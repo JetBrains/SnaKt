@@ -16,7 +16,9 @@ import org.jetbrains.kotlin.formver.names.SimpleNameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
 import org.jetbrains.kotlin.formver.viper.ast.Exp
+import org.jetbrains.kotlin.formver.viper.ast.Exp.Companion.toConjunction
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
+import kotlin.reflect.KProperty
 
 class PureLinearizerMisuseException(val offendingFunction: String) : IllegalStateException(offendingFunction)
 
@@ -29,9 +31,11 @@ class PureLinearizerMisuseException(val offendingFunction: String) : IllegalStat
  */
 data class PureLinearizer(
     override val source: KtSourceElement?,
-    val ssaConverter: SsaConverter
+    private val ssaConverterReference: SsaConverterReference = SsaConverterReference(SsaConverter())
 ) :
     LinearizationContext {
+    var ssaConverter: SsaConverter by ssaConverterReference
+
     override val unfoldPolicy: UnfoldPolicy
         get() = UnfoldPolicy.UNFOLDING_IN
 
@@ -68,6 +72,81 @@ data class PureLinearizer(
         ssaConverter.addBody(returnExp.toViper(this))
     }
 
+    override fun addBranch(
+        condition: ExpEmbedding,
+        thenBranch: ExpEmbedding,
+        elseBranch: ExpEmbedding,
+        type: TypeEmbedding,
+        result: VariableEmbedding?
+    ) {
+        val startNode = this.ssaConverter
+        val joinNode = startNode.createSibling()
+        startNode.transferSuccessorsTo(joinNode)
+        val conditionExp = condition.ignoringCastsAndMetaNodes().toViperBuiltinType(this)
+        fun createBranch(cond: Exp) = createBranchLinearizer(
+            branchCondition = cond,
+            predecessors = mutableListOf(startNode),
+            successors = mutableListOf(joinNode)
+        )
+        val thenLinearizer = createBranch(conditionExp)
+        val elseLinearizer = createBranch(Exp.Not(conditionExp))
+        val branchNodes = listOf(thenLinearizer.ssaConverter, elseLinearizer.ssaConverter)
+        startNode.successors.addAll(branchNodes)
+        joinNode.predecessors.addAll(branchNodes)
+        this.ssaConverter = joinNode
+        thenBranch.toViperUnusedResult(thenLinearizer)
+        elseBranch.toViperUnusedResult(elseLinearizer)
+    }
+
+    /**
+     * Creates a new converter with the same properties as the original.
+     */
+    private fun SsaConverter.createSibling(
+        localCondition: Exp? = this.localBranchingCondition,
+        globalCondition: Exp? = this.globalBranchingCondition
+    ) = SsaConverter(
+        variableIndex = this.variableIndex,
+        localBranchingCondition = localCondition,
+        globalBranchingCondition = globalCondition
+    )
+
+    /**
+     * Moves all successors from this node to the target node, updating back-references.
+     */
+    private fun SsaConverter.transferSuccessorsTo(target: SsaConverter) {
+        if (this.successors.isEmpty()) return
+        this.successors.forEach { successor ->
+            successor.predecessors.remove(this)
+            successor.predecessors.add(target)
+        }
+        target.successors.addAll(this.successors)
+        this.successors.clear()
+    }
+
+    /**
+     * Creates an SSAConverter for a specific branch
+     */
+    private fun createBranchLinearizer(
+        branchCondition: Exp,
+        predecessors: MutableList<SsaConverter>,
+        successors: MutableList<SsaConverter>
+    ): PureLinearizer {
+        val parentGlobal = this.ssaConverter.globalBranchingCondition
+        val newGlobal = if (parentGlobal != null) {
+            listOf(branchCondition, parentGlobal).toConjunction()
+        } else {
+            branchCondition
+        }
+        val branchSsa = SsaConverter(
+            variableIndex = this.ssaConverter.variableIndex,
+            predecessors = predecessors,
+            successors = successors,
+            localBranchingCondition = branchCondition,
+            globalBranchingCondition = newGlobal
+        )
+        return PureLinearizer(source, SsaConverterReference(branchSsa))
+    }
+
     override fun addModifier(mod: StmtModifier) {
         throw PureLinearizerMisuseException("addModifier")
     }
@@ -77,7 +156,7 @@ data class PureLinearizer(
 
 fun ExpEmbedding.pureToViper(toBuiltin: Boolean, source: KtSourceElement? = null): Exp {
     try {
-        val linearizer = PureLinearizer(source, SsaConverter(source))
+        val linearizer = PureLinearizer(source)
         return if (toBuiltin) toViperBuiltinType(linearizer) else toViper(linearizer)
     } catch (e: PureLinearizerMisuseException) {
         val catchNameResolver = SimpleNameResolver()
@@ -90,3 +169,10 @@ fun ExpEmbedding.pureToViper(toBuiltin: Boolean, source: KtSourceElement? = null
 
 fun List<ExpEmbedding>.pureToViper(toBuiltin: Boolean, source: KtSourceElement? = null): List<Exp> =
     map { it.pureToViper(toBuiltin, source) }
+
+data class SsaConverterReference(var value: SsaConverter) {
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): SsaConverter = this.value
+    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: SsaConverter) {
+        this.value = value
+    }
+}

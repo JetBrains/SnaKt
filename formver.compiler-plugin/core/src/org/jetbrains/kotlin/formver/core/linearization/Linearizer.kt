@@ -8,10 +8,7 @@ package org.jetbrains.kotlin.formver.core.linearization
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
-import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.LinearizationVariableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.withType
+import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.core.embeddings.toViperGoto
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
@@ -83,6 +80,20 @@ data class Linearizer(
             .toViperStoringIn(target.variable, this)
         addStatement { target.label.toLink().toViperGoto(this) }
     }
+
+    override fun addBranch(
+        condition: ExpEmbedding,
+        thenBranch: ExpEmbedding,
+        elseBranch: ExpEmbedding,
+        type: TypeEmbedding,
+        result: VariableEmbedding?
+    ) =
+        addStatement {
+            val condViper = condition.toViperBuiltinType(this)
+            val thenViper = asBlock { thenBranch.withType(type).toViperMaybeStoringIn(result, this) }
+            val elseViper = asBlock { elseBranch.withType(type).toViperMaybeStoringIn(result, this) }
+            Stmt.If(condViper, thenViper, elseViper, source.asPosition)
+        }
 
     override fun addModifier(mod: StmtModifier) {
         stmtModifierTracker?.add(mod) ?: error("Not in a statement")

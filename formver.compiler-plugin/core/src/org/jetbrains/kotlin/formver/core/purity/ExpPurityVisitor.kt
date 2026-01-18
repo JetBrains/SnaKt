@@ -38,8 +38,8 @@ internal class ExprPurityVisitor(val declaredVariables: MutableSet<VariableEmbed
     override fun visitWithPosition(e: WithPosition) = e.allChildrenPure(this)
     override fun visitInjectionBasedExpEmbedding(e: InjectionBasedExpEmbedding) = e.allChildrenPure(this)
     override fun visitSharingContext(e: SharingContext) = e.allChildrenPure(this)
+    override fun visitIf(e: If) = e.allChildrenPure(this)
 
-    override fun visitIf(e: If) = false
     override fun visitElvis(e: Elvis) = false
     override fun visitSafeCast(e: SafeCast) = false
     override fun visitCast(e: Cast) = false

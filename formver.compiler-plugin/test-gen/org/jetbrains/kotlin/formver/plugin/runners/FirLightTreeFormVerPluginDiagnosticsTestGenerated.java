@@ -73,6 +73,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
+    @TestMetadata("pure_function_with_branching.kt")
+    public void testPure_function_with_branching() {
+      runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_function_with_branching.kt");
+    }
+
+    @Test
     @TestMetadata("pure_function_with_reassignments.kt")
     public void testPure_function_with_reassignments() {
       runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_function_with_reassignments.kt");

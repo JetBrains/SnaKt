@@ -5,7 +5,6 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.expression
 
-import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
 import org.jetbrains.kotlin.formver.core.embeddings.*
@@ -65,12 +64,7 @@ data class If(
 ) :
     OptionalResultExpEmbedding, DefaultDebugTreeViewImplementation {
     override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
-        ctx.addStatement {
-            val condViper = condition.toViperBuiltinType(ctx)
-            val thenViper = ctx.asBlock { thenBranch.withType(type).toViperMaybeStoringIn(result, this) }
-            val elseViper = ctx.asBlock { elseBranch.withType(type).toViperMaybeStoringIn(result, this) }
-            Stmt.If(condViper, thenViper, elseViper, ctx.source.asPosition)
-        }
+        ctx.addBranch(condition, thenBranch, elseBranch, type, result)
     }
 
     override val debugAnonymousSubexpressions: List<ExpEmbedding>
