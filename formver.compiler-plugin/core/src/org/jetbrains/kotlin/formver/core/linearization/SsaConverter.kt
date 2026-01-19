@@ -147,10 +147,10 @@ class SsaConverter(
         val expressionPairs: List<Pair<Exp, Exp>> = incomingVersions.map { (cond, ssaName) ->
             cond to Exp.LocalVar(ssaName, Type.Ref)
         }
-        val phiExpression = expressionPairs
+        // We reverse the list as this makes reduce fold in the expected order
+        val phiExpression = expressionPairs.reversed()
             .reduce { (_, accExp), (nextCond, nextExp) ->
-                val condition = nextCond
-                nextCond to TernaryExp(condition, nextExp, accExp)
+                nextCond to TernaryExp(nextCond, nextExp, accExp)
             }.second
         addAssignment(Declaration.LocalVarDecl(originalName, Type.Ref), phiExpression)
         return SsaVariableName(originalName, assignments.last { it.declaration.name == originalName }.ssaIdx)
