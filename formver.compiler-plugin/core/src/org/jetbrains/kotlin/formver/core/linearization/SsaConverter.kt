@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.formver.core.names.SsaVariableName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
 import org.jetbrains.kotlin.formver.viper.ast.Exp
+import org.jetbrains.kotlin.formver.viper.ast.Exp.Companion.toDisjunction
 import org.jetbrains.kotlin.formver.viper.ast.Exp.TernaryExp
 import org.jetbrains.kotlin.formver.viper.ast.Type
 import org.jetbrains.kotlin.formver.viper.debugMangled
@@ -51,6 +52,9 @@ class SsaConverter(
         return checkUpstream(ssaConverter, mutableSetOf())
     }
 
+    /**
+     * Recursively checks upwards if a body is defined for any path reaching this converter
+     */
     private fun checkUpstream(current: SsaConverter, visited: MutableSet<SsaConverter>): Boolean =
         when {
             current.body != null -> true
@@ -61,6 +65,9 @@ class SsaConverter(
             }
         }
 
+    /**
+     * Returns a topological ordering of SSAConverters starting from this SSAConverter
+     */
     private fun getTopologicallySortedBlocks(): List<SsaConverter> {
         val visited = mutableSetOf<SsaConverter>()
         val result = mutableListOf<SsaConverter>()
@@ -96,21 +103,29 @@ class SsaConverter(
      * If no local assignment is found, we assume the provided name is valid
      */
     fun resolveVariableName(name: SymbolicName): SymbolicName {
-        findLocalSsaVersion(name)?.let { return it }
-        return when (predecessors.size) {
-            1 -> predecessors.first().resolveVariableName(name)
-            else -> resolvePhiOrFallback(name)
-        }
+        return findLocalSsaVersion(name) ?: return resolveGloballyOrFallback(name)
     }
 
-    private fun resolvePhiOrFallback(name: SymbolicName): SymbolicName {
-        val incomingVersions = predecessors.map { converter ->
-            converter.localBranchingCondition to converter.resolveVariableName(name)
+    /**
+     * Resolves a variable name from previous SSAConverters or fallback to the name
+     */
+    private fun resolveGloballyOrFallback(name: SymbolicName): SymbolicName {
+        val incomingVersionsWithDuplicates = predecessors.map { converter ->
+            (converter.localBranchingCondition ?: Exp.BoolLit(true)) to converter.resolveVariableName(name)
         }
+        val incomingVersions = incomingVersionsWithDuplicates
+            .groupBy(
+                keySelector = { (_, name) -> name },
+                valueTransform = { (condition, _) -> condition }
+            ).map { (name, conditions) ->
+                conditions.toDisjunction() to name
+            }
+
         val allAreSsa = incomingVersions.all { (_, n) -> n is SsaVariableName }
         val anyAreSsa = incomingVersions.any { (_, n) -> n is SsaVariableName }
         return when {
             incomingVersions.isEmpty() -> name // Fallback if no versions are incoming
+            incomingVersions.size == 1 -> incomingVersions[0].second // Only one preceding version
             allAreSsa -> createPhiAssignment(name, incomingVersions)
             anyAreSsa -> throw SnaktInternalException(
                 source,
@@ -118,24 +133,32 @@ class SsaConverter(
             )
             else -> name // Fallback if all SSAConverters agree, that variable is not an SSAAssignment
         }
+
     }
 
+    /**
+     * Creates a phi expression and the corresponding assignment in this SSAConverter
+     * for a list of incoming versions of a source variable
+     */
     private fun createPhiAssignment(
         originalName: SymbolicName,
-        incomingVersions: List<Pair<Exp?, SymbolicName>>
+        incomingVersions: List<Pair<Exp, SymbolicName>>
     ): SsaVariableName {
-        val expressionPairs = incomingVersions.map { (cond, ssaName) ->
-            cond to Exp.LocalVar(ssaName, Type.Ref) as Exp
+        val expressionPairs: List<Pair<Exp, Exp>> = incomingVersions.map { (cond, ssaName) ->
+            cond to Exp.LocalVar(ssaName, Type.Ref)
         }
         val phiExpression = expressionPairs
             .reduce { (_, accExp), (nextCond, nextExp) ->
-                val condition = nextCond ?: Exp.BoolLit(true)
+                val condition = nextCond
                 nextCond to TernaryExp(condition, nextExp, accExp)
             }.second
         addAssignment(Declaration.LocalVarDecl(originalName, Type.Ref), phiExpression)
         return SsaVariableName(originalName, assignments.last { it.declaration.name == originalName }.ssaIdx)
     }
 
+    /**
+     * Returns the latest local definition of a source variable
+     */
     private fun findLocalSsaVersion(name: SymbolicName): SsaVariableName? {
         return assignments
             .lastOrNull { it.declaration.name == name }
