@@ -14,6 +14,7 @@ method f$testManualPermissionFieldGetter$TF$T$ManualPermissionFields(p$mpf: Ref)
   unfold acc(p$c$ManualPermissionFields$shared(p$mpf), wildcard)
   l0$a := p$mpf.bf$a
   l0$b := p$mpf.bf$b
+  inhale df$rt$isSubtype(df$rt$typeOf(l0$b), df$rt$intType())
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
