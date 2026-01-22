@@ -40,9 +40,6 @@ interface FieldEmbedding {
     val includeInShortDump: Boolean
     val symbol: FirPropertySymbol?
         get() = null
-    //If this is true, programmer wants to manually control permissions
-    val isManual: Boolean
-        get() = false
 
     fun toViper(): Field = Field(name, viperType, includeInShortDump)
 
@@ -67,11 +64,15 @@ class UserFieldEmbedding(
     override val symbol: FirPropertySymbol,
     override val isUnique: Boolean,
     override val containingClass: ClassTypeEmbedding,
-    override val isManual: Boolean
+    val isManual: Boolean
 ) : FieldEmbedding {
     override val viperType = Type.Ref
     override val accessPolicy: AccessPolicy =
-        if (symbol.isVal) AccessPolicy.ALWAYS_READABLE else if (isManual) AccessPolicy.MANUAL else AccessPolicy.ALWAYS_INHALE_EXHALE
+        when {
+            symbol.isVal -> AccessPolicy.ALWAYS_READABLE
+            isManual -> AccessPolicy.MANUAL
+            else -> AccessPolicy.ALWAYS_INHALE_EXHALE
+        }
     override val unfoldToAccess: Boolean
         get() = accessPolicy == AccessPolicy.ALWAYS_READABLE
     override val includeInShortDump: Boolean = true
