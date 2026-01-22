@@ -524,14 +524,14 @@ class ProgramConverter(
 
     private fun embedGetter(symbol: FirPropertySymbol, backingField: FieldEmbedding?): GetterEmbedding =
         if (backingField != null) {
-            BackingFieldGetter(backingField, symbol.isManual(session))
+            BackingFieldGetter(backingField)
         } else {
             CustomGetter(embedGetterFunction(symbol))
         }
 
     private fun embedSetter(symbol: FirPropertySymbol, backingField: FieldEmbedding?): SetterEmbedding =
         if (backingField != null) {
-            BackingFieldSetter(backingField, symbol.isManual(session))
+            BackingFieldSetter(backingField)
         } else {
             CustomSetter(embedSetterFunction(symbol))
         }
