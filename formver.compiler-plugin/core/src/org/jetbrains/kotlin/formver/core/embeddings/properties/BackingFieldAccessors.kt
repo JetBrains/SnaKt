@@ -17,10 +17,10 @@ class BackingFieldGetter(val field: FieldEmbedding) : GetterEmbedding {
         return if (field.accessPolicy == AccessPolicy.ALWAYS_READABLE) {
             FieldAccess(receiver, field)
         } else {
-                FieldAccess(receiver, field).withInvariants {
-                    proven = true
-                    access = true
-                }
+            FieldAccess(receiver, field).withInvariants {
+                proven = true
+                access = true
+            }
         }
     }
 }
