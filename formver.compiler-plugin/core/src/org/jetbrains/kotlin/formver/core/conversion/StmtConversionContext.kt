@@ -269,9 +269,9 @@ fun StmtConversionContext.convertFunctionWithBody(
         "Impure function body detected in pure function"
     )
     val ssaConverter = SsaConverter(declaration.source)
-    val pureLinearizer = PureLinearizer(declaration.source, SsaConverterReference(ssaConverter))
+    val pureLinearizer = PureLinearizer(declaration.source, ssaConverter)
     body.toViperUnusedResult(pureLinearizer)
-    return ssaConverter.asExp()
+    return ssaConverter.foldAssignmentsAndReturnsIntoExpression()
 }
 
 private const val INVALID_STATEMENT_MSG =
