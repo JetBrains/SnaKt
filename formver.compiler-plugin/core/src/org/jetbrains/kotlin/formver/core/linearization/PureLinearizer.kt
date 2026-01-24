@@ -88,6 +88,8 @@ data class PureLinearizer(
     }
 
     override fun resolveVariableName(name: SymbolicName): SymbolicName = ssaConverter.resolveVariableName(name)
+
+    fun generateFinalExpression(): Exp = ssaConverter.foldAssignmentsAndReturnsIntoExpression()
 }
 
 fun ExpEmbedding.pureToViper(toBuiltin: Boolean, source: KtSourceElement? = null): Exp {
