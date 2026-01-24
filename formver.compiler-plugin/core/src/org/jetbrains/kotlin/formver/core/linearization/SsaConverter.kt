@@ -2,6 +2,7 @@ package org.jetbrains.kotlin.formver.core.linearization
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.core.conversion.FreshEntityProducer
 import org.jetbrains.kotlin.formver.core.names.SsaVariableName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
@@ -11,11 +12,33 @@ import org.jetbrains.kotlin.formver.viper.ast.Type
 
 class SsaConverter(
     val source: KtSourceElement? = null,
-    var head: SsaNode = SsaStartNode()
+    private var head: UpdatingSsaNode = SsaStartNode()
 ) {
+    private val ssaNameProducer: MutableMap<SymbolicName, FreshEntityProducer<SsaVariableName, SymbolicName>> =
+        mutableMapOf()
     private val ssaAssignments: MutableList<Pair<SsaVariableName, Exp>> = mutableListOf()
     private val returnExpressions: MutableList<Pair<Exp, Exp>> = mutableListOf()
-    private val variableIndex: MutableMap<SymbolicName, Int> = mutableMapOf()
+
+    fun branch(
+        condition: Exp,
+        thenBlock: () -> Unit,
+        elseBlock: () -> Unit
+    ) {
+        val splitPoint = head
+
+        fun runPath(pathCondition: Exp, block: () -> Unit): UpdatingSsaNode {
+            val branchNode = splitPoint.generateBranchNodeFromThisNode(pathCondition)
+            head = SsaBlockNode(branchNode, branchNode)
+            block()
+            return head
+        }
+
+        val thenResultHead = runPath(condition, thenBlock)
+        val elseResultHead = runPath(Exp.Not(condition), elseBlock)
+        val joinNode = SsaJoinNode(thenResultHead, elseResultHead, this, splitPoint.branch)
+
+        head = SsaBlockNode(joinNode, joinNode.branch)
+    }
 
     fun foldAssignmentsAndReturnsIntoExpression(): Exp {
         if (returnExpressions.isEmpty()) throw SnaktInternalException(
@@ -36,18 +59,39 @@ class SsaConverter(
     }
 
     fun addAssignment(name: SymbolicName, varExp: Exp): SsaVariableName {
-        val ssaIdx = (variableIndex[name]?.plus(1) ?: 0)
-        val ssaName = SsaVariableName(name, ssaIdx)
+        ssaNameProducer.putIfAbsent(name, FreshEntityProducer(::SsaVariableName))
+        val ssaName = ssaNameProducer[name]!!.getFresh(name)
         head.updateLatestName(name, ssaName)
         ssaAssignments.add(ssaName to varExp)
-        variableIndex[name] = ssaIdx
         return ssaName
+    }
+
+    fun addPhiAssignment(condition: Exp, left: SymbolicName, right: SymbolicName): SsaVariableName {
+        if (left !is SsaVariableName || right !is SsaVariableName) {
+            throw SnaktInternalException(
+                source,
+                "Phi Assignments may only be created for SSA variables"
+            )
+        }
+        if (left.baseName != right.baseName) {
+            throw SnaktInternalException(
+                source,
+                "Phi Assignments may only be created for SSA variables referring to the same source variable"
+            )
+        }
+        return addAssignment(
+            left.baseName, TernaryExp(
+                condition,
+                Exp.LocalVar(left, Type.Ref),
+                Exp.LocalVar(right, Type.Ref)
+            )
+        )
     }
 
     fun addReturn(returnExp: Exp) {
         returnExpressions.add(head.fullBranchingCondition() to returnExp)
     }
-    
+
     fun resolveVariableName(name: SymbolicName): SymbolicName {
         return head.resolveVariableName(name)
     }

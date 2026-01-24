@@ -77,19 +77,10 @@ data class PureLinearizer(
         result: VariableEmbedding?
     ) {
         val conditionExp = condition.ignoringCastsAndMetaNodes().toViperBuiltinType(this)
-        val currentHead = ssaConverter.head
-        val leftResult = performSsaBranch(conditionExp, currentHead, thenBranch)
-        val rightResult = performSsaBranch(Exp.Not(conditionExp), currentHead, elseBranch)
-        val joinNode = SsaJoinNode(leftResult, rightResult, ssaConverter, currentHead.branches)
-        ssaConverter.head = SsaBlockNode(joinNode, joinNode.branches)
-    }
-
-    private fun performSsaBranch(condition: Exp, currentHead: SsaNode, embeddingInBranch: ExpEmbedding): SsaNode {
-        val branchNode = currentHead.generateBranchNodeFromThisNode(condition)
-        val blockNode = SsaBlockNode(branchNode, branchNode.branches)
-        ssaConverter.head = blockNode
-        embeddingInBranch.toViperUnusedResult(this)
-        return ssaConverter.head
+        ssaConverter.branch(
+            conditionExp,
+            { thenBranch.toViperUnusedResult(this) },
+            { elseBranch.toViperUnusedResult(this) })
     }
 
     override fun addModifier(mod: StmtModifier) {
