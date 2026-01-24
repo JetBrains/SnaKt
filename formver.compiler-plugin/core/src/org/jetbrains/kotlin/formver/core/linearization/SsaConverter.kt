@@ -2,7 +2,6 @@ package org.jetbrains.kotlin.formver.core.linearization
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
-import org.jetbrains.kotlin.formver.core.conversion.FreshEntityProducer
 import org.jetbrains.kotlin.formver.core.names.SsaVariableName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
@@ -12,10 +11,8 @@ import org.jetbrains.kotlin.formver.viper.ast.Type
 
 class SsaConverter(
     val source: KtSourceElement? = null,
-    private var head: UpdatingSsaNode = SsaStartNode()
+    private var head: SsaBlockNode = SsaBlockNode(SsaStartNode(), Exp.BoolLit(true), Exp.BoolLit(true))
 ) {
-    private val ssaNameProducer: MutableMap<SymbolicName, FreshEntityProducer<SsaVariableName, SymbolicName>> =
-        mutableMapOf()
     private val ssaAssignments: MutableList<Pair<SsaVariableName, Exp>> = mutableListOf()
     private val returnExpressions: MutableList<Pair<Exp, Exp>> = mutableListOf()
 
@@ -25,19 +22,23 @@ class SsaConverter(
         elseBlock: () -> Unit
     ) {
         val splitPoint = head
-
-        fun runPath(pathCondition: Exp, block: () -> Unit): UpdatingSsaNode {
-            val branchNode = splitPoint.generateBranchNodeFromThisNode(pathCondition)
-            head = SsaBlockNode(branchNode, branchNode)
+        fun runPath(pathCondition: Exp, block: () -> Unit): SsaNode {
+            head = splitPoint.generateBranchingBlockNodeFromThisNode(pathCondition)
             block()
             return head
         }
 
         val thenResultHead = runPath(condition, thenBlock)
         val elseResultHead = runPath(Exp.Not(condition), elseBlock)
-        val joinNode = SsaJoinNode(thenResultHead, elseResultHead, this, splitPoint.branch)
+        val joinNode = SsaJoinNode(
+            thenResultHead,
+            elseResultHead,
+            this,
+            splitPoint.mostRecentBranchingCondition,
+            splitPoint.fullBranchingCondition
+        )
 
-        head = SsaBlockNode(joinNode, joinNode.branch)
+        head = SsaBlockNode(joinNode, joinNode.mostRecentBranchingCondition, joinNode.fullBranchingCondition)
     }
 
     fun foldAssignmentsAndReturnsIntoExpression(): Exp {
@@ -58,29 +59,20 @@ class SsaConverter(
         }
     }
 
-    fun addAssignment(name: SymbolicName, varExp: Exp): SsaVariableName {
-        ssaNameProducer.putIfAbsent(name, FreshEntityProducer(::SsaVariableName))
-        val ssaName = ssaNameProducer[name]!!.getFresh(name)
-        head.updateLatestName(name, ssaName)
+    fun addAssignment(name: SymbolicName, varExp: Exp) {
+        val ssaName = head.registerAndUpdateLatestNameUsage(name)
         ssaAssignments.add(ssaName to varExp)
-        return ssaName
     }
 
-    fun addPhiAssignment(condition: Exp, left: SymbolicName, right: SymbolicName): SsaVariableName {
-        if (left !is SsaVariableName || right !is SsaVariableName) {
-            throw SnaktInternalException(
-                source,
-                "Phi Assignments may only be created for SSA variables"
-            )
-        }
+    fun addPhiAssignment(condition: Exp, left: SsaVariableName, right: SsaVariableName, name: SsaVariableName) {
         if (left.baseName != right.baseName) {
             throw SnaktInternalException(
                 source,
-                "Phi Assignments may only be created for SSA variables referring to the same source variable"
+                "Phi Assignments may only be created for SSA variables referring to the same source variable."
             )
         }
-        return addAssignment(
-            left.baseName, TernaryExp(
+        ssaAssignments.add(
+            name to TernaryExp(
                 condition,
                 Exp.LocalVar(left, Type.Ref),
                 Exp.LocalVar(right, Type.Ref)
@@ -89,7 +81,7 @@ class SsaConverter(
     }
 
     fun addReturn(returnExp: Exp) {
-        returnExpressions.add(head.fullBranchingCondition() to returnExp)
+        returnExpressions.add(head.fullBranchingCondition to returnExp)
     }
 
     fun resolveVariableName(name: SymbolicName): SymbolicName {
