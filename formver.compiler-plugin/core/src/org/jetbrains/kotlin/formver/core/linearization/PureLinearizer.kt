@@ -30,9 +30,7 @@ class PureLinearizerMisuseException(val offendingFunction: String) : IllegalStat
 data class PureLinearizer(
     override val source: KtSourceElement?,
     private val ssaConverter: SsaConverter = SsaConverter(source)
-) :
-    LinearizationContext {
-
+) : LinearizationContext {
     override val unfoldPolicy: UnfoldPolicy
         get() = UnfoldPolicy.UNFOLDING_IN
 
@@ -76,6 +74,7 @@ data class PureLinearizer(
         type: TypeEmbedding,
         result: VariableEmbedding?
     ) {
+        // TODO: Return result of translation
         val conditionExp = condition.ignoringCastsAndMetaNodes().toViperBuiltinType(this)
         ssaConverter.branch(
             conditionExp,
@@ -89,7 +88,7 @@ data class PureLinearizer(
 
     override fun resolveVariableName(name: SymbolicName): SymbolicName = ssaConverter.resolveVariableName(name)
 
-    fun generateFinalExpression(): Exp = ssaConverter.foldAssignmentsAndReturnsIntoExpression()
+    fun constructExpression(): Exp = ssaConverter.constructExpression()
 }
 
 fun ExpEmbedding.pureToViper(toBuiltin: Boolean, source: KtSourceElement? = null): Exp {

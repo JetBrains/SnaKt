@@ -273,7 +273,7 @@ fun StmtConversionContext.convertFunctionWithBody(
     )
     val pureLinearizer = PureLinearizer(declaration.source)
     body.toViperUnusedResult(pureLinearizer)
-    return pureLinearizer.generateFinalExpression()
+    return pureLinearizer.constructExpression()
 }
 
 private const val INVALID_STATEMENT_MSG =

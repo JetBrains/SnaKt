@@ -2,6 +2,7 @@ package org.jetbrains.kotlin.formver.core.linearization
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.core.conversion.FreshEntityProducer
 import org.jetbrains.kotlin.formver.core.names.SsaVariableName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
@@ -11,10 +12,14 @@ import org.jetbrains.kotlin.formver.viper.ast.Type
 
 class SsaConverter(
     val source: KtSourceElement? = null,
-    private var head: SsaBlockNode = SsaBlockNode(SsaStartNode(), Exp.BoolLit(true), Exp.BoolLit(true))
 ) {
+    private var head: SsaBlockNode = SsaBlockNode(SsaStartNode(), Exp.BoolLit(true), Exp.BoolLit(true))
     private val ssaAssignments: MutableList<Pair<SsaVariableName, Exp>> = mutableListOf()
     private val returnExpressions: MutableList<Pair<Exp, Exp>> = mutableListOf()
+
+    // Shared between nodes: Produce new ssa names
+    private val ssaNameProducers: MutableMap<SymbolicName, FreshEntityProducer<SsaVariableName, SymbolicName>> =
+        mutableMapOf()
 
     fun branch(
         condition: Exp,
@@ -22,26 +27,20 @@ class SsaConverter(
         elseBlock: () -> Unit
     ) {
         val splitPoint = head
-        fun runPath(pathCondition: Exp, block: () -> Unit): SsaNode {
-            head = splitPoint.generateBranchingBlockNodeFromThisNode(pathCondition)
-            block()
-            return head
-        }
-
-        val thenResultHead = runPath(condition, thenBlock)
-        val elseResultHead = runPath(Exp.Not(condition), elseBlock)
+        head = splitPoint.generateBranchingBlockNodeFromThisNode(condition)
+        thenBlock()
+        val thenResultHead = head
+        head = splitPoint.generateBranchingBlockNodeFromThisNode(Exp.Not(condition))
+        elseBlock()
         val joinNode = SsaJoinNode(
             thenResultHead,
-            elseResultHead,
-            this,
-            splitPoint.mostRecentBranchingCondition,
-            splitPoint.fullBranchingCondition
+            head,
+            this
         )
-
-        head = SsaBlockNode(joinNode, joinNode.mostRecentBranchingCondition, joinNode.fullBranchingCondition)
+        head = SsaBlockNode(joinNode, splitPoint.mostRecentBranchingCondition, splitPoint.fullBranchingCondition)
     }
 
-    fun foldAssignmentsAndReturnsIntoExpression(): Exp {
+    fun constructExpression(): Exp {
         if (returnExpressions.isEmpty()) throw SnaktInternalException(
             source,
             "No return expression was found for translation"
@@ -59,8 +58,13 @@ class SsaConverter(
         }
     }
 
+    fun generateFreshSsaName(name: SymbolicName): SsaVariableName {
+        val producer = ssaNameProducers.getOrPut(name) { FreshEntityProducer(::SsaVariableName) }
+        return producer.getFresh(name)
+    }
+
     fun addAssignment(name: SymbolicName, varExp: Exp) {
-        val ssaName = head.registerAndUpdateLatestNameUsage(name)
+        val ssaName = head.updateLatestNameUsage(name)
         ssaAssignments.add(ssaName to varExp)
     }
 
