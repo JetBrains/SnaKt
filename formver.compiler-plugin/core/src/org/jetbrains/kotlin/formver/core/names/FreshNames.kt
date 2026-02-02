@@ -117,7 +117,7 @@ data class DomainFuncParameterName(val baseName: String) : SymbolicName {
         get() = baseName
 }
 
-data class SsaVariableName(val baseName: SymbolicName, val ssaIndex: Int) : SymbolicName {
+data class SsaVariableName(val ssaIndex: Int, val baseName: SymbolicName) : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "${baseName.mangled}$$ssaIndex"

@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeBuilder
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeBuilder
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
@@ -47,6 +48,13 @@ interface LinearizationContext {
     fun addDeclaration(decl: Declaration)
     fun addAssignment(lhs: ExpEmbedding, rhs: ExpEmbedding)
     fun addReturn(returnExp: ExpEmbedding, target: ReturnTarget)
+    fun addBranch(
+        condition: ExpEmbedding,
+        thenBranch: ExpEmbedding,
+        elseBranch: ExpEmbedding,
+        type: TypeEmbedding,
+        result: VariableEmbedding?
+    )
 
     fun addModifier(mod: StmtModifier)
 

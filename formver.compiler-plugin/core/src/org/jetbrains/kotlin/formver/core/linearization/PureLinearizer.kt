@@ -29,9 +29,8 @@ class PureLinearizerMisuseException(val offendingFunction: String) : IllegalStat
  */
 data class PureLinearizer(
     override val source: KtSourceElement?,
-    val ssaConverter: SsaConverter
-) :
-    LinearizationContext {
+    private val ssaConverter: SsaConverter = SsaConverter(source)
+) : LinearizationContext {
     override val unfoldPolicy: UnfoldPolicy
         get() = UnfoldPolicy.UNFOLDING_IN
 
@@ -59,13 +58,28 @@ data class PureLinearizer(
     override fun addAssignment(lhs: ExpEmbedding, rhs: ExpEmbedding) {
         // It would be nicer to constraint this a bit further as this is a very special case
         ssaConverter.addAssignment(
-            (lhs.ignoringMetaNodes() as VariableEmbedding).toLocalVarDecl(),
+            (lhs.ignoringMetaNodes() as VariableEmbedding).name,
             rhs.toViper(this)
         )
     }
 
     override fun addReturn(returnExp: ExpEmbedding, target: ReturnTarget) {
-        ssaConverter.addBody(returnExp.toViper(this))
+        ssaConverter.addReturn(returnExp.toViper(this))
+    }
+
+    override fun addBranch(
+        condition: ExpEmbedding,
+        thenBranch: ExpEmbedding,
+        elseBranch: ExpEmbedding,
+        type: TypeEmbedding,
+        result: VariableEmbedding?
+    ) {
+        // TODO: Return result of translation
+        val conditionExp = condition.ignoringCastsAndMetaNodes().toViperBuiltinType(this)
+        ssaConverter.branch(
+            conditionExp,
+            { thenBranch.toViperUnusedResult(this) },
+            { elseBranch.toViperUnusedResult(this) })
     }
 
     override fun addModifier(mod: StmtModifier) {
@@ -73,11 +87,13 @@ data class PureLinearizer(
     }
 
     override fun resolveVariableName(name: SymbolicName): SymbolicName = ssaConverter.resolveVariableName(name)
+
+    fun constructExpression(): Exp = ssaConverter.constructExpression()
 }
 
 fun ExpEmbedding.pureToViper(toBuiltin: Boolean, source: KtSourceElement? = null): Exp {
     try {
-        val linearizer = PureLinearizer(source, SsaConverter(source))
+        val linearizer = PureLinearizer(source)
         return if (toBuiltin) toViperBuiltinType(linearizer) else toViper(linearizer)
     } catch (e: PureLinearizerMisuseException) {
         val catchNameResolver = SimpleNameResolver()

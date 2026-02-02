@@ -2,45 +2,94 @@ package org.jetbrains.kotlin.formver.core.linearization
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.core.conversion.FreshEntityProducer
 import org.jetbrains.kotlin.formver.core.names.SsaVariableName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
 import org.jetbrains.kotlin.formver.viper.ast.Exp
+import org.jetbrains.kotlin.formver.viper.ast.Exp.TernaryExp
+import org.jetbrains.kotlin.formver.viper.ast.Type
 
 class SsaConverter(
     val source: KtSourceElement? = null,
-    val variableIndex: MutableMap<SymbolicName, Int> = mutableMapOf()
 ) {
-    private val assignments: MutableList<SsaAssignment> = mutableListOf()
-    private var body: Exp? = null
+    private var head: SsaBlockNode = SsaBlockNode(SsaStartNode(), Exp.BoolLit(true))
+    private val ssaAssignments: MutableList<Pair<SsaVariableName, Exp>> = mutableListOf()
+    private val returnExpressions: MutableList<Pair<Exp, Exp>> = mutableListOf()
 
-    fun asExp(): Exp {
-        val bodyExp = body ?: throw SnaktInternalException(
-            source,
-            "Empty body cannot be converted into let chain"
+    // Produce new ssa names for a source variable name
+    private val ssaNameProducers: MutableMap<SymbolicName, FreshEntityProducer<SsaVariableName, SymbolicName>> =
+        mutableMapOf()
+
+    fun branch(
+        condition: Exp,
+        thenBlock: () -> Unit,
+        elseBlock: () -> Unit
+    ) {
+        val splitPoint = head
+        head = splitPoint.generateBranchingBlockNodeFromThisNode(condition)
+        thenBlock()
+        val thenResultHead = head
+        head = splitPoint.generateBranchingBlockNodeFromThisNode(Exp.Not(condition))
+        elseBlock()
+        val joinNode = SsaJoinNode(
+            thenResultHead,
+            head,
+            condition,
+            this
         )
-        return assignments.foldRight(bodyExp) { (decl, ssaIdx, expr), acc ->
-            Exp.LetBinding(decl.copy(name = SsaVariableName(decl.name, ssaIdx)), expr, acc)
+        head = SsaBlockNode(joinNode, splitPoint.fullBranchingCondition)
+    }
+
+    fun constructExpression(): Exp {
+        if (returnExpressions.isEmpty()) throw SnaktInternalException(
+            source,
+            "No return expression was found for translation"
+        )
+        val defaultBody = returnExpressions.last().second
+        val bodyExp = returnExpressions.dropLast(1).foldRight(defaultBody) { expPair, elseBranch ->
+            TernaryExp(
+                expPair.first,
+                expPair.second,
+                elseBranch
+            )
+        }
+        return ssaAssignments.foldRight(bodyExp) { assignment, innerScope ->
+            Exp.LetBinding(Declaration.LocalVarDecl(assignment.first, Type.Ref), assignment.second, innerScope)
         }
     }
 
-    fun addAssignment(decl: Declaration.LocalVarDecl, varExp: Exp) {
-        val ssaIdx = (variableIndex[decl.name]?.plus(1) ?: 0)
-        variableIndex[decl.name] = ssaIdx
-        assignments.add(SsaAssignment(decl, ssaIdx, varExp))
+    fun generateFreshSsaName(name: SymbolicName): SsaVariableName {
+        val producer = ssaNameProducers.getOrPut(name) { FreshEntityProducer(::SsaVariableName) }
+        return producer.getFresh(name)
     }
 
-    fun addBody(body: Exp) {
-        this.body = body
+    fun addAssignment(name: SymbolicName, varExp: Exp) {
+        val ssaName = head.updateLatestName(name)
+        ssaAssignments.add(ssaName to varExp)
     }
 
-    /**
-     * Resolves the symbolic name to its most recent SSA definition.
-     * If no local assignment is found, we assume the provided name is valid
-     */
-    fun resolveVariableName(name: SymbolicName): SymbolicName =
-        // TODO: Fall back to global value numbering before falling back to provided name
-        assignments.lastOrNull { it.declaration.name == name }?.let { SsaVariableName(name, it.ssaIdx) } ?: name
+    fun addPhiAssignment(condition: Exp, left: SsaVariableName, right: SsaVariableName, name: SsaVariableName) {
+        if (left.baseName != right.baseName) {
+            throw SnaktInternalException(
+                source,
+                "Phi Assignments may only be created for SSA variables referring to the same source variable."
+            )
+        }
+        ssaAssignments.add(
+            name to TernaryExp(
+                condition,
+                Exp.LocalVar(left, Type.Ref),
+                Exp.LocalVar(right, Type.Ref)
+            )
+        )
+    }
+
+    fun addReturn(returnExp: Exp) {
+        returnExpressions.add(head.fullBranchingCondition to returnExp)
+    }
+
+    fun resolveVariableName(name: SymbolicName): SymbolicName {
+        return head.resolveVariableName(name)
+    }
 }
-
-data class SsaAssignment(val declaration: Declaration.LocalVarDecl, val ssaIdx: Int, val exp: Exp)
