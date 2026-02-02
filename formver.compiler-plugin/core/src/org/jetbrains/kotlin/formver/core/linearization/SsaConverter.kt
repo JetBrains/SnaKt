@@ -13,11 +13,11 @@ import org.jetbrains.kotlin.formver.viper.ast.Type
 class SsaConverter(
     val source: KtSourceElement? = null,
 ) {
-    private var head: SsaBlockNode = SsaBlockNode(SsaStartNode(), Exp.BoolLit(true), Exp.BoolLit(true))
+    private var head: SsaBlockNode = SsaBlockNode(SsaStartNode(), Exp.BoolLit(true))
     private val ssaAssignments: MutableList<Pair<SsaVariableName, Exp>> = mutableListOf()
     private val returnExpressions: MutableList<Pair<Exp, Exp>> = mutableListOf()
 
-    // Shared between nodes: Produce new ssa names
+    // Produce new ssa names for a source variable name
     private val ssaNameProducers: MutableMap<SymbolicName, FreshEntityProducer<SsaVariableName, SymbolicName>> =
         mutableMapOf()
 
@@ -35,9 +35,10 @@ class SsaConverter(
         val joinNode = SsaJoinNode(
             thenResultHead,
             head,
+            condition,
             this
         )
-        head = SsaBlockNode(joinNode, splitPoint.mostRecentBranchingCondition, splitPoint.fullBranchingCondition)
+        head = SsaBlockNode(joinNode, splitPoint.fullBranchingCondition)
     }
 
     fun constructExpression(): Exp {
@@ -64,7 +65,7 @@ class SsaConverter(
     }
 
     fun addAssignment(name: SymbolicName, varExp: Exp) {
-        val ssaName = head.updateLatestNameUsage(name)
+        val ssaName = head.updateLatestName(name)
         ssaAssignments.add(ssaName to varExp)
     }
 

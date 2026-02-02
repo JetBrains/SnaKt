@@ -9,41 +9,33 @@ import org.jetbrains.kotlin.formver.viper.ast.Exp
  * A node in a SSA-Graph
  */
 sealed interface SsaNode {
-
     /**
-     * Function used to resolve names to their SSAVariableName
+     * Function resolves source names to their SSAVariableName
      * Fallsback to provided name if no such name is found
      */
     fun resolveVariableName(name: SymbolicName): SymbolicName
 }
 
-class SsaStartNode() :
-    SsaNode {
+class SsaStartNode() : SsaNode {
     override fun resolveVariableName(name: SymbolicName): SymbolicName =
         name
 }
 
 class SsaBlockNode(
     private val predecessor: SsaNode,
-    val mostRecentBranchingCondition: Exp,
     val fullBranchingCondition: Exp
 ) : SsaNode {
-
     val latestName: MutableMap<SymbolicName, SsaVariableName> = mutableMapOf()
 
     fun generateBranchingBlockNodeFromThisNode(condition: Exp): SsaBlockNode =
         SsaBlockNode(
             this,
-            condition,
             if (fullBranchingCondition == Exp.BoolLit(true)) condition else Exp.And(condition, fullBranchingCondition),
         )
 
     context(ssaConverter: SsaConverter)
-    fun updateLatestNameUsage(name: SymbolicName): SsaVariableName {
-        val ssaName = ssaConverter.generateFreshSsaName(name);
-        latestName[name] = ssaName;
-        return ssaName
-    }
+    fun updateLatestName(name: SymbolicName): SsaVariableName =
+        ssaConverter.generateFreshSsaName(name).also { latestName[name] = it }
 
     override fun resolveVariableName(name: SymbolicName): SymbolicName =
         latestName[name] ?: predecessor.resolveVariableName(name)
@@ -52,6 +44,7 @@ class SsaBlockNode(
 class SsaJoinNode(
     private val leftPredecessor: SsaBlockNode,
     private val rightPredecessor: SsaBlockNode,
+    private val mostRecentBranchingCondition: Exp,
     private val ssaConverter: SsaConverter
 ) : SsaNode {
     private val lookupCache: MutableMap<SymbolicName, SymbolicName> = mutableMapOf()
@@ -67,7 +60,7 @@ class SsaJoinNode(
         } else if (leftIncoming is SsaVariableName && rightIncoming is SsaVariableName) {
             val ssaName = ssaConverter.generateFreshSsaName(leftIncoming.baseName)
             ssaConverter.addPhiAssignment( // Resolve to phi assignment
-                leftPredecessor.mostRecentBranchingCondition,
+                mostRecentBranchingCondition,
                 leftIncoming,
                 rightIncoming,
                 ssaName
