@@ -6,13 +6,30 @@
 package org.jetbrains.kotlin.formver.core.conversion
 
 import org.jetbrains.kotlin.fir.FirLabel
+import org.jetbrains.kotlin.fir.containingClassLookupTag
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
+import org.jetbrains.kotlin.fir.declarations.FirValueParameter
+import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.impl.*
+import org.jetbrains.kotlin.fir.types.ConeCapturedType
+import org.jetbrains.kotlin.fir.types.ConeDefinitelyNotNullType
+import org.jetbrains.kotlin.fir.types.ConeFlexibleType
+import org.jetbrains.kotlin.fir.types.ConeIntegerConstantOperatorType
+import org.jetbrains.kotlin.fir.types.ConeIntegerLiteralConstantType
+import org.jetbrains.kotlin.fir.types.ConeIntersectionType
+import org.jetbrains.kotlin.fir.types.ConeLookupTagBasedType
+import org.jetbrains.kotlin.fir.types.ConeStubTypeForTypeVariableInSubtyping
+import org.jetbrains.kotlin.fir.types.ConeTypeVariableType
+import org.jetbrains.kotlin.fir.types.classId
 import org.jetbrains.kotlin.fir.types.isBoolean
+import org.jetbrains.kotlin.fir.types.isMarkedNullable
+import org.jetbrains.kotlin.fir.types.isMarkedOrFlexiblyNullable
+import org.jetbrains.kotlin.fir.types.lowerBoundIfFlexible
 import org.jetbrains.kotlin.fir.types.resolvedType
+import org.jetbrains.kotlin.fir.types.withNullability
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.LabelEmbedding
@@ -20,16 +37,34 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.FullNamedFunctionS
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.ClassPropertyAccess
+import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyAccessEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.properties.UserFieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.asPropertyAccess
+import org.jetbrains.kotlin.formver.core.embeddings.types.AnyTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.BooleanTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.CharTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.IntTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.NothingTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.StringTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbeddingFlags
+import org.jetbrains.kotlin.formver.core.embeddings.types.UnitTypeEmbedding
 import org.jetbrains.kotlin.formver.core.isCustom
 import org.jetbrains.kotlin.formver.core.isInvariantBuilderFunctionNamed
 import org.jetbrains.kotlin.formver.core.linearization.*
+import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
+import org.jetbrains.kotlin.formver.core.names.embedMemberPropertyName
+import org.jetbrains.kotlin.formver.core.names.embedName
 import org.jetbrains.kotlin.formver.core.purity.checkValidity
 import org.jetbrains.kotlin.formver.core.purity.isPure
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Exp
+import org.jetbrains.kotlin.formver.viper.ast.PermExp
+import org.jetbrains.kotlin.name.StandardClassIds
+import org.jetbrains.kotlin.text
 import org.jetbrains.kotlin.utils.addIfNotNull
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 import org.jetbrains.kotlin.utils.filterIsInstanceAnd
@@ -232,6 +267,31 @@ fun StmtConversionContext.insertForAllFunctionCall(
             val (invariants, triggers) = collectInvariantsAndTriggers(block)
             ForAllEmbedding(anonVar, invariants, triggers)
         }
+    }
+}
+
+fun StmtConversionContext.insertAccFunctionCall(
+    field: FirPropertyAccessExpression,
+    perm: FirValueParameter,
+): ExpEmbedding {
+    val symbol = field.calleeReference.symbol as? FirPropertySymbol ?: throw SnaktInternalException(
+            field.source,
+            "acc requires a property access like x.a"
+        )
+    val name = symbol.embedMemberPropertyName()
+
+    val type = embedType(symbol.resolvedReturnType)
+
+    val classEmbedding = ClassTypeEmbedding(symbol.containingClassLookupTag()?.classId?.embedName() ?: throw SnaktInternalException(symbol.source, "type not supported/found"))
+    val rcv = UserFieldEmbedding(name, type, symbol, false, classEmbedding, true)
+    val permExp = when(perm.source.text.toString()) {
+        "write" -> PermExp.WildcardPerm()
+        "read" -> PermExp.FullPerm()
+        else -> throw SnaktInternalException(symbol.source, "perm is not supported")
+    }
+    val fieldExp = embedLocalProperty(symbol.findFinalParentProperty() ?: throw SnaktInternalException(symbol.source, "field not found"))
+    return withNoScope {
+        AccEmbedding(rcv, fieldExp, permExp)
     }
 }
 

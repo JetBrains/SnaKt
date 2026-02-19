@@ -5,10 +5,12 @@
 
 package org.jetbrains.kotlin.formver.core.conversion
 
+import org.checkerframework.common.aliasing.qual.Unique
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.contracts.description.LogicOperationKind
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.declarations.FirProperty
+import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.expressions.impl.FirElseIfTrueCondition
 import org.jetbrains.kotlin.fir.expressions.impl.FirUnitExpression
@@ -21,6 +23,7 @@ import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.common.UnsupportedFeatureBehaviour
+import org.jetbrains.kotlin.formver.core.annotationId
 import org.jetbrains.kotlin.formver.core.embeddings.LabelLink
 import org.jetbrains.kotlin.formver.core.embeddings.callables.CallableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionEmbedding
@@ -286,17 +289,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         val symbol = functionCall.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
             ?: throw NotImplementedError("Only functions are expected as callables of function calls, got ${functionCall.toResolvedCallableSymbol()}")
 
-        when (val forAllLambda = functionCall.extractFormverFirBlock { isInvariantBuilderFunctionNamed("forAll") }) {
-            null -> {
-                val callee = data.embedAnyFunction(symbol)
-                return callee.insertCall(
-                    functionCall.functionCallArguments.withVarargsHandled(data, callee),
-                    data,
-                    data.embedType(functionCall.resolvedType),
-                )
-            }
-
-            else -> {
+        functionCall.extractFormverFirBlock { isInvariantBuilderFunctionNamed("forAll") }?.let { forAllLambda ->
                 if (!data.isValidForForAllBlock) throw SnaktInternalException(
                     forAllLambda.source,
                     "`forAll` scope is only allowed inside one of the `loopInvariants`, `preconditions` or `postconditions`."
@@ -307,8 +300,22 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                     forAllLambda.body?.source, "Lambda body should be accessible in `forAll` function call."
                 )
                 return data.insertForAllFunctionCall(forAllArg.symbol, forAllBody)
-            }
         }
+
+        functionCall.extractFormverFirBlock {  isInvariantBuilderFunctionNamed("acc") }?.let {
+            accLambda ->
+            //acc is only allowed to be used in the same context as forAll
+            if (!data.isValidForForAllBlock) throw SnaktInternalException(
+                accLambda.source,
+                "`acc` scope is only allowed inside one of the `loopInvariants`, `preconditions` or `postconditions`."
+            )
+            val fieldExpr = accLambda.valueParameters[0] as FirPropertyAccessExpression
+            val permExpr = accLambda.valueParameters[1]
+            return data.insertAccFunctionCall(fieldExpr, permExpr)
+        }
+
+        val callee = data.embedAnyFunction(symbol)
+        return callee.insertCall( functionCall.functionCallArguments.withVarargsHandled(data, callee), data, data.embedType(functionCall.resolvedType), )
     }
 
     override fun visitImplicitInvokeCall(
