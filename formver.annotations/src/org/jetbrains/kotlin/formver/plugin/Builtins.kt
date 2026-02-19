@@ -37,4 +37,7 @@ class InvariantBuilder {
      */
     fun triggers(@Suppress("UNUSED_PARAMETER") vararg expressions: Any?): Unit =
         throw FormverFunctionCalledInRuntimeException("triggers")
+
+    fun accessExpression(@Suppress("UNUSED_PARAMETER") vararg access: Any?): Unit =
+        throw FormverFunctionCalledInRuntimeException("access")
 }
