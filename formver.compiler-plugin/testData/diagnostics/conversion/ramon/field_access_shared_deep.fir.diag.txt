@@ -1,0 +1,662 @@
+/field_access_shared_deep.kt:(195,220): info: Generated Viper text for testFieldAccessDeepShared:
+domain d$rt  {
+
+  unique function df$rt$intType(): d$rt
+
+  unique function df$rt$boolType(): d$rt
+
+  unique function df$rt$charType(): d$rt
+
+  unique function df$rt$unitType(): d$rt
+
+  unique function df$rt$nothingType(): d$rt
+
+  unique function df$rt$anyType(): d$rt
+
+  unique function df$rt$functionType(): d$rt
+
+  unique function df$rt$stringType(): d$rt
+
+  unique function df$rt$c$A(): d$rt
+
+  unique function df$rt$c$B(): d$rt
+
+  unique function df$rt$c$C(): d$rt
+
+  function df$rt$nullValue(): Ref
+
+  function df$rt$unitValue(): Ref
+
+  function df$rt$isSubtype(t1: d$rt, t2: d$rt): Bool
+
+  function df$rt$typeOf(r: Ref): d$rt
+
+  function df$rt$nullable(t: d$rt): d$rt
+
+  function df$rt$intToRef(v: Int): Ref
+
+  function df$rt$intFromRef(r: Ref): Int
+
+  function df$rt$boolToRef(v: Bool): Ref
+
+  function df$rt$boolFromRef(r: Ref): Bool
+
+  function df$rt$charToRef(v: Int): Ref
+
+  function df$rt$charFromRef(r: Ref): Int
+
+  function df$rt$stringToRef(v: Seq[Int]): Ref
+
+  function df$rt$stringFromRef(r: Ref): Seq[Int]
+
+  axiom rt$subtype_reflexive {
+    (forall t: d$rt ::df$rt$isSubtype(t, t))
+  }
+
+  axiom rt$subtype_transitive {
+    (forall t1: d$rt, t2: d$rt, t3: d$rt ::
+      { df$rt$isSubtype(t1, t2), df$rt$isSubtype(t2, t3) }
+      { df$rt$isSubtype(t1, t2), df$rt$isSubtype(t1, t3) }
+      { df$rt$isSubtype(t2, t3), df$rt$isSubtype(t1, t3) }
+      df$rt$isSubtype(t1, t2) && df$rt$isSubtype(t2, t3) ==>
+      df$rt$isSubtype(t1, t3))
+  }
+
+  axiom rt$subtype_antisymmetric {
+    (forall t1: d$rt, t2: d$rt ::
+      { df$rt$isSubtype(t1, t2), df$rt$isSubtype(t2, t1) }
+      df$rt$isSubtype(t1, t2) && df$rt$isSubtype(t2, t1) ==> t1 == t2)
+  }
+
+  axiom rt$nullable_idempotent {
+    (forall t: d$rt ::
+      { df$rt$nullable(df$rt$nullable(t)) }
+      df$rt$nullable(df$rt$nullable(t)) == df$rt$nullable(t))
+  }
+
+  axiom rt$nullable_supertype {
+    (forall t: d$rt ::
+      { df$rt$nullable(t) }
+      df$rt$isSubtype(t, df$rt$nullable(t)))
+  }
+
+  axiom rt$nullable_preserves_subtype {
+    (forall t1: d$rt, t2: d$rt ::
+      { df$rt$isSubtype(df$rt$nullable(t1), df$rt$nullable(t2)) }
+      df$rt$isSubtype(t1, t2) ==>
+      df$rt$isSubtype(df$rt$nullable(t1), df$rt$nullable(t2)))
+  }
+
+  axiom rt$nullable_any_supertype {
+    (forall t: d$rt ::df$rt$isSubtype(t, df$rt$nullable(df$rt$anyType())))
+  }
+
+  axiom {
+    df$rt$isSubtype(df$rt$intType(), df$rt$anyType())
+  }
+
+  axiom {
+    df$rt$isSubtype(df$rt$boolType(), df$rt$anyType())
+  }
+
+  axiom {
+    df$rt$isSubtype(df$rt$charType(), df$rt$anyType())
+  }
+
+  axiom {
+    df$rt$isSubtype(df$rt$unitType(), df$rt$anyType())
+  }
+
+  axiom {
+    df$rt$isSubtype(df$rt$nothingType(), df$rt$anyType())
+  }
+
+  axiom {
+    df$rt$isSubtype(df$rt$anyType(), df$rt$anyType())
+  }
+
+  axiom {
+    df$rt$isSubtype(df$rt$functionType(), df$rt$anyType())
+  }
+
+  axiom {
+    df$rt$isSubtype(df$rt$stringType(), df$rt$anyType())
+  }
+
+  axiom {
+    df$rt$isSubtype(df$rt$c$A(), df$rt$anyType())
+  }
+
+  axiom {
+    df$rt$isSubtype(df$rt$c$B(), df$rt$anyType())
+  }
+
+  axiom {
+    df$rt$isSubtype(df$rt$c$C(), df$rt$anyType())
+  }
+
+  axiom rt$supertype_of_nothing {
+    (forall t: d$rt ::df$rt$isSubtype(df$rt$nothingType(), t))
+  }
+
+  axiom rt$any_not_nullable_type_level {
+    (forall t: d$rt ::!df$rt$isSubtype(df$rt$nullable(t), df$rt$anyType()))
+  }
+
+  axiom rt$null_smartcast_value_level {
+    (forall r: Ref, t: d$rt ::
+      { df$rt$isSubtype(df$rt$typeOf(r), df$rt$nullable(t)) }
+      df$rt$isSubtype(df$rt$typeOf(r), df$rt$nullable(t)) ==>
+      r == df$rt$nullValue() || df$rt$isSubtype(df$rt$typeOf(r), t))
+  }
+
+  axiom rt$nothing_empty {
+    (forall r: Ref ::!df$rt$isSubtype(df$rt$typeOf(r), df$rt$nothingType()))
+  }
+
+  axiom rt$null_smartcast_type_level {
+    (forall t1: d$rt, t2: d$rt ::
+      { df$rt$isSubtype(t1, df$rt$anyType()), df$rt$isSubtype(t1, df$rt$nullable(t2)) }
+      df$rt$isSubtype(t1, df$rt$anyType()) &&
+      df$rt$isSubtype(t1, df$rt$nullable(t2)) ==>
+      df$rt$isSubtype(t1, t2))
+  }
+
+  axiom rt$type_of_null {
+    df$rt$isSubtype(df$rt$typeOf(df$rt$nullValue()), df$rt$nullable(df$rt$nothingType()))
+  }
+
+  axiom rt$any_not_nullable_value_level {
+    !df$rt$isSubtype(df$rt$typeOf(df$rt$nullValue()), df$rt$anyType())
+  }
+
+  axiom rt$type_of_unit {
+    df$rt$isSubtype(df$rt$typeOf(df$rt$unitValue()), df$rt$unitType())
+  }
+
+  axiom rt$uniqueness_of_unit {
+    (forall r: Ref ::
+      { df$rt$isSubtype(df$rt$typeOf(r), df$rt$unitType()) }
+      df$rt$isSubtype(df$rt$typeOf(r), df$rt$unitType()) ==>
+      r == df$rt$unitValue())
+  }
+
+  axiom {
+    (forall v: Int ::
+      { df$rt$isSubtype(df$rt$typeOf(df$rt$intToRef(v)), df$rt$intType()) }
+      df$rt$isSubtype(df$rt$typeOf(df$rt$intToRef(v)), df$rt$intType()))
+  }
+
+  axiom {
+    (forall v: Int ::
+      { df$rt$intFromRef(df$rt$intToRef(v)) }
+      df$rt$intFromRef(df$rt$intToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { df$rt$intToRef(df$rt$intFromRef(r)) }
+      df$rt$isSubtype(df$rt$typeOf(r), df$rt$intType()) ==>
+      df$rt$intToRef(df$rt$intFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall v: Bool ::
+      { df$rt$isSubtype(df$rt$typeOf(df$rt$boolToRef(v)), df$rt$boolType()) }
+      df$rt$isSubtype(df$rt$typeOf(df$rt$boolToRef(v)), df$rt$boolType()))
+  }
+
+  axiom {
+    (forall v: Bool ::
+      { df$rt$boolFromRef(df$rt$boolToRef(v)) }
+      df$rt$boolFromRef(df$rt$boolToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { df$rt$boolToRef(df$rt$boolFromRef(r)) }
+      df$rt$isSubtype(df$rt$typeOf(r), df$rt$boolType()) ==>
+      df$rt$boolToRef(df$rt$boolFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall v: Int ::
+      { df$rt$isSubtype(df$rt$typeOf(df$rt$charToRef(v)), df$rt$charType()) }
+      df$rt$isSubtype(df$rt$typeOf(df$rt$charToRef(v)), df$rt$charType()))
+  }
+
+  axiom {
+    (forall v: Int ::
+      { df$rt$charFromRef(df$rt$charToRef(v)) }
+      df$rt$charFromRef(df$rt$charToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { df$rt$charToRef(df$rt$charFromRef(r)) }
+      df$rt$isSubtype(df$rt$typeOf(r), df$rt$charType()) ==>
+      df$rt$charToRef(df$rt$charFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall v: Seq[Int] ::
+      { df$rt$isSubtype(df$rt$typeOf(df$rt$stringToRef(v)), df$rt$stringType()) }
+      df$rt$isSubtype(df$rt$typeOf(df$rt$stringToRef(v)), df$rt$stringType()))
+  }
+
+  axiom {
+    (forall v: Seq[Int] ::
+      { df$rt$stringFromRef(df$rt$stringToRef(v)) }
+      df$rt$stringFromRef(df$rt$stringToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { df$rt$stringToRef(df$rt$stringFromRef(r)) }
+      df$rt$isSubtype(df$rt$typeOf(r), df$rt$stringType()) ==>
+      df$rt$stringToRef(df$rt$stringFromRef(r)) == r)
+  }
+}
+
+field bf$a1: Ref
+
+field bf$a2: Ref
+
+field bf$b1: Ref
+
+field bf$b2: Ref
+
+field bf$c1: Ref
+
+field bf$c2: Ref
+
+function sp$addCharInt(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$charType())
+  ensures df$rt$charFromRef(result) ==
+    df$rt$charFromRef(arg1) + df$rt$intFromRef(arg2)
+
+
+function sp$addStringChar(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$stringType())
+  ensures df$rt$stringFromRef(result) ==
+    df$rt$stringFromRef(arg1) ++ Seq(df$rt$charFromRef(arg2))
+
+
+function sp$addStrings(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$stringType())
+  ensures df$rt$stringFromRef(result) ==
+    df$rt$stringFromRef(arg1) ++ df$rt$stringFromRef(arg2)
+
+
+function sp$andBools(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+  ensures df$rt$boolFromRef(result) ==
+    (df$rt$boolFromRef(arg1) && df$rt$boolFromRef(arg2))
+
+
+function sp$divInts(arg1: Ref, arg2: Ref): Ref
+  requires df$rt$intFromRef(arg2) != 0
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+  ensures df$rt$intFromRef(result) ==
+    df$rt$intFromRef(arg1) / df$rt$intFromRef(arg2)
+
+
+function sp$geChars(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+  ensures df$rt$boolFromRef(result) ==
+    df$rt$charFromRef(arg1) >= df$rt$charFromRef(arg2)
+
+
+function sp$geInts(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+  ensures df$rt$boolFromRef(result) ==
+    df$rt$intFromRef(arg1) >= df$rt$intFromRef(arg2)
+
+
+function sp$gtChars(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+  ensures df$rt$boolFromRef(result) ==
+    df$rt$charFromRef(arg1) > df$rt$charFromRef(arg2)
+
+
+function sp$gtInts(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+  ensures df$rt$boolFromRef(result) ==
+    df$rt$intFromRef(arg1) > df$rt$intFromRef(arg2)
+
+
+function sp$impliesBools(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+  ensures df$rt$boolFromRef(result) ==
+    (df$rt$boolFromRef(arg1) ==> df$rt$boolFromRef(arg2))
+
+
+function sp$leChars(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+  ensures df$rt$boolFromRef(result) ==
+    df$rt$charFromRef(arg1) <= df$rt$charFromRef(arg2)
+
+
+function sp$leInts(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+  ensures df$rt$boolFromRef(result) ==
+    df$rt$intFromRef(arg1) <= df$rt$intFromRef(arg2)
+
+
+function sp$ltChars(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+  ensures df$rt$boolFromRef(result) ==
+    df$rt$charFromRef(arg1) < df$rt$charFromRef(arg2)
+
+
+function sp$ltInts(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+  ensures df$rt$boolFromRef(result) ==
+    df$rt$intFromRef(arg1) < df$rt$intFromRef(arg2)
+
+
+function sp$minusInts(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+  ensures df$rt$intFromRef(result) ==
+    df$rt$intFromRef(arg1) - df$rt$intFromRef(arg2)
+
+
+function sp$notBool(arg1: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+  ensures df$rt$boolFromRef(result) == !df$rt$boolFromRef(arg1)
+
+
+function sp$orBools(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+  ensures df$rt$boolFromRef(result) ==
+    (df$rt$boolFromRef(arg1) || df$rt$boolFromRef(arg2))
+
+
+function sp$plusInts(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+  ensures df$rt$intFromRef(result) ==
+    df$rt$intFromRef(arg1) + df$rt$intFromRef(arg2)
+
+
+function sp$remInts(arg1: Ref, arg2: Ref): Ref
+  requires df$rt$intFromRef(arg2) != 0
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+  ensures df$rt$intFromRef(result) ==
+    df$rt$intFromRef(arg1) % df$rt$intFromRef(arg2)
+
+
+function sp$stringGet(arg1: Ref, arg2: Ref): Ref
+  requires df$rt$intFromRef(arg2) >= 0 &&
+    df$rt$intFromRef(arg2) < |df$rt$stringFromRef(arg1)|
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$charType())
+  ensures df$rt$charFromRef(result) ==
+    df$rt$stringFromRef(arg1)[df$rt$intFromRef(arg2)]
+
+
+function sp$stringLength(arg1: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+  ensures df$rt$intFromRef(result) == |df$rt$stringFromRef(arg1)|
+
+
+function sp$subCharInt(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$charType())
+  ensures df$rt$charFromRef(result) ==
+    df$rt$charFromRef(arg1) - df$rt$intFromRef(arg2)
+
+
+function sp$subChars(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+  ensures df$rt$intFromRef(result) ==
+    df$rt$charFromRef(arg1) - df$rt$charFromRef(arg2)
+
+
+function sp$timesInts(arg1: Ref, arg2: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+  ensures df$rt$intFromRef(result) ==
+    df$rt$intFromRef(arg1) * df$rt$intFromRef(arg2)
+
+
+predicate p$c$A$shared(this$dispatch: Ref) {
+  acc(this$dispatch.bf$a1, wildcard) &&
+  acc(p$c$B$shared(this$dispatch.bf$a1), wildcard) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$a1), df$rt$c$B())
+}
+
+predicate p$c$A$unique(this$dispatch: Ref) {
+  acc(this$dispatch.bf$a1, wildcard) &&
+  acc(p$c$B$shared(this$dispatch.bf$a1), wildcard) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$a1), df$rt$c$B()) &&
+  acc(this$dispatch.bf$a2, write) &&
+  acc(p$c$B$shared(this$dispatch.bf$a2), wildcard) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$a2), df$rt$c$B())
+}
+
+predicate p$c$B$shared(this$dispatch: Ref) {
+  acc(this$dispatch.bf$b1, wildcard) &&
+  acc(p$c$C$shared(this$dispatch.bf$b1), wildcard) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$b1), df$rt$c$C())
+}
+
+predicate p$c$B$unique(this$dispatch: Ref) {
+  acc(this$dispatch.bf$b1, wildcard) &&
+  acc(p$c$C$shared(this$dispatch.bf$b1), wildcard) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$b1), df$rt$c$C()) &&
+  acc(this$dispatch.bf$b2, write) &&
+  acc(p$c$C$shared(this$dispatch.bf$b2), wildcard) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$b2), df$rt$c$C())
+}
+
+predicate p$c$C$shared(this$dispatch: Ref) {
+  acc(this$dispatch.bf$c1, wildcard) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$c1), df$rt$intType()) &&
+  acc(this$dispatch.bf$c2, wildcard) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$c2), df$rt$intType())
+}
+
+predicate p$c$C$unique(this$dispatch: Ref) {
+  acc(this$dispatch.bf$c1, wildcard) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$c1), df$rt$intType()) &&
+  acc(this$dispatch.bf$c2, wildcard) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$c2), df$rt$intType())
+}
+
+method f$testFieldAccessDeepShared$TF$T$A(p$a: Ref) returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$a1b1c1: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  var l0$a1b1c2: Ref
+  var anon$2: Ref
+  var anon$3: Ref
+  var l0$a1b2c1: Ref
+  var anon$4: Ref
+  var anon$5: Ref
+  var l0$a1b2c2: Ref
+  var anon$6: Ref
+  var anon$7: Ref
+  var l0$a2b1c1: Ref
+  var anon$8: Ref
+  var anon$9: Ref
+  var l0$a2b1c2: Ref
+  var anon$10: Ref
+  var anon$11: Ref
+  var l0$a2b2c1: Ref
+  var anon$12: Ref
+  var anon$13: Ref
+  var l0$a2b2c2: Ref
+  var anon$14: Ref
+  var anon$15: Ref
+  var l0$a1b1c1_v: Ref
+  var anon$16: Ref
+  var anon$17: Ref
+  var l0$a1b1c2_v: Ref
+  var anon$18: Ref
+  var anon$19: Ref
+  var l0$a1b2c1_v: Ref
+  var anon$20: Ref
+  var anon$21: Ref
+  var l0$a1b2c2_v: Ref
+  var anon$22: Ref
+  var anon$23: Ref
+  var l0$a2b1c1_v: Ref
+  var anon$24: Ref
+  var anon$25: Ref
+  var l0$a2b1c2_v: Ref
+  var anon$26: Ref
+  var anon$27: Ref
+  var l0$a2b2c1_v: Ref
+  var anon$28: Ref
+  var anon$29: Ref
+  var l0$a2b2c2_v: Ref
+  var anon$30: Ref
+  var anon$31: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$shared(p$a), wildcard)
+  anon$1 := p$a.bf$a1
+  unfold acc(p$c$B$shared(anon$1), wildcard)
+  anon$0 := anon$1.bf$b1
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$a1b1c1 := anon$0.bf$c1
+  unfold acc(p$c$A$shared(p$a), wildcard)
+  anon$3 := p$a.bf$a1
+  unfold acc(p$c$B$shared(anon$3), wildcard)
+  anon$2 := anon$3.bf$b1
+  unfold acc(p$c$C$shared(anon$2), wildcard)
+  l0$a1b1c2 := anon$2.bf$c2
+  unfold acc(p$c$A$shared(p$a), wildcard)
+  anon$5 := p$a.bf$a1
+  inhale acc(anon$5.bf$b2, write)
+  anon$4 := anon$5.bf$b2
+  exhale acc(anon$5.bf$b2, write)
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$4), df$rt$c$C())
+  inhale acc(p$c$C$shared(anon$4), wildcard)
+  unfold acc(p$c$C$shared(anon$4), wildcard)
+  l0$a1b2c1 := anon$4.bf$c1
+  unfold acc(p$c$A$shared(p$a), wildcard)
+  anon$7 := p$a.bf$a1
+  inhale acc(anon$7.bf$b2, write)
+  anon$6 := anon$7.bf$b2
+  exhale acc(anon$7.bf$b2, write)
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$6), df$rt$c$C())
+  inhale acc(p$c$C$shared(anon$6), wildcard)
+  unfold acc(p$c$C$shared(anon$6), wildcard)
+  l0$a1b2c2 := anon$6.bf$c2
+  inhale acc(p$a.bf$a2, write)
+  anon$9 := p$a.bf$a2
+  exhale acc(p$a.bf$a2, write)
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$9), df$rt$c$B())
+  inhale acc(p$c$B$shared(anon$9), wildcard)
+  unfold acc(p$c$B$shared(anon$9), wildcard)
+  anon$8 := anon$9.bf$b1
+  unfold acc(p$c$C$shared(anon$8), wildcard)
+  l0$a2b1c1 := anon$8.bf$c1
+  inhale acc(p$a.bf$a2, write)
+  anon$11 := p$a.bf$a2
+  exhale acc(p$a.bf$a2, write)
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$11), df$rt$c$B())
+  inhale acc(p$c$B$shared(anon$11), wildcard)
+  unfold acc(p$c$B$shared(anon$11), wildcard)
+  anon$10 := anon$11.bf$b1
+  unfold acc(p$c$C$shared(anon$10), wildcard)
+  l0$a2b1c2 := anon$10.bf$c2
+  inhale acc(p$a.bf$a2, write)
+  anon$13 := p$a.bf$a2
+  exhale acc(p$a.bf$a2, write)
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$13), df$rt$c$B())
+  inhale acc(p$c$B$shared(anon$13), wildcard)
+  inhale acc(anon$13.bf$b2, write)
+  anon$12 := anon$13.bf$b2
+  exhale acc(anon$13.bf$b2, write)
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$12), df$rt$c$C())
+  inhale acc(p$c$C$shared(anon$12), wildcard)
+  unfold acc(p$c$C$shared(anon$12), wildcard)
+  l0$a2b2c1 := anon$12.bf$c1
+  inhale acc(p$a.bf$a2, write)
+  anon$15 := p$a.bf$a2
+  exhale acc(p$a.bf$a2, write)
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$15), df$rt$c$B())
+  inhale acc(p$c$B$shared(anon$15), wildcard)
+  inhale acc(anon$15.bf$b2, write)
+  anon$14 := anon$15.bf$b2
+  exhale acc(anon$15.bf$b2, write)
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$14), df$rt$c$C())
+  inhale acc(p$c$C$shared(anon$14), wildcard)
+  unfold acc(p$c$C$shared(anon$14), wildcard)
+  l0$a2b2c2 := anon$14.bf$c2
+  unfold acc(p$c$A$shared(p$a), wildcard)
+  anon$17 := p$a.bf$a1
+  unfold acc(p$c$B$shared(anon$17), wildcard)
+  anon$16 := anon$17.bf$b1
+  unfold acc(p$c$C$shared(anon$16), wildcard)
+  l0$a1b1c1_v := anon$16.bf$c1
+  unfold acc(p$c$A$shared(p$a), wildcard)
+  anon$19 := p$a.bf$a1
+  unfold acc(p$c$B$shared(anon$19), wildcard)
+  anon$18 := anon$19.bf$b1
+  unfold acc(p$c$C$shared(anon$18), wildcard)
+  l0$a1b1c2_v := anon$18.bf$c2
+  unfold acc(p$c$A$shared(p$a), wildcard)
+  anon$21 := p$a.bf$a1
+  inhale acc(anon$21.bf$b2, write)
+  anon$20 := anon$21.bf$b2
+  exhale acc(anon$21.bf$b2, write)
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$20), df$rt$c$C())
+  inhale acc(p$c$C$shared(anon$20), wildcard)
+  unfold acc(p$c$C$shared(anon$20), wildcard)
+  l0$a1b2c1_v := anon$20.bf$c1
+  unfold acc(p$c$A$shared(p$a), wildcard)
+  anon$23 := p$a.bf$a1
+  inhale acc(anon$23.bf$b2, write)
+  anon$22 := anon$23.bf$b2
+  exhale acc(anon$23.bf$b2, write)
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$22), df$rt$c$C())
+  inhale acc(p$c$C$shared(anon$22), wildcard)
+  unfold acc(p$c$C$shared(anon$22), wildcard)
+  l0$a1b2c2_v := anon$22.bf$c2
+  inhale acc(p$a.bf$a2, write)
+  anon$25 := p$a.bf$a2
+  exhale acc(p$a.bf$a2, write)
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$25), df$rt$c$B())
+  inhale acc(p$c$B$shared(anon$25), wildcard)
+  unfold acc(p$c$B$shared(anon$25), wildcard)
+  anon$24 := anon$25.bf$b1
+  unfold acc(p$c$C$shared(anon$24), wildcard)
+  l0$a2b1c1_v := anon$24.bf$c1
+  inhale acc(p$a.bf$a2, write)
+  anon$27 := p$a.bf$a2
+  exhale acc(p$a.bf$a2, write)
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$27), df$rt$c$B())
+  inhale acc(p$c$B$shared(anon$27), wildcard)
+  unfold acc(p$c$B$shared(anon$27), wildcard)
+  anon$26 := anon$27.bf$b1
+  unfold acc(p$c$C$shared(anon$26), wildcard)
+  l0$a2b1c2_v := anon$26.bf$c2
+  inhale acc(p$a.bf$a2, write)
+  anon$29 := p$a.bf$a2
+  exhale acc(p$a.bf$a2, write)
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$29), df$rt$c$B())
+  inhale acc(p$c$B$shared(anon$29), wildcard)
+  inhale acc(anon$29.bf$b2, write)
+  anon$28 := anon$29.bf$b2
+  exhale acc(anon$29.bf$b2, write)
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$28), df$rt$c$C())
+  inhale acc(p$c$C$shared(anon$28), wildcard)
+  unfold acc(p$c$C$shared(anon$28), wildcard)
+  l0$a2b2c1_v := anon$28.bf$c1
+  inhale acc(p$a.bf$a2, write)
+  anon$31 := p$a.bf$a2
+  exhale acc(p$a.bf$a2, write)
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$31), df$rt$c$B())
+  inhale acc(p$c$B$shared(anon$31), wildcard)
+  inhale acc(anon$31.bf$b2, write)
+  anon$30 := anon$31.bf$b2
+  exhale acc(anon$31.bf$b2, write)
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$30), df$rt$c$C())
+  inhale acc(p$c$C$shared(anon$30), wildcard)
+  unfold acc(p$c$C$shared(anon$30), wildcard)
+  l0$a2b2c2_v := anon$30.bf$c2
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
