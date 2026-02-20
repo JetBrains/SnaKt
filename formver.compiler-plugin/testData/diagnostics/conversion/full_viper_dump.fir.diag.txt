@@ -303,6 +303,10 @@ function sp$gtInts(arg1: Ref, arg2: Ref): Ref
     df$rt$intFromRef(arg1) > df$rt$intFromRef(arg2)
 
 
+function sp$havoc(arg1: d$rt): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), arg1)
+
+
 function sp$impliesBools(arg1: Ref, arg2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
   ensures df$rt$boolFromRef(result) ==
