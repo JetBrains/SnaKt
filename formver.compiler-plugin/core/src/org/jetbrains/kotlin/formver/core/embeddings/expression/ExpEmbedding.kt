@@ -117,7 +117,7 @@ sealed interface DefaultToBuiltinExpEmbedding : ExpEmbedding {
  */
 sealed interface DefaultStoringInExpEmbedding : ExpEmbedding {
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-        ctx.addStatement { Stmt.assign(result.toViper(ctx), toViper(ctx)) }
+        ctx.addAssignment(result, this)
     }
 }
 

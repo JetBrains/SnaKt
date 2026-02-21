@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.linearization
 
 import org.jetbrains.kotlin.KtSourceElement
+import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
@@ -29,6 +30,7 @@ class PureLinearizerMisuseException(val offendingFunction: String) : IllegalStat
  */
 data class PureLinearizer(
     override val source: KtSourceElement?,
+    val state: SharedLinearizationState? = null,
     private val ssaConverter: SsaConverter = SsaConverter(source)
 ) : LinearizationContext {
     override val unfoldPolicy: UnfoldPolicy
@@ -41,7 +43,8 @@ data class PureLinearizer(
         copy(source = newSource).action()
 
     override fun freshAnonVar(type: TypeEmbedding): AnonymousVariableEmbedding {
-        throw PureLinearizerMisuseException("newVar")
+        if (state == null) throw PureLinearizerMisuseException("newVar")
+        return state.freshAnonVar(type)
     }
 
     override fun asBlock(action: LinearizationContext.() -> Unit): Stmt.Seqn {
@@ -76,10 +79,21 @@ data class PureLinearizer(
     ) {
         // TODO: Return result of translation
         val conditionExp = condition.ignoringCastsAndMetaNodes().toViperBuiltinType(this)
+        var resultThen: Exp? = null
+        var resultElse: Exp? = null
+
         ssaConverter.branch(
             conditionExp,
-            { thenBranch.toViperUnusedResult(this) },
-            { elseBranch.toViperUnusedResult(this) })
+            { resultThen = thenBranch.toViper(this) },
+            { resultElse = elseBranch.toViper(this) })
+
+        if (resultThen == null || resultElse == null) throw SnaktInternalException(
+            source,
+            "Tried to translate an if-embedding missing a branch"
+        )
+        if (result != null) {
+            ssaConverter.addAssignment(result.name, Exp.TernaryExp(conditionExp, resultThen, resultElse))
+        }
     }
 
     override fun addModifier(mod: StmtModifier) {
