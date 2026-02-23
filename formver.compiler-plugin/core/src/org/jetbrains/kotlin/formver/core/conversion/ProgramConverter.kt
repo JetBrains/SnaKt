@@ -426,7 +426,8 @@ class ProgramConverter(
                 }
                 addAll(returnVariable.pureInvariants())
                 addAll(returnVariable.provenInvariants())
-                addAll(returnVariable.allAccessInvariants())
+                if (returnVariable.name !is FunctionResultVariableName)
+                    addAll(returnVariable.allAccessInvariants())
                 if (subSignature.callableType.returnsUnique) {
                     addIfNotNull(returnVariable.uniquePredicateAccessInvariant())
                 }
