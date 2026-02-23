@@ -1,12 +1,12 @@
 package org.jetbrains.kotlin.formver.uniqueness
 
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
-import org.jetbrains.kotlin.formver.uniqueness.UniqueLevel.*
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessType.*
 
 /**
  * Stores unique context for each path in a trie structure.
  *
- * Each path represents a sequence of symbols like x.y.z, where each node has a unique level annotation ([Unique]/[Shared]/[Top])
+ * Each path represents a sequence of symbols like x.y.z, where each node has a unique level annotation ([Unique]/[Shared]/[Moved])
  *
  * Example:
  * ```
@@ -15,9 +15,8 @@ import org.jetbrains.kotlin.formver.uniqueness.UniqueLevel.*
  *     x.z.w ======+     +-> A/z -> C/w -> ...
  * ```
  */
-interface UniquePathContext {
-    var level: UniqueLevel
-    context(_: UniqueCheckerContext) val borrowingLevel: BorrowingLevel
+interface UniquenessPathStore {
+    var type: UniquenessType
 
     /**
      * Retrieves the child node corresponding to the given path within the trie structure,
@@ -26,15 +25,15 @@ interface UniquePathContext {
      *
      * @param path A list of [FirBasedSymbol] items representing the path to traverse or create in the trie.
      *             Each symbol corresponds to a hierarchical level in the path.
-     * @return The [ContextTrie] node at the end of the given path, creating intermediate nodes as necessary.
+     * @return The [UniquenessPathStore] node at the end of the given path, creating intermediate nodes as necessary.
      */
-    context(context: UniqueCheckerContext) fun getOrPutPath(path: List<FirBasedSymbol<*>>): UniquePathContext
+    context(context: UniquenessResolver) fun ensurePath(path: List<FirBasedSymbol<*>>): UniquenessPathStore
 
     /**
      * Represents the least upper bound (LUB) of uniqueness levels for the subtree
      * originating at this node in the trie structure.
      */
-    val subtreeLUB: UniqueLevel
+    val childrenJoin: UniquenessType
 
     /**
      * Represents the least upper bound (LUB) of uniqueness levels for the path from the current node
@@ -42,10 +41,5 @@ interface UniquePathContext {
      *
      * For example, for the node representing `x.y.z`, this would return the LUB of `x.y.z`, `x.y` and `x`
      */
-    val pathToRootLUB: UniqueLevel
-
-    /**
-     * Represents whether the subtree originating at this node in the trie has any changes
-     */
-    context(_: UniqueCheckerContext) val hasChanges: Boolean
+    val parentsJoin: UniquenessType
 }
