@@ -400,6 +400,62 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
       public void testWrongly_annotated() {
         runTest("formver.compiler-plugin/testData/diagnostics/conversion/purity/wrongly_annotated.kt");
       }
+
+      @Nested
+      @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/ramon/pure")
+      @TestDataPath("$PROJECT_ROOT")
+      public class Pure {
+        @Test
+        public void testAllFilesPresentInPure() {
+          KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/conversion/ramon/pure"), Pattern.compile("^(.+)\\.kt$"), null, true);
+        }
+
+        @Test
+        @TestMetadata("pure_example.kt")
+        public void testPure_example() {
+          runTest("formver.compiler-plugin/testData/diagnostics/conversion/ramon/pure/pure_example.kt");
+        }
+      }
+
+      @Nested
+      @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/ramon/standard")
+      @TestDataPath("$PROJECT_ROOT")
+      public class Standard {
+        @Test
+        public void testAllFilesPresentInStandard() {
+          KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/conversion/ramon/standard"), Pattern.compile("^(.+)\\.kt$"), null, true);
+        }
+
+        @Test
+        @TestMetadata("field_access_unique_deep.kt")
+        public void testField_access_unique_deep() {
+          runTest("formver.compiler-plugin/testData/diagnostics/conversion/ramon/standard/field_access_unique_deep.kt");
+        }
+
+        @Test
+        @TestMetadata("field_access_unique_deeper.kt")
+        public void testField_access_unique_deeper() {
+          runTest("formver.compiler-plugin/testData/diagnostics/conversion/ramon/standard/field_access_unique_deeper.kt");
+        }
+
+        @Test
+        @TestMetadata("field_set_shared.kt")
+        public void testField_set_shared() {
+          runTest("formver.compiler-plugin/testData/diagnostics/conversion/ramon/standard/field_set_shared.kt");
+        }
+
+        @Test
+        @TestMetadata("field_set_unique.kt")
+        public void testField_set_unique() {
+          runTest("formver.compiler-plugin/testData/diagnostics/conversion/ramon/standard/field_set_unique.kt");
+        }
+
+        @Test
+        @TestMetadata("field_set_unique_deep.kt")
+        public void testField_set_unique_deep() {
+          runTest("formver.compiler-plugin/testData/diagnostics/conversion/ramon/standard/field_set_unique_deep.kt");
+        }
+      }
     }
 
     @Nested
