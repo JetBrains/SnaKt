@@ -18,8 +18,11 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.core.embeddings.types.injectionOr
 import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
+import org.jetbrains.kotlin.formver.core.linearization.Linearizer
+import org.jetbrains.kotlin.formver.core.linearization.PureLinearizer
 import org.jetbrains.kotlin.formver.core.linearization.UnfoldPolicy
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
+import org.jetbrains.kotlin.formver.core.names.SpecialName
 import org.jetbrains.kotlin.formver.core.purity.PurityContext
 import org.jetbrains.kotlin.formver.names.SimpleNameResolver
 import org.jetbrains.kotlin.formver.viper.NameResolver
@@ -351,8 +354,17 @@ data class PrimitiveFieldAccess(override val inner: ExpEmbedding, val field: Fie
     override val type: TypeEmbedding
         get() = this.field.type
 
-    override fun toViper(ctx: LinearizationContext): Exp =
-        Exp.FieldAccess(inner.toViper(ctx), field.toViper(), ctx.source.asPosition)
+    override fun toViper(ctx: LinearizationContext): Exp = when(ctx) {
+        is PureLinearizer -> toViper(ctx)
+        is Linearizer -> toViper(ctx)
+        else -> throw IllegalArgumentException("Unsupported linearization context: $ctx")
+    }
+
+    fun toViper(ctx: PureLinearizer) : Exp = Exp.FieldAccess(inner.toViper(ctx), field.toViper(), ctx.source.asPosition)
+    fun toViper(ctx: Linearizer) : Exp = when(field.accessPolicy) {
+        AccessPolicy.ALWAYS_VOLATILE -> Exp.FuncApp(SpecialName("havoc"), listOf(field.type.runtimeType), field.viperType)
+        else -> Exp.FieldAccess(inner.toViper(ctx), field.toViper(), ctx.source.asPosition)
+    }
 
     context(nameResolver: NameResolver)
     override val debugTreeView: TreeView

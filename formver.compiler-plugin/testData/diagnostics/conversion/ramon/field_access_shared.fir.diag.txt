@@ -305,6 +305,10 @@ function sp$gtInts(arg1: Ref, arg2: Ref): Ref
     df$rt$intFromRef(arg1) > df$rt$intFromRef(arg2)
 
 
+function sp$havoc(arg1: d$rt): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), arg1)
+
+
 function sp$impliesBools(arg1: Ref, arg2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
   ensures df$rt$boolFromRef(result) ==
@@ -409,7 +413,6 @@ predicate p$c$X$unique(this$dispatch: Ref) {
 }
 
 method f$testFieldAccessShared$TF$T$X(p$x: Ref) returns (ret$0: Ref)
-  requires acc(p$c$X$unique(p$x), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$a: Ref
@@ -418,9 +421,7 @@ method f$testFieldAccessShared$TF$T$X(p$x: Ref) returns (ret$0: Ref)
   inhale acc(p$c$X$shared(p$x), wildcard)
   unfold acc(p$c$X$shared(p$x), wildcard)
   l0$a := p$x.bf$a
-  inhale acc(p$x.bf$b, write)
-  l0$b := p$x.bf$b
-  exhale acc(p$x.bf$b, write)
+  l0$b := sp$havoc(df$rt$intType())
   inhale df$rt$isSubtype(df$rt$typeOf(l0$b), df$rt$intType())
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
