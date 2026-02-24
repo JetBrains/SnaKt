@@ -443,6 +443,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
+    @TestMetadata("local_assignments.kt")
+    public void testLocal_assignments() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/local_assignments.kt");
+    }
+
+    @Test
     @TestMetadata("local_same_type.kt")
     public void testLocal_same_type() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/local_same_type.kt");

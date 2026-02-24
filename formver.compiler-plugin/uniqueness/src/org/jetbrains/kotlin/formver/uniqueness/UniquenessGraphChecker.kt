@@ -11,10 +11,20 @@ import org.jetbrains.kotlin.formver.common.ErrorCollector
 
 class UniquenessGraphChecker(
     val session: FirSession,
+    val initial: Map<Path, UniquenessType>,
     val out: ErrorCollector
 ) {
 
     fun check(graph: ControlFlowGraph) {
+        val resolver = UniquenessResolver(session)
+        val analyzer = UniquenessGraphAnalyzer(resolver, initial)
+        val facts = analyzer.analyze(graph)
+        val expressionChecker = UniquenessExpressionChecker(resolver, out)
+
+        for (node in graph.nodes) {
+            val store = facts.flowBefore(node)
+            expressionChecker.check(store, node.fir)
+        }
     }
 
 }

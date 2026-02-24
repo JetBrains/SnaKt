@@ -1,12 +1,11 @@
 package org.jetbrains.kotlin.formver.uniqueness
 
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
-import org.jetbrains.kotlin.formver.uniqueness.UniquenessType.*
 
 /**
  * Stores unique context for each path in a trie structure.
  *
- * Each path represents a sequence of symbols like x.y.z, where each node has a unique level annotation ([Unique]/[Shared]/[Moved])
+ * Each path represents a sequence of symbols like x.y.z, where each node has a uniqueness type annotation
  *
  * Example:
  * ```
@@ -27,7 +26,7 @@ interface UniquenessPathStore {
      *             Each symbol corresponds to a hierarchical level in the path.
      * @return The [UniquenessPathStore] node at the end of the given path, creating intermediate nodes as necessary.
      */
-    context(context: UniquenessResolver) fun ensurePath(path: List<FirBasedSymbol<*>>): UniquenessPathStore
+    fun ensurePath(path: Path): UniquenessPathStore
 
     /**
      * Represents the least upper bound (LUB) of uniqueness levels for the subtree
@@ -39,7 +38,7 @@ interface UniquenessPathStore {
      * Represents the least upper bound (LUB) of uniqueness levels for the path from the current node
      * to the root of the trie structure.
      *
-     * For example, for the node representing `x.y.z`, this would return the LUB of `x.y.z`, `x.y` and `x`
+     * For example, for the node representing `x.y.z`, this would return the LUB of `x.y.z`, `x.y` and `x`.
      */
     val parentsJoin: UniquenessType
 }
