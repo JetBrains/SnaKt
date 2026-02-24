@@ -84,14 +84,26 @@ data class PureLinearizer(
 
         ssaConverter.branch(
             conditionExp,
-            { resultThen = thenBranch.toViper(this) },
-            { resultElse = elseBranch.toViper(this) })
+            {
+                if (result != null) {
+                    resultThen = thenBranch.toViper(this)
+                } else {
+                    thenBranch.toViperUnusedResult(this)
+                }
+            },
+            {
+                if (result != null) {
+                    resultElse = elseBranch.toViper(this)
+                } else {
+                    elseBranch.toViperUnusedResult(this)
+                }
+            })
 
-        if (resultThen == null || resultElse == null) throw SnaktInternalException(
-            source,
-            "Tried to translate an if-embedding missing a branch"
-        )
         if (result != null) {
+            if (resultThen == null || resultElse == null) throw SnaktInternalException(
+                source,
+                "Tried to translate an if-embedding missing a branch"
+            )
             ssaConverter.addAssignment(result.name, Exp.TernaryExp(conditionExp, resultThen, resultElse))
         }
     }
@@ -100,7 +112,8 @@ data class PureLinearizer(
         throw PureLinearizerMisuseException("addModifier")
     }
 
-    override fun resolveVariableName(name: SymbolicName): SymbolicName = ssaConverter.resolveVariableName(name)
+    override fun resolveVariableName(name: SymbolicName): SymbolicName =
+        ssaConverter.resolveVariableName(name)
 
     fun constructExpression(): Exp = ssaConverter.constructExpression()
 }

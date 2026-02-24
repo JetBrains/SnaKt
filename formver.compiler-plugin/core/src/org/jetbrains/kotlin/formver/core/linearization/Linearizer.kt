@@ -67,7 +67,7 @@ data class Linearizer(
 
     override fun addAssignment(lhs: ExpEmbedding, rhs: ExpEmbedding) {
         val lhsViper = lhs.toViper(this)
-        if (lhsViper is Exp.LocalVar) {
+        if (lhs !is LinearizationVariableEmbedding && lhsViper is Exp.LocalVar) {
             rhs.withType(lhs.type).toViperStoringIn(LinearizationVariableEmbedding(lhsViper.name, lhs.type), this)
         } else {
             val rhsViper = rhs.withType(lhs.type).toViper(this)
