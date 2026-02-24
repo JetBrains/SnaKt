@@ -435,6 +435,7 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
         get() = OperatorNode(receiver.debugTreeView, ".", this.field.debugTreeView)
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitFieldAccess(this)
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(receiver)
 }
 
 /**
@@ -480,6 +481,7 @@ data class FieldAccessPermissions(override val inner: ExpEmbedding, val field: F
         get() = listOf(this.field.debugTreeView, perm.debugTreeView)
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitFieldAccessPermissions(this)
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(inner)
 }
 
 // Ideally we would use the predicate, but due to the possibility of recursion this is inconvenient at present.
