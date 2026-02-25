@@ -365,9 +365,9 @@ data class PrimitiveFieldAccess(override val inner: ExpEmbedding, val field: Fie
         return when(field.accessPolicy) {
             AccessPolicy.ALWAYS_VOLATILE -> {
                 val tmp = ctx.freshAnonVar(field.type)
-                val methodCall = if (field.containingClass != null) {
+                val methodCall = if (field.type.pretype is ClassTypeEmbedding) {
                     // the expected value is a class
-                    field.containingClass!!.details.havocMethod.toMethodCall(emptyList(), listOf(tmp.toLocalVarUse()))
+                    (field.type.pretype as ClassTypeEmbedding).details.havocMethod.toMethodCall(emptyList(), listOf(tmp.toLocalVarUse()))
                 } else {
                     // the expected value is a primitive type
                     Stmt.MethodCall(SpecialName("havoc"), listOf(field.type.runtimeType), listOf(tmp.toLocalVarUse()))
