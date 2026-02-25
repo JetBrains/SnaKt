@@ -15,9 +15,9 @@ method f$test$TF$T$Unit() returns (ret$0: Ref)
 {
   var anon$0: Ref
   var anon$1: Ref
+  var l0$y: Ref
   var anon$2: Ref
   var anon$3: Ref
-  var l0$y: Ref
   var anon$4: Ref
   anon$0 := f$getFoo$TF$T$Foo()
   anon$1 := f$sideEffect$TF$T$Int()
