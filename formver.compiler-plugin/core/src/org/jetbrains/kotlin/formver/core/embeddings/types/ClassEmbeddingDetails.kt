@@ -5,13 +5,22 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
+import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
+import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
 import org.jetbrains.kotlin.formver.core.names.PredicateKotlinName
 import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
 import org.jetbrains.kotlin.formver.core.names.SimpleKotlinName
 import org.jetbrains.kotlin.formver.core.names.asScope
+import org.jetbrains.kotlin.formver.viper.ast.BuiltInMethod
+import org.jetbrains.kotlin.formver.viper.ast.Declaration
+import org.jetbrains.kotlin.formver.viper.ast.Exp
+import org.jetbrains.kotlin.formver.viper.ast.Method
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
 import org.jetbrains.kotlin.formver.viper.ast.Predicate
+import org.jetbrains.kotlin.formver.viper.ast.Stmt
+import org.jetbrains.kotlin.formver.viper.ast.Type
+import org.jetbrains.kotlin.formver.viper.ast.UserMethod
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 
 class ClassEmbeddingDetails(
@@ -33,12 +42,15 @@ class ClassEmbeddingDetails(
     private var _fields: Map<SimpleKotlinName, FieldEmbedding>? = null
     private var _sharedPredicate: Predicate? = null
     private var _uniquePredicate: Predicate? = null
+    private var _havocMethod: Method? = null
     val fields: Map<SimpleKotlinName, FieldEmbedding>
         get() = _fields ?: error("Fields of ${type.name} have not been initialised yet.")
     val sharedPredicate: Predicate
         get() = _sharedPredicate ?: error("Predicate of ${type.name} has not been initialised yet.")
     val uniquePredicate: Predicate
         get() = _uniquePredicate ?: error("Unique Predicate of ${type.name} has not been initialised yet.")
+    val havocMethod: Method
+        get() = _havocMethod ?: error("Havoc method of ${type.name} has not been initialised yet.")
 
     fun initFields(newFields: Map<SimpleKotlinName, FieldEmbedding>) {
         check(_fields == null) { "Fields of ${type.name} are already initialised." }
@@ -76,8 +88,31 @@ class ClassEmbeddingDetails(
                 addAccessToUniquePredicate()
             }
         }
+        _havocMethod = BuiltInMethod(
+            havocFunctionName,
+            emptyList(),
+            Declaration.LocalVarDecl(PlaceholderReturnVariableName, Type.Ref),
+            emptyList(),
+            listOf(
+                Exp.PredicateAccess(
+                    sharedPredicateName,
+                    listOf(Exp.LocalVar(PlaceholderReturnVariableName, Type.Ref)),
+                    PermExp.WildcardPerm()
+                ),
+                RuntimeTypeDomain.isSubtype(
+                    RuntimeTypeDomain.typeOf(
+                        Exp.LocalVar(
+                            PlaceholderReturnVariableName,
+                            Type.Ref
+                        )
+                    ), type.runtimeType
+                )
+            ),
+            null
+        )
     }
 
+    private val havocFunctionName = ScopedKotlinName(type.name.asScope(), PredicateKotlinName("havoc"))
     private val sharedPredicateName = ScopedKotlinName(type.name.asScope(), PredicateKotlinName("shared"))
     private val uniquePredicateName = ScopedKotlinName(type.name.asScope(), PredicateKotlinName("unique"))
 
