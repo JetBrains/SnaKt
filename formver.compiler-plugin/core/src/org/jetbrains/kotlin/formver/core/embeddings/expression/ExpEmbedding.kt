@@ -361,9 +361,22 @@ data class PrimitiveFieldAccess(override val inner: ExpEmbedding, val field: Fie
     }
 
     fun toViper(ctx: PureLinearizer) : Exp = Exp.FieldAccess(inner.toViper(ctx), field.toViper(), ctx.source.asPosition)
-    fun toViper(ctx: Linearizer) : Exp = when(field.accessPolicy) {
-        AccessPolicy.ALWAYS_VOLATILE -> Exp.FuncApp(SpecialName("havoc"), listOf(field.type.runtimeType), field.viperType)
-        else -> Exp.FieldAccess(inner.toViper(ctx), field.toViper(), ctx.source.asPosition)
+    fun toViper(ctx: Linearizer) : Exp {
+        return when(field.accessPolicy) {
+            AccessPolicy.ALWAYS_VOLATILE -> {
+                val tmp = ctx.freshAnonVar(field.type)
+                val methodCall = if (field.containingClass != null) {
+                    // the expected value is a class
+                    field.containingClass!!.details.havocMethod.toMethodCall(emptyList(), listOf(tmp.toLocalVarUse()))
+                } else {
+                    // the expected value is a primitive type
+                    Stmt.MethodCall(SpecialName("havoc"), listOf(field.type.runtimeType), listOf(tmp.toLocalVarUse()))
+                }
+                ctx.addStatement{methodCall}
+                tmp.toViper(ctx)
+            }
+            else -> Exp.FieldAccess(inner.toViper(ctx), field.toViper(), ctx.source.asPosition)
+        }
     }
 
     context(nameResolver: NameResolver)
