@@ -16,6 +16,9 @@ object PathExtractor : FirVisitor<Path?, Unit>() {
     override fun visitResolvedNamedReference(resolvedNamedReference: FirResolvedNamedReference, data: Unit): Path =
         listOf(resolvedNamedReference.resolvedSymbol)
 
+    override fun visitProperty(property: FirProperty, data: Unit): Path =
+        listOf(property.symbol)
+
     override fun visitPropertyAccessExpression(propertyAccessExpression: FirPropertyAccessExpression, data: Unit): Path {
         val parent = propertyAccessExpression.explicitReceiver?.accept(this, data) ?: emptyList()
         val callee = propertyAccessExpression.calleeReference.accept(this, data) ?: emptyList()
@@ -23,10 +26,12 @@ object PathExtractor : FirVisitor<Path?, Unit>() {
         return parent + callee
     }
 
-    override fun visitProperty(property: FirProperty, data: Unit): Path =
-        listOf(property.symbol)
-
 }
 
+/**
+ * Attempts to convert a FirElement to a Path.
+ *
+ * @return the path representation of the FirElement, or `null` if conversion is not possible.
+ */
 fun FirElement.toPath() =
     this.accept(PathExtractor, Unit)

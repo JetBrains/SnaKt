@@ -61,18 +61,29 @@ abstract class DataFlowAnalyzer<F>(
 
     /**
      * Merges two flow facts at a join point.
+     *
+     * @param a the first flow fact.
+     * @param b the second flow fact.
+     * @return the joined flow fact.
      */
     abstract fun join(a: F, b: F): F
 
     /**
-     * The transfer function.  Given the dataflow fact [inFlow] arriving at
-     * [node], returns the fact that holds after [node].
+     * The transfer function.  Given the dataflow fact [inFlow] arriving at * [node], returns the fact that holds after
+     * [node].
+     *
+     * @param node the CFG node to transfer.
+     * @param inFlow the incoming dataflow fact.
+     * @return the outgoing dataflow fact.
      */
     abstract fun transfer(node: CFGNode<*>, inFlow: F): F
 
     /**
-     * Runs the worklist algorithm on [graph] and returns a [FlowFacts]
-     * containing the before/after facts for every node.
+     * Runs the worklist algorithm on [graph] and returns a [FlowFacts] containing the before/after facts for every
+     * node.
+     *
+     * @param graph the control flow graph to analyze.
+     * @return a [FlowFacts] containing the before/after facts for every node.
      */
     fun analyze(graph: ControlFlowGraph): FlowFacts<F> {
         val nodes: List<CFGNode<*>> = graph.nodes
@@ -120,7 +131,7 @@ abstract class DataFlowAnalyzer<F>(
             } else {
                 predecessors
                     .map { outFlow[it] ?: bottom }
-                    .reduce { acc, f -> join(acc, f) }
+                    .reduce { result, flow -> join(result, flow) }
             }
 
             inFlow[node] = joinedIn

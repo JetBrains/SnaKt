@@ -5,8 +5,6 @@
 
 package org.jetbrains.kotlin.formver.uniqueness
 
-import org.jetbrains.kotlin.fir.FirAnnotationContainer
-import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
@@ -28,28 +26,22 @@ class UniquenessResolver(val session: FirSession) {
     private val borrowId: ClassId
         get() = getAnnotationId("Borrowed")
 
-    fun resolveUniqueLevel(element: FirAnnotationContainer): UniqueLevel =
-        if (element.hasAnnotation(uniqueId, session))
+    fun resolveUniqueLevel(symbol: FirBasedSymbol<*>): UniqueLevel =
+        if (symbol.hasAnnotation(uniqueId, session))
             UniqueLevel.Unique
         else
             UniqueLevel.Shared
 
-    fun resolveBorrowLevel(element: FirAnnotationContainer): BorrowLevel =
-        if (element.hasAnnotation(borrowId, session))
+    fun resolveBorrowLevel(symbol: FirBasedSymbol<*>): BorrowLevel =
+        if (symbol.hasAnnotation(borrowId, session))
             BorrowLevel.Borrowed
         else
-            BorrowLevel.Free
+            BorrowLevel.Consumed
 
-    fun resolveUniquenessType(element: FirAnnotationContainer): UniquenessType  =
+    fun resolveUniquenessType(symbol: FirBasedSymbol<*>): UniquenessType.Active  =
         UniquenessType.Active(
-            resolveUniqueLevel(element),
-            resolveBorrowLevel(element)
+            resolveUniqueLevel(symbol),
+            resolveBorrowLevel(symbol)
         )
-
-    fun resolveUniquenessType(element: FirElement): UniquenessType? =
-        if (element is FirAnnotationContainer)
-            resolveUniquenessType(element)
-        else
-            null
 
 }
