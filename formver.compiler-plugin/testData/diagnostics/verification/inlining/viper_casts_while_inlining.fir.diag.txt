@@ -334,7 +334,6 @@ method f$checkEvaluatedOnce$TF$T$Int$T$ManyMembers$T$Unit(p$i: Ref, p$mm: Ref)
   var anon$4: Ref
   var anon$5: Ref
   var anon$6: Ref
-  var anon$7: Ref
   var ret$2: Ref
   var anon$1: Ref
   inhale acc(p$c$ManyMembers$shared(p$mm), wildcard)
