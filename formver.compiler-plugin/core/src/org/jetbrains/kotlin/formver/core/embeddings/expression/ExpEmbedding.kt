@@ -18,8 +18,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.core.embeddings.types.injectionOr
 import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
-import org.jetbrains.kotlin.formver.core.linearization.Linearizer
-import org.jetbrains.kotlin.formver.core.linearization.PureLinearizer
 import org.jetbrains.kotlin.formver.core.linearization.UnfoldPolicy
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.SpecialName
@@ -354,28 +352,52 @@ data class PrimitiveFieldAccess(override val inner: ExpEmbedding, val field: Fie
     override val type: TypeEmbedding
         get() = this.field.type
 
-    override fun toViper(ctx: LinearizationContext): Exp = when(ctx) {
-        is PureLinearizer -> toViper(ctx)
-        is Linearizer -> toViper(ctx)
-        else -> throw IllegalArgumentException("Unsupported linearization context: $ctx")
+    override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
+        val stmt = toViperMaybeStmt(result, ctx) ?: Stmt.assign(
+                result.toLocalVarUse(),
+                Exp.FieldAccess(inner.toViper(ctx), field.toViper(), ctx.source.asPosition)
+            )
+       ctx.addStatement { stmt }
     }
 
-    fun toViper(ctx: PureLinearizer) : Exp = Exp.FieldAccess(inner.toViper(ctx), field.toViper(), ctx.source.asPosition)
-    fun toViper(ctx: Linearizer) : Exp {
-        return when(field.accessPolicy) {
-            AccessPolicy.ALWAYS_VOLATILE -> {
-                val tmp = ctx.freshAnonVar(field.type)
-                val methodCall = if (field.type.pretype is ClassTypeEmbedding) {
-                    // the expected value is a class
-                    (field.type.pretype as ClassTypeEmbedding).details.havocMethod.toMethodCall(emptyList(), listOf(tmp.toLocalVarUse()))
-                } else {
-                    // the expected value is a primitive type
-                    Stmt.MethodCall(SpecialName("havoc"), listOf(field.type.runtimeType), listOf(tmp.toLocalVarUse()))
+
+    override fun toViper(ctx: LinearizationContext): Exp
+        {
+            // TODO: The condition `ctx.unfoldPolicy == UnfoldPolicy.UNFOLD` should not be necessary. Pure vs Impure context...
+            when (field.accessPolicy) {
+                AccessPolicy.ALWAYS_VOLATILE if ctx.unfoldPolicy == UnfoldPolicy.UNFOLD -> {
+                    val resultVar = ctx.freshAnonVar(field.type)
+                    toViperStoringIn(resultVar, ctx)
+                    return resultVar.toViper(ctx)
                 }
-                ctx.addStatement{methodCall}
-                tmp.toViper(ctx)
+                else -> {
+                    return Exp.FieldAccess(inner.toViper(ctx), field.toViper(), ctx.source.asPosition)
+                }
             }
-            else -> Exp.FieldAccess(inner.toViper(ctx), field.toViper(), ctx.source.asPosition)
+        }
+
+    fun toViperMaybeStmt(result: VariableEmbedding, ctx: LinearizationContext) : Stmt? = when (field.accessPolicy) {
+        // TODO: The condition `ctx.unfoldPolicy == UnfoldPolicy.UNFOLD` should not be necessary. Pure vs Impure context...
+        AccessPolicy.ALWAYS_VOLATILE if ctx.unfoldPolicy == UnfoldPolicy.UNFOLD -> {
+            if (field.type.pretype is ClassTypeEmbedding) {
+                // the expected value is a class
+                // calling the specific havoc method
+                (field.type.pretype as ClassTypeEmbedding).details.havocMethod.toMethodCall(
+                    emptyList(),
+                    listOf(result.toLocalVarUse())
+                )
+            } else {
+                // the expected value is a primitive type
+                // calling the general havoc method
+                Stmt.MethodCall(
+                    SpecialName("havoc"),
+                    listOf(field.type.runtimeType),
+                    listOf(result.toLocalVarUse())
+                )
+            }
+        }
+        else -> {
+            null
         }
     }
 
