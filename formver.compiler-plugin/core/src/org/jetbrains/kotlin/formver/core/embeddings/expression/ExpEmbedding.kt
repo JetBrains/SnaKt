@@ -379,6 +379,8 @@ data class PrimitiveFieldAccess(override val inner: ExpEmbedding, val field: Fie
     fun toViperMaybeStmt(result: VariableEmbedding, ctx: LinearizationContext) : Stmt? = when (field.accessPolicy) {
         // TODO: The condition `ctx.unfoldPolicy == UnfoldPolicy.UNFOLD` should not be necessary. Pure vs Impure context...
         AccessPolicy.ALWAYS_VOLATILE if ctx.unfoldPolicy == UnfoldPolicy.UNFOLD -> {
+            // even though the value is havoced, we still need to evaluate the inner expression (receiver) because of side conditions.
+            inner.toViperUnusedResult(ctx)
             if (field.type.pretype is ClassTypeEmbedding) {
                 // the expected value is a class
                 // calling the specific havoc method
