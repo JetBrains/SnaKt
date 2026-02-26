@@ -147,8 +147,8 @@ method f$test$TF$T$Unit() returns (ret$0: Ref)
   var anon$3: Ref
   var l0$expr1: Ref
   var anon$4: Ref
-  var anon$5: Ref
   var l0$expr2: Ref
+  var anon$5: Ref
   var anon$6: Ref
   anon$0 := con$c$Node$T$Int$NT$Node$NT$Node$T$Node(df$rt$intToRef(4), df$rt$nullValue(),
     df$rt$nullValue())
@@ -170,8 +170,8 @@ method f$test$TF$T$Unit() returns (ret$0: Ref)
     anon$7 := havoc$T$Int()
     anon$5 := anon$7
   } else {
-    anon$6 := df$rt$nullValue()}
-  l0$expr2 := df$rt$boolToRef(anon$6 == df$rt$intToRef(4))
+    anon$5 := df$rt$nullValue()}
+  l0$expr2 := df$rt$boolToRef(anon$5 == df$rt$intToRef(4))
   assert df$rt$boolFromRef(l0$expr2)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())

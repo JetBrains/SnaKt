@@ -34,10 +34,8 @@ method f$testReferenceFieldGetter$TF$T$ReferenceFields$T$Unit(p$rf: Ref)
 {
   var l0$f: Ref
   var l0$g: Ref
-  var anon$0: Ref
   var l0$fa: Ref
   var l0$fb: Ref
-  var anon$1: Ref
   var l0$ga: Ref
   var l0$gb: Ref
   inhale acc(p$c$ReferenceFields$shared(p$rf), wildcard)

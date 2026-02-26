@@ -181,7 +181,6 @@ method f$checkArgumentIsCopied$TF$T$ClassWithVar$T$Unit(p$x: Ref)
   var anon$0: Ref
   var anon$4: Ref
   var anon$5: Ref
-  var anon$6: Ref
   var ret$2: Ref
   var anon$1: Ref
   inhale acc(p$c$ClassWithVar$shared(p$x), wildcard)
@@ -193,8 +192,8 @@ method f$checkArgumentIsCopied$TF$T$ClassWithVar$T$Unit(p$x: Ref)
   ret$2 := anon$1
   goto lbl$ret$2
   label lbl$ret$2
-  anon$6 := ret$2
-  ret$1 := anon$6
+  anon$5 := ret$2
+  ret$1 := anon$5
   inhale df$rt$isSubtype(df$rt$typeOf(ret$1), df$rt$nullable(df$rt$anyType()))
   goto lbl$ret$1
   label lbl$ret$1
@@ -234,12 +233,12 @@ method f$accessManyMembers$TF$T$ManyMembers$T$Unit(p$m: Ref)
   var anon$12: Ref
   var anon$13: Ref
   var anon$14: Ref
-  var anon$15: Ref
   var ret$3: Ref
   var anon$2: Ref
-  var anon$16: Ref
+  var anon$15: Ref
   var ret$4: Ref
   var anon$3: Ref
+  var anon$16: Ref
   var anon$17: Ref
   var anon$18: Ref
   var anon$19: Ref
@@ -293,15 +292,15 @@ method f$accessManyMembers$TF$T$ManyMembers$T$Unit(p$m: Ref)
   ret$4 := anon$3.bf$c
   goto lbl$ret$4
   label lbl$ret$4
-  anon$16 := ret$4
-  ret$3 := anon$16
+  anon$15 := ret$4
+  ret$3 := anon$15
   inhale df$rt$isSubtype(df$rt$typeOf(ret$3), df$rt$nullable(df$rt$anyType()))
   goto lbl$ret$3
   label lbl$ret$3
-  anon$15 := ret$3
-  anon$14 := anon$15
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$14), df$rt$c$ClassWithVar())
-  inhale acc(p$c$ClassWithVar$shared(anon$14), wildcard)
+  anon$14 := ret$3
+  anon$13 := anon$14
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$13), df$rt$c$ClassWithVar())
+  inhale acc(p$c$ClassWithVar$shared(anon$13), wildcard)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -351,8 +350,8 @@ method f$checkEvaluatedOnce$TF$T$Int$T$ManyMembers$T$Unit(p$i: Ref, p$mm: Ref)
   assert df$rt$intFromRef(anon$1) == df$rt$intFromRef(anon$1)
   label lbl$ret$2
   inhale df$rt$isSubtype(df$rt$typeOf(ret$2), df$rt$unitType())
-  anon$7 := ret$2
-  ret$1 := anon$7
+  anon$6 := ret$2
+  ret$1 := anon$6
   inhale df$rt$isSubtype(df$rt$typeOf(ret$1), df$rt$nullable(df$rt$anyType()))
   goto lbl$ret$1
   label lbl$ret$1
