@@ -67,8 +67,8 @@ method f$extractPublic$TF$T$Unit() returns (ret$0: Ref)
   var l0$cond1: Ref
   var anon$0: Ref
   var anon$1: Ref
-  var anon$2: Ref
   var l0$cond2: Ref
+  var anon$2: Ref
   var anon$3: Ref
   anon$1 := con$c$C$T$C()
   anon$0 := havoc$T$Int()

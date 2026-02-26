@@ -22,7 +22,6 @@ method f$extractInt$TF$T$Base$T$Boolean$NT$Int(p$base: Ref, p$returnNull: Ref)
       anon$1 := anon$2
       inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$intType())
     } elseif (df$rt$isSubtype(df$rt$typeOf(p$base), df$rt$c$FinalClassOpenFieldVarDerived())) {
-      var anon$3: Ref
       inhale acc(p$c$FinalClassOpenFieldVarDerived$shared(p$base), wildcard)
       anon$1 := havoc$T$Int()
     } elseif (df$rt$isSubtype(df$rt$typeOf(p$base), df$rt$c$FinalClassFinalFieldValDerived())) {
@@ -30,7 +29,6 @@ method f$extractInt$TF$T$Base$T$Boolean$NT$Int(p$base: Ref, p$returnNull: Ref)
       unfold acc(p$c$FinalClassFinalFieldValDerived$shared(p$base), wildcard)
       anon$1 := p$base.bf$field
     } elseif (df$rt$isSubtype(df$rt$typeOf(p$base), df$rt$c$OpenClassFinalFieldVarDerived())) {
-      var anon$4: Ref
       inhale acc(p$c$OpenClassFinalFieldVarDerived$shared(p$base), wildcard)
       anon$1 := havoc$T$Int()
     } else {
