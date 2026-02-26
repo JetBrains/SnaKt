@@ -11,64 +11,49 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 
+/**
+ * Visitor assigning uniqueness types to CFG nodes.
+ *
+ * @param resolver The resolver used for fetching the default uniqueness type of some path.
+ */
 class UniquenessTypeAssigner(
     private val resolver: UniquenessResolver
-): ControlFlowGraphVisitor<Map<Path, UniquenessType>, Map<Path, UniquenessType>>() {
+): ControlFlowGraphVisitor<UniquenessTrie, UniquenessTrie>() {
 
-    override fun visitNode(node: CFGNode<*>, data: Map<Path, UniquenessType>): Map<Path, UniquenessType> {
+    override fun visitNode(node: CFGNode<*>, data: UniquenessTrie): UniquenessTrie {
         return data
     }
 
-    private fun handleDefinition(assignee: FirElement, assigned: FirElement, data: Map<Path, UniquenessType>): Map<Path, UniquenessType> {
-        val result = data.toMutableMap()
+    private fun handleDefinition(assignee: FirElement, assigned: FirElement, data: UniquenessTrie): UniquenessTrie {
+        val result = data.copy()
+        val left = assignee.toPath()
 
-        // Handle assignments between locals
-        val assigneePath = assignee.toPath()
+        if (left != null) {
+            val right = assigned.toPath()
 
-        if (assigneePath != null) {
-            val assignedPath = assigned.toPath()
-
-            if (assignedPath != null) {
+            if (right != null) {
                 // Path-to-Path assignment
-                val assignedUniqueness = data[assignedPath];
+                val rightType = data[right]
 
-                when (assignedUniqueness) {
-                    UniquenessType.Active(UniqueLevel.Unique, BorrowLevel.Borrowed) -> {
-                        result[assigneePath] = assignedUniqueness
-                        result[assignedPath] = UniquenessType.Moved
-                    }
+                result[left] = rightType
 
-                    UniquenessType.Active(UniqueLevel.Shared, BorrowLevel.Borrowed) -> {
-                        result[assigneePath] = assignedUniqueness
-                        result[assignedPath] = UniquenessType.Moved
-                    }
-
-                    UniquenessType.Active(UniqueLevel.Unique, BorrowLevel.Free) -> {
-                        result[assigneePath] = UniquenessType.Active(UniqueLevel.Shared, BorrowLevel.Free)
-                        result[assignedPath] = UniquenessType.Active(UniqueLevel.Shared, BorrowLevel.Free)
-                    }
-
-                    UniquenessType.Active(UniqueLevel.Shared, BorrowLevel.Free) -> {
-                        result[assigneePath] = UniquenessType.Active(UniqueLevel.Shared, BorrowLevel.Free)
-                    }
-
-                    UniquenessType.Moved -> {
-                        result[assigneePath] = UniquenessType.Moved
-                    }
-
-                    else -> {
-                        throw IllegalStateException("Unexpected UniquenessType: ${data[assignedPath]}")
-                    }
+                if (rightType is UniquenessType.Active &&
+                    (rightType.uniqueLevel == UniqueLevel.Unique || rightType.borrowLevel == BorrowLevel.Borrowed)) {
+                    result[right] = UniquenessType.Moved
+                    result[left] = rightType
                 }
-            }
 
-            // TODO: Handle call assignments
+                // TODO: Handle call assignments
+            } else {
+                // Generic value assignment
+                result[left] = UniquenessType.Active(UniqueLevel.Shared, BorrowLevel.Consumed)
+            }
         }
 
         return result
     }
 
-    override fun visitVariableDeclarationNode(node: VariableDeclarationNode, data: Map<Path, UniquenessType>): Map<Path, UniquenessType> {
+    override fun visitVariableDeclarationNode(node: VariableDeclarationNode, data: UniquenessTrie): UniquenessTrie {
         val assignee = node.fir
         val assigned = node.fir.initializer
 
@@ -79,7 +64,7 @@ class UniquenessTypeAssigner(
         return handleDefinition(assignee, assigned, data)
     }
 
-    override fun visitVariableAssignmentNode(node: VariableAssignmentNode, data: Map<Path, UniquenessType>): Map<Path, UniquenessType> {
+    override fun visitVariableAssignmentNode(node: VariableAssignmentNode, data: UniquenessTrie): UniquenessTrie {
         val assignee = node.fir.lValue
         val assigned = node.fir.rValue
 
@@ -87,23 +72,26 @@ class UniquenessTypeAssigner(
     }
 
     @OptIn(SymbolInternals::class)
-    override fun visitFunctionCallEnterNode(node: FunctionCallEnterNode, data: Map<Path, UniquenessType>): Map<Path, UniquenessType> {
+    override fun visitFunctionCallEnterNode(node: FunctionCallEnterNode, data: UniquenessTrie): UniquenessTrie {
         val call = node.fir
         val callableSymbol = (call.toResolvedCallableSymbol() as FirFunctionSymbol<*>).fir
-        val result = data.toMutableMap()
+        val result = data.copy()
 
         for ((argument, parameter) in call.arguments.zip(callableSymbol.valueParameters)) {
-            val argumentPath = argument.toPath()
+            val right = argument.toPath()
 
-            if (argumentPath != null) {
-                val argumentType = data[argumentPath]
-                val parameterType = resolver.resolveUniquenessType(parameter)
+            if (right != null) {
+                val leftType = resolver.resolveUniquenessType(parameter.symbol)
 
-                if (parameterType is UniquenessType.Active
-                    && parameterType.borrowLevel == BorrowLevel.Free
-                    && argumentType is UniquenessType.Active
-                    && argumentType.borrowLevel == BorrowLevel.Borrowed) {
-                    result[argumentPath] = UniquenessType.Moved
+                if (leftType.borrowLevel == BorrowLevel.Consumed) {
+                    when (leftType.uniqueLevel) {
+                        UniqueLevel.Unique -> {
+                            result[right] = UniquenessType.Moved
+                        }
+                        UniqueLevel.Shared -> {
+                            result[right] = UniquenessType.Active(UniqueLevel.Shared, BorrowLevel.Consumed)
+                        }
+                    }
                 }
             }
         }
@@ -113,27 +101,30 @@ class UniquenessTypeAssigner(
 
 }
 
+/**
+ * Analyzer inferring the uniqueness typing environment before and after the execution of each node.
+ *
+ * @param resolver The resolver used for fetching the default uniqueness type of some path.
+ * @param initial The initial uniqueness typing environment.
+ */
 class UniquenessGraphAnalyzer(
     resolver: UniquenessResolver,
-    override val initial: Map<Path, UniquenessType>
-) : DataFlowAnalyzer<Map<Path, UniquenessType>>(FlowDirection.FORWARD) {
+    override val initial: UniquenessTrie
+) : DataFlowAnalyzer<UniquenessTrie>(FlowDirection.FORWARD) {
 
     val typeAssigner = UniquenessTypeAssigner(resolver)
 
-    override val bottom: Map<Path, UniquenessType> = mapOf()
+    override val bottom: UniquenessTrie = UniquenessTrie(resolver)
 
-    override fun join(a: Map<Path, UniquenessType>, b: Map<Path, UniquenessType>): Map<Path, UniquenessType> {
-        val result = a.toMutableMap()
-
-        for ((bSymbol, bType) in b) {
-            result.merge(bSymbol, bType) { existing, incoming -> existing.join(incoming) }
-        }
+    override fun join(a: UniquenessTrie, b: UniquenessTrie): UniquenessTrie {
+        val result = a.copy()
+        result.join(b)
 
         return result
     }
 
     @OptIn(SymbolInternals::class)
-    override fun transfer( node: CFGNode<*>, inFlow: Map<Path, UniquenessType> ): Map<Path, UniquenessType> =
+    override fun transfer(node: CFGNode<*>, inFlow: UniquenessTrie): UniquenessTrie =
         node.accept(typeAssigner, inFlow)
 
 }
