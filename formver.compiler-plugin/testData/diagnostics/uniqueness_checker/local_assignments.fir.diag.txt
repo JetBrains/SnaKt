@@ -1,1 +1,5 @@
-/local_assignments.kt:(697,705): error: Returned value was moved
+/local_assignments.kt:(647,655): error: Returned value was moved
+
+/local_assignments.kt:(809,817): error: Returned value was moved
+
+/local_assignments.kt:(1246,1254): error: Returned value was moved

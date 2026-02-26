@@ -3,7 +3,7 @@
 import org.jetbrains.kotlin.formver.plugin.Unique
 import org.jetbrains.kotlin.formver.plugin.Borrowed
 
-fun f1(@Unique @Borrowed x: Any): Any {
+fun f1(@Unique x: Any): Any {
     var y: Any
 
     y = x
@@ -11,7 +11,7 @@ fun f1(@Unique @Borrowed x: Any): Any {
     return y
 }
 
-fun f2(@Unique @Borrowed x: Any): Any {
+fun f2(@Unique x: Any): Any {
     var y: Any
     var z: Any
 
@@ -21,7 +21,7 @@ fun f2(@Unique @Borrowed x: Any): Any {
     return z
 }
 
-fun f3(@Unique @Borrowed x: Any): Any {
+fun f3(@Unique x: Any): Any {
     var y = x
 
     return y
@@ -31,7 +31,7 @@ fun nondet(): Boolean {
     return false
 }
 
-fun f4(@Unique @Borrowed x: Any, y: Any): Any {
+fun f4(@Unique x: Any, y: Any): Any {
     var z: Any;
 
     if (nondet()) {
@@ -43,7 +43,7 @@ fun f4(@Unique @Borrowed x: Any, y: Any): Any {
     return z
 }
 
-fun f5(@Unique @Borrowed x: Any, y: Any): Any {
+fun f5(@Unique x: Any, y: Any): Any {
     var z: Any = y;
 
     while (nondet()) {
@@ -51,4 +51,53 @@ fun f5(@Unique @Borrowed x: Any, y: Any): Any {
     }
 
     <!UNIQUENESS_VIOLATION!>return z<!>
+}
+
+fun f6(@Unique x: Any, @Unique y: Any): Any {
+    var z = x
+    z = y
+
+    return z
+}
+
+fun f7(@Unique x: Any): Any {
+    var y = x
+    var z = y
+
+    <!UNIQUENESS_VIOLATION!>return y<!>
+}
+
+fun f8(@Unique a: Any, @Unique b: Any): Any {
+    var x = a
+    var y = b
+    var tmp = x
+    x = y
+    y = tmp
+
+    return x
+}
+
+fun f9(@Unique x: Any, @Unique @Borrowed y: Any): Any {
+    var z: Any
+
+    if (nondet()) {
+        z = x
+    } else {
+        z = x
+    }
+
+    return z
+}
+
+fun f10(@Unique @Borrowed a: Any, b: Any): Any {
+    var x = a
+    x = b
+
+    return x
+}
+
+fun f11(@Unique x: Any): Any {
+    var y = x
+
+    <!UNIQUENESS_VIOLATION!>return x<!>
 }

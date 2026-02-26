@@ -13,12 +13,12 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirSimpleFunctionChecker
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
-import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.formver.common.ErrorCollector
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.uniqueness.UniquenessCheckException
 import org.jetbrains.kotlin.formver.uniqueness.UniquenessGraphChecker
 import org.jetbrains.kotlin.formver.uniqueness.UniquenessResolver
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessTrie
 
 class UniquenessDeclarationChecker(private val session: FirSession, private val config: PluginConfiguration) :
 
@@ -34,12 +34,8 @@ class UniquenessDeclarationChecker(private val session: FirSession, private val 
             throw IllegalStateException("Control flow graph is null for declaration: ${declaration.name}")
         }
 
-        val parameters = declaration.valueParameters
         val resolver = UniquenessResolver(session)
-        val initial = parameters.associate {
-            val symbol = it.symbol as FirBasedSymbol<*>
-            listOf(symbol) to resolver.resolveUniquenessType(it)
-        }
+        val initial = UniquenessTrie(resolver)
 
         try {
             val graphChecker = UniquenessGraphChecker(session, initial, out)

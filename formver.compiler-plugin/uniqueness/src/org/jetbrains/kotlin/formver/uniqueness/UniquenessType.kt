@@ -11,7 +11,7 @@ enum class UniqueLevel {
 }
 
 enum class BorrowLevel {
-    Free,
+    Consumed,
     Borrowed
 }
 
