@@ -352,35 +352,53 @@ data class PrimitiveFieldAccess(override val inner: ExpEmbedding, val field: Fie
     override val type: TypeEmbedding
         get() = this.field.type
 
-    override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-        val stmt = toViperMaybeStmt(result, ctx) ?: Stmt.assign(
-                result.toLocalVarUse(),
-                Exp.FieldAccess(inner.toViper(ctx), field.toViper(), ctx.source.asPosition)
-            )
-       ctx.addStatement { stmt }
+    override fun toViper(ctx: LinearizationContext): Exp =  Exp.FieldAccess(inner.toViper(ctx), field.toViper(), ctx.source.asPosition)
+
+    context(nameResolver: NameResolver)
+    override val debugTreeView: TreeView
+        get() = OperatorNode(inner.debugTreeView, ".", this.field.debugTreeView)
+
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitPrimitiveFieldAccess(this)
+}
+
+data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : DefaultMaybeStoringInExpEmbedding,
+    DefaultToBuiltinExpEmbedding {
+    override val type: TypeEmbedding = field.type
+    private val accessInvariant = field.accessInvariantForAccess()
+    private val noInvariants: Boolean
+        get() = accessInvariant == null
+
+    override fun toViper(ctx: LinearizationContext): Exp {
+        if (field.accessPolicy == AccessPolicy.ALWAYS_WRITEABLE) return PrimitiveFieldAccess(receiver, field).toViper(ctx)
+
+        if (field.unfoldToAccess && ctx.unfoldPolicy == UnfoldPolicy.UNFOLDING_IN) return unfoldingInImpl(ctx)
+        val variable = ctx.freshAnonVar(type)
+        toViperStoringIn(variable, ctx)
+        return variable.toViper(ctx)
     }
 
+    override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
+        val receiverViper = receiver.toViper(ctx)
+        val receiverWrapper = ExpWrapper(receiverViper, receiver.type)
+        // If the field is immutable, it is necessary to unfold predicates
+        if (field.unfoldToAccess) unfoldHierarchy(receiverWrapper, ctx)
 
-    override fun toViper(ctx: LinearizationContext): Exp
-        {
-            // TODO: The condition `ctx.unfoldPolicy == UnfoldPolicy.UNFOLD` should not be necessary. Pure vs Impure context...
-            when (field.accessPolicy) {
-                AccessPolicy.ALWAYS_VOLATILE if ctx.unfoldPolicy == UnfoldPolicy.UNFOLD -> {
-                    val resultVar = ctx.freshAnonVar(field.type)
-                    toViperStoringIn(resultVar, ctx)
-                    return resultVar.toViper(ctx)
-                }
-                else -> {
-                    return Exp.FieldAccess(inner.toViper(ctx), field.toViper(), ctx.source.asPosition)
-                }
-            }
+        val invariant = accessInvariant?.fillHole(receiverWrapper)?.pureToViper(toBuiltin = true, ctx.source)
+
+
+        val stmt = getHavocAssignStmt(result) ?: Stmt.assign(
+            result.toLocalVarUse(),
+            Exp.FieldAccess(receiverViper, field.toViper(), ctx.source.asPosition)
+        )
+        ctx.addStatement {
+            invariant?.let { addModifier(InhaleExhaleStmtModifier(it)) }
+            stmt
         }
+    }
 
-    fun toViperMaybeStmt(result: VariableEmbedding, ctx: LinearizationContext) : Stmt? = when (field.accessPolicy) {
-        // TODO: The condition `ctx.unfoldPolicy == UnfoldPolicy.UNFOLD` should not be necessary. Pure vs Impure context...
-        AccessPolicy.ALWAYS_VOLATILE if ctx.unfoldPolicy == UnfoldPolicy.UNFOLD -> {
-            // even though the value is havoced, we still need to evaluate the inner expression (receiver) because of side conditions.
-            inner.toViperUnusedResult(ctx)
+    /** Translates the field access to it's corresponding havoc method. Returns null iff no havoc call is necessary. **/
+    private fun getHavocAssignStmt(result: VariableEmbedding) : Stmt? = when (field.accessPolicy) {
+        AccessPolicy.ALWAYS_VOLATILE -> {
             if (field.type.pretype is ClassTypeEmbedding) {
                 // the expected value is a class
                 // calling the specific havoc method
