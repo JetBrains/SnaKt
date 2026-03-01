@@ -253,9 +253,9 @@ fun StmtConversionContext.convertMethodWithBody(
     // as we may not encounter any `return` statement in the body
     returnTarget.variable.withIsUnitInvariantIfUnit().toViperUnusedResult(linearizer)
 
-    if (!body.checkValidity(declaration.source, errorCollector))throw SnaktInternalException(
+    if (!body.checkValidity(declaration.source, errorCollector)) throw SnaktInternalException(
         declaration.source,
-        "Method has invalid body"
+        "Invalid function body detected in method"
     )
 
     return FunctionBodyEmbedding(seqnBuilder.block, returnTarget, bodyExp)
