@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.core.linearization
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.core.conversion.FreshEntityProducer
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
@@ -30,7 +31,7 @@ class PureLinearizerMisuseException(val offendingFunction: String) : IllegalStat
  */
 data class PureLinearizer(
     override val source: KtSourceElement?,
-    val state: SharedLinearizationState? = null,
+    val state: SharedLinearizationState = SharedLinearizationState(FreshEntityProducer(::AnonymousVariableEmbedding)),
     private val ssaConverter: SsaConverter = SsaConverter(source)
 ) : LinearizationContext {
     override val unfoldPolicy: UnfoldPolicy
@@ -42,10 +43,7 @@ data class PureLinearizer(
     override fun <R> withPosition(newSource: KtSourceElement, action: LinearizationContext.() -> R): R =
         copy(source = newSource).action()
 
-    override fun freshAnonVar(type: TypeEmbedding): AnonymousVariableEmbedding {
-        if (state == null) throw PureLinearizerMisuseException("newVar")
-        return state.freshAnonVar(type)
-    }
+    override fun freshAnonVar(type: TypeEmbedding): AnonymousVariableEmbedding = state.freshAnonVar(type)
 
     override fun asBlock(action: LinearizationContext.() -> Unit): Stmt.Seqn {
         throw PureLinearizerMisuseException("withNewScopeToBlock")
@@ -58,7 +56,9 @@ data class PureLinearizer(
     // Nothing to do here, as an assignment is also added
     override fun addDeclaration(decl: Declaration) {}
 
-    override fun addAssignment(lhs: ExpEmbedding, rhs: ExpEmbedding) {
+    override fun addAssignment(lhs: ExpEmbedding, rhs: ExpEmbedding) = store(lhs, rhs)
+
+    override fun store(lhs: ExpEmbedding, rhs: ExpEmbedding) {
         // It would be nicer to constraint this a bit further as this is a very special case
         ssaConverter.addAssignment(
             (lhs.ignoringMetaNodes() as VariableEmbedding).name,
