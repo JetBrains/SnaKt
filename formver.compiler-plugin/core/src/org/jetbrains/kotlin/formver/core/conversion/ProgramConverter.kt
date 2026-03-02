@@ -426,10 +426,11 @@ class ProgramConverter(
                 }
                 addAll(returnVariable.pureInvariants())
                 addAll(returnVariable.provenInvariants())
-                if (!subSignature.symbol.isPure(session))
+                if (!subSignature.symbol.isPure(session)) {
                     addAll(returnVariable.allAccessInvariants())
-                if (subSignature.callableType.returnsUnique) {
-                    addIfNotNull(returnVariable.uniquePredicateAccessInvariant())
+                    if (subSignature.callableType.returnsUnique) {
+                        addIfNotNull(returnVariable.uniquePredicateAccessInvariant())
+                    }
                 }
                 addAll(contractVisitor.getPostconditions(ContractVisitorContext(returnVariable, symbol)))
                 addAll(subSignature.stdLibPostconditions(returnVariable))
