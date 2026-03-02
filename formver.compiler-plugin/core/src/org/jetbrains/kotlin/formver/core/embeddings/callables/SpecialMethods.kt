@@ -16,7 +16,6 @@ import org.jetbrains.kotlin.formver.viper.ast.Method
 import org.jetbrains.kotlin.formver.viper.ast.Type
 
 object SpecialMethods {
-
     private val havoc = BuiltInMethod(
             SpecialName("havoc"),
             listOf(Declaration.LocalVarDecl(PlaceholderArgumentName(0), RuntimeTypeDomain.RuntimeType)),
