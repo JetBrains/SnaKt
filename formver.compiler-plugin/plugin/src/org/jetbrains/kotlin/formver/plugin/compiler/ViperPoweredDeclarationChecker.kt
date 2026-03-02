@@ -49,6 +49,10 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
         try {
             val programConversionContext = ProgramConverter(session, config, errorCollector)
             programConversionContext.registerForVerification(declaration)
+            errorCollector.forEachPurityError { source, errorMessage ->
+                reporter.reportOn(source, PluginErrors.PURITY_VIOLATION, errorMessage)
+            }
+            if (errorCollector.collectedPurityError()) return
             val program = programConversionContext.program
 
             with(programConversionContext.nameResolver) {
@@ -75,7 +79,6 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
                     }
                 }
             }
-
             val verifier = Verifier()
             val onFailure = { err: VerifierError ->
                 val source = err.position.unwrapOr { declaration.source }
@@ -89,9 +92,6 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
             verifier.verify(viperProgram, onFailure)
         } catch (e: SnaktInternalException) {
             reporter.reportOn(e.source, PluginErrors.INTERNAL_ERROR, e.message)
-            errorCollector.forEachPurityError { source, errorMessage ->
-                reporter.reportOn(source, PluginErrors.PURITY_VIOLATION, errorMessage)
-            }
         } catch (e: Exception) {
             val error = e.message ?: "No message provided"
             reporter.reportOn(declaration.source, PluginErrors.INTERNAL_ERROR, error)

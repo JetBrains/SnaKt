@@ -34,4 +34,6 @@ class ErrorCollector {
             action(key, value)
         }
     }
+
+    fun collectedPurityError() = purityErrors.isNotEmpty()
 }

@@ -1,13 +1,5 @@
-/assert_statements.kt:(46,177): error: An internal error has occurred.
-Details: Invalid function body detected in method
-Please report this at https://github.com/jesyspa/kotlin
-
 /assert_statements.kt:(160,166): error: Assert condition is impure
 
 /assert_statements.kt:(168,174): error: Assert condition is impure
-
-/assert_statements.kt:(179,246): error: An internal error has occurred.
-Details: Invalid function body detected in method
-Please report this at https://github.com/jesyspa/kotlin
 
 /assert_statements.kt:(237,243): error: Assert condition is impure
