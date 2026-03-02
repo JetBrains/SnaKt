@@ -5,13 +5,10 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
-
-
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings
 
 
 object SpecialFunctions {
-
     val all
         get() = OperatorExpEmbeddings.allTemplates.map { it.refsOperation }
 }
