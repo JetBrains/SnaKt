@@ -352,7 +352,8 @@ data class PrimitiveFieldAccess(override val inner: ExpEmbedding, val field: Fie
     override val type: TypeEmbedding
         get() = this.field.type
 
-    override fun toViper(ctx: LinearizationContext): Exp =  Exp.FieldAccess(inner.toViper(ctx), field.toViper(), ctx.source.asPosition)
+    override fun toViper(ctx: LinearizationContext): Exp =
+        Exp.FieldAccess(inner.toViper(ctx), field.toViper(), ctx.source.asPosition)
 
     context(nameResolver: NameResolver)
     override val debugTreeView: TreeView
@@ -364,12 +365,10 @@ data class PrimitiveFieldAccess(override val inner: ExpEmbedding, val field: Fie
 data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : DefaultMaybeStoringInExpEmbedding,
     DefaultToBuiltinExpEmbedding {
     override val type: TypeEmbedding = field.type
-    private val accessInvariant = field.accessInvariantForAccess()
-    private val noInvariants: Boolean
-        get() = accessInvariant == null
-
     override fun toViper(ctx: LinearizationContext): Exp {
-        if (field.accessPolicy == AccessPolicy.ALWAYS_WRITEABLE) return PrimitiveFieldAccess(receiver, field).toViper(ctx)
+        if (field.accessPolicy == AccessPolicy.ALWAYS_WRITEABLE) return PrimitiveFieldAccess(receiver, field).toViper(
+            ctx
+        )
 
         if (field.unfoldToAccess && ctx.unfoldPolicy == UnfoldPolicy.UNFOLDING_IN) return unfoldingInImpl(ctx)
         val variable = ctx.freshAnonVar(type)
@@ -383,21 +382,17 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
         // If the field is immutable, it is necessary to unfold predicates
         if (field.unfoldToAccess) unfoldHierarchy(receiverWrapper, ctx)
 
-        val invariant = accessInvariant?.fillHole(receiverWrapper)?.pureToViper(toBuiltin = true, ctx.source)
-
-
         val stmt = getHavocAssignStmt(result) ?: Stmt.assign(
             result.toLocalVarUse(),
             Exp.FieldAccess(receiverViper, field.toViper(), ctx.source.asPosition)
         )
         ctx.addStatement {
-            invariant?.let { addModifier(InhaleExhaleStmtModifier(it)) }
             stmt
         }
     }
 
     /** Translates the field access to it's corresponding havoc method. Returns null iff no havoc call is necessary. **/
-    private fun getHavocAssignStmt(result: VariableEmbedding) : Stmt? = when (field.accessPolicy) {
+    private fun getHavocAssignStmt(result: VariableEmbedding): Stmt? = when (field.accessPolicy) {
         AccessPolicy.ALWAYS_VOLATILE -> {
             if (field.type.pretype is ClassTypeEmbedding) {
                 // the expected value is a class
@@ -416,6 +411,7 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
                 )
             }
         }
+
         else -> {
             null
         }
