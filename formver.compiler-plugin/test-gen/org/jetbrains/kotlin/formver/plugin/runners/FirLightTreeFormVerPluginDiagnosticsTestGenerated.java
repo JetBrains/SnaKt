@@ -88,6 +88,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
       }
 
       @Test
+      @TestMetadata("example_classes.kt")
+      public void testExample_classes() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/example_classes.kt");
+      }
+
+      @Test
       @TestMetadata("field_getters.kt")
       public void testField_getters() {
         runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/field_getters.kt");
@@ -670,6 +676,16 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     @TestMetadata("shared_to_shared.kt")
     public void testShared_to_shared() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/shared_to_shared.kt");
+    }
+
+    @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/datastructures")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Datastructures {
+      @Test
+      public void testAllFilesPresentInDatastructures() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/datastructures"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
     }
   }
 
