@@ -108,7 +108,7 @@ class UniquenessTypeChecker(
         val leakedPath = returnExpression.result.toPath()
 
         if (leakedPath != null) {
-            val leakedType = data[leakedPath]
+            val leakedType = data.ensure(leakedPath).parentsJoin
 
             if (leakedType is UniquenessType.Moved) {
                 throw UniquenessCheckException(returnExpression.source, "Cannot return a moved value")
@@ -124,10 +124,10 @@ class UniquenessTypeChecker(
 
     override fun visitThrowExceptionNode(node: ThrowExceptionNode, data: UniquenessTrie) {
         val throwExpression = node.fir
-        val leakedPath = throwExpression.toPath()
+        val leakedPath = throwExpression.exception.toPath()
 
         if (leakedPath != null) {
-            val leakedType = data[leakedPath]
+            val leakedType = data.ensure(leakedPath).parentsJoin
 
             if (leakedType is UniquenessType.Moved) {
                 throw UniquenessCheckException(throwExpression.source, "Cannot throw a moved value")

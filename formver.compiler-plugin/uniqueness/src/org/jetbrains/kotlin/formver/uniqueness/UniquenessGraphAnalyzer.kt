@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.fir.expressions.toResolvedCallableSymbol
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraphVisitor
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallEnterNode
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.QualifiedAccessNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
