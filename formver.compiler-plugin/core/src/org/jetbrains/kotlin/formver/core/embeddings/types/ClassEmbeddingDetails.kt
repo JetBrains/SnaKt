@@ -7,20 +7,8 @@ package org.jetbrains.kotlin.formver.core.embeddings.types
 
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
-import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
-import org.jetbrains.kotlin.formver.core.names.PredicateKotlinName
-import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
-import org.jetbrains.kotlin.formver.core.names.SimpleKotlinName
-import org.jetbrains.kotlin.formver.core.names.asScope
-import org.jetbrains.kotlin.formver.viper.ast.BuiltInMethod
-import org.jetbrains.kotlin.formver.viper.ast.Declaration
-import org.jetbrains.kotlin.formver.viper.ast.Exp
-import org.jetbrains.kotlin.formver.viper.ast.Method
-import org.jetbrains.kotlin.formver.viper.ast.PermExp
-import org.jetbrains.kotlin.formver.viper.ast.Predicate
-import org.jetbrains.kotlin.formver.viper.ast.Stmt
-import org.jetbrains.kotlin.formver.viper.ast.Type
-import org.jetbrains.kotlin.formver.viper.ast.UserMethod
+import org.jetbrains.kotlin.formver.core.names.*
+import org.jetbrains.kotlin.formver.viper.ast.*
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 
 class ClassEmbeddingDetails(
@@ -43,6 +31,7 @@ class ClassEmbeddingDetails(
     private var _sharedPredicate: Predicate? = null
     private var _uniquePredicate: Predicate? = null
     private var _havocMethod: Method? = null
+    private var _havocMethodNullable: Method? = null
     val fields: Map<SimpleKotlinName, FieldEmbedding>
         get() = _fields ?: error("Fields of ${type.name} have not been initialised yet.")
     val sharedPredicate: Predicate
@@ -51,6 +40,9 @@ class ClassEmbeddingDetails(
         get() = _uniquePredicate ?: error("Unique Predicate of ${type.name} has not been initialised yet.")
     val havocMethod: Method
         get() = _havocMethod ?: error("Havoc method of ${type.name} has not been initialised yet.")
+    val havocMethodNullable: Method
+        get() = _havocMethodNullable ?: error("Havoc method of ${type.name} has not been initialised yet.")
+
 
     fun initFields(newFields: Map<SimpleKotlinName, FieldEmbedding>) {
         check(_fields == null) { "Fields of ${type.name} are already initialised." }
@@ -98,14 +90,35 @@ class ClassEmbeddingDetails(
                     sharedPredicateName,
                     listOf(Exp.LocalVar(PlaceholderReturnVariableName, Type.Ref)),
                     PermExp.WildcardPerm()
-                ),
-                RuntimeTypeDomain.isSubtype(
+                ), RuntimeTypeDomain.isSubtype(
                     RuntimeTypeDomain.typeOf(
                         Exp.LocalVar(
-                            PlaceholderReturnVariableName,
-                            Type.Ref
+                            PlaceholderReturnVariableName, Type.Ref
                         )
                     ), type.runtimeType
+                )
+            ),
+            null
+        )
+        _havocMethodNullable = BuiltInMethod(
+            havocFunctionNameNullable,
+            emptyList(),
+            Declaration.LocalVarDecl(PlaceholderReturnVariableName, Type.Ref),
+            emptyList(),
+            listOf(
+                Exp.Implies(
+                    Exp.NeCmp(Exp.LocalVar(PlaceholderReturnVariableName, Type.Ref), RuntimeTypeDomain.nullValue()),
+                    Exp.PredicateAccess(
+                        sharedPredicateName,
+                        listOf(Exp.LocalVar(PlaceholderReturnVariableName, Type.Ref)),
+                        PermExp.WildcardPerm()
+                    )
+                ), RuntimeTypeDomain.isSubtype(
+                    RuntimeTypeDomain.typeOf(
+                        Exp.LocalVar(
+                            PlaceholderReturnVariableName, Type.Ref
+                        )
+                    ), RuntimeTypeDomain.nullable(type.runtimeType)
                 )
             ),
             null
@@ -113,6 +126,7 @@ class ClassEmbeddingDetails(
     }
 
     private val havocFunctionName = ScopedKotlinName(type.name.asScope(), PredicateKotlinName("havoc"))
+    private val havocFunctionNameNullable = ScopedKotlinName(type.name.asScope(), PredicateKotlinName("havocNullable"))
     private val sharedPredicateName = ScopedKotlinName(type.name.asScope(), PredicateKotlinName("shared"))
     private val uniquePredicateName = ScopedKotlinName(type.name.asScope(), PredicateKotlinName("unique"))
 

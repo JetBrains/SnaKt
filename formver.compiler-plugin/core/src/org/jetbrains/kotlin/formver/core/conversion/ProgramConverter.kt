@@ -46,16 +46,12 @@ import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
  * We need the FirSession to get access to the TypeContext.
  */
 class ProgramConverter(
-    val session: FirSession,
-    override val config: PluginConfiguration,
-    override val errorCollector: ErrorCollector
-) :
-    ProgramConversionContext {
-    private val methods: MutableMap<SymbolicName, FunctionEmbedding> =
-        buildMap {
-            putAll(SpecialKotlinFunctions.byName)
-            putAll(PartiallySpecialKotlinFunctions.generateAllByName())
-        }.toMutableMap()
+    val session: FirSession, override val config: PluginConfiguration, override val errorCollector: ErrorCollector
+) : ProgramConversionContext {
+    private val methods: MutableMap<SymbolicName, FunctionEmbedding> = buildMap {
+        putAll(SpecialKotlinFunctions.byName)
+        putAll(PartiallySpecialKotlinFunctions.generateAllByName())
+    }.toMutableMap()
     private val functions: MutableMap<SymbolicName, PureFunctionEmbedding> = mutableMapOf()
     private val classes: MutableMap<SymbolicName, ClassTypeEmbedding> = mutableMapOf()
     private val properties: MutableMap<SymbolicName, PropertyEmbedding> = mutableMapOf()
@@ -179,8 +175,7 @@ class ProgramConverter(
             }
 
             is PartiallySpecialKotlinFunction -> {
-                if (existing.baseEmbedding != null)
-                    return existing
+                if (existing.baseEmbedding != null) return existing
                 val signature = embedFullSignature(symbol)
                 val callable = processCallable(symbol, signature)
                 val userFunction = UserFunctionEmbedding(callable)
@@ -208,12 +203,11 @@ class ProgramConverter(
         }
     }
 
-    override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding =
-        if (symbol.isPure(session)) {
-            embedPureFunction(symbol)
-        } else {
-            embedFunction(symbol)
-        }
+    override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding = if (symbol.isPure(session)) {
+        embedPureFunction(symbol)
+    } else {
+        embedFunction(symbol)
+    }
 
     /**
      * Returns an embedding of the class type, with details set.
@@ -293,8 +287,7 @@ class ProgramConverter(
         }
 
     private fun extractConstructorParamsAsFields(symbol: FirFunctionSymbol<*>): Map<FirValueParameterSymbol, FieldEmbedding> {
-        if (symbol !is FirConstructorSymbol || !symbol.isPrimary)
-            return emptyMap()
+        if (symbol !is FirConstructorSymbol || !symbol.isPrimary) return emptyMap()
         val constructedClassSymbol = symbol.resolvedReturnType.toRegularClassSymbol(session) ?: return emptyMap()
         val constructedClass = embedClass(constructedClassSymbol)
 
@@ -334,11 +327,7 @@ class ProgramConverter(
 
             override val params = symbol.valueParameterSymbols.map {
                 FirVariableEmbedding(
-                    it.embedName(),
-                    embedType(it.resolvedReturnType),
-                    it,
-                    it.isUnique(session),
-                    it.isBorrowed(session)
+                    it.embedName(), embedType(it.resolvedReturnType), it, it.isUnique(session), it.isBorrowed(session)
                 )
             }
         }
@@ -364,8 +353,7 @@ class ProgramConverter(
         val constructorParamSymbolsToFields = extractConstructorParamsAsFields(symbol)
         val contractVisitor = ContractDescriptionConversionVisitor(this@ProgramConverter, subSignature)
 
-        @OptIn(SymbolInternals::class)
-        val declaration = symbol.fir
+        @OptIn(SymbolInternals::class) val declaration = symbol.fir
         val body = declaration.body
 
         /** Specifications are only allowed inside simple functions.
@@ -379,22 +367,18 @@ class ProgramConverter(
             else -> extractFirSpecification(body, declaration.symbol.resolvedReturnType)
         }
 
-        val rootResolver =
-            RootParameterResolver(
-                this@ProgramConverter,
-                subSignature,
-                subSignature.symbol.valueParameterSymbols,
-                subSignature.labelName,
-                ReturnTarget(depth = 0, subSignature.callableType.returnType),
-            )
+        val rootResolver = RootParameterResolver(
+            this@ProgramConverter,
+            subSignature,
+            subSignature.symbol.valueParameterSymbols,
+            subSignature.labelName,
+            ReturnTarget(depth = 0, subSignature.callableType.returnType),
+        )
 
         fun createCtx(returnVariable: VariableEmbedding? = null): StmtConversionContext {
             val returnVarCtx = returnVariable?.let { ret -> firSpec?.returnVar?.let { ReturnVarSubstitutor(it, ret) } }
-            val paramResolver =
-                if (returnVarCtx != null)
-                    SubstitutedReturnParameterResolver(rootResolver, returnVarCtx)
-                else
-                    rootResolver
+            val paramResolver = if (returnVarCtx != null) SubstitutedReturnParameterResolver(rootResolver, returnVarCtx)
+            else rootResolver
 
             return MethodConverter(
                 this@ProgramConverter,
@@ -488,9 +472,7 @@ class ProgramConverter(
         val scopedName = symbol.callableId.embedMemberBackingFieldName(
             Visibilities.isPrivate(symbol.visibility)
         )
-        val fieldIsAllowed = symbol.hasBackingField
-                && !symbol.isCustom
-                && (symbol.isFinal || classSymbol.isFinal)
+        val fieldIsAllowed = symbol.hasBackingField && !symbol.isCustom && (symbol.isFinal || classSymbol.isFinal)
         val backingField = scopedName.specialEmbedding(embedding) ?: fieldIsAllowed.ifTrue {
             UserFieldEmbedding(
                 scopedName,
@@ -524,11 +506,10 @@ class ProgramConverter(
 
     private fun embedCustomProperty(symbol: FirPropertySymbol) = embedProperty(symbol, null)
 
-    private fun embedProperty(symbol: FirPropertySymbol, backingField: FieldEmbedding?) =
-        PropertyEmbedding(
-            embedGetter(symbol, backingField),
-            symbol.isVar.ifTrue { embedSetter(symbol, backingField) },
-        )
+    private fun embedProperty(symbol: FirPropertySymbol, backingField: FieldEmbedding?) = PropertyEmbedding(
+        embedGetter(symbol, backingField),
+        symbol.isVar.ifTrue { embedSetter(symbol, backingField) },
+    )
 
     private fun embedGetter(symbol: FirPropertySymbol, backingField: FieldEmbedding?): GetterEmbedding =
         if (backingField != null) {
@@ -546,8 +527,7 @@ class ProgramConverter(
 
     @OptIn(SymbolInternals::class)
     private fun processCallable(
-        symbol: FirFunctionSymbol<*>,
-        signature: FullNamedFunctionSignature
+        symbol: FirFunctionSymbol<*>, signature: FullNamedFunctionSignature
     ): RichCallableEmbedding {
         return if (symbol.shouldBeInlined) {
             InlineNamedFunction(signature, symbol.fir.body!!)
@@ -557,8 +537,7 @@ class ProgramConverter(
             // TODO: fit this into the flow in some logical way instead.
             // TODO: We should emit the function with its body here instead of creating an empty header for functions
             NonInlineNamedFunction(
-                signature,
-                symbol.isPure(session)
+                signature, symbol.isPure(session)
             ).also { if (symbol.isPure(session)) it.toViperFunctionHeader() else it.toViperMethodHeader() }
         }
     }
@@ -625,14 +604,12 @@ class ProgramConverter(
         returnsUnique = symbol.isUnique(session) || symbol is FirConstructorSymbol
     }
 
-    private fun TypeBuilder.unimplementedTypeEmbedding(type: ConeKotlinType): PretypeBuilder =
-        when (config.behaviour) {
-            UnsupportedFeatureBehaviour.THROW_EXCEPTION ->
-                throw NotImplementedError("The embedding for type $type is not yet implemented.")
+    private fun TypeBuilder.unimplementedTypeEmbedding(type: ConeKotlinType): PretypeBuilder = when (config.behaviour) {
+        UnsupportedFeatureBehaviour.THROW_EXCEPTION -> throw NotImplementedError("The embedding for type $type is not yet implemented.")
 
-            UnsupportedFeatureBehaviour.ASSUME_UNREACHABLE -> {
-                errorCollector.addMinorError("Requested type $type, for which we do not yet have an embedding.")
-                unit()
-            }
+        UnsupportedFeatureBehaviour.ASSUME_UNREACHABLE -> {
+            errorCollector.addMinorError("Requested type $type, for which we do not yet have an embedding.")
+            unit()
         }
+    }
 }
