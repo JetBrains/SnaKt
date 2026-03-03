@@ -56,7 +56,7 @@ class UniquenessTypeChecker(
                             )
                         }
 
-                        if (parameterType.uniqueLevel > argumentType.uniqueLevel) {
+                        if (argumentType.uniqueLevel > parameterType.uniqueLevel) {
                             throw UniquenessCheckException(
                                 argument.source,
                                 "Expected ${parameterType.uniqueLevel.toString().lowercase()} value, " +
@@ -66,22 +66,24 @@ class UniquenessTypeChecker(
                     }
                 }
 
-                val argumentPartialType = argumentStore.childrenJoin
+                if (argumentType.uniqueLevel == UniqueLevel.Unique && !data.isInvariant(argumentPath)) {
+                    val argumentPartialType = argumentStore.childrenJoin
 
-                if (!data.isInvariant(argumentPath)) {
-                    if (argumentPartialType is UniquenessType.Moved) {
-                        throw UniquenessCheckException(
-                            argument.source,
-                            "Cannot pass a partially moved argument"
-                        )
-                    }
-
-                    if (argumentPartialType is UniquenessType.Active
-                        && argumentPartialType.uniqueLevel == UniqueLevel.Shared) {
-                        throw UniquenessCheckException(
-                            argument.source,
-                            "Cannot pass a partially shared argument"
-                        )
+                    when (argumentPartialType) {
+                        is UniquenessType.Moved ->
+                            throw UniquenessCheckException(
+                                argument.source,
+                                "Cannot pass a partially moved argument"
+                            )
+                        is UniquenessType.Active -> {
+                            if (argumentPartialType.uniqueLevel > parameterType.uniqueLevel
+                                && parameterType.uniqueLevel == UniqueLevel.Unique) {
+                                throw UniquenessCheckException(
+                                    argument.source,
+                                    "Cannot pass a partially shared argument as unique"
+                                )
+                            }
+                        }
                     }
                 }
             }
