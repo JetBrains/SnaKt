@@ -385,7 +385,9 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
             AccessPolicy.ALWAYS_VOLATILE -> {
                 field.type.havocMethodBuilder.withTarget(result.toLocalVarUse()).build()
             }
-
+            AccessPolicy.BY_RECEIVER_UNIQUENESS if false/** TODO: Replace to: if !receiver.isUnique()**/ -> {
+                field.type.havocMethodBuilder.withTarget(result.toLocalVarUse()).build()
+            }
             else -> {
                 Stmt.assign(
                     result.toLocalVarUse(),
@@ -497,6 +499,16 @@ data class FieldModification(val receiver: ExpEmbedding, val field: FieldEmbeddi
                 receiver.toViperUnusedResult(ctx)
                 newValue.toViperUnusedResult(ctx)
             }
+            else -> {
+                val receiverViper = receiver.toViper(ctx)
+                if (field.unfoldToAccess) {
+                    val receiverWrapper = ExpWrapper(receiverViper, receiver.type)
+                    unfoldHierarchy(receiverWrapper, ctx)
+                }
+                val newValueViper = newValue.withType(field.type).toViper(ctx)
+                ctx.addStatement {
+                    Stmt.FieldAssign(Exp.FieldAccess(receiverViper, field.toViper()), newValueViper, ctx.source.asPosition)
+                }
 
             else -> {
                 val receiverViper = receiver.toViper(ctx)
