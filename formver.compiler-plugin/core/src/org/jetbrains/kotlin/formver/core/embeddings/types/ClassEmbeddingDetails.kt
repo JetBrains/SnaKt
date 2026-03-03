@@ -125,8 +125,8 @@ class ClassEmbeddingDetails(
         )
     }
 
-    private val havocFunctionName = ScopedKotlinName(type.name.asScope(), PredicateKotlinName("havoc"))
-    private val havocFunctionNameNullable = ScopedKotlinName(type.name.asScope(), PredicateKotlinName("havocNullable"))
+    private val havocFunctionName = ScopedKotlinName(type.name.asScope(), HavocKotlinName("havoc"))
+    private val havocFunctionNameNullable = ScopedKotlinName(type.name.asScope(), HavocKotlinName("havocNullable"))
     private val sharedPredicateName = ScopedKotlinName(type.name.asScope(), PredicateKotlinName("shared"))
     private val uniquePredicateName = ScopedKotlinName(type.name.asScope(), PredicateKotlinName("unique"))
 
