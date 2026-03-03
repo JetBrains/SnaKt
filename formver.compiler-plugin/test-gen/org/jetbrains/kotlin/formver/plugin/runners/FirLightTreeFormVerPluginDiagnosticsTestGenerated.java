@@ -617,6 +617,18 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
+    @TestMetadata("return_local.kt")
+    public void testReturn_local() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/return_local.kt");
+    }
+
+    @Test
+    @TestMetadata("return_property.kt")
+    public void testReturn_property() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/return_property.kt");
+    }
+
+    @Test
     @TestMetadata("share_local.kt")
     public void testShare_local() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/share_local.kt");
@@ -626,6 +638,18 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     @TestMetadata("share_properties.kt")
     public void testShare_properties() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/share_properties.kt");
+    }
+
+    @Test
+    @TestMetadata("throw_local.kt")
+    public void testThrow_local() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/throw_local.kt");
+    }
+
+    @Test
+    @TestMetadata("throw_property.kt")
+    public void testThrow_property() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/throw_property.kt");
     }
   }
 
