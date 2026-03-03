@@ -20,7 +20,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.injectionOr
 import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
 import org.jetbrains.kotlin.formver.core.linearization.UnfoldPolicy
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
-import org.jetbrains.kotlin.formver.core.names.SpecialName
 import org.jetbrains.kotlin.formver.core.purity.PurityContext
 import org.jetbrains.kotlin.formver.names.SimpleNameResolver
 import org.jetbrains.kotlin.formver.viper.NameResolver
@@ -382,38 +381,20 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
         // If the field is immutable, it is necessary to unfold predicates
         if (field.unfoldToAccess) unfoldHierarchy(receiverWrapper, ctx)
 
-        val stmt = getHavocAssignStmt(result) ?: Stmt.assign(
-            result.toLocalVarUse(),
-            Exp.FieldAccess(receiverViper, field.toViper(), ctx.source.asPosition)
-        )
-        ctx.addStatement {
-            stmt
-        }
-    }
+        val stmt = when (field.accessPolicy) {
+            AccessPolicy.ALWAYS_VOLATILE -> {
+                field.type.havocMethodBuilder.withTarget(result.toLocalVarUse()).build()
+            }
 
-    /** Translates the field access to it's corresponding havoc method. Returns null iff no havoc call is necessary. **/
-    private fun getHavocAssignStmt(result: VariableEmbedding): Stmt? = when (field.accessPolicy) {
-        AccessPolicy.ALWAYS_VOLATILE -> {
-            if (field.type.pretype is ClassTypeEmbedding) {
-                // the expected value is a class
-                // calling the specific havoc method
-                (field.type.pretype as ClassTypeEmbedding).details.havocMethod.toMethodCall(
-                    emptyList(),
-                    listOf(result.toLocalVarUse())
-                )
-            } else {
-                // the expected value is a primitive type
-                // calling the general havoc method
-                Stmt.MethodCall(
-                    SpecialName("havoc"),
-                    listOf(field.type.runtimeType),
-                    listOf(result.toLocalVarUse())
+            else -> {
+                Stmt.assign(
+                    result.toLocalVarUse(),
+                    Exp.FieldAccess(receiverViper, field.toViper(), ctx.source.asPosition)
                 )
             }
         }
-
-        else -> {
-            null
+        ctx.addStatement {
+            stmt
         }
     }
 

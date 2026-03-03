@@ -5,12 +5,14 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
+import org.jetbrains.kotlin.formver.core.conversion.HavocMethodCallBuilder
+import org.jetbrains.kotlin.formver.core.conversion.PrimitiveHavocMethodCallBuilder
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.PlaintextLeaf
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.TreeView
 import org.jetbrains.kotlin.formver.core.names.PretypeName
-import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.NameResolver
+import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.mangled
 
 /**
@@ -25,47 +27,57 @@ import org.jetbrains.kotlin.formver.viper.mangled
  */
 interface PretypeEmbedding : RuntimeTypeHolder, TypeInvariantHolder {
     val name: SymbolicName
+    val havocMethodBuilder: HavocMethodCallBuilder
 
     context(nameResolver: NameResolver)
     override val debugTreeView: TreeView
         get() = PlaintextLeaf(name.mangled)
 
     override fun subTypeInvariant(): TypeInvariantEmbedding = SubTypeInvariantEmbedding(this)
+
 }
 
-data object UnitTypeEmbedding : PretypeEmbedding {
+/** Enables default havoc builder for primitive types.
+ *  With primitive types, we mean types for which no access predicate is needed.
+ **/
+interface PrimitiveHavoc : PretypeEmbedding {
+    override val havocMethodBuilder: HavocMethodCallBuilder
+        get() = PrimitiveHavocMethodCallBuilder(this)
+}
+
+data object UnitTypeEmbedding : PretypeEmbedding, PrimitiveHavoc {
     override val runtimeType = RuntimeTypeDomain.unitType()
     override val name = PretypeName("Unit")
 }
 
-data object NothingTypeEmbedding : PretypeEmbedding {
+data object NothingTypeEmbedding : PretypeEmbedding, PrimitiveHavoc {
     override val runtimeType = RuntimeTypeDomain.nothingType()
     override val name = PretypeName("Nothing")
 
     override fun pureInvariants(): List<TypeInvariantEmbedding> = listOf(FalseTypeInvariant)
 }
 
-data object AnyTypeEmbedding : PretypeEmbedding {
+data object AnyTypeEmbedding : PretypeEmbedding, PrimitiveHavoc {
     override val runtimeType = RuntimeTypeDomain.anyType()
     override val name = PretypeName("Any")
 }
 
-data object IntTypeEmbedding : PretypeEmbedding {
+data object IntTypeEmbedding : PretypeEmbedding, PrimitiveHavoc {
     override val runtimeType = RuntimeTypeDomain.intType()
     override val name = PretypeName("Int")
 }
 
-data object BooleanTypeEmbedding : PretypeEmbedding {
+data object BooleanTypeEmbedding : PretypeEmbedding, PrimitiveHavoc {
     override val runtimeType = RuntimeTypeDomain.boolType()
     override val name = PretypeName("Boolean")
 }
 
-data object CharTypeEmbedding : PretypeEmbedding {
+data object CharTypeEmbedding : PretypeEmbedding, PrimitiveHavoc {
     override val runtimeType = RuntimeTypeDomain.charType()
     override val name = PretypeName("Char")
 }
 
-data object StringTypeEmbedding : PretypeEmbedding {
+data object StringTypeEmbedding : PretypeEmbedding, PrimitiveHavoc {
     override val runtimeType = RuntimeTypeDomain.stringType()
     override val name = PretypeName("String")
 }

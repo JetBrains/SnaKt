@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
+import org.jetbrains.kotlin.formver.core.conversion.ClassHavocMethodCallBuilder
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
 import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
@@ -26,6 +27,8 @@ data class ClassTypeEmbedding(override val name: ScopedKotlinName) : PretypeEmbe
         get() = _details != null
 
     override val runtimeType: Exp = this.embedClassTypeFunc()()
+
+    override val havocMethodBuilder = ClassHavocMethodCallBuilder(this)
 
     override fun accessInvariants(): List<TypeInvariantEmbedding> = details.accessInvariants()
 
