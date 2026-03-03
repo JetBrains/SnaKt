@@ -1,0 +1,3 @@
+/return_local.kt:(281,289): error: Cannot return a borrowed value
+
+/return_local.kt:(418,426): error: Cannot return a borrowed value
