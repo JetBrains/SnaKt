@@ -53,7 +53,6 @@ class UniquenessTrie(
                 }
     }
 
-
     /**
      * @return true if the subpaths of `symbol` are invariant with respect to their default specification, `false`
      * otherwise.
@@ -61,7 +60,6 @@ class UniquenessTrie(
     fun isInvariant(path: Path): Boolean {
         return path.isEmpty() || ensure(path).isInvariant(path.first())
     }
-
 
     /**
      * Ensures that there is a `UniquenessTrie` associated with the specified path, creating one if it does not exist.

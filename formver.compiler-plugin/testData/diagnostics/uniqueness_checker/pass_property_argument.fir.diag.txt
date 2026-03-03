@@ -1,0 +1,3 @@
+/pass_property_argument.kt:(685,686): error: Cannot pass a partially moved argument
+
+/pass_property_argument.kt:(801,802): error: Cannot pass a partially moved argument

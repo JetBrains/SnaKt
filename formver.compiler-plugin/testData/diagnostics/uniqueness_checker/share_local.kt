@@ -1,7 +1,7 @@
 // UNIQUE_CHECK_ONLY
 
-import org.jetbrains.kotlin.formver.plugin.Unique
 import org.jetbrains.kotlin.formver.plugin.Borrowed
+import org.jetbrains.kotlin.formver.plugin.Unique
 
 class A()
 
