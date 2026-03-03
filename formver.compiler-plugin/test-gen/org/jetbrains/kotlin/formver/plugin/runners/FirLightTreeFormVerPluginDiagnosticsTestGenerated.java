@@ -569,63 +569,51 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
-    @TestMetadata("borrowing.kt")
-    public void testBorrowing() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/borrowing.kt");
+    @TestMetadata("assign_local.kt")
+    public void testAssign_local() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/assign_local.kt");
     }
 
     @Test
-    @TestMetadata("consume_properties.kt")
-    public void testConsume_properties() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/consume_properties.kt");
+    @TestMetadata("assign_property.kt")
+    public void testAssign_property() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/assign_property.kt");
     }
 
     @Test
-    @TestMetadata("direct_pass_shared_to_unique.kt")
-    public void testDirect_pass_shared_to_unique() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/direct_pass_shared_to_unique.kt");
+    @TestMetadata("borrow_local.kt")
+    public void testBorrow_local() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/borrow_local.kt");
     }
 
     @Test
-    @TestMetadata("field_assignments.kt")
-    public void testField_assignments() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/field_assignments.kt");
+    @TestMetadata("borrow_property.kt")
+    public void testBorrow_property() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/borrow_property.kt");
     }
 
     @Test
-    @TestMetadata("local_assignments.kt")
-    public void testLocal_assignments() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/local_assignments.kt");
+    @TestMetadata("consume_local.kt")
+    public void testConsume_local() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/consume_local.kt");
     }
 
     @Test
-    @TestMetadata("local_same_type.kt")
-    public void testLocal_same_type() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/local_same_type.kt");
+    @TestMetadata("consume_property.kt")
+    public void testConsume_property() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/consume_property.kt");
     }
 
     @Test
-    @TestMetadata("multi_level.kt")
-    public void testMulti_level() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/multi_level.kt");
+    @TestMetadata("share_local.kt")
+    public void testShare_local() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/share_local.kt");
     }
 
     @Test
-    @TestMetadata("partial_move.kt")
-    public void testPartial_move() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/partial_move.kt");
-    }
-
-    @Test
-    @TestMetadata("partially_shared.kt")
-    public void testPartially_shared() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/partially_shared.kt");
-    }
-
-    @Test
-    @TestMetadata("shared_to_shared.kt")
-    public void testShared_to_shared() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/shared_to_shared.kt");
+    @TestMetadata("share_properties.kt")
+    public void testShare_properties() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/share_properties.kt");
     }
   }
 

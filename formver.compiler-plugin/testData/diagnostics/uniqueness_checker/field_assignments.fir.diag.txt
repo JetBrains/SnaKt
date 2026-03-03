@@ -1,9 +1,0 @@
-/field_assignments.kt:(229,237): error: Returned value is borrowed
-
-/field_assignments.kt:(337,338): error: cannot pass a partially shared argument
-
-/field_assignments.kt:(509,510): error: cannot pass a partially shared argument
-
-/field_assignments.kt:(850,853): error: cannot pass borrowed value as non-borrowed
-
-/field_assignments.kt:(1073,1076): error: expected unique value, got shared

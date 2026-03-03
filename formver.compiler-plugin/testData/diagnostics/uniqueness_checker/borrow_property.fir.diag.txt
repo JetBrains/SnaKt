@@ -1,0 +1,1 @@
+/borrow_property.kt:(883,884): error: Cannot pass a partially moved argument
