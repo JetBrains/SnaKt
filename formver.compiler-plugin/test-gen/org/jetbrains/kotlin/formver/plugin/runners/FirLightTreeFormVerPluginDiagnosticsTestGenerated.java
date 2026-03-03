@@ -461,6 +461,18 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
+    @TestMetadata("pass_local_argument.kt")
+    public void testPass_local_argument() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/pass_local_argument.kt");
+    }
+
+    @Test
+    @TestMetadata("pass_property_argument.kt")
+    public void testPass_property_argument() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/pass_property_argument.kt");
+    }
+
+    @Test
     @TestMetadata("share_local.kt")
     public void testShare_local() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/share_local.kt");

@@ -30,12 +30,13 @@ class UniquenessTypeChecker(
     override fun visitFunctionCallEnterNode(node: FunctionCallEnterNode, data: UniquenessTrie) {
         val functionCall = node.fir
         val callableSymbol = (functionCall.toResolvedCallableSymbol() as FirFunctionSymbol<*>).fir
+        var currentData = data.copy()
 
         for ((argument, parameter) in functionCall.arguments.zip(callableSymbol.valueParameters)) {
             val argumentPath = argument.toPath()
 
             if (argumentPath != null) {
-                val argumentStore = data.ensure(argumentPath)
+                val argumentStore = currentData.ensure(argumentPath)
                 val argumentType = argumentStore.parentsJoin
                 val parameterType = resolver.resolveUniquenessType(parameter.symbol)
 
@@ -66,7 +67,7 @@ class UniquenessTypeChecker(
                     }
                 }
 
-                if (argumentType.uniqueLevel == UniqueLevel.Unique && !data.isInvariant(argumentPath)) {
+                if (argumentType.uniqueLevel == UniqueLevel.Unique && !currentData.isInvariant(argumentPath)) {
                     val argumentPartialType = argumentStore.childrenJoin
 
                     when (argumentPartialType) {
@@ -75,9 +76,10 @@ class UniquenessTypeChecker(
                                 argument.source,
                                 "Cannot pass a partially moved argument"
                             )
+
                         is UniquenessType.Active -> {
-                            if (argumentPartialType.uniqueLevel > parameterType.uniqueLevel
-                                && parameterType.uniqueLevel == UniqueLevel.Unique) {
+                            if (argumentPartialType.uniqueLevel > parameterType.uniqueLevel &&
+                                parameterType.uniqueLevel == UniqueLevel.Unique) {
                                 throw UniquenessCheckException(
                                     argument.source,
                                     "Cannot pass a partially shared argument as unique"
@@ -85,6 +87,12 @@ class UniquenessTypeChecker(
                             }
                         }
                     }
+                }
+
+                if (parameterType.uniqueLevel == UniqueLevel.Unique ||
+                    parameterType.borrowLevel == BorrowLevel.Borrowed) {
+                    currentData = currentData.copy()
+                    currentData[argumentPath] = UniquenessType.Moved
                 }
             }
         }

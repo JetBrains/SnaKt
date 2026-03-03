@@ -28,9 +28,9 @@ class UniquenessDeclarationChecker(private val session: FirSession, private val 
     override fun check(declaration: FirSimpleFunction) {
         if (!config.checkUniqueness) return
         val out = ErrorCollector()
-        val flowGraph = declaration.controlFlowGraphReference?.controlFlowGraph
+        val graph = declaration.controlFlowGraphReference?.controlFlowGraph
 
-        if (flowGraph == null) {
+        if (graph == null) {
             throw IllegalStateException("Control flow graph is null for declaration: ${declaration.name}")
         }
 
@@ -39,7 +39,7 @@ class UniquenessDeclarationChecker(private val session: FirSession, private val 
 
         try {
             val graphChecker = UniquenessGraphChecker(session, initial, out)
-            graphChecker.check(flowGraph)
+            graphChecker.check(graph)
         } catch (e: UniquenessCheckException) {
             reporter.reportOn(e.source, PluginErrors.UNIQUENESS_VIOLATION, e.message)
         } catch (e: Exception) {

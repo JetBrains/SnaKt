@@ -73,11 +73,11 @@ class UniquenessTypeAssigner(
 
     @OptIn(SymbolInternals::class)
     override fun visitFunctionCallEnterNode(node: FunctionCallEnterNode, data: UniquenessTrie): UniquenessTrie {
-        val call = node.fir
-        val callableSymbol = (call.toResolvedCallableSymbol() as FirFunctionSymbol<*>).fir
+        val functionCall = node.fir
+        val callableSymbol = (functionCall.toResolvedCallableSymbol() as FirFunctionSymbol<*>).fir
         val result = data.copy()
 
-        for ((argument, parameter) in call.arguments.zip(callableSymbol.valueParameters)) {
+        for ((argument, parameter) in functionCall.arguments.zip(callableSymbol.valueParameters)) {
             val right = argument.toPath()
 
             if (right != null) {
@@ -88,6 +88,7 @@ class UniquenessTypeAssigner(
                         UniqueLevel.Unique -> {
                             result[right] = UniquenessType.Moved
                         }
+
                         UniqueLevel.Shared -> {
                             result[right] = UniquenessType.Active(UniqueLevel.Shared, BorrowLevel.Consumed)
                         }
