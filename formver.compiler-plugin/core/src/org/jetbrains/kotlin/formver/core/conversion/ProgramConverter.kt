@@ -104,21 +104,19 @@ class ProgramConverter(
     fun registerForVerification(declaration: FirSimpleFunction) {
         val signature = embedFullSignature(declaration.symbol)
         val returnTarget = returnTargetProducer.getFresh(signature.callableType.returnType)
-        val paramResolver =
-            RootParameterResolver(
-                this@ProgramConverter,
-                signature,
-                signature.symbol.valueParameterSymbols,
-                signature.labelName,
-                returnTarget,
-            )
-        val stmtCtx =
-            MethodConverter(
-                this@ProgramConverter,
-                signature,
-                paramResolver,
-                scopeIndexProducer.getFresh(),
-            ).statementCtxt()
+        val paramResolver = RootParameterResolver(
+            this@ProgramConverter,
+            signature,
+            signature.symbol.valueParameterSymbols,
+            signature.labelName,
+            returnTarget,
+        )
+        val stmtCtx = MethodConverter(
+            this@ProgramConverter,
+            signature,
+            paramResolver,
+            scopeIndexProducer.getFresh(),
+        ).statementCtxt()
 
         // Note: it is important that `body` is only set after `embedUserFunction` is complete, as we need to
         // place the embedding in the map before processing the body.
@@ -134,8 +132,7 @@ class ProgramConverter(
     }
 
     fun embedPureUserFunction(
-        symbol: FirFunctionSymbol<*>,
-        signature: FullNamedFunctionSignature
+        symbol: FirFunctionSymbol<*>, signature: FullNamedFunctionSignature
     ): PureUserFunctionEmbedding {
         (functions[signature.name] as? PureUserFunctionEmbedding)?.also { return it }
         val new = PureUserFunctionEmbedding(processCallable(symbol, signature))
@@ -230,11 +227,10 @@ class ProgramConverter(
         }
         if (embedding.hasDetails) return embedding
 
-        val newDetails =
-            ClassEmbeddingDetails(
-                embedding,
-                symbol.classKind.isInterface,
-            )
+        val newDetails = ClassEmbeddingDetails(
+            embedding,
+            symbol.classKind.isInterface,
+        )
         embedding.initDetails(newDetails)
 
         // The full class embedding is necessary to process the signatures of the properties of the class, since
