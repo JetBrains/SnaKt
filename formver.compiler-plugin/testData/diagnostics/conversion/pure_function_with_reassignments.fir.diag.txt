@@ -67,46 +67,40 @@ function f$overwriteNotSelfReferential$TF$(): Ref
 function f$nestedConditionalAssignment$TF$T$Boolean$T$Boolean(p$a: Ref, p$b: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
-  (let anon$2$0 ==
+  (let anon$1$0 ==
     (df$rt$intToRef(4)) in
-    (let anon$3$0 ==
+    (let anon$2$0 ==
       (df$rt$intToRef(3)) in
-      (let anon$1$0 ==
-        ((df$rt$boolFromRef(p$b) ? anon$2$0 : anon$3$0)) in
-        (let anon$5$0 ==
+      (let anon$0$0 ==
+        ((df$rt$boolFromRef(p$b) ? anon$1$0 : anon$2$0)) in
+        (let anon$4$0 ==
           (df$rt$intToRef(2)) in
-          (let anon$6$0 ==
+          (let anon$5$0 ==
             (df$rt$intToRef(1)) in
-            (let anon$4$0 ==
-              ((df$rt$boolFromRef(p$b) ? anon$5$0 : anon$6$0)) in
-              (let anon$0$0 ==
-                ((df$rt$boolFromRef(p$a) ? anon$1$0 : anon$4$0)) in
-                (let l0$x$0 ==
-                  (anon$0$0) in
-                  l0$x$0))))))))
+            (let anon$3$0 ==
+              ((df$rt$boolFromRef(p$b) ? anon$4$0 : anon$5$0)) in
+              (let l0$x$0 ==
+                ((df$rt$boolFromRef(p$a) ? anon$0$0 : anon$3$0)) in
+                l0$x$0)))))))
 }
 
 /pure_function_with_reassignments.kt:(710,736): info: Generated Viper text for blockConditionalAssignment:
 function f$blockConditionalAssignment$TF$T$Boolean$T$Boolean(p$a: Ref, p$b: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
-  (let anon$3$0 ==
+  (let anon$1$0 ==
     (df$rt$intToRef(10)) in
-    (let anon$4$0 ==
+    (let anon$2$0 ==
       (df$rt$intToRef(20)) in
-      (let anon$2$0 ==
-        ((df$rt$boolFromRef(p$b) ? anon$3$0 : anon$4$0)) in
-        (let l2$y$0 ==
-          (anon$2$0) in
-          (let anon$1$0 ==
-            (sp$plusInts(l2$y$0, df$rt$intToRef(1))) in
-            (let anon$5$0 ==
-              (df$rt$intToRef(30)) in
-              (let anon$0$0 ==
-                ((df$rt$boolFromRef(p$a) ? anon$1$0 : anon$5$0)) in
-                (let l0$x$0 ==
-                  (anon$0$0) in
-                  l0$x$0))))))))
+      (let l2$y$0 ==
+        ((df$rt$boolFromRef(p$b) ? anon$1$0 : anon$2$0)) in
+        (let anon$0$0 ==
+          (sp$plusInts(l2$y$0, df$rt$intToRef(1))) in
+          (let anon$3$0 ==
+            (df$rt$intToRef(30)) in
+            (let l0$x$0 ==
+              ((df$rt$boolFromRef(p$a) ? anon$0$0 : anon$3$0)) in
+              l0$x$0))))))
 }
 
 /pure_function_with_reassignments.kt:(893,907): info: Generated Viper text for whenAssignment:
@@ -115,21 +109,19 @@ function f$whenAssignment$TF$T$Int$T$Boolean(p$a: Ref, p$b: Ref): Ref
 {
   (let anon$0$0 ==
     (p$a) in
-    (let anon$3$0 ==
+    (let anon$2$0 ==
       (df$rt$intToRef(2)) in
-      (let anon$4$0 ==
+      (let anon$3$0 ==
         (df$rt$intToRef(3)) in
-        (let anon$2$0 ==
-          ((df$rt$boolFromRef(p$b) ? anon$3$0 : anon$4$0)) in
-          (let anon$6$0 ==
+        (let anon$1$0 ==
+          ((df$rt$boolFromRef(p$b) ? anon$2$0 : anon$3$0)) in
+          (let anon$5$0 ==
             (df$rt$intToRef(4)) in
-            (let anon$7$0 ==
+            (let anon$6$0 ==
               (df$rt$intToRef(5)) in
-              (let anon$5$0 ==
-                ((df$rt$intFromRef(anon$0$0) == 2 ? anon$6$0 : anon$7$0)) in
-                (let anon$1$0 ==
-                  ((df$rt$intFromRef(anon$0$0) == 1 ? anon$2$0 : anon$5$0)) in
-                  (let l0$x$0 ==
-                    (anon$1$0) in
-                    l0$x$0)))))))))
+              (let anon$4$0 ==
+                ((df$rt$intFromRef(anon$0$0) == 2 ? anon$5$0 : anon$6$0)) in
+                (let l0$x$0 ==
+                  ((df$rt$intFromRef(anon$0$0) == 1 ? anon$1$0 : anon$4$0)) in
+                  l0$x$0))))))))
 }

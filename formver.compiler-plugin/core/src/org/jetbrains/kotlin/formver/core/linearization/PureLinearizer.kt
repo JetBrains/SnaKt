@@ -56,9 +56,7 @@ data class PureLinearizer(
     // Nothing to do here, as an assignment is also added
     override fun addDeclaration(decl: Declaration) {}
 
-    override fun addAssignment(lhs: ExpEmbedding, rhs: ExpEmbedding) = store(lhs, rhs)
-
-    override fun store(lhs: ExpEmbedding, rhs: ExpEmbedding) {
+    override fun addAssignment(lhs: ExpEmbedding, rhs: ExpEmbedding) {
         // It would be nicer to constraint this a bit further as this is a very special case
         ssaConverter.addAssignment(
             (lhs.ignoringMetaNodes() as VariableEmbedding).name,
@@ -77,7 +75,6 @@ data class PureLinearizer(
         type: TypeEmbedding,
         result: VariableEmbedding?
     ) {
-        // TODO: Return result of translation
         val conditionExp = condition.ignoringCastsAndMetaNodes().toViperBuiltinType(this)
         var resultThen: Exp? = null
         var resultElse: Exp? = null

@@ -8,13 +8,15 @@ package org.jetbrains.kotlin.formver.core.linearization
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
-import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.withType
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.core.embeddings.toViperGoto
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
-import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Position
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
 
@@ -66,15 +68,6 @@ data class Linearizer(
     }
 
     override fun addAssignment(lhs: ExpEmbedding, rhs: ExpEmbedding) {
-        val lhsViper = lhs.toViper(this)
-        if (lhsViper is Exp.LocalVar) {
-            rhs.withType(lhs.type).toViperStoringIn(LinearizationVariableEmbedding(lhsViper.name, lhs.type), this)
-        } else {
-            store(lhs, rhs)
-        }
-    }
-
-    override fun store(lhs: ExpEmbedding, rhs: ExpEmbedding) {
         val lhsViper = lhs.toViper(this)
         val rhsViper = rhs.withType(lhs.type).toViper(this)
         addStatement { Stmt.assign(lhsViper, rhsViper, source.asPosition) }
