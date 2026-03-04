@@ -12,8 +12,14 @@ import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 
-class UniquenessResolver(val session: FirSession) {
-    
+/**
+ * Resolves and determines the default uniqueness and borrowing levels of FIR symbols.
+ *
+ * @param session The FIR session used to access annotations and metadata associated with symbols.
+ */
+class UniquenessResolver(
+    val session: FirSession
+) {
     private fun getAnnotationId(name: String): ClassId =
         ClassId(
             FqName.fromSegments(listOf("org", "jetbrains", "kotlin", "formver", "plugin")),
@@ -34,14 +40,13 @@ class UniquenessResolver(val session: FirSession) {
 
     fun resolveBorrowLevel(symbol: FirBasedSymbol<*>): BorrowLevel =
         if (symbol.hasAnnotation(borrowId, session))
-            BorrowLevel.Borrowed
+            BorrowLevel.Local
         else
-            BorrowLevel.Consumed
+            BorrowLevel.Global
 
     fun resolveUniquenessType(symbol: FirBasedSymbol<*>): UniquenessType.Active  =
         UniquenessType.Active(
             resolveUniqueLevel(symbol),
             resolveBorrowLevel(symbol)
         )
-
 }
