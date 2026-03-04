@@ -527,15 +527,8 @@ data class Declare(val variable: VariableEmbedding, val initializer: ExpEmbeddin
 
     override fun toViperSideEffects(ctx: LinearizationContext) {
         ctx.addDeclaration(variable.toLocalVarDecl(ctx.source.asPosition))
-        if (initializer != null) {
-            val varViper = variable.toViper(ctx)
-            if (varViper is Exp.LocalVar) {
-                initializer.withType(variable.type)
-                    .toViperStoringIn(LinearizationVariableEmbedding(variable.name, variable.type), ctx)
-            } else {
-                ctx.store(variable, initializer)
-            }
-        }
+        initializer?.withType(variable.type)
+            ?.toViperStoringIn(LinearizationVariableEmbedding(variable.name, variable.type), ctx)
     }
 
     override val debugAnonymousSubexpressions: List<ExpEmbedding>
