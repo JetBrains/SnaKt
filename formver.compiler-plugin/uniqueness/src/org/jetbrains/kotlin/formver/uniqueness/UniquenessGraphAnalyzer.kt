@@ -1,53 +1,46 @@
+/*
+ * Copyright 2010-2024 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
+ */
+
 package org.jetbrains.kotlin.formver.uniqueness
 
 import org.jetbrains.kotlin.fir.FirElement
+import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.expressions.arguments
 import org.jetbrains.kotlin.fir.expressions.toResolvedCallableSymbol
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraphVisitor
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallEnterNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.QualifiedAccessNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
-import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 
 /**
- * Visitor assigning uniqueness types to CFG nodes.
+ * Visitor assigning uniqueness types to paths after the execution of a [CFGNode].
  *
- * @param resolver The resolver used for fetching the default uniqueness type of some path.
+ * @param resolver The resolver used for fetching the default uniqueness type of parameter symbols.
  */
 class UniquenessTypeAssigner(
     private val resolver: UniquenessResolver
 ): ControlFlowGraphVisitor<UniquenessTrie, UniquenessTrie>() {
+    override fun visitNode(node: CFGNode<*>, data: UniquenessTrie): UniquenessTrie = data
 
-    override fun visitNode(node: CFGNode<*>, data: UniquenessTrie): UniquenessTrie {
-        return data
-    }
-
-    private fun handleDefinition(assignee: FirElement, assigned: FirElement, data: UniquenessTrie): UniquenessTrie {
+    private fun evaluateDefinition(receiver: FirElement, value: FirElement, data: UniquenessTrie): UniquenessTrie {
         val result = data.copy()
-        val left = assignee.toPath()
+        val receiverPath = receiver.receiverPath
+        val valuePaths = value.valuePaths
+        val aggregatedValueType = data.aggregate(valuePaths)
 
-        if (left != null) {
-            val right = assigned.toPath()
+        if (receiverPath != null) {
+            result[receiverPath] = aggregatedValueType
+        }
 
-            if (right != null) {
-                // Path-to-Path assignment
-                val rightType = data[right]
+        for (valuePath in valuePaths) {
+            val valueType = data[valuePath]
 
-                result[left] = rightType
-
-                if (rightType is UniquenessType.Active &&
-                    (rightType.uniqueLevel == UniqueLevel.Unique || rightType.borrowLevel == BorrowLevel.Borrowed)) {
-                    result[right] = UniquenessType.Moved
-                    result[left] = rightType
-                }
-
-                // TODO: Handle call assignments
-            } else {
-                // Generic value assignment
-                result[left] = UniquenessType.Active(UniqueLevel.Shared, BorrowLevel.Consumed)
+            if (valueType is UniquenessType.Active && valueType.uniqueLevel == UniqueLevel.Unique) {
+                result[valuePath] = UniquenessType.Moved
             }
         }
 
@@ -55,43 +48,43 @@ class UniquenessTypeAssigner(
     }
 
     override fun visitVariableDeclarationNode(node: VariableDeclarationNode, data: UniquenessTrie): UniquenessTrie {
-        val assignee = node.fir
-        val assigned = node.fir.initializer
+        val receiver = node.fir
+        val value = node.fir.initializer ?: return data
 
-        if (assigned == null) {
-            return data
-        }
-
-        return handleDefinition(assignee, assigned, data)
+        return evaluateDefinition(receiver, value, data)
     }
 
     override fun visitVariableAssignmentNode(node: VariableAssignmentNode, data: UniquenessTrie): UniquenessTrie {
-        val assignee = node.fir.lValue
-        val assigned = node.fir.rValue
+        val receiver = node.fir.lValue
+        val value = node.fir.rValue
 
-        return handleDefinition(assignee, assigned, data)
+        return evaluateDefinition(receiver, value, data)
     }
 
     @OptIn(SymbolInternals::class)
     override fun visitFunctionCallEnterNode(node: FunctionCallEnterNode, data: UniquenessTrie): UniquenessTrie {
         val functionCall = node.fir
-        val callableSymbol = (functionCall.toResolvedCallableSymbol() as FirFunctionSymbol<*>).fir
+        val callableSymbol = functionCall.toResolvedCallableSymbol()
+            ?: throw IllegalStateException("Unable to resolve ${functionCall}")
+        val callableDeclaration = callableSymbol.fir as? FirSimpleFunction
+            ?: throw IllegalStateException("Callable symbol is not a function: ${callableSymbol.fir}")
         val result = data.copy()
 
-        for ((argument, parameter) in functionCall.arguments.zip(callableSymbol.valueParameters)) {
-            val right = argument.toPath()
+        // TODO: If possible, it would be good to compute the outflow for the argument before reaching the
+        //  [FunctionCallEnterNode]. This would allow us to provide more precise flow information to the checker.
+        //  {@see UniquenessGraphChecker.visitFunctionCallEnterNode}
+        for ((argument, parameter) in functionCall.arguments.zip(callableDeclaration.valueParameters)) {
+            for (argumentPath in argument.valuePaths) {
+                val parameterType = resolver.resolveUniquenessType(parameter.symbol)
 
-            if (right != null) {
-                val leftType = resolver.resolveUniquenessType(parameter.symbol)
-
-                if (leftType.borrowLevel == BorrowLevel.Consumed) {
-                    when (leftType.uniqueLevel) {
+                if (parameterType.borrowLevel == BorrowLevel.Global) {
+                    when (parameterType.uniqueLevel) {
                         UniqueLevel.Unique -> {
-                            result[right] = UniquenessType.Moved
+                            result[argumentPath] = UniquenessType.Moved
                         }
 
                         UniqueLevel.Shared -> {
-                            result[right] = UniquenessType.Active(UniqueLevel.Shared, BorrowLevel.Consumed)
+                            result[argumentPath] = UniquenessType.Active(UniqueLevel.Shared, BorrowLevel.Global)
                         }
                     }
                 }
@@ -100,7 +93,6 @@ class UniquenessTypeAssigner(
 
         return result
     }
-
 }
 
 /**
@@ -113,7 +105,6 @@ class UniquenessGraphAnalyzer(
     resolver: UniquenessResolver,
     override val initial: UniquenessTrie
 ) : DataFlowAnalyzer<UniquenessTrie>(FlowDirection.FORWARD) {
-
     val typeAssigner = UniquenessTypeAssigner(resolver)
 
     override val bottom: UniquenessTrie = UniquenessTrie(resolver)
@@ -128,5 +119,4 @@ class UniquenessGraphAnalyzer(
     @OptIn(SymbolInternals::class)
     override fun transfer(node: CFGNode<*>, inFlow: UniquenessTrie): UniquenessTrie =
         node.accept(typeAssigner, inFlow)
-
 }

@@ -6,6 +6,8 @@
 package org.jetbrains.kotlin.formver.uniqueness
 
 import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
+import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
 import org.jetbrains.kotlin.fir.expressions.arguments
 import org.jetbrains.kotlin.fir.expressions.toResolvedCallableSymbol
@@ -16,81 +18,100 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallEnterNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.JumpNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ThrowExceptionNode
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
-import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.formver.common.ErrorCollector
 
+/**
+ * A visitor for checking uniqueness types in a [CFGNode].
+ *
+ * @param resolver The resolver used for fetching the default uniqueness type of parameter symbols.
+ * @param errorCollector A collector for the checker's errors.
+ */
 class UniquenessTypeChecker(
     val resolver: UniquenessResolver,
-    val out: ErrorCollector
+    val errorCollector: ErrorCollector
 ) : ControlFlowGraphVisitor<Unit, UniquenessTrie>() {
-
     override fun visitNode(node: CFGNode<*>, data: UniquenessTrie) {}
+
+    private fun checkValueUsage(value: FirExpression, expectedType: UniquenessType.Active, data: UniquenessTrie) {
+        for (valuePath in value.valuePaths) {
+            val valueData = data.ensure(valuePath)
+            val actualType = valueData.parentsJoin
+
+            when (actualType) {
+                // TODO: Use errorCollector for errors, allowing to report more than one error per declaration.
+                is UniquenessType.Moved -> {
+                    throw UniquenessCheckException(
+                        value.source,
+                        "Cannot pass a moved argument"
+                    )
+                }
+
+                is UniquenessType.Active -> {
+                    if (actualType.borrowLevel > expectedType.borrowLevel) {
+                        throw UniquenessCheckException(
+                            value.source,
+                            "Expected ${expectedType.borrowLevel.toString().lowercase()} value, " +
+                                    "got ${actualType.borrowLevel.toString().lowercase()}"
+                        )
+                    }
+
+                    if (actualType.uniqueLevel > expectedType.uniqueLevel) {
+                        throw UniquenessCheckException(
+                            value.source,
+                            "Expected ${expectedType.uniqueLevel.toString().lowercase()} value, " +
+                                    "got ${actualType.uniqueLevel.toString().lowercase()}"
+                        )
+                    }
+                }
+            }
+
+            if (actualType.uniqueLevel == UniqueLevel.Unique && !data.isInvariant(valuePath)) {
+                val valuePartialType = valueData.childrenJoin
+
+                when (valuePartialType) {
+                    is UniquenessType.Moved ->
+                        throw UniquenessCheckException(
+                            value.source,
+                            "Cannot pass a partially moved argument"
+                        )
+
+                    is UniquenessType.Active -> {
+                        if (valuePartialType.uniqueLevel > expectedType.uniqueLevel &&
+                            expectedType.uniqueLevel == UniqueLevel.Unique) {
+                            throw UniquenessCheckException(
+                                value.source,
+                                "Cannot pass a partially shared argument as unique"
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     @OptIn(SymbolInternals::class)
     override fun visitFunctionCallEnterNode(node: FunctionCallEnterNode, data: UniquenessTrie) {
         val functionCall = node.fir
-        val callableSymbol = (functionCall.toResolvedCallableSymbol() as FirFunctionSymbol<*>).fir
-        var currentData = data.copy()
+        val callableSymbol = functionCall.toResolvedCallableSymbol()
+            ?: throw IllegalStateException("Unable to resolve ${functionCall}")
+        val callableDeclaration = callableSymbol.fir as? FirSimpleFunction
+            ?: throw IllegalStateException("Callable symbol is not a function: ${callableSymbol.fir}")
 
-        for ((argument, parameter) in functionCall.arguments.zip(callableSymbol.valueParameters)) {
-            val argumentPath = argument.toPath()
+        var currentData = data
 
-            if (argumentPath != null) {
-                val argumentStore = currentData.ensure(argumentPath)
-                val argumentType = argumentStore.parentsJoin
+        for ((argument, parameter) in functionCall.arguments.zip(callableDeclaration.valueParameters)) {
+            val argumentPaths = argument.valuePaths
+
+            for (argumentPath in argumentPaths) {
                 val parameterType = resolver.resolveUniquenessType(parameter.symbol)
+                checkValueUsage(argument, parameterType, currentData)
 
-                when (argumentType) {
-                    is UniquenessType.Moved -> {
-                        throw UniquenessCheckException(
-                            argument.source,
-                            "Cannot pass a moved argument"
-                        )
-                    }
-
-                    is UniquenessType.Active -> {
-                        if (argumentType.borrowLevel > parameterType.borrowLevel) {
-                            throw UniquenessCheckException(
-                                argument.source,
-                                "Expected ${parameterType.borrowLevel.toString().lowercase()} value, " +
-                                        "got ${argumentType.borrowLevel.toString().lowercase()}"
-                            )
-                        }
-
-                        if (argumentType.uniqueLevel > parameterType.uniqueLevel) {
-                            throw UniquenessCheckException(
-                                argument.source,
-                                "Expected ${parameterType.uniqueLevel.toString().lowercase()} value, " +
-                                        "got ${argumentType.uniqueLevel.toString().lowercase()}"
-                            )
-                        }
-                    }
-                }
-
-                if (argumentType.uniqueLevel == UniqueLevel.Unique && !currentData.isInvariant(argumentPath)) {
-                    val argumentPartialType = argumentStore.childrenJoin
-
-                    when (argumentPartialType) {
-                        is UniquenessType.Moved ->
-                            throw UniquenessCheckException(
-                                argument.source,
-                                "Cannot pass a partially moved argument"
-                            )
-
-                        is UniquenessType.Active -> {
-                            if (argumentPartialType.uniqueLevel > parameterType.uniqueLevel &&
-                                parameterType.uniqueLevel == UniqueLevel.Unique) {
-                                throw UniquenessCheckException(
-                                    argument.source,
-                                    "Cannot pass a partially shared argument as unique"
-                                )
-                            }
-                        }
-                    }
-                }
-
+                // TODO: Look into how to do this at the analyzer level.
+                //  As of now the analysis can only provide us with the uniqueness `data` before and after the method
+                //  call, but we would like to compute this data before and after each parameter reference.
+                //  {@see UniquenessGraphAnalyzer.visitFunctionCallEnterNode}
                 if (parameterType.uniqueLevel == UniqueLevel.Unique ||
-                    parameterType.borrowLevel == BorrowLevel.Borrowed) {
+                    parameterType.borrowLevel == BorrowLevel.Local) {
                     currentData = currentData.copy()
                     currentData[argumentPath] = UniquenessType.Moved
                 }
@@ -98,62 +119,55 @@ class UniquenessTypeChecker(
         }
     }
 
+    private fun checkLeakedValue(value: FirExpression, operation: String, data: UniquenessTrie) {
+        val valuePaths = value.valuePaths
+
+        for (valuePath in valuePaths) {
+            val valueType = data.ensure(valuePath).parentsJoin
+
+            when (valueType) {
+                is UniquenessType.Active -> {
+                    if (valueType.borrowLevel == BorrowLevel.Local) {
+                        throw UniquenessCheckException(
+                            value.source,
+                            "Cannot ${operation} a borrowed value"
+                        )
+                    }
+                }
+
+                is UniquenessType.Moved -> {
+                    throw UniquenessCheckException(
+                        value.source,
+                        "Cannot ${operation} a moved value"
+                    )
+                }
+            }
+        }
+    }
+
     override fun visitJumpNode(node: JumpNode, data: UniquenessTrie) {
-        val returnExpression = node.fir
-
-        if (returnExpression !is FirReturnExpression) {
-            return
-        }
-
-        val leakedPath = returnExpression.result.toPath()
-
-        if (leakedPath != null) {
-            val leakedType = data.ensure(leakedPath).parentsJoin
-
-            if (leakedType is UniquenessType.Moved) {
-                throw UniquenessCheckException(returnExpression.source, "Cannot return a moved value")
-            }
-
-            leakedType as UniquenessType.Active
-
-            if (leakedType.borrowLevel == BorrowLevel.Borrowed) {
-                throw UniquenessCheckException(returnExpression.source, "Cannot return a borrowed value")
-            }
-        }
+        val returnExpression = node.fir as? FirReturnExpression ?: return
+        val value = returnExpression.result
+        checkLeakedValue(value, "return", data)
     }
 
     override fun visitThrowExceptionNode(node: ThrowExceptionNode, data: UniquenessTrie) {
         val throwExpression = node.fir
-        val leakedPath = throwExpression.exception.toPath()
-
-        if (leakedPath != null) {
-            val leakedType = data.ensure(leakedPath).parentsJoin
-
-            if (leakedType is UniquenessType.Moved) {
-                throw UniquenessCheckException(throwExpression.source, "Cannot throw a moved value")
-            }
-
-            leakedType as UniquenessType.Active
-
-            if (leakedType.borrowLevel == BorrowLevel.Borrowed) {
-                throw UniquenessCheckException(throwExpression.source, "Cannot throw a borrowed value")
-            }
-        }
+        val exception = throwExpression.exception
+        checkLeakedValue(exception, "throw", data)
     }
-
 }
 
 class UniquenessGraphChecker(
     session: FirSession,
     initial: UniquenessTrie,
-    out: ErrorCollector
+    errorCollector: ErrorCollector
 ) {
-
     val resolver = UniquenessResolver(session)
 
     val analyzer = UniquenessGraphAnalyzer(resolver, initial)
 
-    val typeChecker = UniquenessTypeChecker(resolver, out)
+    val typeChecker = UniquenessTypeChecker(resolver, errorCollector)
 
     fun check(graph: ControlFlowGraph) {
         val facts = analyzer.analyze(graph)
@@ -163,5 +177,4 @@ class UniquenessGraphChecker(
             node.accept(typeChecker, store)
         }
     }
-
 }

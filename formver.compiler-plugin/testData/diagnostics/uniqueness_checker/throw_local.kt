@@ -3,18 +3,18 @@
 import org.jetbrains.kotlin.formver.plugin.Borrowed
 import org.jetbrains.kotlin.formver.plugin.Unique
 
-fun `return shared`(a: Throwable) {
+fun `throw shared`(a: Throwable) {
     throw a
 }
 
-fun `return borrowed`(@Borrowed a: Throwable) {
-    <!UNIQUENESS_VIOLATION!>throw a<!>
+fun `throw borrowed`(@Borrowed a: Throwable) {
+    throw <!UNIQUENESS_VIOLATION!>a<!>
 }
 
-fun `return unique`(@Unique a: Throwable) {
+fun `throw unique`(@Unique a: Throwable) {
     throw a
 }
 
-fun `return unique-borrowed`(@Unique @Borrowed a: Throwable) {
-    <!UNIQUENESS_VIOLATION!>throw a<!>
+fun `throw unique-borrowed`(@Unique @Borrowed a: Throwable) {
+    throw <!UNIQUENESS_VIOLATION!>a<!>
 }

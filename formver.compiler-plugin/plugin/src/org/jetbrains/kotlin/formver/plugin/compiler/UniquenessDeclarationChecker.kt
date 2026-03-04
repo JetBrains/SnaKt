@@ -27,18 +27,14 @@ class UniquenessDeclarationChecker(private val session: FirSession, private val 
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(declaration: FirSimpleFunction) {
         if (!config.checkUniqueness) return
-        val out = ErrorCollector()
-        val graph = declaration.controlFlowGraphReference?.controlFlowGraph
-
-        if (graph == null) {
-            throw IllegalStateException("Control flow graph is null for declaration: ${declaration.name}")
-        }
-
-        val resolver = UniquenessResolver(session)
-        val initial = UniquenessTrie(resolver)
 
         try {
-            val graphChecker = UniquenessGraphChecker(session, initial, out)
+            val errorCollector = ErrorCollector()
+            val graph = declaration.controlFlowGraphReference?.controlFlowGraph
+                ?: error("Control flow graph is null for declaration: ${declaration.name}")
+            val resolver = UniquenessResolver(session)
+            val initial = UniquenessTrie(resolver)
+            val graphChecker = UniquenessGraphChecker(session, initial, errorCollector)
             graphChecker.check(graph)
         } catch (e: UniquenessCheckException) {
             reporter.reportOn(e.source, PluginErrors.UNIQUENESS_VIOLATION, e.message)

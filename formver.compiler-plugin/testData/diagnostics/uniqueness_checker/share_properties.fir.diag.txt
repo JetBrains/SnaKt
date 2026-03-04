@@ -1,5 +1,5 @@
-/share_properties.kt:(463,468): error: Expected consumed value, got borrowed
+/share_properties.kt:(433,438): error: Expected global value, got local
 
-/share_properties.kt:(616,621): error: Expected consumed value, got borrowed
+/share_properties.kt:(586,591): error: Expected global value, got local
 
-/share_properties.kt:(838,839): error: Cannot pass a partially moved argument
+/share_properties.kt:(808,809): error: Cannot pass a partially moved argument

@@ -11,12 +11,11 @@ enum class UniqueLevel {
 }
 
 enum class BorrowLevel {
-    Consumed,
-    Borrowed
+    Global,
+    Local
 }
 
 sealed interface UniquenessType {
-
     /**
      * Corresponds to the TOP type
      */
@@ -38,17 +37,19 @@ sealed interface UniquenessType {
             return this
         }
 
-        if (this is Moved || other is Moved) {
-            return Moved
+        when (this) {
+            is Moved -> return this
+            is Active -> {
+                when (other) {
+                    is Moved -> return other
+                    is Active -> {
+                        return Active(
+                            maxOf(uniqueLevel, other.uniqueLevel),
+                            maxOf(borrowLevel, other.borrowLevel)
+                        )
+                    }
+                }
+            }
         }
-
-        this as Active
-        other as Active
-
-        return Active(
-            maxOf(uniqueLevel, other.uniqueLevel),
-            maxOf(borrowLevel, other.borrowLevel)
-        )
     }
-
 }

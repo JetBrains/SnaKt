@@ -1,11 +1,11 @@
-/consume_property.kt:(398,403): error: Expected unique value, got shared
+/consume_property.kt:(368,373): error: Expected unique value, got shared
 
-/consume_property.kt:(473,478): error: Expected consumed value, got borrowed
+/consume_property.kt:(443,448): error: Expected global value, got local
 
-/consume_property.kt:(634,639): error: Expected consumed value, got borrowed
+/consume_property.kt:(604,609): error: Expected global value, got local
 
-/consume_property.kt:(871,872): error: Cannot pass a partially moved argument
+/consume_property.kt:(841,842): error: Cannot pass a partially moved argument
 
-/consume_property.kt:(951,952): error: Cannot pass a partially shared argument as unique
+/consume_property.kt:(921,922): error: Cannot pass a partially shared argument as unique
 
-/consume_property.kt:(1112,1113): error: Cannot pass a partially shared argument as unique
+/consume_property.kt:(1082,1083): error: Cannot pass a partially shared argument as unique

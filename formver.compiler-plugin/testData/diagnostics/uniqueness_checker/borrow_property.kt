@@ -3,13 +3,13 @@
 import org.jetbrains.kotlin.formver.plugin.Borrowed
 import org.jetbrains.kotlin.formver.plugin.Unique
 
-abstract class A {
-    @Unique abstract var x: Any
-    @Unique abstract var w: Any
+class A {
+    @Unique var x = Object()
+    @Unique var w = Object()
 }
 
-abstract class B {
-    @Unique abstract var y: A
+class B {
+    @Unique var y = A()
 }
 
 fun borrow(@Borrowed y: Any) {}
