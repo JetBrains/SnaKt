@@ -46,7 +46,7 @@ interface LinearizationContext {
 
     fun addStatement(buildStmt: LinearizationContext.() -> Stmt)
     fun addDeclaration(decl: Declaration)
-    fun addAssignment(lhs: ExpEmbedding, rhs: ExpEmbedding)
+    fun store(lhs: VariableEmbedding, rhs: ExpEmbedding)
     fun addReturn(returnExp: ExpEmbedding, target: ReturnTarget)
     fun addBranch(
         condition: ExpEmbedding,

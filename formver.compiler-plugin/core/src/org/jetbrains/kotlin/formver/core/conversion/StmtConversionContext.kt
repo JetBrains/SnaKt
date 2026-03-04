@@ -271,7 +271,7 @@ fun StmtConversionContext.convertFunctionWithBody(
         declaration.source,
         "Impure function body detected in pure function"
     )
-    val pureLinearizer = PureLinearizer(declaration.source)
+    val pureLinearizer = PureLinearizer(declaration.source, SharedLinearizationState(anonVarProducer))
     body.toViperUnusedResult(pureLinearizer)
     return pureLinearizer.constructExpression()
 }
