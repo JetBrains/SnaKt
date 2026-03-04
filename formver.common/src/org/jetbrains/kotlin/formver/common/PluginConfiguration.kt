@@ -18,4 +18,9 @@ class PluginConfiguration(
             "Conversion options may not be stricter than verification options; converting $conversionSelection but verifying $verificationSelection."
         }
     }
+
+    override fun toString(): String =
+        "PluginConfiguration(logLevel=$logLevel, errorStyle=$errorStyle, behaviour=$behaviour, " +
+        "conversionSelection=$conversionSelection, verificationSelection=$verificationSelection, " +
+        "checkUniqueness=$checkUniqueness)"
 }
