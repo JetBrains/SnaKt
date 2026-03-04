@@ -3,13 +3,13 @@
 import org.jetbrains.kotlin.formver.plugin.Borrowed
 import org.jetbrains.kotlin.formver.plugin.Unique
 
-abstract class A {
-    @Unique abstract var x: Any
-    @Unique abstract var w: Any
+class A {
+    @Unique var x = Object()
+    @Unique var w = Object()
 }
 
-abstract class B {
-    @Unique abstract var y: A
+class B {
+    @Unique var y = A()
 }
 
 fun `return shared subproperty`(a: B): Any {
@@ -17,7 +17,7 @@ fun `return shared subproperty`(a: B): Any {
 }
 
 fun `return borrowed subproperty`(@Borrowed a: B): Any {
-    <!UNIQUENESS_VIOLATION!>return a.y<!>
+    return <!UNIQUENESS_VIOLATION!>a.y<!>
 }
 
 fun `return unique subproperty`(@Unique a: B): Any {
@@ -25,5 +25,5 @@ fun `return unique subproperty`(@Unique a: B): Any {
 }
 
 fun `return unique-borrowed subproperty`(@Unique @Borrowed a: B): Any {
-    <!UNIQUENESS_VIOLATION!>return a.y<!>
+    return <!UNIQUENESS_VIOLATION!>a.y<!>
 }

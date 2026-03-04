@@ -15,19 +15,19 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
  */
 class FlowFacts<F>(
     private val flowBefore: Map<CFGNode<*>, F>,
-    private val flowAfter: Map<CFGNode<*>, F>,
+    private val flowAfter: Map<CFGNode<*>, F>
 ) {
     /**
      * Returns the dataflow fact holding *before* the given [node] is executed.
      */
     fun flowBefore(node: CFGNode<*>): F =
-        flowBefore[node] ?: error("No flow-before information for node: $node")
+        flowBefore[node] ?: throw IllegalArgumentException("No flow-before information for node: $node")
 
     /**
      * Returns the dataflow fact holding *after* the given [node] is executed.
      */
     fun flowAfter(node: CFGNode<*>): F =
-        flowAfter[node] ?: error("No flow-after information for node: $node")
+        flowAfter[node] ?: throw IllegalArgumentException("No flow-after information for node: $node")
 }
 
 /**
@@ -48,7 +48,6 @@ enum class FlowDirection {
 abstract class DataFlowAnalyzer<F>(
     val direction: FlowDirection = FlowDirection.FORWARD,
 ) {
-
     /**
      * Returns the initial dataflow fact for the entry point of the analysis.
      */
@@ -69,7 +68,7 @@ abstract class DataFlowAnalyzer<F>(
     abstract fun join(a: F, b: F): F
 
     /**
-     * The transfer function.  Given the dataflow fact [inFlow] arriving at * [node], returns the fact that holds after
+     * The transfer function.  Given the dataflow fact [inFlow] arriving at [node], returns the fact that holds after
      * [node].
      *
      * @param node the CFG node to transfer.

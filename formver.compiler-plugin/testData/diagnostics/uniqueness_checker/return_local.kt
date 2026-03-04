@@ -12,7 +12,7 @@ fun `return shared`(a: Any): Any {
 }
 
 fun `return borrowed`(@Borrowed a: Any): Any {
-    <!UNIQUENESS_VIOLATION!>return a<!>
+    return <!UNIQUENESS_VIOLATION!>a<!>
 }
 
 fun `return unique`(@Unique a: Any): Any {
@@ -20,5 +20,5 @@ fun `return unique`(@Unique a: Any): Any {
 }
 
 fun `return unique-borrowed`(@Unique @Borrowed a: Any): Any {
-    <!UNIQUENESS_VIOLATION!>return a<!>
+    return <!UNIQUENESS_VIOLATION!>a<!>
 }
