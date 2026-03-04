@@ -67,7 +67,7 @@ data class Linearizer(
         seqnBuilder.addDeclaration(decl)
     }
 
-    override fun addAssignment(lhs: ExpEmbedding, rhs: ExpEmbedding) {
+    override fun store(lhs: VariableEmbedding, rhs: ExpEmbedding) {
         val lhsViper = lhs.toViper(this)
         val rhsViper = rhs.withType(lhs.type).toViper(this)
         addStatement { Stmt.assign(lhsViper, rhsViper, source.asPosition) }

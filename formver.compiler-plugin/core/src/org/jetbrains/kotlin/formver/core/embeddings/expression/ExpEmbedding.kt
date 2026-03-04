@@ -117,7 +117,7 @@ sealed interface DefaultToBuiltinExpEmbedding : ExpEmbedding {
  */
 sealed interface DefaultStoringInExpEmbedding : ExpEmbedding {
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-        ctx.addAssignment(result, this)
+        ctx.store(result, this)
     }
 }
 
@@ -506,15 +506,11 @@ data class PredicateAccessPermissions(
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitPredicateAccessPermissions(this)
 }
 
-data class Assign(val lhs: ExpEmbedding, val rhs: ExpEmbedding) : UnitResultExpEmbedding {
+data class Assign(val lhs: VariableEmbedding, val rhs: ExpEmbedding) : UnitResultExpEmbedding {
     override val type: TypeEmbedding = lhs.type
 
     override fun toViperSideEffects(ctx: LinearizationContext) {
-        if (lhs is VariableEmbedding) {
-            rhs.withType(lhs.type).toViperStoringIn(LinearizationVariableEmbedding(lhs.name, lhs.type), ctx)
-        } else {
-            ctx.addAssignment(lhs, rhs)
-        }
+        rhs.withType(lhs.type).toViperStoringIn(LinearizationVariableEmbedding(lhs.name, lhs.type), ctx)
     }
 
     context(nameResolver: NameResolver)
@@ -537,7 +533,7 @@ data class Declare(val variable: VariableEmbedding, val initializer: ExpEmbeddin
                 initializer.withType(variable.type)
                     .toViperStoringIn(LinearizationVariableEmbedding(variable.name, variable.type), ctx)
             } else {
-                ctx.addAssignment(variable, initializer)
+                ctx.store(variable, initializer)
             }
         }
     }
