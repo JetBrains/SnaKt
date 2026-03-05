@@ -5,7 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
-import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
+import org.jetbrains.kotlin.formver.core.conversion.Havoc
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.ast.*
@@ -43,6 +43,10 @@ class ClassEmbeddingDetails(
     val havocMethodNullable: Method
         get() = _havocMethodNullable ?: error("Havoc method of ${type.name} has not been initialised yet.")
 
+    fun initHavocMethods() {
+        _havocMethod = Havoc.getClassMethod(this.type, false)
+        _havocMethodNullable = Havoc.getClassMethod(this.type, true)
+    }
 
     fun initFields(newFields: Map<SimpleKotlinName, FieldEmbedding>) {
         check(_fields == null) { "Fields of ${type.name} are already initialised." }
@@ -80,53 +84,8 @@ class ClassEmbeddingDetails(
                 addAccessToUniquePredicate()
             }
         }
-        _havocMethod = BuiltInMethod(
-            havocFunctionName,
-            emptyList(),
-            Declaration.LocalVarDecl(PlaceholderReturnVariableName, Type.Ref),
-            emptyList(),
-            listOf(
-                Exp.PredicateAccess(
-                    sharedPredicateName,
-                    listOf(Exp.LocalVar(PlaceholderReturnVariableName, Type.Ref)),
-                    PermExp.WildcardPerm()
-                ), RuntimeTypeDomain.isSubtype(
-                    RuntimeTypeDomain.typeOf(
-                        Exp.LocalVar(
-                            PlaceholderReturnVariableName, Type.Ref
-                        )
-                    ), type.runtimeType
-                )
-            ),
-            null
-        )
-        _havocMethodNullable = BuiltInMethod(
-            havocFunctionNameNullable,
-            emptyList(),
-            Declaration.LocalVarDecl(PlaceholderReturnVariableName, Type.Ref),
-            emptyList(),
-            listOf(
-                Exp.Implies(
-                    Exp.NeCmp(Exp.LocalVar(PlaceholderReturnVariableName, Type.Ref), RuntimeTypeDomain.nullValue()),
-                    Exp.PredicateAccess(
-                        sharedPredicateName,
-                        listOf(Exp.LocalVar(PlaceholderReturnVariableName, Type.Ref)),
-                        PermExp.WildcardPerm()
-                    )
-                ), RuntimeTypeDomain.isSubtype(
-                    RuntimeTypeDomain.typeOf(
-                        Exp.LocalVar(
-                            PlaceholderReturnVariableName, Type.Ref
-                        )
-                    ), RuntimeTypeDomain.nullable(type.runtimeType)
-                )
-            ),
-            null
-        )
     }
 
-    private val havocFunctionName = ScopedKotlinName(type.name.asScope(), HavocKotlinName("havoc"))
-    private val havocFunctionNameNullable = ScopedKotlinName(type.name.asScope(), HavocKotlinName("havocNullable"))
     private val sharedPredicateName = ScopedKotlinName(type.name.asScope(), PredicateKotlinName("shared"))
     private val uniquePredicateName = ScopedKotlinName(type.name.asScope(), PredicateKotlinName("unique"))
 

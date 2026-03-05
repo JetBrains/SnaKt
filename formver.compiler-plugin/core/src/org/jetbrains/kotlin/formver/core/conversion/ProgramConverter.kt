@@ -268,6 +268,8 @@ class ProgramConverter(
         // Phase 3
         properties.forEach { processProperty(it, newDetails) }
 
+        newDetails.initHavocMethods()
+
         return embedding
     }
 
