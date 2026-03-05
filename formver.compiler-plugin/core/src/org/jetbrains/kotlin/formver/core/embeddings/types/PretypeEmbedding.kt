@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
 import org.jetbrains.kotlin.formver.core.conversion.Havoc
+import org.jetbrains.kotlin.formver.core.conversion.HavocMethodCallBuilder
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.PlaintextLeaf
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.TreeView
@@ -26,7 +27,7 @@ import org.jetbrains.kotlin.formver.viper.mangled
  */
 interface PretypeEmbedding : RuntimeTypeHolder, TypeInvariantHolder {
     val name: SymbolicName
-    val havocMethodCallBuilder: Havoc.HavocMethodCallBuilder
+    val havocMethodCallBuilder: HavocMethodCallBuilder
 
     context(nameResolver: NameResolver)
     override val debugTreeView: TreeView
@@ -40,7 +41,7 @@ interface PretypeEmbedding : RuntimeTypeHolder, TypeInvariantHolder {
  *  With primitive types, we mean types for which no access predicate is needed.
  **/
 interface PrimitivePreTypeEmbedding : PretypeEmbedding {
-    override val havocMethodCallBuilder: Havoc.HavocMethodCallBuilder
+    override val havocMethodCallBuilder: HavocMethodCallBuilder
         get() = Havoc.getCallBuilder(this)
 }
 
