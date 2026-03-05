@@ -12,6 +12,34 @@ import org.jetbrains.kotlin.formver.viper.ast.Stmt
 import org.jetbrains.kotlin.formver.viper.ast.Type
 
 /**
+ * The ``HavocMethodCallBuilder`` is used to create havoc calls.
+ * They can be created using the `Havoc` object.
+ * First the flags and the target (the variable to which the result should be written to) must be set, before calling `.build()`
+ */
+abstract class HavocMethodCallBuilder {
+    val target: Exp.LocalVar
+        get() = _target ?: throw IllegalStateException("Target not set")
+
+    val flags: TypeEmbeddingFlags
+        get() = _flags ?: throw IllegalStateException("Flags not set")
+
+    private var _target: Exp.LocalVar? = null
+    private var _flags: TypeEmbeddingFlags? = null
+
+    fun withTarget(target: Exp.LocalVar): HavocMethodCallBuilder {
+        _target = target
+        return this
+    }
+
+    fun withFlags(flags: TypeEmbeddingFlags): HavocMethodCallBuilder {
+        _flags = flags
+        return this
+    }
+
+    abstract fun build(): Stmt.MethodCall
+}
+
+/**
  * The Havoc object should be used for everything that is related to havoc. This includes:
  * - Creating havoc methods
  * - Creating havoc method calls
@@ -32,40 +60,12 @@ import org.jetbrains.kotlin.formver.viper.ast.Type
 object Havoc {
 
     // Start of the Factory section
-    /**
-     * The ``HavocMethodCallBuilder`` is used to create havoc calls.
-     * They can be created using the `Havoc` object.
-     * First the flags and the target (the variable to which the result should be written to) must be set, before calling `.build()`
-     */
-    abstract class HavocMethodCallBuilder {
-        val target: Exp.LocalVar
-            get() = _target ?: throw IllegalStateException("Target not set")
-
-        val flags: TypeEmbeddingFlags
-            get() = _flags ?: throw IllegalStateException("Flags not set")
-
-        private var _target: Exp.LocalVar? = null
-        private var _flags: TypeEmbeddingFlags? = null
-
-        fun withTarget(target: Exp.LocalVar): HavocMethodCallBuilder {
-            _target = target
-            return this
-        }
-
-        fun withFlags(flags: TypeEmbeddingFlags): HavocMethodCallBuilder {
-            _flags = flags
-            return this
-        }
-
-        abstract fun build(): Stmt.MethodCall
-    }
-
-    class PrimitiveHavocMethodCallBuilder(private val preType: PretypeEmbedding) : HavocMethodCallBuilder() {
+    private class PrimitiveHavocMethodCallBuilder(private val preType: PretypeEmbedding) : HavocMethodCallBuilder() {
         override fun build(): Stmt.MethodCall =
             getPrimitiveMethod().toMethodCall(listOf(flags.adjustRuntimeType(preType.runtimeType)), listOf(target))
     }
 
-    class ClassHavocMethodCallBuilder(private val preType: ClassTypeEmbedding) : HavocMethodCallBuilder() {
+    private class ClassHavocMethodCallBuilder(private val preType: ClassTypeEmbedding) : HavocMethodCallBuilder() {
         override fun build(): Stmt.MethodCall {
             val method = if (flags.nullable) {
                 preType.details.havocMethodNullable
