@@ -6,15 +6,7 @@
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
 import org.jetbrains.kotlin.formver.core.conversion.Havoc
-import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
-import org.jetbrains.kotlin.formver.core.names.PlaceholderArgumentName
-import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
-import org.jetbrains.kotlin.formver.core.names.SpecialName
-import org.jetbrains.kotlin.formver.viper.ast.BuiltInMethod
-import org.jetbrains.kotlin.formver.viper.ast.Declaration
-import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Method
-import org.jetbrains.kotlin.formver.viper.ast.Type
 
 object SpecialMethods {
     private val havoc = Havoc.getPrimitiveMethod()

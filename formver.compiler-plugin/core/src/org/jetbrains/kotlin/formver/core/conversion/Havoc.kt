@@ -3,11 +3,7 @@ package org.jetbrains.kotlin.formver.core.conversion
 import org.jetbrains.kotlin.formver.core.domains.MethodBuilder
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.PrimitivePreTypeEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbeddingFlags
-import org.jetbrains.kotlin.formver.core.embeddings.types.asTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.ast.Exp
@@ -80,12 +76,12 @@ object Havoc {
         }
     }
 
-    fun getCallBuilder(preType: PrimitivePreTypeEmbedding): HavocMethodCallBuilder = PrimitiveHavocMethodCallBuilder(preType)
+    fun getCallBuilder(preType: PrimitivePreTypeEmbedding): HavocMethodCallBuilder =
+        PrimitiveHavocMethodCallBuilder(preType)
 
     fun getCallBuilder(preType: ClassTypeEmbedding): HavocMethodCallBuilder = ClassHavocMethodCallBuilder(preType)
 
     // End of the Factory section
-
 
 
     // Start of Method creation
