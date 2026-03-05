@@ -5,7 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
-import org.jetbrains.kotlin.formver.core.conversion.HavocMethodCallBuilder
+import org.jetbrains.kotlin.formver.core.conversion.Havoc
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.names.SetOfNames
 
@@ -29,7 +29,7 @@ data class FunctionTypeEmbedding(
     val formalArgTypes: List<TypeEmbedding>
         get() = listOfNotNull(dispatchReceiverType, extensionReceiverType) + paramTypes
 
-    override val havocMethodBuilder: HavocMethodCallBuilder
+    override val havocMethodCallBuilder: Havoc.HavocMethodCallBuilder
         get() {
             throw NotImplementedError("Havoc method for function types is not yet implemented.")
         }

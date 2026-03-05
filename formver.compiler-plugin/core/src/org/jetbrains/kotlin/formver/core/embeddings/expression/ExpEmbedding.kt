@@ -383,10 +383,10 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
 
         val stmt = when (field.accessPolicy) {
             AccessPolicy.ALWAYS_VOLATILE -> {
-                field.type.havocMethodBuilder.withTarget(result.toLocalVarUse()).build()
+                field.type.havocMethodCallBuilder.withTarget(result.toLocalVarUse()).build()
             }
             AccessPolicy.BY_RECEIVER_UNIQUENESS if false/** TODO: Replace to: if !receiver.isUnique()**/ -> {
-                field.type.havocMethodBuilder.withTarget(result.toLocalVarUse()).build()
+                field.type.havocMethodCallBuilder.withTarget(result.toLocalVarUse()).build()
             }
             else -> {
                 Stmt.assign(

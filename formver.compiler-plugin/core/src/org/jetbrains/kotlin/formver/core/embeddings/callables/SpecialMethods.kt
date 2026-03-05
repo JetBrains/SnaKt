@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
+import org.jetbrains.kotlin.formver.core.conversion.Havoc
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.names.PlaceholderArgumentName
 import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
@@ -16,19 +17,6 @@ import org.jetbrains.kotlin.formver.viper.ast.Method
 import org.jetbrains.kotlin.formver.viper.ast.Type
 
 object SpecialMethods {
-    private val havoc = BuiltInMethod(
-            SpecialName("havoc"),
-            listOf(Declaration.LocalVarDecl(PlaceholderArgumentName(0), RuntimeTypeDomain.RuntimeType)),
-            Declaration.LocalVarDecl(PlaceholderReturnVariableName, Type.Ref),
-            emptyList(),
-            listOf(
-                RuntimeTypeDomain.isSubtype(
-                    RuntimeTypeDomain.typeOf(Exp.LocalVar(PlaceholderReturnVariableName, Type.Ref)),
-                    Exp.LocalVar(PlaceholderArgumentName(0), RuntimeTypeDomain.RuntimeType)
-                ),
-            ),
-            null
-        )
-
+    private val havoc = Havoc.getPrimitiveMethod()
     val all: List<Method> = listOf(havoc)
 }
