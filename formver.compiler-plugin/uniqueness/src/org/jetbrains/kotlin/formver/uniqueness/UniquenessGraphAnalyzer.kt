@@ -30,10 +30,9 @@ class UniquenessTypeAssigner(
         val result = data.copy()
         val receiverPath = receiver.receiverPath
         val valuePaths = value.valuePaths
-        val aggregatedValueType = data.aggregate(valuePaths)
 
         if (receiverPath != null) {
-            result[receiverPath] = aggregatedValueType
+            result[receiverPath] = resolver.resolveUniquenessType(receiverPath.last())
         }
 
         for (valuePath in valuePaths) {

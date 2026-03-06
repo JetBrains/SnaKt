@@ -48,13 +48,13 @@ fun `share partially moved`(@Unique z: B) {
 
 fun `share partially shared`(@Unique z: B) {
     share(z.y)
-    share(z)
+    share(<!UNIQUENESS_VIOLATION!>z<!>)
 }
 
 // Sharing subproperties after assignment
 
 fun `share subproperty after assigning it to shared`(@Unique x: B, v: A) {
-    x.y = v
+    x.y = <!UNIQUENESS_VIOLATION!>v<!>
     share(x.y)
 }
 

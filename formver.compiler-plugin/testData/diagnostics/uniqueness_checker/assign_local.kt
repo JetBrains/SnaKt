@@ -20,7 +20,7 @@ fun `assign shared`(x: Any) {
 }
 
 fun `assign borrowed`(@Borrowed x: Any) {
-    var y: Any
+    @Borrowed var y: Any
 
     y = x
 
@@ -28,7 +28,7 @@ fun `assign borrowed`(@Borrowed x: Any) {
 }
 
 fun `assign unique`(@Unique x: Any) {
-    var y: Any
+    @Unique var y: Any
 
     y = x
 
@@ -36,7 +36,7 @@ fun `assign unique`(@Unique x: Any) {
 }
 
 fun `assign unique-borrowed`(@Unique @Borrowed x: Any) {
-    var y: Any
+    @Unique @Borrowed var y: Any
 
     y = x
 
@@ -52,19 +52,31 @@ fun `assign shared in declaration`(x: Any) {
 }
 
 fun `assign borrowed in declaration`(@Borrowed x: Any) {
+    @Borrowed var y = x
+
+    consume(<!UNIQUENESS_VIOLATION!>y<!>)
+}
+
+fun `assign unique in unique declaration`(@Unique x: Any) {
+    @Unique var y = x
+
+    consume(y)
+}
+
+fun `assign unique in shared declaration`(@Unique x: Any) {
     var y = x
 
     consume(<!UNIQUENESS_VIOLATION!>y<!>)
 }
 
-fun `assign unique in declaration`(@Unique x: Any) {
-    var y = x
+fun `assign unique-borrowed in borrowed declaration`(@Unique @Borrowed x: Any) {
+    @Borrowed var y = x
 
-    consume(y)
+    consume(<!UNIQUENESS_VIOLATION!>y<!>)
 }
 
-fun `assign unique-borrowed in declaration`(@Unique @Borrowed x: Any) {
-    var y = x
+fun `assign unique-borrowed in unique-borrowed declaration`(@Unique @Borrowed x: Any) {
+    @Unique @Borrowed var y = x
 
     consume(<!UNIQUENESS_VIOLATION!>y<!>)
 }
@@ -82,8 +94,8 @@ fun `chain shared assignments`(x: Any) {
 }
 
 fun `chain borrowed assignments`(@Borrowed x: Any) {
-    var y: Any
-    var z: Any
+    @Borrowed var y: Any
+    @Borrowed var z: Any
 
     y = x
     z = y
@@ -92,8 +104,8 @@ fun `chain borrowed assignments`(@Borrowed x: Any) {
 }
 
 fun `chain unique assignments`(@Unique x: Any) {
-    var y: Any
-    var z: Any
+    @Unique var y: Any
+    @Unique var z: Any
 
     y = x
     z = y
@@ -102,8 +114,8 @@ fun `chain unique assignments`(@Unique x: Any) {
 }
 
 fun `chain unique-borrowed assignments`(@Unique @Borrowed x: Any) {
-    var y: Any
-    var z: Any
+    @Unique @Borrowed var y: Any
+    @Unique @Borrowed var z: Any
 
     y = x
     z = y
@@ -127,12 +139,12 @@ fun `assign unique or shared`(@Unique x: Any, y: Any) {
 
 // Looping assignments
 
-fun `assign unique to shared in loop`(@Unique x: Any, y: Any) {
-    var z: Any = y;
+fun `assign unique to shared in loop`(@Unique x: Any, @Unique y: Any) {
+    @Unique var z: Any = y;
 
     while (nondet()) {
-        z = x
+        z = <!UNIQUENESS_VIOLATION!>x<!>
     }
 
-    consume(<!UNIQUENESS_VIOLATION!>z<!>)
+    consume(z)
 }

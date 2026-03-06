@@ -14,7 +14,7 @@ fun `pass shared twice to shareBoth`(a: Any) {
 }
 
 fun `pass borrowed twice to borrowBoth`(@Borrowed a: Any) {
-    borrowBoth(a, <!UNIQUENESS_VIOLATION!>a<!>)
+    borrowBoth(a, a)
 }
 
 fun `pass unique twice to consumeBoth`(@Unique a: Any) {

@@ -1,21 +1,25 @@
-/assign_local.kt:(290,291): error: Expected unique value, got shared
+/assign_local.kt:(290,291): error: Argument uniqueness mismatch: expected 'unique global', actual 'shared global'.
 
-/assign_local.kt:(377,378): error: Expected global value, got local
+/assign_local.kt:(387,388): error: Argument uniqueness mismatch: expected 'unique global', actual 'shared local'.
 
-/assign_local.kt:(562,563): error: Expected global value, got local
+/assign_local.kt:(598,599): error: Argument uniqueness mismatch: expected 'unique global', actual 'unique local'.
 
-/assign_local.kt:(661,662): error: Expected unique value, got shared
+/assign_local.kt:(697,698): error: Argument uniqueness mismatch: expected 'unique global', actual 'shared global'.
 
-/assign_local.kt:(751,752): error: Expected global value, got local
+/assign_local.kt:(797,798): error: Argument uniqueness mismatch: expected 'unique global', actual 'shared local'.
 
-/assign_local.kt:(942,943): error: Expected global value, got local
+/assign_local.kt:(991,992): error: Argument uniqueness mismatch: expected 'unique global', actual 'shared global'.
 
-/assign_local.kt:(1077,1078): error: Expected unique value, got shared
+/assign_local.kt:(1115,1116): error: Argument uniqueness mismatch: expected 'unique global', actual 'shared local'.
 
-/assign_local.kt:(1200,1201): error: Expected global value, got local
+/assign_local.kt:(1254,1255): error: Argument uniqueness mismatch: expected 'unique global', actual 'unique local'.
 
-/assign_local.kt:(1457,1458): error: Expected global value, got local
+/assign_local.kt:(1389,1390): error: Argument uniqueness mismatch: expected 'unique global', actual 'shared global'.
 
-/assign_local.kt:(1644,1645): error: Expected unique value, got shared
+/assign_local.kt:(1532,1533): error: Argument uniqueness mismatch: expected 'unique global', actual 'shared local'.
 
-/assign_local.kt:(1815,1816): error: Cannot pass a moved argument
+/assign_local.kt:(1841,1842): error: Argument uniqueness mismatch: expected 'unique global', actual 'unique local'.
+
+/assign_local.kt:(2028,2029): error: Argument uniqueness mismatch: expected 'unique global', actual 'shared global'.
+
+/assign_local.kt:(2194,2195): error: Assignment uniqueness mismatch: expected 'unique global', actual 'moved'.

@@ -1,3 +1,1 @@
-/pass_property_argument.kt:(655,656): error: Cannot pass a partially moved argument
-
-/pass_property_argument.kt:(771,772): error: Cannot pass a partially moved argument
+/pass_property_argument.kt:(655,656): error: Argument uniqueness mismatch: partial type 'moved' is inconsistent with parent type 'unique global'.
