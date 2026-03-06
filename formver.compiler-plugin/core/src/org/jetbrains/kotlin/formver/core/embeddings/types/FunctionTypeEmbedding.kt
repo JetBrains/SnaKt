@@ -16,7 +16,6 @@ data class FunctionTypeEmbedding(
     val returnsUnique: Boolean,
 ) : PretypeEmbedding {
     override val runtimeType = RuntimeTypeDomain.functionType()
-    override val createHavocMethod = false
 
     override val name: SetOfNames = SetOfNames(formalArgTypes.map { it -> it.name } + listOf(returnType.name))
 
