@@ -5,8 +5,6 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
-import org.jetbrains.kotlin.formver.core.conversion.Havoc
-import org.jetbrains.kotlin.formver.core.conversion.HavocMethodCallBuilder
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.PlaintextLeaf
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.TreeView
@@ -27,7 +25,6 @@ import org.jetbrains.kotlin.formver.viper.mangled
  */
 interface PretypeEmbedding : RuntimeTypeHolder, TypeInvariantHolder {
     val name: SymbolicName
-    val havocMethodCallBuilder: HavocMethodCallBuilder
 
     context(nameResolver: NameResolver)
     override val debugTreeView: TreeView
@@ -37,47 +34,39 @@ interface PretypeEmbedding : RuntimeTypeHolder, TypeInvariantHolder {
 
 }
 
-/** Enables default havoc builder for primitive types.
- *  With primitive types, we mean types for which no access predicate is needed.
- **/
-interface PrimitivePreTypeEmbedding : PretypeEmbedding {
-    override val havocMethodCallBuilder: HavocMethodCallBuilder
-        get() = Havoc.getCallBuilder(this)
-}
-
-data object UnitTypeEmbedding : PrimitivePreTypeEmbedding {
+data object UnitTypeEmbedding : PretypeEmbedding {
     override val runtimeType = RuntimeTypeDomain.unitType()
     override val name = PretypeName("Unit")
 }
 
-data object NothingTypeEmbedding : PrimitivePreTypeEmbedding {
+data object NothingTypeEmbedding : PretypeEmbedding {
     override val runtimeType = RuntimeTypeDomain.nothingType()
     override val name = PretypeName("Nothing")
 
     override fun pureInvariants(): List<TypeInvariantEmbedding> = listOf(FalseTypeInvariant)
 }
 
-data object AnyTypeEmbedding : PrimitivePreTypeEmbedding {
+data object AnyTypeEmbedding : PretypeEmbedding {
     override val runtimeType = RuntimeTypeDomain.anyType()
     override val name = PretypeName("Any")
 }
 
-data object IntTypeEmbedding : PrimitivePreTypeEmbedding {
+data object IntTypeEmbedding : PretypeEmbedding {
     override val runtimeType = RuntimeTypeDomain.intType()
     override val name = PretypeName("Int")
 }
 
-data object BooleanTypeEmbedding : PrimitivePreTypeEmbedding {
+data object BooleanTypeEmbedding : PretypeEmbedding {
     override val runtimeType = RuntimeTypeDomain.boolType()
     override val name = PretypeName("Boolean")
 }
 
-data object CharTypeEmbedding : PrimitivePreTypeEmbedding {
+data object CharTypeEmbedding : PretypeEmbedding {
     override val runtimeType = RuntimeTypeDomain.charType()
     override val name = PretypeName("Char")
 }
 
-data object StringTypeEmbedding : PrimitivePreTypeEmbedding {
+data object StringTypeEmbedding : PretypeEmbedding {
     override val runtimeType = RuntimeTypeDomain.stringType()
     override val name = PretypeName("String")
 }

@@ -5,7 +5,6 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
-import org.jetbrains.kotlin.formver.core.conversion.HavocMethodCallBuilder
 import org.jetbrains.kotlin.formver.core.domains.Injection
 import org.jetbrains.kotlin.formver.core.domains.MethodBuilder
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
@@ -82,9 +81,6 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
         get() = flags.nullable
 
     override val runtimeType: Exp = flags.adjustRuntimeType(pretype.runtimeType)
-
-    val havocMethodCallBuilder: HavocMethodCallBuilder
-        get() = pretype.havocMethodCallBuilder.withFlags(flags)
 
     override fun accessInvariants(): List<TypeInvariantEmbedding> =
         flags.adjustManyInvariants(pretype.accessInvariants())
