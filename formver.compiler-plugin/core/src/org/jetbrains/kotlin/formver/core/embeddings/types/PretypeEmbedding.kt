@@ -25,6 +25,8 @@ import org.jetbrains.kotlin.formver.viper.mangled
  */
 interface PretypeEmbedding : RuntimeTypeHolder, TypeInvariantHolder {
     val name: SymbolicName
+    val createHavocMethod: Boolean
+        get() = true
 
     context(nameResolver: NameResolver)
     override val debugTreeView: TreeView

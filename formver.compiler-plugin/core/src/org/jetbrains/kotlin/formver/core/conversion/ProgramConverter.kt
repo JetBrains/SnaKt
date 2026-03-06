@@ -269,14 +269,17 @@ class ProgramConverter(
         // Phase 3
         properties.forEach { processProperty(it, newDetails) }
 
-//        newDetails.initHavocMethods()
-
         return embedding
     }
 
     override fun embedType(type: ConeKotlinType): TypeEmbedding {
         val embeddedType = buildType { embedTypeWithBuilder(type) }
-        havocMethods.putIfAbsent(embeddedType.name, embeddedType.havocMethod)
+        embeddedType.creatHavocMethod.ifTrue {
+            havocMethods.putIfAbsent(
+                embeddedType.havocMethodName,
+                embeddedType.havocMethod
+            )
+        }
         return embeddedType
     }
 
