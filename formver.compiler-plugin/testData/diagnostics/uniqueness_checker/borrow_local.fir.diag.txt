@@ -1,1 +1,1 @@
-/borrow_local.kt:(585,586): error: Cannot pass a moved argument
+/borrow_local.kt:(585,586): error: Argument uniqueness mismatch: expected 'shared local', actual 'moved'.

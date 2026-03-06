@@ -1,3 +1,3 @@
-/share_local.kt:(269,270): error: Expected global value, got local
+/share_local.kt:(269,270): error: Argument uniqueness mismatch: expected 'shared global', actual 'shared local'.
 
-/share_local.kt:(390,391): error: Expected global value, got local
+/share_local.kt:(390,391): error: Argument uniqueness mismatch: expected 'shared global', actual 'unique local'.

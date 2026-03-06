@@ -19,25 +19,21 @@ fun consume(@Unique a: Any) {}
 // Property assignments
 
 fun `assign shared to unique subproperty`(@Unique x: B, v: A): Unit {
-    x.y = v
-
-    consume(<!UNIQUENESS_VIOLATION!>x<!>)
+    x.y = <!UNIQUENESS_VIOLATION!>v<!>
 }
 
 fun `assign borrowed to unique subproperty`(@Unique x: B, @Borrowed v: A): Unit {
-    x.y = v // TODO: Either disallow assigning borrowed to properties, or make sure that assigned properties cannot leak
-
-    consume(<!UNIQUENESS_VIOLATION!>x<!>)
+    x.y = <!UNIQUENESS_VIOLATION!>v<!>
 }
 
 fun `assign unique to unique subproperty`(@Unique x: B, @Unique v: A): Unit {
-    x.y = v // TODO: Either disallow assigning borrowed to properties, or make sure that assigned properties cannot leak
+    x.y = v
 
     consume(x)
 }
 
 fun `assign unique-borrowed to unique subproperty`(@Unique x: B, @Unique @Borrowed v: A): Unit {
-    x.y = v
+    x.y = <!UNIQUENESS_VIOLATION!>v<!>
 
     consume(x)
 }

@@ -19,12 +19,16 @@ sealed interface UniquenessType {
     /**
      * Corresponds to the TOP type
      */
-    object Moved : UniquenessType
+    object Moved : UniquenessType {
+        override fun toString() = "moved"
+    }
 
     /**
      * Intermediate components of the lattice
      */
-    data class Active(val uniqueLevel: UniqueLevel, val borrowLevel: BorrowLevel) : UniquenessType
+    data class Active(val uniqueLevel: UniqueLevel, val borrowLevel: BorrowLevel) : UniquenessType {
+        override fun toString() = "${uniqueLevel.name.lowercase()} ${borrowLevel.name.lowercase()}"
+    }
 
     /**
      * Join operation for the uniqueness type lattice.

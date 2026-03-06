@@ -50,15 +50,10 @@ fun `borrow partially moved`(@Unique z: B) {
 
 fun `borrow partially shared`(@Unique z: B) {
     share(z.y)
-    borrow(z)
+    borrow(<!UNIQUENESS_VIOLATION!>z<!>)
 }
 
 // Borrowing after assignment
-
-fun `borrow unique parent after assigning subproperty to shared`(@Unique x: B, v: A) {
-    x.y = v
-    borrow(x)
-}
 
 fun `borrow unique parent after assigning subproperty to unique`(@Unique x: B, @Unique v: A) {
     x.y = v
