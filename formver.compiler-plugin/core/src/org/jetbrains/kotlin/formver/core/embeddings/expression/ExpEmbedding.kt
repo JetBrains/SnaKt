@@ -382,10 +382,8 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
         if (field.unfoldToAccess) unfoldHierarchy(receiverWrapper, ctx)
 
         val stmt = when (field.accessPolicy) {
+            // TODO: Handling a unique field on a shared receiver must be added here.
             AccessPolicy.ALWAYS_VOLATILE -> {
-                field.type.havocMethodCallBuilder.withTarget(result.toLocalVarUse()).build()
-            }
-            AccessPolicy.BY_RECEIVER_UNIQUENESS if false/** TODO: Replace to: if !receiver.isUnique()**/ -> {
                 field.type.havocMethodCallBuilder.withTarget(result.toLocalVarUse()).build()
             }
             else -> {
