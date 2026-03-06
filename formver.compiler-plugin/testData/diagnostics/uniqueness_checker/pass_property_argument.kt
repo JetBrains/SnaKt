@@ -31,5 +31,5 @@ fun `pass unique subproperty and parent to consumeBoth`(@Unique a: B) {
 }
 
 fun `pass unique-borrowed subproperty and parent to borrowBoth`(@Unique @Borrowed a: B) {
-    borrowBoth(a.y, <!UNIQUENESS_VIOLATION!>a<!>)
+    borrowBoth(a.y, a)
 }

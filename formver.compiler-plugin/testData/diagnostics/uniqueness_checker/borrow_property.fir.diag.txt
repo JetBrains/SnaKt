@@ -1,1 +1,3 @@
-/borrow_property.kt:(853,854): error: Cannot pass a partially moved argument
+/borrow_property.kt:(853,854): error: Argument uniqueness mismatch: partial type 'moved' is inconsistent with parent type 'unique global'.
+
+/borrow_property.kt:(931,932): error: Argument uniqueness mismatch: partial type 'shared global' is inconsistent with parent type 'unique global'.

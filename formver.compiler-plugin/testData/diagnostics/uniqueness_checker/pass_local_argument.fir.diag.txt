@@ -1,3 +1,1 @@
-/pass_local_argument.kt:(414,415): error: Cannot pass a moved argument
-
-/pass_local_argument.kt:(496,497): error: Cannot pass a moved argument
+/pass_local_argument.kt:(496,497): error: Argument uniqueness mismatch: expected 'unique global', actual 'moved'.

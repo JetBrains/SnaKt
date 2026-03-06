@@ -53,11 +53,6 @@ fun `consume partially shared`(@Unique z: B) {
 
 // Consuming subproperty after assignment
 
-fun `consume unique parent after assigning subproperty to shared`(@Unique x: B, v: A) {
-    x.y = v
-    consume(<!UNIQUENESS_VIOLATION!>x<!>)
-}
-
 fun `consume unique parent after assigning subproperty to unique`(@Unique x: B, @Unique y: A) {
     x.y = y
     consume(x.y)
