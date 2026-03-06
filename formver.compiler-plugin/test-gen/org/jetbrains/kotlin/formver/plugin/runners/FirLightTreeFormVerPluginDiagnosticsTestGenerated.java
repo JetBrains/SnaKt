@@ -677,6 +677,16 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     public void testShared_to_shared() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/shared_to_shared.kt");
     }
+
+    @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/datastructures")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Datastructures {
+      @Test
+      public void testAllFilesPresentInDatastructures() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/datastructures"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+    }
   }
 
   @Nested
@@ -907,6 +917,38 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
       @TestMetadata("pure_function_rely_on_branch.kt")
       public void testPure_function_rely_on_branch() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/pure_function_rely_on_branch.kt");
+      }
+    }
+
+    @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/uniqueness")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Uniqueness {
+      @Test
+      public void testAllFilesPresentInUniqueness() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/uniqueness"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Nested
+      @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/uniqueness/failing-tests")
+      @TestDataPath("$PROJECT_ROOT")
+      public class Failing_tests {
+        @Test
+        public void testAllFilesPresentInFailing_tests() {
+          KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/uniqueness/failing-tests"), Pattern.compile("^(.+)\\.kt$"), null, true);
+        }
+
+        @Test
+        @TestMetadata("binary_tree.kt")
+        public void testBinary_tree() {
+          runTest("formver.compiler-plugin/testData/diagnostics/verification/uniqueness/failing-tests/binary_tree.kt");
+        }
+
+        @Test
+        @TestMetadata("linked_list.kt")
+        public void testLinked_list() {
+          runTest("formver.compiler-plugin/testData/diagnostics/verification/uniqueness/failing-tests/linked_list.kt");
+        }
       }
     }
 
