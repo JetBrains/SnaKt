@@ -5,10 +5,8 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
-import org.jetbrains.kotlin.formver.core.conversion.Havoc
 import org.jetbrains.kotlin.formver.viper.ast.Method
 
 object SpecialMethods {
-    private val havoc = Havoc.getPrimitiveMethod()
-    val all: List<Method> = listOf(havoc)
+    val all: List<Method> = listOf()
 }

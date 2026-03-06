@@ -384,7 +384,7 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
         val stmt = when (field.accessPolicy) {
             // TODO: Handling a unique field on a shared receiver must be added here.
             AccessPolicy.ALWAYS_VOLATILE -> {
-                field.type.havocMethodCallBuilder.withTarget(result.toLocalVarUse()).build()
+                field.type.havocMethod.toMethodCall(emptyList(), listOf(result.toLocalVarUse()))
             }
             else -> {
                 Stmt.assign(

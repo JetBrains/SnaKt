@@ -5,13 +5,11 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
-import org.jetbrains.kotlin.formver.core.conversion.Havoc
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.names.PredicateKotlinName
 import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
 import org.jetbrains.kotlin.formver.core.names.SimpleKotlinName
 import org.jetbrains.kotlin.formver.core.names.asScope
-import org.jetbrains.kotlin.formver.viper.ast.Method
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
 import org.jetbrains.kotlin.formver.viper.ast.Predicate
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
@@ -35,23 +33,12 @@ class ClassEmbeddingDetails(
     private var _fields: Map<SimpleKotlinName, FieldEmbedding>? = null
     private var _sharedPredicate: Predicate? = null
     private var _uniquePredicate: Predicate? = null
-    private var _havocMethod: Method? = null
-    private var _havocMethodNullable: Method? = null
     val fields: Map<SimpleKotlinName, FieldEmbedding>
         get() = _fields ?: error("Fields of ${type.name} have not been initialised yet.")
     val sharedPredicate: Predicate
         get() = _sharedPredicate ?: error("Predicate of ${type.name} has not been initialised yet.")
     val uniquePredicate: Predicate
         get() = _uniquePredicate ?: error("Unique Predicate of ${type.name} has not been initialised yet.")
-    val havocMethod: Method
-        get() = _havocMethod ?: error("Havoc method of ${type.name} has not been initialised yet.")
-    val havocMethodNullable: Method
-        get() = _havocMethodNullable ?: error("Havoc method of ${type.name} has not been initialised yet.")
-
-    fun initHavocMethods() {
-        _havocMethod = Havoc.getClassMethod(this.type, false)
-        _havocMethodNullable = Havoc.getClassMethod(this.type, true)
-    }
 
     fun initFields(newFields: Map<SimpleKotlinName, FieldEmbedding>) {
         check(_fields == null) { "Fields of ${type.name} are already initialised." }
