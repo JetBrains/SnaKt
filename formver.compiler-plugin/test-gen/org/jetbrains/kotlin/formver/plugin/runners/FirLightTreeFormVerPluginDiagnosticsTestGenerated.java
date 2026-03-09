@@ -85,6 +85,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
+    @TestMetadata("pure_function_with_scope_functions.kt")
+    public void testPure_function_with_scope_functions() {
+      runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_function_with_scope_functions.kt");
+    }
+
+    @Test
     @TestMetadata("pure_literal_function.kt")
     public void testPure_literal_function() {
       runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_literal_function.kt");

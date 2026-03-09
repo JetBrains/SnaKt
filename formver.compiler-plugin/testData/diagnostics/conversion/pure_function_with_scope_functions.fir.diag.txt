@@ -1,0 +1,28 @@
+/pure_function_with_scope_functions.kt:(76,204): error: An internal error has occurred.
+Details: addStatement
+Please report this at https://github.com/jesyspa/kotlin
+
+/pure_function_with_scope_functions.kt:(210,225): info: Generated Viper text for runImpureBoyRun:
+method f$runImpureBoyRun$TF$() returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var ret$1: Ref
+  var anon$1: Ref
+  var ret$2: Ref
+  l0$x := df$rt$intToRef(0)
+  l0$x := sp$plusInts(l0$x, df$rt$intToRef(1))
+  ret$2 := l0$x
+  goto lbl$ret$2
+  label lbl$ret$2
+  anon$1 := ret$2
+  ret$1 := anon$1
+  goto lbl$ret$1
+  label lbl$ret$1
+  anon$0 := ret$1
+  l0$x := anon$0
+  ret$0 := l0$x
+  goto lbl$ret$0
+  label lbl$ret$0
+}
