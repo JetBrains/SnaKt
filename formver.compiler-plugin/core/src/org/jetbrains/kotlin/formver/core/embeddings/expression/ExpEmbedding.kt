@@ -365,9 +365,9 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
     DefaultToBuiltinExpEmbedding {
     override val type: TypeEmbedding = field.type
     override fun toViper(ctx: LinearizationContext): Exp {
-        if (field.accessPolicy == AccessPolicy.ALWAYS_WRITEABLE) return PrimitiveFieldAccess(receiver, field).toViper(
-            ctx
-        )
+        if (field.accessPolicy == AccessPolicy.ALWAYS_WRITEABLE) {
+            return PrimitiveFieldAccess(receiver, field).toViper(ctx)
+        }
 
         if (field.unfoldToAccess && ctx.unfoldPolicy == UnfoldPolicy.UNFOLDING_IN) return unfoldingInImpl(ctx)
         val variable = ctx.freshAnonVar(type)
