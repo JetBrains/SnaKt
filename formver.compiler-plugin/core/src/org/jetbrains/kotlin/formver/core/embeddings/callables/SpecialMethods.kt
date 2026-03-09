@@ -5,8 +5,8 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
-import org.jetbrains.kotlin.formver.viper.ast.Method
+import org.jetbrains.kotlin.formver.viper.ast.BuiltInMethod
 
 object SpecialMethods {
-    val all: List<Method> = listOf()
+    val all: List<BuiltInMethod> = listOf()
 }
