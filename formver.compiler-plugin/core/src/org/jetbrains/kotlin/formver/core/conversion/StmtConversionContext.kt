@@ -15,7 +15,9 @@ import org.jetbrains.kotlin.fir.types.isBoolean
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.InvalidFunctionBodyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.LabelEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.MethodBodyConversionResult
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FullNamedFunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
@@ -242,7 +244,7 @@ fun StmtConversionContext.convertMethodWithBody(
     declaration: FirSimpleFunction,
     signature: FullNamedFunctionSignature,
     returnTarget: ReturnTarget,
-): FunctionBodyEmbedding? {
+): MethodBodyConversionResult? {
     val firBody = declaration.body ?: return null
     val body = convert(firBody)
     val bodyExp = FunctionExp(signature, body, returnTarget.label)
@@ -253,7 +255,11 @@ fun StmtConversionContext.convertMethodWithBody(
     // as we may not encounter any `return` statement in the body
     returnTarget.variable.withIsUnitInvariantIfUnit().toViperUnusedResult(linearizer)
     val isValid = body.checkValidity(declaration.source, errorCollector)
-    return if (!isValid) null else FunctionBodyEmbedding(seqnBuilder.block, returnTarget, bodyExp)
+    return if (isValid) {
+        FunctionBodyEmbedding(seqnBuilder.block, returnTarget, bodyExp)
+    } else {
+        InvalidFunctionBodyEmbedding(declaration.source, bodyExp)
+    }
 }
 
 fun StmtConversionContext.convertFunctionWithBody(

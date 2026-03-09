@@ -6,6 +6,8 @@
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
 import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.InvalidFunctionBodyEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.MethodBodyConversionResult
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Function
 import org.jetbrains.kotlin.formver.viper.ast.Method
@@ -24,12 +26,16 @@ interface PureFunctionEmbedding : CallableEmbedding {
 class UserFunctionEmbedding(private val callable: RichCallableEmbedding) : FunctionEmbedding,
     CallableEmbedding by callable {
     /**
-     * The presence of the body indicates that the function should be verified, as opposed to simply having a declaration available.
+     * The presence of the body indicates that the function should be verified, as opposed to simply having a declaration available
      */
-    var body: FunctionBodyEmbedding? = null
+    var body: MethodBodyConversionResult? = null
 
     override val viperMethod: Method?
-        get() = body?.toViperMethod(callable) ?: callable.toViperMethodHeader()
+        get() = when (val currentBody = body) {
+            is InvalidFunctionBodyEmbedding -> null
+            is FunctionBodyEmbedding -> currentBody.toViperMethod(callable)
+            else -> callable.toViperMethodHeader()
+        }
 }
 
 
