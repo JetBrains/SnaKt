@@ -378,15 +378,17 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
         val receiverViper = receiver.toViper(ctx)
         val receiverWrapper = ExpWrapper(receiverViper, receiver.type)
-        // If the field is immutable, it is necessary to unfold predicates
-        if (field.unfoldToAccess) unfoldHierarchy(receiverWrapper, ctx)
+
 
         val stmt = when (field.accessPolicy) {
             // TODO: Handling a unique field on a shared receiver must be added here.
-            AccessPolicy.ALWAYS_VOLATILE -> {
+            AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
                 field.type.havocMethod.toMethodCall(emptyList(), listOf(result.toLocalVarUse()))
             }
             else -> {
+                // If the field access is not replaced with havoc,
+                // we might need to unfold some predicate to access it.
+                if (field.unfoldToAccess) unfoldHierarchy(receiverWrapper, ctx)
                 Stmt.assign(
                     result.toLocalVarUse(),
                     Exp.FieldAccess(receiverViper, field.toViper(), ctx.source.asPosition)
