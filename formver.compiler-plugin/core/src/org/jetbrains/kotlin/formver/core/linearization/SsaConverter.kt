@@ -66,7 +66,16 @@ class SsaConverter(
 
     fun addAssignment(name: SymbolicName, varExp: Exp) {
         val ssaName = head.updateLatestName(name)
-        ssaAssignments.add(ssaName to varExp)
+        if (varExp.type.defaultExpression() == null) throw SnaktInternalException(
+            source,
+            "Tried to assign a variable without a default expression"
+        )
+        if (head.fullBranchingCondition == Exp.BoolLit(true)) {
+            ssaAssignments.add(ssaName to varExp)
+        } else {
+            val ternaryGuard = Exp.TernaryExp(head.fullBranchingCondition, varExp, varExp.type.defaultExpression()!!)
+            ssaAssignments.add(ssaName to ternaryGuard)
+        }
     }
 
     fun addPhiAssignment(condition: Exp, left: SsaVariableName, right: SsaVariableName, name: SsaVariableName) {
@@ -76,13 +85,17 @@ class SsaConverter(
                 "Phi Assignments may only be created for SSA variables referring to the same source variable."
             )
         }
-        ssaAssignments.add(
-            name to TernaryExp(
-                condition,
-                Exp.LocalVar(left, Type.Ref),
-                Exp.LocalVar(right, Type.Ref)
-            )
+        val selectionTernary = TernaryExp(
+            condition,
+            Exp.LocalVar(left, Type.Ref),
+            Exp.LocalVar(right, Type.Ref)
         )
+
+        if (head.fullBranchingCondition == Exp.BoolLit(true)) {
+            ssaAssignments.add(name to selectionTernary)
+        } else {
+            ssaAssignments.add(name to Exp.TernaryExp(head.fullBranchingCondition, selectionTernary, selectionTernary))
+        }
     }
 
     fun addReturn(returnExp: Exp) {
