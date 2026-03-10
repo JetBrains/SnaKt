@@ -7,17 +7,11 @@ method f$iAmAMethod$TF$() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/wrongly_annotated.kt:(89,160): error: An internal error has occurred.
-Details: Impure function body detected in pure function
-Please report this at https://github.com/jesyspa/kotlin
+/wrongly_annotated.kt:(89,160): error: Impure function body detected in pure function
 
-/wrongly_annotated.kt:(162,239): error: An internal error has occurred.
-Details: Impure function body detected in pure function
-Please report this at https://github.com/jesyspa/kotlin
+/wrongly_annotated.kt:(162,239): error: Impure function body detected in pure function
 
-/wrongly_annotated.kt:(270,368): error: An internal error has occurred.
-Details: Impure function body detected in pure function
-Please report this at https://github.com/jesyspa/kotlin
+/wrongly_annotated.kt:(270,368): error: Impure function body detected in pure function
 
 /wrongly_annotated.kt:(380,395): info: Generated Viper text for impureExtension:
 field bf$value: Ref

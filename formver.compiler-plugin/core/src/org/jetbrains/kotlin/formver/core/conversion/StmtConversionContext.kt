@@ -14,10 +14,10 @@ import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.isBoolean
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyConversionResult
 import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.InvalidFunctionBodyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.LabelEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.MethodBodyConversionResult
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FullNamedFunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
@@ -244,7 +244,7 @@ fun StmtConversionContext.convertMethodWithBody(
     declaration: FirSimpleFunction,
     signature: FullNamedFunctionSignature,
     returnTarget: ReturnTarget,
-): MethodBodyConversionResult? {
+): FunctionBodyConversionResult? {
     val firBody = declaration.body ?: return null
     val body = convert(firBody)
     val bodyExp = FunctionExp(signature, body, returnTarget.label)
@@ -264,17 +264,24 @@ fun StmtConversionContext.convertMethodWithBody(
 
 fun StmtConversionContext.convertFunctionWithBody(
     declaration: FirSimpleFunction
-): Exp {
+): Exp? {
     val firBody = declaration.body ?: throw SnaktInternalException(
         declaration.source,
         "Pure functions expect a function body to exist"
     )
     val body = convert(firBody)
-    if (!body.isPure()) throw SnaktInternalException(
-        declaration.source,
-        "Impure function body detected in pure function"
-    )
-    val pureLinearizer = PureLinearizer(declaration.source, SharedLinearizationState(anonVarProducer))
+    if (!body.isPure()) {
+        when (val source = declaration.source) {
+            null -> throw SnaktInternalException(
+                source,
+                "Pure function body detected in pure function and no source found"
+            )
+
+            else -> errorCollector.addPurityError(source, "Impure function body detected in pure function")
+        }
+        return null
+    }
+    val pureLinearizer = PureLinearizer(declaration.source)
     body.toViperUnusedResult(pureLinearizer)
     return pureLinearizer.constructExpression()
 }
