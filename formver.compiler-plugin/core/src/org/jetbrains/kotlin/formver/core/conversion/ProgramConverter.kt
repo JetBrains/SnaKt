@@ -267,10 +267,7 @@ class ProgramConverter(
         return embedding
     }
 
-    override fun embedType(type: ConeKotlinType): TypeEmbedding {
-        val embeddedType = buildType { embedTypeWithBuilder(type) }
-        return embeddedType
-    }
+    override fun embedType(type: ConeKotlinType): TypeEmbedding = buildType { embedTypeWithBuilder(type) }
 
     // Note: keep in mind that this function is necessary to resolve the name of the function!
     override fun embedFunctionPretype(symbol: FirFunctionSymbol<*>): FunctionTypeEmbedding = buildFunctionPretype {
