@@ -33,7 +33,7 @@ predicate p$c$Node$unique(this$dispatch: Ref) {
   df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$right), df$rt$nullable(df$rt$c$Node()))
 }
 
-method f$get_left_val$TF$T$Node(p$n: Ref) returns (ret$0: Ref)
+method f$get_left_val$TF$T$Node$NT$Int(p$n: Ref) returns (ret$0: Ref)
   requires acc(p$c$Node$unique(p$n), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
 {
@@ -122,7 +122,7 @@ predicate p$pkg$kotlin$c$Cloneable$unique(this$dispatch: Ref) {
   true
 }
 
-method con$c$Node$T$Int$NT$Node$NT$Node(p$data: Ref, p$left: Ref, p$right: Ref)
+method con$c$Node$T$Int$NT$Node$NT$Node$T$Node(p$data: Ref, p$left: Ref, p$right: Ref)
   returns (ret: Ref)
   requires p$left != df$rt$nullValue() ==>
     acc(p$c$Node$unique(p$left), write)
@@ -137,7 +137,7 @@ method con$c$Node$T$Int$NT$Node$NT$Node(p$data: Ref, p$left: Ref, p$right: Ref)
     p$right
 
 
-method f$test$TF$() returns (ret$0: Ref)
+method f$test$TF$T$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$n: Ref
@@ -150,14 +150,16 @@ method f$test$TF$() returns (ret$0: Ref)
   var l0$expr2: Ref
   var anon$5: Ref
   var anon$6: Ref
-  anon$0 := con$c$Node$T$Int$NT$Node$NT$Node(df$rt$intToRef(4), df$rt$nullValue(),
+  anon$0 := con$c$Node$T$Int$NT$Node$NT$Node$T$Node(df$rt$intToRef(4), df$rt$nullValue(),
     df$rt$nullValue())
-  anon$2 := con$c$Node$T$Int$NT$Node$NT$Node(df$rt$intToRef(2), df$rt$nullValue(),
+  anon$2 := con$c$Node$T$Int$NT$Node$NT$Node$T$Node(df$rt$intToRef(2), df$rt$nullValue(),
     df$rt$nullValue())
-  anon$3 := con$c$Node$T$Int$NT$Node$NT$Node(df$rt$intToRef(1), df$rt$nullValue(),
+  anon$3 := con$c$Node$T$Int$NT$Node$NT$Node$T$Node(df$rt$intToRef(1), df$rt$nullValue(),
     df$rt$nullValue())
-  anon$1 := con$c$Node$T$Int$NT$Node$NT$Node(df$rt$intToRef(3), anon$2, anon$3)
-  l0$n := con$c$Node$T$Int$NT$Node$NT$Node(df$rt$intToRef(5), anon$0, anon$1)
+  anon$1 := con$c$Node$T$Int$NT$Node$NT$Node$T$Node(df$rt$intToRef(3), anon$2,
+    anon$3)
+  l0$n := con$c$Node$T$Int$NT$Node$NT$Node$T$Node(df$rt$intToRef(5), anon$0,
+    anon$1)
   inhale acc(l0$n.bf$data, write)
   anon$4 := l0$n.bf$data
   exhale acc(l0$n.bf$data, write)

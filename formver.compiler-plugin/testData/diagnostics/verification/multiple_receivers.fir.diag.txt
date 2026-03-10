@@ -3,7 +3,7 @@ field bf$delta: Ref
 
 field bf$size: Ref
 
-method f$c$ClassWithExtension$applyDelta$TF$T$ClassWithExtension$T$Int(this$dispatch: Ref,
+method f$c$ClassWithExtension$applyDelta$TF$T$ClassWithExtension$T$Int$T$Unit(this$dispatch: Ref,
   this$extension: Ref)
   returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -30,7 +30,7 @@ method f$c$ClassWithExtension$applyDelta$TF$T$ClassWithExtension$T$Int(this$disp
 /multiple_receivers.kt:(531,542): info: Generated Viper text for returnDelta:
 field bf$delta: Ref
 
-method f$c$ClassWithExtension$returnDelta$TF$T$ClassWithExtension(this$dispatch: Ref)
+method f$c$ClassWithExtension$returnDelta$TF$T$ClassWithExtension$T$Int(this$dispatch: Ref)
   returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -45,7 +45,7 @@ method f$c$ClassWithExtension$returnDelta$TF$T$ClassWithExtension(this$dispatch:
 /multiple_receivers.kt:(579,599): info: Generated Viper text for extensionReturnDelta:
 field bf$delta: Ref
 
-method f$extensionReturnDelta$TF$T$ClassWithExtension(this$extension: Ref)
+method f$extensionReturnDelta$TF$T$ClassWithExtension$T$Int(this$extension: Ref)
   returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -62,7 +62,8 @@ field bf$delta: Ref
 
 field bf$size: Ref
 
-method con$c$ClassWithExtension$T$Int(p$delta: Ref) returns (ret: Ref)
+method con$c$ClassWithExtension$T$Int$T$ClassWithExtension(p$delta: Ref)
+  returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$ClassWithExtension())
   ensures acc(p$c$ClassWithExtension$shared(ret), wildcard)
   ensures acc(p$c$ClassWithExtension$unique(ret), write)
@@ -71,18 +72,18 @@ method con$c$ClassWithExtension$T$Int(p$delta: Ref) returns (ret: Ref)
     df$rt$intFromRef(p$delta)
 
 
-method f$c$ClassWithExtension$applyDelta$TF$T$ClassWithExtension$T$Int(this$dispatch: Ref,
+method f$c$ClassWithExtension$applyDelta$TF$T$ClassWithExtension$T$Int$T$Unit(this$dispatch: Ref,
   this$extension: Ref)
   returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
-method f$c$ClassWithExtension$returnDelta$TF$T$ClassWithExtension(this$dispatch: Ref)
+method f$c$ClassWithExtension$returnDelta$TF$T$ClassWithExtension$T$Int(this$dispatch: Ref)
   returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 
-method f$checkClassWithExtension$TF$() returns (ret$0: Ref)
+method f$checkClassWithExtension$TF$T$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$3: Ref
@@ -100,16 +101,16 @@ method f$checkClassWithExtension$TF$() returns (ret$0: Ref)
   var ret$3: Ref
   var anon$2: Ref
   var anon$11: Ref
-  anon$5 := con$c$ClassWithExtension$T$Int(df$rt$intToRef(42))
+  anon$5 := con$c$ClassWithExtension$T$Int$T$ClassWithExtension(df$rt$intToRef(42))
   anon$0 := anon$5
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$nullable(df$rt$anyType()))
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$c$ClassWithExtension())
   inhale acc(p$c$ClassWithExtension$shared(anon$0), wildcard)
   anon$1 := anon$0
-  anon$7 := f$c$ClassWithExtension$applyDelta$TF$T$ClassWithExtension$T$Int(anon$1,
+  anon$7 := f$c$ClassWithExtension$applyDelta$TF$T$ClassWithExtension$T$Int$T$Unit(anon$1,
     df$rt$intToRef(42))
-  anon$8 := f$c$ClassWithExtension$returnDelta$TF$T$ClassWithExtension(anon$1)
-  anon$9 := f$extensionReturnDelta$TF$T$ClassWithExtension(anon$1)
+  anon$8 := f$c$ClassWithExtension$returnDelta$TF$T$ClassWithExtension$T$Int(anon$1)
+  anon$9 := f$extensionReturnDelta$TF$T$ClassWithExtension$T$Int(anon$1)
   anon$2 := df$rt$intToRef(42)
   unfold acc(p$c$ClassWithExtension$shared(anon$1), wildcard)
   anon$11 := anon$1.bf$delta
@@ -132,6 +133,7 @@ method f$checkClassWithExtension$TF$() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-method f$extensionReturnDelta$TF$T$ClassWithExtension(this$extension: Ref)
+method f$extensionReturnDelta$TF$T$ClassWithExtension$T$Int(this$extension: Ref)
   returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
+

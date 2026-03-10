@@ -1,5 +1,5 @@
 /pure_function_with_assignments.kt:(59,74): info: Generated Viper text for returnNumberVal:
-function f$returnNumberVal$TF$(): Ref
+function f$returnNumberVal$TF$T$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$x$0 ==
@@ -8,7 +8,7 @@ function f$returnNumberVal$TF$(): Ref
 }
 
 /pure_function_with_assignments.kt:(125,159): info: Generated Viper text for multipleAssignmentsOfDifferentType:
-function f$multipleAssignmentsOfDifferentType$TF$(): Ref
+function f$multipleAssignmentsOfDifferentType$TF$T$Boolean(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
 {
   (let l0$a$0 ==
@@ -23,7 +23,7 @@ function f$multipleAssignmentsOfDifferentType$TF$(): Ref
 }
 
 /pure_function_with_assignments.kt:(273,309): info: Generated Viper text for multipleAssignmentsWithLiteralReturn:
-function f$multipleAssignmentsWithLiteralReturn$TF$(): Ref
+function f$multipleAssignmentsWithLiteralReturn$TF$T$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$a$0 ==
@@ -38,7 +38,7 @@ function f$multipleAssignmentsWithLiteralReturn$TF$(): Ref
 }
 
 /pure_function_with_assignments.kt:(420,454): info: Generated Viper text for laterInitializersCanRelyOnPrevious:
-function f$laterInitializersCanRelyOnPrevious$TF$(): Ref
+function f$laterInitializersCanRelyOnPrevious$TF$T$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$a$0 ==
@@ -51,7 +51,7 @@ function f$laterInitializersCanRelyOnPrevious$TF$(): Ref
 }
 
 /pure_function_with_assignments.kt:(541,572): info: Generated Viper text for initializersCanRelyOnParameters:
-function f$initializersCanRelyOnParameters$TF$T$Int$T$Int(p$x: Ref, p$y: Ref): Ref
+function f$initializersCanRelyOnParameters$TF$T$Int$T$Int$T$Int(p$x: Ref, p$y: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$sum$0 ==

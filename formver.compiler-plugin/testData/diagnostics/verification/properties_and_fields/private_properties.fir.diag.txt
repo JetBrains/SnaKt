@@ -1,5 +1,5 @@
 /private_properties.kt:(222,237): info: Generated Viper text for getBooleanField:
-method f$c$A$getBooleanField$TF$T$A(this$dispatch: Ref)
+method f$c$A$getBooleanField$TF$T$A$T$Boolean(this$dispatch: Ref)
   returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
@@ -23,7 +23,8 @@ method ps$c$A$private$field(this$dispatch: Ref, anon$0: Ref)
 /private_properties.kt:(316,330): info: Generated Viper text for getStringField:
 field bf$c$B$private$field: Ref
 
-method f$c$B$getStringField$TF$T$B(this$dispatch: Ref) returns (ret$0: Ref)
+method f$c$B$getStringField$TF$T$B$T$String(this$dispatch: Ref)
+  returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$stringType())
 {
   inhale df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$B())
@@ -48,19 +49,19 @@ field bf$field: Ref
 
 field bf$size: Ref
 
-method con$c$C$() returns (ret: Ref)
+method con$c$C$T$C() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$C())
   ensures acc(p$c$C$shared(ret), wildcard)
   ensures acc(p$c$C$unique(ret), write)
 
 
-method con$c$D$() returns (ret: Ref)
+method con$c$D$T$D() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$D())
   ensures acc(p$c$D$shared(ret), wildcard)
   ensures acc(p$c$D$unique(ret), write)
 
 
-method f$extractPublic$TF$() returns (ret$0: Ref)
+method f$extractPublic$TF$T$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$cond1: Ref
@@ -69,13 +70,13 @@ method f$extractPublic$TF$() returns (ret$0: Ref)
   var l0$cond2: Ref
   var anon$2: Ref
   var anon$3: Ref
-  anon$1 := con$c$C$()
+  anon$1 := con$c$C$T$C()
   inhale acc(anon$1.bf$field, write)
   anon$0 := anon$1.bf$field
   exhale acc(anon$1.bf$field, write)
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
   l0$cond1 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType()))
-  anon$3 := con$c$D$()
+  anon$3 := con$c$D$T$D()
   unfold acc(p$c$D$shared(anon$3), wildcard)
   anon$2 := anon$3.bf$field
   l0$cond2 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(anon$2), df$rt$intType()))

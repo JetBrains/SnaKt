@@ -1,5 +1,5 @@
 /cond_effects.kt:(121,146): info: Generated Viper text for compoundConditionalEffect:
-method f$compoundConditionalEffect$TF$T$Boolean(p$b: Ref)
+method f$compoundConditionalEffect$TF$T$Boolean$T$Unit(p$b: Ref)
   returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
   ensures true ==> df$rt$boolFromRef(p$b) && false
@@ -12,7 +12,7 @@ method f$compoundConditionalEffect$TF$T$Boolean(p$b: Ref)
 /cond_effects.kt:(190,220): warning: Cannot verify that if the function returns then (b && false).
 
 /cond_effects.kt:(271,287): info: Generated Viper text for mayReturnNonNull:
-method f$mayReturnNonNull$TF$NT$Any(p$x: Ref) returns (ret$0: Ref)
+method f$mayReturnNonNull$TF$NT$Any$NT$Any(p$x: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$anyType()))
   ensures ret$0 == df$rt$nullValue() ==>
     df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
@@ -26,7 +26,7 @@ method f$mayReturnNonNull$TF$NT$Any(p$x: Ref) returns (ret$0: Ref)
 /cond_effects.kt:(328,360): warning: Cannot verify that if a null value is returned then x is Int.
 
 /cond_effects.kt:(424,437): info: Generated Viper text for mayReturnNull:
-method f$mayReturnNull$TF$NT$Any(p$x: Ref) returns (ret$0: Ref)
+method f$mayReturnNull$TF$NT$Any$NT$Any(p$x: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$anyType()))
   ensures ret$0 != df$rt$nullValue() ==>
     df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
@@ -40,7 +40,7 @@ method f$mayReturnNull$TF$NT$Any(p$x: Ref) returns (ret$0: Ref)
 /cond_effects.kt:(478,513): warning: Cannot verify that if a non-null value is returned then x is Int.
 
 /cond_effects.kt:(723,741): info: Generated Viper text for isNullOrEmptyWrong:
-method f$isNullOrEmptyWrong$TF$NT$CharSequence(p$seq: Ref)
+method f$isNullOrEmptyWrong$TF$NT$CharSequence$T$Boolean(p$seq: Ref)
   returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures df$rt$boolFromRef(ret$0) == false ==> p$seq != df$rt$nullValue()
@@ -67,7 +67,7 @@ method pg$public$length(this$dispatch: Ref) returns (ret: Ref)
 /cond_effects.kt:(796,832): warning: Cannot verify that if a false value is returned then seq != null.
 
 /cond_effects.kt:(925,942): info: Generated Viper text for recursiveContract:
-method f$recursiveContract$TF$T$Int$NT$Any(p$n: Ref, p$x: Ref)
+method f$recursiveContract$TF$T$Int$NT$Any$T$Boolean(p$n: Ref, p$x: Ref)
   returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures df$rt$boolFromRef(ret$0) == true ==>
@@ -78,8 +78,8 @@ method f$recursiveContract$TF$T$Int$NT$Any(p$n: Ref, p$x: Ref)
   if (df$rt$intFromRef(p$n) == 0) {
     ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType()))
   } else {
-    ret$0 := f$recursiveContract$TF$T$Int$NT$Any(sp$minusInts(p$n, df$rt$intToRef(1)),
-      p$x)}
+    ret$0 := f$recursiveContract$TF$T$Int$NT$Any$T$Boolean(sp$minusInts(p$n,
+      df$rt$intToRef(1)), p$x)}
   goto lbl$ret$0
   label lbl$ret$0
 }

@@ -48,7 +48,7 @@ predicate p$c$T$unique(this$dispatch: Ref) {
   true
 }
 
-method f$unique_foo_arg$TF$T$Foo(p$foo: Ref) returns (ret$0: Ref)
+method f$unique_foo_arg$TF$T$Foo$T$Unit(p$foo: Ref) returns (ret$0: Ref)
   requires acc(p$c$Foo$unique(p$foo), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -67,7 +67,7 @@ predicate p$c$T$unique(this$dispatch: Ref) {
   true
 }
 
-method f$nullable_unique_arg$TF$NT$T(p$t: Ref) returns (ret$0: Ref)
+method f$nullable_unique_arg$TF$NT$T$T$Unit(p$t: Ref) returns (ret$0: Ref)
   requires p$t != df$rt$nullValue() ==> acc(p$c$T$unique(p$t), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -86,7 +86,7 @@ predicate p$c$T$unique(this$dispatch: Ref) {
   true
 }
 
-method f$borrowed_unique_arg$TF$T$T(p$t: Ref) returns (ret$0: Ref)
+method f$borrowed_unique_arg$TF$T$T$T$Unit(p$t: Ref) returns (ret$0: Ref)
   requires acc(p$c$T$unique(p$t), write)
   ensures acc(p$c$T$unique(p$t), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -106,7 +106,8 @@ predicate p$c$T$unique(this$dispatch: Ref) {
   true
 }
 
-method f$unique_receiver$TF$T$T(this$extension: Ref) returns (ret$0: Ref)
+method f$unique_receiver$TF$T$T$T$Unit(this$extension: Ref)
+  returns (ret$0: Ref)
   requires acc(p$c$T$unique(this$extension), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -125,7 +126,7 @@ predicate p$c$T$unique(this$dispatch: Ref) {
   true
 }
 
-method f$borrowed_unique_receiver$TF$T$T(this$extension: Ref)
+method f$borrowed_unique_receiver$TF$T$T$T$Unit(this$extension: Ref)
   returns (ret$0: Ref)
   requires acc(p$c$T$unique(this$extension), write)
   ensures acc(p$c$T$unique(this$extension), write)
@@ -146,18 +147,18 @@ predicate p$c$T$unique(this$dispatch: Ref) {
   true
 }
 
-method con$c$T$() returns (ret: Ref)
+method con$c$T$T$T() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$T())
   ensures acc(p$c$T$shared(ret), wildcard)
   ensures acc(p$c$T$unique(ret), write)
 
 
-method f$unique_result$TF$() returns (ret$0: Ref)
+method f$unique_result$TF$T$T() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$T())
   ensures acc(p$c$T$shared(ret$0), wildcard)
   ensures acc(p$c$T$unique(ret$0), write)
 {
-  ret$0 := con$c$T$()
+  ret$0 := con$c$T$T$T()
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -171,7 +172,7 @@ predicate p$c$T$unique(this$dispatch: Ref) {
   true
 }
 
-method f$unique_nullable_result$TF$() returns (ret$0: Ref)
+method f$unique_nullable_result$TF$NT$T() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$c$T()))
   ensures ret$0 != df$rt$nullValue() ==> acc(p$c$T$shared(ret$0), wildcard)
   ensures ret$0 != df$rt$nullValue() ==> acc(p$c$T$unique(ret$0), write)

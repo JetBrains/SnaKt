@@ -1,7 +1,7 @@
 /binary_search.kt:(90,110): info: Generated Viper text for mid_increased_by_one:
 field sp$size: Ref
 
-method f$mid_increased_by_one$TF$T$List$T$Int(p$arr: Ref, p$target: Ref)
+method f$mid_increased_by_one$TF$T$List$T$Int$T$Boolean(p$arr: Ref, p$target: Ref)
   returns (ret$0: Ref)
   requires acc(p$arr.sp$size, write)
   requires df$rt$intFromRef(p$arr.sp$size) >= 0
@@ -21,27 +21,29 @@ method f$mid_increased_by_one$TF$T$List$T$Int(p$arr: Ref, p$target: Ref)
   anon$0 := p$arr.sp$size
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
   l0$mid := sp$plusInts(sp$divInts(anon$0, df$rt$intToRef(2)), df$rt$intToRef(1))
-  anon$1 := f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List(p$arr)
+  anon$1 := f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List$T$Boolean(p$arr)
   if (df$rt$boolFromRef(anon$1)) {
     ret$0 := df$rt$boolToRef(false)
   } else {
     var anon$2: Ref
-    anon$2 := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int(p$arr, l0$mid)
+    anon$2 := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(p$arr,
+      l0$mid)
     if (df$rt$intFromRef(anon$2) == df$rt$intFromRef(p$target)) {
       ret$0 := df$rt$boolToRef(true)
     } else {
       var anon$3: Ref
-      anon$3 := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int(p$arr, l0$mid)
+      anon$3 := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(p$arr,
+        l0$mid)
       if (df$rt$intFromRef(anon$3) < df$rt$intFromRef(p$target)) {
         var anon$4: Ref
-        anon$4 := f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int(p$arr,
+        anon$4 := f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int$T$List(p$arr,
           sp$plusInts(l0$mid, df$rt$intToRef(1)), l0$size)
-        ret$0 := f$mid_increased_by_one$TF$T$List$T$Int(anon$4, p$target)
+        ret$0 := f$mid_increased_by_one$TF$T$List$T$Int$T$Boolean(anon$4, p$target)
       } else {
         var anon$5: Ref
-        anon$5 := f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int(p$arr,
+        anon$5 := f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int$T$List(p$arr,
           df$rt$intToRef(0), l0$mid)
-        ret$0 := f$mid_increased_by_one$TF$T$List$T$Int(anon$5, p$target)
+        ret$0 := f$mid_increased_by_one$TF$T$List$T$Int$T$Boolean(anon$5, p$target)
       }
     }
   }
@@ -49,7 +51,7 @@ method f$mid_increased_by_one$TF$T$List$T$Int(p$arr: Ref, p$target: Ref)
   label lbl$ret$0
 }
 
-method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int(this$dispatch: Ref,
+method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(this$dispatch: Ref,
   p$index: Ref)
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
@@ -64,7 +66,7 @@ method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int(this$dispatch: Ref,
     old(df$rt$intFromRef(this$dispatch.sp$size))
 
 
-method f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List(this$dispatch: Ref)
+method f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List$T$Boolean(this$dispatch: Ref)
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
   requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
@@ -79,7 +81,7 @@ method f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List(this$dispatch: Ref)
     df$rt$intFromRef(this$dispatch.sp$size) > 0
 
 
-method f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int(this$dispatch: Ref,
+method f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int$T$List(this$dispatch: Ref,
   p$fromIndex: Ref, p$toIndex: Ref)
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
@@ -105,7 +107,7 @@ method f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int(this$dispat
 /binary_search.kt:(511,531): info: Generated Viper text for mid_decreased_by_one:
 field sp$size: Ref
 
-method f$mid_decreased_by_one$TF$T$List$T$Int(p$arr: Ref, p$target: Ref)
+method f$mid_decreased_by_one$TF$T$List$T$Int$T$Boolean(p$arr: Ref, p$target: Ref)
   returns (ret$0: Ref)
   requires acc(p$arr.sp$size, write)
   requires df$rt$intFromRef(p$arr.sp$size) >= 0
@@ -125,27 +127,29 @@ method f$mid_decreased_by_one$TF$T$List$T$Int(p$arr: Ref, p$target: Ref)
   anon$0 := p$arr.sp$size
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
   l0$mid := sp$minusInts(sp$divInts(anon$0, df$rt$intToRef(2)), df$rt$intToRef(1))
-  anon$1 := f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List(p$arr)
+  anon$1 := f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List$T$Boolean(p$arr)
   if (df$rt$boolFromRef(anon$1)) {
     ret$0 := df$rt$boolToRef(false)
   } else {
     var anon$2: Ref
-    anon$2 := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int(p$arr, l0$mid)
+    anon$2 := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(p$arr,
+      l0$mid)
     if (df$rt$intFromRef(anon$2) == df$rt$intFromRef(p$target)) {
       ret$0 := df$rt$boolToRef(true)
     } else {
       var anon$3: Ref
-      anon$3 := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int(p$arr, l0$mid)
+      anon$3 := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(p$arr,
+        l0$mid)
       if (df$rt$intFromRef(anon$3) < df$rt$intFromRef(p$target)) {
         var anon$4: Ref
-        anon$4 := f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int(p$arr,
+        anon$4 := f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int$T$List(p$arr,
           sp$plusInts(l0$mid, df$rt$intToRef(1)), l0$size)
-        ret$0 := f$mid_decreased_by_one$TF$T$List$T$Int(anon$4, p$target)
+        ret$0 := f$mid_decreased_by_one$TF$T$List$T$Int$T$Boolean(anon$4, p$target)
       } else {
         var anon$5: Ref
-        anon$5 := f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int(p$arr,
+        anon$5 := f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int$T$List(p$arr,
           df$rt$intToRef(0), l0$mid)
-        ret$0 := f$mid_decreased_by_one$TF$T$List$T$Int(anon$5, p$target)
+        ret$0 := f$mid_decreased_by_one$TF$T$List$T$Int$T$Boolean(anon$5, p$target)
       }
     }
   }
@@ -153,7 +157,7 @@ method f$mid_decreased_by_one$TF$T$List$T$Int(p$arr: Ref, p$target: Ref)
   label lbl$ret$0
 }
 
-method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int(this$dispatch: Ref,
+method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(this$dispatch: Ref,
   p$index: Ref)
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
@@ -168,7 +172,7 @@ method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int(this$dispatch: Ref,
     old(df$rt$intFromRef(this$dispatch.sp$size))
 
 
-method f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List(this$dispatch: Ref)
+method f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List$T$Boolean(this$dispatch: Ref)
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
   requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
@@ -183,7 +187,7 @@ method f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List(this$dispatch: Ref)
     df$rt$intFromRef(this$dispatch.sp$size) > 0
 
 
-method f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int(this$dispatch: Ref,
+method f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int$T$List(this$dispatch: Ref,
   p$fromIndex: Ref, p$toIndex: Ref)
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
@@ -209,7 +213,8 @@ method f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int(this$dispat
 /binary_search.kt:(932,964): info: Generated Viper text for mid_decreased_by_one_in_rec_call:
 field sp$size: Ref
 
-method f$mid_decreased_by_one_in_rec_call$TF$T$List$T$Int(p$arr: Ref, p$target: Ref)
+method f$mid_decreased_by_one_in_rec_call$TF$T$List$T$Int$T$Boolean(p$arr: Ref,
+  p$target: Ref)
   returns (ret$0: Ref)
   requires acc(p$arr.sp$size, write)
   requires df$rt$intFromRef(p$arr.sp$size) >= 0
@@ -229,28 +234,30 @@ method f$mid_decreased_by_one_in_rec_call$TF$T$List$T$Int(p$arr: Ref, p$target: 
   anon$0 := p$arr.sp$size
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
   l0$mid := sp$divInts(anon$0, df$rt$intToRef(2))
-  anon$1 := f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List(p$arr)
+  anon$1 := f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List$T$Boolean(p$arr)
   if (df$rt$boolFromRef(anon$1)) {
     ret$0 := df$rt$boolToRef(false)
   } else {
     var anon$2: Ref
-    anon$2 := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int(p$arr, l0$mid)
+    anon$2 := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(p$arr,
+      l0$mid)
     if (df$rt$intFromRef(anon$2) == df$rt$intFromRef(p$target)) {
       ret$0 := df$rt$boolToRef(true)
     } else {
       var anon$3: Ref
-      anon$3 := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int(p$arr, l0$mid)
+      anon$3 := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(p$arr,
+        l0$mid)
       if (df$rt$intFromRef(anon$3) < df$rt$intFromRef(p$target)) {
         var anon$4: Ref
-        anon$4 := f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int(p$arr,
+        anon$4 := f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int$T$List(p$arr,
           sp$plusInts(l0$mid, df$rt$intToRef(1)), l0$size)
-        ret$0 := f$mid_decreased_by_one_in_rec_call$TF$T$List$T$Int(anon$4,
+        ret$0 := f$mid_decreased_by_one_in_rec_call$TF$T$List$T$Int$T$Boolean(anon$4,
           p$target)
       } else {
         var anon$5: Ref
-        anon$5 := f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int(p$arr,
+        anon$5 := f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int$T$List(p$arr,
           df$rt$intToRef(0), sp$minusInts(l0$mid, df$rt$intToRef(1)))
-        ret$0 := f$mid_decreased_by_one_in_rec_call$TF$T$List$T$Int(anon$5,
+        ret$0 := f$mid_decreased_by_one_in_rec_call$TF$T$List$T$Int$T$Boolean(anon$5,
           p$target)
       }
     }
@@ -259,7 +266,7 @@ method f$mid_decreased_by_one_in_rec_call$TF$T$List$T$Int(p$arr: Ref, p$target: 
   label lbl$ret$0
 }
 
-method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int(this$dispatch: Ref,
+method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(this$dispatch: Ref,
   p$index: Ref)
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
@@ -274,7 +281,7 @@ method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int(this$dispatch: Ref,
     old(df$rt$intFromRef(this$dispatch.sp$size))
 
 
-method f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List(this$dispatch: Ref)
+method f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List$T$Boolean(this$dispatch: Ref)
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
   requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
@@ -289,7 +296,7 @@ method f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List(this$dispatch: Ref)
     df$rt$intFromRef(this$dispatch.sp$size) > 0
 
 
-method f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int(this$dispatch: Ref,
+method f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int$T$List(this$dispatch: Ref,
   p$fromIndex: Ref, p$toIndex: Ref)
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
@@ -315,7 +322,7 @@ method f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int(this$dispat
 /binary_search.kt:(1405,1425): info: Generated Viper text for unsafe_binary_search:
 field sp$size: Ref
 
-method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int(this$dispatch: Ref,
+method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(this$dispatch: Ref,
   p$index: Ref)
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
@@ -330,8 +337,8 @@ method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int(this$dispatch: Ref,
     old(df$rt$intFromRef(this$dispatch.sp$size))
 
 
-method f$unsafe_binary_search$TF$T$List$T$Int$T$Int$T$Int(p$arr: Ref, p$target: Ref,
-  p$left: Ref, p$right: Ref)
+method f$unsafe_binary_search$TF$T$List$T$Int$T$Int$T$Int$T$Boolean(p$arr: Ref,
+  p$target: Ref, p$left: Ref, p$right: Ref)
   returns (ret$0: Ref)
   requires acc(p$arr.sp$size, write)
   requires df$rt$intFromRef(p$arr.sp$size) >= 0
@@ -351,18 +358,20 @@ method f$unsafe_binary_search$TF$T$List$T$Int$T$Int$T$Int(p$arr: Ref, p$target: 
     goto lbl$ret$0
   }
   l0$mid := sp$plusInts(p$left, sp$divInts(sp$minusInts(p$right, p$left), df$rt$intToRef(2)))
-  anon$0 := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int(p$arr, l0$mid)
+  anon$0 := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(p$arr,
+    l0$mid)
   if (df$rt$intFromRef(anon$0) == df$rt$intFromRef(p$target)) {
     ret$0 := df$rt$boolToRef(true)
   } else {
     var anon$1: Ref
-    anon$1 := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int(p$arr, l0$mid)
+    anon$1 := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(p$arr,
+      l0$mid)
     if (df$rt$intFromRef(anon$1) < df$rt$intFromRef(p$target)) {
-      ret$0 := f$unsafe_binary_search$TF$T$List$T$Int$T$Int$T$Int(p$arr, p$target,
-        sp$plusInts(l0$mid, df$rt$intToRef(1)), p$right)
+      ret$0 := f$unsafe_binary_search$TF$T$List$T$Int$T$Int$T$Int$T$Boolean(p$arr,
+        p$target, sp$plusInts(l0$mid, df$rt$intToRef(1)), p$right)
     } else {
-      ret$0 := f$unsafe_binary_search$TF$T$List$T$Int$T$Int$T$Int(p$arr, p$target,
-        p$left, sp$minusInts(l0$mid, df$rt$intToRef(1)))}
+      ret$0 := f$unsafe_binary_search$TF$T$List$T$Int$T$Int$T$Int$T$Boolean(p$arr,
+        p$target, p$left, sp$minusInts(l0$mid, df$rt$intToRef(1)))}
   }
   goto lbl$ret$0
   label lbl$ret$0

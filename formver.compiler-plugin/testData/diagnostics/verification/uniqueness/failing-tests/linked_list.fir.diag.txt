@@ -21,7 +21,7 @@ predicate p$c$Link$unique(this$dispatch: Ref) {
   df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$next), df$rt$nullable(df$rt$c$Link()))
 }
 
-method f$getVal$TF$T$Link(p$l: Ref) returns (ret$0: Ref)
+method f$getVal$TF$T$Link$NT$Int(p$l: Ref) returns (ret$0: Ref)
   requires acc(p$c$Link$unique(p$l), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
 {
@@ -98,7 +98,7 @@ predicate p$pkg$kotlin$c$Cloneable$unique(this$dispatch: Ref) {
   true
 }
 
-method con$c$Link$T$Int$NT$Link(p$data: Ref, p$next: Ref)
+method con$c$Link$T$Int$NT$Link$T$Link(p$data: Ref, p$next: Ref)
   returns (ret: Ref)
   requires p$next != df$rt$nullValue() ==>
     acc(p$c$Link$unique(p$next), write)
@@ -109,7 +109,7 @@ method con$c$Link$T$Int$NT$Link(p$data: Ref, p$next: Ref)
     p$next
 
 
-method f$test$TF$() returns (ret$0: Ref)
+method f$test$TF$T$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$l: Ref
@@ -119,8 +119,8 @@ method f$test$TF$() returns (ret$0: Ref)
   var l0$expr2: Ref
   var anon$2: Ref
   var anon$3: Ref
-  anon$0 := con$c$Link$T$Int$NT$Link(df$rt$intToRef(3), df$rt$nullValue())
-  l0$l := con$c$Link$T$Int$NT$Link(df$rt$intToRef(5), anon$0)
+  anon$0 := con$c$Link$T$Int$NT$Link$T$Link(df$rt$intToRef(3), df$rt$nullValue())
+  l0$l := con$c$Link$T$Int$NT$Link$T$Link(df$rt$intToRef(5), anon$0)
   inhale acc(l0$l.bf$data, write)
   anon$1 := l0$l.bf$data
   exhale acc(l0$l.bf$data, write)
