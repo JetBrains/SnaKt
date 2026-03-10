@@ -34,14 +34,8 @@ method f$impureExtension$TF$T$Field(this$extension: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/wrongly_annotated.kt:(423,530): error: An internal error has occurred.
-Details: Impure function body detected in pure function
-Please report this at https://github.com/jesyspa/kotlin
+/wrongly_annotated.kt:(423,530): error: Impure function body detected in pure function
 
-/wrongly_annotated.kt:(532,599): error: An internal error has occurred.
-Details: Impure function body detected in pure function
-Please report this at https://github.com/jesyspa/kotlin
+/wrongly_annotated.kt:(532,599): error: Impure function body detected in pure function
 
-/wrongly_annotated.kt:(634,758): error: An internal error has occurred.
-Details: Impure function body detected in pure function
-Please report this at https://github.com/jesyspa/kotlin
+/wrongly_annotated.kt:(634,758): error: Impure function body detected in pure function
