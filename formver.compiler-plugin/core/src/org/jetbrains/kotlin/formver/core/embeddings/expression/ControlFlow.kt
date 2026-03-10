@@ -26,14 +26,21 @@ import org.jetbrains.kotlin.formver.viper.ast.Stmt
 
 private data class BlockImpl(override val exps: List<ExpEmbedding>) : Block
 
+/** Creates a [Block] from a vararg list of expressions. */
 fun blockOf(vararg exps: ExpEmbedding): Block = BlockImpl(exps.toList())
 
+/** Converts a list of expressions into a [Block]. */
 fun List<ExpEmbedding>.toBlock(): Block = BlockImpl(this)
 
+/** Builds a [Block] using a list-builder lambda. */
 fun Block(actions: MutableList<ExpEmbedding>.() -> Unit): Block = BlockImpl(buildList {
     actions()
 })
 
+/**
+ * A sequential block of expressions evaluated for side effects, with the last expression
+ * providing the result and type. An empty block has type `Unit`.
+ */
 sealed interface Block : OptionalResultExpEmbedding {
     val exps: List<ExpEmbedding>
     override val type: TypeEmbedding
@@ -56,6 +63,11 @@ sealed interface Block : OptionalResultExpEmbedding {
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitBlock(this)
 }
 
+/**
+ * A conditional expression with a boolean [condition] and two branches.
+ * The [type] must be supplied explicitly as the common type of both branches.
+ * Lowered to a Viper `if`/`else` statement via [LinearizationContext.addBranch].
+ */
 data class If(
     val condition: ExpEmbedding,
     val thenBranch: ExpEmbedding,
@@ -74,6 +86,14 @@ data class If(
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitIf(this)
 }
 
+/**
+ * A while-loop embedding.
+ *
+ * Lowered to a Viper `if` guarded by [condition] with a body that jumps back to the
+ * [continueLabel] (the loop head). The [breakLabel] marks the exit point after the loop.
+ * [invariants] are asserted via `assert` statements after the loop body (pending a Viper
+ * version upgrade that supports native loop invariants — see TODO in [toViperSideEffects]).
+ */
 data class While(
     val condition: ExpEmbedding,
     val body: ExpEmbedding,
@@ -122,6 +142,7 @@ data class While(
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitWhile(this)
 }
 
+/** An unconditional jump to [target]. Has type `Nothing` since control never continues past it. */
 data class Goto(val target: LabelLink) : NoResultExpEmbedding, DefaultDebugTreeViewImplementation {
     override val type: TypeEmbedding = buildType { nothing() }
     override fun toViperUnusedResult(ctx: LinearizationContext) {
@@ -138,7 +159,10 @@ data class Goto(val target: LabelLink) : NoResultExpEmbedding, DefaultDebugTreeV
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitGoto(this)
 }
 
-// Using this name to avoid clashes with all our other `Label` types.
+/**
+ * An expression that emits a Viper label statement at the current position.
+ * Named `LabelExp` to avoid clashing with other `Label`-named types in the codebase.
+ */
 data class LabelExp(val label: LabelEmbedding) : UnitResultExpEmbedding {
     override fun toViperSideEffects(ctx: LinearizationContext) {
         ctx.addLabel(label.toViper(ctx))
@@ -152,9 +176,8 @@ data class LabelExp(val label: LabelEmbedding) : UnitResultExpEmbedding {
 }
 
 /**
- * An expression that optionally has a label and that uses a goto to exit.
- *
- * The result of the intermediate expression is stored.
+ * A node in a goto-chain: optionally emits [label], evaluates [exp] storing its result, then
+ * unconditionally jumps to [next]. Used to link SSA blocks in sequence.
  */
 data class GotoChainNode(val label: LabelEmbedding?, val exp: ExpEmbedding, val next: LabelLink) :
     OptionalResultExpEmbedding {
@@ -176,6 +199,10 @@ data class GotoChainNode(val label: LabelEmbedding?, val exp: ExpEmbedding, val 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitGotoChainNode(this)
 }
 
+/**
+ * Wraps [exp] in a non-deterministic branch: lowered to a Viper `if (*)` so the expression
+ * may or may not execute. Used to model optional side effects without committing to a path.
+ */
 data class NonDeterministically(val exp: ExpEmbedding) : UnitResultExpEmbedding, DefaultDebugTreeViewImplementation {
     override fun toViperSideEffects(ctx: LinearizationContext) {
         ctx.addStatement {
@@ -191,7 +218,13 @@ data class NonDeterministically(val exp: ExpEmbedding) : UnitResultExpEmbedding,
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitNonDeterministically(this)
 }
 
-// Note: this is always a *real* Viper method call.
+/**
+ * A call to a Viper `method` (not a Viper `function`).
+ *
+ * Always generates a Viper method-call statement via [NamedFunctionSignature.toMethodCall].
+ * The result is written into a fresh variable supplied by [StoredResultExpEmbedding].
+ * Contrast with [FunctionCall], which emits a pure Viper function-application expression.
+ */
 data class MethodCall(val method: NamedFunctionSignature, val args: List<ExpEmbedding>) : StoredResultExpEmbedding {
     override val type: TypeEmbedding = method.callableType.returnType
 
@@ -218,6 +251,12 @@ data class MethodCall(val method: NamedFunctionSignature, val args: List<ExpEmbe
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitMethodCall(this)
 }
 
+/**
+ * A call to a Viper `function` (pure, expression-level).
+ *
+ * Emits a Viper function-application expression via [NamedFunctionSignature.toFuncApp].
+ * Contrast with [MethodCall], which emits a statement-level Viper method call.
+ */
 data class FunctionCall(val function: NamedFunctionSignature, val args: List<ExpEmbedding>) : DirectResultExpEmbedding {
     override val type: TypeEmbedding = function.callableType.returnType
 
@@ -234,7 +273,11 @@ data class FunctionCall(val function: NamedFunctionSignature, val args: List<Exp
 }
 
 /**
- * We need to generate a fresh variable here since we want to havoc the result.
+ * Represents a call through a first-class function object (e.g. a lambda or function reference).
+ *
+ * Because the exact callee is unknown statically, the result is havoc'd: a fresh anonymous
+ * variable of [type] is created and its invariants are inhaled. The receiver and arguments
+ * are evaluated for side effects but their values are discarded.
  *
  * TODO: do this with an explicit havoc in `toViperMaybeStoringIn`.
  */
@@ -267,6 +310,19 @@ data class InvokeFunctionObject(
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitInvokeFunctionObject(this)
 }
 
+/**
+ * The top-level wrapper for a non-pure (Viper method) function body.
+ *
+ * On linearization:
+ * 1. For each formal parameter, inhales its `provenInvariants` (runtime type) and
+ *    `sharedPredicateAccessInvariant` (heap permissions) so the body can rely on them.
+ *    Note: `@Pure` functions instead receive these as `requires` preconditions, since
+ *    pure Viper functions cannot contain statements.
+ * 2. Linearizes [body].
+ * 3. Emits [returnLabel] so that `return` expressions inside [body] can jump here.
+ *
+ * [signature] is nullable to support anonymous/lambda bodies that have no named signature.
+ */
 data class FunctionExp(
     val signature: FullNamedFunctionSignature?,
     val body: ExpEmbedding,
@@ -304,6 +360,12 @@ data class FunctionExp(
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitFunctionExp(this)
 }
 
+/**
+ * The Elvis operator (`left ?: right`).
+ *
+ * If [left] is non-null it is used as the result; otherwise [right] is evaluated and used.
+ * Lowered to an [If] conditioned on a null-check of [left].
+ */
 data class Elvis(val left: ExpEmbedding, val right: ExpEmbedding, override val type: TypeEmbedding) :
     StoredResultExpEmbedding,
     DefaultDebugTreeViewImplementation {
@@ -321,6 +383,12 @@ data class Elvis(val left: ExpEmbedding, val right: ExpEmbedding, override val t
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitElvis(this)
 }
 
+/**
+ * A `return` expression that transfers [returnExp] to [target] and jumps to the target's label.
+ *
+ * Has type `Nothing` because control never falls through. Used for both plain `return` and
+ * labelled `return@label` expressions; the correct [ReturnTarget] is resolved during conversion.
+ */
 data class Return(
     val returnExp: ExpEmbedding, val target: ReturnTarget
 ) : OptionalResultExpEmbedding {

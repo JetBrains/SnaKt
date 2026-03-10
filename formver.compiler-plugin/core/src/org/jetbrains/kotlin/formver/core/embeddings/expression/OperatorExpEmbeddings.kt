@@ -242,7 +242,7 @@ object OperatorExpEmbeddings {
 
     val allTemplates
         get() = listOf(
-            AddIntInt, SubIntInt, MulIntInt, DivIntInt, RemIntInt,
+            AddIntInt, SubIntInt, MulIntInt, DivIntInt, RemIntInt, NegInt,
             LeIntInt, GeIntInt, LtIntInt, GtIntInt,
             Not, And, Or, Implies,
             AddCharInt, SubCharChar, SubCharInt,
