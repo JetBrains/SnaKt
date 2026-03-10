@@ -281,7 +281,7 @@ fun StmtConversionContext.convertFunctionWithBody(
         }
         return null
     }
-    val pureLinearizer = PureLinearizer(declaration.source)
+    val pureLinearizer = PureLinearizer(declaration.source, SharedLinearizationState(anonVarProducer))
     body.toViperUnusedResult(pureLinearizer)
     return pureLinearizer.constructExpression()
 }
