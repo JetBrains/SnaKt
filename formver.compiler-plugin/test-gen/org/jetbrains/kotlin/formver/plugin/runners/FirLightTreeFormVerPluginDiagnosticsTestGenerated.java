@@ -495,6 +495,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
+    @TestMetadata("nullability_operations.kt")
+    public void testNullability_operations() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/nullability_operations.kt");
+    }
+
+    @Test
     @TestMetadata("stdlib_replacement_tests.kt")
     public void testStdlib_replacement_tests() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/stdlib_replacement_tests.kt");
