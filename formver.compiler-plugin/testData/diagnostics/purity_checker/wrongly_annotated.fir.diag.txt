@@ -1,4 +1,4 @@
-/wrongly_annotated.kt:(54,64): info: Generated Viper text for iAmAMethod:
+/wrongly_annotated.kt:(53,63): info: Generated Viper text for iAmAMethod:
 method f$iAmAMethod$TF$() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -7,6 +7,35 @@ method f$iAmAMethod$TF$() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/wrongly_annotated.kt:(91,162): error: An internal error has occurred.
-Details: Impure function body detected in pure function
-Please report this at https://github.com/jesyspa/kotlin
+/wrongly_annotated.kt:(89,160): error: Impure function body detected in pure function
+
+/wrongly_annotated.kt:(162,239): error: Impure function body detected in pure function
+
+/wrongly_annotated.kt:(270,368): error: Impure function body detected in pure function
+
+/wrongly_annotated.kt:(380,395): info: Generated Viper text for impureExtension:
+field bf$value: Ref
+
+method f$impureExtension$TF$T$Field(this$extension: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$Field())
+  inhale acc(p$c$Field$shared(this$extension), wildcard)
+  inhale acc(this$extension.bf$value, write)
+  anon$0 := this$extension.bf$value
+  exhale acc(this$extension.bf$value, write)
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
+  inhale acc(this$extension.bf$value, write)
+  this$extension.bf$value := sp$plusInts(anon$0, df$rt$intToRef(1))
+  exhale acc(this$extension.bf$value, write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/wrongly_annotated.kt:(423,530): error: Impure function body detected in pure function
+
+/wrongly_annotated.kt:(532,599): error: Impure function body detected in pure function
+
+/wrongly_annotated.kt:(634,758): error: Impure function body detected in pure function

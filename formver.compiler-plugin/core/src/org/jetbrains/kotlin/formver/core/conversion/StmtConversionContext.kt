@@ -14,7 +14,9 @@ import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.isBoolean
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyConversionResult
 import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.InvalidFunctionBodyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.LabelEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FullNamedFunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
@@ -242,7 +244,7 @@ fun StmtConversionContext.convertMethodWithBody(
     declaration: FirSimpleFunction,
     signature: FullNamedFunctionSignature,
     returnTarget: ReturnTarget,
-): FunctionBodyEmbedding? {
+): FunctionBodyConversionResult? {
     val firBody = declaration.body ?: return null
     val body = convert(firBody)
     val bodyExp = FunctionExp(signature, body, returnTarget.label)
@@ -252,25 +254,26 @@ fun StmtConversionContext.convertMethodWithBody(
     // note: we must guarantee somewhere that returned value is Unit
     // as we may not encounter any `return` statement in the body
     returnTarget.variable.withIsUnitInvariantIfUnit().toViperUnusedResult(linearizer)
-
-    // TODO: Stop translation if this check fails
-    body.checkValidity(declaration.source, errorCollector)
-
-    return FunctionBodyEmbedding(seqnBuilder.block, returnTarget, bodyExp)
+    val isValid = body.checkValidity(declaration.source, errorCollector)
+    return if (isValid) {
+        FunctionBodyEmbedding(seqnBuilder.block, returnTarget, bodyExp)
+    } else {
+        InvalidFunctionBodyEmbedding(declaration.source, bodyExp)
+    }
 }
 
 fun StmtConversionContext.convertFunctionWithBody(
     declaration: FirSimpleFunction
-): Exp {
+): Exp? {
     val firBody = declaration.body ?: throw SnaktInternalException(
         declaration.source,
         "Pure functions expect a function body to exist"
     )
     val body = convert(firBody)
-    if (!body.isPure()) throw SnaktInternalException(
-        declaration.source,
-        "Impure function body detected in pure function"
-    )
+    if (!body.isPure()) {
+        errorCollector.addPurityError(declaration.source, "Impure function body detected in pure function")
+        return null
+    }
     val pureLinearizer = PureLinearizer(declaration.source, SharedLinearizationState(anonVarProducer))
     body.toViperUnusedResult(pureLinearizer)
     return pureLinearizer.constructExpression()

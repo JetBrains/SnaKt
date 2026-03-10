@@ -8,17 +8,23 @@ package org.jetbrains.kotlin.formver.core.embeddings.callables
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
+import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.asPosition
+import org.jetbrains.kotlin.formver.core.embeddings.expression.AccEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.PredicateAccessPermissions
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildFunctionPretype
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.core.embeddings.types.nullableAny
+import org.jetbrains.kotlin.formver.core.exhaustiveAll
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.DispatchReceiverName
 import org.jetbrains.kotlin.formver.core.names.FunctionResultVariableName
+import org.jetbrains.kotlin.formver.core.purity.isPure
+import org.jetbrains.kotlin.formver.core.purity.preorder
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
 
@@ -95,18 +101,28 @@ fun FullNamedFunctionSignature.toViperMethod(
 
 fun FullNamedFunctionSignature.toViperFunction(
     body: Exp?,
-) = UserFunction(
-    name,
-    formalArgs.map { it.toLocalVarDecl() },
-    // TODO: Be explicit about the return types of functions instead of boxing them into a Ref
-    Type.Ref,
-    getPreconditions().pureToViper(toBuiltin = true),
-    getPostconditions(
+): UserFunction {
+    val postconditions = getPostconditions(
         PlaceholderVariableEmbedding(
             FunctionResultVariableName,
             this.callableType.returnType
         )
-    ).pureToViper(toBuiltin = true),
-    body,
-    declarationSource.asPosition
-)
+    )
+    postconditions.forEach { postcondition ->
+        val isValid = postcondition.preorder().all { it.first !is AccEmbedding && it.first !is PredicateAccessPermissions}
+        if (!isValid) throw SnaktInternalException(
+            declarationSource,
+            "Postcondition tries to acquire permissions, which is not allowed in a function"
+        )
+    }
+    return UserFunction(
+        name,
+        formalArgs.map { it.toLocalVarDecl() },
+        // TODO: Be explicit about the return types of functions instead of boxing them into a Ref
+        Type.Ref,
+        getPreconditions().pureToViper(toBuiltin = true),
+        postconditions.pureToViper(toBuiltin = true),
+        body,
+        declarationSource.asPosition
+    )
+}
