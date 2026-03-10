@@ -269,9 +269,6 @@ class ProgramConverter(
 
     override fun embedType(type: ConeKotlinType): TypeEmbedding {
         val embeddedType = buildType { embedTypeWithBuilder(type) }
-        havocMethods.putIfAbsent(
-            embeddedType.havocMethodName, embeddedType.havocMethod
-        )
         return embeddedType
     }
 
