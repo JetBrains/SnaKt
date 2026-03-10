@@ -271,14 +271,7 @@ fun StmtConversionContext.convertFunctionWithBody(
     )
     val body = convert(firBody)
     if (!body.isPure()) {
-        when (val source = declaration.source) {
-            null -> throw SnaktInternalException(
-                source,
-                "Pure function body detected in pure function and no source found"
-            )
-
-            else -> errorCollector.addPurityError(source, "Impure function body detected in pure function")
-        }
+        errorCollector.addPurityError(declaration.source, "Impure function body detected in pure function")
         return null
     }
     val pureLinearizer = PureLinearizer(declaration.source, SharedLinearizationState(anonVarProducer))
