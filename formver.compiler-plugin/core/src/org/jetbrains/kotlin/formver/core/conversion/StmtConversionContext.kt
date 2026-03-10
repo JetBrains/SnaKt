@@ -40,53 +40,128 @@ import org.jetbrains.kotlin.utils.filterIsInstanceAnd
 /**
  * Interface for statement conversion.
  *
+ * Extends [MethodConversionContext] with the mutable, statement-level state needed while
+ * walking a FIR function body: the current `when`-subject variable, safe-call subject caching,
+ * active exception catch labels, and loop/scope management.
+ *
+ * All conversion of FIR statements and expressions flows through [convert], which dispatches
+ * to [StmtConversionVisitor].
+ *
  * Naming convention:
  * - Functions that return a new `StmtConversionContext` should describe what change they make (`addResult`, `removeResult`...)
  * - Functions that take a lambda to execute should describe what extra state the lambda will have (`withResult`...)
  */
 interface StmtConversionContext : MethodConversionContext {
+
+    /**
+     * The temporary variable holding the subject of the current `when` expression, if any.
+     * Each branch of the `when` compares against this variable instead of re-evaluating the subject.
+     */
     val whenSubject: VariableEmbedding?
 
     /**
      * In a safe call `callSubject?.foo()` we evaluate the call subject first to check for nullness.
      * In case it is not null, we evaluate the call to `callSubject.foo()`. Here we don't want to evaluate
-     * the `callSubject` again to we store it in the `StmtConversionContext`.
+     * the `callSubject` again so we store it in the `StmtConversionContext`.
      */
     val checkedSafeCallSubject: ExpEmbedding?
+
+    /** The stack of active exception catch labels for the current try-catch nesting. */
     val activeCatchLabels: List<LabelEmbedding>
 
+    /** Returns the Viper label name used as the `continue` target for the given (optional) loop label. */
     fun continueLabelName(targetName: String? = null): SymbolicName
+
+    /** Returns the Viper label name used as the `break` target for the given (optional) loop label. */
     fun breakLabelName(targetName: String? = null): SymbolicName
+
+    /** Registers the Kotlin loop label [targetName] with the current while-loop index. */
     fun addLoopName(targetName: String)
+
+    /**
+     * Converts a single FIR statement or expression into an [ExpEmbedding].
+     * This is the main dispatch point; it delegates to [StmtConversionVisitor].
+     */
     fun convert(stmt: FirStatement): ExpEmbedding
 
+    /**
+     * Executes [action] in a new inner variable scope.
+     * Local variables declared inside [action] are invisible outside it.
+     */
     fun <R> withNewScope(action: StmtConversionContext.() -> R): R
+
+    /**
+     * Executes [action] in a scope that prohibits local variable creation (e.g. a `forall` block).
+     * This is used to enforce that quantifier bodies contain only pure expressions.
+     */
     fun <R> withNoScope(action: StmtConversionContext.() -> R): R
+
+    /**
+     * Executes [action] in a new method conversion context created by [factory].
+     * Used when entering an inlined function body or a lambda body that requires its own
+     * parameter resolver and scope, without changing the outer context.
+     */
     fun <R> withMethodCtx(factory: MethodContextFactory, action: StmtConversionContext.() -> R): R
 
+    /**
+     * Executes [action] in a context that has a fresh while-loop index bound to [label].
+     * The loop index is used to generate unique `continue`/`break` label names.
+     */
     fun <R> withFreshWhile(label: FirLabel?, action: StmtConversionContext.() -> R): R
+
+    /**
+     * Executes [action] with [subject] set as the active `when`-subject variable.
+     * Pass null to clear the subject (e.g. outside a `when` expression).
+     */
     fun <R> withWhenSubject(subject: VariableEmbedding?, action: StmtConversionContext.() -> R): R
+
+    /**
+     * Executes [action] with [subject] stored as the safe-call subject.
+     * Avoids re-evaluating the receiver of a `?.` call when checking for null and invoking the method.
+     */
     fun <R> withCheckedSafeCallSubject(subject: ExpEmbedding?, action: StmtConversionContext.() -> R): R
+
+    /**
+     * Registers [catches] as the active exception handlers, then executes [action].
+     * Returns the [CatchBlockListData] (Viper catch label info) alongside the action's result,
+     * so the caller can wire up the catch branches after converting the try body.
+     */
     fun <R> withCatches(
         catches: List<FirCatch>,
         action: StmtConversionContext.(catchBlockListData: CatchBlockListData) -> R,
     ): Pair<CatchBlockListData, R>
 }
 
+/**
+ * Registers a local property in this context and returns a [Declare] embedding that
+ * allocates the backing variable with an optional [initializer].
+ */
 fun StmtConversionContext.declareLocalProperty(symbol: FirPropertySymbol, initializer: ExpEmbedding?): Declare {
     registerLocalProperty(symbol)
     return Declare(embedLocalProperty(symbol), initializer)
 }
 
+/**
+ * Registers a local variable (e.g. from a destructuring or for-loop) and returns a
+ * [Declare] embedding for it with an optional [initializer].
+ */
 fun StmtConversionContext.declareLocalVariable(symbol: FirVariableSymbol<*>, initializer: ExpEmbedding?): Declare {
     registerLocalVariable(symbol)
     return Declare(embedLocalVariable(symbol), initializer)
 }
 
+/**
+ * Creates a fresh anonymous variable of the given [type] and returns a [Declare] embedding
+ * with an optional [initializer]. Used for temporaries that have no corresponding Kotlin symbol.
+ */
 fun StmtConversionContext.declareAnonVar(type: TypeEmbedding, initializer: ExpEmbedding?): Declare =
     Declare(freshAnonVar(type), initializer)
 
 
+/**
+ * Returns the non-fake property symbols that are valid intersections of this override symbol —
+ * i.e. those with the same `isVal` flag as the override itself.
+ */
 val FirIntersectionOverridePropertySymbol.propertyIntersections
     get() = intersections.filterIsInstanceAnd<FirPropertySymbol> { it.isVal == isVal }
 
@@ -99,6 +174,10 @@ val FirIntersectionOverridePropertySymbol.propertyIntersections
  * 2. final property can't subsume other final property as that means final property
  * is overridden.
  * //TODO: decide if we leave this lookup or consider it unsafe.
+ *
+ * For a regular (non-intersection-override) symbol, returns `this` if it is final and not
+ * custom, or null otherwise. For an [FirIntersectionOverridePropertySymbol], recursively
+ * searches its intersections for the first final, non-custom property.
  */
 fun FirPropertySymbol.findFinalParentProperty(): FirPropertySymbol? =
     if (this !is FirIntersectionOverridePropertySymbol)
@@ -120,6 +199,13 @@ fun FirPropertySymbol.findFinalParentProperty(): FirPropertySymbol? =
  *
  * If final backing field is not found, we lazily create a getter/setter pair for this
  * `FirIntersectionOverrideProperty`.
+ *
+ * Three cases are handled based on the call-site symbol and receiver:
+ * - [FirValueParameterSymbol]: treat the parameter directly as a property access.
+ * - [FirPropertySymbol] with a dispatch receiver: look up the final backing field (if any)
+ *   and wrap as a [ClassPropertyAccess] on the converted receiver.
+ * - [FirPropertySymbol] with an extension receiver: always uses a custom getter/setter via the receiver.
+ * - [FirPropertySymbol] with no receiver: treat as a local property access.
  */
 fun StmtConversionContext.embedPropertyAccess(accessExpression: FirPropertyAccessExpression): PropertyAccessEmbedding =
     when (val calleeSymbol = accessExpression.calleeReference.symbol) {
@@ -148,6 +234,17 @@ fun StmtConversionContext.embedPropertyAccess(accessExpression: FirPropertyAcces
     }
 
 
+/**
+ * Prepares a single call argument for use at an inline call site.
+ *
+ * Lambda arguments are passed through as-is (they will be inlined by the caller).
+ * For all other arguments, type invariants are attached, and if the result is not already
+ * a plain variable, a fresh anonymous variable is declared to hold the value so it is only
+ * evaluated once.
+ *
+ * Returns a [Pair] of an optional [Declare] (null if no temporary is needed) and the
+ * [ExpEmbedding] to use as the argument at the call site.
+ */
 fun StmtConversionContext.argumentDeclaration(
     arg: ExpEmbedding,
     callType: TypeEmbedding
@@ -170,6 +267,13 @@ fun StmtConversionContext.argumentDeclaration(
         }
     }
 
+/**
+ * Prepares all arguments for an inline function call by calling [argumentDeclaration] for each.
+ *
+ * Returns:
+ * - A list of [Declare] nodes for any temporaries that were introduced.
+ * - A list of argument [ExpEmbedding]s to substitute for the callee's formal parameters.
+ */
 fun StmtConversionContext.getInlineFunctionCallArgs(
     args: List<ExpEmbedding>,
     formalArgTypes: List<TypeEmbedding>,
@@ -184,6 +288,25 @@ fun StmtConversionContext.getInlineFunctionCallArgs(
     return Pair(declarations, storedArgs)
 }
 
+/**
+ * Emits the Viper embedding for an inlined function call.
+ *
+ * Inlining works by:
+ * 1. Allocating a fresh [ReturnTarget] variable to capture the inlined function's return value.
+ * 2. Preparing argument temporaries via [getInlineFunctionCallArgs].
+ * 3. Building an [InlineParameterResolver] that maps each formal parameter to the corresponding argument.
+ * 4. Converting the callee's FIR body in a new [MethodConversionContext] (with optional [parentCtx]
+ *    for lambda captures) so that the inlined body's symbol references resolve correctly.
+ * 5. Wrapping the result in a [Block] that declares the return variable, the argument temporaries,
+ *    the inlined body expression, and a unit-invariant guard on the return variable.
+ *
+ * @param calleeSignature The signature of the function being inlined.
+ * @param paramNames The [SubstitutedArgument] keys identifying each formal parameter.
+ * @param args The actual argument expressions at the call site.
+ * @param body The FIR body block of the function being inlined.
+ * @param returnTargetName The label name for `return` statements inside the inlined body.
+ * @param parentCtx An optional parent context for variable capture (e.g. lambda over outer locals).
+ */
 fun StmtConversionContext.insertInlineFunctionCall(
     calleeSignature: FunctionSignature,
     paramNames: List<SubstitutedArgument>,
@@ -214,6 +337,14 @@ fun StmtConversionContext.insertInlineFunctionCall(
 
 /**
  * Insert `ForAllEmbedding` where `forAll` function call was encountered.
+ *
+ * Translates a `forAll { x -> ... }` call into a Viper `forall` quantifier.
+ * A fresh builtin (non-ref) anonymous variable is created for the bound variable [symbol],
+ * and the lambda body [block] is converted in a no-scope context (disallowing local declarations)
+ * with an [InlineParameterResolver] that maps [symbol] to the anonymous variable.
+ *
+ * The block may contain both invariant expressions and `triggers()` calls; both are extracted
+ * via [collectInvariantsAndTriggers] and assembled into a [ForAllEmbedding].
  */
 fun StmtConversionContext.insertForAllFunctionCall(
     symbol: FirValueParameterSymbol,
@@ -238,6 +369,19 @@ fun StmtConversionContext.insertForAllFunctionCall(
     }
 }
 
+/**
+ * Converts a non-pure (regular) function body to a [FunctionBodyEmbedding].
+ *
+ * Steps:
+ * 1. Converts the FIR body to an [ExpEmbedding] via `convert`.
+ * 2. Wraps it in a [FunctionExp] tied to the [returnTarget] label, so that `return` statements
+ *    jump to the correct target.
+ * 3. Runs the [Linearizer] to flatten the embedding into a Viper `Seqn` (statement sequence).
+ * 4. Appends a unit-invariant guard for the return variable (in case no `return` was encountered).
+ * 5. Runs [checkValidity] to validate the embedding tree and collect any errors.
+ *
+ * Returns null if the function has no body (e.g. abstract or external functions).
+ */
 fun StmtConversionContext.convertMethodWithBody(
     declaration: FirSimpleFunction,
     signature: FullNamedFunctionSignature,
@@ -259,6 +403,17 @@ fun StmtConversionContext.convertMethodWithBody(
     return FunctionBodyEmbedding(seqnBuilder.block, returnTarget, bodyExp)
 }
 
+/**
+ * Converts a `@Pure` function body to a single Viper expression ([Exp]).
+ *
+ * Steps:
+ * 1. Requires a non-null FIR body (pure functions must have a visible body).
+ * 2. Converts the FIR body to an [ExpEmbedding] via `convert`.
+ * 3. Asserts the embedding is pure via [isPure]; throws [SnaktInternalException] if not.
+ * 4. Runs [PureLinearizer] (which forbids statement generation) to reduce the embedding
+ *    to a single Viper expression.
+ * 5. Returns the resulting [Exp], which becomes the body of a Viper `function` declaration.
+ */
 fun StmtConversionContext.convertFunctionWithBody(
     declaration: FirSimpleFunction
 ): Exp {
@@ -276,14 +431,26 @@ fun StmtConversionContext.convertFunctionWithBody(
     return pureLinearizer.constructExpression()
 }
 
+// Error message emitted when a non-boolean or non-expression statement appears in an invariant block.
 private const val INVALID_STATEMENT_MSG =
     "Every statement in invariant block must be a pure boolean invariant."
 
+/**
+ * Holds the result of parsing a `forAll { ... }` or loop-invariant block that may contain
+ * both invariant expressions and quantifier trigger expressions.
+ */
 data class InvariantsAndTriggers(
     val invariants: List<ExpEmbedding>,
     val triggers: List<ExpEmbedding>
 )
 
+/**
+ * Converts a [FirBlock] used as a specification clause (e.g. `preconditions { }`,
+ * `postconditions { }`, or `loopInvariants { }`) into a list of [ExpEmbedding]s.
+ *
+ * Every statement in the block must be a boolean expression; non-boolean statements
+ * or non-expression statements cause a hard error via [INVALID_STATEMENT_MSG].
+ */
 fun StmtConversionContext.collectInvariants(block: FirBlock) = buildList {
     block.statements.forEach { stmt ->
         check(stmt is FirExpression && stmt.resolvedType.isBoolean) {
@@ -296,6 +463,9 @@ fun StmtConversionContext.collectInvariants(block: FirBlock) = buildList {
 /**
  * Attempts to extract trigger expressions from a triggers() function call.
  * Returns the list of trigger expressions if this is a triggers() call, or null otherwise.
+ *
+ * The `triggers()` call must have a single varargs argument; each element of the vararg
+ * becomes a Viper quantifier trigger expression.
  */
 private fun StmtConversionContext.tryExtractTriggers(stmt: FirStatement): List<ExpEmbedding>? {
     if (stmt !is FirFunctionCall) return null
@@ -312,6 +482,16 @@ private fun StmtConversionContext.tryExtractTriggers(stmt: FirStatement): List<E
     }
 }
 
+/**
+ * Converts a [FirBlock] that may contain both invariant expressions and `triggers()` calls
+ * into an [InvariantsAndTriggers] result.
+ *
+ * Each statement is first checked with [tryExtractTriggers]; if it is a `triggers()` call,
+ * its arguments are added to the trigger list. Otherwise it is validated as a boolean expression
+ * and added to the invariant list.
+ *
+ * Used for `forall { }` blocks where Viper quantifier triggers can be specified alongside invariants.
+ */
 fun StmtConversionContext.collectInvariantsAndTriggers(block: FirBlock): InvariantsAndTriggers {
     val invariants = mutableListOf<ExpEmbedding>()
     val triggers = mutableListOf<ExpEmbedding>()
@@ -332,4 +512,3 @@ fun StmtConversionContext.collectInvariantsAndTriggers(block: FirBlock): Invaria
 
     return InvariantsAndTriggers(invariants, triggers)
 }
-

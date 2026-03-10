@@ -12,11 +12,13 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.DivIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Implies
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.MulIntInt
+import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.NegInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.StringGet
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubCharChar
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubCharInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubIntInt
+import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.RemIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.UnitLit
 import org.jetbrains.kotlin.formver.core.embeddings.expression.toBlock
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildFunctionPretype
@@ -71,6 +73,9 @@ object SpecialKotlinFunctions {
             addFunction(SpecialPackages.kotlin, className = "Int", name = "div") { args, _ ->
                 DivIntInt(args[0], args[1])
             }
+            addFunction(SpecialPackages.kotlin, className = "Int", name = "rem") { args, _ ->
+                RemIntInt(args[0], args[1])
+            }
         }
 
         val intToIntType = buildFunctionPretype {
@@ -84,6 +89,9 @@ object SpecialKotlinFunctions {
             }
             addFunction(SpecialPackages.kotlin, className = "Int", name = "dec") { args, _ ->
                 SubIntInt(args[0], IntLit(1))
+            }
+            addFunction(SpecialPackages.kotlin, className = "Int", name = "unaryMinus") { args, _ ->
+                NegInt(args[0])
             }
         }
 

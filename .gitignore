@@ -5,3 +5,5 @@
 .kotlin/
 build/
 out/
+.artifacts/
+CLAUDE.md

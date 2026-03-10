@@ -60,6 +60,16 @@ object OperatorExpEmbeddings {
         }
     }
 
+    val NegInt = buildUnaryOperator {
+        setName("negInt")
+        withSignature {
+            withParam { int() }
+            withReturnType { int() }
+        }
+        viperImplementation { Exp.Minus(args[0], pos, info, trafos) }
+    }
+
+
     private val intIntToBooleanType
         get() = buildFunctionPretype {
             withParam { int() }

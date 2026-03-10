@@ -1,0 +1,18 @@
+// test the working sof non-determinism in Viper
+method nonDeterministics(a: Int) returns (r: Int)
+    requires true
+    ensures true
+{
+    var x: Int, lo: Int, hi: Int
+    lo := 0
+    hi := 3
+
+    x := giveMeAnything(lo, hi)
+    
+    assert x == 0 || x == 1 || x == 2
+    assert lo <= x && x < hi
+}
+
+method giveMeAnything(lo: Int, hi: Int) returns (r: Int)
+    requires lo < hi
+    ensures lo <= r && r < hi

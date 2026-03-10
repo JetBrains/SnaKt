@@ -48,7 +48,7 @@ import org.jetbrains.kotlin.utils.addIfNotNull
 /**
  * Convert a statement, emitting the resulting Viper statements and
  * declarations into the context, returning a reference to the
- * expression containing the result.  Note that in the FIR, expressions
+ * expression containing the result. Note that in the FIR, expressions
  * are a subtype of statements.
  *
  * In many cases, we introduce a temporary variable to represent this
@@ -56,14 +56,29 @@ import org.jetbrains.kotlin.utils.addIfNotNull
  * When the result is an lvalue, it is important to return an expression
  * that refers to location, not just the same value, and so introducing
  * a temporary variable for the result is not acceptable in those cases.
+ *
+ * This is a singleton `FirVisitor` that maps every FIR node type to an [ExpEmbedding].
+ * It never produces Viper AST directly — that happens later in the `Linearizer` /
+ * `PureLinearizer` stage. The [StmtConversionContext] passed as `data` carries all mutable
+ * state (scope, loop index, when-subject, etc.) needed during traversal.
+ *
+ * Unsupported FIR nodes are handled by [handleUnimplementedElement], which either throws
+ * or records a minor error depending on [UnsupportedFeatureBehaviour].
  */
 object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>() {
     // Note that in some cases we don't expect to ever implement it: we are only
     // translating statements here, after all.  It isn't 100% clear how best to
     // communicate this.
+    /** Fallback for any FIR node not explicitly handled; delegates to [handleUnimplementedElement]. */
     override fun visitElement(element: FirElement, data: StmtConversionContext): ExpEmbedding =
         handleUnimplementedElement(element.source, "Not yet implemented for $element (${element.source.text})", data)
 
+    /**
+     * Converts a `return` expression.
+     * - A `return Unit` / implicit return maps to [UnitLit].
+     * - All other return values are converted recursively.
+     * The resolved [ReturnTarget] is looked up by label name (null for an unlabelled return).
+     */
     override fun visitReturnExpression(
         returnExpression: FirReturnExpression,
         data: StmtConversionContext,
@@ -78,6 +93,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return Return(expr, target)
     }
 
+    /**
+     * Converts a resolved qualifier (e.g. a companion object reference used as a statement).
+     * Only `Unit`-typed qualifiers are currently supported; anything else is a hard error.
+     */
     override fun visitResolvedQualifier(
         resolvedQualifier: FirResolvedQualifier, data: StmtConversionContext
     ): ExpEmbedding {
@@ -89,9 +108,22 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return UnitLit
     }
 
+    /**
+     * Converts a block by converting each statement in order and collecting the results
+     * into a single [Block] embedding.
+     */
     override fun visitBlock(block: FirBlock, data: StmtConversionContext): ExpEmbedding =
         block.statements.map(data::convert).toBlock()
 
+    /**
+     * Converts a literal constant expression to the corresponding embedding:
+     * - `Int` → [IntLit]
+     * - `Boolean` → [BooleanLit]
+     * - `Char` → [CharLit]
+     * - `String` → [StringLit]
+     * - `null` → [NullLit]
+     * - Other literal kinds → [handleUnimplementedElement]
+     */
     override fun visitLiteralExpression(
         literalExpression: FirLiteralExpression,
         data: StmtConversionContext,
@@ -108,9 +140,14 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         )
     }
 
+    /** Returns the string representation of this literal's value. */
     private val FirLiteralExpression.stringValue: String
         get() = value.toString()
 
+    /**
+     * Converts a string concatenation by joining all literal arguments into a single [StringLit].
+     * Non-literal arguments (e.g. string templates containing expressions) are not yet supported.
+     */
     override fun visitStringConcatenationCall(
         stringConcatenationCall: FirStringConcatenationCall, data: StmtConversionContext
     ): ExpEmbedding {
@@ -125,6 +162,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return StringLit(combinedLiteral)
     }
 
+    /**
+     * Integer literal operator calls (e.g. `1 + 2` where the literal types are resolved at the
+     * call site) are handled identically to regular function calls.
+     */
     override fun visitIntegerLiteralOperatorCall(
         integerLiteralOperatorCall: FirIntegerLiteralOperatorCall,
         data: StmtConversionContext,
@@ -132,11 +173,21 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return visitFunctionCall(integerLiteralOperatorCall, data)
     }
 
+    /**
+     * Returns the pre-stored [StmtConversionContext.whenSubject] variable for a `when` subject reference.
+     * The subject is set by [visitWhenExpression] before branches are converted.
+     */
     override fun visitWhenSubjectExpression(
         whenSubjectExpression: FirWhenSubjectExpression,
         data: StmtConversionContext,
     ): ExpEmbedding = data.whenSubject!!
 
+    /**
+     * Recursively converts the branches of a `when` expression into nested [If] embeddings.
+     * The last branch is either an `else` (mapped to its body directly) or a regular
+     * condition branch (mapped to `If(cond, then, convertRemainingBranches(...))`).
+     * Returns [UnitLit] when no branches remain.
+     */
     private fun convertWhenBranches(
         whenBranches: Iterator<FirWhenBranch>,
         type: TypeEmbedding,
@@ -157,6 +208,13 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
     }
 
+    /**
+     * Converts a `when` expression:
+     * 1. If the `when` has a subject variable, it is declared as a local (or anon) variable.
+     * 2. The subject is set as [StmtConversionContext.whenSubject] for branch conversion.
+     * 3. Branches are converted into nested [If] embeddings via [convertWhenBranches].
+     * 4. The subject declaration (if any) is prepended to the result in a [blockOf].
+     */
     override fun visitWhenExpression(whenExpression: FirWhenExpression, data: StmtConversionContext): ExpEmbedding =
         data.withNewScope {
             val type = data.embedType(whenExpression)
@@ -173,6 +231,11 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             subj?.let { blockOf(it, body) } ?: body
         }
 
+    /**
+     * Converts a property read (`receiver.field` or a local variable reference).
+     * Delegates to [embedPropertyAccess] for the access embedding, then calls `getValue`
+     * to produce the read expression.
+     */
     override fun visitPropertyAccessExpression(
         propertyAccessExpression: FirPropertyAccessExpression,
         data: StmtConversionContext,
@@ -181,6 +244,11 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return propertyAccess.getValue(data)
     }
 
+    /**
+     * Converts an equality comparison (`==` or `!=`).
+     * Both operands are converted and compared with [EqCmp]; `!=` wraps the result in [Not].
+     * Any other operation (e.g. identity `===`) is currently unsupported.
+     */
     override fun visitEqualityOperatorCall(
         equalityOperatorCall: FirEqualityOperatorCall,
         data: StmtConversionContext,
@@ -205,11 +273,24 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
     }
 
+    /**
+     * Wraps two embeddings in an [EqCmp].
+     * TODO: replace with a call to `left.equals()` for proper structural equality.
+     */
     private fun convertEqCmp(left: ExpEmbedding, right: ExpEmbedding): ExpEmbedding {
         //TODO: replace with call to left.equals()
         return EqCmp(left, right)
     }
 
+    /**
+     * Converts an ordering comparison (`<`, `<=`, `>`, `>=`).
+     *
+     * Resolves the `compareTo` callee type to pick the right operator template:
+     * - Int operands → [IntComparisonExpEmbeddingsTemplate]
+     * - Char operands → [CharComparisonExpEmbeddingsTemplate]
+     * - Other types → falls back to converting the `compareTo` call and comparing the
+     *   resulting Int against 0 using the Int template.
+     */
     override fun visitComparisonExpression(
         comparisonExpression: FirComparisonExpression,
         data: StmtConversionContext,
@@ -241,10 +322,12 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return comparisonTemplate.retrieve(comparisonExpression.operation)(left, right)
     }
 
+    /** Selects a [BinaryOperatorExpEmbeddingTemplate] for a given comparison [FirOperation]. */
     private interface ComparisonExpEmbeddingsTemplate {
         fun retrieve(operation: FirOperation): BinaryOperatorExpEmbeddingTemplate
     }
 
+    /** Maps `<`, `<=`, `>`, `>=` to the corresponding Int Viper operator templates. */
     private object IntComparisonExpEmbeddingsTemplate : ComparisonExpEmbeddingsTemplate {
         override fun retrieve(operation: FirOperation) = when (operation) {
             FirOperation.LT -> LtIntInt
@@ -255,6 +338,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
     }
 
+    /** Maps `<`, `<=`, `>`, `>=` to the corresponding Char Viper operator templates. */
     private object CharComparisonExpEmbeddingsTemplate : ComparisonExpEmbeddingsTemplate {
         override fun retrieve(operation: FirOperation) = when (operation) {
             FirOperation.LT -> LtCharChar
@@ -265,6 +349,11 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
     }
 
+    /**
+     * Expands a vararg argument list, converting each element individually.
+     * Vararg arguments are only supported for the `verify()` function; any other use is a hard error.
+     * Non-vararg arguments are converted normally via `data::convert`.
+     */
     private fun List<FirExpression>.withVarargsHandled(data: StmtConversionContext, function: CallableEmbedding?) =
         flatMap { arg ->
             when (arg) {
@@ -282,6 +371,16 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             }
         }
 
+    /**
+     * Converts a function call.
+     *
+     * Two cases:
+     * - **`forAll { }` call**: validated to be inside a specification block, then routed to
+     *   [insertForAllFunctionCall] to produce a [ForAllEmbedding] quantifier.
+     * - **Regular call**: the callee is embedded via `embedAnyFunction` (pure or impure),
+     *   arguments are converted and varargs are expanded, then `insertCall` produces the
+     *   appropriate [FunctionCall] or [MethodCall] embedding.
+     */
     override fun visitFunctionCall(functionCall: FirFunctionCall, data: StmtConversionContext): ExpEmbedding {
         val symbol = functionCall.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
             ?: throw NotImplementedError("Only functions are expected as callables of function calls, got ${functionCall.toResolvedCallableSymbol()}")
@@ -311,6 +410,15 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
     }
 
+    /**
+     * Converts an implicit `invoke` call (calling a lambda or function object via `()`).
+     *
+     * Two cases:
+     * - The receiver resolves to a [LambdaExp] local variable: the lambda is inlined directly
+     *   via `insertCall`.
+     * - Otherwise: wrapped in [InvokeFunctionObject] which calls the generic `invoke` method on
+     *   the function object.
+     */
     override fun visitImplicitInvokeCall(
         implicitInvokeCall: FirImplicitInvokeCall,
         data: StmtConversionContext,
@@ -336,6 +444,12 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
     }
 
+    /**
+     * Converts a local property declaration (`val` / `var`).
+     * Non-local properties should not reach this visitor; they are a hard error.
+     * Registers the property and emits a [Declare] with the converted initializer (if any),
+     * with its type narrowed to the declared type.
+     */
     override fun visitProperty(property: FirProperty, data: StmtConversionContext): ExpEmbedding {
         val symbol = property.symbol
         if (!symbol.isLocal) {
@@ -349,6 +463,16 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return data.declareLocalProperty(symbol, property.initializer?.let { data.convert(it).withType(type) })
     }
 
+    /**
+     * Converts a `while` loop.
+     *
+     * 1. Converts the loop condition.
+     * 2. Collects loop invariants from all in-scope variables (shared predicate access and
+     *    proven invariants) plus any explicit `loopInvariants { }` block in the body.
+     * 3. Converts the loop body in a fresh while-loop scope (which assigns a new index for
+     *    `break`/`continue` labels).
+     * 4. Returns a [While] embedding with the condition, body, break/continue labels, and invariants.
+     */
     override fun visitWhileLoop(whileLoop: FirWhileLoop, data: StmtConversionContext): ExpEmbedding {
         val condition = data.convert(whileLoop.condition).withType { boolean() }
         val invariants = buildList {
@@ -366,6 +490,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
     }
 
+    /**
+     * Converts a `break` expression to a [Goto] targeting the break label of the
+     * innermost (or named) while loop.
+     */
     override fun visitBreakExpression(
         breakExpression: FirBreakExpression,
         data: StmtConversionContext,
@@ -375,6 +503,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return Goto(breakLabel)
     }
 
+    /**
+     * Converts a `continue` expression to a [Goto] targeting the continue label of the
+     * innermost (or named) while loop.
+     */
     override fun visitContinueExpression(
         continueExpression: FirContinueExpression,
         data: StmtConversionContext,
@@ -384,6 +516,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return Goto(continueLabel)
     }
 
+    /**
+     * Converts a desugared assignment value reference (the LHS placeholder in compound
+     * assignments like `x += 1`). Delegates to converting the underlying expression.
+     */
     override fun visitDesugaredAssignmentValueReferenceExpression(
         desugaredAssignmentValueReferenceExpression: FirDesugaredAssignmentValueReferenceExpression,
         data: StmtConversionContext
@@ -391,6 +527,13 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return data.convert(desugaredAssignmentValueReferenceExpression.expressionRef.value)
     }
 
+    /**
+     * Converts a variable assignment (`x = expr` or `obj.field = expr`).
+     *
+     * The lvalue is embedded via [embedPropertyAccess] (handles local variables, backing fields,
+     * and desugared compound assignments). The rvalue is converted, then `setValue` produces
+     * the appropriate [Assign] or [FieldModification] embedding.
+     */
     override fun visitVariableAssignment(
         variableAssignment: FirVariableAssignment,
         data: StmtConversionContext,
@@ -412,6 +555,13 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return embedding.setValue(convertedRValue, data)
     }
 
+    /**
+     * Converts a smart-cast expression.
+     *
+     * If the cast is a simple null-narrowing (e.g. `T?` → `T`), the type is updated without
+     * adding new invariants. Otherwise (e.g. `B` → `A`), access invariants for the target
+     * type are inhaled to inform the verifier of the new type's permissions.
+     */
     override fun visitSmartCastExpression(
         smartCastExpression: FirSmartCastExpression,
         data: StmtConversionContext,
@@ -429,6 +579,11 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
     }
 
+    /**
+     * Converts a short-circuit boolean operator:
+     * - `&&` → [SequentialAnd] (right operand only evaluated if left is true)
+     * - `||` → [SequentialOr] (right operand only evaluated if left is false)
+     */
     override fun visitBooleanOperatorExpression(
         booleanOperatorExpression: FirBooleanOperatorExpression,
         data: StmtConversionContext,
@@ -441,6 +596,17 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
     }
 
+    /**
+     * Converts a `this` receiver expression.
+     *
+     * Resolves the bound symbol to determine which receiver this refers to:
+     * - [FirClassSymbol] → dispatch receiver (`this` in a member function).
+     * - [FirAnonymousFunctionSymbol] → extension receiver of the anonymous function (lambda).
+     * - [FirFunctionSymbol] → extension receiver of the named function.
+     *
+     * If the direct bound symbol doesn't resolve, falls back to the containing declaration symbol
+     * (e.g. for [FirReceiverParameterSymbol] or [FirValueParameterSymbol]).
+     */
     override fun visitThisReceiverExpression(
         thisReceiverExpression: FirThisReceiverExpression,
         data: StmtConversionContext,
@@ -478,6 +644,14 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         throw SnaktInternalException(thisReceiverExpression.source, "No resolution approach to this symbol worked.")
     }
 
+    /**
+     * Converts a type operator call (`is`, `!is`, `as`, `as?`):
+     * - `is T` → [Is]
+     * - `!is T` → `Not(Is(...))`
+     * - `as T` → [Cast] with access + proven invariants inhaled.
+     * - `as? T` → [SafeCast] with access + proven invariants inhaled (nullable result).
+     * - Other operators → [handleUnimplementedElement].
+     */
     override fun visitTypeOperatorCall(
         typeOperatorCall: FirTypeOperatorCall,
         data: StmtConversionContext,
@@ -503,6 +677,11 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
     }
 
+    /**
+     * Converts a lambda expression (anonymous function) into a [LambdaExp].
+     * The lambda is **not** inlined here — inlining happens at the call site when the
+     * lambda is passed to an inline function and [visitImplicitInvokeCall] is reached.
+     */
     override fun visitAnonymousFunctionExpression(
         anonymousFunctionExpression: FirAnonymousFunctionExpression,
         data: StmtConversionContext,
@@ -511,6 +690,22 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return LambdaExp(data.embedFunctionSignature(function.symbol), function, data, function.symbol.label!!.name)
     }
 
+    /**
+     * Converts a `try`/`catch` expression.
+     *
+     * The try body is converted in a context where each catch clause has a registered entry
+     * label. Non-deterministic [Goto]s to all catch entry labels are inserted at the start
+     * and end of the try body to model the possibility of exceptions at any point.
+     *
+     * Each catch clause is then converted as a [GotoChainNode] that:
+     * 1. Begins at its entry label.
+     * 2. Declares the caught exception parameter (uninitialised — its value is unknown).
+     * 3. Converts the catch body.
+     * 4. Jumps to the shared exit label.
+     *
+     * The entire try-catch is assembled as a [Block] of the try body, all catch nodes,
+     * and a final exit [LabelExp].
+     */
     override fun visitTryExpression(tryExpression: FirTryExpression, data: StmtConversionContext): ExpEmbedding {
         val (catchData, tryBody) = data.withCatches(tryExpression.catches) { catchData ->
             withNewScope {
@@ -550,6 +745,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
     }
 
+    /**
+     * Converts an Elvis expression (`lhs ?: rhs`) into an [Elvis] embedding.
+     * Both sides are converted; the result type is the non-nullable union of the two branches.
+     */
     override fun visitElvisExpression(
         elvisExpression: FirElvisExpression,
         data: StmtConversionContext,
@@ -560,6 +759,15 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return Elvis(lhs, rhs, expType)
     }
 
+    /**
+     * Converts a safe call expression (`receiver?.selector`).
+     *
+     * The receiver is evaluated once and shared (via `share`) to avoid double evaluation.
+     * The result is an [If] that:
+     * - Checks `receiver != null`.
+     * - If true: converts the selector with the receiver stored as [StmtConversionContext.checkedSafeCallSubject].
+     * - If false: returns [NullLit].
+     */
     override fun visitSafeCallExpression(
         safeCallExpression: FirSafeCallExpression,
         data: StmtConversionContext,
@@ -579,6 +787,11 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
     }
 
+    /**
+     * Resolves the checked subject of a safe call (the `it` or implicit `this` inside `?.`).
+     * The value was stored in [StmtConversionContext.checkedSafeCallSubject] when entering the
+     * safe-call selector; throws if it is absent (indicates a conversion ordering bug).
+     */
     override fun visitCheckedSafeCallSubject(
         checkedSafeCallSubject: FirCheckedSafeCallSubject,
         data: StmtConversionContext,
@@ -587,6 +800,14 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         "Trying to resolve checked subject $checkedSafeCallSubject which was not captured in StmtConversionContext"
     )
 
+    /**
+     * Handles FIR nodes that do not yet have an embedding.
+     *
+     * Behaviour depends on [UnsupportedFeatureBehaviour]:
+     * - [UnsupportedFeatureBehaviour.THROW_EXCEPTION]: throws [SnaktInternalException] (strict mode).
+     * - [UnsupportedFeatureBehaviour.ASSUME_UNREACHABLE]: records a minor error and returns
+     *   [ErrorExp] so that conversion can continue (lenient mode).
+     */
     private fun handleUnimplementedElement(
         source: KtSourceElement?, msg: String, data: StmtConversionContext
     ): ExpEmbedding = when (data.config.behaviour) {
