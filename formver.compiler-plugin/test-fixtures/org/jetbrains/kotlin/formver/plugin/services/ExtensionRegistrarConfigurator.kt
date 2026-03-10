@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrarAdapter
 import org.jetbrains.kotlin.formver.common.*
 import org.jetbrains.kotlin.formver.plugin.compiler.FormalVerificationPluginExtensionRegistrar
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.ALWAYS_VALIDATE
+import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.DUMP_VIPER_FILES
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.FULL_VIPER_DUMP
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.NEVER_VALIDATE
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.RENDER_PREDICATES
@@ -52,13 +53,16 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
             else -> TargetsSelection.ALL_TARGETS
         }
         val checkUniqueness = UNIQUE_CHECK_ONLY in module.directives
+        val dumpViperFiles = DUMP_VIPER_FILES in module.directives
         val config = PluginConfiguration(
             logLevel,
             errorStyle,
             UnsupportedFeatureBehaviour.THROW_EXCEPTION,
             conversionSelection = conversionSelection,
             verificationSelection = verificationSelection,
-            checkUniqueness = checkUniqueness
+            checkUniqueness = checkUniqueness,
+            dumpViperFiles = dumpViperFiles,
+            projectDir = null,
         )
         FirExtensionRegistrarAdapter.registerExtension(FormalVerificationPluginExtensionRegistrar(config))
     }
@@ -83,6 +87,10 @@ object FormVerDirectives : SimpleDirectivesContainer() {
 
     val UNIQUE_CHECK_ONLY by directive(
         description = "Do uniqueness checking"
+    )
+
+    val DUMP_VIPER_FILES by directive(
+        description = "Write Viper dump files to .formver/ in the project root"
     )
 
     val REPLACE_STDLIB_EXTENSIONS by directive(

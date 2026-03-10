@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.declaration.DeclarationChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirSimpleFunctionChecker
 import org.jetbrains.kotlin.fir.analysis.extensions.FirAdditionalCheckersExtension
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
+import java.nio.file.Path
 
 class PluginAdditionalCheckers(session: FirSession, config: PluginConfiguration) :
     FirAdditionalCheckersExtension(session) {
@@ -19,9 +20,18 @@ class PluginAdditionalCheckers(session: FirSession, config: PluginConfiguration)
         }
     }
 
+    private val viperDumpFileManager: ViperDumpFileManager? =
+        if (config.dumpViperFiles) {
+            val projectDir = config.projectDir?.let { Path.of(it) } ?: Path.of(System.getProperty("user.dir"))
+            ViperDumpFileManager(projectDir)
+        } else null
+
     override val declarationCheckers: DeclarationCheckers = object : DeclarationCheckers() {
         override val simpleFunctionCheckers: Set<FirSimpleFunctionChecker>
-            get() = setOf(ViperPoweredDeclarationChecker(session, config), UniqueDeclarationChecker(session, config))
+            get() = setOf(
+                ViperPoweredDeclarationChecker(session, config, viperDumpFileManager),
+                UniqueDeclarationChecker(session, config),
+            )
     }
 }
 

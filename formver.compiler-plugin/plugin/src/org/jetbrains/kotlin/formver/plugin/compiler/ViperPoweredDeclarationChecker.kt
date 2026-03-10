@@ -48,8 +48,11 @@ private fun TargetsSelection.applicable(declaration: FirSimpleFunction): Boolean
 
 // The main FIR checker. The Kotlin compiler invokes `check()` once per FirSimpleFunction
 // encountered during analysis. This class drives the entire conversion → verification pipeline.
-class ViperPoweredDeclarationChecker(private val session: FirSession, private val config: PluginConfiguration) :
-    FirSimpleFunctionChecker(MppCheckerKind.Common) {
+class ViperPoweredDeclarationChecker(
+    private val session: FirSession,
+    private val config: PluginConfiguration,
+    private val viperDumpFileManager: ViperDumpFileManager?,
+) : FirSimpleFunctionChecker(MppCheckerKind.Common) {
 
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(declaration: FirSimpleFunction) {
@@ -79,7 +82,21 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
                     declaration.source,
                     PluginErrors.VIPER_TEXT,
                     declaration.name.asString(),
-                    with(programConversionContext.nameResolver) { it.toDebugOutput() }
+                    with(programConversionContext.nameResolver) { it.toDebugOutput() },
+                )
+            }
+
+            // Step 4b (optional): File dump — if a ViperDumpFileManager was provided, write the
+            // full Viper program to .formver/<name>.vpr and emit the file URI as a VIPER_FILE diagnostic.
+            viperDumpFileManager?.let { manager ->
+                val declarationName = declaration.name.asString()
+                val dumpText = with(programConversionContext.nameResolver) { program.toDebugOutput() }
+                val fileUri = manager.writeViperDump(declarationName, dumpText)
+                reporter.reportOn(
+                    declaration.source,
+                    PluginErrors.VIPER_FILE,
+                    declarationName,
+                    fileUri.toString(),
                 )
             }
 

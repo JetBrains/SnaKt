@@ -34,7 +34,9 @@ class FormVerGradleSubplugin
         val formVerExtension = project.extensions.getByType(FormVerExtension::class.java)
 
         return project.provider {
-            val options = mutableListOf<SubpluginOption>()
+            val options = mutableListOf<SubpluginOption>(
+                SubpluginOption(FormalVerificationPluginNames.PROJECT_DIR_OPTION_NAME, project.projectDir.absolutePath),
+            )
 
             formVerExtension.myLogLevel?.let {
                 options += SubpluginOption(FormalVerificationPluginNames.LOG_LEVEL_OPTION_NAME, it)
@@ -54,6 +56,10 @@ class FormVerGradleSubplugin
 
             formVerExtension.myVerificationTargetsSelection?.let {
                 options += SubpluginOption(FormalVerificationPluginNames.VERIFICATION_TARGETS_SELECTION_OPTION_NAME, it)
+            }
+
+            formVerExtension.myDumpViperFiles?.let {
+                options += SubpluginOption(FormalVerificationPluginNames.DUMP_VIPER_FILES_OPTION_NAME, it)
             }
 
             options

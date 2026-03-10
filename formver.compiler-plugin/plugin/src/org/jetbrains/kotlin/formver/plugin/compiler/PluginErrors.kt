@@ -15,6 +15,7 @@ import org.jetbrains.kotlin.diagnostics.warning2
 object PluginErrors {
     val VIPER_VERIFICATION_ERROR by warning1<PsiElement, String>()
     val VIPER_TEXT by info2<PsiElement, String, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
+    val VIPER_FILE by info2<PsiElement, String, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
     val EXP_EMBEDDING by info2<PsiElement, String, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
     val INTERNAL_ERROR by error1<PsiElement, String>()
     val MINOR_INTERNAL_ERROR by error1<PsiElement, String>(SourceElementPositioningStrategies.DECLARATION_NAME)

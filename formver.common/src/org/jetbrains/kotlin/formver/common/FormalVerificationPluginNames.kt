@@ -12,4 +12,6 @@ object FormalVerificationPluginNames {
     const val UNSUPPORTED_FEATURE_BEHAVIOUR_OPTION_NAME = "unsupported_feature_behaviour"
     const val CONVERSION_TARGETS_SELECTION_OPTION_NAME = "conversion_targets_selection"
     const val VERIFICATION_TARGETS_SELECTION_OPTION_NAME = "verification_targets_selection"
+    const val DUMP_VIPER_FILES_OPTION_NAME = "dump_viper_files"
+    const val PROJECT_DIR_OPTION_NAME = "project_dir"
 }

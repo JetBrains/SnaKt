@@ -12,6 +12,8 @@ class PluginConfiguration(
     val conversionSelection: TargetsSelection,
     val verificationSelection: TargetsSelection,
     val checkUniqueness: Boolean,
+    val dumpViperFiles: Boolean,
+    val projectDir: String?,
 ) {
     init {
         require(conversionSelection >= verificationSelection) {
@@ -22,5 +24,5 @@ class PluginConfiguration(
     override fun toString(): String =
         "PluginConfiguration(logLevel=$logLevel, errorStyle=$errorStyle, behaviour=$behaviour, " +
         "conversionSelection=$conversionSelection, verificationSelection=$verificationSelection, " +
-        "checkUniqueness=$checkUniqueness)"
+        "checkUniqueness=$checkUniqueness, dumpViperFiles=$dumpViperFiles, projectDir=$projectDir)"
 }

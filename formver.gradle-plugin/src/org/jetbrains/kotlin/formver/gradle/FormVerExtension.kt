@@ -12,6 +12,7 @@ open class FormVerExtension {
     internal var myUnsupportedFeatureBehaviour: String? = null
     internal var myConversionTargetsSelection: String? = null
     internal var myVerificationTargetsSelection: String? = null
+    internal var myDumpViperFiles: String? = null
 
     open fun logLevel(logLevel: String) {
         myLogLevel = logLevel
@@ -31,5 +32,9 @@ open class FormVerExtension {
 
     open fun verificationTargetsSelection(selection: String) {
         myVerificationTargetsSelection = selection
+    }
+
+    open fun dumpViperFiles(dump: Boolean) {
+        myDumpViperFiles = dump.toString()
     }
 }

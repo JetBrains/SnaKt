@@ -40,9 +40,11 @@ class FormalVerificationPluginComponentRegistrar : CompilerPluginRegistrar() {
         )
         // TODO: provide configuration to enable uniqueness checks
         val checkUniqueness = false
+        val dumpViperFiles = configuration.get(FormalVerificationConfigurationKeys.DUMP_VIPER_FILES, false)
+        val projectDir = configuration.get(FormalVerificationConfigurationKeys.PROJECT_DIR)
         val config = PluginConfiguration(
             logLevel, errorStyle, behaviour, conversionSelection, verificationSelection,
-            checkUniqueness
+            checkUniqueness, dumpViperFiles, projectDir,
         )
         configuration.messageCollector.report(CompilerMessageSeverity.INFO, "Formal verification plugin: $config")
         FirExtensionRegistrarAdapter.registerExtension(FormalVerificationPluginExtensionRegistrar(config))

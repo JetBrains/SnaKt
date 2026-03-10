@@ -19,6 +19,12 @@ object FormalVerificationPluginErrorMessages : BaseDiagnosticRendererFactory() {
                 CommonRenderers.STRING,
             )
             map.put(
+                PluginErrors.VIPER_FILE,
+                "Viper dump for {0} written to: {1}",
+                CommonRenderers.STRING,
+                CommonRenderers.STRING,
+            )
+            map.put(
                 PluginErrors.EXP_EMBEDDING,
                 "Generated ExpEmbedding for {0}:\n{1}",
                 CommonRenderers.STRING,

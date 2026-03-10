@@ -9,12 +9,16 @@ import org.jetbrains.kotlin.compiler.plugin.*
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.CompilerConfigurationKey
 import org.jetbrains.kotlin.formver.cli.FormalVerificationConfigurationKeys.CONVERSION_TARGETS_SELECTION
+import org.jetbrains.kotlin.formver.cli.FormalVerificationConfigurationKeys.DUMP_VIPER_FILES
+import org.jetbrains.kotlin.formver.cli.FormalVerificationConfigurationKeys.PROJECT_DIR
 import org.jetbrains.kotlin.formver.cli.FormalVerificationConfigurationKeys.ERROR_STYLE
 import org.jetbrains.kotlin.formver.cli.FormalVerificationConfigurationKeys.LOG_LEVEL
 import org.jetbrains.kotlin.formver.cli.FormalVerificationConfigurationKeys.UNSUPPORTED_FEATURE_BEHAVIOUR
 import org.jetbrains.kotlin.formver.cli.FormalVerificationConfigurationKeys.VERIFICATION_TARGETS_SELECTION
 import org.jetbrains.kotlin.formver.common.*
 import org.jetbrains.kotlin.formver.common.FormalVerificationPluginNames.CONVERSION_TARGETS_SELECTION_OPTION_NAME
+import org.jetbrains.kotlin.formver.common.FormalVerificationPluginNames.DUMP_VIPER_FILES_OPTION_NAME
+import org.jetbrains.kotlin.formver.common.FormalVerificationPluginNames.PROJECT_DIR_OPTION_NAME
 import org.jetbrains.kotlin.formver.common.FormalVerificationPluginNames.ERROR_STYLE_NAME
 import org.jetbrains.kotlin.formver.common.FormalVerificationPluginNames.LOG_LEVEL_OPTION_NAME
 import org.jetbrains.kotlin.formver.common.FormalVerificationPluginNames.UNSUPPORTED_FEATURE_BEHAVIOUR_OPTION_NAME
@@ -30,6 +34,10 @@ object FormalVerificationConfigurationKeys {
         CompilerConfigurationKey.create("conversion targets selection")
     val VERIFICATION_TARGETS_SELECTION: CompilerConfigurationKey<TargetsSelection> =
         CompilerConfigurationKey.create("verification targets selection")
+    val DUMP_VIPER_FILES: CompilerConfigurationKey<Boolean> =
+        CompilerConfigurationKey.create("dump viper files")
+    val PROJECT_DIR: CompilerConfigurationKey<String> =
+        CompilerConfigurationKey.create("project dir")
 }
 
 @OptIn(ExperimentalCompilerApi::class)
@@ -64,6 +72,20 @@ class FormalVerificationCommandLineProcessor : CommandLineProcessor {
             required = false,
             allowMultipleOccurrences = false
         )
+        val DUMP_VIPER_FILES_OPTION = CliOption(
+            DUMP_VIPER_FILES_OPTION_NAME,
+            "<true|false>",
+            "Write Viper dump for each converted function to .formver/ in the project root",
+            required = false,
+            allowMultipleOccurrences = false
+        )
+        val PROJECT_DIR_OPTION = CliOption(
+            PROJECT_DIR_OPTION_NAME,
+            "<path>",
+            "Absolute path to the project directory; set automatically by the Gradle plugin",
+            required = false,
+            allowMultipleOccurrences = false
+        )
     }
 
     override val pluginId: String = FormalVerificationPluginNames.PLUGIN_ID
@@ -72,7 +94,9 @@ class FormalVerificationCommandLineProcessor : CommandLineProcessor {
         ERROR_STYLE_OPTION,
         UNSUPPORTED_FEATURE_BEHAVIOUR_OPTION,
         CONVERSION_TARGETS_SELECTION_OPTION,
-        VERIFICATION_TARGETS_SELECTION_OPTION
+        VERIFICATION_TARGETS_SELECTION_OPTION,
+        DUMP_VIPER_FILES_OPTION,
+        PROJECT_DIR_OPTION,
     )
 
     override fun processOption(option: AbstractCliOption, value: String, configuration: CompilerConfiguration) =
@@ -99,6 +123,12 @@ class FormalVerificationCommandLineProcessor : CommandLineProcessor {
                         VERIFICATION_TARGETS_SELECTION,
                         TargetsSelection.valueOf(value.toUpperCaseAsciiOnly())
                     )
+
+                DUMP_VIPER_FILES_OPTION ->
+                    configuration.put(DUMP_VIPER_FILES, value.toBoolean())
+
+                PROJECT_DIR_OPTION ->
+                    configuration.put(PROJECT_DIR, value)
 
                 else -> throw CliOptionProcessingException("Unknown option: ${option.optionName}")
             }
