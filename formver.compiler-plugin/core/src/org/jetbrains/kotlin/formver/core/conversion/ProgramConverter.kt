@@ -264,12 +264,16 @@ class ProgramConverter(
         // Phase 3
         properties.forEach { processProperty(it, newDetails) }
 
-        newDetails.initHavocMethods()
-
         return embedding
     }
 
-    override fun embedType(type: ConeKotlinType): TypeEmbedding = buildType { embedTypeWithBuilder(type) }
+    override fun embedType(type: ConeKotlinType): TypeEmbedding {
+        val embeddedType = buildType { embedTypeWithBuilder(type) }
+        havocMethods.putIfAbsent(
+            embeddedType.havocMethodName, embeddedType.havocMethod
+        )
+        return embeddedType
+    }
 
     // Note: keep in mind that this function is necessary to resolve the name of the function!
     override fun embedFunctionPretype(symbol: FirFunctionSymbol<*>): FunctionTypeEmbedding = buildFunctionPretype {
