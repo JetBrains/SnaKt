@@ -1,0 +1,48 @@
+/calls_in_place.kt:(742,760): info: Generated Viper text for callFunctionObject:
+method f$callFunctionObject$TF$TF$T$Int(p$g: Ref) returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var anon$0: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$g), df$rt$functionType())
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
+  ret$0 := anon$0
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/calls_in_place.kt:(902,922): info: Generated Viper text for callWithCallsInPlace:
+method f$callWithCallsInPlace$TF$TF$(p$f: Ref) returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+  ensures true
+{
+  var anon$0: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$functionType())
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
+  ret$0 := anon$0
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/calls_in_place.kt:(1123,1138): info: Generated Viper text for callAtLeastOnce:
+method f$callAtLeastOnce$TF$TF$(p$f: Ref) returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  ensures true
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$functionType())
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$unitType())
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$unitType())
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/calls_in_place.kt:(1279,1293): info: Generated Viper text for callAtMostOnce:
+method f$callAtMostOnce$TF$TF$(p$f: Ref) returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  ensures true
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$functionType())
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}

@@ -1,0 +1,73 @@
+/calls_in_place_behavior.kt:(614,638): info: Generated Viper text for inlineLambdaIsVerifiable:
+field bf$size: Ref
+
+method f$inlineLambdaIsVerifiable$TF$() returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
+{
+  var l0$result: Ref
+  var ret$1: Ref
+  var ret$2: Ref
+  var l0$cond: Ref
+  ret$2 := df$rt$intToRef(42)
+  goto lbl$ret$2
+  label lbl$ret$2
+  ret$1 := ret$2
+  goto lbl$ret$1
+  label lbl$ret$1
+  l0$result := ret$1
+  l0$cond := df$rt$boolToRef(df$rt$intFromRef(l0$result) == 42)
+  assert df$rt$boolFromRef(l0$cond)
+  ret$0 := l0$cond
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/calls_in_place_behavior.kt:(1038,1066): info: Generated Viper text for inlineCallsInPlaceVerifiable:
+field bf$size: Ref
+
+method f$inlineCallsInPlaceVerifiable$TF$() returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
+{
+  var l0$result: Ref
+  var ret$1: Ref
+  var ret$2: Ref
+  var l0$cond: Ref
+  ret$2 := sp$plusInts(df$rt$intToRef(7), df$rt$intToRef(3))
+  goto lbl$ret$2
+  label lbl$ret$2
+  ret$1 := ret$2
+  goto lbl$ret$1
+  label lbl$ret$1
+  l0$result := ret$1
+  l0$cond := df$rt$boolToRef(df$rt$intFromRef(l0$result) == 10)
+  assert df$rt$boolFromRef(l0$cond)
+  ret$0 := l0$cond
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/calls_in_place_behavior.kt:(1483,1506): info: Generated Viper text for inlineCaptureVerifiable:
+field bf$size: Ref
+
+method f$inlineCaptureVerifiable$TF$() returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
+{
+  var l0$result: Ref
+  var ret$1: Ref
+  var anon$0: Ref
+  var ret$2: Ref
+  var l0$cond: Ref
+  anon$0 := df$rt$intToRef(5)
+  ret$2 := sp$plusInts(anon$0, df$rt$intToRef(1))
+  goto lbl$ret$2
+  label lbl$ret$2
+  ret$1 := ret$2
+  goto lbl$ret$1
+  label lbl$ret$1
+  l0$result := ret$1
+  l0$cond := df$rt$boolToRef(df$rt$intFromRef(l0$result) == 6)
+  assert df$rt$boolFromRef(l0$cond)
+  ret$0 := l0$cond
+  goto lbl$ret$0
+  label lbl$ret$0
+}
