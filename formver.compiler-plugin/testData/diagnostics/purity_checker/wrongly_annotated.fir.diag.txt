@@ -1,4 +1,4 @@
-/wrongly_annotated.kt:(54,64): info: Generated Viper text for iAmAMethod:
+/wrongly_annotated.kt:(53,63): info: Generated Viper text for iAmAMethod:
 method f$iAmAMethod$TF$T$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -16,7 +16,7 @@ method f$iAmAMethod$TF$T$Int() returns (ret$0: Ref)
 /wrongly_annotated.kt:(380,395): info: Generated Viper text for impureExtension:
 field bf$value: Ref
 
-method f$impureExtension$TF$T$Field(this$extension: Ref)
+method f$impureExtension$TF$T$Field$T$Unit(this$extension: Ref)
   returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
