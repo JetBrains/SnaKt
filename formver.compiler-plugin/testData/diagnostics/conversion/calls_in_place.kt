@@ -22,12 +22,8 @@ fun callsInPlaceOnce(f: () -> Unit) {
     f()
 }
 
-// Function object call: arguments discarded, result is havoc'd.
-fun <!VIPER_TEXT!>callFunctionObject<!>(g: (Int) -> Int): Int {
-    return g(42)
-}
-
 // callsInPlace contract produces no Viper constraints.
+// (Function object havoc behavior is already tested in function_object.kt.)
 @OptIn(ExperimentalContracts::class)
 fun <!VIPER_TEXT!>callWithCallsInPlace<!>(f: () -> Int): Int {
     contract { callsInPlace(f, InvocationKind.EXACTLY_ONCE) }

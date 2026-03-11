@@ -37,6 +37,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
+    @TestMetadata("calls_in_place.kt")
+    public void testCalls_in_place() {
+      runTest("formver.compiler-plugin/testData/diagnostics/conversion/calls_in_place.kt");
+    }
+
+    @Test
     @TestMetadata("do_not_verify.kt")
     public void testDo_not_verify() {
       runTest("formver.compiler-plugin/testData/diagnostics/conversion/do_not_verify.kt");
