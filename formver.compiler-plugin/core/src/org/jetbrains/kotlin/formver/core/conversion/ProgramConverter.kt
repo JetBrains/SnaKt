@@ -32,6 +32,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.names.SimpleNameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
+import org.jetbrains.kotlin.formver.viper.ast.Method
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.formver.viper.debugMangled
 import org.jetbrains.kotlin.utils.addIfNotNull
@@ -59,6 +60,7 @@ class ProgramConverter(
     private val classes: MutableMap<SymbolicName, ClassTypeEmbedding> = mutableMapOf()
     private val properties: MutableMap<SymbolicName, PropertyEmbedding> = mutableMapOf()
     private val fields: MutableSet<FieldEmbedding> = mutableSetOf()
+    private val havocMethods: MutableMap<SymbolicName, Method> = mutableMapOf()
 
     // Cast is valid since we check that values are not null. We specify the type for `filterValues` explicitly to ensure there's no
     // loss of type information earlier.
@@ -89,7 +91,8 @@ class ProgramConverter(
             functions = SpecialFunctions.all +
                     functions.values.mapNotNull { it.viperFunction }.distinctBy { it.name.debugMangled },
             methods = SpecialMethods.all +
-                    methods.values.mapNotNull { it.viperMethod }.distinctBy { it.name.debugMangled },
+                    methods.values.mapNotNull { it.viperMethod }
+                        .distinctBy { it.name.debugMangled } + havocMethods.values,
             predicates = classes.values.flatMap {
                 listOf(
                     it.details.sharedPredicate,
@@ -255,6 +258,13 @@ class ProgramConverter(
             }
         }.toMap())
 
+        // Create Havoc methods for all fields.
+        newDetails.fields.values.forEach {
+            havocMethods.putIfAbsent(
+                it.type.havocMethodName,
+                it.type.havocMethod
+            )
+        }
         // Phase 3
         properties.forEach { processProperty(it, newDetails) }
 
