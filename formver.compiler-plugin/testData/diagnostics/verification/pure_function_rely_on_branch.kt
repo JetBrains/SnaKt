@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.formver.plugin.*
 
 @AlwaysVerify
 @Pure
-fun safeDivide(x: Int, y: Int): Int {
+fun <!VIPER_TEXT!>safeDivide<!>(x: Int, y: Int): Int {
     var res = 0
     if (y != 0) {
         res = x / y
@@ -12,7 +12,7 @@ fun safeDivide(x: Int, y: Int): Int {
 
 @AlwaysVerify
 @Pure
-fun getStringLength(obj: Any): Int {
+fun <!VIPER_TEXT!>getStringLength<!>(obj: Any): Int {
     var len = -1
     if (obj is String) {
         len = obj.length
@@ -22,7 +22,7 @@ fun getStringLength(obj: Any): Int {
 
 @AlwaysVerify
 @Pure
-fun safeNestedDivide(x: Int, y: Int, z: Int): Int {
+fun <!VIPER_TEXT!>safeNestedDivide<!>(x: Int, y: Int, z: Int): Int {
     var res = 0
     if (y != 0) {
         if (z != 0) {
@@ -34,7 +34,7 @@ fun safeNestedDivide(x: Int, y: Int, z: Int): Int {
 
 @AlwaysVerify
 @Pure
-fun safeInverseDifference(x: Int, y: Int): Int {
+fun <!VIPER_TEXT!>safeInverseDifference<!>(x: Int, y: Int): Int {
     var res = 0
     if (x != y) {
         res = 100 / (x - y)
