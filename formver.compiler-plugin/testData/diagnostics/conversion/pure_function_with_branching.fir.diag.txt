@@ -57,7 +57,7 @@ function f$nestedBranching$TF$T$Boolean$T$Boolean$T$Int(p$a: Ref, p$b: Ref): Ref
               (let l0$result$6 ==
                 ((!df$rt$boolFromRef(p$a) ?
                   (df$rt$boolFromRef(p$b) ? l0$result$4 : l0$result$5) :
-                  (df$rt$boolFromRef(p$b) ? l0$result$4 : l0$result$5))) in
+                  null)) in
                 (let l0$result$7 ==
                   ((!df$rt$boolFromRef(p$a) ?
                     sp$plusInts(df$rt$intToRef(6), l0$result$6) :
