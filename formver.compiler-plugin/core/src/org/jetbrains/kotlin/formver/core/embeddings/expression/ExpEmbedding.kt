@@ -41,7 +41,6 @@ sealed interface ExpEmbedding : DebugPrintable {
 
     /**
      * Convert this `ExpEmbedding` into a Viper `Exp` of type `Ref`, using the provided context for auxiliary statements and declarations.
-     * This should never be used for assertions inside Viper's `inhale`, `exhale`, `require`, `assert` etc.
      *
      * The `Exp` returned contains the result of the expression.
      */
