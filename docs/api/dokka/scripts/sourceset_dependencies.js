@@ -1,0 +1,1 @@
+sourceset_dependencies = '{":formver.compiler-plugin:cli/main":[],":formver.compiler-plugin:core/main":[],":formver.compiler-plugin:plugin/main":[],":formver.compiler-plugin:uniqueness/main":[],":formver.gradle-plugin/main":[],":formver.compiler-plugin:viper/main":[],":formver.annotations/main":[],":formver.common/main":[]}'

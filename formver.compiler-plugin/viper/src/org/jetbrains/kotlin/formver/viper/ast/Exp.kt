@@ -8,14 +8,36 @@ package org.jetbrains.kotlin.formver.viper.ast
 import org.jetbrains.kotlin.formver.viper.*
 import viper.silver.ast.*
 
+/**
+ * Marker interface for binary Viper expressions that have a [left] and [right] operand.
+ *
+ * Shared by all arithmetic, comparison, Boolean, and sequence binary operations so that
+ * generic traversal code (e.g. [registerExpNames] in `Program.kt`) can recurse into both
+ * sub-expressions without pattern-matching every individual node.
+ */
 sealed interface BinaryExp : Exp {
     val left: Exp
     val right: Exp
 }
+
+/**
+ * Sealed hierarchy of Viper expressions.
+ *
+ * Each nested class represents one node in the Viper expression language and implements
+ * [IntoSilver] to produce the matching `viper.silver.ast` node for Silicon.
+ *
+ * Every expression carries a [type] (a [Type] instance) and the standard Silver AST metadata
+ * (`pos`, `info`, `trafos`) that are left at their defaults in normal SnaKt usage.
+ *
+ * Kotlin-friendly operator overloads (`+`, `-`, `*`, `/`, `%`, `!`, infix `and`/`or`/`eq`/…)
+ * are defined as extension functions at the bottom of the file for ergonomic expression
+ * construction.
+ */
 sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
 
     val type: Type
 
+    /** Arithmetic negation of [arg]; always has type [Type.Int]. */
     data class Minus(
         val arg: Exp,
         val pos: Position = Position.NoPosition,
@@ -29,6 +51,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
     }
 
     //region Arithmetic Expressions
+    /** Integer addition: `left + right`. */
     data class Add(
         override val left: Exp,
         override val right: Exp,
@@ -42,6 +65,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             Add(left.toSilver(), right.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /** Integer subtraction: `left - right`. */
     data class Sub(
         override val left: Exp,
         override val right: Exp,
@@ -55,6 +79,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             Sub(left.toSilver(), right.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /** Integer multiplication: `left * right`. */
     data class Mul(
         override val left: Exp,
         override val right: Exp,
@@ -68,6 +93,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             Mul(left.toSilver(), right.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /** Integer division: `left \ right` (truncated towards negative infinity in Viper). */
     data class Div(
         override val left: Exp,
         override val right: Exp,
@@ -81,6 +107,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             Div(left.toSilver(), right.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /** Integer modulo: `left % right`. */
     data class Mod(
         override val left: Exp,
         override val right: Exp,
@@ -96,6 +123,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
     //endregion
 
     //region Integer Comparison Expressions
+    /** Integer less-than comparison: `left < right`. Result type is [Type.Bool]. */
     data class LtCmp(
         override val left: Exp,
         override val right: Exp,
@@ -109,6 +137,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             LtCmp(left.toSilver(), right.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /** Integer less-than-or-equal comparison: `left <= right`. Result type is [Type.Bool]. */
     data class LeCmp(
         override val left: Exp,
         override val right: Exp,
@@ -122,6 +151,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             LeCmp(left.toSilver(), right.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /** Integer greater-than comparison: `left > right`. Result type is [Type.Bool]. */
     data class GtCmp(
         override val left: Exp,
         override val right: Exp,
@@ -135,6 +165,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             GtCmp(left.toSilver(), right.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /** Integer greater-than-or-equal comparison: `left >= right`. Result type is [Type.Bool]. */
     data class GeCmp(
         override val left: Exp,
         override val right: Exp,
@@ -150,6 +181,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
     //endregion
 
     //region Boolean Comparison Expressions
+    /** Structural (value) equality: `left == right`. Works on any [Type]; result is [Type.Bool]. */
     data class EqCmp(
         override val left: Exp,
         override val right: Exp,
@@ -163,6 +195,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             EqCmp(left.toSilver(), right.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /** Structural (value) inequality: `left != right`. Works on any [Type]; result is [Type.Bool]. */
     data class NeCmp(
         override val left: Exp,
         override val right: Exp,
@@ -178,6 +211,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
     //endregion
 
     //region Boolean Expressions
+    /** Short-circuit logical conjunction: `left && right`. */
     data class And(
         override val left: Exp,
         override val right: Exp,
@@ -191,6 +225,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             And(left.toSilver(), right.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /** Short-circuit logical disjunction: `left || right`. */
     data class Or(
         override val left: Exp,
         override val right: Exp,
@@ -204,6 +239,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             Or(left.toSilver(), right.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /** Logical implication: `left ==> right`. */
     data class Implies(
         override val left: Exp,
         override val right: Exp,
@@ -217,6 +253,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             Implies(left.toSilver(), right.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /** Logical negation of [arg]. */
     data class Not(
         val arg: Exp,
         val pos: Position = Position.NoPosition,
@@ -231,6 +268,13 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
     //endregion
 
     //region Quantifier Expressions
+    /**
+     * A quantifier trigger (also called a *pattern*) that guides the SMT solver's
+     * instantiation strategy for the enclosing [Forall] or [Exists].
+     *
+     * A trigger is a list of expressions; the solver instantiates the quantifier whenever
+     * all expressions in the list match terms already present in the proof context.
+     */
     class Trigger(
         val exps: List<Exp>,
         val pos: Position = Position.NoPosition,
@@ -242,6 +286,12 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             Trigger(exps.toSilver().toScalaSeq(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /**
+     * Universal quantification over [variables] with optional [triggers] and body [exp].
+     *
+     * Always has type [Type.Bool].  Prefer constructing via [Exp.forall] helper functions
+     * which pass the bound variables as [LocalVar] expressions into the builder lambda.
+     */
     data class Forall(
         val variables: List<Declaration.LocalVarDecl>,
         val triggers: List<Trigger>,
@@ -263,6 +313,11 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             )
     }
 
+    /**
+     * Existential quantification over [variables] with optional [triggers] and body [exp].
+     *
+     * Always has type [Type.Bool].
+     */
     data class Exists(
         val variables: List<Declaration.LocalVarDecl>,
         val triggers: List<Trigger>,
@@ -285,6 +340,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
     }
 
     //region Literals
+    /** A Viper integer literal. The Kotlin [Int] value is converted to a Scala `BigInt` by [toSilver]. */
     data class IntLit(
         val value: Int,
         val pos: Position = Position.NoPosition,
@@ -297,6 +353,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             IntLit(value.toScalaBigInt(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /** The Viper `null` reference literal; always has type [Type.Ref]. */
     data class NullLit(
         val pos: Position = Position.NoPosition,
         val info: Info = Info.NoInfo,
@@ -307,6 +364,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         override fun toSilver(): viper.silver.ast.NullLit = NullLit(pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /** A Boolean literal (`true` or `false`). */
     data class BoolLit(
         val value: Boolean,
         val pos: Position = Position.NoPosition,
@@ -320,6 +378,11 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
     }
     //endregion
 
+    /**
+     * A reference to a local variable with a symbolic [name] and a static [type].
+     *
+     * [name] is mangled to a globally unique Silver identifier during [toSilver] conversion.
+     */
     data class LocalVar(
         val name: SymbolicName,
         override val type: Type,
@@ -332,6 +395,12 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             LocalVar(name.mangled, type.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /**
+     * Heap field read: `rcv.field`.
+     *
+     * The type is derived from the field's declared type.  Reading a field requires the caller
+     * to hold at least read permission to `acc(rcv.field)`.
+     */
     data class FieldAccess(
         val rcv: Exp,
         val field: Field,
@@ -345,6 +414,10 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             FieldAccess(rcv.toSilver(), field.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /**
+     * The special `result` expression used inside Viper function postconditions to refer to
+     * the function's return value.
+     */
     data class Result(
         override val type: Type,
         val pos: Position = Position.NoPosition,
@@ -356,6 +429,12 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             Result(type.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /**
+     * An application of a named Viper (pure) function to [args].
+     *
+     * The return [type] must be supplied explicitly because no function table is available at
+     * AST construction time.
+     */
     data class FuncApp(
         val functionName: SymbolicName,
         val args: List<Exp>,
@@ -406,6 +485,11 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             )
     }
 
+    /**
+     * A Viper sequence literal built from an explicit list of elements: `Seq(e1, e2, …)`.
+     *
+     * The element type is inferred from the first element; all elements must share the same type.
+     */
     data class ExplicitSeq(
         val args: List<Exp>,
         val pos: Position = Position.NoPosition,
@@ -424,6 +508,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         override val type = Type.Seq(args.first().type)
     }
 
+    /** An empty Viper sequence with element type [elementType]: `Seq[T]()`. */
     data class EmptySeq(
         val elementType: Type,
         val pos: Position = Position.NoPosition,
@@ -442,6 +527,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         override val type = Type.Seq(elementType)
     }
 
+    /** Length of sequence [seq]: `|seq|`. Result type is [Type.Int]. */
     data class SeqLength(
         val seq: Exp,
         val pos: Position = Position.NoPosition,
@@ -460,6 +546,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         override val type = Type.Int
     }
 
+    /** Prefix of [seq] up to (but not including) index [idx]: `seq[..idx]`. */
     data class SeqTake(
         val seq: Exp,
         val idx: Exp,
@@ -480,6 +567,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         override val type = seq.type
     }
 
+    /** Element of [seq] at zero-based index [idx]: `seq[idx]`. Result type is [Type.Int]. */
     data class SeqIndex(
         val seq: Exp,
         val idx: Exp,
@@ -500,6 +588,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         override val type = Type.Int
     }
 
+    /** Sequence concatenation: `left ++ right`. Result type matches [left]'s type. */
     data class SeqAppend(
         override val left: Exp,
         override val right: Exp,
@@ -520,6 +609,11 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         override val type = left.type
     }
 
+    /**
+     * Evaluates [exp] in the heap state at method entry (the `old` heap).
+     *
+     * Used in postconditions to refer to pre-call values, e.g. `old(x.f)`.
+     */
     data class Old(
         val exp: Exp,
         val pos: Position = Position.NoPosition,
@@ -532,6 +626,14 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             Old(exp.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /**
+     * An access predicate `acc(P(args), perm)` representing a fractional permission to the
+     * predicate named [predicateName] applied to [formalArgs] with amount [perm].
+     *
+     * [toSilver] always produces a `PredicateAccessPredicate` rather than a bare `PredicateAccess`
+     * because the latter does not work reliably with Silicon when used outside of `acc(…)` context.
+     * The Silver `type` is set to [Type.Bool] for consistency with the Silver type system.
+     */
     data class PredicateAccess(
         val predicateName: SymbolicName,
         val formalArgs: List<Exp>,
@@ -564,6 +666,12 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         }
     }
 
+    /**
+     * Temporarily unfolds [predicateAccess] to evaluate [body], then refolds it.
+     *
+     * Used in pure contexts (Viper functions and specifications) where a `fold`/`unfold`
+     * statement pair is not available.
+     */
     data class Unfolding(
         val predicateAccess: PredicateAccess,
         val body: Exp,
@@ -577,6 +685,12 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             Unfolding(predicateAccess.toSilver(), body.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /**
+     * A field access predicate `acc(rcv.field, perm)` asserting that the caller holds
+     * fractional permission [perm] to the heap location described by [field].
+     *
+     * Serialised as a Silver `FieldAccessPredicate`.  Type is [Type.Bool].
+     */
     data class Acc(
         val field: FieldAccess,
         val perm: PermExp,
@@ -596,6 +710,12 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             )
     }
 
+    /**
+     * A `let … in …` binding that binds [varExp] to [variable] within [body].
+     *
+     * Corresponds to Silver's `let x == (expr) in body` construct.  The type of the whole
+     * expression equals the type of [variable].
+     */
     data class LetBinding(
         val variable: Declaration.LocalVarDecl,
         val varExp: Exp,
@@ -611,6 +731,12 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             Let(variable.toSilver(), varExp.toSilver(), body.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
+    /**
+     * A conditional (ternary) expression: `condExp ? thenExp : elseExp`.
+     *
+     * Corresponds to Silver's `CondExp`.  The [thenExp] and [elseExp] branches must have the
+     * same type; that type becomes the type of the entire expression (asserted at construction time).
+     */
     data class TernaryExp(
         val condExp: Exp,
         val thenExp: Exp,
@@ -628,6 +754,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
 
     // We can't pass all the available position, info, and trafos information here.
     // Living with that seems fine for the moment.
+    /** Convenience shorthand for constructing a [FieldAccess] expression for `this.field`. */
     fun fieldAccess(
         field: Field,
         pos: Position = Position.NoPosition,
@@ -638,6 +765,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
 
     // We can't pass all the available position, info, and trafos information here.
     // Living with that seems fine for the moment.
+    /** Convenience shorthand for constructing an [AccessPredicate.FieldAccessPredicate] for `acc(this.field, permission)`. */
     fun fieldAccessPredicate(
         field: Field,
         permission: PermExp,
@@ -769,6 +897,19 @@ infix fun Exp.implies(other: Exp) = Exp.Implies(this, other)
 fun Int.toExp() = Exp.IntLit(this)
 fun Boolean.toExp() = Exp.BoolLit(this)
 
+/**
+ * Converts a Kotlin primitive value to the corresponding Viper literal expression.
+ *
+ * Supported types:
+ * - `null` → [Exp.NullLit]
+ * - [Int] → [Exp.IntLit]
+ * - [Boolean] → [Exp.BoolLit]
+ * - [Char] → [Exp.IntLit] (using the character code point)
+ * - Empty [String] → [Exp.EmptySeq] of `Int`
+ * - Non-empty [String] → [Exp.ExplicitSeq] of character code-point [Exp.IntLit] nodes
+ *
+ * Throws [IllegalStateException] for any other type.
+ */
 fun Any?.viperLiteral(
     pos: Position = Position.NoPosition,
     info: Info = Info.NoInfo,

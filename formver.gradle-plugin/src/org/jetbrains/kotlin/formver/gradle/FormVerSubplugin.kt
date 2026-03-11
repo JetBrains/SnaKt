@@ -17,6 +17,22 @@ import org.jetbrains.kotlin.gradle.plugin.SubpluginArtifact
 import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
 import javax.inject.Inject
 
+/**
+ * Gradle [KotlinCompilerPluginSupportPlugin] that wires the FormVer compiler plugin into
+ * the Kotlin compilation pipeline.
+ *
+ * Responsibilities:
+ * - Registers the [FormVerExtension] DSL block (`formver { … }`) on the target project.
+ * - Registers [FormVerModelBuilder] with the Gradle tooling API so that IDEs can query
+ *   the plugin's configuration model.
+ * - Translates each property of [FormVerExtension] into a [SubpluginOption] and passes
+ *   the full list to the Kotlin compiler via [applyToCompilation].
+ * - Reports the compiler plugin artifact coordinates (group, name, version) sourced from
+ *   the generated [BuildConfig] so that Gradle can download the plugin from the
+ *   configured repositories.
+ *
+ * The plugin is applicable to every [KotlinCompilation] ([isApplicable] always returns `true`).
+ */
 class FormVerGradleSubplugin
 @Inject internal constructor(
     private val registry: ToolingModelBuilderRegistry,

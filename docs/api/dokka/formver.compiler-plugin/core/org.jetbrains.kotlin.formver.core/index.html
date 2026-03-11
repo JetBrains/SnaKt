@@ -1,0 +1,400 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>org.jetbrains.kotlin.formver.core</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
+                    kotlin-formver
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">0.1.0-SNAPSHOT
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":formver.compiler-plugin:core/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":formver.compiler-plugin:core/main" data-filter=":formver.compiler-plugin:core/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    kotlin-formver
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="package" id="content" pageids="core::org.jetbrains.kotlin.formver.core////PointingToDeclaration//-1777701753">
+  <div class="breadcrumbs"><a href="../index.html">core</a><span class="delimiter">/</span><span class="current">org.jetbrains.kotlin.formver.core</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button><button class="section-tab" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="EXTENSION_PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="-320244571%2FProperties%2F-1777701753" anchor-label="asPosition" id="-320244571%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="as-position.html"><span>as</span><wbr><span><span>Position</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-320244571%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">val </span><span data-unresolved-link="org.jetbrains.kotlin/KtSourceElement///PointingToDeclaration/">KtSourceElement</span><span class="token operator">?</span><span class="token punctuation">.</span><a href="as-position.html">asPosition</a><span class="token operator">: </span><a href="../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-position/index.html">Position</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-628987786%2FProperties%2F-1777701753" anchor-label="asSourceRole" id="-628987786%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="as-source-role.html"><span>as</span><wbr><span>Source</span><wbr><span><span>Role</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-628987786%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">val </span><span data-unresolved-link="org.jetbrains.kotlin.fir.symbols/FirBasedSymbol///PointingToDeclaration/">FirBasedSymbol</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="as-source-role.html">asSourceRole</a><span class="token operator">: </span><a href="../org.jetbrains.kotlin.formver.core.embeddings/-source-role/index.html">SourceRole</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-850307276%2FProperties%2F-1777701753" anchor-label="effects" id="-850307276%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="effects.html"><span><span>effects</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-850307276%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">val </span><span data-unresolved-link="org.jetbrains.kotlin.fir.symbols.impl/FirFunctionSymbol///PointingToDeclaration/">FirFunctionSymbol</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="effects.html">effects</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.contracts/FirEffectDeclaration///PointingToDeclaration/">FirEffectDeclaration</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="261090654%2FProperties%2F-1777701753" anchor-label="functionCallArguments" id="261090654%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="function-call-arguments.html"><span>function</span><wbr><span>Call</span><wbr><span><span>Arguments</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="261090654%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">val </span><span data-unresolved-link="org.jetbrains.kotlin.fir.expressions/FirFunctionCall///PointingToDeclaration/">FirFunctionCall</span><span class="token punctuation">.</span><a href="function-call-arguments.html">functionCallArguments</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.expressions/FirExpression///PointingToDeclaration/">FirExpression</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1496735294%2FProperties%2F-1777701753" anchor-label="isCustom" id="1496735294%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-custom.html"><span>is</span><wbr><span><span>Custom</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1496735294%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">val </span><span data-unresolved-link="org.jetbrains.kotlin.fir.symbols.impl/FirPropertySymbol///PointingToDeclaration/">FirPropertySymbol</span><span class="token punctuation">.</span><a href="is-custom.html">isCustom</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-690502239%2FProperties%2F-1777701753" anchor-label="shouldBeInlined" id="-690502239%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="should-be-inlined.html"><span>should</span><wbr><span>Be</span><wbr><span><span>Inlined</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-690502239%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">val </span><span data-unresolved-link="org.jetbrains.kotlin.fir.symbols.impl/FirFunctionSymbol///PointingToDeclaration/">FirFunctionSymbol</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="should-be-inlined.html">shouldBeInlined</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="1835407658%2FFunctions%2F-1777701753" anchor-label="annotationId" id="1835407658%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="annotation-id.html"><span>annotation</span><wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1835407658%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="annotation-id.html"><span class="token function">annotationId</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.name/ClassId///PointingToDeclaration/">ClassId</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-736166174%2FFunctions%2F-1777701753" anchor-label="exhaustiveAll" id="-736166174%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="exhaustive-all.html"><span>exhaustive</span><wbr><span><span>All</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-736166174%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="exhaustive-all.html">T</a><span class="token operator">&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="exhaustive-all.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="exhaustive-all.html"><span class="token function">exhaustiveAll</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">predicate<span class="token operator">: </span><span class="token punctuation">(</span><a href="exhaustive-all.html">T</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Similar to <code class="lang-kotlin">all</code>, but does not short-circuit.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-297772817%2FFunctions%2F-1777701753" anchor-label="forEachWithIsLast" id="-297772817%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="for-each-with-is-last.html"><span>for</span><wbr><span>Each</span><wbr><span>With</span><wbr><span>Is</span><wbr><span><span>Last</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-297772817%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="for-each-with-is-last.html">T</a><span class="token operator">&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="for-each-with-is-last.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="for-each-with-is-last.html"><span class="token function">forEachWithIsLast</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">f<span class="token operator">: </span><span class="token punctuation">(</span><a href="for-each-with-is-last.html">T</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1166547432%2FFunctions%2F-1777701753" anchor-label="formverCallableId" id="1166547432%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="formver-callable-id.html"><span>formver</span><wbr><span>Callable</span><wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1166547432%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="formver-callable-id.html"><span class="token function">formverCallableId</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">className<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.name/CallableId///PointingToDeclaration/">CallableId</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-760647084%2FFunctions%2F-1777701753" anchor-label="isBorrowed" id="-760647084%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-borrowed.html"><span>is</span><wbr><span><span>Borrowed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-760647084%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.fir/FirAnnotationContainer///PointingToDeclaration/">FirAnnotationContainer</span><span class="token punctuation">.</span><a href="is-borrowed.html"><span class="token function">isBorrowed</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.fir/FirSession///PointingToDeclaration/">FirSession</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.fir.symbols/FirBasedSymbol///PointingToDeclaration/">FirBasedSymbol</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="is-borrowed.html"><span class="token function">isBorrowed</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.fir/FirSession///PointingToDeclaration/">FirSession</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-278996276%2FFunctions%2F-1777701753" anchor-label="isFormverFunctionNamed" id="-278996276%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-formver-function-named.html"><span>is</span><wbr><span>Formver</span><wbr><span>Function</span><wbr><span><span>Named</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-278996276%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.fir.symbols.impl/FirFunctionSymbol///PointingToDeclaration/">FirFunctionSymbol</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="is-formver-function-named.html"><span class="token function">isFormverFunctionNamed</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-87972470%2FFunctions%2F-1777701753" anchor-label="isInvariantBuilderFunctionNamed" id="-87972470%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-invariant-builder-function-named.html"><span>is</span><wbr><span>Invariant</span><wbr><span>Builder</span><wbr><span>Function</span><wbr><span><span>Named</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-87972470%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.fir.symbols.impl/FirFunctionSymbol///PointingToDeclaration/">FirFunctionSymbol</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="is-invariant-builder-function-named.html"><span class="token function">isInvariantBuilderFunctionNamed</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-233025496%2FFunctions%2F-1777701753" anchor-label="isManual" id="-233025496%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-manual.html"><span>is</span><wbr><span><span>Manual</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-233025496%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.fir.symbols/FirBasedSymbol///PointingToDeclaration/">FirBasedSymbol</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="is-manual.html"><span class="token function">isManual</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.fir/FirSession///PointingToDeclaration/">FirSession</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1963015322%2FFunctions%2F-1777701753" anchor-label="isPure" id="1963015322%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-pure.html"><span>is</span><wbr><span><span>Pure</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1963015322%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.fir.symbols/FirBasedSymbol///PointingToDeclaration/">FirBasedSymbol</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="is-pure.html"><span class="token function">isPure</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.fir/FirSession///PointingToDeclaration/">FirSession</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1997159374%2FFunctions%2F-1777701753" anchor-label="isUnique" id="1997159374%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-unique.html"><span>is</span><wbr><span><span>Unique</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1997159374%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.fir/FirAnnotationContainer///PointingToDeclaration/">FirAnnotationContainer</span><span class="token punctuation">.</span><a href="is-unique.html"><span class="token function">isUnique</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.fir/FirSession///PointingToDeclaration/">FirSession</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.fir.symbols/FirBasedSymbol///PointingToDeclaration/">FirBasedSymbol</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="is-unique.html"><span class="token function">isUnique</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">session<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.fir/FirSession///PointingToDeclaration/">FirSession</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="926455732%2FFunctions%2F-1777701753" anchor-label="kotlinCallableId" id="926455732%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="kotlin-callable-id.html"><span>kotlin</span><wbr><span>Callable</span><wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="926455732%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="kotlin-callable-id.html"><span class="token function">kotlinCallableId</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">className<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.name/CallableId///PointingToDeclaration/">CallableId</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-757289328%2FFunctions%2F-1777701753" anchor-label="mapWithIsLast" id="-757289328%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map-with-is-last.html"><span>map</span><wbr><span>With</span><wbr><span>Is</span><wbr><span><span>Last</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-757289328%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="map-with-is-last.html">T</a><span class="token punctuation">, </span><a href="map-with-is-last.html">R</a><span class="token operator">&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="map-with-is-last.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="map-with-is-last.html"><span class="token function">mapWithIsLast</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">f<span class="token operator">: </span><span class="token punctuation">(</span><a href="map-with-is-last.html">T</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="map-with-is-last.html">R</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="map-with-is-last.html">R</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

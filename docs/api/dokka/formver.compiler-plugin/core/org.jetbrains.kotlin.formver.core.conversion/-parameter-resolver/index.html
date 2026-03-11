@@ -1,0 +1,236 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>ParameterResolver</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../../index.html" tabindex="1">
+                    kotlin-formver
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">0.1.0-SNAPSHOT
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":formver.compiler-plugin:core/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":formver.compiler-plugin:core/main" data-filter=":formver.compiler-plugin:core/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    kotlin-formver
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="core::org.jetbrains.kotlin.formver.core.conversion/ParameterResolver///PointingToDeclaration//-1777701753">
+  <div class="breadcrumbs"><a href="../../index.html">core</a><span class="delimiter">/</span><a href="../index.html">org.jetbrains.kotlin.formver.core.conversion</a><span class="delimiter">/</span><span class="current">ParameterResolver</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Parameter</span><wbr><span><span>Resolver</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="index.html">ParameterResolver</a></div><p class="paragraph">Name resolver for parameters and return values and labels.</p><p class="paragraph">Since parameter names may map to lambda embeddings, we use <code class="lang-kotlin">embed</code> for those for consistency.</p><p class="paragraph">During body conversion the statement converter needs to map FIR symbols (value parameters, receivers) to their corresponding <a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a>s. This interface abstracts over the three contexts in which that mapping differs:</p><ul><li><p class="paragraph"><strong>Regular functions</strong> (<a href="../-root-parameter-resolver/index.html">RootParameterResolver</a>): parameters come directly from the <a href="../../org.jetbrains.kotlin.formver.core.embeddings.callables/-function-signature/index.html">FunctionSignature</a> and are matched by FIR symbol.</p></li><li><p class="paragraph"><strong>Specification embedding</strong> (<a href="../-substituted-return-parameter-resolver/index.html">SubstitutedReturnParameterResolver</a>): same as above, but the special <code class="lang-kotlin">result</code> parameter is replaced by a concrete return <a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-variable-embedding/index.html">VariableEmbedding</a> so that postconditions can refer to the actual return value.</p></li><li><p class="paragraph"><strong>Inlined call sites</strong> (<a href="../-inline-parameter-resolver/index.html">InlineParameterResolver</a>): parameters are replaced by the caller-provided argument expressions, keyed via <a href="../-substituted-argument/index.html">SubstitutedArgument</a>.</p></li></ul><h4 class="tableheader">Inheritors</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-root-parameter-resolver/index.html">RootParameterResolver</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-substituted-return-parameter-resolver/index.html">SubstitutedReturnParameterResolver</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-inline-parameter-resolver/index.html">InlineParameterResolver</a></div></span></div><div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION,EXTENSION_PROPERTY,EXTENSION_FUNCTION">Members &amp; Extensions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="-1282528729%2FProperties%2F-1777701753" anchor-label="defaultResolvedReturnTarget" id="-1282528729%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="default-resolved-return-target.html"><span>default</span><wbr><span>Resolved</span><wbr><span>Return</span><wbr><span><span>Target</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1282528729%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="default-resolved-return-target.html">defaultResolvedReturnTarget</a><span class="token operator">: </span><a href="../-return-target/index.html">ReturnTarget</a></div><div class="brief "><p class="paragraph">The <a href="../-return-target/index.html">ReturnTarget</a> that an unlabelled <code class="lang-kotlin">return</code> in this scope should jump to.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1323419134%2FProperties%2F-1777701753" anchor-label="labelName" id="-1323419134%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="label-name.html"><span>label</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1323419134%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="label-name.html">labelName</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">The label identifying this function scope (used for named <code class="lang-kotlin">return@label</code> resolution and scoped extension receiver lookup). Null for anonymous or top-level scopes.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1727712652%2FFunctions%2F-1777701753" anchor-label="resolveNamedReturnTarget" id="-1727712652%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../resolve-named-return-target.html"><span>resolve</span><wbr><span>Named</span><wbr><span>Return</span><wbr><span><span>Target</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1727712652%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html">ParameterResolver</a><span class="token punctuation">.</span><a href="../resolve-named-return-target.html"><span class="token function">resolveNamedReturnTarget</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">returnPointName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-return-target/index.html">ReturnTarget</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Resolves a named return target for this resolver.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1596303734%2FFunctions%2F-1777701753" anchor-label="retrieveAllParams" id="1596303734%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="retrieve-all-params.html"><span>retrieve</span><wbr><span>All</span><wbr><span><span>Params</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1596303734%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="retrieve-all-params.html"><span class="token function">retrieveAllParams</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-variable-embedding/index.html">VariableEmbedding</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns all formal parameter <a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-variable-embedding/index.html">VariableEmbedding</a>s, used e.g. when building Viper formals.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-189980129%2FFunctions%2F-1777701753" anchor-label="tryResolveDispatchReceiver" id="-189980129%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="try-resolve-dispatch-receiver.html"><span>try</span><wbr><span>Resolve</span><wbr><span>Dispatch</span><wbr><span><span>Receiver</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-189980129%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="try-resolve-dispatch-receiver.html"><span class="token function">tryResolveDispatchReceiver</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Returns the dispatch receiver (<code class="lang-kotlin">this</code>) embedding, or null if the function has none.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1854786368%2FFunctions%2F-1777701753" anchor-label="tryResolveExtensionReceiver" id="-1854786368%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="try-resolve-extension-receiver.html"><span>try</span><wbr><span>Resolve</span><wbr><span>Extension</span><wbr><span><span>Receiver</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1854786368%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="try-resolve-extension-receiver.html"><span class="token function">tryResolveExtensionReceiver</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">labelName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Returns the extension receiver embedding if <a href="try-resolve-extension-receiver.html">labelName</a> matches this resolver's label, or null otherwise. The label check is necessary because nested lambdas each have their own extension receiver, scoped to their label.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1814492747%2FFunctions%2F-1777701753" anchor-label="tryResolveParameter" id="1814492747%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="try-resolve-parameter.html"><span>try</span><wbr><span>Resolve</span><wbr><span><span>Parameter</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1814492747%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="try-resolve-parameter.html"><span class="token function">tryResolveParameter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">symbol<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.fir.symbols.impl/FirValueParameterSymbol///PointingToDeclaration/">FirValueParameterSymbol</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Looks up the embedding for a value parameter by its FIR symbol, or null if not found.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

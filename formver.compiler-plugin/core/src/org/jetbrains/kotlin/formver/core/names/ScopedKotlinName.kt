@@ -24,8 +24,19 @@ data class ScopedKotlinName(val scope: NameScope, val name: KotlinName) : Symbol
         get() = name.mangledType
 }
 
+/**
+ * Converts a fully-qualified Kotlin name to a Viper-compatible string by replacing
+ * every `.` separator with `_`.
+ */
 fun FqName.asViperString() = asString().replace('.', '_')
 
+/**
+ * Promotes this [ScopedKotlinName] into a [NameScope] so that it can be used as the
+ * enclosing scope for members of the named class.
+ *
+ * Only valid when the underlying [KotlinName] is a [ClassKotlinName]; throws
+ * [IllegalArgumentException] otherwise.
+ */
 fun ScopedKotlinName.asScope(): NameScope {
     val className = name as? ClassKotlinName
     require(className != null) { "Only classes can be used for scopes." }

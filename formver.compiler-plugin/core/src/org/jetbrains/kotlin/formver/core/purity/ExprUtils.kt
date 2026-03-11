@@ -46,8 +46,12 @@ fun ExpEmbedding.checkValidity(source: KtSourceElement?, errorCollector: ErrorCo
 fun ExpEmbedding.isPure(): Boolean = this.accept(ExprPurityVisitor())
 
 /**
- * Returns the `KtSourceElement` of the outermost `WithPosition`
- * inside this expression; returns [fallback] if none is found.
+ * Returns the [KtSourceElement] of the innermost [WithPosition] wrapper
+ * directly enclosing this embedding (skipping any [SharingContext] wrappers),
+ * or [fallback] when no such wrapper exists.
+ *
+ * Used by [DefaultPurityContext] to pin diagnostics to the most specific
+ * source position available for a given node.
  */
 internal fun ExpEmbedding.expressionSource(fallback: KtSourceElement): KtSourceElement {
     var curr: ExpEmbedding = this@expressionSource

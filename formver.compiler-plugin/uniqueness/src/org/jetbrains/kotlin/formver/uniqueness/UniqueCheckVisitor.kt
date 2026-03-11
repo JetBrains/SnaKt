@@ -14,6 +14,14 @@ import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 
+/**
+ * [FirVisitor] that resolves a [FirPropertyAccessExpression] (or a chain of them) into
+ * an ordered list of [FirBasedSymbol] items representing the access path.
+ *
+ * For example, `a.b.c` yields `[local/a, A/b, B/c]`.  The visitor is only intended to be
+ * called on property-access expressions and resolved named references; calling it on other
+ * FIR elements throws [IllegalStateException].
+ */
 object PathVisitor : FirVisitor<List<FirBasedSymbol<*>>, Unit>() {
     override fun visitElement(element: FirElement, data: Unit) =
         throw IllegalStateException("LocalVariableVisitor should not be called on general FIR elements")
@@ -37,6 +45,21 @@ object PathVisitor : FirVisitor<List<FirBasedSymbol<*>>, Unit>() {
  */
 fun FirPropertyAccessExpression.resolvePath(): List<FirBasedSymbol<*>> = accept(PathVisitor, Unit)
 
+/**
+ * [FirVisitor] that performs the ownership/uniqueness check for a single function body.
+ *
+ * The visitor returns a [Pair] of the [UniqueLevel] of the visited expression and,
+ * optionally, its [UniquePathContext] node (non-null when the expression is a property
+ * access whose path is tracked in the [ContextTrie]).
+ *
+ * During traversal the visitor:
+ * - Records ownership consumption when a unique argument is passed to a consuming parameter.
+ * - Raises [UniquenessCheckException] if a consumed, partially-moved, or borrowed value
+ *   is passed in a position that violates the uniqueness contract.
+ *
+ * Entry point: call `accept(UniqueCheckVisitor, context)` on a [FirSimpleFunction] or
+ * any FIR expression.
+ */
 object UniqueCheckVisitor : FirVisitor<Pair<UniqueLevel, UniquePathContext?>, UniqueCheckerContext>() {
     override fun visitElement(element: FirElement, data: UniqueCheckerContext) =
         throw IllegalStateException("UniqueCheckVisitor should not be called on general FIR elements")
@@ -73,6 +96,22 @@ object UniqueCheckVisitor : FirVisitor<Pair<UniqueLevel, UniquePathContext?>, Un
         return Pair(UniqueLevel.Shared, null)
     }
 
+    /**
+     * Validates that the ownership and borrowing state of [argument] satisfies the
+     * [requirements] declared by the corresponding formal parameter of [functionCall].
+     *
+     * Throws [UniquenessCheckException] if any of the following violations are detected:
+     * - The argument's uniqueness state is already [UniqueLevel.Top] (consumed).
+     * - The argument is a partially-moved object (subtree LUB is [UniqueLevel.Top]).
+     * - A borrowed argument is passed to a non-borrowed parameter.
+     * - A non-unique argument is passed to a unique parameter.
+     * - A partially-shared argument is passed to a unique parameter.
+     *
+     * @param requirements The ([UniqueLevel], [BorrowingLevel]) pair required by the callee.
+     * @param actual The ([UniqueLevel], [BorrowingLevel]) pair observed for the argument.
+     * @param pathContext The [UniquePathContext] of the argument expression, or `null` if
+     *   the argument is not a tracked access path.
+     */
     private fun verifyPassingRules(
         functionCall: FirFunctionCall,
         argument: FirExpression,

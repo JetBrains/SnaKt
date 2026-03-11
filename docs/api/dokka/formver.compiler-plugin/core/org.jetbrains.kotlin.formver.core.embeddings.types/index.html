@@ -1,0 +1,869 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>org.jetbrains.kotlin.formver.core.embeddings.types</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
+                    kotlin-formver
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">0.1.0-SNAPSHOT
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":formver.compiler-plugin:core/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":formver.compiler-plugin:core/main" data-filter=":formver.compiler-plugin:core/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    kotlin-formver
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="package" id="content" pageids="core::org.jetbrains.kotlin.formver.core.embeddings.types////PointingToDeclaration//-1777701753">
+  <div class="breadcrumbs"><a href="../index.html">core</a><span class="delimiter">/</span><span class="current">org.jetbrains.kotlin.formver.core.embeddings.types</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button><button class="section-tab" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="-2117888294%2FClasslikes%2F-1777701753" anchor-label="AnyPretypeBuilder" id="-2117888294%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-any-pretype-builder/index.html"><span>Any</span><wbr><span>Pretype</span><wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2117888294%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-any-pretype-builder/index.html">AnyPretypeBuilder</a> : <a href="-pretype-builder/index.html">PretypeBuilder</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1645211469%2FClasslikes%2F-1777701753" anchor-label="AnyTypeEmbedding" id="1645211469%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-any-type-embedding/index.html"><span>Any</span><wbr><span>Type</span><wbr><span><span>Embedding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1645211469%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">object </span><a href="-any-type-embedding/index.html">AnyTypeEmbedding</a> : <a href="-pretype-embedding/index.html">PretypeEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-427874402%2FClasslikes%2F-1777701753" anchor-label="BooleanPretypeBuilder" id="-427874402%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-boolean-pretype-builder/index.html"><span>Boolean</span><wbr><span>Pretype</span><wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-427874402%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-boolean-pretype-builder/index.html">BooleanPretypeBuilder</a> : <a href="-pretype-builder/index.html">PretypeBuilder</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="452802057%2FClasslikes%2F-1777701753" anchor-label="BooleanTypeEmbedding" id="452802057%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-boolean-type-embedding/index.html"><span>Boolean</span><wbr><span>Type</span><wbr><span><span>Embedding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="452802057%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">object </span><a href="-boolean-type-embedding/index.html">BooleanTypeEmbedding</a> : <a href="-pretype-embedding/index.html">PretypeEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1047210666%2FClasslikes%2F-1777701753" anchor-label="CharPretypeBuilder" id="1047210666%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-char-pretype-builder/index.html"><span>Char</span><wbr><span>Pretype</span><wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1047210666%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-char-pretype-builder/index.html">CharPretypeBuilder</a> : <a href="-pretype-builder/index.html">PretypeBuilder</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-885087875%2FClasslikes%2F-1777701753" anchor-label="CharTypeEmbedding" id="-885087875%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-char-type-embedding/index.html"><span>Char</span><wbr><span>Type</span><wbr><span><span>Embedding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-885087875%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">object </span><a href="-char-type-embedding/index.html">CharTypeEmbedding</a> : <a href="-pretype-embedding/index.html">PretypeEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1375040641%2FClasslikes%2F-1777701753" anchor-label="ClassEmbeddingDetails" id="1375040641%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-class-embedding-details/index.html"><span>Class</span><wbr><span>Embedding</span><wbr><span><span>Details</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1375040641%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-class-embedding-details/index.html">ClassEmbeddingDetails</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>type<span class="token operator">: </span><a href="-class-type-embedding/index.html">ClassTypeEmbedding</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>isInterface<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span> : <a href="-type-invariant-holder/index.html">TypeInvariantHolder</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="542789902%2FClasslikes%2F-1777701753" anchor-label="ClassPretypeBuilder" id="542789902%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-class-pretype-builder/index.html"><span>Class</span><wbr><span>Pretype</span><wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="542789902%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-class-pretype-builder/index.html">ClassPretypeBuilder</a> : <a href="-pretype-builder/index.html">PretypeBuilder</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="761208473%2FClasslikes%2F-1777701753" anchor-label="ClassTypeEmbedding" id="761208473%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-class-type-embedding/index.html"><span>Class</span><wbr><span>Type</span><wbr><span><span>Embedding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="761208473%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-class-type-embedding/index.html">ClassTypeEmbedding</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="../org.jetbrains.kotlin.formver.core.names/-scoped-kotlin-name/index.html">ScopedKotlinName</a></span></span><span class="token punctuation">)</span> : <a href="-pretype-embedding/index.html">PretypeEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2012436395%2FClasslikes%2F-1777701753" anchor-label="ExistingPretypeBuilder" id="-2012436395%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-existing-pretype-builder/index.html"><span>Existing</span><wbr><span>Pretype</span><wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2012436395%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-existing-pretype-builder/index.html">ExistingPretypeBuilder</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>embedding<span class="token operator">: </span><a href="-pretype-embedding/index.html">PretypeEmbedding</a></span></span><span class="token punctuation">)</span> : <a href="-pretype-builder/index.html">PretypeBuilder</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-996608581%2FClasslikes%2F-1777701753" anchor-label="FalseTypeInvariant" id="-996608581%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-false-type-invariant/index.html"><span>False</span><wbr><span>Type</span><wbr><span><span>Invariant</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-996608581%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">object </span><a href="-false-type-invariant/index.html">FalseTypeInvariant</a> : <a href="-type-invariant-embedding/index.html">TypeInvariantEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="173099285%2FClasslikes%2F-1777701753" anchor-label="FieldAccessTypeInvariantEmbedding" id="173099285%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-field-access-type-invariant-embedding/index.html"><span>Field</span><wbr><span>Access</span><wbr><span>Type</span><wbr><span>Invariant</span><wbr><span><span>Embedding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="173099285%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-field-access-type-invariant-embedding/index.html">FieldAccessTypeInvariantEmbedding</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>field<span class="token operator">: </span><a href="../org.jetbrains.kotlin.formver.core.embeddings.properties/-field-embedding/index.html">FieldEmbedding</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>perm<span class="token operator">: </span><a href="../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-perm-exp/index.html">PermExp</a></span></span><span class="token punctuation">)</span> : <a href="-type-invariant-embedding/index.html">TypeInvariantEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1049361842%2FClasslikes%2F-1777701753" anchor-label="FieldAssertionsBuilder" id="-1049361842%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-field-assertions-builder/index.html"><span>Field</span><wbr><span>Assertions</span><wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1049361842%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-field-assertions-builder/index.html">FieldAssertionsBuilder</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">subject<span class="token operator">: </span><a href="../org.jetbrains.kotlin.formver.core.embeddings.expression/-variable-embedding/index.html">VariableEmbedding</a><span class="token punctuation">, </span></span><span class="parameter ">field<span class="token operator">: </span><a href="../org.jetbrains.kotlin.formver.core.embeddings.properties/-user-field-embedding/index.html">UserFieldEmbedding</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-179941929%2FClasslikes%2F-1777701753" anchor-label="FieldEqualsInvariant" id="-179941929%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-field-equals-invariant/index.html"><span>Field</span><wbr><span>Equals</span><wbr><span><span>Invariant</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-179941929%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-field-equals-invariant/index.html">FieldEqualsInvariant</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>field<span class="token operator">: </span><a href="../org.jetbrains.kotlin.formver.core.embeddings.properties/-field-embedding/index.html">FieldEmbedding</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>comparedWith<span class="token operator">: </span><a href="../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></span></span><span class="token punctuation">)</span> : <a href="-type-invariant-embedding/index.html">TypeInvariantEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1779491480%2FClasslikes%2F-1777701753" anchor-label="FunctionPretypeBuilder" id="-1779491480%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-function-pretype-builder/index.html"><span>Function</span><wbr><span>Pretype</span><wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1779491480%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-function-pretype-builder/index.html">FunctionPretypeBuilder</a> : <a href="-pretype-builder/index.html">PretypeBuilder</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1379032831%2FClasslikes%2F-1777701753" anchor-label="FunctionTypeEmbedding" id="1379032831%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-function-type-embedding/index.html"><span>Function</span><wbr><span>Type</span><wbr><span><span>Embedding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1379032831%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-function-type-embedding/index.html">FunctionTypeEmbedding</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>dispatchReceiverType<span class="token operator">: </span><a href="-type-embedding/index.html">TypeEmbedding</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>extensionReceiverType<span class="token operator">: </span><a href="-type-embedding/index.html">TypeEmbedding</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>paramTypes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="-type-embedding/index.html">TypeEmbedding</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>returnType<span class="token operator">: </span><a href="-type-embedding/index.html">TypeEmbedding</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>returnsUnique<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span> : <a href="-pretype-embedding/index.html">PretypeEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="998543957%2FClasslikes%2F-1777701753" anchor-label="IfNonNullInvariant" id="998543957%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-if-non-null-invariant/index.html"><span>If</span><wbr><span>Non</span><wbr><span>Null</span><wbr><span><span>Invariant</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="998543957%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-if-non-null-invariant/index.html">IfNonNullInvariant</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>invariant<span class="token operator">: </span><a href="-type-invariant-embedding/index.html">TypeInvariantEmbedding</a></span></span><span class="token punctuation">)</span> : <a href="-type-invariant-embedding/index.html">TypeInvariantEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="156732279%2FClasslikes%2F-1777701753" anchor-label="IntPretypeBuilder" id="156732279%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-int-pretype-builder/index.html"><span>Int</span><wbr><span>Pretype</span><wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="156732279%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-int-pretype-builder/index.html">IntPretypeBuilder</a> : <a href="-pretype-builder/index.html">PretypeBuilder</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-636718320%2FClasslikes%2F-1777701753" anchor-label="IntTypeEmbedding" id="-636718320%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-int-type-embedding/index.html"><span>Int</span><wbr><span>Type</span><wbr><span><span>Embedding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-636718320%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">object </span><a href="-int-type-embedding/index.html">IntTypeEmbedding</a> : <a href="-pretype-embedding/index.html">PretypeEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1315468199%2FClasslikes%2F-1777701753" anchor-label="NothingPretypeBuilder" id="-1315468199%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-nothing-pretype-builder/index.html"><span>Nothing</span><wbr><span>Pretype</span><wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1315468199%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-nothing-pretype-builder/index.html">NothingPretypeBuilder</a> : <a href="-pretype-builder/index.html">PretypeBuilder</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-684208658%2FClasslikes%2F-1777701753" anchor-label="NothingTypeEmbedding" id="-684208658%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-nothing-type-embedding/index.html"><span>Nothing</span><wbr><span>Type</span><wbr><span><span>Embedding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-684208658%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">object </span><a href="-nothing-type-embedding/index.html">NothingTypeEmbedding</a> : <a href="-pretype-embedding/index.html">PretypeEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1481313016%2FClasslikes%2F-1777701753" anchor-label="PredicateAccessTypeInvariantEmbedding" id="1481313016%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-predicate-access-type-invariant-embedding/index.html"><span>Predicate</span><wbr><span>Access</span><wbr><span>Type</span><wbr><span>Invariant</span><wbr><span><span>Embedding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1481313016%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-predicate-access-type-invariant-embedding/index.html">PredicateAccessTypeInvariantEmbedding</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>predicateName<span class="token operator">: </span><a href="../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper/-symbolic-name/index.html">SymbolicName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>perm<span class="token operator">: </span><a href="../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-perm-exp/index.html">PermExp</a></span></span><span class="token punctuation">)</span> : <a href="-type-invariant-embedding/index.html">TypeInvariantEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="569366880%2FClasslikes%2F-1777701753" anchor-label="PretypeBuilder" id="569366880%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-pretype-builder/index.html"><span>Pretype</span><wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="569366880%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-pretype-builder/index.html">PretypeBuilder</a></div><div class="brief "><p class="paragraph">We use "pretype" to refer to types that do not contain information on nullability or other flags.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1915386532%2FClasslikes%2F-1777701753" anchor-label="PretypeEmbedding" id="1915386532%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-pretype-embedding/index.html"><span>Pretype</span><wbr><span><span>Embedding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1915386532%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-pretype-embedding/index.html">PretypeEmbedding</a> : <a href="-runtime-type-holder/index.html">RuntimeTypeHolder</a>, <a href="-type-invariant-holder/index.html">TypeInvariantHolder</a></div><div class="brief "><p class="paragraph">A representation of a Kotlin type without nullability and uniqueness information.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1713525606%2FClasslikes%2F-1777701753" anchor-label="RuntimeTypeHolder" id="1713525606%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-runtime-type-holder/index.html"><span>Runtime</span><wbr><span>Type</span><wbr><span><span>Holder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1713525606%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-runtime-type-holder/index.html">RuntimeTypeHolder</a> : <a href="../org.jetbrains.kotlin.formver.core.embeddings.expression.debug/-debug-printable/index.html">DebugPrintable</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="922069583%2FClasslikes%2F-1777701753" anchor-label="StringPretypeBuilder" id="922069583%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-string-pretype-builder/index.html"><span>String</span><wbr><span>Pretype</span><wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="922069583%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-string-pretype-builder/index.html">StringPretypeBuilder</a> : <a href="-pretype-builder/index.html">PretypeBuilder</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-750577352%2FClasslikes%2F-1777701753" anchor-label="StringTypeEmbedding" id="-750577352%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-string-type-embedding/index.html"><span>String</span><wbr><span>Type</span><wbr><span><span>Embedding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-750577352%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">object </span><a href="-string-type-embedding/index.html">StringTypeEmbedding</a> : <a href="-pretype-embedding/index.html">PretypeEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2060331155%2FClasslikes%2F-1777701753" anchor-label="SubTypeInvariantEmbedding" id="2060331155%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-sub-type-invariant-embedding/index.html"><span>Sub</span><wbr><span>Type</span><wbr><span>Invariant</span><wbr><span><span>Embedding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2060331155%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-sub-type-invariant-embedding/index.html">SubTypeInvariantEmbedding</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>type<span class="token operator">: </span><a href="-runtime-type-holder/index.html">RuntimeTypeHolder</a></span></span><span class="token punctuation">)</span> : <a href="-type-invariant-embedding/index.html">TypeInvariantEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1502388099%2FClasslikes%2F-1777701753" anchor-label="TypeBuilder" id="1502388099%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-type-builder/index.html"><span>Type</span><wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1502388099%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-type-builder/index.html">TypeBuilder</a></div><div class="brief "><p class="paragraph">Builder for a <code class="lang-kotlin">TypeEmbedding</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="900613127%2FClasslikes%2F-1777701753" anchor-label="TypeEmbedding" id="900613127%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-type-embedding/index.html"><span>Type</span><wbr><span><span>Embedding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="900613127%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-type-embedding/index.html">TypeEmbedding</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>pretype<span class="token operator">: </span><a href="-pretype-embedding/index.html">PretypeEmbedding</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>flags<span class="token operator">: </span><a href="-type-embedding-flags/index.html">TypeEmbeddingFlags</a></span></span><span class="token punctuation">)</span> : <a href="-runtime-type-holder/index.html">RuntimeTypeHolder</a>, <a href="-type-invariant-holder/index.html">TypeInvariantHolder</a></div><div class="brief "><p class="paragraph">Represents our representation of a Kotlin type.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1440951916%2FClasslikes%2F-1777701753" anchor-label="TypeEmbeddingFlags" id="-1440951916%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-type-embedding-flags/index.html"><span>Type</span><wbr><span>Embedding</span><wbr><span><span>Flags</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1440951916%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-type-embedding-flags/index.html">TypeEmbeddingFlags</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>nullable<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1511117843%2FClasslikes%2F-1777701753" anchor-label="TypeInvariantEmbedding" id="-1511117843%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-type-invariant-embedding/index.html"><span>Type</span><wbr><span>Invariant</span><wbr><span><span>Embedding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1511117843%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-type-invariant-embedding/index.html">TypeInvariantEmbedding</a></div><div class="brief "><p class="paragraph">An invariant for a type.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1621510578%2FClasslikes%2F-1777701753" anchor-label="TypeInvariantHolder" id="1621510578%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-type-invariant-holder/index.html"><span>Type</span><wbr><span>Invariant</span><wbr><span><span>Holder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1621510578%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-type-invariant-holder/index.html">TypeInvariantHolder</a></div><div class="brief "><p class="paragraph">Representation of an entity that, in Viper, should have invariants associated with it.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-112548842%2FClasslikes%2F-1777701753" anchor-label="TypeInvariantsBuilder" id="-112548842%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-type-invariants-builder/index.html"><span>Type</span><wbr><span>Invariants</span><wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-112548842%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-type-invariants-builder/index.html">TypeInvariantsBuilder</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="-type-embedding/index.html">TypeEmbedding</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1667142468%2FClasslikes%2F-1777701753" anchor-label="UnitPretypeBuilder" id="-1667142468%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-unit-pretype-builder/index.html"><span>Unit</span><wbr><span>Pretype</span><wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1667142468%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-unit-pretype-builder/index.html">UnitPretypeBuilder</a> : <a href="-pretype-builder/index.html">PretypeBuilder</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-418458325%2FClasslikes%2F-1777701753" anchor-label="UnitTypeEmbedding" id="-418458325%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-unit-type-embedding/index.html"><span>Unit</span><wbr><span>Type</span><wbr><span><span>Embedding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-418458325%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">object </span><a href="-unit-type-embedding/index.html">UnitTypeEmbedding</a> : <a href="-pretype-embedding/index.html">PretypeEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="EXTENSION_PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="623763085%2FProperties%2F-1777701753" anchor-label="injection" id="623763085%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="injection.html"><span><span>injection</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="623763085%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-type-embedding/index.html">TypeEmbedding</a><span class="token punctuation">.</span><a href="injection.html">injection</a><span class="token operator">: </span><a href="../org.jetbrains.kotlin.formver.core.domains/-injection/index.html">Injection</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1078349853%2FProperties%2F-1777701753" anchor-label="injectionOrNull" id="-1078349853%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="injection-or-null.html"><span>injection</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1078349853%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-type-embedding/index.html">TypeEmbedding</a><span class="token punctuation">.</span><a href="injection-or-null.html">injectionOrNull</a><span class="token operator">: </span><a href="../org.jetbrains.kotlin.formver.core.domains/-injection/index.html">Injection</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-789194427%2FProperties%2F-1777701753" anchor-label="isCollectionInheritor" id="-789194427%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-collection-inheritor.html"><span>is</span><wbr><span>Collection</span><wbr><span><span>Inheritor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-789194427%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-pretype-embedding/index.html">PretypeEmbedding</a><span class="token punctuation">.</span><a href="is-collection-inheritor.html">isCollectionInheritor</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1853363366%2FFunctions%2F-1777701753" anchor-label="asTypeEmbedding" id="-1853363366%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="as-type-embedding.html"><span>as</span><wbr><span>Type</span><wbr><span><span>Embedding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1853363366%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="-pretype-embedding/index.html">PretypeEmbedding</a><span class="token punctuation">.</span><a href="as-type-embedding.html"><span class="token function">asTypeEmbedding</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-type-embedding/index.html">TypeEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1980515903%2FFunctions%2F-1777701753" anchor-label="buildClassPretype" id="-1980515903%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="build-class-pretype.html"><span>build</span><wbr><span>Class</span><wbr><span><span>Pretype</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1980515903%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="build-class-pretype.html"><span class="token function">buildClassPretype</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">init<span class="token operator">: </span><a href="-class-pretype-builder/index.html">ClassPretypeBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-class-type-embedding/index.html">ClassTypeEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-772199047%2FFunctions%2F-1777701753" anchor-label="buildFunctionPretype" id="-772199047%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="build-function-pretype.html"><span>build</span><wbr><span>Function</span><wbr><span><span>Pretype</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-772199047%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="build-function-pretype.html"><span class="token function">buildFunctionPretype</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">init<span class="token operator">: </span><a href="-function-pretype-builder/index.html">FunctionPretypeBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-function-type-embedding/index.html">FunctionTypeEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1512883818%2FFunctions%2F-1777701753" anchor-label="buildType" id="-1512883818%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="build-type.html"><span>build</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1512883818%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="build-type.html"><span class="token function">buildType</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">init<span class="token operator">: </span><a href="-type-builder/index.html">TypeBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="-pretype-builder/index.html">PretypeBuilder</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-type-embedding/index.html">TypeEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="338140719%2FFunctions%2F-1777701753" anchor-label="embedClassTypeFunc" id="338140719%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="embed-class-type-func.html"><span>embed</span><wbr><span>Class</span><wbr><span>Type</span><wbr><span><span>Func</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="338140719%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="-class-type-embedding/index.html">ClassTypeEmbedding</a><span class="token punctuation">.</span><a href="embed-class-type-func.html"><span class="token function">embedClassTypeFunc</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-domain-func/index.html">DomainFunc</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-643676128%2FFunctions%2F-1777701753" anchor-label="equalToType" id="-643676128%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="equal-to-type.html"><span>equal</span><wbr><span>To</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-643676128%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="-type-embedding/index.html">TypeEmbedding</a><span class="token punctuation">.</span><a href="equal-to-type.html"><span class="token function">equalToType</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">init<span class="token operator">: </span><a href="-type-builder/index.html">TypeBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="-pretype-builder/index.html">PretypeBuilder</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-76736409%2FFunctions%2F-1777701753" anchor-label="fillHoles" id="-76736409%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="fill-holes.html"><span>fill</span><wbr><span><span>Holes</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-76736409%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="-type-invariant-embedding/index.html">TypeInvariantEmbedding</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="fill-holes.html"><span class="token function">fillHoles</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">exp<span class="token operator">: </span><a href="../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1837360226%2FFunctions%2F-1777701753" anchor-label="injectionOr" id="-1837360226%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="injection-or.html"><span>injection</span><wbr><span><span>Or</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1837360226%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="-type-embedding/index.html">TypeEmbedding</a><span class="token punctuation">.</span><a href="injection-or.html"><span class="token function">injectionOr</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">default<span class="token operator">: </span><span class="token punctuation">(</span><a href="-type-embedding/index.html">TypeEmbedding</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="../org.jetbrains.kotlin.formver.core.domains/-injection/index.html">Injection</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../org.jetbrains.kotlin.formver.core.domains/-injection/index.html">Injection</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1518073831%2FFunctions%2F-1777701753" anchor-label="isInheritorOfCollectionTypeNamed" id="1518073831%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-inheritor-of-collection-type-named.html"><span>is</span><wbr><span>Inheritor</span><wbr><span>Of</span><wbr><span>Collection</span><wbr><span>Type</span><wbr><span><span>Named</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1518073831%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="-pretype-embedding/index.html">PretypeEmbedding</a><span class="token punctuation">.</span><a href="is-inheritor-of-collection-type-named.html"><span class="token function">isInheritorOfCollectionTypeNamed</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-298573475%2FFunctions%2F-1777701753" anchor-label="nullableAny" id="-298573475%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="nullable-any.html"><span>nullable</span><wbr><span><span>Any</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-298573475%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="-type-builder/index.html">TypeBuilder</a><span class="token punctuation">.</span><a href="nullable-any.html"><span class="token function">nullableAny</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-any-pretype-builder/index.html">AnyPretypeBuilder</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

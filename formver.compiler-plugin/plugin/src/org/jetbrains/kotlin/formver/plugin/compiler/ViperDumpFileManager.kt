@@ -30,6 +30,11 @@ class ViperDumpFileManager(projectDir: Path) {
         dir
     }
 
+    /**
+     * Deletes all entries inside [dir] if it already exists, leaving the directory itself
+     * in place for [Files.createDirectories] to use.  This gives each compilation a clean slate
+     * without needing to recreate the parent path.
+     */
     @OptIn(ExperimentalPathApi::class)
     private fun cleanUpPreviousRun(dir: Path) {
         if (Files.exists(dir)) {
@@ -51,6 +56,12 @@ class ViperDumpFileManager(projectDir: Path) {
         return file.toUri()
     }
 
+    /**
+     * Returns a [Path] inside [dir] that does not yet exist.
+     *
+     * Tries `<baseName>.vpr` first; if that file already exists it tries
+     * `<baseName>_1.vpr`, `<baseName>_2.vpr`, and so on until a free slot is found.
+     */
     private fun resolveUniquePath(dir: Path, baseName: String): Path {
         val candidate = dir.resolve("$baseName.vpr")
         if (!Files.exists(candidate)) return candidate

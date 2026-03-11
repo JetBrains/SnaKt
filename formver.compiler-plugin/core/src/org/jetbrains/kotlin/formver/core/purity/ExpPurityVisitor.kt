@@ -8,6 +8,25 @@ package org.jetbrains.kotlin.formver.core.purity
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 
+/**
+ * An [ExpVisitor] that classifies every [ExpEmbedding] node as pure (`true`) or
+ * impure (`false`).
+ *
+ * Purity rules (summary):
+ * - Literals, variable reads, and function calls are always pure.
+ * - [Declare] is pure only when it includes an initializer; the declared variable is
+ *   then tracked in [declaredVariables] so that a subsequent [Assign] to that same
+ *   variable is also considered pure (initialisation pattern).
+ * - Structural nodes ([Block], [Return], binary/unary operators, [If], …) are pure
+ *   iff all their children are pure.
+ * - Side-effecting nodes ([MethodCall], field reads/writes, [While], [Goto], …) are
+ *   always impure.
+ *
+ * Use the [isPure] extension rather than instantiating this class directly.
+ *
+ * @param declaredVariables Mutable set of variables that have been declared-with-initialiser
+ *   within the current traversal; pre-populated when re-entering an already-started walk.
+ */
 internal class ExprPurityVisitor(val declaredVariables: MutableSet<VariableEmbedding> = mutableSetOf()) :
     ExpVisitor<Boolean> {
 

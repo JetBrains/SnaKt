@@ -1,0 +1,232 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Companion</title>
+<link href="../../../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../../../index.html" tabindex="1">
+                    kotlin-formver
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">0.1.0-SNAPSHOT
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":formver.compiler-plugin:cli/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":formver.compiler-plugin:cli/main" data-filter=":formver.compiler-plugin:cli/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    kotlin-formver
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="cli::org.jetbrains.kotlin.formver.cli/FormalVerificationCommandLineProcessor.Companion///PointingToDeclaration//1079650534">
+  <div class="breadcrumbs"><a href="../../../index.html">cli</a><span class="delimiter">/</span><a href="../../index.html">org.jetbrains.kotlin.formver.cli</a><span class="delimiter">/</span><a href="../index.html">FormalVerificationCommandLineProcessor</a><span class="delimiter">/</span><span class="current">Companion</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Companion</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:cli/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="index.html">Companion</a></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="1425128954%2FProperties%2F1079650534" anchor-label="CONVERSION_TARGETS_SELECTION_OPTION" id="1425128954%2FProperties%2F1079650534" data-filterable-set=":formver.compiler-plugin:cli/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:cli/main" data-filterable-set=":formver.compiler-plugin:cli/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-c-o-n-v-e-r-s-i-o-n_-t-a-r-g-e-t-s_-s-e-l-e-c-t-i-o-n_-o-p-t-i-o-n.html"><span>CONVERSION_</span><wbr><span>TARGETS_</span><wbr><span>SELECTION_</span><wbr><span>OPTION</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1425128954%2FProperties%2F1079650534"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:cli/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-c-o-n-v-e-r-s-i-o-n_-t-a-r-g-e-t-s_-s-e-l-e-c-t-i-o-n_-o-p-t-i-o-n.html">CONVERSION_TARGETS_SELECTION_OPTION</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.compiler.plugin/CliOption///PointingToDeclaration/">CliOption</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1946606453%2FProperties%2F1079650534" anchor-label="DUMP_VIPER_FILES_OPTION" id="-1946606453%2FProperties%2F1079650534" data-filterable-set=":formver.compiler-plugin:cli/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:cli/main" data-filterable-set=":formver.compiler-plugin:cli/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-d-u-m-p_-v-i-p-e-r_-f-i-l-e-s_-o-p-t-i-o-n.html"><span>DUMP_</span><wbr><span>VIPER_</span><wbr><span>FILES_</span><wbr><span>OPTION</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1946606453%2FProperties%2F1079650534"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:cli/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-d-u-m-p_-v-i-p-e-r_-f-i-l-e-s_-o-p-t-i-o-n.html">DUMP_VIPER_FILES_OPTION</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.compiler.plugin/CliOption///PointingToDeclaration/">CliOption</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-86327336%2FProperties%2F1079650534" anchor-label="ERROR_STYLE_OPTION" id="-86327336%2FProperties%2F1079650534" data-filterable-set=":formver.compiler-plugin:cli/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:cli/main" data-filterable-set=":formver.compiler-plugin:cli/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-e-r-r-o-r_-s-t-y-l-e_-o-p-t-i-o-n.html"><span>ERROR_</span><wbr><span>STYLE_</span><wbr><span>OPTION</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-86327336%2FProperties%2F1079650534"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:cli/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-e-r-r-o-r_-s-t-y-l-e_-o-p-t-i-o-n.html">ERROR_STYLE_OPTION</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.compiler.plugin/CliOption///PointingToDeclaration/">CliOption</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1798513881%2FProperties%2F1079650534" anchor-label="LOG_LEVEL_OPTION" id="-1798513881%2FProperties%2F1079650534" data-filterable-set=":formver.compiler-plugin:cli/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:cli/main" data-filterable-set=":formver.compiler-plugin:cli/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-l-o-g_-l-e-v-e-l_-o-p-t-i-o-n.html"><span>LOG_</span><wbr><span>LEVEL_</span><wbr><span>OPTION</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1798513881%2FProperties%2F1079650534"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:cli/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-l-o-g_-l-e-v-e-l_-o-p-t-i-o-n.html">LOG_LEVEL_OPTION</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.compiler.plugin/CliOption///PointingToDeclaration/">CliOption</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-263495291%2FProperties%2F1079650534" anchor-label="PROJECT_DIR_OPTION" id="-263495291%2FProperties%2F1079650534" data-filterable-set=":formver.compiler-plugin:cli/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:cli/main" data-filterable-set=":formver.compiler-plugin:cli/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-p-r-o-j-e-c-t_-d-i-r_-o-p-t-i-o-n.html"><span>PROJECT_</span><wbr><span>DIR_</span><wbr><span>OPTION</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-263495291%2FProperties%2F1079650534"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:cli/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-p-r-o-j-e-c-t_-d-i-r_-o-p-t-i-o-n.html">PROJECT_DIR_OPTION</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.compiler.plugin/CliOption///PointingToDeclaration/">CliOption</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1632928488%2FProperties%2F1079650534" anchor-label="UNSUPPORTED_FEATURE_BEHAVIOUR_OPTION" id="1632928488%2FProperties%2F1079650534" data-filterable-set=":formver.compiler-plugin:cli/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:cli/main" data-filterable-set=":formver.compiler-plugin:cli/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-u-n-s-u-p-p-o-r-t-e-d_-f-e-a-t-u-r-e_-b-e-h-a-v-i-o-u-r_-o-p-t-i-o-n.html"><span>UNSUPPORTED_</span><wbr><span>FEATURE_</span><wbr><span>BEHAVIOUR_</span><wbr><span>OPTION</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1632928488%2FProperties%2F1079650534"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:cli/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-u-n-s-u-p-p-o-r-t-e-d_-f-e-a-t-u-r-e_-b-e-h-a-v-i-o-u-r_-o-p-t-i-o-n.html">UNSUPPORTED_FEATURE_BEHAVIOUR_OPTION</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.compiler.plugin/CliOption///PointingToDeclaration/">CliOption</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="707514623%2FProperties%2F1079650534" anchor-label="VERIFICATION_TARGETS_SELECTION_OPTION" id="707514623%2FProperties%2F1079650534" data-filterable-set=":formver.compiler-plugin:cli/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:cli/main" data-filterable-set=":formver.compiler-plugin:cli/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-v-e-r-i-f-i-c-a-t-i-o-n_-t-a-r-g-e-t-s_-s-e-l-e-c-t-i-o-n_-o-p-t-i-o-n.html"><span>VERIFICATION_</span><wbr><span>TARGETS_</span><wbr><span>SELECTION_</span><wbr><span>OPTION</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="707514623%2FProperties%2F1079650534"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:cli/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-v-e-r-i-f-i-c-a-t-i-o-n_-t-a-r-g-e-t-s_-s-e-l-e-c-t-i-o-n_-o-p-t-i-o-n.html">VERIFICATION_TARGETS_SELECTION_OPTION</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.compiler.plugin/CliOption///PointingToDeclaration/">CliOption</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

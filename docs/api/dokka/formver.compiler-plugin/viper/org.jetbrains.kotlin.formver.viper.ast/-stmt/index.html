@@ -1,0 +1,356 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Stmt</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../../index.html" tabindex="1">
+                    kotlin-formver
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">0.1.0-SNAPSHOT
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":formver.compiler-plugin:viper/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":formver.compiler-plugin:viper/main" data-filter=":formver.compiler-plugin:viper/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    kotlin-formver
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="viper::org.jetbrains.kotlin.formver.viper.ast/Stmt///PointingToDeclaration//-302586480">
+  <div class="breadcrumbs"><a href="../../index.html">viper</a><span class="delimiter">/</span><a href="../index.html">org.jetbrains.kotlin.formver.viper.ast</a><span class="delimiter">/</span><span class="current">Stmt</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Stmt</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:viper/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="index.html">Stmt</a> : <a href="../../org.jetbrains.kotlin.formver.viper/-into-silver/index.html">IntoSilver</a><span class="token operator">&lt;</span><span data-unresolved-link="viper.silver.ast/Stmt///PointingToDeclaration/">Stmt</span><span class="token operator">&gt; </span></div><p class="paragraph">Sealed hierarchy of Viper statements.</p><p class="paragraph">Each data class in this hierarchy corresponds to a Viper statement node and implements <a href="../../org.jetbrains.kotlin.formver.viper/-into-silver/index.html">IntoSilver</a> to produce the matching <code class="lang-kotlin">viper.silver.ast</code> node consumed by Silicon.</p><p class="paragraph">The standard <code class="lang-kotlin">pos</code>, <code class="lang-kotlin">info</code>, and <code class="lang-kotlin">trafos</code> parameters carried by every node are Silver AST metadata (source position, annotations, transformation provenance) and are left at their no-op defaults in normal SnaKt usage.</p><p class="paragraph">Use <a href="-companion/assign.html">Stmt.assign</a> to create an assignment statement without having to inspect the type of the left-hand side manually.</p><h4 class="tableheader">Inheritors</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-local-var-assign/index.html">LocalVarAssign</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-field-assign/index.html">FieldAssign</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-method-call/index.html">MethodCall</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-exhale/index.html">Exhale</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-inhale/index.html">Inhale</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-assert/index.html">Assert</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-seqn/index.html">Seqn</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-if/index.html">If</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-while/index.html">While</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-label/index.html">Label</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-goto/index.html">Goto</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-fold/index.html">Fold</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-unfold/index.html">Unfold</a></div></span></div><div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="1297294064%2FClasslikes%2F-302586480" anchor-label="Assert" id="1297294064%2FClasslikes%2F-302586480" data-filterable-set=":formver.compiler-plugin:viper/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-assert/index.html"><span><span>Assert</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1297294064%2FClasslikes%2F-302586480"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:viper/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-assert/index.html">Assert</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>exp<span class="token operator">: </span><a href="../-exp/index.html">Exp</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>position<span class="token operator">: </span><a href="../-position/index.html">Position</a><span class="token operator"> = </span>Position.NoPosition<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>info<span class="token operator">: </span><a href="../-info/index.html">Info</a><span class="token operator"> = </span>Info.NoInfo<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>trafos<span class="token operator">: </span><a href="../-trafos/index.html">Trafos</a><span class="token operator"> = </span>Trafos.NoTrafos</span></span><span class="token punctuation">)</span> : <a href="index.html">Stmt</a></div><div class="brief "><p class="paragraph">Asserts that <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-stmt/-assert/--root--.html">exp</a> holds in the current state.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2051133760%2FClasslikes%2F-302586480" anchor-label="Companion" id="2051133760%2FClasslikes%2F-302586480" data-filterable-set=":formver.compiler-plugin:viper/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2051133760%2FClasslikes%2F-302586480"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:viper/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1493144655%2FClasslikes%2F-302586480" anchor-label="Exhale" id="-1493144655%2FClasslikes%2F-302586480" data-filterable-set=":formver.compiler-plugin:viper/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-exhale/index.html"><span><span>Exhale</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1493144655%2FClasslikes%2F-302586480"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:viper/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-exhale/index.html">Exhale</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>exp<span class="token operator">: </span><a href="../-exp/index.html">Exp</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>position<span class="token operator">: </span><a href="../-position/index.html">Position</a><span class="token operator"> = </span>Position.NoPosition<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>info<span class="token operator">: </span><a href="../-info/index.html">Info</a><span class="token operator"> = </span>Info.NoInfo<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>trafos<span class="token operator">: </span><a href="../-trafos/index.html">Trafos</a><span class="token operator"> = </span>Trafos.NoTrafos</span></span><span class="token punctuation">)</span> : <a href="index.html">Stmt</a></div><div class="brief "><p class="paragraph">Removes the permissions and pure facts described by <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-stmt/-exhale/--root--.html">exp</a> from the current state.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1809218141%2FClasslikes%2F-302586480" anchor-label="FieldAssign" id="-1809218141%2FClasslikes%2F-302586480" data-filterable-set=":formver.compiler-plugin:viper/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-field-assign/index.html"><span>Field</span><wbr><span><span>Assign</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1809218141%2FClasslikes%2F-302586480"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:viper/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-field-assign/index.html">FieldAssign</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>lhs<span class="token operator">: </span><a href="../-exp/-field-access/index.html">Exp.FieldAccess</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>rhs<span class="token operator">: </span><a href="../-exp/index.html">Exp</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>position<span class="token operator">: </span><a href="../-position/index.html">Position</a><span class="token operator"> = </span>Position.NoPosition<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>info<span class="token operator">: </span><a href="../-info/index.html">Info</a><span class="token operator"> = </span>Info.NoInfo<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>trafos<span class="token operator">: </span><a href="../-trafos/index.html">Trafos</a><span class="token operator"> = </span>Trafos.NoTrafos</span></span><span class="token punctuation">)</span> : <a href="index.html">Stmt</a></div><div class="brief "><p class="paragraph">Assigns the value of <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-stmt/-field-assign/--root--.html">rhs</a> to the heap field <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-stmt/-field-assign/--root--.html">lhs</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1146146773%2FClasslikes%2F-302586480" anchor-label="Fold" id="1146146773%2FClasslikes%2F-302586480" data-filterable-set=":formver.compiler-plugin:viper/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fold/index.html"><span><span>Fold</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1146146773%2FClasslikes%2F-302586480"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:viper/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-fold/index.html">Fold</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>acc<span class="token operator">: </span><a href="../-exp/-predicate-access/index.html">Exp.PredicateAccess</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>position<span class="token operator">: </span><a href="../-position/index.html">Position</a><span class="token operator"> = </span>Position.NoPosition<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>info<span class="token operator">: </span><a href="../-info/index.html">Info</a><span class="token operator"> = </span>Info.NoInfo<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>trafos<span class="token operator">: </span><a href="../-trafos/index.html">Trafos</a><span class="token operator"> = </span>Trafos.NoTrafos</span></span><span class="token punctuation">)</span> : <a href="index.html">Stmt</a></div><div class="brief "><p class="paragraph">Folds the predicate instance <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-stmt/-fold/--root--.html">acc</a>, consuming its body permissions and producing the abstract predicate resource.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1283443891%2FClasslikes%2F-302586480" anchor-label="Goto" id="1283443891%2FClasslikes%2F-302586480" data-filterable-set=":formver.compiler-plugin:viper/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-goto/index.html"><span><span>Goto</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1283443891%2FClasslikes%2F-302586480"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:viper/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-goto/index.html">Goto</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.viper/-symbolic-name/index.html">SymbolicName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>position<span class="token operator">: </span><a href="../-position/index.html">Position</a><span class="token operator"> = </span>Position.NoPosition<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>info<span class="token operator">: </span><a href="../-info/index.html">Info</a><span class="token operator"> = </span>Info.NoInfo<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>trafos<span class="token operator">: </span><a href="../-trafos/index.html">Trafos</a><span class="token operator"> = </span>Trafos.NoTrafos</span></span><span class="token punctuation">)</span> : <a href="index.html">Stmt</a></div><div class="brief "><p class="paragraph">Unconditional jump to the <a href="-label/index.html">Label</a> identified by <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-stmt/-goto/--root--.html">name</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1199709319%2FClasslikes%2F-302586480" anchor-label="If" id="-1199709319%2FClasslikes%2F-302586480" data-filterable-set=":formver.compiler-plugin:viper/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-if/index.html"><span><span>If</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1199709319%2FClasslikes%2F-302586480"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:viper/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-if/index.html">If</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>cond<span class="token operator">: </span><a href="../-exp/index.html">Exp</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>then<span class="token operator">: </span><a href="-seqn/index.html">Stmt.Seqn</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>els<span class="token operator">: </span><a href="-seqn/index.html">Stmt.Seqn</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>position<span class="token operator">: </span><a href="../-position/index.html">Position</a><span class="token operator"> = </span>Position.NoPosition<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>info<span class="token operator">: </span><a href="../-info/index.html">Info</a><span class="token operator"> = </span>Info.NoInfo<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>trafos<span class="token operator">: </span><a href="../-trafos/index.html">Trafos</a><span class="token operator"> = </span>Trafos.NoTrafos</span></span><span class="token punctuation">)</span> : <a href="index.html">Stmt</a></div><div class="brief "><p class="paragraph">A conditional statement branching on <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-stmt/-if/--root--.html">cond</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-203106177%2FClasslikes%2F-302586480" anchor-label="Inhale" id="-203106177%2FClasslikes%2F-302586480" data-filterable-set=":formver.compiler-plugin:viper/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-inhale/index.html"><span><span>Inhale</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-203106177%2FClasslikes%2F-302586480"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:viper/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-inhale/index.html">Inhale</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>exp<span class="token operator">: </span><a href="../-exp/index.html">Exp</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>position<span class="token operator">: </span><a href="../-position/index.html">Position</a><span class="token operator"> = </span>Position.NoPosition<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>info<span class="token operator">: </span><a href="../-info/index.html">Info</a><span class="token operator"> = </span>Info.NoInfo<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>trafos<span class="token operator">: </span><a href="../-trafos/index.html">Trafos</a><span class="token operator"> = </span>Trafos.NoTrafos</span></span><span class="token punctuation">)</span> : <a href="index.html">Stmt</a></div><div class="brief "><p class="paragraph">Adds the permissions and pure facts described by <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-stmt/-inhale/--root--.html">exp</a> to the current state without checking that they already hold.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-959025192%2FClasslikes%2F-302586480" anchor-label="Label" id="-959025192%2FClasslikes%2F-302586480" data-filterable-set=":formver.compiler-plugin:viper/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-label/index.html"><span><span>Label</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-959025192%2FClasslikes%2F-302586480"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:viper/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-label/index.html">Label</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.viper/-symbolic-name/index.html">SymbolicName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>invariants<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../-exp/index.html">Exp</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>position<span class="token operator">: </span><a href="../-position/index.html">Position</a><span class="token operator"> = </span>Position.NoPosition<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>info<span class="token operator">: </span><a href="../-info/index.html">Info</a><span class="token operator"> = </span>Info.NoInfo<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>trafos<span class="token operator">: </span><a href="../-trafos/index.html">Trafos</a><span class="token operator"> = </span>Trafos.NoTrafos</span></span><span class="token punctuation">)</span> : <a href="index.html">Stmt</a></div><div class="brief "><p class="paragraph">A named program point, optionally annotated with <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-stmt/-label/--root--.html">invariants</a> that must hold at this point.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="752110859%2FClasslikes%2F-302586480" anchor-label="LocalVarAssign" id="752110859%2FClasslikes%2F-302586480" data-filterable-set=":formver.compiler-plugin:viper/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-local-var-assign/index.html"><span>Local</span><wbr><span>Var</span><wbr><span><span>Assign</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="752110859%2FClasslikes%2F-302586480"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:viper/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-local-var-assign/index.html">LocalVarAssign</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>lhs<span class="token operator">: </span><a href="../-exp/-local-var/index.html">Exp.LocalVar</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>rhs<span class="token operator">: </span><a href="../-exp/index.html">Exp</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>position<span class="token operator">: </span><a href="../-position/index.html">Position</a><span class="token operator"> = </span>Position.NoPosition<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>info<span class="token operator">: </span><a href="../-info/index.html">Info</a><span class="token operator"> = </span>Info.NoInfo<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>trafos<span class="token operator">: </span><a href="../-trafos/index.html">Trafos</a><span class="token operator"> = </span>Trafos.NoTrafos</span></span><span class="token punctuation">)</span> : <a href="index.html">Stmt</a></div><div class="brief "><p class="paragraph">Assigns the value of <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-stmt/-local-var-assign/--root--.html">rhs</a> to the local variable <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-stmt/-local-var-assign/--root--.html">lhs</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-354479369%2FClasslikes%2F-302586480" anchor-label="MethodCall" id="-354479369%2FClasslikes%2F-302586480" data-filterable-set=":formver.compiler-plugin:viper/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-method-call/index.html"><span>Method</span><wbr><span><span>Call</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-354479369%2FClasslikes%2F-302586480"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:viper/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-method-call/index.html">MethodCall</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>methodName<span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.viper/-symbolic-name/index.html">SymbolicName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>args<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../-exp/index.html">Exp</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>targets<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../-exp/-local-var/index.html">Exp.LocalVar</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>position<span class="token operator">: </span><a href="../-position/index.html">Position</a><span class="token operator"> = </span>Position.NoPosition<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>info<span class="token operator">: </span><a href="../-info/index.html">Info</a><span class="token operator"> = </span>Info.NoInfo<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>trafos<span class="token operator">: </span><a href="../-trafos/index.html">Trafos</a><span class="token operator"> = </span>Trafos.NoTrafos</span></span><span class="token punctuation">)</span> : <a href="index.html">Stmt</a></div><div class="brief "><p class="paragraph">Invokes the Viper method identified by <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-stmt/-method-call/--root--.html">methodName</a> with <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-stmt/-method-call/--root--.html">args</a> and stores results in <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-stmt/-method-call/--root--.html">targets</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="642233255%2FClasslikes%2F-302586480" anchor-label="Seqn" id="642233255%2FClasslikes%2F-302586480" data-filterable-set=":formver.compiler-plugin:viper/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-seqn/index.html"><span><span>Seqn</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="642233255%2FClasslikes%2F-302586480"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:viper/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-seqn/index.html">Seqn</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>stmts<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="index.html">Stmt</a><span class="token operator">&gt;</span><span class="token operator"> = </span>listOf()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>scopedSeqnDeclarations<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../-declaration/index.html">Declaration</a><span class="token operator">&gt;</span><span class="token operator"> = </span>listOf()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>position<span class="token operator">: </span><a href="../-position/index.html">Position</a><span class="token operator"> = </span>Position.NoPosition<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>info<span class="token operator">: </span><a href="../-info/index.html">Info</a><span class="token operator"> = </span>Info.NoInfo<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>trafos<span class="token operator">: </span><a href="../-trafos/index.html">Trafos</a><span class="token operator"> = </span>Trafos.NoTrafos</span></span><span class="token punctuation">)</span> : <a href="index.html">Stmt</a></div><div class="brief "><p class="paragraph">A sequential block of statements with locally scoped declarations.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-977041764%2FClasslikes%2F-302586480" anchor-label="Unfold" id="-977041764%2FClasslikes%2F-302586480" data-filterable-set=":formver.compiler-plugin:viper/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-unfold/index.html"><span><span>Unfold</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-977041764%2FClasslikes%2F-302586480"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:viper/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-unfold/index.html">Unfold</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>acc<span class="token operator">: </span><a href="../-exp/-predicate-access/index.html">Exp.PredicateAccess</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>position<span class="token operator">: </span><a href="../-position/index.html">Position</a><span class="token operator"> = </span>Position.NoPosition<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>info<span class="token operator">: </span><a href="../-info/index.html">Info</a><span class="token operator"> = </span>Info.NoInfo<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>trafos<span class="token operator">: </span><a href="../-trafos/index.html">Trafos</a><span class="token operator"> = </span>Trafos.NoTrafos</span></span><span class="token punctuation">)</span> : <a href="index.html">Stmt</a></div><div class="brief "><p class="paragraph">Unfolds the predicate instance <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-stmt/-unfold/--root--.html">acc</a>, consuming the abstract predicate resource and producing its body permissions.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="158233147%2FClasslikes%2F-302586480" anchor-label="While" id="158233147%2FClasslikes%2F-302586480" data-filterable-set=":formver.compiler-plugin:viper/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-while/index.html"><span><span>While</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="158233147%2FClasslikes%2F-302586480"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:viper/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-while/index.html">While</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>cond<span class="token operator">: </span><a href="../-exp/index.html">Exp</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>invariants<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../-exp/index.html">Exp</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>body<span class="token operator">: </span><a href="-seqn/index.html">Stmt.Seqn</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>position<span class="token operator">: </span><a href="../-position/index.html">Position</a><span class="token operator"> = </span>Position.NoPosition<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>info<span class="token operator">: </span><a href="../-info/index.html">Info</a><span class="token operator"> = </span>Info.NoInfo<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>trafos<span class="token operator">: </span><a href="../-trafos/index.html">Trafos</a><span class="token operator"> = </span>Trafos.NoTrafos</span></span><span class="token punctuation">)</span> : <a href="index.html">Stmt</a></div><div class="brief "><p class="paragraph">A while loop with a Boolean condition <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-stmt/-while/--root--.html">cond</a>, a list of loop <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-stmt/-while/--root--.html">invariants</a>, and a <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-stmt/-while/--root--.html">body</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1074835418%2FFunctions%2F-302586480" anchor-label="toSilver" id="-1074835418%2FFunctions%2F-302586480" data-filterable-set=":formver.compiler-plugin:viper/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:viper/main" data-filterable-set=":formver.compiler-plugin:viper/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../org.jetbrains.kotlin.formver.viper/-into-silver/to-silver.html"><span>to</span><wbr><span><span>Silver</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1074835418%2FFunctions%2F-302586480"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:viper/main"><div class="symbol monospace"><span class="token keyword">context</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">nameResolver<span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.viper/-name-resolver/index.html">NameResolver</a></span></span><span class="token punctuation">)</span><br><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../../org.jetbrains.kotlin.formver.viper/-into-silver/to-silver.html"><span class="token function">toSilver</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="viper.silver.ast/Stmt///PointingToDeclaration/">Stmt</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

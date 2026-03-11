@@ -14,6 +14,17 @@ import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 
+/**
+ * Standard implementation of [UniqueCheckerContext] used by [UniqueDeclarationChecker].
+ *
+ * Resolves `@Unique` and `@Borrowed` annotations against the active [FirSession] and
+ * maintains the root [ContextTrie] that tracks ownership state for all value-parameter
+ * paths in the function currently being checked.
+ *
+ * @param session The active [FirSession], used for annotation resolution.
+ * @param config The resolved plugin configuration for this compilation.
+ * @param errorCollector Accumulates uniqueness errors for later bulk reporting.
+ */
 class UniqueChecker(
     override val session: FirSession,
     override val config: PluginConfiguration,

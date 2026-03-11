@@ -18,6 +18,20 @@ import viper.silver.cfg.silver.SilverCfg
 import viper.silver.reporter.StdIOReporter
 
 
+/**
+ * Wraps the Silicon SMT-based Viper verifier and exposes the two operations needed by SnaKt:
+ * consistency checking and deductive verification.
+ *
+ * The [Verifier] holds a single [DefaultMainVerifier] instance that is initialised once and
+ * reused across calls.  Callers are expected to:
+ * 1. Convert the Kotlin-side [Program] AST to a `viper.silver.ast.Program` via [IntoSilver].
+ * 2. Optionally call [checkConsistency] to detect malformed programs before spending time on
+ *    the full SMT encoding.
+ * 3. Call [verify] and collect any [VerificationError] results.
+ *
+ * Because Silicon requires a file path in its configuration, a dummy filename is supplied and
+ * immediately suppressed with `--ignoreFile`.
+ */
 class Verifier {
     private val verifier: DefaultMainVerifier
 

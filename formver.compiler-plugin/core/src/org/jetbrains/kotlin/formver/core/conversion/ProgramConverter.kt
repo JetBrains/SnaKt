@@ -564,6 +564,12 @@ class ProgramConverter(
                 subSignature.formalArgs.forEach {
                     addAll(it.pureInvariants())
                     addAll(it.accessInvariants())
+//                    // For pure functions (Viper `function`), parameter type info cannot be inhaled
+//                    // as a statement — it must come from `requires`. Non-pure functions get this
+//                    // via `inhale` in FunctionExp, so we skip it there to avoid redundant preconditions.
+//                    if (subSignature.symbol.isPure(session)) {
+//                        addAll(it.provenInvariants())
+//                    }
                     if (it.isUnique) {
                         addIfNotNull(it.type.uniquePredicateAccessInvariant()?.fillHole(it))
                     }

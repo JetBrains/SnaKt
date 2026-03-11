@@ -1,0 +1,461 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>ContractDescriptionConversionVisitor</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../../index.html" tabindex="1">
+                    kotlin-formver
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">0.1.0-SNAPSHOT
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":formver.compiler-plugin:core/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":formver.compiler-plugin:core/main" data-filter=":formver.compiler-plugin:core/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    kotlin-formver
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="core::org.jetbrains.kotlin.formver.core.conversion/ContractDescriptionConversionVisitor///PointingToDeclaration//-1777701753">
+  <div class="breadcrumbs"><a href="../../index.html">core</a><span class="delimiter">/</span><a href="../index.html">org.jetbrains.kotlin.formver.core.conversion</a><span class="delimiter">/</span><span class="current">ContractDescriptionConversionVisitor</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Contract</span><wbr><span>Description</span><wbr><span>Conversion</span><wbr><span><span>Visitor</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">ContractDescriptionConversionVisitor</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">ctx<span class="token operator">: </span><a href="../-program-conversion-context/index.html">ProgramConversionContext</a><span class="token punctuation">, </span></span><span class="parameter ">signature<span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.callables/-named-function-signature/index.html">NamedFunctionSignature</a></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtContractDescriptionVisitor///PointingToDeclaration/">KtContractDescriptionVisitor</span><span class="token operator">&lt;</span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a><span class="token punctuation">, </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt; </span></div><p class="paragraph">Converts Kotlin <code class="lang-kotlin">contract { }</code> effect declarations into <a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a>s that can be used as Viper postconditions.</p><p class="paragraph">Implements <code class="lang-kotlin">KtContractDescriptionVisitor</code> — the Kotlin compiler's visitor interface for the contract description AST (<code class="lang-kotlin">KtEffectDeclaration</code> and its subtypes). Each <code class="lang-kotlin">visitX</code> method maps one contract node type to the corresponding Viper expression.</p><p class="paragraph"><code class="lang-kotlin">KtEffectDeclaration</code>s are nodes generated by the compiler, and as such have no source information beyond the source of the <code class="lang-kotlin">FirEffectDeclaration</code>. As such, we only assign position information at the top level (in <a href="get-postconditions.html">getPostconditions</a>).</p><h4 class="tableheader">Parameters</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>ctx</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The program-level conversion context, used to embed types referenced in contracts.</p></div></div></div></div><div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>signature</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The signature of the function being converted, used to resolve parameter references (formal params, dispatch/extension receivers) inside the contract.</p></div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="-2032134556%2FConstructors%2F-1777701753" anchor-label="ContractDescriptionConversionVisitor" id="-2032134556%2FConstructors%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-contract-description-conversion-visitor.html"><span>Contract</span><wbr><span>Description</span><wbr><span>Conversion</span><wbr><span><span>Visitor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2032134556%2FConstructors%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">ctx<span class="token operator">: </span><a href="../-program-conversion-context/index.html">ProgramConversionContext</a><span class="token punctuation">, </span></span><span class="parameter ">signature<span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.callables/-named-function-signature/index.html">NamedFunctionSignature</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1345411232%2FFunctions%2F-1777701753" anchor-label="getPostconditions" id="-1345411232%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-postconditions.html"><span>get</span><wbr><span><span>Postconditions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1345411232%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="get-postconditions.html"><span class="token function">getPostconditions</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Converts all effect declarations of <a href="get-postconditions.html">context</a>'s function into Viper postcondition <a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a>s, attaching source positions at the top level.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1429191070%2FFunctions%2F-1777701753" anchor-label="visitBooleanConstantDescriptor" id="1429191070%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="visit-boolean-constant-descriptor.html"><span>visit</span><wbr><span>Boolean</span><wbr><span>Constant</span><wbr><span><span>Descriptor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1429191070%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="visit-boolean-constant-descriptor.html"><span class="token function">visitBooleanConstantDescriptor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">booleanConstantDescriptor<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtBooleanConstantReference///PointingToDeclaration/">KtBooleanConstantReference</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div><div class="brief "><p class="paragraph">Converts a boolean constant reference (<code class="lang-kotlin">true</code> / <code class="lang-kotlin">false</code>) used inside a contract condition. Any value other than the two known constants is an error.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-927328255%2FFunctions%2F-1777701753" anchor-label="visitBooleanExpression" id="-927328255%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-927328255%2FFunctions%2F-1777701753"><span>visit</span><wbr><span>Boolean</span><wbr><span><span>Expression</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-927328255%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-927328255%2FFunctions%2F-1777701753"><span class="token function">visitBooleanExpression</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">booleanExpression<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtBooleanExpression///PointingToDeclaration/">KtBooleanExpression</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1860739137%2FFunctions%2F-1777701753" anchor-label="visitBooleanValueParameterReference" id="-1860739137%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1860739137%2FFunctions%2F-1777701753"><span>visit</span><wbr><span>Boolean</span><wbr><span>Value</span><wbr><span>Parameter</span><wbr><span><span>Reference</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1860739137%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-1860739137%2FFunctions%2F-1777701753"><span class="token function">visitBooleanValueParameterReference</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">booleanValueParameterReference<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtBooleanValueParameterReference///PointingToDeclaration/">KtBooleanValueParameterReference</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1354616994%2FFunctions%2F-1777701753" anchor-label="visitCallsEffectDeclaration" id="-1354616994%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="visit-calls-effect-declaration.html"><span>visit</span><wbr><span>Calls</span><wbr><span>Effect</span><wbr><span><span>Declaration</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1354616994%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="visit-calls-effect-declaration.html"><span class="token function">visitCallsEffectDeclaration</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">callsEffect<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtCallsEffectDeclaration///PointingToDeclaration/">KtCallsEffectDeclaration</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div><div class="brief "><p class="paragraph">Converts a <code class="lang-kotlin">callsInPlace(lambda, ...)</code> effect declaration. This effect has no Viper representation; it is mapped to <code class="lang-kotlin">true</code> (trivially satisfied) so that functions using <code class="lang-kotlin">callsInPlace</code> can still be processed without error.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-191372098%2FFunctions%2F-1777701753" anchor-label="visitConditionalEffectDeclaration" id="-191372098%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="visit-conditional-effect-declaration.html"><span>visit</span><wbr><span>Conditional</span><wbr><span>Effect</span><wbr><span><span>Declaration</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-191372098%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="visit-conditional-effect-declaration.html"><span class="token function">visitConditionalEffectDeclaration</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">conditionalEffect<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtConditionalEffectDeclaration///PointingToDeclaration/">KtConditionalEffectDeclaration</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div><div class="brief "><p class="paragraph">Converts a conditional effect (<code class="lang-kotlin">returns(...) implies condition</code>) into a Viper implication.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="163335715%2FFunctions%2F-1777701753" anchor-label="visitConstantDescriptor" id="163335715%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#163335715%2FFunctions%2F-1777701753"><span>visit</span><wbr><span>Constant</span><wbr><span><span>Descriptor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="163335715%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#163335715%2FFunctions%2F-1777701753"><span class="token function">visitConstantDescriptor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">constantReference<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtConstantReference///PointingToDeclaration/">KtConstantReference</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="296874399%2FFunctions%2F-1777701753" anchor-label="visitContractDescriptionElement" id="296874399%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#296874399%2FFunctions%2F-1777701753"><span>visit</span><wbr><span>Contract</span><wbr><span>Description</span><wbr><span><span>Element</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="296874399%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#296874399%2FFunctions%2F-1777701753"><span class="token function">visitContractDescriptionElement</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">contractDescriptionElement<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtContractDescriptionElement///PointingToDeclaration/">KtContractDescriptionElement</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1047384429%2FFunctions%2F-1777701753" anchor-label="visitEffectDeclaration" id="-1047384429%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1047384429%2FFunctions%2F-1777701753"><span>visit</span><wbr><span>Effect</span><wbr><span><span>Declaration</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1047384429%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-1047384429%2FFunctions%2F-1777701753"><span class="token function">visitEffectDeclaration</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">effectDeclaration<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtEffectDeclaration///PointingToDeclaration/">KtEffectDeclaration</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1436446207%2FFunctions%2F-1777701753" anchor-label="visitErroneousCallsEffectDeclaration" id="-1436446207%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1436446207%2FFunctions%2F-1777701753"><span>visit</span><wbr><span>Erroneous</span><wbr><span>Calls</span><wbr><span>Effect</span><wbr><span><span>Declaration</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1436446207%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-1436446207%2FFunctions%2F-1777701753"><span class="token function">visitErroneousCallsEffectDeclaration</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">callsEffect<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtErroneousCallsEffectDeclaration///PointingToDeclaration/">KtErroneousCallsEffectDeclaration</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1131715649%2FFunctions%2F-1777701753" anchor-label="visitErroneousConstantReference" id="-1131715649%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1131715649%2FFunctions%2F-1777701753"><span>visit</span><wbr><span>Erroneous</span><wbr><span>Constant</span><wbr><span><span>Reference</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1131715649%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-1131715649%2FFunctions%2F-1777701753"><span class="token function">visitErroneousConstantReference</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">erroneousConstantReference<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtErroneousConstantReference///PointingToDeclaration/">KtErroneousConstantReference</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-680914515%2FFunctions%2F-1777701753" anchor-label="visitErroneousElement" id="-680914515%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-680914515%2FFunctions%2F-1777701753"><span>visit</span><wbr><span>Erroneous</span><wbr><span><span>Element</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-680914515%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-680914515%2FFunctions%2F-1777701753"><span class="token function">visitErroneousElement</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">element<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtErroneousContractElement///PointingToDeclaration/">KtErroneousContractElement</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="595834911%2FFunctions%2F-1777701753" anchor-label="visitErroneousIsInstancePredicate" id="595834911%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#595834911%2FFunctions%2F-1777701753"><span>visit</span><wbr><span>Erroneous</span><wbr><span>Is</span><wbr><span>Instance</span><wbr><span><span>Predicate</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="595834911%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#595834911%2FFunctions%2F-1777701753"><span class="token function">visitErroneousIsInstancePredicate</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isInstancePredicate<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtErroneousIsInstancePredicate///PointingToDeclaration/">KtErroneousIsInstancePredicate</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1184280257%2FFunctions%2F-1777701753" anchor-label="visitErroneousValueParameterReference" id="-1184280257%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1184280257%2FFunctions%2F-1777701753"><span>visit</span><wbr><span>Erroneous</span><wbr><span>Value</span><wbr><span>Parameter</span><wbr><span><span>Reference</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1184280257%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-1184280257%2FFunctions%2F-1777701753"><span class="token function">visitErroneousValueParameterReference</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">valueParameterReference<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtErroneousValueParameterReference///PointingToDeclaration/">KtErroneousValueParameterReference</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1130620976%2FFunctions%2F-1777701753" anchor-label="visitIsInstancePredicate" id="1130620976%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="visit-is-instance-predicate.html"><span>visit</span><wbr><span>Is</span><wbr><span>Instance</span><wbr><span><span>Predicate</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1130620976%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="visit-is-instance-predicate.html"><span class="token function">visitIsInstancePredicate</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isInstancePredicate<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtIsInstancePredicate///PointingToDeclaration/">KtIsInstancePredicate</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div><div class="brief "><p class="paragraph">Converts an <code class="lang-kotlin">x is T</code> or <code class="lang-kotlin">x !is T</code> predicate in a contract condition into an <a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-is/index.html">Is</a> check. The argument variable is resolved via <a href="../../../../formver.compiler-plugin/core/org.jetbrains.kotlin.formver.core.conversion/-contract-description-conversion-visitor/embedded-var.html">embeddedVar</a>; the target type is embedded via the program context. Negated predicates are wrapped in <a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-operator-exp-embeddings/-not.html">OperatorExpEmbeddings.Not</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1365662260%2FFunctions%2F-1777701753" anchor-label="visitIsNullPredicate" id="-1365662260%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="visit-is-null-predicate.html"><span>visit</span><wbr><span>Is</span><wbr><span>Null</span><wbr><span><span>Predicate</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1365662260%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="visit-is-null-predicate.html"><span class="token function">visitIsNullPredicate</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isNullPredicate<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtIsNullPredicate///PointingToDeclaration/">KtIsNullPredicate</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div><div class="brief "><p class="paragraph">Converts an <code class="lang-kotlin">isNull(x)</code> or <code class="lang-kotlin">isNotNull(x)</code> predicate in a contract condition.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="553970936%2FFunctions%2F-1777701753" anchor-label="visitLogicalBinaryOperationContractExpression" id="553970936%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="visit-logical-binary-operation-contract-expression.html"><span>visit</span><wbr><span>Logical</span><wbr><span>Binary</span><wbr><span>Operation</span><wbr><span>Contract</span><wbr><span><span>Expression</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="553970936%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="visit-logical-binary-operation-contract-expression.html"><span class="token function">visitLogicalBinaryOperationContractExpression</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">binaryLogicExpression<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtBinaryLogicExpression///PointingToDeclaration/">KtBinaryLogicExpression</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div><div class="brief "><p class="paragraph">Converts a binary logic expression (<code class="lang-kotlin">&amp;&amp;</code> or <code class="lang-kotlin">||</code>) inside a contract condition. Both sides are visited recursively. The resulting <a href="../../org.jetbrains.kotlin.formver.core.embeddings/-source-role/index.html">SourceRole</a>s are combined into a <a href="../../org.jetbrains.kotlin.formver.core.embeddings/-source-role/-condition/-conjunction/index.html">SourceRole.Condition.Conjunction</a> or <a href="../../org.jetbrains.kotlin.formver.core.embeddings/-source-role/-condition/-disjunction/index.html">SourceRole.Condition.Disjunction</a> for traceability in error messages.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="141512350%2FFunctions%2F-1777701753" anchor-label="visitLogicalNot" id="141512350%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="visit-logical-not.html"><span>visit</span><wbr><span>Logical</span><wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="141512350%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="visit-logical-not.html"><span class="token function">visitLogicalNot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">logicalNot<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtLogicalNot///PointingToDeclaration/">KtLogicalNot</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div><div class="brief "><p class="paragraph">Converts a logical negation (<code class="lang-kotlin">!condition</code>) inside a contract. Wraps the visited argument in <a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-operator-exp-embeddings/-not.html">OperatorExpEmbeddings.Not</a> and records a <a href="../../org.jetbrains.kotlin.formver.core.embeddings/-source-role/-condition/-negation/index.html">SourceRole.Condition.Negation</a> for traceability.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="219176798%2FFunctions%2F-1777701753" anchor-label="visitReturnsEffectDeclaration" id="219176798%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="visit-returns-effect-declaration.html"><span>visit</span><wbr><span>Returns</span><wbr><span>Effect</span><wbr><span><span>Declaration</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="219176798%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="visit-returns-effect-declaration.html"><span class="token function">visitReturnsEffectDeclaration</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">returnsEffect<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtReturnsEffectDeclaration///PointingToDeclaration/">KtReturnsEffectDeclaration</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div><div class="brief "><p class="paragraph">Converts a <code class="lang-kotlin">returns(value)</code> effect declaration into a Viper expression about the return variable.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="618917437%2FFunctions%2F-1777701753" anchor-label="visitValue" id="618917437%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#618917437%2FFunctions%2F-1777701753"><span>visit</span><wbr><span><span>Value</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="618917437%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#618917437%2FFunctions%2F-1777701753"><span class="token function">visitValue</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtContractDescriptionValue///PointingToDeclaration/">KtContractDescriptionValue</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1355778138%2FFunctions%2F-1777701753" anchor-label="visitValueParameterReference" id="-1355778138%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="visit-value-parameter-reference.html"><span>visit</span><wbr><span>Value</span><wbr><span>Parameter</span><wbr><span><span>Reference</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1355778138%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="visit-value-parameter-reference.html"><span class="token function">visitValueParameterReference</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">valueParameterReference<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.contracts.description/KtValueParameterReference///PointingToDeclaration/">KtValueParameterReference</span><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.fir.types/ConeKotlinType///PointingToDeclaration/">ConeKotlinType</span><span class="token punctuation">, </span><span data-unresolved-link="org.jetbrains.kotlin.fir.diagnostics/ConeDiagnostic///PointingToDeclaration/">ConeDiagnostic</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">data<span class="token operator">: </span><a href="../-contract-visitor-context/index.html">ContractVisitorContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-exp-embedding/index.html">ExpEmbedding</a></div><div class="brief "><p class="paragraph">Converts a reference to a value parameter inside a contract into the corresponding <a href="../../org.jetbrains.kotlin.formver.core.embeddings.expression/-variable-embedding/index.html">VariableEmbedding</a> from the function signature, using <a href="../../../../formver.compiler-plugin/core/org.jetbrains.kotlin.formver.core.conversion/-contract-description-conversion-visitor/embedded-var.html">embeddedVar</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

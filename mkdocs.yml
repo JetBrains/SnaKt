@@ -1,0 +1,84 @@
+site_name: SnaKt — Kotlin Formal Verification
+site_description: A K2 compiler plugin for formal verification of Kotlin code using Viper
+repo_url: https://github.com/jesyspa/SnaKt
+repo_name: jesyspa/SnaKt
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.annotate
+    - content.code.copy
+    - toc.follow
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Quick Start: getting-started/quick-start.md
+      - Configuration: getting-started/configuration.md
+  - User Guide:
+      - Annotations & Built-ins: user-guide/annotations.md
+      - Writing Specifications: user-guide/specifications.md
+      - Supported Features: user-guide/supported-features.md
+      - Troubleshooting: user-guide/troubleshooting.md
+  - Architecture:
+      - Overview: architecture/overview.md
+      - Conversion Pipeline: architecture/pipeline.md
+      - Embeddings: architecture/embeddings.md
+      - Purity Analysis: architecture/purity.md
+      - SSA Transformation: architecture/ssa.md
+      - Name Mangling: architecture/name-mangling.md
+      - Type System: architecture/type-system.md
+      - Permissions & Separation Logic: architecture/permissions.md
+      - Uniqueness & Ownership: architecture/uniqueness.md
+      - Reading Generated Viper: architecture/viper-encoding.md
+  - Implementation:
+      - Conversion Engine: implementation/conversion.md
+      - Linearization: implementation/linearization.md
+      - Viper AST: implementation/viper-ast.md
+      - Special Functions: implementation/special-functions.md
+      - Error Reporting: implementation/error-reporting.md
+  - Developer Guide:
+      - Onboarding: developer-guide/onboarding.md
+      - Testing: developer-guide/testing.md
+      - Adding Features: developer-guide/adding-features.md
+      - Contributing: developer-guide/contributing.md
+  - API Reference: api/index.md

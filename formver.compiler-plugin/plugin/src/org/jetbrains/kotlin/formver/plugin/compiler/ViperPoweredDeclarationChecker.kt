@@ -29,25 +29,67 @@ import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 
-// A function "has a contract" if its FIR contract description is resolved and contains at least one effect.
-// Used by TargetsSelection.TARGETS_WITH_CONTRACT to decide whether to convert/verify a function.
+/**
+ * Returns `true` when this declaration's FIR contract description has been resolved and
+ * contains at least one effect.
+ *
+ * Used by [TargetsSelection.TARGETS_WITH_CONTRACT] to decide whether to convert/verify
+ * a function.
+ *
+ * A function "has a contract" if its FIR contract description is resolved and contains at least one effect.
+ * Used by TargetsSelection.TARGETS_WITH_CONTRACT to decide whether to convert/verify a function.
+ */
 private val FirContractDescriptionOwner.hasContract: Boolean
     get() = when (val description = contractDescription) {
         is FirResolvedContractDescription -> description.effects.isNotEmpty()
         else -> false
     }
 
-// Maps a TargetsSelection policy to a yes/no decision for a specific function declaration.
-// ALL_TARGETS: always convert; TARGETS_WITH_CONTRACT: only if the function has Kotlin contracts;
-// NO_TARGETS: never convert (plugin effectively disabled).
+/**
+ * Maps a [TargetsSelection] policy to a yes/no decision for a specific function declaration.
+ *
+ * - [TargetsSelection.ALL_TARGETS] — always `true`.
+ * - [TargetsSelection.TARGETS_WITH_CONTRACT] — `true` only when the function has at least
+ *   one resolved Kotlin contract effect.
+ * - [TargetsSelection.NO_TARGETS] — always `false` (plugin effectively disabled).
+ *
+ * Maps a TargetsSelection policy to a yes/no decision for a specific function declaration.
+ * ALL_TARGETS: always convert; TARGETS_WITH_CONTRACT: only if the function has Kotlin contracts;
+ * NO_TARGETS: never convert (plugin effectively disabled).
+ */
 private fun TargetsSelection.applicable(declaration: FirSimpleFunction): Boolean = when (this) {
     TargetsSelection.ALL_TARGETS -> true
     TargetsSelection.TARGETS_WITH_CONTRACT -> declaration.hasContract
     TargetsSelection.NO_TARGETS -> false
 }
 
-// The main FIR checker. The Kotlin compiler invokes `check()` once per FirSimpleFunction
-// encountered during analysis. This class drives the entire conversion → verification pipeline.
+/**
+ * K2 [FirSimpleFunctionChecker] that orchestrates the full formal-verification pipeline
+ * for each Kotlin function encountered during FIR analysis.
+ *
+ * When the compiler calls [check], this class:
+ * 1. **Gates** — skips functions excluded by [PluginConfiguration] or `@NeverConvert`.
+ * 2. **Converts** — delegates to [ProgramConverter] to translate the FIR body into a
+ *    Viper program embedding.
+ * 3. **Resolves names** — registers all symbolic names so that diagnostics are readable.
+ * 4. **Logs** (optional) — emits the Viper text as a [PluginErrors.VIPER_TEXT] diagnostic
+ *    when the configured log level demands it.
+ * 5. **Dumps to file** (optional) — writes a `.vpr` file via [ViperDumpFileManager] and
+ *    emits a [PluginErrors.VIPER_FILE] diagnostic containing the file URI.
+ * 6. **Reports purity errors** — surfaces any [ErrorCollector] purity violations.
+ * 7. **Checks consistency** — verifies that the generated Viper program is internally
+ *    well-formed before invoking Silicon; ill-formed programs indicate a plugin bug.
+ * 8. **Verifies** — runs Silicon and reports any failing postconditions or assertions
+ *    via [PluginErrors].
+ *
+ * @param session The active [FirSession], used for annotation look-ups.
+ * @param config The resolved [PluginConfiguration] for the current compilation.
+ * @param viperDumpFileManager Optional manager for writing `.vpr` files to disk;
+ *   non-null only when `dumpViperFiles` is enabled in the Gradle extension.
+ *
+ *  The main FIR checker. The Kotlin compiler invokes `check()` once per FirSimpleFunction
+ *  encountered during analysis. This class drives the entire conversion → verification pipeline.
+ */
 class ViperPoweredDeclarationChecker(
     private val session: FirSession,
     private val config: PluginConfiguration,
@@ -153,8 +195,16 @@ class ViperPoweredDeclarationChecker(
         }
     }
 
-    // Returns the program to log based on the configured verbosity level,
-    // or null if logging is suppressed (ONLY_WARNINGS).
+    /**
+     * Returns the [Program] that should be emitted as a [PluginErrors.VIPER_TEXT] diagnostic,
+     * or `null` when logging is suppressed ([LogLevel.ONLY_WARNINGS]).
+     *
+     * The returned program may be a shortened version (without all predicates) depending on
+     * the configured [LogLevel].
+     *
+     * Returns the program to log based on the configured verbosity level,
+     * or null if logging is suppressed (ONLY_WARNINGS).
+     */
     private fun getProgramForLogging(program: Program): Program? = when (config.logLevel) {
         LogLevel.ONLY_WARNINGS -> null
         LogLevel.SHORT_VIPER_DUMP -> program.toShort().withoutPredicates()
@@ -162,7 +212,10 @@ class ViperPoweredDeclarationChecker(
         LogLevel.FULL_VIPER_DUMP -> program
     }
 
-    // Constructs the ClassId for a formver plugin annotation by its simple name.
+    /**
+     * Constructs the [ClassId] for a formver plugin annotation located in the
+     * `org.jetbrains.kotlin.formver.plugin` package, identified by its simple [name].
+     */
     private fun getAnnotationId(name: String): ClassId =
         ClassId(FqName.fromSegments(listOf("org", "jetbrains", "kotlin", "formver", "plugin")), Name.identifier(name))
 
@@ -172,16 +225,25 @@ class ViperPoweredDeclarationChecker(
     private val alwaysVerifyId: ClassId = getAnnotationId("AlwaysVerify")
     private val dumpExpEmbeddingsId: ClassId = getAnnotationId("DumpExpEmbeddings")
 
-    // Decides whether a function should be converted to Viper at all.
-    // @NeverConvert overrides all other settings.
+    /**
+     * Returns `true` when [declaration] should be translated into a Viper program.
+     *
+     * `@NeverConvert` unconditionally suppresses conversion regardless of the global
+     * [PluginConfiguration.conversionSelection] policy.
+     */
     private fun PluginConfiguration.shouldConvert(declaration: FirSimpleFunction): Boolean = when {
         declaration.hasAnnotation(neverConvertId, session) -> false
         else -> conversionSelection.applicable(declaration)
     }
 
-    // Decides whether Silicon should verify the converted Viper program.
-    // @NeverConvert and @NeverVerify suppress verification; @AlwaysVerify forces it
-    // regardless of the global verificationSelection policy.
+    /**
+     * Returns `true` when Silicon should run on the converted Viper program for [declaration].
+     *
+     * Annotation precedence (highest to lowest):
+     * - `@NeverConvert` / `@NeverVerify` — always suppresses verification.
+     * - `@AlwaysVerify` — forces verification regardless of the global policy.
+     * - [PluginConfiguration.verificationSelection] — the fallback policy.
+     */
     private fun PluginConfiguration.shouldVerify(declaration: FirSimpleFunction): Boolean = when {
         declaration.hasAnnotation(neverConvertId, session) -> false
         declaration.hasAnnotation(neverVerifyId, session) -> false
@@ -189,8 +251,11 @@ class ViperPoweredDeclarationChecker(
         else -> verificationSelection.applicable(declaration)
     }
 
-    // Returns true if the @DumpExpEmbeddings annotation is present,
-    // which triggers emission of intermediate expression embeddings as diagnostics.
+    /**
+     * Returns `true` when the `@DumpExpEmbeddings` annotation is present on [declaration],
+     * which triggers the emission of each intermediate [ExpEmbedding] tree as a
+     * [PluginErrors.EXP_EMBEDDING] diagnostic.
+     */
     private fun shouldDumpExpEmbeddings(declaration: FirSimpleFunction): Boolean =
         declaration.hasAnnotation(dumpExpEmbeddingsId, session)
 }

@@ -1,0 +1,439 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>RuntimeTypeDomain</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../../index.html" tabindex="1">
+                    kotlin-formver
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">0.1.0-SNAPSHOT
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":formver.compiler-plugin:core/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":formver.compiler-plugin:core/main" data-filter=":formver.compiler-plugin:core/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    kotlin-formver
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="core::org.jetbrains.kotlin.formver.core.domains/RuntimeTypeDomain///PointingToDeclaration//-1777701753">
+  <div class="breadcrumbs"><a href="../../index.html">core</a><span class="delimiter">/</span><a href="../index.html">org.jetbrains.kotlin.formver.core.domains</a><span class="delimiter">/</span><span class="current">RuntimeTypeDomain</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Runtime</span><wbr><span>Type</span><wbr><span><span>Domain</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">RuntimeTypeDomain</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>classes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.types/-class-type-embedding/index.html">ClassTypeEmbedding</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-builtin-domain/index.html">BuiltinDomain</a></div><p class="paragraph">This new domain is designed to replace <code class="lang-kotlin">NullableDomain</code>, <code class="lang-kotlin">TypeDomain</code> and <code class="lang-kotlin">CastingDomain</code> and it is not yet integrated. To enable its generation in viper output uncomment corresponding lines in jetbrains://idea/navigate/reference?project=kotlin&amp;path=org/jetbrains/kotlin/formver/conversion/ProgramConverter.kt:70 and jetbrains://idea/navigate/reference?project=kotlin&amp;path=org/jetbrains/kotlin/formver/embeddings/callables/SpecialFunctions.kt:58</p><p class="paragraph">Viper code:</p><div class="sample-container"><pre><code class="block lang-viper" theme="idea">domain RuntimeType  {<br><br><br> unique function intType(): RuntimeType<br> unique function boolType(): RuntimeType<br> unique function unitType(): RuntimeType<br> unique function nothingType(): RuntimeType<br> unique function anyType(): RuntimeType<br> unique function functionType(): RuntimeType<br><br> // unique *Type() : RuntimeType for each user type<br><br> function nullValue(): Ref<br> function unitValue(): Ref<br><br> function isSubtype(t1: RuntimeType, t2: RuntimeType): Bool<br> function typeOf(r: Ref): RuntimeType<br> function nullable(t: RuntimeType): RuntimeType<br><br><br> function intToRef(v: Int): Ref<br> function intFromRef(r: Ref): Int<br> function boolToRef(v: Bool): Ref<br> function boolFromRef(r: Ref): Bool<br><br><br> axiom subtype_reflexive {<br>   (forall t: RuntimeType ::isSubtype(t, t))<br> }<br><br> axiom subtype_transitive {<br>   (forall t1: RuntimeType, t2: RuntimeType, t3: RuntimeType ::<br>     { isSubtype(t1, t2), isSubtype(t2, t3) }<br>     isSubtype(t1, t2) &amp;&amp;<br>     isSubtype(t2, t3) ==&gt;<br>     isSubtype(t1, t3))<br> }<br><br> axiom subtype_antisymmetric {<br>   (forall t1: RuntimeType, t2: RuntimeType ::<br>     { isSubtype(t1, t2), isSubtype(t2, t1) }<br>     isSubtype(t1, t2) &amp;&amp;<br>     isSubtype(t2, t1) ==&gt;<br>     t1 == t2)<br> }<br><br> axiom nullable_idempotent {<br>   (forall t: RuntimeType ::<br>     { nullable(nullable(t)) }<br>     nullable(nullable(t)) ==<br>     nullable(t))<br> }<br><br> axiom nullable_supertype {<br>   (forall t: RuntimeType ::<br>     { nullable(t) }<br>     isSubtype(t, nullable(t)))<br> }<br><br> axiom nullable_preserves_subtype {<br>   (forall t1: RuntimeType, t2: RuntimeType ::<br>     { isSubtype(nullable(t1), nullable(t2)) }<br>     isSubtype(t1, t2) ==&gt;<br>     isSubtype(nullable(t1), nullable(t2)))<br> }<br><br> axiom nullable_any_supertype {<br>   (forall t: RuntimeType ::isSubtype(t, nullable(anyType())))<br> }<br><br> axiom {<br>   isSubtype(intType(), anyType())<br> }<br><br> axiom {<br>   isSubtype(boolType(), anyType())<br> }<br><br> axiom {<br>   isSubtype(unitType(), anyType())<br> }<br><br> axiom {<br>   isSubtype(nothingType(), anyType())<br> }<br><br> axiom {<br>   isSubtype(anyType(), anyType())<br> }<br><br> axiom {<br>   isSubtype(functionType(), anyType())<br> }<br><br> // isSubtype(*Type(), anyType()) for each user type<br><br> axiom supertype_of_nullable_nothing {<br>   (forall t: RuntimeType ::isSubtype(nullable(nothingType()),<br>     t))<br> }<br><br> axiom any_not_nullable {<br>   (forall t: RuntimeType ::!isSubtype(nullable(t),<br>     anyType()))<br> }<br><br> axiom null_smartcast_value_level {<br>   (forall r: Ref, t: RuntimeType ::<br>     { isSubtype(typeOf(r), nullable(t)) }<br>     isSubtype(typeOf(r), nullable(t)) ==&gt;<br>     r == nullValue() ||<br>     isSubtype(typeOf(r), t))<br> }<br><br> axiom nothing_empty {<br>   (forall r: Ref ::!isSubtype(typeOf(r), nothingType()))<br> }<br><br> axiom null_smartcast_type_level {<br>   (forall t1: RuntimeType, t2: RuntimeType ::<br>     { isSubtype(t1, anyType()), isSubtype(t1,<br>     nullable(t2)) }<br>     isSubtype(t1, anyType()) &amp;&amp;<br>     isSubtype(t1, nullable(t2)) ==&gt;<br>     isSubtype(t1, t2))<br> }<br><br> axiom type_of_null {<br>   isSubtype(typeOf(nullValue()),<br>   nullable(nothingType()))<br> }<br><br> axiom type_of_unit {<br>   isSubtype(typeOf(unitValue()),<br>   unitType())<br> }<br><br> axiom uniqueness_of_unit {<br>   (forall r: Ref ::<br>     { isSubtype(typeOf(r), unitType()) }<br>     isSubtype(typeOf(r), unitType()) ==&gt;<br>     r == unitValue())<br> }<br><br> axiom {<br>   (forall v: Int ::<br>     { isSubtype(typeOf(intToRef(v)),<br>     intType()) }<br>     isSubtype(typeOf(intToRef(v)),<br>     intType()))<br> }<br><br> axiom {<br>   (forall v: Int ::<br>     { intFromRef(intToRef(v)) }<br>     intFromRef(intToRef(v)) == v)<br> }<br><br> axiom {<br>   (forall r: Ref ::<br>     { intToRef(intFromRef(r)) }<br>     isSubtype(typeOf(r), intType()) ==&gt;<br>     intToRef(intFromRef(r)) == r)<br> }<br><br> // same for bool2ref and ref2bool<br><br> // isSubtype(*Type(), *Type()) for each pair of user type and its supertype()<br>}<br><br>function addInts(arg1: Ref, arg2: Ref): Ref<br>  requires isSubtype(typeOf(arg1), intType())<br>  requires isSubtype(typeOf(arg2), intType())<br>  ensures isSubtype(typeOf(result), intType())<br>  ensures intFromRef(result) == intFromRef(arg1) + intFromRef(arg2)<br>{<br>  intToRef(intFromRef(arg1) + intFromRef(arg2))<br>}<br><br>// same for subtraction, multiplication and so on</code></pre><span class="copy-tooltip"><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div><span class="copy-icon"></span></span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="1311313624%2FConstructors%2F-1777701753" anchor-label="RuntimeTypeDomain" id="1311313624%2FConstructors%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-runtime-type-domain.html"><span>Runtime</span><wbr><span>Type</span><wbr><span><span>Domain</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1311313624%2FConstructors%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">classes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.types/-class-type-embedding/index.html">ClassTypeEmbedding</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="1757521586%2FClasslikes%2F-1777701753" anchor-label="Companion" id="1757521586%2FClasslikes%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1757521586%2FClasslikes%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="-67553236%2FProperties%2F-1777701753" anchor-label="axioms" id="-67553236%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="axioms.html"><span><span>axioms</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-67553236%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="axioms.html">axioms</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-domain-axiom/index.html">DomainAxiom</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-799214087%2FProperties%2F-1777701753" anchor-label="builtinTypes" id="-799214087%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="builtin-types.html"><span>builtin</span><wbr><span><span>Types</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-799214087%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="builtin-types.html">builtinTypes</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-domain-func/index.html">DomainFunc</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="407996293%2FProperties%2F-1777701753" anchor-label="classes" id="407996293%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="classes.html"><span><span>classes</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="407996293%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="classes.html">classes</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.types/-class-type-embedding/index.html">ClassTypeEmbedding</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="230747406%2FProperties%2F-1777701753" anchor-label="classTypes" id="230747406%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="class-types.html"><span>class</span><wbr><span><span>Types</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="230747406%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="class-types.html">classTypes</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="../../org.jetbrains.kotlin.formver.core.embeddings.types/-class-type-embedding/index.html">ClassTypeEmbedding</a><span class="token punctuation">, </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-domain-func/index.html">DomainFunc</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2036400688%2FProperties%2F-1777701753" anchor-label="functions" id="2036400688%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="functions.html"><span><span>functions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2036400688%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="functions.html">functions</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-domain-func/index.html">DomainFunc</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1507893241%2FProperties%2F-1777701753" anchor-label="includeInShortDump" id="-1507893241%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1507893241%2FProperties%2F-1777701753"><span>include</span><wbr><span>In</span><wbr><span>Short</span><wbr><span><span>Dump</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1507893241%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="index.html#-1507893241%2FProperties%2F-1777701753">includeInShortDump</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1470673487%2FProperties%2F-1777701753" anchor-label="info" id="1470673487%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1470673487%2FProperties%2F-1777701753"><span><span>info</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1470673487%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html#1470673487%2FProperties%2F-1777701753">info</a><span class="token operator">: </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-info/index.html">Info</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1783955218%2FProperties%2F-1777701753" anchor-label="name" id="1783955218%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1783955218%2FProperties%2F-1777701753"><span><span>name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1783955218%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html#1783955218%2FProperties%2F-1777701753">name</a><span class="token operator">: </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-domain-name/index.html">DomainName</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="737002724%2FProperties%2F-1777701753" anchor-label="nonNullableTypes" id="737002724%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="non-nullable-types.html"><span>non</span><wbr><span>Nullable</span><wbr><span><span>Types</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="737002724%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="non-nullable-types.html">nonNullableTypes</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-domain-func/index.html">DomainFunc</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-278817687%2FProperties%2F-1777701753" anchor-label="pos" id="-278817687%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-278817687%2FProperties%2F-1777701753"><span><span>pos</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-278817687%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html#-278817687%2FProperties%2F-1777701753">pos</a><span class="token operator">: </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-position/index.html">Position</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2033221846%2FProperties%2F-1777701753" anchor-label="trafos" id="2033221846%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#2033221846%2FProperties%2F-1777701753"><span><span>trafos</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2033221846%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html#2033221846%2FProperties%2F-1777701753">trafos</a><span class="token operator">: </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-trafos/index.html">Trafos</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="445747849%2FProperties%2F-1777701753" anchor-label="typeVars" id="445747849%2FProperties%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="type-vars.html"><span>type</span><wbr><span><span>Vars</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="445747849%2FProperties%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="type-vars.html">typeVars</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-type/-type-var/index.html">Type.TypeVar</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="142673327%2FFunctions%2F-1777701753" anchor-label="createAnonymousDomainAxiom" id="142673327%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#142673327%2FFunctions%2F-1777701753"><span>create</span><wbr><span>Anonymous</span><wbr><span>Domain</span><wbr><span><span>Axiom</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="142673327%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#142673327%2FFunctions%2F-1777701753"><span class="token function">createAnonymousDomainAxiom</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">exp<span class="token operator">: </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-exp/index.html">Exp</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-domain-axiom/index.html">DomainAxiom</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="301834308%2FFunctions%2F-1777701753" anchor-label="createDomainFunc" id="301834308%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#301834308%2FFunctions%2F-1777701753"><span>create</span><wbr><span>Domain</span><wbr><span><span>Func</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="301834308%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#301834308%2FFunctions%2F-1777701753"><span class="token function">createDomainFunc</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">funcName<span class="token operator">: </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper/-symbolic-name/index.html">SymbolicName</a><span class="token punctuation">, </span></span><span class="parameter ">args<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-declaration/-local-var-decl/index.html">Declaration.LocalVarDecl</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">type<span class="token operator">: </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-type/index.html">Type</a><span class="token punctuation">, </span></span><span class="parameter ">unique<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-domain-func/index.html">DomainFunc</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="763119926%2FFunctions%2F-1777701753" anchor-label="createNamedDomainAxiom" id="763119926%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#763119926%2FFunctions%2F-1777701753"><span>create</span><wbr><span>Named</span><wbr><span>Domain</span><wbr><span><span>Axiom</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="763119926%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#763119926%2FFunctions%2F-1777701753"><span class="token function">createNamedDomainAxiom</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">axiomName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">exp<span class="token operator">: </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-exp/index.html">Exp</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-domain-axiom/index.html">DomainAxiom</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-303405143%2FFunctions%2F-1777701753" anchor-label="funcApp" id="-303405143%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-303405143%2FFunctions%2F-1777701753"><span>func</span><wbr><span><span>App</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-303405143%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#-303405143%2FFunctions%2F-1777701753"><span class="token function">funcApp</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">func<span class="token operator">: </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-domain-func/index.html">DomainFunc</a><span class="token punctuation">, </span></span><span class="parameter ">args<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-exp/index.html">Exp</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">typeVarMap<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-type/-type-var/index.html">Type.TypeVar</a><span class="token punctuation">, </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-type/index.html">Type</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">pos<span class="token operator">: </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-position/index.html">Position</a><span class="token punctuation">, </span></span><span class="parameter ">info<span class="token operator">: </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-info/index.html">Info</a><span class="token punctuation">, </span></span><span class="parameter ">trafos<span class="token operator">: </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-trafos/index.html">Trafos</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-exp/-domain-func-app/index.html">Exp.DomainFuncApp</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-404538871%2FFunctions%2F-1777701753" anchor-label="toSilver" id="-404538871%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-404538871%2FFunctions%2F-1777701753"><span>to</span><wbr><span><span>Silver</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-404538871%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">context</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">nameResolver<span class="token operator">: </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper/-name-resolver/index.html">NameResolver</a></span></span><span class="token punctuation">)</span><br><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#-404538871%2FFunctions%2F-1777701753"><span class="token function">toSilver</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="viper.silver.ast/Domain///PointingToDeclaration/">Domain</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1019872595%2FFunctions%2F-1777701753" anchor-label="toType" id="1019872595%2FFunctions%2F-1777701753" data-filterable-set=":formver.compiler-plugin:core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":formver.compiler-plugin:core/main" data-filterable-set=":formver.compiler-plugin:core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1019872595%2FFunctions%2F-1777701753"><span>to</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1019872595%2FFunctions%2F-1777701753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":formver.compiler-plugin:core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html#1019872595%2FFunctions%2F-1777701753"><span class="token function">toType</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">typeParamSubst<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-type/-type-var/index.html">Type.TypeVar</a><span class="token punctuation">, </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-type/index.html">Type</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../formver.compiler-plugin/viper/org.jetbrains.kotlin.formver.viper.ast/-type/-domain/index.html">Type.Domain</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
