@@ -64,7 +64,6 @@ buildConfig {
     }
 
     packageName(group.toString())
-    buildConfigField("String", "COMPILER_PLUGIN_ID", "\"${rootProject.group}\"")
 }
 
 tasks.test {
