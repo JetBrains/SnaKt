@@ -31,6 +31,8 @@ import org.jetbrains.kotlin.formver.core.linearization.Linearizer
 import org.jetbrains.kotlin.formver.core.linearization.PureLinearizer
 import org.jetbrains.kotlin.formver.core.linearization.SeqnBuilder
 import org.jetbrains.kotlin.formver.core.linearization.SharedLinearizationState
+import org.jetbrains.kotlin.formver.core.linearization.SsaConverter
+import org.jetbrains.kotlin.formver.core.linearization.UnfoldPolicy
 import org.jetbrains.kotlin.formver.core.purity.checkValidity
 import org.jetbrains.kotlin.formver.core.purity.isPure
 import org.jetbrains.kotlin.formver.viper.SymbolicName
@@ -274,7 +276,7 @@ fun StmtConversionContext.convertFunctionWithBody(
         errorCollector.addPurityError(declaration.source, "Impure function body detected in pure function")
         return null
     }
-    val pureLinearizer = PureLinearizer(declaration.source, SharedLinearizationState(anonVarProducer))
+    val pureLinearizer = PureLinearizer(declaration.source, SharedLinearizationState(anonVarProducer), SsaConverter(declaration.source), UnfoldPolicy.UNFOLD)
     body.toViperUnusedResult(pureLinearizer)
     return pureLinearizer.constructExpression()
 }

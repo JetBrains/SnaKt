@@ -1,0 +1,231 @@
+/pure_function_with_heap_dependent_expressions.kt:(157,165): info: Generated Viper text for testData:
+field bf$box: Ref
+
+field bf$data: Ref
+
+function f$testData$TF$T$BoxOfBox$T$Int(p$boxOfBox: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let anon$0$0 ==
+    ((unfolding acc(p$c$BoxOfBox$shared(p$boxOfBox), wildcard) in
+      p$boxOfBox.bf$box)) in
+    (let l0$value$0 ==
+      ((unfolding acc(p$c$BoxOfBox$shared(p$boxOfBox), wildcard) in
+        (unfolding acc(p$c$Box$shared(anon$0$0), wildcard) in
+          anon$0$0.bf$data))) in
+      l0$value$0))
+}
+
+/pure_function_with_heap_dependent_expressions.kt:(257,269): info: Generated Viper text for boxBoxBoxBox:
+field bf$box: Ref
+
+field bf$boxOfBox: Ref
+
+field bf$data: Ref
+
+function f$boxBoxBoxBox$TF$T$BoxOfBoxOfBox$T$Int(p$boxOfBoxOfBox: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let anon$1$0 ==
+    ((unfolding acc(p$c$BoxOfBoxOfBox$shared(p$boxOfBoxOfBox), wildcard) in
+      p$boxOfBoxOfBox.bf$boxOfBox)) in
+    (let anon$0$0 ==
+      ((unfolding acc(p$c$BoxOfBoxOfBox$shared(p$boxOfBoxOfBox), wildcard) in
+        (unfolding acc(p$c$BoxOfBox$shared(anon$1$0), wildcard) in
+          anon$1$0.bf$box))) in
+      (let l0$value$0 ==
+        ((unfolding acc(p$c$BoxOfBoxOfBox$shared(p$boxOfBoxOfBox), wildcard) in
+          (unfolding acc(p$c$BoxOfBox$shared(anon$1$0), wildcard) in
+            (unfolding acc(p$c$Box$shared(anon$0$0), wildcard) in
+              anon$0$0.bf$data)))) in
+        l0$value$0)))
+}
+
+/pure_function_with_heap_dependent_expressions.kt:(385,394): info: Generated Viper text for boxReturn:
+field bf$box: Ref
+
+field bf$data: Ref
+
+function f$boxReturn$TF$T$BoxOfBox$T$Int(p$boxOfBox: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let anon$1$0 ==
+    ((unfolding acc(p$c$BoxOfBox$shared(p$boxOfBox), wildcard) in
+      p$boxOfBox.bf$box)) in
+    (let anon$0$0 ==
+      ((unfolding acc(p$c$BoxOfBox$shared(p$boxOfBox), wildcard) in
+        (unfolding acc(p$c$Box$shared(anon$1$0), wildcard) in
+          anon$1$0.bf$data))) in
+      anon$0$0))
+}
+
+/pure_function_with_heap_dependent_expressions.kt:(469,502): info: Generated Viper text for copy:
+field bf$next: Ref
+
+field bf$value: Ref
+
+method f$c$Node$copy$TF$T$Node$T$Int$NT$Node$T$Node(this$dispatch: Ref, p$value: Ref,
+  p$next: Ref)
+  returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Node())
+  ensures acc(p$c$Node$shared(ret), wildcard)
+
+
+/pure_function_with_heap_dependent_expressions.kt:(474,479): info: Generated Viper text for component1:
+field bf$next: Ref
+
+field bf$value: Ref
+
+method f$c$Node$component1$TF$T$Node$T$Int(this$dispatch: Ref)
+  returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
+
+
+/pure_function_with_heap_dependent_expressions.kt:(490,494): info: Generated Viper text for component2:
+field bf$next: Ref
+
+field bf$value: Ref
+
+method f$c$Node$component2$TF$T$Node$NT$Node(this$dispatch: Ref)
+  returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$c$Node()))
+  ensures ret != df$rt$nullValue() ==> acc(p$c$Node$shared(ret), wildcard)
+
+
+/pure_function_with_heap_dependent_expressions.kt:(514,520): info: Generated Viper text for length:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$length$TF$T$Node$T$Int(p$node: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let anon$1$0 ==
+    ((unfolding acc(p$c$Node$shared(p$node), wildcard) in p$node.bf$next)) in
+    (let anon$2$0 ==
+      (df$rt$intToRef(1)) in
+      (let anon$4$0 ==
+        ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
+          p$node.bf$next)) in
+        (let anon$3$0 ==
+          (sp$plusInts(df$rt$intToRef(1), f$length$TF$T$Node$T$Int(anon$4$0))) in
+          (let anon$0$0 ==
+            ((anon$1$0 == df$rt$nullValue() ? anon$2$0 : anon$3$0)) in
+            anon$0$0)))))
+}
+
+/pure_function_with_heap_dependent_expressions.kt:(642,665): info: Generated Viper text for iAmAMethodAndNeedLength:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$length$TF$T$Node$T$Int(p$node: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+
+
+method f$iAmAMethodAndNeedLength$TF$T$Node$T$Int(p$node: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var l0$length: Ref
+  var anon$0: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
+  inhale acc(p$c$Node$shared(p$node), wildcard)
+  unfold acc(p$c$Node$shared(p$node), wildcard)
+  anon$0 := p$node.bf$next
+  if (!(anon$0 == df$rt$nullValue())) {
+    var anon$1: Ref
+    unfold acc(p$c$Node$shared(p$node), wildcard)
+    anon$1 := p$node.bf$next
+    l0$length := f$length$TF$T$Node$T$Int(anon$1)
+  } else {
+    l0$length := f$length$TF$T$Node$T$Int(p$node)}
+  ret$0 := l0$length
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/pure_function_with_heap_dependent_expressions.kt:(785,812): info: Generated Viper text for iAmAMethodAndNeedNextLength:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$length$TF$T$Node$T$Int(p$node: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+
+
+method f$iAmAMethodAndNeedNextLength$TF$T$Node$T$Int(p$node: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var l0$length: Ref
+  var anon$0: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
+  inhale acc(p$c$Node$shared(p$node), wildcard)
+  unfold acc(p$c$Node$shared(p$node), wildcard)
+  anon$0 := p$node.bf$next
+  if (!(anon$0 == df$rt$nullValue())) {
+    var anon$1: Ref
+    unfold acc(p$c$Node$shared(p$node), wildcard)
+    anon$1 := p$node.bf$next
+    l0$length := f$length$TF$T$Node$T$Int(anon$1)
+  } else {
+    l0$length := df$rt$intToRef(0)}
+  ret$0 := l0$length
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/pure_function_with_heap_dependent_expressions.kt:(922,946): info: Generated Viper text for customLengthPreCondition:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$length$TF$T$Node$T$Int(p$node: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+
+
+method f$customLengthPreCondition$TF$T$Node$T$Int(p$node: Ref)
+  returns (ret$0: Ref)
+  requires !((unfolding acc(p$c$Node$shared(p$node), wildcard) in
+      p$node.bf$next) ==
+    df$rt$nullValue())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var l0$length: Ref
+  var anon$0: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
+  inhale acc(p$c$Node$shared(p$node), wildcard)
+  unfold acc(p$c$Node$shared(p$node), wildcard)
+  anon$0 := p$node.bf$next
+  if (!(anon$0 == df$rt$nullValue())) {
+    var anon$1: Ref
+    unfold acc(p$c$Node$shared(p$node), wildcard)
+    anon$1 := p$node.bf$next
+    l0$length := f$length$TF$T$Node$T$Int(anon$1)
+  } else {
+    l0$length := df$rt$intToRef(0)}
+  ret$0 := l0$length
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/pure_function_with_heap_dependent_expressions.kt:(1114,1130): info: Generated Viper text for variableReassign:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$variableReassign$TF$T$Node$T$Int(p$node: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let l0$nextNode$0 ==
+    ((unfolding acc(p$c$Node$shared(p$node), wildcard) in p$node.bf$next)) in
+    (let l0$nextNode2$0 ==
+      (l0$nextNode$0) in
+      (let l0$nextValue$0 ==
+        ((unfolding acc(p$c$Node$shared(l0$nextNode2$0), wildcard) in
+          l0$nextNode2$0.bf$value)) in
+        l0$nextValue$0)))
+}
+
+/pure_function_with_heap_dependent_expressions.kt:(1237,1238): error: Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'Node?'.

@@ -517,14 +517,6 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
             ?.pureToViper(toBuiltin = true, ctx.source) as? Exp.PredicateAccess
             ?: error("Attempt to unfold a predicate of ${name.debugMangled}.")
 
-    private fun unfoldHierarchy(receiverWrapper: ExpEmbedding, ctx: LinearizationContext) {
-        val hierarchyPath = (receiver.type.pretype as? ClassTypeEmbedding)?.details?.hierarchyUnfoldPath(field)
-        hierarchyPath?.forEach { classType ->
-            val predAcc = classType.predicateAccess(receiverWrapper, ctx)
-            predAcc.let { ctx.addStatement { Stmt.Unfold(it) } }
-        }
-    }
-
     override fun toViperUnusedResult(ctx: LinearizationContext) {
         receiver.toViperUnusedResult(ctx)
     }

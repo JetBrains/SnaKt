@@ -3,8 +3,8 @@
 package org.jetbrains.kotlin.formver.plugin.runners;
 
 import com.intellij.testFramework.TestDataPath;
-import org.jetbrains.kotlin.test.TestMetadata;
 import org.jetbrains.kotlin.test.util.KtTestUtil;
+import org.jetbrains.kotlin.test.TestMetadata;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -88,12 +88,6 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
       }
 
       @Test
-      @TestMetadata("example_classes.kt")
-      public void testExample_classes() {
-        runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/example_classes.kt");
-      }
-
-      @Test
       @TestMetadata("field_getters.kt")
       public void testField_getters() {
         runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/field_getters.kt");
@@ -169,6 +163,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
       @TestMetadata("property_getters.kt")
       public void testProperty_getters() {
         runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/property_getters.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_function_with_heap_dependent_expressions.kt")
+      public void testPure_function_with_heap_dependent_expressions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/pure_function_with_heap_dependent_expressions.kt");
       }
 
       @Test
@@ -732,16 +732,6 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     @TestMetadata("shared_to_shared.kt")
     public void testShared_to_shared() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/shared_to_shared.kt");
-    }
-
-    @Nested
-    @TestMetadata("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/datastructures")
-    @TestDataPath("$PROJECT_ROOT")
-    public class Datastructures {
-      @Test
-      public void testAllFilesPresentInDatastructures() {
-        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/datastructures"), Pattern.compile("^(.+)\\.kt$"), null, true);
-      }
     }
   }
 

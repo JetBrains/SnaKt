@@ -7,18 +7,24 @@ package org.jetbrains.kotlin.formver.core.linearization
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.FreshEntityProducer
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpWrapper
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.print
+import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
+import org.jetbrains.kotlin.formver.core.names.SsaVariableName
 import org.jetbrains.kotlin.formver.names.SimpleNameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
+import org.jetbrains.kotlin.formver.viper.debugMangled
 
 class PureLinearizerMisuseException(val offendingFunction: String) : IllegalStateException(offendingFunction)
 
@@ -32,10 +38,10 @@ class PureLinearizerMisuseException(val offendingFunction: String) : IllegalStat
 data class PureLinearizer(
     override val source: KtSourceElement?,
     val state: SharedLinearizationState = SharedLinearizationState(FreshEntityProducer(::AnonymousVariableEmbedding)),
-    private val ssaConverter: SsaConverter = SsaConverter(source)
+    private val ssaConverter: SsaConverter = SsaConverter(source),
+    override val unfoldPolicy: UnfoldPolicy = UnfoldPolicy.UNFOLDING_IN,
+    private val accessInvariants: MutableMap<SymbolicName, List<Exp.PredicateAccess>> = mutableMapOf()
 ) : LinearizationContext {
-    override val unfoldPolicy: UnfoldPolicy
-        get() = UnfoldPolicy.UNFOLDING_IN
 
     override val logicOperatorPolicy: LogicOperatorPolicy
         get() = LogicOperatorPolicy.CONVERT_TO_EXPRESSION
@@ -104,6 +110,40 @@ data class PureLinearizer(
             ssaConverter.addAssignment(result.name, Exp.TernaryExp(conditionExp, resultThen, resultElse))
         }
     }
+
+    override fun handleFieldAccess(
+        field: FieldEmbedding,
+        receiver: ExpEmbedding,
+        result: VariableEmbedding
+    ) {
+        val viperReceiver = receiver.toViper(this)
+        if (viperReceiver !is Exp.LocalVar) throw SnaktInternalException(
+            source,
+            "Invalid receiver encountered in pure function"
+        )
+        val receiverWrapper = ExpWrapper(viperReceiver, receiver.type)
+        val hierarchyPath = (receiver.type.pretype as? ClassTypeEmbedding)?.details?.hierarchyUnfoldPath(field)
+        val predAccList = hierarchyPath?.map { it.predicateAccess(receiverWrapper, this) }?.toList() ?: emptyList()
+        val completeAccList = (accessInvariants[viperReceiver.name] ?: emptyList()) + predAccList
+        val primitiveAccess: Exp = Exp.FieldAccess(viperReceiver, field.toViper(), source.asPosition)
+        val fieldAccessExpression = if (completeAccList.isEmpty()) {
+            primitiveAccess
+        } else {
+            completeAccList.foldRight(primitiveAccess) { access, acc -> Exp.Unfolding(access, acc) }
+        }
+        ssaConverter.addAssignment(result.name, fieldAccessExpression)
+        accessInvariants[ssaConverter.resolveVariableName(result.name)] = completeAccList
+    }
+
+    private fun ClassTypeEmbedding.predicateAccess(
+        receiver: ExpEmbedding,
+        ctx: LinearizationContext
+    ): Exp.PredicateAccess =
+        sharedPredicateAccessInvariant()?.fillHole(receiver)
+            ?.pureToViper(toBuiltin = true, ctx.source) as? Exp.PredicateAccess
+            ?: error("Attempt to unfold a predicate of ${name.debugMangled}.")
+
+    private fun SymbolicName.stripSsaName() = if (this is SsaVariableName) this.baseName else this
 
     override fun addModifier(mod: StmtModifier) {
         throw PureLinearizerMisuseException("addModifier")
