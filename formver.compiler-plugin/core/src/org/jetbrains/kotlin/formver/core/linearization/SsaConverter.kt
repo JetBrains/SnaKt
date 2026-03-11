@@ -66,7 +66,7 @@ class SsaConverter(
 
     fun addAssignment(name: SymbolicName, varExp: Exp) {
         val ssaName = head.updateLatestName(name)
-        addAndGuardAssignment(ssaName, varExp)
+        addGuardedAssignment(ssaName, varExp)
     }
 
     fun addPhiAssignment(condition: Exp, left: SsaVariableName, right: SsaVariableName, name: SsaVariableName) {
@@ -81,7 +81,7 @@ class SsaConverter(
             Exp.LocalVar(left, Type.Ref),
             Exp.LocalVar(right, Type.Ref)
         )
-        addAndGuardAssignment(name, selectionTernary)
+        addGuardedAssignment(name, selectionTernary)
     }
 
     fun addReturn(returnExp: Exp) {
@@ -92,7 +92,7 @@ class SsaConverter(
         return head.resolveVariableName(name)
     }
 
-    private fun addAndGuardAssignment(name: SsaVariableName, varExp: Exp) {
+    private fun addGuardedAssignment(name: SsaVariableName, varExp: Exp) {
         val defaultExpression = varExp.type.defaultExpression() ?: throw SnaktInternalException(
             source,
             "Tried to assign a variable without a default expression"
