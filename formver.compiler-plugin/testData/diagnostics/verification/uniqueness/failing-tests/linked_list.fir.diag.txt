@@ -32,10 +32,7 @@ method f$getVal$TF$T$Link$NT$Int(p$l: Ref) returns (ret$0: Ref)
   anon$0 := p$l.bf$next
   if (anon$0 != df$rt$nullValue()) {
     var anon$1: Ref
-    inhale acc(anon$0.bf$data, write)
-    anon$1 := anon$0.bf$data
-    exhale acc(anon$0.bf$data, write)
-    inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$intType())
+    anon$1 := havoc$T$Int()
     ret$0 := anon$1
   } else {
     ret$0 := df$rt$nullValue()}
@@ -121,20 +118,14 @@ method f$test$TF$T$Unit() returns (ret$0: Ref)
   var anon$3: Ref
   anon$0 := con$c$Link$T$Int$NT$Link$T$Link(df$rt$intToRef(3), df$rt$nullValue())
   l0$l := con$c$Link$T$Int$NT$Link$T$Link(df$rt$intToRef(5), anon$0)
-  inhale acc(l0$l.bf$data, write)
-  anon$1 := l0$l.bf$data
-  exhale acc(l0$l.bf$data, write)
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$intType())
+  anon$1 := havoc$T$Int()
   l0$expr1 := df$rt$boolToRef(df$rt$intFromRef(anon$1) == 5)
   assert df$rt$boolFromRef(l0$expr1)
   unfold acc(p$c$Link$shared(l0$l), wildcard)
   anon$3 := l0$l.bf$next
   if (anon$3 != df$rt$nullValue()) {
     var anon$4: Ref
-    inhale acc(anon$3.bf$data, write)
-    anon$4 := anon$3.bf$data
-    exhale acc(anon$3.bf$data, write)
-    inhale df$rt$isSubtype(df$rt$typeOf(anon$4), df$rt$intType())
+    anon$4 := havoc$T$Int()
     anon$2 := anon$4
   } else {
     anon$2 := df$rt$nullValue()}

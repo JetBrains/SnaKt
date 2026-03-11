@@ -20,16 +20,8 @@ method f$impureExtension$TF$T$Field$T$Unit(this$extension: Ref)
   returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
-  var anon$0: Ref
   inhale df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$Field())
   inhale acc(p$c$Field$shared(this$extension), wildcard)
-  inhale acc(this$extension.bf$value, write)
-  anon$0 := this$extension.bf$value
-  exhale acc(this$extension.bf$value, write)
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
-  inhale acc(this$extension.bf$value, write)
-  this$extension.bf$value := sp$plusInts(anon$0, df$rt$intToRef(1))
-  exhale acc(this$extension.bf$value, write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }

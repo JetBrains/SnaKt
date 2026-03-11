@@ -80,10 +80,7 @@ method f$accessSuperField$TF$T$Bar$T$Boolean(p$bar: Ref)
 {
   inhale df$rt$isSubtype(df$rt$typeOf(p$bar), df$rt$c$Bar())
   inhale acc(p$c$Bar$shared(p$bar), wildcard)
-  inhale acc(p$bar.bf$b, write)
-  ret$0 := p$bar.bf$b
-  exhale acc(p$bar.bf$b, write)
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
+  ret$0 := havoc$T$Boolean()
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -145,9 +142,6 @@ method f$setSuperField$TF$T$Bar$T$Unit(p$bar: Ref) returns (ret$0: Ref)
 {
   inhale df$rt$isSubtype(df$rt$typeOf(p$bar), df$rt$c$Bar())
   inhale acc(p$c$Bar$shared(p$bar), wildcard)
-  inhale acc(p$bar.bf$b, write)
-  p$bar.bf$b := df$rt$boolToRef(true)
-  exhale acc(p$bar.bf$b, write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }

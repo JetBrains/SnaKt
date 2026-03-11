@@ -7,9 +7,6 @@ method f$testPrimitiveFieldSetter$TF$T$PrimitiveField$T$Unit(p$pf: Ref)
 {
   inhale df$rt$isSubtype(df$rt$typeOf(p$pf), df$rt$c$PrimitiveField())
   inhale acc(p$c$PrimitiveField$shared(p$pf), wildcard)
-  inhale acc(p$pf.bf$a, write)
-  p$pf.bf$a := df$rt$intToRef(0)
-  exhale acc(p$pf.bf$a, write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -34,9 +31,6 @@ method f$testReferenceFieldSetter$TF$T$ReferenceField$T$Unit(p$rf: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(p$rf), df$rt$c$ReferenceField())
   inhale acc(p$c$ReferenceField$shared(p$rf), wildcard)
   anon$0 := con$c$PrimitiveField$T$Int$T$PrimitiveField(df$rt$intToRef(0))
-  inhale acc(p$rf.bf$pf, write)
-  p$rf.bf$pf := anon$0
-  exhale acc(p$rf.bf$pf, write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }

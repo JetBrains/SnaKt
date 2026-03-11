@@ -180,17 +180,11 @@ method f$checkArgumentIsCopied$TF$T$ClassWithVar$T$Unit(p$x: Ref)
   var anon$1: Ref
   inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$ClassWithVar())
   inhale acc(p$c$ClassWithVar$shared(p$x), wildcard)
-  inhale acc(p$x.bf$a, write)
-  anon$4 := p$x.bf$a
-  exhale acc(p$x.bf$a, write)
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$4), df$rt$intType())
+  anon$4 := havoc$T$Int()
   anon$0 := anon$4
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$nullable(df$rt$anyType()))
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
   anon$1 := anon$0
-  inhale acc(p$x.bf$a, write)
-  p$x.bf$a := df$rt$intToRef(42)
-  exhale acc(p$x.bf$a, write)
   ret$2 := anon$1
   goto lbl$ret$2
   label lbl$ret$2
@@ -258,10 +252,7 @@ method f$accessManyMembers$TF$T$ManyMembers$T$Unit(p$m: Ref)
   anon$8 := f$idFun$TF$NT$Any$NT$Any(anon$9)
   anon$7 := anon$8
   inhale df$rt$isSubtype(df$rt$typeOf(anon$7), df$rt$intType())
-  inhale acc(anon$1.bf$b, write)
-  anon$12 := anon$1.bf$b
-  exhale acc(anon$1.bf$b, write)
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$12), df$rt$boolType())
+  anon$12 := havoc$T$Boolean()
   anon$11 := f$idFun$TF$NT$Any$NT$Any(anon$12)
   anon$10 := anon$11
   inhale df$rt$isSubtype(df$rt$typeOf(anon$10), df$rt$boolType())
@@ -289,10 +280,7 @@ method f$accessManyMembers$TF$T$ManyMembers$T$Unit(p$m: Ref)
   anon$18 := f$idFun$TF$NT$Any$NT$Any(anon$19)
   anon$17 := anon$18
   inhale df$rt$isSubtype(df$rt$typeOf(anon$17), df$rt$intType())
-  inhale acc(anon$3.bf$b, write)
-  anon$22 := anon$3.bf$b
-  exhale acc(anon$3.bf$b, write)
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$22), df$rt$boolType())
+  anon$22 := havoc$T$Boolean()
   anon$21 := f$idFun$TF$NT$Any$NT$Any(anon$22)
   anon$20 := anon$21
   inhale df$rt$isSubtype(df$rt$typeOf(anon$20), df$rt$boolType())
@@ -344,10 +332,7 @@ method f$checkEvaluatedOnce$TF$T$Int$T$ManyMembers$T$Unit(p$i: Ref, p$mm: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(p$i), df$rt$intType())
   inhale df$rt$isSubtype(df$rt$typeOf(p$mm), df$rt$c$ManyMembers())
   inhale acc(p$c$ManyMembers$shared(p$mm), wildcard)
-  inhale acc(p$mm.bf$b, write)
-  anon$5 := p$mm.bf$b
-  exhale acc(p$mm.bf$b, write)
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$5), df$rt$boolType())
+  anon$5 := havoc$T$Boolean()
   if (df$rt$boolFromRef(anon$5)) {
     anon$4 := df$rt$intToRef(1)
   } else {

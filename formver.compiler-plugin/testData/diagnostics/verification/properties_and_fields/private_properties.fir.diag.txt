@@ -71,10 +71,7 @@ method f$extractPublic$TF$T$Unit() returns (ret$0: Ref)
   var anon$2: Ref
   var anon$3: Ref
   anon$1 := con$c$C$T$C()
-  inhale acc(anon$1.bf$field, write)
-  anon$0 := anon$1.bf$field
-  exhale acc(anon$1.bf$field, write)
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
+  anon$0 := havoc$T$Int()
   l0$cond1 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType()))
   anon$3 := con$c$D$T$D()
   unfold acc(p$c$D$shared(anon$3), wildcard)
