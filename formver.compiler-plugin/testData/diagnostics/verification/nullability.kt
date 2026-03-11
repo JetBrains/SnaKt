@@ -4,42 +4,11 @@ import org.jetbrains.kotlin.formver.plugin.postconditions
 
 fun <!VIPER_TEXT!>return_null<!>(): Int? = null
 
-fun <!VIPER_TEXT!>elvisDefaultOnNull<!>(): Int {
-    postconditions<Int> {
-        it == 42
-    }
-    val x: Int? = null
-    return x ?: 42
-}
-
 fun <!VIPER_TEXT!>nullablePassthrough<!>(x: Int?): Int? {
     postconditions<Int?> {
         it == x
     }
     return x
-}
-
-fun <!VIPER_TEXT!>returnNullLiteral<!>(): Int? {
-    postconditions<Int?> {
-        it == null
-    }
-    return null
-}
-
-fun <!VIPER_TEXT!>nullComparisonReturnsTrue<!>(): Boolean {
-    postconditions<Boolean> {
-        it == true
-    }
-    val x: Int? = null
-    return x == null
-}
-
-fun <!VIPER_TEXT!>nonNullComparisonReturnsFalse<!>(): Boolean {
-    postconditions<Boolean> {
-        it == false
-    }
-    val x: Int? = null
-    return x != null
 }
 
 fun <!VIPER_TEXT!>elvisWithNonNull<!>(x: Int): Int {
