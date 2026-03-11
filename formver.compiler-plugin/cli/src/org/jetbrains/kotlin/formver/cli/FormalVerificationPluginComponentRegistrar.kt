@@ -8,10 +8,8 @@ package org.jetbrains.kotlin.formver.cli
 import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.jetbrains.kotlin.config.CompilerConfiguration
-import org.jetbrains.kotlin.config.messageCollector
 import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrarAdapter
 import org.jetbrains.kotlin.formver.common.*
-import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.formver.plugin.compiler.FormalVerificationPluginExtensionRegistrar
 
 @OptIn(ExperimentalCompilerApi::class)
@@ -44,7 +42,6 @@ class FormalVerificationPluginComponentRegistrar : CompilerPluginRegistrar() {
             logLevel, errorStyle, behaviour, conversionSelection, verificationSelection,
             checkUniqueness
         )
-        configuration.messageCollector.report(CompilerMessageSeverity.INFO, "Formal verification plugin: $config")
         FirExtensionRegistrarAdapter.registerExtension(FormalVerificationPluginExtensionRegistrar(config))
     }
 }
