@@ -66,14 +66,14 @@ class SsaConverter(
 
     fun addAssignment(name: SymbolicName, varExp: Exp) {
         val ssaName = head.updateLatestName(name)
-        if (varExp.type.defaultExpression() == null) throw SnaktInternalException(
+        val defaultExpression = varExp.type.defaultExpression() ?: throw SnaktInternalException(
             source,
             "Tried to assign a variable without a default expression"
         )
         if (head.fullBranchingCondition == Exp.BoolLit(true)) {
             ssaAssignments.add(ssaName to varExp)
         } else {
-            val ternaryGuard = Exp.TernaryExp(head.fullBranchingCondition, varExp, varExp.type.defaultExpression()!!)
+            val ternaryGuard = Exp.TernaryExp(head.fullBranchingCondition, varExp, defaultExpression)
             ssaAssignments.add(ssaName to ternaryGuard)
         }
     }
