@@ -364,11 +364,11 @@ data class PrimitiveFieldAccess(override val inner: ExpEmbedding, val field: Fie
 data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : DefaultMaybeStoringInExpEmbedding,
     DefaultToBuiltinExpEmbedding {
     override val type: TypeEmbedding = field.type
+
     override fun toViper(ctx: LinearizationContext): Exp {
         if (field.accessPolicy == AccessPolicy.ALWAYS_WRITEABLE) {
             return PrimitiveFieldAccess(receiver, field).toViper(ctx)
         }
-
         if (field.unfoldToAccess && ctx.unfoldPolicy == UnfoldPolicy.UNFOLDING_IN) return unfoldingInImpl(ctx)
         val variable = ctx.freshAnonVar(type)
         toViperStoringIn(variable, ctx)
@@ -376,27 +376,27 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
     }
 
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-        val receiverViper = receiver.toViper(ctx)
-        val receiverWrapper = ExpWrapper(receiverViper, receiver.type)
-
-
-        val stmt = when (field.accessPolicy) {
-            // TODO: Handling a unique field on a shared receiver must be added here.
-            AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
-                field.type.havocMethod.toMethodCall(emptyList(), listOf(result.toLocalVarUse()))
-            }
-            else -> {
-                // If the field access is not replaced with havoc,
-                // we might need to unfold some predicate to access it.
-                if (field.unfoldToAccess) unfoldHierarchy(receiverWrapper, ctx)
-                Stmt.assign(
-                    result.toLocalVarUse(),
-                    Exp.FieldAccess(receiverViper, field.toViper(), ctx.source.asPosition)
-                )
-            }
-        }
         ctx.addStatement {
-            stmt
+            when (field.accessPolicy) {
+                // TODO: Handling a unique field on a shared receiver must be added here.
+                AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
+                    receiver.toViperUnusedResult(ctx)
+                    field.type.havocMethod.toMethodCall(emptyList(), listOf(result.toLocalVarUse()))
+                }
+
+                else -> {
+                    val receiverViper = receiver.toViper(ctx)
+                    // If the field access is not replaced with havoc,
+                    // we might need to unfold some predicate to access it.
+                    if (field.unfoldToAccess) {
+                        val receiverWrapper = ExpWrapper(receiverViper, receiver.type)
+                        unfoldHierarchy(receiverWrapper, ctx)
+                    }
+                    Stmt.assign(
+                        result.toLocalVarUse(), Exp.FieldAccess(receiverViper, field.toViper(), ctx.source.asPosition)
+                    )
+                }
+            }
         }
     }
 
