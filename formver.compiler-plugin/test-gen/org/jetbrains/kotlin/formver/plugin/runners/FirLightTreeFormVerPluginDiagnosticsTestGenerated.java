@@ -495,6 +495,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
+    @TestMetadata("pure_function_rely_on_branch.kt")
+    public void testPure_function_rely_on_branch() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_function_rely_on_branch.kt");
+    }
+
+    @Test
     @TestMetadata("stdlib_replacement_tests.kt")
     public void testStdlib_replacement_tests() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/stdlib_replacement_tests.kt");
