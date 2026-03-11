@@ -3,7 +3,8 @@ field bf$field: Ref
 
 field bf$size: Ref
 
-method con$c$ClassWithField$T$Int(p$field: Ref) returns (ret: Ref)
+method con$c$ClassWithField$T$Int$T$ClassWithField(p$field: Ref)
+  returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$ClassWithField())
   ensures acc(p$c$ClassWithField$shared(ret), wildcard)
   ensures acc(p$c$ClassWithField$unique(ret), write)
@@ -12,12 +13,13 @@ method con$c$ClassWithField$T$Int(p$field: Ref) returns (ret: Ref)
     df$rt$intFromRef(p$field)
 
 
-method f$pkg$kotlin$c$Int$unaryMinus$TF$T$Int(this$dispatch: Ref)
+method f$pkg$kotlin$c$Int$unaryMinus$TF$T$Int$T$Int(this$dispatch: Ref)
   returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 
-method f$test_while$TF$T$ClassWithField(p$param: Ref) returns (ret$0: Ref)
+method f$test_while$TF$T$ClassWithField$T$Unit(p$param: Ref)
+  returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$c: Ref
@@ -30,7 +32,7 @@ method f$test_while$TF$T$ClassWithField(p$param: Ref) returns (ret$0: Ref)
   var anon$3: Ref
   inhale df$rt$isSubtype(df$rt$typeOf(p$param), df$rt$c$ClassWithField())
   inhale acc(p$c$ClassWithField$shared(p$param), wildcard)
-  l0$c := con$c$ClassWithField$T$Int(df$rt$intToRef(13))
+  l0$c := con$c$ClassWithField$T$Int$T$ClassWithField(df$rt$intToRef(13))
   unfold acc(p$c$ClassWithField$shared(p$param), wildcard)
   l0$initParamField := p$param.bf$field
   if (df$rt$intFromRef(l0$initParamField) > 0) {
@@ -38,7 +40,7 @@ method f$test_while$TF$T$ClassWithField(p$param: Ref) returns (ret$0: Ref)
   } else {
     var l3$intermediate: Ref
     var anon$0: Ref
-    anon$0 := f$pkg$kotlin$c$Int$unaryMinus$TF$T$Int(l0$initParamField)
+    anon$0 := f$pkg$kotlin$c$Int$unaryMinus$TF$T$Int$T$Int(l0$initParamField)
     l3$intermediate := sp$plusInts(anon$0, df$rt$intToRef(1))
     l0$iteration := sp$timesInts(l3$intermediate, l3$intermediate)
   }
@@ -85,7 +87,8 @@ field bf$field: Ref
 
 field bf$size: Ref
 
-method con$c$ClassWithField$T$Int(p$field: Ref) returns (ret: Ref)
+method con$c$ClassWithField$T$Int$T$ClassWithField(p$field: Ref)
+  returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$ClassWithField())
   ensures acc(p$c$ClassWithField$shared(ret), wildcard)
   ensures acc(p$c$ClassWithField$unique(ret), write)
@@ -94,7 +97,7 @@ method con$c$ClassWithField$T$Int(p$field: Ref) returns (ret: Ref)
     df$rt$intFromRef(p$field)
 
 
-method f$test_while_with_inlining$TF$T$ClassWithField(p$param: Ref)
+method f$test_while_with_inlining$TF$T$ClassWithField$T$Unit(p$param: Ref)
   returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -113,8 +116,8 @@ method f$test_while_with_inlining$TF$T$ClassWithField(p$param: Ref)
   var anon$8: Ref
   inhale df$rt$isSubtype(df$rt$typeOf(p$param), df$rt$c$ClassWithField())
   inhale acc(p$c$ClassWithField$shared(p$param), wildcard)
-  l0$local := con$c$ClassWithField$T$Int(df$rt$intToRef(13))
-  anon$4 := con$c$ClassWithField$T$Int(df$rt$intToRef(42))
+  l0$local := con$c$ClassWithField$T$Int$T$ClassWithField(df$rt$intToRef(13))
+  anon$4 := con$c$ClassWithField$T$Int$T$ClassWithField(df$rt$intToRef(42))
   anon$0 := anon$4
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$nullable(df$rt$anyType()))
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$c$ClassWithField())
@@ -174,7 +177,7 @@ method f$test_while_with_inlining$TF$T$ClassWithField(p$param: Ref)
 /while.kt:(1311,1336): info: Generated Viper text for test_while_with_smartcast:
 field bf$field: Ref
 
-method f$test_while_with_smartcast$TF$T$Any$T$Any(p$param: Ref, p$innerParam: Ref)
+method f$test_while_with_smartcast$TF$T$Any$T$Any$T$Unit(p$param: Ref, p$innerParam: Ref)
   returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {

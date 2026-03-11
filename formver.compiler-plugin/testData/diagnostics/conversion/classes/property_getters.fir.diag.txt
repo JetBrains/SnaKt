@@ -1,5 +1,5 @@
 /property_getters.kt:(102,129): info: Generated Viper text for testPrimitivePropertyGetter:
-method f$testPrimitivePropertyGetter$TF$T$PrimitiveProperty(p$pp: Ref)
+method f$testPrimitivePropertyGetter$TF$T$PrimitiveProperty$T$Int(p$pp: Ref)
   returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -17,7 +17,7 @@ method pg$public$nProp(this$dispatch: Ref) returns (ret: Ref)
 
 
 /property_getters.kt:(286,313): info: Generated Viper text for testReferencePropertyGetter:
-method f$testReferencePropertyGetter$TF$T$ReferenceProperty(p$rp: Ref)
+method f$testReferencePropertyGetter$TF$T$ReferenceProperty$T$Unit(p$rp: Ref)
   returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -45,7 +45,7 @@ method pg$public$rProp(this$dispatch: Ref) returns (ret: Ref)
 
 
 /property_getters.kt:(391,418): info: Generated Viper text for testCascadingPropertyGetter:
-method f$testCascadingPropertyGetter$TF$T$ReferenceProperty(p$rp: Ref)
+method f$testCascadingPropertyGetter$TF$T$ReferenceProperty$T$Unit(p$rp: Ref)
   returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -70,3 +70,4 @@ method pg$public$nProp(this$dispatch: Ref) returns (ret: Ref)
 
 
 method pg$public$rProp(this$dispatch: Ref) returns (ret: Ref)
+

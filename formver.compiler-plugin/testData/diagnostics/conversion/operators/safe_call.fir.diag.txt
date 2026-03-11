@@ -1,11 +1,11 @@
 /safe_call.kt:(142,154): info: Generated Viper text for testSafeCall:
 field bf$x: Ref
 
-method f$c$Foo$f$TF$T$Foo(this$dispatch: Ref) returns (ret: Ref)
+method f$c$Foo$f$TF$T$Foo$T$Unit(this$dispatch: Ref) returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
-method f$testSafeCall$TF$NT$Foo(p$foo: Ref) returns (ret$0: Ref)
+method f$testSafeCall$TF$NT$Foo$NT$Unit(p$foo: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$unitType()))
 {
   inhale df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$nullable(df$rt$c$Foo()))
@@ -13,7 +13,7 @@ method f$testSafeCall$TF$NT$Foo(p$foo: Ref) returns (ret$0: Ref)
     acc(p$c$Foo$shared(p$foo), wildcard)
   if (p$foo != df$rt$nullValue()) {
     var anon$0: Ref
-    anon$0 := f$c$Foo$f$TF$T$Foo(p$foo)
+    anon$0 := f$c$Foo$f$TF$T$Foo$T$Unit(p$foo)
     ret$0 := anon$0
   } else {
     ret$0 := df$rt$nullValue()}
@@ -24,18 +24,19 @@ method f$testSafeCall$TF$NT$Foo(p$foo: Ref) returns (ret$0: Ref)
 /safe_call.kt:(217,240): info: Generated Viper text for testSafeCallNonNullable:
 field bf$x: Ref
 
-method f$c$Foo$f$TF$T$Foo(this$dispatch: Ref) returns (ret: Ref)
+method f$c$Foo$f$TF$T$Foo$T$Unit(this$dispatch: Ref) returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
-method f$testSafeCallNonNullable$TF$T$Foo(p$foo: Ref) returns (ret$0: Ref)
+method f$testSafeCallNonNullable$TF$T$Foo$NT$Unit(p$foo: Ref)
+  returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$unitType()))
 {
   inhale df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$c$Foo())
   inhale acc(p$c$Foo$shared(p$foo), wildcard)
   if (p$foo != df$rt$nullValue()) {
     var anon$0: Ref
-    anon$0 := f$c$Foo$f$TF$T$Foo(p$foo)
+    anon$0 := f$c$Foo$f$TF$T$Foo$T$Unit(p$foo)
     ret$0 := anon$0
   } else {
     ret$0 := df$rt$nullValue()}
@@ -46,7 +47,8 @@ method f$testSafeCallNonNullable$TF$T$Foo(p$foo: Ref) returns (ret$0: Ref)
 /safe_call.kt:(267,287): info: Generated Viper text for testSafeCallProperty:
 field bf$x: Ref
 
-method f$testSafeCallProperty$TF$NT$Foo(p$foo: Ref) returns (ret$0: Ref)
+method f$testSafeCallProperty$TF$NT$Foo$NT$Int(p$foo: Ref)
+  returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
 {
   inhale df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$nullable(df$rt$c$Foo()))
@@ -66,7 +68,7 @@ method f$testSafeCallProperty$TF$NT$Foo(p$foo: Ref) returns (ret$0: Ref)
 /safe_call.kt:(354,385): info: Generated Viper text for testSafeCallPropertyNonNullable:
 field bf$x: Ref
 
-method f$testSafeCallPropertyNonNullable$TF$T$Foo(p$foo: Ref)
+method f$testSafeCallPropertyNonNullable$TF$T$Foo$NT$Int(p$foo: Ref)
   returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
 {
@@ -86,12 +88,13 @@ method f$testSafeCallPropertyNonNullable$TF$T$Foo(p$foo: Ref)
 /safe_call.kt:(493,506): info: Generated Viper text for safeCallChain:
 field bf$v: Ref
 
-method f$c$Rec$nullable$TF$T$Rec(this$dispatch: Ref) returns (ret: Ref)
+method f$c$Rec$nullable$TF$T$Rec$NT$Rec(this$dispatch: Ref)
+  returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$c$Rec()))
   ensures ret != df$rt$nullValue() ==> acc(p$c$Rec$shared(ret), wildcard)
 
 
-method f$safeCallChain$TF$NT$Rec(p$rec: Ref) returns (ret$0: Ref)
+method f$safeCallChain$TF$NT$Rec$NT$Int(p$rec: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
 {
   var anon$0: Ref
@@ -100,11 +103,11 @@ method f$safeCallChain$TF$NT$Rec(p$rec: Ref) returns (ret$0: Ref)
   inhale p$rec != df$rt$nullValue() ==>
     acc(p$c$Rec$shared(p$rec), wildcard)
   if (p$rec != df$rt$nullValue()) {
-    anon$1 := f$c$Rec$nullable$TF$T$Rec(p$rec)
+    anon$1 := f$c$Rec$nullable$TF$T$Rec$NT$Rec(p$rec)
   } else {
     anon$1 := df$rt$nullValue()}
   if (anon$1 != df$rt$nullValue()) {
-    anon$0 := f$c$Rec$nullable$TF$T$Rec(anon$1)
+    anon$0 := f$c$Rec$nullable$TF$T$Rec$NT$Rec(anon$1)
   } else {
     anon$0 := df$rt$nullValue()}
   if (anon$0 != df$rt$nullValue()) {

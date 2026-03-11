@@ -1,5 +1,6 @@
 /contracts_with_receivers.kt:(148,151): info: Generated Viper text for is2:
-method f$c$Class$is2$TF$T$Class(this$dispatch: Ref) returns (ret$0: Ref)
+method f$c$Class$is2$TF$T$Class$T$Boolean(this$dispatch: Ref)
+  returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures df$rt$boolFromRef(ret$0) == true ==>
     df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Impl1())
@@ -14,7 +15,8 @@ method f$c$Class$is2$TF$T$Class(this$dispatch: Ref) returns (ret$0: Ref)
 /contracts_with_receivers.kt:(196,239): warning: Cannot verify that if a true value is returned then this is Impl1.
 
 /contracts_with_receivers.kt:(341,359): info: Generated Viper text for is1butWithDispatch:
-method f$c$Class$is1butWithDispatch$TF$T$Class$T$Class(this$dispatch: Ref, this$extension: Ref)
+method f$c$Class$is1butWithDispatch$TF$T$Class$T$Class$T$Boolean(this$dispatch: Ref,
+  this$extension: Ref)
   returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures df$rt$boolFromRef(ret$0) == true ==>
@@ -32,7 +34,7 @@ method f$c$Class$is1butWithDispatch$TF$T$Class$T$Class(this$dispatch: Ref, this$
 /contracts_with_receivers.kt:(404,460): warning: Cannot verify that if a true value is returned then this is Impl2.
 
 /contracts_with_receivers.kt:(618,621): info: Generated Viper text for is1:
-method f$is1$TF$T$Class(this$extension: Ref) returns (ret$0: Ref)
+method f$is1$TF$T$Class$T$Boolean(this$extension: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures df$rt$boolFromRef(ret$0) == true ==>
     df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$Impl2())

@@ -56,7 +56,8 @@ predicate p$c$D$unique(this$dispatch: Ref) {
   true
 }
 
-method f$accessSuperTypeProperty$TF$T$C(p$c: Ref) returns (ret$0: Ref)
+method f$accessSuperTypeProperty$TF$T$C$T$Unit(p$c: Ref)
+  returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$temp: Ref
@@ -131,7 +132,7 @@ predicate p$c$D$unique(this$dispatch: Ref) {
   true
 }
 
-method f$accessNested$TF$T$C(p$c: Ref) returns (ret$0: Ref)
+method f$accessNested$TF$T$C$T$Unit(p$c: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$temp: Ref
@@ -162,7 +163,7 @@ predicate p$c$A$unique(this$dispatch: Ref) {
   df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$a), df$rt$intType())
 }
 
-method f$accessNullable$TF$NT$A(p$x: Ref) returns (ret$0: Ref)
+method f$accessNullable$TF$NT$A$T$Unit(p$x: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$n: Ref
@@ -203,7 +204,7 @@ predicate p$c$B$unique(this$dispatch: Ref) {
   acc(p$c$A$unique(this$dispatch), write)
 }
 
-method f$accessCast$TF$T$A(p$x: Ref) returns (ret$0: Ref)
+method f$accessCast$TF$T$A$T$Unit(p$x: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$n: Ref
@@ -244,7 +245,7 @@ predicate p$c$B$unique(this$dispatch: Ref) {
   acc(p$c$A$unique(this$dispatch), write)
 }
 
-method f$accessSafeCast$TF$T$A(p$x: Ref) returns (ret$0: Ref)
+method f$accessSafeCast$TF$T$A$T$Unit(p$x: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$n: Ref
@@ -293,7 +294,7 @@ predicate p$c$B$unique(this$dispatch: Ref) {
   acc(p$c$A$unique(this$dispatch), write)
 }
 
-method f$accessSmartCast$TF$T$A(p$x: Ref) returns (ret$0: Ref)
+method f$accessSmartCast$TF$T$A$T$Unit(p$x: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$n: Ref

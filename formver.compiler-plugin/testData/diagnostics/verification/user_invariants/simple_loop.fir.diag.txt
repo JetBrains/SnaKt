@@ -1,7 +1,7 @@
 /simple_loop.kt:(239,243): info: Generated Viper text for test:
 field bf$size: Ref
 
-method f$test$TF$T$Int(p$n: Ref) returns (ret$0: Ref)
+method f$test$TF$T$Int$T$Unit(p$n: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$it: Ref
@@ -54,7 +54,7 @@ method f$test$TF$T$Int(p$n: Ref) returns (ret$0: Ref)
 }
 
 /simple_loop.kt:(652,666): info: Generated Viper text for loopInsideLoop:
-method f$loopInsideLoop$TF$() returns (ret$0: Ref)
+method f$loopInsideLoop$TF$T$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$i: Ref
@@ -96,7 +96,7 @@ method f$loopInsideLoop$TF$() returns (ret$0: Ref)
 /simple_loop.kt:(974,983): info: Generated Viper text for withBreak:
 field bf$size: Ref
 
-method f$withBreak$TF$() returns (ret$0: Ref)
+method f$withBreak$TF$T$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$i: Ref
@@ -125,24 +125,24 @@ field bf$e: Ref
 
 field bf$size: Ref
 
-method con$c$WithVar$T$Int(p$e: Ref) returns (ret: Ref)
+method con$c$WithVar$T$Int$T$WithVar(p$e: Ref) returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$WithVar())
   ensures acc(p$c$WithVar$shared(ret), wildcard)
   ensures acc(p$c$WithVar$unique(ret), write)
 
 
-method f$c$WithVar$doSomething$TF$T$WithVar(this$dispatch: Ref)
+method f$c$WithVar$doSomething$TF$T$WithVar$T$Boolean(this$dispatch: Ref)
   returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
 
 
-method f$test_boolean_postcondition$TF$() returns (ret$0: Ref)
+method f$test_boolean_postcondition$TF$T$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$withVar: Ref
   var l0$boolean: Ref
   var anon$0: Ref
-  l0$withVar := con$c$WithVar$T$Int(df$rt$intToRef(42))
+  l0$withVar := con$c$WithVar$T$Int$T$WithVar(df$rt$intToRef(42))
   l0$boolean := df$rt$boolToRef(true)
   label lbl$continue$0
     invariant acc(p$c$WithVar$shared(l0$withVar), wildcard)
@@ -150,7 +150,7 @@ method f$test_boolean_postcondition$TF$() returns (ret$0: Ref)
     invariant df$rt$isSubtype(df$rt$typeOf(l0$boolean), df$rt$boolType())
   anon$0 := l0$boolean
   if (df$rt$boolFromRef(anon$0)) {
-    l0$boolean := f$c$WithVar$doSomething$TF$T$WithVar(l0$withVar)
+    l0$boolean := f$c$WithVar$doSomething$TF$T$WithVar$T$Boolean(l0$withVar)
     goto lbl$continue$0
   }
   label lbl$break$0

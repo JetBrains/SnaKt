@@ -5,7 +5,7 @@ field bf$x: Ref
 
 field bf$y: Ref
 
-method f$c$Foo$getY$TF$T$Foo(this$dispatch: Ref) returns (ret$0: Ref)
+method f$c$Foo$getY$TF$T$Foo$T$Int(this$dispatch: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   inhale df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
@@ -25,7 +25,7 @@ field bf$y: Ref
 
 field bf$z: Ref
 
-method f$c$Bar$sum$TF$T$Bar(this$dispatch: Ref) returns (ret$0: Ref)
+method f$c$Bar$sum$TF$T$Bar$T$Int(this$dispatch: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var anon$0: Ref
@@ -51,16 +51,16 @@ field bf$y: Ref
 
 field bf$z: Ref
 
-method f$c$Foo$getY$TF$T$Foo(this$dispatch: Ref) returns (ret: Ref)
+method f$c$Foo$getY$TF$T$Foo$T$Int(this$dispatch: Ref) returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 
-method f$callSuperMethod$TF$T$Bar(p$bar: Ref) returns (ret$0: Ref)
+method f$callSuperMethod$TF$T$Bar$T$Int(p$bar: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   inhale df$rt$isSubtype(df$rt$typeOf(p$bar), df$rt$c$Bar())
   inhale acc(p$c$Bar$shared(p$bar), wildcard)
-  ret$0 := f$c$Foo$getY$TF$T$Foo(p$bar)
+  ret$0 := f$c$Foo$getY$TF$T$Foo$T$Int(p$bar)
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -74,7 +74,8 @@ field bf$y: Ref
 
 field bf$z: Ref
 
-method f$accessSuperField$TF$T$Bar(p$bar: Ref) returns (ret$0: Ref)
+method f$accessSuperField$TF$T$Bar$T$Boolean(p$bar: Ref)
+  returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
   inhale df$rt$isSubtype(df$rt$typeOf(p$bar), df$rt$c$Bar())
@@ -96,7 +97,7 @@ field bf$y: Ref
 
 field bf$z: Ref
 
-method f$accessNewField$TF$T$Bar(p$bar: Ref) returns (ret$0: Ref)
+method f$accessNewField$TF$T$Bar$T$Int(p$bar: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   inhale df$rt$isSubtype(df$rt$typeOf(p$bar), df$rt$c$Bar())
@@ -116,16 +117,16 @@ field bf$y: Ref
 
 field bf$z: Ref
 
-method f$c$Bar$sum$TF$T$Bar(this$dispatch: Ref) returns (ret: Ref)
+method f$c$Bar$sum$TF$T$Bar$T$Int(this$dispatch: Ref) returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 
-method f$callNewMethod$TF$T$Bar(p$bar: Ref) returns (ret$0: Ref)
+method f$callNewMethod$TF$T$Bar$T$Int(p$bar: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   inhale df$rt$isSubtype(df$rt$typeOf(p$bar), df$rt$c$Bar())
   inhale acc(p$c$Bar$shared(p$bar), wildcard)
-  ret$0 := f$c$Bar$sum$TF$T$Bar(p$bar)
+  ret$0 := f$c$Bar$sum$TF$T$Bar$T$Int(p$bar)
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -139,7 +140,7 @@ field bf$y: Ref
 
 field bf$z: Ref
 
-method f$setSuperField$TF$T$Bar(p$bar: Ref) returns (ret$0: Ref)
+method f$setSuperField$TF$T$Bar$T$Unit(p$bar: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   inhale df$rt$isSubtype(df$rt$typeOf(p$bar), df$rt$c$Bar())
@@ -160,7 +161,8 @@ field bf$y: Ref
 
 field bf$z: Ref
 
-method f$accessSuperSuperField$TF$T$Baz(p$baz: Ref) returns (ret$0: Ref)
+method f$accessSuperSuperField$TF$T$Baz$T$Int(p$baz: Ref)
+  returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   inhale df$rt$isSubtype(df$rt$typeOf(p$baz), df$rt$c$Baz())
