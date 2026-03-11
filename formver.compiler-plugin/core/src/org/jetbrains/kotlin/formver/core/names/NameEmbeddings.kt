@@ -104,22 +104,25 @@ fun Name.embedParameterName() = buildName {
 
 fun FirValueParameterSymbol.embedName(): ScopedKotlinName = name.embedParameterName()
 
-fun FirPropertySymbol.embedGetterName(ctx: ProgramConversionContext): ScopedKotlinName = when (isExtension) {
-    true -> callableId.embedExtensionGetterName(ctx.embedFunctionPretype(getterSymbol!!))
-    false -> callableId.embedMemberGetterName(Visibilities.isPrivate(visibility))
-}
+fun FirPropertySymbol.embedGetterName(ctx: ProgramConversionContext): ScopedKotlinName =
+    if (receiverParameterSymbol != null) {
+        callableId!!.embedExtensionGetterName(ctx.embedFunctionPretype(getterSymbol!!))
+    } else {
+        callableId!!.embedMemberGetterName(Visibilities.isPrivate(visibility))
+    }
 
-fun FirPropertySymbol.embedSetterName(ctx: ProgramConversionContext): ScopedKotlinName = when (isExtension) {
-    true -> callableId.embedExtensionSetterName(
-        ctx.embedFunctionPretype(
-            setterSymbol ?: error("Embedding setter of read-only extension property.")
+fun FirPropertySymbol.embedSetterName(ctx: ProgramConversionContext): ScopedKotlinName =
+    if (receiverParameterSymbol != null) {
+        callableId!!.embedExtensionSetterName(
+            ctx.embedFunctionPretype(
+                setterSymbol ?: error("Embedding setter of read-only extension property.")
+            )
         )
-    )
+    } else {
+        callableId!!.embedMemberSetterName(Visibilities.isPrivate(visibility))
+    }
 
-    false -> callableId.embedMemberSetterName(Visibilities.isPrivate(visibility))
-}
-
-fun FirPropertySymbol.embedMemberPropertyName() = callableId.embedMemberPropertyName(
+fun FirPropertySymbol.embedMemberPropertyName() = callableId!!.embedMemberPropertyName(
     Visibilities.isPrivate(this.visibility)
 )
 
