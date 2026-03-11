@@ -67,6 +67,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
+    @TestMetadata("havoc.kt")
+    public void testHavoc() {
+      runTest("formver.compiler-plugin/testData/diagnostics/conversion/havoc.kt");
+    }
+
+    @Test
     @TestMetadata("pure_function_with_assignments.kt")
     public void testPure_function_with_assignments() {
       runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_function_with_assignments.kt");
@@ -109,6 +115,18 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
       @TestMetadata("field_getters.kt")
       public void testField_getters() {
         runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/field_getters.kt");
+      }
+
+      @Test
+      @TestMetadata("field_getters_unique_shared.kt")
+      public void testField_getters_unique_shared() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/field_getters_unique_shared.kt");
+      }
+
+      @Test
+      @TestMetadata("field_setters_unique_shared.kt")
+      public void testField_setters_unique_shared() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/field_setters_unique_shared.kt");
       }
 
       @Test
