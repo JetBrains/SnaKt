@@ -1,0 +1,63 @@
+/pure_function_rely_on_branch.kt:(70,80): info: Generated Viper text for safeDivide:
+function f$safeDivide$TF$T$Int$T$Int$T$Int(p$x: Ref, p$y: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let l0$res$0 ==
+    (df$rt$intToRef(0)) in
+    (let l0$res$1 ==
+      ((!(df$rt$intFromRef(p$y) == 0) ? sp$divInts(p$x, p$y) : null)) in
+      (let l0$res$2 ==
+        ((!(df$rt$intFromRef(p$y) == 0) ? l0$res$1 : l0$res$0)) in
+        l0$res$2)))
+}
+
+/pure_function_rely_on_branch.kt:(206,221): info: Generated Viper text for getStringLength:
+function f$getStringLength$TF$T$Any$T$Int(p$obj: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let l0$len$0 ==
+    (df$rt$intToRef(-1)) in
+    (let l0$len$1 ==
+      ((df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$stringType()) ?
+        sp$stringLength(p$obj) :
+        null)) in
+      (let l0$len$2 ==
+        ((df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$stringType()) ?
+          l0$len$1 :
+          l0$len$0)) in
+        l0$len$2)))
+}
+
+/pure_function_rely_on_branch.kt:(354,370): info: Generated Viper text for safeNestedDivide:
+function f$safeNestedDivide$TF$T$Int$T$Int$T$Int$T$Int(p$x: Ref, p$y: Ref, p$z: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let l0$res$0 ==
+    (df$rt$intToRef(0)) in
+    (let l0$res$1 ==
+      ((!(df$rt$intFromRef(p$z) == 0) && !(df$rt$intFromRef(p$y) == 0) ?
+        sp$divInts(sp$divInts(p$x, p$y), p$z) :
+        null)) in
+      (let l0$res$2 ==
+        ((!(df$rt$intFromRef(p$z) == 0) ? l0$res$1 : l0$res$0)) in
+        (let l0$res$3 ==
+          ((!(df$rt$intFromRef(p$y) == 0) ? l0$res$2 : l0$res$0)) in
+          l0$res$3))))
+}
+
+/pure_function_rely_on_branch.kt:(546,567): info: Generated Viper text for safeInverseDifference:
+function f$safeInverseDifference$TF$T$Int$T$Int$T$Int(p$x: Ref, p$y: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let l0$res$0 ==
+    (df$rt$intToRef(0)) in
+    (let l0$res$1 ==
+      ((!(df$rt$intFromRef(p$x) == df$rt$intFromRef(p$y)) ?
+        sp$divInts(df$rt$intToRef(100), sp$minusInts(p$x, p$y)) :
+        null)) in
+      (let l0$res$2 ==
+        ((!(df$rt$intFromRef(p$x) == df$rt$intFromRef(p$y)) ?
+          l0$res$1 :
+          l0$res$0)) in
+        l0$res$2)))
+}
