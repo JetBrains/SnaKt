@@ -80,16 +80,20 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
                 }
             }
             val verifier = Verifier()
-            val onFailure = { err: VerifierError ->
-                val source = err.position.unwrapOr { declaration.source }
-                reporter.reportVerifierError(source, err, config.errorStyle)
-            }
-            val viperProgram = with(programConversionContext.nameResolver) { program.toSilver() }
-            val consistent = verifier.checkConsistency(viperProgram, onFailure)
-            // If the Viper program is not consistent, that's our error; we shouldn't surface it to the user as an unverified contract.
-            if (!consistent || !config.shouldVerify(declaration)) return
+            try {
+                val onFailure = { err: VerifierError ->
+                    val source = err.position.unwrapOr { declaration.source }
+                    reporter.reportVerifierError(source, err, config.errorStyle)
+                }
+                val viperProgram = with(programConversionContext.nameResolver) { program.toSilver() }
+                val consistent = verifier.checkConsistency(viperProgram, onFailure)
+                // If the Viper program is not consistent, that's our error; we shouldn't surface it to the user as an unverified contract.
+                if (!consistent || !config.shouldVerify(declaration)) return
 
-            verifier.verify(viperProgram, onFailure)
+                verifier.verify(viperProgram, onFailure)
+            } finally {
+                verifier.stop()
+            }
         } catch (e: SnaktInternalException) {
             reporter.reportOn(e.source, PluginErrors.INTERNAL_ERROR, e.message)
         } catch (e: Exception) {

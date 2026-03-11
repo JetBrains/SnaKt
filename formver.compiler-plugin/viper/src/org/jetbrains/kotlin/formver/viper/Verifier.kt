@@ -24,7 +24,11 @@ class Verifier {
     init {
         // Viper requires a file to be passed as part of the configuration, hence we need to specify a
         // dummy file name and also specify that that file should be ignored.
-        val config = Config(seqOf("--ignoreFile", "dummy.vpr"))
+        val args = mutableListOf("--ignoreFile", "dummy.vpr")
+        System.getenv("SILICON_PARALLEL_VERIFIERS")?.let {
+            args += listOf("--numberOfParallelVerifiers", it)
+        }
+        val config = Config(seqOf(*args.toTypedArray()))
         @Suppress("UNCHECKED_CAST")
         verifier = DefaultMainVerifier(
             config,
@@ -58,5 +62,9 @@ class Verifier {
                 onFailure(VerificationError.fromSilver(result))
             }
         }
+    }
+
+    fun stop() {
+        verifier.stop()
     }
 }
