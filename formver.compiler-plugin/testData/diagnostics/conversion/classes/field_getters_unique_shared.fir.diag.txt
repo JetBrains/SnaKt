@@ -1,0 +1,117 @@
+/field_getters_unique_shared.kt:(211,241): info: Generated Viper text for testPrimitiveFieldGetterUnique:
+field bf$sharedVal: Ref
+
+field bf$sharedVar: Ref
+
+field bf$uniqueVal: Ref
+
+field bf$uniqueVar: Ref
+
+method f$testPrimitiveFieldGetterUnique$TF$T$PrimitiveFields$T$Unit(p$pf: Ref)
+  returns (ret$0: Ref)
+  requires acc(p$c$PrimitiveFields$unique(p$pf), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$sharedVal: Ref
+  var l0$sharedVar: Ref
+  var l0$uniqueVal: Ref
+  var l0$uniqueVar: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$pf), df$rt$c$PrimitiveFields())
+  inhale acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
+  unfold acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
+  l0$sharedVal := p$pf.bf$sharedVal
+  l0$sharedVar := havoc$T$Int()
+  unfold acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
+  l0$uniqueVal := p$pf.bf$uniqueVal
+  l0$uniqueVar := havoc$T$Int()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/field_getters_unique_shared.kt:(412,442): info: Generated Viper text for testPrimitiveFieldGetterShared:
+field bf$sharedVal: Ref
+
+field bf$sharedVar: Ref
+
+field bf$uniqueVal: Ref
+
+field bf$uniqueVar: Ref
+
+method f$testPrimitiveFieldGetterShared$TF$T$PrimitiveFields$T$Unit(p$pf: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$sharedVal: Ref
+  var l0$sharedVar: Ref
+  var l0$uniqueVal: Ref
+  var l0$uniqueVar: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$pf), df$rt$c$PrimitiveFields())
+  inhale acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
+  unfold acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
+  l0$sharedVal := p$pf.bf$sharedVal
+  l0$sharedVar := havoc$T$Int()
+  unfold acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
+  l0$uniqueVal := p$pf.bf$uniqueVal
+  l0$uniqueVar := havoc$T$Int()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/field_getters_unique_shared.kt:(791,821): info: Generated Viper text for testReferenceFieldGetterUnique:
+field bf$sharedVal: Ref
+
+field bf$sharedVar: Ref
+
+field bf$uniqueVal: Ref
+
+field bf$uniqueVar: Ref
+
+method f$testReferenceFieldGetterUnique$TF$T$ReferenceFields$T$Unit(p$rf: Ref)
+  returns (ret$0: Ref)
+  requires acc(p$c$ReferenceFields$unique(p$rf), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$sharedVal: Ref
+  var l0$sharedVar: Ref
+  var l0$uniqueVal: Ref
+  var l0$uniqueVar: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$rf), df$rt$c$ReferenceFields())
+  inhale acc(p$c$ReferenceFields$shared(p$rf), wildcard)
+  unfold acc(p$c$ReferenceFields$shared(p$rf), wildcard)
+  l0$sharedVal := p$rf.bf$sharedVal
+  l0$sharedVar := havoc$T$PrimitiveFields()
+  unfold acc(p$c$ReferenceFields$shared(p$rf), wildcard)
+  l0$uniqueVal := p$rf.bf$uniqueVal
+  l0$uniqueVar := havoc$T$PrimitiveFields()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/field_getters_unique_shared.kt:(992,1022): info: Generated Viper text for testReferenceFieldGetterShared:
+field bf$sharedVal: Ref
+
+field bf$sharedVar: Ref
+
+field bf$uniqueVal: Ref
+
+field bf$uniqueVar: Ref
+
+method f$testReferenceFieldGetterShared$TF$T$ReferenceFields$T$Unit(p$rf: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$sharedVal: Ref
+  var l0$sharedVar: Ref
+  var l0$uniqueVal: Ref
+  var l0$uniqueVar: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$rf), df$rt$c$ReferenceFields())
+  inhale acc(p$c$ReferenceFields$shared(p$rf), wildcard)
+  unfold acc(p$c$ReferenceFields$shared(p$rf), wildcard)
+  l0$sharedVal := p$rf.bf$sharedVal
+  l0$sharedVar := havoc$T$PrimitiveFields()
+  unfold acc(p$c$ReferenceFields$shared(p$rf), wildcard)
+  l0$uniqueVal := p$rf.bf$uniqueVal
+  l0$uniqueVar := havoc$T$PrimitiveFields()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}

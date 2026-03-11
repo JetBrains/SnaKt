@@ -23,20 +23,14 @@ method f$extractInt$TF$T$Base$T$Boolean$NT$Int(p$base: Ref, p$returnNull: Ref)
       inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$intType())
     } elseif (df$rt$isSubtype(df$rt$typeOf(p$base), df$rt$c$FinalClassOpenFieldVarDerived())) {
       inhale acc(p$c$FinalClassOpenFieldVarDerived$shared(p$base), wildcard)
-      inhale acc(p$base.bf$field, write)
-      anon$1 := p$base.bf$field
-      exhale acc(p$base.bf$field, write)
-      inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$intType())
+      anon$1 := havoc$T$Int()
     } elseif (df$rt$isSubtype(df$rt$typeOf(p$base), df$rt$c$FinalClassFinalFieldValDerived())) {
       inhale acc(p$c$FinalClassFinalFieldValDerived$shared(p$base), wildcard)
       unfold acc(p$c$FinalClassFinalFieldValDerived$shared(p$base), wildcard)
       anon$1 := p$base.bf$field
     } elseif (df$rt$isSubtype(df$rt$typeOf(p$base), df$rt$c$OpenClassFinalFieldVarDerived())) {
       inhale acc(p$c$OpenClassFinalFieldVarDerived$shared(p$base), wildcard)
-      inhale acc(p$base.bf$field, write)
-      anon$1 := p$base.bf$field
-      exhale acc(p$base.bf$field, write)
-      inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$intType())
+      anon$1 := havoc$T$Int()
     } else {
       anon$1 := df$rt$intToRef(0)}
     ret$0 := anon$1
