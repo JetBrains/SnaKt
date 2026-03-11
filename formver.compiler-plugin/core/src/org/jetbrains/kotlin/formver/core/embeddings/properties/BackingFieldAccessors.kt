@@ -14,10 +14,9 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.withInvariants
 
 class BackingFieldGetter(val field: FieldEmbedding) : GetterEmbedding {
     override fun getValue(receiver: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding {
-        return if (field.accessPolicy == AccessPolicy.ALWAYS_READABLE) {
-            FieldAccess(receiver, field)
-        } else {
-            FieldAccess(receiver, field).withInvariants {
+        return when (field.accessPolicy) {
+            AccessPolicy.ALWAYS_READABLE, AccessPolicy.BY_RECEIVER_UNIQUENESS -> FieldAccess(receiver, field)
+            else -> FieldAccess(receiver, field).withInvariants {
                 proven = true
                 access = true
             }
