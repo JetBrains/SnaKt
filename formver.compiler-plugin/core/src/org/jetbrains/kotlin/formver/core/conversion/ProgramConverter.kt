@@ -268,7 +268,7 @@ class ProgramConverter(
         embedFunctionPretypeWithBuilder(symbol)
     }
 
-    override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding = if (symbol.isExtension) {
+    override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding = if (symbol.receiverParameterSymbol != null) {
         embedCustomProperty(symbol)
     } else {
         // Ensure that the class has been processed.
@@ -294,7 +294,7 @@ class ProgramConverter(
 
         return constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
             propertySymbol.withConstructorParam { paramSymbol ->
-                constructedClass.details.findField(callableId.embedUnscopedPropertyName())?.let { paramSymbol to it }
+                constructedClass.details.findField(callableId!!.embedUnscopedPropertyName())?.let { paramSymbol to it }
             }
         }.toMap()
     }
@@ -478,8 +478,8 @@ class ProgramConverter(
         classSymbol: FirRegularClassSymbol,
     ): Pair<SimpleKotlinName, FieldEmbedding>? {
         val embedding = embedClass(classSymbol)
-        val unscopedName = symbol.callableId.embedUnscopedPropertyName()
-        val scopedName = symbol.callableId.embedMemberBackingFieldName(
+        val unscopedName = symbol.callableId!!.embedUnscopedPropertyName()
+        val scopedName = symbol.callableId!!.embedMemberBackingFieldName(
             Visibilities.isPrivate(symbol.visibility)
         )
         val fieldIsAllowed = symbol.hasBackingField
@@ -507,7 +507,7 @@ class ProgramConverter(
      * Null value of parameter [embedding] means that there is no class details corresponding to this type (e.g. it is primitive).
      */
     private fun processProperty(symbol: FirPropertySymbol, embedding: ClassEmbeddingDetails?) {
-        val unscopedName = symbol.callableId.embedUnscopedPropertyName()
+        val unscopedName = symbol.callableId!!.embedUnscopedPropertyName()
         properties[symbol.embedMemberPropertyName()] =
             SpecialProperties.byCallableId[symbol.callableId] ?: embedding.run {
                 val backingField = embedding?.findField(unscopedName)
