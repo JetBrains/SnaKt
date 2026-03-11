@@ -65,7 +65,7 @@ class ProgramConverter(
     @Suppress("UNCHECKED_CAST")
     val debugExpEmbeddings: Map<SymbolicName, ExpEmbedding>
         get() = methods
-            .mapValues { (it.value as? UserFunctionEmbedding)?.body?.debugExpEmbedding }
+            .mapValues { (it.value as? UserFunctionEmbedding)?.body?.debugExpEmbedding() }
             .filterValues { value: ExpEmbedding? -> value != null } as Map<SymbolicName, ExpEmbedding>
 
     override val whileIndexProducer = indexProducer()

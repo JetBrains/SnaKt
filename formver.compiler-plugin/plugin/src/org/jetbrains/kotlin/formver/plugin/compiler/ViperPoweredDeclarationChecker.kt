@@ -49,6 +49,10 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
         try {
             val programConversionContext = ProgramConverter(session, config, errorCollector)
             programConversionContext.registerForVerification(declaration)
+            errorCollector.forEachPurityError { source, errorMessage ->
+                reporter.reportOn(source, PluginErrors.PURITY_VIOLATION, errorMessage)
+            }
+            if (errorCollector.collectedPurityError()) return
             val program = programConversionContext.program
 
             with(programConversionContext.nameResolver) {
@@ -75,10 +79,6 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
                     }
                 }
             }
-            errorCollector.forEachPurityError { source, errorMessage ->
-                reporter.reportOn(source, PluginErrors.PURITY_VIOLATION, errorMessage)
-            }
-
             val verifier = Verifier()
             val onFailure = { err: VerifierError ->
                 val source = err.position.unwrapOr { declaration.source }
