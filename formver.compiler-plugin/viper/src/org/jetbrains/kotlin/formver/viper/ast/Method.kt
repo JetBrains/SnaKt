@@ -56,11 +56,17 @@ class UserMethod(
     override val formalReturns: List<Declaration.LocalVarDecl> = listOf(returnVar)
 }
 
-abstract class BuiltInMethod(
+class BuiltInMethod(
     name: SymbolicName,
+    override val formalArgs: List<Declaration.LocalVarDecl>,
+    returnVar: Declaration.LocalVarDecl,
+    override val pres: List<Exp>,
+    override val posts: List<Exp>,
+    override val body: Stmt.Seqn?,
     pos: Position = Position.NoPosition,
     info: Info = Info.NoInfo,
     trafos: Trafos = Trafos.NoTrafos,
 ) : Method(name, pos, info, trafos) {
     override val includeInShortDump: Boolean = false
+    override val formalReturns: List<Declaration.LocalVarDecl> = listOf(returnVar)
 }
