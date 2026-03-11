@@ -27,5 +27,4 @@ data class FunctionTypeEmbedding(
      */
     val formalArgTypes: List<TypeEmbedding>
         get() = listOfNotNull(dispatchReceiverType, extensionReceiverType) + paramTypes
-
 }
