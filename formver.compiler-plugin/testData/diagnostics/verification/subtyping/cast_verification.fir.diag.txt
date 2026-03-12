@@ -1,0 +1,47 @@
+/cast_verification.kt:(303,325): info: Generated Viper text for safeCastPreservesValue:
+field bf$x: Ref
+
+field bf$y: Ref
+
+method f$safeCastPreservesValue$TF$T$Base$T$Int(p$b: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var l0$d: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$Base())
+  inhale acc(p$c$Base$shared(p$b), wildcard)
+  if (df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$Derived())) {
+    l0$d := p$b
+  } else {
+    l0$d := df$rt$nullValue()}
+  inhale df$rt$isSubtype(df$rt$typeOf(l0$d), df$rt$nullable(df$rt$c$Derived()))
+  inhale l0$d != df$rt$nullValue() ==>
+    acc(p$c$Derived$shared(l0$d), wildcard)
+  if (!(l0$d == df$rt$nullValue())) {
+    unfold acc(p$c$Derived$shared(l0$d), wildcard)
+    unfold acc(p$c$Base$shared(l0$d), wildcard)
+    ret$0 := l0$d.bf$x
+  } else {
+    unfold acc(p$c$Base$shared(p$b), wildcard)
+    ret$0 := p$b.bf$x
+  }
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/cast_verification.kt:(507,527): info: Generated Viper text for upcastAlwaysSucceeds:
+field bf$x: Ref
+
+field bf$y: Ref
+
+method f$upcastAlwaysSucceeds$TF$T$Derived$T$Boolean(p$d: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
+  ensures df$rt$boolFromRef(ret$0) == true
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$d), df$rt$c$Derived())
+  inhale acc(p$c$Derived$shared(p$d), wildcard)
+  ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(p$d), df$rt$c$Base()))
+  goto lbl$ret$0
+  label lbl$ret$0
+}

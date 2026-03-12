@@ -1,0 +1,45 @@
+/class_hierarchy_basics.kt:(180,191): info: Generated Viper text for takesAnimal:
+field bf$legs: Ref
+
+method f$takesAnimal$TF$T$Animal$T$Int(p$a: Ref) returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$Animal())
+  inhale acc(p$c$Animal$shared(p$a), wildcard)
+  unfold acc(p$c$Animal$shared(p$a), wildcard)
+  ret$0 := p$a.bf$legs
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/class_hierarchy_basics.kt:(222,237): info: Generated Viper text for passDogAsAnimal:
+field bf$legs: Ref
+
+method f$passDogAsAnimal$TF$T$Dog$T$Int(p$d: Ref) returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$d), df$rt$c$Dog())
+  inhale acc(p$c$Dog$shared(p$d), wildcard)
+  ret$0 := f$takesAnimal$TF$T$Animal$T$Int(p$d)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+method f$takesAnimal$TF$T$Animal$T$Int(p$a: Ref) returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
+
+
+/class_hierarchy_basics.kt:(337,344): info: Generated Viper text for dogLegs:
+field bf$legs: Ref
+
+method f$dogLegs$TF$T$Dog$T$Int(p$d: Ref) returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$d), df$rt$c$Dog())
+  inhale acc(p$c$Dog$shared(p$d), wildcard)
+  unfold acc(p$c$Dog$shared(p$d), wildcard)
+  unfold acc(p$c$Animal$shared(p$d), wildcard)
+  ret$0 := p$d.bf$legs
+  goto lbl$ret$0
+  label lbl$ret$0
+}

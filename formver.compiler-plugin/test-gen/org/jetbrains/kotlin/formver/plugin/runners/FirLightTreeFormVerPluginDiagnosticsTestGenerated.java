@@ -809,6 +809,52 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/subtyping")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Subtyping {
+      @Test
+      @TestMetadata("abstract_class.kt")
+      public void testAbstract_class() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/subtyping/abstract_class.kt");
+      }
+
+      @Test
+      public void testAllFilesPresentInSubtyping() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/subtyping"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("cast_verification.kt")
+      public void testCast_verification() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/subtyping/cast_verification.kt");
+      }
+
+      @Test
+      @TestMetadata("class_hierarchy_basics.kt")
+      public void testClass_hierarchy_basics() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/subtyping/class_hierarchy_basics.kt");
+      }
+
+      @Test
+      @TestMetadata("interface_verification.kt")
+      public void testInterface_verification() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/subtyping/interface_verification.kt");
+      }
+
+      @Test
+      @TestMetadata("override_methods.kt")
+      public void testOverride_methods() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/subtyping/override_methods.kt");
+      }
+
+      @Test
+      @TestMetadata("smart_cast_class.kt")
+      public void testSmart_cast_class() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/subtyping/smart_cast_class.kt");
+      }
+    }
+
+    @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/uniqueness")
     @TestDataPath("$PROJECT_ROOT")
     public class Uniqueness {

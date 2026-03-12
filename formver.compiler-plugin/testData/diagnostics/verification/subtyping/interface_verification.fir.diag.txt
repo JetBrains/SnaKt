@@ -1,0 +1,43 @@
+/interface_verification.kt:(422,435): info: Generated Viper text for getPersonName:
+field bf$age: Ref
+
+field bf$name: Ref
+
+method f$getPersonName$TF$T$Person$T$String(p$p: Ref) returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$stringType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$p), df$rt$c$Person())
+  inhale acc(p$c$Person$shared(p$p), wildcard)
+  unfold acc(p$c$Person$shared(p$p), wildcard)
+  ret$0 := p$p.bf$name
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+method pg$public$age(this$dispatch: Ref) returns (ret: Ref)
+
+
+method pg$public$name(this$dispatch: Ref) returns (ret: Ref)
+
+
+/interface_verification.kt:(569,584): info: Generated Viper text for personIsHasName:
+field bf$age: Ref
+
+field bf$name: Ref
+
+method f$personIsHasName$TF$T$Person$T$Boolean(p$p: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
+  ensures df$rt$boolFromRef(ret$0) == true
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$p), df$rt$c$Person())
+  inhale acc(p$c$Person$shared(p$p), wildcard)
+  ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(p$p), df$rt$c$HasName()))
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+method pg$public$age(this$dispatch: Ref) returns (ret: Ref)
+
+
+method pg$public$name(this$dispatch: Ref) returns (ret: Ref)

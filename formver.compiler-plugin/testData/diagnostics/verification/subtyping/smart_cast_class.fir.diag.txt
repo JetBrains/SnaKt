@@ -1,0 +1,51 @@
+/smart_cast_class.kt:(255,275): info: Generated Viper text for accessAfterSmartCast:
+field bf$height: Ref
+
+field bf$width: Ref
+
+method f$accessAfterSmartCast$TF$T$Shape$T$Int(p$s: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$c$Shape())
+  inhale acc(p$c$Shape$shared(p$s), wildcard)
+  if (df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$c$Rectangle())) {
+    inhale acc(p$c$Rectangle$shared(p$s), wildcard)
+    unfold acc(p$c$Rectangle$shared(p$s), wildcard)
+    ret$0 := p$s.bf$width
+    goto lbl$ret$0
+  }
+  ret$0 := df$rt$intToRef(-1)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/smart_cast_class.kt:(390,405): info: Generated Viper text for nestedSmartCast:
+field bf$height: Ref
+
+field bf$side: Ref
+
+field bf$width: Ref
+
+method f$nestedSmartCast$TF$T$Shape$T$Int(p$s: Ref) returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$c$Shape())
+  inhale acc(p$c$Shape$shared(p$s), wildcard)
+  if (df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$c$Rectangle())) {
+    inhale acc(p$c$Rectangle$shared(p$s), wildcard)
+    if (df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$c$Square())) {
+      inhale acc(p$c$Square$shared(p$s), wildcard)
+      unfold acc(p$c$Square$shared(p$s), wildcard)
+      ret$0 := p$s.bf$side
+      goto lbl$ret$0
+    }
+    inhale acc(p$c$Rectangle$shared(p$s), wildcard)
+    unfold acc(p$c$Rectangle$shared(p$s), wildcard)
+    ret$0 := p$s.bf$height
+    goto lbl$ret$0
+  }
+  ret$0 := df$rt$intToRef(0)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
