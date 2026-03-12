@@ -83,8 +83,9 @@ class UniquenessConeAttribute(val type : UniquenessType) : ConeAttribute<Uniquen
         return UniquenessConeAttribute(type.join(other?.type ?: return null))
     }
 
-    override fun isSubtypeOf(other: UniquenessConeAttribute?): Boolean
-            = true
+    override fun isSubtypeOf(other: UniquenessConeAttribute?): Boolean {
+        return true
+    }
 
     override fun toString(): String {
         return "@(${type})"
