@@ -1,7 +1,7 @@
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
-@Suppress("USELESS_IS_CHECK")
+@Suppress("IMPOSSIBLE_IS_CHECK_WARNING")
 @OptIn(ExperimentalContracts::class)
 fun <!VIPER_TEXT!>unverifiableTypeCheck<!>(x: Int?): Boolean {
     contract {
