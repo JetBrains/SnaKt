@@ -7,7 +7,6 @@ package org.jetbrains.kotlin.formver.uniqueness
 
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.FirSession
-import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
 import org.jetbrains.kotlin.fir.expressions.arguments
@@ -21,6 +20,7 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ThrowExceptionNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
+import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.formver.common.ErrorCollector
 
 /**
@@ -130,10 +130,9 @@ class UniquenessTypeChecker(
     @OptIn(SymbolInternals::class)
     override fun visitFunctionCallEnterNode(node: FunctionCallEnterNode, data: UniquenessTrie) {
         val functionCall = node.fir
-        val callableSymbol = functionCall.toResolvedCallableSymbol()
+        val callableSymbol = functionCall.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
             ?: throw IllegalStateException("Unable to resolve ${functionCall}")
-        val callableDeclaration = callableSymbol.fir as? FirSimpleFunction
-            ?: throw IllegalStateException("Callable symbol is not a function: ${callableSymbol.fir}")
+        val callableDeclaration = callableSymbol.fir
         var currentData = data
 
         for ((argument, parameter) in functionCall.arguments.zip(callableDeclaration.valueParameters)) {
