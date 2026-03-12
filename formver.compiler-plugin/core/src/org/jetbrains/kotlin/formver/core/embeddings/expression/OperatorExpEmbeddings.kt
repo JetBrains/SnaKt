@@ -91,6 +91,15 @@ object OperatorExpEmbeddings {
         viperImplementation { Exp.GtCmp(args[0], args[1], pos, info, trafos) }
     }
 
+    val NegInt = buildUnaryOperator {
+        setName("negInt")
+        withSignature {
+            withParam { int() }
+            withReturnType { int() }
+        }
+        viperImplementation { Exp.Minus(args[0], pos, info, trafos) }
+    }
+
     val Not = buildUnaryOperator {
         setName("notBool")
         withSignature {
@@ -232,7 +241,7 @@ object OperatorExpEmbeddings {
 
     val allTemplates
         get() = listOf(
-            AddIntInt, SubIntInt, MulIntInt, DivIntInt, RemIntInt,
+            AddIntInt, SubIntInt, MulIntInt, DivIntInt, RemIntInt, NegInt,
             LeIntInt, GeIntInt, LtIntInt, GtIntInt,
             Not, And, Or, Implies,
             AddCharInt, SubCharChar, SubCharInt,
