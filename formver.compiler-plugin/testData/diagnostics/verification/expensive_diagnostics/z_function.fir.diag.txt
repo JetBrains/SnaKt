@@ -2,6 +2,11 @@
 method f$zFuncHelper$TF$T$String$T$String$T$Int$T$Int$T$Int$T$Int(p$s: Ref,
   p$res: Ref, p$i: Ref, p$checkedLeft: Ref, p$checkedRight: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$stringType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$res), df$rt$stringType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$i), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$checkedLeft), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$checkedRight), df$rt$intType())
   requires 1 <= df$rt$intFromRef(p$i) &&
     df$rt$intFromRef(p$i) < |df$rt$stringFromRef(p$s)|
   requires |df$rt$stringFromRef(p$res)| == df$rt$intFromRef(p$i)
@@ -40,11 +45,6 @@ method f$zFuncHelper$TF$T$String$T$String$T$Int$T$Int$T$Int$T$Int(p$s: Ref,
       df$rt$stringFromRef(p$s)[anon$builtin$7])
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$stringType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$res), df$rt$stringType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$i), df$rt$intType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$checkedLeft), df$rt$intType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$checkedRight), df$rt$intType())
   if (df$rt$intFromRef(p$checkedLeft) == 0) {
     anon$0 := df$rt$boolToRef(true)
   } else {
@@ -68,12 +68,19 @@ method f$zFuncHelper$TF$T$String$T$String$T$Int$T$Int$T$Int$T$Int(p$s: Ref,
 method f$pkg$kotlin$c$String$plus$TF$T$String$NT$Any$T$String(this$dispatch: Ref,
   p$other: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$stringType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$other), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$stringType())
 
 
 method f$zFuncHelper$TF$T$String$T$String$T$Int$T$Int$T$Int$T$Int(p$s: Ref,
   p$res: Ref, p$i: Ref, p$checkedLeft: Ref, p$checkedRight: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$stringType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$res), df$rt$stringType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$i), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$checkedLeft), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$checkedRight), df$rt$intType())
   requires 1 <= df$rt$intFromRef(p$i) &&
     df$rt$intFromRef(p$i) < |df$rt$stringFromRef(p$s)|
   requires |df$rt$stringFromRef(p$res)| == df$rt$intFromRef(p$i)
@@ -114,6 +121,7 @@ method f$zFuncHelper$TF$T$String$T$String$T$Int$T$Int$T$Int$T$Int(p$s: Ref,
 
 method f$zFunction$TF$T$String$T$String(this$extension: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$stringType())
   ensures |df$rt$stringFromRef(ret$0)| ==
     |df$rt$stringFromRef(this$extension)|
@@ -139,7 +147,6 @@ method f$zFunction$TF$T$String$T$String(this$extension: Ref)
   var l0$checkedLeft: Ref
   var l0$checkedRight: Ref
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
   if (|df$rt$stringFromRef(this$extension)| == 0) {
     ret$0 := this$extension
     goto lbl$ret$0
@@ -293,11 +300,14 @@ method f$zFunction$TF$T$String$T$String(this$extension: Ref)
 method f$pkg$kotlin$c$String$plus$TF$T$String$NT$Any$T$String(this$dispatch: Ref,
   p$other: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$stringType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$other), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$stringType())
 
 
 method f$zFunctionNaive$TF$T$String$T$String(this$extension: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$stringType())
   ensures |df$rt$stringFromRef(ret$0)| ==
     |df$rt$stringFromRef(this$extension)|
@@ -320,7 +330,6 @@ method f$zFunctionNaive$TF$T$String$T$String(this$extension: Ref)
   var l0$i: Ref
   var l0$res: Ref
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
   if (|df$rt$stringFromRef(this$extension)| == 0) {
     ret$0 := this$extension
     goto lbl$ret$0

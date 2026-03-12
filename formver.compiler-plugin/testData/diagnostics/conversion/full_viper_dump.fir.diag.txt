@@ -405,6 +405,7 @@ predicate p$c$Foo$unique(this$dispatch: Ref) {
 }
 
 method con$c$Foo$T$Int$T$Foo(p$x: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Foo())
   ensures acc(p$c$Foo$shared(ret), wildcard)
   ensures acc(p$c$Foo$unique(ret), write)

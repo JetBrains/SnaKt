@@ -52,6 +52,8 @@ function f$laterInitializersCanRelyOnPrevious$TF$T$Int(): Ref
 
 /pure_function_with_assignments.kt:(541,572): info: Generated Viper text for initializersCanRelyOnParameters:
 function f$initializersCanRelyOnParameters$TF$T$Int$T$Int$T$Int(p$x: Ref, p$y: Ref): Ref
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$y), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$sum$0 ==

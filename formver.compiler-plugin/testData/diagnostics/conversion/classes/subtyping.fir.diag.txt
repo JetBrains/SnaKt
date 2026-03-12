@@ -1,8 +1,8 @@
 /subtyping.kt:(80,89): info: Generated Viper text for smartCast:
 method f$smartCast$TF$NT$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
   if (p$x == df$rt$nullValue()) {
     ret$0 := df$rt$intToRef(0)
     goto lbl$ret$0
@@ -45,5 +45,5 @@ method f$functionParameterSubtyping$TF$T$Unit() returns (ret$0: Ref)
 
 method f$nullableParameter$TF$NT$Boolean$T$Unit(p$b: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$nullable(df$rt$boolType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
-

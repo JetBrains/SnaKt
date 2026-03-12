@@ -14,9 +14,9 @@ method f$simpleIf$TF$T$Int() returns (ret$0: Ref)
 
 /if.kt:(116,129): info: Generated Viper text for ifOnParameter:
 method f$ifOnParameter$TF$T$Boolean$T$Int(p$b: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   if (df$rt$boolFromRef(p$b)) {
     ret$0 := df$rt$intToRef(0)
     goto lbl$ret$0
@@ -47,9 +47,9 @@ method f$ifAsExpression$TF$T$Boolean() returns (ret$0: Ref)
 }
 
 method f$ifOnParameter$TF$T$Boolean$T$Int(p$b: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 
 method f$simpleIf$TF$T$Int() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-

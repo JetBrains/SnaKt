@@ -3,9 +3,9 @@ field bf$x: Ref
 
 method f$c$Foo$memberFun$TF$T$Foo$T$Int(this$dispatch: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
   inhale acc(p$c$Foo$shared(this$dispatch), wildcard)
   unfold acc(p$c$Foo$shared(this$dispatch), wildcard)
   ret$0 := this$dispatch.bf$x
@@ -18,10 +18,10 @@ field bf$x: Ref
 
 method f$c$Foo$callMemberFun$TF$T$Foo$T$Unit(this$dispatch: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
   inhale acc(p$c$Foo$shared(this$dispatch), wildcard)
   anon$0 := f$c$Foo$memberFun$TF$T$Foo$T$Int(this$dispatch)
   label lbl$ret$0
@@ -30,6 +30,7 @@ method f$c$Foo$callMemberFun$TF$T$Foo$T$Unit(this$dispatch: Ref)
 
 method f$c$Foo$memberFun$TF$T$Foo$T$Int(this$dispatch: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 
@@ -38,17 +39,18 @@ field bf$x: Ref
 
 method f$c$Foo$memberFun$TF$T$Foo$T$Int(this$dispatch: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 
 method f$c$Foo$siblingCall$TF$T$Foo$T$Foo$T$Unit(this$dispatch: Ref, p$other: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
+  requires df$rt$isSubtype(df$rt$typeOf(p$other), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
   inhale acc(p$c$Foo$shared(this$dispatch), wildcard)
-  inhale df$rt$isSubtype(df$rt$typeOf(p$other), df$rt$c$Foo())
   inhale acc(p$c$Foo$shared(p$other), wildcard)
   anon$0 := f$c$Foo$memberFun$TF$T$Foo$T$Int(p$other)
   label lbl$ret$0
@@ -60,14 +62,15 @@ field bf$x: Ref
 
 method f$c$Foo$memberFun$TF$T$Foo$T$Int(this$dispatch: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 
 method f$outerMemberFunCall$TF$T$Foo$T$Unit(p$f: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$c$Foo())
   inhale acc(p$c$Foo$shared(p$f), wildcard)
   anon$0 := f$c$Foo$memberFun$TF$T$Foo$T$Int(p$f)
   label lbl$ret$0

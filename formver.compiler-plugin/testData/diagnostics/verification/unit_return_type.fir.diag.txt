@@ -1,8 +1,8 @@
 /unit_return_type.kt:(171,176): info: Generated Viper text for idFun:
 method f$idFun$TF$NT$Any$NT$Any(p$t: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$t), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$anyType()))
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$t), df$rt$nullable(df$rt$anyType()))
   ret$0 := p$t
   goto lbl$ret$0
   label lbl$ret$0
@@ -10,9 +10,9 @@ method f$idFun$TF$NT$Any$NT$Any(p$t: Ref) returns (ret$0: Ref)
 
 /unit_return_type.kt:(195,208): info: Generated Viper text for directReturns:
 method f$directReturns$TF$T$Boolean$T$Unit(p$b: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   if (df$rt$boolFromRef(p$b)) {
     ret$0 := df$rt$unitValue()
     goto lbl$ret$0
@@ -32,6 +32,7 @@ method f$directReturns$TF$T$Boolean$T$Unit(p$b: Ref) returns (ret$0: Ref)
 }
 
 method f$idFun$TF$NT$Any$NT$Any(p$t: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$t), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$anyType()))
 
 
@@ -39,10 +40,12 @@ method f$idFun$TF$NT$Any$NT$Any(p$t: Ref) returns (ret: Ref)
 field bf$size: Ref
 
 method f$idFun$TF$NT$Any$NT$Any(p$t: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$t), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$anyType()))
 
 
 method f$useInlineUnit$TF$T$Boolean$T$Unit(p$b: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$unitRes: Ref
@@ -50,7 +53,6 @@ method f$useInlineUnit$TF$T$Boolean$T$Unit(p$b: Ref) returns (ret$0: Ref)
   var anon$0: Ref
   var ret$2: Ref
   var anon$1: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$nullable(df$rt$anyType()))
   anon$0 := p$b
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$boolType())

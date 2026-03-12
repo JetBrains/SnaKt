@@ -17,13 +17,13 @@ field sp$size: Ref
 method f$initialization$TF$T$List$T$Unit(p$l: Ref) returns (ret$0: Ref)
   requires acc(p$l.sp$size, write)
   requires df$rt$intFromRef(p$l.sp$size) >= 0
+  requires df$rt$isSubtype(df$rt$typeOf(p$l), df$rt$c$pkg$kotlin_collections$List())
   ensures acc(p$l.sp$size, write)
   ensures df$rt$intFromRef(p$l.sp$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$myList: Ref
   var l0$myEmptyList: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$l), df$rt$c$pkg$kotlin_collections$List())
   inhale acc(p$pkg$kotlin_collections$c$List$shared(p$l), wildcard)
   l0$myList := p$l
   l0$myEmptyList := f$pkg$kotlin_collections$emptyList$TF$T$List()
@@ -45,13 +45,13 @@ field sp$size: Ref
 method f$add_get$TF$T$MutableList$T$Unit(p$l: Ref) returns (ret$0: Ref)
   requires acc(p$l.sp$size, write)
   requires df$rt$intFromRef(p$l.sp$size) >= 0
+  requires df$rt$isSubtype(df$rt$typeOf(p$l), df$rt$c$pkg$kotlin_collections$MutableList())
   ensures acc(p$l.sp$size, write)
   ensures df$rt$intFromRef(p$l.sp$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
   var l0$n: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$l), df$rt$c$pkg$kotlin_collections$MutableList())
   inhale acc(p$pkg$kotlin_collections$c$MutableList$shared(p$l), wildcard)
   anon$0 := f$pkg$kotlin_collections$c$MutableList$add$TF$T$MutableList$T$Int$T$Boolean(p$l,
     df$rt$intToRef(1))
@@ -66,6 +66,8 @@ method f$pkg$kotlin_collections$c$MutableList$add$TF$T$MutableList$T$Int$T$Boole
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
   requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$MutableList())
+  requires df$rt$isSubtype(df$rt$typeOf(p$element), df$rt$intType())
   ensures acc(this$dispatch.sp$size, write)
   ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
@@ -78,6 +80,8 @@ method f$pkg$kotlin_collections$c$MutableList$get$TF$T$MutableList$T$Int$T$Int(t
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
   requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$MutableList())
+  requires df$rt$isSubtype(df$rt$typeOf(p$index), df$rt$intType())
   requires df$rt$intFromRef(p$index) >= 0
   requires df$rt$intFromRef(this$dispatch.sp$size) >
     df$rt$intFromRef(p$index)
@@ -94,12 +98,12 @@ field sp$size: Ref
 method f$last_or_null$TF$T$List$NT$Int(p$l: Ref) returns (ret$0: Ref)
   requires acc(p$l.sp$size, write)
   requires df$rt$intFromRef(p$l.sp$size) >= 0
+  requires df$rt$isSubtype(df$rt$typeOf(p$l), df$rt$c$pkg$kotlin_collections$List())
   ensures acc(p$l.sp$size, write)
   ensures df$rt$intFromRef(p$l.sp$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
 {
   var l0$size: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$l), df$rt$c$pkg$kotlin_collections$List())
   inhale acc(p$pkg$kotlin_collections$c$List$shared(p$l), wildcard)
   l0$size := p$l.sp$size
   inhale df$rt$isSubtype(df$rt$typeOf(l0$size), df$rt$intType())
@@ -121,6 +125,8 @@ method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(this$dispatch: 
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
   requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
+  requires df$rt$isSubtype(df$rt$typeOf(p$index), df$rt$intType())
   requires df$rt$intFromRef(p$index) >= 0
   requires df$rt$intFromRef(this$dispatch.sp$size) >
     df$rt$intFromRef(p$index)
@@ -137,12 +143,12 @@ field sp$size: Ref
 method f$is_empty$TF$T$List$T$Int(p$l: Ref) returns (ret$0: Ref)
   requires acc(p$l.sp$size, write)
   requires df$rt$intFromRef(p$l.sp$size) >= 0
+  requires df$rt$isSubtype(df$rt$typeOf(p$l), df$rt$c$pkg$kotlin_collections$List())
   ensures acc(p$l.sp$size, write)
   ensures df$rt$intFromRef(p$l.sp$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$l), df$rt$c$pkg$kotlin_collections$List())
   inhale acc(p$pkg$kotlin_collections$c$List$shared(p$l), wildcard)
   anon$0 := f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List$T$Boolean(p$l)
   if (!df$rt$boolFromRef(anon$0)) {
@@ -159,6 +165,8 @@ method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(this$dispatch: 
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
   requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
+  requires df$rt$isSubtype(df$rt$typeOf(p$index), df$rt$intType())
   requires df$rt$intFromRef(p$index) >= 0
   requires df$rt$intFromRef(this$dispatch.sp$size) >
     df$rt$intFromRef(p$index)
@@ -173,6 +181,7 @@ method f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List$T$Boolean(this$dispatch
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
   requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
   ensures acc(this$dispatch.sp$size, write)
   ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
@@ -190,12 +199,12 @@ field sp$size: Ref
 method f$nullable_list$TF$NT$List$T$Unit(p$l: Ref) returns (ret$0: Ref)
   requires p$l != df$rt$nullValue() ==> acc(p$l.sp$size, write)
   requires p$l != df$rt$nullValue() ==> df$rt$intFromRef(p$l.sp$size) >= 0
+  requires df$rt$isSubtype(df$rt$typeOf(p$l), df$rt$nullable(df$rt$c$pkg$kotlin_collections$List()))
   ensures p$l != df$rt$nullValue() ==> acc(p$l.sp$size, write)
   ensures p$l != df$rt$nullValue() ==> df$rt$intFromRef(p$l.sp$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$l), df$rt$nullable(df$rt$c$pkg$kotlin_collections$List()))
   inhale p$l != df$rt$nullValue() ==>
     acc(p$pkg$kotlin_collections$c$List$shared(p$l), wildcard)
   if (!(p$l == df$rt$nullValue())) {
@@ -221,6 +230,8 @@ method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(this$dispatch: 
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
   requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
+  requires df$rt$isSubtype(df$rt$typeOf(p$index), df$rt$intType())
   requires df$rt$intFromRef(p$index) >= 0
   requires df$rt$intFromRef(this$dispatch.sp$size) >
     df$rt$intFromRef(p$index)
@@ -235,6 +246,7 @@ method f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List$T$Boolean(this$dispatch
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
   requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
   ensures acc(this$dispatch.sp$size, write)
   ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
@@ -244,4 +256,3 @@ method f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List$T$Boolean(this$dispatch
     df$rt$intFromRef(this$dispatch.sp$size) == 0
   ensures !df$rt$boolFromRef(ret) ==>
     df$rt$intFromRef(this$dispatch.sp$size) > 0
-

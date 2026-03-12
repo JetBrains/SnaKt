@@ -1,10 +1,10 @@
 /cond_effects.kt:(121,146): info: Generated Viper text for compoundConditionalEffect:
 method f$compoundConditionalEffect$TF$T$Boolean$T$Unit(p$b: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
   ensures true ==> df$rt$boolFromRef(p$b) && false
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -13,11 +13,11 @@ method f$compoundConditionalEffect$TF$T$Boolean$T$Unit(p$b: Ref)
 
 /cond_effects.kt:(271,287): info: Generated Viper text for mayReturnNonNull:
 method f$mayReturnNonNull$TF$NT$Any$NT$Any(p$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$anyType()))
   ensures ret$0 == df$rt$nullValue() ==>
     df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$anyType()))
   ret$0 := p$x
   goto lbl$ret$0
   label lbl$ret$0
@@ -27,11 +27,11 @@ method f$mayReturnNonNull$TF$NT$Any$NT$Any(p$x: Ref) returns (ret$0: Ref)
 
 /cond_effects.kt:(424,437): info: Generated Viper text for mayReturnNull:
 method f$mayReturnNull$TF$NT$Any$NT$Any(p$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$anyType()))
   ensures ret$0 != df$rt$nullValue() ==>
     df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$anyType()))
   ret$0 := p$x
   goto lbl$ret$0
   label lbl$ret$0
@@ -42,10 +42,10 @@ method f$mayReturnNull$TF$NT$Any$NT$Any(p$x: Ref) returns (ret$0: Ref)
 /cond_effects.kt:(723,741): info: Generated Viper text for isNullOrEmptyWrong:
 method f$isNullOrEmptyWrong$TF$NT$CharSequence$T$Boolean(p$seq: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$seq), df$rt$nullable(df$rt$c$pkg$kotlin$CharSequence()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures df$rt$boolFromRef(ret$0) == false ==> p$seq != df$rt$nullValue()
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$seq), df$rt$nullable(df$rt$c$pkg$kotlin$CharSequence()))
   inhale p$seq != df$rt$nullValue() ==>
     acc(p$pkg$kotlin$c$CharSequence$shared(p$seq), wildcard)
   if (!(p$seq == df$rt$nullValue())) {
@@ -69,12 +69,12 @@ method pg$public$length(this$dispatch: Ref) returns (ret: Ref)
 /cond_effects.kt:(925,942): info: Generated Viper text for recursiveContract:
 method f$recursiveContract$TF$T$Int$NT$Any$T$Boolean(p$n: Ref, p$x: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures df$rt$boolFromRef(ret$0) == true ==>
     df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$stringType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$anyType()))
   if (df$rt$intFromRef(p$n) == 0) {
     ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType()))
   } else {

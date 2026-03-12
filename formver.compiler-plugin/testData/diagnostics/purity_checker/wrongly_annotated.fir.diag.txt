@@ -18,9 +18,9 @@ field bf$value: Ref
 
 method f$impureExtension$TF$T$Field$T$Unit(this$extension: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$Field())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$Field())
   inhale acc(p$c$Field$shared(this$extension), wildcard)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())

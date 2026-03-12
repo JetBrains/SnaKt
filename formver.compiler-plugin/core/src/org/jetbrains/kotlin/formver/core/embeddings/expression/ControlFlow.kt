@@ -277,11 +277,9 @@ data class FunctionExp(
 
     override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
         signature?.formalArgs?.forEach { arg ->
-            // Ideally we would want to assume these rather than inhale them to prevent inconsistencies with permissions.
-            // Unfortunately Silicon for some reason does not allow Assumes. However, it doesn't matter as long as the
-            // provenInvariants don't contain permissions.
-            // TODO (inhale vs require) Decide if `predicateAccessInvariant` should be required rather than inhaled in the beginning of the body.
-            (arg.provenInvariants() + listOfNotNull(arg.sharedPredicateAccessInvariant())).forEach { invariant ->
+            // Ideally, we would want to assume these rather than inhale them to prevent inconsistencies with
+            // permissions. Unfortunately, Silicon for some reason does not allow Assumes.
+            listOfNotNull(arg.sharedPredicateAccessInvariant()).forEach { invariant ->
                 ctx.addStatement { Stmt.Inhale(invariant.toViperBuiltinType(ctx), ctx.source.asPosition) }
             }
         }

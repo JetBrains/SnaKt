@@ -28,12 +28,12 @@ method f$forAllWithMultipleTriggers$TF$T$Int() returns (ret$0: Ref)
 /forall_with_triggers.kt:(590,614): info: Generated Viper text for forAllWithTriggersInLoop:
 method f$forAllWithTriggersInLoop$TF$T$String$T$Int(p$str: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$str), df$rt$stringType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var l0$res: Ref
   var l0$i: Ref
   var anon$1: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$str), df$rt$stringType())
   l0$res := df$rt$intToRef(0)
   l0$i := df$rt$intToRef(10)
   label lbl$continue$0

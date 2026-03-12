@@ -2,11 +2,11 @@
 method f$returnWhen$TF$T$Boolean$T$Boolean$T$Boolean$T$Int(p$a: Ref, p$b: Ref,
   p$c: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$boolType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$boolType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$boolType())
   if (df$rt$boolFromRef(p$a)) {
     ret$0 := df$rt$intToRef(0)
   } elseif (df$rt$boolFromRef(p$b)) {
@@ -23,11 +23,11 @@ method f$returnWhen$TF$T$Boolean$T$Boolean$T$Boolean$T$Int(p$a: Ref, p$b: Ref,
 method f$whenReturn$TF$T$Boolean$T$Boolean$T$Boolean$T$Int(p$a: Ref, p$b: Ref,
   p$c: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$boolType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$boolType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$boolType())
   if (df$rt$boolFromRef(p$a)) {
     ret$0 := df$rt$intToRef(0)
     goto lbl$ret$0
@@ -46,10 +46,10 @@ method f$whenReturn$TF$T$Boolean$T$Boolean$T$Boolean$T$Int(p$a: Ref, p$b: Ref,
 
 /when.kt:(340,356): info: Generated Viper text for singleBranchWhen:
 method f$singleBranchWhen$TF$T$Boolean$T$Int(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var l0$x: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$boolType())
   l0$x := df$rt$intToRef(1)
   if (df$rt$boolFromRef(p$a)) {
     l0$x := df$rt$intToRef(2)
@@ -63,12 +63,12 @@ method f$singleBranchWhen$TF$T$Boolean$T$Int(p$a: Ref) returns (ret$0: Ref)
 method f$noElseWhen$TF$T$Boolean$T$Boolean$T$Boolean$T$Int(p$a: Ref, p$b: Ref,
   p$c: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$boolType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var l0$y: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$boolType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$boolType())
   l0$y := df$rt$intToRef(0)
   if (df$rt$boolFromRef(p$a)) {
     l0$y := df$rt$intToRef(1)
@@ -84,10 +84,10 @@ method f$noElseWhen$TF$T$Boolean$T$Boolean$T$Boolean$T$Int(p$a: Ref, p$b: Ref,
 
 /when.kt:(608,626): info: Generated Viper text for whenWithSubjectVar:
 method f$whenWithSubjectVar$TF$T$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   anon$0 := p$x
   if (df$rt$intFromRef(anon$0) == 1) {
     ret$0 := df$rt$intToRef(2)
@@ -101,10 +101,10 @@ method f$whenWithSubjectVar$TF$T$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
 
 /when.kt:(726,745): info: Generated Viper text for whenWithSubjectCall:
 method f$whenWithSubjectCall$TF$T$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   anon$0 := f$whenWithSubjectVar$TF$T$Int$T$Int(p$x)
   if (df$rt$intFromRef(anon$0) == 1) {
     ret$0 := df$rt$intToRef(2)
@@ -125,6 +125,7 @@ method f$whenWithSubjectCall$TF$T$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
 }
 
 method f$whenWithSubjectVar$TF$T$Int$T$Int(p$x: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 
@@ -150,10 +151,10 @@ method f$unusedResult$TF$T$Int() returns (ret$0: Ref)
 
 /when.kt:(1221,1227): info: Generated Viper text for whenIs:
 method f$whenIs$TF$T$Foo$T$Boolean(p$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$Foo())
   inhale acc(p$c$Foo$shared(p$x), wildcard)
   anon$0 := p$x
   if (df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$c$Bar())) {

@@ -3,12 +3,12 @@ field bf$field: Ref
 
 method f$extractInt$TF$T$Base$T$Boolean$NT$Int(p$base: Ref, p$returnNull: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$base), df$rt$c$Base())
+  requires df$rt$isSubtype(df$rt$typeOf(p$returnNull), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
   ensures ret$0 == df$rt$nullValue() ==> df$rt$boolFromRef(p$returnNull)
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$base), df$rt$c$Base())
   inhale acc(p$c$Base$shared(p$base), wildcard)
-  inhale df$rt$isSubtype(df$rt$typeOf(p$returnNull), df$rt$boolType())
   if (df$rt$boolFromRef(p$returnNull)) {
     var anon$0: Ref
     anon$0 := df$rt$nullValue()
@@ -43,4 +43,3 @@ method pg$public$field(this$dispatch: Ref) returns (ret: Ref)
 
 
 method ps$public$field(this$dispatch: Ref, anon$0: Ref) returns (ret: Ref)
-

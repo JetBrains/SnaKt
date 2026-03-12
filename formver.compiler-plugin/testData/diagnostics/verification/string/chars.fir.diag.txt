@@ -4,6 +4,7 @@ field bf$char: Ref
 field bf$size: Ref
 
 method con$c$CharBox$T$Char$T$CharBox(p$char: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$char), df$rt$charType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$CharBox())
   ensures acc(p$c$CharBox$shared(ret), wildcard)
   ensures acc(p$c$CharBox$unique(ret), write)
@@ -13,6 +14,7 @@ method con$c$CharBox$T$Char$T$CharBox(p$char: Ref) returns (ret: Ref)
 
 
 method f$testChars$TF$T$Char$T$Unit(p$c: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$charType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$box: Ref
@@ -20,7 +22,6 @@ method f$testChars$TF$T$Char$T$Unit(p$c: Ref) returns (ret$0: Ref)
   var l0$cond1: Ref
   var anon$0: Ref
   var l0$charZ: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$charType())
   l0$box := con$c$CharBox$T$Char$T$CharBox(df$rt$charToRef(97))
   l0$charA := df$rt$charToRef(97)
   unfold acc(p$c$CharBox$shared(l0$box), wildcard)
