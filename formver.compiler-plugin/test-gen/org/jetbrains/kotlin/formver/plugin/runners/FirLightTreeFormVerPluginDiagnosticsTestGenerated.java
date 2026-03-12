@@ -73,30 +73,6 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
-    @TestMetadata("pure_function_with_assignments.kt")
-    public void testPure_function_with_assignments() {
-      runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_function_with_assignments.kt");
-    }
-
-    @Test
-    @TestMetadata("pure_function_with_branching.kt")
-    public void testPure_function_with_branching() {
-      runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_function_with_branching.kt");
-    }
-
-    @Test
-    @TestMetadata("pure_function_with_reassignments.kt")
-    public void testPure_function_with_reassignments() {
-      runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_function_with_reassignments.kt");
-    }
-
-    @Test
-    @TestMetadata("pure_literal_function.kt")
-    public void testPure_literal_function() {
-      runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_literal_function.kt");
-    }
-
-    @Test
     @TestMetadata("shadowing.kt")
     public void testShadowing() {
       runTest("formver.compiler-plugin/testData/diagnostics/conversion/shadowing.kt");
@@ -371,6 +347,40 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/pure_functions")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Pure_functions {
+      @Test
+      public void testAllFilesPresentInPure_functions() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/conversion/pure_functions"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("pure_function_with_assignments.kt")
+      public void testPure_function_with_assignments() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_functions/pure_function_with_assignments.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_function_with_branching.kt")
+      public void testPure_function_with_branching() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_functions/pure_function_with_branching.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_function_with_reassignments.kt")
+      public void testPure_function_with_reassignments() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_functions/pure_function_with_reassignments.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_literal_function.kt")
+      public void testPure_literal_function() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_functions/pure_literal_function.kt");
+      }
+    }
+
+    @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/purity")
     @TestDataPath("$PROJECT_ROOT")
     public class Purity {
@@ -629,12 +639,6 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
-    @TestMetadata("pure_function_rely_on_branch.kt")
-    public void testPure_function_rely_on_branch() {
-      runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_function_rely_on_branch.kt");
-    }
-
-    @Test
     @TestMetadata("unit_return_type.kt")
     public void testUnit_return_type() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/unit_return_type.kt");
@@ -825,6 +829,22 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
       @TestMetadata("viper_casts_while_inlining.kt")
       public void testViper_casts_while_inlining() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/inlining/viper_casts_while_inlining.kt");
+      }
+    }
+
+    @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/pure_functions")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Pure_functions {
+      @Test
+      public void testAllFilesPresentInPure_functions() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/pure_functions"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("pure_function_rely_on_branch.kt")
+      public void testPure_function_rely_on_branch() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/pure_function_rely_on_branch.kt");
       }
     }
 
