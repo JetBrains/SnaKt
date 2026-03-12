@@ -29,6 +29,7 @@ method f$createBox$TF$T$Int() returns (ret$0: Ref)
   var l0$boolBox: Ref
   var l0$b: Ref
   var anon$0: Ref
+  var l0$intBox: Ref
   var anon$1: Ref
   l0$boolBox := con$c$Box$NT$Any$T$Box(df$rt$boolToRef(true))
   anon$0 := havoc$NT$Any()

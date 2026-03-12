@@ -24,9 +24,11 @@ function f$getSafeNextValue$TF$T$Node$T$Int(p$node: Ref): Ref
   (let anon$2$0 ==
     ((unfolding acc(p$c$Node$shared(p$node), wildcard) in p$node.bf$next)) in
     (let anon$3$0 ==
-      ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
-        (unfolding acc(p$c$Node$shared(anon$2$0), wildcard) in
-          anon$2$0.bf$value))) in
+      ((anon$2$0 != df$rt$nullValue() ?
+        (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+          (unfolding acc(p$c$Node$shared(anon$2$0), wildcard) in
+            anon$2$0.bf$value)) :
+        null)) in
       (let anon$1$0 ==
         ((anon$2$0 != df$rt$nullValue() ? anon$3$0 : df$rt$nullValue())) in
         (let anon$0$0 ==
@@ -46,16 +48,20 @@ function f$getSafeNextNextValue$TF$T$Node$T$Int(p$node: Ref): Ref
   (let anon$3$0 ==
     ((unfolding acc(p$c$Node$shared(p$node), wildcard) in p$node.bf$next)) in
     (let anon$4$0 ==
-      ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
-        (unfolding acc(p$c$Node$shared(anon$3$0), wildcard) in
-          anon$3$0.bf$next))) in
+      ((anon$3$0 != df$rt$nullValue() ?
+        (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+          (unfolding acc(p$c$Node$shared(anon$3$0), wildcard) in
+            anon$3$0.bf$next)) :
+        null)) in
       (let anon$2$0 ==
         ((anon$3$0 != df$rt$nullValue() ? anon$4$0 : df$rt$nullValue())) in
         (let anon$5$0 ==
-          ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
-            (unfolding acc(p$c$Node$shared(anon$3$0), wildcard) in
-              (unfolding acc(p$c$Node$shared(anon$2$0), wildcard) in
-                anon$2$0.bf$value)))) in
+          ((anon$2$0 != df$rt$nullValue() ?
+            (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+              (unfolding acc(p$c$Node$shared(anon$3$0), wildcard) in
+                (unfolding acc(p$c$Node$shared(anon$2$0), wildcard) in
+                  anon$2$0.bf$value))) :
+            null)) in
           (let anon$1$0 ==
             ((anon$2$0 != df$rt$nullValue() ? anon$5$0 : df$rt$nullValue())) in
             (let anon$0$0 ==
@@ -77,20 +83,28 @@ function f$sumFirstTwoNodes$TF$T$Node$T$Int(p$node: Ref): Ref
   (let l0$nextNode$0 ==
     ((unfolding acc(p$c$Node$shared(p$node), wildcard) in p$node.bf$next)) in
     (let anon$2$0 ==
-      ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
-        p$node.bf$value)) in
+      ((!(l0$nextNode$0 == df$rt$nullValue()) ?
+        (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+          p$node.bf$value) :
+        null)) in
       (let anon$3$0 ==
-        ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
-          (unfolding acc(p$c$Node$shared(l0$nextNode$0), wildcard) in
-            l0$nextNode$0.bf$value))) in
-        (let anon$1$0 ==
-          ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
+        ((!(l0$nextNode$0 == df$rt$nullValue()) ?
+          (unfolding acc(p$c$Node$shared(p$node), wildcard) in
             (unfolding acc(p$c$Node$shared(l0$nextNode$0), wildcard) in
-              (unfolding acc(p$c$Node$shared(p$node), wildcard) in
-                sp$plusInts(anon$2$0, anon$3$0))))) in
+              l0$nextNode$0.bf$value)) :
+          null)) in
+        (let anon$1$0 ==
+          ((!(l0$nextNode$0 == df$rt$nullValue()) ?
+            (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+              (unfolding acc(p$c$Node$shared(l0$nextNode$0), wildcard) in
+                (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+                  sp$plusInts(anon$2$0, anon$3$0)))) :
+            null)) in
           (let anon$4$0 ==
-            ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
-              p$node.bf$value)) in
+            ((!!(l0$nextNode$0 == df$rt$nullValue()) ?
+              (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+                p$node.bf$value) :
+              null)) in
             (let anon$0$0 ==
               ((!(l0$nextNode$0 == df$rt$nullValue()) ?
                 anon$1$0 :
@@ -124,10 +138,12 @@ function f$length$TF$T$Node$T$Int(p$node: Ref): Ref
   (let l0$nextNode$0 ==
     ((unfolding acc(p$c$Node$shared(p$node), wildcard) in p$node.bf$next)) in
     (let anon$1$0 ==
-      (df$rt$intToRef(1)) in
+      ((l0$nextNode$0 == df$rt$nullValue() ? df$rt$intToRef(1) : null)) in
       (let anon$2$0 ==
-        ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
-          sp$plusInts(df$rt$intToRef(1), f$length$TF$T$Node$T$Int(l0$nextNode$0)))) in
+        ((!(l0$nextNode$0 == df$rt$nullValue()) ?
+          (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+            sp$plusInts(df$rt$intToRef(1), f$length$TF$T$Node$T$Int(l0$nextNode$0))) :
+          null)) in
         (let anon$0$0 ==
           ((l0$nextNode$0 == df$rt$nullValue() ? anon$1$0 : anon$2$0)) in
           anon$0$0))))
@@ -145,15 +161,21 @@ function f$sumAllNodes$TF$T$Node$T$Int(p$node: Ref): Ref
   (let l0$nextNode$0 ==
     ((unfolding acc(p$c$Node$shared(p$node), wildcard) in p$node.bf$next)) in
     (let anon$1$0 ==
-      ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
-        p$node.bf$value)) in
+      ((l0$nextNode$0 == df$rt$nullValue() ?
+        (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+          p$node.bf$value) :
+        null)) in
       (let anon$3$0 ==
-        ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
-          p$node.bf$value)) in
+        ((!(l0$nextNode$0 == df$rt$nullValue()) ?
+          (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+            p$node.bf$value) :
+          null)) in
         (let anon$2$0 ==
-          ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
+          ((!(l0$nextNode$0 == df$rt$nullValue()) ?
             (unfolding acc(p$c$Node$shared(p$node), wildcard) in
-              sp$plusInts(anon$3$0, f$sumAllNodes$TF$T$Node$T$Int(l0$nextNode$0))))) in
+              (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+                sp$plusInts(anon$3$0, f$sumAllNodes$TF$T$Node$T$Int(l0$nextNode$0)))) :
+            null)) in
           (let anon$0$0 ==
             ((l0$nextNode$0 == df$rt$nullValue() ? anon$1$0 : anon$2$0)) in
             anon$0$0)))))
@@ -173,10 +195,14 @@ function f$containsValue$TF$T$Node$T$Int$T$Boolean(p$node: Ref, p$target: Ref): 
     (let l0$nextNode$0 ==
       ((unfolding acc(p$c$Node$shared(p$node), wildcard) in p$node.bf$next)) in
       (let anon$2$0 ==
-        ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
-          f$containsValue$TF$T$Node$T$Int$T$Boolean(l0$nextNode$0, p$target))) in
+        ((!(l0$nextNode$0 == df$rt$nullValue()) ?
+          (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+            f$containsValue$TF$T$Node$T$Int$T$Boolean(l0$nextNode$0, p$target)) :
+          null)) in
         (let anon$3$0 ==
-          (df$rt$boolToRef(false)) in
+          ((!!(l0$nextNode$0 == df$rt$nullValue()) ?
+            df$rt$boolToRef(false) :
+            null)) in
           (let anon$1$0 ==
             ((!(l0$nextNode$0 == df$rt$nullValue()) ? anon$2$0 : anon$3$0)) in
             (df$rt$intFromRef(anon$0$0) == df$rt$intFromRef(p$target) ?
@@ -201,9 +227,11 @@ function f$aliasAndReassign$TF$T$Node$T$Int(p$node: Ref): Ref
       (let l0$fallbackValue$0 ==
         (df$rt$intToRef(-1)) in
         (let l0$fallbackValue$1 ==
-          ((unfolding acc(p$c$Node$shared(l0$alias1$0), wildcard) in
-            (unfolding acc(p$c$Node$shared(l0$alias2$0), wildcard) in
-              l0$alias2$0.bf$value))) in
+          ((!(l0$alias2$0 == df$rt$nullValue()) ?
+            (unfolding acc(p$c$Node$shared(l0$alias1$0), wildcard) in
+              (unfolding acc(p$c$Node$shared(l0$alias2$0), wildcard) in
+                l0$alias2$0.bf$value)) :
+            null)) in
           (let l0$fallbackValue$2 ==
             ((!(l0$alias2$0 == df$rt$nullValue()) ?
               l0$fallbackValue$1 :
@@ -242,8 +270,10 @@ function f$useIdentityFunction$TF$T$Node$T$Int(p$node: Ref): Ref
   (let l0$sameNode$0 ==
     (f$id$TF$NT$Node$NT$Node(p$node)) in
     (let anon$2$0 ==
-      ((unfolding acc(p$c$Node$shared(l0$sameNode$0), wildcard) in
-        l0$sameNode$0.bf$value)) in
+      ((l0$sameNode$0 != df$rt$nullValue() ?
+        (unfolding acc(p$c$Node$shared(l0$sameNode$0), wildcard) in
+          l0$sameNode$0.bf$value) :
+        null)) in
       (let anon$1$0 ==
         ((l0$sameNode$0 != df$rt$nullValue() ?
           anon$2$0 :
@@ -268,11 +298,13 @@ function f$getNextValueUsingId$TF$T$Node$T$Int(p$node: Ref): Ref
       ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
         f$id$TF$NT$Node$NT$Node(anon$0$0))) in
       (let anon$2$0 ==
-        (df$rt$intToRef(0)) in
+        ((l0$nextNode$0 == df$rt$nullValue() ? df$rt$intToRef(0) : null)) in
         (let anon$3$0 ==
-          ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
-            (unfolding acc(p$c$Node$shared(l0$nextNode$0), wildcard) in
-              l0$nextNode$0.bf$value))) in
+          ((!(l0$nextNode$0 == df$rt$nullValue()) ?
+            (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+              (unfolding acc(p$c$Node$shared(l0$nextNode$0), wildcard) in
+                l0$nextNode$0.bf$value)) :
+            null)) in
           (let anon$1$0 ==
             ((l0$nextNode$0 == df$rt$nullValue() ? anon$2$0 : anon$3$0)) in
             anon$1$0)))))

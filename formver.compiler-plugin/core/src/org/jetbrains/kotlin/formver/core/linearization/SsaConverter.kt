@@ -70,7 +70,9 @@ class SsaConverter(
         newVarAccessInvariants: List<Exp.PredicateAccess> = emptyList()
     ) {
         val ssaName = head.updateLatestName(name)
-        addGuardedAssignment(ssaName, varExp)
+        accessInvariants[ssaName] = newVarAccessInvariants
+        varExp.propagateAccessInvariants(ssaName)
+        addGuardedAssignment(ssaName, varExp.withAccessInvariants(ssaName))
     }
 
     fun addPhiAssignment(condition: Exp, left: SsaVariableName, right: SsaVariableName, name: SsaVariableName) {
@@ -80,12 +82,13 @@ class SsaConverter(
                 "Phi Assignments may only be created for SSA variables referring to the same source variable."
             )
         }
-        val selectionTernary = TernaryExp(
+        val phiExpression = Exp.TernaryExp(
             condition,
             Exp.LocalVar(left, Type.Ref),
             Exp.LocalVar(right, Type.Ref)
         )
-        addGuardedAssignment(name, selectionTernary)
+        phiExpression.propagateAccessInvariants(name)
+        addGuardedAssignment(name, phiExpression.withAccessInvariants(name))
     }
 
     fun addReturn(returnExp: Exp) {
@@ -106,5 +109,43 @@ class SsaConverter(
         } else {
             ssaAssignments.add(name to Exp.TernaryExp(head.fullBranchingCondition, varExp, defaultExpression))
         }
+    }
+    private fun Exp.withAccessInvariants(name: SsaVariableName): Exp =
+        when (this) {
+            is Exp.FieldAccess, is Exp.FuncApp, is Exp.DomainFuncApp -> accessInvariants[name]?.foldRight(this) { invariant, acc ->
+                Exp.Unfolding(invariant, acc)
+            } ?: this
+
+            else -> this
+        }
+
+    private fun mergeAccessInvariants(from: List<SymbolicName>, newName: SsaVariableName) {
+        val mergedInvariants = from.mapNotNull { accessInvariants[it] }.flatten() + accessInvariants[newName].orEmpty()
+        accessInvariants[newName] = mergedInvariants.distinct()
+    }
+
+    private fun Exp.propagateAccessInvariants(to: SsaVariableName) {
+        var from: Exp? = null
+        when (this) {
+            is Exp.LocalVar -> from = this
+            is Exp.FieldAccess -> from = this.rcv
+            is Exp.FuncApp -> this.args.forEach { it.propagateAccessInvariants(to) }
+            is Exp.DomainFuncApp -> {
+                this.args.forEach { it.propagateAccessInvariants(to) }
+            }
+
+            is Exp.TernaryExp -> {
+                this.thenExp.propagateAccessInvariants(to)
+                this.elseExp.propagateAccessInvariants(to)
+            }
+
+            else -> {}
+        }
+        if (from == null) return
+        if (from !is Exp.LocalVar) throw SnaktInternalException(
+            source,
+            "Access sources must be local variables $from"
+        )
+        mergeAccessInvariants(listOf(from.name), to)
     }
 }
