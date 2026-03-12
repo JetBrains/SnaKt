@@ -5,11 +5,15 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
+import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
 import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
 import org.jetbrains.kotlin.formver.viper.ast.DomainFunc
 import org.jetbrains.kotlin.formver.viper.ast.Exp
+import org.jetbrains.kotlin.formver.viper.debugMangled
 
 // TODO: incorporate generic parameters.
 data class ClassTypeEmbedding(override val name: ScopedKotlinName) : PretypeEmbedding {
@@ -58,3 +62,11 @@ private fun PretypeEmbedding.isCollectionTypeNamed(name: String): Boolean {
 }
 
 fun ClassTypeEmbedding.embedClassTypeFunc(): DomainFunc = RuntimeTypeDomain.classTypeFunc(name)
+
+fun ClassTypeEmbedding.predicateAccess(
+    receiver: ExpEmbedding,
+    source: KtSourceElement?
+): Exp.PredicateAccess =
+    sharedPredicateAccessInvariant()?.fillHole(receiver)
+        ?.pureToViper(toBuiltin = true, source) as? Exp.PredicateAccess
+        ?: error("Attempt to unfold a predicate of ${name.debugMangled}.")

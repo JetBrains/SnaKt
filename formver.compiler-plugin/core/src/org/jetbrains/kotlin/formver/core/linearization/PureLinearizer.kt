@@ -18,13 +18,12 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.print
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
-import org.jetbrains.kotlin.formver.core.names.SsaVariableName
+import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
 import org.jetbrains.kotlin.formver.names.SimpleNameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
-import org.jetbrains.kotlin.formver.viper.debugMangled
 
 class PureLinearizerMisuseException(val offendingFunction: String) : IllegalStateException(offendingFunction)
 
@@ -40,7 +39,6 @@ data class PureLinearizer(
     val state: SharedLinearizationState = SharedLinearizationState(FreshEntityProducer(::AnonymousVariableEmbedding)),
     private val ssaConverter: SsaConverter = SsaConverter(source),
     override val unfoldPolicy: UnfoldPolicy = UnfoldPolicy.UNFOLDING_IN,
-    private val accessInvariants: MutableMap<SymbolicName, List<Exp.PredicateAccess>> = mutableMapOf()
 ) : LinearizationContext {
 
     override val logicOperatorPolicy: LogicOperatorPolicy
@@ -59,16 +57,10 @@ data class PureLinearizer(
         throw PureLinearizerMisuseException("addStatement")
     }
 
-    // Nothing to do here, as an assignment is also added
     override fun addDeclaration(decl: Declaration) {}
 
-    override fun store(lhs: VariableEmbedding, rhs: ExpEmbedding) {
-        // It would be nicer to constraint this a bit further as this is a very special case
-        ssaConverter.addAssignment(
-            lhs.name,
-            rhs.toViper(this)
-        )
-    }
+    override fun store(lhs: VariableEmbedding, rhs: ExpEmbedding) =
+        ssaConverter.addAssignment(lhs.name, rhs.toViper(this))
 
     override fun addReturn(returnExp: ExpEmbedding, target: ReturnTarget) {
         ssaConverter.addReturn(returnExp.toViper(this))
@@ -123,27 +115,11 @@ data class PureLinearizer(
         )
         val receiverWrapper = ExpWrapper(viperReceiver, receiver.type)
         val hierarchyPath = (receiver.type.pretype as? ClassTypeEmbedding)?.details?.hierarchyUnfoldPath(field)
-        val predAccList = hierarchyPath?.map { it.predicateAccess(receiverWrapper, this) }?.toList() ?: emptyList()
-        val completeAccList = (accessInvariants[viperReceiver.name] ?: emptyList()) + predAccList
+        val accessInvariants =
+            hierarchyPath?.map { it.predicateAccess(receiverWrapper, source) }?.toList() ?: emptyList()
         val primitiveAccess: Exp = Exp.FieldAccess(viperReceiver, field.toViper(), source.asPosition)
-        val fieldAccessExpression = if (completeAccList.isEmpty()) {
-            primitiveAccess
-        } else {
-            completeAccList.foldRight(primitiveAccess) { access, acc -> Exp.Unfolding(access, acc) }
-        }
-        ssaConverter.addAssignment(result.name, fieldAccessExpression)
-        accessInvariants[ssaConverter.resolveVariableName(result.name)] = completeAccList
+        ssaConverter.addAssignment(result.name, primitiveAccess, accessInvariants)
     }
-
-    private fun ClassTypeEmbedding.predicateAccess(
-        receiver: ExpEmbedding,
-        ctx: LinearizationContext
-    ): Exp.PredicateAccess =
-        sharedPredicateAccessInvariant()?.fillHole(receiver)
-            ?.pureToViper(toBuiltin = true, ctx.source) as? Exp.PredicateAccess
-            ?: error("Attempt to unfold a predicate of ${name.debugMangled}.")
-
-    private fun SymbolicName.stripSsaName() = if (this is SsaVariableName) this.baseName else this
 
     override fun addModifier(mod: StmtModifier) {
         throw PureLinearizerMisuseException("addModifier")

@@ -13,10 +13,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
 import org.jetbrains.kotlin.formver.core.embeddings.asInfo
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
-import org.jetbrains.kotlin.formver.core.embeddings.types.injectionOr
+import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
 import org.jetbrains.kotlin.formver.core.linearization.UnfoldPolicy
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
@@ -504,18 +501,10 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
         val primitiveAccess: Exp = Exp.FieldAccess(receiver.toViper(ctx), field.toViper(), ctx.source.asPosition)
         if (hierarchyPath == null) return primitiveAccess
         return hierarchyPath.toList().foldRight(primitiveAccess) { classType, acc ->
-            val predAcc = classType.predicateAccess(receiver, ctx)
+            val predAcc = classType.predicateAccess(receiver, ctx.source)
             Exp.Unfolding(predAcc, acc)
         }
     }
-
-    private fun ClassTypeEmbedding.predicateAccess(
-        receiver: ExpEmbedding,
-        ctx: LinearizationContext
-    ): Exp.PredicateAccess =
-        sharedPredicateAccessInvariant()?.fillHole(receiver)
-            ?.pureToViper(toBuiltin = true, ctx.source) as? Exp.PredicateAccess
-            ?: error("Attempt to unfold a predicate of ${name.debugMangled}.")
 
     override fun toViperUnusedResult(ctx: LinearizationContext) {
         receiver.toViperUnusedResult(ctx)
@@ -544,6 +533,7 @@ data class FieldModification(val receiver: ExpEmbedding, val field: FieldEmbeddi
                 receiver.toViperUnusedResult(ctx)
                 newValue.toViperUnusedResult(ctx)
             }
+
             else -> {
                 val receiverViper = receiver.toViper(ctx)
                 if (field.unfoldToAccess) {
@@ -552,7 +542,11 @@ data class FieldModification(val receiver: ExpEmbedding, val field: FieldEmbeddi
                 }
                 val newValueViper = newValue.withType(field.type).toViper(ctx)
                 ctx.addStatement {
-                    Stmt.FieldAssign(Exp.FieldAccess(receiverViper, field.toViper()), newValueViper, ctx.source.asPosition)
+                    Stmt.FieldAssign(
+                        Exp.FieldAccess(receiverViper, field.toViper()),
+                        newValueViper,
+                        ctx.source.asPosition
+                    )
                 }
 
             else -> {

@@ -222,10 +222,58 @@ function f$variableReassign$TF$T$Node$T$Int(p$node: Ref): Ref
     ((unfolding acc(p$c$Node$shared(p$node), wildcard) in p$node.bf$next)) in
     (let l0$nextNode2$0 ==
       (l0$nextNode$0) in
-      (let l0$nextValue$0 ==
-        ((unfolding acc(p$c$Node$shared(l0$nextNode2$0), wildcard) in
-          l0$nextNode2$0.bf$value)) in
-        l0$nextValue$0)))
+      (let l0$potentiallyNextValue$0 ==
+        (df$rt$intToRef(-1)) in
+        (let anon$0$0 ==
+          ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
+            p$node.bf$next)) in
+          (let l0$potentiallyNextValue$1 ==
+            ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
+              (unfolding acc(p$c$Node$shared(l0$nextNode2$0), wildcard) in
+                l0$nextNode2$0.bf$value))) in
+            (let l0$potentiallyNextValue$2 ==
+              ((!(anon$0$0 == df$rt$nullValue()) ?
+                l0$potentiallyNextValue$1 :
+                l0$potentiallyNextValue$0)) in
+              l0$potentiallyNextValue$2))))))
 }
 
-/pure_function_with_heap_dependent_expressions.kt:(1237,1238): error: Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'Node?'.
+/pure_function_with_heap_dependent_expressions.kt:(1464,1466): info: Generated Viper text for id:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$id$TF$NT$Node$NT$Node(p$node: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$nullable(df$rt$c$Node()))
+{
+  p$node
+}
+
+/pure_function_with_heap_dependent_expressions.kt:(1518,1542): info: Generated Viper text for getNextValueFromIdentity:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$getNextValueFromIdentity$TF$T$Node$T$Int(p$node: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let anon$0$0 ==
+    ((unfolding acc(p$c$Node$shared(p$node), wildcard) in p$node.bf$next)) in
+    (let l0$nextNode$0 ==
+      (f$id$TF$NT$Node$NT$Node(anon$0$0)) in
+      (let l0$nextValue$0 ==
+        (df$rt$intToRef(0)) in
+        (let l0$nextValue$1 ==
+          ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
+            (unfolding acc(p$c$Node$shared(l0$nextNode$0), wildcard) in
+              l0$nextNode$0.bf$value))) in
+          (let l0$nextValue$2 ==
+            ((!(l0$nextNode$0 == df$rt$nullValue()) ?
+              l0$nextValue$1 :
+              l0$nextValue$0)) in
+            l0$nextValue$2)))))
+}
+
+function f$id$TF$NT$Node$NT$Node(p$node: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$nullable(df$rt$c$Node()))
+

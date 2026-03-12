@@ -23,7 +23,9 @@ fun <!VIPER_TEXT!>boxReturn<!>(boxOfBox: BoxOfBox): Int {
     return boxOfBox.box.data
 }
 
-data class Node<!VIPER_TEXT!>(val <!VIPER_TEXT!>value<!>: Int, val <!VIPER_TEXT!>next<!>: Node?)<!>
+data class Node<!VIPER_TEXT!>(
+val <! VIPER_TEXT!>value<!>: Int,
+val <! VIPER_TEXT!>next<!>: Node?)<!>
 
 @Pure
 fun <!VIPER_TEXT!>length<!>(node: Node): Int {
@@ -34,8 +36,13 @@ fun <!VIPER_TEXT!>length<!>(node: Node): Int {
     }
 }
 
+@Pure
+fun getThisOrNextValue(node: Node): Int {
+    return node.next?.value ?: node.value
+}
+
 fun <!VIPER_TEXT!>iAmAMethodAndNeedLength<!>(node: Node): Int {
-    val length = if(node.next != null) length(node.next) else length(node)
+    val length = if (node.next != null) length(node.next) else length(node)
     return length
 }
 
@@ -56,6 +63,24 @@ fun <!VIPER_TEXT!>customLengthPreCondition<!>(node: Node): Int {
 fun <!VIPER_TEXT!>variableReassign<!>(node: Node): Int {
     val nextNode = node.next
     val nextNode2 = nextNode
-    val nextValue = nextNode2<!UNSAFE_CALL!>.<!>value
+    var potentiallyNextValue = -1
+    if (node.next != null) {
+        potentiallyNextValue = nextNode2.value
+    }
+    return potentiallyNextValue
+}
+
+@Pure
+fun id(node: Node?): Node? {
+    return node
+}
+
+@Pure
+fun getNextValueFromIdentity(node: Node): Int {
+    val nextNode = id(node.next)
+    var nextValue = 0
+    if (nextNode != null) {
+        nextValue = nextNode.value
+    }
     return nextValue
 }

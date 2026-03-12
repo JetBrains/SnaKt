@@ -7,7 +7,6 @@ import org.jetbrains.kotlin.formver.core.names.SsaVariableName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
 import org.jetbrains.kotlin.formver.viper.ast.Exp
-import org.jetbrains.kotlin.formver.viper.ast.Exp.TernaryExp
 import org.jetbrains.kotlin.formver.viper.ast.Type
 
 class SsaConverter(
@@ -16,6 +15,7 @@ class SsaConverter(
     private var head: SsaBlockNode = SsaBlockNode(SsaStartNode(), Exp.BoolLit(true))
     private val ssaAssignments: MutableList<Pair<SsaVariableName, Exp>> = mutableListOf()
     private val returnExpressions: MutableList<Pair<Exp, Exp>> = mutableListOf()
+    private val accessInvariants: MutableMap<SsaVariableName, List<Exp.PredicateAccess>> = mutableMapOf()
 
     // Produce new ssa names for a source variable name
     private val ssaNameProducers: MutableMap<SymbolicName, FreshEntityProducer<SsaVariableName, SymbolicName>> =
@@ -48,7 +48,7 @@ class SsaConverter(
         )
         val defaultBody = returnExpressions.last().second
         val bodyExp = returnExpressions.dropLast(1).foldRight(defaultBody) { expPair, elseBranch ->
-            TernaryExp(
+            Exp.TernaryExp(
                 expPair.first,
                 expPair.second,
                 elseBranch
@@ -64,7 +64,11 @@ class SsaConverter(
         return producer.getFresh(name)
     }
 
-    fun addAssignment(name: SymbolicName, varExp: Exp) {
+    fun addAssignment(
+        name: SymbolicName,
+        varExp: Exp,
+        newVarAccessInvariants: List<Exp.PredicateAccess> = emptyList()
+    ) {
         val ssaName = head.updateLatestName(name)
         addGuardedAssignment(ssaName, varExp)
     }

@@ -19,6 +19,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.core.embeddings.toViperGoto
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
 import org.jetbrains.kotlin.formver.viper.ast.Exp
@@ -132,19 +133,10 @@ data class Linearizer(
 
     private fun Sequence<ClassTypeEmbedding>?.unfoldHierarchy(receiverWrapper: ExpEmbedding, ctx: LinearizationContext) {
         this?.forEach { classType ->
-            val predAcc = classType.predicateAccess(receiverWrapper, ctx)
+            val predAcc = classType.predicateAccess(receiverWrapper, source)
             predAcc.let { ctx.addStatement { Stmt.Unfold(it) } }
         }
     }
-
-    private fun ClassTypeEmbedding.predicateAccess(
-        receiver: ExpEmbedding,
-        ctx: LinearizationContext
-    ): Exp.PredicateAccess =
-        sharedPredicateAccessInvariant()?.fillHole(receiver)
-            ?.pureToViper(toBuiltin = true, ctx.source) as? Exp.PredicateAccess
-            ?: error("Attempt to unfold a predicate of ${name.debugMangled}.")
-
 
     override fun resolveVariableName(name: SymbolicName): SymbolicName = name
 }
