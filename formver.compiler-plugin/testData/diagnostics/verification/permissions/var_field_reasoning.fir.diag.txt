@@ -1,0 +1,74 @@
+/var_field_reasoning.kt:(224,241): info: Generated Viper text for sharedReadIsHavoc:
+field bf$count: Ref
+
+method f$sharedReadIsHavoc$TF$T$Counter$T$Int(p$c: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$c$Counter())
+  inhale acc(p$c$Counter$shared(p$c), wildcard)
+  ret$0 := havoc$T$Int()
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/var_field_reasoning.kt:(362,382): info: Generated Viper text for sharedWriteIsDropped:
+field bf$count: Ref
+
+method f$sharedWriteIsDropped$TF$T$Counter$T$Unit(p$c: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$c$Counter())
+  inhale acc(p$c$Counter$shared(p$c), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/var_field_reasoning.kt:(500,518): info: Generated Viper text for uniqueReadBehavior:
+field bf$count: Ref
+
+method f$uniqueReadBehavior$TF$T$Counter$T$Int(p$c: Ref)
+  returns (ret$0: Ref)
+  requires acc(p$c$Counter$unique(p$c), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$c$Counter())
+  inhale acc(p$c$Counter$shared(p$c), wildcard)
+  ret$0 := havoc$T$Int()
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/var_field_reasoning.kt:(650,669): info: Generated Viper text for uniqueWriteBehavior:
+field bf$count: Ref
+
+method f$uniqueWriteBehavior$TF$T$Counter$T$Unit(p$c: Ref)
+  returns (ret$0: Ref)
+  requires acc(p$c$Counter$unique(p$c), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$c$Counter())
+  inhale acc(p$c$Counter$shared(p$c), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/var_field_reasoning.kt:(815,829): info: Generated Viper text for freshObjectVar:
+field bf$count: Ref
+
+method con$c$Counter$T$Int$T$Counter(p$count: Ref) returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Counter())
+  ensures acc(p$c$Counter$shared(ret), wildcard)
+  ensures acc(p$c$Counter$unique(ret), write)
+
+
+method f$freshObjectVar$TF$T$Int() returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var l0$c: Ref
+  l0$c := con$c$Counter$T$Int$T$Counter(df$rt$intToRef(0))
+  ret$0 := havoc$T$Int()
+  goto lbl$ret$0
+  label lbl$ret$0
+}

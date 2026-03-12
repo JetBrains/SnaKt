@@ -1,0 +1,52 @@
+/borrowed_unique.kt:(271,289): info: Generated Viper text for borrowedUniqueRead:
+field bf$value: Ref
+
+method f$borrowedUniqueRead$TF$T$Box$T$Int(p$b: Ref) returns (ret$0: Ref)
+  requires acc(p$c$Box$unique(p$b), write)
+  ensures acc(p$c$Box$unique(p$b), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$Box())
+  inhale acc(p$c$Box$shared(p$b), wildcard)
+  ret$0 := havoc$T$Int()
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/borrowed_unique.kt:(402,420): info: Generated Viper text for consumedUniqueRead:
+field bf$value: Ref
+
+method f$consumedUniqueRead$TF$T$Box$T$Int(p$b: Ref) returns (ret$0: Ref)
+  requires acc(p$c$Box$unique(p$b), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$Box())
+  inhale acc(p$c$Box$shared(p$b), wildcard)
+  ret$0 := havoc$T$Int()
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/borrowed_unique.kt:(534,553): info: Generated Viper text for callBorrowedThenUse:
+field bf$value: Ref
+
+method f$borrowedUniqueRead$TF$T$Box$T$Int(p$b: Ref) returns (ret: Ref)
+  requires acc(p$c$Box$unique(p$b), write)
+  ensures acc(p$c$Box$unique(p$b), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
+
+
+method f$callBorrowedThenUse$TF$T$Box$T$Int(p$b: Ref) returns (ret$0: Ref)
+  requires acc(p$c$Box$unique(p$b), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var l0$x: Ref
+  var l0$y: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$Box())
+  inhale acc(p$c$Box$shared(p$b), wildcard)
+  l0$x := f$borrowedUniqueRead$TF$T$Box$T$Int(p$b)
+  l0$y := f$borrowedUniqueRead$TF$T$Box$T$Int(p$b)
+  ret$0 := sp$plusInts(l0$x, l0$y)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
