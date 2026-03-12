@@ -6,7 +6,7 @@
 package org.jetbrains.kotlin.formver.plugin
 
 import org.jetbrains.kotlin.formver.plugin.runners.AbstractFirLightTreeFormVerPluginDiagnosticsTest
-import org.jetbrains.kotlin.generators.generateTestGroupSuiteWithJUnit5
+import org.jetbrains.kotlin.generators.dsl.junit5.generateTestGroupSuiteWithJUnit5
 
 fun main() {
     generateTestGroupSuiteWithJUnit5 {
