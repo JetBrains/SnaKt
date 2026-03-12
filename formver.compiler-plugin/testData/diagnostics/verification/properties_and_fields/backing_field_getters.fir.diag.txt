@@ -4,11 +4,11 @@ field bf$y: Ref
 field bf$z: Ref
 
 method f$cascadeGet$TF$T$X$T$Z(p$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$X())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$Z())
   ensures acc(p$c$Z$shared(ret$0), wildcard)
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$X())
   inhale acc(p$c$X$shared(p$x), wildcard)
   unfold acc(p$c$X$shared(p$x), wildcard)
   anon$0 := p$x.bf$y
@@ -25,11 +25,11 @@ field bf$z: Ref
 
 method f$receiverNotNullProved$TF$NT$X$T$Boolean(p$x: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$c$X()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures df$rt$boolFromRef(ret$0) == true ==> p$x != df$rt$nullValue()
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$c$X()))
   inhale p$x != df$rt$nullValue() ==> acc(p$c$X$shared(p$x), wildcard)
   if (p$x != df$rt$nullValue()) {
     var anon$1: Ref
@@ -50,12 +50,12 @@ field bf$z: Ref
 
 method f$cascadeNullableGet$TF$NT$NullableX$NT$Z(p$x: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$c$NullableX()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$c$Z()))
   ensures ret$0 != df$rt$nullValue() ==> acc(p$c$Z$shared(ret$0), wildcard)
   ensures ret$0 != df$rt$nullValue() ==> p$x != df$rt$nullValue()
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$c$NullableX()))
   inhale p$x != df$rt$nullValue() ==>
     acc(p$c$NullableX$shared(p$x), wildcard)
   if (p$x != df$rt$nullValue()) {
@@ -79,11 +79,11 @@ field bf$z: Ref
 
 method f$cascadeNullableSmartcastGet$TF$NT$NullableX$NT$Z(p$x: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$c$NullableX()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$c$Z()))
   ensures ret$0 != df$rt$nullValue() ==> acc(p$c$Z$shared(ret$0), wildcard)
   ensures ret$0 != df$rt$nullValue() ==> p$x != df$rt$nullValue()
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$c$NullableX()))
   inhale p$x != df$rt$nullValue() ==>
     acc(p$c$NullableX$shared(p$x), wildcard)
   if (p$x == df$rt$nullValue()) {
@@ -210,6 +210,8 @@ field bf$z: Ref
 
 method con$c$ClassI$T$Int$T$Int$T$ClassI(p$x: Ref, p$y: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$y), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$ClassI())
   ensures acc(p$c$ClassI$shared(ret), wildcard)
   ensures acc(p$c$ClassI$unique(ret), write)
@@ -222,6 +224,7 @@ method con$c$ClassI$T$Int$T$Int$T$ClassI(p$x: Ref, p$y: Ref)
 
 
 method con$c$ClassII$T$Z$T$ClassII(p$z: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$z), df$rt$c$Z())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$ClassII())
   ensures acc(p$c$ClassII$shared(ret), wildcard)
   ensures acc(p$c$ClassII$unique(ret), write)
@@ -237,6 +240,8 @@ method con$c$Z$T$Z() returns (ret: Ref)
 
 method f$checkPrimary$TF$T$Int$T$Int$T$Unit(p$x: Ref, p$y: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$y), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$classI: Ref
@@ -245,8 +250,6 @@ method f$checkPrimary$TF$T$Int$T$Int$T$Unit(p$x: Ref, p$y: Ref)
   var l0$cond2: Ref
   var anon$2: Ref
   var anon$3: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$y), df$rt$intType())
   l0$classI := con$c$ClassI$T$Int$T$Int$T$ClassI(p$x, p$y)
   l0$z := con$c$Z$T$Z()
   if (!(df$rt$intFromRef(p$x) == df$rt$intFromRef(p$y))) {
@@ -272,4 +275,3 @@ method f$checkPrimary$TF$T$Int$T$Int$T$Unit(p$x: Ref, p$y: Ref)
 }
 
 method pg$public$z(this$dispatch: Ref) returns (ret: Ref)
-

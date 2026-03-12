@@ -6,6 +6,8 @@ method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(this$dispatch: 
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
   requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
+  requires df$rt$isSubtype(df$rt$typeOf(p$index), df$rt$intType())
   requires df$rt$intFromRef(p$index) >= 0
   requires df$rt$intFromRef(this$dispatch.sp$size) >
     df$rt$intFromRef(p$index)
@@ -20,6 +22,7 @@ method f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List$T$Boolean(this$dispatch
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
   requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
   ensures acc(this$dispatch.sp$size, write)
   ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
@@ -36,6 +39,9 @@ method f$pkg$kotlin_collections$c$List$subList$TF$T$List$T$Int$T$Int$T$List(this
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
   requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
+  requires df$rt$isSubtype(df$rt$typeOf(p$fromIndex), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$toIndex), df$rt$intType())
   requires df$rt$intFromRef(p$fromIndex) <= df$rt$intFromRef(p$toIndex)
   requires df$rt$intFromRef(p$fromIndex) >= 0
   requires df$rt$intFromRef(p$toIndex) <=
@@ -56,6 +62,8 @@ method f$safe_binary_search$TF$T$List$T$Int$T$Boolean(p$arr: Ref, p$target: Ref)
   returns (ret$0: Ref)
   requires acc(p$arr.sp$size, write)
   requires df$rt$intFromRef(p$arr.sp$size) >= 0
+  requires df$rt$isSubtype(df$rt$typeOf(p$arr), df$rt$c$pkg$kotlin_collections$List())
+  requires df$rt$isSubtype(df$rt$typeOf(p$target), df$rt$intType())
   ensures acc(p$arr.sp$size, write)
   ensures df$rt$intFromRef(p$arr.sp$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
@@ -64,9 +72,7 @@ method f$safe_binary_search$TF$T$List$T$Int$T$Boolean(p$arr: Ref, p$target: Ref)
   var l0$mid: Ref
   var anon$0: Ref
   var anon$1: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$arr), df$rt$c$pkg$kotlin_collections$List())
   inhale acc(p$pkg$kotlin_collections$c$List$shared(p$arr), wildcard)
-  inhale df$rt$isSubtype(df$rt$typeOf(p$target), df$rt$intType())
   l0$size := p$arr.sp$size
   inhale df$rt$isSubtype(df$rt$typeOf(l0$size), df$rt$intType())
   anon$0 := p$arr.sp$size
@@ -110,6 +116,8 @@ method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(this$dispatch: 
   returns (ret: Ref)
   requires acc(this$dispatch.sp$size, write)
   requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
+  requires df$rt$isSubtype(df$rt$typeOf(p$index), df$rt$intType())
   requires df$rt$intFromRef(p$index) >= 0
   requires df$rt$intFromRef(this$dispatch.sp$size) >
     df$rt$intFromRef(p$index)
@@ -125,6 +133,10 @@ method f$unsafe_binary_search_fixed$TF$T$List$T$Int$T$Int$T$Int$T$Boolean(p$arr:
   returns (ret$0: Ref)
   requires acc(p$arr.sp$size, write)
   requires df$rt$intFromRef(p$arr.sp$size) >= 0
+  requires df$rt$isSubtype(df$rt$typeOf(p$arr), df$rt$c$pkg$kotlin_collections$List())
+  requires df$rt$isSubtype(df$rt$typeOf(p$target), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$left), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$right), df$rt$intType())
   ensures acc(p$arr.sp$size, write)
   ensures df$rt$intFromRef(p$arr.sp$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
@@ -133,11 +145,7 @@ method f$unsafe_binary_search_fixed$TF$T$List$T$Int$T$Int$T$Int$T$Boolean(p$arr:
   var anon$1: Ref
   var l0$mid: Ref
   var anon$3: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$arr), df$rt$c$pkg$kotlin_collections$List())
   inhale acc(p$pkg$kotlin_collections$c$List$shared(p$arr), wildcard)
-  inhale df$rt$isSubtype(df$rt$typeOf(p$target), df$rt$intType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$left), df$rt$intType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$right), df$rt$intType())
   if (df$rt$intFromRef(p$left) > df$rt$intFromRef(p$right)) {
     anon$1 := df$rt$boolToRef(true)
   } else {

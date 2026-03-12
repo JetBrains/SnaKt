@@ -5,11 +5,11 @@ field bf$b: Ref
 
 method f$testPrimitiveFieldGetter$TF$T$PrimitiveFields$T$Unit(p$pf: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$pf), df$rt$c$PrimitiveFields())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$a: Ref
   var l0$b: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$pf), df$rt$c$PrimitiveFields())
   inhale acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
   unfold acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
   l0$a := p$pf.bf$a
@@ -29,6 +29,7 @@ field bf$g: Ref
 
 method f$testReferenceFieldGetter$TF$T$ReferenceFields$T$Unit(p$rf: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$rf), df$rt$c$ReferenceFields())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$f: Ref
@@ -37,7 +38,6 @@ method f$testReferenceFieldGetter$TF$T$ReferenceFields$T$Unit(p$rf: Ref)
   var l0$fb: Ref
   var l0$ga: Ref
   var l0$gb: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$rf), df$rt$c$ReferenceFields())
   inhale acc(p$c$ReferenceFields$shared(p$rf), wildcard)
   unfold acc(p$c$ReferenceFields$shared(p$rf), wildcard)
   l0$f := p$rf.bf$f
@@ -63,6 +63,7 @@ field bf$g: Ref
 
 method f$testCascadingFieldGetter$TF$T$ReferenceFields$T$Unit(p$rf: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$rf), df$rt$c$ReferenceFields())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$fa: Ref
@@ -71,7 +72,6 @@ method f$testCascadingFieldGetter$TF$T$ReferenceFields$T$Unit(p$rf: Ref)
   var l0$ga: Ref
   var anon$1: Ref
   var l0$gb: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$rf), df$rt$c$ReferenceFields())
   inhale acc(p$c$ReferenceFields$shared(p$rf), wildcard)
   unfold acc(p$c$ReferenceFields$shared(p$rf), wildcard)
   anon$0 := p$rf.bf$f

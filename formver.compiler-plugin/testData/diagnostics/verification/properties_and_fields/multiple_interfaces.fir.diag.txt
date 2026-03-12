@@ -1,11 +1,11 @@
 /multiple_interfaces.kt:(799,804): info: Generated Viper text for take1:
 method f$take1$TF$T$InterfaceWithImplementation1$T$Unit(p$obj: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$InterfaceWithImplementation1())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
   var anon$1: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$InterfaceWithImplementation1())
   inhale acc(p$c$InterfaceWithImplementation1$shared(p$obj), wildcard)
   anon$1 := pg$public$field(p$obj)
   anon$0 := anon$1
@@ -20,11 +20,11 @@ method pg$public$field(this$dispatch: Ref) returns (ret: Ref)
 /multiple_interfaces.kt:(863,868): info: Generated Viper text for take2:
 method f$take2$TF$T$InterfaceWithoutImplementation2$T$Unit(p$obj: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$InterfaceWithoutImplementation2())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
   var anon$1: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$InterfaceWithoutImplementation2())
   inhale acc(p$c$InterfaceWithoutImplementation2$shared(p$obj), wildcard)
   anon$1 := pg$public$field(p$obj)
   anon$0 := anon$1
@@ -41,9 +41,9 @@ field bf$field: Ref
 
 method f$take3$TF$T$AbstractWithFinalImplementation3$T$Unit(p$obj: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$AbstractWithFinalImplementation3())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$AbstractWithFinalImplementation3())
   inhale acc(p$c$AbstractWithFinalImplementation3$shared(p$obj), wildcard)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -52,11 +52,11 @@ method f$take3$TF$T$AbstractWithFinalImplementation3$T$Unit(p$obj: Ref)
 /multiple_interfaces.kt:(998,1003): info: Generated Viper text for take4:
 method f$take4$TF$T$AbstractWithOpenImplementation4$T$Unit(p$obj: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$AbstractWithOpenImplementation4())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
   var anon$1: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$AbstractWithOpenImplementation4())
   inhale acc(p$c$AbstractWithOpenImplementation4$shared(p$obj), wildcard)
   anon$1 := pg$public$field(p$obj)
   anon$0 := anon$1
@@ -217,23 +217,26 @@ method f$createImpls$TF$T$Unit() returns (ret$0: Ref)
 
 method f$take1$TF$T$InterfaceWithImplementation1$T$Unit(p$obj: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$InterfaceWithImplementation1())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
 method f$take2$TF$T$InterfaceWithoutImplementation2$T$Unit(p$obj: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$InterfaceWithoutImplementation2())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
 method f$take3$TF$T$AbstractWithFinalImplementation3$T$Unit(p$obj: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$AbstractWithFinalImplementation3())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
 method f$take4$TF$T$AbstractWithOpenImplementation4$T$Unit(p$obj: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$AbstractWithOpenImplementation4())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
 method pg$public$field(this$dispatch: Ref) returns (ret: Ref)
-

@@ -2,12 +2,17 @@
 method f$pkg$kotlin$c$String$plus$TF$T$String$NT$Any$T$String(this$dispatch: Ref,
   p$other: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$stringType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$other), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$stringType())
 
 
 method f$subs$TF$T$String$T$Int$T$Int$T$String(this$extension: Ref, p$lo: Ref,
   p$hi: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$lo), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$hi), df$rt$intType())
   requires 0 <= df$rt$intFromRef(p$lo) &&
     df$rt$intFromRef(p$lo) <= df$rt$intFromRef(p$hi) &&
     df$rt$intFromRef(p$hi) <= |df$rt$stringFromRef(this$extension)|
@@ -23,9 +28,6 @@ method f$subs$TF$T$String$T$Int$T$Int$T$String(this$extension: Ref, p$lo: Ref,
   var l0$res: Ref
   var l0$i: Ref
   var anon$1: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$lo), df$rt$intType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$hi), df$rt$intType())
   l0$res := df$rt$stringToRef(Seq[Int]())
   l0$i := p$lo
   label lbl$continue$0
@@ -74,6 +76,8 @@ method f$subs$TF$T$String$T$Int$T$Int$T$String(this$extension: Ref, p$lo: Ref,
 /merge_sort_of_string.kt:(705,717): info: Generated Viper text for mergeStrings:
 method f$mergeStrings$TF$T$String$T$String$T$String(p$a: Ref, p$b: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$stringType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$stringType())
   requires (forall anon$builtin$3: Int ::(1 <= anon$builtin$3 &&
       anon$builtin$3 < |df$rt$stringFromRef(p$a)| ==>
       df$rt$stringFromRef(p$a)[anon$builtin$3 - 1] <=
@@ -94,8 +98,6 @@ method f$mergeStrings$TF$T$String$T$String$T$String(p$a: Ref, p$b: Ref)
   var l0$res: Ref
   var l0$n: Ref
   var anon$4: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$stringType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$stringType())
   l0$pa := df$rt$intToRef(0)
   l0$pb := df$rt$intToRef(0)
   l0$res := df$rt$stringToRef(Seq[Int]())
@@ -194,12 +196,15 @@ method f$mergeStrings$TF$T$String$T$String$T$String(p$a: Ref, p$b: Ref)
 method f$pkg$kotlin$c$String$plus$TF$T$String$NT$Any$T$String(this$dispatch: Ref,
   p$other: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$stringType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$other), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$stringType())
 
 
 /merge_sort_of_string.kt:(1883,1894): info: Generated Viper text for mergeSorted:
 method f$mergeSorted$TF$T$String$T$String(this$extension: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$stringType())
   ensures |df$rt$stringFromRef(ret$0)| ==
     |df$rt$stringFromRef(this$extension)|
@@ -208,7 +213,6 @@ method f$mergeSorted$TF$T$String$T$String(this$extension: Ref)
       df$rt$stringFromRef(ret$0)[anon$builtin$4 - 1] <=
       df$rt$stringFromRef(ret$0)[anon$builtin$4])
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
   if (|df$rt$stringFromRef(this$extension)| <= 1) {
     ret$0 := this$extension
   } else {
@@ -230,6 +234,8 @@ method f$mergeSorted$TF$T$String$T$String(this$extension: Ref)
 
 method f$mergeStrings$TF$T$String$T$String$T$String(p$a: Ref, p$b: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$stringType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$stringType())
   requires (forall anon$builtin$5: Int ::(1 <= anon$builtin$5 &&
       anon$builtin$5 < |df$rt$stringFromRef(p$a)| ==>
       df$rt$stringFromRef(p$a)[anon$builtin$5 - 1] <=
@@ -249,6 +255,9 @@ method f$mergeStrings$TF$T$String$T$String$T$String(p$a: Ref, p$b: Ref)
 method f$subs$TF$T$String$T$Int$T$Int$T$String(this$extension: Ref, p$lo: Ref,
   p$hi: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$lo), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$hi), df$rt$intType())
   requires 0 <= df$rt$intFromRef(p$lo) &&
     df$rt$intFromRef(p$lo) <= df$rt$intFromRef(p$hi) &&
     df$rt$intFromRef(p$hi) <= |df$rt$stringFromRef(this$extension)|
@@ -260,4 +269,3 @@ method f$subs$TF$T$String$T$Int$T$Int$T$String(this$extension: Ref, p$lo: Ref,
       df$rt$stringFromRef(ret)[anon$builtin$7] ==
       df$rt$stringFromRef(this$extension)[anon$builtin$7 +
       df$rt$intFromRef(p$lo)])
-

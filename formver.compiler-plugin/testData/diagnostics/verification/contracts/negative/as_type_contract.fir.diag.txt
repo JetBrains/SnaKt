@@ -2,12 +2,12 @@
 field bf$x: Ref
 
 method f$getX$TF$T$Any$NT$Int(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$anyType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
   ensures ret$0 != df$rt$nullValue() ==>
     !df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$IntHolder())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$anyType())
   if (df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$IntHolder())) {
     anon$0 := p$a
   } else {

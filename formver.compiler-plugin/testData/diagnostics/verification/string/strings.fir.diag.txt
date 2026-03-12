@@ -44,6 +44,7 @@ predicate p$pkg$kotlin$c$Cloneable$unique(this$dispatch: Ref) {
 }
 
 method con$c$StringBox$T$String$T$StringBox(p$str: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$str), df$rt$stringType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$StringBox())
   ensures acc(p$c$StringBox$shared(ret), wildcard)
   ensures acc(p$c$StringBox$unique(ret), write)
@@ -53,6 +54,7 @@ method con$c$StringBox$T$String$T$StringBox(p$str: Ref) returns (ret: Ref)
 
 
 method f$testType$TF$T$String$T$Unit(p$s: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$stringType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$cond1: Ref
@@ -61,7 +63,6 @@ method f$testType$TF$T$String$T$Unit(p$s: Ref) returns (ret$0: Ref)
   var l0$cond2: Ref
   var anon$2: Ref
   var anon$3: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$stringType())
   anon$1 := con$c$StringBox$T$String$T$StringBox(p$s)
   unfold acc(p$c$StringBox$shared(anon$1), wildcard)
   anon$0 := anon$1.bf$str
@@ -125,6 +126,7 @@ predicate p$pkg$kotlin$c$Cloneable$unique(this$dispatch: Ref) {
 }
 
 method con$c$StringBox$T$String$T$StringBox(p$str: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$str), df$rt$stringType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$StringBox())
   ensures acc(p$c$StringBox$shared(ret), wildcard)
   ensures acc(p$c$StringBox$unique(ret), write)
@@ -134,13 +136,13 @@ method con$c$StringBox$T$String$T$StringBox(p$str: Ref) returns (ret: Ref)
 
 
 method f$testLengthField$TF$T$String$T$Unit(p$s: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$stringType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$len: Ref
   var l0$cond1: Ref
   var anon$0: Ref
   var anon$1: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$stringType())
   l0$len := sp$stringLength(p$s)
   anon$1 := con$c$StringBox$T$String$T$StringBox(df$rt$stringToRef(Seq(115,
     116, 114)))
@@ -188,10 +190,13 @@ predicate p$pkg$kotlin$c$Cloneable$unique(this$dispatch: Ref) {
 method f$pkg$kotlin$c$String$plus$TF$T$String$NT$Any$T$String(this$dispatch: Ref,
   p$other: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$stringType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$other), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$stringType())
 
 
 method f$testOps$TF$T$String$T$Unit(p$s: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$stringType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$c: Ref
@@ -199,7 +204,6 @@ method f$testOps$TF$T$String$T$Unit(p$s: Ref) returns (ret$0: Ref)
   var l0$str: Ref
   var l0$helloWorld: Ref
   var l0$stringPlusInteger: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$stringType())
   if (|df$rt$stringFromRef(p$s)| > 0) {
     l0$c := sp$stringGet(p$s, df$rt$intToRef(0))
   } else {

@@ -3,6 +3,7 @@ field bf$a: Ref
 
 method con$c$NoPrimaryConstructor$T$Boolean$T$NoPrimaryConstructor(p$b: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$NoPrimaryConstructor())
   ensures acc(p$c$NoPrimaryConstructor$shared(ret), wildcard)
   ensures acc(p$c$NoPrimaryConstructor$unique(ret), write)
@@ -10,6 +11,7 @@ method con$c$NoPrimaryConstructor$T$Boolean$T$NoPrimaryConstructor(p$b: Ref)
 
 method con$c$NoPrimaryConstructor$T$Int$T$NoPrimaryConstructor(p$n: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$NoPrimaryConstructor())
   ensures acc(p$c$NoPrimaryConstructor$shared(ret), wildcard)
   ensures acc(p$c$NoPrimaryConstructor$unique(ret), write)
@@ -31,6 +33,7 @@ field bf$a: Ref
 
 method con$c$BothConstructors$T$Boolean$T$BothConstructors(p$b: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$BothConstructors())
   ensures acc(p$c$BothConstructors$shared(ret), wildcard)
   ensures acc(p$c$BothConstructors$unique(ret), write)
@@ -38,6 +41,7 @@ method con$c$BothConstructors$T$Boolean$T$BothConstructors(p$b: Ref)
 
 method con$c$BothConstructors$T$Int$T$BothConstructors(p$a: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$BothConstructors())
   ensures acc(p$c$BothConstructors$shared(ret), wildcard)
   ensures acc(p$c$BothConstructors$unique(ret), write)

@@ -1,5 +1,6 @@
 /interface.kt:(84,98): info: Generated Viper text for testProperties:
 method f$testProperties$TF$T$Foo$T$Unit(p$foo: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
@@ -8,7 +9,6 @@ method f$testProperties$TF$T$Foo$T$Unit(p$foo: Ref) returns (ret$0: Ref)
   var anon$2: Ref
   var anon$3: Ref
   var anon$4: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$c$Foo())
   inhale acc(p$c$Foo$shared(p$foo), wildcard)
   anon$0 := ps$public$varProp(p$foo, df$rt$intToRef(0))
   anon$2 := pg$public$varProp(p$foo)
@@ -36,6 +36,7 @@ method ps$public$varProp(this$dispatch: Ref, anon$0: Ref)
 field bf$number: Ref
 
 method con$c$Impl$T$Int$T$Impl(p$number: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$number), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Impl())
   ensures acc(p$c$Impl$shared(ret), wildcard)
   ensures acc(p$c$Impl$unique(ret), write)
@@ -57,4 +58,3 @@ method f$createImpl$TF$T$Unit() returns (ret$0: Ref)
 }
 
 method pg$public$number(this$dispatch: Ref) returns (ret: Ref)
-
