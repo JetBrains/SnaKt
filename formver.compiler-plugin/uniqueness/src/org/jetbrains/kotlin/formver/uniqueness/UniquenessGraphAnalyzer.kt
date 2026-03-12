@@ -6,7 +6,6 @@
 package org.jetbrains.kotlin.formver.uniqueness
 
 import org.jetbrains.kotlin.fir.FirElement
-import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.expressions.arguments
 import org.jetbrains.kotlin.fir.expressions.toResolvedCallableSymbol
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
@@ -15,6 +14,7 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallEnterNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
+import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 
 /**
  * Visitor assigning uniqueness types to paths after the execution of a [CFGNode].
@@ -63,10 +63,9 @@ class UniquenessTypeAssigner(
     @OptIn(SymbolInternals::class)
     override fun visitFunctionCallEnterNode(node: FunctionCallEnterNode, data: UniquenessTrie): UniquenessTrie {
         val functionCall = node.fir
-        val callableSymbol = functionCall.toResolvedCallableSymbol()
+        val callableSymbol = functionCall.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
             ?: throw IllegalStateException("Unable to resolve ${functionCall}")
-        val callableDeclaration = callableSymbol.fir as? FirSimpleFunction
-            ?: throw IllegalStateException("Callable symbol is not a function: ${callableSymbol.fir}")
+        val callableDeclaration = callableSymbol.fir
         val result = data.copy()
 
         // TODO: If possible, it would be good to compute the outflow for the argument before reaching the
