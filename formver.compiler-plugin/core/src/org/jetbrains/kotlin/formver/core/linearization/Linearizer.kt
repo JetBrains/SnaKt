@@ -9,11 +9,7 @@ import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
-import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpWrapper
-import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.withType
+import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.core.embeddings.toViperGoto
@@ -25,8 +21,6 @@ import org.jetbrains.kotlin.formver.viper.ast.Declaration
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Position
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
-import org.jetbrains.kotlin.formver.viper.debugMangled
-import kotlin.sequences.forEach
 
 /**
  * Standard context for linearization.
@@ -120,7 +114,8 @@ data class Linearizer(
                     // we might need to unfold some predicate to access it.
                     if (field.unfoldToAccess) {
                         val receiverWrapper = ExpWrapper(receiverViper, receiver.type)
-                        val hierarchyPath = (receiver.type.pretype as? ClassTypeEmbedding)?.details?.hierarchyUnfoldPath(field)
+                        val hierarchyPath =
+                            (receiver.type.pretype as? ClassTypeEmbedding)?.details?.hierarchyUnfoldPath(field)
                         hierarchyPath.unfoldHierarchy(receiverWrapper, this)
                     }
                     Stmt.assign(
@@ -131,7 +126,10 @@ data class Linearizer(
         }
     }
 
-    private fun Sequence<ClassTypeEmbedding>?.unfoldHierarchy(receiverWrapper: ExpEmbedding, ctx: LinearizationContext) {
+    private fun Sequence<ClassTypeEmbedding>?.unfoldHierarchy(
+        receiverWrapper: ExpEmbedding,
+        ctx: LinearizationContext
+    ) {
         this?.forEach { classType ->
             val predAcc = classType.predicateAccess(receiverWrapper, source)
             predAcc.let { ctx.addStatement { Stmt.Unfold(it) } }

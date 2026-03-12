@@ -110,6 +110,7 @@ class SsaConverter(
             ssaAssignments.add(name to Exp.TernaryExp(head.fullBranchingCondition, varExp, defaultExpression))
         }
     }
+
     private fun Exp.withAccessInvariants(name: SsaVariableName): Exp =
         when (this) {
             is Exp.FieldAccess, is Exp.FuncApp, is Exp.DomainFuncApp -> accessInvariants[name]?.foldRight(this) { invariant, acc ->

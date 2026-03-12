@@ -31,7 +31,6 @@ interface PretypeEmbedding : RuntimeTypeHolder, TypeInvariantHolder {
         get() = PlaintextLeaf(name.mangled)
 
     override fun subTypeInvariant(): TypeInvariantEmbedding = SubTypeInvariantEmbedding(this)
-
 }
 
 data object UnitTypeEmbedding : PretypeEmbedding {
