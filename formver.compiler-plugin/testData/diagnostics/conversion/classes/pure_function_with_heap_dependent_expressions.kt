@@ -1,86 +1,89 @@
 import org.jetbrains.kotlin.formver.plugin.*
 
-class Box(val data: Int)
-
-class BoxOfBox(val box: Box)
-
-class BoxOfBoxOfBox(val boxOfBox: BoxOfBox)
+class Node(val value: Int, val next: Node?)
 
 @Pure
-fun <!VIPER_TEXT!>testData<!>(boxOfBox: BoxOfBox): Int {
-    val value = boxOfBox.box.data
-    return value
+fun <!VIPER_TEXT!>getValue<!>(node: Node): Int {
+    return node.value
 }
 
 @Pure
-fun <!VIPER_TEXT!>boxBoxBoxBox<!>(boxOfBoxOfBox: BoxOfBoxOfBox): Int {
-    val value = boxOfBoxOfBox.boxOfBox.box.data
-    return value
+fun <!VIPER_TEXT!>getSafeNextValue<!>(node: Node): Int {
+    return node.next?.value ?: -1
 }
 
 @Pure
-fun <!VIPER_TEXT!>boxReturn<!>(boxOfBox: BoxOfBox): Int {
-    return boxOfBox.box.data
+fun <!VIPER_TEXT!>getSafeNextNextValue<!>(node: Node): Int {
+    return node.next?.next?.value ?: 0
 }
 
-data class Node<!VIPER_TEXT!>(
-val <! VIPER_TEXT!>value<!>: Int,
-val <! VIPER_TEXT!>next<!>: Node?)<!>
+@Pure
+fun <!VIPER_TEXT!>sumFirstTwoNodes<!>(node: Node): Int {
+    val nextNode = node.next
+    return if (nextNode != null) {
+        node.value + nextNode.value
+    } else {
+        node.value
+    }
+}
+
+@Pure
+fun <!VIPER_TEXT!>isLastNode<!>(node: Node): Boolean {
+    return node.next == null
+}
 
 @Pure
 fun <!VIPER_TEXT!>length<!>(node: Node): Int {
-    return if (node.next == null) {
+    val nextNode = node.next
+    return if (nextNode == null) {
         1
     } else {
-        1 + length(node.next)
+        1 + length(nextNode)
     }
 }
 
 @Pure
-fun getThisOrNextValue(node: Node): Int {
-    return node.next?.value ?: node.value
-}
-
-fun <!VIPER_TEXT!>iAmAMethodAndNeedLength<!>(node: Node): Int {
-    val length = if (node.next != null) length(node.next) else length(node)
-    return length
-}
-
-fun <!VIPER_TEXT!>iAmAMethodAndNeedNextLength<!>(node: Node): Int {
-    val length = if (node.next != null) length(node.next) else 0
-    return length
-}
-
-fun <!VIPER_TEXT!>customLengthPreCondition<!>(node: Node): Int {
-    preconditions {
-        node.next != null
-    }
-    val length = if (node.next != null) length(node.next) else 0
-    return length
-}
-
-@Pure
-fun <!VIPER_TEXT!>variableReassign<!>(node: Node): Int {
+fun <!VIPER_TEXT!>sumAllNodes<!>(node: Node): Int {
     val nextNode = node.next
-    val nextNode2 = nextNode
-    var potentiallyNextValue = -1
-    if (node.next != null) {
-        potentiallyNextValue = nextNode2.value
+    return if (nextNode == null) {
+        node.value
+    } else {
+        node.value + sumAllNodes(nextNode)
     }
-    return potentiallyNextValue
 }
 
 @Pure
-fun id(node: Node?): Node? {
+fun <!VIPER_TEXT!>containsValue<!>(node: Node, target: Int): Boolean {
+    if (node.value == target) return true
+    val nextNode = node.next
+    return if (nextNode != null) containsValue(nextNode, target) else false
+}
+
+@Pure
+fun <!VIPER_TEXT!>aliasAndReassign<!>(node: Node): Int {
+    val alias1 = node
+    val alias2 = alias1.next
+    var fallbackValue = -1
+
+    if (alias2 != null) {
+        fallbackValue = alias2.value
+    }
+    return fallbackValue
+}
+
+@Pure
+fun <!VIPER_TEXT!>id<!>(node: Node?): Node? {
     return node
 }
 
 @Pure
-fun getNextValueFromIdentity(node: Node): Int {
+fun <!VIPER_TEXT!>useIdentityFunction<!>(node: Node): Int {
+    val sameNode = id(node)
+    return sameNode?.value ?: 0
+}
+
+@Pure
+fun <!VIPER_TEXT!>getNextValueUsingId<!>(node: Node): Int {
     val nextNode = id(node.next)
-    var nextValue = 0
-    if (nextNode != null) {
-        nextValue = nextNode.value
-    }
-    return nextValue
+    return if (nextNode == null) 0 else nextNode.value
 }
