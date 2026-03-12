@@ -16,6 +16,18 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
 
     val type: Type
 
+    data class Minus(
+        val arg: Exp,
+        val pos: Position = Position.NoPosition,
+        val info: Info = Info.NoInfo,
+        val trafos: Trafos = Trafos.NoTrafos,
+    ) : Exp {
+        override val type = Type.Int
+        context(nameResolver: NameResolver)
+        override fun toSilver(): viper.silver.ast.Minus =
+            Minus(arg.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
+    }
+
     //region Arithmetic Expressions
     data class Add(
         override val left: Exp,

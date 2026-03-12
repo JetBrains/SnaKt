@@ -13,11 +13,6 @@ method con$c$ClassWithField$T$Int$T$ClassWithField(p$field: Ref)
     df$rt$intFromRef(p$field)
 
 
-method f$pkg$kotlin$c$Int$unaryMinus$TF$T$Int$T$Int(this$dispatch: Ref)
-  returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-
-
 method f$test_while$TF$T$ClassWithField$T$Unit(p$param: Ref)
   returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -25,11 +20,11 @@ method f$test_while$TF$T$ClassWithField$T$Unit(p$param: Ref)
   var l0$c: Ref
   var l0$initParamField: Ref
   var l0$iteration: Ref
-  var anon$1: Ref
+  var anon$0: Ref
   var l0$cond1: Ref
-  var anon$2: Ref
+  var anon$1: Ref
   var l0$cond2: Ref
-  var anon$3: Ref
+  var anon$2: Ref
   inhale df$rt$isSubtype(df$rt$typeOf(p$param), df$rt$c$ClassWithField())
   inhale acc(p$c$ClassWithField$shared(p$param), wildcard)
   l0$c := con$c$ClassWithField$T$Int$T$ClassWithField(df$rt$intToRef(13))
@@ -39,9 +34,7 @@ method f$test_while$TF$T$ClassWithField$T$Unit(p$param: Ref)
     l0$iteration := df$rt$intToRef(0)
   } else {
     var l3$intermediate: Ref
-    var anon$0: Ref
-    anon$0 := f$pkg$kotlin$c$Int$unaryMinus$TF$T$Int$T$Int(l0$initParamField)
-    l3$intermediate := sp$plusInts(anon$0, df$rt$intToRef(1))
+    l3$intermediate := sp$plusInts(sp$negInt(l0$initParamField), df$rt$intToRef(1))
     l0$iteration := sp$timesInts(l3$intermediate, l3$intermediate)
   }
   label lbl$continue$0
@@ -51,8 +44,8 @@ method f$test_while$TF$T$ClassWithField$T$Unit(p$param: Ref)
     invariant df$rt$isSubtype(df$rt$typeOf(l0$iteration), df$rt$intType())
     invariant acc(p$c$ClassWithField$shared(p$param), wildcard)
     invariant df$rt$isSubtype(df$rt$typeOf(p$param), df$rt$c$ClassWithField())
-  anon$1 := sp$ltInts(l0$iteration, df$rt$intToRef(10))
-  if (df$rt$boolFromRef(anon$1)) {
+  anon$0 := sp$ltInts(l0$iteration, df$rt$intToRef(10))
+  if (df$rt$boolFromRef(anon$0)) {
     var l4$field: Ref
     var l4$paramField: Ref
     unfold acc(p$c$ClassWithField$shared(l0$c), wildcard)
@@ -70,12 +63,12 @@ method f$test_while$TF$T$ClassWithField$T$Unit(p$param: Ref)
   assert acc(p$c$ClassWithField$shared(p$param), wildcard)
   assert df$rt$isSubtype(df$rt$typeOf(p$param), df$rt$c$ClassWithField())
   unfold acc(p$c$ClassWithField$shared(l0$c), wildcard)
-  anon$2 := l0$c.bf$field
-  l0$cond1 := df$rt$boolToRef(df$rt$intFromRef(anon$2) == 13)
+  anon$1 := l0$c.bf$field
+  l0$cond1 := df$rt$boolToRef(df$rt$intFromRef(anon$1) == 13)
   unfold acc(p$c$ClassWithField$shared(p$param), wildcard)
-  anon$3 := p$param.bf$field
+  anon$2 := p$param.bf$field
   l0$cond2 := df$rt$boolToRef(df$rt$intFromRef(l0$initParamField) ==
-    df$rt$intFromRef(anon$3))
+    df$rt$intFromRef(anon$2))
   assert df$rt$boolFromRef(l0$cond1)
   assert df$rt$boolFromRef(l0$cond2)
   label lbl$ret$0
