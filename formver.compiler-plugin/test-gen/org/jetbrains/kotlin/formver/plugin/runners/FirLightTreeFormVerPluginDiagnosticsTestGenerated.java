@@ -848,6 +848,30 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
       }
 
       @Test
+      @TestMetadata("permissions_cast.kt")
+      public void testPermissions_cast() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/subtyping/permissions_cast.kt");
+      }
+
+      @Test
+      @TestMetadata("permissions_double_predicate.kt")
+      public void testPermissions_double_predicate() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/subtyping/permissions_double_predicate.kt");
+      }
+
+      @Test
+      @TestMetadata("permissions_unique.kt")
+      public void testPermissions_unique() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/subtyping/permissions_unique.kt");
+      }
+
+      @Test
+      @TestMetadata("permissions_unique_subtype.kt")
+      public void testPermissions_unique_subtype() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/subtyping/permissions_unique_subtype.kt");
+      }
+
+      @Test
       @TestMetadata("smart_cast_class.kt")
       public void testSmart_cast_class() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/subtyping/smart_cast_class.kt");

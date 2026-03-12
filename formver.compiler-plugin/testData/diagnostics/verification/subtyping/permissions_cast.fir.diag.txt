@@ -1,0 +1,127 @@
+/permissions_cast.kt:(545,569): info: Generated Viper text for castThenAccessBothFields:
+field bf$x: Ref
+
+field bf$y: Ref
+
+method f$castThenAccessBothFields$TF$T$Parent$T$Int(p$p: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var l0$c: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$p), df$rt$c$Parent())
+  inhale acc(p$c$Parent$shared(p$p), wildcard)
+  inhale df$rt$isSubtype(df$rt$typeOf(p$p), df$rt$c$Child())
+  inhale acc(p$c$Child$shared(p$p), wildcard)
+  l0$c := p$p
+  unfold acc(p$c$Child$shared(l0$c), wildcard)
+  unfold acc(p$c$Parent$shared(l0$c), wildcard)
+  anon$0 := l0$c.bf$x
+  unfold acc(p$c$Child$shared(l0$c), wildcard)
+  anon$1 := l0$c.bf$y
+  ret$0 := sp$plusInts(anon$0, anon$1)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/permissions_cast.kt:(688,714): info: Generated Viper text for smartCastAccessParentField:
+field bf$x: Ref
+
+field bf$y: Ref
+
+method f$smartCastAccessParentField$TF$T$Parent$T$Int(p$p: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$p), df$rt$c$Parent())
+  inhale acc(p$c$Parent$shared(p$p), wildcard)
+  if (df$rt$isSubtype(df$rt$typeOf(p$p), df$rt$c$Child())) {
+    unfold acc(p$c$Parent$shared(p$p), wildcard)
+    ret$0 := p$p.bf$x
+    goto lbl$ret$0
+  }
+  ret$0 := df$rt$intToRef(0)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/permissions_cast.kt:(893,918): info: Generated Viper text for smartCastAccessChildField:
+field bf$x: Ref
+
+field bf$y: Ref
+
+method f$smartCastAccessChildField$TF$T$Parent$T$Int(p$p: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$p), df$rt$c$Parent())
+  inhale acc(p$c$Parent$shared(p$p), wildcard)
+  if (df$rt$isSubtype(df$rt$typeOf(p$p), df$rt$c$Child())) {
+    inhale acc(p$c$Child$shared(p$p), wildcard)
+    unfold acc(p$c$Child$shared(p$p), wildcard)
+    ret$0 := p$p.bf$y
+    goto lbl$ret$0
+  }
+  ret$0 := df$rt$intToRef(0)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/permissions_cast.kt:(1071,1091): info: Generated Viper text for safeCastAccessFields:
+field bf$x: Ref
+
+field bf$y: Ref
+
+method f$safeCastAccessFields$TF$T$Parent$T$Int(p$p: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var l0$c: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$p), df$rt$c$Parent())
+  inhale acc(p$c$Parent$shared(p$p), wildcard)
+  if (df$rt$isSubtype(df$rt$typeOf(p$p), df$rt$c$Child())) {
+    l0$c := p$p
+  } else {
+    l0$c := df$rt$nullValue()}
+  inhale df$rt$isSubtype(df$rt$typeOf(l0$c), df$rt$nullable(df$rt$c$Child()))
+  inhale l0$c != df$rt$nullValue() ==>
+    acc(p$c$Child$shared(l0$c), wildcard)
+  if (!(l0$c == df$rt$nullValue())) {
+    var anon$0: Ref
+    var anon$1: Ref
+    unfold acc(p$c$Child$shared(l0$c), wildcard)
+    unfold acc(p$c$Parent$shared(l0$c), wildcard)
+    anon$0 := l0$c.bf$x
+    unfold acc(p$c$Child$shared(l0$c), wildcard)
+    anon$1 := l0$c.bf$y
+    ret$0 := sp$plusInts(anon$0, anon$1)
+  } else {
+    unfold acc(p$c$Parent$shared(p$p), wildcard)
+    ret$0 := p$p.bf$x
+  }
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/permissions_cast.kt:(1293,1321): info: Generated Viper text for smartCastPreservesParentInfo:
+field bf$x: Ref
+
+field bf$y: Ref
+
+method f$smartCastPreservesParentInfo$TF$T$Parent$T$Boolean(p$p: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
+  ensures df$rt$boolFromRef(ret$0) == true
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$p), df$rt$c$Parent())
+  inhale acc(p$c$Parent$shared(p$p), wildcard)
+  if (df$rt$isSubtype(df$rt$typeOf(p$p), df$rt$c$Child())) {
+    inhale acc(p$c$Child$shared(p$p), wildcard)
+    ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(p$p), df$rt$c$Parent()))
+    goto lbl$ret$0
+  }
+  ret$0 := df$rt$boolToRef(true)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
