@@ -92,8 +92,7 @@ class ClassEmbeddingDetails(
     fun <R> flatMapFields(action: (SimpleKotlinName, FieldEmbedding) -> List<R>): List<R> =
         classSuperTypes.flatMap { it.details.flatMapFields(action) } + fields.flatMap { (name, field) ->
             action(
-                name,
-                field
+                name, field
             )
         }
 

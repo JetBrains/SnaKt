@@ -166,6 +166,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
       }
 
       @Test
+      @TestMetadata("pure_function_with_heap_dependent_expressions.kt")
+      public void testPure_function_with_heap_dependent_expressions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/pure_function_with_heap_dependent_expressions.kt");
+      }
+
+      @Test
       @TestMetadata("secondary_constructors.kt")
       public void testSecondary_constructors() {
         runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/secondary_constructors.kt");

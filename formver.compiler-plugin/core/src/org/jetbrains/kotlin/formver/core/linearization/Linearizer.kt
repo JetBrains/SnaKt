@@ -7,16 +7,18 @@ package org.jetbrains.kotlin.formver.core.linearization
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.core.asPosition
+import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
-import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.withType
+import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.core.embeddings.toViperGoto
+import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
+import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Position
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
 
@@ -95,6 +97,43 @@ data class Linearizer(
 
     override fun addModifier(mod: StmtModifier) {
         stmtModifierTracker?.add(mod) ?: error("Not in a statement")
+    }
+
+    override fun addFieldAccess(field: FieldEmbedding, receiver: ExpEmbedding, result: VariableEmbedding) {
+        addStatement {
+            when (field.accessPolicy) {
+                // TODO: Handling a unique field on a shared receiver must be added here.
+                AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
+                    receiver.toViperUnusedResult(this)
+                    field.type.havocMethod.toMethodCall(emptyList(), listOf(result.toLocalVarUse()))
+                }
+
+                else -> {
+                    val receiverViper = receiver.toViper(this)
+                    // If the field access is not replaced with havoc,
+                    // we might need to unfold some predicate to access it.
+                    if (field.unfoldToAccess) {
+                        val receiverWrapper = ExpWrapper(receiverViper, receiver.type)
+                        val hierarchyPath =
+                            (receiver.type.pretype as? ClassTypeEmbedding)?.details?.hierarchyUnfoldPath(field)
+                        hierarchyPath.unfoldHierarchy(receiverWrapper, this)
+                    }
+                    Stmt.assign(
+                        result.toLocalVarUse(), Exp.FieldAccess(receiverViper, field.toViper(), source.asPosition)
+                    )
+                }
+            }
+        }
+    }
+
+    private fun Sequence<ClassTypeEmbedding>?.unfoldHierarchy(
+        receiverWrapper: ExpEmbedding,
+        ctx: LinearizationContext
+    ) {
+        this?.forEach { classType ->
+            val predAcc = classType.predicateAccess(receiverWrapper, source)
+            ctx.addStatement { Stmt.Unfold(predAcc, source.asPosition) }
+        }
     }
 
     override fun resolveVariableName(name: SymbolicName): SymbolicName = name

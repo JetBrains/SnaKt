@@ -7,7 +7,6 @@ import org.jetbrains.kotlin.formver.core.names.SsaVariableName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
 import org.jetbrains.kotlin.formver.viper.ast.Exp
-import org.jetbrains.kotlin.formver.viper.ast.Exp.TernaryExp
 import org.jetbrains.kotlin.formver.viper.ast.Type
 
 class SsaConverter(
@@ -16,6 +15,7 @@ class SsaConverter(
     private var head: SsaBlockNode = SsaBlockNode(SsaStartNode(), Exp.BoolLit(true))
     private val ssaAssignments: MutableList<Pair<SsaVariableName, Exp>> = mutableListOf()
     private val returnExpressions: MutableList<Pair<Exp, Exp>> = mutableListOf()
+    private val accessInvariants: MutableMap<SsaVariableName, List<Exp.PredicateAccess>> = mutableMapOf()
 
     // Produce new ssa names for a source variable name
     private val ssaNameProducers: MutableMap<SymbolicName, FreshEntityProducer<SsaVariableName, SymbolicName>> =
@@ -48,7 +48,7 @@ class SsaConverter(
         )
         val defaultBody = returnExpressions.last().second
         val bodyExp = returnExpressions.dropLast(1).foldRight(defaultBody) { expPair, elseBranch ->
-            TernaryExp(
+            Exp.TernaryExp(
                 expPair.first,
                 expPair.second,
                 elseBranch
@@ -64,9 +64,15 @@ class SsaConverter(
         return producer.getFresh(name)
     }
 
-    fun addAssignment(name: SymbolicName, varExp: Exp) {
+    fun addAssignment(
+        name: SymbolicName,
+        varExp: Exp,
+        newVarAccessInvariants: List<Exp.PredicateAccess> = emptyList()
+    ) {
         val ssaName = head.updateLatestName(name)
-        addGuardedAssignment(ssaName, varExp)
+        accessInvariants[ssaName] = newVarAccessInvariants
+        varExp.propagateAccessInvariants(ssaName)
+        addGuardedAssignment(ssaName, varExp.withAccessInvariants(ssaName))
     }
 
     fun addPhiAssignment(condition: Exp, left: SsaVariableName, right: SsaVariableName, name: SsaVariableName) {
@@ -76,12 +82,13 @@ class SsaConverter(
                 "Phi Assignments may only be created for SSA variables referring to the same source variable."
             )
         }
-        val selectionTernary = TernaryExp(
+        val phiExpression = Exp.TernaryExp(
             condition,
             Exp.LocalVar(left, Type.Ref),
             Exp.LocalVar(right, Type.Ref)
         )
-        addGuardedAssignment(name, selectionTernary)
+        phiExpression.propagateAccessInvariants(name)
+        addGuardedAssignment(name, phiExpression.withAccessInvariants(name))
     }
 
     fun addReturn(returnExp: Exp) {
@@ -102,5 +109,39 @@ class SsaConverter(
         } else {
             ssaAssignments.add(name to Exp.TernaryExp(head.fullBranchingCondition, varExp, defaultExpression))
         }
+    }
+
+    private fun Exp.withAccessInvariants(name: SsaVariableName): Exp =
+        when (this) {
+            is Exp.FieldAccess, is Exp.FuncApp, is Exp.DomainFuncApp -> accessInvariants[name]?.foldRight(this) { invariant, acc ->
+                Exp.Unfolding(invariant, acc)
+            } ?: this
+
+            else -> this
+        }
+
+    private fun mergeAccessInvariants(from: List<SymbolicName>, newName: SsaVariableName) {
+        val mergedInvariants = from.mapNotNull { accessInvariants[it] }.flatten() + accessInvariants[newName].orEmpty()
+        accessInvariants[newName] = mergedInvariants.distinct()
+    }
+
+    private fun Exp.propagateAccessInvariants(to: SsaVariableName) {
+        var from: Exp? = null
+        when (this) {
+            is Exp.LocalVar -> from = this
+            is Exp.FieldAccess -> from = this.rcv
+            is Exp.FuncApp -> this.args.forEach { it.propagateAccessInvariants(to) }
+            is Exp.DomainFuncApp -> {
+                this.args.forEach { it.propagateAccessInvariants(to) }
+            }
+            // TODO: Determine how to handle the access invariants of a Ternary
+            else -> {}
+        }
+        if (from == null) return
+        if (from !is Exp.LocalVar) throw SnaktInternalException(
+            source,
+            "Access sources must be local variables $from"
+        )
+        mergeAccessInvariants(listOf(from.name), to)
     }
 }

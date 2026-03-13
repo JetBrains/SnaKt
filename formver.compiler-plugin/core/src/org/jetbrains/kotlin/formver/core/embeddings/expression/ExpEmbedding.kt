@@ -13,10 +13,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
 import org.jetbrains.kotlin.formver.core.embeddings.asInfo
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
-import org.jetbrains.kotlin.formver.core.embeddings.types.injectionOr
+import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
 import org.jetbrains.kotlin.formver.core.linearization.UnfoldPolicy
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
@@ -376,28 +373,7 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
     }
 
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-        ctx.addStatement {
-            when (field.accessPolicy) {
-                // TODO: Handling a unique field on a shared receiver must be added here.
-                AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
-                    receiver.toViperUnusedResult(ctx)
-                    field.type.havocMethod.toMethodCall(emptyList(), listOf(result.toLocalVarUse()))
-                }
-
-                else -> {
-                    val receiverViper = receiver.toViper(ctx)
-                    // If the field access is not replaced with havoc,
-                    // we might need to unfold some predicate to access it.
-                    if (field.unfoldToAccess) {
-                        val receiverWrapper = ExpWrapper(receiverViper, receiver.type)
-                        unfoldHierarchy(receiverWrapper, ctx)
-                    }
-                    Stmt.assign(
-                        result.toLocalVarUse(), Exp.FieldAccess(receiverViper, field.toViper(), ctx.source.asPosition)
-                    )
-                }
-            }
-        }
+        ctx.addFieldAccess(field, receiver, result)
     }
 
     private fun unfoldingInImpl(ctx: LinearizationContext): Exp {
@@ -405,24 +381,8 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
         val primitiveAccess: Exp = Exp.FieldAccess(receiver.toViper(ctx), field.toViper(), ctx.source.asPosition)
         if (hierarchyPath == null) return primitiveAccess
         return hierarchyPath.toList().foldRight(primitiveAccess) { classType, acc ->
-            val predAcc = classType.predicateAccess(receiver, ctx)
+            val predAcc = classType.predicateAccess(receiver, ctx.source)
             Exp.Unfolding(predAcc, acc)
-        }
-    }
-
-    private fun ClassTypeEmbedding.predicateAccess(
-        receiver: ExpEmbedding,
-        ctx: LinearizationContext
-    ): Exp.PredicateAccess =
-        sharedPredicateAccessInvariant()?.fillHole(receiver)
-            ?.pureToViper(toBuiltin = true, ctx.source) as? Exp.PredicateAccess
-            ?: error("Attempt to unfold a predicate of ${name.debugMangled}.")
-
-    private fun unfoldHierarchy(receiverWrapper: ExpEmbedding, ctx: LinearizationContext) {
-        val hierarchyPath = (receiver.type.pretype as? ClassTypeEmbedding)?.details?.hierarchyUnfoldPath(field)
-        hierarchyPath?.forEach { classType ->
-            val predAcc = classType.predicateAccess(receiverWrapper, ctx)
-            predAcc.let { ctx.addStatement { Stmt.Unfold(it) } }
         }
     }
 

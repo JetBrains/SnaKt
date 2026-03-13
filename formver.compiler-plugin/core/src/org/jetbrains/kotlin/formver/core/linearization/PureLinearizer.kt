@@ -7,13 +7,18 @@ package org.jetbrains.kotlin.formver.core.linearization
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.FreshEntityProducer
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpWrapper
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.print
+import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
 import org.jetbrains.kotlin.formver.names.SimpleNameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
@@ -32,10 +37,9 @@ class PureLinearizerMisuseException(val offendingFunction: String) : IllegalStat
 data class PureLinearizer(
     override val source: KtSourceElement?,
     val state: SharedLinearizationState = SharedLinearizationState(FreshEntityProducer(::AnonymousVariableEmbedding)),
-    private val ssaConverter: SsaConverter = SsaConverter(source)
+    private val ssaConverter: SsaConverter = SsaConverter(source),
+    override val unfoldPolicy: UnfoldPolicy = UnfoldPolicy.UNFOLDING_IN,
 ) : LinearizationContext {
-    override val unfoldPolicy: UnfoldPolicy
-        get() = UnfoldPolicy.UNFOLDING_IN
 
     override val logicOperatorPolicy: LogicOperatorPolicy
         get() = LogicOperatorPolicy.CONVERT_TO_EXPRESSION
@@ -53,16 +57,10 @@ data class PureLinearizer(
         throw PureLinearizerMisuseException("addStatement")
     }
 
-    // Nothing to do here, as an assignment is also added
     override fun addDeclaration(decl: Declaration) {}
 
-    override fun store(lhs: VariableEmbedding, rhs: ExpEmbedding) {
-        // It would be nicer to constraint this a bit further as this is a very special case
-        ssaConverter.addAssignment(
-            lhs.name,
-            rhs.toViper(this)
-        )
-    }
+    override fun store(lhs: VariableEmbedding, rhs: ExpEmbedding) =
+        ssaConverter.addAssignment(lhs.name, rhs.toViper(this))
 
     override fun addReturn(returnExp: ExpEmbedding, target: ReturnTarget) {
         ssaConverter.addReturn(returnExp.toViper(this))
@@ -103,6 +101,24 @@ data class PureLinearizer(
             )
             ssaConverter.addAssignment(result.name, Exp.TernaryExp(conditionExp, resultThen, resultElse))
         }
+    }
+
+    override fun addFieldAccess(
+        field: FieldEmbedding,
+        receiver: ExpEmbedding,
+        result: VariableEmbedding
+    ) {
+        val viperReceiver = receiver.toViper(this)
+        if (viperReceiver !is Exp.LocalVar) throw SnaktInternalException(
+            source,
+            "Invalid receiver encountered in pure function"
+        )
+        val receiverWrapper = ExpWrapper(viperReceiver, receiver.type)
+        val hierarchyPath = receiver.type.hierarchyUnfoldPath(field)
+        val accessInvariants =
+            hierarchyPath?.map { it.predicateAccess(receiverWrapper, source) }?.toList() ?: emptyList()
+        val primitiveAccess: Exp = Exp.FieldAccess(viperReceiver, field.toViper(), source.asPosition)
+        ssaConverter.addAssignment(result.name, primitiveAccess, accessInvariants)
     }
 
     override fun addModifier(mod: StmtModifier) {
