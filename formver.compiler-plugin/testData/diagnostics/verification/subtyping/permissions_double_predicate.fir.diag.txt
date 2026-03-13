@@ -1,0 +1,49 @@
+/permissions_double_predicate.kt:(577,603): info: Generated Viper text for castAndAccessOriginalField:
+field bf$data: Ref
+
+field bf$tag: Ref
+
+method f$castAndAccessOriginalField$TF$T$Wrapper$T$Int(p$w: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var l0$ew: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$w), df$rt$c$Wrapper())
+  inhale acc(p$c$Wrapper$shared(p$w), wildcard)
+  inhale df$rt$isSubtype(df$rt$typeOf(p$w), df$rt$c$ExtendedWrapper())
+  inhale acc(p$c$ExtendedWrapper$shared(p$w), wildcard)
+  l0$ew := p$w
+  unfold acc(p$c$ExtendedWrapper$shared(l0$ew), wildcard)
+  unfold acc(p$c$Wrapper$shared(l0$ew), wildcard)
+  ret$0 := l0$ew.bf$data
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/permissions_double_predicate.kt:(794,815): info: Generated Viper text for smartCastDoubleAccess:
+field bf$data: Ref
+
+field bf$tag: Ref
+
+method f$smartCastDoubleAccess$TF$T$Wrapper$T$Int(p$w: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$w), df$rt$c$Wrapper())
+  inhale acc(p$c$Wrapper$shared(p$w), wildcard)
+  if (df$rt$isSubtype(df$rt$typeOf(p$w), df$rt$c$ExtendedWrapper())) {
+    var anon$0: Ref
+    var anon$1: Ref
+    unfold acc(p$c$Wrapper$shared(p$w), wildcard)
+    anon$0 := p$w.bf$data
+    inhale acc(p$c$ExtendedWrapper$shared(p$w), wildcard)
+    unfold acc(p$c$ExtendedWrapper$shared(p$w), wildcard)
+    anon$1 := p$w.bf$tag
+    ret$0 := sp$plusInts(anon$0, sp$stringLength(anon$1))
+    goto lbl$ret$0
+  }
+  unfold acc(p$c$Wrapper$shared(p$w), wildcard)
+  ret$0 := p$w.bf$data
+  goto lbl$ret$0
+  label lbl$ret$0
+}

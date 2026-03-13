@@ -1,0 +1,90 @@
+/override_methods.kt:(109,114): info: Generated Viper text for count:
+field bf$start: Ref
+
+method f$c$Counter$count$TF$T$Counter$T$Int(this$dispatch: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Counter())
+  inhale acc(p$c$Counter$shared(this$dispatch), wildcard)
+  unfold acc(p$c$Counter$shared(this$dispatch), wildcard)
+  ret$0 := this$dispatch.bf$start
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/override_methods.kt:(201,206): info: Generated Viper text for count:
+field bf$start: Ref
+
+method f$c$DoubleCounter$count$TF$T$DoubleCounter$T$Int(this$dispatch: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var anon$0: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$DoubleCounter())
+  inhale acc(p$c$DoubleCounter$shared(this$dispatch), wildcard)
+  unfold acc(p$c$DoubleCounter$shared(this$dispatch), wildcard)
+  unfold acc(p$c$Counter$shared(this$dispatch), wildcard)
+  anon$0 := this$dispatch.bf$start
+  ret$0 := sp$timesInts(anon$0, df$rt$intToRef(2))
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/override_methods.kt:(270,285): info: Generated Viper text for callDoubleCount:
+field bf$start: Ref
+
+method f$c$DoubleCounter$count$TF$T$DoubleCounter$T$Int(this$dispatch: Ref)
+  returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
+
+
+method f$callDoubleCount$TF$T$DoubleCounter$T$Int(p$dc: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$dc), df$rt$c$DoubleCounter())
+  inhale acc(p$c$DoubleCounter$shared(p$dc), wildcard)
+  ret$0 := f$c$DoubleCounter$count$TF$T$DoubleCounter$T$Int(p$dc)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/override_methods.kt:(390,405): info: Generated Viper text for callOnSupertype:
+field bf$start: Ref
+
+method f$c$Counter$count$TF$T$Counter$T$Int(this$dispatch: Ref)
+  returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
+
+
+method f$callOnSupertype$TF$T$Counter$T$Int(p$c: Ref) returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$c$Counter())
+  inhale acc(p$c$Counter$shared(p$c), wildcard)
+  ret$0 := f$c$Counter$count$TF$T$Counter$T$Int(p$c)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/override_methods.kt:(580,597): info: Generated Viper text for subtypeMethodCall:
+field bf$start: Ref
+
+method f$c$Counter$count$TF$T$Counter$T$Int(this$dispatch: Ref)
+  returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
+
+
+method f$subtypeMethodCall$TF$T$DoubleCounter$T$Int(p$dc: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var l0$c: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$dc), df$rt$c$DoubleCounter())
+  inhale acc(p$c$DoubleCounter$shared(p$dc), wildcard)
+  l0$c := p$dc
+  ret$0 := f$c$Counter$count$TF$T$Counter$T$Int(l0$c)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
