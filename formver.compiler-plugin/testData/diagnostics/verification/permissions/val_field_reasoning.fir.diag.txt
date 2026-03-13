@@ -1,0 +1,60 @@
+/val_field_reasoning.kt:(279,296): info: Generated Viper text for valFieldPreserved:
+field bf$first: Ref
+
+field bf$second: Ref
+
+method f$valFieldPreserved$TF$T$Pair$T$Boolean(p$p: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
+  ensures df$rt$boolFromRef(ret$0) == true
+{
+  var l0$x: Ref
+  var l0$y: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$p), df$rt$c$Pair())
+  inhale acc(p$c$Pair$shared(p$p), wildcard)
+  unfold acc(p$c$Pair$shared(p$p), wildcard)
+  l0$x := p$p.bf$first
+  unfold acc(p$c$Pair$shared(p$p), wildcard)
+  l0$y := p$p.bf$first
+  ret$0 := df$rt$boolToRef(df$rt$intFromRef(l0$x) == df$rt$intFromRef(l0$y))
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/val_field_reasoning.kt:(518,542): info: Generated Viper text for constructorValueRetained:
+field bf$first: Ref
+
+field bf$second: Ref
+
+method con$c$Pair$T$Int$T$Int$T$Pair(p$first: Ref, p$second: Ref)
+  returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Pair())
+  ensures acc(p$c$Pair$shared(ret), wildcard)
+  ensures acc(p$c$Pair$unique(ret), write)
+  ensures df$rt$intFromRef((unfolding acc(p$c$Pair$shared(ret), wildcard) in
+      ret.bf$first)) ==
+    df$rt$intFromRef(p$first) &&
+    df$rt$intFromRef((unfolding acc(p$c$Pair$shared(ret), wildcard) in
+      ret.bf$second)) ==
+    df$rt$intFromRef(p$second)
+
+
+method f$constructorValueRetained$TF$T$Boolean() returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
+  ensures df$rt$boolFromRef(ret$0) == true
+{
+  var l0$p: Ref
+  var anon$0: Ref
+  l0$p := con$c$Pair$T$Int$T$Int$T$Pair(df$rt$intToRef(1), df$rt$intToRef(2))
+  unfold acc(p$c$Pair$shared(l0$p), wildcard)
+  anon$0 := l0$p.bf$first
+  if (df$rt$intFromRef(anon$0) == 1) {
+    var anon$1: Ref
+    unfold acc(p$c$Pair$shared(l0$p), wildcard)
+    anon$1 := l0$p.bf$second
+    ret$0 := df$rt$boolToRef(df$rt$intFromRef(anon$1) == 2)
+  } else {
+    ret$0 := df$rt$boolToRef(false)}
+  goto lbl$ret$0
+  label lbl$ret$0
+}

@@ -753,6 +753,40 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/permissions")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Permissions {
+      @Test
+      public void testAllFilesPresentInPermissions() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/permissions"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("borrowed_unique.kt")
+      public void testBorrowed_unique() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/permissions/borrowed_unique.kt");
+      }
+
+      @Test
+      @TestMetadata("constructor_permissions.kt")
+      public void testConstructor_permissions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/permissions/constructor_permissions.kt");
+      }
+
+      @Test
+      @TestMetadata("val_field_reasoning.kt")
+      public void testVal_field_reasoning() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/permissions/val_field_reasoning.kt");
+      }
+
+      @Test
+      @TestMetadata("var_field_reasoning.kt")
+      public void testVar_field_reasoning() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/permissions/var_field_reasoning.kt");
+      }
+    }
+
+    @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/properties_and_fields")
     @TestDataPath("$PROJECT_ROOT")
     public class Properties_and_fields {

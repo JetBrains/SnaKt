@@ -1,0 +1,75 @@
+/constructor_permissions.kt:(344,354): info: Generated Viper text for takeUnique:
+field bf$x: Ref
+
+field bf$y: Ref
+
+method f$takeUnique$TF$T$Simple$T$Int(p$s: Ref) returns (ret$0: Ref)
+  requires acc(p$c$Simple$unique(p$s), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$c$Simple())
+  inhale acc(p$c$Simple$shared(p$s), wildcard)
+  unfold acc(p$c$Simple$shared(p$s), wildcard)
+  ret$0 := p$s.bf$x
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/constructor_permissions.kt:(403,425): info: Generated Viper text for constructAndPassUnique:
+field bf$x: Ref
+
+field bf$y: Ref
+
+method con$c$Simple$T$Int$T$Int$T$Simple(p$x: Ref, p$y: Ref)
+  returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Simple())
+  ensures acc(p$c$Simple$shared(ret), wildcard)
+  ensures acc(p$c$Simple$unique(ret), write)
+  ensures df$rt$intFromRef((unfolding acc(p$c$Simple$shared(ret), wildcard) in
+      ret.bf$x)) ==
+    df$rt$intFromRef(p$x)
+
+
+method f$constructAndPassUnique$TF$T$Int() returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var l0$s: Ref
+  l0$s := con$c$Simple$T$Int$T$Int$T$Simple(df$rt$intToRef(1), df$rt$intToRef(2))
+  ret$0 := f$takeUnique$TF$T$Simple$T$Int(l0$s)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+method f$takeUnique$TF$T$Simple$T$Int(p$s: Ref) returns (ret: Ref)
+  requires acc(p$c$Simple$unique(p$s), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
+
+
+/constructor_permissions.kt:(586,605): info: Generated Viper text for constructAndReadVal:
+field bf$x: Ref
+
+field bf$y: Ref
+
+method con$c$Simple$T$Int$T$Int$T$Simple(p$x: Ref, p$y: Ref)
+  returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Simple())
+  ensures acc(p$c$Simple$shared(ret), wildcard)
+  ensures acc(p$c$Simple$unique(ret), write)
+  ensures df$rt$intFromRef((unfolding acc(p$c$Simple$shared(ret), wildcard) in
+      ret.bf$x)) ==
+    df$rt$intFromRef(p$x)
+
+
+method f$constructAndReadVal$TF$T$Boolean() returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
+  ensures df$rt$boolFromRef(ret$0) == true
+{
+  var l0$s: Ref
+  var anon$0: Ref
+  l0$s := con$c$Simple$T$Int$T$Int$T$Simple(df$rt$intToRef(10), df$rt$intToRef(20))
+  unfold acc(p$c$Simple$shared(l0$s), wildcard)
+  anon$0 := l0$s.bf$x
+  ret$0 := df$rt$boolToRef(df$rt$intFromRef(anon$0) == 10)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
