@@ -1,0 +1,3 @@
+/return_property.kt:(364,367): error: Return uniqueness mismatch: cannot return a 'shared local' value
+
+/return_property.kt:(525,528): error: Return uniqueness mismatch: cannot return a 'unique local' value
