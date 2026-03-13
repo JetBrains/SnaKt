@@ -5,11 +5,13 @@
 
 package org.jetbrains.kotlin.formver.plugin.compiler
 
+import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
 
 class FormalVerificationPluginExtensionRegistrar(private val config: PluginConfiguration) : FirExtensionRegistrar() {
     override fun ExtensionRegistrarContext.configurePlugin() {
+        +{session: FirSession -> UniquenessTypeAttributeExtension(session, config)}
         +PluginAdditionalCheckers.getFactory(config)
     }
 }
