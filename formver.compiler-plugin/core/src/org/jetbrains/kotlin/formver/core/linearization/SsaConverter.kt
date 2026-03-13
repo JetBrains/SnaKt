@@ -134,12 +134,7 @@ class SsaConverter(
             is Exp.DomainFuncApp -> {
                 this.args.forEach { it.propagateAccessInvariants(to) }
             }
-
-            is Exp.TernaryExp -> {
-                this.thenExp.propagateAccessInvariants(to)
-                this.elseExp.propagateAccessInvariants(to)
-            }
-
+            // TODO: Determine how to handle the access invariants of a Ternary
             else -> {}
         }
         if (from == null) return

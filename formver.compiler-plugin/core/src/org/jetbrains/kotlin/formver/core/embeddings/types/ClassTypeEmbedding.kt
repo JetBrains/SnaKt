@@ -66,7 +66,9 @@ fun ClassTypeEmbedding.embedClassTypeFunc(): DomainFunc = RuntimeTypeDomain.clas
 fun ClassTypeEmbedding.predicateAccess(
     receiver: ExpEmbedding,
     source: KtSourceElement?
-): Exp.PredicateAccess =
-    sharedPredicateAccessInvariant()?.fillHole(receiver)
-        ?.pureToViper(toBuiltin = true, source) as? Exp.PredicateAccess
-        ?: error("Attempt to unfold a predicate of ${name.debugMangled}.")
+): Exp.PredicateAccess {
+    val access = (sharedPredicateAccessInvariant().fillHole(receiver)
+        .pureToViper(toBuiltin = true, source) as? Exp.PredicateAccess
+        ?: error("Translating shared predicate of ${name.debugMangled} yielded no predicate access."))
+    return access
+}

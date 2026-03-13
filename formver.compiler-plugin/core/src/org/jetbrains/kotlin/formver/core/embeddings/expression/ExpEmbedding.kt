@@ -373,7 +373,7 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
     }
 
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-        ctx.handleFieldAccess(field, receiver, result)
+        ctx.addFieldAccess(field, receiver, result)
     }
 
     private fun unfoldingInImpl(ctx: LinearizationContext): Exp {

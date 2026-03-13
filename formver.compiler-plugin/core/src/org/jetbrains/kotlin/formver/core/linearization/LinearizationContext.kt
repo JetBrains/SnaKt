@@ -21,7 +21,7 @@ import org.jetbrains.kotlin.formver.viper.ast.Label
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
 
 enum class UnfoldPolicy {
-    UNFOLD, UNFOLDING_IN;
+    UNFOLD, UNFOLDING_IN, STORE_UNFOLDING_IN;
 }
 
 enum class LogicOperatorPolicy {
@@ -57,7 +57,7 @@ interface LinearizationContext {
         result: VariableEmbedding?
     )
 
-    fun handleFieldAccess(field: FieldEmbedding, receiver: ExpEmbedding, result: VariableEmbedding)
+    fun addFieldAccess(field: FieldEmbedding, receiver: ExpEmbedding, result: VariableEmbedding)
 
     fun addModifier(mod: StmtModifier)
 

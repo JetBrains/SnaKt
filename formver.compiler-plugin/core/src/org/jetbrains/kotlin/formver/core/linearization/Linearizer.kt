@@ -99,7 +99,7 @@ data class Linearizer(
         stmtModifierTracker?.add(mod) ?: error("Not in a statement")
     }
 
-    override fun handleFieldAccess(field: FieldEmbedding, receiver: ExpEmbedding, result: VariableEmbedding) {
+    override fun addFieldAccess(field: FieldEmbedding, receiver: ExpEmbedding, result: VariableEmbedding) {
         addStatement {
             when (field.accessPolicy) {
                 // TODO: Handling a unique field on a shared receiver must be added here.
@@ -132,7 +132,7 @@ data class Linearizer(
     ) {
         this?.forEach { classType ->
             val predAcc = classType.predicateAccess(receiverWrapper, source)
-            predAcc.let { ctx.addStatement { Stmt.Unfold(it) } }
+            ctx.addStatement { Stmt.Unfold(predAcc, source.asPosition) }
         }
     }
 

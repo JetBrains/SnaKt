@@ -103,7 +103,7 @@ data class PureLinearizer(
         }
     }
 
-    override fun handleFieldAccess(
+    override fun addFieldAccess(
         field: FieldEmbedding,
         receiver: ExpEmbedding,
         result: VariableEmbedding
@@ -114,7 +114,7 @@ data class PureLinearizer(
             "Invalid receiver encountered in pure function"
         )
         val receiverWrapper = ExpWrapper(viperReceiver, receiver.type)
-        val hierarchyPath = (receiver.type.pretype as? ClassTypeEmbedding)?.details?.hierarchyUnfoldPath(field)
+        val hierarchyPath = receiver.type.hierarchyUnfoldPath(field)
         val accessInvariants =
             hierarchyPath?.map { it.predicateAccess(receiverWrapper, source) }?.toList() ?: emptyList()
         val primitiveAccess: Exp = Exp.FieldAccess(viperReceiver, field.toViper(), source.asPosition)
