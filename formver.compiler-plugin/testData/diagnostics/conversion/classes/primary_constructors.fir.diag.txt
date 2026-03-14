@@ -1,4 +1,4 @@
-/primary_constructors.kt:(70,91): info: Generated Viper text for createPrimitiveFields:
+/primary_constructors.kt:(71,92): info: Generated Viper text for createPrimitiveFields:
 field bf$a: Ref
 
 field bf$b: Ref
@@ -28,7 +28,7 @@ method f$createPrimitiveFields$TF$T$PrimitiveFields() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/primary_constructors.kt:(178,193): info: Generated Viper text for createRecursive:
+/primary_constructors.kt:(179,194): info: Generated Viper text for createRecursive:
 field bf$a: Ref
 
 method con$c$Recursive$NT$Recursive$T$Recursive(p$a: Ref)
@@ -50,7 +50,7 @@ method f$createRecursive$TF$T$Recursive() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/primary_constructors.kt:(279,296): info: Generated Viper text for createFieldInBody:
+/primary_constructors.kt:(280,297): info: Generated Viper text for createFieldInBody:
 field bf$a: Ref
 
 field bf$c: Ref

@@ -1,4 +1,4 @@
-/return_break_continue.kt:(23,33): info: Generated Viper text for testReturn:
+/return_break_continue.kt:(24,34): info: Generated Viper text for testReturn:
 method f$testReturn$TF$T$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -9,7 +9,7 @@ method f$testReturn$TF$T$Int() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/return_break_continue.kt:(76,90): info: Generated Viper text for returnFromLoop:
+/return_break_continue.kt:(77,91): info: Generated Viper text for returnFromLoop:
 method f$returnFromLoop$TF$T$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -27,7 +27,7 @@ method f$returnFromLoop$TF$T$Int() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/return_break_continue.kt:(162,172): info: Generated Viper text for whileBreak:
+/return_break_continue.kt:(163,173): info: Generated Viper text for whileBreak:
 method f$whileBreak$TF$T$Boolean$T$Int(p$b: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
@@ -52,7 +52,7 @@ method f$whileBreak$TF$T$Boolean$T$Int(p$b: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/return_break_continue.kt:(276,289): info: Generated Viper text for whileContinue:
+/return_break_continue.kt:(277,290): info: Generated Viper text for whileContinue:
 method f$whileContinue$TF$T$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -73,7 +73,7 @@ method f$whileContinue$TF$T$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/return_break_continue.kt:(375,386): info: Generated Viper text for whileNested:
+/return_break_continue.kt:(376,387): info: Generated Viper text for whileNested:
 method f$whileNested$TF$T$Boolean$T$Unit(p$b: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -113,7 +113,7 @@ method f$whileNested$TF$T$Boolean$T$Unit(p$b: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/return_break_continue.kt:(556,569): info: Generated Viper text for labelledBreak:
+/return_break_continue.kt:(557,570): info: Generated Viper text for labelledBreak:
 method f$labelledBreak$TF$T$Boolean$T$Unit(p$b: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -145,7 +145,7 @@ method f$labelledBreak$TF$T$Boolean$T$Unit(p$b: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/return_break_continue.kt:(754,770): info: Generated Viper text for labelledContinue:
+/return_break_continue.kt:(755,771): info: Generated Viper text for labelledContinue:
 method f$labelledContinue$TF$T$Boolean$T$Unit(p$b: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
@@ -178,7 +178,7 @@ method f$labelledContinue$TF$T$Boolean$T$Unit(p$b: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/return_break_continue.kt:(970,992): info: Generated Viper text for labelledWhileShadowing:
+/return_break_continue.kt:(971,993): info: Generated Viper text for labelledWhileShadowing:
 method f$labelledWhileShadowing$TF$T$Boolean$T$Unit(p$b: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())

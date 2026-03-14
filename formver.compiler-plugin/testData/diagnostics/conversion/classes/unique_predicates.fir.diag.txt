@@ -1,4 +1,4 @@
-/unique_predicates.kt:(269,283): info: Generated Viper text for unique_foo_arg:
+/unique_predicates.kt:(270,284): info: Generated Viper text for unique_foo_arg:
 field bf$w: Ref
 
 field bf$x: Ref
@@ -58,7 +58,7 @@ method f$unique_foo_arg$TF$T$Foo$T$Unit(p$foo: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/unique_predicates.kt:(310,329): info: Generated Viper text for nullable_unique_arg:
+/unique_predicates.kt:(311,330): info: Generated Viper text for nullable_unique_arg:
 predicate p$c$T$shared(this$dispatch: Ref) {
   true
 }
@@ -77,7 +77,7 @@ method f$nullable_unique_arg$TF$NT$T$T$Unit(p$t: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/unique_predicates.kt:(353,372): info: Generated Viper text for borrowed_unique_arg:
+/unique_predicates.kt:(354,373): info: Generated Viper text for borrowed_unique_arg:
 predicate p$c$T$shared(this$dispatch: Ref) {
   true
 }
@@ -97,7 +97,7 @@ method f$borrowed_unique_arg$TF$T$T$T$Unit(p$t: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/unique_predicates.kt:(424,439): info: Generated Viper text for unique_receiver:
+/unique_predicates.kt:(425,440): info: Generated Viper text for unique_receiver:
 predicate p$c$T$shared(this$dispatch: Ref) {
   true
 }
@@ -117,7 +117,7 @@ method f$unique_receiver$TF$T$T$T$Unit(this$extension: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/unique_predicates.kt:(488,512): info: Generated Viper text for borrowed_unique_receiver:
+/unique_predicates.kt:(489,513): info: Generated Viper text for borrowed_unique_receiver:
 predicate p$c$T$shared(this$dispatch: Ref) {
   true
 }
@@ -138,7 +138,7 @@ method f$borrowed_unique_receiver$TF$T$T$T$Unit(this$extension: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/unique_predicates.kt:(531,544): info: Generated Viper text for unique_result:
+/unique_predicates.kt:(532,545): info: Generated Viper text for unique_result:
 predicate p$c$T$shared(this$dispatch: Ref) {
   true
 }
@@ -163,7 +163,7 @@ method f$unique_result$TF$T$T() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/unique_predicates.kt:(579,601): info: Generated Viper text for unique_nullable_result:
+/unique_predicates.kt:(580,602): info: Generated Viper text for unique_nullable_result:
 predicate p$c$T$shared(this$dispatch: Ref) {
   true
 }

@@ -1,4 +1,4 @@
-// NEVER_VALIDATE
+// CONVERSION_ONLY
 
 open class Foo(val x: Int) {
     val y: Int = 3

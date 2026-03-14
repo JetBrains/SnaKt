@@ -1,4 +1,4 @@
-// NEVER_VALIDATE
+// CONVERSION_ONLY
 
 fun <!VIPER_TEXT!>whileLoop<!>(b: Boolean): Boolean {
     while (b) {

@@ -1,4 +1,4 @@
-/inheritance_fields.kt:(227,234): info: Generated Viper text for createB:
+/inheritance_fields.kt:(228,235): info: Generated Viper text for createB:
 field bf$fieldNotOverride: Ref
 
 method con$c$B$T$FieldB$T$B(p$fieldOverride: Ref) returns (ret: Ref)
@@ -38,7 +38,7 @@ method f$createB$TF$T$Unit() returns (ret$0: Ref)
 method pg$public$fieldOverride(this$dispatch: Ref) returns (ret: Ref)
 
 
-/inheritance_fields.kt:(699,715): info: Generated Viper text for createBFsAndNoBF:
+/inheritance_fields.kt:(700,716): info: Generated Viper text for createBFsAndNoBF:
 field bf$x: Ref
 
 method con$c$FirstBackingFieldClass$T$FirstBackingFieldClass()
@@ -94,7 +94,7 @@ method f$createBFsAndNoBF$TF$T$Unit() returns (ret$0: Ref)
 method pg$public$x(this$dispatch: Ref) returns (ret: Ref)
 
 
-/inheritance_fields.kt:(1038,1045): info: Generated Viper text for createY:
+/inheritance_fields.kt:(1039,1046): info: Generated Viper text for createY:
 field bf$a: Ref
 
 method con$c$Y$T$Int$T$Y(p$a: Ref) returns (ret: Ref)

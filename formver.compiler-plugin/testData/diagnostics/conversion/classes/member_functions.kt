@@ -1,4 +1,4 @@
-// NEVER_VALIDATE
+// CONVERSION_ONLY
 
 class Foo(val x: Int) {
     fun <!VIPER_TEXT!>memberFun<!>(): Int {

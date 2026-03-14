@@ -1,4 +1,4 @@
-/inheritance.kt:(93,97): info: Generated Viper text for getY:
+/inheritance.kt:(94,98): info: Generated Viper text for getY:
 field bf$b: Ref
 
 field bf$x: Ref
@@ -16,7 +16,7 @@ method f$c$Foo$getY$TF$T$Foo$T$Int(this$dispatch: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/inheritance.kt:(190,193): info: Generated Viper text for sum:
+/inheritance.kt:(191,194): info: Generated Viper text for sum:
 field bf$b: Ref
 
 field bf$x: Ref
@@ -42,7 +42,7 @@ method f$c$Bar$sum$TF$T$Bar$T$Int(this$dispatch: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/inheritance.kt:(236,251): info: Generated Viper text for callSuperMethod:
+/inheritance.kt:(237,252): info: Generated Viper text for callSuperMethod:
 field bf$b: Ref
 
 field bf$x: Ref
@@ -66,7 +66,7 @@ method f$callSuperMethod$TF$T$Bar$T$Int(p$bar: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/inheritance.kt:(298,314): info: Generated Viper text for accessSuperField:
+/inheritance.kt:(299,315): info: Generated Viper text for accessSuperField:
 field bf$b: Ref
 
 field bf$x: Ref
@@ -86,7 +86,7 @@ method f$accessSuperField$TF$T$Bar$T$Boolean(p$bar: Ref)
   label lbl$ret$0
 }
 
-/inheritance.kt:(360,374): info: Generated Viper text for accessNewField:
+/inheritance.kt:(361,375): info: Generated Viper text for accessNewField:
 field bf$b: Ref
 
 field bf$x: Ref
@@ -106,7 +106,7 @@ method f$accessNewField$TF$T$Bar$T$Int(p$bar: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/inheritance.kt:(416,429): info: Generated Viper text for callNewMethod:
+/inheritance.kt:(417,430): info: Generated Viper text for callNewMethod:
 field bf$b: Ref
 
 field bf$x: Ref
@@ -130,7 +130,7 @@ method f$callNewMethod$TF$T$Bar$T$Int(p$bar: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/inheritance.kt:(475,488): info: Generated Viper text for setSuperField:
+/inheritance.kt:(476,489): info: Generated Viper text for setSuperField:
 field bf$b: Ref
 
 field bf$x: Ref
@@ -148,7 +148,7 @@ method f$setSuperField$TF$T$Bar$T$Unit(p$bar: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/inheritance.kt:(525,546): info: Generated Viper text for accessSuperSuperField:
+/inheritance.kt:(526,547): info: Generated Viper text for accessSuperSuperField:
 field bf$b: Ref
 
 field bf$x: Ref

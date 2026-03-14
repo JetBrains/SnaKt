@@ -1,4 +1,4 @@
-/function_call.kt:(118,130): info: Generated Viper text for functionCall:
+/function_call.kt:(119,131): info: Generated Viper text for functionCall:
 method f$f$TF$T$Int$T$Int(p$x: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
@@ -15,7 +15,7 @@ method f$functionCall$TF$T$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/function_call.kt:(160,178): info: Generated Viper text for functionCallNested:
+/function_call.kt:(161,179): info: Generated Viper text for functionCallNested:
 method f$f$TF$T$Int$T$Int(p$x: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
@@ -34,7 +34,7 @@ method f$functionCallNested$TF$T$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/function_call.kt:(205,215): info: Generated Viper text for callItself:
+/function_call.kt:(206,216): info: Generated Viper text for callItself:
 method f$callItself$TF$T$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {

@@ -1,4 +1,4 @@
-/manual_permissions.kt:(145,176): info: Generated Viper text for testManualPermissionFieldGetter:
+/manual_permissions.kt:(146,177): info: Generated Viper text for testManualPermissionFieldGetter:
 field bf$a: Ref
 
 field bf$b: Ref
@@ -19,7 +19,7 @@ method f$testManualPermissionFieldGetter$TF$T$ManualPermissionFields$T$Unit(p$mp
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/manual_permissions.kt:(251,282): info: Generated Viper text for testManualPermissionFieldSetter:
+/manual_permissions.kt:(252,283): info: Generated Viper text for testManualPermissionFieldSetter:
 field bf$a: Ref
 
 field bf$b: Ref

@@ -1,4 +1,4 @@
-// NEVER_VALIDATE
+// CONVERSION_ONLY
 
 class PrimitiveProperty {
     val nProp: Int get() {

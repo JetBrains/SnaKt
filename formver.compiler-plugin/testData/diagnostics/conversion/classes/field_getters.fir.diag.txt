@@ -1,4 +1,4 @@
-/field_getters.kt:(70,94): info: Generated Viper text for testPrimitiveFieldGetter:
+/field_getters.kt:(71,95): info: Generated Viper text for testPrimitiveFieldGetter:
 field bf$a: Ref
 
 field bf$b: Ref
@@ -18,7 +18,7 @@ method f$testPrimitiveFieldGetter$TF$T$PrimitiveFields$T$Unit(p$pf: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/field_getters.kt:(230,254): info: Generated Viper text for testReferenceFieldGetter:
+/field_getters.kt:(231,255): info: Generated Viper text for testReferenceFieldGetter:
 field bf$a: Ref
 
 field bf$b: Ref
@@ -52,7 +52,7 @@ method f$testReferenceFieldGetter$TF$T$ReferenceFields$T$Unit(p$rf: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/field_getters.kt:(387,411): info: Generated Viper text for testCascadingFieldGetter:
+/field_getters.kt:(388,412): info: Generated Viper text for testCascadingFieldGetter:
 field bf$a: Ref
 
 field bf$b: Ref

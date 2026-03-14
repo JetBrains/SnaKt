@@ -1,4 +1,4 @@
-/safe_call.kt:(142,154): info: Generated Viper text for testSafeCall:
+/safe_call.kt:(143,155): info: Generated Viper text for testSafeCall:
 field bf$x: Ref
 
 method f$c$Foo$f$TF$T$Foo$T$Unit(this$dispatch: Ref) returns (ret: Ref)
@@ -22,7 +22,7 @@ method f$testSafeCall$TF$NT$Foo$NT$Unit(p$foo: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/safe_call.kt:(217,240): info: Generated Viper text for testSafeCallNonNullable:
+/safe_call.kt:(218,241): info: Generated Viper text for testSafeCallNonNullable:
 field bf$x: Ref
 
 method f$c$Foo$f$TF$T$Foo$T$Unit(this$dispatch: Ref) returns (ret: Ref)
@@ -46,7 +46,7 @@ method f$testSafeCallNonNullable$TF$T$Foo$NT$Unit(p$foo: Ref)
   label lbl$ret$0
 }
 
-/safe_call.kt:(267,287): info: Generated Viper text for testSafeCallProperty:
+/safe_call.kt:(268,288): info: Generated Viper text for testSafeCallProperty:
 field bf$x: Ref
 
 method f$testSafeCallProperty$TF$NT$Foo$NT$Int(p$foo: Ref)
@@ -67,7 +67,7 @@ method f$testSafeCallProperty$TF$NT$Foo$NT$Int(p$foo: Ref)
   label lbl$ret$0
 }
 
-/safe_call.kt:(354,385): info: Generated Viper text for testSafeCallPropertyNonNullable:
+/safe_call.kt:(355,386): info: Generated Viper text for testSafeCallPropertyNonNullable:
 field bf$x: Ref
 
 method f$testSafeCallPropertyNonNullable$TF$T$Foo$NT$Int(p$foo: Ref)
@@ -87,7 +87,7 @@ method f$testSafeCallPropertyNonNullable$TF$T$Foo$NT$Int(p$foo: Ref)
   label lbl$ret$0
 }
 
-/safe_call.kt:(493,506): info: Generated Viper text for safeCallChain:
+/safe_call.kt:(494,507): info: Generated Viper text for safeCallChain:
 field bf$v: Ref
 
 method f$c$Rec$nullable$TF$T$Rec$NT$Rec(this$dispatch: Ref)

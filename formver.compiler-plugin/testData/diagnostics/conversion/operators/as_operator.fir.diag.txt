@@ -1,4 +1,4 @@
-/as_operator.kt:(57,63): info: Generated Viper text for testAs:
+/as_operator.kt:(58,64): info: Generated Viper text for testAs:
 method f$testAs$TF$T$Foo$T$Bar(p$foo: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$Bar())
@@ -12,7 +12,7 @@ method f$testAs$TF$T$Foo$T$Bar(p$foo: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/as_operator.kt:(97,111): info: Generated Viper text for testNullableAs:
+/as_operator.kt:(98,112): info: Generated Viper text for testNullableAs:
 method f$testNullableAs$TF$NT$Foo$NT$Bar(p$foo: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$nullable(df$rt$c$Foo()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$c$Bar()))
@@ -29,7 +29,7 @@ method f$testNullableAs$TF$NT$Foo$NT$Bar(p$foo: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/as_operator.kt:(148,158): info: Generated Viper text for testSafeAs:
+/as_operator.kt:(149,159): info: Generated Viper text for testSafeAs:
 method f$testSafeAs$TF$T$Foo$NT$Bar(p$foo: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$c$Bar()))
@@ -48,7 +48,7 @@ method f$testSafeAs$TF$T$Foo$NT$Bar(p$foo: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/as_operator.kt:(194,212): info: Generated Viper text for testNullableSafeAs:
+/as_operator.kt:(195,213): info: Generated Viper text for testNullableSafeAs:
 method f$testNullableSafeAs$TF$NT$Foo$NT$Bar(p$foo: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$nullable(df$rt$c$Foo()))

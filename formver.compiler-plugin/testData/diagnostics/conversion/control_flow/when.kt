@@ -1,4 +1,4 @@
-// NEVER_VALIDATE
+// CONVERSION_ONLY
 
 fun <!VIPER_TEXT!>returnWhen<!>(a: Boolean, b: Boolean, c: Boolean): Int {
     return when {

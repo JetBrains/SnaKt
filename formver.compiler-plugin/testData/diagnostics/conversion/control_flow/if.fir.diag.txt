@@ -1,4 +1,4 @@
-/if.kt:(23,31): info: Generated Viper text for simpleIf:
+/if.kt:(24,32): info: Generated Viper text for simpleIf:
 method f$simpleIf$TF$T$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -12,7 +12,7 @@ method f$simpleIf$TF$T$Int() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/if.kt:(116,129): info: Generated Viper text for ifOnParameter:
+/if.kt:(117,130): info: Generated Viper text for ifOnParameter:
 method f$ifOnParameter$TF$T$Boolean$T$Int(p$b: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
@@ -27,7 +27,7 @@ method f$ifOnParameter$TF$T$Boolean$T$Int(p$b: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/if.kt:(221,235): info: Generated Viper text for ifAsExpression:
+/if.kt:(222,236): info: Generated Viper text for ifAsExpression:
 method f$ifAsExpression$TF$T$Boolean() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
@@ -53,3 +53,4 @@ method f$ifOnParameter$TF$T$Boolean$T$Int(p$b: Ref) returns (ret: Ref)
 
 method f$simpleIf$TF$T$Int() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
+

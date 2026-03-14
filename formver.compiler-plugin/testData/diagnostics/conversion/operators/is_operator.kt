@@ -1,4 +1,4 @@
-// NEVER_VALIDATE
+// CONVERSION_ONLY
 
 fun <!VIPER_TEXT!>isNonNullable<!>(x: Int?): Boolean {
     return x is Int

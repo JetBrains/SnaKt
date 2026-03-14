@@ -1,4 +1,4 @@
-/secondary_constructors.kt:(249,271): info: Generated Viper text for onlySecondConstructors:
+/secondary_constructors.kt:(250,272): info: Generated Viper text for onlySecondConstructors:
 field bf$a: Ref
 
 method con$c$NoPrimaryConstructor$T$Boolean$T$NoPrimaryConstructor(p$b: Ref)
@@ -28,7 +28,7 @@ method f$onlySecondConstructors$TF$T$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/secondary_constructors.kt:(365,392): info: Generated Viper text for primaryAndSecondConstructor:
+/secondary_constructors.kt:(366,393): info: Generated Viper text for primaryAndSecondConstructor:
 field bf$a: Ref
 
 method con$c$BothConstructors$T$Boolean$T$BothConstructors(p$b: Ref)

@@ -1,4 +1,4 @@
-/elvis.kt:(121,134): info: Generated Viper text for elvisOperator:
+/elvis.kt:(122,135): info: Generated Viper text for elvisOperator:
 method f$elvisOperator$TF$NT$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
@@ -11,7 +11,7 @@ method f$elvisOperator$TF$NT$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/elvis.kt:(176,196): info: Generated Viper text for elvisOperatorComplex:
+/elvis.kt:(177,197): info: Generated Viper text for elvisOperatorComplex:
 method f$elvisOperator$TF$NT$Int$T$Int(p$x: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
@@ -37,7 +37,7 @@ method f$id$TF$NT$Int$NT$Int(p$x: Ref) returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$intType()))
 
 
-/elvis.kt:(257,276): info: Generated Viper text for elvisOperatorReturn:
+/elvis.kt:(258,277): info: Generated Viper text for elvisOperatorReturn:
 method f$elvisOperatorReturn$TF$NT$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())

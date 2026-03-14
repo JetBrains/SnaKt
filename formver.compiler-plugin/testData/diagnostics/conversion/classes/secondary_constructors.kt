@@ -1,4 +1,4 @@
-// NEVER_VALIDATE
+// CONVERSION_ONLY
 
 class NoPrimaryConstructor {
     val a: Int

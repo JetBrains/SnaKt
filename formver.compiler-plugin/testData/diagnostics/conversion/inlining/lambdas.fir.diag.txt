@@ -1,4 +1,4 @@
-/lambdas.kt:(155,166): info: Generated Viper text for explicitArg:
+/lambdas.kt:(156,167): info: Generated Viper text for explicitArg:
 method f$explicitArg$TF$T$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -17,7 +17,7 @@ method f$explicitArg$TF$T$Int() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/lambdas.kt:(216,227): info: Generated Viper text for implicitArg:
+/lambdas.kt:(217,228): info: Generated Viper text for implicitArg:
 method f$implicitArg$TF$T$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -36,7 +36,7 @@ method f$implicitArg$TF$T$Int() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/lambdas.kt:(273,281): info: Generated Viper text for lambdaIf:
+/lambdas.kt:(274,282): info: Generated Viper text for lambdaIf:
 method f$lambdaIf$TF$T$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -58,7 +58,7 @@ method f$lambdaIf$TF$T$Int() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/lambdas.kt:(412,430): info: Generated Viper text for returnValueNotUsed:
+/lambdas.kt:(413,431): info: Generated Viper text for returnValueNotUsed:
 method f$returnValueNotUsed$TF$T$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -76,7 +76,7 @@ method f$returnValueNotUsed$TF$T$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/lambdas.kt:(466,475): info: Generated Viper text for shadowing:
+/lambdas.kt:(467,476): info: Generated Viper text for shadowing:
 method f$shadowing$TF$T$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -101,7 +101,7 @@ method f$shadowing$TF$T$Int() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/lambdas.kt:(711,717): info: Generated Viper text for nested:
+/lambdas.kt:(712,718): info: Generated Viper text for nested:
 method f$nested$TF$T$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -128,7 +128,7 @@ method f$nested$TF$T$Int() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/lambdas.kt:(853,870): info: Generated Viper text for lambdaPassthrough:
+/lambdas.kt:(854,871): info: Generated Viper text for lambdaPassthrough:
 method f$lambdaPassthrough$TF$T$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {

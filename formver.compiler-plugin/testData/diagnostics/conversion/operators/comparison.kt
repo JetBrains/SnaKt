@@ -1,4 +1,4 @@
-// NEVER_VALIDATE
+// CONVERSION_ONLY
 
 fun <!VIPER_TEXT!>less<!>(x: Int, y: Int): Boolean {
     return x < y

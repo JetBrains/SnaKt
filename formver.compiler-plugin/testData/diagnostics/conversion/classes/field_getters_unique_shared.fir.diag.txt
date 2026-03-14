@@ -1,4 +1,4 @@
-/field_getters_unique_shared.kt:(211,241): info: Generated Viper text for testPrimitiveFieldGetterUnique:
+/field_getters_unique_shared.kt:(212,242): info: Generated Viper text for testPrimitiveFieldGetterUnique:
 field bf$sharedVal: Ref
 
 field bf$sharedVar: Ref
@@ -28,7 +28,7 @@ method f$testPrimitiveFieldGetterUnique$TF$T$PrimitiveFields$T$Unit(p$pf: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/field_getters_unique_shared.kt:(412,442): info: Generated Viper text for testPrimitiveFieldGetterShared:
+/field_getters_unique_shared.kt:(413,443): info: Generated Viper text for testPrimitiveFieldGetterShared:
 field bf$sharedVal: Ref
 
 field bf$sharedVar: Ref
@@ -57,7 +57,7 @@ method f$testPrimitiveFieldGetterShared$TF$T$PrimitiveFields$T$Unit(p$pf: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/field_getters_unique_shared.kt:(791,821): info: Generated Viper text for testReferenceFieldGetterUnique:
+/field_getters_unique_shared.kt:(792,822): info: Generated Viper text for testReferenceFieldGetterUnique:
 field bf$sharedVal: Ref
 
 field bf$sharedVar: Ref
@@ -87,7 +87,7 @@ method f$testReferenceFieldGetterUnique$TF$T$ReferenceFields$T$Unit(p$rf: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/field_getters_unique_shared.kt:(992,1022): info: Generated Viper text for testReferenceFieldGetterShared:
+/field_getters_unique_shared.kt:(993,1023): info: Generated Viper text for testReferenceFieldGetterShared:
 field bf$sharedVal: Ref
 
 field bf$sharedVar: Ref

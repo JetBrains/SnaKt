@@ -1,4 +1,4 @@
-/subtyping.kt:(80,89): info: Generated Viper text for smartCast:
+/subtyping.kt:(81,90): info: Generated Viper text for smartCast:
 method f$smartCast$TF$NT$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
@@ -13,7 +13,7 @@ method f$smartCast$TF$NT$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/subtyping.kt:(187,202): info: Generated Viper text for returnSubtyping:
+/subtyping.kt:(188,203): info: Generated Viper text for returnSubtyping:
 method f$returnSubtyping$TF$NT$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
 {
@@ -22,7 +22,7 @@ method f$returnSubtyping$TF$NT$Int() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/subtyping.kt:(233,252): info: Generated Viper text for assignmentSubtyping:
+/subtyping.kt:(234,253): info: Generated Viper text for assignmentSubtyping:
 method f$assignmentSubtyping$TF$T$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -33,7 +33,7 @@ method f$assignmentSubtyping$TF$T$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/subtyping.kt:(358,384): info: Generated Viper text for functionParameterSubtyping:
+/subtyping.kt:(359,385): info: Generated Viper text for functionParameterSubtyping:
 method f$functionParameterSubtyping$TF$T$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -47,3 +47,4 @@ method f$nullableParameter$TF$NT$Boolean$T$Unit(p$b: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$nullable(df$rt$boolType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+

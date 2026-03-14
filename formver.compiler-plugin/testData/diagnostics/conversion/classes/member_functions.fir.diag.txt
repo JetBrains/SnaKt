@@ -1,4 +1,4 @@
-/member_functions.kt:(51,60): info: Generated Viper text for memberFun:
+/member_functions.kt:(52,61): info: Generated Viper text for memberFun:
 field bf$x: Ref
 
 method f$c$Foo$memberFun$TF$T$Foo$T$Int(this$dispatch: Ref)
@@ -13,7 +13,7 @@ method f$c$Foo$memberFun$TF$T$Foo$T$Int(this$dispatch: Ref)
   label lbl$ret$0
 }
 
-/member_functions.kt:(102,115): info: Generated Viper text for callMemberFun:
+/member_functions.kt:(103,116): info: Generated Viper text for callMemberFun:
 field bf$x: Ref
 
 method f$c$Foo$callMemberFun$TF$T$Foo$T$Unit(this$dispatch: Ref)
@@ -34,7 +34,7 @@ method f$c$Foo$memberFun$TF$T$Foo$T$Int(this$dispatch: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 
-/member_functions.kt:(155,166): info: Generated Viper text for siblingCall:
+/member_functions.kt:(156,167): info: Generated Viper text for siblingCall:
 field bf$x: Ref
 
 method f$c$Foo$memberFun$TF$T$Foo$T$Int(this$dispatch: Ref)
@@ -57,7 +57,7 @@ method f$c$Foo$siblingCall$TF$T$Foo$T$Foo$T$Unit(this$dispatch: Ref, p$other: Re
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/member_functions.kt:(220,238): info: Generated Viper text for outerMemberFunCall:
+/member_functions.kt:(221,239): info: Generated Viper text for outerMemberFunCall:
 field bf$x: Ref
 
 method f$c$Foo$memberFun$TF$T$Foo$T$Int(this$dispatch: Ref)

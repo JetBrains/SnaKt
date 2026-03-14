@@ -1,4 +1,4 @@
-/boolean_logic.kt:(23,31): info: Generated Viper text for negation:
+/boolean_logic.kt:(24,32): info: Generated Viper text for negation:
 method f$negation$TF$T$Boolean$T$Boolean(p$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
@@ -8,7 +8,7 @@ method f$negation$TF$T$Boolean$T$Boolean(p$x: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/boolean_logic.kt:(75,86): info: Generated Viper text for conjunction:
+/boolean_logic.kt:(76,87): info: Generated Viper text for conjunction:
 method f$conjunction$TF$T$Boolean$T$Boolean$T$Boolean(p$x: Ref, p$y: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$boolType())
@@ -23,7 +23,7 @@ method f$conjunction$TF$T$Boolean$T$Boolean$T$Boolean(p$x: Ref, p$y: Ref)
   label lbl$ret$0
 }
 
-/boolean_logic.kt:(146,168): info: Generated Viper text for conjunctionSideEffects:
+/boolean_logic.kt:(147,169): info: Generated Viper text for conjunctionSideEffects:
 method f$conjunctionSideEffects$TF$T$Boolean$T$Boolean$T$Boolean(p$x: Ref, p$y: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$boolType())
@@ -45,7 +45,7 @@ method f$negation$TF$T$Boolean$T$Boolean(p$x: Ref) returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
 
 
-/boolean_logic.kt:(341,352): info: Generated Viper text for disjunction:
+/boolean_logic.kt:(342,353): info: Generated Viper text for disjunction:
 method f$disjunction$TF$T$Boolean$T$Boolean$T$Boolean(p$x: Ref, p$y: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$boolType())

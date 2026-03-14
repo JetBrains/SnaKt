@@ -1,5 +1,5 @@
 // RENDER_PREDICATES
-// NEVER_VALIDATE
+// CONVERSION_ONLY
 
 import org.jetbrains.kotlin.formver.plugin.AlwaysVerify
 
