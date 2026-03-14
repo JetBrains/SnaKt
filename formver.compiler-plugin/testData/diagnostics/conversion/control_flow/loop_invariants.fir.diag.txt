@@ -1,4 +1,4 @@
-/loop_invariants.kt:(146,168): info: Generated Viper text for dynamicLambdaInvariant:
+/loop_invariants.kt:(147,169): info: Generated Viper text for dynamicLambdaInvariant:
 method f$dynamicLambdaInvariant$TF$TF$T$Int$T$Unit(p$f: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$functionType())
@@ -23,7 +23,7 @@ method f$returnsBoolean$TF$T$Boolean() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
 
 
-/loop_invariants.kt:(241,259): info: Generated Viper text for functionAssignment:
+/loop_invariants.kt:(242,260): info: Generated Viper text for functionAssignment:
 method f$functionAssignment$TF$TF$T$Int$T$Unit(p$f: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$functionType())
@@ -52,7 +52,7 @@ method f$returnsBoolean$TF$T$Boolean() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
 
 
-/loop_invariants.kt:(346,375): info: Generated Viper text for conditionalFunctionAssignment:
+/loop_invariants.kt:(347,376): info: Generated Viper text for conditionalFunctionAssignment:
 method f$conditionalFunctionAssignment$TF$T$Boolean$TF$T$Int$TF$T$Int$T$Unit(p$b: Ref,
   p$f: Ref, p$h: Ref)
   returns (ret$0: Ref)
@@ -89,3 +89,4 @@ method f$conditionalFunctionAssignment$TF$T$Boolean$TF$T$Int$TF$T$Int$T$Unit(p$b
 
 method f$returnsBoolean$TF$T$Boolean() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
+

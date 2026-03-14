@@ -1,4 +1,4 @@
-/function_overloading.kt:(49,52): info: Generated Viper text for baz:
+/function_overloading.kt:(50,53): info: Generated Viper text for baz:
 method f$c$Bar$baz$TF$T$Bar$T$Foo$T$Unit(this$dispatch: Ref, p$f: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Bar())
@@ -11,7 +11,7 @@ method f$c$Bar$baz$TF$T$Bar$T$Foo$T$Unit(this$dispatch: Ref, p$f: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/function_overloading.kt:(74,77): info: Generated Viper text for baz:
+/function_overloading.kt:(75,78): info: Generated Viper text for baz:
 method f$c$Bar$baz$TF$T$Bar$T$Bar$T$Unit(this$dispatch: Ref, p$b: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Bar())
@@ -24,7 +24,7 @@ method f$c$Bar$baz$TF$T$Bar$T$Bar$T$Unit(this$dispatch: Ref, p$b: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/function_overloading.kt:(98,107): info: Generated Viper text for fakePrint:
+/function_overloading.kt:(99,108): info: Generated Viper text for fakePrint:
 method f$fakePrint$TF$T$Bar$T$Unit(p$b: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$Bar())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -34,7 +34,7 @@ method f$fakePrint$TF$T$Bar$T$Unit(p$b: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/function_overloading.kt:(125,134): info: Generated Viper text for fakePrint:
+/function_overloading.kt:(126,135): info: Generated Viper text for fakePrint:
 method f$fakePrint$TF$T$Foo$T$Unit(p$f: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -44,7 +44,7 @@ method f$fakePrint$TF$T$Foo$T$Unit(p$f: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/function_overloading.kt:(152,161): info: Generated Viper text for fakePrint:
+/function_overloading.kt:(153,162): info: Generated Viper text for fakePrint:
 method f$fakePrint$TF$T$Int$T$Unit(p$value: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$value), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -53,7 +53,7 @@ method f$fakePrint$TF$T$Int$T$Unit(p$value: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/function_overloading.kt:(183,192): info: Generated Viper text for fakePrint:
+/function_overloading.kt:(184,193): info: Generated Viper text for fakePrint:
 method f$fakePrint$TF$T$Boolean$T$Unit(p$truth: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$truth), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -62,7 +62,7 @@ method f$fakePrint$TF$T$Boolean$T$Unit(p$truth: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/function_overloading.kt:(219,238): info: Generated Viper text for differInNullability:
+/function_overloading.kt:(220,239): info: Generated Viper text for differInNullability:
 method f$differInNullability$TF$T$Int$T$Unit(p$i: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$i), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -71,7 +71,7 @@ method f$differInNullability$TF$T$Int$T$Unit(p$i: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/function_overloading.kt:(256,275): info: Generated Viper text for differInNullability:
+/function_overloading.kt:(257,276): info: Generated Viper text for differInNullability:
 method f$differInNullability$TF$NT$Int$T$Unit(p$i: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$i), df$rt$nullable(df$rt$intType()))
@@ -81,7 +81,7 @@ method f$differInNullability$TF$NT$Int$T$Unit(p$i: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/function_overloading.kt:(295,321): info: Generated Viper text for testGlobalScopeOverloading:
+/function_overloading.kt:(296,322): info: Generated Viper text for testGlobalScopeOverloading:
 method con$c$Bar$T$Bar() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Bar())
   ensures acc(p$c$Bar$shared(ret), wildcard)
@@ -133,7 +133,7 @@ method f$testGlobalScopeOverloading$TF$T$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/function_overloading.kt:(413,441): info: Generated Viper text for testClassFunctionOverloading:
+/function_overloading.kt:(414,442): info: Generated Viper text for testClassFunctionOverloading:
 method con$c$Bar$T$Bar() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Bar())
   ensures acc(p$c$Bar$shared(ret), wildcard)

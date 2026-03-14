@@ -1,4 +1,4 @@
-// NEVER_VALIDATE
+// CONVERSION_ONLY
 
 class Box<T>(var t: T) {
     fun <!VIPER_TEXT!>genericMethod<!>(x: T): T {

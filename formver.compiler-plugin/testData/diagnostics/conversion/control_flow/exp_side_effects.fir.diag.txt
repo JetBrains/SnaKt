@@ -1,4 +1,4 @@
-/exp_side_effects.kt:(185,189): info: Generated Viper text for test:
+/exp_side_effects.kt:(186,190): info: Generated Viper text for test:
 field bf$x: Ref
 
 method f$getFoo$TF$T$Foo() returns (ret: Ref)

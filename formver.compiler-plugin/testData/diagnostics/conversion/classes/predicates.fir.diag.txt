@@ -1,4 +1,4 @@
-/predicates.kt:(203,213): info: Generated Viper text for useClasses:
+/predicates.kt:(204,214): info: Generated Viper text for useClasses:
 field bf$a: Ref
 
 field bf$b: Ref
@@ -67,7 +67,7 @@ method f$useClasses$TF$T$ReferenceField$T$Recursive$T$Unit(p$rf: Ref, p$rec: Ref
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/predicates.kt:(354,374): info: Generated Viper text for threeLayersHierarchy:
+/predicates.kt:(355,375): info: Generated Viper text for threeLayersHierarchy:
 field bf$x: Ref
 
 field bf$y: Ref
@@ -109,7 +109,7 @@ method f$threeLayersHierarchy$TF$T$C$T$Unit(p$c: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/predicates.kt:(390,403): info: Generated Viper text for listHierarchy:
+/predicates.kt:(391,404): info: Generated Viper text for listHierarchy:
 field sp$size: Ref
 
 predicate p$pkg$kotlin_collections$c$Collection$shared(this$dispatch: Ref) {

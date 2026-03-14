@@ -1,4 +1,4 @@
-/setters.kt:(103,127): info: Generated Viper text for testPrimitiveFieldSetter:
+/setters.kt:(104,128): info: Generated Viper text for testPrimitiveFieldSetter:
 field bf$a: Ref
 
 method f$testPrimitiveFieldSetter$TF$T$PrimitiveField$T$Unit(p$pf: Ref)
@@ -11,7 +11,7 @@ method f$testPrimitiveFieldSetter$TF$T$PrimitiveField$T$Unit(p$pf: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/setters.kt:(170,194): info: Generated Viper text for testReferenceFieldSetter:
+/setters.kt:(171,195): info: Generated Viper text for testReferenceFieldSetter:
 field bf$a: Ref
 
 field bf$pf: Ref
@@ -36,7 +36,7 @@ method f$testReferenceFieldSetter$TF$T$ReferenceField$T$Unit(p$rf: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/setters.kt:(427,454): info: Generated Viper text for testPrimitivePropertySetter:
+/setters.kt:(428,455): info: Generated Viper text for testPrimitivePropertySetter:
 method f$testPrimitivePropertySetter$TF$T$PrimitiveProperty$T$Unit(p$pp: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$pp), df$rt$c$PrimitiveProperty())
@@ -55,7 +55,7 @@ method pg$public$aProp(this$dispatch: Ref) returns (ret: Ref)
 method ps$public$aProp(this$dispatch: Ref, anon$0: Ref) returns (ret: Ref)
 
 
-/setters.kt:(504,531): info: Generated Viper text for testReferencePropertySetter:
+/setters.kt:(505,532): info: Generated Viper text for testReferencePropertySetter:
 method con$c$PrimitiveProperty$T$PrimitiveProperty() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$PrimitiveProperty())
   ensures acc(p$c$PrimitiveProperty$shared(ret), wildcard)
@@ -86,3 +86,4 @@ method ps$public$aProp(this$dispatch: Ref, anon$0: Ref) returns (ret: Ref)
 
 
 method ps$public$ppProp(this$dispatch: Ref, anon$0: Ref) returns (ret: Ref)
+

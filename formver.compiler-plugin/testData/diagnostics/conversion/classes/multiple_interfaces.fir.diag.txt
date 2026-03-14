@@ -1,4 +1,4 @@
-/multiple_interfaces.kt:(162,173): info: Generated Viper text for testDiamond:
+/multiple_interfaces.kt:(163,174): info: Generated Viper text for testDiamond:
 method con$c$D$T$D() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$D())
   ensures acc(p$c$D$shared(ret), wildcard)
@@ -21,7 +21,7 @@ method f$testDiamond$TF$T$Int() returns (ret$0: Ref)
 method pg$public$field(this$dispatch: Ref) returns (ret: Ref)
 
 
-/multiple_interfaces.kt:(405,415): info: Generated Viper text for testVarVal:
+/multiple_interfaces.kt:(406,416): info: Generated Viper text for testVarVal:
 method con$c$G$T$G() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$G())
   ensures acc(p$c$G$shared(ret), wildcard)
@@ -63,3 +63,4 @@ method pg$public$field(this$dispatch: Ref) returns (ret: Ref)
 
 
 method ps$public$field(this$dispatch: Ref, anon$0: Ref) returns (ret: Ref)
+

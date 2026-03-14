@@ -1,5 +1,5 @@
 // FULL_VIPER_DUMP
-// NEVER_VALIDATE
+// CONVERSION_ONLY
 
 import org.jetbrains.kotlin.formver.plugin.DumpExpEmbeddings
 // Check class generation.

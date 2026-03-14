@@ -1,4 +1,4 @@
-/loop.kt:(23,32): info: Generated Viper text for whileLoop:
+/loop.kt:(24,33): info: Generated Viper text for whileLoop:
 method f$whileLoop$TF$T$Boolean$T$Boolean(p$b: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
@@ -21,7 +21,7 @@ method f$whileLoop$TF$T$Boolean$T$Boolean(p$b: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/loop.kt:(138,160): info: Generated Viper text for whileFunctionCondition:
+/loop.kt:(139,161): info: Generated Viper text for whileFunctionCondition:
 method f$whileFunctionCondition$TF$T$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -39,3 +39,4 @@ method f$whileFunctionCondition$TF$T$Unit() returns (ret$0: Ref)
 method f$whileLoop$TF$T$Boolean$T$Boolean(p$b: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
+

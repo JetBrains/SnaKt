@@ -1,4 +1,4 @@
-/non-local-returns.kt:(155,167): info: Generated Viper text for simpleReturn:
+/non-local-returns.kt:(156,168): info: Generated Viper text for simpleReturn:
 method f$simpleReturn$TF$T$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -19,7 +19,7 @@ method f$simpleReturn$TF$T$Int() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/non-local-returns.kt:(238,252): info: Generated Viper text for returnAtInline:
+/non-local-returns.kt:(239,253): info: Generated Viper text for returnAtInline:
 method f$returnAtInline$TF$T$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -40,7 +40,7 @@ method f$returnAtInline$TF$T$Int() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/non-local-returns.kt:(330,342): info: Generated Viper text for doubleInvoke:
+/non-local-returns.kt:(331,343): info: Generated Viper text for doubleInvoke:
 method f$doubleInvoke$TF$T$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -73,7 +73,7 @@ method f$doubleInvoke$TF$T$Int() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/non-local-returns.kt:(567,573): info: Generated Viper text for nested:
+/non-local-returns.kt:(568,574): info: Generated Viper text for nested:
 method f$nested$TF$T$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {

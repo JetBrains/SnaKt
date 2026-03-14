@@ -1,4 +1,4 @@
-// NEVER_VALIDATE
+// CONVERSION_ONLY
 
 import org.jetbrains.kotlin.formver.plugin.Unique
 

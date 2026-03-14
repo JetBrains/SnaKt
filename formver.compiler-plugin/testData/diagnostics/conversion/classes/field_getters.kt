@@ -1,4 +1,4 @@
-// NEVER_VALIDATE
+// CONVERSION_ONLY
 
 class PrimitiveFields(val a: Int, var b: Int)
 

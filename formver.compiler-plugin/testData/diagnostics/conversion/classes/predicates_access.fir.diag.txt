@@ -1,4 +1,4 @@
-/predicates_access.kt:(249,272): info: Generated Viper text for accessSuperTypeProperty:
+/predicates_access.kt:(250,273): info: Generated Viper text for accessSuperTypeProperty:
 field bf$a: Ref
 
 field bf$b: Ref
@@ -74,7 +74,7 @@ method f$accessSuperTypeProperty$TF$T$C$T$Unit(p$c: Ref)
 method pg$public$d(this$dispatch: Ref) returns (ret: Ref)
 
 
-/predicates_access.kt:(306,318): info: Generated Viper text for accessNested:
+/predicates_access.kt:(307,319): info: Generated Viper text for accessNested:
 field bf$a: Ref
 
 field bf$b: Ref
@@ -150,7 +150,7 @@ method f$accessNested$TF$T$C$T$Unit(p$c: Ref) returns (ret$0: Ref)
 method pg$public$d(this$dispatch: Ref) returns (ret: Ref)
 
 
-/predicates_access.kt:(354,368): info: Generated Viper text for accessNullable:
+/predicates_access.kt:(355,369): info: Generated Viper text for accessNullable:
 field bf$a: Ref
 
 predicate p$c$A$shared(this$dispatch: Ref) {
@@ -177,7 +177,7 @@ method f$accessNullable$TF$NT$A$T$Unit(p$x: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/predicates_access.kt:(442,452): info: Generated Viper text for accessCast:
+/predicates_access.kt:(443,453): info: Generated Viper text for accessCast:
 field bf$a: Ref
 
 field bf$b: Ref
@@ -218,7 +218,7 @@ method f$accessCast$TF$T$A$T$Unit(p$x: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/predicates_access.kt:(501,515): info: Generated Viper text for accessSafeCast:
+/predicates_access.kt:(502,516): info: Generated Viper text for accessSafeCast:
 field bf$a: Ref
 
 field bf$b: Ref
@@ -267,7 +267,7 @@ method f$accessSafeCast$TF$T$A$T$Unit(p$x: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/predicates_access.kt:(612,627): info: Generated Viper text for accessSmartCast:
+/predicates_access.kt:(613,628): info: Generated Viper text for accessSmartCast:
 field bf$a: Ref
 
 field bf$b: Ref

@@ -79,17 +79,20 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
                     }
                 }
             }
+            val viperProgram = with(programConversionContext.nameResolver) { program.toSilver() }
+            val onFailure = { err: VerifierError ->
+                val source = err.position.unwrapOr { declaration.source }
+                reporter.reportVerifierError(source, err, config.errorStyle)
+            }
+            val consistencyErrors = viperProgram.checkTransitively()
+            for (error in consistencyErrors) {
+                onFailure(org.jetbrains.kotlin.formver.viper.errors.GenericConsistencyError(error))
+            }
+            // If the Viper program is not consistent, that's our error; we shouldn't surface it to the user as an unverified contract.
+            if (consistencyErrors.nonEmpty() || !config.shouldVerify(declaration)) return
+
             val verifier = Verifier()
             try {
-                val onFailure = { err: VerifierError ->
-                    val source = err.position.unwrapOr { declaration.source }
-                    reporter.reportVerifierError(source, err, config.errorStyle)
-                }
-                val viperProgram = with(programConversionContext.nameResolver) { program.toSilver() }
-                val consistent = verifier.checkConsistency(viperProgram, onFailure)
-                // If the Viper program is not consistent, that's our error; we shouldn't surface it to the user as an unverified contract.
-                if (!consistent || !config.shouldVerify(declaration)) return
-
                 verifier.verify(viperProgram, onFailure)
             } finally {
                 verifier.stop()
