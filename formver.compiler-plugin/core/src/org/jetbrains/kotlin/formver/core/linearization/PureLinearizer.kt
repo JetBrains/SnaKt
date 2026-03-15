@@ -16,7 +16,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpWrapper
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.print
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
 import org.jetbrains.kotlin.formver.names.SimpleNameResolver
@@ -103,11 +102,7 @@ data class PureLinearizer(
         }
     }
 
-    override fun addFieldAccess(
-        field: FieldEmbedding,
-        receiver: ExpEmbedding,
-        result: VariableEmbedding
-    ) {
+    override fun addFieldAccess(result: VariableEmbedding, receiver: ExpEmbedding, field: FieldEmbedding) {
         val viperReceiver = receiver.toViper(this)
         if (viperReceiver !is Exp.LocalVar) throw SnaktInternalException(
             source,

@@ -57,7 +57,7 @@ interface LinearizationContext {
         result: VariableEmbedding?
     )
 
-    fun addFieldAccess(field: FieldEmbedding, receiver: ExpEmbedding, result: VariableEmbedding)
+    fun addFieldAccess(result: VariableEmbedding, receiver: ExpEmbedding, field: FieldEmbedding)
 
     fun addModifier(mod: StmtModifier)
 

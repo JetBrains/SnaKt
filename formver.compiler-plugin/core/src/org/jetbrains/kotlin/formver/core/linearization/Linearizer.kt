@@ -99,7 +99,7 @@ data class Linearizer(
         stmtModifierTracker?.add(mod) ?: error("Not in a statement")
     }
 
-    override fun addFieldAccess(field: FieldEmbedding, receiver: ExpEmbedding, result: VariableEmbedding) {
+    override fun addFieldAccess(result: VariableEmbedding, receiver: ExpEmbedding, field: FieldEmbedding) {
         addStatement {
             when (field.accessPolicy) {
                 // TODO: Handling a unique field on a shared receiver must be added here.
