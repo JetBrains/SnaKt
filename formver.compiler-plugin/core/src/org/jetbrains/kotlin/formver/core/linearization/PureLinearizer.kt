@@ -39,6 +39,9 @@ data class PureLinearizer(
     private val ssaConverter: SsaConverter = SsaConverter(source),
     override val unfoldPolicy: UnfoldPolicy = UnfoldPolicy.UNFOLDING_IN,
 ) : LinearizationContext {
+    init {
+        require(unfoldPolicy != UnfoldPolicy.UNFOLD) { throw PureLinearizerMisuseException("UNFOLD") }
+    }
 
     override val logicOperatorPolicy: LogicOperatorPolicy
         get() = LogicOperatorPolicy.CONVERT_TO_EXPRESSION
