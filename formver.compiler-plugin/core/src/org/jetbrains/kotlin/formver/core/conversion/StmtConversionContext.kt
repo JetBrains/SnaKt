@@ -27,12 +27,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.properties.asPropertyAccess
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.isCustom
 import org.jetbrains.kotlin.formver.core.isInvariantBuilderFunctionNamed
-import org.jetbrains.kotlin.formver.core.linearization.Linearizer
-import org.jetbrains.kotlin.formver.core.linearization.PureLinearizer
-import org.jetbrains.kotlin.formver.core.linearization.SeqnBuilder
-import org.jetbrains.kotlin.formver.core.linearization.SharedLinearizationState
-import org.jetbrains.kotlin.formver.core.linearization.SsaConverter
-import org.jetbrains.kotlin.formver.core.linearization.UnfoldPolicy
+import org.jetbrains.kotlin.formver.core.linearization.*
 import org.jetbrains.kotlin.formver.core.purity.checkValidity
 import org.jetbrains.kotlin.formver.core.purity.isPure
 import org.jetbrains.kotlin.formver.viper.SymbolicName
@@ -276,7 +271,13 @@ fun StmtConversionContext.convertFunctionWithBody(
         errorCollector.addPurityError(declaration.source, "Impure function body detected in pure function")
         return null
     }
-    val pureLinearizer = PureLinearizer(declaration.source, SharedLinearizationState(anonVarProducer), SsaConverter(declaration.source), UnfoldPolicy.STORE_UNFOLDING_IN)
+    // We want to let-bind the results of field accesses if we are translating into a method body, hence the UnfoldPolicy STORE_UNFOLDING_IN.
+    val pureLinearizer = PureLinearizer(
+        declaration.source,
+        SharedLinearizationState(anonVarProducer),
+        SsaConverter(declaration.source),
+        UnfoldPolicy.STORE_UNFOLDING_IN
+    )
     body.toViperUnusedResult(pureLinearizer)
     return pureLinearizer.constructExpression()
 }

@@ -366,14 +366,17 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
             return PrimitiveFieldAccess(receiver, field).toViper(ctx)
         }
 
-        if (field.unfoldToAccess && ctx.unfoldPolicy == UnfoldPolicy.UNFOLDING_IN) return unfoldingInImpl(ctx)
+        if (field.unfoldToAccess && ctx.unfoldPolicy == UnfoldPolicy.UNFOLDING_IN) {
+            ctx.addFieldAccess(receiver, field)
+            return unfoldingInImpl(ctx)
+        }
         val variable = ctx.freshAnonVar(type)
         toViperStoringIn(variable, ctx)
         return variable.toViper(ctx)
     }
 
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-        ctx.addFieldAccess(result, receiver, field)
+        ctx.addFieldAccess(receiver, field, result)
     }
 
     private fun unfoldingInImpl(ctx: LinearizationContext): Exp {

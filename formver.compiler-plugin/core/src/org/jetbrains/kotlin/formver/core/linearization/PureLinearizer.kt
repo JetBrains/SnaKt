@@ -105,7 +105,8 @@ data class PureLinearizer(
         }
     }
 
-    override fun addFieldAccess(result: VariableEmbedding, receiver: ExpEmbedding, field: FieldEmbedding) {
+    override fun addFieldAccess(receiver: ExpEmbedding, field: FieldEmbedding, result: VariableEmbedding?) {
+        if (result == null) return
         val viperReceiver = receiver.toViper(this)
         if (viperReceiver !is Exp.LocalVar) throw SnaktInternalException(
             source,
