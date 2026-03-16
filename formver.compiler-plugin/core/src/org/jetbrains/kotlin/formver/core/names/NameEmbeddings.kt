@@ -128,7 +128,7 @@ fun FirPropertySymbol.embedMemberPropertyName() = callableId!!.embedMemberProper
 
 fun FirConstructorSymbol.embedName(ctx: ProgramConversionContext): ScopedKotlinName = buildName {
     embedScope(callableId)
-    ConstructorKotlinName(ctx.embedFunctionPretype(this@embedName))
+    ConstructorKotlinName(ctx.embedFunctionPretype(this@embedName).name)
 }
 
 fun FirFunctionSymbol<*>.embedName(ctx: ProgramConversionContext): ScopedKotlinName = when (this) {

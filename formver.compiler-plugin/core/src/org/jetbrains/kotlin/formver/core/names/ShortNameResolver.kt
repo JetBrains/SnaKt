@@ -19,7 +19,7 @@ class ShortNameResolver : NameResolver {
         listOfNotNull(name.mangledType, name.mangledScope, name.mangledBaseName).joinToString(SEPARATOR)
 
     override fun register(name: SymbolicName) {
-        name.dependsOn().forEach { dag.addEdge(it, name) }
+        name.dependsOn().forEach { dag.addEdge(it, name); register(it) }
         dag.addNode(name)
     }
 

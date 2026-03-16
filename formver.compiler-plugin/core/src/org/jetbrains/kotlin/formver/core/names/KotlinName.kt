@@ -95,15 +95,15 @@ data class ClassKotlinName(val name: FqName) : KotlinName {
     override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
-data class ConstructorKotlinName(val type: FunctionTypeEmbedding) : KotlinName {
+data class ConstructorKotlinName(val type: FunctionTypeName) : KotlinName {
     override val mangledType: String
         get() = "con"
 
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
-        get() = type.name.mangledBaseName
+        get() = type.mangledBaseName
 
-    override fun dependsOn(): Set<SymbolicName> = emptySet()
+    override fun dependsOn(): Set<SymbolicName> = setOf(type)
 }
 
 // It's a bit of a hack to make this as KotlinName, it should really just be any old name, but right now our scoped
@@ -128,7 +128,11 @@ data class HavocKotlinName(val type: TypeEmbedding) : KotlinName {
     override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
-data class PretypeName(val name: String) : KotlinName {
+
+sealed interface TypeName : KotlinName
+
+
+data class PretypeName(val name: String) : TypeName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = name
@@ -136,7 +140,7 @@ data class PretypeName(val name: String) : KotlinName {
     override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
-data class SetOfNames(val names: List<SymbolicName>) : KotlinName {
+data class ListOfTypes(val names: List<TypeName>) : TypeName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = names.joinToString(SEPARATOR) { it.mangled }
@@ -144,7 +148,7 @@ data class SetOfNames(val names: List<SymbolicName>) : KotlinName {
     override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
-data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : KotlinName {
+data class SimpleTypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : TypeName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = pretype.name.mangledBaseName
@@ -156,4 +160,12 @@ data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : Kotl
         ).joinToString("")
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+}
+
+data class FunctionTypeName(val args: ListOfTypes, val returnType: TypeName) : TypeName {
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
+        get() = args.mangledBaseName + SEPARATOR + returnType.mangledBaseName
+
+    override fun dependsOn(): Set<SymbolicName> = args.names.toSet() + returnType.dependsOn()
 }

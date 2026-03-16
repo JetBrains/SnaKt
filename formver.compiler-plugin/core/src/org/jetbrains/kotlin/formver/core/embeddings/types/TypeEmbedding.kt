@@ -15,7 +15,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.TreeView
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.HavocKotlinName
 import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
-import org.jetbrains.kotlin.formver.core.names.TypeName
+import org.jetbrains.kotlin.formver.core.names.SimpleTypeName
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Exp
@@ -36,8 +36,8 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
      * It may at some point necessary to make a `TypeName` hierarchy of some sort to
      * represent these names, but we do it inline for now.
      */
-    val name: SymbolicName
-        get() = TypeName(pretype, flags.nullable)
+    val name: SimpleTypeName
+        get() = SimpleTypeName(pretype, flags.nullable)
 
     val havocMethodName: SymbolicName by lazy {
         HavocKotlinName(this)
