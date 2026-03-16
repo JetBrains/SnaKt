@@ -53,8 +53,8 @@ field bf$a: Ref
 field bf$b: Ref
 
 function f$annotatedReferenceReturn$TF$T$X$T$X(p$x: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$X())
   requires acc(p$c$X$shared(p$x), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$X())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$c$X())
 {
   p$x

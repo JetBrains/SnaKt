@@ -4,8 +4,8 @@ field bf$next: Ref
 field bf$value: Ref
 
 function f$getValue$TF$T$Node$T$Int(p$node: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   requires acc(p$c$Node$shared(p$node), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let anon$0$0 ==
@@ -19,8 +19,8 @@ field bf$next: Ref
 field bf$value: Ref
 
 function f$getSafeNextValue$TF$T$Node$T$Int(p$node: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   requires acc(p$c$Node$shared(p$node), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let anon$2$0 ==
@@ -44,8 +44,8 @@ field bf$next: Ref
 field bf$value: Ref
 
 function f$getSafeNextNextValue$TF$T$Node$T$Int(p$node: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   requires acc(p$c$Node$shared(p$node), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let anon$3$0 ==
@@ -78,8 +78,8 @@ field bf$next: Ref
 field bf$value: Ref
 
 function f$sumFirstTwoNodes$TF$T$Node$T$Int(p$node: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   requires acc(p$c$Node$shared(p$node), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$nextNode$0 ==
@@ -120,8 +120,8 @@ field bf$next: Ref
 field bf$value: Ref
 
 function f$isLastNode$TF$T$Node$T$Boolean(p$node: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   requires acc(p$c$Node$shared(p$node), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
 {
   (let anon$0$0 ==
@@ -135,8 +135,8 @@ field bf$next: Ref
 field bf$value: Ref
 
 function f$length$TF$T$Node$T$Int(p$node: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   requires acc(p$c$Node$shared(p$node), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$nextNode$0 ==
@@ -159,8 +159,8 @@ field bf$next: Ref
 field bf$value: Ref
 
 function f$sumAllNodes$TF$T$Node$T$Int(p$node: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   requires acc(p$c$Node$shared(p$node), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$nextNode$0 ==
@@ -192,9 +192,9 @@ field bf$next: Ref
 field bf$value: Ref
 
 function f$containsValue$TF$T$Node$T$Int$T$Boolean(p$node: Ref, p$target: Ref): Ref
+  requires acc(p$c$Node$shared(p$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   requires df$rt$isSubtype(df$rt$typeOf(p$target), df$rt$intType())
-  requires acc(p$c$Node$shared(p$node), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
 {
   (let anon$0$0 ==
@@ -223,8 +223,8 @@ field bf$next: Ref
 field bf$value: Ref
 
 function f$aliasAndReassign$TF$T$Node$T$Int(p$node: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   requires acc(p$c$Node$shared(p$node), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$alias1$0 ==
@@ -253,9 +253,9 @@ field bf$next: Ref
 field bf$value: Ref
 
 function f$id$TF$NT$Node$NT$Node(p$node: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$nullable(df$rt$c$Node()))
   requires p$node != df$rt$nullValue() ==>
     acc(p$c$Node$shared(p$node), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$nullable(df$rt$c$Node()))
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$nullable(df$rt$c$Node()))
 {
   p$node
@@ -267,15 +267,15 @@ field bf$next: Ref
 field bf$value: Ref
 
 function f$id$TF$NT$Node$NT$Node(p$node: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$nullable(df$rt$c$Node()))
   requires p$node != df$rt$nullValue() ==>
     acc(p$c$Node$shared(p$node), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$nullable(df$rt$c$Node()))
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$nullable(df$rt$c$Node()))
 
 
 function f$useIdentityFunction$TF$T$Node$T$Int(p$node: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   requires acc(p$c$Node$shared(p$node), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$sameNode$0 ==
@@ -300,8 +300,8 @@ field bf$next: Ref
 field bf$value: Ref
 
 function f$getNextValueUsingId$TF$T$Node$T$Int(p$node: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   requires acc(p$c$Node$shared(p$node), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let anon$0$0 ==
@@ -323,8 +323,8 @@ function f$getNextValueUsingId$TF$T$Node$T$Int(p$node: Ref): Ref
 }
 
 function f$id$TF$NT$Node$NT$Node(p$node: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$nullable(df$rt$c$Node()))
   requires p$node != df$rt$nullValue() ==>
     acc(p$c$Node$shared(p$node), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$nullable(df$rt$c$Node()))
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$nullable(df$rt$c$Node()))
 

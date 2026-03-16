@@ -115,7 +115,7 @@ fun FullNamedFunctionSignature.toViperFunction(
             "Postcondition tries to acquire permissions, which is not allowed in a function"
         )
     }
-    val preconditions = getPreconditions() + formalArgs.mapNotNull { it.sharedPredicateAccessInvariant() }
+    val preconditions = formalArgs.mapNotNull { it.sharedPredicateAccessInvariant() } + getPreconditions()
     return UserFunction(
         name,
         formalArgs.map { it.toLocalVarDecl() },
