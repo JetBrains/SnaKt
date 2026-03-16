@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.plugin
 
+import org.jetbrains.kotlin.formver.plugin.runners.AbstractFirLightTreeFormVerPluginNoVerificationDiagnosticsTest
 import org.jetbrains.kotlin.formver.plugin.runners.AbstractFirLightTreeFormVerPluginDiagnosticsTest
 import org.jetbrains.kotlin.generators.generateTestGroupSuiteWithJUnit5
 
@@ -13,6 +14,11 @@ fun main() {
         testGroup(testDataRoot = "formver.compiler-plugin/testData", testsRoot = "formver.compiler-plugin/test-gen") {
             testClass<AbstractFirLightTreeFormVerPluginDiagnosticsTest> {
                 model("diagnostics")
+            }
+            testClass<AbstractFirLightTreeFormVerPluginNoVerificationDiagnosticsTest> {
+                model("diagnostics/verification")
+                model("diagnostics/stdlib")
+                model("diagnostics/expensive_verification")
             }
         }
     }
