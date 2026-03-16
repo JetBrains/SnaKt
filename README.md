@@ -138,6 +138,9 @@ You need to (additionally) set `Z3_EXE` in `~/.xprofile` and/or
 `~/.bash_profile` depending on your shell, window manager, display
 manager, operating system, etc.
 
+**Note**: The `Z3_EXE` environmental variable is captured in the local Maven repository when `publishToMavenLocal`
+is run. Changing the environment variable later has no effect until the task is executed again.
+
 ## Contact
 
 Reach out to komi.golov@jetbrains.com if you'd like to use or contribute to the plugin!
