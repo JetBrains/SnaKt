@@ -6,11 +6,12 @@
 package org.jetbrains.kotlin.formver.core.names
 
 import org.jetbrains.kotlin.formver.viper.NameResolver
+import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.mangled
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.utils.addToStdlib.ifFalse
 
-sealed interface NameScope {
+sealed interface NameScope : SymbolicName {
     val parent: NameScope?
 
     context(nameResolver: NameResolver)
@@ -56,12 +57,24 @@ data class PackageScope(val packageName: FqName) : NameScope {
     context(nameResolver: NameResolver)
     override val mangledScopeName: String?
         get() = packageName.isRoot.ifFalse { "pkg\$${packageName.asViperString()}" }
+
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
+        get() = mangledScopeName ?: ""
+
+    override fun dependsOn(): Set<SymbolicName> = setOfNotNull(parent)
 }
 
 data class ClassScope(override val parent: NameScope, val className: ClassKotlinName) : NameScope {
     context(nameResolver: NameResolver)
     override val mangledScopeName: String
         get() = className.mangled
+
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
+        get() = mangledScopeName
+
+    override fun dependsOn(): Set<SymbolicName> = setOf(parent, className)
 }
 
 /**
@@ -74,12 +87,24 @@ data class PublicScope(override val parent: NameScope) : NameScope {
         get() = "public"
     override val parentAccessible: Boolean
         get() = false
+
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
+        get() = mangledScopeName
+
+    override fun dependsOn(): Set<SymbolicName> = setOf(parent)
 }
 
 data class PrivateScope(override val parent: NameScope) : NameScope {
     context(nameResolver: NameResolver)
     override val mangledScopeName: String
         get() = "private"
+
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
+        get() = mangledScopeName
+
+    override fun dependsOn(): Set<SymbolicName> = setOf(parent)
 }
 
 data object ParameterScope : NameScope {
@@ -88,6 +113,12 @@ data object ParameterScope : NameScope {
     context(nameResolver: NameResolver)
     override val mangledScopeName: String
         get() = "p"
+
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
+        get() = mangledScopeName
+
+    override fun dependsOn(): Set<SymbolicName> = setOfNotNull(parent)
 }
 
 data object BadScope : NameScope {
@@ -96,6 +127,12 @@ data object BadScope : NameScope {
     context(nameResolver: NameResolver)
     override val mangledScopeName: String
         get() = "<BAD>"
+
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
+        get() = mangledScopeName
+
+    override fun dependsOn(): Set<SymbolicName> = setOfNotNull(parent)
 }
 
 data class LocalScope(val level: Int) : NameScope {
@@ -104,6 +141,12 @@ data class LocalScope(val level: Int) : NameScope {
     context(nameResolver: NameResolver)
     override val mangledScopeName: String
         get() = "l$level"
+
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
+        get() = mangledScopeName
+
+    override fun dependsOn(): Set<SymbolicName> = setOfNotNull(parent)
 }
 
 /**
@@ -115,4 +158,10 @@ data object FakeScope : NameScope {
     context(nameResolver: NameResolver)
     override val mangledScopeName: String?
         get() = null
+
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
+        get() = mangledScopeName ?: ""
+
+    override fun dependsOn(): Set<SymbolicName> = setOfNotNull(parent)
 }

@@ -25,6 +25,8 @@ data class AnonymousName(val n: Int) : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = n.toString()
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 data class AnonymousBuiltinName(val n: Int) : SymbolicName {
@@ -35,6 +37,8 @@ data class AnonymousBuiltinName(val n: Int) : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = n.toString()
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 /**
@@ -44,6 +48,8 @@ data object PlaceholderReturnVariableName : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "ret"
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 data class ReturnVariableName(val n: Int) : SymbolicName {
@@ -53,6 +59,8 @@ data class ReturnVariableName(val n: Int) : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = n.toString()
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 /**
@@ -63,18 +71,24 @@ data object FunctionResultVariableName : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "result"
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 data object DispatchReceiverName : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = $$"this$dispatch"
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 data object ExtensionReceiverName : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = $$"this$extension"
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 data class SpecialName(val baseName: String) : SymbolicName {
@@ -83,6 +97,8 @@ data class SpecialName(val baseName: String) : SymbolicName {
         get() = baseName
     override val mangledType: String
         get() = "sp"
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 abstract class NumberedLabelName(val scope: String, val originalN: Int) : SymbolicName {
@@ -96,6 +112,8 @@ abstract class NumberedLabelName(val scope: String, val originalN: Int) : Symbol
     context(nameResolver: NameResolver)
     override val mangledScope: String?
         get() = scope
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 data class ReturnLabelName(val scopeDepth: Int) : NumberedLabelName("ret", scopeDepth)
@@ -109,16 +127,21 @@ data class PlaceholderArgumentName(val n: Int) : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "arg$n"
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 data class DomainFuncParameterName(val baseName: String) : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = baseName
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 data class SsaVariableName(val ssaIndex: Int, val baseName: SymbolicName) : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "${baseName.mangled}$$ssaIndex"
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }

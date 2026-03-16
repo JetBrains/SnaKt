@@ -20,11 +20,14 @@ data class DomainName(val baseName: String) : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = baseName
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 data class UnqualifiedDomainFuncName(val baseName: String) : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = baseName
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 data class QualifiedDomainFuncName(val domainName: DomainName, val funcName: SymbolicName) : SymbolicName {
@@ -36,6 +39,7 @@ data class QualifiedDomainFuncName(val domainName: DomainName, val funcName: Sym
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = funcName.mangled
+    override fun dependsOn(): Set<SymbolicName> = setOf(domainName, funcName)
 }
 
 /** Represents the name of a possible anonymous axiom.
@@ -47,7 +51,15 @@ sealed interface OptionalDomainAxiomLabel {
     val domainName: DomainName
 }
 
-data class NamedDomainAxiomLabel(override val domainName: DomainName, val baseName: String) :
+data class DomainAxiomName(val baseName: String) : SymbolicName {
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
+        get() = baseName
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
+}
+
+data class NamedDomainAxiomLabel(override val domainName: DomainName, val name: DomainAxiomName) :
     OptionalDomainAxiomLabel, SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledScope: String
@@ -55,7 +67,9 @@ data class NamedDomainAxiomLabel(override val domainName: DomainName, val baseNa
 
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
-        get() = baseName
+        get() = name.mangled
+
+    override fun dependsOn(): Set<SymbolicName> = setOf(domainName, name)
 }
 
 data class AnonymousDomainAxiomLabel(override val domainName: DomainName) : OptionalDomainAxiomLabel
@@ -150,7 +164,7 @@ abstract class Domain(
     fun createDomainFunc(funcName: SymbolicName, args: List<Declaration.LocalVarDecl>, type: Type, unique: Boolean = false) =
         DomainFunc(QualifiedDomainFuncName(this.name, funcName), args, typeVars, type, unique)
 
-    fun createNamedDomainAxiom(axiomName: String, exp: Exp): DomainAxiom =
+    fun createNamedDomainAxiom(axiomName: DomainAxiomName, exp: Exp): DomainAxiom =
         DomainAxiom(NamedDomainAxiomLabel(this.name, axiomName), exp)
 
     fun createAnonymousDomainAxiom(exp: Exp): DomainAxiom = DomainAxiom(AnonymousDomainAxiomLabel(this.name), exp)

@@ -28,6 +28,8 @@ data class SimpleKotlinName(val name: Name) : KotlinName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = name.asStringStripSpecialMarkers()
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 abstract class TypedKotlinName(override val mangledType: String, open val name: Name) : KotlinName {
@@ -47,20 +49,38 @@ data class FunctionKotlinName(override val name: Name, val functionType: Functio
     TypedKotlinNameWithType(
         "f", name,
         functionType.asTypeEmbedding()
-    )
+    ) {
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
+}
 
 /**
  * This name will never occur in the viper output, but rather is used to lookup properties.
  */
-data class PropertyKotlinName(override val name: Name) : TypedKotlinName("pp", name)
-data class BackingFieldKotlinName(override val name: Name) : TypedKotlinName("bf", name)
-data class GetterKotlinName(override val name: Name) : TypedKotlinName("pg", name)
-data class SetterKotlinName(override val name: Name) : TypedKotlinName("ps", name)
+data class PropertyKotlinName(override val name: Name) : TypedKotlinName("pp", name) {
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
+}
+
+data class BackingFieldKotlinName(override val name: Name) : TypedKotlinName("bf", name) {
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
+}
+
+data class GetterKotlinName(override val name: Name) : TypedKotlinName("pg", name) {
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
+}
+
+data class SetterKotlinName(override val name: Name) : TypedKotlinName("ps", name) {
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
+}
 data class ExtensionSetterKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
-    TypedKotlinNameWithType("es", name, functionType.asTypeEmbedding())
+    TypedKotlinNameWithType("es", name, functionType.asTypeEmbedding()) {
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
+}
 
 data class ExtensionGetterKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
-    TypedKotlinNameWithType("eg", name, functionType.asTypeEmbedding())
+    TypedKotlinNameWithType("eg", name, functionType.asTypeEmbedding()) {
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
+}
 
 data class ClassKotlinName(val name: FqName) : KotlinName {
     override val mangledType: String
@@ -71,6 +91,8 @@ data class ClassKotlinName(val name: FqName) : KotlinName {
         get() = name.asViperString()
 
     constructor(classSegments: List<String>) : this(FqName.fromSegments(classSegments))
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 data class ConstructorKotlinName(val type: FunctionTypeEmbedding) : KotlinName {
@@ -80,6 +102,8 @@ data class ConstructorKotlinName(val type: FunctionTypeEmbedding) : KotlinName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = type.name.mangledBaseName
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 // It's a bit of a hack to make this as KotlinName, it should really just be any old name, but right now our scoped
@@ -90,6 +114,8 @@ data class PredicateKotlinName(val name: String) : KotlinName {
         get() = name
     override val mangledType: String
         get() = "p"
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 data class HavocKotlinName(val type: TypeEmbedding) : KotlinName {
@@ -98,18 +124,24 @@ data class HavocKotlinName(val type: TypeEmbedding) : KotlinName {
         get() = type.name.mangled
     override val mangledType: String
         get() = "havoc"
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 data class PretypeName(val name: String) : KotlinName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = name
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 data class SetOfNames(val names: List<SymbolicName>) : KotlinName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = names.joinToString(SEPARATOR) { it.mangled }
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : KotlinName {
@@ -122,4 +154,6 @@ data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : Kotl
             "T",
             if (pretype is FunctionTypeEmbedding) "F" else null
         ).joinToString("")
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }

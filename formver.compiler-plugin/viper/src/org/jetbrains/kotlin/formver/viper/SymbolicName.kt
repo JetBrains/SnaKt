@@ -20,6 +20,8 @@ interface SymbolicName {
         get() = null
     context(nameResolver: NameResolver)
     val mangledBaseName: String
+
+    fun dependsOn(): Set<SymbolicName>
 }
 
 context(nameResolver: NameResolver)
