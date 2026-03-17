@@ -549,14 +549,6 @@ data class FieldModification(val receiver: ExpEmbedding, val field: FieldEmbeddi
         }
     }
 
-    private fun ClassTypeEmbedding.predicateAccess(
-        receiver: ExpEmbedding,
-        ctx: LinearizationContext
-    ): Exp.PredicateAccess =
-        sharedPredicateAccessInvariant()?.fillHole(receiver)
-            ?.pureToViper(toBuiltin = true, ctx.source) as? Exp.PredicateAccess
-            ?: error("Attempt to unfold a predicate of ${name.debugMangled}.")
-
     context(nameResolver: NameResolver)
     override val debugTreeView: TreeView
         get() = OperatorNode(
