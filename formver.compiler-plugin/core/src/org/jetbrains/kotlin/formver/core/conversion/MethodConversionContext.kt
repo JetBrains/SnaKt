@@ -35,6 +35,7 @@ interface MethodConversionContext : ProgramConversionContext {
     val signature: FunctionSignature
     val defaultResolvedReturnTarget: ReturnTarget
     val isValidForForAllBlock: Boolean
+    val uniqueness: UniquenessInformation?
 
     fun resolveParameter(symbol: FirValueParameterSymbol): ExpEmbedding
     fun resolveLocal(symbol: FirVariableSymbol<*>): VariableEmbedding

@@ -48,7 +48,7 @@ import org.jetbrains.kotlin.utils.filterIsInstanceAnd
  */
 interface StmtConversionContext : MethodConversionContext {
     val whenSubject: VariableEmbedding?
-
+    val methodCtx: MethodConversionContext
     /**
      * In a safe call `callSubject?.foo()` we evaluate the call subject first to check for nullness.
      * In case it is not null, we evaluate the call to `callSubject.foo()`. Here we don't want to evaluate

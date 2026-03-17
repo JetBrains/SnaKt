@@ -15,5 +15,5 @@ class MethodContextFactory(
     fun create(
         programCtx: ProgramConversionContext,
         scopeDepth: ScopeIndex,
-    ): MethodConversionContext = MethodConverter(programCtx, signature, paramResolver, scopeDepth, parent)
+    ): MethodConversionContext = MethodConverter(programCtx, signature, paramResolver, scopeDepth, parent = parent)
 }

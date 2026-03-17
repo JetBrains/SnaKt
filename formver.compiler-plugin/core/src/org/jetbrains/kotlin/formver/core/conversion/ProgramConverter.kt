@@ -136,6 +136,7 @@ class ProgramConverter(
                 signature,
                 paramResolver,
                 scopeIndexProducer.getFresh(),
+                uniqueness = uniqueness,
             ).statementCtxt()
 
         // Note: it is important that `body` is only set after `embedUserFunction` is complete, as we need to

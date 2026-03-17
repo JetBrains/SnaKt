@@ -28,6 +28,7 @@ class MethodConverter(
     override val signature: FunctionSignature,
     private val paramResolver: ParameterResolver,
     scopeDepth: ScopeIndex,
+    override val uniqueness: UniquenessInformation? = null,
     private val parent: MethodConversionContext? = null,
 ) : MethodConversionContext, ProgramConversionContext by programCtx {
     private var propertyResolver = PropertyResolver(scopeDepth)
