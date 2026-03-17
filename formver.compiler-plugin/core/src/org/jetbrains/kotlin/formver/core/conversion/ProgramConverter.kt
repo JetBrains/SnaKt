@@ -15,6 +15,7 @@ import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFr
 import org.jetbrains.kotlin.fir.declarations.utils.hasBackingField
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
 import org.jetbrains.kotlin.fir.declarations.utils.visibility
+import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
@@ -101,9 +102,22 @@ class ProgramConverter(
             },
         )
 
+    fun extractUniquenessInformation(declaration: FirSimpleFunction): UniquenessInformation {
+        val graph = declaration.controlFlowGraphReference?.controlFlowGraph
+            ?: error("Control flow graph is null for declaration: ${declaration.name}")
+        val resolver = UniquenessResolver(session)
+        val initial = UniquenessTrie(resolver)
+        val graphChecker = UniquenessGraphChecker(session, initial, errorCollector)
+        graphChecker.check(graph)
+        val analyzer = UniquenessGraphAnalyzer(resolver, initial)
+        val facts = analyzer.analyze(graph)
+        return UniquenessInformation(graph.nodes.first(), facts)
+    }
+
     fun registerForVerification(declaration: FirSimpleFunction) {
         val signature = embedFullSignature(declaration.symbol)
         val returnTarget = returnTargetProducer.getFresh(signature.callableType.returnType)
+        val uniqueness = extractUniquenessInformation(declaration)
         val paramResolver =
             RootParameterResolver(
                 this@ProgramConverter,
