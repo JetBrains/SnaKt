@@ -1,7 +1,9 @@
 /pure_literal_function.kt:(53,66): info: Generated Viper text for emptyFunction:
 function f$emptyAnnotatedFunction$TF$NT$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$nullable(df$rt$intType()))
-
+{
+  df$rt$nullValue()
+}
 
 method f$emptyFunction$TF$T$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
