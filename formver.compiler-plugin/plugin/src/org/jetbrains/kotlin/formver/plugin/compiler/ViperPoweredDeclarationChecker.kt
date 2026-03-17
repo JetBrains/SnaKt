@@ -58,6 +58,14 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
             with(programConversionContext.nameResolver) {
                 program.registerAllNames()
             }
+            println("ALL NAMES")
+            programConversionContext.nameResolver.allUsedViperNames().forEach { println(it) }
+            println("DUPLICATE NAMES")
+            programConversionContext.nameResolver.duplicateNames().forEach { println(it) }
+            println("==========")
+
+            programConversionContext.nameResolver.resolveConflicts()
+
             getProgramForLogging(program)?.let {
                 reporter.reportOn(
                     declaration.source,

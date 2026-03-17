@@ -63,6 +63,9 @@ data class PackageScope(val packageName: FqName) : NameScope {
         get() = mangledScopeName ?: ""
 
     override fun dependsOn(): Set<SymbolicName> = setOfNotNull(parent)
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { "pkg\$${packageName.asViperString()}" }
+    }
 }
 
 data class ClassScope(override val parent: NameScope, val className: ClassKotlinName) : NameScope {
@@ -75,6 +78,10 @@ data class ClassScope(override val parent: NameScope, val className: ClassKotlin
         get() = mangledScopeName
 
     override fun dependsOn(): Set<SymbolicName> = setOf(parent, className)
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { resolver -> resolver.resolve(className) }
+        yield { resolver -> "${resolver.resolve(parent)}_${resolver.resolve(className)}" }
+    }
 }
 
 /**
@@ -93,6 +100,10 @@ data class PublicScope(override val parent: NameScope) : NameScope {
         get() = mangledScopeName
 
     override fun dependsOn(): Set<SymbolicName> = setOf(parent)
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { "public" }
+        yield { resolver -> "${resolver.resolve(parent)}_public" }
+    }
 }
 
 data class PrivateScope(override val parent: NameScope) : NameScope {
@@ -105,6 +116,10 @@ data class PrivateScope(override val parent: NameScope) : NameScope {
         get() = mangledScopeName
 
     override fun dependsOn(): Set<SymbolicName> = setOf(parent)
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { "private" }
+        yield { resolver -> "${resolver.resolve(parent)}_private" }
+    }
 }
 
 data object ParameterScope : NameScope {
@@ -119,6 +134,9 @@ data object ParameterScope : NameScope {
         get() = mangledScopeName
 
     override fun dependsOn(): Set<SymbolicName> = setOfNotNull(parent)
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { "p" }
+    }
 }
 
 data object BadScope : NameScope {
@@ -133,6 +151,9 @@ data object BadScope : NameScope {
         get() = mangledScopeName
 
     override fun dependsOn(): Set<SymbolicName> = setOfNotNull(parent)
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { "<BAD>" }
+    }
 }
 
 data class LocalScope(val level: Int) : NameScope {
@@ -147,6 +168,10 @@ data class LocalScope(val level: Int) : NameScope {
         get() = mangledScopeName
 
     override fun dependsOn(): Set<SymbolicName> = setOfNotNull(parent)
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { "l" }
+        yield { "l$level" }
+    }
 }
 
 /**
@@ -164,4 +189,7 @@ data object FakeScope : NameScope {
         get() = mangledScopeName ?: ""
 
     override fun dependsOn(): Set<SymbolicName> = setOfNotNull(parent)
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { "" }
+    }
 }

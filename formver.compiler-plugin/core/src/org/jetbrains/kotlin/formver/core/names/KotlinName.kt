@@ -30,12 +30,22 @@ data class SimpleKotlinName(val name: Name) : KotlinName {
         get() = name.asStringStripSpecialMarkers()
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { name.asStringStripSpecialMarkers() }
+    }
 }
 
 abstract class TypedKotlinName(override val mangledType: String, open val name: Name) : KotlinName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = name.asStringStripSpecialMarkers()
+
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { name.asStringStripSpecialMarkers() }
+        yield { "${mangledType}_${name.asStringStripSpecialMarkers()}" }
+    }
+
+    override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
 abstract class TypedKotlinNameWithType(override val mangledType: String, open val name: Name, val type: TypeEmbedding) :
@@ -43,6 +53,12 @@ abstract class TypedKotlinNameWithType(override val mangledType: String, open va
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "${name.asStringStripSpecialMarkers()}$SEPARATOR${type.name.mangled}"
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { name.asStringStripSpecialMarkers() }
+        yield { resolver -> "${name.asStringStripSpecialMarkers()}_${resolver.resolve(type.name)}" }
+    }
+
+    override fun dependsOn(): Set<SymbolicName> = setOf(type.name)
 }
 
 data class FunctionKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
@@ -51,32 +67,31 @@ data class FunctionKotlinName(override val name: Name, val functionType: Functio
         functionType.asTypeEmbedding()
     ) {
 
-    override fun dependsOn(): Set<SymbolicName> = emptySet()
+    override fun dependsOn(): Set<SymbolicName> = setOf(functionType.name)
+
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { name.asStringStripSpecialMarkers() }
+        yield { resolver -> "${name.asStringStripSpecialMarkers()}_${resolver.resolve(type.name)}" }
+    }
 }
 
 /**
  * This name will never occur in the viper output, but rather is used to lookup properties.
  */
-data class PropertyKotlinName(override val name: Name) : TypedKotlinName("pp", name) {
-    override fun dependsOn(): Set<SymbolicName> = emptySet()
-}
-
+data class PropertyKotlinName(override val name: Name) : TypedKotlinName("pp", name)
 data class BackingFieldKotlinName(override val name: Name) : TypedKotlinName("bf", name) {
-    override fun dependsOn(): Set<SymbolicName> = emptySet()
+
 }
 
 data class GetterKotlinName(override val name: Name) : TypedKotlinName("pg", name) {
-    override fun dependsOn(): Set<SymbolicName> = emptySet()
+
 }
 
 data class SetterKotlinName(override val name: Name) : TypedKotlinName("ps", name) {
-    override fun dependsOn(): Set<SymbolicName> = emptySet()
+
 }
 data class ExtensionSetterKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
-    TypedKotlinNameWithType("es", name, functionType.asTypeEmbedding()) {
-    override fun dependsOn(): Set<SymbolicName> = emptySet()
-}
-
+    TypedKotlinNameWithType("es", name, functionType.asTypeEmbedding())
 data class ExtensionGetterKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
     TypedKotlinNameWithType("eg", name, functionType.asTypeEmbedding()) {
     override fun dependsOn(): Set<SymbolicName> = emptySet()
@@ -93,6 +108,10 @@ data class ClassKotlinName(val name: FqName) : KotlinName {
     constructor(classSegments: List<String>) : this(FqName.fromSegments(classSegments))
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { name.asViperString() }
+        yield { "c_${name.asViperString()}" }
+    }
 }
 
 data class ConstructorKotlinName(val type: FunctionTypeName) : KotlinName {
@@ -104,6 +123,10 @@ data class ConstructorKotlinName(val type: FunctionTypeName) : KotlinName {
         get() = type.mangledBaseName
 
     override fun dependsOn(): Set<SymbolicName> = setOf(type)
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { resolver -> "con${resolver.resolve(type.returnType)}" }
+        yield { resolver -> "con${resolver.resolve(type)}" }
+    }
 }
 
 // It's a bit of a hack to make this as KotlinName, it should really just be any old name, but right now our scoped
@@ -116,6 +139,11 @@ data class PredicateKotlinName(val name: String) : KotlinName {
         get() = "p"
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { name }
+        yield { "${mangledType}_${name}" }
+    }
 }
 
 data class HavocKotlinName(val type: TypeEmbedding) : KotlinName {
@@ -126,6 +154,11 @@ data class HavocKotlinName(val type: TypeEmbedding) : KotlinName {
         get() = "havoc"
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { "havoc" }
+        yield { resolver -> "havoc_${resolver.resolve(type.name)}" }
+    }
 }
 
 
@@ -138,6 +171,9 @@ data class PretypeName(val name: String) : TypeName {
         get() = name
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { name }
+    }
 }
 
 data class ListOfTypes(val names: List<TypeName>) : TypeName {
@@ -146,6 +182,9 @@ data class ListOfTypes(val names: List<TypeName>) : TypeName {
         get() = names.joinToString(SEPARATOR) { it.mangled }
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { resolver -> names.joinToString(SEPARATOR) { resolver.resolve(it) } }
+    }
 }
 
 data class SimpleTypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : TypeName {
@@ -160,6 +199,9 @@ data class SimpleTypeName(val pretype: PretypeEmbedding, val nullable: Boolean) 
         ).joinToString("")
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { resolver -> "${resolver.resolve(pretype.name)}${if (nullable) "_N" else ""}" }
+    }
 }
 
 data class FunctionTypeName(val args: ListOfTypes, val returnType: TypeName) : TypeName {
@@ -168,4 +210,9 @@ data class FunctionTypeName(val args: ListOfTypes, val returnType: TypeName) : T
         get() = args.mangledBaseName + SEPARATOR + returnType.mangledBaseName
 
     override fun dependsOn(): Set<SymbolicName> = args.names.toSet() + returnType.dependsOn()
+
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { resolver -> resolver.resolve(returnType) }
+        yield { resolver -> "${resolver.resolve(args)}_${resolver.resolve(returnType)}" }
+    }
 }

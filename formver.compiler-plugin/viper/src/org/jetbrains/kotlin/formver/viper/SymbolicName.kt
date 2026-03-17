@@ -22,6 +22,9 @@ interface SymbolicName {
     val mangledBaseName: String
 
     fun dependsOn(): Set<SymbolicName>
+
+
+    val candidates: Sequence<(NameResolver) -> String>
 }
 
 context(nameResolver: NameResolver)

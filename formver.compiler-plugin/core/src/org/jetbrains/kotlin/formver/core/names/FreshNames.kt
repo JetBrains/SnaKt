@@ -22,6 +22,11 @@ data class AnonymousName(val n: Int) : SymbolicName {
     override val mangledType: String
         get() = "anon"
 
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { "anon" }
+        yield { "anon$n" }
+    }
+
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = n.toString()
@@ -38,6 +43,11 @@ data class AnonymousBuiltinName(val n: Int) : SymbolicName {
     override val mangledBaseName: String
         get() = n.toString()
 
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { $$"anon$builtin" }
+        yield { $$"anon$builtin$$n" }
+    }
+
     override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
 
@@ -50,6 +60,9 @@ data object PlaceholderReturnVariableName : SymbolicName {
         get() = "ret"
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield({ "ret" })
+    }
 }
 
 data class ReturnVariableName(val n: Int) : SymbolicName {
@@ -61,6 +74,10 @@ data class ReturnVariableName(val n: Int) : SymbolicName {
         get() = n.toString()
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield({ "ret" })
+        yield({ "ret$n" })
+    }
 }
 
 /**
@@ -73,6 +90,10 @@ data object FunctionResultVariableName : SymbolicName {
         get() = "result"
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield({ "result" })
+    }
 }
 
 data object DispatchReceiverName : SymbolicName {
@@ -81,6 +102,11 @@ data object DispatchReceiverName : SymbolicName {
         get() = $$"this$dispatch"
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield({ "this" })
+        yield({ $$"this$dispatch" })
+    }
 }
 
 data object ExtensionReceiverName : SymbolicName {
@@ -89,6 +115,11 @@ data object ExtensionReceiverName : SymbolicName {
         get() = $$"this$extension"
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield({ "this" })
+        yield({ $$"this$extension" })
+    }
 }
 
 data class SpecialName(val baseName: String) : SymbolicName {
@@ -97,6 +128,11 @@ data class SpecialName(val baseName: String) : SymbolicName {
         get() = baseName
     override val mangledType: String
         get() = "sp"
+
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield({ baseName })
+        yield({ "sp_${baseName}" })
+    }
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
 }
@@ -114,6 +150,13 @@ abstract class NumberedLabelName(val scope: String, val originalN: Int) : Symbol
         get() = scope
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield({ scope })
+        yield({ "${scope}_$originalN" })
+        yield({ "${mangledType}_${scope}_${originalN}" })
+    }
+
 }
 
 data class ReturnLabelName(val scopeDepth: Int) : NumberedLabelName("ret", scopeDepth)
@@ -128,6 +171,11 @@ data class PlaceholderArgumentName(val n: Int) : SymbolicName {
     override val mangledBaseName: String
         get() = "arg$n"
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield({ "arg" })
+        yield({ "arg$n" })
+    }
 }
 
 data class DomainFuncParameterName(val baseName: String) : SymbolicName {
@@ -136,6 +184,9 @@ data class DomainFuncParameterName(val baseName: String) : SymbolicName {
         get() = baseName
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield({ baseName })
+    }
 }
 
 data class SsaVariableName(val ssaIndex: Int, val baseName: SymbolicName) : SymbolicName {
@@ -144,4 +195,9 @@ data class SsaVariableName(val ssaIndex: Int, val baseName: SymbolicName) : Symb
         get() = "${baseName.mangled}$$ssaIndex"
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield({ resolver -> resolver.resolve(baseName) })
+        yield({ resolver -> "${resolver.resolve(baseName)}${ssaIndex}" })
+    }
 }

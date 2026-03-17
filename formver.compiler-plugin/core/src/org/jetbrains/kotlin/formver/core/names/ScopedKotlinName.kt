@@ -24,6 +24,10 @@ data class ScopedKotlinName(val scope: NameScope, val name: KotlinName) : Symbol
         get() = name.mangledType
 
     override fun dependsOn(): Set<SymbolicName> = setOf(scope, name)
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { resolver -> resolver.resolve(name) }
+        yield { resolver -> "${resolver.resolve(scope)}_${resolver.resolve(name)}" }
+    }
 }
 
 fun FqName.asViperString() = asString().replace('.', '_')

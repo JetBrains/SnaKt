@@ -22,12 +22,19 @@ data class DomainName(val baseName: String) : SymbolicName {
         get() = baseName
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { baseName }
+        yield { "d_${baseName}" }
+    }
 }
 data class UnqualifiedDomainFuncName(val baseName: String) : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = baseName
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { baseName }
+    }
 }
 
 data class QualifiedDomainFuncName(val domainName: DomainName, val funcName: SymbolicName) : SymbolicName {
@@ -36,10 +43,17 @@ data class QualifiedDomainFuncName(val domainName: DomainName, val funcName: Sym
     context(nameResolver: NameResolver)
     override val mangledScope: String
         get() = domainName.mangledBaseName
+
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = funcName.mangled
-    override fun dependsOn(): Set<SymbolicName> = setOf(domainName, funcName)
+
+    override fun dependsOn(): Set<SymbolicName> = setOf(domainName)
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { resolver -> resolver.resolve(funcName) }
+        yield { resolver -> "${resolver.resolve(domainName)}_${resolver.resolve(funcName)}" }
+        yield { resolver -> "${mangledType}_${resolver.resolve(domainName)}_${resolver.resolve(funcName)}" }
+    }
 }
 
 /** Represents the name of a possible anonymous axiom.
@@ -57,6 +71,9 @@ data class DomainAxiomName(val baseName: String) : SymbolicName {
         get() = baseName
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { baseName }
+    }
 }
 
 data class NamedDomainAxiomLabel(override val domainName: DomainName, val name: DomainAxiomName) :
@@ -70,6 +87,10 @@ data class NamedDomainAxiomLabel(override val domainName: DomainName, val name: 
         get() = name.mangled
 
     override fun dependsOn(): Set<SymbolicName> = setOf(domainName, name)
+    override val candidates: Sequence<(NameResolver) -> String> = sequence {
+        yield { resolver -> resolver.resolve(name) }
+        yield { resolver -> "${resolver.resolve(domainName)}_${resolver.resolve(name)}" }
+    }
 }
 
 data class AnonymousDomainAxiomLabel(override val domainName: DomainName) : OptionalDomainAxiomLabel
@@ -160,9 +181,6 @@ abstract class Domain(
 
     fun toType(typeParamSubst: Map<Type.TypeVar, Type> = typeVars.associateWith { it }): Type.Domain =
         Type.Domain(name, typeVars, typeParamSubst)
-
-    fun createDomainFunc(funcName: SymbolicName, args: List<Declaration.LocalVarDecl>, type: Type, unique: Boolean = false) =
-        DomainFunc(QualifiedDomainFuncName(this.name, funcName), args, typeVars, type, unique)
 
     fun createNamedDomainAxiom(axiomName: DomainAxiomName, exp: Exp): DomainAxiom =
         DomainAxiom(NamedDomainAxiomLabel(this.name, axiomName), exp)
