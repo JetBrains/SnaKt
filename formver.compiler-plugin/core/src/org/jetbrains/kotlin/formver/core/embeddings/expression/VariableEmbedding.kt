@@ -8,6 +8,8 @@ package org.jetbrains.kotlin.formver.core.embeddings.expression
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.asSourceRole
+import org.jetbrains.kotlin.formver.core.conversion.Path
+import org.jetbrains.kotlin.formver.core.conversion.PathRoot
 import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
 import org.jetbrains.kotlin.formver.core.domains.Injection
 import org.jetbrains.kotlin.formver.core.domains.viperType
@@ -132,6 +134,8 @@ class FirVariableEmbedding(
 ) : VariableEmbedding, DefaultUniqueness() {
     override val sourceRole: SourceRole
         get() = symbol.asSourceRole
+
+    override val endingPath: Lazy<Path?> = lazy { PathRoot(this) }
 }
 
 /**

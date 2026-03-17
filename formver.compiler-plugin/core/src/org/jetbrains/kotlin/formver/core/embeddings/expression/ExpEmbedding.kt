@@ -51,6 +51,18 @@ sealed interface ExpEmbedding : DebugPrintable {
     var uniquenessAfter: UniquenessTrie?
 
     /**
+     * All paths that appear inside the `ExpEmbedding`.
+     */
+    val containingPaths: Lazy<Set<Path>>
+        get() = lazy { emptySet() }
+
+    /**
+     * The path that is ending in this `ExpEmbedding`.
+     */
+    val endingPath: Lazy<Path?>
+        get() = lazy { null }
+
+    /**
      * Convert this `ExpEmbedding` into a Viper `Exp` of type `Ref`, using the provided context for auxiliary statements and declarations.
      *
      * The `Exp` returned contains the result of the expression.
@@ -101,9 +113,15 @@ sealed interface ExpEmbedding : DebugPrintable {
     fun isValid(ctx: PurityContext): Boolean = true
 }
 
+/**
+ * Used to set default behavior for the permission related fields.
+ */
 abstract class DefaultUniqueness : ExpEmbedding {
     override var uniquenessBefore: UniquenessTrie? = null
     override var uniquenessAfter: UniquenessTrie? = null
+
+    override val containingPaths: Lazy<Set<Path>> =
+        lazy { (children().flatMap { it.containingPaths.value } + listOfNotNull(endingPath.value)).toSet() }
 }
 
 sealed class ToViperBuiltinMisuseError(msg: String) : RuntimeException(msg)
@@ -310,6 +328,11 @@ sealed interface PassthroughExpEmbedding : ExpEmbedding {
     override val type: TypeEmbedding
         get() = inner.type
 
+    override val endingPath: Lazy<Path?>
+        get() = lazy {
+            inner.endingPath.value
+        }
+
     override fun toViper(ctx: LinearizationContext): Exp = withPassthroughHook(ctx) { inner.toViper(this) }
 
     override fun toViperBuiltinType(ctx: LinearizationContext): Exp = withPassthroughHook(ctx) {
@@ -367,6 +390,10 @@ data class PrimitiveFieldAccess(override val inner: ExpEmbedding, val field: Fie
     override val type: TypeEmbedding
         get() = this.field.type
 
+    override val endingPath: Lazy<Path?> = lazy {
+        inner.endingPath.value?.addField(field)
+    }
+
     override fun toViper(ctx: LinearizationContext): Exp =
         Exp.FieldAccess(inner.toViper(ctx), field.toViper(), ctx.source.asPosition)
 
@@ -380,6 +407,11 @@ data class PrimitiveFieldAccess(override val inner: ExpEmbedding, val field: Fie
 data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : DefaultMaybeStoringInExpEmbedding,
     DefaultToBuiltinExpEmbedding, DefaultUniqueness() {
     override val type: TypeEmbedding = field.type
+
+    override val endingPath: Lazy<Path?> = lazy {
+        receiver.endingPath.value?.addField(field)
+    }
+
     override fun toViper(ctx: LinearizationContext): Exp {
         if (field.accessPolicy == AccessPolicy.ALWAYS_WRITEABLE) {
             return PrimitiveFieldAccess(receiver, field).toViper(ctx)
@@ -459,6 +491,11 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
  */
 data class FieldModification(val receiver: ExpEmbedding, val field: FieldEmbedding, val newValue: ExpEmbedding) :
     UnitResultExpEmbedding, DefaultUniqueness() {
+
+    override val endingPath: Lazy<Path?> = lazy {
+        receiver.endingPath.value?.addField(field)
+    }
+
     override fun toViperSideEffects(ctx: LinearizationContext) {
         when (field.accessPolicy) {
             // TODO: Handling a unique field on a shared receiver must be added here.
@@ -518,6 +555,11 @@ data class FieldModification(val receiver: ExpEmbedding, val field: FieldEmbeddi
 
 data class FieldAccessPermissions(override val inner: ExpEmbedding, val field: FieldEmbedding, val perm: PermExp) :
     OnlyToBuiltinTypeExpEmbedding, UnaryDirectResultExpEmbedding, DefaultUniqueness() {
+
+    override val endingPath: Lazy<Path?> = lazy {
+        inner.endingPath.value?.addField(field)
+    }
+
     // We consider access permissions to have type Boolean, though this is a bit questionable.
     override val type: TypeEmbedding = buildType { boolean() }
 
@@ -589,5 +631,12 @@ data class Declare(val variable: VariableEmbedding, val initializer: ExpEmbeddin
     override val debugExtraSubtrees: List<TreeView>
         get() = listOfNotNull(variable.debugTreeView, variable.type.debugTreeView, initializer?.debugTreeView)
 
+    override fun children(): Sequence<ExpEmbedding> {
+        return if (initializer == null) {
+            sequenceOf(variable)
+        } else {
+            sequenceOf(variable, initializer)
+        }
+    }
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitDeclare(this)
 }

@@ -6,6 +6,8 @@
 package org.jetbrains.kotlin.formver.core.embeddings.expression
 
 import org.jetbrains.kotlin.formver.core.asPosition
+import org.jetbrains.kotlin.formver.core.conversion.Path
+import org.jetbrains.kotlin.formver.core.conversion.PathCast
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
@@ -15,6 +17,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.withDesigna
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessTrie
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
@@ -58,6 +61,13 @@ data class Cast(override val inner: ExpEmbedding, override val type: TypeEmbeddi
     override fun ignoringCasts(): ExpEmbedding = inner.ignoringCasts()
     override fun ignoringCastsAndMetaNodes(): ExpEmbedding = inner.ignoringCastsAndMetaNodes()
 
+    override val containingPaths: Lazy<Set<Path>>
+        get() = lazy { setOfNotNull(endingPath.value) }
+    override val endingPath: Lazy<Path?>
+        get() = lazy { PathCast(inner.endingPath.value!!, type) }
+    override var uniquenessBefore: UniquenessTrie? = inner.uniquenessBefore
+    override var uniquenessAfter: UniquenessTrie? = inner.uniquenessAfter
+
     context(nameResolver: NameResolver)
     override val debugExtraSubtrees: List<TreeView>
         get() = listOf(type.debugTreeView.withDesignation("target"))
@@ -88,6 +98,11 @@ data class SafeCast(val exp: ExpEmbedding, val targetType: TypeEmbedding) : Stor
         conditional.toViperStoringIn(result, ctx)
     }
 
+    override val containingPaths: Lazy<Set<Path>>
+        get() = lazy { setOfNotNull(endingPath.value) }
+    override val endingPath: Lazy<Path?>
+        get() = lazy { exp.endingPath.value?.let { PathCast(it, type) } }
+
     override val debugAnonymousSubexpressions: List<ExpEmbedding>
         get() = listOf(exp)
 
@@ -105,6 +120,9 @@ interface InhaleInvariants : ExpEmbedding, DefaultDebugTreeViewImplementation {
 
     override val type: TypeEmbedding
         get() = exp.type
+
+    override val endingPath: Lazy<Path?>
+        get() = exp.endingPath
 
     override val debugAnonymousSubexpressions: List<ExpEmbedding>
         get() = listOf(exp)
