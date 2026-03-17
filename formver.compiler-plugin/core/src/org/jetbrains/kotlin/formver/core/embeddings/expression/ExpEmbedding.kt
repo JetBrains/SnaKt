@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.core.embeddings.expression
 
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
+import org.jetbrains.kotlin.formver.core.conversion.Path
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
@@ -18,6 +19,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.core.embeddings.types.injectionOr
 import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
+import org.jetbrains.kotlin.formver.core.linearization.PermissionManager
 import org.jetbrains.kotlin.formver.core.linearization.UnfoldPolicy
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.purity.PurityContext
@@ -424,26 +426,59 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
     }
 
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-        ctx.addStatement {
-            when (field.accessPolicy) {
-                // TODO: Handling a unique field on a shared receiver must be added here.
-                AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
-                    receiver.toViperUnusedResult(ctx)
-                    field.type.havocMethod.toMethodCall(emptyList(), listOf(result.toLocalVarUse()))
-                }
+        when (field.accessPolicy) {
+            AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
+                // Mutable fields
 
-                else -> {
-                    val receiverViper = receiver.toViper(ctx)
-                    // If the field access is not replaced with havoc,
-                    // we might need to unfold some predicate to access it.
-                    if (field.unfoldToAccess) {
-                        val receiverWrapper = ExpWrapper(receiverViper, receiver.type)
-                        unfoldHierarchy(receiverWrapper, ctx)
+                val permissionManager = PermissionManager(this)
+                if (permissionManager.isShared()) {
+                    // Since receiver is shared, we havoc it.
+                    receiver.toViper(ctx)
+                    val stmt = field.type.havocMethod.toMethodCall(emptyList(), listOf(result.toLocalVarUse()))
+                    ctx.addStatement { stmt }
+                } else {
+                    // receiver is unique
+                    PrimitiveFieldAccess(receiver, field).toViperStoringIn(result, ctx)
+                }
+            }
+
+            AccessPolicy.ALWAYS_READABLE -> {
+                // Immutable fields
+                // Issue, the receiver could become havocd, and then we unfold the wrong predicate.
+                // might be solved with some smart lookahead in the
+                val receiverViper = receiver.toViper(ctx)
+                val permissionManager = PermissionManager(this)
+                val inner = if (receiverViper is Exp.LocalVar) {
+                    val localVar = LinearizationVariableEmbedding(receiverViper.name, receiver.type)
+                    permissionManager.addSharedUnfold(ctx, localVar)
+                    localVar.toViper(ctx)
+                } else {
+                    val anon = ctx.freshAnonVar(receiver.type)
+                    val anonViper = anon.toViper(ctx)
+                    ctx.addStatement {
+                        Stmt.assign(anonViper, receiverViper, source.asPosition)
                     }
+                    anonViper
+                }
+                ctx.addStatement {
                     Stmt.assign(
-                        result.toLocalVarUse(), Exp.FieldAccess(receiverViper, field.toViper(), ctx.source.asPosition)
+                        result.toViper(ctx),
+                        Exp.FieldAccess(inner, field.toViper(), ctx.source.asPosition),
+                        source.asPosition
                     )
                 }
+            }
+
+            AccessPolicy.ALWAYS_WRITEABLE -> {
+                // Special fields. Nothing to do
+                PrimitiveFieldAccess(receiver, field).toViperStoringIn(result, ctx)
+            }
+
+            AccessPolicy.MANUAL -> {
+                Stmt.assign(
+                    result.toLocalVarUse(),
+                    Exp.FieldAccess(receiver.toViper(ctx), field.toViper(), ctx.source.asPosition)
+                )
             }
         }
     }
@@ -466,13 +501,6 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
             ?.pureToViper(toBuiltin = true, ctx.source) as? Exp.PredicateAccess
             ?: error("Attempt to unfold a predicate of ${name.debugMangled}.")
 
-    private fun unfoldHierarchy(receiverWrapper: ExpEmbedding, ctx: LinearizationContext) {
-        val hierarchyPath = (receiver.type.pretype as? ClassTypeEmbedding)?.details?.hierarchyUnfoldPath(field)
-        hierarchyPath?.forEach { classType ->
-            val predAcc = classType.predicateAccess(receiverWrapper, ctx)
-            predAcc.let { ctx.addStatement { Stmt.Unfold(it) } }
-        }
-    }
 
     override fun toViperUnusedResult(ctx: LinearizationContext) {
         receiver.toViperUnusedResult(ctx)
@@ -499,20 +527,15 @@ data class FieldModification(val receiver: ExpEmbedding, val field: FieldEmbeddi
     override fun toViperSideEffects(ctx: LinearizationContext) {
         when (field.accessPolicy) {
             // TODO: Handling a unique field on a shared receiver must be added here.
-            AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
+            AccessPolicy.BY_RECEIVER_UNIQUENESS if false -> {
                 // We write to a shared var field. Since this value could change at any time, the result can not be
                 // used for reasoning. Hence, we want to ignore that statement.
                 // If there are side effects involved, we assign the results to throw away variables.
                 receiver.toViperUnusedResult(ctx)
                 newValue.toViperUnusedResult(ctx)
             }
-
             else -> {
                 val receiverViper = receiver.toViper(ctx)
-                if (field.unfoldToAccess) {
-                    val receiverWrapper = ExpWrapper(receiverViper, receiver.type)
-                    unfoldHierarchy(receiverWrapper, ctx)
-                }
                 val newValueViper = newValue.withType(field.type).toViper(ctx)
                 ctx.addStatement {
                     Stmt.FieldAssign(
@@ -523,14 +546,6 @@ data class FieldModification(val receiver: ExpEmbedding, val field: FieldEmbeddi
                 }
 
             }
-        }
-    }
-
-    private fun unfoldHierarchy(receiverWrapper: ExpEmbedding, ctx: LinearizationContext) {
-        val hierarchyPath = (receiver.type.pretype as? ClassTypeEmbedding)?.details?.hierarchyUnfoldPath(field)
-        hierarchyPath?.forEach { classType ->
-            val predAcc = classType.predicateAccess(receiverWrapper, ctx)
-            predAcc.let { ctx.addStatement { Stmt.Unfold(it) } }
         }
     }
 
@@ -603,6 +618,8 @@ data class Assign(val lhs: VariableEmbedding, val rhs: ExpEmbedding) : UnitResul
     override val type: TypeEmbedding = lhs.type
 
     override fun toViperSideEffects(ctx: LinearizationContext) {
+        val manager = PermissionManager(this)
+        manager.addUniqueUnfolds(ctx)
         rhs.withType(lhs.type).toViperStoringIn(LinearizationVariableEmbedding(lhs.name, lhs.type), ctx)
     }
 
@@ -620,8 +637,12 @@ data class Declare(val variable: VariableEmbedding, val initializer: ExpEmbeddin
 
     override fun toViperSideEffects(ctx: LinearizationContext) {
         ctx.addDeclaration(variable.toLocalVarDecl(ctx.source.asPosition))
-        initializer?.withType(variable.type)
-            ?.toViperStoringIn(LinearizationVariableEmbedding(variable.name, variable.type), ctx)
+        if (initializer != null) {
+            val manager = PermissionManager(this)
+            manager.addUniqueUnfolds(ctx)
+            initializer.withType(variable.type)
+                .toViperStoringIn(LinearizationVariableEmbedding(variable.name, variable.type), ctx)
+        }
     }
 
     override val debugAnonymousSubexpressions: List<ExpEmbedding>
