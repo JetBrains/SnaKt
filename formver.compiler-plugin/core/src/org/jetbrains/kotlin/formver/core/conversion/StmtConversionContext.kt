@@ -271,12 +271,11 @@ fun StmtConversionContext.convertFunctionWithBody(
         errorCollector.addPurityError(declaration.source, "Impure function body detected in pure function")
         return null
     }
-    // We want to let-bind the results of field accesses if we are translating into a method body, hence the UnfoldPolicy STORE_UNFOLDING_IN.
     val pureLinearizer = PureLinearizer(
         declaration.source,
         SharedLinearizationState(anonVarProducer),
         SsaConverter(declaration.source),
-        UnfoldPolicy.STORE_UNFOLDING_IN
+        UnfoldPolicy.STORE
     )
     body.toViperUnusedResult(pureLinearizer)
     return pureLinearizer.constructExpression()

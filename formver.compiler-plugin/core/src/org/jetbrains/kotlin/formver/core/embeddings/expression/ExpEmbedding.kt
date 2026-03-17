@@ -366,8 +366,8 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
             return PrimitiveFieldAccess(receiver, field).toViper(ctx)
         }
 
+        // UNFOLDING_IN policy requires no action by the LinearizationContext. Result can be returned directly
         if (field.unfoldToAccess && ctx.unfoldPolicy == UnfoldPolicy.UNFOLDING_IN) {
-            ctx.addFieldAccess(receiver, field)
             return unfoldingInImpl(ctx)
         }
         val variable = ctx.freshAnonVar(type)
@@ -376,7 +376,7 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
     }
 
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-        ctx.addFieldAccess(receiver, field, result)
+        ctx.storeFieldAccess(receiver, field, result)
     }
 
     private fun unfoldingInImpl(ctx: LinearizationContext): Exp {

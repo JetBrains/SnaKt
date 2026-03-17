@@ -32,7 +32,7 @@ data class Linearizer(
     val stmtModifierTracker: StmtModifierTracker? = null
 ) : LinearizationContext {
     override val unfoldPolicy: UnfoldPolicy
-        get() = UnfoldPolicy.UNFOLD
+        get() = UnfoldPolicy.STORE
     override val logicOperatorPolicy: LogicOperatorPolicy
         get() = LogicOperatorPolicy.CONVERT_TO_IF
 
@@ -99,8 +99,7 @@ data class Linearizer(
         stmtModifierTracker?.add(mod) ?: error("Not in a statement")
     }
 
-    override fun addFieldAccess(receiver: ExpEmbedding, field: FieldEmbedding, result: VariableEmbedding?) {
-        if (result == null) return
+    override fun storeFieldAccess(receiver: ExpEmbedding, field: FieldEmbedding, result: VariableEmbedding) {
         addStatement {
             when (field.accessPolicy) {
                 // TODO: Handling a unique field on a shared receiver must be added here.

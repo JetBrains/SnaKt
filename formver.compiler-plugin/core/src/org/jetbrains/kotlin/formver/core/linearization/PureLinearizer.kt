@@ -39,9 +39,6 @@ data class PureLinearizer(
     private val ssaConverter: SsaConverter = SsaConverter(source),
     override val unfoldPolicy: UnfoldPolicy = UnfoldPolicy.UNFOLDING_IN,
 ) : LinearizationContext {
-    init {
-        require(unfoldPolicy != UnfoldPolicy.UNFOLD) { throw PureLinearizerMisuseException("UNFOLD") }
-    }
 
     override val logicOperatorPolicy: LogicOperatorPolicy
         get() = LogicOperatorPolicy.CONVERT_TO_EXPRESSION
@@ -105,8 +102,7 @@ data class PureLinearizer(
         }
     }
 
-    override fun addFieldAccess(receiver: ExpEmbedding, field: FieldEmbedding, result: VariableEmbedding?) {
-        if (result == null) return
+    override fun storeFieldAccess(receiver: ExpEmbedding, field: FieldEmbedding, result: VariableEmbedding) {
         val viperReceiver = receiver.toViper(this)
         if (viperReceiver !is Exp.LocalVar) throw SnaktInternalException(
             source,

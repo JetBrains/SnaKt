@@ -20,8 +20,13 @@ import org.jetbrains.kotlin.formver.viper.ast.Declaration
 import org.jetbrains.kotlin.formver.viper.ast.Label
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
 
+/**
+ * Policy defining how field accesses are treated:
+ * - STORE: the accessed value is stored in an anonymous variable
+ * - UNFOLDING_IN: the accessing expression is wrapped in Viper 'unfolding in' expressions
+ */
 enum class UnfoldPolicy {
-    UNFOLD, UNFOLDING_IN, STORE_UNFOLDING_IN;
+    STORE, UNFOLDING_IN;
 }
 
 enum class LogicOperatorPolicy {
@@ -57,7 +62,7 @@ interface LinearizationContext {
         result: VariableEmbedding?
     )
 
-    fun addFieldAccess(receiver: ExpEmbedding, field: FieldEmbedding, result: VariableEmbedding? = null)
+    fun storeFieldAccess(receiver: ExpEmbedding, field: FieldEmbedding, result: VariableEmbedding)
 
     fun addModifier(mod: StmtModifier)
 
