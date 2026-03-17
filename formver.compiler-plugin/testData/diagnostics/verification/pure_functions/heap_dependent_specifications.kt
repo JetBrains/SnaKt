@@ -56,3 +56,17 @@ fun <!VIPER_TEXT!>isLocallyValidBST<!>(node: TreeNode): Boolean {
     }
     return leftValid && rightValid
 }
+
+
+@Pure
+@AlwaysVerify
+fun <!VIPER_TEXT!>testNode<!>(nodeLeft: Node, nodeRight: Node): Int {
+    var node = nodeLeft
+    if (nodeLeft.next != null) {
+        node = nodeLeft.next
+    } else if (nodeRight.next != null) {
+        node = nodeRight.next
+    }
+
+    return node.value
+}
