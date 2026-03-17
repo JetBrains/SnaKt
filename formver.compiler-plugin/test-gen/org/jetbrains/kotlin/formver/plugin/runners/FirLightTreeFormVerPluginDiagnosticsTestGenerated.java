@@ -347,6 +347,22 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/permissions")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Permissions {
+      @Test
+      public void testAllFilesPresentInPermissions() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/conversion/permissions"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("fieldRead.kt")
+      public void testFieldRead() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/permissions/fieldRead.kt");
+      }
+    }
+
+    @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/pure_functions")
     @TestDataPath("$PROJECT_ROOT")
     public class Pure_functions {
