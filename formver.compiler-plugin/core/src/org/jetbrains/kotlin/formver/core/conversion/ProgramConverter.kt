@@ -121,7 +121,11 @@ class ProgramConverter(
         // place the embedding in the map before processing the body.
         if (declaration.symbol.isPure(session)) {
             embedPureUserFunction(declaration.symbol, signature).apply {
-                body = stmtCtx.convertFunctionWithBody(declaration)
+                // The body may already be set if this function was previously encountered as a callee
+                // of another function under verification (via embedPureFunction)
+                if (body == null) {
+                    body = stmtCtx.convertFunctionWithBody(declaration)
+                }
             }
         } else {
             embedUserFunction(declaration.symbol, signature).apply {
@@ -201,6 +205,7 @@ class ProgramConverter(
                 val callable = processCallable(symbol, signature)
                 PureUserFunctionEmbedding(callable).also {
                     functions[lookupName] = it
+                    convertAndSetPureBody(symbol, signature, it)
                 }
             }
 
@@ -549,12 +554,38 @@ class ProgramConverter(
             // We generate a dummy method header here to ensure all required types are processed already. If we skip this, any types
             // that are used only in contracts cause an error because they are not processed until too late.
             // TODO: fit this into the flow in some logical way instead.
-            // TODO: We should emit the function with its body here instead of creating an empty header for functions
             NonInlineNamedFunction(
                 signature,
                 symbol.isPure(session)
             ).also { if (symbol.isPure(session)) it.toViperFunctionHeader() else it.toViperMethodHeader() }
         }
+    }
+
+    @OptIn(SymbolInternals::class)
+    private fun convertAndSetPureBody(
+        symbol: FirFunctionSymbol<*>,
+        signature: FullNamedFunctionSignature,
+        embedding: PureUserFunctionEmbedding,
+    ) {
+        val declaration = symbol.fir as? FirSimpleFunction ?: return
+        if (declaration.body == null) return
+
+        val returnTarget = returnTargetProducer.getFresh(signature.callableType.returnType)
+        val paramResolver = RootParameterResolver(
+            this@ProgramConverter,
+            signature,
+            signature.symbol.valueParameterSymbols,
+            signature.labelName,
+            returnTarget,
+        )
+        val stmtCtx = MethodConverter(
+            this@ProgramConverter,
+            signature,
+            paramResolver,
+            scopeIndexProducer.getFresh(),
+        ).statementCtxt()
+
+        embedding.body = stmtCtx.convertFunctionWithBody(declaration)
     }
 
     private fun TypeBuilder.embedTypeWithBuilder(type: ConeKotlinType): PretypeBuilder = when {
