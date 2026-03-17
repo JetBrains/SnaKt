@@ -19,7 +19,7 @@ class AccEmbedding(
     val field: FieldEmbedding,
     val access: ExpEmbedding,
     val perm: PermExp,
-) : OnlyToBuiltinTypeExpEmbedding {
+) : OnlyToBuiltinTypeExpEmbedding, DefaultUniqueness() {
     override fun toViperBuiltinType(ctx: LinearizationContext): Exp {
         val field = Exp.FieldAccess(
             access.toViper(ctx),

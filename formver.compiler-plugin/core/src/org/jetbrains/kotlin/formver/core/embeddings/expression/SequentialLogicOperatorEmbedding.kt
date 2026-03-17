@@ -15,7 +15,7 @@ import org.jetbrains.kotlin.formver.viper.ast.Exp
  * In pure contexts these operators can be written as simple binary operators.
  * However, regularly their semantics is different: evaluate the first argument and then maybe the second one (not necessarily)
  */
-sealed class SequentialLogicOperatorEmbedding : BinaryDirectResultExpEmbedding {
+sealed class SequentialLogicOperatorEmbedding : BinaryDirectResultExpEmbedding, DefaultUniqueness() {
     override val type
         get() = buildType { boolean() }
 

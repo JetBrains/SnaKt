@@ -20,12 +20,13 @@ import org.jetbrains.kotlin.formver.viper.ast.Stmt
  * We will eventually want to solve this somehow, but there are still open design questions there, so for now this wrapper will
  * do the job.
  */
-data class ExpWrapper(val value: Exp, override val type: TypeEmbedding) : NullaryDirectResultExpEmbedding {
+data class ExpWrapper(val value: Exp, override val type: TypeEmbedding) : NullaryDirectResultExpEmbedding,
+    DefaultUniqueness() {
     override fun toViper(ctx: LinearizationContext): Exp = value
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitExpWrapper(this)
 }
 
-data object ErrorExp : NoResultExpEmbedding, DefaultDebugTreeViewImplementation {
+data object ErrorExp : NoResultExpEmbedding, DefaultDebugTreeViewImplementation, DefaultUniqueness() {
     override val type: TypeEmbedding = buildType { nothing() }
     override fun toViperUnusedResult(ctx: LinearizationContext) {
         ctx.addStatement { Stmt.Inhale(Exp.BoolLit(false, ctx.source.asPosition), ctx.source.asPosition) }
@@ -37,7 +38,8 @@ data object ErrorExp : NoResultExpEmbedding, DefaultDebugTreeViewImplementation 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitErrorExp(this)
 }
 
-data class Assert(val exp: ExpEmbedding) : UnitResultExpEmbedding, DefaultDebugTreeViewImplementation {
+data class Assert(val exp: ExpEmbedding) : UnitResultExpEmbedding, DefaultDebugTreeViewImplementation,
+    DefaultUniqueness() {
     override fun toViperSideEffects(ctx: LinearizationContext) {
         ctx.addStatement { Stmt.Assert(exp.toViperBuiltinType(ctx), ctx.source.asPosition) }
     }
@@ -59,7 +61,8 @@ data class Assert(val exp: ExpEmbedding) : UnitResultExpEmbedding, DefaultDebugT
  * This can cause all kinds of issues with statement ordering, so it's more of a solution for porting legacy stuff than something
  * we should be adding more of going forward.
  */
-data class InhaleDirect(val exp: ExpEmbedding) : UnitResultExpEmbedding, DefaultDebugTreeViewImplementation {
+data class InhaleDirect(val exp: ExpEmbedding) : UnitResultExpEmbedding, DefaultDebugTreeViewImplementation,
+    DefaultUniqueness() {
     override fun toViperSideEffects(ctx: LinearizationContext) {
         ctx.addStatement { Stmt.Inhale(exp.toViperBuiltinType(ctx), ctx.source.asPosition) }
     }

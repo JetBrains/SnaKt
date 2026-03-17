@@ -92,16 +92,17 @@ class PlaceholderVariableEmbedding(
     override val type: TypeEmbedding,
     override val isUnique: Boolean = false,
     override val isBorrowed: Boolean = false,
-) : VariableEmbedding
+) : VariableEmbedding, DefaultUniqueness()
 
 /**
  * Embedding of an anonymous variable.
  */
-class AnonymousVariableEmbedding(n: Int, override val type: TypeEmbedding) : VariableEmbedding {
+class AnonymousVariableEmbedding(n: Int, override val type: TypeEmbedding) : VariableEmbedding, DefaultUniqueness() {
     override val name: SymbolicName = AnonymousName(n)
 }
 
-class AnonymousBuiltinVariableEmbedding(n: Int, override val type: TypeEmbedding) : VariableEmbedding {
+class AnonymousBuiltinVariableEmbedding(n: Int, override val type: TypeEmbedding) : VariableEmbedding,
+    DefaultUniqueness() {
     override val name: SymbolicName = AnonymousBuiltinName(n)
     private val injection: Injection? = type.injectionOrNull
     override fun toViper(ctx: LinearizationContext): Exp {
@@ -128,7 +129,7 @@ class FirVariableEmbedding(
     val symbol: FirBasedSymbol<*>,
     override val isUnique: Boolean = false,
     override val isBorrowed: Boolean = false,
-) : VariableEmbedding {
+) : VariableEmbedding, DefaultUniqueness() {
     override val sourceRole: SourceRole
         get() = symbol.asSourceRole
 }
@@ -139,7 +140,7 @@ class FirVariableEmbedding(
  * This can still correspond to an earlier variable, but it no longer carries any interesting information.
  */
 class LinearizationVariableEmbedding(override val name: SymbolicName, override val type: TypeEmbedding) :
-    VariableEmbedding
+    VariableEmbedding, DefaultUniqueness()
 
 val ExpEmbedding.underlyingVariable
     get() = this.ignoringCastsAndMetaNodes() as? VariableEmbedding

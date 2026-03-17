@@ -22,6 +22,7 @@ import org.jetbrains.kotlin.formver.core.linearization.UnfoldPolicy
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.purity.PurityContext
 import org.jetbrains.kotlin.formver.names.SimpleNameResolver
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessTrie
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Exp
@@ -38,6 +39,16 @@ sealed interface ExpEmbedding : DebugPrintable {
      */
     val sourceRole: SourceRole?
         get() = null
+
+    /**
+     * Uniqueness tree before the `ExpEmbedding` is executed.
+     */
+    var uniquenessBefore: UniquenessTrie?
+
+    /**
+     * Uniqueness tree after the `ExpEmbedding` is executed.
+     */
+    var uniquenessAfter: UniquenessTrie?
 
     /**
      * Convert this `ExpEmbedding` into a Viper `Exp` of type `Ref`, using the provided context for auxiliary statements and declarations.
@@ -88,6 +99,11 @@ sealed interface ExpEmbedding : DebugPrintable {
     fun children(): Sequence<ExpEmbedding> = emptySequence()
     fun <R> accept(v: ExpVisitor<R>): R
     fun isValid(ctx: PurityContext): Boolean = true
+}
+
+abstract class DefaultUniqueness : ExpEmbedding {
+    override var uniquenessBefore: UniquenessTrie? = null
+    override var uniquenessAfter: UniquenessTrie? = null
 }
 
 sealed class ToViperBuiltinMisuseError(msg: String) : RuntimeException(msg)
@@ -347,7 +363,7 @@ fun List<ExpEmbedding>.toViper(ctx: LinearizationContext): List<Exp> = map { it.
  */
 data class PrimitiveFieldAccess(override val inner: ExpEmbedding, val field: FieldEmbedding) :
     UnaryDirectResultExpEmbedding,
-    DefaultToBuiltinExpEmbedding {
+    DefaultToBuiltinExpEmbedding, DefaultUniqueness() {
     override val type: TypeEmbedding
         get() = this.field.type
 
@@ -362,7 +378,7 @@ data class PrimitiveFieldAccess(override val inner: ExpEmbedding, val field: Fie
 }
 
 data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : DefaultMaybeStoringInExpEmbedding,
-    DefaultToBuiltinExpEmbedding {
+    DefaultToBuiltinExpEmbedding, DefaultUniqueness() {
     override val type: TypeEmbedding = field.type
     override fun toViper(ctx: LinearizationContext): Exp {
         if (field.accessPolicy == AccessPolicy.ALWAYS_WRITEABLE) {
@@ -442,7 +458,7 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
  * Represents a combination of `Assign` + `FieldAccess`.
  */
 data class FieldModification(val receiver: ExpEmbedding, val field: FieldEmbedding, val newValue: ExpEmbedding) :
-    UnitResultExpEmbedding {
+    UnitResultExpEmbedding, DefaultUniqueness() {
     override fun toViperSideEffects(ctx: LinearizationContext) {
         when (field.accessPolicy) {
             // TODO: Handling a unique field on a shared receiver must be added here.
@@ -501,7 +517,7 @@ data class FieldModification(val receiver: ExpEmbedding, val field: FieldEmbeddi
 }
 
 data class FieldAccessPermissions(override val inner: ExpEmbedding, val field: FieldEmbedding, val perm: PermExp) :
-    OnlyToBuiltinTypeExpEmbedding, UnaryDirectResultExpEmbedding {
+    OnlyToBuiltinTypeExpEmbedding, UnaryDirectResultExpEmbedding, DefaultUniqueness() {
     // We consider access permissions to have type Boolean, though this is a bit questionable.
     override val type: TypeEmbedding = buildType { boolean() }
 
@@ -523,7 +539,7 @@ data class PredicateAccessPermissions(
     val args: List<ExpEmbedding>,
     val perm: PermExp
 ) :
-    OnlyToBuiltinTypeExpEmbedding {
+    OnlyToBuiltinTypeExpEmbedding, DefaultUniqueness() {
     override val type: TypeEmbedding = buildType { boolean() }
     override fun toViperBuiltinType(ctx: LinearizationContext): Exp =
         Exp.PredicateAccess(predicateName, args.map { it.toViper(ctx) }, perm, ctx.source.asPosition)
@@ -541,7 +557,7 @@ data class PredicateAccessPermissions(
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitPredicateAccessPermissions(this)
 }
 
-data class Assign(val lhs: VariableEmbedding, val rhs: ExpEmbedding) : UnitResultExpEmbedding {
+data class Assign(val lhs: VariableEmbedding, val rhs: ExpEmbedding) : UnitResultExpEmbedding, DefaultUniqueness() {
     override val type: TypeEmbedding = lhs.type
 
     override fun toViperSideEffects(ctx: LinearizationContext) {
@@ -557,7 +573,7 @@ data class Assign(val lhs: VariableEmbedding, val rhs: ExpEmbedding) : UnitResul
 }
 
 data class Declare(val variable: VariableEmbedding, val initializer: ExpEmbedding?) : UnitResultExpEmbedding,
-    DefaultDebugTreeViewImplementation {
+    DefaultDebugTreeViewImplementation, DefaultUniqueness() {
     override val type: TypeEmbedding = buildType { unit() }
 
     override fun toViperSideEffects(ctx: LinearizationContext) {

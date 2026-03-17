@@ -24,7 +24,7 @@ data class Is(
     override val inner: ExpEmbedding, val comparisonType: RuntimeTypeHolder,
     override val sourceRole: SourceRole? = null,
 ) :
-    UnaryDirectResultExpEmbedding {
+    UnaryDirectResultExpEmbedding, DefaultUniqueness() {
     override val type = buildType { boolean() }
 
     override fun toViper(ctx: LinearizationContext) =
@@ -51,7 +51,8 @@ data class Is(
  * ExpEmbedding to change the TypeEmbedding of an inner ExpEmbedding.
  * This is needed since most of our invariants require type and hence can be made more precise via Cast.
  */
-data class Cast(override val inner: ExpEmbedding, override val type: TypeEmbedding) : UnaryDirectResultExpEmbedding {
+data class Cast(override val inner: ExpEmbedding, override val type: TypeEmbedding) : UnaryDirectResultExpEmbedding,
+    DefaultUniqueness() {
     // TODO: Do we want to assert `inner isOf type` here before making a cast itself?
     override fun toViper(ctx: LinearizationContext) = inner.toViper(ctx)
     override fun ignoringCasts(): ExpEmbedding = inner.ignoringCasts()
@@ -76,7 +77,7 @@ fun ExpEmbedding.withType(init: TypeBuilder.() -> PretypeBuilder): ExpEmbedding 
  * This is also why we insist the result is stored; this is a little stronger than necessary, but that does not harm correctness.
  */
 data class SafeCast(val exp: ExpEmbedding, val targetType: TypeEmbedding) : StoredResultExpEmbedding,
-    DefaultDebugTreeViewImplementation {
+    DefaultDebugTreeViewImplementation, DefaultUniqueness() {
     override val type: TypeEmbedding
         get() = targetType.getNullable()
 
@@ -129,7 +130,7 @@ private data class InhaleInvariantsForExp(
     override val exp: ExpEmbedding,
     override val invariants: List<TypeInvariantEmbedding>
 ) :
-    StoredResultExpEmbedding, InhaleInvariants {
+    StoredResultExpEmbedding, InhaleInvariants, DefaultUniqueness() {
 
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
         exp.toViperStoringIn(result, ctx)
@@ -143,7 +144,7 @@ private data class InhaleInvariantsForVariable(
     override val exp: ExpEmbedding,
     override val invariants: List<TypeInvariantEmbedding>,
 ) :
-    InhaleInvariants, OnlyToViperExpEmbedding {
+    InhaleInvariants, OnlyToViperExpEmbedding, DefaultUniqueness() {
 
     override fun toViper(ctx: LinearizationContext): Exp {
         val variable = exp.underlyingVariable ?: error("Use of InhaleInvariantsForVariable for non-variable")

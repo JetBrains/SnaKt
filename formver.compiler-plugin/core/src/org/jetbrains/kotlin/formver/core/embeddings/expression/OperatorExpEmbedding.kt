@@ -78,7 +78,7 @@ class BinaryOperatorExpEmbeddingTemplate(
         right: ExpEmbedding,
         sourceRole: SourceRole? = null
     ): BinaryOperatorExpEmbedding =
-        object : BinaryOperatorExpEmbedding {
+        object : BinaryOperatorExpEmbedding, DefaultUniqueness() {
             override val refsOperation: InjectionImageFunction = this@BinaryOperatorExpEmbeddingTemplate.refsOperation
             override val type = this@BinaryOperatorExpEmbeddingTemplate.type
             override val left = left
@@ -93,7 +93,7 @@ class UnaryOperatorExpEmbeddingTemplate(
 ) :
     OperatorExpEmbeddingTemplate {
     operator fun invoke(inner: ExpEmbedding, sourceRole: SourceRole? = null): UnaryOperatorExpEmbedding =
-        object : UnaryOperatorExpEmbedding {
+        object : UnaryOperatorExpEmbedding, DefaultUniqueness() {
             override val refsOperation: InjectionImageFunction = this@UnaryOperatorExpEmbeddingTemplate.refsOperation
             override val type = this@UnaryOperatorExpEmbeddingTemplate.type
             override val inner = inner

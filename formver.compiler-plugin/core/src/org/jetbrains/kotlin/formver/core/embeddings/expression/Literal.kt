@@ -36,7 +36,7 @@ interface LiteralEmbedding : NullaryDirectResultExpEmbedding {
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitLiteralEmbedding(this)
 }
 
-data object UnitLit : LiteralEmbedding, UnitResultExpEmbedding {
+data object UnitLit : LiteralEmbedding, UnitResultExpEmbedding, DefaultUniqueness() {
     override fun toViper(ctx: LinearizationContext): Exp =
         super<UnitResultExpEmbedding>.toViper(ctx)
 
@@ -51,7 +51,7 @@ data object UnitLit : LiteralEmbedding, UnitResultExpEmbedding {
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitUnitLit(this)
 }
 
-data class IntLit(override val value: Int) : LiteralEmbedding {
+data class IntLit(override val value: Int) : LiteralEmbedding, DefaultUniqueness() {
     override val type = buildType { int() }
 
     override val debugName = "Int"
@@ -60,7 +60,7 @@ data class IntLit(override val value: Int) : LiteralEmbedding {
 data class BooleanLit(
     override val value: Boolean,
     override val sourceRole: SourceRole? = null
-) : LiteralEmbedding {
+) : LiteralEmbedding, DefaultUniqueness() {
 
     override val type = buildType { boolean() }
 
@@ -69,7 +69,7 @@ data class BooleanLit(
 
 data class CharLit(
     override val value: Char,
-) : LiteralEmbedding {
+) : LiteralEmbedding, DefaultUniqueness() {
     override val type = buildType { char() }
 
     override val debugName: String = "Char"
@@ -77,13 +77,13 @@ data class CharLit(
 
 data class StringLit(
     override val value: String,
-) : LiteralEmbedding {
+) : LiteralEmbedding, DefaultUniqueness() {
     override val type = buildType { string() }
 
     override val debugName: String = "String"
 }
 
-data object NullLit : LiteralEmbedding {
+data object NullLit : LiteralEmbedding, DefaultUniqueness() {
     override val value = null
 
     override val type = buildType { isNullable = true; nothing() }
