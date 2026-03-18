@@ -33,5 +33,5 @@ fun `consume nested unique after moving back`(@Unique a: A) {
     consume(b.um)
     a.um = b
 
-    consume(a)
+    consume(<!UNIQUENESS_VIOLATION!>a<!>)
 }
