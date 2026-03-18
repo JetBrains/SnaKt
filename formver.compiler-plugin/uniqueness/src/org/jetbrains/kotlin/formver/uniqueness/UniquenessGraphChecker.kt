@@ -159,7 +159,7 @@ class UniquenessTypeChecker(
                 //  {@see UniquenessGraphAnalyzer.visitFunctionCallEnterNode}
                 if (parameterType.uniqueLevel == UniqueLevel.Unique) {
                     currentData = currentData.copy()
-                    currentData[argumentPath] = UniquenessType.Moved
+                    currentData.ensure(argumentPath).type = UniquenessType.Moved
                 }
             }
         }

@@ -39,7 +39,7 @@ class UniquenessTypeAssigner(
             val valueType = data[valuePath]
 
             if (valueType is UniquenessType.Active && valueType.uniqueLevel == UniqueLevel.Unique) {
-                result[valuePath] = UniquenessType.Moved
+                result.ensure(valuePath).type = UniquenessType.Moved
             }
         }
 
@@ -78,11 +78,11 @@ class UniquenessTypeAssigner(
                 if (parameterType.borrowLevel == BorrowLevel.Global) {
                     when (parameterType.uniqueLevel) {
                         UniqueLevel.Unique -> {
-                            result[argumentPath] = UniquenessType.Moved
+                            result.ensure(argumentPath).type = UniquenessType.Moved
                         }
 
                         UniqueLevel.Shared -> {
-                            result[argumentPath] = UniquenessType.Active(UniqueLevel.Shared, BorrowLevel.Global)
+                            result.ensure(argumentPath).type = UniquenessType.Active(UniqueLevel.Shared, BorrowLevel.Global)
                         }
                     }
                 }

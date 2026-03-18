@@ -89,15 +89,6 @@ class UniquenessTrie(
     }
 
     /**
-     * Retrieves the uniqueness type for a given path.
-     *
-     * @param path The path to retrieve the uniqueness type for.
-     * @return The uniqueness type for the given path, or null if not found.
-     */
-    operator fun get(path: Path): UniquenessType =
-        ensure(path).type
-
-    /**
      * Aggregates the uniqueness types of multiple paths into a single type.
      *
      * @param paths The list of paths of which type should be aggregated.
@@ -109,19 +100,13 @@ class UniquenessTrie(
         } else {
             return paths.fold(
                 UniquenessType.Active(UniqueLevel.Unique, BorrowLevel.Global) as UniquenessType
-            ) { result, path -> result.join(get(path)) }
+            ) { result, path -> result.join(ensure(path).type) }
         }
     }
 
-    /**
-     * Sets the uniqueness type for a given path.
-     *
-     * @param path The path to set the uniqueness type for.
-     * @return The updated UniquenessStore.
-     */
-    operator fun set(path: Path, value: UniquenessType) {
-        val store = ensure(path)
-        store.type = value
+    fun reset() {
+        type = UniquenessType.Active(UniqueLevel.Unique, BorrowLevel.Global)
+        children.clear()
     }
 
     private fun copyWithParent(newParent: UniquenessTrie?): UniquenessTrie {
