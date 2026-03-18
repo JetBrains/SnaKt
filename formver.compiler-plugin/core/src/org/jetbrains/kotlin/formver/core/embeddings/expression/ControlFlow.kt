@@ -15,10 +15,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.toMethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
-import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
-import org.jetbrains.kotlin.formver.core.linearization.addLabel
-import org.jetbrains.kotlin.formver.core.linearization.freshAnonVar
-import org.jetbrains.kotlin.formver.core.linearization.pureToViper
+import org.jetbrains.kotlin.formver.core.linearization.*
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Exp
@@ -198,6 +195,9 @@ data class MethodCall(val method: NamedFunctionSignature, val args: List<ExpEmbe
     override val type: TypeEmbedding = method.callableType.returnType
 
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
+
+        val permissionManager = PermissionManager(this)
+        permissionManager.addUniqueUnfolds(ctx)
         ctx.addStatement {
             method.toMethodCall(
                 args.map { it.toViper(ctx) },
@@ -205,6 +205,7 @@ data class MethodCall(val method: NamedFunctionSignature, val args: List<ExpEmbe
                 ctx.source.asPosition
             )
         }
+        permissionManager.addUniqueFolds(ctx)
     }
 
     context(nameResolver: NameResolver)

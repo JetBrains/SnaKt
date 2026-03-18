@@ -1,0 +1,381 @@
+/methodCalls.kt:(672,679): info: Generated Viper text for consume:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$consume$TF$T$C$T$Unit(p$c: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$c$C())
+  requires acc(p$c$C$unique(p$c), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale acc(p$c$C$shared(p$c), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/methodCalls.kt:(701,708): info: Generated Viper text for consume:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$consume$TF$T$B$T$Unit(p$b: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$B())
+  requires acc(p$c$B$unique(p$b), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale acc(p$c$B$shared(p$b), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/methodCalls.kt:(730,736): info: Generated Viper text for shared:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$shared$TF$T$C$T$Unit(p$c: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$c$C())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale acc(p$c$C$shared(p$c), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/methodCalls.kt:(750,756): info: Generated Viper text for borrow:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$borrow$TF$T$B$T$Unit(p$b: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$B())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale acc(p$c$B$shared(p$b), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/methodCalls.kt:(780,790): info: Generated Viper text for consumeTwo:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$consumeTwo$TF$T$B$T$B$T$Unit(p$b1: Ref, p$b2: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b1), df$rt$c$B())
+  requires acc(p$c$B$unique(p$b1), write)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b2), df$rt$c$B())
+  requires acc(p$c$B$unique(p$b2), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale acc(p$c$B$shared(p$b1), wildcard)
+  inhale acc(p$c$B$shared(p$b2), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/methodCalls.kt:(829,854): info: Generated Viper text for testUniqueFieldFoldUnfold:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$consume$TF$T$B$T$Unit(p$b: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$B())
+  requires acc(p$c$B$unique(p$b), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$testUniqueFieldFoldUnfold$TF$T$A$T$Unit(p$a: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$um
+  anon$0 := f$consume$TF$T$B$T$Unit(anon$1)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/methodCalls.kt:(897,914): info: Generated Viper text for testBorrowedField:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$borrow$TF$T$B$T$Unit(p$b: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$B())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$testBorrowedField$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  var anon$2: Ref
+  var anon$3: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$um
+  anon$0 := f$borrow$TF$T$B$T$Unit(anon$1)
+  fold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$3 := p$a.bf$um
+  anon$2 := f$borrow$TF$T$B$T$Unit(anon$3)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/methodCalls.kt:(972,988): info: Generated Viper text for testNestedUnique:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$consume$TF$T$C$T$Unit(p$c: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$c$C())
+  requires acc(p$c$C$unique(p$c), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$testNestedUnique$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$b: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  l0$b := p$a.bf$um
+  unfold acc(p$c$B$unique(l0$b), write)
+  anon$1 := l0$b.bf$um
+  anon$0 := f$consume$TF$T$C$T$Unit(anon$1)
+  p$a.bf$um := l0$b
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/methodCalls.kt:(1069,1086): info: Generated Viper text for testMultipleCalls:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$borrow$TF$T$B$T$Unit(p$b: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$B())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$testMultipleCalls$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  var anon$2: Ref
+  var anon$3: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$ui
+  anon$0 := f$borrow$TF$T$B$T$Unit(anon$1)
+  fold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$3 := p$a.bf$ui
+  anon$2 := f$borrow$TF$T$B$T$Unit(anon$3)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/methodCalls.kt:(1145,1161): info: Generated Viper text for testNestedBorrow:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$borrow$TF$T$B$T$Unit(p$b: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$B())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$testNestedBorrow$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  var l0$c: Ref
+  var anon$2: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$um
+  anon$0 := f$borrow$TF$T$B$T$Unit(anon$1)
+  fold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  anon$2 := p$a.bf$um
+  l0$c := anon$2.bf$um
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/methodCalls.kt:(1240,1255): info: Generated Viper text for testMixedAccess:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$borrow$TF$T$B$T$Unit(p$b: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$B())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$consume$TF$T$B$T$Unit(p$b: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$B())
+  requires acc(p$c$B$unique(p$b), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$testMixedAccess$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  var anon$2: Ref
+  var anon$3: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$um
+  anon$0 := f$borrow$TF$T$B$T$Unit(anon$1)
+  fold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$3 := p$a.bf$um
+  anon$2 := f$consume$TF$T$B$T$Unit(anon$3)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/methodCalls.kt:(1314,1321): info: Generated Viper text for testTwo:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$consumeTwo$TF$T$B$T$B$T$Unit(p$b1: Ref, p$b2: Ref)
+  returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b1), df$rt$c$B())
+  requires acc(p$c$B$unique(p$b1), write)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b2), df$rt$c$B())
+  requires acc(p$c$B$unique(p$b2), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$testTwo$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  var anon$2: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$um
+  anon$2 := p$a.bf$ui
+  anon$0 := f$consumeTwo$TF$T$B$T$B$T$Unit(anon$1, anon$2)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/methodCalls.kt:(1372,1387): info: Generated Viper text for testSharedField:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$shared$TF$T$C$T$Unit(p$c: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$c$C())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$testSharedField$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$b: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  l0$b := p$a.bf$um
+  unfold acc(p$c$B$unique(l0$b), write)
+  anon$1 := l0$b.bf$sm
+  anon$0 := f$shared$TF$T$C$T$Unit(anon$1)
+  fold acc(p$c$B$unique(l0$b), write)
+  p$a.bf$um := l0$b
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}

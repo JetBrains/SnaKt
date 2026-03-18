@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.EnterNodeMarker
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ExitNodeMarker
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallExitNode
 import org.jetbrains.kotlin.formver.uniqueness.FlowFacts
 import org.jetbrains.kotlin.formver.uniqueness.UniquenessTrie
 
@@ -38,6 +39,7 @@ class UniquenessInformation(val root: CFGNode<*>, val flowFacts: FlowFacts<Uniqu
             when (node) {
                 is EnterNodeMarker -> _entry = node
                 is ExitNodeMarker -> _exit = node
+                is FunctionCallExitNode -> _exit = node
                 else -> {}
             }
             _all.add(node)
