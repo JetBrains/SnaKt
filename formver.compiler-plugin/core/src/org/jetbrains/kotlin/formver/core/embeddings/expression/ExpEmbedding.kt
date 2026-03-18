@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.expression
 
+import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
 import org.jetbrains.kotlin.formver.core.conversion.Path
@@ -525,26 +526,53 @@ data class FieldModification(val receiver: ExpEmbedding, val field: FieldEmbeddi
     }
 
     override fun toViperSideEffects(ctx: LinearizationContext) {
+
         when (field.accessPolicy) {
             // TODO: Handling a unique field on a shared receiver must be added here.
-            AccessPolicy.BY_RECEIVER_UNIQUENESS if false -> {
-                // We write to a shared var field. Since this value could change at any time, the result can not be
-                // used for reasoning. Hence, we want to ignore that statement.
-                // If there are side effects involved, we assign the results to throw away variables.
-                receiver.toViperUnusedResult(ctx)
-                newValue.toViperUnusedResult(ctx)
+            AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
+                val permissionManager = PermissionManager(this)
+                if (permissionManager.isShared()) {
+                    // We write to a shared var field. Since this value could change at any time, the result can not be
+                    // used for reasoning. Hence, we want to ignore that statement.
+                    // If there are side effects involved, we assign the results to throw away variables.
+                    receiver.toViperUnusedResult(ctx)
+                    newValue.toViperUnusedResult(ctx)
+                } else {
+                    // The receiver is unique
+                    permissionManager.addUniqueUnfolds(ctx)
+                    ctx.addStatement {
+                        Stmt.FieldAssign(
+                            Exp.FieldAccess(receiver.toViper(ctx), field.toViper()),
+                            newValue.toViper(ctx)
+                        )
+                    }
+                    permissionManager.addUniqueFolds(ctx)
+                }
             }
-            else -> {
-                val receiverViper = receiver.toViper(ctx)
-                val newValueViper = newValue.withType(field.type).toViper(ctx)
+
+            AccessPolicy.ALWAYS_WRITEABLE -> {
+                // Nothing needs to be done, because it is always writeable (special field)
                 ctx.addStatement {
                     Stmt.FieldAssign(
-                        Exp.FieldAccess(receiverViper, field.toViper()),
-                        newValueViper,
-                        ctx.source.asPosition
+                        Exp.FieldAccess(receiver.toViper(ctx), field.toViper()),
+                        newValue.toViper(ctx)
                     )
                 }
+            }
 
+            AccessPolicy.MANUAL -> {
+                // Manual permission management.
+                // TODO: Handle this.
+                ctx.addStatement {
+                    Stmt.FieldAssign(
+                        Exp.FieldAccess(receiver.toViper(ctx), field.toViper()),
+                        newValue.toViper(ctx)
+                    )
+                }
+            }
+
+            AccessPolicy.ALWAYS_READABLE -> {
+                throw SnaktInternalException(ctx.source, "Trying to write to an immutable field")
             }
         }
     }
@@ -613,6 +641,7 @@ data class Assign(val lhs: VariableEmbedding, val rhs: ExpEmbedding) : UnitResul
         val manager = PermissionManager(this)
         manager.addUniqueUnfolds(ctx)
         rhs.withType(lhs.type).toViperStoringIn(LinearizationVariableEmbedding(lhs.name, lhs.type), ctx)
+        manager.addUniqueFolds(ctx)
     }
 
     context(nameResolver: NameResolver)
@@ -634,6 +663,7 @@ data class Declare(val variable: VariableEmbedding, val initializer: ExpEmbeddin
             manager.addUniqueUnfolds(ctx)
             initializer.withType(variable.type)
                 .toViperStoringIn(LinearizationVariableEmbedding(variable.name, variable.type), ctx)
+            manager.addUniqueFolds(ctx)
         }
     }
 
