@@ -593,6 +593,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
+    @TestMetadata("consume_deeply_nested.kt")
+    public void testConsume_deeply_nested() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/consume_deeply_nested.kt");
+    }
+
+    @Test
     @TestMetadata("consume_local.kt")
     public void testConsume_local() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/consume_local.kt");
@@ -635,9 +641,9 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
-    @TestMetadata("share_properties.kt")
-    public void testShare_properties() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/share_properties.kt");
+    @TestMetadata("share_property.kt")
+    public void testShare_property() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/share_property.kt");
     }
 
     @Test

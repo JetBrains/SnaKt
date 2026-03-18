@@ -30,16 +30,19 @@ class UniquenessTypeAssigner(
         val result = data.copy()
         val receiverPath = receiver.receiverPath
         val valuePaths = value.valuePaths
-
-        if (receiverPath != null) {
-            result[receiverPath] = resolver.resolveUniquenessType(receiverPath.last())
+        val receiverResult = receiverPath?.let {
+            result.ensure(it).also{
+                it.children.clear()
+            }
         }
 
         for (valuePath in valuePaths) {
-            val valueType = data[valuePath]
+            val valueData = data.ensure(valuePath)
+            val valueType = valueData.type
+            receiverResult?.join(valueData)
 
             if (valueType is UniquenessType.Active && valueType.uniqueLevel == UniqueLevel.Unique) {
-                result[valuePath] = UniquenessType.Moved
+                result.ensure(valuePath).type = UniquenessType.Moved
             }
         }
 
@@ -78,11 +81,11 @@ class UniquenessTypeAssigner(
                 if (parameterType.borrowLevel == BorrowLevel.Global) {
                     when (parameterType.uniqueLevel) {
                         UniqueLevel.Unique -> {
-                            result[argumentPath] = UniquenessType.Moved
+                            result.ensure(argumentPath).type = UniquenessType.Moved
                         }
 
                         UniqueLevel.Shared -> {
-                            result[argumentPath] = UniquenessType.Active(UniqueLevel.Shared, BorrowLevel.Global)
+                            result.ensure(argumentPath).type = UniquenessType.Active(UniqueLevel.Shared, BorrowLevel.Global)
                         }
                     }
                 }

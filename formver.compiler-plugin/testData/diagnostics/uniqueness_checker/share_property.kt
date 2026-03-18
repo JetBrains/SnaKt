@@ -4,8 +4,8 @@ import org.jetbrains.kotlin.formver.plugin.Borrowed
 import org.jetbrains.kotlin.formver.plugin.Unique
 
 class A {
-    @Unique var x = Object()
-    @Unique var w = Object()
+    @Unique var x = Any()
+    @Unique var w = Any()
 }
 
 class B {

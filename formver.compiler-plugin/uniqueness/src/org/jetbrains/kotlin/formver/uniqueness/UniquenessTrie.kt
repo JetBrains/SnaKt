@@ -22,8 +22,8 @@ import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 class UniquenessTrie(
     val resolver: UniquenessResolver,
     var type: UniquenessType = UniquenessType.Active(UniqueLevel.Unique, BorrowLevel.Global),
-    private val children: MutableMap<FirBasedSymbol<*>, UniquenessTrie> = mutableMapOf(),
-    private val parent: UniquenessTrie? = null
+    val children: MutableMap<FirBasedSymbol<*>, UniquenessTrie> = mutableMapOf(),
+    val parent: UniquenessTrie? = null
 ) {
     /**
      * Represents the least upper bound (LUB) of uniqueness levels for the path from the current node * to the root of
@@ -51,18 +51,16 @@ class UniquenessTrie(
         val actual = type
         val default = resolver.resolveUniquenessType(symbol)
 
-        return actual == default &&
-                children.all { (symbol, store) ->
-                    store.isInvariant(symbol)
-                }
+        return actual == default && isInvariant()
     }
 
     /**
-     * @return true if the subpaths of `symbol` are invariant with respect to their default specification, `false`
-     * otherwise.
+     * @return true if the subpaths of invariant with respect to their default specification, `false` otherwise.
      */
-    fun isInvariant(path: Path): Boolean {
-        return path.isEmpty() || ensure(path).isInvariant(path.first())
+    fun isInvariant(): Boolean {
+        return children.all { (head, child) ->
+            child.isInvariant(head)
+        }
     }
 
     /**
@@ -86,42 +84,6 @@ class UniquenessTrie(
         }
 
         return child.ensure(path.subList(1, path.size))
-    }
-
-    /**
-     * Retrieves the uniqueness type for a given path.
-     *
-     * @param path The path to retrieve the uniqueness type for.
-     * @return The uniqueness type for the given path, or null if not found.
-     */
-    operator fun get(path: Path): UniquenessType =
-        ensure(path).type
-
-    /**
-     * Aggregates the uniqueness types of multiple paths into a single type.
-     *
-     * @param paths The list of paths of which type should be aggregated.
-     * @return The aggregated uniqueness type.
-     */
-    fun aggregate(paths: List<Path>): UniquenessType {
-        if (paths.isEmpty()) {
-            return UniquenessType.Active(UniqueLevel.Shared, BorrowLevel.Global)
-        } else {
-            return paths.fold(
-                UniquenessType.Active(UniqueLevel.Unique, BorrowLevel.Global) as UniquenessType
-            ) { result, path -> result.join(get(path)) }
-        }
-    }
-
-    /**
-     * Sets the uniqueness type for a given path.
-     *
-     * @param path The path to set the uniqueness type for.
-     * @return The updated UniquenessStore.
-     */
-    operator fun set(path: Path, value: UniquenessType) {
-        val store = ensure(path)
-        store.type = value
     }
 
     private fun copyWithParent(newParent: UniquenessTrie?): UniquenessTrie {
