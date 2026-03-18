@@ -105,21 +105,22 @@ class UniquenessTypeChecker(
         onError: (UniquenessType, UniquenessType) -> Unit
     ) {
         for (valuePath in value.valuePaths) {
-            val valueType = data.ensure(valuePath).parentsJoin
-            val expectedType = resolver.resolveUniquenessType(valuePath.last())
+            val valueData = data.ensure(valuePath)
+            val valueActualType = valueData.parentsJoin
+            val valueExpectedType = resolver.resolveUniquenessType(valuePath.last())
 
-            if (valueType is UniquenessType.Active &&
-                valueType.uniqueLevel == UniqueLevel.Unique &&
-                !data.isInvariant(valuePath)) {
+            if (valueActualType is UniquenessType.Active &&
+                valueActualType.uniqueLevel == UniqueLevel.Unique &&
+                !valueData.isInvariant()) {
                 val valuePartialType = data.childrenJoin
 
                 when (valuePartialType) {
                     is UniquenessType.Moved ->
-                        return onError(valueType, valuePartialType)
+                        return onError(valueActualType, valuePartialType)
 
                     is UniquenessType.Active -> {
-                        if (valuePartialType.uniqueLevel > expectedType.uniqueLevel) {
-                            return onError(valueType, valuePartialType)
+                        if (valuePartialType.uniqueLevel > valueExpectedType.uniqueLevel) {
+                            return onError(valueActualType, valuePartialType)
                         }
                     }
                 }

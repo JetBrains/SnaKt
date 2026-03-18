@@ -51,18 +51,16 @@ class UniquenessTrie(
         val actual = type
         val default = resolver.resolveUniquenessType(symbol)
 
-        return actual == default &&
-                children.all { (symbol, store) ->
-                    store.isInvariant(symbol)
-                }
+        return actual == default && isInvariant()
     }
 
     /**
-     * @return true if the subpaths of `symbol` are invariant with respect to their default specification, `false`
-     * otherwise.
+     * @return true if the subpaths of invariant with respect to their default specification, `false` otherwise.
      */
-    fun isInvariant(path: Path): Boolean {
-        return path.isEmpty() || ensure(path).isInvariant(path.first())
+    fun isInvariant(): Boolean {
+        return children.all { (head, child) ->
+            child.isInvariant(head)
+        }
     }
 
     /**
