@@ -87,7 +87,10 @@ data class Linearizer(
         result: VariableEmbedding?
     ) =
         addStatement {
+            val conditionPermissionManager = PermissionManager(condition)
+            conditionPermissionManager.addUniqueUnfolds(this)
             val condViper = condition.toViperBuiltinType(this)
+            conditionPermissionManager.addUniqueFolds(this)
             val thenViper = asBlock { thenBranch.withType(type).toViperMaybeStoringIn(result, this) }
             val elseViper = asBlock { elseBranch.withType(type).toViperMaybeStoringIn(result, this) }
             Stmt.If(condViper, thenViper, elseViper, source.asPosition)
