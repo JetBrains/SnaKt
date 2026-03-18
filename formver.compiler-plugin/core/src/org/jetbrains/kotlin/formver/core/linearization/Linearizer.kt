@@ -74,8 +74,11 @@ data class Linearizer(
     }
 
     override fun addReturn(returnExp: ExpEmbedding, target: ReturnTarget) {
+        val permissionManager = PermissionManager(returnExp)
+        permissionManager.addUniqueUnfolds(this)
         returnExp.withType(target.variable.type)
             .toViperStoringIn(target.variable, this)
+        permissionManager.addUniqueFolds(this)
         addStatement { target.label.toLink().toViperGoto(this) }
     }
 

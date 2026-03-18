@@ -1,0 +1,106 @@
+/return.kt:(669,683): info: Generated Viper text for simpleReturnUM:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$simpleReturnUM$TF$T$A$T$B(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$B())
+  ensures acc(p$c$B$shared(ret$0), wildcard)
+{
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  ret$0 := p$a.bf$um
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/return.kt:(726,740): info: Generated Viper text for simpleReturnUI:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$simpleReturnUI$TF$T$A$T$B(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$B())
+  ensures acc(p$c$B$shared(ret$0), wildcard)
+{
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  ret$0 := p$a.bf$ui
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/return.kt:(784,798): info: Generated Viper text for simpleReturnSM:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$simpleReturnSM$TF$T$A$T$B(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$B())
+  ensures acc(p$c$B$shared(ret$0), wildcard)
+{
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  ret$0 := p$a.bf$sm
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/return.kt:(842,856): info: Generated Viper text for simpleReturnSI:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$simpleReturnSI$TF$T$A$T$B(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$B())
+  ensures acc(p$c$B$shared(ret$0), wildcard)
+{
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  ret$0 := p$a.bf$si
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/return.kt:(900,914): info: Generated Viper text for deepReturnUMSI:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$deepReturnUMSI$TF$T$A$T$C(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$C())
+  ensures acc(p$c$C$shared(ret$0), wildcard)
+{
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  anon$0 := p$a.bf$um
+  ret$0 := anon$0.bf$si
+  goto lbl$ret$0
+  label lbl$ret$0
+}
