@@ -46,7 +46,7 @@ local repository here: it's necessary to find the compiler plugin for the plugin
 
 ```kotlin
 plugins {
-    kotlin("jvm") version "2.2.0"
+    kotlin("jvm") version "2.3.0"
     id("org.jetbrains.kotlin.formver") version "0.1.0-SNAPSHOT"
 }
 

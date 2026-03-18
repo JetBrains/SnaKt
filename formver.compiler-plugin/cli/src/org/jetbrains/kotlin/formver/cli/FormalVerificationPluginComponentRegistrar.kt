@@ -14,6 +14,8 @@ import org.jetbrains.kotlin.formver.plugin.compiler.FormalVerificationPluginExte
 
 @OptIn(ExperimentalCompilerApi::class)
 class FormalVerificationPluginComponentRegistrar : CompilerPluginRegistrar() {
+    override val pluginId: String = FormalVerificationPluginNames.PLUGIN_ID
+
     override val supportsK2: Boolean
         get() = true
 

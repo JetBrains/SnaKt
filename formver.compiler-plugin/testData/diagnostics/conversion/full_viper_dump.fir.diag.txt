@@ -1,3 +1,10 @@
+/full_viper_dump.kt:(172,173): info: Generated ExpEmbedding for f$f$TF$T$Unit:
+Function(
+    name = f$f$TF$T$Unit,
+    { Declare(Var(l0$foo), T$Foo, MethodCall(callee = con$c$Foo$T$Int$T$Foo, Int(0))) },
+    return = lbl$ret$0,
+)
+
 /full_viper_dump.kt:(172,173): info: Generated Viper text for f:
 domain d$rt  {
 
@@ -425,11 +432,3 @@ method f$f$TF$T$Unit() returns (ret$0: Ref)
 
 method havoc$T$Int() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-
-
-/full_viper_dump.kt:(172,173): info: Generated ExpEmbedding for f$f$TF$T$Unit:
-Function(
-    name = f$f$TF$T$Unit,
-    { Declare(Var(l0$foo), T$Foo, MethodCall(callee = con$c$Foo$T$Int$T$Foo, Int(0))) },
-    return = lbl$ret$0,
-)
