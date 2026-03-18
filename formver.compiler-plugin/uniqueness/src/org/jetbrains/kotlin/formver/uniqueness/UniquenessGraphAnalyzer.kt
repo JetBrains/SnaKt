@@ -30,13 +30,12 @@ class UniquenessTypeAssigner(
         val result = data.copy()
         val receiverPath = receiver.receiverPath
         val valuePaths = value.valuePaths
-
-        if (receiverPath != null) {
-            result[receiverPath] = resolver.resolveUniquenessType(receiverPath.last())
-        }
+        val receiverResult = receiverPath?.let { result.ensure(it).also{ it.reset() } }
 
         for (valuePath in valuePaths) {
-            val valueType = data[valuePath]
+            val valueData = data.ensure(valuePath)
+            val valueType = valueData.type
+            receiverResult?.join(valueData)
 
             if (valueType is UniquenessType.Active && valueType.uniqueLevel == UniqueLevel.Unique) {
                 result.ensure(valuePath).type = UniquenessType.Moved
