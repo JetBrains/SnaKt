@@ -356,6 +356,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
       }
 
       @Test
+      @TestMetadata("branch.kt")
+      public void testBranch() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/permissions/branch.kt");
+      }
+
+      @Test
       @TestMetadata("fieldRead.kt")
       public void testFieldRead() {
         runTest("formver.compiler-plugin/testData/diagnostics/conversion/permissions/fieldRead.kt");
