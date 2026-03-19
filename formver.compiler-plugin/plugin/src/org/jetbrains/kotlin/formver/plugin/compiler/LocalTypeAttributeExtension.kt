@@ -19,6 +19,12 @@ class LocalTypeAttributeExtension(
     session: FirSession,
     private val config: PluginConfiguration
 ) : FirTypeAttributeExtension(session) {
+    companion object {
+        fun getFactory(config: PluginConfiguration): Factory {
+            return Factory { session -> LocalTypeAttributeExtension(session, config) }
+        }
+    }
+
     private val borrowedAnnotationId = ClassId(
         FqName.fromSegments(listOf("org", "jetbrains", "kotlin", "formver", "plugin")),
         Name.identifier("Borrowed")
