@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.formver.common.PluginConfiguration
 class FormalVerificationPluginExtensionRegistrar(private val config: PluginConfiguration) : FirExtensionRegistrar() {
     override fun ExtensionRegistrarContext.configurePlugin() {
         registerDiagnosticContainers(PluginErrors)
+        +LocalTypeAttributeExtension.getFactory(config)
         +PluginAdditionalCheckers.getFactory(config)
     }
 }
-
