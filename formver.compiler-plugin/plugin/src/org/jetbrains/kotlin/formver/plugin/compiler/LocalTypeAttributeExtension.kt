@@ -20,15 +20,15 @@ class LocalTypeAttributeExtension(
     private val config: PluginConfiguration
 ) : FirTypeAttributeExtension(session) {
     companion object {
+        private val borrowedAnnotationId = ClassId(
+            FqName.fromSegments(listOf("org", "jetbrains", "kotlin", "formver", "plugin")),
+            Name.identifier("Borrowed")
+        )
+
         fun getFactory(config: PluginConfiguration): Factory {
             return Factory { session -> LocalTypeAttributeExtension(session, config) }
         }
     }
-
-    private val borrowedAnnotationId = ClassId(
-        FqName.fromSegments(listOf("org", "jetbrains", "kotlin", "formver", "plugin")),
-        Name.identifier("Borrowed")
-    )
 
     override fun extractAttributeFromAnnotation(annotation: FirAnnotation): ConeAttribute<*>? {
         if (!config.checkUniqueness) return null
