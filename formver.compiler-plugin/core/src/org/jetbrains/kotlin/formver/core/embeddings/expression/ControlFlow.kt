@@ -84,13 +84,22 @@ data class While(
     val breakLabel = LabelEmbedding(breakLabelName)
 
     override fun toViperSideEffects(ctx: LinearizationContext) {
-        ctx.addLabel(continueLabel.toViper(ctx))
+        val loopPermissionManager = PermissionManager(this)
+        val permissionInvariants = loopPermissionManager.extractWhileInvariants(ctx)
+        val newContinueLabel = LabelEmbedding(continueLabelName, invariants + permissionInvariants)
+
+        ctx.addLabel(newContinueLabel.toViper(ctx))
         val condVar = ctx.freshAnonVar { boolean() }
+        val conditionPermissionManager = PermissionManager(condition)
+        conditionPermissionManager.addUniqueUnfolds(ctx)
         condition.toViperStoringIn(condVar, ctx)
+        conditionPermissionManager.addUniqueFolds(ctx)
+
+
         ctx.addStatement {
             val bodyBlock = ctx.asBlock {
                 body.toViperUnusedResult(this)
-                addStatement { continueLabel.toLink().toViperGoto(this) }
+                addStatement { newContinueLabel.toLink().toViperGoto(this) }
             }
             Stmt.If(condVar.toViperBuiltinType(ctx), bodyBlock, els = Stmt.Seqn(), ctx.source.asPosition)
         }

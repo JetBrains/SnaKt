@@ -3,12 +3,15 @@ package org.jetbrains.kotlin.formver.core.linearization
 import org.jetbrains.kotlin.formver.core.conversion.Path
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.PredicateAccessPermissions
+import org.jetbrains.kotlin.formver.core.embeddings.expression.While
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeInvariantEmbedding
 import org.jetbrains.kotlin.formver.uniqueness.BorrowLevel
 import org.jetbrains.kotlin.formver.uniqueness.UniqueLevel
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessTrie
 import org.jetbrains.kotlin.formver.uniqueness.UniquenessType
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
+import org.jetbrains.kotlin.formver.uniqueness.Path as FirPath
 
 fun UniquenessType.isMoved(): Boolean = this == UniquenessType.Moved
 fun UniquenessType.isShared(): Boolean = this is UniquenessType.Active && uniqueLevel == UniqueLevel.Shared
@@ -101,9 +104,12 @@ class PermissionManager(val exp: ExpEmbedding) {
     fun getUniqueFolds(ctx: LinearizationContext): List<Exp.PredicateAccess> = toFold.map {
         toUniquePredicates(it, ctx)
     }
-
-    fun isUnique(path: Path): Boolean = exp.uniquenessAfter!!.ensure(path.firPath).parentsJoin.isUnique()
-    fun isShared(path: Path): Boolean = exp.uniquenessAfter!!.ensure(path.firPath).parentsJoin.isShared()
+    fun isUnique(path: FirPath, trie: UniquenessTrie): Boolean = trie.ensure(path).parentsJoin.isUnique()
+    fun isShared(path: FirPath, trie: UniquenessTrie): Boolean = trie.ensure(path).parentsJoin.isShared()
+    fun isUnique(path: Path, trie: UniquenessTrie): Boolean = isUnique(path.firPath, trie)
+    fun isShared(path: Path, trie: UniquenessTrie): Boolean = isShared(path.firPath, trie)
+    fun isUnique(path: Path): Boolean = isUnique(path, exp.uniquenessAfter!!)
+    fun isShared(path: Path): Boolean = isShared(path, exp.uniquenessAfter!!)
 
     fun isShared(): Boolean {
         val path = exp.endingPath.value!!
@@ -123,4 +129,47 @@ class PermissionManager(val exp: ExpEmbedding) {
         }
     }
 
+    fun extractWhileInvariants(ctx: LinearizationContext): List<ExpEmbedding> {
+        check(exp is While) { "Invariants can only be extracted from a while loop." }
+
+        val paths = exp.containingPaths.value
+        val tries = listOf(
+            exp.uniquenessBefore!!,
+            exp.uniquenessAfter!!,
+            exp.body.uniquenessAfter!!,
+            exp.body.uniquenessBefore!!
+        )
+
+        fun isUnique(path: Path) = tries.all { isUnique(path, it) }
+        fun isMoved(path: Path) = tries.all { it.ensure(path.firPath).childrenJoin.isMoved() }
+        fun isShared(path: Path) = tries.all { isShared(path, it) }
+        val resultUnique = mutableSetOf<Path>()
+        val resultShared = mutableSetOf<Path>()
+        for (path in paths) {
+
+            for (prefix in path.traverse()) {
+
+                if (isMoved(prefix)) continue
+                if (isUnique(prefix)) {
+                    resultUnique.add(prefix)
+                    break
+                }
+
+                if (isShared(prefix)) {
+                    resultShared.add(prefix)
+                }
+            }
+
+        }
+
+        val uniquePredicates = resultUnique.mapNotNull {
+            val predicate = it.type.uniquePredicateAccessInvariant()
+            predicate?.fillHole(it.expEmbedding)
+        }
+        val sharedPredicates = resultShared.mapNotNull {
+            val predicate = it.type.sharedPredicateAccessInvariant()
+            predicate?.fillHole(it.expEmbedding)
+        }
+        return uniquePredicates + sharedPredicates
+    }
 }
