@@ -62,6 +62,7 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
             UnsupportedFeatureBehaviour.THROW_EXCEPTION,
             conversionSelection = conversionSelection,
             verificationSelection = verificationSelection,
+            checkLocality = checkUniqueness,
             checkUniqueness = checkUniqueness
         )
         FirExtensionRegistrarAdapter.registerExtension(FormalVerificationPluginExtensionRegistrar(config))
