@@ -127,6 +127,9 @@ class UniquenessTrie(
     }
 
     private fun toString(prefix: String): String {
+        if (children.isEmpty()) {
+            return "$prefix : $type\n"
+        }
         val builder = StringBuilder()
         val prefix = "$prefix : $type"
 
