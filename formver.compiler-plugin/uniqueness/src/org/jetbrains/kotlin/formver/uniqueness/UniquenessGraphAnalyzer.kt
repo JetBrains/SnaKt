@@ -111,7 +111,6 @@ class UniquenessGraphAnalyzer(
         return result
     }
 
-    @OptIn(SymbolInternals::class)
     override fun transfer(node: CFGNode<*>, inFlow: UniquenessTrie): UniquenessTrie =
         node.accept(typeAssigner, inFlow)
 }
