@@ -5,9 +5,9 @@
 
 package org.jetbrains.kotlin.formver.core.domains
 
+import org.jetbrains.kotlin.formver.core.names.FunctionKotlinName
 import org.jetbrains.kotlin.formver.core.names.PlaceholderArgumentName
 import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
-import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.BuiltInMethod
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Type
@@ -39,7 +39,7 @@ class MethodBuilder private constructor() {
         get() = retVar
 
     companion object {
-        fun build(name: SymbolicName, action: MethodBuilder.() -> Unit): BuiltInMethod {
+        fun build(name: FunctionKotlinName, action: MethodBuilder.() -> Unit): BuiltInMethod {
             val builder = MethodBuilder()
             builder.action()
             return BuiltInMethod(

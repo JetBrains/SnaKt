@@ -183,7 +183,7 @@ data class ListOfTypes(val names: List<TypeName>) : TypeName {
 
     override fun dependsOn(): Set<SymbolicName> = emptySet()
     override val candidates: Sequence<(NameResolver) -> String> = sequence {
-        yield { resolver -> names.joinToString(SEPARATOR) { resolver.resolve(it) } }
+        yield { resolver -> "(" + names.joinToString(", ") { resolver.resolve(it) } + ")" }
     }
 }
 
@@ -209,10 +209,9 @@ data class FunctionTypeName(val args: ListOfTypes, val returnType: TypeName) : T
     override val mangledBaseName: String
         get() = args.mangledBaseName + SEPARATOR + returnType.mangledBaseName
 
-    override fun dependsOn(): Set<SymbolicName> = args.names.toSet() + returnType.dependsOn()
+    override fun dependsOn(): Set<SymbolicName> = args.names.toSet() + returnType
 
     override val candidates: Sequence<(NameResolver) -> String> = sequence {
-        yield { resolver -> resolver.resolve(returnType) }
-        yield { resolver -> "${resolver.resolve(args)}_${resolver.resolve(returnType)}" }
+        yield { resolver -> "${resolver.resolve(args)} -> ${resolver.resolve(returnType)}" }
     }
 }

@@ -65,6 +65,9 @@ class NameDAG<T : SymbolicName> {
     val becomesViperName = mutableMapOf<T, Boolean>()
 
     fun addEdge(parent: T, child: T) {
+        if (parent == child) {
+            println("Self-edge detected: ${parent::class.qualifiedName} -> ${child::class.qualifiedName}")
+        }
         adjacencyList.getOrPut(parent) { mutableSetOf() }.add(child)
     }
 
@@ -89,7 +92,11 @@ class NameDAG<T : SymbolicName> {
         builder.appendLine("  edge [color=\"#333333\", arrowhead=vee];")
 
         for (node in adjacencyList.keys) {
-            builder.appendLine("  \"${nameResolver.resolveOld(node)}\" [label=\"${nameResolver.resolve(node)} ${becomesViperName[node]}\"];")
+            builder.appendLine(
+                "  \"${
+                    nameResolver.resolveOld(node) + node.hashCode().toString()
+                }\" [label=\"${nameResolver.resolve(node)} ${becomesViperName[node]}\"];"
+            )
         }
 
         builder.appendLine() // Add a break for readability
@@ -97,7 +104,11 @@ class NameDAG<T : SymbolicName> {
         // 2. Declare the edges
         for ((parent, children) in adjacencyList) {
             for (child in children) {
-                builder.appendLine("  \"${nameResolver.resolveOld(parent)}\" -> \"${nameResolver.resolveOld(child)}\";")
+                builder.appendLine(
+                    "  \"${
+                        nameResolver.resolveOld(parent) + parent.hashCode().toString()
+                    }\" -> \"${nameResolver.resolveOld(child) + child.hashCode().toString()}\";"
+                )
             }
         }
 
