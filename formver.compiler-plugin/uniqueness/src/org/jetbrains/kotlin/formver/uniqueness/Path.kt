@@ -53,6 +53,15 @@ object ReceiverPathExtractor : FirVisitor<Path?, Unit>() {
             return parent + callee
         }
     }
+
+    override fun visitSmartCastExpression(smartCastExpression: FirSmartCastExpression, data: Unit): Path? {
+        return smartCastExpression.originalExpression.accept(this, data)
+    }
+
+    override fun visitTypeOperatorCall(typeOperatorCall: FirTypeOperatorCall, data: Unit): Path? {
+        return typeOperatorCall.argumentList.arguments.singleOrNull()?.accept(this, data)
+    }
+
 }
 
 val FirElement.receiverPath
