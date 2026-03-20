@@ -73,3 +73,10 @@ fun `consume unique parent after cast to not-null`(@Unique node: Node) {
     @Unique val local = node.next as Node
     consume(<!UNIQUENESS_VIOLATION!>node<!>)
 }
+
+fun `consume unique parent after smart-cast`(@Unique node: Node?) {
+    if (node != null) {
+        @Unique val local = node.next
+        consume(<!UNIQUENESS_VIOLATION!>node<!>)
+    }
+}
