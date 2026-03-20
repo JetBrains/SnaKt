@@ -60,3 +60,8 @@ fun `consume after after borrowing unique-borrowed as unique`(@Unique @Borrowed 
     borrowUnique(a)
     consume(<!UNIQUENESS_VIOLATION!>a<!>)
 }
+
+fun `consume unique after storing type check`(@Unique a: Any) {
+    val ok = a is A
+    consume(a)
+}
