@@ -113,7 +113,7 @@ class UniquenessTypeChecker(
             if (valueActualType is UniquenessType.Active &&
                 valueActualType.uniqueLevel == UniqueLevel.Unique &&
                 !valueData.isInvariant()) {
-                val valuePartialType = data.childrenJoin
+                val valuePartialType = valueData.childrenJoin
 
                 when (valuePartialType) {
                     is UniquenessType.Moved ->
