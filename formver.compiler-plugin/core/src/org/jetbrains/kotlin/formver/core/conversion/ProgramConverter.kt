@@ -100,47 +100,61 @@ class ProgramConverter(
 
     fun registerForVerification(declaration: FirSimpleFunction) {
         val signature = embedFullSignature(declaration.symbol)
-        val returnTarget = returnTargetProducer.getFresh(signature.callableType.returnType)
-        val paramResolver =
-            RootParameterResolver(
-                this@ProgramConverter,
-                signature,
-                signature.symbol.valueParameterSymbols,
-                signature.labelName,
-                returnTarget,
-            )
-        val stmtCtx =
-            MethodConverter(
-                this@ProgramConverter,
-                signature,
-                paramResolver,
-                scopeIndexProducer.getFresh(),
-            ).statementCtxt()
-
-        // Note: it is important that `body` is only set after `embedUserFunction` is complete, as we need to
+        // Note: it is important that `body` is only set after embedding is complete, as we need to
         // place the embedding in the map before processing the body.
         if (declaration.symbol.isPure(session)) {
-            embedPureUserFunction(declaration.symbol, signature).apply {
-                // The body may already be set if this function was previously encountered as a callee
-                // of another function under verification (via embedPureFunction)
-                if (body == null) {
-                    body = stmtCtx.convertFunctionWithBody(declaration)
-                }
-            }
+            embedPureUserFunction(declaration.symbol, signature)
         } else {
+            val returnTarget = returnTargetProducer.getFresh(signature.callableType.returnType)
+            val paramResolver =
+                RootParameterResolver(
+                    this@ProgramConverter,
+                    signature,
+                    signature.symbol.valueParameterSymbols,
+                    signature.labelName,
+                    returnTarget,
+                )
+            val stmtCtx =
+                MethodConverter(
+                    this@ProgramConverter,
+                    signature,
+                    paramResolver,
+                    scopeIndexProducer.getFresh(),
+                ).statementCtxt()
             embedUserFunction(declaration.symbol, signature).apply {
                 body = stmtCtx.convertMethodWithBody(declaration, signature, returnTarget)
             }
         }
     }
 
+    @OptIn(SymbolInternals::class)
     fun embedPureUserFunction(
         symbol: FirFunctionSymbol<*>,
         signature: FullNamedFunctionSignature
     ): PureUserFunctionEmbedding {
+        // Return if already registered
         (functions[signature.name] as? PureUserFunctionEmbedding)?.also { return it }
         val new = PureUserFunctionEmbedding(processCallable(symbol, signature))
+        // Insert into the map before processing the body, so recursive calls can find the embedding.
         functions[signature.name] = new
+        val declaration = symbol.fir as? FirSimpleFunction
+        if (declaration?.body != null) {
+            val returnTarget = returnTargetProducer.getFresh(signature.callableType.returnType)
+            val paramResolver = RootParameterResolver(
+                this@ProgramConverter,
+                signature,
+                signature.symbol.valueParameterSymbols,
+                signature.labelName,
+                returnTarget,
+            )
+            val stmtCtx = MethodConverter(
+                this@ProgramConverter,
+                signature,
+                paramResolver,
+                scopeIndexProducer.getFresh(),
+            ).statementCtxt()
+            new.body = stmtCtx.convertFunctionWithBody(declaration)
+        }
         return new
     }
 
@@ -198,19 +212,8 @@ class ProgramConverter(
     }
 
     override fun embedPureFunction(symbol: FirFunctionSymbol<*>): PureFunctionEmbedding {
-        val lookupName = symbol.embedName(this)
-        return when (val existing = functions[lookupName]) {
-            null -> {
-                val signature = embedFullSignature(symbol)
-                val callable = processCallable(symbol, signature)
-                PureUserFunctionEmbedding(callable).also {
-                    functions[lookupName] = it
-                    convertAndSetPureBody(symbol, signature, it)
-                }
-            }
-
-            else -> existing
-        }
+        val signature = embedFullSignature(symbol)
+        return embedPureUserFunction(symbol, signature)
     }
 
     override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding =
@@ -559,33 +562,6 @@ class ProgramConverter(
                 symbol.isPure(session)
             ).also { if (symbol.isPure(session)) it.toViperFunctionHeader() else it.toViperMethodHeader() }
         }
-    }
-
-    @OptIn(SymbolInternals::class)
-    private fun convertAndSetPureBody(
-        symbol: FirFunctionSymbol<*>,
-        signature: FullNamedFunctionSignature,
-        embedding: PureUserFunctionEmbedding,
-    ) {
-        val declaration = symbol.fir as? FirSimpleFunction ?: return
-        if (declaration.body == null) return
-
-        val returnTarget = returnTargetProducer.getFresh(signature.callableType.returnType)
-        val paramResolver = RootParameterResolver(
-            this@ProgramConverter,
-            signature,
-            signature.symbol.valueParameterSymbols,
-            signature.labelName,
-            returnTarget,
-        )
-        val stmtCtx = MethodConverter(
-            this@ProgramConverter,
-            signature,
-            paramResolver,
-            scopeIndexProducer.getFresh(),
-        ).statementCtxt()
-
-        embedding.body = stmtCtx.convertFunctionWithBody(declaration)
     }
 
     private fun TypeBuilder.embedTypeWithBuilder(type: ConeKotlinType): PretypeBuilder = when {
