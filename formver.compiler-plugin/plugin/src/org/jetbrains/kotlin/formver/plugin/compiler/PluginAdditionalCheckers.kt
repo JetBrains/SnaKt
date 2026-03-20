@@ -12,12 +12,14 @@ import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirSimpleFunctionC
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.ExpressionCheckers
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirFunctionCallChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirReturnExpressionChecker
+import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirThrowExpressionChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirVariableAssignmentChecker
 import org.jetbrains.kotlin.fir.analysis.extensions.FirAdditionalCheckersExtension
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityFunctionCallChecker
 import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityPropertyChecker
 import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityReturnChecker
+import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityThrowChecker
 import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityVariableAssignmentChecker
 
 class PluginAdditionalCheckers(session: FirSession, config: PluginConfiguration) :
@@ -45,5 +47,8 @@ class PluginAdditionalCheckers(session: FirSession, config: PluginConfiguration)
 
         override val returnExpressionCheckers: Set<FirReturnExpressionChecker>
             get() = setOf(LocalityReturnChecker(config))
+
+        override val throwExpressionCheckers: Set<FirThrowExpressionChecker>
+            get() = setOf(LocalityThrowChecker(config))
     }
 }
