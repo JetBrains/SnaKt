@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.formver.uniqueness
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.declarations.FirProperty
 import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
+import org.jetbrains.kotlin.fir.expressions.FirSmartCastExpression
 import org.jetbrains.kotlin.fir.references.FirResolvedNamedReference
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
@@ -83,6 +84,10 @@ object ValuePathCollector : FirVisitor<List<Path>, Unit>() {
         } else {
             return emptyList()
         }
+    }
+
+    override fun visitSmartCastExpression(smartCastExpression: FirSmartCastExpression, data: Unit): List<Path> {
+        return smartCastExpression.originalExpression.accept(this, data)
     }
 }
 
