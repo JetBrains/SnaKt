@@ -11,3 +11,5 @@
 /consume_local.kt:(996,997): error: Argument uniqueness mismatch: expected 'unique global', actual 'unique local'.
 
 /consume_local.kt:(1122,1123): error: Argument uniqueness mismatch: expected 'unique global', actual 'unique local'.
+
+/consume_local.kt:(1321,1322): error: Argument uniqueness mismatch: expected 'unique global', actual 'moved'.

@@ -65,3 +65,8 @@ fun `consume unique after storing type check`(@Unique a: Any) {
     val ok = a is A
     consume(a)
 }
+
+fun `consume unique after safe cast`(@Unique a: Any) {
+    val maybe = a as? A
+    consume(<!UNIQUENESS_VIOLATION!>a<!>)
+}
