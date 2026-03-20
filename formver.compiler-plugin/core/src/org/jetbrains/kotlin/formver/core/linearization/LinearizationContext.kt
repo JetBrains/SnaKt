@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeBuilder
@@ -17,17 +18,9 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
+import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Label
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
-
-/**
- * Policy defining how field accesses are treated:
- * - STORE: the accessed value is stored in an anonymous variable
- * - UNFOLDING_IN: the accessing expression is wrapped in Viper 'unfolding in' expressions
- */
-enum class UnfoldPolicy {
-    STORE, UNFOLDING_IN;
-}
 
 enum class LogicOperatorPolicy {
     CONVERT_TO_IF, CONVERT_TO_EXPRESSION;
@@ -42,7 +35,6 @@ enum class LogicOperatorPolicy {
  */
 interface LinearizationContext {
     val source: KtSourceElement?
-    val unfoldPolicy: UnfoldPolicy
     val logicOperatorPolicy: LogicOperatorPolicy
 
     fun freshAnonVar(type: TypeEmbedding): AnonymousVariableEmbedding
@@ -62,6 +54,18 @@ interface LinearizationContext {
         result: VariableEmbedding?
     )
 
+    /**
+     * This function is used to delegate the responsibility of deciding how to translate
+     * a field access to Viper to the LinearizationContext rather than the FieldAccess
+     * querying the context for some policy on how to deal with itself.
+     */
+    fun translateFieldAccess(access: FieldAccess): Exp
+
+    /**
+     * This function is used to store a FieldAccess. Namely, if it is already decided that
+     * the field access should be stored in some variable, this function is used
+     * to perform the store operation depending on context.
+     */
     fun storeFieldAccess(receiver: ExpEmbedding, field: FieldEmbedding, result: VariableEmbedding)
 
     fun addModifier(mod: StmtModifier)

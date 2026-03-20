@@ -10,10 +10,7 @@ import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.FreshEntityProducer
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
-import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpWrapper
-import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.print
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
@@ -37,7 +34,7 @@ data class PureLinearizer(
     override val source: KtSourceElement?,
     val state: SharedLinearizationState = SharedLinearizationState(FreshEntityProducer(::AnonymousVariableEmbedding)),
     private val ssaConverter: SsaConverter = SsaConverter(source),
-    override val unfoldPolicy: UnfoldPolicy = UnfoldPolicy.UNFOLDING_IN,
+    private val storeFieldAccesses: Boolean = false
 ) : LinearizationContext {
 
     override val logicOperatorPolicy: LogicOperatorPolicy
@@ -116,6 +113,15 @@ data class PureLinearizer(
         ssaConverter.addAssignment(result.name, primitiveAccess, accessInvariants)
     }
 
+    override fun translateFieldAccess(access: FieldAccess): Exp {
+        if (access.field.unfoldToAccess && !storeFieldAccesses) {
+            return access.unfoldingInImpl()
+        }
+        val result = freshAnonVar(access.field.type)
+        storeFieldAccess(access.receiver, access.field, result)
+        return result.toViper(this)
+    }
+
     override fun addModifier(mod: StmtModifier) {
         throw PureLinearizerMisuseException("addModifier")
     }
@@ -124,6 +130,17 @@ data class PureLinearizer(
         ssaConverter.resolveVariableName(name)
 
     fun constructExpression(): Exp = ssaConverter.constructExpression()
+
+    private fun FieldAccess.unfoldingInImpl(): Exp {
+        val hierarchyPath = receiver.type.hierarchyUnfoldPath(field)
+        val primitiveAccess: Exp =
+            Exp.FieldAccess(receiver.toViper(this@PureLinearizer), field.toViper(), source.asPosition)
+        if (hierarchyPath == null) return primitiveAccess
+        return hierarchyPath.toList().foldRight(primitiveAccess) { classType, acc ->
+            val predAcc = classType.predicateAccess(receiver, source)
+            Exp.Unfolding(predAcc, acc)
+        }
+    }
 }
 
 fun ExpEmbedding.pureToViper(toBuiltin: Boolean, source: KtSourceElement? = null): Exp {

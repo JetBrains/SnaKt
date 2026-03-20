@@ -31,8 +31,6 @@ data class Linearizer(
     override val source: KtSourceElement?,
     val stmtModifierTracker: StmtModifierTracker? = null
 ) : LinearizationContext {
-    override val unfoldPolicy: UnfoldPolicy
-        get() = UnfoldPolicy.STORE
     override val logicOperatorPolicy: LogicOperatorPolicy
         get() = LogicOperatorPolicy.CONVERT_TO_IF
 
@@ -94,6 +92,12 @@ data class Linearizer(
             val elseViper = asBlock { elseBranch.withType(type).toViperMaybeStoringIn(result, this) }
             Stmt.If(condViper, thenViper, elseViper, source.asPosition)
         }
+
+    override fun translateFieldAccess(access: FieldAccess): Exp {
+        val result = freshAnonVar(access.field.type)
+        storeFieldAccess(access.receiver, access.field, result)
+        return result.toViper(this)
+    }
 
     override fun addModifier(mod: StmtModifier) {
         stmtModifierTracker?.add(mod) ?: error("Not in a statement")

@@ -275,7 +275,7 @@ fun StmtConversionContext.convertFunctionWithBody(
         declaration.source,
         SharedLinearizationState(anonVarProducer),
         SsaConverter(declaration.source),
-        UnfoldPolicy.STORE
+        true
     )
     body.toViperUnusedResult(pureLinearizer)
     return pureLinearizer.constructExpression()
