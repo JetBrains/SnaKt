@@ -10,6 +10,8 @@ import org.jetbrains.kotlin.fir.declarations.FirProperty
 import org.jetbrains.kotlin.fir.expressions.FirCheckNotNullCall
 import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirSmartCastExpression
+import org.jetbrains.kotlin.fir.expressions.FirTypeOperatorCall
+import org.jetbrains.kotlin.fir.expressions.FirWrappedExpression
 import org.jetbrains.kotlin.fir.references.FirResolvedNamedReference
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
@@ -91,8 +93,8 @@ object ValuePathCollector : FirVisitor<List<Path>, Unit>() {
         return smartCastExpression.originalExpression.accept(this, data)
     }
 
-    override fun visitCheckNotNullCall(checkNotNullCall: FirCheckNotNullCall, data: Unit): List<Path> {
-        return checkNotNullCall.argumentList.arguments.singleOrNull()?.accept(this, data) ?: emptyList()
+    override fun visitTypeOperatorCall(typeOperatorCall: FirTypeOperatorCall, data: Unit): List<Path> {
+        return typeOperatorCall.argumentList.arguments.singleOrNull()?.accept(this, data) ?: emptyList()
     }
 }
 
