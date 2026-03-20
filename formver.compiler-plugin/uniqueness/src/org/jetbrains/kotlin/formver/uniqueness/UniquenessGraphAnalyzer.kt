@@ -6,16 +6,12 @@
 package org.jetbrains.kotlin.formver.uniqueness
 
 import org.jetbrains.kotlin.fir.FirElement
-import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
 import org.jetbrains.kotlin.fir.expressions.arguments
-import org.jetbrains.kotlin.fir.expressions.toResolvedCallableSymbol
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraphVisitor
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallEnterNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
-import org.jetbrains.kotlin.fir.symbols.SymbolInternals
-import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 
 /**
  * Visitor assigning uniqueness types to paths after the execution of a [CFGNode].
@@ -64,18 +60,15 @@ class UniquenessTypeAssigner(
         return evaluateDefinition(receiver, value, data)
     }
 
-    @OptIn(SymbolInternals::class)
     override fun visitFunctionCallEnterNode(node: FunctionCallEnterNode, data: UniquenessTrie): UniquenessTrie {
         val functionCall = node.fir
-        val callableSymbol = functionCall.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
-            ?: return data
-        val callableDeclaration = callableSymbol.fir
+        val function = functionCall.resolveFunction() ?: return data
         val result = data.copy()
 
         // TODO: If possible, it would be good to compute the outflow for the argument before reaching the
         //  [FunctionCallEnterNode]. This would allow us to provide more precise flow information to the checker.
         //  {@see UniquenessGraphChecker.visitFunctionCallEnterNode}
-        for ((argument, parameter) in functionCall.arguments.zip(callableDeclaration.valueParameters)) {
+        for ((argument, parameter) in functionCall.arguments.zip(function.valueParameters)) {
             for (argumentPath in argument.valuePaths) {
                 val parameterType = resolver.resolveUniquenessType(parameter.symbol)
 
