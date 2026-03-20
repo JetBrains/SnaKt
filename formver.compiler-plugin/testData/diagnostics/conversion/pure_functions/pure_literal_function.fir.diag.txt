@@ -1,4 +1,4 @@
-/pure_literal_function.kt:(53,66): info: Generated Viper text for emptyFunction:
+/pure_literal_function.kt:(72,85): info: Generated Viper text for emptyFunction:
 function f$emptyAnnotatedFunction$TF$NT$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$nullable(df$rt$intType()))
 
@@ -12,42 +12,42 @@ method f$emptyFunction$TF$T$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/pure_literal_function.kt:(117,139): info: Generated Viper text for emptyAnnotatedFunction:
+/pure_literal_function.kt:(136,158): info: Generated Viper text for emptyAnnotatedFunction:
 function f$emptyAnnotatedFunction$TF$NT$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$nullable(df$rt$intType()))
 {
   df$rt$nullValue()
 }
 
-/pure_literal_function.kt:(175,196): info: Generated Viper text for annotatedIntLitReturn:
+/pure_literal_function.kt:(194,215): info: Generated Viper text for annotatedIntLitReturn:
 function f$annotatedIntLitReturn$TF$T$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   df$rt$intToRef(42)
 }
 
-/pure_literal_function.kt:(229,251): info: Generated Viper text for annotatedBoolLitReturn:
+/pure_literal_function.kt:(248,270): info: Generated Viper text for annotatedBoolLitReturn:
 function f$annotatedBoolLitReturn$TF$T$Boolean(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
 {
   df$rt$boolToRef(true)
 }
 
-/pure_literal_function.kt:(290,312): info: Generated Viper text for annotatedCharLitReturn:
+/pure_literal_function.kt:(309,331): info: Generated Viper text for annotatedCharLitReturn:
 function f$annotatedCharLitReturn$TF$T$Char(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$charType())
 {
   df$rt$charToRef(65)
 }
 
-/pure_literal_function.kt:(347,371): info: Generated Viper text for annotatedStringLitReturn:
+/pure_literal_function.kt:(366,390): info: Generated Viper text for annotatedStringLitReturn:
 function f$annotatedStringLitReturn$TF$T$String(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$stringType())
 {
   df$rt$stringToRef(Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116))
 }
 
-/pure_literal_function.kt:(455,479): info: Generated Viper text for annotatedReferenceReturn:
+/pure_literal_function.kt:(474,498): info: Generated Viper text for annotatedReferenceReturn:
 field bf$a: Ref
 
 field bf$b: Ref

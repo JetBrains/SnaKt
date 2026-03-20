@@ -34,6 +34,7 @@ data class PureLinearizer(
     override val source: KtSourceElement?,
     val state: SharedLinearizationState = SharedLinearizationState(FreshEntityProducer(::AnonymousVariableEmbedding)),
     private val ssaConverter: SsaConverter = SsaConverter(source),
+    // If true, field access are let-bound to an anonymous variable, otherwise they are returned as an 'unfolding' expression.
     private val storeFieldAccesses: Boolean = false
 ) : LinearizationContext {
 
