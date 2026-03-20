@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.uniqueness
 
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.declarations.FirProperty
+import org.jetbrains.kotlin.fir.expressions.FirCheckNotNullCall
 import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirSmartCastExpression
 import org.jetbrains.kotlin.fir.references.FirResolvedNamedReference
@@ -88,6 +89,10 @@ object ValuePathCollector : FirVisitor<List<Path>, Unit>() {
 
     override fun visitSmartCastExpression(smartCastExpression: FirSmartCastExpression, data: Unit): List<Path> {
         return smartCastExpression.originalExpression.accept(this, data)
+    }
+
+    override fun visitCheckNotNullCall(checkNotNullCall: FirCheckNotNullCall, data: Unit): List<Path> {
+        return checkNotNullCall.argumentList.arguments.singleOrNull()?.accept(this, data) ?: emptyList()
     }
 }
 
