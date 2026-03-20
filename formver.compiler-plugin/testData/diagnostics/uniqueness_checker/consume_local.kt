@@ -51,7 +51,7 @@ fun `consume after borrowing unique as unique`(@Unique a: A) {
     consume(a)
 }
 
-fun `consume after borrowing unique-borrowed `(@Unique @Borrowed a: A) {
+fun `consume after borrowing unique-borrowed`(@Unique @Borrowed a: A) {
     borrow(a)
     consume(<!UNIQUENESS_VIOLATION!>a<!>)
 }
