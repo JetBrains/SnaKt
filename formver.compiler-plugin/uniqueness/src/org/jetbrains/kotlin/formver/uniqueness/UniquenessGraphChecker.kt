@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.uniqueness
 
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
 import org.jetbrains.kotlin.fir.expressions.arguments
@@ -132,7 +133,7 @@ class UniquenessTypeChecker(
     override fun visitFunctionCallEnterNode(node: FunctionCallEnterNode, data: UniquenessTrie) {
         val functionCall = node.fir
         val callableSymbol = functionCall.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
-            ?: throw IllegalStateException("Unable to resolve ${functionCall}")
+            ?: return
         val callableDeclaration = callableSymbol.fir
         var currentData = data
 
