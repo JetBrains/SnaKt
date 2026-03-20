@@ -1,13 +1,13 @@
 package org.jetbrains.kotlin.formver.core.conversion
 
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
-import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.FirVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.PrimitiveFieldAccess
-import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.withType
-import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.properties.UserFieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
+import org.jetbrains.kotlin.formver.uniqueness.Path as FirPath
 
 /**
  * Path abstraction to handle paths. The core functionality is to associate the `ExpEmbedding` paths with the `firPaths`.
@@ -15,13 +15,13 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
  * on the `ExpEmbedding` level.
  */
 sealed interface Path {
-    fun addField(field: FieldEmbedding): Path {
+    fun addField(field: UserFieldEmbedding): Path {
         return PathElement(this, field)
     }
 
     val length: Int
 
-    val firPath: List<FirBasedSymbol<*>>
+    val firPath: FirPath
 
     fun pathWithoutLast(): Path?
 
@@ -37,11 +37,11 @@ sealed interface Path {
 }
 
 
-data class PathRoot(val base: VariableEmbedding) : Path {
+data class PathRoot(val base: FirVariableEmbedding) : Path {
     override val length: Int
         get() = 1
 
-    override val firPath = listOf((base.sourceRole!! as SourceRole.FirSymbolHolder).firSymbol)
+    override val firPath = listOf(base.symbol)
     override val type = base.type
     override val expEmbedding = base
 
@@ -49,11 +49,11 @@ data class PathRoot(val base: VariableEmbedding) : Path {
     override fun traverse() = listOf(this)
 }
 
-data class PathElement(val base: Path, val field: FieldEmbedding) : Path {
+data class PathElement(val base: Path, val field: UserFieldEmbedding) : Path {
     override val length: Int
         get() = base.length + 1
 
-    override val firPath = base.firPath + field.symbol!!
+    override val firPath = base.firPath + field.symbol
     override val type = field.type
     override val expEmbedding = PrimitiveFieldAccess(base.expEmbedding, field)
 

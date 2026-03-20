@@ -64,7 +64,7 @@ data class Cast(override val inner: ExpEmbedding, override val type: TypeEmbeddi
     override val containingPaths: Lazy<Set<Path>>
         get() = lazy { setOfNotNull(endingPath.value) }
     override val endingPath: Lazy<Path?>
-        get() = lazy { PathCast(inner.endingPath.value!!, type) }
+        get() = lazy { inner.endingPath.value?.let { PathCast(it, type) } }
     override var uniquenessBefore: UniquenessTrie? = inner.uniquenessBefore
     override var uniquenessAfter: UniquenessTrie? = inner.uniquenessAfter
 

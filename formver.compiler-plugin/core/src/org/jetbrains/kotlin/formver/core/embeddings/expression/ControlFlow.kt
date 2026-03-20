@@ -80,20 +80,23 @@ data class While(
 ) : UnitResultExpEmbedding, DefaultDebugTreeViewImplementation, DefaultUniqueness() {
     override val type: TypeEmbedding = buildType { unit() }
 
+    val permissionManager = WhilePermissionManager.create(this)
     val continueLabel = LabelEmbedding(continueLabelName, invariants)
     val breakLabel = LabelEmbedding(breakLabelName)
 
     override fun toViperSideEffects(ctx: LinearizationContext) {
-        val loopPermissionManager = PermissionManager(this)
-        val permissionInvariants = loopPermissionManager.extractWhileInvariants(ctx)
-        val newContinueLabel = LabelEmbedding(continueLabelName, invariants + permissionInvariants)
+
+        val permissionInvariants = permissionManager?.extractWhileInvariants()
+        val newContinueLabel =
+            permissionInvariants?.let { LabelEmbedding(continueLabelName, invariants + permissionInvariants) }
+                ?: continueLabel
 
         ctx.addLabel(newContinueLabel.toViper(ctx))
         val condVar = ctx.freshAnonVar { boolean() }
-        val conditionPermissionManager = PermissionManager(condition)
-        conditionPermissionManager.addUniqueUnfolds(ctx)
+        val conditionPermissionManager = UniquePermissionManager.create(condition)
+        conditionPermissionManager?.unfold(ctx)
         condition.toViperStoringIn(condVar, ctx)
-        conditionPermissionManager.addUniqueFolds(ctx)
+        conditionPermissionManager?.fold(ctx)
 
 
         ctx.addStatement {
@@ -205,8 +208,8 @@ data class MethodCall(val method: NamedFunctionSignature, val args: List<ExpEmbe
 
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
 
-        val permissionManager = PermissionManager(this)
-        permissionManager.addUniqueUnfolds(ctx)
+        val permissionManager = UniquePermissionManager.create(this)
+        permissionManager?.unfold(ctx)
         ctx.addStatement {
             method.toMethodCall(
                 args.map { it.toViper(ctx) },
@@ -214,7 +217,7 @@ data class MethodCall(val method: NamedFunctionSignature, val args: List<ExpEmbe
                 ctx.source.asPosition
             )
         }
-        permissionManager.addUniqueFolds(ctx)
+        permissionManager?.fold(ctx)
     }
 
     context(nameResolver: NameResolver)
