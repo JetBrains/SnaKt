@@ -7,12 +7,14 @@ package org.jetbrains.kotlin.formver.plugin.compiler
 
 import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
-import org.jetbrains.kotlin.formver.plugin.compiler.fir.TailsCache
+import org.jetbrains.kotlin.formver.plugin.compiler.fir.FirTailsProvider
+import org.jetbrains.kotlin.formver.plugin.compiler.locality.ConeLocalAttributeProvider
 
 class FormalVerificationPluginExtensionRegistrar(private val config: PluginConfiguration) : FirExtensionRegistrar() {
     override fun ExtensionRegistrarContext.configurePlugin() {
         registerDiagnosticContainers(PluginErrors)
-        +TailsCache.getFactory()
+        +FirTailsProvider.getFactory()
+        +ConeLocalAttributeProvider.getFactory()
         +LocalTypeAttributeExtension.getFactory(config)
         +PluginAdditionalCheckers.getFactory(config)
     }
