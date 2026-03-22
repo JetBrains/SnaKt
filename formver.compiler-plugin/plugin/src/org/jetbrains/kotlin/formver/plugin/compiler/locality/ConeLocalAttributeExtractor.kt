@@ -6,17 +6,21 @@ import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 import org.jetbrains.kotlin.formver.plugin.compiler.fir.FirTailsExtractor
+import java.util.WeakHashMap
 
 class ConeLocalAttributeExtractor(
+    val cache: WeakHashMap<FirElement, ConeLocalAttribute?>,
     val tailsExtractor: FirTailsExtractor
 ) : FirVisitor<ConeLocalAttribute?, Unit>() {
     private fun FirExpression.visit(): ConeLocalAttribute? {
         return accept(this@ConeLocalAttributeExtractor, Unit)
     }
 
-    fun extract(element: FirElement): ConeLocalAttribute? {
-        return tailsExtractor.extract(element).fold(null) { result, next ->
-            result?.union(next.visit())
+    fun extractLocalAttribute(element: FirElement): ConeLocalAttribute? {
+        return cache.computeIfAbsent(element) {
+            tailsExtractor.extractTails(element).fold(null) { result, next ->
+                result?.union(next.visit())
+            }
         }
     }
 
