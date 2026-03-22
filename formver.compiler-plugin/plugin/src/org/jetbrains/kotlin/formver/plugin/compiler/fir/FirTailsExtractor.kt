@@ -3,7 +3,6 @@ package org.jetbrains.kotlin.formver.plugin.compiler.fir
 import org.jetbrains.kotlin.fir.FirContractViolation
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.FirExpressionRef
-import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.expressions.FirBlock
 import org.jetbrains.kotlin.fir.expressions.FirCheckedSafeCallSubject
 import org.jetbrains.kotlin.fir.expressions.FirCheckNotNullCall
@@ -28,20 +27,20 @@ import org.jetbrains.kotlin.fir.expressions.builder.buildSafeCallExpression
 import org.jetbrains.kotlin.fir.expressions.builder.buildTypeOperatorCall
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
+import java.util.WeakHashMap
 
 class FirTailsExtractor(
-    val session: FirSession
+    val cache: WeakHashMap<FirElement, Sequence<FirExpression>>
 ) : FirVisitor<Sequence<FirExpression>, Unit>() {
     private fun FirElement.visit(): Sequence<FirExpression> {
-        val cache = session.firTailsCache
-        cache[this]?.let { return@visit it }
-        val tails = accept(this@FirTailsExtractor, Unit)
-        cache[this] = tails
-
-        return tails
+        return cache.computeIfAbsent(this) {
+            val tails = accept(this@FirTailsExtractor, Unit)
+            cache[this] = tails
+            tails
+        }
     }
 
-    fun extract(element: FirElement): Sequence<FirExpression> {
+    fun extractTails(element: FirElement): Sequence<FirExpression> {
         return element.visit()
     }
 
