@@ -6,6 +6,9 @@
 package org.jetbrains.kotlin.formver.uniqueness
 
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirLocalPropertySymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirRegularPropertySymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirValueParameterSymbol
 
 /**
  * Stores unique context for each path in a trie structure.
@@ -127,6 +130,9 @@ class UniquenessTrie(
     }
 
     private fun toString(prefix: String): String {
+        if (children.isEmpty()) {
+            return "$prefix : $type\n"
+        }
         val builder = StringBuilder()
         val prefix = "$prefix : $type"
 
@@ -153,5 +159,27 @@ class UniquenessTrie(
         result = 31 * result + children.hashCode()
 
         return result
+    }
+
+
+    fun render(): String? {
+
+        fun FirBasedSymbol<*>.render(): String = when (this) {
+            is FirValueParameterSymbol,
+            is FirRegularPropertySymbol,
+            is FirLocalPropertySymbol -> name.asString()
+
+            else -> toString()
+        }
+
+        if (children.isNotEmpty()) {
+            return children.flatMap { (child, data) ->
+                val first = "${child.render()} ${data.type}"
+                val second = data.render()?.prependIndent("    ")
+                listOfNotNull(first, second)
+            }.joinToString("\n")
+
+        }
+        return null
     }
 }
