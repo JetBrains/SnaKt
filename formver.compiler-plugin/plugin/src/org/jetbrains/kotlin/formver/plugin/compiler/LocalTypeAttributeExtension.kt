@@ -31,7 +31,7 @@ class LocalTypeAttributeExtension(
     }
 
     override fun extractAttributeFromAnnotation(annotation: FirAnnotation): ConeAttribute<*>? {
-        if (!config.checkUniqueness) return null
+        if (!config.checkLocality) return null
 
         return if (annotation.annotationTypeRef.coneType.classId == borrowedAnnotationId) {
             ConeLocalAttribute
