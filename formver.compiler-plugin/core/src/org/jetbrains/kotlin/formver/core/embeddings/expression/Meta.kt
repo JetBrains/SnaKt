@@ -19,8 +19,7 @@ import org.jetbrains.kotlin.formver.uniqueness.UniquenessTrie
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 
-data class WithPosition(override val inner: ExpEmbedding, val source: KtSourceElement) : PassthroughExpEmbedding,
-    DefaultUniqueness() {
+data class WithPosition(override val inner: ExpEmbedding, val source: KtSourceElement) : PassthroughExpEmbedding {
     override fun <R> withPassthroughHook(ctx: LinearizationContext, action: LinearizationContext.() -> R): R =
         ctx.withPosition(source, action)
 
@@ -36,7 +35,6 @@ data class WithPosition(override val inner: ExpEmbedding, val source: KtSourceEl
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(inner)
 
     override val endingPath: Lazy<Path?> = inner.endingPath
-    override val containingPaths: Lazy<Set<Path>> = inner.containingPaths
     override var uniquenessBefore: UniquenessTrie? = inner.uniquenessBefore
     override var uniquenessAfter: UniquenessTrie? = inner.uniquenessAfter
 }
@@ -64,6 +62,7 @@ fun ExpEmbedding.withPosition(source: KtSourceElement?): ExpEmbedding =
  */
 data class SharingContext(override val inner: ExpEmbedding) : PassthroughExpEmbedding, DefaultUniqueness() {
     var sharedExp: Exp? = null
+    override val containingPaths: Lazy<Set<Path>> = inner.containingPaths
 
     override fun <R> withPassthroughHook(ctx: LinearizationContext, action: LinearizationContext.() -> R): R =
         ctx.action().also { sharedExp = null }
@@ -86,6 +85,7 @@ data class SharingContext(override val inner: ExpEmbedding) : PassthroughExpEmbe
         )
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitSharingContext(this)
+
 }
 
 /**

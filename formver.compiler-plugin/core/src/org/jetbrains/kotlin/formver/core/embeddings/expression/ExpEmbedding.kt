@@ -120,9 +120,8 @@ sealed interface ExpEmbedding : DebugPrintable {
 abstract class DefaultUniqueness : ExpEmbedding {
     override var uniquenessBefore: UniquenessTrie? = null
     override var uniquenessAfter: UniquenessTrie? = null
-
-    override val containingPaths: Lazy<Set<Path>> =
-        lazy { (children().flatMap { it.containingPaths.value } + listOfNotNull(endingPath.value)).toSet() }
+    override val containingPaths: Lazy<Set<Path>>
+        get() = lazy { children().flatMap { it.containingPaths.value }.toSet() }
 }
 
 sealed class ToViperBuiltinMisuseError(msg: String) : RuntimeException(msg)
@@ -334,6 +333,12 @@ sealed interface PassthroughExpEmbedding : ExpEmbedding {
             inner.endingPath.value
         }
 
+    override val containingPaths: Lazy<Set<Path>>
+        get() = lazy {
+            inner.containingPaths.value
+        }
+
+
     override fun toViper(ctx: LinearizationContext): Exp = withPassthroughHook(ctx) { inner.toViper(this) }
 
     override fun toViperBuiltinType(ctx: LinearizationContext): Exp = withPassthroughHook(ctx) {
@@ -392,11 +397,17 @@ data class PrimitiveFieldAccess(override val inner: ExpEmbedding, val field: Fie
         get() = this.field.type
 
     override val endingPath: Lazy<Path?> = lazy {
+        // only UserFieldEmbeddings are support, because it must have a backlink to the corresponding fir element.
         when (field) {
             is UserFieldEmbedding -> inner.endingPath.value?.addField(field)
             else -> null
         }
     }
+
+    override val containingPaths: Lazy<Set<Path>> = lazy {
+        setOfNotNull(endingPath.value)
+    }
+
     override fun toViper(ctx: LinearizationContext): Exp =
         Exp.FieldAccess(inner.toViper(ctx), field.toViper(), ctx.source.asPosition)
 
@@ -412,11 +423,16 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
     override val type: TypeEmbedding = field.type
 
     override val endingPath: Lazy<Path?> = lazy {
+        // only UserFieldEmbeddings are support, because it must have a backlink to the corresponding fir element.
         when (field) {
             is UserFieldEmbedding -> receiver.endingPath.value?.addField(field)
             else -> null
         }
     }
+    override val containingPaths: Lazy<Set<Path>> = lazy {
+        setOfNotNull(endingPath.value)
+    }
+
 
     override fun toViper(ctx: LinearizationContext): Exp {
         if (field.accessPolicy == AccessPolicy.ALWAYS_WRITEABLE) {
@@ -524,15 +540,19 @@ data class FieldModification(val receiver: ExpEmbedding, val field: FieldEmbeddi
 
     override val endingPath: Lazy<Path?> = lazy {
         when (field) {
+            // only UserFieldEmbeddings are support, because it must have a backlink to the corresponding fir element.
             is UserFieldEmbedding -> receiver.endingPath.value?.addField(field)
             else -> null
         }
     }
+    override val containingPaths: Lazy<Set<Path>> = lazy {
+        setOfNotNull(endingPath.value)
+    }
+
 
     override fun toViperSideEffects(ctx: LinearizationContext) {
 
         when (field.accessPolicy) {
-            // TODO: Handling a unique field on a shared receiver must be added here.
             AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
                 val permissionManager = SharedPermissionManager.create(this)
                 val havoc = permissionManager?.isShared ?: true
@@ -599,10 +619,15 @@ data class FieldAccessPermissions(override val inner: ExpEmbedding, val field: F
 
     override val endingPath: Lazy<Path?> = lazy {
         when (field) {
+            // only UserFieldEmbeddings are support, because it must have a backlink to the corresponding fir element.
             is UserFieldEmbedding -> inner.endingPath.value?.addField(field)
             else -> null
         }
     }
+    override val containingPaths: Lazy<Set<Path>> = lazy {
+        setOfNotNull(endingPath.value)
+    }
+
 
     // We consider access permissions to have type Boolean, though this is a bit questionable.
     override val type: TypeEmbedding = buildType { boolean() }
