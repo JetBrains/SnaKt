@@ -67,6 +67,11 @@ object FormalVerificationPluginErrorMessages : BaseDiagnosticRendererFactory() {
             CommonRenderers.STRING,
         )
         map.put(
+            PluginErrors.LOCALITY_VIOLATION,
+            "{0}",
+            CommonRenderers.STRING,
+        )
+        map.put(
             PluginErrors.UNIQUENESS_VIOLATION,
             "{0}",
             CommonRenderers.STRING,
