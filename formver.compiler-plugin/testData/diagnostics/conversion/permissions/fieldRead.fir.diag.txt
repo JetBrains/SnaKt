@@ -60,6 +60,7 @@ method f$sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   inhale acc(p$c$A$shared(p$a), wildcard)
   unfold acc(p$c$A$unique(p$a), write)
   l0$x := p$a.bf$sm
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -82,6 +83,7 @@ method f$si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   inhale acc(p$c$A$shared(p$a), wildcard)
   unfold acc(p$c$A$unique(p$a), write)
   l0$x := p$a.bf$si
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -157,6 +159,8 @@ method f$um_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   unfold acc(p$c$B$unique(p$a.bf$um), write)
   anon$0 := p$a.bf$um
   l0$x := anon$0.bf$sm
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -182,6 +186,8 @@ method f$um_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   unfold acc(p$c$B$unique(p$a.bf$um), write)
   anon$0 := p$a.bf$um
   l0$x := anon$0.bf$si
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -257,6 +263,8 @@ method f$ui_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   unfold acc(p$c$B$unique(p$a.bf$ui), write)
   anon$0 := p$a.bf$ui
   l0$x := anon$0.bf$sm
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -282,6 +290,8 @@ method f$ui_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   unfold acc(p$c$B$unique(p$a.bf$ui), write)
   anon$0 := p$a.bf$ui
   l0$x := anon$0.bf$si
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -355,6 +365,7 @@ method f$sm_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   unfold acc(p$c$A$unique(p$a), write)
   anon$0 := p$a.bf$sm
   l0$x := havoc$T$C()
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -380,6 +391,7 @@ method f$sm_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$0 := p$a.bf$sm
   unfold acc(p$c$B$shared(anon$0), wildcard)
   l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -453,6 +465,7 @@ method f$si_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   unfold acc(p$c$A$unique(p$a), write)
   anon$0 := p$a.bf$si
   l0$x := havoc$T$C()
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -478,6 +491,7 @@ method f$si_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$0 := p$a.bf$si
   unfold acc(p$c$B$shared(anon$0), wildcard)
   l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -562,6 +576,9 @@ method f$um_um_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$1 := p$a.bf$um
   anon$0 := anon$1.bf$um
   l0$x := anon$0.bf$sm
+  fold acc(p$c$C$unique(p$a.bf$um.bf$um), write)
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -590,6 +607,9 @@ method f$um_um_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$1 := p$a.bf$um
   anon$0 := anon$1.bf$um
   l0$x := anon$0.bf$si
+  fold acc(p$c$C$unique(p$a.bf$um.bf$um), write)
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -674,6 +694,9 @@ method f$um_ui_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$1 := p$a.bf$um
   anon$0 := anon$1.bf$ui
   l0$x := anon$0.bf$sm
+  fold acc(p$c$C$unique(p$a.bf$um.bf$ui), write)
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -702,6 +725,9 @@ method f$um_ui_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$1 := p$a.bf$um
   anon$0 := anon$1.bf$ui
   l0$x := anon$0.bf$si
+  fold acc(p$c$C$unique(p$a.bf$um.bf$ui), write)
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -784,6 +810,8 @@ method f$um_sm_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$1 := p$a.bf$um
   anon$0 := anon$1.bf$sm
   l0$x := havoc$T$Any()
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -812,6 +840,8 @@ method f$um_sm_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$0 := anon$1.bf$sm
   unfold acc(p$c$C$shared(anon$0), wildcard)
   l0$x := anon$0.bf$si
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -894,6 +924,8 @@ method f$um_si_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$1 := p$a.bf$um
   anon$0 := anon$1.bf$si
   l0$x := havoc$T$Any()
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -922,6 +954,8 @@ method f$um_si_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$0 := anon$1.bf$si
   unfold acc(p$c$C$shared(anon$0), wildcard)
   l0$x := anon$0.bf$si
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1006,6 +1040,9 @@ method f$ui_um_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$1 := p$a.bf$ui
   anon$0 := anon$1.bf$um
   l0$x := anon$0.bf$sm
+  fold acc(p$c$C$unique(p$a.bf$ui.bf$um), write)
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1034,6 +1071,9 @@ method f$ui_um_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$1 := p$a.bf$ui
   anon$0 := anon$1.bf$um
   l0$x := anon$0.bf$si
+  fold acc(p$c$C$unique(p$a.bf$ui.bf$um), write)
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1118,6 +1158,9 @@ method f$ui_ui_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$1 := p$a.bf$ui
   anon$0 := anon$1.bf$ui
   l0$x := anon$0.bf$sm
+  fold acc(p$c$C$unique(p$a.bf$ui.bf$ui), write)
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1146,6 +1189,9 @@ method f$ui_ui_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$1 := p$a.bf$ui
   anon$0 := anon$1.bf$ui
   l0$x := anon$0.bf$si
+  fold acc(p$c$C$unique(p$a.bf$ui.bf$ui), write)
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1228,6 +1274,8 @@ method f$ui_sm_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$1 := p$a.bf$ui
   anon$0 := anon$1.bf$sm
   l0$x := havoc$T$Any()
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1256,6 +1304,8 @@ method f$ui_sm_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$0 := anon$1.bf$sm
   unfold acc(p$c$C$shared(anon$0), wildcard)
   l0$x := anon$0.bf$si
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1338,6 +1388,8 @@ method f$ui_si_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$1 := p$a.bf$ui
   anon$0 := anon$1.bf$si
   l0$x := havoc$T$Any()
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1366,6 +1418,8 @@ method f$ui_si_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$0 := anon$1.bf$si
   unfold acc(p$c$C$shared(anon$0), wildcard)
   l0$x := anon$0.bf$si
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1445,6 +1499,7 @@ method f$sm_um_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$1 := p$a.bf$sm
   anon$0 := havoc$T$C()
   l0$x := havoc$T$Any()
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1472,6 +1527,7 @@ method f$sm_um_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$0 := havoc$T$C()
   unfold acc(p$c$C$shared(anon$0), wildcard)
   l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1554,6 +1610,7 @@ method f$sm_ui_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   unfold acc(p$c$B$shared(anon$1), wildcard)
   anon$0 := anon$1.bf$ui
   l0$x := havoc$T$Any()
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1582,6 +1639,7 @@ method f$sm_ui_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$0 := anon$1.bf$ui
   unfold acc(p$c$C$shared(anon$0), wildcard)
   l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1661,6 +1719,7 @@ method f$sm_sm_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$1 := p$a.bf$sm
   anon$0 := havoc$T$C()
   l0$x := havoc$T$Any()
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1688,6 +1747,7 @@ method f$sm_sm_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$0 := havoc$T$C()
   unfold acc(p$c$C$shared(anon$0), wildcard)
   l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1770,6 +1830,7 @@ method f$sm_si_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   unfold acc(p$c$B$shared(anon$1), wildcard)
   anon$0 := anon$1.bf$si
   l0$x := havoc$T$Any()
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1798,6 +1859,7 @@ method f$sm_si_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$0 := anon$1.bf$si
   unfold acc(p$c$C$shared(anon$0), wildcard)
   l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1877,6 +1939,7 @@ method f$si_um_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$1 := p$a.bf$si
   anon$0 := havoc$T$C()
   l0$x := havoc$T$Any()
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1904,6 +1967,7 @@ method f$si_um_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$0 := havoc$T$C()
   unfold acc(p$c$C$shared(anon$0), wildcard)
   l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -1986,6 +2050,7 @@ method f$si_ui_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   unfold acc(p$c$B$shared(anon$1), wildcard)
   anon$0 := anon$1.bf$ui
   l0$x := havoc$T$Any()
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -2014,6 +2079,7 @@ method f$si_ui_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$0 := anon$1.bf$ui
   unfold acc(p$c$C$shared(anon$0), wildcard)
   l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -2093,6 +2159,7 @@ method f$si_sm_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$1 := p$a.bf$si
   anon$0 := havoc$T$C()
   l0$x := havoc$T$Any()
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -2120,6 +2187,7 @@ method f$si_sm_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$0 := havoc$T$C()
   unfold acc(p$c$C$shared(anon$0), wildcard)
   l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -2202,6 +2270,7 @@ method f$si_si_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   unfold acc(p$c$B$shared(anon$1), wildcard)
   anon$0 := anon$1.bf$si
   l0$x := havoc$T$Any()
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -2230,6 +2299,7 @@ method f$si_si_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$0 := anon$1.bf$si
   unfold acc(p$c$C$shared(anon$0), wildcard)
   l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }

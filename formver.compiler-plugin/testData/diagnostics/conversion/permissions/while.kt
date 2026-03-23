@@ -85,6 +85,12 @@ fun <!VIPER_TEXT!>borrowInLoop<!>(@Unique a: A) {
     }
 }
 
+fun <!VIPER_TEXT!>unfoldForCondition<!>(@Unique a: A) {
+
+    while (a.um == a.ui) {
+    }
+}
+
 class Node(
     @Unique var next: Node?,
     @Unique var data: A,

@@ -1,4 +1,4 @@
-/methodCalls.kt:(672,679): info: Generated Viper text for consume:
+/methodCalls.kt:(670,677): info: Generated Viper text for consume:
 field bf$si: Ref
 
 field bf$sm: Ref
@@ -17,7 +17,7 @@ method f$consume$TF$T$C$T$Unit(p$c: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/methodCalls.kt:(701,708): info: Generated Viper text for consume:
+/methodCalls.kt:(699,706): info: Generated Viper text for consume:
 field bf$si: Ref
 
 field bf$sm: Ref
@@ -36,7 +36,7 @@ method f$consume$TF$T$B$T$Unit(p$b: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/methodCalls.kt:(730,736): info: Generated Viper text for shared:
+/methodCalls.kt:(728,734): info: Generated Viper text for shared:
 field bf$si: Ref
 
 field bf$sm: Ref
@@ -54,7 +54,7 @@ method f$shared$TF$T$C$T$Unit(p$c: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/methodCalls.kt:(750,756): info: Generated Viper text for borrow:
+/methodCalls.kt:(748,754): info: Generated Viper text for borrow:
 field bf$si: Ref
 
 field bf$sm: Ref
@@ -72,7 +72,7 @@ method f$borrow$TF$T$B$T$Unit(p$b: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/methodCalls.kt:(780,790): info: Generated Viper text for consumeTwo:
+/methodCalls.kt:(778,788): info: Generated Viper text for consumeTwo:
 field bf$si: Ref
 
 field bf$sm: Ref
@@ -95,7 +95,7 @@ method f$consumeTwo$TF$T$B$T$B$T$Unit(p$b1: Ref, p$b2: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/methodCalls.kt:(829,854): info: Generated Viper text for testUniqueFieldFoldUnfold:
+/methodCalls.kt:(827,852): info: Generated Viper text for testUniqueFieldFoldUnfold:
 field bf$si: Ref
 
 field bf$sm: Ref
@@ -126,7 +126,7 @@ method f$testUniqueFieldFoldUnfold$TF$T$A$T$Unit(p$a: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/methodCalls.kt:(897,914): info: Generated Viper text for testBorrowedField:
+/methodCalls.kt:(895,912): info: Generated Viper text for testBorrowedField:
 field bf$si: Ref
 
 field bf$sm: Ref
@@ -162,7 +162,7 @@ method f$testBorrowedField$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/methodCalls.kt:(972,988): info: Generated Viper text for testNestedUnique:
+/methodCalls.kt:(970,986): info: Generated Viper text for testNestedUnique:
 field bf$si: Ref
 
 field bf$sm: Ref
@@ -192,12 +192,11 @@ method f$testNestedUnique$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$1 := l0$b.bf$um
   anon$0 := f$consume$TF$T$C$T$Unit(anon$1)
   p$a.bf$um := l0$b
-  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/methodCalls.kt:(1069,1086): info: Generated Viper text for testMultipleCalls:
+/methodCalls.kt:(1067,1084): info: Generated Viper text for testMultipleCalls:
 field bf$si: Ref
 
 field bf$sm: Ref
@@ -233,7 +232,7 @@ method f$testMultipleCalls$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/methodCalls.kt:(1145,1161): info: Generated Viper text for testNestedBorrow:
+/methodCalls.kt:(1143,1159): info: Generated Viper text for testNestedBorrow:
 field bf$si: Ref
 
 field bf$sm: Ref
@@ -269,7 +268,7 @@ method f$testNestedBorrow$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/methodCalls.kt:(1240,1255): info: Generated Viper text for testMixedAccess:
+/methodCalls.kt:(1238,1253): info: Generated Viper text for testMixedAccess:
 field bf$si: Ref
 
 field bf$sm: Ref
@@ -310,7 +309,7 @@ method f$testMixedAccess$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/methodCalls.kt:(1314,1321): info: Generated Viper text for testTwo:
+/methodCalls.kt:(1312,1319): info: Generated Viper text for testTwo:
 field bf$si: Ref
 
 field bf$sm: Ref
@@ -345,7 +344,7 @@ method f$testTwo$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/methodCalls.kt:(1372,1387): info: Generated Viper text for testSharedField:
+/methodCalls.kt:(1370,1385): info: Generated Viper text for testSharedField:
 field bf$si: Ref
 
 field bf$sm: Ref
@@ -375,7 +374,6 @@ method f$testSharedField$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$0 := f$shared$TF$T$C$T$Unit(anon$1)
   fold acc(p$c$B$unique(l0$b), write)
   p$a.bf$um := l0$b
-  fold acc(p$c$A$unique(p$a), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }

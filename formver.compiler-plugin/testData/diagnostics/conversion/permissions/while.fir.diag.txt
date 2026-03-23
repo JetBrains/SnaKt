@@ -105,7 +105,27 @@ method f$borrow$TF$T$B$T$Unit(p$b: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/while.kt:(1034,1040): info: Generated Viper text for simple:
+/while.kt:(1032,1038): info: Generated Viper text for borrow:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$borrow$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/while.kt:(1072,1078): info: Generated Viper text for simple:
 field bf$si: Ref
 
 field bf$sm: Ref
@@ -147,7 +167,7 @@ method f$simple$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/while.kt:(1112,1134): info: Generated Viper text for partiallyMovedOverLoop:
+/while.kt:(1150,1172): info: Generated Viper text for partiallyMovedOverLoop:
 field bf$si: Ref
 
 field bf$sm: Ref
@@ -197,7 +217,7 @@ method f$partiallyMovedOverLoop$TF$T$A$T$Unit(p$a: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/while.kt:(1324,1336): info: Generated Viper text for BorrowInLoop:
+/while.kt:(1362,1374): info: Generated Viper text for borrowInLoop:
 field bf$si: Ref
 
 field bf$sm: Ref
@@ -206,7 +226,14 @@ field bf$ui: Ref
 
 field bf$um: Ref
 
-method f$BorrowInLoop$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+method f$borrow$TF$T$B$T$Unit(p$b: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$B())
+  requires acc(p$c$B$unique(p$b), write)
+  ensures acc(p$c$B$unique(p$b), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$borrowInLoop$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
   requires acc(p$c$A$unique(p$a), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -242,18 +269,48 @@ method f$BorrowInLoop$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-method f$borrow$TF$T$B$T$Unit(p$b: Ref) returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$B())
-  requires acc(p$c$B$unique(p$b), write)
-  ensures acc(p$c$B$unique(p$b), write)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
-
-
 method f$nonDet$TF$T$Boolean() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
 
 
-/while.kt:(1543,1551): info: Generated Viper text for Optional:
+/while.kt:(1512,1530): info: Generated Viper text for unfoldForCondition:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$unfoldForCondition$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  var anon$2: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  label lbl$continue$0
+    invariant acc(p$c$A$shared(p$a), wildcard)
+    invariant df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+    invariant acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$um
+  anon$2 := p$a.bf$ui
+  anon$0 := df$rt$boolToRef(anon$1 == anon$2)
+  fold acc(p$c$A$unique(p$a), write)
+  if (df$rt$boolFromRef(anon$0)) {
+    goto lbl$continue$0
+  }
+  label lbl$break$0
+  assert acc(p$c$A$shared(p$a), wildcard)
+  assert df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/while.kt:(1657,1665): info: Generated Viper text for optional:
 field bf$data: Ref
 
 field bf$next: Ref
@@ -266,7 +323,18 @@ field bf$ui: Ref
 
 field bf$um: Ref
 
-method f$Optional$TF$T$Node$T$Unit(p$n: Ref) returns (ret$0: Ref)
+method f$borrow$TF$T$A$T$Unit(p$a: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$nonDet$TF$T$Boolean() returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
+
+
+method f$optional$TF$T$Node$T$Unit(p$n: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$c$Node())
   requires acc(p$c$Node$unique(p$n), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -292,7 +360,7 @@ method f$Optional$TF$T$Node$T$Unit(p$n: Ref) returns (ret$0: Ref)
     var anon$4: Ref
     unfold acc(p$c$Node$unique(p$n), write)
     anon$4 := p$n.bf$data
-    anon$3 := f$borrow$TF$T$B$T$Unit(anon$4)
+    anon$3 := f$borrow$TF$T$A$T$Unit(anon$4)
     fold acc(p$c$Node$unique(p$n), write)
     goto lbl$continue$0
   }
@@ -302,16 +370,3 @@ method f$Optional$TF$T$Node$T$Unit(p$n: Ref) returns (ret$0: Ref)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
-
-method f$borrow$TF$T$B$T$Unit(p$b: Ref) returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$B())
-  requires acc(p$c$B$unique(p$b), write)
-  ensures acc(p$c$B$unique(p$b), write)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
-
-
-method f$nonDet$TF$T$Boolean() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
-
-
-/while.kt:(1628,1634): error: Argument type mismatch: actual type is 'A', but 'B' was expected.

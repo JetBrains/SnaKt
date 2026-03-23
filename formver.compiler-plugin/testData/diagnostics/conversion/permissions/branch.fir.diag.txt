@@ -118,11 +118,8 @@ method f$movedOverBranch$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   anon$1 := p$a.bf$si
   if (anon$0 == anon$1) {
     p$a.bf$um := l0$x
-    fold acc(p$c$A$unique(p$a), write)
   } else {
-    p$a.bf$um := l0$x
-    fold acc(p$c$A$unique(p$a), write)
-  }
+    p$a.bf$um := l0$x}
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -152,7 +149,6 @@ method f$movedOverBranchWithoutMovingBack$TF$T$A$T$Unit(p$a: Ref)
   anon$1 := p$a.bf$si
   if (anon$0 == anon$1) {
     p$a.bf$um := l0$x
-    fold acc(p$c$A$unique(p$a), write)
   }
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
