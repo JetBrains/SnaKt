@@ -1,10 +1,10 @@
 /as_type_contract.kt:(152,162): info: Generated Viper text for asOperator:
 method f$asOperator$TF$T$Foo$T$Bar(p$foo: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$Bar())
   ensures acc(p$c$Bar$shared(ret$0), wildcard)
   ensures true ==> df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$c$Bar())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$c$Foo())
   inhale acc(p$c$Foo$shared(p$foo), wildcard)
   inhale df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$c$Bar())
   inhale acc(p$c$Bar$shared(p$foo), wildcard)
@@ -15,13 +15,13 @@ method f$asOperator$TF$T$Foo$T$Bar(p$foo: Ref) returns (ret$0: Ref)
 
 /as_type_contract.kt:(307,321): info: Generated Viper text for safeAsOperator:
 method f$safeAsOperator$TF$T$Foo$NT$Bar(p$foo: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$c$Bar()))
   ensures ret$0 != df$rt$nullValue() ==>
     acc(p$c$Bar$shared(ret$0), wildcard)
   ensures ret$0 != df$rt$nullValue() ==>
     df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$c$Bar())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$c$Foo())
   inhale acc(p$c$Foo$shared(p$foo), wildcard)
   inhale df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$nullable(df$rt$c$Bar()))
   inhale p$foo != df$rt$nullValue() ==>
@@ -35,6 +35,7 @@ method f$safeAsOperator$TF$T$Foo$NT$Bar(p$foo: Ref) returns (ret$0: Ref)
 field bf$x: Ref
 
 method f$getX$TF$T$Any$NT$Int(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$anyType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
   ensures ret$0 != df$rt$nullValue() ==>
     df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$IntHolder())
@@ -42,7 +43,6 @@ method f$getX$TF$T$Any$NT$Int(p$a: Ref) returns (ret$0: Ref)
     !df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$IntHolder())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$anyType())
   if (df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$IntHolder())) {
     anon$0 := p$a
   } else {

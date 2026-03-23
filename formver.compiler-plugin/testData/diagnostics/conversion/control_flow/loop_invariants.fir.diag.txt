@@ -1,10 +1,10 @@
 /loop_invariants.kt:(146,168): info: Generated Viper text for dynamicLambdaInvariant:
 method f$dynamicLambdaInvariant$TF$TF$T$Int$T$Unit(p$f: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$functionType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$functionType())
   label lbl$continue$0
     invariant df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$functionType())
   anon$0 := f$returnsBoolean$TF$T$Boolean()
@@ -26,11 +26,11 @@ method f$returnsBoolean$TF$T$Boolean() returns (ret: Ref)
 /loop_invariants.kt:(241,259): info: Generated Viper text for functionAssignment:
 method f$functionAssignment$TF$TF$T$Int$T$Unit(p$f: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$functionType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$g: Ref
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$functionType())
   l0$g := p$f
   label lbl$continue$0
     invariant df$rt$isSubtype(df$rt$typeOf(l0$g), df$rt$functionType())
@@ -56,13 +56,13 @@ method f$returnsBoolean$TF$T$Boolean() returns (ret: Ref)
 method f$conditionalFunctionAssignment$TF$T$Boolean$TF$T$Int$TF$T$Int$T$Unit(p$b: Ref,
   p$f: Ref, p$h: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$functionType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$h), df$rt$functionType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$g: Ref
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$functionType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$h), df$rt$functionType())
   if (df$rt$boolFromRef(p$b)) {
     l0$g := p$f
   } else {
@@ -89,4 +89,3 @@ method f$conditionalFunctionAssignment$TF$T$Boolean$TF$T$Int$TF$T$Int$T$Unit(p$b
 
 method f$returnsBoolean$TF$T$Boolean() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
-

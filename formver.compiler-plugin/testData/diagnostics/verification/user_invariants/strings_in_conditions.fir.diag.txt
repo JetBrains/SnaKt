@@ -1,6 +1,7 @@
 /strings_in_conditions.kt:(50,69): info: Generated Viper text for firstNotSortedIndex:
 method f$firstNotSortedIndex$TF$T$String$T$Int(p$s: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$stringType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
   ensures 0 <= df$rt$intFromRef(ret$0) &&
     df$rt$intFromRef(ret$0) <= |df$rt$stringFromRef(p$s)|
@@ -9,7 +10,6 @@ method f$firstNotSortedIndex$TF$T$String$T$Int(p$s: Ref)
       df$rt$stringFromRef(p$s)[anon$builtin$2] <=
       df$rt$stringFromRef(p$s)[anon$builtin$2 + 1])
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$stringType())
   if (|df$rt$stringFromRef(p$s)| == 0) {
     ret$0 := df$rt$intToRef(0)
     goto lbl$ret$0
@@ -59,6 +59,9 @@ method f$returnNewString$TF$T$String() returns (ret$0: Ref)
 method f$addCharacterTimes$TF$T$String$T$Char$T$Int$T$String(p$s: Ref, p$c: Ref,
   p$n: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$stringType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$charType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
   requires df$rt$intFromRef(p$n) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$stringType())
   ensures |df$rt$stringFromRef(ret$0)| ==
@@ -71,9 +74,6 @@ method f$addCharacterTimes$TF$T$String$T$Char$T$Int$T$String(p$s: Ref, p$c: Ref,
   var l0$i: Ref
   var l0$res: Ref
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$stringType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$charType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
   l0$i := df$rt$intToRef(0)
   l0$res := p$s
   label lbl$continue$0
@@ -118,5 +118,6 @@ method f$addCharacterTimes$TF$T$String$T$Char$T$Int$T$String(p$s: Ref, p$c: Ref,
 method f$pkg$kotlin$c$String$plus$TF$T$String$NT$Any$T$String(this$dispatch: Ref,
   p$other: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$stringType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$other), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$stringType())
-

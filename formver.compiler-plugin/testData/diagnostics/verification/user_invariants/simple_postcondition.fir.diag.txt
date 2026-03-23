@@ -1,9 +1,9 @@
 /simple_postcondition.kt:(64,75): info: Generated Viper text for testGreater:
 method f$testGreater$TF$T$Int$T$Int(p$init: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$init), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
   ensures df$rt$intFromRef(ret$0) > df$rt$intFromRef(p$init)
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$init), df$rt$intType())
   ret$0 := sp$plusInts(p$init, df$rt$intToRef(5))
   goto lbl$ret$0
   label lbl$ret$0
@@ -22,11 +22,11 @@ method f$testString$TF$T$Char() returns (ret$0: Ref)
 /simple_postcondition.kt:(323,343): info: Generated Viper text for testWithPrecondition:
 method f$testWithPrecondition$TF$T$Int$T$Int(p$int: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$int), df$rt$intType())
   requires df$rt$intFromRef(p$int) > 10
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
   ensures df$rt$intFromRef(ret$0) > 0
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$int), df$rt$intType())
   ret$0 := sp$minusInts(p$int, df$rt$intToRef(10))
   goto lbl$ret$0
   label lbl$ret$0
@@ -60,7 +60,7 @@ method f$testPostconditionIsUsedByPrecondition$TF$T$Int()
 }
 
 method f$testWithPrecondition$TF$T$Int$T$Int(p$int: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$int), df$rt$intType())
   requires df$rt$intFromRef(p$int) > 10
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
   ensures df$rt$intFromRef(ret) > 0
-

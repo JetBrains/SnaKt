@@ -2,12 +2,12 @@
 field bf$size: Ref
 
 method f$test$TF$T$Int$T$Unit(p$n: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$it: Ref
   var l0$holds: Ref
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
   l0$it := df$rt$intToRef(0)
   l0$holds := df$rt$boolToRef(true)
   label lbl$continue$0
@@ -126,6 +126,7 @@ field bf$e: Ref
 field bf$size: Ref
 
 method con$c$WithVar$T$Int$T$WithVar(p$e: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$e), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$WithVar())
   ensures acc(p$c$WithVar$shared(ret), wildcard)
   ensures acc(p$c$WithVar$unique(ret), write)
@@ -133,6 +134,7 @@ method con$c$WithVar$T$Int$T$WithVar(p$e: Ref) returns (ret: Ref)
 
 method f$c$WithVar$doSomething$TF$T$WithVar$T$Boolean(this$dispatch: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$WithVar())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
 
 

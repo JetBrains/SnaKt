@@ -2,6 +2,7 @@
 field bf$fieldNotOverride: Ref
 
 method con$c$B$T$FieldB$T$B(p$fieldOverride: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$fieldOverride), df$rt$c$FieldB())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$B())
   ensures acc(p$c$B$shared(ret), wildcard)
   ensures acc(p$c$B$unique(ret), write)
@@ -55,6 +56,7 @@ method con$c$NoBackingFieldClass$T$NoBackingFieldClass() returns (ret: Ref)
 
 method con$c$SecondBackingFieldClass$T$Int$T$SecondBackingFieldClass(p$x: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$SecondBackingFieldClass())
   ensures acc(p$c$SecondBackingFieldClass$shared(ret), wildcard)
   ensures acc(p$c$SecondBackingFieldClass$unique(ret), write)
@@ -96,6 +98,7 @@ method pg$public$x(this$dispatch: Ref) returns (ret: Ref)
 field bf$a: Ref
 
 method con$c$Y$T$Int$T$Y(p$a: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Y())
   ensures acc(p$c$Y$shared(ret), wildcard)
   ensures acc(p$c$Y$unique(ret), write)

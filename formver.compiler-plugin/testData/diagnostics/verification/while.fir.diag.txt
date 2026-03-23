@@ -5,6 +5,7 @@ field bf$size: Ref
 
 method con$c$ClassWithField$T$Int$T$ClassWithField(p$field: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$field), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$ClassWithField())
   ensures acc(p$c$ClassWithField$shared(ret), wildcard)
   ensures acc(p$c$ClassWithField$unique(ret), write)
@@ -13,8 +14,15 @@ method con$c$ClassWithField$T$Int$T$ClassWithField(p$field: Ref)
     df$rt$intFromRef(p$field)
 
 
+method f$pkg$kotlin$c$Int$unaryMinus$TF$T$Int$T$Int(this$dispatch: Ref)
+  returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$intType())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
+
+
 method f$test_while$TF$T$ClassWithField$T$Unit(p$param: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$param), df$rt$c$ClassWithField())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$c: Ref
@@ -82,6 +90,7 @@ field bf$size: Ref
 
 method con$c$ClassWithField$T$Int$T$ClassWithField(p$field: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$field), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$ClassWithField())
   ensures acc(p$c$ClassWithField$shared(ret), wildcard)
   ensures acc(p$c$ClassWithField$unique(ret), write)
@@ -92,6 +101,7 @@ method con$c$ClassWithField$T$Int$T$ClassWithField(p$field: Ref)
 
 method f$test_while_with_inlining$TF$T$ClassWithField$T$Unit(p$param: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$param), df$rt$c$ClassWithField())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$local: Ref
@@ -107,7 +117,6 @@ method f$test_while_with_inlining$TF$T$ClassWithField$T$Unit(p$param: Ref)
   var anon$6: Ref
   var anon$7: Ref
   var anon$8: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$param), df$rt$c$ClassWithField())
   inhale acc(p$c$ClassWithField$shared(p$param), wildcard)
   l0$local := con$c$ClassWithField$T$Int$T$ClassWithField(df$rt$intToRef(13))
   anon$4 := con$c$ClassWithField$T$Int$T$ClassWithField(df$rt$intToRef(42))
@@ -172,10 +181,10 @@ field bf$field: Ref
 
 method f$test_while_with_smartcast$TF$T$Any$T$Any$T$Unit(p$param: Ref, p$innerParam: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$param), df$rt$anyType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$innerParam), df$rt$anyType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$param), df$rt$anyType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$innerParam), df$rt$anyType())
   if (df$rt$isSubtype(df$rt$typeOf(p$param), df$rt$c$ClassWithField())) {
     var l2$iteration: Ref
     var anon$0: Ref

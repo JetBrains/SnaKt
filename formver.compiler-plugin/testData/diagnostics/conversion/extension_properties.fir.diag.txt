@@ -50,11 +50,11 @@ method eg$pfValProp$TF$T$PrimitiveField$T$Int(this$dispatch: Ref)
 
 method f$extensionGetterPropertyUserDefinedClass$TF$T$PrimitiveField$T$Unit(p$pf: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$pf), df$rt$c$PrimitiveField())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$x: Ref
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$pf), df$rt$c$PrimitiveField())
   inhale acc(p$c$PrimitiveField$shared(p$pf), wildcard)
   anon$0 := eg$pfValProp$TF$T$PrimitiveField$T$Int(p$pf)
   l0$x := anon$0
@@ -76,10 +76,10 @@ method es$pfVarProp$TF$T$PrimitiveField$T$Int$T$Unit(this$dispatch: Ref, anon$0:
 
 method f$extensionSetterPropertyUserDefinedClass$TF$T$PrimitiveField$T$Unit(p$pf: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$pf), df$rt$c$PrimitiveField())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$pf), df$rt$c$PrimitiveField())
   inhale acc(p$c$PrimitiveField$shared(p$pf), wildcard)
   anon$0 := es$pfVarProp$TF$T$PrimitiveField$T$Int$T$Unit(p$pf, df$rt$intToRef(42))
   label lbl$ret$0

@@ -1,8 +1,8 @@
 /elvis.kt:(121,134): info: Generated Viper text for elvisOperator:
 method f$elvisOperator$TF$NT$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
   if (p$x != df$rt$nullValue()) {
     ret$0 := p$x
   } else {
@@ -13,15 +13,16 @@ method f$elvisOperator$TF$NT$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
 
 /elvis.kt:(176,196): info: Generated Viper text for elvisOperatorComplex:
 method f$elvisOperator$TF$NT$Int$T$Int(p$x: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 
 method f$elvisOperatorComplex$TF$NT$Int$T$Int(p$x: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
   anon$0 := f$id$TF$NT$Int$NT$Int(p$x)
   if (anon$0 != df$rt$nullValue()) {
     ret$0 := anon$0
@@ -32,15 +33,16 @@ method f$elvisOperatorComplex$TF$NT$Int$T$Int(p$x: Ref)
 }
 
 method f$id$TF$NT$Int$NT$Int(p$x: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$intType()))
 
 
 /elvis.kt:(257,276): info: Generated Viper text for elvisOperatorReturn:
 method f$elvisOperatorReturn$TF$NT$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var l0$y: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
   if (p$x != df$rt$nullValue()) {
     l0$y := p$x
   } else {

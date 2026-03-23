@@ -6,15 +6,15 @@ field bf$size: Ref
 method f$c$ClassWithExtension$applyDelta$TF$T$ClassWithExtension$T$Int$T$Unit(this$dispatch: Ref,
   this$extension: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$ClassWithExtension())
+  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$withoutLabels: Ref
   var anon$0: Ref
   var l0$withLabels: Ref
   var anon$1: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$ClassWithExtension())
   inhale acc(p$c$ClassWithExtension$shared(this$dispatch), wildcard)
-  inhale df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$intType())
   unfold acc(p$c$ClassWithExtension$shared(this$dispatch), wildcard)
   anon$0 := this$dispatch.bf$delta
   l0$withoutLabels := sp$plusInts(this$extension, anon$0)
@@ -32,9 +32,9 @@ field bf$delta: Ref
 
 method f$c$ClassWithExtension$returnDelta$TF$T$ClassWithExtension$T$Int(this$dispatch: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$ClassWithExtension())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$ClassWithExtension())
   inhale acc(p$c$ClassWithExtension$shared(this$dispatch), wildcard)
   unfold acc(p$c$ClassWithExtension$shared(this$dispatch), wildcard)
   ret$0 := this$dispatch.bf$delta
@@ -47,9 +47,9 @@ field bf$delta: Ref
 
 method f$extensionReturnDelta$TF$T$ClassWithExtension$T$Int(this$extension: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$ClassWithExtension())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$ClassWithExtension())
   inhale acc(p$c$ClassWithExtension$shared(this$extension), wildcard)
   unfold acc(p$c$ClassWithExtension$shared(this$extension), wildcard)
   ret$0 := this$extension.bf$delta
@@ -64,6 +64,7 @@ field bf$size: Ref
 
 method con$c$ClassWithExtension$T$Int$T$ClassWithExtension(p$delta: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$delta), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$ClassWithExtension())
   ensures acc(p$c$ClassWithExtension$shared(ret), wildcard)
   ensures acc(p$c$ClassWithExtension$unique(ret), write)
@@ -75,11 +76,14 @@ method con$c$ClassWithExtension$T$Int$T$ClassWithExtension(p$delta: Ref)
 method f$c$ClassWithExtension$applyDelta$TF$T$ClassWithExtension$T$Int$T$Unit(this$dispatch: Ref,
   this$extension: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$ClassWithExtension())
+  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
 method f$c$ClassWithExtension$returnDelta$TF$T$ClassWithExtension$T$Int(this$dispatch: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$ClassWithExtension())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 
@@ -135,5 +139,5 @@ method f$checkClassWithExtension$TF$T$Unit() returns (ret$0: Ref)
 
 method f$extensionReturnDelta$TF$T$ClassWithExtension$T$Int(this$extension: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$ClassWithExtension())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-

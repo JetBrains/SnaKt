@@ -66,7 +66,7 @@ buildConfig {
     packageName(group.toString())
 }
 
-tasks.test {
+fun Test.configureFormverTest() {
     dependsOn(annotationsRuntimeClasspath)
 
     useJUnitPlatform()
@@ -85,7 +85,42 @@ tasks.test {
     systemProperty("idea.ignore.disabled.plugins", "true")
     systemProperty("idea.home.path", rootDir)
 
+    project.findProperty("kotlin.test.update.test.data")?.let {
+        systemProperty("kotlin.test.update.test.data", it)
+    }
+
     jvmArgs = listOf("-Xss30M", "-Xmx2g", "-XX:MaxMetaspaceSize=512m")
+}
+
+// ./gradlew test — normal mode (full verification, no conversion-only class)
+tasks.test {
+    configureFormverTest()
+    inputs.property("formver.testMode", "normal")
+    systemProperty("formver.conversionOnly", "false")
+    exclude("**/FirLightTreeFormVerPluginNoVerificationDiagnosticsTestGenerated*")
+}
+
+// ./gradlew testNoVerification — all tests in conversion-only mode
+tasks.register<Test>("testNoVerification") {
+    description = "Run all tests in conversion-only mode (no verification)."
+    group = "verification"
+    testClassesDirs = tasks.test.get().testClassesDirs
+    classpath = tasks.test.get().classpath
+    configureFormverTest()
+    inputs.property("formver.testMode", "noVerification")
+    systemProperty("formver.conversionOnly", "true")
+    exclude("**/FirLightTreeFormVerPluginNoVerificationDiagnosticsTestGenerated*")
+}
+
+// ./gradlew testBothModes — normal + verification tests again as conversion-only
+tasks.register<Test>("testBothModes") {
+    description = "Run all tests normally, then verification tests again as conversion-only."
+    group = "verification"
+    testClassesDirs = tasks.test.get().testClassesDirs
+    classpath = tasks.test.get().classpath
+    configureFormverTest()
+    inputs.property("formver.testMode", "bothModes")
+    systemProperty("formver.conversionOnly", "false")
 }
 
 kotlin {

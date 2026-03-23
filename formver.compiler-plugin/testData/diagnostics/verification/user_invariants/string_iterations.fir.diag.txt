@@ -1,6 +1,8 @@
 /string_iterations.kt:(71,83): info: Generated Viper text for firstAtLeast:
 method f$firstAtLeast$TF$T$String$T$Char$T$Int(this$extension: Ref, p$c: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$charType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
   ensures 0 <= df$rt$intFromRef(ret$0) &&
     df$rt$intFromRef(ret$0) <= |df$rt$stringFromRef(this$extension)|
@@ -15,8 +17,6 @@ method f$firstAtLeast$TF$T$String$T$Char$T$Int(this$extension: Ref, p$c: Ref)
 {
   var l0$i: Ref
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$charType())
   l0$i := df$rt$intToRef(0)
   label lbl$continue$0
     invariant df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
@@ -53,6 +53,8 @@ method f$firstAtLeast$TF$T$String$T$Char$T$Int(this$extension: Ref, p$c: Ref)
 /string_iterations.kt:(606,614): info: Generated Viper text for lastLess:
 method f$lastLess$TF$T$String$T$Char$T$Int(this$extension: Ref, p$c: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$charType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
   ensures -1 <= df$rt$intFromRef(ret$0) &&
     df$rt$intFromRef(ret$0) <= |df$rt$stringFromRef(this$extension)| - 1
@@ -67,8 +69,6 @@ method f$lastLess$TF$T$String$T$Char$T$Int(this$extension: Ref, p$c: Ref)
 {
   var l0$i: Ref
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$charType())
   l0$i := sp$minusInts(sp$stringLength(this$extension), df$rt$intToRef(1))
   label lbl$continue$0
     invariant df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())

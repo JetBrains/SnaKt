@@ -5,13 +5,13 @@
 
 package org.jetbrains.kotlin.formver.core.names
 
-import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.asTypeEmbedding
-import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SEPARATOR
+import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.mangled
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
@@ -90,6 +90,14 @@ data class PredicateKotlinName(val name: String) : KotlinName {
         get() = name
     override val mangledType: String
         get() = "p"
+}
+
+data class HavocKotlinName(val type: TypeEmbedding) : KotlinName {
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
+        get() = type.name.mangled
+    override val mangledType: String
+        get() = "havoc"
 }
 
 data class PretypeName(val name: String) : KotlinName {

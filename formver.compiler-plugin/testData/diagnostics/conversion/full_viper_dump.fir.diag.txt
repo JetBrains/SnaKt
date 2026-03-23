@@ -1,3 +1,10 @@
+/full_viper_dump.kt:(172,173): info: Generated ExpEmbedding for f$f$TF$T$Unit:
+Function(
+    name = f$f$TF$T$Unit,
+    { Declare(Var(l0$foo), T$Foo, MethodCall(callee = con$c$Foo$T$Int$T$Foo, Int(0))) },
+    return = lbl$ret$0,
+)
+
 /full_viper_dump.kt:(172,173): info: Generated Viper text for f:
 domain d$rt  {
 
@@ -410,6 +417,7 @@ predicate p$c$Foo$unique(this$dispatch: Ref) {
 }
 
 method con$c$Foo$T$Int$T$Foo(p$x: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Foo())
   ensures acc(p$c$Foo$shared(ret), wildcard)
   ensures acc(p$c$Foo$unique(ret), write)
@@ -427,9 +435,5 @@ method f$f$TF$T$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/full_viper_dump.kt:(172,173): info: Generated ExpEmbedding for f$f$TF$T$Unit:
-Function(
-    name = f$f$TF$T$Unit,
-    { Declare(Var(l0$foo), T$Foo, MethodCall(callee = con$c$Foo$T$Int$T$Foo, Int(0))) },
-    return = lbl$ret$0,
-)
+method havoc$T$Int() returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())

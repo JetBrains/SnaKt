@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.embeddings.properties
 
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
+import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
@@ -48,14 +49,9 @@ interface FieldEmbedding {
     fun accessInvariantsForParameter(): List<TypeInvariantEmbedding> =
         when (accessPolicy) {
             AccessPolicy.ALWAYS_WRITEABLE -> listOf(FieldAccessTypeInvariantEmbedding(this, PermExp.FullPerm()))
-            AccessPolicy.ALWAYS_INHALE_EXHALE, AccessPolicy.ALWAYS_READABLE , AccessPolicy.MANUAL-> listOf()
+            AccessPolicy.BY_RECEIVER_UNIQUENESS, AccessPolicy.ALWAYS_READABLE, AccessPolicy.MANUAL -> listOf()
         } + extraAccessInvariantsForParameter()
 
-    fun accessInvariantForAccess(): TypeInvariantEmbedding? =
-        when (accessPolicy) {
-            AccessPolicy.ALWAYS_INHALE_EXHALE -> FieldAccessTypeInvariantEmbedding(this, PermExp.FullPerm())
-            AccessPolicy.ALWAYS_READABLE, AccessPolicy.ALWAYS_WRITEABLE, AccessPolicy.MANUAL -> null
-        }
 }
 
 class UserFieldEmbedding(
@@ -69,12 +65,16 @@ class UserFieldEmbedding(
     override val viperType = Type.Ref
     override val accessPolicy: AccessPolicy =
         when {
-            symbol.isVal -> AccessPolicy.ALWAYS_READABLE
             isManual -> AccessPolicy.MANUAL
-            else -> AccessPolicy.ALWAYS_INHALE_EXHALE
+            symbol.isVal -> AccessPolicy.ALWAYS_READABLE
+            symbol.isVar -> AccessPolicy.BY_RECEIVER_UNIQUENESS
+            else -> throw SnaktInternalException(
+                symbol.initializerSource,
+                "Failed to determine AccessPolicy. Field is neither val nor var."
+            )
         }
     override val unfoldToAccess: Boolean
-        get() = accessPolicy == AccessPolicy.ALWAYS_READABLE
+        get() = accessPolicy == AccessPolicy.ALWAYS_READABLE || accessPolicy == AccessPolicy.BY_RECEIVER_UNIQUENESS
     override val includeInShortDump: Boolean = true
 }
 

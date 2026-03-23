@@ -67,27 +67,9 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
-    @TestMetadata("pure_function_with_assignments.kt")
-    public void testPure_function_with_assignments() {
-      runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_function_with_assignments.kt");
-    }
-
-    @Test
-    @TestMetadata("pure_function_with_branching.kt")
-    public void testPure_function_with_branching() {
-      runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_function_with_branching.kt");
-    }
-
-    @Test
-    @TestMetadata("pure_function_with_reassignments.kt")
-    public void testPure_function_with_reassignments() {
-      runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_function_with_reassignments.kt");
-    }
-
-    @Test
-    @TestMetadata("pure_literal_function.kt")
-    public void testPure_literal_function() {
-      runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_literal_function.kt");
+    @TestMetadata("havoc.kt")
+    public void testHavoc() {
+      runTest("formver.compiler-plugin/testData/diagnostics/conversion/havoc.kt");
     }
 
     @Test
@@ -109,6 +91,18 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
       @TestMetadata("field_getters.kt")
       public void testField_getters() {
         runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/field_getters.kt");
+      }
+
+      @Test
+      @TestMetadata("field_getters_unique_shared.kt")
+      public void testField_getters_unique_shared() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/field_getters_unique_shared.kt");
+      }
+
+      @Test
+      @TestMetadata("field_setters_unique_shared.kt")
+      public void testField_setters_unique_shared() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/field_setters_unique_shared.kt");
       }
 
       @Test
@@ -353,6 +347,62 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/pure_functions")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Pure_functions {
+      @Test
+      public void testAllFilesPresentInPure_functions() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/conversion/pure_functions"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("pure_function_with_assignments.kt")
+      public void testPure_function_with_assignments() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_functions/pure_function_with_assignments.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_function_with_branching.kt")
+      public void testPure_function_with_branching() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_functions/pure_function_with_branching.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_function_with_reassignments.kt")
+      public void testPure_function_with_reassignments() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_functions/pure_function_with_reassignments.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_literal_function.kt")
+      public void testPure_literal_function() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/pure_functions/pure_literal_function.kt");
+      }
+    }
+
+    @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/purity")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Purity {
+      @Test
+      public void testAllFilesPresentInPurity() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/conversion/purity"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("assert_statements.kt")
+      public void testAssert_statements() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/purity/assert_statements.kt");
+      }
+
+      @Test
+      @TestMetadata("wrongly_annotated.kt")
+      public void testWrongly_annotated() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/purity/wrongly_annotated.kt");
+      }
+    }
+
+    @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/types")
     @TestDataPath("$PROJECT_ROOT")
     public class Types {
@@ -388,24 +438,118 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
   }
 
   @Nested
-  @TestMetadata("formver.compiler-plugin/testData/diagnostics/purity_checker")
+  @TestMetadata("formver.compiler-plugin/testData/diagnostics/expensive_verification")
   @TestDataPath("$PROJECT_ROOT")
-  public class Purity_checker {
+  public class Expensive_verification {
     @Test
-    public void testAllFilesPresentInPurity_checker() {
-      KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/purity_checker"), Pattern.compile("^(.+)\\.kt$"), null, true);
+    public void testAllFilesPresentInExpensive_verification() {
+      KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/expensive_verification"), Pattern.compile("^(.+)\\.kt$"), null, true);
     }
 
     @Test
-    @TestMetadata("assert_statements.kt")
-    public void testAssert_statements() {
-      runTest("formver.compiler-plugin/testData/diagnostics/purity_checker/assert_statements.kt");
+    @TestMetadata("backing_field_getters.kt")
+    public void testBacking_field_getters() {
+      runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/backing_field_getters.kt");
+    }
+
+    @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/expensive_verification/algorithms")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Algorithms {
+      @Test
+      public void testAllFilesPresentInAlgorithms() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/expensive_verification/algorithms"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("binary_search.kt")
+      public void testBinary_search() {
+        runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/algorithms/binary_search.kt");
+      }
+
+      @Test
+      @TestMetadata("merge_sort_of_string.kt")
+      public void testMerge_sort_of_string() {
+        runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/algorithms/merge_sort_of_string.kt");
+      }
+
+      @Test
+      @TestMetadata("quick_sort_of_string.kt")
+      public void testQuick_sort_of_string() {
+        runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/algorithms/quick_sort_of_string.kt");
+      }
+
+      @Test
+      @TestMetadata("z_function.kt")
+      public void testZ_function() {
+        runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/algorithms/z_function.kt");
+      }
+    }
+  }
+
+  @Nested
+  @TestMetadata("formver.compiler-plugin/testData/diagnostics/stdlib")
+  @TestDataPath("$PROJECT_ROOT")
+  public class Stdlib {
+    @Test
+    public void testAllFilesPresentInStdlib() {
+      KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/stdlib"), Pattern.compile("^(.+)\\.kt$"), null, true);
     }
 
     @Test
-    @TestMetadata("wrongly_annotated.kt")
-    public void testWrongly_annotated() {
-      runTest("formver.compiler-plugin/testData/diagnostics/purity_checker/wrongly_annotated.kt");
+    @TestMetadata("stdlib_replacement_tests.kt")
+    public void testStdlib_replacement_tests() {
+      runTest("formver.compiler-plugin/testData/diagnostics/stdlib/stdlib_replacement_tests.kt");
+    }
+
+    @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/stdlib/list")
+    @TestDataPath("$PROJECT_ROOT")
+    public class List {
+      @Test
+      public void testAllFilesPresentInList() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/stdlib/list"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("binary_search.kt")
+      public void testBinary_search() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/binary_search.kt");
+      }
+
+      @Test
+      @TestMetadata("custom_list.kt")
+      public void testCustom_list() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/custom_list.kt");
+      }
+
+      @Test
+      @TestMetadata("list.kt")
+      public void testList() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/list.kt");
+      }
+    }
+
+    @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/stdlib/string")
+    @TestDataPath("$PROJECT_ROOT")
+    public class String {
+      @Test
+      public void testAllFilesPresentInString() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/stdlib/string"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("chars.kt")
+      public void testChars() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/string/chars.kt");
+      }
+
+      @Test
+      @TestMetadata("strings.kt")
+      public void testStrings() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/string/strings.kt");
+      }
     }
   }
 
@@ -425,51 +569,93 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
-    @TestMetadata("borrowing.kt")
-    public void testBorrowing() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/borrowing.kt");
+    @TestMetadata("assign_local.kt")
+    public void testAssign_local() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/assign_local.kt");
     }
 
     @Test
-    @TestMetadata("consume_properties.kt")
-    public void testConsume_properties() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/consume_properties.kt");
+    @TestMetadata("assign_property.kt")
+    public void testAssign_property() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/assign_property.kt");
     }
 
     @Test
-    @TestMetadata("direct_pass_shared_to_unique.kt")
-    public void testDirect_pass_shared_to_unique() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/direct_pass_shared_to_unique.kt");
+    @TestMetadata("borrow_local.kt")
+    public void testBorrow_local() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/borrow_local.kt");
     }
 
     @Test
-    @TestMetadata("local_same_type.kt")
-    public void testLocal_same_type() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/local_same_type.kt");
+    @TestMetadata("borrow_property.kt")
+    public void testBorrow_property() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/borrow_property.kt");
     }
 
     @Test
-    @TestMetadata("multi_level.kt")
-    public void testMulti_level() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/multi_level.kt");
+    @TestMetadata("consume_deeply_nested.kt")
+    public void testConsume_deeply_nested() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/consume_deeply_nested.kt");
     }
 
     @Test
-    @TestMetadata("partial_move.kt")
-    public void testPartial_move() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/partial_move.kt");
+    @TestMetadata("consume_local.kt")
+    public void testConsume_local() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/consume_local.kt");
     }
 
     @Test
-    @TestMetadata("partially_shared.kt")
-    public void testPartially_shared() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/partially_shared.kt");
+    @TestMetadata("consume_property.kt")
+    public void testConsume_property() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/consume_property.kt");
     }
 
     @Test
-    @TestMetadata("shared_to_shared.kt")
-    public void testShared_to_shared() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/shared_to_shared.kt");
+    @TestMetadata("pass_local_argument.kt")
+    public void testPass_local_argument() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/pass_local_argument.kt");
+    }
+
+    @Test
+    @TestMetadata("pass_property_argument.kt")
+    public void testPass_property_argument() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/pass_property_argument.kt");
+    }
+
+    @Test
+    @TestMetadata("return_local.kt")
+    public void testReturn_local() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/return_local.kt");
+    }
+
+    @Test
+    @TestMetadata("return_property.kt")
+    public void testReturn_property() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/return_property.kt");
+    }
+
+    @Test
+    @TestMetadata("share_local.kt")
+    public void testShare_local() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/share_local.kt");
+    }
+
+    @Test
+    @TestMetadata("share_property.kt")
+    public void testShare_property() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/share_property.kt");
+    }
+
+    @Test
+    @TestMetadata("throw_local.kt")
+    public void testThrow_local() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/throw_local.kt");
+    }
+
+    @Test
+    @TestMetadata("throw_property.kt")
+    public void testThrow_property() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/throw_property.kt");
     }
   }
 
@@ -495,18 +681,6 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
-    @TestMetadata("pure_function_rely_on_branch.kt")
-    public void testPure_function_rely_on_branch() {
-      runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_function_rely_on_branch.kt");
-    }
-
-    @Test
-    @TestMetadata("stdlib_replacement_tests.kt")
-    public void testStdlib_replacement_tests() {
-      runTest("formver.compiler-plugin/testData/diagnostics/verification/stdlib_replacement_tests.kt");
-    }
-
-    @Test
     @TestMetadata("unit_return_type.kt")
     public void testUnit_return_type() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/unit_return_type.kt");
@@ -516,6 +690,34 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     @TestMetadata("while.kt")
     public void testWhile() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/while.kt");
+    }
+
+    @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/classes")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Classes {
+      @Test
+      public void testAllFilesPresentInClasses() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/classes"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("multiple_interfaces.kt")
+      public void testMultiple_interfaces() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/multiple_interfaces.kt");
+      }
+
+      @Test
+      @TestMetadata("override_properties_types.kt")
+      public void testOverride_properties_types() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/override_properties_types.kt");
+      }
+
+      @Test
+      @TestMetadata("private_properties.kt")
+      public void testPrivate_properties() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/private_properties.kt");
+      }
     }
 
     @Nested
@@ -540,12 +742,6 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
         @TestMetadata("as_type_contract.kt")
         public void testAs_type_contract() {
           runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/negative/as_type_contract.kt");
-        }
-
-        @Test
-        @TestMetadata("binary_search.kt")
-        public void testBinary_search() {
-          runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/negative/binary_search.kt");
         }
 
         @Test
@@ -645,34 +841,6 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Nested
-    @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/expensive_diagnostics")
-    @TestDataPath("$PROJECT_ROOT")
-    public class Expensive_diagnostics {
-      @Test
-      public void testAllFilesPresentInExpensive_diagnostics() {
-        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/expensive_diagnostics"), Pattern.compile("^(.+)\\.kt$"), null, true);
-      }
-
-      @Test
-      @TestMetadata("merge_sort_of_string.kt")
-      public void testMerge_sort_of_string() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/expensive_diagnostics/merge_sort_of_string.kt");
-      }
-
-      @Test
-      @TestMetadata("quick_sort_of_string.kt")
-      public void testQuick_sort_of_string() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/expensive_diagnostics/quick_sort_of_string.kt");
-      }
-
-      @Test
-      @TestMetadata("z_function.kt")
-      public void testZ_function() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/expensive_diagnostics/z_function.kt");
-      }
-    }
-
-    @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/inlining")
     @TestDataPath("$PROJECT_ROOT")
     public class Inlining {
@@ -707,86 +875,18 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Nested
-    @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/list")
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/pure_functions")
     @TestDataPath("$PROJECT_ROOT")
-    public class List {
+    public class Pure_functions {
       @Test
-      public void testAllFilesPresentInList() {
-        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/list"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      public void testAllFilesPresentInPure_functions() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/pure_functions"), Pattern.compile("^(.+)\\.kt$"), null, true);
       }
 
       @Test
-      @TestMetadata("binary_search.kt")
-      public void testBinary_search() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/list/binary_search.kt");
-      }
-
-      @Test
-      @TestMetadata("custom_list.kt")
-      public void testCustom_list() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/list/custom_list.kt");
-      }
-
-      @Test
-      @TestMetadata("list.kt")
-      public void testList() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/list/list.kt");
-      }
-    }
-
-    @Nested
-    @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/properties_and_fields")
-    @TestDataPath("$PROJECT_ROOT")
-    public class Properties_and_fields {
-      @Test
-      public void testAllFilesPresentInProperties_and_fields() {
-        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/properties_and_fields"), Pattern.compile("^(.+)\\.kt$"), null, true);
-      }
-
-      @Test
-      @TestMetadata("backing_field_getters.kt")
-      public void testBacking_field_getters() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/properties_and_fields/backing_field_getters.kt");
-      }
-
-      @Test
-      @TestMetadata("multiple_interfaces.kt")
-      public void testMultiple_interfaces() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/properties_and_fields/multiple_interfaces.kt");
-      }
-
-      @Test
-      @TestMetadata("override_properties_types.kt")
-      public void testOverride_properties_types() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/properties_and_fields/override_properties_types.kt");
-      }
-
-      @Test
-      @TestMetadata("private_properties.kt")
-      public void testPrivate_properties() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/properties_and_fields/private_properties.kt");
-      }
-    }
-
-    @Nested
-    @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/string")
-    @TestDataPath("$PROJECT_ROOT")
-    public class String {
-      @Test
-      public void testAllFilesPresentInString() {
-        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/string"), Pattern.compile("^(.+)\\.kt$"), null, true);
-      }
-
-      @Test
-      @TestMetadata("chars.kt")
-      public void testChars() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/string/chars.kt");
-      }
-
-      @Test
-      @TestMetadata("strings.kt")
-      public void testStrings() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/string/strings.kt");
+      @TestMetadata("pure_function_rely_on_branch.kt")
+      public void testPure_function_rely_on_branch() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/pure_function_rely_on_branch.kt");
       }
     }
 

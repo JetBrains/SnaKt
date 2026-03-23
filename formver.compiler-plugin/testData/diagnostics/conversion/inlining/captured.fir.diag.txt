@@ -1,12 +1,12 @@
 /captured.kt:(155,165): info: Generated Viper text for captureArg:
 method f$captureArg$TF$TF$T$Int$T$Int$T$Int(p$g: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$g), df$rt$functionType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var ret$1: Ref
   var ret$2: Ref
   var anon$0: Ref
   var anon$1: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$g), df$rt$functionType())
   anon$0 := df$rt$intToRef(0)
   inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$intType())
   ret$2 := anon$1
@@ -43,6 +43,7 @@ method f$captureVar$TF$T$Int() returns (ret$0: Ref)
 
 /captured.kt:(295,311): info: Generated Viper text for captureAndShadow:
 method f$captureAndShadow$TF$T$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var ret$1: Ref
@@ -50,7 +51,6 @@ method f$captureAndShadow$TF$T$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
   var anon$0: Ref
   var l2$y: Ref
   var l2$x: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   anon$0 := df$rt$intToRef(0)
   l2$y := p$x
   l2$x := df$rt$intToRef(1)
@@ -67,6 +67,7 @@ method f$captureAndShadow$TF$T$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
 
 /captured.kt:(513,528): info: Generated Viper text for captureVarClash:
 method f$captureVarClash$TF$T$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var ret$1: Ref
@@ -74,7 +75,6 @@ method f$captureVarClash$TF$T$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
   var anon$1: Ref
   var ret$2: Ref
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   l1$x := df$rt$intToRef(1)
   anon$0 := df$rt$intToRef(0)
   ret$2 := sp$timesInts(anon$0, p$x)
@@ -92,6 +92,7 @@ method f$captureVarClash$TF$T$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
 /captured.kt:(585,606): info: Generated Viper text for captureAndShadowClash:
 method f$captureAndShadowClash$TF$T$Int$T$Int(p$x: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var ret$1: Ref
@@ -101,7 +102,6 @@ method f$captureAndShadowClash$TF$T$Int$T$Int(p$x: Ref)
   var anon$0: Ref
   var l2$y: Ref
   var l2$x: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   l1$x := df$rt$intToRef(1)
   anon$0 := df$rt$intToRef(0)
   l2$y := p$x
@@ -121,6 +121,7 @@ method f$captureAndShadowClash$TF$T$Int$T$Int(p$x: Ref)
 /captured.kt:(715,736): info: Generated Viper text for nestedLambdaShadowing:
 method f$nestedLambdaShadowing$TF$T$Int$T$Int(p$x: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var ret$1: Ref
@@ -136,7 +137,6 @@ method f$nestedLambdaShadowing$TF$T$Int$T$Int(p$x: Ref)
   var l4$x: Ref
   var l2$y: Ref
   var l2$x: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   l1$x := df$rt$intToRef(1)
   anon$0 := df$rt$intToRef(0)
   l3$x := df$rt$intToRef(1)
@@ -165,6 +165,7 @@ method f$nestedLambdaShadowing$TF$T$Int$T$Int(p$x: Ref)
 
 /captured.kt:(1008,1024): info: Generated Viper text for callDoubleInvoke:
 method f$callDoubleInvoke$TF$T$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var ret$1: Ref
@@ -174,7 +175,6 @@ method f$callDoubleInvoke$TF$T$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
   var ret$3: Ref
   var anon$1: Ref
   var l3$x: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   anon$0 := df$rt$intToRef(0)
   l2$x := anon$0
   ret$2 := l2$x

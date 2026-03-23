@@ -3,11 +3,11 @@ field bf$t: Ref
 
 method f$c$Box$genericMethod$TF$T$Box$NT$Any$NT$Any(this$dispatch: Ref, p$x: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Box())
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$anyType()))
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Box())
   inhale acc(p$c$Box$shared(this$dispatch), wildcard)
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$anyType()))
   ret$0 := p$x
   goto lbl$ret$0
   label lbl$ret$0
@@ -17,6 +17,7 @@ method f$c$Box$genericMethod$TF$T$Box$NT$Any$NT$Any(this$dispatch: Ref, p$x: Ref
 field bf$t: Ref
 
 method con$c$Box$NT$Any$T$Box(p$t: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$t), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Box())
   ensures acc(p$c$Box$shared(ret), wildcard)
   ensures acc(p$c$Box$unique(ret), write)
@@ -31,17 +32,11 @@ method f$createBox$TF$T$Int() returns (ret$0: Ref)
   var l0$intBox: Ref
   var anon$1: Ref
   l0$boolBox := con$c$Box$NT$Any$T$Box(df$rt$boolToRef(true))
-  inhale acc(l0$boolBox.bf$t, write)
-  anon$0 := l0$boolBox.bf$t
-  exhale acc(l0$boolBox.bf$t, write)
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$nullable(df$rt$anyType()))
+  anon$0 := havoc$NT$Any()
   l0$b := anon$0
   inhale df$rt$isSubtype(df$rt$typeOf(l0$b), df$rt$boolType())
   l0$intBox := con$c$Box$NT$Any$T$Box(df$rt$intToRef(2))
-  inhale acc(l0$intBox.bf$t, write)
-  anon$1 := l0$intBox.bf$t
-  exhale acc(l0$intBox.bf$t, write)
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$nullable(df$rt$anyType()))
+  anon$1 := havoc$NT$Any()
   ret$0 := anon$1
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
   goto lbl$ret$0
@@ -52,6 +47,7 @@ method f$createBox$TF$T$Int() returns (ret$0: Ref)
 field bf$t: Ref
 
 method con$c$Box$NT$Any$T$Box(p$t: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$t), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Box())
   ensures acc(p$c$Box$shared(ret), wildcard)
   ensures acc(p$c$Box$unique(ret), write)
@@ -62,18 +58,15 @@ method f$setGenericField$TF$T$Unit() returns (ret$0: Ref)
 {
   var l0$box: Ref
   l0$box := con$c$Box$NT$Any$T$Box(df$rt$intToRef(3))
-  inhale acc(l0$box.bf$t, write)
-  l0$box.bf$t := df$rt$intToRef(5)
-  exhale acc(l0$box.bf$t, write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
 /generics.kt:(293,303): info: Generated Viper text for genericFun:
 method f$genericFun$TF$NT$Any$NT$Any(p$t: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$t), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$anyType()))
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$t), df$rt$nullable(df$rt$anyType()))
   ret$0 := p$t
   goto lbl$ret$0
   label lbl$ret$0
@@ -93,6 +86,7 @@ method f$callGenericFunc$TF$T$Unit() returns (ret$0: Ref)
 }
 
 method f$genericFun$TF$NT$Any$NT$Any(p$t: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$t), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$anyType()))
 
 
@@ -101,16 +95,13 @@ field bf$t: Ref
 
 method f$genericAsIfCondition$TF$T$Box$T$Int(p$box: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$box), df$rt$c$Box())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var anon$0: Ref
   var anon$1: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$box), df$rt$c$Box())
   inhale acc(p$c$Box$shared(p$box), wildcard)
-  inhale acc(p$box.bf$t, write)
-  anon$1 := p$box.bf$t
-  exhale acc(p$box.bf$t, write)
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$nullable(df$rt$anyType()))
+  anon$1 := havoc$NT$Any()
   anon$0 := anon$1
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$boolType())
   if (df$rt$boolFromRef(anon$0)) {

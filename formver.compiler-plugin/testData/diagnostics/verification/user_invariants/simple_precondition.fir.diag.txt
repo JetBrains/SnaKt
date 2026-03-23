@@ -2,11 +2,11 @@
 field bf$size: Ref
 
 method f$test$TF$T$Int$T$Unit(p$idx: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$idx), df$rt$intType())
   requires 0 <= df$rt$intFromRef(p$idx)
   requires df$rt$intFromRef(p$idx) < 3
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$idx), df$rt$intType())
   assert 0 <= df$rt$intFromRef(p$idx)
   assert df$rt$intFromRef(p$idx) < 3
   assert !(df$rt$intFromRef(p$idx) == 100)
@@ -18,11 +18,11 @@ method f$test$TF$T$Int$T$Unit(p$idx: Ref) returns (ret$0: Ref)
 /simple_precondition.kt:(446,469): info: Generated Viper text for inlineWithSpecification:
 method f$inlineWithSpecification$TF$T$Boolean$T$Unit(p$bool: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$bool), df$rt$boolType())
   requires true
   requires df$rt$boolFromRef(p$bool)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$bool), df$rt$boolType())
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -48,7 +48,7 @@ method f$good_call$TF$T$Unit() returns (ret$0: Ref)
 }
 
 method f$test$TF$T$Int$T$Unit(p$idx: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$idx), df$rt$intType())
   requires 0 <= df$rt$intFromRef(p$idx)
   requires df$rt$intFromRef(p$idx) < 3
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
-
