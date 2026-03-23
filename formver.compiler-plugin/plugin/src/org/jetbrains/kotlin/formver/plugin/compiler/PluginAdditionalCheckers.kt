@@ -35,20 +35,20 @@ class PluginAdditionalCheckers(session: FirSession, config: PluginConfiguration)
             get() = setOf(ViperPoweredDeclarationChecker(session, config), UniquenessDeclarationChecker(session, config))
 
         override val propertyCheckers: Set<FirPropertyChecker>
-            get() = setOf(LocalityPropertyChecker(session, config))
+            get() = setOf(LocalityPropertyChecker(config))
     }
 
     override val expressionCheckers: ExpressionCheckers = object : ExpressionCheckers() {
         override val variableAssignmentCheckers: Set<FirVariableAssignmentChecker>
-            get() = setOf(LocalityVariableAssignmentChecker(session, config))
+            get() = setOf(LocalityVariableAssignmentChecker(config))
 
         override val functionCallCheckers: Set<FirFunctionCallChecker>
-            get() = setOf(LocalityFunctionCallChecker(session, config))
+            get() = setOf(LocalityFunctionCallChecker(config))
 
         override val returnExpressionCheckers: Set<FirReturnExpressionChecker>
-            get() = setOf(LocalityReturnChecker(session, config))
+            get() = setOf(LocalityReturnChecker(config))
 
         override val throwExpressionCheckers: Set<FirThrowExpressionChecker>
-            get() = setOf(LocalityThrowChecker(session, config))
+            get() = setOf(LocalityThrowChecker(config))
     }
 }
