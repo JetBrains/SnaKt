@@ -19,41 +19,69 @@ sealed class SequentialLogicOperatorEmbedding : BinaryDirectResultExpEmbedding, 
     override val type
         get() = buildType { boolean() }
 
-    protected abstract val ifReplacement: ExpEmbedding
+    abstract fun addIfReplacement(ctx: LinearizationContext, result: VariableEmbedding)
     protected abstract val expressionReplacement: ExpEmbedding
 
-    private fun operatorReplacement(ctx: LinearizationContext) = when (ctx.logicOperatorPolicy) {
-        LogicOperatorPolicy.CONVERT_TO_IF -> ifReplacement
-        LogicOperatorPolicy.CONVERT_TO_EXPRESSION -> expressionReplacement
+
+    fun toViperHelper(ctx: LinearizationContext): ExpEmbedding {
+        when (ctx.logicOperatorPolicy) {
+            LogicOperatorPolicy.CONVERT_TO_IF -> {
+                val result = ctx.freshAnonVar(buildType { boolean() })
+                addIfReplacement(ctx, result)
+                return result
+            }
+
+            LogicOperatorPolicy.CONVERT_TO_EXPRESSION -> {
+                return expressionReplacement
+            }
+        }
     }
 
-    override fun toViper(ctx: LinearizationContext): Exp =
-        operatorReplacement(ctx).toViper(ctx)
 
-    override fun toViperBuiltinType(ctx: LinearizationContext): Exp =
-        operatorReplacement(ctx).toViperBuiltinType(ctx)
+    override fun toViper(ctx: LinearizationContext): Exp = toViperHelper(ctx).toViper(ctx)
+
+    override fun toViperBuiltinType(ctx: LinearizationContext): Exp = toViperHelper(ctx).toViperBuiltinType(ctx)
 
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-        operatorReplacement(ctx).toViperStoringIn(result, ctx)
+        when (ctx.logicOperatorPolicy) {
+            LogicOperatorPolicy.CONVERT_TO_IF -> {
+                addIfReplacement(ctx, result)
+            }
+
+            LogicOperatorPolicy.CONVERT_TO_EXPRESSION -> {
+                expressionReplacement.toViperStoringIn(result, ctx)
+            }
+        }
     }
 }
 
 class SequentialAnd(override val left: ExpEmbedding, override val right: ExpEmbedding) :
     SequentialLogicOperatorEmbedding() {
-    override val ifReplacement
-        get() = If(left, right, BooleanLit(false), buildType { boolean() })
+
     override val expressionReplacement
         get() = OperatorExpEmbeddings.And(left, right)
+
+    override fun addIfReplacement(
+        ctx: LinearizationContext,
+        result: VariableEmbedding
+    ) {
+        ctx.addBranch(left, right, BooleanLit(false), buildType { boolean() }, result)
+    }
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitSequentialAnd(this)
 }
 
 class SequentialOr(override val left: ExpEmbedding, override val right: ExpEmbedding) :
     SequentialLogicOperatorEmbedding() {
-    override val ifReplacement
-        get() = If(left, BooleanLit(true), right, buildType { boolean() })
     override val expressionReplacement
         get() = OperatorExpEmbeddings.Or(left, right)
+
+    override fun addIfReplacement(
+        ctx: LinearizationContext,
+        result: VariableEmbedding
+    ) {
+        ctx.addBranch(left, BooleanLit(true), right, buildType { boolean() }, result)
+    }
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitSequentialOr(this)
 }

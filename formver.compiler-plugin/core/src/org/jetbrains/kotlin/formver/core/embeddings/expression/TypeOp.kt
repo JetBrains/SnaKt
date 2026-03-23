@@ -94,8 +94,7 @@ data class SafeCast(val exp: ExpEmbedding, val targetType: TypeEmbedding) : Stor
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
         val expViper = exp.toViper(ctx)
         val expWrapped = ExpWrapper(expViper, exp.type)
-        val conditional = If(Is(expWrapped, targetType), expWrapped, NullLit, type)
-        conditional.toViperStoringIn(result, ctx)
+        ctx.addBranch(Is(expWrapped, targetType), expWrapped, NullLit, type, result)
     }
 
     override val containingPaths: Lazy<Set<Path>>
