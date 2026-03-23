@@ -88,12 +88,11 @@ data class While(
 ) : UnitResultExpEmbedding, DefaultDebugTreeViewImplementation, DefaultUniqueness() {
     override val type: TypeEmbedding = buildType { unit() }
 
-    val permissionManager = WhilePermissionManager.create(this)
     val continueLabel = LabelEmbedding(continueLabelName, invariants)
     val breakLabel = LabelEmbedding(breakLabelName)
 
     override fun toViperSideEffects(ctx: LinearizationContext) {
-
+        val permissionManager = WhilePermissionManager.create(this)
         val permissionInvariants = permissionManager?.extractWhileInvariants()
         val newContinueLabel =
             permissionInvariants?.let { LabelEmbedding(continueLabelName, invariants + permissionInvariants) }
