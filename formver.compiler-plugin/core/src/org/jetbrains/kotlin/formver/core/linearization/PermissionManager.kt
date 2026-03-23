@@ -66,7 +66,11 @@ sealed interface Folder {
  * There is a limited amount of `ExpEmbeddings` that can be used to create this object. There is not an exact definition,
  * but it should only be used with `ExpEmbeddings` which correspond to statements.
  */
-class UniquePermissionManager private constructor(before: UniquenessTrie, after: UniquenessTrie, paths: Set<Path>) :
+class UniquePermissionManager private constructor(
+    val before: UniquenessTrie,
+    val after: UniquenessTrie,
+    val paths: Set<Path>
+) :
     PredicateBuilder, Folder, Helper {
 
     companion object {
@@ -133,7 +137,7 @@ class UniquePermissionManager private constructor(before: UniquenessTrie, after:
  * there are not enough information available to determine the necessary folds.
  *
  */
-class SharedPermissionManager(before: UniquenessTrie, path: PathElement) :
+class SharedPermissionManager private constructor(val before: UniquenessTrie, val path: PathElement) :
     PredicateBuilder,
     Folder, Helper {
 
@@ -141,11 +145,11 @@ class SharedPermissionManager(before: UniquenessTrie, path: PathElement) :
 
     companion object {
         fun create(exp: ExpEmbedding): SharedPermissionManager? {
-            val before = exp.uniquenessBefore ?: return null
+            val beforeTrie = exp.uniquenessBefore ?: return null
             val usedPath = exp.endingPath.value ?: return null
             if (usedPath.length <= 1) return null
             return SharedPermissionManager(
-                before,
+                beforeTrie,
                 usedPath as PathElement
             ) //cast will always succeed, because of length > 1
         }
@@ -159,11 +163,14 @@ class SharedPermissionManager(before: UniquenessTrie, path: PathElement) :
     val isShared = isShared(prefixPath, before)
 
 
-    fun predicate(path: Path, target: ExpEmbedding, ctx: LinearizationContext) =
+    fun predicate(target: ExpEmbedding, ctx: LinearizationContext) =
         prefixPath.type.sharedPredicateAccessInvariant()?.run { buildPredicate(target, this, ctx) }
 
     override fun unfold(ctx: LinearizationContext) {
-        buildSharedPredicate(prefixPath, ctx)?.let { ctx.addStatement { Stmt.Unfold(it) } }
+        // If the receiver is unique, we must use the unique predicate. Because otherwise we leak privileges
+        if (isShared(prefixPath, before)) {
+            buildSharedPredicate(prefixPath, ctx)?.let { ctx.addStatement { Stmt.Unfold(it) } }
+        }
     }
 
     /**
@@ -172,7 +179,10 @@ class SharedPermissionManager(before: UniquenessTrie, path: PathElement) :
      * on the local variable (``target``)
      */
     fun unfold(ctx: LinearizationContext, target: ExpEmbedding) {
-        predicate(prefixPath, target, ctx)?.let { ctx.addStatement { Stmt.Unfold(it) } }
+        // If the receiver is unique, we must use the unique predicate. Because otherwise we leak privileges
+        if (isShared(prefixPath, before)) {
+            predicate(target, ctx)?.let { ctx.addStatement { Stmt.Unfold(it) } }
+        }
     }
 
     override fun fold(ctx: LinearizationContext) {
