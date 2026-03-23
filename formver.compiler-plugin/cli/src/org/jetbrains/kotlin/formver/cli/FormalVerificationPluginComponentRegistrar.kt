@@ -40,9 +40,10 @@ class FormalVerificationPluginComponentRegistrar : CompilerPluginRegistrar() {
         )
         // TODO: provide configuration to enable uniqueness checks
         val checkUniqueness = false
+        val dumpUniquenessCFG = false
         val config = PluginConfiguration(
             logLevel, errorStyle, behaviour, conversionSelection, verificationSelection,
-            checkUniqueness
+            checkUniqueness, dumpUniquenessCFG
         )
         FirExtensionRegistrarAdapter.registerExtension(FormalVerificationPluginExtensionRegistrar(config))
     }

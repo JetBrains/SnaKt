@@ -44,7 +44,6 @@ fun render(node: CFGNode<*>, facts: FlowFacts<UniquenessTrie>): String {
     }
 }
 
-@Suppress("unused") // Can be used from the debugger
 fun ControlFlowGraph.render(facts: FlowFacts<UniquenessTrie>): String {
     val options = ControlFlowGraphRenderOptions(
         data = { data: CFGNode<*> -> render(data, facts) },
