@@ -15,14 +15,12 @@ class ConeLocalAttributeProvider(
         fun getFactory(): Factory = Factory { session ->
             ConeLocalAttributeProvider(
                 session,
-                ConeLocalAttributeExtractor(
-                    session,
-                    WeakHashMap()
-                )
+                ConeLocalAttributeExtractor(WeakHashMap())
             )
         }
     }
-    
+
+    context(context : CheckerContext)
     operator fun get(element: FirElement): ConeLocalAttribute? =
         localAttributeExtractor.extractLocalAttribute(element)
 }
