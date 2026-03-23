@@ -75,7 +75,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         // returnTarget is null when it is the implicit return of a lambda
         val returnTargetName = returnExpression.target.labelName
         val target = data.resolveReturnTarget(returnTargetName)
-        return Return(expr, target)
+        return Return(expr, target).apply {
+            uniquenessBefore = data.flowBefore(returnExpression)
+            uniquenessAfter = data.flowAfter(returnExpression)
+        }
     }
 
     override fun visitResolvedQualifier(
@@ -90,7 +93,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     }
 
     override fun visitBlock(block: FirBlock, data: StmtConversionContext): ExpEmbedding =
-        block.statements.map(data::convert).toBlock()
+        block.statements.map(data::convert).toBlock().apply {
+            uniquenessBefore = data.flowBefore(block)
+            uniquenessAfter = data.flowAfter(block)
+        }
 
     override fun visitLiteralExpression(
         literalExpression: FirLiteralExpression,
@@ -105,7 +111,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             literalExpression.source,
             "Constant Expression of type ${literalExpression.kind} is not yet implemented.",
             data
-        )
+        ).apply {
+            uniquenessBefore = data.flowBefore(literalExpression)
+            uniquenessAfter = data.flowAfter(literalExpression)
+        }
     }
 
     private val FirLiteralExpression.stringValue: String
@@ -122,20 +131,29 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             }
             arg.stringValue
         }
-        return StringLit(combinedLiteral)
+        return StringLit(combinedLiteral).apply {
+            uniquenessBefore = data.flowBefore(stringConcatenationCall)
+            uniquenessAfter = data.flowAfter(stringConcatenationCall)
+        }
     }
 
     override fun visitIntegerLiteralOperatorCall(
         integerLiteralOperatorCall: FirIntegerLiteralOperatorCall,
         data: StmtConversionContext,
     ): ExpEmbedding {
-        return visitFunctionCall(integerLiteralOperatorCall, data)
+        return visitFunctionCall(integerLiteralOperatorCall, data).apply {
+            uniquenessBefore = data.flowBefore(integerLiteralOperatorCall)
+            uniquenessAfter = data.flowAfter(integerLiteralOperatorCall)
+        }
     }
 
     override fun visitWhenSubjectExpression(
         whenSubjectExpression: FirWhenSubjectExpression,
         data: StmtConversionContext,
-    ): ExpEmbedding = data.whenSubject!!
+    ): ExpEmbedding = data.whenSubject!!.apply {
+        uniquenessBefore = data.flowBefore(whenSubjectExpression)
+        uniquenessAfter = data.flowAfter(whenSubjectExpression)
+    }
 
     private fun convertWhenBranches(
         whenBranches: Iterator<FirWhenBranch>,
@@ -150,7 +168,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return if (branch.condition is FirElseIfTrueCondition) {
             data.withNewScope { convert(branch.result) }
         } else {
-            val cond = data.convert(branch.condition).withType { boolean() }
+            val cond = data.convert(branch.condition).withType { boolean() }.apply {
+                uniquenessBefore = data.flowBefore(branch)
+                uniquenessAfter = data.flowAfter(branch)
+            }
             val thenExp = data.withNewScope { convert(branch.result) }
             val elseExp = convertWhenBranches(whenBranches, type, data)
             If(cond, thenExp, elseExp, type)
@@ -166,11 +187,17 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                     declareAnonVar(subjExp.type, subjExp)
                 else
                     declareLocalVariable(firSubjVar.symbol, subjExp)
+            }?.apply {
+                uniquenessBefore = data.flowBefore(whenExpression.subjectVariable!!)
+                uniquenessAfter = data.flowAfter(whenExpression.subjectVariable!!)
             }
             val body = withWhenSubject(subj?.variable) {
                 convertWhenBranches(whenExpression.branches.iterator(), type, this)
             }
-            subj?.let { blockOf(it, body) } ?: body
+            (subj?.let { blockOf(it, body) } ?: body).apply {
+                uniquenessBefore = data.flowBefore(whenExpression)
+                uniquenessAfter = data.flowAfter(whenExpression)
+            }
         }
 
     override fun visitPropertyAccessExpression(
@@ -178,7 +205,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         data: StmtConversionContext,
     ): ExpEmbedding {
         val propertyAccess = data.embedPropertyAccess(propertyAccessExpression)
-        return propertyAccess.getValue(data)
+        return propertyAccess.getValue(data).apply {
+            uniquenessBefore = data.flowBefore(propertyAccessExpression)
+            uniquenessAfter = data.flowAfter(propertyAccessExpression)
+        }
     }
 
     override fun visitEqualityOperatorCall(
@@ -202,6 +232,9 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 "Equality comparison operation ${equalityOperatorCall.operation} not yet implemented.",
                 data
             )
+        }.apply {
+            uniquenessBefore = data.flowBefore(equalityOperatorCall)
+            uniquenessAfter = data.flowAfter(equalityOperatorCall)
         }
     }
 
@@ -238,7 +271,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 return IntComparisonExpEmbeddingsTemplate.retrieve(comparisonExpression.operation)(result, IntLit(0))
             }
         }
-        return comparisonTemplate.retrieve(comparisonExpression.operation)(left, right)
+        return comparisonTemplate.retrieve(comparisonExpression.operation)(left, right).apply {
+            uniquenessBefore = data.flowBefore(comparisonExpression)
+            uniquenessAfter = data.flowAfter(comparisonExpression)
+        }
     }
 
     private interface ComparisonExpEmbeddingsTemplate {
@@ -293,7 +329,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                     functionCall.functionCallArguments.withVarargsHandled(data, callee),
                     data,
                     data.embedType(functionCall.resolvedType),
-                )
+                ).apply {
+                    uniquenessBefore = data.flowBefore(functionCall)
+                    uniquenessAfter = data.flowAfter(functionCall)
+                }
             }
 
             else -> {
@@ -306,7 +345,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 val forAllBody = forAllLambda.body ?: throw SnaktInternalException(
                     forAllLambda.body?.source, "Lambda body should be accessible in `forAll` function call."
                 )
-                return data.insertForAllFunctionCall(forAllArg.symbol, forAllBody)
+                return data.insertForAllFunctionCall(forAllArg.symbol, forAllBody).apply {
+                    uniquenessBefore = data.flowBefore(functionCall)
+                    uniquenessAfter = data.flowAfter(functionCall)
+                }
             }
         }
     }
@@ -333,6 +375,9 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             else -> {
                 InvokeFunctionObject(data.convert(receiver), args, returnType)
             }
+        }.apply {
+            uniquenessBefore = data.flowBefore(implicitInvokeCall)
+            uniquenessAfter = data.flowAfter(implicitInvokeCall)
         }
     }
 
@@ -346,7 +391,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
 
         val type = data.embedType(symbol.resolvedReturnType)
-        return data.declareLocalProperty(symbol, property.initializer?.let { data.convert(it).withType(type) })
+        return data.declareLocalProperty(symbol, property.initializer?.let { data.convert(it).withType(type) }).apply {
+            uniquenessBefore = data.flowBefore(property)
+            uniquenessAfter = data.flowAfter(property)
+        }
     }
 
     override fun visitWhileLoop(whileLoop: FirWhileLoop, data: StmtConversionContext): ExpEmbedding {
@@ -362,7 +410,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
         return data.withFreshWhile(whileLoop.label) {
             val body = convert(whileLoop.block)
-            While(condition, body, breakLabelName(), continueLabelName(), invariants)
+            While(condition, body, breakLabelName(), continueLabelName(), invariants).apply {
+                uniquenessBefore = data.flowBefore(whileLoop)
+                uniquenessAfter = data.flowAfter(whileLoop)
+            }
         }
     }
 
@@ -372,7 +423,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     ): ExpEmbedding {
         val targetName = breakExpression.target.labelName
         val breakLabel = LabelLink(data.breakLabelName(targetName))
-        return Goto(breakLabel)
+        return Goto(breakLabel).apply {
+            uniquenessBefore = data.flowBefore(breakExpression)
+            uniquenessAfter = data.flowAfter(breakExpression)
+        }
     }
 
     override fun visitContinueExpression(
@@ -381,7 +435,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     ): ExpEmbedding {
         val targetName = continueExpression.target.labelName
         val continueLabel = LabelLink(data.continueLabelName(targetName))
-        return Goto(continueLabel)
+        return Goto(continueLabel).apply {
+            uniquenessBefore = data.flowBefore(continueExpression)
+            uniquenessAfter = data.flowAfter(continueExpression)
+        }
     }
 
     override fun visitDesugaredAssignmentValueReferenceExpression(
@@ -409,7 +466,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             )
         }
         val convertedRValue = data.convert(variableAssignment.rValue)
-        return embedding.setValue(convertedRValue, data)
+        return embedding.setValue(convertedRValue, data).apply {
+            uniquenessBefore = data.flowBefore(variableAssignment)
+            uniquenessAfter = data.flowAfter(variableAssignment)
+        }
     }
 
     override fun visitSmartCastExpression(
@@ -419,13 +479,16 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         val exp = data.convert(smartCastExpression.originalExpression)
         val newType = data.embedType(smartCastExpression.smartcastType.coneType)
         // If the smart-cast is from A? to A, then is not necessary to inhale invariants
-        return if (exp.type.getNonNullable() == newType) {
+        return (if (exp.type.getNonNullable() == newType) {
             exp.withType(newType)
         } else {
             // TODO: when there is a cast from B to A, only inhale invariants of A - invariants of B
             exp.withNewTypeInvariants(newType) {
                 access = true
             }
+        }).apply {
+            uniquenessBefore = data.flowBefore(smartCastExpression)
+            uniquenessAfter = data.flowAfter(smartCastExpression)
         }
     }
 
@@ -438,6 +501,9 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return when (booleanOperatorExpression.kind) {
             LogicOperationKind.AND -> SequentialAnd(left, right)
             LogicOperationKind.OR -> SequentialOr(left, right)
+        }.apply {
+            uniquenessBefore = data.flowBefore(booleanOperatorExpression)
+            uniquenessAfter = data.flowAfter(booleanOperatorExpression)
         }
     }
 
@@ -467,13 +533,23 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
 
         val symbol = thisReceiverExpression.calleeReference.boundSymbol
-        tryResolve(symbol as FirBasedSymbol<*>)?.let { return it }
+        tryResolve(symbol as FirBasedSymbol<*>)?.let {
+            return it.apply {
+                uniquenessBefore = data.flowBefore(thisReceiverExpression)
+                uniquenessAfter = data.flowAfter(thisReceiverExpression)
+            }
+        }
         val declSymbol = when (symbol) {
             is FirReceiverParameterSymbol -> symbol.containingDeclarationSymbol
             is FirValueParameterSymbol -> symbol.containingDeclarationSymbol
             else -> throw SnaktInternalException(symbol.source, "Unsupported receiver expression type.")
         }
-        tryResolve(declSymbol)?.let { return it }
+        tryResolve(declSymbol)?.let {
+            return it.apply {
+                uniquenessBefore = data.flowBefore(thisReceiverExpression)
+                uniquenessAfter = data.flowAfter(thisReceiverExpression)
+            }
+        }
 
         throw SnaktInternalException(thisReceiverExpression.source, "No resolution approach to this symbol worked.")
     }
@@ -500,6 +576,9 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             else -> handleUnimplementedElement(
                 typeOperatorCall.source, "Can't embed type operator ${typeOperatorCall.operation}.", data
             )
+        }.apply {
+            uniquenessBefore = data.flowBefore(typeOperatorCall)
+            uniquenessAfter = data.flowAfter(typeOperatorCall)
         }
     }
 
@@ -508,7 +587,15 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         data: StmtConversionContext,
     ): ExpEmbedding {
         val function = anonymousFunctionExpression.anonymousFunction
-        return LambdaExp(data.embedFunctionSignature(function.symbol), function, data, function.symbol.label!!.name)
+        return LambdaExp(
+            data.embedFunctionSignature(function.symbol),
+            function,
+            data,
+            function.symbol.label!!.name
+        ).apply {
+            uniquenessBefore = data.flowBefore(anonymousFunctionExpression)
+            uniquenessAfter = data.flowAfter(anonymousFunctionExpression)
+        }
     }
 
     override fun visitTryExpression(tryExpression: FirTryExpression, data: StmtConversionContext): ExpEmbedding {
@@ -547,6 +634,9 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             add(tryBody)
             addAll(catches)
             add(LabelExp(catchData.exitLabel))
+        }.apply {
+            uniquenessBefore = data.flowBefore(tryExpression)
+            uniquenessAfter = data.flowAfter(tryExpression)
         }
     }
 
@@ -557,7 +647,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         val lhs = data.convert(elvisExpression.lhs)
         val rhs = data.convert(elvisExpression.rhs)
         val expType = data.embedType(elvisExpression.resolvedType)
-        return Elvis(lhs, rhs, expType)
+        return Elvis(lhs, rhs, expType).apply {
+            uniquenessBefore = data.flowBefore(elvisExpression)
+            uniquenessAfter = data.flowAfter(elvisExpression)
+        }
     }
 
     override fun visitSafeCallExpression(
@@ -575,7 +668,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 data.withCheckedSafeCallSubject(sharedReceiver.withType(checkedSafeCallSubjectType)) { convert(selector) },
                 NullLit,
                 expType
-            )
+            ).apply {
+                uniquenessBefore = data.flowBefore(safeCallExpression)
+                uniquenessAfter = data.flowAfter(safeCallExpression)
+            }
         }
     }
 

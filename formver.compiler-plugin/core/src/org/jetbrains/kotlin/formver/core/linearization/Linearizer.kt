@@ -74,10 +74,30 @@ data class Linearizer(
     }
 
     override fun addReturn(returnExp: ExpEmbedding, target: ReturnTarget) {
+        val permissionManager = UniquePermissionManager.create(returnExp)
+        permissionManager?.unfold(this)
         returnExp.withType(target.variable.type)
             .toViperStoringIn(target.variable, this)
+        permissionManager?.fold(this)
         addStatement { target.label.toLink().toViperGoto(this) }
     }
+
+    override fun addBranchWithFolding(
+        condition: ExpEmbedding,
+        thenBranch: ExpEmbedding,
+        elseBranch: ExpEmbedding,
+        type: TypeEmbedding,
+        result: VariableEmbedding?
+    ) =
+        addStatement {
+            val permissionManager = UniquePermissionManager.create(condition)
+            permissionManager?.unfold(this)
+            val condViper = condition.toViperBuiltinType(this)
+            permissionManager?.fold(this)
+            val thenViper = asBlock { thenBranch.withType(type).toViperMaybeStoringIn(result, this) }
+            val elseViper = asBlock { elseBranch.withType(type).toViperMaybeStoringIn(result, this) }
+            Stmt.If(condViper, thenViper, elseViper, source.asPosition)
+        }
 
     override fun addBranch(
         condition: ExpEmbedding,

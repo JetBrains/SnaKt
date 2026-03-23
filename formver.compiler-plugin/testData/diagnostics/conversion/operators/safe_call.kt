@@ -1,5 +1,4 @@
 // NEVER_VALIDATE
-
 import org.jetbrains.kotlin.formver.plugin.NeverConvert
 
 class Foo {

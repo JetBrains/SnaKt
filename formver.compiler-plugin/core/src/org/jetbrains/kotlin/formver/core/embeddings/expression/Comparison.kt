@@ -51,7 +51,7 @@ data class EqCmp(
     override val left: ExpEmbedding,
     override val right: ExpEmbedding,
     override val sourceRole: SourceRole? = null,
-) : AnyComparisonExpression {
+) : AnyComparisonExpression, DefaultUniqueness() {
     override val comparisonOperation = EqAny
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitEqCmp(this)
 }
@@ -60,7 +60,7 @@ data class NeCmp(
     override val left: ExpEmbedding,
     override val right: ExpEmbedding,
     override val sourceRole: SourceRole? = null,
-) : AnyComparisonExpression {
+) : AnyComparisonExpression, DefaultUniqueness() {
 
     override val comparisonOperation = NeAny
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitNeCmp(this)

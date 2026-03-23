@@ -20,7 +20,7 @@ class ForAllEmbedding(
     val variable: VariableEmbedding,
     conditions: List<ExpEmbedding>,
     val triggerExpressions: List<ExpEmbedding> = emptyList(),
-) : OnlyToBuiltinTypeExpEmbedding {
+) : OnlyToBuiltinTypeExpEmbedding, DefaultUniqueness() {
 
     override fun toViperBuiltinType(ctx: LinearizationContext): Exp {
         val conjunction = subexpressions.map { it.toViperBuiltinType(ctx) }.toConjunction()

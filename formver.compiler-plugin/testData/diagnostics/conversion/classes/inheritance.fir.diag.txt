@@ -10,7 +10,6 @@ method f$c$Foo$getY$TF$T$Foo$T$Int(this$dispatch: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   inhale acc(p$c$Foo$shared(this$dispatch), wildcard)
-  unfold acc(p$c$Foo$shared(this$dispatch), wildcard)
   ret$0 := this$dispatch.bf$y
   goto lbl$ret$0
   label lbl$ret$0
@@ -32,10 +31,7 @@ method f$c$Bar$sum$TF$T$Bar$T$Int(this$dispatch: Ref) returns (ret$0: Ref)
   var anon$0: Ref
   var anon$1: Ref
   inhale acc(p$c$Bar$shared(this$dispatch), wildcard)
-  unfold acc(p$c$Bar$shared(this$dispatch), wildcard)
-  unfold acc(p$c$Foo$shared(this$dispatch), wildcard)
   anon$0 := this$dispatch.bf$x
-  unfold acc(p$c$Bar$shared(this$dispatch), wildcard)
   anon$1 := this$dispatch.bf$z
   ret$0 := sp$plusInts(anon$0, anon$1)
   goto lbl$ret$0
@@ -164,8 +160,6 @@ method f$accessSuperSuperField$TF$T$Baz$T$Int(p$baz: Ref)
 {
   inhale acc(p$c$Baz$shared(p$baz), wildcard)
   unfold acc(p$c$Baz$shared(p$baz), wildcard)
-  unfold acc(p$c$Bar$shared(p$baz), wildcard)
-  unfold acc(p$c$Foo$shared(p$baz), wildcard)
   ret$0 := p$baz.bf$x
   goto lbl$ret$0
   label lbl$ret$0

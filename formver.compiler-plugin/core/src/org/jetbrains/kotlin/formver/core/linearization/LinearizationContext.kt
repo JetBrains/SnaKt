@@ -56,6 +56,14 @@ interface LinearizationContext {
         result: VariableEmbedding?
     )
 
+    fun addBranchWithFolding(
+        condition: ExpEmbedding,
+        thenBranch: ExpEmbedding,
+        elseBranch: ExpEmbedding,
+        type: TypeEmbedding,
+        result: VariableEmbedding?
+    )
+
     fun addModifier(mod: StmtModifier)
 
     fun resolveVariableName(name: SymbolicName): SymbolicName

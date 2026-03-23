@@ -1,0 +1,229 @@
+/branch.kt:(704,716): info: Generated Viper text for simpleBranch:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$simpleBranch$TF$T$A$T$Int(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$0 := p$a.bf$ui
+  anon$1 := p$a.bf$si
+  fold acc(p$c$A$unique(p$a), write)
+  if (anon$0 == anon$1) {
+    ret$0 := df$rt$intToRef(1)
+    goto lbl$ret$0
+  } else {
+    ret$0 := df$rt$intToRef(2)
+    goto lbl$ret$0
+  }
+  label lbl$ret$0
+}
+
+/branch.kt:(824,847): info: Generated Viper text for simpleBranchWithoutElse:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$simpleBranchWithoutElse$TF$T$A$T$Int(p$a: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$0 := p$a.bf$ui
+  anon$1 := p$a.bf$si
+  fold acc(p$c$A$unique(p$a), write)
+  if (anon$0 == anon$1) {
+    ret$0 := df$rt$intToRef(1)
+    goto lbl$ret$0
+  }
+  ret$0 := df$rt$intToRef(2)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/branch.kt:(938,970): info: Generated Viper text for simpleBranchWithOutsideCondition:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$simpleBranchWithOutsideCondition$TF$T$A$T$Int(p$a: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var l0$b: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$0 := p$a.bf$ui
+  anon$1 := p$a.bf$si
+  l0$b := df$rt$boolToRef(anon$0 == anon$1)
+  fold acc(p$c$A$unique(p$a), write)
+  if (df$rt$boolFromRef(l0$b)) {
+    ret$0 := df$rt$intToRef(1)
+    goto lbl$ret$0
+  } else {
+    ret$0 := df$rt$intToRef(2)
+    goto lbl$ret$0
+  }
+  label lbl$ret$0
+}
+
+/branch.kt:(1094,1109): info: Generated Viper text for movedOverBranch:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$movedOverBranch$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  l0$x := p$a.bf$um
+  anon$0 := p$a.bf$ui
+  anon$1 := p$a.bf$si
+  if (anon$0 == anon$1) {
+    p$a.bf$um := l0$x
+  } else {
+    p$a.bf$um := l0$x}
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/branch.kt:(1236,1268): info: Generated Viper text for movedOverBranchWithoutMovingBack:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$movedOverBranchWithoutMovingBack$TF$T$A$T$Unit(p$a: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  l0$x := p$a.bf$um
+  anon$0 := p$a.bf$ui
+  anon$1 := p$a.bf$si
+  if (anon$0 == anon$1) {
+    p$a.bf$um := l0$x
+  }
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/branch.kt:(1366,1379): info: Generated Viper text for deepCondition:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$deepCondition$TF$T$A$T$Int(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  var anon$2: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  anon$1 := p$a.bf$um
+  anon$2 := p$a.bf$si
+  if (anon$1 == anon$2) {
+    var anon$3: Ref
+    var anon$4: Ref
+    var anon$5: Ref
+    var anon$6: Ref
+    anon$4 := p$a.bf$um
+    anon$3 := anon$4.bf$um
+    anon$6 := p$a.bf$si
+    anon$5 := havoc$T$C()
+    anon$0 := df$rt$boolToRef(anon$3 == anon$5)
+  } else {
+    anon$0 := df$rt$boolToRef(false)}
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
+  if (df$rt$boolFromRef(anon$0)) {
+    ret$0 := df$rt$intToRef(2)
+    goto lbl$ret$0
+  }
+  ret$0 := df$rt$intToRef(1)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/branch.kt:(1494,1502): info: Generated Viper text for nullTest:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$nullTest$TF$T$D$T$Int(p$d: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$d), df$rt$c$D())
+  requires acc(p$c$D$unique(p$d), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var anon$0: Ref
+  inhale acc(p$c$D$shared(p$d), wildcard)
+  unfold acc(p$c$D$unique(p$d), write)
+  anon$0 := p$d.bf$um
+  fold acc(p$c$D$unique(p$d), write)
+  if (anon$0 == df$rt$nullValue()) {
+    ret$0 := df$rt$intToRef(1)
+    goto lbl$ret$0
+  } else {
+    ret$0 := df$rt$intToRef(2)
+    goto lbl$ret$0
+  }
+  label lbl$ret$0
+}

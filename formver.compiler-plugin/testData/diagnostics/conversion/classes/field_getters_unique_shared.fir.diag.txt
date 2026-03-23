@@ -18,12 +18,15 @@ method f$testPrimitiveFieldGetterUnique$TF$T$PrimitiveFields$T$Unit(p$pf: Ref)
   var l0$uniqueVal: Ref
   var l0$uniqueVar: Ref
   inhale acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
-  unfold acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
+  unfold acc(p$c$PrimitiveFields$unique(p$pf), write)
   l0$sharedVal := p$pf.bf$sharedVal
-  l0$sharedVar := havoc$T$Int()
-  unfold acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
+  fold acc(p$c$PrimitiveFields$unique(p$pf), write)
+  unfold acc(p$c$PrimitiveFields$unique(p$pf), write)
+  l0$sharedVar := p$pf.bf$sharedVar
+  fold acc(p$c$PrimitiveFields$unique(p$pf), write)
+  unfold acc(p$c$PrimitiveFields$unique(p$pf), write)
   l0$uniqueVal := p$pf.bf$uniqueVal
-  l0$uniqueVar := havoc$T$Int()
+  l0$uniqueVar := p$pf.bf$uniqueVar
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -77,12 +80,15 @@ method f$testReferenceFieldGetterUnique$TF$T$ReferenceFields$T$Unit(p$rf: Ref)
   var l0$uniqueVal: Ref
   var l0$uniqueVar: Ref
   inhale acc(p$c$ReferenceFields$shared(p$rf), wildcard)
-  unfold acc(p$c$ReferenceFields$shared(p$rf), wildcard)
+  unfold acc(p$c$ReferenceFields$unique(p$rf), write)
   l0$sharedVal := p$rf.bf$sharedVal
-  l0$sharedVar := havoc$T$PrimitiveFields()
-  unfold acc(p$c$ReferenceFields$shared(p$rf), wildcard)
+  fold acc(p$c$ReferenceFields$unique(p$rf), write)
+  unfold acc(p$c$ReferenceFields$unique(p$rf), write)
+  l0$sharedVar := p$rf.bf$sharedVar
+  fold acc(p$c$ReferenceFields$unique(p$rf), write)
+  unfold acc(p$c$ReferenceFields$unique(p$rf), write)
   l0$uniqueVal := p$rf.bf$uniqueVal
-  l0$uniqueVar := havoc$T$PrimitiveFields()
+  l0$uniqueVar := p$rf.bf$uniqueVar
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }

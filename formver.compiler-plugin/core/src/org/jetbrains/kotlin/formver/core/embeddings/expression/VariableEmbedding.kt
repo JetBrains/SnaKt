@@ -8,6 +8,8 @@ package org.jetbrains.kotlin.formver.core.embeddings.expression
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.asSourceRole
+import org.jetbrains.kotlin.formver.core.conversion.Path
+import org.jetbrains.kotlin.formver.core.conversion.PathRoot
 import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
 import org.jetbrains.kotlin.formver.core.domains.Injection
 import org.jetbrains.kotlin.formver.core.domains.viperType
@@ -92,16 +94,17 @@ class PlaceholderVariableEmbedding(
     override val type: TypeEmbedding,
     override val isUnique: Boolean = false,
     override val isBorrowed: Boolean = false,
-) : VariableEmbedding
+) : VariableEmbedding, DefaultUniqueness()
 
 /**
  * Embedding of an anonymous variable.
  */
-class AnonymousVariableEmbedding(n: Int, override val type: TypeEmbedding) : VariableEmbedding {
+class AnonymousVariableEmbedding(n: Int, override val type: TypeEmbedding) : VariableEmbedding, DefaultUniqueness() {
     override val name: SymbolicName = AnonymousName(n)
 }
 
-class AnonymousBuiltinVariableEmbedding(n: Int, override val type: TypeEmbedding) : VariableEmbedding {
+class AnonymousBuiltinVariableEmbedding(n: Int, override val type: TypeEmbedding) : VariableEmbedding,
+    DefaultUniqueness() {
     override val name: SymbolicName = AnonymousBuiltinName(n)
     private val injection: Injection? = type.injectionOrNull
     override fun toViper(ctx: LinearizationContext): Exp {
@@ -128,9 +131,11 @@ class FirVariableEmbedding(
     val symbol: FirBasedSymbol<*>,
     override val isUnique: Boolean = false,
     override val isBorrowed: Boolean = false,
-) : VariableEmbedding {
+) : VariableEmbedding, DefaultUniqueness() {
     override val sourceRole: SourceRole
         get() = symbol.asSourceRole
+
+    override val endingPath: Lazy<Path?> = lazy { PathRoot(this) }
 }
 
 /**
@@ -139,7 +144,7 @@ class FirVariableEmbedding(
  * This can still correspond to an earlier variable, but it no longer carries any interesting information.
  */
 class LinearizationVariableEmbedding(override val name: SymbolicName, override val type: TypeEmbedding) :
-    VariableEmbedding
+    VariableEmbedding, DefaultUniqueness()
 
 val ExpEmbedding.underlyingVariable
     get() = this.ignoringCastsAndMetaNodes() as? VariableEmbedding

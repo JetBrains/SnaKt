@@ -1,0 +1,372 @@
+/while.kt:(752,763): info: Generated Viper text for simpleWrite:
+field bf$something: Ref
+
+method con$pkg$kotlin$c$Any$T$Any() returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$anyType())
+
+
+method f$consume$TF$T$Simple$T$Unit(p$a: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$Simple())
+  requires acc(p$c$Simple$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$nonDet$TF$T$Boolean() returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
+
+
+method f$simpleWrite$TF$T$Simple$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$Simple())
+  requires acc(p$c$Simple$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  var anon$2: Ref
+  inhale acc(p$c$Simple$shared(p$a), wildcard)
+  label lbl$continue$0
+    invariant acc(p$c$Simple$shared(p$a), wildcard)
+    invariant df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$Simple())
+    invariant acc(p$c$Simple$unique(p$a), write)
+  anon$0 := f$nonDet$TF$T$Boolean()
+  if (df$rt$boolFromRef(anon$0)) {
+    var anon$1: Ref
+    unfold acc(p$c$Simple$unique(p$a), write)
+    anon$1 := con$pkg$kotlin$c$Any$T$Any()
+    p$a.bf$something := anon$1
+    fold acc(p$c$Simple$unique(p$a), write)
+    goto lbl$continue$0
+  }
+  label lbl$break$0
+  assert acc(p$c$Simple$shared(p$a), wildcard)
+  assert df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$Simple())
+  anon$2 := f$consume$TF$T$Simple$T$Unit(p$a)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/while.kt:(887,893): info: Generated Viper text for nonDet:
+method f$nonDet$TF$T$Boolean() returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
+{
+  ret$0 := df$rt$boolToRef(true)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/while.kt:(931,938): info: Generated Viper text for consume:
+field bf$something: Ref
+
+method f$consume$TF$T$Simple$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$Simple())
+  requires acc(p$c$Simple$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale acc(p$c$Simple$shared(p$a), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/while.kt:(965,972): info: Generated Viper text for consume:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$consume$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/while.kt:(994,1000): info: Generated Viper text for borrow:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$borrow$TF$T$B$T$Unit(p$b: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$B())
+  requires acc(p$c$B$unique(p$b), write)
+  ensures acc(p$c$B$unique(p$b), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale acc(p$c$B$shared(p$b), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/while.kt:(1032,1038): info: Generated Viper text for borrow:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$borrow$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/while.kt:(1072,1078): info: Generated Viper text for simple:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$consume$TF$T$A$T$Unit(p$a: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$nonDet$TF$T$Boolean() returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
+
+
+method f$simple$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  label lbl$continue$0
+    invariant acc(p$c$A$shared(p$a), wildcard)
+    invariant df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  anon$0 := f$nonDet$TF$T$Boolean()
+  if (df$rt$boolFromRef(anon$0)) {
+    goto lbl$continue$0
+  }
+  label lbl$break$0
+  assert acc(p$c$A$shared(p$a), wildcard)
+  assert df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  anon$1 := f$consume$TF$T$A$T$Unit(p$a)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/while.kt:(1150,1172): info: Generated Viper text for partiallyMovedOverLoop:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$nonDet$TF$T$Boolean() returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
+
+
+method f$partiallyMovedOverLoop$TF$T$A$T$Unit(p$a: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  l0$x := p$a.bf$um
+  label lbl$continue$0
+    invariant acc(p$c$B$shared(l0$x), wildcard)
+    invariant df$rt$isSubtype(df$rt$typeOf(l0$x), df$rt$c$B())
+    invariant acc(p$c$A$shared(p$a), wildcard)
+    invariant df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+    invariant acc(p$c$B$shared(p$a.bf$sm), wildcard)
+    invariant acc(p$c$B$shared(p$a.bf$si), wildcard)
+  anon$0 := f$nonDet$TF$T$Boolean()
+  if (df$rt$boolFromRef(anon$0)) {
+    var anon$1: Ref
+    var anon$2: Ref
+    anon$1 := p$a.bf$sm
+    anon$2 := p$a.bf$si
+    if (anon$1 == anon$2) {
+    }
+    goto lbl$continue$0
+  }
+  label lbl$break$0
+  assert acc(p$c$B$shared(l0$x), wildcard)
+  assert df$rt$isSubtype(df$rt$typeOf(l0$x), df$rt$c$B())
+  assert acc(p$c$A$shared(p$a), wildcard)
+  assert df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/while.kt:(1362,1374): info: Generated Viper text for borrowInLoop:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$borrow$TF$T$B$T$Unit(p$b: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$B())
+  requires acc(p$c$B$unique(p$b), write)
+  ensures acc(p$c$B$unique(p$b), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$borrowInLoop$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  label lbl$continue$0
+    invariant acc(p$c$A$shared(p$a), wildcard)
+    invariant df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+    invariant acc(p$c$A$unique(p$a), write)
+  anon$0 := f$nonDet$TF$T$Boolean()
+  if (df$rt$boolFromRef(anon$0)) {
+    var anon$1: Ref
+    var anon$2: Ref
+    unfold acc(p$c$A$unique(p$a), write)
+    anon$1 := p$a.bf$sm
+    anon$2 := p$a.bf$si
+    fold acc(p$c$A$unique(p$a), write)
+    if (anon$1 == anon$2) {
+      var anon$3: Ref
+      var anon$4: Ref
+      unfold acc(p$c$A$unique(p$a), write)
+      anon$4 := p$a.bf$um
+      anon$3 := f$borrow$TF$T$B$T$Unit(anon$4)
+      fold acc(p$c$A$unique(p$a), write)
+    }
+    goto lbl$continue$0
+  }
+  label lbl$break$0
+  assert acc(p$c$A$shared(p$a), wildcard)
+  assert df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+method f$nonDet$TF$T$Boolean() returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
+
+
+/while.kt:(1512,1530): info: Generated Viper text for unfoldForCondition:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$unfoldForCondition$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  var anon$2: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  label lbl$continue$0
+    invariant acc(p$c$A$shared(p$a), wildcard)
+    invariant df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+    invariant acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$um
+  anon$2 := p$a.bf$ui
+  anon$0 := df$rt$boolToRef(anon$1 == anon$2)
+  fold acc(p$c$A$unique(p$a), write)
+  if (df$rt$boolFromRef(anon$0)) {
+    goto lbl$continue$0
+  }
+  label lbl$break$0
+  assert acc(p$c$A$shared(p$a), wildcard)
+  assert df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/while.kt:(1657,1665): info: Generated Viper text for optional:
+field bf$data: Ref
+
+field bf$next: Ref
+
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$borrow$TF$T$A$T$Unit(p$a: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$nonDet$TF$T$Boolean() returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
+
+
+method f$optional$TF$T$Node$T$Unit(p$n: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$c$Node())
+  requires acc(p$c$Node$unique(p$n), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$Node$shared(p$n), wildcard)
+  label lbl$continue$0
+    invariant acc(p$c$Node$shared(p$n), wildcard)
+    invariant df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$c$Node())
+    invariant acc(p$c$Node$unique(p$n), write)
+  unfold acc(p$c$Node$unique(p$n), write)
+  anon$1 := f$nonDet$TF$T$Boolean()
+  if (df$rt$boolFromRef(anon$1)) {
+    var anon$2: Ref
+    anon$2 := p$n.bf$next
+    anon$0 := sp$notBool(df$rt$boolToRef(anon$2 == df$rt$nullValue()))
+  } else {
+    anon$0 := df$rt$boolToRef(false)}
+  fold acc(p$c$Node$unique(p$n), write)
+  if (df$rt$boolFromRef(anon$0)) {
+    var anon$3: Ref
+    var anon$4: Ref
+    unfold acc(p$c$Node$unique(p$n), write)
+    anon$4 := p$n.bf$data
+    anon$3 := f$borrow$TF$T$A$T$Unit(anon$4)
+    fold acc(p$c$Node$unique(p$n), write)
+    goto lbl$continue$0
+  }
+  label lbl$break$0
+  assert acc(p$c$Node$shared(p$n), wildcard)
+  assert df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$c$Node())
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}

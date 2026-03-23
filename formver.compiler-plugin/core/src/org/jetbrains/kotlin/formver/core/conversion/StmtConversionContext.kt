@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.conversion
 
+import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.FirLabel
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
@@ -33,6 +34,7 @@ import org.jetbrains.kotlin.formver.core.linearization.SeqnBuilder
 import org.jetbrains.kotlin.formver.core.linearization.SharedLinearizationState
 import org.jetbrains.kotlin.formver.core.purity.checkValidity
 import org.jetbrains.kotlin.formver.core.purity.isPure
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessTrie
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.utils.addIfNotNull
@@ -48,7 +50,7 @@ import org.jetbrains.kotlin.utils.filterIsInstanceAnd
  */
 interface StmtConversionContext : MethodConversionContext {
     val whenSubject: VariableEmbedding?
-
+    val methodCtx: MethodConversionContext
     /**
      * In a safe call `callSubject?.foo()` we evaluate the call subject first to check for nullness.
      * In case it is not null, we evaluate the call to `callSubject.foo()`. Here we don't want to evaluate
@@ -74,6 +76,13 @@ interface StmtConversionContext : MethodConversionContext {
         action: StmtConversionContext.(catchBlockListData: CatchBlockListData) -> R,
     ): Pair<CatchBlockListData, R>
 }
+
+fun StmtConversionContext.flowBefore(fir: FirElement): UniquenessTrie? =
+    methodCtx.uniqueness?.flowBefore(fir)
+
+fun StmtConversionContext.flowAfter(fir: FirElement): UniquenessTrie? =
+    methodCtx.uniqueness?.flowAfter(fir)
+
 
 fun StmtConversionContext.declareLocalProperty(symbol: FirPropertySymbol, initializer: ExpEmbedding?): Declare {
     registerLocalProperty(symbol)

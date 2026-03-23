@@ -6,6 +6,8 @@
 package org.jetbrains.kotlin.formver.core.embeddings.expression
 
 import org.jetbrains.kotlin.formver.core.asPosition
+import org.jetbrains.kotlin.formver.core.conversion.Path
+import org.jetbrains.kotlin.formver.core.conversion.PathCast
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
@@ -15,6 +17,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.withDesigna
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessTrie
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
@@ -24,7 +27,7 @@ data class Is(
     override val inner: ExpEmbedding, val comparisonType: RuntimeTypeHolder,
     override val sourceRole: SourceRole? = null,
 ) :
-    UnaryDirectResultExpEmbedding {
+    UnaryDirectResultExpEmbedding, DefaultUniqueness() {
     override val type = buildType { boolean() }
 
     override fun toViper(ctx: LinearizationContext) =
@@ -51,11 +54,19 @@ data class Is(
  * ExpEmbedding to change the TypeEmbedding of an inner ExpEmbedding.
  * This is needed since most of our invariants require type and hence can be made more precise via Cast.
  */
-data class Cast(override val inner: ExpEmbedding, override val type: TypeEmbedding) : UnaryDirectResultExpEmbedding {
+data class Cast(override val inner: ExpEmbedding, override val type: TypeEmbedding) : UnaryDirectResultExpEmbedding,
+    DefaultUniqueness() {
     // TODO: Do we want to assert `inner isOf type` here before making a cast itself?
     override fun toViper(ctx: LinearizationContext) = inner.toViper(ctx)
     override fun ignoringCasts(): ExpEmbedding = inner.ignoringCasts()
     override fun ignoringCastsAndMetaNodes(): ExpEmbedding = inner.ignoringCastsAndMetaNodes()
+
+    override val containingPaths: Lazy<Set<Path>>
+        get() = lazy { setOfNotNull(endingPath.value) }
+    override val endingPath: Lazy<Path?>
+        get() = lazy { inner.endingPath.value?.let { PathCast(it, type) } }
+    override var uniquenessBefore: UniquenessTrie? = inner.uniquenessBefore
+    override var uniquenessAfter: UniquenessTrie? = inner.uniquenessAfter
 
     context(nameResolver: NameResolver)
     override val debugExtraSubtrees: List<TreeView>
@@ -76,16 +87,20 @@ fun ExpEmbedding.withType(init: TypeBuilder.() -> PretypeBuilder): ExpEmbedding 
  * This is also why we insist the result is stored; this is a little stronger than necessary, but that does not harm correctness.
  */
 data class SafeCast(val exp: ExpEmbedding, val targetType: TypeEmbedding) : StoredResultExpEmbedding,
-    DefaultDebugTreeViewImplementation {
+    DefaultDebugTreeViewImplementation, DefaultUniqueness() {
     override val type: TypeEmbedding
         get() = targetType.getNullable()
 
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
         val expViper = exp.toViper(ctx)
         val expWrapped = ExpWrapper(expViper, exp.type)
-        val conditional = If(Is(expWrapped, targetType), expWrapped, NullLit, type)
-        conditional.toViperStoringIn(result, ctx)
+        ctx.addBranch(Is(expWrapped, targetType), expWrapped, NullLit, type, result)
     }
+
+    override val containingPaths: Lazy<Set<Path>>
+        get() = lazy { setOfNotNull(endingPath.value) }
+    override val endingPath: Lazy<Path?>
+        get() = lazy { exp.endingPath.value?.let { PathCast(it, type) } }
 
     override val debugAnonymousSubexpressions: List<ExpEmbedding>
         get() = listOf(exp)
@@ -104,6 +119,9 @@ interface InhaleInvariants : ExpEmbedding, DefaultDebugTreeViewImplementation {
 
     override val type: TypeEmbedding
         get() = exp.type
+
+    override val endingPath: Lazy<Path?>
+        get() = exp.endingPath
 
     override val debugAnonymousSubexpressions: List<ExpEmbedding>
         get() = listOf(exp)
@@ -129,7 +147,7 @@ private data class InhaleInvariantsForExp(
     override val exp: ExpEmbedding,
     override val invariants: List<TypeInvariantEmbedding>
 ) :
-    StoredResultExpEmbedding, InhaleInvariants {
+    StoredResultExpEmbedding, InhaleInvariants, DefaultUniqueness() {
 
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
         exp.toViperStoringIn(result, ctx)
@@ -143,7 +161,7 @@ private data class InhaleInvariantsForVariable(
     override val exp: ExpEmbedding,
     override val invariants: List<TypeInvariantEmbedding>,
 ) :
-    InhaleInvariants, OnlyToViperExpEmbedding {
+    InhaleInvariants, OnlyToViperExpEmbedding, DefaultUniqueness() {
 
     override fun toViper(ctx: LinearizationContext): Exp {
         val variable = exp.underlyingVariable ?: error("Use of InhaleInvariantsForVariable for non-variable")

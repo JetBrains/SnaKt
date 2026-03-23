@@ -26,7 +26,7 @@ class LambdaExp(
     private val parentCtx: MethodConversionContext,
     override val labelName: String,
 ) : CallableEmbedding, StoredResultExpEmbedding,
-    FunctionSignature by signature {
+    FunctionSignature by signature, DefaultUniqueness() {
     override val type: TypeEmbedding
         get() = callableType.asTypeEmbedding()
 

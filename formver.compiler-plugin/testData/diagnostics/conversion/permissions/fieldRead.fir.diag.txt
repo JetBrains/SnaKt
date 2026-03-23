@@ -1,0 +1,2305 @@
+/fieldRead.kt:(670,672): info: Generated Viper text for um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  l0$x := p$a.bf$um
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(713,715): info: Generated Viper text for ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  l0$x := p$a.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(756,758): info: Generated Viper text for sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  l0$x := p$a.bf$sm
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(799,801): info: Generated Viper text for si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  l0$x := p$a.bf$si
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(842,847): info: Generated Viper text for um_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  anon$0 := p$a.bf$um
+  l0$x := anon$0.bf$um
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(891,896): info: Generated Viper text for um_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  anon$0 := p$a.bf$um
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(940,945): info: Generated Viper text for um_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  anon$0 := p$a.bf$um
+  l0$x := anon$0.bf$sm
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(989,994): info: Generated Viper text for um_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  anon$0 := p$a.bf$um
+  l0$x := anon$0.bf$si
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1038,1043): info: Generated Viper text for ui_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  anon$0 := p$a.bf$ui
+  l0$x := anon$0.bf$um
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1087,1092): info: Generated Viper text for ui_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  anon$0 := p$a.bf$ui
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1136,1141): info: Generated Viper text for ui_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  anon$0 := p$a.bf$ui
+  l0$x := anon$0.bf$sm
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1185,1190): info: Generated Viper text for ui_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  anon$0 := p$a.bf$ui
+  l0$x := anon$0.bf$si
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1234,1239): info: Generated Viper text for sm_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$0 := p$a.bf$sm
+  l0$x := havoc$T$C()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1283,1288): info: Generated Viper text for sm_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$0 := p$a.bf$sm
+  unfold acc(p$c$B$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1332,1337): info: Generated Viper text for sm_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$0 := p$a.bf$sm
+  l0$x := havoc$T$C()
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1381,1386): info: Generated Viper text for sm_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$0 := p$a.bf$sm
+  unfold acc(p$c$B$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1430,1435): info: Generated Viper text for si_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$0 := p$a.bf$si
+  l0$x := havoc$T$C()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1479,1484): info: Generated Viper text for si_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$0 := p$a.bf$si
+  unfold acc(p$c$B$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1528,1533): info: Generated Viper text for si_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$0 := p$a.bf$si
+  l0$x := havoc$T$C()
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1577,1582): info: Generated Viper text for si_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$0 := p$a.bf$si
+  unfold acc(p$c$B$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1627,1635): info: Generated Viper text for um_um_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_um_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  unfold acc(p$c$C$unique(p$a.bf$um.bf$um), write)
+  anon$1 := p$a.bf$um
+  anon$0 := anon$1.bf$um
+  l0$x := anon$0.bf$um
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1682,1690): info: Generated Viper text for um_um_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_um_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  unfold acc(p$c$C$unique(p$a.bf$um.bf$um), write)
+  anon$1 := p$a.bf$um
+  anon$0 := anon$1.bf$um
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1737,1745): info: Generated Viper text for um_um_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_um_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  unfold acc(p$c$C$unique(p$a.bf$um.bf$um), write)
+  anon$1 := p$a.bf$um
+  anon$0 := anon$1.bf$um
+  l0$x := anon$0.bf$sm
+  fold acc(p$c$C$unique(p$a.bf$um.bf$um), write)
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1792,1800): info: Generated Viper text for um_um_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_um_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  unfold acc(p$c$C$unique(p$a.bf$um.bf$um), write)
+  anon$1 := p$a.bf$um
+  anon$0 := anon$1.bf$um
+  l0$x := anon$0.bf$si
+  fold acc(p$c$C$unique(p$a.bf$um.bf$um), write)
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1847,1855): info: Generated Viper text for um_ui_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_ui_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  unfold acc(p$c$C$unique(p$a.bf$um.bf$ui), write)
+  anon$1 := p$a.bf$um
+  anon$0 := anon$1.bf$ui
+  l0$x := anon$0.bf$um
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1902,1910): info: Generated Viper text for um_ui_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_ui_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  unfold acc(p$c$C$unique(p$a.bf$um.bf$ui), write)
+  anon$1 := p$a.bf$um
+  anon$0 := anon$1.bf$ui
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1957,1965): info: Generated Viper text for um_ui_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_ui_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  unfold acc(p$c$C$unique(p$a.bf$um.bf$ui), write)
+  anon$1 := p$a.bf$um
+  anon$0 := anon$1.bf$ui
+  l0$x := anon$0.bf$sm
+  fold acc(p$c$C$unique(p$a.bf$um.bf$ui), write)
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(2012,2020): info: Generated Viper text for um_ui_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_ui_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  unfold acc(p$c$C$unique(p$a.bf$um.bf$ui), write)
+  anon$1 := p$a.bf$um
+  anon$0 := anon$1.bf$ui
+  l0$x := anon$0.bf$si
+  fold acc(p$c$C$unique(p$a.bf$um.bf$ui), write)
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(2067,2075): info: Generated Viper text for um_sm_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_sm_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  anon$1 := p$a.bf$um
+  anon$0 := anon$1.bf$sm
+  l0$x := havoc$T$Any()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(2122,2130): info: Generated Viper text for um_sm_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_sm_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  anon$1 := p$a.bf$um
+  anon$0 := anon$1.bf$sm
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(2177,2185): info: Generated Viper text for um_sm_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_sm_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  anon$1 := p$a.bf$um
+  anon$0 := anon$1.bf$sm
+  l0$x := havoc$T$Any()
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(2232,2240): info: Generated Viper text for um_sm_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_sm_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  anon$1 := p$a.bf$um
+  anon$0 := anon$1.bf$sm
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$si
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(2287,2295): info: Generated Viper text for um_si_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_si_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  anon$1 := p$a.bf$um
+  anon$0 := anon$1.bf$si
+  l0$x := havoc$T$Any()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(2342,2350): info: Generated Viper text for um_si_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_si_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  anon$1 := p$a.bf$um
+  anon$0 := anon$1.bf$si
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(2397,2405): info: Generated Viper text for um_si_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_si_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  anon$1 := p$a.bf$um
+  anon$0 := anon$1.bf$si
+  l0$x := havoc$T$Any()
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(2452,2460): info: Generated Viper text for um_si_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$um_si_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$um), write)
+  anon$1 := p$a.bf$um
+  anon$0 := anon$1.bf$si
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$si
+  fold acc(p$c$B$unique(p$a.bf$um), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(2508,2516): info: Generated Viper text for ui_um_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_um_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  unfold acc(p$c$C$unique(p$a.bf$ui.bf$um), write)
+  anon$1 := p$a.bf$ui
+  anon$0 := anon$1.bf$um
+  l0$x := anon$0.bf$um
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(2563,2571): info: Generated Viper text for ui_um_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_um_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  unfold acc(p$c$C$unique(p$a.bf$ui.bf$um), write)
+  anon$1 := p$a.bf$ui
+  anon$0 := anon$1.bf$um
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(2618,2626): info: Generated Viper text for ui_um_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_um_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  unfold acc(p$c$C$unique(p$a.bf$ui.bf$um), write)
+  anon$1 := p$a.bf$ui
+  anon$0 := anon$1.bf$um
+  l0$x := anon$0.bf$sm
+  fold acc(p$c$C$unique(p$a.bf$ui.bf$um), write)
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(2673,2681): info: Generated Viper text for ui_um_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_um_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  unfold acc(p$c$C$unique(p$a.bf$ui.bf$um), write)
+  anon$1 := p$a.bf$ui
+  anon$0 := anon$1.bf$um
+  l0$x := anon$0.bf$si
+  fold acc(p$c$C$unique(p$a.bf$ui.bf$um), write)
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(2728,2736): info: Generated Viper text for ui_ui_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_ui_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  unfold acc(p$c$C$unique(p$a.bf$ui.bf$ui), write)
+  anon$1 := p$a.bf$ui
+  anon$0 := anon$1.bf$ui
+  l0$x := anon$0.bf$um
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(2783,2791): info: Generated Viper text for ui_ui_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_ui_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  unfold acc(p$c$C$unique(p$a.bf$ui.bf$ui), write)
+  anon$1 := p$a.bf$ui
+  anon$0 := anon$1.bf$ui
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(2838,2846): info: Generated Viper text for ui_ui_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_ui_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  unfold acc(p$c$C$unique(p$a.bf$ui.bf$ui), write)
+  anon$1 := p$a.bf$ui
+  anon$0 := anon$1.bf$ui
+  l0$x := anon$0.bf$sm
+  fold acc(p$c$C$unique(p$a.bf$ui.bf$ui), write)
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(2893,2901): info: Generated Viper text for ui_ui_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_ui_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  unfold acc(p$c$C$unique(p$a.bf$ui.bf$ui), write)
+  anon$1 := p$a.bf$ui
+  anon$0 := anon$1.bf$ui
+  l0$x := anon$0.bf$si
+  fold acc(p$c$C$unique(p$a.bf$ui.bf$ui), write)
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(2948,2956): info: Generated Viper text for ui_sm_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_sm_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  anon$1 := p$a.bf$ui
+  anon$0 := anon$1.bf$sm
+  l0$x := havoc$T$Any()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3003,3011): info: Generated Viper text for ui_sm_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_sm_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  anon$1 := p$a.bf$ui
+  anon$0 := anon$1.bf$sm
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3058,3066): info: Generated Viper text for ui_sm_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_sm_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  anon$1 := p$a.bf$ui
+  anon$0 := anon$1.bf$sm
+  l0$x := havoc$T$Any()
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3113,3121): info: Generated Viper text for ui_sm_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_sm_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  anon$1 := p$a.bf$ui
+  anon$0 := anon$1.bf$sm
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$si
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3168,3176): info: Generated Viper text for ui_si_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_si_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  anon$1 := p$a.bf$ui
+  anon$0 := anon$1.bf$si
+  l0$x := havoc$T$Any()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3223,3231): info: Generated Viper text for ui_si_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_si_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  anon$1 := p$a.bf$ui
+  anon$0 := anon$1.bf$si
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3278,3286): info: Generated Viper text for ui_si_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_si_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  anon$1 := p$a.bf$ui
+  anon$0 := anon$1.bf$si
+  l0$x := havoc$T$Any()
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3333,3341): info: Generated Viper text for ui_si_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$ui_si_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  unfold acc(p$c$B$unique(p$a.bf$ui), write)
+  anon$1 := p$a.bf$ui
+  anon$0 := anon$1.bf$si
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$si
+  fold acc(p$c$B$unique(p$a.bf$ui), write)
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3389,3397): info: Generated Viper text for sm_um_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_um_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$sm
+  anon$0 := havoc$T$C()
+  l0$x := havoc$T$Any()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3444,3452): info: Generated Viper text for sm_um_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_um_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$sm
+  anon$0 := havoc$T$C()
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3499,3507): info: Generated Viper text for sm_um_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_um_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$sm
+  anon$0 := havoc$T$C()
+  l0$x := havoc$T$Any()
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3554,3562): info: Generated Viper text for sm_um_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_um_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$sm
+  anon$0 := havoc$T$C()
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3609,3617): info: Generated Viper text for sm_ui_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_ui_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$sm
+  unfold acc(p$c$B$shared(anon$1), wildcard)
+  anon$0 := anon$1.bf$ui
+  l0$x := havoc$T$Any()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3664,3672): info: Generated Viper text for sm_ui_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_ui_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$sm
+  unfold acc(p$c$B$shared(anon$1), wildcard)
+  anon$0 := anon$1.bf$ui
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3719,3727): info: Generated Viper text for sm_ui_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_ui_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$sm
+  unfold acc(p$c$B$shared(anon$1), wildcard)
+  anon$0 := anon$1.bf$ui
+  l0$x := havoc$T$Any()
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3774,3782): info: Generated Viper text for sm_ui_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_ui_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$sm
+  unfold acc(p$c$B$shared(anon$1), wildcard)
+  anon$0 := anon$1.bf$ui
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3829,3837): info: Generated Viper text for sm_sm_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_sm_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$sm
+  anon$0 := havoc$T$C()
+  l0$x := havoc$T$Any()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3884,3892): info: Generated Viper text for sm_sm_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_sm_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$sm
+  anon$0 := havoc$T$C()
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3939,3947): info: Generated Viper text for sm_sm_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_sm_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$sm
+  anon$0 := havoc$T$C()
+  l0$x := havoc$T$Any()
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(3994,4002): info: Generated Viper text for sm_sm_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_sm_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$sm
+  anon$0 := havoc$T$C()
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(4049,4057): info: Generated Viper text for sm_si_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_si_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$sm
+  unfold acc(p$c$B$shared(anon$1), wildcard)
+  anon$0 := anon$1.bf$si
+  l0$x := havoc$T$Any()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(4104,4112): info: Generated Viper text for sm_si_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_si_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$sm
+  unfold acc(p$c$B$shared(anon$1), wildcard)
+  anon$0 := anon$1.bf$si
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(4159,4167): info: Generated Viper text for sm_si_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_si_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$sm
+  unfold acc(p$c$B$shared(anon$1), wildcard)
+  anon$0 := anon$1.bf$si
+  l0$x := havoc$T$Any()
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(4214,4222): info: Generated Viper text for sm_si_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$sm_si_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$sm
+  unfold acc(p$c$B$shared(anon$1), wildcard)
+  anon$0 := anon$1.bf$si
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(4270,4278): info: Generated Viper text for si_um_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_um_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$si
+  anon$0 := havoc$T$C()
+  l0$x := havoc$T$Any()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(4325,4333): info: Generated Viper text for si_um_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_um_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$si
+  anon$0 := havoc$T$C()
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(4380,4388): info: Generated Viper text for si_um_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_um_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$si
+  anon$0 := havoc$T$C()
+  l0$x := havoc$T$Any()
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(4435,4443): info: Generated Viper text for si_um_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_um_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$si
+  anon$0 := havoc$T$C()
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(4490,4498): info: Generated Viper text for si_ui_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_ui_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$si
+  unfold acc(p$c$B$shared(anon$1), wildcard)
+  anon$0 := anon$1.bf$ui
+  l0$x := havoc$T$Any()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(4545,4553): info: Generated Viper text for si_ui_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_ui_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$si
+  unfold acc(p$c$B$shared(anon$1), wildcard)
+  anon$0 := anon$1.bf$ui
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(4600,4608): info: Generated Viper text for si_ui_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_ui_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$si
+  unfold acc(p$c$B$shared(anon$1), wildcard)
+  anon$0 := anon$1.bf$ui
+  l0$x := havoc$T$Any()
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(4655,4663): info: Generated Viper text for si_ui_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_ui_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$si
+  unfold acc(p$c$B$shared(anon$1), wildcard)
+  anon$0 := anon$1.bf$ui
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(4710,4718): info: Generated Viper text for si_sm_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_sm_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$si
+  anon$0 := havoc$T$C()
+  l0$x := havoc$T$Any()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(4765,4773): info: Generated Viper text for si_sm_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_sm_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$si
+  anon$0 := havoc$T$C()
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(4820,4828): info: Generated Viper text for si_sm_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_sm_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$si
+  anon$0 := havoc$T$C()
+  l0$x := havoc$T$Any()
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(4875,4883): info: Generated Viper text for si_sm_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_sm_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$si
+  anon$0 := havoc$T$C()
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(4930,4938): info: Generated Viper text for si_si_um:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_si_um$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$si
+  unfold acc(p$c$B$shared(anon$1), wildcard)
+  anon$0 := anon$1.bf$si
+  l0$x := havoc$T$Any()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(4985,4993): info: Generated Viper text for si_si_ui:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_si_ui$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$si
+  unfold acc(p$c$B$shared(anon$1), wildcard)
+  anon$0 := anon$1.bf$si
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$ui
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(5040,5048): info: Generated Viper text for si_si_sm:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_si_sm$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$si
+  unfold acc(p$c$B$shared(anon$1), wildcard)
+  anon$0 := anon$1.bf$si
+  l0$x := havoc$T$Any()
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(5095,5103): info: Generated Viper text for si_si_si:
+field bf$si: Ref
+
+field bf$sm: Ref
+
+field bf$ui: Ref
+
+field bf$um: Ref
+
+method f$si_si_si$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  anon$1 := p$a.bf$si
+  unfold acc(p$c$B$shared(anon$1), wildcard)
+  anon$0 := anon$1.bf$si
+  unfold acc(p$c$C$shared(anon$0), wildcard)
+  l0$x := anon$0.bf$si
+  fold acc(p$c$A$unique(p$a), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}

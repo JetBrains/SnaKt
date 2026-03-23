@@ -347,6 +347,46 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/permissions")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Permissions {
+      @Test
+      public void testAllFilesPresentInPermissions() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/conversion/permissions"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("branch.kt")
+      public void testBranch() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/permissions/branch.kt");
+      }
+
+      @Test
+      @TestMetadata("fieldRead.kt")
+      public void testFieldRead() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/permissions/fieldRead.kt");
+      }
+
+      @Test
+      @TestMetadata("methodCalls.kt")
+      public void testMethodCalls() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/permissions/methodCalls.kt");
+      }
+
+      @Test
+      @TestMetadata("return.kt")
+      public void testReturn() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/permissions/return.kt");
+      }
+
+      @Test
+      @TestMetadata("while.kt")
+      public void testWhile() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/permissions/while.kt");
+      }
+    }
+
+    @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/pure_functions")
     @TestDataPath("$PROJECT_ROOT")
     public class Pure_functions {

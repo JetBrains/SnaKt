@@ -26,7 +26,7 @@ import org.jetbrains.kotlin.formver.viper.SymbolicName
  * NOTE: If you add parameters, be sure to update the `withResultFactory` function!
  */
 data class StmtConverter(
-    private val methodCtx: MethodConversionContext,
+    override val methodCtx: MethodConversionContext,
     private val whileIndex: Int = 0,
     override val whenSubject: VariableEmbedding? = null,
     override val checkedSafeCallSubject: ExpEmbedding? = null,

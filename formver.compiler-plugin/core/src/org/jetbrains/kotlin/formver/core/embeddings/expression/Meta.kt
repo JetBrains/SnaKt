@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.embeddings.expression
 
 import org.jetbrains.kotlin.KtSourceElement
+import org.jetbrains.kotlin.formver.core.conversion.Path
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.NamedBranchingNode
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.PlaintextLeaf
@@ -14,6 +15,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.withDesigna
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessTrie
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 
@@ -31,6 +33,10 @@ data class WithPosition(override val inner: ExpEmbedding, val source: KtSourceEl
         get() = inner.debugTreeView
 
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(inner)
+
+    override val endingPath: Lazy<Path?> = inner.endingPath
+    override var uniquenessBefore: UniquenessTrie? = inner.uniquenessBefore
+    override var uniquenessAfter: UniquenessTrie? = inner.uniquenessAfter
 }
 
 fun ExpEmbedding.withPosition(source: KtSourceElement?): ExpEmbedding =
@@ -54,8 +60,9 @@ fun ExpEmbedding.withPosition(source: KtSourceElement?): ExpEmbedding =
  *
  * This class should be used via the `share` function below. Do not do anything funny, or it will not work.
  */
-data class SharingContext(override val inner: ExpEmbedding) : PassthroughExpEmbedding {
+data class SharingContext(override val inner: ExpEmbedding) : PassthroughExpEmbedding, DefaultUniqueness() {
     var sharedExp: Exp? = null
+    override val containingPaths: Lazy<Set<Path>> = inner.containingPaths
 
     override fun <R> withPassthroughHook(ctx: LinearizationContext, action: LinearizationContext.() -> R): R =
         ctx.action().also { sharedExp = null }
@@ -78,6 +85,7 @@ data class SharingContext(override val inner: ExpEmbedding) : PassthroughExpEmbe
         )
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitSharingContext(this)
+
 }
 
 /**
@@ -90,7 +98,8 @@ data class SharingContext(override val inner: ExpEmbedding) : PassthroughExpEmbe
  * quite easily by using a fresh variable every time, but that would add unreasonable bloat to many programs.
  * TODO: fix this.
  */
-data class Shared(val inner: ExpEmbedding) : StoredResultExpEmbedding, DefaultToBuiltinExpEmbedding {
+data class Shared(val inner: ExpEmbedding) : StoredResultExpEmbedding, DefaultToBuiltinExpEmbedding,
+    DefaultUniqueness() {
     private var _context: SharingContext? = null
     val context: SharingContext
         get() = checkNotNull(_context) { "Context of shared used before initialisation is complete." }

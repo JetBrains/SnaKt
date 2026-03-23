@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 
-data class Old(override val inner: ExpEmbedding) : UnaryDirectResultExpEmbedding {
+data class Old(override val inner: ExpEmbedding) : UnaryDirectResultExpEmbedding, DefaultUniqueness() {
     override val type: TypeEmbedding = inner.type
     override fun toViper(ctx: LinearizationContext): Exp = Exp.Old(inner.toViper(ctx), ctx.source.asPosition)
     override fun toViperBuiltinType(ctx: LinearizationContext): Exp =

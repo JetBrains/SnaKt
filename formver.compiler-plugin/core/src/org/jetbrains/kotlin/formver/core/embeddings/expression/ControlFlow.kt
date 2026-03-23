@@ -15,16 +15,13 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.toMethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
-import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
-import org.jetbrains.kotlin.formver.core.linearization.addLabel
-import org.jetbrains.kotlin.formver.core.linearization.freshAnonVar
-import org.jetbrains.kotlin.formver.core.linearization.pureToViper
+import org.jetbrains.kotlin.formver.core.linearization.*
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
 
-private data class BlockImpl(override val exps: List<ExpEmbedding>) : Block
+private data class BlockImpl(override val exps: List<ExpEmbedding>) : Block, DefaultUniqueness()
 
 fun blockOf(vararg exps: ExpEmbedding): Block = BlockImpl(exps.toList())
 
@@ -62,9 +59,9 @@ data class If(
     val elseBranch: ExpEmbedding,
     override val type: TypeEmbedding
 ) :
-    OptionalResultExpEmbedding, DefaultDebugTreeViewImplementation {
+    OptionalResultExpEmbedding, DefaultDebugTreeViewImplementation, DefaultUniqueness() {
     override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
-        ctx.addBranch(condition, thenBranch, elseBranch, type, result)
+        ctx.addBranchWithFolding(condition, thenBranch, elseBranch, type, result)
     }
 
     override val debugAnonymousSubexpressions: List<ExpEmbedding>
@@ -80,20 +77,31 @@ data class While(
     val breakLabelName: SymbolicName,
     val continueLabelName: SymbolicName,
     val invariants: List<ExpEmbedding>,
-) : UnitResultExpEmbedding, DefaultDebugTreeViewImplementation {
+) : UnitResultExpEmbedding, DefaultDebugTreeViewImplementation, DefaultUniqueness() {
     override val type: TypeEmbedding = buildType { unit() }
 
     val continueLabel = LabelEmbedding(continueLabelName, invariants)
     val breakLabel = LabelEmbedding(breakLabelName)
 
     override fun toViperSideEffects(ctx: LinearizationContext) {
-        ctx.addLabel(continueLabel.toViper(ctx))
+        val permissionManager = WhilePermissionManager.create(this)
+        val permissionInvariants = permissionManager?.extractWhileInvariants()
+        val newContinueLabel =
+            permissionInvariants?.let { LabelEmbedding(continueLabelName, invariants + permissionInvariants) }
+                ?: continueLabel
+
+        ctx.addLabel(newContinueLabel.toViper(ctx))
         val condVar = ctx.freshAnonVar { boolean() }
+        val conditionPermissionManager = UniquePermissionManager.create(condition)
+        conditionPermissionManager?.unfold(ctx)
         condition.toViperStoringIn(condVar, ctx)
+        conditionPermissionManager?.fold(ctx)
+
+
         ctx.addStatement {
             val bodyBlock = ctx.asBlock {
                 body.toViperUnusedResult(this)
-                addStatement { continueLabel.toLink().toViperGoto(this) }
+                addStatement { newContinueLabel.toLink().toViperGoto(this) }
             }
             Stmt.If(condVar.toViperBuiltinType(ctx), bodyBlock, els = Stmt.Seqn(), ctx.source.asPosition)
         }
@@ -122,7 +130,7 @@ data class While(
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitWhile(this)
 }
 
-data class Goto(val target: LabelLink) : NoResultExpEmbedding, DefaultDebugTreeViewImplementation {
+data class Goto(val target: LabelLink) : NoResultExpEmbedding, DefaultDebugTreeViewImplementation, DefaultUniqueness() {
     override val type: TypeEmbedding = buildType { nothing() }
     override fun toViperUnusedResult(ctx: LinearizationContext) {
         ctx.addStatement { target.toViperGoto(ctx) }
@@ -139,7 +147,7 @@ data class Goto(val target: LabelLink) : NoResultExpEmbedding, DefaultDebugTreeV
 }
 
 // Using this name to avoid clashes with all our other `Label` types.
-data class LabelExp(val label: LabelEmbedding) : UnitResultExpEmbedding {
+data class LabelExp(val label: LabelEmbedding) : UnitResultExpEmbedding, DefaultUniqueness() {
     override fun toViperSideEffects(ctx: LinearizationContext) {
         ctx.addLabel(label.toViper(ctx))
     }
@@ -157,7 +165,7 @@ data class LabelExp(val label: LabelEmbedding) : UnitResultExpEmbedding {
  * The result of the intermediate expression is stored.
  */
 data class GotoChainNode(val label: LabelEmbedding?, val exp: ExpEmbedding, val next: LabelLink) :
-    OptionalResultExpEmbedding {
+    OptionalResultExpEmbedding, DefaultUniqueness() {
     override val type: TypeEmbedding = exp.type
 
     override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
@@ -176,7 +184,8 @@ data class GotoChainNode(val label: LabelEmbedding?, val exp: ExpEmbedding, val 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitGotoChainNode(this)
 }
 
-data class NonDeterministically(val exp: ExpEmbedding) : UnitResultExpEmbedding, DefaultDebugTreeViewImplementation {
+data class NonDeterministically(val exp: ExpEmbedding) : UnitResultExpEmbedding, DefaultDebugTreeViewImplementation,
+    DefaultUniqueness() {
     override fun toViperSideEffects(ctx: LinearizationContext) {
         ctx.addStatement {
             val choice = ctx.freshAnonVar { boolean() }
@@ -192,10 +201,14 @@ data class NonDeterministically(val exp: ExpEmbedding) : UnitResultExpEmbedding,
 }
 
 // Note: this is always a *real* Viper method call.
-data class MethodCall(val method: NamedFunctionSignature, val args: List<ExpEmbedding>) : StoredResultExpEmbedding {
+data class MethodCall(val method: NamedFunctionSignature, val args: List<ExpEmbedding>) : StoredResultExpEmbedding,
+    DefaultUniqueness() {
     override val type: TypeEmbedding = method.callableType.returnType
 
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
+
+        val permissionManager = UniquePermissionManager.create(this)
+        permissionManager?.unfold(ctx)
         ctx.addStatement {
             method.toMethodCall(
                 args.map { it.toViper(ctx) },
@@ -203,6 +216,7 @@ data class MethodCall(val method: NamedFunctionSignature, val args: List<ExpEmbe
                 ctx.source.asPosition
             )
         }
+        permissionManager?.fold(ctx)
     }
 
     context(nameResolver: NameResolver)
@@ -218,7 +232,8 @@ data class MethodCall(val method: NamedFunctionSignature, val args: List<ExpEmbe
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitMethodCall(this)
 }
 
-data class FunctionCall(val function: NamedFunctionSignature, val args: List<ExpEmbedding>) : DirectResultExpEmbedding {
+data class FunctionCall(val function: NamedFunctionSignature, val args: List<ExpEmbedding>) : DirectResultExpEmbedding,
+    DefaultUniqueness() {
     override val type: TypeEmbedding = function.callableType.returnType
 
     override val subexpressions: List<ExpEmbedding>
@@ -243,7 +258,7 @@ data class InvokeFunctionObject(
     val args: List<ExpEmbedding>,
     override val type: TypeEmbedding
 ) :
-    OnlyToViperExpEmbedding {
+    OnlyToViperExpEmbedding, DefaultUniqueness() {
     override fun toViper(ctx: LinearizationContext): Exp {
         val variable = ctx.freshAnonVar(type)
         receiver.toViperUnusedResult(ctx)
@@ -272,7 +287,7 @@ data class FunctionExp(
     val body: ExpEmbedding,
     val returnLabel: LabelEmbedding
 ) :
-    OptionalResultExpEmbedding {
+    OptionalResultExpEmbedding, DefaultUniqueness() {
     override val type: TypeEmbedding = body.type
 
     override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
@@ -304,12 +319,11 @@ data class FunctionExp(
 
 data class Elvis(val left: ExpEmbedding, val right: ExpEmbedding, override val type: TypeEmbedding) :
     StoredResultExpEmbedding,
-    DefaultDebugTreeViewImplementation {
+    DefaultDebugTreeViewImplementation, DefaultUniqueness() {
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
         val leftViper = left.toViper(ctx)
         val leftWrapped = ExpWrapper(leftViper, left.type)
-        val conditional = If(leftWrapped.notNullCmp(), leftWrapped, right, type)
-        conditional.toViperStoringIn(result, ctx)
+        ctx.addBranch(leftWrapped.notNullCmp(), leftWrapped, right, type, result)
     }
 
     override val debugAnonymousSubexpressions: List<ExpEmbedding>
@@ -321,7 +335,7 @@ data class Elvis(val left: ExpEmbedding, val right: ExpEmbedding, override val t
 
 data class Return(
     val returnExp: ExpEmbedding, val target: ReturnTarget
-) : OptionalResultExpEmbedding {
+) : OptionalResultExpEmbedding, DefaultUniqueness() {
     override val type = buildType { nothing() }
 
     override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
