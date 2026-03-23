@@ -64,8 +64,6 @@ method f$accessSuperTypeProperty$TF$T$C$T$Unit(p$c: Ref)
   var l0$temp: Ref
   inhale acc(p$c$C$shared(p$c), wildcard)
   unfold acc(p$c$C$shared(p$c), wildcard)
-  unfold acc(p$c$B$shared(p$c), wildcard)
-  unfold acc(p$c$A$shared(p$c), wildcard)
   l0$temp := p$c.bf$a
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())

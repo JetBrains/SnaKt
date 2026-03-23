@@ -29,7 +29,6 @@ method f$createB$TF$T$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(l0$fieldOverride), df$rt$c$FieldB())
   inhale acc(p$c$FieldB$shared(l0$fieldOverride), wildcard)
   unfold acc(p$c$B$shared(l0$b), wildcard)
-  unfold acc(p$c$A$shared(l0$b), wildcard)
   l0$fieldNotOverride := l0$b.bf$fieldNotOverride
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -111,7 +110,6 @@ method f$createY$TF$T$Unit() returns (ret$0: Ref)
   var l0$ya: Ref
   l0$y := con$c$Y$T$Int$T$Y(df$rt$intToRef(10))
   unfold acc(p$c$Y$shared(l0$y), wildcard)
-  unfold acc(p$c$X$shared(l0$y), wildcard)
   l0$ya := l0$y.bf$a
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())

@@ -10,6 +10,12 @@ method f$testPrimitiveFieldSetterUnique$TF$T$PrimitiveFields$T$Unit(p$pf: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   inhale acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
+  unfold acc(p$c$PrimitiveFields$unique(p$pf), write)
+  p$pf.bf$shared := df$rt$intToRef(1)
+  fold acc(p$c$PrimitiveFields$unique(p$pf), write)
+  unfold acc(p$c$PrimitiveFields$unique(p$pf), write)
+  p$pf.bf$unique := df$rt$intToRef(2)
+  fold acc(p$c$PrimitiveFields$unique(p$pf), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -52,10 +58,16 @@ method f$testReferenceFieldSetterUnique$TF$T$ReferenceFields$T$Unit(p$rf: Ref)
   var anon$0: Ref
   var anon$1: Ref
   inhale acc(p$c$ReferenceFields$shared(p$rf), wildcard)
+  unfold acc(p$c$ReferenceFields$unique(p$rf), write)
   anon$0 := con$c$PrimitiveFields$T$Int$T$Int$T$PrimitiveFields(df$rt$intToRef(5),
     df$rt$intToRef(6))
+  p$rf.bf$shared := anon$0
+  fold acc(p$c$ReferenceFields$unique(p$rf), write)
+  unfold acc(p$c$ReferenceFields$unique(p$rf), write)
   anon$1 := con$c$PrimitiveFields$T$Int$T$Int$T$PrimitiveFields(df$rt$intToRef(7),
     df$rt$intToRef(8))
+  p$rf.bf$unique := anon$1
+  fold acc(p$c$ReferenceFields$unique(p$rf), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }

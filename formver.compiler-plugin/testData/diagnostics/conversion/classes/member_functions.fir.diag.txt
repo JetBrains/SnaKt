@@ -7,7 +7,6 @@ method f$c$Foo$memberFun$TF$T$Foo$T$Int(this$dispatch: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   inhale acc(p$c$Foo$shared(this$dispatch), wildcard)
-  unfold acc(p$c$Foo$shared(this$dispatch), wildcard)
   ret$0 := this$dispatch.bf$x
   goto lbl$ret$0
   label lbl$ret$0

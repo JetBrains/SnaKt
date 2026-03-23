@@ -69,18 +69,23 @@ method f$testCascadingFieldGetter$TF$T$ReferenceFields$T$Unit(p$rf: Ref)
   var l0$fa: Ref
   var anon$0: Ref
   var l0$fb: Ref
-  var l0$ga: Ref
   var anon$1: Ref
+  var l0$ga: Ref
+  var anon$2: Ref
   var l0$gb: Ref
+  var anon$3: Ref
   inhale acc(p$c$ReferenceFields$shared(p$rf), wildcard)
   unfold acc(p$c$ReferenceFields$shared(p$rf), wildcard)
   anon$0 := p$rf.bf$f
   unfold acc(p$c$PrimitiveFields$shared(anon$0), wildcard)
   l0$fa := anon$0.bf$a
+  unfold acc(p$c$ReferenceFields$shared(p$rf), wildcard)
+  anon$1 := p$rf.bf$f
   l0$fb := havoc$T$Int()
-  anon$1 := havoc$T$PrimitiveFields()
-  unfold acc(p$c$PrimitiveFields$shared(anon$1), wildcard)
-  l0$ga := anon$1.bf$a
+  anon$2 := havoc$T$PrimitiveFields()
+  unfold acc(p$c$PrimitiveFields$shared(anon$2), wildcard)
+  l0$ga := anon$2.bf$a
+  anon$3 := havoc$T$PrimitiveFields()
   l0$gb := havoc$T$Int()
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
