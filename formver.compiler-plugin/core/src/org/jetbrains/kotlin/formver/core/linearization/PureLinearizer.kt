@@ -105,6 +105,14 @@ data class PureLinearizer(
         }
     }
 
+    override fun addBranchWithFolding(
+        condition: ExpEmbedding,
+        thenBranch: ExpEmbedding,
+        elseBranch: ExpEmbedding,
+        type: TypeEmbedding,
+        result: VariableEmbedding?
+    ) = addBranch(condition, thenBranch, elseBranch, type, result)
+
     override fun addModifier(mod: StmtModifier) {
         throw PureLinearizerMisuseException("addModifier")
     }
