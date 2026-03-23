@@ -128,7 +128,7 @@ class ProgramConverter(
     }
 
     @OptIn(SymbolInternals::class)
-    fun embedPureUserFunction(
+    private fun embedPureUserFunction(
         symbol: FirFunctionSymbol<*>,
         signature: FullNamedFunctionSignature
     ): PureUserFunctionEmbedding {
