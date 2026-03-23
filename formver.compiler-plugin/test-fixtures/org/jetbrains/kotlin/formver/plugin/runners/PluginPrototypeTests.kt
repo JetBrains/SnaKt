@@ -46,6 +46,7 @@ abstract class AbstractFirLightTreeFormVerPluginNoVerificationDiagnosticsTest : 
         private val SKIP_DIRECTIVE_NAMES = listOf(
             FormVerDirectives.NEVER_VALIDATE,
             FormVerDirectives.UNIQUE_CHECK_ONLY,
+            FormVerDirectives.LOCALITY_CHECK_ONLY,
         ).map { "// ${it.name}" }
     }
 
