@@ -611,6 +611,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
+    @TestMetadata("dump_cfg.kt")
+    public void testDump_cfg() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/dump_cfg.kt");
+    }
+
+    @Test
     @TestMetadata("pass_local_argument.kt")
     public void testPass_local_argument() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/pass_local_argument.kt");

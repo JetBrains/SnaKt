@@ -12,6 +12,7 @@ data class PluginConfiguration(
     val conversionSelection: TargetsSelection,
     val verificationSelection: TargetsSelection,
     val checkUniqueness: Boolean,
+    val dumpUniquenessCFG: Boolean,
 ) {
     init {
         require(conversionSelection >= verificationSelection) {

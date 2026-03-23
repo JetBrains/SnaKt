@@ -6,11 +6,14 @@
 package org.jetbrains.kotlin.formver.plugin.compiler
 
 import com.intellij.psi.PsiElement
-import org.jetbrains.kotlin.diagnostics.AbstractSourceElementPositioningStrategy
-import org.jetbrains.kotlin.diagnostics.DiagnosticFactory2DelegateProvider
-import org.jetbrains.kotlin.diagnostics.KtDiagnosticsContainer
-import org.jetbrains.kotlin.diagnostics.Severity
-import org.jetbrains.kotlin.diagnostics.SourceElementPositioningStrategies
+import org.jetbrains.kotlin.diagnostics.*
+
+context(container: KtDiagnosticsContainer)
+inline fun <reified P : PsiElement, A> info1(
+    positioningStrategy: AbstractSourceElementPositioningStrategy = SourceElementPositioningStrategies.DEFAULT
+): DiagnosticFactory1DelegateProvider<A> {
+    return DiagnosticFactory1DelegateProvider(Severity.INFO, positioningStrategy, P::class, container)
+}
 
 context(container: KtDiagnosticsContainer)
 inline fun <reified P : PsiElement, A, B> info2(
