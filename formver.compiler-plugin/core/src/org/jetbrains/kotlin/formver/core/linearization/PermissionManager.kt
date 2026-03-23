@@ -84,7 +84,7 @@ class UniquePermissionManager private constructor(before: UniquenessTrie, after:
     val toFold: List<Path>
 
     init {
-        val pathsToConsider = paths.mapNotNull { it.pathWithoutLast() }.toSet()
+        val pathsToConsider = paths.flatMap { path -> path.traverse().mapNotNull { it.pathWithoutLast() } }.toSet()
         val toUnfold = mutableListOf<Path>()
         val toFold = mutableListOf<Path>()
 
@@ -110,8 +110,8 @@ class UniquePermissionManager private constructor(before: UniquenessTrie, after:
         toUnfold.sortBy { it.length }
         // We need to fold `a.field` before `first`
         toFold.sortByDescending { it.length }
-        this.toUnfold = toUnfold
-        this.toFold = toFold
+        this.toUnfold = toUnfold.toList()
+        this.toFold = toFold.toList()
     }
 
     fun uniquePredicates(list: List<Path>, ctx: LinearizationContext): List<Exp.PredicateAccess> =
