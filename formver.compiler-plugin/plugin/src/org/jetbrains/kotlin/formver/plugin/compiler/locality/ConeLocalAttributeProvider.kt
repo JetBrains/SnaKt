@@ -16,8 +16,8 @@ class ConeLocalAttributeProvider(
             ConeLocalAttributeProvider(
                 session,
                 ConeLocalAttributeExtractor(
-                    WeakHashMap(),
-                    session.firTails.tailsExtractor
+                    session,
+                    WeakHashMap()
                 )
             )
         }
