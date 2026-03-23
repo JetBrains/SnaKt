@@ -375,6 +375,11 @@ function sp$minusInts(arg1: Ref, arg2: Ref): Ref
     df$rt$intFromRef(arg1) - df$rt$intFromRef(arg2)
 
 
+function sp$negInt(arg1: Ref): Ref
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+  ensures df$rt$intFromRef(result) == -df$rt$intFromRef(arg1)
+
+
 function sp$notBool(arg1: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
   ensures df$rt$boolFromRef(result) == !df$rt$boolFromRef(arg1)
@@ -585,3 +590,4 @@ method havoc$T$String() returns (ret: Ref)
 
 method havoc$T$Unit() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
