@@ -10,7 +10,6 @@ import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
-import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.core.embeddings.toViperGoto
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
@@ -93,9 +92,9 @@ data class Linearizer(
             Stmt.If(condViper, thenViper, elseViper, source.asPosition)
         }
 
-    override fun translateFieldAccess(access: FieldAccess): Exp {
+    override fun addFieldAccess(access: FieldAccess): Exp {
         val result = freshAnonVar(access.field.type)
-        storeFieldAccess(access.receiver, access.field, result)
+        addFieldAccessStoringIn(access, result)
         return result.toViper(this)
     }
 
@@ -103,7 +102,9 @@ data class Linearizer(
         stmtModifierTracker?.add(mod) ?: error("Not in a statement")
     }
 
-    override fun storeFieldAccess(receiver: ExpEmbedding, field: FieldEmbedding, result: VariableEmbedding) {
+    override fun addFieldAccessStoringIn(access: FieldAccess, result: VariableEmbedding) {
+        val field = access.field
+        val receiver = access.receiver
         addStatement {
             when (field.accessPolicy) {
                 // TODO: Handling a unique field on a shared receiver must be added here.

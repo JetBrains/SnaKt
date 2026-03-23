@@ -271,14 +271,13 @@ fun StmtConversionContext.convertFunctionWithBody(
         errorCollector.addPurityError(declaration.source, "Impure function body detected in pure function")
         return null
     }
-    val pureLinearizer = PureLinearizer(
+    val pureFunBodyLinearizer = PureFunBodyLinearizer(
         declaration.source,
         SharedLinearizationState(anonVarProducer),
         SsaConverter(declaration.source),
-        true
     )
-    body.toViperUnusedResult(pureLinearizer)
-    return pureLinearizer.constructExpression()
+    body.toViperUnusedResult(pureFunBodyLinearizer)
+    return pureFunBodyLinearizer.constructExpression()
 }
 
 private const val INVALID_STATEMENT_MSG =

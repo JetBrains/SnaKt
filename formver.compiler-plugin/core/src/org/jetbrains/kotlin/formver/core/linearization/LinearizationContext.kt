@@ -11,7 +11,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariable
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeBuilder
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeBuilder
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
@@ -54,19 +53,9 @@ interface LinearizationContext {
         result: VariableEmbedding?
     )
 
-    /**
-     * This function is used to delegate the responsibility of deciding how to translate
-     * a field access to Viper to the LinearizationContext rather than the FieldAccess
-     * querying the context for some policy on how to deal with itself.
-     */
-    fun translateFieldAccess(access: FieldAccess): Exp
+    fun addFieldAccess(access: FieldAccess): Exp
 
-    /**
-     * This function is used to store a FieldAccess. Namely, if it is already decided that
-     * the field access should be stored in some variable, this function is used
-     * to perform the store operation depending on context.
-     */
-    fun storeFieldAccess(receiver: ExpEmbedding, field: FieldEmbedding, result: VariableEmbedding)
+    fun addFieldAccessStoringIn(access: FieldAccess, result: VariableEmbedding)
 
     fun addModifier(mod: StmtModifier)
 

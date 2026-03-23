@@ -367,11 +367,11 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
         if (field.accessPolicy == AccessPolicy.ALWAYS_WRITEABLE) {
             return PrimitiveFieldAccess(receiver, field).toViper(ctx)
         }
-        return ctx.translateFieldAccess(this)
+        return ctx.addFieldAccess(this)
     }
 
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-        ctx.storeFieldAccess(receiver, field, result)
+        ctx.addFieldAccessStoringIn(this, result)
     }
 
     override fun toViperUnusedResult(ctx: LinearizationContext) {
