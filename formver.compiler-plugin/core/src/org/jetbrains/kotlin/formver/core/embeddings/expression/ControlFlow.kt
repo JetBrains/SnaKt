@@ -61,13 +61,13 @@ data class If(
 ) :
     OptionalResultExpEmbedding, DefaultDebugTreeViewImplementation, DefaultUniqueness() {
     override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
-        val permissionManager = UniquePermissionManager.create(condition)
-        permissionManager?.unfold(ctx)
-        val condViper = condition.toViperBuiltinType(ctx)
-        permissionManager?.fold(ctx)
-        val thenViper = ctx.asBlock { thenBranch.withType(type).toViperMaybeStoringIn(result, ctx) }
-        val elseViper = ctx.asBlock { elseBranch.withType(type).toViperMaybeStoringIn(result, ctx) }
         ctx.addStatement {
+            val permissionManager = UniquePermissionManager.create(condition)
+            permissionManager?.unfold(ctx)
+            val condViper = condition.toViperBuiltinType(this)
+            permissionManager?.fold(ctx)
+            val thenViper = asBlock { thenBranch.withType(type).toViperMaybeStoringIn(result, this) }
+            val elseViper = asBlock { elseBranch.withType(type).toViperMaybeStoringIn(result, this) }
             Stmt.If(condViper, thenViper, elseViper, source.asPosition)
         }
     }
