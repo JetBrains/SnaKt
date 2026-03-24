@@ -46,7 +46,10 @@ val ConeKotlinType.localAttribute: ConeLocalAttribute?
     get() = attributes[ConeLocalAttribute::class]
 
 fun ConeLocalAttribute?.accepts(other: ConeLocalAttribute?): Boolean =
-    this == other
+    when (this) {
+        null -> other == null
+        else -> true
+    }
 
 fun ConeLocalAttribute?.render(): String =
     if (this == null)

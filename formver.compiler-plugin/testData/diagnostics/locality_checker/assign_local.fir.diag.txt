@@ -1,3 +1,1 @@
-/assign_local.kt:(141,142): error: Assignment locality mismatch: expected 'local', actual 'global'.
-
-/assign_local.kt:(327,328): error: Assignment locality mismatch: expected 'local', actual 'global'.
+/assign_local.kt:(228,229): error: Assignment locality mismatch: expected 'global', actual 'local'.
