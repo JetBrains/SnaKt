@@ -1,8 +1,5 @@
 package org.jetbrains.kotlin.formver.plugin.compiler.locality
 
-import org.jetbrains.kotlin.fir.FirElement
-import org.jetbrains.kotlin.fir.FirSession
-import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.types.ConeAttribute
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import kotlin.reflect.KClass
