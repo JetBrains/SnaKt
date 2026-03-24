@@ -40,7 +40,7 @@ object ConeLocalAttribute : ConeAttribute<ConeLocalAttribute>() {
 }
 
 fun ConeLocalAttribute?.union(other: ConeLocalAttribute?): ConeLocalAttribute? =
-    if (this == null) other else this.union(other)
+    this?.union(other) ?: other
 
 val ConeKotlinType.localAttribute: ConeLocalAttribute?
     get() = attributes[ConeLocalAttribute::class]
