@@ -28,7 +28,7 @@ class LocalityFunctionCallChecker(
 
         for ((parameter, argument) in parameters.zip(arguments)) {
             val parameterLocality = parameter.resolvedReturnType.localAttribute
-            val argumentLocality = argument.localAttribute
+            val argumentLocality = argument.resolvedLocalAttribute
 
             if (parameterLocality.accepts(argumentLocality)) continue
 

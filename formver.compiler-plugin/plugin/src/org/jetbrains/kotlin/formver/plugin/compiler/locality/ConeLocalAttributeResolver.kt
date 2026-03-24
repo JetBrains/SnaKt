@@ -32,5 +32,5 @@ val FirExpression.declaredLocalAttribute: ConeLocalAttribute?
     get() = resolvedType.localAttribute
 
 context(context : CheckerContext)
-val FirExpression.localAttribute: ConeLocalAttribute?
+val FirExpression.resolvedLocalAttribute: ConeLocalAttribute?
     get() = context.session.coneLocalAttributeResolver.resolve(this)

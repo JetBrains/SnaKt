@@ -18,7 +18,7 @@ class LocalityReturnChecker(
         if (!config.checkLocality) return
 
         val leftLocality = expression.target.labeledElement.returnTypeRef.coneType.localAttribute
-        val rightLocality = expression.result.localAttribute
+        val rightLocality = expression.result.resolvedLocalAttribute
 
         if (leftLocality.accepts(rightLocality)) return
 

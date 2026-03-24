@@ -19,7 +19,7 @@ class LocalityPropertyChecker(
 
         val initializer = declaration.initializer ?: return
         val leftLocality = declaration.returnTypeRef.coneType.localAttribute
-        val rightLocality = initializer.localAttribute
+        val rightLocality = initializer.resolvedLocalAttribute
 
         if (leftLocality.accepts(rightLocality)) return
 

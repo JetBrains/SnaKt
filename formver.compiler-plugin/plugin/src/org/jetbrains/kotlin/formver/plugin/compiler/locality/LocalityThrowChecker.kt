@@ -17,7 +17,7 @@ class LocalityThrowChecker(
         if (!config.checkLocality) return
 
         val leftLocality: ConeLocalAttribute? = null
-        val rightLocality = expression.exception.localAttribute
+        val rightLocality = expression.exception.resolvedLocalAttribute
 
         if (leftLocality.accepts(rightLocality)) return
 
