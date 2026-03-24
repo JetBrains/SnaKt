@@ -104,7 +104,7 @@ data class PureFunBodyLinearizer(
             "Invalid receiver encountered in pure function"
         )
         val receiverWrapper = ExpWrapper(viperReceiver, receiver.type)
-        val hierarchyPath = receiver.type.hierarchyUnfoldPath(field)
+        val hierarchyPath = receiver.type.hierarchyPathTo(field)
         val accessInvariants =
             hierarchyPath?.map { it.predicateAccess(receiverWrapper, source) }?.toList() ?: emptyList()
         val primitiveAccess: Exp = Exp.FieldAccess(viperReceiver, field.toViper(), source.asPosition)

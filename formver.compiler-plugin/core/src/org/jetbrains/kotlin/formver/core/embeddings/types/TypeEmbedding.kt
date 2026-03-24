@@ -100,8 +100,9 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
     override val debugTreeView: TreeView
         get() = PlaintextLeaf(name.mangled)
 
-    fun hierarchyUnfoldPath(field: FieldEmbedding): Sequence<ClassTypeEmbedding>? =
-        (pretype as? ClassTypeEmbedding)?.details?.hierarchyUnfoldPath(field)
+    fun hierarchyPathTo(field: FieldEmbedding): Sequence<ClassTypeEmbedding>? =
+        // TODO: Find a nicer solution to avoid this cast. It should really be: type.hierarchyPathTo(field)
+        (pretype as? ClassTypeEmbedding)?.details?.hierarchyPathTo(field)
 }
 
 data class TypeEmbeddingFlags(val nullable: Boolean) {

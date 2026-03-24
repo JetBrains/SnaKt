@@ -91,7 +91,7 @@ data class PureExpLinearizer(
         name
 
     private fun FieldAccess.unfoldingInImpl(): Exp {
-        val hierarchyPath = receiver.type.hierarchyUnfoldPath(field)
+        val hierarchyPath = receiver.type.hierarchyPathTo(field)
         val primitiveAccess: Exp =
             Exp.FieldAccess(receiver.toViper(this@PureExpLinearizer), field.toViper(), source.asPosition)
         if (hierarchyPath == null) return primitiveAccess

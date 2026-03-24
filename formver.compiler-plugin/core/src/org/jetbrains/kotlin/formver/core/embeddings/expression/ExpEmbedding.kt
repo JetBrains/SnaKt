@@ -422,7 +422,7 @@ data class FieldModification(val receiver: ExpEmbedding, val field: FieldEmbeddi
     }
 
     private fun unfoldHierarchy(receiverWrapper: ExpEmbedding, ctx: LinearizationContext) {
-        val hierarchyPath = receiver.type.hierarchyUnfoldPath(field)
+        val hierarchyPath = receiver.type.hierarchyPathTo(field)
         hierarchyPath?.forEach { classType ->
             val predAcc = classType.predicateAccess(receiverWrapper, ctx)
             predAcc.let { ctx.addStatement { Stmt.Unfold(it) } }
