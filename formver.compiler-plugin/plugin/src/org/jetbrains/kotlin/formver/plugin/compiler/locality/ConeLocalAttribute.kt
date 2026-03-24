@@ -39,6 +39,9 @@ object ConeLocalAttribute : ConeAttribute<ConeLocalAttribute>() {
 fun ConeLocalAttribute?.union(other: ConeLocalAttribute?): ConeLocalAttribute? =
     this?.union(other) ?: other
 
+fun ConeLocalAttribute?.intersect(other: ConeLocalAttribute?): ConeLocalAttribute? =
+    this?.intersect(other)
+
 val ConeKotlinType.localAttribute: ConeLocalAttribute?
     get() = attributes[ConeLocalAttribute::class]
 
