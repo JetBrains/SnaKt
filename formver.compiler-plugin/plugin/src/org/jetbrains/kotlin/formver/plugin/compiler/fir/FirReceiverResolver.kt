@@ -1,6 +1,5 @@
 package org.jetbrains.kotlin.formver.plugin.compiler.fir
 
-import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.FirSession.Companion.sessionComponentAccessor
 import org.jetbrains.kotlin.fir.expressions.FirExpression
@@ -8,25 +7,25 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import java.util.WeakHashMap
 
-class FirReceiversResolver(
+class FirReceiverResolver(
     session: FirSession,
-    val tailsExtractor: FirTailsExtractor,
+    private val receiverExtractor: FirReceiverExtractor,
 ) : FirExtensionSessionComponent(session) {
     companion object {
         fun getFactory(): Factory = Factory { session ->
-            FirTailsResolver(
+            FirReceiverResolver(
                 session,
-                FirTailsExtractor(WeakHashMap())
+                FirReceiverExtractor(WeakHashMap())
             )
         }
     }
     
-    fun resolve(element: FirElement): Sequence<FirExpression> =
-        tailsExtractor.extract(element)
+    fun resolve(expression: FirExpression): FirExpression? =
+        receiverExtractor.extract(expression)
 }
 
-val FirSession.firReceiversResolver: FirTailsResolver by sessionComponentAccessor()
+val FirSession.firReceiversResolver: FirReceiverResolver by sessionComponentAccessor()
 
 context(context : CheckerContext)
-val FirExpression.receivers: Sequence<FirExpression>
-    get() = context.session.firTailsResolver.resolve(this)
+val FirExpression.receiver: FirExpression?
+    get() = context.session.firReceiversResolver.resolve(this)

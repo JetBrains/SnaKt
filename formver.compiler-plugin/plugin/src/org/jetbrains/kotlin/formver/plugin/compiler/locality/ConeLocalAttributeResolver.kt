@@ -5,6 +5,7 @@ import org.jetbrains.kotlin.fir.FirSession.Companion.sessionComponentAccessor
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
+import org.jetbrains.kotlin.fir.types.resolvedType
 import java.util.WeakHashMap
 
 class ConeLocalAttributeResolver(
@@ -26,6 +27,9 @@ class ConeLocalAttributeResolver(
 }
 
 val FirSession.coneLocalAttributeResolver: ConeLocalAttributeResolver by sessionComponentAccessor()
+
+val FirExpression.declaredLocalAttribute: ConeLocalAttribute?
+    get() = resolvedType.localAttribute
 
 context(context : CheckerContext)
 val FirExpression.localAttribute: ConeLocalAttribute?
