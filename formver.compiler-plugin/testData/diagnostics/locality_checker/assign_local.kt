@@ -2,27 +2,33 @@
 
 import org.jetbrains.kotlin.formver.plugin.Borrowed
 
-fun `assign global`(x: Any) {
-    var y: @Borrowed Any
-
-    y = <!LOCALITY_VIOLATION!>x<!>
-}
-
-fun `assign local`(x: @Borrowed Any) {
-    var y: @Borrowed Any
+fun `assign global to local`(x: Any) {
+    @Borrowed var y: Any
 
     y = x
 }
 
-fun `assign local then global`(x: @Borrowed Any, y: Any) {
-    var z: @Borrowed Any
+fun `assign local to global`(@Borrowed x: Any) {
+    var y: Any
 
-    z = x
-    z = <!LOCALITY_VIOLATION!>y<!>
+    y = <!LOCALITY_VIOLATION!>x<!>
 }
 
-fun `assign local in loop`(x: @Borrowed Any) {
-    var z: @Borrowed Any
+fun `assign local to local`(@Borrowed x: Any) {
+    @Borrowed var y: Any
+
+    y = x
+}
+
+fun `assign local then global to local`(@Borrowed x: Any, y: Any) {
+    @Borrowed var z: Any
+
+    z = x
+    z = y
+}
+
+fun `assign local to local in loop`(@Borrowed x: Any) {
+    @Borrowed var z: Any
 
     while (true) {
         z = x
