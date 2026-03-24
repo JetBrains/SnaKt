@@ -40,3 +40,6 @@ fun <!VIPER_TEXT!>havoc<!>(a: A): Unit {
     var localStringNull = a.stringNull
     var localClassTypeNull = a.classTypeNull
 }
+
+/* GENERATED_FIR_TAGS: classDeclaration, functionDeclaration, localProperty, nullableType, primaryConstructor,
+propertyDeclaration */
