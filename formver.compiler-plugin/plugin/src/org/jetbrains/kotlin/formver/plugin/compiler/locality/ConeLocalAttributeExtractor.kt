@@ -20,7 +20,7 @@ class ConeLocalAttributeExtractor(
                     tail.declaredLocalAttribute
                 } else {
                     result.union(
-                        tail.declaredLocalAttribute.union(receiver.resolvedLocalAttribute)
+                        tail.declaredLocalAttribute.intersect(receiver.resolvedLocalAttribute)
                     )
                 }
             }
