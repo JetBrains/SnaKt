@@ -22,7 +22,7 @@ class ConeLocalAttributeResolver(
 
     context(context : CheckerContext)
     fun resolve(expression: FirExpression): ConeLocalAttribute? =
-        localAttributeExtractor.resolveLocalAttribute(expression)
+        localAttributeExtractor.extract(expression)
 }
 
 val FirSession.coneLocalAttributeResolver: ConeLocalAttributeResolver by sessionComponentAccessor()
