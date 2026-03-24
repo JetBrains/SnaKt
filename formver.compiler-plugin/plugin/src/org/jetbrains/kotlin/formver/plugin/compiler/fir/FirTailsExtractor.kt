@@ -14,13 +14,14 @@ import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
 import org.jetbrains.kotlin.fir.expressions.FirSafeCallExpression
 import org.jetbrains.kotlin.fir.expressions.FirSmartCastExpression
+import org.jetbrains.kotlin.fir.expressions.FirThrowExpression
 import org.jetbrains.kotlin.fir.expressions.FirTypeOperatorCall
 import org.jetbrains.kotlin.fir.expressions.FirTryExpression
 import org.jetbrains.kotlin.fir.expressions.FirWhenExpression
 import org.jetbrains.kotlin.fir.expressions.FirWrappedExpression
 import org.jetbrains.kotlin.fir.expressions.builder.buildArgumentList
-import org.jetbrains.kotlin.fir.expressions.builder.buildCheckedSafeCallSubject
 import org.jetbrains.kotlin.fir.expressions.builder.buildCheckNotNullCall
+import org.jetbrains.kotlin.fir.expressions.builder.buildCheckedSafeCallSubject
 import org.jetbrains.kotlin.fir.expressions.builder.buildFunctionCallCopy
 import org.jetbrains.kotlin.fir.expressions.builder.buildPropertyAccessExpressionCopy
 import org.jetbrains.kotlin.fir.expressions.builder.buildSafeCallExpression
@@ -29,18 +30,16 @@ import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 import java.util.WeakHashMap
 
-class FirTailsExtractor(
+open class FirTailsExtractor(
     val cache: WeakHashMap<FirElement, Sequence<FirExpression>>
 ) : FirVisitor<Sequence<FirExpression>, Unit>() {
     private fun FirElement.visit(): Sequence<FirExpression> {
         return cache.computeIfAbsent(this) {
-            val tails = accept(this@FirTailsExtractor, Unit)
-            cache[this] = tails
-            tails
+            accept(this@FirTailsExtractor, Unit)
         }
     }
 
-    fun extractTails(element: FirElement): Sequence<FirExpression> {
+    fun extract(element: FirElement): Sequence<FirExpression> {
         return element.visit()
     }
 
@@ -140,7 +139,14 @@ class FirTailsExtractor(
         returnExpression: FirReturnExpression,
         data: Unit
     ): Sequence<FirExpression> {
-        return returnExpression.result.visit()
+        return emptySequence()
+    }
+
+    override fun visitThrowExpression(
+        throwExpression: FirThrowExpression,
+        data: Unit
+    ): Sequence<FirExpression> {
+        return emptySequence()
     }
 
     override fun visitTryExpression(
@@ -153,6 +159,22 @@ class FirTailsExtractor(
         }
 
         return tryTails + catchTails
+    }
+
+    private fun FirQualifiedAccessExpression.withExplicitReceiver(
+        receiver: FirExpression
+    ): FirQualifiedAccessExpression {
+        return when (this) {
+            is FirFunctionCall -> buildFunctionCallCopy(this) {
+                explicitReceiver = receiver
+            }
+
+            is FirPropertyAccessExpression -> buildPropertyAccessExpressionCopy(this) {
+                explicitReceiver = receiver
+            }
+
+            else -> error("Unsupported qualified access expression: ${this::class.simpleName}")
+        }
     }
 
     override fun visitQualifiedAccessExpression(
@@ -205,22 +227,6 @@ class FirTailsExtractor(
                 checkedSubjectRef = newCheckedSubjectRef
                 selector = newSelector
             }
-        }
-    }
-
-    private fun FirQualifiedAccessExpression.withExplicitReceiver(
-        receiver: FirExpression
-    ): FirExpression {
-        return when (this) {
-            is FirFunctionCall -> buildFunctionCallCopy(this) {
-                explicitReceiver = receiver
-            }
-
-            is FirPropertyAccessExpression -> buildPropertyAccessExpressionCopy(this) {
-                explicitReceiver = receiver
-            }
-
-            else -> error("Unsupported qualified access expression: ${this::class.simpleName}")
         }
     }
 }
