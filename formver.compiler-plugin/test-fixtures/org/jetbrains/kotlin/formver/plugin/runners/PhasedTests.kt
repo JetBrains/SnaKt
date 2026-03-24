@@ -21,6 +21,7 @@ import org.jetbrains.kotlin.test.builders.firHandlersStep
 import org.jetbrains.kotlin.test.configuration.commonServicesConfigurationForCodegenAndDebugTest
 import org.jetbrains.kotlin.test.configuration.configureCommonDiagnosticTestPaths
 import org.jetbrains.kotlin.test.configuration.setupHandlersForDiagnosticTest
+import org.jetbrains.kotlin.test.directives.DiagnosticsDirectives
 import org.jetbrains.kotlin.test.directives.DiagnosticsDirectives.RENDER_DIAGNOSTICS_FULL_TEXT
 import org.jetbrains.kotlin.test.directives.FirDiagnosticsDirectives.ENABLE_PLUGIN_PHASES
 import org.jetbrains.kotlin.test.directives.JvmEnvironmentConfigurationDirectives
@@ -30,10 +31,12 @@ import org.jetbrains.kotlin.test.directives.configureFirParser
 import org.jetbrains.kotlin.test.frontend.fir.FirCliJvmFacade
 import org.jetbrains.kotlin.test.frontend.fir.FirOutputArtifact
 import org.jetbrains.kotlin.test.frontend.fir.TagsGeneratorChecker
+import org.jetbrains.kotlin.test.frontend.fir.handlers.FullDiagnosticsRenderer
 import org.jetbrains.kotlin.test.frontend.fir.handlers.firDiagnosticCollectorService
 import org.jetbrains.kotlin.test.model.*
 import org.jetbrains.kotlin.test.runners.AbstractPhasedJvmDiagnosticLightTreeTest
 import org.jetbrains.kotlin.test.services.*
+import kotlin.collections.map
 
 // TODO: Remove the backend part
 abstract class AbstractPhasedDiagnosticTest() : AbstractPhasedJvmDiagnosticLightTreeTest() {
@@ -86,7 +89,7 @@ abstract class AbstractPhasedDiagnosticTest() : AbstractPhasedJvmDiagnosticLight
 object ViperArtifactKind : TestArtifactKind<ViperVerificationArtifact>("ViperVerification")
 
 class ViperVerificationArtifact(
-    val results: Map<KtSourceElement, List<String>>
+    val results: Map<TestFile, Map<KtSourceElement, MutableList<String>>>
 ) : ResultingArtifact<ViperVerificationArtifact>() {
     override val kind: TestArtifactKind<ViperVerificationArtifact>
         get() = ViperArtifactKind
@@ -108,23 +111,24 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
     ): ViperVerificationArtifact {
         val frontendDiagnosticsPerFile =
             testServices.firDiagnosticCollectorService.getFrontendDiagnosticsForModule(inputArtifact)
-        inputArtifact.allFirFiles.map { (file, firFile) ->
-            val diagnostics = frontendDiagnosticsPerFile[firFile] ?: emptyList()
-            firFile.declarations.forEach { decl ->
-                when (decl) {
-                    is FirSimpleFunction -> {
-
-                        verifyFunction(decl)
+        val result: Map<TestFile, Map<KtSourceElement, MutableList<String>>> =
+            inputArtifact.allFirFiles.map { (file, firFile) ->
+                val res = firFile.declarations
+                    .map { decl ->
+                        if (decl is FirSimpleFunction) verifyFunction(decl)
+                        else emptyMap()
                     }
-                    else -> {}
-                }
-            }
-        }
-        return ViperVerificationArtifact(mapOf())
+                    // This flattens the List<Map<K, V>> into a single Map<K, V>
+                    .fold(mutableMapOf<KtSourceElement, MutableList<String>>()) { acc, map ->
+                        acc.apply { putAll(map) }
+                    }
+                file to res
+            }.toMap()
+        return ViperVerificationArtifact(result)
     }
 
     @OptIn(TestInfrastructureInternals::class)
-    private fun verifyFunction(decl: FirSimpleFunction): ViperVerificationArtifact {
+    private fun verifyFunction(decl: FirSimpleFunction): Map<KtSourceElement, MutableList<String>> {
         val program = decl.viperProgram!!
         val result = mutableMapOf<KtSourceElement, MutableList<String>>()
 
@@ -143,7 +147,7 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
         } finally {
             verifier.stop()
         }
-        return ViperVerificationArtifact(result)
+        return result
     }
 
     override fun shouldTransform(module: TestModule): Boolean = true
@@ -153,13 +157,16 @@ class ViperResultHandler(testServices: TestServices) :
     AnalysisHandler<ViperVerificationArtifact>(testServices, false, false) {
     override val artifactKind: TestArtifactKind<ViperVerificationArtifact> get() = ViperArtifactKind
 
-    override fun processModule(module: TestModule, info: ViperVerificationArtifact) {
-        info.results.forEach { (function, status) ->
-            status.forEach { _ -> println("${function.startOffset} : $status") }
-        }
-    }
+    private val fullDiagnosticsRenderer = FullDiagnosticsRenderer(DiagnosticsDirectives.RENDER_DIAGNOSTICS_FULL_TEXT)
 
+    override fun processModule(module: TestModule, info: ViperVerificationArtifact) {
+        module.files.map { file ->
+            val verificationResult = info.results[file]
+            val diagnostics = verificationResult?.values?.flatten() ?: emptyList()
+        }
+        fullDiagnosticsRenderer.storeFullDiagnosticRender(module, diagnostics.map { it.diagnostic }, file)
+    }
     override fun processAfterAllModules(someAssertionWasFailed: Boolean) {
-        println("here")
+        fullDiagnosticsRenderer.assertCollectedDiagnostics(testServices, ".verify.diag.txt")
     }
 }
