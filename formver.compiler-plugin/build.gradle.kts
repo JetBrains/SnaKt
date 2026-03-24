@@ -41,6 +41,8 @@ dependencies {
     testFixturesApi(kotlin("compiler"))
     testFixturesImplementation(project(":formver.common"))
     testFixturesImplementation(project(":formver.compiler-plugin:plugin"))
+    testFixturesApi(project(":formver.compiler-plugin:viper"))
+    testFixturesImplementation(project(":formver.compiler-plugin:core"))
 
     annotationsRuntimeClasspath(project(":formver.annotations"))
 
