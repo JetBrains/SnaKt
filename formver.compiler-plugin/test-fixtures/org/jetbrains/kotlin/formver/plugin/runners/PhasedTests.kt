@@ -1,18 +1,24 @@
 package org.jetbrains.kotlin.formver.plugin.runners
 
 
+import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.formver.core.viperProgram
 import org.jetbrains.kotlin.formver.plugin.services.ExtensionRegistrarConfigurator
 import org.jetbrains.kotlin.formver.plugin.services.PluginAnnotationsProvider
 import org.jetbrains.kotlin.formver.plugin.services.StdlibReplacementsProvider
+import org.jetbrains.kotlin.formver.viper.Verifier
+import org.jetbrains.kotlin.formver.viper.ast.unwrapOr
+import org.jetbrains.kotlin.formver.viper.errors.GenericConsistencyError
+import org.jetbrains.kotlin.formver.viper.errors.VerifierError
 import org.jetbrains.kotlin.test.TestInfrastructureInternals
 import org.jetbrains.kotlin.test.backend.handlers.NoFirCompilationErrorsHandler
-import org.jetbrains.kotlin.test.backend.ir.BackendCliJvmFacade
 import org.jetbrains.kotlin.test.builders.TestConfigurationBuilder
+import org.jetbrains.kotlin.test.builders.classicFrontendHandlersStep
 import org.jetbrains.kotlin.test.builders.configureFirHandlersStep
-import org.jetbrains.kotlin.test.configuration.commonConfigurationForJvmTest
+import org.jetbrains.kotlin.test.builders.firHandlersStep
+import org.jetbrains.kotlin.test.configuration.commonServicesConfigurationForCodegenAndDebugTest
 import org.jetbrains.kotlin.test.configuration.configureCommonDiagnosticTestPaths
 import org.jetbrains.kotlin.test.configuration.setupHandlersForDiagnosticTest
 import org.jetbrains.kotlin.test.directives.DiagnosticsDirectives.RENDER_DIAGNOSTICS_FULL_TEXT
@@ -21,7 +27,6 @@ import org.jetbrains.kotlin.test.directives.JvmEnvironmentConfigurationDirective
 import org.jetbrains.kotlin.test.directives.LanguageSettingsDirectives.LANGUAGE
 import org.jetbrains.kotlin.test.directives.TestPhaseDirectives.LATEST_PHASE_IN_PIPELINE
 import org.jetbrains.kotlin.test.directives.configureFirParser
-import org.jetbrains.kotlin.test.frontend.fir.Fir2IrCliJvmFacade
 import org.jetbrains.kotlin.test.frontend.fir.FirCliJvmFacade
 import org.jetbrains.kotlin.test.frontend.fir.FirOutputArtifact
 import org.jetbrains.kotlin.test.frontend.fir.TagsGeneratorChecker
@@ -40,33 +45,27 @@ abstract class AbstractPhasedDiagnosticTest() : AbstractPhasedJvmDiagnosticLight
             LANGUAGE with "+PropertyParamAnnotationDefaultTargetMode"
             +JvmEnvironmentConfigurationDirectives.FULL_JDK
         }
-        commonConfigurationForJvmTest(
-            targetFrontend = FrontendKinds.FIR,
-            frontendFacade = ::FirCliJvmFacade,
-            frontendToBackendConverter = ::Fir2IrCliJvmFacade, // How to remove this? Or is it enough to have TestPhase.FRONTEND?
-            backendFacade = ::BackendCliJvmFacade
-        )
+        commonServicesConfigurationForCodegenAndDebugTest(FrontendKinds.FIR)
+        facadeStep(::FirCliJvmFacade)
+        classicFrontendHandlersStep()
+        firHandlersStep()
+        facadeStep(::ViperProgramVerificationFacade)
+        handlersStep(
+            ViperArtifactKind,
+            compilationStage = CompilationStage.FIRST
+        ) {
+            useHandlers(::ViperResultHandler)
+        }
+
         configureFirParser(parser)
         configureCommonDiagnosticTestPaths()
 
-
-        /*        configureIrHandlersStep {
-                    useHandlers(
-                        ::IrDiagnosticsHandler,
-                        ::NoIrCompilationErrorsHandler,
-                    )
-                }*/
 
         configureFirHandlersStep {
             setupHandlersForDiagnosticTest()
             // Standard checkers logic
             useHandlers(::NoFirCompilationErrorsHandler, ::TagsGeneratorChecker)
 
-        }
-
-        facadeStep(::ViperProgramVerificationFacade)
-        handlersStep(ViperArtifactKind, CompilationStage.FIRST) {
-            useHandlers(::ViperResultHandler)
         }
 
 
@@ -87,7 +86,7 @@ abstract class AbstractPhasedDiagnosticTest() : AbstractPhasedJvmDiagnosticLight
 object ViperArtifactKind : TestArtifactKind<ViperVerificationArtifact>("ViperVerification")
 
 class ViperVerificationArtifact(
-    val results: Map<FirSimpleFunction, Boolean>
+    val results: Map<KtSourceElement, List<String>>
 ) : ResultingArtifact<ViperVerificationArtifact>() {
     override val kind: TestArtifactKind<ViperVerificationArtifact>
         get() = ViperArtifactKind
@@ -107,10 +106,16 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
         module: TestModule,
         inputArtifact: FirOutputArtifact
     ): ViperVerificationArtifact {
+        val frontendDiagnosticsPerFile =
+            testServices.firDiagnosticCollectorService.getFrontendDiagnosticsForModule(inputArtifact)
         inputArtifact.allFirFiles.map { (file, firFile) ->
+            val diagnostics = frontendDiagnosticsPerFile[firFile] ?: emptyList()
             firFile.declarations.forEach { decl ->
                 when (decl) {
-                    is FirSimpleFunction -> verifyFunction(decl.viperProgram!!)
+                    is FirSimpleFunction -> {
+
+                        verifyFunction(decl)
+                    }
                     else -> {}
                 }
             }
@@ -119,10 +124,26 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
     }
 
     @OptIn(TestInfrastructureInternals::class)
-    private fun verifyFunction(program: viper.silver.ast.Program) {
-        val reporter = testServices.firDiagnosticCollectorService
-        /*val collector = testServices.testConfiguration.testServices.diagnosticsService*/
-        // Here we might want to add diagnostics that some assertion does not hold (output of the viper verification)
+    private fun verifyFunction(decl: FirSimpleFunction): ViperVerificationArtifact {
+        val program = decl.viperProgram!!
+        val result = mutableMapOf<KtSourceElement, MutableList<String>>()
+
+        val onFailure = { err: VerifierError ->
+            val source = err.position.unwrapOr { decl.source }!!
+            val ins = result.getOrElse(source) { mutableListOf() }.add(err.msg)
+        }
+        val consistencyErrors = program.checkTransitively()
+        for (error in consistencyErrors) {
+            onFailure(GenericConsistencyError(error))
+        }
+        val verifier = Verifier()
+        try {
+            verifier.verify(program, onFailure)
+            result.getOrElse(decl.source!!) { mutableListOf() }.add("Verification completed successfully")
+        } finally {
+            verifier.stop()
+        }
+        return ViperVerificationArtifact(result)
     }
 
     override fun shouldTransform(module: TestModule): Boolean = true
@@ -133,13 +154,12 @@ class ViperResultHandler(testServices: TestServices) :
     override val artifactKind: TestArtifactKind<ViperVerificationArtifact> get() = ViperArtifactKind
 
     override fun processModule(module: TestModule, info: ViperVerificationArtifact) {
-        println("handler")
         info.results.forEach { (function, status) ->
-            if (status) {
-                println("Function ${function.name} verified successfully!")
-            }
+            status.forEach { _ -> println("${function.startOffset} : $status") }
         }
     }
 
-    override fun processAfterAllModules(someAssertionWasFailed: Boolean) {}
+    override fun processAfterAllModules(someAssertionWasFailed: Boolean) {
+        println("here")
+    }
 }
