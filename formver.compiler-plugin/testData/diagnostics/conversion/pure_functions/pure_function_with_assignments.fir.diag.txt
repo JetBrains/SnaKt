@@ -1,4 +1,4 @@
-/pure_function_with_assignments.kt:(59,74): info: Generated Viper text for returnNumberVal:
+/pure_function_with_assignments.kt:(78,93): info: Generated Viper text for returnNumberVal:
 function f$returnNumberVal$TF$T$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
@@ -7,7 +7,7 @@ function f$returnNumberVal$TF$T$Int(): Ref
     l0$x$0)
 }
 
-/pure_function_with_assignments.kt:(125,159): info: Generated Viper text for multipleAssignmentsOfDifferentType:
+/pure_function_with_assignments.kt:(144,178): info: Generated Viper text for multipleAssignmentsOfDifferentType:
 function f$multipleAssignmentsOfDifferentType$TF$T$Boolean(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
 {
@@ -22,7 +22,7 @@ function f$multipleAssignmentsOfDifferentType$TF$T$Boolean(): Ref
           l0$c$0))))
 }
 
-/pure_function_with_assignments.kt:(273,309): info: Generated Viper text for multipleAssignmentsWithLiteralReturn:
+/pure_function_with_assignments.kt:(292,328): info: Generated Viper text for multipleAssignmentsWithLiteralReturn:
 function f$multipleAssignmentsWithLiteralReturn$TF$T$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
@@ -37,7 +37,7 @@ function f$multipleAssignmentsWithLiteralReturn$TF$T$Int(): Ref
           df$rt$intToRef(42)))))
 }
 
-/pure_function_with_assignments.kt:(420,454): info: Generated Viper text for laterInitializersCanRelyOnPrevious:
+/pure_function_with_assignments.kt:(439,473): info: Generated Viper text for laterInitializersCanRelyOnPrevious:
 function f$laterInitializersCanRelyOnPrevious$TF$T$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
@@ -50,7 +50,7 @@ function f$laterInitializersCanRelyOnPrevious$TF$T$Int(): Ref
         l0$c$0)))
 }
 
-/pure_function_with_assignments.kt:(541,572): info: Generated Viper text for initializersCanRelyOnParameters:
+/pure_function_with_assignments.kt:(560,591): info: Generated Viper text for initializersCanRelyOnParameters:
 function f$initializersCanRelyOnParameters$TF$T$Int$T$Int$T$Int(p$x: Ref, p$y: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(p$y), df$rt$intType())

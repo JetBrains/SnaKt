@@ -1,3 +1,5 @@
+// NEVER_VALIDATE
+
 import org.jetbrains.kotlin.formver.plugin.Pure
 
 fun <!VIPER_TEXT!>emptyFunction<!>() { val x = emptyAnnotatedFunction() }

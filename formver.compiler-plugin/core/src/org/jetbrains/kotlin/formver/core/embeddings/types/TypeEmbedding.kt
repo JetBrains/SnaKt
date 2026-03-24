@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.sub
 import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.PlaintextLeaf
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.TreeView
+import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.HavocKotlinName
 import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
@@ -98,6 +99,10 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
     context(nameResolver: NameResolver)
     override val debugTreeView: TreeView
         get() = PlaintextLeaf(name.mangled)
+
+    fun hierarchyPathTo(field: FieldEmbedding): Sequence<ClassTypeEmbedding>? =
+        // TODO: Find a nicer solution to avoid this cast. It should really be: type.hierarchyPathTo(field)
+        (pretype as? ClassTypeEmbedding)?.details?.hierarchyPathTo(field)
 }
 
 data class TypeEmbeddingFlags(val nullable: Boolean) {

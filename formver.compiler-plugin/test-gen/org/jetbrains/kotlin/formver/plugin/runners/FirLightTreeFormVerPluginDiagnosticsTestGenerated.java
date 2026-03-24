@@ -166,6 +166,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
       }
 
       @Test
+      @TestMetadata("pure_function_with_heap_dependent_expressions.kt")
+      public void testPure_function_with_heap_dependent_expressions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/pure_function_with_heap_dependent_expressions.kt");
+      }
+
+      @Test
       @TestMetadata("secondary_constructors.kt")
       public void testSecondary_constructors() {
         runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/secondary_constructors.kt");
@@ -887,6 +893,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
       @Test
       public void testAllFilesPresentInPure_functions() {
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/pure_functions"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("heap_dependent_specifications.kt")
+      public void testHeap_dependent_specifications() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/heap_dependent_specifications.kt");
       }
 
       @Test

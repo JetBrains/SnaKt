@@ -6,36 +6,34 @@
 package org.jetbrains.kotlin.formver.core.linearization
 
 import org.jetbrains.kotlin.KtSourceElement
-import org.jetbrains.kotlin.formver.common.SnaktInternalException
-import org.jetbrains.kotlin.formver.core.conversion.FreshEntityProducer
+import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.print
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
 import org.jetbrains.kotlin.formver.names.SimpleNameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
 
-class PureLinearizerMisuseException(val offendingFunction: String) : IllegalStateException(offendingFunction)
+class PureExpLinearizerMisuseException(val offendingFunction: String) : IllegalStateException(offendingFunction)
 
 /**
- * Linearization context that does not permit generation of statements.
+ * Linearization context linearizing a pure ExpEmbedding into a Viper expression.
  *
  * There are cases in Viper where we expect our result to be an expression by itself, for example when
- * processing preconditions, postconditions, and invariants. In those cases, generating statements
- * would be an error.
+ * processing preconditions, postconditions, and invariants. Compared to the [PureFunBodyLinearizer],
+ * this linearizer is highly restrictive on what embeddings are supported and is used to translate
+ * specifications made in Kotlin into Viper expressions.
  */
-data class PureLinearizer(
-    override val source: KtSourceElement?,
-    val state: SharedLinearizationState = SharedLinearizationState(FreshEntityProducer(::AnonymousVariableEmbedding)),
-    private val ssaConverter: SsaConverter = SsaConverter(source)
+data class PureExpLinearizer(
+    override val source: KtSourceElement?
 ) : LinearizationContext {
-    override val unfoldPolicy: UnfoldPolicy
-        get() = UnfoldPolicy.UNFOLDING_IN
 
     override val logicOperatorPolicy: LogicOperatorPolicy
         get() = LogicOperatorPolicy.CONVERT_TO_EXPRESSION
@@ -43,29 +41,28 @@ data class PureLinearizer(
     override fun <R> withPosition(newSource: KtSourceElement, action: LinearizationContext.() -> R): R =
         copy(source = newSource).action()
 
-    override fun freshAnonVar(type: TypeEmbedding): AnonymousVariableEmbedding = state.freshAnonVar(type)
+    override fun freshAnonVar(type: TypeEmbedding): AnonymousVariableEmbedding {
+        throw PureExpLinearizerMisuseException("freshAnonVar")
+    }
 
     override fun asBlock(action: LinearizationContext.() -> Unit): Stmt.Seqn {
-        throw PureLinearizerMisuseException("withNewScopeToBlock")
+        throw PureExpLinearizerMisuseException("withNewScopeToBlock")
     }
 
     override fun addStatement(buildStmt: LinearizationContext.() -> Stmt) {
-        throw PureLinearizerMisuseException("addStatement")
+        throw PureExpLinearizerMisuseException("addStatement")
     }
 
-    // Nothing to do here, as an assignment is also added
-    override fun addDeclaration(decl: Declaration) {}
+    override fun addDeclaration(decl: Declaration) {
+        throw PureExpLinearizerMisuseException("addDeclaration")
+    }
 
     override fun store(lhs: VariableEmbedding, rhs: ExpEmbedding) {
-        // It would be nicer to constraint this a bit further as this is a very special case
-        ssaConverter.addAssignment(
-            lhs.name,
-            rhs.toViper(this)
-        )
+        throw PureExpLinearizerMisuseException("store")
     }
 
     override fun addReturn(returnExp: ExpEmbedding, target: ReturnTarget) {
-        ssaConverter.addReturn(returnExp.toViper(this))
+        throw PureExpLinearizerMisuseException("addReturn")
     }
 
     override fun addBranch(
@@ -75,51 +72,41 @@ data class PureLinearizer(
         type: TypeEmbedding,
         result: VariableEmbedding?
     ) {
-        val conditionExp = condition.ignoringCastsAndMetaNodes().toViperBuiltinType(this)
-        var resultThen: Exp? = null
-        var resultElse: Exp? = null
-
-        ssaConverter.branch(
-            conditionExp,
-            {
-                if (result != null) {
-                    resultThen = thenBranch.toViper(this)
-                } else {
-                    thenBranch.toViperUnusedResult(this)
-                }
-            },
-            {
-                if (result != null) {
-                    resultElse = elseBranch.toViper(this)
-                } else {
-                    elseBranch.toViperUnusedResult(this)
-                }
-            })
-
-        if (result != null) {
-            if (resultThen == null || resultElse == null) throw SnaktInternalException(
-                source,
-                "Tried to translate an if-embedding missing a branch"
-            )
-            ssaConverter.addAssignment(result.name, Exp.TernaryExp(conditionExp, resultThen, resultElse))
-        }
+        throw PureExpLinearizerMisuseException("addBranch")
     }
 
+    override fun addFieldAccessStoringIn(access: FieldAccess, result: VariableEmbedding) {
+        throw PureExpLinearizerMisuseException("addFieldAccessWithResult")
+    }
+
+    override fun addFieldAccess(access: FieldAccess): Exp =
+        access.unfoldingInImpl()
+
+
     override fun addModifier(mod: StmtModifier) {
-        throw PureLinearizerMisuseException("addModifier")
+        throw PureExpLinearizerMisuseException("addModifier")
     }
 
     override fun resolveVariableName(name: SymbolicName): SymbolicName =
-        ssaConverter.resolveVariableName(name)
+        name
 
-    fun constructExpression(): Exp = ssaConverter.constructExpression()
+    private fun FieldAccess.unfoldingInImpl(): Exp {
+        val hierarchyPath = receiver.type.hierarchyPathTo(field)
+        val primitiveAccess: Exp =
+            Exp.FieldAccess(receiver.toViper(this@PureExpLinearizer), field.toViper(), source.asPosition)
+        if (hierarchyPath == null) return primitiveAccess
+        return hierarchyPath.toList().foldRight(primitiveAccess) { classType, acc ->
+            val predAcc = classType.predicateAccess(receiver, source)
+            Exp.Unfolding(predAcc, acc)
+        }
+    }
 }
 
 fun ExpEmbedding.pureToViper(toBuiltin: Boolean, source: KtSourceElement? = null): Exp {
     try {
-        val linearizer = PureLinearizer(source)
+        val linearizer = PureExpLinearizer(source)
         return if (toBuiltin) toViperBuiltinType(linearizer) else toViper(linearizer)
-    } catch (e: PureLinearizerMisuseException) {
+    } catch (e: PureExpLinearizerMisuseException) {
         val catchNameResolver = SimpleNameResolver()
         val debugView = with(catchNameResolver) { debugTreeView.print() }
         val msg =

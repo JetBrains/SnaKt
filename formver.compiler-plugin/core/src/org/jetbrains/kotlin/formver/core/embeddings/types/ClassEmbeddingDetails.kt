@@ -92,8 +92,7 @@ class ClassEmbeddingDetails(
     fun <R> flatMapFields(action: (SimpleKotlinName, FieldEmbedding) -> List<R>): List<R> =
         classSuperTypes.flatMap { it.details.flatMapFields(action) } + fields.flatMap { (name, field) ->
             action(
-                name,
-                field
+                name, field
             )
         }
 
@@ -112,7 +111,7 @@ class ClassEmbeddingDetails(
     override fun subTypeInvariant(): TypeInvariantEmbedding = type.subTypeInvariant()
 
     // Returns the sequence of classes in a hierarchy that need to be unfolded in order to access the given field
-    fun hierarchyUnfoldPath(field: FieldEmbedding): Sequence<ClassTypeEmbedding> = sequence {
+    fun hierarchyPathTo(field: FieldEmbedding): Sequence<ClassTypeEmbedding> = sequence {
         val className = field.containingClass?.name
         require(className != null) { "Cannot find hierarchy unfold path of a field with no class information" }
         if (className == type.name) {
@@ -122,7 +121,7 @@ class ClassEmbeddingDetails(
                 ?: throw IllegalArgumentException("Reached top of the hierarchy without finding the field")
 
             yield(this@ClassEmbeddingDetails.type)
-            yieldAll(sup.details.hierarchyUnfoldPath(field))
+            yieldAll(sup.details.hierarchyPathTo(field))
         }
     }
 
