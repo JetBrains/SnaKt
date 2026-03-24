@@ -12,41 +12,34 @@ import org.jetbrains.kotlin.fir.expressions.FirWrappedExpression
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 import java.util.WeakHashMap
 
-class FirReceiversExtractor(
+class FirReceiverExtractor(
     val cache: WeakHashMap<FirElement, Sequence<FirExpression>>
-) : FirVisitor<Sequence<FirExpression>, Unit>() {
-    private fun FirExpression?.visit(): Sequence<FirExpression> {
-        return this?.accept(this@FirReceiversExtractor, Unit)
-            ?: emptySequence()
+) : FirVisitor<FirExpression?, Unit>() {
+    private fun FirExpression?.visit(): FirExpression? {
+        return this?.accept(this@FirReceiverExtractor, Unit)
     }
 
-    fun extract(expr: FirExpression): Sequence<FirExpression> =
+    fun extract(expr: FirExpression): FirExpression? =
         expr.visit()
 
     override fun visitElement(
         element: FirElement,
         data: Unit
-    ): Sequence<FirExpression> {
-        return if (element is FirExpression) {
-            sequenceOf(element)
-        } else {
-            emptySequence()
-        }
+    ): FirExpression? {
+        return null
     }
 
     override fun visitQualifiedAccessExpression(
         qualifiedAccessExpression: FirQualifiedAccessExpression,
         data: Unit
-    ): Sequence<FirExpression> {
-        val receivers = qualifiedAccessExpression.explicitReceiver.visit()
-
-        return receivers + sequenceOf(qualifiedAccessExpression)
+    ): FirExpression? {
+        return qualifiedAccessExpression.explicitReceiver
     }
 
     override fun visitSmartCastExpression(
         smartCastExpression: FirSmartCastExpression,
         data: Unit
-    ): Sequence<FirExpression> {
+    ): FirExpression? {
         return smartCastExpression.originalExpression.visit()
     }
 
@@ -56,8 +49,8 @@ class FirReceiversExtractor(
     override fun visitTypeOperatorCall(
         typeOperatorCall: FirTypeOperatorCall,
         data: Unit
-    ): Sequence<FirExpression> {
-        if (!typeOperatorCall.isCast()) return sequenceOf(typeOperatorCall)
+    ): FirExpression? {
+        if (!typeOperatorCall.isCast()) return null
 
         return typeOperatorCall.argumentList.arguments.singleOrNull().visit()
     }
@@ -65,23 +58,21 @@ class FirReceiversExtractor(
     override fun visitWrappedExpression(
         wrappedExpression: FirWrappedExpression,
         data: Unit
-    ): Sequence<FirExpression> {
+    ): FirExpression? {
         return wrappedExpression.expression.visit()
     }
 
     override fun visitCheckNotNullCall(
         checkNotNullCall: FirCheckNotNullCall,
         data: Unit
-    ): Sequence<FirExpression> {
+    ): FirExpression? {
         return checkNotNullCall.argumentList.arguments.first().visit()
     }
 
     override fun visitSafeCallExpression(
         safeCallExpression: FirSafeCallExpression,
         data: Unit
-    ): Sequence<FirExpression> {
-        val receivers = safeCallExpression.receiver.visit()
-
-        return receivers + sequenceOf(safeCallExpression)
+    ): FirExpression? {
+        return safeCallExpression.receiver.visit()
     }
 }
