@@ -104,44 +104,52 @@ class ProgramConverter(
 
     fun registerForVerification(declaration: FirSimpleFunction) {
         val signature = embedFullSignature(declaration.symbol)
-        val returnTarget = returnTargetProducer.getFresh(signature.callableType.returnType)
-        val paramResolver =
-            RootParameterResolver(
-                this@ProgramConverter,
-                signature,
-                signature.symbol.valueParameterSymbols,
-                signature.labelName,
-                returnTarget,
-            )
-        val stmtCtx =
-            MethodConverter(
-                this@ProgramConverter,
-                signature,
-                paramResolver,
-                scopeIndexProducer.getFresh(),
-            ).statementCtxt()
-
-        // Note: it is important that `body` is only set after `embedUserFunction` is complete, as we need to
+        // Note: it is important that `body` is only set after embedding is complete, as we need to
         // place the embedding in the map before processing the body.
         if (declaration.symbol.isPure(session)) {
-            embedPureUserFunction(declaration.symbol, signature).apply {
-                body = stmtCtx.convertFunctionWithBody(declaration)
-            }
+            embedPureUserFunction(declaration.symbol, signature)
         } else {
+            val (returnTarget, stmtCtx) = createBodyConversionContext(signature)
             embedUserFunction(declaration.symbol, signature).apply {
                 body = stmtCtx.convertMethodWithBody(declaration, signature, returnTarget)
             }
         }
     }
 
-    fun embedPureUserFunction(
+    @OptIn(SymbolInternals::class)
+    private fun embedPureUserFunction(
         symbol: FirFunctionSymbol<*>,
         signature: FullNamedFunctionSignature
     ): PureUserFunctionEmbedding {
+        // Return if already registered
         (functions[signature.name] as? PureUserFunctionEmbedding)?.also { return it }
         val new = PureUserFunctionEmbedding(processCallable(symbol, signature))
+        // Insert into the map before processing the body, so recursive calls can find the embedding.
         functions[signature.name] = new
+        val declaration = symbol.fir as? FirSimpleFunction
+        if (declaration?.body != null) {
+            val (_, stmtCtx) = createBodyConversionContext(signature)
+            new.body = stmtCtx.convertFunctionWithBody(declaration)
+        }
         return new
+    }
+
+    private fun createBodyConversionContext(signature: FullNamedFunctionSignature): Pair<ReturnTarget, StmtConversionContext> {
+        val returnTarget = returnTargetProducer.getFresh(signature.callableType.returnType)
+        val paramResolver = RootParameterResolver(
+            this@ProgramConverter,
+            signature,
+            signature.symbol.valueParameterSymbols,
+            signature.labelName,
+            returnTarget,
+        )
+        val stmtCtx = MethodConverter(
+            this@ProgramConverter,
+            signature,
+            paramResolver,
+            scopeIndexProducer.getFresh(),
+        ).statementCtxt()
+        return Pair(returnTarget, stmtCtx)
     }
 
     fun embedUserFunction(symbol: FirFunctionSymbol<*>, signature: FullNamedFunctionSignature): UserFunctionEmbedding {
@@ -198,18 +206,8 @@ class ProgramConverter(
     }
 
     override fun embedPureFunction(symbol: FirFunctionSymbol<*>): PureFunctionEmbedding {
-        val lookupName = symbol.embedName(this)
-        return when (val existing = functions[lookupName]) {
-            null -> {
-                val signature = embedFullSignature(symbol)
-                val callable = processCallable(symbol, signature)
-                PureUserFunctionEmbedding(callable).also {
-                    functions[lookupName] = it
-                }
-            }
-
-            else -> existing
-        }
+        val signature = embedFullSignature(symbol)
+        return embedPureUserFunction(symbol, signature)
     }
 
     override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding =
@@ -560,7 +558,6 @@ class ProgramConverter(
             // We generate a dummy method header here to ensure all required types are processed already. If we skip this, any types
             // that are used only in contracts cause an error because they are not processed until too late.
             // TODO: fit this into the flow in some logical way instead.
-            // TODO: We should emit the function with its body here instead of creating an empty header for functions
             NonInlineNamedFunction(
                 signature,
                 symbol.isPure(session)
