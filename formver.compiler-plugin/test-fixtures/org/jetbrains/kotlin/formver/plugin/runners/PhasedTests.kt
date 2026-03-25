@@ -2,12 +2,16 @@ package org.jetbrains.kotlin.formver.plugin.runners
 
 
 import org.jetbrains.kotlin.KtSourceElement
-import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporterFactory
+import org.jetbrains.kotlin.diagnostics.InternalDiagnosticFactoryMethod
+import org.jetbrains.kotlin.diagnostics.KtDiagnosticWithParameters1
+import org.jetbrains.kotlin.diagnostics.SourceElementPositioningStrategies
 import org.jetbrains.kotlin.diagnostics.impl.BaseDiagnosticsCollector
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
+import org.jetbrains.kotlin.fir.pipeline.collectLostDiagnosticsOnFile
 import org.jetbrains.kotlin.formver.core.viperProgram
+import org.jetbrains.kotlin.formver.plugin.compiler.PluginErrors
 import org.jetbrains.kotlin.formver.plugin.services.ExtensionRegistrarConfigurator
 import org.jetbrains.kotlin.formver.plugin.services.PluginAnnotationsProvider
 import org.jetbrains.kotlin.formver.plugin.services.StdlibReplacementsProvider
@@ -31,14 +35,15 @@ import org.jetbrains.kotlin.test.directives.JvmEnvironmentConfigurationDirective
 import org.jetbrains.kotlin.test.directives.LanguageSettingsDirectives.LANGUAGE
 import org.jetbrains.kotlin.test.directives.TestPhaseDirectives.LATEST_PHASE_IN_PIPELINE
 import org.jetbrains.kotlin.test.directives.configureFirParser
+import org.jetbrains.kotlin.test.frontend.fir.FirCliBasedOutputArtifact
 import org.jetbrains.kotlin.test.frontend.fir.FirCliJvmFacade
 import org.jetbrains.kotlin.test.frontend.fir.FirOutputArtifact
 import org.jetbrains.kotlin.test.frontend.fir.TagsGeneratorChecker
 import org.jetbrains.kotlin.test.frontend.fir.handlers.FullDiagnosticsRenderer
+import org.jetbrains.kotlin.test.frontend.fir.handlers.firDiagnosticCollectorService
 import org.jetbrains.kotlin.test.model.*
 import org.jetbrains.kotlin.test.runners.AbstractPhasedJvmDiagnosticLightTreeTest
 import org.jetbrains.kotlin.test.services.*
-import kotlin.collections.map
 
 // TODO: Remove the backend part
 abstract class AbstractPhasedDiagnosticTest() : AbstractPhasedJvmDiagnosticLightTreeTest() {
@@ -91,7 +96,7 @@ abstract class AbstractPhasedDiagnosticTest() : AbstractPhasedJvmDiagnosticLight
 object ViperArtifactKind : TestArtifactKind<ViperVerificationArtifact>("ViperVerification")
 
 class ViperVerificationArtifact(
-    val results: Map<TestFile, Map<KtSourceElement, MutableList<String>>>
+    val conversionArtifacts: FirOutputArtifact,
 ) : ResultingArtifact<ViperVerificationArtifact>() {
     override val kind: TestArtifactKind<ViperVerificationArtifact>
         get() = ViperArtifactKind
@@ -111,30 +116,53 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
         module: TestModule,
         inputArtifact: FirOutputArtifact
     ): ViperVerificationArtifact {
-
+        val scopeSession = inputArtifact.partsForDependsOnModules[0].scopeSession
+        val globalReporter = testServices.firDiagnosticCollectorService.reporterForLTSyntaxErrors
+        var outputArtifacts = inputArtifact as FirCliBasedOutputArtifact<*>
         val reporter = DiagnosticReporterFactory.createReporter(BaseDiagnosticsCollector.RawReporter.DO_NOTHING)
+        inputArtifact.allFirFiles.mapValues { it ->
+            val firFile = it.value
+            val fileMessages = mutableMapOf<KtSourceElement, MutableList<String>>()
 
-        inputArtifact.allFirFiles.forEach { (file, firFile) ->
-            firFile.declarations
-                .forEach { decl ->
-                    if (decl is FirSimpleFunction) verifyFunction(decl, reporter)
+            val session = firFile.moduleData.session
+            firFile.declarations.forEach { declaration ->
+                if (declaration is FirSimpleFunction) {
+                    val functionResults = verifyFunction(declaration, module)
+                    functionResults.forEach {
+
+                        val byFilePath = session.collectLostDiagnosticsOnFile(
+                            scopeSession,
+                            firFile,
+                            globalReporter
+                        )
+                        outputArtifacts.cliArtifact.diagnosticCollector.diagnosticsByFilePath
+
                     }
+                }
+            }
+            fileMessages
         }
-        return ViperVerificationArtifact(result)
+        return ViperVerificationArtifact(inputArtifact)
     }
 
-    @OptIn(TestInfrastructureInternals::class)
+    @OptIn(TestInfrastructureInternals::class, InternalDiagnosticFactoryMethod::class)
     private fun verifyFunction(
         decl: FirSimpleFunction,
-        reporter: DiagnosticReporter
-    ): Map<KtSourceElement, MutableList<String>> {
+        module: TestModule
+    ): List<KtDiagnosticWithParameters1<String>> {
         val program = decl.viperProgram!!
-        val result = mutableMapOf<KtSourceElement, MutableList<String>>()
 
+        val results = mutableListOf<KtDiagnosticWithParameters1<String>>()
         val onFailure = { err: VerifierError ->
             val source = err.position.unwrapOr { decl.source }!!
-//            reporter.reportOn(source, PluginErrors.INTERNAL_ERROR, err, positioningStrategy = positionStrategy)
-//            reporter.reportVerifierError(source, err, ErrorStyle.USER_FRIENDLY)
+//            val unsued = result.getOrPut(source) { mutableListOf() }.add(err.msg)
+            val diagnostics = PluginErrors.VIPER_VERIFICATION_ERROR.on(
+                source,
+                err.msg,
+                positioningStrategy = SourceElementPositioningStrategies.DEFAULT,
+                languageVersionSettings = module.languageVersionSettings
+            )
+            val unsued = results.add(diagnostics!!)
         }
         val consistencyErrors = program.checkTransitively()
         for (error in consistencyErrors) {
@@ -143,11 +171,20 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
         val verifier = Verifier()
         try {
             verifier.verify(program, onFailure)
-            result.getOrElse(decl.source!!) { mutableListOf() }.add("Verification completed successfully")
         } finally {
             verifier.stop()
         }
-        return result
+
+        val diagnostics = PluginErrors.VIPER_VERIFICATION_ERROR.on(
+            decl.source!!,
+            "hello worlds",
+            positioningStrategy = SourceElementPositioningStrategies.DEFAULT,
+            languageVersionSettings = module.languageVersionSettings
+        )
+        val unsued = results.add(diagnostics!!)
+
+
+        return results
     }
 
     override fun shouldTransform(module: TestModule): Boolean = true
@@ -160,11 +197,7 @@ class ViperResultHandler(testServices: TestServices) :
     private val fullDiagnosticsRenderer = FullDiagnosticsRenderer(DiagnosticsDirectives.RENDER_DIAGNOSTICS_FULL_TEXT)
 
     override fun processModule(module: TestModule, info: ViperVerificationArtifact) {
-        module.files.map { file ->
-            val verificationResult = info.results[file]
-            val diagnostics = verificationResult?.values?.flatten() ?: emptyList()
-        }
-        fullDiagnosticsRenderer.storeFullDiagnosticRender(module, diagnostics.map { it.diagnostic }, file)
+        println(info)
     }
     override fun processAfterAllModules(someAssertionWasFailed: Boolean) {
         fullDiagnosticsRenderer.assertCollectedDiagnostics(testServices, ".verify.diag.txt")
