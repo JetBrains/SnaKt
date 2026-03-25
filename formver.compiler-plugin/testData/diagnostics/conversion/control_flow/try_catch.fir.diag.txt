@@ -1,5 +1,6 @@
 /try_catch.kt:(158,166): info: Generated Viper text for tryCatch:
 method f$call$TF$T$Int$T$Unit(p$x: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
@@ -37,6 +38,7 @@ method pg$public$message(this$dispatch: Ref) returns (ret: Ref)
 
 /try_catch.kt:(271,285): info: Generated Viper text for nestedTryCatch:
 method f$call$TF$T$Int$T$Unit(p$x: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
@@ -87,6 +89,7 @@ method pg$public$message(this$dispatch: Ref) returns (ret: Ref)
 
 /try_catch.kt:(574,592): info: Generated Viper text for tryCatchWithInline:
 method f$call$TF$T$Int$T$Unit(p$x: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
@@ -160,6 +163,7 @@ method pg$public$message(this$dispatch: Ref) returns (ret: Ref)
 
 /try_catch.kt:(813,828): info: Generated Viper text for multipleCatches:
 method f$call$TF$T$Int$T$Unit(p$x: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
@@ -210,10 +214,12 @@ method pg$public$message(this$dispatch: Ref) returns (ret: Ref)
 
 /try_catch.kt:(1044,1056): info: Generated Viper text for useException:
 method f$call$TF$T$Int$T$Unit(p$x: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
 method f$ignore$TF$T$Exception$T$Unit(p$e: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$e), df$rt$c$pkg$java_lang$Exception())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
@@ -245,4 +251,3 @@ method pg$public$cause(this$dispatch: Ref) returns (ret: Ref)
 
 
 method pg$public$message(this$dispatch: Ref) returns (ret: Ref)
-

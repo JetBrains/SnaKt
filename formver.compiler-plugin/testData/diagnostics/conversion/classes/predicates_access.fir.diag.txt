@@ -58,10 +58,10 @@ predicate p$c$D$unique(this$dispatch: Ref) {
 
 method f$accessSuperTypeProperty$TF$T$C$T$Unit(p$c: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$c$C())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$temp: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$c$C())
   inhale acc(p$c$C$shared(p$c), wildcard)
   unfold acc(p$c$C$shared(p$c), wildcard)
   unfold acc(p$c$B$shared(p$c), wildcard)
@@ -133,11 +133,11 @@ predicate p$c$D$unique(this$dispatch: Ref) {
 }
 
 method f$accessNested$TF$T$C$T$Unit(p$c: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$c$C())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$temp: Ref
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$c$C())
   inhale acc(p$c$C$shared(p$c), wildcard)
   unfold acc(p$c$C$shared(p$c), wildcard)
   anon$0 := p$c.bf$x
@@ -164,10 +164,10 @@ predicate p$c$A$unique(this$dispatch: Ref) {
 }
 
 method f$accessNullable$TF$NT$A$T$Unit(p$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$c$A()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$n: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$c$A()))
   inhale p$x != df$rt$nullValue() ==> acc(p$c$A$shared(p$x), wildcard)
   if (!(p$x == df$rt$nullValue())) {
     unfold acc(p$c$A$shared(p$x), wildcard)
@@ -205,10 +205,10 @@ predicate p$c$B$unique(this$dispatch: Ref) {
 }
 
 method f$accessCast$TF$T$A$T$Unit(p$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$A())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$n: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$A())
   inhale acc(p$c$A$shared(p$x), wildcard)
   inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$B())
   inhale acc(p$c$B$shared(p$x), wildcard)
@@ -246,11 +246,11 @@ predicate p$c$B$unique(this$dispatch: Ref) {
 }
 
 method f$accessSafeCast$TF$T$A$T$Unit(p$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$A())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$n: Ref
   var l0$y: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$A())
   inhale acc(p$c$A$shared(p$x), wildcard)
   l0$n := df$rt$intToRef(0)
   if (df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$B())) {
@@ -295,10 +295,10 @@ predicate p$c$B$unique(this$dispatch: Ref) {
 }
 
 method f$accessSmartCast$TF$T$A$T$Unit(p$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$A())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$n: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$A())
   inhale acc(p$c$A$shared(p$x), wildcard)
   l0$n := df$rt$intToRef(0)
   if (df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$B())) {

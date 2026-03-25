@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeBuilder
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeBuilder
@@ -16,12 +17,9 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
+import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Label
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
-
-enum class UnfoldPolicy {
-    UNFOLD, UNFOLDING_IN;
-}
 
 enum class LogicOperatorPolicy {
     CONVERT_TO_IF, CONVERT_TO_EXPRESSION;
@@ -36,7 +34,6 @@ enum class LogicOperatorPolicy {
  */
 interface LinearizationContext {
     val source: KtSourceElement?
-    val unfoldPolicy: UnfoldPolicy
     val logicOperatorPolicy: LogicOperatorPolicy
 
     fun freshAnonVar(type: TypeEmbedding): AnonymousVariableEmbedding
@@ -55,6 +52,10 @@ interface LinearizationContext {
         type: TypeEmbedding,
         result: VariableEmbedding?
     )
+
+    fun addFieldAccess(access: FieldAccess): Exp
+
+    fun addFieldAccessStoringIn(access: FieldAccess, result: VariableEmbedding)
 
     fun addModifier(mod: StmtModifier)
 

@@ -32,6 +32,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.names.SimpleNameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
+import org.jetbrains.kotlin.formver.viper.ast.Method
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.formver.viper.debugMangled
 import org.jetbrains.kotlin.utils.addIfNotNull
@@ -59,6 +60,7 @@ class ProgramConverter(
     private val classes: MutableMap<SymbolicName, ClassTypeEmbedding> = mutableMapOf()
     private val properties: MutableMap<SymbolicName, PropertyEmbedding> = mutableMapOf()
     private val fields: MutableSet<FieldEmbedding> = mutableSetOf()
+    private val havocMethods: MutableMap<SymbolicName, Method> = mutableMapOf()
 
     // Cast is valid since we check that values are not null. We specify the type for `filterValues` explicitly to ensure there's no
     // loss of type information earlier.
@@ -67,6 +69,7 @@ class ProgramConverter(
         get() = methods
             .mapValues { (it.value as? UserFunctionEmbedding)?.body?.debugExpEmbedding() }
             .filterValues { value: ExpEmbedding? -> value != null } as Map<SymbolicName, ExpEmbedding>
+
 
     override val whileIndexProducer = indexProducer()
     override val catchLabelNameProducer = simpleFreshEntityProducer(::CatchLabelName)
@@ -89,7 +92,8 @@ class ProgramConverter(
             functions = SpecialFunctions.all +
                     functions.values.mapNotNull { it.viperFunction }.distinctBy { it.name.debugMangled },
             methods = SpecialMethods.all +
-                    methods.values.mapNotNull { it.viperMethod }.distinctBy { it.name.debugMangled },
+                    methods.values.mapNotNull { it.viperMethod }
+                        .distinctBy { it.name.debugMangled } + havocMethods.values,
             predicates = classes.values.flatMap {
                 listOf(
                     it.details.sharedPredicate,
@@ -253,6 +257,13 @@ class ProgramConverter(
             }
         }.toMap())
 
+        // Create Havoc methods for all fields.
+        newDetails.fields.values.forEach {
+            havocMethods.putIfAbsent(
+                it.type.havocMethodName,
+                it.type.havocMethod
+            )
+        }
         // Phase 3
         properties.forEach { processProperty(it, newDetails) }
 
@@ -266,7 +277,7 @@ class ProgramConverter(
         embedFunctionPretypeWithBuilder(symbol)
     }
 
-    override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding = if (symbol.isExtension) {
+    override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding = if (symbol.receiverParameterSymbol != null) {
         embedCustomProperty(symbol)
     } else {
         // Ensure that the class has been processed.
@@ -292,7 +303,7 @@ class ProgramConverter(
 
         return constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
             propertySymbol.withConstructorParam { paramSymbol ->
-                constructedClass.details.findField(callableId.embedUnscopedPropertyName())?.let { paramSymbol to it }
+                constructedClass.details.findField(callableId!!.embedUnscopedPropertyName())?.let { paramSymbol to it }
             }
         }.toMap()
     }
@@ -397,11 +408,11 @@ class ProgramConverter(
         }
 
         return object : FullNamedFunctionSignature, NamedFunctionSignature by subSignature {
-            // TODO (inhale vs require) Decide if `predicateAccessInvariant` should be required rather than inhaled in the beginning of the body.
             override fun getPreconditions() = buildList {
                 subSignature.formalArgs.forEach {
                     addAll(it.pureInvariants())
                     addAll(it.accessInvariants())
+                    addAll(it.provenInvariants())
                     if (it.isUnique) {
                         addIfNotNull(it.type.uniquePredicateAccessInvariant()?.fillHole(it))
                     }
@@ -476,8 +487,8 @@ class ProgramConverter(
         classSymbol: FirRegularClassSymbol,
     ): Pair<SimpleKotlinName, FieldEmbedding>? {
         val embedding = embedClass(classSymbol)
-        val unscopedName = symbol.callableId.embedUnscopedPropertyName()
-        val scopedName = symbol.callableId.embedMemberBackingFieldName(
+        val unscopedName = symbol.callableId!!.embedUnscopedPropertyName()
+        val scopedName = symbol.callableId!!.embedMemberBackingFieldName(
             Visibilities.isPrivate(symbol.visibility)
         )
         val fieldIsAllowed = symbol.hasBackingField
@@ -505,7 +516,7 @@ class ProgramConverter(
      * Null value of parameter [embedding] means that there is no class details corresponding to this type (e.g. it is primitive).
      */
     private fun processProperty(symbol: FirPropertySymbol, embedding: ClassEmbeddingDetails?) {
-        val unscopedName = symbol.callableId.embedUnscopedPropertyName()
+        val unscopedName = symbol.callableId!!.embedUnscopedPropertyName()
         properties[symbol.embedMemberPropertyName()] =
             SpecialProperties.byCallableId[symbol.callableId] ?: embedding.run {
                 val backingField = embedding?.findField(unscopedName)

@@ -1,5 +1,6 @@
 /function_call.kt:(118,130): info: Generated Viper text for functionCall:
 method f$f$TF$T$Int$T$Int(p$x: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 
@@ -16,6 +17,7 @@ method f$functionCall$TF$T$Unit() returns (ret$0: Ref)
 
 /function_call.kt:(160,178): info: Generated Viper text for functionCallNested:
 method f$f$TF$T$Int$T$Int(p$x: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 

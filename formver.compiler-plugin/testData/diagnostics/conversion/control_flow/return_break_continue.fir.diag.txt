@@ -29,11 +29,11 @@ method f$returnFromLoop$TF$T$Int() returns (ret$0: Ref)
 
 /return_break_continue.kt:(162,172): info: Generated Viper text for whileBreak:
 method f$whileBreak$TF$T$Boolean$T$Int(p$b: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var l0$i: Ref
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   l0$i := df$rt$intToRef(0)
   label lbl$continue$0
     invariant df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
@@ -75,10 +75,10 @@ method f$whileContinue$TF$T$Unit() returns (ret$0: Ref)
 
 /return_break_continue.kt:(375,386): info: Generated Viper text for whileNested:
 method f$whileNested$TF$T$Boolean$T$Unit(p$b: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   label lbl$continue$0
     invariant df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   anon$0 := p$b
@@ -115,10 +115,10 @@ method f$whileNested$TF$T$Boolean$T$Unit(p$b: Ref) returns (ret$0: Ref)
 
 /return_break_continue.kt:(556,569): info: Generated Viper text for labelledBreak:
 method f$labelledBreak$TF$T$Boolean$T$Unit(p$b: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   label lbl$continue$0
     invariant df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   anon$0 := p$b
@@ -148,10 +148,10 @@ method f$labelledBreak$TF$T$Boolean$T$Unit(p$b: Ref) returns (ret$0: Ref)
 /return_break_continue.kt:(754,770): info: Generated Viper text for labelledContinue:
 method f$labelledContinue$TF$T$Boolean$T$Unit(p$b: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   label lbl$continue$0
     invariant df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   anon$0 := p$b
@@ -181,10 +181,10 @@ method f$labelledContinue$TF$T$Boolean$T$Unit(p$b: Ref)
 /return_break_continue.kt:(970,992): info: Generated Viper text for labelledWhileShadowing:
 method f$labelledWhileShadowing$TF$T$Boolean$T$Unit(p$b: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   label lbl$continue$0
     invariant df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   anon$0 := p$b

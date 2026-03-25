@@ -5,7 +5,10 @@
 
 package org.jetbrains.kotlin.formver.plugin.runners
 
+import org.jetbrains.kotlin.formver.plugin.services.ConversionOnlyAfterAnalysisChecker
 import org.jetbrains.kotlin.formver.plugin.services.ExtensionRegistrarConfigurator
+import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives
+import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.NEVER_VALIDATE
 import org.jetbrains.kotlin.formver.plugin.services.PluginAnnotationsProvider
 import org.jetbrains.kotlin.formver.plugin.services.StdlibReplacementsProvider
 import org.jetbrains.kotlin.test.builders.TestConfigurationBuilder
@@ -28,6 +31,50 @@ abstract class AbstractFirLightTreeFormVerPluginDiagnosticsTest : AbstractFirLig
     }
 }
 
+/**
+ * Runs verification tests in conversion-only mode: verification is skipped,
+ * consistency checking still runs.  Used in bothModes to double-check
+ * that verification tests also pass as conversion-only tests.
+ *
+ * Tests that already have NEVER_VALIDATE or UNIQUE_CHECK_ONLY are skipped
+ * since they would run identically (or pointlessly) in this class.
+ */
+abstract class AbstractFirLightTreeFormVerPluginNoVerificationDiagnosticsTest : AbstractFirLightTreeDiagnosticsTest() {
+
+    companion object {
+        /** Directives whose presence means the test already runs without verification. */
+        private val SKIP_DIRECTIVE_NAMES = listOf(
+            FormVerDirectives.NEVER_VALIDATE,
+            FormVerDirectives.UNIQUE_CHECK_ONLY,
+        ).map { "// ${it.name}" }
+    }
+
+    override fun runTest(filePath: String) {
+        // Directives aren't parsed yet at this point in the test lifecycle,
+        // so we check the file text directly against known directive names.
+        val hasRedundantDirective = java.io.File(filePath).useLines { lines ->
+            lines.any { line -> SKIP_DIRECTIVE_NAMES.any { line.trimStart().startsWith(it) } }
+        }
+        org.junit.jupiter.api.Assumptions.assumeFalse(
+            hasRedundantDirective,
+            "Skipping: test already has NEVER_VALIDATE or UNIQUE_CHECK_ONLY directive",
+        )
+        super.runTest(filePath)
+    }
+
+    override fun configure(builder: TestConfigurationBuilder) {
+        super.configure(builder)
+        builder.commonFirWithPluginFrontendConfiguration()
+        builder.defaultDirectives {
+            +NEVER_VALIDATE
+        }
+    }
+
+    override fun createKotlinStandardLibrariesPathProvider(): KotlinStandardLibrariesPathProvider {
+        return EnvironmentBasedStandardLibrariesPathProvider
+    }
+}
+
 fun TestConfigurationBuilder.commonFirWithPluginFrontendConfiguration() {
     defaultDirectives {
         +ENABLE_PLUGIN_PHASES
@@ -43,4 +90,6 @@ fun TestConfigurationBuilder.commonFirWithPluginFrontendConfiguration() {
         ::PluginAnnotationsProvider,
         ::ExtensionRegistrarConfigurator
     )
+
+    useAfterAnalysisCheckers(::ConversionOnlyAfterAnalysisChecker)
 }

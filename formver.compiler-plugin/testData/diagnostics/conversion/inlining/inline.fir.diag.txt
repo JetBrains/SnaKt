@@ -1,5 +1,6 @@
 /inline.kt:(230,239): info: Generated Viper text for quadruple:
 method f$quadruple$TF$T$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var anon$0: Ref
@@ -8,7 +9,6 @@ method f$quadruple$TF$T$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
   var anon$1: Ref
   var ret$2: Ref
   var l2$y: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   l1$y := sp$plusInts(p$x, p$x)
   ret$1 := l1$y
   goto lbl$ret$1

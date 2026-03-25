@@ -1,0 +1,3 @@
+/borrow_property.kt:(847,848): error: Argument uniqueness mismatch: partial type 'moved' is inconsistent with parent type 'unique global'.
+
+/borrow_property.kt:(925,926): error: Argument uniqueness mismatch: partial type 'shared global' is inconsistent with parent type 'unique global'.

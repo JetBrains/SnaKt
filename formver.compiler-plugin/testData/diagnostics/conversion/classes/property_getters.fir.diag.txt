@@ -1,10 +1,10 @@
 /property_getters.kt:(102,129): info: Generated Viper text for testPrimitivePropertyGetter:
 method f$testPrimitivePropertyGetter$TF$T$PrimitiveProperty$T$Int(p$pp: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$pp), df$rt$c$PrimitiveProperty())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$pp), df$rt$c$PrimitiveProperty())
   inhale acc(p$c$PrimitiveProperty$shared(p$pp), wildcard)
   anon$0 := pg$public$nProp(p$pp)
   ret$0 := anon$0
@@ -19,13 +19,13 @@ method pg$public$nProp(this$dispatch: Ref) returns (ret: Ref)
 /property_getters.kt:(286,313): info: Generated Viper text for testReferencePropertyGetter:
 method f$testReferencePropertyGetter$TF$T$ReferenceProperty$T$Unit(p$rp: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$rp), df$rt$c$ReferenceProperty())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$pp: Ref
   var anon$0: Ref
   var l0$ppn: Ref
   var anon$1: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$rp), df$rt$c$ReferenceProperty())
   inhale acc(p$c$ReferenceProperty$shared(p$rp), wildcard)
   anon$0 := pg$public$rProp(p$rp)
   l0$pp := anon$0
@@ -47,13 +47,13 @@ method pg$public$rProp(this$dispatch: Ref) returns (ret: Ref)
 /property_getters.kt:(391,418): info: Generated Viper text for testCascadingPropertyGetter:
 method f$testCascadingPropertyGetter$TF$T$ReferenceProperty$T$Unit(p$rp: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$rp), df$rt$c$ReferenceProperty())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$ppn: Ref
   var anon$0: Ref
   var anon$1: Ref
   var anon$2: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$rp), df$rt$c$ReferenceProperty())
   inhale acc(p$c$ReferenceProperty$shared(p$rp), wildcard)
   anon$2 := pg$public$rProp(p$rp)
   anon$1 := anon$2
@@ -70,4 +70,3 @@ method pg$public$nProp(this$dispatch: Ref) returns (ret: Ref)
 
 
 method pg$public$rProp(this$dispatch: Ref) returns (ret: Ref)
-

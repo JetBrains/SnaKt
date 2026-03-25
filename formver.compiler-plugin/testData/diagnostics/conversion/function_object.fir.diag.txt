@@ -1,8 +1,8 @@
 /function_object.kt:(23,35): info: Generated Viper text for unitFunction:
 method f$unitFunction$TF$TF$T$Unit$T$Unit(p$f: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$functionType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$functionType())
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -10,10 +10,10 @@ method f$unitFunction$TF$TF$T$Unit$T$Unit(p$f: Ref) returns (ret$0: Ref)
 /function_object.kt:(90,108): info: Generated Viper text for functionObjectCall:
 method f$functionObjectCall$TF$TF$T$Boolean$T$Int$T$Int$T$Int(p$g: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$g), df$rt$functionType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$g), df$rt$functionType())
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
   ret$0 := anon$0
   goto lbl$ret$0
@@ -24,13 +24,13 @@ method f$functionObjectCall$TF$TF$T$Boolean$T$Int$T$Int$T$Int(p$g: Ref)
 method f$functionObjectNestedCall$TF$TF$T$Int$T$Int$TF$T$Boolean$T$Int$T$Int(p$f: Ref,
   p$g: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$functionType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$g), df$rt$functionType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var anon$0: Ref
   var anon$1: Ref
   var anon$2: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$functionType())
-  inhale df$rt$isSubtype(df$rt$typeOf(p$g), df$rt$functionType())
   inhale df$rt$isSubtype(df$rt$typeOf(anon$2), df$rt$intType())
   inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$intType())
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())

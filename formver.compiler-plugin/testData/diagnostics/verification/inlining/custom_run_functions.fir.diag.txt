@@ -363,6 +363,7 @@ method f$useRun$TF$T$Unit() returns (ret$0: Ref)
 /custom_run_functions.kt:(2354,2369): info: Generated Viper text for complexScenario:
 method f$complexScenario$TF$T$Boolean$T$Boolean(p$arg: Ref)
   returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$arg), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures df$rt$boolFromRef(ret$0) == true ==> df$rt$boolFromRef(p$arg)
   ensures df$rt$boolFromRef(ret$0) == false ==> !df$rt$boolFromRef(p$arg)
@@ -370,7 +371,6 @@ method f$complexScenario$TF$T$Boolean$T$Boolean(p$arg: Ref)
   var anon$11: Ref
   var anon$12: Ref
   var ret$1: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$arg), df$rt$boolType())
   if (df$rt$boolFromRef(p$arg)) {
     var anon$13: Ref
     var ret$2: Ref

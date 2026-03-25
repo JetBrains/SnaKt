@@ -5,6 +5,8 @@ field bf$b: Ref
 
 method con$c$PrimitiveFields$T$Int$T$Int$T$PrimitiveFields(p$a: Ref, p$b: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$PrimitiveFields())
   ensures acc(p$c$PrimitiveFields$shared(ret), wildcard)
   ensures acc(p$c$PrimitiveFields$unique(ret), write)
@@ -31,6 +33,7 @@ field bf$a: Ref
 
 method con$c$Recursive$NT$Recursive$T$Recursive(p$a: Ref)
   returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$nullable(df$rt$c$Recursive()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Recursive())
   ensures acc(p$c$Recursive$shared(ret), wildcard)
   ensures acc(p$c$Recursive$unique(ret), write)
@@ -53,6 +56,7 @@ field bf$a: Ref
 field bf$c: Ref
 
 method con$c$FieldInBody$T$Int$T$FieldInBody(p$c: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$FieldInBody())
   ensures acc(p$c$FieldInBody$shared(ret), wildcard)
   ensures acc(p$c$FieldInBody$unique(ret), write)

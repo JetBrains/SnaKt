@@ -43,11 +43,11 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
-      - name: Run all tests
-        run: ./gradlew :formver.compiler-plugin:test --tests "org.jetbrains.kotlin.formver.plugin.runners.FirLightTreeFormVerPluginDiagnosticsTestGenerated"
+      - name: Run all tests (both modes)
+        run: ./gradlew :formver.compiler-plugin:testBothModes
       - name: Report failing test results
         uses: mikepenz/action-junit-report@v4
         if: failure()
         with:
-          report_paths: '**/build/test-results/test/TEST-*.xml'
+          report_paths: '**/build/test-results/testBothModes/TEST-*.xml'
 
