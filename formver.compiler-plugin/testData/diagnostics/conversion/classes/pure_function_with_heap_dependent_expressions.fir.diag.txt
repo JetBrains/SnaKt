@@ -60,8 +60,10 @@ function f$getSafeNextNextValue$TF$T$Node$T$Int(p$node: Ref): Ref
         ((anon$3$0 != df$rt$nullValue() ? anon$4$0 : df$rt$nullValue())) in
         (let anon$5$0 ==
           ((anon$2$0 != df$rt$nullValue() ?
-            (unfolding acc(p$c$Node$shared(anon$2$0), wildcard) in
-              anon$2$0.bf$value) :
+            (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+              (unfolding acc(p$c$Node$shared(anon$3$0), wildcard) in
+                (unfolding acc(p$c$Node$shared(anon$2$0), wildcard) in
+                  anon$2$0.bf$value))) :
             null)) in
           (let anon$1$0 ==
             ((anon$2$0 != df$rt$nullValue() ? anon$5$0 : df$rt$nullValue())) in
