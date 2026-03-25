@@ -271,7 +271,9 @@ function f$id$TF$NT$Node$NT$Node(p$node: Ref): Ref
     acc(p$c$Node$shared(p$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$nullable(df$rt$c$Node()))
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$nullable(df$rt$c$Node()))
-
+{
+  p$node
+}
 
 function f$useIdentityFunction$TF$T$Node$T$Int(p$node: Ref): Ref
   requires acc(p$c$Node$shared(p$node), wildcard)
