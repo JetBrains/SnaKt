@@ -68,3 +68,48 @@ fun <!VIPER_TEXT!>testNode<!>(nodeLeft: Node, nodeRight: Node): Int {
     }
     return node.value
 }
+
+@Pure
+@AlwaysVerify
+fun <!VIPER_TEXT!>testSequentialBranches<!>(nodeA: Node, nodeB: Node): Int {
+    var node = nodeA
+    if (nodeA.value > 0) {
+        node = nodeB
+    }
+    if (node.next != null) {
+        node = node.next
+    }
+    return node.value
+}
+
+@Pure
+@AlwaysVerify
+fun <!VIPER_TEXT!>testNestedConditions<!>(nodeA: Node, nodeB: Node): Int {
+    var node = nodeA
+
+    if (nodeA.next != null) {
+        if (nodeA.next.next != null) {
+            node = nodeA.next.next
+        } else {
+            node = nodeB
+        }
+    } else {
+        if (nodeB.next != null) {
+            node = nodeB.next
+        }
+    }
+    return node.value
+}
+
+@Pure
+@AlwaysVerify
+fun <!VIPER_TEXT!>testMultipleVarMerge<!>(left: Node, right: Node): Int {
+    var n1 = left
+    var n2 = right
+
+    if (left.value > right.value) {
+        n1 = right
+        n2 = left
+    }
+    return n1.value + n2.value
+}

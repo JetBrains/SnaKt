@@ -72,14 +72,16 @@ class SsaConverter(
     ) {
         val ssaName = head.updateLatestName(name)
         varExp.propagateAccessInvariants(ssaName)
+        val propagatedInvariants = accessInvariants[ssaName]
         if (newVarAccessInvariants.isNotEmpty()) {
-            val propagatedInvariants = accessInvariants[ssaName]
             if (propagatedInvariants == null || propagatedInvariants.isEmpty()) {
                 accessInvariants[ssaName] = mapOf(Exp.BoolLit(true) to newVarAccessInvariants)
             } else {
                 val withNewInvariants = propagatedInvariants.mapValues { (_, value) -> value + newVarAccessInvariants }
                 accessInvariants[ssaName] = withNewInvariants
             }
+        } else if (propagatedInvariants == null || propagatedInvariants.isEmpty()) {
+            accessInvariants[ssaName] = mapOf(Exp.BoolLit(true) to emptyList())
         }
         addGuardedAssignment(ssaName, varExp.withAccessInvariants(ssaName))
     }
