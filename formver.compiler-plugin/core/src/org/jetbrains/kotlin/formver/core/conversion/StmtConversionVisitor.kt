@@ -302,15 +302,15 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 return data.insertForAllFunctionCall(forAllArg.symbol, forAllBody)
         }
 
-        functionCall.extractFormverFirBlock {  isInvariantBuilderFunctionNamed("acc") }?.let {
+        functionCall.extractFormverFirStmt {  isInvariantBuilderFunctionNamed("acc") }?.let {
             accLambda ->
             //acc is only allowed to be used in the same context as forAll
             if (!data.isValidForForAllBlock) throw SnaktInternalException(
                 accLambda.source,
                 "`acc` scope is only allowed inside one of the `loopInvariants`, `preconditions` or `postconditions`."
             )
-            val fieldExpr = accLambda.valueParameters[0] as FirPropertyAccessExpression
-            val permExpr = accLambda.valueParameters[1]
+            val fieldExpr = accLambda.arguments[0] as FirPropertyAccessExpression
+            val permExpr = accLambda.arguments[1]
             return data.insertAccFunctionCall(fieldExpr, permExpr)
         }
 
