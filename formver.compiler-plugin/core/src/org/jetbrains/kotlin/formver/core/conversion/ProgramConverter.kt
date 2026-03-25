@@ -105,22 +105,7 @@ class ProgramConverter(
         if (declaration.symbol.isPure(session)) {
             embedPureUserFunction(declaration.symbol, signature)
         } else {
-            val returnTarget = returnTargetProducer.getFresh(signature.callableType.returnType)
-            val paramResolver =
-                RootParameterResolver(
-                    this@ProgramConverter,
-                    signature,
-                    signature.symbol.valueParameterSymbols,
-                    signature.labelName,
-                    returnTarget,
-                )
-            val stmtCtx =
-                MethodConverter(
-                    this@ProgramConverter,
-                    signature,
-                    paramResolver,
-                    scopeIndexProducer.getFresh(),
-                ).statementCtxt()
+            val (returnTarget, stmtCtx) = createBodyConversionContext(signature)
             embedUserFunction(declaration.symbol, signature).apply {
                 body = stmtCtx.convertMethodWithBody(declaration, signature, returnTarget)
             }
@@ -139,23 +124,28 @@ class ProgramConverter(
         functions[signature.name] = new
         val declaration = symbol.fir as? FirSimpleFunction
         if (declaration?.body != null) {
-            val returnTarget = returnTargetProducer.getFresh(signature.callableType.returnType)
-            val paramResolver = RootParameterResolver(
-                this@ProgramConverter,
-                signature,
-                signature.symbol.valueParameterSymbols,
-                signature.labelName,
-                returnTarget,
-            )
-            val stmtCtx = MethodConverter(
-                this@ProgramConverter,
-                signature,
-                paramResolver,
-                scopeIndexProducer.getFresh(),
-            ).statementCtxt()
+            val (_, stmtCtx) = createBodyConversionContext(signature)
             new.body = stmtCtx.convertFunctionWithBody(declaration)
         }
         return new
+    }
+
+    private fun createBodyConversionContext(signature: FullNamedFunctionSignature): Pair<ReturnTarget, StmtConversionContext> {
+        val returnTarget = returnTargetProducer.getFresh(signature.callableType.returnType)
+        val paramResolver = RootParameterResolver(
+            this@ProgramConverter,
+            signature,
+            signature.symbol.valueParameterSymbols,
+            signature.labelName,
+            returnTarget,
+        )
+        val stmtCtx = MethodConverter(
+            this@ProgramConverter,
+            signature,
+            paramResolver,
+            scopeIndexProducer.getFresh(),
+        ).statementCtxt()
+        return Pair(returnTarget, stmtCtx)
     }
 
     fun embedUserFunction(symbol: FirFunctionSymbol<*>, signature: FullNamedFunctionSignature): UserFunctionEmbedding {
