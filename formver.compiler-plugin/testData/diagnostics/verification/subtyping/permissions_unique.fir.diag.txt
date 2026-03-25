@@ -1,0 +1,74 @@
+/permissions_unique.kt:(430,446): info: Generated Viper text for readMutableField:
+field bf$value: Ref
+
+method f$readMutableField$TF$T$Box$T$Int(p$b: Ref) returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$Box())
+  inhale acc(p$c$Box$shared(p$b), wildcard)
+  ret$0 := havoc$T$Int()
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/permissions_unique.kt:(522,539): info: Generated Viper text for writeMutableField:
+field bf$value: Ref
+
+method f$writeMutableField$TF$T$Box$T$Unit(p$b: Ref) returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$Box())
+  inhale acc(p$c$Box$shared(p$b), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/permissions_unique.kt:(609,624): info: Generated Viper text for readAfterUpcast:
+field bf$extra: Ref
+
+field bf$value: Ref
+
+method f$readAfterUpcast$TF$T$SpecialBox$T$Int(p$s: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var l0$b: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$c$SpecialBox())
+  inhale acc(p$c$SpecialBox$shared(p$s), wildcard)
+  l0$b := p$s
+  ret$0 := havoc$T$Int()
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/permissions_unique.kt:(728,744): info: Generated Viper text for writeAfterUpcast:
+field bf$extra: Ref
+
+field bf$value: Ref
+
+method f$writeAfterUpcast$TF$T$SpecialBox$T$Unit(p$s: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$b: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$c$SpecialBox())
+  inhale acc(p$c$SpecialBox$shared(p$s), wildcard)
+  l0$b := p$s
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/permissions_unique.kt:(842,858): info: Generated Viper text for writeChildFields:
+field bf$extra: Ref
+
+field bf$value: Ref
+
+method f$writeChildFields$TF$T$SpecialBox$T$Unit(p$s: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$c$SpecialBox())
+  inhale acc(p$c$SpecialBox$shared(p$s), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
