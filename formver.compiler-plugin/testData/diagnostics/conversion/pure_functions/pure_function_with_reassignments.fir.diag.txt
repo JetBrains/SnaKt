@@ -120,7 +120,11 @@ function f$blockConditionalAssignment$TF$T$Boolean$T$Boolean$T$Int(p$a: Ref,
           null)) in
         (let anon$0$0 ==
           ((df$rt$boolFromRef(p$a) ?
-            sp$plusInts(l2$y$0, df$rt$intToRef(1)) :
+            (true && !df$rt$boolFromRef(p$b) ?
+              sp$plusInts(l2$y$0, df$rt$intToRef(1)) :
+              (true && df$rt$boolFromRef(p$b) ?
+                sp$plusInts(l2$y$0, df$rt$intToRef(1)) :
+                null)) :
             null)) in
           (let anon$3$0 ==
             ((!df$rt$boolFromRef(p$a) ? df$rt$intToRef(30) : null)) in
