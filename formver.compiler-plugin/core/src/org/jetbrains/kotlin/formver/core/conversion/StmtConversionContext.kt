@@ -272,7 +272,7 @@ fun StmtConversionContext.insertForAllFunctionCall(
 
 fun StmtConversionContext.insertAccFunctionCall(
     field: FirPropertyAccessExpression,
-    perm: FirValueParameter,
+    perm: FirExpression,
 ): ExpEmbedding {
     val symbol = field.calleeReference.symbol as? FirPropertySymbol ?: throw SnaktInternalException(
             field.source,
@@ -289,7 +289,7 @@ fun StmtConversionContext.insertAccFunctionCall(
         "read" -> PermExp.FullPerm()
         else -> throw SnaktInternalException(symbol.source, "perm is not supported")
     }
-    val fieldExp = embedLocalProperty(symbol.findFinalParentProperty() ?: throw SnaktInternalException(symbol.source, "field not found"))
+    val fieldExp = embedPropertyAccess(field).getValue(this)
     return withNoScope {
         AccEmbedding(rcv, fieldExp, permExp)
     }
