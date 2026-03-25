@@ -2,6 +2,9 @@ package org.jetbrains.kotlin.formver.plugin.runners
 
 
 import org.jetbrains.kotlin.KtSourceElement
+import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
+import org.jetbrains.kotlin.diagnostics.DiagnosticReporterFactory
+import org.jetbrains.kotlin.diagnostics.impl.BaseDiagnosticsCollector
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.formver.core.viperProgram
@@ -32,7 +35,6 @@ import org.jetbrains.kotlin.test.frontend.fir.FirCliJvmFacade
 import org.jetbrains.kotlin.test.frontend.fir.FirOutputArtifact
 import org.jetbrains.kotlin.test.frontend.fir.TagsGeneratorChecker
 import org.jetbrains.kotlin.test.frontend.fir.handlers.FullDiagnosticsRenderer
-import org.jetbrains.kotlin.test.frontend.fir.handlers.firDiagnosticCollectorService
 import org.jetbrains.kotlin.test.model.*
 import org.jetbrains.kotlin.test.runners.AbstractPhasedJvmDiagnosticLightTreeTest
 import org.jetbrains.kotlin.test.services.*
@@ -109,32 +111,30 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
         module: TestModule,
         inputArtifact: FirOutputArtifact
     ): ViperVerificationArtifact {
-        val frontendDiagnosticsPerFile =
-            testServices.firDiagnosticCollectorService.getFrontendDiagnosticsForModule(inputArtifact)
-        val result: Map<TestFile, Map<KtSourceElement, MutableList<String>>> =
-            inputArtifact.allFirFiles.map { (file, firFile) ->
-                val res = firFile.declarations
-                    .map { decl ->
-                        if (decl is FirSimpleFunction) verifyFunction(decl)
-                        else emptyMap()
+
+        val reporter = DiagnosticReporterFactory.createReporter(BaseDiagnosticsCollector.RawReporter.DO_NOTHING)
+
+        inputArtifact.allFirFiles.forEach { (file, firFile) ->
+            firFile.declarations
+                .forEach { decl ->
+                    if (decl is FirSimpleFunction) verifyFunction(decl, reporter)
                     }
-                    // This flattens the List<Map<K, V>> into a single Map<K, V>
-                    .fold(mutableMapOf<KtSourceElement, MutableList<String>>()) { acc, map ->
-                        acc.apply { putAll(map) }
-                    }
-                file to res
-            }.toMap()
+        }
         return ViperVerificationArtifact(result)
     }
 
     @OptIn(TestInfrastructureInternals::class)
-    private fun verifyFunction(decl: FirSimpleFunction): Map<KtSourceElement, MutableList<String>> {
+    private fun verifyFunction(
+        decl: FirSimpleFunction,
+        reporter: DiagnosticReporter
+    ): Map<KtSourceElement, MutableList<String>> {
         val program = decl.viperProgram!!
         val result = mutableMapOf<KtSourceElement, MutableList<String>>()
 
         val onFailure = { err: VerifierError ->
             val source = err.position.unwrapOr { decl.source }!!
-            val ins = result.getOrElse(source) { mutableListOf() }.add(err.msg)
+//            reporter.reportOn(source, PluginErrors.INTERNAL_ERROR, err, positioningStrategy = positionStrategy)
+//            reporter.reportVerifierError(source, err, ErrorStyle.USER_FRIENDLY)
         }
         val consistencyErrors = program.checkTransitively()
         for (error in consistencyErrors) {
