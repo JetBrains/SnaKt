@@ -7,12 +7,18 @@ package org.jetbrains.kotlin.formver.uniqueness
 
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.declarations.FirProperty
+import org.jetbrains.kotlin.fir.expressions.FirOperation
 import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
+import org.jetbrains.kotlin.fir.expressions.FirSmartCastExpression
+import org.jetbrains.kotlin.fir.expressions.FirTypeOperatorCall
 import org.jetbrains.kotlin.fir.references.FirResolvedNamedReference
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 
 typealias Path = List<FirBasedSymbol<*>>
+
+private fun FirTypeOperatorCall.isCast(): Boolean =
+    operation == FirOperation.AS || operation == FirOperation.SAFE_AS
 
 /**
  * A visitor for extracting an atomic receiving path from a [org.jetbrains.kotlin.fir.expressions.FirExpression].
@@ -49,6 +55,17 @@ object ReceiverPathExtractor : FirVisitor<Path?, Unit>() {
             return parent + callee
         }
     }
+
+    override fun visitSmartCastExpression(smartCastExpression: FirSmartCastExpression, data: Unit): Path? {
+        return smartCastExpression.originalExpression.accept(this, data)
+    }
+
+    override fun visitTypeOperatorCall(typeOperatorCall: FirTypeOperatorCall, data: Unit): Path? {
+        if (!typeOperatorCall.isCast()) return null
+
+        return typeOperatorCall.argumentList.arguments.singleOrNull()?.accept(this, data)
+    }
+
 }
 
 val FirElement.receiverPath
@@ -83,6 +100,16 @@ object ValuePathCollector : FirVisitor<List<Path>, Unit>() {
         } else {
             return emptyList()
         }
+    }
+
+    override fun visitSmartCastExpression(smartCastExpression: FirSmartCastExpression, data: Unit): List<Path> {
+        return smartCastExpression.originalExpression.accept(this, data)
+    }
+
+    override fun visitTypeOperatorCall(typeOperatorCall: FirTypeOperatorCall, data: Unit): List<Path> {
+        if (!typeOperatorCall.isCast()) return emptyList()
+
+        return typeOperatorCall.argumentList.arguments.singleOrNull()?.accept(this, data) ?: emptyList()
     }
 }
 
