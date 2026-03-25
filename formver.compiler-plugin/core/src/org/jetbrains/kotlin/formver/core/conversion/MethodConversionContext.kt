@@ -15,8 +15,8 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
-import org.jetbrains.kotlin.formver.core.names.ReturnLabelName
-import org.jetbrains.kotlin.formver.core.names.ReturnVariableName
+import org.jetbrains.kotlin.formver.core.names_deprecated.ReturnLabelName
+import org.jetbrains.kotlin.formver.core.names_deprecated.ReturnVariableName
 
 class ReturnTarget(depth: Int, type: TypeEmbedding) {
     val variable = PlaceholderVariableEmbedding(ReturnVariableName(depth), type)

@@ -6,8 +6,8 @@
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
-import org.jetbrains.kotlin.formver.core.names.FunctionTypeName
-import org.jetbrains.kotlin.formver.core.names.ListOfTypes
+import org.jetbrains.kotlin.formver.core.names_deprecated.FunctionTypeName
+import org.jetbrains.kotlin.formver.core.names_deprecated.ListOfTypes
 
 data class FunctionTypeEmbedding(
     val dispatchReceiverType: TypeEmbedding?,

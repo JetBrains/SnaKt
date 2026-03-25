@@ -13,9 +13,9 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariab
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.PlaintextLeaf
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.TreeView
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
-import org.jetbrains.kotlin.formver.core.names.HavocKotlinName
-import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
-import org.jetbrains.kotlin.formver.core.names.SimpleTypeName
+import org.jetbrains.kotlin.formver.core.names_deprecated.HavocKotlinName
+import org.jetbrains.kotlin.formver.core.names_deprecated.PlaceholderReturnVariableName
+import org.jetbrains.kotlin.formver.core.names_deprecated.SimpleTypeName
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Exp

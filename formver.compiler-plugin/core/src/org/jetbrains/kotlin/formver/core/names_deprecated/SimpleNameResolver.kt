@@ -1,8 +1,8 @@
 package org.jetbrains.kotlin.formver.names
 
-import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SEPARATOR
+import org.jetbrains.kotlin.formver.viper.SymbolicName
 
 /**
  * Resolves mangled names into Viper identifiers while maintaining uniqueness.

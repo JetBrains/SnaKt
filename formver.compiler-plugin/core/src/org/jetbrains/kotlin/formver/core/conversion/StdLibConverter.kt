@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.properties.ListSizeFieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.isInheritorOfCollectionTypeNamed
-import org.jetbrains.kotlin.formver.core.names.NameMatcher
+import org.jetbrains.kotlin.formver.core.names_deprecated.NameMatcher
 
 private fun VariableEmbedding.sameSize(): ExpEmbedding =
     EqCmp(FieldAccess(this, ListSizeFieldEmbedding), Old(FieldAccess(this, ListSizeFieldEmbedding)))

@@ -3,7 +3,7 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
-package org.jetbrains.kotlin.formver.core.names
+package org.jetbrains.kotlin.formver.core.names_deprecated
 
 import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.fir.declarations.utils.visibility
@@ -11,6 +11,9 @@ import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.formver.core.conversion.ProgramConversionContext
 import org.jetbrains.kotlin.formver.core.conversion.ScopeIndex
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
+import org.jetbrains.kotlin.formver.core.names.embedGetter
+import org.jetbrains.kotlin.formver.core.names.embedSetter
+import org.jetbrains.kotlin.formver.core.names.toConstructorName
 import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.Name
@@ -69,11 +72,15 @@ private fun CallableId.embedMemberPropertyNameBase(
 fun CallableId.embedMemberPropertyName(isPrivate: Boolean) =
     embedMemberPropertyNameBase(alwaysScopedPolicy(isPrivate), ::PropertyKotlinName)
 
-fun CallableId.embedMemberGetterName(isPrivate: Boolean) =
-    embedMemberPropertyNameBase(alwaysScopedPolicy(isPrivate), ::GetterKotlinName)
+fun CallableId.embedMemberGetterName(isPrivate: Boolean): ScopedKotlinName =
+    embedMemberPropertyNameBase(alwaysScopedPolicy(isPrivate), ::GetterKotlinName).apply {
+        embedGetter()
+    }
 
 fun CallableId.embedMemberSetterName(isPrivate: Boolean) =
-    embedMemberPropertyNameBase(alwaysScopedPolicy(isPrivate), ::SetterKotlinName)
+    embedMemberPropertyNameBase(alwaysScopedPolicy(isPrivate), ::SetterKotlinName).apply {
+        embedSetter()
+    }
 
 fun CallableId.embedMemberBackingFieldName(isPrivate: Boolean) =
     embedMemberPropertyNameBase(onlyPrivateScopedPolicy(isPrivate), ::BackingFieldKotlinName)
@@ -127,6 +134,7 @@ fun FirPropertySymbol.embedMemberPropertyName() = callableId!!.embedMemberProper
 )
 
 fun FirConstructorSymbol.embedName(ctx: ProgramConversionContext): ScopedKotlinName = buildName {
+    toConstructorName()
     embedScope(callableId)
     ConstructorKotlinName(ctx.embedFunctionPretype(this@embedName).name)
 }

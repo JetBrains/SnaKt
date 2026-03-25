@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.formver.common.*
 import org.jetbrains.kotlin.formver.core.conversion.ProgramConverter
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.print
+import org.jetbrains.kotlin.formver.core.names.CreatedNames
 import org.jetbrains.kotlin.formver.plugin.compiler.reporting.reportVerifierError
 import org.jetbrains.kotlin.formver.viper.Verifier
 import org.jetbrains.kotlin.formver.viper.ast.Program
@@ -54,7 +55,7 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
             }
             if (errorCollector.collectedPurityError()) return
             val program = programConversionContext.program
-
+            CreatedNames.makeCollisionFree()
             with(programConversionContext.nameResolver) {
                 program.registerAllNames()
             }

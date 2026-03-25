@@ -22,9 +22,9 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.fillHoles
 import org.jetbrains.kotlin.formver.core.embeddings.types.injectionOrNull
 import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
-import org.jetbrains.kotlin.formver.core.names.AnonymousBuiltinName
-import org.jetbrains.kotlin.formver.core.names.AnonymousName
-import org.jetbrains.kotlin.formver.core.names.FunctionResultVariableName
+import org.jetbrains.kotlin.formver.core.names_deprecated.AnonymousBuiltinName
+import org.jetbrains.kotlin.formver.core.names_deprecated.AnonymousName
+import org.jetbrains.kotlin.formver.core.names_deprecated.FunctionResultVariableName
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*

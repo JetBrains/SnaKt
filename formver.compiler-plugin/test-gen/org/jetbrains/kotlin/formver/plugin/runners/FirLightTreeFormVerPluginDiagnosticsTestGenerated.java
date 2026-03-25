@@ -73,6 +73,18 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
+    @TestMetadata("mangeling.kt")
+    public void testMangeling() {
+      runTest("formver.compiler-plugin/testData/diagnostics/conversion/mangeling.kt");
+    }
+
+    @Test
+    @TestMetadata("nameing.kt")
+    public void testNameing() {
+      runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing.kt");
+    }
+
+    @Test
     @TestMetadata("shadowing.kt")
     public void testShadowing() {
       runTest("formver.compiler-plugin/testData/diagnostics/conversion/shadowing.kt");

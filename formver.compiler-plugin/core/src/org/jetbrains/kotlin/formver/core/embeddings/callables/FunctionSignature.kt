@@ -8,9 +8,9 @@ package org.jetbrains.kotlin.formver.core.embeddings.callables
 import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
-import org.jetbrains.kotlin.formver.core.names.AnonymousName
-import org.jetbrains.kotlin.formver.core.names.DispatchReceiverName
-import org.jetbrains.kotlin.formver.core.names.ExtensionReceiverName
+import org.jetbrains.kotlin.formver.core.names_deprecated.AnonymousName
+import org.jetbrains.kotlin.formver.core.names_deprecated.DispatchReceiverName
+import org.jetbrains.kotlin.formver.core.names_deprecated.ExtensionReceiverName
 
 interface FunctionSignature {
     val callableType: FunctionTypeEmbedding

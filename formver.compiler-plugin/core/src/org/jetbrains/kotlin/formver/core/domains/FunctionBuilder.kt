@@ -5,8 +5,8 @@
 
 package org.jetbrains.kotlin.formver.core.domains
 
-import org.jetbrains.kotlin.formver.core.names.PlaceholderArgumentName
-import org.jetbrains.kotlin.formver.core.names.SpecialName
+import org.jetbrains.kotlin.formver.core.names_deprecated.PlaceholderArgumentName
+import org.jetbrains.kotlin.formver.core.names_deprecated.SpecialName
 import org.jetbrains.kotlin.formver.viper.ast.BuiltinFunction
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Type

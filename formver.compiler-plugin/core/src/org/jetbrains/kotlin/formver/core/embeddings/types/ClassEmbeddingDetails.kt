@@ -6,10 +6,10 @@
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
-import org.jetbrains.kotlin.formver.core.names.PredicateKotlinName
-import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
-import org.jetbrains.kotlin.formver.core.names.SimpleKotlinName
-import org.jetbrains.kotlin.formver.core.names.asScope
+import org.jetbrains.kotlin.formver.core.names_deprecated.PredicateKotlinName
+import org.jetbrains.kotlin.formver.core.names_deprecated.ScopedKotlinName
+import org.jetbrains.kotlin.formver.core.names_deprecated.SimpleKotlinName
+import org.jetbrains.kotlin.formver.core.names_deprecated.asScope
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
 import org.jetbrains.kotlin.formver.viper.ast.Predicate
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue

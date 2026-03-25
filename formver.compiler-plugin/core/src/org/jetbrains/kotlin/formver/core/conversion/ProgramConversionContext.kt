@@ -22,8 +22,8 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
-import org.jetbrains.kotlin.formver.core.names.CatchLabelName
-import org.jetbrains.kotlin.formver.core.names.TryExitLabelName
+import org.jetbrains.kotlin.formver.core.names_deprecated.CatchLabelName
+import org.jetbrains.kotlin.formver.core.names_deprecated.TryExitLabelName
 import org.jetbrains.kotlin.formver.viper.NameResolver
 
 interface ProgramConversionContext {

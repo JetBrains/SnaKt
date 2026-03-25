@@ -1,6 +1,6 @@
 package org.jetbrains.kotlin.formver.core.domains
 
-import org.jetbrains.kotlin.formver.core.names.DomainFuncParameterName
+import org.jetbrains.kotlin.formver.core.names_deprecated.DomainFuncParameterName
 import org.jetbrains.kotlin.formver.viper.ast.Type
 import org.jetbrains.kotlin.formver.viper.ast.Var
 

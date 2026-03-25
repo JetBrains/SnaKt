@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FirVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
-import org.jetbrains.kotlin.formver.core.names.embedScopedLocalName
+import org.jetbrains.kotlin.formver.core.names_deprecated.embedScopedLocalName
 import org.jetbrains.kotlin.name.Name
 
 data class LoopIdentifier(val targetName: String, val index: Int)

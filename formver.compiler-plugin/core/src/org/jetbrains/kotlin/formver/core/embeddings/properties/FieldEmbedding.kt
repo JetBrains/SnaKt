@@ -13,9 +13,9 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
 import org.jetbrains.kotlin.formver.core.embeddings.expression.IntLit
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
-import org.jetbrains.kotlin.formver.core.names.NameMatcher
-import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
-import org.jetbrains.kotlin.formver.core.names.SpecialName
+import org.jetbrains.kotlin.formver.core.names_deprecated.NameMatcher
+import org.jetbrains.kotlin.formver.core.names_deprecated.ScopedKotlinName
+import org.jetbrains.kotlin.formver.core.names_deprecated.SpecialName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Field
 import org.jetbrains.kotlin.formver.viper.ast.PermExp

@@ -6,8 +6,8 @@
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
-import org.jetbrains.kotlin.formver.core.names.NameMatcher
-import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
+import org.jetbrains.kotlin.formver.core.names_deprecated.NameMatcher
+import org.jetbrains.kotlin.formver.core.names_deprecated.ScopedKotlinName
 import org.jetbrains.kotlin.formver.viper.ast.DomainFunc
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 

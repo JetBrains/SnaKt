@@ -29,7 +29,9 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
-import org.jetbrains.kotlin.formver.core.names.*
+import org.jetbrains.kotlin.formver.core.names.toClassName
+import org.jetbrains.kotlin.formver.core.names.toUserFieldName
+import org.jetbrains.kotlin.formver.core.names_deprecated.*
 import org.jetbrains.kotlin.formver.names.ShortNameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Method
@@ -223,6 +225,7 @@ class ProgramConverter(
      */
     private fun embedClass(symbol: FirRegularClassSymbol): ClassTypeEmbedding {
         val className = symbol.classId.embedName()
+        val newClassName = symbol.classId.toClassName()
         val embedding = classes.getOrPut(className) {
             buildClassPretype {
                 withName(className)
@@ -365,6 +368,7 @@ class ProgramConverter(
                 get() = super<NamedFunctionSignature>.labelName
             override val symbol = symbol
         }
+
         val constructorParamSymbolsToFields = extractConstructorParamsAsFields(symbol)
         val contractVisitor = ContractDescriptionConversionVisitor(this@ProgramConverter, subSignature)
 
@@ -518,6 +522,7 @@ class ProgramConverter(
      */
     private fun processProperty(symbol: FirPropertySymbol, embedding: ClassEmbeddingDetails?) {
         val unscopedName = symbol.callableId!!.embedUnscopedPropertyName()
+        val newName = symbol.toUserFieldName()
         properties[symbol.embedMemberPropertyName()] =
             SpecialProperties.byCallableId[symbol.callableId] ?: embedding.run {
                 val backingField = embedding?.findField(unscopedName)

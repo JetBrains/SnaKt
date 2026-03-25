@@ -5,7 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
-import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
+import org.jetbrains.kotlin.formver.core.names_deprecated.ScopedKotlinName
 
 /**
  * We use "pretype" to refer to types that do not contain information on nullability or

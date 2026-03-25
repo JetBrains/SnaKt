@@ -12,8 +12,8 @@ import org.jetbrains.kotlin.formver.core.embeddings.LabelEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.withPosition
-import org.jetbrains.kotlin.formver.core.names.BreakLabelName
-import org.jetbrains.kotlin.formver.core.names.ContinueLabelName
+import org.jetbrains.kotlin.formver.core.names_deprecated.BreakLabelName
+import org.jetbrains.kotlin.formver.core.names_deprecated.ContinueLabelName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 
 /**
