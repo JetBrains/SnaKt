@@ -16,6 +16,8 @@ class SsaConverter(
     private var head: SsaBlockNode = SsaBlockNode(SsaStartNode(), Exp.BoolLit(true))
     private val ssaAssignments: MutableList<Pair<SsaVariableName, Exp>> = mutableListOf()
     private val returnExpressions: MutableList<Pair<Exp, Exp>> = mutableListOf()
+
+    // An entry in this map means that to accessing the let-bound variable SSAVariableName under condition Exp requires predicates in the List<Exp.PredicateAccess> unfolded
     private val accessInvariants: MutableMap<SsaVariableName, Map<Exp, List<Exp.PredicateAccess>>> = mutableMapOf()
 
     // Produce new ssa names for a source variable name
@@ -73,15 +75,11 @@ class SsaConverter(
         val ssaName = head.updateLatestName(name)
         varExp.propagateAccessInvariants(ssaName)
         val propagatedInvariants = accessInvariants[ssaName]
-        if (newVarAccessInvariants.isNotEmpty()) {
-            if (propagatedInvariants == null || propagatedInvariants.isEmpty()) {
-                accessInvariants[ssaName] = mapOf(Exp.BoolLit(true) to newVarAccessInvariants)
-            } else {
-                val withNewInvariants = propagatedInvariants.mapValues { (_, value) -> value + newVarAccessInvariants }
-                accessInvariants[ssaName] = withNewInvariants
-            }
-        } else if (propagatedInvariants == null || propagatedInvariants.isEmpty()) {
-            accessInvariants[ssaName] = mapOf(Exp.BoolLit(true) to emptyList())
+        if (propagatedInvariants == null || propagatedInvariants.isEmpty()) {
+            accessInvariants[ssaName] = mapOf(Exp.BoolLit(true) to newVarAccessInvariants)
+        } else if (newVarAccessInvariants.isNotEmpty()) {
+            val withNewInvariants = propagatedInvariants.mapValues { (_, value) -> value + newVarAccessInvariants }
+            accessInvariants[ssaName] = withNewInvariants
         }
         addGuardedAssignment(ssaName, varExp.withAccessInvariants(ssaName))
     }
@@ -130,32 +128,20 @@ class SsaConverter(
                     accesses == null || accesses.isEmpty() -> this
                     accesses.size == 1 -> {
                         val toUnfold = accesses.values.first()
-                        if (toUnfold.isEmpty()) {
-                            this
-                        } else {
-                            toUnfold.foldRight(this) { access, acc ->
-                                Exp.Unfolding(access, acc)
-                            }
-                        }
+                        toUnfold.asUnfoldingIn(this)
                     }
-
                     else -> {
-                        val asExpressions = accesses.mapValues { (_, predicates) ->
-                            predicates.foldRight<Exp.PredicateAccess, Exp>(this) { access, acc ->
-                                Exp.Unfolding(access, acc)
-                            }
-                        }
                         val defaultExpression = this.type.defaultExpression() ?: throw SnaktInternalException(
                             source,
                             "Tried to assign a variable without a default expression"
                         )
+                        val asExpressions = accesses.mapValues { (_, predicates) -> predicates.asUnfoldingIn(this) }
                         asExpressions.entries.fold(defaultExpression) { acc, entry ->
                             Exp.TernaryExp(entry.key, entry.value, acc)
                         }
                     }
                 }
             }
-
             else -> this
         }
 
@@ -181,12 +167,10 @@ class SsaConverter(
                 this.args.forEach { it.propagateAccessInvariants(to) }
                 return
             }
-
             is Exp.DomainFuncApp -> {
                 this.args.forEach { it.propagateAccessInvariants(to) }
                 return
             }
-
             is Exp.TernaryExp -> {
                 val leftInvariants = accessInvariants[(this.thenExp as? Exp.LocalVar)?.name] ?: emptyMap()
                 val rightInvariants = accessInvariants[(this.elseExp as? Exp.LocalVar)?.name] ?: emptyMap()
@@ -199,12 +183,14 @@ class SsaConverter(
                 accessInvariants[to] = leftAmended.mergeWith(rightAmended)
                 return
             }
-
             else -> return
         }
         if (sourceExp !is Exp.LocalVar) {
-            throw SnaktInternalException(source, "Access sources must be local variables $sourceExp")
+            throw SnaktInternalException(source, "Access sources must be local variables, but received $sourceExp")
         }
         mergeAccessInvariants(sourceExp.name, to)
     }
+
+    private fun List<Exp.PredicateAccess>.asUnfoldingIn(exp: Exp): Exp =
+        foldRight(exp) { access, acc -> Exp.Unfolding(access, acc) }
 }
