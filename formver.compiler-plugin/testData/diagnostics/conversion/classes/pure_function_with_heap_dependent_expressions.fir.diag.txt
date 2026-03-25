@@ -200,18 +200,25 @@ function f$containsValue$TF$T$Node$T$Int$T$Boolean(p$node: Ref, p$target: Ref): 
   (let anon$0$0 ==
     ((unfolding acc(p$c$Node$shared(p$node), wildcard) in p$node.bf$value)) in
     (let l0$nextNode$0 ==
-      ((unfolding acc(p$c$Node$shared(p$node), wildcard) in p$node.bf$next)) in
+      ((!(df$rt$intFromRef(anon$0$0) == df$rt$intFromRef(p$target)) ?
+        (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+          p$node.bf$next) :
+        null)) in
       (let anon$2$0 ==
-        ((!(l0$nextNode$0 == df$rt$nullValue()) ?
+        ((!(l0$nextNode$0 == df$rt$nullValue()) &&
+        !(df$rt$intFromRef(anon$0$0) == df$rt$intFromRef(p$target)) ?
           (unfolding acc(p$c$Node$shared(p$node), wildcard) in
             f$containsValue$TF$T$Node$T$Int$T$Boolean(l0$nextNode$0, p$target)) :
           null)) in
         (let anon$3$0 ==
-          ((!!(l0$nextNode$0 == df$rt$nullValue()) ?
+          ((!!(l0$nextNode$0 == df$rt$nullValue()) &&
+          !(df$rt$intFromRef(anon$0$0) == df$rt$intFromRef(p$target)) ?
             df$rt$boolToRef(false) :
             null)) in
           (let anon$1$0 ==
-            ((!(l0$nextNode$0 == df$rt$nullValue()) ? anon$2$0 : anon$3$0)) in
+            ((!(df$rt$intFromRef(anon$0$0) == df$rt$intFromRef(p$target)) ?
+              (!(l0$nextNode$0 == df$rt$nullValue()) ? anon$2$0 : anon$3$0) :
+              null)) in
             (df$rt$intFromRef(anon$0$0) == df$rt$intFromRef(p$target) ?
               df$rt$boolToRef(true) :
               anon$1$0))))))
