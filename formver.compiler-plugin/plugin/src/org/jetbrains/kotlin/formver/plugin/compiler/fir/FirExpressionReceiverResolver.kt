@@ -9,13 +9,13 @@ import java.util.WeakHashMap
 
 class FirReceiverResolver(
     session: FirSession,
-    private val receiverExtractor: FirReceiverExtractor,
+    private val receiverExtractor: FirExpressionReceiverExtractor,
 ) : FirExtensionSessionComponent(session) {
     companion object {
         fun getFactory(): Factory = Factory { session ->
             FirReceiverResolver(
                 session,
-                FirReceiverExtractor(WeakHashMap())
+                FirExpressionReceiverExtractor(WeakHashMap())
             )
         }
     }
@@ -26,6 +26,17 @@ class FirReceiverResolver(
 
 val FirSession.firReceiversResolver: FirReceiverResolver by sessionComponentAccessor()
 
-context(context : CheckerContext)
+context(context: CheckerContext)
 val FirExpression.receiver: FirExpression?
     get() = context.session.firReceiversResolver.resolve(this)
+
+context(context: CheckerContext)
+val FirExpression.receivers: Sequence<FirExpression>
+    get() = sequence {
+        var current: FirExpression? = this@receivers
+
+        while (current != null) {
+            yield(current)
+            current = current.receiver
+        }
+    }

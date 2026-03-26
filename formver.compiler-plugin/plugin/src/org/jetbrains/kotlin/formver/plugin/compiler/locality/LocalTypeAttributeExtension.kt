@@ -15,9 +15,6 @@ import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 
-/**
- * Extension attaching the [ConeLocalAttribute] to types annotated with `@Borrowed`.
- */
 class LocalTypeAttributeExtension(
     session: FirSession,
     private val config: PluginConfiguration
@@ -37,7 +34,7 @@ class LocalTypeAttributeExtension(
         if (!config.checkLocality) return null
 
         return if (annotation.annotationTypeRef.coneType.classId == borrowedAnnotationId) {
-            ConeLocalAttribute
+            ConeLocalAttribute(null)
         } else {
             null
         }

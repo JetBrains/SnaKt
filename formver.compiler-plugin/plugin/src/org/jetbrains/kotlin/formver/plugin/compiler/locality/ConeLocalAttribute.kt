@@ -1,5 +1,7 @@
 package org.jetbrains.kotlin.formver.plugin.compiler.locality
 
+import org.jetbrains.kotlin.fir.declarations.FirDeclaration
+import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.types.ConeAttribute
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import kotlin.reflect.KClass
@@ -8,7 +10,9 @@ import kotlin.reflect.KClass
  * Attribute to annotate the locality of a type.
  * The presence of this attribute signals that the reference is `Local`, while the absence signals that it is `Global`.
  */
-object ConeLocalAttribute : ConeAttribute<ConeLocalAttribute>() {
+data class ConeLocalAttribute(
+    val declaration: FirDeclaration? = null
+) : ConeAttribute<ConeLocalAttribute>() {
     override val key: KClass<ConeLocalAttribute>
         get() = ConeLocalAttribute::class
 
@@ -32,7 +36,7 @@ object ConeLocalAttribute : ConeAttribute<ConeLocalAttribute>() {
     }
 
     override fun toString(): String {
-        return "@Local"
+        return "@local(${declaration?.symbol ?: "unknown"})"
     }
 }
 
@@ -48,11 +52,14 @@ val ConeKotlinType.localAttribute: ConeLocalAttribute?
 fun ConeLocalAttribute?.accepts(other: ConeLocalAttribute?): Boolean =
     when (this) {
         null -> other == null
-        else -> true
+        else -> when (other) {
+            null -> true
+            else -> this.declaration == other.declaration
+        }
     }
 
 fun ConeLocalAttribute?.render(): String =
     if (this == null)
         "global"
     else
-        "local"
+        "local(${(declaration?.symbol as? FirCallableSymbol<*>)?.name ?: "unknown"})"

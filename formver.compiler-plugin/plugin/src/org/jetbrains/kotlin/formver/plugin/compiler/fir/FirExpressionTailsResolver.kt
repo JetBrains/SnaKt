@@ -10,13 +10,13 @@ import java.util.WeakHashMap
 
 class FirTailsResolver(
     session: FirSession,
-    val tailsExtractor: FirTailsExtractor,
+    private val tailsExtractor: FirExpressionTailsExtractor,
 ) : FirExtensionSessionComponent(session) {
     companion object {
         fun getFactory(): Factory = Factory { session ->
             FirTailsResolver(
                 session,
-                FirTailsExtractor(WeakHashMap())
+                FirExpressionTailsExtractor(WeakHashMap())
             )
         }
     }
