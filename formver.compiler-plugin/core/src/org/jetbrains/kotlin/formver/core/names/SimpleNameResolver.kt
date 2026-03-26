@@ -1,8 +1,8 @@
 package org.jetbrains.kotlin.formver.names
 
-import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SEPARATOR
+import org.jetbrains.kotlin.formver.viper.SymbolicName
 
 /**
  * Resolves mangled names into Viper identifiers while maintaining uniqueness.
@@ -18,6 +18,6 @@ import org.jetbrains.kotlin.formver.viper.SEPARATOR
  */
 class SimpleNameResolver : NameResolver {
     override fun resolve(name: SymbolicName): String =
-        listOfNotNull(name.mangledType, name.mangledScope, name.mangledBaseName).joinToString(SEPARATOR)
+        listOfNotNull(name.nameType, name.mangledScope, name.mangledBaseName).joinToString(SEPARATOR)
     override fun register(name: SymbolicName) {}
 }

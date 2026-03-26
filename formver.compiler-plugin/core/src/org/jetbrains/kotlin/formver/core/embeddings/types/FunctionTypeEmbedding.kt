@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
+import org.jetbrains.kotlin.formver.core.names.FunctionTypeName
 import org.jetbrains.kotlin.formver.core.names.ListOfNames
 
 data class FunctionTypeEmbedding(
@@ -16,8 +17,9 @@ data class FunctionTypeEmbedding(
     val returnsUnique: Boolean,
 ) : PretypeEmbedding {
     override val runtimeType = RuntimeTypeDomain.functionType()
-
-    override val name: ListOfNames = ListOfNames(formalArgTypes.map { it -> it.name } + listOf(returnType.name))
+    private val argumentTypeNames =
+        ListOfNames((listOfNotNull(dispatchReceiverType, extensionReceiverType) + paramTypes).map { it.name })
+    override val name = FunctionTypeName(argumentTypeNames, returnType.name)
 
     /**
      * The flattened structure of the callable parameters: in case the callable has a receiver

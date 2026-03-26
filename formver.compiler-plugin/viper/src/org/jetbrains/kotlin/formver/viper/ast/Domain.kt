@@ -15,8 +15,8 @@ import viper.silver.ast.NamedDomainAxiom
  */
 
 data class DomainName(val baseName: String) : SymbolicName {
-    override val mangledType: String
-        get() = "d"
+    override val nameType: NameType
+        get() = NameType.Domain
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = baseName
@@ -28,8 +28,8 @@ data class UnqualifiedDomainFuncName(val baseName: String) : SymbolicName {
 }
 
 data class QualifiedDomainFuncName(val domainName: DomainName, val funcName: SymbolicName) : SymbolicName {
-    override val mangledType: String
-        get() = "df"
+    override val nameType: NameType
+        get() = NameType.DomainFunction
     context(nameResolver: NameResolver)
     override val mangledScope: String
         get() = domainName.mangledBaseName
