@@ -1,15 +1,12 @@
 package org.jetbrains.kotlin.formver.plugin.runners
 
-
-import org.jetbrains.kotlin.KtSourceElement
-import org.jetbrains.kotlin.diagnostics.DiagnosticReporterFactory
 import org.jetbrains.kotlin.diagnostics.InternalDiagnosticFactoryMethod
-import org.jetbrains.kotlin.diagnostics.KtDiagnosticWithParameters1
+import org.jetbrains.kotlin.diagnostics.KtDiagnostic
 import org.jetbrains.kotlin.diagnostics.SourceElementPositioningStrategies
-import org.jetbrains.kotlin.diagnostics.impl.BaseDiagnosticsCollector
-import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
+import org.jetbrains.kotlin.fir.FirElement
+import org.jetbrains.kotlin.fir.declarations.FirFile
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
-import org.jetbrains.kotlin.fir.pipeline.collectLostDiagnosticsOnFile
+import org.jetbrains.kotlin.fir.visitors.FirDefaultVisitorVoid
 import org.jetbrains.kotlin.formver.core.viperProgram
 import org.jetbrains.kotlin.formver.plugin.compiler.PluginErrors
 import org.jetbrains.kotlin.formver.plugin.services.ExtensionRegistrarConfigurator
@@ -27,7 +24,6 @@ import org.jetbrains.kotlin.test.builders.configureFirHandlersStep
 import org.jetbrains.kotlin.test.builders.firHandlersStep
 import org.jetbrains.kotlin.test.configuration.commonServicesConfigurationForCodegenAndDebugTest
 import org.jetbrains.kotlin.test.configuration.configureCommonDiagnosticTestPaths
-import org.jetbrains.kotlin.test.configuration.setupHandlersForDiagnosticTest
 import org.jetbrains.kotlin.test.directives.DiagnosticsDirectives
 import org.jetbrains.kotlin.test.directives.DiagnosticsDirectives.RENDER_DIAGNOSTICS_FULL_TEXT
 import org.jetbrains.kotlin.test.directives.FirDiagnosticsDirectives.ENABLE_PLUGIN_PHASES
@@ -35,7 +31,6 @@ import org.jetbrains.kotlin.test.directives.JvmEnvironmentConfigurationDirective
 import org.jetbrains.kotlin.test.directives.LanguageSettingsDirectives.LANGUAGE
 import org.jetbrains.kotlin.test.directives.TestPhaseDirectives.LATEST_PHASE_IN_PIPELINE
 import org.jetbrains.kotlin.test.directives.configureFirParser
-import org.jetbrains.kotlin.test.frontend.fir.FirCliBasedOutputArtifact
 import org.jetbrains.kotlin.test.frontend.fir.FirCliJvmFacade
 import org.jetbrains.kotlin.test.frontend.fir.FirOutputArtifact
 import org.jetbrains.kotlin.test.frontend.fir.TagsGeneratorChecker
@@ -72,10 +67,7 @@ abstract class AbstractPhasedDiagnosticTest() : AbstractPhasedJvmDiagnosticLight
 
 
         configureFirHandlersStep {
-            setupHandlersForDiagnosticTest()
-            // Standard checkers logic
             useHandlers(::NoFirCompilationErrorsHandler, ::TagsGeneratorChecker)
-
         }
 
 
@@ -97,6 +89,7 @@ object ViperArtifactKind : TestArtifactKind<ViperVerificationArtifact>("ViperVer
 
 class ViperVerificationArtifact(
     val conversionArtifacts: FirOutputArtifact,
+    val verificationDiagnostics: Map<FirFile, List<KtDiagnostic>>,
 ) : ResultingArtifact<ViperVerificationArtifact>() {
     override val kind: TestArtifactKind<ViperVerificationArtifact>
         get() = ViperArtifactKind
@@ -110,79 +103,67 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
     override val outputKind: ViperArtifactKind
         get() = ViperArtifactKind
 
-
-    @OptIn(DirectDeclarationsAccess::class)
     override fun transform(
         module: TestModule,
         inputArtifact: FirOutputArtifact
     ): ViperVerificationArtifact {
-        val scopeSession = inputArtifact.partsForDependsOnModules[0].scopeSession
-        val globalReporter = testServices.firDiagnosticCollectorService.reporterForLTSyntaxErrors
-        var outputArtifacts = inputArtifact as FirCliBasedOutputArtifact<*>
-        val reporter = DiagnosticReporterFactory.createReporter(BaseDiagnosticsCollector.RawReporter.DO_NOTHING)
-        inputArtifact.allFirFiles.mapValues { it ->
-            val firFile = it.value
-            val fileMessages = mutableMapOf<KtSourceElement, MutableList<String>>()
+        val verificationDiagnostics = linkedMapOf<FirFile, MutableList<KtDiagnostic>>()
 
-            val session = firFile.moduleData.session
-            firFile.declarations.forEach { declaration ->
-                if (declaration is FirSimpleFunction) {
-                    val functionResults = verifyFunction(declaration, module)
-                    functionResults.forEach {
+        inputArtifact.allFirFiles.values.forEach { firFile ->
+            firFile.accept(object : FirDefaultVisitorVoid() {
+                override fun visitElement(element: FirElement) {
+                    when (element) {
+                        is FirSimpleFunction -> visitSimpleFunction(element)
+                        else -> element.acceptChildren(this)
+                    }
 
-                        val byFilePath = session.collectLostDiagnosticsOnFile(
-                            scopeSession,
-                            firFile,
-                            globalReporter
-                        )
-                        outputArtifacts.cliArtifact.diagnosticCollector.diagnosticsByFilePath
+                }
 
+                override fun visitSimpleFunction(simpleFunction: FirSimpleFunction) {
+                    val diagnostics = verifyFunction(simpleFunction, module)
+                    if (diagnostics.isNotEmpty()) {
+                        verificationDiagnostics.getOrPut(firFile) { mutableListOf() }.addAll(diagnostics)
                     }
                 }
-            }
-            fileMessages
+            })
         }
-        return ViperVerificationArtifact(inputArtifact)
+
+        return ViperVerificationArtifact(
+            conversionArtifacts = inputArtifact,
+            verificationDiagnostics = verificationDiagnostics.mapValues { it.value.toList() }
+        )
     }
 
     @OptIn(TestInfrastructureInternals::class, InternalDiagnosticFactoryMethod::class)
     private fun verifyFunction(
         decl: FirSimpleFunction,
         module: TestModule
-    ): List<KtDiagnosticWithParameters1<String>> {
-        val program = decl.viperProgram!!
+    ): List<KtDiagnostic> {
+        val program = decl.viperProgram ?: return emptyList()
 
-        val results = mutableListOf<KtDiagnosticWithParameters1<String>>()
+        val results = mutableListOf<KtDiagnostic>()
         val onFailure = { err: VerifierError ->
             val source = err.position.unwrapOr { decl.source }!!
-//            val unsued = result.getOrPut(source) { mutableListOf() }.add(err.msg)
             val diagnostics = PluginErrors.VIPER_VERIFICATION_ERROR.on(
                 source,
                 err.msg,
                 positioningStrategy = SourceElementPositioningStrategies.DEFAULT,
                 languageVersionSettings = module.languageVersionSettings
             )
-            val unsued = results.add(diagnostics!!)
+            val unused = results.add(diagnostics!!)
         }
+
         val consistencyErrors = program.checkTransitively()
         for (error in consistencyErrors) {
             onFailure(GenericConsistencyError(error))
         }
+
         val verifier = Verifier()
         try {
             verifier.verify(program, onFailure)
         } finally {
             verifier.stop()
         }
-
-        val diagnostics = PluginErrors.VIPER_VERIFICATION_ERROR.on(
-            decl.source!!,
-            "hello worlds",
-            positioningStrategy = SourceElementPositioningStrategies.DEFAULT,
-            languageVersionSettings = module.languageVersionSettings
-        )
-        val unsued = results.add(diagnostics!!)
-
 
         return results
     }
@@ -197,9 +178,22 @@ class ViperResultHandler(testServices: TestServices) :
     private val fullDiagnosticsRenderer = FullDiagnosticsRenderer(DiagnosticsDirectives.RENDER_DIAGNOSTICS_FULL_TEXT)
 
     override fun processModule(module: TestModule, info: ViperVerificationArtifact) {
-        println(info)
+        val frontendDiagnostics =
+            testServices.firDiagnosticCollectorService.getFrontendDiagnosticsForModule(info.conversionArtifacts)
+
+        for (part in info.conversionArtifacts.partsForDependsOnModules) {
+            for (file in part.module.files) {
+                val firFile = info.conversionArtifacts.mainFirFiles[file] ?: continue
+                val diagnostics = buildList {
+                    addAll(frontendDiagnostics[firFile].map { it.diagnostic })
+                    addAll(info.verificationDiagnostics[firFile].orEmpty())
+                }
+                fullDiagnosticsRenderer.storeFullDiagnosticRender(module, diagnostics, file)
+            }
+        }
     }
+
     override fun processAfterAllModules(someAssertionWasFailed: Boolean) {
-        fullDiagnosticsRenderer.assertCollectedDiagnostics(testServices, ".verify.diag.txt")
+        fullDiagnosticsRenderer.assertCollectedDiagnostics(testServices, ".fir.diag.txt")
     }
 }
