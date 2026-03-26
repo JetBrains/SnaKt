@@ -106,7 +106,7 @@ data class PretypeName(val name: String) : KotlinName {
         get() = name
 }
 
-data class SetOfNames(val names: List<SymbolicName>) : KotlinName {
+data class ListOfNames(val names: List<SymbolicName>) : KotlinName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = names.joinToString(SEPARATOR) { it.mangled }
