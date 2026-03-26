@@ -34,3 +34,10 @@ fun `assign local to local in loop`(x: @Borrowed Any) {
         z = x
     }
 }
+
+fun `assign local to local in lambda`(x: @Borrowed Any) {
+    {y: Any ->
+        var z: @Borrowed Any = <!LOCALITY_VIOLATION!>x<!>
+    }
+}
+

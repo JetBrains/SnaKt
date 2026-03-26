@@ -12,11 +12,18 @@ import org.jetbrains.kotlin.fir.expressions.FirWrappedExpression
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 import java.util.WeakHashMap
 
-class FirReceiverExtractor(
-    val cache: WeakHashMap<FirElement, Sequence<FirExpression>>
+/**
+ * Extract the receiver of an expression
+ */
+class FirExpressionReceiverExtractor(
+    private val cache: WeakHashMap<FirElement, FirExpression?>
 ) : FirVisitor<FirExpression?, Unit>() {
     private fun FirExpression?.visit(): FirExpression? {
-        return this?.accept(this@FirReceiverExtractor, Unit)
+        this ?: return null
+
+        return cache.computeIfAbsent(this) {
+            accept(this@FirExpressionReceiverExtractor, Unit)
+        }
     }
 
     fun extract(expr: FirExpression): FirExpression? =

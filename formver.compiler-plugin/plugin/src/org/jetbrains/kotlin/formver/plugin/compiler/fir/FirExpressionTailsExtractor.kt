@@ -30,12 +30,12 @@ import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 import java.util.WeakHashMap
 
-open class FirTailsExtractor(
-    val cache: WeakHashMap<FirElement, Sequence<FirExpression>>
+class FirExpressionTailsExtractor(
+    private val cache: WeakHashMap<FirElement, Sequence<FirExpression>>
 ) : FirVisitor<Sequence<FirExpression>, Unit>() {
     private fun FirElement.visit(): Sequence<FirExpression> {
         return cache.computeIfAbsent(this) {
-            accept(this@FirTailsExtractor, Unit)
+            accept(this@FirExpressionTailsExtractor, Unit)
         }
     }
 
