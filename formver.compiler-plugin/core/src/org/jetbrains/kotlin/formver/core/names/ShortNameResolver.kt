@@ -1,9 +1,10 @@
 package org.jetbrains.kotlin.formver.names
 
+import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.NameResolver
+import org.jetbrains.kotlin.formver.viper.NameType
 import org.jetbrains.kotlin.formver.viper.SEPARATOR
 import org.jetbrains.kotlin.formver.viper.SymbolicName
-import org.jetbrains.kotlin.formver.viper.mangled
 
 /**
  * Resolves mangled names into Viper identifiers while maintaining uniqueness.
@@ -12,66 +13,83 @@ import org.jetbrains.kotlin.formver.viper.mangled
 class ShortNameResolver : NameResolver {
     // DAG Datastructures
 
-    private val dag: NameDAG<SymbolicName> = NameDAG()
 
 
     override fun resolve(name: SymbolicName): String =
-        listOfNotNull(name.mangledType, name.mangledScope, name.mangledBaseName).joinToString(SEPARATOR)
+        listOfNotNull(name.nameType, name.mangledScope, name.mangledBaseName).joinToString(SEPARATOR)
 
-    override fun register(name: SymbolicName) {
-        name.dependsOn().forEach { dag.addEdge(it, name) }
-        dag.addNode(name)
-    }
+    override fun register(name: SymbolicName) {}
 
-    fun allUsedNames(): List<String> = dag.keys().map { it.mangled }
 
-    fun duplicateNames(): List<String> = allUsedNames().groupBy { it }.filter { it.value.size > 1 }.keys.toList()
-
-    fun render() = dag.render()
 }
 
-class NameDAG<T : SymbolicName> {
-    // Maps a parent to its set of children
-    private val adjacencyList = mutableMapOf<T, MutableSet<T>>()
+class NameSystemGraph {
 
-    fun addEdge(parent: T, child: T) {
-        adjacencyList.getOrPut(parent) { mutableSetOf() }.add(child)
-    }
+    // contains a hierarchy of scopes
+    private val scopeRelation = mutableMapOf<NameScope, Set<NameScope>>()
 
-    fun addNode(node: T) {
-        if (node in adjacencyList) return
-        adjacencyList[node] = mutableSetOf()
-    }
+    // contains mapping from scopes to their names
+    private val scopedNameRelation = mutableMapOf<NameScope, Set<SymbolicName>>()
 
-    fun keys(): Set<T> = adjacencyList.keys
+    // collects the names that belong to one type
+    private val nameTypes = mutableMapOf<NameType, Set<SymbolicName>>()
 
-    fun getChildren(parent: T): Set<T> = adjacencyList[parent] ?: emptySet()
+    private val names = mutableMapOf<KotlinName, Set<KotlinName>>()
 
-    context(nameResolver: NameResolver)
-    fun render(): String {
-        val builder = StringBuilder()
-
-        // Start the digraph (directed graph)
-        builder.appendLine("digraph NameSystemDAG {")
-
-        // Global styling for a clean look
-        builder.appendLine("  node [shape=box, fontname=\"Arial\", style=filled, fillcolor=\"#f9f9f9\"];")
-        builder.appendLine("  edge [color=\"#333333\", arrowhead=vee];")
-
-        for (node in adjacencyList.keys) {
-            builder.appendLine("  \"${node.mangled}\";")
+    fun addScope(scope: NameScope) {
+        scopeRelation.merge(scope, emptySet(), Set<NameScope>::plus)
+        if (scope.parent != null) {
+            scopeRelation.merge(
+                scope.parent!!,
+                setOf(scope),
+                Set<NameScope>::plus,
+            )
         }
+    }
 
-        builder.appendLine() // Add a break for readability
+    fun addScopedName(scope: NameScope, name: SymbolicName) =
+        scopedNameRelation.merge(
+            scope,
+            setOf(name),
+            Set<SymbolicName>::plus,
+        )
 
-        // 2. Declare the edges
-        for ((parent, children) in adjacencyList) {
-            for (child in children) {
-                builder.appendLine("  \"${parent.mangled}\" -> \"${child.mangled}\";")
+    fun addSymbolicName(name: SymbolicName) {
+        name.nameType?.let { nameTypes.merge(it, setOf(name), Set<SymbolicName>::plus) }
+    }
+
+    fun addTypedKotlinName(name: TypedKotlinName) {
+
+    }
+
+    fun addKotlinName(name: KotlinName) {
+        when (name) {
+            is SimpleKotlinName -> {
+                // already handled
+                names.merge(name, emptySet(), Set<KotlinName>::plus)
             }
+
+            is TypedKotlinName -> addTypedKotlinName(name)
+            else -> throw IllegalArgumentException("Unsupported KotlinName type: ${name::class.simpleName}")
         }
 
-        builder.appendLine("}")
-        return builder.toString()
+    }
+
+    fun addName(name: SymbolicName) {
+        when (name) {
+            is ScopedKotlinName -> {
+                val parent = name.scope
+                val child = name.name
+                addScopedName(parent, child)
+                addKotlinName(child)
+            }
+
+            is KotlinName -> {
+
+            }
+
+        }
     }
 }
+
+
