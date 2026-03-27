@@ -93,18 +93,18 @@ data class SpecialName(val baseName: String) : SymbolicName {
         get() = NameType.Special
 }
 
-abstract class NumberedLabelName(override val nameType: NameType, val originalN: Int) : SymbolicName {
+abstract class NumberedLabelName(override val nameType: NameType, open val n: Int) : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
-        get() = originalN.toString()
+        get() = n.toString()
 }
 
 
-data class ReturnLabelName(val scopeDepth: Int) : NumberedLabelName(NameType.Label.Return, scopeDepth)
-data class BreakLabelName(val n: Int) : NumberedLabelName(NameType.Label.Break, n)
-data class ContinueLabelName(val n: Int) : NumberedLabelName(NameType.Label.Continue, n)
-data class CatchLabelName(val n: Int) : NumberedLabelName(NameType.Label.Catch, n)
-data class TryExitLabelName(val n: Int) : NumberedLabelName(NameType.Label.TryExit, n)
+data class ReturnLabelName(override val n: Int) : NumberedLabelName(NameType.Label.Return, n)
+data class BreakLabelName(override val n: Int) : NumberedLabelName(NameType.Label.Break, n)
+data class ContinueLabelName(override val n: Int) : NumberedLabelName(NameType.Label.Continue, n)
+data class CatchLabelName(override val n: Int) : NumberedLabelName(NameType.Label.Catch, n)
+data class TryExitLabelName(override val n: Int) : NumberedLabelName(NameType.Label.TryExit, n)
 
 
 data class PlaceholderArgumentName(val n: Int) : SymbolicName {
