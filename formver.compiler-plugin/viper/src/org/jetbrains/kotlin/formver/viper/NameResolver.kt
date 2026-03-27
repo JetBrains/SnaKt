@@ -9,12 +9,20 @@ package org.jetbrains.kotlin.formver.viper
  */
 
 interface NameResolver {
-    fun resolve(name: SymbolicName): String
+    fun resolve(name: NamedEntity): String
     fun register(name: SymbolicName)
 }
 
 class DebugNameResolver : NameResolver {
-    override fun resolve(name: SymbolicName): String =
-        listOfNotNull(name.nameType, name.mangledScope, name.mangledBaseName).joinToString(SEPARATOR)
+    override fun resolve(name: NamedEntity): String = when (name) {
+        is SymbolicName -> listOfNotNull(
+            name.nameType?.fullName(),
+            name.mangledScope,
+            name.mangledBaseName
+        ).joinToString(SEPARATOR)
+
+        else -> name.toString()
+    }
+
     override fun register(name: SymbolicName) {}
 }

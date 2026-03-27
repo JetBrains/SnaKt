@@ -17,8 +17,21 @@ class ShortNameResolver : NameResolver {
 
     val graph = NameSystemGraph()
 
-    override fun resolve(name: SymbolicName): String =
-        listOfNotNull(name.nameType, name.mangledScope, name.mangledBaseName).joinToString(SEPARATOR)
+    private val currentCandidate = mutableMapOf<NamedEntity, Int>()
+
+    fun resolveFullName(name: NamedEntity): String = when (name) {
+        is SymbolicName -> listOfNotNull(
+            name.nameType?.fullName(),
+            name.mangledScope,
+            name.mangledBaseName
+        ).joinToString(SEPARATOR)
+
+        is NameScope -> name.mangledScopeName ?: "unknown"
+        is NameType -> name.name
+        else -> "should_never_happen"
+    }
+
+    override fun resolve(name: NamedEntity): String = current(name)
 
     override fun register(name: SymbolicName) {
         graph.addName(name)

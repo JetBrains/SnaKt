@@ -5,10 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.names
 
-import org.jetbrains.kotlin.formver.viper.NameResolver
-import org.jetbrains.kotlin.formver.viper.NameType
-import org.jetbrains.kotlin.formver.viper.SymbolicName
-import org.jetbrains.kotlin.formver.viper.mangled
+import org.jetbrains.kotlin.formver.viper.*
 
 /* This file contains mangled names for constructs introduced during the conversion to Viper.
  *
@@ -29,6 +26,17 @@ data class AnonymousName(val n: Int) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "anon$$${n}"
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +"anon"
+            }
+            candidate {
+                +"anon"
+                +"$n"
+            }
+        }
 }
 
 data class AnonymousBuiltinName(val n: Int) : FreshName {
@@ -39,6 +47,22 @@ data class AnonymousBuiltinName(val n: Int) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = $$"anon$builtin"
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +"anon"
+            }
+            candidate {
+                +"anon"
+                +"builtin"
+            }
+            candidate {
+                +"anon"
+                +"builtin"
+                +"$n"
+            }
+        }
 }
 
 /**
@@ -52,6 +76,13 @@ data object PlaceholderReturnVariableName : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "ret"
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +"ret"
+            }
+        }
 }
 
 data class ReturnVariableName(val n: Int) : FreshName {
@@ -61,6 +92,17 @@ data class ReturnVariableName(val n: Int) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = $$"ret$$${n}"
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +"ret"
+            }
+            candidate {
+                +"ret"
+                +"$n"
+            }
+        }
 }
 
 /**
@@ -74,18 +116,50 @@ data object FunctionResultVariableName : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "result"
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +"res"
+            }
+            candidate {
+                +"result"
+            }
+        }
 }
 
 data object DispatchReceiverName : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = $$"this$dispatch"
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +"this"
+            }
+            candidate {
+                +"this"
+                +"dispatch"
+            }
+        }
 }
 
 data object ExtensionReceiverName : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = $$"this$extension"
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +"this"
+            }
+            candidate {
+                +"this"
+                +"extension"
+            }
+        }
 }
 
 data class SpecialName(val baseName: String) : FreshName {
@@ -94,12 +168,38 @@ data class SpecialName(val baseName: String) : FreshName {
         get() = baseName
     override val nameType: NameType
         get() = NameType.Special
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +baseName
+            }
+            candidate {
+                +nameType
+                +baseName
+            }
+        }
 }
 
 abstract class NumberedLabelName(override val nameType: NameType, open val n: Int) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = n.toString()
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +nameType
+            }
+            candidate {
+                +nameType
+                +"$n"
+            }
+            candidate {
+                +"lbl"
+                +nameType
+                +"$n"
+            }
+        }
 }
 
 
@@ -114,16 +214,40 @@ data class PlaceholderArgumentName(val n: Int) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "arg$n"
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +"arg"
+            }
+            candidate {
+                +"arg"
+                +"$n"
+            }
+        }
 }
 
 data class DomainFuncParameterName(val baseName: String) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = baseName
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +baseName
+            }
+        }
 }
 
 data class SsaVariableName(val ssaIndex: Int, val baseName: SymbolicName) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "${baseName.mangled}$$ssaIndex"
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +baseName
+                +"$ssaIndex"
+            }
+        }
 }

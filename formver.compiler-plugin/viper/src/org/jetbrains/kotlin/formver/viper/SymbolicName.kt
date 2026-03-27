@@ -8,8 +8,85 @@ package org.jetbrains.kotlin.formver.viper
 
 interface NamedEntity {
     context(nameResolver: NameResolver)
-    fun name(): String?
+    fun fullName(): String?
+    val candidates: List<CandidateName>
 }
+
+sealed interface NamePart {
+
+    context(nameResolver: NameResolver)
+    fun name(): String
+
+    // Just simple string name
+    class Basic(val name: String) : NamePart {
+        context(nameResolver: NameResolver)
+        override fun name(): String = name
+    }
+
+    // Depends on other Name
+    class Dependent(val name: NamedEntity) : NamePart {
+        context(nameResolver: NameResolver)
+        override fun name(): String = nameResolver.resolve(name)
+    }
+}
+
+class CandidateName(val parts: List<NamePart>) {
+
+    context(nameResolver: NameResolver)
+    fun name(): String {
+        return parts.joinToString(SEPARATOR) { it.name() }
+    }
+}
+
+class CandidatesBuilder {
+    private val candidates = mutableListOf<CandidateName>()
+
+    /**
+     * Creates a new candidate using a nested DSL block.
+     */
+    fun candidate(init: CandidateNameBuilder.() -> Unit) {
+        val builder = CandidateNameBuilder()
+        builder.init()
+        candidates.add(builder.build())
+    }
+
+    /**
+     * Shorthand to add a single-part candidate directly.
+     */
+    fun candidate(name: String) {
+        candidates.add(CandidateName(listOf(NamePart.Basic(name))))
+    }
+
+    fun build(): List<CandidateName> = candidates.toList()
+}
+
+/**
+ * The top-level entry point for building a list of names.
+ */
+fun buildCandidates(init: CandidatesBuilder.() -> Unit): List<CandidateName> {
+    return CandidatesBuilder().apply(init).build()
+}
+
+// Re-using the logic from the previous step for the individual parts
+class CandidateNameBuilder {
+    private val parts = mutableListOf<NamePart>()
+
+    operator fun String.unaryPlus() {
+        parts.add(NamePart.Basic(this))
+    }
+
+    operator fun NamedEntity.unaryPlus() {
+        parts.add(NamePart.Dependent(this))
+    }
+
+    operator fun Iterable<NamedEntity>.unaryPlus() {
+        parts.addAll(map { NamePart.Dependent(it) })
+    }
+
+    fun build(): CandidateName = CandidateName(parts.toList())
+}
+
+
 
 /**
  * Represents a Kotlin name with its Viper equivalent.
@@ -33,7 +110,7 @@ interface SymbolicName : NamedEntity {
     val mangledBaseName: String
 
     context(nameResolver: NameResolver)
-    override fun name(): String? {
+    override fun fullName(): String? {
         return nameResolver.resolve(this)
     }
 }
@@ -55,9 +132,16 @@ val SymbolicName.debugMangled: String
 sealed class NameType(val name: String) : NamedEntity {
 
     context(nameResolver: NameResolver)
-    override fun name(): String? {
+    override fun fullName(): String? {
         return name
     }
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +name
+            }
+        }
     object Property : NameType("p")
     object BackingField : NameType("bf")
     object Getter : NameType("g")
@@ -69,8 +153,8 @@ sealed class NameType(val name: String) : NamedEntity {
     }
     object Constructor : NameType("con")
     object Function : NameType("f")
-    object Predicate : NameType("p")
-    object Havoc : NameType("havoc")
+    object Predicate : NameType("p") // merge them with "generated"
+    object Havoc : NameType("h")// merge them with "generated"
     sealed class Label(lblName: String) : NameType(lblName) {
         object Return : Label("ret")
         object Break : Label("break")

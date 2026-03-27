@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.embedClassTypeFunc
+import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
 
@@ -266,7 +267,7 @@ class RuntimeTypeDomain(val classes: List<ClassTypeEmbedding>) : BuiltinDomain(R
         val functionType: DomainFunc = createNewTypeDomainFunc("functionType")
 
         // for creation of user types
-        fun classTypeFunc(name: SymbolicName) = createDomainFunc(name, emptyList(), RuntimeType, true)
+        fun classTypeFunc(name: ScopedKotlinName) = createDomainFunc(name, emptyList(), RuntimeType, true)
 
         // bijections to primitive types
         val intInjection = Injection("int", Type.Int, intType)

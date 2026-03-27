@@ -27,12 +27,30 @@ data class SimpleKotlinName(val name: Name) : KotlinName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = name.asStringStripSpecialMarkers()
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +name.asStringStripSpecialMarkers()
+            }
+        }
 }
 
 abstract class TypedKotlinName(override val nameType: NameType, open val name: Name) : KotlinName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = name.asStringStripSpecialMarkers()
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +name.asStringStripSpecialMarkers()
+            }
+            candidate {
+                +nameType
+                +name.asStringStripSpecialMarkers()
+            }
+        }
+
 }
 
 abstract class TypedKotlinNameWithType(override val nameType: NameType, open val name: Name, val type: TypeEmbedding) :
@@ -46,7 +64,31 @@ data class FunctionKotlinName(override val name: Name, val functionType: Functio
     TypedKotlinNameWithType(
         NameType.Function, name,
         functionType.asTypeEmbedding()
-    )
+    ) {
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +name.asStringStripSpecialMarkers()
+            }
+            candidate {
+                +nameType
+                +name.asStringStripSpecialMarkers()
+            }
+            candidate {
+                +nameType
+                +name.asStringStripSpecialMarkers()
+                +functionType.returnType.name
+            }
+            candidate {
+                +nameType
+                +name.asStringStripSpecialMarkers()
+                +"args"
+                +functionType.paramTypes.map { it.name }
+                +"ret"
+                +functionType.returnType.name
+            }
+        }
+}
 
 /**
  * This name will never occur in the viper output, but rather is used to lookup properties.
@@ -56,10 +98,59 @@ data class BackingFieldKotlinName(override val name: Name) : TypedKotlinName(Nam
 data class GetterKotlinName(override val name: Name) : TypedKotlinName(NameType.Getter, name)
 data class SetterKotlinName(override val name: Name) : TypedKotlinName(NameType.Setter, name)
 data class ExtensionSetterKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
-    TypedKotlinNameWithType(NameType.ExtensionSetter, name, functionType.asTypeEmbedding())
+    TypedKotlinNameWithType(NameType.ExtensionSetter, name, functionType.asTypeEmbedding()) {
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +name.asStringStripSpecialMarkers()
+            }
+            candidate {
+                +nameType
+                +name.asStringStripSpecialMarkers()
+            }
+            candidate {
+                +nameType
+                +name.asStringStripSpecialMarkers()
+                +functionType.returnType.name
+            }
+            candidate {
+                +nameType
+                +name.asStringStripSpecialMarkers()
+                +"args"
+                +functionType.paramTypes.map { it.name }
+                +"ret"
+                +functionType.returnType.name
+            }
+        }
+}
 
 data class ExtensionGetterKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
-    TypedKotlinNameWithType(NameType.ExtensionGetter, name, functionType.asTypeEmbedding())
+    TypedKotlinNameWithType(NameType.ExtensionGetter, name, functionType.asTypeEmbedding()) {
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +name.asStringStripSpecialMarkers()
+            }
+            candidate {
+                +nameType
+                +name.asStringStripSpecialMarkers()
+            }
+            candidate {
+                +nameType
+                +name.asStringStripSpecialMarkers()
+                +"ret"
+                +functionType.returnType.name
+            }
+            candidate {
+                +nameType
+                +name.asStringStripSpecialMarkers()
+                +"args"
+                +functionType.paramTypes.map { it.name }
+                +"ret"
+                +functionType.returnType.name
+            }
+        }
+}
 
 data class ClassKotlinName(val name: FqName) : KotlinName {
     override val nameType: NameType
@@ -70,6 +161,17 @@ data class ClassKotlinName(val name: FqName) : KotlinName {
         get() = name.asViperString()
 
     constructor(classSegments: List<String>) : this(FqName.fromSegments(classSegments))
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +name.asViperString()
+            }
+            candidate {
+                +nameType
+                +name.asViperString()
+            }
+        }
 }
 
 data class ConstructorKotlinName(val type: FunctionTypeEmbedding) : KotlinName {
@@ -79,6 +181,25 @@ data class ConstructorKotlinName(val type: FunctionTypeEmbedding) : KotlinName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = type.name.mangledBaseName
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +nameType
+            }
+            candidate {
+                +nameType
+                +"ret"
+                +type.returnType.name
+            }
+            candidate {
+                +nameType
+                +"args"
+                +type.paramTypes.map { it.name }
+                +"ret"
+                +type.returnType.name
+            }
+        }
 }
 
 // It's a bit of a hack to make this as KotlinName, it should really just be any old name, but right now our scoped
@@ -89,6 +210,16 @@ data class PredicateKotlinName(val name: String) : KotlinName {
         get() = name
     override val nameType: NameType
         get() = NameType.Predicate
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +name
+            }
+            candidate {
+                +nameType
+                +name
+            }
+        }
 }
 
 data class HavocKotlinName(val type: TypeEmbedding) : KotlinName {
@@ -97,6 +228,22 @@ data class HavocKotlinName(val type: TypeEmbedding) : KotlinName {
         get() = type.name.mangled
     override val nameType: NameType
         get() = NameType.Havoc
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +"havoc"
+            }
+            candidate {
+                +"havoc"
+                +type.name
+            }
+            candidate {
+                +nameType
+                +"havoc"
+                +type.name
+            }
+        }
 }
 
 /**
@@ -109,6 +256,16 @@ data class PretypeName(val name: String) : NameOfType {
 
     override val nameType: NameType
         get() = NameType.Type
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +name
+            }
+            candidate {
+                +nameType
+                +name
+            }
+        }
 }
 
 /**
@@ -121,6 +278,16 @@ data class ListOfNames<T : SymbolicName>(val names: List<T>) : NameOfType {
 
     override val nameType: NameType
         get() = NameType.Type
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +names
+            }
+            candidate {
+                +nameType
+                +names
+            }
+        }
 }
 
 
@@ -131,6 +298,21 @@ data class FunctionTypeName(val args: ListOfNames<TypeName>, val returns: TypeNa
 
     override val nameType: NameType
         get() = NameType.Type
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +nameType
+                +returns
+            }
+            candidate {
+                +nameType
+                +"args"
+                +args
+                +"ret"
+                +returns
+            }
+        }
 }
 
 /**
@@ -147,4 +329,20 @@ data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : Name
 
     override val nameType: NameType
         get() = NameType.Type
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +pretype.name
+            }
+            candidate {
+                if (nullable) +"N"
+                +pretype.name
+            }
+            candidate {
+                +nameType
+                if (nullable) +"N"
+                +pretype.name
+            }
+        }
 }
