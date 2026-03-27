@@ -21,6 +21,8 @@ import org.jetbrains.kotlin.name.Name
  */
 sealed interface KotlinName : SymbolicName
 
+sealed interface NameOfType : SymbolicName
+
 data class SimpleKotlinName(val name: Name) : KotlinName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
@@ -61,7 +63,7 @@ data class ExtensionGetterKotlinName(override val name: Name, val functionType: 
 
 data class ClassKotlinName(val name: FqName) : KotlinName {
     override val nameType: NameType
-        get() = NameType.Class
+        get() = NameType.Type.Class
 
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
@@ -100,32 +102,41 @@ data class HavocKotlinName(val type: TypeEmbedding) : KotlinName {
 /**
  * Name of a _simple_ type.
  **/
-data class PretypeName(val name: String) : KotlinName {
+data class PretypeName(val name: String) : NameOfType {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = name
+
+    override val nameType: NameType
+        get() = NameType.Type
 }
 
 /**
  * Holds a list of names. Useful to collect argument types of functions
  */
-data class ListOfNames<T : SymbolicName>(val names: List<T>) : KotlinName {
+data class ListOfNames<T : SymbolicName>(val names: List<T>) : NameOfType {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = names.joinToString(SEPARATOR) { it.mangled }
+
+    override val nameType: NameType
+        get() = NameType.Type
 }
 
 
-data class FunctionTypeName(val args: ListOfNames<TypeName>, val returns: TypeName) : KotlinName {
+data class FunctionTypeName(val args: ListOfNames<TypeName>, val returns: TypeName) : NameOfType {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = $$"$${args.mangledBaseName}$$${returns.mangled}"
+
+    override val nameType: NameType
+        get() = NameType.Type
 }
 
 /**
  * Names a type, together with nullability.
  */
-data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : KotlinName {
+data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : NameOfType {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = listOfNotNull(
@@ -133,4 +144,7 @@ data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : Kotl
             "T",
             if (pretype is FunctionTypeEmbedding) "F" else null
         ).joinToString("") + SEPARATOR + pretype.name.mangledBaseName
+
+    override val nameType: NameType
+        get() = NameType.Type
 }
