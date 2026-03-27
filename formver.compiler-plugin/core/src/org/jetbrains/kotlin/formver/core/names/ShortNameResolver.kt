@@ -2,6 +2,10 @@ package org.jetbrains.kotlin.formver.names
 
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.*
+import org.jetbrains.kotlin.formver.viper.ast.DomainName
+import org.jetbrains.kotlin.formver.viper.ast.NamedDomainAxiomLabel
+import org.jetbrains.kotlin.formver.viper.ast.QualifiedDomainFuncName
+import org.jetbrains.kotlin.formver.viper.ast.UnqualifiedDomainFuncName
 import kotlin.math.absoluteValue
 
 /**
@@ -23,6 +27,23 @@ class ShortNameResolver : NameResolver {
 
 }
 
+enum class Relation {
+    /** scope SCOPE_OF scopedName**/
+    SCOPE_OF,
+
+    /** name SCOPED_NAME scopeNamed **/
+    SCOPED_NAME,
+
+    /** Function HAS_TYPE Int**/
+    HAS_TYPE,
+
+    /** (a,b) -> c DEPENDS_ON a **/
+    DEPENDS_ON,
+
+    /** name NAME_TYPE nameType **/
+    NAME_TYPE,
+}
+
 class NameSystemGraph {
 
     // contains a hierarchy of scopes
@@ -36,174 +57,186 @@ class NameSystemGraph {
 
     private val kotlinNames = mutableMapOf<KotlinName, Set<KotlinName>>()
 
-    private val freshNames = mutableMapOf<SymbolicName, Set<SymbolicName>>()
+    private val freshNames = mutableMapOf<FreshName, Set<FreshName>>()
 
     private val endUpInViper = mutableSetOf<NamedEntity>()
 
-    fun normalize() {
-        scopeRelation.values.flatten().forEach { scope ->
-            scopeRelation.merge(scope, emptySet(), Set<NameScope>::plus)
-        }
-        scopedNameRelation.values.flatten()
-            .forEach { name -> kotlinNames.merge(name, emptySet(), Set<KotlinName>::plus) }
-        nameTypes.values.flatten().forEach { name -> freshNames.merge(name, emptySet(), Set<SymbolicName>::plus) }
-        kotlinNames.values.flatten().forEach { name -> kotlinNames.merge(name, emptySet(), Set<KotlinName>::plus) }
-        freshNames.values.flatten().forEach { name -> freshNames.merge(name, emptySet(), Set<SymbolicName>::plus) }
+    private val tripleStore = mutableSetOf<Triple<NamedEntity, Relation, NamedEntity>>()
+    private val elements = mutableSetOf<NamedEntity>()
+
+
+    fun addName(scopedName: ScopedKotlinName) {
+        elements.add(scopedName)
+        tripleStore.add(Triple(scopedName.scope, Relation.SCOPE_OF, scopedName))
+        tripleStore.add(Triple(scopedName.name, Relation.SCOPED_NAME, scopedName))
+        addName(scopedName.name)
+        addName(scopedName.scope)
     }
 
-    fun addScope(scope: NameScope) {
-        scopeRelation.merge(scope, emptySet(), Set<NameScope>::plus)
-        if (scope.parent != null) {
-            scopeRelation.merge(
-                scope.parent!!,
-                setOf(scope),
-                Set<NameScope>::plus,
-            )
-            addScope(scope.parent!!)
-        }
-    }
+    fun addName(scope: NameScope) {
+        elements.add(scope)
+        when (scope) {
+            is BadScope -> {}
+            is ClassScope -> {
+                tripleStore.add(Triple(scope.parent, Relation.SCOPE_OF, scope))
+                tripleStore.add(Triple(scope.className, Relation.SCOPED_NAME, scope))
+            }
 
-    fun addScopedName(scope: NameScope, name: KotlinName) {
-        addScope(scope)
-        scopedNameRelation.merge(
-            scope,
-            setOf(name),
-            Set<KotlinName>::plus,
-        )
-        addKotlinName(name)
-    }
+            is FakeScope -> {}
+            is LocalScope -> {}
+            is PackageScope -> {}
+            is ParameterScope -> {}
+            is PrivateScope -> {
+                tripleStore.add(Triple(scope.parent, Relation.SCOPE_OF, scope))
+            }
 
-    fun addTypedKotlinName(name: TypedKotlinName) {
-        addNameWithType(name)
-    }
-
-    fun addNameWithType(name: SymbolicName) {
-        if (name.nameType != null) {
-            nameTypes.merge(name.nameType!!, setOf(name), Set<SymbolicName>::plus)
+            is PublicScope -> {
+                tripleStore.add(Triple(scope.parent, Relation.SCOPE_OF, scope))
+            }
         }
     }
 
-    fun addKotlinName(name: KotlinName) {
-        addNameWithType(name)
+
+    fun addName(name: NameOfType) {
+        elements.add(name)
         when (name) {
-            is SimpleKotlinName -> {
-                kotlinNames.merge(name, emptySet(), Set<KotlinName>::plus)
-            }
 
-            is TypedKotlinName -> {
-                addTypedKotlinName(name)
-            }
-
-            is TypedKotlinNameWithType -> {
-                kotlinNames.merge(name.type.name, setOf(name), Set<KotlinName>::plus)
-                kotlinNames.merge(name, emptySet(), Set<KotlinName>::plus)
-            }
-
-            is ClassKotlinName -> {
-                kotlinNames.merge(name, emptySet(), Set<KotlinName>::plus)
-            }
-
-            is ConstructorKotlinName -> {
-                kotlinNames.merge(name, emptySet(), Set<KotlinName>::plus)
-            }
-
-            is PredicateKotlinName -> {
-                kotlinNames.merge(name, emptySet(), Set<KotlinName>::plus)
-            }
-
-            is HavocKotlinName -> {
-                kotlinNames.merge(name, emptySet(), Set<KotlinName>::plus)
-            }
-
-            is PretypeName -> {
-                kotlinNames.merge(name, emptySet(), Set<KotlinName>::plus)
+            is FunctionTypeName -> {
+                tripleStore.add(
+                    Triple(name, Relation.DEPENDS_ON, name.args)
+                )
+                addName(name.args)
+                tripleStore.add(
+                    Triple(name, Relation.DEPENDS_ON, name.returns)
+                )
+                addName(name.returns)
             }
 
             is ListOfNames<*> -> {
                 name.names.forEach {
-                    kotlinNames.merge(it as KotlinName, setOf(name), Set<KotlinName>::plus)
+                    tripleStore.add(Triple(name, Relation.DEPENDS_ON, it))
+                    addName(it)
                 }
-                addKotlinName(name)
             }
 
-            is FunctionTypeName -> {
-                kotlinNames.merge(name.args, setOf(name), Set<KotlinName>::plus)
-                kotlinNames.merge(name.returns, setOf(name), Set<KotlinName>::plus)
-                kotlinNames.merge(name, emptySet(), Set<KotlinName>::plus)
+            is PretypeName -> {
+                // Noting to do
             }
+
 
             is TypeName -> {
-                kotlinNames.merge(name, emptySet(), Set<KotlinName>::plus)
-                freshNames.merge(name.pretype.name, setOf(name), Set<SymbolicName>::plus)
+                tripleStore.add(
+                    Triple(name, Relation.DEPENDS_ON, name.pretype.name)
+                )
+                addName(name.pretype.name)
+            }
+        }
+    }
+
+    fun addName(name: NameType) {
+        elements.add(name)
+        // nothing to do
+    }
+
+    fun addName(name: KotlinName) {
+        elements.add(name)
+        when (name) {
+            is ClassKotlinName -> {
+                // nothing to do
+            }
+            is ConstructorKotlinName -> {
+                tripleStore.add(Triple(name, Relation.HAS_TYPE, name.type.name))
+                addName(name.type.name)
+            }
+
+            is HavocKotlinName -> {
+                tripleStore.add(Triple(name, Relation.DEPENDS_ON, name.type.name))
+                addName(name.type.name)
+            }
+
+            is PredicateKotlinName -> {
+                // nothing to do
+            }
+
+            is SimpleKotlinName -> {
+                // nothing to do
+            }
+
+            is TypedKotlinName -> {
+                // wil be recorded earlier
+            }
+
+            is TypedKotlinNameWithType -> {
+                tripleStore.add(Triple(name, Relation.HAS_TYPE, name.type.name))
+                addName(name.type.name)
             }
         }
 
     }
 
-    fun addName(name: SymbolicName) {
+    fun addName(name: FreshName) {
+        elements.add(name)
         when (name) {
-            is ScopedKotlinName -> {
-                val parent = name.scope
-                val child = name.name
-                addScopedName(parent, child)
-                addKotlinName(child)
-                return
-            }
-
-            is KotlinName -> addKotlinName(name)
-
-            is AnonymousName -> {
-                freshNames.merge(name, emptySet<SymbolicName>(), Set<SymbolicName>::plus)
-            }
-
-            is AnonymousBuiltinName -> {
-                freshNames.merge(name, emptySet(), Set<SymbolicName>::plus)
-            }
-
-            is PlaceholderReturnVariableName -> {
-                freshNames.merge(name, emptySet(), Set<SymbolicName>::plus)
-            }
-
-
-            is ReturnVariableName -> {
-                freshNames.merge(name, emptySet(), Set<SymbolicName>::plus)
-            }
-
-
-            is FunctionResultVariableName -> {
-                freshNames.merge(name, emptySet(), Set<SymbolicName>::plus)
-            }
-
-
-            is DispatchReceiverName -> {
-                freshNames.merge(name, emptySet(), Set<SymbolicName>::plus)
-            }
-
-
-            is ExtensionReceiverName -> {
-                freshNames.merge(name, emptySet(), Set<SymbolicName>::plus)
-            }
-
-
-            is NumberedLabelName -> {
-                freshNames.merge(name, emptySet(), Set<SymbolicName>::plus)
-            }
-
-            is PlaceholderArgumentName -> {
-                freshNames.merge(name, emptySet(), Set<SymbolicName>::plus)
-            }
-
             is SsaVariableName -> {
-                freshNames.merge(name.baseName, setOf(name), Set<SymbolicName>::plus)
-                freshNames.merge(name, emptySet(), Set<SymbolicName>::plus)
+                tripleStore.add(Triple(name, Relation.DEPENDS_ON, name.baseName))
+                addName(name.baseName)
             }
 
             else -> {
-                // This excludes the whole type domain
-                return
+
             }
         }
-        addNameWithType(name)
+    }
+
+    fun addName(name: SymbolicName) {
+        elements.add(name)
+        if (name.nameType != null) {
+            tripleStore.add(Triple(name, Relation.NAME_TYPE, name.nameType!!))
+            addName(name.nameType!!)
+        }
+
+        when (name) {
+            is FreshName -> {
+                addName(name)
+            }
+
+            is KotlinName -> {
+                addName(name)
+            }
+
+            is ScopedKotlinName -> {
+                addName(name)
+            }
+
+            is DomainName -> {
+                // nothing to do
+            }
+
+            is NamedDomainAxiomLabel -> {
+                tripleStore.add(Triple(name, Relation.DEPENDS_ON, name.domainName))
+            }
+
+            is QualifiedDomainFuncName -> {
+                tripleStore.add(Triple(name, Relation.DEPENDS_ON, name.domainName))
+            }
+
+            is UnqualifiedDomainFuncName -> {
+                // nothing to do
+            }
+
+            is NameOfType -> {
+                addName(name)
+            }
+        }
+    }
+
+    fun addName(name: NamedEntity) {
+        elements.add(name)
+        when (name) {
+            is NameScope -> addName(name)
+            is NameType -> addName(name)
+            is SymbolicName -> addName(name)
+        }
     }
 
     context(resolver: NameResolver)
@@ -219,79 +252,73 @@ class NameSystemGraph {
             val name = "n${hashCode.absoluteValue}"
             return name
         }
+        fun isScoped(obj: NamedEntity): Boolean =
+            tripleStore.any { (a, rel, _) -> a == obj && rel == Relation.SCOPED_NAME }
+
+        fun endUpInViper(obj: NamedEntity): Boolean = when (obj) {
+            is NameScope -> false // Just scopes should never appear as a actual name in viper
+            is NameType -> false // Name Types are only used to distinguish what a name describes
+            is SymbolicName -> {
+                // maybe
+                when (obj) {
+                    is FreshName -> true  // likely yes
+                    is KotlinName -> !isScoped(obj)
+                    is ScopedKotlinName -> true // likely, what if double scoped?
+                    is DomainName -> true // yes the domain is used as a name
+                    is NamedDomainAxiomLabel -> true
+                    is QualifiedDomainFuncName -> true
+                    is UnqualifiedDomainFuncName -> true
+                    is NameOfType -> false // names of types are not necessary to be unique
+                    else -> true
+                }
+            }
+
+            else -> true
+        }
+
+        fun nodeColor(obj: NamedEntity): String {
+            if (endUpInViper(obj)) {
+                return "lime"
+            } else {
+                return "black"
+            }
+        }
 
         // Helper for labels
         fun label(obj: NamedEntity): String = when (obj) {
             is NameScope -> "Scope: ${obj.name()}"
-            is SymbolicName -> "Name: ${obj.name()}"
             is NameType -> "Type: ${obj.name()}"
+            is SymbolicName -> {
+                when (obj) {
+                    is FreshName -> "Fresh: ${obj.name()}"
+                    is KotlinName -> "Kotlin: ${obj.name()}"
+                    is ScopedKotlinName -> "Scoped: ${obj.name()}"
+                    is NameOfType -> "NameOfType: ${obj.name()}"
+                    else -> "Domain: ${obj.name()}"
+                }
+            }
             else -> throw IllegalArgumentException("Unsupported entity type: ${obj.javaClass.name}")
         }
 
-        // 1. Scopes
-        sb.append("  subgraph cluster_scopes {\n")
-        sb.append("    label=\"Scopes\";\n")
-        sb.append("    node [color=blue, style=filled, fillcolor=lightblue];\n")
-        scopeRelation.keys.forEach { scope ->
-            sb.append("    ${id(scope)} [label=\"${label(scope)}\"];\n")
-        }
-        sb.append("  }\n")
 
-        // 2. Types
-        sb.append("  subgraph cluster_types {\n")
-        sb.append("    label=\"Types\";\n")
-        sb.append("    node [color=green, style=filled, fillcolor=lightgreen, shape=ellipse];\n")
-        nameTypes.keys.forEach { type ->
-            sb.append("    ${id(type)} [label=\"${label(type)}\"];\n")
-        }
-        sb.append("  }\n")
-
-        // 3. Names
-        sb.append("  subgraph cluster_names {\n")
-        sb.append("    label=\"Names\";\n")
-        sb.append("    node [color=orange, style=filled, fillcolor=lightsalmon];\n")
-        val allNames = (scopedNameRelation.values.flatten() + nameTypes.values.flatten() +
-                kotlinNames.keys + freshNames.keys + freshNames.values.flatten()).toSet()
-        allNames.forEach { name ->
-            sb.append("    ${id(name)} [label=\"${label(name)}\"];\n")
-        }
-        sb.append("  }\n")
-
-        // Relations
-        // Scope hierarchy: parent -> child
-        scopeRelation.forEach { (parent, children) ->
-            children.forEach { child ->
-                sb.append("  ${id(parent)} -> ${id(child)} [label=\"parentOf\", color=blue, arrowhead=vee];\n")
-            }
+        fun relationLabel(relation: Relation) = when (relation) {
+            Relation.SCOPE_OF -> "[color=blue]"
+            Relation.DEPENDS_ON -> "[color=black]"
+            Relation.HAS_TYPE -> "[color=pink]"
+            Relation.SCOPED_NAME -> "[color=lightblue]"
+            Relation.NAME_TYPE -> "[color=gray]"
         }
 
-        // Scope to names: scope -> name
-        scopedNameRelation.forEach { (scope, names) ->
-            names.forEach { name ->
-                sb.append("  ${id(scope)} -> ${id(name)} [label=\"contains\", color=darkgreen, arrowhead=dot];\n")
-            }
+        // add all elements
+        elements.forEach {
+            sb.appendLine("${id(it)} [label=\"${label(it)}\" color=\"${nodeColor(it)}\"];\n")
         }
 
-        // Type to names: type -> name
-        nameTypes.forEach { (type, names) ->
-            names.forEach { name ->
-                sb.append("  ${id(type)} -> ${id(name)} [label=\"isTypeOf\", color=green, arrowhead=normal];\n")
-            }
+        // relations
+        tripleStore.forEach { (a, relation, b) ->
+            sb.appendLine("${id(a)} -> ${id(b)} ${relationLabel(relation)};\n")
         }
 
-        // SSA/Fresh relations: base -> version
-        freshNames.forEach { (base, versions) ->
-            versions.forEach { version ->
-                sb.append("  ${id(base)} -> ${id(version)} [label=\"ssa\", color=red, arrowhead=diamond];\n")
-            }
-        }
-
-        // KotlinName relations (e.g., ListOfNames -> components)
-        kotlinNames.forEach { (child, parents) ->
-            parents.forEach { parent ->
-                sb.append("  ${id(parent)} -> ${id(child)} [label=\"memberOf\", color=purple, arrowhead=inv];\n")
-            }
-        }
 
         sb.append("}\n")
         return sb.toString()
