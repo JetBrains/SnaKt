@@ -1,0 +1,142 @@
+/names.kt:(246,255): info: Generated Viper text for memberFun:
+field bf$field: Ref
+
+field bf$pkg$org_example$c$Bottom$private$priv_field: Ref
+
+method f$pkg$org_example$c$Bottom$memberFun$t$TF$t$T$Bottom$t$T$Boolean(this$dispatch: Ref)
+  returns (v$ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$org_example$Bottom())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$boolType())
+{
+  inhale acc(p$pkg$org_example$c$Bottom$shared(this$dispatch), wildcard)
+  v$ret$0 := df$rt$boolToRef(true)
+  goto ret$0
+  label ret$0
+}
+
+/names.kt:(329,342): info: Generated Viper text for innerFunction:
+method f$pkg$org_example$c$Bottom_Inner$innerFunction$t$TF$t$T$Bottom_Inner$t$T$Int(this$dispatch: Ref)
+  returns (v$ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$org_example$Bottom_Inner())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+{
+  inhale acc(p$pkg$org_example$c$Bottom_Inner$shared(this$dispatch), wildcard)
+  v$ret$0 := df$rt$intToRef(122)
+  goto ret$0
+  label ret$0
+}
+
+/names.kt:(401,407): info: Generated Viper text for bottom:
+field bf$field: Ref
+
+field bf$pkg$org_example$c$Bottom$private$priv_field: Ref
+
+method con$pkg$org_example$c$Bottom$$t$T$Bottom() returns (v$ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$c$pkg$org_example$Bottom())
+  ensures acc(p$pkg$org_example$c$Bottom$shared(v$ret), wildcard)
+  ensures acc(p$pkg$org_example$c$Bottom$unique(v$ret), write)
+
+
+method con$pkg$org_example$c$Bottom_Inner$$t$T$Bottom_Inner()
+  returns (v$ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$c$pkg$org_example$Bottom_Inner())
+  ensures acc(p$pkg$org_example$c$Bottom_Inner$shared(v$ret), wildcard)
+  ensures acc(p$pkg$org_example$c$Bottom_Inner$unique(v$ret), write)
+
+
+method con$pkg$org_example$c$Middle$$t$T$Middle() returns (v$ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$c$pkg$org_example$Middle())
+  ensures acc(p$pkg$org_example$c$Middle$shared(v$ret), wildcard)
+  ensures acc(p$pkg$org_example$c$Middle$unique(v$ret), write)
+
+
+method con$pkg$org_example$c$Top$t$T$Int$t$T$Top(p$field: Ref)
+  returns (v$ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$field), df$rt$intType())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$c$pkg$org_example$Top())
+  ensures acc(p$pkg$org_example$c$Top$shared(v$ret), wildcard)
+  ensures acc(p$pkg$org_example$c$Top$unique(v$ret), write)
+  ensures df$rt$intFromRef((unfolding acc(p$pkg$org_example$c$Top$shared(v$ret), wildcard) in
+      v$ret.bf$field)) ==
+    df$rt$intFromRef(p$field)
+
+
+method f$pkg$org_example$c$Bottom$bottom$t$TF$t$T$Bottom$t$T$Int$t$T$Int$t$T$Boolean(this$dispatch: Ref,
+  p$par1: Ref, p$par2: Ref)
+  returns (v$ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$org_example$Bottom())
+  requires df$rt$isSubtype(df$rt$typeOf(p$par1), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$par2), df$rt$intType())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$boolType())
+{
+  var l0$top: Ref
+  var l0$middle: Ref
+  var l0$bottom: Ref
+  var l0$test: Ref
+  var l0$test2: Ref
+  var l0$test3: Ref
+  var l0$test4: Ref
+  var v$anon$$0: Ref
+  var v$anon$$1: Ref
+  var l0$inner: Ref
+  var v$anon$$2: Ref
+  var v$anon$$3: Ref
+  inhale acc(p$pkg$org_example$c$Bottom$shared(this$dispatch), wildcard)
+  l0$top := con$pkg$org_example$c$Top$t$T$Int$t$T$Top(df$rt$intToRef(12))
+  l0$middle := con$pkg$org_example$c$Middle$$t$T$Middle()
+  l0$bottom := con$pkg$org_example$c$Bottom$$t$T$Bottom()
+  unfold acc(p$pkg$org_example$c$Top$shared(l0$top), wildcard)
+  l0$test := l0$top.bf$field
+  unfold acc(p$pkg$org_example$c$Middle$shared(l0$middle), wildcard)
+  unfold acc(p$pkg$org_example$c$Top$shared(l0$middle), wildcard)
+  l0$test2 := l0$middle.bf$field
+  unfold acc(p$pkg$org_example$c$Bottom$shared(l0$bottom), wildcard)
+  unfold acc(p$pkg$org_example$c$Middle$shared(l0$bottom), wildcard)
+  unfold acc(p$pkg$org_example$c$Top$shared(l0$bottom), wildcard)
+  l0$test3 := l0$bottom.bf$field
+  unfold acc(p$pkg$org_example$c$Bottom$shared(l0$bottom), wildcard)
+  l0$test4 := l0$bottom.bf$pkg$org_example$c$Bottom$private$priv_field
+  v$anon$$0 := f$pkg$org_example$c$Bottom$memberFun$t$TF$t$T$Bottom$t$T$Boolean(this$dispatch)
+  v$anon$$1 := f$pkg$org_example$localFunction$t$TF$t$T$Int$t$T$Int$t$T$Int(p$par1,
+    p$par2)
+  l0$inner := con$pkg$org_example$c$Bottom_Inner$$t$T$Bottom_Inner()
+  v$anon$$2 := f$pkg$org_example$c$Bottom_Inner$innerFunction$t$TF$t$T$Bottom_Inner$t$T$Int(l0$inner)
+  v$anon$$3 := f$pkg$org_example$c$Bottom_Inner$innerFunction$t$TF$t$T$Bottom_Inner$t$T$Int(l0$inner)
+  v$ret$0 := df$rt$boolToRef(df$rt$intFromRef(l0$test2) ==
+    df$rt$intFromRef(v$anon$$3))
+  goto ret$0
+  label ret$0
+}
+
+method f$pkg$org_example$c$Bottom$memberFun$t$TF$t$T$Bottom$t$T$Boolean(this$dispatch: Ref)
+  returns (v$ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$org_example$Bottom())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$boolType())
+
+
+method f$pkg$org_example$c$Bottom_Inner$innerFunction$t$TF$t$T$Bottom_Inner$t$T$Int(this$dispatch: Ref)
+  returns (v$ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$org_example$Bottom_Inner())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$intType())
+
+
+method f$pkg$org_example$localFunction$t$TF$t$T$Int$t$T$Int$t$T$Int(p$par3: Ref,
+  p$par4: Ref)
+  returns (v$ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$par3), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$par4), df$rt$intType())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$intType())
+
+
+/names.kt:(840,853): info: Generated Viper text for localFunction:
+method f$pkg$org_example$localFunction$t$TF$t$T$Int$t$T$Int$t$T$Int(p$par3: Ref,
+  p$par4: Ref)
+  returns (v$ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$par3), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$par4), df$rt$intType())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+{
+  v$ret$0 := sp$plusInts(df$rt$intToRef(12), p$par3)
+  goto ret$0
+  label ret$0
+}

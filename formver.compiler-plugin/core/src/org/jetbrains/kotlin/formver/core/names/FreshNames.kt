@@ -15,11 +15,14 @@ import org.jetbrains.kotlin.formver.viper.mangled
  * See the NameEmbeddings file for guidelines on good name choices.
  */
 
+interface FreshName : SymbolicName
+
+
 /**
  * Representation for names not present in the original source,
  * e.g. storage for the result of subexpressions.
  */
-data class AnonymousName(val n: Int) : SymbolicName {
+data class AnonymousName(val n: Int) : FreshName {
     override val nameType: NameType
         get() = NameType.Variables
 
@@ -28,7 +31,7 @@ data class AnonymousName(val n: Int) : SymbolicName {
         get() = "anon$$${n}"
 }
 
-data class AnonymousBuiltinName(val n: Int) : SymbolicName {
+data class AnonymousBuiltinName(val n: Int) : FreshName {
 
     override val nameType: NameType
         get() = NameType.Variables
@@ -41,7 +44,7 @@ data class AnonymousBuiltinName(val n: Int) : SymbolicName {
 /**
  * Name for return variable that should *only* be used in signatures of methods without a body.
  */
-data object PlaceholderReturnVariableName : SymbolicName {
+data object PlaceholderReturnVariableName : FreshName {
 
     override val nameType: NameType
         get() = NameType.Variables
@@ -51,7 +54,7 @@ data object PlaceholderReturnVariableName : SymbolicName {
         get() = "ret"
 }
 
-data class ReturnVariableName(val n: Int) : SymbolicName {
+data class ReturnVariableName(val n: Int) : FreshName {
     override val nameType: NameType
         get() = NameType.Variables
 
@@ -64,7 +67,7 @@ data class ReturnVariableName(val n: Int) : SymbolicName {
  * Name for return variable that should *only* be used in signatures of pure functions
  * This variable will be translated into the special result variable in Viper
  */
-data object FunctionResultVariableName : SymbolicName {
+data object FunctionResultVariableName : FreshName {
     override val nameType: NameType
         get() = NameType.Variables
 
@@ -73,19 +76,19 @@ data object FunctionResultVariableName : SymbolicName {
         get() = "result"
 }
 
-data object DispatchReceiverName : SymbolicName {
+data object DispatchReceiverName : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = $$"this$dispatch"
 }
 
-data object ExtensionReceiverName : SymbolicName {
+data object ExtensionReceiverName : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = $$"this$extension"
 }
 
-data class SpecialName(val baseName: String) : SymbolicName {
+data class SpecialName(val baseName: String) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = baseName
@@ -93,7 +96,7 @@ data class SpecialName(val baseName: String) : SymbolicName {
         get() = NameType.Special
 }
 
-abstract class NumberedLabelName(override val nameType: NameType, open val n: Int) : SymbolicName {
+abstract class NumberedLabelName(override val nameType: NameType, open val n: Int) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = n.toString()
@@ -107,19 +110,19 @@ data class CatchLabelName(override val n: Int) : NumberedLabelName(NameType.Labe
 data class TryExitLabelName(override val n: Int) : NumberedLabelName(NameType.Label.TryExit, n)
 
 
-data class PlaceholderArgumentName(val n: Int) : SymbolicName {
+data class PlaceholderArgumentName(val n: Int) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "arg$n"
 }
 
-data class DomainFuncParameterName(val baseName: String) : SymbolicName {
+data class DomainFuncParameterName(val baseName: String) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = baseName
 }
 
-data class SsaVariableName(val ssaIndex: Int, val baseName: SymbolicName) : SymbolicName {
+data class SsaVariableName(val ssaIndex: Int, val baseName: SymbolicName) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "${baseName.mangled}$$ssaIndex"
