@@ -5,6 +5,12 @@
 
 package org.jetbrains.kotlin.formver.viper
 
+
+interface NamedEntity {
+    context(nameResolver: NameResolver)
+    fun name(): String?
+}
+
 /**
  * Represents a Kotlin name with its Viper equivalent.
  *
@@ -12,7 +18,8 @@ package org.jetbrains.kotlin.formver.viper
  * approach makes it easier to see where they came from during debugging.
  */
 const val SEPARATOR = "$"
-interface SymbolicName {
+
+interface SymbolicName : NamedEntity {
     /**
      * Describes the type of the entity the names refer to.
      * This could be a property, a backing field, a getter, a setter, etc.
@@ -24,6 +31,11 @@ interface SymbolicName {
         get() = null
     context(nameResolver: NameResolver)
     val mangledBaseName: String
+
+    context(nameResolver: NameResolver)
+    override fun name(): String? {
+        return nameResolver.resolve(this)
+    }
 }
 
 context(nameResolver: NameResolver)
@@ -40,7 +52,12 @@ val SymbolicName.debugMangled: String
 /**
  * Collects all types of names we can have.
  */
-sealed class NameType(val name: String) {
+sealed class NameType(val name: String) : NamedEntity {
+
+    context(nameResolver: NameResolver)
+    override fun name(): String? {
+        return name
+    }
     object Property : NameType("p")
     object BackingField : NameType("bf")
     object Getter : NameType("g")
