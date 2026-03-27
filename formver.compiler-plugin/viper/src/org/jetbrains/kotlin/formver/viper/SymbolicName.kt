@@ -32,3 +32,36 @@ val SymbolicName.debugMangled: String
         return debugResolver.resolve(this)
     }
 
+
+/**
+ * Collects all types of names we can have.
+ */
+sealed class NameType(val name: String) {
+
+    object Property : NameType("p")
+    object BackingField : NameType("bf")
+    object Getter : NameType("g")
+    object Setter : NameType("s")
+    object ExtensionSetter : NameType("es")
+    object ExtensionGetter : NameType("eg")
+    object Type : NameType("t") {
+        object Class : NameType("c")
+    }
+
+    object Constructor : NameType("con")
+    object Function : NameType("f")
+    object Predicate : NameType("pred")
+    object Havoc : NameType("havoc")
+    sealed class Label(lblName: String) : NameType(lblName) {
+        object Return : Label("ret")
+        object Break : Label("break")
+        object Continue : Label("cont")
+        object Catch : Label("catch")
+        object TryExit : Label("tryExit")
+    }
+
+    object Variable : NameType("v")
+    object Domain : NameType("d")
+    object DomainFunction : NameType("df")
+    object Special : NameType("sp") // I think we should not have this. Like, what does special mean?
+}
