@@ -64,7 +64,9 @@ sealed class NameType(val name: String) : NamedEntity {
     object Setter : NameType("s")
     object ExtensionSetter : NameType("es")
     object ExtensionGetter : NameType("eg")
-    object Class : NameType("c")
+    object Type : NameType("t") {
+        object Class : NameType("c")
+    }
     object Constructor : NameType("con")
     object Function : NameType("f")
     object Predicate : NameType("p")
