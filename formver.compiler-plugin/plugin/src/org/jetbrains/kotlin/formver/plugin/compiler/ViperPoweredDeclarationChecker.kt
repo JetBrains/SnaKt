@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.formver.common.*
 import org.jetbrains.kotlin.formver.core.conversion.ProgramConverter
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.print
+import org.jetbrains.kotlin.formver.names.ShortNameResolver
 import org.jetbrains.kotlin.formver.plugin.compiler.reporting.reportVerifierError
 import org.jetbrains.kotlin.formver.viper.Verifier
 import org.jetbrains.kotlin.formver.viper.ast.Program
@@ -58,6 +59,21 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
             with(programConversionContext.nameResolver) {
                 program.registerAllNames()
             }
+
+            val newResolver = ShortNameResolver()
+
+            with(newResolver) {
+                program.registerAllNames()
+            }
+
+            with(programConversionContext.nameResolver) {
+                val graph = newResolver.graph.toGraphviz()
+                if (declaration.name.asString() == "bottom") {
+                    println("graph")
+                }
+            }
+
+
             getProgramForLogging(program)?.let {
                 reporter.reportOn(
                     declaration.source,
