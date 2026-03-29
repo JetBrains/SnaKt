@@ -239,12 +239,6 @@ public class FirLightTreeFormVerPluginNoVerificationDiagnosticsTestGenerated ext
       }
 
       @Test
-      @TestMetadata("heap_dependent_specifications.kt")
-      public void testHeap_dependent_specifications() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/heap_dependent_specifications.kt");
-      }
-
-      @Test
       @TestMetadata("pure_function_rely_on_branch.kt")
       public void testPure_function_rely_on_branch() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/pure_function_rely_on_branch.kt");
