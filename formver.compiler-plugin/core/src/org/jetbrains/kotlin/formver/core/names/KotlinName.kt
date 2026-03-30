@@ -189,15 +189,13 @@ data class ConstructorKotlinName(val type: FunctionTypeEmbedding) : KotlinName {
             }
             candidate {
                 +nameType
-                +"ret"
                 +type.returnType.name
             }
             candidate {
                 +nameType
+                +type.returnType.name
                 +"args"
                 +type.paramTypes.map { it.name }
-                +"ret"
-                +type.returnType.name
             }
         }
 }

@@ -169,7 +169,7 @@ data class LocalScope(val level: Int) : NameScope {
                 +"l"
             }
             candidate {
-                "l$level"
+                +"l$level"
             }
         }
 }

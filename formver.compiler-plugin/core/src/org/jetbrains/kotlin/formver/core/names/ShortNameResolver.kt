@@ -76,7 +76,10 @@ class ShortNameResolver : NameResolver {
 
     private fun canMove(name: NamedEntity): Boolean {
         val currentIndex = currentCandidate[name] ?: 0
-        return currentIndex + 1 < name.candidates.size
+        if (currentIndex + 1 < name.candidates.size) return true
+        return currentCandidate(name).moveableParts().any {
+            canMove(it.name)
+        }
     }
 
     fun makeUnique() {
