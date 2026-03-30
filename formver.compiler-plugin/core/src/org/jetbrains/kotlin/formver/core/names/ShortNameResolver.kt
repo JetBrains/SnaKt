@@ -1,6 +1,6 @@
-package org.jetbrains.kotlin.formver.names
+package org.jetbrains.kotlin.formver.core.names
 
-import org.jetbrains.kotlin.formver.core.names.*
+import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.viper.*
 import org.jetbrains.kotlin.formver.viper.ast.DomainName
 import org.jetbrains.kotlin.formver.viper.ast.NamedDomainAxiomLabel
@@ -45,14 +45,20 @@ class ShortNameResolver : NameResolver {
         if (name.candidates.isEmpty()) {
             print("empty candidates")
         }
-        return name.candidates[currentCandidate.getOrPut(name) { 0 }].name()
+        return currentCandidate(name).name()
     }
 
-    private fun currentCandidate(name: NamedEntity): CandidateName = name.candidates[currentCandidate[name] ?: 0]
+    private fun currentCandidate(name: NamedEntity): CandidateName {
+        var representative = name
+        while (graph.representationMap[representative] != null) {
+            representative = graph.representationMap[representative]!!
+        }
+        return name.candidates[currentCandidate[representative] ?: 0]
+    }
 
     /**
      * Moves `name` one position.
-     * If it is a scoped name, we first try to move the inner name, then the scope.
+     * We generally try to move first the parts, and only if not successful do we move the `name`
      */
     private fun move(name: NamedEntity): Boolean {
         val movableParts = currentCandidate(name).moveableParts()
@@ -74,9 +80,10 @@ class ShortNameResolver : NameResolver {
     }
 
     fun makeUnique() {
+        graph.createRepresentatives()
         var collisions = graph.nameCollisions(this)
         while (collisions.isNotEmpty()) {
-            val graphviz = graph.toGraphviz(this, true, true)
+            val graphviz = graph.toGraphviz(this, showCollisions = true, showCurrent = true)
             val toResolve = collisions.entries.first().value
 
             val candidateToMove = toResolve.firstOrNull { canMove(it) }
@@ -84,7 +91,7 @@ class ShortNameResolver : NameResolver {
             if (candidateToMove != null) {
                 move(candidateToMove)
             } else {
-                val parents = toResolve.associateWith { graph.dependsOn(it) }
+                throw SnaktInternalException(null, "Unable to make names unique")
             }
             collisions = graph.nameCollisions(this)
         }
@@ -142,7 +149,6 @@ class ViperKeyword(val keyword: String) : NamedEntity {
 
 class NameSystemGraph {
 
-    private val tripleStore = mutableSetOf<Triple<NamedEntity, Relation, NamedEntity>>()
     val viperKeywords = mutableSetOf(
         "import",
         "define",
@@ -187,7 +193,17 @@ class NameSystemGraph {
         "epsilon",
     ).map { ViperKeyword(it) }
 
+    private val tripleStore = mutableSetOf<Triple<NamedEntity, Relation, NamedEntity>>()
+
     private val elements: MutableSet<NamedEntity> = viperKeywords.toMutableSet()
+
+    val representationMap = java.util.WeakHashMap<NamedEntity, NamedEntity?>()
+
+    var NamedEntity.representedBy: NamedEntity?
+        get() = representationMap[this]
+        set(value) {
+            representationMap[this] = value
+        }
 
     fun dependsOn(elem: NamedEntity): Set<NamedEntity> =
         tripleStore.filter { (a, rel, b) -> a == elem && rel == Relation.DEPENDS_ON }.map { (_, _, b) -> b }.toSet()
@@ -207,6 +223,8 @@ class NameSystemGraph {
             is ClassScope -> {
                 tripleStore.add(Triple(scope.parent, Relation.SCOPE_OF, scope))
                 tripleStore.add(Triple(scope.className, Relation.SCOPED_NAME, scope))
+                addName(scope.parent)
+                addName(scope.className)
             }
 
             is FakeScope -> {}
@@ -215,10 +233,12 @@ class NameSystemGraph {
             is ParameterScope -> {}
             is PrivateScope -> {
                 tripleStore.add(Triple(scope.parent, Relation.SCOPE_OF, scope))
+                addName(scope.parent)
             }
 
             is PublicScope -> {
                 tripleStore.add(Triple(scope.parent, Relation.SCOPE_OF, scope))
+                addName(scope.parent)
             }
         }
     }
@@ -354,11 +374,14 @@ class NameSystemGraph {
 
             is NamedDomainAxiomLabel -> {
                 tripleStore.add(Triple(name, Relation.DEPENDS_ON, name.domainName))
+                addName(name.domainName)
             }
 
             is QualifiedDomainFuncName -> {
                 tripleStore.add(Triple(name, Relation.DEPENDS_ON, name.domainName))
                 tripleStore.add(Triple(name, Relation.DEPENDS_ON, name.funcName))
+                addName(name.domainName)
+                addName(name.funcName)
             }
 
             is UnqualifiedDomainFuncName -> {
@@ -395,7 +418,7 @@ class NameSystemGraph {
                 is DomainName -> true // yes the domain is used as a name
                 is NamedDomainAxiomLabel -> true
                 is QualifiedDomainFuncName -> true
-                is UnqualifiedDomainFuncName -> true
+                is UnqualifiedDomainFuncName -> false
                 is NameOfType -> false // names of types are not necessary to be unique
                 else -> true
             }
@@ -406,15 +429,39 @@ class NameSystemGraph {
         else -> true
     }
 
+    fun createRepresentatives() {
+        val publicFields = elements.filter {
+            it is ScopedKotlinName && it.scope is PublicScope
+        }
+        val grouped = mutableMapOf<KotlinName, Set<ScopedKotlinName>>()
+        publicFields.forEach {
+            grouped.merge((it as ScopedKotlinName).name, setOf(it), Set<ScopedKotlinName>::plus)
+        }
+        grouped.forEach { (_, fields) ->
+            val representative = fields.first()
+            fields.drop(1).forEach {
+                it.representedBy = representative
+            }
+        }
+
+    }
+
     fun nameCollisions(resolver: ShortNameResolver): Map<String, Set<NamedEntity>> {
-        val toConsider = elements.filter { endUpInViper(it) }
+
+        // Which names must be considered?
+        // - We do need to make all the names unique, but only once that actually end up in viper. E.g a variable and
+        //   a scope can have the same name.
+        // - Sometimes we want to have name collisions, e.g. public fields with the same name can be merged. This behaviour
+        //   is captured with the "representationMap". Hence names that are represented by someone else, must not be considered.
+        val toConsider = elements.filter { endUpInViper(it) && it.representedBy == null }
         val names = toConsider.map { Pair(resolver.resolve(it), it) }
         val result = mutableMapOf<String, MutableSet<NamedEntity>>()
         names.forEach { (name, entity) ->
             result.getOrPut(name) { mutableSetOf() }.add(entity)
         }
+
+
         return result.filterValues { it.size > 1 }
-            .filterValues { !it.all { name -> name is ReturnVariableName || name is PlaceholderReturnVariableName } }
     }
 
     fun toGraphviz(resolver: ShortNameResolver, showCollisions: Boolean = false, showCurrent: Boolean = false): String {
@@ -460,7 +507,11 @@ class NameSystemGraph {
                         is KotlinName -> "Kotlin: "
                         is ScopedKotlinName -> "Scoped: "
                         is NameOfType -> "NameOfType: "
-                        else -> "Domain: "
+                        is DomainName -> "Domain: "
+                        is NamedDomainAxiomLabel -> "Axiom: "
+                        is QualifiedDomainFuncName -> "Qual Func: "
+                        is UnqualifiedDomainFuncName -> "Unqual Func: "
+                        else -> "Unknown: "
                     }
                 }
             }
@@ -475,8 +526,10 @@ class NameSystemGraph {
             Relation.DEPENDS_ON -> "[color=black]"
             Relation.HAS_TYPE -> "[color=pink]"
             Relation.SCOPED_NAME -> "[color=lightblue]"
-            Relation.NAME_TYPE -> "[color=gray]"
+            Relation.NAME_TYPE -> "[color=green]"
         }
+
+        fun representLabel() = "[color=purple]"
 
         // add all elements
         elements.forEach {
@@ -498,6 +551,12 @@ class NameSystemGraph {
         // relations
         tripleStore.forEach { (a, relation, b) ->
             sb.appendLine("\"${id(a)}\" -> \"${id(b)}\" ${relationLabel(relation)};\n")
+        }
+
+        representationMap.forEach { (a, b) ->
+            if (b != null) {
+                sb.appendLine("\"${id(a)}\" -> \"${id(b)}\" ${representLabel()};\n")
+            }
         }
 
 
