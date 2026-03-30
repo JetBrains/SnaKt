@@ -36,6 +36,7 @@ class CandidateName(val parts: List<NamePart>) {
     fun name(): String {
         return parts.joinToString(SEPARATOR) { it.name() }
     }
+    fun moveableParts(): List<NamePart.Dependent> = parts.filterIsInstance<NamePart.Dependent>()
 }
 
 class CandidatesBuilder {
