@@ -50,6 +50,7 @@ data class Program(
     context(nameResolver: NameResolver)
     fun toDebugOutput(): String = toSilver().toString()
 }
+
 context(nameResolver: NameResolver)
 private fun registerExpNames(exp: Exp) {
     when (exp) {
@@ -58,24 +59,73 @@ private fun registerExpNames(exp: Exp) {
             nameResolver.register(exp.field.name)
             registerExpNames(exp.rcv)
         }
+
         is Exp.PredicateAccess -> {
             nameResolver.register(exp.predicateName)
             exp.formalArgs.forEach { registerExpNames(it) }
         }
+
         is BinaryExp -> {
             registerExpNames(exp.left)
             registerExpNames(exp.right)
         }
+
         is Exp.FuncApp -> {
             nameResolver.register(exp.functionName)
             exp.args.forEach { registerExpNames(it) }
         }
+
         is Exp.DomainFuncApp -> {
             nameResolver.register(exp.function.name)
             exp.function.formalArgs.forEach { arg -> nameResolver.register(arg.name) }
             exp.args.forEach { registerExpNames(it) }
         }
-        else -> { }
+
+        is Exp.Forall -> {
+            exp.variables.forEach { nameResolver.register(it.name) }
+            registerExpNames(exp.exp)
+        }
+
+        is Exp.Exists -> {
+            exp.variables.forEach { nameResolver.register(it.name) }
+            registerExpNames(exp.exp)
+        }
+
+        is Exp.LetBinding -> {
+            nameResolver.register(exp.variable.name)
+            registerExpNames(exp.body)
+        }
+        is Exp.Old -> registerExpNames(exp.exp)
+        is Exp.Result -> {}
+        is Exp.TernaryExp -> {
+            registerExpNames(exp.thenExp)
+            registerExpNames(exp.elseExp)
+        }
+
+        is AccessPredicate.FieldAccessPredicate -> {}
+        is Exp.Acc -> registerExpNames(exp.field)
+        is Exp.BoolLit -> {}
+        is Exp.EmptySeq -> {}
+        is Exp.ExplicitSeq -> exp.args.forEach { registerExpNames(it) }
+        is Exp.IntLit -> {}
+        is Exp.Minus -> registerExpNames(exp.arg)
+        is Exp.Not -> registerExpNames(exp.arg)
+        is Exp.NullLit -> {}
+        is Exp.SeqIndex -> {
+            registerExpNames(exp.seq)
+            registerExpNames(exp.idx)
+        }
+
+        is Exp.SeqLength -> registerExpNames(exp.seq)
+        is Exp.SeqTake -> {
+            registerExpNames(exp.seq)
+            registerExpNames(exp.idx)
+        }
+
+        is Exp.Unfolding -> {
+            registerExpNames(exp.predicateAccess)
+            registerExpNames(exp.body)
+        }
     }
 }
 
@@ -89,7 +139,10 @@ private fun Program.registerSeqnNames(seqn: Stmt.Seqn) {
     }
     seqn.stmts.forEach { stmt ->
         when (stmt) {
-            is Stmt.Label -> nameResolver.register(stmt.name)
+            is Stmt.Label -> {
+                nameResolver.register(stmt.name)
+                stmt.invariants.forEach { registerExpNames(it) }
+            }
             is Stmt.Seqn -> registerSeqnNames(stmt)
             is Stmt.Goto -> nameResolver.register(stmt.name)
             is Stmt.MethodCall -> nameResolver.register(stmt.methodName)
@@ -97,11 +150,27 @@ private fun Program.registerSeqnNames(seqn: Stmt.Seqn) {
                 registerSeqnNames(stmt.then)
                 stmt.els?.let { registerSeqnNames(it) }
             }
-            is Stmt.While -> registerSeqnNames(stmt.body)
-            is Stmt.LocalVarAssign -> nameResolver.register(stmt.lhs.name)
+
+            is Stmt.While -> {
+                registerSeqnNames(stmt.body)
+                stmt.invariants.forEach { registerExpNames(it) }
+            }
+            is Stmt.LocalVarAssign -> {
+                nameResolver.register(stmt.lhs.name)
+                registerExpNames(stmt.rhs)
+            }
             is Stmt.Fold -> nameResolver.register(stmt.acc.predicateName)
             is Stmt.Unfold -> nameResolver.register(stmt.acc.predicateName)
-            else -> { }
+            is Stmt.Assert -> registerExpNames(stmt.exp)
+            is Stmt.Exhale -> registerExpNames(stmt.exp)
+            is Stmt.FieldAssign -> {
+                registerExpNames(stmt.lhs)
+                registerExpNames(stmt.rhs)
+            }
+
+            is Stmt.Inhale -> {
+                registerExpNames(stmt.exp)
+            }
         }
     }
 }
@@ -114,12 +183,20 @@ fun Program.registerAllNames() {
             nameResolver.register(function.name)
             function.formalArgs.forEach { arg -> nameResolver.register(arg.name) }
         }
+        domain.axioms.forEach { axiom ->
+            if (axiom.name is NamedDomainAxiomLabel) {
+                nameResolver.register(axiom.name)
+            }
+            registerExpNames(axiom.exp)
+        }
     }
     fields.forEach { nameResolver.register(it.name) }
 
     functions.forEach { function ->
         nameResolver.register(function.name)
         function.formalArgs.forEach { arg -> nameResolver.register(arg.name) }
+        function.pres.forEach { arg -> registerExpNames(arg) }
+        function.posts.forEach { arg -> registerExpNames(arg) }
         function.body?.let { exp -> registerExpNames(exp) }
     }
 
@@ -133,6 +210,8 @@ fun Program.registerAllNames() {
         nameResolver.register(method.name)
         method.formalArgs.forEach { arg -> nameResolver.register(arg.name) }
         method.formalReturns.forEach { ret -> nameResolver.register(ret.name) }
+        method.pres.forEach { arg -> registerExpNames(arg) }
+        method.posts.forEach { arg -> registerExpNames(arg) }
         method.body?.let { seqn -> registerSeqnNames(seqn) }
     }
 }
