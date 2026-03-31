@@ -23,10 +23,6 @@ sealed interface NameScope : NamedEntity {
     val parentAccessible: Boolean
         get() = true
 
-    context(nameResolver: NameResolver)
-    override fun fullName(): String? {
-        return mangledScopeName
-    }
 }
 
 // Includes the scope itself.

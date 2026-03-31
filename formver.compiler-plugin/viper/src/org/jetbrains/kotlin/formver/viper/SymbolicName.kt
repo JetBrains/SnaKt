@@ -7,35 +7,20 @@ package org.jetbrains.kotlin.formver.viper
 
 
 interface NamedEntity {
-    context(nameResolver: NameResolver)
-    fun fullName(): String?
     val candidates: List<CandidateName>
 }
 
 sealed interface NamePart {
 
-    context(nameResolver: NameResolver)
-    fun name(): String
-
     // Just simple string name
-    class Basic(val name: String) : NamePart {
-        context(nameResolver: NameResolver)
-        override fun name(): String = name
-    }
+    class Basic(val name: String) : NamePart
 
     // Depends on other Name
-    class Dependent(val name: NamedEntity) : NamePart {
-        context(nameResolver: NameResolver)
-        override fun name(): String = nameResolver.resolve(name)
-    }
+    class Dependent(val name: NamedEntity) : NamePart
 }
 
 class CandidateName(val parts: List<NamePart>) {
 
-    context(nameResolver: NameResolver)
-    fun name(): String {
-        return parts.joinToString(SEPARATOR) { it.name() }
-    }
     fun moveableParts(): List<NamePart.Dependent> = parts.filterIsInstance<NamePart.Dependent>()
 }
 
@@ -110,10 +95,6 @@ interface SymbolicName : NamedEntity {
     context(nameResolver: NameResolver)
     val mangledBaseName: String
 
-    context(nameResolver: NameResolver)
-    override fun fullName(): String? {
-        return nameResolver.resolve(this)
-    }
 }
 
 context(nameResolver: NameResolver)
@@ -131,11 +112,6 @@ val SymbolicName.debugMangled: String
  * Collects all types of names we can have.
  */
 sealed class NameType(val name: String) : NamedEntity {
-
-    context(nameResolver: NameResolver)
-    override fun fullName(): String? {
-        return name
-    }
 
     override val candidates: List<CandidateName>
         get() = buildCandidates {

@@ -8,6 +8,31 @@ import org.jetbrains.kotlin.formver.viper.ast.QualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.viper.ast.UnqualifiedDomainFuncName
 import kotlin.math.absoluteValue
 
+context(resolver: ShortNameResolver)
+fun NamePart.name(): String = when (this) {
+    is NamePart.Dependent -> name()
+    is NamePart.Basic -> this.name
+}
+
+context(resolver: ShortNameResolver)
+fun NamePart.fullName(): String = when (this) {
+    is NamePart.Dependent -> fullName()
+    is NamePart.Basic -> this.name
+}
+
+context(resolver: ShortNameResolver)
+fun NamePart.Dependent.name(): String = resolver.current(name)
+
+context(resolver: ShortNameResolver)
+fun NamePart.Dependent.fullName(): String = name.candidates.last().fullName()
+
+
+context(resolver: ShortNameResolver)
+fun CandidateName.name(): String = parts.joinToString(SEPARATOR) { it.name() }
+
+context(resolver: ShortNameResolver)
+fun CandidateName.fullName(): String = parts.joinToString(SEPARATOR) { it.fullName() }
+
 /**
  * Resolves mangled names into Viper identifiers while maintaining uniqueness.
  * The priority lies on the short and readable names.
@@ -17,22 +42,15 @@ class ShortNameResolver : NameResolver {
 
     val graph = NameSystemGraph()
 
+    lateinit var mangledNames: Map<NamedEntity, String>
+
     private val currentCandidate = mutableMapOf<NamedEntity, Int>()
 
-    fun resolveFullName(name: NamedEntity): String = when (name) {
-        is SymbolicName -> listOfNotNull(
-            name.nameType?.fullName(),
-            name.mangledScope,
-            name.mangledBaseName
-        ).joinToString(SEPARATOR)
+    fun resolveFullName(name: NamedEntity): String = name.candidates.last().fullName()
 
-        is NameScope -> name.mangledScopeName ?: "unknown"
-        is NameType -> name.name
-        is ViperKeyword -> name.keyword
-        else -> "should_never_happen"
+    override fun resolve(name: SymbolicName): String = mangledNames.getOrElse(name) {
+        throw SnaktInternalException(null, "Name not resolved: $name")
     }
-
-    override fun resolve(name: NamedEntity): String = current(name)
 
     override fun register(name: SymbolicName) {
         graph.addName(name)
@@ -41,7 +59,7 @@ class ShortNameResolver : NameResolver {
     fun render(showCollisions: Boolean = false, showCurrent: Boolean) =
         graph.toGraphviz(this, showCollisions, showCurrent)
 
-    private fun current(name: NamedEntity): String {
+    fun current(name: NamedEntity): String {
         if (name.candidates.isEmpty()) {
             print("empty candidates")
         }
@@ -82,7 +100,7 @@ class ShortNameResolver : NameResolver {
         }
     }
 
-    fun makeUnique() {
+    override fun mangle() {
         graph.createRepresentatives()
         var collisions = graph.nameCollisions(this)
         while (collisions.isNotEmpty()) {
@@ -98,6 +116,10 @@ class ShortNameResolver : NameResolver {
             }
             collisions = graph.nameCollisions(this)
         }
+
+        mangledNames = graph.endUpInViper().associateWith { current(it) }
+
+
     }
 
 
@@ -142,8 +164,6 @@ enum class Relation {
 }
 
 class ViperKeyword(val keyword: String) : NamedEntity {
-    context(nameResolver: NameResolver)
-    override fun fullName(): String = keyword
 
     override val candidates: List<CandidateName> = buildCandidates {
         candidate { +keyword }
@@ -409,6 +429,8 @@ class NameSystemGraph {
     fun isScoped(obj: NamedEntity): Boolean =
         tripleStore.any { (a, rel, _) -> a == obj && rel == Relation.SCOPED_NAME }
 
+    fun endUpInViper(): List<NamedEntity> = elements.filter { endUpInViper(it) }
+
     fun endUpInViper(obj: NamedEntity): Boolean = when (obj) {
         is NameScope -> false // Just scopes should never appear as a actual name in viper
         is NameType -> false // Name Types are only used to distinguish what a name describes
@@ -429,7 +451,7 @@ class NameSystemGraph {
 
         is ViperKeyword -> true
 
-        else -> true
+        else -> false
     }
 
     fun createRepresentatives() {
@@ -457,7 +479,7 @@ class NameSystemGraph {
         // - Sometimes we want to have name collisions, e.g. public fields with the same name can be merged. This behaviour
         //   is captured with the "representationMap". Hence names that are represented by someone else, must not be considered.
         val toConsider = elements.filter { endUpInViper(it) && it.representedBy == null }
-        val names = toConsider.map { Pair(resolver.resolve(it), it) }
+        val names = toConsider.map { Pair(resolver.current(it), it) }
         val result = mutableMapOf<String, MutableSet<NamedEntity>>()
         names.forEach { (name, entity) ->
             result.getOrPut(name) { mutableSetOf() }.add(entity)
@@ -492,7 +514,7 @@ class NameSystemGraph {
 
         fun nodeLabel(obj: NamedEntity): String {
             var res = ""
-            if (showCurrent) res += resolver.resolve(obj) + "\\n---\\n"
+            if (showCurrent) res += resolver.current(obj) + "\\n---\\n"
             res += candidates(obj)
             return res
         }
