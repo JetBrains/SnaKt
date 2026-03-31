@@ -7,10 +7,7 @@ package org.jetbrains.kotlin.formver.core.linearization
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
-import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
-import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeBuilder
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeBuilder
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
@@ -56,6 +53,8 @@ interface LinearizationContext {
     fun addFieldAccess(access: FieldAccess): Exp
 
     fun addFieldAccessStoringIn(access: FieldAccess, result: VariableEmbedding)
+
+    fun addFunctionCall(call: FunctionCall): Exp
 
     fun addModifier(mod: StmtModifier)
 

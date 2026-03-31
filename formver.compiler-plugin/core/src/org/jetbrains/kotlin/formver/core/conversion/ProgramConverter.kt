@@ -30,6 +30,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
+import org.jetbrains.kotlin.formver.core.purity.preorder
 import org.jetbrains.kotlin.formver.names.SimpleNameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Method
@@ -134,6 +135,7 @@ class ProgramConverter(
         }
     }
 
+    @OptIn(SymbolInternals::class)
     fun embedPureUserFunction(
         symbol: FirFunctionSymbol<*>,
         signature: FullNamedFunctionSignature
@@ -141,8 +143,25 @@ class ProgramConverter(
         (functions[signature.name] as? PureUserFunctionEmbedding)?.also { return it }
         val new = PureUserFunctionEmbedding(processCallable(symbol, signature))
         functions[signature.name] = new
-        return new
-    }
+        val declaration = symbol.fir as? FirSimpleFunction
+        if (declaration?.body != null) {
+            val returnTarget = returnTargetProducer.getFresh(signature.callableType.returnType)
+            val paramResolver = RootParameterResolver(
+                this@ProgramConverter,
+                signature,
+                signature.symbol.valueParameterSymbols,
+                signature.labelName,
+                returnTarget,
+            )
+            val stmtCtx = MethodConverter(
+                this@ProgramConverter,
+                signature,
+                paramResolver,
+                scopeIndexProducer.getFresh(),
+            ).statementCtxt()
+            new.body = stmtCtx.convertFunctionWithBody(declaration)
+        }
+        return new    }
 
     fun embedUserFunction(symbol: FirFunctionSymbol<*>, signature: FullNamedFunctionSignature): UserFunctionEmbedding {
         (methods[signature.name] as? UserFunctionEmbedding)?.also { return it }
@@ -198,18 +217,8 @@ class ProgramConverter(
     }
 
     override fun embedPureFunction(symbol: FirFunctionSymbol<*>): PureFunctionEmbedding {
-        val lookupName = symbol.embedName(this)
-        return when (val existing = functions[lookupName]) {
-            null -> {
-                val signature = embedFullSignature(symbol)
-                val callable = processCallable(symbol, signature)
-                PureUserFunctionEmbedding(callable).also {
-                    functions[lookupName] = it
-                }
-            }
-
-            else -> existing
-        }
+        val signature = embedFullSignature(symbol)
+        return embedPureUserFunction(symbol, signature)
     }
 
     override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding =

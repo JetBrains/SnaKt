@@ -1,0 +1,1052 @@
+/fibonacci_list.kt:(115,118): info: Generated Viper text for fib:
+function f$fib$TF$T$Int$T$Int(p$n: Ref): Ref
+  requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
+  requires df$rt$intFromRef(p$n) >= 0
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let anon$2$0 ==
+    ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+      f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(1))) :
+      null)) in
+    (let anon$3$0 ==
+      ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+        f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(2))) :
+        null)) in
+      (df$rt$intFromRef(p$n) == 0 ?
+        df$rt$intToRef(0) :
+        (df$rt$intFromRef(p$n) == 1 && !(df$rt$intFromRef(p$n) == 0) ?
+          df$rt$intToRef(1) :
+          sp$plusInts(anon$2$0, anon$3$0)))))
+}
+
+/fibonacci_list.kt:(287,296): info: Generated Viper text for isFibList:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$fib$TF$T$Int$T$Int(p$n: Ref): Ref
+  requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
+  requires df$rt$intFromRef(p$n) >= 0
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let anon$0$0 ==
+    ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+      f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(1))) :
+      null)) in
+    (let anon$1$0 ==
+      ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+        f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(2))) :
+        null)) in
+      (df$rt$intFromRef(p$n) == 0 ?
+        df$rt$intToRef(0) :
+        (df$rt$intFromRef(p$n) == 1 && !(df$rt$intFromRef(p$n) == 0) ?
+          df$rt$intToRef(1) :
+          sp$plusInts(anon$0$0, anon$1$0)))))
+}
+
+function f$isFibList$TF$T$Node$T$Int$T$Boolean(p$head: Ref, p$length: Ref): Ref
+  requires acc(p$c$Node$shared(p$head), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$head), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$length), df$rt$intType())
+  requires df$rt$intFromRef(p$length) >= 1
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+{
+  (let anon$8$0 ==
+    ((unfolding acc(p$c$Node$shared(p$head), wildcard) in p$head.bf$value)) in
+    (let anon$9$0 ==
+      (f$fib$TF$T$Int$T$Int(p$length)) in
+      (let anon$10$0 ==
+        ((df$rt$intFromRef(p$length) == 1 &&
+        !!(df$rt$intFromRef(anon$8$0) == df$rt$intFromRef(anon$9$0)) ?
+          (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+            p$head.bf$next) :
+          null)) in
+        (let anon$11$0 ==
+          ((!(df$rt$intFromRef(p$length) == 1) &&
+          !!(df$rt$intFromRef(anon$8$0) == df$rt$intFromRef(anon$9$0)) ?
+            (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+              p$head.bf$next) :
+            null)) in
+          (let anon$13$0 ==
+            ((!(anon$11$0 == df$rt$nullValue()) &&
+            (!(df$rt$intFromRef(p$length) == 1) &&
+            !!(df$rt$intFromRef(anon$8$0) == df$rt$intFromRef(anon$9$0))) ?
+              (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+                p$head.bf$next) :
+              null)) in
+            (let anon$12$0 ==
+              ((!(anon$11$0 == df$rt$nullValue()) &&
+              (!(df$rt$intFromRef(p$length) == 1) &&
+              !!(df$rt$intFromRef(anon$8$0) == df$rt$intFromRef(anon$9$0))) ?
+                (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+                  f$isFibList$TF$T$Node$T$Int$T$Boolean(anon$13$0, sp$minusInts(p$length,
+                  df$rt$intToRef(1)))) :
+                null)) in
+              (let l0$isFib$0 ==
+                ((!(anon$11$0 == df$rt$nullValue()) &&
+                (!(df$rt$intFromRef(p$length) == 1) &&
+                !!(df$rt$intFromRef(anon$8$0) == df$rt$intFromRef(anon$9$0))) ?
+                  anon$12$0 :
+                  null)) in
+                (!(df$rt$intFromRef(anon$8$0) == df$rt$intFromRef(anon$9$0)) ?
+                  df$rt$boolToRef(false) :
+                  (df$rt$intFromRef(p$length) == 1 &&
+                  !!(df$rt$intFromRef(anon$8$0) ==
+                  df$rt$intFromRef(anon$9$0)) ?
+                    df$rt$boolToRef(anon$10$0 == df$rt$nullValue()) :
+                    (anon$11$0 == df$rt$nullValue() &&
+                    (!(df$rt$intFromRef(p$length) == 1) &&
+                    !!(df$rt$intFromRef(anon$8$0) ==
+                    df$rt$intFromRef(anon$9$0))) ?
+                      df$rt$boolToRef(false) :
+                      l0$isFib$0))))))))))
+}
+
+/fibonacci_list.kt:(648,660): info: Generated Viper text for buildFibList:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$fib$TF$T$Int$T$Int(p$n: Ref): Ref
+  requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
+  requires df$rt$intFromRef(p$n) >= 0
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let anon$0$0 ==
+    ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+      f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(1))) :
+      null)) in
+    (let anon$1$0 ==
+      ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+        f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(2))) :
+        null)) in
+      (df$rt$intFromRef(p$n) == 0 ?
+        df$rt$intToRef(0) :
+        (df$rt$intFromRef(p$n) == 1 && !(df$rt$intFromRef(p$n) == 0) ?
+          df$rt$intToRef(1) :
+          sp$plusInts(anon$0$0, anon$1$0)))))
+}
+
+function f$isFibList$TF$T$Node$T$Int$T$Boolean(p$head: Ref, p$length: Ref): Ref
+  requires acc(p$c$Node$shared(p$head), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$head), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$length), df$rt$intType())
+  requires df$rt$intFromRef(p$length) >= 1
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+{
+  (let anon$2$0 ==
+    ((unfolding acc(p$c$Node$shared(p$head), wildcard) in p$head.bf$value)) in
+    (let anon$3$0 ==
+      (f$fib$TF$T$Int$T$Int(p$length)) in
+      (let anon$4$0 ==
+        ((df$rt$intFromRef(p$length) == 1 &&
+        !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+          (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+            p$head.bf$next) :
+          null)) in
+        (let anon$5$0 ==
+          ((!(df$rt$intFromRef(p$length) == 1) &&
+          !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+            (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+              p$head.bf$next) :
+            null)) in
+          (let anon$7$0 ==
+            ((!(anon$5$0 == df$rt$nullValue()) &&
+            (!(df$rt$intFromRef(p$length) == 1) &&
+            !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+              (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+                p$head.bf$next) :
+              null)) in
+            (let anon$6$0 ==
+              ((!(anon$5$0 == df$rt$nullValue()) &&
+              (!(df$rt$intFromRef(p$length) == 1) &&
+              !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+                (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+                  f$isFibList$TF$T$Node$T$Int$T$Boolean(anon$7$0, sp$minusInts(p$length,
+                  df$rt$intToRef(1)))) :
+                null)) in
+              (let l1$isFib$0 ==
+                ((!(anon$5$0 == df$rt$nullValue()) &&
+                (!(df$rt$intFromRef(p$length) == 1) &&
+                !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+                  anon$6$0 :
+                  null)) in
+                (!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+                  df$rt$boolToRef(false) :
+                  (df$rt$intFromRef(p$length) == 1 &&
+                  !!(df$rt$intFromRef(anon$2$0) ==
+                  df$rt$intFromRef(anon$3$0)) ?
+                    df$rt$boolToRef(anon$4$0 == df$rt$nullValue()) :
+                    (anon$5$0 == df$rt$nullValue() &&
+                    (!(df$rt$intFromRef(p$length) == 1) &&
+                    !!(df$rt$intFromRef(anon$2$0) ==
+                    df$rt$intFromRef(anon$3$0))) ?
+                      df$rt$boolToRef(false) :
+                      l1$isFib$0))))))))))
+}
+
+method con$c$Node$T$Int$NT$Node$T$Node(p$value: Ref, p$next: Ref)
+  returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$value), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$next), df$rt$nullable(df$rt$c$Node()))
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Node())
+  ensures acc(p$c$Node$shared(ret), wildcard)
+  ensures acc(p$c$Node$unique(ret), write)
+  ensures df$rt$intFromRef((unfolding acc(p$c$Node$shared(ret), wildcard) in
+      ret.bf$value)) ==
+    df$rt$intFromRef(p$value) &&
+    (unfolding acc(p$c$Node$shared(ret), wildcard) in ret.bf$next) ==
+    p$next
+
+
+method f$buildFibList$TF$T$Int$T$Node(p$length: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$length), df$rt$intType())
+  requires df$rt$intFromRef(p$length) >= 1
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$Node())
+  ensures acc(p$c$Node$shared(ret$0), wildcard)
+  ensures df$rt$boolFromRef((unfolding acc(p$c$Node$shared(ret$0), wildcard) in
+      f$isFibList$TF$T$Node$T$Int$T$Boolean(ret$0, p$length)))
+{
+  var l0$tail: Ref
+  if (df$rt$intFromRef(p$length) == 1) {
+    ret$0 := con$c$Node$T$Int$NT$Node$T$Node(f$fib$TF$T$Int$T$Int(df$rt$intToRef(1)),
+      df$rt$nullValue())
+    goto lbl$ret$0
+  }
+  l0$tail := f$buildFibList$TF$T$Int$T$Node(sp$minusInts(p$length, df$rt$intToRef(1)))
+  ret$0 := con$c$Node$T$Int$NT$Node$T$Node(f$fib$TF$T$Int$T$Int(p$length), l0$tail)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/fibonacci_list.kt:(985,995): info: Generated Viper text for prependFib:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$fib$TF$T$Int$T$Int(p$n: Ref): Ref
+  requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
+  requires df$rt$intFromRef(p$n) >= 0
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let anon$0$0 ==
+    ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+      f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(1))) :
+      null)) in
+    (let anon$1$0 ==
+      ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+        f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(2))) :
+        null)) in
+      (df$rt$intFromRef(p$n) == 0 ?
+        df$rt$intToRef(0) :
+        (df$rt$intFromRef(p$n) == 1 && !(df$rt$intFromRef(p$n) == 0) ?
+          df$rt$intToRef(1) :
+          sp$plusInts(anon$0$0, anon$1$0)))))
+}
+
+function f$isFibList$TF$T$Node$T$Int$T$Boolean(p$head: Ref, p$length: Ref): Ref
+  requires acc(p$c$Node$shared(p$head), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$head), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$length), df$rt$intType())
+  requires df$rt$intFromRef(p$length) >= 1
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+{
+  (let anon$2$0 ==
+    ((unfolding acc(p$c$Node$shared(p$head), wildcard) in p$head.bf$value)) in
+    (let anon$3$0 ==
+      (f$fib$TF$T$Int$T$Int(p$length)) in
+      (let anon$4$0 ==
+        ((df$rt$intFromRef(p$length) == 1 &&
+        !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+          (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+            p$head.bf$next) :
+          null)) in
+        (let anon$5$0 ==
+          ((!(df$rt$intFromRef(p$length) == 1) &&
+          !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+            (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+              p$head.bf$next) :
+            null)) in
+          (let anon$7$0 ==
+            ((!(anon$5$0 == df$rt$nullValue()) &&
+            (!(df$rt$intFromRef(p$length) == 1) &&
+            !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+              (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+                p$head.bf$next) :
+              null)) in
+            (let anon$6$0 ==
+              ((!(anon$5$0 == df$rt$nullValue()) &&
+              (!(df$rt$intFromRef(p$length) == 1) &&
+              !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+                (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+                  f$isFibList$TF$T$Node$T$Int$T$Boolean(anon$7$0, sp$minusInts(p$length,
+                  df$rt$intToRef(1)))) :
+                null)) in
+              (let l1$isFib$0 ==
+                ((!(anon$5$0 == df$rt$nullValue()) &&
+                (!(df$rt$intFromRef(p$length) == 1) &&
+                !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+                  anon$6$0 :
+                  null)) in
+                (!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+                  df$rt$boolToRef(false) :
+                  (df$rt$intFromRef(p$length) == 1 &&
+                  !!(df$rt$intFromRef(anon$2$0) ==
+                  df$rt$intFromRef(anon$3$0)) ?
+                    df$rt$boolToRef(anon$4$0 == df$rt$nullValue()) :
+                    (anon$5$0 == df$rt$nullValue() &&
+                    (!(df$rt$intFromRef(p$length) == 1) &&
+                    !!(df$rt$intFromRef(anon$2$0) ==
+                    df$rt$intFromRef(anon$3$0))) ?
+                      df$rt$boolToRef(false) :
+                      l1$isFib$0))))))))))
+}
+
+method con$c$Node$T$Int$NT$Node$T$Node(p$value: Ref, p$next: Ref)
+  returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$value), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$next), df$rt$nullable(df$rt$c$Node()))
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Node())
+  ensures acc(p$c$Node$shared(ret), wildcard)
+  ensures acc(p$c$Node$unique(ret), write)
+  ensures df$rt$intFromRef((unfolding acc(p$c$Node$shared(ret), wildcard) in
+      ret.bf$value)) ==
+    df$rt$intFromRef(p$value) &&
+    (unfolding acc(p$c$Node$shared(ret), wildcard) in ret.bf$next) ==
+    p$next
+
+
+method f$prependFib$TF$T$Node$T$Int$T$Node(p$head: Ref, p$length: Ref)
+  returns (ret$0: Ref)
+  requires acc(p$c$Node$shared(p$head), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$head), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$length), df$rt$intType())
+  requires df$rt$intFromRef(p$length) >= 1
+  requires df$rt$boolFromRef((unfolding acc(p$c$Node$shared(p$head), wildcard) in
+      f$isFibList$TF$T$Node$T$Int$T$Boolean(p$head, p$length)))
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$Node())
+  ensures acc(p$c$Node$shared(ret$0), wildcard)
+  ensures df$rt$boolFromRef((unfolding acc(p$c$Node$shared(ret$0), wildcard) in
+      f$isFibList$TF$T$Node$T$Int$T$Boolean(ret$0, sp$plusInts(p$length, df$rt$intToRef(1)))))
+{
+  inhale acc(p$c$Node$shared(p$head), wildcard)
+  ret$0 := con$c$Node$T$Int$NT$Node$T$Node(f$fib$TF$T$Int$T$Int(sp$plusInts(p$length,
+    df$rt$intToRef(1))), p$head)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/fibonacci_list.kt:(1243,1252): info: Generated Viper text for dropFirst:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$fib$TF$T$Int$T$Int(p$n: Ref): Ref
+  requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
+  requires df$rt$intFromRef(p$n) >= 0
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let anon$0$0 ==
+    ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+      f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(1))) :
+      null)) in
+    (let anon$1$0 ==
+      ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+        f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(2))) :
+        null)) in
+      (df$rt$intFromRef(p$n) == 0 ?
+        df$rt$intToRef(0) :
+        (df$rt$intFromRef(p$n) == 1 && !(df$rt$intFromRef(p$n) == 0) ?
+          df$rt$intToRef(1) :
+          sp$plusInts(anon$0$0, anon$1$0)))))
+}
+
+function f$isFibList$TF$T$Node$T$Int$T$Boolean(p$head: Ref, p$length: Ref): Ref
+  requires acc(p$c$Node$shared(p$head), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$head), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$length), df$rt$intType())
+  requires df$rt$intFromRef(p$length) >= 1
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+{
+  (let anon$2$0 ==
+    ((unfolding acc(p$c$Node$shared(p$head), wildcard) in p$head.bf$value)) in
+    (let anon$3$0 ==
+      (f$fib$TF$T$Int$T$Int(p$length)) in
+      (let anon$4$0 ==
+        ((df$rt$intFromRef(p$length) == 1 &&
+        !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+          (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+            p$head.bf$next) :
+          null)) in
+        (let anon$5$0 ==
+          ((!(df$rt$intFromRef(p$length) == 1) &&
+          !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+            (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+              p$head.bf$next) :
+            null)) in
+          (let anon$7$0 ==
+            ((!(anon$5$0 == df$rt$nullValue()) &&
+            (!(df$rt$intFromRef(p$length) == 1) &&
+            !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+              (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+                p$head.bf$next) :
+              null)) in
+            (let anon$6$0 ==
+              ((!(anon$5$0 == df$rt$nullValue()) &&
+              (!(df$rt$intFromRef(p$length) == 1) &&
+              !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+                (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+                  f$isFibList$TF$T$Node$T$Int$T$Boolean(anon$7$0, sp$minusInts(p$length,
+                  df$rt$intToRef(1)))) :
+                null)) in
+              (let l1$isFib$0 ==
+                ((!(anon$5$0 == df$rt$nullValue()) &&
+                (!(df$rt$intFromRef(p$length) == 1) &&
+                !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+                  anon$6$0 :
+                  null)) in
+                (!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+                  df$rt$boolToRef(false) :
+                  (df$rt$intFromRef(p$length) == 1 &&
+                  !!(df$rt$intFromRef(anon$2$0) ==
+                  df$rt$intFromRef(anon$3$0)) ?
+                    df$rt$boolToRef(anon$4$0 == df$rt$nullValue()) :
+                    (anon$5$0 == df$rt$nullValue() &&
+                    (!(df$rt$intFromRef(p$length) == 1) &&
+                    !!(df$rt$intFromRef(anon$2$0) ==
+                    df$rt$intFromRef(anon$3$0))) ?
+                      df$rt$boolToRef(false) :
+                      l1$isFib$0))))))))))
+}
+
+method f$dropFirst$TF$T$Node$T$Int$T$Node(p$head: Ref, p$length: Ref)
+  returns (ret$0: Ref)
+  requires acc(p$c$Node$shared(p$head), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$head), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$length), df$rt$intType())
+  requires df$rt$intFromRef(p$length) >= 2
+  requires df$rt$boolFromRef((unfolding acc(p$c$Node$shared(p$head), wildcard) in
+      f$isFibList$TF$T$Node$T$Int$T$Boolean(p$head, p$length)))
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$Node())
+  ensures acc(p$c$Node$shared(ret$0), wildcard)
+  ensures df$rt$boolFromRef((unfolding acc(p$c$Node$shared(ret$0), wildcard) in
+      f$isFibList$TF$T$Node$T$Int$T$Boolean(ret$0, sp$minusInts(p$length, df$rt$intToRef(1)))))
+{
+  var l0$nextNode: Ref
+  inhale acc(p$c$Node$shared(p$head), wildcard)
+  unfold acc(p$c$Node$shared(p$head), wildcard)
+  l0$nextNode := p$head.bf$next
+  if (l0$nextNode == df$rt$nullValue()) {
+    ret$0 := p$head
+    goto lbl$ret$0
+  }
+  ret$0 := l0$nextNode
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/fibonacci_list.kt:(1618,1626): info: Generated Viper text for getFirst:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$fib$TF$T$Int$T$Int(p$n: Ref): Ref
+  requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
+  requires df$rt$intFromRef(p$n) >= 0
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let anon$0$0 ==
+    ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+      f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(1))) :
+      null)) in
+    (let anon$1$0 ==
+      ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+        f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(2))) :
+        null)) in
+      (df$rt$intFromRef(p$n) == 0 ?
+        df$rt$intToRef(0) :
+        (df$rt$intFromRef(p$n) == 1 && !(df$rt$intFromRef(p$n) == 0) ?
+          df$rt$intToRef(1) :
+          sp$plusInts(anon$0$0, anon$1$0)))))
+}
+
+function f$getFirst$TF$T$Node$T$Int$T$Int(p$head: Ref, p$length: Ref): Ref
+  requires acc(p$c$Node$shared(p$head), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$head), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$length), df$rt$intType())
+  requires df$rt$intFromRef(p$length) >= 1
+  requires df$rt$boolFromRef((unfolding acc(p$c$Node$shared(p$head), wildcard) in
+      f$isFibList$TF$T$Node$T$Int$T$Boolean(p$head, p$length)))
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+  ensures df$rt$intFromRef(result) ==
+    df$rt$intFromRef(f$fib$TF$T$Int$T$Int(p$length))
+{
+  (let anon$9$0 ==
+    ((unfolding acc(p$c$Node$shared(p$head), wildcard) in p$head.bf$value)) in
+    anon$9$0)
+}
+
+function f$isFibList$TF$T$Node$T$Int$T$Boolean(p$head: Ref, p$length: Ref): Ref
+  requires acc(p$c$Node$shared(p$head), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$head), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$length), df$rt$intType())
+  requires df$rt$intFromRef(p$length) >= 1
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+{
+  (let anon$2$0 ==
+    ((unfolding acc(p$c$Node$shared(p$head), wildcard) in p$head.bf$value)) in
+    (let anon$3$0 ==
+      (f$fib$TF$T$Int$T$Int(p$length)) in
+      (let anon$4$0 ==
+        ((df$rt$intFromRef(p$length) == 1 &&
+        !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+          (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+            p$head.bf$next) :
+          null)) in
+        (let anon$5$0 ==
+          ((!(df$rt$intFromRef(p$length) == 1) &&
+          !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+            (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+              p$head.bf$next) :
+            null)) in
+          (let anon$7$0 ==
+            ((!(anon$5$0 == df$rt$nullValue()) &&
+            (!(df$rt$intFromRef(p$length) == 1) &&
+            !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+              (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+                p$head.bf$next) :
+              null)) in
+            (let anon$6$0 ==
+              ((!(anon$5$0 == df$rt$nullValue()) &&
+              (!(df$rt$intFromRef(p$length) == 1) &&
+              !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+                (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+                  f$isFibList$TF$T$Node$T$Int$T$Boolean(anon$7$0, sp$minusInts(p$length,
+                  df$rt$intToRef(1)))) :
+                null)) in
+              (let l6$isFib$0 ==
+                ((!(anon$5$0 == df$rt$nullValue()) &&
+                (!(df$rt$intFromRef(p$length) == 1) &&
+                !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+                  anon$6$0 :
+                  null)) in
+                (!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+                  df$rt$boolToRef(false) :
+                  (df$rt$intFromRef(p$length) == 1 &&
+                  !!(df$rt$intFromRef(anon$2$0) ==
+                  df$rt$intFromRef(anon$3$0)) ?
+                    df$rt$boolToRef(anon$4$0 == df$rt$nullValue()) :
+                    (anon$5$0 == df$rt$nullValue() &&
+                    (!(df$rt$intFromRef(p$length) == 1) &&
+                    !!(df$rt$intFromRef(anon$2$0) ==
+                    df$rt$intFromRef(anon$3$0))) ?
+                      df$rt$boolToRef(false) :
+                      l6$isFib$0))))))))))
+}
+
+/fibonacci_list.kt:(1852,1859): info: Generated Viper text for getLast:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$fib$TF$T$Int$T$Int(p$n: Ref): Ref
+  requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
+  requires df$rt$intFromRef(p$n) >= 0
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let anon$0$0 ==
+    ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+      f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(1))) :
+      null)) in
+    (let anon$1$0 ==
+      ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+        f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(2))) :
+        null)) in
+      (df$rt$intFromRef(p$n) == 0 ?
+        df$rt$intToRef(0) :
+        (df$rt$intFromRef(p$n) == 1 && !(df$rt$intFromRef(p$n) == 0) ?
+          df$rt$intToRef(1) :
+          sp$plusInts(anon$0$0, anon$1$0)))))
+}
+
+function f$getLast$TF$T$Node$T$Int$T$Int(p$head: Ref, p$length: Ref): Ref
+  requires acc(p$c$Node$shared(p$head), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$head), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$length), df$rt$intType())
+  requires df$rt$intFromRef(p$length) >= 1
+  requires df$rt$boolFromRef((unfolding acc(p$c$Node$shared(p$head), wildcard) in
+      f$isFibList$TF$T$Node$T$Int$T$Boolean(p$head, p$length)))
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+  ensures df$rt$intFromRef(result) ==
+    df$rt$intFromRef(f$fib$TF$T$Int$T$Int(df$rt$intToRef(1)))
+{
+  (let anon$10$0 ==
+    ((df$rt$intFromRef(p$length) == 1 ?
+      (unfolding acc(p$c$Node$shared(p$head), wildcard) in p$head.bf$value) :
+      null)) in
+    (let l0$nextNode$0 ==
+      ((!(df$rt$intFromRef(p$length) == 1) ?
+        (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+          p$head.bf$next) :
+        null)) in
+      (let anon$11$0 ==
+        ((!(l0$nextNode$0 == df$rt$nullValue()) &&
+        !(df$rt$intFromRef(p$length) == 1) ?
+          (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+            f$getLast$TF$T$Node$T$Int$T$Int(l0$nextNode$0, sp$minusInts(p$length,
+            df$rt$intToRef(1)))) :
+          null)) in
+        (df$rt$intFromRef(p$length) == 1 ?
+          anon$10$0 :
+          (l0$nextNode$0 == df$rt$nullValue() &&
+          !(df$rt$intFromRef(p$length) == 1) ?
+            df$rt$intToRef(0) :
+            anon$11$0)))))
+}
+
+function f$isFibList$TF$T$Node$T$Int$T$Boolean(p$head: Ref, p$length: Ref): Ref
+  requires acc(p$c$Node$shared(p$head), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$head), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$length), df$rt$intType())
+  requires df$rt$intFromRef(p$length) >= 1
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+{
+  (let anon$2$0 ==
+    ((unfolding acc(p$c$Node$shared(p$head), wildcard) in p$head.bf$value)) in
+    (let anon$3$0 ==
+      (f$fib$TF$T$Int$T$Int(p$length)) in
+      (let anon$4$0 ==
+        ((df$rt$intFromRef(p$length) == 1 &&
+        !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+          (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+            p$head.bf$next) :
+          null)) in
+        (let anon$5$0 ==
+          ((!(df$rt$intFromRef(p$length) == 1) &&
+          !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+            (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+              p$head.bf$next) :
+            null)) in
+          (let anon$7$0 ==
+            ((!(anon$5$0 == df$rt$nullValue()) &&
+            (!(df$rt$intFromRef(p$length) == 1) &&
+            !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+              (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+                p$head.bf$next) :
+              null)) in
+            (let anon$6$0 ==
+              ((!(anon$5$0 == df$rt$nullValue()) &&
+              (!(df$rt$intFromRef(p$length) == 1) &&
+              !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+                (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+                  f$isFibList$TF$T$Node$T$Int$T$Boolean(anon$7$0, sp$minusInts(p$length,
+                  df$rt$intToRef(1)))) :
+                null)) in
+              (let l6$isFib$0 ==
+                ((!(anon$5$0 == df$rt$nullValue()) &&
+                (!(df$rt$intFromRef(p$length) == 1) &&
+                !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+                  anon$6$0 :
+                  null)) in
+                (!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+                  df$rt$boolToRef(false) :
+                  (df$rt$intFromRef(p$length) == 1 &&
+                  !!(df$rt$intFromRef(anon$2$0) ==
+                  df$rt$intFromRef(anon$3$0)) ?
+                    df$rt$boolToRef(anon$4$0 == df$rt$nullValue()) :
+                    (anon$5$0 == df$rt$nullValue() &&
+                    (!(df$rt$intFromRef(p$length) == 1) &&
+                    !!(df$rt$intFromRef(anon$2$0) ==
+                    df$rt$intFromRef(anon$3$0))) ?
+                      df$rt$boolToRef(false) :
+                      l6$isFib$0))))))))))
+}
+
+/fibonacci_list.kt:(2260,2765): warning: Viper verification error: Postcondition of f$getNth$TF$T$Node$T$Int$T$Int$T$Int might not hold. Assertion df$rt$intFromRef(result) == df$rt$intFromRef(f$fib$TF$T$Int$T$Int(sp$minusInts(p$length, p$index))) might not hold.
+
+/fibonacci_list.kt:(2284,2290): info: Generated Viper text for getNth:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$fib$TF$T$Int$T$Int(p$n: Ref): Ref
+  requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
+  requires df$rt$intFromRef(p$n) >= 0
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let anon$0$0 ==
+    ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+      f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(1))) :
+      null)) in
+    (let anon$1$0 ==
+      ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+        f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(2))) :
+        null)) in
+      (df$rt$intFromRef(p$n) == 0 ?
+        df$rt$intToRef(0) :
+        (df$rt$intFromRef(p$n) == 1 && !(df$rt$intFromRef(p$n) == 0) ?
+          df$rt$intToRef(1) :
+          sp$plusInts(anon$0$0, anon$1$0)))))
+}
+
+function f$getNth$TF$T$Node$T$Int$T$Int$T$Int(p$head: Ref, p$length: Ref, p$index: Ref): Ref
+  requires acc(p$c$Node$shared(p$head), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$head), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$length), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$index), df$rt$intType())
+  requires df$rt$intFromRef(p$length) >= 1
+  requires df$rt$intFromRef(p$index) >= 0
+  requires df$rt$intFromRef(p$index) < df$rt$intFromRef(p$length)
+  requires df$rt$boolFromRef((unfolding acc(p$c$Node$shared(p$head), wildcard) in
+      f$isFibList$TF$T$Node$T$Int$T$Boolean(p$head, p$length)))
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+  ensures df$rt$intFromRef(result) ==
+    df$rt$intFromRef(f$fib$TF$T$Int$T$Int(sp$minusInts(p$length, p$index)))
+{
+  (let anon$10$0 ==
+    ((df$rt$intFromRef(p$index) == 0 ?
+      (unfolding acc(p$c$Node$shared(p$head), wildcard) in p$head.bf$value) :
+      null)) in
+    (let l0$nextNode$0 ==
+      ((!(df$rt$intFromRef(p$index) == 0) ?
+        (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+          p$head.bf$next) :
+        null)) in
+      (let anon$11$0 ==
+        ((!(l0$nextNode$0 == df$rt$nullValue()) &&
+        !(df$rt$intFromRef(p$index) == 0) ?
+          (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+            f$getNth$TF$T$Node$T$Int$T$Int$T$Int(l0$nextNode$0, sp$minusInts(p$length,
+            df$rt$intToRef(1)), sp$minusInts(p$index, df$rt$intToRef(1)))) :
+          null)) in
+        (df$rt$intFromRef(p$index) == 0 ?
+          anon$10$0 :
+          (l0$nextNode$0 == df$rt$nullValue() &&
+          !(df$rt$intFromRef(p$index) == 0) ?
+            df$rt$intToRef(0) :
+            anon$11$0)))))
+}
+
+function f$isFibList$TF$T$Node$T$Int$T$Boolean(p$head: Ref, p$length: Ref): Ref
+  requires acc(p$c$Node$shared(p$head), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$head), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$length), df$rt$intType())
+  requires df$rt$intFromRef(p$length) >= 1
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+{
+  (let anon$2$0 ==
+    ((unfolding acc(p$c$Node$shared(p$head), wildcard) in p$head.bf$value)) in
+    (let anon$3$0 ==
+      (f$fib$TF$T$Int$T$Int(p$length)) in
+      (let anon$4$0 ==
+        ((df$rt$intFromRef(p$length) == 1 &&
+        !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+          (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+            p$head.bf$next) :
+          null)) in
+        (let anon$5$0 ==
+          ((!(df$rt$intFromRef(p$length) == 1) &&
+          !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+            (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+              p$head.bf$next) :
+            null)) in
+          (let anon$7$0 ==
+            ((!(anon$5$0 == df$rt$nullValue()) &&
+            (!(df$rt$intFromRef(p$length) == 1) &&
+            !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+              (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+                p$head.bf$next) :
+              null)) in
+            (let anon$6$0 ==
+              ((!(anon$5$0 == df$rt$nullValue()) &&
+              (!(df$rt$intFromRef(p$length) == 1) &&
+              !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+                (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+                  f$isFibList$TF$T$Node$T$Int$T$Boolean(anon$7$0, sp$minusInts(p$length,
+                  df$rt$intToRef(1)))) :
+                null)) in
+              (let l6$isFib$0 ==
+                ((!(anon$5$0 == df$rt$nullValue()) &&
+                (!(df$rt$intFromRef(p$length) == 1) &&
+                !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+                  anon$6$0 :
+                  null)) in
+                (!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+                  df$rt$boolToRef(false) :
+                  (df$rt$intFromRef(p$length) == 1 &&
+                  !!(df$rt$intFromRef(anon$2$0) ==
+                  df$rt$intFromRef(anon$3$0)) ?
+                    df$rt$boolToRef(anon$4$0 == df$rt$nullValue()) :
+                    (anon$5$0 == df$rt$nullValue() &&
+                    (!(df$rt$intFromRef(p$length) == 1) &&
+                    !!(df$rt$intFromRef(anon$2$0) ==
+                    df$rt$intFromRef(anon$3$0))) ?
+                      df$rt$boolToRef(false) :
+                      l6$isFib$0))))))))))
+}
+
+/fibonacci_list.kt:(2785,2795): info: Generated Viper text for sumFibList:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$fib$TF$T$Int$T$Int(p$n: Ref): Ref
+  requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
+  requires df$rt$intFromRef(p$n) >= 0
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let anon$0$0 ==
+    ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+      f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(1))) :
+      null)) in
+    (let anon$1$0 ==
+      ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+        f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(2))) :
+        null)) in
+      (df$rt$intFromRef(p$n) == 0 ?
+        df$rt$intToRef(0) :
+        (df$rt$intFromRef(p$n) == 1 && !(df$rt$intFromRef(p$n) == 0) ?
+          df$rt$intToRef(1) :
+          sp$plusInts(anon$0$0, anon$1$0)))))
+}
+
+function f$isFibList$TF$T$Node$T$Int$T$Boolean(p$head: Ref, p$length: Ref): Ref
+  requires acc(p$c$Node$shared(p$head), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$head), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$length), df$rt$intType())
+  requires df$rt$intFromRef(p$length) >= 1
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+{
+  (let anon$2$0 ==
+    ((unfolding acc(p$c$Node$shared(p$head), wildcard) in p$head.bf$value)) in
+    (let anon$3$0 ==
+      (f$fib$TF$T$Int$T$Int(p$length)) in
+      (let anon$4$0 ==
+        ((df$rt$intFromRef(p$length) == 1 &&
+        !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+          (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+            p$head.bf$next) :
+          null)) in
+        (let anon$5$0 ==
+          ((!(df$rt$intFromRef(p$length) == 1) &&
+          !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+            (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+              p$head.bf$next) :
+            null)) in
+          (let anon$7$0 ==
+            ((!(anon$5$0 == df$rt$nullValue()) &&
+            (!(df$rt$intFromRef(p$length) == 1) &&
+            !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+              (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+                p$head.bf$next) :
+              null)) in
+            (let anon$6$0 ==
+              ((!(anon$5$0 == df$rt$nullValue()) &&
+              (!(df$rt$intFromRef(p$length) == 1) &&
+              !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+                (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+                  f$isFibList$TF$T$Node$T$Int$T$Boolean(anon$7$0, sp$minusInts(p$length,
+                  df$rt$intToRef(1)))) :
+                null)) in
+              (let l1$isFib$0 ==
+                ((!(anon$5$0 == df$rt$nullValue()) &&
+                (!(df$rt$intFromRef(p$length) == 1) &&
+                !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+                  anon$6$0 :
+                  null)) in
+                (!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+                  df$rt$boolToRef(false) :
+                  (df$rt$intFromRef(p$length) == 1 &&
+                  !!(df$rt$intFromRef(anon$2$0) ==
+                  df$rt$intFromRef(anon$3$0)) ?
+                    df$rt$boolToRef(anon$4$0 == df$rt$nullValue()) :
+                    (anon$5$0 == df$rt$nullValue() &&
+                    (!(df$rt$intFromRef(p$length) == 1) &&
+                    !!(df$rt$intFromRef(anon$2$0) ==
+                    df$rt$intFromRef(anon$3$0))) ?
+                      df$rt$boolToRef(false) :
+                      l1$isFib$0))))))))))
+}
+
+method f$sumFibList$TF$T$Node$T$Int$T$Int(p$head: Ref, p$length: Ref)
+  returns (ret$0: Ref)
+  requires acc(p$c$Node$shared(p$head), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$head), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$length), df$rt$intType())
+  requires df$rt$intFromRef(p$length) >= 1
+  requires df$rt$boolFromRef((unfolding acc(p$c$Node$shared(p$head), wildcard) in
+      f$isFibList$TF$T$Node$T$Int$T$Boolean(p$head, p$length)))
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+  ensures df$rt$intFromRef(ret$0) ==
+    df$rt$intFromRef(f$fib$TF$T$Int$T$Int(sp$plusInts(p$length, df$rt$intToRef(2)))) -
+    1
+{
+  var l0$nextNode: Ref
+  var l0$tailSum: Ref
+  var anon$8: Ref
+  inhale acc(p$c$Node$shared(p$head), wildcard)
+  if (df$rt$intFromRef(p$length) == 1) {
+    var l14$fib0: Ref
+    var l14$fib1: Ref
+    var l14$fib3: Ref
+    l14$fib0 := f$fib$TF$T$Int$T$Int(df$rt$intToRef(0))
+    l14$fib1 := f$fib$TF$T$Int$T$Int(df$rt$intToRef(2))
+    l14$fib3 := f$fib$TF$T$Int$T$Int(df$rt$intToRef(3))
+    unfold acc(p$c$Node$shared(p$head), wildcard)
+    ret$0 := p$head.bf$value
+    goto lbl$ret$0
+  }
+  unfold acc(p$c$Node$shared(p$head), wildcard)
+  l0$nextNode := p$head.bf$next
+  if (l0$nextNode == df$rt$nullValue()) {
+    ret$0 := sp$minusInts(f$fib$TF$T$Int$T$Int(sp$plusInts(p$length, df$rt$intToRef(2))),
+      df$rt$intToRef(1))
+    goto lbl$ret$0
+  }
+  l0$tailSum := f$sumFibList$TF$T$Node$T$Int$T$Int(l0$nextNode, sp$minusInts(p$length,
+    df$rt$intToRef(1)))
+  unfold acc(p$c$Node$shared(p$head), wildcard)
+  anon$8 := p$head.bf$value
+  ret$0 := sp$plusInts(anon$8, l0$tailSum)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/fibonacci_list.kt:(3365,3376): info: Generated Viper text for copyFibList:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$fib$TF$T$Int$T$Int(p$n: Ref): Ref
+  requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
+  requires df$rt$intFromRef(p$n) >= 0
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let anon$0$0 ==
+    ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+      f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(1))) :
+      null)) in
+    (let anon$1$0 ==
+      ((!(df$rt$intFromRef(p$n) == 1) && !(df$rt$intFromRef(p$n) == 0) ?
+        f$fib$TF$T$Int$T$Int(sp$minusInts(p$n, df$rt$intToRef(2))) :
+        null)) in
+      (df$rt$intFromRef(p$n) == 0 ?
+        df$rt$intToRef(0) :
+        (df$rt$intFromRef(p$n) == 1 && !(df$rt$intFromRef(p$n) == 0) ?
+          df$rt$intToRef(1) :
+          sp$plusInts(anon$0$0, anon$1$0)))))
+}
+
+function f$isFibList$TF$T$Node$T$Int$T$Boolean(p$head: Ref, p$length: Ref): Ref
+  requires acc(p$c$Node$shared(p$head), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$head), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$length), df$rt$intType())
+  requires df$rt$intFromRef(p$length) >= 1
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+{
+  (let anon$2$0 ==
+    ((unfolding acc(p$c$Node$shared(p$head), wildcard) in p$head.bf$value)) in
+    (let anon$3$0 ==
+      (f$fib$TF$T$Int$T$Int(p$length)) in
+      (let anon$4$0 ==
+        ((df$rt$intFromRef(p$length) == 1 &&
+        !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+          (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+            p$head.bf$next) :
+          null)) in
+        (let anon$5$0 ==
+          ((!(df$rt$intFromRef(p$length) == 1) &&
+          !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+            (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+              p$head.bf$next) :
+            null)) in
+          (let anon$7$0 ==
+            ((!(anon$5$0 == df$rt$nullValue()) &&
+            (!(df$rt$intFromRef(p$length) == 1) &&
+            !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+              (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+                p$head.bf$next) :
+              null)) in
+            (let anon$6$0 ==
+              ((!(anon$5$0 == df$rt$nullValue()) &&
+              (!(df$rt$intFromRef(p$length) == 1) &&
+              !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+                (unfolding acc(p$c$Node$shared(p$head), wildcard) in
+                  f$isFibList$TF$T$Node$T$Int$T$Boolean(anon$7$0, sp$minusInts(p$length,
+                  df$rt$intToRef(1)))) :
+                null)) in
+              (let l1$isFib$0 ==
+                ((!(anon$5$0 == df$rt$nullValue()) &&
+                (!(df$rt$intFromRef(p$length) == 1) &&
+                !!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0))) ?
+                  anon$6$0 :
+                  null)) in
+                (!(df$rt$intFromRef(anon$2$0) == df$rt$intFromRef(anon$3$0)) ?
+                  df$rt$boolToRef(false) :
+                  (df$rt$intFromRef(p$length) == 1 &&
+                  !!(df$rt$intFromRef(anon$2$0) ==
+                  df$rt$intFromRef(anon$3$0)) ?
+                    df$rt$boolToRef(anon$4$0 == df$rt$nullValue()) :
+                    (anon$5$0 == df$rt$nullValue() &&
+                    (!(df$rt$intFromRef(p$length) == 1) &&
+                    !!(df$rt$intFromRef(anon$2$0) ==
+                    df$rt$intFromRef(anon$3$0))) ?
+                      df$rt$boolToRef(false) :
+                      l1$isFib$0))))))))))
+}
+
+method con$c$Node$T$Int$NT$Node$T$Node(p$value: Ref, p$next: Ref)
+  returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$value), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$next), df$rt$nullable(df$rt$c$Node()))
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Node())
+  ensures acc(p$c$Node$shared(ret), wildcard)
+  ensures acc(p$c$Node$unique(ret), write)
+  ensures df$rt$intFromRef((unfolding acc(p$c$Node$shared(ret), wildcard) in
+      ret.bf$value)) ==
+    df$rt$intFromRef(p$value) &&
+    (unfolding acc(p$c$Node$shared(ret), wildcard) in ret.bf$next) ==
+    p$next
+
+
+method f$copyFibList$TF$T$Node$T$Int$T$Node(p$head: Ref, p$length: Ref)
+  returns (ret$0: Ref)
+  requires acc(p$c$Node$shared(p$head), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$head), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$length), df$rt$intType())
+  requires df$rt$intFromRef(p$length) >= 1
+  requires df$rt$boolFromRef((unfolding acc(p$c$Node$shared(p$head), wildcard) in
+      f$isFibList$TF$T$Node$T$Int$T$Boolean(p$head, p$length)))
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$Node())
+  ensures acc(p$c$Node$shared(ret$0), wildcard)
+  ensures df$rt$boolFromRef((unfolding acc(p$c$Node$shared(ret$0), wildcard) in
+      f$isFibList$TF$T$Node$T$Int$T$Boolean(ret$0, p$length)))
+{
+  var l0$nextNode: Ref
+  var l0$copiedTail: Ref
+  var anon$10: Ref
+  inhale acc(p$c$Node$shared(p$head), wildcard)
+  if (df$rt$intFromRef(p$length) == 1) {
+    var anon$8: Ref
+    unfold acc(p$c$Node$shared(p$head), wildcard)
+    anon$8 := p$head.bf$value
+    ret$0 := con$c$Node$T$Int$NT$Node$T$Node(anon$8, df$rt$nullValue())
+    goto lbl$ret$0
+  }
+  unfold acc(p$c$Node$shared(p$head), wildcard)
+  l0$nextNode := p$head.bf$next
+  if (l0$nextNode == df$rt$nullValue()) {
+    var anon$9: Ref
+    unfold acc(p$c$Node$shared(p$head), wildcard)
+    anon$9 := p$head.bf$value
+    ret$0 := con$c$Node$T$Int$NT$Node$T$Node(anon$9, df$rt$nullValue())
+    goto lbl$ret$0
+  }
+  l0$copiedTail := f$copyFibList$TF$T$Node$T$Int$T$Node(l0$nextNode, sp$minusInts(p$length,
+    df$rt$intToRef(1)))
+  unfold acc(p$c$Node$shared(p$head), wildcard)
+  anon$10 := p$head.bf$value
+  ret$0 := con$c$Node$T$Int$NT$Node$T$Node(anon$10, l0$copiedTail)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
