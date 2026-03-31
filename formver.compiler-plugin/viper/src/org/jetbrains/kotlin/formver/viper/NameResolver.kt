@@ -9,20 +9,28 @@ package org.jetbrains.kotlin.formver.viper
  */
 
 interface NameResolver {
-    fun resolve(name: NamedEntity): String
+    /**
+     * Resolves the given [name] into a Viper identifier.
+     */
+    fun resolve(name: SymbolicName): String
+
+    /**
+     * Registers a new [name] for mangling.
+     */
     fun register(name: SymbolicName)
+
+    /**
+     * Applies mangling to all registered names.
+     */
+    fun mangle() {}
 }
 
 class DebugNameResolver : NameResolver {
-    override fun resolve(name: NamedEntity): String = when (name) {
-        is SymbolicName -> listOfNotNull(
-            name.nameType?.fullName(),
+    override fun resolve(name: SymbolicName): String = listOfNotNull(
+        name.nameType?.name,
             name.mangledScope,
             name.mangledBaseName
         ).joinToString(SEPARATOR)
-
-        else -> name.toString()
-    }
 
     override fun register(name: SymbolicName) {}
 }
