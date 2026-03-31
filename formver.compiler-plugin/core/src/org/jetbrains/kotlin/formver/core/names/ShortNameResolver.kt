@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.formver.viper.ast.DomainName
 import org.jetbrains.kotlin.formver.viper.ast.NamedDomainAxiomLabel
 import org.jetbrains.kotlin.formver.viper.ast.QualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.viper.ast.UnqualifiedDomainFuncName
+import java.util.*
 import kotlin.math.absoluteValue
 
 // START UTILITY SECTION
@@ -75,12 +76,36 @@ internal enum class Relation {
     REPRESENTED_BY,
 }
 
+enum class Equality {
+    REFERENCE, STRUCTURE
+}
+
+internal class MyTriple(val a: NamedEntity, val rel: Relation, val b: NamedEntity) {
+    override operator fun equals(other: Any?): Boolean {
+        return when (other) {
+            null -> false
+            is MyTriple -> {
+                System.identityHashCode(a) == System.identityHashCode(other.a)
+                        && rel == other.rel && System.identityHashCode(b) == System.identityHashCode(other.b)
+            }
+
+            else -> false
+        }
+    }
+
+    override fun hashCode(): Int {
+        var result = System.identityHashCode(a)
+        result = 31 * result + rel.hashCode()
+        result = 31 * result + System.identityHashCode(b)
+        return result
+    }
+}
 
 /**
  * Resolves mangled names into Viper identifiers while maintaining uniqueness.
  * The priority lies on the short and readable names.
  */
-class ShortNameResolver : NameResolver {
+class ShortNameResolver(val equality: Equality) : NameResolver {
 
     /**
      * This Mapping stores the mangled names. It is only initialized after calling `mangle()`
@@ -92,29 +117,55 @@ class ShortNameResolver : NameResolver {
      * Stores which candidate is currently used for a given name.
      * Since the name can depend on other names, recursive lookups may be necessary.
      */
-    private val currentCandidate = mutableMapOf<NamedEntity, Int>()
+    private val currentCandidateStructure = mutableMapOf<NamedEntity, Int>()
+    private val currentCandidateReference = IdentityHashMap<NamedEntity, Int>()
+    private val currentCandidate: MutableMap<NamedEntity, Int> = when (equality) {
+        Equality.REFERENCE -> currentCandidateReference
+        Equality.STRUCTURE -> currentCandidateStructure
+    }
 
     /**
      * Stores all the names that exist in the system.
      */
-    private val elements: MutableSet<NamedEntity> = ViperKeywords.keywords.toMutableSet()
-    internal fun addElement(entity: NamedEntity) = elements.add(entity)
+    private val elementsReference: MutableSet<NamedEntity> =
+        Collections.newSetFromMap(IdentityHashMap<NamedEntity, Boolean>())
+    private val elementsStructure: MutableSet<NamedEntity> = ViperKeywords.keywords.toMutableSet()
+    private fun elements(): Iterable<NamedEntity> = when (equality) {
+        Equality.REFERENCE -> elementsReference
+        Equality.STRUCTURE -> elementsStructure
+    }
+
+    internal fun addElement(entity: NamedEntity) = when (equality) {
+        Equality.STRUCTURE -> elementsStructure.add(entity)
+        Equality.REFERENCE -> elementsReference.add(entity)
+    }
 
     /**
      * All names that appear in Viper. 
      */
-    internal fun viperElements() = elements.filter { endUpInViper(it) }
+    internal fun viperElements() = elements().filter { endUpInViper(it) }
 
     /**
      * Stores all the relations between names.
      */
-    private val tripleStore = mutableSetOf<Triple<NamedEntity, Relation, NamedEntity>>()
+    private val tripleStoreStructure = mutableSetOf<Triple<NamedEntity, Relation, NamedEntity>>()
+    private val tripleStoreReference = mutableSetOf<MyTriple>()
+    private fun tripleStore(): Iterable<Triple<NamedEntity, Relation, NamedEntity>> = when (equality) {
+        Equality.REFERENCE -> tripleStoreReference.map {
+            Triple(it.a, it.rel, it.b)
+        }
+
+        Equality.STRUCTURE -> tripleStoreStructure
+    }
 
     /**
      * Adds a relation between two entities.
      */
     internal fun link(a: NamedEntity, rel: Relation, b: NamedEntity) {
-        tripleStore.add(Triple(a, rel, b))
+        when (equality) {
+            Equality.REFERENCE -> tripleStoreReference.add(MyTriple(a, rel, b))
+            Equality.STRUCTURE -> tripleStoreStructure.add(Triple(a, rel, b))
+        }
         addElement(a)
         addElement(b)
     }
@@ -123,17 +174,17 @@ class ShortNameResolver : NameResolver {
      * Returns true iff the ``entity`` is scoped. Meaning that there is a name, which wraps around `entity`
      */
     private fun isScoped(entity: NamedEntity): Boolean =
-        tripleStore.any { (a, rel, _) -> a == entity && rel == Relation.SCOPED_BY }
+        tripleStore().any { (a, rel, _) -> a == entity && rel == Relation.SCOPED_BY }
 
     /**
      * Returns the entities `elem` is dependent on.
      */
     fun dependsOn(entity: NamedEntity): Set<NamedEntity> =
-        tripleStore.filter { (a, rel, _) -> a == entity && rel == Relation.IS_PART_OF }.map { (_, _, b) -> b }.toSet()
+        tripleStore().filter { (a, rel, _) -> a == entity && rel == Relation.IS_PART_OF }.map { (_, _, b) -> b }.toSet()
 
     fun isRepresented(entity: NamedEntity): Boolean = representedBy(entity) != null
     fun representedBy(entity: NamedEntity): NamedEntity? =
-        tripleStore.find { (a, rel, _) -> a == entity && rel == Relation.REPRESENTED_BY }?.third
+        tripleStore().find { (a, rel, _) -> a == entity && rel == Relation.REPRESENTED_BY }?.third
 
 
     private val registrator = Registrator()
@@ -189,7 +240,7 @@ class ShortNameResolver : NameResolver {
 
     private fun createRepresentatives() {
         // Field Names which are public
-        val publicFields = elements.filter {
+        val publicFields = elements().filter {
             it is ScopedKotlinName && it.scope is PublicScope
         }
         // Group them according to their name
@@ -217,11 +268,16 @@ class ShortNameResolver : NameResolver {
      *   is captured with the representation system. Hence, names that are represented by someone else must not be considered.
      */
     fun collisions(): Map<String, Set<NamedEntity>> {
-        val toConsider = elements.filter { endUpInViper(it) && !isRepresented(it) }
+        val toConsider = elements().filter { endUpInViper(it) && !isRepresented(it) }
         val names = toConsider.map { Pair(current(it), it) }
         val result = mutableMapOf<String, MutableSet<NamedEntity>>()
         names.forEach { (name, entity) ->
-            result.getOrPut(name) { mutableSetOf() }.add(entity)
+            result.getOrPut(name) {
+                when (equality) {
+                    Equality.STRUCTURE -> mutableSetOf()
+                    Equality.REFERENCE -> Collections.newSetFromMap(IdentityHashMap<NamedEntity, Boolean>())
+                }
+            }.add(entity)
         }
         return result.filterValues { it.size > 1 }
     }
@@ -237,7 +293,7 @@ class ShortNameResolver : NameResolver {
             when (entity) {
                 is FreshName -> true  // likely yes
                 is KotlinName -> !isScoped(entity)
-                is ScopedKotlinName -> (!isScoped(entity) && entity.name !is ClassKotlinName) || true
+                is ScopedKotlinName -> (!isScoped(entity) && entity.name !is ClassKotlinName)
                 is DomainName -> true // yes the domain is used as a name
                 is NamedDomainAxiomLabel -> true
                 is QualifiedDomainFuncName -> true
@@ -319,16 +375,22 @@ class ShortNameResolver : NameResolver {
         fun candidates(entity: NamedEntity): String = entity.candidates.joinToString(nl) { candidateNameTemplate(it) }
 
         fun id(entity: NamedEntity): String {
-            val hashCode = entity.hashCode() + entity::class.qualifiedName.hashCode()
-            val name = "n${hashCode.absoluteValue}"
-            return name
+            when (equality) {
+                Equality.STRUCTURE -> {
+                    val hashCode = entity.hashCode() + entity::class.qualifiedName.hashCode()
+                    return "n${hashCode.absoluteValue}"
+                }
+
+                Equality.REFERENCE -> {
+                    return "n${System.identityHashCode(entity)}"
+                }
+            }
         }
 
-        fun nodeColor(entity: NamedEntity): String =
-            if (endUpInViper(entity)) {
-                "lime"
-            } else {
-                "black"
+        fun nodeColor(entity: NamedEntity): String = if (endUpInViper(entity)) {
+            "lime"
+        } else {
+            "black"
         }
 
 
@@ -365,6 +427,7 @@ class ShortNameResolver : NameResolver {
                     }
                 }
             }
+
             is ViperKeyword -> "Viper Keyword: "
             else -> throw IllegalArgumentException("Unsupported entity type: ${entity.javaClass.name}")
         } + fullName(entity) + nl + nodeLabel(entity)
@@ -381,7 +444,7 @@ class ShortNameResolver : NameResolver {
 
 
         // add all elements
-        elements.forEach {
+        elements().forEach {
             sb.appendLine("\"${id(it)}\" [label=\"${label(it)}\" color=\"${nodeColor(it)}\"];\n")
         }
 
@@ -397,7 +460,7 @@ class ShortNameResolver : NameResolver {
         }
 
         // relations
-        tripleStore.forEach { (a, relation, b) ->
+        tripleStore().forEach { (a, relation, b) ->
             sb.appendLine("\"${id(a)}\" -> \"${id(b)}\" ${relationLabel(relation)};\n")
         }
 
@@ -538,8 +601,7 @@ internal class Registrator : NamedEntityVisitor<ShortNameResolver, Unit> {
             }
 
             override fun visitPlaceholderReturnVariableName(
-                name: PlaceholderReturnVariableName,
-                data: ShortNameResolver
+                name: PlaceholderReturnVariableName, data: ShortNameResolver
             ) {
                 data.addElement(name)
                 data.link(name.nameType, Relation.KIND_OF, name)

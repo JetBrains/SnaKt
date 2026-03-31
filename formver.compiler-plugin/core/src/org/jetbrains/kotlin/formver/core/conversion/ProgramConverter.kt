@@ -79,7 +79,8 @@ class ProgramConverter(
     override val anonVarProducer = FreshEntityProducer(::AnonymousVariableEmbedding)
     override val anonBuiltinVarProducer = FreshEntityProducer(::AnonymousBuiltinVariableEmbedding)
     override val returnTargetProducer = FreshEntityProducer(::ReturnTarget)
-    override val nameResolver = ShortNameResolver()
+    override val nameResolver = ShortNameResolver(Equality.STRUCTURE)
+
 
     val program: Program
         get() = Program(
