@@ -57,6 +57,12 @@ public class FirLightTreeFormVerPluginNoVerificationDiagnosticsTestGenerated ext
       }
 
       @Test
+      @TestMetadata("fibonacci_list.kt")
+      public void testFibonacci_list() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/fibonacci_list.kt");
+      }
+
+      @Test
       @TestMetadata("multiple_interfaces.kt")
       public void testMultiple_interfaces() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/multiple_interfaces.kt");

@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
+import com.intellij.util.containers.addAllIfNotNull
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
@@ -93,7 +94,7 @@ fun FullNamedFunctionSignature.toViperMethod(
     name,
     formalArgs.map { it.toLocalVarDecl() },
     returnVariable.toLocalVarDecl(),
-    getPreconditions().pureToViper(toBuiltin = true),
+    getPreconditions().pureToViper(toBuiltin = true).addPredicatesToPreconditions(),
     getPostconditions(returnVariable).pureToViper(toBuiltin = true),
     body,
     declarationSource.asPosition
@@ -127,3 +128,15 @@ fun FullNamedFunctionSignature.toViperFunction(
         declarationSource.asPosition
     )
 }
+private fun List<Exp>.addPredicatesToPreconditions(): List<Exp> {
+    val predicates = this.flatMap { exp ->
+        when (exp) {
+            is Exp.DomainFuncApp -> exp.args.mapNotNull { it.inferPredicate() }
+            is Exp.Unfolding -> listOfNotNull(exp.inferPredicate())
+            else -> emptyList()
+        }
+    }
+    return predicates + this
+}
+
+private fun Exp.inferPredicate(): Exp? = (this as? Exp.Unfolding)?.predicateAccess
