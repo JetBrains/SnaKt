@@ -36,7 +36,6 @@ fun CandidateName.name(): String = parts.joinToString(SEPARATOR) { it.name() }
 /**
  * Gives the most specific name.
  */
-context(resolver: ShortNameResolver)
 fun NamePart.fullName(): String = when (this) {
     is NamePart.Dependent -> fullName()
     is NamePart.Basic -> this.name
@@ -45,14 +44,19 @@ fun NamePart.fullName(): String = when (this) {
 /**
  * Gives the most specific name.
  */
-context(resolver: ShortNameResolver)
 fun NamePart.Dependent.fullName(): String = name.candidates.last().fullName()
 
 /**
  * Gives the most specific name.
  */
-context(resolver: ShortNameResolver)
-fun CandidateName.fullName(): String = parts.joinToString(SEPARATOR) { it.fullName() }
+fun CandidateName.fullName(): String = if (parts.size > 1) {
+    "[" + parts.joinToString(SEPARATOR) { it.fullName() } + "]"
+} else {
+    parts.joinToString(SEPARATOR) { it.fullName() }
+}
+
+fun NamedEntity.fullName(): String = candidates.last().fullName()
+
 
 // END UTILITY SECTION
 
@@ -85,8 +89,9 @@ internal class MyTriple(val a: NamedEntity, val rel: Relation, val b: NamedEntit
         return when (other) {
             null -> false
             is MyTriple -> {
-                System.identityHashCode(a) == System.identityHashCode(other.a)
-                        && rel == other.rel && System.identityHashCode(b) == System.identityHashCode(other.b)
+                System.identityHashCode(a) == System.identityHashCode(other.a) && rel == other.rel && System.identityHashCode(
+                    b
+                ) == System.identityHashCode(other.b)
             }
 
             else -> false

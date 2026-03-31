@@ -33,7 +33,6 @@ import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Method
 import org.jetbrains.kotlin.formver.viper.ast.Program
-import org.jetbrains.kotlin.formver.viper.debugMangled
 import org.jetbrains.kotlin.utils.addIfNotNull
 import org.jetbrains.kotlin.utils.addToStdlib.ifFalse
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
@@ -88,12 +87,12 @@ class ProgramConverter(
             // We need to deduplicate fields since public fields with the same name are represented differently
             // at `FieldEmbedding` level but map to the same Viper.
             fields = SpecialFields.all.map { it.toViper() } +
-                    fields.distinctBy { it.name.debugMangled }.map { it.toViper() },
+                    fields.distinctBy { it.name.fullName() }.map { it.toViper() },
             functions = SpecialFunctions.all +
-                    functions.values.mapNotNull { it.viperFunction }.distinctBy { it.name.debugMangled },
+                    functions.values.mapNotNull { it.viperFunction }.distinctBy { it.name.fullName() },
             methods = SpecialMethods.all +
                     methods.values.mapNotNull { it.viperMethod }
-                        .distinctBy { it.name.debugMangled } + havocMethods.values,
+                        .distinctBy { it.name.fullName() } + havocMethods.values,
             predicates = classes.values.flatMap {
                 listOf(
                     it.details.sharedPredicate,

@@ -65,8 +65,15 @@ class CandidateNameBuilder {
         parts.add(NamePart.Dependent(this))
     }
 
-    operator fun Iterable<NamedEntity>.unaryPlus() {
-        parts.addAll(map { NamePart.Dependent(it) })
+    operator fun Iterable<*>.unaryPlus() {
+        parts.addAll(mapNotNull {
+            when (it) {
+                is String -> NamePart.Basic(it)
+                is NamedEntity -> NamePart.Dependent(it)
+                null -> null
+                else -> error("Unsupported type: ${it::class.simpleName}")
+            }
+        })
     }
 
     fun build(): CandidateName = CandidateName(parts.toList())

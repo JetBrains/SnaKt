@@ -60,10 +60,16 @@ data class PackageScope(val packageName: FqName) : NameScope {
 
     override val candidates: List<CandidateName>
         get() = buildCandidates {
-            candidate {
-                +"pkg\$${packageName.asViperString()}"
+            val split = packageName.asString().split(".")
+            for (i in split.indices) {
+                candidate {
+                    +split.takeLast(i + 1)
+                }
             }
-
+            candidate {
+                +"pkg"
+                +split
+            }
         }
 }
 

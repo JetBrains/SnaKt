@@ -165,11 +165,11 @@ data class ClassKotlinName(val name: FqName) : KotlinName {
     override val candidates: List<CandidateName>
         get() = buildCandidates {
             candidate {
-                +name.asViperString()
+                +name.asString().split(".")
             }
             candidate {
                 +nameType
-                +name.asViperString()
+                +name.asString().split(".")
             }
         }
 }
