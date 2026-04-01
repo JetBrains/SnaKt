@@ -415,6 +415,7 @@ class ProgramConverter(
                     addAll(it.pureInvariants())
                     addAll(it.accessInvariants())
                     addAll(it.provenInvariants())
+                    addIfNotNull(it.sharedPredicateAccessInvariant())
                     if (it.isUnique) {
                         addIfNotNull(it.type.uniquePredicateAccessInvariant()?.fillHole(it))
                     }
