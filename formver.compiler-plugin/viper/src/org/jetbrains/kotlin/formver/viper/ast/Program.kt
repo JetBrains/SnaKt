@@ -48,6 +48,15 @@ data class Program(
     )
 
     context(nameResolver: NameResolver)
+    fun deduplicated(): Program = copy(
+        domains = domains.distinctBy { it.name.mangled },
+        fields = fields.distinctBy { it.name.mangled },
+        functions = functions.distinctBy { it.name.mangled },
+        predicates = predicates.distinctBy { it.name.mangled },
+        methods = methods.distinctBy { it.name.mangled },
+    )
+
+    context(nameResolver: NameResolver)
     fun toDebugOutput(): String = toSilver().toString()
 }
 

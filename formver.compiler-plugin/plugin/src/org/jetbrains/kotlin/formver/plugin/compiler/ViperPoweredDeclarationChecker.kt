@@ -60,8 +60,11 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
             }
 
             programConversionContext.nameResolver.mangle()
+            val programDedup = with(programConversionContext.nameResolver) {
+                program.deduplicated()
+            }
 
-            getProgramForLogging(program)?.let {
+            getProgramForLogging(programDedup)?.let {
                 reporter.reportOn(
                     declaration.source,
                     PluginErrors.VIPER_TEXT,
@@ -82,7 +85,7 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
                     }
                 }
             }
-            val viperProgram = with(programConversionContext.nameResolver) { program.toSilver() }
+            val viperProgram = with(programConversionContext.nameResolver) { programDedup.toSilver() }
             val onFailure = { err: VerifierError ->
                 val source = err.position.unwrapOr { declaration.source }
                 reporter.reportVerifierError(source, err, config.errorStyle)
