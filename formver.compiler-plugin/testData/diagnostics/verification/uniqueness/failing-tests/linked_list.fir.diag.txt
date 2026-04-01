@@ -3,39 +3,39 @@ field bf$data: Ref
 
 field bf$next: Ref
 
-predicate p$c$Link$shared(this$dispatch: Ref) {
+predicate pred$c$Link$shared(this$dispatch: Ref) {
   acc(this$dispatch.bf$next, wildcard) &&
   (this$dispatch.bf$next != df$rt$nullValue() ==>
-  acc(p$c$Link$shared(this$dispatch.bf$next), wildcard)) &&
+  acc(pred$c$Link$shared(this$dispatch.bf$next), wildcard)) &&
   df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$next), df$rt$nullable(df$rt$c$Link()))
 }
 
-predicate p$c$Link$unique(this$dispatch: Ref) {
+predicate pred$c$Link$unique(this$dispatch: Ref) {
   acc(this$dispatch.bf$data, write) &&
   df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$data), df$rt$intType()) &&
   acc(this$dispatch.bf$next, wildcard) &&
   (this$dispatch.bf$next != df$rt$nullValue() ==>
-  acc(p$c$Link$shared(this$dispatch.bf$next), wildcard)) &&
+  acc(pred$c$Link$shared(this$dispatch.bf$next), wildcard)) &&
   (this$dispatch.bf$next != df$rt$nullValue() ==>
-  acc(p$c$Link$unique(this$dispatch.bf$next), write)) &&
+  acc(pred$c$Link$unique(this$dispatch.bf$next), write)) &&
   df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$next), df$rt$nullable(df$rt$c$Link()))
 }
 
-method f$getVal$TF$T$Link$NT$Int(p$l: Ref) returns (ret$0: Ref)
+method f$getVal$t$TF$t$T$Link$t$NT$Int(p$l: Ref) returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$l), df$rt$c$Link())
-  requires acc(p$c$Link$unique(p$l), write)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
+  requires acc(pred$c$Link$unique(p$l), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$nullable(df$rt$intType()))
 {
-  var anon$0: Ref
-  inhale acc(p$c$Link$shared(p$l), wildcard)
-  unfold acc(p$c$Link$shared(p$l), wildcard)
-  anon$0 := p$l.bf$next
-  if (anon$0 != df$rt$nullValue()) {
-    var anon$1: Ref
-    anon$1 := havoc$T$Int()
-    ret$0 := anon$1
+  var v$anon$$0: Ref
+  inhale acc(pred$c$Link$shared(p$l), wildcard)
+  unfold acc(pred$c$Link$shared(p$l), wildcard)
+  v$anon$$0 := p$l.bf$next
+  if (v$anon$$0 != df$rt$nullValue()) {
+    var v$anon$$1: Ref
+    v$anon$$1 := h$t$T$Int()
+    v$ret$0 := v$anon$$1
   } else {
-    ret$0 := df$rt$nullValue()}
+    v$ret$0 := df$rt$nullValue()}
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -47,94 +47,95 @@ field bf$next: Ref
 
 field bf$size: Ref
 
-predicate p$c$Link$shared(this$dispatch: Ref) {
+predicate pred$c$Link$shared(this$dispatch: Ref) {
   acc(this$dispatch.bf$next, wildcard) &&
   (this$dispatch.bf$next != df$rt$nullValue() ==>
-  acc(p$c$Link$shared(this$dispatch.bf$next), wildcard)) &&
+  acc(pred$c$Link$shared(this$dispatch.bf$next), wildcard)) &&
   df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$next), df$rt$nullable(df$rt$c$Link()))
 }
 
-predicate p$c$Link$unique(this$dispatch: Ref) {
+predicate pred$c$Link$unique(this$dispatch: Ref) {
   acc(this$dispatch.bf$data, write) &&
   df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$data), df$rt$intType()) &&
   acc(this$dispatch.bf$next, wildcard) &&
   (this$dispatch.bf$next != df$rt$nullValue() ==>
-  acc(p$c$Link$shared(this$dispatch.bf$next), wildcard)) &&
+  acc(pred$c$Link$shared(this$dispatch.bf$next), wildcard)) &&
   (this$dispatch.bf$next != df$rt$nullValue() ==>
-  acc(p$c$Link$unique(this$dispatch.bf$next), write)) &&
+  acc(pred$c$Link$unique(this$dispatch.bf$next), write)) &&
   df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$next), df$rt$nullable(df$rt$c$Link()))
 }
 
-predicate p$pkg$java_io$c$Serializable$shared(this$dispatch: Ref) {
+predicate pred$pkg$java_io$c$Serializable$shared(this$dispatch: Ref) {
   true
 }
 
-predicate p$pkg$java_io$c$Serializable$unique(this$dispatch: Ref) {
+predicate pred$pkg$java_io$c$Serializable$unique(this$dispatch: Ref) {
   true
 }
 
-predicate p$pkg$kotlin$c$BooleanArray$shared(this$dispatch: Ref) {
+predicate pred$pkg$kotlin$c$BooleanArray$shared(this$dispatch: Ref) {
   acc(this$dispatch.bf$size, wildcard) &&
   df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$size), df$rt$intType()) &&
-  acc(p$pkg$kotlin$c$Cloneable$shared(this$dispatch), wildcard) &&
-  acc(p$pkg$java_io$c$Serializable$shared(this$dispatch), wildcard)
+  acc(pred$pkg$kotlin$c$Cloneable$shared(this$dispatch), wildcard) &&
+  acc(pred$pkg$java_io$c$Serializable$shared(this$dispatch), wildcard)
 }
 
-predicate p$pkg$kotlin$c$BooleanArray$unique(this$dispatch: Ref) {
+predicate pred$pkg$kotlin$c$BooleanArray$unique(this$dispatch: Ref) {
   acc(this$dispatch.bf$size, wildcard) &&
   df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$size), df$rt$intType()) &&
-  acc(p$pkg$kotlin$c$Cloneable$unique(this$dispatch), write) &&
-  acc(p$pkg$java_io$c$Serializable$unique(this$dispatch), write)
+  acc(pred$pkg$kotlin$c$Cloneable$unique(this$dispatch), write) &&
+  acc(pred$pkg$java_io$c$Serializable$unique(this$dispatch), write)
 }
 
-predicate p$pkg$kotlin$c$Cloneable$shared(this$dispatch: Ref) {
+predicate pred$pkg$kotlin$c$Cloneable$shared(this$dispatch: Ref) {
   true
 }
 
-predicate p$pkg$kotlin$c$Cloneable$unique(this$dispatch: Ref) {
+predicate pred$pkg$kotlin$c$Cloneable$unique(this$dispatch: Ref) {
   true
 }
 
-method con$c$Link$T$Int$NT$Link$T$Link(p$data: Ref, p$next: Ref)
-  returns (ret: Ref)
+method con$c$Link$t$T$Int$t$NT$Link$t$T$Link(p$data: Ref, p$next: Ref)
+  returns (v$ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$data), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(p$next), df$rt$nullable(df$rt$c$Link()))
   requires p$next != df$rt$nullValue() ==>
-    acc(p$c$Link$unique(p$next), write)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Link())
-  ensures acc(p$c$Link$shared(ret), wildcard)
-  ensures acc(p$c$Link$unique(ret), write)
-  ensures (unfolding acc(p$c$Link$shared(ret), wildcard) in ret.bf$next) ==
+    acc(pred$c$Link$unique(p$next), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$c$Link())
+  ensures acc(pred$c$Link$shared(v$ret), wildcard)
+  ensures acc(pred$c$Link$unique(v$ret), write)
+  ensures (unfolding acc(pred$c$Link$shared(v$ret), wildcard) in
+      v$ret.bf$next) ==
     p$next
 
 
-method f$test$TF$T$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method f$test$t$TF$$t$T$Unit() returns (v$ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 {
   var l0$l: Ref
-  var anon$0: Ref
+  var v$anon$$0: Ref
   var l0$expr1: Ref
-  var anon$1: Ref
+  var v$anon$$1: Ref
   var l0$expr2: Ref
-  var anon$2: Ref
-  var anon$3: Ref
-  anon$0 := con$c$Link$T$Int$NT$Link$T$Link(df$rt$intToRef(3), df$rt$nullValue())
-  l0$l := con$c$Link$T$Int$NT$Link$T$Link(df$rt$intToRef(5), anon$0)
-  anon$1 := havoc$T$Int()
-  l0$expr1 := df$rt$boolToRef(df$rt$intFromRef(anon$1) == 5)
+  var v$anon$$2: Ref
+  var v$anon$$3: Ref
+  v$anon$$0 := con$c$Link$t$T$Int$t$NT$Link$t$T$Link(df$rt$intToRef(3), df$rt$nullValue())
+  l0$l := con$c$Link$t$T$Int$t$NT$Link$t$T$Link(df$rt$intToRef(5), v$anon$$0)
+  v$anon$$1 := h$t$T$Int()
+  l0$expr1 := df$rt$boolToRef(df$rt$intFromRef(v$anon$$1) == 5)
   assert df$rt$boolFromRef(l0$expr1)
-  unfold acc(p$c$Link$shared(l0$l), wildcard)
-  anon$3 := l0$l.bf$next
-  if (anon$3 != df$rt$nullValue()) {
-    var anon$4: Ref
-    anon$4 := havoc$T$Int()
-    anon$2 := anon$4
+  unfold acc(pred$c$Link$shared(l0$l), wildcard)
+  v$anon$$3 := l0$l.bf$next
+  if (v$anon$$3 != df$rt$nullValue()) {
+    var v$anon$$4: Ref
+    v$anon$$4 := h$t$T$Int()
+    v$anon$$2 := v$anon$$4
   } else {
-    anon$2 := df$rt$nullValue()}
-  l0$expr2 := df$rt$boolToRef(anon$2 == df$rt$intToRef(3))
+    v$anon$$2 := df$rt$nullValue()}
+  l0$expr2 := df$rt$boolToRef(v$anon$$2 == df$rt$intToRef(3))
   assert df$rt$boolFromRef(l0$expr2)
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }
 
 /linked_list.kt:(513,518): warning: Viper verification error: Assert might fail. Assertion df$rt$boolFromRef(l0$expr1) might not hold.

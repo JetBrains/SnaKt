@@ -1,26 +1,27 @@
 /custom_list.kt:(168,171): info: Generated Viper text for get:
 field bf$c$CustomList$private$value: Ref
 
-field sp$size: Ref
+field prop$size: Ref
 
-method f$c$CustomList$get$TF$T$CustomList$T$Int$T$Int(this$dispatch: Ref, p$index: Ref)
-  returns (ret$0: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+method f$c$CustomList$get$t$TF$t$T$CustomList$t$T$Int$t$T$Int(this$dispatch: Ref,
+  p$index: Ref)
+  returns (v$ret$0: Ref)
+  requires acc(this$dispatch.prop$size, write)
+  requires df$rt$intFromRef(this$dispatch.prop$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$CustomList())
   requires df$rt$isSubtype(df$rt$typeOf(p$index), df$rt$intType())
   requires df$rt$intFromRef(p$index) >= 0
-  requires df$rt$intFromRef(this$dispatch.sp$size) >
+  requires df$rt$intFromRef(this$dispatch.prop$size) >
     df$rt$intFromRef(p$index)
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
+  ensures acc(this$dispatch.prop$size, write)
+  ensures df$rt$intFromRef(this$dispatch.prop$size) >= 0
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+  ensures df$rt$intFromRef(this$dispatch.prop$size) ==
+    old(df$rt$intFromRef(this$dispatch.prop$size))
 {
-  inhale acc(p$c$CustomList$shared(this$dispatch), wildcard)
-  unfold acc(p$c$CustomList$shared(this$dispatch), wildcard)
-  ret$0 := this$dispatch.bf$c$CustomList$private$value
+  inhale acc(pred$c$CustomList$shared(this$dispatch), wildcard)
+  unfold acc(pred$c$CustomList$shared(this$dispatch), wildcard)
+  v$ret$0 := this$dispatch.bf$c$CustomList$private$value
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -28,70 +29,71 @@ method f$c$CustomList$get$TF$T$CustomList$T$Int$T$Int(this$dispatch: Ref, p$inde
 /custom_list.kt:(248,252): info: Generated Viper text for test:
 field bf$c$CustomList$private$value: Ref
 
-field sp$size: Ref
+field prop$size: Ref
 
-method con$c$CustomList$T$Int$T$Int$T$CustomList(p$size: Ref, p$value: Ref)
-  returns (ret: Ref)
+method con$c$CustomList$t$T$Int$t$T$Int$t$T$CustomList(p$size: Ref, p$value: Ref)
+  returns (v$ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$size), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(p$value), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$CustomList())
-  ensures acc(ret.sp$size, write)
-  ensures df$rt$intFromRef(ret.sp$size) >= 0
-  ensures acc(p$c$CustomList$shared(ret), wildcard)
-  ensures acc(p$c$CustomList$unique(ret), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$c$CustomList())
+  ensures acc(v$ret.prop$size, write)
+  ensures df$rt$intFromRef(v$ret.prop$size) >= 0
+  ensures acc(pred$c$CustomList$shared(v$ret), wildcard)
+  ensures acc(pred$c$CustomList$unique(v$ret), write)
 
 
-method f$c$CustomList$get$TF$T$CustomList$T$Int$T$Int(this$dispatch: Ref, p$index: Ref)
-  returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+method f$c$CustomList$get$t$TF$t$T$CustomList$t$T$Int$t$T$Int(this$dispatch: Ref,
+  p$index: Ref)
+  returns (v$ret: Ref)
+  requires acc(this$dispatch.prop$size, write)
+  requires df$rt$intFromRef(this$dispatch.prop$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$CustomList())
   requires df$rt$isSubtype(df$rt$typeOf(p$index), df$rt$intType())
   requires df$rt$intFromRef(p$index) >= 0
-  requires df$rt$intFromRef(this$dispatch.sp$size) >
+  requires df$rt$intFromRef(this$dispatch.prop$size) >
     df$rt$intFromRef(p$index)
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
+  ensures acc(this$dispatch.prop$size, write)
+  ensures df$rt$intFromRef(this$dispatch.prop$size) >= 0
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$intType())
+  ensures df$rt$intFromRef(this$dispatch.prop$size) ==
+    old(df$rt$intFromRef(this$dispatch.prop$size))
 
 
-method f$c$CustomList$isEmpty$TF$T$CustomList$T$Boolean(this$dispatch: Ref)
-  returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+method f$c$CustomList$isEmpty$t$TF$t$T$CustomList$t$T$Boolean(this$dispatch: Ref)
+  returns (v$ret: Ref)
+  requires acc(this$dispatch.prop$size, write)
+  requires df$rt$intFromRef(this$dispatch.prop$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$CustomList())
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
-  ensures df$rt$boolFromRef(ret) ==>
-    df$rt$intFromRef(this$dispatch.sp$size) == 0
-  ensures !df$rt$boolFromRef(ret) ==>
-    df$rt$intFromRef(this$dispatch.sp$size) > 0
+  ensures acc(this$dispatch.prop$size, write)
+  ensures df$rt$intFromRef(this$dispatch.prop$size) >= 0
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$boolType())
+  ensures df$rt$intFromRef(this$dispatch.prop$size) ==
+    old(df$rt$intFromRef(this$dispatch.prop$size))
+  ensures df$rt$boolFromRef(v$ret) ==>
+    df$rt$intFromRef(this$dispatch.prop$size) == 0
+  ensures !df$rt$boolFromRef(v$ret) ==>
+    df$rt$intFromRef(this$dispatch.prop$size) > 0
 
 
-method f$test$TF$T$Int$T$Unit(p$n: Ref) returns (ret$0: Ref)
+method f$test$t$TF$t$T$Int$t$T$Unit(p$n: Ref) returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 {
   var l0$customList: Ref
-  var anon$0: Ref
-  l0$customList := con$c$CustomList$T$Int$T$Int$T$CustomList(p$n, df$rt$intToRef(0))
-  anon$0 := f$c$CustomList$isEmpty$TF$T$CustomList$T$Boolean(l0$customList)
-  if (!df$rt$boolFromRef(anon$0)) {
-    var anon$1: Ref
-    var anon$2: Ref
-    var anon$3: Ref
-    anon$2 := l0$customList.sp$size
-    inhale df$rt$isSubtype(df$rt$typeOf(anon$2), df$rt$intType())
-    anon$1 := f$c$CustomList$get$TF$T$CustomList$T$Int$T$Int(l0$customList,
-      sp$minusInts(anon$2, df$rt$intToRef(1)))
-    anon$3 := f$c$CustomList$get$TF$T$CustomList$T$Int$T$Int(l0$customList,
+  var v$anon$$0: Ref
+  l0$customList := con$c$CustomList$t$T$Int$t$T$Int$t$T$CustomList(p$n, df$rt$intToRef(0))
+  v$anon$$0 := f$c$CustomList$isEmpty$t$TF$t$T$CustomList$t$T$Boolean(l0$customList)
+  if (!df$rt$boolFromRef(v$anon$$0)) {
+    var v$anon$$1: Ref
+    var v$anon$$2: Ref
+    var v$anon$$3: Ref
+    v$anon$$2 := l0$customList.prop$size
+    inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$2), df$rt$intType())
+    v$anon$$1 := f$c$CustomList$get$t$TF$t$T$CustomList$t$T$Int$t$T$Int(l0$customList,
+      f$minusInts(v$anon$$2, df$rt$intToRef(1)))
+    v$anon$$3 := f$c$CustomList$get$t$TF$t$T$CustomList$t$T$Int$t$T$Int(l0$customList,
       df$rt$intToRef(0))
   }
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }

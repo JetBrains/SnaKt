@@ -18,7 +18,7 @@ import org.jetbrains.kotlin.formver.viper.SymbolicName
  */
 class SimpleNameResolver : NameResolver {
     override fun resolve(name: SymbolicName): String = listOfNotNull(
-        name.nameType?.name,
+        name.nameType?.mangledName,
             name.mangledScope,
             name.mangledBaseName
         ).joinToString(SEPARATOR)

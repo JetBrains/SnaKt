@@ -1,43 +1,44 @@
 /contracts_with_receivers.kt:(148,151): info: Generated Viper text for is2:
-method f$c$Class$is2$TF$T$Class$T$Boolean(this$dispatch: Ref)
-  returns (ret$0: Ref)
+method f$c$Class$is2$t$TF$t$T$Class$t$T$Boolean(this$dispatch: Ref)
+  returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Class())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(ret$0) == true ==>
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$boolType())
+  ensures df$rt$boolFromRef(v$ret$0) == true ==>
     df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Impl2())
 {
-  inhale acc(p$c$Class$shared(this$dispatch), wildcard)
-  ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Impl2()))
+  inhale acc(pred$c$Class$shared(this$dispatch), wildcard)
+  v$ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Impl2()))
   goto lbl$ret$0
   label lbl$ret$0
 }
 
 /contracts_with_receivers.kt:(341,359): info: Generated Viper text for is1butWithDispatch:
-method f$c$Class$is1butWithDispatch$TF$T$Class$T$Class$T$Boolean(this$dispatch: Ref,
+method f$c$Class$is1butWithDispatch$t$TF$t$T$Class$t$T$Class$t$T$Boolean(this$dispatch: Ref,
   this$extension: Ref)
-  returns (ret$0: Ref)
+  returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Class())
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$Class())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(ret$0) == true ==>
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$boolType())
+  ensures df$rt$boolFromRef(v$ret$0) == true ==>
     df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$Impl1())
 {
-  inhale acc(p$c$Class$shared(this$dispatch), wildcard)
-  inhale acc(p$c$Class$shared(this$extension), wildcard)
-  ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$Impl1()))
+  inhale acc(pred$c$Class$shared(this$dispatch), wildcard)
+  inhale acc(pred$c$Class$shared(this$extension), wildcard)
+  v$ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$Impl1()))
   goto lbl$ret$0
   label lbl$ret$0
 }
 
 /contracts_with_receivers.kt:(618,621): info: Generated Viper text for is1:
-method f$is1$TF$T$Class$T$Boolean(this$extension: Ref) returns (ret$0: Ref)
+method f$is1$t$TF$t$T$Class$t$T$Boolean(this$extension: Ref)
+  returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$Class())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(ret$0) == true ==>
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$boolType())
+  ensures df$rt$boolFromRef(v$ret$0) == true ==>
     df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$Impl1())
 {
-  inhale acc(p$c$Class$shared(this$extension), wildcard)
-  ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$Impl1()))
+  inhale acc(pred$c$Class$shared(this$extension), wildcard)
+  v$ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$Impl1()))
   goto lbl$ret$0
   label lbl$ret$0
 }

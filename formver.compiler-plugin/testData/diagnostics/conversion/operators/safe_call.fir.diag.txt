@@ -1,23 +1,25 @@
 /safe_call.kt:(142,154): info: Generated Viper text for testSafeCall:
 field bf$x: Ref
 
-method f$c$Foo$f$TF$T$Foo$T$Unit(this$dispatch: Ref) returns (ret: Ref)
+method f$c$Foo$f$t$TF$t$T$Foo$t$T$Unit(this$dispatch: Ref)
+  returns (v$ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$unitType())
 
 
-method f$testSafeCall$TF$NT$Foo$NT$Unit(p$foo: Ref) returns (ret$0: Ref)
+method f$testSafeCall$t$TF$t$NT$Foo$t$NT$Unit(p$foo: Ref)
+  returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$nullable(df$rt$c$Foo()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$unitType()))
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$nullable(df$rt$unitType()))
 {
   inhale p$foo != df$rt$nullValue() ==>
-    acc(p$c$Foo$shared(p$foo), wildcard)
+    acc(pred$c$Foo$shared(p$foo), wildcard)
   if (p$foo != df$rt$nullValue()) {
-    var anon$0: Ref
-    anon$0 := f$c$Foo$f$TF$T$Foo$T$Unit(p$foo)
-    ret$0 := anon$0
+    var v$anon$$0: Ref
+    v$anon$$0 := f$c$Foo$f$t$TF$t$T$Foo$t$T$Unit(p$foo)
+    v$ret$0 := v$anon$$0
   } else {
-    ret$0 := df$rt$nullValue()}
+    v$ret$0 := df$rt$nullValue()}
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -25,23 +27,24 @@ method f$testSafeCall$TF$NT$Foo$NT$Unit(p$foo: Ref) returns (ret$0: Ref)
 /safe_call.kt:(217,240): info: Generated Viper text for testSafeCallNonNullable:
 field bf$x: Ref
 
-method f$c$Foo$f$TF$T$Foo$T$Unit(this$dispatch: Ref) returns (ret: Ref)
+method f$c$Foo$f$t$TF$t$T$Foo$t$T$Unit(this$dispatch: Ref)
+  returns (v$ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$unitType())
 
 
-method f$testSafeCallNonNullable$TF$T$Foo$NT$Unit(p$foo: Ref)
-  returns (ret$0: Ref)
+method f$testSafeCallNonNullable$t$TF$t$T$Foo$t$NT$Unit(p$foo: Ref)
+  returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$c$Foo())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$unitType()))
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$nullable(df$rt$unitType()))
 {
-  inhale acc(p$c$Foo$shared(p$foo), wildcard)
+  inhale acc(pred$c$Foo$shared(p$foo), wildcard)
   if (p$foo != df$rt$nullValue()) {
-    var anon$0: Ref
-    anon$0 := f$c$Foo$f$TF$T$Foo$T$Unit(p$foo)
-    ret$0 := anon$0
+    var v$anon$$0: Ref
+    v$anon$$0 := f$c$Foo$f$t$TF$t$T$Foo$t$T$Unit(p$foo)
+    v$ret$0 := v$anon$$0
   } else {
-    ret$0 := df$rt$nullValue()}
+    v$ret$0 := df$rt$nullValue()}
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -49,20 +52,20 @@ method f$testSafeCallNonNullable$TF$T$Foo$NT$Unit(p$foo: Ref)
 /safe_call.kt:(267,287): info: Generated Viper text for testSafeCallProperty:
 field bf$x: Ref
 
-method f$testSafeCallProperty$TF$NT$Foo$NT$Int(p$foo: Ref)
-  returns (ret$0: Ref)
+method f$testSafeCallProperty$t$TF$t$NT$Foo$t$NT$Int(p$foo: Ref)
+  returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$nullable(df$rt$c$Foo()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$nullable(df$rt$intType()))
 {
   inhale p$foo != df$rt$nullValue() ==>
-    acc(p$c$Foo$shared(p$foo), wildcard)
+    acc(pred$c$Foo$shared(p$foo), wildcard)
   if (p$foo != df$rt$nullValue()) {
-    var anon$0: Ref
-    unfold acc(p$c$Foo$shared(p$foo), wildcard)
-    anon$0 := p$foo.bf$x
-    ret$0 := anon$0
+    var v$anon$$0: Ref
+    unfold acc(pred$c$Foo$shared(p$foo), wildcard)
+    v$anon$$0 := p$foo.bf$x
+    v$ret$0 := v$anon$$0
   } else {
-    ret$0 := df$rt$nullValue()}
+    v$ret$0 := df$rt$nullValue()}
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -70,19 +73,19 @@ method f$testSafeCallProperty$TF$NT$Foo$NT$Int(p$foo: Ref)
 /safe_call.kt:(354,385): info: Generated Viper text for testSafeCallPropertyNonNullable:
 field bf$x: Ref
 
-method f$testSafeCallPropertyNonNullable$TF$T$Foo$NT$Int(p$foo: Ref)
-  returns (ret$0: Ref)
+method f$testSafeCallPropertyNonNullable$t$TF$t$T$Foo$t$NT$Int(p$foo: Ref)
+  returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$c$Foo())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$nullable(df$rt$intType()))
 {
-  inhale acc(p$c$Foo$shared(p$foo), wildcard)
+  inhale acc(pred$c$Foo$shared(p$foo), wildcard)
   if (p$foo != df$rt$nullValue()) {
-    var anon$0: Ref
-    unfold acc(p$c$Foo$shared(p$foo), wildcard)
-    anon$0 := p$foo.bf$x
-    ret$0 := anon$0
+    var v$anon$$0: Ref
+    unfold acc(pred$c$Foo$shared(p$foo), wildcard)
+    v$anon$$0 := p$foo.bf$x
+    v$ret$0 := v$anon$$0
   } else {
-    ret$0 := df$rt$nullValue()}
+    v$ret$0 := df$rt$nullValue()}
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -90,36 +93,38 @@ method f$testSafeCallPropertyNonNullable$TF$T$Foo$NT$Int(p$foo: Ref)
 /safe_call.kt:(493,506): info: Generated Viper text for safeCallChain:
 field bf$v: Ref
 
-method f$c$Rec$nullable$TF$T$Rec$NT$Rec(this$dispatch: Ref)
-  returns (ret: Ref)
+method f$c$Rec$nullable$t$TF$t$T$Rec$t$NT$Rec(this$dispatch: Ref)
+  returns (v$ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Rec())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$c$Rec()))
-  ensures ret != df$rt$nullValue() ==> acc(p$c$Rec$shared(ret), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$nullable(df$rt$c$Rec()))
+  ensures v$ret != df$rt$nullValue() ==>
+    acc(pred$c$Rec$shared(v$ret), wildcard)
 
 
-method f$safeCallChain$TF$NT$Rec$NT$Int(p$rec: Ref) returns (ret$0: Ref)
+method f$safeCallChain$t$TF$t$NT$Rec$t$NT$Int(p$rec: Ref)
+  returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$rec), df$rt$nullable(df$rt$c$Rec()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$nullable(df$rt$intType()))
 {
-  var anon$0: Ref
-  var anon$1: Ref
+  var v$anon$$0: Ref
+  var v$anon$$1: Ref
   inhale p$rec != df$rt$nullValue() ==>
-    acc(p$c$Rec$shared(p$rec), wildcard)
+    acc(pred$c$Rec$shared(p$rec), wildcard)
   if (p$rec != df$rt$nullValue()) {
-    anon$1 := f$c$Rec$nullable$TF$T$Rec$NT$Rec(p$rec)
+    v$anon$$1 := f$c$Rec$nullable$t$TF$t$T$Rec$t$NT$Rec(p$rec)
   } else {
-    anon$1 := df$rt$nullValue()}
-  if (anon$1 != df$rt$nullValue()) {
-    anon$0 := f$c$Rec$nullable$TF$T$Rec$NT$Rec(anon$1)
+    v$anon$$1 := df$rt$nullValue()}
+  if (v$anon$$1 != df$rt$nullValue()) {
+    v$anon$$0 := f$c$Rec$nullable$t$TF$t$T$Rec$t$NT$Rec(v$anon$$1)
   } else {
-    anon$0 := df$rt$nullValue()}
-  if (anon$0 != df$rt$nullValue()) {
-    var anon$2: Ref
-    unfold acc(p$c$Rec$shared(anon$0), wildcard)
-    anon$2 := anon$0.bf$v
-    ret$0 := anon$2
+    v$anon$$0 := df$rt$nullValue()}
+  if (v$anon$$0 != df$rt$nullValue()) {
+    var v$anon$$2: Ref
+    unfold acc(pred$c$Rec$shared(v$anon$$0), wildcard)
+    v$anon$$2 := v$anon$$0.bf$v
+    v$ret$0 := v$anon$$2
   } else {
-    ret$0 := df$rt$nullValue()}
+    v$ret$0 := df$rt$nullValue()}
   goto lbl$ret$0
   label lbl$ret$0
 }

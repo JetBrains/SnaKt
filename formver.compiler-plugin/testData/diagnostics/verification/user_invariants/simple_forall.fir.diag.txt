@@ -1,64 +1,65 @@
 /simple_forall.kt:(64,92): info: Generated Viper text for anyIntegerSquaredAtLeastZero:
-method f$anyIntegerSquaredAtLeastZero$TF$T$Int() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
-  ensures (forall anon$builtin$1: Int ::anon$builtin$1 * anon$builtin$1 >=
+method f$anyIntegerSquaredAtLeastZero$t$TF$$t$T$Int()
+  returns (v$ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+  ensures (forall v$anon$builtin: Int ::v$anon$builtin * v$anon$builtin >=
       0 &&
-      anon$builtin$1 * anon$builtin$1 >= df$rt$intFromRef(ret$0))
+      v$anon$builtin * v$anon$builtin >= df$rt$intFromRef(v$ret$0))
 {
-  ret$0 := df$rt$intToRef(0)
+  v$ret$0 := df$rt$intToRef(0)
   goto lbl$ret$0
   label lbl$ret$0
 }
 
 /simple_forall.kt:(259,298): info: Generated Viper text for anyIntegerSquaredIsAtLeastOneExceptZero:
-method f$anyIntegerSquaredIsAtLeastOneExceptZero$TF$T$Int()
-  returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
-  ensures (forall anon$builtin$1: Int ::!(anon$builtin$1 == 0) ==>
-      anon$builtin$1 * anon$builtin$1 >= df$rt$intFromRef(ret$0))
+method f$anyIntegerSquaredIsAtLeastOneExceptZero$t$TF$$t$T$Int()
+  returns (v$ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+  ensures (forall v$anon$builtin: Int ::!(v$anon$builtin == 0) ==>
+      v$anon$builtin * v$anon$builtin >= df$rt$intFromRef(v$ret$0))
 {
-  ret$0 := df$rt$intToRef(1)
+  v$ret$0 := df$rt$intToRef(1)
   goto lbl$ret$0
   label lbl$ret$0
 }
 
 /simple_forall.kt:(460,503): info: Generated Viper text for anyIntegerSquaredIsAtLeastZeroStringVersion:
-method f$anyIntegerSquaredIsAtLeastZeroStringVersion$TF$T$String$T$Int(p$str: Ref)
-  returns (ret$0: Ref)
+method f$anyIntegerSquaredIsAtLeastZeroStringVersion$t$TF$t$T$String$t$T$Int(p$str: Ref)
+  returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$str), df$rt$stringType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
 {
   var l0$res: Ref
   var l0$i: Ref
-  var anon$1: Ref
+  var v$anon$$1: Ref
   l0$res := df$rt$intToRef(0)
   l0$i := df$rt$intToRef(10)
-  label lbl$continue$0
+  label lbl$cont$0
     invariant df$rt$isSubtype(df$rt$typeOf(l0$res), df$rt$intType())
     invariant df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
     invariant df$rt$isSubtype(df$rt$typeOf(p$str), df$rt$stringType())
-    invariant (forall anon$builtin$0: Int ::0 <= anon$builtin$0 &&
-        anon$builtin$0 < |df$rt$stringFromRef(p$str)| ==>
-        (df$rt$stringFromRef(p$str)[anon$builtin$0] - 97) *
-        (df$rt$stringFromRef(p$str)[anon$builtin$0] - 97) >=
+    invariant (forall v$anon$builtin: Int ::0 <= v$anon$builtin &&
+        v$anon$builtin < |df$rt$stringFromRef(p$str)| ==>
+        (df$rt$stringFromRef(p$str)[v$anon$builtin] - 97) *
+        (df$rt$stringFromRef(p$str)[v$anon$builtin] - 97) >=
         df$rt$intFromRef(l0$res))
-  anon$1 := sp$gtInts(l0$i, df$rt$intToRef(0))
-  if (df$rt$boolFromRef(anon$1)) {
-    var anon$0: Ref
-    anon$0 := l0$i
-    l0$i := sp$minusInts(anon$0, df$rt$intToRef(1))
-    goto lbl$continue$0
+  v$anon$$1 := f$gtInts(l0$i, df$rt$intToRef(0))
+  if (df$rt$boolFromRef(v$anon$$1)) {
+    var v$anon$$0: Ref
+    v$anon$$0 := l0$i
+    l0$i := f$minusInts(v$anon$$0, df$rt$intToRef(1))
+    goto lbl$cont$0
   }
   label lbl$break$0
   assert df$rt$isSubtype(df$rt$typeOf(l0$res), df$rt$intType())
   assert df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
   assert df$rt$isSubtype(df$rt$typeOf(p$str), df$rt$stringType())
-  assert (forall anon$builtin$0: Int ::0 <= anon$builtin$0 &&
-      anon$builtin$0 < |df$rt$stringFromRef(p$str)| ==>
-      (df$rt$stringFromRef(p$str)[anon$builtin$0] - 97) *
-      (df$rt$stringFromRef(p$str)[anon$builtin$0] - 97) >=
+  assert (forall v$anon$builtin: Int ::0 <= v$anon$builtin &&
+      v$anon$builtin < |df$rt$stringFromRef(p$str)| ==>
+      (df$rt$stringFromRef(p$str)[v$anon$builtin] - 97) *
+      (df$rt$stringFromRef(p$str)[v$anon$builtin] - 97) >=
       df$rt$intFromRef(l0$res))
-  ret$0 := l0$res
+  v$ret$0 := l0$res
   goto lbl$ret$0
   label lbl$ret$0
 }

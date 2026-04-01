@@ -1,9 +1,10 @@
 /returns_booleans.kt:(121,146): info: Generated Viper text for incorrectly_returns_false:
-method f$incorrectly_returns_false$TF$T$Boolean() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(ret$0) == true
+method f$incorrectly_returns_false$t$TF$$t$T$Boolean()
+  returns (v$ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$boolType())
+  ensures df$rt$boolFromRef(v$ret$0) == true
 {
-  ret$0 := df$rt$boolToRef(false)
+  v$ret$0 := df$rt$boolToRef(false)
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -11,11 +12,12 @@ method f$incorrectly_returns_false$TF$T$Boolean() returns (ret$0: Ref)
 /returns_booleans.kt:(183,196): warning: Function may return a false value.
 
 /returns_booleans.kt:(264,288): info: Generated Viper text for incorrectly_returns_true:
-method f$incorrectly_returns_true$TF$T$Boolean() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(ret$0) == false
+method f$incorrectly_returns_true$t$TF$$t$T$Boolean()
+  returns (v$ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$boolType())
+  ensures df$rt$boolFromRef(v$ret$0) == false
 {
-  ret$0 := df$rt$boolToRef(true)
+  v$ret$0 := df$rt$boolToRef(true)
   goto lbl$ret$0
   label lbl$ret$0
 }
