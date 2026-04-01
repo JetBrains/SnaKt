@@ -103,7 +103,7 @@ class InjectionImageFunction(
     argsInjections: List<Injection>,
     resultInjection: Injection,
     additionalConditions: FunctionBuilder.() -> Unit = { }
-) : Function by FunctionBuilder.build(name, {
+) : Function by FunctionBuilder.build(RelatedDomainFuncName(DomainName(RUNTIME_TYPE_DOMAIN_NAME), name), {
     val viperResult = original.toFuncApp(argsInjections.map { it.fromRef(argument(Type.Ref)) })
     returns(Type.Ref)
     postcondition { result isOf resultInjection.typeFunction() }

@@ -1,0 +1,60 @@
+/inner_class_property_collision.kt:(181,208): info: Generated Viper text for innerClassPropertyCollision:
+field bf$value: Ref
+
+method con(this: Ref, value: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), InnerValue$Box())
+  requires isSubtype(typeOf(value), boolType())
+  ensures isSubtype(typeOf(ret), InnerValue$Box$Node())
+  ensures acc(InnerValue$Box$Node$pred$shared(ret), wildcard)
+  ensures acc(InnerValue$Box$Node$pred$unique(ret), write)
+  ensures boolFromRef((unfolding acc(InnerValue$Box$Node$pred$shared(ret), wildcard) in
+      ret.bf$value)) ==
+    boolFromRef(value)
+
+
+method con$InnerValue() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), InnerValue())
+  ensures acc(InnerValue$pred$shared(ret), wildcard)
+  ensures acc(InnerValue$pred$unique(ret), write)
+
+
+method con$InnerValue$Box(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), InnerValue())
+  ensures isSubtype(typeOf(ret), InnerValue$Box())
+  ensures acc(InnerValue$Box$pred$shared(ret), wildcard)
+  ensures acc(InnerValue$Box$pred$unique(ret), write)
+
+
+method con$InnerValue_Box() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), InnerValue_Box())
+  ensures acc(InnerValue_Box$pred$shared(ret), wildcard)
+  ensures acc(InnerValue_Box$pred$unique(ret), write)
+
+
+method con$InnerValue_Box$Node(this: Ref, value: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), InnerValue_Box())
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(ret), InnerValue_Box$Node())
+  ensures acc(InnerValue_Box$Node$pred$shared(ret), wildcard)
+  ensures acc(InnerValue_Box$Node$pred$unique(ret), write)
+  ensures intFromRef((unfolding acc(InnerValue_Box$Node$pred$shared(ret), wildcard) in
+      ret.bf$value)) ==
+    intFromRef(value)
+
+
+method innerClassPropertyCollision() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var left: Ref
+  var anon0: Ref
+  var right: Ref
+  var anon1: Ref
+  var anon: Ref
+  anon0 := con$InnerValue_Box()
+  left := con$InnerValue_Box$Node(anon0, intToRef(1))
+  anon := con$InnerValue()
+  anon1 := con$InnerValue$Box(anon)
+  right := con(anon1, boolToRef(true))
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}

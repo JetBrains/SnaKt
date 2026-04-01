@@ -1,0 +1,97 @@
+/flattened_private_accessors.kt:(172,177): info: Generated Viper text for touch:
+method g$value(this: Ref) returns (ret: Ref)
+
+
+method touch(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), PrivateAccessor_Box())
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var anon0: Ref
+  var anon1: Ref
+  var anon: Ref
+  inhale acc(PrivateAccessor_Box$pred$shared(this), wildcard)
+  anon := g$value(this)
+  anon1 := anon
+  inhale isSubtype(typeOf(anon1), intType())
+  anon0 := value(this, plusInts(anon1, intToRef(1)))
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}
+
+method value(this: Ref, anon0: Ref) returns (ret: Ref)
+
+
+/flattened_private_accessors.kt:(418,423): info: Generated Viper text for touch:
+method g_value(this: Ref) returns (ret: Ref)
+
+
+method touch(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), PrivateAccessor_Box())
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var anon0: Ref
+  var anon1: Ref
+  var anon: Ref
+  inhale acc(PrivateAccessor_Box_pred_shared(this), wildcard)
+  anon := g_value(this)
+  anon1 := anon
+  inhale isSubtype(typeOf(anon1), boolType())
+  anon0 := value(this, notBool(anon1))
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}
+
+method value(this: Ref, anon0: Ref) returns (ret: Ref)
+
+
+/flattened_private_accessors.kt:(486,511): info: Generated Viper text for flattenedPrivateAccessors:
+method con(seed: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seed), boolType())
+  ensures isSubtype(typeOf(ret), PrivateAccessor$Box())
+  ensures acc(PrivateAccessor$Box$pred$shared(ret), wildcard)
+  ensures acc(PrivateAccessor$Box$pred$unique(ret), write)
+
+
+method con$PrivateAccessor_Box(seed: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seed), intType())
+  ensures isSubtype(typeOf(ret), PrivateAccessor_Box())
+  ensures acc(PrivateAccessor_Box$pred$shared(ret), wildcard)
+  ensures acc(PrivateAccessor_Box$pred$unique(ret), write)
+
+
+method f$touch(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), PrivateAccessor_Box())
+  ensures isSubtype(typeOf(ret), unitType())
+
+
+method flattenedPrivateAccessors() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon0: Ref
+  var anon: Ref
+  left := con$PrivateAccessor_Box(intToRef(1))
+  right := con(boolToRef(true))
+  anon0 := f$touch(left)
+  anon := touch(right)
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}
+
+method g$value(this: Ref) returns (ret: Ref)
+
+
+method private$g$value(this: Ref) returns (ret: Ref)
+
+
+method private$s$value(this: Ref, anon0: Ref) returns (ret: Ref)
+
+
+method s$value(this: Ref, anon0: Ref) returns (ret: Ref)
+
+
+method touch(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), PrivateAccessor$Box())
+  ensures isSubtype(typeOf(ret), unitType())
+

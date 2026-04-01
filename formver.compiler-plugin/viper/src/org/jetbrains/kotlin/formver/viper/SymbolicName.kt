@@ -5,6 +5,103 @@
 
 package org.jetbrains.kotlin.formver.viper
 
+
+interface NamedEntity {
+    val candidates: List<CandidateName>
+}
+
+sealed interface NamePart {
+
+    // Just a simple string name
+    class Basic(val name: String) : NamePart
+
+    // Depends on another Name
+    class Dependent(val name: NamedEntity) : NamePart
+
+    object Separator : NamePart
+    object NoSeparator : NamePart
+}
+
+class CandidateName(val parts: List<NamePart>) {
+
+    fun moveableParts(): List<NamePart.Dependent> = parts.filterIsInstance<NamePart.Dependent>()
+}
+
+class CandidatesBuilder {
+    private val candidates = mutableListOf<CandidateName>()
+
+    /**
+     * Creates a new candidate using a nested DSL block.
+     */
+    fun candidate(init: CandidateNameBuilder.() -> Unit) {
+        val builder = CandidateNameBuilder()
+        builder.init()
+        candidates.add(builder.build())
+    }
+
+    /**
+     * Shorthand to add a single-part candidate directly.
+     */
+    fun candidate(name: String) {
+        candidates.add(CandidateName(listOf(NamePart.Basic(name))))
+    }
+
+    fun build(): List<CandidateName> = candidates.toList()
+}
+
+/**
+ * The top-level entry point for building a list of names.
+ */
+fun buildCandidates(init: CandidatesBuilder.() -> Unit): List<CandidateName> {
+    return CandidatesBuilder().apply(init).build()
+}
+
+// Re-using the logic from the previous step for the individual parts
+class CandidateNameBuilder {
+    private val parts = mutableListOf<NamePart>()
+
+    val noSeparator: Unit
+        get() {
+            parts.add(NamePart.NoSeparator)
+        }
+
+    operator fun String.unaryPlus() {
+        parts.add(NamePart.Basic(this))
+    }
+
+    operator fun NamedEntity.unaryPlus() {
+        parts.add(NamePart.Dependent(this))
+    }
+
+    operator fun Iterable<*>.unaryPlus() {
+        parts.addAll(mapNotNull {
+            when (it) {
+                is String -> NamePart.Basic(it)
+                is NamedEntity -> NamePart.Dependent(it)
+                null -> null
+                else -> error("Unsupported type: ${it::class.simpleName}")
+            }
+        })
+    }
+
+    fun build(): CandidateName {
+        val separatorParts = parts.foldRight(Pair(mutableListOf<NamePart>(), false)) { part, (result, addSeparator) ->
+            if (part is NamePart.NoSeparator) {
+                return@foldRight Pair(result, false)
+            }
+            if (addSeparator) {
+                result.add(NamePart.Separator)
+            }
+            result.add(part)
+            Pair(result, true)
+        }
+
+        return CandidateName(separatorParts.first.reversed())
+    }
+}
+
+
+
 /**
  * Represents a Kotlin name with its Viper equivalent.
  *
@@ -12,14 +109,20 @@ package org.jetbrains.kotlin.formver.viper
  * approach makes it easier to see where they came from during debugging.
  */
 const val SEPARATOR = "$"
-interface SymbolicName {
-    val mangledType: String?
+
+interface SymbolicName : NamedEntity {
+    /**
+     * Describes the type of the entity the names refer to.
+     * This could be a property, a backing field, a getter, a setter, etc.
+     */
+    val nameType: NameType?
         get() = null
     context(nameResolver: NameResolver)
     val mangledScope: String?
         get() = null
     context(nameResolver: NameResolver)
     val mangledBaseName: String
+
 }
 
 context(nameResolver: NameResolver)
@@ -32,3 +135,54 @@ val SymbolicName.debugMangled: String
         return debugResolver.resolve(this)
     }
 
+
+/**
+ * Collects all types of names we can have.
+ */
+sealed class NameType(val name: String) : NamedEntity {
+
+    open val mangledName = name
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +name
+            }
+        }
+
+    object Property : NameType("prop")
+    object BackingField : NameType("bf")
+    object Getter : NameType("g")
+    object Setter : NameType("s")
+    object ExtensionSetter : NameType("es")
+    object ExtensionGetter : NameType("eg")
+    object Type : NameType("t") {
+        object Class : NameType("c")
+    }
+    object Constructor : NameType("con")
+    object Function : NameType("f")
+    object Predicate : NameType("pred") // merge them with "generated"
+    object Havoc : NameType("h")// merge them with "generated"
+    sealed class Label(lblName: String) : NameType(lblName) {
+        override val mangledName = "lbl$SEPARATOR$lblName"
+        override val candidates: List<CandidateName>
+            get() = buildCandidates {
+                candidate {
+                    +name
+                }
+                candidate {
+                    +"lbl"
+                    +name
+                }
+            }
+        object Return : Label("ret")
+        object Break : Label("break")
+        object Continue : Label("cont")
+        object Catch : Label("catch")
+        object TryExit : Label("tryExit")
+    }
+
+    object Variables : NameType("v")
+    object Domain : NameType("d")
+    object DomainFunction : NameType("df")
+    object Special : NameType("sp") // I think we should not have this. Like, what does special mean?
+}

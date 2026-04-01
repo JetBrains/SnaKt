@@ -1,0 +1,59 @@
+/flattened_inherited_functions.kt:(57,60): info: Generated Viper text for act:
+method act(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), Base_Action())
+  ensures isSubtype(typeOf(ret0), intType())
+{
+  inhale acc(Base_Action$pred$shared(this), wildcard)
+  ret0 := intToRef(1)
+  goto ret
+  label ret
+}
+
+/flattened_inherited_functions.kt:(134,137): info: Generated Viper text for act:
+method act(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), Base_Action())
+  ensures isSubtype(typeOf(ret0), boolType())
+{
+  inhale acc(Base_Action_pred_shared(this), wildcard)
+  ret0 := boolToRef(true)
+  goto ret
+  label ret
+}
+
+/flattened_inherited_functions.kt:(269,296): info: Generated Viper text for flattenedInheritedFunctions:
+method act(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), Base$Action())
+  ensures isSubtype(typeOf(ret), boolType())
+
+
+method con() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), Derived_Base$Action())
+  ensures acc(Derived_Base$Action$pred$shared(ret), wildcard)
+  ensures acc(Derived_Base$Action$pred$unique(ret), write)
+
+
+method con$Derived_Base_Action() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), Derived_Base_Action())
+  ensures acc(Derived_Base_Action$pred$shared(ret), wildcard)
+  ensures acc(Derived_Base_Action$pred$unique(ret), write)
+
+
+method f$act(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), Base_Action())
+  ensures isSubtype(typeOf(ret), intType())
+
+
+method flattenedInheritedFunctions() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon0: Ref
+  var anon: Ref
+  left := con$Derived_Base_Action()
+  right := con()
+  anon0 := f$act(left)
+  anon := act(right)
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}

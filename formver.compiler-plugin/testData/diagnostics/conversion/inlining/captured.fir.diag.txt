@@ -1,194 +1,192 @@
 /captured.kt:(155,165): info: Generated Viper text for captureArg:
-method f$captureArg$TF$TF$T$Int$T$Int$T$Int(p$g: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$g), df$rt$functionType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method captureArg(g: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(g), functionType())
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var ret$1: Ref
-  var ret$2: Ref
-  var anon$0: Ref
-  var anon$1: Ref
-  anon$0 := df$rt$intToRef(0)
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$intType())
-  ret$2 := anon$1
-  goto lbl$ret$2
-  label lbl$ret$2
-  ret$1 := ret$2
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  var ret1: Ref
+  var ret2: Ref
+  var anon0: Ref
+  var anon: Ref
+  anon0 := intToRef(0)
+  inhale isSubtype(typeOf(anon), intType())
+  ret2 := anon
+  goto lbl_ret_2
+  label lbl_ret_2
+  ret1 := ret2
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret0 := ret1
+  goto lbl_ret
+  label lbl_ret
 }
 
 /captured.kt:(225,235): info: Generated Viper text for captureVar:
-method f$captureVar$TF$T$Int() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method captureVar() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var l0$x: Ref
-  var ret$1: Ref
-  var ret$2: Ref
-  var anon$0: Ref
-  l0$x := df$rt$intToRef(1)
-  anon$0 := df$rt$intToRef(0)
-  ret$2 := sp$plusInts(anon$0, l0$x)
-  goto lbl$ret$2
-  label lbl$ret$2
-  ret$1 := ret$2
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  var x: Ref
+  var ret1: Ref
+  var ret2: Ref
+  var anon: Ref
+  x := intToRef(1)
+  anon := intToRef(0)
+  ret2 := plusInts(anon, x)
+  goto lbl_ret_2
+  label lbl_ret_2
+  ret1 := ret2
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret0 := ret1
+  goto lbl_ret
+  label lbl_ret
 }
 
 /captured.kt:(295,311): info: Generated Viper text for captureAndShadow:
-method f$captureAndShadow$TF$T$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method captureAndShadow(p_x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(p_x), intType())
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var ret$1: Ref
-  var ret$2: Ref
-  var anon$0: Ref
-  var l2$y: Ref
-  var l2$x: Ref
-  anon$0 := df$rt$intToRef(0)
-  l2$y := p$x
-  l2$x := df$rt$intToRef(1)
-  ret$2 := sp$plusInts(sp$plusInts(anon$0, l2$x), l2$y)
-  goto lbl$ret$2
-  label lbl$ret$2
-  ret$1 := ret$2
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  var ret1: Ref
+  var ret2: Ref
+  var anon: Ref
+  var y: Ref
+  var x: Ref
+  anon := intToRef(0)
+  y := p_x
+  x := intToRef(1)
+  ret2 := plusInts(plusInts(anon, x), y)
+  goto lbl_ret_2
+  label lbl_ret_2
+  ret1 := ret2
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret0 := ret1
+  goto lbl_ret
+  label lbl_ret
 }
 
 /captured.kt:(513,528): info: Generated Viper text for captureVarClash:
-method f$captureVarClash$TF$T$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method captureVarClash(p_x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(p_x), intType())
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var ret$1: Ref
-  var l1$x: Ref
-  var anon$1: Ref
-  var ret$2: Ref
-  var anon$0: Ref
-  l1$x := df$rt$intToRef(1)
-  anon$0 := df$rt$intToRef(0)
-  ret$2 := sp$timesInts(anon$0, p$x)
-  goto lbl$ret$2
-  label lbl$ret$2
-  anon$1 := ret$2
-  ret$1 := sp$plusInts(anon$1, l1$x)
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  var ret1: Ref
+  var x: Ref
+  var anon1: Ref
+  var ret2: Ref
+  var anon: Ref
+  x := intToRef(1)
+  anon := intToRef(0)
+  ret2 := timesInts(anon, p_x)
+  goto lbl_ret_2
+  label lbl_ret_2
+  anon1 := ret2
+  ret1 := plusInts(anon1, x)
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret0 := ret1
+  goto lbl_ret
+  label lbl_ret
 }
 
 /captured.kt:(585,606): info: Generated Viper text for captureAndShadowClash:
-method f$captureAndShadowClash$TF$T$Int$T$Int(p$x: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method captureAndShadowClash(p_x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(p_x), intType())
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var ret$1: Ref
-  var l1$x: Ref
-  var anon$1: Ref
-  var ret$2: Ref
-  var anon$0: Ref
-  var l2$y: Ref
-  var l2$x: Ref
-  l1$x := df$rt$intToRef(1)
-  anon$0 := df$rt$intToRef(0)
-  l2$y := p$x
-  l2$x := df$rt$intToRef(2)
-  ret$2 := sp$plusInts(sp$plusInts(l2$x, l2$y), anon$0)
-  goto lbl$ret$2
-  label lbl$ret$2
-  anon$1 := ret$2
-  ret$1 := sp$plusInts(anon$1, l1$x)
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  var ret1: Ref
+  var l_x: Ref
+  var anon1: Ref
+  var ret2: Ref
+  var anon: Ref
+  var y: Ref
+  var x: Ref
+  l_x := intToRef(1)
+  anon := intToRef(0)
+  y := p_x
+  x := intToRef(2)
+  ret2 := plusInts(plusInts(x, y), anon)
+  goto lbl_ret_2
+  label lbl_ret_2
+  anon1 := ret2
+  ret1 := plusInts(anon1, l_x)
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret0 := ret1
+  goto lbl_ret
+  label lbl_ret
 }
 
 /captured.kt:(715,736): info: Generated Viper text for nestedLambdaShadowing:
-method f$nestedLambdaShadowing$TF$T$Int$T$Int(p$x: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method nestedLambdaShadowing(p_x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(p_x), intType())
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var ret$1: Ref
-  var l1$x: Ref
-  var anon$2: Ref
-  var ret$2: Ref
-  var anon$0: Ref
-  var ret$3: Ref
-  var l3$x: Ref
-  var anon$3: Ref
-  var ret$4: Ref
-  var anon$1: Ref
-  var l4$x: Ref
-  var l2$y: Ref
-  var l2$x: Ref
-  l1$x := df$rt$intToRef(1)
-  anon$0 := df$rt$intToRef(0)
-  l3$x := df$rt$intToRef(1)
-  anon$1 := df$rt$intToRef(0)
-  l4$x := df$rt$intToRef(3)
-  ret$4 := sp$plusInts(l4$x, anon$1)
-  goto lbl$ret$4
-  label lbl$ret$4
-  anon$3 := ret$4
-  ret$3 := sp$plusInts(anon$3, l3$x)
-  goto lbl$ret$3
-  label lbl$ret$3
-  l2$y := p$x
-  l2$x := df$rt$intToRef(4)
-  ret$2 := sp$plusInts(sp$plusInts(l2$x, l2$y), anon$0)
-  goto lbl$ret$2
-  label lbl$ret$2
-  anon$2 := ret$2
-  ret$1 := sp$plusInts(anon$2, l1$x)
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  var ret1: Ref
+  var l1_x: Ref
+  var anon2: Ref
+  var ret2: Ref
+  var anon0: Ref
+  var ret3: Ref
+  var l3_x: Ref
+  var anon3: Ref
+  var ret4: Ref
+  var anon: Ref
+  var l_x: Ref
+  var y: Ref
+  var x: Ref
+  l1_x := intToRef(1)
+  anon0 := intToRef(0)
+  l3_x := intToRef(1)
+  anon := intToRef(0)
+  l_x := intToRef(3)
+  ret4 := plusInts(l_x, anon)
+  goto lbl_ret_4
+  label lbl_ret_4
+  anon3 := ret4
+  ret3 := plusInts(anon3, l3_x)
+  goto lbl_ret_3
+  label lbl_ret_3
+  y := p_x
+  x := intToRef(4)
+  ret2 := plusInts(plusInts(x, y), anon0)
+  goto lbl_ret_2
+  label lbl_ret_2
+  anon2 := ret2
+  ret1 := plusInts(anon2, l1_x)
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret0 := ret1
+  goto lbl_ret
+  label lbl_ret
 }
 
 /captured.kt:(1008,1024): info: Generated Viper text for callDoubleInvoke:
-method f$callDoubleInvoke$TF$T$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method callDoubleInvoke(p_x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(p_x), intType())
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var ret$1: Ref
-  var ret$2: Ref
-  var anon$0: Ref
-  var l2$x: Ref
-  var ret$3: Ref
-  var anon$1: Ref
-  var l3$x: Ref
-  anon$0 := df$rt$intToRef(0)
-  l2$x := anon$0
-  ret$2 := l2$x
-  goto lbl$ret$2
-  label lbl$ret$2
-  anon$1 := df$rt$intToRef(1)
-  l3$x := anon$1
-  ret$3 := l3$x
-  goto lbl$ret$3
-  label lbl$ret$3
-  ret$1 := ret$3
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  var ret1: Ref
+  var ret2: Ref
+  var anon0: Ref
+  var l_x: Ref
+  var ret: Ref
+  var anon: Ref
+  var x: Ref
+  anon0 := intToRef(0)
+  l_x := anon0
+  ret2 := l_x
+  goto lbl_ret_2
+  label lbl_ret_2
+  anon := intToRef(1)
+  x := anon
+  ret := x
+  goto lbl_ret_3
+  label lbl_ret_3
+  ret1 := ret
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret0 := ret1
+  goto lbl_ret
+  label lbl_ret
 }

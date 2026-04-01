@@ -1,45 +1,45 @@
 /override_properties_types.kt:(520,530): info: Generated Viper text for extractInt:
-field bf$field: Ref
+field bf_field: Ref
 
-method f$extractInt$TF$T$Base$T$Boolean$NT$Int(p$base: Ref, p$returnNull: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$base), df$rt$c$Base())
-  requires df$rt$isSubtype(df$rt$typeOf(p$returnNull), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
-  ensures ret$0 == df$rt$nullValue() ==> df$rt$boolFromRef(p$returnNull)
+method extractInt(base: Ref, returnNull: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(base), Base())
+  requires isSubtype(typeOf(returnNull), boolType())
+  ensures isSubtype(typeOf(ret0), nullable(intType()))
+  ensures ret0 == nullValue() ==> boolFromRef(returnNull)
 {
-  inhale acc(p$c$Base$shared(p$base), wildcard)
-  if (df$rt$boolFromRef(p$returnNull)) {
-    var anon$0: Ref
-    anon$0 := df$rt$nullValue()
-    ret$0 := anon$0
+  inhale acc(Base_pred_shared(base), wildcard)
+  if (boolFromRef(returnNull)) {
+    var anon0: Ref
+    anon0 := nullValue()
+    ret0 := anon0
   } else {
-    var anon$1: Ref
-    if (df$rt$isSubtype(df$rt$typeOf(p$base), df$rt$c$OpenClassOpenFieldVarDerived())) {
-      var anon$2: Ref
-      inhale acc(p$c$OpenClassOpenFieldVarDerived$shared(p$base), wildcard)
-      anon$2 := pg$public$field(p$base)
-      anon$1 := anon$2
-      inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$intType())
-    } elseif (df$rt$isSubtype(df$rt$typeOf(p$base), df$rt$c$FinalClassOpenFieldVarDerived())) {
-      inhale acc(p$c$FinalClassOpenFieldVarDerived$shared(p$base), wildcard)
-      anon$1 := havoc$T$Int()
-    } elseif (df$rt$isSubtype(df$rt$typeOf(p$base), df$rt$c$FinalClassFinalFieldValDerived())) {
-      inhale acc(p$c$FinalClassFinalFieldValDerived$shared(p$base), wildcard)
-      unfold acc(p$c$FinalClassFinalFieldValDerived$shared(p$base), wildcard)
-      anon$1 := p$base.bf$field
-    } elseif (df$rt$isSubtype(df$rt$typeOf(p$base), df$rt$c$OpenClassFinalFieldVarDerived())) {
-      inhale acc(p$c$OpenClassFinalFieldVarDerived$shared(p$base), wildcard)
-      anon$1 := havoc$T$Int()
+    var anon1: Ref
+    if (isSubtype(typeOf(base), OpenClassOpenFieldVarDerived())) {
+      var anon: Ref
+      inhale acc(OpenClassOpenFieldVarDerived_pred_shared(base), wildcard)
+      anon := g_field(base)
+      anon1 := anon
+      inhale isSubtype(typeOf(anon1), intType())
+    } elseif (isSubtype(typeOf(base), FinalClassOpenFieldVarDerived())) {
+      inhale acc(FinalClassOpenFieldVarDerived_pred_shared(base), wildcard)
+      anon1 := havoc()
+    } elseif (isSubtype(typeOf(base), FinalClassFinalFieldValDerived())) {
+      inhale acc(FinalClassFinalFieldValDerived_pred_shared(base), wildcard)
+      unfold acc(FinalClassFinalFieldValDerived_pred_shared(base), wildcard)
+      anon1 := base.bf_field
+    } elseif (isSubtype(typeOf(base), OpenClassFinalFieldVarDerived())) {
+      inhale acc(OpenClassFinalFieldVarDerived_pred_shared(base), wildcard)
+      anon1 := havoc()
     } else {
-      anon$1 := df$rt$intToRef(0)}
-    ret$0 := anon$1
+      anon1 := intToRef(0)}
+    ret0 := anon1
   }
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto lbl_ret
+  label lbl_ret
 }
 
-method pg$public$field(this$dispatch: Ref) returns (ret: Ref)
+method g_field(this: Ref) returns (ret: Ref)
 
 
-method ps$public$field(this$dispatch: Ref, anon$0: Ref) returns (ret: Ref)
+method s_field(this: Ref, anon0: Ref) returns (ret: Ref)
+

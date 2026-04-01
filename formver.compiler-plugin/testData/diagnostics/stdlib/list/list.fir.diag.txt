@@ -1,258 +1,226 @@
 /list.kt:(77,88): info: Generated Viper text for declaration:
-field sp$size: Ref
+field size: Ref
 
-method f$declaration$TF$T$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method declaration() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var l0$l1: Ref
-  var l0$l2: Ref
-  var l0$l3: Ref
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  var l1: Ref
+  var l2: Ref
+  var l3: Ref
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /list.kt:(187,201): info: Generated Viper text for initialization:
-field sp$size: Ref
+field size: Ref
 
-method f$initialization$TF$T$List$T$Unit(p$l: Ref) returns (ret$0: Ref)
-  requires acc(p$l.sp$size, write)
-  requires df$rt$intFromRef(p$l.sp$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(p$l), df$rt$c$pkg$kotlin_collections$List())
-  ensures acc(p$l.sp$size, write)
-  ensures df$rt$intFromRef(p$l.sp$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method emptyList() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), List())
+  ensures acc(ret.size, write)
+  ensures intFromRef(ret.size) >= 0
+  ensures acc(List_pred_shared(ret), wildcard)
+  ensures intFromRef(ret.size) == 0
+
+
+method initialization(l: Ref) returns (ret0: Ref)
+  requires acc(l.size, write)
+  requires intFromRef(l.size) >= 0
+  requires isSubtype(typeOf(l), List())
+  ensures acc(l.size, write)
+  ensures intFromRef(l.size) >= 0
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var l0$myList: Ref
-  var l0$myEmptyList: Ref
-  inhale acc(p$pkg$kotlin_collections$c$List$shared(p$l), wildcard)
-  l0$myList := p$l
-  l0$myEmptyList := f$pkg$kotlin_collections$emptyList$TF$T$List()
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  var myList: Ref
+  var myEmptyList: Ref
+  inhale acc(List_pred_shared(l), wildcard)
+  myList := l
+  myEmptyList := emptyList()
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
-
-method f$pkg$kotlin_collections$emptyList$TF$T$List() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$pkg$kotlin_collections$List())
-  ensures acc(ret.sp$size, write)
-  ensures df$rt$intFromRef(ret.sp$size) >= 0
-  ensures acc(p$pkg$kotlin_collections$c$List$shared(ret), wildcard)
-  ensures df$rt$intFromRef(ret.sp$size) == 0
-
 
 /list.kt:(297,304): info: Generated Viper text for add_get:
-field sp$size: Ref
+field size: Ref
 
-method f$add_get$TF$T$MutableList$T$Unit(p$l: Ref) returns (ret$0: Ref)
-  requires acc(p$l.sp$size, write)
-  requires df$rt$intFromRef(p$l.sp$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(p$l), df$rt$c$pkg$kotlin_collections$MutableList())
-  ensures acc(p$l.sp$size, write)
-  ensures df$rt$intFromRef(p$l.sp$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method add(this: Ref, element: Ref) returns (ret: Ref)
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(this), MutableList())
+  requires isSubtype(typeOf(element), intType())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size)) + 1
+
+
+method add_get(l: Ref) returns (ret0: Ref)
+  requires acc(l.size, write)
+  requires intFromRef(l.size) >= 0
+  requires isSubtype(typeOf(l), MutableList())
+  ensures acc(l.size, write)
+  ensures intFromRef(l.size) >= 0
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var anon$0: Ref
-  var l0$n: Ref
-  inhale acc(p$pkg$kotlin_collections$c$MutableList$shared(p$l), wildcard)
-  anon$0 := f$pkg$kotlin_collections$c$MutableList$add$TF$T$MutableList$T$Int$T$Boolean(p$l,
-    df$rt$intToRef(1))
-  l0$n := f$pkg$kotlin_collections$c$MutableList$get$TF$T$MutableList$T$Int$T$Int(p$l,
-    df$rt$intToRef(0))
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  var anon: Ref
+  var n: Ref
+  inhale acc(MutableList_pred_shared(l), wildcard)
+  anon := add(l, intToRef(1))
+  n := get(l, intToRef(0))
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
-method f$pkg$kotlin_collections$c$MutableList$add$TF$T$MutableList$T$Int$T$Boolean(this$dispatch: Ref,
-  p$element: Ref)
-  returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$MutableList())
-  requires df$rt$isSubtype(df$rt$typeOf(p$element), df$rt$intType())
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size)) + 1
-
-
-method f$pkg$kotlin_collections$c$MutableList$get$TF$T$MutableList$T$Int$T$Int(this$dispatch: Ref,
-  p$index: Ref)
-  returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$MutableList())
-  requires df$rt$isSubtype(df$rt$typeOf(p$index), df$rt$intType())
-  requires df$rt$intFromRef(p$index) >= 0
-  requires df$rt$intFromRef(this$dispatch.sp$size) >
-    df$rt$intFromRef(p$index)
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
+method get(this: Ref, index: Ref) returns (ret: Ref)
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(this), MutableList())
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
 
 
 /list.kt:(379,391): info: Generated Viper text for last_or_null:
-field sp$size: Ref
+field prop_size: Ref
 
-method f$last_or_null$TF$T$List$NT$Int(p$l: Ref) returns (ret$0: Ref)
-  requires acc(p$l.sp$size, write)
-  requires df$rt$intFromRef(p$l.sp$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(p$l), df$rt$c$pkg$kotlin_collections$List())
-  ensures acc(p$l.sp$size, write)
-  ensures df$rt$intFromRef(p$l.sp$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
+method get(this: Ref, index: Ref) returns (ret: Ref)
+  requires acc(this.prop_size, write)
+  requires intFromRef(this.prop_size) >= 0
+  requires isSubtype(typeOf(this), List())
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.prop_size) > intFromRef(index)
+  ensures acc(this.prop_size, write)
+  ensures intFromRef(this.prop_size) >= 0
+  ensures isSubtype(typeOf(ret), intType())
+  ensures intFromRef(this.prop_size) == old(intFromRef(this.prop_size))
+
+
+method last_or_null(l: Ref) returns (ret0: Ref)
+  requires acc(l.prop_size, write)
+  requires intFromRef(l.prop_size) >= 0
+  requires isSubtype(typeOf(l), List())
+  ensures acc(l.prop_size, write)
+  ensures intFromRef(l.prop_size) >= 0
+  ensures isSubtype(typeOf(ret0), nullable(intType()))
 {
-  var l0$size: Ref
-  inhale acc(p$pkg$kotlin_collections$c$List$shared(p$l), wildcard)
-  l0$size := p$l.sp$size
-  inhale df$rt$isSubtype(df$rt$typeOf(l0$size), df$rt$intType())
-  if (!(df$rt$intFromRef(l0$size) == 0)) {
-    var anon$0: Ref
-    anon$0 := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(p$l,
-      sp$minusInts(l0$size, df$rt$intToRef(1)))
-    ret$0 := anon$0
-    goto lbl$ret$0
+  var size: Ref
+  inhale acc(List_pred_shared(l), wildcard)
+  size := l.prop_size
+  inhale isSubtype(typeOf(size), intType())
+  if (!(intFromRef(size) == 0)) {
+    var anon: Ref
+    anon := get(l, minusInts(size, intToRef(1)))
+    ret0 := anon
+    goto lbl_ret
   } else {
-    ret$0 := df$rt$nullValue()
-    goto lbl$ret$0
+    ret0 := nullValue()
+    goto lbl_ret
   }
-  label lbl$ret$0
+  label lbl_ret
 }
-
-method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(this$dispatch: Ref,
-  p$index: Ref)
-  returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
-  requires df$rt$isSubtype(df$rt$typeOf(p$index), df$rt$intType())
-  requires df$rt$intFromRef(p$index) >= 0
-  requires df$rt$intFromRef(this$dispatch.sp$size) >
-    df$rt$intFromRef(p$index)
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
-
 
 /list.kt:(545,553): info: Generated Viper text for is_empty:
-field sp$size: Ref
+field size: Ref
 
-method f$is_empty$TF$T$List$T$Int(p$l: Ref) returns (ret$0: Ref)
-  requires acc(p$l.sp$size, write)
-  requires df$rt$intFromRef(p$l.sp$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(p$l), df$rt$c$pkg$kotlin_collections$List())
-  ensures acc(p$l.sp$size, write)
-  ensures df$rt$intFromRef(p$l.sp$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method get(this: Ref, index: Ref) returns (ret: Ref)
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(this), List())
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method isEmpty(this: Ref) returns (ret: Ref)
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(this), List())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures boolFromRef(ret) ==> intFromRef(this.size) == 0
+  ensures !boolFromRef(ret) ==> intFromRef(this.size) > 0
+
+
+method is_empty(l: Ref) returns (ret0: Ref)
+  requires acc(l.size, write)
+  requires intFromRef(l.size) >= 0
+  requires isSubtype(typeOf(l), List())
+  ensures acc(l.size, write)
+  ensures intFromRef(l.size) >= 0
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var anon$0: Ref
-  inhale acc(p$pkg$kotlin_collections$c$List$shared(p$l), wildcard)
-  anon$0 := f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List$T$Boolean(p$l)
-  if (!df$rt$boolFromRef(anon$0)) {
-    ret$0 := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(p$l,
-      df$rt$intToRef(0))
+  var anon: Ref
+  inhale acc(List_pred_shared(l), wildcard)
+  anon := isEmpty(l)
+  if (!boolFromRef(anon)) {
+    ret0 := get(l, intToRef(0))
   } else {
-    ret$0 := df$rt$intToRef(1)}
-  goto lbl$ret$0
-  label lbl$ret$0
+    ret0 := intToRef(1)}
+  goto lbl_ret
+  label lbl_ret
 }
-
-method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(this$dispatch: Ref,
-  p$index: Ref)
-  returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
-  requires df$rt$isSubtype(df$rt$typeOf(p$index), df$rt$intType())
-  requires df$rt$intFromRef(p$index) >= 0
-  requires df$rt$intFromRef(this$dispatch.sp$size) >
-    df$rt$intFromRef(p$index)
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
-
-
-method f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List$T$Boolean(this$dispatch: Ref)
-  returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
-  ensures df$rt$boolFromRef(ret) ==>
-    df$rt$intFromRef(this$dispatch.sp$size) == 0
-  ensures !df$rt$boolFromRef(ret) ==>
-    df$rt$intFromRef(this$dispatch.sp$size) > 0
-
 
 /list.kt:(670,683): info: Generated Viper text for nullable_list:
-field sp$size: Ref
+field size: Ref
 
-method f$nullable_list$TF$NT$List$T$Unit(p$l: Ref) returns (ret$0: Ref)
-  requires p$l != df$rt$nullValue() ==> acc(p$l.sp$size, write)
-  requires p$l != df$rt$nullValue() ==> df$rt$intFromRef(p$l.sp$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(p$l), df$rt$nullable(df$rt$c$pkg$kotlin_collections$List()))
-  ensures p$l != df$rt$nullValue() ==> acc(p$l.sp$size, write)
-  ensures p$l != df$rt$nullValue() ==> df$rt$intFromRef(p$l.sp$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method get(this: Ref, index: Ref) returns (ret: Ref)
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(this), List())
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method isEmpty(this: Ref) returns (ret: Ref)
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(this), List())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures boolFromRef(ret) ==> intFromRef(this.size) == 0
+  ensures !boolFromRef(ret) ==> intFromRef(this.size) > 0
+
+
+method nullable_list(l: Ref) returns (ret0: Ref)
+  requires l != nullValue() ==> acc(l.size, write)
+  requires l != nullValue() ==> intFromRef(l.size) >= 0
+  requires isSubtype(typeOf(l), nullable(List()))
+  ensures l != nullValue() ==> acc(l.size, write)
+  ensures l != nullValue() ==> intFromRef(l.size) >= 0
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var anon$0: Ref
-  inhale p$l != df$rt$nullValue() ==>
-    acc(p$pkg$kotlin_collections$c$List$shared(p$l), wildcard)
-  if (!(p$l == df$rt$nullValue())) {
-    var anon$1: Ref
-    anon$1 := f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List$T$Boolean(p$l)
-    anon$0 := sp$notBool(anon$1)
+  var anon0: Ref
+  inhale l != nullValue() ==> acc(List_pred_shared(l), wildcard)
+  if (!(l == nullValue())) {
+    var anon1: Ref
+    anon1 := isEmpty(l)
+    anon0 := notBool(anon1)
   } else {
-    anon$0 := df$rt$boolToRef(false)}
-  if (df$rt$boolFromRef(anon$0)) {
-    var l2$x: Ref
-    var anon$2: Ref
-    anon$2 := p$l.sp$size
-    inhale df$rt$isSubtype(df$rt$typeOf(anon$2), df$rt$intType())
-    l2$x := f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(p$l, sp$minusInts(anon$2,
-      df$rt$intToRef(1)))
+    anon0 := boolToRef(false)}
+  if (boolFromRef(anon0)) {
+    var x: Ref
+    var anon: Ref
+    anon := l.size
+    inhale isSubtype(typeOf(anon), intType())
+    x := get(l, minusInts(anon, intToRef(1)))
   }
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
-
-method f$pkg$kotlin_collections$c$List$get$TF$T$List$T$Int$T$Int(this$dispatch: Ref,
-  p$index: Ref)
-  returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
-  requires df$rt$isSubtype(df$rt$typeOf(p$index), df$rt$intType())
-  requires df$rt$intFromRef(p$index) >= 0
-  requires df$rt$intFromRef(this$dispatch.sp$size) >
-    df$rt$intFromRef(p$index)
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
-
-
-method f$pkg$kotlin_collections$c$List$isEmpty$TF$T$List$T$Boolean(this$dispatch: Ref)
-  returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
-  ensures df$rt$boolFromRef(ret) ==>
-    df$rt$intFromRef(this$dispatch.sp$size) == 0
-  ensures !df$rt$boolFromRef(ret) ==>
-    df$rt$intFromRef(this$dispatch.sp$size) > 0

@@ -1,362 +1,357 @@
 /viper_casts_while_inlining.kt:(250,255): info: Generated Viper text for idFun:
-method f$idFun$TF$NT$Any$NT$Any(p$arg: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$arg), df$rt$nullable(df$rt$anyType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$anyType()))
+method idFun(arg: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(arg), nullable(anyType()))
+  ensures isSubtype(typeOf(ret0), nullable(anyType()))
 {
-  ret$0 := p$arg
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret0 := arg
+  goto ret
+  label ret
 }
 
 /viper_casts_while_inlining.kt:(609,626): info: Generated Viper text for checkMemberAccess:
-field bf$member: Ref
+field bf_member: Ref
 
-method con$c$ClassWithMember$T$Int$T$ClassWithMember(p$member: Ref)
-  returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$member), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$ClassWithMember())
-  ensures acc(p$c$ClassWithMember$shared(ret), wildcard)
-  ensures acc(p$c$ClassWithMember$unique(ret), write)
-  ensures df$rt$intFromRef((unfolding acc(p$c$ClassWithMember$shared(ret), wildcard) in
-      ret.bf$member)) ==
-    df$rt$intFromRef(p$member)
-
-
-method f$checkMemberAccess$TF$T$Boolean() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(ret$0) == true
+method checkMemberAccess() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), boolType())
+  ensures boolFromRef(ret0) == true
 {
-  var l0$obj: Ref
-  var anon$4: Ref
-  var anon$5: Ref
-  var ret$1: Ref
-  var anon$0: Ref
-  var anon$6: Ref
-  var ret$2: Ref
-  var anon$1: Ref
-  var anon$7: Ref
-  var anon$8: Ref
-  var anon$9: Ref
-  var ret$3: Ref
-  var anon$2: Ref
-  var anon$10: Ref
-  var ret$4: Ref
-  var anon$3: Ref
-  var anon$11: Ref
-  l0$obj := con$c$ClassWithMember$T$Int$T$ClassWithMember(df$rt$intToRef(42))
-  inhale df$rt$isSubtype(df$rt$typeOf(l0$obj), df$rt$nullable(df$rt$anyType()))
-  anon$0 := l0$obj
-  anon$7 := f$idFun$TF$NT$Any$NT$Any(anon$0)
-  anon$1 := anon$7
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$c$ClassWithMember())
-  inhale acc(p$c$ClassWithMember$shared(anon$1), wildcard)
-  unfold acc(p$c$ClassWithMember$shared(anon$1), wildcard)
-  ret$2 := anon$1.bf$member
-  goto lbl$ret$2
-  label lbl$ret$2
-  anon$6 := ret$2
-  ret$1 := anon$6
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$1), df$rt$nullable(df$rt$anyType()))
-  goto lbl$ret$1
-  label lbl$ret$1
-  anon$5 := ret$1
-  anon$4 := anon$5
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$4), df$rt$intType())
-  inhale df$rt$isSubtype(df$rt$typeOf(l0$obj), df$rt$nullable(df$rt$anyType()))
-  anon$2 := l0$obj
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$2), df$rt$c$ClassWithMember())
-  inhale acc(p$c$ClassWithMember$shared(anon$2), wildcard)
-  anon$3 := anon$2
-  unfold acc(p$c$ClassWithMember$shared(l0$obj), wildcard)
-  anon$11 := l0$obj.bf$member
-  ret$0 := df$rt$boolToRef(df$rt$intFromRef(anon$11) == 42)
-  goto lbl$ret$0
-  label lbl$ret$4
-  anon$10 := ret$4
-  ret$3 := anon$10
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$3), df$rt$nullable(df$rt$anyType()))
-  goto lbl$ret$3
-  label lbl$ret$3
-  anon$9 := ret$3
-  anon$8 := anon$9
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$8), df$rt$nothingType())
-  label lbl$ret$0
+  var obj: Ref
+  var anon4: Ref
+  var anon5: Ref
+  var ret1: Ref
+  var anon0: Ref
+  var anon6: Ref
+  var ret2: Ref
+  var anon1: Ref
+  var anon7: Ref
+  var anon8: Ref
+  var anon9: Ref
+  var ret3: Ref
+  var anon2: Ref
+  var anon10: Ref
+  var ret4: Ref
+  var anon3: Ref
+  var anon: Ref
+  obj := con(intToRef(42))
+  inhale isSubtype(typeOf(obj), nullable(anyType()))
+  anon0 := obj
+  anon7 := idFun(anon0)
+  anon1 := anon7
+  inhale isSubtype(typeOf(anon1), ClassWithMember())
+  inhale acc(ClassWithMember_pred_shared(anon1), wildcard)
+  unfold acc(ClassWithMember_pred_shared(anon1), wildcard)
+  ret2 := anon1.bf_member
+  goto lbl_ret_2
+  label lbl_ret_2
+  anon6 := ret2
+  ret1 := anon6
+  inhale isSubtype(typeOf(ret1), nullable(anyType()))
+  goto lbl_ret_1
+  label lbl_ret_1
+  anon5 := ret1
+  anon4 := anon5
+  inhale isSubtype(typeOf(anon4), intType())
+  inhale isSubtype(typeOf(obj), nullable(anyType()))
+  anon2 := obj
+  inhale isSubtype(typeOf(anon2), ClassWithMember())
+  inhale acc(ClassWithMember_pred_shared(anon2), wildcard)
+  anon3 := anon2
+  unfold acc(ClassWithMember_pred_shared(obj), wildcard)
+  anon := obj.bf_member
+  ret0 := boolToRef(intFromRef(anon) == 42)
+  goto lbl_ret
+  label lbl_ret_4
+  anon10 := ret4
+  ret3 := anon10
+  inhale isSubtype(typeOf(ret3), nullable(anyType()))
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon9 := ret3
+  anon8 := anon9
+  inhale isSubtype(typeOf(anon8), nothingType())
+  label lbl_ret
 }
 
-method f$idFun$TF$NT$Any$NT$Any(p$arg: Ref) returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$arg), df$rt$nullable(df$rt$anyType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$anyType()))
+method con(member: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(member), intType())
+  ensures isSubtype(typeOf(ret), ClassWithMember())
+  ensures acc(ClassWithMember_pred_shared(ret), wildcard)
+  ensures acc(ClassWithMember_pred_unique(ret), write)
+  ensures intFromRef((unfolding acc(ClassWithMember_pred_shared(ret), wildcard) in
+      ret.bf_member)) ==
+    intFromRef(member)
+
+
+method idFun(arg: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(arg), nullable(anyType()))
+  ensures isSubtype(typeOf(ret), nullable(anyType()))
 
 
 /viper_casts_while_inlining.kt:(895,919): info: Generated Viper text for checkGenericMemberAccess:
-field bf$wrapped: Ref
+field bf_wrapped: Ref
 
-method con$c$Box$NT$Any$T$Box(p$wrapped: Ref) returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$wrapped), df$rt$nullable(df$rt$anyType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Box())
-  ensures acc(p$c$Box$shared(ret), wildcard)
-  ensures acc(p$c$Box$unique(ret), write)
-  ensures (unfolding acc(p$c$Box$shared(ret), wildcard) in ret.bf$wrapped) ==
-    p$wrapped
-
-
-method f$checkGenericMemberAccess$TF$T$Box$T$Boolean(p$box: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$box), df$rt$c$Box())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(ret$0) == true
+method checkGenericMemberAccess(box: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(box), Box())
+  ensures isSubtype(typeOf(ret0), boolType())
+  ensures boolFromRef(ret0) == true
 {
-  var ret$1: Ref
-  var anon$0: Ref
-  var ret$2: Ref
-  var anon$1: Ref
-  var anon$4: Ref
-  var anon$5: Ref
-  var anon$6: Ref
-  var ret$3: Ref
-  var anon$2: Ref
-  var anon$7: Ref
-  var anon$8: Ref
-  var anon$9: Ref
-  var ret$4: Ref
-  var anon$3: Ref
-  var anon$10: Ref
-  var anon$11: Ref
-  inhale acc(p$c$Box$shared(p$box), wildcard)
-  inhale df$rt$isSubtype(df$rt$typeOf(p$box), df$rt$nullable(df$rt$anyType()))
-  anon$0 := p$box
-  anon$4 := f$idFun$TF$NT$Any$NT$Any(anon$0)
-  anon$1 := anon$4
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$c$Box())
-  inhale acc(p$c$Box$shared(anon$1), wildcard)
-  unfold acc(p$c$Box$shared(anon$1), wildcard)
-  ret$2 := anon$1.bf$wrapped
-  goto lbl$ret$2
-  label lbl$ret$2
-  ret$1 := ret$2
-  goto lbl$ret$1
-  label lbl$ret$1
-  unfold acc(p$c$Box$shared(p$box), wildcard)
-  anon$8 := p$box.bf$wrapped
-  anon$7 := con$c$Box$NT$Any$T$Box(anon$8)
-  anon$2 := anon$7
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$2), df$rt$nullable(df$rt$anyType()))
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$2), df$rt$c$Box())
-  inhale acc(p$c$Box$shared(anon$2), wildcard)
-  anon$3 := anon$2
-  unfold acc(p$c$Box$shared(anon$3), wildcard)
-  anon$10 := anon$3.bf$wrapped
-  unfold acc(p$c$Box$shared(p$box), wildcard)
-  anon$11 := p$box.bf$wrapped
-  ret$0 := df$rt$boolToRef(anon$10 == anon$11)
-  goto lbl$ret$0
-  label lbl$ret$4
-  anon$9 := ret$4
-  ret$3 := anon$9
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$3), df$rt$nullable(df$rt$anyType()))
-  goto lbl$ret$3
-  label lbl$ret$3
-  anon$6 := ret$3
-  anon$5 := anon$6
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$5), df$rt$nothingType())
-  label lbl$ret$0
+  var ret1: Ref
+  var anon0: Ref
+  var ret2: Ref
+  var anon1: Ref
+  var anon4: Ref
+  var anon5: Ref
+  var anon6: Ref
+  var ret3: Ref
+  var anon2: Ref
+  var anon7: Ref
+  var anon8: Ref
+  var anon9: Ref
+  var ret4: Ref
+  var anon3: Ref
+  var anon10: Ref
+  var anon: Ref
+  inhale acc(Box_pred_shared(box), wildcard)
+  inhale isSubtype(typeOf(box), nullable(anyType()))
+  anon0 := box
+  anon4 := idFun(anon0)
+  anon1 := anon4
+  inhale isSubtype(typeOf(anon1), Box())
+  inhale acc(Box_pred_shared(anon1), wildcard)
+  unfold acc(Box_pred_shared(anon1), wildcard)
+  ret2 := anon1.bf_wrapped
+  goto lbl_ret_2
+  label lbl_ret_2
+  ret1 := ret2
+  goto lbl_ret_1
+  label lbl_ret_1
+  unfold acc(Box_pred_shared(box), wildcard)
+  anon8 := box.bf_wrapped
+  anon7 := con(anon8)
+  anon2 := anon7
+  inhale isSubtype(typeOf(anon2), nullable(anyType()))
+  inhale isSubtype(typeOf(anon2), Box())
+  inhale acc(Box_pred_shared(anon2), wildcard)
+  anon3 := anon2
+  unfold acc(Box_pred_shared(anon3), wildcard)
+  anon10 := anon3.bf_wrapped
+  unfold acc(Box_pred_shared(box), wildcard)
+  anon := box.bf_wrapped
+  ret0 := boolToRef(anon10 == anon)
+  goto lbl_ret
+  label lbl_ret_4
+  anon9 := ret4
+  ret3 := anon9
+  inhale isSubtype(typeOf(ret3), nullable(anyType()))
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon6 := ret3
+  anon5 := anon6
+  inhale isSubtype(typeOf(anon5), nothingType())
+  label lbl_ret
 }
 
-method f$idFun$TF$NT$Any$NT$Any(p$arg: Ref) returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$arg), df$rt$nullable(df$rt$anyType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$anyType()))
+method con(wrapped: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(wrapped), nullable(anyType()))
+  ensures isSubtype(typeOf(ret), Box())
+  ensures acc(Box_pred_shared(ret), wildcard)
+  ensures acc(Box_pred_unique(ret), write)
+  ensures (unfolding acc(Box_pred_shared(ret), wildcard) in ret.bf_wrapped) ==
+    wrapped
+
+
+method idFun(arg: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(arg), nullable(anyType()))
+  ensures isSubtype(typeOf(ret), nullable(anyType()))
 
 
 /viper_casts_while_inlining.kt:(1161,1182): info: Generated Viper text for checkArgumentIsCopied:
-field bf$a: Ref
+field a: Ref
 
-method f$checkArgumentIsCopied$TF$T$ClassWithVar$T$Unit(p$x: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$ClassWithVar())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method checkArgumentIsCopied(x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(x), ClassWithVar())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var anon$2: Ref
-  var anon$3: Ref
-  var ret$1: Ref
-  var anon$0: Ref
-  var anon$4: Ref
-  var anon$5: Ref
-  var ret$2: Ref
-  var anon$1: Ref
-  inhale acc(p$c$ClassWithVar$shared(p$x), wildcard)
-  anon$4 := havoc$T$Int()
-  anon$0 := anon$4
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$nullable(df$rt$anyType()))
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
-  anon$1 := anon$0
-  ret$2 := anon$1
-  goto lbl$ret$2
-  label lbl$ret$2
-  anon$5 := ret$2
-  ret$1 := anon$5
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$1), df$rt$nullable(df$rt$anyType()))
-  goto lbl$ret$1
-  label lbl$ret$1
-  anon$3 := ret$1
-  anon$2 := anon$3
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$2), df$rt$intType())
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  var anon2: Ref
+  var anon3: Ref
+  var ret1: Ref
+  var anon0: Ref
+  var anon4: Ref
+  var anon5: Ref
+  var ret2: Ref
+  var anon: Ref
+  inhale acc(ClassWithVar_pred_shared(x), wildcard)
+  anon4 := havoc()
+  anon0 := anon4
+  inhale isSubtype(typeOf(anon0), nullable(anyType()))
+  inhale isSubtype(typeOf(anon0), intType())
+  anon := anon0
+  ret2 := anon
+  goto lbl_ret_2
+  label lbl_ret_2
+  anon5 := ret2
+  ret1 := anon5
+  inhale isSubtype(typeOf(ret1), nullable(anyType()))
+  goto lbl_ret_1
+  label lbl_ret_1
+  anon3 := ret1
+  anon2 := anon3
+  inhale isSubtype(typeOf(anon2), intType())
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /viper_casts_while_inlining.kt:(1347,1364): info: Generated Viper text for accessManyMembers:
-field bf$a: Ref
+field a: Ref
 
-field bf$b: Ref
+field b: Ref
 
-field bf$c: Ref
+field c: Ref
 
-field bf$i: Ref
+field i: Ref
 
-method f$accessManyMembers$TF$T$ManyMembers$T$Unit(p$m: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$m), df$rt$c$ManyMembers())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method accessManyMembers(m: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(m), ManyMembers())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var anon$4: Ref
-  var anon$5: Ref
-  var ret$1: Ref
-  var anon$0: Ref
-  var anon$6: Ref
-  var ret$2: Ref
-  var anon$1: Ref
-  var anon$7: Ref
-  var anon$8: Ref
-  var anon$9: Ref
-  var anon$10: Ref
-  var anon$11: Ref
-  var anon$12: Ref
-  var anon$13: Ref
-  var anon$14: Ref
-  var ret$3: Ref
-  var anon$2: Ref
-  var anon$15: Ref
-  var ret$4: Ref
-  var anon$3: Ref
-  var anon$16: Ref
-  var anon$17: Ref
-  var anon$18: Ref
-  var anon$19: Ref
-  var anon$20: Ref
-  var anon$21: Ref
-  var anon$22: Ref
-  inhale acc(p$c$ManyMembers$shared(p$m), wildcard)
-  inhale df$rt$isSubtype(df$rt$typeOf(p$m), df$rt$nullable(df$rt$anyType()))
-  anon$0 := p$m
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$c$ManyMembers())
-  inhale acc(p$c$ManyMembers$shared(anon$0), wildcard)
-  anon$1 := anon$0
-  unfold acc(p$c$ManyMembers$shared(anon$1), wildcard)
-  anon$9 := anon$1.bf$i
-  anon$8 := f$idFun$TF$NT$Any$NT$Any(anon$9)
-  anon$7 := anon$8
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$7), df$rt$intType())
-  anon$12 := havoc$T$Boolean()
-  anon$11 := f$idFun$TF$NT$Any$NT$Any(anon$12)
-  anon$10 := anon$11
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$10), df$rt$boolType())
-  unfold acc(p$c$ManyMembers$shared(anon$1), wildcard)
-  ret$2 := anon$1.bf$c
-  goto lbl$ret$2
-  label lbl$ret$2
-  anon$6 := ret$2
-  ret$1 := anon$6
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$1), df$rt$nullable(df$rt$anyType()))
-  goto lbl$ret$1
-  label lbl$ret$1
-  anon$5 := ret$1
-  anon$4 := anon$5
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$4), df$rt$c$ClassWithVar())
-  inhale acc(p$c$ClassWithVar$shared(anon$4), wildcard)
-  inhale df$rt$isSubtype(df$rt$typeOf(p$m), df$rt$nullable(df$rt$anyType()))
-  anon$2 := p$m
-  anon$16 := f$idFun$TF$NT$Any$NT$Any(anon$2)
-  anon$3 := anon$16
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$3), df$rt$c$ManyMembers())
-  inhale acc(p$c$ManyMembers$shared(anon$3), wildcard)
-  unfold acc(p$c$ManyMembers$shared(anon$3), wildcard)
-  anon$19 := anon$3.bf$i
-  anon$18 := f$idFun$TF$NT$Any$NT$Any(anon$19)
-  anon$17 := anon$18
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$17), df$rt$intType())
-  anon$22 := havoc$T$Boolean()
-  anon$21 := f$idFun$TF$NT$Any$NT$Any(anon$22)
-  anon$20 := anon$21
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$20), df$rt$boolType())
-  unfold acc(p$c$ManyMembers$shared(anon$3), wildcard)
-  ret$4 := anon$3.bf$c
-  goto lbl$ret$4
-  label lbl$ret$4
-  anon$15 := ret$4
-  ret$3 := anon$15
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$3), df$rt$nullable(df$rt$anyType()))
-  goto lbl$ret$3
-  label lbl$ret$3
-  anon$14 := ret$3
-  anon$13 := anon$14
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$13), df$rt$c$ClassWithVar())
-  inhale acc(p$c$ClassWithVar$shared(anon$13), wildcard)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  var anon4: Ref
+  var anon5: Ref
+  var ret1: Ref
+  var anon0: Ref
+  var anon6: Ref
+  var ret2: Ref
+  var anon1: Ref
+  var anon7: Ref
+  var anon8: Ref
+  var anon9: Ref
+  var anon10: Ref
+  var anon11: Ref
+  var anon12: Ref
+  var anon13: Ref
+  var anon14: Ref
+  var ret3: Ref
+  var anon2: Ref
+  var anon15: Ref
+  var ret4: Ref
+  var anon3: Ref
+  var anon16: Ref
+  var anon17: Ref
+  var anon18: Ref
+  var anon19: Ref
+  var anon20: Ref
+  var anon21: Ref
+  var anon: Ref
+  inhale acc(ManyMembers_pred_shared(m), wildcard)
+  inhale isSubtype(typeOf(m), nullable(anyType()))
+  anon0 := m
+  inhale isSubtype(typeOf(anon0), ManyMembers())
+  inhale acc(ManyMembers_pred_shared(anon0), wildcard)
+  anon1 := anon0
+  unfold acc(ManyMembers_pred_shared(anon1), wildcard)
+  anon9 := anon1.i
+  anon8 := idFun(anon9)
+  anon7 := anon8
+  inhale isSubtype(typeOf(anon7), intType())
+  anon12 := havoc_Boolean()
+  anon11 := idFun(anon12)
+  anon10 := anon11
+  inhale isSubtype(typeOf(anon10), boolType())
+  unfold acc(ManyMembers_pred_shared(anon1), wildcard)
+  ret2 := anon1.c
+  goto lbl_ret_2
+  label lbl_ret_2
+  anon6 := ret2
+  ret1 := anon6
+  inhale isSubtype(typeOf(ret1), nullable(anyType()))
+  goto lbl_ret_1
+  label lbl_ret_1
+  anon5 := ret1
+  anon4 := anon5
+  inhale isSubtype(typeOf(anon4), ClassWithVar())
+  inhale acc(ClassWithVar_pred_shared(anon4), wildcard)
+  inhale isSubtype(typeOf(m), nullable(anyType()))
+  anon2 := m
+  anon16 := idFun(anon2)
+  anon3 := anon16
+  inhale isSubtype(typeOf(anon3), ManyMembers())
+  inhale acc(ManyMembers_pred_shared(anon3), wildcard)
+  unfold acc(ManyMembers_pred_shared(anon3), wildcard)
+  anon19 := anon3.i
+  anon18 := idFun(anon19)
+  anon17 := anon18
+  inhale isSubtype(typeOf(anon17), intType())
+  anon := havoc_Boolean()
+  anon21 := idFun(anon)
+  anon20 := anon21
+  inhale isSubtype(typeOf(anon20), boolType())
+  unfold acc(ManyMembers_pred_shared(anon3), wildcard)
+  ret4 := anon3.c
+  goto lbl_ret_4
+  label lbl_ret_4
+  anon15 := ret4
+  ret3 := anon15
+  inhale isSubtype(typeOf(ret3), nullable(anyType()))
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon14 := ret3
+  anon13 := anon14
+  inhale isSubtype(typeOf(anon13), ClassWithVar())
+  inhale acc(ClassWithVar_pred_shared(anon13), wildcard)
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
-method f$idFun$TF$NT$Any$NT$Any(p$arg: Ref) returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$arg), df$rt$nullable(df$rt$anyType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$anyType()))
+method idFun(arg: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(arg), nullable(anyType()))
+  ensures isSubtype(typeOf(ret), nullable(anyType()))
 
 
 /viper_casts_while_inlining.kt:(1540,1558): info: Generated Viper text for checkEvaluatedOnce:
-field bf$a: Ref
+field a: Ref
 
-field bf$b: Ref
+field b: Ref
 
-field bf$c: Ref
+field bf_i: Ref
 
-field bf$i: Ref
+field c: Ref
 
-field bf$size: Ref
+field size: Ref
 
-method f$checkEvaluatedOnce$TF$T$Int$T$ManyMembers$T$Unit(p$i: Ref, p$mm: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$i), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(p$mm), df$rt$c$ManyMembers())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method checkEvaluatedOnce(i: Ref, mm: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(i), intType())
+  requires isSubtype(typeOf(mm), ManyMembers())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var anon$2: Ref
-  var anon$3: Ref
-  var ret$1: Ref
-  var anon$0: Ref
-  var anon$4: Ref
-  var anon$5: Ref
-  var anon$6: Ref
-  var ret$2: Ref
-  var anon$1: Ref
-  inhale acc(p$c$ManyMembers$shared(p$mm), wildcard)
-  anon$5 := havoc$T$Boolean()
-  if (df$rt$boolFromRef(anon$5)) {
-    anon$4 := df$rt$intToRef(1)
+  var anon2: Ref
+  var anon3: Ref
+  var ret1: Ref
+  var anon0: Ref
+  var anon4: Ref
+  var anon5: Ref
+  var anon6: Ref
+  var ret2: Ref
+  var anon: Ref
+  inhale acc(ManyMembers_pred_shared(mm), wildcard)
+  anon5 := havoc_Boolean()
+  if (boolFromRef(anon5)) {
+    anon4 := intToRef(1)
   } else {
-    anon$4 := df$rt$intToRef(-1)}
-  anon$0 := sp$plusInts(p$i, anon$4)
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$nullable(df$rt$anyType()))
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
-  anon$1 := anon$0
-  assert df$rt$intFromRef(anon$1) == df$rt$intFromRef(anon$1)
-  label lbl$ret$2
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$2), df$rt$unitType())
-  anon$6 := ret$2
-  ret$1 := anon$6
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$1), df$rt$nullable(df$rt$anyType()))
-  goto lbl$ret$1
-  label lbl$ret$1
-  anon$3 := ret$1
-  anon$2 := anon$3
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$2), df$rt$unitType())
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+    anon4 := intToRef(-1)}
+  anon0 := plusInts(i, anon4)
+  inhale isSubtype(typeOf(anon0), nullable(anyType()))
+  inhale isSubtype(typeOf(anon0), intType())
+  anon := anon0
+  assert intFromRef(anon) == intFromRef(anon)
+  label lbl_ret_2
+  inhale isSubtype(typeOf(ret2), unitType())
+  anon6 := ret2
+  ret1 := anon6
+  inhale isSubtype(typeOf(ret1), nullable(anyType()))
+  goto lbl_ret_1
+  label lbl_ret_1
+  anon3 := ret1
+  anon2 := anon3
+  inhale isSubtype(typeOf(anon2), unitType())
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }

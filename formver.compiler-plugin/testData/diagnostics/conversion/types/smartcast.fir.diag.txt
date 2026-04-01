@@ -1,40 +1,40 @@
 /smartcast.kt:(23,38): info: Generated Viper text for smartcastReturn:
-method f$smartcastReturn$TF$NT$Int$T$Int(p$n: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$nullable(df$rt$intType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method smartcastReturn(n: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(n), nullable(intType()))
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  if (!(p$n == df$rt$nullValue())) {
-    ret$0 := p$n
+  if (!(n == nullValue())) {
+    ret0 := n
   } else {
-    ret$0 := df$rt$intToRef(0)}
-  goto lbl$ret$0
-  label lbl$ret$0
+    ret0 := intToRef(0)}
+  goto ret
+  label ret
 }
 
 /smartcast.kt:(88,106): info: Generated Viper text for isNullOrEmptyWrong:
-method f$isNullOrEmptyWrong$TF$NT$CharSequence$T$Boolean(p$seq: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$seq), df$rt$nullable(df$rt$c$pkg$kotlin$CharSequence()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
+method isNullOrEmptyWrong(seq: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(seq), nullable(CharSequence()))
+  ensures isSubtype(typeOf(ret0), boolType())
 {
-  inhale p$seq != df$rt$nullValue() ==>
-    acc(p$pkg$kotlin$c$CharSequence$shared(p$seq), wildcard)
-  if (p$seq == df$rt$nullValue()) {
-    var anon$0: Ref
-    if (p$seq != df$rt$nullValue()) {
-      var anon$1: Ref
-      var anon$2: Ref
-      anon$2 := pg$public$length(p$seq)
-      anon$1 := anon$2
-      inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$intType())
-      anon$0 := anon$1
+  inhale seq != nullValue() ==>
+    acc(CharSequence_pred_shared(seq), wildcard)
+  if (seq == nullValue()) {
+    var anon0: Ref
+    if (seq != nullValue()) {
+      var anon1: Ref
+      var anon: Ref
+      anon := length(seq)
+      anon1 := anon
+      inhale isSubtype(typeOf(anon1), intType())
+      anon0 := anon1
     } else {
-      anon$0 := df$rt$nullValue()}
-    ret$0 := df$rt$boolToRef(anon$0 == df$rt$intToRef(0))
+      anon0 := nullValue()}
+    ret0 := boolToRef(anon0 == intToRef(0))
   } else {
-    ret$0 := df$rt$boolToRef(false)}
-  goto lbl$ret$0
-  label lbl$ret$0
+    ret0 := boolToRef(false)}
+  goto lbl_ret
+  label lbl_ret
 }
 
-method pg$public$length(this$dispatch: Ref) returns (ret: Ref)
+method length(this: Ref) returns (ret: Ref)
+

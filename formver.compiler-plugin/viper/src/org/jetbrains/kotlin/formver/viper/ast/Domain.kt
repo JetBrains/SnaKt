@@ -15,27 +15,91 @@ import viper.silver.ast.NamedDomainAxiom
  */
 
 data class DomainName(val baseName: String) : SymbolicName {
-    override val mangledType: String
-        get() = "d"
+    override val nameType: NameType
+        get() = NameType.Domain
+
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = baseName
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +baseName
+            }
+            candidate {
+                +nameType
+                +baseName
+            }
+        }
 }
+
 data class UnqualifiedDomainFuncName(val baseName: String) : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = baseName
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +baseName
+            }
+        }
 }
 
 data class QualifiedDomainFuncName(val domainName: DomainName, val funcName: SymbolicName) : SymbolicName {
-    override val mangledType: String
-        get() = "df"
+    override val nameType: NameType
+        get() = NameType.DomainFunction
+
     context(nameResolver: NameResolver)
     override val mangledScope: String
         get() = domainName.mangledBaseName
+
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = funcName.mangled
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +funcName
+            }
+            candidate {
+                +nameType
+                +funcName
+            }
+            candidate {
+                +domainName
+                +nameType
+                +funcName
+            }
+        }
+}
+
+/**
+ * Name for functions which are very closely related to the domain but not part of the domain.
+ */
+data class RelatedDomainFuncName(val domainName: DomainName, val name: String) : SymbolicName {
+    override val nameType: NameType
+        get() = NameType.Function
+
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
+        get() = name
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +name
+            }
+            candidate {
+                +nameType
+                +name
+            }
+            candidate {
+                +domainName
+                +nameType
+                +name
+            }
+        }
 }
 
 /** Represents the name of a possible anonymous axiom.
@@ -56,6 +120,18 @@ data class NamedDomainAxiomLabel(override val domainName: DomainName, val baseNa
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = baseName
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +baseName
+            }
+            candidate {
+                +domainName
+                +baseName
+            }
+        }
+
 }
 
 data class AnonymousDomainAxiomLabel(override val domainName: DomainName) : OptionalDomainAxiomLabel
@@ -106,6 +182,7 @@ class DomainAxiom(
                 name.domainName.mangled,
                 trafos.toSilver()
             )
+
             is AnonymousDomainAxiomLabel -> AnonymousDomainAxiom(
                 exp.toSilver(),
                 pos.toSilver(),
@@ -128,6 +205,7 @@ abstract class Domain(
     abstract val typeVars: List<Type.TypeVar>
     abstract val functions: List<DomainFunc>
     abstract val axioms: List<DomainAxiom>
+
     context(nameResolver: NameResolver)
     override fun toSilver(): viper.silver.ast.Domain =
         viper.silver.ast.Domain(
@@ -147,7 +225,12 @@ abstract class Domain(
     fun toType(typeParamSubst: Map<Type.TypeVar, Type> = typeVars.associateWith { it }): Type.Domain =
         Type.Domain(name, typeVars, typeParamSubst)
 
-    fun createDomainFunc(funcName: SymbolicName, args: List<Declaration.LocalVarDecl>, type: Type, unique: Boolean = false) =
+    fun createDomainFunc(
+        funcName: SymbolicName,
+        args: List<Declaration.LocalVarDecl>,
+        type: Type,
+        unique: Boolean = false
+    ) =
         DomainFunc(QualifiedDomainFuncName(this.name, funcName), args, typeVars, type, unique)
 
     fun createNamedDomainAxiom(axiomName: String, exp: Exp): DomainAxiom =

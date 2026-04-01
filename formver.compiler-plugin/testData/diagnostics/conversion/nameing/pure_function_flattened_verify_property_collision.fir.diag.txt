@@ -1,0 +1,59 @@
+/pure_function_flattened_verify_property_collision.kt:(78,84): info: Generated Viper text for verify:
+function verify(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(x, intToRef(1))
+}
+
+/pure_function_flattened_verify_property_collision.kt:(301,345): info: Generated Viper text for pureFunctionFlattenedVerifyPropertyCollision:
+field bf$seed: Ref
+
+function f$verify(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(seed: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seed), boolType())
+  ensures isSubtype(typeOf(ret), Verify$Box())
+  ensures acc(Verify$Box$pred$shared(ret), wildcard)
+  ensures acc(Verify$Box$pred$unique(ret), write)
+  ensures boolFromRef((unfolding acc(Verify$Box$pred$shared(ret), wildcard) in
+      ret.bf$seed)) ==
+    boolFromRef(seed)
+
+
+method con$Verify_Box(seed: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seed), intType())
+  ensures isSubtype(typeOf(ret), Verify_Box())
+  ensures acc(Verify_Box$pred$shared(ret), wildcard)
+  ensures acc(Verify_Box$pred$unique(ret), write)
+  ensures intFromRef((unfolding acc(Verify_Box$pred$shared(ret), wildcard) in
+      ret.bf$seed)) ==
+    intFromRef(seed)
+
+
+method pureFunctionFlattenedVerifyPropertyCollision() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon0: Ref
+  var anon1: Ref
+  var anon2: Ref
+  var anon: Ref
+  left := con$Verify_Box(intToRef(1))
+  right := con(boolToRef(true))
+  anon1 := verify(left)
+  anon0 := anon1
+  inhale isSubtype(typeOf(anon0), intType())
+  anon := verify(right)
+  anon2 := anon
+  inhale isSubtype(typeOf(anon2), boolType())
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}
+
+method verify(this: Ref) returns (ret: Ref)
+

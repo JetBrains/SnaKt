@@ -20,6 +20,10 @@ class A(
     var charNull: Char?,
     var stringNull: String?,
     var classTypeNull: B?,
+    var func1: () -> Unit,
+    var func2: (a: Int) -> Unit,
+    var func3: () -> Int,
+    var func4: (a: Int, b: Int) -> Unit,
 )
 
 fun <!VIPER_TEXT!>havoc<!>(a: A): Unit {
@@ -39,4 +43,8 @@ fun <!VIPER_TEXT!>havoc<!>(a: A): Unit {
     var localCharNull = a.charNull
     var localStringNull = a.stringNull
     var localClassTypeNull = a.classTypeNull
+    var localFunc1 = a.func1
+    var localFunc2 = a.func2
+    var localFunc3 = a.func3
+    var localFunc4 = a.func4
 }

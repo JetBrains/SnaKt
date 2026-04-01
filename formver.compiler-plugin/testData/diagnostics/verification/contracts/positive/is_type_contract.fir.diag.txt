@@ -1,85 +1,82 @@
 /is_type_contract.kt:(157,165): info: Generated Viper text for isString:
-method f$isString$TF$NT$Any$T$Boolean(p$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$anyType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(ret$0) == true ==>
-    df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$stringType())
+method isString(x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(x), nullable(anyType()))
+  ensures isSubtype(typeOf(ret0), boolType())
+  ensures boolFromRef(ret0) == true ==> isSubtype(typeOf(x), stringType())
 {
-  ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$stringType()))
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret0 := boolToRef(isSubtype(typeOf(x), stringType()))
+  goto ret
+  label ret
 }
 
 /is_type_contract.kt:(322,330): info: Generated Viper text for isString:
-method f$isString$TF$T$Any$T$Boolean(this$extension: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$anyType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(ret$0) == true ==>
-    df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
+method isString(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret0), boolType())
+  ensures boolFromRef(ret0) == true ==>
+    isSubtype(typeOf(this), stringType())
 {
-  ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType()))
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret0 := boolToRef(isSubtype(typeOf(this), stringType()))
+  goto ret
+  label ret
 }
 
 /is_type_contract.kt:(491,508): info: Generated Viper text for subtypeTransitive:
-method f$subtypeTransitive$TF$T$Unit$T$Unit(p$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$unitType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
-  ensures true ==>
-    df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$anyType()))
+method subtypeTransitive(x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(x), unitType())
+  ensures isSubtype(typeOf(ret0), unitType())
+  ensures true ==> isSubtype(typeOf(x), nullable(anyType()))
 {
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  label ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /is_type_contract.kt:(686,707): info: Generated Viper text for constructorReturnType:
-field bf$bar: Ref
+field bar: Ref
 
-method con$c$Foo$T$Foo() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Foo())
-  ensures acc(p$c$Foo$shared(ret), wildcard)
-  ensures acc(p$c$Foo$unique(ret), write)
+method con() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), Foo())
+  ensures acc(Foo_pred_shared(ret), wildcard)
+  ensures acc(Foo_pred_unique(ret), write)
 
 
-method f$constructorReturnType$TF$T$Boolean() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(ret$0) == true
+method constructorReturnType() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), boolType())
+  ensures boolFromRef(ret0) == true
 {
-  var anon$0: Ref
-  anon$0 := con$c$Foo$T$Foo()
-  ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$c$Foo()))
-  goto lbl$ret$0
-  label lbl$ret$0
+  var anon: Ref
+  anon := con()
+  ret0 := boolToRef(isSubtype(typeOf(anon), Foo()))
+  goto lbl_ret
+  label lbl_ret
 }
 
 /is_type_contract.kt:(832,848): info: Generated Viper text for subtypeSuperType:
-field bf$bar: Ref
+field bf_bar: Ref
 
-method f$subtypeSuperType$TF$T$Bar$T$Unit(p$bar: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$bar), df$rt$c$Bar())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
-  ensures true ==> df$rt$isSubtype(df$rt$typeOf(p$bar), df$rt$c$Foo())
+method subtypeSuperType(bar: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(bar), Bar())
+  ensures isSubtype(typeOf(ret0), unitType())
+  ensures true ==> isSubtype(typeOf(bar), Foo())
 {
-  inhale acc(p$c$Bar$shared(p$bar), wildcard)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale acc(Bar_pred_shared(bar), wildcard)
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /is_type_contract.kt:(965,976): info: Generated Viper text for typeOfField:
-field bf$bar: Ref
+field bar: Ref
 
-method f$typeOfField$TF$T$Foo$T$Boolean(p$foo: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$c$Foo())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(ret$0) == true
+method typeOfField(foo: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(foo), Foo())
+  ensures isSubtype(typeOf(ret0), boolType())
+  ensures boolFromRef(ret0) == true
 {
-  var anon$0: Ref
-  inhale acc(p$c$Foo$shared(p$foo), wildcard)
-  unfold acc(p$c$Foo$shared(p$foo), wildcard)
-  anon$0 := p$foo.bf$bar
-  ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$c$Bar()))
-  goto lbl$ret$0
-  label lbl$ret$0
+  var anon: Ref
+  inhale acc(Foo_pred_shared(foo), wildcard)
+  unfold acc(Foo_pred_shared(foo), wildcard)
+  anon := foo.bar
+  ret0 := boolToRef(isSubtype(typeOf(anon), Bar()))
+  goto lbl_ret
+  label lbl_ret
 }

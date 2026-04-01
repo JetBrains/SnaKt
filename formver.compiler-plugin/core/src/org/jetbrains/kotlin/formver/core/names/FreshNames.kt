@@ -5,120 +5,254 @@
 
 package org.jetbrains.kotlin.formver.core.names
 
-import org.jetbrains.kotlin.formver.viper.NameResolver
-import org.jetbrains.kotlin.formver.viper.SymbolicName
-import org.jetbrains.kotlin.formver.viper.mangled
+import org.jetbrains.kotlin.formver.viper.*
 
 /* This file contains mangled names for constructs introduced during the conversion to Viper.
  *
  * See the NameEmbeddings file for guidelines on good name choices.
  */
 
+interface FreshName : SymbolicName
+
+
 /**
  * Representation for names not present in the original source,
  * e.g. storage for the result of subexpressions.
  */
-data class AnonymousName(val n: Int) : SymbolicName {
-    override val mangledType: String
-        get() = "anon"
+data class AnonymousName(val n: Int) : FreshName {
+    override val nameType: NameType
+        get() = NameType.Variables
 
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
-        get() = n.toString()
+        get() = "anon$$${n}"
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +"anon"
+            }
+            candidate {
+                +"anon"
+                noSeparator
+                +"$n"
+            }
+        }
 }
 
-data class AnonymousBuiltinName(val n: Int) : SymbolicName {
+data class AnonymousBuiltinName(val n: Int) : FreshName {
 
-    override val mangledType: String
-        get() = $$"anon$builtin"
+    override val nameType: NameType
+        get() = NameType.Variables
 
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
-        get() = n.toString()
+        get() = $$"anon$builtin$$$n"
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +"anon"
+            }
+            candidate {
+                +"anon"
+                +"builtin"
+            }
+            candidate {
+                +"anon"
+                +"builtin"
+                noSeparator
+                +"$n"
+            }
+        }
 }
 
 /**
  * Name for return variable that should *only* be used in signatures of methods without a body.
  */
-data object PlaceholderReturnVariableName : SymbolicName {
+data object PlaceholderReturnVariableName : FreshName {
+
+    override val nameType: NameType
+        get() = NameType.Variables
+
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "ret"
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +"ret"
+            }
+        }
 }
 
-data class ReturnVariableName(val n: Int) : SymbolicName {
-    override val mangledType: String
-        get() = "ret"
+data class ReturnVariableName(val n: Int) : FreshName {
+    override val nameType: NameType
+        get() = NameType.Variables
 
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
-        get() = n.toString()
+        get() = $$"ret$$${n}"
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +"ret"
+            }
+            candidate {
+                +"ret"
+                noSeparator
+                +"$n"
+            }
+        }
 }
 
 /**
  * Name for return variable that should *only* be used in signatures of pure functions
  * This variable will be translated into the special result variable in Viper
  */
-data object FunctionResultVariableName : SymbolicName {
+data object FunctionResultVariableName : FreshName {
+    override val nameType: NameType
+        get() = NameType.Variables
+
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "result"
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +"res"
+            }
+            candidate {
+                +"result"
+            }
+        }
 }
 
-data object DispatchReceiverName : SymbolicName {
+data object DispatchReceiverName : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = $$"this$dispatch"
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +"this"
+            }
+            candidate {
+                +"this"
+                +"dispatch"
+            }
+        }
 }
 
-data object ExtensionReceiverName : SymbolicName {
+data object ExtensionReceiverName : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = $$"this$extension"
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +"this"
+            }
+            candidate {
+                +"this"
+                +"extension"
+            }
+        }
 }
 
-data class SpecialName(val baseName: String) : SymbolicName {
+data class SpecialFieldName(val baseName: String) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = baseName
-    override val mangledType: String
-        get() = "sp"
+    override val nameType: NameType
+        get() = NameType.Property
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +baseName
+            }
+            candidate {
+                +nameType
+                +baseName
+            }
+        }
 }
 
-abstract class NumberedLabelName(val scope: String, val originalN: Int) : SymbolicName {
-    override val mangledType: String
-        get() = "lbl"
-
+abstract class NumberedLabelName(override val nameType: NameType, open val n: Int) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
-        get() = originalN.toString()
-
-    context(nameResolver: NameResolver)
-    override val mangledScope: String?
-        get() = scope
+        get() = n.toString()
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +nameType
+            }
+            candidate {
+                +nameType
+                +"$n"
+            }
+            candidate {
+                +"lbl"
+                +nameType
+                noSeparator
+                +"$n"
+            }
+        }
 }
 
-data class ReturnLabelName(val scopeDepth: Int) : NumberedLabelName("ret", scopeDepth)
-data class BreakLabelName(val n: Int) : NumberedLabelName("break", n)
-data class ContinueLabelName(val n: Int) : NumberedLabelName("continue", n)
-data class CatchLabelName(val n: Int) : NumberedLabelName("catch", n)
-data class TryExitLabelName(val n: Int) : NumberedLabelName("try_exit", n)
+
+data class ReturnLabelName(override val n: Int) : NumberedLabelName(NameType.Label.Return, n)
+data class BreakLabelName(override val n: Int) : NumberedLabelName(NameType.Label.Break, n)
+data class ContinueLabelName(override val n: Int) : NumberedLabelName(NameType.Label.Continue, n)
+data class CatchLabelName(override val n: Int) : NumberedLabelName(NameType.Label.Catch, n)
+data class TryExitLabelName(override val n: Int) : NumberedLabelName(NameType.Label.TryExit, n)
 
 
-data class PlaceholderArgumentName(val n: Int) : SymbolicName {
+data class PlaceholderArgumentName(val n: Int) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "arg$n"
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +"arg"
+            }
+            candidate {
+                +"arg"
+                noSeparator
+                +"$n"
+            }
+        }
 }
 
-data class DomainFuncParameterName(val baseName: String) : SymbolicName {
+data class DomainFuncParameterName(val baseName: String) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = baseName
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +baseName
+            }
+        }
 }
 
-data class SsaVariableName(val ssaIndex: Int, val baseName: SymbolicName) : SymbolicName {
+data class SsaVariableName(val ssaIndex: Int, val baseName: SymbolicName) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "${baseName.mangled}$$ssaIndex"
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +baseName
+                +"$ssaIndex"
+            }
+        }
 }

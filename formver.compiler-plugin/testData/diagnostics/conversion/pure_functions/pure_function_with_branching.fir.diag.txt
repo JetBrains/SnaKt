@@ -1,195 +1,182 @@
 /pure_function_with_branching.kt:(78,98): info: Generated Viper text for noAssignmentInBlocks:
-function f$noAssignmentInBlocks$TF$T$Boolean$T$Int(p$a: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+function noAssignmentInBlocks(a: Ref): Ref
+  requires isSubtype(typeOf(a), boolType())
+  ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$result$0 ==
-    (df$rt$intToRef(0)) in
-    (let l0$result$1 ==
-      (sp$plusInts(l0$result$0, df$rt$intToRef(1))) in
-      l0$result$1))
+  (let l_result_0 ==
+    (intToRef(0)) in
+    (let l_result_1 ==
+      (plusInts(l_result_0, intToRef(1))) in
+      l_result_1))
 }
 
 /pure_function_with_branching.kt:(216,231): info: Generated Viper text for simpleBranching:
-function f$simpleBranching$TF$T$Boolean$T$Int(p$a: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+function simpleBranching(a: Ref): Ref
+  requires isSubtype(typeOf(a), boolType())
+  ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$result$0 ==
-    (df$rt$intToRef(0)) in
-    (let l0$result$1 ==
-      ((df$rt$boolFromRef(p$a) ?
-        sp$plusInts(l0$result$0, df$rt$intToRef(1)) :
-        null)) in
-      (let l0$result$2 ==
-        ((!df$rt$boolFromRef(p$a) ?
-          sp$plusInts(l0$result$0, df$rt$intToRef(2)) :
-          null)) in
-        (let l0$result$3 ==
-          ((df$rt$boolFromRef(p$a) ? l0$result$1 : l0$result$2)) in
-          l0$result$3))))
+  (let l_result_0 ==
+    (intToRef(0)) in
+    (let l_result_1 ==
+      ((boolFromRef(a) ? plusInts(l_result_0, intToRef(1)) : null)) in
+      (let l_result_2 ==
+        ((!boolFromRef(a) ? plusInts(l_result_0, intToRef(2)) : null)) in
+        (let l_result_3 ==
+          ((boolFromRef(a) ? l_result_1 : l_result_2)) in
+          l_result_3))))
 }
 
 /pure_function_with_branching.kt:(389,404): info: Generated Viper text for nestedBranching:
-function f$nestedBranching$TF$T$Boolean$T$Boolean$T$Int(p$a: Ref, p$b: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$boolType())
-  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+function nestedBranching(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), boolType())
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$result$0 ==
-    (df$rt$intToRef(0)) in
-    (let l0$result$1 ==
-      ((df$rt$boolFromRef(p$a) ?
-        sp$plusInts(df$rt$intToRef(1), l0$result$0) :
-        null)) in
-      (let l0$result$2 ==
-        ((df$rt$boolFromRef(p$b) && df$rt$boolFromRef(p$a) ?
-          sp$plusInts(df$rt$intToRef(2), l0$result$1) :
+  (let l_result_0 ==
+    (intToRef(0)) in
+    (let l_result_1 ==
+      ((boolFromRef(a) ? plusInts(intToRef(1), l_result_0) : null)) in
+      (let l_result_2 ==
+        ((boolFromRef(b) && boolFromRef(a) ?
+          plusInts(intToRef(2), l_result_1) :
           null)) in
-        (let l0$result$3 ==
-          ((!df$rt$boolFromRef(p$b) && df$rt$boolFromRef(p$a) ?
-            sp$plusInts(df$rt$intToRef(3), l0$result$1) :
+        (let l_result_3 ==
+          ((!boolFromRef(b) && boolFromRef(a) ?
+            plusInts(intToRef(3), l_result_1) :
             null)) in
-          (let l0$result$4 ==
-            ((df$rt$boolFromRef(p$b) && !df$rt$boolFromRef(p$a) ?
-              sp$plusInts(df$rt$intToRef(4), l0$result$0) :
+          (let l_result_4 ==
+            ((boolFromRef(b) && !boolFromRef(a) ?
+              plusInts(intToRef(4), l_result_0) :
               null)) in
-            (let l0$result$5 ==
-              ((!df$rt$boolFromRef(p$b) && !df$rt$boolFromRef(p$a) ?
-                sp$plusInts(df$rt$intToRef(5), l0$result$0) :
+            (let l_result_5 ==
+              ((!boolFromRef(b) && !boolFromRef(a) ?
+                plusInts(intToRef(5), l_result_0) :
                 null)) in
-              (let l0$result$6 ==
-                ((!df$rt$boolFromRef(p$a) ?
-                  (df$rt$boolFromRef(p$b) ? l0$result$4 : l0$result$5) :
+              (let l_result_6 ==
+                ((!boolFromRef(a) ?
+                  (boolFromRef(b) ? l_result_4 : l_result_5) :
                   null)) in
-                (let l0$result$7 ==
-                  ((!df$rt$boolFromRef(p$a) ?
-                    sp$plusInts(df$rt$intToRef(6), l0$result$6) :
+                (let l_result_7 ==
+                  ((!boolFromRef(a) ?
+                    plusInts(intToRef(6), l_result_6) :
                     null)) in
-                  (let l0$result$8 ==
-                    ((df$rt$boolFromRef(p$b) ? l0$result$2 : l0$result$3)) in
-                    (let l0$result$9 ==
-                      ((df$rt$boolFromRef(p$a) ? l0$result$8 : l0$result$7)) in
-                      (let l0$result$10 ==
-                        (sp$plusInts(df$rt$intToRef(7), l0$result$9)) in
-                        l0$result$10)))))))))))
+                  (let l_result_8 ==
+                    ((boolFromRef(b) ? l_result_2 : l_result_3)) in
+                    (let l_result_9 ==
+                      ((boolFromRef(a) ? l_result_8 : l_result_7)) in
+                      (let l_result_10 ==
+                        (plusInts(intToRef(7), l_result_9)) in
+                        l_result_10)))))))))))
 }
 
 /pure_function_with_branching.kt:(814,834): info: Generated Viper text for whenExpressionSimple:
-function f$whenExpressionSimple$TF$T$Int$T$Int(p$x: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+function whenExpressionSimple(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$y$0 ==
-    (df$rt$intToRef(0)) in
-    (let anon$0$0 ==
-      (p$x) in
-      (let l0$y$1 ==
-        ((df$rt$intFromRef(anon$0$0) == 1 ? df$rt$intToRef(10) : null)) in
-        (let l0$y$2 ==
-          ((!(df$rt$intFromRef(anon$0$0) == 2) &&
-          !(df$rt$intFromRef(anon$0$0) == 1) ?
-            df$rt$intToRef(30) :
+  (let y_0 ==
+    (intToRef(0)) in
+    (let anon_0 ==
+      (x) in
+      (let y_1 ==
+        ((intFromRef(anon_0) == 1 ? intToRef(10) : null)) in
+        (let y_2 ==
+          ((!(intFromRef(anon_0) == 2) && !(intFromRef(anon_0) == 1) ?
+            intToRef(30) :
             null)) in
-          (let l0$y$3 ==
-            ((df$rt$intFromRef(anon$0$0) == 2 ? l0$y$0 : l0$y$2)) in
-            (let l0$y$4 ==
-              ((df$rt$intFromRef(anon$0$0) == 1 ? l0$y$1 : l0$y$3)) in
-              (df$rt$intFromRef(anon$0$0) == 2 &&
-              !(df$rt$intFromRef(anon$0$0) == 1) ?
-                df$rt$intToRef(20) :
-                sp$plusInts(l0$y$4, df$rt$intToRef(1)))))))))
+          (let y_3 ==
+            ((intFromRef(anon_0) == 2 ? y_0 : y_2)) in
+            (let y_4 ==
+              ((intFromRef(anon_0) == 1 ? y_1 : y_3)) in
+              (intFromRef(anon_0) == 2 && !(intFromRef(anon_0) == 1) ?
+                intToRef(20) :
+                plusInts(y_4, intToRef(1)))))))))
 }
 
 /pure_function_with_branching.kt:(1053,1076): info: Generated Viper text for whenNoArgumentBranching:
-function f$whenNoArgumentBranching$TF$T$Int$T$Int$T$Int(p$x: Ref, p$y: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(p$y), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+function whenNoArgumentBranching(x: Ref, y: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(result), intType())
 {
-  (let l5$z$0 ==
-    ((!(df$rt$intFromRef(p$x) < 0 || df$rt$intFromRef(p$y) < 0) &&
-    (!(df$rt$intFromRef(p$x) > 0 && df$rt$intFromRef(p$y) > 0) &&
-    !(df$rt$intFromRef(p$x) == 0)) ?
-      df$rt$intToRef(5) :
+  (let z_0 ==
+    ((!(intFromRef(x) < 0 || intFromRef(y) < 0) &&
+    (!(intFromRef(x) > 0 && intFromRef(y) > 0) && !(intFromRef(x) == 0)) ?
+      intToRef(5) :
       null)) in
-    (df$rt$intFromRef(p$x) == 0 ?
-      df$rt$intToRef(0) :
-      (df$rt$intFromRef(p$x) > 0 && df$rt$intFromRef(p$y) > 0 &&
-      !(df$rt$intFromRef(p$x) == 0) ?
-        df$rt$intToRef(1) :
-        ((df$rt$intFromRef(p$x) < 0 || df$rt$intFromRef(p$y) < 0) &&
-        (!(df$rt$intFromRef(p$x) > 0 && df$rt$intFromRef(p$y) > 0) &&
-        !(df$rt$intFromRef(p$x) == 0)) ?
-          df$rt$intToRef(-1) :
-          l5$z$0))))
+    (intFromRef(x) == 0 ?
+      intToRef(0) :
+      (intFromRef(x) > 0 && intFromRef(y) > 0 && !(intFromRef(x) == 0) ?
+        intToRef(1) :
+        ((intFromRef(x) < 0 || intFromRef(y) < 0) &&
+        (!(intFromRef(x) > 0 && intFromRef(y) > 0) && !(intFromRef(x) == 0)) ?
+          intToRef(-1) :
+          z_0))))
 }
 
 /pure_function_with_branching.kt:(1299,1322): info: Generated Viper text for stringEqualityBranching:
-function f$stringEqualityBranching$TF$T$String$T$Boolean(p$input: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$input), df$rt$stringType())
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+function stringEqualityBranching(input: Ref): Ref
+  requires isSubtype(typeOf(input), stringType())
+  ensures isSubtype(typeOf(result), boolType())
 {
-  (let l0$isValid$0 ==
-    (df$rt$boolToRef(false)) in
-    (let l0$isValid$1 ==
-      ((df$rt$stringFromRef(p$input) == Seq(117, 115, 101, 114) &&
-      !(df$rt$stringFromRef(p$input) == Seq(97, 100, 109, 105, 110)) ?
-        df$rt$boolToRef(true) :
+  (let isValid_0 ==
+    (boolToRef(false)) in
+    (let isValid_1 ==
+      ((stringFromRef(input) == Seq(117, 115, 101, 114) &&
+      !(stringFromRef(input) == Seq(97, 100, 109, 105, 110)) ?
+        boolToRef(true) :
         null)) in
-      (let l0$isValid$2 ==
-        ((!(df$rt$stringFromRef(p$input) == Seq(117, 115, 101, 114)) &&
-        !(df$rt$stringFromRef(p$input) == Seq(97, 100, 109, 105, 110)) ?
-          df$rt$boolToRef(false) :
+      (let isValid_2 ==
+        ((!(stringFromRef(input) == Seq(117, 115, 101, 114)) &&
+        !(stringFromRef(input) == Seq(97, 100, 109, 105, 110)) ?
+          boolToRef(false) :
           null)) in
-        (let l0$isValid$3 ==
-          ((df$rt$stringFromRef(p$input) == Seq(117, 115, 101, 114) ?
-            l0$isValid$1 :
-            l0$isValid$2)) in
-          (let l0$isValid$4 ==
-            ((df$rt$stringFromRef(p$input) == Seq(97, 100, 109, 105, 110) ?
-              l0$isValid$0 :
-              l0$isValid$3)) in
-            (df$rt$stringFromRef(p$input) == Seq(97, 100, 109, 105, 110) ?
-              df$rt$boolToRef(true) :
-              l0$isValid$4))))))
+        (let isValid_3 ==
+          ((stringFromRef(input) == Seq(117, 115, 101, 114) ?
+            isValid_1 :
+            isValid_2)) in
+          (let isValid_4 ==
+            ((stringFromRef(input) == Seq(97, 100, 109, 105, 110) ?
+              isValid_0 :
+              isValid_3)) in
+            (stringFromRef(input) == Seq(97, 100, 109, 105, 110) ?
+              boolToRef(true) :
+              isValid_4))))))
 }
 
 /pure_function_with_branching.kt:(1585,1609): info: Generated Viper text for sequentialIfWithMutation:
-function f$sequentialIfWithMutation$TF$T$Int(): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+function sequentialIfWithMutation(): Ref
+  ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$x$0 ==
-    (df$rt$intToRef(10)) in
-    (let l0$x$1 ==
-      ((df$rt$intFromRef(l0$x$0) > 5 ? df$rt$intToRef(2) : null)) in
-      (let l0$x$2 ==
-        ((!(df$rt$intFromRef(l0$x$0) > 5) ? df$rt$intToRef(20) : null)) in
-        (let l0$x$3 ==
-          ((df$rt$intFromRef(l0$x$0) > 5 ? l0$x$1 : l0$x$2)) in
-          (df$rt$intFromRef(l0$x$3) == 2 ?
-            df$rt$intToRef(100) :
-            df$rt$intToRef(0))))))
+  (let x_0 ==
+    (intToRef(10)) in
+    (let x_1 ==
+      ((intFromRef(x_0) > 5 ? intToRef(2) : null)) in
+      (let x_2 ==
+        ((!(intFromRef(x_0) > 5) ? intToRef(20) : null)) in
+        (let x_3 ==
+          ((intFromRef(x_0) > 5 ? x_1 : x_2)) in
+          (intFromRef(x_3) == 2 ? intToRef(100) : intToRef(0))))))
 }
 
 /pure_function_with_branching.kt:(1768,1788): info: Generated Viper text for complexBooleanReturn:
-function f$complexBooleanReturn$TF$T$Int$T$Boolean(p$x: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+function complexBooleanReturn(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), boolType())
 {
-  (let l0$result$0 ==
-    (df$rt$boolToRef(false)) in
-    (let l0$result$1 ==
-      ((df$rt$intFromRef(p$x) > 50 ? df$rt$boolToRef(true) : null)) in
-      (let l0$result$2 ==
-        ((!(df$rt$intFromRef(p$x) > 50) ? df$rt$boolToRef(true) : null)) in
-        (let l0$result$3 ==
-          ((df$rt$intFromRef(p$x) > 50 ? l0$result$1 : l0$result$2)) in
-          (df$rt$intFromRef(p$x) > 100 ?
-            df$rt$boolToRef(true) :
-            (df$rt$intFromRef(p$x) < 0 && !(df$rt$intFromRef(p$x) > 50) ?
-              df$rt$boolToRef(false) :
-              (df$rt$boolFromRef(l0$result$3) ?
-                df$rt$boolToRef(false) :
-                df$rt$boolToRef(true))))))))
+  (let l_result_0 ==
+    (boolToRef(false)) in
+    (let l_result_1 ==
+      ((intFromRef(x) > 50 ? boolToRef(true) : null)) in
+      (let l_result_2 ==
+        ((!(intFromRef(x) > 50) ? boolToRef(true) : null)) in
+        (let l_result_3 ==
+          ((intFromRef(x) > 50 ? l_result_1 : l_result_2)) in
+          (intFromRef(x) > 100 ?
+            boolToRef(true) :
+            (intFromRef(x) < 0 && !(intFromRef(x) > 50) ?
+              boolToRef(false) :
+              (boolFromRef(l_result_3) ?
+                boolToRef(false) :
+                boolToRef(true))))))))
 }

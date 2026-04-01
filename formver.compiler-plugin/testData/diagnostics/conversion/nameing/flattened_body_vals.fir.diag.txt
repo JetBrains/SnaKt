@@ -1,0 +1,27 @@
+/flattened_body_vals.kt:(159,176): info: Generated Viper text for flattenedBodyVals:
+field value: Ref
+
+method con(seed: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seed), boolType())
+  ensures isSubtype(typeOf(ret), BodyVal$Box())
+  ensures acc(BodyVal$Box$pred$shared(ret), wildcard)
+  ensures acc(BodyVal$Box$pred$unique(ret), write)
+
+
+method con$BodyVal_Box(seed: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seed), intType())
+  ensures isSubtype(typeOf(ret), BodyVal_Box())
+  ensures acc(BodyVal_Box$pred$shared(ret), wildcard)
+  ensures acc(BodyVal_Box$pred$unique(ret), write)
+
+
+method flattenedBodyVals() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  left := con$BodyVal_Box(intToRef(1))
+  right := con(boolToRef(true))
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}

@@ -1,105 +1,83 @@
 /string_iterations.kt:(71,83): info: Generated Viper text for firstAtLeast:
-method f$firstAtLeast$TF$T$String$T$Char$T$Int(this$extension: Ref, p$c: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
-  requires df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$charType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
-  ensures 0 <= df$rt$intFromRef(ret$0) &&
-    df$rt$intFromRef(ret$0) <= |df$rt$stringFromRef(this$extension)|
-  ensures (forall anon$builtin$2: Int ::0 <= anon$builtin$2 &&
-      anon$builtin$2 < df$rt$intFromRef(ret$0) ==>
-      df$rt$stringFromRef(this$extension)[anon$builtin$2] <
-      df$rt$charFromRef(p$c))
-  ensures !(df$rt$intFromRef(ret$0) ==
-    |df$rt$stringFromRef(this$extension)|) ==>
-    df$rt$stringFromRef(this$extension)[df$rt$intFromRef(ret$0)] >=
-    df$rt$charFromRef(p$c)
+method firstAtLeast(this: Ref, c: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), stringType())
+  requires isSubtype(typeOf(c), charType())
+  ensures isSubtype(typeOf(ret0), intType())
+  ensures 0 <= intFromRef(ret0) &&
+    intFromRef(ret0) <= |stringFromRef(this)|
+  ensures (forall anon_builtin: Int ::0 <= anon_builtin &&
+      anon_builtin < intFromRef(ret0) ==>
+      stringFromRef(this)[anon_builtin] < charFromRef(c))
+  ensures !(intFromRef(ret0) == |stringFromRef(this)|) ==>
+    stringFromRef(this)[intFromRef(ret0)] >= charFromRef(c)
 {
-  var l0$i: Ref
-  var anon$0: Ref
-  l0$i := df$rt$intToRef(0)
-  label lbl$continue$0
-    invariant df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
-    invariant df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$charType())
-    invariant 0 <= df$rt$intFromRef(l0$i) &&
-      df$rt$intFromRef(l0$i) <= |df$rt$stringFromRef(this$extension)|
-    invariant (forall anon$builtin$1: Int ::0 <= anon$builtin$1 &&
-        anon$builtin$1 < df$rt$intFromRef(l0$i) ==>
-        df$rt$stringFromRef(this$extension)[anon$builtin$1] <
-        df$rt$charFromRef(p$c))
-  anon$0 := sp$ltInts(l0$i, sp$stringLength(this$extension))
-  if (df$rt$boolFromRef(anon$0)) {
-    if (df$rt$stringFromRef(this$extension)[df$rt$intFromRef(l0$i)] >=
-    df$rt$charFromRef(p$c)) {
-      goto lbl$break$0
+  var i: Ref
+  var anon0: Ref
+  i := intToRef(0)
+  label cont
+    invariant isSubtype(typeOf(i), intType())
+    invariant isSubtype(typeOf(c), charType())
+    invariant 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef(this)|
+    invariant (forall anon: Int ::0 <= anon && anon < intFromRef(i) ==>
+        stringFromRef(this)[anon] < charFromRef(c))
+  anon0 := ltInts(i, stringLength(this))
+  if (boolFromRef(anon0)) {
+    if (stringFromRef(this)[intFromRef(i)] >= charFromRef(c)) {
+      goto break
     }
-    l0$i := sp$plusInts(l0$i, df$rt$intToRef(1))
-    goto lbl$continue$0
+    i := plusInts(i, intToRef(1))
+    goto cont
   }
-  label lbl$break$0
-  assert df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
-  assert df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$charType())
-  assert 0 <= df$rt$intFromRef(l0$i) &&
-    df$rt$intFromRef(l0$i) <= |df$rt$stringFromRef(this$extension)|
-  assert (forall anon$builtin$1: Int ::0 <= anon$builtin$1 &&
-      anon$builtin$1 < df$rt$intFromRef(l0$i) ==>
-      df$rt$stringFromRef(this$extension)[anon$builtin$1] <
-      df$rt$charFromRef(p$c))
-  ret$0 := l0$i
-  goto lbl$ret$0
-  label lbl$ret$0
+  label break
+  assert isSubtype(typeOf(i), intType())
+  assert isSubtype(typeOf(c), charType())
+  assert 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef(this)|
+  assert (forall anon: Int ::0 <= anon && anon < intFromRef(i) ==>
+      stringFromRef(this)[anon] < charFromRef(c))
+  ret0 := i
+  goto ret
+  label ret
 }
 
 /string_iterations.kt:(606,614): info: Generated Viper text for lastLess:
-method f$lastLess$TF$T$String$T$Char$T$Int(this$extension: Ref, p$c: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
-  requires df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$charType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
-  ensures -1 <= df$rt$intFromRef(ret$0) &&
-    df$rt$intFromRef(ret$0) <= |df$rt$stringFromRef(this$extension)| - 1
-  ensures (forall anon$builtin$2: Int ::df$rt$intFromRef(ret$0) <
-      anon$builtin$2 &&
-      anon$builtin$2 < |df$rt$stringFromRef(this$extension)| ==>
-      df$rt$stringFromRef(this$extension)[anon$builtin$2] >=
-      df$rt$charFromRef(p$c))
-  ensures !(df$rt$intFromRef(ret$0) == -1) ==>
-    df$rt$stringFromRef(this$extension)[df$rt$intFromRef(ret$0)] <
-    df$rt$charFromRef(p$c)
+method lastLess(this: Ref, c: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), stringType())
+  requires isSubtype(typeOf(c), charType())
+  ensures isSubtype(typeOf(ret0), intType())
+  ensures -1 <= intFromRef(ret0) &&
+    intFromRef(ret0) <= |stringFromRef(this)| - 1
+  ensures (forall anon_builtin: Int ::intFromRef(ret0) < anon_builtin &&
+      anon_builtin < |stringFromRef(this)| ==>
+      stringFromRef(this)[anon_builtin] >= charFromRef(c))
+  ensures !(intFromRef(ret0) == -1) ==>
+    stringFromRef(this)[intFromRef(ret0)] < charFromRef(c)
 {
-  var l0$i: Ref
-  var anon$0: Ref
-  l0$i := sp$minusInts(sp$stringLength(this$extension), df$rt$intToRef(1))
-  label lbl$continue$0
-    invariant df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
-    invariant df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$charType())
-    invariant -1 <= df$rt$intFromRef(l0$i) &&
-      df$rt$intFromRef(l0$i) < |df$rt$stringFromRef(this$extension)|
-    invariant (forall anon$builtin$1: Int ::df$rt$intFromRef(l0$i) <
-        anon$builtin$1 &&
-        anon$builtin$1 < |df$rt$stringFromRef(this$extension)| ==>
-        df$rt$stringFromRef(this$extension)[anon$builtin$1] >=
-        df$rt$charFromRef(p$c))
-  anon$0 := sp$gtInts(l0$i, df$rt$intToRef(-1))
-  if (df$rt$boolFromRef(anon$0)) {
-    if (df$rt$stringFromRef(this$extension)[df$rt$intFromRef(l0$i)] <
-    df$rt$charFromRef(p$c)) {
-      goto lbl$break$0
+  var i: Ref
+  var anon0: Ref
+  i := minusInts(stringLength(this), intToRef(1))
+  label cont
+    invariant isSubtype(typeOf(i), intType())
+    invariant isSubtype(typeOf(c), charType())
+    invariant -1 <= intFromRef(i) && intFromRef(i) < |stringFromRef(this)|
+    invariant (forall anon: Int ::intFromRef(i) < anon &&
+        anon < |stringFromRef(this)| ==>
+        stringFromRef(this)[anon] >= charFromRef(c))
+  anon0 := gtInts(i, intToRef(-1))
+  if (boolFromRef(anon0)) {
+    if (stringFromRef(this)[intFromRef(i)] < charFromRef(c)) {
+      goto break
     }
-    l0$i := sp$minusInts(l0$i, df$rt$intToRef(1))
-    goto lbl$continue$0
+    i := minusInts(i, intToRef(1))
+    goto cont
   }
-  label lbl$break$0
-  assert df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
-  assert df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$charType())
-  assert -1 <= df$rt$intFromRef(l0$i) &&
-    df$rt$intFromRef(l0$i) < |df$rt$stringFromRef(this$extension)|
-  assert (forall anon$builtin$1: Int ::df$rt$intFromRef(l0$i) <
-      anon$builtin$1 &&
-      anon$builtin$1 < |df$rt$stringFromRef(this$extension)| ==>
-      df$rt$stringFromRef(this$extension)[anon$builtin$1] >=
-      df$rt$charFromRef(p$c))
-  ret$0 := l0$i
-  goto lbl$ret$0
-  label lbl$ret$0
+  label break
+  assert isSubtype(typeOf(i), intType())
+  assert isSubtype(typeOf(c), charType())
+  assert -1 <= intFromRef(i) && intFromRef(i) < |stringFromRef(this)|
+  assert (forall anon: Int ::intFromRef(i) < anon &&
+      anon < |stringFromRef(this)| ==>
+      stringFromRef(this)[anon] >= charFromRef(c))
+  ret0 := i
+  goto ret
+  label ret
 }

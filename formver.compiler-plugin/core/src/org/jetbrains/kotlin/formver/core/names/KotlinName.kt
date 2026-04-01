@@ -9,10 +9,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.asTypeEmbedding
-import org.jetbrains.kotlin.formver.viper.NameResolver
-import org.jetbrains.kotlin.formver.viper.SEPARATOR
-import org.jetbrains.kotlin.formver.viper.SymbolicName
-import org.jetbrains.kotlin.formver.viper.mangled
+import org.jetbrains.kotlin.formver.viper.*
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 
@@ -24,102 +21,262 @@ import org.jetbrains.kotlin.name.Name
  */
 sealed interface KotlinName : SymbolicName
 
+sealed interface NameOfType : SymbolicName
+
 data class SimpleKotlinName(val name: Name) : KotlinName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = name.asStringStripSpecialMarkers()
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +name.asStringStripSpecialMarkers()
+            }
+        }
 }
 
-abstract class TypedKotlinName(override val mangledType: String, open val name: Name) : KotlinName {
+abstract class TypedKotlinName(override val nameType: NameType, open val name: Name) : KotlinName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = name.asStringStripSpecialMarkers()
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +name.asStringStripSpecialMarkers()
+            }
+            candidate {
+                +nameType
+                +name.asStringStripSpecialMarkers()
+            }
+        }
+
 }
 
-abstract class TypedKotlinNameWithType(override val mangledType: String, open val name: Name, val type: TypeEmbedding) :
+abstract class TypedKotlinNameWithType(override val nameType: NameType, open val name: Name, val type: TypeEmbedding) :
     KotlinName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "${name.asStringStripSpecialMarkers()}$SEPARATOR${type.name.mangled}"
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +name.asStringStripSpecialMarkers()
+            }
+            candidate {
+                +nameType
+                +name.asStringStripSpecialMarkers()
+            }
+            candidate {
+                +nameType
+                +name.asStringStripSpecialMarkers()
+                +type.name
+            }
+        }
 }
 
 data class FunctionKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
     TypedKotlinNameWithType(
-        "f", name,
+        NameType.Function, name,
         functionType.asTypeEmbedding()
-    )
+    ) {
+
+}
 
 /**
  * This name will never occur in the viper output, but rather is used to lookup properties.
  */
-data class PropertyKotlinName(override val name: Name) : TypedKotlinName("pp", name)
-data class BackingFieldKotlinName(override val name: Name) : TypedKotlinName("bf", name)
-data class GetterKotlinName(override val name: Name) : TypedKotlinName("pg", name)
-data class SetterKotlinName(override val name: Name) : TypedKotlinName("ps", name)
+data class PropertyKotlinName(override val name: Name) : TypedKotlinName(NameType.Property, name)
+data class BackingFieldKotlinName(override val name: Name) : TypedKotlinName(NameType.BackingField, name)
+data class GetterKotlinName(override val name: Name) : TypedKotlinName(NameType.Getter, name)
+data class SetterKotlinName(override val name: Name) : TypedKotlinName(NameType.Setter, name)
 data class ExtensionSetterKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
-    TypedKotlinNameWithType("es", name, functionType.asTypeEmbedding())
+    TypedKotlinNameWithType(NameType.ExtensionSetter, name, functionType.asTypeEmbedding()) {
+}
 
 data class ExtensionGetterKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
-    TypedKotlinNameWithType("eg", name, functionType.asTypeEmbedding())
+    TypedKotlinNameWithType(NameType.ExtensionGetter, name, functionType.asTypeEmbedding())
 
 data class ClassKotlinName(val name: FqName) : KotlinName {
-    override val mangledType: String
-        get() = "c"
+    override val nameType: NameType
+        get() = NameType.Type.Class
 
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = name.asViperString()
 
     constructor(classSegments: List<String>) : this(FqName.fromSegments(classSegments))
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +name.asString().split(".")
+            }
+            candidate {
+                +nameType
+                +name.asString().split(".")
+            }
+        }
 }
 
 data class ConstructorKotlinName(val type: FunctionTypeEmbedding) : KotlinName {
-    override val mangledType: String
-        get() = "con"
+    override val nameType: NameType
+        get() = NameType.Constructor
 
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = type.name.mangledBaseName
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +nameType
+            }
+            candidate {
+                +nameType
+                +type.returnType.name
+            }
+            candidate {
+                +nameType
+                +type.returnType.name
+                +"args"
+                +type.paramTypes.map { it.name }
+            }
+        }
 }
 
-// It's a bit of a hack to make this as KotlinName, it should really just be any old name, but right now our scoped
-// names are KotlinNames and changing that could be messy.
-data class PredicateKotlinName(val name: String) : KotlinName {
+data class PredicateName(val name: String) : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = name
-    override val mangledType: String
-        get() = "p"
+    override val nameType: NameType
+        get() = NameType.Predicate
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +name
+            }
+            candidate {
+                +nameType
+                +name
+            }
+        }
 }
 
-data class HavocKotlinName(val type: TypeEmbedding) : KotlinName {
+data class HavocName(val type: TypeEmbedding) : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = type.name.mangled
-    override val mangledType: String
-        get() = "havoc"
+    override val nameType: NameType
+        get() = NameType.Havoc
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +"havoc"
+            }
+            candidate {
+                +"havoc"
+                +type.name
+            }
+            candidate {
+                +nameType
+                +"havoc"
+                +type.name
+            }
+        }
 }
 
-data class PretypeName(val name: String) : KotlinName {
+/**
+ * Name of a _simple_ type.
+ **/
+data class PretypeName(val name: String) : NameOfType {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = name
+
+    override val nameType: NameType
+        get() = NameType.Type
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +name
+            }
+            candidate {
+                +nameType
+                +name
+            }
+        }
 }
 
-data class SetOfNames(val names: List<SymbolicName>) : KotlinName {
+/**
+ * Holds a list of names. Useful to collect argument types of functions
+ */
+data class ListOfNames<T : SymbolicName>(val names: List<T>) : NameOfType {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = names.joinToString(SEPARATOR) { it.mangled }
+
+    override val nameType: NameType
+        get() = NameType.Type
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +names
+            }
+        }
 }
 
-data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : KotlinName {
+
+data class FunctionTypeName(val args: ListOfNames<TypeName>, val returns: TypeName) : NameOfType {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
-        get() = pretype.name.mangledBaseName
-    override val mangledType: String
+        get() = $$"$${args.mangledBaseName}$$${returns.mangled}"
+
+    override val nameType: NameType
+        get() = NameType.Type
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +nameType
+                +returns
+            }
+            candidate {
+                +nameType
+                +"args"
+                +args
+                +"ret"
+                +returns
+            }
+        }
+}
+
+/**
+ * Names a type, together with nullability.
+ */
+data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : NameOfType {
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
         get() = listOfNotNull(
             if (nullable) "N" else null,
             "T",
             if (pretype is FunctionTypeEmbedding) "F" else null
-        ).joinToString("")
+        ).joinToString("") + SEPARATOR + pretype.name.mangledBaseName
+
+    override val nameType: NameType
+        get() = NameType.Type
+
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +pretype.name
+            }
+            candidate {
+                if (nullable) +"N"
+                noSeparator
+                +pretype.name
+            }
+        }
 }

@@ -1,76 +1,68 @@
 /returns_null.kt:(121,140): info: Generated Viper text for simple_returns_null:
-method f$simple_returns_null$TF$NT$Int$NT$Int(p$x: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
-  ensures ret$0 == df$rt$nullValue()
-  ensures ret$0 != df$rt$nullValue() ==> false
+method simple_returns_null(x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(x), nullable(intType()))
+  ensures isSubtype(typeOf(ret0), nullable(intType()))
+  ensures ret0 == nullValue()
+  ensures ret0 != nullValue() ==> false
 {
-  ret$0 := df$rt$nullValue()
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret0 := nullValue()
+  goto ret
+  label ret
 }
 
 /returns_null.kt:(300,320): info: Generated Viper text for returns_null_implies:
-method f$returns_null_implies$TF$NT$Boolean$NT$Boolean(p$x: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$boolType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$boolType()))
-  ensures ret$0 == df$rt$nullValue() ==> p$x == df$rt$nullValue()
-  ensures ret$0 != df$rt$nullValue() ==> p$x != df$rt$nullValue()
+method returns_null_implies(x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(x), nullable(boolType()))
+  ensures isSubtype(typeOf(ret0), nullable(boolType()))
+  ensures ret0 == nullValue() ==> x == nullValue()
+  ensures ret0 != nullValue() ==> x != nullValue()
 {
-  ret$0 := p$x
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret0 := x
+  goto ret
+  label ret
 }
 
 /returns_null.kt:(511,531): info: Generated Viper text for returns_null_with_if:
-method f$returns_null_with_if$TF$NT$Int$NT$Int$NT$Int$NT$Int(p$x: Ref, p$y: Ref,
-  p$z: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
-  requires df$rt$isSubtype(df$rt$typeOf(p$y), df$rt$nullable(df$rt$intType()))
-  requires df$rt$isSubtype(df$rt$typeOf(p$z), df$rt$nullable(df$rt$intType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
-  ensures ret$0 == df$rt$nullValue() ==>
-    p$x == df$rt$nullValue() && p$y == df$rt$nullValue() ||
-    p$z == df$rt$nullValue()
-  ensures ret$0 != df$rt$nullValue() ==>
-    p$x != df$rt$nullValue() || p$y != df$rt$nullValue()
+method returns_null_with_if(x: Ref, y: Ref, z: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(x), nullable(intType()))
+  requires isSubtype(typeOf(y), nullable(intType()))
+  requires isSubtype(typeOf(z), nullable(intType()))
+  ensures isSubtype(typeOf(ret0), nullable(intType()))
+  ensures ret0 == nullValue() ==>
+    x == nullValue() && y == nullValue() || z == nullValue()
+  ensures ret0 != nullValue() ==> x != nullValue() || y != nullValue()
 {
-  if (p$x == df$rt$nullValue()) {
-    ret$0 := p$y
-    goto lbl$ret$0
+  if (x == nullValue()) {
+    ret0 := y
+    goto ret
   } else {
-    ret$0 := p$z
-    goto lbl$ret$0
+    ret0 := z
+    goto ret
   }
-  label lbl$ret$0
+  label ret
 }
 
 /returns_null.kt:(833,862): info: Generated Viper text for non_nullable_returns_not_null:
-method f$non_nullable_returns_not_null$TF$T$Int$T$Int(p$x: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
-  ensures ret$0 != df$rt$nullValue()
+method non_nullable_returns_not_null(x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret0), intType())
+  ensures ret0 != nullValue()
 {
-  ret$0 := p$x
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret0 := x
+  goto ret
+  label ret
 }
 
 /returns_null.kt:(981,1010): info: Generated Viper text for non_nullable_compared_to_null:
-method f$non_nullable_compared_to_null$TF$T$Int$T$Int$T$Int(p$x: Ref, p$y: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(p$y), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
-  ensures true ==> p$y == df$rt$nullValue() || p$x != df$rt$nullValue()
+method non_nullable_compared_to_null(x: Ref, y: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(ret0), intType())
+  ensures true ==> y == nullValue() || x != nullValue()
 {
-  ret$0 := p$x
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret0 := x
+  goto ret
+  label ret
 }
 
 /returns_null.kt:(1076,1085): warning: Condition is always 'false'.

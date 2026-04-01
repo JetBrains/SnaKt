@@ -1,222 +1,220 @@
 /return_break_continue.kt:(23,33): info: Generated Viper text for testReturn:
-method f$testReturn$TF$T$Int() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method testReturn() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  ret$0 := df$rt$intToRef(0)
-  goto lbl$ret$0
-  ret$0 := df$rt$intToRef(1)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret0 := intToRef(0)
+  goto ret
+  ret0 := intToRef(1)
+  goto ret
+  label ret
 }
 
 /return_break_continue.kt:(76,90): info: Generated Viper text for returnFromLoop:
-method f$returnFromLoop$TF$T$Int() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method returnFromLoop() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var anon$0: Ref
-  label lbl$continue$0
-  anon$0 := df$rt$boolToRef(true)
-  if (df$rt$boolFromRef(anon$0)) {
-    ret$0 := df$rt$intToRef(0)
-    goto lbl$ret$0
-    goto lbl$continue$0
+  var anon: Ref
+  label cont
+  anon := boolToRef(true)
+  if (boolFromRef(anon)) {
+    ret0 := intToRef(0)
+    goto ret
+    goto cont
   }
-  label lbl$break$0
-  ret$0 := df$rt$intToRef(1)
-  goto lbl$ret$0
-  label lbl$ret$0
+  label break
+  ret0 := intToRef(1)
+  goto ret
+  label ret
 }
 
 /return_break_continue.kt:(162,172): info: Generated Viper text for whileBreak:
-method f$whileBreak$TF$T$Boolean$T$Int(p$b: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method whileBreak(b: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var l0$i: Ref
-  var anon$0: Ref
-  l0$i := df$rt$intToRef(0)
-  label lbl$continue$0
-    invariant df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
-    invariant df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  anon$0 := p$b
-  if (df$rt$boolFromRef(anon$0)) {
-    l0$i := df$rt$intToRef(1)
-    goto lbl$break$0
-    goto lbl$continue$0
+  var i: Ref
+  var anon: Ref
+  i := intToRef(0)
+  label cont
+    invariant isSubtype(typeOf(i), intType())
+    invariant isSubtype(typeOf(b), boolType())
+  anon := b
+  if (boolFromRef(anon)) {
+    i := intToRef(1)
+    goto break
+    goto cont
   }
-  label lbl$break$0
-  assert df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
-  assert df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  ret$0 := l0$i
-  goto lbl$ret$0
-  label lbl$ret$0
+  label break
+  assert isSubtype(typeOf(i), intType())
+  assert isSubtype(typeOf(b), boolType())
+  ret0 := i
+  goto ret
+  label ret
 }
 
 /return_break_continue.kt:(276,289): info: Generated Viper text for whileContinue:
-method f$whileContinue$TF$T$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method whileContinue() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var l0$b: Ref
-  var anon$0: Ref
-  l0$b := df$rt$boolToRef(true)
-  label lbl$continue$0
-    invariant df$rt$isSubtype(df$rt$typeOf(l0$b), df$rt$boolType())
-  anon$0 := l0$b
-  if (df$rt$boolFromRef(anon$0)) {
-    l0$b := df$rt$boolToRef(false)
-    goto lbl$continue$0
-    goto lbl$continue$0
+  var b: Ref
+  var anon: Ref
+  b := boolToRef(true)
+  label cont
+    invariant isSubtype(typeOf(b), boolType())
+  anon := b
+  if (boolFromRef(anon)) {
+    b := boolToRef(false)
+    goto cont
+    goto cont
   }
-  label lbl$break$0
-  assert df$rt$isSubtype(df$rt$typeOf(l0$b), df$rt$boolType())
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  label break
+  assert isSubtype(typeOf(b), boolType())
+  label ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /return_break_continue.kt:(375,386): info: Generated Viper text for whileNested:
-method f$whileNested$TF$T$Boolean$T$Unit(p$b: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method whileNested(b: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var anon$0: Ref
-  label lbl$continue$0
-    invariant df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  anon$0 := p$b
-  if (df$rt$boolFromRef(anon$0)) {
-    var anon$1: Ref
-    var anon$2: Ref
-    label lbl$continue$1
-      invariant df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-    anon$1 := p$b
-    if (df$rt$boolFromRef(anon$1)) {
-      goto lbl$break$1
-      goto lbl$continue$1
+  var anon0: Ref
+  label lbl_cont_0
+    invariant isSubtype(typeOf(b), boolType())
+  anon0 := b
+  if (boolFromRef(anon0)) {
+    var anon1: Ref
+    var anon: Ref
+    label lbl_cont_1
+      invariant isSubtype(typeOf(b), boolType())
+    anon1 := b
+    if (boolFromRef(anon1)) {
+      goto lbl_break_1
+      goto lbl_cont_1
     }
-    label lbl$break$1
-    assert df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-    goto lbl$continue$0
-    label lbl$continue$2
-      invariant df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-    anon$2 := p$b
-    if (df$rt$boolFromRef(anon$2)) {
-      goto lbl$continue$2
-      goto lbl$continue$2
+    label lbl_break_1
+    assert isSubtype(typeOf(b), boolType())
+    goto lbl_cont_0
+    label lbl_cont
+      invariant isSubtype(typeOf(b), boolType())
+    anon := b
+    if (boolFromRef(anon)) {
+      goto lbl_cont
+      goto lbl_cont
     }
-    label lbl$break$2
-    assert df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-    goto lbl$break$0
-    goto lbl$continue$0
+    label lbl_break
+    assert isSubtype(typeOf(b), boolType())
+    goto lbl_break_0
+    goto lbl_cont_0
   }
-  label lbl$break$0
-  assert df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  label lbl_break_0
+  assert isSubtype(typeOf(b), boolType())
+  label ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /return_break_continue.kt:(556,569): info: Generated Viper text for labelledBreak:
-method f$labelledBreak$TF$T$Boolean$T$Unit(p$b: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method labelledBreak(b: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var anon$0: Ref
-  label lbl$continue$0
-    invariant df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  anon$0 := p$b
-  if (df$rt$boolFromRef(anon$0)) {
-    var anon$1: Ref
-    label lbl$continue$1
-      invariant df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-    anon$1 := p$b
-    if (df$rt$boolFromRef(anon$1)) {
-      goto lbl$break$0
-      goto lbl$break$1
-      goto lbl$break$1
-      goto lbl$continue$1
+  var anon0: Ref
+  label lbl_cont_0
+    invariant isSubtype(typeOf(b), boolType())
+  anon0 := b
+  if (boolFromRef(anon0)) {
+    var anon: Ref
+    label lbl_cont
+      invariant isSubtype(typeOf(b), boolType())
+    anon := b
+    if (boolFromRef(anon)) {
+      goto lbl_break_0
+      goto lbl_break
+      goto lbl_break
+      goto lbl_cont
     }
-    label lbl$break$1
-    assert df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-    goto lbl$break$0
-    goto lbl$break$0
-    goto lbl$continue$0
+    label lbl_break
+    assert isSubtype(typeOf(b), boolType())
+    goto lbl_break_0
+    goto lbl_break_0
+    goto lbl_cont_0
   }
-  label lbl$break$0
-  assert df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  label lbl_break_0
+  assert isSubtype(typeOf(b), boolType())
+  label ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /return_break_continue.kt:(754,770): info: Generated Viper text for labelledContinue:
-method f$labelledContinue$TF$T$Boolean$T$Unit(p$b: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method labelledContinue(b: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var anon$0: Ref
-  label lbl$continue$0
-    invariant df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  anon$0 := p$b
-  if (df$rt$boolFromRef(anon$0)) {
-    var anon$1: Ref
-    label lbl$continue$1
-      invariant df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-    anon$1 := p$b
-    if (df$rt$boolFromRef(anon$1)) {
-      goto lbl$continue$0
-      goto lbl$continue$1
-      goto lbl$continue$1
-      goto lbl$continue$1
+  var anon0: Ref
+  label lbl_cont_0
+    invariant isSubtype(typeOf(b), boolType())
+  anon0 := b
+  if (boolFromRef(anon0)) {
+    var anon: Ref
+    label lbl_cont
+      invariant isSubtype(typeOf(b), boolType())
+    anon := b
+    if (boolFromRef(anon)) {
+      goto lbl_cont_0
+      goto lbl_cont
+      goto lbl_cont
+      goto lbl_cont
     }
-    label lbl$break$1
-    assert df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-    goto lbl$continue$0
-    goto lbl$continue$0
-    goto lbl$continue$0
+    label lbl_break
+    assert isSubtype(typeOf(b), boolType())
+    goto lbl_cont_0
+    goto lbl_cont_0
+    goto lbl_cont_0
   }
-  label lbl$break$0
-  assert df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  label lbl_break_0
+  assert isSubtype(typeOf(b), boolType())
+  label ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /return_break_continue.kt:(970,992): info: Generated Viper text for labelledWhileShadowing:
-method f$labelledWhileShadowing$TF$T$Boolean$T$Unit(p$b: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method labelledWhileShadowing(b: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var anon$0: Ref
-  label lbl$continue$0
-    invariant df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  anon$0 := p$b
-  if (df$rt$boolFromRef(anon$0)) {
-    var anon$1: Ref
-    var anon$2: Ref
-    label lbl$continue$1
-      invariant df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-    anon$1 := p$b
-    if (df$rt$boolFromRef(anon$1)) {
-      goto lbl$break$1
-      goto lbl$continue$1
-      goto lbl$continue$1
+  var anon0: Ref
+  label lbl_cont_0
+    invariant isSubtype(typeOf(b), boolType())
+  anon0 := b
+  if (boolFromRef(anon0)) {
+    var anon1: Ref
+    var anon: Ref
+    label lbl_cont_1
+      invariant isSubtype(typeOf(b), boolType())
+    anon1 := b
+    if (boolFromRef(anon1)) {
+      goto lbl_break_1
+      goto lbl_cont_1
+      goto lbl_cont_1
     }
-    label lbl$break$1
-    assert df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-    label lbl$continue$2
-      invariant df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-    anon$2 := p$b
-    if (df$rt$boolFromRef(anon$2)) {
-      goto lbl$break$2
-      goto lbl$continue$2
-      goto lbl$continue$2
+    label lbl_break_1
+    assert isSubtype(typeOf(b), boolType())
+    label lbl_cont
+      invariant isSubtype(typeOf(b), boolType())
+    anon := b
+    if (boolFromRef(anon)) {
+      goto lbl_break
+      goto lbl_cont
+      goto lbl_cont
     }
-    label lbl$break$2
-    assert df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-    goto lbl$break$0
-    goto lbl$continue$0
-    goto lbl$continue$0
+    label lbl_break
+    assert isSubtype(typeOf(b), boolType())
+    goto lbl_break_0
+    goto lbl_cont_0
+    goto lbl_cont_0
   }
-  label lbl$break$0
-  assert df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  label lbl_break_0
+  assert isSubtype(typeOf(b), boolType())
+  label ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }

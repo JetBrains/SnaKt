@@ -1,0 +1,27 @@
+/flattened_secondary_constructors.kt:(259,289): info: Generated Viper text for flattenedSecondaryConstructors:
+field value: Ref
+
+method con(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), boolType())
+  ensures isSubtype(typeOf(ret), Constructor$Box())
+  ensures acc(Constructor$Box$pred$shared(ret), wildcard)
+  ensures acc(Constructor$Box$pred$unique(ret), write)
+
+
+method con$Constructor_Box(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret), Constructor_Box())
+  ensures acc(Constructor_Box$pred$shared(ret), wildcard)
+  ensures acc(Constructor_Box$pred$unique(ret), write)
+
+
+method flattenedSecondaryConstructors() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  left := con$Constructor_Box(intToRef(1))
+  right := con(boolToRef(true))
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}

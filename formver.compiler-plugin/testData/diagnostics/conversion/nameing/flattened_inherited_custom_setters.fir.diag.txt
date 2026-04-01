@@ -1,0 +1,33 @@
+/flattened_inherited_custom_setters.kt:(420,451): info: Generated Viper text for flattenedInheritedCustomSetters:
+method con() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), Derived_Base$CustomSetter())
+  ensures acc(Derived_Base$CustomSetter$pred$shared(ret), wildcard)
+  ensures acc(Derived_Base$CustomSetter$pred$unique(ret), write)
+
+
+method con$Derived_Base_CustomSetter() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), Derived_Base_CustomSetter())
+  ensures acc(Derived_Base_CustomSetter$pred$shared(ret), wildcard)
+  ensures acc(Derived_Base_CustomSetter$pred$unique(ret), write)
+
+
+method flattenedInheritedCustomSetters() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon0: Ref
+  var anon: Ref
+  left := con$Derived_Base_CustomSetter()
+  right := con()
+  anon0 := s$payload(left, intToRef(1))
+  anon := s$payload(right, boolToRef(true))
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}
+
+method payload(this: Ref) returns (ret: Ref)
+
+
+method s$payload(this: Ref, anon0: Ref) returns (ret: Ref)
+
