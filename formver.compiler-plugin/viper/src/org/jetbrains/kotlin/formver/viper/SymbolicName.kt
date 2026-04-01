@@ -12,10 +12,10 @@ interface NamedEntity {
 
 sealed interface NamePart {
 
-    // Just simple string name
+    // Just a simple string name
     class Basic(val name: String) : NamePart
 
-    // Depends on other Name
+    // Depends on another Name
     class Dependent(val name: NamedEntity) : NamePart
 
     object Separator : NamePart
