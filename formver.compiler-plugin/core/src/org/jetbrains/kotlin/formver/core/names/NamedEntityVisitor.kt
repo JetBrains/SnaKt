@@ -110,6 +110,8 @@ interface SymbolicNameVisitor<D, R> {
         is NamedDomainAxiomLabel -> visitNamedDomainAxiomLabel(name, data)
         is QualifiedDomainFuncName -> visitQualifiedDomainFuncName(name, data)
         is UnqualifiedDomainFuncName -> visitUnqualifiedDomainFuncName(name, data)
+        is HavocName -> visitHavocKotlinName(name, data)
+        is PredicateName -> visitPredicateKotlinName(name, data)
         is NameOfType -> visitNameOfType(name, data)
         is RelatedDomainFuncName -> visitRelatedDomainFuncName(name, data)
         else -> {
@@ -153,8 +155,6 @@ interface SymbolicNameVisitor<D, R> {
     // Kotlin Specific Names
     fun visitKotlinName(name: KotlinName, data: D): R = when (name) {
         is ConstructorKotlinName -> visitConstructorKotlinName(name, data)
-        is HavocName -> visitHavocKotlinName(name, data)
-        is PredicateName -> visitPredicateKotlinName(name, data)
         is SimpleKotlinName -> visitSimpleKotlinName(name, data)
         is TypedKotlinNameWithType -> visitTypedKotlinNameWithType(name, data)
         is ClassKotlinName -> visitClassKotlinName(name, data)
