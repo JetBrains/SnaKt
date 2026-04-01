@@ -9,9 +9,9 @@ import org.jetbrains.kotlin.formver.viper.*
 import org.jetbrains.kotlin.name.FqName
 
 /**
- * Name of a Kotlin entity in the original program in a specified scope and optionally distinguished by type.
+ * A name of an entity together with a scope.
  */
-data class ScopedKotlinName(val scope: NameScope, val name: KotlinName) : SymbolicName {
+data class ScopedName(val scope: NameScope, val name: SymbolicName) : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledScope: String?
         get() = scope.fullMangledName
@@ -43,7 +43,7 @@ data class ScopedKotlinName(val scope: NameScope, val name: KotlinName) : Symbol
 
 fun FqName.asViperString() = asString().replace('.', '_')
 
-fun ScopedKotlinName.asScope(): NameScope {
+fun ScopedName.asScope(): NameScope {
     val className = name as? ClassKotlinName
     require(className != null) { "Only classes can be used for scopes." }
     return ClassScope(scope, className)

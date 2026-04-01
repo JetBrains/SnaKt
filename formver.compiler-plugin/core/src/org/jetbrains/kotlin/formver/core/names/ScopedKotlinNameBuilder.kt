@@ -10,9 +10,9 @@ import org.jetbrains.kotlin.name.FqName
 class ScopedKotlinNameBuilder {
     private var scope: NameScope? = null
 
-    fun complete(name: KotlinName): ScopedKotlinName {
+    fun complete(name: KotlinName): ScopedName {
         require(scope != null) { "No scope specified " }
-        return ScopedKotlinName(scope!!, name)
+        return ScopedName(scope!!, name)
     }
 
     fun packageScope(packageName: FqName) {
@@ -62,5 +62,5 @@ class ScopedKotlinNameBuilder {
 }
 
 // TODO: generalise this to work for all names.
-fun buildName(init: ScopedKotlinNameBuilder.() -> KotlinName): ScopedKotlinName =
+fun buildName(init: ScopedKotlinNameBuilder.() -> KotlinName): ScopedName =
     ScopedKotlinNameBuilder().run { complete(init()) }

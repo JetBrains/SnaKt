@@ -284,12 +284,12 @@ class ShortNameResolver(val equality: Equality) : NameResolver {
     private fun createRepresentatives() {
         // Field Names which are public
         val publicFields = elements().filter {
-            it is ScopedKotlinName && it.scope is PublicScope
+            it is ScopedName && it.scope is PublicScope
         }
         // Group them according to their name
-        val grouped = mutableMapOf<KotlinName, Set<ScopedKotlinName>>()
+        val grouped = mutableMapOf<SymbolicName, Set<ScopedName>>()
         publicFields.forEach {
-            grouped.merge((it as ScopedKotlinName).name, setOf(it), Set<ScopedKotlinName>::plus)
+            grouped.merge((it as ScopedName).name, setOf(it), Set<ScopedName>::plus)
         }
         // The first is the representative.
         // TODO: if one of them already has a representative, this must be taken into account. But can this even happen?
@@ -336,7 +336,7 @@ class ShortNameResolver(val equality: Equality) : NameResolver {
             when (entity) {
                 is FreshName -> true  // likely yes
                 is KotlinName -> !isScoped(entity)
-                is ScopedKotlinName -> (!isScoped(entity) && entity.name !is ClassKotlinName)
+                is ScopedName -> (!isScoped(entity) && entity.name !is ClassKotlinName)
                 is DomainName -> true // yes the domain is used as a name
                 is NamedDomainAxiomLabel -> true
                 is QualifiedDomainFuncName -> true
@@ -404,7 +404,7 @@ class ShortNameResolver(val equality: Equality) : NameResolver {
                     is SymbolicName -> when (it.name) {
                         is FreshName -> "<fresh>"
                         is KotlinName -> "<kotlin>"
-                        is ScopedKotlinName -> "<Kscope>"
+                        is ScopedName -> "<Kscope>"
                         is DomainName -> "<domain>"
                         is NameOfType -> "<typeName>"
                         else -> "<other>"
@@ -463,7 +463,7 @@ class ShortNameResolver(val equality: Equality) : NameResolver {
                     when (entity) {
                         is FreshName -> "Fresh: "
                         is KotlinName -> "Kotlin: "
-                        is ScopedKotlinName -> "Scoped: "
+                        is ScopedName -> "Scoped: "
                         is NameOfType -> "NameOfType: "
                         is DomainName -> "Domain: "
                         is NamedDomainAxiomLabel -> "Axiom: "
@@ -722,7 +722,7 @@ internal class Registrator : NamedEntityVisitor<ShortNameResolver, Unit> {
             }
 
             override fun visitHavocKotlinName(
-                name: HavocKotlinName, data: ShortNameResolver
+                name: HavocName, data: ShortNameResolver
             ) {
                 data.addElement(name)
                 data.link(name.type.name, Relation.IS_PART_OF, name)
@@ -733,7 +733,7 @@ internal class Registrator : NamedEntityVisitor<ShortNameResolver, Unit> {
             }
 
             override fun visitPredicateKotlinName(
-                name: PredicateKotlinName, data: ShortNameResolver
+                name: PredicateName, data: ShortNameResolver
             ) {
                 data.addElement(name)
                 data.link(name.nameType, Relation.KIND_OF, name)
@@ -776,7 +776,7 @@ internal class Registrator : NamedEntityVisitor<ShortNameResolver, Unit> {
             }
 
             override fun visitScopedKotlinName(
-                name: ScopedKotlinName, data: ShortNameResolver
+                name: ScopedName, data: ShortNameResolver
             ) {
                 data.addElement(name)
                 name.nameType?.let {

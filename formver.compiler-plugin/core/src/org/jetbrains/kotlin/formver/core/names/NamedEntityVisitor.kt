@@ -105,7 +105,7 @@ interface SymbolicNameVisitor<D, R> {
     fun visit(name: SymbolicName, data: D): R = when (name) {
         is FreshName -> visitFreshName(name, data)
         is KotlinName -> visitKotlinName(name, data)
-        is ScopedKotlinName -> visitScopedKotlinName(name, data)
+        is ScopedName -> visitScopedKotlinName(name, data)
         is DomainName -> visitDomainName(name, data)
         is NamedDomainAxiomLabel -> visitNamedDomainAxiomLabel(name, data)
         is QualifiedDomainFuncName -> visitQualifiedDomainFuncName(name, data)
@@ -153,8 +153,8 @@ interface SymbolicNameVisitor<D, R> {
     // Kotlin Specific Names
     fun visitKotlinName(name: KotlinName, data: D): R = when (name) {
         is ConstructorKotlinName -> visitConstructorKotlinName(name, data)
-        is HavocKotlinName -> visitHavocKotlinName(name, data)
-        is PredicateKotlinName -> visitPredicateKotlinName(name, data)
+        is HavocName -> visitHavocKotlinName(name, data)
+        is PredicateName -> visitPredicateKotlinName(name, data)
         is SimpleKotlinName -> visitSimpleKotlinName(name, data)
         is TypedKotlinNameWithType -> visitTypedKotlinNameWithType(name, data)
         is ClassKotlinName -> visitClassKotlinName(name, data)
@@ -162,15 +162,15 @@ interface SymbolicNameVisitor<D, R> {
     }
 
     fun visitConstructorKotlinName(name: ConstructorKotlinName, data: D): R
-    fun visitHavocKotlinName(name: HavocKotlinName, data: D): R
-    fun visitPredicateKotlinName(name: PredicateKotlinName, data: D): R
+    fun visitHavocKotlinName(name: HavocName, data: D): R
+    fun visitPredicateKotlinName(name: PredicateName, data: D): R
     fun visitSimpleKotlinName(name: SimpleKotlinName, data: D): R
     fun visitTypedKotlinNameWithType(name: TypedKotlinNameWithType, data: D): R
     fun visitClassKotlinName(name: ClassKotlinName, data: D): R
     fun visitTypedKotlinName(name: TypedKotlinName, data: D): R
 
     // Various Names
-    fun visitScopedKotlinName(name: ScopedKotlinName, data: D): R
+    fun visitScopedKotlinName(name: ScopedName, data: D): R
     fun visitDomainName(name: DomainName, data: D): R
     fun visitNamedDomainAxiomLabel(name: NamedDomainAxiomLabel, data: D): R
     fun visitQualifiedDomainFuncName(name: QualifiedDomainFuncName, data: D): R
@@ -281,10 +281,10 @@ fun <D, R> SsaVariableName.accept(visitor: SymbolicNameVisitor<D, R>, data: D): 
 fun <D, R> ConstructorKotlinName.accept(visitor: SymbolicNameVisitor<D, R>, data: D): R =
     visitor.visitConstructorKotlinName(this, data)
 
-fun <D, R> HavocKotlinName.accept(visitor: SymbolicNameVisitor<D, R>, data: D): R =
+fun <D, R> HavocName.accept(visitor: SymbolicNameVisitor<D, R>, data: D): R =
     visitor.visitHavocKotlinName(this, data)
 
-fun <D, R> PredicateKotlinName.accept(visitor: SymbolicNameVisitor<D, R>, data: D): R =
+fun <D, R> PredicateName.accept(visitor: SymbolicNameVisitor<D, R>, data: D): R =
     visitor.visitPredicateKotlinName(this, data)
 
 fun <D, R> SimpleKotlinName.accept(visitor: SymbolicNameVisitor<D, R>, data: D): R =
@@ -293,7 +293,7 @@ fun <D, R> SimpleKotlinName.accept(visitor: SymbolicNameVisitor<D, R>, data: D):
 fun <D, R> TypedKotlinNameWithType.accept(visitor: SymbolicNameVisitor<D, R>, data: D): R =
     visitor.visitTypedKotlinNameWithType(this, data)
 
-fun <D, R> ScopedKotlinName.accept(visitor: SymbolicNameVisitor<D, R>, data: D): R =
+fun <D, R> ScopedName.accept(visitor: SymbolicNameVisitor<D, R>, data: D): R =
     visitor.visitScopedKotlinName(this, data)
 
 fun <D, R> NamedDomainAxiomLabel.accept(visitor: SymbolicNameVisitor<D, R>, data: D): R =

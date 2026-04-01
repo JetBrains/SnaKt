@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.PlaintextLe
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.TreeView
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
-import org.jetbrains.kotlin.formver.core.names.HavocKotlinName
+import org.jetbrains.kotlin.formver.core.names.HavocName
 import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
 import org.jetbrains.kotlin.formver.core.names.TypeName
 import org.jetbrains.kotlin.formver.viper.NameResolver
@@ -41,7 +41,7 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
         get() = TypeName(pretype, flags.nullable)
 
     val havocMethodName: SymbolicName by lazy {
-        HavocKotlinName(this)
+        HavocName(this)
     }
 
     val havocMethod: Method by lazy {
