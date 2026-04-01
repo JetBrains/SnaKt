@@ -166,7 +166,6 @@ class ShortNameResolver : NameResolver {
 
 
     // START RESOLVE NAMES
-    fun fullName(entity: NamedEntity): String = entity.candidates.last().fullName()
 
     // The name.fullName() contains characters which are not allowed in viper. This should only happen when we dump the ExpEmbedding, which can contain
     // entities that the final program does not.
@@ -415,7 +414,7 @@ class ShortNameResolver : NameResolver {
 
             is ViperKeyword -> "Viper Keyword: "
             else -> throw SnaktInternalException(null, "Unsupported entity type: ${entity.javaClass.name}")
-        } + fullName(entity) + nl + nodeLabel(entity)
+        } + entity.fullName() + nl + nodeLabel(entity)
 
 
         fun relationLabel(relation: Relation) = when (relation) {
