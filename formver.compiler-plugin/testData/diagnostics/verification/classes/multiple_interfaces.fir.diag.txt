@@ -1,71 +1,71 @@
 /multiple_interfaces.kt:(799,804): info: Generated Viper text for take1:
-method f$take1$TF$T$InterfaceWithImplementation1$T$Unit(p$obj: Ref)
-  returns (ret$0: Ref)
+method f$take1$t$TF$t$T$InterfaceWithImplementation1$t$T$Unit(p$obj: Ref)
+  returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$InterfaceWithImplementation1())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 {
-  var anon$0: Ref
-  var anon$1: Ref
-  inhale acc(p$c$InterfaceWithImplementation1$shared(p$obj), wildcard)
-  anon$1 := pg$public$field(p$obj)
-  anon$0 := anon$1
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
+  var v$anon$$0: Ref
+  var v$anon$$1: Ref
+  inhale acc(pred$c$InterfaceWithImplementation1$shared(p$obj), wildcard)
+  v$anon$$1 := g$public$field(p$obj)
+  v$anon$$0 := v$anon$$1
+  inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$0), df$rt$intType())
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }
 
-method pg$public$field(this$dispatch: Ref) returns (ret: Ref)
+method g$public$field(this$dispatch: Ref) returns (v$ret: Ref)
 
 
 /multiple_interfaces.kt:(863,868): info: Generated Viper text for take2:
-method f$take2$TF$T$InterfaceWithoutImplementation2$T$Unit(p$obj: Ref)
-  returns (ret$0: Ref)
+method f$take2$t$TF$t$T$InterfaceWithoutImplementation2$t$T$Unit(p$obj: Ref)
+  returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$InterfaceWithoutImplementation2())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 {
-  var anon$0: Ref
-  var anon$1: Ref
-  inhale acc(p$c$InterfaceWithoutImplementation2$shared(p$obj), wildcard)
-  anon$1 := pg$public$field(p$obj)
-  anon$0 := anon$1
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
+  var v$anon$$0: Ref
+  var v$anon$$1: Ref
+  inhale acc(pred$c$InterfaceWithoutImplementation2$shared(p$obj), wildcard)
+  v$anon$$1 := g$public$field(p$obj)
+  v$anon$$0 := v$anon$$1
+  inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$0), df$rt$intType())
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }
 
-method pg$public$field(this$dispatch: Ref) returns (ret: Ref)
+method g$public$field(this$dispatch: Ref) returns (v$ret: Ref)
 
 
 /multiple_interfaces.kt:(930,935): info: Generated Viper text for take3:
 field bf$field: Ref
 
-method f$take3$TF$T$AbstractWithFinalImplementation3$T$Unit(p$obj: Ref)
-  returns (ret$0: Ref)
+method f$take3$t$TF$t$T$AbstractWithFinalImplementation3$t$T$Unit(p$obj: Ref)
+  returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$AbstractWithFinalImplementation3())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 {
-  inhale acc(p$c$AbstractWithFinalImplementation3$shared(p$obj), wildcard)
+  inhale acc(pred$c$AbstractWithFinalImplementation3$shared(p$obj), wildcard)
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }
 
 /multiple_interfaces.kt:(998,1003): info: Generated Viper text for take4:
-method f$take4$TF$T$AbstractWithOpenImplementation4$T$Unit(p$obj: Ref)
-  returns (ret$0: Ref)
+method f$take4$t$TF$t$T$AbstractWithOpenImplementation4$t$T$Unit(p$obj: Ref)
+  returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$AbstractWithOpenImplementation4())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 {
-  var anon$0: Ref
-  var anon$1: Ref
-  inhale acc(p$c$AbstractWithOpenImplementation4$shared(p$obj), wildcard)
-  anon$1 := pg$public$field(p$obj)
-  anon$0 := anon$1
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
+  var v$anon$$0: Ref
+  var v$anon$$1: Ref
+  inhale acc(pred$c$AbstractWithOpenImplementation4$shared(p$obj), wildcard)
+  v$anon$$1 := g$public$field(p$obj)
+  v$anon$$0 := v$anon$$1
+  inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$0), df$rt$intType())
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }
 
-method pg$public$field(this$dispatch: Ref) returns (ret: Ref)
+method g$public$field(this$dispatch: Ref) returns (v$ret: Ref)
 
 
 /multiple_interfaces.kt:(1683,1694): info: Generated Viper text for createImpls:
@@ -73,138 +73,138 @@ field bf$field: Ref
 
 field bf$size: Ref
 
-method con$c$Impl12$T$Impl12() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Impl12())
-  ensures acc(p$c$Impl12$shared(ret), wildcard)
-  ensures acc(p$c$Impl12$unique(ret), write)
+method con$c$Impl12$$t$T$Impl12() returns (v$ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$c$Impl12())
+  ensures acc(pred$c$Impl12$shared(v$ret), wildcard)
+  ensures acc(pred$c$Impl12$unique(v$ret), write)
 
 
-method con$c$Impl14$T$Impl14() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Impl14())
-  ensures acc(p$c$Impl14$shared(ret), wildcard)
-  ensures acc(p$c$Impl14$unique(ret), write)
+method con$c$Impl14$$t$T$Impl14() returns (v$ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$c$Impl14())
+  ensures acc(pred$c$Impl14$shared(v$ret), wildcard)
+  ensures acc(pred$c$Impl14$unique(v$ret), write)
 
 
-method con$c$Impl23$T$Impl23() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Impl23())
-  ensures acc(p$c$Impl23$shared(ret), wildcard)
-  ensures acc(p$c$Impl23$unique(ret), write)
+method con$c$Impl23$$t$T$Impl23() returns (v$ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$c$Impl23())
+  ensures acc(pred$c$Impl23$shared(v$ret), wildcard)
+  ensures acc(pred$c$Impl23$unique(v$ret), write)
 
 
-method con$c$Impl24$T$Impl24() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Impl24())
-  ensures acc(p$c$Impl24$shared(ret), wildcard)
-  ensures acc(p$c$Impl24$unique(ret), write)
+method con$c$Impl24$$t$T$Impl24() returns (v$ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$c$Impl24())
+  ensures acc(pred$c$Impl24$shared(v$ret), wildcard)
+  ensures acc(pred$c$Impl24$unique(v$ret), write)
 
 
-method con$c$Impl3$T$Impl3() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Impl3())
-  ensures acc(p$c$Impl3$shared(ret), wildcard)
-  ensures acc(p$c$Impl3$unique(ret), write)
+method con$c$Impl3$$t$T$Impl3() returns (v$ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$c$Impl3())
+  ensures acc(pred$c$Impl3$shared(v$ret), wildcard)
+  ensures acc(pred$c$Impl3$unique(v$ret), write)
 
 
-method f$create6$TF$T$InheritingInterfaceWithoutImplementation6()
-  returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$InheritingInterfaceWithoutImplementation6())
-  ensures acc(p$c$InheritingInterfaceWithoutImplementation6$shared(ret), wildcard)
+method f$create6$t$TF$$t$T$InheritingInterfaceWithoutImplementation6()
+  returns (v$ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$c$InheritingInterfaceWithoutImplementation6())
+  ensures acc(pred$c$InheritingInterfaceWithoutImplementation6$shared(v$ret), wildcard)
 
 
-method f$createImpls$TF$T$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method f$createImpls$t$TF$$t$T$Unit() returns (v$ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 {
   var l0$impl12: Ref
   var l0$start12: Ref
-  var anon$0: Ref
-  var anon$1: Ref
-  var anon$2: Ref
+  var v$anon$$0: Ref
+  var v$anon$$1: Ref
+  var v$anon$$2: Ref
   var l0$impl23: Ref
   var l0$start23: Ref
-  var anon$3: Ref
-  var anon$4: Ref
-  var anon$5: Ref
+  var v$anon$$3: Ref
+  var v$anon$$4: Ref
+  var v$anon$$5: Ref
   var l0$impl3: Ref
   var l0$start3: Ref
-  var anon$6: Ref
-  var anon$7: Ref
+  var v$anon$$6: Ref
+  var v$anon$$7: Ref
   var l0$impl24: Ref
   var l0$start24: Ref
-  var anon$8: Ref
-  var anon$9: Ref
-  var anon$10: Ref
-  var anon$11: Ref
+  var v$anon$$8: Ref
+  var v$anon$$9: Ref
+  var v$anon$$10: Ref
+  var v$anon$$11: Ref
   var l0$impl14: Ref
   var l0$start14: Ref
-  var anon$12: Ref
-  var anon$13: Ref
-  var anon$14: Ref
+  var v$anon$$12: Ref
+  var v$anon$$13: Ref
+  var v$anon$$14: Ref
   var l0$impl6: Ref
   var l0$start6: Ref
-  var anon$15: Ref
-  var anon$16: Ref
+  var v$anon$$15: Ref
+  var v$anon$$16: Ref
   var l0$cond1: Ref
-  var anon$17: Ref
+  var v$anon$$17: Ref
   var l0$cond2: Ref
-  var anon$18: Ref
+  var v$anon$$18: Ref
   var l0$cond3: Ref
-  var anon$19: Ref
+  var v$anon$$19: Ref
   var l0$cond4: Ref
-  var anon$20: Ref
+  var v$anon$$20: Ref
   var l0$cond5: Ref
-  l0$impl12 := con$c$Impl12$T$Impl12()
-  unfold acc(p$c$Impl12$shared(l0$impl12), wildcard)
-  anon$0 := l0$impl12.bf$field
-  l0$start12 := sp$minusInts(sp$plusInts(anon$0, df$rt$intToRef(1)), df$rt$intToRef(1))
-  anon$1 := f$take1$TF$T$InterfaceWithImplementation1$T$Unit(l0$impl12)
-  anon$2 := f$take2$TF$T$InterfaceWithoutImplementation2$T$Unit(l0$impl12)
-  l0$impl23 := con$c$Impl23$T$Impl23()
-  unfold acc(p$c$Impl23$shared(l0$impl23), wildcard)
-  unfold acc(p$c$AbstractWithFinalImplementation3$shared(l0$impl23), wildcard)
-  anon$3 := l0$impl23.bf$field
-  l0$start23 := sp$minusInts(sp$plusInts(anon$3, df$rt$intToRef(1)), df$rt$intToRef(1))
-  anon$4 := f$take2$TF$T$InterfaceWithoutImplementation2$T$Unit(l0$impl23)
-  anon$5 := f$take3$TF$T$AbstractWithFinalImplementation3$T$Unit(l0$impl23)
-  l0$impl3 := con$c$Impl3$T$Impl3()
-  unfold acc(p$c$Impl3$shared(l0$impl3), wildcard)
-  unfold acc(p$c$AbstractWithFinalImplementation3$shared(l0$impl3), wildcard)
-  anon$6 := l0$impl3.bf$field
-  l0$start3 := sp$minusInts(sp$plusInts(anon$6, df$rt$intToRef(1)), df$rt$intToRef(1))
-  anon$7 := f$take3$TF$T$AbstractWithFinalImplementation3$T$Unit(l0$impl3)
-  l0$impl24 := con$c$Impl24$T$Impl24()
-  anon$9 := pg$public$field(l0$impl24)
-  anon$8 := anon$9
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$8), df$rt$intType())
-  l0$start24 := sp$minusInts(sp$plusInts(anon$8, df$rt$intToRef(1)), df$rt$intToRef(1))
-  anon$10 := f$take2$TF$T$InterfaceWithoutImplementation2$T$Unit(l0$impl24)
-  anon$11 := f$take4$TF$T$AbstractWithOpenImplementation4$T$Unit(l0$impl24)
-  l0$impl14 := con$c$Impl14$T$Impl14()
-  unfold acc(p$c$Impl14$shared(l0$impl14), wildcard)
-  anon$12 := l0$impl14.bf$field
-  l0$start14 := sp$minusInts(sp$plusInts(anon$12, df$rt$intToRef(1)), df$rt$intToRef(1))
-  anon$13 := f$take1$TF$T$InterfaceWithImplementation1$T$Unit(l0$impl14)
-  anon$14 := f$take4$TF$T$AbstractWithOpenImplementation4$T$Unit(l0$impl14)
-  l0$impl6 := f$create6$TF$T$InheritingInterfaceWithoutImplementation6()
-  anon$16 := pg$public$field(l0$impl6)
-  anon$15 := anon$16
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$15), df$rt$intType())
-  l0$start6 := sp$minusInts(sp$plusInts(anon$15, df$rt$intToRef(1)), df$rt$intToRef(1))
-  unfold acc(p$c$Impl12$shared(l0$impl12), wildcard)
-  anon$17 := l0$impl12.bf$field
+  l0$impl12 := con$c$Impl12$$t$T$Impl12()
+  unfold acc(pred$c$Impl12$shared(l0$impl12), wildcard)
+  v$anon$$0 := l0$impl12.bf$field
+  l0$start12 := f$minusInts(f$plusInts(v$anon$$0, df$rt$intToRef(1)), df$rt$intToRef(1))
+  v$anon$$1 := f$take1$t$TF$t$T$InterfaceWithImplementation1$t$T$Unit(l0$impl12)
+  v$anon$$2 := f$take2$t$TF$t$T$InterfaceWithoutImplementation2$t$T$Unit(l0$impl12)
+  l0$impl23 := con$c$Impl23$$t$T$Impl23()
+  unfold acc(pred$c$Impl23$shared(l0$impl23), wildcard)
+  unfold acc(pred$c$AbstractWithFinalImplementation3$shared(l0$impl23), wildcard)
+  v$anon$$3 := l0$impl23.bf$field
+  l0$start23 := f$minusInts(f$plusInts(v$anon$$3, df$rt$intToRef(1)), df$rt$intToRef(1))
+  v$anon$$4 := f$take2$t$TF$t$T$InterfaceWithoutImplementation2$t$T$Unit(l0$impl23)
+  v$anon$$5 := f$take3$t$TF$t$T$AbstractWithFinalImplementation3$t$T$Unit(l0$impl23)
+  l0$impl3 := con$c$Impl3$$t$T$Impl3()
+  unfold acc(pred$c$Impl3$shared(l0$impl3), wildcard)
+  unfold acc(pred$c$AbstractWithFinalImplementation3$shared(l0$impl3), wildcard)
+  v$anon$$6 := l0$impl3.bf$field
+  l0$start3 := f$minusInts(f$plusInts(v$anon$$6, df$rt$intToRef(1)), df$rt$intToRef(1))
+  v$anon$$7 := f$take3$t$TF$t$T$AbstractWithFinalImplementation3$t$T$Unit(l0$impl3)
+  l0$impl24 := con$c$Impl24$$t$T$Impl24()
+  v$anon$$9 := g$public$field(l0$impl24)
+  v$anon$$8 := v$anon$$9
+  inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$8), df$rt$intType())
+  l0$start24 := f$minusInts(f$plusInts(v$anon$$8, df$rt$intToRef(1)), df$rt$intToRef(1))
+  v$anon$$10 := f$take2$t$TF$t$T$InterfaceWithoutImplementation2$t$T$Unit(l0$impl24)
+  v$anon$$11 := f$take4$t$TF$t$T$AbstractWithOpenImplementation4$t$T$Unit(l0$impl24)
+  l0$impl14 := con$c$Impl14$$t$T$Impl14()
+  unfold acc(pred$c$Impl14$shared(l0$impl14), wildcard)
+  v$anon$$12 := l0$impl14.bf$field
+  l0$start14 := f$minusInts(f$plusInts(v$anon$$12, df$rt$intToRef(1)), df$rt$intToRef(1))
+  v$anon$$13 := f$take1$t$TF$t$T$InterfaceWithImplementation1$t$T$Unit(l0$impl14)
+  v$anon$$14 := f$take4$t$TF$t$T$AbstractWithOpenImplementation4$t$T$Unit(l0$impl14)
+  l0$impl6 := f$create6$t$TF$$t$T$InheritingInterfaceWithoutImplementation6()
+  v$anon$$16 := g$public$field(l0$impl6)
+  v$anon$$15 := v$anon$$16
+  inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$15), df$rt$intType())
+  l0$start6 := f$minusInts(f$plusInts(v$anon$$15, df$rt$intToRef(1)), df$rt$intToRef(1))
+  unfold acc(pred$c$Impl12$shared(l0$impl12), wildcard)
+  v$anon$$17 := l0$impl12.bf$field
   l0$cond1 := df$rt$boolToRef(df$rt$intFromRef(l0$start12) ==
-    df$rt$intFromRef(anon$17))
-  unfold acc(p$c$Impl23$shared(l0$impl23), wildcard)
-  unfold acc(p$c$AbstractWithFinalImplementation3$shared(l0$impl23), wildcard)
-  anon$18 := l0$impl23.bf$field
+    df$rt$intFromRef(v$anon$$17))
+  unfold acc(pred$c$Impl23$shared(l0$impl23), wildcard)
+  unfold acc(pred$c$AbstractWithFinalImplementation3$shared(l0$impl23), wildcard)
+  v$anon$$18 := l0$impl23.bf$field
   l0$cond2 := df$rt$boolToRef(df$rt$intFromRef(l0$start23) ==
-    df$rt$intFromRef(anon$18))
-  unfold acc(p$c$Impl3$shared(l0$impl3), wildcard)
-  unfold acc(p$c$AbstractWithFinalImplementation3$shared(l0$impl3), wildcard)
-  anon$19 := l0$impl3.bf$field
+    df$rt$intFromRef(v$anon$$18))
+  unfold acc(pred$c$Impl3$shared(l0$impl3), wildcard)
+  unfold acc(pred$c$AbstractWithFinalImplementation3$shared(l0$impl3), wildcard)
+  v$anon$$19 := l0$impl3.bf$field
   l0$cond3 := df$rt$boolToRef(df$rt$intFromRef(l0$start3) ==
-    df$rt$intFromRef(anon$19))
-  unfold acc(p$c$Impl14$shared(l0$impl14), wildcard)
-  anon$20 := l0$impl14.bf$field
+    df$rt$intFromRef(v$anon$$19))
+  unfold acc(pred$c$Impl14$shared(l0$impl14), wildcard)
+  v$anon$$20 := l0$impl14.bf$field
   l0$cond4 := df$rt$boolToRef(df$rt$intFromRef(l0$start14) ==
-    df$rt$intFromRef(anon$20))
+    df$rt$intFromRef(v$anon$$20))
   l0$cond5 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(l0$start6), df$rt$intType()))
   assert df$rt$boolFromRef(l0$cond1)
   assert df$rt$boolFromRef(l0$cond2)
@@ -212,31 +212,32 @@ method f$createImpls$TF$T$Unit() returns (ret$0: Ref)
   assert df$rt$boolFromRef(l0$cond4)
   assert df$rt$boolFromRef(l0$cond5)
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }
 
-method f$take1$TF$T$InterfaceWithImplementation1$T$Unit(p$obj: Ref)
-  returns (ret: Ref)
+method f$take1$t$TF$t$T$InterfaceWithImplementation1$t$T$Unit(p$obj: Ref)
+  returns (v$ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$InterfaceWithImplementation1())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$unitType())
 
 
-method f$take2$TF$T$InterfaceWithoutImplementation2$T$Unit(p$obj: Ref)
-  returns (ret: Ref)
+method f$take2$t$TF$t$T$InterfaceWithoutImplementation2$t$T$Unit(p$obj: Ref)
+  returns (v$ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$InterfaceWithoutImplementation2())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$unitType())
 
 
-method f$take3$TF$T$AbstractWithFinalImplementation3$T$Unit(p$obj: Ref)
-  returns (ret: Ref)
+method f$take3$t$TF$t$T$AbstractWithFinalImplementation3$t$T$Unit(p$obj: Ref)
+  returns (v$ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$AbstractWithFinalImplementation3())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$unitType())
 
 
-method f$take4$TF$T$AbstractWithOpenImplementation4$T$Unit(p$obj: Ref)
-  returns (ret: Ref)
+method f$take4$t$TF$t$T$AbstractWithOpenImplementation4$t$T$Unit(p$obj: Ref)
+  returns (v$ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$c$AbstractWithOpenImplementation4())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$unitType())
 
 
-method pg$public$field(this$dispatch: Ref) returns (ret: Ref)
+method g$public$field(this$dispatch: Ref) returns (v$ret: Ref)
+

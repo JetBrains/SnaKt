@@ -27,7 +27,7 @@ interface NameResolver {
 
 class DebugNameResolver : NameResolver {
     override fun resolve(name: SymbolicName): String = listOfNotNull(
-        name.nameType?.name,
+        name.nameType?.mangledName,
             name.mangledScope,
             name.mangledBaseName
         ).joinToString(SEPARATOR)

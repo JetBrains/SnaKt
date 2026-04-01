@@ -3,20 +3,20 @@ field bf$a: Ref
 
 field bf$b: Ref
 
-method f$testManualPermissionFieldGetter$TF$T$ManualPermissionFields$T$Unit(p$mpf: Ref)
-  returns (ret$0: Ref)
+method f$testManualPermissionFieldGetter$t$TF$t$T$ManualPermissionFields$t$T$Unit(p$mpf: Ref)
+  returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$mpf), df$rt$c$ManualPermissionFields())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 {
   var l0$a: Ref
   var l0$b: Ref
-  inhale acc(p$c$ManualPermissionFields$shared(p$mpf), wildcard)
-  unfold acc(p$c$ManualPermissionFields$shared(p$mpf), wildcard)
+  inhale acc(pred$c$ManualPermissionFields$shared(p$mpf), wildcard)
+  unfold acc(pred$c$ManualPermissionFields$shared(p$mpf), wildcard)
   l0$a := p$mpf.bf$a
   l0$b := p$mpf.bf$b
   inhale df$rt$isSubtype(df$rt$typeOf(l0$b), df$rt$intType())
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }
 
 /manual_permissions.kt:(251,282): info: Generated Viper text for testManualPermissionFieldSetter:
@@ -24,13 +24,13 @@ field bf$a: Ref
 
 field bf$b: Ref
 
-method f$testManualPermissionFieldSetter$TF$T$ManualPermissionFields$T$Unit(p$mpf: Ref)
-  returns (ret$0: Ref)
+method f$testManualPermissionFieldSetter$t$TF$t$T$ManualPermissionFields$t$T$Unit(p$mpf: Ref)
+  returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$mpf), df$rt$c$ManualPermissionFields())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 {
-  inhale acc(p$c$ManualPermissionFields$shared(p$mpf), wildcard)
+  inhale acc(pred$c$ManualPermissionFields$shared(p$mpf), wildcard)
   p$mpf.bf$b := df$rt$intToRef(123)
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }
