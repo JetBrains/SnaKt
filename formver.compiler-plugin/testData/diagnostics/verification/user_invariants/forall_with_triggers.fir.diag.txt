@@ -1,10 +1,10 @@
 /forall_with_triggers.kt:(50,73): info: Generated Viper text for forAllWithSimpleTrigger:
 method f$forAllWithSimpleTrigger$t$TF$$t$T$Int() returns (v$ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
-  ensures (forall v$anon$builtin: Int ::
-      { v$anon$builtin * v$anon$builtin }
-      v$anon$builtin * v$anon$builtin >= 0 &&
-      v$anon$builtin * v$anon$builtin >= df$rt$intFromRef(v$ret$0))
+  ensures (forall v$anon$builtin$1: Int ::
+      { v$anon$builtin$1 * v$anon$builtin$1 }
+      v$anon$builtin$1 * v$anon$builtin$1 >= 0 &&
+      v$anon$builtin$1 * v$anon$builtin$1 >= df$rt$intFromRef(v$ret$0))
 {
   v$ret$0 := df$rt$intToRef(0)
   goto lbl$ret$0
@@ -14,11 +14,11 @@ method f$forAllWithSimpleTrigger$t$TF$$t$T$Int() returns (v$ret$0: Ref)
 /forall_with_triggers.kt:(318,344): info: Generated Viper text for forAllWithMultipleTriggers:
 method f$forAllWithMultipleTriggers$t$TF$$t$T$Int() returns (v$ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
-  ensures (forall v$anon$builtin: Int ::
-      { v$anon$builtin * v$anon$builtin }
-      { v$anon$builtin + 1 }
-      !(v$anon$builtin == 0) ==>
-      v$anon$builtin * v$anon$builtin >= df$rt$intFromRef(v$ret$0))
+  ensures (forall v$anon$builtin$1: Int ::
+      { v$anon$builtin$1 * v$anon$builtin$1 }
+      { v$anon$builtin$1 + 1 }
+      !(v$anon$builtin$1 == 0) ==>
+      v$anon$builtin$1 * v$anon$builtin$1 >= df$rt$intFromRef(v$ret$0))
 {
   v$ret$0 := df$rt$intToRef(1)
   goto lbl$ret$0
@@ -40,12 +40,12 @@ method f$forAllWithTriggersInLoop$t$TF$t$T$String$t$T$Int(p$str: Ref)
     invariant df$rt$isSubtype(df$rt$typeOf(l0$res), df$rt$intType())
     invariant df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
     invariant df$rt$isSubtype(df$rt$typeOf(p$str), df$rt$stringType())
-    invariant (forall v$anon$builtin: Int ::
-        { df$rt$stringFromRef(p$str)[v$anon$builtin] }
-        0 <= v$anon$builtin &&
-        v$anon$builtin < |df$rt$stringFromRef(p$str)| ==>
-        (df$rt$stringFromRef(p$str)[v$anon$builtin] - 97) *
-        (df$rt$stringFromRef(p$str)[v$anon$builtin] - 97) >=
+    invariant (forall v$anon$builtin$0: Int ::
+        { df$rt$stringFromRef(p$str)[v$anon$builtin$0] }
+        0 <= v$anon$builtin$0 &&
+        v$anon$builtin$0 < |df$rt$stringFromRef(p$str)| ==>
+        (df$rt$stringFromRef(p$str)[v$anon$builtin$0] - 97) *
+        (df$rt$stringFromRef(p$str)[v$anon$builtin$0] - 97) >=
         df$rt$intFromRef(l0$res))
   v$anon$$1 := f$gtInts(l0$i, df$rt$intToRef(0))
   if (df$rt$boolFromRef(v$anon$$1)) {
@@ -58,11 +58,12 @@ method f$forAllWithTriggersInLoop$t$TF$t$T$String$t$T$Int(p$str: Ref)
   assert df$rt$isSubtype(df$rt$typeOf(l0$res), df$rt$intType())
   assert df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
   assert df$rt$isSubtype(df$rt$typeOf(p$str), df$rt$stringType())
-  assert (forall v$anon$builtin: Int ::
-      { df$rt$stringFromRef(p$str)[v$anon$builtin] }
-      0 <= v$anon$builtin && v$anon$builtin < |df$rt$stringFromRef(p$str)| ==>
-      (df$rt$stringFromRef(p$str)[v$anon$builtin] - 97) *
-      (df$rt$stringFromRef(p$str)[v$anon$builtin] - 97) >=
+  assert (forall v$anon$builtin$0: Int ::
+      { df$rt$stringFromRef(p$str)[v$anon$builtin$0] }
+      0 <= v$anon$builtin$0 &&
+      v$anon$builtin$0 < |df$rt$stringFromRef(p$str)| ==>
+      (df$rt$stringFromRef(p$str)[v$anon$builtin$0] - 97) *
+      (df$rt$stringFromRef(p$str)[v$anon$builtin$0] - 97) >=
       df$rt$intFromRef(l0$res))
   v$ret$0 := l0$res
   goto lbl$ret$0
@@ -72,7 +73,8 @@ method f$forAllWithTriggersInLoop$t$TF$t$T$String$t$T$Int(p$str: Ref)
 /forall_with_triggers.kt:(990,1011): info: Generated Viper text for forAllWithoutTriggers:
 method f$forAllWithoutTriggers$t$TF$$t$T$Int() returns (v$ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
-  ensures (forall v$anon$builtin: Int ::v$anon$builtin * v$anon$builtin >=
+  ensures (forall v$anon$builtin$1: Int ::v$anon$builtin$1 *
+      v$anon$builtin$1 >=
       0)
 {
   v$ret$0 := df$rt$intToRef(0)

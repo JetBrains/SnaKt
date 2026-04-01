@@ -19,10 +19,10 @@ method f$subs$t$TF$t$T$String$t$T$Int$t$T$Int$t$T$String(this$extension: Ref,
   ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$stringType())
   ensures |df$rt$stringFromRef(v$ret$0)| ==
     df$rt$intFromRef(p$hi) - df$rt$intFromRef(p$lo)
-  ensures (forall v$anon$builtin: Int ::0 <= v$anon$builtin &&
-      v$anon$builtin < |df$rt$stringFromRef(v$ret$0)| ==>
-      df$rt$stringFromRef(v$ret$0)[v$anon$builtin] ==
-      df$rt$stringFromRef(this$extension)[v$anon$builtin +
+  ensures (forall v$anon$builtin$2: Int ::0 <= v$anon$builtin$2 &&
+      v$anon$builtin$2 < |df$rt$stringFromRef(v$ret$0)| ==>
+      df$rt$stringFromRef(v$ret$0)[v$anon$builtin$2] ==
+      df$rt$stringFromRef(this$extension)[v$anon$builtin$2 +
       df$rt$intFromRef(p$lo)])
 {
   var l0$res: Ref
@@ -39,10 +39,10 @@ method f$subs$t$TF$t$T$String$t$T$Int$t$T$Int$t$T$String(this$extension: Ref,
       df$rt$intFromRef(l0$i) <= df$rt$intFromRef(p$hi)
     invariant |df$rt$stringFromRef(l0$res)| ==
       df$rt$intFromRef(l0$i) - df$rt$intFromRef(p$lo)
-    invariant (forall v$anon$builtin: Int ::0 <= v$anon$builtin &&
-        v$anon$builtin < |df$rt$stringFromRef(l0$res)| ==>
-        df$rt$stringFromRef(l0$res)[v$anon$builtin] ==
-        df$rt$stringFromRef(this$extension)[v$anon$builtin +
+    invariant (forall v$anon$builtin$1: Int ::0 <= v$anon$builtin$1 &&
+        v$anon$builtin$1 < |df$rt$stringFromRef(l0$res)| ==>
+        df$rt$stringFromRef(l0$res)[v$anon$builtin$1] ==
+        df$rt$stringFromRef(this$extension)[v$anon$builtin$1 +
         df$rt$intFromRef(p$lo)])
   v$anon$$1 := f$ltInts(l0$i, p$hi)
   if (df$rt$boolFromRef(v$anon$$1)) {
@@ -63,10 +63,10 @@ method f$subs$t$TF$t$T$String$t$T$Int$t$T$Int$t$T$String(this$extension: Ref,
     df$rt$intFromRef(l0$i) <= df$rt$intFromRef(p$hi)
   assert |df$rt$stringFromRef(l0$res)| ==
     df$rt$intFromRef(l0$i) - df$rt$intFromRef(p$lo)
-  assert (forall v$anon$builtin: Int ::0 <= v$anon$builtin &&
-      v$anon$builtin < |df$rt$stringFromRef(l0$res)| ==>
-      df$rt$stringFromRef(l0$res)[v$anon$builtin] ==
-      df$rt$stringFromRef(this$extension)[v$anon$builtin +
+  assert (forall v$anon$builtin$1: Int ::0 <= v$anon$builtin$1 &&
+      v$anon$builtin$1 < |df$rt$stringFromRef(l0$res)| ==>
+      df$rt$stringFromRef(l0$res)[v$anon$builtin$1] ==
+      df$rt$stringFromRef(this$extension)[v$anon$builtin$1 +
       df$rt$intFromRef(p$lo)])
   v$ret$0 := l0$res
   goto lbl$ret$0
@@ -78,20 +78,21 @@ method f$mergeStrings$t$TF$t$T$String$t$T$String$t$T$String(p$a: Ref, p$b: Ref)
   returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$stringType())
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$stringType())
-  requires (forall v$anon$builtin: Int ::(1 <= v$anon$builtin &&
-      v$anon$builtin < |df$rt$stringFromRef(p$a)| ==>
-      df$rt$stringFromRef(p$a)[v$anon$builtin - 1] <=
-      df$rt$stringFromRef(p$a)[v$anon$builtin]) &&
-      (1 <= v$anon$builtin && v$anon$builtin < |df$rt$stringFromRef(p$b)| ==>
-      df$rt$stringFromRef(p$b)[v$anon$builtin - 1] <=
-      df$rt$stringFromRef(p$b)[v$anon$builtin]))
+  requires (forall v$anon$builtin$3: Int ::(1 <= v$anon$builtin$3 &&
+      v$anon$builtin$3 < |df$rt$stringFromRef(p$a)| ==>
+      df$rt$stringFromRef(p$a)[v$anon$builtin$3 - 1] <=
+      df$rt$stringFromRef(p$a)[v$anon$builtin$3]) &&
+      (1 <= v$anon$builtin$3 &&
+      v$anon$builtin$3 < |df$rt$stringFromRef(p$b)| ==>
+      df$rt$stringFromRef(p$b)[v$anon$builtin$3 - 1] <=
+      df$rt$stringFromRef(p$b)[v$anon$builtin$3]))
   ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$stringType())
   ensures |df$rt$stringFromRef(v$ret$0)| ==
     |df$rt$stringFromRef(p$a)| + |df$rt$stringFromRef(p$b)|
-  ensures (forall v$anon$builtin: Int ::1 <= v$anon$builtin &&
-      v$anon$builtin < |df$rt$stringFromRef(v$ret$0)| ==>
-      df$rt$stringFromRef(v$ret$0)[v$anon$builtin - 1] <=
-      df$rt$stringFromRef(v$ret$0)[v$anon$builtin])
+  ensures (forall v$anon$builtin$4: Int ::1 <= v$anon$builtin$4 &&
+      v$anon$builtin$4 < |df$rt$stringFromRef(v$ret$0)| ==>
+      df$rt$stringFromRef(v$ret$0)[v$anon$builtin$4 - 1] <=
+      df$rt$stringFromRef(v$ret$0)[v$anon$builtin$4])
 {
   var l0$pa: Ref
   var l0$pb: Ref
@@ -115,10 +116,10 @@ method f$mergeStrings$t$TF$t$T$String$t$T$String$t$T$String(p$a: Ref, p$b: Ref)
       df$rt$intFromRef(l0$pb) <= |df$rt$stringFromRef(p$b)|
     invariant |df$rt$stringFromRef(l0$res)| ==
       df$rt$intFromRef(l0$pa) + df$rt$intFromRef(l0$pb)
-    invariant (forall v$anon$builtin: Int ::1 <= v$anon$builtin &&
-        v$anon$builtin < |df$rt$stringFromRef(l0$res)| ==>
-        df$rt$stringFromRef(l0$res)[v$anon$builtin - 1] <=
-        df$rt$stringFromRef(l0$res)[v$anon$builtin])
+    invariant (forall v$anon$builtin$2: Int ::1 <= v$anon$builtin$2 &&
+        v$anon$builtin$2 < |df$rt$stringFromRef(l0$res)| ==>
+        df$rt$stringFromRef(l0$res)[v$anon$builtin$2 - 1] <=
+        df$rt$stringFromRef(l0$res)[v$anon$builtin$2])
     invariant |df$rt$stringFromRef(l0$res)| == 0 ||
       df$rt$intFromRef(l0$pa) == |df$rt$stringFromRef(p$a)| ||
       df$rt$stringFromRef(l0$res)[|df$rt$stringFromRef(l0$res)| - 1] <=
@@ -176,10 +177,10 @@ method f$mergeStrings$t$TF$t$T$String$t$T$String$t$T$String(p$a: Ref, p$b: Ref)
     df$rt$intFromRef(l0$pb) <= |df$rt$stringFromRef(p$b)|
   assert |df$rt$stringFromRef(l0$res)| ==
     df$rt$intFromRef(l0$pa) + df$rt$intFromRef(l0$pb)
-  assert (forall v$anon$builtin: Int ::1 <= v$anon$builtin &&
-      v$anon$builtin < |df$rt$stringFromRef(l0$res)| ==>
-      df$rt$stringFromRef(l0$res)[v$anon$builtin - 1] <=
-      df$rt$stringFromRef(l0$res)[v$anon$builtin])
+  assert (forall v$anon$builtin$2: Int ::1 <= v$anon$builtin$2 &&
+      v$anon$builtin$2 < |df$rt$stringFromRef(l0$res)| ==>
+      df$rt$stringFromRef(l0$res)[v$anon$builtin$2 - 1] <=
+      df$rt$stringFromRef(l0$res)[v$anon$builtin$2])
   assert |df$rt$stringFromRef(l0$res)| == 0 ||
     df$rt$intFromRef(l0$pa) == |df$rt$stringFromRef(p$a)| ||
     df$rt$stringFromRef(l0$res)[|df$rt$stringFromRef(l0$res)| - 1] <=
@@ -208,10 +209,10 @@ method f$mergeSorted$t$TF$t$T$String$t$T$String(this$extension: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$stringType())
   ensures |df$rt$stringFromRef(v$ret$0)| ==
     |df$rt$stringFromRef(this$extension)|
-  ensures (forall v$anon$builtin: Int ::1 <= v$anon$builtin &&
-      v$anon$builtin < |df$rt$stringFromRef(v$ret$0)| ==>
-      df$rt$stringFromRef(v$ret$0)[v$anon$builtin - 1] <=
-      df$rt$stringFromRef(v$ret$0)[v$anon$builtin])
+  ensures (forall v$anon$builtin$4: Int ::1 <= v$anon$builtin$4 &&
+      v$anon$builtin$4 < |df$rt$stringFromRef(v$ret$0)| ==>
+      df$rt$stringFromRef(v$ret$0)[v$anon$builtin$4 - 1] <=
+      df$rt$stringFromRef(v$ret$0)[v$anon$builtin$4])
 {
   if (|df$rt$stringFromRef(this$extension)| <= 1) {
     v$ret$0 := this$extension
@@ -237,20 +238,21 @@ method f$mergeStrings$t$TF$t$T$String$t$T$String$t$T$String(p$a: Ref, p$b: Ref)
   returns (v$ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$stringType())
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$stringType())
-  requires (forall v$anon$builtin: Int ::(1 <= v$anon$builtin &&
-      v$anon$builtin < |df$rt$stringFromRef(p$a)| ==>
-      df$rt$stringFromRef(p$a)[v$anon$builtin - 1] <=
-      df$rt$stringFromRef(p$a)[v$anon$builtin]) &&
-      (1 <= v$anon$builtin && v$anon$builtin < |df$rt$stringFromRef(p$b)| ==>
-      df$rt$stringFromRef(p$b)[v$anon$builtin - 1] <=
-      df$rt$stringFromRef(p$b)[v$anon$builtin]))
+  requires (forall v$anon$builtin$5: Int ::(1 <= v$anon$builtin$5 &&
+      v$anon$builtin$5 < |df$rt$stringFromRef(p$a)| ==>
+      df$rt$stringFromRef(p$a)[v$anon$builtin$5 - 1] <=
+      df$rt$stringFromRef(p$a)[v$anon$builtin$5]) &&
+      (1 <= v$anon$builtin$5 &&
+      v$anon$builtin$5 < |df$rt$stringFromRef(p$b)| ==>
+      df$rt$stringFromRef(p$b)[v$anon$builtin$5 - 1] <=
+      df$rt$stringFromRef(p$b)[v$anon$builtin$5]))
   ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$stringType())
   ensures |df$rt$stringFromRef(v$ret)| ==
     |df$rt$stringFromRef(p$a)| + |df$rt$stringFromRef(p$b)|
-  ensures (forall v$anon$builtin: Int ::1 <= v$anon$builtin &&
-      v$anon$builtin < |df$rt$stringFromRef(v$ret)| ==>
-      df$rt$stringFromRef(v$ret)[v$anon$builtin - 1] <=
-      df$rt$stringFromRef(v$ret)[v$anon$builtin])
+  ensures (forall v$anon$builtin$6: Int ::1 <= v$anon$builtin$6 &&
+      v$anon$builtin$6 < |df$rt$stringFromRef(v$ret)| ==>
+      df$rt$stringFromRef(v$ret)[v$anon$builtin$6 - 1] <=
+      df$rt$stringFromRef(v$ret)[v$anon$builtin$6])
 
 
 method f$subs$t$TF$t$T$String$t$T$Int$t$T$Int$t$T$String(this$extension: Ref,
@@ -265,9 +267,9 @@ method f$subs$t$TF$t$T$String$t$T$Int$t$T$Int$t$T$String(this$extension: Ref,
   ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$stringType())
   ensures |df$rt$stringFromRef(v$ret)| ==
     df$rt$intFromRef(p$hi) - df$rt$intFromRef(p$lo)
-  ensures (forall v$anon$builtin: Int ::0 <= v$anon$builtin &&
-      v$anon$builtin < |df$rt$stringFromRef(v$ret)| ==>
-      df$rt$stringFromRef(v$ret)[v$anon$builtin] ==
-      df$rt$stringFromRef(this$extension)[v$anon$builtin +
+  ensures (forall v$anon$builtin$7: Int ::0 <= v$anon$builtin$7 &&
+      v$anon$builtin$7 < |df$rt$stringFromRef(v$ret)| ==>
+      df$rt$stringFromRef(v$ret)[v$anon$builtin$7] ==
+      df$rt$stringFromRef(this$extension)[v$anon$builtin$7 +
       df$rt$intFromRef(p$lo)])
 

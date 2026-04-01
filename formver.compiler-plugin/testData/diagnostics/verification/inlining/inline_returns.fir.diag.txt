@@ -9,19 +9,14 @@ method f$simple_return$t$TF$$t$T$Unit() returns (v$ret$0: Ref)
   var v$anon$$0: Ref
   var v$ret$2: Ref
   v$ret$2 := df$rt$boolToRef(false)
-  goto ret$2
-  label ret$2
   goto lbl$ret$2
   label lbl$ret$2
   v$anon$$0 := v$ret$2
   v$ret$1 := f$notBool(v$anon$$0)
-  goto ret$1
-  label ret$1
   goto lbl$ret$1
   label lbl$ret$1
   l0$cond1 := v$ret$1
   assert df$rt$boolFromRef(l0$cond1)
-  label ret$0
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }
@@ -35,22 +30,15 @@ method f$unnamed_return$t$TF$$t$T$Boolean() returns (v$ret$0: Ref)
   var v$anon$$0: Ref
   var v$ret$2: Ref
   v$ret$0 := df$rt$boolToRef(true)
-  goto ret$0
   goto lbl$ret$0
   v$ret$2 := df$rt$boolToRef(true)
-  goto ret$2
-  label ret$2
   goto lbl$ret$2
   label lbl$ret$2
   v$anon$$0 := v$ret$2
   v$ret$1 := f$notBool(v$anon$$0)
-  goto ret$1
-  label ret$1
   goto lbl$ret$1
   label lbl$ret$1
   v$ret$0 := v$ret$1
-  goto ret$0
-  label ret$0
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -64,22 +52,15 @@ method f$named_local_return$t$TF$$t$T$Boolean() returns (v$ret$0: Ref)
   var v$anon$$0: Ref
   var v$ret$2: Ref
   v$ret$2 := df$rt$boolToRef(false)
-  goto ret$2
   goto lbl$ret$2
   v$ret$2 := df$rt$boolToRef(true)
-  goto ret$2
-  label ret$2
   goto lbl$ret$2
   label lbl$ret$2
   v$anon$$0 := v$ret$2
   v$ret$1 := f$notBool(v$anon$$0)
-  goto ret$1
-  label ret$1
   goto lbl$ret$1
   label lbl$ret$1
   v$ret$0 := v$ret$1
-  goto ret$0
-  label ret$0
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -93,22 +74,15 @@ method f$named_nonlocal_return$t$TF$$t$T$Boolean() returns (v$ret$0: Ref)
   var v$anon$$0: Ref
   var v$ret$2: Ref
   v$ret$0 := df$rt$boolToRef(true)
-  goto ret$0
   goto lbl$ret$0
   v$ret$2 := df$rt$boolToRef(true)
-  goto ret$2
-  label ret$2
   goto lbl$ret$2
   label lbl$ret$2
   v$anon$$0 := v$ret$2
   v$ret$1 := f$notBool(v$anon$$0)
-  goto ret$1
-  label ret$1
   goto lbl$ret$1
   label lbl$ret$1
   v$ret$0 := v$ret$1
-  goto ret$0
-  label ret$0
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -126,37 +100,25 @@ method f$double_nonlocal_return$t$TF$$t$T$Boolean() returns (v$ret$0: Ref)
   var v$anon$$1: Ref
   var v$ret$4: Ref
   v$ret$0 := df$rt$boolToRef(true)
-  goto ret$0
   goto lbl$ret$0
   v$ret$4 := df$rt$boolToRef(false)
-  goto ret$4
-  label ret$4
   goto lbl$ret$4
   label lbl$ret$4
   v$anon$$1 := v$ret$4
   v$ret$3 := f$notBool(v$anon$$1)
-  goto ret$3
-  label ret$3
   goto lbl$ret$3
   label lbl$ret$3
   l2$x := v$ret$3
   v$ret$0 := df$rt$boolToRef(false)
-  goto ret$0
   goto lbl$ret$0
   v$ret$2 := l2$x
-  goto ret$2
-  label ret$2
   goto lbl$ret$2
   label lbl$ret$2
   v$anon$$0 := v$ret$2
   v$ret$1 := f$notBool(v$anon$$0)
-  goto ret$1
-  label ret$1
   goto lbl$ret$1
   label lbl$ret$1
   v$ret$0 := v$ret$1
-  goto ret$0
-  label ret$0
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -173,37 +135,25 @@ method f$named_double_nonlocal_return$t$TF$$t$T$Boolean()
   var v$ret$3: Ref
   var v$ret$4: Ref
   v$ret$2 := df$rt$boolToRef(false)
-  goto ret$2
   goto lbl$ret$2
   v$ret$0 := df$rt$boolToRef(false)
-  goto ret$0
-  label ret$4
   goto lbl$ret$0
   label lbl$ret$4
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$4), df$rt$unitType())
   v$ret$3 := v$ret$4
-  goto ret$3
-  label ret$3
   goto lbl$ret$3
   label lbl$ret$3
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$3), df$rt$unitType())
   v$ret$0 := df$rt$boolToRef(false)
-  goto ret$0
   goto lbl$ret$0
   v$ret$2 := df$rt$boolToRef(true)
-  goto ret$2
-  label ret$2
   goto lbl$ret$2
   label lbl$ret$2
   v$anon$$0 := v$ret$2
   v$ret$1 := f$notBool(v$anon$$0)
-  goto ret$1
-  label ret$1
   goto lbl$ret$1
   label lbl$ret$1
   v$ret$0 := v$ret$1
-  goto ret$0
-  label ret$0
   goto lbl$ret$0
   label lbl$ret$0
 }

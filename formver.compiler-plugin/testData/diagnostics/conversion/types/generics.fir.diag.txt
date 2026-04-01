@@ -1,4 +1,4 @@
-/generics.kt:(76,89): info: Generated Viper text for genericMethod:
+/generics.kt:(52,65): info: Generated Viper text for genericMethod:
 field bf$t: Ref
 
 method f$c$Box$genericMethod$t$TF$t$T$Box$t$NT$Any$t$NT$Any(this$dispatch: Ref,
@@ -14,7 +14,7 @@ method f$c$Box$genericMethod$t$TF$t$T$Box$t$NT$Any$t$NT$Any(this$dispatch: Ref,
   label lbl$ret$0
 }
 
-/generics.kt:(131,140): info: Generated Viper text for createBox:
+/generics.kt:(107,116): info: Generated Viper text for createBox:
 field bf$t: Ref
 
 method con$c$Box$t$NT$Any$t$T$Box(p$t: Ref) returns (v$ret: Ref)
@@ -44,7 +44,7 @@ method f$createBox$t$TF$$t$T$Int() returns (v$ret$0: Ref)
   label lbl$ret$0
 }
 
-/generics.kt:(251,266): info: Generated Viper text for setGenericField:
+/generics.kt:(227,242): info: Generated Viper text for setGenericField:
 field bf$t: Ref
 
 method con$c$Box$t$NT$Any$t$T$Box(p$t: Ref) returns (v$ret: Ref)
@@ -63,7 +63,7 @@ method f$setGenericField$t$TF$$t$T$Unit() returns (v$ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }
 
-/generics.kt:(317,327): info: Generated Viper text for genericFun:
+/generics.kt:(293,303): info: Generated Viper text for genericFun:
 method f$genericFun$t$TF$t$NT$Any$t$NT$Any(p$t: Ref) returns (v$ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$t), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$nullable(df$rt$anyType()))
@@ -73,7 +73,7 @@ method f$genericFun$t$TF$t$NT$Any$t$NT$Any(p$t: Ref) returns (v$ret$0: Ref)
   label lbl$ret$0
 }
 
-/generics.kt:(346,361): info: Generated Viper text for callGenericFunc:
+/generics.kt:(322,337): info: Generated Viper text for callGenericFunc:
 method f$callGenericFunc$t$TF$$t$T$Unit() returns (v$ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 {
@@ -91,7 +91,7 @@ method f$genericFun$t$TF$t$NT$Any$t$NT$Any(p$t: Ref) returns (v$ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$nullable(df$rt$anyType()))
 
 
-/generics.kt:(399,419): info: Generated Viper text for genericAsIfCondition:
+/generics.kt:(375,395): info: Generated Viper text for genericAsIfCondition:
 field bf$t: Ref
 
 method f$genericAsIfCondition$t$TF$t$T$Box$t$T$Int(p$box: Ref)

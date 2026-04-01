@@ -9,7 +9,7 @@ method f$empty_list_expr_get$t$TF$$t$T$Unit() returns (v$ret$0: Ref)
   v$anon$$0 := f$pkg$kotlin_collections$emptyList$t$TF$$t$T$List()
   l0$s := f$pkg$kotlin_collections$c$List$get$t$TF$t$T$List$t$T$Int$t$T$Int(v$anon$$0,
     df$rt$intToRef(0))
-  label ret$0
+  label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }
 
@@ -52,7 +52,7 @@ method f$empty_list_get$t$TF$$t$T$Unit() returns (v$ret$0: Ref)
   l0$myList := f$pkg$kotlin_collections$emptyList$t$TF$$t$T$List()
   l0$s := f$pkg$kotlin_collections$c$List$get$t$TF$t$T$List$t$T$Int$t$T$Int(l0$myList,
     df$rt$intToRef(0))
-  label ret$0
+  label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }
 
@@ -118,8 +118,8 @@ method f$unsafe_last$t$TF$t$T$List$t$T$Int(p$l: Ref) returns (v$ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$0), df$rt$intType())
   v$ret$0 := f$pkg$kotlin_collections$c$List$get$t$TF$t$T$List$t$T$Int$t$T$Int(p$l,
     f$minusInts(v$anon$$0, df$rt$intToRef(1)))
-  goto ret$0
-  label ret$0
+  goto lbl$ret$0
+  label lbl$ret$0
 }
 
 /list.kt:(315,328): warning: Invalid index for list 'l', the index may be less than zero.
@@ -143,7 +143,7 @@ method f$add_get$t$TF$t$T$MutableList$t$T$Unit(p$l: Ref)
     df$rt$intToRef(1))
   l0$n := f$pkg$kotlin_collections$c$MutableList$get$t$TF$t$T$MutableList$t$T$Int$t$T$Int(p$l,
     df$rt$intToRef(1))
-  label ret$0
+  label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }
 
@@ -191,7 +191,7 @@ method f$empty_list_sub$t$TF$$t$T$Unit() returns (v$ret$0: Ref)
   v$anon$$0 := f$pkg$kotlin_collections$emptyList$t$TF$$t$T$List()
   l0$l := f$pkg$kotlin_collections$c$List$subList$t$TF$t$T$List$t$T$Int$t$T$Int$t$T$List(v$anon$$0,
     df$rt$intToRef(0), df$rt$intToRef(1))
-  label ret$0
+  label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }
 
@@ -241,7 +241,7 @@ method f$empty_list_sub_negative$t$TF$$t$T$Unit() returns (v$ret$0: Ref)
   v$anon$$0 := f$pkg$kotlin_collections$emptyList$t$TF$$t$T$List()
   l0$l := f$pkg$kotlin_collections$c$List$subList$t$TF$t$T$List$t$T$Int$t$T$Int$t$T$List(v$anon$$0,
     df$rt$intToRef(-1), df$rt$intToRef(1))
-  label ret$0
+  label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }
 

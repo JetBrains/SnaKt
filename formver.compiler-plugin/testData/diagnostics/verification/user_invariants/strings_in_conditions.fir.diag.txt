@@ -5,10 +5,10 @@ method f$firstNotSortedIndex$t$TF$t$T$String$t$T$Int(p$s: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
   ensures 0 <= df$rt$intFromRef(v$ret$0) &&
     df$rt$intFromRef(v$ret$0) <= |df$rt$stringFromRef(p$s)|
-  ensures (forall v$anon$builtin: Int ::0 <= v$anon$builtin &&
-      v$anon$builtin + 1 < df$rt$intFromRef(v$ret$0) ==>
-      df$rt$stringFromRef(p$s)[v$anon$builtin] <=
-      df$rt$stringFromRef(p$s)[v$anon$builtin + 1])
+  ensures (forall v$anon$builtin$2: Int ::0 <= v$anon$builtin$2 &&
+      v$anon$builtin$2 + 1 < df$rt$intFromRef(v$ret$0) ==>
+      df$rt$stringFromRef(p$s)[v$anon$builtin$2] <=
+      df$rt$stringFromRef(p$s)[v$anon$builtin$2 + 1])
 {
   if (|df$rt$stringFromRef(p$s)| == 0) {
     v$ret$0 := df$rt$intToRef(0)
@@ -20,10 +20,10 @@ method f$firstNotSortedIndex$t$TF$t$T$String$t$T$Int(p$s: Ref)
     label lbl$cont$0
       invariant df$rt$isSubtype(df$rt$typeOf(l3$i), df$rt$intType())
       invariant df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$stringType())
-      invariant (forall v$anon$builtin: Int ::0 <= v$anon$builtin &&
-          v$anon$builtin + 1 < df$rt$intFromRef(l3$i) ==>
-          df$rt$stringFromRef(p$s)[v$anon$builtin] <=
-          df$rt$stringFromRef(p$s)[v$anon$builtin + 1])
+      invariant (forall v$anon$builtin$1: Int ::0 <= v$anon$builtin$1 &&
+          v$anon$builtin$1 + 1 < df$rt$intFromRef(l3$i) ==>
+          df$rt$stringFromRef(p$s)[v$anon$builtin$1] <=
+          df$rt$stringFromRef(p$s)[v$anon$builtin$1 + 1])
     if (df$rt$intFromRef(l3$i) < |df$rt$stringFromRef(p$s)|) {
       v$anon$$0 := f$leChars(f$stringGet(p$s, f$minusInts(l3$i, df$rt$intToRef(1))),
         f$stringGet(p$s, l3$i))
@@ -36,10 +36,10 @@ method f$firstNotSortedIndex$t$TF$t$T$String$t$T$Int(p$s: Ref)
     label lbl$break$0
     assert df$rt$isSubtype(df$rt$typeOf(l3$i), df$rt$intType())
     assert df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$stringType())
-    assert (forall v$anon$builtin: Int ::0 <= v$anon$builtin &&
-        v$anon$builtin + 1 < df$rt$intFromRef(l3$i) ==>
-        df$rt$stringFromRef(p$s)[v$anon$builtin] <=
-        df$rt$stringFromRef(p$s)[v$anon$builtin + 1])
+    assert (forall v$anon$builtin$1: Int ::0 <= v$anon$builtin$1 &&
+        v$anon$builtin$1 + 1 < df$rt$intFromRef(l3$i) ==>
+        df$rt$stringFromRef(p$s)[v$anon$builtin$1] <=
+        df$rt$stringFromRef(p$s)[v$anon$builtin$1 + 1])
     v$ret$0 := l3$i
     goto lbl$ret$0
   }
@@ -66,10 +66,10 @@ method f$addCharacterTimes$t$TF$t$T$String$t$T$Char$t$T$Int$t$T$String(p$s: Ref,
   ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$stringType())
   ensures |df$rt$stringFromRef(v$ret$0)| ==
     |df$rt$stringFromRef(p$s)| + df$rt$intFromRef(p$n)
-  ensures (forall v$anon$builtin: Int ::|df$rt$stringFromRef(p$s)| <=
-      v$anon$builtin &&
-      v$anon$builtin < |df$rt$stringFromRef(v$ret$0)| ==>
-      df$rt$stringFromRef(v$ret$0)[v$anon$builtin] ==
+  ensures (forall v$anon$builtin$2: Int ::|df$rt$stringFromRef(p$s)| <=
+      v$anon$builtin$2 &&
+      v$anon$builtin$2 < |df$rt$stringFromRef(v$ret$0)| ==>
+      df$rt$stringFromRef(v$ret$0)[v$anon$builtin$2] ==
       df$rt$charFromRef(p$c))
 {
   var l0$i: Ref
@@ -87,10 +87,10 @@ method f$addCharacterTimes$t$TF$t$T$String$t$T$Char$t$T$Int$t$T$String(p$s: Ref,
       df$rt$intFromRef(l0$i) <= df$rt$intFromRef(p$n)
     invariant |df$rt$stringFromRef(l0$res)| ==
       |df$rt$stringFromRef(p$s)| + df$rt$intFromRef(l0$i)
-    invariant (forall v$anon$builtin: Int ::|df$rt$stringFromRef(p$s)| <=
-        v$anon$builtin &&
-        v$anon$builtin < |df$rt$stringFromRef(l0$res)| ==>
-        df$rt$stringFromRef(l0$res)[v$anon$builtin] ==
+    invariant (forall v$anon$builtin$1: Int ::|df$rt$stringFromRef(p$s)| <=
+        v$anon$builtin$1 &&
+        v$anon$builtin$1 < |df$rt$stringFromRef(l0$res)| ==>
+        df$rt$stringFromRef(l0$res)[v$anon$builtin$1] ==
         df$rt$charFromRef(p$c))
   v$anon$$0 := f$ltInts(l0$i, p$n)
   if (df$rt$boolFromRef(v$anon$$0)) {
@@ -107,10 +107,11 @@ method f$addCharacterTimes$t$TF$t$T$String$t$T$Char$t$T$Int$t$T$String(p$s: Ref,
     df$rt$intFromRef(l0$i) <= df$rt$intFromRef(p$n)
   assert |df$rt$stringFromRef(l0$res)| ==
     |df$rt$stringFromRef(p$s)| + df$rt$intFromRef(l0$i)
-  assert (forall v$anon$builtin: Int ::|df$rt$stringFromRef(p$s)| <=
-      v$anon$builtin &&
-      v$anon$builtin < |df$rt$stringFromRef(l0$res)| ==>
-      df$rt$stringFromRef(l0$res)[v$anon$builtin] == df$rt$charFromRef(p$c))
+  assert (forall v$anon$builtin$1: Int ::|df$rt$stringFromRef(p$s)| <=
+      v$anon$builtin$1 &&
+      v$anon$builtin$1 < |df$rt$stringFromRef(l0$res)| ==>
+      df$rt$stringFromRef(l0$res)[v$anon$builtin$1] ==
+      df$rt$charFromRef(p$c))
   v$ret$0 := l0$res
   goto lbl$ret$0
   label lbl$ret$0

@@ -6,10 +6,10 @@ function f$annotatedIntLitReturn$t$TF$t$T$Int$t$T$Int(p$arg: Ref): Ref
   requires df$rt$intFromRef(p$arg) <= 42
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
   ensures df$rt$intFromRef(result) == 42
-  ensures (forall v$anon$builtin: Int ::
-      { v$anon$builtin == df$rt$intFromRef(result) }
-      v$anon$builtin == df$rt$intFromRef(result) ==>
-      v$anon$builtin == df$rt$intFromRef(p$arg))
+  ensures (forall v$anon$builtin$1: Int ::
+      { v$anon$builtin$1 == df$rt$intFromRef(result) }
+      v$anon$builtin$1 == df$rt$intFromRef(result) ==>
+      v$anon$builtin$1 == df$rt$intFromRef(p$arg))
 {
   df$rt$intToRef(42)
 }

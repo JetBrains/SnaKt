@@ -4,8 +4,6 @@ method f$idFun$t$TF$t$NT$Any$t$NT$Any(p$arg: Ref) returns (v$ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$nullable(df$rt$anyType()))
 {
   v$ret$0 := p$arg
-  goto ret$0
-  label ret$0
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -54,15 +52,11 @@ method f$checkMemberAccess$t$TF$$t$T$Boolean() returns (v$ret$0: Ref)
   inhale acc(pred$c$ClassWithMember$shared(v$anon$$1), wildcard)
   unfold acc(pred$c$ClassWithMember$shared(v$anon$$1), wildcard)
   v$ret$2 := v$anon$$1.bf$member
-  goto ret$2
-  label ret$2
   goto lbl$ret$2
   label lbl$ret$2
   v$anon$$6 := v$ret$2
   v$ret$1 := v$anon$$6
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$1), df$rt$nullable(df$rt$anyType()))
-  goto ret$1
-  label ret$1
   goto lbl$ret$1
   label lbl$ret$1
   v$anon$$5 := v$ret$1
@@ -76,21 +70,16 @@ method f$checkMemberAccess$t$TF$$t$T$Boolean() returns (v$ret$0: Ref)
   unfold acc(pred$c$ClassWithMember$shared(l0$obj), wildcard)
   v$anon$$11 := l0$obj.bf$member
   v$ret$0 := df$rt$boolToRef(df$rt$intFromRef(v$anon$$11) == 42)
-  goto ret$0
-  label ret$4
   goto lbl$ret$0
   label lbl$ret$4
   v$anon$$10 := v$ret$4
   v$ret$3 := v$anon$$10
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$3), df$rt$nullable(df$rt$anyType()))
-  goto ret$3
-  label ret$3
   goto lbl$ret$3
   label lbl$ret$3
   v$anon$$9 := v$ret$3
   v$anon$$8 := v$anon$$9
   inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$8), df$rt$nothingType())
-  label ret$0
   label lbl$ret$0
 }
 
@@ -143,13 +132,9 @@ method f$checkGenericMemberAccess$t$TF$t$T$Box$t$T$Boolean(p$box: Ref)
   inhale acc(pred$c$Box$shared(v$anon$$1), wildcard)
   unfold acc(pred$c$Box$shared(v$anon$$1), wildcard)
   v$ret$2 := v$anon$$1.bf$wrapped
-  goto ret$2
-  label ret$2
   goto lbl$ret$2
   label lbl$ret$2
   v$ret$1 := v$ret$2
-  goto ret$1
-  label ret$1
   goto lbl$ret$1
   label lbl$ret$1
   unfold acc(pred$c$Box$shared(p$box), wildcard)
@@ -165,21 +150,16 @@ method f$checkGenericMemberAccess$t$TF$t$T$Box$t$T$Boolean(p$box: Ref)
   unfold acc(pred$c$Box$shared(p$box), wildcard)
   v$anon$$11 := p$box.bf$wrapped
   v$ret$0 := df$rt$boolToRef(v$anon$$10 == v$anon$$11)
-  goto ret$0
-  label ret$4
   goto lbl$ret$0
   label lbl$ret$4
   v$anon$$9 := v$ret$4
   v$ret$3 := v$anon$$9
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$3), df$rt$nullable(df$rt$anyType()))
-  goto ret$3
-  label ret$3
   goto lbl$ret$3
   label lbl$ret$3
   v$anon$$6 := v$ret$3
   v$anon$$5 := v$anon$$6
   inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$5), df$rt$nothingType())
-  label ret$0
   label lbl$ret$0
 }
 
@@ -211,21 +191,16 @@ method f$checkArgumentIsCopied$t$TF$t$T$ClassWithVar$t$T$Unit(p$x: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$0), df$rt$intType())
   v$anon$$1 := v$anon$$0
   v$ret$2 := v$anon$$1
-  goto ret$2
-  label ret$2
   goto lbl$ret$2
   label lbl$ret$2
   v$anon$$5 := v$ret$2
   v$ret$1 := v$anon$$5
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$1), df$rt$nullable(df$rt$anyType()))
-  goto ret$1
-  label ret$1
   goto lbl$ret$1
   label lbl$ret$1
   v$anon$$3 := v$ret$1
   v$anon$$2 := v$anon$$3
   inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$2), df$rt$intType())
-  label ret$0
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }
@@ -288,15 +263,11 @@ method f$accessManyMembers$t$TF$t$T$ManyMembers$t$T$Unit(p$m: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$10), df$rt$boolType())
   unfold acc(pred$c$ManyMembers$shared(v$anon$$1), wildcard)
   v$ret$2 := v$anon$$1.bf$c
-  goto ret$2
-  label ret$2
   goto lbl$ret$2
   label lbl$ret$2
   v$anon$$6 := v$ret$2
   v$ret$1 := v$anon$$6
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$1), df$rt$nullable(df$rt$anyType()))
-  goto ret$1
-  label ret$1
   goto lbl$ret$1
   label lbl$ret$1
   v$anon$$5 := v$ret$1
@@ -320,22 +291,17 @@ method f$accessManyMembers$t$TF$t$T$ManyMembers$t$T$Unit(p$m: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$20), df$rt$boolType())
   unfold acc(pred$c$ManyMembers$shared(v$anon$$3), wildcard)
   v$ret$4 := v$anon$$3.bf$c
-  goto ret$4
-  label ret$4
   goto lbl$ret$4
   label lbl$ret$4
   v$anon$$15 := v$ret$4
   v$ret$3 := v$anon$$15
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$3), df$rt$nullable(df$rt$anyType()))
-  goto ret$3
-  label ret$3
   goto lbl$ret$3
   label lbl$ret$3
   v$anon$$14 := v$ret$3
   v$anon$$13 := v$anon$$14
   inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$13), df$rt$c$ClassWithVar())
   inhale acc(pred$c$ClassWithVar$shared(v$anon$$13), wildcard)
-  label ret$0
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }
@@ -383,20 +349,16 @@ method f$checkEvaluatedOnce$t$TF$t$T$Int$t$T$ManyMembers$t$T$Unit(p$i: Ref,
   inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$0), df$rt$intType())
   v$anon$$1 := v$anon$$0
   assert df$rt$intFromRef(v$anon$$1) == df$rt$intFromRef(v$anon$$1)
-  label ret$2
   label lbl$ret$2
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$2), df$rt$unitType())
   v$anon$$6 := v$ret$2
   v$ret$1 := v$anon$$6
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$1), df$rt$nullable(df$rt$anyType()))
-  goto ret$1
-  label ret$1
   goto lbl$ret$1
   label lbl$ret$1
   v$anon$$3 := v$ret$1
   v$anon$$2 := v$anon$$3
   inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$2), df$rt$unitType())
-  label ret$0
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }

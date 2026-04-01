@@ -2,9 +2,10 @@
 method f$anyIntegerSquaredAtLeastZero$t$TF$$t$T$Int()
   returns (v$ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
-  ensures (forall v$anon$builtin: Int ::v$anon$builtin * v$anon$builtin >=
+  ensures (forall v$anon$builtin$1: Int ::v$anon$builtin$1 *
+      v$anon$builtin$1 >=
       0 &&
-      v$anon$builtin * v$anon$builtin >= df$rt$intFromRef(v$ret$0))
+      v$anon$builtin$1 * v$anon$builtin$1 >= df$rt$intFromRef(v$ret$0))
 {
   v$ret$0 := df$rt$intToRef(0)
   goto lbl$ret$0
@@ -15,8 +16,8 @@ method f$anyIntegerSquaredAtLeastZero$t$TF$$t$T$Int()
 method f$anyIntegerSquaredIsAtLeastOneExceptZero$t$TF$$t$T$Int()
   returns (v$ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
-  ensures (forall v$anon$builtin: Int ::!(v$anon$builtin == 0) ==>
-      v$anon$builtin * v$anon$builtin >= df$rt$intFromRef(v$ret$0))
+  ensures (forall v$anon$builtin$1: Int ::!(v$anon$builtin$1 == 0) ==>
+      v$anon$builtin$1 * v$anon$builtin$1 >= df$rt$intFromRef(v$ret$0))
 {
   v$ret$0 := df$rt$intToRef(1)
   goto lbl$ret$0
@@ -38,10 +39,10 @@ method f$anyIntegerSquaredIsAtLeastZeroStringVersion$t$TF$t$T$String$t$T$Int(p$s
     invariant df$rt$isSubtype(df$rt$typeOf(l0$res), df$rt$intType())
     invariant df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
     invariant df$rt$isSubtype(df$rt$typeOf(p$str), df$rt$stringType())
-    invariant (forall v$anon$builtin: Int ::0 <= v$anon$builtin &&
-        v$anon$builtin < |df$rt$stringFromRef(p$str)| ==>
-        (df$rt$stringFromRef(p$str)[v$anon$builtin] - 97) *
-        (df$rt$stringFromRef(p$str)[v$anon$builtin] - 97) >=
+    invariant (forall v$anon$builtin$0: Int ::0 <= v$anon$builtin$0 &&
+        v$anon$builtin$0 < |df$rt$stringFromRef(p$str)| ==>
+        (df$rt$stringFromRef(p$str)[v$anon$builtin$0] - 97) *
+        (df$rt$stringFromRef(p$str)[v$anon$builtin$0] - 97) >=
         df$rt$intFromRef(l0$res))
   v$anon$$1 := f$gtInts(l0$i, df$rt$intToRef(0))
   if (df$rt$boolFromRef(v$anon$$1)) {
@@ -54,10 +55,10 @@ method f$anyIntegerSquaredIsAtLeastZeroStringVersion$t$TF$t$T$String$t$T$Int(p$s
   assert df$rt$isSubtype(df$rt$typeOf(l0$res), df$rt$intType())
   assert df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
   assert df$rt$isSubtype(df$rt$typeOf(p$str), df$rt$stringType())
-  assert (forall v$anon$builtin: Int ::0 <= v$anon$builtin &&
-      v$anon$builtin < |df$rt$stringFromRef(p$str)| ==>
-      (df$rt$stringFromRef(p$str)[v$anon$builtin] - 97) *
-      (df$rt$stringFromRef(p$str)[v$anon$builtin] - 97) >=
+  assert (forall v$anon$builtin$0: Int ::0 <= v$anon$builtin$0 &&
+      v$anon$builtin$0 < |df$rt$stringFromRef(p$str)| ==>
+      (df$rt$stringFromRef(p$str)[v$anon$builtin$0] - 97) *
+      (df$rt$stringFromRef(p$str)[v$anon$builtin$0] - 97) >=
       df$rt$intFromRef(l0$res))
   v$ret$0 := l0$res
   goto lbl$ret$0

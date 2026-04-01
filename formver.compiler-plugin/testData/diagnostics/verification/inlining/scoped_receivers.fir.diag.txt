@@ -57,8 +57,6 @@ method f$with_run_extension_labeled$t$TF$t$NT$Int$t$T$Unit(this$extension: Ref)
   var v$ret$17: Ref
   var v$anon$$12: Ref
   v$ret$1 := df$rt$boolToRef(this$extension == df$rt$nullValue())
-  goto ret$1
-  label ret$1
   goto lbl$ret$1
   label lbl$ret$1
   v$anon$$13 := v$ret$1
@@ -68,8 +66,6 @@ method f$with_run_extension_labeled$t$TF$t$NT$Int$t$T$Unit(this$extension: Ref)
     var v$ret$2: Ref
     v$ret$2 := f$notBool(df$rt$boolToRef(this$extension ==
       df$rt$nullValue()))
-    goto ret$2
-    label ret$2
     goto lbl$ret$2
     label lbl$ret$2
     l0$cond1 := v$ret$2
@@ -86,8 +82,6 @@ method f$with_run_extension_labeled$t$TF$t$NT$Int$t$T$Unit(this$extension: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$3), df$rt$nullable(df$rt$intType()))
   v$anon$$4 := v$anon$$3
   v$ret$7 := df$rt$boolToRef(v$anon$$4 == df$rt$nullValue())
-  goto ret$7
-  label ret$7
   goto lbl$ret$7
   label lbl$ret$7
   v$anon$$20 := v$ret$7
@@ -95,8 +89,6 @@ method f$with_run_extension_labeled$t$TF$t$NT$Int$t$T$Unit(this$extension: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$3), df$rt$nullable(df$rt$intType()))
   v$anon$$5 := v$anon$$3
   v$ret$8 := df$rt$boolToRef(v$anon$$5 == df$rt$nullValue())
-  goto ret$8
-  label ret$8
   goto lbl$ret$8
   label lbl$ret$8
   v$anon$$21 := v$ret$8
@@ -104,20 +96,15 @@ method f$with_run_extension_labeled$t$TF$t$NT$Int$t$T$Unit(this$extension: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$3), df$rt$nullable(df$rt$intType()))
   v$anon$$6 := v$anon$$3
   v$ret$9 := df$rt$boolToRef(v$anon$$6 == df$rt$nullValue())
-  goto ret$9
-  label ret$9
   goto lbl$ret$9
   label lbl$ret$9
   v$anon$$22 := v$ret$9
   assert df$rt$boolFromRef(v$anon$$22)
-  label ret$6
   label lbl$ret$6
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$6), df$rt$unitType())
   v$anon$$19 := v$ret$6
   v$ret$5 := v$anon$$19
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$5), df$rt$nullable(df$rt$anyType()))
-  goto ret$5
-  label ret$5
   goto lbl$ret$5
   label lbl$ret$5
   v$anon$$18 := v$ret$5
@@ -133,8 +120,6 @@ method f$with_run_extension_labeled$t$TF$t$NT$Int$t$T$Unit(this$extension: Ref)
   assert !df$rt$boolFromRef(v$anon$$8)
   assert df$rt$boolFromRef(v$anon$$1)
   v$ret$12 := df$rt$boolToRef(this$extension == df$rt$nullValue())
-  goto ret$12
-  label ret$12
   goto lbl$ret$12
   label lbl$ret$12
   v$anon$$27 := v$ret$12
@@ -144,8 +129,6 @@ method f$with_run_extension_labeled$t$TF$t$NT$Int$t$T$Unit(this$extension: Ref)
     var v$ret$13: Ref
     v$ret$13 := f$notBool(df$rt$boolToRef(this$extension ==
       df$rt$nullValue()))
-    goto ret$13
-    label ret$13
     goto lbl$ret$13
     label lbl$ret$13
     v$anon$$26 := v$ret$13
@@ -165,59 +148,46 @@ method f$with_run_extension_labeled$t$TF$t$NT$Int$t$T$Unit(this$extension: Ref)
   assert !df$rt$boolFromRef(v$anon$$10)
   assert df$rt$boolFromRef(v$anon$$12)
   assert df$rt$boolFromRef(v$anon$$12)
-  label ret$17
   label lbl$ret$17
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$17), df$rt$unitType())
   v$anon$$33 := v$ret$17
   v$ret$16 := v$anon$$33
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$16), df$rt$nullable(df$rt$anyType()))
-  goto ret$16
-  label ret$16
   goto lbl$ret$16
   label lbl$ret$16
   v$anon$$32 := v$ret$16
   v$anon$$31 := v$anon$$32
   inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$31), df$rt$unitType())
-  label ret$15
   label lbl$ret$15
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$15), df$rt$unitType())
   v$anon$$30 := v$ret$15
   v$ret$14 := v$anon$$30
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$14), df$rt$nullable(df$rt$anyType()))
-  goto ret$14
-  label ret$14
   goto lbl$ret$14
   label lbl$ret$14
   v$anon$$29 := v$ret$14
   v$anon$$28 := v$anon$$29
   inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$28), df$rt$unitType())
-  label ret$11
   label lbl$ret$11
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$11), df$rt$unitType())
   v$anon$$25 := v$ret$11
   v$ret$10 := v$anon$$25
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$10), df$rt$nullable(df$rt$anyType()))
-  goto ret$10
-  label ret$10
   goto lbl$ret$10
   label lbl$ret$10
   v$anon$$24 := v$ret$10
   v$anon$$23 := v$anon$$24
   inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$23), df$rt$unitType())
-  label ret$4
   label lbl$ret$4
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$4), df$rt$unitType())
   v$anon$$16 := v$ret$4
   v$ret$3 := v$anon$$16
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$3), df$rt$nullable(df$rt$anyType()))
-  goto ret$3
-  label ret$3
   goto lbl$ret$3
   label lbl$ret$3
   v$anon$$15 := v$ret$3
   v$anon$$14 := v$anon$$15
   inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$14), df$rt$unitType())
-  label ret$0
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
 }
