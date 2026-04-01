@@ -47,7 +47,7 @@ data class AnonymousBuiltinName(val n: Int) : FreshName {
 
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
-        get() = $$"anon$builtin"
+        get() = $$"anon$builtin$$$n"
 
     override val candidates: List<CandidateName>
         get() = buildCandidates {

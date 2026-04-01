@@ -141,13 +141,15 @@ val SymbolicName.debugMangled: String
  */
 sealed class NameType(val name: String) : NamedEntity {
 
+    open val mangledName = name
     override val candidates: List<CandidateName>
         get() = buildCandidates {
             candidate {
                 +name
             }
         }
-    object Property : NameType("p")
+
+    object Property : NameType("prop")
     object BackingField : NameType("bf")
     object Getter : NameType("g")
     object Setter : NameType("s")
@@ -158,9 +160,20 @@ sealed class NameType(val name: String) : NamedEntity {
     }
     object Constructor : NameType("con")
     object Function : NameType("f")
-    object Predicate : NameType("p") // merge them with "generated"
+    object Predicate : NameType("pred") // merge them with "generated"
     object Havoc : NameType("h")// merge them with "generated"
     sealed class Label(lblName: String) : NameType(lblName) {
+        override val mangledName = "lbl$SEPARATOR$lblName"
+        override val candidates: List<CandidateName>
+            get() = buildCandidates {
+                candidate {
+                    +name
+                }
+                candidate {
+                    +"lbl"
+                    +name
+                }
+            }
         object Return : Label("ret")
         object Break : Label("break")
         object Continue : Label("cont")
