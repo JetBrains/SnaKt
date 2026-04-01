@@ -15,10 +15,10 @@ method f$smartcastReturn$TF$NT$Int$T$Int(p$n: Ref) returns (ret$0: Ref)
 method f$isNullOrEmptyWrong$TF$NT$CharSequence$T$Boolean(p$seq: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$seq), df$rt$nullable(df$rt$c$pkg$kotlin$CharSequence()))
+  requires p$seq != df$rt$nullValue() ==>
+    acc(p$pkg$kotlin$c$CharSequence$shared(p$seq), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
-  inhale p$seq != df$rt$nullValue() ==>
-    acc(p$pkg$kotlin$c$CharSequence$shared(p$seq), wildcard)
   if (p$seq == df$rt$nullValue()) {
     var anon$0: Ref
     if (p$seq != df$rt$nullValue()) {
@@ -38,3 +38,4 @@ method f$isNullOrEmptyWrong$TF$NT$CharSequence$T$Boolean(p$seq: Ref)
 }
 
 method pg$public$length(this$dispatch: Ref) returns (ret: Ref)
+

@@ -2,11 +2,11 @@
 method f$c$Bar$baz$TF$T$Bar$T$Foo$T$Unit(this$dispatch: Ref, p$f: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Bar())
+  requires acc(p$c$Bar$shared(this$dispatch), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$c$Foo())
+  requires acc(p$c$Foo$shared(p$f), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
-  inhale acc(p$c$Bar$shared(this$dispatch), wildcard)
-  inhale acc(p$c$Foo$shared(p$f), wildcard)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -15,11 +15,11 @@ method f$c$Bar$baz$TF$T$Bar$T$Foo$T$Unit(this$dispatch: Ref, p$f: Ref)
 method f$c$Bar$baz$TF$T$Bar$T$Bar$T$Unit(this$dispatch: Ref, p$b: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Bar())
+  requires acc(p$c$Bar$shared(this$dispatch), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$Bar())
+  requires acc(p$c$Bar$shared(p$b), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
-  inhale acc(p$c$Bar$shared(this$dispatch), wildcard)
-  inhale acc(p$c$Bar$shared(p$b), wildcard)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -27,9 +27,9 @@ method f$c$Bar$baz$TF$T$Bar$T$Bar$T$Unit(this$dispatch: Ref, p$b: Ref)
 /function_overloading.kt:(98,107): info: Generated Viper text for fakePrint:
 method f$fakePrint$TF$T$Bar$T$Unit(p$b: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$Bar())
+  requires acc(p$c$Bar$shared(p$b), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
-  inhale acc(p$c$Bar$shared(p$b), wildcard)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -37,9 +37,9 @@ method f$fakePrint$TF$T$Bar$T$Unit(p$b: Ref) returns (ret$0: Ref)
 /function_overloading.kt:(125,134): info: Generated Viper text for fakePrint:
 method f$fakePrint$TF$T$Foo$T$Unit(p$f: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$c$Foo())
+  requires acc(p$c$Foo$shared(p$f), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
-  inhale acc(p$c$Foo$shared(p$f), wildcard)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -96,6 +96,7 @@ method con$c$Foo$T$Foo() returns (ret: Ref)
 
 method f$fakePrint$TF$T$Bar$T$Unit(p$b: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$Bar())
+  requires acc(p$c$Bar$shared(p$b), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
@@ -106,6 +107,7 @@ method f$fakePrint$TF$T$Boolean$T$Unit(p$truth: Ref) returns (ret: Ref)
 
 method f$fakePrint$TF$T$Foo$T$Unit(p$f: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$c$Foo())
+  requires acc(p$c$Foo$shared(p$f), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
@@ -149,14 +151,18 @@ method con$c$Foo$T$Foo() returns (ret: Ref)
 method f$c$Bar$baz$TF$T$Bar$T$Bar$T$Unit(this$dispatch: Ref, p$b: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Bar())
+  requires acc(p$c$Bar$shared(this$dispatch), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$Bar())
+  requires acc(p$c$Bar$shared(p$b), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
 method f$c$Bar$baz$TF$T$Bar$T$Foo$T$Unit(this$dispatch: Ref, p$f: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Bar())
+  requires acc(p$c$Bar$shared(this$dispatch), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$c$Foo())
+  requires acc(p$c$Foo$shared(p$f), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 

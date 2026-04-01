@@ -3,15 +3,16 @@ field bf$x: Ref
 
 method f$c$Foo$f$TF$T$Foo$T$Unit(this$dispatch: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
+  requires acc(p$c$Foo$shared(this$dispatch), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
 method f$testSafeCall$TF$NT$Foo$NT$Unit(p$foo: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$nullable(df$rt$c$Foo()))
+  requires p$foo != df$rt$nullValue() ==>
+    acc(p$c$Foo$shared(p$foo), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$unitType()))
 {
-  inhale p$foo != df$rt$nullValue() ==>
-    acc(p$c$Foo$shared(p$foo), wildcard)
   if (p$foo != df$rt$nullValue()) {
     var anon$0: Ref
     anon$0 := f$c$Foo$f$TF$T$Foo$T$Unit(p$foo)
@@ -27,15 +28,16 @@ field bf$x: Ref
 
 method f$c$Foo$f$TF$T$Foo$T$Unit(this$dispatch: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
+  requires acc(p$c$Foo$shared(this$dispatch), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
 method f$testSafeCallNonNullable$TF$T$Foo$NT$Unit(p$foo: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$c$Foo())
+  requires acc(p$c$Foo$shared(p$foo), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$unitType()))
 {
-  inhale acc(p$c$Foo$shared(p$foo), wildcard)
   if (p$foo != df$rt$nullValue()) {
     var anon$0: Ref
     anon$0 := f$c$Foo$f$TF$T$Foo$T$Unit(p$foo)
@@ -52,10 +54,10 @@ field bf$x: Ref
 method f$testSafeCallProperty$TF$NT$Foo$NT$Int(p$foo: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$nullable(df$rt$c$Foo()))
+  requires p$foo != df$rt$nullValue() ==>
+    acc(p$c$Foo$shared(p$foo), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
 {
-  inhale p$foo != df$rt$nullValue() ==>
-    acc(p$c$Foo$shared(p$foo), wildcard)
   if (p$foo != df$rt$nullValue()) {
     var anon$0: Ref
     unfold acc(p$c$Foo$shared(p$foo), wildcard)
@@ -73,9 +75,9 @@ field bf$x: Ref
 method f$testSafeCallPropertyNonNullable$TF$T$Foo$NT$Int(p$foo: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$c$Foo())
+  requires acc(p$c$Foo$shared(p$foo), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
 {
-  inhale acc(p$c$Foo$shared(p$foo), wildcard)
   if (p$foo != df$rt$nullValue()) {
     var anon$0: Ref
     unfold acc(p$c$Foo$shared(p$foo), wildcard)
@@ -93,18 +95,19 @@ field bf$v: Ref
 method f$c$Rec$nullable$TF$T$Rec$NT$Rec(this$dispatch: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Rec())
+  requires acc(p$c$Rec$shared(this$dispatch), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$c$Rec()))
   ensures ret != df$rt$nullValue() ==> acc(p$c$Rec$shared(ret), wildcard)
 
 
 method f$safeCallChain$TF$NT$Rec$NT$Int(p$rec: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$rec), df$rt$nullable(df$rt$c$Rec()))
+  requires p$rec != df$rt$nullValue() ==>
+    acc(p$c$Rec$shared(p$rec), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
 {
   var anon$0: Ref
   var anon$1: Ref
-  inhale p$rec != df$rt$nullValue() ==>
-    acc(p$c$Rec$shared(p$rec), wildcard)
   if (p$rec != df$rt$nullValue()) {
     anon$1 := f$c$Rec$nullable$TF$T$Rec$NT$Rec(p$rec)
   } else {

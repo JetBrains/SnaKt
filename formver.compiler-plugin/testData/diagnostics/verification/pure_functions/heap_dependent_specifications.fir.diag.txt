@@ -4,8 +4,8 @@ field bf$next: Ref
 field bf$value: Ref
 
 function f$isAlternating$TF$T$Node$T$Boolean$T$Boolean(p$node: Ref, p$expectsPositive: Ref): Ref
-  requires acc(p$c$Node$shared(p$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
+  requires acc(p$c$Node$shared(p$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(p$expectsPositive), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
 {
@@ -56,8 +56,8 @@ field bf$next: Ref
 field bf$value: Ref
 
 function f$isStrictlyAscendingAndPositive$TF$T$Node$T$Boolean(p$node: Ref): Ref
-  requires acc(p$c$Node$shared(p$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
+  requires acc(p$c$Node$shared(p$node), wildcard)
   requires df$rt$intFromRef((unfolding acc(p$c$Node$shared(p$node), wildcard) in
       p$node.bf$value)) >=
     0
@@ -120,8 +120,8 @@ field bf$right: Ref
 field bf$value: Ref
 
 function f$isLocallyValidBST$TF$T$TreeNode$T$Boolean(p$node: Ref): Ref
-  requires acc(p$c$TreeNode$shared(p$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$TreeNode())
+  requires acc(p$c$TreeNode$shared(p$node), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
 {
   (let l0$leftNode$0 ==

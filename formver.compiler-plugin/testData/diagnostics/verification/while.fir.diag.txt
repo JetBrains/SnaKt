@@ -17,6 +17,7 @@ method con$c$ClassWithField$T$Int$T$ClassWithField(p$field: Ref)
 method f$test_while$TF$T$ClassWithField$T$Unit(p$param: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$param), df$rt$c$ClassWithField())
+  requires acc(p$c$ClassWithField$shared(p$param), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$c: Ref
@@ -27,7 +28,6 @@ method f$test_while$TF$T$ClassWithField$T$Unit(p$param: Ref)
   var anon$1: Ref
   var l0$cond2: Ref
   var anon$2: Ref
-  inhale acc(p$c$ClassWithField$shared(p$param), wildcard)
   l0$c := con$c$ClassWithField$T$Int$T$ClassWithField(df$rt$intToRef(13))
   unfold acc(p$c$ClassWithField$shared(p$param), wildcard)
   l0$initParamField := p$param.bf$field
@@ -95,6 +95,7 @@ method con$c$ClassWithField$T$Int$T$ClassWithField(p$field: Ref)
 method f$test_while_with_inlining$TF$T$ClassWithField$T$Unit(p$param: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$param), df$rt$c$ClassWithField())
+  requires acc(p$c$ClassWithField$shared(p$param), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$local: Ref
@@ -110,7 +111,6 @@ method f$test_while_with_inlining$TF$T$ClassWithField$T$Unit(p$param: Ref)
   var anon$6: Ref
   var anon$7: Ref
   var anon$8: Ref
-  inhale acc(p$c$ClassWithField$shared(p$param), wildcard)
   l0$local := con$c$ClassWithField$T$Int$T$ClassWithField(df$rt$intToRef(13))
   anon$4 := con$c$ClassWithField$T$Int$T$ClassWithField(df$rt$intToRef(42))
   anon$0 := anon$4

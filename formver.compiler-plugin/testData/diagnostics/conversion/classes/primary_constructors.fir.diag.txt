@@ -34,6 +34,8 @@ field bf$a: Ref
 method con$c$Recursive$NT$Recursive$T$Recursive(p$a: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$nullable(df$rt$c$Recursive()))
+  requires p$a != df$rt$nullValue() ==>
+    acc(p$c$Recursive$shared(p$a), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Recursive())
   ensures acc(p$c$Recursive$shared(ret), wildcard)
   ensures acc(p$c$Recursive$unique(ret), write)

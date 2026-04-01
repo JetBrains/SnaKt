@@ -57,6 +57,12 @@ public class FirLightTreeFormVerPluginNoVerificationDiagnosticsTestGenerated ext
       }
 
       @Test
+      @TestMetadata("conditional_subtype_passing.kt")
+      public void testConditional_subtype_passing() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/conditional_subtype_passing.kt");
+      }
+
+      @Test
       @TestMetadata("multiple_interfaces.kt")
       public void testMultiple_interfaces() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/multiple_interfaces.kt");
@@ -236,6 +242,12 @@ public class FirLightTreeFormVerPluginNoVerificationDiagnosticsTestGenerated ext
       @Test
       public void testAllFilesPresentInPure_functions() {
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/pure_functions"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("heap_dependent_specifications.kt")
+      public void testHeap_dependent_specifications() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/heap_dependent_specifications.kt");
       }
 
       @Test

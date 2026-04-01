@@ -13,8 +13,10 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.NamedFunctionSigna
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toFuncApp
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toMethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.*
+import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
+import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
 import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
 import org.jetbrains.kotlin.formver.core.linearization.addLabel
 import org.jetbrains.kotlin.formver.core.linearization.freshAnonVar
@@ -191,11 +193,31 @@ data class NonDeterministically(val exp: ExpEmbedding) : UnitResultExpEmbedding,
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitNonDeterministically(this)
 }
 
+/** Unfolds every predicate in the subtyping hierarchy between the actual type and the expected supertype */
+private fun unfoldSubtypePredicatesForArgs(
+    args: List<ExpEmbedding>,
+    formalArgs: List<VariableEmbedding>,
+    ctx: LinearizationContext,
+) {
+    args.zip(formalArgs).forEach { (arg, param) ->
+        val innerPretype = arg.ignoringCastsAndMetaNodes().type.pretype
+        val paramPretype = param.type.pretype
+        if (innerPretype is ClassTypeEmbedding && paramPretype is ClassTypeEmbedding) {
+            val path = innerPretype.details.supertypePathTo(paramPretype) ?: return@forEach
+            for (step in path) { // unfold for each type in hierarchy
+                val predAcc = step.predicateAccess(arg, ctx.source)
+                ctx.addStatement { Stmt.Unfold(predAcc, ctx.source.asPosition) }
+            }
+        }
+    }
+}
+
 // Note: this is always a *real* Viper method call.
 data class MethodCall(val method: NamedFunctionSignature, val args: List<ExpEmbedding>) : StoredResultExpEmbedding {
     override val type: TypeEmbedding = method.callableType.returnType
 
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
+        unfoldSubtypePredicatesForArgs(args, method.formalArgs, ctx)
         ctx.addStatement {
             method.toMethodCall(
                 args.map { it.toViper(ctx) },
@@ -224,10 +246,13 @@ data class FunctionCall(val function: NamedFunctionSignature, val args: List<Exp
     override val subexpressions: List<ExpEmbedding>
         get() = args
 
-    override fun toViper(ctx: LinearizationContext): Exp = function.toFuncApp(
-        args.map { it.toViper(ctx) },
-        ctx.source.asPosition
-    )
+    override fun toViper(ctx: LinearizationContext): Exp {
+        unfoldSubtypePredicatesForArgs(args, function.formalArgs, ctx) // unfold before function call
+        return function.toFuncApp(
+            args.map { it.toViper(ctx) },
+            ctx.source.asPosition
+        )
+    }
 
     override fun <R> accept(v: ExpVisitor<R>): R =
         v.visitFunctionCall(this)
@@ -276,13 +301,6 @@ data class FunctionExp(
     override val type: TypeEmbedding = body.type
 
     override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
-        signature?.formalArgs?.forEach { arg ->
-            // Ideally, we would want to assume these rather than inhale them to prevent inconsistencies with
-            // permissions. Unfortunately, Silicon for some reason does not allow Assumes.
-            listOfNotNull(arg.sharedPredicateAccessInvariant()).forEach { invariant ->
-                ctx.addStatement { Stmt.Inhale(invariant.toViperBuiltinType(ctx), ctx.source.asPosition) }
-            }
-        }
         body.toViperMaybeStoringIn(result, ctx)
         ctx.addLabel(returnLabel.toViper(ctx))
     }

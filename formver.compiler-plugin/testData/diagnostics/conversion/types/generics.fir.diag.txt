@@ -4,10 +4,10 @@ field bf$t: Ref
 method f$c$Box$genericMethod$TF$T$Box$NT$Any$NT$Any(this$dispatch: Ref, p$x: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Box())
+  requires acc(p$c$Box$shared(this$dispatch), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$anyType()))
 {
-  inhale acc(p$c$Box$shared(this$dispatch), wildcard)
   ret$0 := p$x
   goto lbl$ret$0
   label lbl$ret$0
@@ -96,11 +96,11 @@ field bf$t: Ref
 method f$genericAsIfCondition$TF$T$Box$T$Int(p$box: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$box), df$rt$c$Box())
+  requires acc(p$c$Box$shared(p$box), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var anon$0: Ref
   var anon$1: Ref
-  inhale acc(p$c$Box$shared(p$box), wildcard)
   anon$1 := havoc$NT$Any()
   anon$0 := anon$1
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$boolType())
