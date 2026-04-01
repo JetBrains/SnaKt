@@ -1,0 +1,47 @@
+/flattened_secondary_constructor_overloads.kt:(404,442): info: Generated Viper text for flattenedSecondaryConstructorOverloads:
+field first: Ref
+
+field second: Ref
+
+method con(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), boolType())
+  ensures isSubtype(typeOf(ret), OverloadedCtor$Box())
+  ensures acc(OverloadedCtor$Box$pred$shared(ret), wildcard)
+  ensures acc(OverloadedCtor$Box$pred$unique(ret), write)
+
+
+method con$OverloadedCtor$Box(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret), OverloadedCtor$Box())
+  ensures acc(OverloadedCtor$Box$pred$shared(ret), wildcard)
+  ensures acc(OverloadedCtor$Box$pred$unique(ret), write)
+
+
+method con$pkg$$c$c$OverloadedCtor_Box(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), boolType())
+  ensures isSubtype(typeOf(ret), pkg$$c$c$OverloadedCtor_Box())
+  ensures acc(c$OverloadedCtor_Box$pred$shared(ret), wildcard)
+  ensures acc(c$OverloadedCtor_Box$pred$unique(ret), write)
+
+
+method con$pkg$$c$c$OverloadedCtor_Box$args$Int(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret), pkg$$c$c$OverloadedCtor_Box())
+  ensures acc(c$OverloadedCtor_Box$pred$shared(ret), wildcard)
+  ensures acc(c$OverloadedCtor_Box$pred$unique(ret), write)
+
+
+method flattenedSecondaryConstructorOverloads() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var a: Ref
+  var b: Ref
+  var c: Ref
+  var d: Ref
+  a := con$pkg$$c$c$OverloadedCtor_Box$args$Int(intToRef(1))
+  b := con$pkg$$c$c$OverloadedCtor_Box(boolToRef(false))
+  c := con$OverloadedCtor$Box(intToRef(2))
+  d := con(boolToRef(true))
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}

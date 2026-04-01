@@ -1,0 +1,83 @@
+/flattened_private_members.kt:(102,108): info: Generated Viper text for reveal:
+field payload: Ref
+
+field value: Ref
+
+method reveal(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), Shadow_Box())
+  ensures isSubtype(typeOf(ret0), intType())
+{
+  inhale acc(Shadow_Box$pred$shared(this), wildcard)
+  unfold acc(Shadow_Box$pred$shared(this), wildcard)
+  ret0 := this.value
+  goto lbl$ret
+  label lbl$ret
+}
+
+/flattened_private_members.kt:(233,239): info: Generated Viper text for reveal:
+field payload: Ref
+
+field value: Ref
+
+method reveal(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), Shadow_Box())
+  ensures isSubtype(typeOf(ret0), boolType())
+{
+  inhale acc(Shadow_Box_pred_shared(this), wildcard)
+  unfold acc(Shadow_Box_pred_shared(this), wildcard)
+  ret0 := this.value
+  goto lbl_ret
+  label lbl_ret
+}
+
+/flattened_private_members.kt:(263,286): info: Generated Viper text for flattenedPrivateMembers:
+field bf$payload: Ref
+
+field bf$value: Ref
+
+field private$bf$value: Ref
+
+method con(payload: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(payload), boolType())
+  ensures isSubtype(typeOf(ret), Shadow$Box())
+  ensures acc(Shadow$Box$pred$shared(ret), wildcard)
+  ensures acc(Shadow$Box$pred$unique(ret), write)
+  ensures boolFromRef((unfolding acc(Shadow$Box$pred$shared(ret), wildcard) in
+      ret.bf$payload)) ==
+    boolFromRef(payload)
+
+
+method con$Shadow_Box(payload: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(payload), intType())
+  ensures isSubtype(typeOf(ret), Shadow_Box())
+  ensures acc(Shadow_Box$pred$shared(ret), wildcard)
+  ensures acc(Shadow_Box$pred$unique(ret), write)
+  ensures intFromRef((unfolding acc(Shadow_Box$pred$shared(ret), wildcard) in
+      ret.bf$payload)) ==
+    intFromRef(payload)
+
+
+method f$reveal(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), Shadow_Box())
+  ensures isSubtype(typeOf(ret), intType())
+
+
+method flattenedPrivateMembers() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon0: Ref
+  var anon: Ref
+  left := con$Shadow_Box(intToRef(0))
+  right := con(boolToRef(true))
+  anon0 := f$reveal(left)
+  anon := reveal(right)
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}
+
+method reveal(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), Shadow$Box())
+  ensures isSubtype(typeOf(ret), boolType())
+

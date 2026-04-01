@@ -1,0 +1,38 @@
+/flattened_inherited_body_vals.kt:(328,354): info: Generated Viper text for flattenedInheritedBodyVals:
+method con(seed: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seed), boolType())
+  ensures isSubtype(typeOf(ret), Derived_Base$BodyVal())
+  ensures acc(Derived_Base$BodyVal$pred$shared(ret), wildcard)
+  ensures acc(Derived_Base$BodyVal$pred$unique(ret), write)
+
+
+method con$Derived_Base_BodyVal(seed: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seed), intType())
+  ensures isSubtype(typeOf(ret), Derived_Base_BodyVal())
+  ensures acc(Derived_Base_BodyVal$pred$shared(ret), wildcard)
+  ensures acc(Derived_Base_BodyVal$pred$unique(ret), write)
+
+
+method flattenedInheritedBodyVals() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon0: Ref
+  var anon1: Ref
+  var anon2: Ref
+  var anon: Ref
+  left := con$Derived_Base_BodyVal(intToRef(1))
+  right := con(boolToRef(true))
+  anon1 := payload(left)
+  anon0 := anon1
+  inhale isSubtype(typeOf(anon0), intType())
+  anon := payload(right)
+  anon2 := anon
+  inhale isSubtype(typeOf(anon2), boolType())
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}
+
+method payload(this: Ref) returns (ret: Ref)
+

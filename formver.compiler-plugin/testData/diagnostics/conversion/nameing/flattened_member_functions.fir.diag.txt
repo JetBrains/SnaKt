@@ -1,0 +1,75 @@
+/flattened_member_functions.kt:(63,67): info: Generated Viper text for read:
+field seed: Ref
+
+method read(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), Function_Box())
+  ensures isSubtype(typeOf(ret0), intType())
+{
+  inhale acc(Function_Box$pred$shared(this), wildcard)
+  unfold acc(Function_Box$pred$shared(this), wildcard)
+  ret0 := this.seed
+  goto lbl$ret
+  label lbl$ret
+}
+
+/flattened_member_functions.kt:(149,153): info: Generated Viper text for read:
+field seed: Ref
+
+method read(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), Function_Box())
+  ensures isSubtype(typeOf(ret0), boolType())
+{
+  inhale acc(Function_Box_pred_shared(this), wildcard)
+  unfold acc(Function_Box_pred_shared(this), wildcard)
+  ret0 := this.seed
+  goto lbl_ret
+  label lbl_ret
+}
+
+/flattened_member_functions.kt:(185,209): info: Generated Viper text for flattenedMemberFunctions:
+field bf$seed: Ref
+
+method con(seed: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seed), boolType())
+  ensures isSubtype(typeOf(ret), Function$Box())
+  ensures acc(Function$Box$pred$shared(ret), wildcard)
+  ensures acc(Function$Box$pred$unique(ret), write)
+  ensures boolFromRef((unfolding acc(Function$Box$pred$shared(ret), wildcard) in
+      ret.bf$seed)) ==
+    boolFromRef(seed)
+
+
+method con$Function_Box(seed: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seed), intType())
+  ensures isSubtype(typeOf(ret), Function_Box())
+  ensures acc(Function_Box$pred$shared(ret), wildcard)
+  ensures acc(Function_Box$pred$unique(ret), write)
+  ensures intFromRef((unfolding acc(Function_Box$pred$shared(ret), wildcard) in
+      ret.bf$seed)) ==
+    intFromRef(seed)
+
+
+method f$read(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), Function_Box())
+  ensures isSubtype(typeOf(ret), intType())
+
+
+method flattenedMemberFunctions() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon0: Ref
+  var anon: Ref
+  left := con$Function_Box(intToRef(1))
+  right := con(boolToRef(true))
+  anon0 := f$read(left)
+  anon := read(right)
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}
+
+method read(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), Function$Box())
+  ensures isSubtype(typeOf(ret), boolType())
+

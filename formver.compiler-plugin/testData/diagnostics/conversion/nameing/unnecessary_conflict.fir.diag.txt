@@ -1,0 +1,27 @@
+/unnecessary_conflict.kt:(75,79): info: Generated Viper text for test:
+function test(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(a, b)
+}
+
+/unnecessary_conflict.kt:(128,133): info: Generated Viper text for test2:
+function test(p_a: Ref, p_b: Ref): Ref
+  requires isSubtype(typeOf(p_a), intType())
+  requires isSubtype(typeOf(p_b), intType())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method test2() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), intType())
+{
+  var a: Ref
+  var b: Ref
+  a := intToRef(3)
+  b := intToRef(4)
+  ret0 := plusInts(plusInts(a, b), test(a, b))
+  goto ret
+  label ret
+}

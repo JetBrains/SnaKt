@@ -1,0 +1,36 @@
+/flattened_interface_body_props.kt:(279,306): info: Generated Viper text for flattenedInterfaceBodyProps:
+method con() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), Holder_Box_Nested_Base())
+  ensures acc(Holder_Box_Nested_Base$pred$shared(ret), wildcard)
+  ensures acc(Holder_Box_Nested_Base$pred$unique(ret), write)
+
+
+method con$Holder_Box_Base() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), Holder_Box_Base())
+  ensures acc(Holder_Box_Base$pred$shared(ret), wildcard)
+  ensures acc(Holder_Box_Base$pred$unique(ret), write)
+
+
+method flattenedInterfaceBodyProps() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon0: Ref
+  var anon1: Ref
+  var anon2: Ref
+  var anon: Ref
+  left := con$Holder_Box_Base()
+  right := con()
+  anon1 := payload(left)
+  anon0 := anon1
+  inhale isSubtype(typeOf(anon0), intType())
+  anon := payload(right)
+  anon2 := anon
+  inhale isSubtype(typeOf(anon2), boolType())
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}
+
+method payload(this: Ref) returns (ret: Ref)
+

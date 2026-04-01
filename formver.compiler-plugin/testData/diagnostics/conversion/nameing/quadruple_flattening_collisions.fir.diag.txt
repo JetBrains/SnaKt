@@ -1,0 +1,63 @@
+/quadruple_flattening_collisions.kt:(232,261): info: Generated Viper text for quadrupleFlatteningCollisions:
+field bf$first: Ref
+
+field bf$fourth: Ref
+
+field bf$second: Ref
+
+field bf$third: Ref
+
+method con(fourth: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(fourth), boolType())
+  ensures isSubtype(typeOf(ret), A$B_C_D())
+  ensures acc(A$B_C_D$pred$shared(ret), wildcard)
+  ensures acc(A$B_C_D$pred$unique(ret), write)
+  ensures boolFromRef((unfolding acc(A$B_C_D$pred$shared(ret), wildcard) in
+      ret.bf$fourth)) ==
+    boolFromRef(fourth)
+
+
+method con$A_B$C_D(third: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(third), intType())
+  ensures isSubtype(typeOf(ret), A_B$C_D())
+  ensures acc(A_B$C_D$pred$shared(ret), wildcard)
+  ensures acc(A_B$C_D$pred$unique(ret), write)
+  ensures intFromRef((unfolding acc(A_B$C_D$pred$shared(ret), wildcard) in
+      ret.bf$third)) ==
+    intFromRef(third)
+
+
+method con$A_B_C$D(second: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(second), boolType())
+  ensures isSubtype(typeOf(ret), A_B_C$D())
+  ensures acc(A_B_C$D$pred$shared(ret), wildcard)
+  ensures acc(A_B_C$D$pred$unique(ret), write)
+  ensures boolFromRef((unfolding acc(A_B_C$D$pred$shared(ret), wildcard) in
+      ret.bf$second)) ==
+    boolFromRef(second)
+
+
+method con$A_B_C_D(first: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(first), intType())
+  ensures isSubtype(typeOf(ret), A_B_C_D())
+  ensures acc(A_B_C_D$pred$shared(ret), wildcard)
+  ensures acc(A_B_C_D$pred$unique(ret), write)
+  ensures intFromRef((unfolding acc(A_B_C_D$pred$shared(ret), wildcard) in
+      ret.bf$first)) ==
+    intFromRef(first)
+
+
+method quadrupleFlatteningCollisions() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var w: Ref
+  var x: Ref
+  var y: Ref
+  var z: Ref
+  w := con$A_B_C_D(intToRef(0))
+  x := con$A_B_C$D(boolToRef(true))
+  y := con$A_B$C_D(intToRef(1))
+  z := con(boolToRef(false))
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}

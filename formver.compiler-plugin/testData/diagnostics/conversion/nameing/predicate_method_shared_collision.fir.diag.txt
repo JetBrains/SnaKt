@@ -1,0 +1,33 @@
+/predicate_method_shared_collision.kt:(65,71): info: Generated Viper text for shared:
+method shared() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  label ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}
+
+/predicate_method_shared_collision.kt:(82,112): info: Generated Viper text for predicateMethodSharedCollision:
+field x: Ref
+
+predicate A_pred_shared(this: Ref) {
+  acc(this.x, wildcard) && isSubtype(typeOf(this.x), intType())
+}
+
+predicate A_pred_unique(this: Ref) {
+  acc(this.x, wildcard) && isSubtype(typeOf(this.x), intType())
+}
+
+method predicateMethodSharedCollision(a: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(a), A())
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var anon: Ref
+  inhale acc(A_pred_shared(a), wildcard)
+  anon := shared()
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}
+
+method shared() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+

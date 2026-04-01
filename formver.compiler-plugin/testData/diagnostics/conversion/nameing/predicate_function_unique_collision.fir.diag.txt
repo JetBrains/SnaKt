@@ -1,0 +1,32 @@
+/predicate_function_unique_collision.kt:(120,130): info: Generated Viper text for p$unique:
+function p$unique(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  x
+}
+
+/predicate_function_unique_collision.kt:(153,185): info: Generated Viper text for predicateFunctionUniqueCollision:
+field bf_x: Ref
+
+function p$unique(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate A_pred_shared(this: Ref) {
+  acc(this.bf_x, wildcard) && isSubtype(typeOf(this.bf_x), intType())
+}
+
+predicate A_pred_unique(this: Ref) {
+  acc(this.bf_x, wildcard) && isSubtype(typeOf(this.bf_x), intType())
+}
+
+method predicateFunctionUniqueCollision(a: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(a), A())
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  inhale acc(A_pred_shared(a), wildcard)
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}

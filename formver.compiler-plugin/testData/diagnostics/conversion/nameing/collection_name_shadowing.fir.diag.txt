@@ -1,0 +1,81 @@
+/collection_name_shadowing.kt:(93,100): info: Generated Viper text for isEmpty:
+function isEmpty(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  x
+}
+
+/collection_name_shadowing.kt:(323,346): info: Generated Viper text for collectionNameShadowing:
+field bf$seed: Ref
+
+field size: Ref
+
+function f$isEmpty(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method collectionNameShadowing(l: Ref) returns (ret0: Ref)
+  requires acc(l.size, write)
+  requires intFromRef(l.size) >= 0
+  requires isSubtype(typeOf(l), List())
+  ensures acc(l.size, write)
+  ensures intFromRef(l.size) >= 0
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon0: Ref
+  var anon1: Ref
+  var anon2: Ref
+  var anon3: Ref
+  var anon: Ref
+  inhale acc(List$pred$shared(l), wildcard)
+  left := con$Collection_Box(intToRef(1))
+  right := con(boolToRef(true))
+  anon1 := g$isEmpty(left)
+  anon0 := anon1
+  inhale isSubtype(typeOf(anon0), intType())
+  anon3 := g$isEmpty(right)
+  anon2 := anon3
+  inhale isSubtype(typeOf(anon2), boolType())
+  anon := isEmpty(l)
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}
+
+method con(seed: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seed), boolType())
+  ensures isSubtype(typeOf(ret), Collection$Box())
+  ensures acc(Collection$Box$pred$shared(ret), wildcard)
+  ensures acc(Collection$Box$pred$unique(ret), write)
+  ensures boolFromRef((unfolding acc(Collection$Box$pred$shared(ret), wildcard) in
+      ret.bf$seed)) ==
+    boolFromRef(seed)
+
+
+method con$Collection_Box(seed: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seed), intType())
+  ensures isSubtype(typeOf(ret), Collection_Box())
+  ensures acc(Collection_Box$pred$shared(ret), wildcard)
+  ensures acc(Collection_Box$pred$unique(ret), write)
+  ensures intFromRef((unfolding acc(Collection_Box$pred$shared(ret), wildcard) in
+      ret.bf$seed)) ==
+    intFromRef(seed)
+
+
+method g$isEmpty(this: Ref) returns (ret: Ref)
+
+
+method isEmpty(this: Ref) returns (ret: Ref)
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(this), List())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures boolFromRef(ret) ==> intFromRef(this.size) == 0
+  ensures !boolFromRef(ret) ==> intFromRef(this.size) > 0
+

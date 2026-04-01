@@ -1,0 +1,77 @@
+/special_verify_member_functions.kt:(72,78): info: Generated Viper text for verify:
+field seed: Ref
+
+method verify(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), VerifyFun_Box())
+  ensures isSubtype(typeOf(ret0), intType())
+{
+  inhale acc(VerifyFun_Box$pred$shared(this), wildcard)
+  unfold acc(VerifyFun_Box$pred$shared(this), wildcard)
+  ret0 := this.seed
+  goto lbl$ret
+  label lbl$ret
+}
+
+/special_verify_member_functions.kt:(169,175): info: Generated Viper text for verify:
+field seed: Ref
+
+method verify(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), VerifyFun_Box())
+  ensures isSubtype(typeOf(ret0), boolType())
+{
+  inhale acc(VerifyFun_Box_pred_shared(this), wildcard)
+  unfold acc(VerifyFun_Box_pred_shared(this), wildcard)
+  ret0 := this.seed
+  goto lbl_ret
+  label lbl_ret
+}
+
+/special_verify_member_functions.kt:(207,235): info: Generated Viper text for specialVerifyMemberFunctions:
+field bf$seed: Ref
+
+field private$bf$seed: Ref
+
+method con(seed: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seed), boolType())
+  ensures isSubtype(typeOf(ret), VerifyFun$Box())
+  ensures acc(VerifyFun$Box$pred$shared(ret), wildcard)
+  ensures acc(VerifyFun$Box$pred$unique(ret), write)
+  ensures boolFromRef((unfolding acc(VerifyFun$Box$pred$shared(ret), wildcard) in
+      ret.bf$seed)) ==
+    boolFromRef(seed)
+
+
+method con$VerifyFun_Box(seed: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seed), intType())
+  ensures isSubtype(typeOf(ret), VerifyFun_Box())
+  ensures acc(VerifyFun_Box$pred$shared(ret), wildcard)
+  ensures acc(VerifyFun_Box$pred$unique(ret), write)
+  ensures intFromRef((unfolding acc(VerifyFun_Box$pred$shared(ret), wildcard) in
+      ret.private$bf$seed)) ==
+    intFromRef(seed)
+
+
+method f$verify(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), VerifyFun_Box())
+  ensures isSubtype(typeOf(ret), intType())
+
+
+method specialVerifyMemberFunctions() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon0: Ref
+  var anon: Ref
+  left := con$VerifyFun_Box(intToRef(1))
+  right := con(boolToRef(true))
+  anon0 := f$verify(left)
+  anon := verify(right)
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}
+
+method verify(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), VerifyFun$Box())
+  ensures isSubtype(typeOf(ret), boolType())
+

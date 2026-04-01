@@ -1,0 +1,87 @@
+/flattened_inherited_vars.kt:(78,82): info: Generated Viper text for read:
+method g$payload(this: Ref) returns (ret: Ref)
+
+
+method payload(this: Ref, anon: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), Base_Cell())
+  ensures isSubtype(typeOf(ret0), intType())
+{
+  var anon: Ref
+  inhale acc(Base_Cell$pred$shared(this), wildcard)
+  anon := g$payload(this)
+  ret0 := anon
+  inhale isSubtype(typeOf(ret0), intType())
+  goto lbl$ret
+  label lbl$ret
+}
+
+/flattened_inherited_vars.kt:(182,186): info: Generated Viper text for read:
+method g_payload(this: Ref) returns (ret: Ref)
+
+
+method payload(this: Ref, anon: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), Base_Cell())
+  ensures isSubtype(typeOf(ret0), boolType())
+{
+  var anon: Ref
+  inhale acc(Base_Cell_pred_shared(this), wildcard)
+  anon := g_payload(this)
+  ret0 := anon
+  inhale isSubtype(typeOf(ret0), boolType())
+  goto lbl_ret
+  label lbl_ret
+}
+
+/flattened_inherited_vars.kt:(376,398): info: Generated Viper text for flattenedInheritedVars:
+field bf$payload: Ref
+
+method con(payload: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(payload), boolType())
+  ensures isSubtype(typeOf(ret), Derived_Base$Cell())
+  ensures acc(Derived_Base$Cell$pred$shared(ret), wildcard)
+  ensures acc(Derived_Base$Cell$pred$unique(ret), write)
+
+
+method con$Derived_Base_Cell(payload: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(payload), intType())
+  ensures isSubtype(typeOf(ret), Derived_Base_Cell())
+  ensures acc(Derived_Base_Cell$pred$shared(ret), wildcard)
+  ensures acc(Derived_Base_Cell$pred$unique(ret), write)
+
+
+method f$read(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), Base_Cell())
+  ensures isSubtype(typeOf(ret), intType())
+
+
+method flattenedInheritedVars() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon0: Ref
+  var anon: Ref
+  left := con$Derived_Base_Cell(intToRef(1))
+  right := con(boolToRef(false))
+  anon0 := f$read(left)
+  anon := read(right)
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}
+
+method g$payload(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), Base$Cell())
+  ensures isSubtype(typeOf(ret), boolType())
+
+
+method s$payload(this: Ref, anon0: Ref) returns (ret: Ref)
+

@@ -1,0 +1,84 @@
+/flattened_inherited_members.kt:(78,82): info: Generated Viper text for read:
+method payload(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), Base_Node())
+  ensures isSubtype(typeOf(ret0), intType())
+{
+  var anon: Ref
+  inhale acc(Base_Node$pred$shared(this), wildcard)
+  anon := payload(this)
+  ret0 := anon
+  inhale isSubtype(typeOf(ret0), intType())
+  goto lbl$ret
+  label lbl$ret
+}
+
+/flattened_inherited_members.kt:(182,186): info: Generated Viper text for read:
+method payload(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), Base_Node())
+  ensures isSubtype(typeOf(ret0), boolType())
+{
+  var anon: Ref
+  inhale acc(Base_Node_pred_shared(this), wildcard)
+  anon := payload(this)
+  ret0 := anon
+  inhale isSubtype(typeOf(ret0), boolType())
+  goto lbl_ret
+  label lbl_ret
+}
+
+/flattened_inherited_members.kt:(376,401): info: Generated Viper text for flattenedInheritedMembers:
+field bf$payload: Ref
+
+method con(payload: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(payload), boolType())
+  ensures isSubtype(typeOf(ret), Derived_Base$Node())
+  ensures acc(Derived_Base$Node$pred$shared(ret), wildcard)
+  ensures acc(Derived_Base$Node$pred$unique(ret), write)
+  ensures boolFromRef((unfolding acc(Derived_Base$Node$pred$shared(ret), wildcard) in
+      ret.bf$payload)) ==
+    boolFromRef(payload)
+
+
+method con$Derived_Base_Node(payload: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(payload), intType())
+  ensures isSubtype(typeOf(ret), Derived_Base_Node())
+  ensures acc(Derived_Base_Node$pred$shared(ret), wildcard)
+  ensures acc(Derived_Base_Node$pred$unique(ret), write)
+  ensures intFromRef((unfolding acc(Derived_Base_Node$pred$shared(ret), wildcard) in
+      ret.bf$payload)) ==
+    intFromRef(payload)
+
+
+method f$read(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), Base_Node())
+  ensures isSubtype(typeOf(ret), intType())
+
+
+method flattenedInheritedMembers() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon0: Ref
+  var anon: Ref
+  left := con$Derived_Base_Node(intToRef(1))
+  right := con(boolToRef(false))
+  anon0 := f$read(left)
+  anon := read(right)
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}
+
+method g$payload(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), Base$Node())
+  ensures isSubtype(typeOf(ret), boolType())
+

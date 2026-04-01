@@ -1,0 +1,33 @@
+/flattened_class_names.kt:(109,128): info: Generated Viper text for flattenedClassNames:
+field bf$value: Ref
+
+method con(value: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(value), boolType())
+  ensures isSubtype(typeOf(ret), Alpha$Beta())
+  ensures acc(Alpha$Beta$pred$shared(ret), wildcard)
+  ensures acc(Alpha$Beta$pred$unique(ret), write)
+  ensures boolFromRef((unfolding acc(Alpha$Beta$pred$shared(ret), wildcard) in
+      ret.bf$value)) ==
+    boolFromRef(value)
+
+
+method con$Alpha_Beta(value: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(ret), Alpha_Beta())
+  ensures acc(Alpha_Beta$pred$shared(ret), wildcard)
+  ensures acc(Alpha_Beta$pred$unique(ret), write)
+  ensures intFromRef((unfolding acc(Alpha_Beta$pred$shared(ret), wildcard) in
+      ret.bf$value)) ==
+    intFromRef(value)
+
+
+method flattenedClassNames() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  left := con$Alpha_Beta(intToRef(0))
+  right := con(boolToRef(true))
+  label lbl$ret
+  inhale isSubtype(typeOf(ret0), unitType())
+}
