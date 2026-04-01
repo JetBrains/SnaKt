@@ -6,10 +6,10 @@ field bf$unique: Ref
 method f$testPrimitiveFieldSetterUnique$TF$T$PrimitiveFields$T$Unit(p$pf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$pf), df$rt$c$PrimitiveFields())
+  requires acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
   requires acc(p$c$PrimitiveFields$unique(p$pf), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
-  inhale acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -22,9 +22,9 @@ field bf$unique: Ref
 method f$testPrimitiveFieldSetterShared$TF$T$PrimitiveFields$T$Unit(p$pf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$pf), df$rt$c$PrimitiveFields())
+  requires acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
-  inhale acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -46,12 +46,12 @@ method con$c$PrimitiveFields$T$Int$T$Int$T$PrimitiveFields(p$shared: Ref, p$uniq
 method f$testReferenceFieldSetterUnique$TF$T$ReferenceFields$T$Unit(p$rf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$rf), df$rt$c$ReferenceFields())
+  requires acc(p$c$ReferenceFields$shared(p$rf), wildcard)
   requires acc(p$c$ReferenceFields$unique(p$rf), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
   var anon$1: Ref
-  inhale acc(p$c$ReferenceFields$shared(p$rf), wildcard)
   anon$0 := con$c$PrimitiveFields$T$Int$T$Int$T$PrimitiveFields(df$rt$intToRef(5),
     df$rt$intToRef(6))
   anon$1 := con$c$PrimitiveFields$T$Int$T$Int$T$PrimitiveFields(df$rt$intToRef(7),
@@ -77,11 +77,11 @@ method con$c$PrimitiveFields$T$Int$T$Int$T$PrimitiveFields(p$shared: Ref, p$uniq
 method f$testReferenceFieldSetterShared$TF$T$ReferenceFields$T$Unit(p$rf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$rf), df$rt$c$ReferenceFields())
+  requires acc(p$c$ReferenceFields$shared(p$rf), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
   var anon$1: Ref
-  inhale acc(p$c$ReferenceFields$shared(p$rf), wildcard)
   anon$0 := con$c$PrimitiveFields$T$Int$T$Int$T$PrimitiveFields(df$rt$intToRef(9),
     df$rt$intToRef(10))
   anon$1 := con$c$PrimitiveFields$T$Int$T$Int$T$PrimitiveFields(df$rt$intToRef(11),

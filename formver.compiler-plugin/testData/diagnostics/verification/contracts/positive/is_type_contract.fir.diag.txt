@@ -59,10 +59,10 @@ field bf$bar: Ref
 
 method f$subtypeSuperType$TF$T$Bar$T$Unit(p$bar: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$bar), df$rt$c$Bar())
+  requires acc(p$c$Bar$shared(p$bar), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
   ensures true ==> df$rt$isSubtype(df$rt$typeOf(p$bar), df$rt$c$Foo())
 {
-  inhale acc(p$c$Bar$shared(p$bar), wildcard)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -72,11 +72,11 @@ field bf$bar: Ref
 
 method f$typeOfField$TF$T$Foo$T$Boolean(p$foo: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$foo), df$rt$c$Foo())
+  requires acc(p$c$Foo$shared(p$foo), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures df$rt$boolFromRef(ret$0) == true
 {
   var anon$0: Ref
-  inhale acc(p$c$Foo$shared(p$foo), wildcard)
   unfold acc(p$c$Foo$shared(p$foo), wildcard)
   anon$0 := p$foo.bf$bar
   ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$c$Bar()))

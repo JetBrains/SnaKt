@@ -3,6 +3,7 @@ field bf$fieldNotOverride: Ref
 
 method con$c$B$T$FieldB$T$B(p$fieldOverride: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$fieldOverride), df$rt$c$FieldB())
+  requires acc(p$c$FieldB$shared(p$fieldOverride), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$B())
   ensures acc(p$c$B$shared(ret), wildcard)
   ensures acc(p$c$B$unique(ret), write)

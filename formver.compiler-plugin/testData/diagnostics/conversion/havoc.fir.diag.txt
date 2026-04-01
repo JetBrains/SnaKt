@@ -1,56 +1,56 @@
 /havoc.kt:(453,458): info: Generated Viper text for havoc:
 domain d$rt  {
-
-  unique function df$rt$intType(): d$rt
-
-  unique function df$rt$boolType(): d$rt
-
-  unique function df$rt$charType(): d$rt
-
-  unique function df$rt$unitType(): d$rt
-
-  unique function df$rt$nothingType(): d$rt
-
-  unique function df$rt$anyType(): d$rt
-
-  unique function df$rt$functionType(): d$rt
-
-  unique function df$rt$stringType(): d$rt
-
-  unique function df$rt$c$A(): d$rt
-
-  unique function df$rt$c$B(): d$rt
-
-  function df$rt$nullValue(): Ref
-
-  function df$rt$unitValue(): Ref
-
-  function df$rt$isSubtype(t1: d$rt, t2: d$rt): Bool
-
-  function df$rt$typeOf(r: Ref): d$rt
-
-  function df$rt$nullable(t: d$rt): d$rt
-
-  function df$rt$intToRef(v: Int): Ref
-
-  function df$rt$intFromRef(r: Ref): Int
-
-  function df$rt$boolToRef(v: Bool): Ref
-
-  function df$rt$boolFromRef(r: Ref): Bool
-
-  function df$rt$charToRef(v: Int): Ref
-
-  function df$rt$charFromRef(r: Ref): Int
-
-  function df$rt$stringToRef(v: Seq[Int]): Ref
-
-  function df$rt$stringFromRef(r: Ref): Seq[Int]
-
+  
+  unique function df$rt$intType(): d$rt 
+  
+  unique function df$rt$boolType(): d$rt 
+  
+  unique function df$rt$charType(): d$rt 
+  
+  unique function df$rt$unitType(): d$rt 
+  
+  unique function df$rt$nothingType(): d$rt 
+  
+  unique function df$rt$anyType(): d$rt 
+  
+  unique function df$rt$functionType(): d$rt 
+  
+  unique function df$rt$stringType(): d$rt 
+  
+  unique function df$rt$c$A(): d$rt 
+  
+  unique function df$rt$c$B(): d$rt 
+  
+  function df$rt$nullValue(): Ref 
+  
+  function df$rt$unitValue(): Ref 
+  
+  function df$rt$isSubtype(t1: d$rt, t2: d$rt): Bool 
+  
+  function df$rt$typeOf(r: Ref): d$rt 
+  
+  function df$rt$nullable(t: d$rt): d$rt 
+  
+  function df$rt$intToRef(v: Int): Ref 
+  
+  function df$rt$intFromRef(r: Ref): Int 
+  
+  function df$rt$boolToRef(v: Bool): Ref 
+  
+  function df$rt$boolFromRef(r: Ref): Bool 
+  
+  function df$rt$charToRef(v: Int): Ref 
+  
+  function df$rt$charFromRef(r: Ref): Int 
+  
+  function df$rt$stringToRef(v: Seq[Int]): Ref 
+  
+  function df$rt$stringFromRef(r: Ref): Seq[Int] 
+  
   axiom rt$subtype_reflexive {
     (forall t: d$rt ::df$rt$isSubtype(t, t))
   }
-
+  
   axiom rt$subtype_transitive {
     (forall t1: d$rt, t2: d$rt, t3: d$rt ::
       { df$rt$isSubtype(t1, t2), df$rt$isSubtype(t2, t3) }
@@ -59,95 +59,95 @@ domain d$rt  {
       df$rt$isSubtype(t1, t2) && df$rt$isSubtype(t2, t3) ==>
       df$rt$isSubtype(t1, t3))
   }
-
+  
   axiom rt$subtype_antisymmetric {
     (forall t1: d$rt, t2: d$rt ::
       { df$rt$isSubtype(t1, t2), df$rt$isSubtype(t2, t1) }
       df$rt$isSubtype(t1, t2) && df$rt$isSubtype(t2, t1) ==> t1 == t2)
   }
-
+  
   axiom rt$nullable_idempotent {
     (forall t: d$rt ::
       { df$rt$nullable(df$rt$nullable(t)) }
       df$rt$nullable(df$rt$nullable(t)) == df$rt$nullable(t))
   }
-
+  
   axiom rt$nullable_supertype {
     (forall t: d$rt ::
       { df$rt$nullable(t) }
       df$rt$isSubtype(t, df$rt$nullable(t)))
   }
-
+  
   axiom rt$nullable_preserves_subtype {
     (forall t1: d$rt, t2: d$rt ::
       { df$rt$isSubtype(df$rt$nullable(t1), df$rt$nullable(t2)) }
       df$rt$isSubtype(t1, t2) ==>
       df$rt$isSubtype(df$rt$nullable(t1), df$rt$nullable(t2)))
   }
-
+  
   axiom rt$nullable_any_supertype {
     (forall t: d$rt ::df$rt$isSubtype(t, df$rt$nullable(df$rt$anyType())))
   }
-
+  
   axiom {
     df$rt$isSubtype(df$rt$intType(), df$rt$anyType())
   }
-
+  
   axiom {
     df$rt$isSubtype(df$rt$boolType(), df$rt$anyType())
   }
-
+  
   axiom {
     df$rt$isSubtype(df$rt$charType(), df$rt$anyType())
   }
-
+  
   axiom {
     df$rt$isSubtype(df$rt$unitType(), df$rt$anyType())
   }
-
+  
   axiom {
     df$rt$isSubtype(df$rt$nothingType(), df$rt$anyType())
   }
-
+  
   axiom {
     df$rt$isSubtype(df$rt$anyType(), df$rt$anyType())
   }
-
+  
   axiom {
     df$rt$isSubtype(df$rt$functionType(), df$rt$anyType())
   }
-
+  
   axiom {
     df$rt$isSubtype(df$rt$stringType(), df$rt$anyType())
   }
-
+  
   axiom {
     df$rt$isSubtype(df$rt$c$A(), df$rt$anyType())
   }
-
+  
   axiom {
     df$rt$isSubtype(df$rt$c$B(), df$rt$anyType())
   }
-
+  
   axiom rt$supertype_of_nothing {
     (forall t: d$rt ::df$rt$isSubtype(df$rt$nothingType(), t))
   }
-
+  
   axiom rt$any_not_nullable_type_level {
     (forall t: d$rt ::!df$rt$isSubtype(df$rt$nullable(t), df$rt$anyType()))
   }
-
+  
   axiom rt$null_smartcast_value_level {
     (forall r: Ref, t: d$rt ::
       { df$rt$isSubtype(df$rt$typeOf(r), df$rt$nullable(t)) }
       df$rt$isSubtype(df$rt$typeOf(r), df$rt$nullable(t)) ==>
       r == df$rt$nullValue() || df$rt$isSubtype(df$rt$typeOf(r), t))
   }
-
+  
   axiom rt$nothing_empty {
     (forall r: Ref ::!df$rt$isSubtype(df$rt$typeOf(r), df$rt$nothingType()))
   }
-
+  
   axiom rt$null_smartcast_type_level {
     (forall t1: d$rt, t2: d$rt ::
       { df$rt$isSubtype(t1, df$rt$anyType()), df$rt$isSubtype(t1, df$rt$nullable(t2)) }
@@ -155,95 +155,95 @@ domain d$rt  {
       df$rt$isSubtype(t1, df$rt$nullable(t2)) ==>
       df$rt$isSubtype(t1, t2))
   }
-
+  
   axiom rt$type_of_null {
     df$rt$isSubtype(df$rt$typeOf(df$rt$nullValue()), df$rt$nullable(df$rt$nothingType()))
   }
-
+  
   axiom rt$any_not_nullable_value_level {
     !df$rt$isSubtype(df$rt$typeOf(df$rt$nullValue()), df$rt$anyType())
   }
-
+  
   axiom rt$type_of_unit {
     df$rt$isSubtype(df$rt$typeOf(df$rt$unitValue()), df$rt$unitType())
   }
-
+  
   axiom rt$uniqueness_of_unit {
     (forall r: Ref ::
       { df$rt$isSubtype(df$rt$typeOf(r), df$rt$unitType()) }
       df$rt$isSubtype(df$rt$typeOf(r), df$rt$unitType()) ==>
       r == df$rt$unitValue())
   }
-
+  
   axiom {
     (forall v: Int ::
       { df$rt$isSubtype(df$rt$typeOf(df$rt$intToRef(v)), df$rt$intType()) }
       df$rt$isSubtype(df$rt$typeOf(df$rt$intToRef(v)), df$rt$intType()))
   }
-
+  
   axiom {
     (forall v: Int ::
       { df$rt$intFromRef(df$rt$intToRef(v)) }
       df$rt$intFromRef(df$rt$intToRef(v)) == v)
   }
-
+  
   axiom {
     (forall r: Ref ::
       { df$rt$intToRef(df$rt$intFromRef(r)) }
       df$rt$isSubtype(df$rt$typeOf(r), df$rt$intType()) ==>
       df$rt$intToRef(df$rt$intFromRef(r)) == r)
   }
-
+  
   axiom {
     (forall v: Bool ::
       { df$rt$isSubtype(df$rt$typeOf(df$rt$boolToRef(v)), df$rt$boolType()) }
       df$rt$isSubtype(df$rt$typeOf(df$rt$boolToRef(v)), df$rt$boolType()))
   }
-
+  
   axiom {
     (forall v: Bool ::
       { df$rt$boolFromRef(df$rt$boolToRef(v)) }
       df$rt$boolFromRef(df$rt$boolToRef(v)) == v)
   }
-
+  
   axiom {
     (forall r: Ref ::
       { df$rt$boolToRef(df$rt$boolFromRef(r)) }
       df$rt$isSubtype(df$rt$typeOf(r), df$rt$boolType()) ==>
       df$rt$boolToRef(df$rt$boolFromRef(r)) == r)
   }
-
+  
   axiom {
     (forall v: Int ::
       { df$rt$isSubtype(df$rt$typeOf(df$rt$charToRef(v)), df$rt$charType()) }
       df$rt$isSubtype(df$rt$typeOf(df$rt$charToRef(v)), df$rt$charType()))
   }
-
+  
   axiom {
     (forall v: Int ::
       { df$rt$charFromRef(df$rt$charToRef(v)) }
       df$rt$charFromRef(df$rt$charToRef(v)) == v)
   }
-
+  
   axiom {
     (forall r: Ref ::
       { df$rt$charToRef(df$rt$charFromRef(r)) }
       df$rt$isSubtype(df$rt$typeOf(r), df$rt$charType()) ==>
       df$rt$charToRef(df$rt$charFromRef(r)) == r)
   }
-
+  
   axiom {
     (forall v: Seq[Int] ::
       { df$rt$isSubtype(df$rt$typeOf(df$rt$stringToRef(v)), df$rt$stringType()) }
       df$rt$isSubtype(df$rt$typeOf(df$rt$stringToRef(v)), df$rt$stringType()))
   }
-
+  
   axiom {
     (forall v: Seq[Int] ::
       { df$rt$stringFromRef(df$rt$stringToRef(v)) }
       df$rt$stringFromRef(df$rt$stringToRef(v)) == v)
   }
-
+  
   axiom {
     (forall r: Ref ::
       { df$rt$stringToRef(df$rt$stringFromRef(r)) }
@@ -487,6 +487,7 @@ predicate p$c$B$unique(this$dispatch: Ref) {
 
 method f$havoc$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$shared(p$a), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$localUnit: Ref
@@ -505,7 +506,6 @@ method f$havoc$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   var l0$localCharNull: Ref
   var l0$localStringNull: Ref
   var l0$localClassTypeNull: Ref
-  inhale acc(p$c$A$shared(p$a), wildcard)
   l0$localUnit := havoc$T$Unit()
   l0$localNothing := havoc$T$Nothing()
   l0$localAny := havoc$T$Any()

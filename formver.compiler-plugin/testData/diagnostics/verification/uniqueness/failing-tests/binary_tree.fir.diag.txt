@@ -35,11 +35,11 @@ predicate p$c$Node$unique(this$dispatch: Ref) {
 
 method f$get_left_val$TF$T$Node$NT$Int(p$n: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$c$Node())
+  requires acc(p$c$Node$shared(p$n), wildcard)
   requires acc(p$c$Node$unique(p$n), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
 {
   var anon$0: Ref
-  inhale acc(p$c$Node$shared(p$n), wildcard)
   unfold acc(p$c$Node$shared(p$n), wildcard)
   anon$0 := p$n.bf$left
   if (anon$0 != df$rt$nullValue()) {
@@ -124,8 +124,12 @@ method con$c$Node$T$Int$NT$Node$NT$Node$T$Node(p$data: Ref, p$left: Ref, p$right
   requires df$rt$isSubtype(df$rt$typeOf(p$data), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(p$left), df$rt$nullable(df$rt$c$Node()))
   requires p$left != df$rt$nullValue() ==>
+    acc(p$c$Node$shared(p$left), wildcard)
+  requires p$left != df$rt$nullValue() ==>
     acc(p$c$Node$unique(p$left), write)
   requires df$rt$isSubtype(df$rt$typeOf(p$right), df$rt$nullable(df$rt$c$Node()))
+  requires p$right != df$rt$nullValue() ==>
+    acc(p$c$Node$shared(p$right), wildcard)
   requires p$right != df$rt$nullValue() ==>
     acc(p$c$Node$unique(p$right), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Node())

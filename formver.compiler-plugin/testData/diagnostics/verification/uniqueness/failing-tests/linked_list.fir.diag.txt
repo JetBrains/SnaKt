@@ -23,11 +23,11 @@ predicate p$c$Link$unique(this$dispatch: Ref) {
 
 method f$getVal$TF$T$Link$NT$Int(p$l: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$l), df$rt$c$Link())
+  requires acc(p$c$Link$shared(p$l), wildcard)
   requires acc(p$c$Link$unique(p$l), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
 {
   var anon$0: Ref
-  inhale acc(p$c$Link$shared(p$l), wildcard)
   unfold acc(p$c$Link$shared(p$l), wildcard)
   anon$0 := p$l.bf$next
   if (anon$0 != df$rt$nullValue()) {
@@ -99,6 +99,8 @@ method con$c$Link$T$Int$NT$Link$T$Link(p$data: Ref, p$next: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$data), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(p$next), df$rt$nullable(df$rt$c$Link()))
+  requires p$next != df$rt$nullValue() ==>
+    acc(p$c$Link$shared(p$next), wildcard)
   requires p$next != df$rt$nullValue() ==>
     acc(p$c$Link$unique(p$next), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Link())
