@@ -1,45 +1,45 @@
 /function_call.kt:(118,130): info: Generated Viper text for functionCall:
-method f$f$t$TF$t$T$Int$t$T$Int(p$x: Ref) returns (v$ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$intType())
+method f(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret), intType())
 
 
-method f$functionCall$t$TF$$t$T$Unit() returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method functionCall() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var v$anon$$0: Ref
-  var v$anon$$1: Ref
-  v$anon$$0 := f$f$t$TF$t$T$Int$t$T$Int(df$rt$intToRef(0))
-  v$anon$$1 := f$f$t$TF$t$T$Int$t$T$Int(df$rt$intToRef(0))
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  var anon0: Ref
+  var anon: Ref
+  anon0 := f(intToRef(0))
+  anon := f(intToRef(0))
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /function_call.kt:(160,178): info: Generated Viper text for functionCallNested:
-method f$f$t$TF$t$T$Int$t$T$Int(p$x: Ref) returns (v$ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$intType())
+method f(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret), intType())
 
 
-method f$functionCallNested$t$TF$$t$T$Unit() returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method functionCallNested() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var v$anon$$0: Ref
-  var v$anon$$1: Ref
-  var v$anon$$2: Ref
-  v$anon$$2 := f$f$t$TF$t$T$Int$t$T$Int(df$rt$intToRef(0))
-  v$anon$$1 := f$f$t$TF$t$T$Int$t$T$Int(v$anon$$2)
-  v$anon$$0 := f$f$t$TF$t$T$Int$t$T$Int(v$anon$$1)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  var anon0: Ref
+  var anon1: Ref
+  var anon: Ref
+  anon := f(intToRef(0))
+  anon1 := f(anon)
+  anon0 := f(anon1)
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /function_call.kt:(205,215): info: Generated Viper text for callItself:
-method f$callItself$t$TF$$t$T$Unit() returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method callItself() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var v$anon$$0: Ref
-  v$anon$$0 := f$callItself$t$TF$$t$T$Unit()
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  var anon: Ref
+  anon := callItself()
+  label ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }

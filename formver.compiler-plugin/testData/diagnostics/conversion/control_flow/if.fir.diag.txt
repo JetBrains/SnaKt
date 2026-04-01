@@ -1,58 +1,56 @@
 /if.kt:(23,31): info: Generated Viper text for simpleIf:
-method f$simpleIf$t$TF$$t$T$Int() returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+method simpleIf() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), intType())
 {
   if (true) {
-    v$ret$0 := df$rt$intToRef(0)
-    goto lbl$ret$0
+    ret0 := intToRef(0)
+    goto ret
   } else {
-    v$ret$0 := df$rt$intToRef(1)
-    goto lbl$ret$0
+    ret0 := intToRef(1)
+    goto ret
   }
-  label lbl$ret$0
+  label ret
 }
 
 /if.kt:(116,129): info: Generated Viper text for ifOnParameter:
-method f$ifOnParameter$t$TF$t$T$Boolean$t$T$Int(p$b: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+method ifOnParameter(b: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  if (df$rt$boolFromRef(p$b)) {
-    v$ret$0 := df$rt$intToRef(0)
-    goto lbl$ret$0
+  if (boolFromRef(b)) {
+    ret0 := intToRef(0)
+    goto ret
   } else {
-    v$ret$0 := df$rt$intToRef(1)
-    goto lbl$ret$0
+    ret0 := intToRef(1)
+    goto ret
   }
-  label lbl$ret$0
+  label ret
 }
 
 /if.kt:(221,235): info: Generated Viper text for ifAsExpression:
-method f$ifAsExpression$t$TF$$t$T$Boolean() returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$boolType())
+method ifAsExpression() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), boolType())
 {
-  var l0$b: Ref
-  l0$b := df$rt$boolToRef(false)
-  if (df$rt$boolFromRef(l0$b)) {
-    var v$anon$$0: Ref
-    v$anon$$0 := f$simpleIf$t$TF$$t$T$Int()
-    v$ret$0 := df$rt$boolToRef(false)
+  var l_b: Ref
+  l_b := boolToRef(false)
+  if (boolFromRef(l_b)) {
+    var anon0: Ref
+    anon0 := simpleIf()
+    ret0 := boolToRef(false)
   } else {
-    var v$anon$$1: Ref
-    v$anon$$1 := f$ifOnParameter$t$TF$t$T$Boolean$t$T$Int(l0$b)
-    v$ret$0 := df$rt$boolToRef(true)
+    var anon: Ref
+    anon := ifOnParameter(l_b)
+    ret0 := boolToRef(true)
   }
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto lbl_ret
+  label lbl_ret
 }
 
-method f$ifOnParameter$t$TF$t$T$Boolean$t$T$Int(p$b: Ref)
-  returns (v$ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$intType())
+method ifOnParameter(b: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(ret), intType())
 
 
-method f$simpleIf$t$TF$$t$T$Int() returns (v$ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$intType())
+method simpleIf() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), intType())
 

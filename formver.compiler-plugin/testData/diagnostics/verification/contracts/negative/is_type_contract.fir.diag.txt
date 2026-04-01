@@ -1,26 +1,24 @@
 /is_type_contract.kt:(162,183): info: Generated Viper text for unverifiableTypeCheck:
-method f$unverifiableTypeCheck$t$TF$t$NT$Int$t$T$Boolean(p$x: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$boolType())
-  ensures true ==> df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$unitType())
+method unverifiableTypeCheck(x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(x), nullable(intType()))
+  ensures isSubtype(typeOf(ret0), boolType())
+  ensures true ==> isSubtype(typeOf(x), unitType())
 {
-  v$ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$stringType()))
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret0 := boolToRef(isSubtype(typeOf(x), stringType()))
+  goto ret
+  label ret
 }
 
 /is_type_contract.kt:(227,256): warning: Cannot verify that if the function returns then x is Unit.
 
 /is_type_contract.kt:(330,352): info: Generated Viper text for nullableNotNonNullable:
-method f$nullableNotNonNullable$t$TF$t$NT$Int$t$T$Unit(p$x: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
-  ensures true ==> df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
+method nullableNotNonNullable(x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(x), nullable(intType()))
+  ensures isSubtype(typeOf(ret0), unitType())
+  ensures true ==> isSubtype(typeOf(x), intType())
 {
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  label ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /is_type_contract.kt:(387,415): warning: Cannot verify that if the function returns then x is Int.

@@ -1,181 +1,173 @@
 /predicates.kt:(203,213): info: Generated Viper text for useClasses:
-field bf$a: Ref
+field a: Ref
 
-field bf$b: Ref
+field b: Ref
 
-field bf$next: Ref
+field next: Ref
 
-field bf$pf: Ref
+field pf: Ref
 
-predicate pred$c$Baz$shared(this$dispatch: Ref) {
+predicate Baz_pred_shared(this: Ref) {
   true
 }
 
-predicate pred$c$Baz$unique(this$dispatch: Ref) {
+predicate Baz_pred_unique(this: Ref) {
   true
 }
 
-predicate pred$c$PrimitiveFields$shared(this$dispatch: Ref) {
-  acc(this$dispatch.bf$a, wildcard) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$a), df$rt$intType())
+predicate PrimitiveFields_pred_shared(this: Ref) {
+  acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType())
 }
 
-predicate pred$c$PrimitiveFields$unique(this$dispatch: Ref) {
-  acc(this$dispatch.bf$a, wildcard) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$a), df$rt$intType()) &&
-  acc(this$dispatch.bf$b, write) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$b), df$rt$intType())
+predicate PrimitiveFields_pred_unique(this: Ref) {
+  acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType()) &&
+  acc(this.b, write) &&
+  isSubtype(typeOf(this.b), intType())
 }
 
-predicate pred$c$Recursive$shared(this$dispatch: Ref) {
-  acc(this$dispatch.bf$next, wildcard) &&
-  (this$dispatch.bf$next != df$rt$nullValue() ==>
-  acc(pred$c$Recursive$shared(this$dispatch.bf$next), wildcard)) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$next), df$rt$nullable(df$rt$c$Recursive()))
+predicate Recursive_pred_shared(this: Ref) {
+  acc(this.next, wildcard) &&
+  (this.next != nullValue() ==>
+  acc(Recursive_pred_shared(this.next), wildcard)) &&
+  isSubtype(typeOf(this.next), nullable(Recursive()))
 }
 
-predicate pred$c$Recursive$unique(this$dispatch: Ref) {
-  acc(this$dispatch.bf$next, wildcard) &&
-  (this$dispatch.bf$next != df$rt$nullValue() ==>
-  acc(pred$c$Recursive$shared(this$dispatch.bf$next), wildcard)) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$next), df$rt$nullable(df$rt$c$Recursive()))
+predicate Recursive_pred_unique(this: Ref) {
+  acc(this.next, wildcard) &&
+  (this.next != nullValue() ==>
+  acc(Recursive_pred_shared(this.next), wildcard)) &&
+  isSubtype(typeOf(this.next), nullable(Recursive()))
 }
 
-predicate pred$c$ReferenceField$shared(this$dispatch: Ref) {
-  acc(this$dispatch.bf$pf, wildcard) &&
-  acc(pred$c$PrimitiveFields$shared(this$dispatch.bf$pf), wildcard) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$pf), df$rt$c$PrimitiveFields()) &&
-  acc(pred$c$Baz$shared(this$dispatch), wildcard)
+predicate ReferenceField_pred_shared(this: Ref) {
+  acc(this.pf, wildcard) &&
+  acc(PrimitiveFields_pred_shared(this.pf), wildcard) &&
+  isSubtype(typeOf(this.pf), PrimitiveFields()) &&
+  acc(Baz_pred_shared(this), wildcard)
 }
 
-predicate pred$c$ReferenceField$unique(this$dispatch: Ref) {
-  acc(this$dispatch.bf$pf, wildcard) &&
-  acc(pred$c$PrimitiveFields$shared(this$dispatch.bf$pf), wildcard) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$pf), df$rt$c$PrimitiveFields()) &&
-  acc(pred$c$Baz$unique(this$dispatch), write)
+predicate ReferenceField_pred_unique(this: Ref) {
+  acc(this.pf, wildcard) &&
+  acc(PrimitiveFields_pred_shared(this.pf), wildcard) &&
+  isSubtype(typeOf(this.pf), PrimitiveFields()) &&
+  acc(Baz_pred_unique(this), write)
 }
 
-method f$useClasses$t$TF$t$T$ReferenceField$t$T$Recursive$t$T$Unit(p$rf: Ref,
-  p$rec: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$rf), df$rt$c$ReferenceField())
-  requires df$rt$isSubtype(df$rt$typeOf(p$rec), df$rt$c$Recursive())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method useClasses(rf: Ref, rec: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(rf), ReferenceField())
+  requires isSubtype(typeOf(rec), Recursive())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  inhale acc(pred$c$ReferenceField$shared(p$rf), wildcard)
-  inhale acc(pred$c$Recursive$shared(p$rec), wildcard)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  inhale acc(ReferenceField_pred_shared(rf), wildcard)
+  inhale acc(Recursive_pred_shared(rec), wildcard)
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /predicates.kt:(354,374): info: Generated Viper text for threeLayersHierarchy:
-field bf$x: Ref
+field x: Ref
 
-field bf$y: Ref
+field y: Ref
 
-predicate pred$c$A$shared(this$dispatch: Ref) {
-  acc(this$dispatch.bf$x, wildcard) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$x), df$rt$intType())
+predicate A_pred_shared(this: Ref) {
+  acc(this.x, wildcard) && isSubtype(typeOf(this.x), intType())
 }
 
-predicate pred$c$A$unique(this$dispatch: Ref) {
-  acc(this$dispatch.bf$x, wildcard) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$x), df$rt$intType()) &&
-  acc(this$dispatch.bf$y, write) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$y), df$rt$intType())
+predicate A_pred_unique(this: Ref) {
+  acc(this.x, wildcard) && isSubtype(typeOf(this.x), intType()) &&
+  acc(this.y, write) &&
+  isSubtype(typeOf(this.y), intType())
 }
 
-predicate pred$c$B$shared(this$dispatch: Ref) {
-  acc(pred$c$A$shared(this$dispatch), wildcard)
+predicate B_pred_shared(this: Ref) {
+  acc(A_pred_shared(this), wildcard)
 }
 
-predicate pred$c$B$unique(this$dispatch: Ref) {
-  acc(pred$c$A$unique(this$dispatch), write)
+predicate B_pred_unique(this: Ref) {
+  acc(A_pred_unique(this), write)
 }
 
-predicate pred$c$C$shared(this$dispatch: Ref) {
-  acc(pred$c$B$shared(this$dispatch), wildcard)
+predicate C_pred_shared(this: Ref) {
+  acc(B_pred_shared(this), wildcard)
 }
 
-predicate pred$c$C$unique(this$dispatch: Ref) {
-  acc(pred$c$B$unique(this$dispatch), write)
+predicate C_pred_unique(this: Ref) {
+  acc(B_pred_unique(this), write)
 }
 
-method f$threeLayersHierarchy$t$TF$t$T$C$t$T$Unit(p$c: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$c$C())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method threeLayersHierarchy(c: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(c), C())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  inhale acc(pred$c$C$shared(p$c), wildcard)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  inhale acc(C_pred_shared(c), wildcard)
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /predicates.kt:(390,403): info: Generated Viper text for listHierarchy:
-field prop$size: Ref
+field size: Ref
 
-predicate pred$pkg$kotlin_collections$c$Collection$shared(this$dispatch: Ref) {
-  acc(pred$pkg$kotlin_collections$c$Iterable$shared(this$dispatch), wildcard)
+predicate Collection_pred_shared(this: Ref) {
+  acc(Iterable_pred_shared(this), wildcard)
 }
 
-predicate pred$pkg$kotlin_collections$c$Collection$unique(this$dispatch: Ref) {
-  acc(pred$pkg$kotlin_collections$c$Iterable$unique(this$dispatch), write)
+predicate Collection_pred_unique(this: Ref) {
+  acc(Iterable_pred_unique(this), write)
 }
 
-predicate pred$pkg$kotlin_collections$c$Iterable$shared(this$dispatch: Ref) {
+predicate Iterable_pred_shared(this: Ref) {
   true
 }
 
-predicate pred$pkg$kotlin_collections$c$Iterable$unique(this$dispatch: Ref) {
+predicate Iterable_pred_unique(this: Ref) {
   true
 }
 
-predicate pred$pkg$kotlin_collections$c$List$shared(this$dispatch: Ref) {
-  acc(pred$pkg$kotlin_collections$c$Collection$shared(this$dispatch), wildcard)
+predicate List_pred_shared(this: Ref) {
+  acc(Collection_pred_shared(this), wildcard)
 }
 
-predicate pred$pkg$kotlin_collections$c$List$unique(this$dispatch: Ref) {
-  acc(pred$pkg$kotlin_collections$c$Collection$unique(this$dispatch), write)
+predicate List_pred_unique(this: Ref) {
+  acc(Collection_pred_unique(this), write)
 }
 
-predicate pred$pkg$kotlin_collections$c$MutableCollection$shared(this$dispatch: Ref) {
-  acc(pred$pkg$kotlin_collections$c$Collection$shared(this$dispatch), wildcard) &&
-  acc(pred$pkg$kotlin_collections$c$MutableIterable$shared(this$dispatch), wildcard)
+predicate MutableCollection_pred_shared(this: Ref) {
+  acc(Collection_pred_shared(this), wildcard) &&
+  acc(MutableIterable_pred_shared(this), wildcard)
 }
 
-predicate pred$pkg$kotlin_collections$c$MutableCollection$unique(this$dispatch: Ref) {
-  acc(pred$pkg$kotlin_collections$c$Collection$unique(this$dispatch), write) &&
-  acc(pred$pkg$kotlin_collections$c$MutableIterable$unique(this$dispatch), write)
+predicate MutableCollection_pred_unique(this: Ref) {
+  acc(Collection_pred_unique(this), write) &&
+  acc(MutableIterable_pred_unique(this), write)
 }
 
-predicate pred$pkg$kotlin_collections$c$MutableIterable$shared(this$dispatch: Ref) {
-  acc(pred$pkg$kotlin_collections$c$Iterable$shared(this$dispatch), wildcard)
+predicate MutableIterable_pred_shared(this: Ref) {
+  acc(Iterable_pred_shared(this), wildcard)
 }
 
-predicate pred$pkg$kotlin_collections$c$MutableIterable$unique(this$dispatch: Ref) {
-  acc(pred$pkg$kotlin_collections$c$Iterable$unique(this$dispatch), write)
+predicate MutableIterable_pred_unique(this: Ref) {
+  acc(Iterable_pred_unique(this), write)
 }
 
-predicate pred$pkg$kotlin_collections$c$MutableList$shared(this$dispatch: Ref) {
-  acc(pred$pkg$kotlin_collections$c$List$shared(this$dispatch), wildcard) &&
-  acc(pred$pkg$kotlin_collections$c$MutableCollection$shared(this$dispatch), wildcard)
+predicate MutableList_pred_shared(this: Ref) {
+  acc(List_pred_shared(this), wildcard) &&
+  acc(MutableCollection_pred_shared(this), wildcard)
 }
 
-predicate pred$pkg$kotlin_collections$c$MutableList$unique(this$dispatch: Ref) {
-  acc(pred$pkg$kotlin_collections$c$List$unique(this$dispatch), write) &&
-  acc(pred$pkg$kotlin_collections$c$MutableCollection$unique(this$dispatch), write)
+predicate MutableList_pred_unique(this: Ref) {
+  acc(List_pred_unique(this), write) &&
+  acc(MutableCollection_pred_unique(this), write)
 }
 
-method f$listHierarchy$t$TF$t$T$MutableList$t$T$Unit(p$xs: Ref)
-  returns (v$ret$0: Ref)
-  requires acc(p$xs.prop$size, write)
-  requires df$rt$intFromRef(p$xs.prop$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(p$xs), df$rt$c$pkg$kotlin_collections$MutableList())
-  ensures acc(p$xs.prop$size, write)
-  ensures df$rt$intFromRef(p$xs.prop$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method listHierarchy(xs: Ref) returns (ret0: Ref)
+  requires acc(xs.size, write)
+  requires intFromRef(xs.size) >= 0
+  requires isSubtype(typeOf(xs), MutableList())
+  ensures acc(xs.size, write)
+  ensures intFromRef(xs.size) >= 0
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  inhale acc(pred$pkg$kotlin_collections$c$MutableList$shared(p$xs), wildcard)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  inhale acc(MutableList_pred_shared(xs), wildcard)
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }

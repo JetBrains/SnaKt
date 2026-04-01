@@ -1,79 +1,77 @@
 /unit_return_type.kt:(171,176): info: Generated Viper text for idFun:
-method f$idFun$t$TF$t$NT$Any$t$NT$Any(p$t: Ref) returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$t), df$rt$nullable(df$rt$anyType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$nullable(df$rt$anyType()))
+method idFun(p_t: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(p_t), nullable(anyType()))
+  ensures isSubtype(typeOf(ret0), nullable(anyType()))
 {
-  v$ret$0 := p$t
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret0 := p_t
+  goto ret
+  label ret
 }
 
 /unit_return_type.kt:(195,208): info: Generated Viper text for directReturns:
-method f$directReturns$t$TF$t$T$Boolean$t$T$Unit(p$b: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method directReturns(b: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  if (df$rt$boolFromRef(p$b)) {
-    v$ret$0 := df$rt$unitValue()
-    goto lbl$ret$0
+  if (boolFromRef(b)) {
+    ret0 := unitValue()
+    goto lbl_ret
   } else {
-    var v$anon$$0: Ref
-    var v$anon$$1: Ref
-    v$anon$$1 := f$idFun$t$TF$t$NT$Any$t$NT$Any(p$b)
-    v$anon$$0 := v$anon$$1
-    inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$0), df$rt$boolType())
-    if (df$rt$boolFromRef(v$anon$$0)) {
-      v$ret$0 := df$rt$unitValue()
-      goto lbl$ret$0
+    var anon0: Ref
+    var anon: Ref
+    anon := idFun(b)
+    anon0 := anon
+    inhale isSubtype(typeOf(anon0), boolType())
+    if (boolFromRef(anon0)) {
+      ret0 := unitValue()
+      goto lbl_ret
     }
   }
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
-method f$idFun$t$TF$t$NT$Any$t$NT$Any(p$t: Ref) returns (v$ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$t), df$rt$nullable(df$rt$anyType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$nullable(df$rt$anyType()))
+method idFun(p_t: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(p_t), nullable(anyType()))
+  ensures isSubtype(typeOf(ret), nullable(anyType()))
 
 
 /unit_return_type.kt:(374,387): info: Generated Viper text for useInlineUnit:
-field bf$size: Ref
+field size: Ref
 
-method f$idFun$t$TF$t$NT$Any$t$NT$Any(p$t: Ref) returns (v$ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$t), df$rt$nullable(df$rt$anyType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$nullable(df$rt$anyType()))
+method idFun(p_t: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(p_t), nullable(anyType()))
+  ensures isSubtype(typeOf(ret), nullable(anyType()))
 
 
-method f$useInlineUnit$t$TF$t$T$Boolean$t$T$Unit(p$b: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method useInlineUnit(b: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var l0$unitRes: Ref
-  var v$ret$1: Ref
-  var v$anon$$0: Ref
-  var v$ret$2: Ref
-  var v$anon$$1: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$nullable(df$rt$anyType()))
-  v$anon$$0 := p$b
-  inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$0), df$rt$boolType())
-  v$anon$$1 := v$anon$$0
-  if (df$rt$boolFromRef(v$anon$$1)) {
-    var l4$tmp: Ref
-    var v$anon$$2: Ref
-    var v$anon$$3: Ref
-    l4$tmp := df$rt$intToRef(42)
-    v$anon$$3 := f$idFun$t$TF$t$NT$Any$t$NT$Any(l4$tmp)
-    v$anon$$2 := v$anon$$3
-    inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$2), df$rt$intType())
+  var unitRes: Ref
+  var ret1: Ref
+  var anon0: Ref
+  var ret2: Ref
+  var anon1: Ref
+  inhale isSubtype(typeOf(b), nullable(anyType()))
+  anon0 := b
+  inhale isSubtype(typeOf(anon0), boolType())
+  anon1 := anon0
+  if (boolFromRef(anon1)) {
+    var tmp: Ref
+    var anon2: Ref
+    var anon: Ref
+    tmp := intToRef(42)
+    anon := idFun(tmp)
+    anon2 := anon
+    inhale isSubtype(typeOf(anon2), intType())
   }
-  label lbl$ret$2
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$2), df$rt$unitType())
-  label lbl$ret$1
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$1), df$rt$unitType())
-  l0$unitRes := v$ret$1
-  assert l0$unitRes == df$rt$unitValue()
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  label lbl_ret_2
+  inhale isSubtype(typeOf(ret2), unitType())
+  label lbl_ret_1
+  inhale isSubtype(typeOf(ret1), unitType())
+  unitRes := ret1
+  assert unitRes == unitValue()
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }

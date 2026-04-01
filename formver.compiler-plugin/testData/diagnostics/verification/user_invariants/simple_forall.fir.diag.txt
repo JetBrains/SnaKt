@@ -1,66 +1,62 @@
 /simple_forall.kt:(64,92): info: Generated Viper text for anyIntegerSquaredAtLeastZero:
-method f$anyIntegerSquaredAtLeastZero$t$TF$$t$T$Int()
-  returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
-  ensures (forall v$anon$builtin$1: Int ::v$anon$builtin$1 *
-      v$anon$builtin$1 >=
-      0 &&
-      v$anon$builtin$1 * v$anon$builtin$1 >= df$rt$intFromRef(v$ret$0))
+method anyIntegerSquaredAtLeastZero() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), intType())
+  ensures (forall anon: Int ::anon * anon >= 0 &&
+      anon * anon >= intFromRef(ret0))
 {
-  v$ret$0 := df$rt$intToRef(0)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret0 := intToRef(0)
+  goto ret
+  label ret
 }
 
 /simple_forall.kt:(259,298): info: Generated Viper text for anyIntegerSquaredIsAtLeastOneExceptZero:
-method f$anyIntegerSquaredIsAtLeastOneExceptZero$t$TF$$t$T$Int()
-  returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
-  ensures (forall v$anon$builtin$1: Int ::!(v$anon$builtin$1 == 0) ==>
-      v$anon$builtin$1 * v$anon$builtin$1 >= df$rt$intFromRef(v$ret$0))
+method anyIntegerSquaredIsAtLeastOneExceptZero() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), intType())
+  ensures (forall anon: Int ::!(anon == 0) ==>
+      anon * anon >= intFromRef(ret0))
 {
-  v$ret$0 := df$rt$intToRef(1)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret0 := intToRef(1)
+  goto ret
+  label ret
 }
 
 /simple_forall.kt:(460,503): info: Generated Viper text for anyIntegerSquaredIsAtLeastZeroStringVersion:
-method f$anyIntegerSquaredIsAtLeastZeroStringVersion$t$TF$t$T$String$t$T$Int(p$str: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$str), df$rt$stringType())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+method anyIntegerSquaredIsAtLeastZeroStringVersion(str: Ref)
+  returns (ret0: Ref)
+  requires isSubtype(typeOf(str), stringType())
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var l0$res: Ref
-  var l0$i: Ref
-  var v$anon$$1: Ref
-  l0$res := df$rt$intToRef(0)
-  l0$i := df$rt$intToRef(10)
-  label lbl$cont$0
-    invariant df$rt$isSubtype(df$rt$typeOf(l0$res), df$rt$intType())
-    invariant df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
-    invariant df$rt$isSubtype(df$rt$typeOf(p$str), df$rt$stringType())
-    invariant (forall v$anon$builtin$0: Int ::0 <= v$anon$builtin$0 &&
-        v$anon$builtin$0 < |df$rt$stringFromRef(p$str)| ==>
-        (df$rt$stringFromRef(p$str)[v$anon$builtin$0] - 97) *
-        (df$rt$stringFromRef(p$str)[v$anon$builtin$0] - 97) >=
-        df$rt$intFromRef(l0$res))
-  v$anon$$1 := f$gtInts(l0$i, df$rt$intToRef(0))
-  if (df$rt$boolFromRef(v$anon$$1)) {
-    var v$anon$$0: Ref
-    v$anon$$0 := l0$i
-    l0$i := f$minusInts(v$anon$$0, df$rt$intToRef(1))
-    goto lbl$cont$0
+  var res: Ref
+  var i: Ref
+  var anon1: Ref
+  res := intToRef(0)
+  i := intToRef(10)
+  label cont
+    invariant isSubtype(typeOf(res), intType())
+    invariant isSubtype(typeOf(i), intType())
+    invariant isSubtype(typeOf(str), stringType())
+    invariant (forall anon_builtin: Int ::0 <= anon_builtin &&
+        anon_builtin < |stringFromRef(str)| ==>
+        (stringFromRef(str)[anon_builtin] - 97) *
+        (stringFromRef(str)[anon_builtin] - 97) >=
+        intFromRef(res))
+  anon1 := gtInts(i, intToRef(0))
+  if (boolFromRef(anon1)) {
+    var anon: Ref
+    anon := i
+    i := minusInts(anon, intToRef(1))
+    goto cont
   }
-  label lbl$break$0
-  assert df$rt$isSubtype(df$rt$typeOf(l0$res), df$rt$intType())
-  assert df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
-  assert df$rt$isSubtype(df$rt$typeOf(p$str), df$rt$stringType())
-  assert (forall v$anon$builtin$0: Int ::0 <= v$anon$builtin$0 &&
-      v$anon$builtin$0 < |df$rt$stringFromRef(p$str)| ==>
-      (df$rt$stringFromRef(p$str)[v$anon$builtin$0] - 97) *
-      (df$rt$stringFromRef(p$str)[v$anon$builtin$0] - 97) >=
-      df$rt$intFromRef(l0$res))
-  v$ret$0 := l0$res
-  goto lbl$ret$0
-  label lbl$ret$0
+  label break
+  assert isSubtype(typeOf(res), intType())
+  assert isSubtype(typeOf(i), intType())
+  assert isSubtype(typeOf(str), stringType())
+  assert (forall anon_builtin: Int ::0 <= anon_builtin &&
+      anon_builtin < |stringFromRef(str)| ==>
+      (stringFromRef(str)[anon_builtin] - 97) *
+      (stringFromRef(str)[anon_builtin] - 97) >=
+      intFromRef(res))
+  ret0 := res
+  goto ret
+  label ret
 }

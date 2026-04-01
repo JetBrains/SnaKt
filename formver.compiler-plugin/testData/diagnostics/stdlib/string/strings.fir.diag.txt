@@ -1,233 +1,217 @@
 /strings.kt:(237,245): info: Generated Viper text for testType:
-field bf$size: Ref
+field bf_str: Ref
 
-field bf$str: Ref
+field size: Ref
 
-predicate pred$c$StringBox$shared(this$dispatch: Ref) {
-  acc(this$dispatch.bf$str, wildcard) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$str), df$rt$stringType())
+predicate BooleanArray_pred_shared(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(Cloneable_pred_shared(this), wildcard) &&
+  acc(Serializable_pred_shared(this), wildcard)
 }
 
-predicate pred$c$StringBox$unique(this$dispatch: Ref) {
-  acc(this$dispatch.bf$str, wildcard) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$str), df$rt$stringType())
+predicate BooleanArray_pred_unique(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(Cloneable_pred_unique(this), write) &&
+  acc(Serializable_pred_unique(this), write)
 }
 
-predicate pred$pkg$java_io$c$Serializable$shared(this$dispatch: Ref) {
+predicate Cloneable_pred_shared(this: Ref) {
   true
 }
 
-predicate pred$pkg$java_io$c$Serializable$unique(this$dispatch: Ref) {
+predicate Cloneable_pred_unique(this: Ref) {
   true
 }
 
-predicate pred$pkg$kotlin$c$BooleanArray$shared(this$dispatch: Ref) {
-  acc(this$dispatch.bf$size, wildcard) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$size), df$rt$intType()) &&
-  acc(pred$pkg$kotlin$c$Cloneable$shared(this$dispatch), wildcard) &&
-  acc(pred$pkg$java_io$c$Serializable$shared(this$dispatch), wildcard)
-}
-
-predicate pred$pkg$kotlin$c$BooleanArray$unique(this$dispatch: Ref) {
-  acc(this$dispatch.bf$size, wildcard) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$size), df$rt$intType()) &&
-  acc(pred$pkg$kotlin$c$Cloneable$unique(this$dispatch), write) &&
-  acc(pred$pkg$java_io$c$Serializable$unique(this$dispatch), write)
-}
-
-predicate pred$pkg$kotlin$c$Cloneable$shared(this$dispatch: Ref) {
+predicate Serializable_pred_shared(this: Ref) {
   true
 }
 
-predicate pred$pkg$kotlin$c$Cloneable$unique(this$dispatch: Ref) {
+predicate Serializable_pred_unique(this: Ref) {
   true
 }
 
-method con$c$StringBox$t$T$String$t$T$StringBox(p$str: Ref)
-  returns (v$ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$str), df$rt$stringType())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$c$StringBox())
-  ensures acc(pred$c$StringBox$shared(v$ret), wildcard)
-  ensures acc(pred$c$StringBox$unique(v$ret), write)
-  ensures df$rt$stringFromRef((unfolding acc(pred$c$StringBox$shared(v$ret), wildcard) in
-      v$ret.bf$str)) ==
-    df$rt$stringFromRef(p$str)
+predicate StringBox_pred_shared(this: Ref) {
+  acc(this.bf_str, wildcard) &&
+  isSubtype(typeOf(this.bf_str), stringType())
+}
+
+predicate StringBox_pred_unique(this: Ref) {
+  acc(this.bf_str, wildcard) &&
+  isSubtype(typeOf(this.bf_str), stringType())
+}
+
+method con(str: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(str), stringType())
+  ensures isSubtype(typeOf(ret), StringBox())
+  ensures acc(StringBox_pred_shared(ret), wildcard)
+  ensures acc(StringBox_pred_unique(ret), write)
+  ensures stringFromRef((unfolding acc(StringBox_pred_shared(ret), wildcard) in
+      ret.bf_str)) ==
+    stringFromRef(str)
 
 
-method f$testType$t$TF$t$T$String$t$T$Unit(p$s: Ref) returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$stringType())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method testType(s: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(s), stringType())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var l0$cond1: Ref
-  var v$anon$$0: Ref
-  var v$anon$$1: Ref
-  var l0$cond2: Ref
-  var v$anon$$2: Ref
-  var v$anon$$3: Ref
-  v$anon$$1 := con$c$StringBox$t$T$String$t$T$StringBox(p$s)
-  unfold acc(pred$c$StringBox$shared(v$anon$$1), wildcard)
-  v$anon$$0 := v$anon$$1.bf$str
-  l0$cond1 := df$rt$boolToRef(df$rt$stringFromRef(v$anon$$0) ==
-    df$rt$stringFromRef(p$s))
-  v$anon$$3 := con$c$StringBox$t$T$String$t$T$StringBox(df$rt$stringToRef(Seq(115,
-    116, 114)))
-  unfold acc(pred$c$StringBox$shared(v$anon$$3), wildcard)
-  v$anon$$2 := v$anon$$3.bf$str
-  l0$cond2 := df$rt$boolToRef(df$rt$stringFromRef(v$anon$$2) ==
-    Seq(115, 116, 114))
-  assert df$rt$boolFromRef(l0$cond1)
-  assert df$rt$boolFromRef(l0$cond2)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  var cond1: Ref
+  var anon0: Ref
+  var anon1: Ref
+  var cond2: Ref
+  var anon2: Ref
+  var anon: Ref
+  anon1 := con(s)
+  unfold acc(StringBox_pred_shared(anon1), wildcard)
+  anon0 := anon1.bf_str
+  cond1 := boolToRef(stringFromRef(anon0) == stringFromRef(s))
+  anon := con(stringToRef(Seq(115, 116, 114)))
+  unfold acc(StringBox_pred_shared(anon), wildcard)
+  anon2 := anon.bf_str
+  cond2 := boolToRef(stringFromRef(anon2) == Seq(115, 116, 114))
+  assert boolFromRef(cond1)
+  assert boolFromRef(cond2)
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /strings.kt:(412,427): info: Generated Viper text for testLengthField:
-field bf$size: Ref
+field bf_str: Ref
 
-field bf$str: Ref
+field size: Ref
 
-predicate pred$c$StringBox$shared(this$dispatch: Ref) {
-  acc(this$dispatch.bf$str, wildcard) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$str), df$rt$stringType())
+predicate BooleanArray_pred_shared(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(Cloneable_pred_shared(this), wildcard) &&
+  acc(Serializable_pred_shared(this), wildcard)
 }
 
-predicate pred$c$StringBox$unique(this$dispatch: Ref) {
-  acc(this$dispatch.bf$str, wildcard) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$str), df$rt$stringType())
+predicate BooleanArray_pred_unique(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(Cloneable_pred_unique(this), write) &&
+  acc(Serializable_pred_unique(this), write)
 }
 
-predicate pred$pkg$java_io$c$Serializable$shared(this$dispatch: Ref) {
+predicate Cloneable_pred_shared(this: Ref) {
   true
 }
 
-predicate pred$pkg$java_io$c$Serializable$unique(this$dispatch: Ref) {
+predicate Cloneable_pred_unique(this: Ref) {
   true
 }
 
-predicate pred$pkg$kotlin$c$BooleanArray$shared(this$dispatch: Ref) {
-  acc(this$dispatch.bf$size, wildcard) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$size), df$rt$intType()) &&
-  acc(pred$pkg$kotlin$c$Cloneable$shared(this$dispatch), wildcard) &&
-  acc(pred$pkg$java_io$c$Serializable$shared(this$dispatch), wildcard)
-}
-
-predicate pred$pkg$kotlin$c$BooleanArray$unique(this$dispatch: Ref) {
-  acc(this$dispatch.bf$size, wildcard) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$size), df$rt$intType()) &&
-  acc(pred$pkg$kotlin$c$Cloneable$unique(this$dispatch), write) &&
-  acc(pred$pkg$java_io$c$Serializable$unique(this$dispatch), write)
-}
-
-predicate pred$pkg$kotlin$c$Cloneable$shared(this$dispatch: Ref) {
+predicate Serializable_pred_shared(this: Ref) {
   true
 }
 
-predicate pred$pkg$kotlin$c$Cloneable$unique(this$dispatch: Ref) {
+predicate Serializable_pred_unique(this: Ref) {
   true
 }
 
-method con$c$StringBox$t$T$String$t$T$StringBox(p$str: Ref)
-  returns (v$ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$str), df$rt$stringType())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$c$StringBox())
-  ensures acc(pred$c$StringBox$shared(v$ret), wildcard)
-  ensures acc(pred$c$StringBox$unique(v$ret), write)
-  ensures df$rt$stringFromRef((unfolding acc(pred$c$StringBox$shared(v$ret), wildcard) in
-      v$ret.bf$str)) ==
-    df$rt$stringFromRef(p$str)
+predicate StringBox_pred_shared(this: Ref) {
+  acc(this.bf_str, wildcard) &&
+  isSubtype(typeOf(this.bf_str), stringType())
+}
+
+predicate StringBox_pred_unique(this: Ref) {
+  acc(this.bf_str, wildcard) &&
+  isSubtype(typeOf(this.bf_str), stringType())
+}
+
+method con(str: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(str), stringType())
+  ensures isSubtype(typeOf(ret), StringBox())
+  ensures acc(StringBox_pred_shared(ret), wildcard)
+  ensures acc(StringBox_pred_unique(ret), write)
+  ensures stringFromRef((unfolding acc(StringBox_pred_shared(ret), wildcard) in
+      ret.bf_str)) ==
+    stringFromRef(str)
 
 
-method f$testLengthField$t$TF$t$T$String$t$T$Unit(p$s: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$stringType())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method testLengthField(s: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(s), stringType())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var l0$len: Ref
-  var l0$cond1: Ref
-  var v$anon$$0: Ref
-  var v$anon$$1: Ref
-  l0$len := f$stringLength(p$s)
-  v$anon$$1 := con$c$StringBox$t$T$String$t$T$StringBox(df$rt$stringToRef(Seq(115,
-    116, 114)))
-  unfold acc(pred$c$StringBox$shared(v$anon$$1), wildcard)
-  v$anon$$0 := v$anon$$1.bf$str
-  l0$cond1 := df$rt$boolToRef(|df$rt$stringFromRef(v$anon$$0)| == 3)
-  assert df$rt$boolFromRef(l0$cond1)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  var len: Ref
+  var cond1: Ref
+  var anon0: Ref
+  var anon: Ref
+  len := stringLength(s)
+  anon := con(stringToRef(Seq(115, 116, 114)))
+  unfold acc(StringBox_pred_shared(anon), wildcard)
+  anon0 := anon.bf_str
+  cond1 := boolToRef(|stringFromRef(anon0)| == 3)
+  assert boolFromRef(cond1)
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /strings.kt:(552,559): info: Generated Viper text for testOps:
-field bf$size: Ref
+field size: Ref
 
-predicate pred$pkg$java_io$c$Serializable$shared(this$dispatch: Ref) {
+predicate BooleanArray_pred_shared(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(Cloneable_pred_shared(this), wildcard) &&
+  acc(Serializable_pred_shared(this), wildcard)
+}
+
+predicate BooleanArray_pred_unique(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(Cloneable_pred_unique(this), write) &&
+  acc(Serializable_pred_unique(this), write)
+}
+
+predicate Cloneable_pred_shared(this: Ref) {
   true
 }
 
-predicate pred$pkg$java_io$c$Serializable$unique(this$dispatch: Ref) {
+predicate Cloneable_pred_unique(this: Ref) {
   true
 }
 
-predicate pred$pkg$kotlin$c$BooleanArray$shared(this$dispatch: Ref) {
-  acc(this$dispatch.bf$size, wildcard) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$size), df$rt$intType()) &&
-  acc(pred$pkg$kotlin$c$Cloneable$shared(this$dispatch), wildcard) &&
-  acc(pred$pkg$java_io$c$Serializable$shared(this$dispatch), wildcard)
-}
-
-predicate pred$pkg$kotlin$c$BooleanArray$unique(this$dispatch: Ref) {
-  acc(this$dispatch.bf$size, wildcard) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$size), df$rt$intType()) &&
-  acc(pred$pkg$kotlin$c$Cloneable$unique(this$dispatch), write) &&
-  acc(pred$pkg$java_io$c$Serializable$unique(this$dispatch), write)
-}
-
-predicate pred$pkg$kotlin$c$Cloneable$shared(this$dispatch: Ref) {
+predicate Serializable_pred_shared(this: Ref) {
   true
 }
 
-predicate pred$pkg$kotlin$c$Cloneable$unique(this$dispatch: Ref) {
+predicate Serializable_pred_unique(this: Ref) {
   true
 }
 
-method f$pkg$kotlin$c$String$plus$t$TF$t$T$String$t$NT$Any$t$T$String(this$dispatch: Ref,
-  p$other: Ref)
-  returns (v$ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$stringType())
-  requires df$rt$isSubtype(df$rt$typeOf(p$other), df$rt$nullable(df$rt$anyType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$stringType())
+method plus(this: Ref, other: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), stringType())
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(ret), stringType())
 
 
-method f$testOps$t$TF$t$T$String$t$T$Unit(p$s: Ref) returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$stringType())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method testOps(s: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(s), stringType())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var l0$c: Ref
-  var v$anon$$0: Ref
-  var l0$str: Ref
-  var l0$helloWorld: Ref
-  var l0$stringPlusInteger: Ref
-  if (|df$rt$stringFromRef(p$s)| > 0) {
-    l0$c := f$stringGet(p$s, df$rt$intToRef(0))
+  var c: Ref
+  var anon: Ref
+  var str: Ref
+  var helloWorld: Ref
+  var stringPlusInteger: Ref
+  if (|stringFromRef(s)| > 0) {
+    c := stringGet(s, intToRef(0))
   } else {
-    l0$c := df$rt$charToRef(97)}
-  if (df$rt$charFromRef(l0$c) == 97) {
-    v$anon$$0 := df$rt$boolToRef(true)
+    c := charToRef(97)}
+  if (charFromRef(c) == 97) {
+    anon := boolToRef(true)
   } else {
-    v$anon$$0 := f$gtInts(f$stringLength(p$s), df$rt$intToRef(0))}
-  assert df$rt$boolFromRef(v$anon$$0)
-  l0$str := df$rt$stringToRef(Seq(97, 98, 97))
-  assert df$rt$stringFromRef(l0$str)[0] == df$rt$stringFromRef(l0$str)[2]
-  assert !(df$rt$stringFromRef(l0$str)[1] == df$rt$stringFromRef(l0$str)[0])
-  assert df$rt$stringFromRef(l0$str)[1] == 98
+    anon := gtInts(stringLength(s), intToRef(0))}
+  assert boolFromRef(anon)
+  str := stringToRef(Seq(97, 98, 97))
+  assert stringFromRef(str)[0] == stringFromRef(str)[2]
+  assert !(stringFromRef(str)[1] == stringFromRef(str)[0])
+  assert stringFromRef(str)[1] == 98
   assert Seq(75, 111, 116, 108, 105, 110, 46, 83, 116, 114, 105, 110, 103) ==
     Seq(75, 111, 116, 108, 105, 110, 46, 83, 116, 114, 105, 110, 103)
-  l0$helloWorld := f$addStringChar(df$rt$stringToRef(Seq(72, 101, 108, 108,
-    111, 32, 87, 111, 114, 108, 100)), df$rt$charToRef(33))
-  assert df$rt$stringFromRef(l0$helloWorld) ==
+  helloWorld := addStringChar(stringToRef(Seq(72, 101, 108, 108, 111, 32, 87,
+    111, 114, 108, 100)), charToRef(33))
+  assert stringFromRef(helloWorld) ==
     Seq(72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100, 33)
-  l0$stringPlusInteger := f$pkg$kotlin$c$String$plus$t$TF$t$T$String$t$NT$Any$t$T$String(df$rt$stringToRef(Seq(52,
-    50)), df$rt$intToRef(42))
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  stringPlusInteger := plus(stringToRef(Seq(52, 50)), intToRef(42))
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }

@@ -1,185 +1,158 @@
 /binary_search.kt:(90,108): info: Generated Viper text for safe_binary_search:
-field prop$size: Ref
+field prop_size: Ref
 
-method f$pkg$kotlin_collections$c$List$get$t$TF$t$T$List$t$T$Int$t$T$Int(this$dispatch: Ref,
-  p$index: Ref)
-  returns (v$ret: Ref)
-  requires acc(this$dispatch.prop$size, write)
-  requires df$rt$intFromRef(this$dispatch.prop$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
-  requires df$rt$isSubtype(df$rt$typeOf(p$index), df$rt$intType())
-  requires df$rt$intFromRef(p$index) >= 0
-  requires df$rt$intFromRef(this$dispatch.prop$size) >
-    df$rt$intFromRef(p$index)
-  ensures acc(this$dispatch.prop$size, write)
-  ensures df$rt$intFromRef(this$dispatch.prop$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$intType())
-  ensures df$rt$intFromRef(this$dispatch.prop$size) ==
-    old(df$rt$intFromRef(this$dispatch.prop$size))
+method get(this: Ref, index: Ref) returns (ret: Ref)
+  requires acc(this.prop_size, write)
+  requires intFromRef(this.prop_size) >= 0
+  requires isSubtype(typeOf(this), List())
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.prop_size) > intFromRef(index)
+  ensures acc(this.prop_size, write)
+  ensures intFromRef(this.prop_size) >= 0
+  ensures isSubtype(typeOf(ret), intType())
+  ensures intFromRef(this.prop_size) == old(intFromRef(this.prop_size))
 
 
-method f$pkg$kotlin_collections$c$List$isEmpty$t$TF$t$T$List$t$T$Boolean(this$dispatch: Ref)
-  returns (v$ret: Ref)
-  requires acc(this$dispatch.prop$size, write)
-  requires df$rt$intFromRef(this$dispatch.prop$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
-  ensures acc(this$dispatch.prop$size, write)
-  ensures df$rt$intFromRef(this$dispatch.prop$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$boolType())
-  ensures df$rt$intFromRef(this$dispatch.prop$size) ==
-    old(df$rt$intFromRef(this$dispatch.prop$size))
-  ensures df$rt$boolFromRef(v$ret) ==>
-    df$rt$intFromRef(this$dispatch.prop$size) == 0
-  ensures !df$rt$boolFromRef(v$ret) ==>
-    df$rt$intFromRef(this$dispatch.prop$size) > 0
+method isEmpty(this: Ref) returns (ret: Ref)
+  requires acc(this.prop_size, write)
+  requires intFromRef(this.prop_size) >= 0
+  requires isSubtype(typeOf(this), List())
+  ensures acc(this.prop_size, write)
+  ensures intFromRef(this.prop_size) >= 0
+  ensures isSubtype(typeOf(ret), boolType())
+  ensures intFromRef(this.prop_size) == old(intFromRef(this.prop_size))
+  ensures boolFromRef(ret) ==> intFromRef(this.prop_size) == 0
+  ensures !boolFromRef(ret) ==> intFromRef(this.prop_size) > 0
 
 
-method f$pkg$kotlin_collections$c$List$subList$t$TF$t$T$List$t$T$Int$t$T$Int$t$T$List(this$dispatch: Ref,
-  p$fromIndex: Ref, p$toIndex: Ref)
-  returns (v$ret: Ref)
-  requires acc(this$dispatch.prop$size, write)
-  requires df$rt$intFromRef(this$dispatch.prop$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
-  requires df$rt$isSubtype(df$rt$typeOf(p$fromIndex), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(p$toIndex), df$rt$intType())
-  requires df$rt$intFromRef(p$fromIndex) <= df$rt$intFromRef(p$toIndex)
-  requires df$rt$intFromRef(p$fromIndex) >= 0
-  requires df$rt$intFromRef(p$toIndex) <=
-    df$rt$intFromRef(this$dispatch.prop$size)
-  ensures acc(this$dispatch.prop$size, write)
-  ensures df$rt$intFromRef(this$dispatch.prop$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$c$pkg$kotlin_collections$List())
-  ensures acc(v$ret.prop$size, write)
-  ensures df$rt$intFromRef(v$ret.prop$size) >= 0
-  ensures acc(pred$pkg$kotlin_collections$c$List$shared(v$ret), wildcard)
-  ensures df$rt$intFromRef(this$dispatch.prop$size) ==
-    old(df$rt$intFromRef(this$dispatch.prop$size))
-  ensures df$rt$intFromRef(v$ret.prop$size) ==
-    df$rt$intFromRef(p$toIndex) - df$rt$intFromRef(p$fromIndex)
-
-
-method f$safe_binary_search$t$TF$t$T$List$t$T$Int$t$T$Boolean(p$arr: Ref, p$target: Ref)
-  returns (v$ret$0: Ref)
-  requires acc(p$arr.prop$size, write)
-  requires df$rt$intFromRef(p$arr.prop$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(p$arr), df$rt$c$pkg$kotlin_collections$List())
-  requires df$rt$isSubtype(df$rt$typeOf(p$target), df$rt$intType())
-  ensures acc(p$arr.prop$size, write)
-  ensures df$rt$intFromRef(p$arr.prop$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$boolType())
+method safe_binary_search(arr: Ref, target: Ref) returns (ret0: Ref)
+  requires acc(arr.prop_size, write)
+  requires intFromRef(arr.prop_size) >= 0
+  requires isSubtype(typeOf(arr), List())
+  requires isSubtype(typeOf(target), intType())
+  ensures acc(arr.prop_size, write)
+  ensures intFromRef(arr.prop_size) >= 0
+  ensures isSubtype(typeOf(ret0), boolType())
 {
-  var l0$size: Ref
-  var l0$mid: Ref
-  var v$anon$$0: Ref
-  var v$anon$$1: Ref
-  inhale acc(pred$pkg$kotlin_collections$c$List$shared(p$arr), wildcard)
-  l0$size := p$arr.prop$size
-  inhale df$rt$isSubtype(df$rt$typeOf(l0$size), df$rt$intType())
-  v$anon$$0 := p$arr.prop$size
-  inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$0), df$rt$intType())
-  l0$mid := f$divInts(v$anon$$0, df$rt$intToRef(2))
-  v$anon$$1 := f$pkg$kotlin_collections$c$List$isEmpty$t$TF$t$T$List$t$T$Boolean(p$arr)
-  if (df$rt$boolFromRef(v$anon$$1)) {
-    v$ret$0 := df$rt$boolToRef(false)
+  var size: Ref
+  var mid: Ref
+  var anon0: Ref
+  var anon1: Ref
+  inhale acc(List_pred_shared(arr), wildcard)
+  size := arr.prop_size
+  inhale isSubtype(typeOf(size), intType())
+  anon0 := arr.prop_size
+  inhale isSubtype(typeOf(anon0), intType())
+  mid := divInts(anon0, intToRef(2))
+  anon1 := isEmpty(arr)
+  if (boolFromRef(anon1)) {
+    ret0 := boolToRef(false)
   } else {
-    var v$anon$$2: Ref
-    v$anon$$2 := f$pkg$kotlin_collections$c$List$get$t$TF$t$T$List$t$T$Int$t$T$Int(p$arr,
-      l0$mid)
-    if (df$rt$intFromRef(v$anon$$2) == df$rt$intFromRef(p$target)) {
-      v$ret$0 := df$rt$boolToRef(true)
+    var anon2: Ref
+    anon2 := get(arr, mid)
+    if (intFromRef(anon2) == intFromRef(target)) {
+      ret0 := boolToRef(true)
     } else {
-      var v$anon$$3: Ref
-      v$anon$$3 := f$pkg$kotlin_collections$c$List$get$t$TF$t$T$List$t$T$Int$t$T$Int(p$arr,
-        l0$mid)
-      if (df$rt$intFromRef(v$anon$$3) < df$rt$intFromRef(p$target)) {
-        var v$anon$$4: Ref
-        v$anon$$4 := f$pkg$kotlin_collections$c$List$subList$t$TF$t$T$List$t$T$Int$t$T$Int$t$T$List(p$arr,
-          f$plusInts(l0$mid, df$rt$intToRef(1)), l0$size)
-        v$ret$0 := f$safe_binary_search$t$TF$t$T$List$t$T$Int$t$T$Boolean(v$anon$$4,
-          p$target)
+      var anon3: Ref
+      anon3 := get(arr, mid)
+      if (intFromRef(anon3) < intFromRef(target)) {
+        var anon4: Ref
+        anon4 := subList(arr, plusInts(mid, intToRef(1)), size)
+        ret0 := safe_binary_search(anon4, target)
       } else {
-        var v$anon$$5: Ref
-        v$anon$$5 := f$pkg$kotlin_collections$c$List$subList$t$TF$t$T$List$t$T$Int$t$T$Int$t$T$List(p$arr,
-          df$rt$intToRef(0), l0$mid)
-        v$ret$0 := f$safe_binary_search$t$TF$t$T$List$t$T$Int$t$T$Boolean(v$anon$$5,
-          p$target)
+        var anon: Ref
+        anon := subList(arr, intToRef(0), mid)
+        ret0 := safe_binary_search(anon, target)
       }
     }
   }
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto lbl_ret
+  label lbl_ret
 }
 
+method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
+  requires acc(this.prop_size, write)
+  requires intFromRef(this.prop_size) >= 0
+  requires isSubtype(typeOf(this), List())
+  requires isSubtype(typeOf(fromIndex), intType())
+  requires isSubtype(typeOf(toIndex), intType())
+  requires intFromRef(fromIndex) <= intFromRef(toIndex)
+  requires intFromRef(fromIndex) >= 0
+  requires intFromRef(toIndex) <= intFromRef(this.prop_size)
+  ensures acc(this.prop_size, write)
+  ensures intFromRef(this.prop_size) >= 0
+  ensures isSubtype(typeOf(ret), List())
+  ensures acc(ret.prop_size, write)
+  ensures intFromRef(ret.prop_size) >= 0
+  ensures acc(List_pred_shared(ret), wildcard)
+  ensures intFromRef(this.prop_size) == old(intFromRef(this.prop_size))
+  ensures intFromRef(ret.prop_size) ==
+    intFromRef(toIndex) - intFromRef(fromIndex)
+
+
 /binary_search.kt:(537,563): info: Generated Viper text for unsafe_binary_search_fixed:
-field prop$size: Ref
+field size: Ref
 
-method f$pkg$kotlin_collections$c$List$get$t$TF$t$T$List$t$T$Int$t$T$Int(this$dispatch: Ref,
-  p$index: Ref)
-  returns (v$ret: Ref)
-  requires acc(this$dispatch.prop$size, write)
-  requires df$rt$intFromRef(this$dispatch.prop$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
-  requires df$rt$isSubtype(df$rt$typeOf(p$index), df$rt$intType())
-  requires df$rt$intFromRef(p$index) >= 0
-  requires df$rt$intFromRef(this$dispatch.prop$size) >
-    df$rt$intFromRef(p$index)
-  ensures acc(this$dispatch.prop$size, write)
-  ensures df$rt$intFromRef(this$dispatch.prop$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$intType())
-  ensures df$rt$intFromRef(this$dispatch.prop$size) ==
-    old(df$rt$intFromRef(this$dispatch.prop$size))
+method get(this: Ref, index: Ref) returns (ret: Ref)
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(this), List())
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
 
 
-method f$unsafe_binary_search_fixed$t$TF$t$T$List$t$T$Int$t$T$Int$t$T$Int$t$T$Boolean(p$arr: Ref,
-  p$target: Ref, p$left: Ref, p$right: Ref)
-  returns (v$ret$0: Ref)
-  requires acc(p$arr.prop$size, write)
-  requires df$rt$intFromRef(p$arr.prop$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(p$arr), df$rt$c$pkg$kotlin_collections$List())
-  requires df$rt$isSubtype(df$rt$typeOf(p$target), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(p$left), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(p$right), df$rt$intType())
-  ensures acc(p$arr.prop$size, write)
-  ensures df$rt$intFromRef(p$arr.prop$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$boolType())
+method unsafe_binary_search_fixed(arr: Ref, target: Ref, left: Ref, right: Ref)
+  returns (ret0: Ref)
+  requires acc(arr.size, write)
+  requires intFromRef(arr.size) >= 0
+  requires isSubtype(typeOf(arr), List())
+  requires isSubtype(typeOf(target), intType())
+  requires isSubtype(typeOf(left), intType())
+  requires isSubtype(typeOf(right), intType())
+  ensures acc(arr.size, write)
+  ensures intFromRef(arr.size) >= 0
+  ensures isSubtype(typeOf(ret0), boolType())
 {
-  var v$anon$$0: Ref
-  var v$anon$$1: Ref
-  var l0$mid: Ref
-  var v$anon$$3: Ref
-  inhale acc(pred$pkg$kotlin_collections$c$List$shared(p$arr), wildcard)
-  if (df$rt$intFromRef(p$left) > df$rt$intFromRef(p$right)) {
-    v$anon$$1 := df$rt$boolToRef(true)
+  var anon0: Ref
+  var anon1: Ref
+  var mid: Ref
+  var anon3: Ref
+  inhale acc(List_pred_shared(arr), wildcard)
+  if (intFromRef(left) > intFromRef(right)) {
+    anon1 := boolToRef(true)
   } else {
-    v$anon$$1 := f$ltInts(p$left, df$rt$intToRef(0))}
-  if (df$rt$boolFromRef(v$anon$$1)) {
-    v$anon$$0 := df$rt$boolToRef(true)
+    anon1 := ltInts(left, intToRef(0))}
+  if (boolFromRef(anon1)) {
+    anon0 := boolToRef(true)
   } else {
-    var v$anon$$2: Ref
-    v$anon$$2 := p$arr.prop$size
-    inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$2), df$rt$intType())
-    v$anon$$0 := f$geInts(p$right, v$anon$$2)
+    var anon2: Ref
+    anon2 := arr.size
+    inhale isSubtype(typeOf(anon2), intType())
+    anon0 := geInts(right, anon2)
   }
-  if (df$rt$boolFromRef(v$anon$$0)) {
-    v$ret$0 := df$rt$boolToRef(false)
-    goto lbl$ret$0
+  if (boolFromRef(anon0)) {
+    ret0 := boolToRef(false)
+    goto lbl_ret
   }
-  l0$mid := f$plusInts(p$left, f$divInts(f$minusInts(p$right, p$left), df$rt$intToRef(2)))
-  v$anon$$3 := f$pkg$kotlin_collections$c$List$get$t$TF$t$T$List$t$T$Int$t$T$Int(p$arr,
-    l0$mid)
-  if (df$rt$intFromRef(v$anon$$3) == df$rt$intFromRef(p$target)) {
-    v$ret$0 := df$rt$boolToRef(true)
+  mid := plusInts(left, divInts(minusInts(right, left), intToRef(2)))
+  anon3 := get(arr, mid)
+  if (intFromRef(anon3) == intFromRef(target)) {
+    ret0 := boolToRef(true)
   } else {
-    var v$anon$$4: Ref
-    v$anon$$4 := f$pkg$kotlin_collections$c$List$get$t$TF$t$T$List$t$T$Int$t$T$Int(p$arr,
-      l0$mid)
-    if (df$rt$intFromRef(v$anon$$4) < df$rt$intFromRef(p$target)) {
-      v$ret$0 := f$unsafe_binary_search_fixed$t$TF$t$T$List$t$T$Int$t$T$Int$t$T$Int$t$T$Boolean(p$arr,
-        p$target, f$plusInts(l0$mid, df$rt$intToRef(1)), p$right)
+    var anon: Ref
+    anon := get(arr, mid)
+    if (intFromRef(anon) < intFromRef(target)) {
+      ret0 := unsafe_binary_search_fixed(arr, target, plusInts(mid, intToRef(1)),
+        right)
     } else {
-      v$ret$0 := f$unsafe_binary_search_fixed$t$TF$t$T$List$t$T$Int$t$T$Int$t$T$Int$t$T$Boolean(p$arr,
-        p$target, p$left, f$minusInts(l0$mid, df$rt$intToRef(1)))}
+      ret0 := unsafe_binary_search_fixed(arr, target, left, minusInts(mid, intToRef(1)))}
   }
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto lbl_ret
+  label lbl_ret
 }

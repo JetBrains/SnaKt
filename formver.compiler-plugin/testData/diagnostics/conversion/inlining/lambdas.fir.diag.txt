@@ -1,150 +1,150 @@
 /lambdas.kt:(155,166): info: Generated Viper text for explicitArg:
-method f$explicitArg$t$TF$$t$T$Int() returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+method explicitArg() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var v$ret$1: Ref
-  var v$ret$2: Ref
-  var v$anon$$0: Ref
-  v$anon$$0 := df$rt$intToRef(0)
-  v$ret$2 := f$plusInts(v$anon$$0, v$anon$$0)
-  goto lbl$ret$2
-  label lbl$ret$2
-  v$ret$1 := v$ret$2
-  goto lbl$ret$1
-  label lbl$ret$1
-  v$ret$0 := v$ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  var ret1: Ref
+  var ret2: Ref
+  var anon: Ref
+  anon := intToRef(0)
+  ret2 := plusInts(anon, anon)
+  goto lbl_ret_2
+  label lbl_ret_2
+  ret1 := ret2
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret0 := ret1
+  goto lbl_ret
+  label lbl_ret
 }
 
 /lambdas.kt:(216,227): info: Generated Viper text for implicitArg:
-method f$implicitArg$t$TF$$t$T$Int() returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+method implicitArg() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var v$ret$1: Ref
-  var v$ret$2: Ref
-  var v$anon$$0: Ref
-  v$anon$$0 := df$rt$intToRef(0)
-  v$ret$2 := f$timesInts(v$anon$$0, df$rt$intToRef(2))
-  goto lbl$ret$2
-  label lbl$ret$2
-  v$ret$1 := v$ret$2
-  goto lbl$ret$1
-  label lbl$ret$1
-  v$ret$0 := v$ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  var ret1: Ref
+  var ret2: Ref
+  var anon: Ref
+  anon := intToRef(0)
+  ret2 := timesInts(anon, intToRef(2))
+  goto lbl_ret_2
+  label lbl_ret_2
+  ret1 := ret2
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret0 := ret1
+  goto lbl_ret
+  label lbl_ret
 }
 
 /lambdas.kt:(273,281): info: Generated Viper text for lambdaIf:
-method f$lambdaIf$t$TF$$t$T$Int() returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+method lambdaIf() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var v$ret$1: Ref
-  var v$ret$2: Ref
-  var v$anon$$0: Ref
-  v$anon$$0 := df$rt$intToRef(0)
-  if (df$rt$intFromRef(v$anon$$0) == 0) {
-    v$ret$2 := f$plusInts(v$anon$$0, df$rt$intToRef(1))
+  var ret1: Ref
+  var ret2: Ref
+  var anon: Ref
+  anon := intToRef(0)
+  if (intFromRef(anon) == 0) {
+    ret2 := plusInts(anon, intToRef(1))
   } else {
-    v$ret$2 := f$plusInts(v$anon$$0, df$rt$intToRef(2))}
-  goto lbl$ret$2
-  label lbl$ret$2
-  v$ret$1 := v$ret$2
-  goto lbl$ret$1
-  label lbl$ret$1
-  v$ret$0 := v$ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+    ret2 := plusInts(anon, intToRef(2))}
+  goto lbl_ret_2
+  label lbl_ret_2
+  ret1 := ret2
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret0 := ret1
+  goto lbl_ret
+  label lbl_ret
 }
 
 /lambdas.kt:(412,430): info: Generated Viper text for returnValueNotUsed:
-method f$returnValueNotUsed$t$TF$$t$T$Unit() returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method returnValueNotUsed() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var v$ret$1: Ref
-  var v$ret$2: Ref
-  var v$anon$$0: Ref
-  v$anon$$0 := df$rt$intToRef(0)
-  v$ret$2 := v$anon$$0
-  goto lbl$ret$2
-  label lbl$ret$2
-  v$ret$1 := v$ret$2
-  goto lbl$ret$1
-  label lbl$ret$1
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  var ret1: Ref
+  var ret2: Ref
+  var anon: Ref
+  anon := intToRef(0)
+  ret2 := anon
+  goto lbl_ret_2
+  label lbl_ret_2
+  ret1 := ret2
+  goto lbl_ret_1
+  label lbl_ret_1
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /lambdas.kt:(466,475): info: Generated Viper text for shadowing:
-method f$shadowing$t$TF$$t$T$Int() returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+method shadowing() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var l0$x: Ref
-  var l0$y: Ref
-  var v$ret$1: Ref
-  var v$ret$2: Ref
-  var v$anon$$0: Ref
-  var l2$y: Ref
-  l0$x := df$rt$intToRef(1)
-  l0$y := df$rt$intToRef(1)
-  v$anon$$0 := df$rt$intToRef(0)
-  l2$y := df$rt$intToRef(0)
-  v$ret$2 := f$plusInts(v$anon$$0, l2$y)
-  goto lbl$ret$2
-  label lbl$ret$2
-  v$ret$1 := v$ret$2
-  goto lbl$ret$1
-  label lbl$ret$1
-  v$ret$0 := v$ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  var x: Ref
+  var l_y: Ref
+  var ret1: Ref
+  var ret2: Ref
+  var anon: Ref
+  var y: Ref
+  x := intToRef(1)
+  l_y := intToRef(1)
+  anon := intToRef(0)
+  y := intToRef(0)
+  ret2 := plusInts(anon, y)
+  goto lbl_ret_2
+  label lbl_ret_2
+  ret1 := ret2
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret0 := ret1
+  goto lbl_ret
+  label lbl_ret
 }
 
 /lambdas.kt:(711,717): info: Generated Viper text for nested:
-method f$nested$t$TF$$t$T$Int() returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+method nested() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var l0$x: Ref
-  var v$ret$1: Ref
-  var l1$x: Ref
-  var v$ret$2: Ref
-  var v$ret$3: Ref
-  var v$anon$$0: Ref
-  l0$x := df$rt$intToRef(2)
-  l1$x := df$rt$intToRef(2)
-  v$anon$$0 := df$rt$intToRef(0)
-  v$ret$3 := f$plusInts(v$anon$$0, df$rt$intToRef(1))
-  goto lbl$ret$3
-  label lbl$ret$3
-  v$ret$2 := v$ret$3
-  goto lbl$ret$2
-  label lbl$ret$2
-  v$ret$1 := v$ret$2
-  goto lbl$ret$1
-  label lbl$ret$1
-  v$ret$0 := v$ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  var l_x: Ref
+  var ret1: Ref
+  var x: Ref
+  var ret2: Ref
+  var ret3: Ref
+  var anon: Ref
+  l_x := intToRef(2)
+  x := intToRef(2)
+  anon := intToRef(0)
+  ret3 := plusInts(anon, intToRef(1))
+  goto lbl_ret_3
+  label lbl_ret_3
+  ret2 := ret3
+  goto lbl_ret_2
+  label lbl_ret_2
+  ret1 := ret2
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret0 := ret1
+  goto lbl_ret
+  label lbl_ret
 }
 
 /lambdas.kt:(853,870): info: Generated Viper text for lambdaPassthrough:
-method f$lambdaPassthrough$t$TF$$t$T$Unit() returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method lambdaPassthrough() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var v$ret$1: Ref
-  var v$ret$2: Ref
-  var v$ret$3: Ref
-  var v$anon$$0: Ref
-  v$anon$$0 := df$rt$intToRef(0)
-  v$ret$3 := f$plusInts(v$anon$$0, df$rt$intToRef(1))
-  goto lbl$ret$3
-  label lbl$ret$3
-  v$ret$2 := v$ret$3
-  goto lbl$ret$2
-  label lbl$ret$2
-  label lbl$ret$1
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$1), df$rt$unitType())
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  var ret1: Ref
+  var ret2: Ref
+  var ret3: Ref
+  var anon: Ref
+  anon := intToRef(0)
+  ret3 := plusInts(anon, intToRef(1))
+  goto lbl_ret_3
+  label lbl_ret_3
+  ret2 := ret3
+  goto lbl_ret_2
+  label lbl_ret_2
+  label lbl_ret_1
+  inhale isSubtype(typeOf(ret1), unitType())
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }

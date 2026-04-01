@@ -1,111 +1,111 @@
 /non-local-returns.kt:(155,167): info: Generated Viper text for simpleReturn:
-method f$simpleReturn$t$TF$$t$T$Int() returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+method simpleReturn() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var v$ret$1: Ref
-  var v$ret$2: Ref
-  var v$anon$$0: Ref
-  v$anon$$0 := df$rt$intToRef(0)
-  v$ret$0 := df$rt$intToRef(1)
-  goto lbl$ret$0
-  v$ret$2 := v$anon$$0
-  goto lbl$ret$2
-  label lbl$ret$2
-  v$ret$1 := v$ret$2
-  goto lbl$ret$1
-  label lbl$ret$1
-  v$ret$0 := v$ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  var ret1: Ref
+  var ret2: Ref
+  var anon: Ref
+  anon := intToRef(0)
+  ret0 := intToRef(1)
+  goto lbl_ret
+  ret2 := anon
+  goto lbl_ret_2
+  label lbl_ret_2
+  ret1 := ret2
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret0 := ret1
+  goto lbl_ret
+  label lbl_ret
 }
 
 /non-local-returns.kt:(238,252): info: Generated Viper text for returnAtInline:
-method f$returnAtInline$t$TF$$t$T$Int() returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+method returnAtInline() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var v$ret$1: Ref
-  var v$ret$2: Ref
-  var v$anon$$0: Ref
-  v$anon$$0 := df$rt$intToRef(0)
-  v$ret$2 := df$rt$intToRef(1)
-  goto lbl$ret$2
-  v$ret$2 := v$anon$$0
-  goto lbl$ret$2
-  label lbl$ret$2
-  v$ret$1 := v$ret$2
-  goto lbl$ret$1
-  label lbl$ret$1
-  v$ret$0 := v$ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  var ret1: Ref
+  var ret2: Ref
+  var anon: Ref
+  anon := intToRef(0)
+  ret2 := intToRef(1)
+  goto lbl_ret_2
+  ret2 := anon
+  goto lbl_ret_2
+  label lbl_ret_2
+  ret1 := ret2
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret0 := ret1
+  goto lbl_ret
+  label lbl_ret
 }
 
 /non-local-returns.kt:(330,342): info: Generated Viper text for doubleInvoke:
-method f$doubleInvoke$t$TF$$t$T$Int() returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+method doubleInvoke() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var v$ret$1: Ref
-  var v$ret$2: Ref
-  var v$anon$$0: Ref
-  var v$ret$3: Ref
-  var v$ret$4: Ref
-  var v$anon$$1: Ref
-  v$anon$$0 := df$rt$intToRef(0)
-  v$anon$$1 := df$rt$intToRef(0)
-  v$ret$4 := df$rt$intToRef(1)
-  goto lbl$ret$4
-  v$ret$4 := v$anon$$1
-  goto lbl$ret$4
-  label lbl$ret$4
-  v$ret$3 := v$ret$4
-  goto lbl$ret$3
-  label lbl$ret$3
-  v$ret$2 := df$rt$intToRef(2)
-  goto lbl$ret$2
-  v$ret$2 := v$anon$$0
-  goto lbl$ret$2
-  label lbl$ret$2
-  v$ret$1 := v$ret$2
-  goto lbl$ret$1
-  label lbl$ret$1
-  v$ret$0 := v$ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  var ret1: Ref
+  var ret2: Ref
+  var anon0: Ref
+  var ret3: Ref
+  var ret4: Ref
+  var anon: Ref
+  anon0 := intToRef(0)
+  anon := intToRef(0)
+  ret4 := intToRef(1)
+  goto lbl_ret_4
+  ret4 := anon
+  goto lbl_ret_4
+  label lbl_ret_4
+  ret3 := ret4
+  goto lbl_ret_3
+  label lbl_ret_3
+  ret2 := intToRef(2)
+  goto lbl_ret_2
+  ret2 := anon0
+  goto lbl_ret_2
+  label lbl_ret_2
+  ret1 := ret2
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret0 := ret1
+  goto lbl_ret
+  label lbl_ret
 }
 
 /non-local-returns.kt:(567,573): info: Generated Viper text for nested:
-method f$nested$t$TF$$t$T$Int() returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+method nested() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  var v$ret$1: Ref
-  var v$ret$2: Ref
-  var v$anon$$0: Ref
-  var v$ret$3: Ref
-  var v$ret$4: Ref
-  var v$anon$$1: Ref
-  v$anon$$0 := df$rt$intToRef(0)
-  v$anon$$1 := df$rt$intToRef(1)
-  v$ret$4 := df$rt$intToRef(2)
-  goto lbl$ret$4
-  v$ret$2 := df$rt$intToRef(3)
-  goto lbl$ret$2
-  v$ret$0 := df$rt$intToRef(4)
-  goto lbl$ret$0
-  v$ret$4 := v$anon$$1
-  goto lbl$ret$4
-  label lbl$ret$4
-  v$ret$3 := v$ret$4
-  goto lbl$ret$3
-  label lbl$ret$3
-  v$ret$2 := df$rt$intToRef(5)
-  goto lbl$ret$2
-  v$ret$2 := v$anon$$0
-  goto lbl$ret$2
-  label lbl$ret$2
-  v$ret$1 := v$ret$2
-  goto lbl$ret$1
-  label lbl$ret$1
-  v$ret$0 := v$ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  var ret1: Ref
+  var ret2: Ref
+  var anon0: Ref
+  var ret3: Ref
+  var ret4: Ref
+  var anon: Ref
+  anon0 := intToRef(0)
+  anon := intToRef(1)
+  ret4 := intToRef(2)
+  goto lbl_ret_4
+  ret2 := intToRef(3)
+  goto lbl_ret_2
+  ret0 := intToRef(4)
+  goto lbl_ret
+  ret4 := anon
+  goto lbl_ret_4
+  label lbl_ret_4
+  ret3 := ret4
+  goto lbl_ret_3
+  label lbl_ret_3
+  ret2 := intToRef(5)
+  goto lbl_ret_2
+  ret2 := anon0
+  goto lbl_ret_2
+  label lbl_ret_2
+  ret1 := ret2
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret0 := ret1
+  goto lbl_ret
+  label lbl_ret
 }

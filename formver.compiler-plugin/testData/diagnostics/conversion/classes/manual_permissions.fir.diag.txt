@@ -1,36 +1,34 @@
 /manual_permissions.kt:(145,176): info: Generated Viper text for testManualPermissionFieldGetter:
-field bf$a: Ref
+field bf_a: Ref
 
-field bf$b: Ref
+field bf_b: Ref
 
-method f$testManualPermissionFieldGetter$t$TF$t$T$ManualPermissionFields$t$T$Unit(p$mpf: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$mpf), df$rt$c$ManualPermissionFields())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method testManualPermissionFieldGetter(mpf: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(mpf), ManualPermissionFields())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var l0$a: Ref
-  var l0$b: Ref
-  inhale acc(pred$c$ManualPermissionFields$shared(p$mpf), wildcard)
-  unfold acc(pred$c$ManualPermissionFields$shared(p$mpf), wildcard)
-  l0$a := p$mpf.bf$a
-  l0$b := p$mpf.bf$b
-  inhale df$rt$isSubtype(df$rt$typeOf(l0$b), df$rt$intType())
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  var a: Ref
+  var b: Ref
+  inhale acc(ManualPermissionFields_pred_shared(mpf), wildcard)
+  unfold acc(ManualPermissionFields_pred_shared(mpf), wildcard)
+  a := mpf.bf_a
+  b := mpf.bf_b
+  inhale isSubtype(typeOf(b), intType())
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /manual_permissions.kt:(251,282): info: Generated Viper text for testManualPermissionFieldSetter:
-field bf$a: Ref
+field a: Ref
 
-field bf$b: Ref
+field b: Ref
 
-method f$testManualPermissionFieldSetter$t$TF$t$T$ManualPermissionFields$t$T$Unit(p$mpf: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$mpf), df$rt$c$ManualPermissionFields())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method testManualPermissionFieldSetter(mpf: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(mpf), ManualPermissionFields())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  inhale acc(pred$c$ManualPermissionFields$shared(p$mpf), wildcard)
-  p$mpf.bf$b := df$rt$intToRef(123)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  inhale acc(ManualPermissionFields_pred_shared(mpf), wildcard)
+  mpf.b := intToRef(123)
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }

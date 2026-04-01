@@ -1,36 +1,34 @@
 /is_operator.kt:(23,36): info: Generated Viper text for isNonNullable:
-method f$isNonNullable$t$TF$t$NT$Int$t$T$Boolean(p$x: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$boolType())
+method isNonNullable(x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(x), nullable(intType()))
+  ensures isSubtype(typeOf(ret0), boolType())
 {
-  v$ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType()))
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret0 := boolToRef(isSubtype(typeOf(x), intType()))
+  goto ret
+  label ret
 }
 
 /is_operator.kt:(84,97): info: Generated Viper text for notIsNullable:
-method f$notIsNullable$t$TF$t$NT$Int$t$T$Boolean(p$x: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$boolType())
+method notIsNullable(x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(x), nullable(intType()))
+  ensures isSubtype(typeOf(ret0), boolType())
 {
-  v$ret$0 := f$notBool(df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nothingType())))
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret0 := notBool(boolToRef(isSubtype(typeOf(x), nothingType())))
+  goto ret
+  label ret
 }
 
 /is_operator.kt:(150,159): info: Generated Viper text for smartCast:
-method f$smartCast$t$TF$t$NT$Any$t$T$Int(p$x: Ref) returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$anyType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+method smartCast(x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(x), nullable(anyType()))
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  if (df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())) {
-    v$ret$0 := p$x
-    goto lbl$ret$0
+  if (isSubtype(typeOf(x), intType())) {
+    ret0 := x
+    goto ret
   } else {
-    v$ret$0 := df$rt$intToRef(-1)
-    goto lbl$ret$0
+    ret0 := intToRef(-1)
+    goto ret
   }
-  label lbl$ret$0
+  label ret
 }

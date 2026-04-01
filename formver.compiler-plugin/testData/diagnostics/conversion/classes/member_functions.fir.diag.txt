@@ -1,80 +1,72 @@
 /member_functions.kt:(51,60): info: Generated Viper text for memberFun:
-field bf$x: Ref
+field x: Ref
 
-method f$c$Foo$memberFun$t$TF$t$T$Foo$t$T$Int(this$dispatch: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+method memberFun(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  inhale acc(pred$c$Foo$shared(this$dispatch), wildcard)
-  unfold acc(pred$c$Foo$shared(this$dispatch), wildcard)
-  v$ret$0 := this$dispatch.bf$x
-  goto lbl$ret$0
-  label lbl$ret$0
+  inhale acc(Foo_pred_shared(this), wildcard)
+  unfold acc(Foo_pred_shared(this), wildcard)
+  ret0 := this.x
+  goto lbl_ret
+  label lbl_ret
 }
 
 /member_functions.kt:(102,115): info: Generated Viper text for callMemberFun:
-field bf$x: Ref
+field x: Ref
 
-method f$c$Foo$callMemberFun$t$TF$t$T$Foo$t$T$Unit(this$dispatch: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method callMemberFun(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var v$anon$$0: Ref
-  inhale acc(pred$c$Foo$shared(this$dispatch), wildcard)
-  v$anon$$0 := f$c$Foo$memberFun$t$TF$t$T$Foo$t$T$Int(this$dispatch)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  var anon: Ref
+  inhale acc(Foo_pred_shared(this), wildcard)
+  anon := memberFun(this)
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
-method f$c$Foo$memberFun$t$TF$t$T$Foo$t$T$Int(this$dispatch: Ref)
-  returns (v$ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$intType())
+method memberFun(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(ret), intType())
 
 
 /member_functions.kt:(155,166): info: Generated Viper text for siblingCall:
-field bf$x: Ref
+field x: Ref
 
-method f$c$Foo$memberFun$t$TF$t$T$Foo$t$T$Int(this$dispatch: Ref)
-  returns (v$ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$intType())
+method memberFun(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(ret), intType())
 
 
-method f$c$Foo$siblingCall$t$TF$t$T$Foo$t$T$Foo$t$T$Unit(this$dispatch: Ref,
-  p$other: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
-  requires df$rt$isSubtype(df$rt$typeOf(p$other), df$rt$c$Foo())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method siblingCall(this: Ref, other: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), Foo())
+  requires isSubtype(typeOf(other), Foo())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var v$anon$$0: Ref
-  inhale acc(pred$c$Foo$shared(this$dispatch), wildcard)
-  inhale acc(pred$c$Foo$shared(p$other), wildcard)
-  v$anon$$0 := f$c$Foo$memberFun$t$TF$t$T$Foo$t$T$Int(p$other)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  var anon: Ref
+  inhale acc(Foo_pred_shared(this), wildcard)
+  inhale acc(Foo_pred_shared(other), wildcard)
+  anon := memberFun(other)
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /member_functions.kt:(220,238): info: Generated Viper text for outerMemberFunCall:
-field bf$x: Ref
+field x: Ref
 
-method f$c$Foo$memberFun$t$TF$t$T$Foo$t$T$Int(this$dispatch: Ref)
-  returns (v$ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$intType())
+method memberFun(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(ret), intType())
 
 
-method f$outerMemberFunCall$t$TF$t$T$Foo$t$T$Unit(p$f: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$f), df$rt$c$Foo())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method outerMemberFunCall(f: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(f), Foo())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var v$anon$$0: Ref
-  inhale acc(pred$c$Foo$shared(p$f), wildcard)
-  v$anon$$0 := f$c$Foo$memberFun$t$TF$t$T$Foo$t$T$Int(p$f)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  var anon: Ref
+  inhale acc(Foo_pred_shared(f), wildcard)
+  anon := memberFun(f)
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }

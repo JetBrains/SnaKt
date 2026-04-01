@@ -1,144 +1,133 @@
 /multiple_receivers.kt:(236,246): info: Generated Viper text for applyDelta:
-field bf$delta: Ref
+field delta: Ref
 
-field bf$size: Ref
+field size: Ref
 
-method f$c$ClassWithExtension$applyDelta$t$TF$t$T$ClassWithExtension$t$T$Int$t$T$Unit(this$dispatch: Ref,
-  this$extension: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$ClassWithExtension())
-  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method applyDelta(this_dispatch: Ref, this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this_dispatch), ClassWithExtension())
+  requires isSubtype(typeOf(this), intType())
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var l0$withoutLabels: Ref
-  var v$anon$$0: Ref
-  var l0$withLabels: Ref
-  var v$anon$$1: Ref
-  inhale acc(pred$c$ClassWithExtension$shared(this$dispatch), wildcard)
-  unfold acc(pred$c$ClassWithExtension$shared(this$dispatch), wildcard)
-  v$anon$$0 := this$dispatch.bf$delta
-  l0$withoutLabels := f$plusInts(this$extension, v$anon$$0)
-  unfold acc(pred$c$ClassWithExtension$shared(this$dispatch), wildcard)
-  v$anon$$1 := this$dispatch.bf$delta
-  l0$withLabels := f$plusInts(v$anon$$1, this$extension)
-  assert df$rt$intFromRef(l0$withoutLabels) ==
-    df$rt$intFromRef(l0$withLabels)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  var withoutLabels: Ref
+  var anon0: Ref
+  var withLabels: Ref
+  var anon: Ref
+  inhale acc(ClassWithExtension_pred_shared(this_dispatch), wildcard)
+  unfold acc(ClassWithExtension_pred_shared(this_dispatch), wildcard)
+  anon0 := this_dispatch.delta
+  withoutLabels := plusInts(this, anon0)
+  unfold acc(ClassWithExtension_pred_shared(this_dispatch), wildcard)
+  anon := this_dispatch.delta
+  withLabels := plusInts(anon, this)
+  assert intFromRef(withoutLabels) == intFromRef(withLabels)
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
 /multiple_receivers.kt:(531,542): info: Generated Viper text for returnDelta:
-field bf$delta: Ref
+field delta: Ref
 
-method f$c$ClassWithExtension$returnDelta$t$TF$t$T$ClassWithExtension$t$T$Int(this$dispatch: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$ClassWithExtension())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+method returnDelta(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), ClassWithExtension())
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  inhale acc(pred$c$ClassWithExtension$shared(this$dispatch), wildcard)
-  unfold acc(pred$c$ClassWithExtension$shared(this$dispatch), wildcard)
-  v$ret$0 := this$dispatch.bf$delta
-  goto lbl$ret$0
-  label lbl$ret$0
+  inhale acc(ClassWithExtension_pred_shared(this), wildcard)
+  unfold acc(ClassWithExtension_pred_shared(this), wildcard)
+  ret0 := this.delta
+  goto lbl_ret
+  label lbl_ret
 }
 
 /multiple_receivers.kt:(579,599): info: Generated Viper text for extensionReturnDelta:
-field bf$delta: Ref
+field delta: Ref
 
-method f$extensionReturnDelta$t$TF$t$T$ClassWithExtension$t$T$Int(this$extension: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$ClassWithExtension())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$intType())
+method extensionReturnDelta(this: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(this), ClassWithExtension())
+  ensures isSubtype(typeOf(ret0), intType())
 {
-  inhale acc(pred$c$ClassWithExtension$shared(this$extension), wildcard)
-  unfold acc(pred$c$ClassWithExtension$shared(this$extension), wildcard)
-  v$ret$0 := this$extension.bf$delta
-  goto lbl$ret$0
-  label lbl$ret$0
+  inhale acc(ClassWithExtension_pred_shared(this), wildcard)
+  unfold acc(ClassWithExtension_pred_shared(this), wildcard)
+  ret0 := this.delta
+  goto lbl_ret
+  label lbl_ret
 }
 
 /multiple_receivers.kt:(712,735): info: Generated Viper text for checkClassWithExtension:
-field bf$delta: Ref
+field bf_delta: Ref
 
-field bf$size: Ref
+field size: Ref
 
-method con$c$ClassWithExtension$t$T$Int$t$T$ClassWithExtension(p$delta: Ref)
-  returns (v$ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$delta), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$c$ClassWithExtension())
-  ensures acc(pred$c$ClassWithExtension$shared(v$ret), wildcard)
-  ensures acc(pred$c$ClassWithExtension$unique(v$ret), write)
-  ensures df$rt$intFromRef((unfolding acc(pred$c$ClassWithExtension$shared(v$ret), wildcard) in
-      v$ret.bf$delta)) ==
-    df$rt$intFromRef(p$delta)
+method applyDelta(this_dispatch: Ref, this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this_dispatch), ClassWithExtension())
+  requires isSubtype(typeOf(this), intType())
+  ensures isSubtype(typeOf(ret), unitType())
 
 
-method f$c$ClassWithExtension$applyDelta$t$TF$t$T$ClassWithExtension$t$T$Int$t$T$Unit(this$dispatch: Ref,
-  this$extension: Ref)
-  returns (v$ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$ClassWithExtension())
-  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$unitType())
-
-
-method f$c$ClassWithExtension$returnDelta$t$TF$t$T$ClassWithExtension$t$T$Int(this$dispatch: Ref)
-  returns (v$ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$ClassWithExtension())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$intType())
-
-
-method f$checkClassWithExtension$t$TF$$t$T$Unit() returns (v$ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+method checkClassWithExtension() returns (ret0: Ref)
+  ensures isSubtype(typeOf(ret0), unitType())
 {
-  var v$anon$$3: Ref
-  var v$anon$$4: Ref
-  var v$ret$1: Ref
-  var v$anon$$0: Ref
-  var v$anon$$5: Ref
-  var v$anon$$6: Ref
-  var v$ret$2: Ref
-  var v$anon$$1: Ref
-  var v$anon$$7: Ref
-  var v$anon$$8: Ref
-  var v$anon$$9: Ref
-  var v$anon$$10: Ref
-  var v$ret$3: Ref
-  var v$anon$$2: Ref
-  var v$anon$$11: Ref
-  v$anon$$5 := con$c$ClassWithExtension$t$T$Int$t$T$ClassWithExtension(df$rt$intToRef(42))
-  v$anon$$0 := v$anon$$5
-  inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$0), df$rt$nullable(df$rt$anyType()))
-  inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$0), df$rt$c$ClassWithExtension())
-  inhale acc(pred$c$ClassWithExtension$shared(v$anon$$0), wildcard)
-  v$anon$$1 := v$anon$$0
-  v$anon$$7 := f$c$ClassWithExtension$applyDelta$t$TF$t$T$ClassWithExtension$t$T$Int$t$T$Unit(v$anon$$1,
-    df$rt$intToRef(42))
-  v$anon$$8 := f$c$ClassWithExtension$returnDelta$t$TF$t$T$ClassWithExtension$t$T$Int(v$anon$$1)
-  v$anon$$9 := f$extensionReturnDelta$t$TF$t$T$ClassWithExtension$t$T$Int(v$anon$$1)
-  v$anon$$2 := df$rt$intToRef(42)
-  unfold acc(pred$c$ClassWithExtension$shared(v$anon$$1), wildcard)
-  v$anon$$11 := v$anon$$1.bf$delta
-  v$ret$3 := f$plusInts(v$anon$$2, v$anon$$11)
-  goto lbl$ret$3
-  label lbl$ret$3
-  v$anon$$10 := v$ret$3
-  assert df$rt$intFromRef(v$anon$$10) == 84
-  label lbl$ret$2
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$2), df$rt$unitType())
-  v$anon$$6 := v$ret$2
-  v$ret$1 := v$anon$$6
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$1), df$rt$nullable(df$rt$anyType()))
-  goto lbl$ret$1
-  label lbl$ret$1
-  v$anon$$4 := v$ret$1
-  v$anon$$3 := v$anon$$4
-  inhale df$rt$isSubtype(df$rt$typeOf(v$anon$$3), df$rt$unitType())
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$unitType())
+  var anon3: Ref
+  var anon4: Ref
+  var ret1: Ref
+  var anon0: Ref
+  var anon5: Ref
+  var anon6: Ref
+  var ret2: Ref
+  var anon1: Ref
+  var anon7: Ref
+  var anon8: Ref
+  var anon9: Ref
+  var anon10: Ref
+  var ret3: Ref
+  var anon2: Ref
+  var anon: Ref
+  anon5 := con(intToRef(42))
+  anon0 := anon5
+  inhale isSubtype(typeOf(anon0), nullable(anyType()))
+  inhale isSubtype(typeOf(anon0), ClassWithExtension())
+  inhale acc(ClassWithExtension_pred_shared(anon0), wildcard)
+  anon1 := anon0
+  anon7 := applyDelta(anon1, intToRef(42))
+  anon8 := returnDelta(anon1)
+  anon9 := extensionReturnDelta(anon1)
+  anon2 := intToRef(42)
+  unfold acc(ClassWithExtension_pred_shared(anon1), wildcard)
+  anon := anon1.bf_delta
+  ret3 := plusInts(anon2, anon)
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon10 := ret3
+  assert intFromRef(anon10) == 84
+  label lbl_ret_2
+  inhale isSubtype(typeOf(ret2), unitType())
+  anon6 := ret2
+  ret1 := anon6
+  inhale isSubtype(typeOf(ret1), nullable(anyType()))
+  goto lbl_ret_1
+  label lbl_ret_1
+  anon4 := ret1
+  anon3 := anon4
+  inhale isSubtype(typeOf(anon3), unitType())
+  label lbl_ret
+  inhale isSubtype(typeOf(ret0), unitType())
 }
 
-method f$extensionReturnDelta$t$TF$t$T$ClassWithExtension$t$T$Int(this$extension: Ref)
-  returns (v$ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$ClassWithExtension())
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$intType())
+method con(delta: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(delta), intType())
+  ensures isSubtype(typeOf(ret), ClassWithExtension())
+  ensures acc(ClassWithExtension_pred_shared(ret), wildcard)
+  ensures acc(ClassWithExtension_pred_unique(ret), write)
+  ensures intFromRef((unfolding acc(ClassWithExtension_pred_shared(ret), wildcard) in
+      ret.bf_delta)) ==
+    intFromRef(delta)
+
+
+method extensionReturnDelta(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), ClassWithExtension())
+  ensures isSubtype(typeOf(ret), intType())
+
+
+method returnDelta(this_dispatch: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this_dispatch), ClassWithExtension())
+  ensures isSubtype(typeOf(ret), intType())
 

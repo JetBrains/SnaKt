@@ -1,70 +1,62 @@
 /nullable.kt:(80,96): info: Generated Viper text for useNullableTwice:
-method f$useNullableTwice$t$TF$t$NT$Int$t$NT$Int(p$x: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$nullable(df$rt$intType()))
+method useNullableTwice(x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(x), nullable(intType()))
+  ensures isSubtype(typeOf(ret0), nullable(intType()))
 {
-  var l0$a: Ref
-  var l0$b: Ref
-  l0$a := p$x
-  l0$b := p$x
-  v$ret$0 := l0$a
-  goto lbl$ret$0
-  label lbl$ret$0
+  var a: Ref
+  var b: Ref
+  a := x
+  b := x
+  ret0 := a
+  goto ret
+  label ret
 }
 
 /nullable.kt:(162,183): info: Generated Viper text for passNullableParameter:
-method f$passNullableParameter$t$TF$t$NT$Int$t$NT$Int(p$x: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$nullable(df$rt$intType()))
+method passNullableParameter(x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(x), nullable(intType()))
+  ensures isSubtype(typeOf(ret0), nullable(intType()))
 {
-  var v$anon$$0: Ref
-  v$anon$$0 := f$useNullableTwice$t$TF$t$NT$Int$t$NT$Int(p$x)
-  v$ret$0 := p$x
-  goto lbl$ret$0
-  label lbl$ret$0
+  var anon: Ref
+  anon := useNullableTwice(x)
+  ret0 := x
+  goto lbl_ret
+  label lbl_ret
 }
 
-method f$useNullableTwice$t$TF$t$NT$Int$t$NT$Int(p$x: Ref)
-  returns (v$ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret), df$rt$nullable(df$rt$intType()))
+method useNullableTwice(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), nullable(intType()))
+  ensures isSubtype(typeOf(ret), nullable(intType()))
 
 
 /nullable.kt:(245,271): info: Generated Viper text for nullableNullableComparison:
-method f$nullableNullableComparison$t$TF$t$NT$Int$t$NT$Int$t$T$Boolean(p$x: Ref,
-  p$y: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
-  requires df$rt$isSubtype(df$rt$typeOf(p$y), df$rt$nullable(df$rt$intType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$boolType())
+method nullableNullableComparison(x: Ref, y: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(x), nullable(intType()))
+  requires isSubtype(typeOf(y), nullable(intType()))
+  ensures isSubtype(typeOf(ret0), boolType())
 {
-  v$ret$0 := df$rt$boolToRef(p$x == p$y)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret0 := boolToRef(x == y)
+  goto ret
+  label ret
 }
 
 /nullable.kt:(326,355): info: Generated Viper text for nullableNonNullableComparison:
-method f$nullableNonNullableComparison$t$TF$t$NT$Int$t$NT$Int$t$T$Boolean(p$x: Ref,
-  p$y: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
-  requires df$rt$isSubtype(df$rt$typeOf(p$y), df$rt$nullable(df$rt$intType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$boolType())
+method nullableNonNullableComparison(x: Ref, y: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(x), nullable(intType()))
+  requires isSubtype(typeOf(y), nullable(intType()))
+  ensures isSubtype(typeOf(ret0), boolType())
 {
-  v$ret$0 := f$notBool(df$rt$boolToRef(p$x == df$rt$intToRef(3)))
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret0 := notBool(boolToRef(x == intToRef(3)))
+  goto ret
+  label ret
 }
 
 /nullable.kt:(410,424): info: Generated Viper text for nullComparison:
-method f$nullComparison$t$TF$t$NT$Int$t$T$Boolean(p$x: Ref)
-  returns (v$ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(v$ret$0), df$rt$boolType())
+method nullComparison(x: Ref) returns (ret0: Ref)
+  requires isSubtype(typeOf(x), nullable(intType()))
+  ensures isSubtype(typeOf(ret0), boolType())
 {
-  v$ret$0 := df$rt$boolToRef(p$x == df$rt$nullValue())
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret0 := boolToRef(x == nullValue())
+  goto ret
+  label ret
 }
