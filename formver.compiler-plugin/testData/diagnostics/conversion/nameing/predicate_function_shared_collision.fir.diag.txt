@@ -1,0 +1,32 @@
+/predicate_function_shared_collision.kt:(120,126): info: Generated Viper text for shared:
+function shared(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  x
+}
+
+/predicate_function_shared_collision.kt:(149,181): info: Generated Viper text for predicateFunctionSharedCollision:
+field bf$x: Ref
+
+function f$shared(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate p$unique(this: Ref) {
+  acc(this.bf$x, wildcard) && isSubtype(typeOf(this.bf$x), intType())
+}
+
+predicate shared(this: Ref) {
+  acc(this.bf$x, wildcard) && isSubtype(typeOf(this.bf$x), intType())
+}
+
+method predicateFunctionSharedCollision(a: Ref) returns (ret$0: Ref)
+  requires isSubtype(typeOf(a), A())
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  inhale acc(shared(a), wildcard)
+  label lbl$ret$0
+  inhale isSubtype(typeOf(ret$0), unitType())
+}

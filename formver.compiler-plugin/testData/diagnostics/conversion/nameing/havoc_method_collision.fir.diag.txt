@@ -1,0 +1,785 @@
+/havoc_method_collision.kt:(74,79): info: Generated Viper text for havoc:
+domain rt  {
+
+  unique function intType(): rt
+
+  unique function boolType(): rt
+
+  unique function charType(): rt
+
+  unique function unitType(): rt
+
+  unique function nothingType(): rt
+
+  unique function anyType(): rt
+
+  unique function functionType(): rt
+
+  unique function stringType(): rt
+
+  function nullValue(): Ref
+
+  function unitValue(): Ref
+
+  function isSubtype(t1: rt, t2: rt): Bool
+
+  function typeOf(r: Ref): rt
+
+  function nullable(t: rt): rt
+
+  function intToRef(v: Int): Ref
+
+  function intFromRef(r: Ref): Int
+
+  function boolToRef(v: Bool): Ref
+
+  function boolFromRef(r: Ref): Bool
+
+  function charToRef(v: Int): Ref
+
+  function charFromRef(r: Ref): Int
+
+  function stringToRef(v: Seq[Int]): Ref
+
+  function stringFromRef(r: Ref): Seq[Int]
+
+  axiom subtype_reflexive {
+    (forall t: rt ::isSubtype(t, t))
+  }
+
+  axiom subtype_transitive {
+    (forall t1: rt, t2: rt, t3: rt ::
+      { isSubtype(t1, t2), isSubtype(t2, t3) }
+      { isSubtype(t1, t2), isSubtype(t1, t3) }
+      { isSubtype(t2, t3), isSubtype(t1, t3) }
+      isSubtype(t1, t2) && isSubtype(t2, t3) ==> isSubtype(t1, t3))
+  }
+
+  axiom subtype_antisymmetric {
+    (forall t1: rt, t2: rt ::
+      { isSubtype(t1, t2), isSubtype(t2, t1) }
+      isSubtype(t1, t2) && isSubtype(t2, t1) ==> t1 == t2)
+  }
+
+  axiom nullable_idempotent {
+    (forall t: rt ::
+      { nullable(nullable(t)) }
+      nullable(nullable(t)) == nullable(t))
+  }
+
+  axiom nullable_supertype {
+    (forall t: rt :: { nullable(t) } isSubtype(t, nullable(t)))
+  }
+
+  axiom nullable_preserves_subtype {
+    (forall t1: rt, t2: rt ::
+      { isSubtype(nullable(t1), nullable(t2)) }
+      isSubtype(t1, t2) ==> isSubtype(nullable(t1), nullable(t2)))
+  }
+
+  axiom nullable_any_supertype {
+    (forall t: rt ::isSubtype(t, nullable(anyType())))
+  }
+
+  axiom {
+    isSubtype(intType(), anyType())
+  }
+
+  axiom {
+    isSubtype(boolType(), anyType())
+  }
+
+  axiom {
+    isSubtype(charType(), anyType())
+  }
+
+  axiom {
+    isSubtype(unitType(), anyType())
+  }
+
+  axiom {
+    isSubtype(nothingType(), anyType())
+  }
+
+  axiom {
+    isSubtype(anyType(), anyType())
+  }
+
+  axiom {
+    isSubtype(functionType(), anyType())
+  }
+
+  axiom {
+    isSubtype(stringType(), anyType())
+  }
+
+  axiom supertype_of_nothing {
+    (forall t: rt ::isSubtype(nothingType(), t))
+  }
+
+  axiom any_not_nullable_type_level {
+    (forall t: rt ::!isSubtype(nullable(t), anyType()))
+  }
+
+  axiom null_smartcast_value_level {
+    (forall r: Ref, t: rt ::
+      { isSubtype(typeOf(r), nullable(t)) }
+      isSubtype(typeOf(r), nullable(t)) ==>
+      r == nullValue() || isSubtype(typeOf(r), t))
+  }
+
+  axiom nothing_empty {
+    (forall r: Ref ::!isSubtype(typeOf(r), nothingType()))
+  }
+
+  axiom null_smartcast_type_level {
+    (forall t1: rt, t2: rt ::
+      { isSubtype(t1, anyType()), isSubtype(t1, nullable(t2)) }
+      isSubtype(t1, anyType()) && isSubtype(t1, nullable(t2)) ==>
+      isSubtype(t1, t2))
+  }
+
+  axiom type_of_null {
+    isSubtype(typeOf(nullValue()), nullable(nothingType()))
+  }
+
+  axiom any_not_nullable_value_level {
+    !isSubtype(typeOf(nullValue()), anyType())
+  }
+
+  axiom type_of_unit {
+    isSubtype(typeOf(unitValue()), unitType())
+  }
+
+  axiom uniqueness_of_unit {
+    (forall r: Ref ::
+      { isSubtype(typeOf(r), unitType()) }
+      isSubtype(typeOf(r), unitType()) ==> r == unitValue())
+  }
+
+  axiom {
+    (forall v: Int ::
+      { isSubtype(typeOf(intToRef(v)), intType()) }
+      isSubtype(typeOf(intToRef(v)), intType()))
+  }
+
+  axiom {
+    (forall v: Int ::
+      { intFromRef(intToRef(v)) }
+      intFromRef(intToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { intToRef(intFromRef(r)) }
+      isSubtype(typeOf(r), intType()) ==> intToRef(intFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall v: Bool ::
+      { isSubtype(typeOf(boolToRef(v)), boolType()) }
+      isSubtype(typeOf(boolToRef(v)), boolType()))
+  }
+
+  axiom {
+    (forall v: Bool ::
+      { boolFromRef(boolToRef(v)) }
+      boolFromRef(boolToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { boolToRef(boolFromRef(r)) }
+      isSubtype(typeOf(r), boolType()) ==> boolToRef(boolFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall v: Int ::
+      { isSubtype(typeOf(charToRef(v)), charType()) }
+      isSubtype(typeOf(charToRef(v)), charType()))
+  }
+
+  axiom {
+    (forall v: Int ::
+      { charFromRef(charToRef(v)) }
+      charFromRef(charToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { charToRef(charFromRef(r)) }
+      isSubtype(typeOf(r), charType()) ==> charToRef(charFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall v: Seq[Int] ::
+      { isSubtype(typeOf(stringToRef(v)), stringType()) }
+      isSubtype(typeOf(stringToRef(v)), stringType()))
+  }
+
+  axiom {
+    (forall v: Seq[Int] ::
+      { stringFromRef(stringToRef(v)) }
+      stringFromRef(stringToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { stringToRef(stringFromRef(r)) }
+      isSubtype(typeOf(r), stringType()) ==>
+      stringToRef(stringFromRef(r)) == r)
+  }
+}
+
+function addCharInt(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), charType())
+  ensures charFromRef(result) == charFromRef(arg$1) + intFromRef(arg)
+
+
+function addStringChar(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), stringType())
+  ensures stringFromRef(result) ==
+    stringFromRef(arg$1) ++ Seq(charFromRef(arg))
+
+
+function addStrings(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), stringType())
+  ensures stringFromRef(result) ==
+    stringFromRef(arg$1) ++ stringFromRef(arg)
+
+
+function andBools(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (boolFromRef(arg$1) && boolFromRef(arg))
+
+
+function divInts(arg$1: Ref, arg: Ref): Ref
+  requires intFromRef(arg) != 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg$1) / intFromRef(arg)
+
+
+function geChars(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg$1) >= charFromRef(arg)
+
+
+function geInts(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg$1) >= intFromRef(arg)
+
+
+function gtChars(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg$1) > charFromRef(arg)
+
+
+function gtInts(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg$1) > intFromRef(arg)
+
+
+function impliesBools(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (boolFromRef(arg$1) ==> boolFromRef(arg))
+
+
+function leChars(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg$1) <= charFromRef(arg)
+
+
+function leInts(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg$1) <= intFromRef(arg)
+
+
+function ltChars(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg$1) < charFromRef(arg)
+
+
+function ltInts(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg$1) < intFromRef(arg)
+
+
+function minusInts(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg$1) - intFromRef(arg)
+
+
+function negInt(arg$1: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == -intFromRef(arg$1)
+
+
+function notBool(arg$1: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == !boolFromRef(arg$1)
+
+
+function orBools(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (boolFromRef(arg$1) || boolFromRef(arg))
+
+
+function plusInts(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg$1) + intFromRef(arg)
+
+
+function remInts(arg$1: Ref, arg: Ref): Ref
+  requires intFromRef(arg) != 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg$1) % intFromRef(arg)
+
+
+function stringGet(arg$1: Ref, arg: Ref): Ref
+  requires intFromRef(arg) >= 0 && intFromRef(arg) < |stringFromRef(arg$1)|
+  ensures isSubtype(typeOf(result), charType())
+  ensures charFromRef(result) == stringFromRef(arg$1)[intFromRef(arg)]
+
+
+function stringLength(arg$1: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == |stringFromRef(arg$1)|
+
+
+function subCharInt(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), charType())
+  ensures charFromRef(result) == charFromRef(arg$1) - intFromRef(arg)
+
+
+function subChars(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == charFromRef(arg$1) - charFromRef(arg)
+
+
+function timesInts(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg$1) * intFromRef(arg)
+
+
+method havoc() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  label ret
+  inhale isSubtype(typeOf(ret$0), unitType())
+}
+
+/havoc_method_collision.kt:(90,110): info: Generated Viper text for havocMethodCollision:
+domain rt  {
+
+  unique function intType(): rt
+
+  unique function boolType(): rt
+
+  unique function charType(): rt
+
+  unique function unitType(): rt
+
+  unique function nothingType(): rt
+
+  unique function anyType(): rt
+
+  unique function functionType(): rt
+
+  unique function stringType(): rt
+
+  unique function A(): rt
+
+  unique function B(): rt
+
+  function nullValue(): Ref
+
+  function unitValue(): Ref
+
+  function isSubtype(t1: rt, t2: rt): Bool
+
+  function typeOf(r: Ref): rt
+
+  function nullable(t: rt): rt
+
+  function intToRef(v: Int): Ref
+
+  function intFromRef(r: Ref): Int
+
+  function boolToRef(v: Bool): Ref
+
+  function boolFromRef(r: Ref): Bool
+
+  function charToRef(v: Int): Ref
+
+  function charFromRef(r: Ref): Int
+
+  function stringToRef(v: Seq[Int]): Ref
+
+  function stringFromRef(r: Ref): Seq[Int]
+
+  axiom subtype_reflexive {
+    (forall t: rt ::isSubtype(t, t))
+  }
+
+  axiom subtype_transitive {
+    (forall t1: rt, t2: rt, t3: rt ::
+      { isSubtype(t1, t2), isSubtype(t2, t3) }
+      { isSubtype(t1, t2), isSubtype(t1, t3) }
+      { isSubtype(t2, t3), isSubtype(t1, t3) }
+      isSubtype(t1, t2) && isSubtype(t2, t3) ==> isSubtype(t1, t3))
+  }
+
+  axiom subtype_antisymmetric {
+    (forall t1: rt, t2: rt ::
+      { isSubtype(t1, t2), isSubtype(t2, t1) }
+      isSubtype(t1, t2) && isSubtype(t2, t1) ==> t1 == t2)
+  }
+
+  axiom nullable_idempotent {
+    (forall t: rt ::
+      { nullable(nullable(t)) }
+      nullable(nullable(t)) == nullable(t))
+  }
+
+  axiom nullable_supertype {
+    (forall t: rt :: { nullable(t) } isSubtype(t, nullable(t)))
+  }
+
+  axiom nullable_preserves_subtype {
+    (forall t1: rt, t2: rt ::
+      { isSubtype(nullable(t1), nullable(t2)) }
+      isSubtype(t1, t2) ==> isSubtype(nullable(t1), nullable(t2)))
+  }
+
+  axiom nullable_any_supertype {
+    (forall t: rt ::isSubtype(t, nullable(anyType())))
+  }
+
+  axiom {
+    isSubtype(intType(), anyType())
+  }
+
+  axiom {
+    isSubtype(boolType(), anyType())
+  }
+
+  axiom {
+    isSubtype(charType(), anyType())
+  }
+
+  axiom {
+    isSubtype(unitType(), anyType())
+  }
+
+  axiom {
+    isSubtype(nothingType(), anyType())
+  }
+
+  axiom {
+    isSubtype(anyType(), anyType())
+  }
+
+  axiom {
+    isSubtype(functionType(), anyType())
+  }
+
+  axiom {
+    isSubtype(stringType(), anyType())
+  }
+
+  axiom {
+    isSubtype(A(), anyType())
+  }
+
+  axiom {
+    isSubtype(B(), anyType())
+  }
+
+  axiom supertype_of_nothing {
+    (forall t: rt ::isSubtype(nothingType(), t))
+  }
+
+  axiom any_not_nullable_type_level {
+    (forall t: rt ::!isSubtype(nullable(t), anyType()))
+  }
+
+  axiom null_smartcast_value_level {
+    (forall r: Ref, t: rt ::
+      { isSubtype(typeOf(r), nullable(t)) }
+      isSubtype(typeOf(r), nullable(t)) ==>
+      r == nullValue() || isSubtype(typeOf(r), t))
+  }
+
+  axiom nothing_empty {
+    (forall r: Ref ::!isSubtype(typeOf(r), nothingType()))
+  }
+
+  axiom null_smartcast_type_level {
+    (forall t1: rt, t2: rt ::
+      { isSubtype(t1, anyType()), isSubtype(t1, nullable(t2)) }
+      isSubtype(t1, anyType()) && isSubtype(t1, nullable(t2)) ==>
+      isSubtype(t1, t2))
+  }
+
+  axiom type_of_null {
+    isSubtype(typeOf(nullValue()), nullable(nothingType()))
+  }
+
+  axiom any_not_nullable_value_level {
+    !isSubtype(typeOf(nullValue()), anyType())
+  }
+
+  axiom type_of_unit {
+    isSubtype(typeOf(unitValue()), unitType())
+  }
+
+  axiom uniqueness_of_unit {
+    (forall r: Ref ::
+      { isSubtype(typeOf(r), unitType()) }
+      isSubtype(typeOf(r), unitType()) ==> r == unitValue())
+  }
+
+  axiom {
+    (forall v: Int ::
+      { isSubtype(typeOf(intToRef(v)), intType()) }
+      isSubtype(typeOf(intToRef(v)), intType()))
+  }
+
+  axiom {
+    (forall v: Int ::
+      { intFromRef(intToRef(v)) }
+      intFromRef(intToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { intToRef(intFromRef(r)) }
+      isSubtype(typeOf(r), intType()) ==> intToRef(intFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall v: Bool ::
+      { isSubtype(typeOf(boolToRef(v)), boolType()) }
+      isSubtype(typeOf(boolToRef(v)), boolType()))
+  }
+
+  axiom {
+    (forall v: Bool ::
+      { boolFromRef(boolToRef(v)) }
+      boolFromRef(boolToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { boolToRef(boolFromRef(r)) }
+      isSubtype(typeOf(r), boolType()) ==> boolToRef(boolFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall v: Int ::
+      { isSubtype(typeOf(charToRef(v)), charType()) }
+      isSubtype(typeOf(charToRef(v)), charType()))
+  }
+
+  axiom {
+    (forall v: Int ::
+      { charFromRef(charToRef(v)) }
+      charFromRef(charToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { charToRef(charFromRef(r)) }
+      isSubtype(typeOf(r), charType()) ==> charToRef(charFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall v: Seq[Int] ::
+      { isSubtype(typeOf(stringToRef(v)), stringType()) }
+      isSubtype(typeOf(stringToRef(v)), stringType()))
+  }
+
+  axiom {
+    (forall v: Seq[Int] ::
+      { stringFromRef(stringToRef(v)) }
+      stringFromRef(stringToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { stringToRef(stringFromRef(r)) }
+      isSubtype(typeOf(r), stringType()) ==>
+      stringToRef(stringFromRef(r)) == r)
+  }
+}
+
+field ref: Ref
+
+function addCharInt(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), charType())
+  ensures charFromRef(result) == charFromRef(arg$1) + intFromRef(arg)
+
+
+function addStringChar(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), stringType())
+  ensures stringFromRef(result) ==
+    stringFromRef(arg$1) ++ Seq(charFromRef(arg))
+
+
+function addStrings(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), stringType())
+  ensures stringFromRef(result) ==
+    stringFromRef(arg$1) ++ stringFromRef(arg)
+
+
+function andBools(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (boolFromRef(arg$1) && boolFromRef(arg))
+
+
+function divInts(arg$1: Ref, arg: Ref): Ref
+  requires intFromRef(arg) != 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg$1) / intFromRef(arg)
+
+
+function geChars(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg$1) >= charFromRef(arg)
+
+
+function geInts(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg$1) >= intFromRef(arg)
+
+
+function gtChars(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg$1) > charFromRef(arg)
+
+
+function gtInts(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg$1) > intFromRef(arg)
+
+
+function impliesBools(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (boolFromRef(arg$1) ==> boolFromRef(arg))
+
+
+function leChars(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg$1) <= charFromRef(arg)
+
+
+function leInts(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg$1) <= intFromRef(arg)
+
+
+function ltChars(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg$1) < charFromRef(arg)
+
+
+function ltInts(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg$1) < intFromRef(arg)
+
+
+function minusInts(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg$1) - intFromRef(arg)
+
+
+function negInt(arg$1: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == -intFromRef(arg$1)
+
+
+function notBool(arg$1: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == !boolFromRef(arg$1)
+
+
+function orBools(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (boolFromRef(arg$1) || boolFromRef(arg))
+
+
+function plusInts(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg$1) + intFromRef(arg)
+
+
+function remInts(arg$1: Ref, arg: Ref): Ref
+  requires intFromRef(arg) != 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg$1) % intFromRef(arg)
+
+
+function stringGet(arg$1: Ref, arg: Ref): Ref
+  requires intFromRef(arg) >= 0 && intFromRef(arg) < |stringFromRef(arg$1)|
+  ensures isSubtype(typeOf(result), charType())
+  ensures charFromRef(result) == stringFromRef(arg$1)[intFromRef(arg)]
+
+
+function stringLength(arg$1: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == |stringFromRef(arg$1)|
+
+
+function subCharInt(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), charType())
+  ensures charFromRef(result) == charFromRef(arg$1) - intFromRef(arg)
+
+
+function subChars(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == charFromRef(arg$1) - charFromRef(arg)
+
+
+function timesInts(arg$1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg$1) * intFromRef(arg)
+
+
+predicate A$p$shared(this: Ref) {
+  true
+}
+
+predicate A$p$unique(this: Ref) {
+  acc(this.ref, write) && acc(p$shared(this.ref), wildcard) &&
+  isSubtype(typeOf(this.ref), B())
+}
+
+predicate p$shared(this: Ref) {
+  true
+}
+
+predicate p$unique(this: Ref) {
+  true
+}
+
+method havoc() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+
+
+method havoc$B() returns (ret: Ref)
+  ensures acc(p$shared(ret), wildcard)
+  ensures isSubtype(typeOf(ret), B())
+
+
+method havocMethodCollision(a: Ref) returns (ret$0: Ref)
+  requires isSubtype(typeOf(a), A())
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  var local: Ref
+  var anon: Ref
+  inhale acc(A$p$shared(a), wildcard)
+  local := havoc$B()
+  anon := havoc()
+  label lbl$ret$0
+  inhale isSubtype(typeOf(ret$0), unitType())
+}

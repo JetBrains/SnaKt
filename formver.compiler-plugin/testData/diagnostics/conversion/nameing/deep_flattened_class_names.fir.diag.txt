@@ -1,0 +1,33 @@
+/deep_flattened_class_names.kt:(161,184): info: Generated Viper text for deepFlattenedClassNames:
+field bf$data: Ref
+
+method con(data: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(data), boolType())
+  ensures isSubtype(typeOf(ret), Gamma$Delta_Eta$Zed())
+  ensures acc(p$shared(ret), wildcard)
+  ensures acc(p$unique(ret), write)
+  ensures boolFromRef((unfolding acc(p$shared(ret), wildcard) in
+      ret.bf$data)) ==
+    boolFromRef(data)
+
+
+method con$Gamma_Delta_Eta$Zed(data: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(data), intType())
+  ensures isSubtype(typeOf(ret), Gamma_Delta_Eta$Zed())
+  ensures acc(Gamma_Delta_Eta$Zed$p$shared(ret), wildcard)
+  ensures acc(Gamma_Delta_Eta$Zed$p$unique(ret), write)
+  ensures intFromRef((unfolding acc(Gamma_Delta_Eta$Zed$p$shared(ret), wildcard) in
+      ret.bf$data)) ==
+    intFromRef(data)
+
+
+method deepFlattenedClassNames() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  left := con$Gamma_Delta_Eta$Zed(intToRef(0))
+  right := con(boolToRef(true))
+  label lbl$ret$0
+  inhale isSubtype(typeOf(ret$0), unitType())
+}

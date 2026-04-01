@@ -1,0 +1,83 @@
+/havoc_method_candidate_exhaustion.kt:(36,41): info: Generated Viper text for havoc:
+method havoc() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  label ret
+  inhale isSubtype(typeOf(ret$0), unitType())
+}
+
+/havoc_method_candidate_exhaustion.kt:(52,61): info: Generated Viper text for havoc$B:
+method havoc$B() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  label ret
+  inhale isSubtype(typeOf(ret$0), unitType())
+}
+
+/havoc_method_candidate_exhaustion.kt:(72,83): info: Generated Viper text for h$havoc$B:
+method h$havoc$B() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  label ret
+  inhale isSubtype(typeOf(ret$0), unitType())
+}
+
+/havoc_method_candidate_exhaustion.kt:(94,105): info: Generated Viper text for havoc$c$B:
+method havoc$c$B() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  label ret
+  inhale isSubtype(typeOf(ret$0), unitType())
+}
+
+/havoc_method_candidate_exhaustion.kt:(116,129): info: Generated Viper text for h$havoc$c$B:
+method h$havoc$c$B() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  label ret
+  inhale isSubtype(typeOf(ret$0), unitType())
+}
+
+/havoc_method_candidate_exhaustion.kt:(140,170): info: Generated Viper text for havocMethodCandidateExhaustion:
+field ref: Ref
+
+method h$havoc$B() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+
+
+method h$havoc$c$B() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+
+
+method havoc() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+
+
+method havoc$B() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+
+
+method havoc$c$B() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+
+
+method havocMethodCandidateExhaustion(a: Ref) returns (ret$0: Ref)
+  requires isSubtype(typeOf(a), A())
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  var local: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  var anon$2: Ref
+  var anon$3: Ref
+  var anon: Ref
+  inhale acc(A$p$shared(a), wildcard)
+  local := havoc$$c$B()
+  anon$0 := havoc()
+  anon$1 := havoc$B()
+  anon$2 := h$havoc$B()
+  anon$3 := havoc$c$B()
+  anon := h$havoc$c$B()
+  label lbl$ret$0
+  inhale isSubtype(typeOf(ret$0), unitType())
+}

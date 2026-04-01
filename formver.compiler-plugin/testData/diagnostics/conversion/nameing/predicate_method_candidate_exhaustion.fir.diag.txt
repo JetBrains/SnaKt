@@ -1,0 +1,67 @@
+/predicate_method_candidate_exhaustion.kt:(25,31): info: Generated Viper text for shared:
+method shared() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  label ret
+  inhale isSubtype(typeOf(ret$0), unitType())
+}
+
+/predicate_method_candidate_exhaustion.kt:(42,52): info: Generated Viper text for p$shared:
+method p$shared() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  label ret
+  inhale isSubtype(typeOf(ret$0), unitType())
+}
+
+/predicate_method_candidate_exhaustion.kt:(63,75): info: Generated Viper text for A$p$shared:
+method A$p$shared() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  label ret
+  inhale isSubtype(typeOf(ret$0), unitType())
+}
+
+/predicate_method_candidate_exhaustion.kt:(86,100): info: Generated Viper text for c$A$p$shared:
+method c$A$p$shared() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  label ret
+  inhale isSubtype(typeOf(ret$0), unitType())
+}
+
+/predicate_method_candidate_exhaustion.kt:(111,145): info: Generated Viper text for predicateMethodCandidateExhaustion:
+field x: Ref
+
+method A$p$shared() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+
+
+method c$A$p$shared() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+
+
+method p$shared() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+
+
+method predicateMethodCandidateExhaustion(a: Ref) returns (ret$0: Ref)
+  requires isSubtype(typeOf(a), c$A())
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  var anon$2: Ref
+  var anon: Ref
+  inhale acc($c$A$p$shared(a), wildcard)
+  anon$0 := shared()
+  anon$1 := p$shared()
+  anon$2 := A$p$shared()
+  anon := c$A$p$shared()
+  label lbl$ret$0
+  inhale isSubtype(typeOf(ret$0), unitType())
+}
+
+method shared() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+

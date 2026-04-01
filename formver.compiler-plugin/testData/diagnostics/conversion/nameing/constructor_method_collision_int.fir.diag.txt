@@ -1,0 +1,35 @@
+/constructor_method_collision_int.kt:(23,26): info: Generated Viper text for con:
+method con(x: Ref) returns (ret$0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  label ret
+  inhale isSubtype(typeOf(ret$0), unitType())
+}
+
+/constructor_method_collision_int.kt:(87,116): info: Generated Viper text for constructorMethodCollisionInt:
+field bf$x: Ref
+
+method con(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret), ConstructorCollisionInt())
+  ensures acc(shared(ret), wildcard)
+  ensures acc(p$unique(ret), write)
+  ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf$x)) ==
+    intFromRef(x)
+
+
+method constructorMethodCollisionInt() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  var anon: Ref
+  var box: Ref
+  anon := f$con(intToRef(1))
+  box := con(intToRef(2))
+  label lbl$ret$0
+  inhale isSubtype(typeOf(ret$0), unitType())
+}
+
+method f$con(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret), unitType())

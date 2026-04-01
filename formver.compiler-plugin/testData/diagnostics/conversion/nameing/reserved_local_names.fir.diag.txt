@@ -1,0 +1,25 @@
+/reserved_local_names.kt:(23,41): info: Generated Viper text for reservedLocalNames:
+method reservedLocalNames() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  var l$ret: Ref
+  var anon: Ref
+  var l$ret$0: Ref
+  var anon$0: Ref
+  var l$lbl$ret$0: Ref
+  var x: Ref
+  l$ret := intToRef(1)
+  anon := boolToRef(true)
+  l$ret$0 := l$ret
+  anon$0 := anon
+  l$lbl$ret$0 := l$ret$0
+  x := l$lbl$ret$0
+  if (boolFromRef(anon$0)) {
+    var ret: Ref
+    var y: Ref
+    ret := plusInts(x, intToRef(1))
+    y := ret
+  }
+  label lbl$ret$0
+  inhale isSubtype(typeOf(ret$0), unitType())
+}

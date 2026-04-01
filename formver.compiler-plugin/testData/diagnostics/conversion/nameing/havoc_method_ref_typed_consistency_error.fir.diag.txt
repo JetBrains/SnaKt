@@ -1,0 +1,27 @@
+/havoc_method_ref_typed_consistency_error.kt:(36,45): info: Generated Viper text for havoc$B:
+method havoc$B() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  label ret
+  inhale isSubtype(typeOf(ret$0), unitType())
+}
+
+/havoc_method_ref_typed_consistency_error.kt:(56,91): info: Generated Viper text for havocMethodRefTypedConsistencyError:
+field ref: Ref
+
+method havoc$B() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+
+
+method havocMethodRefTypedConsistencyError(a: Ref) returns (ret$0: Ref)
+  requires isSubtype(typeOf(a), A())
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  var local: Ref
+  var anon: Ref
+  inhale acc(A$p$shared(a), wildcard)
+  local := havoc()
+  anon := havoc$B()
+  label lbl$ret$0
+  inhale isSubtype(typeOf(ret$0), unitType())
+}

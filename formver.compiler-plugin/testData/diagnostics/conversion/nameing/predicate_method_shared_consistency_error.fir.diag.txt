@@ -1,0 +1,24 @@
+/predicate_method_shared_consistency_error.kt:(25,31): info: Generated Viper text for shared:
+method shared() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  label ret
+  inhale isSubtype(typeOf(ret$0), unitType())
+}
+
+/predicate_method_shared_consistency_error.kt:(42,79): info: Generated Viper text for predicateMethodSharedConsistencyError:
+field x: Ref
+
+method predicateMethodSharedConsistencyError(a: Ref) returns (ret$0: Ref)
+  requires isSubtype(typeOf(a), A())
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  var anon: Ref
+  inhale acc(p$shared(a), wildcard)
+  anon := shared()
+  label lbl$ret$0
+  inhale isSubtype(typeOf(ret$0), unitType())
+}
+
+method shared() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())

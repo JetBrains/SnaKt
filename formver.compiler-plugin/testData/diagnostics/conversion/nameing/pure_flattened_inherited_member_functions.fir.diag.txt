@@ -1,0 +1,53 @@
+/pure_flattened_inherited_member_functions.kt:(117,124): info: Generated Viper text for payload:
+function payload(this: Ref): Ref
+  requires acc(shared(this), wildcard)
+  requires isSubtype(typeOf(this), Base_PureFun())
+  ensures isSubtype(typeOf(result), intType())
+{
+  intToRef(1)
+}
+
+/pure_flattened_inherited_member_functions.kt:(213,220): info: Generated Viper text for payload:
+function payload(this: Ref): Ref
+  requires acc(shared(this), wildcard)
+  requires isSubtype(typeOf(this), Base$PureFun())
+  ensures isSubtype(typeOf(result), boolType())
+{
+  boolToRef(true)
+}
+
+/pure_flattened_inherited_member_functions.kt:(356,393): info: Generated Viper text for pureFlattenedInheritedMemberFunctions:
+function f$payload(this: Ref): Ref
+  requires acc(Base_PureFun$p$shared(this), wildcard)
+  requires isSubtype(typeOf(this), Base_PureFun())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function payload(this: Ref): Ref
+  requires acc(Base$PureFun$p$shared(this), wildcard)
+  requires isSubtype(typeOf(this), Base$PureFun())
+  ensures isSubtype(typeOf(result), boolType())
+
+
+method con() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), Derived_Base$PureFun())
+  ensures acc(p$shared(ret), wildcard)
+  ensures acc(Derived_Base$PureFun$p$unique(ret), write)
+
+
+method con$Derived_Base_PureFun() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), Derived_Base_PureFun())
+  ensures acc(Derived_Base_PureFun$p$shared(ret), wildcard)
+  ensures acc(Derived_Base_PureFun$p$unique(ret), write)
+
+
+method pureFlattenedInheritedMemberFunctions() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  left := con$Derived_Base_PureFun()
+  right := con()
+  label lbl$ret$0
+  inhale isSubtype(typeOf(ret$0), unitType())
+}

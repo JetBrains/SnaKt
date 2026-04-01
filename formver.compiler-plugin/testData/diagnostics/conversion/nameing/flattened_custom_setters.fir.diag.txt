@@ -1,0 +1,35 @@
+/flattened_custom_setters.kt:(281,303): info: Generated Viper text for flattenedCustomSetters:
+method con(seed: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seed), boolType())
+  ensures isSubtype(typeOf(ret), Setter$Box())
+  ensures acc(p$shared(ret), wildcard)
+  ensures acc(p$unique(ret), write)
+
+
+method con$Setter_Box(seed: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seed), intType())
+  ensures isSubtype(typeOf(ret), Setter_Box())
+  ensures acc(Setter_Box$p$shared(ret), wildcard)
+  ensures acc(Setter_Box$p$unique(ret), write)
+
+
+method flattenedCustomSetters() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon$0: Ref
+  var anon: Ref
+  left := con$Setter_Box(intToRef(1))
+  right := con(boolToRef(true))
+  anon$0 := s$value(left, intToRef(2))
+  anon := s$value(right, boolToRef(false))
+  label lbl$ret$0
+  inhale isSubtype(typeOf(ret$0), unitType())
+}
+
+method s$value(this: Ref, anon$0: Ref) returns (ret: Ref)
+
+
+method value(this: Ref) returns (ret: Ref)
+

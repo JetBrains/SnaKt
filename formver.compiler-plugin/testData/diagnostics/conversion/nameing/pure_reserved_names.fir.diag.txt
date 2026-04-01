@@ -1,0 +1,26 @@
+/pure_reserved_names.kt:(78,95): info: Generated Viper text for pureReservedNames:
+function pureReservedNames(p$result: Ref, p$a: Ref): Ref
+  requires isSubtype(typeOf(p$result), intType())
+  requires isSubtype(typeOf(p$a), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let result$0$0 ==
+    (p$result) in
+    (let anon$0 ==
+      (p$a) in
+      plusInts(result$0$0, anon$0)))
+}
+
+/pure_reserved_names.kt:(221,242): info: Generated Viper text for callPureReservedNames:
+function pureReservedNames(p$result: Ref, p$a: Ref): Ref
+  requires isSubtype(typeOf(p$result), intType())
+  requires isSubtype(typeOf(p$a), intType())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method callPureReservedNames() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  label ret
+  inhale isSubtype(typeOf(ret$0), unitType())
+}

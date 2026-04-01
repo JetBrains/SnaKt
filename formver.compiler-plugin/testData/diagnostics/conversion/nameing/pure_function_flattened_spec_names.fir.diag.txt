@@ -1,0 +1,75 @@
+/pure_function_flattened_spec_names.kt:(78,91): info: Generated Viper text for preconditions:
+function preconditions(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  x
+}
+
+/pure_function_flattened_spec_names.kt:(120,134): info: Generated Viper text for postconditions:
+function postconditions(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(x, intToRef(1))
+}
+
+/pure_function_flattened_spec_names.kt:(362,392): info: Generated Viper text for pureFunctionFlattenedSpecNames:
+field bf$seed: Ref
+
+function f$postconditions(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function f$preconditions(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(seed: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seed), boolType())
+  ensures isSubtype(typeOf(ret), Spec$Box())
+  ensures acc(p$shared(ret), wildcard)
+  ensures acc(p$unique(ret), write)
+  ensures boolFromRef((unfolding acc(p$shared(ret), wildcard) in
+      ret.bf$seed)) ==
+    boolFromRef(seed)
+
+
+method con$Spec_Box(seed: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seed), intType())
+  ensures isSubtype(typeOf(ret), Spec_Box())
+  ensures acc(Spec_Box$p$shared(ret), wildcard)
+  ensures acc(Spec_Box$p$unique(ret), write)
+  ensures intFromRef((unfolding acc(Spec_Box$p$shared(ret), wildcard) in
+      ret.bf$seed)) ==
+    intFromRef(seed)
+
+
+method postconditions(this: Ref) returns (ret: Ref)
+
+
+method preconditions(this: Ref) returns (ret: Ref)
+
+
+method pureFunctionFlattenedSpecNames() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  var anon$2: Ref
+  var anon: Ref
+  left := con$Spec_Box(intToRef(1))
+  right := con(boolToRef(true))
+  anon$1 := preconditions(left)
+  anon$0 := anon$1
+  inhale isSubtype(typeOf(anon$0), intType())
+  anon := postconditions(right)
+  anon$2 := anon
+  inhale isSubtype(typeOf(anon$2), boolType())
+  label lbl$ret$0
+  inhale isSubtype(typeOf(ret$0), unitType())
+}

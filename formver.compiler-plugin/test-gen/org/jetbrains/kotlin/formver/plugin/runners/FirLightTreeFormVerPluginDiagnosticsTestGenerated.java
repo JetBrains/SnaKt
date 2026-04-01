@@ -295,6 +295,358 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/nameing")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Nameing {
+      @Test
+      public void testAllFilesPresentInNameing() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/conversion/nameing"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("collection_name_shadowing.kt")
+      public void testCollection_name_shadowing() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/collection_name_shadowing.kt");
+      }
+
+      @Test
+      @TestMetadata("constructor_method_collision.kt")
+      public void testConstructor_method_collision() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/constructor_method_collision.kt");
+      }
+
+      @Test
+      @TestMetadata("constructor_method_collision_int.kt")
+      public void testConstructor_method_collision_int() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/constructor_method_collision_int.kt");
+      }
+
+      @Test
+      @TestMetadata("deep_flattened_class_names.kt")
+      public void testDeep_flattened_class_names() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/deep_flattened_class_names.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_body_vals.kt")
+      public void testFlattened_body_vals() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_body_vals.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_body_vars.kt")
+      public void testFlattened_body_vars() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_body_vars.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_class_names.kt")
+      public void testFlattened_class_names() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_class_names.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_custom_getters.kt")
+      public void testFlattened_custom_getters() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_custom_getters.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_custom_setters.kt")
+      public void testFlattened_custom_setters() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_custom_setters.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_inherited_body_vals.kt")
+      public void testFlattened_inherited_body_vals() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_inherited_body_vals.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_inherited_body_vars.kt")
+      public void testFlattened_inherited_body_vars() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_inherited_body_vars.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_inherited_custom_getters.kt")
+      public void testFlattened_inherited_custom_getters() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_inherited_custom_getters.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_inherited_custom_setters.kt")
+      public void testFlattened_inherited_custom_setters() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_inherited_custom_setters.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_inherited_functions.kt")
+      public void testFlattened_inherited_functions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_inherited_functions.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_inherited_members.kt")
+      public void testFlattened_inherited_members() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_inherited_members.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_inherited_vars.kt")
+      public void testFlattened_inherited_vars() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_inherited_vars.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_interface_body_props.kt")
+      public void testFlattened_interface_body_props() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_interface_body_props.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_interface_getters.kt")
+      public void testFlattened_interface_getters() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_interface_getters.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_member_functions.kt")
+      public void testFlattened_member_functions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_member_functions.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_private_accessors.kt")
+      public void testFlattened_private_accessors() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_private_accessors.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_private_members.kt")
+      public void testFlattened_private_members() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_private_members.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_secondary_constructor_overloads.kt")
+      public void testFlattened_secondary_constructor_overloads() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_secondary_constructor_overloads.kt");
+      }
+
+      @Test
+      @TestMetadata("flattened_secondary_constructors.kt")
+      public void testFlattened_secondary_constructors() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/flattened_secondary_constructors.kt");
+      }
+
+      @Test
+      @TestMetadata("havoc_helper_name_collision.kt")
+      public void testHavoc_helper_name_collision() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/havoc_helper_name_collision.kt");
+      }
+
+      @Test
+      @TestMetadata("havoc_method_candidate_exhaustion.kt")
+      public void testHavoc_method_candidate_exhaustion() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/havoc_method_candidate_exhaustion.kt");
+      }
+
+      @Test
+      @TestMetadata("havoc_method_collision.kt")
+      public void testHavoc_method_collision() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/havoc_method_collision.kt");
+      }
+
+      @Test
+      @TestMetadata("havoc_method_int_collision.kt")
+      public void testHavoc_method_int_collision() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/havoc_method_int_collision.kt");
+      }
+
+      @Test
+      @TestMetadata("havoc_method_ref_typed_collision.kt")
+      public void testHavoc_method_ref_typed_collision() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/havoc_method_ref_typed_collision.kt");
+      }
+
+      @Test
+      @TestMetadata("havoc_method_ref_typed_consistency_error.kt")
+      public void testHavoc_method_ref_typed_consistency_error() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/havoc_method_ref_typed_consistency_error.kt");
+      }
+
+      @Test
+      @TestMetadata("havoc_nullable_helper_name_collision.kt")
+      public void testHavoc_nullable_helper_name_collision() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/havoc_nullable_helper_name_collision.kt");
+      }
+
+      @Test
+      @TestMetadata("inline_pure_flattened_interface_getters.kt")
+      public void testInline_pure_flattened_interface_getters() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/inline_pure_flattened_interface_getters.kt");
+      }
+
+      @Test
+      @TestMetadata("inner_class_property_collision.kt")
+      public void testInner_class_property_collision() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/inner_class_property_collision.kt");
+      }
+
+      @Test
+      @TestMetadata("multiple_flattening_collisions.kt")
+      public void testMultiple_flattening_collisions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/multiple_flattening_collisions.kt");
+      }
+
+      @Test
+      @TestMetadata("predicate_collection_base_collision.kt")
+      public void testPredicate_collection_base_collision() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/predicate_collection_base_collision.kt");
+      }
+
+      @Test
+      @TestMetadata("predicate_collection_helper_name_collision.kt")
+      public void testPredicate_collection_helper_name_collision() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/predicate_collection_helper_name_collision.kt");
+      }
+
+      @Test
+      @TestMetadata("predicate_collection_interface_collision.kt")
+      public void testPredicate_collection_interface_collision() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/predicate_collection_interface_collision.kt");
+      }
+
+      @Test
+      @TestMetadata("predicate_function_shared_collision.kt")
+      public void testPredicate_function_shared_collision() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/predicate_function_shared_collision.kt");
+      }
+
+      @Test
+      @TestMetadata("predicate_function_unique_collision.kt")
+      public void testPredicate_function_unique_collision() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/predicate_function_unique_collision.kt");
+      }
+
+      @Test
+      @TestMetadata("predicate_helper_name_collision.kt")
+      public void testPredicate_helper_name_collision() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/predicate_helper_name_collision.kt");
+      }
+
+      @Test
+      @TestMetadata("predicate_method_candidate_exhaustion.kt")
+      public void testPredicate_method_candidate_exhaustion() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/predicate_method_candidate_exhaustion.kt");
+      }
+
+      @Test
+      @TestMetadata("predicate_method_collection_base_collision.kt")
+      public void testPredicate_method_collection_base_collision() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/predicate_method_collection_base_collision.kt");
+      }
+
+      @Test
+      @TestMetadata("predicate_method_collection_base_consistency_error.kt")
+      public void testPredicate_method_collection_base_consistency_error() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/predicate_method_collection_base_consistency_error.kt");
+      }
+
+      @Test
+      @TestMetadata("predicate_method_shared_collision.kt")
+      public void testPredicate_method_shared_collision() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/predicate_method_shared_collision.kt");
+      }
+
+      @Test
+      @TestMetadata("predicate_method_shared_consistency_error.kt")
+      public void testPredicate_method_shared_consistency_error() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/predicate_method_shared_consistency_error.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_flattened_inherited_member_functions.kt")
+      public void testPure_flattened_inherited_member_functions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/pure_flattened_inherited_member_functions.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_flattened_member_functions.kt")
+      public void testPure_flattened_member_functions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/pure_flattened_member_functions.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_function_flattened_interface_body_props.kt")
+      public void testPure_function_flattened_interface_body_props() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/pure_function_flattened_interface_body_props.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_function_flattened_interface_getters.kt")
+      public void testPure_function_flattened_interface_getters() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/pure_function_flattened_interface_getters.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_function_flattened_property_collision.kt")
+      public void testPure_function_flattened_property_collision() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/pure_function_flattened_property_collision.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_function_flattened_spec_names.kt")
+      public void testPure_function_flattened_spec_names() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/pure_function_flattened_spec_names.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_function_flattened_verify_property_collision.kt")
+      public void testPure_function_flattened_verify_property_collision() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/pure_function_flattened_verify_property_collision.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_function_property_collision.kt")
+      public void testPure_function_property_collision() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/pure_function_property_collision.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_reserved_names.kt")
+      public void testPure_reserved_names() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/pure_reserved_names.kt");
+      }
+
+      @Test
+      @TestMetadata("quadruple_flattening_collisions.kt")
+      public void testQuadruple_flattening_collisions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/quadruple_flattening_collisions.kt");
+      }
+
+      @Test
+      @TestMetadata("reserved_local_names.kt")
+      public void testReserved_local_names() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/reserved_local_names.kt");
+      }
+
+      @Test
+      @TestMetadata("special_verify_member_functions.kt")
+      public void testSpecial_verify_member_functions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/special_verify_member_functions.kt");
+      }
+
+      @Test
+      @TestMetadata("unnecessary_conflict.kt")
+      public void testUnnecessary_conflict() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/nameing/unnecessary_conflict.kt");
+      }
+    }
+
+    @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/operators")
     @TestDataPath("$PROJECT_ROOT")
     public class Operators {
