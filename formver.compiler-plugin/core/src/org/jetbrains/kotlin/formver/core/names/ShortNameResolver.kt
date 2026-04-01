@@ -18,6 +18,8 @@ context(resolver: ShortNameResolver)
 fun NamePart.name(): String = when (this) {
     is NamePart.Dependent -> name()
     is NamePart.Basic -> this.name
+    NamePart.NoSeparator -> ""
+    NamePart.Separator -> resolver.separator
 }
 
 /**
@@ -30,7 +32,7 @@ fun NamePart.Dependent.name(): String = resolver.current(name)
  * Gives the current name.
  */
 context(resolver: ShortNameResolver)
-fun CandidateName.name(): String = parts.joinToString(SEPARATOR) { it.name() }
+fun CandidateName.name(): String = parts.joinToString("") { it.name() }
 
 
 /**
@@ -39,6 +41,8 @@ fun CandidateName.name(): String = parts.joinToString(SEPARATOR) { it.name() }
 fun NamePart.fullName(): String = when (this) {
     is NamePart.Dependent -> fullName()
     is NamePart.Basic -> this.name
+    NamePart.NoSeparator -> ""
+    NamePart.Separator -> SEPARATOR
 }
 
 /**
@@ -50,9 +54,9 @@ fun NamePart.Dependent.fullName(): String = name.candidates.last().fullName()
  * Gives the most specific name.
  */
 fun CandidateName.fullName(): String = if (parts.size > 1) {
-    "[" + parts.joinToString(SEPARATOR) { it.fullName() } + "]"
+    "[" + parts.joinToString("") { it.fullName() } + "]"
 } else {
-    parts.joinToString(SEPARATOR) { it.fullName() }
+    parts.joinToString("") { it.fullName() }
 }
 
 fun NamedEntity.fullName(): String = candidates.last().fullName()
@@ -117,6 +121,9 @@ class ShortNameResolver(val equality: Equality) : NameResolver {
      */
     private lateinit var mangledNames: Map<NamedEntity, String>
 
+    private var _separator = "$"
+    val separator
+        get() = _separator
 
     /**
      * Stores which candidate is currently used for a given name.
@@ -176,6 +183,23 @@ class ShortNameResolver(val equality: Equality) : NameResolver {
     }
 
     /**
+     * Collects the user chosen names. They are used to select the deliminator.
+     */
+    private var longestSequenceDollar = 0
+    private var longestSequenceUnderscore = 0
+    private fun findLongestAnySequence(input: String, c: Char): Int {
+        // Regex matches any character (.) followed by itself \1 zero or more times *
+        val pattern = "($c)\\1*".toRegex()
+
+        return pattern.findAll(input).maxOfOrNull { it.value.length } ?: 0
+    }
+
+    fun registerUserName(name: String) {
+        longestSequenceDollar = maxOf(longestSequenceDollar, findLongestAnySequence(name, '$'))
+        longestSequenceUnderscore = maxOf(longestSequenceUnderscore, findLongestAnySequence(name, '_'))
+    }
+
+    /**
      * Returns true iff the ``entity`` is scoped. Meaning that there is a name, which wraps around `entity`
      */
     private fun isScoped(entity: NamedEntity): Boolean =
@@ -222,11 +246,15 @@ class ShortNameResolver(val equality: Equality) : NameResolver {
 
 
     // START MANGLE
+
+    /**
+     * Generates short human-readable names. Must be called before using [resolve].
+     */
     override fun mangle() {
         createRepresentatives()
+        chooseSeparator()
         var collisions = collisions()
         while (collisions.isNotEmpty()) {
-//            val graphviz = graph.toGraphviz(this, showCollisions = true, showCurrent = true)
             val toResolve = collisions.entries.first().value
 
             val candidateToMove = toResolve.firstOrNull { canMove(it) }
@@ -243,6 +271,19 @@ class ShortNameResolver(val equality: Equality) : NameResolver {
         mangledNames = viperElements().associateWith { current(it) }
     }
 
+    fun chooseSeparator() {
+        _separator = if (longestSequenceDollar < longestSequenceUnderscore) {
+            "$".repeat(longestSequenceDollar + 1)
+        } else {
+            "_".repeat(longestSequenceUnderscore + 1)
+        }
+    }
+
+    /**
+     * For some names (e.g., public fields with the same name), we want to merge them in the viper.
+     * If there are multiple such names, and we do nothing, then there will be unnecessary collisions.
+     * Hence, this function groups the names into groups that should be merged and choose a representative.
+     */
     private fun createRepresentatives() {
         // Field Names which are public
         val publicFields = elements().filter {
@@ -357,7 +398,7 @@ class ShortNameResolver(val equality: Equality) : NameResolver {
          * Returns the candidate Name, but not recursively resolved. Recursive Names are replaced with
          * placeholders.
          */
-        fun candidateNameTemplate(candidate: CandidateName): String = candidate.parts.joinToString(SEPARATOR) {
+        fun candidateNameTemplate(candidate: CandidateName): String = candidate.parts.joinToString() {
             when (it) {
                 is NamePart.Basic -> it.name
                 is NamePart.Dependent -> when (it.name) {
@@ -374,6 +415,9 @@ class ShortNameResolver(val equality: Equality) : NameResolver {
 
                     else -> it.name.toString()
                 }
+
+                NamePart.NoSeparator -> ""
+                NamePart.Separator -> SEPARATOR
             }
         }
 
@@ -514,6 +558,7 @@ internal class Registrator : NamedEntityVisitor<ShortNameResolver, Unit> {
                 scope: PackageScope, data: ShortNameResolver
             ) {
                 data.addElement(scope)
+                data.registerUserName(scope.packageName.asString())
             }
 
             override fun visitParameterScope(
@@ -647,6 +692,7 @@ internal class Registrator : NamedEntityVisitor<ShortNameResolver, Unit> {
                 name: SpecialName, data: ShortNameResolver
             ) {
                 data.addElement(name)
+                data.registerUserName(name.baseName)
                 data.link(name.nameType, Relation.KIND_OF, name)
                 name.nameType.accept(this@Registrator.nameTypeVisitor, data)
             }
@@ -689,6 +735,7 @@ internal class Registrator : NamedEntityVisitor<ShortNameResolver, Unit> {
             override fun visitSimpleKotlinName(
                 name: SimpleKotlinName, data: ShortNameResolver
             ) {
+                data.registerUserName(name.name.asString())
                 data.addElement(name)
             }
 
@@ -705,6 +752,7 @@ internal class Registrator : NamedEntityVisitor<ShortNameResolver, Unit> {
             override fun visitClassKotlinName(
                 name: ClassKotlinName, data: ShortNameResolver
             ) {
+                data.registerUserName(name.name.asString())
                 data.addElement(name)
                 data.link(name.nameType, Relation.KIND_OF, name)
                 name.nameType.accept(this@Registrator.nameTypeVisitor, data)
@@ -713,6 +761,7 @@ internal class Registrator : NamedEntityVisitor<ShortNameResolver, Unit> {
             override fun visitTypedKotlinName(
                 name: TypedKotlinName, data: ShortNameResolver
             ) {
+                data.registerUserName(name.name.asString())
                 data.addElement(name)
                 data.link(name.nameType, Relation.KIND_OF, name)
                 name.nameType.accept(this@Registrator.nameTypeVisitor, data)
@@ -735,6 +784,7 @@ internal class Registrator : NamedEntityVisitor<ShortNameResolver, Unit> {
             override fun visitDomainName(
                 name: DomainName, data: ShortNameResolver
             ) {
+                data.registerUserName(name.baseName)
                 data.addElement(name)
                 data.link(name.nameType, Relation.KIND_OF, name)
                 name.nameType.accept(this@Registrator.nameTypeVisitor, data)
@@ -743,6 +793,7 @@ internal class Registrator : NamedEntityVisitor<ShortNameResolver, Unit> {
             override fun visitNamedDomainAxiomLabel(
                 name: NamedDomainAxiomLabel, data: ShortNameResolver
             ) {
+                data.registerUserName(name.baseName)
                 data.addElement(name)
                 data.link(name.domainName, Relation.IS_PART_OF, name)
                 name.domainName.accept(this@Registrator.symbolicNameVisitor, data)

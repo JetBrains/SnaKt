@@ -17,6 +17,9 @@ sealed interface NamePart {
 
     // Depends on other Name
     class Dependent(val name: NamedEntity) : NamePart
+
+    object Separator : NamePart
+    object NoSeparator : NamePart
 }
 
 class CandidateName(val parts: List<NamePart>) {
@@ -57,6 +60,11 @@ fun buildCandidates(init: CandidatesBuilder.() -> Unit): List<CandidateName> {
 class CandidateNameBuilder {
     private val parts = mutableListOf<NamePart>()
 
+    val noSeparator: Unit
+        get() {
+            parts.add(NamePart.NoSeparator)
+        }
+
     operator fun String.unaryPlus() {
         parts.add(NamePart.Basic(this))
     }
@@ -76,7 +84,20 @@ class CandidateNameBuilder {
         })
     }
 
-    fun build(): CandidateName = CandidateName(parts.toList())
+    fun build(): CandidateName {
+        val separatorParts = parts.foldRight(Pair(mutableListOf<NamePart>(), false)) { part, (result, addSeparator) ->
+            if (part is NamePart.NoSeparator) {
+                return@foldRight Pair(result, false)
+            }
+            if (addSeparator) {
+                result.add(NamePart.Separator)
+            }
+            result.add(part)
+            Pair(result, true)
+        }
+
+        return CandidateName(separatorParts.first.reversed())
+    }
 }
 
 

@@ -34,6 +34,7 @@ data class AnonymousName(val n: Int) : FreshName {
             }
             candidate {
                 +"anon"
+                noSeparator
                 +"$n"
             }
         }
@@ -60,6 +61,7 @@ data class AnonymousBuiltinName(val n: Int) : FreshName {
             candidate {
                 +"anon"
                 +"builtin"
+                noSeparator
                 +"$n"
             }
         }
@@ -100,6 +102,7 @@ data class ReturnVariableName(val n: Int) : FreshName {
             }
             candidate {
                 +"ret"
+                noSeparator
                 +"$n"
             }
         }
@@ -197,6 +200,7 @@ abstract class NumberedLabelName(override val nameType: NameType, open val n: In
             candidate {
                 +"lbl"
                 +nameType
+                noSeparator
                 +"$n"
             }
         }
@@ -221,6 +225,7 @@ data class PlaceholderArgumentName(val n: Int) : FreshName {
             }
             candidate {
                 +"arg"
+                noSeparator
                 +"$n"
             }
         }

@@ -58,13 +58,7 @@ abstract class TypedKotlinNameWithType(override val nameType: NameType, open val
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "${name.asStringStripSpecialMarkers()}$SEPARATOR${type.name.mangled}"
-}
 
-data class FunctionKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
-    TypedKotlinNameWithType(
-        NameType.Function, name,
-        functionType.asTypeEmbedding()
-    ) {
     override val candidates: List<CandidateName>
         get() = buildCandidates {
             candidate {
@@ -77,17 +71,17 @@ data class FunctionKotlinName(override val name: Name, val functionType: Functio
             candidate {
                 +nameType
                 +name.asStringStripSpecialMarkers()
-                +functionType.returnType.name
-            }
-            candidate {
-                +nameType
-                +name.asStringStripSpecialMarkers()
-                +"args"
-                +functionType.paramTypes.map { it.name }
-                +"ret"
-                +functionType.returnType.name
+                +type.name
             }
         }
+}
+
+data class FunctionKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
+    TypedKotlinNameWithType(
+        NameType.Function, name,
+        functionType.asTypeEmbedding()
+    ) {
+
 }
 
 /**
@@ -99,58 +93,10 @@ data class GetterKotlinName(override val name: Name) : TypedKotlinName(NameType.
 data class SetterKotlinName(override val name: Name) : TypedKotlinName(NameType.Setter, name)
 data class ExtensionSetterKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
     TypedKotlinNameWithType(NameType.ExtensionSetter, name, functionType.asTypeEmbedding()) {
-    override val candidates: List<CandidateName>
-        get() = buildCandidates {
-            candidate {
-                +name.asStringStripSpecialMarkers()
-            }
-            candidate {
-                +nameType
-                +name.asStringStripSpecialMarkers()
-            }
-            candidate {
-                +nameType
-                +name.asStringStripSpecialMarkers()
-                +functionType.returnType.name
-            }
-            candidate {
-                +nameType
-                +name.asStringStripSpecialMarkers()
-                +"args"
-                +functionType.paramTypes.map { it.name }
-                +"ret"
-                +functionType.returnType.name
-            }
-        }
 }
 
 data class ExtensionGetterKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
-    TypedKotlinNameWithType(NameType.ExtensionGetter, name, functionType.asTypeEmbedding()) {
-    override val candidates: List<CandidateName>
-        get() = buildCandidates {
-            candidate {
-                +name.asStringStripSpecialMarkers()
-            }
-            candidate {
-                +nameType
-                +name.asStringStripSpecialMarkers()
-            }
-            candidate {
-                +nameType
-                +name.asStringStripSpecialMarkers()
-                +"ret"
-                +functionType.returnType.name
-            }
-            candidate {
-                +nameType
-                +name.asStringStripSpecialMarkers()
-                +"args"
-                +functionType.paramTypes.map { it.name }
-                +"ret"
-                +functionType.returnType.name
-            }
-        }
-}
+    TypedKotlinNameWithType(NameType.ExtensionGetter, name, functionType.asTypeEmbedding())
 
 data class ClassKotlinName(val name: FqName) : KotlinName {
     override val nameType: NameType
@@ -281,10 +227,6 @@ data class ListOfNames<T : SymbolicName>(val names: List<T>) : NameOfType {
             candidate {
                 +names
             }
-            candidate {
-                +nameType
-                +names
-            }
         }
 }
 
@@ -335,11 +277,7 @@ data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : Name
             }
             candidate {
                 if (nullable) +"N"
-                +pretype.name
-            }
-            candidate {
-                +nameType
-                if (nullable) +"N"
+                noSeparator
                 +pretype.name
             }
         }
