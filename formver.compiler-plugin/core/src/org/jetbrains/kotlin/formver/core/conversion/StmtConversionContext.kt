@@ -291,11 +291,11 @@ fun StmtConversionContext.insertAccFunctionCall(
     val classEmbedding = ClassTypeEmbedding(symbol.containingClassLookupTag()?.classId?.embedName() ?: throw SnaktInternalException(symbol.source, "type not supported/found"))
     val rcv = UserFieldEmbedding(name, type, symbol, false, classEmbedding, true)
     val permExp = when(perm.source.text.toString()) {
-        "write" -> PermExp.WildcardPerm()
-        "read" -> PermExp.FullPerm()
+        "write" -> PermExp.FullPerm()
+        "read" -> PermExp.WildcardPerm()
         else -> throw SnaktInternalException(symbol.source, "perm is not supported")
     }
-    val fieldExp = embedPropertyAccess(field).getValue(this)
+    val fieldExp = convert(field.dispatchReceiver!!)
     return withNoScope {
         AccEmbedding(rcv, fieldExp, permExp)
     }
