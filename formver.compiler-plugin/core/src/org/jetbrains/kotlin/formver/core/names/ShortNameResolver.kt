@@ -2,10 +2,7 @@ package org.jetbrains.kotlin.formver.core.names
 
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.viper.*
-import org.jetbrains.kotlin.formver.viper.ast.DomainName
-import org.jetbrains.kotlin.formver.viper.ast.NamedDomainAxiomLabel
-import org.jetbrains.kotlin.formver.viper.ast.QualifiedDomainFuncName
-import org.jetbrains.kotlin.formver.viper.ast.UnqualifiedDomainFuncName
+import org.jetbrains.kotlin.formver.viper.ast.*
 import java.util.*
 import kotlin.math.absoluteValue
 
@@ -644,6 +641,17 @@ internal class Registrator : NamedEntityVisitor<ShortNameResolver, Unit> {
                 data.addElement(name)
             }
 
+            override fun visitRelatedDomainFuncName(
+                name: RelatedDomainFuncName,
+                data: ShortNameResolver
+            ) {
+                data.addElement(name)
+                data.link(name.nameType, Relation.KIND_OF, name)
+                data.link(name.domainName, Relation.IS_PART_OF, name)
+                name.nameType.accept(this@Registrator.nameTypeVisitor, data)
+                name.domainName.accept(this@Registrator.symbolicNameVisitor, data)
+            }
+
             override fun visitExtensionReceiverName(
                 name: ExtensionReceiverName, data: ShortNameResolver
             ) {
@@ -689,7 +697,7 @@ internal class Registrator : NamedEntityVisitor<ShortNameResolver, Unit> {
             }
 
             override fun visitSpecialName(
-                name: SpecialName, data: ShortNameResolver
+                name: SpecialFieldName, data: ShortNameResolver
             ) {
                 data.addElement(name)
                 data.registerUserName(name.baseName)

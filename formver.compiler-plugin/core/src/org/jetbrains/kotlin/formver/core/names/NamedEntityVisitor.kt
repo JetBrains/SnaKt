@@ -4,10 +4,7 @@ import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.viper.NameType
 import org.jetbrains.kotlin.formver.viper.NamedEntity
 import org.jetbrains.kotlin.formver.viper.SymbolicName
-import org.jetbrains.kotlin.formver.viper.ast.DomainName
-import org.jetbrains.kotlin.formver.viper.ast.NamedDomainAxiomLabel
-import org.jetbrains.kotlin.formver.viper.ast.QualifiedDomainFuncName
-import org.jetbrains.kotlin.formver.viper.ast.UnqualifiedDomainFuncName
+import org.jetbrains.kotlin.formver.viper.ast.*
 
 interface NamedEntityVisitor<D, R> {
     val nameScopeVisitor: NameScopeVisitor<D, R>
@@ -114,6 +111,7 @@ interface SymbolicNameVisitor<D, R> {
         is QualifiedDomainFuncName -> visitQualifiedDomainFuncName(name, data)
         is UnqualifiedDomainFuncName -> visitUnqualifiedDomainFuncName(name, data)
         is NameOfType -> visitNameOfType(name, data)
+        is RelatedDomainFuncName -> visitRelatedDomainFuncName(name, data)
         else -> {
             throw SnaktInternalException(null, "Unknown SymbolicName type: ${name::class.simpleName}")
         }
@@ -130,7 +128,7 @@ interface SymbolicNameVisitor<D, R> {
         is NumberedLabelName -> visitNumberedLabelName(name, data)
         is PlaceholderArgumentName -> visitPlaceholderArgumentName(name, data)
         is ReturnVariableName -> visitReturnVariableName(name, data)
-        is SpecialName -> visitSpecialName(name, data)
+        is SpecialFieldName -> visitSpecialName(name, data)
         is SsaVariableName -> visitSsaVariableName(name, data)
         is PlaceholderReturnVariableName -> visitPlaceholderReturnVariableName(name, data)
         else -> {
@@ -142,13 +140,14 @@ interface SymbolicNameVisitor<D, R> {
     fun visitAnonymousName(name: AnonymousName, data: D): R
     fun visitDispatchReceiverName(name: DispatchReceiverName, data: D): R
     fun visitDomainFuncParameterName(name: DomainFuncParameterName, data: D): R
+    fun visitRelatedDomainFuncName(name: RelatedDomainFuncName, data: D): R
     fun visitExtensionReceiverName(name: ExtensionReceiverName, data: D): R
     fun visitPlaceholderReturnVariableName(name: PlaceholderReturnVariableName, data: D): R
     fun visitFunctionResultVariableName(name: FunctionResultVariableName, data: D): R
     fun visitNumberedLabelName(name: NumberedLabelName, data: D): R
     fun visitPlaceholderArgumentName(name: PlaceholderArgumentName, data: D): R
     fun visitReturnVariableName(name: ReturnVariableName, data: D): R
-    fun visitSpecialName(name: SpecialName, data: D): R
+    fun visitSpecialName(name: SpecialFieldName, data: D): R
     fun visitSsaVariableName(name: SsaVariableName, data: D): R
 
     // Kotlin Specific Names
@@ -253,6 +252,9 @@ fun <D, R> DispatchReceiverName.accept(visitor: SymbolicNameVisitor<D, R>, data:
 fun <D, R> DomainFuncParameterName.accept(visitor: SymbolicNameVisitor<D, R>, data: D): R =
     visitor.visitDomainFuncParameterName(this, data)
 
+fun <D, R> RelatedDomainFuncName.accept(visitor: SymbolicNameVisitor<D, R>, data: D): R =
+    visitor.visitRelatedDomainFuncName(this, data)
+
 fun <D, R> ExtensionReceiverName.accept(visitor: SymbolicNameVisitor<D, R>, data: D): R =
     visitor.visitExtensionReceiverName(this, data)
 
@@ -271,7 +273,8 @@ fun <D, R> PlaceholderReturnVariableName.accept(visitor: SymbolicNameVisitor<D, 
 fun <D, R> ReturnVariableName.accept(visitor: SymbolicNameVisitor<D, R>, data: D): R =
     visitor.visitReturnVariableName(this, data)
 
-fun <D, R> SpecialName.accept(visitor: SymbolicNameVisitor<D, R>, data: D): R = visitor.visitSpecialName(this, data)
+fun <D, R> SpecialFieldName.accept(visitor: SymbolicNameVisitor<D, R>, data: D): R =
+    visitor.visitSpecialName(this, data)
 fun <D, R> SsaVariableName.accept(visitor: SymbolicNameVisitor<D, R>, data: D): R =
     visitor.visitSsaVariableName(this, data)
 

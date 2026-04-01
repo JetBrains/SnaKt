@@ -75,6 +75,33 @@ data class QualifiedDomainFuncName(val domainName: DomainName, val funcName: Sym
         }
 }
 
+/**
+ * Name for functions which are very closely related to the domain but not part of the domain.
+ */
+data class RelatedDomainFuncName(val domainName: DomainName, val name: String) : SymbolicName {
+    override val nameType: NameType
+        get() = NameType.Function
+
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
+        get() = name
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            candidate {
+                +name
+            }
+            candidate {
+                +nameType
+                +name
+            }
+            candidate {
+                +domainName
+                +nameType
+                +name
+            }
+        }
+}
+
 /** Represents the name of a possible anonymous axiom.
  *
  * We need the domain name regardless because of how Viper is set up, hence the somewhat

@@ -165,12 +165,12 @@ data object ExtensionReceiverName : FreshName {
         }
 }
 
-data class SpecialName(val baseName: String) : FreshName {
+data class SpecialFieldName(val baseName: String) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = baseName
     override val nameType: NameType
-        get() = NameType.Special
+        get() = NameType.Property
 
     override val candidates: List<CandidateName>
         get() = buildCandidates {

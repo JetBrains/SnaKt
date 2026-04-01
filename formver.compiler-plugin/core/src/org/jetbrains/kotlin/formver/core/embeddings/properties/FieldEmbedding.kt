@@ -15,7 +15,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
 import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
-import org.jetbrains.kotlin.formver.core.names.SpecialName
+import org.jetbrains.kotlin.formver.core.names.SpecialFieldName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Field
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
@@ -80,7 +80,7 @@ class UserFieldEmbedding(
 
 
 object ListSizeFieldEmbedding : FieldEmbedding {
-    override val name = SpecialName("size")
+    override val name = SpecialFieldName("size")
     override val type = buildType { int() }
     override val viperType = Type.Ref
     override val accessPolicy = AccessPolicy.ALWAYS_WRITEABLE
