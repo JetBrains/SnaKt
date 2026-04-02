@@ -36,6 +36,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.LabelEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FullNamedFunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.properties.BackingFieldGetter
 import org.jetbrains.kotlin.formver.core.embeddings.properties.ClassPropertyAccess
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyAccessEmbedding
@@ -278,20 +279,16 @@ fun StmtConversionContext.insertAccFunctionCall(
             field.source,
             "acc requires a property access like x.a"
         )
-    val name = symbol.embedMemberPropertyName()
-
-    val type = embedType(symbol.resolvedReturnType)
-
-    val classEmbedding = ClassTypeEmbedding(symbol.containingClassLookupTag()?.classId?.embedName() ?: throw SnaktInternalException(symbol.source, "type not supported/found"))
-    val rcv = UserFieldEmbedding(name, type, symbol, false, classEmbedding, true)
+    val fieldAccess = embedPropertyAccess(field)
+    val field = ((fieldAccess as ClassPropertyAccess).property.getter as BackingFieldGetter).field
+    val receiver = fieldAccess.receiver
     val permExp = when(perm.source.text.toString()) {
-        "write" -> PermExp.FullPerm()
-        "read" -> PermExp.WildcardPerm()
+        "write" -> PermExp.WildcardPerm()
+        "read" -> PermExp.FullPerm()
         else -> throw SnaktInternalException(symbol.source, "perm is not supported")
     }
-    val fieldExp = convert(field.dispatchReceiver!!)
     return withNoScope {
-        AccEmbedding(rcv, fieldExp, permExp)
+        AccEmbedding(field, receiver, permExp)
     }
 }
 
