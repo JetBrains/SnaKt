@@ -240,6 +240,7 @@ class ProgramConverter(
                 embedding,
                 symbol.classKind.isInterface,
                 symbol.classKind.isObject,
+                symbol.isADT(session),
             )
         embedding.initDetails(newDetails)
 
@@ -273,6 +274,11 @@ class ProgramConverter(
         }
         // Phase 3
         properties.forEach { processProperty(it, newDetails) }
+
+        // Ensure the class adheres to specifications of special types, such as ADTs
+        if (embedding.details.isADT && !embedding.details.isObject) {
+            errorCollector.addAdtError(symbol.source, "Only object can be declared to be an ADT")
+        }
 
         return embedding
     }

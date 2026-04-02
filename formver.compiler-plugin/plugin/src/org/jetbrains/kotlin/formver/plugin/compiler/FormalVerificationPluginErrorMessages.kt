@@ -71,10 +71,14 @@ object FormalVerificationPluginErrorMessages : BaseDiagnosticRendererFactory() {
             "{0}",
             CommonRenderers.STRING,
         )
-
         map.put(
             PluginErrors.UNIQUENESS_CFG,
             "\n{0}",
+            CommonRenderers.STRING,
+        )
+        map.put(
+            PluginErrors.ADT_INVALID_TARGET,
+            "{0}",
             CommonRenderers.STRING,
         )
     }

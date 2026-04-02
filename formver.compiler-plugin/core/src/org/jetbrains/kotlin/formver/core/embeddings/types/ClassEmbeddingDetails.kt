@@ -18,6 +18,7 @@ class ClassEmbeddingDetails(
     val type: ClassTypeEmbedding,
     val isInterface: Boolean,
     val isObject: Boolean,
+    val isADT: Boolean,
 ) : TypeInvariantHolder {
     private var _superTypes: List<PretypeEmbedding>? = null
     val superTypes: List<PretypeEmbedding>

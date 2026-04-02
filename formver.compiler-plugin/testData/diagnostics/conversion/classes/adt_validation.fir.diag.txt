@@ -1,0 +1,45 @@
+/adt_validation.kt:(123,156): error: Only object can be declared to be an ADT
+
+/adt_validation.kt:(198,228): error: Only object can be declared to be an ADT
+
+/adt_validation.kt:(321,333): info: Generated Viper text for useAdtObject:
+field bf$x: Ref
+
+method con$c$AdtOnClass$T$Int$T$AdtOnClass(p$x: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$AdtOnClass())
+  ensures acc(p$c$AdtOnClass$shared(ret), wildcard)
+  ensures acc(p$c$AdtOnClass$unique(ret), write)
+  ensures df$rt$intFromRef((unfolding acc(p$c$AdtOnClass$shared(ret), wildcard) in
+      ret.bf$x)) ==
+    df$rt$intFromRef(p$x)
+
+
+method con$c$AdtOnOpenClass$T$AdtOnOpenClass() returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$AdtOnOpenClass())
+  ensures acc(p$c$AdtOnOpenClass$shared(ret), wildcard)
+  ensures acc(p$c$AdtOnOpenClass$unique(ret), write)
+
+
+method f$takeAny$TF$T$Any$T$Unit(p$x: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$anyType())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$useAdtObject$TF$T$Unit() returns (ret$0: Ref)
+  requires acc(p$c$AdtOnObject$shared(df$rt$c$AdtOnObject$value()), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  var anon$2: Ref
+  var anon$3: Ref
+  var anon$4: Ref
+  anon$0 := f$takeAny$TF$T$Any$T$Unit(df$rt$c$AdtOnObject$value())
+  anon$2 := con$c$AdtOnOpenClass$T$AdtOnOpenClass()
+  anon$1 := f$takeAny$TF$T$Any$T$Unit(anon$2)
+  anon$4 := con$c$AdtOnClass$T$Int$T$AdtOnClass(df$rt$intToRef(2))
+  anon$3 := f$takeAny$TF$T$Any$T$Unit(anon$4)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}

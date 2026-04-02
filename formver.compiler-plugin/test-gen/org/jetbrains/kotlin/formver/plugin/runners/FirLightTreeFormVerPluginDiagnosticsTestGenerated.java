@@ -83,6 +83,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     @TestDataPath("$PROJECT_ROOT")
     public class Classes {
       @Test
+      @TestMetadata("adt_validation.kt")
+      public void testAdt_validation() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/adt_validation.kt");
+      }
+
+      @Test
       public void testAllFilesPresentInClasses() {
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/conversion/classes"), Pattern.compile("^(.+)\\.kt$"), null, true);
       }
