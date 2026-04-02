@@ -8,6 +8,8 @@ package org.jetbrains.kotlin.formver.core.conversion
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.descriptors.isInterface
+import org.jetbrains.kotlin.descriptors.isObject
+import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.processAllDeclarations
@@ -15,11 +17,13 @@ import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFr
 import org.jetbrains.kotlin.fir.declarations.utils.hasBackingField
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
 import org.jetbrains.kotlin.fir.declarations.utils.visibility
+import org.jetbrains.kotlin.fir.expressions.FirResolvedQualifier
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.*
+import org.jetbrains.kotlin.fir.visitors.FirVisitorVoid
 import org.jetbrains.kotlin.formver.common.ErrorCollector
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.common.UnsupportedFeatureBehaviour
@@ -235,6 +239,7 @@ class ProgramConverter(
             ClassEmbeddingDetails(
                 embedding,
                 symbol.classKind.isInterface,
+                symbol.classKind.isObject,
             )
         embedding.initDetails(newDetails)
 
@@ -409,6 +414,9 @@ class ProgramConverter(
             ).statementCtxt()
         }
 
+        // Holds all objects referenced by the function
+        val referencedObjects = collectReferencedObjects(body)
+
         return object : FullNamedFunctionSignature, NamedFunctionSignature by subSignature {
             override fun getPreconditions() = buildList {
                 subSignature.formalArgs.forEach {
@@ -419,6 +427,17 @@ class ProgramConverter(
                     if (it.isUnique) {
                         addIfNotNull(it.type.uniquePredicateAccessInvariant()?.fillHole(it))
                     }
+                }
+                // If a function references a singleton object, it must hold read permissions to this object.
+                // As objects are not created using a constructor that emits this permission, we must request it
+                // in the pres.
+                for (objectSymbol in referencedObjects) {
+                    val classTypeEmbedding = this@ProgramConverter.embedClass(objectSymbol)
+                    val objectLit = ObjectLit(
+                        buildType { existing(classTypeEmbedding) },
+                        classTypeEmbedding.embedObjectValueFunc(),
+                    )
+                    addIfNotNull(classTypeEmbedding.sharedPredicateAccessInvariant().fillHole(objectLit))
                 }
                 addAll(subSignature.stdLibPreconditions())
                 // We create a separate context to embed the preconditions here.
@@ -468,6 +487,27 @@ class ProgramConverter(
 
             override val declarationSource: KtSourceElement? = symbol.source
         }
+    }
+
+    /** Collects all distinct object class symbols referenced by traversing the FIR AST again.
+     *  TODO: Check if the second tree traversal can be avoided */
+    private fun collectReferencedObjects(element: FirElement?): List<FirRegularClassSymbol> {
+        if (element == null) return emptyList()
+        val objects = mutableSetOf<FirRegularClassSymbol>()
+        element.acceptChildren(object : FirVisitorVoid() {
+            override fun visitElement(element: FirElement) {
+                element.acceptChildren(this)
+            }
+
+            override fun visitResolvedQualifier(resolvedQualifier: FirResolvedQualifier) {
+                resolvedQualifier.acceptChildren(this)
+                val classSymbol = resolvedQualifier.symbol as? FirRegularClassSymbol ?: return
+                if (classSymbol.classKind.isObject) {
+                    objects.add(classSymbol)
+                }
+            }
+        })
+        return objects.toList()
     }
 
     private val FirFunctionSymbol<*>.containingPropertyOrSelf

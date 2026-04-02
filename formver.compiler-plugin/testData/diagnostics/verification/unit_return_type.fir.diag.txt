@@ -11,6 +11,7 @@ method f$idFun$TF$NT$Any$NT$Any(p$t: Ref) returns (ret$0: Ref)
 /unit_return_type.kt:(195,208): info: Generated Viper text for directReturns:
 method f$directReturns$TF$T$Boolean$T$Unit(p$b: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
+  requires acc(p$pkg$kotlin$c$Unit$shared(df$rt$c$Unit$value()), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   if (df$rt$boolFromRef(p$b)) {
@@ -46,6 +47,7 @@ method f$idFun$TF$NT$Any$NT$Any(p$t: Ref) returns (ret: Ref)
 
 method f$useInlineUnit$TF$T$Boolean$T$Unit(p$b: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
+  requires acc(p$pkg$kotlin$c$Unit$shared(df$rt$c$Unit$value()), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$unitRes: Ref

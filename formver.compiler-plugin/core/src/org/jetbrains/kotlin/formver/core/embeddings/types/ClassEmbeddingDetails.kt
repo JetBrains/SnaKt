@@ -17,6 +17,7 @@ import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 class ClassEmbeddingDetails(
     val type: ClassTypeEmbedding,
     val isInterface: Boolean,
+    val isObject: Boolean,
 ) : TypeInvariantHolder {
     private var _superTypes: List<PretypeEmbedding>? = null
     val superTypes: List<PretypeEmbedding>

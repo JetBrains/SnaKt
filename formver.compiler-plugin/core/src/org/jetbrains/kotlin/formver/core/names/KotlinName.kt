@@ -82,6 +82,14 @@ data class ConstructorKotlinName(val type: FunctionTypeEmbedding) : KotlinName {
         get() = type.name.mangledBaseName
 }
 
+data class ObjectValueName(val className: SymbolicName) : KotlinName {
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
+        get() = "${className.mangledBaseName}${SEPARATOR}value"
+    override val mangledType: String
+        get() = className.mangledType ?: ""
+}
+
 // It's a bit of a hack to make this as KotlinName, it should really just be any old name, but right now our scoped
 // names are KotlinNames and changing that could be messy.
 data class PredicateKotlinName(val name: String) : KotlinName {

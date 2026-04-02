@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.core.conversion
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.contracts.description.LogicOperationKind
+import org.jetbrains.kotlin.descriptors.isObject
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.declarations.FirProperty
 import org.jetbrains.kotlin.fir.expressions.*
@@ -37,7 +38,10 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.LtIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
+import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.embedClassTypeFunc
+import org.jetbrains.kotlin.formver.core.embeddings.types.embedObjectValueFunc
 import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
 import org.jetbrains.kotlin.formver.core.functionCallArguments
 import org.jetbrains.kotlin.formver.core.isInvariantBuilderFunctionNamed
@@ -81,12 +85,19 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     override fun visitResolvedQualifier(
         resolvedQualifier: FirResolvedQualifier, data: StmtConversionContext
     ): ExpEmbedding {
-        if (!resolvedQualifier.resolvedType.isUnit) {
-            throw SnaktInternalException(
-                resolvedQualifier.source, "Only `Unit` is supported among resolved qualifiers currently."
-            )
+        if (resolvedQualifier.resolvedType.isUnit) {
+            return UnitLit
         }
-        return UnitLit
+        val classSymbol = resolvedQualifier.symbol as? FirClassSymbol<*>
+        if (classSymbol != null && classSymbol.classKind.isObject) {
+            val type = data.embedType(resolvedQualifier.resolvedType)
+            // TODO: Is there a better way to do this? E.g. by not selecting the domain function here
+            val classTypeEmbedding = type.pretype as? ClassTypeEmbedding ?:
+                throw SnaktInternalException(resolvedQualifier.source, "Object type must be an class")
+            return ObjectLit(type, classTypeEmbedding.embedObjectValueFunc())
+        }
+
+        throw SnaktInternalException(resolvedQualifier.source, "Unsupported reference used as resolved quantifier.")
     }
 
     override fun visitBlock(block: FirBlock, data: StmtConversionContext): ExpEmbedding =
