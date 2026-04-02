@@ -27,6 +27,14 @@ fun <T> postconditions(@Suppress("UNUSED_PARAMETER") body: InvariantBuilder.(T) 
  * This class is designed as a receiver for lambda blocks of `loopInvariants`, `preconditions` and `postconditions`.
  */
 class InvariantBuilder {
+
+    class Permission
+
+    val read : Permission
+        get() = throw FormverFunctionCalledInRuntimeException("read.get")
+    val write : Permission
+        get() = throw FormverFunctionCalledInRuntimeException("write.get")
+
     fun <T> forAll(@Suppress("UNUSED_PARAMETER") body: (T) -> Unit): Boolean =
         throw FormverFunctionCalledInRuntimeException("forAll")
 
@@ -37,4 +45,7 @@ class InvariantBuilder {
      */
     fun triggers(@Suppress("UNUSED_PARAMETER") vararg expressions: Any?): Unit =
         throw FormverFunctionCalledInRuntimeException("triggers")
+
+    fun acc(@Suppress("UNUSED_PARAMETER") path: Any?, permission: Permission): Boolean =
+        throw FormverFunctionCalledInRuntimeException("acc")
 }
