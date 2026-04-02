@@ -115,13 +115,12 @@ fun FullNamedFunctionSignature.toViperFunction(
             "Postcondition tries to acquire permissions, which is not allowed in a function"
         )
     }
-    val preconditions = formalArgs.mapNotNull { it.sharedPredicateAccessInvariant() } + getPreconditions()
     return UserFunction(
         name,
         formalArgs.map { it.toLocalVarDecl() },
         // TODO: Be explicit about the return types of functions instead of boxing them into a Ref
         Type.Ref,
-        preconditions.pureToViper(toBuiltin = true),
+        getPreconditions().pureToViper(toBuiltin = true),
         postconditions.pureToViper(toBuiltin = true),
         body,
         declarationSource.asPosition

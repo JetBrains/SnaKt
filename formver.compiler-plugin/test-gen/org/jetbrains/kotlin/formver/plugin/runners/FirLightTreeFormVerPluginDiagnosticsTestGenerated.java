@@ -142,6 +142,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
       }
 
       @Test
+      @TestMetadata("objects.kt")
+      public void testObjects() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/objects.kt");
+      }
+
+      @Test
       @TestMetadata("predicates.kt")
       public void testPredicates() {
         runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/predicates.kt");
@@ -717,6 +723,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
       @TestMetadata("multiple_interfaces.kt")
       public void testMultiple_interfaces() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/multiple_interfaces.kt");
+      }
+
+      @Test
+      @TestMetadata("objects.kt")
+      public void testObjects() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/objects.kt");
       }
 
       @Test

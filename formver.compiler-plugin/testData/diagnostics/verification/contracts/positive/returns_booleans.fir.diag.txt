@@ -100,6 +100,8 @@ method f$isNullOrEmpty$TF$NT$Collection$T$Boolean(this$extension: Ref)
   requires this$extension != df$rt$nullValue() ==>
     df$rt$intFromRef(this$extension.sp$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$nullable(df$rt$c$pkg$kotlin_collections$Collection()))
+  requires this$extension != df$rt$nullValue() ==>
+    acc(p$pkg$kotlin_collections$c$Collection$shared(this$extension), wildcard)
   ensures this$extension != df$rt$nullValue() ==>
     acc(this$extension.sp$size, write)
   ensures this$extension != df$rt$nullValue() ==>
@@ -108,8 +110,6 @@ method f$isNullOrEmpty$TF$NT$Collection$T$Boolean(this$extension: Ref)
   ensures df$rt$boolFromRef(ret$0) == false ==>
     this$extension != df$rt$nullValue()
 {
-  inhale this$extension != df$rt$nullValue() ==>
-    acc(p$pkg$kotlin_collections$c$Collection$shared(this$extension), wildcard)
   if (this$extension == df$rt$nullValue()) {
     ret$0 := df$rt$boolToRef(true)
   } else {
@@ -123,6 +123,7 @@ method f$pkg$kotlin_collections$c$Collection$isEmpty$TF$T$Collection$T$Boolean(t
   requires acc(this$dispatch.sp$size, write)
   requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$Collection())
+  requires acc(p$pkg$kotlin_collections$c$Collection$shared(this$dispatch), wildcard)
   ensures acc(this$dispatch.sp$size, write)
   ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
@@ -132,3 +133,4 @@ method f$pkg$kotlin_collections$c$Collection$isEmpty$TF$T$Collection$T$Boolean(t
     df$rt$intFromRef(this$dispatch.sp$size) == 0
   ensures !df$rt$boolFromRef(ret) ==>
     df$rt$intFromRef(this$dispatch.sp$size) > 0
+

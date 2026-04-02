@@ -1,0 +1,83 @@
+/objects.kt:(253,273): info: Generated Viper text for objectPropertyAccess:
+field bf$size: Ref
+
+field bf$x: Ref
+
+method f$objectPropertyAccess$TF$T$Unit() returns (ret$0: Ref)
+  requires acc(p$c$Singleton$shared(df$rt$c$Singleton$value()), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$v: Ref
+  unfold acc(p$c$Singleton$shared(df$rt$c$Singleton$value()), wildcard)
+  l0$v := df$rt$c$Singleton$value().bf$x
+  assert df$rt$isSubtype(df$rt$typeOf(l0$v), df$rt$intType())
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/objects.kt:(387,405): info: Generated Viper text for objectMutableState:
+field bf$count: Ref
+
+field bf$size: Ref
+
+method f$objectMutableState$TF$T$Unit() returns (ret$0: Ref)
+  requires acc(p$c$Counter$shared(df$rt$c$Counter$value()), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$c: Ref
+  l0$c := havoc$T$Int()
+  assert df$rt$intFromRef(l0$c) == 5
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/objects.kt:(469,475): warning: Viper verification error: Assert might fail. Assertion df$rt$intFromRef(l0$c) == 5 might not hold.
+
+/objects.kt:(738,763): info: Generated Viper text for objectImplementsInterface:
+field bf$description: Ref
+
+field bf$size: Ref
+
+method f$objectImplementsInterface$TF$T$Unit() returns (ret$0: Ref)
+  requires acc(p$c$DescribableSingleton$shared(df$rt$c$DescribableSingleton$value()), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$d: Ref
+  var l0$desc: Ref
+  var anon$0: Ref
+  l0$d := df$rt$c$DescribableSingleton$value()
+  unfold acc(p$c$DescribableSingleton$shared(l0$d), wildcard)
+  anon$0 := pg$public$description(l0$d)
+  l0$desc := anon$0
+  inhale df$rt$isSubtype(df$rt$typeOf(l0$desc), df$rt$intType())
+  assert df$rt$isSubtype(df$rt$typeOf(l0$desc), df$rt$intType())
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+method pg$public$description(this$dispatch: Ref) returns (ret: Ref)
+
+
+/objects.kt:(995,1010): info: Generated Viper text for distinctObjects:
+field bf$id: Ref
+
+field bf$size: Ref
+
+method f$distinctObjects$TF$T$Unit() returns (ret$0: Ref)
+  requires acc(p$c$First$shared(df$rt$c$First$value()), wildcard)
+  requires acc(p$c$Second$shared(df$rt$c$Second$value()), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$a: Ref
+  var l0$b: Ref
+  var l0$cond1: Ref
+  var l0$cond2: Ref
+  l0$a := df$rt$c$First$value()
+  l0$b := df$rt$c$Second$value()
+  l0$cond1 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(l0$a), df$rt$c$First()))
+  l0$cond2 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(l0$b), df$rt$c$Second()))
+  assert df$rt$boolFromRef(l0$cond1)
+  assert df$rt$boolFromRef(l0$cond2)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}

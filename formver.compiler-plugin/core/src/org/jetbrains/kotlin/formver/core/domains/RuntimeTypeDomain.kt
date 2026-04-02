@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.embedClassTypeFunc
+import org.jetbrains.kotlin.formver.core.embeddings.types.embedObjectValueFunc
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
 
@@ -268,6 +269,10 @@ class RuntimeTypeDomain(val classes: List<ClassTypeEmbedding>) : BuiltinDomain(R
         // for creation of user types
         fun classTypeFunc(name: SymbolicName) = createDomainFunc(name, emptyList(), RuntimeType, true)
 
+        // value functions for object, which are later axiomatized to be unique
+        fun objectValueFunc(name: SymbolicName) = createDomainFunc(name, emptyList(), Ref)
+
+
         // bijections to primitive types
         val intInjection = Injection("int", Type.Int, intType)
         val boolInjection = Injection("bool", Type.Bool, boolType)
@@ -281,6 +286,8 @@ class RuntimeTypeDomain(val classes: List<ClassTypeEmbedding>) : BuiltinDomain(R
     }
 
     val classTypes: Map<ClassTypeEmbedding, DomainFunc> = classes.associateWith { it.embedClassTypeFunc() }
+    private val objectClasses: List<ClassTypeEmbedding> = classes.filter { it.hasDetails && it.details.isObject }
+    val objectClassesWithValueFunc: Map<ClassTypeEmbedding, DomainFunc> = objectClasses.associateWith { it.embedObjectValueFunc() }
     val builtinTypes: List<DomainFunc> =
         listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType)
     val nonNullableTypes: List<DomainFunc> = buildList {
@@ -289,7 +296,7 @@ class RuntimeTypeDomain(val classes: List<ClassTypeEmbedding>) : BuiltinDomain(R
     }.distinctBy { it.name }
     override val functions: List<DomainFunc> = nonNullableTypes + listOf(
         nullValue, unitValue, isSubtype, typeOf, nullable
-    ) + allInjections.flatMap { listOf(it.toRef, it.fromRef) }
+    ) + allInjections.flatMap { listOf(it.toRef, it.fromRef) } + objectClassesWithValueFunc.values
     override val axioms: List<DomainAxiom> = AxiomListBuilder.build(this) {
         axiom("subtype_reflexive") {
             Exp.forall(t) { t -> t subtype t }
@@ -408,6 +415,21 @@ class RuntimeTypeDomain(val classes: List<ClassTypeEmbedding>) : BuiltinDomain(R
                     axiom {
                         typeFunction() subtype supertypeFunction()
                     }
+                }
+            }
+        }
+        // Create type and uniqueness axioms for object types
+        objectClassesWithValueFunc.forEach { (typeEmbedding, valueFunction) ->
+            val typeFunction = classTypes[typeEmbedding]!!
+            axiom {
+                valueFunction() isOf typeFunction()
+            }
+            axiom {
+                Exp.forall(r) { r ->
+                    assumption {
+                        simpleTrigger { r isOf typeFunction() }
+                    }
+                    r eq valueFunction()
                 }
             }
         }

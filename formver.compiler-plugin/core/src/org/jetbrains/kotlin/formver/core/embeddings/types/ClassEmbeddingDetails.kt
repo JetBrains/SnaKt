@@ -17,6 +17,7 @@ import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 class ClassEmbeddingDetails(
     val type: ClassTypeEmbedding,
     val isInterface: Boolean,
+    val isObject: Boolean,
 ) : TypeInvariantHolder {
     private var _superTypes: List<PretypeEmbedding>? = null
     val superTypes: List<PretypeEmbedding>
@@ -109,6 +110,16 @@ class ClassEmbeddingDetails(
         PredicateAccessTypeInvariantEmbedding(uniquePredicateName, PermExp.FullPerm())
 
     override fun subTypeInvariant(): TypeInvariantEmbedding = type.subTypeInvariant()
+
+    /** Constructs a list resembling the full subtyping relations between the current class and some supertype */
+    fun supertypePathTo(target: ClassTypeEmbedding): List<ClassTypeEmbedding>? {
+        if (type == target) return emptyList()
+        for (sup in classSuperTypes) {
+            val subPath = sup.details.supertypePathTo(target)
+            if (subPath != null) return listOf(type) + subPath
+        }
+        return null
+    }
 
     // Returns the sequence of classes in a hierarchy that need to be unfolded in order to access the given field
     fun hierarchyPathTo(field: FieldEmbedding): Sequence<ClassTypeEmbedding> = sequence {

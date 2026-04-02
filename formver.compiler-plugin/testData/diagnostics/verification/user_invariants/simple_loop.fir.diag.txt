@@ -135,6 +135,7 @@ method con$c$WithVar$T$Int$T$WithVar(p$e: Ref) returns (ret: Ref)
 method f$c$WithVar$doSomething$TF$T$WithVar$T$Boolean(this$dispatch: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$WithVar())
+  requires acc(p$c$WithVar$shared(this$dispatch), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
 
 

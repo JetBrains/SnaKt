@@ -12,12 +12,15 @@ import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
 import org.jetbrains.kotlin.formver.core.embeddings.asInfo
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.PlaintextLeaf
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.TreeView
+import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.core.embeddings.types.injection
 import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
 import org.jetbrains.kotlin.formver.viper.NameResolver
+import org.jetbrains.kotlin.formver.viper.ast.DomainFunc
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.viperLiteral
+import viper.silicon.state.terms.DomainFun
 
 interface LiteralEmbedding : NullaryDirectResultExpEmbedding {
     val value: Any?
@@ -93,3 +96,19 @@ data object NullLit : LiteralEmbedding {
     override val debugName = "Null"
 }
 
+/**
+ * Resembles a Kotlin object
+ *  Requires the object's type embedding and a domain function returning its unique reference
+ */
+data class ObjectLit(
+    override val type: TypeEmbedding,
+    val valueFunc: DomainFunc
+) : NullaryDirectResultExpEmbedding {
+    override val debugName = "ObjectLit"
+
+    override fun toViper(ctx: LinearizationContext): Exp =
+        valueFunc(pos = ctx.source.asPosition)
+
+    override fun <R> accept(v: ExpVisitor<R>): R =
+        v.visitDefault(this)
+}

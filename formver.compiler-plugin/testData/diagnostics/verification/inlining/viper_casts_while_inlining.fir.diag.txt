@@ -103,6 +103,7 @@ method con$c$Box$NT$Any$T$Box(p$wrapped: Ref) returns (ret: Ref)
 method f$checkGenericMemberAccess$TF$T$Box$T$Boolean(p$box: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$box), df$rt$c$Box())
+  requires acc(p$c$Box$shared(p$box), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures df$rt$boolFromRef(ret$0) == true
 {
@@ -122,7 +123,6 @@ method f$checkGenericMemberAccess$TF$T$Box$T$Boolean(p$box: Ref)
   var anon$3: Ref
   var anon$10: Ref
   var anon$11: Ref
-  inhale acc(p$c$Box$shared(p$box), wildcard)
   inhale df$rt$isSubtype(df$rt$typeOf(p$box), df$rt$nullable(df$rt$anyType()))
   anon$0 := p$box
   anon$4 := f$idFun$TF$NT$Any$NT$Any(anon$0)
@@ -173,6 +173,7 @@ field bf$a: Ref
 method f$checkArgumentIsCopied$TF$T$ClassWithVar$T$Unit(p$x: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$ClassWithVar())
+  requires acc(p$c$ClassWithVar$shared(p$x), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$2: Ref
@@ -183,7 +184,6 @@ method f$checkArgumentIsCopied$TF$T$ClassWithVar$T$Unit(p$x: Ref)
   var anon$5: Ref
   var ret$2: Ref
   var anon$1: Ref
-  inhale acc(p$c$ClassWithVar$shared(p$x), wildcard)
   anon$4 := havoc$T$Int()
   anon$0 := anon$4
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$nullable(df$rt$anyType()))
@@ -216,6 +216,7 @@ field bf$i: Ref
 method f$accessManyMembers$TF$T$ManyMembers$T$Unit(p$m: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$m), df$rt$c$ManyMembers())
+  requires acc(p$c$ManyMembers$shared(p$m), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$4: Ref
@@ -245,7 +246,6 @@ method f$accessManyMembers$TF$T$ManyMembers$T$Unit(p$m: Ref)
   var anon$20: Ref
   var anon$21: Ref
   var anon$22: Ref
-  inhale acc(p$c$ManyMembers$shared(p$m), wildcard)
   inhale df$rt$isSubtype(df$rt$typeOf(p$m), df$rt$nullable(df$rt$anyType()))
   anon$0 := p$m
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$c$ManyMembers())
@@ -325,6 +325,7 @@ method f$checkEvaluatedOnce$TF$T$Int$T$ManyMembers$T$Unit(p$i: Ref, p$mm: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$i), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(p$mm), df$rt$c$ManyMembers())
+  requires acc(p$c$ManyMembers$shared(p$mm), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$2: Ref
@@ -336,7 +337,6 @@ method f$checkEvaluatedOnce$TF$T$Int$T$ManyMembers$T$Unit(p$i: Ref, p$mm: Ref)
   var anon$6: Ref
   var ret$2: Ref
   var anon$1: Ref
-  inhale acc(p$c$ManyMembers$shared(p$mm), wildcard)
   anon$5 := havoc$T$Boolean()
   if (df$rt$boolFromRef(anon$5)) {
     anon$4 := df$rt$intToRef(1)

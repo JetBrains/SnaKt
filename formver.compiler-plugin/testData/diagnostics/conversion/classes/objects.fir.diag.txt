@@ -1,0 +1,163 @@
+/objects.kt:(128,148): info: Generated Viper text for accessObjectProperty:
+field bf$x: Ref
+
+method f$accessObjectProperty$TF$T$Int() returns (ret$0: Ref)
+  requires acc(p$c$SimpleSingleton$shared(df$rt$c$SimpleSingleton$value()), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  unfold acc(p$c$SimpleSingleton$shared(df$rt$c$SimpleSingleton$value()), wildcard)
+  ret$0 := df$rt$c$SimpleSingleton$value().bf$x
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/objects.kt:(289,315): info: Generated Viper text for accessMultipleObjectFields:
+field bf$a: Ref
+
+field bf$b: Ref
+
+field bf$c: Ref
+
+method f$accessMultipleObjectFields$TF$T$Unit() returns (ret$0: Ref)
+  requires acc(p$c$WithMultipleFields$shared(df$rt$c$WithMultipleFields$value()), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$a: Ref
+  var l0$b: Ref
+  var l0$c: Ref
+  unfold acc(p$c$WithMultipleFields$shared(df$rt$c$WithMultipleFields$value()), wildcard)
+  l0$a := df$rt$c$WithMultipleFields$value().bf$a
+  unfold acc(p$c$WithMultipleFields$shared(df$rt$c$WithMultipleFields$value()), wildcard)
+  l0$b := df$rt$c$WithMultipleFields$value().bf$b
+  l0$c := havoc$T$Int()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/objects.kt:(426,443): info: Generated Viper text for mutateObjectField:
+field bf$a: Ref
+
+field bf$b: Ref
+
+field bf$c: Ref
+
+method f$mutateObjectField$TF$T$Unit() returns (ret$0: Ref)
+  requires acc(p$c$WithMultipleFields$shared(df$rt$c$WithMultipleFields$value()), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/objects.kt:(541,549): info: Generated Viper text for getValue:
+field bf$value: Ref
+
+method f$c$WithMemberFunction$getValue$TF$T$WithMemberFunction$T$Int(this$dispatch: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$WithMemberFunction())
+  requires acc(p$c$WithMemberFunction$shared(this$dispatch), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  unfold acc(p$c$WithMemberFunction$shared(this$dispatch), wildcard)
+  ret$0 := this$dispatch.bf$value
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/objects.kt:(593,617): info: Generated Viper text for callObjectMemberFunction:
+field bf$value: Ref
+
+method f$c$WithMemberFunction$getValue$TF$T$WithMemberFunction$T$Int(this$dispatch: Ref)
+  returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$WithMemberFunction())
+  requires acc(p$c$WithMemberFunction$shared(this$dispatch), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
+
+
+method f$callObjectMemberFunction$TF$T$Int() returns (ret$0: Ref)
+  requires acc(p$c$WithMemberFunction$shared(df$rt$c$WithMemberFunction$value()), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  ret$0 := f$c$WithMemberFunction$getValue$TF$T$WithMemberFunction$T$Int(df$rt$c$WithMemberFunction$value())
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/objects.kt:(713,733): info: Generated Viper text for passObjectAsArgument:
+field bf$x: Ref
+
+method f$passObjectAsArgument$TF$T$Unit() returns (ret$0: Ref)
+  requires acc(p$c$SimpleSingleton$shared(df$rt$c$SimpleSingleton$value()), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  anon$0 := f$takeAny$TF$T$Any$T$Unit(df$rt$c$SimpleSingleton$value())
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+method f$takeAny$TF$T$Any$T$Unit(p$x: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$anyType())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+/objects.kt:(895,919): info: Generated Viper text for accessObjectViaInterface:
+method f$accessObjectViaInterface$TF$T$HasValue$T$Int(p$h: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$h), df$rt$c$HasValue())
+  requires acc(p$c$HasValue$shared(p$h), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  var anon$0: Ref
+  anon$0 := pg$public$value(p$h)
+  ret$0 := anon$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+method pg$public$value(this$dispatch: Ref) returns (ret: Ref)
+
+
+/objects.kt:(966,997): info: Generated Viper text for createAndPassObjectViaInterface:
+field bf$value: Ref
+
+method f$accessObjectViaInterface$TF$T$HasValue$T$Int(p$h: Ref)
+  returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$h), df$rt$c$HasValue())
+  requires acc(p$c$HasValue$shared(p$h), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
+
+
+method f$createAndPassObjectViaInterface$TF$T$Int() returns (ret$0: Ref)
+  requires acc(p$c$ImplementingInterface$shared(df$rt$c$ImplementingInterface$value()), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  unfold acc(p$c$ImplementingInterface$shared(df$rt$c$ImplementingInterface$value()), wildcard)
+  ret$0 := f$accessObjectViaInterface$TF$T$HasValue$T$Int(df$rt$c$ImplementingInterface$value())
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+method pg$public$value(this$dispatch: Ref) returns (ret: Ref)
+
+
+/objects.kt:(1162,1189): info: Generated Viper text for accessObjectWithInheritance:
+field bf$extra: Ref
+
+field bf$n: Ref
+
+method f$accessObjectWithInheritance$TF$T$Unit() returns (ret$0: Ref)
+  requires acc(p$c$ExtendingClass$shared(df$rt$c$ExtendingClass$value()), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$n: Ref
+  var l0$extra: Ref
+  unfold acc(p$c$ExtendingClass$shared(df$rt$c$ExtendingClass$value()), wildcard)
+  unfold acc(p$c$Base$shared(df$rt$c$ExtendingClass$value()), wildcard)
+  l0$n := df$rt$c$ExtendingClass$value().bf$n
+  unfold acc(p$c$ExtendingClass$shared(df$rt$c$ExtendingClass$value()), wildcard)
+  l0$extra := df$rt$c$ExtendingClass$value().bf$extra
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}

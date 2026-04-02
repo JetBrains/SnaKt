@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
+import org.jetbrains.kotlin.formver.core.names.ObjectValueName
 import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
 import org.jetbrains.kotlin.formver.viper.ast.DomainFunc
 import org.jetbrains.kotlin.formver.viper.ast.Exp
@@ -62,6 +63,10 @@ private fun PretypeEmbedding.isCollectionTypeNamed(name: String): Boolean {
 }
 
 fun ClassTypeEmbedding.embedClassTypeFunc(): DomainFunc = RuntimeTypeDomain.classTypeFunc(name)
+
+fun ClassTypeEmbedding.embedObjectValueFunc(): DomainFunc = RuntimeTypeDomain.objectValueFunc(
+    ObjectValueName(name)
+)
 
 fun ClassTypeEmbedding.predicateAccess(
     receiver: ExpEmbedding,
