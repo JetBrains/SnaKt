@@ -434,7 +434,7 @@ class ProgramConverter(
                 for (objectSymbol in referencedObjects) {
                     val classTypeEmbedding = this@ProgramConverter.embedClass(objectSymbol)
                     val objectLit = ObjectLit(
-                        buildType { existing(classTypeEmbedding) },
+                        TypeEmbedding(classTypeEmbedding, TypeEmbeddingFlags(nullable = false)),
                         classTypeEmbedding.embedObjectValueFunc(),
                     )
                     addIfNotNull(classTypeEmbedding.sharedPredicateAccessInvariant().fillHole(objectLit))
