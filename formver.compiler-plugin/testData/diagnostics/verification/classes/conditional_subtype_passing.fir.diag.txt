@@ -1,0 +1,263 @@
+/conditional_subtype_passing.kt:(499,507): info: Generated Viper text for takeBase:
+method f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(p$b: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$pkg$diagnostics_verification_classes$Base())
+  requires acc(p$pkg$diagnostics_verification_classes$c$Base$shared(p$b), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  anon$1 := pg$public$value(p$b)
+  anon$0 := anon$1
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+method pg$public$value(this$dispatch: Ref) returns (ret: Ref)
+
+
+/conditional_subtype_passing.kt:(538,551): info: Generated Viper text for takeOtherBase:
+method f$pkg$diagnostics_verification_classes$takeOtherBase$TF$T$OtherBase$T$Unit(p$o: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$o), df$rt$c$pkg$diagnostics_verification_classes$OtherBase())
+  requires acc(p$pkg$diagnostics_verification_classes$c$OtherBase$shared(p$o), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  anon$1 := pg$public$tag(p$o)
+  anon$0 := anon$1
+  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+method pg$public$tag(this$dispatch: Ref) returns (ret: Ref)
+
+
+/conditional_subtype_passing.kt:(757,779): info: Generated Viper text for conditionalSubtypePass:
+field bf$value: Ref
+
+method con$pkg$diagnostics_verification_classes$c$Sub1$T$Sub1()
+  returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$pkg$diagnostics_verification_classes$Sub1())
+  ensures acc(p$pkg$diagnostics_verification_classes$c$Sub1$shared(ret), wildcard)
+  ensures acc(p$pkg$diagnostics_verification_classes$c$Sub1$unique(ret), write)
+
+
+method con$pkg$diagnostics_verification_classes$c$Sub2$T$Sub2()
+  returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$pkg$diagnostics_verification_classes$Sub2())
+  ensures acc(p$pkg$diagnostics_verification_classes$c$Sub2$shared(ret), wildcard)
+  ensures acc(p$pkg$diagnostics_verification_classes$c$Sub2$unique(ret), write)
+
+
+method f$pkg$diagnostics_verification_classes$conditionalSubtypePass$TF$T$Boolean$T$Unit(p$flag: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$flag), df$rt$boolType())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  if (df$rt$boolFromRef(p$flag)) {
+    var l2$s: Ref
+    var anon$0: Ref
+    l2$s := con$pkg$diagnostics_verification_classes$c$Sub1$T$Sub1()
+    unfold acc(p$pkg$diagnostics_verification_classes$c$Sub1$shared(l2$s), wildcard)
+    anon$0 := f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(l2$s)
+  } else {
+    var l3$s: Ref
+    var anon$1: Ref
+    l3$s := con$pkg$diagnostics_verification_classes$c$Sub2$T$Sub2()
+    unfold acc(p$pkg$diagnostics_verification_classes$c$Sub2$shared(l3$s), wildcard)
+    anon$1 := f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(l3$s)
+  }
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+method f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(p$b: Ref)
+  returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$pkg$diagnostics_verification_classes$Base())
+  requires acc(p$pkg$diagnostics_verification_classes$c$Base$shared(p$b), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method pg$public$value(this$dispatch: Ref) returns (ret: Ref)
+
+
+/conditional_subtype_passing.kt:(1110,1132): info: Generated Viper text for subtypePassInOneBranch:
+field bf$value: Ref
+
+method con$pkg$diagnostics_verification_classes$c$Sub1$T$Sub1()
+  returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$pkg$diagnostics_verification_classes$Sub1())
+  ensures acc(p$pkg$diagnostics_verification_classes$c$Sub1$shared(ret), wildcard)
+  ensures acc(p$pkg$diagnostics_verification_classes$c$Sub1$unique(ret), write)
+
+
+method f$pkg$diagnostics_verification_classes$subtypePassInOneBranch$TF$T$Boolean$T$Unit(p$flag: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$flag), df$rt$boolType())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$s: Ref
+  l0$s := con$pkg$diagnostics_verification_classes$c$Sub1$T$Sub1()
+  if (df$rt$boolFromRef(p$flag)) {
+    var anon$0: Ref
+    unfold acc(p$pkg$diagnostics_verification_classes$c$Sub1$shared(l0$s), wildcard)
+    anon$0 := f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(l0$s)
+  }
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+method f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(p$b: Ref)
+  returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$pkg$diagnostics_verification_classes$Base())
+  requires acc(p$pkg$diagnostics_verification_classes$c$Base$shared(p$b), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method pg$public$value(this$dispatch: Ref) returns (ret: Ref)
+
+
+/conditional_subtype_passing.kt:(1349,1374): info: Generated Viper text for multiInterfaceConditional:
+field bf$tag: Ref
+
+field bf$value: Ref
+
+method con$pkg$diagnostics_verification_classes$c$Multi$T$Multi()
+  returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$pkg$diagnostics_verification_classes$Multi())
+  ensures acc(p$pkg$diagnostics_verification_classes$c$Multi$shared(ret), wildcard)
+  ensures acc(p$pkg$diagnostics_verification_classes$c$Multi$unique(ret), write)
+
+
+method f$pkg$diagnostics_verification_classes$multiInterfaceConditional$TF$T$Boolean$T$Unit(p$flag: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$flag), df$rt$boolType())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$m: Ref
+  l0$m := con$pkg$diagnostics_verification_classes$c$Multi$T$Multi()
+  if (df$rt$boolFromRef(p$flag)) {
+    var anon$0: Ref
+    unfold acc(p$pkg$diagnostics_verification_classes$c$Multi$shared(l0$m), wildcard)
+    anon$0 := f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(l0$m)
+  } else {
+    var anon$1: Ref
+    unfold acc(p$pkg$diagnostics_verification_classes$c$Multi$shared(l0$m), wildcard)
+    anon$1 := f$pkg$diagnostics_verification_classes$takeOtherBase$TF$T$OtherBase$T$Unit(l0$m)
+  }
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+method f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(p$b: Ref)
+  returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$pkg$diagnostics_verification_classes$Base())
+  requires acc(p$pkg$diagnostics_verification_classes$c$Base$shared(p$b), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$pkg$diagnostics_verification_classes$takeOtherBase$TF$T$OtherBase$T$Unit(p$o: Ref)
+  returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$o), df$rt$c$pkg$diagnostics_verification_classes$OtherBase())
+  requires acc(p$pkg$diagnostics_verification_classes$c$OtherBase$shared(p$o), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method pg$public$tag(this$dispatch: Ref) returns (ret: Ref)
+
+
+method pg$public$value(this$dispatch: Ref) returns (ret: Ref)
+
+
+/conditional_subtype_passing.kt:(1646,1673): info: Generated Viper text for subtypeCreatedConditionally:
+field bf$value: Ref
+
+method con$pkg$diagnostics_verification_classes$c$Sub1$T$Sub1()
+  returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$pkg$diagnostics_verification_classes$Sub1())
+  ensures acc(p$pkg$diagnostics_verification_classes$c$Sub1$shared(ret), wildcard)
+  ensures acc(p$pkg$diagnostics_verification_classes$c$Sub1$unique(ret), write)
+
+
+method con$pkg$diagnostics_verification_classes$c$Sub2$T$Sub2()
+  returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$pkg$diagnostics_verification_classes$Sub2())
+  ensures acc(p$pkg$diagnostics_verification_classes$c$Sub2$shared(ret), wildcard)
+  ensures acc(p$pkg$diagnostics_verification_classes$c$Sub2$unique(ret), write)
+
+
+method f$pkg$diagnostics_verification_classes$subtypeCreatedConditionally$TF$T$Boolean$T$Unit(p$flag: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$flag), df$rt$boolType())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$b: Ref
+  var anon$2: Ref
+  if (df$rt$boolFromRef(p$flag)) {
+    var anon$0: Ref
+    anon$0 := con$pkg$diagnostics_verification_classes$c$Sub1$T$Sub1()
+    l0$b := anon$0
+    unfold acc(p$pkg$diagnostics_verification_classes$c$Sub1$shared(l0$b), wildcard)
+  } else {
+    var anon$1: Ref
+    anon$1 := con$pkg$diagnostics_verification_classes$c$Sub2$T$Sub2()
+    l0$b := anon$1
+    unfold acc(p$pkg$diagnostics_verification_classes$c$Sub2$shared(l0$b), wildcard)
+  }
+  anon$2 := f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(l0$b)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+method f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(p$b: Ref)
+  returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$pkg$diagnostics_verification_classes$Base())
+  requires acc(p$pkg$diagnostics_verification_classes$c$Base$shared(p$b), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method pg$public$value(this$dispatch: Ref) returns (ret: Ref)
+
+
+/conditional_subtype_passing.kt:(1876,1897): info: Generated Viper text for nestedConditionalPass:
+field bf$value: Ref
+
+method con$pkg$diagnostics_verification_classes$c$Sub1$T$Sub1()
+  returns (ret: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$pkg$diagnostics_verification_classes$Sub1())
+  ensures acc(p$pkg$diagnostics_verification_classes$c$Sub1$shared(ret), wildcard)
+  ensures acc(p$pkg$diagnostics_verification_classes$c$Sub1$unique(ret), write)
+
+
+method f$pkg$diagnostics_verification_classes$nestedConditionalPass$TF$T$Boolean$T$Boolean$T$Unit(p$flag1: Ref,
+  p$flag2: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$flag1), df$rt$boolType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$flag2), df$rt$boolType())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$s: Ref
+  l0$s := con$pkg$diagnostics_verification_classes$c$Sub1$T$Sub1()
+  if (df$rt$boolFromRef(p$flag1)) {
+    if (df$rt$boolFromRef(p$flag2)) {
+      var anon$0: Ref
+      unfold acc(p$pkg$diagnostics_verification_classes$c$Sub1$shared(l0$s), wildcard)
+      anon$0 := f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(l0$s)
+    }
+  }
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+method f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(p$b: Ref)
+  returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$pkg$diagnostics_verification_classes$Base())
+  requires acc(p$pkg$diagnostics_verification_classes$c$Base$shared(p$b), wildcard)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method pg$public$value(this$dispatch: Ref) returns (ret: Ref)

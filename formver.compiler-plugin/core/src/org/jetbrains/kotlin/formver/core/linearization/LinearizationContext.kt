@@ -6,15 +6,18 @@
 package org.jetbrains.kotlin.formver.core.linearization
 
 import org.jetbrains.kotlin.KtSourceElement
+import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeBuilder
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeBuilder
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
+import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
 import org.jetbrains.kotlin.formver.viper.ast.Exp
@@ -68,4 +71,17 @@ fun LinearizationContext.freshAnonVar(init: TypeBuilder.() -> PretypeBuilder): A
 fun LinearizationContext.addLabel(label: Label) {
     addDeclaration(label.toDecl())
     addStatement { label.toStmt() }
+}
+
+/** Unfolds every predicate in the subtyping hierarchy between [actual]'s concrete type and [formalType]. */
+fun unfoldSubtypePredicates(actual: ExpEmbedding, formalType: TypeEmbedding, ctx: LinearizationContext) {
+    val innerPretype = actual.ignoringCastsAndMetaNodes().type.pretype
+    val formalPretype = formalType.pretype
+    if (innerPretype is ClassTypeEmbedding && formalPretype is ClassTypeEmbedding) {
+        val path = innerPretype.details.hierarchyForTypeCast(formalPretype)
+        for (step in path) {
+            val predAcc = step.predicateAccess(actual, ctx.source)
+            ctx.addStatement { Stmt.Unfold(predAcc, ctx.source.asPosition) }
+        }
+    }
 }

@@ -71,16 +71,8 @@ data class Linearizer(
         val rhsViper = rhs.withType(lhs.type).toViper(this)
         addStatement { Stmt.assign(lhsViper, rhsViper, source.asPosition) }
         // Unfold the subtype's shared predicate hierarchy so the supertype's shared predicate becomes available
-        val innerPretype = rhs.ignoringCastsAndMetaNodes().type.pretype
-        val lhsPretype = lhs.type.pretype
-        if (innerPretype is ClassTypeEmbedding && lhsPretype is ClassTypeEmbedding) { // Only for class-like objects
-            val path = innerPretype.details.supertypePathTo(lhsPretype) ?: return
-            val lhsWrapper = ExpWrapper(lhsViper, rhs.ignoringCastsAndMetaNodes().type)
-            for (step in path) {
-                val predAcc = step.predicateAccess(lhsWrapper, source)
-                addStatement { Stmt.Unfold(predAcc, source.asPosition) }
-            }
-        }
+        val lhsWrapper = ExpWrapper(lhsViper, rhs.ignoringCastsAndMetaNodes().type)
+        unfoldSubtypePredicates(lhsWrapper, lhs.type, this)
     }
 
     override fun addReturn(returnExp: ExpEmbedding, target: ReturnTarget) {

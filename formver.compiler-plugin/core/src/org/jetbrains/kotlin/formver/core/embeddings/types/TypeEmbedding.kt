@@ -102,7 +102,7 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
 
     fun hierarchyPathTo(field: FieldEmbedding): Sequence<ClassTypeEmbedding>? =
         // TODO: Find a nicer solution to avoid this cast. It should really be: type.hierarchyPathTo(field)
-        (pretype as? ClassTypeEmbedding)?.details?.hierarchyPathTo(field)
+        (pretype as? ClassTypeEmbedding)?.details?.hierarchyForFieldAccess(field)
 }
 
 data class TypeEmbeddingFlags(val nullable: Boolean) {

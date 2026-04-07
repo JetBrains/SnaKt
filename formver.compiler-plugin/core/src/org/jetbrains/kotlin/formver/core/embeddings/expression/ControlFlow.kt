@@ -13,14 +13,13 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.NamedFunctionSigna
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toFuncApp
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toMethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.*
-import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
-import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
 import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
 import org.jetbrains.kotlin.formver.core.linearization.addLabel
 import org.jetbrains.kotlin.formver.core.linearization.freshAnonVar
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
+import org.jetbrains.kotlin.formver.core.linearization.unfoldSubtypePredicates
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Exp
@@ -193,23 +192,12 @@ data class NonDeterministically(val exp: ExpEmbedding) : UnitResultExpEmbedding,
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitNonDeterministically(this)
 }
 
-/** Unfolds every predicate in the subtyping hierarchy between the actual type and the expected supertype */
 private fun unfoldSubtypePredicatesForArgs(
     args: List<ExpEmbedding>,
     formalArgs: List<VariableEmbedding>,
     ctx: LinearizationContext,
 ) {
-    args.zip(formalArgs).forEach { (arg, param) ->
-        val innerPretype = arg.ignoringCastsAndMetaNodes().type.pretype
-        val paramPretype = param.type.pretype
-        if (innerPretype is ClassTypeEmbedding && paramPretype is ClassTypeEmbedding) {
-            val path = innerPretype.details.supertypePathTo(paramPretype) ?: return@forEach
-            for (step in path) { // unfold for each type in hierarchy
-                val predAcc = step.predicateAccess(arg, ctx.source)
-                ctx.addStatement { Stmt.Unfold(predAcc, ctx.source.asPosition) }
-            }
-        }
-    }
+    args.zip(formalArgs).forEach { (arg, param) -> unfoldSubtypePredicates(arg, param.type, ctx) }
 }
 
 // Note: this is always a *real* Viper method call.
