@@ -13,6 +13,7 @@ sealed class Position : IntoSilver<viper.silver.ast.Position> {
 
     internal class Wrapper<P>(val wrappedValue: P) : viper.silver.ast.Position {
         override fun toString(): String = "<wrapped value>"
+        override fun deltaColumn(delta: Int): viper.silver.ast.Position = this
     }
 
     companion object {

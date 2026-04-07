@@ -556,7 +556,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             )
             return PredicateAccessPredicate(
                 predicateAccess,
-                perm.toSilver(),
+                perm.toSilver().toScalaOption(),
                 pos.toSilver(),
                 info.toSilver(),
                 trafos.toSilver()
@@ -589,7 +589,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         context(nameResolver: NameResolver)
         override fun toSilver() = FieldAccessPredicate(
                 field.toSilver(),
-                perm.toSilver(),
+                perm.toSilver().toScalaOption(),
                 pos.toSilver(),
                 info.toSilver(),
                 trafos.toSilver(),
