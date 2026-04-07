@@ -10,8 +10,12 @@ dependencyResolutionManagement {
     repositories {
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/bootstrap")
-        maven {
-            url = uri("https://packages.jetbrains.team/maven/p/kotlin-formver/maven")
+        if (settings.extra.has("useLocalViper") && settings.extra["useLocalViper"] == "true") {
+            mavenLocal()
+        } else {
+            maven {
+                url = uri("https://packages.jetbrains.team/maven/p/kotlin-formver/maven")
+            }
         }
     }
 }

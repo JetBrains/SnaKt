@@ -8,7 +8,7 @@ dependencies {
     compileOnly(kotlin("compiler"))
 
     // TODO: figure out how to avoid this dependency
-    compileOnly("viper:silicon_2.13:1.2-SNAPSHOT")
+    compileOnly("viper:silicon_2.13:${project.property("viperVersion")}")
 }
 
 sourceSets {
