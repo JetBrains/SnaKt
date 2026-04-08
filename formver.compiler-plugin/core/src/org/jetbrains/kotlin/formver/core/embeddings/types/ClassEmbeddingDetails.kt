@@ -110,35 +110,13 @@ class ClassEmbeddingDetails(
     override fun subTypeInvariant(): TypeInvariantEmbedding = type.subTypeInvariant()
 
     /**
-     * Returns the sequence of types to a class with access to [field] from the current type.
-     * Throws if no suitable class is found.
-     */
-    fun hierarchyForFieldAccess(field: FieldEmbedding): Sequence<ClassTypeEmbedding> {
-        val target = requireNotNull(field.containingClass) { "Cannot find hierarchy path of a field with no class information" }
-        return hierarchyPathTo(target, includeTarget = true, throwOnFailure = true)
-    }
-
-    /**
-     * Returns a sequence of all types (including multiple hierarchies) to [target] from the current type.
-     */
-    fun hierarchyForTypeCast(target: ClassTypeEmbedding) = hierarchyPathTo(target)
-
-    /**
      * Returns the sequence of types to unfold to reach [target] from the current type.
-     * When [includeTarget] is true (used for field access), the target class is appended.
      * Returns an empty sequence if the current type already is [target].
-     * Throws if [throwOnFailure] is true and [target] is unreachable; otherwise returns empty.
+     * Throws if [target] is unreachable.
      */
-    private fun hierarchyPathTo(
-        target: ClassTypeEmbedding,
-        includeTarget: Boolean = false,
-        throwOnFailure: Boolean = false,
-    ): Sequence<ClassTypeEmbedding> {
-        val path = pathToOrNull(target)
-            ?: if (throwOnFailure) throw IllegalArgumentException("Reached top of the hierarchy without finding ${target.name}")
-               else return emptySequence()
-        return if (includeTarget) path.asSequence() + target else path.asSequence()
-    }
+    fun hierarchyPathTo(target: ClassTypeEmbedding): Sequence<ClassTypeEmbedding> =
+        pathToOrNull(target)?.asSequence()
+            ?: throw IllegalArgumentException("Could not find a path from ${type.name} to ${target.name} in the class hierarchy")
 
     /**
      * Returns the path of types to unfold from the current type to reach [target], or `null` if unreachable.
@@ -147,8 +125,8 @@ class ClassEmbeddingDetails(
     private fun pathToOrNull(target: ClassTypeEmbedding): List<ClassTypeEmbedding>? {
         if (type == target) return emptyList()
         for (sup in classSuperTypes) {
-            val subPath = sup.details.pathToOrNull(target)
-            if (subPath != null) return listOf(type) + subPath
+            val subPath = sup.details.pathToOrNull(target) ?: continue
+            return listOf(type) + subPath
         }
         return null
     }

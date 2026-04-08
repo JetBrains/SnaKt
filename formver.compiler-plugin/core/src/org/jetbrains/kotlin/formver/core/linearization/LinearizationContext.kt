@@ -60,6 +60,28 @@ interface LinearizationContext {
 
     fun addFieldAccessStoringIn(access: FieldAccess, result: VariableEmbedding)
 
+    /**
+     * Unfold [predicates] in the appropriate way for this context, then return [innerViper].
+     *
+     * When [nullGuard] is non-null, the unfolding is conditional on that expression being true (used for nullable
+     * upcasts, where the value may be null).
+     *
+     * - [Linearizer]: emits `Stmt.Unfold` for each predicate, optionally wrapped in `Stmt.If`
+     * - [PureFunBodyLinearizer]: registers predicates on an SSA variable so [SsaConverter]
+     *   wraps the *usage* (FuncApp/FieldAccess) with `Exp.Unfolding`, not the argument
+     * - [PureExpLinearizer]: throws — correct placement requires SSA, which this linearizer
+     *   does not have
+     */
+    fun applyUnfolding(
+        predicates: List<Exp.PredicateAccess>,
+        innerViper: Exp,
+        innerType: TypeEmbedding,
+        nullGuard: Exp? = null,
+    ): Exp {
+        val unfolded = predicates.foldRight(innerViper) { pred, acc -> Exp.Unfolding(pred, acc) }
+        return if (nullGuard != null) Exp.TernaryExp(nullGuard, unfolded, innerViper) else unfolded
+    }
+
     fun addModifier(mod: StmtModifier)
 
     fun resolveVariableName(name: SymbolicName): SymbolicName
@@ -71,17 +93,4 @@ fun LinearizationContext.freshAnonVar(init: TypeBuilder.() -> PretypeBuilder): A
 fun LinearizationContext.addLabel(label: Label) {
     addDeclaration(label.toDecl())
     addStatement { label.toStmt() }
-}
-
-/** Unfolds every predicate in the subtyping hierarchy between [actual]'s concrete type and [formalType]. */
-fun unfoldSubtypePredicates(actual: ExpEmbedding, formalType: TypeEmbedding, ctx: LinearizationContext) {
-    val innerPretype = actual.ignoringCastsAndMetaNodes().type.pretype
-    val formalPretype = formalType.pretype
-    if (innerPretype is ClassTypeEmbedding && formalPretype is ClassTypeEmbedding) {
-        val path = innerPretype.details.hierarchyForTypeCast(formalPretype)
-        for (step in path) {
-            val predAcc = step.predicateAccess(actual, ctx.source)
-            ctx.addStatement { Stmt.Unfold(predAcc, ctx.source.asPosition) }
-        }
-    }
 }

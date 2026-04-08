@@ -493,7 +493,7 @@ data class Assign(val lhs: VariableEmbedding, val rhs: ExpEmbedding) : UnitResul
     override val type: TypeEmbedding = lhs.type
 
     override fun toViperSideEffects(ctx: LinearizationContext) {
-        rhs.withType(lhs.type).toViperStoringIn(LinearizationVariableEmbedding(lhs.name, lhs.type), ctx)
+        rhs.withUpcast(lhs.type).toViperStoringIn(LinearizationVariableEmbedding(lhs.name, lhs.type), ctx)
     }
 
     context(nameResolver: NameResolver)

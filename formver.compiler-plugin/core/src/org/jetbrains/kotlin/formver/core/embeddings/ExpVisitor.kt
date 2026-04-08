@@ -31,6 +31,7 @@ interface ExpVisitor<R> {
     fun visitForAllEmbedding(e: ForAllEmbedding): R
     fun visitPredicateAccessPermissions(e: PredicateAccessPermissions): R
     fun visitCast(e: Cast): R
+    fun visitUpcast(e: Upcast): R
     fun visitIs(e: Is): R
     fun visitOld(e: Old): R
     fun visitPrimitiveFieldAccess(e: PrimitiveFieldAccess): R

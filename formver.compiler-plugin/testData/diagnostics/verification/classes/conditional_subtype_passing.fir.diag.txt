@@ -200,13 +200,13 @@ method f$pkg$diagnostics_verification_classes$subtypeCreatedConditionally$TF$T$B
   if (df$rt$boolFromRef(p$flag)) {
     var anon$0: Ref
     anon$0 := con$pkg$diagnostics_verification_classes$c$Sub1$T$Sub1()
+    unfold acc(p$pkg$diagnostics_verification_classes$c$Sub1$shared(anon$0), wildcard)
     l0$b := anon$0
-    unfold acc(p$pkg$diagnostics_verification_classes$c$Sub1$shared(l0$b), wildcard)
   } else {
     var anon$1: Ref
     anon$1 := con$pkg$diagnostics_verification_classes$c$Sub2$T$Sub2()
+    unfold acc(p$pkg$diagnostics_verification_classes$c$Sub2$shared(anon$1), wildcard)
     l0$b := anon$1
-    unfold acc(p$pkg$diagnostics_verification_classes$c$Sub2$shared(l0$b), wildcard)
   }
   anon$2 := f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(l0$b)
   label lbl$ret$0

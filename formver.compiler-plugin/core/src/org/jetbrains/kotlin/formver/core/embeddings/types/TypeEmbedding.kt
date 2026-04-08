@@ -100,9 +100,13 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
     override val debugTreeView: TreeView
         get() = PlaintextLeaf(name.mangled)
 
-    fun hierarchyPathTo(field: FieldEmbedding): Sequence<ClassTypeEmbedding>? =
-        // TODO: Find a nicer solution to avoid this cast. It should really be: type.hierarchyPathTo(field)
-        (pretype as? ClassTypeEmbedding)?.details?.hierarchyForFieldAccess(field)
+    fun hierarchyPathTo(field: FieldEmbedding): Sequence<ClassTypeEmbedding>? {
+        if (pretype !is ClassTypeEmbedding) return null
+        val target = requireNotNull(field.containingClass) {
+            "Cannot find hierarchy path of a field with no class information"
+        }
+        return pretype.details.hierarchyPathTo(target).plus(target)
+    }
 }
 
 data class TypeEmbeddingFlags(val nullable: Boolean) {

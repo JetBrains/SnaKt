@@ -68,6 +68,45 @@ fun ExpEmbedding.withType(newType: TypeEmbedding): ExpEmbedding = if (type == ne
 
 fun ExpEmbedding.withType(init: TypeBuilder.() -> PretypeBuilder): ExpEmbedding = withType(buildType(init))
 
+/**
+ * Upcast this expression to [targetType], emitting the necessary predicate unfolds during linearization.
+ * Only created when [targetType] is a strict supertype in the class hierarchy and uses [Cast] otherwise.
+ */
+data class Upcast(override val inner: ExpEmbedding, override val type: TypeEmbedding) : UnaryDirectResultExpEmbedding {
+    override fun toViper(ctx: LinearizationContext): Exp {
+        val innerPretype = inner.type.pretype
+        val targetPretype = type.pretype
+        require(innerPretype is ClassTypeEmbedding && targetPretype is ClassTypeEmbedding) {
+            "Upcast can only be applied to classes, but got $innerPretype -> $targetPretype"
+        }
+
+        val innerViper = inner.toViper(ctx)
+        val innerWrapper = ExpWrapper(innerViper, inner.type)
+        val predicates = innerPretype.details.hierarchyPathTo(targetPretype)
+            .map { it.predicateAccess(innerWrapper, ctx.source) }.toList()
+        val nullGuard = if (inner.type.flags.nullable) innerWrapper.notNullCmp().toViperBuiltinType(ctx) else null
+
+        return ctx.applyUnfolding(predicates, innerViper, inner.type, nullGuard)
+    }
+
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitUpcast(this)
+}
+
+fun ExpEmbedding.withUpcast(targetType: TypeEmbedding): ExpEmbedding {
+    if (type == targetType) return this
+    if (type.flags.nullable || targetType.flags.nullable) return withType(targetType)
+    val innerPretype = type.pretype
+    val targetPretype = targetType.pretype
+    return if (
+        innerPretype is ClassTypeEmbedding && targetPretype is ClassTypeEmbedding
+        && innerPretype.details.hierarchyPathTo(targetPretype).any() // i.e. targetPretype is strict supertype
+    ) {
+        Upcast(this, targetType)
+    } else {
+        withType(targetType)
+    }
+}
+
 
 /**
  * Implementation of "safe as".

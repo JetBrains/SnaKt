@@ -10,7 +10,9 @@ function f$safeDivide$TF$T$Int$T$Int$T$Int(p$x: Ref, p$y: Ref): Ref
       ((!(df$rt$intFromRef(p$y) == 0) ? sp$divInts(p$x, p$y) : null)) in
       (let l0$res$2 ==
         ((!(df$rt$intFromRef(p$y) == 0) ? l0$res$1 : l0$res$0)) in
-        l0$res$2)))
+        (let anon$0$0 ==
+          (l0$res$2) in
+          anon$0$0))))
 }
 
 /pure_function_rely_on_branch.kt:(206,221): info: Generated Viper text for getStringLength:
@@ -28,7 +30,9 @@ function f$getStringLength$TF$T$Any$T$Int(p$obj: Ref): Ref
         ((df$rt$isSubtype(df$rt$typeOf(p$obj), df$rt$stringType()) ?
           l0$len$1 :
           l0$len$0)) in
-        l0$len$2)))
+        (let anon$0$0 ==
+          (l0$len$2) in
+          anon$0$0))))
 }
 
 /pure_function_rely_on_branch.kt:(354,370): info: Generated Viper text for safeNestedDivide:
@@ -48,7 +52,9 @@ function f$safeNestedDivide$TF$T$Int$T$Int$T$Int$T$Int(p$x: Ref, p$y: Ref, p$z: 
         ((!(df$rt$intFromRef(p$z) == 0) ? l0$res$1 : l0$res$0)) in
         (let l0$res$3 ==
           ((!(df$rt$intFromRef(p$y) == 0) ? l0$res$2 : l0$res$0)) in
-          l0$res$3))))
+          (let anon$0$0 ==
+            (l0$res$3) in
+            anon$0$0)))))
 }
 
 /pure_function_rely_on_branch.kt:(546,567): info: Generated Viper text for safeInverseDifference:
@@ -67,5 +73,7 @@ function f$safeInverseDifference$TF$T$Int$T$Int$T$Int(p$x: Ref, p$y: Ref): Ref
         ((!(df$rt$intFromRef(p$x) == df$rt$intFromRef(p$y)) ?
           l0$res$1 :
           l0$res$0)) in
-        l0$res$2)))
+        (let anon$0$0 ==
+          (l0$res$2) in
+          anon$0$0))))
 }

@@ -19,7 +19,6 @@ import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
 import org.jetbrains.kotlin.formver.core.linearization.addLabel
 import org.jetbrains.kotlin.formver.core.linearization.freshAnonVar
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
-import org.jetbrains.kotlin.formver.core.linearization.unfoldSubtypePredicates
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Exp
@@ -192,19 +191,11 @@ data class NonDeterministically(val exp: ExpEmbedding) : UnitResultExpEmbedding,
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitNonDeterministically(this)
 }
 
-private fun LinearizationContext.unfoldSubtypePredicatesForArgs(
-    args: List<ExpEmbedding>,
-    formalArgs: List<VariableEmbedding>,
-) {
-    args.zip(formalArgs).forEach { (arg, param) -> unfoldSubtypePredicates(arg, param.type, this) }
-}
-
 // Note: this is always a *real* Viper method call.
 data class MethodCall(val method: NamedFunctionSignature, val args: List<ExpEmbedding>) : StoredResultExpEmbedding {
     override val type: TypeEmbedding = method.callableType.returnType
 
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-        ctx.unfoldSubtypePredicatesForArgs(args, method.formalArgs)
         ctx.addStatement {
             method.toMethodCall(
                 args.map { it.toViper(ctx) },
@@ -234,7 +225,6 @@ data class FunctionCall(val function: NamedFunctionSignature, val args: List<Exp
         get() = args
 
     override fun toViper(ctx: LinearizationContext): Exp {
-        ctx.unfoldSubtypePredicatesForArgs(args, function.formalArgs) // unfold before function call
         return function.toFuncApp(
             args.map { it.toViper(ctx) },
             ctx.source.asPosition
