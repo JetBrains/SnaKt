@@ -138,15 +138,6 @@ You need to (additionally) set `Z3_EXE` in `~/.xprofile` and/or
 `~/.bash_profile` depending on your shell, window manager, display
 manager, operating system, etc.
 
-## Gradle Properties
-
-Two properties in `gradle.properties` control which Silicon artifact is used:
-
-- `viperVersion`: the version of `viper:silicon_2.13` to depend on (e.g. `1.1-SNAPSHOT`).
-- `useLocalViper`: set to `true` to resolve Silicon from the local Maven repository (`~/.m2`)
-  instead of the JetBrains Space Maven repository. Useful when testing a locally built Silicon
-  via `sbt publishM2`.
-
 ## Running tests
 
 The test pipeline for each function does conversion (Kotlin FIR → Viper AST),
