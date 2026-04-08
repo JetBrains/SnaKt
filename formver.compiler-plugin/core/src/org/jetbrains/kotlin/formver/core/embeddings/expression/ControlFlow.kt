@@ -192,12 +192,11 @@ data class NonDeterministically(val exp: ExpEmbedding) : UnitResultExpEmbedding,
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitNonDeterministically(this)
 }
 
-private fun unfoldSubtypePredicatesForArgs(
+private fun LinearizationContext.unfoldSubtypePredicatesForArgs(
     args: List<ExpEmbedding>,
     formalArgs: List<VariableEmbedding>,
-    ctx: LinearizationContext,
 ) {
-    args.zip(formalArgs).forEach { (arg, param) -> unfoldSubtypePredicates(arg, param.type, ctx) }
+    args.zip(formalArgs).forEach { (arg, param) -> unfoldSubtypePredicates(arg, param.type, this) }
 }
 
 // Note: this is always a *real* Viper method call.
@@ -205,7 +204,7 @@ data class MethodCall(val method: NamedFunctionSignature, val args: List<ExpEmbe
     override val type: TypeEmbedding = method.callableType.returnType
 
     override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-        unfoldSubtypePredicatesForArgs(args, method.formalArgs, ctx)
+        ctx.unfoldSubtypePredicatesForArgs(args, method.formalArgs)
         ctx.addStatement {
             method.toMethodCall(
                 args.map { it.toViper(ctx) },
@@ -235,7 +234,7 @@ data class FunctionCall(val function: NamedFunctionSignature, val args: List<Exp
         get() = args
 
     override fun toViper(ctx: LinearizationContext): Exp {
-        unfoldSubtypePredicatesForArgs(args, function.formalArgs, ctx) // unfold before function call
+        ctx.unfoldSubtypePredicatesForArgs(args, function.formalArgs) // unfold before function call
         return function.toFuncApp(
             args.map { it.toViper(ctx) },
             ctx.source.asPosition
