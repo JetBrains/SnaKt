@@ -44,6 +44,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
 import org.jetbrains.kotlin.formver.core.functionCallArguments
 import org.jetbrains.kotlin.formver.core.isInvariantBuilderFunctionNamed
+import org.jetbrains.kotlin.formver.viper.ast.PermExp
 import org.jetbrains.kotlin.text
 import org.jetbrains.kotlin.types.ConstantValueKind
 import org.jetbrains.kotlin.utils.addIfNotNull
@@ -309,8 +310,15 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 accLambda.source,
                 "`acc` scope is only allowed inside one of the `loopInvariants`, `preconditions` or `postconditions`."
             )
-            val fieldExpr = accLambda.arguments[0] as FirPropertyAccessExpression
-            val permExpr = accLambda.arguments[1]
+            val fieldExpr = accLambda.arguments[0] as? FirPropertyAccessExpression ?: throw SnaktInternalException(
+                accLambda.source,
+                "must be a property access expression."
+            )
+            val permExpr = when(accLambda.arguments.getOrNull(1)?.source?.text?.toString() ?: "") {
+                "write" -> PermExp.WildcardPerm()
+                "read", "" -> PermExp.FullPerm()
+                else -> throw SnaktInternalException(symbol.source, "perm is not supported")
+            }
             return data.insertAccFunctionCall(fieldExpr, permExpr)
         }
 
