@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.formver.plugin.compiler.analysis.FirExpressionSymbolicValueExtractor
 
-class FirExpressionLocalityEvaluator(
+class FirExpressionLocalityValueResolver(
     private val context: CheckerContext
 ) : FirExpressionSymbolicValueExtractor<ConeLocalityAttribute?>() {
     override val empty: ConeLocalityAttribute? = null
