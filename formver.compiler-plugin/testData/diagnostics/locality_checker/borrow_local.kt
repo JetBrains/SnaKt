@@ -38,6 +38,10 @@ fun `pass local twice as borrowed arguments`(x: @Borrowed A) {
     borrowBoth(x, x)
 }
 
+fun `pass local as explicit shared target`(x: @Borrowed A) {
+    <!LOCALITY_VIOLATION!>x<!>.shareTarget()
+}
+
 fun `pass global as explicit borrowed target`(x: A) {
     x.borrowTarget()
 }
