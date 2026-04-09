@@ -7,7 +7,7 @@ package org.jetbrains.kotlin.formver.core.embeddings.types
 
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.names.PredicateName
-import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
+import org.jetbrains.kotlin.formver.core.names.ScopedName
 import org.jetbrains.kotlin.formver.core.names.SimpleKotlinName
 import org.jetbrains.kotlin.formver.core.names.asScope
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
@@ -78,8 +78,8 @@ class ClassEmbeddingDetails(
         }
     }
 
-    private val sharedPredicateName = ScopedKotlinName(type.name.asScope(), PredicateName("shared"))
-    private val uniquePredicateName = ScopedKotlinName(type.name.asScope(), PredicateName("unique"))
+    private val sharedPredicateName = ScopedName(type.name.asScope(), PredicateName("shared"))
+    private val uniquePredicateName = ScopedName(type.name.asScope(), PredicateName("unique"))
 
     /**
      * Find an embedding of a backing field by this name amongst the ancestors of this type.

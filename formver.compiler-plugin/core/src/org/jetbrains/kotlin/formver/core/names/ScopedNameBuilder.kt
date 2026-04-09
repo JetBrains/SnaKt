@@ -7,12 +7,12 @@ package org.jetbrains.kotlin.formver.core.names
 
 import org.jetbrains.kotlin.name.FqName
 
-class ScopedKotlinNameBuilder {
+class ScopedNameBuilder {
     private var scope: NameScope? = null
 
-    fun complete(name: KotlinName): ScopedKotlinName {
+    fun complete(name: KotlinName): ScopedName {
         require(scope != null) { "No scope specified " }
-        return ScopedKotlinName(scope!!, name)
+        return ScopedName(scope!!, name)
     }
 
     fun packageScope(packageName: FqName) {
@@ -62,5 +62,5 @@ class ScopedKotlinNameBuilder {
 }
 
 // TODO: generalise this to work for all names.
-fun buildName(init: ScopedKotlinNameBuilder.() -> KotlinName): ScopedKotlinName =
-    ScopedKotlinNameBuilder().run { complete(init()) }
+fun buildName(init: ScopedNameBuilder.() -> KotlinName): ScopedName =
+    ScopedNameBuilder().run { complete(init()) }
