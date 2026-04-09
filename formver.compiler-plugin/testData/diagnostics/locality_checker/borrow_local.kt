@@ -30,7 +30,7 @@ fun `pass local as borrowed argument`(x: @Borrowed A) {
 }
 
 fun `assign local to global after passing it as borrowed argument`(x: @Borrowed A) {
-    borrowArg(x)
+    borrow(x)
     var y: A = <!LOCALITY_VIOLATION!>x<!>
 }
 
