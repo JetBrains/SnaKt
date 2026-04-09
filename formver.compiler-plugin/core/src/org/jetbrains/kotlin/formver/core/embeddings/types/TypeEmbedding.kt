@@ -37,7 +37,7 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
      * It may at some point necessary to make a `TypeName` hierarchy of some sort to
      * represent these names, but we do it inline for now.
      */
-    val name: SymbolicName
+    val name: TypeName
         get() = TypeName(pretype, flags.nullable)
 
     val havocMethodName: SymbolicName by lazy {
