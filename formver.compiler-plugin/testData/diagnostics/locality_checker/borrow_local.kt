@@ -26,7 +26,7 @@ fun `pass global as borrowed argument`(x: A) {
 }
 
 fun `pass local as borrowed argument`(x: @Borrowed A) {
-    borrowArg(x)
+    borrow(x)
 }
 
 fun `assign local to global after passing it as borrowed argument`(x: @Borrowed A) {
