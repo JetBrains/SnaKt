@@ -16,8 +16,8 @@ class LocalityThrowChecker(
     override fun check(expression: FirThrowExpression) {
         if (!config.checkLocality) return
 
-        val leftLocality: ConeLocalAttribute? = null
-        val rightLocality = expression.exception.resolvedLocalAttribute
+        val leftLocality: ConeLocalityAttribute? = null
+        val rightLocality = expression.exception.localityAttribute
 
         if (leftLocality.accepts(rightLocality)) return
 
