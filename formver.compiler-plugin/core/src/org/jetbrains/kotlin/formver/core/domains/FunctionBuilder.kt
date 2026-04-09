@@ -6,7 +6,7 @@
 package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.names.PlaceholderArgumentName
-import org.jetbrains.kotlin.formver.core.names.SpecialName
+import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.BuiltinFunction
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Type
@@ -38,10 +38,10 @@ class FunctionBuilder private constructor() {
         get() = Exp.Result(retType)
 
     companion object {
-        fun build(name: String, action: FunctionBuilder.() -> Unit): BuiltinFunction {
+        fun build(name: SymbolicName, action: FunctionBuilder.() -> Unit): BuiltinFunction {
             val builder = FunctionBuilder()
             builder.action()
-            return object : BuiltinFunction(SpecialName(name)) {
+            return object : BuiltinFunction(name) {
                 override val formalArgs = builder.formalArgs.map { it.decl() }
                 override val retType: Type = builder.retType
                 override val body = builder.functionBody
