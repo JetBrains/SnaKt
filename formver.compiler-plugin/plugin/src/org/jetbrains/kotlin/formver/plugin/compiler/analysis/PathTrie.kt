@@ -13,28 +13,30 @@ abstract class PathTrie<T>(
 ) {
     abstract fun T.join(other: T): T
 
-    abstract fun initialize(symbol: FirBasedSymbol<*>): T
-
     abstract fun construct(element: T, children: Map<FirBasedSymbol<*>, PathTrie<T>>): PathTrie<T>
+
+    val childrenJoin: T
+        get() = children.values.fold(element) {
+            result, child ->
+            result.join(child.childrenJoin)
+        }
 
     fun copy(element: T = this.element, children: Map<FirBasedSymbol<*>, PathTrie<T>> = this.children): PathTrie<T> {
         return construct(element, children)
     }
 
-    fun ensure(path: Path): PathTrie<T> {
-        if (path.isEmpty()) {
+    fun ensure(path: Path, initialize: (FirBasedSymbol<*>) -> T): PathTrie<T> {
+        return ensure(path.iterator(), initialize)
+    }
+
+    private fun ensure(path: Iterator<FirBasedSymbol<*>>, initialize: (FirBasedSymbol<*>) -> T): PathTrie<T> {
+        if (!path.hasNext()) {
             return this
         }
 
-        val symbol = path.first()
-        val rest = path.drop(1)
-        val next = children[symbol]
-
-        val newChildren = if (next != null) {
-            children + (symbol to next.ensure(rest))
-        } else {
-            children + (symbol to construct(initialize(symbol), mapOf()))
-        }
+        val symbol = path.next()
+        val next = children[symbol] ?: construct(initialize(symbol), emptyMap())
+        val newChildren = children + (symbol to next.ensure(path, initialize))
 
         return construct(element, newChildren)
     }

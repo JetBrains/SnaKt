@@ -7,6 +7,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirFunctionCallChecker
 import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
 import org.jetbrains.kotlin.fir.expressions.arguments
+import org.jetbrains.kotlin.fir.expressions.resolvedArgumentMapping
 import org.jetbrains.kotlin.fir.expressions.toResolvedCallableSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
@@ -16,47 +17,64 @@ import org.jetbrains.kotlin.formver.plugin.compiler.PluginErrors.LOCALITY_VIOLAT
 class LocalityFunctionCallChecker(
     private val config : PluginConfiguration
 ) : FirFunctionCallChecker(MppCheckerKind.Common) {
+    context(context: CheckerContext, reporter: DiagnosticReporter)
+    private fun checkArgument(argument: org.jetbrains.kotlin.fir.expressions.FirExpression, requiredArgumentLocality: Locality) {
+        val actualArgumentLocality = argument.resolvedLocality
+
+        if (requiredArgumentLocality.accepts(actualArgumentLocality)) return
+
+        reporter.reportOn(
+            argument.source,
+            LOCALITY_VIOLATION,
+            "Argument locality mismatch: expected '${requiredArgumentLocality.render()}', " +
+                    "actual '${actualArgumentLocality.render()}'."
+        )
+    }
+
     @OptIn(SymbolInternals::class)
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(functionCall: FirFunctionCall) {
         if (!config.checkLocality) return
 
-        val receiver = expression.dispatchReceiver
+        val callableSymbol = functionCall.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
+            ?: throw IllegalStateException("Unable to resolve $functionCall")
+        val receiverDeclaration = callableSymbol.receiverParameterSymbol?.fir
+        val receiver = functionCall.extensionReceiver
 
-        if (receiver != null) {
-            val receiverLocality = receiver.resolvedLocalAttribute
-            val receiverExpectedLocality = receiver.declaredLocalAttribute
+        if (receiver != null && receiverDeclaration != null) {
+            val requiredReceiverLocality = receiverDeclaration.requiredLocality
+            val actualReceiverLocality = receiver.resolvedLocality
 
-            if (!receiverLocality.accepts(receiverExpectedLocality)) {
+            if (!requiredReceiverLocality.accepts(actualReceiverLocality)) {
                 reporter.reportOn(
                     receiver.source ?: functionCall.source,
                     LOCALITY_VIOLATION,
-                    "Receiver uniqueness mismatch: expected '${receiverExpectedLocality.render()}', " +
-                            "actual '${receiverLocality.render()}'."
+                    "Receiver locality mismatch: expected '${requiredReceiverLocality.render()}', " +
+                            "actual '${actualReceiverLocality.render()}'."
                 )
             }
         }
 
-        val callableSymbol = expression.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
-            ?: throw IllegalStateException("Unable to resolve ${expression}")
-        val parameters = callableSymbol.valueParameterSymbols
-        val arguments = expression.arguments
+        val resolvedArgumentMapping = functionCall.resolvedArgumentMapping
 
-        val argumentSymbols = callableSymbol.valueParameterSymbols
-        val arguments = expression.arguments
+        if (resolvedArgumentMapping != null) {
+            for ((argument, argumentDeclaration) in resolvedArgumentMapping) {
+                if (argumentDeclaration.isVararg) continue
 
-        for ((argumentSymbol, argument) in argumentSymbols.zip(arguments)) {
-            val requiredArgumentLocality = argumentSymbol.fir.requiredLocality
-            val actualArgumentLocality = argument.resolvedLocality
+                checkArgument(argument, argumentDeclaration.requiredLocality)
+            }
+        } else {
+            val argumentSymbols = callableSymbol.valueParameterSymbols
+            val arguments = functionCall.arguments
 
-            if (parameterLocality.accepts(argumentLocality)) continue
+            for ((argumentSymbol, argument) in argumentSymbols.zip(arguments)) {
+                val argumentDeclaration = argumentSymbol.fir
 
-            reporter.reportOn(
-            if (expectedArgumentLocality.accepts(actualArgumentLocality)) continue
-                LOCALITY_VIOLATION,
-                "Argument uniqueness mismatch: expected '${parameterLocality.render()}', " +
-                        "actual '${argumentLocality.render()}'."
-            )
-                "Argument uniqueness mismatch: expected '${expectedArgumentLocality.render()}', " +
-                        "actual '${actualArgumentLocality.render()}'."
+                if (argumentDeclaration.isVararg) continue
+
+                checkArgument(argument, argumentDeclaration.requiredLocality)
+            }
+        }
+    }
+
 }

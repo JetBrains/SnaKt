@@ -1,4 +1,4 @@
-package org.jetbrains.kotlin.formver.plugin.compiler.fir
+package org.jetbrains.kotlin.formver.plugin.compiler.analysis
 
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.FirSession.Companion.sessionComponentAccessor

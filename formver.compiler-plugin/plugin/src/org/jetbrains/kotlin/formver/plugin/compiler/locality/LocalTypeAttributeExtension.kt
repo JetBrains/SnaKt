@@ -21,7 +21,7 @@ class LocalTypeAttributeExtension(
 ) : FirTypeAttributeExtension(session) {
     companion object {
         private val borrowedAnnotationId = ClassId(
-            FqName.Companion.fromSegments(listOf("org", "jetbrains", "kotlin", "formver", "plugin")),
+            FqName.fromSegments(listOf("org", "jetbrains", "kotlin", "formver", "plugin")),
             Name.identifier("Borrowed")
         )
 
