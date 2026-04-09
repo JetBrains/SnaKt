@@ -1,7 +1,7 @@
 /custom_run_functions.kt:(1194,1200): info: Generated Viper text for useRun:
 field bf$size: Ref
 
-method f$useRun$TF$T$Unit() returns (ret$0: Ref)
+method f$useRun$t$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$genericResult: Ref
@@ -361,17 +361,17 @@ method f$useRun$TF$T$Unit() returns (ret$0: Ref)
 }
 
 /custom_run_functions.kt:(2354,2369): info: Generated Viper text for complexScenario:
-method f$complexScenario$TF$T$Boolean$T$Boolean(p$arg: Ref)
+method f$complexScenario$t$F$t$Boolean$t$Boolean(par$arg: Ref)
   returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$arg), df$rt$boolType())
+  requires df$rt$isSubtype(df$rt$typeOf(par$arg), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(ret$0) == true ==> df$rt$boolFromRef(p$arg)
-  ensures df$rt$boolFromRef(ret$0) == false ==> !df$rt$boolFromRef(p$arg)
+  ensures df$rt$boolFromRef(ret$0) == true ==> df$rt$boolFromRef(par$arg)
+  ensures df$rt$boolFromRef(ret$0) == false ==> !df$rt$boolFromRef(par$arg)
 {
   var anon$11: Ref
   var anon$12: Ref
   var ret$1: Ref
-  if (df$rt$boolFromRef(p$arg)) {
+  if (df$rt$boolFromRef(par$arg)) {
     var anon$13: Ref
     var ret$2: Ref
     var anon$14: Ref
@@ -538,13 +538,13 @@ field bf$member: Ref
 
 field bf$size: Ref
 
-method con$c$CustomClass$T$CustomClass() returns (ret: Ref)
+method con$c$CustomClass$t$CustomClass() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$CustomClass())
-  ensures acc(p$c$CustomClass$shared(ret), wildcard)
-  ensures acc(p$c$CustomClass$unique(ret), write)
+  ensures acc(pred$c$CustomClass$shared(ret), wildcard)
+  ensures acc(pred$c$CustomClass$unique(ret), write)
 
 
-method f$testCustomClass$TF$T$Unit() returns (ret$0: Ref)
+method f$testCustomClass$t$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$custom: Ref
@@ -559,8 +559,8 @@ method f$testCustomClass$TF$T$Unit() returns (ret$0: Ref)
   var ret$3: Ref
   var anon$5: Ref
   var ret$4: Ref
-  l0$custom := con$c$CustomClass$T$CustomClass()
-  unfold acc(p$c$CustomClass$shared(l0$custom), wildcard)
+  l0$custom := con$c$CustomClass$t$CustomClass()
+  unfold acc(pred$c$CustomClass$shared(l0$custom), wildcard)
   ret$2 := l0$custom.bf$member
   goto lbl$ret$2
   label lbl$ret$2
@@ -572,7 +572,7 @@ method f$testCustomClass$TF$T$Unit() returns (ret$0: Ref)
   anon$1 := ret$1
   anon$0 := anon$1
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
-  unfold acc(p$c$CustomClass$shared(l0$custom), wildcard)
+  unfold acc(pred$c$CustomClass$shared(l0$custom), wildcard)
   ret$4 := l0$custom.bf$member
   goto lbl$ret$4
   label lbl$ret$4
