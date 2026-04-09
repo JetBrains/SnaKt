@@ -1,83 +1,137 @@
-/pure_upcast.kt:(255,298): error: Impure function body detected in pure function
+/pure_upcast.kt:(221,230): info: Generated Viper text for readValue:
+field bf$value: Ref
 
-/pure_upcast.kt:(405,415): info: Generated Viper text for pureUpcast:
+function f$readValue$TF$T$Base$T$Int(p$b: Ref): Ref
+  requires acc(p$c$Base$shared(p$b), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$Base())
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let anon$1$0 ==
+    ((unfolding acc(p$c$Base$shared(p$b), wildcard) in p$b.bf$value)) in
+    (let anon$0$0 ==
+      (anon$1$0) in
+      anon$0$0))
+}
+
+/pure_upcast.kt:(361,371): info: Generated Viper text for pureUpcast:
 field bf$value: Ref
 
 function f$pureUpcast$TF$T$Sub$T$Int(p$s: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$c$Sub())
   requires acc(p$c$Sub$shared(p$s), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$c$Sub())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
-  (let anon$0$0 ==
+  (let anon$1$0 ==
     (p$s) in
-    f$readValue$TF$T$Base$T$Int(anon$0$0))
+    (let anon$0$0 ==
+      ((unfolding acc(p$c$Sub$shared(p$s), wildcard) in
+        f$readValue$TF$T$Base$T$Int(anon$1$0))) in
+      anon$0$0))
 }
 
 function f$readValue$TF$T$Base$T$Int(p$b: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$Base())
   requires acc(p$c$Base$shared(p$b), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$Base())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 
 
-method pg$public$value(this$dispatch: Ref) returns (ret: Ref)
-
-
-/pure_upcast.kt:(431,443): warning: Viper verification error: Precondition of function f$readValue$TF$T$Base$T$Int might not hold. There might be insufficient permission to access p$c$Base$shared(anon$0$0)
-
-/pure_upcast.kt:(554,575): info: Generated Viper text for pureConditionalUpcast:
+/pure_upcast.kt:(510,531): info: Generated Viper text for pureConditionalUpcast:
 field bf$value: Ref
 
 function f$pureConditionalUpcast$TF$T$Sub$T$Sub2$T$Boolean$T$Int(p$s1: Ref,
   p$s2: Ref, p$flag: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$s1), df$rt$c$Sub())
   requires acc(p$c$Sub$shared(p$s1), wildcard)
-  requires df$rt$isSubtype(df$rt$typeOf(p$s2), df$rt$c$Sub2())
   requires acc(p$c$Sub2$shared(p$s2), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$s1), df$rt$c$Sub())
+  requires df$rt$isSubtype(df$rt$typeOf(p$s2), df$rt$c$Sub2())
   requires df$rt$isSubtype(df$rt$typeOf(p$flag), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
-  (let anon$1$0 ==
+  (let anon$3$0 ==
     ((df$rt$boolFromRef(p$flag) ? p$s1 : null)) in
     (let anon$2$0 ==
-      ((!df$rt$boolFromRef(p$flag) ? p$s2 : null)) in
-      (let anon$0$0 ==
-        ((df$rt$boolFromRef(p$flag) ? anon$1$0 : anon$2$0)) in
-        f$readValue$TF$T$Base$T$Int(anon$0$0))))
+      ((df$rt$boolFromRef(p$flag) ? anon$3$0 : null)) in
+      (let anon$5$0 ==
+        ((!df$rt$boolFromRef(p$flag) ? p$s2 : null)) in
+        (let anon$4$0 ==
+          ((!df$rt$boolFromRef(p$flag) ? anon$5$0 : null)) in
+          (let anon$1$0 ==
+            ((df$rt$boolFromRef(p$flag) ? anon$2$0 : anon$4$0)) in
+            (let anon$0$0 ==
+              (f$readValue$TF$T$Base$T$Int(anon$1$0)) in
+              anon$0$0))))))
 }
 
 function f$readValue$TF$T$Base$T$Int(p$b: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$Base())
   requires acc(p$c$Base$shared(p$b), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$Base())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 
 
-method pg$public$value(this$dispatch: Ref) returns (ret: Ref)
+/pure_upcast.kt:(577,608): warning: Viper verification error: Precondition of function f$readValue$TF$T$Base$T$Int might not hold. There might be insufficient permission to access p$c$Base$shared(anon$1$0)
 
+/pure_upcast.kt:(690,791): warning: Viper verification error: Function might not be well-formed. There might be insufficient permission to access p$c$Base$shared(l0$b$0)
 
-/pure_upcast.kt:(621,652): warning: Viper verification error: Precondition of function f$readValue$TF$T$Base$T$Int might not hold. There might be insufficient permission to access p$c$Base$shared(anon$0$0)
+/pure_upcast.kt:(714,735): info: Generated Viper text for pureUpcastViaVariable:
+field bf$value: Ref
 
-/pure_upcast.kt:(734,835): error: Impure function body detected in pure function
+function f$pureUpcastViaVariable$TF$T$Sub$T$Int(p$s: Ref): Ref
+  requires acc(p$c$Sub$shared(p$s), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$c$Sub())
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let l0$b$0 ==
+    (p$s) in
+    (let anon$1$0 ==
+      ((unfolding acc(p$c$Base$shared(l0$b$0), wildcard) in
+        l0$b$0.bf$value)) in
+      (let anon$0$0 ==
+        (anon$1$0) in
+        anon$0$0)))
+}
 
-/pure_upcast.kt:(907,982): error: Impure function body detected in pure function
+/pure_upcast.kt:(873,890): info: Generated Viper text for readValueNullable:
+field bf$value: Ref
 
-/pure_upcast.kt:(1008,1026): info: Generated Viper text for pureNullableUpcast:
+function f$readValueNullable$TF$NT$Base$T$Int(p$b: Ref): Ref
+  requires p$b != df$rt$nullValue() ==> acc(p$c$Base$shared(p$b), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$nullable(df$rt$c$Base()))
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let anon$3$0 ==
+    ((!(p$b == df$rt$nullValue()) ?
+      (unfolding acc(p$c$Base$shared(p$b), wildcard) in p$b.bf$value) :
+      null)) in
+    (let anon$2$0 ==
+      ((!(p$b == df$rt$nullValue()) ? anon$3$0 : null)) in
+      (let anon$5$0 ==
+        ((!!(p$b == df$rt$nullValue()) ? df$rt$intToRef(-1) : null)) in
+        (let anon$4$0 ==
+          ((!!(p$b == df$rt$nullValue()) ? anon$5$0 : null)) in
+          (let anon$1$0 ==
+            ((!(p$b == df$rt$nullValue()) ? anon$2$0 : anon$4$0)) in
+            (let anon$0$0 ==
+              (anon$1$0) in
+              anon$0$0))))))
+}
+
+/pure_upcast.kt:(964,982): info: Generated Viper text for pureNullableUpcast:
 field bf$value: Ref
 
 function f$pureNullableUpcast$TF$NT$Sub$T$Int(p$s: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$nullable(df$rt$c$Sub()))
   requires p$s != df$rt$nullValue() ==> acc(p$c$Sub$shared(p$s), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$s), df$rt$nullable(df$rt$c$Sub()))
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
-  f$readValueNullable$TF$NT$Base$T$Int(p$s)
+  (let anon$0$0 ==
+    (f$readValueNullable$TF$NT$Base$T$Int(p$s)) in
+    anon$0$0)
 }
 
 function f$readValueNullable$TF$NT$Base$T$Int(p$b: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$nullable(df$rt$c$Base()))
   requires p$b != df$rt$nullValue() ==> acc(p$c$Base$shared(p$b), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$nullable(df$rt$c$Base()))
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 
 
-method pg$public$value(this$dispatch: Ref) returns (ret: Ref)
-
-
-/pure_upcast.kt:(1043,1063): warning: Viper verification error: Precondition of function f$readValueNullable$TF$NT$Base$T$Int might not hold. There might be insufficient permission to access p$c$Base$shared(p$s)
+/pure_upcast.kt:(999,1019): warning: Viper verification error: Precondition of function f$readValueNullable$TF$NT$Base$T$Int might not hold. There might be insufficient permission to access p$c$Base$shared(p$s)

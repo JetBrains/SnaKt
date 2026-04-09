@@ -7,7 +7,9 @@ function f$noAssignmentInBlocks$TF$T$Boolean$T$Int(p$a: Ref): Ref
     (df$rt$intToRef(0)) in
     (let l0$result$1 ==
       (sp$plusInts(l0$result$0, df$rt$intToRef(1))) in
-      l0$result$1))
+      (let anon$0$0 ==
+        (l0$result$1) in
+        anon$0$0)))
 }
 
 /pure_function_with_branching.kt:(216,231): info: Generated Viper text for simpleBranching:
@@ -27,7 +29,9 @@ function f$simpleBranching$TF$T$Boolean$T$Int(p$a: Ref): Ref
           null)) in
         (let l0$result$3 ==
           ((df$rt$boolFromRef(p$a) ? l0$result$1 : l0$result$2)) in
-          l0$result$3))))
+          (let anon$0$0 ==
+            (l0$result$3) in
+            anon$0$0)))))
 }
 
 /pure_function_with_branching.kt:(389,404): info: Generated Viper text for nestedBranching:
@@ -72,7 +76,9 @@ function f$nestedBranching$TF$T$Boolean$T$Boolean$T$Int(p$a: Ref, p$b: Ref): Ref
                       ((df$rt$boolFromRef(p$a) ? l0$result$8 : l0$result$7)) in
                       (let l0$result$10 ==
                         (sp$plusInts(df$rt$intToRef(7), l0$result$9)) in
-                        l0$result$10)))))))))))
+                        (let anon$0$0 ==
+                          (l0$result$10) in
+                          anon$0$0))))))))))))
 }
 
 /pure_function_with_branching.kt:(814,834): info: Generated Viper text for whenExpressionSimple:
@@ -86,19 +92,26 @@ function f$whenExpressionSimple$TF$T$Int$T$Int(p$x: Ref): Ref
       (p$x) in
       (let l0$y$1 ==
         ((df$rt$intFromRef(anon$0$0) == 1 ? df$rt$intToRef(10) : null)) in
-        (let l0$y$2 ==
-          ((!(df$rt$intFromRef(anon$0$0) == 2) &&
+        (let anon$1$0 ==
+          ((df$rt$intFromRef(anon$0$0) == 2 &&
           !(df$rt$intFromRef(anon$0$0) == 1) ?
-            df$rt$intToRef(30) :
+            df$rt$intToRef(20) :
             null)) in
-          (let l0$y$3 ==
-            ((df$rt$intFromRef(anon$0$0) == 2 ? l0$y$0 : l0$y$2)) in
-            (let l0$y$4 ==
-              ((df$rt$intFromRef(anon$0$0) == 1 ? l0$y$1 : l0$y$3)) in
-              (df$rt$intFromRef(anon$0$0) == 2 &&
-              !(df$rt$intFromRef(anon$0$0) == 1) ?
-                df$rt$intToRef(20) :
-                sp$plusInts(l0$y$4, df$rt$intToRef(1)))))))))
+          (let l0$y$2 ==
+            ((!(df$rt$intFromRef(anon$0$0) == 2) &&
+            !(df$rt$intFromRef(anon$0$0) == 1) ?
+              df$rt$intToRef(30) :
+              null)) in
+            (let l0$y$3 ==
+              ((df$rt$intFromRef(anon$0$0) == 2 ? l0$y$0 : l0$y$2)) in
+              (let l0$y$4 ==
+                ((df$rt$intFromRef(anon$0$0) == 1 ? l0$y$1 : l0$y$3)) in
+                (let anon$2$0 ==
+                  (sp$plusInts(l0$y$4, df$rt$intToRef(1))) in
+                  (df$rt$intFromRef(anon$0$0) == 2 &&
+                  !(df$rt$intFromRef(anon$0$0) == 1) ?
+                    anon$1$0 :
+                    anon$2$0)))))))))
 }
 
 /pure_function_with_branching.kt:(1053,1076): info: Generated Viper text for whenNoArgumentBranching:
@@ -107,22 +120,41 @@ function f$whenNoArgumentBranching$TF$T$Int$T$Int$T$Int(p$x: Ref, p$y: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(p$y), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
-  (let l5$z$0 ==
-    ((!(df$rt$intFromRef(p$x) < 0 || df$rt$intFromRef(p$y) < 0) &&
-    (!(df$rt$intFromRef(p$x) > 0 && df$rt$intFromRef(p$y) > 0) &&
-    !(df$rt$intFromRef(p$x) == 0)) ?
-      df$rt$intToRef(5) :
-      null)) in
-    (df$rt$intFromRef(p$x) == 0 ?
-      df$rt$intToRef(0) :
-      (df$rt$intFromRef(p$x) > 0 && df$rt$intFromRef(p$y) > 0 &&
+  (let anon$0$0 ==
+    ((df$rt$intFromRef(p$x) == 0 ? df$rt$intToRef(0) : null)) in
+    (let anon$1$0 ==
+      ((df$rt$intFromRef(p$x) > 0 && df$rt$intFromRef(p$y) > 0 &&
       !(df$rt$intFromRef(p$x) == 0) ?
         df$rt$intToRef(1) :
-        ((df$rt$intFromRef(p$x) < 0 || df$rt$intFromRef(p$y) < 0) &&
+        null)) in
+      (let anon$2$0 ==
+        (((df$rt$intFromRef(p$x) < 0 || df$rt$intFromRef(p$y) < 0) &&
         (!(df$rt$intFromRef(p$x) > 0 && df$rt$intFromRef(p$y) > 0) &&
         !(df$rt$intFromRef(p$x) == 0)) ?
           df$rt$intToRef(-1) :
-          l5$z$0))))
+          null)) in
+        (let l5$z$0 ==
+          ((!(df$rt$intFromRef(p$x) < 0 || df$rt$intFromRef(p$y) < 0) &&
+          (!(df$rt$intFromRef(p$x) > 0 && df$rt$intFromRef(p$y) > 0) &&
+          !(df$rt$intFromRef(p$x) == 0)) ?
+            df$rt$intToRef(5) :
+            null)) in
+          (let anon$3$0 ==
+            ((!(df$rt$intFromRef(p$x) < 0 || df$rt$intFromRef(p$y) < 0) &&
+            (!(df$rt$intFromRef(p$x) > 0 && df$rt$intFromRef(p$y) > 0) &&
+            !(df$rt$intFromRef(p$x) == 0)) ?
+              l5$z$0 :
+              null)) in
+            (df$rt$intFromRef(p$x) == 0 ?
+              anon$0$0 :
+              (df$rt$intFromRef(p$x) > 0 && df$rt$intFromRef(p$y) > 0 &&
+              !(df$rt$intFromRef(p$x) == 0) ?
+                anon$1$0 :
+                ((df$rt$intFromRef(p$x) < 0 || df$rt$intFromRef(p$y) < 0) &&
+                (!(df$rt$intFromRef(p$x) > 0 && df$rt$intFromRef(p$y) > 0) &&
+                !(df$rt$intFromRef(p$x) == 0)) ?
+                  anon$2$0 :
+                  anon$3$0))))))))
 }
 
 /pure_function_with_branching.kt:(1299,1322): info: Generated Viper text for stringEqualityBranching:
@@ -132,27 +164,34 @@ function f$stringEqualityBranching$TF$T$String$T$Boolean(p$input: Ref): Ref
 {
   (let l0$isValid$0 ==
     (df$rt$boolToRef(false)) in
-    (let l0$isValid$1 ==
-      ((df$rt$stringFromRef(p$input) == Seq(117, 115, 101, 114) &&
-      !(df$rt$stringFromRef(p$input) == Seq(97, 100, 109, 105, 110)) ?
+    (let anon$0$0 ==
+      ((df$rt$stringFromRef(p$input) == Seq(97, 100, 109, 105, 110) ?
         df$rt$boolToRef(true) :
         null)) in
-      (let l0$isValid$2 ==
-        ((!(df$rt$stringFromRef(p$input) == Seq(117, 115, 101, 114)) &&
+      (let l0$isValid$1 ==
+        ((df$rt$stringFromRef(p$input) == Seq(117, 115, 101, 114) &&
         !(df$rt$stringFromRef(p$input) == Seq(97, 100, 109, 105, 110)) ?
-          df$rt$boolToRef(false) :
+          df$rt$boolToRef(true) :
           null)) in
-        (let l0$isValid$3 ==
-          ((df$rt$stringFromRef(p$input) == Seq(117, 115, 101, 114) ?
-            l0$isValid$1 :
-            l0$isValid$2)) in
-          (let l0$isValid$4 ==
-            ((df$rt$stringFromRef(p$input) == Seq(97, 100, 109, 105, 110) ?
-              l0$isValid$0 :
-              l0$isValid$3)) in
-            (df$rt$stringFromRef(p$input) == Seq(97, 100, 109, 105, 110) ?
-              df$rt$boolToRef(true) :
-              l0$isValid$4))))))
+        (let l0$isValid$2 ==
+          ((!(df$rt$stringFromRef(p$input) == Seq(117, 115, 101, 114)) &&
+          !(df$rt$stringFromRef(p$input) == Seq(97, 100, 109, 105, 110)) ?
+            df$rt$boolToRef(false) :
+            null)) in
+          (let l0$isValid$3 ==
+            ((df$rt$stringFromRef(p$input) == Seq(117, 115, 101, 114) ?
+              l0$isValid$1 :
+              l0$isValid$2)) in
+            (let l0$isValid$4 ==
+              ((df$rt$stringFromRef(p$input) == Seq(97, 100, 109, 105, 110) ?
+                l0$isValid$0 :
+                l0$isValid$3)) in
+              (let anon$1$0 ==
+                (l0$isValid$4) in
+                (df$rt$stringFromRef(p$input) ==
+                Seq(97, 100, 109, 105, 110) ?
+                  anon$0$0 :
+                  anon$1$0))))))))
 }
 
 /pure_function_with_branching.kt:(1585,1609): info: Generated Viper text for sequentialIfWithMutation:
@@ -167,9 +206,11 @@ function f$sequentialIfWithMutation$TF$T$Int(): Ref
         ((!(df$rt$intFromRef(l0$x$0) > 5) ? df$rt$intToRef(20) : null)) in
         (let l0$x$3 ==
           ((df$rt$intFromRef(l0$x$0) > 5 ? l0$x$1 : l0$x$2)) in
-          (df$rt$intFromRef(l0$x$3) == 2 ?
-            df$rt$intToRef(100) :
-            df$rt$intToRef(0))))))
+          (let anon$0$0 ==
+            ((df$rt$intFromRef(l0$x$3) == 2 ? df$rt$intToRef(100) : null)) in
+            (let anon$1$0 ==
+              (df$rt$intToRef(0)) in
+              (df$rt$intFromRef(l0$x$3) == 2 ? anon$0$0 : anon$1$0)))))))
 }
 
 /pure_function_with_branching.kt:(1768,1788): info: Generated Viper text for complexBooleanReturn:
@@ -177,19 +218,34 @@ function f$complexBooleanReturn$TF$T$Int$T$Boolean(p$x: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
 {
-  (let l0$result$0 ==
-    (df$rt$boolToRef(false)) in
-    (let l0$result$1 ==
-      ((df$rt$intFromRef(p$x) > 50 ? df$rt$boolToRef(true) : null)) in
-      (let l0$result$2 ==
-        ((!(df$rt$intFromRef(p$x) > 50) ? df$rt$boolToRef(true) : null)) in
-        (let l0$result$3 ==
-          ((df$rt$intFromRef(p$x) > 50 ? l0$result$1 : l0$result$2)) in
-          (df$rt$intFromRef(p$x) > 100 ?
-            df$rt$boolToRef(true) :
-            (df$rt$intFromRef(p$x) < 0 && !(df$rt$intFromRef(p$x) > 50) ?
-              df$rt$boolToRef(false) :
-              (df$rt$boolFromRef(l0$result$3) ?
-                df$rt$boolToRef(false) :
-                df$rt$boolToRef(true))))))))
+  (let anon$0$0 ==
+    ((df$rt$intFromRef(p$x) > 100 ? df$rt$boolToRef(true) : null)) in
+    (let l0$result$0 ==
+      (df$rt$boolToRef(false)) in
+      (let l0$result$1 ==
+        ((df$rt$intFromRef(p$x) > 50 ? df$rt$boolToRef(true) : null)) in
+        (let anon$1$0 ==
+          ((df$rt$intFromRef(p$x) < 0 && !(df$rt$intFromRef(p$x) > 50) ?
+            df$rt$boolToRef(false) :
+            null)) in
+          (let l0$result$2 ==
+            ((!(df$rt$intFromRef(p$x) > 50) ? df$rt$boolToRef(true) : null)) in
+            (let l0$result$3 ==
+              ((df$rt$intFromRef(p$x) > 50 ? l0$result$1 : l0$result$2)) in
+              (let anon$2$0 ==
+                ((df$rt$boolFromRef(l0$result$3) ?
+                  df$rt$boolToRef(false) :
+                  null)) in
+                (let anon$3$0 ==
+                  ((!df$rt$boolFromRef(l0$result$3) ?
+                    df$rt$boolToRef(true) :
+                    null)) in
+                  (df$rt$intFromRef(p$x) > 100 ?
+                    anon$0$0 :
+                    (df$rt$intFromRef(p$x) < 0 &&
+                    !(df$rt$intFromRef(p$x) > 50) ?
+                      anon$1$0 :
+                      (df$rt$boolFromRef(l0$result$3) ?
+                        anon$2$0 :
+                        anon$3$0)))))))))))
 }

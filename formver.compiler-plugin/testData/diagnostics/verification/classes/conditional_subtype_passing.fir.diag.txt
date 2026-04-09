@@ -2,11 +2,11 @@
 method f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(p$b: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$pkg$diagnostics_verification_classes$Base())
-  requires acc(p$pkg$diagnostics_verification_classes$c$Base$shared(p$b), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
   var anon$1: Ref
+  inhale acc(p$pkg$diagnostics_verification_classes$c$Base$shared(p$b), wildcard)
   anon$1 := pg$public$value(p$b)
   anon$0 := anon$1
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
@@ -21,11 +21,11 @@ method pg$public$value(this$dispatch: Ref) returns (ret: Ref)
 method f$pkg$diagnostics_verification_classes$takeOtherBase$TF$T$OtherBase$T$Unit(p$o: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$o), df$rt$c$pkg$diagnostics_verification_classes$OtherBase())
-  requires acc(p$pkg$diagnostics_verification_classes$c$OtherBase$shared(p$o), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
   var anon$1: Ref
+  inhale acc(p$pkg$diagnostics_verification_classes$c$OtherBase$shared(p$o), wildcard)
   anon$1 := pg$public$tag(p$o)
   anon$0 := anon$1
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
@@ -78,7 +78,6 @@ method f$pkg$diagnostics_verification_classes$conditionalSubtypePass$TF$T$Boolea
 method f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(p$b: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$pkg$diagnostics_verification_classes$Base())
-  requires acc(p$pkg$diagnostics_verification_classes$c$Base$shared(p$b), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
@@ -114,7 +113,6 @@ method f$pkg$diagnostics_verification_classes$subtypePassInOneBranch$TF$T$Boolea
 method f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(p$b: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$pkg$diagnostics_verification_classes$Base())
-  requires acc(p$pkg$diagnostics_verification_classes$c$Base$shared(p$b), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
@@ -156,14 +154,12 @@ method f$pkg$diagnostics_verification_classes$multiInterfaceConditional$TF$T$Boo
 method f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(p$b: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$pkg$diagnostics_verification_classes$Base())
-  requires acc(p$pkg$diagnostics_verification_classes$c$Base$shared(p$b), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
 method f$pkg$diagnostics_verification_classes$takeOtherBase$TF$T$OtherBase$T$Unit(p$o: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$o), df$rt$c$pkg$diagnostics_verification_classes$OtherBase())
-  requires acc(p$pkg$diagnostics_verification_classes$c$OtherBase$shared(p$o), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
@@ -216,7 +212,6 @@ method f$pkg$diagnostics_verification_classes$subtypeCreatedConditionally$TF$T$B
 method f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(p$b: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$pkg$diagnostics_verification_classes$Base())
-  requires acc(p$pkg$diagnostics_verification_classes$c$Base$shared(p$b), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
@@ -256,8 +251,8 @@ method f$pkg$diagnostics_verification_classes$nestedConditionalPass$TF$T$Boolean
 method f$pkg$diagnostics_verification_classes$takeBase$TF$T$Base$T$Unit(p$b: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$pkg$diagnostics_verification_classes$Base())
-  requires acc(p$pkg$diagnostics_verification_classes$c$Base$shared(p$b), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
 method pg$public$value(this$dispatch: Ref) returns (ret: Ref)
+
