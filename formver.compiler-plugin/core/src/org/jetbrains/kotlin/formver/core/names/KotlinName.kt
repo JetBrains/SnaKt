@@ -83,24 +83,6 @@ data class ConstructorKotlinName(val type: FunctionTypeEmbedding) : KotlinName {
         get() = type.name.mangledBaseName
 }
 
-// It's a bit of a hack to make this as KotlinName, it should really just be any old name, but right now our scoped
-// names are KotlinNames and changing that could be messy.
-data class PredicateKotlinName(val name: String) : KotlinName {
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = name
-    override val mangledType: NameType
-        get() = NameType.Predicate
-}
-
-data class HavocKotlinName(val type: TypeEmbedding) : KotlinName {
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = type.name.mangled
-    override val mangledType: NameType
-        get() = NameType.Havoc
-}
-
 data class PretypeName(val name: String) : KotlinName {
 
     context(nameResolver: NameResolver)

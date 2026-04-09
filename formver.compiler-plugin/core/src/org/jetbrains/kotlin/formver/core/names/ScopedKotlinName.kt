@@ -13,7 +13,7 @@ import org.jetbrains.kotlin.name.FqName
 /**
  * Name of a Kotlin entity in the original program in a specified scope and optionally distinguished by type.
  */
-data class ScopedKotlinName(val scope: NameScope, val name: KotlinName) : SymbolicName {
+data class ScopedKotlinName(val scope: NameScope, val name: SymbolicName) : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledScope: String?
         get() = scope.fullMangledName
