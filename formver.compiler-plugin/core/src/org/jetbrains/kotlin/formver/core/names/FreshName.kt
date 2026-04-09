@@ -20,93 +20,41 @@ import org.jetbrains.kotlin.formver.viper.mangled
 
 interface FreshName : SymbolicName
 
-/**
- * Representation for names not present in the original source,
- * e.g. storage for the result of subexpressions.
- */
-data class AnonymousName(val n: Int) : FreshName {
-    override val mangledType: NameType
-        get() = NameType.Variable
-
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = "anon$$n"
-}
-
-data class AnonymousBuiltinName(val n: Int) : FreshName {
-
-    override val mangledType: NameType
-        get() = NameType.Variable
-
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = $$"anon$builtin$$$n"
-}
-
-/**
- * Name for return variable that should *only* be used in signatures of methods without a body.
- */
-data object PlaceholderReturnVariableName : FreshName {
-
-    override val mangledType: NameType
-        get() = NameType.Variable
-
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = "ret"
-}
-
-data class ReturnVariableName(val n: Int) : FreshName {
-    override val mangledType: NameType
-        get() = NameType.Variable
-
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = "ret$$n"
-}
-
-/**
- * Name for return variable that should *only* be used in signatures of pure functions
- * This variable will be translated into the special result variable in Viper
- */
-data object FunctionResultVariableName : FreshName {
-    override val mangledType: NameType
-        get() = NameType.Variable
-
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = "result"
-}
-
-data object DispatchReceiverName : FreshName {
-    override val mangledType: NameType
-        get() = NameType.Variable
-
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = $$"this$dispatch"
-}
-
-data object ExtensionReceiverName : FreshName {
-    override val mangledType: NameType
-        get() = NameType.Variable
-
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = $$"this$extension"
-}
-
-data class SpecialName(val baseName: String) : FreshName {
-    override val mangledType: NameType
-        get() = NameType.Special
-
+abstract class TypedFreshName(override val mangledType: NameType, val baseName: String) : FreshName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = baseName
 }
 
-abstract class NumberedLabelName(val baseName: String, val originalN: Int) : FreshName {
-    override val mangledType = Label
+/**
+ * Representation for names not present in the original source,
+ * e.g. storage for the result of subexpressions.
+ */
+data class AnonymousName(val n: Int) : TypedFreshName(NameType.Variable, "anon$$n")
+
+data class AnonymousBuiltinName(val n: Int) : TypedFreshName(NameType.Variable, $$"anon$builtin$$$n")
+
+/**
+ * Name for return variable that should *only* be used in signatures of methods without a body.
+ */
+data object PlaceholderReturnVariableName : TypedFreshName(NameType.Variable, "ret")
+
+data class ReturnVariableName(val n: Int) : TypedFreshName(NameType.Variable, "ret$$n")
+
+/**
+ * Name for return variable that should *only* be used in signatures of pure functions
+ * This variable will be translated into the special result variable in Viper
+ */
+data object FunctionResultVariableName : TypedFreshName(NameType.Variable, "result")
+
+data object DispatchReceiverName : TypedFreshName(NameType.Variable, $$"this$dispatch")
+
+data object ExtensionReceiverName : TypedFreshName(NameType.Variable, $$"this$extension")
+
+data class SpecialFieldName(val name: String) : TypedFreshName(NameType.Property, name)
+
+
+abstract class NumberedLabelName(val baseName: String, val originalN: Int) : TypedFreshName(Label) {
 
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
@@ -120,22 +68,11 @@ data class CatchLabelName(val n: Int) : NumberedLabelName("catch", n)
 data class TryExitLabelName(val n: Int) : NumberedLabelName("tryExit", n)
 
 
-data class PlaceholderArgumentName(val n: Int) : FreshName {
-    override val mangledType: NameType
-        get() = NameType.Variable
+data class DomainAssociatedFuncName(val name: String) : TypedFreshName(NameType.DomainFunction, name)
 
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = "arg$$n"
-}
+data class PlaceholderArgumentName(val n: Int) : TypedFreshName(NameType.Variable, "arg$$n")
 
-data class DomainFuncParameterName(val baseName: String) : FreshName {
-    override val mangledType: NameType
-        get() = NameType.Variable
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = baseName
-}
+data class DomainFuncParameterName(val name: String) : TypedFreshName(NameType.Variable, name)
 
 data class SsaVariableName(val ssaIndex: Int, val baseName: SymbolicName) : FreshName {
     override val mangledType: NameType
@@ -146,15 +83,9 @@ data class SsaVariableName(val ssaIndex: Int, val baseName: SymbolicName) : Fres
         get() = "${baseName.mangled}$$ssaIndex"
 }
 
-data class PredicateKotlinName(val name: String) : FreshName {
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = name
-    override val mangledType: NameType
-        get() = NameType.Predicate
-}
+data class PredicateName(val name: String) : TypedFreshName(NameType.Predicate, name)
 
-data class HavocKotlinName(val type: TypeEmbedding) : KotlinName {
+data class HavocName(val type: TypeEmbedding) : SymbolicName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = type.name.mangled
