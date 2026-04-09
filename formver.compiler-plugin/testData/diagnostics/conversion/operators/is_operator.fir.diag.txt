@@ -1,30 +1,32 @@
 /is_operator.kt:(23,36): info: Generated Viper text for isNonNullable:
-method f$isNonNullable$TF$NT$Int$T$Boolean(p$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
+method f$isNonNullable$t$F$t$N$Int$t$Boolean(par$x: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
-  ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType()))
+  ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType()))
   goto lbl$ret$0
   label lbl$ret$0
 }
 
 /is_operator.kt:(84,97): info: Generated Viper text for notIsNullable:
-method f$notIsNullable$TF$NT$Int$T$Boolean(p$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
+method f$notIsNullable$t$F$t$N$Int$t$Boolean(par$x: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
-  ret$0 := sp$notBool(df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nothingType())))
+  ret$0 := sp$notBool(df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nothingType())))
   goto lbl$ret$0
   label lbl$ret$0
 }
 
 /is_operator.kt:(150,159): info: Generated Viper text for smartCast:
-method f$smartCast$TF$NT$Any$T$Int(p$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$anyType()))
+method f$smartCast$t$F$t$N$Any$t$Int(par$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
-  if (df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())) {
-    ret$0 := p$x
+  if (df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())) {
+    ret$0 := par$x
     goto lbl$ret$0
   } else {
     ret$0 := df$rt$intToRef(-1)
