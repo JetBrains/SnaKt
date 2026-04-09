@@ -26,9 +26,9 @@ class LocalityFunctionCallChecker(
         val receiverDeclaration = callableSymbol.receiverParameterSymbol?.fir
         val receiver = expression.dispatchReceiver
 
-        if (receiver != null && target != null) {
-            val targetLocality = target.resolvedType.localAttribute
-            val receiverLocality = receiver.resolvedLocalAttribute
+        if (receiver != null && receiverDeclaration != null) {
+            val expectedReceiverLocality = receiverDeclaration.localityAttribute
+            val actualReceiverLocality = receiver.localityAttribute
 
             if (!receiverLocality.accepts(targetLocality)) {
                 reporter.reportOn(
