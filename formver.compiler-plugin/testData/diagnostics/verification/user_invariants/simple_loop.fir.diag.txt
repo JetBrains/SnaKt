@@ -16,9 +16,9 @@ method f$test$t$F$t$Int$t$Unit(par$n: Ref) returns (ret$0: Ref)
     invariant df$rt$isSubtype(df$rt$typeOf(par$n), df$rt$intType())
     invariant df$rt$intFromRef(l0$it) <= 10
     invariant df$rt$boolFromRef(l0$holds)
-  anon$0 := sp$ltInts(l0$it, df$rt$intToRef(10))
+  anon$0 := df$ltInts(l0$it, df$rt$intToRef(10))
   if (df$rt$boolFromRef(anon$0)) {
-    l0$it := sp$plusInts(l0$it, df$rt$intToRef(1))
+    l0$it := df$plusInts(l0$it, df$rt$intToRef(1))
     goto lbl$cont$0
   }
   label lbl$break$0
@@ -36,9 +36,9 @@ method f$test$t$F$t$Int$t$Unit(par$n: Ref) returns (ret$0: Ref)
       invariant df$rt$isSubtype(df$rt$typeOf(par$n), df$rt$intType())
       invariant df$rt$intFromRef(l0$it) <= df$rt$intFromRef(par$n)
       invariant df$rt$boolFromRef(l0$holds)
-    anon$1 := sp$ltInts(l0$it, par$n)
+    anon$1 := df$ltInts(l0$it, par$n)
     if (df$rt$boolFromRef(anon$1)) {
-      l0$it := sp$plusInts(l0$it, df$rt$intToRef(1))
+      l0$it := df$plusInts(l0$it, df$rt$intToRef(1))
       goto lbl$cont$1
     }
     label lbl$break$1
@@ -63,19 +63,19 @@ method f$loopInsideLoop$t$F$t$Unit() returns (ret$0: Ref)
   label lbl$cont$0
     invariant df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
     invariant df$rt$intFromRef(l0$i) <= 10
-  anon$0 := sp$ltInts(l0$i, df$rt$intToRef(10))
+  anon$0 := df$ltInts(l0$i, df$rt$intToRef(10))
   if (df$rt$boolFromRef(anon$0)) {
     var l1$j: Ref
     var anon$1: Ref
-    l1$j := sp$plusInts(l0$i, df$rt$intToRef(1))
+    l1$j := df$plusInts(l0$i, df$rt$intToRef(1))
     label lbl$cont$1
       invariant df$rt$isSubtype(df$rt$typeOf(l1$j), df$rt$intType())
       invariant df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
       invariant df$rt$intFromRef(l0$i) < df$rt$intFromRef(l1$j)
       invariant df$rt$intFromRef(l1$j) <= 10
-    anon$1 := sp$ltInts(l1$j, df$rt$intToRef(10))
+    anon$1 := df$ltInts(l1$j, df$rt$intToRef(10))
     if (df$rt$boolFromRef(anon$1)) {
-      l1$j := sp$plusInts(l1$j, df$rt$intToRef(1))
+      l1$j := df$plusInts(l1$j, df$rt$intToRef(1))
       goto lbl$cont$1
     }
     label lbl$break$1
@@ -83,7 +83,7 @@ method f$loopInsideLoop$t$F$t$Unit() returns (ret$0: Ref)
     assert df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
     assert df$rt$intFromRef(l0$i) < df$rt$intFromRef(l1$j)
     assert df$rt$intFromRef(l1$j) <= 10
-    l0$i := sp$plusInts(l0$i, df$rt$intToRef(1))
+    l0$i := df$plusInts(l0$i, df$rt$intToRef(1))
     goto lbl$cont$0
   }
   label lbl$break$0

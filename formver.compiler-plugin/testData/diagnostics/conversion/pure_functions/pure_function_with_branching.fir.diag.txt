@@ -6,7 +6,7 @@ function f$noAssignmentInBlocks$t$F$t$Boolean$t$Int(par$a: Ref): Ref
   (let l0$result$0 ==
     (df$rt$intToRef(0)) in
     (let l0$result$1 ==
-      (sp$plusInts(l0$result$0, df$rt$intToRef(1))) in
+      (df$plusInts(l0$result$0, df$rt$intToRef(1))) in
       l0$result$1))
 }
 
@@ -19,11 +19,11 @@ function f$simpleBranching$t$F$t$Boolean$t$Int(par$a: Ref): Ref
     (df$rt$intToRef(0)) in
     (let l0$result$1 ==
       ((df$rt$boolFromRef(par$a) ?
-        sp$plusInts(l0$result$0, df$rt$intToRef(1)) :
+        df$plusInts(l0$result$0, df$rt$intToRef(1)) :
         null)) in
       (let l0$result$2 ==
         ((!df$rt$boolFromRef(par$a) ?
-          sp$plusInts(l0$result$0, df$rt$intToRef(2)) :
+          df$plusInts(l0$result$0, df$rt$intToRef(2)) :
           null)) in
         (let l0$result$3 ==
           ((df$rt$boolFromRef(par$a) ? l0$result$1 : l0$result$2)) in
@@ -40,23 +40,23 @@ function f$nestedBranching$t$F$t$Boolean$t$Boolean$t$Int(par$a: Ref, par$b: Ref)
     (df$rt$intToRef(0)) in
     (let l0$result$1 ==
       ((df$rt$boolFromRef(par$a) ?
-        sp$plusInts(df$rt$intToRef(1), l0$result$0) :
+        df$plusInts(df$rt$intToRef(1), l0$result$0) :
         null)) in
       (let l0$result$2 ==
         ((df$rt$boolFromRef(par$b) && df$rt$boolFromRef(par$a) ?
-          sp$plusInts(df$rt$intToRef(2), l0$result$1) :
+          df$plusInts(df$rt$intToRef(2), l0$result$1) :
           null)) in
         (let l0$result$3 ==
           ((!df$rt$boolFromRef(par$b) && df$rt$boolFromRef(par$a) ?
-            sp$plusInts(df$rt$intToRef(3), l0$result$1) :
+            df$plusInts(df$rt$intToRef(3), l0$result$1) :
             null)) in
           (let l0$result$4 ==
             ((df$rt$boolFromRef(par$b) && !df$rt$boolFromRef(par$a) ?
-              sp$plusInts(df$rt$intToRef(4), l0$result$0) :
+              df$plusInts(df$rt$intToRef(4), l0$result$0) :
               null)) in
             (let l0$result$5 ==
               ((!df$rt$boolFromRef(par$b) && !df$rt$boolFromRef(par$a) ?
-                sp$plusInts(df$rt$intToRef(5), l0$result$0) :
+                df$plusInts(df$rt$intToRef(5), l0$result$0) :
                 null)) in
               (let l0$result$6 ==
                 ((!df$rt$boolFromRef(par$a) ?
@@ -64,7 +64,7 @@ function f$nestedBranching$t$F$t$Boolean$t$Boolean$t$Int(par$a: Ref, par$b: Ref)
                   null)) in
                 (let l0$result$7 ==
                   ((!df$rt$boolFromRef(par$a) ?
-                    sp$plusInts(df$rt$intToRef(6), l0$result$6) :
+                    df$plusInts(df$rt$intToRef(6), l0$result$6) :
                     null)) in
                   (let l0$result$8 ==
                     ((df$rt$boolFromRef(par$b) ? l0$result$2 : l0$result$3)) in
@@ -73,7 +73,7 @@ function f$nestedBranching$t$F$t$Boolean$t$Boolean$t$Int(par$a: Ref, par$b: Ref)
                         l0$result$8 :
                         l0$result$7)) in
                       (let l0$result$10 ==
-                        (sp$plusInts(df$rt$intToRef(7), l0$result$9)) in
+                        (df$plusInts(df$rt$intToRef(7), l0$result$9)) in
                         l0$result$10)))))))))))
 }
 
@@ -100,7 +100,7 @@ function f$whenExpressionSimple$t$F$t$Int$t$Int(par$x: Ref): Ref
               (df$rt$intFromRef(anon$0$0) == 2 &&
               !(df$rt$intFromRef(anon$0$0) == 1) ?
                 df$rt$intToRef(20) :
-                sp$plusInts(l0$y$4, df$rt$intToRef(1)))))))))
+                df$plusInts(l0$y$4, df$rt$intToRef(1)))))))))
 }
 
 /pure_function_with_branching.kt:(1053,1076): info: Generated Viper text for whenNoArgumentBranching:

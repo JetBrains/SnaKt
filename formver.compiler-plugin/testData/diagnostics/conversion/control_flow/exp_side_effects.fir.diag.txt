@@ -24,7 +24,7 @@ method f$test$t$F$t$Unit() returns (ret$0: Ref)
   anon$3 := f$getFoo$t$F$t$Foo()
   anon$2 := havoc$t$Int()
   anon$4 := f$sideEffect$t$F$t$Int()
-  l0$y := sp$plusInts(anon$2, anon$4)
+  l0$y := df$plusInts(anon$2, anon$4)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }

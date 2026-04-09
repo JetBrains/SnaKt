@@ -5,7 +5,7 @@ method f$less$t$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
-  ret$0 := sp$ltInts(par$x, par$y)
+  ret$0 := df$ltInts(par$x, par$y)
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -17,7 +17,7 @@ method f$lessEqual$t$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
-  ret$0 := sp$leInts(par$x, par$y)
+  ret$0 := df$leInts(par$x, par$y)
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -29,7 +29,7 @@ method f$greater$t$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
-  ret$0 := sp$gtInts(par$x, par$y)
+  ret$0 := df$gtInts(par$x, par$y)
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -41,7 +41,7 @@ method f$greaterEqual$t$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
-  ret$0 := sp$geInts(par$x, par$y)
+  ret$0 := df$geInts(par$x, par$y)
   goto lbl$ret$0
   label lbl$ret$0
 }

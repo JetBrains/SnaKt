@@ -4,7 +4,7 @@ method f$testGreater$t$F$t$Int$t$Int(par$init: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
   ensures df$rt$intFromRef(ret$0) > df$rt$intFromRef(par$init)
 {
-  ret$0 := sp$plusInts(par$init, df$rt$intToRef(5))
+  ret$0 := df$plusInts(par$init, df$rt$intToRef(5))
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -14,7 +14,7 @@ method f$testString$t$F$t$Char() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$charType())
   ensures df$rt$charFromRef(ret$0) == 97
 {
-  ret$0 := sp$stringGet(df$rt$stringToRef(Seq(98, 97, 98)), df$rt$intToRef(1))
+  ret$0 := df$stringGet(df$rt$stringToRef(Seq(98, 97, 98)), df$rt$intToRef(1))
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -27,7 +27,7 @@ method f$testWithPrecondition$t$F$t$Int$t$Int(par$int: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
   ensures df$rt$intFromRef(ret$0) > 0
 {
-  ret$0 := sp$minusInts(par$int, df$rt$intToRef(10))
+  ret$0 := df$minusInts(par$int, df$rt$intToRef(10))
   goto lbl$ret$0
   label lbl$ret$0
 }

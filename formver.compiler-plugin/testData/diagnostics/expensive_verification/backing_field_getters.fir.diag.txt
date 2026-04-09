@@ -39,7 +39,7 @@ method f$receiverNotNullProved$t$F$t$N$X$t$Boolean(par$x: Ref)
     anon$0 := anon$1
   } else {
     anon$0 := df$rt$nullValue()}
-  ret$0 := sp$notBool(df$rt$boolToRef(anon$0 == df$rt$nullValue()))
+  ret$0 := df$notBool(df$rt$boolToRef(anon$0 == df$rt$nullValue()))
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -140,7 +140,7 @@ method f$nullableReceiverNotNullSafeGet$t$F$t$Unit() returns (ret$0: Ref)
     anon$1 := anon$2
   } else {
     anon$1 := df$rt$nullValue()}
-  l0$cond1 := sp$notBool(df$rt$boolToRef(anon$1 == df$rt$nullValue()))
+  l0$cond1 := df$notBool(df$rt$boolToRef(anon$1 == df$rt$nullValue()))
   assert df$rt$boolFromRef(l0$cond1)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -196,7 +196,7 @@ method f$nonNullableReceiverSafeGet$t$F$t$Unit() returns (ret$0: Ref)
     anon$0 := anon$1
   } else {
     anon$0 := df$rt$nullValue()}
-  l0$cond1 := sp$notBool(df$rt$boolToRef(anon$0 == df$rt$nullValue()))
+  l0$cond1 := df$notBool(df$rt$boolToRef(anon$0 == df$rt$nullValue()))
   assert df$rt$boolFromRef(l0$cond1)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())

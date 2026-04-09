@@ -53,7 +53,7 @@ method f$nullableNonNullableComparison$t$F$t$N$Int$t$N$Int$t$Boolean(par$x: Ref,
   requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
-  ret$0 := sp$notBool(df$rt$boolToRef(par$x == df$rt$intToRef(3)))
+  ret$0 := df$notBool(df$rt$boolToRef(par$x == df$rt$intToRef(3)))
   goto lbl$ret$0
   label lbl$ret$0
 }

@@ -38,7 +38,7 @@ method f$c$Bar$sum$t$F$t$Bar$t$Int(this$dispatch: Ref) returns (ret$0: Ref)
   anon$0 := this$dispatch.bf$x
   unfold acc(pred$c$Bar$shared(this$dispatch), wildcard)
   anon$1 := this$dispatch.bf$z
-  ret$0 := sp$plusInts(anon$0, anon$1)
+  ret$0 := df$plusInts(anon$0, anon$1)
   goto lbl$ret$0
   label lbl$ret$0
 }
