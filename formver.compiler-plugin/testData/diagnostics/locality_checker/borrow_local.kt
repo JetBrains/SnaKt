@@ -17,7 +17,9 @@ fun A.shareTarget() {}
 
 fun (@Borrowed A).borrowTargetAndArg(y: @Borrowed A) {}
 
-fun @receiver:Borrowed A.borrowTargetAndArg(y: @Borrowed A) {}
+fun `pass local as shared argument`(x: @Borrowed A) {
+    share(<!LOCALITY_VIOLATION!>x<!>)
+}
 
 fun `pass global as borrowed argument`(x: A) {
     borrowArg(x)
