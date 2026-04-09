@@ -6,11 +6,12 @@
 package org.jetbrains.kotlin.formver.core.names
 
 import org.jetbrains.kotlin.formver.viper.NameResolver
+import org.jetbrains.kotlin.formver.viper.NamedEntity
 import org.jetbrains.kotlin.formver.viper.mangled
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.utils.addToStdlib.ifFalse
 
-sealed interface NameScope {
+sealed interface NameScope : NamedEntity {
     val parent: NameScope?
 
     context(nameResolver: NameResolver)
