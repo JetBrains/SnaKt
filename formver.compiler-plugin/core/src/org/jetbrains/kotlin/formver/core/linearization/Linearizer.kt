@@ -73,7 +73,7 @@ data class Linearizer(
     }
 
     override fun addReturn(returnExp: ExpEmbedding, target: ReturnTarget) {
-        returnExp.withType(target.variable.type)
+        returnExp.withUpcast(target.variable.type)
             .toViperStoringIn(target.variable, this)
         addStatement { target.label.toLink().toViperGoto(this) }
     }
@@ -87,8 +87,8 @@ data class Linearizer(
     ) =
         addStatement {
             val condViper = condition.toViperBuiltinType(this)
-            val thenViper = asBlock { thenBranch.withType(type).toViperMaybeStoringIn(result, this) }
-            val elseViper = asBlock { elseBranch.withType(type).toViperMaybeStoringIn(result, this) }
+            val thenViper = asBlock { thenBranch.withUpcast(type).toViperMaybeStoringIn(result, this) }
+            val elseViper = asBlock { elseBranch.withUpcast(type).toViperMaybeStoringIn(result, this) }
             Stmt.If(condViper, thenViper, elseViper, source.asPosition)
         }
 
@@ -96,6 +96,23 @@ data class Linearizer(
         val result = freshAnonVar(access.field.type)
         addFieldAccessStoringIn(access, result)
         return result.toViper(this)
+    }
+
+    override fun applyUnfolding(
+        predicates: List<Exp.PredicateAccess>,
+        innerViper: Exp,
+        innerType: TypeEmbedding,
+        nullGuard: Exp?,
+    ): Exp {
+        val emitUnfolds: LinearizationContext.() -> Unit = {
+            for (pred in predicates) addStatement { Stmt.Unfold(pred, source.asPosition) }
+        }
+        if (nullGuard != null) {
+            addStatement { Stmt.If(nullGuard, asBlock(emitUnfolds), Stmt.Seqn(), source.asPosition) }
+        } else {
+            emitUnfolds()
+        }
+        return innerViper
     }
 
     override fun addModifier(mod: StmtModifier) {

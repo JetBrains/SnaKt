@@ -6,15 +6,18 @@
 package org.jetbrains.kotlin.formver.core.linearization
 
 import org.jetbrains.kotlin.KtSourceElement
+import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeBuilder
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeBuilder
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
+import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
 import org.jetbrains.kotlin.formver.viper.ast.Exp
@@ -56,6 +59,28 @@ interface LinearizationContext {
     fun addFieldAccess(access: FieldAccess): Exp
 
     fun addFieldAccessStoringIn(access: FieldAccess, result: VariableEmbedding)
+
+    /**
+     * Unfold [predicates] in the appropriate way for this context, then return [innerViper].
+     *
+     * When [nullGuard] is non-null, the unfolding is conditional on that expression being true (used for nullable
+     * upcasts, where the value may be null).
+     *
+     * - [Linearizer]: emits `Stmt.Unfold` for each predicate, optionally wrapped in `Stmt.If`
+     * - [PureFunBodyLinearizer]: registers predicates on an SSA variable so [SsaConverter]
+     *   wraps the *usage* (FuncApp/FieldAccess) with `Exp.Unfolding`, not the argument
+     * - [PureExpLinearizer]: throws — correct placement requires SSA, which this linearizer
+     *   does not have
+     */
+    fun applyUnfolding(
+        predicates: List<Exp.PredicateAccess>,
+        innerViper: Exp,
+        innerType: TypeEmbedding,
+        nullGuard: Exp? = null,
+    ): Exp {
+        val unfolded = predicates.foldRight(innerViper) { pred, acc -> Exp.Unfolding(pred, acc) }
+        return if (nullGuard != null) Exp.TernaryExp(nullGuard, unfolded, innerViper) else unfolded
+    }
 
     fun addModifier(mod: StmtModifier)
 

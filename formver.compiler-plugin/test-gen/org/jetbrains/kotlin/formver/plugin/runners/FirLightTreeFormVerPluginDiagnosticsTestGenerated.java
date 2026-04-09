@@ -714,6 +714,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
       }
 
       @Test
+      @TestMetadata("conditional_subtype_passing.kt")
+      public void testConditional_subtype_passing() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/conditional_subtype_passing.kt");
+      }
+
+      @Test
       @TestMetadata("multiple_interfaces.kt")
       public void testMultiple_interfaces() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/multiple_interfaces.kt");
@@ -905,6 +911,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
       @TestMetadata("pure_function_rely_on_branch.kt")
       public void testPure_function_rely_on_branch() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/pure_function_rely_on_branch.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_upcast.kt")
+      public void testPure_upcast() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/pure_upcast.kt");
       }
     }
 

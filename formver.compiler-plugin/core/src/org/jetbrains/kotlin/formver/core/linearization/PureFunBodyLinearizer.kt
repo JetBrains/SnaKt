@@ -55,7 +55,12 @@ data class PureFunBodyLinearizer(
         ssaConverter.addAssignment(lhs.name, rhs.toViper(this))
 
     override fun addReturn(returnExp: ExpEmbedding, target: ReturnTarget) {
-        ssaConverter.addReturn(returnExp.toViper(this))
+        // When we reach a return, we must ensure that the actual type corresponds to the expected type, which might
+        // require upcasts with unfolding. This can only be applied to variables. Thus, we introduce a new var and
+        // reuse the existing logic for assignments.
+        val resultVar = freshAnonVar(target.variable.type)
+        ssaConverter.addAssignment(resultVar.name, returnExp.toViper(this))
+        ssaConverter.addReturn(resultVar.toViper(this))
     }
 
     override fun addBranch(
@@ -73,14 +78,18 @@ data class PureFunBodyLinearizer(
             conditionExp,
             {
                 if (result != null) {
-                    resultThen = thenBranch.toViper(this)
+                    val thenVar = freshAnonVar(type)
+                    ssaConverter.addAssignment(thenVar.name, thenBranch.toViper(this))
+                    resultThen = thenVar.toViper(this)
                 } else {
                     thenBranch.toViperUnusedResult(this)
                 }
             },
             {
                 if (result != null) {
-                    resultElse = elseBranch.toViper(this)
+                    val elseVar = freshAnonVar(type)
+                    ssaConverter.addAssignment(elseVar.name, elseBranch.toViper(this))
+                    resultElse = elseVar.toViper(this)
                 } else {
                     elseBranch.toViperUnusedResult(this)
                 }
@@ -114,6 +123,21 @@ data class PureFunBodyLinearizer(
     override fun addFieldAccess(access: FieldAccess): Exp {
         val result = freshAnonVar(access.field.type)
         addFieldAccessStoringIn(access, result)
+        return result.toViper(this)
+    }
+
+    override fun applyUnfolding(
+        predicates: List<Exp.PredicateAccess>,
+        innerViper: Exp,
+        innerType: TypeEmbedding,
+        nullGuard: Exp?,
+    ): Exp {
+        // Store innerViper in a fresh SSA variable with the predicates as access invariants.
+        // SsaConverter.withAccessInvariants then propagates them to any FuncApp/FieldAccess that
+        // uses this variable, wrapping the usage with Exp.Unfolding.
+        if (predicates.isEmpty()) return innerViper
+        val result = freshAnonVar(innerType)
+        ssaConverter.addAssignment(result.name, innerViper, predicates)
         return result.toViper(this)
     }
 
