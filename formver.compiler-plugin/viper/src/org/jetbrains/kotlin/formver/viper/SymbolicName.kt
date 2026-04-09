@@ -38,6 +38,8 @@ val SymbolicName.debugMangled: String
  */
 sealed class NameType(val name: String) {
 
+    override fun toString(): String = name
+
     object Property : NameType("p")
     object BackingField : NameType("bf")
     object Getter : NameType("g")
@@ -52,7 +54,8 @@ sealed class NameType(val name: String) {
     object Function : NameType("f")
     object Predicate : NameType("pred")
     object Havoc : NameType("havoc")
-    sealed class Label(lblName: String) : NameType(lblName) {
+    sealed class Label(val lblName: String) : NameType(lblName) {
+        override fun toString(): String = "lbl$$lblName"
         object Return : Label("ret")
         object Break : Label("break")
         object Continue : Label("cont")
