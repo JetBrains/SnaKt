@@ -22,7 +22,7 @@ fun `pass local as shared argument`(x: @Borrowed A) {
 }
 
 fun `pass global as borrowed argument`(x: A) {
-    borrowArg(x)
+    borrow(x)
 }
 
 fun `pass local as borrowed argument`(x: @Borrowed A) {
