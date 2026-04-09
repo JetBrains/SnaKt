@@ -7,9 +7,7 @@ package org.jetbrains.kotlin.formver.plugin.compiler
 
 import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
-import org.jetbrains.kotlin.formver.plugin.compiler.analysis.FirDeclarationVariablesResolver
-import org.jetbrains.kotlin.formver.plugin.compiler.analysis.FirVariableDeclarationResolver
-import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalTypeAttributeExtension
+import org.jetbrains.kotlin.formver.plugin.compiler.locality.ConeLocalityAttributeExtension
 
 class FormalVerificationPluginExtensionRegistrar(private val config: PluginConfiguration) : FirExtensionRegistrar() {
     override fun ExtensionRegistrarContext.configurePlugin() {
