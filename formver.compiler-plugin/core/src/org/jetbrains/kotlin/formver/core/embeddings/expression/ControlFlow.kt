@@ -224,10 +224,12 @@ data class FunctionCall(val function: NamedFunctionSignature, val args: List<Exp
     override val subexpressions: List<ExpEmbedding>
         get() = args
 
-    override fun toViper(ctx: LinearizationContext): Exp = function.toFuncApp(
-        args.map { it.toViper(ctx) },
-        ctx.source.asPosition
-    )
+    override fun toViper(ctx: LinearizationContext): Exp {
+        return function.toFuncApp(
+            args.map { it.toViper(ctx) },
+            ctx.source.asPosition
+        )
+    }
 
     override fun <R> accept(v: ExpVisitor<R>): R =
         v.visitFunctionCall(this)
@@ -276,13 +278,6 @@ data class FunctionExp(
     override val type: TypeEmbedding = body.type
 
     override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
-        signature?.formalArgs?.forEach { arg ->
-            // Ideally, we would want to assume these rather than inhale them to prevent inconsistencies with
-            // permissions. Unfortunately, Silicon for some reason does not allow Assumes.
-            listOfNotNull(arg.sharedPredicateAccessInvariant()).forEach { invariant ->
-                ctx.addStatement { Stmt.Inhale(invariant.toViperBuiltinType(ctx), ctx.source.asPosition) }
-            }
-        }
         body.toViperMaybeStoringIn(result, ctx)
         ctx.addLabel(returnLabel.toViper(ctx))
     }
