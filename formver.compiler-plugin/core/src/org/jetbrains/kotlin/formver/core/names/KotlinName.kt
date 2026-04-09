@@ -83,14 +83,16 @@ data class ConstructorKotlinName(val type: FunctionTypeEmbedding) : KotlinName {
         get() = type.name.mangledBaseName
 }
 
-data class PretypeName(val name: String) : KotlinName {
+interface NameOfType : SymbolicName
+
+data class PretypeName(val name: String) : NameOfType {
 
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = name
 }
 
-data class SetOfNames(val names: List<SymbolicName>) : KotlinName {
+data class ListOfNames<T : SymbolicName>(val names: List<T>) : SymbolicName {
     override val mangledType: NameType
         get() = NameType.Type
 
@@ -99,7 +101,17 @@ data class SetOfNames(val names: List<SymbolicName>) : KotlinName {
         get() = names.joinToString(SEPARATOR) { it.mangled }
 }
 
-data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : KotlinName {
+data class FunctionTypeName(val args: ListOfNames<NameOfType>, val returns: TypeName) : NameOfType {
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
+        get() = buildString {
+            append(args.mangledBaseName)
+            if (isNotEmpty()) append(SEPARATOR)
+            append(returns.mangled)
+        }
+}
+
+data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : NameOfType {
 
     override val mangledType: NameType
         get() = NameType.Type
@@ -112,5 +124,4 @@ data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : Kotl
             if (isNotEmpty()) append(SEPARATOR)
             append(pretype.name.mangledBaseName)
         }
-
 }
