@@ -5,8 +5,9 @@
 
 package org.jetbrains.kotlin.formver.core.names
 
-import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.NameResolver
+import org.jetbrains.kotlin.formver.viper.NameType
+import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.name.FqName
 
 /**
@@ -20,8 +21,8 @@ data class ScopedKotlinName(val scope: NameScope, val name: KotlinName) : Symbol
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = name.mangledBaseName
-    override val mangledType: String?
-        get() = name.mangledType
+
+    override val mangledType: NameType? = name.mangledType
 }
 
 fun FqName.asViperString() = asString().replace('.', '_')

@@ -13,7 +13,7 @@ package org.jetbrains.kotlin.formver.viper
  */
 const val SEPARATOR = "$"
 interface SymbolicName {
-    val mangledType: String?
+    val mangledType: NameType?
         get() = null
     context(nameResolver: NameResolver)
     val mangledScope: String?
