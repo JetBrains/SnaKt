@@ -12,9 +12,7 @@ import org.jetbrains.kotlin.formver.plugin.compiler.locality.ConeLocalityAttribu
 class FormalVerificationPluginExtensionRegistrar(private val config: PluginConfiguration) : FirExtensionRegistrar() {
     override fun ExtensionRegistrarContext.configurePlugin() {
         registerDiagnosticContainers(PluginErrors)
-        +FirDeclarationVariablesResolver.getFactory()
-        +FirVariableDeclarationResolver.getFactory()
-        +LocalTypeAttributeExtension.getFactory(config)
+        +ConeLocalityAttributeExtension.getFactory(config)
         +PluginAdditionalCheckers.getFactory(config)
     }
 }
