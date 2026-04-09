@@ -5,7 +5,9 @@ import org.jetbrains.kotlin.formver.plugin.Borrowed
 
 class A
 
-fun borrowArg(x: @Borrowed A) {}
+fun borrow(x: @Borrowed A) {}
+
+fun share(x: A) {}
 
 fun borrowBoth(x: @Borrowed A, y: @Borrowed A) {}
 
