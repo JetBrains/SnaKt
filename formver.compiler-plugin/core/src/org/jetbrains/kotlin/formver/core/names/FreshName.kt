@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.names
 
+import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.NameType
 import org.jetbrains.kotlin.formver.viper.NameType.Label
@@ -143,4 +144,20 @@ data class SsaVariableName(val ssaIndex: Int, val baseName: SymbolicName) : Fres
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = "${baseName.mangled}$$ssaIndex"
+}
+
+data class PredicateKotlinName(val name: String) : FreshName {
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
+        get() = name
+    override val mangledType: NameType
+        get() = NameType.Predicate
+}
+
+data class HavocKotlinName(val type: TypeEmbedding) : KotlinName {
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
+        get() = type.name.mangled
+    override val mangledType: NameType
+        get() = NameType.Havoc
 }
