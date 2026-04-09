@@ -16,13 +16,13 @@ import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
 
 class AccEmbedding(
+    val receiver: ExpEmbedding,
     val field: FieldEmbedding,
-    val access: ExpEmbedding,
     val perm: PermExp,
 ) : OnlyToBuiltinTypeExpEmbedding {
     override fun toViperBuiltinType(ctx: LinearizationContext): Exp {
         val field = Exp.FieldAccess(
-            access.toViper(ctx),
+            receiver.toViper(ctx),
             field.toViper(),
             ctx.source.asPosition,
         )
@@ -34,7 +34,7 @@ class AccEmbedding(
         )
     }
 
-    override val subexpressions: List<ExpEmbedding> = listOf(access)
+    override val subexpressions: List<ExpEmbedding> = listOf(receiver)
 
     override val type: TypeEmbedding
         get() = buildType { boolean() }
