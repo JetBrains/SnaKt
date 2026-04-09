@@ -16,11 +16,14 @@ import org.jetbrains.kotlin.formver.viper.mangled
  * See the NameEmbeddings file for guidelines on good name choices.
  */
 
+
+interface FreshName : SymbolicName
+
 /**
  * Representation for names not present in the original source,
  * e.g. storage for the result of subexpressions.
  */
-data class AnonymousName(val n: Int) : SymbolicName {
+data class AnonymousName(val n: Int) : FreshName {
     override val mangledType: NameType
         get() = NameType.Variable
 
@@ -29,7 +32,7 @@ data class AnonymousName(val n: Int) : SymbolicName {
         get() = "anon$$n"
 }
 
-data class AnonymousBuiltinName(val n: Int) : SymbolicName {
+data class AnonymousBuiltinName(val n: Int) : FreshName {
 
     override val mangledType: NameType
         get() = NameType.Variable
@@ -42,7 +45,7 @@ data class AnonymousBuiltinName(val n: Int) : SymbolicName {
 /**
  * Name for return variable that should *only* be used in signatures of methods without a body.
  */
-data object PlaceholderReturnVariableName : SymbolicName {
+data object PlaceholderReturnVariableName : FreshName {
 
     override val mangledType: NameType
         get() = NameType.Variable
@@ -52,7 +55,7 @@ data object PlaceholderReturnVariableName : SymbolicName {
         get() = "ret"
 }
 
-data class ReturnVariableName(val n: Int) : SymbolicName {
+data class ReturnVariableName(val n: Int) : FreshName {
     override val mangledType: NameType
         get() = NameType.Variable
 
@@ -65,7 +68,7 @@ data class ReturnVariableName(val n: Int) : SymbolicName {
  * Name for return variable that should *only* be used in signatures of pure functions
  * This variable will be translated into the special result variable in Viper
  */
-data object FunctionResultVariableName : SymbolicName {
+data object FunctionResultVariableName : FreshName {
     override val mangledType: NameType
         get() = NameType.Variable
 
@@ -74,7 +77,7 @@ data object FunctionResultVariableName : SymbolicName {
         get() = "result"
 }
 
-data object DispatchReceiverName : SymbolicName {
+data object DispatchReceiverName : FreshName {
     override val mangledType: NameType
         get() = NameType.Variable
 
@@ -83,7 +86,7 @@ data object DispatchReceiverName : SymbolicName {
         get() = $$"this$dispatch"
 }
 
-data object ExtensionReceiverName : SymbolicName {
+data object ExtensionReceiverName : FreshName {
     override val mangledType: NameType
         get() = NameType.Variable
 
@@ -92,7 +95,7 @@ data object ExtensionReceiverName : SymbolicName {
         get() = $$"this$extension"
 }
 
-data class SpecialName(val baseName: String) : SymbolicName {
+data class SpecialName(val baseName: String) : FreshName {
     override val mangledType: NameType
         get() = NameType.Special
 
@@ -101,7 +104,7 @@ data class SpecialName(val baseName: String) : SymbolicName {
         get() = baseName
 }
 
-abstract class NumberedLabelName(val baseName: String, val originalN: Int) : SymbolicName {
+abstract class NumberedLabelName(val baseName: String, val originalN: Int) : FreshName {
     override val mangledType = Label
 
     context(nameResolver: NameResolver)
@@ -116,7 +119,7 @@ data class CatchLabelName(val n: Int) : NumberedLabelName("catch", n)
 data class TryExitLabelName(val n: Int) : NumberedLabelName("tryExit", n)
 
 
-data class PlaceholderArgumentName(val n: Int) : SymbolicName {
+data class PlaceholderArgumentName(val n: Int) : FreshName {
     override val mangledType: NameType
         get() = NameType.Variable
 
@@ -125,7 +128,7 @@ data class PlaceholderArgumentName(val n: Int) : SymbolicName {
         get() = "arg$$n"
 }
 
-data class DomainFuncParameterName(val baseName: String) : SymbolicName {
+data class DomainFuncParameterName(val baseName: String) : FreshName {
     override val mangledType: NameType
         get() = NameType.Variable
     context(nameResolver: NameResolver)
@@ -133,7 +136,7 @@ data class DomainFuncParameterName(val baseName: String) : SymbolicName {
         get() = baseName
 }
 
-data class SsaVariableName(val ssaIndex: Int, val baseName: SymbolicName) : SymbolicName {
+data class SsaVariableName(val ssaIndex: Int, val baseName: SymbolicName) : FreshName {
     override val mangledType: NameType
         get() = NameType.Variable
 
