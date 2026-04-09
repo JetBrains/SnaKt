@@ -52,11 +52,11 @@ domain d$rt  {
 
   function df$rt$stringFromRef(r: Ref): Seq[Int]
 
-  axiom rt$subtype_reflexive {
+  axiom rt$subtypeReflexive {
     (forall t: d$rt ::df$rt$isSubtype(t, t))
   }
 
-  axiom rt$subtype_transitive {
+  axiom rt$subtypeTransitive {
     (forall t1: d$rt, t2: d$rt, t3: d$rt ::
       { df$rt$isSubtype(t1, t2), df$rt$isSubtype(t2, t3) }
       { df$rt$isSubtype(t1, t2), df$rt$isSubtype(t1, t3) }
@@ -65,32 +65,32 @@ domain d$rt  {
       df$rt$isSubtype(t1, t3))
   }
 
-  axiom rt$subtype_antisymmetric {
+  axiom rt$subtypeAntisymmetric {
     (forall t1: d$rt, t2: d$rt ::
       { df$rt$isSubtype(t1, t2), df$rt$isSubtype(t2, t1) }
       df$rt$isSubtype(t1, t2) && df$rt$isSubtype(t2, t1) ==> t1 == t2)
   }
 
-  axiom rt$nullable_idempotent {
+  axiom rt$nullableIdempotent {
     (forall t: d$rt ::
       { df$rt$nullable(df$rt$nullable(t)) }
       df$rt$nullable(df$rt$nullable(t)) == df$rt$nullable(t))
   }
 
-  axiom rt$nullable_supertype {
+  axiom rt$nullableSupertype {
     (forall t: d$rt ::
       { df$rt$nullable(t) }
       df$rt$isSubtype(t, df$rt$nullable(t)))
   }
 
-  axiom rt$nullable_preserves_subtype {
+  axiom rt$nullablePreservesSubtype {
     (forall t1: d$rt, t2: d$rt ::
       { df$rt$isSubtype(df$rt$nullable(t1), df$rt$nullable(t2)) }
       df$rt$isSubtype(t1, t2) ==>
       df$rt$isSubtype(df$rt$nullable(t1), df$rt$nullable(t2)))
   }
 
-  axiom rt$nullable_any_supertype {
+  axiom rt$nullableAnySupertype {
     (forall t: d$rt ::df$rt$isSubtype(t, df$rt$nullable(df$rt$anyType())))
   }
 
@@ -130,26 +130,26 @@ domain d$rt  {
     df$rt$isSubtype(df$rt$c$Foo(), df$rt$anyType())
   }
 
-  axiom rt$supertype_of_nothing {
+  axiom rt$supertypeOfNothing {
     (forall t: d$rt ::df$rt$isSubtype(df$rt$nothingType(), t))
   }
 
-  axiom rt$any_not_nullable_type_level {
+  axiom rt$anyNotNullableTypeLevel {
     (forall t: d$rt ::!df$rt$isSubtype(df$rt$nullable(t), df$rt$anyType()))
   }
 
-  axiom rt$null_smartcast_value_level {
+  axiom rt$nullSmartcastValueLevel {
     (forall r: Ref, t: d$rt ::
       { df$rt$isSubtype(df$rt$typeOf(r), df$rt$nullable(t)) }
       df$rt$isSubtype(df$rt$typeOf(r), df$rt$nullable(t)) ==>
       r == df$rt$nullValue() || df$rt$isSubtype(df$rt$typeOf(r), t))
   }
 
-  axiom rt$nothing_empty {
+  axiom rt$nothingEmpty {
     (forall r: Ref ::!df$rt$isSubtype(df$rt$typeOf(r), df$rt$nothingType()))
   }
 
-  axiom rt$null_smartcast_type_level {
+  axiom rt$nullSmartcastTypeLevel {
     (forall t1: d$rt, t2: d$rt ::
       { df$rt$isSubtype(t1, df$rt$anyType()), df$rt$isSubtype(t1, df$rt$nullable(t2)) }
       df$rt$isSubtype(t1, df$rt$anyType()) &&
@@ -157,19 +157,19 @@ domain d$rt  {
       df$rt$isSubtype(t1, t2))
   }
 
-  axiom rt$type_of_null {
+  axiom rt$typeOfNull {
     df$rt$isSubtype(df$rt$typeOf(df$rt$nullValue()), df$rt$nullable(df$rt$nothingType()))
   }
 
-  axiom rt$any_not_nullable_value_level {
+  axiom rt$anyNotNullableValueLevel {
     !df$rt$isSubtype(df$rt$typeOf(df$rt$nullValue()), df$rt$anyType())
   }
 
-  axiom rt$type_of_unit {
+  axiom rt$typeOfUnit {
     df$rt$isSubtype(df$rt$typeOf(df$rt$unitValue()), df$rt$unitType())
   }
 
-  axiom rt$uniqueness_of_unit {
+  axiom rt$uniquenessOfUnit {
     (forall r: Ref ::
       { df$rt$isSubtype(df$rt$typeOf(r), df$rt$unitType()) }
       df$rt$isSubtype(df$rt$typeOf(r), df$rt$unitType()) ==>
@@ -437,3 +437,4 @@ method f$f$TF$T$Unit() returns (ret$0: Ref)
 
 method havoc$T$Int() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
+
