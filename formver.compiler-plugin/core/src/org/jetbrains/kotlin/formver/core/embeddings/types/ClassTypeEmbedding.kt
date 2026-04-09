@@ -10,13 +10,13 @@ import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
-import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
+import org.jetbrains.kotlin.formver.core.names.ScopedName
 import org.jetbrains.kotlin.formver.viper.ast.DomainFunc
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.debugMangled
 
 // TODO: incorporate generic parameters.
-data class ClassTypeEmbedding(override val name: ScopedKotlinName) : PretypeEmbedding {
+data class ClassTypeEmbedding(override val name: ScopedName) : PretypeEmbedding {
     private var _details: ClassEmbeddingDetails? = null
     val details: ClassEmbeddingDetails
         get() = _details ?: error("Details of $name have not been initialised yet.")
