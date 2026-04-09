@@ -52,6 +52,6 @@ class LocalityFunctionCallChecker(
                 "Argument uniqueness mismatch: expected '${parameterLocality.render()}', " +
                         "actual '${argumentLocality.render()}'."
             )
-        }
-    }
+                "Argument uniqueness mismatch: expected '${expectedArgumentLocality.render()}', " +
+                        "actual '${actualArgumentLocality.render()}'."
 }
