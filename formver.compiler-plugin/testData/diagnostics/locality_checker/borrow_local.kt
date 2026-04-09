@@ -11,7 +11,11 @@ fun share(x: A) {}
 
 fun borrowBoth(x: @Borrowed A, y: @Borrowed A) {}
 
-fun @receiver:Borrowed A.borrowTarget() {}
+fun (@Borrowed A).borrowTarget() {}
+
+fun A.shareTarget() {}
+
+fun (@Borrowed A).borrowTargetAndArg(y: @Borrowed A) {}
 
 fun @receiver:Borrowed A.borrowTargetAndArg(y: @Borrowed A) {}
 
