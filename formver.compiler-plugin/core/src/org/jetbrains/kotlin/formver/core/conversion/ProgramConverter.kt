@@ -7,7 +7,6 @@ package org.jetbrains.kotlin.formver.core.conversion
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.descriptors.Visibilities
-import org.jetbrains.kotlin.descriptors.isInterface
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.processAllDeclarations
@@ -234,7 +233,6 @@ class ProgramConverter(
         val newDetails =
             ClassEmbeddingDetails(
                 embedding,
-                symbol.classKind.isInterface,
             )
         embedding.initDetails(newDetails)
 
