@@ -44,14 +44,14 @@ method f$subs$t$F$t$String$t$Int$t$Int$t$String(this$extension: Ref, par$lo: Ref
         df$rt$stringFromRef(l0$res)[anon$builtin$1] ==
         df$rt$stringFromRef(this$extension)[anon$builtin$1 +
         df$rt$intFromRef(par$lo)])
-  anon$1 := sp$ltInts(l0$i, par$hi)
+  anon$1 := df$ltInts(l0$i, par$hi)
   if (df$rt$boolFromRef(anon$1)) {
     var anon$2: Ref
     var anon$0: Ref
     anon$0 := l0$i
-    l0$i := sp$plusInts(anon$0, df$rt$intToRef(1))
+    l0$i := df$plusInts(anon$0, df$rt$intToRef(1))
     anon$2 := anon$0
-    l0$res := sp$addStringChar(l0$res, sp$stringGet(this$extension, anon$2))
+    l0$res := df$addStringChar(l0$res, df$stringGet(this$extension, anon$2))
     goto lbl$cont$0
   }
   label lbl$break$0
@@ -101,7 +101,7 @@ method f$mergeStrings$t$F$t$String$t$String$t$String(par$a: Ref, par$b: Ref)
   l0$pa := df$rt$intToRef(0)
   l0$pb := df$rt$intToRef(0)
   l0$res := df$rt$stringToRef(Seq[Int]())
-  l0$n := sp$plusInts(sp$stringLength(par$a), sp$stringLength(par$b))
+  l0$n := df$plusInts(df$stringLength(par$a), df$stringLength(par$b))
   label lbl$cont$0
     invariant df$rt$isSubtype(df$rt$typeOf(l0$pa), df$rt$intType())
     invariant df$rt$isSubtype(df$rt$typeOf(l0$pb), df$rt$intType())
@@ -127,40 +127,40 @@ method f$mergeStrings$t$F$t$String$t$String$t$String(par$a: Ref, par$b: Ref)
       df$rt$intFromRef(l0$pb) == |df$rt$stringFromRef(par$b)| ||
       df$rt$stringFromRef(l0$res)[|df$rt$stringFromRef(l0$res)| - 1] <=
       df$rt$stringFromRef(par$b)[df$rt$intFromRef(l0$pb)]
-  anon$4 := sp$ltInts(sp$plusInts(l0$pa, l0$pb), l0$n)
+  anon$4 := df$ltInts(df$plusInts(l0$pa, l0$pb), l0$n)
   if (df$rt$boolFromRef(anon$4)) {
     var anon$5: Ref
     if (df$rt$intFromRef(l0$pa) == |df$rt$stringFromRef(par$a)|) {
       var anon$6: Ref
       var anon$0: Ref
       anon$0 := l0$pb
-      l0$pb := sp$plusInts(anon$0, df$rt$intToRef(1))
+      l0$pb := df$plusInts(anon$0, df$rt$intToRef(1))
       anon$6 := anon$0
-      anon$5 := sp$stringGet(par$b, anon$6)
+      anon$5 := df$stringGet(par$b, anon$6)
     } elseif (df$rt$intFromRef(l0$pb) == |df$rt$stringFromRef(par$b)|) {
       var anon$7: Ref
       var anon$1: Ref
       anon$1 := l0$pa
-      l0$pa := sp$plusInts(anon$1, df$rt$intToRef(1))
+      l0$pa := df$plusInts(anon$1, df$rt$intToRef(1))
       anon$7 := anon$1
-      anon$5 := sp$stringGet(par$a, anon$7)
+      anon$5 := df$stringGet(par$a, anon$7)
     } elseif (df$rt$stringFromRef(par$a)[df$rt$intFromRef(l0$pa)] <
     df$rt$stringFromRef(par$b)[df$rt$intFromRef(l0$pb)]) {
       var anon$8: Ref
       var anon$2: Ref
       anon$2 := l0$pa
-      l0$pa := sp$plusInts(anon$2, df$rt$intToRef(1))
+      l0$pa := df$plusInts(anon$2, df$rt$intToRef(1))
       anon$8 := anon$2
-      anon$5 := sp$stringGet(par$a, anon$8)
+      anon$5 := df$stringGet(par$a, anon$8)
     } else {
       var anon$9: Ref
       var anon$3: Ref
       anon$3 := l0$pb
-      l0$pb := sp$plusInts(anon$3, df$rt$intToRef(1))
+      l0$pb := df$plusInts(anon$3, df$rt$intToRef(1))
       anon$9 := anon$3
-      anon$5 := sp$stringGet(par$b, anon$9)
+      anon$5 := df$stringGet(par$b, anon$9)
     }
-    l0$res := sp$addStringChar(l0$res, anon$5)
+    l0$res := df$addStringChar(l0$res, anon$5)
     goto lbl$cont$0
   }
   label lbl$break$0
@@ -221,10 +221,10 @@ method f$mergeSorted$t$F$t$String$t$String(this$extension: Ref)
     var anon$2: Ref
     var anon$3: Ref
     anon$1 := f$subs$t$F$t$String$t$Int$t$Int$t$String(this$extension, df$rt$intToRef(0),
-      sp$divInts(sp$stringLength(this$extension), df$rt$intToRef(2)))
+      df$divInts(df$stringLength(this$extension), df$rt$intToRef(2)))
     anon$0 := f$mergeSorted$t$F$t$String$t$String(anon$1)
-    anon$3 := f$subs$t$F$t$String$t$Int$t$Int$t$String(this$extension, sp$divInts(sp$stringLength(this$extension),
-      df$rt$intToRef(2)), sp$stringLength(this$extension))
+    anon$3 := f$subs$t$F$t$String$t$Int$t$Int$t$String(this$extension, df$divInts(df$stringLength(this$extension),
+      df$rt$intToRef(2)), df$stringLength(this$extension))
     anon$2 := f$mergeSorted$t$F$t$String$t$String(anon$3)
     ret$0 := f$mergeStrings$t$F$t$String$t$String$t$String(anon$0, anon$2)
   }

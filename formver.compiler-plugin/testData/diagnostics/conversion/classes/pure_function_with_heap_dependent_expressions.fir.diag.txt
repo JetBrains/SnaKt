@@ -104,7 +104,7 @@ function f$sumFirstTwoNodes$t$F$t$Node$t$Int(par$node: Ref): Ref
             (unfolding acc(pred$c$Node$shared(par$node), wildcard) in
               (unfolding acc(pred$c$Node$shared(l0$nextNode$0), wildcard) in
                 (unfolding acc(pred$c$Node$shared(par$node), wildcard) in
-                  sp$plusInts(anon$2$0, anon$3$0)))) :
+                  df$plusInts(anon$2$0, anon$3$0)))) :
             null)) in
           (let anon$4$0 ==
             ((!!(l0$nextNode$0 == df$rt$nullValue()) ?
@@ -152,7 +152,7 @@ function f$length$t$F$t$Node$t$Int(par$node: Ref): Ref
       (let anon$2$0 ==
         ((!(l0$nextNode$0 == df$rt$nullValue()) ?
           (unfolding acc(pred$c$Node$shared(par$node), wildcard) in
-            sp$plusInts(df$rt$intToRef(1), f$length$t$F$t$Node$t$Int(l0$nextNode$0))) :
+            df$plusInts(df$rt$intToRef(1), f$length$t$F$t$Node$t$Int(l0$nextNode$0))) :
           null)) in
         (let anon$0$0 ==
           ((l0$nextNode$0 == df$rt$nullValue() ? anon$1$0 : anon$2$0)) in
@@ -186,7 +186,7 @@ function f$sumAllNodes$t$F$t$Node$t$Int(par$node: Ref): Ref
           ((!(l0$nextNode$0 == df$rt$nullValue()) ?
             (unfolding acc(pred$c$Node$shared(par$node), wildcard) in
               (unfolding acc(pred$c$Node$shared(par$node), wildcard) in
-                sp$plusInts(anon$3$0, f$sumAllNodes$t$F$t$Node$t$Int(l0$nextNode$0)))) :
+                df$plusInts(anon$3$0, f$sumAllNodes$t$F$t$Node$t$Int(l0$nextNode$0)))) :
             null)) in
           (let anon$0$0 ==
             ((l0$nextNode$0 == df$rt$nullValue() ? anon$1$0 : anon$2$0)) in

@@ -5,9 +5,9 @@ function f$doubleIncrement$t$F$t$Int(): Ref
   (let l0$x$0 ==
     (df$rt$intToRef(1)) in
     (let l0$x$1 ==
-      (sp$plusInts(l0$x$0, df$rt$intToRef(1))) in
+      (df$plusInts(l0$x$0, df$rt$intToRef(1))) in
       (let l0$x$2 ==
-        (sp$plusInts(l0$x$1, df$rt$intToRef(1))) in
+        (df$plusInts(l0$x$1, df$rt$intToRef(1))) in
         l0$x$2)))
 }
 
@@ -18,9 +18,9 @@ function f$updateThenReadIntoOther$t$F$t$Int(): Ref
   (let l0$x$0 ==
     (df$rt$intToRef(3)) in
     (let l0$x$1 ==
-      (sp$plusInts(l0$x$0, df$rt$intToRef(4))) in
+      (df$plusInts(l0$x$0, df$rt$intToRef(4))) in
       (let l0$y$0 ==
-        (sp$plusInts(l0$x$1, df$rt$intToRef(1))) in
+        (df$plusInts(l0$x$1, df$rt$intToRef(1))) in
         l0$y$0)))
 }
 
@@ -31,11 +31,11 @@ function f$readOldValueBeforeUpdate$t$F$t$Int(): Ref
   (let l0$x$0 ==
     (df$rt$intToRef(10)) in
     (let l0$y$0 ==
-      (sp$plusInts(l0$x$0, df$rt$intToRef(1))) in
+      (df$plusInts(l0$x$0, df$rt$intToRef(1))) in
       (let l0$x$1 ==
-        (sp$plusInts(l0$x$0, df$rt$intToRef(5))) in
+        (df$plusInts(l0$x$0, df$rt$intToRef(5))) in
         (let l0$x$2 ==
-          (sp$plusInts(l0$y$0, l0$x$1)) in
+          (df$plusInts(l0$y$0, l0$x$1)) in
           l0$x$2))))
 }
 
@@ -46,9 +46,9 @@ function f$chainThroughTemp$t$F$t$Int(): Ref
   (let l0$x$0 ==
     (df$rt$intToRef(2)) in
     (let l0$t$0 ==
-      (sp$plusInts(l0$x$0, df$rt$intToRef(3))) in
+      (df$plusInts(l0$x$0, df$rt$intToRef(3))) in
       (let l0$x$1 ==
-        (sp$plusInts(l0$t$0, df$rt$intToRef(4))) in
+        (df$plusInts(l0$t$0, df$rt$intToRef(4))) in
         l0$x$1)))
 }
 
@@ -120,7 +120,7 @@ function f$blockConditionalAssignment$t$F$t$Boolean$t$Boolean$t$Int(par$a: Ref,
           null)) in
         (let anon$0$0 ==
           ((df$rt$boolFromRef(par$a) ?
-            sp$plusInts(l2$y$0, df$rt$intToRef(1)) :
+            df$plusInts(l2$y$0, df$rt$intToRef(1)) :
             null)) in
           (let anon$3$0 ==
             ((!df$rt$boolFromRef(par$a) ? df$rt$intToRef(30) : null)) in

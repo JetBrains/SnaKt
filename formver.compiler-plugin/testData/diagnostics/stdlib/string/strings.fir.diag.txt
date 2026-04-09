@@ -146,7 +146,7 @@ method f$testLengthField$t$F$t$String$t$Unit(par$s: Ref)
   var l0$cond1: Ref
   var anon$0: Ref
   var anon$1: Ref
-  l0$len := sp$stringLength(par$s)
+  l0$len := df$stringLength(par$s)
   anon$1 := con$c$StringBox$t$String$t$StringBox(df$rt$stringToRef(Seq(115,
     116, 114)))
   unfold acc(pred$c$StringBox$shared(anon$1), wildcard)
@@ -208,13 +208,13 @@ method f$testOps$t$F$t$String$t$Unit(par$s: Ref) returns (ret$0: Ref)
   var l0$helloWorld: Ref
   var l0$stringPlusInteger: Ref
   if (|df$rt$stringFromRef(par$s)| > 0) {
-    l0$c := sp$stringGet(par$s, df$rt$intToRef(0))
+    l0$c := df$stringGet(par$s, df$rt$intToRef(0))
   } else {
     l0$c := df$rt$charToRef(97)}
   if (df$rt$charFromRef(l0$c) == 97) {
     anon$0 := df$rt$boolToRef(true)
   } else {
-    anon$0 := sp$gtInts(sp$stringLength(par$s), df$rt$intToRef(0))}
+    anon$0 := df$gtInts(df$stringLength(par$s), df$rt$intToRef(0))}
   assert df$rt$boolFromRef(anon$0)
   l0$str := df$rt$stringToRef(Seq(97, 98, 97))
   assert df$rt$stringFromRef(l0$str)[0] == df$rt$stringFromRef(l0$str)[2]
@@ -222,7 +222,7 @@ method f$testOps$t$F$t$String$t$Unit(par$s: Ref) returns (ret$0: Ref)
   assert df$rt$stringFromRef(l0$str)[1] == 98
   assert Seq(75, 111, 116, 108, 105, 110, 46, 83, 116, 114, 105, 110, 103) ==
     Seq(75, 111, 116, 108, 105, 110, 46, 83, 116, 114, 105, 110, 103)
-  l0$helloWorld := sp$addStringChar(df$rt$stringToRef(Seq(72, 101, 108, 108,
+  l0$helloWorld := df$addStringChar(df$rt$stringToRef(Seq(72, 101, 108, 108,
     111, 32, 87, 111, 114, 108, 100)), df$rt$charToRef(33))
   assert df$rt$stringFromRef(l0$helloWorld) ==
     Seq(72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100, 33)

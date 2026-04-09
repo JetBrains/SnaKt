@@ -3,7 +3,7 @@ method f$negation$t$F$t$Boolean$t$Boolean(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
-  ret$0 := sp$notBool(par$x)
+  ret$0 := df$notBool(par$x)
   goto lbl$ret$0
   label lbl$ret$0
 }

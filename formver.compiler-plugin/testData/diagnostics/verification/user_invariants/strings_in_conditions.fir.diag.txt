@@ -25,12 +25,12 @@ method f$firstNotSortedIndex$t$F$t$String$t$Int(par$s: Ref)
           df$rt$stringFromRef(par$s)[anon$builtin$1] <=
           df$rt$stringFromRef(par$s)[anon$builtin$1 + 1])
     if (df$rt$intFromRef(l3$i) < |df$rt$stringFromRef(par$s)|) {
-      anon$0 := sp$leChars(sp$stringGet(par$s, sp$minusInts(l3$i, df$rt$intToRef(1))),
-        sp$stringGet(par$s, l3$i))
+      anon$0 := df$leChars(df$stringGet(par$s, df$minusInts(l3$i, df$rt$intToRef(1))),
+        df$stringGet(par$s, l3$i))
     } else {
       anon$0 := df$rt$boolToRef(false)}
     if (df$rt$boolFromRef(anon$0)) {
-      l3$i := sp$plusInts(l3$i, df$rt$intToRef(1))
+      l3$i := df$plusInts(l3$i, df$rt$intToRef(1))
       goto lbl$cont$0
     }
     label lbl$break$0
@@ -92,9 +92,9 @@ method f$addCharacterTimes$t$F$t$String$t$Char$t$Int$t$String(par$s: Ref, par$c:
         anon$builtin$1 < |df$rt$stringFromRef(l0$res)| ==>
         df$rt$stringFromRef(l0$res)[anon$builtin$1] ==
         df$rt$charFromRef(par$c))
-  anon$0 := sp$ltInts(l0$i, par$n)
+  anon$0 := df$ltInts(l0$i, par$n)
   if (df$rt$boolFromRef(anon$0)) {
-    l0$res := sp$addStringChar(l0$res, par$c)
+    l0$res := df$addStringChar(l0$res, par$c)
     goto lbl$cont$0
   }
   label lbl$break$0

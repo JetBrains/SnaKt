@@ -56,7 +56,7 @@ method f$isNullOrEmptyWrong$t$F$t$N$CharSequence$t$Boolean(par$seq: Ref)
     anon$1 := g$public$length(par$seq)
     anon$0 := anon$1
     inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
-    ret$0 := sp$notBool(df$rt$boolToRef(df$rt$intFromRef(anon$0) == 0))
+    ret$0 := df$notBool(df$rt$boolToRef(df$rt$intFromRef(anon$0) == 0))
   } else {
     ret$0 := df$rt$boolToRef(false)}
   goto lbl$ret$0
@@ -80,7 +80,7 @@ method f$recursiveContract$t$F$t$Int$t$N$Any$t$Boolean(par$n: Ref, par$x: Ref)
   if (df$rt$intFromRef(par$n) == 0) {
     ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType()))
   } else {
-    ret$0 := f$recursiveContract$t$F$t$Int$t$N$Any$t$Boolean(sp$minusInts(par$n,
+    ret$0 := f$recursiveContract$t$F$t$Int$t$N$Any$t$Boolean(df$minusInts(par$n,
       df$rt$intToRef(1)), par$x)}
   goto lbl$ret$0
   label lbl$ret$0
