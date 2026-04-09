@@ -1,0 +1,1 @@
+/assign_property.kt:(573,577): error: Assignment locality mismatch: expected 'global', actual 'local(assign local safe-call expression to global)'.

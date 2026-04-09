@@ -1,0 +1,1 @@
+/borrow_local.kt:(583,584): error: Assignment locality mismatch: expected 'global', actual 'local(assign local to global after passing it as borrowed argument)'.
