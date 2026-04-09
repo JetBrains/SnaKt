@@ -47,7 +47,7 @@ class LocalityFunctionCallChecker(
             if (parameterLocality.accepts(argumentLocality)) continue
 
             reporter.reportOn(
-                argument.source,
+            if (expectedArgumentLocality.accepts(actualArgumentLocality)) continue
                 LOCALITY_VIOLATION,
                 "Argument uniqueness mismatch: expected '${parameterLocality.render()}', " +
                         "actual '${argumentLocality.render()}'."
