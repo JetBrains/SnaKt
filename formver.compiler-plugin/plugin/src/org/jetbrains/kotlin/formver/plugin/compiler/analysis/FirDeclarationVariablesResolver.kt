@@ -1,4 +1,4 @@
-package org.jetbrains.kotlin.formver.plugin.compiler.fir
+package org.jetbrains.kotlin.formver.plugin.compiler.analysis
 
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.FirSession.Companion.sessionComponentAccessor
@@ -24,17 +24,17 @@ class FirDeclarationVariablesResolver(
             FirDeclarationVariablesResolver(session, WeakHashMap())
         }
 
+        private fun resolveValueParameters(declaration: FirDeclaration) : Sequence<FirVariable> {
+            if (declaration !is FirFunction) return emptySequence()
+
+            return declaration.valueParameters.asSequence()
+        }
+
         private fun resolveLocalProperties(declaration: FirDeclaration) : Sequence<FirVariable> {
             if (declaration !is FirControlFlowGraphOwner) return emptySequence()
             val graph = declaration.controlFlowGraphReference?.controlFlowGraph ?: return emptySequence()
 
             return graph.nodes.asSequence().filterIsInstance<VariableDeclarationNode>().map { it.fir }
-        }
-
-        private fun resolveValueParameters(declaration: FirDeclaration) : Sequence<FirVariable> {
-            if (declaration !is FirFunction) return emptySequence()
-
-            return declaration.valueParameters.asSequence()
         }
     }
 

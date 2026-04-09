@@ -1,9 +1,13 @@
 package org.jetbrains.kotlin.formver.plugin.compiler.locality
 
+import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
+import org.jetbrains.kotlin.fir.declarations.FirVariable
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.types.ConeAttribute
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
+import org.jetbrains.kotlin.fir.types.coneType
+import org.jetbrains.kotlin.formver.plugin.compiler.analysis.declaration
 import kotlin.reflect.KClass
 
 /**
@@ -43,9 +47,6 @@ data class ConeLocalAttribute(
 fun ConeLocalAttribute?.union(other: ConeLocalAttribute?): ConeLocalAttribute? =
     this?.union(other) ?: other
 
-fun ConeLocalAttribute?.intersect(other: ConeLocalAttribute?): ConeLocalAttribute? =
-    this?.intersect(other)
-
 val ConeKotlinType.localAttribute: ConeLocalAttribute?
     get() = attributes[ConeLocalAttribute::class]
 
@@ -63,3 +64,7 @@ fun ConeLocalAttribute?.render(): String =
         "global"
     else
         "local(${(declaration?.symbol as? FirCallableSymbol<*>)?.name ?: "unknown"})"
+
+context(context: CheckerContext)
+val FirVariable.resolvedLocalAttribute: ConeLocalAttribute?
+    get() = returnTypeRef.coneType.localAttribute?.copy(declaration = declaration)

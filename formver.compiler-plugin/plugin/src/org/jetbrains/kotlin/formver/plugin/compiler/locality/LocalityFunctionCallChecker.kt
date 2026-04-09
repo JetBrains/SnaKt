@@ -21,26 +21,26 @@ class LocalityFunctionCallChecker(
     override fun check(expression: FirFunctionCall) {
         if (!config.checkLocality) return
 
+        val callableSymbol = expression.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
+            ?: throw IllegalStateException("Unable to resolve ${expression}")
+        val target = callableSymbol.receiverParameterSymbol
         val receiver = expression.dispatchReceiver
+        val parameters = callableSymbol.valueParameterSymbols
+        val arguments = expression.arguments
 
-        if (receiver != null) {
+        if (receiver != null && target != null) {
+            val targetLocality = target.resolvedType.localAttribute
             val receiverLocality = receiver.resolvedLocalAttribute
-            val receiverExpectedLocality = receiver.declaredLocalAttribute
 
-            if (!receiverLocality.accepts(receiverExpectedLocality)) {
+            if (!receiverLocality.accepts(targetLocality)) {
                 reporter.reportOn(
                     receiver.source ?: expression.source,
                     LOCALITY_VIOLATION,
-                    "Receiver uniqueness mismatch: expected '${receiverExpectedLocality.render()}', " +
+                    "Receiver uniqueness mismatch: expected '${targetLocality.render()}', " +
                             "actual '${receiverLocality.render()}'."
                 )
             }
         }
-
-        val callableSymbol = expression.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
-            ?: throw IllegalStateException("Unable to resolve ${expression}")
-        val parameters = callableSymbol.valueParameterSymbols
-        val arguments = expression.arguments
 
         for ((parameter, argument) in parameters.zip(arguments)) {
             val parameterLocality = parameter.resolvedReturnType.localAttribute
