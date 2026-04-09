@@ -46,6 +46,6 @@ class InvariantBuilder {
     fun triggers(@Suppress("UNUSED_PARAMETER") vararg expressions: Any?): Unit =
         throw FormverFunctionCalledInRuntimeException("triggers")
 
-    fun acc(@Suppress("UNUSED_PARAMETER") path: Any?, permission: Permission): Boolean =
+    fun acc(@Suppress("UNUSED_PARAMETER") path: Any?, permission: Permission? = null): Boolean =
         throw FormverFunctionCalledInRuntimeException("acc")
 }
