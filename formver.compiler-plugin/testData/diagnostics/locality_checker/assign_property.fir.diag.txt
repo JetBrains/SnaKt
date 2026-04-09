@@ -1,0 +1,13 @@
+/assign_property.kt:(573,577): error: Assignment locality mismatch: expected 'global', actual 'local(assign local safe-call expression to global)'.
+
+/assign_property.kt:(777,780): error: Assignment locality mismatch: expected 'global', actual 'local(assign local property to global property)'.
+
+/assign_property.kt:(974,1005): error: Assignment locality mismatch: expected 'global', actual 'local(assign local property if-expression to global)'.
+
+/assign_property.kt:(1150,1215): error: Assignment locality mismatch: expected 'global', actual 'local(assign local property when-expression to global in loop)'.
+
+/assign_property.kt:(1526,1590): error: Assignment locality mismatch: expected 'global', actual 'local(assign local property try-expression to global)'.
+
+/assign_property.kt:(1726,1757): error: Assignment locality mismatch: expected 'global', actual 'local(assign local property if-expression to global property in loop)'.
+
+/assign_property.kt:(2087,2151): error: Assignment locality mismatch: expected 'global', actual 'local(assign local property try-expression to global property)'.
