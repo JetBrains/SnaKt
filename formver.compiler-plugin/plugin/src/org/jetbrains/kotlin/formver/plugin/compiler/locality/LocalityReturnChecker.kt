@@ -17,8 +17,8 @@ class LocalityReturnChecker(
     override fun check(expression: FirReturnExpression) {
         if (!config.checkLocality) return
 
-        val leftLocality = expression.target.labeledElement.returnTypeRef.coneType.localAttribute
-        val rightLocality = expression.result.resolvedLocalAttribute
+        val leftLocality: ConeLocalityAttribute? = null
+        val rightLocality = expression.result.localityAttribute
 
         if (leftLocality.accepts(rightLocality)) return
 
