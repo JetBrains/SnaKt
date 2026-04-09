@@ -32,7 +32,6 @@ import org.jetbrains.kotlin.formver.core.purity.isPure
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
-import org.jetbrains.kotlin.text
 import org.jetbrains.kotlin.utils.addIfNotNull
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 import org.jetbrains.kotlin.utils.filterIsInstanceAnd
@@ -256,7 +255,7 @@ fun StmtConversionContext.insertAccFunctionCall(
     )).field
     val receiver = fieldAccess.receiver
     return withNoScope {
-        AccEmbedding(field, receiver, perm)
+        AccEmbedding(receiver, field, perm)
     }
 }
 
