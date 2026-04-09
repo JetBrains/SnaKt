@@ -35,4 +35,4 @@ class FirExpressionLocalityValueResolver(
 
 context(context: CheckerContext)
 val FirExpression.localityAttribute: ConeLocalityAttribute?
-    get() = FirExpressionLocalityEvaluator(context).extract(this)
+    get() = FirExpressionLocalityValueResolver(context).extract(this)
