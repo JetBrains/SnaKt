@@ -284,127 +284,127 @@ field bf$unit: Ref
 
 field bf$unitNull: Ref
 
-function sp$addCharInt(arg$1: Ref, arg$2: Ref): Ref
+function df$addCharInt(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$charType())
   ensures df$rt$charFromRef(result) ==
     df$rt$charFromRef(arg$1) + df$rt$intFromRef(arg$2)
 
 
-function sp$addStringChar(arg$1: Ref, arg$2: Ref): Ref
+function df$addStringChar(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$stringType())
   ensures df$rt$stringFromRef(result) ==
     df$rt$stringFromRef(arg$1) ++ Seq(df$rt$charFromRef(arg$2))
 
 
-function sp$addStrings(arg$1: Ref, arg$2: Ref): Ref
+function df$addStrings(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$stringType())
   ensures df$rt$stringFromRef(result) ==
     df$rt$stringFromRef(arg$1) ++ df$rt$stringFromRef(arg$2)
 
 
-function sp$andBools(arg$1: Ref, arg$2: Ref): Ref
+function df$andBools(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
   ensures df$rt$boolFromRef(result) ==
     (df$rt$boolFromRef(arg$1) && df$rt$boolFromRef(arg$2))
 
 
-function sp$divInts(arg$1: Ref, arg$2: Ref): Ref
+function df$divInts(arg$1: Ref, arg$2: Ref): Ref
   requires df$rt$intFromRef(arg$2) != 0
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
   ensures df$rt$intFromRef(result) ==
     df$rt$intFromRef(arg$1) / df$rt$intFromRef(arg$2)
 
 
-function sp$geChars(arg$1: Ref, arg$2: Ref): Ref
+function df$geChars(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
   ensures df$rt$boolFromRef(result) ==
     df$rt$charFromRef(arg$1) >= df$rt$charFromRef(arg$2)
 
 
-function sp$geInts(arg$1: Ref, arg$2: Ref): Ref
+function df$geInts(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
   ensures df$rt$boolFromRef(result) ==
     df$rt$intFromRef(arg$1) >= df$rt$intFromRef(arg$2)
 
 
-function sp$gtChars(arg$1: Ref, arg$2: Ref): Ref
+function df$gtChars(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
   ensures df$rt$boolFromRef(result) ==
     df$rt$charFromRef(arg$1) > df$rt$charFromRef(arg$2)
 
 
-function sp$gtInts(arg$1: Ref, arg$2: Ref): Ref
+function df$gtInts(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
   ensures df$rt$boolFromRef(result) ==
     df$rt$intFromRef(arg$1) > df$rt$intFromRef(arg$2)
 
 
-function sp$impliesBools(arg$1: Ref, arg$2: Ref): Ref
+function df$impliesBools(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
   ensures df$rt$boolFromRef(result) ==
     (df$rt$boolFromRef(arg$1) ==> df$rt$boolFromRef(arg$2))
 
 
-function sp$leChars(arg$1: Ref, arg$2: Ref): Ref
+function df$leChars(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
   ensures df$rt$boolFromRef(result) ==
     df$rt$charFromRef(arg$1) <= df$rt$charFromRef(arg$2)
 
 
-function sp$leInts(arg$1: Ref, arg$2: Ref): Ref
+function df$leInts(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
   ensures df$rt$boolFromRef(result) ==
     df$rt$intFromRef(arg$1) <= df$rt$intFromRef(arg$2)
 
 
-function sp$ltChars(arg$1: Ref, arg$2: Ref): Ref
+function df$ltChars(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
   ensures df$rt$boolFromRef(result) ==
     df$rt$charFromRef(arg$1) < df$rt$charFromRef(arg$2)
 
 
-function sp$ltInts(arg$1: Ref, arg$2: Ref): Ref
+function df$ltInts(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
   ensures df$rt$boolFromRef(result) ==
     df$rt$intFromRef(arg$1) < df$rt$intFromRef(arg$2)
 
 
-function sp$minusInts(arg$1: Ref, arg$2: Ref): Ref
+function df$minusInts(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
   ensures df$rt$intFromRef(result) ==
     df$rt$intFromRef(arg$1) - df$rt$intFromRef(arg$2)
 
 
-function sp$negInt(arg$1: Ref): Ref
+function df$negInt(arg$1: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
   ensures df$rt$intFromRef(result) == -df$rt$intFromRef(arg$1)
 
 
-function sp$notBool(arg$1: Ref): Ref
+function df$notBool(arg$1: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
   ensures df$rt$boolFromRef(result) == !df$rt$boolFromRef(arg$1)
 
 
-function sp$orBools(arg$1: Ref, arg$2: Ref): Ref
+function df$orBools(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
   ensures df$rt$boolFromRef(result) ==
     (df$rt$boolFromRef(arg$1) || df$rt$boolFromRef(arg$2))
 
 
-function sp$plusInts(arg$1: Ref, arg$2: Ref): Ref
+function df$plusInts(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
   ensures df$rt$intFromRef(result) ==
     df$rt$intFromRef(arg$1) + df$rt$intFromRef(arg$2)
 
 
-function sp$remInts(arg$1: Ref, arg$2: Ref): Ref
+function df$remInts(arg$1: Ref, arg$2: Ref): Ref
   requires df$rt$intFromRef(arg$2) != 0
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
   ensures df$rt$intFromRef(result) ==
     df$rt$intFromRef(arg$1) % df$rt$intFromRef(arg$2)
 
 
-function sp$stringGet(arg$1: Ref, arg$2: Ref): Ref
+function df$stringGet(arg$1: Ref, arg$2: Ref): Ref
   requires df$rt$intFromRef(arg$2) >= 0 &&
     df$rt$intFromRef(arg$2) < |df$rt$stringFromRef(arg$1)|
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$charType())
@@ -412,24 +412,24 @@ function sp$stringGet(arg$1: Ref, arg$2: Ref): Ref
     df$rt$stringFromRef(arg$1)[df$rt$intFromRef(arg$2)]
 
 
-function sp$stringLength(arg$1: Ref): Ref
+function df$stringLength(arg$1: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
   ensures df$rt$intFromRef(result) == |df$rt$stringFromRef(arg$1)|
 
 
-function sp$subCharInt(arg$1: Ref, arg$2: Ref): Ref
+function df$subCharInt(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$charType())
   ensures df$rt$charFromRef(result) ==
     df$rt$charFromRef(arg$1) - df$rt$intFromRef(arg$2)
 
 
-function sp$subChars(arg$1: Ref, arg$2: Ref): Ref
+function df$subChars(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
   ensures df$rt$intFromRef(result) ==
     df$rt$charFromRef(arg$1) - df$rt$charFromRef(arg$2)
 
 
-function sp$timesInts(arg$1: Ref, arg$2: Ref): Ref
+function df$timesInts(arg$1: Ref, arg$2: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
   ensures df$rt$intFromRef(result) ==
     df$rt$intFromRef(arg$1) * df$rt$intFromRef(arg$2)

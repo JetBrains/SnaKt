@@ -5,7 +5,7 @@ method f$resultOrArg$t$F$t$Boolean$t$Boolean(par$arg: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures df$rt$boolFromRef(ret$0) || df$rt$boolFromRef(par$arg)
 {
-  ret$0 := sp$notBool(par$arg)
+  ret$0 := df$notBool(par$arg)
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -20,7 +20,7 @@ method f$testImplies$t$F$t$Boolean$t$Boolean(par$arg: Ref)
   ensures !df$rt$boolFromRef(par$arg) ==> df$rt$boolFromRef(ret$0)
   ensures !df$rt$boolFromRef(ret$0) ==> df$rt$boolFromRef(par$arg)
 {
-  ret$0 := sp$notBool(par$arg)
+  ret$0 := df$notBool(par$arg)
   goto lbl$ret$0
   label lbl$ret$0
 }

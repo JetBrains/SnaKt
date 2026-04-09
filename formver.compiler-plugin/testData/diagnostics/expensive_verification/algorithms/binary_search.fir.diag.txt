@@ -1,14 +1,14 @@
 /binary_search.kt:(90,110): info: Generated Viper text for mid_increased_by_one:
-field sp$size: Ref
+field p$size: Ref
 
 method f$mid_increased_by_one$t$F$t$List$t$Int$t$Boolean(par$arr: Ref, par$target: Ref)
   returns (ret$0: Ref)
-  requires acc(par$arr.sp$size, write)
-  requires df$rt$intFromRef(par$arr.sp$size) >= 0
+  requires acc(par$arr.p$size, write)
+  requires df$rt$intFromRef(par$arr.p$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(par$arr), df$rt$c$pkg$kotlin_collections$List())
   requires df$rt$isSubtype(df$rt$typeOf(par$target), df$rt$intType())
-  ensures acc(par$arr.sp$size, write)
-  ensures df$rt$intFromRef(par$arr.sp$size) >= 0
+  ensures acc(par$arr.p$size, write)
+  ensures df$rt$intFromRef(par$arr.p$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
   var l0$size: Ref
@@ -16,11 +16,11 @@ method f$mid_increased_by_one$t$F$t$List$t$Int$t$Boolean(par$arr: Ref, par$targe
   var anon$0: Ref
   var anon$1: Ref
   inhale acc(pred$pkg$kotlin_collections$c$List$shared(par$arr), wildcard)
-  l0$size := par$arr.sp$size
+  l0$size := par$arr.p$size
   inhale df$rt$isSubtype(df$rt$typeOf(l0$size), df$rt$intType())
-  anon$0 := par$arr.sp$size
+  anon$0 := par$arr.p$size
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
-  l0$mid := sp$plusInts(sp$divInts(anon$0, df$rt$intToRef(2)), df$rt$intToRef(1))
+  l0$mid := df$plusInts(df$divInts(anon$0, df$rt$intToRef(2)), df$rt$intToRef(1))
   anon$1 := f$pkg$kotlin_collections$c$List$isEmpty$t$F$t$List$t$Boolean(par$arr)
   if (df$rt$boolFromRef(anon$1)) {
     ret$0 := df$rt$boolToRef(false)
@@ -37,7 +37,7 @@ method f$mid_increased_by_one$t$F$t$List$t$Int$t$Boolean(par$arr: Ref, par$targe
       if (df$rt$intFromRef(anon$3) < df$rt$intFromRef(par$target)) {
         var anon$4: Ref
         anon$4 := f$pkg$kotlin_collections$c$List$subList$t$F$t$List$t$Int$t$Int$t$List(par$arr,
-          sp$plusInts(l0$mid, df$rt$intToRef(1)), l0$size)
+          df$plusInts(l0$mid, df$rt$intToRef(1)), l0$size)
         ret$0 := f$mid_increased_by_one$t$F$t$List$t$Int$t$Boolean(anon$4, par$target)
       } else {
         var anon$5: Ref
@@ -54,73 +54,73 @@ method f$mid_increased_by_one$t$F$t$List$t$Int$t$Boolean(par$arr: Ref, par$targe
 method f$pkg$kotlin_collections$c$List$get$t$F$t$List$t$Int$t$Int(this$dispatch: Ref,
   par$index: Ref)
   returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires acc(this$dispatch.p$size, write)
+  requires df$rt$intFromRef(this$dispatch.p$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
   requires df$rt$isSubtype(df$rt$typeOf(par$index), df$rt$intType())
   requires df$rt$intFromRef(par$index) >= 0
-  requires df$rt$intFromRef(this$dispatch.sp$size) >
+  requires df$rt$intFromRef(this$dispatch.p$size) >
     df$rt$intFromRef(par$index)
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  ensures acc(this$dispatch.p$size, write)
+  ensures df$rt$intFromRef(this$dispatch.p$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
+  ensures df$rt$intFromRef(this$dispatch.p$size) ==
+    old(df$rt$intFromRef(this$dispatch.p$size))
 
 
 method f$pkg$kotlin_collections$c$List$isEmpty$t$F$t$List$t$Boolean(this$dispatch: Ref)
   returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires acc(this$dispatch.p$size, write)
+  requires df$rt$intFromRef(this$dispatch.p$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  ensures acc(this$dispatch.p$size, write)
+  ensures df$rt$intFromRef(this$dispatch.p$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
+  ensures df$rt$intFromRef(this$dispatch.p$size) ==
+    old(df$rt$intFromRef(this$dispatch.p$size))
   ensures df$rt$boolFromRef(ret) ==>
-    df$rt$intFromRef(this$dispatch.sp$size) == 0
+    df$rt$intFromRef(this$dispatch.p$size) == 0
   ensures !df$rt$boolFromRef(ret) ==>
-    df$rt$intFromRef(this$dispatch.sp$size) > 0
+    df$rt$intFromRef(this$dispatch.p$size) > 0
 
 
 method f$pkg$kotlin_collections$c$List$subList$t$F$t$List$t$Int$t$Int$t$List(this$dispatch: Ref,
   par$fromIndex: Ref, par$toIndex: Ref)
   returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires acc(this$dispatch.p$size, write)
+  requires df$rt$intFromRef(this$dispatch.p$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
   requires df$rt$isSubtype(df$rt$typeOf(par$fromIndex), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(par$toIndex), df$rt$intType())
   requires df$rt$intFromRef(par$fromIndex) <= df$rt$intFromRef(par$toIndex)
   requires df$rt$intFromRef(par$fromIndex) >= 0
   requires df$rt$intFromRef(par$toIndex) <=
-    df$rt$intFromRef(this$dispatch.sp$size)
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
+    df$rt$intFromRef(this$dispatch.p$size)
+  ensures acc(this$dispatch.p$size, write)
+  ensures df$rt$intFromRef(this$dispatch.p$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$pkg$kotlin_collections$List())
-  ensures acc(ret.sp$size, write)
-  ensures df$rt$intFromRef(ret.sp$size) >= 0
+  ensures acc(ret.p$size, write)
+  ensures df$rt$intFromRef(ret.p$size) >= 0
   ensures acc(pred$pkg$kotlin_collections$c$List$shared(ret), wildcard)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
-  ensures df$rt$intFromRef(ret.sp$size) ==
+  ensures df$rt$intFromRef(this$dispatch.p$size) ==
+    old(df$rt$intFromRef(this$dispatch.p$size))
+  ensures df$rt$intFromRef(ret.p$size) ==
     df$rt$intFromRef(par$toIndex) - df$rt$intFromRef(par$fromIndex)
 
 
 /binary_search.kt:(305,313): warning: Invalid index for list 'arr', the index may be greater than the list's size.
 
 /binary_search.kt:(511,531): info: Generated Viper text for mid_decreased_by_one:
-field sp$size: Ref
+field p$size: Ref
 
 method f$mid_decreased_by_one$t$F$t$List$t$Int$t$Boolean(par$arr: Ref, par$target: Ref)
   returns (ret$0: Ref)
-  requires acc(par$arr.sp$size, write)
-  requires df$rt$intFromRef(par$arr.sp$size) >= 0
+  requires acc(par$arr.p$size, write)
+  requires df$rt$intFromRef(par$arr.p$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(par$arr), df$rt$c$pkg$kotlin_collections$List())
   requires df$rt$isSubtype(df$rt$typeOf(par$target), df$rt$intType())
-  ensures acc(par$arr.sp$size, write)
-  ensures df$rt$intFromRef(par$arr.sp$size) >= 0
+  ensures acc(par$arr.p$size, write)
+  ensures df$rt$intFromRef(par$arr.p$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
   var l0$size: Ref
@@ -128,11 +128,11 @@ method f$mid_decreased_by_one$t$F$t$List$t$Int$t$Boolean(par$arr: Ref, par$targe
   var anon$0: Ref
   var anon$1: Ref
   inhale acc(pred$pkg$kotlin_collections$c$List$shared(par$arr), wildcard)
-  l0$size := par$arr.sp$size
+  l0$size := par$arr.p$size
   inhale df$rt$isSubtype(df$rt$typeOf(l0$size), df$rt$intType())
-  anon$0 := par$arr.sp$size
+  anon$0 := par$arr.p$size
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
-  l0$mid := sp$minusInts(sp$divInts(anon$0, df$rt$intToRef(2)), df$rt$intToRef(1))
+  l0$mid := df$minusInts(df$divInts(anon$0, df$rt$intToRef(2)), df$rt$intToRef(1))
   anon$1 := f$pkg$kotlin_collections$c$List$isEmpty$t$F$t$List$t$Boolean(par$arr)
   if (df$rt$boolFromRef(anon$1)) {
     ret$0 := df$rt$boolToRef(false)
@@ -149,7 +149,7 @@ method f$mid_decreased_by_one$t$F$t$List$t$Int$t$Boolean(par$arr: Ref, par$targe
       if (df$rt$intFromRef(anon$3) < df$rt$intFromRef(par$target)) {
         var anon$4: Ref
         anon$4 := f$pkg$kotlin_collections$c$List$subList$t$F$t$List$t$Int$t$Int$t$List(par$arr,
-          sp$plusInts(l0$mid, df$rt$intToRef(1)), l0$size)
+          df$plusInts(l0$mid, df$rt$intToRef(1)), l0$size)
         ret$0 := f$mid_decreased_by_one$t$F$t$List$t$Int$t$Boolean(anon$4, par$target)
       } else {
         var anon$5: Ref
@@ -166,74 +166,74 @@ method f$mid_decreased_by_one$t$F$t$List$t$Int$t$Boolean(par$arr: Ref, par$targe
 method f$pkg$kotlin_collections$c$List$get$t$F$t$List$t$Int$t$Int(this$dispatch: Ref,
   par$index: Ref)
   returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires acc(this$dispatch.p$size, write)
+  requires df$rt$intFromRef(this$dispatch.p$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
   requires df$rt$isSubtype(df$rt$typeOf(par$index), df$rt$intType())
   requires df$rt$intFromRef(par$index) >= 0
-  requires df$rt$intFromRef(this$dispatch.sp$size) >
+  requires df$rt$intFromRef(this$dispatch.p$size) >
     df$rt$intFromRef(par$index)
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  ensures acc(this$dispatch.p$size, write)
+  ensures df$rt$intFromRef(this$dispatch.p$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
+  ensures df$rt$intFromRef(this$dispatch.p$size) ==
+    old(df$rt$intFromRef(this$dispatch.p$size))
 
 
 method f$pkg$kotlin_collections$c$List$isEmpty$t$F$t$List$t$Boolean(this$dispatch: Ref)
   returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires acc(this$dispatch.p$size, write)
+  requires df$rt$intFromRef(this$dispatch.p$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  ensures acc(this$dispatch.p$size, write)
+  ensures df$rt$intFromRef(this$dispatch.p$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
+  ensures df$rt$intFromRef(this$dispatch.p$size) ==
+    old(df$rt$intFromRef(this$dispatch.p$size))
   ensures df$rt$boolFromRef(ret) ==>
-    df$rt$intFromRef(this$dispatch.sp$size) == 0
+    df$rt$intFromRef(this$dispatch.p$size) == 0
   ensures !df$rt$boolFromRef(ret) ==>
-    df$rt$intFromRef(this$dispatch.sp$size) > 0
+    df$rt$intFromRef(this$dispatch.p$size) > 0
 
 
 method f$pkg$kotlin_collections$c$List$subList$t$F$t$List$t$Int$t$Int$t$List(this$dispatch: Ref,
   par$fromIndex: Ref, par$toIndex: Ref)
   returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires acc(this$dispatch.p$size, write)
+  requires df$rt$intFromRef(this$dispatch.p$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
   requires df$rt$isSubtype(df$rt$typeOf(par$fromIndex), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(par$toIndex), df$rt$intType())
   requires df$rt$intFromRef(par$fromIndex) <= df$rt$intFromRef(par$toIndex)
   requires df$rt$intFromRef(par$fromIndex) >= 0
   requires df$rt$intFromRef(par$toIndex) <=
-    df$rt$intFromRef(this$dispatch.sp$size)
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
+    df$rt$intFromRef(this$dispatch.p$size)
+  ensures acc(this$dispatch.p$size, write)
+  ensures df$rt$intFromRef(this$dispatch.p$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$pkg$kotlin_collections$List())
-  ensures acc(ret.sp$size, write)
-  ensures df$rt$intFromRef(ret.sp$size) >= 0
+  ensures acc(ret.p$size, write)
+  ensures df$rt$intFromRef(ret.p$size) >= 0
   ensures acc(pred$pkg$kotlin_collections$c$List$shared(ret), wildcard)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
-  ensures df$rt$intFromRef(ret.sp$size) ==
+  ensures df$rt$intFromRef(this$dispatch.p$size) ==
+    old(df$rt$intFromRef(this$dispatch.p$size))
+  ensures df$rt$intFromRef(ret.p$size) ==
     df$rt$intFromRef(par$toIndex) - df$rt$intFromRef(par$fromIndex)
 
 
 /binary_search.kt:(726,734): warning: Invalid index for list 'arr', the index may be less than zero.
 
 /binary_search.kt:(932,964): info: Generated Viper text for mid_decreased_by_one_in_rec_call:
-field sp$size: Ref
+field p$size: Ref
 
 method f$mid_decreased_by_one_in_rec_call$t$F$t$List$t$Int$t$Boolean(par$arr: Ref,
   par$target: Ref)
   returns (ret$0: Ref)
-  requires acc(par$arr.sp$size, write)
-  requires df$rt$intFromRef(par$arr.sp$size) >= 0
+  requires acc(par$arr.p$size, write)
+  requires df$rt$intFromRef(par$arr.p$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(par$arr), df$rt$c$pkg$kotlin_collections$List())
   requires df$rt$isSubtype(df$rt$typeOf(par$target), df$rt$intType())
-  ensures acc(par$arr.sp$size, write)
-  ensures df$rt$intFromRef(par$arr.sp$size) >= 0
+  ensures acc(par$arr.p$size, write)
+  ensures df$rt$intFromRef(par$arr.p$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
   var l0$size: Ref
@@ -241,11 +241,11 @@ method f$mid_decreased_by_one_in_rec_call$t$F$t$List$t$Int$t$Boolean(par$arr: Re
   var anon$0: Ref
   var anon$1: Ref
   inhale acc(pred$pkg$kotlin_collections$c$List$shared(par$arr), wildcard)
-  l0$size := par$arr.sp$size
+  l0$size := par$arr.p$size
   inhale df$rt$isSubtype(df$rt$typeOf(l0$size), df$rt$intType())
-  anon$0 := par$arr.sp$size
+  anon$0 := par$arr.p$size
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
-  l0$mid := sp$divInts(anon$0, df$rt$intToRef(2))
+  l0$mid := df$divInts(anon$0, df$rt$intToRef(2))
   anon$1 := f$pkg$kotlin_collections$c$List$isEmpty$t$F$t$List$t$Boolean(par$arr)
   if (df$rt$boolFromRef(anon$1)) {
     ret$0 := df$rt$boolToRef(false)
@@ -262,13 +262,13 @@ method f$mid_decreased_by_one_in_rec_call$t$F$t$List$t$Int$t$Boolean(par$arr: Re
       if (df$rt$intFromRef(anon$3) < df$rt$intFromRef(par$target)) {
         var anon$4: Ref
         anon$4 := f$pkg$kotlin_collections$c$List$subList$t$F$t$List$t$Int$t$Int$t$List(par$arr,
-          sp$plusInts(l0$mid, df$rt$intToRef(1)), l0$size)
+          df$plusInts(l0$mid, df$rt$intToRef(1)), l0$size)
         ret$0 := f$mid_decreased_by_one_in_rec_call$t$F$t$List$t$Int$t$Boolean(anon$4,
           par$target)
       } else {
         var anon$5: Ref
         anon$5 := f$pkg$kotlin_collections$c$List$subList$t$F$t$List$t$Int$t$Int$t$List(par$arr,
-          df$rt$intToRef(0), sp$minusInts(l0$mid, df$rt$intToRef(1)))
+          df$rt$intToRef(0), df$minusInts(l0$mid, df$rt$intToRef(1)))
         ret$0 := f$mid_decreased_by_one_in_rec_call$t$F$t$List$t$Int$t$Boolean(anon$5,
           par$target)
       }
@@ -281,93 +281,93 @@ method f$mid_decreased_by_one_in_rec_call$t$F$t$List$t$Int$t$Boolean(par$arr: Re
 method f$pkg$kotlin_collections$c$List$get$t$F$t$List$t$Int$t$Int(this$dispatch: Ref,
   par$index: Ref)
   returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires acc(this$dispatch.p$size, write)
+  requires df$rt$intFromRef(this$dispatch.p$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
   requires df$rt$isSubtype(df$rt$typeOf(par$index), df$rt$intType())
   requires df$rt$intFromRef(par$index) >= 0
-  requires df$rt$intFromRef(this$dispatch.sp$size) >
+  requires df$rt$intFromRef(this$dispatch.p$size) >
     df$rt$intFromRef(par$index)
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  ensures acc(this$dispatch.p$size, write)
+  ensures df$rt$intFromRef(this$dispatch.p$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
+  ensures df$rt$intFromRef(this$dispatch.p$size) ==
+    old(df$rt$intFromRef(this$dispatch.p$size))
 
 
 method f$pkg$kotlin_collections$c$List$isEmpty$t$F$t$List$t$Boolean(this$dispatch: Ref)
   returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires acc(this$dispatch.p$size, write)
+  requires df$rt$intFromRef(this$dispatch.p$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  ensures acc(this$dispatch.p$size, write)
+  ensures df$rt$intFromRef(this$dispatch.p$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
+  ensures df$rt$intFromRef(this$dispatch.p$size) ==
+    old(df$rt$intFromRef(this$dispatch.p$size))
   ensures df$rt$boolFromRef(ret) ==>
-    df$rt$intFromRef(this$dispatch.sp$size) == 0
+    df$rt$intFromRef(this$dispatch.p$size) == 0
   ensures !df$rt$boolFromRef(ret) ==>
-    df$rt$intFromRef(this$dispatch.sp$size) > 0
+    df$rt$intFromRef(this$dispatch.p$size) > 0
 
 
 method f$pkg$kotlin_collections$c$List$subList$t$F$t$List$t$Int$t$Int$t$List(this$dispatch: Ref,
   par$fromIndex: Ref, par$toIndex: Ref)
   returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires acc(this$dispatch.p$size, write)
+  requires df$rt$intFromRef(this$dispatch.p$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
   requires df$rt$isSubtype(df$rt$typeOf(par$fromIndex), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(par$toIndex), df$rt$intType())
   requires df$rt$intFromRef(par$fromIndex) <= df$rt$intFromRef(par$toIndex)
   requires df$rt$intFromRef(par$fromIndex) >= 0
   requires df$rt$intFromRef(par$toIndex) <=
-    df$rt$intFromRef(this$dispatch.sp$size)
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
+    df$rt$intFromRef(this$dispatch.p$size)
+  ensures acc(this$dispatch.p$size, write)
+  ensures df$rt$intFromRef(this$dispatch.p$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$pkg$kotlin_collections$List())
-  ensures acc(ret.sp$size, write)
-  ensures df$rt$intFromRef(ret.sp$size) >= 0
+  ensures acc(ret.p$size, write)
+  ensures df$rt$intFromRef(ret.p$size) >= 0
   ensures acc(pred$pkg$kotlin_collections$c$List$shared(ret), wildcard)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
-  ensures df$rt$intFromRef(ret.sp$size) ==
+  ensures df$rt$intFromRef(this$dispatch.p$size) ==
+    old(df$rt$intFromRef(this$dispatch.p$size))
+  ensures df$rt$intFromRef(ret.p$size) ==
     df$rt$intFromRef(par$toIndex) - df$rt$intFromRef(par$fromIndex)
 
 
 /binary_search.kt:(1345,1368): warning: Invalid sub-list range for list 'arr', the range may be greater than the list's size.
 
 /binary_search.kt:(1405,1425): info: Generated Viper text for unsafe_binary_search:
-field sp$size: Ref
+field p$size: Ref
 
 method f$pkg$kotlin_collections$c$List$get$t$F$t$List$t$Int$t$Int(this$dispatch: Ref,
   par$index: Ref)
   returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires acc(this$dispatch.p$size, write)
+  requires df$rt$intFromRef(this$dispatch.p$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$List())
   requires df$rt$isSubtype(df$rt$typeOf(par$index), df$rt$intType())
   requires df$rt$intFromRef(par$index) >= 0
-  requires df$rt$intFromRef(this$dispatch.sp$size) >
+  requires df$rt$intFromRef(this$dispatch.p$size) >
     df$rt$intFromRef(par$index)
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  ensures acc(this$dispatch.p$size, write)
+  ensures df$rt$intFromRef(this$dispatch.p$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
+  ensures df$rt$intFromRef(this$dispatch.p$size) ==
+    old(df$rt$intFromRef(this$dispatch.p$size))
 
 
 method f$unsafe_binary_search$t$F$t$List$t$Int$t$Int$t$Int$t$Boolean(par$arr: Ref,
   par$target: Ref, par$left: Ref, par$right: Ref)
   returns (ret$0: Ref)
-  requires acc(par$arr.sp$size, write)
-  requires df$rt$intFromRef(par$arr.sp$size) >= 0
+  requires acc(par$arr.p$size, write)
+  requires df$rt$intFromRef(par$arr.p$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(par$arr), df$rt$c$pkg$kotlin_collections$List())
   requires df$rt$isSubtype(df$rt$typeOf(par$target), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(par$left), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(par$right), df$rt$intType())
-  ensures acc(par$arr.sp$size, write)
-  ensures df$rt$intFromRef(par$arr.sp$size) >= 0
+  ensures acc(par$arr.p$size, write)
+  ensures df$rt$intFromRef(par$arr.p$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
   var l0$mid: Ref
@@ -377,7 +377,7 @@ method f$unsafe_binary_search$t$F$t$List$t$Int$t$Int$t$Int$t$Boolean(par$arr: Re
     ret$0 := df$rt$boolToRef(false)
     goto lbl$ret$0
   }
-  l0$mid := sp$plusInts(par$left, sp$divInts(sp$minusInts(par$right, par$left),
+  l0$mid := df$plusInts(par$left, df$divInts(df$minusInts(par$right, par$left),
     df$rt$intToRef(2)))
   anon$0 := f$pkg$kotlin_collections$c$List$get$t$F$t$List$t$Int$t$Int(par$arr,
     l0$mid)
@@ -389,10 +389,10 @@ method f$unsafe_binary_search$t$F$t$List$t$Int$t$Int$t$Int$t$Boolean(par$arr: Re
       l0$mid)
     if (df$rt$intFromRef(anon$1) < df$rt$intFromRef(par$target)) {
       ret$0 := f$unsafe_binary_search$t$F$t$List$t$Int$t$Int$t$Int$t$Boolean(par$arr,
-        par$target, sp$plusInts(l0$mid, df$rt$intToRef(1)), par$right)
+        par$target, df$plusInts(l0$mid, df$rt$intToRef(1)), par$right)
     } else {
       ret$0 := f$unsafe_binary_search$t$F$t$List$t$Int$t$Int$t$Int$t$Boolean(par$arr,
-        par$target, par$left, sp$minusInts(l0$mid, df$rt$intToRef(1)))}
+        par$target, par$left, df$minusInts(l0$mid, df$rt$intToRef(1)))}
   }
   goto lbl$ret$0
   label lbl$ret$0

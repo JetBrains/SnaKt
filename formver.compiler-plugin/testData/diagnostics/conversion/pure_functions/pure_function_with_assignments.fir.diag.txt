@@ -44,9 +44,9 @@ function f$laterInitializersCanRelyOnPrevious$t$F$t$Int(): Ref
   (let l0$a$0 ==
     (df$rt$intToRef(40)) in
     (let l0$b$0 ==
-      (sp$plusInts(l0$a$0, df$rt$intToRef(2))) in
+      (df$plusInts(l0$a$0, df$rt$intToRef(2))) in
       (let l0$c$0 ==
-        (sp$timesInts(l0$b$0, df$rt$intToRef(2))) in
+        (df$timesInts(l0$b$0, df$rt$intToRef(2))) in
         l0$c$0)))
 }
 
@@ -58,10 +58,10 @@ function f$initializersCanRelyOnParameters$t$F$t$Int$t$Int$t$Int(par$x: Ref,
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$sum$0 ==
-    (sp$plusInts(par$x, par$y)) in
+    (df$plusInts(par$x, par$y)) in
     (let l0$diff$0 ==
-      (sp$minusInts(par$x, par$y)) in
+      (df$minusInts(par$x, par$y)) in
       (let l0$res$0 ==
-        (sp$timesInts(l0$sum$0, l0$diff$0)) in
+        (df$timesInts(l0$sum$0, l0$diff$0)) in
         l0$res$0)))
 }
