@@ -53,7 +53,7 @@ method f$sumOfIntegersUpToN$t$F$t$Int$t$Int(par$n: Ref)
   assert df$rt$isSubtype(df$rt$typeOf(par$n), df$rt$intType())
   assert df$rt$intFromRef(l0$i) <= df$rt$intFromRef(par$n)
   assert df$rt$intFromRef(l0$sum) ==
-    df$rt$intFromRef(l0$i) * (df$rt$intFromRef(l0$i) + 1) \ 2
+    df$rt$intFromRef(l0$i) * (df$rt$intFromRef(l0$i) + 1) / 2
   ret$0 := l0$sum
   goto lbl$ret$0
   label lbl$ret$0
