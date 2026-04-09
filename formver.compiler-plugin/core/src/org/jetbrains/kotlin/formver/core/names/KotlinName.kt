@@ -9,10 +9,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.asTypeEmbedding
-import org.jetbrains.kotlin.formver.viper.NameResolver
-import org.jetbrains.kotlin.formver.viper.SEPARATOR
-import org.jetbrains.kotlin.formver.viper.SymbolicName
-import org.jetbrains.kotlin.formver.viper.mangled
+import org.jetbrains.kotlin.formver.viper.*
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 
@@ -30,13 +27,17 @@ data class SimpleKotlinName(val name: Name) : KotlinName {
         get() = name.asStringStripSpecialMarkers()
 }
 
-abstract class TypedKotlinName(override val mangledType: String, open val name: Name) : KotlinName {
+abstract class TypedKotlinName(override val mangledType: NameType, open val name: Name) : KotlinName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = name.asStringStripSpecialMarkers()
 }
 
-abstract class TypedKotlinNameWithType(override val mangledType: String, open val name: Name, val type: TypeEmbedding) :
+abstract class TypedKotlinNameWithType(
+    override val mangledType: NameType,
+    open val name: Name,
+    val type: TypeEmbedding
+) :
     KotlinName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
@@ -45,26 +46,26 @@ abstract class TypedKotlinNameWithType(override val mangledType: String, open va
 
 data class FunctionKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
     TypedKotlinNameWithType(
-        "f", name,
+        NameType.Function, name,
         functionType.asTypeEmbedding()
     )
 
 /**
  * This name will never occur in the viper output, but rather is used to lookup properties.
  */
-data class PropertyKotlinName(override val name: Name) : TypedKotlinName("pp", name)
-data class BackingFieldKotlinName(override val name: Name) : TypedKotlinName("bf", name)
-data class GetterKotlinName(override val name: Name) : TypedKotlinName("pg", name)
-data class SetterKotlinName(override val name: Name) : TypedKotlinName("ps", name)
+data class PropertyKotlinName(override val name: Name) : TypedKotlinName(NameType.Property, name)
+data class BackingFieldKotlinName(override val name: Name) : TypedKotlinName(NameType.BackingField, name)
+data class GetterKotlinName(override val name: Name) : TypedKotlinName(NameType.Getter, name)
+data class SetterKotlinName(override val name: Name) : TypedKotlinName(NameType.Setter, name)
 data class ExtensionSetterKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
-    TypedKotlinNameWithType("es", name, functionType.asTypeEmbedding())
+    TypedKotlinNameWithType(NameType.ExtensionSetter, name, functionType.asTypeEmbedding())
 
 data class ExtensionGetterKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
-    TypedKotlinNameWithType("eg", name, functionType.asTypeEmbedding())
+    TypedKotlinNameWithType(NameType.ExtensionGetter, name, functionType.asTypeEmbedding())
 
 data class ClassKotlinName(val name: FqName) : KotlinName {
-    override val mangledType: String
-        get() = "c"
+    override val mangledType: NameType
+        get() = NameType.Type.Class
 
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
@@ -74,8 +75,8 @@ data class ClassKotlinName(val name: FqName) : KotlinName {
 }
 
 data class ConstructorKotlinName(val type: FunctionTypeEmbedding) : KotlinName {
-    override val mangledType: String
-        get() = "con"
+    override val mangledType: NameType
+        get() = NameType.Constructor
 
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
@@ -88,38 +89,46 @@ data class PredicateKotlinName(val name: String) : KotlinName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = name
-    override val mangledType: String
-        get() = "p"
+    override val mangledType: NameType
+        get() = NameType.Predicate
 }
 
 data class HavocKotlinName(val type: TypeEmbedding) : KotlinName {
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = type.name.mangled
-    override val mangledType: String
-        get() = "havoc"
+    override val mangledType: NameType
+        get() = NameType.Havoc
 }
 
 data class PretypeName(val name: String) : KotlinName {
+
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = name
 }
 
 data class SetOfNames(val names: List<SymbolicName>) : KotlinName {
+    override val mangledType: NameType
+        get() = NameType.Type
+
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = names.joinToString(SEPARATOR) { it.mangled }
 }
 
 data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : KotlinName {
+
+    override val mangledType: NameType
+        get() = NameType.Type
+
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
-        get() = pretype.name.mangledBaseName
-    override val mangledType: String
-        get() = listOfNotNull(
-            if (nullable) "N" else null,
-            "T",
-            if (pretype is FunctionTypeEmbedding) "F" else null
-        ).joinToString("")
+        get() = buildString {
+            if (nullable) append("N")
+            if (pretype is FunctionTypeEmbedding) append("F")
+            if (isNotEmpty()) append(SEPARATOR)
+            append(pretype.name.mangledBaseName)
+        }
+
 }
