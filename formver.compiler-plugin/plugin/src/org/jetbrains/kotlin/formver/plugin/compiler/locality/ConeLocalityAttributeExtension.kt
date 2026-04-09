@@ -15,7 +15,7 @@ import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 
-class LocalTypeAttributeExtension(
+class ConeLocalityAttributeExtension(
     session: FirSession,
     private val config: PluginConfiguration
 ) : FirTypeAttributeExtension(session) {
@@ -26,7 +26,7 @@ class LocalTypeAttributeExtension(
         )
 
         fun getFactory(config: PluginConfiguration): Factory {
-            return Factory { session -> LocalTypeAttributeExtension(session, config) }
+            return Factory { session -> ConeLocalityAttributeExtension(session, config) }
         }
     }
 
@@ -34,14 +34,14 @@ class LocalTypeAttributeExtension(
         if (!config.checkLocality) return null
 
         return if (annotation.annotationTypeRef.coneType.classId == borrowedAnnotationId) {
-            ConeLocalAttribute(null)
+            ConeLocalityAttribute(null)
         } else {
             null
         }
     }
 
     override fun convertAttributeToAnnotation(attribute: ConeAttribute<*>): FirAnnotation? {
-        if (attribute !is ConeLocalAttribute) return null
+        if (attribute !is ConeLocalityAttribute) return null
 
         return buildAnnotation {
             annotationTypeRef = buildResolvedTypeRef {
