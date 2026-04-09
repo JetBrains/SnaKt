@@ -65,5 +65,4 @@ sealed class NameType(val name: String) : NamedEntity {
     object Variable : NameType("v")
     object Domain : NameType("d")
     object DomainFunction : NameType("df")
-    object Special : NameType("sp") // I think we should not have this. Like, what does special mean?
 }
