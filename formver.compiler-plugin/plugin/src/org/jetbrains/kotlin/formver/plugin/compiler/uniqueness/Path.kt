@@ -1,4 +1,4 @@
-package org.jetbrains.kotlin.formver.plugin.compiler.analysis
+package org.jetbrains.kotlin.formver.plugin.compiler.uniqueness
 
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 

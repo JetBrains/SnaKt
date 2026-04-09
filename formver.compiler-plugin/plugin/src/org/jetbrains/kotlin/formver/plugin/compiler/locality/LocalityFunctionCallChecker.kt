@@ -47,14 +47,14 @@ class LocalityFunctionCallChecker(
             val expectedArgumentLocality = argumentSymbol.fir.localityAttribute
             val actualArgumentLocality = argument.localityAttribute
 
-            if (parameterLocality.accepts(argumentLocality)) continue
+            if (expectedArgumentLocality.accepts(actualArgumentLocality)) continue
 
             reporter.reportOn(
-            if (expectedArgumentLocality.accepts(actualArgumentLocality)) continue
+                argument.source,
                 LOCALITY_VIOLATION,
-                "Argument uniqueness mismatch: expected '${parameterLocality.render()}', " +
-                        "actual '${argumentLocality.render()}'."
-            )
                 "Argument uniqueness mismatch: expected '${expectedArgumentLocality.render()}', " +
                         "actual '${actualArgumentLocality.render()}'."
+            )
+        }
+    }
 }

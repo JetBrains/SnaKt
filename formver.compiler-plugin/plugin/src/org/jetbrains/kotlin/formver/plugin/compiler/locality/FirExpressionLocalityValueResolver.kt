@@ -5,27 +5,34 @@ import org.jetbrains.kotlin.fir.declarations.FirVariable
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
-import org.jetbrains.kotlin.formver.plugin.compiler.analysis.FirExpressionSymbolicEvaluator
-import org.jetbrains.kotlin.formver.plugin.compiler.analysis.PathTrie
+import org.jetbrains.kotlin.formver.plugin.compiler.analysis.FirExpressionSymbolicValueExtractor
 
 class FirExpressionLocalityEvaluator(
     private val context: CheckerContext
-) : FirExpressionSymbolicEvaluator<ConeLocalAttribute?>() {
+) : FirExpressionSymbolicValueExtractor<ConeLocalityAttribute?>() {
+    override val empty: ConeLocalityAttribute? = null
+
     @OptIn(SymbolInternals::class)
-    override fun resolve(symbol: FirBasedSymbol<*>): ConeLocalAttribute? {
+    override fun create(symbol: FirBasedSymbol<*>): ConeLocalityAttribute? {
         val element = symbol.fir
 
         with(context) {
             return when (element) {
-                is FirVariable -> element.resolvedLocalAttribute
+                is FirVariable -> element.localityAttribute
                 else -> null
             }
         }
     }
 
-    override val default: PathTrie<ConeLocalAttribute?> = LocalityValue()
+    override fun ConeLocalityAttribute?.join(other: ConeLocalityAttribute?): ConeLocalityAttribute? {
+        return this.union(other)
+    }
+
+    override fun ConeLocalityAttribute?.append(other: ConeLocalityAttribute?): ConeLocalityAttribute? {
+        return this
+    }
 }
 
 context(context: CheckerContext)
-val FirExpression.localityValue: PathTrie<ConeLocalAttribute?>
+val FirExpression.localityAttribute: ConeLocalityAttribute?
     get() = FirExpressionLocalityEvaluator(context).extract(this)

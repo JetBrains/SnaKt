@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.fir.expressions.FirCheckNotNullCall
 import org.jetbrains.kotlin.fir.expressions.FirElvisExpression
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
+import org.jetbrains.kotlin.fir.expressions.FirLiteralExpression
 import org.jetbrains.kotlin.fir.expressions.FirOperation
 import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
@@ -19,54 +20,39 @@ import org.jetbrains.kotlin.fir.expressions.FirWhenExpression
 import org.jetbrains.kotlin.fir.expressions.FirWrappedExpression
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
-import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
+import org.jetbrains.kotlin.formver.plugin.compiler.uniqueness.LiteralSymbol
 
-/**
- * Evaluates the possible variable/property paths yielded by an expression.
- */
-abstract class FirExpressionSymbolicEvaluator<T> : FirVisitor<PathTrie<T>, Unit>() {
+abstract class FirExpressionSymbolicValueExtractor<T> : FirVisitor<T, Unit>() {
 
-    abstract val default: PathTrie<T>
+    abstract val empty: T
 
-    abstract fun resolve(symbol: FirBasedSymbol<*>): T
+    abstract fun create(symbol: FirBasedSymbol<*>): T
 
-    private fun FirExpression?.visit(): PathTrie<T> =
-        this?.accept(this@FirExpressionSymbolicEvaluator, Unit) ?: default
+    abstract fun T.join(other: T): T
 
-    fun extract(expression: FirExpression): PathTrie<T> {
+    abstract fun T.append(other: T): T
+
+    private fun FirExpression?.visit(): T =
+        this?.accept(this@FirExpressionSymbolicValueExtractor, Unit) ?: empty
+
+    fun extract(expression: FirExpression): T {
         return expression.visit()
     }
 
     override fun visitElement(
         element: FirElement,
         data: Unit
-    ): PathTrie<T> {
-        return default
-    }
-
-    private fun FirQualifiedAccessExpression.pathSymbol(): FirBasedSymbol<*>? {
-        val symbol = calleeReference.symbol
-
-        return symbol.takeIf { it is FirVariableSymbol<*> }
-    }
-
-    private fun PathTrie<T>.append(suffix: PathTrie<T>): PathTrie<T> {
-        if (suffix.children.isEmpty()) return this
-
-        return if (children.isEmpty()) {
-            copy(children = suffix.children)
-        } else {
-            copy(children = children.mapValues { (_, child) -> child.append(suffix) })
-        }
+    ): T {
+        return empty
     }
 
     override fun visitBlock(
         block: FirBlock,
         data: Unit
-    ): PathTrie<T> {
+    ): T {
         val lastValue = block.statements.lastOrNull() as? FirExpression
-            ?: return default
+            ?: return empty
 
         return lastValue.visit()
     }
@@ -74,8 +60,8 @@ abstract class FirExpressionSymbolicEvaluator<T> : FirVisitor<PathTrie<T>, Unit>
     override fun visitWhenExpression(
         whenExpression: FirWhenExpression,
         data: Unit
-    ): PathTrie<T> {
-        return whenExpression.branches.fold(default) { result, branch ->
+    ): T {
+        return whenExpression.branches.fold(empty) { result, branch ->
             result.join(branch.result.visit())
         }
     }
@@ -83,28 +69,28 @@ abstract class FirExpressionSymbolicEvaluator<T> : FirVisitor<PathTrie<T>, Unit>
     override fun visitElvisExpression(
         elvisExpression: FirElvisExpression,
         data: Unit
-    ): PathTrie<T> {
+    ): T {
         return elvisExpression.lhs.visit().join(elvisExpression.rhs.visit())
     }
 
     override fun visitSmartCastExpression(
         smartCastExpression: FirSmartCastExpression,
         data: Unit
-    ): PathTrie<T> {
+    ): T {
         return smartCastExpression.originalExpression.visit()
     }
 
     override fun visitWrappedExpression(
         wrappedExpression: FirWrappedExpression,
         data: Unit
-    ): PathTrie<T> {
+    ): T {
         return wrappedExpression.expression.visit()
     }
 
     override fun visitCheckNotNullCall(
         checkNotNullCall: FirCheckNotNullCall,
         data: Unit
-    ): PathTrie<T> {
+    ): T {
         return checkNotNullCall.argumentList.arguments.singleOrNull().visit()
     }
 
@@ -114,8 +100,8 @@ abstract class FirExpressionSymbolicEvaluator<T> : FirVisitor<PathTrie<T>, Unit>
     override fun visitTypeOperatorCall(
         typeOperatorCall: FirTypeOperatorCall,
         data: Unit
-    ): PathTrie<T> {
-        if (!typeOperatorCall.isCast()) return default
+    ): T {
+        if (!typeOperatorCall.isCast()) return empty
 
         return typeOperatorCall.argumentList.arguments.singleOrNull().visit()
     }
@@ -123,23 +109,23 @@ abstract class FirExpressionSymbolicEvaluator<T> : FirVisitor<PathTrie<T>, Unit>
     override fun visitReturnExpression(
         returnExpression: FirReturnExpression,
         data: Unit
-    ): PathTrie<T> {
-        return default
+    ): T {
+        return empty
     }
 
     override fun visitThrowExpression(
         throwExpression: FirThrowExpression,
         data: Unit
-    ): PathTrie<T> {
-        return default
+    ): T {
+        return empty
     }
 
     override fun visitTryExpression(
         tryExpression: FirTryExpression,
         data: Unit
-    ): PathTrie<T> {
+    ): T {
         val tryValue = tryExpression.tryBlock.visit()
-        val catchValues = tryExpression.catches.fold(default) { result, catch ->
+        val catchValues = tryExpression.catches.fold(empty) { result, catch ->
             result.join(catch.block.visit())
         }
 
@@ -149,47 +135,45 @@ abstract class FirExpressionSymbolicEvaluator<T> : FirVisitor<PathTrie<T>, Unit>
     override fun visitQualifiedAccessExpression(
         qualifiedAccessExpression: FirQualifiedAccessExpression,
         data: Unit
-    ): PathTrie<T> {
-        val symbol = qualifiedAccessExpression.pathSymbol()
-            ?: return default
-        val receiverValue = qualifiedAccessExpression.explicitReceiver
-            ?: return default.ensure(sequenceOf(symbol)) {
-                resolve(it)
-            }
+    ): T {
+        val receiverValue = qualifiedAccessExpression.explicitReceiver.visit()
+        val symbol = qualifiedAccessExpression.calleeReference.symbol
+            ?: return empty
 
-        return receiverValue.visit().append(
-            default.ensure(sequenceOf(symbol)) {
-                resolve(it)
-            }
-        )
+        return receiverValue.append(create(symbol))
     }
 
     override fun visitPropertyAccessExpression(
         propertyAccessExpression: FirPropertyAccessExpression,
         data: Unit
-    ): PathTrie<T> {
+    ): T {
         val symbol = propertyAccessExpression.calleeReference.symbol
-            ?: return default
+            ?: return empty
 
-        return default.ensure(sequenceOf(symbol)) {
-            resolve(it)
-        }
+        return create(symbol)
     }
 
     override fun visitFunctionCall(
         functionCall: FirFunctionCall,
         data: Unit
-    ): PathTrie<T> {
-        return default
+    ): T {
+        return empty
     }
 
     override fun visitSafeCallExpression(
         safeCallExpression: FirSafeCallExpression,
         data: Unit
-    ): PathTrie<T> {
+    ): T {
         val receiverValue = safeCallExpression.receiver.visit()
         val selectorValue = (safeCallExpression.selector as? FirExpression).visit()
 
         return receiverValue.append(selectorValue)
+    }
+
+    override fun visitLiteralExpression(
+        literalExpression: FirLiteralExpression,
+        data: Unit
+    ): T {
+        return create(LiteralSymbol)
     }
 }
