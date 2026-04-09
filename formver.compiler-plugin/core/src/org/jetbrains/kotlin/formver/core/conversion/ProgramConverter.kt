@@ -121,7 +121,6 @@ class ProgramConverter(
         symbol: FirFunctionSymbol<*>,
         signature: FullNamedFunctionSignature
     ): PureUserFunctionEmbedding {
-        // Return if already registered
         (functions[signature.name] as? PureUserFunctionEmbedding)?.also { return it }
         val new = PureUserFunctionEmbedding(processCallable(symbol, signature))
         // Insert into the map before processing the body, so recursive calls can find the embedding.
