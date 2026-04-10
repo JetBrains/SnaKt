@@ -24,7 +24,7 @@ interface NamedEntity {
 const val SEPARATOR = "$"
 
 interface SymbolicName : NamedEntity {
-    val mangledType: NameType?
+    val nameType: NameType?
         get() = null
 
 }

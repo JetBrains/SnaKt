@@ -15,14 +15,14 @@ import viper.silver.ast.NamedDomainAxiom
  */
 
 data class DomainName(val baseName: String) : SymbolicName {
-    override val mangledType: NameType
+    override val nameType: NameType
         get() = NameType.Base.Domain
 }
 data class UnqualifiedDomainFuncName(val baseName: String) : SymbolicName {
 }
 
 data class QualifiedDomainFuncName(val domainName: DomainName, val funcName: SymbolicName) : SymbolicName {
-    override val mangledType: NameType
+    override val nameType: NameType
         get() = NameType.Base.DomainFunction
 
 }

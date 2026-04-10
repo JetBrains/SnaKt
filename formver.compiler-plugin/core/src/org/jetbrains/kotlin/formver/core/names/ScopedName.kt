@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.name.FqName
  */
 data class ScopedName(val scope: NameScope, val name: SymbolicName) : SymbolicName {
 
-    override val mangledType: NameType? = name.mangledType
+    override val nameType: NameType? = name.nameType
 }
 
 fun FqName.asViperString() = asString().replace('.', '_')
