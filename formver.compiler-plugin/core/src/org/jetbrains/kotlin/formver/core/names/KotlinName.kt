@@ -25,11 +25,11 @@ sealed interface KotlinName : SymbolicName
 data class SimpleKotlinName(val name: Name) : KotlinName {
 }
 
-abstract class TypedKotlinName(override val mangledType: NameType, open val name: Name) : KotlinName {
+abstract class TypedKotlinName(override val nameType: NameType, open val name: Name) : KotlinName {
 }
 
 abstract class TypedKotlinNameWithType(
-    override val mangledType: NameType,
+    override val nameType: NameType,
     open val name: Name,
     val type: TypeEmbedding
 ) :
@@ -56,14 +56,14 @@ data class ExtensionGetterKotlinName(override val name: Name, val functionType: 
     TypedKotlinNameWithType(NameType.Member.ExtensionGetter, name, functionType.asTypeEmbedding())
 
 data class ClassKotlinName(val name: FqName) : KotlinName {
-    override val mangledType: NameType
+    override val nameType: NameType
         get() = NameType.TypeCategory.Class
 
     constructor(classSegments: List<String>) : this(FqName.fromSegments(classSegments))
 }
 
 data class ConstructorKotlinName(val type: FunctionTypeEmbedding) : KotlinName {
-    override val mangledType: NameType
+    override val nameType: NameType
         get() = NameType.Base.Constructor
 
 }
@@ -73,7 +73,7 @@ data class PretypeName(val name: String) : SymbolicName {
 }
 
 data class ListOfNames<T : SymbolicName>(val names: List<T>) : SymbolicName {
-    override val mangledType: NameType
+    override val nameType: NameType
         get() = NameType.TypeCategory.GeneralType
 
 }
@@ -82,7 +82,7 @@ data class FunctionTypeName(val args: ListOfNames<TypeName>, val returns: TypeNa
 
 data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : SymbolicName {
 
-    override val mangledType: NameType
+    override val nameType: NameType
         get() = NameType.TypeCategory.GeneralType
 
 }
