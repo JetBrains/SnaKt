@@ -8,6 +8,8 @@
 
 /consume_local.kt:(705,706): error: Argument uniqueness mismatch: expected 'unique global', actual 'shared local'.
 
-/consume_local.kt:(996,997): error: Argument uniqueness mismatch: expected 'unique global', actual 'unique local'.
+/consume_local.kt:(995,996): error: Argument uniqueness mismatch: expected 'unique global', actual 'unique local'.
 
-/consume_local.kt:(1122,1123): error: Argument uniqueness mismatch: expected 'unique global', actual 'unique local'.
+/consume_local.kt:(1121,1122): error: Argument uniqueness mismatch: expected 'unique global', actual 'unique local'.
+
+/consume_local.kt:(1320,1321): error: Argument uniqueness mismatch: expected 'unique global', actual 'moved'.
