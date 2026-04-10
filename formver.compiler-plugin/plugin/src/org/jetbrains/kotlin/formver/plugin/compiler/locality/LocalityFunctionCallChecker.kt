@@ -30,7 +30,7 @@ class LocalityFunctionCallChecker(
             val requiredReceiverLocality = receiverDeclaration.requiredLocality
             val actualReceiverLocality = receiver.resolvedLocality
 
-            if (!expectedReceiverLocality.accepts(actualReceiverLocality)) {
+            if (!requiredReceiverLocality.accepts(actualReceiverLocality)) {
                 reporter.reportOn(
                     receiver.source ?: expression.source,
                     LOCALITY_VIOLATION,
