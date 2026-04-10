@@ -54,7 +54,7 @@ data object ExtensionReceiverName : TypedFreshName(NameType.Variable, $$"this$ex
 data class SpecialFieldName(val name: String) : TypedFreshName(NameType.Property, name)
 
 
-abstract class NumberedLabelName(name: String, val originalN: Int) : TypedFreshName(Label, name) {
+sealed class NumberedLabelName(name: String, val originalN: Int) : TypedFreshName(Label, name) {
 
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
