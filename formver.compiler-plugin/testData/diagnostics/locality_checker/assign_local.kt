@@ -37,7 +37,7 @@ fun `assign local to local in loop`(x: @Borrowed Any) {
 
 fun `assign local to local in lambda`(@Borrowed x: Any) {
     { y: Any ->
-        var z: @Borrowed Any = <!LOCALITY_VIOLATION!>x<!>
+        @Borrowed var z: Any = <!LOCALITY_VIOLATION!>x<!>
     }
 }
 
