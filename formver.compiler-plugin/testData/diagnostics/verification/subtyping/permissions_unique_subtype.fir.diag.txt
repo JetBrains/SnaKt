@@ -1,0 +1,66 @@
+/permissions_unique_subtype.kt:(321,334): info: Generated Viper text for readUniqueVar:
+field bf$value: Ref
+
+method f$readUniqueVar$TF$T$MutBox$T$Int(p$b: Ref) returns (ret$0: Ref)
+  requires acc(p$c$MutBox$unique(p$b), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$MutBox())
+  inhale acc(p$c$MutBox$shared(p$b), wildcard)
+  ret$0 := havoc$T$Int()
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/permissions_unique_subtype.kt:(430,444): info: Generated Viper text for writeUniqueVar:
+field bf$value: Ref
+
+method f$writeUniqueVar$TF$T$MutBox$T$Unit(p$b: Ref) returns (ret$0: Ref)
+  requires acc(p$c$MutBox$unique(p$b), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$c$MutBox())
+  inhale acc(p$c$MutBox$shared(p$b), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/permissions_unique_subtype.kt:(705,722): info: Generated Viper text for passUniqueSubtype:
+field bf$extra: Ref
+
+field bf$value: Ref
+
+method f$passUniqueSubtype$TF$T$ExtMutBox$T$Int(p$e: Ref)
+  returns (ret$0: Ref)
+  requires acc(p$c$ExtMutBox$unique(p$e), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$e), df$rt$c$ExtMutBox())
+  inhale acc(p$c$ExtMutBox$shared(p$e), wildcard)
+  ret$0 := f$takeUniqueMutBox$TF$T$MutBox$T$Int(p$e)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+method f$takeUniqueMutBox$TF$T$MutBox$T$Int(p$b: Ref) returns (ret: Ref)
+  requires acc(p$c$MutBox$unique(p$b), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
+
+
+/permissions_unique_subtype.kt:(763,782): warning: Viper verification error: The precondition of method f$takeUniqueMutBox$TF$T$MutBox$T$Int might not hold. There might be insufficient permission to access p$c$MutBox$unique(p$e)
+
+/permissions_unique_subtype.kt:(838,860): info: Generated Viper text for writeUniqueChildFields:
+field bf$extra: Ref
+
+field bf$value: Ref
+
+method f$writeUniqueChildFields$TF$T$ExtMutBox$T$Unit(p$e: Ref)
+  returns (ret$0: Ref)
+  requires acc(p$c$ExtMutBox$unique(p$e), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$e), df$rt$c$ExtMutBox())
+  inhale acc(p$c$ExtMutBox$shared(p$e), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}

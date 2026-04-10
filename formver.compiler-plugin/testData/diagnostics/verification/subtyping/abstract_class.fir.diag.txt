@@ -1,0 +1,27 @@
+/abstract_class.kt:(316,328): info: Generated Viper text for carIsVehicle:
+field bf$wheels: Ref
+
+method f$carIsVehicle$TF$T$Car$T$Boolean(p$c: Ref) returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
+  ensures df$rt$boolFromRef(ret$0) == true
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$c$Car())
+  inhale acc(p$c$Car$shared(p$c), wildcard)
+  ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(p$c), df$rt$c$Vehicle()))
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/abstract_class.kt:(468,477): info: Generated Viper text for getWheels:
+field bf$wheels: Ref
+
+method f$getWheels$TF$T$Vehicle$T$Int(p$v: Ref) returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$v), df$rt$c$Vehicle())
+  inhale acc(p$c$Vehicle$shared(p$v), wildcard)
+  unfold acc(p$c$Vehicle$shared(p$v), wildcard)
+  ret$0 := p$v.bf$wheels
+  goto lbl$ret$0
+  label lbl$ret$0
+}
