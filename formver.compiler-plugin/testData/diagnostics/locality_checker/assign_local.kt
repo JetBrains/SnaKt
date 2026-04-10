@@ -41,8 +41,8 @@ fun `assign local to local in lambda`(@Borrowed x: Any) {
     }
 }
 
-fun `assign local if-expression to local`(x: @Borrowed Any) {
-    var z: @Borrowed Any = if (false) { x } else { Any() }
+fun `assign local if-expression to local`(@Borrowed x: Any) {
+    @Borrowed var z: Any = if (false) { x } else { Any() }
 }
 
 fun `assign local if-expression to global`(x: @Borrowed Any) {
