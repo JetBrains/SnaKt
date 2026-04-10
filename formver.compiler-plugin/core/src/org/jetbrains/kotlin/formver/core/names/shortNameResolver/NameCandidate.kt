@@ -63,8 +63,11 @@ fun NamedEntity.candidates(): List<CandidateName> = when (this) {
     is NameScope -> candidates()
     is SymbolicName -> candidates()
     is NameType -> candidates()
+    is ViperKeyword -> candidates()
     else -> throw SnaktInternalException(null, "Unexpected name type: ${this::class.simpleName}")
 }
+
+fun ViperKeyword.candidates(): List<CandidateName> = nameOnlyCandidates(keyword)
 
 fun NameScope.candidates(): List<CandidateName> = when (this) {
     is BadScope -> nameOnlyCandidates("<BAD>")
