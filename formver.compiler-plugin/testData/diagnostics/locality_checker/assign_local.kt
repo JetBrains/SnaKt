@@ -8,7 +8,7 @@ fun `assign global to local`(x: Any) {
     y = x
 }
 
-fun `assign local to global`(x: @Borrowed Any) {
+fun `assign local to global`(@Borrowed x: Any) {
     var y: Any
 
     y = <!LOCALITY_VIOLATION!>x<!>
