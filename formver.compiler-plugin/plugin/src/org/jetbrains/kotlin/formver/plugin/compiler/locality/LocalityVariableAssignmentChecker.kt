@@ -16,8 +16,8 @@ class LocalityVariableAssignmentChecker(
     override fun check(expression: FirVariableAssignment) {
         if (!config.checkLocality) return
 
-        val leftLocality = expression.lValue.localityAttribute
-        val rightLocality = expression.rValue.localityAttribute
+        val leftLocality = expression.lValue.resolvedLocality
+        val rightLocality = expression.rValue.resolvedLocality
 
         if (leftLocality.accepts(rightLocality)) return
 
