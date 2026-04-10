@@ -83,7 +83,7 @@ data class ConstructorKotlinName(val type: FunctionTypeEmbedding) : KotlinName {
         get() = type.name.mangledBaseName
 }
 
-interface NameOfType : SymbolicName
+sealed interface NameOfType : SymbolicName
 
 data class PretypeName(val name: String) : NameOfType {
 
