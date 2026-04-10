@@ -27,7 +27,7 @@ class LocalityFunctionCallChecker(
         val receiver = expression.explicitReceiver
 
         if (receiver != null && receiverDeclaration != null) {
-            val expectedReceiverLocality = receiverDeclaration.localityAttribute
+            val expectedReceiverLocality = receiverDeclaration.requiredLocality
             val actualReceiverLocality = receiver.localityAttribute
 
             if (!expectedReceiverLocality.accepts(actualReceiverLocality)) {
