@@ -17,7 +17,7 @@ class LocalityThrowChecker(
         if (!config.checkLocality) return
 
         val leftLocality = LocalityValue.Global
-        val rightLocality = expression.exception.localityAttribute
+        val rightLocality = expression.exception.resolvedLocality
 
         if (leftLocality.accepts(rightLocality)) return
 
