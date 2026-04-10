@@ -101,18 +101,19 @@ data class SpecialName(val baseName: String) : SymbolicName {
         get() = baseName
 }
 
-abstract class NumberedLabelName(override val mangledType: NameType, val originalN: Int) : SymbolicName {
+abstract class NumberedLabelName(val baseName: String, val originalN: Int) : SymbolicName {
+    override val mangledType = Label
 
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
-        get() = originalN.toString()
+        get() = "$baseName$$originalN"
 }
 
-data class ReturnLabelName(val scopeDepth: Int) : NumberedLabelName(Label.Return, scopeDepth)
-data class BreakLabelName(val n: Int) : NumberedLabelName(Label.Break, n)
-data class ContinueLabelName(val n: Int) : NumberedLabelName(Label.Continue, n)
-data class CatchLabelName(val n: Int) : NumberedLabelName(Label.Catch, n)
-data class TryExitLabelName(val n: Int) : NumberedLabelName(Label.TryExit, n)
+data class ReturnLabelName(val scopeDepth: Int) : NumberedLabelName("ret", scopeDepth)
+data class BreakLabelName(val n: Int) : NumberedLabelName("break", n)
+data class ContinueLabelName(val n: Int) : NumberedLabelName("cont", n)
+data class CatchLabelName(val n: Int) : NumberedLabelName("catch", n)
+data class TryExitLabelName(val n: Int) : NumberedLabelName("tryExit", n)
 
 
 data class PlaceholderArgumentName(val n: Int) : SymbolicName {
