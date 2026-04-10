@@ -19,7 +19,7 @@ import org.jetbrains.kotlin.formver.common.*
 import org.jetbrains.kotlin.formver.core.conversion.ProgramConverter
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.print
 import org.jetbrains.kotlin.formver.plugin.compiler.reporting.reportVerifierError
-import org.jetbrains.kotlin.formver.viper.Verifier
+import org.jetbrains.kotlin.formver.viper.SiliconFrontend
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.formver.viper.ast.registerAllNames
 import org.jetbrains.kotlin.formver.viper.ast.unwrapOr
@@ -85,18 +85,13 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
                 val source = err.position.unwrapOr { declaration.source }
                 reporter.reportVerifierError(source, err, config.errorStyle)
             }
-            val consistencyErrors = viperProgram.checkTransitively()
-            for (error in consistencyErrors) {
-                onFailure(org.jetbrains.kotlin.formver.viper.errors.GenericConsistencyError(error))
-            }
-            // If the Viper program is not consistent, that's our error; we shouldn't surface it to the user as an unverified contract.
-            if (consistencyErrors.nonEmpty() || !config.shouldVerify(declaration)) return
+            if (!config.shouldVerify(declaration)) return
 
-            val verifier = Verifier()
+            val frontend = SiliconFrontend(emptyList())
             try {
-                verifier.verify(viperProgram, onFailure)
+                frontend.verify(viperProgram, onFailure)
             } finally {
-                verifier.stop()
+                frontend.stop()
             }
         } catch (e: SnaktInternalException) {
             reporter.reportOn(e.source, PluginErrors.INTERNAL_ERROR, e.message)
