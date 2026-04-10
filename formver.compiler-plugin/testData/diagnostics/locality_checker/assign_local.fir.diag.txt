@@ -18,6 +18,6 @@
 
 /assign_local.kt:(2595,2705): error: Assignment locality mismatch: expected 'global', actual 'local(assign local nested control-flow to global in loop)'.
 
-/assign_local.kt:(3114,3230): error: Assignment locality mismatch: expected 'global', actual 'local(assign local nested control-flow to global in lambda loop)'.
+/assign_local.kt:(3114,3230): error: Assignment locality mismatch: expected 'global', actual 'local(anonymous)'.
 
 /assign_local.kt:(3248,3370): error: Assignment locality mismatch: expected 'global', actual 'local(assign local nested control-flow to global in lambda loop)'.
