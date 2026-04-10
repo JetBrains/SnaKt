@@ -19,7 +19,6 @@ import org.jetbrains.kotlin.fir.expressions.FirTryExpression
 import org.jetbrains.kotlin.fir.expressions.FirWhenExpression
 import org.jetbrains.kotlin.fir.expressions.FirWrappedExpression
 import org.jetbrains.kotlin.fir.references.symbol
-import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 import org.jetbrains.kotlin.formver.plugin.compiler.uniqueness.LiteralSymbol
 
