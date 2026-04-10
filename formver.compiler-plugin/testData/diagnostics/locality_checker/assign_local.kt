@@ -45,7 +45,7 @@ fun `assign local if-expression to local`(@Borrowed x: Any) {
     @Borrowed var z: Any = if (false) { x } else { Any() }
 }
 
-fun `assign local if-expression to global`(x: @Borrowed Any) {
+fun `assign local if-expression to global`(@Borrowed x: Any) {
     var z: Any = <!LOCALITY_VIOLATION!>if (false) { x } else { Any() }<!>
 }
 
