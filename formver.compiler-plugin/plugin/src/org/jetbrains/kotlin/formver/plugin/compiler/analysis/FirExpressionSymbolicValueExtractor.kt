@@ -143,7 +143,7 @@ abstract class FirExpressionSymbolicValueExtractor<T : SymbolicValue<T>>(
         val symbol = propertyAccessExpression.calleeReference.symbol
             ?: return empty
 
-        return create(symbol)
+        return factory.fromSymbol(symbol)
     }
 
     override fun visitFunctionCall(
