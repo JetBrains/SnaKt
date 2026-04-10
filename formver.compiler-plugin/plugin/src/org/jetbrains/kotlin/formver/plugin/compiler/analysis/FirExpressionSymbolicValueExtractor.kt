@@ -22,16 +22,10 @@ import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 import org.jetbrains.kotlin.formver.plugin.compiler.uniqueness.LiteralSymbol
 
-abstract class FirExpressionSymbolicValueExtractor<T> : FirVisitor<T, Unit>() {
-
-    abstract val empty: T
-
-    abstract fun create(symbol: FirBasedSymbol<*>): T
-
-    abstract fun T.join(other: T): T
-
-    abstract fun T.append(other: T): T
-
+abstract class FirExpressionSymbolicValueExtractor<T : SymbolicValue<T>>(
+    private val empty: T,
+    private val factory: SymbolicValueFactory<T>,
+) : FirVisitor<T, Unit>() {
     private fun FirExpression?.visit(): T =
         this?.accept(this@FirExpressionSymbolicValueExtractor, Unit) ?: empty
 
