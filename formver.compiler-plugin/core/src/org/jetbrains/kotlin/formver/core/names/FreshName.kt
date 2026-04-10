@@ -18,7 +18,7 @@ import org.jetbrains.kotlin.formver.viper.mangled
  */
 
 
-interface FreshName : SymbolicName
+sealed interface FreshName : SymbolicName
 
 abstract class TypedFreshName(override val mangledType: NameType, val baseName: String) : FreshName {
     context(nameResolver: NameResolver)
