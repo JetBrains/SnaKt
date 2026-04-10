@@ -57,7 +57,7 @@ fun `assign local property when-expression to global in loop`(@Borrowed x: A, y:
     }
 }
 
-fun `assign local property try-expression to global`(x: @Borrowed A, y: A) {
+fun `assign local property try-expression to global`(@Borrowed x: A, y: A) {
     var z: Any = try {
         x.x
     } catch (_: Throwable) {
