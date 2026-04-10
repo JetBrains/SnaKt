@@ -42,7 +42,7 @@ fun `assign local property to local property`(@Borrowed x: B, @Borrowed y: B) {
     x.x = y.x
 }
 
-fun `assign local property if-expression to global`(x: @Borrowed A, y: A) {
+fun `assign local property if-expression to global`(@Borrowed x: A, y: A) {
     var z: Any = if (false) { x.x } else { y.x }
 }
 
