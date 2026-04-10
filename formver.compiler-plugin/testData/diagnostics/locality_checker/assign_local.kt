@@ -63,8 +63,8 @@ fun `assign local if-expression to local in loop`(@Borrowed x: Any) {
     }
 }
 
-fun `assign local when-expression to local`(x: @Borrowed Any) {
-    var z: @Borrowed Any = when {
+fun `assign local when-expression to local`(@Borrowed x: Any) {
+    @Borrowed var z: Any = when {
         false -> x
         else -> Any()
     }
