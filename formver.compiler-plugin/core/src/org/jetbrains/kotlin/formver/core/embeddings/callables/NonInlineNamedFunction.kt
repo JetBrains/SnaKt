@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FunctionCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.MethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.withUpcast
 import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
 import org.jetbrains.kotlin.formver.viper.ast.Function
 import org.jetbrains.kotlin.formver.viper.ast.Method
@@ -22,10 +23,13 @@ class NonInlineNamedFunction(val signature: FullNamedFunctionSignature, val hasP
         args: List<ExpEmbedding>,
         ctx: StmtConversionContext,
     ): ExpEmbedding {
+        val wrappedArgs = args.zip(callableType.formalArgTypes).map { (arg, formalType) ->
+            arg.withUpcast(formalType)
+        }
         return if (hasPureAnnotation) {
-            FunctionCall(signature, args)
+            FunctionCall(signature, wrappedArgs)
         } else {
-            MethodCall(signature, args)
+            MethodCall(signature, wrappedArgs)
         }
     }
 

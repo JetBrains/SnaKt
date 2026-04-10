@@ -8,7 +8,9 @@ function f$doubleIncrement$TF$T$Int(): Ref
       (sp$plusInts(l0$x$0, df$rt$intToRef(1))) in
       (let l0$x$2 ==
         (sp$plusInts(l0$x$1, df$rt$intToRef(1))) in
-        l0$x$2)))
+        (let anon$0$0 ==
+          (l0$x$2) in
+          anon$0$0))))
 }
 
 /pure_function_with_reassignments.kt:(171,194): info: Generated Viper text for updateThenReadIntoOther:
@@ -21,7 +23,9 @@ function f$updateThenReadIntoOther$TF$T$Int(): Ref
       (sp$plusInts(l0$x$0, df$rt$intToRef(4))) in
       (let l0$y$0 ==
         (sp$plusInts(l0$x$1, df$rt$intToRef(1))) in
-        l0$y$0)))
+        (let anon$0$0 ==
+          (l0$y$0) in
+          anon$0$0))))
 }
 
 /pure_function_with_reassignments.kt:(276,300): info: Generated Viper text for readOldValueBeforeUpdate:
@@ -36,7 +40,9 @@ function f$readOldValueBeforeUpdate$TF$T$Int(): Ref
         (sp$plusInts(l0$x$0, df$rt$intToRef(5))) in
         (let l0$x$2 ==
           (sp$plusInts(l0$y$0, l0$x$1)) in
-          l0$x$2))))
+          (let anon$0$0 ==
+            (l0$x$2) in
+            anon$0$0)))))
 }
 
 /pure_function_with_reassignments.kt:(397,413): info: Generated Viper text for chainThroughTemp:
@@ -49,7 +55,9 @@ function f$chainThroughTemp$TF$T$Int(): Ref
       (sp$plusInts(l0$x$0, df$rt$intToRef(3))) in
       (let l0$x$1 ==
         (sp$plusInts(l0$t$0, df$rt$intToRef(4))) in
-        l0$x$1)))
+        (let anon$0$0 ==
+          (l0$x$1) in
+          anon$0$0))))
 }
 
 /pure_function_with_reassignments.kt:(495,522): info: Generated Viper text for overwriteNotSelfReferential:
@@ -60,7 +68,9 @@ function f$overwriteNotSelfReferential$TF$T$Int(): Ref
     (df$rt$intToRef(7)) in
     (let l0$x$1 ==
       (df$rt$intToRef(100)) in
-      l0$x$1))
+      (let anon$0$0 ==
+        (l0$x$1) in
+        anon$0$0)))
 }
 
 /pure_function_with_reassignments.kt:(584,611): info: Generated Viper text for nestedConditionalAssignment:
@@ -70,33 +80,53 @@ function f$nestedConditionalAssignment$TF$T$Boolean$T$Boolean$T$Int(p$a: Ref,
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
-  (let anon$1$0 ==
+  (let anon$3$0 ==
     ((df$rt$boolFromRef(p$b) && df$rt$boolFromRef(p$a) ?
       df$rt$intToRef(4) :
       null)) in
     (let anon$2$0 ==
-      ((!df$rt$boolFromRef(p$b) && df$rt$boolFromRef(p$a) ?
-        df$rt$intToRef(3) :
-        null)) in
-      (let anon$0$0 ==
-        ((df$rt$boolFromRef(p$a) ?
-          (df$rt$boolFromRef(p$b) ? anon$1$0 : anon$2$0) :
+      ((df$rt$boolFromRef(p$b) && df$rt$boolFromRef(p$a) ? anon$3$0 : null)) in
+      (let anon$5$0 ==
+        ((!df$rt$boolFromRef(p$b) && df$rt$boolFromRef(p$a) ?
+          df$rt$intToRef(3) :
           null)) in
         (let anon$4$0 ==
-          ((df$rt$boolFromRef(p$b) && !df$rt$boolFromRef(p$a) ?
-            df$rt$intToRef(2) :
+          ((!df$rt$boolFromRef(p$b) && df$rt$boolFromRef(p$a) ?
+            anon$5$0 :
             null)) in
-          (let anon$5$0 ==
-            ((!df$rt$boolFromRef(p$b) && !df$rt$boolFromRef(p$a) ?
-              df$rt$intToRef(1) :
+          (let anon$1$0 ==
+            ((df$rt$boolFromRef(p$a) ?
+              (df$rt$boolFromRef(p$b) ? anon$2$0 : anon$4$0) :
               null)) in
-            (let anon$3$0 ==
-              ((!df$rt$boolFromRef(p$a) ?
-                (df$rt$boolFromRef(p$b) ? anon$4$0 : anon$5$0) :
-                null)) in
-              (let l0$x$0 ==
-                ((df$rt$boolFromRef(p$a) ? anon$0$0 : anon$3$0)) in
-                l0$x$0)))))))
+            (let anon$0$0 ==
+              ((df$rt$boolFromRef(p$a) ? anon$1$0 : null)) in
+              (let anon$9$0 ==
+                ((df$rt$boolFromRef(p$b) && !df$rt$boolFromRef(p$a) ?
+                  df$rt$intToRef(2) :
+                  null)) in
+                (let anon$8$0 ==
+                  ((df$rt$boolFromRef(p$b) && !df$rt$boolFromRef(p$a) ?
+                    anon$9$0 :
+                    null)) in
+                  (let anon$11$0 ==
+                    ((!df$rt$boolFromRef(p$b) && !df$rt$boolFromRef(p$a) ?
+                      df$rt$intToRef(1) :
+                      null)) in
+                    (let anon$10$0 ==
+                      ((!df$rt$boolFromRef(p$b) && !df$rt$boolFromRef(p$a) ?
+                        anon$11$0 :
+                        null)) in
+                      (let anon$7$0 ==
+                        ((!df$rt$boolFromRef(p$a) ?
+                          (df$rt$boolFromRef(p$b) ? anon$8$0 : anon$10$0) :
+                          null)) in
+                        (let anon$6$0 ==
+                          ((!df$rt$boolFromRef(p$a) ? anon$7$0 : null)) in
+                          (let l0$x$0 ==
+                            ((df$rt$boolFromRef(p$a) ? anon$0$0 : anon$6$0)) in
+                            (let anon$12$0 ==
+                              (l0$x$0) in
+                              anon$12$0))))))))))))))
 }
 
 /pure_function_with_reassignments.kt:(729,755): info: Generated Viper text for blockConditionalAssignment:
@@ -106,27 +136,39 @@ function f$blockConditionalAssignment$TF$T$Boolean$T$Boolean$T$Int(p$a: Ref,
   requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
-  (let anon$1$0 ==
+  (let anon$3$0 ==
     ((df$rt$boolFromRef(p$b) && df$rt$boolFromRef(p$a) ?
       df$rt$intToRef(10) :
       null)) in
     (let anon$2$0 ==
-      ((!df$rt$boolFromRef(p$b) && df$rt$boolFromRef(p$a) ?
-        df$rt$intToRef(20) :
-        null)) in
-      (let l2$y$0 ==
-        ((df$rt$boolFromRef(p$a) ?
-          (df$rt$boolFromRef(p$b) ? anon$1$0 : anon$2$0) :
+      ((df$rt$boolFromRef(p$b) && df$rt$boolFromRef(p$a) ? anon$3$0 : null)) in
+      (let anon$5$0 ==
+        ((!df$rt$boolFromRef(p$b) && df$rt$boolFromRef(p$a) ?
+          df$rt$intToRef(20) :
           null)) in
-        (let anon$0$0 ==
-          ((df$rt$boolFromRef(p$a) ?
-            sp$plusInts(l2$y$0, df$rt$intToRef(1)) :
+        (let anon$4$0 ==
+          ((!df$rt$boolFromRef(p$b) && df$rt$boolFromRef(p$a) ?
+            anon$5$0 :
             null)) in
-          (let anon$3$0 ==
-            ((!df$rt$boolFromRef(p$a) ? df$rt$intToRef(30) : null)) in
-            (let l0$x$0 ==
-              ((df$rt$boolFromRef(p$a) ? anon$0$0 : anon$3$0)) in
-              l0$x$0))))))
+          (let l2$y$0 ==
+            ((df$rt$boolFromRef(p$a) ?
+              (df$rt$boolFromRef(p$b) ? anon$2$0 : anon$4$0) :
+              null)) in
+            (let anon$1$0 ==
+              ((df$rt$boolFromRef(p$a) ?
+                sp$plusInts(l2$y$0, df$rt$intToRef(1)) :
+                null)) in
+              (let anon$0$0 ==
+                ((df$rt$boolFromRef(p$a) ? anon$1$0 : null)) in
+                (let anon$7$0 ==
+                  ((!df$rt$boolFromRef(p$a) ? df$rt$intToRef(30) : null)) in
+                  (let anon$6$0 ==
+                    ((!df$rt$boolFromRef(p$a) ? anon$7$0 : null)) in
+                    (let l0$x$0 ==
+                      ((df$rt$boolFromRef(p$a) ? anon$0$0 : anon$6$0)) in
+                      (let anon$8$0 ==
+                        (l0$x$0) in
+                        anon$8$0)))))))))))
 }
 
 /pure_function_with_reassignments.kt:(912,926): info: Generated Viper text for whenAssignment:
@@ -137,33 +179,63 @@ function f$whenAssignment$TF$T$Int$T$Boolean$T$Int(p$a: Ref, p$b: Ref): Ref
 {
   (let anon$0$0 ==
     (p$a) in
-    (let anon$2$0 ==
+    (let anon$4$0 ==
       ((df$rt$boolFromRef(p$b) && df$rt$intFromRef(anon$0$0) == 1 ?
         df$rt$intToRef(2) :
         null)) in
       (let anon$3$0 ==
-        ((!df$rt$boolFromRef(p$b) && df$rt$intFromRef(anon$0$0) == 1 ?
-          df$rt$intToRef(3) :
+        ((df$rt$boolFromRef(p$b) && df$rt$intFromRef(anon$0$0) == 1 ?
+          anon$4$0 :
           null)) in
-        (let anon$1$0 ==
-          ((df$rt$intFromRef(anon$0$0) == 1 ?
-            (df$rt$boolFromRef(p$b) ? anon$2$0 : anon$3$0) :
+        (let anon$6$0 ==
+          ((!df$rt$boolFromRef(p$b) && df$rt$intFromRef(anon$0$0) == 1 ?
+            df$rt$intToRef(3) :
             null)) in
           (let anon$5$0 ==
-            ((df$rt$intFromRef(anon$0$0) == 2 &&
-            !(df$rt$intFromRef(anon$0$0) == 1) ?
-              df$rt$intToRef(4) :
+            ((!df$rt$boolFromRef(p$b) && df$rt$intFromRef(anon$0$0) == 1 ?
+              anon$6$0 :
               null)) in
-            (let anon$6$0 ==
-              ((!(df$rt$intFromRef(anon$0$0) == 2) &&
-              !(df$rt$intFromRef(anon$0$0) == 1) ?
-                df$rt$intToRef(5) :
+            (let anon$2$0 ==
+              ((df$rt$intFromRef(anon$0$0) == 1 ?
+                (df$rt$boolFromRef(p$b) ? anon$3$0 : anon$5$0) :
                 null)) in
-              (let anon$4$0 ==
-                ((!(df$rt$intFromRef(anon$0$0) == 1) ?
-                  (df$rt$intFromRef(anon$0$0) == 2 ? anon$5$0 : anon$6$0) :
-                  null)) in
-                (let l0$x$0 ==
-                  ((df$rt$intFromRef(anon$0$0) == 1 ? anon$1$0 : anon$4$0)) in
-                  l0$x$0))))))))
+              (let anon$1$0 ==
+                ((df$rt$intFromRef(anon$0$0) == 1 ? anon$2$0 : null)) in
+                (let anon$10$0 ==
+                  ((df$rt$intFromRef(anon$0$0) == 2 &&
+                  !(df$rt$intFromRef(anon$0$0) == 1) ?
+                    df$rt$intToRef(4) :
+                    null)) in
+                  (let anon$9$0 ==
+                    ((df$rt$intFromRef(anon$0$0) == 2 &&
+                    !(df$rt$intFromRef(anon$0$0) == 1) ?
+                      anon$10$0 :
+                      null)) in
+                    (let anon$12$0 ==
+                      ((!(df$rt$intFromRef(anon$0$0) == 2) &&
+                      !(df$rt$intFromRef(anon$0$0) == 1) ?
+                        df$rt$intToRef(5) :
+                        null)) in
+                      (let anon$11$0 ==
+                        ((!(df$rt$intFromRef(anon$0$0) == 2) &&
+                        !(df$rt$intFromRef(anon$0$0) == 1) ?
+                          anon$12$0 :
+                          null)) in
+                        (let anon$8$0 ==
+                          ((!(df$rt$intFromRef(anon$0$0) == 1) ?
+                            (df$rt$intFromRef(anon$0$0) == 2 ?
+                              anon$9$0 :
+                              anon$11$0) :
+                            null)) in
+                          (let anon$7$0 ==
+                            ((!(df$rt$intFromRef(anon$0$0) == 1) ?
+                              anon$8$0 :
+                              null)) in
+                            (let l0$x$0 ==
+                              ((df$rt$intFromRef(anon$0$0) == 1 ?
+                                anon$1$0 :
+                                anon$7$0)) in
+                              (let anon$13$0 ==
+                                (l0$x$0) in
+                                anon$13$0)))))))))))))))
 }

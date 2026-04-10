@@ -83,6 +83,18 @@ data class PureExpLinearizer(
         access.unfoldingInImpl()
 
 
+    override fun applyUnfolding(
+        predicates: List<Exp.PredicateAccess>,
+        innerViper: Exp,
+        innerType: TypeEmbedding,
+        nullGuard: Exp?,
+    ): Exp {
+        // Implementing unfolding for pure expressions requires some kind of SSA to move the unfolding in function
+        // calls or assignments before the actual usage of the expression itself. This is currently not supported here.
+        // TODO: Implement a behavior similar to PureFunBodyLinearizer
+        throw PureExpLinearizerMisuseException("applyUnfolding (upcast in specification context not yet supported)")
+    }
+
     override fun addModifier(mod: StmtModifier) {
         throw PureExpLinearizerMisuseException("addModifier")
     }

@@ -61,6 +61,7 @@ method f$callSuperMethod$TF$T$Bar$T$Int(p$bar: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   inhale acc(p$c$Bar$shared(p$bar), wildcard)
+  unfold acc(p$c$Bar$shared(p$bar), wildcard)
   ret$0 := f$c$Foo$getY$TF$T$Foo$T$Int(p$bar)
   goto lbl$ret$0
   label lbl$ret$0
