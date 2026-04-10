@@ -20,8 +20,8 @@ fun `assign local to local`(@Borrowed x: Any) {
     y = x
 }
 
-fun `assign local then global to local`(x: @Borrowed Any, y: Any) {
-    var z: @Borrowed Any
+fun `assign local then global to local`(@Borrowed x: Any, y: Any) {
+    @Borrowed var z: Any
 
     z = x
     z = y
