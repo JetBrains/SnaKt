@@ -38,7 +38,7 @@ fun `assign local property to global property`(x: B, @Borrowed y: B) {
     x.x = y.x
 }
 
-fun `assign local property to local property`(x: @Borrowed B, y: @Borrowed B) {
+fun `assign local property to local property`(@Borrowed x: B, @Borrowed y: B) {
     x.x = y.x
 }
 
