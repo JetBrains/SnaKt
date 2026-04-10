@@ -167,6 +167,6 @@ abstract class FirExpressionSymbolicValueExtractor<T : SymbolicValue<T>>(
         literalExpression: FirLiteralExpression,
         data: Unit
     ): T {
-        return create(LiteralSymbol)
+        return factory.fromSymbol(LiteralSymbol)
     }
 }
