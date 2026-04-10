@@ -65,7 +65,7 @@ fun `assign local property try-expression to global`(@Borrowed x: A, y: A) {
     }
 }
 
-fun `assign property if-expression to property in loop`(x: B, y: @Borrowed B, z: B) {
+fun `assign property if-expression to property in loop`(x: B, @Borrowed y: B, z: B) {
     while (true) {
         x.x = if (false) { y.x } else { z.x }
     }
