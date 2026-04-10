@@ -3,7 +3,7 @@
 import org.jetbrains.kotlin.formver.plugin.Borrowed
 
 fun `assign global to local`(x: Any) {
-    var y: @Borrowed Any
+    @Borrowed var y: Any
 
     y = x
 }
