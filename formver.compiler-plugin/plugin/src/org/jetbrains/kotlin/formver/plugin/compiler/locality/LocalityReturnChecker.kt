@@ -17,7 +17,7 @@ class LocalityReturnChecker(
         if (!config.checkLocality) return
 
         val leftLocality = LocalityValue.Global
-        val rightLocality = expression.result.localityAttribute
+        val rightLocality = expression.result.resolvedLocality
 
         if (leftLocality.accepts(rightLocality)) return
 
