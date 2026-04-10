@@ -47,7 +47,7 @@ class LocalityFunctionCallChecker(
             val expectedArgumentLocality = argumentSymbol.fir.requiredLocality
             val actualArgumentLocality = argument.localityAttribute
 
-            if (expectedArgumentLocality.accepts(actualArgumentLocality)) continue
+            if (requiredArgumentLocality.accepts(actualArgumentLocality)) continue
 
             reporter.reportOn(
                 argument.source,
