@@ -14,7 +14,7 @@ annotation class DumpExpEmbeddings
 @Target(AnnotationTarget.LOCAL_VARIABLE, AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
 annotation class Unique
 
-@Target(AnnotationTarget.TYPE, AnnotationTarget.LOCAL_VARIABLE, AnnotationTarget.VALUE_PARAMETER)
+@Target(AnnotationTarget.LOCAL_VARIABLE, AnnotationTarget.VALUE_PARAMETER)
 annotation class Borrowed
 
 @Target(AnnotationTarget.FUNCTION)
