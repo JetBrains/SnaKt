@@ -52,7 +52,7 @@ class LocalityFunctionCallChecker(
             reporter.reportOn(
                 argument.source,
                 LOCALITY_VIOLATION,
-                "Argument uniqueness mismatch: expected '${expectedArgumentLocality.render()}', " +
+                "Argument uniqueness mismatch: expected '${requiredArgumentLocality.render()}', " +
                         "actual '${actualArgumentLocality.render()}'."
             )
         }
