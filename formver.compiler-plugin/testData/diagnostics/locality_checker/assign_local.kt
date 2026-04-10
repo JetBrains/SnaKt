@@ -27,8 +27,8 @@ fun `assign local then global to local`(@Borrowed x: Any, y: Any) {
     z = y
 }
 
-fun `assign local to local in loop`(x: @Borrowed Any) {
-    var z: @Borrowed Any
+fun `assign local to local in loop`(@Borrowed x: Any) {
+    @Borrowed var z: Any
 
     while (true) {
         z = x
