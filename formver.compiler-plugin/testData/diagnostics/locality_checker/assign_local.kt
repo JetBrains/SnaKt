@@ -88,7 +88,7 @@ fun `assign local when-expression to global in loop`(@Borrowed x: Any) {
     }
 }
 
-fun `assign local try-expression to global`(x: @Borrowed Any) {
+fun `assign local try-expression to global`(@Borrowed x: Any) {
     var z: Any = <!LOCALITY_VIOLATION!>try {
         x
     } catch (_: Throwable) {
