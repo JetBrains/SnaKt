@@ -10,8 +10,8 @@ fun `assign global property access to local`(x: A) {
     @Borrowed var z: Any = x.x
 }
 
-fun `assign local property access to local`(x: @Borrowed A) {
-    var z: @Borrowed Any = x.x
+fun `assign local property access to local`(@Borrowed x: A) {
+    @Borrowed var z: Any = x.x
 }
 
 fun `assign global safe-call expression to local`(x: A?) {
