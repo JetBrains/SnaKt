@@ -4,6 +4,8 @@
 
 /assign_local.kt:(1482,1535): error: Assignment locality mismatch: expected 'global', actual 'local(assign local when-expression to global)'.
 
+/assign_local.kt:(1035,1066): error: Assignment locality mismatch: expected 'local(anonymous)', actual 'local(assign local if-expression to local in lambda)'.
+
 /assign_local.kt:(1667,1732): error: Assignment locality mismatch: expected 'global', actual 'local(assign local when-expression to global in loop)'.
 
 /assign_local.kt:(1823,1887): error: Assignment locality mismatch: expected 'global', actual 'local(assign local try-expression to global)'.
