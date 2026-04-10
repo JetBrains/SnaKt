@@ -22,7 +22,7 @@ fun `assign local safe-call expression to local`(@Borrowed x: A?) {
     @Borrowed var z: Any? = x?.x
 }
 
-fun `assign local safe-call expression to global`(x: @Borrowed A?) {
+fun `assign local safe-call expression to global`(@Borrowed x: A?) {
     var z: Any? = <!LOCALITY_VIOLATION!>x?.x<!>
 }
 
