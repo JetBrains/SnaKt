@@ -71,7 +71,7 @@ fun `assign property if-expression to property in loop`(x: B, @Borrowed y: B, z:
     }
 }
 
-fun `assign property when-expression to property in loop`(x: @Borrowed B, y: B, z: @Borrowed B) {
+fun `assign property when-expression to property in loop`(@Borrowed x: B, y: B, @Borrowed z: B) {
     while (true) {
         x.x = when {
             false -> y.x
