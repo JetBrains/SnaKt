@@ -22,24 +22,17 @@ import org.jetbrains.kotlin.name.Name
  */
 sealed interface KotlinName : SymbolicName
 
-data class SimpleKotlinName(val name: Name) : KotlinName {
-}
+data class SimpleKotlinName(val name: Name) : KotlinName
 
-abstract class TypedKotlinName(override val nameType: NameType, open val name: Name) : KotlinName {
-}
+abstract class TypedKotlinName(override val nameType: NameType, open val name: Name) : KotlinName
 
 abstract class TypedKotlinNameWithType(
-    override val nameType: NameType,
-    open val name: Name,
-    val type: TypeEmbedding
-) :
-    KotlinName {
-}
+    override val nameType: NameType, open val name: Name, val type: TypeEmbedding
+) : KotlinName
 
 data class FunctionKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
     TypedKotlinNameWithType(
-        NameType.Base.Function, name,
-        functionType.asTypeEmbedding()
+        NameType.Base.Function, name, functionType.asTypeEmbedding()
     )
 
 /**
@@ -56,33 +49,21 @@ data class ExtensionGetterKotlinName(override val name: Name, val functionType: 
     TypedKotlinNameWithType(NameType.Member.ExtensionGetter, name, functionType.asTypeEmbedding())
 
 data class ClassKotlinName(val name: FqName) : KotlinName {
-    override val nameType: NameType
-        get() = NameType.TypeCategory.Class
+    override val nameType: NameType = NameType.TypeCategory.Class
 
     constructor(classSegments: List<String>) : this(FqName.fromSegments(classSegments))
 }
 
 data class ConstructorKotlinName(val type: FunctionTypeEmbedding) : KotlinName {
-    override val nameType: NameType
-        get() = NameType.Base.Constructor
-
+    override val nameType: NameType = NameType.Base.Constructor
 }
 
-data class PretypeName(val name: String) : SymbolicName {
-
-}
+data class PretypeName(val name: String) : SymbolicName
 
 data class ListOfNames<T : SymbolicName>(val names: List<T>) : SymbolicName {
-    override val nameType: NameType
-        get() = NameType.TypeCategory.GeneralType
-
+    override val nameType: NameType = NameType.TypeCategory.GeneralType
 }
 
 data class FunctionTypeName(val args: ListOfNames<TypeName>, val returns: TypeName) : SymbolicName
 
-data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : SymbolicName {
-
-    override val nameType: NameType
-        get() = NameType.TypeCategory.GeneralType
-
-}
+data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : SymbolicName
