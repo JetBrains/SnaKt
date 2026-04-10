@@ -23,52 +23,38 @@ sealed interface NumberedName : FreshName {
     val n: Int
 }
 
+sealed interface NameTypeVariable : FreshName {
+    override val nameType
+        get() = NameType.Base.Variable
+}
+
 /**
  * Representation for names not present in the original source,
  * e.g. storage for the result of subexpressions.
  */
-// "anon$n"
-data class AnonymousName(override val n: Int) : NumberedName {
-    override val nameType: NameType = NameType.Base.Variable
-}
+data class AnonymousName(override val n: Int) : NumberedName, NameTypeVariable
 
-// $$"anon$builtin$$$n"
-data class AnonymousBuiltinName(override val n: Int) : NumberedName {
-    override val nameType: NameType = NameType.Base.Variable
-}
+data class AnonymousBuiltinName(override val n: Int) : NumberedName, NameTypeVariable
 
 /**
  * Name for return variable that should *only* be used in signatures of methods without a body.
  */
-// ret
 data object PlaceholderReturnVariableName : FreshName {
     override val nameType: NameType = NameType.Base.Variable
 
 }
 
-//ret$n
-data class ReturnVariableName(override val n: Int) : NumberedName {
-    override val nameType: NameType = NameType.Base.Variable
-}
+data class ReturnVariableName(override val n: Int) : NumberedName, NameTypeVariable
 
 /**
  * Name for return variable that should *only* be used in signatures of pure functions
  * This variable will be translated into the special result variable in Viper
  */
-// , "result"
-data object FunctionResultVariableName : FreshName {
-    override val nameType: NameType = NameType.Base.Variable
-}
+data object FunctionResultVariableName : FreshName, NameTypeVariable
 
-// "this$dispatch"
-data object DispatchReceiverName : FreshName {
-    override val nameType: NameType = NameType.Base.Variable
-}
+data object DispatchReceiverName : FreshName, NameTypeVariable
 
-// "this$extension"
-data object ExtensionReceiverName : FreshName {
-    override val nameType: NameType = NameType.Base.Variable
-}
+data object ExtensionReceiverName : FreshName, NameTypeVariable
 
 data class SpecialFieldName(val name: String) : FreshName {
     override val nameType: NameType = NameType.Member.Property
@@ -89,18 +75,11 @@ data class DomainAssociatedFuncName(val name: String) : FreshName {
     override val nameType: NameType = NameType.Base.DomainFunction
 }
 
-// "arg$$n"
-data class PlaceholderArgumentName(override val n: Int) : NumberedName {
-    override val nameType = NameType.Base.Variable
-}
+data class PlaceholderArgumentName(override val n: Int) : NumberedName, NameTypeVariable
 
-data class DomainFuncParameterName(val name: String) : FreshName {
-    override val nameType = NameType.Base.Variable
-}
+data class DomainFuncParameterName(val name: String) : FreshName, NameTypeVariable
 
-data class SsaVariableName(override val n: Int, val baseName: SymbolicName) : NumberedName {
-    override val nameType: NameType = NameType.Base.Variable
-}
+data class SsaVariableName(override val n: Int, val baseName: SymbolicName) : NumberedName, NameTypeVariable
 
 data class PredicateName(val name: String) : FreshName {
     override val nameType: NameType = NameType.Base.Predicate
