@@ -30,7 +30,7 @@ class B(
     var x: Any
 )
 
-fun `assign global property to local property`(x: @Borrowed B, y: B) {
+fun `assign global property to local property`(@Borrowed x: B, y: B) {
     x.x = y.x
 }
 
