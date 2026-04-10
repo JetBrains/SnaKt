@@ -80,7 +80,7 @@ fun `assign property when-expression to property in loop`(@Borrowed x: B, y: B, 
     }
 }
 
-fun `assign property try-expression to property`(x: B, y: @Borrowed B, z: B) {
+fun `assign property try-expression to property`(x: B, @Borrowed y: B, z: B) {
     x.x = try {
         y.x
     } catch (_: Throwable) {
