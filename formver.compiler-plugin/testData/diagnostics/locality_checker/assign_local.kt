@@ -55,8 +55,8 @@ fun `assign local if-expression to local in lambda`(@Borrowed x: Any) {
     }
 }
 
-fun `assign local if-expression to local in loop`(x: @Borrowed Any) {
-    var z: @Borrowed Any = Any()
+fun `assign local if-expression to local in loop`(@Borrowed x: Any) {
+    @Borrowed var z: Any = Any()
 
     while (true) {
         z = if (false) { x } else { Any() }
