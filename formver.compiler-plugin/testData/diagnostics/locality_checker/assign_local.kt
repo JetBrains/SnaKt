@@ -112,7 +112,7 @@ fun `assign local cast-expression to global`(@Borrowed x: Any) {
     var z: String = <!LOCALITY_VIOLATION!>x as String<!>
 }
 
-fun `assign local not-null-expression to global`(x: @Borrowed Any?) {
+fun `assign local not-null-expression to global`(@Borrowed x: Any?) {
     var z: Any = <!LOCALITY_VIOLATION!>x!!<!>
 }
 
