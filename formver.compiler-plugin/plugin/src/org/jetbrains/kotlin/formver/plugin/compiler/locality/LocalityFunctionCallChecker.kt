@@ -34,7 +34,7 @@ class LocalityFunctionCallChecker(
                 reporter.reportOn(
                     receiver.source ?: expression.source,
                     LOCALITY_VIOLATION,
-                    "Receiver uniqueness mismatch: expected '${expectedReceiverLocality.render()}', " +
+                    "Receiver uniqueness mismatch: expected '${requiredReceiverLocality.render()}', " +
                             "actual '${actualReceiverLocality.render()}'."
                 )
             }
