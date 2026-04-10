@@ -24,7 +24,7 @@ interface AnyName {
 const val SEPARATOR = "$"
 
 interface SymbolicName : AnyName {
-    val mangledType: NameType?
+    val nameType: NameType?
         get() = null
     context(nameResolver: NameResolver)
     val mangledScope: String?

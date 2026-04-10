@@ -22,7 +22,7 @@ data class ScopedName(val scope: NameScope, val name: SymbolicName) : SymbolicNa
     override val mangledBaseName: String
         get() = name.mangledBaseName
 
-    override val mangledType: NameType? = name.mangledType
+    override val nameType: NameType? = name.nameType
 }
 
 fun FqName.asViperString() = asString().replace('.', '_')
