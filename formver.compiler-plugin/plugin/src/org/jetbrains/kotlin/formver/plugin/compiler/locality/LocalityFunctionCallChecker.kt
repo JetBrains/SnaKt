@@ -44,7 +44,7 @@ class LocalityFunctionCallChecker(
         val arguments = expression.arguments
 
         for ((argumentSymbol, argument) in argumentSymbols.zip(arguments)) {
-            val expectedArgumentLocality = argumentSymbol.fir.localityAttribute
+            val expectedArgumentLocality = argumentSymbol.fir.requiredLocality
             val actualArgumentLocality = argument.localityAttribute
 
             if (expectedArgumentLocality.accepts(actualArgumentLocality)) continue
