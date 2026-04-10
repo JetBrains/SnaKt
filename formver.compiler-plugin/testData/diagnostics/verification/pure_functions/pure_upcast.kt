@@ -17,15 +17,15 @@ fun <!VIPER_TEXT!>pureUpcast<!>(s: Sub): Int = readValue(s)
 @Pure
 @AlwaysVerify
 fun <!VIPER_TEXT!>pureConditionalUpcast<!>(s1: Sub, s2: Sub2, flag: Boolean): Int =
-    readValue(if (flag) s1 else s2)
+    <!VIPER_VERIFICATION_ERROR!>readValue(if (flag) s1 else s2)<!>
 
 // Test 3: pure function stores the upcast result in a variable, then reads it.
-@Pure
+<!VIPER_VERIFICATION_ERROR!>@Pure
 @AlwaysVerify
 fun <!VIPER_TEXT!>pureUpcastViaVariable<!>(s: Sub): Int {
     val b: Base = s
     return b.value
-}
+}<!>
 
 // Test 4: nullable subtype passed to a nullable supertype parameter.
 @Pure
@@ -33,4 +33,4 @@ fun <!VIPER_TEXT!>readValueNullable<!>(b: Base?): Int = if (b != null) b.value e
 
 @Pure
 @AlwaysVerify
-fun <!VIPER_TEXT!>pureNullableUpcast<!>(s: Sub?): Int = readValueNullable(s)
+fun <!VIPER_TEXT!>pureNullableUpcast<!>(s: Sub?): Int = <!VIPER_VERIFICATION_ERROR!>readValueNullable(s)<!>

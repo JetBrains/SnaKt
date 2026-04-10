@@ -487,6 +487,7 @@ predicate p$c$B$unique(this$dispatch: Ref) {
 
 method f$havoc$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$shared(p$a), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$localUnit: Ref
@@ -505,7 +506,6 @@ method f$havoc$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
   var l0$localCharNull: Ref
   var l0$localStringNull: Ref
   var l0$localClassTypeNull: Ref
-  inhale acc(p$c$A$shared(p$a), wildcard)
   l0$localUnit := havoc$T$Unit()
   l0$localNothing := havoc$T$Nothing()
   l0$localAny := havoc$T$Any()

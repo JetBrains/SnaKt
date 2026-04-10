@@ -4,7 +4,9 @@ function f$returnNumberVal$TF$T$Int(): Ref
 {
   (let l0$x$0 ==
     (df$rt$intToRef(42)) in
-    l0$x$0)
+    (let anon$0$0 ==
+      (l0$x$0) in
+      anon$0$0))
 }
 
 /pure_function_with_assignments.kt:(144,178): info: Generated Viper text for multipleAssignmentsOfDifferentType:
@@ -19,7 +21,9 @@ function f$multipleAssignmentsOfDifferentType$TF$T$Boolean(): Ref
         (df$rt$boolToRef(true)) in
         (let l0$d$0 ==
           (df$rt$charToRef(65)) in
-          l0$c$0))))
+          (let anon$0$0 ==
+            (l0$c$0) in
+            anon$0$0)))))
 }
 
 /pure_function_with_assignments.kt:(292,328): info: Generated Viper text for multipleAssignmentsWithLiteralReturn:
@@ -34,7 +38,9 @@ function f$multipleAssignmentsWithLiteralReturn$TF$T$Int(): Ref
         (df$rt$boolToRef(true)) in
         (let l0$d$0 ==
           (df$rt$charToRef(65)) in
-          df$rt$intToRef(42)))))
+          (let anon$0$0 ==
+            (df$rt$intToRef(42)) in
+            anon$0$0)))))
 }
 
 /pure_function_with_assignments.kt:(439,473): info: Generated Viper text for laterInitializersCanRelyOnPrevious:
@@ -47,7 +53,9 @@ function f$laterInitializersCanRelyOnPrevious$TF$T$Int(): Ref
       (sp$plusInts(l0$a$0, df$rt$intToRef(2))) in
       (let l0$c$0 ==
         (sp$timesInts(l0$b$0, df$rt$intToRef(2))) in
-        l0$c$0)))
+        (let anon$0$0 ==
+          (l0$c$0) in
+          anon$0$0))))
 }
 
 /pure_function_with_assignments.kt:(560,591): info: Generated Viper text for initializersCanRelyOnParameters:
@@ -62,5 +70,7 @@ function f$initializersCanRelyOnParameters$TF$T$Int$T$Int$T$Int(p$x: Ref, p$y: R
       (sp$minusInts(p$x, p$y)) in
       (let l0$res$0 ==
         (sp$timesInts(l0$sum$0, l0$diff$0)) in
-        l0$res$0)))
+        (let anon$0$0 ==
+          (l0$res$0) in
+          anon$0$0))))
 }

@@ -11,7 +11,9 @@ function f$annotatedIntLitReturn$TF$T$Int$T$Int(p$arg: Ref): Ref
       anon$builtin$1 == df$rt$intFromRef(result) ==>
       anon$builtin$1 == df$rt$intFromRef(p$arg))
 {
-  df$rt$intToRef(42)
+  (let anon$0$0 ==
+    (df$rt$intToRef(42)) in
+    anon$0$0)
 }
 
 /pure_function_with_literal_return.kt:(403,425): info: Generated Viper text for annotatedBoolLitReturn:
@@ -23,7 +25,9 @@ function f$annotatedBoolLitReturn$TF$T$Int$T$Boolean(p$arg: Ref): Ref
   ensures df$rt$boolFromRef(result)
   ensures df$rt$intFromRef(p$arg) == 0
 {
-  df$rt$boolToRef(true)
+  (let anon$0$0 ==
+    (df$rt$boolToRef(true)) in
+    anon$0$0)
 }
 
 /pure_function_with_literal_return.kt:(628,650): info: Generated Viper text for annotatedCharLitReturn:
@@ -34,7 +38,9 @@ function f$annotatedCharLitReturn$TF$T$String$T$Char(p$arg: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$charType())
   ensures df$rt$charFromRef(result) == 65
 {
-  df$rt$charToRef(65)
+  (let anon$0$0 ==
+    (df$rt$charToRef(65)) in
+    anon$0$0)
 }
 
 /pure_function_with_literal_return.kt:(834,858): info: Generated Viper text for annotatedStringLitReturn:
@@ -45,5 +51,7 @@ function f$annotatedStringLitReturn$TF$T$Boolean$T$String(p$arg: Ref): Ref
   ensures df$rt$stringFromRef(result) ==
     Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116)
 {
-  df$rt$stringToRef(Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116))
+  (let anon$0$0 ==
+    (df$rt$stringToRef(Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116))) in
+    anon$0$0)
 }

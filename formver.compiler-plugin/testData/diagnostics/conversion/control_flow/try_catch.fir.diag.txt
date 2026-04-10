@@ -220,6 +220,7 @@ method f$call$TF$T$Int$T$Unit(p$x: Ref) returns (ret: Ref)
 
 method f$ignore$TF$T$Exception$T$Unit(p$e: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(p$e), df$rt$c$pkg$java_lang$Exception())
+  requires acc(p$pkg$java_lang$c$Exception$shared(p$e), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
@@ -251,3 +252,4 @@ method pg$public$cause(this$dispatch: Ref) returns (ret: Ref)
 
 
 method pg$public$message(this$dispatch: Ref) returns (ret: Ref)
+

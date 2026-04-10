@@ -4,50 +4,66 @@ field bf$next: Ref
 field bf$value: Ref
 
 function f$isAlternating$TF$T$Node$T$Boolean$T$Boolean(p$node: Ref, p$expectsPositive: Ref): Ref
-  requires acc(p$c$Node$shared(p$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
+  requires acc(p$c$Node$shared(p$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(p$expectsPositive), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
 {
-  (let anon$1$0 ==
+  (let anon$2$0 ==
     ((df$rt$boolFromRef(p$expectsPositive) ?
       (unfolding acc(p$c$Node$shared(p$node), wildcard) in p$node.bf$value) :
       null)) in
-    (let anon$0$0 ==
+    (let anon$1$0 ==
       ((df$rt$boolFromRef(p$expectsPositive) ?
         (unfolding acc(p$c$Node$shared(p$node), wildcard) in
-          sp$gtInts(anon$1$0, df$rt$intToRef(0))) :
+          sp$gtInts(anon$2$0, df$rt$intToRef(0))) :
         null)) in
-      (let anon$3$0 ==
-        ((!df$rt$boolFromRef(p$expectsPositive) ?
-          (unfolding acc(p$c$Node$shared(p$node), wildcard) in
-            p$node.bf$value) :
-          null)) in
-        (let anon$2$0 ==
+      (let anon$0$0 ==
+        ((df$rt$boolFromRef(p$expectsPositive) ? anon$1$0 : null)) in
+        (let anon$5$0 ==
           ((!df$rt$boolFromRef(p$expectsPositive) ?
             (unfolding acc(p$c$Node$shared(p$node), wildcard) in
-              sp$ltInts(anon$3$0, df$rt$intToRef(0))) :
+              p$node.bf$value) :
             null)) in
-          (let l0$isCurrentValid$0 ==
-            ((df$rt$boolFromRef(p$expectsPositive) ? anon$0$0 : anon$2$0)) in
-            (let l0$nextNode$0 ==
-              ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
-                p$node.bf$next)) in
-              (let anon$5$0 ==
-                ((!(l0$nextNode$0 == df$rt$nullValue()) ?
-                  (unfolding acc(p$c$Node$shared(p$node), wildcard) in
-                    f$isAlternating$TF$T$Node$T$Boolean$T$Boolean(l0$nextNode$0,
-                    sp$notBool(p$expectsPositive))) :
-                  null)) in
-                (let anon$6$0 ==
-                  ((!!(l0$nextNode$0 == df$rt$nullValue()) ?
-                    df$rt$boolToRef(true) :
-                    null)) in
-                  (let anon$4$0 ==
+          (let anon$4$0 ==
+            ((!df$rt$boolFromRef(p$expectsPositive) ?
+              (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+                sp$ltInts(anon$5$0, df$rt$intToRef(0))) :
+              null)) in
+            (let anon$3$0 ==
+              ((!df$rt$boolFromRef(p$expectsPositive) ? anon$4$0 : null)) in
+              (let l0$isCurrentValid$0 ==
+                ((df$rt$boolFromRef(p$expectsPositive) ?
+                  anon$0$0 :
+                  anon$3$0)) in
+                (let l0$nextNode$0 ==
+                  ((unfolding acc(p$c$Node$shared(p$node), wildcard) in
+                    p$node.bf$next)) in
+                  (let anon$9$0 ==
                     ((!(l0$nextNode$0 == df$rt$nullValue()) ?
-                      anon$5$0 :
-                      anon$6$0)) in
-                    sp$andBools(l0$isCurrentValid$0, anon$4$0))))))))))
+                      (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+                        f$isAlternating$TF$T$Node$T$Boolean$T$Boolean(l0$nextNode$0,
+                        sp$notBool(p$expectsPositive))) :
+                      null)) in
+                    (let anon$8$0 ==
+                      ((!(l0$nextNode$0 == df$rt$nullValue()) ?
+                        anon$9$0 :
+                        null)) in
+                      (let anon$11$0 ==
+                        ((!!(l0$nextNode$0 == df$rt$nullValue()) ?
+                          df$rt$boolToRef(true) :
+                          null)) in
+                        (let anon$10$0 ==
+                          ((!!(l0$nextNode$0 == df$rt$nullValue()) ?
+                            anon$11$0 :
+                            null)) in
+                          (let anon$7$0 ==
+                            ((!(l0$nextNode$0 == df$rt$nullValue()) ?
+                              anon$8$0 :
+                              anon$10$0)) in
+                            (let anon$6$0 ==
+                              (sp$andBools(l0$isCurrentValid$0, anon$7$0)) in
+                              anon$6$0))))))))))))))
 }
 
 /heap_dependent_specifications.kt:(482,512): info: Generated Viper text for isStrictlyAscendingAndPositive:
@@ -56,8 +72,8 @@ field bf$next: Ref
 field bf$value: Ref
 
 function f$isStrictlyAscendingAndPositive$TF$T$Node$T$Boolean(p$node: Ref): Ref
-  requires acc(p$c$Node$shared(p$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
+  requires acc(p$c$Node$shared(p$node), wildcard)
   requires df$rt$intFromRef((unfolding acc(p$c$Node$shared(p$node), wildcard) in
       p$node.bf$value)) >=
     0
@@ -65,51 +81,73 @@ function f$isStrictlyAscendingAndPositive$TF$T$Node$T$Boolean(p$node: Ref): Ref
 {
   (let l0$nextNode$0 ==
     ((unfolding acc(p$c$Node$shared(p$node), wildcard) in p$node.bf$next)) in
-    (let anon$2$0 ==
+    (let anon$4$0 ==
       ((!(l0$nextNode$0 == df$rt$nullValue()) ?
         (unfolding acc(p$c$Node$shared(p$node), wildcard) in
           (unfolding acc(p$c$Node$shared(l0$nextNode$0), wildcard) in
             l0$nextNode$0.bf$value)) :
         null)) in
-      (let anon$3$0 ==
-        ((df$rt$intFromRef(anon$2$0) < 0 &&
+      (let anon$6$0 ==
+        ((df$rt$intFromRef(anon$4$0) < 0 &&
         !(l0$nextNode$0 == df$rt$nullValue()) ?
           df$rt$boolToRef(false) :
           null)) in
         (let anon$5$0 ==
-          ((!(df$rt$intFromRef(anon$2$0) < 0) &&
+          ((df$rt$intFromRef(anon$4$0) < 0 &&
           !(l0$nextNode$0 == df$rt$nullValue()) ?
-            (unfolding acc(p$c$Node$shared(p$node), wildcard) in
-              (unfolding acc(p$c$Node$shared(l0$nextNode$0), wildcard) in
-                l0$nextNode$0.bf$value)) :
+            anon$6$0 :
             null)) in
-          (let anon$6$0 ==
-            ((!(df$rt$intFromRef(anon$2$0) < 0) &&
+          (let anon$9$0 ==
+            ((!(df$rt$intFromRef(anon$4$0) < 0) &&
             !(l0$nextNode$0 == df$rt$nullValue()) ?
               (unfolding acc(p$c$Node$shared(p$node), wildcard) in
-                p$node.bf$value) :
+                (unfolding acc(p$c$Node$shared(l0$nextNode$0), wildcard) in
+                  l0$nextNode$0.bf$value)) :
               null)) in
-            (let anon$4$0 ==
-              ((!(df$rt$intFromRef(anon$2$0) < 0) &&
+            (let anon$10$0 ==
+              ((!(df$rt$intFromRef(anon$4$0) < 0) &&
               !(l0$nextNode$0 == df$rt$nullValue()) ?
                 (unfolding acc(p$c$Node$shared(p$node), wildcard) in
-                  (unfolding acc(p$c$Node$shared(p$node), wildcard) in
-                    (unfolding acc(p$c$Node$shared(l0$nextNode$0), wildcard) in
-                      sp$andBools(sp$gtInts(anon$5$0, anon$6$0), f$isStrictlyAscendingAndPositive$TF$T$Node$T$Boolean(l0$nextNode$0))))) :
+                  p$node.bf$value) :
                 null)) in
-              (let anon$1$0 ==
-                ((!(l0$nextNode$0 == df$rt$nullValue()) ?
-                  (df$rt$intFromRef(anon$2$0) < 0 ? anon$3$0 : anon$4$0) :
+              (let anon$8$0 ==
+                ((!(df$rt$intFromRef(anon$4$0) < 0) &&
+                !(l0$nextNode$0 == df$rt$nullValue()) ?
+                  (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+                    (unfolding acc(p$c$Node$shared(p$node), wildcard) in
+                      (unfolding acc(p$c$Node$shared(l0$nextNode$0), wildcard) in
+                        sp$andBools(sp$gtInts(anon$9$0, anon$10$0), f$isStrictlyAscendingAndPositive$TF$T$Node$T$Boolean(l0$nextNode$0))))) :
                   null)) in
                 (let anon$7$0 ==
-                  ((!!(l0$nextNode$0 == df$rt$nullValue()) ?
-                    df$rt$boolToRef(true) :
+                  ((!(df$rt$intFromRef(anon$4$0) < 0) &&
+                  !(l0$nextNode$0 == df$rt$nullValue()) ?
+                    anon$8$0 :
                     null)) in
-                  (let anon$0$0 ==
+                  (let anon$3$0 ==
                     ((!(l0$nextNode$0 == df$rt$nullValue()) ?
-                      anon$1$0 :
-                      anon$7$0)) in
-                    anon$0$0)))))))))
+                      (df$rt$intFromRef(anon$4$0) < 0 ?
+                        anon$5$0 :
+                        anon$7$0) :
+                      null)) in
+                    (let anon$2$0 ==
+                      ((!(l0$nextNode$0 == df$rt$nullValue()) ?
+                        anon$3$0 :
+                        null)) in
+                      (let anon$12$0 ==
+                        ((!!(l0$nextNode$0 == df$rt$nullValue()) ?
+                          df$rt$boolToRef(true) :
+                          null)) in
+                        (let anon$11$0 ==
+                          ((!!(l0$nextNode$0 == df$rt$nullValue()) ?
+                            anon$12$0 :
+                            null)) in
+                          (let anon$1$0 ==
+                            ((!(l0$nextNode$0 == df$rt$nullValue()) ?
+                              anon$2$0 :
+                              anon$11$0)) in
+                            (let anon$0$0 ==
+                              (anon$1$0) in
+                              anon$0$0))))))))))))))
 }
 
 /heap_dependent_specifications.kt:(948,965): info: Generated Viper text for isLocallyValidBST:
@@ -120,67 +158,82 @@ field bf$right: Ref
 field bf$value: Ref
 
 function f$isLocallyValidBST$TF$T$TreeNode$T$Boolean(p$node: Ref): Ref
-  requires acc(p$c$TreeNode$shared(p$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$TreeNode())
+  requires acc(p$c$TreeNode$shared(p$node), wildcard)
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
 {
   (let l0$leftNode$0 ==
     ((unfolding acc(p$c$TreeNode$shared(p$node), wildcard) in
       p$node.bf$left)) in
-    (let anon$1$0 ==
+    (let anon$2$0 ==
       ((!(l0$leftNode$0 == df$rt$nullValue()) ?
         (unfolding acc(p$c$TreeNode$shared(p$node), wildcard) in
           (unfolding acc(p$c$TreeNode$shared(l0$leftNode$0), wildcard) in
             l0$leftNode$0.bf$value)) :
         null)) in
-      (let anon$2$0 ==
+      (let anon$3$0 ==
         ((!(l0$leftNode$0 == df$rt$nullValue()) ?
           (unfolding acc(p$c$TreeNode$shared(p$node), wildcard) in
             p$node.bf$value) :
           null)) in
-        (let anon$0$0 ==
+        (let anon$1$0 ==
           ((!(l0$leftNode$0 == df$rt$nullValue()) ?
             (unfolding acc(p$c$TreeNode$shared(p$node), wildcard) in
               (unfolding acc(p$c$TreeNode$shared(p$node), wildcard) in
                 (unfolding acc(p$c$TreeNode$shared(l0$leftNode$0), wildcard) in
-                  sp$andBools(sp$ltInts(anon$1$0, anon$2$0), f$isLocallyValidBST$TF$T$TreeNode$T$Boolean(l0$leftNode$0))))) :
+                  sp$andBools(sp$ltInts(anon$2$0, anon$3$0), f$isLocallyValidBST$TF$T$TreeNode$T$Boolean(l0$leftNode$0))))) :
             null)) in
-          (let anon$3$0 ==
-            ((!!(l0$leftNode$0 == df$rt$nullValue()) ?
-              df$rt$boolToRef(true) :
-              null)) in
-            (let l0$leftValid$0 ==
-              ((!(l0$leftNode$0 == df$rt$nullValue()) ?
-                anon$0$0 :
-                anon$3$0)) in
-              (let l0$rightNode$0 ==
-                ((unfolding acc(p$c$TreeNode$shared(p$node), wildcard) in
-                  p$node.bf$right)) in
-                (let anon$5$0 ==
-                  ((!(l0$rightNode$0 == df$rt$nullValue()) ?
-                    (unfolding acc(p$c$TreeNode$shared(p$node), wildcard) in
-                      (unfolding acc(p$c$TreeNode$shared(l0$rightNode$0), wildcard) in
-                        l0$rightNode$0.bf$value)) :
-                    null)) in
-                  (let anon$6$0 ==
-                    ((!(l0$rightNode$0 == df$rt$nullValue()) ?
-                      (unfolding acc(p$c$TreeNode$shared(p$node), wildcard) in
-                        p$node.bf$value) :
-                      null)) in
-                    (let anon$4$0 ==
+          (let anon$0$0 ==
+            ((!(l0$leftNode$0 == df$rt$nullValue()) ? anon$1$0 : null)) in
+            (let anon$5$0 ==
+              ((!!(l0$leftNode$0 == df$rt$nullValue()) ?
+                df$rt$boolToRef(true) :
+                null)) in
+              (let anon$4$0 ==
+                ((!!(l0$leftNode$0 == df$rt$nullValue()) ? anon$5$0 : null)) in
+                (let l0$leftValid$0 ==
+                  ((!(l0$leftNode$0 == df$rt$nullValue()) ?
+                    anon$0$0 :
+                    anon$4$0)) in
+                  (let l0$rightNode$0 ==
+                    ((unfolding acc(p$c$TreeNode$shared(p$node), wildcard) in
+                      p$node.bf$right)) in
+                    (let anon$8$0 ==
                       ((!(l0$rightNode$0 == df$rt$nullValue()) ?
                         (unfolding acc(p$c$TreeNode$shared(p$node), wildcard) in
-                          (unfolding acc(p$c$TreeNode$shared(p$node), wildcard) in
-                            (unfolding acc(p$c$TreeNode$shared(l0$rightNode$0), wildcard) in
-                              sp$andBools(sp$gtInts(anon$5$0, anon$6$0), f$isLocallyValidBST$TF$T$TreeNode$T$Boolean(l0$rightNode$0))))) :
+                          (unfolding acc(p$c$TreeNode$shared(l0$rightNode$0), wildcard) in
+                            l0$rightNode$0.bf$value)) :
                         null)) in
-                      (let anon$7$0 ==
-                        ((!!(l0$rightNode$0 == df$rt$nullValue()) ?
-                          df$rt$boolToRef(true) :
+                      (let anon$9$0 ==
+                        ((!(l0$rightNode$0 == df$rt$nullValue()) ?
+                          (unfolding acc(p$c$TreeNode$shared(p$node), wildcard) in
+                            p$node.bf$value) :
                           null)) in
-                        (let l0$rightValid$0 ==
+                        (let anon$7$0 ==
                           ((!(l0$rightNode$0 == df$rt$nullValue()) ?
-                            anon$4$0 :
-                            anon$7$0)) in
-                          sp$andBools(l0$leftValid$0, l0$rightValid$0)))))))))))))
+                            (unfolding acc(p$c$TreeNode$shared(p$node), wildcard) in
+                              (unfolding acc(p$c$TreeNode$shared(p$node), wildcard) in
+                                (unfolding acc(p$c$TreeNode$shared(l0$rightNode$0), wildcard) in
+                                  sp$andBools(sp$gtInts(anon$8$0, anon$9$0),
+                                  f$isLocallyValidBST$TF$T$TreeNode$T$Boolean(l0$rightNode$0))))) :
+                            null)) in
+                          (let anon$6$0 ==
+                            ((!(l0$rightNode$0 == df$rt$nullValue()) ?
+                              anon$7$0 :
+                              null)) in
+                            (let anon$11$0 ==
+                              ((!!(l0$rightNode$0 == df$rt$nullValue()) ?
+                                df$rt$boolToRef(true) :
+                                null)) in
+                              (let anon$10$0 ==
+                                ((!!(l0$rightNode$0 == df$rt$nullValue()) ?
+                                  anon$11$0 :
+                                  null)) in
+                                (let l0$rightValid$0 ==
+                                  ((!(l0$rightNode$0 == df$rt$nullValue()) ?
+                                    anon$6$0 :
+                                    anon$10$0)) in
+                                  (let anon$12$0 ==
+                                    (sp$andBools(l0$leftValid$0, l0$rightValid$0)) in
+                                    anon$12$0)))))))))))))))))
 }
