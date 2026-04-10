@@ -34,7 +34,7 @@ fun `assign local to global after passing it as borrowed argument`(x: @Borrowed 
     var y: A = <!LOCALITY_VIOLATION!>x<!>
 }
 
-fun `pass local twice as borrowed arguments`(x: @Borrowed A) {
+fun `pass local twice as borrowed arguments`(@Borrowed x: A) {
     borrowBoth(x, x)
 }
 
