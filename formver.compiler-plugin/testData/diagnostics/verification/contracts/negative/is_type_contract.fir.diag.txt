@@ -1,11 +1,11 @@
 /is_type_contract.kt:(162,183): info: Generated Viper text for unverifiableTypeCheck:
-method f$unverifiableTypeCheck$TF$NT$Int$T$Boolean(p$x: Ref)
+method f$unverifiableTypeCheck$t$F$t$N$Int$t$Boolean(par$x: Ref)
   returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures true ==> df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$unitType())
+  ensures true ==> df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$unitType())
 {
-  ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$stringType()))
+  ret$0 := df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$stringType()))
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -13,11 +13,11 @@ method f$unverifiableTypeCheck$TF$NT$Int$T$Boolean(p$x: Ref)
 /is_type_contract.kt:(227,256): warning: Cannot verify that if the function returns then x is Unit.
 
 /is_type_contract.kt:(330,352): info: Generated Viper text for nullableNotNonNullable:
-method f$nullableNotNonNullable$TF$NT$Int$T$Unit(p$x: Ref)
+method f$nullableNotNonNullable$t$F$t$N$Int$t$Unit(par$x: Ref)
   returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
-  ensures true ==> df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
+  ensures true ==> df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
 {
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())

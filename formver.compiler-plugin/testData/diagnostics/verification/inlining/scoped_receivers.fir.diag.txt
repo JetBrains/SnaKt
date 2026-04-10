@@ -1,7 +1,7 @@
 /scoped_receivers.kt:(407,433): info: Generated Viper text for with_run_extension_labeled:
 field bf$size: Ref
 
-method f$with_run_extension_labeled$TF$NT$Int$T$Unit(this$extension: Ref)
+method f$with_run_extension_labeled$t$F$t$N$Int$t$Unit(this$extension: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -64,7 +64,7 @@ method f$with_run_extension_labeled$TF$NT$Int$T$Unit(this$extension: Ref)
     l0$cond1 := df$rt$boolToRef(true)
   } else {
     var ret$2: Ref
-    ret$2 := sp$notBool(df$rt$boolToRef(this$extension == df$rt$nullValue()))
+    ret$2 := df$notBool(df$rt$boolToRef(this$extension == df$rt$nullValue()))
     goto lbl$ret$2
     label lbl$ret$2
     l0$cond1 := ret$2
@@ -126,7 +126,7 @@ method f$with_run_extension_labeled$TF$NT$Int$T$Unit(this$extension: Ref)
     anon$26 := df$rt$boolToRef(true)
   } else {
     var ret$13: Ref
-    ret$13 := sp$notBool(df$rt$boolToRef(this$extension ==
+    ret$13 := df$notBool(df$rt$boolToRef(this$extension ==
       df$rt$nullValue()))
     goto lbl$ret$13
     label lbl$ret$13

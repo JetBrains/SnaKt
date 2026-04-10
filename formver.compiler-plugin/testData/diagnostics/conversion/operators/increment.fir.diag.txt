@@ -1,21 +1,21 @@
 /increment.kt:(23,34): info: Generated Viper text for test_simple:
-method f$test_simple$TF$T$Unit() returns (ret$0: Ref)
+method f$test_simple$t$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$x: Ref
   l0$x := df$rt$intToRef(10)
-  l0$x := sp$plusInts(l0$x, df$rt$intToRef(5))
-  l0$x := sp$minusInts(l0$x, df$rt$intToRef(1))
-  l0$x := sp$minusInts(l0$x, df$rt$intToRef(3))
-  l0$x := sp$plusInts(l0$x, df$rt$intToRef(1))
-  l0$x := sp$timesInts(l0$x, df$rt$intToRef(2))
-  l0$x := sp$divInts(l0$x, df$rt$intToRef(4))
+  l0$x := df$plusInts(l0$x, df$rt$intToRef(5))
+  l0$x := df$minusInts(l0$x, df$rt$intToRef(1))
+  l0$x := df$minusInts(l0$x, df$rt$intToRef(3))
+  l0$x := df$plusInts(l0$x, df$rt$intToRef(1))
+  l0$x := df$timesInts(l0$x, df$rt$intToRef(2))
+  l0$x := df$divInts(l0$x, df$rt$intToRef(4))
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
 /increment.kt:(121,140): info: Generated Viper text for test_postincvrement:
-method f$test_postincvrement$TF$T$Unit() returns (ret$0: Ref)
+method f$test_postincvrement$t$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$x: Ref
@@ -26,10 +26,10 @@ method f$test_postincvrement$TF$T$Unit() returns (ret$0: Ref)
   var l0$unary: Ref
   l0$x := df$rt$intToRef(10)
   anon$0 := l0$x
-  l0$x := sp$plusInts(anon$0, df$rt$intToRef(1))
+  l0$x := df$plusInts(anon$0, df$rt$intToRef(1))
   l0$first := anon$0
   anon$1 := l0$x
-  l0$x := sp$minusInts(anon$1, df$rt$intToRef(1))
+  l0$x := df$minusInts(anon$1, df$rt$intToRef(1))
   l0$second := anon$1
   l0$unary := l0$x
   label lbl$ret$0
