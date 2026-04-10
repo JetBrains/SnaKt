@@ -62,7 +62,7 @@ fun `pass global as borrowed target`(x: A) {
     x.borrowTarget()
 }
 
-fun `pass local as borrowed target and argument`(x: @Borrowed A) {
+fun `pass local as borrowed target and argument`(@Borrowed x: A) {
     x.borrowTargetAndArg(x)
 }
 
