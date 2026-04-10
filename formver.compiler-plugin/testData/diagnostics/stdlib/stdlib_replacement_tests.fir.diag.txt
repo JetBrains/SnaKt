@@ -1,5 +1,5 @@
 /stdlib_replacement_tests.kt:(104,113): info: Generated Viper text for useChecks:
-method f$useChecks$TF$T$Unit() returns (ret$0: Ref)
+method f$useChecks$t$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var ret$1: Ref
@@ -19,8 +19,8 @@ method f$useChecks$TF$T$Unit() returns (ret$0: Ref)
 /stdlib_replacement_tests.kt:(298,305): info: Generated Viper text for useRuns:
 field bf$size: Ref
 
-method f$useRuns$TF$T$Int$T$Unit(p$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
+method f$useRuns$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$cond1: Ref
@@ -37,7 +37,7 @@ method f$useRuns$TF$T$Int$T$Unit(p$x: Ref) returns (ret$0: Ref)
   var anon$7: Ref
   var ret$4: Ref
   var anon$1: Ref
-  ret$2 := sp$plusInts(p$x, df$rt$intToRef(1))
+  ret$2 := df$plusInts(par$x, df$rt$intToRef(1))
   goto lbl$ret$2
   label lbl$ret$2
   anon$4 := ret$2
@@ -49,12 +49,12 @@ method f$useRuns$TF$T$Int$T$Unit(p$x: Ref) returns (ret$0: Ref)
   anon$2 := anon$3
   inhale df$rt$isSubtype(df$rt$typeOf(anon$2), df$rt$intType())
   l0$cond1 := df$rt$boolToRef(df$rt$intFromRef(anon$2) ==
-    1 + df$rt$intFromRef(p$x))
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$anyType()))
-  anon$0 := p$x
+    1 + df$rt$intFromRef(par$x))
+  inhale df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$anyType()))
+  anon$0 := par$x
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
   anon$1 := anon$0
-  ret$4 := sp$plusInts(anon$1, df$rt$intToRef(1))
+  ret$4 := df$plusInts(anon$1, df$rt$intToRef(1))
   goto lbl$ret$4
   label lbl$ret$4
   anon$7 := ret$4
@@ -66,7 +66,7 @@ method f$useRuns$TF$T$Int$T$Unit(p$x: Ref) returns (ret$0: Ref)
   anon$5 := anon$6
   inhale df$rt$isSubtype(df$rt$typeOf(anon$5), df$rt$intType())
   l0$cond2 := df$rt$boolToRef(df$rt$intFromRef(anon$5) ==
-    1 + df$rt$intFromRef(p$x))
+    1 + df$rt$intFromRef(par$x))
   assert df$rt$boolFromRef(l0$cond1)
   assert df$rt$boolFromRef(l0$cond2)
   label lbl$ret$0
@@ -76,8 +76,8 @@ method f$useRuns$TF$T$Int$T$Unit(p$x: Ref) returns (ret$0: Ref)
 /stdlib_replacement_tests.kt:(459,466): info: Generated Viper text for useAlso:
 field bf$size: Ref
 
-method f$useAlso$TF$T$Int$T$Unit(p$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
+method f$useAlso$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$2: Ref
@@ -86,11 +86,11 @@ method f$useAlso$TF$T$Int$T$Unit(p$x: Ref) returns (ret$0: Ref)
   var anon$0: Ref
   var ret$2: Ref
   var anon$1: Ref
-  anon$0 := sp$plusInts(p$x, df$rt$intToRef(1))
+  anon$0 := df$plusInts(par$x, df$rt$intToRef(1))
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$nullable(df$rt$anyType()))
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
   anon$1 := anon$0
-  assert df$rt$intFromRef(anon$1) == 1 + df$rt$intFromRef(p$x)
+  assert df$rt$intFromRef(anon$1) == 1 + df$rt$intFromRef(par$x)
   label lbl$ret$2
   inhale df$rt$isSubtype(df$rt$typeOf(ret$2), df$rt$unitType())
   ret$1 := anon$0
@@ -106,8 +106,8 @@ method f$useAlso$TF$T$Int$T$Unit(p$x: Ref) returns (ret$0: Ref)
 /stdlib_replacement_tests.kt:(531,537): info: Generated Viper text for useLet:
 field bf$size: Ref
 
-method f$useLet$TF$T$Int$T$Unit(p$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
+method f$useLet$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$cond1: Ref
@@ -118,11 +118,11 @@ method f$useLet$TF$T$Int$T$Unit(p$x: Ref) returns (ret$0: Ref)
   var anon$4: Ref
   var ret$2: Ref
   var anon$1: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$anyType()))
-  anon$0 := p$x
+  inhale df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$anyType()))
+  anon$0 := par$x
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
   anon$1 := anon$0
-  ret$2 := sp$plusInts(anon$1, df$rt$intToRef(1))
+  ret$2 := df$plusInts(anon$1, df$rt$intToRef(1))
   goto lbl$ret$2
   label lbl$ret$2
   anon$4 := ret$2
@@ -134,7 +134,7 @@ method f$useLet$TF$T$Int$T$Unit(p$x: Ref) returns (ret$0: Ref)
   anon$2 := anon$3
   inhale df$rt$isSubtype(df$rt$typeOf(anon$2), df$rt$intType())
   l0$cond1 := df$rt$boolToRef(df$rt$intFromRef(anon$2) ==
-    1 + df$rt$intFromRef(p$x))
+    1 + df$rt$intFromRef(par$x))
   assert df$rt$boolFromRef(l0$cond1)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -143,8 +143,8 @@ method f$useLet$TF$T$Int$T$Unit(p$x: Ref) returns (ret$0: Ref)
 /stdlib_replacement_tests.kt:(621,628): info: Generated Viper text for useWith:
 field bf$size: Ref
 
-method f$useWith$TF$T$Int$T$Unit(p$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
+method f$useWith$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$2: Ref
@@ -154,11 +154,11 @@ method f$useWith$TF$T$Int$T$Unit(p$x: Ref) returns (ret$0: Ref)
   var anon$4: Ref
   var ret$2: Ref
   var anon$1: Ref
-  anon$0 := sp$plusInts(p$x, df$rt$intToRef(1))
+  anon$0 := df$plusInts(par$x, df$rt$intToRef(1))
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$nullable(df$rt$anyType()))
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
   anon$1 := anon$0
-  assert df$rt$intFromRef(anon$1) == 1 + df$rt$intFromRef(p$x)
+  assert df$rt$intFromRef(anon$1) == 1 + df$rt$intFromRef(par$x)
   label lbl$ret$2
   inhale df$rt$isSubtype(df$rt$typeOf(ret$2), df$rt$unitType())
   anon$4 := ret$2
@@ -176,8 +176,8 @@ method f$useWith$TF$T$Int$T$Unit(p$x: Ref) returns (ret$0: Ref)
 /stdlib_replacement_tests.kt:(694,702): info: Generated Viper text for useApply:
 field bf$size: Ref
 
-method f$useApply$TF$T$Int$T$Unit(p$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
+method f$useApply$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$2: Ref
@@ -186,11 +186,11 @@ method f$useApply$TF$T$Int$T$Unit(p$x: Ref) returns (ret$0: Ref)
   var anon$0: Ref
   var ret$2: Ref
   var anon$1: Ref
-  anon$0 := sp$plusInts(p$x, df$rt$intToRef(1))
+  anon$0 := df$plusInts(par$x, df$rt$intToRef(1))
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$nullable(df$rt$anyType()))
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
   anon$1 := anon$0
-  assert df$rt$intFromRef(anon$1) == 1 + df$rt$intFromRef(p$x)
+  assert df$rt$intFromRef(anon$1) == 1 + df$rt$intFromRef(par$x)
   label lbl$ret$2
   inhale df$rt$isSubtype(df$rt$typeOf(ret$2), df$rt$unitType())
   ret$1 := anon$0

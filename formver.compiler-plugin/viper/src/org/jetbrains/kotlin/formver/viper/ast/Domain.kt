@@ -15,27 +15,16 @@ import viper.silver.ast.NamedDomainAxiom
  */
 
 data class DomainName(val baseName: String) : SymbolicName {
-    override val mangledType: String
-        get() = "d"
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = baseName
+    override val nameType: NameType
+        get() = NameType.Base.Domain
 }
 data class UnqualifiedDomainFuncName(val baseName: String) : SymbolicName {
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = baseName
 }
 
 data class QualifiedDomainFuncName(val domainName: DomainName, val funcName: SymbolicName) : SymbolicName {
-    override val mangledType: String
-        get() = "df"
-    context(nameResolver: NameResolver)
-    override val mangledScope: String
-        get() = domainName.mangledBaseName
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = funcName.mangled
+    override val nameType: NameType
+        get() = NameType.Base.DomainFunction
+
 }
 
 /** Represents the name of a possible anonymous axiom.
@@ -49,13 +38,7 @@ sealed interface OptionalDomainAxiomLabel {
 
 data class NamedDomainAxiomLabel(override val domainName: DomainName, val baseName: String) :
     OptionalDomainAxiomLabel, SymbolicName {
-    context(nameResolver: NameResolver)
-    override val mangledScope: String
-        get() = domainName.mangledBaseName
 
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = baseName
 }
 
 data class AnonymousDomainAxiomLabel(override val domainName: DomainName) : OptionalDomainAxiomLabel

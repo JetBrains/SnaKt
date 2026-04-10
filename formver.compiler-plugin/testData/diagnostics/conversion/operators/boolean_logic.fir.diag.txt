@@ -1,22 +1,22 @@
 /boolean_logic.kt:(23,31): info: Generated Viper text for negation:
-method f$negation$TF$T$Boolean$T$Boolean(p$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$boolType())
+method f$negation$t$F$t$Boolean$t$Boolean(par$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
-  ret$0 := sp$notBool(p$x)
+  ret$0 := df$notBool(par$x)
   goto lbl$ret$0
   label lbl$ret$0
 }
 
 /boolean_logic.kt:(75,86): info: Generated Viper text for conjunction:
-method f$conjunction$TF$T$Boolean$T$Boolean$T$Boolean(p$x: Ref, p$y: Ref)
+method f$conjunction$t$F$t$Boolean$t$Boolean$t$Boolean(par$x: Ref, par$y: Ref)
   returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$boolType())
-  requires df$rt$isSubtype(df$rt$typeOf(p$y), df$rt$boolType())
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$boolType())
+  requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
-  if (df$rt$boolFromRef(p$x)) {
-    ret$0 := p$y
+  if (df$rt$boolFromRef(par$x)) {
+    ret$0 := par$y
   } else {
     ret$0 := df$rt$boolToRef(false)}
   goto lbl$ret$0
@@ -24,38 +24,39 @@ method f$conjunction$TF$T$Boolean$T$Boolean$T$Boolean(p$x: Ref, p$y: Ref)
 }
 
 /boolean_logic.kt:(146,168): info: Generated Viper text for conjunctionSideEffects:
-method f$conjunctionSideEffects$TF$T$Boolean$T$Boolean$T$Boolean(p$x: Ref, p$y: Ref)
+method f$conjunctionSideEffects$t$F$t$Boolean$t$Boolean$t$Boolean(par$x: Ref,
+  par$y: Ref)
   returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$boolType())
-  requires df$rt$isSubtype(df$rt$typeOf(p$y), df$rt$boolType())
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$boolType())
+  requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
   var anon$0: Ref
-  anon$0 := f$negation$TF$T$Boolean$T$Boolean(p$x)
+  anon$0 := f$negation$t$F$t$Boolean$t$Boolean(par$x)
   if (df$rt$boolFromRef(anon$0)) {
-    ret$0 := f$negation$TF$T$Boolean$T$Boolean(p$y)
+    ret$0 := f$negation$t$F$t$Boolean$t$Boolean(par$y)
   } else {
     ret$0 := df$rt$boolToRef(false)}
   goto lbl$ret$0
   label lbl$ret$0
 }
 
-method f$negation$TF$T$Boolean$T$Boolean(p$x: Ref) returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$boolType())
+method f$negation$t$F$t$Boolean$t$Boolean(par$x: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
 
 
 /boolean_logic.kt:(341,352): info: Generated Viper text for disjunction:
-method f$disjunction$TF$T$Boolean$T$Boolean$T$Boolean(p$x: Ref, p$y: Ref)
+method f$disjunction$t$F$t$Boolean$t$Boolean$t$Boolean(par$x: Ref, par$y: Ref)
   returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$boolType())
-  requires df$rt$isSubtype(df$rt$typeOf(p$y), df$rt$boolType())
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$boolType())
+  requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
-  if (df$rt$boolFromRef(p$x)) {
+  if (df$rt$boolFromRef(par$x)) {
     ret$0 := df$rt$boolToRef(true)
   } else {
-    ret$0 := p$y}
+    ret$0 := par$y}
   goto lbl$ret$0
   label lbl$ret$0
 }

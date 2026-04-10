@@ -14,8 +14,8 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.IntLit
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
-import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
-import org.jetbrains.kotlin.formver.core.names.SpecialName
+import org.jetbrains.kotlin.formver.core.names.ScopedName
+import org.jetbrains.kotlin.formver.core.names.SpecialFieldName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Field
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
@@ -55,7 +55,7 @@ interface FieldEmbedding {
 }
 
 class UserFieldEmbedding(
-    override val name: ScopedKotlinName,
+    override val name: ScopedName,
     override val type: TypeEmbedding,
     override val symbol: FirPropertySymbol,
     override val isUnique: Boolean,
@@ -80,7 +80,7 @@ class UserFieldEmbedding(
 
 
 object ListSizeFieldEmbedding : FieldEmbedding {
-    override val name = SpecialName("size")
+    override val name = SpecialFieldName("size")
     override val type = buildType { int() }
     override val viperType = Type.Ref
     override val accessPolicy = AccessPolicy.ALWAYS_WRITEABLE
@@ -94,7 +94,7 @@ object ListSizeFieldEmbedding : FieldEmbedding {
     }
 }
 
-fun ScopedKotlinName.specialEmbedding(embedding: ClassTypeEmbedding): FieldEmbedding? =
+fun ScopedName.specialEmbedding(embedding: ClassTypeEmbedding): FieldEmbedding? =
     NameMatcher.Companion.matchClassScope(this) {
         ifBackingFieldName("size") {
             return embedding.isCollectionInheritor.ifTrue {

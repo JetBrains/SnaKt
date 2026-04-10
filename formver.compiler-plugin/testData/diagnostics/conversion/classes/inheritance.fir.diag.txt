@@ -5,12 +5,13 @@ field bf$x: Ref
 
 field bf$y: Ref
 
-method f$c$Foo$getY$TF$T$Foo$T$Int(this$dispatch: Ref) returns (ret$0: Ref)
+method f$c$Foo$getY$t$F$t$Foo$t$Int(this$dispatch: Ref)
+  returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
-  inhale acc(p$c$Foo$shared(this$dispatch), wildcard)
-  unfold acc(p$c$Foo$shared(this$dispatch), wildcard)
+  inhale acc(pred$c$Foo$shared(this$dispatch), wildcard)
+  unfold acc(pred$c$Foo$shared(this$dispatch), wildcard)
   ret$0 := this$dispatch.bf$y
   goto lbl$ret$0
   label lbl$ret$0
@@ -25,19 +26,19 @@ field bf$y: Ref
 
 field bf$z: Ref
 
-method f$c$Bar$sum$TF$T$Bar$T$Int(this$dispatch: Ref) returns (ret$0: Ref)
+method f$c$Bar$sum$t$F$t$Bar$t$Int(this$dispatch: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Bar())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var anon$0: Ref
   var anon$1: Ref
-  inhale acc(p$c$Bar$shared(this$dispatch), wildcard)
-  unfold acc(p$c$Bar$shared(this$dispatch), wildcard)
-  unfold acc(p$c$Foo$shared(this$dispatch), wildcard)
+  inhale acc(pred$c$Bar$shared(this$dispatch), wildcard)
+  unfold acc(pred$c$Bar$shared(this$dispatch), wildcard)
+  unfold acc(pred$c$Foo$shared(this$dispatch), wildcard)
   anon$0 := this$dispatch.bf$x
-  unfold acc(p$c$Bar$shared(this$dispatch), wildcard)
+  unfold acc(pred$c$Bar$shared(this$dispatch), wildcard)
   anon$1 := this$dispatch.bf$z
-  ret$0 := sp$plusInts(anon$0, anon$1)
+  ret$0 := df$plusInts(anon$0, anon$1)
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -51,17 +52,17 @@ field bf$y: Ref
 
 field bf$z: Ref
 
-method f$c$Foo$getY$TF$T$Foo$T$Int(this$dispatch: Ref) returns (ret: Ref)
+method f$c$Foo$getY$t$F$t$Foo$t$Int(this$dispatch: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 
-method f$callSuperMethod$TF$T$Bar$T$Int(p$bar: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$bar), df$rt$c$Bar())
+method f$callSuperMethod$t$F$t$Bar$t$Int(par$bar: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$bar), df$rt$c$Bar())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
-  inhale acc(p$c$Bar$shared(p$bar), wildcard)
-  ret$0 := f$c$Foo$getY$TF$T$Foo$T$Int(p$bar)
+  inhale acc(pred$c$Bar$shared(par$bar), wildcard)
+  ret$0 := f$c$Foo$getY$t$F$t$Foo$t$Int(par$bar)
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -75,13 +76,13 @@ field bf$y: Ref
 
 field bf$z: Ref
 
-method f$accessSuperField$TF$T$Bar$T$Boolean(p$bar: Ref)
+method f$accessSuperField$t$F$t$Bar$t$Boolean(par$bar: Ref)
   returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$bar), df$rt$c$Bar())
+  requires df$rt$isSubtype(df$rt$typeOf(par$bar), df$rt$c$Bar())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
-  inhale acc(p$c$Bar$shared(p$bar), wildcard)
-  ret$0 := havoc$T$Boolean()
+  inhale acc(pred$c$Bar$shared(par$bar), wildcard)
+  ret$0 := havoc$t$Boolean()
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -95,13 +96,13 @@ field bf$y: Ref
 
 field bf$z: Ref
 
-method f$accessNewField$TF$T$Bar$T$Int(p$bar: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$bar), df$rt$c$Bar())
+method f$accessNewField$t$F$t$Bar$t$Int(par$bar: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$bar), df$rt$c$Bar())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
-  inhale acc(p$c$Bar$shared(p$bar), wildcard)
-  unfold acc(p$c$Bar$shared(p$bar), wildcard)
-  ret$0 := p$bar.bf$z
+  inhale acc(pred$c$Bar$shared(par$bar), wildcard)
+  unfold acc(pred$c$Bar$shared(par$bar), wildcard)
+  ret$0 := par$bar.bf$z
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -115,17 +116,17 @@ field bf$y: Ref
 
 field bf$z: Ref
 
-method f$c$Bar$sum$TF$T$Bar$T$Int(this$dispatch: Ref) returns (ret: Ref)
+method f$c$Bar$sum$t$F$t$Bar$t$Int(this$dispatch: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Bar())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 
-method f$callNewMethod$TF$T$Bar$T$Int(p$bar: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$bar), df$rt$c$Bar())
+method f$callNewMethod$t$F$t$Bar$t$Int(par$bar: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$bar), df$rt$c$Bar())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
-  inhale acc(p$c$Bar$shared(p$bar), wildcard)
-  ret$0 := f$c$Bar$sum$TF$T$Bar$T$Int(p$bar)
+  inhale acc(pred$c$Bar$shared(par$bar), wildcard)
+  ret$0 := f$c$Bar$sum$t$F$t$Bar$t$Int(par$bar)
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -139,11 +140,11 @@ field bf$y: Ref
 
 field bf$z: Ref
 
-method f$setSuperField$TF$T$Bar$T$Unit(p$bar: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$bar), df$rt$c$Bar())
+method f$setSuperField$t$F$t$Bar$t$Unit(par$bar: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$bar), df$rt$c$Bar())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
-  inhale acc(p$c$Bar$shared(p$bar), wildcard)
+  inhale acc(pred$c$Bar$shared(par$bar), wildcard)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -157,16 +158,16 @@ field bf$y: Ref
 
 field bf$z: Ref
 
-method f$accessSuperSuperField$TF$T$Baz$T$Int(p$baz: Ref)
+method f$accessSuperSuperField$t$F$t$Baz$t$Int(par$baz: Ref)
   returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$baz), df$rt$c$Baz())
+  requires df$rt$isSubtype(df$rt$typeOf(par$baz), df$rt$c$Baz())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
-  inhale acc(p$c$Baz$shared(p$baz), wildcard)
-  unfold acc(p$c$Baz$shared(p$baz), wildcard)
-  unfold acc(p$c$Bar$shared(p$baz), wildcard)
-  unfold acc(p$c$Foo$shared(p$baz), wildcard)
-  ret$0 := p$baz.bf$x
+  inhale acc(pred$c$Baz$shared(par$baz), wildcard)
+  unfold acc(pred$c$Baz$shared(par$baz), wildcard)
+  unfold acc(pred$c$Bar$shared(par$baz), wildcard)
+  unfold acc(pred$c$Foo$shared(par$baz), wildcard)
+  ret$0 := par$baz.bf$x
   goto lbl$ret$0
   label lbl$ret$0
 }
