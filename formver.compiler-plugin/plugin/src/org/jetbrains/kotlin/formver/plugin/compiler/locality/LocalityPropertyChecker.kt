@@ -17,8 +17,8 @@ class LocalityPropertyChecker(
         if (!config.checkLocality) return
 
         val initializer = declaration.initializer ?: return
-        val leftLocality = declaration.declaredLocality
-        val rightLocality = initializer.localityAttribute
+        val leftLocality = declaration.requiredLocality
+        val rightLocality = initializer.resolvedLocality
 
         if (leftLocality.accepts(rightLocality)) return
 
