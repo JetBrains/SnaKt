@@ -1,20 +1,20 @@
 /subtyping.kt:(80,89): info: Generated Viper text for smartCast:
-method f$smartCast$TF$NT$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
+method f$smartCast$t$F$t$N$Int$t$Int(par$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
-  if (p$x == df$rt$nullValue()) {
+  if (par$x == df$rt$nullValue()) {
     ret$0 := df$rt$intToRef(0)
     goto lbl$ret$0
   } else {
-    ret$0 := p$x
+    ret$0 := par$x
     goto lbl$ret$0
   }
   label lbl$ret$0
 }
 
 /subtyping.kt:(187,202): info: Generated Viper text for returnSubtyping:
-method f$returnSubtyping$TF$NT$Int() returns (ret$0: Ref)
+method f$returnSubtyping$t$F$t$N$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
 {
   ret$0 := df$rt$intToRef(0)
@@ -23,7 +23,7 @@ method f$returnSubtyping$TF$NT$Int() returns (ret$0: Ref)
 }
 
 /subtyping.kt:(233,252): info: Generated Viper text for assignmentSubtyping:
-method f$assignmentSubtyping$TF$T$Unit() returns (ret$0: Ref)
+method f$assignmentSubtyping$t$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$x: Ref
@@ -34,16 +34,17 @@ method f$assignmentSubtyping$TF$T$Unit() returns (ret$0: Ref)
 }
 
 /subtyping.kt:(358,384): info: Generated Viper text for functionParameterSubtyping:
-method f$functionParameterSubtyping$TF$T$Unit() returns (ret$0: Ref)
+method f$functionParameterSubtyping$t$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
-  anon$0 := f$nullableParameter$TF$NT$Boolean$T$Unit(df$rt$boolToRef(false))
+  anon$0 := f$nullableParameter$t$F$t$N$Boolean$t$Unit(df$rt$boolToRef(false))
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-method f$nullableParameter$TF$NT$Boolean$T$Unit(p$b: Ref)
+method f$nullableParameter$t$F$t$N$Boolean$t$Unit(par$b: Ref)
   returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$b), df$rt$nullable(df$rt$boolType()))
+  requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$nullable(df$rt$boolType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
