@@ -19,15 +19,16 @@ import org.jetbrains.kotlin.fir.expressions.FirTryExpression
 import org.jetbrains.kotlin.fir.expressions.FirWhenExpression
 import org.jetbrains.kotlin.fir.expressions.FirWrappedExpression
 import org.jetbrains.kotlin.fir.references.symbol
+import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
-import org.jetbrains.kotlin.formver.plugin.compiler.uniqueness.LiteralSymbol
 
-abstract class FirExpressionSymbolicValueExtractor<T : SymbolicValue<T>>(
-    private val empty: T,
-    private val factory: SymbolicValueFactory<T>,
-) : FirVisitor<T, Unit>() {
+abstract class SymbolicValueExtractor<T : SymbolicValue<T>> : FirVisitor<T, Unit>() {
+    abstract val empty: T
+
+    abstract fun FirBasedSymbol<*>.extract(): T
+
     private fun FirExpression?.visit(): T =
-        this?.accept(this@FirExpressionSymbolicValueExtractor, Unit) ?: empty
+        this?.accept(this@SymbolicValueExtractor, Unit) ?: empty
 
     fun extract(expression: FirExpression): T {
         return expression.visit()
@@ -133,7 +134,7 @@ abstract class FirExpressionSymbolicValueExtractor<T : SymbolicValue<T>>(
         val symbol = qualifiedAccessExpression.calleeReference.symbol
             ?: return empty
 
-        return receiverValue.append(factory.fromSymbol(symbol))
+        return receiverValue.append(symbol.extract())
     }
 
     override fun visitPropertyAccessExpression(
@@ -143,7 +144,7 @@ abstract class FirExpressionSymbolicValueExtractor<T : SymbolicValue<T>>(
         val symbol = propertyAccessExpression.calleeReference.symbol
             ?: return empty
 
-        return factory.fromSymbol(symbol)
+        return symbol.extract()
     }
 
     override fun visitFunctionCall(
@@ -167,6 +168,6 @@ abstract class FirExpressionSymbolicValueExtractor<T : SymbolicValue<T>>(
         literalExpression: FirLiteralExpression,
         data: Unit
     ): T {
-        return factory.fromSymbol(LiteralSymbol)
+        return LiteralSymbol.extract()
     }
 }
