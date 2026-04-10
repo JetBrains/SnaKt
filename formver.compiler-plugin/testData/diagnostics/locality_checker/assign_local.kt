@@ -70,7 +70,7 @@ fun `assign local when-expression to local`(@Borrowed x: Any) {
     }
 }
 
-fun `assign local when-expression to global`(x: @Borrowed Any) {
+fun `assign local when-expression to global`(@Borrowed x: Any) {
     var z: Any = <!LOCALITY_VIOLATION!>when {
         false -> x
         else -> Any()
