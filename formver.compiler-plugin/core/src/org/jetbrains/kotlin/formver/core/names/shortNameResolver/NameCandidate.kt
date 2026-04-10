@@ -2,6 +2,7 @@ package org.jetbrains.kotlin.formver.names
 
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.names.*
+import org.jetbrains.kotlin.formver.core.names.shortNameResolver.ViperKeyword
 import org.jetbrains.kotlin.formver.viper.NameType
 import org.jetbrains.kotlin.formver.viper.NamedEntity
 import org.jetbrains.kotlin.formver.viper.SymbolicName
@@ -12,7 +13,7 @@ import org.jetbrains.kotlin.formver.viper.ast.UnqualifiedDomainFuncName
 
 
 private fun nameOnlyCandidates(name: Any): List<CandidateName> = buildCandidates { candidate { +name } }
-private fun nameWithPrefixAndSuffixCandidates(name: Any, nameType: NameType, suffix: Any): List<CandidateName> =
+private fun nameWithPrefixAndSuffixCandidates(name: Any, nameType: NameType, suffix: String): List<CandidateName> =
     buildCandidates {
         candidate {
             +name
@@ -128,12 +129,12 @@ fun FreshName.candidates(): List<CandidateName> = when (this) {
             is ReturnLabelName -> "ret"
             is TryExitLabelName -> "tryExit"
         }
-        nameWithPrefixAndSuffixCandidates(name, nameType, n)
+        nameWithPrefixAndSuffixCandidates(name, nameType, n.toString())
     }
 
-    is PlaceholderArgumentName -> nameWithPrefixAndSuffixCandidates("arg", nameType, n)
-    is ReturnVariableName -> nameWithPrefixAndSuffixCandidates("ret", nameType, n)
-    is SsaVariableName -> nameWithPrefixAndSuffixCandidates(baseName, nameType, n)
+    is PlaceholderArgumentName -> nameWithPrefixAndSuffixCandidates("arg", nameType, n.toString())
+    is ReturnVariableName -> nameWithPrefixAndSuffixCandidates("ret", nameType, n.toString())
+    is SsaVariableName -> nameWithPrefixAndSuffixCandidates(baseName, nameType, n.toString())
     is PredicateName -> nameWithPrefixCandidates(name, nameType)
     DispatchReceiverName -> nameWithPrefixCandidates("this", nameType)
     is DomainAssociatedFuncName -> nameWithPrefixCandidates(name, nameType)
