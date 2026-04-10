@@ -116,7 +116,7 @@ fun `assign local not-null-expression to global`(@Borrowed x: Any?) {
     var z: Any = <!LOCALITY_VIOLATION!>x!!<!>
 }
 
-fun `assign local nested control-flow to global in loop`(x: @Borrowed Any) {
+fun `assign local nested control-flow to global in loop`(@Borrowed x: Any) {
     var z: Any = Any()
 
     while (true) {
