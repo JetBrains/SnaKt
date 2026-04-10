@@ -1,8 +1,50 @@
-/nullability.kt:(24,35): info: Generated Viper text for return_null:
+/nullability.kt:(83,94): info: Generated Viper text for return_null:
 method f$return_null$TF$NT$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
 {
   ret$0 := df$rt$nullValue()
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/nullability.kt:(115,134): info: Generated Viper text for nullablePassthrough:
+method f$nullablePassthrough$TF$NT$Int$NT$Int(p$x: Ref)
+  returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
+  ensures ret$0 == p$x
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$nullable(df$rt$intType()))
+  ret$0 := p$x
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/nullability.kt:(221,237): info: Generated Viper text for elvisWithNonNull:
+method f$elvisWithNonNull$TF$T$Int$T$Int(p$x: Ref) returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+  ensures df$rt$intFromRef(ret$0) == df$rt$intFromRef(p$x)
+{
+  var l0$y: Ref
+  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
+  l0$y := p$x
+  if (l0$y != df$rt$nullValue()) {
+    ret$0 := l0$y
+  } else {
+    ret$0 := df$rt$intToRef(0)}
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/nullability.kt:(346,363): info: Generated Viper text for smartcastInBranch:
+method f$smartcastInBranch$TF$NT$Int$T$Int(p$n: Ref) returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  inhale df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$nullable(df$rt$intType()))
+  if (!(p$n == df$rt$nullValue())) {
+    ret$0 := p$n
+    goto lbl$ret$0
+  }
+  ret$0 := df$rt$intToRef(0)
   goto lbl$ret$0
   label lbl$ret$0
 }
