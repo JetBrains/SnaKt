@@ -96,7 +96,7 @@ fun `assign local try-expression to global`(@Borrowed x: Any) {
     }<!>
 }
 
-fun `assign local try-expression to global in loop`(x: @Borrowed Any) {
+fun `assign local try-expression to global in loop`(@Borrowed x: Any) {
     var z: Any = Any()
 
     while (true) {
