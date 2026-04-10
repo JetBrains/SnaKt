@@ -8,7 +8,11 @@ package org.jetbrains.kotlin.formver.viper
 /**
  * Interface to unify all structures that are names to something.
  */
-interface AnyName
+interface AnyName {
+    fun register(nameResolver: NameResolver) {
+        nameResolver.register(this)
+    }
+}
 
 
 /**
@@ -31,13 +35,8 @@ interface SymbolicName : AnyName {
 
 context(nameResolver: NameResolver)
 val SymbolicName.mangled: String
-    get() = nameResolver.resolve(this)
+    get() = nameResolver.lookup(this)
 
-val SymbolicName.debugMangled: String
-    get() {
-        val debugResolver = DebugNameResolver()
-        return debugResolver.resolve(this)
-    }
 
 
 /**
