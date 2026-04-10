@@ -13,21 +13,26 @@ import org.jetbrains.kotlin.fir.types.classId
 import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.formver.core.annotationId
 
-abstract class DeclarationLocalityValueExtractor {
-    val localityAnnotationId = annotationId("Borrowed")
+/**
+ * Extracts the locality of a declaration.
+ */
+abstract class DeclarationLocalityExtractor {
+    companion object {
+        val localityAnnotationId = annotationId("Borrowed")
 
-    val FirDeclaration.hasLocalityAnnotation: Boolean
-        get() = annotations.any { it.annotationTypeRef.coneType.classId == localityAnnotationId }
+        val FirDeclaration.hasLocalityAnnotation: Boolean
+            get() = annotations.any { it.annotationTypeRef.coneType.classId == localityAnnotationId }
+    }
 
     context(_: CheckerContext)
     abstract val FirDeclaration.owner: FirDeclaration?
 
     context(context: CheckerContext)
-    fun extract(declaration: FirDeclaration): LocalityValue =
+    fun extract(declaration: FirDeclaration): Locality =
         if (declaration.hasLocalityAnnotation) {
-            return LocalityValue.Local(declaration.owner)
+            return Locality.Local(declaration.owner)
         } else {
-            return LocalityValue.Global
+            return Locality.Global
         }
 }
 
@@ -52,7 +57,7 @@ private fun FirProperty.resolveOwner(): FirDeclaration? {
         .first()
 }
 
-private class UseLocalityValueExtractor : DeclarationLocalityValueExtractor() {
+private class UseLocalityExtractor : DeclarationLocalityExtractor() {
     @OptIn(SymbolInternals::class)
     context(_: CheckerContext)
     override val FirDeclaration.owner: FirDeclaration?
@@ -65,10 +70,10 @@ private class UseLocalityValueExtractor : DeclarationLocalityValueExtractor() {
 }
 
 context(_: CheckerContext)
-val FirDeclaration.actualLocality: LocalityValue
-    get() = UseLocalityValueExtractor().extract(this)
+val FirDeclaration.usageLocality: Locality
+    get() = UseLocalityExtractor().extract(this)
 
-private class DefinitionLocalityValueExtractor : DeclarationLocalityValueExtractor() {
+private class DefinitionLocalityExtractor : DeclarationLocalityExtractor() {
     @OptIn(SymbolInternals::class)
     context(context: CheckerContext)
     override val FirDeclaration.owner: FirDeclaration?
@@ -81,5 +86,5 @@ private class DefinitionLocalityValueExtractor : DeclarationLocalityValueExtract
 }
 
 context(_: CheckerContext)
-val FirDeclaration.requiredLocality : LocalityValue
-    get() = DefinitionLocalityValueExtractor().extract(this)
+val FirDeclaration.requiredLocality : Locality
+    get() = DefinitionLocalityExtractor().extract(this)

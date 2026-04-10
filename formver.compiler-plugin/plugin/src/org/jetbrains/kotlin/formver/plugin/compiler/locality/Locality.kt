@@ -4,22 +4,22 @@ import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.formver.plugin.compiler.analysis.SymbolicValue
 
-sealed interface LocalityValue : SymbolicValue<LocalityValue> {
-    data object Global : LocalityValue
+sealed interface Locality : SymbolicValue<Locality> {
+    data object Global : Locality
 
     data class Local(
         val owner: FirDeclaration? = null
-    ) : LocalityValue
+    ) : Locality
 
-    override fun join(other: LocalityValue): LocalityValue =
+    override fun join(other: Locality): Locality =
         when (other) {
             Global -> this
             is Local -> other
         }
 
-    override fun append(other: LocalityValue): LocalityValue = this
+    override fun append(other: Locality): Locality = this
 
-    fun accepts(other: LocalityValue): Boolean =
+    fun accepts(other: Locality): Boolean =
         when (this) {
             Global -> other == Global
             is Local -> when (other) {
