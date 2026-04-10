@@ -148,7 +148,7 @@ fun `assign local nested control-flow to local in loop`(@Borrowed x: Any) {
     }
 }
 
-fun `assign local nested control-flow to global in lambda loop`(x: @Borrowed Any) {
+fun `assign local nested control-flow to global in lambda loop`(@Borrowed x: Any) {
     {
         var z: Any = Any()
 
