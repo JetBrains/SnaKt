@@ -50,7 +50,7 @@ fun `pass local as explicit borrowed target`(@Borrowed x: A) {
     x.borrowTarget()
 }
 
-fun `pass local as explicit borrowed target and argument`(x: @Borrowed A) {
+fun `pass local as explicit borrowed target and argument`(@Borrowed x: A) {
     x.borrowTargetAndArg(x)
 }
 
