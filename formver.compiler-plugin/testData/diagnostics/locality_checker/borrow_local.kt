@@ -9,7 +9,7 @@ fun borrow(x: @Borrowed A) {}
 
 fun share(x: A) {}
 
-fun borrowBoth(x: @Borrowed A, y: @Borrowed A) {}
+fun borrowBoth(@Borrowed x: A, @Borrowed y: A) {}
 
 fun @receiver:Borrowed A.borrowTarget() {}
 
