@@ -1,7 +1,5 @@
 /assign_local.kt:(228,229): error: Assignment locality mismatch: expected 'global', actual 'local(assign local to global)'.
 
-/assign_local.kt:(666,667): error: Assignment locality mismatch: expected 'local(anonymous)', actual 'local(assign local to local in lambda)'.
-
 /assign_local.kt:(881,912): error: Assignment locality mismatch: expected 'global', actual 'local(assign local if-expression to global)'.
 
 /assign_local.kt:(1035,1066): error: Assignment locality mismatch: expected 'local(anonymous)', actual 'local(assign local if-expression to local in lambda)'.
