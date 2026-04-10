@@ -7,7 +7,7 @@ class A(
 )
 
 fun `assign global property access to local`(x: A) {
-    var z: @Borrowed Any = x.x
+    @Borrowed var z: Any = x.x
 }
 
 fun `assign local property access to local`(x: @Borrowed A) {
