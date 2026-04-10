@@ -196,6 +196,22 @@ public class FirLightTreeFormVerPluginNoVerificationDiagnosticsTestGenerated ext
     }
 
     @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/expensive_diagnostics")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Expensive_diagnostics {
+      @Test
+      public void testAllFilesPresentInExpensive_diagnostics() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/expensive_diagnostics"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("from_epoch_days.kt")
+      public void testFrom_epoch_days() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/expensive_diagnostics/from_epoch_days.kt");
+      }
+    }
+
+    @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/inlining")
     @TestDataPath("$PROJECT_ROOT")
     public class Inlining {
@@ -236,6 +252,12 @@ public class FirLightTreeFormVerPluginNoVerificationDiagnosticsTestGenerated ext
       @Test
       public void testAllFilesPresentInPure_functions() {
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/pure_functions"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("heap_dependent_specifications.kt")
+      public void testHeap_dependent_specifications() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/heap_dependent_specifications.kt");
       }
 
       @Test

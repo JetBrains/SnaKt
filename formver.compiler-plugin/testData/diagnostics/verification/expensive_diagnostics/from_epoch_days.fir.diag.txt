@@ -1,0 +1,115 @@
+/from_epoch_days.kt:(1085,1096): info: Generated Viper text for toEpochDays:
+method f$toEpochDays$TF$T$Int$T$Int$T$Int$T$Int(p$year: Ref, p$month: Ref, p$day: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$year), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$month), df$rt$intType())
+  requires df$rt$isSubtype(df$rt$typeOf(p$day), df$rt$intType())
+  requires 0 <= df$rt$intFromRef(p$year) &&
+    df$rt$intFromRef(p$year) <= 9999
+  requires 1 <= df$rt$intFromRef(p$month) &&
+    df$rt$intFromRef(p$month) <= 12
+  requires 1 <= df$rt$intFromRef(p$day) && df$rt$intFromRef(p$day) <= 31
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+  ensures df$rt$intFromRef(ret$0) >= -719528
+{
+  var l0$total: Ref
+  l0$total := sp$timesInts(df$rt$intToRef(365), p$year)
+  l0$total := sp$plusInts(l0$total, sp$plusInts(sp$minusInts(sp$divInts(sp$plusInts(p$year,
+    df$rt$intToRef(3)), df$rt$intToRef(4)), sp$divInts(sp$plusInts(p$year, df$rt$intToRef(99)),
+    df$rt$intToRef(100))), sp$divInts(sp$plusInts(p$year, df$rt$intToRef(399)),
+    df$rt$intToRef(400))))
+  l0$total := sp$plusInts(l0$total, sp$divInts(sp$minusInts(sp$timesInts(df$rt$intToRef(367),
+    p$month), df$rt$intToRef(362)), df$rt$intToRef(12)))
+  l0$total := sp$plusInts(l0$total, sp$minusInts(p$day, df$rt$intToRef(1)))
+  if (df$rt$intFromRef(p$month) > 2) {
+    var anon$0: Ref
+    var anon$2: Ref
+    anon$0 := l0$total
+    l0$total := sp$minusInts(anon$0, df$rt$intToRef(1))
+    if (!(df$rt$intFromRef(p$year) % 4 == 0)) {
+      anon$2 := df$rt$boolToRef(true)
+    } elseif (df$rt$intFromRef(p$year) % 100 == 0) {
+      anon$2 := sp$notBool(df$rt$boolToRef(df$rt$intFromRef(p$year) % 400 ==
+        0))
+    } else {
+      anon$2 := df$rt$boolToRef(false)}
+    if (df$rt$boolFromRef(anon$2)) {
+      var anon$1: Ref
+      anon$1 := l0$total
+      l0$total := sp$minusInts(anon$1, df$rt$intToRef(1))
+    }
+  }
+  ret$0 := sp$minusInts(l0$total, df$rt$intToRef(719528))
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/from_epoch_days.kt:(1670,1683): info: Generated Viper text for fromEpochDays:
+field bf$size: Ref
+
+method f$fromEpochDays$TF$T$Int$T$Int(p$epochDays: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$epochDays), df$rt$intType())
+  requires df$rt$intFromRef(p$epochDays) >= -719528
+  requires df$rt$intFromRef(p$epochDays) <= 2932896
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+  ensures df$rt$intFromRef(ret$0) >= 101
+  ensures df$rt$intFromRef(ret$0) <= 99991231
+{
+  var l0$zeroDay: Ref
+  var l0$adjust: Ref
+  var l0$yearEst: Ref
+  var l0$doyEst: Ref
+  var l0$marchDoy0: Ref
+  var l0$marchMonth0: Ref
+  var l0$month: Ref
+  var l0$dom: Ref
+  l0$zeroDay := sp$plusInts(p$epochDays, df$rt$intToRef(719528))
+  l0$zeroDay := sp$minusInts(l0$zeroDay, df$rt$intToRef(60))
+  l0$adjust := df$rt$intToRef(0)
+  if (df$rt$intFromRef(l0$zeroDay) < 0) {
+    var l2$adjustCycles: Ref
+    l2$adjustCycles := sp$minusInts(sp$divInts(sp$plusInts(l0$zeroDay, df$rt$intToRef(1)),
+      df$rt$intToRef(146097)), df$rt$intToRef(1))
+    assert df$rt$intFromRef(l2$adjustCycles) <= -1
+    l0$adjust := sp$timesInts(l2$adjustCycles, df$rt$intToRef(400))
+    l0$zeroDay := sp$minusInts(l0$zeroDay, sp$timesInts(l2$adjustCycles, df$rt$intToRef(146097)))
+  }
+  assert df$rt$intFromRef(l0$adjust) <= 0
+  assert df$rt$intFromRef(l0$zeroDay) >= 0
+  l0$yearEst := sp$divInts(sp$plusInts(sp$timesInts(df$rt$intToRef(400), l0$zeroDay),
+    df$rt$intToRef(591)), df$rt$intToRef(146097))
+  l0$doyEst := sp$minusInts(l0$zeroDay, sp$plusInts(sp$minusInts(sp$plusInts(sp$timesInts(df$rt$intToRef(365),
+    l0$yearEst), sp$divInts(l0$yearEst, df$rt$intToRef(4))), sp$divInts(l0$yearEst,
+    df$rt$intToRef(100))), sp$divInts(l0$yearEst, df$rt$intToRef(400))))
+  if (df$rt$intFromRef(l0$doyEst) < 0) {
+    var anon$0: Ref
+    anon$0 := l0$yearEst
+    l0$yearEst := sp$minusInts(anon$0, df$rt$intToRef(1))
+    l0$doyEst := sp$minusInts(l0$zeroDay, sp$plusInts(sp$minusInts(sp$plusInts(sp$timesInts(df$rt$intToRef(365),
+      l0$yearEst), sp$divInts(l0$yearEst, df$rt$intToRef(4))), sp$divInts(l0$yearEst,
+      df$rt$intToRef(100))), sp$divInts(l0$yearEst, df$rt$intToRef(400))))
+  }
+  assert df$rt$intFromRef(l0$doyEst) >= 0
+  l0$yearEst := sp$plusInts(l0$yearEst, l0$adjust)
+  l0$marchDoy0 := l0$doyEst
+  assert df$rt$intFromRef(l0$marchDoy0) >= 0
+  l0$marchMonth0 := sp$divInts(sp$plusInts(sp$timesInts(l0$marchDoy0, df$rt$intToRef(5)),
+    df$rt$intToRef(2)), df$rt$intToRef(153))
+  assert df$rt$intFromRef(l0$marchMonth0) >= 0
+  assert df$rt$intFromRef(l0$marchMonth0) <= 11
+  l0$month := sp$plusInts(sp$remInts(sp$plusInts(l0$marchMonth0, df$rt$intToRef(2)),
+    df$rt$intToRef(12)), df$rt$intToRef(1))
+  assert df$rt$intFromRef(l0$month) >= 1
+  assert df$rt$intFromRef(l0$month) <= 12
+  l0$dom := sp$plusInts(sp$minusInts(l0$marchDoy0, sp$divInts(sp$plusInts(sp$timesInts(l0$marchMonth0,
+    df$rt$intToRef(306)), df$rt$intToRef(5)), df$rt$intToRef(10))), df$rt$intToRef(1))
+  assert df$rt$intFromRef(l0$dom) >= 1
+  assert df$rt$intFromRef(l0$dom) <= 31
+  l0$yearEst := sp$plusInts(l0$yearEst, sp$divInts(l0$marchMonth0, df$rt$intToRef(10)))
+  assert df$rt$intFromRef(l0$yearEst) >= 0
+  ret$0 := sp$plusInts(sp$plusInts(sp$timesInts(l0$yearEst, df$rt$intToRef(10000)),
+    sp$timesInts(l0$month, df$rt$intToRef(100))), l0$dom)
+  goto lbl$ret$0
+  label lbl$ret$0
+}

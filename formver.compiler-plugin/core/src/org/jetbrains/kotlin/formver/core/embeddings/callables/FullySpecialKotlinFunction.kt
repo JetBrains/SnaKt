@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.IntLit
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.AddCharInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.AddIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.DivIntInt
+import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.RemIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Implies
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.MulIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
@@ -17,7 +18,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubCharChar
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubCharInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubIntInt
-import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.RemIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.NegInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.UnitLit
 import org.jetbrains.kotlin.formver.core.embeddings.expression.toBlock
@@ -78,6 +78,26 @@ object SpecialKotlinFunctions {
             }
         }
 
+        // Long maps to the same Viper Int type (Viper integers are unbounded).
+        // Register Long-Long operators reusing the same operator embeddings as Int.
+        withCallableType(intIntToIntType) {
+            addFunction(SpecialPackages.kotlin, className = "Long", name = "plus") { args, _ ->
+                AddIntInt(args[0], args[1])
+            }
+            addFunction(SpecialPackages.kotlin, className = "Long", name = "minus") { args, _ ->
+                SubIntInt(args[0], args[1])
+            }
+            addFunction(SpecialPackages.kotlin, className = "Long", name = "times") { args, _ ->
+                MulIntInt(args[0], args[1])
+            }
+            addFunction(SpecialPackages.kotlin, className = "Long", name = "div") { args, _ ->
+                DivIntInt(args[0], args[1])
+            }
+            addFunction(SpecialPackages.kotlin, className = "Long", name = "rem") { args, _ ->
+                RemIntInt(args[0], args[1])
+            }
+        }
+
         val intToIntType = buildFunctionPretype {
             withDispatchReceiver { int() }
             withReturnType { int() }
@@ -92,6 +112,23 @@ object SpecialKotlinFunctions {
             }
             addFunction(SpecialPackages.kotlin, className = "Int", name = "unaryMinus") { args, _ ->
                 NegInt(args[0])
+            }
+            // Long inc/dec/unaryMinus
+            addFunction(SpecialPackages.kotlin, className = "Long", name = "inc") { args, _ ->
+                AddIntInt(args[0], IntLit(1))
+            }
+            addFunction(SpecialPackages.kotlin, className = "Long", name = "dec") { args, _ ->
+                SubIntInt(args[0], IntLit(1))
+            }
+            addFunction(SpecialPackages.kotlin, className = "Long", name = "unaryMinus") { args, _ ->
+                NegInt(args[0])
+            }
+            // Int<->Long conversions are identity (both map to Viper Int)
+            addFunction(SpecialPackages.kotlin, className = "Int", name = "toLong") { args, _ ->
+                args[0]
+            }
+            addFunction(SpecialPackages.kotlin, className = "Long", name = "toInt") { args, _ ->
+                args[0]
             }
         }
 

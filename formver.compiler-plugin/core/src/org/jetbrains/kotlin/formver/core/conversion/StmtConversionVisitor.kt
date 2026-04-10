@@ -97,6 +97,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         data: StmtConversionContext,
     ): ExpEmbedding = when (literalExpression.kind) {
         ConstantValueKind.Int -> IntLit((literalExpression.value as Long).toInt())
+        ConstantValueKind.Long -> IntLit((literalExpression.value as Long).toInt())
         ConstantValueKind.Boolean -> BooleanLit(literalExpression.value as Boolean)
         ConstantValueKind.Char -> CharLit(literalExpression.value as Char)
         ConstantValueKind.String -> StringLit(literalExpression.value as String)

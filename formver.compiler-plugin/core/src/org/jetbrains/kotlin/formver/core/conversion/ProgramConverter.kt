@@ -585,6 +585,7 @@ class ProgramConverter(
         type.isUnit -> unit()
         type.isChar -> char()
         type.isInt -> int()
+        type.isLong -> int()
         type.isBoolean -> boolean()
         type.isNothing -> nothing()
         type.isSomeFunctionType(session) -> function {
