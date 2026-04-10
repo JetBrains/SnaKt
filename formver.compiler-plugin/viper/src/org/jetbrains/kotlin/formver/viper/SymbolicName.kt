@@ -54,15 +54,7 @@ sealed class NameType(val name: String) {
     object Function : NameType("f")
     object Predicate : NameType("pred")
     object Havoc : NameType("havoc")
-    sealed class Label(val lblName: String) : NameType(lblName) {
-        override fun toString(): String = "lbl$$lblName"
-        object Return : Label("ret")
-        object Break : Label("break")
-        object Continue : Label("cont")
-        object Catch : Label("catch")
-        object TryExit : Label("tryExit")
-    }
-
+    object Label : NameType("lbl")
     object Variable : NameType("v")
     object Domain : NameType("d")
     object DomainFunction : NameType("df")
