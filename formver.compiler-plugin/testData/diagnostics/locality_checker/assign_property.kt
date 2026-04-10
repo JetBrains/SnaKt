@@ -46,7 +46,7 @@ fun `assign local property if-expression to global`(@Borrowed x: A, y: A) {
     var z: Any = if (false) { x.x } else { y.x }
 }
 
-fun `assign local property when-expression to global in loop`(x: @Borrowed A, y: A) {
+fun `assign local property when-expression to global in loop`(@Borrowed x: A, y: A) {
     var z: Any = Any()
 
     while (true) {
