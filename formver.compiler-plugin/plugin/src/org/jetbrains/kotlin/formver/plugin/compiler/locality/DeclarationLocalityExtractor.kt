@@ -23,11 +23,11 @@ abstract class DeclarationLocalityValueExtractor {
     abstract val FirDeclaration.owner: FirDeclaration?
 
     context(context: CheckerContext)
-    fun extract(declaration: FirDeclaration): LocalityValue =
+    fun extract(declaration: FirDeclaration): Locality =
         if (declaration.hasLocalityAnnotation) {
-            return LocalityValue.Local(declaration.owner)
+            return Locality.Local(declaration.owner)
         } else {
-            return LocalityValue.Global
+            return Locality.Global
         }
 }
 
@@ -65,7 +65,7 @@ private class UseLocalityValueExtractor : DeclarationLocalityValueExtractor() {
 }
 
 context(_: CheckerContext)
-val FirDeclaration.actualLocality: LocalityValue
+val FirDeclaration.actualLocality: Locality
     get() = UseLocalityValueExtractor().extract(this)
 
 private class DefinitionLocalityValueExtractor : DeclarationLocalityValueExtractor() {
@@ -81,5 +81,5 @@ private class DefinitionLocalityValueExtractor : DeclarationLocalityValueExtract
 }
 
 context(_: CheckerContext)
-val FirDeclaration.requiredLocality : LocalityValue
+val FirDeclaration.requiredLocality : Locality
     get() = DefinitionLocalityValueExtractor().extract(this)

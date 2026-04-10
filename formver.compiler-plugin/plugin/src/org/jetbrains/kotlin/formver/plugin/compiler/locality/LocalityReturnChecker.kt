@@ -16,7 +16,7 @@ class LocalityReturnChecker(
     override fun check(expression: FirReturnExpression) {
         if (!config.checkLocality) return
 
-        val leftLocality = LocalityValue.Global
+        val leftLocality = Locality.Global
         val rightLocality = expression.result.resolvedLocality
 
         if (leftLocality.accepts(rightLocality)) return
