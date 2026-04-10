@@ -108,7 +108,7 @@ fun `assign local try-expression to global in loop`(@Borrowed x: Any) {
     }
 }
 
-fun `assign local cast-expression to global`(x: @Borrowed Any) {
+fun `assign local cast-expression to global`(@Borrowed x: Any) {
     var z: String = <!LOCALITY_VIOLATION!>x as String<!>
 }
 
