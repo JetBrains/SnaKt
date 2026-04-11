@@ -143,13 +143,17 @@ function f$stringEqualityBranching$TF$T$String$T$Boolean(p$input: Ref): Ref
           df$rt$boolToRef(false) :
           null)) in
         (let l0$isValid$3 ==
-          ((df$rt$stringFromRef(p$input) == Seq(117, 115, 101, 114) ?
-            l0$isValid$1 :
-            l0$isValid$2)) in
+          ((!(df$rt$stringFromRef(p$input) == Seq(97, 100, 109, 105, 110)) ?
+            (df$rt$stringFromRef(p$input) == Seq(117, 115, 101, 114) ?
+              l0$isValid$1 :
+              l0$isValid$2) :
+            null)) in
           (let l0$isValid$4 ==
-            ((df$rt$stringFromRef(p$input) == Seq(97, 100, 109, 105, 110) ?
-              l0$isValid$0 :
-              l0$isValid$3)) in
+            ((!(df$rt$stringFromRef(p$input) == Seq(97, 100, 109, 105, 110)) ?
+              (df$rt$stringFromRef(p$input) == Seq(97, 100, 109, 105, 110) ?
+                l0$isValid$0 :
+                l0$isValid$3) :
+              null)) in
             (df$rt$stringFromRef(p$input) == Seq(97, 100, 109, 105, 110) ?
               df$rt$boolToRef(true) :
               l0$isValid$4))))))
@@ -178,18 +182,28 @@ function f$complexBooleanReturn$TF$T$Int$T$Boolean(p$x: Ref): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
 {
   (let l0$result$0 ==
-    (df$rt$boolToRef(false)) in
+    ((!(df$rt$intFromRef(p$x) > 100) ? df$rt$boolToRef(false) : null)) in
     (let l0$result$1 ==
-      ((df$rt$intFromRef(p$x) > 50 ? df$rt$boolToRef(true) : null)) in
+      ((df$rt$intFromRef(p$x) > 50 && !(df$rt$intFromRef(p$x) > 100) ?
+        df$rt$boolToRef(true) :
+        null)) in
       (let l0$result$2 ==
-        ((!(df$rt$intFromRef(p$x) > 50) ? df$rt$boolToRef(true) : null)) in
+        ((!(df$rt$intFromRef(p$x) < 0) &&
+        (!(df$rt$intFromRef(p$x) > 50) && !(df$rt$intFromRef(p$x) > 100)) ?
+          df$rt$boolToRef(true) :
+          null)) in
         (let l0$result$3 ==
-          ((df$rt$intFromRef(p$x) > 50 ? l0$result$1 : l0$result$2)) in
+          ((!(df$rt$intFromRef(p$x) > 100) ?
+            (df$rt$intFromRef(p$x) > 50 ? l0$result$1 : l0$result$2) :
+            null)) in
           (df$rt$intFromRef(p$x) > 100 ?
             df$rt$boolToRef(true) :
-            (df$rt$intFromRef(p$x) < 0 && !(df$rt$intFromRef(p$x) > 50) ?
+            (df$rt$intFromRef(p$x) < 0 &&
+            (!(df$rt$intFromRef(p$x) > 50) &&
+            !(df$rt$intFromRef(p$x) > 100)) ?
               df$rt$boolToRef(false) :
-              (df$rt$boolFromRef(l0$result$3) ?
+              (df$rt$boolFromRef(l0$result$3) &&
+              !(df$rt$intFromRef(p$x) > 100) ?
                 df$rt$boolToRef(false) :
                 df$rt$boolToRef(true))))))))
 }
