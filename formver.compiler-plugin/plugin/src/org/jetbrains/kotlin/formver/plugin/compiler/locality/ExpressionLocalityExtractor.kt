@@ -11,13 +11,16 @@ import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.formver.plugin.compiler.analysis.TailValueExtractor
 
+/**
+ * Extracts the locality of an expression with respect to the outer declarations specified in [context].
+ */
+class ExpressionLocalityExtractor(
+    private val context: CheckerContext
 ) : TailValueExtractor<Locality, Unit>() {
     fun extract(expression: FirExpression): Locality {
         return extract(expression, Unit)
     }
 
-    private val context: CheckerContext
-) : TailValueExtractor<Locality>() {
     override val empty = Locality.Global
 
     override fun Locality.join(other: Locality): Locality {
