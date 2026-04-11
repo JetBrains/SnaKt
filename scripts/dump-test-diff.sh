@@ -30,8 +30,9 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 EXTENSION_FILE="$ROOT_DIR/formver.compiler-plugin/test-fixtures/org/jetbrains/kotlin/formver/plugin/DumpAssertionDiffExtension.kt"
-SERVICES_DIR="$ROOT_DIR/formver.compiler-plugin/test-fixtures/META-INF/services"
+SERVICES_DIR="$ROOT_DIR/formver.compiler-plugin/testData/META-INF/services"
 SERVICES_FILE="$SERVICES_DIR/org.junit.jupiter.api.extension.Extension"
+PLATFORM_PROPS="$ROOT_DIR/formver.compiler-plugin/testData/junit-platform.properties"
 
 # Clean up old dumps
 rm -f /tmp/test-assertion-dump-*.txt
@@ -50,15 +51,36 @@ class DumpAssertionDiffExtension : TestWatcher {
     override fun testFailed(context: ExtensionContext, cause: Throwable) {
         if (cause is AssertionFailedError && cause.isExpectedDefined && cause.isActualDefined) {
             val name = context.displayName.replace(Regex("[^a-zA-Z0-9_]"), "_")
+            val expected = resolveValue(cause.expected)
+            val actual = resolveValue(cause.actual)
             File("/tmp/test-assertion-dump-$name.txt").writeText(buildString {
                 appendLine("=== EXPECTED ===")
-                appendLine(cause.expected.stringRepresentation)
+                appendLine(expected)
                 appendLine()
                 appendLine("=== ACTUAL ===")
-                appendLine(cause.actual.stringRepresentation)
+                appendLine(actual)
             })
             System.err.println(">>> Assertion diff dumped to /tmp/test-assertion-dump-$name.txt")
         }
+    }
+
+    private fun resolveValue(wrapper: org.opentest4j.ValueWrapper): String {
+        // First try the raw value — may be a FileInfo with getContentsAsString()
+        val value = wrapper.value
+        if (value != null && value !is String) {
+            try {
+                val m = value.javaClass.getMethod("getContentsAsString")
+                return m.invoke(value) as String
+            } catch (_: Exception) {}
+        }
+        val str = (value as? String) ?: wrapper.stringRepresentation
+        // If it looks like a FileInfo toString, read the file directly
+        val match = Regex("""FileInfo\[path='(.+?)',""").find(str)
+        if (match != null) {
+            val path = match.groupValues[1]
+            try { return File(path).readText() } catch (_: Exception) {}
+        }
+        return str
     }
 }
 KOTLIN
@@ -67,11 +89,18 @@ KOTLIN
 mkdir -p "$SERVICES_DIR"
 echo "org.jetbrains.kotlin.formver.plugin.DumpAssertionDiffExtension" > "$SERVICES_FILE"
 
+# Enable JUnit 5 extension autodetection (disabled by default)
+echo "junit.jupiter.extensions.autodetection.enabled=true" > "$PLATFORM_PROPS"
+
 cleanup() {
     rm -f "$EXTENSION_FILE"
     rm -f "$SERVICES_FILE"
+    rm -f "$PLATFORM_PROPS"
     rmdir "$SERVICES_DIR" 2>/dev/null || true
     rmdir "$(dirname "$SERVICES_DIR")" 2>/dev/null || true
+    # Also clean up the build copy so it doesn't persist across runs
+    rm -f "$ROOT_DIR/formver.compiler-plugin/build/resources/test/junit-platform.properties"
+    rm -rf "$ROOT_DIR/formver.compiler-plugin/build/resources/test/META-INF/services"
 }
 trap cleanup EXIT
 
