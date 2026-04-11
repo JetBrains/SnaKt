@@ -6,36 +6,36 @@
 package org.jetbrains.kotlin.formver.core.embeddings.expression
 
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
+import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
 import org.jetbrains.kotlin.formver.core.linearization.LogicOperatorPolicy
-import org.jetbrains.kotlin.formver.viper.ast.Exp
+import org.jetbrains.kotlin.formver.viper.NameResolver
 
 /**
  * In pure contexts these operators can be written as simple binary operators.
  * However, regularly their semantics is different: evaluate the first argument and then maybe the second one (not necessarily)
  */
-sealed class SequentialLogicOperatorEmbedding : BinaryDirectResultExpEmbedding {
+sealed class SequentialLogicOperatorEmbedding : ExpEmbedding {
+    abstract val left: ExpEmbedding
+    abstract val right: ExpEmbedding
+
     override val type
         get() = buildType { boolean() }
 
     protected abstract val ifReplacement: ExpEmbedding
     protected abstract val expressionReplacement: ExpEmbedding
 
-    private fun operatorReplacement(ctx: LinearizationContext) = when (ctx.logicOperatorPolicy) {
+    fun operatorReplacement(ctx: LinearizationContext) = when (ctx.logicOperatorPolicy) {
         LogicOperatorPolicy.CONVERT_TO_IF -> ifReplacement
         LogicOperatorPolicy.CONVERT_TO_EXPRESSION -> expressionReplacement
     }
 
-    override fun toViper(ctx: LinearizationContext): Exp =
-        operatorReplacement(ctx).toViper(ctx)
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(left, right)
 
-    override fun toViperBuiltinType(ctx: LinearizationContext): Exp =
-        operatorReplacement(ctx).toViperBuiltinType(ctx)
-
-    override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-        operatorReplacement(ctx).toViperStoringIn(result, ctx)
-    }
+    context(nameResolver: NameResolver)
+    override val debugTreeView: TreeView
+        get() = NamedBranchingNode(javaClass.simpleName, listOf(left.debugTreeView, right.debugTreeView))
 }
 
 class SequentialAnd(override val left: ExpEmbedding, override val right: ExpEmbedding) :

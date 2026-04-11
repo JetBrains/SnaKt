@@ -12,14 +12,12 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.PlaintextLe
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.TreeView
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.withDesignation
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
-import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
-import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 
-data class WithPosition(override val inner: ExpEmbedding, val source: KtSourceElement) : PassthroughExpEmbedding {
-    override fun <R> withPassthroughHook(ctx: LinearizationContext, action: LinearizationContext.() -> R): R =
-        ctx.withPosition(source, action)
+data class WithPosition(val inner: ExpEmbedding, val source: KtSourceElement) : ExpEmbedding {
+    override val type: TypeEmbedding
+        get() = inner.type
 
     override fun ignoringMetaNodes(): ExpEmbedding = inner.ignoringMetaNodes()
     override fun ignoringCastsAndMetaNodes(): ExpEmbedding = inner.ignoringCastsAndMetaNodes()
@@ -54,11 +52,10 @@ fun ExpEmbedding.withPosition(source: KtSourceElement?): ExpEmbedding =
  *
  * This class should be used via the `share` function below. Do not do anything funny, or it will not work.
  */
-data class SharingContext(override val inner: ExpEmbedding) : PassthroughExpEmbedding {
+data class SharingContext(val inner: ExpEmbedding) : ExpEmbedding {
+    override val type: TypeEmbedding
+        get() = inner.type
     var sharedExp: Exp? = null
-
-    override fun <R> withPassthroughHook(ctx: LinearizationContext, action: LinearizationContext.() -> R): R =
-        ctx.action().also { sharedExp = null }
 
     // We need a temporary variable here since Kotlin believes sharedExp may be modified at any point.
     fun tryInitShared(f: () -> Exp): Exp = when (val r = sharedExp) {
@@ -78,6 +75,7 @@ data class SharingContext(override val inner: ExpEmbedding) : PassthroughExpEmbe
         )
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitSharingContext(this)
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(inner)
 }
 
 /**
@@ -90,23 +88,12 @@ data class SharingContext(override val inner: ExpEmbedding) : PassthroughExpEmbe
  * quite easily by using a fresh variable every time, but that would add unreasonable bloat to many programs.
  * TODO: fix this.
  */
-data class Shared(val inner: ExpEmbedding) : StoredResultExpEmbedding, DefaultToBuiltinExpEmbedding {
+data class Shared(val inner: ExpEmbedding) : ExpEmbedding {
     private var _context: SharingContext? = null
     val context: SharingContext
         get() = checkNotNull(_context) { "Context of shared used before initialisation is complete." }
     override val type: TypeEmbedding
         get() = inner.type
-
-    override fun toViper(ctx: LinearizationContext): Exp = context.tryInitShared { inner.toViper(ctx) }
-
-    override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-        context.tryInitShared { inner.toViperStoringIn(result, ctx); result.toViper(ctx) }
-    }
-
-    override fun toViperUnusedResult(ctx: LinearizationContext) {
-        context.tryInitShared { inner.toViperUnusedResult(ctx); UnitLit.pureToViper(toBuiltin = false) }
-    }
-
 
     override fun ignoringMetaNodes() = inner
     override fun ignoringCastsAndMetaNodes() = inner

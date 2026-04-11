@@ -67,14 +67,14 @@ data class Linearizer(
     }
 
     override fun store(lhs: VariableEmbedding, rhs: ExpEmbedding) {
-        val lhsViper = lhs.toViper(this)
-        val rhsViper = rhs.withType(lhs.type).toViper(this)
+        val lhsViper = lhs.linearize().toViper(this)
+        val rhsViper = rhs.withType(lhs.type).linearize().toViper(this)
         addStatement { Stmt.assign(lhsViper, rhsViper, source.asPosition) }
     }
 
     override fun addReturn(returnExp: ExpEmbedding, target: ReturnTarget) {
         returnExp.withType(target.variable.type)
-            .toViperStoringIn(target.variable, this)
+            .linearize().toViperStoringIn(target.variable, this)
         addStatement { target.label.toLink().toViperGoto(this) }
     }
 
@@ -86,16 +86,16 @@ data class Linearizer(
         result: VariableEmbedding?
     ) =
         addStatement {
-            val condViper = condition.toViperBuiltinType(this)
-            val thenViper = asBlock { thenBranch.withType(type).toViperMaybeStoringIn(result, this) }
-            val elseViper = asBlock { elseBranch.withType(type).toViperMaybeStoringIn(result, this) }
+            val condViper = condition.linearize().toViperBuiltinType(this)
+            val thenViper = asBlock { thenBranch.withType(type).linearize().toViperMaybeStoringIn(result, this) }
+            val elseViper = asBlock { elseBranch.withType(type).linearize().toViperMaybeStoringIn(result, this) }
             Stmt.If(condViper, thenViper, elseViper, source.asPosition)
         }
 
     override fun addFieldAccess(access: FieldAccess): Exp {
         val result = freshAnonVar(access.field.type)
         addFieldAccessStoringIn(access, result)
-        return result.toViper(this)
+        return result.linearize().toViper(this)
     }
 
     override fun addModifier(mod: StmtModifier) {
@@ -109,12 +109,12 @@ data class Linearizer(
             when (field.accessPolicy) {
                 // TODO: Handling a unique field on a shared receiver must be added here.
                 AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
-                    receiver.toViperUnusedResult(this)
+                    receiver.linearize().toViperUnusedResult(this)
                     field.type.havocMethod.toMethodCall(emptyList(), listOf(result.toLocalVarUse()))
                 }
 
                 else -> {
-                    val receiverViper = receiver.toViper(this)
+                    val receiverViper = receiver.linearize().toViper(this)
                     // If the field access is not replaced with havoc,
                     // we might need to unfold some predicate to access it.
                     if (field.unfoldToAccess) {

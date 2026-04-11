@@ -52,10 +52,10 @@ data class PureFunBodyLinearizer(
     override fun addDeclaration(decl: Declaration) {}
 
     override fun store(lhs: VariableEmbedding, rhs: ExpEmbedding) =
-        ssaConverter.addAssignment(lhs.name, rhs.toViper(this))
+        ssaConverter.addAssignment(lhs.name, rhs.linearize().toViper(this))
 
     override fun addReturn(returnExp: ExpEmbedding, target: ReturnTarget) {
-        ssaConverter.addReturn(returnExp.toViper(this))
+        ssaConverter.addReturn(returnExp.linearize().toViper(this))
     }
 
     override fun addBranch(
@@ -65,7 +65,7 @@ data class PureFunBodyLinearizer(
         type: TypeEmbedding,
         result: VariableEmbedding?
     ) {
-        val conditionExp = condition.ignoringCastsAndMetaNodes().toViperBuiltinType(this)
+        val conditionExp = condition.ignoringCastsAndMetaNodes().linearize().toViperBuiltinType(this)
         var resultThen: Exp? = null
         var resultElse: Exp? = null
 
@@ -73,16 +73,16 @@ data class PureFunBodyLinearizer(
             conditionExp,
             {
                 if (result != null) {
-                    resultThen = thenBranch.toViper(this)
+                    resultThen = thenBranch.linearize().toViper(this)
                 } else {
-                    thenBranch.toViperUnusedResult(this)
+                    thenBranch.linearize().toViperUnusedResult(this)
                 }
             },
             {
                 if (result != null) {
-                    resultElse = elseBranch.toViper(this)
+                    resultElse = elseBranch.linearize().toViper(this)
                 } else {
-                    elseBranch.toViperUnusedResult(this)
+                    elseBranch.linearize().toViperUnusedResult(this)
                 }
             })
 
@@ -98,7 +98,7 @@ data class PureFunBodyLinearizer(
     override fun addFieldAccessStoringIn(access: FieldAccess, result: VariableEmbedding) {
         val receiver = access.receiver
         val field = access.field
-        val viperReceiver = receiver.toViper(this)
+        val viperReceiver = receiver.linearize().toViper(this)
         if (viperReceiver !is Exp.LocalVar) throw SnaktInternalException(
             source,
             "Invalid receiver encountered in pure function"
@@ -114,7 +114,7 @@ data class PureFunBodyLinearizer(
     override fun addFieldAccess(access: FieldAccess): Exp {
         val result = freshAnonVar(access.field.type)
         addFieldAccessStoringIn(access, result)
-        return result.toViper(this)
+        return result.linearize().toViper(this)
     }
 
     override fun addModifier(mod: StmtModifier) {

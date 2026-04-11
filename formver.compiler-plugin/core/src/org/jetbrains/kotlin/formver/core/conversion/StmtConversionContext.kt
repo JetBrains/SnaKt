@@ -247,10 +247,10 @@ fun StmtConversionContext.convertMethodWithBody(
     val bodyExp = FunctionExp(signature, body, returnTarget.label)
     val seqnBuilder = SeqnBuilder(declaration.source)
     val linearizer = Linearizer(SharedLinearizationState(anonVarProducer), seqnBuilder, declaration.source)
-    bodyExp.toViperUnusedResult(linearizer)
+    bodyExp.linearize().toViperUnusedResult(linearizer)
     // note: we must guarantee somewhere that returned value is Unit
     // as we may not encounter any `return` statement in the body
-    returnTarget.variable.withIsUnitInvariantIfUnit().toViperUnusedResult(linearizer)
+    returnTarget.variable.withIsUnitInvariantIfUnit().linearize().toViperUnusedResult(linearizer)
     val isValid = body.checkValidity(declaration.source, errorCollector)
     return if (isValid) {
         FunctionBodyEmbedding(seqnBuilder.block, returnTarget, bodyExp)
@@ -276,7 +276,7 @@ fun StmtConversionContext.convertFunctionWithBody(
         SharedLinearizationState(anonVarProducer),
         SsaConverter(declaration.source),
     )
-    body.toViperUnusedResult(pureFunBodyLinearizer)
+    body.linearize().toViperUnusedResult(pureFunBodyLinearizer)
     return pureFunBodyLinearizer.constructExpression()
 }
 

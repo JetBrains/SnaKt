@@ -5,46 +5,29 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.expression
 
-import org.jetbrains.kotlin.formver.core.asPosition
-import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
-import org.jetbrains.kotlin.formver.core.embeddings.asInfo
+import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
-import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
+import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.ast.EqAny
-import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.NeAny
 import org.jetbrains.kotlin.formver.viper.ast.Operator
 
-sealed interface AnyComparisonExpression : BinaryDirectResultExpEmbedding {
+sealed interface AnyComparisonExpression : ExpEmbedding {
+    val left: ExpEmbedding
+    val right: ExpEmbedding
+
     override val type
         get() = buildType { boolean() }
 
     val comparisonOperation: Operator
 
-    override fun toViper(ctx: LinearizationContext): Exp =
-        RuntimeTypeDomain.boolInjection.toRef(
-            toViperBuiltinType(ctx),
-            pos = ctx.source.asPosition,
-            info = sourceRole.asInfo
-        )
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(left, right)
 
-    override fun toViperBuiltinType(ctx: LinearizationContext): Exp =
-        // this check guarantees that arguments will be of the same Viper type
-        if (left.type == right.type)
-            comparisonOperation(
-                left.toViperBuiltinType(ctx),
-                right.toViperBuiltinType(ctx),
-                pos = ctx.source.asPosition,
-                info = sourceRole.asInfo
-            )
-        else comparisonOperation(
-            left.toViper(ctx),
-            right.toViper(ctx),
-            pos = ctx.source.asPosition,
-            info = sourceRole.asInfo
-        )
+    context(nameResolver: NameResolver)
+    override val debugTreeView: TreeView
+        get() = NamedBranchingNode(javaClass.simpleName, listOf(left.debugTreeView, right.debugTreeView))
 }
 
 data class EqCmp(
@@ -67,4 +50,3 @@ data class NeCmp(
 }
 
 fun ExpEmbedding.notNullCmp(): ExpEmbedding = NeCmp(this, NullLit)
-
