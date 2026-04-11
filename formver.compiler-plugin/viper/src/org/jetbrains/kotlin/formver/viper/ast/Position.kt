@@ -13,6 +13,12 @@ sealed class Position : IntoSilver<viper.silver.ast.Position> {
 
     internal class Wrapper<P>(val wrappedValue: P) : viper.silver.ast.Position {
         override fun toString(): String = "<wrapped value>"
+
+        /**
+         * Shifts a position's column number to assign accurate source locations.
+         * Used to handle concatenated expressions in Viper, e.g. by the ADT plugin.
+         */
+        override fun deltaColumn(delta: Int): viper.silver.ast.Position = this
     }
 
     companion object {

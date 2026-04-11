@@ -5,7 +5,7 @@ method f$recursiveSumOfIntegersUpToN$TF$T$Int$T$Int(p$n: Ref)
   requires df$rt$intFromRef(p$n) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
   ensures df$rt$intFromRef(ret$0) ==
-    df$rt$intFromRef(p$n) * (df$rt$intFromRef(p$n) + 1) / 2
+    df$rt$intFromRef(p$n) * (df$rt$intFromRef(p$n) + 1) \ 2
 {
   if (df$rt$intFromRef(p$n) == 0) {
     ret$0 := df$rt$intToRef(0)
@@ -26,7 +26,7 @@ method f$sumOfIntegersUpToN$TF$T$Int$T$Int(p$n: Ref) returns (ret$0: Ref)
   requires df$rt$intFromRef(p$n) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
   ensures df$rt$intFromRef(ret$0) ==
-    df$rt$intFromRef(p$n) * (df$rt$intFromRef(p$n) + 1) / 2
+    df$rt$intFromRef(p$n) * (df$rt$intFromRef(p$n) + 1) \ 2
 {
   var l0$sum: Ref
   var l0$i: Ref
@@ -39,7 +39,7 @@ method f$sumOfIntegersUpToN$TF$T$Int$T$Int(p$n: Ref) returns (ret$0: Ref)
     invariant df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
     invariant df$rt$intFromRef(l0$i) <= df$rt$intFromRef(p$n)
     invariant df$rt$intFromRef(l0$sum) ==
-      df$rt$intFromRef(l0$i) * (df$rt$intFromRef(l0$i) + 1) / 2
+      df$rt$intFromRef(l0$i) * (df$rt$intFromRef(l0$i) + 1) \ 2
   anon$0 := sp$ltInts(l0$i, p$n)
   if (df$rt$boolFromRef(anon$0)) {
     l0$sum := sp$plusInts(l0$sum, sp$plusInts(l0$i, df$rt$intToRef(1)))
@@ -52,7 +52,7 @@ method f$sumOfIntegersUpToN$TF$T$Int$T$Int(p$n: Ref) returns (ret$0: Ref)
   assert df$rt$isSubtype(df$rt$typeOf(p$n), df$rt$intType())
   assert df$rt$intFromRef(l0$i) <= df$rt$intFromRef(p$n)
   assert df$rt$intFromRef(l0$sum) ==
-    df$rt$intFromRef(l0$i) * (df$rt$intFromRef(l0$i) + 1) / 2
+    df$rt$intFromRef(l0$i) * (df$rt$intFromRef(l0$i) + 1) \ 2
   ret$0 := l0$sum
   goto lbl$ret$0
   label lbl$ret$0

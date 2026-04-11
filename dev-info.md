@@ -23,7 +23,7 @@ here is some useful information about that:
 
 As prerequisites, you will need:
 
-* The Java Development Kit
+* The Java Development Kit with Java 17 (as of April 2026).
 * [Maven](https://maven.apache.org/index.html)
 * [SBT](https://www.scala-sbt.org/)
 

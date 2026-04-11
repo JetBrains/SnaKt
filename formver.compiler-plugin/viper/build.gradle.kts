@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation("viper:silicon_2.13:1.2-SNAPSHOT")
+    implementation(ViperVersions.silicon)
 }
 
 sourceSets {
