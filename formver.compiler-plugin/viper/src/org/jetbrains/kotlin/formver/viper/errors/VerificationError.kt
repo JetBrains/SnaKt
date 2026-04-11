@@ -12,10 +12,8 @@ class VerificationError private constructor(
     val result: viper.silver.verifier.VerificationError,
 ) : VerifierError {
     companion object {
-        fun fromSilver(result: viper.silicon.interfaces.VerificationResult): VerificationError {
-            check(result.isFatal) { "The verification result must contain an error to be converted." }
-            return VerificationError((result as viper.silicon.interfaces.Failure).message())
-        }
+        fun fromSilver(result: viper.silver.verifier.VerificationError): VerificationError =
+            VerificationError(result)
     }
 
     /**
