@@ -2,6 +2,10 @@ package org.jetbrains.kotlin.formver.plugin.compiler.locality
 
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.expressions.FirExpression
+import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
+import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
+import org.jetbrains.kotlin.fir.expressions.FirSafeCallExpression
+import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
@@ -16,8 +20,12 @@ import org.jetbrains.kotlin.formver.plugin.compiler.analysis.TailValueExtractor
 ) : TailValueExtractor<Locality>() {
     override val empty = Locality.Global
 
+    override fun Locality.join(other: Locality): Locality {
+        return join(other)
+    }
+
     @OptIn(SymbolInternals::class)
-    override fun FirBasedSymbol<*>.extract(): Locality {
+    fun FirBasedSymbol<*>.extract(): Locality {
         when (this) {
             is FirVariableSymbol<*> -> {
                 context(context) {
@@ -26,6 +34,28 @@ import org.jetbrains.kotlin.formver.plugin.compiler.analysis.TailValueExtractor
             }
             else -> return Locality.Global
         }
+    }
+
+    override fun visitPropertyAccessExpression(
+        propertyAccessExpression: FirPropertyAccessExpression,
+        data: Unit
+    ): Locality {
+        return propertyAccessExpression.explicitReceiver?.visit(data)
+            ?: propertyAccessExpression.calleeReference.symbol?.extract() ?: empty
+    }
+
+    override fun visitQualifiedAccessExpression(
+        qualifiedAccessExpression: FirQualifiedAccessExpression,
+        data: Unit
+    ): Locality {
+        return qualifiedAccessExpression.explicitReceiver.visit(data)
+    }
+
+    override fun visitSafeCallExpression(
+        safeCallExpression: FirSafeCallExpression,
+        data: Unit
+    ): Locality {
+        return safeCallExpression.receiver.visit(data)
     }
 }
 
