@@ -37,7 +37,7 @@ import org.jetbrains.kotlin.formver.viper.mangled
  *               expect a VariableEmbedding and on the ExpEmbedding level it behaves similar enough to a general VariableEmbedding.
  *               In Viper however, this special case is not treated as a variable, which is why there is a case distinction in .toViper().
  */
-sealed interface VariableEmbedding : NullaryDirectResultExpEmbedding, PropertyAccessEmbedding {
+sealed interface VariableEmbedding : ExpEmbedding, PropertyAccessEmbedding {
     val name: SymbolicName
     override val type: TypeEmbedding
     val isUnique: Boolean
@@ -57,7 +57,7 @@ sealed interface VariableEmbedding : NullaryDirectResultExpEmbedding, PropertyAc
         trafos: Trafos = Trafos.NoTrafos,
     ): Exp.LocalVar = Exp.LocalVar(name, Type.Ref, pos, info, trafos)
 
-    override fun toViper(ctx: LinearizationContext): Exp = when (name) {
+    fun toViperExp(ctx: LinearizationContext): Exp = when (name) {
         is FunctionResultVariableName -> Exp.Result(Type.Ref, ctx.source.asPosition, sourceRole.asInfo)
         else -> Exp.LocalVar(ctx.resolveVariableName(name), Type.Ref, ctx.source.asPosition, sourceRole.asInfo)
     }
@@ -104,7 +104,7 @@ class AnonymousVariableEmbedding(n: Int, override val type: TypeEmbedding) : Var
 class AnonymousBuiltinVariableEmbedding(n: Int, override val type: TypeEmbedding) : VariableEmbedding {
     override val name: SymbolicName = AnonymousBuiltinName(n)
     private val injection: Injection? = type.injectionOrNull
-    override fun toViper(ctx: LinearizationContext): Exp {
+    override fun toViperExp(ctx: LinearizationContext): Exp {
         val inner = Exp.LocalVar(name, injection.viperType, ctx.source.asPosition, sourceRole.asInfo)
         return injection?.let { it.toRef(inner) } ?: inner
     }

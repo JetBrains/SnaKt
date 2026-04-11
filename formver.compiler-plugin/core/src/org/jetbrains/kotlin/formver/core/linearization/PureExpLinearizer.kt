@@ -93,7 +93,7 @@ data class PureExpLinearizer(
     private fun FieldAccess.unfoldingInImpl(): Exp {
         val hierarchyPath = receiver.type.hierarchyPathTo(field)
         val primitiveAccess: Exp =
-            Exp.FieldAccess(receiver.toViper(this@PureExpLinearizer), field.toViper(), source.asPosition)
+            Exp.FieldAccess(receiver.linearize().toViper(this@PureExpLinearizer), field.toViper(), source.asPosition)
         if (hierarchyPath == null) return primitiveAccess
         return hierarchyPath.toList().foldRight(primitiveAccess) { classType, acc ->
             val predAcc = classType.predicateAccess(receiver, source)
@@ -105,7 +105,8 @@ data class PureExpLinearizer(
 fun ExpEmbedding.pureToViper(toBuiltin: Boolean, source: KtSourceElement? = null): Exp {
     try {
         val linearizer = PureExpLinearizer(source)
-        return if (toBuiltin) toViperBuiltinType(linearizer) else toViper(linearizer)
+        val lin = linearize()
+        return if (toBuiltin) lin.toViperBuiltinType(linearizer) else lin.toViper(linearizer)
     } catch (e: PureExpLinearizerMisuseException) {
         val catchNameResolver = SimpleNameResolver()
         val debugView = with(catchNameResolver) { debugTreeView.print() }
