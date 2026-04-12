@@ -39,6 +39,7 @@ private fun TargetsSelection.applicable(declaration: FirSimpleFunction): Boolean
     TargetsSelection.ALL_TARGETS -> true
     TargetsSelection.TARGETS_WITH_CONTRACT -> declaration.hasContract
     TargetsSelection.NO_TARGETS -> false
+    TargetsSelection.FORCE_DISABLE -> false
 }
 
 class ViperPoweredDeclarationChecker(private val session: FirSession, private val config: PluginConfiguration) :
@@ -130,6 +131,7 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
     }
 
     private fun PluginConfiguration.shouldVerify(declaration: FirSimpleFunction): Boolean = when {
+        verificationSelection == TargetsSelection.FORCE_DISABLE -> false
         declaration.hasAnnotation(neverConvertId, session) -> false
         declaration.hasAnnotation(neverVerifyId, session) -> false
         declaration.hasAnnotation(alwaysVerifyId, session) -> true
