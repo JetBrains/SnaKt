@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.FreshEntityProducer
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
 import org.jetbrains.kotlin.formver.viper.SymbolicName
@@ -18,7 +19,7 @@ import org.jetbrains.kotlin.formver.viper.ast.Declaration
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
 
-class PureFunBodyLinearizerMisuseException(val offendingFunction: String) : IllegalStateException(offendingFunction)
+class PureFunBodyLinearizerMisuseException(offendingFunction: String) : IllegalStateException(offendingFunction)
 
 /**
  * Linearization context linearizing a pure ExpEmbedding into a chain of let-bindings
@@ -51,21 +52,20 @@ data class PureFunBodyLinearizer(
 
     override fun addDeclaration(decl: Declaration) {}
 
-    override fun store(lhs: VariableEmbedding, rhs: ExpEmbedding) =
+    override fun store(lhs: VariableEmbedding, rhs: Linearizable) =
         ssaConverter.addAssignment(lhs.name, rhs.toViper(this))
 
-    override fun addReturn(returnExp: ExpEmbedding, target: ReturnTarget) {
+    override fun addReturn(returnExp: Linearizable, target: ReturnTarget) {
         ssaConverter.addReturn(returnExp.toViper(this))
     }
 
     override fun addBranch(
-        condition: ExpEmbedding,
-        thenBranch: ExpEmbedding,
-        elseBranch: ExpEmbedding,
-        type: TypeEmbedding,
+        condition: Linearizable,
+        thenBranch: Linearizable,
+        elseBranch: Linearizable,
         result: VariableEmbedding?
     ) {
-        val conditionExp = condition.ignoringCastsAndMetaNodes().toViperBuiltinType(this)
+        val conditionExp = condition.toViperBuiltinType(this)
         var resultThen: Exp? = null
         var resultElse: Exp? = null
 
@@ -95,26 +95,24 @@ data class PureFunBodyLinearizer(
         }
     }
 
-    override fun addFieldAccessStoringIn(access: FieldAccess, result: VariableEmbedding) {
-        val receiver = access.receiver
-        val field = access.field
+    override fun addFieldAccessStoringIn(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding, result: VariableEmbedding) {
         val viperReceiver = receiver.toViper(this)
         if (viperReceiver !is Exp.LocalVar) throw SnaktInternalException(
             source,
             "Invalid receiver encountered in pure function"
         )
-        val receiverWrapper = ExpWrapper(viperReceiver, receiver.type)
-        val hierarchyPath = receiver.type.hierarchyPathTo(field)
+        val receiverWrapper = ExpWrapper(viperReceiver, receiverType)
+        val hierarchyPath = receiverType.hierarchyPathTo(field)
         val accessInvariants =
             hierarchyPath?.map { it.predicateAccess(receiverWrapper, source) }?.toList() ?: emptyList()
         val primitiveAccess: Exp = Exp.FieldAccess(viperReceiver, field.toViper(), source.asPosition)
         ssaConverter.addAssignment(result.name, primitiveAccess, accessInvariants)
     }
 
-    override fun addFieldAccess(access: FieldAccess): Exp {
-        val result = freshAnonVar(access.field.type)
-        addFieldAccessStoringIn(access, result)
-        return result.toViper(this)
+    override fun addFieldAccess(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding): Exp {
+        val result = freshAnonVar(field.type)
+        addFieldAccessStoringIn(receiver, receiverType, field, result)
+        return result.toViperExp(this)
     }
 
     override fun addModifier(mod: StmtModifier) {

@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.core.embeddings.toViperGoto
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
@@ -66,45 +67,41 @@ data class Linearizer(
         seqnBuilder.addDeclaration(decl)
     }
 
-    override fun store(lhs: VariableEmbedding, rhs: ExpEmbedding) {
-        val lhsViper = lhs.toViper(this)
-        val rhsViper = rhs.withType(lhs.type).toViper(this)
+    override fun store(lhs: VariableEmbedding, rhs: Linearizable) {
+        val lhsViper = lhs.toViperExp(this)
+        val rhsViper = rhs.toViper(this)
         addStatement { Stmt.assign(lhsViper, rhsViper, source.asPosition) }
     }
 
-    override fun addReturn(returnExp: ExpEmbedding, target: ReturnTarget) {
-        returnExp.withType(target.variable.type)
-            .toViperStoringIn(target.variable, this)
+    override fun addReturn(returnExp: Linearizable, target: ReturnTarget) {
+        returnExp.toViperStoringIn(target.variable, this)
         addStatement { target.label.toLink().toViperGoto(this) }
     }
 
     override fun addBranch(
-        condition: ExpEmbedding,
-        thenBranch: ExpEmbedding,
-        elseBranch: ExpEmbedding,
-        type: TypeEmbedding,
+        condition: Linearizable,
+        thenBranch: Linearizable,
+        elseBranch: Linearizable,
         result: VariableEmbedding?
     ) =
         addStatement {
             val condViper = condition.toViperBuiltinType(this)
-            val thenViper = asBlock { thenBranch.withType(type).toViperMaybeStoringIn(result, this) }
-            val elseViper = asBlock { elseBranch.withType(type).toViperMaybeStoringIn(result, this) }
+            val thenViper = asBlock { thenBranch.toViperMaybeStoringIn(result, this) }
+            val elseViper = asBlock { elseBranch.toViperMaybeStoringIn(result, this) }
             Stmt.If(condViper, thenViper, elseViper, source.asPosition)
         }
 
-    override fun addFieldAccess(access: FieldAccess): Exp {
-        val result = freshAnonVar(access.field.type)
-        addFieldAccessStoringIn(access, result)
-        return result.toViper(this)
+    override fun addFieldAccess(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding): Exp {
+        val result = freshAnonVar(field.type)
+        addFieldAccessStoringIn(receiver, receiverType, field, result)
+        return result.toViperExp(this)
     }
 
     override fun addModifier(mod: StmtModifier) {
         stmtModifierTracker?.add(mod) ?: error("Not in a statement")
     }
 
-    override fun addFieldAccessStoringIn(access: FieldAccess, result: VariableEmbedding) {
-        val field = access.field
-        val receiver = access.receiver
+    override fun addFieldAccessStoringIn(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding, result: VariableEmbedding) {
         addStatement {
             when (field.accessPolicy) {
                 // TODO: Handling a unique field on a shared receiver must be added here.
@@ -118,8 +115,8 @@ data class Linearizer(
                     // If the field access is not replaced with havoc,
                     // we might need to unfold some predicate to access it.
                     if (field.unfoldToAccess) {
-                        val receiverWrapper = ExpWrapper(receiverViper, receiver.type)
-                        val hierarchyPath = receiver.type.hierarchyPathTo(field)
+                        val receiverWrapper = ExpWrapper(receiverViper, receiverType)
+                        val hierarchyPath = receiverType.hierarchyPathTo(field)
                         hierarchyPath.unfoldHierarchyPath(receiverWrapper, this)
                     }
                     Stmt.assign(

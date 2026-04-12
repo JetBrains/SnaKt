@@ -5,51 +5,33 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.expression
 
-import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.domains.InjectionImageFunction
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
-import org.jetbrains.kotlin.formver.core.embeddings.asInfo
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
-import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 
-interface InjectionBasedExpEmbedding : DirectResultExpEmbedding {
+interface InjectionBasedExpEmbedding : ExpEmbedding {
     val refsOperation: InjectionImageFunction
     val builtinsOperation
         get() = refsOperation.original
 }
 
-interface BinaryOperatorExpEmbedding : BinaryDirectResultExpEmbedding, InjectionBasedExpEmbedding {
-    override fun toViper(ctx: LinearizationContext): Exp {
-        return refsOperation(
-            left.toViper(ctx),
-            right.toViper(ctx),
-            pos = ctx.source.asPosition,
-            info = sourceRole.asInfo
-        )
-    }
-
-    override fun toViperBuiltinType(ctx: LinearizationContext): Exp {
-        return builtinsOperation(
-            left.toViperBuiltinType(ctx),
-            right.toViperBuiltinType(ctx),
-            pos = ctx.source.asPosition,
-            info = sourceRole.asInfo
-        )
-    }
+interface BinaryOperatorExpEmbedding : InjectionBasedExpEmbedding {
+    val left: ExpEmbedding
+    val right: ExpEmbedding
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitBinaryOperatorExpEmbedding(this)
+
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(left, right)
 }
 
-interface UnaryOperatorExpEmbedding : UnaryDirectResultExpEmbedding, InjectionBasedExpEmbedding {
-    override fun toViper(ctx: LinearizationContext) =
-        refsOperation(inner.toViper(ctx), pos = ctx.source.asPosition, info = sourceRole.asInfo)
-
-    override fun toViperBuiltinType(ctx: LinearizationContext) =
-        builtinsOperation(inner.toViperBuiltinType(ctx), pos = ctx.source.asPosition, info = sourceRole.asInfo)
+interface UnaryOperatorExpEmbedding : InjectionBasedExpEmbedding {
+    val inner: ExpEmbedding
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitUnaryOperatorExpEmbedding(this)
+
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(inner)
 }
 
 sealed interface OperatorExpEmbeddingTemplate {

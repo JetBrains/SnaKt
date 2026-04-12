@@ -8,9 +8,8 @@ package org.jetbrains.kotlin.formver.core.linearization
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeBuilder
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeBuilder
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
@@ -33,6 +32,8 @@ enum class LogicOperatorPolicy {
  * of statements. We call this process linearization.
  */
 interface LinearizationContext {
+    // TODO: Move position tracking out of LinearizationContext and into LinearizationVisitor,
+    //  passing Position explicitly to ctx methods that need it.
     val source: KtSourceElement?
     val logicOperatorPolicy: LogicOperatorPolicy
 
@@ -43,19 +44,18 @@ interface LinearizationContext {
 
     fun addStatement(buildStmt: LinearizationContext.() -> Stmt)
     fun addDeclaration(decl: Declaration)
-    fun store(lhs: VariableEmbedding, rhs: ExpEmbedding)
-    fun addReturn(returnExp: ExpEmbedding, target: ReturnTarget)
+    fun store(lhs: VariableEmbedding, rhs: Linearizable)
+    fun addReturn(returnExp: Linearizable, target: ReturnTarget)
     fun addBranch(
-        condition: ExpEmbedding,
-        thenBranch: ExpEmbedding,
-        elseBranch: ExpEmbedding,
-        type: TypeEmbedding,
+        condition: Linearizable,
+        thenBranch: Linearizable,
+        elseBranch: Linearizable,
         result: VariableEmbedding?
     )
 
-    fun addFieldAccess(access: FieldAccess): Exp
+    fun addFieldAccess(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding): Exp
 
-    fun addFieldAccessStoringIn(access: FieldAccess, result: VariableEmbedding)
+    fun addFieldAccessStoringIn(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding, result: VariableEmbedding)
 
     fun addModifier(mod: StmtModifier)
 

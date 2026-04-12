@@ -74,16 +74,20 @@ interface StmtConversionContext : MethodConversionContext {
 
 fun StmtConversionContext.declareLocalProperty(symbol: FirPropertySymbol, initializer: ExpEmbedding?): Declare {
     registerLocalProperty(symbol)
-    return Declare(embedLocalProperty(symbol), initializer)
+    val variable = embedLocalProperty(symbol)
+    return Declare(variable, initializer?.withType(variable.type))
 }
 
 fun StmtConversionContext.declareLocalVariable(symbol: FirVariableSymbol<*>, initializer: ExpEmbedding?): Declare {
     registerLocalVariable(symbol)
-    return Declare(embedLocalVariable(symbol), initializer)
+    val variable = embedLocalVariable(symbol)
+    return Declare(variable, initializer?.withType(variable.type))
 }
 
-fun StmtConversionContext.declareAnonVar(type: TypeEmbedding, initializer: ExpEmbedding?): Declare =
-    Declare(freshAnonVar(type), initializer)
+fun StmtConversionContext.declareAnonVar(type: TypeEmbedding, initializer: ExpEmbedding?): Declare {
+    val variable = freshAnonVar(type)
+    return Declare(variable, initializer?.withType(variable.type))
+}
 
 
 val FirIntersectionOverridePropertySymbol.propertyIntersections
@@ -247,10 +251,10 @@ fun StmtConversionContext.convertMethodWithBody(
     val bodyExp = FunctionExp(signature, body, returnTarget.label)
     val seqnBuilder = SeqnBuilder(declaration.source)
     val linearizer = Linearizer(SharedLinearizationState(anonVarProducer), seqnBuilder, declaration.source)
-    bodyExp.toViperUnusedResult(linearizer)
+    bodyExp.toLinearizable(declaration.source).toViperUnusedResult(linearizer)
     // note: we must guarantee somewhere that returned value is Unit
     // as we may not encounter any `return` statement in the body
-    returnTarget.variable.withIsUnitInvariantIfUnit().toViperUnusedResult(linearizer)
+    returnTarget.variable.withIsUnitInvariantIfUnit().toLinearizable(declaration.source).toViperUnusedResult(linearizer)
     val isValid = body.checkValidity(declaration.source, errorCollector)
     return if (isValid) {
         FunctionBodyEmbedding(seqnBuilder.block, returnTarget, bodyExp)
@@ -276,7 +280,7 @@ fun StmtConversionContext.convertFunctionWithBody(
         SharedLinearizationState(anonVarProducer),
         SsaConverter(declaration.source),
     )
-    body.toViperUnusedResult(pureFunBodyLinearizer)
+    body.toLinearizable(declaration.source).toViperUnusedResult(pureFunBodyLinearizer)
     return pureFunBodyLinearizer.constructExpression()
 }
 

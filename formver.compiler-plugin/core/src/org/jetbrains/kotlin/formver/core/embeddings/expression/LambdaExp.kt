@@ -13,26 +13,19 @@ import org.jetbrains.kotlin.formver.core.conversion.insertInlineFunctionCall
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.callables.CallableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
-import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.PlaintextLeaf
-import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.TreeView
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.asTypeEmbedding
-import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
-import org.jetbrains.kotlin.formver.viper.NameResolver
 
 class LambdaExp(
     val signature: FunctionSignature,
     val function: FirAnonymousFunction,
     private val parentCtx: MethodConversionContext,
     override val labelName: String,
-) : CallableEmbedding, StoredResultExpEmbedding,
+) : CallableEmbedding,
+    ExpEmbedding,
     FunctionSignature by signature {
     override val type: TypeEmbedding
         get() = callableType.asTypeEmbedding()
-
-    override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-        TODO("create new function object with counter, duplicable (requires toViper restructuring)")
-    }
 
     override fun insertCall(
         args: List<ExpEmbedding>,
@@ -52,10 +45,6 @@ class LambdaExp(
             parentCtx,
         )
     }
-
-    context(nameResolver: NameResolver)
-    override val debugTreeView: TreeView
-        get() = PlaintextLeaf("Lambda")
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitLambdaExp(this)
 }
