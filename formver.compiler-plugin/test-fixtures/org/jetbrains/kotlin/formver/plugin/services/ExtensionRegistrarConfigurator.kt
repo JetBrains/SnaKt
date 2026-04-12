@@ -48,7 +48,7 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
         val uniquenessOnly = UNIQUE_CHECK_ONLY in module.directives
         val dumpUniquenessCFG = DUMP_UNIQUENESS_CFG in module.directives
         val verificationSelection = when {
-            conversionOnly -> TargetsSelection.NO_TARGETS
+            conversionOnly -> TargetsSelection.FORCE_DISABLE
             ALWAYS_VALIDATE in module.directives -> TargetsSelection.ALL_TARGETS
             uniquenessOnly -> TargetsSelection.NO_TARGETS
             else -> TargetsSelection.TARGETS_WITH_CONTRACT

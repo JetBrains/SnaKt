@@ -6,7 +6,7 @@
 package org.jetbrains.kotlin.formver.common
 
 enum class TargetsSelection {
-    NO_TARGETS, TARGETS_WITH_CONTRACT, ALL_TARGETS;
+    FORCE_DISABLE, NO_TARGETS, TARGETS_WITH_CONTRACT, ALL_TARGETS;
 
 
     companion object {
