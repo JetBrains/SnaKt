@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldModification
 import org.jetbrains.kotlin.formver.core.embeddings.expression.withInvariants
+import org.jetbrains.kotlin.formver.core.embeddings.expression.withType
 
 class BackingFieldGetter(val field: FieldEmbedding) : GetterEmbedding {
     override fun getValue(receiver: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding {
@@ -26,6 +27,6 @@ class BackingFieldGetter(val field: FieldEmbedding) : GetterEmbedding {
 
 class BackingFieldSetter(val field: FieldEmbedding) : SetterEmbedding {
     override fun setValue(receiver: ExpEmbedding, value: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding =
-        FieldModification(receiver, field, value)
+        FieldModification(receiver, field, value.withType(field.type))
 }
 

@@ -14,9 +14,6 @@ import org.jetbrains.kotlin.formver.core.domains.viperType
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
 import org.jetbrains.kotlin.formver.core.embeddings.asInfo
-import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.NamedBranchingNode
-import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.PlaintextLeaf
-import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.TreeView
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyAccessEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.fillHoles
@@ -25,10 +22,8 @@ import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
 import org.jetbrains.kotlin.formver.core.names.AnonymousBuiltinName
 import org.jetbrains.kotlin.formver.core.names.AnonymousName
 import org.jetbrains.kotlin.formver.core.names.FunctionResultVariableName
-import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
-import org.jetbrains.kotlin.formver.viper.mangled
 
 /**
  * Embedding of a variable.
@@ -37,7 +32,7 @@ import org.jetbrains.kotlin.formver.viper.mangled
  *               expect a VariableEmbedding and on the ExpEmbedding level it behaves similar enough to a general VariableEmbedding.
  *               In Viper however, this special case is not treated as a variable, which is why there is a case distinction in .toViper().
  */
-sealed interface VariableEmbedding : NullaryDirectResultExpEmbedding, PropertyAccessEmbedding {
+sealed interface VariableEmbedding : ExpEmbedding, PropertyAccessEmbedding {
     val name: SymbolicName
     override val type: TypeEmbedding
     val isUnique: Boolean
@@ -57,7 +52,7 @@ sealed interface VariableEmbedding : NullaryDirectResultExpEmbedding, PropertyAc
         trafos: Trafos = Trafos.NoTrafos,
     ): Exp.LocalVar = Exp.LocalVar(name, Type.Ref, pos, info, trafos)
 
-    override fun toViper(ctx: LinearizationContext): Exp = when (name) {
+    fun toViperExp(ctx: LinearizationContext): Exp = when (name) {
         is FunctionResultVariableName -> Exp.Result(Type.Ref, ctx.source.asPosition, sourceRole.asInfo)
         else -> Exp.LocalVar(ctx.resolveVariableName(name), Type.Ref, ctx.source.asPosition, sourceRole.asInfo)
     }
@@ -66,7 +61,7 @@ sealed interface VariableEmbedding : NullaryDirectResultExpEmbedding, PropertyAc
         get() = true
 
     override fun getValue(ctx: StmtConversionContext): ExpEmbedding = this
-    override fun setValue(value: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding = Assign(this, value)
+    override fun setValue(value: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding = Assign(this, value.withType(type))
 
     fun pureInvariants(): List<ExpEmbedding> = type.pureInvariants().fillHoles(this)
     fun provenInvariants(): List<ExpEmbedding> = listOf(type.subTypeInvariant().fillHole(this))
@@ -75,10 +70,6 @@ sealed interface VariableEmbedding : NullaryDirectResultExpEmbedding, PropertyAc
     fun uniquePredicateAccessInvariant() = type.uniquePredicateAccessInvariant()?.fillHole(this)
 
     fun allAccessInvariants() = accessInvariants() + listOfNotNull(sharedPredicateAccessInvariant())
-
-    context(nameResolver: NameResolver)
-    override val debugTreeView: TreeView
-        get() = NamedBranchingNode("Var", PlaintextLeaf(name.mangled))
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitVariableEmbedding(this)
 }
@@ -104,7 +95,7 @@ class AnonymousVariableEmbedding(n: Int, override val type: TypeEmbedding) : Var
 class AnonymousBuiltinVariableEmbedding(n: Int, override val type: TypeEmbedding) : VariableEmbedding {
     override val name: SymbolicName = AnonymousBuiltinName(n)
     private val injection: Injection? = type.injectionOrNull
-    override fun toViper(ctx: LinearizationContext): Exp {
+    override fun toViperExp(ctx: LinearizationContext): Exp {
         val inner = Exp.LocalVar(name, injection.viperType, ctx.source.asPosition, sourceRole.asInfo)
         return injection?.let { it.toRef(inner) } ?: inner
     }

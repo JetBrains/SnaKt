@@ -14,7 +14,6 @@ method f$directReturns$TF$T$Boolean$T$Unit(p$b: Ref) returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   if (df$rt$boolFromRef(p$b)) {
-    ret$0 := df$rt$unitValue()
     goto lbl$ret$0
   } else {
     var anon$0: Ref
@@ -23,7 +22,6 @@ method f$directReturns$TF$T$Boolean$T$Unit(p$b: Ref) returns (ret$0: Ref)
     anon$0 := anon$1
     inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$boolType())
     if (df$rt$boolFromRef(anon$0)) {
-      ret$0 := df$rt$unitValue()
       goto lbl$ret$0
     }
   }
