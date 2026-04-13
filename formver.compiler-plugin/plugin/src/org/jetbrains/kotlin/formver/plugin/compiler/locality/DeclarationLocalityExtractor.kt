@@ -36,26 +36,21 @@ abstract class DeclarationLocalityExtractor {
         }
 }
 
+private fun FirControlFlowGraphOwner.declares(property: FirProperty): Boolean =
+    controlFlowGraphReference?.controlFlowGraph?.nodes?.any { node ->
+        node is VariableDeclarationNode && node.fir == property
+    } ?: false
+
 @OptIn(SymbolInternals::class)
 context(context: CheckerContext)
-private fun FirProperty.resolveOwner(): FirDeclaration? {
-    return context.containingDeclarations.reversed()
-        .filter { declarationSymbol ->
-            val declaration = declarationSymbol.fir
-
-            if (declaration is FirControlFlowGraphOwner) {
-                declaration.controlFlowGraphReference?.controlFlowGraph?.nodes?.any { node ->
-                    node is VariableDeclarationNode && node.fir == this
-                } ?: false
-            } else {
-                false
-            }
+private fun FirProperty.resolveOwner(): FirDeclaration? =
+    context.containingDeclarations
+        .asReversed()
+        .firstOrNull { declarationSymbol ->
+            val declaration = declarationSymbol.fir as? FirControlFlowGraphOwner ?: return@firstOrNull false
+            declaration.declares(this)
         }
-        .map {
-            it.fir
-        }
-        .first()
-}
+        ?.fir
 
 private class UseLocalityExtractor : DeclarationLocalityExtractor() {
     @OptIn(SymbolInternals::class)
