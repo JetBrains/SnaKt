@@ -111,6 +111,12 @@ data class PureFunBodyLinearizer(
         ssaConverter.addAssignment(result.name, primitiveAccess, accessInvariants)
     }
 
+    override fun addFunctionCall(call: FunctionCall): Exp {
+        val result = freshAnonVar(call.type)
+        ssaConverter.addAssignment(result.toLocalVarDecl().name, call.toFuncApp(this))
+        return result.toViper(this)
+    }
+
     override fun addFieldAccess(access: FieldAccess): Exp {
         val result = freshAnonVar(access.field.type)
         addFieldAccessStoringIn(access, result)

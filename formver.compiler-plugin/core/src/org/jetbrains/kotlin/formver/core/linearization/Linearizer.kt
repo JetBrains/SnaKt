@@ -130,6 +130,8 @@ data class Linearizer(
         }
     }
 
+    override fun addFunctionCall(call: FunctionCall): Exp = call.toFuncApp(this)
+
     private fun Sequence<ClassTypeEmbedding>?.unfoldHierarchyPath(
         receiverWrapper: ExpEmbedding,
         ctx: LinearizationContext

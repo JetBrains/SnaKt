@@ -184,3 +184,314 @@ function f$isLocallyValidBST$TF$T$TreeNode$T$Boolean(p$node: Ref): Ref
                             anon$7$0)) in
                           sp$andBools(l0$leftValid$0, l0$rightValid$0)))))))))))))
 }
+
+/heap_dependent_specifications.kt:(1405,1413): info: Generated Viper text for testNode:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$testNode$TF$T$Node$T$Node$T$Int(p$nodeLeft: Ref, p$nodeRight: Ref): Ref
+  requires acc(p$c$Node$shared(p$nodeLeft), wildcard)
+  requires acc(p$c$Node$shared(p$nodeRight), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$nodeLeft), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$nodeRight), df$rt$c$Node())
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let l0$node$0 ==
+    (p$nodeLeft) in
+    (let anon$0$0 ==
+      ((unfolding acc(p$c$Node$shared(p$nodeLeft), wildcard) in
+        p$nodeLeft.bf$next)) in
+      (let anon$1$0 ==
+        ((!(anon$0$0 == df$rt$nullValue()) ?
+          (unfolding acc(p$c$Node$shared(p$nodeLeft), wildcard) in
+            p$nodeLeft.bf$next) :
+          null)) in
+        (let l0$node$1 ==
+          ((!(anon$0$0 == df$rt$nullValue()) ? anon$1$0 : null)) in
+          (let anon$2$0 ==
+            ((!!(anon$0$0 == df$rt$nullValue()) ?
+              (unfolding acc(p$c$Node$shared(p$nodeRight), wildcard) in
+                p$nodeRight.bf$next) :
+              null)) in
+            (let anon$3$0 ==
+              ((!(anon$2$0 == df$rt$nullValue()) &&
+              !!(anon$0$0 == df$rt$nullValue()) ?
+                (unfolding acc(p$c$Node$shared(p$nodeRight), wildcard) in
+                  p$nodeRight.bf$next) :
+                null)) in
+              (let l0$node$2 ==
+                ((!(anon$2$0 == df$rt$nullValue()) &&
+                !!(anon$0$0 == df$rt$nullValue()) ?
+                  anon$3$0 :
+                  null)) in
+                (let l0$node$3 ==
+                  ((!(anon$2$0 == df$rt$nullValue()) ?
+                    l0$node$2 :
+                    l0$node$0)) in
+                  (let l0$node$4 ==
+                    ((!(anon$0$0 == df$rt$nullValue()) ?
+                      l0$node$1 :
+                      l0$node$3)) in
+                    (let anon$4$0 ==
+                      ((true && !!(anon$2$0 == df$rt$nullValue()) &&
+                      !!(anon$0$0 == df$rt$nullValue()) ?
+                        (unfolding acc(p$c$Node$shared(l0$node$4), wildcard) in
+                          l0$node$4.bf$value) :
+                        (true && !(anon$2$0 == df$rt$nullValue()) &&
+                        !!(anon$0$0 == df$rt$nullValue()) ?
+                          (unfolding acc(p$c$Node$shared(p$nodeRight), wildcard) in
+                            (unfolding acc(p$c$Node$shared(l0$node$4), wildcard) in
+                              l0$node$4.bf$value)) :
+                          (true && !(anon$0$0 == df$rt$nullValue()) ?
+                            (unfolding acc(p$c$Node$shared(p$nodeLeft), wildcard) in
+                              (unfolding acc(p$c$Node$shared(l0$node$4), wildcard) in
+                                l0$node$4.bf$value)) :
+                            null)))) in
+                      anon$4$0))))))))))
+}
+
+/heap_dependent_specifications.kt:(1666,1688): info: Generated Viper text for testSequentialBranches:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$testSequentialBranches$TF$T$Node$T$Node$T$Int(p$nodeA: Ref, p$nodeB: Ref): Ref
+  requires acc(p$c$Node$shared(p$nodeA), wildcard)
+  requires acc(p$c$Node$shared(p$nodeB), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$nodeA), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$nodeB), df$rt$c$Node())
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let l0$node$0 ==
+    (p$nodeA) in
+    (let anon$0$0 ==
+      ((unfolding acc(p$c$Node$shared(p$nodeA), wildcard) in
+        p$nodeA.bf$value)) in
+      (let l0$node$1 ==
+        ((df$rt$intFromRef(anon$0$0) > 0 ? p$nodeB : null)) in
+        (let l0$node$2 ==
+          ((df$rt$intFromRef(anon$0$0) > 0 ? l0$node$1 : l0$node$0)) in
+          (let anon$1$0 ==
+            ((true && !(df$rt$intFromRef(anon$0$0) > 0) ?
+              (unfolding acc(p$c$Node$shared(l0$node$2), wildcard) in
+                l0$node$2.bf$next) :
+              (true && df$rt$intFromRef(anon$0$0) > 0 ?
+                (unfolding acc(p$c$Node$shared(l0$node$2), wildcard) in
+                  l0$node$2.bf$next) :
+                null))) in
+            (let l0$node$3 ==
+              ((!(anon$1$0 == df$rt$nullValue()) ?
+                (df$rt$intFromRef(anon$0$0) > 0 ? l0$node$1 : l0$node$0) :
+                null)) in
+              (let anon$2$0 ==
+                ((!(anon$1$0 == df$rt$nullValue()) ?
+                  (true && !(df$rt$intFromRef(anon$0$0) > 0) ?
+                    (unfolding acc(p$c$Node$shared(l0$node$3), wildcard) in
+                      l0$node$3.bf$next) :
+                    (true && df$rt$intFromRef(anon$0$0) > 0 ?
+                      (unfolding acc(p$c$Node$shared(l0$node$3), wildcard) in
+                        l0$node$3.bf$next) :
+                      null)) :
+                  null)) in
+                (let l0$node$4 ==
+                  ((!(anon$1$0 == df$rt$nullValue()) ? anon$2$0 : null)) in
+                  (let l0$node$5 ==
+                    ((df$rt$intFromRef(anon$0$0) > 0 ?
+                      l0$node$1 :
+                      l0$node$0)) in
+                    (let l0$node$6 ==
+                      ((!(anon$1$0 == df$rt$nullValue()) ?
+                        l0$node$4 :
+                        l0$node$5)) in
+                      (let anon$3$0 ==
+                        ((true && !(df$rt$intFromRef(anon$0$0) > 0) &&
+                        !!(anon$1$0 == df$rt$nullValue()) ?
+                          (unfolding acc(p$c$Node$shared(l0$node$6), wildcard) in
+                            l0$node$6.bf$value) :
+                          (true && df$rt$intFromRef(anon$0$0) > 0 &&
+                          !!(anon$1$0 == df$rt$nullValue()) ?
+                            (unfolding acc(p$c$Node$shared(l0$node$6), wildcard) in
+                              l0$node$6.bf$value) :
+                            (true && !(df$rt$intFromRef(anon$0$0) > 0) &&
+                            !(anon$1$0 == df$rt$nullValue()) ?
+                              (unfolding acc(p$c$Node$shared(l0$node$3), wildcard) in
+                                (unfolding acc(p$c$Node$shared(l0$node$6), wildcard) in
+                                  l0$node$6.bf$value)) :
+                              (true && df$rt$intFromRef(anon$0$0) > 0 &&
+                              !(anon$1$0 == df$rt$nullValue()) ?
+                                (unfolding acc(p$c$Node$shared(l0$node$3), wildcard) in
+                                  (unfolding acc(p$c$Node$shared(l0$node$6), wildcard) in
+                                    l0$node$6.bf$value)) :
+                                null))))) in
+                        anon$3$0)))))))))))
+}
+
+/heap_dependent_specifications.kt:(1906,1926): info: Generated Viper text for testNestedConditions:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$testNestedConditions$TF$T$Node$T$Node$T$Int(p$nodeA: Ref, p$nodeB: Ref): Ref
+  requires acc(p$c$Node$shared(p$nodeA), wildcard)
+  requires acc(p$c$Node$shared(p$nodeB), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$nodeA), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$nodeB), df$rt$c$Node())
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let l0$node$0 ==
+    (p$nodeA) in
+    (let anon$0$0 ==
+      ((unfolding acc(p$c$Node$shared(p$nodeA), wildcard) in
+        p$nodeA.bf$next)) in
+      (let anon$2$0 ==
+        ((!(anon$0$0 == df$rt$nullValue()) ?
+          (unfolding acc(p$c$Node$shared(p$nodeA), wildcard) in
+            p$nodeA.bf$next) :
+          null)) in
+        (let anon$1$0 ==
+          ((!(anon$0$0 == df$rt$nullValue()) ?
+            (unfolding acc(p$c$Node$shared(p$nodeA), wildcard) in
+              (unfolding acc(p$c$Node$shared(anon$2$0), wildcard) in
+                anon$2$0.bf$next)) :
+            null)) in
+          (let anon$4$0 ==
+            ((!(anon$1$0 == df$rt$nullValue()) &&
+            !(anon$0$0 == df$rt$nullValue()) ?
+              (unfolding acc(p$c$Node$shared(p$nodeA), wildcard) in
+                p$nodeA.bf$next) :
+              null)) in
+            (let anon$3$0 ==
+              ((!(anon$1$0 == df$rt$nullValue()) &&
+              !(anon$0$0 == df$rt$nullValue()) ?
+                (unfolding acc(p$c$Node$shared(p$nodeA), wildcard) in
+                  (unfolding acc(p$c$Node$shared(anon$4$0), wildcard) in
+                    anon$4$0.bf$next)) :
+                null)) in
+              (let l0$node$1 ==
+                ((!(anon$1$0 == df$rt$nullValue()) &&
+                !(anon$0$0 == df$rt$nullValue()) ?
+                  anon$3$0 :
+                  null)) in
+                (let l0$node$2 ==
+                  ((!!(anon$1$0 == df$rt$nullValue()) &&
+                  !(anon$0$0 == df$rt$nullValue()) ?
+                    p$nodeB :
+                    null)) in
+                  (let anon$5$0 ==
+                    ((!!(anon$0$0 == df$rt$nullValue()) ?
+                      (unfolding acc(p$c$Node$shared(p$nodeB), wildcard) in
+                        p$nodeB.bf$next) :
+                      null)) in
+                    (let anon$6$0 ==
+                      ((!(anon$5$0 == df$rt$nullValue()) &&
+                      !!(anon$0$0 == df$rt$nullValue()) ?
+                        (unfolding acc(p$c$Node$shared(p$nodeB), wildcard) in
+                          p$nodeB.bf$next) :
+                        null)) in
+                      (let l0$node$3 ==
+                        ((!(anon$5$0 == df$rt$nullValue()) &&
+                        !!(anon$0$0 == df$rt$nullValue()) ?
+                          anon$6$0 :
+                          null)) in
+                        (let l0$node$4 ==
+                          ((!(anon$1$0 == df$rt$nullValue()) ?
+                            l0$node$1 :
+                            l0$node$2)) in
+                          (let l0$node$5 ==
+                            ((!(anon$5$0 == df$rt$nullValue()) ?
+                              l0$node$3 :
+                              l0$node$0)) in
+                            (let l0$node$6 ==
+                              ((!(anon$0$0 == df$rt$nullValue()) ?
+                                l0$node$4 :
+                                l0$node$5)) in
+                              (let anon$7$0 ==
+                                ((true && !!(anon$5$0 == df$rt$nullValue()) &&
+                                !!(anon$0$0 == df$rt$nullValue()) ?
+                                  (unfolding acc(p$c$Node$shared(l0$node$6), wildcard) in
+                                    l0$node$6.bf$value) :
+                                  (true && !(anon$5$0 == df$rt$nullValue()) &&
+                                  !!(anon$0$0 == df$rt$nullValue()) ?
+                                    (unfolding acc(p$c$Node$shared(p$nodeB), wildcard) in
+                                      (unfolding acc(p$c$Node$shared(l0$node$6), wildcard) in
+                                        l0$node$6.bf$value)) :
+                                    (true &&
+                                    !!(anon$1$0 == df$rt$nullValue()) &&
+                                    !(anon$0$0 == df$rt$nullValue()) ?
+                                      (unfolding acc(p$c$Node$shared(l0$node$6), wildcard) in
+                                        l0$node$6.bf$value) :
+                                      (true &&
+                                      !(anon$1$0 == df$rt$nullValue()) &&
+                                      !(anon$0$0 == df$rt$nullValue()) ?
+                                        (unfolding acc(p$c$Node$shared(p$nodeA), wildcard) in
+                                          (unfolding acc(p$c$Node$shared(anon$4$0), wildcard) in
+                                            (unfolding acc(p$c$Node$shared(l0$node$6), wildcard) in
+                                              l0$node$6.bf$value))) :
+                                        null))))) in
+                                anon$7$0)))))))))))))))
+}
+
+/heap_dependent_specifications.kt:(2280,2300): info: Generated Viper text for testMultipleVarMerge:
+field bf$next: Ref
+
+field bf$value: Ref
+
+function f$testMultipleVarMerge$TF$T$Node$T$Node$T$Int(p$left: Ref, p$right: Ref): Ref
+  requires acc(p$c$Node$shared(p$left), wildcard)
+  requires acc(p$c$Node$shared(p$right), wildcard)
+  requires df$rt$isSubtype(df$rt$typeOf(p$left), df$rt$c$Node())
+  requires df$rt$isSubtype(df$rt$typeOf(p$right), df$rt$c$Node())
+  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+{
+  (let l0$n1$0 ==
+    (p$left) in
+    (let l0$n2$0 ==
+      (p$right) in
+      (let anon$0$0 ==
+        ((unfolding acc(p$c$Node$shared(p$left), wildcard) in
+          p$left.bf$value)) in
+        (let anon$1$0 ==
+          ((unfolding acc(p$c$Node$shared(p$right), wildcard) in
+            p$right.bf$value)) in
+          (let l0$n1$1 ==
+            ((df$rt$intFromRef(anon$0$0) > df$rt$intFromRef(anon$1$0) ?
+              p$right :
+              null)) in
+            (let l0$n2$1 ==
+              ((df$rt$intFromRef(anon$0$0) > df$rt$intFromRef(anon$1$0) ?
+                p$left :
+                null)) in
+              (let l0$n1$2 ==
+                ((df$rt$intFromRef(anon$0$0) > df$rt$intFromRef(anon$1$0) ?
+                  l0$n1$1 :
+                  l0$n1$0)) in
+                (let anon$2$0 ==
+                  ((true &&
+                  !(df$rt$intFromRef(anon$0$0) > df$rt$intFromRef(anon$1$0)) ?
+                    (unfolding acc(p$c$Node$shared(l0$n1$2), wildcard) in
+                      l0$n1$2.bf$value) :
+                    (true &&
+                    df$rt$intFromRef(anon$0$0) > df$rt$intFromRef(anon$1$0) ?
+                      (unfolding acc(p$c$Node$shared(l0$n1$2), wildcard) in
+                        l0$n1$2.bf$value) :
+                      null))) in
+                  (let l0$n2$2 ==
+                    ((df$rt$intFromRef(anon$0$0) >
+                    df$rt$intFromRef(anon$1$0) ?
+                      l0$n2$1 :
+                      l0$n2$0)) in
+                    (let anon$3$0 ==
+                      ((true &&
+                      !(df$rt$intFromRef(anon$0$0) >
+                      df$rt$intFromRef(anon$1$0)) ?
+                        (unfolding acc(p$c$Node$shared(l0$n2$2), wildcard) in
+                          l0$n2$2.bf$value) :
+                        (true &&
+                        df$rt$intFromRef(anon$0$0) >
+                        df$rt$intFromRef(anon$1$0) ?
+                          (unfolding acc(p$c$Node$shared(l0$n2$2), wildcard) in
+                            l0$n2$2.bf$value) :
+                          null))) in
+                      sp$plusInts(anon$2$0, anon$3$0)))))))))))
+}

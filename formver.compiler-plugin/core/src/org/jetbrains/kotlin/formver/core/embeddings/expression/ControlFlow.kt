@@ -224,13 +224,15 @@ data class FunctionCall(val function: NamedFunctionSignature, val args: List<Exp
     override val subexpressions: List<ExpEmbedding>
         get() = args
 
-    override fun toViper(ctx: LinearizationContext): Exp = function.toFuncApp(
-        args.map { it.toViper(ctx) },
-        ctx.source.asPosition
-    )
+    override fun toViper(ctx: LinearizationContext): Exp = ctx.addFunctionCall(this)
 
     override fun <R> accept(v: ExpVisitor<R>): R =
         v.visitFunctionCall(this)
+
+    fun toFuncApp(ctx: LinearizationContext): Exp = function.toFuncApp(
+        args.map { it.toViper(ctx) },
+        ctx.source.asPosition
+    )
 }
 
 /**
