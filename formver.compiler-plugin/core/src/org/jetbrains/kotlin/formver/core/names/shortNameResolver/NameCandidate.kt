@@ -12,8 +12,10 @@ import org.jetbrains.kotlin.formver.viper.ast.QualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.viper.ast.UnqualifiedDomainFuncName
 
 
-private fun nameOnlyCandidates(name: Any): List<CandidateName> = buildCandidates { candidate { +name } }
-private fun nameWithPrefixAndSuffixCandidates(name: Any, nameType: NameType, suffix: String): List<CandidateName> =
+private fun nameOnlyCandidates(name: String): List<CandidateName> = buildCandidates { candidate { +name } }
+private fun nameOnlyCandidates(name: List<String>): List<CandidateName> = buildCandidates { candidate { +name } }
+
+private fun nameWithPrefixAndSuffixCandidates(name: String, nameType: NameType, suffix: String): List<CandidateName> =
     buildCandidates {
         candidate {
             +name
@@ -29,7 +31,7 @@ private fun nameWithPrefixAndSuffixCandidates(name: Any, nameType: NameType, suf
         }
     }
 
-private fun nameWithPrefixCandidates(name: Any, nameType: NameType): List<CandidateName> = buildCandidates {
+private fun nameWithPrefixCandidates(name: String, nameType: NameType): List<CandidateName> = buildCandidates {
     candidate {
         +name
     }
@@ -39,7 +41,8 @@ private fun nameWithPrefixCandidates(name: Any, nameType: NameType): List<Candid
     }
 }
 
-private fun nameWithDependentPrefixCandidates(name: Any, prefix: NamedEntity): List<CandidateName> = buildCandidates {
+private fun nameWithDependentPrefixCandidates(name: String, prefix: NamedEntity): List<CandidateName> =
+    buildCandidates {
     candidate { +name }
     candidate {
         +prefix
@@ -47,15 +50,12 @@ private fun nameWithDependentPrefixCandidates(name: Any, prefix: NamedEntity): L
     }
 }
 
-private fun candidatesWithScope(name: Any, scope: NameScope, nameType: NameType? = null): List<CandidateName> =
+private fun nameWithDependentPrefixCandidates(name: NamedEntity, prefix: NamedEntity): List<CandidateName> =
     buildCandidates {
-        +nameWithDependentPrefixCandidates(name, scope)
-        if (nameType != null) {
-            candidate {
-                +nameType
-                +scope
-                +name
-            }
+        candidate { +name }
+        candidate {
+            +prefix
+            +name
         }
     }
 
@@ -94,7 +94,16 @@ fun NameScope.candidates(): List<CandidateName> = when (this) {
 fun SymbolicName.candidates(): List<CandidateName> = when (this) {
     is FreshName -> candidates()
     is KotlinName -> candidates()
-    is ScopedName -> candidatesWithScope(name, scope, nameType)
+    is ScopedName -> buildCandidates {
+        +nameWithDependentPrefixCandidates(name, scope)
+        if (nameType != null) {
+            candidate {
+                +nameType
+                +scope
+                +name
+            }
+        }
+    }
     is DomainName -> nameWithPrefixCandidates(baseName, nameType)
     is NamedDomainAxiomLabel -> nameWithDependentPrefixCandidates(baseName, domainName)
     is QualifiedDomainFuncName -> buildCandidates {
@@ -113,7 +122,15 @@ fun SymbolicName.candidates(): List<CandidateName> = when (this) {
     }
 
     is UnqualifiedDomainFuncName -> nameOnlyCandidates(baseName)
-    is ListOfNames<*> -> nameWithPrefixCandidates(names, nameType)
+    is ListOfNames<*> -> buildCandidates {
+        candidate {
+            +names
+        }
+        candidate {
+            +nameType
+            +names
+        }
+    }
     is NameOfType -> candidates()
     else -> throw SnaktInternalException(null, "Unexpected name type: ${this::class.simpleName}")
 }
@@ -148,7 +165,20 @@ fun FreshName.candidates(): List<CandidateName> = when (this) {
 
     is PlaceholderArgumentName -> nameWithPrefixAndSuffixCandidates("arg", nameType, n.toString())
     is ReturnVariableName -> nameWithPrefixAndSuffixCandidates("ret", nameType, n.toString())
-    is SsaVariableName -> nameWithPrefixAndSuffixCandidates(baseName, nameType, n.toString())
+    is SsaVariableName -> buildCandidates {
+        candidate {
+            +baseName
+        }
+        candidate {
+            +baseName
+            +n.toString()
+        }
+        candidate {
+            +nameType
+            +baseName
+            +n.toString()
+        }
+    }
     is PredicateName -> nameWithPrefixCandidates(name, nameType)
     DispatchReceiverName -> nameWithPrefixCandidates("this", nameType)
     is DomainAssociatedFuncName -> nameWithPrefixCandidates(name, nameType)
@@ -170,7 +200,20 @@ fun FreshName.candidates(): List<CandidateName> = when (this) {
 
 
 fun KotlinName.candidates(): List<CandidateName> = when (this) {
-    is ClassKotlinName -> nameWithPrefixCandidates(name.asString().split("."), nameType)
+    is ClassKotlinName -> buildCandidates {
+        // Inner classes get a name separated with "."
+        // This will break the generated viper program
+        // Since at the moment we do not support inner classes, this is not an issue.
+        val className = name.asString()
+        candidate {
+            +className
+        }
+        candidate {
+            +nameType
+            +className
+        }
+    }
+
     is ConstructorKotlinName -> buildCandidates {
         candidate {
             +nameType
