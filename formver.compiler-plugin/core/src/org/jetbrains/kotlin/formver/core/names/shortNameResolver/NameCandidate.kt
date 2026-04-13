@@ -52,8 +52,8 @@ private fun candidatesWithScope(name: Any, scope: NameScope, nameType: NameType?
         +nameWithDependentPrefixCandidates(name, scope)
         if (nameType != null) {
             candidate {
-                +scope
                 +nameType
+                +scope
                 +name
             }
         }
@@ -119,8 +119,22 @@ fun SymbolicName.candidates(): List<CandidateName> = when (this) {
 }
 
 fun FreshName.candidates(): List<CandidateName> = when (this) {
-    is AnonymousBuiltinName -> nameWithPrefixAndSuffixCandidates("anon", nameType, "builtin")
-    is AnonymousName -> nameWithPrefixCandidates("anon", nameType)
+    is AnonymousBuiltinName -> buildCandidates {
+        candidate {
+            +"anon"
+        }
+        candidate {
+            +"anon"
+            +"builtin"
+        }
+        candidate {
+            +"anon"
+            +"builtin"
+            +n.toString()
+        }
+    }
+
+    is AnonymousName -> nameWithPrefixAndSuffixCandidates("anon", nameType, n.toString())
     is LabelName -> {
         val name = when (this@candidates) {
             is BreakLabelName -> "break"
@@ -141,7 +155,15 @@ fun FreshName.candidates(): List<CandidateName> = when (this) {
     is DomainFuncParameterName -> nameWithPrefixCandidates(name, nameType)
     ExtensionReceiverName -> nameWithPrefixCandidates("this", nameType)
     FunctionResultVariableName -> nameWithPrefixCandidates("result", nameType)
-    is HavocName -> nameWithPrefixCandidates(type.name, nameType)
+    is HavocName -> buildCandidates {
+        candidate {
+            +nameType
+        }
+        candidate {
+            +nameType
+            +type.name
+        }
+    }
     PlaceholderReturnVariableName -> nameWithPrefixCandidates("ret", nameType)
     is SpecialFieldName -> nameWithPrefixCandidates(name, nameType)
 }
