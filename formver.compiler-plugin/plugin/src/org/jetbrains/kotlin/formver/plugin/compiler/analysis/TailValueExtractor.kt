@@ -17,9 +17,36 @@ import org.jetbrains.kotlin.fir.expressions.FirWrappedExpression
 import org.jetbrains.kotlin.fir.lastExpression
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 
+/**
+ * Computes symbolic values for an expression at each of its tail position.
+ *
+ * Expressions that do not produce a usable tail value for the analysis return [empty].
+ * By default these include arbitrary FIR elements, function calls, `return`, and `throw`.
+ *
+ * Implementors define the abstract domain [T] by providing:
+ * - [empty], the identity / "no tail value" result
+ * - [join], the way alternative tail paths are merged
+ *
+ * In addition to this, they can also override specific visitor methods when a particular expression kind should
+ * contribute a non-empty result, as [org.jetbrains.kotlin.formver.plugin.compiler.locality.ExpressionLocalityExtractor]
+ * does for variable, property, and receiver accesses.
+ *
+ * [D] is the extra visitor data threaded through the traversal.
+ */
 abstract class TailValueExtractor<T, D> : FirVisitor<T, D>() {
+    /**
+     * Result used when an expression does not produce any relevant value for the tail of the expression.
+     *
+     * This should act as the identity element for [join].
+     */
     abstract val empty: T
 
+    /**
+     * Merges results from alternative value-producing tails.
+     *
+     * Typical examples are the branches of a `when`, the two sides of an Elvis expression, or the `try` block together
+     * with all `catch` blocks.
+     */
     abstract fun T.join(other: T): T
 
     protected fun FirExpression?.visit(data: D): T =
