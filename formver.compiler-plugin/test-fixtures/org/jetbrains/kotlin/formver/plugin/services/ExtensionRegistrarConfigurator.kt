@@ -60,7 +60,9 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
             else -> TargetsSelection.ALL_TARGETS
         }
         val checkUniqueness = uniquenessOnly
-        val checkLocality = localityOnly || checkUniqueness
+        // TODO: Eventually turn on locality checking together with uniqueness checking once the latter will be able to
+        //  leverage locality information.
+        val checkLocality = localityOnly // || checkUniqueness
         val config = PluginConfiguration(
             logLevel,
             errorStyle,
