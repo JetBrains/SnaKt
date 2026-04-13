@@ -87,7 +87,7 @@ data object ParameterScope : NameScope {
 
     context(nameResolver: NameResolver)
     override val mangledScopeName: String
-        get() = "p"
+        get() = "par"
 }
 
 data object BadScope : NameScope {

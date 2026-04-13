@@ -7,23 +7,23 @@ field bf$uniqueVal: Ref
 
 field bf$uniqueVar: Ref
 
-method f$testPrimitiveFieldGetterUnique$TF$T$PrimitiveFields$T$Unit(p$pf: Ref)
+method f$testPrimitiveFieldGetterUnique$t$F$t$PrimitiveFields$t$Unit(par$pf: Ref)
   returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$pf), df$rt$c$PrimitiveFields())
-  requires acc(p$c$PrimitiveFields$unique(p$pf), write)
+  requires df$rt$isSubtype(df$rt$typeOf(par$pf), df$rt$c$PrimitiveFields())
+  requires acc(pred$c$PrimitiveFields$unique(par$pf), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$sharedVal: Ref
   var l0$sharedVar: Ref
   var l0$uniqueVal: Ref
   var l0$uniqueVar: Ref
-  inhale acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
-  unfold acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
-  l0$sharedVal := p$pf.bf$sharedVal
-  l0$sharedVar := havoc$T$Int()
-  unfold acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
-  l0$uniqueVal := p$pf.bf$uniqueVal
-  l0$uniqueVar := havoc$T$Int()
+  inhale acc(pred$c$PrimitiveFields$shared(par$pf), wildcard)
+  unfold acc(pred$c$PrimitiveFields$shared(par$pf), wildcard)
+  l0$sharedVal := par$pf.bf$sharedVal
+  l0$sharedVar := havoc$t$Int()
+  unfold acc(pred$c$PrimitiveFields$shared(par$pf), wildcard)
+  l0$uniqueVal := par$pf.bf$uniqueVal
+  l0$uniqueVar := havoc$t$Int()
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -37,22 +37,22 @@ field bf$uniqueVal: Ref
 
 field bf$uniqueVar: Ref
 
-method f$testPrimitiveFieldGetterShared$TF$T$PrimitiveFields$T$Unit(p$pf: Ref)
+method f$testPrimitiveFieldGetterShared$t$F$t$PrimitiveFields$t$Unit(par$pf: Ref)
   returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$pf), df$rt$c$PrimitiveFields())
+  requires df$rt$isSubtype(df$rt$typeOf(par$pf), df$rt$c$PrimitiveFields())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$sharedVal: Ref
   var l0$sharedVar: Ref
   var l0$uniqueVal: Ref
   var l0$uniqueVar: Ref
-  inhale acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
-  unfold acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
-  l0$sharedVal := p$pf.bf$sharedVal
-  l0$sharedVar := havoc$T$Int()
-  unfold acc(p$c$PrimitiveFields$shared(p$pf), wildcard)
-  l0$uniqueVal := p$pf.bf$uniqueVal
-  l0$uniqueVar := havoc$T$Int()
+  inhale acc(pred$c$PrimitiveFields$shared(par$pf), wildcard)
+  unfold acc(pred$c$PrimitiveFields$shared(par$pf), wildcard)
+  l0$sharedVal := par$pf.bf$sharedVal
+  l0$sharedVar := havoc$t$Int()
+  unfold acc(pred$c$PrimitiveFields$shared(par$pf), wildcard)
+  l0$uniqueVal := par$pf.bf$uniqueVal
+  l0$uniqueVar := havoc$t$Int()
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -66,23 +66,23 @@ field bf$uniqueVal: Ref
 
 field bf$uniqueVar: Ref
 
-method f$testReferenceFieldGetterUnique$TF$T$ReferenceFields$T$Unit(p$rf: Ref)
+method f$testReferenceFieldGetterUnique$t$F$t$ReferenceFields$t$Unit(par$rf: Ref)
   returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$rf), df$rt$c$ReferenceFields())
-  requires acc(p$c$ReferenceFields$unique(p$rf), write)
+  requires df$rt$isSubtype(df$rt$typeOf(par$rf), df$rt$c$ReferenceFields())
+  requires acc(pred$c$ReferenceFields$unique(par$rf), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$sharedVal: Ref
   var l0$sharedVar: Ref
   var l0$uniqueVal: Ref
   var l0$uniqueVar: Ref
-  inhale acc(p$c$ReferenceFields$shared(p$rf), wildcard)
-  unfold acc(p$c$ReferenceFields$shared(p$rf), wildcard)
-  l0$sharedVal := p$rf.bf$sharedVal
-  l0$sharedVar := havoc$T$PrimitiveFields()
-  unfold acc(p$c$ReferenceFields$shared(p$rf), wildcard)
-  l0$uniqueVal := p$rf.bf$uniqueVal
-  l0$uniqueVar := havoc$T$PrimitiveFields()
+  inhale acc(pred$c$ReferenceFields$shared(par$rf), wildcard)
+  unfold acc(pred$c$ReferenceFields$shared(par$rf), wildcard)
+  l0$sharedVal := par$rf.bf$sharedVal
+  l0$sharedVar := havoc$t$PrimitiveFields()
+  unfold acc(pred$c$ReferenceFields$shared(par$rf), wildcard)
+  l0$uniqueVal := par$rf.bf$uniqueVal
+  l0$uniqueVar := havoc$t$PrimitiveFields()
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -96,22 +96,22 @@ field bf$uniqueVal: Ref
 
 field bf$uniqueVar: Ref
 
-method f$testReferenceFieldGetterShared$TF$T$ReferenceFields$T$Unit(p$rf: Ref)
+method f$testReferenceFieldGetterShared$t$F$t$ReferenceFields$t$Unit(par$rf: Ref)
   returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(p$rf), df$rt$c$ReferenceFields())
+  requires df$rt$isSubtype(df$rt$typeOf(par$rf), df$rt$c$ReferenceFields())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$sharedVal: Ref
   var l0$sharedVar: Ref
   var l0$uniqueVal: Ref
   var l0$uniqueVar: Ref
-  inhale acc(p$c$ReferenceFields$shared(p$rf), wildcard)
-  unfold acc(p$c$ReferenceFields$shared(p$rf), wildcard)
-  l0$sharedVal := p$rf.bf$sharedVal
-  l0$sharedVar := havoc$T$PrimitiveFields()
-  unfold acc(p$c$ReferenceFields$shared(p$rf), wildcard)
-  l0$uniqueVal := p$rf.bf$uniqueVal
-  l0$uniqueVar := havoc$T$PrimitiveFields()
+  inhale acc(pred$c$ReferenceFields$shared(par$rf), wildcard)
+  unfold acc(pred$c$ReferenceFields$shared(par$rf), wildcard)
+  l0$sharedVal := par$rf.bf$sharedVal
+  l0$sharedVar := havoc$t$PrimitiveFields()
+  unfold acc(pred$c$ReferenceFields$shared(par$rf), wildcard)
+  l0$uniqueVal := par$rf.bf$uniqueVal
+  l0$uniqueVar := havoc$t$PrimitiveFields()
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
