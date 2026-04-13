@@ -2,16 +2,15 @@ package org.jetbrains.kotlin.formver.plugin.compiler.locality
 
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
-import org.jetbrains.kotlin.formver.plugin.compiler.analysis.SymbolicValue
 
-sealed interface Locality : SymbolicValue<Locality> {
+sealed interface Locality {
     data object Global : Locality
 
     data class Local(
         val owner: FirDeclaration? = null
     ) : Locality
 
-    override fun join(other: Locality): Locality =
+    fun join(other: Locality): Locality =
         when (other) {
             Global -> this
             is Local -> {
@@ -27,8 +26,6 @@ sealed interface Locality : SymbolicValue<Locality> {
                 }
             }
         }
-
-    override fun append(other: Locality): Locality = this
 
     fun accepts(other: Locality): Boolean =
         when (this) {
