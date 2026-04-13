@@ -14,7 +14,18 @@ sealed interface Locality : SymbolicValue<Locality> {
     override fun join(other: Locality): Locality =
         when (other) {
             Global -> this
-            is Local -> other
+            is Local -> {
+                when (this) {
+                    Global -> other
+                    is Local -> {
+                        if (owner == other.owner) {
+                            this
+                        } else {
+                            Local() // Unknown owner
+                        }
+                    }
+                }
+            }
         }
 
     override fun append(other: Locality): Locality = this
