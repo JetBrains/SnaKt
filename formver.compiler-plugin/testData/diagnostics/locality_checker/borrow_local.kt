@@ -10,6 +10,12 @@ fun share(x: A) {}
 
 fun borrowBoth(@Borrowed x: A, @Borrowed y: A) {}
 
+fun shareAndBorrow(x: A, @Borrowed y: A) {}
+
+fun borrowWithDefault(@Borrowed x: A = A()) {}
+
+fun borrowDefaultAndShare(@Borrowed x: A = A(), y: A) {}
+
 fun @receiver:Borrowed A.borrowTarget() {}
 
 fun A.shareTarget() {}
@@ -24,8 +30,16 @@ fun `pass global as borrowed argument`(x: A) {
     borrow(x)
 }
 
+fun `pass global as named borrowed argument`(x: A) {
+    borrow(x=x)
+}
+
 fun `pass local as borrowed argument`(@Borrowed x: A) {
     borrow(x)
+}
+
+fun `pass local as named borrowed argument`(@Borrowed x: A) {
+    borrow(x=x)
 }
 
 fun `assign local to global after passing it as borrowed argument`(@Borrowed x: A) {
@@ -35,6 +49,10 @@ fun `assign local to global after passing it as borrowed argument`(@Borrowed x: 
 
 fun `pass local twice as borrowed arguments`(@Borrowed x: A) {
     borrowBoth(x, x)
+}
+
+fun `pass local twice as named borrowed arguments`(@Borrowed x: A) {
+    borrowBoth(y=x, x=x)
 }
 
 fun `pass local as explicit shared target`(@Borrowed x: A) {
@@ -67,4 +85,12 @@ fun `pass local as borrowed target and argument`(@Borrowed x: A) {
 
 fun `pass global as borrowed target and argument`(x: A) {
     x.borrowTargetAndArg(x)
+}
+
+fun `pass local as named local and global arguments`(@Borrowed x: A) {
+    shareAndBorrow(y = x, x = <!LOCALITY_VIOLATION!>x<!>)
+}
+
+fun `pass local as named local along local default`(@Borrowed x: A) {
+    borrowDefaultAndShare(y = <!LOCALITY_VIOLATION!>x<!>)
 }
