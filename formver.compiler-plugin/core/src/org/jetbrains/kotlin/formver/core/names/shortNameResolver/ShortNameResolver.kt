@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.formver.viper.ast.DomainName
 import org.jetbrains.kotlin.formver.viper.ast.NamedDomainAxiomLabel
 import org.jetbrains.kotlin.formver.viper.ast.QualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.viper.ast.UnqualifiedDomainFuncName
+import org.jetbrains.kotlin.utils.addToStdlib.ifNotEmpty
 import kotlin.math.absoluteValue
 
 /**
@@ -298,6 +299,27 @@ class ShortNameResolver : NameResolver {
     // START MANGLE
 
     /**
+     * The higher the priority, the earlier it is chosen
+     */
+    fun priorityOrder(name: NamedEntity): Int = when (name) {
+        is SymbolicName -> when (name) {
+            is FreshName -> when (name) {
+                is LabelName -> 5
+                else -> 1
+            }
+
+            is KotlinName -> 1
+            is ScopedName -> 2
+            is NameOfType -> 3
+            is DomainName -> 4
+            else -> -1
+        }
+
+        else -> -1
+    }
+
+
+    /**
      * Generates short human-readable names. Must be called before using [lookup].
      */
     override fun resolve() {
@@ -307,7 +329,7 @@ class ShortNameResolver : NameResolver {
         while (collisions.isNotEmpty()) {
             val toResolve = collisions.entries.first().value
 
-            val candidateToMove = toResolve.firstOrNull { canMove(it) }
+            val candidateToMove = toResolve.filter { canMove(it) }.ifNotEmpty { maxBy { priorityOrder(it) } }
 
             if (candidateToMove != null) {
                 move(candidateToMove)
@@ -384,10 +406,10 @@ class ShortNameResolver : NameResolver {
         is SymbolicName -> {
             // maybe
             when (entity) {
-                is FreshName -> true  // likely yes
+                is FreshName -> true
                 is KotlinName -> !isScoped(entity)
                 is ScopedName -> (!isScoped(entity) && entity.name !is ClassKotlinName)
-                is DomainName -> true // yes the domain is used as a name
+                is DomainName -> true // the domain is used as a name
                 is NamedDomainAxiomLabel -> true
                 is QualifiedDomainFuncName -> true
                 is UnqualifiedDomainFuncName -> false
