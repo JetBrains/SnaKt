@@ -8,6 +8,7 @@ import org.jetbrains.kotlin.fir.declarations.FirReceiverParameter
 import org.jetbrains.kotlin.fir.declarations.FirValueParameter
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
 import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
+import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.types.classId
 import org.jetbrains.kotlin.fir.types.coneType
@@ -25,7 +26,7 @@ abstract class DeclarationLocalityExtractor {
     }
 
     context(_: CheckerContext)
-    abstract val FirDeclaration.owner: FirDeclaration?
+    abstract val FirDeclaration.owner: FirBasedSymbol<*>?
 
     context(context: CheckerContext)
     fun extract(declaration: FirDeclaration): Locality =
@@ -43,22 +44,20 @@ private fun FirControlFlowGraphOwner.declares(property: FirProperty): Boolean =
 
 @OptIn(SymbolInternals::class)
 context(context: CheckerContext)
-private fun FirProperty.resolveOwner(): FirDeclaration? =
+private fun FirProperty.resolveOwner(): FirBasedSymbol<*>? =
     context.containingDeclarations
         .asReversed()
         .firstOrNull { declarationSymbol ->
             val declaration = declarationSymbol.fir as? FirControlFlowGraphOwner ?: return@firstOrNull false
             declaration.declares(this)
         }
-        ?.fir
 
 private class UseLocalityExtractor : DeclarationLocalityExtractor() {
-    @OptIn(SymbolInternals::class)
     context(_: CheckerContext)
-    override val FirDeclaration.owner: FirDeclaration?
+    override val FirDeclaration.owner: FirBasedSymbol<*>?
         get() = when (this) {
-            is FirValueParameter -> containingDeclarationSymbol.fir
-            is FirReceiverParameter -> containingDeclarationSymbol.fir
+            is FirValueParameter -> containingDeclarationSymbol
+            is FirReceiverParameter -> containingDeclarationSymbol
             is FirProperty -> resolveOwner()
             else -> null
         }
@@ -68,13 +67,15 @@ context(_: CheckerContext)
 val FirDeclaration.usageLocality: Locality
     get() = UseLocalityExtractor().extract(this)
 
+private val CheckerContext.currentDeclaration: FirBasedSymbol<*>?
+    get() = containingDeclarations.lastOrNull()
+
 private class DefinitionLocalityExtractor : DeclarationLocalityExtractor() {
-    @OptIn(SymbolInternals::class)
     context(context: CheckerContext)
-    override val FirDeclaration.owner: FirDeclaration?
+    override val FirDeclaration.owner: FirBasedSymbol<*>?
         get() =  when (this) {
-            is FirValueParameter -> context.containingDeclarations.lastOrNull()?.fir
-            is FirReceiverParameter ->  context.containingDeclarations.lastOrNull()?.fir
+            is FirValueParameter -> context.currentDeclaration
+            is FirReceiverParameter ->  context.currentDeclaration
             is FirProperty -> resolveOwner()
             else -> null
         }
