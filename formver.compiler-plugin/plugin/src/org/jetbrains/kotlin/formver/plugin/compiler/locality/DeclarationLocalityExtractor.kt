@@ -63,6 +63,9 @@ private class UseLocalityExtractor : DeclarationLocalityExtractor() {
         }
 }
 
+/**
+ * Extracts the locality of [this] declaration usage with respect to the outer declarations.
+ */
 context(_: CheckerContext)
 val FirDeclaration.usageLocality: Locality
     get() = UseLocalityExtractor().extract(this)
@@ -81,6 +84,9 @@ private class DefinitionLocalityExtractor : DeclarationLocalityExtractor() {
         }
 }
 
+/**
+ * Extracts the locality required by [this] declaration with respect to the outer declarations.
+ */
 context(_: CheckerContext)
 val FirDeclaration.requiredLocality : Locality
     get() = DefinitionLocalityExtractor().extract(this)
