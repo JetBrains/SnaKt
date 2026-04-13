@@ -104,14 +104,31 @@ class CandidateNameBuilder {
         }
 
     /**
-     * Adds a part to the name.
+     * Adds a string part to the name.
      */
-    operator fun Any.unaryPlus() {
-        when (this) {
-            is String -> parts.add(NamePart.Basic(this))
-            is NamedEntity -> parts.add(NamePart.Dependent(this))
-            is Iterable<*> -> this.forEach { if (it != null) +it }
-            else -> throw SnaktInternalException(null, "Unsupported type: ${this::class.simpleName}")
+    operator fun String.unaryPlus() {
+        parts.add(NamePart.Basic(this))
+    }
+
+    /**
+     * Adds a named entity part to the name.
+     */
+    operator fun NamedEntity.unaryPlus() {
+        parts.add(NamePart.Dependent(this))
+    }
+
+    /**
+     * Adds all parts from an iterable to the name.
+     */
+    operator fun Iterable<*>.unaryPlus() {
+        this.forEach {
+            when (it) {
+                is String -> +it
+                is NamedEntity -> +it
+                is Iterable<*> -> +it
+                null -> {}
+                else -> throw SnaktInternalException(null, "Unsupported type: ${it::class.simpleName}")
+            }
         }
     }
 
