@@ -57,3 +57,26 @@ fun `consume unique parent after assigning subproperty to unique`(@Unique x: B, 
     x.y = y
     consume(x.y)
 }
+
+// Consuming subproperty after smart-cast
+
+class Node(
+    @Unique val next : Node?
+)
+
+fun `consume unique parent after cast`(@Unique node: Any) {
+    @Unique val local = (node as Node).next
+    consume(<!UNIQUENESS_VIOLATION!>node<!>)
+}
+
+fun `consume unique parent after cast to not-null`(@Unique node: Node) {
+    @Unique val local = node.next as Node
+    consume(<!UNIQUENESS_VIOLATION!>node<!>)
+}
+
+fun `consume unique parent after smart-cast`(@Unique node: Node?) {
+    if (node != null) {
+        @Unique val local = node.next
+        consume(<!UNIQUENESS_VIOLATION!>node<!>)
+    }
+}

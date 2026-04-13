@@ -51,12 +51,22 @@ fun `consume after borrowing unique as unique`(@Unique a: A) {
     consume(a)
 }
 
-fun `consume after borrowing unique-borrowed `(@Unique @Borrowed a: A) {
+fun `consume after borrowing unique-borrowed`(@Unique @Borrowed a: A) {
     borrow(a)
     consume(<!UNIQUENESS_VIOLATION!>a<!>)
 }
 
 fun `consume after after borrowing unique-borrowed as unique`(@Unique @Borrowed a: A) {
     borrowUnique(a)
+    consume(<!UNIQUENESS_VIOLATION!>a<!>)
+}
+
+fun `consume unique after storing type check`(@Unique a: Any) {
+    val ok = a is A
+    consume(a)
+}
+
+fun `consume unique after safe cast`(@Unique a: Any) {
+    val maybe = a as? A
     consume(<!UNIQUENESS_VIOLATION!>a<!>)
 }
