@@ -1,5 +1,5 @@
-/borrow_local.kt:(428,429): error: Argument uniqueness mismatch: expected 'global', actual 'local(pass local as shared argument)'.
+/borrow_local.kt:(428,429): error: Argument locality mismatch: expected 'global', actual 'local(pass local as shared argument)'.
 
 /borrow_local.kt:(685,686): error: Assignment locality mismatch: expected 'global', actual 'local(assign local to global after passing it as borrowed argument)'.
 
-/borrow_local.kt:(842,843): error: Receiver uniqueness mismatch: expected 'global', actual 'local(pass local as explicit shared target)'.
+/borrow_local.kt:(842,843): error: Receiver locality mismatch: expected 'global', actual 'local(pass local as explicit shared target)'.
