@@ -25,13 +25,6 @@ abstract class TailValueExtractor<T, D> : FirVisitor<T, D>() {
     protected fun FirExpression?.visit(data: D): T =
         this?.accept(this@TailValueExtractor, data) ?: empty
 
-    fun extract(
-        expression: FirExpression,
-        data: D
-    ): T {
-        return expression.visit(data)
-    }
-
     override fun visitElement(
         element: FirElement,
         data: D

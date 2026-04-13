@@ -20,7 +20,7 @@ class ExpressionLocalityExtractor(
     private val context: CheckerContext
 ) : TailValueExtractor<Locality, Unit>() {
     fun extract(expression: FirExpression): Locality {
-        return extract(expression, Unit)
+        return expression.visit(Unit)
     }
 
     override val empty = Locality.Global
