@@ -22,6 +22,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.formver.common.ErrorCollector
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
+import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.common.UnsupportedFeatureBehaviour
 import org.jetbrains.kotlin.formver.core.*
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
@@ -126,7 +127,11 @@ class ProgramConverter(
         // Insert into the map before processing the body, so recursive calls can find the embedding.
         functions[signature.name] = new
         val declaration = symbol.fir as? FirSimpleFunction
-        if (declaration?.body != null) {
+            ?: throw SnaktInternalException(
+                symbol.source,
+                "Expected FirSimpleFunction, got unexpected type ${symbol.fir.javaClass.simpleName}"
+            )
+        if (declaration.body != null) {
             val (_, stmtCtx) = createBodyConversionContext(signature)
             new.body = stmtCtx.convertFunctionWithBody(declaration)
         }
