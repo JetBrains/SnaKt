@@ -7,6 +7,7 @@ import org.jetbrains.kotlin.formver.core.names.SsaVariableName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
 import org.jetbrains.kotlin.formver.viper.ast.Exp
+import org.jetbrains.kotlin.formver.viper.ast.Exp.Companion.toDisjunction
 import org.jetbrains.kotlin.formver.viper.ast.Type
 
 class SsaConverter(
@@ -38,7 +39,13 @@ class SsaConverter(
             condition,
             this
         )
-        head = SsaBlockNode(joinNode, splitPoint.fullBranchingCondition)
+        val branchCondition = when {
+            thenResultHead.returns && head.returns -> Exp.BoolLit(false)
+            thenResultHead.returns -> head.fullBranchingCondition
+            head.returns -> thenResultHead.fullBranchingCondition
+            else -> listOf(thenResultHead.fullBranchingCondition, head.fullBranchingCondition).toDisjunction()
+        }
+        head = SsaBlockNode(joinNode, branchCondition)
     }
 
     fun constructExpression(): Exp {
@@ -92,6 +99,7 @@ class SsaConverter(
     }
 
     fun addReturn(returnExp: Exp) {
+        head.returns = true
         returnExpressions.add(head.fullBranchingCondition to returnExp)
     }
 
