@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.DeclarationCheckers
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirPropertyChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirSimpleFunctionChecker
+import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirValueParameterChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.ExpressionCheckers
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirFunctionCallChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirReturnExpressionChecker
@@ -20,6 +21,7 @@ import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityFunctionCal
 import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityPropertyChecker
 import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityReturnChecker
 import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityThrowChecker
+import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityValueParameterChecker
 import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityVariableAssignmentChecker
 
 class PluginAdditionalCheckers(session: FirSession, config: PluginConfiguration) :
@@ -36,6 +38,9 @@ class PluginAdditionalCheckers(session: FirSession, config: PluginConfiguration)
 
         override val propertyCheckers: Set<FirPropertyChecker>
             get() = setOf(LocalityPropertyChecker(config))
+
+        override val valueParameterCheckers: Set<FirValueParameterChecker>
+            get() = setOf(LocalityValueParameterChecker(config))
     }
 
     override val expressionCheckers: ExpressionCheckers = object : ExpressionCheckers() {

@@ -1,0 +1,3 @@
+/borrow_default_argument.kt:(335,336): error: Initializer locality mismatch: expected 'global', actual 'local(assign local argument as global default argument)'.
+
+/borrow_default_argument.kt:(663,664): error: Initializer locality mismatch: expected 'global', actual 'local(assign local argument as global default argument in constructor)'.
