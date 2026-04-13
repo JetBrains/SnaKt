@@ -6,4 +6,8 @@
 
 /borrow_local.kt:(1925,1926): error: Argument locality mismatch: expected 'global', actual 'local(pass local as named local and global arguments)'.
 
-/borrow_local.kt:(2106,2107): error: Argument locality mismatch: expected 'global', actual 'local(pass local as named local along local default)'.
+/borrow_local.kt:(2031,2032): error: Argument locality mismatch: expected 'global', actual 'local(pass local as named local along local default)'.
+
+/borrow_local.kt:(2109,2122): error: Receiver locality mismatch: expected 'global', actual 'local(pass local as implicit shared target)'.
+
+/borrow_local.kt:(2292,2296): error: Receiver locality mismatch: expected 'global', actual 'local(pass local this as explicit shared target)'.

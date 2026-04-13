@@ -94,3 +94,19 @@ fun `pass local as named local and global arguments`(@Borrowed x: A) {
 fun `pass local as named local along local default`(@Borrowed x: A) {
     borrowDefaultAndShare(y = <!LOCALITY_VIOLATION!>x<!>)
 }
+
+fun @receiver:Borrowed A.`pass local as implicit shared target`() {
+    <!LOCALITY_VIOLATION!>shareTarget()<!>
+}
+
+fun @receiver:Borrowed A.`pass local as implicit local target`() {
+    borrowTarget()
+}
+
+fun @receiver:Borrowed A.`pass local this as explicit shared target`() {
+    <!LOCALITY_VIOLATION!>this<!>.shareTarget()
+}
+
+fun @receiver:Borrowed A.`pass local this as explicit local target`() {
+    this.borrowTarget()
+}

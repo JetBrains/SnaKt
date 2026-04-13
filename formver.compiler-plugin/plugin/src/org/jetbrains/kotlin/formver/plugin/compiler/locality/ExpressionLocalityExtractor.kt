@@ -5,9 +5,11 @@ import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirSafeCallExpression
+import org.jetbrains.kotlin.fir.expressions.FirThisReceiverExpression
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
+import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.formver.plugin.compiler.analysis.TailValueExtractor
 
@@ -59,6 +61,21 @@ class ExpressionLocalityExtractor(
         data: Unit
     ): Locality {
         return safeCallExpression.receiver.visit(data)
+    }
+
+    @OptIn(SymbolInternals::class)
+    override fun visitThisReceiverExpression(
+        thisReceiverExpression: FirThisReceiverExpression,
+        data: Unit
+    ): Locality {
+        context(context) {
+            val boundSymbol = thisReceiverExpression.calleeReference.boundSymbol
+
+            return when (boundSymbol) {
+                is FirReceiverParameterSymbol -> boundSymbol.fir.usageLocality
+                else -> empty
+            }
+        }
     }
 }
 
