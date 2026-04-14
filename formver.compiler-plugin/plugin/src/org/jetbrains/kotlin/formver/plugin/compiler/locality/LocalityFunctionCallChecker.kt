@@ -38,13 +38,13 @@ class LocalityFunctionCallChecker(
 
     @OptIn(SymbolInternals::class)
     context(context: CheckerContext, reporter: DiagnosticReporter)
-    override fun check(functionCall: FirFunctionCall) {
+    override fun check(expression: FirFunctionCall) {
         if (!config.checkLocality) return
 
-        val callableSymbol = functionCall.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
-            ?: throw IllegalStateException("Unable to resolve $functionCall")
+        val callableSymbol = expression.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
+            ?: throw IllegalStateException("Unable to resolve $expression")
         val receiverDeclaration = callableSymbol.receiverParameterSymbol?.fir
-        val receiver = functionCall.extensionReceiver
+        val receiver = expression.extensionReceiver
 
         if (receiver != null && receiverDeclaration != null) {
             val requiredReceiverLocality = receiverDeclaration.requiredLocality
@@ -52,7 +52,7 @@ class LocalityFunctionCallChecker(
 
             if (!requiredReceiverLocality.accepts(actualReceiverLocality)) {
                 reporter.reportOn(
-                    receiver.source ?: functionCall.source,
+                    receiver.source ?: expression.source,
                     LOCALITY_VIOLATION,
                     "Receiver locality mismatch: expected '${requiredReceiverLocality.render()}', " +
                             "actual '${actualReceiverLocality.render()}'."
@@ -60,12 +60,12 @@ class LocalityFunctionCallChecker(
             }
         }
 
-        val resolvedArgumentMapping = functionCall.resolvedArgumentMapping
+        val resolvedArgumentMapping = expression.resolvedArgumentMapping
         val argumentMappings = if (resolvedArgumentMapping != null) {
             resolvedArgumentMapping.toList()
         } else {
             val argumentSymbols = callableSymbol.valueParameterSymbols
-            val arguments = functionCall.arguments
+            val arguments = expression.arguments
 
             arguments.zip(argumentSymbols.map { it.fir })
         }

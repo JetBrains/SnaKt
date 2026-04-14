@@ -18,17 +18,17 @@ class LocalityValueParameterChecker(
     private val config : PluginConfiguration
 ) : FirValueParameterChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
-    override fun check(valueParameter: FirValueParameter) {
+    override fun check(expression: FirValueParameter) {
         if (!config.checkLocality) return
 
-        val defaultValue = valueParameter.defaultValue ?: return
-        val requiredLocality = valueParameter.requiredLocality
+        val defaultValue = expression.defaultValue ?: return
+        val requiredLocality = expression.requiredLocality
         val actualLocality = defaultValue.resolvedLocality
 
         if (requiredLocality.accepts(actualLocality)) return
 
         reporter.reportOn(
-            defaultValue.source ?: valueParameter.source,
+            defaultValue.source ?: expression.source,
             LOCALITY_VIOLATION,
             "Initializer locality mismatch: expected '${requiredLocality.render()}', " +
                     "actual '${actualLocality.render()}'."
