@@ -2,6 +2,7 @@ package org.jetbrains.kotlin.formver.viper.ast
 
 import org.jetbrains.kotlin.formver.viper.IntoSilver
 import org.jetbrains.kotlin.formver.viper.NameResolver
+import org.jetbrains.kotlin.formver.viper.NameType
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.emptyScalaMap
 import org.jetbrains.kotlin.formver.viper.emptySeq
@@ -14,20 +15,25 @@ import viper.silver.plugin.standard.adt.AdtType
 
 
 data class AdtName(val className: SymbolicName) : SymbolicName {
-    override val mangledType: String get() = "adt"
+    override val mangledType: NameType
+        get() = NameType.Adt
 
     context(nameResolver: NameResolver)
-    override val mangledBaseName: String get() = className.mangled
+    override val mangledBaseName: String
+        get() = className.mangled
 }
 
 data class AdtConstructorName(val adtName: AdtName, val className: SymbolicName) : SymbolicName {
-    override val mangledType: String get() = "adtc"
+    override val mangledType: NameType
+        get() = NameType.AdtCons
 
     context(nameResolver: NameResolver)
-    override val mangledScope: String get() = adtName.mangledBaseName
+    override val mangledScope: String
+        get() = adtName.mangledBaseName
 
     context(nameResolver: NameResolver)
-    override val mangledBaseName: String get() = "constr_${className.mangled}"
+    override val mangledBaseName: String
+        get() = "constr_${className.mangled}"
 }
 
 /**

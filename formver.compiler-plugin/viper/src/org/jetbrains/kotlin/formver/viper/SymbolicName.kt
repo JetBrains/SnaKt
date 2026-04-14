@@ -59,4 +59,6 @@ sealed class NameType(val name: String) {
     object Domain : NameType("d")
     object DomainFunction : NameType("df")
     object Special : NameType("sp") // I think we should not have this. Like, what does special mean?
+    object Adt : NameType("adt")
+    object AdtCons : NameType("adtc")
 }
