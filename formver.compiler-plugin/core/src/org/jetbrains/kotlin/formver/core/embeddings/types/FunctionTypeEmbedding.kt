@@ -8,8 +8,6 @@ package org.jetbrains.kotlin.formver.core.embeddings.types
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.names.FunctionTypeName
 import org.jetbrains.kotlin.formver.core.names.ListOfNames
-import org.jetbrains.kotlin.formver.core.names.NameOfType
-
 data class FunctionTypeEmbedding(
     val dispatchReceiverType: TypeEmbedding?,
     val extensionReceiverType: TypeEmbedding?,
@@ -19,7 +17,7 @@ data class FunctionTypeEmbedding(
 ) : PretypeEmbedding {
     override val runtimeType = RuntimeTypeDomain.functionType()
 
-    private val argsTypeNames = ListOfNames<NameOfType>(formalArgTypes.map { it.name })
+    private val argsTypeNames = ListOfNames(formalArgTypes.map { it.name })
     override val name: FunctionTypeName = FunctionTypeName(argsTypeNames, returnType.name)
 
     /**
