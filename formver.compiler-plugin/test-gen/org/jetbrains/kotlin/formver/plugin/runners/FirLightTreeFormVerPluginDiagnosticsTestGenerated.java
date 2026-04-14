@@ -515,15 +515,15 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
-    @TestMetadata("borrow_default_argument.kt")
-    public void testBorrow_default_argument() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/borrow_default_argument.kt");
+    @TestMetadata("default_argument.kt")
+    public void testDefault_argument() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/default_argument.kt");
     }
 
     @Test
-    @TestMetadata("borrow_local.kt")
-    public void testBorrow_local() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/borrow_local.kt");
+    @TestMetadata("pass_local.kt")
+    public void testPass_local() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/pass_local.kt");
     }
 
     @Test

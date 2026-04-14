@@ -47,6 +47,11 @@ fun `assign local to global after passing it as borrowed argument`(@Borrowed x: 
     var y: A = <!LOCALITY_VIOLATION!>x<!>
 }
 
+fun `share local after initializing it with a global value`(x: A) {
+    @Borrowed var y = x
+    share(<!LOCALITY_VIOLATION!>y<!>)
+}
+
 fun `pass local twice as borrowed arguments`(@Borrowed x: A) {
     borrowBoth(x, x)
 }
