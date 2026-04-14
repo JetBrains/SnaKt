@@ -33,6 +33,5 @@ class DeclarationUniquenessExtractor {
 /**
  * Extracts the uniqueness required by [this] declaration definition.
  */
-context(_: CheckerContext)
 val FirDeclaration.requiredUniqueness: Uniqueness
     get() = DeclarationUniquenessExtractor().extract(this)
