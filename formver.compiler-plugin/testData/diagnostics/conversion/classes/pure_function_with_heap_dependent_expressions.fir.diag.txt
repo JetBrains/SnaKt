@@ -281,7 +281,7 @@ function f$id$t$F$t$N$Node$t$N$Node(par$node: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$nullable(df$rt$c$Node()))
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$nullable(df$rt$c$Node()))
 {
-  p$node
+  par$node
 }
 
 function f$useIdentityFunction$t$F$t$Node$t$Int(par$node: Ref): Ref
@@ -340,5 +340,5 @@ function f$id$t$F$t$N$Node$t$N$Node(par$node: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$nullable(df$rt$c$Node()))
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$nullable(df$rt$c$Node()))
 {
-  p$node
+  par$node
 }
