@@ -525,6 +525,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     public void testBorrow_local() {
       runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/borrow_local.kt");
     }
+
+    @Test
+    @TestMetadata("return_local.kt")
+    public void testReturn_local() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/return_local.kt");
+    }
   }
 
   @Nested
