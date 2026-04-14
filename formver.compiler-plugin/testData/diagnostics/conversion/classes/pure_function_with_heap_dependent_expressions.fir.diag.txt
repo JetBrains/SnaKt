@@ -280,7 +280,9 @@ function f$id$t$F$t$N$Node$t$N$Node(par$node: Ref): Ref
     acc(pred$c$Node$shared(par$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$nullable(df$rt$c$Node()))
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$nullable(df$rt$c$Node()))
-
+{
+  p$node
+}
 
 function f$useIdentityFunction$t$F$t$Node$t$Int(par$node: Ref): Ref
   requires acc(pred$c$Node$shared(par$node), wildcard)
@@ -337,4 +339,6 @@ function f$id$t$F$t$N$Node$t$N$Node(par$node: Ref): Ref
     acc(pred$c$Node$shared(par$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$nullable(df$rt$c$Node()))
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$nullable(df$rt$c$Node()))
-
+{
+  p$node
+}
