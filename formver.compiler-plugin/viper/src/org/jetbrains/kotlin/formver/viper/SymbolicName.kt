@@ -6,9 +6,9 @@
 package org.jetbrains.kotlin.formver.viper
 
 /**
- * Interface to unify all structures that are names to some entity.
+ * Interface to unify all structures that are names to something.
  */
-interface NamedEntity
+interface AnyName
 
 
 /**
@@ -19,7 +19,7 @@ interface NamedEntity
  */
 const val SEPARATOR = "$"
 
-interface SymbolicName : NamedEntity {
+interface SymbolicName : AnyName {
     val mangledType: NameType?
         get() = null
     context(nameResolver: NameResolver)
@@ -43,7 +43,7 @@ val SymbolicName.debugMangled: String
 /**
  * Collects all types of names we can have.
  */
-sealed class NameType(val name: String) : NamedEntity {
+sealed class NameType(val name: String) : AnyName {
 
     override fun toString(): String = name
 
