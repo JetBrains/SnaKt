@@ -7,15 +7,15 @@ package org.jetbrains.kotlin.formver.plugin.compiler.uniqueness
 
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 
-abstract class PathTrie<T>(
+abstract class PathTrie<T, Self : PathTrie<T, Self>>(
     var element: T,
-    val children: Map<FirBasedSymbol<*>, PathTrie<T>> = emptyMap(),
+    val children: Map<FirBasedSymbol<*>, Self> = emptyMap(),
 ) {
     abstract fun T.join(other: T): T
 
-    abstract fun construct(element: T, children: Map<FirBasedSymbol<*>, PathTrie<T>>): PathTrie<T>
+    abstract fun construct(element: T, children: Map<FirBasedSymbol<*>, Self>): Self
 
-    operator fun get(symbol: FirBasedSymbol<*>): PathTrie<T>? =
+    operator fun get(symbol: FirBasedSymbol<*>): Self? =
         children[symbol]
 
     val childrenJoin: T
@@ -24,27 +24,11 @@ abstract class PathTrie<T>(
             result.join(child.childrenJoin)
         }
 
-    fun copy(element: T = this.element, children: Map<FirBasedSymbol<*>, PathTrie<T>> = this.children): PathTrie<T> {
+    fun copy(element: T = this.element, children: Map<FirBasedSymbol<*>, Self> = this.children): Self {
         return construct(element, children)
     }
 
-    fun ensure(path: Path, initialize: (FirBasedSymbol<*>) -> T): PathTrie<T> {
-        return ensure(path.iterator(), initialize)
-    }
-
-    private fun ensure(path: Iterator<FirBasedSymbol<*>>, initialize: (FirBasedSymbol<*>) -> T): PathTrie<T> {
-        if (!path.hasNext()) {
-            return this
-        }
-
-        val symbol = path.next()
-        val next = children[symbol] ?: construct(initialize(symbol), emptyMap())
-        val newChildren = children + (symbol to next.ensure(path, initialize))
-
-        return construct(element, newChildren)
-    }
-
-    fun join(other: PathTrie<T>): PathTrie<T> {
+    fun join(other: Self): Self {
         val newElement = element.join(other.element)
         val newChildren = (children.keys + other.children.keys).associateWith { key ->
             val left = children[key]
@@ -61,7 +45,7 @@ abstract class PathTrie<T>(
     }
 
     override fun equals(other: Any?): Boolean {
-        return other is PathTrie<T> &&
+        return other is PathTrie<*, *> &&
                 children == other.children &&
                 element == other.element
     }
@@ -72,4 +56,26 @@ abstract class PathTrie<T>(
 
         return result
     }
+}
+
+fun <T, Self : PathTrie<T, Self>> Self.ensure(
+    path: Path,
+    initialize: (FirBasedSymbol<*>) -> T
+): Self {
+    return ensure(path.iterator(), initialize)
+}
+
+private fun <T, Self : PathTrie<T, Self>> Self.ensure(
+    path: Iterator<FirBasedSymbol<*>>,
+    initialize: (FirBasedSymbol<*>) -> T
+): Self {
+    if (!path.hasNext()) {
+        return this
+    }
+
+    val symbol = path.next()
+    val next = children[symbol] ?: construct(initialize(symbol), emptyMap())
+    val newChildren = children + (symbol to next.ensure(path, initialize))
+
+    return construct(element, newChildren)
 }
