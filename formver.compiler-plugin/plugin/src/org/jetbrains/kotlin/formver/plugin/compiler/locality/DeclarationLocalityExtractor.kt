@@ -36,9 +36,9 @@ abstract class DeclarationLocalityExtractor {
     context(context: CheckerContext)
     fun extract(declaration: FirDeclaration): Locality =
         if (declaration.hasLocalityAnnotation) {
-            return Locality.Local(declaration.owner)
+            Locality.Local(declaration.owner)
         } else {
-            return Locality.Global
+            Locality.Global
         }
 }
 
