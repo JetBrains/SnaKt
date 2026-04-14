@@ -15,6 +15,9 @@ abstract class PathTrie<T>(
 
     abstract fun construct(element: T, children: Map<FirBasedSymbol<*>, PathTrie<T>>): PathTrie<T>
 
+    operator fun get(symbol: FirBasedSymbol<*>): PathTrie<T>? =
+        children[symbol]
+
     val childrenJoin: T
         get() = children.values.fold(element) {
             result, child ->
