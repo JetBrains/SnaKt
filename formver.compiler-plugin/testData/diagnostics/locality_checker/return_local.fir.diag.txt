@@ -3,3 +3,9 @@
 /return_local.kt:(294,295): error: Return locality mismatch: expected 'global', actual 'local(return local value from expression body)'.
 
 /return_local.kt:(382,383): error: Return locality mismatch: expected 'global', actual 'local(return local value from lambda body)'.
+
+/return_local.kt:(487,491): error: Return locality mismatch: expected 'global', actual 'local(return local receiver)'.
+
+/return_local.kt:(582,588): error: Return locality mismatch: expected 'global', actual 'local(return explicit local receiver property)'.
+
+/return_local.kt:(679,680): error: Return locality mismatch: expected 'global', actual 'local(return implicit local receiver property)'.

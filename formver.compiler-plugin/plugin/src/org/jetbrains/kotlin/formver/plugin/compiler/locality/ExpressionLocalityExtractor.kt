@@ -46,6 +46,7 @@ class ExpressionLocalityExtractor(
         data: Unit
     ): Locality {
         return propertyAccessExpression.explicitReceiver?.visit(data)
+            ?: propertyAccessExpression.dispatchReceiver?.visit(data)
             ?: propertyAccessExpression.calleeReference.symbol?.extract() ?: empty
     }
 

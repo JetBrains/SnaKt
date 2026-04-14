@@ -16,3 +16,19 @@ fun `return local value from lambda body`(@Borrowed x: Any) {
         <!LOCALITY_VIOLATION!>x<!>
     }
 }
+
+class A(
+    val x: Any
+)
+
+fun @receiver:Borrowed A.`return local receiver`(): A {
+    return <!LOCALITY_VIOLATION!>this<!>
+}
+
+fun @receiver:Borrowed A.`return explicit local receiver property`(): Any {
+    return <!LOCALITY_VIOLATION!>this.x<!>
+}
+
+fun @receiver:Borrowed A.`return implicit local receiver property`(): Any {
+    return <!LOCALITY_VIOLATION!>x<!>
+}
