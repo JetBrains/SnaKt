@@ -5,7 +5,6 @@
 
 package org.jetbrains.kotlin.formver.plugin.compiler.uniqueness
 
-import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.types.classId
 import org.jetbrains.kotlin.fir.types.coneType
