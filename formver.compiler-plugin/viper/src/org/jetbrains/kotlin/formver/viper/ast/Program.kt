@@ -124,6 +124,10 @@ private fun registerExpNames(exp: Exp) {
             registerExpNames(exp.predicateAccess)
             registerExpNames(exp.body)
         }
+        is Exp.AdtConstructorApp -> {
+            nameResolver.register(exp.constructor.name)
+            exp.args.forEach { registerExpNames(it) }
+        }
         // no else branch to make decisions explicit.
         is Exp.Result, is Exp.BoolLit, is Exp.EmptySeq, is Exp.IntLit, is Exp.NullLit -> {}
     }

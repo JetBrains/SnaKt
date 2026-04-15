@@ -406,6 +406,35 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             )
     }
 
+    /**
+     * Represents the application of an ADT constructor.
+     *
+     * Singleton ADTs do not exist as an independent entity in the Kotlin program. Instead, when we encounter a
+     * reference to an ADT type, it will be replaced with a constructor application. This will be modified for the
+     * introduction of product types.
+     */
+    data class AdtConstructorApp(
+        val constructor: AdtConstructor,
+        val args: List<Exp>,
+        val typeVarMap: Map<Type.TypeVar, Type> = emptyMap(),
+        val pos: Position = Position.NoPosition,
+        val info: Info = Info.NoInfo,
+        val trafos: Trafos = Trafos.NoTrafos,
+    ) : Exp {
+        override val type: Type = Type.Adt(constructor.name.adtName)
+
+        context(nameResolver: NameResolver)
+        override fun toSilver(): viper.silver.ast.Exp =
+            viper.silver.plugin.standard.adt.AdtConstructorApp.apply(
+                constructor.toSilver(),
+                args.toSilver().toScalaSeq(),
+                typeVarMap.mapKeys { it.key.toSilver() }.mapValues { it.value.toSilver() }.toScalaMap(),
+                pos.toSilver(),
+                info.toSilver(),
+                trafos.toSilver(),
+            )
+    }
+
     data class ExplicitSeq(
         val args: List<Exp>,
         val pos: Position = Position.NoPosition,
