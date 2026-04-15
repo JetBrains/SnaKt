@@ -57,7 +57,7 @@ private fun FirProperty.resolveOwner(): FirBasedSymbol<*>? =
             declaration.declares(this)
         }
 
-private class UseLocalityExtractor : DeclarationLocalityExtractor() {
+private object ActualLocalityExtractor : DeclarationLocalityExtractor() {
     context(_: CheckerContext)
     override val FirDeclaration.owner: FirBasedSymbol<*>?
         get() = when (this) {
@@ -72,13 +72,13 @@ private class UseLocalityExtractor : DeclarationLocalityExtractor() {
  * Extracts the locality of [this] declaration usage with respect to the outer declarations.
  */
 context(_: CheckerContext)
-val FirDeclaration.usageLocality: Locality
-    get() = UseLocalityExtractor().extract(this)
+val FirDeclaration.actualLocality: Locality
+    get() = ActualLocalityExtractor.extract(this)
 
 private val CheckerContext.currentDeclaration: FirBasedSymbol<*>?
     get() = containingDeclarations.lastOrNull()
 
-private class DefinitionLocalityExtractor : DeclarationLocalityExtractor() {
+private object RequiredLocalityExtractor : DeclarationLocalityExtractor() {
     context(context: CheckerContext)
     override val FirDeclaration.owner: FirBasedSymbol<*>?
         get() =  when (this) {
@@ -94,4 +94,4 @@ private class DefinitionLocalityExtractor : DeclarationLocalityExtractor() {
  */
 context(_: CheckerContext)
 val FirDeclaration.requiredLocality : Locality
-    get() = DefinitionLocalityExtractor().extract(this)
+    get() = RequiredLocalityExtractor.extract(this)

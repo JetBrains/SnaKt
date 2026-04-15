@@ -39,7 +39,7 @@ class ExpressionLocalityExtractor(
         when (this) {
             is FirVariableSymbol<*> -> {
                 context(context) {
-                    return fir.usageLocality
+                    return fir.actualLocality
                 }
             }
             else -> return Locality.Global
@@ -78,7 +78,7 @@ class ExpressionLocalityExtractor(
             val boundSymbol = thisReceiverExpression.calleeReference.boundSymbol
 
             return when (boundSymbol) {
-                is FirReceiverParameterSymbol -> boundSymbol.fir.usageLocality
+                is FirReceiverParameterSymbol -> boundSymbol.fir.actualLocality
                 else -> empty
             }
         }
