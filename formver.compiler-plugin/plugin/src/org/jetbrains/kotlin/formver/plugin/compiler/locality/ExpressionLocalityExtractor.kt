@@ -50,16 +50,16 @@ class ExpressionLocalityExtractor(
         propertyAccessExpression: FirPropertyAccessExpression,
         data: Unit
     ): Locality {
-        return propertyAccessExpression.explicitReceiver?.visit(data)
-            ?: propertyAccessExpression.dispatchReceiver?.visit(data)
-            ?: propertyAccessExpression.calleeReference.symbol?.extract() ?: empty
+        return visitQualifiedAccessExpression(propertyAccessExpression, data)
     }
 
     override fun visitQualifiedAccessExpression(
         qualifiedAccessExpression: FirQualifiedAccessExpression,
         data: Unit
     ): Locality {
-        return qualifiedAccessExpression.explicitReceiver.visit(data)
+        return qualifiedAccessExpression.explicitReceiver?.visit(data)
+            ?: qualifiedAccessExpression.dispatchReceiver?.visit(data)
+            ?: qualifiedAccessExpression.calleeReference.symbol?.extract() ?: empty
     }
 
     override fun visitSafeCallExpression(
