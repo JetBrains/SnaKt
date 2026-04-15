@@ -18,32 +18,6 @@ abstract class PathTrie<T, Self : PathTrie<T, Self>>(
     operator fun get(symbol: FirBasedSymbol<*>): Self? =
         children[symbol]
 
-    val childrenJoin: T
-        get() = children.values.fold(element) {
-            result, child ->
-            result.join(child.childrenJoin)
-        }
-
-    fun copy(element: T = this.element, children: Map<FirBasedSymbol<*>, Self> = this.children): Self {
-        return construct(element, children)
-    }
-
-    fun join(other: Self): Self {
-        val newElement = element.join(other.element)
-        val newChildren = (children.keys + other.children.keys).associateWith { key ->
-            val left = children[key]
-            val right = other.children[key]
-
-            when {
-                left != null && right != null -> left.join(right)
-                left != null -> left
-                else -> right!!
-            }
-        }
-
-        return construct(newElement, newChildren)
-    }
-
     override fun equals(other: Any?): Boolean {
         return other is PathTrie<*, *> &&
                 children == other.children &&
@@ -56,6 +30,13 @@ abstract class PathTrie<T, Self : PathTrie<T, Self>>(
 
         return result
     }
+}
+
+fun <T, Self : PathTrie<T, Self>> Self.copy(
+    element: T = this.element,
+    children: Map<FirBasedSymbol<*>, Self> = this.children
+): Self {
+    return construct(element, children)
 }
 
 fun <T, Self : PathTrie<T, Self>> Self.ensure(
@@ -78,4 +59,20 @@ private fun <T, Self : PathTrie<T, Self>> Self.ensure(
     val newChildren = children + (symbol to next.ensure(path, initialize))
 
     return construct(element, newChildren)
+}
+
+fun <T, Self : PathTrie<T, Self>> Self.join(other: Self): Self {
+    val newElement = element.join(other.element)
+    val newChildren = (children.keys + other.children.keys).associateWith { key ->
+        val left = children[key]
+        val right = other.children[key]
+
+        when {
+            left != null && right != null -> left.join(right)
+            left != null -> left
+            else -> right!!
+        }
+    }
+
+    return construct(newElement, newChildren)
 }
