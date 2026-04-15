@@ -13,13 +13,11 @@ import org.jetbrains.kotlin.formver.core.annotationId
 /**
  * Extracts the uniqueness required by a declaration definition.
  */
-class DeclarationUniquenessExtractor {
-    companion object {
-        val uniquenessAnnotationId = annotationId("Unique")
+object DeclarationUniquenessExtractor {
+    val uniquenessAnnotationId = annotationId("Unique")
 
-        val FirDeclaration.hasUniquenessAnnotation: Boolean
-            get() = annotations.any { it.annotationTypeRef.coneType.classId == uniquenessAnnotationId }
-    }
+    val FirDeclaration.hasUniquenessAnnotation: Boolean
+        get() = annotations.any { it.annotationTypeRef.coneType.classId == uniquenessAnnotationId }
 
     fun extract(declaration: FirDeclaration): Uniqueness =
         if (declaration.hasUniquenessAnnotation) {
@@ -33,4 +31,4 @@ class DeclarationUniquenessExtractor {
  * Extracts the uniqueness required by [this] declaration definition.
  */
 val FirDeclaration.requiredUniqueness: Uniqueness
-    get() = DeclarationUniquenessExtractor().extract(this)
+    get() = DeclarationUniquenessExtractor.extract(this)
