@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 
-object UseExpressionUniquenessExtractor : PathValueExtractor<Uniqueness>() {
+object UseExpressionUniquenessExtractor : PathValueExtractor<Uniqueness, UniquenessTrie?>() {
     fun extract(expression: FirExpression, typingEnvironment: UniquenessTrie): Uniqueness {
         return expression.accept(this, typingEnvironment)
     }

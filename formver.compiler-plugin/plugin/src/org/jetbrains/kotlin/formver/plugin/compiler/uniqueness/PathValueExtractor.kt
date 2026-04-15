@@ -8,17 +8,17 @@ import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.formver.plugin.compiler.analysis.TailValueExtractor
 
-abstract class PathValueExtractor<T> : TailValueExtractor<T, UniquenessTrie?>() {
+abstract class PathValueExtractor<T, D> : TailValueExtractor<T, D>() {
     abstract fun visitReceiverExpression(
         symbol: FirBasedSymbol<*>?,
         explicitReceiver: FirExpression?,
         dispatchReceiver: FirExpression?,
-        data: UniquenessTrie?
+        data: D
     ): T
 
     override fun visitPropertyAccessExpression(
         propertyAccessExpression: FirPropertyAccessExpression,
-        data: UniquenessTrie?
+        data: D
     ): T {
         return visitReceiverExpression(
             symbol = propertyAccessExpression.calleeReference.symbol,
@@ -30,7 +30,7 @@ abstract class PathValueExtractor<T> : TailValueExtractor<T, UniquenessTrie?>() 
 
     override fun visitQualifiedAccessExpression(
         qualifiedAccessExpression: FirQualifiedAccessExpression,
-        data: UniquenessTrie?
+        data: D
     ): T {
         return visitReceiverExpression(
             symbol = qualifiedAccessExpression.calleeReference.symbol,
@@ -42,7 +42,7 @@ abstract class PathValueExtractor<T> : TailValueExtractor<T, UniquenessTrie?>() 
 
     override fun visitSafeCallExpression(
         safeCallExpression: FirSafeCallExpression,
-        data: UniquenessTrie?
+        data: D
     ): T {
         val selectorSymbol = (safeCallExpression.selector as? FirQualifiedAccessExpression)?.calleeReference?.symbol
 
