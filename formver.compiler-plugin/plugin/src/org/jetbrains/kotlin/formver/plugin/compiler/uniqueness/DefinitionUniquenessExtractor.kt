@@ -12,15 +12,9 @@ import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 /**
  * Extracts expression uniqueness from a definition expression.
  */
-object DefinitionUniquenessExtractor : PathValueExtractor<Uniqueness, Unit>() {
+object DefinitionUniquenessExtractor : ExpressionUniquenessExtractor<Unit>() {
     fun extract(expression: FirExpression): Uniqueness {
         return expression.accept(this, Unit)
-    }
-
-    override val empty = Uniqueness.Unique
-
-    override fun Uniqueness.join(other: Uniqueness): Uniqueness {
-        return join(other)
     }
 
     @OptIn(SymbolInternals::class)
@@ -44,4 +38,3 @@ object DefinitionUniquenessExtractor : PathValueExtractor<Uniqueness, Unit>() {
  */
 val FirExpression.requiredUniqueness: Uniqueness
     get() = DefinitionUniquenessExtractor.extract(this)
-

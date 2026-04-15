@@ -12,15 +12,9 @@ import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 
-object UseUniquenessExtractor : PathValueExtractor<Uniqueness, UniquenessTrie?>() {
+object UseUniquenessExtractor : ExpressionUniquenessExtractor<UniquenessTrie?>() {
     fun extract(expression: FirExpression, typingEnvironment: UniquenessTrie): Uniqueness {
         return expression.accept(this, typingEnvironment)
-    }
-
-    override val empty = Uniqueness.Unique
-
-    override fun Uniqueness.join(other: Uniqueness): Uniqueness {
-        return join(other)
     }
 
     override fun visitReceiverExpression(
