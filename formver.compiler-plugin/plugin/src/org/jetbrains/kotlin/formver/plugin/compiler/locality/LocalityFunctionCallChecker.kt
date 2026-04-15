@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirFunctionCallChecker
+import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
 import org.jetbrains.kotlin.fir.expressions.arguments
 import org.jetbrains.kotlin.fir.expressions.resolvedArgumentMapping
@@ -23,7 +24,7 @@ class LocalityFunctionCallChecker(
     private val config : PluginConfiguration
 ) : FirFunctionCallChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
-    private fun checkArgument(argument: org.jetbrains.kotlin.fir.expressions.FirExpression, requiredArgumentLocality: Locality) {
+    private fun checkArgument(argument: FirExpression, requiredArgumentLocality: Locality) {
         val actualArgumentLocality = argument.resolvedLocality
 
         if (requiredArgumentLocality.accepts(actualArgumentLocality)) return
