@@ -20,12 +20,7 @@ abstract class PathValueExtractor<T, D> : TailValueExtractor<T, D>() {
         propertyAccessExpression: FirPropertyAccessExpression,
         data: D
     ): T {
-        return visitReceiverExpression(
-            symbol = propertyAccessExpression.calleeReference.symbol,
-            explicitReceiver = propertyAccessExpression.explicitReceiver,
-            dispatchReceiver = propertyAccessExpression.dispatchReceiver,
-            data = data
-        )
+        return visitQualifiedAccessExpression(propertyAccessExpression, data)
     }
 
     override fun visitQualifiedAccessExpression(
