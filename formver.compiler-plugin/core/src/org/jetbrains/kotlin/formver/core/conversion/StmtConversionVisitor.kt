@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.core.conversion
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.contracts.description.LogicOperationKind
+import org.jetbrains.kotlin.descriptors.isObject
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.declarations.FirProperty
 import org.jetbrains.kotlin.fir.expressions.*
@@ -37,6 +38,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.LtIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
+import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
 import org.jetbrains.kotlin.formver.core.functionCallArguments
@@ -81,12 +83,22 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     override fun visitResolvedQualifier(
         resolvedQualifier: FirResolvedQualifier, data: StmtConversionContext
     ): ExpEmbedding {
-        if (!resolvedQualifier.resolvedType.isUnit) {
-            throw SnaktInternalException(
-                resolvedQualifier.source, "Only `Unit` is supported among resolved qualifiers currently."
-            )
+        if (resolvedQualifier.resolvedType.isUnit) {
+            return UnitLit
         }
-        return UnitLit
+        val classSymbol = resolvedQualifier.symbol as? FirClassSymbol<*>
+        if (classSymbol != null && classSymbol.classKind.isObject) {
+            val type = data.embedType(resolvedQualifier.resolvedType)
+            val adtEmbedding = type.pretype as? AdtTypeEmbedding
+                ?: throw SnaktInternalException(
+                    resolvedQualifier.source,
+                    "Objects can only be used as ADT constructors. Declare it as an ADT to use it."
+                )
+            val constructorEmbedding = adtEmbedding.constructors.firstOrNull()
+                ?: throw SnaktInternalException(resolvedQualifier.source, "ADT constructors not initialized")
+            return AdtConstructorLit(type, constructorEmbedding, adtEmbedding)
+        }
+        throw SnaktInternalException(resolvedQualifier.source, "Unsupported reference used as resolved qualifier.")
     }
 
     override fun visitBlock(block: FirBlock, data: StmtConversionContext): ExpEmbedding =

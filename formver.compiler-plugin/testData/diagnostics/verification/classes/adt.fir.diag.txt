@@ -1,0 +1,120 @@
+/adt.kt:(298,310): info: Generated Viper text for takeAdtParam:
+method f$takeAdtParam$t$F$t$Color1$t$Unit(par$c: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$Color1())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+adt adt$c$Color1 {
+  adtc$c$Color1$constr_c$Color1()
+}
+
+/adt.kt:(392,412): info: Generated Viper text for twoSameTypeAdtParams:
+method f$twoSameTypeAdtParams$t$F$t$Color1$t$Color1$t$Unit(par$a: Ref, par$b: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$c$Color1())
+  requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$c$Color1())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+adt adt$c$Color1 {
+  adtc$c$Color1$constr_c$Color1()
+}
+
+/adt.kt:(507,532): info: Generated Viper text for twoDifferentTypeAdtParams:
+method f$twoDifferentTypeAdtParams$t$F$t$Color1$t$Color2$t$Unit(par$a: Ref,
+  par$b: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$c$Color1())
+  requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$c$Color2())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+adt adt$c$Color1 {
+  adtc$c$Color1$constr_c$Color1()
+}
+
+adt adt$c$Color2 {
+  adtc$c$Color2$constr_c$Color2()
+}
+
+/adt.kt:(623,634): info: Generated Viper text for mixedParams:
+method f$mixedParams$t$F$t$Color1$t$Int$t$Unit(par$c: Ref, par$n: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$Color1())
+  requires df$rt$isSubtype(df$rt$typeOf(par$n), df$rt$intType())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+adt adt$c$Color1 {
+  adtc$c$Color1$constr_c$Color1()
+}
+
+/adt.kt:(718,729): info: Generated Viper text for adtLocalVar:
+method f$adtLocalVar$t$F$t$Unit() returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$c: Ref
+  l0$c := df$rt$c$Color1ToRef(adtc$c$Color1$constr_c$Color1())
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+adt adt$c$Color1 {
+  adtc$c$Color1$constr_c$Color1()
+}
+
+/adt.kt:(820,840): info: Generated Viper text for adtSameValueEquality:
+field bf$size: Ref
+
+method f$adtSameValueEquality$t$F$t$Unit() returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$a: Ref
+  var l0$b: Ref
+  l0$a := df$rt$c$Color1ToRef(adtc$c$Color1$constr_c$Color1())
+  l0$b := df$rt$c$Color1ToRef(adtc$c$Color1$constr_c$Color1())
+  assert l0$a == l0$b
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+adt adt$c$Color1 {
+  adtc$c$Color1$constr_c$Color1()
+}
+
+/adt.kt:(1078,1092): info: Generated Viper text for threeAdtParams:
+method f$threeAdtParams$t$F$t$Color1$t$Color2$t$Color3$t$Unit(par$a: Ref, par$b: Ref,
+  par$c: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$c$Color1())
+  requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$c$Color2())
+  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$Color3())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+adt adt$c$Color1 {
+  adtc$c$Color1$constr_c$Color1()
+}
+
+adt adt$c$Color2 {
+  adtc$c$Color2$constr_c$Color2()
+}
+
+adt adt$c$Color3 {
+  adtc$c$Color3$constr_c$Color3()
+}

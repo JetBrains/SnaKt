@@ -19,9 +19,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.toMethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.core.embeddings.toViper
 import org.jetbrains.kotlin.formver.core.embeddings.toViperGoto
-import org.jetbrains.kotlin.formver.viper.ast.Exp
-import org.jetbrains.kotlin.formver.viper.ast.Stmt
-import org.jetbrains.kotlin.formver.viper.ast.viperLiteral
+import org.jetbrains.kotlin.formver.viper.ast.*
 
 data class LinearizationVisitor(
     val source: KtSourceElement? = null,
@@ -183,6 +181,18 @@ data class LinearizationVisitor(
 
     override fun visitUnitLit(e: UnitLit): Linearizable = object : UnitResultLinearizable(e) {
         override fun toViperUnusedResult(ctx: LinearizationContext) = Unit
+    }
+
+    override fun visitAdtConstructorLit(e: AdtConstructorLit): Linearizable = object : DirectResultLinearizable(e, this@LinearizationVisitor) {
+        override fun toViper(ctx: LinearizationContext): Exp {
+            val adtName = e.adtTypeEmbedding.adtName
+            val viperConstructor = AdtConstructor(
+                AdtConstructorName(adtName, e.constructorEmbedding.className),
+                emptyList(),
+            )
+            val constructorApp = Exp.AdtConstructorApp(viperConstructor, emptyList(), pos = ctx.source.asPosition)
+            return e.adtTypeEmbedding.toRefFunc(constructorApp, pos = ctx.source.asPosition)
+        }
     }
 
     // endregion
