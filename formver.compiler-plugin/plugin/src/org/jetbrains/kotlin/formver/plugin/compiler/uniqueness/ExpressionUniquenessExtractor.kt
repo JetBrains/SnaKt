@@ -11,7 +11,7 @@ package org.jetbrains.kotlin.formver.plugin.compiler.uniqueness
  * [D] is the visitor data type threaded through the expression traversal.
  */
 abstract class ExpressionUniquenessExtractor<D> : PathValueExtractor<Uniqueness, D>() {
-    override val empty = Uniqueness.Unique
+    override val empty = Uniqueness.Shared
 
     override fun Uniqueness.join(other: Uniqueness): Uniqueness {
         return join(other)
