@@ -8,15 +8,11 @@ package org.jetbrains.kotlin.formver.plugin.compiler.uniqueness
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
 import org.jetbrains.kotlin.fir.expressions.FirLiteralExpression
-import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
-import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
-import org.jetbrains.kotlin.fir.expressions.FirSafeCallExpression
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
-import org.jetbrains.kotlin.formver.plugin.compiler.analysis.TailValueExtractor
 
-class ExpressionUniquenessExtractor : TailValueExtractor<Uniqueness, UniquenessTrie?>() {
+class ExpressionUniquenessExtractor : PathValueExtractor<Uniqueness>() {
     fun extract(expression: FirExpression, typingEnvironment: UniquenessTrie): Uniqueness {
         return expression.accept(this, typingEnvironment)
     }
@@ -27,7 +23,7 @@ class ExpressionUniquenessExtractor : TailValueExtractor<Uniqueness, UniquenessT
         return join(other)
     }
 
-    private fun visitReceiverExpression(
+    override fun visitReceiverExpression(
         symbol: FirBasedSymbol<*>?,
         explicitReceiver: FirExpression?,
         dispatchReceiver: FirExpression?,
@@ -41,44 +37,6 @@ class ExpressionUniquenessExtractor : TailValueExtractor<Uniqueness, UniquenessT
             ?: empty
 
         return receiverUniqueness.join(componentUniqueness)
-    }
-
-    override fun visitPropertyAccessExpression(
-        propertyAccessExpression: FirPropertyAccessExpression,
-        data: UniquenessTrie?
-    ): Uniqueness {
-        return visitReceiverExpression(
-            symbol = propertyAccessExpression.calleeReference.symbol,
-            explicitReceiver = propertyAccessExpression.explicitReceiver,
-            dispatchReceiver = propertyAccessExpression.dispatchReceiver,
-            data = data
-        )
-    }
-
-    override fun visitQualifiedAccessExpression(
-        qualifiedAccessExpression: FirQualifiedAccessExpression,
-        data: UniquenessTrie?
-    ): Uniqueness {
-        return visitReceiverExpression(
-            symbol = qualifiedAccessExpression.calleeReference.symbol,
-            explicitReceiver = qualifiedAccessExpression.explicitReceiver,
-            dispatchReceiver = qualifiedAccessExpression.dispatchReceiver,
-            data = data
-        )
-    }
-
-    override fun visitSafeCallExpression(
-        safeCallExpression: FirSafeCallExpression,
-        data: UniquenessTrie?
-    ): Uniqueness {
-        val selectorSymbol = (safeCallExpression.selector as? FirQualifiedAccessExpression)?.calleeReference?.symbol
-
-        return visitReceiverExpression(
-            symbol = selectorSymbol,
-            explicitReceiver = safeCallExpression.receiver,
-            dispatchReceiver = null,
-            data = data
-        )
     }
 
     @OptIn(SymbolInternals::class)
