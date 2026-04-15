@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.formver.plugin.compiler.analysis.TailValueExtractor
 
-class ExpressionUniquenessExtractor : TailValueExtractor<Uniqueness, PathTrie<Uniqueness>?>() {
+class ExpressionUniquenessExtractor : TailValueExtractor<Uniqueness, UniquenessTrie?>() {
     fun extract(expression: FirExpression, typingEnvironment: UniquenessTrie): Uniqueness {
         return expression.accept(this, typingEnvironment)
     }
@@ -31,7 +31,7 @@ class ExpressionUniquenessExtractor : TailValueExtractor<Uniqueness, PathTrie<Un
         symbol: FirBasedSymbol<*>?,
         explicitReceiver: FirExpression?,
         dispatchReceiver: FirExpression?,
-        data: PathTrie<Uniqueness>?
+        data: UniquenessTrie?
     ): Uniqueness {
         val nextData = symbol?.let { data?.get(it) }
         val receiverData = if (symbol != null) nextData else data
@@ -45,7 +45,7 @@ class ExpressionUniquenessExtractor : TailValueExtractor<Uniqueness, PathTrie<Un
 
     override fun visitPropertyAccessExpression(
         propertyAccessExpression: FirPropertyAccessExpression,
-        data: PathTrie<Uniqueness>?
+        data: UniquenessTrie?
     ): Uniqueness {
         return visitReceiverExpression(
             symbol = propertyAccessExpression.calleeReference.symbol,
@@ -57,7 +57,7 @@ class ExpressionUniquenessExtractor : TailValueExtractor<Uniqueness, PathTrie<Un
 
     override fun visitQualifiedAccessExpression(
         qualifiedAccessExpression: FirQualifiedAccessExpression,
-        data: PathTrie<Uniqueness>?
+        data: UniquenessTrie?
     ): Uniqueness {
         return visitReceiverExpression(
             symbol = qualifiedAccessExpression.calleeReference.symbol,
@@ -69,7 +69,7 @@ class ExpressionUniquenessExtractor : TailValueExtractor<Uniqueness, PathTrie<Un
 
     override fun visitSafeCallExpression(
         safeCallExpression: FirSafeCallExpression,
-        data: PathTrie<Uniqueness>?
+        data: UniquenessTrie?
     ): Uniqueness {
         val selectorSymbol = (safeCallExpression.selector as? FirQualifiedAccessExpression)?.calleeReference?.symbol
 
@@ -84,7 +84,7 @@ class ExpressionUniquenessExtractor : TailValueExtractor<Uniqueness, PathTrie<Un
     @OptIn(SymbolInternals::class)
     override fun visitFunctionCall(
         functionCall: FirFunctionCall,
-        data: PathTrie<Uniqueness>?
+        data: UniquenessTrie?
     ): Uniqueness {
         val functionDeclaration = functionCall.calleeReference.symbol?.fir
 
@@ -93,7 +93,7 @@ class ExpressionUniquenessExtractor : TailValueExtractor<Uniqueness, PathTrie<Un
 
     override fun visitLiteralExpression(
         literalExpression: FirLiteralExpression,
-        data: PathTrie<Uniqueness>?
+        data: UniquenessTrie?
     ): Uniqueness {
         return Uniqueness.Unique
     }
