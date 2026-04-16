@@ -7,18 +7,18 @@ package org.jetbrains.kotlin.formver.core.embeddings.expression
 
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
-import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.*
+import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.DebugPrintable
+import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.DebugTreeViewVisitor
+import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.TreeView
+import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.print
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
+import org.jetbrains.kotlin.formver.core.names.SimpleNameResolver
 import org.jetbrains.kotlin.formver.core.purity.PurityContext
-import org.jetbrains.kotlin.formver.names.SimpleNameResolver
-import org.jetbrains.kotlin.formver.names.debugMangled
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
-import org.jetbrains.kotlin.formver.viper.ast.Stmt
-import org.jetbrains.kotlin.formver.viper.mangled
 
 sealed interface ExpEmbedding : DebugPrintable {
     val type: TypeEmbedding

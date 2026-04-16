@@ -1,8 +1,7 @@
-package org.jetbrains.kotlin.formver.names
+package org.jetbrains.kotlin.formver.core.names
 
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
-import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.*
 import org.jetbrains.kotlin.formver.viper.ast.DomainName
 import org.jetbrains.kotlin.formver.viper.ast.NamedDomainAxiomLabel
