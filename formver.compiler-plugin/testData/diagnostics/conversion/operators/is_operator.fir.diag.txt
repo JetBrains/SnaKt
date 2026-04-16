@@ -15,7 +15,7 @@ method f$notIsNullable$t$F$t$N$Int$t$Boolean(par$x: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
 {
-  ret$0 := sp$notBool(df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nothingType())))
+  ret$0 := df$notBool(df$rt$boolToRef(df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nothingType())))
   goto lbl$ret$0
   label lbl$ret$0
 }

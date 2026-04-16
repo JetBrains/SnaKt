@@ -247,11 +247,11 @@ method f$useRun$t$F$t$Unit() returns (ret$0: Ref)
     df$rt$intFromRef(anon$34) ==
     df$rt$intFromRef(anon$37))
   anon$0 := df$rt$intToRef(1)
-  ret$26 := sp$plusInts(anon$0, df$rt$intToRef(1))
+  ret$26 := df$plusInts(anon$0, df$rt$intToRef(1))
   goto lbl$ret$26
   label lbl$ret$26
   anon$1 := ret$26
-  ret$27 := sp$plusInts(anon$1, df$rt$intToRef(1))
+  ret$27 := df$plusInts(anon$1, df$rt$intToRef(1))
   goto lbl$ret$27
   label lbl$ret$27
   ret$25 := ret$27
@@ -263,7 +263,7 @@ method f$useRun$t$F$t$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(anon$2), df$rt$nullable(df$rt$anyType()))
   inhale df$rt$isSubtype(df$rt$typeOf(anon$2), df$rt$intType())
   anon$3 := anon$2
-  ret$29 := sp$plusInts(anon$3, df$rt$intToRef(2))
+  ret$29 := df$plusInts(anon$3, df$rt$intToRef(2))
   goto lbl$ret$29
   label lbl$ret$29
   anon$43 := ret$29
@@ -276,7 +276,7 @@ method f$useRun$t$F$t$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(anon$41), df$rt$intType())
   l0$genericReceiverResult := df$rt$boolToRef(df$rt$intFromRef(anon$41) ==
     3)
-  ret$31 := sp$plusInts(df$rt$intToRef(1), df$rt$intToRef(2))
+  ret$31 := df$plusInts(df$rt$intToRef(1), df$rt$intToRef(2))
   goto lbl$ret$31
   label lbl$ret$31
   l30$result := ret$31
@@ -292,9 +292,9 @@ method f$useRun$t$F$t$Unit() returns (ret$0: Ref)
   goto lbl$ret$32
   label lbl$ret$32
   anon$44 := ret$32
-  l0$cond2 := sp$notBool(anon$44)
+  l0$cond2 := df$notBool(anon$44)
   anon$4 := df$rt$intToRef(1)
-  ret$35 := sp$plusInts(anon$4, df$rt$intToRef(2))
+  ret$35 := df$plusInts(anon$4, df$rt$intToRef(2))
   goto lbl$ret$35
   label lbl$ret$35
   l34$result := ret$35
@@ -311,9 +311,9 @@ method f$useRun$t$F$t$Unit() returns (ret$0: Ref)
   goto lbl$ret$36
   label lbl$ret$36
   anon$45 := ret$36
-  l0$cond4 := sp$notBool(anon$45)
+  l0$cond4 := df$notBool(anon$45)
   anon$6 := df$rt$intToRef(1)
-  ret$39 := sp$plusInts(anon$6, df$rt$intToRef(2))
+  ret$39 := df$plusInts(anon$6, df$rt$intToRef(2))
   goto lbl$ret$39
   label lbl$ret$39
   l38$result := ret$39
@@ -322,7 +322,7 @@ method f$useRun$t$F$t$Unit() returns (ret$0: Ref)
   label lbl$ret$38
   l0$cond5 := ret$38
   anon$7 := df$rt$intToRef(1)
-  ret$41 := sp$plusInts(anon$7, df$rt$intToRef(2))
+  ret$41 := df$plusInts(anon$7, df$rt$intToRef(2))
   goto lbl$ret$41
   label lbl$ret$41
   l40$result := ret$41
@@ -331,11 +331,11 @@ method f$useRun$t$F$t$Unit() returns (ret$0: Ref)
   label lbl$ret$40
   l0$cond6 := ret$40
   anon$8 := df$rt$intToRef(1)
-  ret$43 := sp$plusInts(anon$8, df$rt$intToRef(1))
+  ret$43 := df$plusInts(anon$8, df$rt$intToRef(1))
   goto lbl$ret$43
   label lbl$ret$43
   anon$9 := ret$43
-  ret$44 := sp$plusInts(anon$9, df$rt$intToRef(1))
+  ret$44 := df$plusInts(anon$9, df$rt$intToRef(1))
   goto lbl$ret$44
   label lbl$ret$44
   l42$result := ret$44
@@ -394,11 +394,11 @@ method f$complexScenario$t$F$t$Boolean$t$Boolean(par$arg: Ref)
     anon$1 := anon$0
     inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$intType())
     anon$2 := anon$1
-    ret$8 := sp$plusInts(anon$2, df$rt$intToRef(1))
+    ret$8 := df$plusInts(anon$2, df$rt$intToRef(1))
     goto lbl$ret$8
     label lbl$ret$8
     anon$3 := ret$8
-    ret$9 := sp$plusInts(anon$3, df$rt$intToRef(1))
+    ret$9 := df$plusInts(anon$3, df$rt$intToRef(1))
     goto lbl$ret$9
     label lbl$ret$9
     ret$7 := ret$9
@@ -472,15 +472,15 @@ method f$complexScenario$t$F$t$Boolean$t$Boolean(par$arg: Ref)
     anon$5 := anon$4
     inhale df$rt$isSubtype(df$rt$typeOf(anon$5), df$rt$intType())
     anon$6 := anon$5
-    anon$7 := sp$plusInts(anon$6, df$rt$intToRef(1))
+    anon$7 := df$plusInts(anon$6, df$rt$intToRef(1))
     inhale df$rt$isSubtype(df$rt$typeOf(anon$7), df$rt$nullable(df$rt$anyType()))
     inhale df$rt$isSubtype(df$rt$typeOf(anon$7), df$rt$intType())
     anon$8 := anon$7
-    anon$9 := sp$plusInts(anon$8, df$rt$intToRef(1))
+    anon$9 := df$plusInts(anon$8, df$rt$intToRef(1))
     inhale df$rt$isSubtype(df$rt$typeOf(anon$9), df$rt$nullable(df$rt$anyType()))
     inhale df$rt$isSubtype(df$rt$typeOf(anon$9), df$rt$intType())
     anon$10 := anon$9
-    ret$19 := sp$plusInts(anon$10, df$rt$intToRef(1))
+    ret$19 := df$plusInts(anon$10, df$rt$intToRef(1))
     goto lbl$ret$19
     label lbl$ret$19
     anon$25 := ret$19

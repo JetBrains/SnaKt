@@ -17,10 +17,10 @@ method f$c$ClassWithExtension$applyDelta$t$F$t$ClassWithExtension$t$Int$t$Unit(t
   inhale acc(pred$c$ClassWithExtension$shared(this$dispatch), wildcard)
   unfold acc(pred$c$ClassWithExtension$shared(this$dispatch), wildcard)
   anon$0 := this$dispatch.bf$delta
-  l0$withoutLabels := sp$plusInts(this$extension, anon$0)
+  l0$withoutLabels := df$plusInts(this$extension, anon$0)
   unfold acc(pred$c$ClassWithExtension$shared(this$dispatch), wildcard)
   anon$1 := this$dispatch.bf$delta
-  l0$withLabels := sp$plusInts(anon$1, this$extension)
+  l0$withLabels := df$plusInts(anon$1, this$extension)
   assert df$rt$intFromRef(l0$withoutLabels) ==
     df$rt$intFromRef(l0$withLabels)
   label lbl$ret$0
@@ -118,7 +118,7 @@ method f$checkClassWithExtension$t$F$t$Unit() returns (ret$0: Ref)
   anon$2 := df$rt$intToRef(42)
   unfold acc(pred$c$ClassWithExtension$shared(anon$1), wildcard)
   anon$11 := anon$1.bf$delta
-  ret$3 := sp$plusInts(anon$2, anon$11)
+  ret$3 := df$plusInts(anon$2, anon$11)
   goto lbl$ret$3
   label lbl$ret$3
   anon$10 := ret$3

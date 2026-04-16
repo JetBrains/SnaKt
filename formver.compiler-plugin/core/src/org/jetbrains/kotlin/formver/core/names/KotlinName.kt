@@ -83,32 +83,14 @@ data class ConstructorKotlinName(val type: FunctionTypeEmbedding) : KotlinName {
         get() = type.name.mangledBaseName
 }
 
-// It's a bit of a hack to make this as KotlinName, it should really just be any old name, but right now our scoped
-// names are KotlinNames and changing that could be messy.
-data class PredicateKotlinName(val name: String) : KotlinName {
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = name
-    override val mangledType: NameType
-        get() = NameType.Predicate
-}
-
-data class HavocKotlinName(val type: TypeEmbedding) : KotlinName {
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = type.name.mangled
-    override val mangledType: NameType
-        get() = NameType.Havoc
-}
-
-data class PretypeName(val name: String) : KotlinName {
+data class PretypeName(val name: String) : SymbolicName {
 
     context(nameResolver: NameResolver)
     override val mangledBaseName: String
         get() = name
 }
 
-data class SetOfNames(val names: List<SymbolicName>) : KotlinName {
+data class ListOfNames<T : SymbolicName>(val names: List<T>) : SymbolicName {
     override val mangledType: NameType
         get() = NameType.Type
 
@@ -117,7 +99,17 @@ data class SetOfNames(val names: List<SymbolicName>) : KotlinName {
         get() = names.joinToString(SEPARATOR) { it.mangled }
 }
 
-data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : KotlinName {
+data class FunctionTypeName(val args: ListOfNames<TypeName>, val returns: TypeName) : SymbolicName {
+    context(nameResolver: NameResolver)
+    override val mangledBaseName: String
+        get() = buildString {
+            append(args.mangledBaseName)
+            if (isNotEmpty()) append(SEPARATOR)
+            append(returns.mangled)
+        }
+}
+
+data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : SymbolicName {
 
     override val mangledType: NameType
         get() = NameType.Type
@@ -130,5 +122,4 @@ data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : Kotl
             if (isNotEmpty()) append(SEPARATOR)
             append(pretype.name.mangledBaseName)
         }
-
 }

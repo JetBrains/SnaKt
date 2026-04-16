@@ -5,7 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
-import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
+import org.jetbrains.kotlin.formver.core.names.ScopedName
 
 /**
  * We use "pretype" to refer to types that do not contain information on nullability or
@@ -90,9 +90,9 @@ fun buildFunctionPretype(init: FunctionPretypeBuilder.() -> Unit): FunctionTypeE
     FunctionPretypeBuilder().apply(init).complete()
 
 class ClassPretypeBuilder : PretypeBuilder {
-    private var className: ScopedKotlinName? = null
+    private var className: ScopedName? = null
 
-    fun withName(name: ScopedKotlinName) {
+    fun withName(name: ScopedName) {
         require(className == null) { "Class name already set" }
         className = name
     }

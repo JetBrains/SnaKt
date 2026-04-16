@@ -20,7 +20,7 @@ internal sealed class NameMatcher(val name: SymbolicName) {
         }
     }
 
-    protected val scopedName = name as? ScopedKotlinName
+    protected val scopedName = name as? ScopedName
     protected val packageName = scopedName?.scope?.packageNameIfAny
     protected abstract val className: ClassKotlinName?
 

@@ -6,13 +6,20 @@
 package org.jetbrains.kotlin.formver.viper
 
 /**
+ * Interface to unify all structures that are names to something.
+ */
+interface AnyName
+
+
+/**
  * Represents a Kotlin name with its Viper equivalent.
  *
  * We could directly convert names and pass them around as strings, but this
  * approach makes it easier to see where they came from during debugging.
  */
 const val SEPARATOR = "$"
-interface SymbolicName {
+
+interface SymbolicName : AnyName {
     val mangledType: NameType?
         get() = null
     context(nameResolver: NameResolver)
@@ -36,7 +43,7 @@ val SymbolicName.debugMangled: String
 /**
  * Collects all types of names we can have.
  */
-sealed class NameType(val name: String) {
+sealed class NameType(val name: String) : AnyName {
 
     override fun toString(): String = name
 
@@ -58,5 +65,4 @@ sealed class NameType(val name: String) {
     object Variable : NameType("v")
     object Domain : NameType("d")
     object DomainFunction : NameType("df")
-    object Special : NameType("sp") // I think we should not have this. Like, what does special mean?
 }

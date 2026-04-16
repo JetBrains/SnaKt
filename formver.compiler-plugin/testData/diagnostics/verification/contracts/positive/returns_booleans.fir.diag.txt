@@ -95,19 +95,19 @@ method f$call_fun_with_contracts$t$F$t$Boolean$t$Boolean(par$b: Ref)
 }
 
 /returns_booleans.kt:(1268,1281): info: Generated Viper text for isNullOrEmpty:
-field sp$size: Ref
+field p$size: Ref
 
 method f$isNullOrEmpty$t$F$t$N$Collection$t$Boolean(this$extension: Ref)
   returns (ret$0: Ref)
   requires this$extension != df$rt$nullValue() ==>
-    acc(this$extension.sp$size, write)
+    acc(this$extension.p$size, write)
   requires this$extension != df$rt$nullValue() ==>
-    df$rt$intFromRef(this$extension.sp$size) >= 0
+    df$rt$intFromRef(this$extension.p$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$nullable(df$rt$c$pkg$kotlin_collections$Collection()))
   ensures this$extension != df$rt$nullValue() ==>
-    acc(this$extension.sp$size, write)
+    acc(this$extension.p$size, write)
   ensures this$extension != df$rt$nullValue() ==>
-    df$rt$intFromRef(this$extension.sp$size) >= 0
+    df$rt$intFromRef(this$extension.p$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures df$rt$boolFromRef(ret$0) == false ==>
     this$extension != df$rt$nullValue()
@@ -124,16 +124,16 @@ method f$isNullOrEmpty$t$F$t$N$Collection$t$Boolean(this$extension: Ref)
 
 method f$pkg$kotlin_collections$c$Collection$isEmpty$t$F$t$Collection$t$Boolean(this$dispatch: Ref)
   returns (ret: Ref)
-  requires acc(this$dispatch.sp$size, write)
-  requires df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  requires acc(this$dispatch.p$size, write)
+  requires df$rt$intFromRef(this$dispatch.p$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$pkg$kotlin_collections$Collection())
-  ensures acc(this$dispatch.sp$size, write)
-  ensures df$rt$intFromRef(this$dispatch.sp$size) >= 0
+  ensures acc(this$dispatch.p$size, write)
+  ensures df$rt$intFromRef(this$dispatch.p$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
-  ensures df$rt$intFromRef(this$dispatch.sp$size) ==
-    old(df$rt$intFromRef(this$dispatch.sp$size))
+  ensures df$rt$intFromRef(this$dispatch.p$size) ==
+    old(df$rt$intFromRef(this$dispatch.p$size))
   ensures df$rt$boolFromRef(ret) ==>
-    df$rt$intFromRef(this$dispatch.sp$size) == 0
+    df$rt$intFromRef(this$dispatch.p$size) == 0
   ensures !df$rt$boolFromRef(ret) ==>
-    df$rt$intFromRef(this$dispatch.sp$size) > 0
+    df$rt$intFromRef(this$dispatch.p$size) > 0
 
