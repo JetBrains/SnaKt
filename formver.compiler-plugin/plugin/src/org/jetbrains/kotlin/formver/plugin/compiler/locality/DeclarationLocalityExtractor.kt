@@ -5,7 +5,6 @@
 
 package org.jetbrains.kotlin.formver.plugin.compiler.locality
 
-import org.jetbrains.kotlin.fir.analysis.checkers.closestNonLocal
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.context.findClosest
 import org.jetbrains.kotlin.fir.declarations.FirControlFlowGraphOwner
