@@ -23,11 +23,11 @@ import org.jetbrains.kotlin.formver.viper.ast.UnqualifiedDomainFuncName
  */
 class SimpleNameResolver : NameResolver {
 
-    val cache = mutableMapOf<NamedEntity, String>()
+    val cache = mutableMapOf<AnyName, String>()
 
     companion object {
         private fun resolveParts(
-            name: NamedEntity,
+            name: AnyName,
             skipType: Boolean = false,
             skipScope: Boolean = false
         ): List<String> = when (name) {
@@ -79,7 +79,21 @@ class SimpleNameResolver : NameResolver {
 
             is UnqualifiedDomainFuncName -> listOf(name.baseName)
             is ListOfNames<*> -> name.names.flatMap { resolveParts(it, skipType, skipScope) }
-            is NameOfType -> resolveNameOfType(name, skipType, skipScope)
+            is FunctionTypeName -> resolveParts(
+                name.args,
+                skipType = false,
+                skipScope = skipScope
+            ) + resolveParts(
+                name.returns,
+                skipType = false,
+                skipScope = skipScope
+            )
+
+            is PretypeName -> listOf(name.name)
+            is TypeName -> resolveParts(name.nameType, skipType) + listOfNotNull(buildString {
+                if (name.nullable) append("N")
+                if (name.pretype is FunctionTypeEmbedding) append("F")
+            }.ifEmpty { null }) + resolveParts(name.pretype.name, skipType = true, skipScope = true)
             else -> throw SnaktInternalException(null, "Unexpected name type: ${name::class.simpleName}")
         }
 
@@ -132,28 +146,6 @@ class SimpleNameResolver : NameResolver {
             ) + listOf(name.name.asStringStripSpecialMarkers()) + resolveParts(name.type.name)
         }
 
-        private fun resolveNameOfType(
-            name: NameOfType,
-            skipType: Boolean,
-            skipScope: Boolean
-        ): List<String> = when (name) {
-            is FunctionTypeName -> resolveParts(
-                name.args,
-                skipType = false,
-                skipScope = skipScope
-            ) + resolveParts(
-                name.returns,
-                skipType = false,
-                skipScope = skipScope
-            )
-
-            is PretypeName -> listOf(name.name)
-            is TypeName -> resolveParts(name.nameType, skipType) + listOfNotNull(buildString {
-                if (name.nullable) append("N")
-                if (name.pretype is FunctionTypeEmbedding) append("F")
-            }.ifEmpty { null }) + resolveParts(name.pretype.name, skipType = true, skipScope = true)
-        }
-
         private fun resolveNameType(name: NameType): List<String> = when (name) {
             NameType.Member.Property -> listOf("p")
             NameType.Member.BackingField -> listOf("bf")
@@ -182,7 +174,7 @@ class SimpleNameResolver : NameResolver {
 
     override fun resolve() {}
 
-    override fun register(name: NamedEntity) {}
+    override fun register(name: AnyName) {}
 }
 
 
