@@ -61,7 +61,7 @@ fun CandidateName.fullName(): String = if (parts.size > 1) {
     parts.joinToString("") { it.fullName() }
 }
 
-fun NamedEntity.fullName(): String = candidates().last().fullName()
+fun AnyName.fullName(): String = candidates().last().fullName()
 
 
 // END UTILITY SECTION
@@ -95,7 +95,7 @@ class ShortNameResolver : NameResolver {
     /**
      * This Mapping stores the mangled names. It is only initialized after calling `mangle()`
      */
-    private lateinit var mangledNames: Map<NamedEntity, String>
+    private lateinit var mangledNames: Map<AnyName, String>
 
     private var _separator = "$"
     val separator
@@ -105,14 +105,14 @@ class ShortNameResolver : NameResolver {
      * Stores which candidate is currently used for a given name.
      * Since the name can depend on other names, recursive lookups may be necessary.
      */
-    private val currentCandidate = mutableMapOf<NamedEntity, Int>()
+    private val currentCandidate = mutableMapOf<AnyName, Int>()
 
     /**
      * Stores all the names that exist in the system.
      */
-    private val elements: MutableSet<NamedEntity> = ViperKeywords.keywords.toMutableSet()
+    private val elements: MutableSet<AnyName> = ViperKeywords.keywords.toMutableSet()
 
-    internal fun addElement(entity: NamedEntity) = elements.add(entity)
+    internal fun addElement(entity: AnyName) = elements.add(entity)
 
     /**
      * All names that appear in Viper. 
@@ -122,12 +122,12 @@ class ShortNameResolver : NameResolver {
     /**
      * Stores all the relations between names.
      */
-    private val tripleStore = mutableSetOf<Triple<NamedEntity, Relation, NamedEntity>>()
+    private val tripleStore = mutableSetOf<Triple<AnyName, Relation, AnyName>>()
 
     /**
      * Adds a relation between two entities.
      */
-    internal fun link(a: NamedEntity, rel: Relation, b: NamedEntity) {
+    internal fun link(a: AnyName, rel: Relation, b: AnyName) {
         tripleStore.add(Triple(a, rel, b))
         addElement(a)
         addElement(b)
@@ -153,23 +153,55 @@ class ShortNameResolver : NameResolver {
     /**
      * Returns true iff the ``entity`` is scoped. Meaning that there is a name, which wraps around `entity`
      */
-    private fun isScoped(entity: NamedEntity): Boolean =
+    private fun isScoped(entity: AnyName): Boolean =
         tripleStore.any { (a, rel, _) -> a == entity && rel == Relation.SCOPED_BY }
 
     /**
      * Returns the entities `elem` is dependent on.
      */
-    fun dependsOn(entity: NamedEntity): Set<NamedEntity> =
+    fun dependsOn(entity: AnyName): Set<AnyName> =
         tripleStore.filter { (a, rel, _) -> a == entity && rel == Relation.IS_PART_OF }.map { (_, _, b) -> b }.toSet()
 
-    fun isRepresented(entity: NamedEntity): Boolean = representedBy(entity) != null
-    fun representedBy(entity: NamedEntity): NamedEntity? =
+    fun isRepresented(entity: AnyName): Boolean = representedBy(entity) != null
+    fun representedBy(entity: AnyName): AnyName? =
         tripleStore.find { (a, rel, _) -> a == entity && rel == Relation.REPRESENTED_BY }?.third
 
 
-    override fun register(name: NamedEntity) = registerEntity(name)
+    override fun register(name: AnyName) = registerEntity(name)
 
-    private fun registerEntity(entity: NamedEntity) {
+    private fun registerFreshName(entity: FreshName) {
+        when (entity) {
+            is SsaVariableName -> {
+                link(entity.baseName, Relation.IS_PART_OF, entity)
+                registerEntity(entity.baseName)
+            }
+
+            DispatchReceiverName -> {}
+            is DomainAssociatedFuncName -> registerUserName(entity.name)
+            is DomainFuncParameterName -> registerUserName(entity.name)
+            ExtensionReceiverName -> {}
+            FunctionResultVariableName -> {}
+            is HavocName -> {
+                link(entity.type.name, Relation.IS_PART_OF, entity)
+                registerEntity(entity.type.name)
+            }
+
+            is AnonymousBuiltinName -> {}
+            is AnonymousName -> {}
+            is PlaceholderArgumentName -> {}
+            is ReturnVariableName -> {}
+            is BreakLabelName -> {}
+            is CatchLabelName -> {}
+            is ContinueLabelName -> {}
+            is ReturnLabelName -> {}
+            is TryExitLabelName -> {}
+            PlaceholderReturnVariableName -> {}
+            is PredicateName -> registerUserName(entity.name)
+            is SpecialFieldName -> registerUserName(entity.name)
+        }
+    }
+
+    private fun registerEntity(entity: AnyName) {
         if (elements.contains(entity)) return
         addElement(entity)
         when (entity) {
@@ -196,6 +228,7 @@ class ShortNameResolver : NameResolver {
                     registerEntity(it)
                 }
                 when (entity) {
+                    is FreshName -> registerFreshName(entity)
                     is ScopedName -> {
                         link(entity.name, Relation.SCOPED_BY, entity)
                         registerEntity(entity.name)
@@ -203,18 +236,10 @@ class ShortNameResolver : NameResolver {
                         registerEntity(entity.scope)
                     }
 
-                    is SsaVariableName -> {
-                        link(entity.baseName, Relation.IS_PART_OF, entity)
-                        registerEntity(entity.baseName)
-                    }
+
 
                     is ConstructorKotlinName -> {
                         link(entity.type.name, Relation.TYPE_OF, entity)
-                        registerEntity(entity.type.name)
-                    }
-
-                    is HavocName -> {
-                        link(entity.type.name, Relation.IS_PART_OF, entity)
                         registerEntity(entity.type.name)
                     }
 
@@ -262,8 +287,9 @@ class ShortNameResolver : NameResolver {
                     is SimpleKotlinName -> registerUserName(entity.name.asString())
                     is ClassKotlinName -> registerUserName(entity.name.asString())
                     is TypedKotlinName -> registerUserName(entity.name.asString())
-                    is SpecialFieldName -> registerUserName(entity.name)
-                    else -> {}
+                    else -> {
+                        throw SnaktInternalException(null, "Unsupported entity type: ${entity.javaClass.name}")
+                    }
                 }
             }
         }
@@ -278,14 +304,14 @@ class ShortNameResolver : NameResolver {
         name.fullName()
     }
 
-    fun current(entity: NamedEntity): String {
+    fun current(entity: AnyName): String {
         if (entity.candidates().isEmpty()) {
             print("empty candidates")
         }
         return currentCandidate(entity).name()
     }
 
-    private fun currentCandidate(name: NamedEntity): CandidateName {
+    private fun currentCandidate(name: AnyName): CandidateName {
         var representative = name
         // find the root of representation
         while (true) {
@@ -301,7 +327,7 @@ class ShortNameResolver : NameResolver {
     /**
      * The higher the priority, the earlier it is chosen
      */
-    fun priorityOrder(name: NamedEntity): Int = when (name) {
+    fun priorityOrder(name: AnyName): Int = when (name) {
         is SymbolicName -> when (name) {
             is FreshName -> when (name) {
                 is LabelName -> 5
@@ -310,7 +336,6 @@ class ShortNameResolver : NameResolver {
 
             is KotlinName -> 1
             is ScopedName -> 2
-            is NameOfType -> 3
             is DomainName -> 4
             else -> -1
         }
@@ -385,10 +410,10 @@ class ShortNameResolver : NameResolver {
      * - Sometimes we want to have name collisions, e.g., public fields with the same name can be merged. This behavior
      *   is captured with the representation system. Hence, names that are represented by someone else must not be considered.
      */
-    fun collisions(): Map<String, Set<NamedEntity>> {
+    fun collisions(): Map<String, Set<AnyName>> {
         val toConsider = elements.filter { endUpInViper(it) && !isRepresented(it) }
         val names = toConsider.map { Pair(current(it), it) }
-        val result = mutableMapOf<String, MutableSet<NamedEntity>>()
+        val result = mutableMapOf<String, MutableSet<AnyName>>()
         names.forEach { (name, entity) ->
             result.getOrPut(name) {
                 mutableSetOf()
@@ -400,20 +425,27 @@ class ShortNameResolver : NameResolver {
     /**
      * Returns true iff the ``entity`` could end up in viper.
      */
-    private fun endUpInViper(entity: NamedEntity): Boolean = when (entity) {
+    private fun endUpInViper(entity: AnyName): Boolean = when (entity) {
         is NameScope -> false // Just scopes should never appear as an actual name in viper
         is NameType -> false // Name Types are only used to distinguish what a name describes
         is SymbolicName -> {
             // maybe
             when (entity) {
-                is FreshName -> true
+                is FreshName -> when (entity) {
+                    is PredicateName -> false
+                    is HavocName -> !isScoped(entity)
+                    else -> true
+                }
                 is KotlinName -> !isScoped(entity)
                 is ScopedName -> (!isScoped(entity) && entity.name !is ClassKotlinName)
                 is DomainName -> true // the domain is used as a name
                 is NamedDomainAxiomLabel -> true
                 is QualifiedDomainFuncName -> true
                 is UnqualifiedDomainFuncName -> false
-                is NameOfType -> false
+                is TypeName -> false
+                is FunctionTypeName -> false
+                is PretypeName -> false
+                is ListOfNames<*> -> false
                 else -> true
             }
         }
@@ -428,7 +460,7 @@ class ShortNameResolver : NameResolver {
      * Moves `name` one position.
      * We generally try to move first the parts, and only if not successful do we move the `name`
      */
-    private fun move(entity: NamedEntity): Boolean {
+    private fun move(entity: AnyName): Boolean {
         val movableParts = currentCandidate(entity).moveableParts()
         // maybe some priority sorting?
         for (part in movableParts) {
@@ -445,7 +477,7 @@ class ShortNameResolver : NameResolver {
     /**
      * Returns true if `name` can be moved or one of the parts of the current candidate can be moved
      */
-    private fun canMove(entity: NamedEntity): Boolean {
+    private fun canMove(entity: AnyName): Boolean {
         val currentIndex = currentCandidate[entity] ?: 0
         if (currentIndex + 1 < entity.candidates().size) return true
         return currentCandidate(entity).moveableParts().any {
@@ -478,7 +510,7 @@ class ShortNameResolver : NameResolver {
                         is KotlinName -> "<kotlin>"
                         is ScopedName -> "<Kscope>"
                         is DomainName -> "<domain>"
-                        is NameOfType -> "<typeName>"
+                        is PretypeName -> "<typeName>"
                         else -> "<other>"
                     }
 
@@ -490,14 +522,14 @@ class ShortNameResolver : NameResolver {
             }
         }
 
-        fun candidates(entity: NamedEntity): String = entity.candidates().joinToString(nl) { candidateNameTemplate(it) }
+        fun candidates(entity: AnyName): String = entity.candidates().joinToString(nl) { candidateNameTemplate(it) }
 
-        fun id(entity: NamedEntity): String {
+        fun id(entity: AnyName): String {
             val hashCode = entity.hashCode() + entity::class.qualifiedName.hashCode()
             return "n${hashCode.absoluteValue}"
         }
 
-        fun nodeColor(entity: NamedEntity): String = if (endUpInViper(entity)) {
+        fun nodeColor(entity: AnyName): String = if (endUpInViper(entity)) {
             "lime"
         } else {
             "black"
@@ -509,7 +541,7 @@ class ShortNameResolver : NameResolver {
         sb.appendLine("node [shape=box];")
 
 
-        fun nodeLabel(entity: NamedEntity): String {
+        fun nodeLabel(entity: AnyName): String {
             var res = ""
             if (showCurrent) res += current(entity) + "$nl---$nl"
             res += candidates(entity)
@@ -517,7 +549,7 @@ class ShortNameResolver : NameResolver {
         }
 
         // Helper for labels
-        fun label(entity: NamedEntity): String = when (entity) {
+        fun label(entity: AnyName): String = when (entity) {
             is NameScope -> "Scope: "
             is NameType -> "Type: "
             is SymbolicName -> {
@@ -528,7 +560,7 @@ class ShortNameResolver : NameResolver {
                         is FreshName -> "Fresh: "
                         is KotlinName -> "Kotlin: "
                         is ScopedName -> "Scoped: "
-                        is NameOfType -> "NameOfType: "
+                        is PretypeName -> "PretypeName: "
                         is DomainName -> "Domain: "
                         is NamedDomainAxiomLabel -> "Axiom: "
                         is QualifiedDomainFuncName -> "Qual Func: "
