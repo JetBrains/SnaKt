@@ -4,12 +4,13 @@ import org.jetbrains.kotlin.formver.viper.errors.GenericConsistencyError
 import org.jetbrains.kotlin.formver.viper.errors.VerificationError
 import org.jetbrains.kotlin.formver.viper.errors.VerifierError
 import viper.silver.reporter.StdIOReporter
+import java.io.Closeable
 
 /**
  * Passes Viper programs for verification to the Silicon backend via [viper.silicon.SiliconFrontendAPI].
  * Use [SiliconFrontend.verify] to consistency-check and verify a given program.
  */
-class SiliconFrontend(commandLineArgs: List<String>) {
+class SiliconFrontend(commandLineArgs: List<String>) : Closeable {
     private val siliconApi: viper.silicon.SiliconFrontendAPI
 
     init {
@@ -42,7 +43,7 @@ class SiliconFrontend(commandLineArgs: List<String>) {
             for (error in result.errors()) {
                 when (error) {
                     is viper.silver.verifier.VerificationError ->
-                        onFailure(VerificationError.fromSilver(error))
+                        onFailure(VerificationError(error))
                     is viper.silver.verifier.ConsistencyError ->
                         onFailure(GenericConsistencyError(error))
                 }
@@ -50,7 +51,7 @@ class SiliconFrontend(commandLineArgs: List<String>) {
         }
     }
 
-    fun stop() {
+    override fun close() {
         siliconApi.stop()
     }
 }

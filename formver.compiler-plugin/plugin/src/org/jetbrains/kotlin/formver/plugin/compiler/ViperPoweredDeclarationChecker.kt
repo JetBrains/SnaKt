@@ -87,12 +87,7 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
             }
             if (!config.shouldVerify(declaration)) return
 
-            val frontend = SiliconFrontend(emptyList())
-            try {
-                frontend.verify(viperProgram, onFailure)
-            } finally {
-                frontend.stop()
-            }
+            SiliconFrontend(emptyList()).use { it.verify(viperProgram, onFailure) }
         } catch (e: SnaktInternalException) {
             reporter.reportOn(e.source, PluginErrors.INTERNAL_ERROR, e.message)
         } catch (e: Exception) {
