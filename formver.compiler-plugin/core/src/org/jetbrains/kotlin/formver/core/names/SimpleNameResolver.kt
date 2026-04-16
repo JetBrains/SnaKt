@@ -31,7 +31,7 @@ class SimpleNameResolver : NameResolver {
         ): List<String> = when (name) {
             is NameScope -> resolveNameScope(name, skipScope)
             is SymbolicName -> resolveSymbolicName(name, skipType, skipScope)
-            is NameType -> if (skipType) emptyList() else resolveNameType(name)
+            is NameType -> if (skipType) emptyList() else listOf(resolveNameType(name))
             else -> throw SnaktInternalException(null, "Unexpected name type: ${name::class.simpleName}")
         }
 
@@ -60,7 +60,7 @@ class SimpleNameResolver : NameResolver {
         ): List<String> = when (name) {
             is FreshName -> resolveFreshName(name, skipType)
             is KotlinName -> resolveKotlinName(name, skipType)
-            is ScopedName -> resolveOptionalNameType(name.nameType, skipType) + resolveParts(
+            is ScopedName -> listOfNotNull(resolveOptionalNameType(name.nameType, skipType)) + resolveParts(
                 name.scope, skipScope = skipScope
             ) + resolveParts(name.name, skipType = name.nameType == name.name.nameType, skipScope = skipScope)
 
@@ -102,7 +102,7 @@ class SimpleNameResolver : NameResolver {
                 PlaceholderReturnVariableName -> listOf("ret")
                 is SpecialFieldName -> listOf(name.name)
             }
-            return typeParts + nameParts
+            return listOfNotNull(typeParts) + nameParts
         }
 
         private fun resolveNumberedName(name: NumberedName): List<String> = when (name) {
@@ -134,28 +134,28 @@ class SimpleNameResolver : NameResolver {
             ) + listOf(name.name.asStringStripSpecialMarkers()) + resolveParts(name.type.name)
         }
 
-        private fun resolveOptionalNameType(name: NameType?, skipType: Boolean): List<String> =
-            if (name == null || skipType) emptyList() else {
+        private fun resolveOptionalNameType(name: NameType?, skipType: Boolean): String? =
+            if (name == null || skipType) null else {
                 resolveNameType(name)
             }
 
-        private fun resolveNameType(name: NameType): List<String> = when (name) {
-            NameType.Member.Property -> listOf("p")
-            NameType.Member.BackingField -> listOf("bf")
-            NameType.Member.Getter -> listOf("g")
-            NameType.Member.Setter -> listOf("s")
-            NameType.Member.ExtensionSetter -> listOf("es")
-            NameType.Member.ExtensionGetter -> listOf("eg")
-            NameType.TypeCategory.GeneralType -> listOf("t")
-            NameType.TypeCategory.Class -> listOf("c")
-            NameType.Base.Constructor -> listOf("con")
-            NameType.Base.Function -> listOf("f")
-            NameType.Base.Predicate -> listOf("pred")
-            NameType.Base.Havoc -> listOf("havoc")
-            NameType.Base.Label -> listOf("lbl")
-            NameType.Base.Variable -> listOf("v")
-            NameType.Base.Domain -> listOf("d")
-            NameType.Base.DomainFunction -> listOf("df")
+        private fun resolveNameType(name: NameType): String = when (name) {
+            NameType.Member.Property -> "p"
+            NameType.Member.BackingField -> "bf"
+            NameType.Member.Getter -> "g"
+            NameType.Member.Setter -> "s"
+            NameType.Member.ExtensionSetter -> "es"
+            NameType.Member.ExtensionGetter -> "eg"
+            NameType.TypeCategory.GeneralType -> "t"
+            NameType.TypeCategory.Class -> "c"
+            NameType.Base.Constructor -> "con"
+            NameType.Base.Function -> "f"
+            NameType.Base.Predicate -> "pred"
+            NameType.Base.Havoc -> "havoc"
+            NameType.Base.Label -> "lbl"
+            NameType.Base.Variable -> "v"
+            NameType.Base.Domain -> "d"
+            NameType.Base.DomainFunction -> "df"
         }
 
         fun debugResolve(name: SymbolicName): String = resolveParts(name).joinToString(SEPARATOR)
