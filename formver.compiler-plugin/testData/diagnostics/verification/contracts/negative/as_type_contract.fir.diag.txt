@@ -24,5 +24,3 @@ method getX(a: Ref) returns (ret_0: Ref)
   goto lbl_ret_0
   label lbl_ret_0
 }
-
-/as_type_contract.kt:(194,236): warning: Cannot verify that if a non-null value is returned then a !is IntHolder.
