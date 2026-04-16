@@ -41,6 +41,9 @@ dependencies {
     testFixturesApi(kotlin("compiler"))
     testFixturesImplementation(project(":formver.common"))
     testFixturesImplementation(project(":formver.compiler-plugin:plugin"))
+    testFixturesApi(project(":formver.compiler-plugin:viper"))
+    testFixturesApi("viper:silicon_2.13:1.2-SNAPSHOT")
+    testFixturesImplementation(project(":formver.compiler-plugin:core"))
 
     annotationsRuntimeClasspath(project(":formver.annotations"))
 
@@ -98,6 +101,7 @@ tasks.test {
     inputs.property("formver.testMode", "normal")
     systemProperty("formver.conversionOnly", "false")
     exclude("**/FirLightTreeFormVerPluginNoVerificationDiagnosticsTestGenerated*")
+    exclude("**/FirLightTreeFormVerPluginDiagnosticsTestGenerated.java*")
 }
 
 // ./gradlew testNoVerification — all tests in conversion-only mode
@@ -120,6 +124,36 @@ tasks.register<Test>("testBothModes") {
     classpath = tasks.test.get().classpath
     configureFormverTest()
     inputs.property("formver.testMode", "bothModes")
+    systemProperty("formver.conversionOnly", "false")
+}
+
+tasks.register<Test>("PhasedFULL") {
+    description = "Runs until verification"
+    group = "verification"
+    testClassesDirs = tasks.test.get().testClassesDirs
+    classpath = tasks.test.get().classpath
+    configureFormverTest()
+    systemProperty("formver.testMode", "FULL")
+    systemProperty("formver.conversionOnly", "false")
+}
+
+tasks.register<Test>("PhasedCONVERSION") {
+    description = "Runs until conversion"
+    group = "verification"
+    testClassesDirs = tasks.test.get().testClassesDirs
+    classpath = tasks.test.get().classpath
+    configureFormverTest()
+    systemProperty("formver.testMode", "CHECK_CONVERSION")
+    systemProperty("formver.conversionOnly", "false")
+}
+
+tasks.register<Test>("PhasedUPDATE") {
+    description = "Runs conversion and verification iff conversion changed"
+    group = "verification"
+    testClassesDirs = tasks.test.get().testClassesDirs
+    classpath = tasks.test.get().classpath
+    configureFormverTest()
+    systemProperty("formver.testMode", "UPDATE")
     systemProperty("formver.conversionOnly", "false")
 }
 
