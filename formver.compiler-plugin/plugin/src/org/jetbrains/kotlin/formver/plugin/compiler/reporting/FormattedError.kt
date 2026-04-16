@@ -11,7 +11,8 @@ import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.diagnostics.FirDiagnosticRenderers
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
-import org.jetbrains.kotlin.formver.plugin.compiler.PluginErrors
+import org.jetbrains.kotlin.formver.plugin.compiler.VerificationErrors
+import org.jetbrains.kotlin.formver.plugin.compiler.reporting.SourceRoleConditionPrettyPrinter.prettyPrint
 import org.jetbrains.kotlin.formver.viper.ast.info
 import org.jetbrains.kotlin.formver.viper.ast.unwrapOr
 import org.jetbrains.kotlin.formver.viper.errors.VerificationError
@@ -31,8 +32,10 @@ class ReturnsEffectError(private val sourceRole: SourceRole.ReturnsEffect) : For
 
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun report(source: KtSourceElement?) {
-        reporter.reportOn(source, PluginErrors.UNEXPECTED_RETURNED_VALUE, sourceRole.asUserFriendlyMessage)
+        reporter.reportOn(source, VerificationErrors.UNEXPECTED_RETURNED_VALUE, msg())
     }
+
+    fun msg(): String = sourceRole.asUserFriendlyMessage
 }
 
 class ConditionalEffectError(private val sourceRole: SourceRole.ConditionalEffect) : FormattedError {
@@ -44,20 +47,22 @@ class ConditionalEffectError(private val sourceRole: SourceRole.ConditionalEffec
 
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun report(source: KtSourceElement?) {
-        val (returnEffect, condition) = sourceRole
-        val returnEffectMsg = returnEffect.asUserFriendlyMessage
-        val conditionPrettyPrinted = with(SourceRoleConditionPrettyPrinter) {
-            condition.prettyPrint()
-        }
-        reporter.reportOn(source, PluginErrors.CONDITIONAL_EFFECT_ERROR, returnEffectMsg, conditionPrettyPrinted)
+        val (returnEffectMsg, conditionPrettyPrinted) = msg()
+        reporter.reportOn(source, VerificationErrors.CONDITIONAL_EFFECT_ERROR, returnEffectMsg, conditionPrettyPrinted)
+    }
+
+    fun msg(): Pair<String, String> = sourceRole.let { (returnEffect, condition) ->
+        returnEffect.asUserFriendlyMessage to condition.prettyPrint()
     }
 }
 
 class DefaultError(private val error: VerificationError) : FormattedError {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun report(source: KtSourceElement?) {
-        reporter.reportOn(source, PluginErrors.VIPER_VERIFICATION_ERROR, error.msg)
+        reporter.reportOn(source, VerificationErrors.VIPER_VERIFICATION_ERROR, msg())
     }
+
+    fun msg(): String = error.msg
 }
 
 class IndexOutOfBoundError(
@@ -78,14 +83,19 @@ class IndexOutOfBoundError(
          * When we are dealing with inlined expressions returning a list, we do not have access to any list symbol.
          * Therefore, we do not report any name since the compiler would highlight the sub-expression causing the problem.
          */
-        val targetListInfo = error.locationNode.asCallable().arg(0).info
-        val targetList = targetListInfo.unwrapOr<SourceRole.FirSymbolHolder> { null }
+        val (targetInfo, userFriendlyMessage) = msg()
         reporter.reportOn(
             source,
-            PluginErrors.POSSIBLE_INDEX_OUT_OF_BOUND,
-            targetList.formatListMessage(),
-            sourceRole.accessType.asUserFriendlyMessage,
+            VerificationErrors.POSSIBLE_INDEX_OUT_OF_BOUND,
+            targetInfo,
+            userFriendlyMessage,
         )
+    }
+
+    fun msg(): Pair<String, String> {
+        val targetListInfo = error.locationNode.asCallable().arg(0).info
+        val targetList = targetListInfo.unwrapOr<SourceRole.FirSymbolHolder> { null }
+        return targetList.formatListMessage() to sourceRole.accessType.asUserFriendlyMessage
     }
 }
 
@@ -101,14 +111,19 @@ class InvalidSubListRangeError(
 
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun report(source: KtSourceElement?) {
-        val targetListInfo = error.locationNode.asCallable().arg(0).info
-        val targetList = targetListInfo.unwrapOr<SourceRole.FirSymbolHolder> { null }
+        val (targetInfo, userFriendlyMessage) = msg()
         reporter.reportOn(
             source,
-            PluginErrors.INVALID_SUBLIST_RANGE,
-            targetList.formatListMessage(),
-            sourceRole.asUserFriendlyMessage,
+            VerificationErrors.INVALID_SUBLIST_RANGE,
+            targetInfo,
+            userFriendlyMessage,
         )
+    }
+
+    fun msg(): Pair<String, String> {
+        val targetListInfo = error.locationNode.asCallable().arg(0).info
+        val targetList = targetListInfo.unwrapOr<SourceRole.FirSymbolHolder> { null }
+        return targetList.formatListMessage() to sourceRole.asUserFriendlyMessage
     }
 }
 
