@@ -25,6 +25,8 @@ class SimpleNameResolver : NameResolver {
     val cache = mutableMapOf<AnyName, String>()
 
     companion object {
+
+
         private fun resolveParts(
             name: AnyName,
             skipType: Boolean = false,
@@ -78,7 +80,7 @@ class SimpleNameResolver : NameResolver {
 
             is UnqualifiedDomainFuncName -> listOf(name.baseName)
             is ListOfNames<*> -> name.names.flatMap { resolveParts(it, skipType, skipScope) }
-            is FunctionTypeName -> resolveParts(
+            is FunctionTypeName -> resolveOptionalNameType(name.nameType, skipType) + resolveParts(
                 name.args,
                 skipType = false,
                 skipScope = skipScope
@@ -88,8 +90,8 @@ class SimpleNameResolver : NameResolver {
                 skipScope = skipScope
             )
 
-            is PretypeName -> listOf(name.name)
-            is TypeName -> (name.nameType?.let { resolveParts(it, skipType) } ?: emptyList()) + listOfNotNull(
+            is PretypeName -> resolveOptionalNameType(name.nameType, skipType) + listOf(name.name)
+            is TypeName -> resolveOptionalNameType(name.nameType, skipType) + listOfNotNull(
                 buildString {
                     if (name.nullable) append("N")
                     if (name.pretype is FunctionTypeEmbedding) append("F")
@@ -99,7 +101,7 @@ class SimpleNameResolver : NameResolver {
 
         private fun resolveFreshName(name: FreshName, skipType: Boolean): List<String> {
             val typeParts = name.nameType.takeIf { it != NameType.Base.Variable }
-                ?.let { resolveParts(it, skipType) } ?: emptyList()
+                ?.let { resolveOptionalNameType(it, skipType) } ?: emptyList()
             val nameParts = when (name) {
                 is NumberedName -> resolveNumberedName(name)
                 is PredicateName -> listOf(name.name)
@@ -133,7 +135,7 @@ class SimpleNameResolver : NameResolver {
 
         private fun resolveKotlinName(name: KotlinName, skipType: Boolean): List<String> = when (name) {
             is ClassKotlinName -> resolveParts(name.nameType, skipType) + listOf(name.name.asViperString())
-            is ConstructorKotlinName -> resolveParts(name.nameType, skipType) + resolveParts(name.type.name)
+            is ConstructorKotlinName -> resolveParts(name.nameType, skipType) + resolveParts(name.type.name, true)
             is SimpleKotlinName -> listOf(name.name.asStringStripSpecialMarkers())
             is TypedKotlinName -> resolveParts(
                 name.nameType,
@@ -144,6 +146,11 @@ class SimpleNameResolver : NameResolver {
                 name.nameType,
                 skipType
             ) + listOf(name.name.asStringStripSpecialMarkers()) + resolveParts(name.type.name)
+        }
+
+        private fun resolveOptionalNameType(name: NameType?, skipType: Boolean): List<String> {
+            if (skipType || name == null) return emptyList()
+            return resolveParts(name)
         }
 
         private fun resolveNameType(name: NameType): List<String> = when (name) {

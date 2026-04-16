@@ -6,11 +6,8 @@
 package org.jetbrains.kotlin.formver.core.names
 
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
-import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.NameType
-import org.jetbrains.kotlin.formver.viper.NameType.Label
 import org.jetbrains.kotlin.formver.viper.SymbolicName
-import org.jetbrains.kotlin.formver.viper.mangled
 
 /* This file contains mangled names for constructs introduced during the conversion to Viper.
  *

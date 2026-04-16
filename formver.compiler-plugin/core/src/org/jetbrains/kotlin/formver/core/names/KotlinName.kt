@@ -60,10 +60,12 @@ data class ConstructorKotlinName(val type: FunctionTypeEmbedding) : KotlinName {
 
 data class PretypeName(val name: String) : SymbolicName
 
-data class ListOfNames<T : SymbolicName>(val names: List<T>) : SymbolicName {
+data class ListOfNames<T : SymbolicName>(val names: List<T>) : SymbolicName
+
+data class FunctionTypeName(val args: ListOfNames<TypeName>, val returns: TypeName) : SymbolicName {
     override val nameType: NameType = NameType.TypeCategory.GeneralType
 }
 
-data class FunctionTypeName(val args: ListOfNames<TypeName>, val returns: TypeName) : SymbolicName
-
-data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : SymbolicName
+data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : SymbolicName {
+    override val nameType: NameType = NameType.TypeCategory.GeneralType
+}
