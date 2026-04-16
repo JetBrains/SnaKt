@@ -1,3 +1,4 @@
+// FULL_JDK
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 

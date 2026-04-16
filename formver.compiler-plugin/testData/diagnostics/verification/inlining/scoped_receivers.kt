@@ -1,3 +1,4 @@
+// FULL_JDK
 // REPLACE_STDLIB_EXTENSIONS
 
 import org.jetbrains.kotlin.formver.plugin.NeverConvert

@@ -138,7 +138,6 @@ abstract class AbstractPhasedDiagnosticTest() : AbstractKotlinCompilerWithTarget
             LATEST_PHASE_IN_PIPELINE with TestPhase.FRONTEND
             +ENABLE_PLUGIN_PHASES
             +RENDER_DIAGNOSTICS_FULL_TEXT
-            +JvmEnvironmentConfigurationDirectives.FULL_JDK
             LANGUAGE with "+PropertyParamAnnotationDefaultTargetMode"
         }
         commonServicesConfigurationForCodegenAndDebugTest(FrontendKinds.FIR)
