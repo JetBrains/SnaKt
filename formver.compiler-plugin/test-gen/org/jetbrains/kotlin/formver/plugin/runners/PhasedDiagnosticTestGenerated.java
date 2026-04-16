@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 @SuppressWarnings("all")
 @TestMetadata("formver.compiler-plugin/testData/diagnostics")
 @TestDataPath("$PROJECT_ROOT")
-public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractFirLightTreeFormVerPluginDiagnosticsTest {
+public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest {
   @Test
   public void testAllFilesPresentInDiagnostics() {
     KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics"), Pattern.compile("^(.+)\\.kt$"), null, true);
