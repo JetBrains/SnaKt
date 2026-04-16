@@ -3,8 +3,8 @@ package org.jetbrains.kotlin.formver.names
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.core.names.shortNameResolver.ViperKeyword
+import org.jetbrains.kotlin.formver.viper.AnyName
 import org.jetbrains.kotlin.formver.viper.NameType
-import org.jetbrains.kotlin.formver.viper.NamedEntity
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.DomainName
 import org.jetbrains.kotlin.formver.viper.ast.NamedDomainAxiomLabel
@@ -41,7 +41,7 @@ private fun nameWithPrefixCandidates(name: String, nameType: NameType): List<Can
     }
 }
 
-private fun nameWithDependentPrefixCandidates(name: String, prefix: NamedEntity): List<CandidateName> =
+private fun nameWithDependentPrefixCandidates(name: String, prefix: AnyName): List<CandidateName> =
     buildCandidates {
     candidate { +name }
     candidate {
@@ -50,7 +50,7 @@ private fun nameWithDependentPrefixCandidates(name: String, prefix: NamedEntity)
     }
 }
 
-private fun nameWithDependentPrefixCandidates(name: NamedEntity, prefix: NamedEntity): List<CandidateName> =
+private fun nameWithDependentPrefixCandidates(name: AnyName, prefix: AnyName): List<CandidateName> =
     buildCandidates {
         candidate { +name }
         candidate {
@@ -60,7 +60,7 @@ private fun nameWithDependentPrefixCandidates(name: NamedEntity, prefix: NamedEn
     }
 
 
-fun NamedEntity.candidates(): List<CandidateName> = when (this) {
+fun AnyName.candidates(): List<CandidateName> = when (this) {
     is NameScope -> candidates()
     is SymbolicName -> candidates()
     is NameType -> candidates()
@@ -75,7 +75,13 @@ fun NameScope.candidates(): List<CandidateName> = when (this) {
     is ClassScope -> nameWithDependentPrefixCandidates(className, parent)
 
     is FakeScope -> nameOnlyCandidates("fake")
-    is LocalScope -> nameOnlyCandidates(listOf("l", "$level"))
+    is LocalScope -> buildCandidates {
+        candidate {
+            +"l"
+            noSeparator
+            +"$level"
+        }
+    }
 
     is PackageScope -> buildCandidates {
         val split = packageName.asString().split(".")
@@ -92,8 +98,8 @@ fun NameScope.candidates(): List<CandidateName> = when (this) {
 }
 
 fun SymbolicName.candidates(): List<CandidateName> = when (this) {
-    is FreshName -> candidates()
     is KotlinName -> candidates()
+    is FreshName -> candidates()
     is ScopedName -> buildCandidates {
         +nameWithDependentPrefixCandidates(name, scope)
         if (nameType != null) {
@@ -131,7 +137,29 @@ fun SymbolicName.candidates(): List<CandidateName> = when (this) {
             +names
         }
     }
-    is NameOfType -> candidates()
+    is FunctionTypeName -> buildCandidates {
+        candidate {
+            +returns
+        }
+        candidate {
+            +"args"
+            +args
+            +"ret"
+            +returns
+        }
+    }
+
+    is PretypeName -> nameOnlyCandidates(name)
+    is TypeName -> buildCandidates {
+        candidate {
+            +pretype.name
+        }
+        candidate {
+            if (nullable) +"N"
+            noSeparator
+            +pretype.name
+        }
+    }
     else -> throw SnaktInternalException(null, "Unexpected name type: ${this::class.simpleName}")
 }
 
@@ -179,7 +207,7 @@ fun FreshName.candidates(): List<CandidateName> = when (this) {
             +n.toString()
         }
     }
-    is PredicateName -> nameWithPrefixCandidates(name, nameType)
+    is PredicateName -> nameOnlyCandidates(name)
     DispatchReceiverName -> nameWithPrefixCandidates("this", nameType)
     is DomainAssociatedFuncName -> nameWithPrefixCandidates(name, nameType)
     is DomainFuncParameterName -> nameWithPrefixCandidates(name, nameType)
@@ -238,32 +266,6 @@ fun KotlinName.candidates(): List<CandidateName> = when (this) {
             +nameType
             +name.asStringStripSpecialMarkers()
             +type.name
-        }
-    }
-}
-
-fun NameOfType.candidates(): List<CandidateName> = when (this) {
-    is FunctionTypeName -> buildCandidates {
-        candidate {
-            +returns
-        }
-        candidate {
-            +"args"
-            +args
-            +"ret"
-            +returns
-        }
-    }
-
-    is PretypeName -> nameOnlyCandidates(name)
-    is TypeName -> buildCandidates {
-        candidate {
-            +pretype.name
-        }
-        candidate {
-            if (nullable) +"N"
-            noSeparator
-            +pretype.name
         }
     }
 }
