@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.plugin.compiler.locality
 
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
+import org.jetbrains.kotlin.fir.analysis.checkers.context.findClosest
 import org.jetbrains.kotlin.fir.declarations.FirControlFlowGraphOwner
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirProperty
@@ -50,12 +51,10 @@ private fun FirControlFlowGraphOwner.declares(property: FirProperty): Boolean =
 @OptIn(SymbolInternals::class)
 context(context: CheckerContext)
 private fun FirProperty.resolveOwner(): FirBasedSymbol<*>? =
-    context.containingDeclarations
-        .asReversed()
-        .firstOrNull { declarationSymbol ->
-            val declaration = declarationSymbol.fir as? FirControlFlowGraphOwner ?: return@firstOrNull false
-            declaration.declares(this)
-        }
+    context.findClosest { declarationSymbol ->
+        val declaration = declarationSymbol.fir as? FirControlFlowGraphOwner ?: return@findClosest false
+        declaration.declares(this)
+    }
 
 private object ActualLocalityExtractor : DeclarationLocalityExtractor() {
     context(_: CheckerContext)
