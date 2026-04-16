@@ -27,9 +27,7 @@ class SimpleNameResolver : NameResolver {
 
     companion object {
         private fun resolveParts(
-            name: AnyName,
-            skipType: Boolean = false,
-            skipScope: Boolean = false
+            name: AnyName, skipType: Boolean = false, skipScope: Boolean = false
         ): List<String> = when (name) {
             is NameScope -> resolveNameScope(name, skipScope)
             is SymbolicName -> resolveSymbolicName(name, skipType, skipScope)
@@ -38,8 +36,7 @@ class SimpleNameResolver : NameResolver {
         }
 
         private fun resolveNameScope(
-            name: NameScope,
-            skipScope: Boolean
+            name: NameScope, skipScope: Boolean
         ): List<String> = when (name) {
             is BadScope -> listOf("<BAD>")
             is ClassScope -> (if (skipScope) emptyList() else resolveParts(name.parent)) + resolveParts(name.className)
@@ -59,34 +56,26 @@ class SimpleNameResolver : NameResolver {
         }
 
         private fun resolveSymbolicName(
-            name: SymbolicName,
-            skipType: Boolean,
-            skipScope: Boolean
+            name: SymbolicName, skipType: Boolean, skipScope: Boolean
         ): List<String> = when (name) {
             is FreshName -> resolveFreshName(name, skipType)
             is KotlinName -> resolveKotlinName(name, skipType)
-            is ScopedName -> (name.nameType?.let { resolveParts(it, skipType) } ?: emptyList()) + resolveParts(
-                name.scope,
-                skipScope = skipScope
+            is ScopedName -> resolveOptionalNameType(name.nameType, skipType) + resolveParts(
+                name.scope, skipScope = skipScope
             ) + resolveParts(name.name, skipType = name.nameType == name.name.nameType, skipScope = skipScope)
 
             is DomainName -> resolveParts(name.nameType, skipType) + listOf(name.baseName)
             is NamedDomainAxiomLabel -> resolveParts(name.domainName, true) + listOf(name.baseName)
             is QualifiedDomainFuncName -> resolveParts(name.nameType, skipType) + resolveParts(
-                name.domainName,
-                true
+                name.domainName, true
             ) + resolveParts(name.funcName)
 
             is UnqualifiedDomainFuncName -> listOf(name.baseName)
             is ListOfNames<*> -> name.names.flatMap { resolveParts(it, skipType, skipScope) }
             is FunctionTypeName -> resolveParts(
-                name.args,
-                skipType = false,
-                skipScope = skipScope
+                name.args, skipType = false, skipScope = skipScope
             ) + resolveParts(
-                name.returns,
-                skipType = false,
-                skipScope = skipScope
+                name.returns, skipType = false, skipScope = skipScope
             )
 
             is PretypeName -> listOf(name.name)
@@ -94,12 +83,13 @@ class SimpleNameResolver : NameResolver {
                 if (name.nullable) append("N")
                 if (name.pretype is FunctionTypeEmbedding) append("F")
             }.ifEmpty { null }) + resolveParts(name.pretype.name, skipType = true, skipScope = true)
+
             else -> throw SnaktInternalException(null, "Unexpected name type: ${name::class.simpleName}")
         }
 
         private fun resolveFreshName(name: FreshName, skipType: Boolean): List<String> {
-            val typeParts = name.nameType.takeIf { it != NameType.Base.Variable }
-                ?.let { resolveParts(it, skipType) } ?: emptyList()
+            val typeParts =
+                name.nameType.takeIf { it != NameType.Base.Variable }.let { resolveOptionalNameType(it, skipType) }
             val nameParts = when (name) {
                 is NumberedName -> resolveNumberedName(name)
                 is PredicateName -> listOf(name.name)
@@ -136,15 +126,18 @@ class SimpleNameResolver : NameResolver {
             is ConstructorKotlinName -> resolveParts(name.nameType, skipType) + resolveParts(name.type.name)
             is SimpleKotlinName -> listOf(name.name.asStringStripSpecialMarkers())
             is TypedKotlinName -> resolveParts(
-                name.nameType,
-                skipType
+                name.nameType, skipType
             ) + listOf(name.name.asStringStripSpecialMarkers())
 
             is TypedKotlinNameWithType -> resolveParts(
-                name.nameType,
-                skipType
+                name.nameType, skipType
             ) + listOf(name.name.asStringStripSpecialMarkers()) + resolveParts(name.type.name)
         }
+
+        private fun resolveOptionalNameType(name: NameType?, skipType: Boolean): List<String> =
+            if (name == null || skipType) emptyList() else {
+                resolveNameType(name)
+            }
 
         private fun resolveNameType(name: NameType): List<String> = when (name) {
             NameType.Member.Property -> listOf("p")
