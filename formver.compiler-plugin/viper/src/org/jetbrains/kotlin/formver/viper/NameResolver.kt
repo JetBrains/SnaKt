@@ -28,5 +28,5 @@ interface NameResolver {
     /**
      * Register a new name which later can be resolved by [lookup].
      */
-    fun register(name: NamedEntity)
+    fun register(name: AnyName)
 }
