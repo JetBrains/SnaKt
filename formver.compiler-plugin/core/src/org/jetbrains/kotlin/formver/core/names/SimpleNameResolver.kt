@@ -4,10 +4,6 @@ import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.*
-import org.jetbrains.kotlin.formver.viper.ast.DomainName
-import org.jetbrains.kotlin.formver.viper.ast.NamedDomainAxiomLabel
-import org.jetbrains.kotlin.formver.viper.ast.QualifiedDomainFuncName
-import org.jetbrains.kotlin.formver.viper.ast.UnqualifiedDomainFuncName
 
 /**
  * Resolves mangled names into Viper identifiers while maintaining uniqueness.
@@ -134,12 +130,12 @@ class SimpleNameResolver : NameResolver {
             ) + listOf(name.name.asStringStripSpecialMarkers()) + resolveParts(name.type.name)
         }
 
-        private fun resolveOptionalNameType(name: NameType?, skipType: Boolean): String? =
+        private fun resolveOptionalNameType(name: NameTypeBase?, skipType: Boolean): String? =
             if (name == null || skipType) null else {
                 resolveNameType(name)
             }
 
-        private fun resolveNameType(name: NameType): String = when (name) {
+        private fun resolveNameType(name: NameTypeBase): String = when (name) {
             NameType.Member.Property -> "p"
             NameType.Member.BackingField -> "bf"
             NameType.Member.Getter -> "g"
@@ -156,6 +152,10 @@ class SimpleNameResolver : NameResolver {
             NameType.Base.Variable -> "v"
             NameType.Base.Domain -> "d"
             NameType.Base.DomainFunction -> "df"
+            is NameTypeBase -> throw SnaktInternalException(
+                null,
+                "NameTypeBase should never been inherited by something else than NameType"
+            )
         }
 
         fun debugResolve(name: SymbolicName): String = resolveParts(name).joinToString(SEPARATOR)

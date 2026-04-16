@@ -5,7 +5,8 @@
 
 package org.jetbrains.kotlin.formver.core.names
 
-import org.jetbrains.kotlin.formver.viper.NameType
+
+import org.jetbrains.kotlin.formver.viper.NameTypeBase
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.name.FqName
 
@@ -14,7 +15,7 @@ import org.jetbrains.kotlin.name.FqName
  */
 data class ScopedName(val scope: NameScope, val name: SymbolicName) : SymbolicName {
 
-    override val nameType: NameType? = name.nameType
+    override val nameType: NameTypeBase? = name.nameType
 }
 
 fun FqName.asViperString() = asString().replace('.', '_')

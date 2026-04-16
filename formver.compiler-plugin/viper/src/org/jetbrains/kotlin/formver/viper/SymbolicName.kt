@@ -24,7 +24,7 @@ interface AnyName {
 const val SEPARATOR = "$"
 
 interface SymbolicName : AnyName {
-    val nameType: NameType?
+    val nameType: NameTypeBase?
         get() = null
 
 }
@@ -37,21 +37,8 @@ val SymbolicName.mangled: String
 
 /**
  * Collects all types of names we can have.
+ *
+ * Do not inherit from this interface. If you need a new name type, add it to the [NameType] interface.
  */
-sealed interface NameType : AnyName {
+interface NameTypeBase : AnyName
 
-    enum class Member : NameType {
-        Property, BackingField, Getter, Setter,
-        ExtensionSetter, ExtensionGetter
-    }
-
-    enum class Base : NameType {
-        Constructor, Function, Predicate,
-        Havoc, Variable, Domain, DomainFunction, Label
-    }
-
-    enum class TypeCategory : NameType {
-        Class, GeneralType
-    }
-
-}

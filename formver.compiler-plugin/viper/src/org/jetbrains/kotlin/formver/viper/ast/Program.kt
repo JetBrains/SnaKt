@@ -190,9 +190,7 @@ fun Program.registerAllNames() {
             function.formalArgs.forEach { arg -> nameResolver.register(arg.name) }
         }
         domain.axioms.forEach { axiom ->
-            if (axiom.name is NamedDomainAxiomLabel) {
-                nameResolver.register(axiom.name)
-            }
+            axiom.name?.let { nameResolver.register(it) }
             registerExpNames(axiom.exp)
         }
     }
