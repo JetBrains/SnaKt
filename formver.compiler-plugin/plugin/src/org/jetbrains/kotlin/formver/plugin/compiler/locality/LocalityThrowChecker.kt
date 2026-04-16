@@ -22,7 +22,7 @@ class LocalityThrowChecker(
         if (!config.checkLocality) return
 
         val leftLocality = Locality.Global
-        val rightLocality = expression.exception.resolvedLocality
+        val rightLocality = expression.exception.extractLocality()
 
         if (leftLocality.accepts(rightLocality)) return
 

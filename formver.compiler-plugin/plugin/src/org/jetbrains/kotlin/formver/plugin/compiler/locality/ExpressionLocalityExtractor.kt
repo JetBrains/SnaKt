@@ -6,6 +6,8 @@
 package org.jetbrains.kotlin.formver.plugin.compiler.locality
 
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
+import org.jetbrains.kotlin.fir.declarations.FirProperty
+import org.jetbrains.kotlin.fir.declarations.FirValueParameter
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
@@ -16,18 +18,14 @@ import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
-import org.jetbrains.kotlin.formver.plugin.compiler.analysis.TailValueExtractor
+import org.jetbrains.kotlin.formver.plugin.compiler.analysis.TailExpressionVisitor
 
 /**
  * Extracts the locality of an expression with respect to the outer declarations specified in [context].
  */
 class ExpressionLocalityExtractor(
     private val context: CheckerContext
-) : TailValueExtractor<Locality, Unit>() {
-    fun extract(expression: FirExpression): Locality {
-        return expression.visit(Unit)
-    }
-
+) : TailExpressionVisitor<Locality, Unit>() {
     override val empty = Locality.Global
 
     override fun Locality.join(other: Locality): Locality {
@@ -35,14 +33,19 @@ class ExpressionLocalityExtractor(
     }
 
     @OptIn(SymbolInternals::class)
-    fun FirBasedSymbol<*>.extract(): Locality {
-        when (this) {
-            is FirVariableSymbol<*> -> {
-                context(context) {
-                    return fir.actualLocality
+    fun FirBasedSymbol<*>.extractLocality(): Locality {
+        return when (this) {
+            is FirVariableSymbol<*> ->
+                when (val declaration = fir) {
+                    is FirValueParameter ->
+                        declaration.extractActualLocality()
+                    is FirProperty ->
+                        context(context) {
+                            declaration.extractLocality()
+                        }
+                    else -> Locality.Global
                 }
-            }
-            else -> return Locality.Global
+            else -> Locality.Global
         }
     }
 
@@ -59,7 +62,7 @@ class ExpressionLocalityExtractor(
     ): Locality {
         return qualifiedAccessExpression.explicitReceiver?.visit(data)
             ?: qualifiedAccessExpression.dispatchReceiver?.visit(data)
-            ?: qualifiedAccessExpression.calleeReference.symbol?.extract() ?: empty
+            ?: qualifiedAccessExpression.calleeReference.symbol?.extractLocality() ?: empty
     }
 
     override fun visitSafeCallExpression(
@@ -74,13 +77,11 @@ class ExpressionLocalityExtractor(
         thisReceiverExpression: FirThisReceiverExpression,
         data: Unit
     ): Locality {
-        context(context) {
-            val boundSymbol = thisReceiverExpression.calleeReference.boundSymbol
+        val boundSymbol = thisReceiverExpression.calleeReference.boundSymbol
 
-            return when (boundSymbol) {
-                is FirReceiverParameterSymbol -> boundSymbol.fir.actualLocality
-                else -> empty
-            }
+        return when (boundSymbol) {
+            is FirReceiverParameterSymbol -> boundSymbol.fir.extractActualLocality()
+            else -> empty
         }
     }
 }
@@ -89,5 +90,6 @@ class ExpressionLocalityExtractor(
  * Extracts the locality of [this] expression with respect to the outer declarations.
  */
 context(context: CheckerContext)
-val FirExpression.resolvedLocality: Locality
-    get() = ExpressionLocalityExtractor(context).extract(this)
+fun FirExpression.extractLocality(): Locality {
+    return accept(ExpressionLocalityExtractor(context), Unit)
+}

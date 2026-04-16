@@ -23,7 +23,7 @@ import org.jetbrains.kotlin.fir.lastExpression
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 
 /**
- * Computes symbolic values for an expression at each of its tail position.
+ * Computes values for an expression at each of its tail position.
  *
  * Expressions that do not produce a usable tail value for the analysis return [empty].
  * By default these include arbitrary FIR elements, function calls, `return`, and `throw`.
@@ -38,7 +38,7 @@ import org.jetbrains.kotlin.fir.visitors.FirVisitor
  *
  * [D] is the extra visitor data threaded through the traversal.
  */
-abstract class TailValueExtractor<T, D> : FirVisitor<T, D>() {
+abstract class TailExpressionVisitor<T, D> : FirVisitor<T, D>() {
     /**
      * Result used when an expression does not produce any relevant value for the tail of the expression.
      *
@@ -55,7 +55,7 @@ abstract class TailValueExtractor<T, D> : FirVisitor<T, D>() {
     abstract fun T.join(other: T): T
 
     protected fun FirExpression?.visit(data: D): T =
-        this?.accept(this@TailValueExtractor, data) ?: empty
+        this?.accept(this@TailExpressionVisitor, data) ?: empty
 
     override fun visitElement(
         element: FirElement,

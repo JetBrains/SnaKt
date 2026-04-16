@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.plugin.compiler.locality
 
+import org.jetbrains.kotlin.fir.analysis.checkers.closestNonLocal
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.context.findClosest
 import org.jetbrains.kotlin.fir.declarations.FirControlFlowGraphOwner
@@ -20,77 +21,58 @@ import org.jetbrains.kotlin.fir.types.classId
 import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.formver.core.annotationId
 
-/**
- * Extracts the locality of a declaration.
- */
-abstract class DeclarationLocalityExtractor {
-    companion object {
-        val localityAnnotationId = annotationId("Borrowed")
+private val localityAnnotationId = annotationId("Borrowed")
 
-        val FirDeclaration.hasLocalityAnnotation: Boolean
-            get() = annotations.any { it.annotationTypeRef.coneType.classId == localityAnnotationId }
-    }
-
-    context(_: CheckerContext)
-    abstract val FirDeclaration.owner: FirBasedSymbol<*>?
-
-    context(context: CheckerContext)
-    fun extract(declaration: FirDeclaration): Locality =
-        if (declaration.hasLocalityAnnotation) {
-            Locality.Local(declaration.owner)
-        } else {
-            Locality.Global
-        }
+private fun FirDeclaration.hasLocalityAnnotation(): Boolean {
+    return annotations.any { it.annotationTypeRef.coneType.classId == localityAnnotationId }
 }
 
-private fun FirControlFlowGraphOwner.declares(property: FirProperty): Boolean =
+private inline fun FirDeclaration.extractLocality(
+    findOwner: FirDeclaration.() -> FirBasedSymbol<*>?
+): Locality {
+    if (!hasLocalityAnnotation()) return Locality.Global
+
+    return Locality.Local(findOwner())
+}
+
+context(context: CheckerContext)
+fun FirReceiverParameter.extractRequiredLocality(): Locality =
+    extractLocality {
+        context.findClosest()
+    }
+
+fun FirReceiverParameter.extractActualLocality(): Locality =
+    extractLocality {
+        containingDeclarationSymbol
+    }
+
+context(context: CheckerContext)
+fun FirValueParameter.extractRequiredLocality(): Locality =
+    extractLocality {
+        context.findClosest()
+    }
+
+fun FirValueParameter.extractActualLocality(): Locality =
+    extractLocality {
+        containingDeclarationSymbol
+    }
+
+private fun FirControlFlowGraphOwner.declaresProperty(property: FirProperty): Boolean =
     controlFlowGraphReference?.controlFlowGraph?.nodes?.any { node ->
         node is VariableDeclarationNode && node.fir == property
     } ?: false
 
 @OptIn(SymbolInternals::class)
 context(context: CheckerContext)
-private fun FirProperty.resolveOwner(): FirBasedSymbol<*>? =
+private fun FirProperty.findOwner(): FirBasedSymbol<*>? =
     context.findClosest { declarationSymbol ->
-        val declaration = declarationSymbol.fir as? FirControlFlowGraphOwner ?: return@findClosest false
-        declaration.declares(this)
+        val declaration = declarationSymbol.fir as? FirControlFlowGraphOwner
+            ?: return@findClosest false
+        declaration.declaresProperty(this)
     }
 
-private object ActualLocalityExtractor : DeclarationLocalityExtractor() {
-    context(_: CheckerContext)
-    override val FirDeclaration.owner: FirBasedSymbol<*>?
-        get() = when (this) {
-            is FirValueParameter -> containingDeclarationSymbol
-            is FirReceiverParameter -> containingDeclarationSymbol
-            is FirProperty -> resolveOwner()
-            else -> null
-        }
-}
-
-/**
- * Extracts the locality of [this] declaration usage with respect to the outer declarations.
- */
-context(_: CheckerContext)
-val FirDeclaration.actualLocality: Locality
-    get() = ActualLocalityExtractor.extract(this)
-
-private val CheckerContext.currentDeclaration: FirBasedSymbol<*>?
-    get() = containingDeclarations.lastOrNull()
-
-private object RequiredLocalityExtractor : DeclarationLocalityExtractor() {
-    context(context: CheckerContext)
-    override val FirDeclaration.owner: FirBasedSymbol<*>?
-        get() =  when (this) {
-            is FirValueParameter -> context.currentDeclaration
-            is FirReceiverParameter ->  context.currentDeclaration
-            is FirProperty -> resolveOwner()
-            else -> null
-        }
-}
-
-/**
- * Extracts the locality required by [this] declaration with respect to the outer declarations.
- */
-context(_: CheckerContext)
-val FirDeclaration.requiredLocality : Locality
-    get() = RequiredLocalityExtractor.extract(this)
+context(context: CheckerContext)
+fun FirProperty.extractLocality(): Locality =
+    extractLocality {
+        findOwner()
+    }

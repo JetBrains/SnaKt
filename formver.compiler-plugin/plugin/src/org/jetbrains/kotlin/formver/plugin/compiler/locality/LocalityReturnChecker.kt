@@ -22,7 +22,7 @@ class LocalityReturnChecker(
         if (!config.checkLocality) return
 
         val leftLocality = Locality.Global
-        val rightLocality = expression.result.resolvedLocality
+        val rightLocality = expression.result.extractLocality()
 
         if (leftLocality.accepts(rightLocality)) return
 

@@ -22,8 +22,8 @@ class LocalityValueParameterChecker(
         if (!config.checkLocality) return
 
         val defaultValue = declaration.defaultValue ?: return
-        val requiredLocality = declaration.requiredLocality
-        val actualLocality = defaultValue.resolvedLocality
+        val requiredLocality = declaration.extractRequiredLocality()
+        val actualLocality = defaultValue.extractLocality()
 
         if (requiredLocality.accepts(actualLocality)) return
 

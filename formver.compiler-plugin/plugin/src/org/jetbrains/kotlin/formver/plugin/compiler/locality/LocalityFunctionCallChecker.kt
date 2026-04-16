@@ -25,7 +25,7 @@ class LocalityFunctionCallChecker(
 ) : FirFunctionCallChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     private fun checkArgument(argument: FirExpression, requiredArgumentLocality: Locality) {
-        val actualArgumentLocality = argument.resolvedLocality
+        val actualArgumentLocality = argument.extractLocality()
 
         if (requiredArgumentLocality.accepts(actualArgumentLocality)) return
 
@@ -48,8 +48,8 @@ class LocalityFunctionCallChecker(
         val receiver = expression.extensionReceiver
 
         if (receiver != null && receiverDeclaration != null) {
-            val requiredReceiverLocality = receiverDeclaration.requiredLocality
-            val actualReceiverLocality = receiver.resolvedLocality
+            val requiredReceiverLocality = receiverDeclaration.extractRequiredLocality()
+            val actualReceiverLocality = receiver.extractLocality()
 
             if (!requiredReceiverLocality.accepts(actualReceiverLocality)) {
                 reporter.reportOn(
@@ -72,8 +72,7 @@ class LocalityFunctionCallChecker(
         }
 
         for ((argument, argumentDeclaration) in argumentMappings) {
-            checkArgument(argument, argumentDeclaration.requiredLocality)
+            checkArgument(argument, argumentDeclaration.extractRequiredLocality())
         }
     }
-
 }
