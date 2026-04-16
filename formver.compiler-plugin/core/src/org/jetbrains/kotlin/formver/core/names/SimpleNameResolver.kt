@@ -21,71 +21,108 @@ class SimpleNameResolver : NameResolver {
 
     val cache = mutableMapOf<AnyName, String>()
 
+    enum class NameTypeAction {
+        SHOW,
+        SKIP;
+
+        fun show() = this == SHOW
+        fun skip() = this == SKIP
+    }
     companion object {
+        context(nameTypeAction: NameTypeAction)
         private fun resolveParts(
-            name: AnyName, skipType: Boolean = false, skipScope: Boolean = false
+            name: AnyName
         ): List<String> = when (name) {
-            is NameScope -> resolveNameScope(name, skipScope)
-            is SymbolicName -> resolveSymbolicName(name, skipType, skipScope)
-            is NameType -> if (skipType) emptyList() else listOf(resolveNameType(name))
+            is NameScope -> resolveNameScope(name)
+            is SymbolicName -> resolveSymbolicName(name)
+            is NameType -> if (nameTypeAction.show()) listOf(resolveNameType(name)) else emptyList()
+
             else -> throw SnaktInternalException(null, "Unexpected name type: ${name::class.simpleName}")
         }
 
+        context(nameTypeAction: NameTypeAction)
+        private fun resolveOptionalNameScope(name: NameScope?): List<String> =
+            if (name == null) emptyList() else resolveNameScope(name)
+
+        context(nameTypeAction: NameTypeAction)
         private fun resolveNameScope(
-            name: NameScope, skipScope: Boolean
-        ): List<String> = when (name) {
-            is BadScope -> listOf("<BAD>")
-            is ClassScope -> (if (skipScope) emptyList() else resolveParts(name.parent)) + resolveParts(name.className)
-            is FakeScope -> emptyList()
-            is LocalScope -> listOf("l${name.level}")
-            is PackageScope -> {
-                if (name.packageName.isRoot || skipScope) {
-                    emptyList()
-                } else {
-                    listOf($$"pkg$$${name.packageName.asViperString()}")
+            name: NameScope
+        ): List<String> {
+
+            // Since every public field with the same name should be matched to the same string, we should not add the
+            // parent scope (which is the class, making it non-unique)
+            val parentScopes = if (name !is PublicScope) {
+                resolveOptionalNameScope(name.parent)
+            } else {
+                emptyList()
+            }
+            val scope = when (name) {
+                // BadScope should never actually be resolved. We add "<>" to the name such that the viper consistency
+                // checker fails.
+                is BadScope -> listOf("<BAD>")
+                is ClassScope -> resolveParts(name.className)
+                is FakeScope -> emptyList()
+                is LocalScope -> listOf("l${name.level}")
+                is PackageScope -> {
+                    if (name.packageName.isRoot) {
+                        emptyList()
+                    } else {
+                        listOf($$"pkg$$${name.packageName.asViperString()}")
+                    }
                 }
+
+                is ParameterScope -> listOf("par")
+                is PrivateScope -> listOf("private")
+                is PublicScope -> listOf("public")
+            }
+            return parentScopes + scope
+        }
+
+        context(nameTypeAction: NameTypeAction)
+        private fun resolveSymbolicName(
+            name: SymbolicName
+        ): List<String> = when (name) {
+            is FreshName -> resolveFreshName(name)
+            is KotlinName -> resolveKotlinName(name)
+            is ScopedName -> listOfNotNull(resolveOptionalNameType(name.nameType)) + resolveParts(
+                name.scope
+            ) + with(if (name.nameType == name.name.nameType) NameTypeAction.SKIP else nameTypeAction) {
+                resolveParts(
+                    name.name
+                )
             }
 
-            is ParameterScope -> listOf("par")
-            is PrivateScope -> resolveParts(name.parent) + listOf("private")
-            is PublicScope -> listOf("public")
-        }
-
-        private fun resolveSymbolicName(
-            name: SymbolicName, skipType: Boolean, skipScope: Boolean
-        ): List<String> = when (name) {
-            is FreshName -> resolveFreshName(name, skipType)
-            is KotlinName -> resolveKotlinName(name, skipType)
-            is ScopedName -> listOfNotNull(resolveOptionalNameType(name.nameType, skipType)) + resolveParts(
-                name.scope, skipScope = skipScope
-            ) + resolveParts(name.name, skipType = name.nameType == name.name.nameType, skipScope = skipScope)
-
-            is DomainName -> resolveParts(name.nameType, skipType) + listOf(name.baseName)
-            is NamedDomainAxiomLabel -> resolveParts(name.domainName, true) + listOf(name.baseName)
-            is QualifiedDomainFuncName -> resolveParts(name.nameType, skipType) + resolveParts(
-                name.domainName, true
-            ) + resolveParts(name.funcName)
+            is DomainName -> resolveParts(name.nameType) + listOf(name.baseName)
+            is NamedDomainAxiomLabel -> with(NameTypeAction.SKIP) { resolveParts(name.domainName) } + listOf(name.baseName)
+            is QualifiedDomainFuncName -> resolveParts(name.nameType) + with(NameTypeAction.SKIP) {
+                resolveParts(
+                    name.domainName
+                )
+            } + resolveParts(name.funcName)
 
             is UnqualifiedDomainFuncName -> listOf(name.baseName)
-            is ListOfNames<*> -> name.names.flatMap { resolveParts(it, skipType, skipScope) }
-            is FunctionTypeName -> resolveParts(
-                name.args, skipType = false, skipScope = skipScope
-            ) + resolveParts(
-                name.returns, skipType = false, skipScope = skipScope
-            )
+            is ListOfNames<*> -> name.names.flatMap { resolveParts(it) }
+            is FunctionTypeName -> with(NameTypeAction.SHOW) {
+                resolveParts(
+                    name.args
+                ) + resolveParts(
+                    name.returns
+                )
+            }
 
             is PretypeName -> listOf(name.name)
-            is TypeName -> resolveParts(name.nameType, skipType) + listOfNotNull(buildString {
+            is TypeName -> resolveParts(name.nameType) + listOfNotNull(buildString {
                 if (name.nullable) append("N")
                 if (name.pretype is FunctionTypeEmbedding) append("F")
-            }.ifEmpty { null }) + resolveParts(name.pretype.name, skipType = true, skipScope = true)
+            }.ifEmpty { null }) + with(NameTypeAction.SKIP) { resolveParts(name.pretype.name) }
 
             else -> throw SnaktInternalException(null, "Unexpected name type: ${name::class.simpleName}")
         }
 
-        private fun resolveFreshName(name: FreshName, skipType: Boolean): List<String> {
+        context(nameTypeAction: NameTypeAction)
+        private fun resolveFreshName(name: FreshName): List<String> {
             val typeParts =
-                name.nameType.takeIf { it != NameType.Base.Variable }.let { resolveOptionalNameType(it, skipType) }
+                name.nameType.takeIf { it != NameType.Base.Variable }.let { resolveOptionalNameType(it) }
             val nameParts = when (name) {
                 is NumberedName -> resolveNumberedName(name)
                 is PredicateName -> listOf(name.name)
@@ -101,6 +138,7 @@ class SimpleNameResolver : NameResolver {
             return listOfNotNull(typeParts) + nameParts
         }
 
+        context(nameTypeAction: NameTypeAction)
         private fun resolveNumberedName(name: NumberedName): List<String> = when (name) {
             is AnonymousBuiltinName -> listOf("anon", "builtin")
             is AnonymousName -> listOf("anon")
@@ -117,21 +155,23 @@ class SimpleNameResolver : NameResolver {
             is SsaVariableName -> resolveParts(name.baseName)
         } + listOf(name.n.toString())
 
-        private fun resolveKotlinName(name: KotlinName, skipType: Boolean): List<String> = when (name) {
-            is ClassKotlinName -> resolveParts(name.nameType, skipType) + listOf(name.name.asViperString())
-            is ConstructorKotlinName -> resolveParts(name.nameType, skipType) + resolveParts(name.type.name)
+        context(nameTypeAction: NameTypeAction)
+        private fun resolveKotlinName(name: KotlinName): List<String> = when (name) {
+            is ClassKotlinName -> resolveParts(name.nameType) + listOf(name.name.asViperString())
+            is ConstructorKotlinName -> resolveParts(name.nameType) + resolveParts(name.type.name)
             is SimpleKotlinName -> listOf(name.name.asStringStripSpecialMarkers())
             is TypedKotlinName -> resolveParts(
-                name.nameType, skipType
+                name.nameType
             ) + listOf(name.name.asStringStripSpecialMarkers())
 
             is TypedKotlinNameWithType -> resolveParts(
-                name.nameType, skipType
+                name.nameType
             ) + listOf(name.name.asStringStripSpecialMarkers()) + resolveParts(name.type.name)
         }
 
-        private fun resolveOptionalNameType(name: NameTypeBase?, skipType: Boolean): String? =
-            if (name == null || skipType) null else {
+        context(nameTypeAction: NameTypeAction)
+        private fun resolveOptionalNameType(name: NameTypeBase?): String? =
+            if (name == null || nameTypeAction.skip()) null else {
                 resolveNameType(name)
             }
 
@@ -153,17 +193,22 @@ class SimpleNameResolver : NameResolver {
             NameType.Base.Domain -> "d"
             NameType.Base.DomainFunction -> "df"
             is NameTypeBase -> throw SnaktInternalException(
-                null,
-                "NameTypeBase should never been inherited by something else than NameType"
+                null, "NameTypeBase should never been inherited by something else than NameType"
             )
         }
 
-        fun debugResolve(name: SymbolicName): String = resolveParts(name).joinToString(SEPARATOR)
+        fun debugResolve(name: SymbolicName): String = with(NameTypeAction.SHOW) {
+            resolveParts(name).joinToString(SEPARATOR)
+        }
     }
 
     override fun lookup(name: SymbolicName): String = cache.getOrPut(
         name
-    ) { resolveParts(name).joinToString(SEPARATOR) }
+    ) {
+        with(NameTypeAction.SHOW) {
+            resolveParts(name).joinToString(SEPARATOR)
+        }
+    }
 
     override fun resolve() {}
 
