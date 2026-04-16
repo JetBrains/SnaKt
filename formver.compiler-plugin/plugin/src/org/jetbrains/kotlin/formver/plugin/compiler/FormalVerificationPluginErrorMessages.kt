@@ -25,7 +25,7 @@ object FormalVerificationPluginErrorMessages : BaseDiagnosticRendererFactory() {
             CommonRenderers.STRING,
         )
         map.put(
-            PluginErrors.VIPER_VERIFICATION_ERROR,
+            VerificationErrors.VIPER_VERIFICATION_ERROR,
             "Viper verification error: {0}",
             CommonRenderers.STRING,
         )
@@ -40,24 +40,24 @@ object FormalVerificationPluginErrorMessages : BaseDiagnosticRendererFactory() {
             CommonRenderers.STRING,
         )
         map.put(
-            PluginErrors.UNEXPECTED_RETURNED_VALUE,
+            VerificationErrors.UNEXPECTED_RETURNED_VALUE,
             "Function may return a {0} value.",
             CommonRenderers.STRING,
         )
         map.put(
-            PluginErrors.CONDITIONAL_EFFECT_ERROR,
+            VerificationErrors.CONDITIONAL_EFFECT_ERROR,
             "Cannot verify that if {0} then {1}.",
             CommonRenderers.STRING,
             CommonRenderers.STRING,
         )
         map.put(
-            PluginErrors.POSSIBLE_INDEX_OUT_OF_BOUND,
+            VerificationErrors.POSSIBLE_INDEX_OUT_OF_BOUND,
             "Invalid index for {0}, the index may be {1}.",
             CommonRenderers.STRING,
             CommonRenderers.STRING,
         )
         map.put(
-            PluginErrors.INVALID_SUBLIST_RANGE,
+            VerificationErrors.INVALID_SUBLIST_RANGE,
             "Invalid sub-list range for {0}, the range may be {1}.",
             CommonRenderers.STRING,
             CommonRenderers.STRING,
