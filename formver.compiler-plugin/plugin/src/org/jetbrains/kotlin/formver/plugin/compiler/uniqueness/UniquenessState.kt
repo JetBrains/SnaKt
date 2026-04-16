@@ -6,18 +6,19 @@
 package org.jetbrains.kotlin.formver.plugin.compiler.uniqueness
 
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
+import org.jetbrains.kotlin.formver.plugin.compiler.analysis.PathTrie
 
-class UniquenessTrie(
+class UniquenessState(
     element: Uniqueness,
-    children: Map<FirBasedSymbol<*>, UniquenessTrie> = emptyMap(),
-) : PathTrie<Uniqueness, UniquenessTrie>(element, children) {
+    children: Map<FirBasedSymbol<*>, UniquenessState> = emptyMap(),
+) : PathTrie<Uniqueness, UniquenessState>(element, children) {
     override fun Uniqueness.join(other: Uniqueness): Uniqueness =
         this.join(other)
 
     override fun construct(
         element: Uniqueness,
-        children: Map<FirBasedSymbol<*>, UniquenessTrie>
-    ): UniquenessTrie {
-        return UniquenessTrie(element, children)
+        children: Map<FirBasedSymbol<*>, UniquenessState>
+    ): UniquenessState {
+        return UniquenessState(element, children)
     }
 }

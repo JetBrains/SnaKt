@@ -3,7 +3,7 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
-package org.jetbrains.kotlin.formver.plugin.compiler.uniqueness
+package org.jetbrains.kotlin.formver.plugin.compiler.analysis
 
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 
