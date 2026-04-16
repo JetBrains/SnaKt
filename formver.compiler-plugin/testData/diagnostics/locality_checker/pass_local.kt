@@ -115,3 +115,13 @@ fun @receiver:Borrowed A.`pass local this as explicit shared target`() {
 fun @receiver:Borrowed A.`pass local this as explicit local target`() {
     this.borrowTarget()
 }
+
+fun `pass local as local argument in local property initializer`(@Borrowed x: A) {
+    val y = borrow(x)
+}
+
+fun `pass outer local as local argument in lambda`(@Borrowed x: A) {
+    {
+        borrow(<!LOCALITY_VIOLATION!>x<!>)
+    }
+}

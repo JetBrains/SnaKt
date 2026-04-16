@@ -16,6 +16,7 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
 import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
+import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.types.classId
 import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.formver.core.annotationId
@@ -34,10 +35,13 @@ private inline fun FirDeclaration.extractLocality(
     return Locality.Local(findOwner())
 }
 
+private fun CheckerContext.findClosestFunction(): FirBasedSymbol<*>? =
+    findClosest<FirFunctionSymbol<*>>()
+
 context(context: CheckerContext)
 fun FirReceiverParameter.extractRequiredLocality(): Locality =
     extractLocality {
-        context.findClosest()
+        context.findClosestFunction()
     }
 
 fun FirReceiverParameter.extractActualLocality(): Locality =
@@ -48,7 +52,7 @@ fun FirReceiverParameter.extractActualLocality(): Locality =
 context(context: CheckerContext)
 fun FirValueParameter.extractRequiredLocality(): Locality =
     extractLocality {
-        context.findClosest()
+        context.findClosestFunction()
     }
 
 fun FirValueParameter.extractActualLocality(): Locality =

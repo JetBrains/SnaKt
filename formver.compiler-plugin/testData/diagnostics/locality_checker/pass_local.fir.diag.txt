@@ -13,3 +13,5 @@
 /pass_local.kt:(2217,2230): error: Receiver locality mismatch: expected 'global', actual 'local(pass local as implicit shared target)'.
 
 /pass_local.kt:(2400,2404): error: Receiver locality mismatch: expected 'global', actual 'local(pass local this as explicit shared target)'.
+
+/pass_local.kt:(2727,2728): error: Argument locality mismatch: expected 'local(anonymous)', actual 'local(pass outer local as borrowed argument in lambda)'.
