@@ -1,9 +1,9 @@
 package org.jetbrains.kotlin.formver.core.names.shortNameResolver
 
-import org.jetbrains.kotlin.formver.viper.NamedEntity
+import org.jetbrains.kotlin.formver.viper.AnyName
 
 
-class ViperKeyword(val keyword: String) : NamedEntity
+class ViperKeyword(val keyword: String) : AnyName
 
 object ViperKeywords {
     val keywords = mutableSetOf(
