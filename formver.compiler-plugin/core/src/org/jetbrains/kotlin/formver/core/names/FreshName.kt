@@ -23,7 +23,10 @@ sealed interface NumberedName : FreshName {
     val n: Int
 }
 
-sealed interface NameTypeVariable : FreshName {
+/**
+ * Marker interface for names which describe a variable.
+ */
+sealed interface NameTypeIsVariable : FreshName {
     override val nameType
         get() = NameType.Base.Variable
 }
@@ -32,9 +35,9 @@ sealed interface NameTypeVariable : FreshName {
  * Representation for names not present in the original source,
  * e.g. storage for the result of subexpressions.
  */
-data class AnonymousName(override val n: Int) : NumberedName, NameTypeVariable
+data class AnonymousName(override val n: Int) : NumberedName, NameTypeIsVariable
 
-data class AnonymousBuiltinName(override val n: Int) : NumberedName, NameTypeVariable
+data class AnonymousBuiltinName(override val n: Int) : NumberedName, NameTypeIsVariable
 
 /**
  * Name for return variable that should *only* be used in signatures of methods without a body.
@@ -44,17 +47,17 @@ data object PlaceholderReturnVariableName : FreshName {
 
 }
 
-data class ReturnVariableName(override val n: Int) : NumberedName, NameTypeVariable
+data class ReturnVariableName(override val n: Int) : NumberedName, NameTypeIsVariable
 
 /**
  * Name for return variable that should *only* be used in signatures of pure functions
  * This variable will be translated into the special result variable in Viper
  */
-data object FunctionResultVariableName : FreshName, NameTypeVariable
+data object FunctionResultVariableName : FreshName, NameTypeIsVariable
 
-data object DispatchReceiverName : FreshName, NameTypeVariable
+data object DispatchReceiverName : FreshName, NameTypeIsVariable
 
-data object ExtensionReceiverName : FreshName, NameTypeVariable
+data object ExtensionReceiverName : FreshName, NameTypeIsVariable
 
 data class SpecialFieldName(val name: String) : FreshName {
     override val nameType: NameType = NameType.Member.Property
@@ -75,11 +78,11 @@ data class DomainAssociatedFuncName(val name: String) : FreshName {
     override val nameType: NameType = NameType.Base.DomainFunction
 }
 
-data class PlaceholderArgumentName(override val n: Int) : NumberedName, NameTypeVariable
+data class PlaceholderArgumentName(override val n: Int) : NumberedName, NameTypeIsVariable
 
-data class DomainFuncParameterName(val name: String) : FreshName, NameTypeVariable
+data class DomainFuncParameterName(val name: String) : FreshName, NameTypeIsVariable
 
-data class SsaVariableName(override val n: Int, val baseName: SymbolicName) : NumberedName, NameTypeVariable
+data class SsaVariableName(override val n: Int, val baseName: SymbolicName) : NumberedName, NameTypeIsVariable
 
 data class PredicateName(val name: String) : FreshName {
     override val nameType: NameType = NameType.Base.Predicate
