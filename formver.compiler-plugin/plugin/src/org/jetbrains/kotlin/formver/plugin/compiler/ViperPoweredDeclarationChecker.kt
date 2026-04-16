@@ -18,12 +18,14 @@ import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.formver.common.*
 import org.jetbrains.kotlin.formver.core.conversion.ProgramConverter
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.print
+import org.jetbrains.kotlin.formver.core.shouldVerify
+import org.jetbrains.kotlin.formver.core.viperProgram
 import org.jetbrains.kotlin.formver.plugin.compiler.reporting.reportVerifierError
 import org.jetbrains.kotlin.formver.viper.SiliconFrontend
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.formver.viper.ast.registerAllNames
 import org.jetbrains.kotlin.formver.viper.ast.unwrapOr
-import org.jetbrains.kotlin.formver.viper.errors.VerifierError
+import org.jetbrains.kotlin.formver.viper.errors.GenericConsistencyError
 import org.jetbrains.kotlin.formver.viper.mangled
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
@@ -44,7 +46,9 @@ private fun TargetsSelection.applicable(declaration: FirSimpleFunction): Boolean
 
 class ViperPoweredDeclarationChecker(private val session: FirSession, private val config: PluginConfiguration) :
     FirSimpleFunctionChecker(MppCheckerKind.Common) {
-    context(context: CheckerContext, reporter: DiagnosticReporter) override fun check(declaration: FirSimpleFunction) {
+
+    context(context: CheckerContext, reporter: DiagnosticReporter)
+    override fun check(declaration: FirSimpleFunction) {
         if (!config.shouldConvert(declaration)) return
         val errorCollector = ErrorCollector()
         try {
@@ -82,14 +86,21 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
                     }
                 }
             }
+
             val viperProgram = with(programConversionContext.nameResolver) { program.toSilver() }
+            declaration.viperProgram = viperProgram
+            declaration.shouldVerify = config.shouldVerify(declaration)
+
             val onFailure = { err: VerifierError ->
                 val source = err.position.unwrapOr { declaration.source }
                 reporter.reportVerifierError(source, err, config.errorStyle)
             }
-            if (!config.shouldVerify(declaration)) return
-
+            val consistencyErrors = viperProgram.checkTransitively()
+            for (error in consistencyErrors) {
+                onFailure(GenericConsistencyError(error))
+            }
             SiliconFrontend(emptyList()).use { it.verify(viperProgram, onFailure) }
+
         } catch (e: SnaktInternalException) {
             reporter.reportOn(e.source, PluginErrors.INTERNAL_ERROR, e.message)
         } catch (e: Exception) {
@@ -123,7 +134,7 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
     }
 
     private fun PluginConfiguration.shouldVerify(declaration: FirSimpleFunction): Boolean = when {
-        verificationSelection == TargetsSelection.FORCE_DISABLE -> false
+//        verificationSelection == TargetsSelection.FORCE_DISABLE -> false
         declaration.hasAnnotation(neverConvertId, session) -> false
         declaration.hasAnnotation(neverVerifyId, session) -> false
         declaration.hasAnnotation(alwaysVerifyId, session) -> true
