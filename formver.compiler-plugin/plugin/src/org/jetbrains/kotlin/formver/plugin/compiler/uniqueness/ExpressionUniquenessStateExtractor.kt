@@ -23,10 +23,8 @@ abstract class ExpressionUniquenessStateExtractor : PathValueExtractor<Uniquenes
  * Extracts the uniqueness state after evaluating an expression.
  */
 object UseUniquenessStateExtractor : ExpressionUniquenessStateExtractor() {
-    fun extract(expression: FirExpression, typingEnvironment: UniquenessState): UniquenessState {
-        val movedTerminals = expression.visit(typingEnvironment)
-
-        return typingEnvironment.join(movedTerminals)
+    fun extract(expression: FirExpression, preState: UniquenessState): UniquenessState {
+        return expression.visit(preState)
     }
 
     override fun visitReceiverExpression(
@@ -48,18 +46,17 @@ object UseUniquenessStateExtractor : ExpressionUniquenessStateExtractor() {
 }
 
 /**
- * Extracts the uniqueness state after using [this] expression in [typingEnvironment].
+ * Extracts the uniqueness state after using [this] expression in [preState].
  */
-fun FirExpression.extractPostUseState(typingEnvironment: UniquenessState): UniquenessState =
-    UseUniquenessStateExtractor.extract(this, typingEnvironment)
-
+fun FirExpression.extractPostUseState(preState: UniquenessState): UniquenessState =
+    UseUniquenessStateExtractor.extract(this, preState)
 
 /**
  * Extracts the uniqueness state after defining an expression.
  */
 object DefinitionUniquenessStateExtractor : ExpressionUniquenessStateExtractor() {
-    fun extract(expression: FirExpression, typingEnvironment: UniquenessState): UniquenessState {
-        return expression.visit(typingEnvironment)
+    fun extract(expression: FirExpression, preState: UniquenessState): UniquenessState {
+        return expression.visit(preState)
     }
 
     override val empty: UniquenessState = UniquenessState(Uniqueness.Unique)
@@ -87,7 +84,7 @@ object DefinitionUniquenessStateExtractor : ExpressionUniquenessStateExtractor()
 }
 
 /**
- * Extracts the uniqueness trie after defining [this] expression in [typingEnvironment].
+ * Extracts the uniqueness trie after defining [this] expression in [preState].
  */
-fun FirExpression.extractPostDefinitionState(typingEnvironment: UniquenessState): UniquenessState =
-    DefinitionUniquenessStateExtractor.extract(this, typingEnvironment)
+fun FirExpression.extractPostDefinitionState(preState: UniquenessState): UniquenessState =
+    DefinitionUniquenessStateExtractor.extract(this, preState)
