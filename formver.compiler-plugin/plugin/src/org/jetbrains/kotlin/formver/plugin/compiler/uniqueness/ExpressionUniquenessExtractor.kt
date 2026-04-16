@@ -11,14 +11,14 @@ import org.jetbrains.kotlin.fir.expressions.FirLiteralExpression
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
-import org.jetbrains.kotlin.formver.plugin.compiler.analysis.PathValueExtractor
+import org.jetbrains.kotlin.formver.plugin.compiler.analysis.ReceiverExpressionVisitor
 
 /**
  * Common building blocks to extract expression uniqueness.
  *
  * [D] is the visitor data type threaded through the expression traversal.
  */
-abstract class ExpressionUniquenessExtractor<D> : PathValueExtractor<Uniqueness, D>() {
+abstract class ExpressionUniquenessExtractor<D> : ReceiverExpressionVisitor<Uniqueness, D>() {
     override val empty = Uniqueness.Shared
 
     override fun Uniqueness.join(other: Uniqueness): Uniqueness {

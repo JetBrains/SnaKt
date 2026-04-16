@@ -8,10 +8,10 @@ package org.jetbrains.kotlin.formver.plugin.compiler.uniqueness
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
-import org.jetbrains.kotlin.formver.plugin.compiler.analysis.PathValueExtractor
+import org.jetbrains.kotlin.formver.plugin.compiler.analysis.ReceiverExpressionVisitor
 import org.jetbrains.kotlin.formver.plugin.compiler.analysis.copy
 
-abstract class ExpressionUniquenessStateExtractor : PathValueExtractor<UniquenessState, UniquenessState>() {
+abstract class ExpressionUniquenessStateExtractor : ReceiverExpressionVisitor<UniquenessState, UniquenessState>() {
     override val empty: UniquenessState = UniquenessState(Uniqueness.Shared)
 
     override fun UniquenessState.join(other: UniquenessState): UniquenessState {

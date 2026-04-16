@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.fir.expressions.FirSafeCallExpression
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 
-abstract class PathValueExtractor<T, D> : TailValueExtractor<T, D>() {
+abstract class ReceiverExpressionVisitor<T, D> : TailExpressionVisitor<T, D>() {
     abstract fun visitReceiverExpression(
         symbol: FirBasedSymbol<*>?,
         explicitReceiver: FirExpression?,
