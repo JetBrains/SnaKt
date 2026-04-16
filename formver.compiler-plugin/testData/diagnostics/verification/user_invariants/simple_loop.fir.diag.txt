@@ -1,7 +1,7 @@
 /simple_loop.kt:(239,243): info: Generated Viper text for test:
 field bf$size: Ref
 
-method f$test$t$F$t$Int$t$Unit(par$n: Ref) returns (ret$0: Ref)
+method f$test$F$t$Int$t$Unit(par$n: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$n), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -54,7 +54,7 @@ method f$test$t$F$t$Int$t$Unit(par$n: Ref) returns (ret$0: Ref)
 }
 
 /simple_loop.kt:(652,666): info: Generated Viper text for loopInsideLoop:
-method f$loopInsideLoop$t$F$t$Unit() returns (ret$0: Ref)
+method f$loopInsideLoop$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$i: Ref
@@ -96,7 +96,7 @@ method f$loopInsideLoop$t$F$t$Unit() returns (ret$0: Ref)
 /simple_loop.kt:(974,983): info: Generated Viper text for withBreak:
 field bf$size: Ref
 
-method f$withBreak$t$F$t$Unit() returns (ret$0: Ref)
+method f$withBreak$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$i: Ref
@@ -132,13 +132,13 @@ method con$c$WithVar$t$Int$t$WithVar(par$e: Ref) returns (ret: Ref)
   ensures acc(pred$c$WithVar$unique(ret), write)
 
 
-method f$c$WithVar$doSomething$t$F$t$WithVar$t$Boolean(this$dispatch: Ref)
+method f$c$WithVar$doSomething$F$t$WithVar$t$Boolean(this$dispatch: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$WithVar())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
 
 
-method f$test_boolean_postcondition$t$F$t$Unit() returns (ret$0: Ref)
+method f$test_boolean_postcondition$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$withVar: Ref
@@ -152,7 +152,7 @@ method f$test_boolean_postcondition$t$F$t$Unit() returns (ret$0: Ref)
     invariant df$rt$isSubtype(df$rt$typeOf(l0$boolean), df$rt$boolType())
   anon$0 := l0$boolean
   if (df$rt$boolFromRef(anon$0)) {
-    l0$boolean := f$c$WithVar$doSomething$t$F$t$WithVar$t$Boolean(l0$withVar)
+    l0$boolean := f$c$WithVar$doSomething$F$t$WithVar$t$Boolean(l0$withVar)
     goto lbl$cont$0
   }
   label lbl$break$0

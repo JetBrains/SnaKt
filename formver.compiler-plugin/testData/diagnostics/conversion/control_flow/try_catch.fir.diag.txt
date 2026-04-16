@@ -1,10 +1,10 @@
 /try_catch.kt:(158,166): info: Generated Viper text for tryCatch:
-method f$call$t$F$t$Int$t$Unit(par$x: Ref) returns (ret: Ref)
+method f$call$F$t$Int$t$Unit(par$x: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
-method f$tryCatch$t$F$t$Unit() returns (ret$0: Ref)
+method f$tryCatch$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
@@ -16,14 +16,14 @@ method f$tryCatch$t$F$t$Unit() returns (ret$0: Ref)
   if (df$rt$boolFromRef(anon$0)) {
     goto lbl$catch$0
   }
-  anon$1 := f$call$t$F$t$Int$t$Unit(df$rt$intToRef(0))
-  anon$2 := f$call$t$F$t$Int$t$Unit(df$rt$intToRef(1))
+  anon$1 := f$call$F$t$Int$t$Unit(df$rt$intToRef(0))
+  anon$2 := f$call$F$t$Int$t$Unit(df$rt$intToRef(1))
   if (df$rt$boolFromRef(anon$3)) {
     goto lbl$catch$0
   }
   goto lbl$tryExit$0
   label lbl$catch$0
-  anon$4 := f$call$t$F$t$Int$t$Unit(df$rt$intToRef(2))
+  anon$4 := f$call$F$t$Int$t$Unit(df$rt$intToRef(2))
   goto lbl$tryExit$0
   label lbl$tryExit$0
   label lbl$ret$0
@@ -37,12 +37,12 @@ method g$public$message(this$dispatch: Ref) returns (ret: Ref)
 
 
 /try_catch.kt:(271,285): info: Generated Viper text for nestedTryCatch:
-method f$call$t$F$t$Int$t$Unit(par$x: Ref) returns (ret: Ref)
+method f$call$F$t$Int$t$Unit(par$x: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
-method f$nestedTryCatch$t$F$t$Unit() returns (ret$0: Ref)
+method f$nestedTryCatch$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
@@ -57,17 +57,17 @@ method f$nestedTryCatch$t$F$t$Unit() returns (ret$0: Ref)
   if (df$rt$boolFromRef(anon$0)) {
     goto lbl$catch$0
   }
-  anon$1 := f$call$t$F$t$Int$t$Unit(df$rt$intToRef(0))
+  anon$1 := f$call$F$t$Int$t$Unit(df$rt$intToRef(0))
   if (df$rt$boolFromRef(anon$2)) {
     goto lbl$catch$1
   }
-  anon$3 := f$call$t$F$t$Int$t$Unit(df$rt$intToRef(1))
+  anon$3 := f$call$F$t$Int$t$Unit(df$rt$intToRef(1))
   if (df$rt$boolFromRef(anon$4)) {
     goto lbl$catch$1
   }
   goto lbl$tryExit$1
   label lbl$catch$1
-  anon$5 := f$call$t$F$t$Int$t$Unit(df$rt$intToRef(2))
+  anon$5 := f$call$F$t$Int$t$Unit(df$rt$intToRef(2))
   goto lbl$tryExit$1
   label lbl$tryExit$1
   if (df$rt$boolFromRef(anon$6)) {
@@ -88,12 +88,12 @@ method g$public$message(this$dispatch: Ref) returns (ret: Ref)
 
 
 /try_catch.kt:(574,592): info: Generated Viper text for tryCatchWithInline:
-method f$call$t$F$t$Int$t$Unit(par$x: Ref) returns (ret: Ref)
+method f$call$F$t$Int$t$Unit(par$x: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
-method f$tryCatchWithInline$t$F$t$Unit() returns (ret$0: Ref)
+method f$tryCatchWithInline$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
@@ -106,8 +106,8 @@ method f$tryCatchWithInline$t$F$t$Unit() returns (ret$0: Ref)
   if (df$rt$boolFromRef(anon$0)) {
     goto lbl$catch$0
   }
-  anon$1 := f$call$t$F$t$Int$t$Unit(df$rt$intToRef(0))
-  anon$2 := f$call$t$F$t$Int$t$Unit(df$rt$intToRef(1))
+  anon$1 := f$call$F$t$Int$t$Unit(df$rt$intToRef(0))
+  anon$2 := f$call$F$t$Int$t$Unit(df$rt$intToRef(1))
   label lbl$ret$1
   inhale df$rt$isSubtype(df$rt$typeOf(ret$1), df$rt$unitType())
   if (df$rt$boolFromRef(anon$3)) {
@@ -115,7 +115,7 @@ method f$tryCatchWithInline$t$F$t$Unit() returns (ret$0: Ref)
   }
   goto lbl$tryExit$0
   label lbl$catch$0
-  anon$4 := f$call$t$F$t$Int$t$Unit(df$rt$intToRef(2))
+  anon$4 := f$call$F$t$Int$t$Unit(df$rt$intToRef(2))
   goto lbl$tryExit$0
   label lbl$tryExit$0
   label lbl$ret$0
@@ -129,7 +129,7 @@ method g$public$message(this$dispatch: Ref) returns (ret: Ref)
 
 
 /try_catch.kt:(685,702): info: Generated Viper text for tryCatchShadowing:
-method f$tryCatchShadowing$t$F$t$Unit() returns (ret$0: Ref)
+method f$tryCatchShadowing$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$x: Ref
@@ -162,12 +162,12 @@ method g$public$message(this$dispatch: Ref) returns (ret: Ref)
 
 
 /try_catch.kt:(813,828): info: Generated Viper text for multipleCatches:
-method f$call$t$F$t$Int$t$Unit(par$x: Ref) returns (ret: Ref)
+method f$call$F$t$Int$t$Unit(par$x: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
-method f$multipleCatches$t$F$t$Unit() returns (ret$0: Ref)
+method f$multipleCatches$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
@@ -186,8 +186,8 @@ method f$multipleCatches$t$F$t$Unit() returns (ret$0: Ref)
   if (df$rt$boolFromRef(anon$1)) {
     goto lbl$catch$1
   }
-  anon$2 := f$call$t$F$t$Int$t$Unit(df$rt$intToRef(0))
-  anon$3 := f$call$t$F$t$Int$t$Unit(df$rt$intToRef(1))
+  anon$2 := f$call$F$t$Int$t$Unit(df$rt$intToRef(0))
+  anon$3 := f$call$F$t$Int$t$Unit(df$rt$intToRef(1))
   if (df$rt$boolFromRef(anon$4)) {
     goto lbl$catch$0
   }
@@ -196,10 +196,10 @@ method f$multipleCatches$t$F$t$Unit() returns (ret$0: Ref)
   }
   goto lbl$tryExit$0
   label lbl$catch$0
-  anon$6 := f$call$t$F$t$Int$t$Unit(df$rt$intToRef(2))
+  anon$6 := f$call$F$t$Int$t$Unit(df$rt$intToRef(2))
   goto lbl$tryExit$0
   label lbl$catch$1
-  anon$7 := f$call$t$F$t$Int$t$Unit(df$rt$intToRef(3))
+  anon$7 := f$call$F$t$Int$t$Unit(df$rt$intToRef(3))
   goto lbl$tryExit$0
   label lbl$tryExit$0
   label lbl$ret$0
@@ -213,17 +213,18 @@ method g$public$message(this$dispatch: Ref) returns (ret: Ref)
 
 
 /try_catch.kt:(1044,1056): info: Generated Viper text for useException:
-method f$call$t$F$t$Int$t$Unit(par$x: Ref) returns (ret: Ref)
+method f$call$F$t$Int$t$Unit(par$x: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
-method f$ignore$t$F$t$Exception$t$Unit(par$e: Ref) returns (ret: Ref)
+method f$ignore$F$t$pkg$java_lang$Exception$t$Unit(par$e: Ref)
+  returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$e), df$rt$c$pkg$java_lang$Exception())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
-method f$useException$t$F$t$Unit() returns (ret$0: Ref)
+method f$useException$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
@@ -234,13 +235,13 @@ method f$useException$t$F$t$Unit() returns (ret$0: Ref)
   if (df$rt$boolFromRef(anon$0)) {
     goto lbl$catch$0
   }
-  anon$1 := f$call$t$F$t$Int$t$Unit(df$rt$intToRef(0))
+  anon$1 := f$call$F$t$Int$t$Unit(df$rt$intToRef(0))
   if (df$rt$boolFromRef(anon$2)) {
     goto lbl$catch$0
   }
   goto lbl$tryExit$0
   label lbl$catch$0
-  anon$3 := f$ignore$t$F$t$Exception$t$Unit(l2$e)
+  anon$3 := f$ignore$F$t$pkg$java_lang$Exception$t$Unit(l2$e)
   goto lbl$tryExit$0
   label lbl$tryExit$0
   label lbl$ret$0

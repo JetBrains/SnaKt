@@ -1,7 +1,7 @@
 /setters.kt:(103,127): info: Generated Viper text for testPrimitiveFieldSetter:
 field bf$a: Ref
 
-method f$testPrimitiveFieldSetter$t$F$t$PrimitiveField$t$Unit(par$pf: Ref)
+method f$testPrimitiveFieldSetter$F$t$PrimitiveField$t$Unit(par$pf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$pf), df$rt$c$PrimitiveField())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -24,7 +24,7 @@ method con$c$PrimitiveField$t$Int$t$PrimitiveField(par$a: Ref)
   ensures acc(pred$c$PrimitiveField$unique(ret), write)
 
 
-method f$testReferenceFieldSetter$t$F$t$ReferenceField$t$Unit(par$rf: Ref)
+method f$testReferenceFieldSetter$F$t$ReferenceField$t$Unit(par$rf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$rf), df$rt$c$ReferenceField())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -37,7 +37,7 @@ method f$testReferenceFieldSetter$t$F$t$ReferenceField$t$Unit(par$rf: Ref)
 }
 
 /setters.kt:(427,454): info: Generated Viper text for testPrimitivePropertySetter:
-method f$testPrimitivePropertySetter$t$F$t$PrimitiveProperty$t$Unit(par$pp: Ref)
+method f$testPrimitivePropertySetter$F$t$PrimitiveProperty$t$Unit(par$pp: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$pp), df$rt$c$PrimitiveProperty())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -62,7 +62,7 @@ method con$c$PrimitiveProperty$t$PrimitiveProperty() returns (ret: Ref)
   ensures acc(pred$c$PrimitiveProperty$unique(ret), write)
 
 
-method f$testReferencePropertySetter$t$F$t$ReferenceProperty$t$Unit(par$rp: Ref)
+method f$testReferencePropertySetter$F$t$ReferenceProperty$t$Unit(par$rp: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$rp), df$rt$c$ReferenceProperty())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())

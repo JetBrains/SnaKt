@@ -3,7 +3,7 @@ field bf$a: Ref
 
 field bf$b: Ref
 
-method f$testManualPermissionFieldGetter$t$F$t$ManualPermissionFields$t$Unit(par$mpf: Ref)
+method f$testManualPermissionFieldGetter$F$t$ManualPermissionFields$t$Unit(par$mpf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$mpf), df$rt$c$ManualPermissionFields())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -24,7 +24,7 @@ field bf$a: Ref
 
 field bf$b: Ref
 
-method f$testManualPermissionFieldSetter$t$F$t$ManualPermissionFields$t$Unit(par$mpf: Ref)
+method f$testManualPermissionFieldSetter$F$t$ManualPermissionFields$t$Unit(par$mpf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$mpf), df$rt$c$ManualPermissionFields())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())

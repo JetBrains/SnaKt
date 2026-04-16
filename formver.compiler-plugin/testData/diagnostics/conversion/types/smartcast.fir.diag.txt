@@ -1,5 +1,5 @@
 /smartcast.kt:(23,38): info: Generated Viper text for smartcastReturn:
-method f$smartcastReturn$t$F$t$N$Int$t$Int(par$n: Ref) returns (ret$0: Ref)
+method f$smartcastReturn$F$t$N$Int$t$Int(par$n: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$n), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -12,7 +12,7 @@ method f$smartcastReturn$t$F$t$N$Int$t$Int(par$n: Ref) returns (ret$0: Ref)
 }
 
 /smartcast.kt:(88,106): info: Generated Viper text for isNullOrEmptyWrong:
-method f$isNullOrEmptyWrong$t$F$t$N$CharSequence$t$Boolean(par$seq: Ref)
+method f$isNullOrEmptyWrong$F$t$N$pkg$kotlin$CharSequence$t$Boolean(par$seq: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$seq), df$rt$nullable(df$rt$c$pkg$kotlin$CharSequence()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())

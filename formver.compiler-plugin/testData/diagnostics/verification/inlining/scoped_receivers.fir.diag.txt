@@ -1,7 +1,7 @@
 /scoped_receivers.kt:(407,433): info: Generated Viper text for with_run_extension_labeled:
 field bf$size: Ref
 
-method f$with_run_extension_labeled$t$F$t$N$Int$t$Unit(this$extension: Ref)
+method f$with_run_extension_labeled$F$t$N$Int$t$Unit(this$extension: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())

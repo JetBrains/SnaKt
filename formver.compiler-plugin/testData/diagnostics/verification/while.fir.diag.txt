@@ -14,7 +14,7 @@ method con$c$ClassWithField$t$Int$t$ClassWithField(par$field: Ref)
     df$rt$intFromRef(par$field)
 
 
-method f$test_while$t$F$t$ClassWithField$t$Unit(par$param: Ref)
+method f$test_while$F$t$ClassWithField$t$Unit(par$param: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$param), df$rt$c$ClassWithField())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -92,7 +92,7 @@ method con$c$ClassWithField$t$Int$t$ClassWithField(par$field: Ref)
     df$rt$intFromRef(par$field)
 
 
-method f$test_while_with_inlining$t$F$t$ClassWithField$t$Unit(par$param: Ref)
+method f$test_while_with_inlining$F$t$ClassWithField$t$Unit(par$param: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$param), df$rt$c$ClassWithField())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -172,7 +172,7 @@ method f$test_while_with_inlining$t$F$t$ClassWithField$t$Unit(par$param: Ref)
 /while.kt:(1311,1336): info: Generated Viper text for test_while_with_smartcast:
 field bf$field: Ref
 
-method f$test_while_with_smartcast$t$F$t$Any$t$Any$t$Unit(par$param: Ref, par$innerParam: Ref)
+method f$test_while_with_smartcast$F$t$Any$t$Any$t$Unit(par$param: Ref, par$innerParam: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$param), df$rt$anyType())
   requires df$rt$isSubtype(df$rt$typeOf(par$innerParam), df$rt$anyType())

@@ -1,5 +1,5 @@
 /pure_function_with_assignments.kt:(78,93): info: Generated Viper text for returnNumberVal:
-function f$returnNumberVal$t$F$t$Int(): Ref
+function f$returnNumberVal$F$t$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$x$0 ==
@@ -8,7 +8,7 @@ function f$returnNumberVal$t$F$t$Int(): Ref
 }
 
 /pure_function_with_assignments.kt:(144,178): info: Generated Viper text for multipleAssignmentsOfDifferentType:
-function f$multipleAssignmentsOfDifferentType$t$F$t$Boolean(): Ref
+function f$multipleAssignmentsOfDifferentType$F$t$Boolean(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
 {
   (let l0$a$0 ==
@@ -23,7 +23,7 @@ function f$multipleAssignmentsOfDifferentType$t$F$t$Boolean(): Ref
 }
 
 /pure_function_with_assignments.kt:(292,328): info: Generated Viper text for multipleAssignmentsWithLiteralReturn:
-function f$multipleAssignmentsWithLiteralReturn$t$F$t$Int(): Ref
+function f$multipleAssignmentsWithLiteralReturn$F$t$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$a$0 ==
@@ -38,7 +38,7 @@ function f$multipleAssignmentsWithLiteralReturn$t$F$t$Int(): Ref
 }
 
 /pure_function_with_assignments.kt:(439,473): info: Generated Viper text for laterInitializersCanRelyOnPrevious:
-function f$laterInitializersCanRelyOnPrevious$t$F$t$Int(): Ref
+function f$laterInitializersCanRelyOnPrevious$F$t$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$a$0 ==
@@ -51,8 +51,7 @@ function f$laterInitializersCanRelyOnPrevious$t$F$t$Int(): Ref
 }
 
 /pure_function_with_assignments.kt:(560,591): info: Generated Viper text for initializersCanRelyOnParameters:
-function f$initializersCanRelyOnParameters$t$F$t$Int$t$Int$t$Int(par$x: Ref,
-  par$y: Ref): Ref
+function f$initializersCanRelyOnParameters$F$t$Int$t$Int$t$Int(par$x: Ref, par$y: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())

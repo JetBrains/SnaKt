@@ -1,5 +1,5 @@
 /property_getters.kt:(102,129): info: Generated Viper text for testPrimitivePropertyGetter:
-method f$testPrimitivePropertyGetter$t$F$t$PrimitiveProperty$t$Int(par$pp: Ref)
+method f$testPrimitivePropertyGetter$F$t$PrimitiveProperty$t$Int(par$pp: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$pp), df$rt$c$PrimitiveProperty())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
@@ -17,7 +17,7 @@ method g$public$nProp(this$dispatch: Ref) returns (ret: Ref)
 
 
 /property_getters.kt:(286,313): info: Generated Viper text for testReferencePropertyGetter:
-method f$testReferencePropertyGetter$t$F$t$ReferenceProperty$t$Unit(par$rp: Ref)
+method f$testReferencePropertyGetter$F$t$ReferenceProperty$t$Unit(par$rp: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$rp), df$rt$c$ReferenceProperty())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -45,7 +45,7 @@ method g$public$rProp(this$dispatch: Ref) returns (ret: Ref)
 
 
 /property_getters.kt:(391,418): info: Generated Viper text for testCascadingPropertyGetter:
-method f$testCascadingPropertyGetter$t$F$t$ReferenceProperty$t$Unit(par$rp: Ref)
+method f$testCascadingPropertyGetter$F$t$ReferenceProperty$t$Unit(par$rp: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$rp), df$rt$c$ReferenceProperty())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())

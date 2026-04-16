@@ -33,7 +33,7 @@ predicate pred$c$Node$unique(this$dispatch: Ref) {
   df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$right), df$rt$nullable(df$rt$c$Node()))
 }
 
-method f$get_left_val$t$F$t$Node$t$N$Int(par$n: Ref) returns (ret$0: Ref)
+method f$get_left_val$F$t$Node$t$N$Int(par$n: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$n), df$rt$c$Node())
   requires acc(pred$c$Node$unique(par$n), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
@@ -138,7 +138,7 @@ method con$c$Node$t$Int$t$N$Node$t$N$Node$t$Node(par$data: Ref, par$left: Ref,
     par$right
 
 
-method f$test$t$F$t$Unit() returns (ret$0: Ref)
+method f$test$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$n: Ref

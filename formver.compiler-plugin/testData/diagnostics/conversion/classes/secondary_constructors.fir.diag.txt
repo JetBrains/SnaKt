@@ -17,7 +17,7 @@ method con$c$NoPrimaryConstructor$t$Int$t$NoPrimaryConstructor(par$n: Ref)
   ensures acc(pred$c$NoPrimaryConstructor$unique(ret), write)
 
 
-method f$onlySecondConstructors$t$F$t$Unit() returns (ret$0: Ref)
+method f$onlySecondConstructors$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$npc1: Ref
@@ -50,7 +50,7 @@ method con$c$BothConstructors$t$Int$t$BothConstructors(par$a: Ref)
     df$rt$intFromRef(par$a)
 
 
-method f$primaryAndSecondConstructor$t$F$t$Unit() returns (ret$0: Ref)
+method f$primaryAndSecondConstructor$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$bc1: Ref

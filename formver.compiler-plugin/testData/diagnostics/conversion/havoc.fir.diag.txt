@@ -485,7 +485,7 @@ predicate pred$c$B$unique(this$dispatch: Ref) {
   true
 }
 
-method f$havoc$t$F$t$A$t$Unit(par$a: Ref) returns (ret$0: Ref)
+method f$havoc$F$t$A$t$Unit(par$a: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$c$A())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
