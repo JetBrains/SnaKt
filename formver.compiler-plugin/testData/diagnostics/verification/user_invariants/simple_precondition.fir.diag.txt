@@ -1,7 +1,7 @@
-/simple_precondition.kt:(238,242): info: Generated Viper text for test:
+/simple_precondition.kt:(250,254): info: Generated Viper text for test:
 field bf$size: Ref
 
-method f$test$F$t$Int$t$Unit(par$idx: Ref) returns (ret$0: Ref)
+method f$test$t$F$t$Int$t$Unit(par$idx: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$idx), df$rt$intType())
   requires 0 <= df$rt$intFromRef(par$idx)
   requires df$rt$intFromRef(par$idx) < 3
@@ -15,8 +15,8 @@ method f$test$F$t$Int$t$Unit(par$idx: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/simple_precondition.kt:(446,469): info: Generated Viper text for inlineWithSpecification:
-method f$inlineWithSpecification$F$t$Boolean$t$Unit(par$bool: Ref)
+/simple_precondition.kt:(458,481): info: Generated Viper text for inlineWithSpecification:
+method f$inlineWithSpecification$t$F$t$Boolean$t$Unit(par$bool: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$bool), df$rt$boolType())
   requires true
@@ -27,8 +27,8 @@ method f$inlineWithSpecification$F$t$Boolean$t$Unit(par$bool: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/simple_precondition.kt:(560,569): info: Generated Viper text for good_call:
-method f$good_call$F$t$Unit() returns (ret$0: Ref)
+/simple_precondition.kt:(572,581): info: Generated Viper text for good_call:
+method f$good_call$t$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$2: Ref
@@ -36,7 +36,7 @@ method f$good_call$F$t$Unit() returns (ret$0: Ref)
   var anon$0: Ref
   var ret$2: Ref
   var anon$1: Ref
-  anon$2 := f$test$F$t$Int$t$Unit(df$rt$intToRef(2))
+  anon$2 := f$test$t$F$t$Int$t$Unit(df$rt$intToRef(2))
   anon$0 := df$rt$boolToRef(true)
   label lbl$ret$1
   inhale df$rt$isSubtype(df$rt$typeOf(ret$1), df$rt$unitType())
@@ -47,9 +47,8 @@ method f$good_call$F$t$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-method f$test$F$t$Int$t$Unit(par$idx: Ref) returns (ret: Ref)
+method f$test$t$F$t$Int$t$Unit(par$idx: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$idx), df$rt$intType())
   requires 0 <= df$rt$intFromRef(par$idx)
   requires df$rt$intFromRef(par$idx) < 3
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
-

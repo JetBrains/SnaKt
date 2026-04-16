@@ -1,4 +1,4 @@
-/while.kt:(254,264): info: Generated Viper text for test_while:
+/while.kt:(267,277): info: Generated Viper text for test_while:
 field bf$field: Ref
 
 field bf$size: Ref
@@ -76,7 +76,7 @@ method f$test_while$F$t$ClassWithField$t$Unit(par$param: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/while.kt:(899,923): info: Generated Viper text for test_while_with_inlining:
+/while.kt:(912,936): info: Generated Viper text for test_while_with_inlining:
 field bf$field: Ref
 
 field bf$size: Ref
@@ -169,7 +169,7 @@ method f$test_while_with_inlining$F$t$ClassWithField$t$Unit(par$param: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/while.kt:(1311,1336): info: Generated Viper text for test_while_with_smartcast:
+/while.kt:(1324,1349): info: Generated Viper text for test_while_with_smartcast:
 field bf$field: Ref
 
 method f$test_while_with_smartcast$F$t$Any$t$Any$t$Unit(par$param: Ref, par$innerParam: Ref)

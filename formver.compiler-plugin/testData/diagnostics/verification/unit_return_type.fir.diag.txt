@@ -1,5 +1,5 @@
-/unit_return_type.kt:(171,176): info: Generated Viper text for idFun:
-method f$idFun$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret$0: Ref)
+/unit_return_type.kt:(184,189): info: Generated Viper text for idFun:
+method f$idFun$t$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$t), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$anyType()))
 {
@@ -8,8 +8,9 @@ method f$idFun$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/unit_return_type.kt:(195,208): info: Generated Viper text for directReturns:
-method f$directReturns$F$t$Boolean$t$Unit(par$b: Ref) returns (ret$0: Ref)
+/unit_return_type.kt:(208,221): info: Generated Viper text for directReturns:
+method f$directReturns$t$F$t$Boolean$t$Unit(par$b: Ref)
+  returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -18,7 +19,7 @@ method f$directReturns$F$t$Boolean$t$Unit(par$b: Ref) returns (ret$0: Ref)
   } else {
     var anon$0: Ref
     var anon$1: Ref
-    anon$1 := f$idFun$F$t$N$Any$t$N$Any(par$b)
+    anon$1 := f$idFun$t$F$t$N$Any$t$N$Any(par$b)
     anon$0 := anon$1
     inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$boolType())
     if (df$rt$boolFromRef(anon$0)) {
@@ -29,20 +30,21 @@ method f$directReturns$F$t$Boolean$t$Unit(par$b: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-method f$idFun$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret: Ref)
+method f$idFun$t$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$t), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$anyType()))
 
 
-/unit_return_type.kt:(374,387): info: Generated Viper text for useInlineUnit:
+/unit_return_type.kt:(387,400): info: Generated Viper text for useInlineUnit:
 field bf$size: Ref
 
-method f$idFun$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret: Ref)
+method f$idFun$t$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$t), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$anyType()))
 
 
-method f$useInlineUnit$F$t$Boolean$t$Unit(par$b: Ref) returns (ret$0: Ref)
+method f$useInlineUnit$t$F$t$Boolean$t$Unit(par$b: Ref)
+  returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -60,7 +62,7 @@ method f$useInlineUnit$F$t$Boolean$t$Unit(par$b: Ref) returns (ret$0: Ref)
     var anon$2: Ref
     var anon$3: Ref
     l4$tmp := df$rt$intToRef(42)
-    anon$3 := f$idFun$F$t$N$Any$t$N$Any(l4$tmp)
+    anon$3 := f$idFun$t$F$t$N$Any$t$N$Any(l4$tmp)
     anon$2 := anon$3
     inhale df$rt$isSubtype(df$rt$typeOf(anon$2), df$rt$intType())
   }

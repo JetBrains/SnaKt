@@ -1,3 +1,6 @@
+// FULL_JDK
+
+
 import org.jetbrains.kotlin.formver.plugin.*
 
 fun <!VIPER_TEXT!>forAllWithSimpleTrigger<!>(): Int {

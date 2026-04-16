@@ -1,4 +1,4 @@
-/list.kt:(91,110): info: Generated Viper text for empty_list_expr_get:
+/list.kt:(103,122): info: Generated Viper text for empty_list_expr_get:
 field p$size: Ref
 
 method f$empty_list_expr_get$F$t$Unit() returns (ret$0: Ref)
@@ -39,7 +39,7 @@ method f$pkg$kotlin_collections$emptyList$F$t$pkg$kotlin_collections$List()
   ensures df$rt$intFromRef(ret.p$size) == 0
 
 
-/list.kt:(168,182): info: Generated Viper text for empty_list_get:
+/list.kt:(180,194): info: Generated Viper text for empty_list_get:
 field p$size: Ref
 
 method f$empty_list_get$F$t$Unit() returns (ret$0: Ref)
@@ -80,7 +80,7 @@ method f$pkg$kotlin_collections$emptyList$F$t$pkg$kotlin_collections$List()
   ensures df$rt$intFromRef(ret.p$size) == 0
 
 
-/list.kt:(270,281): info: Generated Viper text for unsafe_last:
+/list.kt:(282,293): info: Generated Viper text for unsafe_last:
 field p$size: Ref
 
 method f$pkg$kotlin_collections$c$List$get$F$t$pkg$kotlin_collections$List$t$Int$t$Int(this$dispatch: Ref,
@@ -119,7 +119,7 @@ method f$unsafe_last$F$t$pkg$kotlin_collections$List$t$Int(par$l: Ref)
   label lbl$ret$0
 }
 
-/list.kt:(350,357): info: Generated Viper text for add_get:
+/list.kt:(362,369): info: Generated Viper text for add_get:
 field p$size: Ref
 
 method f$add_get$F$t$pkg$kotlin_collections$MutableList$t$Unit(par$l: Ref)
@@ -173,7 +173,7 @@ method f$pkg$kotlin_collections$c$MutableList$get$F$t$pkg$kotlin_collections$Mut
     old(df$rt$intFromRef(this$dispatch.p$size))
 
 
-/list.kt:(432,446): info: Generated Viper text for empty_list_sub:
+/list.kt:(444,458): info: Generated Viper text for empty_list_sub:
 field p$size: Ref
 
 method f$empty_list_sub$F$t$Unit() returns (ret$0: Ref)
@@ -221,7 +221,7 @@ method f$pkg$kotlin_collections$emptyList$F$t$pkg$kotlin_collections$List()
   ensures df$rt$intFromRef(ret.p$size) == 0
 
 
-/list.kt:(515,538): info: Generated Viper text for empty_list_sub_negative:
+/list.kt:(527,550): info: Generated Viper text for empty_list_sub_negative:
 field p$size: Ref
 
 method f$empty_list_sub_negative$F$t$Unit() returns (ret$0: Ref)

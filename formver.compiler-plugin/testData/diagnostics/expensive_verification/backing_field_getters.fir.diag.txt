@@ -1,4 +1,4 @@
-/backing_field_getters.kt:(270,280): info: Generated Viper text for cascadeGet:
+/backing_field_getters.kt:(282,292): info: Generated Viper text for cascadeGet:
 field bf$y: Ref
 
 field bf$z: Ref
@@ -18,7 +18,7 @@ method f$cascadeGet$F$t$X$t$Z(par$x: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/backing_field_getters.kt:(353,374): info: Generated Viper text for receiverNotNullProved:
+/backing_field_getters.kt:(365,386): info: Generated Viper text for receiverNotNullProved:
 field bf$y: Ref
 
 field bf$z: Ref
@@ -44,7 +44,7 @@ method f$receiverNotNullProved$F$t$N$X$t$Boolean(par$x: Ref)
   label lbl$ret$0
 }
 
-/backing_field_getters.kt:(622,640): info: Generated Viper text for cascadeNullableGet:
+/backing_field_getters.kt:(634,652): info: Generated Viper text for cascadeNullableGet:
 field bf$y: Ref
 
 field bf$z: Ref
@@ -74,7 +74,7 @@ method f$cascadeNullableGet$F$t$N$NullableX$t$N$Z(par$x: Ref)
   label lbl$ret$0
 }
 
-/backing_field_getters.kt:(791,818): info: Generated Viper text for cascadeNullableSmartcastGet:
+/backing_field_getters.kt:(803,830): info: Generated Viper text for cascadeNullableSmartcastGet:
 field bf$y: Ref
 
 field bf$z: Ref
@@ -113,7 +113,7 @@ method f$cascadeNullableSmartcastGet$F$t$N$NullableX$t$N$Z(par$x: Ref)
   label lbl$ret$0
 }
 
-/backing_field_getters.kt:(1030,1060): info: Generated Viper text for nullableReceiverNotNullSafeGet:
+/backing_field_getters.kt:(1042,1072): info: Generated Viper text for nullableReceiverNotNullSafeGet:
 field bf$size: Ref
 
 field bf$x: Ref
@@ -146,7 +146,7 @@ method f$nullableReceiverNotNullSafeGet$F$t$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/backing_field_getters.kt:(1157,1184): info: Generated Viper text for nullableReceiverNullSafeGet:
+/backing_field_getters.kt:(1169,1196): info: Generated Viper text for nullableReceiverNullSafeGet:
 field bf$size: Ref
 
 field bf$x: Ref
@@ -171,7 +171,7 @@ method f$nullableReceiverNullSafeGet$F$t$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/backing_field_getters.kt:(1315,1341): info: Generated Viper text for nonNullableReceiverSafeGet:
+/backing_field_getters.kt:(1327,1353): info: Generated Viper text for nonNullableReceiverSafeGet:
 field bf$size: Ref
 
 field bf$x: Ref
@@ -202,7 +202,7 @@ method f$nonNullableReceiverSafeGet$F$t$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/backing_field_getters.kt:(1565,1577): info: Generated Viper text for checkPrimary:
+/backing_field_getters.kt:(1577,1589): info: Generated Viper text for checkPrimary:
 field bf$size: Ref
 
 field bf$x: Ref
@@ -278,4 +278,3 @@ method f$checkPrimary$F$t$Int$t$Int$t$Unit(par$x: Ref, par$y: Ref)
 }
 
 method g$public$z(this$dispatch: Ref) returns (ret: Ref)
-

@@ -1,5 +1,5 @@
-/returns_booleans.kt:(121,133): info: Generated Viper text for returns_true:
-method f$returns_true$F$t$Boolean() returns (ret$0: Ref)
+/returns_booleans.kt:(133,145): info: Generated Viper text for returns_true:
+method f$returns_true$t$F$t$Boolean() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures true
   ensures df$rt$boolFromRef(ret$0) == true
@@ -9,8 +9,8 @@ method f$returns_true$F$t$Boolean() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/returns_booleans.kt:(268,281): info: Generated Viper text for returns_false:
-method f$returns_false$F$t$Boolean() returns (ret$0: Ref)
+/returns_booleans.kt:(280,293): info: Generated Viper text for returns_false:
+method f$returns_false$t$F$t$Boolean() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures true
   ensures df$rt$boolFromRef(ret$0) == false
@@ -20,8 +20,8 @@ method f$returns_false$F$t$Boolean() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/returns_booleans.kt:(418,435): info: Generated Viper text for conditional_basic:
-method f$conditional_basic$F$t$Boolean$t$Boolean(par$b: Ref)
+/returns_booleans.kt:(430,447): info: Generated Viper text for conditional_basic:
+method f$conditional_basic$t$F$t$Boolean$t$Boolean(par$b: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
@@ -33,8 +33,8 @@ method f$conditional_basic$F$t$Boolean$t$Boolean(par$b: Ref)
   label lbl$ret$0
 }
 
-/returns_booleans.kt:(612,636): info: Generated Viper text for binary_logic_expressions:
-method f$binary_logic_expressions$F$t$Boolean$t$Boolean$t$Boolean(par$a: Ref,
+/returns_booleans.kt:(624,648): info: Generated Viper text for binary_logic_expressions:
+method f$binary_logic_expressions$t$F$t$Boolean$t$Boolean$t$Boolean(par$a: Ref,
   par$b: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$boolType())
@@ -51,8 +51,9 @@ method f$binary_logic_expressions$F$t$Boolean$t$Boolean$t$Boolean(par$a: Ref,
   label lbl$ret$0
 }
 
-/returns_booleans.kt:(855,866): info: Generated Viper text for logical_not:
-method f$logical_not$F$t$Boolean$t$Boolean(par$b: Ref) returns (ret$0: Ref)
+/returns_booleans.kt:(867,878): info: Generated Viper text for logical_not:
+method f$logical_not$t$F$t$Boolean$t$Boolean(par$b: Ref)
+  returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures df$rt$boolFromRef(ret$0) == true ==>
@@ -65,8 +66,8 @@ method f$logical_not$F$t$Boolean$t$Boolean(par$b: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/returns_booleans.kt:(1052,1075): info: Generated Viper text for call_fun_with_contracts:
-method f$binary_logic_expressions$F$t$Boolean$t$Boolean$t$Boolean(par$a: Ref,
+/returns_booleans.kt:(1064,1087): info: Generated Viper text for call_fun_with_contracts:
+method f$binary_logic_expressions$t$F$t$Boolean$t$Boolean$t$Boolean(par$a: Ref,
   par$b: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$boolType())
@@ -79,24 +80,24 @@ method f$binary_logic_expressions$F$t$Boolean$t$Boolean$t$Boolean(par$a: Ref,
     (df$rt$boolFromRef(par$b) || true)
 
 
-method f$call_fun_with_contracts$F$t$Boolean$t$Boolean(par$b: Ref)
+method f$call_fun_with_contracts$t$F$t$Boolean$t$Boolean(par$b: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures df$rt$boolFromRef(ret$0) == true
 {
   var l0$a: Ref
-  l0$a := f$binary_logic_expressions$F$t$Boolean$t$Boolean$t$Boolean(par$b,
+  l0$a := f$binary_logic_expressions$t$F$t$Boolean$t$Boolean$t$Boolean(par$b,
     par$b)
   ret$0 := l0$a
   goto lbl$ret$0
   label lbl$ret$0
 }
 
-/returns_booleans.kt:(1268,1281): info: Generated Viper text for isNullOrEmpty:
+/returns_booleans.kt:(1280,1293): info: Generated Viper text for isNullOrEmpty:
 field p$size: Ref
 
-method f$isNullOrEmpty$F$t$N$pkg$kotlin_collections$Collection$t$Boolean(this$extension: Ref)
+method f$isNullOrEmpty$t$F$t$N$Collection$t$Boolean(this$extension: Ref)
   returns (ret$0: Ref)
   requires this$extension != df$rt$nullValue() ==>
     acc(this$extension.p$size, write)
@@ -116,12 +117,12 @@ method f$isNullOrEmpty$F$t$N$pkg$kotlin_collections$Collection$t$Boolean(this$ex
   if (this$extension == df$rt$nullValue()) {
     ret$0 := df$rt$boolToRef(true)
   } else {
-    ret$0 := f$pkg$kotlin_collections$c$Collection$isEmpty$F$t$pkg$kotlin_collections$Collection$t$Boolean(this$extension)}
+    ret$0 := f$pkg$kotlin_collections$c$Collection$isEmpty$t$F$t$Collection$t$Boolean(this$extension)}
   goto lbl$ret$0
   label lbl$ret$0
 }
 
-method f$pkg$kotlin_collections$c$Collection$isEmpty$F$t$pkg$kotlin_collections$Collection$t$Boolean(this$dispatch: Ref)
+method f$pkg$kotlin_collections$c$Collection$isEmpty$t$F$t$Collection$t$Boolean(this$dispatch: Ref)
   returns (ret: Ref)
   requires acc(this$dispatch.p$size, write)
   requires df$rt$intFromRef(this$dispatch.p$size) >= 0
@@ -135,4 +136,3 @@ method f$pkg$kotlin_collections$c$Collection$isEmpty$F$t$pkg$kotlin_collections$
     df$rt$intFromRef(this$dispatch.p$size) == 0
   ensures !df$rt$boolFromRef(ret) ==>
     df$rt$intFromRef(this$dispatch.p$size) > 0
-

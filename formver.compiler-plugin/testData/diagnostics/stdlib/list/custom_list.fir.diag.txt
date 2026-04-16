@@ -1,4 +1,4 @@
-/custom_list.kt:(168,171): info: Generated Viper text for get:
+/custom_list.kt:(180,183): info: Generated Viper text for get:
 field bf$c$CustomList$private$value: Ref
 
 field p$size: Ref
@@ -25,7 +25,7 @@ method f$c$CustomList$get$F$t$CustomList$t$Int$t$Int(this$dispatch: Ref, par$ind
   label lbl$ret$0
 }
 
-/custom_list.kt:(248,252): info: Generated Viper text for test:
+/custom_list.kt:(260,264): info: Generated Viper text for test:
 field bf$c$CustomList$private$value: Ref
 
 field p$size: Ref

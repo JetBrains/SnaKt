@@ -1,7 +1,7 @@
-/custom_run_functions.kt:(1194,1200): info: Generated Viper text for useRun:
+/custom_run_functions.kt:(1206,1212): info: Generated Viper text for useRun:
 field bf$size: Ref
 
-method f$useRun$F$t$Unit() returns (ret$0: Ref)
+method f$useRun$t$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$genericResult: Ref
@@ -360,8 +360,8 @@ method f$useRun$F$t$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/custom_run_functions.kt:(2354,2369): info: Generated Viper text for complexScenario:
-method f$complexScenario$F$t$Boolean$t$Boolean(par$arg: Ref)
+/custom_run_functions.kt:(2366,2381): info: Generated Viper text for complexScenario:
+method f$complexScenario$t$F$t$Boolean$t$Boolean(par$arg: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$arg), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
@@ -533,7 +533,7 @@ method f$complexScenario$F$t$Boolean$t$Boolean(par$arg: Ref)
   label lbl$ret$0
 }
 
-/custom_run_functions.kt:(3410,3425): info: Generated Viper text for testCustomClass:
+/custom_run_functions.kt:(3422,3437): info: Generated Viper text for testCustomClass:
 field bf$member: Ref
 
 field bf$size: Ref
@@ -544,7 +544,7 @@ method con$c$CustomClass$t$CustomClass() returns (ret: Ref)
   ensures acc(pred$c$CustomClass$unique(ret), write)
 
 
-method f$testCustomClass$F$t$Unit() returns (ret$0: Ref)
+method f$testCustomClass$t$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$custom: Ref

@@ -1,4 +1,4 @@
-/binary_search.kt:(90,108): info: Generated Viper text for safe_binary_search:
+/binary_search.kt:(102,120): info: Generated Viper text for safe_binary_search:
 field p$size: Ref
 
 method f$pkg$kotlin_collections$c$List$get$F$t$pkg$kotlin_collections$List$t$Int$t$Int(this$dispatch: Ref,
@@ -111,7 +111,7 @@ method f$safe_binary_search$F$t$pkg$kotlin_collections$List$t$Int$t$Boolean(par$
   label lbl$ret$0
 }
 
-/binary_search.kt:(537,563): info: Generated Viper text for unsafe_binary_search_fixed:
+/binary_search.kt:(549,575): info: Generated Viper text for unsafe_binary_search_fixed:
 field p$size: Ref
 
 method f$pkg$kotlin_collections$c$List$get$F$t$pkg$kotlin_collections$List$t$Int$t$Int(this$dispatch: Ref,

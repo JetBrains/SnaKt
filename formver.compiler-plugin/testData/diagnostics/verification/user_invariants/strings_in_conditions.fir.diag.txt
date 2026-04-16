@@ -1,5 +1,5 @@
-/strings_in_conditions.kt:(50,69): info: Generated Viper text for firstNotSortedIndex:
-method f$firstNotSortedIndex$F$t$String$t$Int(par$s: Ref)
+/strings_in_conditions.kt:(64,83): info: Generated Viper text for firstNotSortedIndex:
+method f$firstNotSortedIndex$t$F$t$String$t$Int(par$s: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$s), df$rt$stringType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
@@ -46,8 +46,8 @@ method f$firstNotSortedIndex$F$t$String$t$Int(par$s: Ref)
   label lbl$ret$0
 }
 
-/strings_in_conditions.kt:(621,636): info: Generated Viper text for returnNewString:
-method f$returnNewString$F$t$String() returns (ret$0: Ref)
+/strings_in_conditions.kt:(635,650): info: Generated Viper text for returnNewString:
+method f$returnNewString$t$F$t$String() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$stringType())
 {
   ret$0 := df$rt$stringToRef(Seq(52, 50))
@@ -55,8 +55,8 @@ method f$returnNewString$F$t$String() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/strings_in_conditions.kt:(672,689): info: Generated Viper text for addCharacterTimes:
-method f$addCharacterTimes$F$t$String$t$Char$t$Int$t$String(par$s: Ref, par$c: Ref,
+/strings_in_conditions.kt:(686,703): info: Generated Viper text for addCharacterTimes:
+method f$addCharacterTimes$t$F$t$String$t$Char$t$Int$t$String(par$s: Ref, par$c: Ref,
   par$n: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$s), df$rt$stringType())
@@ -117,10 +117,9 @@ method f$addCharacterTimes$F$t$String$t$Char$t$Int$t$String(par$s: Ref, par$c: R
   label lbl$ret$0
 }
 
-method f$pkg$kotlin$c$String$plus$F$t$String$t$N$Any$t$String(this$dispatch: Ref,
+method f$pkg$kotlin$c$String$plus$t$F$t$String$t$N$Any$t$String(this$dispatch: Ref,
   par$other: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$stringType())
   requires df$rt$isSubtype(df$rt$typeOf(par$other), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$stringType())
-

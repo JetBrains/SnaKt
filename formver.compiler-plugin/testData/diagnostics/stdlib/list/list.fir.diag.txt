@@ -1,4 +1,4 @@
-/list.kt:(77,88): info: Generated Viper text for declaration:
+/list.kt:(89,100): info: Generated Viper text for declaration:
 field p$size: Ref
 
 method f$declaration$F$t$Unit() returns (ret$0: Ref)
@@ -11,7 +11,7 @@ method f$declaration$F$t$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/list.kt:(187,201): info: Generated Viper text for initialization:
+/list.kt:(199,213): info: Generated Viper text for initialization:
 field p$size: Ref
 
 method f$initialization$F$t$pkg$kotlin_collections$List$t$Unit(par$l: Ref)
@@ -41,7 +41,7 @@ method f$pkg$kotlin_collections$emptyList$F$t$pkg$kotlin_collections$List()
   ensures df$rt$intFromRef(ret.p$size) == 0
 
 
-/list.kt:(297,304): info: Generated Viper text for add_get:
+/list.kt:(309,316): info: Generated Viper text for add_get:
 field p$size: Ref
 
 method f$add_get$F$t$pkg$kotlin_collections$MutableList$t$Unit(par$l: Ref)
@@ -95,7 +95,7 @@ method f$pkg$kotlin_collections$c$MutableList$get$F$t$pkg$kotlin_collections$Mut
     old(df$rt$intFromRef(this$dispatch.p$size))
 
 
-/list.kt:(379,391): info: Generated Viper text for last_or_null:
+/list.kt:(391,403): info: Generated Viper text for last_or_null:
 field p$size: Ref
 
 method f$last_or_null$F$t$pkg$kotlin_collections$List$t$N$Int(par$l: Ref)
@@ -141,7 +141,7 @@ method f$pkg$kotlin_collections$c$List$get$F$t$pkg$kotlin_collections$List$t$Int
     old(df$rt$intFromRef(this$dispatch.p$size))
 
 
-/list.kt:(545,553): info: Generated Viper text for is_empty:
+/list.kt:(557,565): info: Generated Viper text for is_empty:
 field p$size: Ref
 
 method f$is_empty$F$t$pkg$kotlin_collections$List$t$Int(par$l: Ref)
@@ -198,7 +198,7 @@ method f$pkg$kotlin_collections$c$List$isEmpty$F$t$pkg$kotlin_collections$List$t
     df$rt$intFromRef(this$dispatch.p$size) > 0
 
 
-/list.kt:(670,683): info: Generated Viper text for nullable_list:
+/list.kt:(682,695): info: Generated Viper text for nullable_list:
 field p$size: Ref
 
 method f$nullable_list$F$t$N$pkg$kotlin_collections$List$t$Unit(par$l: Ref)
@@ -264,4 +264,3 @@ method f$pkg$kotlin_collections$c$List$isEmpty$F$t$pkg$kotlin_collections$List$t
     df$rt$intFromRef(this$dispatch.p$size) == 0
   ensures !df$rt$boolFromRef(ret) ==>
     df$rt$intFromRef(this$dispatch.p$size) > 0
-
