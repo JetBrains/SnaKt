@@ -1,7 +1,7 @@
 package org.jetbrains.kotlin.formver.names
 
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
-import org.jetbrains.kotlin.formver.viper.NamedEntity
+import org.jetbrains.kotlin.formver.viper.AnyName
 
 /**
  * Represents a part of a candidate name.
@@ -14,9 +14,9 @@ sealed interface NamePart {
     class Basic(val name: String) : NamePart
 
     /**
-     * A name part that depends on another [NamedEntity].
+     * A name part that depends on another [AnyName].
      */
-    class Dependent(val name: NamedEntity) : NamePart
+    class Dependent(val name: AnyName) : NamePart
 
     /**
      * A separator between name parts.
@@ -113,7 +113,7 @@ class CandidateNameBuilder {
     /**
      * Adds a named entity part to the name.
      */
-    operator fun NamedEntity.unaryPlus() {
+    operator fun AnyName.unaryPlus() {
         parts.add(NamePart.Dependent(this))
     }
 
@@ -124,7 +124,7 @@ class CandidateNameBuilder {
         this.forEach {
             when (it) {
                 is String -> +it
-                is NamedEntity -> +it
+                is AnyName -> +it
                 is Iterable<*> -> +it
                 null -> {}
                 else -> throw SnaktInternalException(null, "Unsupported type: ${it::class.simpleName}")
