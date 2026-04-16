@@ -43,7 +43,7 @@ class LocalityFunctionCallChecker(
         if (!config.checkLocality) return
 
         val callableSymbol = expression.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
-            ?: throw IllegalStateException("Unable to resolve $expression")
+            ?: return
         val receiverDeclaration = callableSymbol.receiverParameterSymbol?.fir
         val receiver = expression.extensionReceiver
 
