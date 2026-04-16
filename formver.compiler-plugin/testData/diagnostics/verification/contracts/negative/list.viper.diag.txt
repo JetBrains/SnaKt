@@ -1,0 +1,11 @@
+/list.kt:(127,146): warning: Invalid index for the following list sub-expression, the index may be greater than the list's size.
+
+/list.kt:(239,248): warning: Invalid index for list 'myList', the index may be greater than the list's size.
+
+/list.kt:(315,328): warning: Invalid index for list 'l', the index may be less than zero.
+
+/list.kt:(406,410): warning: Invalid index for list 'l', the index may be greater than the list's size.
+
+/list.kt:(463,493): warning: Invalid sub-list range for the following list sub-expression, the range may be greater than the list's size.
+
+/list.kt:(555,586): warning: Invalid sub-list range for the following list sub-expression, the range may be including negative indices.

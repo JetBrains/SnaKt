@@ -25,5 +25,3 @@ method f$getX$F$t$Any$t$N$Int(par$a: Ref) returns (ret$0: Ref)
   goto lbl$ret$0
   label lbl$ret$0
 }
-
-/as_type_contract.kt:(194,236): warning: Cannot verify that if a non-null value is returned then a !is IntHolder.

@@ -1,0 +1,3 @@
+/returns_booleans.kt:(183,196): warning: Function may return a false value.
+
+/returns_booleans.kt:(325,339): warning: Function may return a true value.

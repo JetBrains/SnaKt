@@ -7,5 +7,3 @@ method f$returns_null$F$t$N$Int() returns (ret$0: Ref)
   goto lbl$ret$0
   label lbl$ret$0
 }
-
-/returns_not_null.kt:(167,183): warning: Function may return a null value.

@@ -8,8 +8,6 @@ method f$incorrectly_returns_false$F$t$Boolean() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/returns_booleans.kt:(183,196): warning: Function may return a false value.
-
 /returns_booleans.kt:(264,288): info: Generated Viper text for incorrectly_returns_true:
 method f$incorrectly_returns_true$F$t$Boolean() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
@@ -19,5 +17,3 @@ method f$incorrectly_returns_true$F$t$Boolean() returns (ret$0: Ref)
   goto lbl$ret$0
   label lbl$ret$0
 }
-
-/returns_booleans.kt:(325,339): warning: Function may return a true value.

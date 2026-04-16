@@ -9,8 +9,6 @@ method f$compoundConditionalEffect$F$t$Boolean$t$Unit(par$b: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/cond_effects.kt:(190,220): warning: Cannot verify that if the function returns then (b && false).
-
 /cond_effects.kt:(271,287): info: Generated Viper text for mayReturnNonNull:
 method f$mayReturnNonNull$F$t$N$Any$t$N$Any(par$x: Ref)
   returns (ret$0: Ref)
@@ -24,8 +22,6 @@ method f$mayReturnNonNull$F$t$N$Any$t$N$Any(par$x: Ref)
   label lbl$ret$0
 }
 
-/cond_effects.kt:(328,360): warning: Cannot verify that if a null value is returned then x is Int.
-
 /cond_effects.kt:(424,437): info: Generated Viper text for mayReturnNull:
 method f$mayReturnNull$F$t$N$Any$t$N$Any(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$anyType()))
@@ -37,8 +33,6 @@ method f$mayReturnNull$F$t$N$Any$t$N$Any(par$x: Ref) returns (ret$0: Ref)
   goto lbl$ret$0
   label lbl$ret$0
 }
-
-/cond_effects.kt:(478,513): warning: Cannot verify that if a non-null value is returned then x is Int.
 
 /cond_effects.kt:(723,741): info: Generated Viper text for isNullOrEmptyWrong:
 method f$isNullOrEmptyWrong$F$t$N$pkg$kotlin$CharSequence$t$Boolean(par$seq: Ref)
@@ -66,8 +60,6 @@ method f$isNullOrEmptyWrong$F$t$N$pkg$kotlin$CharSequence$t$Boolean(par$seq: Ref
 method g$public$length(this$dispatch: Ref) returns (ret: Ref)
 
 
-/cond_effects.kt:(796,832): warning: Cannot verify that if a false value is returned then seq != null.
-
 /cond_effects.kt:(925,942): info: Generated Viper text for recursiveContract:
 method f$recursiveContract$F$t$Int$t$N$Any$t$Boolean(par$n: Ref, par$x: Ref)
   returns (ret$0: Ref)
@@ -85,5 +77,3 @@ method f$recursiveContract$F$t$Int$t$N$Any$t$Boolean(par$n: Ref, par$x: Ref)
   goto lbl$ret$0
   label lbl$ret$0
 }
-
-/cond_effects.kt:(994,1029): warning: Cannot verify that if a true value is returned then x is String.
