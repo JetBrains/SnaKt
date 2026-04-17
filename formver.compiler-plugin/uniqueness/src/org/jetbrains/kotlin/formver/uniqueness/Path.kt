@@ -30,7 +30,14 @@ object ReceiverPathExtractor : FirVisitor<Path?, Unit>() {
     override fun visitElement(
         element: FirElement,
         data: Unit
-    ): Path? = null
+    ): Path? = when (element) {
+        is FirPropertyAccessExpression -> element.accept(this, data)
+        is FirSmartCastExpression -> element.accept(this, data)
+        is FirTypeOperatorCall -> element.accept(this, data)
+        is FirProperty -> element.accept(this, data)
+        is FirResolvedNamedReference -> element.accept(this, data)
+        else -> null
+    }
 
     override fun visitResolvedNamedReference(
         resolvedNamedReference: FirResolvedNamedReference,
