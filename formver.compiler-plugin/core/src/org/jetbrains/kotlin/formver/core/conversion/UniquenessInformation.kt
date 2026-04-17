@@ -12,7 +12,15 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ExitNodeMarker
 import org.jetbrains.kotlin.formver.uniqueness.FlowFacts
 import org.jetbrains.kotlin.formver.uniqueness.UniquenessTrie
 
-
+/**
+ * Represents information about the uniqueness of paths through a control flow graph (CFG).
+ * It provides mechanisms to access dataflow facts and analyze paths before and after a specific
+ * FirElement
+ *
+ * @property root The root node of the control flow graph (CFG) from which traversal begins.
+ * @property flowFacts The dataflow facts associated with each node in the CFG, which store
+ *                     information before and after execution of those nodes.
+ */
 class UniquenessInformation(val root: CFGNode<*>, val flowFacts: FlowFacts<UniquenessTrie>) {
 
     private val nodeCollectionMap by lazy { extract() }
