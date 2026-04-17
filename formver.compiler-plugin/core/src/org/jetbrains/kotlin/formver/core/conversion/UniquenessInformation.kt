@@ -36,11 +36,11 @@ class UniquenessInformation(val root: CFGNode<*>, val flowFacts: FlowFacts<Uniqu
     class NodeCollection {
         private var _entry: CFGNode<*>? = null
         private var _exit: CFGNode<*>? = null
-        private val _all: MutableList<CFGNode<*>> = mutableListOf()
+        private val all: MutableList<CFGNode<*>> = mutableListOf()
 
 
-        val entry: CFGNode<*>? get() = _entry ?: _all.firstOrNull()
-        val exit: CFGNode<*>? get() = _exit ?: _all.lastOrNull()
+        val entry: CFGNode<*>? get() = _entry ?: all.firstOrNull()
+        val exit: CFGNode<*>? get() = _exit ?: all.lastOrNull()
 
         fun update(node: CFGNode<*>) {
             when (node) {
@@ -48,7 +48,7 @@ class UniquenessInformation(val root: CFGNode<*>, val flowFacts: FlowFacts<Uniqu
                 is ExitNodeMarker -> _exit = node
                 else -> {}
             }
-            _all.add(node)
+            all.add(node)
         }
     }
 
