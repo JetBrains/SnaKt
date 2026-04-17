@@ -21,16 +21,17 @@ class LocalityVariableAssignmentChecker(
     override fun check(expression: FirVariableAssignment) {
         if (!config.checkLocality) return
 
-        val leftLocality = expression.lValue.extractLocality()
-        val rightLocality = expression.rValue.extractLocality()
+        val requiredLocality = expression.lValue.extractLocality()
+        val actualLocality = expression.rValue.extractLocality()
 
-        if (leftLocality.accepts(rightLocality)) return
+        if (requiredLocality.accepts(actualLocality)) return
 
         reporter.reportOn(
             expression.rValue.source,
             LOCALITY_VIOLATION,
-            "Assignment locality mismatch: expected '${leftLocality.render()}', " +
-                    "actual '${rightLocality.render()}'."
+            "Assignment",
+            requiredLocality,
+            actualLocality
         )
     }
 }

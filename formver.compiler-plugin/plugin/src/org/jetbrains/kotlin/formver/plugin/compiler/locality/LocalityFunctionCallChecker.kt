@@ -32,8 +32,9 @@ class LocalityFunctionCallChecker(
         reporter.reportOn(
             argument.source,
             LOCALITY_VIOLATION,
-            "Argument locality mismatch: expected '${requiredArgumentLocality.render()}', " +
-                    "actual '${actualArgumentLocality.render()}'."
+            "Argument",
+            requiredArgumentLocality,
+            actualArgumentLocality
         )
     }
 
@@ -55,8 +56,9 @@ class LocalityFunctionCallChecker(
                 reporter.reportOn(
                     receiver.source ?: expression.source,
                     LOCALITY_VIOLATION,
-                    "Receiver locality mismatch: expected '${requiredReceiverLocality.render()}', " +
-                            "actual '${actualReceiverLocality.render()}'."
+                    "Receiver",
+                    requiredReceiverLocality,
+                    actualReceiverLocality
                 )
             }
         }

@@ -30,8 +30,9 @@ class LocalityValueParameterChecker(
         reporter.reportOn(
             defaultValue.source ?: declaration.source,
             LOCALITY_VIOLATION,
-            "Initializer locality mismatch: expected '${requiredLocality.render()}', " +
-                    "actual '${actualLocality.render()}'."
+            "Initializer",
+            requiredLocality,
+            actualLocality
         )
     }
 }

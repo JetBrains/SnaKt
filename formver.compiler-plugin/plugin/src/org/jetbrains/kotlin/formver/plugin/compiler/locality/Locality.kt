@@ -5,8 +5,11 @@
 
 package org.jetbrains.kotlin.formver.plugin.compiler.locality
 
+import org.jetbrains.kotlin.diagnostics.rendering.Renderer
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
+import org.jetbrains.kotlin.formver.plugin.compiler.locality.Locality.Global
+import org.jetbrains.kotlin.formver.plugin.compiler.locality.Locality.Local
 
 sealed interface Locality {
     data object Global : Locality
@@ -40,10 +43,11 @@ sealed interface Locality {
                 is Local -> owner == other.owner
             }
         }
+}
 
-    fun render(): String =
-        when (this) {
-            Global -> "global"
-            is Local -> "local(${(owner as? FirCallableSymbol<*>)?.name ?: "unknown"})"
-        }
+val LocalityRenderer = Renderer<Locality> { locality ->
+    when (locality) {
+        Global -> "'global'"
+        is Local -> "'local(${(locality.owner as? FirCallableSymbol<*>)?.name ?: "unknown"})'"
+    }
 }

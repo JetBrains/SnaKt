@@ -21,16 +21,17 @@ class LocalityThrowChecker(
     override fun check(expression: FirThrowExpression) {
         if (!config.checkLocality) return
 
-        val leftLocality = Locality.Global
-        val rightLocality = expression.exception.extractLocality()
+        val requiredLocality = Locality.Global
+        val actualLocality = expression.exception.extractLocality()
 
-        if (leftLocality.accepts(rightLocality)) return
+        if (requiredLocality.accepts(actualLocality)) return
 
         reporter.reportOn(
             expression.exception.source,
             LOCALITY_VIOLATION,
-            "Throw locality mismatch: expected '${leftLocality.render()}', " +
-                    "actual '${rightLocality.render()}'."
+            "Throw",
+            requiredLocality,
+            actualLocality
         )
     }
 }

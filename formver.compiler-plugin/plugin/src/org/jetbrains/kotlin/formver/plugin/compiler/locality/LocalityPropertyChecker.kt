@@ -22,16 +22,17 @@ class LocalityPropertyChecker(
         if (!config.checkLocality) return
 
         val initializer = declaration.initializer ?: return
-        val leftLocality = declaration.extractLocality()
-        val rightLocality = initializer.extractLocality()
+        val requiredLocality = declaration.extractLocality()
+        val actualLocality = initializer.extractLocality()
 
-        if (leftLocality.accepts(rightLocality)) return
+        if (requiredLocality.accepts(actualLocality)) return
 
         reporter.reportOn(
             initializer.source,
             LOCALITY_VIOLATION,
-            "Assignment locality mismatch: expected '${leftLocality.render()}', " +
-                    "actual '${rightLocality.render()}'."
+            "Assignment",
+            requiredLocality,
+            actualLocality
         )
     }
 }

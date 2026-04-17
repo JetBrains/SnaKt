@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.formver.plugin.compiler
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactoryToRendererMap
 import org.jetbrains.kotlin.diagnostics.rendering.BaseDiagnosticRendererFactory
 import org.jetbrains.kotlin.diagnostics.rendering.CommonRenderers
+import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityRenderer
 
 object FormalVerificationPluginErrorMessages : BaseDiagnosticRendererFactory() {
     override val MAP: KtDiagnosticFactoryToRendererMap by KtDiagnosticFactoryToRendererMap("FormalVerification") { map ->
@@ -68,8 +69,10 @@ object FormalVerificationPluginErrorMessages : BaseDiagnosticRendererFactory() {
         )
         map.put(
             PluginErrors.LOCALITY_VIOLATION,
-            "{0}",
+            "{0} locality mismatch: expected {1}, actual {2}.",
             CommonRenderers.STRING,
+            LocalityRenderer,
+            LocalityRenderer,
         )
         map.put(
             PluginErrors.UNIQUENESS_VIOLATION,

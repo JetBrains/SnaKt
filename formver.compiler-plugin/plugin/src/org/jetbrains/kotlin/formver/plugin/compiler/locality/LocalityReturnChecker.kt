@@ -21,16 +21,17 @@ class LocalityReturnChecker(
     override fun check(expression: FirReturnExpression) {
         if (!config.checkLocality) return
 
-        val leftLocality = Locality.Global
-        val rightLocality = expression.result.extractLocality()
+        val requiredLocality = Locality.Global
+        val actualLocality = expression.result.extractLocality()
 
-        if (leftLocality.accepts(rightLocality)) return
+        if (requiredLocality.accepts(actualLocality)) return
 
         reporter.reportOn(
             expression.result.source,
             LOCALITY_VIOLATION,
-            "Return locality mismatch: expected '${leftLocality.render()}', " +
-                    "actual '${rightLocality.render()}'."
+            "Return",
+            requiredLocality,
+            actualLocality
         )
     }
 }
