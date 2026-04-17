@@ -73,7 +73,7 @@ object DefinitionUniquenessStateExtractor : ExpressionUniquenessStateExtractor()
         data: UniquenessState
     ): UniquenessState {
         val symbol = symbol ?: return data
-        val uniqueness = symbol.fir.requiredUniqueness
+        val uniqueness = symbol.fir.extractUniqueness()
         val receiverData = data[symbol] ?: empty
         val receiverEnvironment = explicitReceiver?.visit(receiverData)
             ?: dispatchReceiver?.visit(receiverData)

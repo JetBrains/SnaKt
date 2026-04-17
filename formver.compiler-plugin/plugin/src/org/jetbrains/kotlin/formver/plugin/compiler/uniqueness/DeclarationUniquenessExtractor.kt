@@ -10,25 +10,17 @@ import org.jetbrains.kotlin.fir.types.classId
 import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.formver.core.annotationId
 
-/**
- * Extracts the uniqueness required by a declaration definition.
- */
-object DeclarationUniquenessExtractor {
-    val uniquenessAnnotationId = annotationId("Unique")
+val uniquenessAnnotationId = annotationId("Unique")
 
-    val FirDeclaration.hasUniquenessAnnotation: Boolean
-        get() = annotations.any { it.annotationTypeRef.coneType.classId == uniquenessAnnotationId }
-
-    fun extract(declaration: FirDeclaration): Uniqueness =
-        if (declaration.hasUniquenessAnnotation) {
-            Uniqueness.Unique
-        } else {
-            Uniqueness.Shared
-        }
-}
+fun FirDeclaration.hasUniquenessAnnotation(): Boolean =
+    annotations.any { it.annotationTypeRef.coneType.classId == uniquenessAnnotationId }
 
 /**
  * Extracts the uniqueness required by [this] declaration definition.
  */
-val FirDeclaration.requiredUniqueness: Uniqueness
-    get() = DeclarationUniquenessExtractor.extract(this)
+fun FirDeclaration.extractUniqueness(): Uniqueness =
+    if (hasUniquenessAnnotation()) {
+        Uniqueness.Unique
+    } else {
+        Uniqueness.Shared
+    }

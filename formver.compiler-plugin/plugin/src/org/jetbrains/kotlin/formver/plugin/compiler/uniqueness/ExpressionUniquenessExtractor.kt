@@ -41,7 +41,7 @@ object DefinitionUniquenessExtractor : ExpressionUniquenessExtractor<Unit>() {
         dispatchReceiver: FirExpression?,
         data: Unit
     ): Uniqueness {
-        val componentUniqueness = symbol?.fir?.requiredUniqueness ?: Uniqueness.Shared
+        val componentUniqueness = symbol?.fir?.extractUniqueness() ?: Uniqueness.Shared
         val receiverUniqueness = explicitReceiver?.visit(data)
             ?: dispatchReceiver?.visit(data)
             ?: empty
@@ -84,7 +84,7 @@ object UseUniquenessExtractor : ExpressionUniquenessExtractor<UniquenessState?>(
     ): Uniqueness {
         val functionDeclaration = functionCall.calleeReference.symbol?.fir
 
-        return functionDeclaration?.requiredUniqueness ?: Uniqueness.Shared
+        return functionDeclaration?.extractUniqueness() ?: Uniqueness.Shared
     }
 
     override fun visitLiteralExpression(
