@@ -63,15 +63,8 @@ class LocalityFunctionCallChecker(
             }
         }
 
-        val resolvedArgumentMapping = expression.resolvedArgumentMapping
-        val argumentMappings = if (resolvedArgumentMapping != null) {
-            resolvedArgumentMapping.toList()
-        } else {
-            val argumentSymbols = callableSymbol.valueParameterSymbols
-            val arguments = expression.arguments
-
-            arguments.zip(argumentSymbols.map { it.fir })
-        }
+        val argumentMappings = expression.resolvedArgumentMapping
+            ?: return
 
         for ((argument, argumentDeclaration) in argumentMappings) {
             checkArgument(argument, argumentDeclaration.extractRequiredLocality())
