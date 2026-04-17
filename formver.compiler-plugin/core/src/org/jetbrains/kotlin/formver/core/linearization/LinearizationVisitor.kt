@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.*
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toFuncApp
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toMethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.fillHoles
 import org.jetbrains.kotlin.formver.core.embeddings.types.injection
 import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
@@ -410,8 +411,22 @@ data class LinearizationVisitor(
         override fun toViperUnusedResult(ctx: LinearizationContext) {
             when (e.field.accessPolicy) {
                 AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
-                    e.receiver.linearize().toViperUnusedResult(ctx)
-                    e.newValue.linearize().toViperUnusedResult(ctx)
+                    if (false) {
+                        // receiver is shared
+                        e.receiver.linearize().toViperUnusedResult(ctx)
+                        e.newValue.linearize().toViperUnusedResult(ctx)
+                    } else {
+                        // receiver is unique
+                        val receiverViper = e.receiver.linearize().toViper(ctx)
+                        val newValueViper = e.newValue.linearize().toViper(ctx)
+                        ctx.addStatement {
+                            Stmt.FieldAssign(
+                                Exp.FieldAccess(receiverViper, e.field.toViper()),
+                                newValueViper,
+                                ctx.source.asPosition
+                            )
+                        }
+                    }
                 }
                 else -> {
                     val receiverViper = e.receiver.linearize().toViper(ctx)
@@ -581,21 +596,27 @@ data class LinearizationVisitor(
 
     // region Permission
 
+    // TODO : use the correct default Interface for the Linearizer
     override fun visitFoldEmbedding(e: FoldEmbedding) = object : UnitResultLinearizable(e) {
+
         override fun toViperUnusedResult(ctx: LinearizationContext) {
-            val predicate = e.predicate.linearize().toViperBuiltinType(ctx)
+            val predicate = (e.path.inner.type.pretype as ClassTypeEmbedding).uniquePredicateAccessInvariant()
+            val viperPredicate = predicate.fillHole(e.path).linearize().toViperBuiltinType(ctx)
             ctx.addStatement {
-                Stmt.Fold(predicate as Exp.PredicateAccess)
+                Stmt.Fold(viperPredicate as Exp.PredicateAccess)
             }
         }
+
 
     }
 
     override fun visitUnfoldEmbedding(e: UnfoldEmbedding): Linearizable = object : UnitResultLinearizable(e) {
+
         override fun toViperUnusedResult(ctx: LinearizationContext) {
-            val predicate = e.predicate.linearize().toViperBuiltinType(ctx)
+            val predicate = (e.path.inner.type.pretype as ClassTypeEmbedding).uniquePredicateAccessInvariant()
+            val viperPredicate = predicate.fillHole(e.path).linearize().toViperBuiltinType(ctx)
             ctx.addStatement {
-                Stmt.Unfold(predicate as Exp.PredicateAccess)
+                Stmt.Unfold(viperPredicate as Exp.PredicateAccess)
             }
         }
     }
