@@ -8,15 +8,9 @@ package org.jetbrains.kotlin.formver.viper.errors
 import org.jetbrains.kotlin.formver.viper.ast.AstWrapper
 import org.jetbrains.kotlin.formver.viper.ast.Position
 
-class VerificationError private constructor(
+class VerificationError(
     val result: viper.silver.verifier.VerificationError,
 ) : VerifierError {
-    companion object {
-        fun fromSilver(result: viper.silicon.interfaces.VerificationResult): VerificationError {
-            check(result.isFatal) { "The verification result must contain an error to be converted." }
-            return VerificationError((result as viper.silicon.interfaces.Failure).message())
-        }
-    }
 
     /**
      * The [locationNode] represents the node in Viper's AST where the error occurred.
