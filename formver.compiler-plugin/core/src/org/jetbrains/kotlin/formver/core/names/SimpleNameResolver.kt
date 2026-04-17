@@ -26,7 +26,6 @@ class SimpleNameResolver : NameResolver {
         SKIP;
 
         fun show() = this == SHOW
-        fun skip() = this == SKIP
     }
     companion object {
         context(nameTypeAction: NameTypeAction)
@@ -171,7 +170,7 @@ class SimpleNameResolver : NameResolver {
 
         context(nameTypeAction: NameTypeAction)
         private fun resolveOptionalNameType(name: NameTypeBase?): String? =
-            if (name == null || nameTypeAction.skip()) null else {
+            if (name == null || !nameTypeAction.show()) null else {
                 resolveNameType(name)
             }
 
