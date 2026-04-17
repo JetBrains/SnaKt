@@ -10,7 +10,9 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.EnterNodeMarker
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ExitNodeMarker
 import org.jetbrains.kotlin.formver.uniqueness.FlowFacts
+import org.jetbrains.kotlin.formver.uniqueness.Path
 import org.jetbrains.kotlin.formver.uniqueness.UniquenessTrie
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessType
 
 /**
  * Represents information about the uniqueness of paths through a control flow graph (CFG).
@@ -31,6 +33,18 @@ class UniquenessInformation(val root: CFGNode<*>, val flowFacts: FlowFacts<Uniqu
 
     fun flowAfter(firElement: FirElement): UniquenessTrie? {
         return nodeCollectionMap[firElement]?.exit?.let { flowFacts.flowAfter(it) }
+    }
+
+    fun mustUnfold(firElement: FirElement, path: Path?): Boolean {
+        if (path == null) return false
+        val flowType = flowBefore(firElement)?.ensure(path)?.parentsJoin ?: return false
+        return flowType != UniquenessType.Moved
+    }
+
+    fun mustFold(firElement: FirElement, path: Path?): Boolean {
+        if (path == null) return false
+        val flowType = flowAfter(firElement)?.ensure(path)?.parentsJoin ?: return false
+        return flowType != UniquenessType.Moved
     }
 
     class NodeCollection {
