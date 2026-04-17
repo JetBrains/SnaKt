@@ -30,8 +30,11 @@ class SiliconFrontend(commandLineArgs: List<String>) : Closeable {
             // SiliconFrontendAPI's constructor calls ViperStdOutLogger, which casts LoggerFactory.getILoggerFactory()
             // to LoggerContext. Under concurrent construction (parallel tests), SLF4J's first-time initialization may
             // still be in progress and return a SubstituteLoggerFactory instead, causing a ClassCastException.
+            //
             // Calling getLogger here forces logback to fully initialize exactly once, under the JVM's
             // class-initialization guarantee, before any constructor runs.
+            //
+            // This issue is known to the Silicon team: https://github.com/viperproject/silicon/issues/968
             org.slf4j.LoggerFactory.getLogger(SiliconFrontend::class.java)
         }
     }
