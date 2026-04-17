@@ -29,6 +29,7 @@ class MethodConverter(
     private val paramResolver: ParameterResolver,
     scopeDepth: ScopeIndex,
     private val parent: MethodConversionContext? = null,
+    override val uniquenessInformation: UniquenessInformation? = null,
 ) : MethodConversionContext, ProgramConversionContext by programCtx {
     private var propertyResolver = PropertyResolver(scopeDepth)
 

@@ -33,6 +33,10 @@ import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.names.SimpleNameResolver
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessGraphAnalyzer
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessGraphChecker
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessResolver
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessTrie
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Method
 import org.jetbrains.kotlin.formver.viper.ast.Program
@@ -123,7 +127,7 @@ class ProgramConverter(
         if (declaration.symbol.isPure(session)) {
             embedPureUserFunction(declaration.symbol, signature)
         } else {
-            val (returnTarget, stmtCtx) = createBodyConversionContext(signature)
+            val (returnTarget, stmtCtx) = createBodyConversionContext(signature, declaration)
             embedUserFunction(declaration.symbol, signature).apply {
                 body = stmtCtx.convertMethodWithBody(declaration, signature, returnTarget)
             }
@@ -145,13 +149,16 @@ class ProgramConverter(
                 "Expected FirSimpleFunction, got unexpected type ${symbol.fir.javaClass.simpleName}"
             )
         if (declaration.body != null) {
-            val (_, stmtCtx) = createBodyConversionContext(signature)
+            val (_, stmtCtx) = createBodyConversionContext(signature, declaration)
             new.body = stmtCtx.convertFunctionWithBody(declaration)
         }
         return new
     }
 
-    private fun createBodyConversionContext(signature: FullNamedFunctionSignature): Pair<ReturnTarget, StmtConversionContext> {
+    private fun createBodyConversionContext(
+        signature: FullNamedFunctionSignature,
+        declaration: FirSimpleFunction
+    ): Pair<ReturnTarget, StmtConversionContext> {
         val returnTarget = returnTargetProducer.getFresh(signature.callableType.returnType)
         val uniqueness = extractUniquenessInformation(declaration)
         val paramResolver = RootParameterResolver(
@@ -166,7 +173,7 @@ class ProgramConverter(
             signature,
             paramResolver,
             scopeIndexProducer.getFresh(),
-            uniqueness,
+            uniquenessInformation = uniqueness,
         ).statementCtxt()
         return Pair(returnTarget, stmtCtx)
     }
