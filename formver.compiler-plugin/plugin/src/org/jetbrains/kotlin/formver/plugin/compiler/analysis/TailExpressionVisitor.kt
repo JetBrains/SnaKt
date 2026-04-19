@@ -120,20 +120,6 @@ abstract class TailExpressionVisitor<T, D> : FirVisitor<T, D>() {
         return typeOperatorCall.argumentList.arguments.singleOrNull().visit(data)
     }
 
-    override fun visitReturnExpression(
-        returnExpression: FirReturnExpression,
-        data: D
-    ): T {
-        return empty
-    }
-
-    override fun visitThrowExpression(
-        throwExpression: FirThrowExpression,
-        data: D
-    ): T {
-        return empty
-    }
-
     override fun visitTryExpression(
         tryExpression: FirTryExpression,
         data: D
