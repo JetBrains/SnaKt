@@ -21,6 +21,12 @@ import org.jetbrains.kotlin.test.frontend.fir.FirOutputArtifact
 import org.jetbrains.kotlin.test.model.*
 import org.jetbrains.kotlin.test.services.TestServices
 
+fun shouldSkipByTestMode(testServices: TestServices): Boolean = when (getTestMode()) {
+    TestMode.CHECK_CONVERSION -> true
+    TestMode.UPDATE -> !testServices.diagnosticsCollector.conversionHasChanged()
+    TestMode.FULL -> false
+}
+
 
 class ViperProgramVerificationFacade(val testServices: TestServices) :
     AbstractTestFacade<FirOutputArtifact, FirOutputArtifact>() {
@@ -32,18 +38,8 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
     /**
      * Returns true iff the given [decl] should be verified.
      */
-    fun shouldVerify(decl: FirSimpleFunction, testService: TestServices): Boolean {
-        val testMode = getTestMode()
-
-        // decl.shouldVerify could also be null
-        if (decl.shouldVerify != true) return false
-
-        return when (testMode) {
-            TestMode.CHECK_CONVERSION -> false // in this mode we never want to verify.
-            TestMode.UPDATE -> testService.diagnosticsCollector.conversionHasChanged()
-            TestMode.FULL -> true // only if the target is selected
-        }
-    }
+    fun shouldVerify(decl: FirSimpleFunction, testServices: TestServices): Boolean =
+        decl.shouldVerify == true && !shouldSkipByTestMode(testServices)
 
     /**
      * Extracts the Viper programs and if necessary, verifies them.
@@ -91,7 +87,7 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
         val results = mutableListOf<KtDiagnostic>()
         val onFailure = { err: VerificationError ->
             val diagnostics = formatVerificationError(err, decl, module)
-            val _ = results.add(diagnostics)
+            val unsued = results.add(diagnostics)
         }
 
         val verifier = Verifier()
@@ -179,21 +175,14 @@ class ViperResultHandler(testServices: TestServices) :
     override val artifactKind: TestArtifactKind<FirOutputArtifact> get() = FrontendKinds.FIR
 
     override fun processModule(module: TestModule, info: FirOutputArtifact) {
-        val shouldAssert = when (getTestMode()) {
-            TestMode.CHECK_CONVERSION -> false // in this mode we never want to verify.
-            TestMode.UPDATE -> testServices.diagnosticsCollector.conversionHasChanged()
-            TestMode.FULL -> true // only if the target is selected
-        }
+        if (shouldSkipByTestMode(testServices)) return
 
-        if (shouldAssert) {
-            runChecks(
-                testServices,
-                { testServices.diagnosticsCollector.assertVerification() },
-                { testServices.diagnosticsCollector.assertConversion() },
-                { testServices.tagCollector.assertAll() },
-            )
-
-        }
+        runChecks(
+            testServices,
+            { testServices.diagnosticsCollector.assertVerification() },
+            { testServices.diagnosticsCollector.assertConversion() },
+            { testServices.tagCollector.assertAll() },
+        )
     }
 
     override fun processAfterAllModules(someAssertionWasFailed: Boolean) {}

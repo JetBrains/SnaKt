@@ -132,6 +132,7 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
     }
 
     private fun PluginConfiguration.shouldVerify(declaration: FirSimpleFunction): Boolean = when {
+        //TODO: Delete the following line, if we go with this approach
 //        verificationSelection == TargetsSelection.FORCE_DISABLE -> false
         declaration.hasAnnotation(neverConvertId, session) -> false
         declaration.hasAnnotation(neverVerifyId, session) -> false

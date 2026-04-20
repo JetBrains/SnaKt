@@ -11,14 +11,16 @@ import org.jetbrains.kotlin.generators.dsl.junit5.generateTestGroupSuiteWithJUni
 fun main() {
     generateTestGroupSuiteWithJUnit5 {
         testGroup(testDataRoot = "formver.compiler-plugin/testData", testsRoot = "formver.compiler-plugin/test-gen") {
-//            testClass<AbstractFirLightTreeFormVerPluginDiagnosticsTest> {
-//                model("diagnostics")
-//            }
-//            testClass<AbstractFirLightTreeFormVerPluginNoVerificationDiagnosticsTest> {
-//                model("diagnostics/verification")
-//                model("diagnostics/stdlib")
-//                model("diagnostics/expensive_verification")
-//            }
+            //TODO: Delete the following lines, if we go with this approach
+
+            //            testClass<AbstractFirLightTreeFormVerPluginDiagnosticsTest> {
+            //                model("diagnostics")
+            //            }
+            //            testClass<AbstractFirLightTreeFormVerPluginNoVerificationDiagnosticsTest> {
+            //                model("diagnostics/verification")
+            //                model("diagnostics/stdlib")
+            //                model("diagnostics/expensive_verification")
+            //            }
             testClass<AbstractPhasedDiagnosticTest> {
                 model("diagnostics")
             }
