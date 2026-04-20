@@ -7,10 +7,7 @@ package org.jetbrains.kotlin.formver.uniqueness
 
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.declarations.FirProperty
-import org.jetbrains.kotlin.fir.expressions.FirOperation
-import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
-import org.jetbrains.kotlin.fir.expressions.FirSmartCastExpression
-import org.jetbrains.kotlin.fir.expressions.FirTypeOperatorCall
+import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.references.FirResolvedNamedReference
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
@@ -117,6 +114,10 @@ object ValuePathCollector : FirVisitor<List<Path>, Unit>() {
         if (!typeOperatorCall.isCast()) return emptyList()
 
         return typeOperatorCall.argumentList.arguments.singleOrNull()?.accept(this, data) ?: emptyList()
+    }
+
+    override fun visitVariableAssignment(variableAssignment: FirVariableAssignment, data: Unit): List<Path> {
+        return variableAssignment.lValue.accept(this, data) + variableAssignment.rValue.accept(this, data)
     }
 }
 
