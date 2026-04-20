@@ -51,9 +51,14 @@ class ExpressionLocalityExtractor(
         qualifiedAccessExpression: FirQualifiedAccessExpression,
         data: Unit
     ): Locality {
-        return qualifiedAccessExpression.explicitReceiver?.visit(data)
-            ?: qualifiedAccessExpression.dispatchReceiver?.visit(data)
-            ?: qualifiedAccessExpression.calleeReference.symbol?.extractLocality() ?: empty
+        val receiver = qualifiedAccessExpression.explicitReceiver
+            ?: qualifiedAccessExpression.dispatchReceiver
+
+        return if (receiver != null) {
+            empty
+        } else {
+            qualifiedAccessExpression.calleeReference.symbol?.extractLocality() ?: empty
+        }
     }
 
     @OptIn(SymbolInternals::class)

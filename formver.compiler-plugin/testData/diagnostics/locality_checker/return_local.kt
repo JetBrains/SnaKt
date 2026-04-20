@@ -26,9 +26,9 @@ fun @receiver:Borrowed A.`return local receiver`(): A {
 }
 
 fun @receiver:Borrowed A.`return explicit local receiver property`(): Any {
-    return <!LOCALITY_VIOLATION!>this.x<!>
+    return this.x
 }
 
 fun @receiver:Borrowed A.`return implicit local receiver property`(): Any {
-    return <!LOCALITY_VIOLATION!>x<!>
+    return x
 }

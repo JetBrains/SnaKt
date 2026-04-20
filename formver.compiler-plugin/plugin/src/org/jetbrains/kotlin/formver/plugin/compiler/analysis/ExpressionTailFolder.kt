@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.fir.lastExpression
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 
 /**
- * Computes values for an expression at each of its tail position.
+ * Folds a value over each tail of the expression.
  *
  * Expressions that do not produce a usable tail value for the analysis return [empty].
  * By default these include arbitrary FIR elements, function calls, `return`, and `throw`.
