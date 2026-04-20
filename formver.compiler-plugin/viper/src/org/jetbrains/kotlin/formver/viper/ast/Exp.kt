@@ -16,6 +16,18 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
 
     val type: Type
 
+    data class Minus(
+        val arg: Exp,
+        val pos: Position = Position.NoPosition,
+        val info: Info = Info.NoInfo,
+        val trafos: Trafos = Trafos.NoTrafos,
+    ) : Exp {
+        override val type = Type.Int
+        context(nameResolver: NameResolver)
+        override fun toSilver(): viper.silver.ast.Minus =
+            Minus(arg.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
+    }
+
     //region Arithmetic Expressions
     data class Add(
         override val left: Exp,
@@ -544,7 +556,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             )
             return PredicateAccessPredicate(
                 predicateAccess,
-                perm.toSilver(),
+                perm.toSilver().toScalaOption(),
                 pos.toSilver(),
                 info.toSilver(),
                 trafos.toSilver()
@@ -577,7 +589,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         context(nameResolver: NameResolver)
         override fun toSilver() = FieldAccessPredicate(
                 field.toSilver(),
-                perm.toSilver(),
+                perm.toSilver().toScalaOption(),
                 pos.toSilver(),
                 info.toSilver(),
                 trafos.toSilver(),
@@ -597,6 +609,21 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.Let =
             Let(variable.toSilver(), varExp.toSilver(), body.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
+    }
+
+    data class TernaryExp(
+        val condExp: Exp,
+        val thenExp: Exp,
+        val elseExp: Exp,
+        val pos: Position = Position.NoPosition,
+        val info: Info = Info.NoInfo,
+        val trafos: Trafos = Trafos.NoTrafos
+    ): Exp {
+        override val type: Type = thenExp.type.also { assert(it == elseExp.type) }
+
+        context(nameResolver: NameResolver)
+        override fun toSilver(): CondExp =
+            CondExp(condExp.toSilver(), thenExp.toSilver(), elseExp.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
 
     // We can't pass all the available position, info, and trafos information here.
@@ -645,7 +672,6 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         fun List<Exp>.toConjunction(): Exp =
             if (isEmpty()) BoolLit(true)
             else reduce { l, r -> And(l, r) }
-
     }
 
     /**

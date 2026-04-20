@@ -1,0 +1,5 @@
+/assert_statements.kt:(160,166): error: Assert condition is impure
+
+/assert_statements.kt:(168,174): error: Assert condition is impure
+
+/assert_statements.kt:(237,243): error: Assert condition is impure

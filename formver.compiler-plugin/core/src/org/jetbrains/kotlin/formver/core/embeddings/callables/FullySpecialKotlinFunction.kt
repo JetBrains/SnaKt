@@ -12,7 +12,9 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.DivIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Implies
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.MulIntInt
+import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.NegInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
+import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.RemIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.StringGet
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubCharChar
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubCharInt
@@ -31,7 +33,7 @@ import org.jetbrains.kotlin.name.Name
 val SpecialKotlinFunction.callableId: CallableId
     get() = CallableId(FqName.fromSegments(packageName), className?.let { FqName(it) }, Name.identifier(name))
 
-fun SpecialKotlinFunction.embedName(): ScopedKotlinName = callableId.embedFunctionName(callableType)
+fun SpecialKotlinFunction.embedName(): ScopedName = callableId.embedFunctionName(callableType)
 
 /**
  * We store here all the __Kotlin__ functions that need a (fully) special `ExpEmbedding`.
@@ -71,6 +73,9 @@ object SpecialKotlinFunctions {
             addFunction(SpecialPackages.kotlin, className = "Int", name = "div") { args, _ ->
                 DivIntInt(args[0], args[1])
             }
+            addFunction(SpecialPackages.kotlin, className = "Int", name = "rem") { args, _ ->
+                RemIntInt(args[0], args[1])
+            }
         }
 
         val intToIntType = buildFunctionPretype {
@@ -84,6 +89,9 @@ object SpecialKotlinFunctions {
             }
             addFunction(SpecialPackages.kotlin, className = "Int", name = "dec") { args, _ ->
                 SubIntInt(args[0], IntLit(1))
+            }
+            addFunction(SpecialPackages.kotlin, className = "Int", name = "unaryMinus") { args, _ ->
+                NegInt(args[0])
             }
         }
 

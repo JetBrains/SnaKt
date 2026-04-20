@@ -19,7 +19,6 @@ internal class ExprPurityVisitor(val declaredVariables: MutableSet<VariableEmbed
         if (pure) declaredVariables.add(e.variable)
         return pure
     }
-
     override fun visitLiteralEmbedding(e: LiteralEmbedding) = true
     override fun visitExpWrapper(e: ExpWrapper) = true
     override fun visitVariableEmbedding(e: VariableEmbedding) = true
@@ -38,29 +37,26 @@ internal class ExprPurityVisitor(val declaredVariables: MutableSet<VariableEmbed
     override fun visitWithPosition(e: WithPosition) = e.allChildrenPure(this)
     override fun visitInjectionBasedExpEmbedding(e: InjectionBasedExpEmbedding) = e.allChildrenPure(this)
     override fun visitSharingContext(e: SharingContext) = e.allChildrenPure(this)
-
-    override fun visitIf(e: If) = false
-    override fun visitElvis(e: Elvis) = false
-    override fun visitSafeCast(e: SafeCast) = false
-    override fun visitCast(e: Cast) = false
-    override fun visitIs(e: Is) = false
-    override fun visitOld(e: Old) = false
-    override fun visitForAllEmbedding(e: ForAllEmbedding) = false
-
+    override fun visitIf(e: If) = e.allChildrenPure(this)
+    override fun visitElvis(e: Elvis) = e.allChildrenPure(this)
+    override fun visitFieldAccess(e: FieldAccess): Boolean = e.allChildrenPure(this)
+    override fun visitPrimitiveFieldAccess(e: PrimitiveFieldAccess): Boolean = e.allChildrenPure(this)
+    override fun visitIs(e: Is) = e.allChildrenPure(this)
+    override fun visitCast(e: Cast): Boolean = e.allChildrenPure(this)
+    override fun visitShared(e: Shared) = e.allChildrenPure(this)
 
     /* ————— impure nodes ————— */
-    override fun visitMethodCall(e: MethodCall) = false// TODO: Whitelist for annotated methods?
+    override fun visitSafeCast(e: SafeCast) = false
+    override fun visitOld(e: Old) = false
+    override fun visitForAllEmbedding(e: ForAllEmbedding) = false
+    override fun visitMethodCall(e: MethodCall) = false
     override fun visitFunctionExp(e: FunctionExp) = false
     override fun visitLambdaExp(e: LambdaExp) = false
     override fun visitInvokeFunctionObject(e: InvokeFunctionObject) = false
-    override fun visitShared(e: Shared) = false
     override fun visitInhaleDirect(e: InhaleDirect): Boolean = false
     override fun visitErrorExp(e: ErrorExp) = false
-
     override fun visitAssert(e: Assert): Boolean = false
     override fun visitFieldModification(e: FieldModification): Boolean = false
-    override fun visitFieldAccess(e: FieldAccess): Boolean = false // TODO
-    override fun visitPrimitiveFieldAccess(e: PrimitiveFieldAccess): Boolean = false // TODO
     override fun visitGoto(e: Goto): Boolean = false
     override fun visitGotoChainNode(e: GotoChainNode): Boolean = false
     override fun visitWhile(e: While): Boolean = false
@@ -69,9 +65,7 @@ internal class ExprPurityVisitor(val declaredVariables: MutableSet<VariableEmbed
     override fun visitFieldAccessPermissions(e: FieldAccessPermissions): Boolean = false
     override fun visitPredicateAccessPermissions(e: PredicateAccessPermissions): Boolean = false
     override fun visitLabelExp(e: LabelExp): Boolean = false
-
     override fun visitAccEmbedding(e: AccEmbedding): Boolean = false
-
     override fun visitDefault(e: ExpEmbedding): Boolean = false
 }
 

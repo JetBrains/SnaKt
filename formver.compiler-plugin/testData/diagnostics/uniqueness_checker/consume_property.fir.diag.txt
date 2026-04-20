@@ -1,0 +1,15 @@
+/consume_property.kt:(362,367): error: Argument uniqueness mismatch: expected 'unique global', actual 'shared global'.
+
+/consume_property.kt:(437,442): error: Argument uniqueness mismatch: expected 'unique global', actual 'shared local'.
+
+/consume_property.kt:(598,603): error: Argument uniqueness mismatch: expected 'unique global', actual 'unique local'.
+
+/consume_property.kt:(835,836): error: Argument uniqueness mismatch: partial type 'moved' is inconsistent with parent type 'unique global'.
+
+/consume_property.kt:(915,916): error: Argument uniqueness mismatch: partial type 'shared global' is inconsistent with parent type 'unique global'.
+
+/consume_property.kt:(1295,1299): error: Argument uniqueness mismatch: partial type 'moved' is inconsistent with parent type 'unique global'.
+
+/consume_property.kt:(1431,1435): error: Argument uniqueness mismatch: partial type 'moved' is inconsistent with parent type 'unique global'.
+
+/consume_property.kt:(1586,1590): error: Argument uniqueness mismatch: partial type 'moved' is inconsistent with parent type 'unique global'.

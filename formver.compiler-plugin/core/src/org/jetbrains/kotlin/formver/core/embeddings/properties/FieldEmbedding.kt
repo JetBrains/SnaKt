@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.embeddings.properties
 
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
+import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
@@ -13,8 +14,8 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.IntLit
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
-import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
-import org.jetbrains.kotlin.formver.core.names.SpecialName
+import org.jetbrains.kotlin.formver.core.names.ScopedName
+import org.jetbrains.kotlin.formver.core.names.SpecialFieldName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Field
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
@@ -48,18 +49,13 @@ interface FieldEmbedding {
     fun accessInvariantsForParameter(): List<TypeInvariantEmbedding> =
         when (accessPolicy) {
             AccessPolicy.ALWAYS_WRITEABLE -> listOf(FieldAccessTypeInvariantEmbedding(this, PermExp.FullPerm()))
-            AccessPolicy.ALWAYS_INHALE_EXHALE, AccessPolicy.ALWAYS_READABLE , AccessPolicy.MANUAL-> listOf()
+            AccessPolicy.BY_RECEIVER_UNIQUENESS, AccessPolicy.ALWAYS_READABLE, AccessPolicy.MANUAL -> listOf()
         } + extraAccessInvariantsForParameter()
 
-    fun accessInvariantForAccess(): TypeInvariantEmbedding? =
-        when (accessPolicy) {
-            AccessPolicy.ALWAYS_INHALE_EXHALE -> FieldAccessTypeInvariantEmbedding(this, PermExp.FullPerm())
-            AccessPolicy.ALWAYS_READABLE, AccessPolicy.ALWAYS_WRITEABLE, AccessPolicy.MANUAL -> null
-        }
 }
 
 class UserFieldEmbedding(
-    override val name: ScopedKotlinName,
+    override val name: ScopedName,
     override val type: TypeEmbedding,
     override val symbol: FirPropertySymbol,
     override val isUnique: Boolean,
@@ -69,18 +65,22 @@ class UserFieldEmbedding(
     override val viperType = Type.Ref
     override val accessPolicy: AccessPolicy =
         when {
-            symbol.isVal -> AccessPolicy.ALWAYS_READABLE
             isManual -> AccessPolicy.MANUAL
-            else -> AccessPolicy.ALWAYS_INHALE_EXHALE
+            symbol.isVal -> AccessPolicy.ALWAYS_READABLE
+            symbol.isVar -> AccessPolicy.BY_RECEIVER_UNIQUENESS
+            else -> throw SnaktInternalException(
+                symbol.initializerSource,
+                "Failed to determine AccessPolicy. Field is neither val nor var."
+            )
         }
     override val unfoldToAccess: Boolean
-        get() = accessPolicy == AccessPolicy.ALWAYS_READABLE
+        get() = accessPolicy == AccessPolicy.ALWAYS_READABLE || accessPolicy == AccessPolicy.BY_RECEIVER_UNIQUENESS
     override val includeInShortDump: Boolean = true
 }
 
 
 object ListSizeFieldEmbedding : FieldEmbedding {
-    override val name = SpecialName("size")
+    override val name = SpecialFieldName("size")
     override val type = buildType { int() }
     override val viperType = Type.Ref
     override val accessPolicy = AccessPolicy.ALWAYS_WRITEABLE
@@ -94,7 +94,7 @@ object ListSizeFieldEmbedding : FieldEmbedding {
     }
 }
 
-fun ScopedKotlinName.specialEmbedding(embedding: ClassTypeEmbedding): FieldEmbedding? =
+fun ScopedName.specialEmbedding(embedding: ClassTypeEmbedding): FieldEmbedding? =
     NameMatcher.Companion.matchClassScope(this) {
         ifBackingFieldName("size") {
             return embedding.isCollectionInheritor.ifTrue {

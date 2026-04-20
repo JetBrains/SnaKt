@@ -22,6 +22,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.formver.common.ErrorCollector
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
+import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.common.UnsupportedFeatureBehaviour
 import org.jetbrains.kotlin.formver.core.*
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
@@ -31,9 +32,10 @@ import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.names.SimpleNameResolver
+import org.jetbrains.kotlin.formver.names.debugMangled
 import org.jetbrains.kotlin.formver.viper.SymbolicName
+import org.jetbrains.kotlin.formver.viper.ast.Method
 import org.jetbrains.kotlin.formver.viper.ast.Program
-import org.jetbrains.kotlin.formver.viper.debugMangled
 import org.jetbrains.kotlin.utils.addIfNotNull
 import org.jetbrains.kotlin.utils.addToStdlib.ifFalse
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
@@ -59,14 +61,16 @@ class ProgramConverter(
     private val classes: MutableMap<SymbolicName, ClassTypeEmbedding> = mutableMapOf()
     private val properties: MutableMap<SymbolicName, PropertyEmbedding> = mutableMapOf()
     private val fields: MutableSet<FieldEmbedding> = mutableSetOf()
+    private val havocMethods: MutableMap<SymbolicName, Method> = mutableMapOf()
 
     // Cast is valid since we check that values are not null. We specify the type for `filterValues` explicitly to ensure there's no
     // loss of type information earlier.
     @Suppress("UNCHECKED_CAST")
     val debugExpEmbeddings: Map<SymbolicName, ExpEmbedding>
         get() = methods
-            .mapValues { (it.value as? UserFunctionEmbedding)?.body?.debugExpEmbedding }
+            .mapValues { (it.value as? UserFunctionEmbedding)?.body?.debugExpEmbedding() }
             .filterValues { value: ExpEmbedding? -> value != null } as Map<SymbolicName, ExpEmbedding>
+
 
     override val whileIndexProducer = indexProducer()
     override val catchLabelNameProducer = simpleFreshEntityProducer(::CatchLabelName)
@@ -89,7 +93,8 @@ class ProgramConverter(
             functions = SpecialFunctions.all +
                     functions.values.mapNotNull { it.viperFunction }.distinctBy { it.name.debugMangled },
             methods = SpecialMethods.all +
-                    methods.values.mapNotNull { it.viperMethod }.distinctBy { it.name.debugMangled },
+                    methods.values.mapNotNull { it.viperMethod }
+                        .distinctBy { it.name.debugMangled } + havocMethods.values,
             predicates = classes.values.flatMap {
                 listOf(
                     it.details.sharedPredicate,
@@ -100,44 +105,55 @@ class ProgramConverter(
 
     fun registerForVerification(declaration: FirSimpleFunction) {
         val signature = embedFullSignature(declaration.symbol)
-        val returnTarget = returnTargetProducer.getFresh(signature.callableType.returnType)
-        val paramResolver =
-            RootParameterResolver(
-                this@ProgramConverter,
-                signature,
-                signature.symbol.valueParameterSymbols,
-                signature.labelName,
-                returnTarget,
-            )
-        val stmtCtx =
-            MethodConverter(
-                this@ProgramConverter,
-                signature,
-                paramResolver,
-                scopeIndexProducer.getFresh(),
-            ).statementCtxt()
-
-        // Note: it is important that `body` is only set after `embedUserFunction` is complete, as we need to
+        // Note: it is important that `body` is only set after embedding is complete, as we need to
         // place the embedding in the map before processing the body.
         if (declaration.symbol.isPure(session)) {
-            embedPureUserFunction(declaration.symbol, signature).apply {
-                body = stmtCtx.convertFunctionWithBody(declaration)
-            }
+            embedPureUserFunction(declaration.symbol, signature)
         } else {
+            val (returnTarget, stmtCtx) = createBodyConversionContext(signature)
             embedUserFunction(declaration.symbol, signature).apply {
                 body = stmtCtx.convertMethodWithBody(declaration, signature, returnTarget)
             }
         }
     }
 
-    fun embedPureUserFunction(
+    @OptIn(SymbolInternals::class)
+    private fun embedPureUserFunction(
         symbol: FirFunctionSymbol<*>,
         signature: FullNamedFunctionSignature
     ): PureUserFunctionEmbedding {
         (functions[signature.name] as? PureUserFunctionEmbedding)?.also { return it }
         val new = PureUserFunctionEmbedding(processCallable(symbol, signature))
+        // Insert into the map before processing the body, so recursive calls can find the embedding.
         functions[signature.name] = new
+        val declaration = symbol.fir as? FirSimpleFunction
+            ?: throw SnaktInternalException(
+                symbol.source,
+                "Expected FirSimpleFunction, got unexpected type ${symbol.fir.javaClass.simpleName}"
+            )
+        if (declaration.body != null) {
+            val (_, stmtCtx) = createBodyConversionContext(signature)
+            new.body = stmtCtx.convertFunctionWithBody(declaration)
+        }
         return new
+    }
+
+    private fun createBodyConversionContext(signature: FullNamedFunctionSignature): Pair<ReturnTarget, StmtConversionContext> {
+        val returnTarget = returnTargetProducer.getFresh(signature.callableType.returnType)
+        val paramResolver = RootParameterResolver(
+            this@ProgramConverter,
+            signature,
+            signature.symbol.valueParameterSymbols,
+            signature.labelName,
+            returnTarget,
+        )
+        val stmtCtx = MethodConverter(
+            this@ProgramConverter,
+            signature,
+            paramResolver,
+            scopeIndexProducer.getFresh(),
+        ).statementCtxt()
+        return Pair(returnTarget, stmtCtx)
     }
 
     fun embedUserFunction(symbol: FirFunctionSymbol<*>, signature: FullNamedFunctionSignature): UserFunctionEmbedding {
@@ -194,18 +210,8 @@ class ProgramConverter(
     }
 
     override fun embedPureFunction(symbol: FirFunctionSymbol<*>): PureFunctionEmbedding {
-        val lookupName = symbol.embedName(this)
-        return when (val existing = functions[lookupName]) {
-            null -> {
-                val signature = embedFullSignature(symbol)
-                val callable = processCallable(symbol, signature)
-                PureUserFunctionEmbedding(callable).also {
-                    functions[lookupName] = it
-                }
-            }
-
-            else -> existing
-        }
+        val signature = embedFullSignature(symbol)
+        return embedPureUserFunction(symbol, signature)
     }
 
     override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding =
@@ -255,6 +261,13 @@ class ProgramConverter(
             }
         }.toMap())
 
+        // Create Havoc methods for all fields.
+        newDetails.fields.values.forEach {
+            havocMethods.putIfAbsent(
+                it.type.havocMethodName,
+                it.type.havocMethod
+            )
+        }
         // Phase 3
         properties.forEach { processProperty(it, newDetails) }
 
@@ -268,7 +281,7 @@ class ProgramConverter(
         embedFunctionPretypeWithBuilder(symbol)
     }
 
-    override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding = if (symbol.isExtension) {
+    override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding = if (symbol.receiverParameterSymbol != null) {
         embedCustomProperty(symbol)
     } else {
         // Ensure that the class has been processed.
@@ -294,7 +307,7 @@ class ProgramConverter(
 
         return constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
             propertySymbol.withConstructorParam { paramSymbol ->
-                constructedClass.details.findField(callableId.embedUnscopedPropertyName())?.let { paramSymbol to it }
+                constructedClass.details.findField(callableId!!.embedUnscopedPropertyName())?.let { paramSymbol to it }
             }
         }.toMap()
     }
@@ -399,11 +412,11 @@ class ProgramConverter(
         }
 
         return object : FullNamedFunctionSignature, NamedFunctionSignature by subSignature {
-            // TODO (inhale vs require) Decide if `predicateAccessInvariant` should be required rather than inhaled in the beginning of the body.
             override fun getPreconditions() = buildList {
                 subSignature.formalArgs.forEach {
                     addAll(it.pureInvariants())
                     addAll(it.accessInvariants())
+                    addAll(it.provenInvariants())
                     if (it.isUnique) {
                         addIfNotNull(it.type.uniquePredicateAccessInvariant()?.fillHole(it))
                     }
@@ -426,9 +439,11 @@ class ProgramConverter(
                 }
                 addAll(returnVariable.pureInvariants())
                 addAll(returnVariable.provenInvariants())
-                addAll(returnVariable.allAccessInvariants())
-                if (subSignature.callableType.returnsUnique) {
-                    addIfNotNull(returnVariable.uniquePredicateAccessInvariant())
+                if (!subSignature.symbol.isPure(session)) {
+                    addAll(returnVariable.allAccessInvariants())
+                    if (subSignature.callableType.returnsUnique) {
+                        addIfNotNull(returnVariable.uniquePredicateAccessInvariant())
+                    }
                 }
                 addAll(contractVisitor.getPostconditions(ContractVisitorContext(returnVariable, symbol)))
                 addAll(subSignature.stdLibPostconditions(returnVariable))
@@ -476,8 +491,8 @@ class ProgramConverter(
         classSymbol: FirRegularClassSymbol,
     ): Pair<SimpleKotlinName, FieldEmbedding>? {
         val embedding = embedClass(classSymbol)
-        val unscopedName = symbol.callableId.embedUnscopedPropertyName()
-        val scopedName = symbol.callableId.embedMemberBackingFieldName(
+        val unscopedName = symbol.callableId!!.embedUnscopedPropertyName()
+        val scopedName = symbol.callableId!!.embedMemberBackingFieldName(
             Visibilities.isPrivate(symbol.visibility)
         )
         val fieldIsAllowed = symbol.hasBackingField
@@ -505,7 +520,7 @@ class ProgramConverter(
      * Null value of parameter [embedding] means that there is no class details corresponding to this type (e.g. it is primitive).
      */
     private fun processProperty(symbol: FirPropertySymbol, embedding: ClassEmbeddingDetails?) {
-        val unscopedName = symbol.callableId.embedUnscopedPropertyName()
+        val unscopedName = symbol.callableId!!.embedUnscopedPropertyName()
         properties[symbol.embedMemberPropertyName()] =
             SpecialProperties.byCallableId[symbol.callableId] ?: embedding.run {
                 val backingField = embedding?.findField(unscopedName)
@@ -547,7 +562,6 @@ class ProgramConverter(
             // We generate a dummy method header here to ensure all required types are processed already. If we skip this, any types
             // that are used only in contracts cause an error because they are not processed until too late.
             // TODO: fit this into the flow in some logical way instead.
-            // TODO: We should emit the function with its body here instead of creating an empty header for functions
             NonInlineNamedFunction(
                 signature,
                 symbol.isPure(session)

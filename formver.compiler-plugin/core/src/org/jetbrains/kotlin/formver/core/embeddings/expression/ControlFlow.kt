@@ -5,25 +5,13 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.expression
 
-import org.jetbrains.kotlin.formver.common.SnaktInternalException
-import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
 import org.jetbrains.kotlin.formver.core.embeddings.*
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FullNamedFunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.callables.NamedFunctionSignature
-import org.jetbrains.kotlin.formver.core.embeddings.callables.toFuncApp
-import org.jetbrains.kotlin.formver.core.embeddings.callables.toMethodCall
-import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
-import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
-import org.jetbrains.kotlin.formver.core.linearization.addLabel
-import org.jetbrains.kotlin.formver.core.linearization.freshAnonVar
-import org.jetbrains.kotlin.formver.core.linearization.pureToViper
-import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
-import org.jetbrains.kotlin.formver.viper.ast.Exp
-import org.jetbrains.kotlin.formver.viper.ast.Stmt
 
 private data class BlockImpl(override val exps: List<ExpEmbedding>) : Block
 
@@ -35,23 +23,10 @@ fun Block(actions: MutableList<ExpEmbedding>.() -> Unit): Block = BlockImpl(buil
     actions()
 })
 
-sealed interface Block : OptionalResultExpEmbedding {
+sealed interface Block : ExpEmbedding {
     val exps: List<ExpEmbedding>
     override val type: TypeEmbedding
         get() = exps.lastOrNull()?.type ?: buildType { unit() }
-
-    override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
-        if (exps.isEmpty()) return
-
-        for (exp in exps.take(exps.size - 1)) {
-            exp.toViperUnusedResult(ctx)
-        }
-        exps.last().toViperMaybeStoringIn(result, ctx)
-    }
-
-    context(nameResolver: NameResolver)
-    override val debugTreeView: TreeView
-        get() = BlockNode(exps.map { it.debugTreeView })
 
     override fun children(): Sequence<ExpEmbedding> = exps.asSequence()
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitBlock(this)
@@ -63,18 +38,7 @@ data class If(
     val elseBranch: ExpEmbedding,
     override val type: TypeEmbedding
 ) :
-    OptionalResultExpEmbedding, DefaultDebugTreeViewImplementation {
-    override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
-        ctx.addStatement {
-            val condViper = condition.toViperBuiltinType(ctx)
-            val thenViper = ctx.asBlock { thenBranch.withType(type).toViperMaybeStoringIn(result, this) }
-            val elseViper = ctx.asBlock { elseBranch.withType(type).toViperMaybeStoringIn(result, this) }
-            Stmt.If(condViper, thenViper, elseViper, ctx.source.asPosition)
-        }
-    }
-
-    override val debugAnonymousSubexpressions: List<ExpEmbedding>
-        get() = listOf(condition, thenBranch, elseBranch)
+    ExpEmbedding {
 
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(condition, thenBranch, elseBranch)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitIf(this)
@@ -86,73 +50,25 @@ data class While(
     val breakLabelName: SymbolicName,
     val continueLabelName: SymbolicName,
     val invariants: List<ExpEmbedding>,
-) : UnitResultExpEmbedding, DefaultDebugTreeViewImplementation {
+) : ExpEmbedding {
     override val type: TypeEmbedding = buildType { unit() }
 
     val continueLabel = LabelEmbedding(continueLabelName, invariants)
     val breakLabel = LabelEmbedding(breakLabelName)
 
-    override fun toViperSideEffects(ctx: LinearizationContext) {
-        ctx.addLabel(continueLabel.toViper(ctx))
-        val condVar = ctx.freshAnonVar { boolean() }
-        condition.toViperStoringIn(condVar, ctx)
-        ctx.addStatement {
-            val bodyBlock = ctx.asBlock {
-                body.toViperUnusedResult(this)
-                addStatement { continueLabel.toLink().toViperGoto(this) }
-            }
-            Stmt.If(condVar.toViperBuiltinType(ctx), bodyBlock, els = Stmt.Seqn(), ctx.source.asPosition)
-        }
-        ctx.addLabel(breakLabel.toViper(ctx))
-
-        // TODO: this logic can be rewritten back to invariants once the version of Viper is updated
-        invariants.forEach {
-            ctx.addStatement {
-                Stmt.Assert(it.pureToViper(toBuiltin = true))
-            }
-        }
-    }
-
-    // TODO: add invariants
-    override val debugAnonymousSubexpressions: List<ExpEmbedding>
-        get() = listOf(condition, body)
-
-    context(nameResolver: NameResolver)
-    override val debugExtraSubtrees: List<TreeView>
-        get() = listOf(
-            breakLabel.debugTreeView.withDesignation("break"),
-            continueLabel.debugTreeView.withDesignation("continue"),
-        )
-
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(condition, body)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitWhile(this)
 }
 
-data class Goto(val target: LabelLink) : NoResultExpEmbedding, DefaultDebugTreeViewImplementation {
+data class Goto(val target: LabelLink) : ExpEmbedding {
     override val type: TypeEmbedding = buildType { nothing() }
-    override fun toViperUnusedResult(ctx: LinearizationContext) {
-        ctx.addStatement { target.toViperGoto(ctx) }
-    }
-
-    override val debugAnonymousSubexpressions: List<ExpEmbedding>
-        get() = listOf()
-
-    context(nameResolver: NameResolver)
-    override val debugExtraSubtrees: List<TreeView>
-        get() = listOf(target.debugTreeView)
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitGoto(this)
 }
 
 // Using this name to avoid clashes with all our other `Label` types.
-data class LabelExp(val label: LabelEmbedding) : UnitResultExpEmbedding {
-    override fun toViperSideEffects(ctx: LinearizationContext) {
-        ctx.addLabel(label.toViper(ctx))
-    }
-
-    context(nameResolver: NameResolver)
-    override val debugTreeView: TreeView
-        get() = NamedBranchingNode("Label", label.debugTreeView)
+data class LabelExp(val label: LabelEmbedding) : ExpEmbedding {
+    override val type: TypeEmbedding = buildType { unit() }
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitLabelExp(this)
 }
@@ -163,80 +79,35 @@ data class LabelExp(val label: LabelEmbedding) : UnitResultExpEmbedding {
  * The result of the intermediate expression is stored.
  */
 data class GotoChainNode(val label: LabelEmbedding?, val exp: ExpEmbedding, val next: LabelLink) :
-    OptionalResultExpEmbedding {
+    ExpEmbedding {
     override val type: TypeEmbedding = exp.type
-
-    override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
-        label?.let { ctx.addLabel(it.toViper(ctx)) }
-        ctx.addStatement {
-            exp.toViperMaybeStoringIn(result, ctx)
-            next.toViperGoto(ctx)
-        }
-    }
-
-    context(nameResolver: NameResolver)
-    override val debugTreeView: TreeView
-        get() = NamedBranchingNode("GotoChainNode", listOfNotNull())
 
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(exp)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitGotoChainNode(this)
 }
 
-data class NonDeterministically(val exp: ExpEmbedding) : UnitResultExpEmbedding, DefaultDebugTreeViewImplementation {
-    override fun toViperSideEffects(ctx: LinearizationContext) {
-        ctx.addStatement {
-            val choice = ctx.freshAnonVar { boolean() }
-            val expViper = ctx.asBlock { exp.toViper(this) }
-            Stmt.If(choice.toViperBuiltinType(ctx), expViper, Stmt.Seqn(), ctx.source.asPosition)
-        }
-    }
+data class NonDeterministically(val exp: ExpEmbedding) : ExpEmbedding {
+    override val type: TypeEmbedding = buildType { unit() }
 
-    override val debugAnonymousSubexpressions: List<ExpEmbedding>
-        get() = listOf(exp)
-
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(exp)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitNonDeterministically(this)
 }
 
 // Note: this is always a *real* Viper method call.
-data class MethodCall(val method: NamedFunctionSignature, val args: List<ExpEmbedding>) : StoredResultExpEmbedding {
+data class MethodCall(val method: NamedFunctionSignature, val args: List<ExpEmbedding>) : ExpEmbedding {
     override val type: TypeEmbedding = method.callableType.returnType
-
-    override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-        ctx.addStatement {
-            method.toMethodCall(
-                args.map { it.toViper(ctx) },
-                result.toLocalVarUse(ctx.source.asPosition),
-                ctx.source.asPosition
-            )
-        }
-    }
-
-    context(nameResolver: NameResolver)
-    override val debugTreeView: TreeView
-        get() = NamedBranchingNode(
-            "MethodCall",
-            buildList {
-                add(method.nameAsDebugTreeView.withDesignation("callee"))
-                addAll(args.map { it.debugTreeView })
-            })
 
     override fun children(): Sequence<ExpEmbedding> = args.asSequence()
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitMethodCall(this)
 }
 
-data class FunctionCall(val function: NamedFunctionSignature, val args: List<ExpEmbedding>) : DirectResultExpEmbedding {
+data class FunctionCall(val function: NamedFunctionSignature, val args: List<ExpEmbedding>) : ExpEmbedding {
     override val type: TypeEmbedding = function.callableType.returnType
-
-    override val subexpressions: List<ExpEmbedding>
-        get() = args
-
-    override fun toViper(ctx: LinearizationContext): Exp = function.toFuncApp(
-        args.map { it.toViper(ctx) },
-        ctx.source.asPosition
-    )
 
     override fun <R> accept(v: ExpVisitor<R>): R =
         v.visitFunctionCall(this)
+
+    override fun children(): Sequence<ExpEmbedding> = args.asSequence()
 }
 
 /**
@@ -249,27 +120,9 @@ data class InvokeFunctionObject(
     val args: List<ExpEmbedding>,
     override val type: TypeEmbedding
 ) :
-    OnlyToViperExpEmbedding {
-    override fun toViper(ctx: LinearizationContext): Exp {
-        val variable = ctx.freshAnonVar(type)
-        receiver.toViperUnusedResult(ctx)
-        for (arg in args) arg.toViperUnusedResult(ctx)
-        // TODO: figure out which exactly invariants we want here
-        return variable.withInvariants {
-            proven = true
-            access = true
-        }.toViper(ctx)
-    }
+    ExpEmbedding {
 
-    context(nameResolver: NameResolver)
-    override val debugTreeView: TreeView
-        get() = NamedBranchingNode(
-            "InvokeFunctionObject",
-            buildList {
-                add(receiver.debugTreeView.withDesignation("receiver"))
-                addAll(args.map { it.debugTreeView })
-            })
-
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(receiver) + args.asSequence()
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitInvokeFunctionObject(this)
 }
 
@@ -278,50 +131,15 @@ data class FunctionExp(
     val body: ExpEmbedding,
     val returnLabel: LabelEmbedding
 ) :
-    OptionalResultExpEmbedding {
+    ExpEmbedding {
     override val type: TypeEmbedding = body.type
-
-    override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
-        signature?.formalArgs?.forEach { arg ->
-            // Ideally we would want to assume these rather than inhale them to prevent inconsistencies with permissions.
-            // Unfortunately Silicon for some reason does not allow Assumes. However, it doesn't matter as long as the
-            // provenInvariants don't contain permissions.
-            // TODO (inhale vs require) Decide if `predicateAccessInvariant` should be required rather than inhaled in the beginning of the body.
-            (arg.provenInvariants() + listOfNotNull(arg.sharedPredicateAccessInvariant())).forEach { invariant ->
-                ctx.addStatement { Stmt.Inhale(invariant.toViperBuiltinType(ctx), ctx.source.asPosition) }
-            }
-        }
-        body.toViperMaybeStoringIn(result, ctx)
-        ctx.addLabel(returnLabel.toViper(ctx))
-    }
-
-    context(nameResolver: NameResolver)
-    override val debugTreeView: TreeView
-        get() = NamedBranchingNode(
-            "Function",
-            listOfNotNull(
-                signature?.nameAsDebugTreeView?.withDesignation("name"),
-                body.debugTreeView,
-                returnLabel.debugTreeView.withDesignation("return")
-            )
-        )
 
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(body)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitFunctionExp(this)
 }
 
 data class Elvis(val left: ExpEmbedding, val right: ExpEmbedding, override val type: TypeEmbedding) :
-    StoredResultExpEmbedding,
-    DefaultDebugTreeViewImplementation {
-    override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-        val leftViper = left.toViper(ctx)
-        val leftWrapped = ExpWrapper(leftViper, left.type)
-        val conditional = If(leftWrapped.notNullCmp(), leftWrapped, right, type)
-        conditional.toViperStoringIn(result, ctx)
-    }
-
-    override val debugAnonymousSubexpressions: List<ExpEmbedding>
-        get() = listOf(left, right)
+    ExpEmbedding {
 
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(left, right)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitElvis(this)
@@ -329,22 +147,8 @@ data class Elvis(val left: ExpEmbedding, val right: ExpEmbedding, override val t
 
 data class Return(
     val returnExp: ExpEmbedding, val target: ReturnTarget
-) : OptionalResultExpEmbedding {
+) : ExpEmbedding {
     override val type = buildType { nothing() }
-
-    override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
-        ctx.addReturn(returnExp, target)
-    }
-
-    context(nameResolver: NameResolver)
-    override val debugTreeView: TreeView
-        get() = NamedBranchingNode(
-            "Return",
-            listOf(
-                target.variable.debugTreeView,
-                returnExp.debugTreeView
-            )
-        )
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitReturn(this)
 

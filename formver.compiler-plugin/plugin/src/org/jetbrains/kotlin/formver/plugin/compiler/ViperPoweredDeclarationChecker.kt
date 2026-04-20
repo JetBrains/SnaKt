@@ -19,7 +19,7 @@ import org.jetbrains.kotlin.formver.common.*
 import org.jetbrains.kotlin.formver.core.conversion.ProgramConverter
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.print
 import org.jetbrains.kotlin.formver.plugin.compiler.reporting.reportVerifierError
-import org.jetbrains.kotlin.formver.viper.Verifier
+import org.jetbrains.kotlin.formver.viper.SiliconFrontend
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.formver.viper.ast.registerAllNames
 import org.jetbrains.kotlin.formver.viper.ast.unwrapOr
@@ -39,6 +39,7 @@ private fun TargetsSelection.applicable(declaration: FirSimpleFunction): Boolean
     TargetsSelection.ALL_TARGETS -> true
     TargetsSelection.TARGETS_WITH_CONTRACT -> declaration.hasContract
     TargetsSelection.NO_TARGETS -> false
+    TargetsSelection.FORCE_DISABLE -> false
 }
 
 class ViperPoweredDeclarationChecker(private val session: FirSession, private val config: PluginConfiguration) :
@@ -49,6 +50,10 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
         try {
             val programConversionContext = ProgramConverter(session, config, errorCollector)
             programConversionContext.registerForVerification(declaration)
+            errorCollector.forEachPurityError { source, errorMessage ->
+                reporter.reportOn(source, PluginErrors.PURITY_VIOLATION, errorMessage)
+            }
+            if (errorCollector.collectedPurityError()) return
             val program = programConversionContext.program
 
             with(programConversionContext.nameResolver) {
@@ -75,21 +80,14 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
                     }
                 }
             }
-            errorCollector.forEachPurityError { source, errorMessage ->
-                reporter.reportOn(source, PluginErrors.PURITY_VIOLATION, errorMessage)
-            }
-
-            val verifier = Verifier()
+            val viperProgram = with(programConversionContext.nameResolver) { program.toSilver() }
             val onFailure = { err: VerifierError ->
                 val source = err.position.unwrapOr { declaration.source }
                 reporter.reportVerifierError(source, err, config.errorStyle)
             }
-            val viperProgram = with(programConversionContext.nameResolver) { program.toSilver() }
-            val consistent = verifier.checkConsistency(viperProgram, onFailure)
-            // If the Viper program is not consistent, that's our error; we shouldn't surface it to the user as an unverified contract.
-            if (!consistent || !config.shouldVerify(declaration)) return
+            if (!config.shouldVerify(declaration)) return
 
-            verifier.verify(viperProgram, onFailure)
+            SiliconFrontend(emptyList()).use { it.verify(viperProgram, onFailure) }
         } catch (e: SnaktInternalException) {
             reporter.reportOn(e.source, PluginErrors.INTERNAL_ERROR, e.message)
         } catch (e: Exception) {
@@ -123,6 +121,7 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
     }
 
     private fun PluginConfiguration.shouldVerify(declaration: FirSimpleFunction): Boolean = when {
+        verificationSelection == TargetsSelection.FORCE_DISABLE -> false
         declaration.hasAnnotation(neverConvertId, session) -> false
         declaration.hasAnnotation(neverVerifyId, session) -> false
         declaration.hasAnnotation(alwaysVerifyId, session) -> true

@@ -6,8 +6,8 @@
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
-import org.jetbrains.kotlin.formver.core.names.PredicateKotlinName
-import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
+import org.jetbrains.kotlin.formver.core.names.PredicateName
+import org.jetbrains.kotlin.formver.core.names.ScopedName
 import org.jetbrains.kotlin.formver.core.names.SimpleKotlinName
 import org.jetbrains.kotlin.formver.core.names.asScope
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
@@ -78,8 +78,8 @@ class ClassEmbeddingDetails(
         }
     }
 
-    private val sharedPredicateName = ScopedKotlinName(type.name.asScope(), PredicateKotlinName("shared"))
-    private val uniquePredicateName = ScopedKotlinName(type.name.asScope(), PredicateKotlinName("unique"))
+    private val sharedPredicateName = ScopedName(type.name.asScope(), PredicateName("shared"))
+    private val uniquePredicateName = ScopedName(type.name.asScope(), PredicateName("unique"))
 
     /**
      * Find an embedding of a backing field by this name amongst the ancestors of this type.
@@ -92,8 +92,7 @@ class ClassEmbeddingDetails(
     fun <R> flatMapFields(action: (SimpleKotlinName, FieldEmbedding) -> List<R>): List<R> =
         classSuperTypes.flatMap { it.details.flatMapFields(action) } + fields.flatMap { (name, field) ->
             action(
-                name,
-                field
+                name, field
             )
         }
 
@@ -112,7 +111,7 @@ class ClassEmbeddingDetails(
     override fun subTypeInvariant(): TypeInvariantEmbedding = type.subTypeInvariant()
 
     // Returns the sequence of classes in a hierarchy that need to be unfolded in order to access the given field
-    fun hierarchyUnfoldPath(field: FieldEmbedding): Sequence<ClassTypeEmbedding> = sequence {
+    fun hierarchyPathTo(field: FieldEmbedding): Sequence<ClassTypeEmbedding> = sequence {
         val className = field.containingClass?.name
         require(className != null) { "Cannot find hierarchy unfold path of a field with no class information" }
         if (className == type.name) {
@@ -122,7 +121,7 @@ class ClassEmbeddingDetails(
                 ?: throw IllegalArgumentException("Reached top of the hierarchy without finding the field")
 
             yield(this@ClassEmbeddingDetails.type)
-            yieldAll(sup.details.hierarchyUnfoldPath(field))
+            yieldAll(sup.details.hierarchyPathTo(field))
         }
     }
 

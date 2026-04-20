@@ -7,12 +7,9 @@ package org.jetbrains.kotlin.formver.core.embeddings.expression
 
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
-import org.jetbrains.kotlin.formver.core.embeddings.asInfo
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
-import org.jetbrains.kotlin.formver.core.linearization.LinearizationContext
-import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
 
 class AccEmbedding(
@@ -40,4 +37,5 @@ class AccEmbedding(
         get() = buildType { boolean() }
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitAccEmbedding(this)
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(access)
 }

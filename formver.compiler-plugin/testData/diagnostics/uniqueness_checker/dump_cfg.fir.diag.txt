@@ -1,0 +1,124 @@
+/dump_cfg.kt:(229,235): info:
+digraph nonDet {
+    graph [nodesep=3]
+    node [shape=box penwidth=2]
+    edge [penwidth=2]
+
+    subgraph cluster_0 {
+        color=red
+        0 [label=< <TABLE BORDER="0"><TR><TD>Enter function nonDet</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Initial:<BR/>null<BR/></TD></TR></TABLE> > style="filled" fillcolor=red];
+        subgraph cluster_1 {
+            color=blue
+            1 [label="Enter block"];
+            2 [label="Const: Boolean(true)"];
+            3 [label="Jump: ^nonDet Boolean(true)"];
+            4 [label="Stub" style="filled" fillcolor=gray];
+            5 [label="Exit block" style="filled" fillcolor=gray];
+        }
+        6 [label=< <TABLE BORDER="0"><TR><TD>Exit function nonDet</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Final:<BR/>null<BR/></TD></TR></TABLE> > style="filled" fillcolor=red];
+    }
+    0 -> {1};
+    1 -> {2};
+    2 -> {3};
+    3 -> {6};
+    3 -> {4} [style=dotted];
+    4 -> {5} [style=dotted];
+    5 -> {6} [style=dotted];
+
+}
+
+
+/dump_cfg.kt:(273,277): info:
+digraph test {
+    graph [nodesep=3]
+    node [shape=box penwidth=2]
+    edge [penwidth=2]
+
+    subgraph cluster_0 {
+        color=red
+        0 [label=< <TABLE BORDER="0"><TR><TD>Enter function test</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Initial:<BR/>null<BR/></TD></TR></TABLE> > style="filled" fillcolor=red];
+        subgraph cluster_1 {
+            color=blue
+            1 [label=< <TABLE BORDER="0"><TR><TD>Enter block</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Before:<BR/>null<BR/><BR/>After:<BR/>a unique global<BR/>    first unique global<BR/>    second unique global<BR/></TD></TR></TABLE> >];
+            subgraph cluster_2 {
+                color=blue
+                2 [label="Enter when"];
+                subgraph cluster_3 {
+                    color=blue
+                    3 [label="Enter when branch condition "];
+                    subgraph cluster_4 {
+                        color=blue
+                        4 [label="Function call arguments enter"];
+                        5 [label="Function call arguments exit"];
+                    }
+                    6 [label="Function call enter: R|/nonDet|()"];
+                    7 [label="Function call exit: R|/nonDet|()" style="filled" fillcolor=yellow];
+                    8 [label="Exit when branch condition"];
+                }
+                subgraph cluster_5 {
+                    color=blue
+                    9 [label="Enter when branch condition else"];
+                    10 [label="Exit when branch condition"];
+                }
+                11 [label="Enter when branch result"];
+                subgraph cluster_6 {
+                    color=blue
+                    12 [label="Enter block"];
+                    13 [label="Access variable R|<local>/a|"];
+                    14 [label="Access variable R|/A.second|"];
+                    15 [label=< <TABLE BORDER="0"><TR><TD>Variable declaration: lvar y: R|B|</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Before:<BR/>a unique global<BR/>    first unique global<BR/>    second unique global<BR/><BR/>After:<BR/>a unique global<BR/>    first unique global<BR/>    second moved<BR/>y unique global<BR/></TD></TR></TABLE> >];
+                    16 [label="Exit block"];
+                }
+                17 [label="Exit when branch result"];
+                18 [label="Enter when branch result"];
+                subgraph cluster_7 {
+                    color=blue
+                    19 [label="Enter block"];
+                    20 [label="Access variable R|<local>/a|"];
+                    21 [label="Access variable R|/A.first|"];
+                    22 [label=< <TABLE BORDER="0"><TR><TD>Variable declaration: lvar x: R|B|</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Before:<BR/>a unique global<BR/>    first unique global<BR/>    second unique global<BR/><BR/>After:<BR/>x shared global<BR/>a unique global<BR/>    first moved<BR/></TD></TR></TABLE> >];
+                    23 [label="Exit block"];
+                }
+                24 [label="Exit when branch result"];
+                25 [label=< <TABLE BORDER="0"><TR><TD>Exit when</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Merge:<BR/>x shared global<BR/>a unique global<BR/>    first moved<BR/>    second moved<BR/>y unique global<BR/></TD></TR></TABLE> >];
+            }
+            26 [label="Access variable R|<local>/a|"];
+            27 [label="Jump: ^test R|<local>/a|"];
+            28 [label="Stub" style="filled" fillcolor=gray];
+            29 [label="Exit block" style="filled" fillcolor=gray];
+        }
+        30 [label=< <TABLE BORDER="0"><TR><TD>Exit function test</TD></TR><TR><TD ALIGN="LEFT" BALIGN="LEFT">Final:<BR/>x shared global<BR/>a unique global<BR/>    first moved<BR/>    second moved<BR/>y unique global<BR/></TD></TR></TABLE> > style="filled" fillcolor=red];
+    }
+    0 -> {1};
+    1 -> {2};
+    2 -> {3};
+    3 -> {4};
+    4 -> {5};
+    5 -> {6};
+    6 -> {7};
+    7 -> {8};
+    8 -> {9 18};
+    9 -> {10};
+    10 -> {11};
+    11 -> {12};
+    12 -> {13};
+    13 -> {14};
+    14 -> {15};
+    15 -> {16};
+    16 -> {17};
+    17 -> {25};
+    18 -> {19};
+    19 -> {20};
+    20 -> {21};
+    21 -> {22};
+    22 -> {23};
+    23 -> {24};
+    24 -> {25};
+    25 -> {26};
+    26 -> {27};
+    27 -> {30};
+    27 -> {28} [style=dotted];
+    28 -> {29} [style=dotted];
+    29 -> {30} [style=dotted];
+
+}

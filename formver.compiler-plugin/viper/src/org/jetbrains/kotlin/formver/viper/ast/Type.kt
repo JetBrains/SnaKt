@@ -5,27 +5,26 @@
 
 package org.jetbrains.kotlin.formver.viper.ast
 
-import org.jetbrains.kotlin.formver.viper.IntoSilver
-import org.jetbrains.kotlin.formver.viper.NameResolver
-import org.jetbrains.kotlin.formver.viper.mangled
-import org.jetbrains.kotlin.formver.viper.toScalaMap
-import org.jetbrains.kotlin.formver.viper.toScalaSeq
+import org.jetbrains.kotlin.formver.viper.*
 import viper.silver.ast.*
 
 sealed interface Type : IntoSilver<viper.silver.ast.Type> {
 
     fun substitute(typeVarMap: kotlin.collections.Map<TypeVar, Type>): Type
+    fun defaultExpression(): Exp? = null
 
     data object Int : Type {
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.Type = `Int$`.`MODULE$`
         override fun substitute(typeVarMap: kotlin.collections.Map<TypeVar, Type>): Int = Int
+        override fun defaultExpression(): Exp = Exp.IntLit(0)
     }
 
     data object Bool : Type {
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.Type = `Bool$`.`MODULE$`
         override fun substitute(typeVarMap: kotlin.collections.Map<TypeVar, Type>): Bool = Bool
+        override fun defaultExpression(): Exp = Exp.BoolLit(false)
     }
 
     data object Perm : Type {
@@ -38,6 +37,7 @@ sealed interface Type : IntoSilver<viper.silver.ast.Type> {
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.Type = `Ref$`.`MODULE$`
         override fun substitute(typeVarMap: kotlin.collections.Map<TypeVar, Type>): Ref = Ref
+        override fun defaultExpression(): Exp = Exp.NullLit()
     }
 
     data object Wand : Type {
@@ -84,7 +84,7 @@ sealed interface Type : IntoSilver<viper.silver.ast.Type> {
     }
 
     data class Domain(
-        val domainName: DomainName,
+        val domainName: SymbolicName,
         val typeParams: List<TypeVar> = emptyList(),
         val typeSubstitutions: kotlin.collections.Map<TypeVar, Type> = emptyMap(),
     ) : Type {

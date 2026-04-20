@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.viper.ast
 
 import org.jetbrains.kotlin.formver.viper.NameResolver
+import org.jetbrains.kotlin.formver.viper.toScalaOption
 
 sealed interface AccessPredicate : Exp {
     context(nameResolver: NameResolver)
@@ -24,7 +25,7 @@ sealed interface AccessPredicate : Exp {
         override fun toSilver(): viper.silver.ast.AccessPredicate =
             viper.silver.ast.FieldAccessPredicate(
                 access.toSilver(),
-                perm.toSilver(),
+                perm.toSilver().toScalaOption(),
                 pos.toSilver(),
                 info.toSilver(),
                 trafos.toSilver()

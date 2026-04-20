@@ -6,29 +6,39 @@
 package org.jetbrains.kotlin.formver.viper
 
 /**
+ * Interface to unify all structures that are names to something.
+ */
+interface AnyName {
+    fun register(nameResolver: NameResolver) {
+        nameResolver.register(this)
+    }
+}
+
+
+/**
  * Represents a Kotlin name with its Viper equivalent.
  *
  * We could directly convert names and pass them around as strings, but this
  * approach makes it easier to see where they came from during debugging.
  */
 const val SEPARATOR = "$"
-interface SymbolicName {
-    val mangledType: String?
+
+interface SymbolicName : AnyName {
+    val nameType: NameTypeBase?
         get() = null
-    context(nameResolver: NameResolver)
-    val mangledScope: String?
-        get() = null
-    context(nameResolver: NameResolver)
-    val mangledBaseName: String
+
 }
 
 context(nameResolver: NameResolver)
 val SymbolicName.mangled: String
-    get() = nameResolver.resolve(this)
+    get() = nameResolver.lookup(this)
 
-val SymbolicName.debugMangled: String
-    get() {
-        val debugResolver = DebugNameResolver()
-        return debugResolver.resolve(this)
-    }
+
+
+/**
+ * Collects all types of names we can have.
+ *
+ * Do not inherit from this interface. If you need a new name type, add it to the [NameType] interface.
+ */
+interface NameTypeBase : AnyName
 

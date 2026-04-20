@@ -6,6 +6,8 @@
 package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.isOf
+import org.jetbrains.kotlin.formver.core.names.UnqualifiedDomainFuncName
+import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
 import org.jetbrains.kotlin.formver.viper.ast.Function
 
@@ -98,7 +100,7 @@ val Injection?.viperType: Type
  * @param additionalConditions allows to add additional preconditions and/or postconditions
  */
 class InjectionImageFunction(
-    name: String,
+    name: SymbolicName,
     val original: Applicable,
     argsInjections: List<Injection>,
     resultInjection: Injection,

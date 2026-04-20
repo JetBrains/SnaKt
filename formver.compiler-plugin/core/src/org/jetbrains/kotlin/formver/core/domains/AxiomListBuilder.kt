@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.domains
 
+import org.jetbrains.kotlin.formver.core.names.NamedDomainAxiomLabel
 import org.jetbrains.kotlin.formver.viper.ast.Domain
 import org.jetbrains.kotlin.formver.viper.ast.DomainAxiom
 import org.jetbrains.kotlin.formver.viper.ast.Exp
@@ -41,7 +42,8 @@ internal class AxiomListBuilder private constructor(private val domain: Domain) 
      */
     fun axiom(name: String, action: () -> Exp): DomainAxiom {
         val exp = action()
-        val axiom = domain.createNamedDomainAxiom(name, exp)
+        val axiomName = NamedDomainAxiomLabel(domain.name, name)
+        val axiom = DomainAxiom(axiomName, domain.name, exp)
         axioms.add(axiom)
         return axiom
     }
@@ -51,7 +53,7 @@ internal class AxiomListBuilder private constructor(private val domain: Domain) 
      */
     fun axiom(action: () -> Exp): DomainAxiom {
         val exp = action()
-        val axiom = domain.createAnonymousDomainAxiom(exp)
+        val axiom = DomainAxiom(null, domain.name, exp)
         axioms.add(axiom)
         return axiom
     }

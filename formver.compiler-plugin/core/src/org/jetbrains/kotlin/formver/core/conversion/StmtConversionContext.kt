@@ -14,7 +14,9 @@ import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.isBoolean
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyConversionResult
 import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.InvalidFunctionBodyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.LabelEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FullNamedFunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
@@ -74,16 +76,20 @@ interface StmtConversionContext : MethodConversionContext {
 
 fun StmtConversionContext.declareLocalProperty(symbol: FirPropertySymbol, initializer: ExpEmbedding?): Declare {
     registerLocalProperty(symbol)
-    return Declare(embedLocalProperty(symbol), initializer)
+    val variable = embedLocalProperty(symbol)
+    return Declare(variable, initializer?.withType(variable.type))
 }
 
 fun StmtConversionContext.declareLocalVariable(symbol: FirVariableSymbol<*>, initializer: ExpEmbedding?): Declare {
     registerLocalVariable(symbol)
-    return Declare(embedLocalVariable(symbol), initializer)
+    val variable = embedLocalVariable(symbol)
+    return Declare(variable, initializer?.withType(variable.type))
 }
 
-fun StmtConversionContext.declareAnonVar(type: TypeEmbedding, initializer: ExpEmbedding?): Declare =
-    Declare(freshAnonVar(type), initializer)
+fun StmtConversionContext.declareAnonVar(type: TypeEmbedding, initializer: ExpEmbedding?): Declare {
+    val variable = freshAnonVar(type)
+    return Declare(variable, initializer?.withType(variable.type))
+}
 
 
 val FirIntersectionOverridePropertySymbol.propertyIntersections
@@ -259,39 +265,43 @@ fun StmtConversionContext.convertMethodWithBody(
     declaration: FirSimpleFunction,
     signature: FullNamedFunctionSignature,
     returnTarget: ReturnTarget,
-): FunctionBodyEmbedding? {
+): FunctionBodyConversionResult? {
     val firBody = declaration.body ?: return null
     val body = convert(firBody)
     val bodyExp = FunctionExp(signature, body, returnTarget.label)
     val seqnBuilder = SeqnBuilder(declaration.source)
     val linearizer = Linearizer(SharedLinearizationState(anonVarProducer), seqnBuilder, declaration.source)
-    bodyExp.toViperUnusedResult(linearizer)
+    bodyExp.toLinearizable(declaration.source).toViperUnusedResult(linearizer)
     // note: we must guarantee somewhere that returned value is Unit
     // as we may not encounter any `return` statement in the body
-    returnTarget.variable.withIsUnitInvariantIfUnit().toViperUnusedResult(linearizer)
-
-    // TODO: Stop translation if this check fails
-    body.checkValidity(declaration.source, errorCollector)
-
-    return FunctionBodyEmbedding(seqnBuilder.block, returnTarget, bodyExp)
+    returnTarget.variable.withIsUnitInvariantIfUnit().toLinearizable(declaration.source).toViperUnusedResult(linearizer)
+    val isValid = body.checkValidity(declaration.source, errorCollector)
+    return if (isValid) {
+        FunctionBodyEmbedding(seqnBuilder.block, returnTarget, bodyExp)
+    } else {
+        InvalidFunctionBodyEmbedding(declaration.source, bodyExp)
+    }
 }
 
 fun StmtConversionContext.convertFunctionWithBody(
     declaration: FirSimpleFunction
-): Exp {
+): Exp? {
     val firBody = declaration.body ?: throw SnaktInternalException(
         declaration.source,
         "Pure functions expect a function body to exist"
     )
     val body = convert(firBody)
-    if (!body.isPure()) throw SnaktInternalException(
+    if (!body.isPure()) {
+        errorCollector.addPurityError(declaration.source, "Impure function body detected in pure function")
+        return null
+    }
+    val pureFunBodyLinearizer = PureFunBodyLinearizer(
         declaration.source,
-        "Impure function body detected in pure function"
+        SharedLinearizationState(anonVarProducer),
+        SsaConverter(declaration.source),
     )
-    val ssaConverter = SsaConverter(declaration.source)
-    val pureLinearizer = PureLinearizer(declaration.source, ssaConverter)
-    body.toViperUnusedResult(pureLinearizer)
-    return ssaConverter.asExp()
+    body.toLinearizable(declaration.source).toViperUnusedResult(pureFunBodyLinearizer)
+    return pureFunBodyLinearizer.constructExpression()
 }
 
 private const val INVALID_STATEMENT_MSG =

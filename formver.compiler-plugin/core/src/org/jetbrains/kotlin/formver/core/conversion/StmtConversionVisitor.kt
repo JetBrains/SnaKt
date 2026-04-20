@@ -79,7 +79,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         // returnTarget is null when it is the implicit return of a lambda
         val returnTargetName = returnExpression.target.labelName
         val target = data.resolveReturnTarget(returnTargetName)
-        return Return(expr, target)
+        return Return(expr.withType(target.variable.type), target)
     }
 
     override fun visitResolvedQualifier(
@@ -157,7 +157,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             val cond = data.convert(branch.condition).withType { boolean() }
             val thenExp = data.withNewScope { convert(branch.result) }
             val elseExp = convertWhenBranches(whenBranches, type, data)
-            If(cond, thenExp, elseExp, type)
+            If(cond, thenExp.withType(type), elseExp.withType(type), type)
         }
     }
 
@@ -361,7 +361,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
 
         val type = data.embedType(symbol.resolvedReturnType)
-        return data.declareLocalProperty(symbol, property.initializer?.let { data.convert(it).withType(type) })
+        return data.declareLocalProperty(symbol, property.initializer?.let { data.convert(it) })
     }
 
     override fun visitWhileLoop(whileLoop: FirWhileLoop, data: StmtConversionContext): ExpEmbedding {
@@ -587,8 +587,8 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return share(receiver) { sharedReceiver ->
             If(
                 sharedReceiver.notNullCmp(),
-                data.withCheckedSafeCallSubject(sharedReceiver.withType(checkedSafeCallSubjectType)) { convert(selector) },
-                NullLit,
+                data.withCheckedSafeCallSubject(sharedReceiver.withType(checkedSafeCallSubjectType)) { convert(selector) }.withType(expType),
+                NullLit.withType(expType),
                 expType
             )
         }

@@ -46,7 +46,7 @@ local repository here: it's necessary to find the compiler plugin for the plugin
 
 ```kotlin
 plugins {
-    kotlin("jvm") version "2.2.0"
+    kotlin("jvm") version "2.3.0"
     id("org.jetbrains.kotlin.formver") version "0.1.0-SNAPSHOT"
 }
 
@@ -137,6 +137,28 @@ Check that this is the case when you open a new shell, too!
 You need to (additionally) set `Z3_EXE` in `~/.xprofile` and/or
 `~/.bash_profile` depending on your shell, window manager, display
 manager, operating system, etc.
+
+## Running tests
+
+The test pipeline for each function does conversion (Kotlin FIR → Viper AST),
+consistency checking (AST validation, no z3), and verification (Silicon/z3).
+Three Gradle tasks cover different combinations:
+
+- `./gradlew test` — full pipeline (conversion + consistency + verification).
+- `./gradlew testNoVerification` — conversion + consistency only, no z3.
+  Useful for fast local iteration (~65% faster).
+- `./gradlew testBothModes` — runs `test`, then re-runs verification tests
+  in conversion-only mode to catch conversion regressions.
+
+To update golden files after a change, pass `-Pkotlin.test.update.test.data=true`.
+
+### Test directives
+
+Test source files support directives that control how they are run:
+
+- `NEVER_VALIDATE` — skip verification, keep consistency and uniqueness checking.
+- `UNIQUE_CHECK_ONLY` — run only the uniqueness checker (skip conversion and verification).
+- `ALWAYS_VALIDATE` — force verification for all functions.
 
 ## Contact
 

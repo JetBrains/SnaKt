@@ -1,0 +1,46 @@
+/override_properties_types.kt:(520,530): info: Generated Viper text for extractInt:
+field bf$field: Ref
+
+method f$extractInt$F$t$Base$t$Boolean$t$N$Int(par$base: Ref, par$returnNull: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$base), df$rt$c$Base())
+  requires df$rt$isSubtype(df$rt$typeOf(par$returnNull), df$rt$boolType())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
+  ensures ret$0 == df$rt$nullValue() ==> df$rt$boolFromRef(par$returnNull)
+{
+  inhale acc(pred$c$Base$shared(par$base), wildcard)
+  if (df$rt$boolFromRef(par$returnNull)) {
+    var anon$0: Ref
+    anon$0 := df$rt$nullValue()
+    ret$0 := anon$0
+  } else {
+    var anon$1: Ref
+    if (df$rt$isSubtype(df$rt$typeOf(par$base), df$rt$c$OpenClassOpenFieldVarDerived())) {
+      var anon$2: Ref
+      inhale acc(pred$c$OpenClassOpenFieldVarDerived$shared(par$base), wildcard)
+      anon$2 := g$public$field(par$base)
+      anon$1 := anon$2
+      inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$intType())
+    } elseif (df$rt$isSubtype(df$rt$typeOf(par$base), df$rt$c$FinalClassOpenFieldVarDerived())) {
+      inhale acc(pred$c$FinalClassOpenFieldVarDerived$shared(par$base), wildcard)
+      anon$1 := havoc$t$Int()
+    } elseif (df$rt$isSubtype(df$rt$typeOf(par$base), df$rt$c$FinalClassFinalFieldValDerived())) {
+      inhale acc(pred$c$FinalClassFinalFieldValDerived$shared(par$base), wildcard)
+      unfold acc(pred$c$FinalClassFinalFieldValDerived$shared(par$base), wildcard)
+      anon$1 := par$base.bf$field
+    } elseif (df$rt$isSubtype(df$rt$typeOf(par$base), df$rt$c$OpenClassFinalFieldVarDerived())) {
+      inhale acc(pred$c$OpenClassFinalFieldVarDerived$shared(par$base), wildcard)
+      anon$1 := havoc$t$Int()
+    } else {
+      anon$1 := df$rt$intToRef(0)}
+    ret$0 := anon$1
+  }
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+method g$public$field(this$dispatch: Ref) returns (ret: Ref)
+
+
+method s$public$field(this$dispatch: Ref, anon$0: Ref) returns (ret: Ref)
+

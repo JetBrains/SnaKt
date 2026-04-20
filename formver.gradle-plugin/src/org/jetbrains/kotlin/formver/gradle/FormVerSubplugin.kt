@@ -60,8 +60,7 @@ class FormVerGradleSubplugin
         }
     }
 
-    override fun getCompilerPluginId(): String =
-        "${BuildConfig.COMPILER_PLUGIN_GROUP}.${BuildConfig.COMPILER_PLUGIN_NAME}"
+    override fun getCompilerPluginId(): String = FormalVerificationPluginNames.PLUGIN_ID
 
     override fun getPluginArtifact(): SubpluginArtifact =
         SubpluginArtifact(

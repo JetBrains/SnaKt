@@ -1,0 +1,117 @@
+/field_getters_unique_shared.kt:(211,241): info: Generated Viper text for testPrimitiveFieldGetterUnique:
+field bf$sharedVal: Ref
+
+field bf$sharedVar: Ref
+
+field bf$uniqueVal: Ref
+
+field bf$uniqueVar: Ref
+
+method f$testPrimitiveFieldGetterUnique$F$t$PrimitiveFields$t$Unit(par$pf: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$pf), df$rt$c$PrimitiveFields())
+  requires acc(pred$c$PrimitiveFields$unique(par$pf), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$sharedVal: Ref
+  var l0$sharedVar: Ref
+  var l0$uniqueVal: Ref
+  var l0$uniqueVar: Ref
+  inhale acc(pred$c$PrimitiveFields$shared(par$pf), wildcard)
+  unfold acc(pred$c$PrimitiveFields$shared(par$pf), wildcard)
+  l0$sharedVal := par$pf.bf$sharedVal
+  l0$sharedVar := havoc$t$Int()
+  unfold acc(pred$c$PrimitiveFields$shared(par$pf), wildcard)
+  l0$uniqueVal := par$pf.bf$uniqueVal
+  l0$uniqueVar := havoc$t$Int()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/field_getters_unique_shared.kt:(412,442): info: Generated Viper text for testPrimitiveFieldGetterShared:
+field bf$sharedVal: Ref
+
+field bf$sharedVar: Ref
+
+field bf$uniqueVal: Ref
+
+field bf$uniqueVar: Ref
+
+method f$testPrimitiveFieldGetterShared$F$t$PrimitiveFields$t$Unit(par$pf: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$pf), df$rt$c$PrimitiveFields())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$sharedVal: Ref
+  var l0$sharedVar: Ref
+  var l0$uniqueVal: Ref
+  var l0$uniqueVar: Ref
+  inhale acc(pred$c$PrimitiveFields$shared(par$pf), wildcard)
+  unfold acc(pred$c$PrimitiveFields$shared(par$pf), wildcard)
+  l0$sharedVal := par$pf.bf$sharedVal
+  l0$sharedVar := havoc$t$Int()
+  unfold acc(pred$c$PrimitiveFields$shared(par$pf), wildcard)
+  l0$uniqueVal := par$pf.bf$uniqueVal
+  l0$uniqueVar := havoc$t$Int()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/field_getters_unique_shared.kt:(791,821): info: Generated Viper text for testReferenceFieldGetterUnique:
+field bf$sharedVal: Ref
+
+field bf$sharedVar: Ref
+
+field bf$uniqueVal: Ref
+
+field bf$uniqueVar: Ref
+
+method f$testReferenceFieldGetterUnique$F$t$ReferenceFields$t$Unit(par$rf: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$rf), df$rt$c$ReferenceFields())
+  requires acc(pred$c$ReferenceFields$unique(par$rf), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$sharedVal: Ref
+  var l0$sharedVar: Ref
+  var l0$uniqueVal: Ref
+  var l0$uniqueVar: Ref
+  inhale acc(pred$c$ReferenceFields$shared(par$rf), wildcard)
+  unfold acc(pred$c$ReferenceFields$shared(par$rf), wildcard)
+  l0$sharedVal := par$rf.bf$sharedVal
+  l0$sharedVar := havoc$t$PrimitiveFields()
+  unfold acc(pred$c$ReferenceFields$shared(par$rf), wildcard)
+  l0$uniqueVal := par$rf.bf$uniqueVal
+  l0$uniqueVar := havoc$t$PrimitiveFields()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/field_getters_unique_shared.kt:(992,1022): info: Generated Viper text for testReferenceFieldGetterShared:
+field bf$sharedVal: Ref
+
+field bf$sharedVar: Ref
+
+field bf$uniqueVal: Ref
+
+field bf$uniqueVar: Ref
+
+method f$testReferenceFieldGetterShared$F$t$ReferenceFields$t$Unit(par$rf: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$rf), df$rt$c$ReferenceFields())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$sharedVal: Ref
+  var l0$sharedVar: Ref
+  var l0$uniqueVal: Ref
+  var l0$uniqueVar: Ref
+  inhale acc(pred$c$ReferenceFields$shared(par$rf), wildcard)
+  unfold acc(pred$c$ReferenceFields$shared(par$rf), wildcard)
+  l0$sharedVal := par$rf.bf$sharedVal
+  l0$sharedVar := havoc$t$PrimitiveFields()
+  unfold acc(pred$c$ReferenceFields$shared(par$rf), wildcard)
+  l0$uniqueVal := par$rf.bf$uniqueVal
+  l0$uniqueVar := havoc$t$PrimitiveFields()
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}

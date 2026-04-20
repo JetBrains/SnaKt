@@ -5,13 +5,14 @@
 
 package org.jetbrains.kotlin.formver.common
 
-class PluginConfiguration(
+data class PluginConfiguration(
     val logLevel: LogLevel,
     val errorStyle: ErrorStyle,
     val behaviour: UnsupportedFeatureBehaviour,
     val conversionSelection: TargetsSelection,
     val verificationSelection: TargetsSelection,
     val checkUniqueness: Boolean,
+    val dumpUniquenessCFG: Boolean,
 ) {
     init {
         require(conversionSelection >= verificationSelection) {

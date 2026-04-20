@@ -13,3 +13,12 @@ fun <!VIPER_TEXT!>division<!>(x: Int) {
     // will not verify because `x` is not guaranteed to be non-zero
     val y = x / x
 }
+
+fun <!VIPER_TEXT!>remainder<!>(x: Int) {
+    // will not verify because `x` is not guaranteed to be non-zero
+    val y = x % x
+}
+
+fun <!VIPER_TEXT!>unary_minus<!>(x: Int) {
+    val y = -x
+}

@@ -1,5 +1,6 @@
 /inline.kt:(230,239): info: Generated Viper text for quadruple:
-method f$quadruple$TF$T$Int(p$x: Ref) returns (ret$0: Ref)
+method f$quadruple$F$t$Int$t$Int(par$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var anon$0: Ref
@@ -8,24 +9,23 @@ method f$quadruple$TF$T$Int(p$x: Ref) returns (ret$0: Ref)
   var anon$1: Ref
   var ret$2: Ref
   var l2$y: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$intType())
-  l1$y := sp$plusInts(p$x, p$x)
+  l1$y := df$plusInts(par$x, par$x)
   ret$1 := l1$y
   goto lbl$ret$1
   label lbl$ret$1
   anon$0 := ret$1
-  l2$y := sp$plusInts(p$x, p$x)
+  l2$y := df$plusInts(par$x, par$x)
   ret$2 := l2$y
   goto lbl$ret$2
   label lbl$ret$2
   anon$1 := ret$2
-  ret$0 := sp$plusInts(anon$0, anon$1)
+  ret$0 := df$plusInts(anon$0, anon$1)
   goto lbl$ret$0
   label lbl$ret$0
 }
 
 /inline.kt:(469,481): info: Generated Viper text for useBranching:
-method f$useBranching$TF$() returns (ret$0: Ref)
+method f$useBranching$F$t$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var anon$2: Ref
@@ -54,7 +54,7 @@ method f$useBranching$TF$() returns (ret$0: Ref)
   }
   label lbl$ret$2
   anon$3 := ret$2
-  ret$0 := sp$plusInts(anon$2, anon$3)
+  ret$0 := df$plusInts(anon$2, anon$3)
   goto lbl$ret$0
   label lbl$ret$0
 }

@@ -2,45 +2,146 @@ package org.jetbrains.kotlin.formver.core.linearization
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.core.conversion.FreshEntityProducer
 import org.jetbrains.kotlin.formver.core.names.SsaVariableName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
 import org.jetbrains.kotlin.formver.viper.ast.Exp
+import org.jetbrains.kotlin.formver.viper.ast.Type
 
 class SsaConverter(
     val source: KtSourceElement? = null,
-    val variableIndex: MutableMap<SymbolicName, Int> = mutableMapOf()
 ) {
-    private val assignments: MutableList<SsaAssignment> = mutableListOf()
-    private var body: Exp? = null
+    private var head: SsaBlockNode = SsaBlockNode(SsaStartNode(), Exp.BoolLit(true))
+    private val ssaAssignments: MutableList<Pair<SsaVariableName, Exp>> = mutableListOf()
+    private val returnExpressions: MutableList<Pair<Exp, Exp>> = mutableListOf()
+    private val accessInvariants: MutableMap<SsaVariableName, List<Exp.PredicateAccess>> = mutableMapOf()
 
-    fun asExp(): Exp {
-        val bodyExp = body ?: throw SnaktInternalException(
-            source,
-            "Empty body cannot be converted into let chain"
+    // Produce new ssa names for a source variable name
+    private val ssaNameProducers: MutableMap<SymbolicName, FreshEntityProducer<SsaVariableName, SymbolicName>> =
+        mutableMapOf()
+
+    fun branch(
+        condition: Exp,
+        thenBlock: () -> Unit,
+        elseBlock: () -> Unit
+    ) {
+        val splitPoint = head
+        head = splitPoint.generateBranchingBlockNodeFromThisNode(condition)
+        thenBlock()
+        val thenResultHead = head
+        head = splitPoint.generateBranchingBlockNodeFromThisNode(Exp.Not(condition))
+        elseBlock()
+        val joinNode = SsaJoinNode(
+            thenResultHead,
+            head,
+            condition,
+            this
         )
-        return assignments.foldRight(bodyExp) { (decl, ssaIdx, expr), acc ->
-            Exp.LetBinding(decl.copy(name = SsaVariableName(decl.name, ssaIdx)), expr, acc)
+        head = SsaBlockNode(joinNode, splitPoint.fullBranchingCondition)
+    }
+
+    fun constructExpression(): Exp {
+        if (returnExpressions.isEmpty()) throw SnaktInternalException(
+            source,
+            "No return expression was found for translation"
+        )
+        val defaultBody = returnExpressions.last().second
+        val bodyExp = returnExpressions.dropLast(1).foldRight(defaultBody) { expPair, elseBranch ->
+            Exp.TernaryExp(
+                expPair.first,
+                expPair.second,
+                elseBranch
+            )
+        }
+        return ssaAssignments.foldRight(bodyExp) { assignment, innerScope ->
+            Exp.LetBinding(Declaration.LocalVarDecl(assignment.first, Type.Ref), assignment.second, innerScope)
         }
     }
 
-    fun addAssignment(decl: Declaration.LocalVarDecl, varExp: Exp) {
-        val ssaIdx = (variableIndex[decl.name]?.plus(1) ?: 0)
-        variableIndex[decl.name] = ssaIdx
-        assignments.add(SsaAssignment(decl, ssaIdx, varExp))
+    fun generateFreshSsaName(name: SymbolicName): SsaVariableName {
+        val producer = ssaNameProducers.getOrPut(name) { FreshEntityProducer(::SsaVariableName) }
+        return producer.getFresh(name)
     }
 
-    fun addBody(body: Exp) {
-        this.body = body
+    fun addAssignment(
+        name: SymbolicName,
+        varExp: Exp,
+        newVarAccessInvariants: List<Exp.PredicateAccess> = emptyList()
+    ) {
+        val ssaName = head.updateLatestName(name)
+        accessInvariants[ssaName] = newVarAccessInvariants
+        varExp.propagateAccessInvariants(ssaName)
+        addGuardedAssignment(ssaName, varExp.withAccessInvariants(ssaName))
     }
 
-    /**
-     * Resolves the symbolic name to its most recent SSA definition.
-     * If no local assignment is found, we assume the provided name is valid
-     */
-    fun resolveVariableName(name: SymbolicName): SymbolicName =
-        // TODO: Fall back to global value numbering before falling back to provided name
-        assignments.lastOrNull { it.declaration.name == name }?.let { SsaVariableName(name, it.ssaIdx) } ?: name
+    fun addPhiAssignment(condition: Exp, left: SsaVariableName, right: SsaVariableName, name: SsaVariableName) {
+        if (left.baseName != right.baseName) {
+            throw SnaktInternalException(
+                source,
+                "Phi Assignments may only be created for SSA variables referring to the same source variable."
+            )
+        }
+        val phiExpression = Exp.TernaryExp(
+            condition,
+            Exp.LocalVar(left, Type.Ref),
+            Exp.LocalVar(right, Type.Ref)
+        )
+        phiExpression.propagateAccessInvariants(name)
+        addGuardedAssignment(name, phiExpression.withAccessInvariants(name))
+    }
+
+    fun addReturn(returnExp: Exp) {
+        returnExpressions.add(head.fullBranchingCondition to returnExp)
+    }
+
+    fun resolveVariableName(name: SymbolicName): SymbolicName {
+        return head.resolveVariableName(name)
+    }
+
+    private fun addGuardedAssignment(name: SsaVariableName, varExp: Exp) {
+        val defaultExpression = varExp.type.defaultExpression() ?: throw SnaktInternalException(
+            source,
+            "Tried to assign a variable without a default expression"
+        )
+        if (head.fullBranchingCondition == Exp.BoolLit(true)) {
+            ssaAssignments.add(name to varExp)
+        } else {
+            ssaAssignments.add(name to Exp.TernaryExp(head.fullBranchingCondition, varExp, defaultExpression))
+        }
+    }
+
+    private fun Exp.withAccessInvariants(name: SsaVariableName): Exp =
+        when (this) {
+            is Exp.FieldAccess, is Exp.FuncApp, is Exp.DomainFuncApp -> accessInvariants[name]?.foldRight(this) { invariant, acc ->
+                Exp.Unfolding(invariant, acc)
+            } ?: this
+
+            else -> this
+        }
+
+    private fun mergeAccessInvariants(from: List<SymbolicName>, newName: SsaVariableName) {
+        val mergedInvariants = from.mapNotNull { accessInvariants[it] }.flatten() + accessInvariants[newName].orEmpty()
+        accessInvariants[newName] = mergedInvariants.distinct()
+    }
+
+    private fun Exp.propagateAccessInvariants(to: SsaVariableName) {
+        var from: Exp? = null
+        when (this) {
+            is Exp.LocalVar -> from = this
+            is Exp.FieldAccess -> from = this.rcv
+            is Exp.FuncApp -> this.args.forEach { it.propagateAccessInvariants(to) }
+            is Exp.DomainFuncApp -> {
+                this.args.forEach { it.propagateAccessInvariants(to) }
+            }
+            // TODO: Determine how to handle the access invariants of a Ternary
+            else -> {}
+        }
+        if (from == null) return
+        if (from !is Exp.LocalVar) throw SnaktInternalException(
+            source,
+            "Access sources must be local variables $from"
+        )
+        mergeAccessInvariants(listOf(from.name), to)
+    }
 }
-
-data class SsaAssignment(val declaration: Declaration.LocalVarDecl, val ssaIdx: Int, val exp: Exp)

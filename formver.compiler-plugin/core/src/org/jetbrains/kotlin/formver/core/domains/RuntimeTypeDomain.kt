@@ -7,6 +7,9 @@ package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.embedClassTypeFunc
+import org.jetbrains.kotlin.formver.core.names.DomainName
+import org.jetbrains.kotlin.formver.core.names.QualifiedDomainFuncName
+import org.jetbrains.kotlin.formver.core.names.UnqualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
 
@@ -205,20 +208,20 @@ const val RUNTIME_TYPE_DOMAIN_NAME = "rt"
  * // same for subtraction, multiplication and so on
  * ```
  */
-class RuntimeTypeDomain(val classes: List<ClassTypeEmbedding>) : BuiltinDomain(RUNTIME_TYPE_DOMAIN_NAME) {
+class RuntimeTypeDomain(val classes: List<ClassTypeEmbedding>) : BuiltinDomain(DomainName(RUNTIME_TYPE_DOMAIN_NAME)) {
     override val typeVars: List<Type.TypeVar> = emptyList()
 
     // Define types that are not dependent on the user defined classes in a companion object.
     // That way other classes can refer to them without having an explicit reference to the concrete TypeDomain.
     companion object {
-
-        val RuntimeType: Type.Domain = Type.Domain(DomainName(RUNTIME_TYPE_DOMAIN_NAME), emptyList())
+        private val domainName = DomainName(RUNTIME_TYPE_DOMAIN_NAME)
+        val RuntimeType: Type.Domain = Type.Domain(domainName, emptyList())
         val Ref = Type.Ref
 
         fun createDomainFunc(
             funcName: SymbolicName, args: List<Declaration.LocalVarDecl>, type: Type, unique: Boolean = false
         ) = DomainFunc(
-            QualifiedDomainFuncName(DomainName(RUNTIME_TYPE_DOMAIN_NAME), funcName), args, emptyList(), type, unique
+            QualifiedDomainFuncName(domainName, funcName), domainName, args, emptyList(), type, unique
         )
 
         private fun createNewTypeDomainFunc(funcName: SymbolicName) = createDomainFunc(
@@ -291,10 +294,10 @@ class RuntimeTypeDomain(val classes: List<ClassTypeEmbedding>) : BuiltinDomain(R
         nullValue, unitValue, isSubtype, typeOf, nullable
     ) + allInjections.flatMap { listOf(it.toRef, it.fromRef) }
     override val axioms: List<DomainAxiom> = AxiomListBuilder.build(this) {
-        axiom("subtype_reflexive") {
+        axiom("subtypeReflexive") {
             Exp.forall(t) { t -> t subtype t }
         }
-        axiom("subtype_transitive") {
+        axiom("subtypeTransitive") {
             Exp.forall(t1, t2, t3) { t1, t2, t3 ->
                 assumption {
                     compoundTrigger {
@@ -313,7 +316,7 @@ class RuntimeTypeDomain(val classes: List<ClassTypeEmbedding>) : BuiltinDomain(R
                 t1 subtype t3
             }
         }
-        axiom("subtype_antisymmetric") {
+        axiom("subtypeAntisymmetric") {
             Exp.forall(t1, t2) { t1, t2 ->
                 assumption {
                     compoundTrigger {
@@ -324,23 +327,23 @@ class RuntimeTypeDomain(val classes: List<ClassTypeEmbedding>) : BuiltinDomain(R
                 t1 eq t2
             }
         }
-        axiom("nullable_idempotent") {
+        axiom("nullableIdempotent") {
             Exp.forall(t) { t ->
                 simpleTrigger { nullable(nullable(t)) } eq nullable(t)
             }
         }
-        axiom("nullable_supertype") {
+        axiom("nullableSupertype") {
             Exp.forall(t) { t ->
                 t subtype simpleTrigger { nullable(t) }
             }
         }
-        axiom("nullable_preserves_subtype") {
+        axiom("nullablePreservesSubtype") {
             Exp.forall(t1, t2) { t1, t2 ->
                 assumption { t1 subtype t2 }
                 simpleTrigger { nullable(t1) subtype nullable(t2) }
             }
         }
-        axiom("nullable_any_supertype") {
+        axiom("nullableAnySupertype") {
             Exp.forall(t) { t ->
                 t subtype nullable(anyType())
             }
@@ -348,17 +351,17 @@ class RuntimeTypeDomain(val classes: List<ClassTypeEmbedding>) : BuiltinDomain(R
         nonNullableTypes.forEach {
             axiom { it() subtype anyType() }
         }
-        axiom("supertype_of_nothing") {
+        axiom("supertypeOfNothing") {
             Exp.forall(t) { t ->
                 nothingType() subtype t
             }
         }
-        axiom("any_not_nullable_type_level") {
+        axiom("anyNotNullableTypeLevel") {
             Exp.forall(t) { t ->
                 !isSubtype(nullable(t), anyType())
             }
         }
-        axiom("null_smartcast_value_level") {
+        axiom("nullSmartcastValueLevel") {
             Exp.forall(r, t) { r, t ->
                 assumption {
                     simpleTrigger { r isOf nullable(t) }
@@ -366,12 +369,12 @@ class RuntimeTypeDomain(val classes: List<ClassTypeEmbedding>) : BuiltinDomain(R
                 (r eq nullValue()) or (r isOf t)
             }
         }
-        axiom("nothing_empty") {
+        axiom("nothingEmpty") {
             Exp.forall(r) { r ->
                 !(r isOf nothingType())
             }
         }
-        axiom("null_smartcast_type_level") {
+        axiom("nullSmartcastTypeLevel") {
             Exp.forall(t1, t2) { t1, t2 ->
                 assumption {
                     compoundTrigger {
@@ -382,16 +385,16 @@ class RuntimeTypeDomain(val classes: List<ClassTypeEmbedding>) : BuiltinDomain(R
                 t1 subtype t2
             }
         }
-        axiom("type_of_null") {
+        axiom("typeOfNull") {
             nullValue() isOf nullable(nothingType())
         }
-        axiom("any_not_nullable_value_level") {
+        axiom("anyNotNullableValueLevel") {
             !(nullValue() isOf anyType())
         }
-        axiom("type_of_unit") {
+        axiom("typeOfUnit") {
             unitValue() isOf unitType()
         }
-        axiom("uniqueness_of_unit") {
+        axiom("uniquenessOfUnit") {
             Exp.forall(r) { r ->
                 assumption {
                     simpleTrigger { r isOf unitType() }
