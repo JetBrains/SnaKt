@@ -98,10 +98,9 @@ fun Test.configureFormverTest() {
 // ./gradlew test — normal mode (full verification, no conversion-only class)
 tasks.test {
     configureFormverTest()
-    inputs.property("formver.testMode", "normal")
+    inputs.property("formver.testMode", "FULL")
+    systemProperty("formver.testMode", "FULL")
     systemProperty("formver.conversionOnly", "false")
-    exclude("**/FirLightTreeFormVerPluginNoVerificationDiagnosticsTestGenerated*")
-    exclude("**/FirLightTreeFormVerPluginDiagnosticsTestGenerated.java*")
 }
 
 // ./gradlew testNoVerification — all tests in conversion-only mode
@@ -124,16 +123,6 @@ tasks.register<Test>("testBothModes") {
     classpath = tasks.test.get().classpath
     configureFormverTest()
     inputs.property("formver.testMode", "bothModes")
-    systemProperty("formver.conversionOnly", "false")
-}
-
-tasks.register<Test>("PhasedFULL") {
-    description = "Runs until verification"
-    group = "verification"
-    testClassesDirs = tasks.test.get().testClassesDirs
-    classpath = tasks.test.get().classpath
-    configureFormverTest()
-    systemProperty("formver.testMode", "FULL")
     systemProperty("formver.conversionOnly", "false")
 }
 
