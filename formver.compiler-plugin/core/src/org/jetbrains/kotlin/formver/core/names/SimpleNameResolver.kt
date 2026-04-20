@@ -56,9 +56,7 @@ class SimpleNameResolver : NameResolver {
                 emptyList()
             }
             val scope = when (name) {
-                // BadScope should never actually be resolved. We add "<>" to the name such that the viper consistency
-                // checker fails.
-                is BadScope -> listOf("<BAD>")
+                is BadScope -> throw SnaktInternalException(null, "BadScope should never be resolved")
                 is ClassScope -> resolveParts(name.className)
                 is FakeScope -> emptyList()
                 is LocalScope -> listOf("l${name.level}")
