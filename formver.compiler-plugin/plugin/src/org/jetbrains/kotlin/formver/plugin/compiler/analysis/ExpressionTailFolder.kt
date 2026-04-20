@@ -7,15 +7,8 @@ package org.jetbrains.kotlin.formver.plugin.compiler.analysis
 
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.expressions.FirBlock
-import org.jetbrains.kotlin.fir.expressions.FirCheckNotNullCall
 import org.jetbrains.kotlin.fir.expressions.FirElvisExpression
 import org.jetbrains.kotlin.fir.expressions.FirExpression
-import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
-import org.jetbrains.kotlin.fir.expressions.FirOperation
-import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
-import org.jetbrains.kotlin.fir.expressions.FirSmartCastExpression
-import org.jetbrains.kotlin.fir.expressions.FirThrowExpression
-import org.jetbrains.kotlin.fir.expressions.FirTypeOperatorCall
 import org.jetbrains.kotlin.fir.expressions.FirTryExpression
 import org.jetbrains.kotlin.fir.expressions.FirWhenExpression
 import org.jetbrains.kotlin.fir.expressions.FirWrappedExpression
@@ -38,7 +31,7 @@ import org.jetbrains.kotlin.fir.visitors.FirVisitor
  *
  * [D] is the extra visitor data threaded through the traversal.
  */
-abstract class TailExpressionVisitor<T, D> : FirVisitor<T, D>() {
+abstract class ExpressionTailFolder<T, D> : FirVisitor<T, D>() {
     /**
      * Result used when an expression does not produce any relevant value for the tail of the expression.
      *
@@ -55,7 +48,7 @@ abstract class TailExpressionVisitor<T, D> : FirVisitor<T, D>() {
     abstract fun T.join(other: T): T
 
     protected fun FirExpression?.visit(data: D): T =
-        this?.accept(this@TailExpressionVisitor, data) ?: empty
+        this?.accept(this@ExpressionTailFolder, data) ?: empty
 
     override fun visitElement(
         element: FirElement,
@@ -69,6 +62,13 @@ abstract class TailExpressionVisitor<T, D> : FirVisitor<T, D>() {
         data: D
     ): T {
         return block.lastExpression?.visit(data) ?: empty
+    }
+
+    override fun visitWrappedExpression(
+        wrappedExpression: FirWrappedExpression,
+        data: D
+    ): T {
+        return wrappedExpression.expression.visit(data)
     }
 
     override fun visitWhenExpression(
@@ -87,39 +87,6 @@ abstract class TailExpressionVisitor<T, D> : FirVisitor<T, D>() {
         return elvisExpression.lhs.visit(data).join(elvisExpression.rhs.visit(data))
     }
 
-    override fun visitSmartCastExpression(
-        smartCastExpression: FirSmartCastExpression,
-        data: D
-    ): T {
-        return smartCastExpression.originalExpression.visit(data)
-    }
-
-    override fun visitWrappedExpression(
-        wrappedExpression: FirWrappedExpression,
-        data: D
-    ): T {
-        return wrappedExpression.expression.visit(data)
-    }
-
-    override fun visitCheckNotNullCall(
-        checkNotNullCall: FirCheckNotNullCall,
-        data: D
-    ): T {
-        return checkNotNullCall.argumentList.arguments.singleOrNull().visit(data)
-    }
-
-    private fun FirTypeOperatorCall.isCast(): Boolean =
-        operation == FirOperation.AS || operation == FirOperation.SAFE_AS
-
-    override fun visitTypeOperatorCall(
-        typeOperatorCall: FirTypeOperatorCall,
-        data: D
-    ): T {
-        if (!typeOperatorCall.isCast()) return empty
-
-        return typeOperatorCall.argumentList.arguments.singleOrNull().visit(data)
-    }
-
     override fun visitTryExpression(
         tryExpression: FirTryExpression,
         data: D
@@ -130,12 +97,5 @@ abstract class TailExpressionVisitor<T, D> : FirVisitor<T, D>() {
         }
 
         return tryValue.join(catchValues)
-    }
-
-    override fun visitFunctionCall(
-        functionCall: FirFunctionCall,
-        data: D
-    ): T {
-        return empty
     }
 }

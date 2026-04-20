@@ -9,23 +9,21 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.declarations.FirProperty
 import org.jetbrains.kotlin.fir.declarations.FirValueParameter
 import org.jetbrains.kotlin.fir.expressions.FirExpression
-import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
-import org.jetbrains.kotlin.fir.expressions.FirSafeCallExpression
 import org.jetbrains.kotlin.fir.expressions.FirThisReceiverExpression
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
-import org.jetbrains.kotlin.formver.plugin.compiler.analysis.TailExpressionVisitor
+import org.jetbrains.kotlin.formver.plugin.compiler.analysis.ExpressionPathFolder
 
 /**
  * Extracts the locality of an expression with respect to the outer declarations specified in [context].
  */
 class ExpressionLocalityExtractor(
     private val context: CheckerContext
-) : TailExpressionVisitor<Locality, Unit>() {
+) : ExpressionPathFolder<Locality, Unit>() {
     override val empty = Locality.Global
 
     override fun Locality.join(other: Locality): Locality {
@@ -49,13 +47,6 @@ class ExpressionLocalityExtractor(
         }
     }
 
-    override fun visitPropertyAccessExpression(
-        propertyAccessExpression: FirPropertyAccessExpression,
-        data: Unit
-    ): Locality {
-        return visitQualifiedAccessExpression(propertyAccessExpression, data)
-    }
-
     override fun visitQualifiedAccessExpression(
         qualifiedAccessExpression: FirQualifiedAccessExpression,
         data: Unit
@@ -63,13 +54,6 @@ class ExpressionLocalityExtractor(
         return qualifiedAccessExpression.explicitReceiver?.visit(data)
             ?: qualifiedAccessExpression.dispatchReceiver?.visit(data)
             ?: qualifiedAccessExpression.calleeReference.symbol?.extractLocality() ?: empty
-    }
-
-    override fun visitSafeCallExpression(
-        safeCallExpression: FirSafeCallExpression,
-        data: Unit
-    ): Locality {
-        return safeCallExpression.receiver.visit(data)
     }
 
     @OptIn(SymbolInternals::class)
