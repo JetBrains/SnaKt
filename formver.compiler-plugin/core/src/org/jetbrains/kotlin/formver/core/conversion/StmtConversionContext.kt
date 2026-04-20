@@ -248,17 +248,13 @@ fun StmtConversionContext.insertAccFunctionCall(
     field: FirPropertyAccessExpression,
     perm: PermExp,
 ): ExpEmbedding {
-    val symbol = field.calleeReference.symbol as? FirPropertySymbol ?: throw SnaktInternalException(
-            field.source,
-            "acc requires a property access like x.a"
-        )
     val fieldAccess = embedPropertyAccess(field)
     val field = ((fieldAccess as? ClassPropertyAccess ?: throw SnaktInternalException(
         field.source,
         "could not embed as class property"
     )).property.getter as? BackingFieldGetter ?: throw SnaktInternalException(
         field.source,
-        "could not get property access like x.a"
+        "acc requires property access like x.a"
     )).field
     val receiver = fieldAccess.receiver
     return withNoScope {
