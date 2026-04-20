@@ -315,8 +315,8 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 "must be a property access expression."
             )
             val permExpr = when(accLambda.arguments.getOrNull(1)?.source?.text?.toString() ?: "") {
-                "write" -> PermExp.WildcardPerm()
-                "read", "" -> PermExp.FullPerm()
+                "write" -> PermExp.FullPerm()
+                "read", "" -> PermExp.WildcardPerm()
                 else -> throw SnaktInternalException(symbol.source, "perm is not supported")
             }
             return data.insertAccFunctionCall(fieldExpr, permExpr)
