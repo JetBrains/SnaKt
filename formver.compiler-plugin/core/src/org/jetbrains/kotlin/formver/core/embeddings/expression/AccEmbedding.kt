@@ -5,34 +5,17 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.expression
 
-import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
 
-class AccEmbedding(
-    val receiver: ExpEmbedding,
+data class AccEmbedding(
     val field: FieldEmbedding,
+    val access: ExpEmbedding,
     val perm: PermExp,
-) : OnlyToBuiltinTypeExpEmbedding {
-    override fun toViperBuiltinType(ctx: LinearizationContext): Exp {
-        val field = Exp.FieldAccess(
-            receiver.toViper(ctx),
-            field.toViper(),
-            ctx.source.asPosition,
-        )
-        return Exp.Acc(
-            field = field,
-            perm = perm,
-            pos = ctx.source.asPosition,
-            info = sourceRole.asInfo,
-        )
-    }
-
-    override val subexpressions: List<ExpEmbedding> = listOf(receiver)
-
+) : ExpEmbedding {
     override val type: TypeEmbedding
         get() = buildType { boolean() }
 
