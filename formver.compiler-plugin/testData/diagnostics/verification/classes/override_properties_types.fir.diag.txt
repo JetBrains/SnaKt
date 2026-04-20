@@ -1,7 +1,7 @@
 /override_properties_types.kt:(520,530): info: Generated Viper text for extractInt:
 field bf$field: Ref
 
-method f$extractInt$t$F$t$Base$t$Boolean$t$N$Int(par$base: Ref, par$returnNull: Ref)
+method f$extractInt$F$t$Base$t$Boolean$t$N$Int(par$base: Ref, par$returnNull: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$base), df$rt$c$Base())
   requires df$rt$isSubtype(df$rt$typeOf(par$returnNull), df$rt$boolType())

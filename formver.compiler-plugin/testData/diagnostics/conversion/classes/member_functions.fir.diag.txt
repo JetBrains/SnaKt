@@ -1,7 +1,7 @@
 /member_functions.kt:(51,60): info: Generated Viper text for memberFun:
 field bf$x: Ref
 
-method f$c$Foo$memberFun$t$F$t$Foo$t$Int(this$dispatch: Ref)
+method f$c$Foo$memberFun$F$t$Foo$t$Int(this$dispatch: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
@@ -16,19 +16,19 @@ method f$c$Foo$memberFun$t$F$t$Foo$t$Int(this$dispatch: Ref)
 /member_functions.kt:(102,115): info: Generated Viper text for callMemberFun:
 field bf$x: Ref
 
-method f$c$Foo$callMemberFun$t$F$t$Foo$t$Unit(this$dispatch: Ref)
+method f$c$Foo$callMemberFun$F$t$Foo$t$Unit(this$dispatch: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
   inhale acc(pred$c$Foo$shared(this$dispatch), wildcard)
-  anon$0 := f$c$Foo$memberFun$t$F$t$Foo$t$Int(this$dispatch)
+  anon$0 := f$c$Foo$memberFun$F$t$Foo$t$Int(this$dispatch)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-method f$c$Foo$memberFun$t$F$t$Foo$t$Int(this$dispatch: Ref)
+method f$c$Foo$memberFun$F$t$Foo$t$Int(this$dispatch: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
@@ -37,13 +37,13 @@ method f$c$Foo$memberFun$t$F$t$Foo$t$Int(this$dispatch: Ref)
 /member_functions.kt:(155,166): info: Generated Viper text for siblingCall:
 field bf$x: Ref
 
-method f$c$Foo$memberFun$t$F$t$Foo$t$Int(this$dispatch: Ref)
+method f$c$Foo$memberFun$F$t$Foo$t$Int(this$dispatch: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 
-method f$c$Foo$siblingCall$t$F$t$Foo$t$Foo$t$Unit(this$dispatch: Ref, par$other: Ref)
+method f$c$Foo$siblingCall$F$t$Foo$t$Foo$t$Unit(this$dispatch: Ref, par$other: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
   requires df$rt$isSubtype(df$rt$typeOf(par$other), df$rt$c$Foo())
@@ -52,7 +52,7 @@ method f$c$Foo$siblingCall$t$F$t$Foo$t$Foo$t$Unit(this$dispatch: Ref, par$other:
   var anon$0: Ref
   inhale acc(pred$c$Foo$shared(this$dispatch), wildcard)
   inhale acc(pred$c$Foo$shared(par$other), wildcard)
-  anon$0 := f$c$Foo$memberFun$t$F$t$Foo$t$Int(par$other)
+  anon$0 := f$c$Foo$memberFun$F$t$Foo$t$Int(par$other)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -60,20 +60,19 @@ method f$c$Foo$siblingCall$t$F$t$Foo$t$Foo$t$Unit(this$dispatch: Ref, par$other:
 /member_functions.kt:(220,238): info: Generated Viper text for outerMemberFunCall:
 field bf$x: Ref
 
-method f$c$Foo$memberFun$t$F$t$Foo$t$Int(this$dispatch: Ref)
+method f$c$Foo$memberFun$F$t$Foo$t$Int(this$dispatch: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 
-method f$outerMemberFunCall$t$F$t$Foo$t$Unit(par$f: Ref)
-  returns (ret$0: Ref)
+method f$outerMemberFunCall$F$t$Foo$t$Unit(par$f: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$f), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
   inhale acc(pred$c$Foo$shared(par$f), wildcard)
-  anon$0 := f$c$Foo$memberFun$t$F$t$Foo$t$Int(par$f)
+  anon$0 := f$c$Foo$memberFun$F$t$Foo$t$Int(par$f)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }

@@ -3,7 +3,7 @@ field bf$next: Ref
 
 field bf$value: Ref
 
-function f$getValue$t$F$t$Node$t$Int(par$node: Ref): Ref
+function f$getValue$F$t$Node$t$Int(par$node: Ref): Ref
   requires acc(pred$c$Node$shared(par$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
@@ -19,7 +19,7 @@ field bf$next: Ref
 
 field bf$value: Ref
 
-function f$getSafeNextValue$t$F$t$Node$t$Int(par$node: Ref): Ref
+function f$getSafeNextValue$F$t$Node$t$Int(par$node: Ref): Ref
   requires acc(pred$c$Node$shared(par$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
@@ -45,7 +45,7 @@ field bf$next: Ref
 
 field bf$value: Ref
 
-function f$getSafeNextNextValue$t$F$t$Node$t$Int(par$node: Ref): Ref
+function f$getSafeNextNextValue$F$t$Node$t$Int(par$node: Ref): Ref
   requires acc(pred$c$Node$shared(par$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
@@ -80,7 +80,7 @@ field bf$next: Ref
 
 field bf$value: Ref
 
-function f$sumFirstTwoNodes$t$F$t$Node$t$Int(par$node: Ref): Ref
+function f$sumFirstTwoNodes$F$t$Node$t$Int(par$node: Ref): Ref
   requires acc(pred$c$Node$shared(par$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
@@ -123,7 +123,7 @@ field bf$next: Ref
 
 field bf$value: Ref
 
-function f$isLastNode$t$F$t$Node$t$Boolean(par$node: Ref): Ref
+function f$isLastNode$F$t$Node$t$Boolean(par$node: Ref): Ref
   requires acc(pred$c$Node$shared(par$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
@@ -139,7 +139,7 @@ field bf$next: Ref
 
 field bf$value: Ref
 
-function f$length$t$F$t$Node$t$Int(par$node: Ref): Ref
+function f$length$F$t$Node$t$Int(par$node: Ref): Ref
   requires acc(pred$c$Node$shared(par$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
@@ -152,7 +152,7 @@ function f$length$t$F$t$Node$t$Int(par$node: Ref): Ref
       (let anon$2$0 ==
         ((!(l0$nextNode$0 == df$rt$nullValue()) ?
           (unfolding acc(pred$c$Node$shared(par$node), wildcard) in
-            df$plusInts(df$rt$intToRef(1), f$length$t$F$t$Node$t$Int(l0$nextNode$0))) :
+            df$plusInts(df$rt$intToRef(1), f$length$F$t$Node$t$Int(l0$nextNode$0))) :
           null)) in
         (let anon$0$0 ==
           ((l0$nextNode$0 == df$rt$nullValue() ? anon$1$0 : anon$2$0)) in
@@ -164,7 +164,7 @@ field bf$next: Ref
 
 field bf$value: Ref
 
-function f$sumAllNodes$t$F$t$Node$t$Int(par$node: Ref): Ref
+function f$sumAllNodes$F$t$Node$t$Int(par$node: Ref): Ref
   requires acc(pred$c$Node$shared(par$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
@@ -186,7 +186,7 @@ function f$sumAllNodes$t$F$t$Node$t$Int(par$node: Ref): Ref
           ((!(l0$nextNode$0 == df$rt$nullValue()) ?
             (unfolding acc(pred$c$Node$shared(par$node), wildcard) in
               (unfolding acc(pred$c$Node$shared(par$node), wildcard) in
-                df$plusInts(anon$3$0, f$sumAllNodes$t$F$t$Node$t$Int(l0$nextNode$0)))) :
+                df$plusInts(anon$3$0, f$sumAllNodes$F$t$Node$t$Int(l0$nextNode$0)))) :
             null)) in
           (let anon$0$0 ==
             ((l0$nextNode$0 == df$rt$nullValue() ? anon$1$0 : anon$2$0)) in
@@ -198,7 +198,7 @@ field bf$next: Ref
 
 field bf$value: Ref
 
-function f$containsValue$t$F$t$Node$t$Int$t$Boolean(par$node: Ref, par$target: Ref): Ref
+function f$containsValue$F$t$Node$t$Int$t$Boolean(par$node: Ref, par$target: Ref): Ref
   requires acc(pred$c$Node$shared(par$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$c$Node())
   requires df$rt$isSubtype(df$rt$typeOf(par$target), df$rt$intType())
@@ -213,7 +213,7 @@ function f$containsValue$t$F$t$Node$t$Int$t$Boolean(par$node: Ref, par$target: R
       (let anon$2$0 ==
         ((!(l0$nextNode$0 == df$rt$nullValue()) ?
           (unfolding acc(pred$c$Node$shared(par$node), wildcard) in
-            f$containsValue$t$F$t$Node$t$Int$t$Boolean(l0$nextNode$0, par$target)) :
+            f$containsValue$F$t$Node$t$Int$t$Boolean(l0$nextNode$0, par$target)) :
           null)) in
         (let anon$3$0 ==
           ((!!(l0$nextNode$0 == df$rt$nullValue()) ?
@@ -231,7 +231,7 @@ field bf$next: Ref
 
 field bf$value: Ref
 
-function f$aliasAndReassign$t$F$t$Node$t$Int(par$node: Ref): Ref
+function f$aliasAndReassign$F$t$Node$t$Int(par$node: Ref): Ref
   requires acc(pred$c$Node$shared(par$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
@@ -261,7 +261,7 @@ field bf$next: Ref
 
 field bf$value: Ref
 
-function f$id$t$F$t$N$Node$t$N$Node(par$node: Ref): Ref
+function f$id$F$t$N$Node$t$N$Node(par$node: Ref): Ref
   requires par$node != df$rt$nullValue() ==>
     acc(pred$c$Node$shared(par$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$nullable(df$rt$c$Node()))
@@ -275,7 +275,7 @@ field bf$next: Ref
 
 field bf$value: Ref
 
-function f$id$t$F$t$N$Node$t$N$Node(par$node: Ref): Ref
+function f$id$F$t$N$Node$t$N$Node(par$node: Ref): Ref
   requires par$node != df$rt$nullValue() ==>
     acc(pred$c$Node$shared(par$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$nullable(df$rt$c$Node()))
@@ -284,13 +284,13 @@ function f$id$t$F$t$N$Node$t$N$Node(par$node: Ref): Ref
   par$node
 }
 
-function f$useIdentityFunction$t$F$t$Node$t$Int(par$node: Ref): Ref
+function f$useIdentityFunction$F$t$Node$t$Int(par$node: Ref): Ref
   requires acc(pred$c$Node$shared(par$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$sameNode$0 ==
-    (f$id$t$F$t$N$Node$t$N$Node(par$node)) in
+    (f$id$F$t$N$Node$t$N$Node(par$node)) in
     (let anon$2$0 ==
       ((l0$sameNode$0 != df$rt$nullValue() ?
         (unfolding acc(pred$c$Node$shared(l0$sameNode$0), wildcard) in
@@ -310,7 +310,7 @@ field bf$next: Ref
 
 field bf$value: Ref
 
-function f$getNextValueUsingId$t$F$t$Node$t$Int(par$node: Ref): Ref
+function f$getNextValueUsingId$F$t$Node$t$Int(par$node: Ref): Ref
   requires acc(pred$c$Node$shared(par$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$c$Node())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
@@ -320,7 +320,7 @@ function f$getNextValueUsingId$t$F$t$Node$t$Int(par$node: Ref): Ref
       par$node.bf$next)) in
     (let l0$nextNode$0 ==
       ((unfolding acc(pred$c$Node$shared(par$node), wildcard) in
-        f$id$t$F$t$N$Node$t$N$Node(anon$0$0))) in
+        f$id$F$t$N$Node$t$N$Node(anon$0$0))) in
       (let anon$2$0 ==
         ((l0$nextNode$0 == df$rt$nullValue() ? df$rt$intToRef(0) : null)) in
         (let anon$3$0 ==
@@ -334,7 +334,7 @@ function f$getNextValueUsingId$t$F$t$Node$t$Int(par$node: Ref): Ref
             anon$1$0)))))
 }
 
-function f$id$t$F$t$N$Node$t$N$Node(par$node: Ref): Ref
+function f$id$F$t$N$Node$t$N$Node(par$node: Ref): Ref
   requires par$node != df$rt$nullValue() ==>
     acc(pred$c$Node$shared(par$node), wildcard)
   requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$nullable(df$rt$c$Node()))

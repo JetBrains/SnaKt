@@ -7,7 +7,7 @@ field bf$uniqueVal: Ref
 
 field bf$uniqueVar: Ref
 
-method f$testPrimitiveFieldGetterUnique$t$F$t$PrimitiveFields$t$Unit(par$pf: Ref)
+method f$testPrimitiveFieldGetterUnique$F$t$PrimitiveFields$t$Unit(par$pf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$pf), df$rt$c$PrimitiveFields())
   requires acc(pred$c$PrimitiveFields$unique(par$pf), write)
@@ -37,7 +37,7 @@ field bf$uniqueVal: Ref
 
 field bf$uniqueVar: Ref
 
-method f$testPrimitiveFieldGetterShared$t$F$t$PrimitiveFields$t$Unit(par$pf: Ref)
+method f$testPrimitiveFieldGetterShared$F$t$PrimitiveFields$t$Unit(par$pf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$pf), df$rt$c$PrimitiveFields())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -66,7 +66,7 @@ field bf$uniqueVal: Ref
 
 field bf$uniqueVar: Ref
 
-method f$testReferenceFieldGetterUnique$t$F$t$ReferenceFields$t$Unit(par$rf: Ref)
+method f$testReferenceFieldGetterUnique$F$t$ReferenceFields$t$Unit(par$rf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$rf), df$rt$c$ReferenceFields())
   requires acc(pred$c$ReferenceFields$unique(par$rf), write)
@@ -96,7 +96,7 @@ field bf$uniqueVal: Ref
 
 field bf$uniqueVar: Ref
 
-method f$testReferenceFieldGetterShared$t$F$t$ReferenceFields$t$Unit(par$rf: Ref)
+method f$testReferenceFieldGetterShared$F$t$ReferenceFields$t$Unit(par$rf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$rf), df$rt$c$ReferenceFields())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())

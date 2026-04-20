@@ -1,5 +1,5 @@
 /and_or_then.kt:(64,75): info: Generated Viper text for resultOrArg:
-method f$resultOrArg$t$F$t$Boolean$t$Boolean(par$arg: Ref)
+method f$resultOrArg$F$t$Boolean$t$Boolean(par$arg: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$arg), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
@@ -11,7 +11,7 @@ method f$resultOrArg$t$F$t$Boolean$t$Boolean(par$arg: Ref)
 }
 
 /and_or_then.kt:(200,211): info: Generated Viper text for testImplies:
-method f$testImplies$t$F$t$Boolean$t$Boolean(par$arg: Ref)
+method f$testImplies$F$t$Boolean$t$Boolean(par$arg: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$arg), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
@@ -26,7 +26,7 @@ method f$testImplies$t$F$t$Boolean$t$Boolean(par$arg: Ref)
 }
 
 /and_or_then.kt:(417,424): info: Generated Viper text for testAnd:
-method f$testAnd$t$F$t$Boolean$t$Boolean$t$Boolean(par$arg1: Ref, par$arg2: Ref)
+method f$testAnd$F$t$Boolean$t$Boolean$t$Boolean(par$arg1: Ref, par$arg2: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$arg1), df$rt$boolType())
   requires df$rt$isSubtype(df$rt$typeOf(par$arg2), df$rt$boolType())

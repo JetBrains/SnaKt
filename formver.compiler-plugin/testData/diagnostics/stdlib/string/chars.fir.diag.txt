@@ -13,7 +13,7 @@ method con$c$CharBox$t$Char$t$CharBox(par$char: Ref) returns (ret: Ref)
     df$rt$charFromRef(par$char)
 
 
-method f$testChars$t$F$t$Char$t$Unit(par$c: Ref) returns (ret$0: Ref)
+method f$testChars$F$t$Char$t$Unit(par$c: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$charType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {

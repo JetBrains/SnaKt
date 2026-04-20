@@ -21,7 +21,7 @@ predicate pred$c$Link$unique(this$dispatch: Ref) {
   df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$next), df$rt$nullable(df$rt$c$Link()))
 }
 
-method f$getVal$t$F$t$Link$t$N$Int(par$l: Ref) returns (ret$0: Ref)
+method f$getVal$F$t$Link$t$N$Int(par$l: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$l), df$rt$c$Link())
   requires acc(pred$c$Link$unique(par$l), write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
@@ -108,7 +108,7 @@ method con$c$Link$t$Int$t$N$Link$t$Link(par$data: Ref, par$next: Ref)
     par$next
 
 
-method f$test$t$F$t$Unit() returns (ret$0: Ref)
+method f$test$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$l: Ref

@@ -5,8 +5,8 @@
 
 package org.jetbrains.kotlin.formver.core.names
 
-import org.jetbrains.kotlin.formver.viper.NameResolver
-import org.jetbrains.kotlin.formver.viper.NameType
+
+import org.jetbrains.kotlin.formver.viper.NameTypeBase
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.name.FqName
 
@@ -14,15 +14,8 @@ import org.jetbrains.kotlin.name.FqName
  * Name of an entity specified by a scope and name.
  */
 data class ScopedName(val scope: NameScope, val name: SymbolicName) : SymbolicName {
-    context(nameResolver: NameResolver)
-    override val mangledScope: String?
-        get() = scope.fullMangledName
 
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = name.mangledBaseName
-
-    override val mangledType: NameType? = name.mangledType
+    override val nameType: NameTypeBase? = name.nameType
 }
 
 fun FqName.asViperString() = asString().replace('.', '_')

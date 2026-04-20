@@ -3,7 +3,7 @@ field bf$c$CustomList$private$value: Ref
 
 field p$size: Ref
 
-method f$c$CustomList$get$t$F$t$CustomList$t$Int$t$Int(this$dispatch: Ref, par$index: Ref)
+method f$c$CustomList$get$F$t$CustomList$t$Int$t$Int(this$dispatch: Ref, par$index: Ref)
   returns (ret$0: Ref)
   requires acc(this$dispatch.p$size, write)
   requires df$rt$intFromRef(this$dispatch.p$size) >= 0
@@ -41,7 +41,7 @@ method con$c$CustomList$t$Int$t$Int$t$CustomList(par$size: Ref, par$value: Ref)
   ensures acc(pred$c$CustomList$unique(ret), write)
 
 
-method f$c$CustomList$get$t$F$t$CustomList$t$Int$t$Int(this$dispatch: Ref, par$index: Ref)
+method f$c$CustomList$get$F$t$CustomList$t$Int$t$Int(this$dispatch: Ref, par$index: Ref)
   returns (ret: Ref)
   requires acc(this$dispatch.p$size, write)
   requires df$rt$intFromRef(this$dispatch.p$size) >= 0
@@ -57,7 +57,7 @@ method f$c$CustomList$get$t$F$t$CustomList$t$Int$t$Int(this$dispatch: Ref, par$i
     old(df$rt$intFromRef(this$dispatch.p$size))
 
 
-method f$c$CustomList$isEmpty$t$F$t$CustomList$t$Boolean(this$dispatch: Ref)
+method f$c$CustomList$isEmpty$F$t$CustomList$t$Boolean(this$dispatch: Ref)
   returns (ret: Ref)
   requires acc(this$dispatch.p$size, write)
   requires df$rt$intFromRef(this$dispatch.p$size) >= 0
@@ -73,24 +73,23 @@ method f$c$CustomList$isEmpty$t$F$t$CustomList$t$Boolean(this$dispatch: Ref)
     df$rt$intFromRef(this$dispatch.p$size) > 0
 
 
-method f$test$t$F$t$Int$t$Unit(par$n: Ref) returns (ret$0: Ref)
+method f$test$F$t$Int$t$Unit(par$n: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$n), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$customList: Ref
   var anon$0: Ref
   l0$customList := con$c$CustomList$t$Int$t$Int$t$CustomList(par$n, df$rt$intToRef(0))
-  anon$0 := f$c$CustomList$isEmpty$t$F$t$CustomList$t$Boolean(l0$customList)
+  anon$0 := f$c$CustomList$isEmpty$F$t$CustomList$t$Boolean(l0$customList)
   if (!df$rt$boolFromRef(anon$0)) {
     var anon$1: Ref
     var anon$2: Ref
     var anon$3: Ref
     anon$2 := l0$customList.p$size
     inhale df$rt$isSubtype(df$rt$typeOf(anon$2), df$rt$intType())
-    anon$1 := f$c$CustomList$get$t$F$t$CustomList$t$Int$t$Int(l0$customList,
-      df$minusInts(anon$2, df$rt$intToRef(1)))
-    anon$3 := f$c$CustomList$get$t$F$t$CustomList$t$Int$t$Int(l0$customList,
-      df$rt$intToRef(0))
+    anon$1 := f$c$CustomList$get$F$t$CustomList$t$Int$t$Int(l0$customList, df$minusInts(anon$2,
+      df$rt$intToRef(1)))
+    anon$3 := f$c$CustomList$get$F$t$CustomList$t$Int$t$Int(l0$customList, df$rt$intToRef(0))
   }
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())

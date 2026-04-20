@@ -1,5 +1,5 @@
 /as_type_contract.kt:(152,162): info: Generated Viper text for asOperator:
-method f$asOperator$t$F$t$Foo$t$Bar(par$foo: Ref) returns (ret$0: Ref)
+method f$asOperator$F$t$Foo$t$Bar(par$foo: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$foo), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$Bar())
   ensures acc(pred$c$Bar$shared(ret$0), wildcard)
@@ -14,8 +14,7 @@ method f$asOperator$t$F$t$Foo$t$Bar(par$foo: Ref) returns (ret$0: Ref)
 }
 
 /as_type_contract.kt:(307,321): info: Generated Viper text for safeAsOperator:
-method f$safeAsOperator$t$F$t$Foo$t$N$Bar(par$foo: Ref)
-  returns (ret$0: Ref)
+method f$safeAsOperator$F$t$Foo$t$N$Bar(par$foo: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$foo), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$c$Bar()))
   ensures ret$0 != df$rt$nullValue() ==>
@@ -35,7 +34,7 @@ method f$safeAsOperator$t$F$t$Foo$t$N$Bar(par$foo: Ref)
 /as_type_contract.kt:(504,508): info: Generated Viper text for getX:
 field bf$x: Ref
 
-method f$getX$t$F$t$Any$t$N$Int(par$a: Ref) returns (ret$0: Ref)
+method f$getX$F$t$Any$t$N$Int(par$a: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$anyType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
   ensures ret$0 != df$rt$nullValue() ==>

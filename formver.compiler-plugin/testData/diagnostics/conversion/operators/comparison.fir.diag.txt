@@ -1,5 +1,5 @@
 /comparison.kt:(23,27): info: Generated Viper text for less:
-method f$less$t$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
+method f$less$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
@@ -11,7 +11,7 @@ method f$less$t$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
 }
 
 /comparison.kt:(79,88): info: Generated Viper text for lessEqual:
-method f$lessEqual$t$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
+method f$lessEqual$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
@@ -23,7 +23,7 @@ method f$lessEqual$t$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
 }
 
 /comparison.kt:(141,148): info: Generated Viper text for greater:
-method f$greater$t$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
+method f$greater$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
@@ -35,7 +35,7 @@ method f$greater$t$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
 }
 
 /comparison.kt:(200,212): info: Generated Viper text for greaterEqual:
-method f$greaterEqual$t$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
+method f$greaterEqual$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())

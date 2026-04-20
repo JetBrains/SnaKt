@@ -3,7 +3,7 @@ field bf$a: Ref
 
 field bf$b: Ref
 
-method f$testPrimitiveFieldGetter$t$F$t$PrimitiveFields$t$Unit(par$pf: Ref)
+method f$testPrimitiveFieldGetter$F$t$PrimitiveFields$t$Unit(par$pf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$pf), df$rt$c$PrimitiveFields())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -27,7 +27,7 @@ field bf$f: Ref
 
 field bf$g: Ref
 
-method f$testReferenceFieldGetter$t$F$t$ReferenceFields$t$Unit(par$rf: Ref)
+method f$testReferenceFieldGetter$F$t$ReferenceFields$t$Unit(par$rf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$rf), df$rt$c$ReferenceFields())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -61,7 +61,7 @@ field bf$f: Ref
 
 field bf$g: Ref
 
-method f$testCascadingFieldGetter$t$F$t$ReferenceFields$t$Unit(par$rf: Ref)
+method f$testCascadingFieldGetter$F$t$ReferenceFields$t$Unit(par$rf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$rf), df$rt$c$ReferenceFields())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())

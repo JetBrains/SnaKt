@@ -9,59 +9,10 @@ import org.jetbrains.kotlin.formver.viper.*
 import viper.silver.ast.AnonymousDomainAxiom
 import viper.silver.ast.NamedDomainAxiom
 
-/**
- * We also convert domain names and their function and axiom names as
- * they have to be globally unique as well.
- */
-
-data class DomainName(val baseName: String) : SymbolicName {
-    override val mangledType: NameType
-        get() = NameType.Domain
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = baseName
-}
-data class UnqualifiedDomainFuncName(val baseName: String) : SymbolicName {
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = baseName
-}
-
-data class QualifiedDomainFuncName(val domainName: DomainName, val funcName: SymbolicName) : SymbolicName {
-    override val mangledType: NameType
-        get() = NameType.DomainFunction
-    context(nameResolver: NameResolver)
-    override val mangledScope: String
-        get() = domainName.mangledBaseName
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = funcName.mangled
-}
-
-/** Represents the name of a possible anonymous axiom.
- *
- * We need the domain name regardless because of how Viper is set up, hence the somewhat
- * unusual
- */
-sealed interface OptionalDomainAxiomLabel {
-    val domainName: DomainName
-}
-
-data class NamedDomainAxiomLabel(override val domainName: DomainName, val baseName: String) :
-    OptionalDomainAxiomLabel, SymbolicName {
-    context(nameResolver: NameResolver)
-    override val mangledScope: String
-        get() = domainName.mangledBaseName
-
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = baseName
-}
-
-data class AnonymousDomainAxiomLabel(override val domainName: DomainName) : OptionalDomainAxiomLabel
 
 data class DomainFunc(
-    val name: QualifiedDomainFuncName,
+    val name: SymbolicName,
+    val domainName: SymbolicName,
     val formalArgs: List<Declaration.LocalVarDecl>,
     val typeArgs: List<Type.TypeVar>,
     val returnType: Type,
@@ -80,7 +31,7 @@ data class DomainFunc(
             null.toScalaOption(),
             pos.toSilver(),
             info.toSilver(),
-            name.domainName.mangled,
+            domainName.mangled,
             trafos.toSilver()
         )
 
@@ -89,7 +40,8 @@ data class DomainFunc(
 }
 
 class DomainAxiom(
-    val name: OptionalDomainAxiomLabel,
+    val name: SymbolicName?,
+    val domainName: SymbolicName,
     val exp: Exp,
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
@@ -98,31 +50,32 @@ class DomainAxiom(
     context(nameResolver: NameResolver)
     override fun toSilver(): viper.silver.ast.DomainAxiom =
         when (name) {
-            is NamedDomainAxiomLabel -> NamedDomainAxiom(
+            null -> AnonymousDomainAxiom(
+                exp.toSilver(),
+                pos.toSilver(),
+                info.toSilver(),
+                domainName.mangled,
+                trafos.toSilver()
+            )
+
+            else -> NamedDomainAxiom(
                 name.mangled,
                 exp.toSilver(),
                 pos.toSilver(),
                 info.toSilver(),
-                name.domainName.mangled,
-                trafos.toSilver()
-            )
-            is AnonymousDomainAxiomLabel -> AnonymousDomainAxiom(
-                exp.toSilver(),
-                pos.toSilver(),
-                info.toSilver(),
-                name.domainName.mangled,
+                domainName.mangled,
                 trafos.toSilver()
             )
         }
 }
 
 abstract class Domain(
-    baseName: String,
+    val name: SymbolicName,
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
     val trafos: Trafos = Trafos.NoTrafos,
 ) : IntoSilver<viper.silver.ast.Domain> {
-    val name = DomainName(baseName)
+
 
     open val includeInShortDump: Boolean = true
     abstract val typeVars: List<Type.TypeVar>
@@ -142,19 +95,6 @@ abstract class Domain(
             trafos.toSilver()
         )
 
-    // Don't use this directly, instead, use the custom types defined in `org.jetbrains.kotlin.formver.viper.ast.Type` for specific domains.
-
-    fun toType(typeParamSubst: Map<Type.TypeVar, Type> = typeVars.associateWith { it }): Type.Domain =
-        Type.Domain(name, typeVars, typeParamSubst)
-
-    fun createDomainFunc(funcName: SymbolicName, args: List<Declaration.LocalVarDecl>, type: Type, unique: Boolean = false) =
-        DomainFunc(QualifiedDomainFuncName(this.name, funcName), args, typeVars, type, unique)
-
-    fun createNamedDomainAxiom(axiomName: String, exp: Exp): DomainAxiom =
-        DomainAxiom(NamedDomainAxiomLabel(this.name, axiomName), exp)
-
-    fun createAnonymousDomainAxiom(exp: Exp): DomainAxiom = DomainAxiom(AnonymousDomainAxiomLabel(this.name), exp)
-
     fun funcApp(
         func: DomainFunc,
         args: List<Exp>,
@@ -166,7 +106,7 @@ abstract class Domain(
 }
 
 abstract class BuiltinDomain(
-    baseName: String,
+    baseName: SymbolicName,
     pos: Position = Position.NoPosition,
     info: Info = Info.NoInfo,
     trafos: Trafos = Trafos.NoTrafos,

@@ -1,5 +1,5 @@
 /as_operator.kt:(57,63): info: Generated Viper text for testAs:
-method f$testAs$t$F$t$Foo$t$Bar(par$foo: Ref) returns (ret$0: Ref)
+method f$testAs$F$t$Foo$t$Bar(par$foo: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$foo), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$Bar())
   ensures acc(pred$c$Bar$shared(ret$0), wildcard)
@@ -13,7 +13,7 @@ method f$testAs$t$F$t$Foo$t$Bar(par$foo: Ref) returns (ret$0: Ref)
 }
 
 /as_operator.kt:(97,111): info: Generated Viper text for testNullableAs:
-method f$testNullableAs$t$F$t$N$Foo$t$N$Bar(par$foo: Ref)
+method f$testNullableAs$F$t$N$Foo$t$N$Bar(par$foo: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$foo), df$rt$nullable(df$rt$c$Foo()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$c$Bar()))
@@ -31,7 +31,7 @@ method f$testNullableAs$t$F$t$N$Foo$t$N$Bar(par$foo: Ref)
 }
 
 /as_operator.kt:(148,158): info: Generated Viper text for testSafeAs:
-method f$testSafeAs$t$F$t$Foo$t$N$Bar(par$foo: Ref) returns (ret$0: Ref)
+method f$testSafeAs$F$t$Foo$t$N$Bar(par$foo: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$foo), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$c$Bar()))
   ensures ret$0 != df$rt$nullValue() ==>
@@ -50,7 +50,7 @@ method f$testSafeAs$t$F$t$Foo$t$N$Bar(par$foo: Ref) returns (ret$0: Ref)
 }
 
 /as_operator.kt:(194,212): info: Generated Viper text for testNullableSafeAs:
-method f$testNullableSafeAs$t$F$t$N$Foo$t$N$Bar(par$foo: Ref)
+method f$testNullableSafeAs$F$t$N$Foo$t$N$Bar(par$foo: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$foo), df$rt$nullable(df$rt$c$Foo()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$c$Bar()))

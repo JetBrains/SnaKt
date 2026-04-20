@@ -8,7 +8,11 @@ package org.jetbrains.kotlin.formver.viper
 /**
  * Interface to unify all structures that are names to something.
  */
-interface AnyName
+interface AnyName {
+    fun register(nameResolver: NameResolver) {
+        nameResolver.register(this)
+    }
+}
 
 
 /**
@@ -20,49 +24,21 @@ interface AnyName
 const val SEPARATOR = "$"
 
 interface SymbolicName : AnyName {
-    val mangledType: NameType?
+    val nameType: NameTypeBase?
         get() = null
-    context(nameResolver: NameResolver)
-    val mangledScope: String?
-        get() = null
-    context(nameResolver: NameResolver)
-    val mangledBaseName: String
+
 }
 
 context(nameResolver: NameResolver)
 val SymbolicName.mangled: String
-    get() = nameResolver.resolve(this)
+    get() = nameResolver.lookup(this)
 
-val SymbolicName.debugMangled: String
-    get() {
-        val debugResolver = DebugNameResolver()
-        return debugResolver.resolve(this)
-    }
 
 
 /**
  * Collects all types of names we can have.
+ *
+ * Do not inherit from this interface. If you need a new name type, add it to the [NameType] interface.
  */
-sealed class NameType(val name: String) : AnyName {
+interface NameTypeBase : AnyName
 
-    override fun toString(): String = name
-
-    object Property : NameType("p")
-    object BackingField : NameType("bf")
-    object Getter : NameType("g")
-    object Setter : NameType("s")
-    object ExtensionSetter : NameType("es")
-    object ExtensionGetter : NameType("eg")
-    object Type : NameType("t") {
-        object Class : NameType("c")
-    }
-
-    object Constructor : NameType("con")
-    object Function : NameType("f")
-    object Predicate : NameType("pred")
-    object Havoc : NameType("havoc")
-    object Label : NameType("lbl")
-    object Variable : NameType("v")
-    object Domain : NameType("d")
-    object DomainFunction : NameType("df")
-}

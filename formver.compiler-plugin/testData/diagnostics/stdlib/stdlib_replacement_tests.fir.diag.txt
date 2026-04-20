@@ -1,5 +1,5 @@
 /stdlib_replacement_tests.kt:(104,113): info: Generated Viper text for useChecks:
-method f$useChecks$t$F$t$Unit() returns (ret$0: Ref)
+method f$useChecks$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var ret$1: Ref
@@ -19,7 +19,7 @@ method f$useChecks$t$F$t$Unit() returns (ret$0: Ref)
 /stdlib_replacement_tests.kt:(298,305): info: Generated Viper text for useRuns:
 field bf$size: Ref
 
-method f$useRuns$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
+method f$useRuns$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -76,7 +76,7 @@ method f$useRuns$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
 /stdlib_replacement_tests.kt:(459,466): info: Generated Viper text for useAlso:
 field bf$size: Ref
 
-method f$useAlso$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
+method f$useAlso$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -106,7 +106,7 @@ method f$useAlso$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
 /stdlib_replacement_tests.kt:(531,537): info: Generated Viper text for useLet:
 field bf$size: Ref
 
-method f$useLet$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
+method f$useLet$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -143,7 +143,7 @@ method f$useLet$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
 /stdlib_replacement_tests.kt:(621,628): info: Generated Viper text for useWith:
 field bf$size: Ref
 
-method f$useWith$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
+method f$useWith$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -176,7 +176,7 @@ method f$useWith$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
 /stdlib_replacement_tests.kt:(694,702): info: Generated Viper text for useApply:
 field bf$size: Ref
 
-method f$useApply$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
+method f$useApply$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {

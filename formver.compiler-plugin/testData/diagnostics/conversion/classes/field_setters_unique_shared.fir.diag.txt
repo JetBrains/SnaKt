@@ -3,7 +3,7 @@ field bf$shared: Ref
 
 field bf$unique: Ref
 
-method f$testPrimitiveFieldSetterUnique$t$F$t$PrimitiveFields$t$Unit(par$pf: Ref)
+method f$testPrimitiveFieldSetterUnique$F$t$PrimitiveFields$t$Unit(par$pf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$pf), df$rt$c$PrimitiveFields())
   requires acc(pred$c$PrimitiveFields$unique(par$pf), write)
@@ -19,7 +19,7 @@ field bf$shared: Ref
 
 field bf$unique: Ref
 
-method f$testPrimitiveFieldSetterShared$t$F$t$PrimitiveFields$t$Unit(par$pf: Ref)
+method f$testPrimitiveFieldSetterShared$F$t$PrimitiveFields$t$Unit(par$pf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$pf), df$rt$c$PrimitiveFields())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -44,7 +44,7 @@ method con$c$PrimitiveFields$t$Int$t$Int$t$PrimitiveFields(par$shared: Ref,
   ensures acc(pred$c$PrimitiveFields$unique(ret), write)
 
 
-method f$testReferenceFieldSetterUnique$t$F$t$ReferenceFields$t$Unit(par$rf: Ref)
+method f$testReferenceFieldSetterUnique$F$t$ReferenceFields$t$Unit(par$rf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$rf), df$rt$c$ReferenceFields())
   requires acc(pred$c$ReferenceFields$unique(par$rf), write)
@@ -76,7 +76,7 @@ method con$c$PrimitiveFields$t$Int$t$Int$t$PrimitiveFields(par$shared: Ref,
   ensures acc(pred$c$PrimitiveFields$unique(ret), write)
 
 
-method f$testReferenceFieldSetterShared$t$F$t$ReferenceFields$t$Unit(par$rf: Ref)
+method f$testReferenceFieldSetterShared$F$t$ReferenceFields$t$Unit(par$rf: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$rf), df$rt$c$ReferenceFields())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())

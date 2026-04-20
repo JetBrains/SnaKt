@@ -1,5 +1,5 @@
 /inline.kt:(230,239): info: Generated Viper text for quadruple:
-method f$quadruple$t$F$t$Int$t$Int(par$x: Ref) returns (ret$0: Ref)
+method f$quadruple$F$t$Int$t$Int(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -25,7 +25,7 @@ method f$quadruple$t$F$t$Int$t$Int(par$x: Ref) returns (ret$0: Ref)
 }
 
 /inline.kt:(469,481): info: Generated Viper text for useBranching:
-method f$useBranching$t$F$t$Int() returns (ret$0: Ref)
+method f$useBranching$F$t$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var anon$2: Ref

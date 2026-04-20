@@ -6,11 +6,7 @@
 package org.jetbrains.kotlin.formver.core.names
 
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
-import org.jetbrains.kotlin.formver.viper.NameResolver
-import org.jetbrains.kotlin.formver.viper.NameType
-import org.jetbrains.kotlin.formver.viper.NameType.Label
 import org.jetbrains.kotlin.formver.viper.SymbolicName
-import org.jetbrains.kotlin.formver.viper.mangled
 
 /* This file contains mangled names for constructs introduced during the conversion to Viper.
  *
@@ -18,77 +14,79 @@ import org.jetbrains.kotlin.formver.viper.mangled
  */
 
 
-sealed interface FreshName : SymbolicName
+sealed interface FreshName : SymbolicName {
+    override val nameType: NameType
+}
 
-abstract class TypedFreshName(override val mangledType: NameType, val baseName: String) : FreshName {
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = baseName
+sealed interface NumberedName : FreshName {
+    val n: Int
+}
+
+/**
+ * Marker interface for names which describe a variable.
+ */
+sealed interface NameTypeIsVariable : FreshName {
+    override val nameType
+        get() = NameType.Base.Variable
 }
 
 /**
  * Representation for names not present in the original source,
  * e.g. storage for the result of subexpressions.
  */
-data class AnonymousName(val n: Int) : TypedFreshName(NameType.Variable, "anon$$n")
+data class AnonymousName(override val n: Int) : NumberedName, NameTypeIsVariable
 
-data class AnonymousBuiltinName(val n: Int) : TypedFreshName(NameType.Variable, $$"anon$builtin$$$n")
+data class AnonymousBuiltinName(override val n: Int) : NumberedName, NameTypeIsVariable
 
 /**
  * Name for return variable that should *only* be used in signatures of methods without a body.
  */
-data object PlaceholderReturnVariableName : TypedFreshName(NameType.Variable, "ret")
+data object PlaceholderReturnVariableName : FreshName {
+    override val nameType: NameType = NameType.Base.Variable
 
-data class ReturnVariableName(val n: Int) : TypedFreshName(NameType.Variable, "ret$$n")
+}
+
+data class ReturnVariableName(override val n: Int) : NumberedName, NameTypeIsVariable
 
 /**
  * Name for return variable that should *only* be used in signatures of pure functions
  * This variable will be translated into the special result variable in Viper
  */
-data object FunctionResultVariableName : TypedFreshName(NameType.Variable, "result")
+data object FunctionResultVariableName : FreshName, NameTypeIsVariable
 
-data object DispatchReceiverName : TypedFreshName(NameType.Variable, $$"this$dispatch")
+data object DispatchReceiverName : FreshName, NameTypeIsVariable
 
-data object ExtensionReceiverName : TypedFreshName(NameType.Variable, $$"this$extension")
+data object ExtensionReceiverName : FreshName, NameTypeIsVariable
 
-data class SpecialFieldName(val name: String) : TypedFreshName(NameType.Property, name)
-
-
-sealed class NumberedLabelName(name: String, val originalN: Int) : TypedFreshName(Label, name) {
-
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = "$baseName$$originalN"
+data class SpecialFieldName(val name: String) : FreshName {
+    override val nameType: NameType = NameType.Member.Property
 }
 
-data class ReturnLabelName(val scopeDepth: Int) : NumberedLabelName("ret", scopeDepth)
-data class BreakLabelName(val n: Int) : NumberedLabelName("break", n)
-data class ContinueLabelName(val n: Int) : NumberedLabelName("cont", n)
-data class CatchLabelName(val n: Int) : NumberedLabelName("catch", n)
-data class TryExitLabelName(val n: Int) : NumberedLabelName("tryExit", n)
-
-
-data class DomainAssociatedFuncName(val name: String) : TypedFreshName(NameType.DomainFunction, name)
-
-data class PlaceholderArgumentName(val n: Int) : TypedFreshName(NameType.Variable, "arg$$n")
-
-data class DomainFuncParameterName(val name: String) : TypedFreshName(NameType.Variable, name)
-
-data class SsaVariableName(val ssaIndex: Int, val baseName: SymbolicName) : FreshName {
-    override val mangledType: NameType
-        get() = NameType.Variable
-
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = "${baseName.mangled}$$ssaIndex"
+sealed class LabelName(override val n: Int) : NumberedName {
+    override val nameType: NameType = NameType.Base.Label
 }
 
-data class PredicateName(val name: String) : TypedFreshName(NameType.Predicate, name)
+data class ReturnLabelName(override val n: Int) : LabelName(n)
+data class BreakLabelName(override val n: Int) : LabelName(n)
+data class ContinueLabelName(override val n: Int) : LabelName(n)
+data class CatchLabelName(override val n: Int) : LabelName(n)
+data class TryExitLabelName(override val n: Int) : LabelName(n)
 
-data class HavocName(val type: TypeEmbedding) : SymbolicName {
-    context(nameResolver: NameResolver)
-    override val mangledBaseName: String
-        get() = type.name.mangled
-    override val mangledType: NameType
-        get() = NameType.Havoc
+
+data class DomainAssociatedFuncName(val name: String) : FreshName {
+    override val nameType: NameType = NameType.Base.DomainFunction
+}
+
+data class PlaceholderArgumentName(override val n: Int) : NumberedName, NameTypeIsVariable
+
+data class DomainFuncParameterName(val name: String) : FreshName, NameTypeIsVariable
+
+data class SsaVariableName(override val n: Int, val baseName: SymbolicName) : NumberedName, NameTypeIsVariable
+
+data class PredicateName(val name: String) : FreshName {
+    override val nameType: NameType = NameType.Base.Predicate
+}
+
+data class HavocName(val type: TypeEmbedding) : FreshName {
+    override val nameType: NameType = NameType.Base.Havoc
 }

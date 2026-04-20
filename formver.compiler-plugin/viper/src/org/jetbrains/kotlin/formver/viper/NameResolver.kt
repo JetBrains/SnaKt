@@ -1,19 +1,32 @@
 package org.jetbrains.kotlin.formver.viper
 
 /**
- * Interface defining a strategy for converting a [ScopedKotlinName]
- * into an internal Viper identifier ([SymbolicName]).
+ * Interface defining a strategy for converting a [SymbolicName]
+ * into an internal Viper identifier (String).
  *
  * Multiple conversion strategies can be implemented and passed
  * to the `toViper(...)` function as needed.
+ *
+ * Workflow:
+ *  1. Register all used names with [register]
+ *  2. Call [resolve] to perform any necessary name resolution
+ *  3. Use [lookup] to look up Viper identifiers
  */
 
 interface NameResolver {
-    fun resolve(name: SymbolicName): String
-    fun register(name: SymbolicName)
-}
+    /**
+     * Given a [SymbolicName], returns the corresponding Viper identifier.
+     * Must only be called after [resolve] was executed
+     */
+    fun lookup(name: SymbolicName): String
 
-class DebugNameResolver : NameResolver {
-    override fun resolve(name: SymbolicName): String = listOfNotNull(name.mangledType, name.mangledScope, name.mangledBaseName).joinToString(SEPARATOR)
-    override fun register(name: SymbolicName) {}
+    /**
+     * Performs any necessary resolution of names to make them collision free.
+     */
+    fun resolve()
+
+    /**
+     * Register a new name which later can be resolved by [lookup].
+     */
+    fun register(name: AnyName)
 }

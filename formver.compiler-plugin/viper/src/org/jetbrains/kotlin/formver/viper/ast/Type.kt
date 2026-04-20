@@ -84,7 +84,7 @@ sealed interface Type : IntoSilver<viper.silver.ast.Type> {
     }
 
     data class Domain(
-        val domainName: DomainName,
+        val domainName: SymbolicName,
         val typeParams: List<TypeVar> = emptyList(),
         val typeSubstitutions: kotlin.collections.Map<TypeVar, Type> = emptyMap(),
     ) : Type {
