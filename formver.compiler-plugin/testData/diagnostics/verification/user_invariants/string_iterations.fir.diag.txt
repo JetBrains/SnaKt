@@ -1,5 +1,5 @@
 /string_iterations.kt:(71,83): info: Generated Viper text for firstAtLeast:
-method f$firstAtLeast$t$F$t$String$t$Char$t$Int(this$extension: Ref, par$c: Ref)
+method f$firstAtLeast$F$t$String$t$Char$t$Int(this$extension: Ref, par$c: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
   requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$charType())
@@ -27,13 +27,13 @@ method f$firstAtLeast$t$F$t$String$t$Char$t$Int(this$extension: Ref, par$c: Ref)
         anon$builtin$1 < df$rt$intFromRef(l0$i) ==>
         df$rt$stringFromRef(this$extension)[anon$builtin$1] <
         df$rt$charFromRef(par$c))
-  anon$0 := sp$ltInts(l0$i, sp$stringLength(this$extension))
+  anon$0 := df$ltInts(l0$i, df$stringLength(this$extension))
   if (df$rt$boolFromRef(anon$0)) {
     if (df$rt$stringFromRef(this$extension)[df$rt$intFromRef(l0$i)] >=
     df$rt$charFromRef(par$c)) {
       goto lbl$break$0
     }
-    l0$i := sp$plusInts(l0$i, df$rt$intToRef(1))
+    l0$i := df$plusInts(l0$i, df$rt$intToRef(1))
     goto lbl$cont$0
   }
   label lbl$break$0
@@ -51,7 +51,7 @@ method f$firstAtLeast$t$F$t$String$t$Char$t$Int(this$extension: Ref, par$c: Ref)
 }
 
 /string_iterations.kt:(606,614): info: Generated Viper text for lastLess:
-method f$lastLess$t$F$t$String$t$Char$t$Int(this$extension: Ref, par$c: Ref)
+method f$lastLess$F$t$String$t$Char$t$Int(this$extension: Ref, par$c: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
   requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$charType())
@@ -69,7 +69,7 @@ method f$lastLess$t$F$t$String$t$Char$t$Int(this$extension: Ref, par$c: Ref)
 {
   var l0$i: Ref
   var anon$0: Ref
-  l0$i := sp$minusInts(sp$stringLength(this$extension), df$rt$intToRef(1))
+  l0$i := df$minusInts(df$stringLength(this$extension), df$rt$intToRef(1))
   label lbl$cont$0
     invariant df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
     invariant df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$charType())
@@ -80,13 +80,13 @@ method f$lastLess$t$F$t$String$t$Char$t$Int(this$extension: Ref, par$c: Ref)
         anon$builtin$1 < |df$rt$stringFromRef(this$extension)| ==>
         df$rt$stringFromRef(this$extension)[anon$builtin$1] >=
         df$rt$charFromRef(par$c))
-  anon$0 := sp$gtInts(l0$i, df$rt$intToRef(-1))
+  anon$0 := df$gtInts(l0$i, df$rt$intToRef(-1))
   if (df$rt$boolFromRef(anon$0)) {
     if (df$rt$stringFromRef(this$extension)[df$rt$intFromRef(l0$i)] <
     df$rt$charFromRef(par$c)) {
       goto lbl$break$0
     }
-    l0$i := sp$minusInts(l0$i, df$rt$intToRef(1))
+    l0$i := df$minusInts(l0$i, df$rt$intToRef(1))
     goto lbl$cont$0
   }
   label lbl$break$0

@@ -18,7 +18,7 @@ method con$c$PrimitiveFields$t$Int$t$Int$t$PrimitiveFields(par$a: Ref, par$b: Re
     df$rt$intFromRef(par$b)
 
 
-method f$createPrimitiveFields$t$F$t$PrimitiveFields() returns (ret$0: Ref)
+method f$createPrimitiveFields$F$t$PrimitiveFields() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$PrimitiveFields())
   ensures acc(pred$c$PrimitiveFields$shared(ret$0), wildcard)
 {
@@ -42,7 +42,7 @@ method con$c$Recursive$t$N$Recursive$t$Recursive(par$a: Ref)
     par$a
 
 
-method f$createRecursive$t$F$t$Recursive() returns (ret$0: Ref)
+method f$createRecursive$F$t$Recursive() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$Recursive())
   ensures acc(pred$c$Recursive$shared(ret$0), wildcard)
 {
@@ -66,7 +66,7 @@ method con$c$FieldInBody$t$Int$t$FieldInBody(par$c: Ref) returns (ret: Ref)
     df$rt$intFromRef(par$c)
 
 
-method f$createFieldInBody$t$F$t$FieldInBody() returns (ret$0: Ref)
+method f$createFieldInBody$F$t$FieldInBody() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$FieldInBody())
   ensures acc(pred$c$FieldInBody$shared(ret$0), wildcard)
 {

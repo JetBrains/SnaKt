@@ -1,65 +1,65 @@
 /arithmetic.kt:(23,31): info: Generated Viper text for addition:
-method f$addition$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
+method f$addition$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$y: Ref
-  l0$y := sp$plusInts(par$x, par$x)
+  l0$y := df$plusInts(par$x, par$x)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
 /arithmetic.kt:(66,77): info: Generated Viper text for subtraction:
-method f$subtraction$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
+method f$subtraction$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$y: Ref
-  l0$y := sp$minusInts(par$x, par$x)
+  l0$y := df$minusInts(par$x, par$x)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
 /arithmetic.kt:(112,126): info: Generated Viper text for multiplication:
-method f$multiplication$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
+method f$multiplication$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$y: Ref
-  l0$y := sp$timesInts(par$x, par$x)
+  l0$y := df$timesInts(par$x, par$x)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
 /arithmetic.kt:(161,169): info: Generated Viper text for division:
-method f$division$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
+method f$division$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$y: Ref
-  l0$y := sp$divInts(par$x, par$x)
+  l0$y := df$divInts(par$x, par$x)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
 /arithmetic.kt:(273,282): info: Generated Viper text for remainder:
-method f$remainder$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
+method f$remainder$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$y: Ref
-  l0$y := sp$remInts(par$x, par$x)
+  l0$y := df$remInts(par$x, par$x)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
 /arithmetic.kt:(386,397): info: Generated Viper text for unary_minus:
-method f$unary_minus$t$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
+method f$unary_minus$F$t$Int$t$Unit(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$y: Ref
-  l0$y := sp$negInt(par$x)
+  l0$y := df$negInt(par$x)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }

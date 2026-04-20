@@ -11,6 +11,8 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionPretypeBuilder
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildFunctionPretype
 import org.jetbrains.kotlin.formver.core.embeddings.types.injection
+import org.jetbrains.kotlin.formver.core.names.DomainAssociatedFuncName
+import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
 
 /**
@@ -20,7 +22,7 @@ import org.jetbrains.kotlin.formver.viper.ast.*
  * Then we should just set its signature (`(Int, Int) -> Int`) and Viper implementation (`Exp.Add`).
  */
 class OperatorExpEmbeddingBuilder {
-    private var runtimeTypeFunctionName: String? = null
+    private var runtimeTypeFunctionName: SymbolicName? = null
     private var viperApplicable: Applicable? = null
     private var callableType: FunctionTypeEmbedding? = null
     private var additionalConditions: (FunctionBuilder.() -> Unit)? = null
@@ -41,7 +43,7 @@ class OperatorExpEmbeddingBuilder {
 
     fun setName(name: String) {
         check(runtimeTypeFunctionName == null) { "Name for underlying viper function is already set." }
-        runtimeTypeFunctionName = name
+        runtimeTypeFunctionName = DomainAssociatedFuncName(name)
     }
 
     fun setSignature(signature: FunctionTypeEmbedding) {

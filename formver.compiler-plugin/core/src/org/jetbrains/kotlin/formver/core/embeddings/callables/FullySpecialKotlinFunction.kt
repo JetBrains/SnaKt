@@ -12,13 +12,13 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.DivIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Implies
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.MulIntInt
+import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.NegInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
+import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.RemIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.StringGet
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubCharChar
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubCharInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubIntInt
-import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.RemIntInt
-import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.NegInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.UnitLit
 import org.jetbrains.kotlin.formver.core.embeddings.expression.toBlock
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildFunctionPretype
@@ -33,7 +33,7 @@ import org.jetbrains.kotlin.name.Name
 val SpecialKotlinFunction.callableId: CallableId
     get() = CallableId(FqName.fromSegments(packageName), className?.let { FqName(it) }, Name.identifier(name))
 
-fun SpecialKotlinFunction.embedName(): ScopedKotlinName = callableId.embedFunctionName(callableType)
+fun SpecialKotlinFunction.embedName(): ScopedName = callableId.embedFunctionName(callableType)
 
 /**
  * We store here all the __Kotlin__ functions that need a (fully) special `ExpEmbedding`.

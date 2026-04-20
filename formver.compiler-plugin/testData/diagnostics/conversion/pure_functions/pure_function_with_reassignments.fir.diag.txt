@@ -1,59 +1,59 @@
 /pure_function_with_reassignments.kt:(78,93): info: Generated Viper text for doubleIncrement:
-function f$doubleIncrement$t$F$t$Int(): Ref
+function f$doubleIncrement$F$t$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$x$0 ==
     (df$rt$intToRef(1)) in
     (let l0$x$1 ==
-      (sp$plusInts(l0$x$0, df$rt$intToRef(1))) in
+      (df$plusInts(l0$x$0, df$rt$intToRef(1))) in
       (let l0$x$2 ==
-        (sp$plusInts(l0$x$1, df$rt$intToRef(1))) in
+        (df$plusInts(l0$x$1, df$rt$intToRef(1))) in
         l0$x$2)))
 }
 
 /pure_function_with_reassignments.kt:(171,194): info: Generated Viper text for updateThenReadIntoOther:
-function f$updateThenReadIntoOther$t$F$t$Int(): Ref
+function f$updateThenReadIntoOther$F$t$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$x$0 ==
     (df$rt$intToRef(3)) in
     (let l0$x$1 ==
-      (sp$plusInts(l0$x$0, df$rt$intToRef(4))) in
+      (df$plusInts(l0$x$0, df$rt$intToRef(4))) in
       (let l0$y$0 ==
-        (sp$plusInts(l0$x$1, df$rt$intToRef(1))) in
+        (df$plusInts(l0$x$1, df$rt$intToRef(1))) in
         l0$y$0)))
 }
 
 /pure_function_with_reassignments.kt:(276,300): info: Generated Viper text for readOldValueBeforeUpdate:
-function f$readOldValueBeforeUpdate$t$F$t$Int(): Ref
+function f$readOldValueBeforeUpdate$F$t$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$x$0 ==
     (df$rt$intToRef(10)) in
     (let l0$y$0 ==
-      (sp$plusInts(l0$x$0, df$rt$intToRef(1))) in
+      (df$plusInts(l0$x$0, df$rt$intToRef(1))) in
       (let l0$x$1 ==
-        (sp$plusInts(l0$x$0, df$rt$intToRef(5))) in
+        (df$plusInts(l0$x$0, df$rt$intToRef(5))) in
         (let l0$x$2 ==
-          (sp$plusInts(l0$y$0, l0$x$1)) in
+          (df$plusInts(l0$y$0, l0$x$1)) in
           l0$x$2))))
 }
 
 /pure_function_with_reassignments.kt:(397,413): info: Generated Viper text for chainThroughTemp:
-function f$chainThroughTemp$t$F$t$Int(): Ref
+function f$chainThroughTemp$F$t$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$x$0 ==
     (df$rt$intToRef(2)) in
     (let l0$t$0 ==
-      (sp$plusInts(l0$x$0, df$rt$intToRef(3))) in
+      (df$plusInts(l0$x$0, df$rt$intToRef(3))) in
       (let l0$x$1 ==
-        (sp$plusInts(l0$t$0, df$rt$intToRef(4))) in
+        (df$plusInts(l0$t$0, df$rt$intToRef(4))) in
         l0$x$1)))
 }
 
 /pure_function_with_reassignments.kt:(495,522): info: Generated Viper text for overwriteNotSelfReferential:
-function f$overwriteNotSelfReferential$t$F$t$Int(): Ref
+function f$overwriteNotSelfReferential$F$t$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$x$0 ==
@@ -64,7 +64,7 @@ function f$overwriteNotSelfReferential$t$F$t$Int(): Ref
 }
 
 /pure_function_with_reassignments.kt:(584,611): info: Generated Viper text for nestedConditionalAssignment:
-function f$nestedConditionalAssignment$t$F$t$Boolean$t$Boolean$t$Int(par$a: Ref,
+function f$nestedConditionalAssignment$F$t$Boolean$t$Boolean$t$Int(par$a: Ref,
   par$b: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$boolType())
   requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$boolType())
@@ -100,7 +100,7 @@ function f$nestedConditionalAssignment$t$F$t$Boolean$t$Boolean$t$Int(par$a: Ref,
 }
 
 /pure_function_with_reassignments.kt:(729,755): info: Generated Viper text for blockConditionalAssignment:
-function f$blockConditionalAssignment$t$F$t$Boolean$t$Boolean$t$Int(par$a: Ref,
+function f$blockConditionalAssignment$F$t$Boolean$t$Boolean$t$Int(par$a: Ref,
   par$b: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$boolType())
   requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$boolType())
@@ -120,7 +120,7 @@ function f$blockConditionalAssignment$t$F$t$Boolean$t$Boolean$t$Int(par$a: Ref,
           null)) in
         (let anon$0$0 ==
           ((df$rt$boolFromRef(par$a) ?
-            sp$plusInts(l2$y$0, df$rt$intToRef(1)) :
+            df$plusInts(l2$y$0, df$rt$intToRef(1)) :
             null)) in
           (let anon$3$0 ==
             ((!df$rt$boolFromRef(par$a) ? df$rt$intToRef(30) : null)) in
@@ -130,7 +130,7 @@ function f$blockConditionalAssignment$t$F$t$Boolean$t$Boolean$t$Int(par$a: Ref,
 }
 
 /pure_function_with_reassignments.kt:(912,926): info: Generated Viper text for whenAssignment:
-function f$whenAssignment$t$F$t$Int$t$Boolean$t$Int(par$a: Ref, par$b: Ref): Ref
+function f$whenAssignment$F$t$Int$t$Boolean$t$Int(par$a: Ref, par$b: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())

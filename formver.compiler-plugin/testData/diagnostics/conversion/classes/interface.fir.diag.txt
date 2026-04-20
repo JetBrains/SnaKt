@@ -1,5 +1,5 @@
 /interface.kt:(84,98): info: Generated Viper text for testProperties:
-method f$testProperties$t$F$t$Foo$t$Unit(par$foo: Ref) returns (ret$0: Ref)
+method f$testProperties$F$t$Foo$t$Unit(par$foo: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$foo), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -17,7 +17,7 @@ method f$testProperties$t$F$t$Foo$t$Unit(par$foo: Ref) returns (ret$0: Ref)
   anon$4 := g$public$valProp(par$foo)
   anon$3 := anon$4
   inhale df$rt$isSubtype(df$rt$typeOf(anon$3), df$rt$intType())
-  l0$x := sp$plusInts(anon$1, anon$3)
+  l0$x := df$plusInts(anon$1, anon$3)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -44,7 +44,7 @@ method con$c$Impl$t$Int$t$Impl(par$number: Ref) returns (ret: Ref)
     df$rt$intFromRef(par$number)
 
 
-method f$createImpl$t$F$t$Unit() returns (ret$0: Ref)
+method f$createImpl$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$impl: Ref

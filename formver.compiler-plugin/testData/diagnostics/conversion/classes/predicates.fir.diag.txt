@@ -55,7 +55,7 @@ predicate pred$c$ReferenceField$unique(this$dispatch: Ref) {
   acc(pred$c$Baz$unique(this$dispatch), write)
 }
 
-method f$useClasses$t$F$t$ReferenceField$t$Recursive$t$Unit(par$rf: Ref, par$rec: Ref)
+method f$useClasses$F$t$ReferenceField$t$Recursive$t$Unit(par$rf: Ref, par$rec: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$rf), df$rt$c$ReferenceField())
   requires df$rt$isSubtype(df$rt$typeOf(par$rec), df$rt$c$Recursive())
@@ -100,8 +100,7 @@ predicate pred$c$C$unique(this$dispatch: Ref) {
   acc(pred$c$B$unique(this$dispatch), write)
 }
 
-method f$threeLayersHierarchy$t$F$t$C$t$Unit(par$c: Ref)
-  returns (ret$0: Ref)
+method f$threeLayersHierarchy$F$t$C$t$Unit(par$c: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$C())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -111,7 +110,7 @@ method f$threeLayersHierarchy$t$F$t$C$t$Unit(par$c: Ref)
 }
 
 /predicates.kt:(390,403): info: Generated Viper text for listHierarchy:
-field sp$size: Ref
+field p$size: Ref
 
 predicate pred$pkg$kotlin_collections$c$Collection$shared(this$dispatch: Ref) {
   acc(pred$pkg$kotlin_collections$c$Iterable$shared(this$dispatch), wildcard)
@@ -165,13 +164,13 @@ predicate pred$pkg$kotlin_collections$c$MutableList$unique(this$dispatch: Ref) {
   acc(pred$pkg$kotlin_collections$c$MutableCollection$unique(this$dispatch), write)
 }
 
-method f$listHierarchy$t$F$t$MutableList$t$Unit(par$xs: Ref)
+method f$listHierarchy$F$t$pkg$kotlin_collections$MutableList$t$Unit(par$xs: Ref)
   returns (ret$0: Ref)
-  requires acc(par$xs.sp$size, write)
-  requires df$rt$intFromRef(par$xs.sp$size) >= 0
+  requires acc(par$xs.p$size, write)
+  requires df$rt$intFromRef(par$xs.p$size) >= 0
   requires df$rt$isSubtype(df$rt$typeOf(par$xs), df$rt$c$pkg$kotlin_collections$MutableList())
-  ensures acc(par$xs.sp$size, write)
-  ensures df$rt$intFromRef(par$xs.sp$size) >= 0
+  ensures acc(par$xs.p$size, write)
+  ensures df$rt$intFromRef(par$xs.p$size) >= 0
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   inhale acc(pred$pkg$kotlin_collections$c$MutableList$shared(par$xs), wildcard)

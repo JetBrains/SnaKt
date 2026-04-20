@@ -1,5 +1,5 @@
 /quick_sort_of_string.kt:(282,294): info: Generated Viper text for minOrMaxChar:
-method f$minOrMaxChar$t$F$t$String$t$Boolean$t$Char(this$extension: Ref, par$calcMin: Ref)
+method f$minOrMaxChar$F$t$String$t$Boolean$t$Char(this$extension: Ref, par$calcMin: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
   requires df$rt$isSubtype(df$rt$typeOf(par$calcMin), df$rt$boolType())
@@ -19,7 +19,7 @@ method f$minOrMaxChar$t$F$t$String$t$Boolean$t$Char(this$extension: Ref, par$cal
   var l0$res: Ref
   var l0$i: Ref
   var anon$0: Ref
-  l0$res := sp$stringGet(this$extension, df$rt$intToRef(0))
+  l0$res := df$stringGet(this$extension, df$rt$intToRef(0))
   l0$i := df$rt$intToRef(1)
   label lbl$cont$0
     invariant df$rt$isSubtype(df$rt$typeOf(l0$res), df$rt$charType())
@@ -37,24 +37,24 @@ method f$minOrMaxChar$t$F$t$String$t$Boolean$t$Char(this$extension: Ref, par$cal
         anon$builtin$3 < df$rt$intFromRef(l0$i) ==>
         df$rt$charFromRef(l0$res) >=
         df$rt$stringFromRef(this$extension)[anon$builtin$3])
-  anon$0 := sp$ltInts(l0$i, sp$stringLength(this$extension))
+  anon$0 := df$ltInts(l0$i, df$stringLength(this$extension))
   if (df$rt$boolFromRef(anon$0)) {
     var anon$1: Ref
     var anon$2: Ref
     if (df$rt$boolFromRef(par$calcMin)) {
-      anon$2 := sp$ltChars(sp$stringGet(this$extension, l0$i), l0$res)
+      anon$2 := df$ltChars(df$stringGet(this$extension, l0$i), l0$res)
     } else {
       anon$2 := df$rt$boolToRef(false)}
     if (df$rt$boolFromRef(anon$2)) {
       anon$1 := df$rt$boolToRef(true)
     } elseif (!df$rt$boolFromRef(par$calcMin)) {
-      anon$1 := sp$gtChars(sp$stringGet(this$extension, l0$i), l0$res)
+      anon$1 := df$gtChars(df$stringGet(this$extension, l0$i), l0$res)
     } else {
       anon$1 := df$rt$boolToRef(false)}
     if (df$rt$boolFromRef(anon$1)) {
-      l0$res := sp$stringGet(this$extension, l0$i)
+      l0$res := df$stringGet(this$extension, l0$i)
     }
-    l0$i := sp$plusInts(l0$i, df$rt$intToRef(1))
+    l0$i := df$plusInts(l0$i, df$rt$intToRef(1))
     goto lbl$cont$0
   }
   label lbl$break$0
@@ -79,7 +79,7 @@ method f$minOrMaxChar$t$F$t$String$t$Boolean$t$Char(this$extension: Ref, par$cal
 }
 
 /quick_sort_of_string.kt:(1135,1144): info: Generated Viper text for quickSort:
-method f$minOrMaxChar$t$F$t$String$t$Boolean$t$Char(this$extension: Ref, par$calcMin: Ref)
+method f$minOrMaxChar$F$t$String$t$Boolean$t$Char(this$extension: Ref, par$calcMin: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
   requires df$rt$isSubtype(df$rt$typeOf(par$calcMin), df$rt$boolType())
@@ -97,7 +97,7 @@ method f$minOrMaxChar$t$F$t$String$t$Boolean$t$Char(this$extension: Ref, par$cal
       df$rt$stringFromRef(this$extension)[anon$builtin$8])
 
 
-method f$quickSort$t$F$t$String$t$String(this$extension: Ref)
+method f$quickSort$F$t$String$t$String(this$extension: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$stringType())
@@ -114,17 +114,15 @@ method f$quickSort$t$F$t$String$t$String(this$extension: Ref)
     ret$0 := this$extension
     goto lbl$ret$0
   }
-  l0$minVal := f$minOrMaxChar$t$F$t$String$t$Boolean$t$Char(this$extension,
-    df$rt$boolToRef(true))
-  l0$maxVal := f$minOrMaxChar$t$F$t$String$t$Boolean$t$Char(this$extension,
-    df$rt$boolToRef(false))
-  ret$0 := f$quickSortRec$t$F$t$String$t$Char$t$Char$t$String(this$extension,
+  l0$minVal := f$minOrMaxChar$F$t$String$t$Boolean$t$Char(this$extension, df$rt$boolToRef(true))
+  l0$maxVal := f$minOrMaxChar$F$t$String$t$Boolean$t$Char(this$extension, df$rt$boolToRef(false))
+  ret$0 := f$quickSortRec$F$t$String$t$Char$t$Char$t$String(this$extension,
     l0$minVal, l0$maxVal)
   goto lbl$ret$0
   label lbl$ret$0
 }
 
-method f$quickSortRec$t$F$t$String$t$Char$t$Char$t$String(this$extension: Ref,
+method f$quickSortRec$F$t$String$t$Char$t$Char$t$String(this$extension: Ref,
   par$minVal: Ref, par$maxVal: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
@@ -152,7 +150,7 @@ method f$quickSortRec$t$F$t$String$t$Char$t$Char$t$String(this$extension: Ref,
 
 
 /quick_sort_of_string.kt:(1507,1519): info: Generated Viper text for quickSortRec:
-method f$chooseIndex$t$F$t$String$t$Int(this$extension: Ref)
+method f$chooseIndex$F$t$String$t$Int(this$extension: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
   requires |df$rt$stringFromRef(this$extension)| >= 1
@@ -161,7 +159,7 @@ method f$chooseIndex$t$F$t$String$t$Int(this$extension: Ref)
     df$rt$intFromRef(ret) < |df$rt$stringFromRef(this$extension)|
 
 
-method f$pkg$kotlin$c$String$plus$t$F$t$String$t$N$Any$t$String(this$dispatch: Ref,
+method f$pkg$kotlin$c$String$plus$F$t$String$t$N$Any$t$String(this$dispatch: Ref,
   par$other: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$stringType())
@@ -169,7 +167,7 @@ method f$pkg$kotlin$c$String$plus$t$F$t$String$t$N$Any$t$String(this$dispatch: R
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$stringType())
 
 
-method f$quickSortRec$t$F$t$String$t$Char$t$Char$t$String(this$extension: Ref,
+method f$quickSortRec$F$t$String$t$Char$t$Char$t$String(this$extension: Ref,
   par$minVal: Ref, par$maxVal: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
@@ -208,8 +206,8 @@ method f$quickSortRec$t$F$t$String$t$Char$t$Char$t$String(this$extension: Ref,
     ret$0 := this$extension
     goto lbl$ret$0
   }
-  anon$1 := f$chooseIndex$t$F$t$String$t$Int(this$extension)
-  l0$medVal := sp$stringGet(this$extension, anon$1)
+  anon$1 := f$chooseIndex$F$t$String$t$Int(this$extension)
+  l0$medVal := df$stringGet(this$extension, anon$1)
   l0$i := df$rt$intToRef(0)
   l0$lessString := df$rt$stringToRef(Seq[Int]())
   l0$greaterString := df$rt$stringToRef(Seq[Int]())
@@ -244,21 +242,21 @@ method f$quickSortRec$t$F$t$String$t$Char$t$Char$t$String(this$extension: Ref,
         anon$builtin$5 < |df$rt$stringFromRef(l0$eqString)| ==>
         df$rt$stringFromRef(l0$eqString)[anon$builtin$5] ==
         df$rt$charFromRef(l0$medVal))
-  anon$2 := sp$ltInts(l0$i, sp$stringLength(this$extension))
+  anon$2 := df$ltInts(l0$i, df$stringLength(this$extension))
   if (df$rt$boolFromRef(anon$2)) {
     var l3$curChar: Ref
     var anon$3: Ref
     var anon$0: Ref
     anon$0 := l0$i
-    l0$i := sp$plusInts(anon$0, df$rt$intToRef(1))
+    l0$i := df$plusInts(anon$0, df$rt$intToRef(1))
     anon$3 := anon$0
-    l3$curChar := sp$stringGet(this$extension, anon$3)
+    l3$curChar := df$stringGet(this$extension, anon$3)
     if (df$rt$charFromRef(l3$curChar) < df$rt$charFromRef(l0$medVal)) {
-      l0$lessString := sp$addStringChar(l0$lessString, l3$curChar)
+      l0$lessString := df$addStringChar(l0$lessString, l3$curChar)
     } elseif (df$rt$charFromRef(l3$curChar) > df$rt$charFromRef(l0$medVal)) {
-      l0$greaterString := sp$addStringChar(l0$greaterString, l3$curChar)
+      l0$greaterString := df$addStringChar(l0$greaterString, l3$curChar)
     } else {
-      l0$eqString := sp$addStringChar(l0$eqString, l3$curChar)}
+      l0$eqString := df$addStringChar(l0$eqString, l3$curChar)}
     goto lbl$cont$0
   }
   label lbl$break$0
@@ -291,11 +289,11 @@ method f$quickSortRec$t$F$t$String$t$Char$t$Char$t$String(this$extension: Ref,
       anon$builtin$5 < |df$rt$stringFromRef(l0$eqString)| ==>
       df$rt$stringFromRef(l0$eqString)[anon$builtin$5] ==
       df$rt$charFromRef(l0$medVal))
-  anon$4 := f$quickSortRec$t$F$t$String$t$Char$t$Char$t$String(l0$lessString,
+  anon$4 := f$quickSortRec$F$t$String$t$Char$t$Char$t$String(l0$lessString,
     par$minVal, l0$medVal)
-  anon$5 := f$quickSortRec$t$F$t$String$t$Char$t$Char$t$String(l0$greaterString,
+  anon$5 := f$quickSortRec$F$t$String$t$Char$t$Char$t$String(l0$greaterString,
     l0$medVal, par$maxVal)
-  ret$0 := sp$addStrings(sp$addStrings(anon$4, l0$eqString), anon$5)
+  ret$0 := df$addStrings(df$addStrings(anon$4, l0$eqString), anon$5)
   goto lbl$ret$0
   label lbl$ret$0
 }

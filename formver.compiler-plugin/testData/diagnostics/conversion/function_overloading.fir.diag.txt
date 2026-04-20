@@ -1,5 +1,5 @@
 /function_overloading.kt:(49,52): info: Generated Viper text for baz:
-method f$c$Bar$baz$t$F$t$Bar$t$Foo$t$Unit(this$dispatch: Ref, par$f: Ref)
+method f$c$Bar$baz$F$t$Bar$t$Foo$t$Unit(this$dispatch: Ref, par$f: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Bar())
   requires df$rt$isSubtype(df$rt$typeOf(par$f), df$rt$c$Foo())
@@ -12,7 +12,7 @@ method f$c$Bar$baz$t$F$t$Bar$t$Foo$t$Unit(this$dispatch: Ref, par$f: Ref)
 }
 
 /function_overloading.kt:(74,77): info: Generated Viper text for baz:
-method f$c$Bar$baz$t$F$t$Bar$t$Bar$t$Unit(this$dispatch: Ref, par$b: Ref)
+method f$c$Bar$baz$F$t$Bar$t$Bar$t$Unit(this$dispatch: Ref, par$b: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Bar())
   requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$c$Bar())
@@ -25,7 +25,7 @@ method f$c$Bar$baz$t$F$t$Bar$t$Bar$t$Unit(this$dispatch: Ref, par$b: Ref)
 }
 
 /function_overloading.kt:(98,107): info: Generated Viper text for fakePrint:
-method f$fakePrint$t$F$t$Bar$t$Unit(par$b: Ref) returns (ret$0: Ref)
+method f$fakePrint$F$t$Bar$t$Unit(par$b: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$c$Bar())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -35,7 +35,7 @@ method f$fakePrint$t$F$t$Bar$t$Unit(par$b: Ref) returns (ret$0: Ref)
 }
 
 /function_overloading.kt:(125,134): info: Generated Viper text for fakePrint:
-method f$fakePrint$t$F$t$Foo$t$Unit(par$f: Ref) returns (ret$0: Ref)
+method f$fakePrint$F$t$Foo$t$Unit(par$f: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$f), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -45,7 +45,7 @@ method f$fakePrint$t$F$t$Foo$t$Unit(par$f: Ref) returns (ret$0: Ref)
 }
 
 /function_overloading.kt:(152,161): info: Generated Viper text for fakePrint:
-method f$fakePrint$t$F$t$Int$t$Unit(par$value: Ref) returns (ret$0: Ref)
+method f$fakePrint$F$t$Int$t$Unit(par$value: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$value), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -54,8 +54,7 @@ method f$fakePrint$t$F$t$Int$t$Unit(par$value: Ref) returns (ret$0: Ref)
 }
 
 /function_overloading.kt:(183,192): info: Generated Viper text for fakePrint:
-method f$fakePrint$t$F$t$Boolean$t$Unit(par$truth: Ref)
-  returns (ret$0: Ref)
+method f$fakePrint$F$t$Boolean$t$Unit(par$truth: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$truth), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -64,7 +63,7 @@ method f$fakePrint$t$F$t$Boolean$t$Unit(par$truth: Ref)
 }
 
 /function_overloading.kt:(219,238): info: Generated Viper text for differInNullability:
-method f$differInNullability$t$F$t$Int$t$Unit(par$i: Ref)
+method f$differInNullability$F$t$Int$t$Unit(par$i: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$i), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -74,7 +73,7 @@ method f$differInNullability$t$F$t$Int$t$Unit(par$i: Ref)
 }
 
 /function_overloading.kt:(256,275): info: Generated Viper text for differInNullability:
-method f$differInNullability$t$F$t$N$Int$t$Unit(par$i: Ref)
+method f$differInNullability$F$t$N$Int$t$Unit(par$i: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$i), df$rt$nullable(df$rt$intType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -96,27 +95,27 @@ method con$c$Foo$t$Foo() returns (ret: Ref)
   ensures acc(pred$c$Foo$unique(ret), write)
 
 
-method f$fakePrint$t$F$t$Bar$t$Unit(par$b: Ref) returns (ret: Ref)
+method f$fakePrint$F$t$Bar$t$Unit(par$b: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$c$Bar())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
-method f$fakePrint$t$F$t$Boolean$t$Unit(par$truth: Ref) returns (ret: Ref)
+method f$fakePrint$F$t$Boolean$t$Unit(par$truth: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$truth), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
-method f$fakePrint$t$F$t$Foo$t$Unit(par$f: Ref) returns (ret: Ref)
+method f$fakePrint$F$t$Foo$t$Unit(par$f: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$f), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
-method f$fakePrint$t$F$t$Int$t$Unit(par$value: Ref) returns (ret: Ref)
+method f$fakePrint$F$t$Int$t$Unit(par$value: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$value), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
-method f$testGlobalScopeOverloading$t$F$t$Unit() returns (ret$0: Ref)
+method f$testGlobalScopeOverloading$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var anon$0: Ref
@@ -125,12 +124,12 @@ method f$testGlobalScopeOverloading$t$F$t$Unit() returns (ret$0: Ref)
   var anon$3: Ref
   var anon$4: Ref
   var anon$5: Ref
-  anon$0 := f$fakePrint$t$F$t$Int$t$Unit(df$rt$intToRef(42))
-  anon$1 := f$fakePrint$t$F$t$Boolean$t$Unit(df$rt$boolToRef(true))
+  anon$0 := f$fakePrint$F$t$Int$t$Unit(df$rt$intToRef(42))
+  anon$1 := f$fakePrint$F$t$Boolean$t$Unit(df$rt$boolToRef(true))
   anon$3 := con$c$Foo$t$Foo()
-  anon$2 := f$fakePrint$t$F$t$Foo$t$Unit(anon$3)
+  anon$2 := f$fakePrint$F$t$Foo$t$Unit(anon$3)
   anon$5 := con$c$Bar$t$Bar()
-  anon$4 := f$fakePrint$t$F$t$Bar$t$Unit(anon$5)
+  anon$4 := f$fakePrint$F$t$Bar$t$Unit(anon$5)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -148,21 +147,21 @@ method con$c$Foo$t$Foo() returns (ret: Ref)
   ensures acc(pred$c$Foo$unique(ret), write)
 
 
-method f$c$Bar$baz$t$F$t$Bar$t$Bar$t$Unit(this$dispatch: Ref, par$b: Ref)
+method f$c$Bar$baz$F$t$Bar$t$Bar$t$Unit(this$dispatch: Ref, par$b: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Bar())
   requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$c$Bar())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
-method f$c$Bar$baz$t$F$t$Bar$t$Foo$t$Unit(this$dispatch: Ref, par$f: Ref)
+method f$c$Bar$baz$F$t$Bar$t$Foo$t$Unit(this$dispatch: Ref, par$f: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Bar())
   requires df$rt$isSubtype(df$rt$typeOf(par$f), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
 
 
-method f$testClassFunctionOverloading$t$F$t$Unit() returns (ret$0: Ref)
+method f$testClassFunctionOverloading$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$b: Ref
@@ -172,9 +171,9 @@ method f$testClassFunctionOverloading$t$F$t$Unit() returns (ret$0: Ref)
   var anon$3: Ref
   l0$b := con$c$Bar$t$Bar()
   anon$1 := con$c$Foo$t$Foo()
-  anon$0 := f$c$Bar$baz$t$F$t$Bar$t$Foo$t$Unit(l0$b, anon$1)
+  anon$0 := f$c$Bar$baz$F$t$Bar$t$Foo$t$Unit(l0$b, anon$1)
   anon$3 := con$c$Bar$t$Bar()
-  anon$2 := f$c$Bar$baz$t$F$t$Bar$t$Bar$t$Unit(l0$b, anon$3)
+  anon$2 := f$c$Bar$baz$F$t$Bar$t$Bar$t$Unit(l0$b, anon$3)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }

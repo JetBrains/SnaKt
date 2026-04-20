@@ -14,7 +14,7 @@ method con$c$FieldB$t$FieldB() returns (ret: Ref)
   ensures acc(pred$c$FieldB$unique(ret), write)
 
 
-method f$createB$t$F$t$Unit() returns (ret$0: Ref)
+method f$createB$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$fieldB: Ref
@@ -65,7 +65,7 @@ method con$c$SecondBackingFieldClass$t$Int$t$SecondBackingFieldClass(par$x: Ref)
     df$rt$intFromRef(par$x)
 
 
-method f$createBFsAndNoBF$t$F$t$Unit() returns (ret$0: Ref)
+method f$createBFsAndNoBF$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$fbf: Ref
@@ -104,7 +104,7 @@ method con$c$Y$t$Int$t$Y(par$a: Ref) returns (ret: Ref)
   ensures acc(pred$c$Y$unique(ret), write)
 
 
-method f$createY$t$F$t$Unit() returns (ret$0: Ref)
+method f$createY$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$y: Ref

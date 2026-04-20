@@ -8,6 +8,9 @@ package org.jetbrains.kotlin.formver.core.domains
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.embedClassTypeFunc
+import org.jetbrains.kotlin.formver.core.names.DomainName
+import org.jetbrains.kotlin.formver.core.names.QualifiedDomainFuncName
+import org.jetbrains.kotlin.formver.core.names.UnqualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
 
@@ -209,20 +212,20 @@ const val RUNTIME_TYPE_DOMAIN_NAME = "rt"
 class RuntimeTypeDomain(
     val classes: List<ClassTypeEmbedding>,
     val adts: List<AdtTypeEmbedding> = emptyList(),
-) : BuiltinDomain(RUNTIME_TYPE_DOMAIN_NAME) {
+) : BuiltinDomain(DomainName(RUNTIME_TYPE_DOMAIN_NAME)) {
     override val typeVars: List<Type.TypeVar> = emptyList()
 
     // Define types that are not dependent on the user defined classes in a companion object.
     // That way other classes can refer to them without having an explicit reference to the concrete TypeDomain.
     companion object {
-
-        val RuntimeType: Type.Domain = Type.Domain(DomainName(RUNTIME_TYPE_DOMAIN_NAME), emptyList())
+        private val domainName = DomainName(RUNTIME_TYPE_DOMAIN_NAME)
+        val RuntimeType: Type.Domain = Type.Domain(domainName, emptyList())
         val Ref = Type.Ref
 
         fun createDomainFunc(
             funcName: SymbolicName, args: List<Declaration.LocalVarDecl>, type: Type, unique: Boolean = false
         ) = DomainFunc(
-            QualifiedDomainFuncName(DomainName(RUNTIME_TYPE_DOMAIN_NAME), funcName), args, emptyList(), type, unique
+            QualifiedDomainFuncName(domainName, funcName), domainName, args, emptyList(), type, unique
         )
 
         private fun createNewTypeDomainFunc(funcName: SymbolicName) = createDomainFunc(

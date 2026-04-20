@@ -1,5 +1,5 @@
 /viper_casts_while_inlining.kt:(250,255): info: Generated Viper text for idFun:
-method f$idFun$t$F$t$N$Any$t$N$Any(par$arg: Ref) returns (ret$0: Ref)
+method f$idFun$F$t$N$Any$t$N$Any(par$arg: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$arg), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$anyType()))
 {
@@ -22,7 +22,7 @@ method con$c$ClassWithMember$t$Int$t$ClassWithMember(par$member: Ref)
     df$rt$intFromRef(par$member)
 
 
-method f$checkMemberAccess$t$F$t$Boolean() returns (ret$0: Ref)
+method f$checkMemberAccess$F$t$Boolean() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures df$rt$boolFromRef(ret$0) == true
 {
@@ -46,7 +46,7 @@ method f$checkMemberAccess$t$F$t$Boolean() returns (ret$0: Ref)
   l0$obj := con$c$ClassWithMember$t$Int$t$ClassWithMember(df$rt$intToRef(42))
   inhale df$rt$isSubtype(df$rt$typeOf(l0$obj), df$rt$nullable(df$rt$anyType()))
   anon$0 := l0$obj
-  anon$7 := f$idFun$t$F$t$N$Any$t$N$Any(anon$0)
+  anon$7 := f$idFun$F$t$N$Any$t$N$Any(anon$0)
   anon$1 := anon$7
   inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$c$ClassWithMember())
   inhale acc(pred$c$ClassWithMember$shared(anon$1), wildcard)
@@ -83,7 +83,7 @@ method f$checkMemberAccess$t$F$t$Boolean() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-method f$idFun$t$F$t$N$Any$t$N$Any(par$arg: Ref) returns (ret: Ref)
+method f$idFun$F$t$N$Any$t$N$Any(par$arg: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$arg), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$anyType()))
 
@@ -101,7 +101,7 @@ method con$c$Box$t$N$Any$t$Box(par$wrapped: Ref) returns (ret: Ref)
     par$wrapped
 
 
-method f$checkGenericMemberAccess$t$F$t$Box$t$Boolean(par$box: Ref)
+method f$checkGenericMemberAccess$F$t$Box$t$Boolean(par$box: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$box), df$rt$c$Box())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
@@ -126,7 +126,7 @@ method f$checkGenericMemberAccess$t$F$t$Box$t$Boolean(par$box: Ref)
   inhale acc(pred$c$Box$shared(par$box), wildcard)
   inhale df$rt$isSubtype(df$rt$typeOf(par$box), df$rt$nullable(df$rt$anyType()))
   anon$0 := par$box
-  anon$4 := f$idFun$t$F$t$N$Any$t$N$Any(anon$0)
+  anon$4 := f$idFun$F$t$N$Any$t$N$Any(anon$0)
   anon$1 := anon$4
   inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$c$Box())
   inhale acc(pred$c$Box$shared(anon$1), wildcard)
@@ -163,7 +163,7 @@ method f$checkGenericMemberAccess$t$F$t$Box$t$Boolean(par$box: Ref)
   label lbl$ret$0
 }
 
-method f$idFun$t$F$t$N$Any$t$N$Any(par$arg: Ref) returns (ret: Ref)
+method f$idFun$F$t$N$Any$t$N$Any(par$arg: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$arg), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$anyType()))
 
@@ -171,7 +171,7 @@ method f$idFun$t$F$t$N$Any$t$N$Any(par$arg: Ref) returns (ret: Ref)
 /viper_casts_while_inlining.kt:(1161,1182): info: Generated Viper text for checkArgumentIsCopied:
 field bf$a: Ref
 
-method f$checkArgumentIsCopied$t$F$t$ClassWithVar$t$Unit(par$x: Ref)
+method f$checkArgumentIsCopied$F$t$ClassWithVar$t$Unit(par$x: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$ClassWithVar())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -214,7 +214,7 @@ field bf$c: Ref
 
 field bf$i: Ref
 
-method f$accessManyMembers$t$F$t$ManyMembers$t$Unit(par$m: Ref)
+method f$accessManyMembers$F$t$ManyMembers$t$Unit(par$m: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$m), df$rt$c$ManyMembers())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -254,11 +254,11 @@ method f$accessManyMembers$t$F$t$ManyMembers$t$Unit(par$m: Ref)
   anon$1 := anon$0
   unfold acc(pred$c$ManyMembers$shared(anon$1), wildcard)
   anon$9 := anon$1.bf$i
-  anon$8 := f$idFun$t$F$t$N$Any$t$N$Any(anon$9)
+  anon$8 := f$idFun$F$t$N$Any$t$N$Any(anon$9)
   anon$7 := anon$8
   inhale df$rt$isSubtype(df$rt$typeOf(anon$7), df$rt$intType())
   anon$12 := havoc$t$Boolean()
-  anon$11 := f$idFun$t$F$t$N$Any$t$N$Any(anon$12)
+  anon$11 := f$idFun$F$t$N$Any$t$N$Any(anon$12)
   anon$10 := anon$11
   inhale df$rt$isSubtype(df$rt$typeOf(anon$10), df$rt$boolType())
   unfold acc(pred$c$ManyMembers$shared(anon$1), wildcard)
@@ -276,17 +276,17 @@ method f$accessManyMembers$t$F$t$ManyMembers$t$Unit(par$m: Ref)
   inhale acc(pred$c$ClassWithVar$shared(anon$4), wildcard)
   inhale df$rt$isSubtype(df$rt$typeOf(par$m), df$rt$nullable(df$rt$anyType()))
   anon$2 := par$m
-  anon$16 := f$idFun$t$F$t$N$Any$t$N$Any(anon$2)
+  anon$16 := f$idFun$F$t$N$Any$t$N$Any(anon$2)
   anon$3 := anon$16
   inhale df$rt$isSubtype(df$rt$typeOf(anon$3), df$rt$c$ManyMembers())
   inhale acc(pred$c$ManyMembers$shared(anon$3), wildcard)
   unfold acc(pred$c$ManyMembers$shared(anon$3), wildcard)
   anon$19 := anon$3.bf$i
-  anon$18 := f$idFun$t$F$t$N$Any$t$N$Any(anon$19)
+  anon$18 := f$idFun$F$t$N$Any$t$N$Any(anon$19)
   anon$17 := anon$18
   inhale df$rt$isSubtype(df$rt$typeOf(anon$17), df$rt$intType())
   anon$22 := havoc$t$Boolean()
-  anon$21 := f$idFun$t$F$t$N$Any$t$N$Any(anon$22)
+  anon$21 := f$idFun$F$t$N$Any$t$N$Any(anon$22)
   anon$20 := anon$21
   inhale df$rt$isSubtype(df$rt$typeOf(anon$20), df$rt$boolType())
   unfold acc(pred$c$ManyMembers$shared(anon$3), wildcard)
@@ -306,7 +306,7 @@ method f$accessManyMembers$t$F$t$ManyMembers$t$Unit(par$m: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-method f$idFun$t$F$t$N$Any$t$N$Any(par$arg: Ref) returns (ret: Ref)
+method f$idFun$F$t$N$Any$t$N$Any(par$arg: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$arg), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$anyType()))
 
@@ -322,7 +322,7 @@ field bf$i: Ref
 
 field bf$size: Ref
 
-method f$checkEvaluatedOnce$t$F$t$Int$t$ManyMembers$t$Unit(par$i: Ref, par$mm: Ref)
+method f$checkEvaluatedOnce$F$t$Int$t$ManyMembers$t$Unit(par$i: Ref, par$mm: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$i), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(par$mm), df$rt$c$ManyMembers())
@@ -343,7 +343,7 @@ method f$checkEvaluatedOnce$t$F$t$Int$t$ManyMembers$t$Unit(par$i: Ref, par$mm: R
     anon$4 := df$rt$intToRef(1)
   } else {
     anon$4 := df$rt$intToRef(-1)}
-  anon$0 := sp$plusInts(par$i, anon$4)
+  anon$0 := df$plusInts(par$i, anon$4)
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$nullable(df$rt$anyType()))
   inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
   anon$1 := anon$0

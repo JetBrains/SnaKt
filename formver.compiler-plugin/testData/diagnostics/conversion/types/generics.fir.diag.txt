@@ -1,7 +1,7 @@
 /generics.kt:(52,65): info: Generated Viper text for genericMethod:
 field bf$t: Ref
 
-method f$c$Box$genericMethod$t$F$t$Box$t$N$Any$t$N$Any(this$dispatch: Ref, par$x: Ref)
+method f$c$Box$genericMethod$F$t$Box$t$N$Any$t$N$Any(this$dispatch: Ref, par$x: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Box())
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$anyType()))
@@ -23,7 +23,7 @@ method con$c$Box$t$N$Any$t$Box(par$t: Ref) returns (ret: Ref)
   ensures acc(pred$c$Box$unique(ret), write)
 
 
-method f$createBox$t$F$t$Int() returns (ret$0: Ref)
+method f$createBox$F$t$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var l0$boolBox: Ref
@@ -53,7 +53,7 @@ method con$c$Box$t$N$Any$t$Box(par$t: Ref) returns (ret: Ref)
   ensures acc(pred$c$Box$unique(ret), write)
 
 
-method f$setGenericField$t$F$t$Unit() returns (ret$0: Ref)
+method f$setGenericField$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$box: Ref
@@ -63,7 +63,7 @@ method f$setGenericField$t$F$t$Unit() returns (ret$0: Ref)
 }
 
 /generics.kt:(293,303): info: Generated Viper text for genericFun:
-method f$genericFun$t$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret$0: Ref)
+method f$genericFun$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$t), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$anyType()))
 {
@@ -73,19 +73,19 @@ method f$genericFun$t$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret$0: Ref)
 }
 
 /generics.kt:(322,337): info: Generated Viper text for callGenericFunc:
-method f$callGenericFunc$t$F$t$Unit() returns (ret$0: Ref)
+method f$callGenericFunc$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$x: Ref
   var anon$0: Ref
-  anon$0 := f$genericFun$t$F$t$N$Any$t$N$Any(df$rt$intToRef(3))
+  anon$0 := f$genericFun$F$t$N$Any$t$N$Any(df$rt$intToRef(3))
   l0$x := anon$0
   inhale df$rt$isSubtype(df$rt$typeOf(l0$x), df$rt$intType())
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-method f$genericFun$t$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret: Ref)
+method f$genericFun$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$t), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$anyType()))
 
@@ -93,7 +93,7 @@ method f$genericFun$t$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret: Ref)
 /generics.kt:(375,395): info: Generated Viper text for genericAsIfCondition:
 field bf$t: Ref
 
-method f$genericAsIfCondition$t$F$t$Box$t$Int(par$box: Ref)
+method f$genericAsIfCondition$F$t$Box$t$Int(par$box: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$box), df$rt$c$Box())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())

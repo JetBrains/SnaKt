@@ -5,7 +5,7 @@ method con$c$D$t$D() returns (ret: Ref)
   ensures acc(pred$c$D$unique(ret), write)
 
 
-method f$testDiamond$t$F$t$Int() returns (ret$0: Ref)
+method f$testDiamond$F$t$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   var anon$0: Ref
@@ -34,7 +34,7 @@ method con$c$I$t$I() returns (ret: Ref)
   ensures acc(pred$c$I$unique(ret), write)
 
 
-method f$testVarVal$t$F$t$Unit() returns (ret$0: Ref)
+method f$testVarVal$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$g: Ref

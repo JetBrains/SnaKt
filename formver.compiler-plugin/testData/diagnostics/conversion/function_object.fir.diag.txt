@@ -1,6 +1,5 @@
 /function_object.kt:(23,35): info: Generated Viper text for unitFunction:
-method f$unitFunction$t$F$t$F$t$Unit$t$Unit(par$f: Ref)
-  returns (ret$0: Ref)
+method f$unitFunction$F$t$F$t$Unit$t$Unit(par$f: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$f), df$rt$functionType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -9,7 +8,7 @@ method f$unitFunction$t$F$t$F$t$Unit$t$Unit(par$f: Ref)
 }
 
 /function_object.kt:(90,108): info: Generated Viper text for functionObjectCall:
-method f$functionObjectCall$t$F$t$F$t$Boolean$t$Int$t$Int$t$Int(par$g: Ref)
+method f$functionObjectCall$F$t$F$t$Boolean$t$Int$t$Int$t$Int(par$g: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$g), df$rt$functionType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
@@ -22,7 +21,7 @@ method f$functionObjectCall$t$F$t$F$t$Boolean$t$Int$t$Int$t$Int(par$g: Ref)
 }
 
 /function_object.kt:(171,195): info: Generated Viper text for functionObjectNestedCall:
-method f$functionObjectNestedCall$t$F$t$F$t$Int$t$Int$t$F$t$Boolean$t$Int$t$Int(par$f: Ref,
+method f$functionObjectNestedCall$F$t$F$t$Int$t$Int$t$F$t$Boolean$t$Int$t$Int(par$f: Ref,
   par$g: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$f), df$rt$functionType())

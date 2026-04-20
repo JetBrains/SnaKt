@@ -56,7 +56,7 @@ predicate pred$c$D$unique(this$dispatch: Ref) {
   true
 }
 
-method f$accessSuperTypeProperty$t$F$t$C$t$Unit(par$c: Ref)
+method f$accessSuperTypeProperty$F$t$C$t$Unit(par$c: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$C())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -132,7 +132,7 @@ predicate pred$c$D$unique(this$dispatch: Ref) {
   true
 }
 
-method f$accessNested$t$F$t$C$t$Unit(par$c: Ref) returns (ret$0: Ref)
+method f$accessNested$F$t$C$t$Unit(par$c: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$C())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -163,7 +163,7 @@ predicate pred$c$A$unique(this$dispatch: Ref) {
   df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$a), df$rt$intType())
 }
 
-method f$accessNullable$t$F$t$N$A$t$Unit(par$x: Ref) returns (ret$0: Ref)
+method f$accessNullable$F$t$N$A$t$Unit(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$c$A()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -205,7 +205,7 @@ predicate pred$c$B$unique(this$dispatch: Ref) {
   acc(pred$c$A$unique(this$dispatch), write)
 }
 
-method f$accessCast$t$F$t$A$t$Unit(par$x: Ref) returns (ret$0: Ref)
+method f$accessCast$F$t$A$t$Unit(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$A())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -246,7 +246,7 @@ predicate pred$c$B$unique(this$dispatch: Ref) {
   acc(pred$c$A$unique(this$dispatch), write)
 }
 
-method f$accessSafeCast$t$F$t$A$t$Unit(par$x: Ref) returns (ret$0: Ref)
+method f$accessSafeCast$F$t$A$t$Unit(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$A())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -295,7 +295,7 @@ predicate pred$c$B$unique(this$dispatch: Ref) {
   acc(pred$c$A$unique(this$dispatch), write)
 }
 
-method f$accessSmartCast$t$F$t$A$t$Unit(par$x: Ref) returns (ret$0: Ref)
+method f$accessSmartCast$F$t$A$t$Unit(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$A())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {

@@ -1,5 +1,5 @@
 /contracts_with_receivers.kt:(148,151): info: Generated Viper text for is2:
-method f$c$Class$is2$t$F$t$Class$t$Boolean(this$dispatch: Ref)
+method f$c$Class$is2$F$t$Class$t$Boolean(this$dispatch: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Class())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
@@ -13,7 +13,7 @@ method f$c$Class$is2$t$F$t$Class$t$Boolean(this$dispatch: Ref)
 }
 
 /contracts_with_receivers.kt:(341,359): info: Generated Viper text for is1butWithDispatch:
-method f$c$Class$is1butWithDispatch$t$F$t$Class$t$Class$t$Boolean(this$dispatch: Ref,
+method f$c$Class$is1butWithDispatch$F$t$Class$t$Class$t$Boolean(this$dispatch: Ref,
   this$extension: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Class())
@@ -30,8 +30,7 @@ method f$c$Class$is1butWithDispatch$t$F$t$Class$t$Class$t$Boolean(this$dispatch:
 }
 
 /contracts_with_receivers.kt:(618,621): info: Generated Viper text for is1:
-method f$is1$t$F$t$Class$t$Boolean(this$extension: Ref)
-  returns (ret$0: Ref)
+method f$is1$F$t$Class$t$Boolean(this$extension: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$Class())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
   ensures df$rt$boolFromRef(ret$0) == true ==>

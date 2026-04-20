@@ -1,7 +1,7 @@
 /as_type_contract.kt:(150,154): info: Generated Viper text for getX:
 field bf$x: Ref
 
-method f$getX$t$F$t$Any$t$N$Int(par$a: Ref) returns (ret$0: Ref)
+method f$getX$F$t$Any$t$N$Int(par$a: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$anyType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
   ensures ret$0 != df$rt$nullValue() ==>

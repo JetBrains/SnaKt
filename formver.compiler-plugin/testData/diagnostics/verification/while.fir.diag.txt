@@ -14,7 +14,7 @@ method con$c$ClassWithField$t$Int$t$ClassWithField(par$field: Ref)
     df$rt$intFromRef(par$field)
 
 
-method f$test_while$t$F$t$ClassWithField$t$Unit(par$param: Ref)
+method f$test_while$F$t$ClassWithField$t$Unit(par$param: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$param), df$rt$c$ClassWithField())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -35,8 +35,8 @@ method f$test_while$t$F$t$ClassWithField$t$Unit(par$param: Ref)
     l0$iteration := df$rt$intToRef(0)
   } else {
     var l3$intermediate: Ref
-    l3$intermediate := sp$plusInts(sp$negInt(l0$initParamField), df$rt$intToRef(1))
-    l0$iteration := sp$timesInts(l3$intermediate, l3$intermediate)
+    l3$intermediate := df$plusInts(df$negInt(l0$initParamField), df$rt$intToRef(1))
+    l0$iteration := df$timesInts(l3$intermediate, l3$intermediate)
   }
   label lbl$cont$0
     invariant acc(pred$c$ClassWithField$shared(l0$c), wildcard)
@@ -45,7 +45,7 @@ method f$test_while$t$F$t$ClassWithField$t$Unit(par$param: Ref)
     invariant df$rt$isSubtype(df$rt$typeOf(l0$iteration), df$rt$intType())
     invariant acc(pred$c$ClassWithField$shared(par$param), wildcard)
     invariant df$rt$isSubtype(df$rt$typeOf(par$param), df$rt$c$ClassWithField())
-  anon$0 := sp$ltInts(l0$iteration, df$rt$intToRef(10))
+  anon$0 := df$ltInts(l0$iteration, df$rt$intToRef(10))
   if (df$rt$boolFromRef(anon$0)) {
     var l4$field: Ref
     var l4$paramField: Ref
@@ -53,7 +53,7 @@ method f$test_while$t$F$t$ClassWithField$t$Unit(par$param: Ref)
     l4$field := l0$c.bf$field
     unfold acc(pred$c$ClassWithField$shared(par$param), wildcard)
     l4$paramField := par$param.bf$field
-    l0$iteration := sp$plusInts(l0$iteration, df$rt$intToRef(1))
+    l0$iteration := df$plusInts(l0$iteration, df$rt$intToRef(1))
     goto lbl$cont$0
   }
   label lbl$break$0
@@ -92,7 +92,7 @@ method con$c$ClassWithField$t$Int$t$ClassWithField(par$field: Ref)
     df$rt$intFromRef(par$field)
 
 
-method f$test_while_with_inlining$t$F$t$ClassWithField$t$Unit(par$param: Ref)
+method f$test_while_with_inlining$F$t$ClassWithField$t$Unit(par$param: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$param), df$rt$c$ClassWithField())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -127,7 +127,7 @@ method f$test_while_with_inlining$t$F$t$ClassWithField$t$Unit(par$param: Ref)
     invariant df$rt$isSubtype(df$rt$typeOf(l0$local), df$rt$c$ClassWithField())
     invariant acc(pred$c$ClassWithField$shared(par$param), wildcard)
     invariant df$rt$isSubtype(df$rt$typeOf(par$param), df$rt$c$ClassWithField())
-  anon$6 := sp$ltInts(l2$iteration, df$rt$intToRef(10))
+  anon$6 := df$ltInts(l2$iteration, df$rt$intToRef(10))
   if (df$rt$boolFromRef(anon$6)) {
     var l3$paramField: Ref
     var l3$localField: Ref
@@ -138,7 +138,7 @@ method f$test_while_with_inlining$t$F$t$ClassWithField$t$Unit(par$param: Ref)
     l3$localField := l0$local.bf$field
     unfold acc(pred$c$ClassWithField$shared(anon$1), wildcard)
     l3$thisField := anon$1.bf$field
-    l2$iteration := sp$plusInts(l2$iteration, df$rt$intToRef(1))
+    l2$iteration := df$plusInts(l2$iteration, df$rt$intToRef(1))
     goto lbl$cont$0
   }
   label lbl$break$0
@@ -172,7 +172,7 @@ method f$test_while_with_inlining$t$F$t$ClassWithField$t$Unit(par$param: Ref)
 /while.kt:(1311,1336): info: Generated Viper text for test_while_with_smartcast:
 field bf$field: Ref
 
-method f$test_while_with_smartcast$t$F$t$Any$t$Any$t$Unit(par$param: Ref, par$innerParam: Ref)
+method f$test_while_with_smartcast$F$t$Any$t$Any$t$Unit(par$param: Ref, par$innerParam: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$param), df$rt$anyType())
   requires df$rt$isSubtype(df$rt$typeOf(par$innerParam), df$rt$anyType())
@@ -186,7 +186,7 @@ method f$test_while_with_smartcast$t$F$t$Any$t$Any$t$Unit(par$param: Ref, par$in
       invariant df$rt$isSubtype(df$rt$typeOf(l2$iteration), df$rt$intType())
       invariant df$rt$isSubtype(df$rt$typeOf(par$param), df$rt$anyType())
       invariant df$rt$isSubtype(df$rt$typeOf(par$innerParam), df$rt$anyType())
-    anon$0 := sp$ltInts(l2$iteration, df$rt$intToRef(10))
+    anon$0 := df$ltInts(l2$iteration, df$rt$intToRef(10))
     if (df$rt$boolFromRef(anon$0)) {
       var l3$paramField: Ref
       inhale acc(pred$c$ClassWithField$shared(par$param), wildcard)
@@ -198,7 +198,7 @@ method f$test_while_with_smartcast$t$F$t$Any$t$Any$t$Unit(par$param: Ref, par$in
         unfold acc(pred$c$ClassWithField$shared(par$innerParam), wildcard)
         l5$innerParamField := par$innerParam.bf$field
       }
-      l2$iteration := sp$plusInts(l2$iteration, df$rt$intToRef(1))
+      l2$iteration := df$plusInts(l2$iteration, df$rt$intToRef(1))
       goto lbl$cont$0
     }
     label lbl$break$0

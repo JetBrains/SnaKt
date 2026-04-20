@@ -3,7 +3,7 @@ field bf$y: Ref
 
 field bf$z: Ref
 
-method f$cascadeGet$t$F$t$X$t$Z(par$x: Ref) returns (ret$0: Ref)
+method f$cascadeGet$F$t$X$t$Z(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$X())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$Z())
   ensures acc(pred$c$Z$shared(ret$0), wildcard)
@@ -23,7 +23,7 @@ field bf$y: Ref
 
 field bf$z: Ref
 
-method f$receiverNotNullProved$t$F$t$N$X$t$Boolean(par$x: Ref)
+method f$receiverNotNullProved$F$t$N$X$t$Boolean(par$x: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$c$X()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
@@ -39,7 +39,7 @@ method f$receiverNotNullProved$t$F$t$N$X$t$Boolean(par$x: Ref)
     anon$0 := anon$1
   } else {
     anon$0 := df$rt$nullValue()}
-  ret$0 := sp$notBool(df$rt$boolToRef(anon$0 == df$rt$nullValue()))
+  ret$0 := df$notBool(df$rt$boolToRef(anon$0 == df$rt$nullValue()))
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -49,7 +49,7 @@ field bf$y: Ref
 
 field bf$z: Ref
 
-method f$cascadeNullableGet$t$F$t$N$NullableX$t$N$Z(par$x: Ref)
+method f$cascadeNullableGet$F$t$N$NullableX$t$N$Z(par$x: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$c$NullableX()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$c$Z()))
@@ -79,7 +79,7 @@ field bf$y: Ref
 
 field bf$z: Ref
 
-method f$cascadeNullableSmartcastGet$t$F$t$N$NullableX$t$N$Z(par$x: Ref)
+method f$cascadeNullableSmartcastGet$F$t$N$NullableX$t$N$Z(par$x: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$c$NullableX()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$c$Z()))
@@ -124,7 +124,7 @@ method con$c$Baz$t$Baz() returns (ret: Ref)
   ensures acc(pred$c$Baz$unique(ret), write)
 
 
-method f$nullableReceiverNotNullSafeGet$t$F$t$Unit() returns (ret$0: Ref)
+method f$nullableReceiverNotNullSafeGet$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$f: Ref
@@ -140,7 +140,7 @@ method f$nullableReceiverNotNullSafeGet$t$F$t$Unit() returns (ret$0: Ref)
     anon$1 := anon$2
   } else {
     anon$1 := df$rt$nullValue()}
-  l0$cond1 := sp$notBool(df$rt$boolToRef(anon$1 == df$rt$nullValue()))
+  l0$cond1 := df$notBool(df$rt$boolToRef(anon$1 == df$rt$nullValue()))
   assert df$rt$boolFromRef(l0$cond1)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -151,7 +151,7 @@ field bf$size: Ref
 
 field bf$x: Ref
 
-method f$nullableReceiverNullSafeGet$t$F$t$Unit() returns (ret$0: Ref)
+method f$nullableReceiverNullSafeGet$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$f: Ref
@@ -182,7 +182,7 @@ method con$c$Baz$t$Baz() returns (ret: Ref)
   ensures acc(pred$c$Baz$unique(ret), write)
 
 
-method f$nonNullableReceiverSafeGet$t$F$t$Unit() returns (ret$0: Ref)
+method f$nonNullableReceiverSafeGet$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$f: Ref
@@ -196,7 +196,7 @@ method f$nonNullableReceiverSafeGet$t$F$t$Unit() returns (ret$0: Ref)
     anon$0 := anon$1
   } else {
     anon$0 := df$rt$nullValue()}
-  l0$cond1 := sp$notBool(df$rt$boolToRef(anon$0 == df$rt$nullValue()))
+  l0$cond1 := df$notBool(df$rt$boolToRef(anon$0 == df$rt$nullValue()))
   assert df$rt$boolFromRef(l0$cond1)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -241,7 +241,7 @@ method con$c$Z$t$Z() returns (ret: Ref)
   ensures acc(pred$c$Z$unique(ret), write)
 
 
-method f$checkPrimary$t$F$t$Int$t$Int$t$Unit(par$x: Ref, par$y: Ref)
+method f$checkPrimary$F$t$Int$t$Int$t$Unit(par$x: Ref, par$y: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
