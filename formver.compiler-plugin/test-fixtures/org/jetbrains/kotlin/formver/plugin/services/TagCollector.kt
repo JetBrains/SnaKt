@@ -2,6 +2,7 @@ package org.jetbrains.kotlin.formver.plugin.services
 
 import org.jetbrains.kotlin.codeMetaInfo.CodeMetaInfoParser
 import org.jetbrains.kotlin.codeMetaInfo.CodeMetaInfoRenderer
+import org.jetbrains.kotlin.codeMetaInfo.clearTextFromDiagnosticMarkup
 import org.jetbrains.kotlin.codeMetaInfo.model.CodeMetaInfo
 import org.jetbrains.kotlin.diagnostics.KtDiagnostic
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticWithSource
@@ -82,9 +83,7 @@ class TagCollector(
 
     fun sourceFileWithoutTags(file: TestFile): String {
         val content = testServices.sourceFileProvider.getContentOfSourceFile(file)
-        return content.replace(
-            Regex("\"<![A-Z_]*!>(.*?)<!>\"")
-        ) { it.groupValues[1] }
+        return clearTextFromDiagnosticMarkup(content)
     }
 
     /**
