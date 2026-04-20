@@ -8,7 +8,21 @@ import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirSafeCallExpression
 import org.jetbrains.kotlin.fir.expressions.FirSmartCastExpression
 import org.jetbrains.kotlin.fir.expressions.FirTypeOperatorCall
+import org.jetbrains.kotlin.fir.expressions.FirWrappedExpression
 
+/**
+ * Path-transparent refinement of [ExpressionTailFolder].
+ *
+ * The folder treats a wrapper as semantically equivalent to its wrapped expression and continues folding through it.
+ * For example:
+ * - `x as T` / `x as? T` -> folds `x`
+ * - `x!!` -> folds `x`
+ *
+ * Subclasses can still override any visitor method to impose analysis-specific policy
+ * (for example, treating some safe-call selector kinds conservatively).
+ *
+ * [T] is the folded domain and [D] is the visitor data threaded through traversal.
+ */
 abstract class ExpressionPathFolder<T, D> : ExpressionTailFolder<T, D>() {
     private fun FirTypeOperatorCall.isCast(): Boolean =
         operation == FirOperation.AS || operation == FirOperation.SAFE_AS
@@ -57,5 +71,12 @@ abstract class ExpressionPathFolder<T, D> : ExpressionTailFolder<T, D>() {
         data: D
     ): T {
         return checkedSafeCallSubject.originalReceiverRef.value.visit(data)
+    }
+
+    override fun visitWrappedExpression(
+        wrappedExpression: FirWrappedExpression,
+        data: D
+    ): T {
+        return wrappedExpression.expression.visit(data)
     }
 }

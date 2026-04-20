@@ -19,7 +19,18 @@ import org.jetbrains.kotlin.fir.visitors.FirVisitor
  * Folds a value over each tail of the expression.
  *
  * Expressions that do not produce a usable tail value for the analysis return [empty].
- * By default these include arbitrary FIR elements, function calls, `return`, and `throw`.
+ * By default these include arbitrary FIR elements.
+ *
+ * This folder can be used to resolve a value based on the branch structure of the expression. Example of these include:
+ * if, elvis, and when expressions. For example, in the right-hand side of the following assignment:
+ * ```kotlin
+ * val v = if (*) {
+ *     a
+ * } else {
+ *     b
+ * }
+ * ```
+ * the result of this visitor will be `a.accept(this, data).join(b.accept(this, data))`.
  *
  * Implementors define the abstract domain [T] by providing:
  * - [empty], the identity / "no tail value" result
@@ -29,7 +40,7 @@ import org.jetbrains.kotlin.fir.visitors.FirVisitor
  * contribute a non-empty result, as [org.jetbrains.kotlin.formver.plugin.compiler.locality.ExpressionLocalityExtractor]
  * does for variable, property, and receiver accesses.
  *
- * [D] is the extra visitor data threaded through the traversal.
+ * [D] is the type of the extra data threaded through the traversal.
  */
 abstract class ExpressionTailFolder<T, D> : FirVisitor<T, D>() {
     /**
@@ -62,13 +73,6 @@ abstract class ExpressionTailFolder<T, D> : FirVisitor<T, D>() {
         data: D
     ): T {
         return block.lastExpression?.visit(data) ?: empty
-    }
-
-    override fun visitWrappedExpression(
-        wrappedExpression: FirWrappedExpression,
-        data: D
-    ): T {
-        return wrappedExpression.expression.visit(data)
     }
 
     override fun visitWhenExpression(
