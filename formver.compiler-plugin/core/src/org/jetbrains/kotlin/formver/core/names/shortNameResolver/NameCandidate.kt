@@ -1,19 +1,16 @@
-package org.jetbrains.kotlin.formver.names
+package org.jetbrains.kotlin.formver.core.names.shortNameResolver
 
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.names.*
-import org.jetbrains.kotlin.formver.core.names.shortNameResolver.ViperKeyword
+import org.jetbrains.kotlin.formver.names.CandidateName
+import org.jetbrains.kotlin.formver.names.buildCandidates
 import org.jetbrains.kotlin.formver.viper.AnyName
-import org.jetbrains.kotlin.formver.viper.NameType
 import org.jetbrains.kotlin.formver.viper.SymbolicName
-import org.jetbrains.kotlin.formver.viper.ast.DomainName
-import org.jetbrains.kotlin.formver.viper.ast.NamedDomainAxiomLabel
-import org.jetbrains.kotlin.formver.viper.ast.QualifiedDomainFuncName
-import org.jetbrains.kotlin.formver.viper.ast.UnqualifiedDomainFuncName
 
+// region Helper Function
 
-private fun nameOnlyCandidates(name: String): List<CandidateName> = buildCandidates { candidate { +name } }
-private fun nameOnlyCandidates(name: List<String>): List<CandidateName> = buildCandidates { candidate { +name } }
+private fun nameOnlyCandidates(name: String): List<CandidateName> =
+    buildCandidates { candidate { +name } }
 
 private fun nameWithPrefixAndSuffixCandidates(name: String, nameType: NameType, suffix: String): List<CandidateName> =
     buildCandidates {
@@ -31,24 +28,25 @@ private fun nameWithPrefixAndSuffixCandidates(name: String, nameType: NameType, 
         }
     }
 
-private fun nameWithPrefixCandidates(name: String, nameType: NameType): List<CandidateName> = buildCandidates {
-    candidate {
-        +name
+private fun nameWithPrefixCandidates(name: String, nameType: NameType): List<CandidateName> =
+    buildCandidates {
+        candidate {
+            +name
+        }
+        candidate {
+            +nameType
+            +name
+        }
     }
-    candidate {
-        +nameType
-        +name
-    }
-}
 
 private fun nameWithDependentPrefixCandidates(name: String, prefix: AnyName): List<CandidateName> =
     buildCandidates {
-    candidate { +name }
-    candidate {
-        +prefix
-        +name
+        candidate { +name }
+        candidate {
+            +prefix
+            +name
+        }
     }
-}
 
 private fun nameWithDependentPrefixCandidates(name: AnyName, prefix: AnyName): List<CandidateName> =
     buildCandidates {
@@ -58,6 +56,8 @@ private fun nameWithDependentPrefixCandidates(name: AnyName, prefix: AnyName): L
             +name
         }
     }
+
+// end region
 
 
 fun AnyName.candidates(): List<CandidateName> = when (this) {
