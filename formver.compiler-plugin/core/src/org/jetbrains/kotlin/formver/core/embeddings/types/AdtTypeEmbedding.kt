@@ -1,7 +1,8 @@
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
-import org.jetbrains.kotlin.formver.core.names.ScopedKotlinName
+import org.jetbrains.kotlin.formver.core.names.AdtName
+import org.jetbrains.kotlin.formver.core.names.ScopedName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
 
@@ -14,7 +15,7 @@ class AdtConstructorEmbedding(
     val className: SymbolicName,
 )
 
-data class AdtTypeEmbedding(override val name: ScopedKotlinName) : PretypeEmbedding {
+data class AdtTypeEmbedding(override val name: ScopedName) : PretypeEmbedding {
     private var _constructors: List<AdtConstructorEmbedding>? = null
     val constructors: List<AdtConstructorEmbedding>
         get() = _constructors ?: error("ADT constructors of $name have not been initialised yet.")

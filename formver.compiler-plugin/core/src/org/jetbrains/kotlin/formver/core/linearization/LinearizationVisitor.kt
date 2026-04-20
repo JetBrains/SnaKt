@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.asInfo
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
+import org.jetbrains.kotlin.formver.core.names.AdtConstructorName
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toFuncApp
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toMethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
@@ -188,6 +189,7 @@ data class LinearizationVisitor(
             val adtName = e.adtTypeEmbedding.adtName
             val viperConstructor = AdtConstructor(
                 AdtConstructorName(adtName, e.constructorEmbedding.className),
+                adtName,
                 emptyList(),
             )
             return Exp.AdtConstructorApp(viperConstructor, emptyList(), pos = ctx.source.asPosition)

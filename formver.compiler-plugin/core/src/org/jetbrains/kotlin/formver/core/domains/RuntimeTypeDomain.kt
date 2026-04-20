@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.formver.core.domains
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.embedClassTypeFunc
+import org.jetbrains.kotlin.formver.core.names.AdtInjectionName
 import org.jetbrains.kotlin.formver.core.names.DomainName
 import org.jetbrains.kotlin.formver.core.names.QualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.core.names.UnqualifiedDomainFuncName

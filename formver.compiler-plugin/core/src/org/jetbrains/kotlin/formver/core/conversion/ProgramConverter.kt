@@ -36,6 +36,8 @@ import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.names.SimpleNameResolver
 import org.jetbrains.kotlin.formver.names.debugMangled
 import org.jetbrains.kotlin.formver.viper.SymbolicName
+import org.jetbrains.kotlin.formver.viper.ast.AdtConstructor
+import org.jetbrains.kotlin.formver.viper.ast.AlgebraicDataType
 import org.jetbrains.kotlin.formver.viper.ast.Method
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.utils.addIfNotNull
@@ -108,7 +110,11 @@ class ProgramConverter(
                 AlgebraicDataType(
                     name = adt.adtName,
                     constructors = adt.constructors.map { contr ->
-                        AdtConstructor(AdtConstructorName(adt.adtName, contr.className), emptyList())
+                        AdtConstructor(
+                            AdtConstructorName(adt.adtName, contr.className),
+                            adt.adtName,
+                            emptyList(),
+                        )
                     },
                 )
             },

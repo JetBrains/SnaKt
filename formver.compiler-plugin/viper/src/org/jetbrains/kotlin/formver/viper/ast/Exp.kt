@@ -421,7 +421,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val info: Info = Info.NoInfo,
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
-        override val type: Type = Type.Adt(constructor.name.adtName)
+        override val type: Type = Type.Adt(constructor.adtName)
 
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.Exp =
