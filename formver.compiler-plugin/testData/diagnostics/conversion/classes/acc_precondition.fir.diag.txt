@@ -19,7 +19,7 @@ predicate p$pkg$org_jetbrains_kotlin_formver_plugin$c$InvariantBuilder$unique(th
 }
 
 method f$test_acc_precondition$TF$T$X(p$x: Ref) returns (ret$0: Ref)
-  requires acc(p$x.bf$a, wildcard)
+  requires acc(p$x.bf$a, write)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$X())
