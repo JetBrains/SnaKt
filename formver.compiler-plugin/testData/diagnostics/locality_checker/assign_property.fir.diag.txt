@@ -1,0 +1,3 @@
+/assign_property.kt:(178,179): error: Assignment locality mismatch: expected 'global', actual 'local(assign local to global property)'.
+
+/assign_property.kt:(266,267): error: Assignment locality mismatch: expected 'global', actual 'local(assign local to local property)'.

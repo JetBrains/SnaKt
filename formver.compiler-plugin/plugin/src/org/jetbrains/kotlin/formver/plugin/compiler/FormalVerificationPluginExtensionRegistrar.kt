@@ -14,4 +14,3 @@ class FormalVerificationPluginExtensionRegistrar(private val config: PluginConfi
         +PluginAdditionalCheckers.getFactory(config)
     }
 }
-

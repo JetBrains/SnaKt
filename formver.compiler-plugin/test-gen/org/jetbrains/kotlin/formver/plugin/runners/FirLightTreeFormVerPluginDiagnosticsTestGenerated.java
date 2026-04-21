@@ -494,6 +494,46 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
   }
 
   @Nested
+  @TestMetadata("formver.compiler-plugin/testData/diagnostics/locality_checker")
+  @TestDataPath("$PROJECT_ROOT")
+  public class Locality_checker {
+    @Test
+    public void testAllFilesPresentInLocality_checker() {
+      KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/locality_checker"), Pattern.compile("^(.+)\\.kt$"), null, true);
+    }
+
+    @Test
+    @TestMetadata("assign_local.kt")
+    public void testAssign_local() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/assign_local.kt");
+    }
+
+    @Test
+    @TestMetadata("assign_property.kt")
+    public void testAssign_property() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/assign_property.kt");
+    }
+
+    @Test
+    @TestMetadata("default_argument.kt")
+    public void testDefault_argument() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/default_argument.kt");
+    }
+
+    @Test
+    @TestMetadata("pass_local.kt")
+    public void testPass_local() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/pass_local.kt");
+    }
+
+    @Test
+    @TestMetadata("return_local.kt")
+    public void testReturn_local() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/return_local.kt");
+    }
+  }
+
+  @Nested
   @TestMetadata("formver.compiler-plugin/testData/diagnostics/stdlib")
   @TestDataPath("$PROJECT_ROOT")
   public class Stdlib {
