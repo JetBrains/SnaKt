@@ -8,7 +8,6 @@ package org.jetbrains.kotlin.formver.locality.plugin
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactoryToRendererMap
 import org.jetbrains.kotlin.diagnostics.rendering.BaseDiagnosticRendererFactory
 import org.jetbrains.kotlin.diagnostics.rendering.CommonRenderers
-import org.jetbrains.kotlin.formver.locality.plugin.extension.LocalityRenderer
 
 object LocalityErrorMessages : BaseDiagnosticRendererFactory() {
     override val MAP: KtDiagnosticFactoryToRendererMap by KtDiagnosticFactoryToRendererMap("FormalVerificationLocality") { map ->
