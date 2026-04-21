@@ -3,81 +3,81 @@
 import org.jetbrains.kotlin.formver.plugin.Borrowed
 
 fun `assign global to local`(x: Any) {
-    @Borrowed var y: Any
+    var y: @Borrowed Any
 
     y = x
 }
 
-fun `assign local to global`(@Borrowed x: Any) {
+fun `assign local to global`(x: @Borrowed Any) {
     var y: Any
 
     y = <!LOCALITY_VIOLATION!>x<!>
 }
 
-fun `assign local to local`(@Borrowed x: Any) {
-    @Borrowed var y: Any
+fun `assign local to local`(x: @Borrowed Any) {
+    var y: @Borrowed Any
 
     y = x
 }
 
-fun `assign local then global to local`(@Borrowed x: Any, y: Any) {
-    @Borrowed var z: Any
+fun `assign local then global to local`(x: @Borrowed Any, y: Any) {
+    var z: @Borrowed Any
 
     z = x
     z = y
 }
 
-fun `assign local to local in loop`(@Borrowed x: Any) {
-    @Borrowed var z: Any
+fun `assign local to local in loop`(x: @Borrowed Any) {
+    var z: @Borrowed Any
 
     while (true) {
         z = x
     }
 }
 
-fun `assign local to local in lambda`(@Borrowed x: Any) {
+fun `assign local to local in lambda`(x: @Borrowed Any) {
     { y: Any ->
-        @Borrowed var z: Any = <!LOCALITY_VIOLATION!>x<!>
+        var z: @Borrowed Any = <!LOCALITY_VIOLATION!>x<!>
     }
 }
 
-fun `assign local if-expression to local`(@Borrowed x: Any) {
-    @Borrowed var z: Any = if (false) { x } else { Any() }
+fun `assign local if-expression to local`(x: @Borrowed Any) {
+    var z: @Borrowed Any = if (false) { x } else { Any() }
 }
 
-fun `assign local if-expression to global`(@Borrowed x: Any) {
+fun `assign local if-expression to global`(x: @Borrowed Any) {
     var z: Any = <!LOCALITY_VIOLATION!>if (false) { x } else { Any() }<!>
 }
 
-fun `assign local if-expression to local in lambda`(@Borrowed x: Any) {
+fun `assign local if-expression to local in lambda`(x: @Borrowed Any) {
     { y: Any ->
-        @Borrowed var z: Any = <!LOCALITY_VIOLATION!>if (false) { x } else { Any() }<!>
+        var z: @Borrowed Any = <!LOCALITY_VIOLATION!>if (false) { x } else { Any() }<!>
     }
 }
 
-fun `assign local if-expression to local in loop`(@Borrowed x: Any) {
-    @Borrowed var z: Any = Any()
+fun `assign local if-expression to local in loop`(x: @Borrowed Any) {
+    var z: @Borrowed Any = Any()
 
     while (true) {
         z = if (false) { x } else { Any() }
     }
 }
 
-fun `assign local when-expression to local`(@Borrowed x: Any) {
-    @Borrowed var z: Any = when {
+fun `assign local when-expression to local`(x: @Borrowed Any) {
+    var z: @Borrowed Any = when {
         false -> x
         else -> Any()
     }
 }
 
-fun `assign local when-expression to global`(@Borrowed x: Any) {
+fun `assign local when-expression to global`(x: @Borrowed Any) {
     var z: Any = <!LOCALITY_VIOLATION!>when {
         false -> x
         else -> Any()
     }<!>
 }
 
-fun `assign local when-expression to global in loop`(@Borrowed x: Any) {
+fun `assign local when-expression to global in loop`(x: @Borrowed Any) {
     var z: Any = Any()
 
     while (true) {
@@ -88,7 +88,7 @@ fun `assign local when-expression to global in loop`(@Borrowed x: Any) {
     }
 }
 
-fun `assign local try-expression to global`(@Borrowed x: Any) {
+fun `assign local try-expression to global`(x: @Borrowed Any) {
     var z: Any = <!LOCALITY_VIOLATION!>try {
         x
     } catch (_: Throwable) {
@@ -96,7 +96,7 @@ fun `assign local try-expression to global`(@Borrowed x: Any) {
     }<!>
 }
 
-fun `assign local try-expression to global in loop`(@Borrowed x: Any) {
+fun `assign local try-expression to global in loop`(x: @Borrowed Any) {
     var z: Any = Any()
 
     while (true) {
@@ -108,15 +108,15 @@ fun `assign local try-expression to global in loop`(@Borrowed x: Any) {
     }
 }
 
-fun `assign local cast-expression to global`(@Borrowed x: Any) {
+fun `assign local cast-expression to global`(x: @Borrowed Any) {
     var z: String = <!LOCALITY_VIOLATION!>x as String<!>
 }
 
-fun `assign local not-null-expression to global`(@Borrowed x: Any?) {
+fun `assign local not-null-expression to global`(x: @Borrowed Any?) {
     var z: Any = <!LOCALITY_VIOLATION!>x!!<!>
 }
 
-fun `assign local nested control-flow to global in loop`(@Borrowed x: Any) {
+fun `assign local nested control-flow to global in loop`(x: @Borrowed Any) {
     var z: Any = Any()
 
     while (true) {
@@ -137,8 +137,8 @@ fun `assign local nested control-flow to global in loop`(@Borrowed x: Any) {
     }
 }
 
-fun `assign local nested control-flow to local in loop`(@Borrowed x: Any) {
-    @Borrowed var z: Any = Any()
+fun `assign local nested control-flow to local in loop`(x: @Borrowed Any) {
+    var z: @Borrowed Any = Any()
 
     while (true) {
         z = when {
@@ -148,7 +148,7 @@ fun `assign local nested control-flow to local in loop`(@Borrowed x: Any) {
     }
 }
 
-fun `assign local nested control-flow to global in lambda loop`(@Borrowed x: Any) {
+fun `assign local nested control-flow to global in lambda loop`(x: @Borrowed Any) {
     {
         var z: Any = Any()
 
