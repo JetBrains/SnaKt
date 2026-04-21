@@ -3,7 +3,7 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
-package org.jetbrains.kotlin.formver.plugin.compiler
+package org.jetbrains.kotlin.formver.locality.plugin.extension
 
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.DeclarationCheckers
@@ -15,12 +15,6 @@ import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirReturnExpression
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirThrowExpressionChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirVariableAssignmentChecker
 import org.jetbrains.kotlin.fir.analysis.extensions.FirAdditionalCheckersExtension
-import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityFunctionCallChecker
-import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityPropertyChecker
-import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityReturnChecker
-import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityThrowChecker
-import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityValueParameterChecker
-import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityVariableAssignmentChecker
 
 class LocalityAdditionalCheckers(session: FirSession) : FirAdditionalCheckersExtension(session) {
     companion object {
