@@ -72,10 +72,13 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             is FirUnitExpression -> UnitLit
             else -> data.convert(returnExpression.result)
         }
+        val folds = data.uniquenessInformation?.getFolds(returnExpression.result)
+
         // returnTarget is null when it is the implicit return of a lambda
         val returnTargetName = returnExpression.target.labelName
         val target = data.resolveReturnTarget(returnTargetName)
-        return Return(expr.withType(target.variable.type), target)
+        val exp = folds?.wrap(expr.withType(target.variable.type), data) ?: expr
+        return Return(exp, target)
     }
 
     override fun visitResolvedQualifier(
@@ -150,17 +153,29 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return if (branch.condition is FirElseIfTrueCondition) {
             data.withNewScope { convert(branch.result) }
         } else {
+            val folds = data.uniquenessInformation?.getFolds(branch.condition)
             val cond = data.convert(branch.condition).withType { boolean() }
-            val thenExp = data.withNewScope { convert(branch.result) }
-            val elseExp = convertWhenBranches(whenBranches, type, data)
-            If(cond, thenExp.withType(type), elseExp.withType(type), type)
+            val thenExp = data.withNewScope { convert(branch.result) }.withType(type)
+            val thenExpFolds = Block {
+                addIfNotNull(folds?.foldBlock(data))
+                add(thenExp)
+            }
+            val elseExp = convertWhenBranches(whenBranches, type, data).withType(type)
+            val elseExpFolds = Block {
+                addIfNotNull(folds?.foldBlock(data))
+                add(elseExp)
+            }
+            val branch = If(cond, thenExpFolds, elseExpFolds, type)
+            folds?.wrapUnfolds(branch, data) ?: branch
         }
     }
 
     override fun visitWhenExpression(whenExpression: FirWhenExpression, data: StmtConversionContext): ExpEmbedding =
         data.withNewScope {
             val type = data.embedType(whenExpression)
+            var foldInfo: Folds? = null
             val subj: Declare? = whenExpression.subjectVariable?.let { firSubjVar ->
+                foldInfo = data.uniquenessInformation?.getFolds(firSubjVar)
                 val subjExp = convert(firSubjVar.initializer!!)
                 if (firSubjVar.name.isSpecial)
                     declareAnonVar(subjExp.type, subjExp)
@@ -170,7 +185,16 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             val body = withWhenSubject(subj?.variable) {
                 convertWhenBranches(whenExpression.branches.iterator(), type, this)
             }
-            subj?.let { blockOf(it, body) } ?: body
+            val unfolds = foldInfo?.unfoldBlock(data)
+            val folds = foldInfo?.foldBlock(data)
+            subj?.let {
+                Block {
+                    addIfNotNull(unfolds)
+                    add(it)
+                    addIfNotNull(folds)
+                    add(body)
+                }
+            } ?: body
         }
 
     override fun visitPropertyAccessExpression(
@@ -288,12 +312,14 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
 
         when (val forAllLambda = functionCall.extractFormverFirBlock { isInvariantBuilderFunctionNamed("forAll") }) {
             null -> {
+                val foldInfo = data.uniquenessInformation?.getFolds(functionCall)
                 val callee = data.embedAnyFunction(symbol)
-                return callee.insertCall(
+                val call = callee.insertCall(
                     functionCall.functionCallArguments.withVarargsHandled(data, callee),
                     data,
                     data.embedType(functionCall.resolvedType),
                 )
+                return foldInfo?.wrap(call, data) ?: call
             }
 
             else -> {
@@ -311,6 +337,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
     }
 
+    // TODO: add folds if necessecary
     override fun visitImplicitInvokeCall(
         implicitInvokeCall: FirImplicitInvokeCall,
         data: StmtConversionContext,
@@ -346,11 +373,20 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
 
         val type = data.embedType(symbol.resolvedReturnType)
-        return data.declareLocalProperty(symbol, property.initializer?.let { data.convert(it) })
+
+        val initializer = property.initializer?.let { data.convert(it) }
+        val foldInfo = property.let { data.uniquenessInformation?.getFolds(it) }
+
+        return Block {
+            addIfNotNull(foldInfo?.unfoldBlock(data))
+            add(data.declareLocalProperty(symbol, initializer))
+            addIfNotNull(foldInfo?.foldBlock(data))
+        }
     }
 
     override fun visitWhileLoop(whileLoop: FirWhileLoop, data: StmtConversionContext): ExpEmbedding {
         val condition = data.convert(whileLoop.condition).withType { boolean() }
+        val foldInfoCondition = data.uniquenessInformation?.getFolds(whileLoop.condition)
         val invariants = buildList {
             data.retrievePropertiesAndParameters().forEach {
                 addIfNotNull(it.sharedPredicateAccessInvariant())
@@ -362,7 +398,15 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
         return data.withFreshWhile(whileLoop.label) {
             val body = convert(whileLoop.block)
-            While(condition, body, breakLabelName(), continueLabelName(), invariants)
+            val bodyWithFolds = Block {
+                addIfNotNull(foldInfoCondition?.foldBlock(data))
+                add(body)
+                addIfNotNull(foldInfoCondition?.unfoldBlock(data))
+            }
+            Block {
+                addIfNotNull(foldInfoCondition?.unfoldBlock(data))
+                add(While(condition, bodyWithFolds, breakLabelName(), continueLabelName(), invariants))
+            }
         }
     }
 
@@ -409,13 +453,8 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
         val convertedRValue = data.convert(variableAssignment.rValue)
 
-
-
-        return Block {
-            folds?.unfolds(data)?.let { addAll(it) }
-            add(embedding.setValue(convertedRValue, data))
-            folds?.folds(data)?.let { addAll(it) }
-        }
+        val exp = embedding.setValue(convertedRValue, data)
+        return folds?.wrap(exp, data) ?: exp
     }
 
     override fun visitSmartCastExpression(
@@ -517,6 +556,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return LambdaExp(data.embedFunctionSignature(function.symbol), function, data, function.symbol.label!!.name)
     }
 
+    // TODO: add folds+unfolds
     override fun visitTryExpression(tryExpression: FirTryExpression, data: StmtConversionContext): ExpEmbedding {
         val (catchData, tryBody) = data.withCatches(tryExpression.catches) { catchData ->
             withNewScope {
@@ -566,6 +606,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return Elvis(lhs, rhs, expType)
     }
 
+    // TODO: add folds+unfolds
     override fun visitSafeCallExpression(
         safeCallExpression: FirSafeCallExpression,
         data: StmtConversionContext,
