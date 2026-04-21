@@ -11,16 +11,11 @@ import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirValueParameterChecker
 import org.jetbrains.kotlin.fir.declarations.FirValueParameter
-import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.plugin.compiler.PluginErrors.LOCALITY_VIOLATION
 
-class LocalityValueParameterChecker(
-    private val config : PluginConfiguration
-) : FirValueParameterChecker(MppCheckerKind.Common) {
+object LocalityValueParameterChecker : FirValueParameterChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(declaration: FirValueParameter) {
-        if (!config.checkLocality) return
-
         val defaultValue = declaration.defaultValue ?: return
         val requiredLocality = declaration.extractRequiredLocality()
         val actualLocality = defaultValue.extractLocality()

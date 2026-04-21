@@ -11,16 +11,11 @@ import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirVariableAssignmentChecker
 import org.jetbrains.kotlin.fir.expressions.FirVariableAssignment
-import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.plugin.compiler.PluginErrors.LOCALITY_VIOLATION
 
-class LocalityVariableAssignmentChecker(
-    private val config : PluginConfiguration
-) : FirVariableAssignmentChecker(MppCheckerKind.Common) {
+object LocalityVariableAssignmentChecker : FirVariableAssignmentChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirVariableAssignment) {
-        if (!config.checkLocality) return
-
         val requiredLocality = expression.lValue.extractLocality()
         val actualLocality = expression.rValue.extractLocality()
 
