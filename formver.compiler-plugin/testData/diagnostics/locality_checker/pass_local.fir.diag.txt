@@ -1,17 +1,17 @@
-/pass_local.kt:(535,536): error: Argument locality mismatch: expected 'global', actual 'local(pass local as shared argument)'.
+/pass_local.kt:(517,518): error: Argument locality mismatch: expected 'global', actual 'local(pass local as shared argument)'.
 
-/pass_local.kt:(945,946): error: Assignment locality mismatch: expected 'global', actual 'local(assign local to global after passing it as borrowed argument)'.
+/pass_local.kt:(927,928): error: Assignment locality mismatch: expected 'global', actual 'local(assign local to global after passing it as borrowed argument)'.
 
-/pass_local.kt:(1052,1053): error: Argument locality mismatch: expected 'global', actual 'local(share local after initializing it with a global value)'.
+/pass_local.kt:(1037,1038): error: Argument locality mismatch: expected 'global', actual 'local(share local after initializing it with a global value)'.
 
-/pass_local.kt:(1307,1308): error: Receiver locality mismatch: expected 'global', actual 'local(pass local as explicit shared target)'.
+/pass_local.kt:(1292,1293): error: Receiver locality mismatch: expected 'global', actual 'local(pass local as explicit shared target)'.
 
-/pass_local.kt:(2033,2034): error: Argument locality mismatch: expected 'global', actual 'local(pass local as named local and global arguments)'.
+/pass_local.kt:(2018,2019): error: Argument locality mismatch: expected 'global', actual 'local(pass local as named local and global arguments)'.
 
-/pass_local.kt:(2139,2140): error: Argument locality mismatch: expected 'global', actual 'local(pass local as named local along local default)'.
+/pass_local.kt:(2124,2125): error: Argument locality mismatch: expected 'global', actual 'local(pass local as named local along local default)'.
 
-/pass_local.kt:(2217,2230): error: Receiver locality mismatch: expected 'global', actual 'local(pass local as implicit shared target)'.
+/pass_local.kt:(2193,2206): error: Receiver locality mismatch: expected 'global', actual 'local(pass local as implicit shared target)'.
 
-/pass_local.kt:(2400,2404): error: Receiver locality mismatch: expected 'global', actual 'local(pass local this as explicit shared target)'.
+/pass_local.kt:(2358,2362): error: Receiver locality mismatch: expected 'global', actual 'local(pass local this as explicit shared target)'.
 
-/pass_local.kt:(2719,2720): error: Argument locality mismatch: expected 'local(anonymous)', actual 'local(pass outer local as local argument in lambda)'.
+/pass_local.kt:(2668,2669): error: Argument locality mismatch: expected 'local(anonymous)', actual 'local(pass outer local as local argument in lambda)'.

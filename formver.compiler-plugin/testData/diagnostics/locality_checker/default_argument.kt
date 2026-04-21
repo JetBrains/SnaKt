@@ -7,24 +7,24 @@ fun `assign global value as global default argument`(
 ) {}
 
 fun `assign global value as local default argument`(
-    @Borrowed x: Any = Any()
+    x: @Borrowed Any = Any()
 ) {}
 
 fun `assign local argument as global default argument`(
-    @Borrowed x: Any,
+    x: @Borrowed Any,
     y: Any = <!LOCALITY_VIOLATION!>x<!>
 ) {}
 
 fun `assign local argument as local default argument`(
-    @Borrowed x: Any,
-    @Borrowed y: Any = x
+    x: @Borrowed Any,
+    y: @Borrowed Any = x
 ) {}
 
 class `assign global value as global default argument in constructor`(
-    @Borrowed x: Any = Any(),
+    x: @Borrowed Any = Any(),
 )
 
 class `assign local argument as global default argument in constructor`(
-    @Borrowed x: Any,
+    x: @Borrowed Any,
     y: Any = <!LOCALITY_VIOLATION!>x<!>,
 )

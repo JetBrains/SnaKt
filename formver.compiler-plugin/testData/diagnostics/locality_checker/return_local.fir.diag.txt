@@ -4,4 +4,4 @@
 
 /return_local.kt:(382,383): error: Return locality mismatch: expected 'global', actual 'local(return local value from lambda body)'.
 
-/return_local.kt:(487,491): error: Return locality mismatch: expected 'global', actual 'local(return local receiver)'.
+/return_local.kt:(478,482): error: Return locality mismatch: expected 'global', actual 'local(return local receiver)'.
