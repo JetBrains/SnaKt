@@ -3,28 +3,29 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
-package org.jetbrains.kotlin.formver.locality.plugin.extension
+package org.jetbrains.kotlin.formver.locality.plugin
 
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
-import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirReturnExpressionChecker
-import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
+import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirValueParameterChecker
+import org.jetbrains.kotlin.fir.declarations.FirValueParameter
 import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOLATION
 
-object LocalityReturnChecker : FirReturnExpressionChecker(MppCheckerKind.Common) {
+object LocalityValueParameterChecker : FirValueParameterChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
-    override fun check(expression: FirReturnExpression) {
-        val requiredLocality: LocalityAttribute? = null
-        val actualLocality = expression.result.extractLocality()
+    override fun check(declaration: FirValueParameter) {
+        val defaultValue = declaration.defaultValue ?: return
+        val requiredLocality = declaration.extractRequiredLocality()
+        val actualLocality = defaultValue.extractLocality()
 
         if (requiredLocality.accepts(actualLocality)) return
 
         reporter.reportOn(
-            expression.result.source,
+            defaultValue.source ?: declaration.source,
             LOCALITY_VIOLATION,
-            "Return",
+            "Initializer",
             requiredLocality,
             actualLocality
         )
