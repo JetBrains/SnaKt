@@ -3,10 +3,9 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":formver.compiler-plugin:analysis"))
+    compileOnly(project(":formver.compiler-plugin:core")) // TODO: Remove this dependency
     compileOnly(kotlin("compiler"))
-    implementation(project(":formver.common"))
-    implementation(project(":formver.compiler-plugin:plugin"))
-    implementation(project(":formver.compiler-plugin:locality"))
 }
 
 sourceSets {

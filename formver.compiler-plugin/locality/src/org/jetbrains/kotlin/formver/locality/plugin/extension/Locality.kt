@@ -3,13 +3,13 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
-package org.jetbrains.kotlin.formver.plugin.compiler.locality
+package org.jetbrains.kotlin.formver.locality.plugin.extension
 
 import org.jetbrains.kotlin.diagnostics.rendering.Renderer
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
-import org.jetbrains.kotlin.formver.plugin.compiler.locality.Locality.Global
-import org.jetbrains.kotlin.formver.plugin.compiler.locality.Locality.Local
+import org.jetbrains.kotlin.formver.locality.plugin.extension.Locality.Global
+import org.jetbrains.kotlin.formver.locality.plugin.extension.Locality.Local
 
 sealed interface Locality {
     data object Global : Locality

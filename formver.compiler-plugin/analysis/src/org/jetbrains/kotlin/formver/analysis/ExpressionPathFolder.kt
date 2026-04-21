@@ -1,4 +1,4 @@
-package org.jetbrains.kotlin.formver.plugin.compiler.analysis
+package org.jetbrains.kotlin.formver.analysis
 
 import org.jetbrains.kotlin.fir.expressions.FirCheckNotNullCall
 import org.jetbrains.kotlin.fir.expressions.FirCheckedSafeCallSubject

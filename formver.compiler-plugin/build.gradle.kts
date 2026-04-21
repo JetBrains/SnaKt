@@ -33,6 +33,8 @@ dependencies {
     implementation(project(":formver.compiler-plugin:viper")) { isTransitive = true }
     implementation(project(":formver.compiler-plugin:cli")) { isTransitive = false }
     implementation(project(":formver.compiler-plugin:plugin")) { isTransitive = false }
+    implementation(project(":formver.compiler-plugin:locality")) { isTransitive = false }
+    implementation(project(":formver.compiler-plugin:analysis")) { isTransitive = false }
     implementation(project(":formver.common")) { isTransitive = false }
     implementation(kotlin("compiler"))
 
@@ -44,10 +46,14 @@ dependencies {
     testFixturesApi(project(":formver.compiler-plugin:viper"))
     testFixturesApi("viper:silicon_2.13:1.2-SNAPSHOT")
     testFixturesImplementation(project(":formver.compiler-plugin:core"))
+    testFixturesImplementation(project(":formver.compiler-plugin:locality"))
+    testFixturesImplementation(project(":formver.compiler-plugin:analysis"))
 
     annotationsRuntimeClasspath(project(":formver.annotations"))
 
     testImplementation(project(":formver.compiler-plugin:plugin"))
+    testImplementation(project(":formver.compiler-plugin:locality"))
+    testImplementation(project(":formver.compiler-plugin:analysis"))
     testImplementation(project(":formver.common"))
     testImplementation(project(":formver.compiler-plugin:uniqueness"))
     testRuntimeOnly(project(":formver.compiler-plugin:core"))
@@ -86,7 +92,6 @@ fun Test.configureFormverTest() {
     setLibraryProperty("org.jetbrains.kotlin.test.kotlin-annotations-jvm", "kotlin-annotations-jvm")
 
     systemProperty("idea.ignore.disabled.plugins", "true")
-    systemProperty("formver.testRun", "true")
     systemProperty("idea.home.path", rootDir)
 
     project.findProperty("kotlin.test.update.test.data")?.let {
