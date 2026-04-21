@@ -98,9 +98,7 @@ class ShortNameResolver : NameResolver {
      */
     private lateinit var mangledNames: Map<AnyName, String>
 
-    private var _separator = "$"
-    val separator
-        get() = _separator
+    val separator = "$"
 
     /**
      * Stores which candidate is currently used for a given name.
@@ -134,22 +132,6 @@ class ShortNameResolver : NameResolver {
         addElement(b)
     }
 
-    /**
-     * This method must be called on every string that the user supplies.
-     * We need to count the number of consecutive separator candidates in the string.
-     */
-    fun registerUserName(name: String) {
-        longestSequenceDollar = maxOf(longestSequenceDollar, findLongestAnySequence(name, '$'))
-        longestSequenceUnderscore = maxOf(longestSequenceUnderscore, findLongestAnySequence(name, '_'))
-    }
-
-    private var longestSequenceUnderscore = 0
-    private fun findLongestAnySequence(input: String, c: Char): Int {
-        val pattern = "($c)\\1*".toRegex()
-        return pattern.findAll(input).maxOfOrNull { it.value.length } ?: 0
-    }
-
-    private var longestSequenceDollar = 0
 
     /**
      * Returns true iff the ``entity`` is scoped. Meaning that there is a name, which wraps around `entity`
@@ -171,19 +153,16 @@ class ShortNameResolver : NameResolver {
                 link(entity.baseName, Relation.IS_PART_OF, entity)
                 registerEntity(entity.baseName)
             }
-            is DomainAssociatedFuncName -> registerUserName(entity.name)
-            is DomainFuncParameterName -> registerUserName(entity.name)
             is HavocName -> {
                 link(entity.type.name, Relation.IS_PART_OF, entity)
                 registerEntity(entity.type.name)
             }
-            is PredicateName -> registerUserName(entity.name)
-            is SpecialFieldName -> registerUserName(entity.name)
             // No else branch, because FreshName is sealed. When adding a new name, the compiler will complain here.
             PlaceholderReturnVariableName, ExtensionReceiverName, FunctionResultVariableName, DispatchReceiverName,
             is AnonymousBuiltinName, is AnonymousName, is PlaceholderArgumentName,
             is ReturnVariableName, is BreakLabelName, is CatchLabelName,
-            is ContinueLabelName, is TryExitLabelName, is ReturnLabelName -> {
+            is ContinueLabelName, is TryExitLabelName, is ReturnLabelName,
+            is DomainAssociatedFuncName, is DomainFuncParameterName, is PredicateName, is SpecialFieldName -> {
             }
         }
     }
@@ -200,8 +179,6 @@ class ShortNameResolver : NameResolver {
                 if (entity is ClassScope) {
                     link(entity.className, Relation.SCOPED_BY, entity)
                     registerEntity(entity.className)
-                } else if (entity is PackageScope) {
-                    registerUserName(entity.packageName.asString())
                 }
             }
 
@@ -233,12 +210,8 @@ class ShortNameResolver : NameResolver {
                         registerEntity(entity.type.name)
                     }
 
-                    is DomainName -> {
-                        registerUserName(entity.baseName)
-                    }
 
                     is NamedDomainAxiomLabel -> {
-                        registerUserName(entity.baseName)
                         link(entity.domainName, Relation.IS_PART_OF, entity)
                         registerEntity(entity.domainName)
                     }
@@ -269,9 +242,7 @@ class ShortNameResolver : NameResolver {
                         registerEntity(entity.pretype.name)
                     }
 
-                    is SimpleKotlinName -> registerUserName(entity.name.asString())
-                    is ClassKotlinName -> registerUserName(entity.name.asString())
-                    is TypedKotlinName -> registerUserName(entity.name.asString())
+                    is SimpleKotlinName, is ClassKotlinName, is TypedKotlinName, is DomainName -> {}
                     else -> {
                         throw SnaktInternalException(null, "Unsupported entity type: ${entity.javaClass.name}")
                     }
@@ -332,7 +303,6 @@ class ShortNameResolver : NameResolver {
      */
     override fun resolve() {
         createRepresentatives()
-        chooseSeparator()
         var currentCollisions = collisions()
         while (currentCollisions.isNotEmpty()) {
             val toResolve = currentCollisions.entries.first().value
@@ -349,14 +319,6 @@ class ShortNameResolver : NameResolver {
 
         // Fix the names
         mangledNames = viperElements().associateWith { current(it) }
-    }
-
-    private fun chooseSeparator() {
-        _separator = if (longestSequenceDollar < longestSequenceUnderscore) {
-            "$".repeat(longestSequenceDollar + 1)
-        } else {
-            "_".repeat(longestSequenceUnderscore + 1)
-        }
     }
 
     /**
