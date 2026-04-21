@@ -1,0 +1,53 @@
+/*
+ * Copyright 2010-2026 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
+ */
+
+package org.jetbrains.kotlin.formver.plugin.compiler
+
+import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.analysis.checkers.declaration.DeclarationCheckers
+import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirPropertyChecker
+import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirValueParameterChecker
+import org.jetbrains.kotlin.fir.analysis.checkers.expression.ExpressionCheckers
+import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirFunctionCallChecker
+import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirReturnExpressionChecker
+import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirThrowExpressionChecker
+import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirVariableAssignmentChecker
+import org.jetbrains.kotlin.fir.analysis.extensions.FirAdditionalCheckersExtension
+import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityFunctionCallChecker
+import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityPropertyChecker
+import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityReturnChecker
+import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityThrowChecker
+import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityValueParameterChecker
+import org.jetbrains.kotlin.formver.plugin.compiler.locality.LocalityVariableAssignmentChecker
+
+class LocalityAdditionalCheckers(session: FirSession) : FirAdditionalCheckersExtension(session) {
+    companion object {
+        fun getFactory(): Factory {
+            return Factory { session -> LocalityAdditionalCheckers(session) }
+        }
+    }
+
+    override val declarationCheckers: DeclarationCheckers = object : DeclarationCheckers() {
+        override val propertyCheckers: Set<FirPropertyChecker>
+            get() = setOf(LocalityPropertyChecker)
+
+        override val valueParameterCheckers: Set<FirValueParameterChecker>
+            get() = setOf(LocalityValueParameterChecker)
+    }
+
+    override val expressionCheckers: ExpressionCheckers = object : ExpressionCheckers() {
+        override val variableAssignmentCheckers: Set<FirVariableAssignmentChecker>
+            get() = setOf(LocalityVariableAssignmentChecker)
+
+        override val functionCallCheckers: Set<FirFunctionCallChecker>
+            get() = setOf(LocalityFunctionCallChecker)
+
+        override val returnExpressionCheckers: Set<FirReturnExpressionChecker>
+            get() = setOf(LocalityReturnChecker)
+
+        override val throwExpressionCheckers: Set<FirThrowExpressionChecker>
+            get() = setOf(LocalityThrowChecker)
+    }
+}

@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrarAdapter
 import org.jetbrains.kotlin.formver.common.*
 import org.jetbrains.kotlin.formver.plugin.compiler.FormalVerificationPluginExtensionRegistrar
+import org.jetbrains.kotlin.formver.plugin.compiler.LocalityExtensionRegistrar
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.ALWAYS_VALIDATE
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.DUMP_UNIQUENESS_CFG
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.FULL_VIPER_DUMP
@@ -74,6 +75,9 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
             checkLocality = checkLocality,
         )
         FirExtensionRegistrarAdapter.registerExtension(FormalVerificationPluginExtensionRegistrar(config))
+        if (config.checkLocality) {
+            FirExtensionRegistrarAdapter.registerExtension(LocalityExtensionRegistrar)
+        }
     }
 }
 
