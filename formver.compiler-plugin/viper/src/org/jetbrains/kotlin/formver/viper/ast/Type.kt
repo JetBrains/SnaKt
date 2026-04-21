@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.viper.ast
 
 import org.jetbrains.kotlin.formver.viper.*
 import viper.silver.ast.*
+import viper.silver.plugin.standard.adt.AdtType
 
 sealed interface Type : IntoSilver<viper.silver.ast.Type> {
 
@@ -102,6 +103,31 @@ sealed interface Type : IntoSilver<viper.silver.ast.Type> {
                 typeParams,
                 typeParams.associateWith { typeSubstitutions.getOrDefault(it, it).substitute(typeVarMap) })
 
+    }
+
+    data class Adt(
+        val adtName: SymbolicName,
+        val typeParams: List<TypeVar> = emptyList(),
+        val typeSubstitutions: kotlin.collections.Map<TypeVar, Type> = emptyMap(),
+    ) : Type {
+        context(nameResolver: NameResolver)
+        override fun toSilver(): ExtensionType =
+            AdtType(
+                adtName.mangled,
+                typeSubstitutions.mapKeys { it.key.toSilver() }.mapValues {
+                    it.value.toSilver()
+                }.toScalaMap(),
+                typeParams.map { it.toSilver() }.toScalaSeq()
+            )
+
+        override fun substitute(typeVarMap: kotlin.collections.Map<TypeVar, Type>): Adt =
+            Adt(
+                adtName,
+                typeParams,
+                typeParams.associateWith {
+                    typeSubstitutions.getOrDefault(it, it).substitute(typeVarMap)
+                }
+            )
     }
 
 }

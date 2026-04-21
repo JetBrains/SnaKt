@@ -13,6 +13,7 @@ data class Program(
     val functions: List<Function>,
     val predicates: List<Predicate>,
     val methods: List<Method>,
+    val adts: List<AlgebraicDataType> = emptyList(),
     /* no extensions */
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
@@ -25,7 +26,7 @@ data class Program(
         functions.sortedBy { it.name.mangled }.toSilver().toScalaSeq(),
         predicates.sortedBy { it.name.mangled }.toSilver().toScalaSeq(),
         methods.sortedBy { it.name.mangled }.toSilver().toScalaSeq(),
-        emptySeq(), /* extensions */
+        adts.sortedBy { it.name.mangled }.toSilver().toScalaSeq(),
         pos.toSilver(),
         info.toSilver(),
         trafos.toSilver(),
@@ -37,6 +38,7 @@ data class Program(
         functions.filter { it.includeInDumpPolicy != IncludeInDumpPolicy.ONLY_IN_FULL_DUMP },
         predicates.filter { it.includeInDumpPolicy != IncludeInDumpPolicy.ONLY_IN_FULL_DUMP },
         methods.filter { it.includeInShortDump },
+        adts.filter { it.includeInShortDump },
         pos,
         info,
         trafos,
@@ -121,6 +123,10 @@ private fun registerExpNames(exp: Exp) {
         is Exp.Unfolding -> {
             registerExpNames(exp.predicateAccess)
             registerExpNames(exp.body)
+        }
+        is Exp.AdtConstructorApp -> {
+            nameResolver.register(exp.constructor.name)
+            exp.args.forEach { registerExpNames(it) }
         }
         // no else branch to make decisions explicit.
         is Exp.Result, is Exp.BoolLit, is Exp.EmptySeq, is Exp.IntLit, is Exp.NullLit -> {}
@@ -217,5 +223,13 @@ fun Program.registerAllNames() {
         method.pres.forEach { arg -> registerExpNames(arg) }
         method.posts.forEach { arg -> registerExpNames(arg) }
         method.body?.let { seqn -> registerSeqnNames(seqn) }
+    }
+
+    adts.forEach { adt ->
+        nameResolver.register(adt.name)
+        adt.constructors.forEach { constructor ->
+            nameResolver.register(constructor.name)
+            constructor.formalArgs.forEach { nameResolver.register(it.name) }
+        }
     }
 }

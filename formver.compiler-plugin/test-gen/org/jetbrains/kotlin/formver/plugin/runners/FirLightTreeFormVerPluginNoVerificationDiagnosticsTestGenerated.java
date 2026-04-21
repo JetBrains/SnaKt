@@ -52,6 +52,12 @@ public class FirLightTreeFormVerPluginNoVerificationDiagnosticsTestGenerated ext
     @TestDataPath("$PROJECT_ROOT")
     public class Classes {
       @Test
+      @TestMetadata("adt.kt")
+      public void testAdt() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/adt.kt");
+      }
+
+      @Test
       public void testAllFilesPresentInClasses() {
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/classes"), Pattern.compile("^(.+)\\.kt$"), null, true);
       }

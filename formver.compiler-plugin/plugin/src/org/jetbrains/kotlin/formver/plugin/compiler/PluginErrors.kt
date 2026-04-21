@@ -19,6 +19,7 @@ object PluginErrors : KtDiagnosticsContainer() {
     val POSSIBLE_INDEX_OUT_OF_BOUND by warning2<PsiElement, String, String>()
     val INVALID_SUBLIST_RANGE by warning2<PsiElement, String, String>()
     val PURITY_VIOLATION by error1<PsiElement, String>()
+    val ADT_INVALID_TARGET by error1<PsiElement, String>()
 
     val UNIQUENESS_VIOLATION by error1<PsiElement, String>()
     val UNIQUENESS_CFG by info1<PsiElement, String>(SourceElementPositioningStrategies.DECLARATION_NAME)

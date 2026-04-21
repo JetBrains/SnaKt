@@ -14,7 +14,8 @@ sealed interface NameType : NameTypeBase {
 
     enum class Base : NameType {
         Constructor, Function, Predicate,
-        Havoc, Variable, Domain, DomainFunction, Label
+        Havoc, Variable, Domain, DomainFunction, Label,
+        Adt, AdtCons
     }
 
     enum class TypeCategory : NameType {

@@ -16,6 +16,7 @@ import org.jetbrains.kotlin.KtSourceElement
 class ErrorCollector {
     private val minorErrors = mutableListOf<String>()
     private val purityErrors = mutableListOf<Pair<KtSourceElement?, String>>()
+    private val adtErrors = mutableListOf<Pair<KtSourceElement?, String>>()
 
     fun addMinorError(error: String) {
         minorErrors.add(error)
@@ -36,4 +37,14 @@ class ErrorCollector {
     }
 
     fun collectedPurityError() = purityErrors.isNotEmpty()
+
+    fun addAdtError(position: KtSourceElement?, msg: String) {
+        adtErrors.add(Pair(position, msg))
+    }
+
+    fun forEachAdtError(action: (KtSourceElement?, String) -> Unit) {
+        adtErrors.forEach { (key, value) ->
+            action(key, value)
+        }
+    }
 }
