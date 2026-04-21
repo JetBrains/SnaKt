@@ -39,6 +39,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
+import org.jetbrains.kotlin.formver.names.debugMangled
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
 import org.jetbrains.kotlin.formver.core.functionCallArguments
@@ -94,6 +95,13 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                     resolvedQualifier.source,
                     "Objects can only be used as ADT constructors. Declare it as an ADT to use it."
                 )
+            if (!adtEmbedding.isInitialized) {
+                throw SnaktInternalException(
+                    resolvedQualifier.source,
+                    "ADT constructors for ${adtEmbedding.name.debugMangled} are not initialized. " +
+                            "This can happen if the referenced object is not actually a valid ADT."
+                )
+            }
             val constructorEmbedding = adtEmbedding.constructors.firstOrNull()
                 ?: throw SnaktInternalException(resolvedQualifier.source, "ADT constructors not initialized")
             return AdtConstructorLit(type, constructorEmbedding, adtEmbedding)

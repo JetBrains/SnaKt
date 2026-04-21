@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.processAllDeclarations
 import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.utils.hasBackingField
+import org.jetbrains.kotlin.fir.declarations.utils.isData
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
 import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
@@ -307,25 +308,25 @@ class ProgramConverter(
         embedding: AdtTypeEmbedding,
         className: SymbolicName,
     ) {
-        if (!symbol.classKind.isObject) {
-            errorCollector.addAdtError(symbol.source, "@ADT may only be applied to object declarations")
+        if (!symbol.classKind.isObject || !symbol.isData) {
+            errorCollector.addAdtError(symbol.source, "@ADT may only be applied to data object declarations")
             return
         }
         val fields = mutableListOf<FirPropertySymbol>()
         symbol.fir.processAllDeclarations(session) { if (it is FirPropertySymbol && it.hasBackingField) fields.add(it) }
         if (fields.isNotEmpty()) {
-            errorCollector.addAdtError(symbol.source, "An @ADT object must not have fields")
+            errorCollector.addAdtError(symbol.source, "An @ADT data object must not have fields")
             return
         }
         val memberFunctions = mutableListOf<FirNamedFunctionSymbol>()
         symbol.fir.processAllDeclarations(session) { if (it is FirNamedFunctionSymbol) memberFunctions.add(it) }
         if (memberFunctions.isNotEmpty()) {
-            errorCollector.addAdtError(symbol.source, "An @ADT object must not have member functions")
+            errorCollector.addAdtError(symbol.source, "An @ADT data object must not have member functions")
             return
         }
         val hasSuperTypes = symbol.resolvedSuperTypes.any { !it.isAny }
         if (hasSuperTypes) {
-            errorCollector.addAdtError(symbol.source, "An @ADT object must not extend a class or implement an interface")
+            errorCollector.addAdtError(symbol.source, "An @ADT data object must not extend a class or implement an interface")
             return
         }
         embedding.initConstructors(listOf(AdtConstructorEmbedding(className)))

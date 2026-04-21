@@ -1,4 +1,4 @@
-/adt.kt:(355,367): info: Generated Viper text for takeAdtParam:
+/adt.kt:(370,382): info: Generated Viper text for takeAdtParam:
 method f$takeAdtParam$F$t$Color1$t$Unit(par$c: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$Color1())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -11,7 +11,7 @@ adt adt$c$Color1 {
   adtc$Color1$c$Color1()
 }
 
-/adt.kt:(449,474): info: Generated Viper text for twoDifferentTypeAdtParams:
+/adt.kt:(464,489): info: Generated Viper text for twoDifferentTypeAdtParams:
 method f$twoDifferentTypeAdtParams$F$t$Color1$t$Color2$t$Unit(par$a: Ref, par$b: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$c$Color1())
@@ -30,7 +30,7 @@ adt adt$c$Color2 {
   adtc$Color2$c$Color2()
 }
 
-/adt.kt:(565,576): info: Generated Viper text for mixedParams:
+/adt.kt:(580,591): info: Generated Viper text for mixedParams:
 method f$mixedParams$F$t$Color1$t$Int$t$Unit(par$c: Ref, par$n: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$Color1())
@@ -45,7 +45,7 @@ adt adt$c$Color1 {
   adtc$Color1$c$Color1()
 }
 
-/adt.kt:(660,671): info: Generated Viper text for adtLocalVar:
+/adt.kt:(675,686): info: Generated Viper text for adtLocalVar:
 method f$adtLocalVar$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -59,7 +59,7 @@ adt adt$c$Color1 {
   adtc$Color1$c$Color1()
 }
 
-/adt.kt:(762,782): info: Generated Viper text for adtSameValueEquality:
+/adt.kt:(777,797): info: Generated Viper text for adtSameValueEquality:
 field bf$size: Ref
 
 method f$adtSameValueEquality$F$t$Unit() returns (ret$0: Ref)
@@ -78,7 +78,7 @@ adt adt$c$Color1 {
   adtc$Color1$c$Color1()
 }
 
-/adt.kt:(929,951): info: Generated Viper text for adtCrossTypeInequality:
+/adt.kt:(944,966): info: Generated Viper text for adtCrossTypeInequality:
 field bf$size: Ref
 
 method f$adtCrossTypeInequality$F$t$Color1$t$Unit(par$c: Ref)
@@ -99,9 +99,9 @@ adt adt$c$Color2 {
   adtc$Color2$c$Color2()
 }
 
-/adt.kt:(976,987): warning: Viper verification error: Assert might fail. Assertion !(par$c == df$rt$c$Color2$ToRef(adtc$Color2$c$Color2())) might not hold.
+/adt.kt:(991,1002): warning: Viper verification error: Assert might fail. Assertion !(par$c == df$rt$c$Color2$ToRef(adtc$Color2$c$Color2())) might not hold.
 
-/adt.kt:(1074,1098): info: Generated Viper text for adtSameTypeParamEquality:
+/adt.kt:(1089,1113): info: Generated Viper text for adtSameTypeParamEquality:
 field bf$size: Ref
 
 method f$adtSameTypeParamEquality$F$t$Color1$t$Color1$t$Unit(par$a: Ref, par$b: Ref)
@@ -119,9 +119,9 @@ adt adt$c$Color1 {
   adtc$Color1$c$Color1()
 }
 
-/adt.kt:(1134,1140): warning: Viper verification error: Assert might fail. Assertion df$rt$c$Color1$FromRef(par$a) == df$rt$c$Color1$FromRef(par$b) might not hold.
+/adt.kt:(1149,1155): warning: Viper verification error: Assert might fail. Assertion df$rt$c$Color1$FromRef(par$a) == df$rt$c$Color1$FromRef(par$b) might not hold.
 
-/adt.kt:(1228,1243): info: Generated Viper text for adtPrecondition:
+/adt.kt:(1243,1258): info: Generated Viper text for adtPrecondition:
 method f$adtPrecondition$F$t$Color1$t$Unit(par$c: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$Color1())
   requires !(par$c == df$rt$c$Color2$ToRef(adtc$Color2$c$Color2()))
@@ -139,7 +139,7 @@ adt adt$c$Color2 {
   adtc$Color2$c$Color2()
 }
 
-/adt.kt:(1392,1409): info: Generated Viper text for adtLiteralVsParam:
+/adt.kt:(1407,1424): info: Generated Viper text for adtLiteralVsParam:
 field bf$size: Ref
 
 method f$adtLiteralVsParam$F$t$Color1$t$Unit(par$c: Ref)
@@ -158,4 +158,4 @@ adt adt$c$Color1 {
   adtc$Color1$c$Color1()
 }
 
-/adt.kt:(1457,1467): warning: Viper verification error: Assert might fail. Assertion df$rt$c$Color1$FromRef(par$c) == df$rt$c$Color1$FromRef(l0$local) might not hold.
+/adt.kt:(1472,1482): warning: Viper verification error: Assert might fail. Assertion df$rt$c$Color1$FromRef(par$c) == df$rt$c$Color1$FromRef(l0$local) might not hold.

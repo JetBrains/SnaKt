@@ -10,47 +10,54 @@ class AdtOnClass<!>
 <!ADT_INVALID_TARGET!>@ADT
 open class AdtOnOpenClass<!>
 
-// --- Invalid: @ADT object with fields ---
+// --- Invalid: @ADT on a non-data object ---
 
 @ADT
-<!ADT_INVALID_TARGET!>object AdtWithField<!> {
+<!ADT_INVALID_TARGET!>object AdtNonDataObject<!>
+
+// --- Invalid: @ADT data object with fields ---
+
+@ADT
+data <!ADT_INVALID_TARGET!>object AdtWithField<!> {
     val x: Int = 42
 }
 
-// --- Invalid: @ADT object with member functions ---
+// --- Invalid: @ADT data object with member functions ---
 
 @ADT
-<!ADT_INVALID_TARGET, ADT_INVALID_TARGET!>object AdtWithFunction<!> {
+data <!ADT_INVALID_TARGET, ADT_INVALID_TARGET!>object AdtWithFunction<!> {
     fun <!VIPER_TEXT!>doSomething<!>(): Int = 1
 }
 
-// --- Invalid: @ADT object extending a class ---
+// --- Invalid: @ADT data object extending a class ---
 
 open class SomeBase
 
 @ADT
-<!ADT_INVALID_TARGET!>object AdtExtendingClass<!> : SomeBase()
+data <!ADT_INVALID_TARGET!>object AdtExtendingClass<!> : SomeBase()
 
-// --- Invalid: @ADT object implementing an interface ---
+// --- Invalid: @ADT data object implementing an interface ---
 
 interface SomeInterface
 
 @ADT
-<!ADT_INVALID_TARGET!>object AdtImplementingInterface<!> : SomeInterface
+data <!ADT_INVALID_TARGET!>object AdtImplementingInterface<!> : SomeInterface
 
-// --- Valid: bare @ADT objects ---
-
-@ADT
-object ValidAdt1
+// --- Valid: bare @ADT data objects ---
 
 @ADT
-object ValidAdt2
+data object ValidAdt1
+
+@ADT
+data object ValidAdt2
 
 // --- Trigger class embedding for invalid ADTs to exercise the checker ---
 
 fun <!VIPER_TEXT!>triggerAdtOnClass<!>(x: AdtOnClass) {}
 
 fun <!VIPER_TEXT!>triggerAdtOnOpenClass<!>(x: AdtOnOpenClass) {}
+
+fun <!VIPER_TEXT!>triggerAdtNonDataObject<!>(x: AdtNonDataObject) {}
 
 fun <!VIPER_TEXT!>triggerAdtWithField<!>(x: AdtWithField) {}
 

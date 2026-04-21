@@ -4,13 +4,13 @@ import org.jetbrains.kotlin.formver.plugin.preconditions
 import org.jetbrains.kotlin.formver.plugin.verify
 
 @ADT
-object Color1
+data object Color1
 
 @ADT
-object Color2
+data object Color2
 
 @ADT
-object Color3
+data object Color3
 
 // --- ADT parameter: type information is available in Viper ---
 

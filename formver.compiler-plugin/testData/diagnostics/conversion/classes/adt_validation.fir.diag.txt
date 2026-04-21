@@ -1,14 +1,16 @@
-/adt_validation.kt:(126,147): error: Invalid ADT annotation: @ADT may only be applied to object declarations
+/adt_validation.kt:(126,147): error: Invalid ADT annotation: @ADT may only be applied to data object declarations
 
-/adt_validation.kt:(149,179): error: Invalid ADT annotation: @ADT may only be applied to object declarations
+/adt_validation.kt:(149,179): error: Invalid ADT annotation: @ADT may only be applied to data object declarations
 
-/adt_validation.kt:(231,250): error: Invalid ADT annotation: An @ADT object must not have fields
+/adt_validation.kt:(233,256): error: Invalid ADT annotation: @ADT may only be applied to data object declarations
 
-/adt_validation.kt:(336,358): error: Invalid ADT annotation: An @ADT object must not have member functions
+/adt_validation.kt:(318,337): error: Invalid ADT annotation: An @ADT data object must not have fields
 
-/adt_validation.kt:(336,358): error: Invalid ADT annotation: An @ADT object must not have member functions
+/adt_validation.kt:(433,455): error: Invalid ADT annotation: An @ADT data object must not have member functions
 
-/adt_validation.kt:(369,380): info: Generated Viper text for doSomething:
+/adt_validation.kt:(433,455): error: Invalid ADT annotation: An @ADT data object must not have member functions
+
+/adt_validation.kt:(466,477): info: Generated Viper text for doSomething:
 method f$c$AdtWithFunction$doSomething$F$t$AdtWithFunction$t$Int(this$dispatch: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$AdtWithFunction())
@@ -19,11 +21,11 @@ method f$c$AdtWithFunction$doSomething$F$t$AdtWithFunction$t$Int(this$dispatch: 
   label lbl$ret$0
 }
 
-/adt_validation.kt:(472,496): error: Invalid ADT annotation: An @ADT object must not extend a class or implement an interface
+/adt_validation.kt:(579,603): error: Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface
 
-/adt_validation.kt:(600,631): error: Invalid ADT annotation: An @ADT object must not extend a class or implement an interface
+/adt_validation.kt:(717,748): error: Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface
 
-/adt_validation.kt:(813,830): info: Generated Viper text for triggerAdtOnClass:
+/adt_validation.kt:(945,962): info: Generated Viper text for triggerAdtOnClass:
 method f$triggerAdtOnClass$F$t$AdtOnClass$t$Unit(par$x: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$AdtOnClass())
@@ -33,7 +35,7 @@ method f$triggerAdtOnClass$F$t$AdtOnClass$t$Unit(par$x: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/adt_validation.kt:(854,875): info: Generated Viper text for triggerAdtOnOpenClass:
+/adt_validation.kt:(986,1007): info: Generated Viper text for triggerAdtOnOpenClass:
 method f$triggerAdtOnOpenClass$F$t$AdtOnOpenClass$t$Unit(par$x: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$AdtOnOpenClass())
@@ -43,7 +45,17 @@ method f$triggerAdtOnOpenClass$F$t$AdtOnOpenClass$t$Unit(par$x: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/adt_validation.kt:(903,922): info: Generated Viper text for triggerAdtWithField:
+/adt_validation.kt:(1035,1058): info: Generated Viper text for triggerAdtNonDataObject:
+method f$triggerAdtNonDataObject$F$t$AdtNonDataObject$t$Unit(par$x: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$AdtNonDataObject())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/adt_validation.kt:(1088,1107): info: Generated Viper text for triggerAdtWithField:
 method f$triggerAdtWithField$F$t$AdtWithField$t$Unit(par$x: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$AdtWithField())
@@ -53,7 +65,7 @@ method f$triggerAdtWithField$F$t$AdtWithField$t$Unit(par$x: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/adt_validation.kt:(948,970): info: Generated Viper text for triggerAdtWithFunction:
+/adt_validation.kt:(1133,1155): info: Generated Viper text for triggerAdtWithFunction:
 method f$triggerAdtWithFunction$F$t$AdtWithFunction$t$Unit(par$x: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$AdtWithFunction())
@@ -63,7 +75,7 @@ method f$triggerAdtWithFunction$F$t$AdtWithFunction$t$Unit(par$x: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/adt_validation.kt:(999,1023): info: Generated Viper text for triggerAdtExtendingClass:
+/adt_validation.kt:(1184,1208): info: Generated Viper text for triggerAdtExtendingClass:
 method f$triggerAdtExtendingClass$F$t$AdtExtendingClass$t$Unit(par$x: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$AdtExtendingClass())
@@ -73,7 +85,7 @@ method f$triggerAdtExtendingClass$F$t$AdtExtendingClass$t$Unit(par$x: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/adt_validation.kt:(1054,1085): info: Generated Viper text for triggerAdtImplementingInterface:
+/adt_validation.kt:(1239,1270): info: Generated Viper text for triggerAdtImplementingInterface:
 method f$triggerAdtImplementingInterface$F$t$AdtImplementingInterface$t$Unit(par$x: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$AdtImplementingInterface())
@@ -83,7 +95,7 @@ method f$triggerAdtImplementingInterface$F$t$AdtImplementingInterface$t$Unit(par
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/adt_validation.kt:(1180,1192): info: Generated Viper text for adtParameter:
+/adt_validation.kt:(1365,1377): info: Generated Viper text for adtParameter:
 method f$adtParameter$F$t$ValidAdt1$t$Unit(par$a: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$c$ValidAdt1())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -96,7 +108,7 @@ adt adt$c$ValidAdt1 {
   adtc$ValidAdt1$c$ValidAdt1()
 }
 
-/adt_validation.kt:(1274,1290): info: Generated Viper text for twoAdtParameters:
+/adt_validation.kt:(1459,1475): info: Generated Viper text for twoAdtParameters:
 method f$twoAdtParameters$F$t$ValidAdt1$t$ValidAdt2$t$Unit(par$a: Ref, par$b: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$c$ValidAdt1())
@@ -115,7 +127,7 @@ adt adt$c$ValidAdt2 {
   adtc$ValidAdt2$c$ValidAdt2()
 }
 
-/adt_validation.kt:(1397,1412): info: Generated Viper text for mixedParameters:
+/adt_validation.kt:(1582,1597): info: Generated Viper text for mixedParameters:
 method f$mixedParameters$F$t$ValidAdt1$t$Int$t$Unit(par$a: Ref, par$n: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$c$ValidAdt1())
@@ -130,7 +142,7 @@ adt adt$c$ValidAdt1 {
   adtc$ValidAdt1$c$ValidAdt1()
 }
 
-/adt_validation.kt:(1498,1514): info: Generated Viper text for adtLocalVariable:
+/adt_validation.kt:(1683,1699): info: Generated Viper text for adtLocalVariable:
 method f$adtLocalVariable$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
