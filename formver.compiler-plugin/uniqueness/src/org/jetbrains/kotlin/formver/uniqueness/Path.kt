@@ -119,6 +119,14 @@ object ValuePathCollector : FirVisitor<List<Path>, Unit>() {
     override fun visitVariableAssignment(variableAssignment: FirVariableAssignment, data: Unit): List<Path> {
         return variableAssignment.lValue.accept(this, data) + variableAssignment.rValue.accept(this, data)
     }
+
+    override fun visitProperty(property: FirProperty, data: Unit): List<Path> {
+        return (property.initializer?.accept(this, data) ?: emptyList()) + listOf(listOf(property.symbol))
+    }
+
+    override fun visitEqualityOperatorCall(equalityOperatorCall: FirEqualityOperatorCall, data: Unit): List<Path> {
+        return equalityOperatorCall.arguments.flatMap { it.accept(this, data) }
+    }
 }
 
 val FirElement.valuePaths
