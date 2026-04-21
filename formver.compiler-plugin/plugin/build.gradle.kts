@@ -3,6 +3,8 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":formver.compiler-plugin:locality"))
+
     compileOnly(project(":formver.compiler-plugin:core"))
     compileOnly(project(":formver.compiler-plugin:uniqueness"))
     compileOnly(project(":formver.common"))

@@ -3,7 +3,7 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
-package org.jetbrains.kotlin.formver.plugin.compiler.locality
+package org.jetbrains.kotlin.formver.locality.plugin.extension
 
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.declarations.FirProperty
@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
-import org.jetbrains.kotlin.formver.plugin.compiler.analysis.ExpressionPathFolder
+import org.jetbrains.kotlin.formver.analysis.ExpressionPathFolder
 
 /**
  * Extracts the locality of an expression with respect to the outer declarations specified in [context].
