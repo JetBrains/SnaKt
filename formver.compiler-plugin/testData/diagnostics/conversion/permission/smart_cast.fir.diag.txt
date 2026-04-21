@@ -1,0 +1,41 @@
+/smart_cast.kt:(146,153): info: Generated Viper text for consume:
+field bf$next: Ref
+
+method f$consume$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/smart_cast.kt:(177,181): info: Generated Viper text for test:
+field bf$next: Ref
+
+method f$consume$TF$T$A$T$Unit(p$a: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$test$TF$T$A$T$Unit(p$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$a), df$rt$c$A())
+  requires acc(p$c$A$unique(p$a), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$current: Ref
+  inhale acc(p$c$A$shared(p$a), wildcard)
+  unfold acc(p$c$A$unique(p$a), write)
+  l0$current := p$a.bf$next
+  if (!(l0$current == df$rt$nullValue())) {
+    var l2$local: Ref
+    var anon$0: Ref
+    unfold acc(p$c$A$shared(l0$current), wildcard)
+    l2$local := l0$current.bf$next
+    anon$0 := f$consume$TF$T$A$T$Unit(l0$current)
+  }
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}

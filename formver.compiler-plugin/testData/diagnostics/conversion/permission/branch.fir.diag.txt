@@ -1,0 +1,162 @@
+/branch.kt:(190,202): info: Generated Viper text for bothBranches:
+field bf$left: Ref
+
+field bf$right: Ref
+
+method f$bothBranches$t$F$t$Node$t$Unit(par$root: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$root), df$rt$c$Node())
+  requires acc(pred$c$Node$unique(par$root), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(pred$c$Node$shared(par$root), wildcard)
+  unfold acc(pred$c$Node$unique(par$root), write)
+  anon$0 := par$root.bf$left
+  anon$1 := par$root.bf$right
+  if (anon$0 == anon$1) {
+    fold acc(pred$c$Node$unique(par$root), write)
+    unfold acc(pred$c$Node$unique(par$root), write)
+    par$root.bf$left := df$rt$nullValue()
+    fold acc(pred$c$Node$unique(par$root), write)
+  } else {
+    fold acc(pred$c$Node$unique(par$root), write)
+    unfold acc(pred$c$Node$unique(par$root), write)
+    par$root.bf$right := df$rt$nullValue()
+    fold acc(pred$c$Node$unique(par$root), write)
+  }
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/branch.kt:(338,349): info: Generated Viper text for oneBranches:
+field bf$left: Ref
+
+field bf$right: Ref
+
+method f$oneBranches$t$F$t$Node$t$Unit(par$root: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$root), df$rt$c$Node())
+  requires acc(pred$c$Node$unique(par$root), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(pred$c$Node$shared(par$root), wildcard)
+  unfold acc(pred$c$Node$unique(par$root), write)
+  anon$0 := par$root.bf$left
+  anon$1 := par$root.bf$right
+  if (anon$0 == anon$1) {
+    fold acc(pred$c$Node$unique(par$root), write)
+    unfold acc(pred$c$Node$unique(par$root), write)
+    par$root.bf$left := df$rt$nullValue()
+    fold acc(pred$c$Node$unique(par$root), write)
+  } else {
+    fold acc(pred$c$Node$unique(par$root), write)}
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/branch.kt:(445,462): info: Generated Viper text for conditionVariable:
+field bf$left: Ref
+
+field bf$right: Ref
+
+method f$conditionVariable$t$F$t$Node$t$Unit(par$root: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$root), df$rt$c$Node())
+  requires acc(pred$c$Node$unique(par$root), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$condition: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(pred$c$Node$shared(par$root), wildcard)
+  anon$0 := par$root.bf$left
+  anon$1 := par$root.bf$right
+  l0$condition := df$rt$boolToRef(anon$0 == anon$1)
+  if (df$rt$boolFromRef(l0$condition)) {
+    var anon$2: Ref
+    unfold acc(pred$c$Node$unique(par$root), write)
+    anon$2 := par$root.bf$right
+    par$root.bf$left := anon$2
+  }
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/branch.kt:(594,601): info: Generated Viper text for consume:
+field bf$left: Ref
+
+field bf$right: Ref
+
+method f$consume$t$F$t$N$Node$t$Unit(par$node: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$nullable(df$rt$c$Node()))
+  requires par$node != df$rt$nullValue() ==>
+    acc(pred$c$Node$unique(par$node), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale par$node != df$rt$nullValue() ==>
+    acc(pred$c$Node$shared(par$node), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/branch.kt:(631,648): info: Generated Viper text for movedBeforeBranch:
+field bf$left: Ref
+
+field bf$right: Ref
+
+method f$consume$t$F$t$N$Node$t$Unit(par$node: Ref) returns (ret: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$node), df$rt$nullable(df$rt$c$Node()))
+  requires par$node != df$rt$nullValue() ==>
+    acc(pred$c$Node$unique(par$node), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+
+
+method f$movedBeforeBranch$t$F$t$Node$t$Unit(par$root: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$root), df$rt$c$Node())
+  requires acc(pred$c$Node$unique(par$root), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  var anon$2: Ref
+  inhale acc(pred$c$Node$shared(par$root), wildcard)
+  anon$1 := par$root.bf$left
+  anon$0 := f$consume$t$F$t$N$Node$t$Unit(anon$1)
+  anon$2 := par$root.bf$right
+  if (anon$2 == df$rt$nullValue()) {
+    par$root.bf$right := df$rt$nullValue()
+    par$root.bf$left := df$rt$nullValue()
+  }
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/branch.kt:(792,799): info: Generated Viper text for consume:
+field bf$left: Ref
+
+field bf$right: Ref
+
+method f$consume$t$F$t$N$Node$t$N$Node$t$Unit(par$a: Ref, par$b: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$nullable(df$rt$c$Node()))
+  requires par$a != df$rt$nullValue() ==>
+    acc(pred$c$Node$unique(par$a), write)
+  requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$nullable(df$rt$c$Node()))
+  requires par$b != df$rt$nullValue() ==>
+    acc(pred$c$Node$unique(par$b), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  inhale par$a != df$rt$nullValue() ==>
+    acc(pred$c$Node$shared(par$a), wildcard)
+  inhale par$b != df$rt$nullValue() ==>
+    acc(pred$c$Node$shared(par$b), wildcard)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/branch.kt:(839,1137): error: An internal error has occurred.
+Details: Argument uniqueness mismatch: expected 'unique global', actual 'moved'.
+Please report this at https://github.com/jesyspa/kotlin

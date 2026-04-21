@@ -1,0 +1,68 @@
+/stack.kt:(213,216): info: Generated Viper text for pop:
+field bf$data: Ref
+
+field bf$head: Ref
+
+field bf$next: Ref
+
+method f$pop$TF$T$Stack$NT$Node(p$stack: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$stack), df$rt$c$Stack())
+  requires acc(p$c$Stack$unique(p$stack), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$c$Node()))
+  ensures ret$0 != df$rt$nullValue() ==>
+    acc(p$c$Node$shared(ret$0), wildcard)
+{
+  var l0$head: Ref
+  inhale acc(p$c$Stack$shared(p$stack), wildcard)
+  unfold acc(p$c$Stack$unique(p$stack), write)
+  l0$head := p$stack.bf$head
+  if (!(l0$head == df$rt$nullValue())) {
+    var l2$nextNode: Ref
+    unfold acc(p$c$Node$unique(l0$head), write)
+    l2$nextNode := l0$head.bf$next
+    l0$head.bf$next := df$rt$nullValue()
+    fold acc(p$c$Node$unique(l0$head), write)
+    p$stack.bf$head := l2$nextNode
+    fold acc(p$c$Stack$unique(p$stack), write)
+    ret$0 := l0$head
+    goto lbl$ret$0
+  } else {
+    ret$0 := df$rt$nullValue()
+    goto lbl$ret$0
+  }
+  label lbl$ret$0
+}
+
+/stack.kt:(469,475): info: Generated Viper text for insert:
+field bf$data: Ref
+
+field bf$head: Ref
+
+field bf$next: Ref
+
+method f$insert$TF$T$Stack$T$Node$T$Unit(p$stack: Ref, p$node: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(p$stack), df$rt$c$Stack())
+  requires acc(p$c$Stack$unique(p$stack), write)
+  requires df$rt$isSubtype(df$rt$typeOf(p$node), df$rt$c$Node())
+  requires acc(p$c$Node$unique(p$node), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$head: Ref
+  inhale acc(p$c$Stack$shared(p$stack), wildcard)
+  inhale acc(p$c$Node$shared(p$node), wildcard)
+  unfold acc(p$c$Stack$unique(p$stack), write)
+  l0$head := p$stack.bf$head
+  if (!(l0$head == df$rt$nullValue())) {
+    unfold acc(p$c$Node$unique(p$node), write)
+    p$node.bf$next := l0$head
+    fold acc(p$c$Node$unique(p$node), write)
+    p$stack.bf$head := p$node
+    fold acc(p$c$Stack$unique(p$stack), write)
+  } else {
+    p$stack.bf$head := p$node
+    fold acc(p$c$Stack$unique(p$stack), write)
+  }
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}

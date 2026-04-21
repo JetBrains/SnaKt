@@ -1,0 +1,21 @@
+/simpleFolds.kt:(161,165): info: Generated Viper text for test:
+field bf$a: Ref
+
+field bf$x: Ref
+
+method f$test$t$F$t$B$t$Unit(par$b: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$c$B())
+  requires acc(pred$c$B$unique(par$b), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  inhale acc(pred$c$B$shared(par$b), wildcard)
+  unfold acc(pred$c$B$unique(par$b), write)
+  unfold acc(pred$c$A$unique(par$b.bf$a), write)
+  anon$0 := par$b.bf$a
+  anon$0.bf$x := df$rt$intToRef(3)
+  fold acc(pred$c$A$unique(par$b.bf$a), write)
+  fold acc(pred$c$B$unique(par$b), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}

@@ -1,0 +1,318 @@
+/fieldRead.kt:(289,298): info: Generated Viper text for uniq_uniq:
+field bf$shared: Ref
+
+field bf$uniq: Ref
+
+method f$uniq_uniq$t$F$t$C$t$Unit(par$c: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$C())
+  requires acc(pred$c$C$unique(par$c), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$l: Ref
+  inhale acc(pred$c$C$shared(par$c), wildcard)
+  unfold acc(pred$c$C$unique(par$c), write)
+  l0$l := par$c.bf$uniq
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(350,361): info: Generated Viper text for uniq_shared:
+field bf$shared: Ref
+
+field bf$uniq: Ref
+
+method f$uniq_shared$t$F$t$C$t$Unit(par$c: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$C())
+  requires acc(pred$c$C$unique(par$c), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$l: Ref
+  inhale acc(pred$c$C$shared(par$c), wildcard)
+  unfold acc(pred$c$C$unique(par$c), write)
+  l0$l := par$c.bf$shared
+  fold acc(pred$c$C$unique(par$c), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(406,420): info: Generated Viper text for uniq_uniq_uniq:
+field bf$shared: Ref
+
+field bf$uniq: Ref
+
+method f$uniq_uniq_uniq$t$F$t$C$t$Unit(par$c: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$C())
+  requires acc(pred$c$C$unique(par$c), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$l: Ref
+  var anon$0: Ref
+  inhale acc(pred$c$C$shared(par$c), wildcard)
+  unfold acc(pred$c$C$unique(par$c), write)
+  unfold acc(pred$c$B$unique(par$c.bf$uniq), write)
+  anon$0 := par$c.bf$uniq
+  l0$l := anon$0.bf$uniq
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(477,493): info: Generated Viper text for uniq_shared_uniq:
+field bf$shared: Ref
+
+field bf$uniq: Ref
+
+method f$uniq_shared_uniq$t$F$t$C$t$Unit(par$c: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$C())
+  requires acc(pred$c$C$unique(par$c), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$l: Ref
+  var anon$0: Ref
+  inhale acc(pred$c$C$shared(par$c), wildcard)
+  unfold acc(pred$c$C$unique(par$c), write)
+  anon$0 := par$c.bf$shared
+  l0$l := anon$0.bf$uniq
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(543,559): info: Generated Viper text for uniq_uniq_shared:
+field bf$shared: Ref
+
+field bf$uniq: Ref
+
+method f$uniq_uniq_shared$t$F$t$C$t$Unit(par$c: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$C())
+  requires acc(pred$c$C$unique(par$c), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$l: Ref
+  var anon$0: Ref
+  inhale acc(pred$c$C$shared(par$c), wildcard)
+  unfold acc(pred$c$C$unique(par$c), write)
+  unfold acc(pred$c$B$unique(par$c.bf$uniq), write)
+  anon$0 := par$c.bf$uniq
+  l0$l := anon$0.bf$shared
+  fold acc(pred$c$B$unique(par$c.bf$uniq), write)
+  fold acc(pred$c$C$unique(par$c), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(610,628): info: Generated Viper text for uniq_shared_shared:
+field bf$shared: Ref
+
+field bf$uniq: Ref
+
+method f$uniq_shared_shared$t$F$t$C$t$Unit(par$c: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$C())
+  requires acc(pred$c$C$unique(par$c), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$l: Ref
+  var anon$0: Ref
+  inhale acc(pred$c$C$shared(par$c), wildcard)
+  unfold acc(pred$c$C$unique(par$c), write)
+  anon$0 := par$c.bf$shared
+  l0$l := anon$0.bf$shared
+  fold acc(pred$c$C$unique(par$c), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(680,699): info: Generated Viper text for uniq_uniq_uniq_uniq:
+field bf$shared: Ref
+
+field bf$uniq: Ref
+
+method f$uniq_uniq_uniq_uniq$t$F$t$C$t$Unit(par$c: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$C())
+  requires acc(pred$c$C$unique(par$c), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$l: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(pred$c$C$shared(par$c), wildcard)
+  unfold acc(pred$c$C$unique(par$c), write)
+  unfold acc(pred$c$B$unique(par$c.bf$uniq), write)
+  unfold acc(pred$c$A$unique(par$c.bf$uniq.bf$uniq), write)
+  anon$1 := par$c.bf$uniq
+  anon$0 := anon$1.bf$uniq
+  l0$l := anon$0.bf$uniq
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(761,782): info: Generated Viper text for uniq_shared_uniq_uniq:
+field bf$shared: Ref
+
+field bf$uniq: Ref
+
+method f$uniq_shared_uniq_uniq$t$F$t$C$t$Unit(par$c: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$C())
+  requires acc(pred$c$C$unique(par$c), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$l: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(pred$c$C$shared(par$c), wildcard)
+  unfold acc(pred$c$C$unique(par$c), write)
+  anon$1 := par$c.bf$shared
+  anon$0 := anon$1.bf$uniq
+  l0$l := anon$0.bf$uniq
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(837,858): info: Generated Viper text for uniq_uniq_shared_uniq:
+field bf$shared: Ref
+
+field bf$uniq: Ref
+
+method f$uniq_uniq_shared_uniq$t$F$t$C$t$Unit(par$c: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$C())
+  requires acc(pred$c$C$unique(par$c), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$l: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(pred$c$C$shared(par$c), wildcard)
+  unfold acc(pred$c$C$unique(par$c), write)
+  unfold acc(pred$c$B$unique(par$c.bf$uniq), write)
+  anon$1 := par$c.bf$uniq
+  anon$0 := anon$1.bf$shared
+  l0$l := anon$0.bf$uniq
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(914,937): info: Generated Viper text for uniq_shared_shared_uniq:
+field bf$shared: Ref
+
+field bf$uniq: Ref
+
+method f$uniq_shared_shared_uniq$t$F$t$C$t$Unit(par$c: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$C())
+  requires acc(pred$c$C$unique(par$c), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$l: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(pred$c$C$shared(par$c), wildcard)
+  unfold acc(pred$c$C$unique(par$c), write)
+  anon$1 := par$c.bf$shared
+  anon$0 := anon$1.bf$shared
+  l0$l := anon$0.bf$uniq
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(994,1015): info: Generated Viper text for uniq_uniq_uniq_shared:
+field bf$shared: Ref
+
+field bf$uniq: Ref
+
+method f$uniq_uniq_uniq_shared$t$F$t$C$t$Unit(par$c: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$C())
+  requires acc(pred$c$C$unique(par$c), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$l: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(pred$c$C$shared(par$c), wildcard)
+  unfold acc(pred$c$C$unique(par$c), write)
+  unfold acc(pred$c$B$unique(par$c.bf$uniq), write)
+  unfold acc(pred$c$A$unique(par$c.bf$uniq.bf$uniq), write)
+  anon$1 := par$c.bf$uniq
+  anon$0 := anon$1.bf$uniq
+  l0$l := anon$0.bf$shared
+  fold acc(pred$c$A$unique(par$c.bf$uniq.bf$uniq), write)
+  fold acc(pred$c$B$unique(par$c.bf$uniq), write)
+  fold acc(pred$c$C$unique(par$c), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1071,1094): info: Generated Viper text for uniq_shared_uniq_shared:
+field bf$shared: Ref
+
+field bf$uniq: Ref
+
+method f$uniq_shared_uniq_shared$t$F$t$C$t$Unit(par$c: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$C())
+  requires acc(pred$c$C$unique(par$c), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$l: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(pred$c$C$shared(par$c), wildcard)
+  unfold acc(pred$c$C$unique(par$c), write)
+  anon$1 := par$c.bf$shared
+  anon$0 := anon$1.bf$uniq
+  l0$l := anon$0.bf$shared
+  fold acc(pred$c$C$unique(par$c), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1151,1174): info: Generated Viper text for uniq_uniq_shared_shared:
+field bf$shared: Ref
+
+field bf$uniq: Ref
+
+method f$uniq_uniq_shared_shared$t$F$t$C$t$Unit(par$c: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$C())
+  requires acc(pred$c$C$unique(par$c), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$l: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(pred$c$C$shared(par$c), wildcard)
+  unfold acc(pred$c$C$unique(par$c), write)
+  unfold acc(pred$c$B$unique(par$c.bf$uniq), write)
+  anon$1 := par$c.bf$uniq
+  anon$0 := anon$1.bf$shared
+  l0$l := anon$0.bf$shared
+  fold acc(pred$c$B$unique(par$c.bf$uniq), write)
+  fold acc(pred$c$C$unique(par$c), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/fieldRead.kt:(1232,1257): info: Generated Viper text for uniq_shared_shared_shared:
+field bf$shared: Ref
+
+field bf$uniq: Ref
+
+method f$uniq_shared_shared_shared$t$F$t$C$t$Unit(par$c: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$c$C())
+  requires acc(pred$c$C$unique(par$c), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$l: Ref
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(pred$c$C$shared(par$c), wildcard)
+  unfold acc(pred$c$C$unique(par$c), write)
+  anon$1 := par$c.bf$shared
+  anon$0 := anon$1.bf$shared
+  l0$l := anon$0.bf$shared
+  fold acc(pred$c$C$unique(par$c), write)
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
