@@ -21,7 +21,7 @@ import kotlin.collections.iterator
 
 object LocalityFunctionCallChecker : FirFunctionCallChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
-    private fun checkArgument(argument: FirExpression, requiredArgumentLocality: Locality) {
+    private fun checkArgument(argument: FirExpression, requiredArgumentLocality: LocalityAttribute?) {
         val actualArgumentLocality = argument.extractLocality()
 
         if (requiredArgumentLocality.accepts(actualArgumentLocality)) return
