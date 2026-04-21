@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.formver.viper.AnyName
 class ViperKeyword(val keyword: String) : AnyName
 
 object ViperKeywords {
-    val keywords = mutableSetOf(
+    val keywords = setOf(
         "import",
         "define",
         "field",
