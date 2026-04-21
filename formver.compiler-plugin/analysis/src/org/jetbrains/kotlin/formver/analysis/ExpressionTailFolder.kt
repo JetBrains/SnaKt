@@ -3,7 +3,7 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
-package org.jetbrains.kotlin.formver.plugin.compiler.analysis
+package org.jetbrains.kotlin.formver.analysis
 
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.expressions.FirBlock
@@ -37,7 +37,7 @@ import org.jetbrains.kotlin.fir.visitors.FirVisitor
  * - [join], the way alternative tail paths are merged
  *
  * In addition to this, they can also override specific visitor methods when a particular expression kind should
- * contribute a non-empty result, as [org.jetbrains.kotlin.formver.plugin.compiler.locality.ExpressionLocalityExtractor]
+ * contribute a non-empty result, as [org.jetbrains.kotlin.formver.locality.ExpressionLocalityExtractor]
  * does for variable, property, and receiver accesses.
  *
  * [D] is the type of the extra data threaded through the traversal.

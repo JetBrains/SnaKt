@@ -33,6 +33,8 @@ dependencies {
     implementation(project(":formver.compiler-plugin:viper")) { isTransitive = true }
     implementation(project(":formver.compiler-plugin:cli")) { isTransitive = false }
     implementation(project(":formver.compiler-plugin:plugin")) { isTransitive = false }
+    implementation(project(":formver.compiler-plugin:locality")) { isTransitive = false }
+    implementation(project(":formver.compiler-plugin:analysis")) { isTransitive = false }
     implementation(project(":formver.common")) { isTransitive = false }
     implementation(kotlin("compiler"))
 
@@ -41,10 +43,14 @@ dependencies {
     testFixturesApi(kotlin("compiler"))
     testFixturesImplementation(project(":formver.common"))
     testFixturesImplementation(project(":formver.compiler-plugin:plugin"))
+    testFixturesImplementation(project(":formver.compiler-plugin:locality"))
+    testFixturesImplementation(project(":formver.compiler-plugin:analysis"))
 
     annotationsRuntimeClasspath(project(":formver.annotations"))
 
     testImplementation(project(":formver.compiler-plugin:plugin"))
+    testImplementation(project(":formver.compiler-plugin:locality"))
+    testImplementation(project(":formver.compiler-plugin:analysis"))
     testImplementation(project(":formver.common"))
     testImplementation(project(":formver.compiler-plugin:uniqueness"))
     testRuntimeOnly(project(":formver.compiler-plugin:core"))
