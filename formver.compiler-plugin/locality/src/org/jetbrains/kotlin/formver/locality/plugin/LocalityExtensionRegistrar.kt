@@ -7,10 +7,12 @@ package org.jetbrains.kotlin.formver.locality.plugin
 
 import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
 import org.jetbrains.kotlin.formver.locality.plugin.extension.LocalityAdditionalCheckers
+import org.jetbrains.kotlin.formver.locality.plugin.extension.LocalityAttributeExtension
 
 object LocalityExtensionRegistrar : FirExtensionRegistrar() {
     override fun ExtensionRegistrarContext.configurePlugin() {
         registerDiagnosticContainers(LocalityErrors)
+        +LocalityAttributeExtension.getFactory()
         +LocalityAdditionalCheckers.getFactory()
     }
 }

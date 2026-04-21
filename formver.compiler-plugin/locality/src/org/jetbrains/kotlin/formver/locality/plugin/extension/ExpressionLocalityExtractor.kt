@@ -23,15 +23,15 @@ import org.jetbrains.kotlin.formver.analysis.ExpressionPathFolder
  */
 class ExpressionLocalityExtractor(
     private val context: CheckerContext
-) : ExpressionPathFolder<Locality, Unit>() {
-    override val empty = Locality.Global
+) : ExpressionPathFolder<LocalityAttribute?, Unit>() {
+    override val empty: LocalityAttribute? = null
 
-    override fun Locality.join(other: Locality): Locality {
-        return join(other)
+    override fun LocalityAttribute?.join(other: LocalityAttribute?): LocalityAttribute? {
+        return union(other)
     }
 
     @OptIn(SymbolInternals::class)
-    fun FirBasedSymbol<*>.extractLocality(): Locality {
+    fun FirBasedSymbol<*>.extractLocality(): LocalityAttribute? {
         return when (this) {
             is FirVariableSymbol<*> ->
                 when (val declaration = fir) {
@@ -41,16 +41,16 @@ class ExpressionLocalityExtractor(
                         context(context) {
                             declaration.extractLocality()
                         }
-                    else -> Locality.Global
+                    else -> null
                 }
-            else -> Locality.Global
+            else -> null
         }
     }
 
     override fun visitQualifiedAccessExpression(
         qualifiedAccessExpression: FirQualifiedAccessExpression,
         data: Unit
-    ): Locality {
+    ): LocalityAttribute? {
         val receiver = qualifiedAccessExpression.explicitReceiver
             ?: qualifiedAccessExpression.dispatchReceiver
 
@@ -65,7 +65,7 @@ class ExpressionLocalityExtractor(
     override fun visitThisReceiverExpression(
         thisReceiverExpression: FirThisReceiverExpression,
         data: Unit
-    ): Locality {
+    ): LocalityAttribute? {
         val boundSymbol = thisReceiverExpression.calleeReference.boundSymbol
 
         return when (boundSymbol) {
@@ -79,6 +79,6 @@ class ExpressionLocalityExtractor(
  * Extracts the locality of [this] expression with respect to the outer declarations.
  */
 context(context: CheckerContext)
-fun FirExpression.extractLocality(): Locality {
+fun FirExpression.extractLocality(): LocalityAttribute? {
     return accept(ExpressionLocalityExtractor(context), Unit)
 }

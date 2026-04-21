@@ -8,7 +8,6 @@ package org.jetbrains.kotlin.formver.locality.plugin.extension
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.context.findClosest
 import org.jetbrains.kotlin.fir.declarations.FirControlFlowGraphOwner
-import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirProperty
 import org.jetbrains.kotlin.fir.declarations.FirReceiverParameter
 import org.jetbrains.kotlin.fir.declarations.FirValueParameter
@@ -17,48 +16,28 @@ import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
-import org.jetbrains.kotlin.fir.types.classId
+import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.types.coneType
-import org.jetbrains.kotlin.formver.core.annotationId
 
-private val localityAnnotationId = annotationId("Borrowed")
-
-private fun FirDeclaration.hasLocalityAnnotation(): Boolean {
-    return annotations.any { it.annotationTypeRef.coneType.classId == localityAnnotationId }
-}
-
-private inline fun FirDeclaration.extractLocality(
-    findOwner: FirDeclaration.() -> FirBasedSymbol<*>?
-): Locality {
-    if (!hasLocalityAnnotation()) return Locality.Global
-
-    return Locality.Local(findOwner())
-}
+private inline fun FirTypeRef.extractLocality(findOwner: () -> FirBasedSymbol<*>?): LocalityAttribute? =
+    coneType.attributes.locality?.copy(owner = findOwner())
 
 private fun CheckerContext.findClosestFunction(): FirBasedSymbol<*>? =
     findClosest<FirFunctionSymbol<*>>()
 
 context(context: CheckerContext)
-fun FirReceiverParameter.extractRequiredLocality(): Locality =
-    extractLocality {
-        context.findClosestFunction()
-    }
+fun FirReceiverParameter.extractRequiredLocality(): LocalityAttribute? =
+    typeRef.extractLocality { context.findClosestFunction() }
 
-fun FirReceiverParameter.extractActualLocality(): Locality =
-    extractLocality {
-        containingDeclarationSymbol
-    }
+fun FirReceiverParameter.extractActualLocality(): LocalityAttribute? =
+    typeRef.extractLocality { containingDeclarationSymbol }
 
 context(context: CheckerContext)
-fun FirValueParameter.extractRequiredLocality(): Locality =
-    extractLocality {
-        context.findClosestFunction()
-    }
+fun FirValueParameter.extractRequiredLocality(): LocalityAttribute? =
+    returnTypeRef.extractLocality { context.findClosestFunction() }
 
-fun FirValueParameter.extractActualLocality(): Locality =
-    extractLocality {
-        containingDeclarationSymbol
-    }
+fun FirValueParameter.extractActualLocality(): LocalityAttribute? =
+    returnTypeRef.extractLocality { containingDeclarationSymbol }
 
 private fun FirControlFlowGraphOwner.declaresProperty(property: FirProperty): Boolean =
     controlFlowGraphReference?.controlFlowGraph?.nodes?.any { node ->
@@ -75,7 +54,5 @@ private fun FirProperty.findOwner(): FirBasedSymbol<*>? =
     }
 
 context(context: CheckerContext)
-fun FirProperty.extractLocality(): Locality =
-    extractLocality {
-        findOwner()
-    }
+fun FirProperty.extractLocality(): LocalityAttribute? =
+    returnTypeRef.extractLocality { findOwner() }
