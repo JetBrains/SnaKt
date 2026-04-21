@@ -9,10 +9,115 @@ import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.EnterNodeMarker
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ExitNodeMarker
-import org.jetbrains.kotlin.formver.uniqueness.FlowFacts
-import org.jetbrains.kotlin.formver.uniqueness.Path
-import org.jetbrains.kotlin.formver.uniqueness.UniquenessTrie
-import org.jetbrains.kotlin.formver.uniqueness.UniquenessType
+import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirRegularPropertySymbol
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.FoldEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.PrimitiveFieldAccess
+import org.jetbrains.kotlin.formver.core.embeddings.expression.UnfoldEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.properties.BackingFieldGetter
+import org.jetbrains.kotlin.formver.uniqueness.*
+
+data class Folds(val unfolds: List<Path>, val folds: List<Path>) {
+
+    private fun createExpEmbeddings(data: StmtConversionContext, path: Path): ExpEmbedding {
+        val base = data.embedLocalSymbol(path.first())
+        return path.drop(1).fold(base) { path, symbol ->
+            val field = (data.embedProperty(symbol as FirRegularPropertySymbol).getter as BackingFieldGetter).field
+            PrimitiveFieldAccess(path, field)
+        }
+    }
+
+    fun unfolds(data: StmtConversionContext) = unfolds.map {
+        UnfoldEmbedding(createExpEmbeddings(data, it))
+    }
+
+    fun folds(data: StmtConversionContext) = folds.map {
+        FoldEmbedding(createExpEmbeddings(data, it))
+    }
+}
+
+sealed interface Node {
+    data class Symbol(val symbol: FirBasedSymbol<*>) : Node {
+        override fun holds(other: FirBasedSymbol<*>): Boolean = symbol == other
+    }
+
+    object Root : Node {
+        override fun holds(other: FirBasedSymbol<*>): Boolean = false
+    }
+
+    fun holds(other: FirBasedSymbol<*>): Boolean
+}
+
+data class PathTreeNode(
+    val element: Node,
+    val children: MutableList<PathTreeNode>,
+    val typeBefore: UniquenessType? = null,
+    val typeAfter: UniquenessType? = null,
+) {
+
+    context(firExpression: FirElement)
+    fun insertPath(path: Path, data: UniquenessInformation) {
+        if (path.isEmpty()) return
+        val first = path.first()
+        val childMatches = children.firstOrNull {
+            it.element.holds(first)
+        }
+        if (childMatches != null) {
+            childMatches.insertPath(path.drop(1), data)
+        } else {
+            val subTree = PathTreeNode(
+                Node.Symbol(first),
+                mutableListOf(),
+                data.typeBefore(firExpression, path),
+                data.typeAfter(firExpression, path),
+            )
+            subTree.insertPath(path.drop(1), data)
+            children.add(subTree)
+        }
+    }
+
+    fun allSubPaths(): List<Path> {
+        if (element is Node.Root) return emptyList()
+        return children.flatMap { it.allSubPaths() }.map { listOf((element as Node.Symbol).symbol) + it }
+    }
+
+    fun isMoved(type: UniquenessType): Boolean = type == UniquenessType.Moved
+
+    fun extractFolds(): List<Path> {
+        if (element is Node.Root) return children.flatMap { it.extractFolds() }
+        val currentSymbol = (element as Node.Symbol).symbol
+
+        if (children.isEmpty()) {
+            return emptyList()
+        }
+
+        return when (typeAfter) {
+            is UniquenessType.Moved -> children.flatMap { it.extractFolds() }.map { listOf(currentSymbol) + it }
+            else -> children.flatMap { it.extractFolds() }.map { listOf(currentSymbol) + it } + listOf(
+                listOf(
+                    currentSymbol
+                )
+            )
+        }
+    }
+
+    fun extractUnfolds(): List<Path> {
+        if (element is Node.Root) return children.flatMap { it.extractUnfolds() }
+        val currentSymbol = (element as Node.Symbol).symbol
+
+        if (children.isEmpty()) {
+            return emptyList()
+        }
+
+        return when (typeBefore) {
+            is UniquenessType.Moved -> children.flatMap { it.extractUnfolds() }.map { listOf(currentSymbol) + it }
+            // Before Unique
+            else -> listOf(listOf(currentSymbol)) + children.flatMap { it.extractUnfolds() }
+                .map { listOf(currentSymbol) + it }
+        }
+    }
+}
 
 /**
  * Represents information about the uniqueness of paths through a control flow graph (CFG).
@@ -35,17 +140,27 @@ class UniquenessInformation(val root: CFGNode<*>, val flowFacts: FlowFacts<Uniqu
         return nodeCollectionMap[firElement]?.exit?.let { flowFacts.flowAfter(it) }
     }
 
-    fun mustUnfold(firElement: FirElement, path: Path?): Boolean {
-        if (path == null) return false
-        val flowType = flowBefore(firElement)?.ensure(path)?.parentsJoin ?: return false
-        return flowType != UniquenessType.Moved
+    fun typeBefore(firElement: FirElement, path: Path): UniquenessType? {
+        return flowBefore(firElement)?.ensure(path)?.parentsJoin
     }
 
-    fun mustFold(firElement: FirElement, path: Path?): Boolean {
-        if (path == null) return false
-        val flowType = flowAfter(firElement)?.ensure(path)?.parentsJoin ?: return false
-        return flowType != UniquenessType.Moved
+    fun typeAfter(firElement: FirElement, path: Path): UniquenessType? {
+        return flowAfter(firElement)?.ensure(path)?.parentsJoin
     }
+
+
+    fun getFolds(embedding: FirElement): Folds {
+
+        val pathTree = PathTreeNode(Node.Root, mutableListOf())
+        with(embedding) {
+            embedding.valuePaths.forEach { path ->
+                pathTree.insertPath(path, this@UniquenessInformation)
+            }
+        }
+
+        return Folds(pathTree.extractUnfolds(), pathTree.extractFolds())
+    }
+
 
     class NodeCollection {
         private var _entry: CFGNode<*>? = null

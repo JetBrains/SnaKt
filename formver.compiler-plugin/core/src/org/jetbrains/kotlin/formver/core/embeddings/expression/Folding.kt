@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 
 data class FoldEmbedding(
-    val path: PrimitiveFieldAccess,
+    val path: ExpEmbedding,
 ) : ExpEmbedding {
     override val type: TypeEmbedding
         get() = buildType { boolean() }
@@ -15,7 +15,7 @@ data class FoldEmbedding(
 }
 
 data class UnfoldEmbedding(
-    val path: PrimitiveFieldAccess,
+    val path: ExpEmbedding,
 ) : ExpEmbedding {
     override val type: TypeEmbedding
         get() = buildType { boolean() }

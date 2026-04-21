@@ -36,14 +36,11 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.LtCharChar
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.LtIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
-import org.jetbrains.kotlin.formver.core.embeddings.properties.BackingFieldGetter
-import org.jetbrains.kotlin.formver.core.embeddings.properties.ClassPropertyAccess
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
 import org.jetbrains.kotlin.formver.core.functionCallArguments
 import org.jetbrains.kotlin.formver.core.isInvariantBuilderFunctionNamed
-import org.jetbrains.kotlin.formver.uniqueness.ReceiverPathExtractor
 import org.jetbrains.kotlin.text
 import org.jetbrains.kotlin.types.ConstantValueKind
 import org.jetbrains.kotlin.utils.addIfNotNull
@@ -398,21 +395,9 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         variableAssignment: FirVariableAssignment,
         data: StmtConversionContext,
     ): ExpEmbedding {
-        val pathsToUnfold = mutableListOf<UnfoldEmbedding>()
-        val pathsToFold = mutableListOf<FoldEmbedding>()
+        val folds = data.uniquenessInformation?.getFolds(variableAssignment)
         val embedding = when (val lValue = variableAssignment.lValue) {
-            is FirPropertyAccessExpression -> {
-                val path = ReceiverPathExtractor.visitElement(lValue, Unit)
-                val addUnfold = data.uniquenessInformation?.mustUnfold(variableAssignment, path) ?: false
-                val addFold = data.uniquenessInformation?.mustFold(variableAssignment, path) ?: false
-                val lhs = data.embedPropertyAccess(lValue) as ClassPropertyAccess
-                val receiver = lhs.receiver
-                val field = (lhs.property.getter as BackingFieldGetter).field
-                val fieldAccess = PrimitiveFieldAccess(receiver, field)
-                if (addUnfold) pathsToUnfold.add(UnfoldEmbedding(fieldAccess))
-                if (addFold) pathsToFold.add(FoldEmbedding(fieldAccess))
-                lhs
-            }
+            is FirPropertyAccessExpression -> data.embedPropertyAccess(lValue)
 
             is FirDesugaredAssignmentValueReferenceExpression -> {
                 data.embedPropertyAccess(lValue.expressionRef.value as FirPropertyAccessExpression)
@@ -424,10 +409,12 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
         val convertedRValue = data.convert(variableAssignment.rValue)
 
+
+
         return Block {
-            addAll(pathsToUnfold)
+            folds?.unfolds(data)?.let { addAll(it) }
             add(embedding.setValue(convertedRValue, data))
-            addAll(pathsToFold)
+            folds?.folds(data)?.let { addAll(it) }
         }
     }
 

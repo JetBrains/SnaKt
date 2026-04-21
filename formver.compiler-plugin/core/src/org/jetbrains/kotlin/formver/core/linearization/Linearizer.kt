@@ -9,7 +9,9 @@ import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
-import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.core.embeddings.toViperGoto
@@ -105,7 +107,7 @@ data class Linearizer(
         addStatement {
             when (field.accessPolicy) {
                 // TODO: Handling a unique field on a shared receiver must be added here.
-                AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
+                AccessPolicy.BY_RECEIVER_UNIQUENESS if false -> {
                     receiver.toViperUnusedResult(this)
                     field.type.havocMethod.toMethodCall(emptyList(), listOf(result.toLocalVarUse()))
                 }
@@ -114,11 +116,12 @@ data class Linearizer(
                     val receiverViper = receiver.toViper(this)
                     // If the field access is not replaced with havoc,
                     // we might need to unfold some predicate to access it.
-                    if (field.unfoldToAccess) {
-                        val receiverWrapper = ExpWrapper(receiverViper, receiverType)
-                        val hierarchyPath = receiverType.hierarchyPathTo(field)
-                        hierarchyPath.unfoldHierarchyPath(receiverWrapper, this)
-                    }
+// TODO: Figure out, what to do with the shared predicates
+//                    if (field.unfoldToAccess) {
+//                        val receiverWrapper = ExpWrapper(receiverViper, receiverType)
+//                        val hierarchyPath = receiverType.hierarchyPathTo(field)
+//                        hierarchyPath.unfoldHierarchyPath(receiverWrapper, this)
+//                    }
                     Stmt.assign(
                         result.toLocalVarUse(), Exp.FieldAccess(receiverViper, field.toViper(), source.asPosition)
                     )

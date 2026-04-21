@@ -596,11 +596,11 @@ data class LinearizationVisitor(
 
     // region Permission
 
-    // TODO : use the correct default Interface for the Linearizer
+    // TODO : Is this the correct Interface?
     override fun visitFoldEmbedding(e: FoldEmbedding) = object : UnitResultLinearizable(e) {
 
         override fun toViperUnusedResult(ctx: LinearizationContext) {
-            val predicate = (e.path.inner.type.pretype as ClassTypeEmbedding).uniquePredicateAccessInvariant()
+            val predicate = (e.path.type.pretype as ClassTypeEmbedding).uniquePredicateAccessInvariant()
             val viperPredicate = predicate.fillHole(e.path).linearize().toViperBuiltinType(ctx)
             ctx.addStatement {
                 Stmt.Fold(viperPredicate as Exp.PredicateAccess)
@@ -613,7 +613,7 @@ data class LinearizationVisitor(
     override fun visitUnfoldEmbedding(e: UnfoldEmbedding): Linearizable = object : UnitResultLinearizable(e) {
 
         override fun toViperUnusedResult(ctx: LinearizationContext) {
-            val predicate = (e.path.inner.type.pretype as ClassTypeEmbedding).uniquePredicateAccessInvariant()
+            val predicate = (e.path.type.pretype as ClassTypeEmbedding).uniquePredicateAccessInvariant()
             val viperPredicate = predicate.fillHole(e.path).linearize().toViperBuiltinType(ctx)
             ctx.addStatement {
                 Stmt.Unfold(viperPredicate as Exp.PredicateAccess)
