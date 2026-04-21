@@ -11,10 +11,8 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.EnterNodeMarker
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ExitNodeMarker
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirRegularPropertySymbol
-import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.FoldEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.PrimitiveFieldAccess
-import org.jetbrains.kotlin.formver.core.embeddings.expression.UnfoldEmbedding
+import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.BackingFieldGetter
 import org.jetbrains.kotlin.formver.uniqueness.*
 
@@ -35,6 +33,30 @@ data class Folds(val unfolds: List<Path>, val folds: List<Path>) {
     fun folds(data: StmtConversionContext) = folds.map {
         FoldEmbedding(createExpEmbeddings(data, it))
     }
+
+    fun unfoldBlock(data: StmtConversionContext) = Block {
+        addAll(unfolds(data))
+    }
+
+    fun foldBlock(data: StmtConversionContext) = Block {
+        addAll(folds(data))
+    }
+
+    fun wrap(exp: ExpEmbedding, data: StmtConversionContext) = Block {
+        addAll(unfolds(data))
+        add(exp)
+        addAll(folds(data))
+    }
+
+    fun wrapFolds(exp: ExpEmbedding, data: StmtConversionContext) = Block {
+        add(exp)
+        addAll(folds(data))
+    }
+
+    fun wrapUnfolds(exp: ExpEmbedding, data: StmtConversionContext) = Block {
+        addAll(unfolds(data))
+        add(exp)
+    }
 }
 
 sealed interface Node {
@@ -52,28 +74,30 @@ sealed interface Node {
 data class PathTreeNode(
     val element: Node,
     val children: MutableList<PathTreeNode>,
-    val typeBefore: UniquenessType? = null,
-    val typeAfter: UniquenessType? = null,
+    val typeBefore: UniquenessTrie? = null,
+    val typeAfter: UniquenessTrie? = null,
 ) {
 
     context(firExpression: FirElement)
     fun insertPath(path: Path, data: UniquenessInformation) {
-        if (path.isEmpty()) return
-        val first = path.first()
-        val childMatches = children.firstOrNull {
-            it.element.holds(first)
-        }
-        if (childMatches != null) {
-            childMatches.insertPath(path.drop(1), data)
-        } else {
-            val subTree = PathTreeNode(
-                Node.Symbol(first),
-                mutableListOf(),
-                data.typeBefore(firExpression, path),
-                data.typeAfter(firExpression, path),
-            )
-            subTree.insertPath(path.drop(1), data)
-            children.add(subTree)
+        var currentNode = this
+        for (i in 1 until path.size + 1) {
+            val prefix = path.take(i)
+            val childMatches = currentNode.children.firstOrNull {
+                it.element.holds(prefix.last())
+            }
+            if (childMatches != null) {
+                currentNode = childMatches
+            } else {
+                val subTree = PathTreeNode(
+                    Node.Symbol(prefix.last()),
+                    mutableListOf(),
+                    data.typeBefore(firExpression, prefix),
+                    data.typeAfter(firExpression, prefix),
+                )
+                currentNode.children.add(subTree)
+                currentNode = subTree
+            }
         }
     }
 
@@ -82,7 +106,9 @@ data class PathTreeNode(
         return children.flatMap { it.allSubPaths() }.map { listOf((element as Node.Symbol).symbol) + it }
     }
 
-    fun isMoved(type: UniquenessType): Boolean = type == UniquenessType.Moved
+    private fun UniquenessType.isShared(): Boolean =
+        (this is UniquenessType.Active) && this.uniqueLevel == UniqueLevel.Shared
+
 
     fun extractFolds(): List<Path> {
         if (element is Node.Root) return children.flatMap { it.extractFolds() }
@@ -91,14 +117,23 @@ data class PathTreeNode(
         if (children.isEmpty()) {
             return emptyList()
         }
+        if (typeAfter?.parentsJoin?.isShared() == true) {
+            return emptyList()
+        }
+        return when (typeAfter?.childrenJoin) {
+            is UniquenessType.Moved -> {
+                // we can not fold back the current path. But we still might be able to fold some child paths.
+                children.flatMap { it.extractFolds() }.map { listOf(currentSymbol) + it }
+            }
 
-        return when (typeAfter) {
-            is UniquenessType.Moved -> children.flatMap { it.extractFolds() }.map { listOf(currentSymbol) + it }
-            else -> children.flatMap { it.extractFolds() }.map { listOf(currentSymbol) + it } + listOf(
+            is UniquenessType.Active -> children.flatMap { it.extractFolds() }
+                .map { listOf(currentSymbol) + it } + listOf(
                 listOf(
                     currentSymbol
                 )
             )
+
+            null -> throw SnaktInternalException(null, "Uniqueness Information is missing for $currentSymbol")
         }
     }
 
@@ -110,11 +145,24 @@ data class PathTreeNode(
             return emptyList()
         }
 
-        return when (typeBefore) {
-            is UniquenessType.Moved -> children.flatMap { it.extractUnfolds() }.map { listOf(currentSymbol) + it }
-            // Before Unique
-            else -> listOf(listOf(currentSymbol)) + children.flatMap { it.extractUnfolds() }
+        if (typeAfter?.parentsJoin?.isShared() == true) {
+            // when on the path to the root there is something shared,
+            // then we will not need to fold the unique predicate
+            return emptyList()
+        }
+
+        return when (typeBefore?.childrenJoin) {
+            is UniquenessType.Moved -> {
+                // we don't need to unfold, because it is partially moved and thereby already unfolded.
+                // we might need to unfold some child paths.
+                children.flatMap { it.extractUnfolds() }.map { listOf(currentSymbol) + it }
+            }
+
+            is UniquenessType.Active -> listOf(listOf(currentSymbol)) + children.flatMap { it.extractUnfolds() }
                 .map { listOf(currentSymbol) + it }
+
+            // Before Unique
+            null -> throw SnaktInternalException(null, "Uniqueness Information is missing for $currentSymbol")
         }
     }
 }
@@ -140,12 +188,12 @@ class UniquenessInformation(val root: CFGNode<*>, val flowFacts: FlowFacts<Uniqu
         return nodeCollectionMap[firElement]?.exit?.let { flowFacts.flowAfter(it) }
     }
 
-    fun typeBefore(firElement: FirElement, path: Path): UniquenessType? {
-        return flowBefore(firElement)?.ensure(path)?.parentsJoin
+    fun typeBefore(firElement: FirElement, path: Path): UniquenessTrie? {
+        return flowBefore(firElement)?.ensure(path)
     }
 
-    fun typeAfter(firElement: FirElement, path: Path): UniquenessType? {
-        return flowAfter(firElement)?.ensure(path)?.parentsJoin
+    fun typeAfter(firElement: FirElement, path: Path): UniquenessTrie? {
+        return flowAfter(firElement)?.ensure(path)
     }
 
 
