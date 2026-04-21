@@ -11,12 +11,12 @@ sealed interface NamePart {
     /**
      * A simple string name part.
      */
-    class Basic(val name: String) : NamePart
+    data class Basic(val name: String) : NamePart
 
     /**
      * A name part that depends on another [AnyName].
      */
-    class Dependent(val name: AnyName) : NamePart
+    data class Dependent(val name: AnyName) : NamePart
 
     /**
      * A separator between name parts.
