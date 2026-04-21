@@ -22,23 +22,17 @@ sealed interface NamePart {
      * A separator between name parts.
      */
     object Separator : NamePart
-
-    /**
-     * Indicates that no separator should be added before this part.
-     */
-    object NoSeparator : NamePart
 }
 
 /**
  * A candidate name composed of multiple [NamePart]s.
+ * There are no public available classes. A candidate name must always be created using [CandidateNameBuilder].
  */
-class CandidateName(val parts: List<NamePart>) {
-
-    /**
-     * Returns the list of [NamePart.Dependent] parts in this candidate name.
-     */
+interface CandidateName {
     fun moveableParts(): List<NamePart.Dependent> = parts.filterIsInstance<NamePart.Dependent>()
+    val parts: List<NamePart>
 }
+
 
 /**
  * A builder for a list of [CandidateName]s.
@@ -63,7 +57,7 @@ class CandidatesBuilder {
      * @param name The string name to add as a basic part.
      */
     fun candidate(name: String) {
-        candidates.add(CandidateName(listOf(NamePart.Basic(name))))
+        candidates.add(CandidateNameBuilder().apply { +name }.build())
     }
 
     /**
@@ -91,16 +85,20 @@ fun buildCandidates(init: CandidatesBuilder.() -> Unit): List<CandidateName> {
 
 /**
  * A builder for a single [CandidateName], providing a DSL for adding parts.
+ *
+ * Separators are automatically added between parts, except when explicitly skipped (use +noSeparator).
  */
 class CandidateNameBuilder {
     private val parts = mutableListOf<NamePart>()
+
+    private object SkipSeparator : NamePart
 
     /**
      * Prevents the addition of a separator before the next part.
      */
     val noSeparator: Unit
         get() {
-            parts.add(NamePart.NoSeparator)
+            parts.add(SkipSeparator)
         }
 
     /**
@@ -138,7 +136,7 @@ class CandidateNameBuilder {
      */
     fun build(): CandidateName {
         val separatorParts = parts.foldRight(Pair(mutableListOf<NamePart>(), false)) { part, (result, addSeparator) ->
-            if (part is NamePart.NoSeparator) {
+            if (part is SkipSeparator) {
                 return@foldRight Pair(result, false)
             }
             if (addSeparator) {
@@ -148,6 +146,8 @@ class CandidateNameBuilder {
             Pair(result, true)
         }
 
-        return CandidateName(separatorParts.first.reversed())
+        return object : CandidateName {
+            override val parts: List<NamePart> = separatorParts.first.reversed()
+        }
     }
 }

@@ -18,8 +18,8 @@ context(resolver: ShortNameResolver)
 fun NamePart.name(): String = when (this) {
     is NamePart.Dependent -> name()
     is NamePart.Basic -> this.name
-    NamePart.NoSeparator -> ""
     NamePart.Separator -> resolver.separator
+    else -> throw SnaktInternalException(null, "Unknown name part: $this")
 }
 
 /**
@@ -41,8 +41,8 @@ fun CandidateName.name(): String = parts.joinToString("") { it.name() }
 fun NamePart.fullName(): String = when (this) {
     is NamePart.Dependent -> fullName()
     is NamePart.Basic -> this.name
-    NamePart.NoSeparator -> ""
     NamePart.Separator -> SEPARATOR
+    else -> throw SnaktInternalException(null, "Unknown name part: $this")
 }
 
 /**
@@ -510,9 +510,8 @@ class ShortNameResolver : NameResolver {
 
                     else -> it.name.toString()
                 }
-
-                NamePart.NoSeparator -> ""
                 NamePart.Separator -> SEPARATOR
+                else -> "<unknown>"
             }
         }
 
