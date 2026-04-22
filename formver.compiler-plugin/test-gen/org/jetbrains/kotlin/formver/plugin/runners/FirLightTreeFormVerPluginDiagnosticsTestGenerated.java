@@ -521,6 +521,12 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Test
+    @TestMetadata("merge_unknown_owner.kt")
+    public void testMerge_unknown_owner() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/merge_unknown_owner.kt");
+    }
+
+    @Test
     @TestMetadata("pass_local.kt")
     public void testPass_local() {
       runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/pass_local.kt");

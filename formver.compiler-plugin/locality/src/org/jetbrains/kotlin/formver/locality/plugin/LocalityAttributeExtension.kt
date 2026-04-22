@@ -26,7 +26,7 @@ class LocalityAttributeExtension(
     override fun extractAttributeFromAnnotation(annotation: FirAnnotation): ConeAttribute<*>? {
         if (annotation.toAnnotationClassId(session) != localityAnnotationId) return null
 
-        return LocalityAttribute()
+        return LocalityAttribute
     }
 
     override fun convertAttributeToAnnotation(attribute: ConeAttribute<*>): FirAnnotation? {

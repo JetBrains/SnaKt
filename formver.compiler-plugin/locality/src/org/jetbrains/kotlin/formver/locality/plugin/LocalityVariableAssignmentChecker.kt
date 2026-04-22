@@ -16,8 +16,8 @@ import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOL
 object LocalityVariableAssignmentChecker : FirVariableAssignmentChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirVariableAssignment) {
-        val requiredLocality = expression.lValue.extractLocality()
-        val actualLocality = expression.rValue.extractLocality()
+        val requiredLocality = expression.lValue.resolveLocality()
+        val actualLocality = expression.rValue.resolveLocality()
 
         if (requiredLocality.accepts(actualLocality)) return
 
