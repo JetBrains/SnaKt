@@ -5,12 +5,10 @@
 
 package org.jetbrains.kotlin.formver.core.conversion
 
-import org.checkerframework.common.aliasing.qual.Unique
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.contracts.description.LogicOperationKind
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.declarations.FirProperty
-import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.expressions.impl.FirElseIfTrueCondition
 import org.jetbrains.kotlin.fir.expressions.impl.FirUnitExpression
@@ -23,7 +21,6 @@ import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.common.UnsupportedFeatureBehaviour
-import org.jetbrains.kotlin.formver.core.annotationId
 import org.jetbrains.kotlin.formver.core.embeddings.LabelLink
 import org.jetbrains.kotlin.formver.core.embeddings.callables.CallableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionEmbedding
@@ -314,10 +311,11 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 accLambda.source,
                 "must be a property access expression."
             )
-            val permExpr = when(accLambda.arguments.getOrNull(1)?.source?.text?.toString() ?: "") {
+            val permExpr = when (val perm = accLambda.arguments.getOrNull(1)?.source?.text?.toString()) {
                 "write" -> PermExp.FullPerm()
-                "read", "" -> PermExp.WildcardPerm()
-                else -> throw SnaktInternalException(symbol.source, "perm is not supported")
+                "read" -> PermExp.WildcardPerm()
+                null -> PermExp.FullPerm()
+                else -> throw SnaktInternalException(symbol.source, "$perm is not supported as permission amount.")
             }
             return data.insertAccFunctionCall(fieldExpr, permExpr)
         }
