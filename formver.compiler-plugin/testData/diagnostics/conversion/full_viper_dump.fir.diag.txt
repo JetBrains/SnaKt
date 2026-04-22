@@ -190,7 +190,7 @@ domain d$rt  {
 
   axiom {
     (forall r: Ref ::
-      { df$rt$intToRef(df$rt$intFromRef(r)) }
+      { df$rt$intFromRef(r) }
       df$rt$isSubtype(df$rt$typeOf(r), df$rt$intType()) ==>
       df$rt$intToRef(df$rt$intFromRef(r)) == r)
   }
@@ -209,7 +209,7 @@ domain d$rt  {
 
   axiom {
     (forall r: Ref ::
-      { df$rt$boolToRef(df$rt$boolFromRef(r)) }
+      { df$rt$boolFromRef(r) }
       df$rt$isSubtype(df$rt$typeOf(r), df$rt$boolType()) ==>
       df$rt$boolToRef(df$rt$boolFromRef(r)) == r)
   }
@@ -228,7 +228,7 @@ domain d$rt  {
 
   axiom {
     (forall r: Ref ::
-      { df$rt$charToRef(df$rt$charFromRef(r)) }
+      { df$rt$charFromRef(r) }
       df$rt$isSubtype(df$rt$typeOf(r), df$rt$charType()) ==>
       df$rt$charToRef(df$rt$charFromRef(r)) == r)
   }
@@ -247,7 +247,7 @@ domain d$rt  {
 
   axiom {
     (forall r: Ref ::
-      { df$rt$stringToRef(df$rt$stringFromRef(r)) }
+      { df$rt$stringFromRef(r) }
       df$rt$isSubtype(df$rt$typeOf(r), df$rt$stringType()) ==>
       df$rt$stringToRef(df$rt$stringFromRef(r)) == r)
   }
