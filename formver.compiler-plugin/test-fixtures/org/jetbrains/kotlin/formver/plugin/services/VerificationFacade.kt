@@ -13,9 +13,11 @@ import org.jetbrains.kotlin.formver.plugin.compiler.reporting.*
 import org.jetbrains.kotlin.formver.plugin.runners.TestMode
 import org.jetbrains.kotlin.formver.plugin.runners.getTestMode
 import org.jetbrains.kotlin.formver.plugin.runners.runChecks
-import org.jetbrains.kotlin.formver.viper.Verifier
+import org.jetbrains.kotlin.formver.viper.SiliconFrontend
 import org.jetbrains.kotlin.formver.viper.ast.unwrapOr
+import org.jetbrains.kotlin.formver.viper.errors.ConsistencyError
 import org.jetbrains.kotlin.formver.viper.errors.VerificationError
+import org.jetbrains.kotlin.formver.viper.errors.VerifierError
 import org.jetbrains.kotlin.test.TestInfrastructureInternals
 import org.jetbrains.kotlin.test.frontend.fir.FirOutputArtifact
 import org.jetbrains.kotlin.test.model.*
@@ -52,7 +54,8 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
     ): FirOutputArtifact {
         inputArtifact.partsForDependsOnModules.forEach { part ->
             val currentModule = part.module
-            part.firFiles.forEach { (testFile, firFile) ->
+            val toVerify: MutableList<Pair<TestFile, FirSimpleFunction>> = mutableListOf()
+            part.firFiles.map { (testFile, firFile) ->
                 firFile.accept(object : FirDefaultVisitorVoid() {
                     override fun visitElement(element: FirElement) {
                         when (element) {
@@ -63,12 +66,21 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
 
                     override fun visitSimpleFunction(simpleFunction: FirSimpleFunction) {
                         if (shouldVerify(simpleFunction, testServices)) {
-                            val diagnostics = verifyFunction(simpleFunction, module)
-                            testServices.diagnosticsCollector.addVerificationDiagnostics(diagnostics)
-                            testServices.tagCollector.reportDiagnostics(testFile, diagnostics)
+                            toVerify.add(Pair(testFile, simpleFunction))
                         }
                     }
                 })
+            }
+            if (toVerify.isNotEmpty()) {
+                val verifier = SiliconFrontend(emptyList())
+                with(verifier) {
+                    toVerify.forEach { (testFile, decl) ->
+                        val diagnostics = verifyFunction(decl, module)
+                        testServices.diagnosticsCollector.addVerificationDiagnostics(diagnostics)
+                        testServices.tagCollector.reportDiagnostics(testFile, diagnostics)
+                    }
+                }
+//                verifier.close()
             }
         }
 
@@ -79,24 +91,25 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
      * Runs the verifier
      */
     @OptIn(InternalDiagnosticFactoryMethod::class)
+    context(verifier: SiliconFrontend)
     private fun verifyFunction(
         decl: FirSimpleFunction,
         module: TestModule
     ): List<KtDiagnostic> {
-        val program = decl.viperProgram ?: return emptyList()
         val results = mutableListOf<KtDiagnostic>()
-        val onFailure = { err: VerificationError ->
-            val diagnostics = formatVerificationError(err, decl, module)
-            val unsued = results.add(diagnostics)
+        val program = decl.viperProgram!!
+        val onFailure = { err: VerifierError ->
+            when (err) {
+                is ConsistencyError -> {}
+                is VerificationError -> {
+                    val diagnostics = formatVerificationError(err, decl, module)
+                    val unsued = results.add(diagnostics)
+                }
+            }
         }
-
-        val verifier = Verifier()
-        try {
-            verifier.verify(program, onFailure)
-        } finally {
-            verifier.stop()
+        verifier.use {
+            it.verify(program, onFailure)
         }
-
         return results
     }
 

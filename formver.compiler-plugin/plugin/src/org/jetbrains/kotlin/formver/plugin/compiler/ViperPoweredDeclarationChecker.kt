@@ -26,6 +26,7 @@ import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.formver.viper.ast.registerAllNames
 import org.jetbrains.kotlin.formver.viper.ast.unwrapOr
 import org.jetbrains.kotlin.formver.viper.errors.GenericConsistencyError
+import org.jetbrains.kotlin.formver.viper.errors.VerifierError
 import org.jetbrains.kotlin.formver.viper.mangled
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
@@ -49,7 +50,7 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
 
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(declaration: FirSimpleFunction) {
-        val inTestRun = System.getProperty("kotlin.formver.testRun").toBoolean()
+        val inTestRun = System.getProperty("formver.testRun").toBoolean()
         if (!config.shouldConvert(declaration)) return
         val errorCollector = ErrorCollector()
         try {
@@ -89,20 +90,28 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
             }
 
             val viperProgram = with(programConversionContext.nameResolver) { program.toSilver() }
-            if (inTestRun) {
-                declaration.viperProgram = viperProgram
-                declaration.shouldVerify = config.shouldVerify(declaration)
-            }
 
             val onFailure = { err: VerifierError ->
                 val source = err.position.unwrapOr { declaration.source }
                 reporter.reportVerifierError(source, err, config.errorStyle)
             }
-            val consistencyErrors = viperProgram.checkTransitively()
-            for (error in consistencyErrors) {
-                onFailure(GenericConsistencyError(error))
+
+            if (inTestRun) {
+                declaration.viperProgram = viperProgram
+                declaration.shouldVerify = config.shouldVerify(declaration)
+                val consistencyErrors = viperProgram.checkTransitively()
+                for (error in consistencyErrors) {
+                    onFailure(GenericConsistencyError(error))
+                }
             }
-            SiliconFrontend(emptyList()).use { it.verify(viperProgram, onFailure) }
+
+
+            if (!inTestRun) {
+                // If we are in a test, then the verification happens later.
+                val verifier = SiliconFrontend(emptyList())
+                verifier.use { it.verify(viperProgram, onFailure) }
+                verifier.close()
+            }
 
         } catch (e: SnaktInternalException) {
             reporter.reportOn(e.source, PluginErrors.INTERNAL_ERROR, e.message)
