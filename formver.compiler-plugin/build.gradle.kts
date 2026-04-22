@@ -86,6 +86,7 @@ fun Test.configureFormverTest() {
     setLibraryProperty("org.jetbrains.kotlin.test.kotlin-annotations-jvm", "kotlin-annotations-jvm")
 
     systemProperty("idea.ignore.disabled.plugins", "true")
+    systemProperty("formver.testRun", "true")
     systemProperty("idea.home.path", rootDir)
 
     project.findProperty("kotlin.test.update.test.data")?.let {
@@ -95,55 +96,28 @@ fun Test.configureFormverTest() {
     jvmArgs = listOf("-Xss30M", "-Xmx2g", "-XX:MaxMetaspaceSize=512m")
 }
 
-// ./gradlew test — normal mode (full verification, no conversion-only class)
+// ./gradlew test — normal mode (full verification)
 tasks.test {
     configureFormverTest()
-    inputs.property("formver.testMode", "FULL")
     systemProperty("formver.testMode", "FULL")
-    systemProperty("formver.conversionOnly", "false")
 }
 
-// ./gradlew testNoVerification — all tests in conversion-only mode
-tasks.register<Test>("testNoVerification") {
-    description = "Run all tests in conversion-only mode (no verification)."
-    group = "verification"
-    testClassesDirs = tasks.test.get().testClassesDirs
-    classpath = tasks.test.get().classpath
-    configureFormverTest()
-    inputs.property("formver.testMode", "noVerification")
-    systemProperty("formver.conversionOnly", "true")
-    exclude("**/FirLightTreeFormVerPluginNoVerificationDiagnosticsTestGenerated*")
-}
-
-// ./gradlew testBothModes — normal + verification tests again as conversion-only
-tasks.register<Test>("testBothModes") {
-    description = "Run all tests normally, then verification tests again as conversion-only."
-    group = "verification"
-    testClassesDirs = tasks.test.get().testClassesDirs
-    classpath = tasks.test.get().classpath
-    configureFormverTest()
-    inputs.property("formver.testMode", "bothModes")
-    systemProperty("formver.conversionOnly", "false")
-}
-
-tasks.register<Test>("PhasedCONVERSION") {
+tasks.register<Test>("untilConversion") {
     description = "Runs until conversion"
     group = "verification"
     testClassesDirs = tasks.test.get().testClassesDirs
     classpath = tasks.test.get().classpath
     configureFormverTest()
     systemProperty("formver.testMode", "CHECK_CONVERSION")
-    systemProperty("formver.conversionOnly", "false")
 }
 
-tasks.register<Test>("PhasedUPDATE") {
+tasks.register<Test>("update") {
     description = "Runs conversion and verification iff conversion changed"
     group = "verification"
     testClassesDirs = tasks.test.get().testClassesDirs
     classpath = tasks.test.get().classpath
     configureFormverTest()
     systemProperty("formver.testMode", "UPDATE")
-    systemProperty("formver.conversionOnly", "false")
 }
 
 kotlin {
