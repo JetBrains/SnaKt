@@ -1,5 +1,5 @@
 /private_properties.kt:(235,250): info: Generated Viper text for getBooleanField:
-method f$c$A$getBooleanField$t$F$t$A$t$Boolean(this$dispatch: Ref)
+method f$c$A$getBooleanField$F$t$A$t$Boolean(this$dispatch: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$A())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
@@ -23,7 +23,7 @@ method s$c$A$private$field(this$dispatch: Ref, anon$0: Ref)
 /private_properties.kt:(329,343): info: Generated Viper text for getStringField:
 field bf$c$B$private$field: Ref
 
-method f$c$B$getStringField$t$F$t$B$t$String(this$dispatch: Ref)
+method f$c$B$getStringField$F$t$B$t$String(this$dispatch: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$B())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$stringType())
@@ -61,7 +61,7 @@ method con$c$D$t$D() returns (ret: Ref)
   ensures acc(pred$c$D$unique(ret), write)
 
 
-method f$extractPublic$t$F$t$Unit() returns (ret$0: Ref)
+method f$extractPublic$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$cond1: Ref

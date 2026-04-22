@@ -1,5 +1,5 @@
 /pure_function_with_branching.kt:(90,110): info: Generated Viper text for noAssignmentInBlocks:
-function f$noAssignmentInBlocks$t$F$t$Boolean$t$Int(par$a: Ref): Ref
+function f$noAssignmentInBlocks$F$t$Boolean$t$Int(par$a: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
@@ -11,7 +11,7 @@ function f$noAssignmentInBlocks$t$F$t$Boolean$t$Int(par$a: Ref): Ref
 }
 
 /pure_function_with_branching.kt:(228,243): info: Generated Viper text for simpleBranching:
-function f$simpleBranching$t$F$t$Boolean$t$Int(par$a: Ref): Ref
+function f$simpleBranching$F$t$Boolean$t$Int(par$a: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
@@ -31,7 +31,7 @@ function f$simpleBranching$t$F$t$Boolean$t$Int(par$a: Ref): Ref
 }
 
 /pure_function_with_branching.kt:(401,416): info: Generated Viper text for nestedBranching:
-function f$nestedBranching$t$F$t$Boolean$t$Boolean$t$Int(par$a: Ref, par$b: Ref): Ref
+function f$nestedBranching$F$t$Boolean$t$Boolean$t$Int(par$a: Ref, par$b: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$boolType())
   requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
@@ -78,7 +78,7 @@ function f$nestedBranching$t$F$t$Boolean$t$Boolean$t$Int(par$a: Ref, par$b: Ref)
 }
 
 /pure_function_with_branching.kt:(826,846): info: Generated Viper text for whenExpressionSimple:
-function f$whenExpressionSimple$t$F$t$Int$t$Int(par$x: Ref): Ref
+function f$whenExpressionSimple$F$t$Int$t$Int(par$x: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
@@ -104,7 +104,7 @@ function f$whenExpressionSimple$t$F$t$Int$t$Int(par$x: Ref): Ref
 }
 
 /pure_function_with_branching.kt:(1065,1088): info: Generated Viper text for whenNoArgumentBranching:
-function f$whenNoArgumentBranching$t$F$t$Int$t$Int$t$Int(par$x: Ref, par$y: Ref): Ref
+function f$whenNoArgumentBranching$F$t$Int$t$Int$t$Int(par$x: Ref, par$y: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
@@ -128,7 +128,7 @@ function f$whenNoArgumentBranching$t$F$t$Int$t$Int$t$Int(par$x: Ref, par$y: Ref)
 }
 
 /pure_function_with_branching.kt:(1311,1334): info: Generated Viper text for stringEqualityBranching:
-function f$stringEqualityBranching$t$F$t$String$t$Boolean(par$input: Ref): Ref
+function f$stringEqualityBranching$F$t$String$t$Boolean(par$input: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(par$input), df$rt$stringType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
 {
@@ -158,7 +158,7 @@ function f$stringEqualityBranching$t$F$t$String$t$Boolean(par$input: Ref): Ref
 }
 
 /pure_function_with_branching.kt:(1597,1621): info: Generated Viper text for sequentialIfWithMutation:
-function f$sequentialIfWithMutation$t$F$t$Int(): Ref
+function f$sequentialIfWithMutation$F$t$Int(): Ref
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
   (let l0$x$0 ==
@@ -175,7 +175,7 @@ function f$sequentialIfWithMutation$t$F$t$Int(): Ref
 }
 
 /pure_function_with_branching.kt:(1780,1800): info: Generated Viper text for complexBooleanReturn:
-function f$complexBooleanReturn$t$F$t$Int$t$Boolean(par$x: Ref): Ref
+function f$complexBooleanReturn$F$t$Int$t$Boolean(par$x: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
 {

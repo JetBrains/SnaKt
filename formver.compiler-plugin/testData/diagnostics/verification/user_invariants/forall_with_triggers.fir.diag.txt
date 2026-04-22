@@ -1,5 +1,5 @@
 /forall_with_triggers.kt:(64,87): info: Generated Viper text for forAllWithSimpleTrigger:
-method f$forAllWithSimpleTrigger$t$F$t$Int() returns (ret$0: Ref)
+method f$forAllWithSimpleTrigger$F$t$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
   ensures (forall anon$builtin$1: Int ::
       { anon$builtin$1 * anon$builtin$1 }
@@ -12,7 +12,7 @@ method f$forAllWithSimpleTrigger$t$F$t$Int() returns (ret$0: Ref)
 }
 
 /forall_with_triggers.kt:(332,358): info: Generated Viper text for forAllWithMultipleTriggers:
-method f$forAllWithMultipleTriggers$t$F$t$Int() returns (ret$0: Ref)
+method f$forAllWithMultipleTriggers$F$t$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
   ensures (forall anon$builtin$1: Int ::
       { anon$builtin$1 * anon$builtin$1 }
@@ -26,7 +26,7 @@ method f$forAllWithMultipleTriggers$t$F$t$Int() returns (ret$0: Ref)
 }
 
 /forall_with_triggers.kt:(604,628): info: Generated Viper text for forAllWithTriggersInLoop:
-method f$forAllWithTriggersInLoop$t$F$t$String$t$Int(par$str: Ref)
+method f$forAllWithTriggersInLoop$F$t$String$t$Int(par$str: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$str), df$rt$stringType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
@@ -71,7 +71,7 @@ method f$forAllWithTriggersInLoop$t$F$t$String$t$Int(par$str: Ref)
 }
 
 /forall_with_triggers.kt:(1004,1025): info: Generated Viper text for forAllWithoutTriggers:
-method f$forAllWithoutTriggers$t$F$t$Int() returns (ret$0: Ref)
+method f$forAllWithoutTriggers$F$t$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
   ensures (forall anon$builtin$1: Int ::anon$builtin$1 * anon$builtin$1 >=
       0)

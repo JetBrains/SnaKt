@@ -1,5 +1,5 @@
 /wrongly_annotated.kt:(65,75): info: Generated Viper text for iAmAMethod:
-method f$iAmAMethod$t$F$t$Int() returns (ret$0: Ref)
+method f$iAmAMethod$F$t$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
   ret$0 := df$rt$intToRef(1)
@@ -16,7 +16,7 @@ method f$iAmAMethod$t$F$t$Int() returns (ret$0: Ref)
 /wrongly_annotated.kt:(392,407): info: Generated Viper text for impureExtension:
 field bf$value: Ref
 
-method f$impureExtension$t$F$t$Field$t$Unit(this$extension: Ref)
+method f$impureExtension$F$t$Field$t$Unit(this$extension: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$Field())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())

@@ -1,5 +1,5 @@
 /simple_forall.kt:(78,106): info: Generated Viper text for anyIntegerSquaredAtLeastZero:
-method f$anyIntegerSquaredAtLeastZero$t$F$t$Int() returns (ret$0: Ref)
+method f$anyIntegerSquaredAtLeastZero$F$t$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
   ensures (forall anon$builtin$1: Int ::anon$builtin$1 * anon$builtin$1 >=
       0 &&
@@ -11,7 +11,7 @@ method f$anyIntegerSquaredAtLeastZero$t$F$t$Int() returns (ret$0: Ref)
 }
 
 /simple_forall.kt:(273,312): info: Generated Viper text for anyIntegerSquaredIsAtLeastOneExceptZero:
-method f$anyIntegerSquaredIsAtLeastOneExceptZero$t$F$t$Int()
+method f$anyIntegerSquaredIsAtLeastOneExceptZero$F$t$Int()
   returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
   ensures (forall anon$builtin$1: Int ::!(anon$builtin$1 == 0) ==>
@@ -23,7 +23,7 @@ method f$anyIntegerSquaredIsAtLeastOneExceptZero$t$F$t$Int()
 }
 
 /simple_forall.kt:(474,517): info: Generated Viper text for anyIntegerSquaredIsAtLeastZeroStringVersion:
-method f$anyIntegerSquaredIsAtLeastZeroStringVersion$t$F$t$String$t$Int(par$str: Ref)
+method f$anyIntegerSquaredIsAtLeastZeroStringVersion$F$t$String$t$Int(par$str: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$str), df$rt$stringType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())

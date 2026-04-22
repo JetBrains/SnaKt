@@ -1,5 +1,5 @@
 /interface.kt:(96,110): info: Generated Viper text for testProperties:
-method f$testProperties$t$F$t$Foo$t$Unit(par$foo: Ref) returns (ret$0: Ref)
+method f$testProperties$F$t$Foo$t$Unit(par$foo: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$foo), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -44,7 +44,7 @@ method con$c$Impl$t$Int$t$Impl(par$number: Ref) returns (ret: Ref)
     df$rt$intFromRef(par$number)
 
 
-method f$createImpl$t$F$t$Unit() returns (ret$0: Ref)
+method f$createImpl$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
   var l0$impl: Ref

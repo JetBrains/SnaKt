@@ -1,5 +1,5 @@
 /merge_sort_of_string.kt:(84,88): info: Generated Viper text for subs:
-method f$pkg$kotlin$c$String$plus$t$F$t$String$t$N$Any$t$String(this$dispatch: Ref,
+method f$pkg$kotlin$c$String$plus$F$t$String$t$N$Any$t$String(this$dispatch: Ref,
   par$other: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$stringType())
@@ -7,7 +7,7 @@ method f$pkg$kotlin$c$String$plus$t$F$t$String$t$N$Any$t$String(this$dispatch: R
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$stringType())
 
 
-method f$subs$t$F$t$String$t$Int$t$Int$t$String(this$extension: Ref, par$lo: Ref,
+method f$subs$F$t$String$t$Int$t$Int$t$String(this$extension: Ref, par$lo: Ref,
   par$hi: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
@@ -74,7 +74,7 @@ method f$subs$t$F$t$String$t$Int$t$Int$t$String(this$extension: Ref, par$lo: Ref
 }
 
 /merge_sort_of_string.kt:(717,729): info: Generated Viper text for mergeStrings:
-method f$mergeStrings$t$F$t$String$t$String$t$String(par$a: Ref, par$b: Ref)
+method f$mergeStrings$F$t$String$t$String$t$String(par$a: Ref, par$b: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$stringType())
   requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$stringType())
@@ -193,7 +193,7 @@ method f$mergeStrings$t$F$t$String$t$String$t$String(par$a: Ref, par$b: Ref)
   label lbl$ret$0
 }
 
-method f$pkg$kotlin$c$String$plus$t$F$t$String$t$N$Any$t$String(this$dispatch: Ref,
+method f$pkg$kotlin$c$String$plus$F$t$String$t$N$Any$t$String(this$dispatch: Ref,
   par$other: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$stringType())
@@ -202,7 +202,7 @@ method f$pkg$kotlin$c$String$plus$t$F$t$String$t$N$Any$t$String(this$dispatch: R
 
 
 /merge_sort_of_string.kt:(1895,1906): info: Generated Viper text for mergeSorted:
-method f$mergeSorted$t$F$t$String$t$String(this$extension: Ref)
+method f$mergeSorted$F$t$String$t$String(this$extension: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$stringType())
@@ -220,19 +220,19 @@ method f$mergeSorted$t$F$t$String$t$String(this$extension: Ref)
     var anon$1: Ref
     var anon$2: Ref
     var anon$3: Ref
-    anon$1 := f$subs$t$F$t$String$t$Int$t$Int$t$String(this$extension, df$rt$intToRef(0),
+    anon$1 := f$subs$F$t$String$t$Int$t$Int$t$String(this$extension, df$rt$intToRef(0),
       df$divInts(df$stringLength(this$extension), df$rt$intToRef(2)))
-    anon$0 := f$mergeSorted$t$F$t$String$t$String(anon$1)
-    anon$3 := f$subs$t$F$t$String$t$Int$t$Int$t$String(this$extension, df$divInts(df$stringLength(this$extension),
+    anon$0 := f$mergeSorted$F$t$String$t$String(anon$1)
+    anon$3 := f$subs$F$t$String$t$Int$t$Int$t$String(this$extension, df$divInts(df$stringLength(this$extension),
       df$rt$intToRef(2)), df$stringLength(this$extension))
-    anon$2 := f$mergeSorted$t$F$t$String$t$String(anon$3)
-    ret$0 := f$mergeStrings$t$F$t$String$t$String$t$String(anon$0, anon$2)
+    anon$2 := f$mergeSorted$F$t$String$t$String(anon$3)
+    ret$0 := f$mergeStrings$F$t$String$t$String$t$String(anon$0, anon$2)
   }
   goto lbl$ret$0
   label lbl$ret$0
 }
 
-method f$mergeStrings$t$F$t$String$t$String$t$String(par$a: Ref, par$b: Ref)
+method f$mergeStrings$F$t$String$t$String$t$String(par$a: Ref, par$b: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$stringType())
   requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$stringType())
@@ -252,7 +252,7 @@ method f$mergeStrings$t$F$t$String$t$String$t$String(par$a: Ref, par$b: Ref)
       df$rt$stringFromRef(ret)[anon$builtin$6])
 
 
-method f$subs$t$F$t$String$t$Int$t$Int$t$String(this$extension: Ref, par$lo: Ref,
+method f$subs$F$t$String$t$Int$t$Int$t$String(this$extension: Ref, par$lo: Ref,
   par$hi: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())

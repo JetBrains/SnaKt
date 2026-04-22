@@ -1,5 +1,5 @@
 /pure_function_rely_on_branch.kt:(82,92): info: Generated Viper text for safeDivide:
-function f$safeDivide$t$F$t$Int$t$Int$t$Int(par$x: Ref, par$y: Ref): Ref
+function f$safeDivide$F$t$Int$t$Int$t$Int(par$x: Ref, par$y: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
@@ -14,7 +14,7 @@ function f$safeDivide$t$F$t$Int$t$Int$t$Int(par$x: Ref, par$y: Ref): Ref
 }
 
 /pure_function_rely_on_branch.kt:(218,233): info: Generated Viper text for getStringLength:
-function f$getStringLength$t$F$t$Any$t$Int(par$obj: Ref): Ref
+function f$getStringLength$F$t$Any$t$Int(par$obj: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(par$obj), df$rt$anyType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
 {
@@ -32,7 +32,7 @@ function f$getStringLength$t$F$t$Any$t$Int(par$obj: Ref): Ref
 }
 
 /pure_function_rely_on_branch.kt:(366,382): info: Generated Viper text for safeNestedDivide:
-function f$safeNestedDivide$t$F$t$Int$t$Int$t$Int$t$Int(par$x: Ref, par$y: Ref,
+function f$safeNestedDivide$F$t$Int$t$Int$t$Int$t$Int(par$x: Ref, par$y: Ref,
   par$z: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
@@ -53,7 +53,7 @@ function f$safeNestedDivide$t$F$t$Int$t$Int$t$Int$t$Int(par$x: Ref, par$y: Ref,
 }
 
 /pure_function_rely_on_branch.kt:(558,579): info: Generated Viper text for safeInverseDifference:
-function f$safeInverseDifference$t$F$t$Int$t$Int$t$Int(par$x: Ref, par$y: Ref): Ref
+function f$safeInverseDifference$F$t$Int$t$Int$t$Int(par$x: Ref, par$y: Ref): Ref
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())

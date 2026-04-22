@@ -1,4 +1,4 @@
-/binary_tree.kt:(261,273): info: Generated Viper text for get_left_val:
+/binary_tree.kt:(273,285): info: Generated Viper text for get_left_val:
 field bf$data: Ref
 
 field bf$left: Ref
@@ -52,7 +52,7 @@ method f$get_left_val$F$t$Node$t$N$Int(par$n: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/binary_tree.kt:(445,449): info: Generated Viper text for test:
+/binary_tree.kt:(457,461): info: Generated Viper text for test:
 field bf$data: Ref
 
 field bf$left: Ref
