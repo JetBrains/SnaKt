@@ -34,6 +34,10 @@ fun `assign local safe-call expression to global`(x: @Borrowed A?) {
     var z: Any? = x?.x
 }
 
+fun `safe-call local receiver property stays global`(a: @Borrowed A?) {
+    val y: Any? = a?.x
+}
+
 class B(
     var x: Any
 )

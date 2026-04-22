@@ -5,38 +5,20 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
-import org.jetbrains.kotlin.diagnostics.rendering.Renderer
 import org.jetbrains.kotlin.fir.types.ConeAttribute
 import org.jetbrains.kotlin.fir.types.ConeAttributes
-import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
-import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import kotlin.reflect.KClass
 
-fun LocalityAttribute?.accepts(other: LocalityAttribute?): Boolean {
-    return when (this) {
-        null -> other == null
-        else -> other == null || owner == other.owner
-    }
-}
+object LocalityAttribute : ConeAttribute<LocalityAttribute>() {
+    override fun union(other: LocalityAttribute?): LocalityAttribute = this
 
-data class LocalityAttribute(
-    val owner: FirBasedSymbol<*>? = null
-) : ConeAttribute<LocalityAttribute>() {
-    override fun union(other: LocalityAttribute?): LocalityAttribute {
-        if (other == null) return this
+    override fun intersect(other: LocalityAttribute?): LocalityAttribute? = other
 
-        return if (owner == other.owner) this else LocalityAttribute()
-    }
+    override fun add(other: LocalityAttribute?): LocalityAttribute = this
 
-    override fun intersect(other: LocalityAttribute?): LocalityAttribute? {
-        if (other == null) return null
+    override fun isSubtypeOf(other: LocalityAttribute?): Boolean = other != null
 
-        return if (owner == other.owner) this else null
-    }
-
-    override fun add(other: LocalityAttribute?): LocalityAttribute = union(other)
-
-    override fun isSubtypeOf(other: LocalityAttribute?): Boolean = other.accepts(this)
+    override fun toString(): String = "LocalityAttribute"
 
     override val key: KClass<out LocalityAttribute>
         get() = LocalityAttribute::class
@@ -46,16 +28,3 @@ data class LocalityAttribute(
 }
 
 val ConeAttributes.locality: LocalityAttribute? by ConeAttributes.attributeAccessor<LocalityAttribute>()
-
-fun LocalityAttribute?.union(other: LocalityAttribute?): LocalityAttribute? {
-    if (this == null) return other
-
-    return union(other)
-}
-
-val LocalityRenderer = Renderer<LocalityAttribute?> { locality ->
-    when (locality) {
-        null -> "'global'"
-        else -> "'local(${(locality.owner as? FirCallableSymbol<*>)?.name ?: "unknown"})'"
-    }
-}

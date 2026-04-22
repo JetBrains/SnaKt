@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.diagnostics.KtDiagnosticsContainer
 import org.jetbrains.kotlin.diagnostics.error3
 
 object LocalityErrors : KtDiagnosticsContainer() {
-    val LOCALITY_VIOLATION by error3<PsiElement, String, LocalityAttribute?, LocalityAttribute?>()
+    val LOCALITY_VIOLATION by error3<PsiElement, String, Locality, Locality>()
 
     override fun getRendererFactory() = LocalityErrorMessages
 }
