@@ -257,7 +257,7 @@ fun StmtConversionContext.insertAccFunctionCall(
     )).field
     val receiver = fieldAccess.receiver
     return withNoScope {
-        AccEmbedding(receiver, field, perm)
+        AccEmbedding(field, receiver, perm)
     }
 }
 
