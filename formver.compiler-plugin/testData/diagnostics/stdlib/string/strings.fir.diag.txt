@@ -1,4 +1,4 @@
-/strings.kt:(237,245): info: Generated Viper text for testType:
+/strings.kt:(249,257): info: Generated Viper text for testType:
 field bf$size: Ref
 
 field bf$str: Ref
@@ -81,7 +81,7 @@ method f$testType$F$t$String$t$Unit(par$s: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/strings.kt:(412,427): info: Generated Viper text for testLengthField:
+/strings.kt:(424,439): info: Generated Viper text for testLengthField:
 field bf$size: Ref
 
 field bf$str: Ref
@@ -156,7 +156,7 @@ method f$testLengthField$F$t$String$t$Unit(par$s: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/strings.kt:(552,559): info: Generated Viper text for testOps:
+/strings.kt:(564,571): info: Generated Viper text for testOps:
 field bf$size: Ref
 
 predicate pred$pkg$java_io$c$Serializable$shared(this$dispatch: Ref) {

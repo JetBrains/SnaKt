@@ -1,4 +1,4 @@
-/heap_dependent_specifications.kt:(115,128): info: Generated Viper text for isAlternating:
+/heap_dependent_specifications.kt:(127,140): info: Generated Viper text for isAlternating:
 field bf$next: Ref
 
 field bf$value: Ref
@@ -51,7 +51,7 @@ function f$isAlternating$F$t$Node$t$Boolean$t$Boolean(par$node: Ref, par$expects
                     df$andBools(l0$isCurrentValid$0, anon$4$0))))))))))
 }
 
-/heap_dependent_specifications.kt:(482,512): info: Generated Viper text for isStrictlyAscendingAndPositive:
+/heap_dependent_specifications.kt:(494,524): info: Generated Viper text for isStrictlyAscendingAndPositive:
 field bf$next: Ref
 
 field bf$value: Ref
@@ -114,7 +114,7 @@ function f$isStrictlyAscendingAndPositive$F$t$Node$t$Boolean(par$node: Ref): Ref
                     anon$0$0)))))))))
 }
 
-/heap_dependent_specifications.kt:(948,965): info: Generated Viper text for isLocallyValidBST:
+/heap_dependent_specifications.kt:(960,977): info: Generated Viper text for isLocallyValidBST:
 field bf$left: Ref
 
 field bf$right: Ref

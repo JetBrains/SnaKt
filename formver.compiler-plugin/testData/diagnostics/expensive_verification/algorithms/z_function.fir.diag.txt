@@ -1,4 +1,4 @@
-/z_function.kt:(187,198): info: Generated Viper text for zFuncHelper:
+/z_function.kt:(199,210): info: Generated Viper text for zFuncHelper:
 method f$zFuncHelper$F$t$String$t$String$t$Int$t$Int$t$Int$t$Int(par$s: Ref,
   par$res: Ref, par$i: Ref, par$checkedLeft: Ref, par$checkedRight: Ref)
   returns (ret$0: Ref)
@@ -65,7 +65,7 @@ method f$zFuncHelper$F$t$String$t$String$t$Int$t$Int$t$Int$t$Int(par$s: Ref,
   label lbl$ret$0
 }
 
-/z_function.kt:(1389,1398): info: Generated Viper text for zFunction:
+/z_function.kt:(1401,1410): info: Generated Viper text for zFunction:
 method f$pkg$kotlin$c$String$plus$F$t$String$t$N$Any$t$String(this$dispatch: Ref,
   par$other: Ref)
   returns (ret: Ref)
@@ -299,7 +299,7 @@ method f$zFunction$F$t$String$t$String(this$extension: Ref)
   label lbl$ret$0
 }
 
-/z_function.kt:(3481,3495): info: Generated Viper text for zFunctionNaive:
+/z_function.kt:(3493,3507): info: Generated Viper text for zFunctionNaive:
 method f$pkg$kotlin$c$String$plus$F$t$String$t$N$Any$t$String(this$dispatch: Ref,
   par$other: Ref)
   returns (ret: Ref)

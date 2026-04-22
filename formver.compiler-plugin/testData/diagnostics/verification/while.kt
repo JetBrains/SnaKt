@@ -1,5 +1,7 @@
+// FULL_JDK
 // REPLACE_STDLIB_EXTENSIONS
 // ALWAYS_VALIDATE
+
 
 import org.jetbrains.kotlin.formver.plugin.AlwaysVerify
 import org.jetbrains.kotlin.formver.plugin.verify

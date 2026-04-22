@@ -1,4 +1,4 @@
-/merge_sort_of_string.kt:(72,76): info: Generated Viper text for subs:
+/merge_sort_of_string.kt:(84,88): info: Generated Viper text for subs:
 method f$pkg$kotlin$c$String$plus$F$t$String$t$N$Any$t$String(this$dispatch: Ref,
   par$other: Ref)
   returns (ret: Ref)
@@ -73,7 +73,7 @@ method f$subs$F$t$String$t$Int$t$Int$t$String(this$extension: Ref, par$lo: Ref,
   label lbl$ret$0
 }
 
-/merge_sort_of_string.kt:(705,717): info: Generated Viper text for mergeStrings:
+/merge_sort_of_string.kt:(717,729): info: Generated Viper text for mergeStrings:
 method f$mergeStrings$F$t$String$t$String$t$String(par$a: Ref, par$b: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$stringType())
@@ -201,7 +201,7 @@ method f$pkg$kotlin$c$String$plus$F$t$String$t$N$Any$t$String(this$dispatch: Ref
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$stringType())
 
 
-/merge_sort_of_string.kt:(1883,1894): info: Generated Viper text for mergeSorted:
+/merge_sort_of_string.kt:(1895,1906): info: Generated Viper text for mergeSorted:
 method f$mergeSorted$F$t$String$t$String(this$extension: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
@@ -269,4 +269,3 @@ method f$subs$F$t$String$t$Int$t$Int$t$String(this$extension: Ref, par$lo: Ref,
       df$rt$stringFromRef(ret)[anon$builtin$7] ==
       df$rt$stringFromRef(this$extension)[anon$builtin$7 +
       df$rt$intFromRef(par$lo)])
-

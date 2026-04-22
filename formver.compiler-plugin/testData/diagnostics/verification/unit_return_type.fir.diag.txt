@@ -1,4 +1,4 @@
-/unit_return_type.kt:(171,176): info: Generated Viper text for idFun:
+/unit_return_type.kt:(184,189): info: Generated Viper text for idFun:
 method f$idFun$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$t), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$anyType()))
@@ -8,7 +8,7 @@ method f$idFun$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/unit_return_type.kt:(195,208): info: Generated Viper text for directReturns:
+/unit_return_type.kt:(208,221): info: Generated Viper text for directReturns:
 method f$directReturns$F$t$Boolean$t$Unit(par$b: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -34,7 +34,7 @@ method f$idFun$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$anyType()))
 
 
-/unit_return_type.kt:(374,387): info: Generated Viper text for useInlineUnit:
+/unit_return_type.kt:(387,400): info: Generated Viper text for useInlineUnit:
 field bf$size: Ref
 
 method f$idFun$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret: Ref)

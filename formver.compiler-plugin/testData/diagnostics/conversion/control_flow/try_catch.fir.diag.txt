@@ -1,4 +1,4 @@
-/try_catch.kt:(158,166): info: Generated Viper text for tryCatch:
+/try_catch.kt:(170,178): info: Generated Viper text for tryCatch:
 method f$call$F$t$Int$t$Unit(par$x: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
@@ -36,7 +36,7 @@ method g$public$cause(this$dispatch: Ref) returns (ret: Ref)
 method g$public$message(this$dispatch: Ref) returns (ret: Ref)
 
 
-/try_catch.kt:(271,285): info: Generated Viper text for nestedTryCatch:
+/try_catch.kt:(283,297): info: Generated Viper text for nestedTryCatch:
 method f$call$F$t$Int$t$Unit(par$x: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
@@ -87,7 +87,7 @@ method g$public$cause(this$dispatch: Ref) returns (ret: Ref)
 method g$public$message(this$dispatch: Ref) returns (ret: Ref)
 
 
-/try_catch.kt:(574,592): info: Generated Viper text for tryCatchWithInline:
+/try_catch.kt:(586,604): info: Generated Viper text for tryCatchWithInline:
 method f$call$F$t$Int$t$Unit(par$x: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
@@ -128,7 +128,7 @@ method g$public$cause(this$dispatch: Ref) returns (ret: Ref)
 method g$public$message(this$dispatch: Ref) returns (ret: Ref)
 
 
-/try_catch.kt:(685,702): info: Generated Viper text for tryCatchShadowing:
+/try_catch.kt:(697,714): info: Generated Viper text for tryCatchShadowing:
 method f$tryCatchShadowing$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -161,7 +161,7 @@ method g$public$cause(this$dispatch: Ref) returns (ret: Ref)
 method g$public$message(this$dispatch: Ref) returns (ret: Ref)
 
 
-/try_catch.kt:(813,828): info: Generated Viper text for multipleCatches:
+/try_catch.kt:(825,840): info: Generated Viper text for multipleCatches:
 method f$call$F$t$Int$t$Unit(par$x: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
@@ -212,7 +212,7 @@ method g$public$cause(this$dispatch: Ref) returns (ret: Ref)
 method g$public$message(this$dispatch: Ref) returns (ret: Ref)
 
 
-/try_catch.kt:(1044,1056): info: Generated Viper text for useException:
+/try_catch.kt:(1056,1068): info: Generated Viper text for useException:
 method f$call$F$t$Int$t$Unit(par$x: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
@@ -252,4 +252,3 @@ method g$public$cause(this$dispatch: Ref) returns (ret: Ref)
 
 
 method g$public$message(this$dispatch: Ref) returns (ret: Ref)
-

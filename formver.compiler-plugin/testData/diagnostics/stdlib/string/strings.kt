@@ -1,3 +1,4 @@
+// FULL_JDK
 // RENDER_PREDICATES
 
 import org.jetbrains.kotlin.formver.plugin.AlwaysVerify

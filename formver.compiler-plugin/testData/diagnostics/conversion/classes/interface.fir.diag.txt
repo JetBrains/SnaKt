@@ -1,4 +1,4 @@
-/interface.kt:(84,98): info: Generated Viper text for testProperties:
+/interface.kt:(96,110): info: Generated Viper text for testProperties:
 method f$testProperties$F$t$Foo$t$Unit(par$foo: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$foo), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
@@ -31,7 +31,7 @@ method g$public$varProp(this$dispatch: Ref) returns (ret: Ref)
 method s$public$varProp(this$dispatch: Ref, anon$0: Ref) returns (ret: Ref)
 
 
-/interface.kt:(348,358): info: Generated Viper text for createImpl:
+/interface.kt:(360,370): info: Generated Viper text for createImpl:
 field bf$number: Ref
 
 method con$c$Impl$t$Int$t$Impl(par$number: Ref) returns (ret: Ref)
@@ -57,4 +57,3 @@ method f$createImpl$F$t$Unit() returns (ret$0: Ref)
 }
 
 method g$public$number(this$dispatch: Ref) returns (ret: Ref)
-

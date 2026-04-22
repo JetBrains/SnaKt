@@ -1,4 +1,4 @@
-/multiple_interfaces.kt:(799,804): info: Generated Viper text for take1:
+/multiple_interfaces.kt:(811,816): info: Generated Viper text for take1:
 method f$take1$F$t$InterfaceWithImplementation1$t$Unit(par$obj: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$obj), df$rt$c$InterfaceWithImplementation1())
@@ -17,7 +17,7 @@ method f$take1$F$t$InterfaceWithImplementation1$t$Unit(par$obj: Ref)
 method g$public$field(this$dispatch: Ref) returns (ret: Ref)
 
 
-/multiple_interfaces.kt:(863,868): info: Generated Viper text for take2:
+/multiple_interfaces.kt:(875,880): info: Generated Viper text for take2:
 method f$take2$F$t$InterfaceWithoutImplementation2$t$Unit(par$obj: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$obj), df$rt$c$InterfaceWithoutImplementation2())
@@ -36,7 +36,7 @@ method f$take2$F$t$InterfaceWithoutImplementation2$t$Unit(par$obj: Ref)
 method g$public$field(this$dispatch: Ref) returns (ret: Ref)
 
 
-/multiple_interfaces.kt:(930,935): info: Generated Viper text for take3:
+/multiple_interfaces.kt:(942,947): info: Generated Viper text for take3:
 field bf$field: Ref
 
 method f$take3$F$t$AbstractWithFinalImplementation3$t$Unit(par$obj: Ref)
@@ -49,7 +49,7 @@ method f$take3$F$t$AbstractWithFinalImplementation3$t$Unit(par$obj: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/multiple_interfaces.kt:(998,1003): info: Generated Viper text for take4:
+/multiple_interfaces.kt:(1010,1015): info: Generated Viper text for take4:
 method f$take4$F$t$AbstractWithOpenImplementation4$t$Unit(par$obj: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$obj), df$rt$c$AbstractWithOpenImplementation4())
@@ -68,7 +68,7 @@ method f$take4$F$t$AbstractWithOpenImplementation4$t$Unit(par$obj: Ref)
 method g$public$field(this$dispatch: Ref) returns (ret: Ref)
 
 
-/multiple_interfaces.kt:(1683,1694): info: Generated Viper text for createImpls:
+/multiple_interfaces.kt:(1695,1706): info: Generated Viper text for createImpls:
 field bf$field: Ref
 
 field bf$size: Ref
@@ -240,4 +240,3 @@ method f$take4$F$t$AbstractWithOpenImplementation4$t$Unit(par$obj: Ref)
 
 
 method g$public$field(this$dispatch: Ref) returns (ret: Ref)
-

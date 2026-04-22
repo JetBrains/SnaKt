@@ -1,4 +1,4 @@
-/viper_casts_while_inlining.kt:(250,255): info: Generated Viper text for idFun:
+/viper_casts_while_inlining.kt:(262,267): info: Generated Viper text for idFun:
 method f$idFun$F$t$N$Any$t$N$Any(par$arg: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$arg), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$anyType()))
@@ -8,7 +8,7 @@ method f$idFun$F$t$N$Any$t$N$Any(par$arg: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/viper_casts_while_inlining.kt:(609,626): info: Generated Viper text for checkMemberAccess:
+/viper_casts_while_inlining.kt:(621,638): info: Generated Viper text for checkMemberAccess:
 field bf$member: Ref
 
 method con$c$ClassWithMember$t$Int$t$ClassWithMember(par$member: Ref)
@@ -88,7 +88,7 @@ method f$idFun$F$t$N$Any$t$N$Any(par$arg: Ref) returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$anyType()))
 
 
-/viper_casts_while_inlining.kt:(895,919): info: Generated Viper text for checkGenericMemberAccess:
+/viper_casts_while_inlining.kt:(907,931): info: Generated Viper text for checkGenericMemberAccess:
 field bf$wrapped: Ref
 
 method con$c$Box$t$N$Any$t$Box(par$wrapped: Ref) returns (ret: Ref)
@@ -168,7 +168,7 @@ method f$idFun$F$t$N$Any$t$N$Any(par$arg: Ref) returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$anyType()))
 
 
-/viper_casts_while_inlining.kt:(1161,1182): info: Generated Viper text for checkArgumentIsCopied:
+/viper_casts_while_inlining.kt:(1173,1194): info: Generated Viper text for checkArgumentIsCopied:
 field bf$a: Ref
 
 method f$checkArgumentIsCopied$F$t$ClassWithVar$t$Unit(par$x: Ref)
@@ -205,7 +205,7 @@ method f$checkArgumentIsCopied$F$t$ClassWithVar$t$Unit(par$x: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/viper_casts_while_inlining.kt:(1347,1364): info: Generated Viper text for accessManyMembers:
+/viper_casts_while_inlining.kt:(1359,1376): info: Generated Viper text for accessManyMembers:
 field bf$a: Ref
 
 field bf$b: Ref
@@ -311,7 +311,7 @@ method f$idFun$F$t$N$Any$t$N$Any(par$arg: Ref) returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$anyType()))
 
 
-/viper_casts_while_inlining.kt:(1540,1558): info: Generated Viper text for checkEvaluatedOnce:
+/viper_casts_while_inlining.kt:(1552,1570): info: Generated Viper text for checkEvaluatedOnce:
 field bf$a: Ref
 
 field bf$b: Ref

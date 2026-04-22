@@ -1,4 +1,4 @@
-/simple_precondition.kt:(238,242): info: Generated Viper text for test:
+/simple_precondition.kt:(250,254): info: Generated Viper text for test:
 field bf$size: Ref
 
 method f$test$F$t$Int$t$Unit(par$idx: Ref) returns (ret$0: Ref)
@@ -15,7 +15,7 @@ method f$test$F$t$Int$t$Unit(par$idx: Ref) returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/simple_precondition.kt:(446,469): info: Generated Viper text for inlineWithSpecification:
+/simple_precondition.kt:(458,481): info: Generated Viper text for inlineWithSpecification:
 method f$inlineWithSpecification$F$t$Boolean$t$Unit(par$bool: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$bool), df$rt$boolType())
@@ -27,7 +27,7 @@ method f$inlineWithSpecification$F$t$Boolean$t$Unit(par$bool: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/simple_precondition.kt:(560,569): info: Generated Viper text for good_call:
+/simple_precondition.kt:(572,581): info: Generated Viper text for good_call:
 method f$good_call$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -52,4 +52,3 @@ method f$test$F$t$Int$t$Unit(par$idx: Ref) returns (ret: Ref)
   requires 0 <= df$rt$intFromRef(par$idx)
   requires df$rt$intFromRef(par$idx) < 3
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
-

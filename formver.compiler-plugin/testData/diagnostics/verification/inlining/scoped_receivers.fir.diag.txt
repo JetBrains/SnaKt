@@ -1,4 +1,4 @@
-/scoped_receivers.kt:(407,433): info: Generated Viper text for with_run_extension_labeled:
+/scoped_receivers.kt:(419,445): info: Generated Viper text for with_run_extension_labeled:
 field bf$size: Ref
 
 method f$with_run_extension_labeled$F$t$N$Int$t$Unit(this$extension: Ref)

@@ -1,0 +1,3 @@
+/is_type_contract.kt:(227,256): warning: Cannot verify that if the function returns then x is Unit.
+
+/is_type_contract.kt:(387,415): warning: Cannot verify that if the function returns then x is Int.

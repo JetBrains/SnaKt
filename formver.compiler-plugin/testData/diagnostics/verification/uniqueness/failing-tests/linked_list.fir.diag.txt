@@ -1,4 +1,4 @@
-/linked_list.kt:(249,255): info: Generated Viper text for getVal:
+/linked_list.kt:(261,267): info: Generated Viper text for getVal:
 field bf$data: Ref
 
 field bf$next: Ref
@@ -40,7 +40,7 @@ method f$getVal$F$t$Link$t$N$Int(par$l: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/linked_list.kt:(430,434): info: Generated Viper text for test:
+/linked_list.kt:(442,446): info: Generated Viper text for test:
 field bf$data: Ref
 
 field bf$next: Ref
@@ -136,5 +136,3 @@ method f$test$F$t$Unit() returns (ret$0: Ref)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
-
-/linked_list.kt:(513,518): warning: Viper verification error: Assert might fail. Assertion df$rt$boolFromRef(l0$expr1) might not hold.

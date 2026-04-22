@@ -1,4 +1,4 @@
-/wrongly_annotated.kt:(53,63): info: Generated Viper text for iAmAMethod:
+/wrongly_annotated.kt:(65,75): info: Generated Viper text for iAmAMethod:
 method f$iAmAMethod$F$t$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -7,13 +7,13 @@ method f$iAmAMethod$F$t$Int() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/wrongly_annotated.kt:(89,160): error: Impure function body detected in pure function
+/wrongly_annotated.kt:(101,172): error: Impure function body detected in pure function
 
-/wrongly_annotated.kt:(162,239): error: Impure function body detected in pure function
+/wrongly_annotated.kt:(174,251): error: Impure function body detected in pure function
 
-/wrongly_annotated.kt:(270,368): error: Impure function body detected in pure function
+/wrongly_annotated.kt:(282,380): error: Impure function body detected in pure function
 
-/wrongly_annotated.kt:(380,395): info: Generated Viper text for impureExtension:
+/wrongly_annotated.kt:(392,407): info: Generated Viper text for impureExtension:
 field bf$value: Ref
 
 method f$impureExtension$F$t$Field$t$Unit(this$extension: Ref)
@@ -26,8 +26,8 @@ method f$impureExtension$F$t$Field$t$Unit(this$extension: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/wrongly_annotated.kt:(423,530): error: Impure function body detected in pure function
+/wrongly_annotated.kt:(435,542): error: Impure function body detected in pure function
 
-/wrongly_annotated.kt:(532,599): error: Impure function body detected in pure function
+/wrongly_annotated.kt:(544,611): error: Impure function body detected in pure function
 
-/wrongly_annotated.kt:(634,758): error: Impure function body detected in pure function
+/wrongly_annotated.kt:(646,770): error: Impure function body detected in pure function

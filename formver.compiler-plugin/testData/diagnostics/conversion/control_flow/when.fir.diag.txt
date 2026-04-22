@@ -1,4 +1,4 @@
-/when.kt:(23,33): info: Generated Viper text for returnWhen:
+/when.kt:(35,45): info: Generated Viper text for returnWhen:
 method f$returnWhen$F$t$Boolean$t$Boolean$t$Boolean$t$Int(par$a: Ref, par$b: Ref,
   par$c: Ref)
   returns (ret$0: Ref)
@@ -19,7 +19,7 @@ method f$returnWhen$F$t$Boolean$t$Boolean$t$Boolean$t$Int(par$a: Ref, par$b: Ref
   label lbl$ret$0
 }
 
-/when.kt:(171,181): info: Generated Viper text for whenReturn:
+/when.kt:(183,193): info: Generated Viper text for whenReturn:
 method f$whenReturn$F$t$Boolean$t$Boolean$t$Boolean$t$Int(par$a: Ref, par$b: Ref,
   par$c: Ref)
   returns (ret$0: Ref)
@@ -44,7 +44,7 @@ method f$whenReturn$F$t$Boolean$t$Boolean$t$Boolean$t$Int(par$a: Ref, par$b: Ref
   label lbl$ret$0
 }
 
-/when.kt:(340,356): info: Generated Viper text for singleBranchWhen:
+/when.kt:(352,368): info: Generated Viper text for singleBranchWhen:
 method f$singleBranchWhen$F$t$Boolean$t$Int(par$a: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$boolType())
@@ -60,7 +60,7 @@ method f$singleBranchWhen$F$t$Boolean$t$Int(par$a: Ref)
   label lbl$ret$0
 }
 
-/when.kt:(446,456): info: Generated Viper text for noElseWhen:
+/when.kt:(458,468): info: Generated Viper text for noElseWhen:
 method f$noElseWhen$F$t$Boolean$t$Boolean$t$Boolean$t$Int(par$a: Ref, par$b: Ref,
   par$c: Ref)
   returns (ret$0: Ref)
@@ -83,7 +83,7 @@ method f$noElseWhen$F$t$Boolean$t$Boolean$t$Boolean$t$Int(par$a: Ref, par$b: Ref
   label lbl$ret$0
 }
 
-/when.kt:(608,626): info: Generated Viper text for whenWithSubjectVar:
+/when.kt:(620,638): info: Generated Viper text for whenWithSubjectVar:
 method f$whenWithSubjectVar$F$t$Int$t$Int(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
@@ -100,7 +100,7 @@ method f$whenWithSubjectVar$F$t$Int$t$Int(par$x: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/when.kt:(726,745): info: Generated Viper text for whenWithSubjectCall:
+/when.kt:(738,757): info: Generated Viper text for whenWithSubjectCall:
 method f$whenWithSubjectCall$F$t$Int$t$Int(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
@@ -130,7 +130,7 @@ method f$whenWithSubjectVar$F$t$Int$t$Int(par$x: Ref) returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
 
 
-/when.kt:(963,972): info: Generated Viper text for emptyWhen:
+/when.kt:(975,984): info: Generated Viper text for emptyWhen:
 method f$emptyWhen$F$t$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -139,7 +139,7 @@ method f$emptyWhen$F$t$Int() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/when.kt:(1015,1027): info: Generated Viper text for unusedResult:
+/when.kt:(1027,1039): info: Generated Viper text for unusedResult:
 method f$unusedResult$F$t$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -150,7 +150,7 @@ method f$unusedResult$F$t$Int() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/when.kt:(1221,1227): info: Generated Viper text for whenIs:
+/when.kt:(1233,1239): info: Generated Viper text for whenIs:
 method f$whenIs$F$t$Foo$t$Boolean(par$x: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$Foo())
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
@@ -166,7 +166,7 @@ method f$whenIs$F$t$Foo$t$Boolean(par$x: Ref) returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/when.kt:(1301,1315): info: Generated Viper text for whenSubjectVal:
+/when.kt:(1313,1327): info: Generated Viper text for whenSubjectVal:
 method f$whenSubjectVal$F$t$Int() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
 {
@@ -180,7 +180,7 @@ method f$whenSubjectVal$F$t$Int() returns (ret$0: Ref)
   label lbl$ret$0
 }
 
-/when.kt:(1392,1412): info: Generated Viper text for whenSubjectValNested:
+/when.kt:(1404,1424): info: Generated Viper text for whenSubjectValNested:
 method f$whenSubjectValNested$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {
@@ -210,7 +210,7 @@ method f$whenSubjectValNested$F$t$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/when.kt:(1674,1697): info: Generated Viper text for whenSubjectVarShadowing:
+/when.kt:(1686,1709): info: Generated Viper text for whenSubjectVarShadowing:
 method f$whenSubjectVarShadowing$F$t$Unit() returns (ret$0: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 {

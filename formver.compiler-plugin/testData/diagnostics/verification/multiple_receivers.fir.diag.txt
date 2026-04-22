@@ -1,4 +1,4 @@
-/multiple_receivers.kt:(236,246): info: Generated Viper text for applyDelta:
+/multiple_receivers.kt:(249,259): info: Generated Viper text for applyDelta:
 field bf$delta: Ref
 
 field bf$size: Ref
@@ -27,7 +27,7 @@ method f$c$ClassWithExtension$applyDelta$F$t$ClassWithExtension$t$Int$t$Unit(thi
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/multiple_receivers.kt:(531,542): info: Generated Viper text for returnDelta:
+/multiple_receivers.kt:(544,555): info: Generated Viper text for returnDelta:
 field bf$delta: Ref
 
 method f$c$ClassWithExtension$returnDelta$F$t$ClassWithExtension$t$Int(this$dispatch: Ref)
@@ -42,7 +42,7 @@ method f$c$ClassWithExtension$returnDelta$F$t$ClassWithExtension$t$Int(this$disp
   label lbl$ret$0
 }
 
-/multiple_receivers.kt:(579,599): info: Generated Viper text for extensionReturnDelta:
+/multiple_receivers.kt:(592,612): info: Generated Viper text for extensionReturnDelta:
 field bf$delta: Ref
 
 method f$extensionReturnDelta$F$t$ClassWithExtension$t$Int(this$extension: Ref)
@@ -57,7 +57,7 @@ method f$extensionReturnDelta$F$t$ClassWithExtension$t$Int(this$extension: Ref)
   label lbl$ret$0
 }
 
-/multiple_receivers.kt:(712,735): info: Generated Viper text for checkClassWithExtension:
+/multiple_receivers.kt:(725,748): info: Generated Viper text for checkClassWithExtension:
 field bf$delta: Ref
 
 field bf$size: Ref
@@ -141,4 +141,3 @@ method f$extensionReturnDelta$F$t$ClassWithExtension$t$Int(this$extension: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$ClassWithExtension())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-

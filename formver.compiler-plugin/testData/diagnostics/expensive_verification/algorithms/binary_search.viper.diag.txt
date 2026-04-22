@@ -1,0 +1,7 @@
+/binary_search.kt:(317,325): warning: Invalid index for list 'arr', the index may be greater than the list's size.
+
+/binary_search.kt:(738,746): warning: Invalid index for list 'arr', the index may be less than zero.
+
+/binary_search.kt:(1357,1380): warning: Invalid sub-list range for list 'arr', the range may be greater than the list's size.
+
+/binary_search.kt:(1620,1628): warning: Invalid index for list 'arr', the index may be less than zero.

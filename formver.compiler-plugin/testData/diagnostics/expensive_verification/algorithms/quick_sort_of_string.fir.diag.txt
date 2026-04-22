@@ -1,4 +1,4 @@
-/quick_sort_of_string.kt:(282,294): info: Generated Viper text for minOrMaxChar:
+/quick_sort_of_string.kt:(294,306): info: Generated Viper text for minOrMaxChar:
 method f$minOrMaxChar$F$t$String$t$Boolean$t$Char(this$extension: Ref, par$calcMin: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
@@ -78,7 +78,7 @@ method f$minOrMaxChar$F$t$String$t$Boolean$t$Char(this$extension: Ref, par$calcM
   label lbl$ret$0
 }
 
-/quick_sort_of_string.kt:(1135,1144): info: Generated Viper text for quickSort:
+/quick_sort_of_string.kt:(1147,1156): info: Generated Viper text for quickSort:
 method f$minOrMaxChar$F$t$String$t$Boolean$t$Char(this$extension: Ref, par$calcMin: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())
@@ -149,7 +149,7 @@ method f$quickSortRec$F$t$String$t$Char$t$Char$t$String(this$extension: Ref,
       df$rt$stringFromRef(ret)[anon$builtin$11])
 
 
-/quick_sort_of_string.kt:(1507,1519): info: Generated Viper text for quickSortRec:
+/quick_sort_of_string.kt:(1519,1531): info: Generated Viper text for quickSortRec:
 method f$chooseIndex$F$t$String$t$Int(this$extension: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$stringType())

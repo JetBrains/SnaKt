@@ -1,4 +1,4 @@
-/extension_properties.kt:(114,137): info: Generated Viper text for extensionGetterProperty:
+/extension_properties.kt:(126,149): info: Generated Viper text for extensionGetterProperty:
 method eg$intValProp$F$t$Int$t$Int(this$dispatch: Ref) returns (ret: Ref)
 
 
@@ -24,7 +24,7 @@ method f$extensionGetterProperty$F$t$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/extension_properties.kt:(210,233): info: Generated Viper text for extensionSetterProperty:
+/extension_properties.kt:(222,245): info: Generated Viper text for extensionSetterProperty:
 method eg$intVarProp$F$t$Int$t$Int(this$dispatch: Ref) returns (ret: Ref)
 
 
@@ -41,7 +41,7 @@ method f$extensionSetterProperty$F$t$Unit() returns (ret$0: Ref)
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/extension_properties.kt:(414,453): info: Generated Viper text for extensionGetterPropertyUserDefinedClass:
+/extension_properties.kt:(426,465): info: Generated Viper text for extensionGetterPropertyUserDefinedClass:
 field bf$x: Ref
 
 method eg$pfValProp$F$t$PrimitiveField$t$Int(this$dispatch: Ref)
@@ -63,7 +63,7 @@ method f$extensionGetterPropertyUserDefinedClass$F$t$PrimitiveField$t$Unit(par$p
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
 
-/extension_properties.kt:(508,547): info: Generated Viper text for extensionSetterPropertyUserDefinedClass:
+/extension_properties.kt:(520,559): info: Generated Viper text for extensionSetterPropertyUserDefinedClass:
 field bf$x: Ref
 
 method eg$pfVarProp$F$t$PrimitiveField$t$Int(this$dispatch: Ref)

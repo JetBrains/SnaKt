@@ -1,4 +1,4 @@
-/sum_of_1_to_n.kt:(64,91): info: Generated Viper text for recursiveSumOfIntegersUpToN:
+/sum_of_1_to_n.kt:(78,105): info: Generated Viper text for recursiveSumOfIntegersUpToN:
 method f$recursiveSumOfIntegersUpToN$F$t$Int$t$Int(par$n: Ref)
   returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$n), df$rt$intType())
@@ -20,7 +20,7 @@ method f$recursiveSumOfIntegersUpToN$F$t$Int$t$Int(par$n: Ref)
   label lbl$ret$0
 }
 
-/sum_of_1_to_n.kt:(296,314): info: Generated Viper text for sumOfIntegersUpToN:
+/sum_of_1_to_n.kt:(310,328): info: Generated Viper text for sumOfIntegersUpToN:
 method f$sumOfIntegersUpToN$F$t$Int$t$Int(par$n: Ref) returns (ret$0: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$n), df$rt$intType())
   requires df$rt$intFromRef(par$n) >= 0
