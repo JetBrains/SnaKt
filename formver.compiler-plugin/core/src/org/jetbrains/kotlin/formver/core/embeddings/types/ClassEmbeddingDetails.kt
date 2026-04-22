@@ -16,7 +16,6 @@ import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 
 class ClassEmbeddingDetails(
     val type: ClassTypeEmbedding,
-    val isInterface: Boolean,
 ) : TypeInvariantHolder {
     private var _superTypes: List<PretypeEmbedding>? = null
     val superTypes: List<PretypeEmbedding>
@@ -110,19 +109,26 @@ class ClassEmbeddingDetails(
 
     override fun subTypeInvariant(): TypeInvariantEmbedding = type.subTypeInvariant()
 
-    // Returns the sequence of classes in a hierarchy that need to be unfolded in order to access the given field
-    fun hierarchyPathTo(field: FieldEmbedding): Sequence<ClassTypeEmbedding> = sequence {
-        val className = field.containingClass?.name
-        require(className != null) { "Cannot find hierarchy unfold path of a field with no class information" }
-        if (className == type.name) {
-            yield(this@ClassEmbeddingDetails.type)
-        } else {
-            val sup = classSuperTypes.firstOrNull { !it.details.isInterface }
-                ?: throw IllegalArgumentException("Reached top of the hierarchy without finding the field")
+    /**
+     * Returns the sequence of types to unfold to reach [target] from the current type.
+     * Returns an empty sequence if the current type already is [target].
+     * Throws if [target] is unreachable.
+     */
+    fun hierarchyPathTo(target: ClassTypeEmbedding): Sequence<ClassTypeEmbedding> =
+        pathToOrNull(target)?.asSequence()
+            ?: throw IllegalArgumentException("Could not find a path from ${type.name} to ${target.name} in the class hierarchy")
 
-            yield(this@ClassEmbeddingDetails.type)
-            yieldAll(sup.details.hierarchyPathTo(field))
+    /**
+     * Returns the path of types to unfold from the current type to reach [target], or `null` if unreachable.
+     * An empty list means the current type IS the target.
+     */
+    private fun pathToOrNull(target: ClassTypeEmbedding): List<ClassTypeEmbedding>? {
+        if (type == target) return emptyList()
+        for (sup in classSuperTypes) {
+            val subPath = sup.details.pathToOrNull(target) ?: continue
+            return listOf(type) + subPath
         }
+        return null
     }
 
     fun <R> flatMapUniqueFields(action: (SimpleKotlinName, FieldEmbedding) -> List<R>): List<R> {
