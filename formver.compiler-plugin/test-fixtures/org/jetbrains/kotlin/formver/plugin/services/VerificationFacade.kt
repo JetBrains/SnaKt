@@ -72,15 +72,14 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
                 })
             }
             if (toVerify.isNotEmpty()) {
-                val verifier = SiliconFrontend(emptyList())
-                with(verifier) {
-                    toVerify.forEach { (testFile, decl) ->
-                        val diagnostics = verifyFunction(decl, module)
-                        testServices.diagnosticsCollector.addVerificationDiagnostics(diagnostics)
-                        testServices.tagCollector.reportDiagnostics(testFile, diagnostics)
-                    }
+                val verifier = SiliconFrontend(listOf("--numberOfParallelVerifiers", "1"))
+                toVerify.forEach { (testFile, decl) ->
+                    val diagnostics = verifyFunction(verifier, decl, module)
+                    testServices.diagnosticsCollector.addVerificationDiagnostics(diagnostics)
+                    testServices.tagCollector.reportDiagnostics(testFile, diagnostics)
                 }
-//                verifier.close()
+                verifier.close()
+
             }
         }
 
@@ -91,8 +90,8 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
      * Runs the verifier
      */
     @OptIn(InternalDiagnosticFactoryMethod::class)
-    context(verifier: SiliconFrontend)
     private fun verifyFunction(
+        verifier: SiliconFrontend,
         decl: FirSimpleFunction,
         module: TestModule
     ): List<KtDiagnostic> {
@@ -107,9 +106,8 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
                 }
             }
         }
-        verifier.use {
-            it.verify(program, onFailure)
-        }
+        verifier.verify(program, onFailure)
+
         return results
     }
 
