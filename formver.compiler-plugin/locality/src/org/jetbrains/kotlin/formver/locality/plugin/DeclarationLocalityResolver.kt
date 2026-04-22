@@ -19,25 +19,28 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.types.coneType
 
-private inline fun FirTypeRef.extractLocality(findOwner: () -> FirBasedSymbol<*>?): LocalityAttribute? =
-    coneType.attributes.locality?.copy(owner = findOwner())
+private inline fun FirTypeRef.resolveLocality(findOwner: () -> FirBasedSymbol<*>?): Locality {
+    if (coneType.attributes.locality == null) return Global
+
+    return Local(findOwner() ?: UnknownSymbol)
+}
 
 private fun CheckerContext.findClosestFunction(): FirBasedSymbol<*>? =
     findClosest<FirFunctionSymbol<*>>()
 
 context(context: CheckerContext)
-fun FirReceiverParameter.extractRequiredLocality(): LocalityAttribute? =
-    typeRef.extractLocality { context.findClosestFunction() }
+fun FirReceiverParameter.extractRequiredLocality(): Locality =
+    typeRef.resolveLocality { context.findClosestFunction() }
 
-fun FirReceiverParameter.extractActualLocality(): LocalityAttribute? =
-    typeRef.extractLocality { containingDeclarationSymbol }
+fun FirReceiverParameter.extractActualLocality(): Locality =
+    typeRef.resolveLocality { containingDeclarationSymbol }
 
 context(context: CheckerContext)
-fun FirValueParameter.extractRequiredLocality(): LocalityAttribute? =
-    returnTypeRef.extractLocality { context.findClosestFunction() }
+fun FirValueParameter.extractRequiredLocality(): Locality =
+    returnTypeRef.resolveLocality { context.findClosestFunction() }
 
-fun FirValueParameter.extractActualLocality(): LocalityAttribute? =
-    returnTypeRef.extractLocality { containingDeclarationSymbol }
+fun FirValueParameter.extractActualLocality(): Locality =
+    returnTypeRef.resolveLocality { containingDeclarationSymbol }
 
 private fun FirControlFlowGraphOwner.declaresProperty(property: FirProperty): Boolean =
     controlFlowGraphReference?.controlFlowGraph?.nodes?.any { node ->
@@ -54,5 +57,5 @@ private fun FirProperty.findOwner(): FirBasedSymbol<*>? =
     }
 
 context(context: CheckerContext)
-fun FirProperty.extractLocality(): LocalityAttribute? =
-    returnTypeRef.extractLocality { findOwner() }
+fun FirProperty.extractLocality(): Locality =
+    returnTypeRef.resolveLocality { findOwner() }

@@ -1,0 +1,1 @@
+/merge_unknown_owner.kt:(187,214): error: Assignment locality mismatch: expected 'global', actual 'local(unknown)'.

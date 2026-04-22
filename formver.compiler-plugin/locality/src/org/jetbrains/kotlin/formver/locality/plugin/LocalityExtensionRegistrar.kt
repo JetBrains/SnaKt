@@ -11,6 +11,7 @@ object LocalityExtensionRegistrar : FirExtensionRegistrar() {
     override fun ExtensionRegistrarContext.configurePlugin() {
         registerDiagnosticContainers(LocalityErrors)
         +LocalityAttributeExtension.getFactory()
+        +GraphLocalityResolver.getFactory()
         +LocalityAdditionalCheckers.getFactory()
     }
 }
