@@ -49,6 +49,7 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
 
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(declaration: FirSimpleFunction) {
+        val inTestRun = System.getProperty("kotlin.formver.testRun").toBoolean()
         if (!config.shouldConvert(declaration)) return
         val errorCollector = ErrorCollector()
         try {
@@ -86,8 +87,10 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
             }
 
             val viperProgram = with(programConversionContext.nameResolver) { program.toSilver() }
-            declaration.viperProgram = viperProgram
-            declaration.shouldVerify = config.shouldVerify(declaration)
+            if (inTestRun) {
+                declaration.viperProgram = viperProgram
+                declaration.shouldVerify = config.shouldVerify(declaration)
+            }
 
             val onFailure = { err: VerifierError ->
                 val source = err.position.unwrapOr { declaration.source }
@@ -132,8 +135,6 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
     }
 
     private fun PluginConfiguration.shouldVerify(declaration: FirSimpleFunction): Boolean = when {
-        //TODO: Delete the following line, if we go with this approach
-//        verificationSelection == TargetsSelection.FORCE_DISABLE -> false
         declaration.hasAnnotation(neverConvertId, session) -> false
         declaration.hasAnnotation(neverVerifyId, session) -> false
         declaration.hasAnnotation(alwaysVerifyId, session) -> true
