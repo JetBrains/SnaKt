@@ -39,6 +39,9 @@ import org.jetbrains.kotlin.utils.addIfNotNull
 import org.jetbrains.kotlin.utils.addToStdlib.ifFalse
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 
+
+typealias PropertyName = Pair<ScopedName, ScopedName>
+
 /**
  * Tracks the top-level information about the program.
  * Conversions for global entities like types should generally be
@@ -63,7 +66,7 @@ class ProgramConverter(
      * [properties] contains all the properties. This includes properties defined on interfaces etc.
      * They are stored in a map. The key is the pair of the name of the class and the field.
      **/
-    private val properties: MutableMap<Pair<SymbolicName, SymbolicName>, PropertyEmbedding> = mutableMapOf()
+    private val properties: MutableMap<PropertyName, PropertyEmbedding> = mutableMapOf()
 
     /** [fields] contain the properties that actually have backing fields. **/
     private val fields: MutableSet<FieldEmbedding> = mutableSetOf()
