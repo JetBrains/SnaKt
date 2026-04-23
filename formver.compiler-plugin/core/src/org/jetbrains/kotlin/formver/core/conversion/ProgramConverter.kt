@@ -89,12 +89,12 @@ class ProgramConverter(
             // We need to deduplicate fields since public fields with the same name are represented differently
             // at `FieldEmbedding` level but map to the same Viper.
             fields = SpecialFields.all.map { it.toViper() } +
-                    fields.distinctBy { it.name.debugMangled }.map { it.toViper() },
+                    fields.distinctBy { it.name }.map { it.toViper() },
             functions = SpecialFunctions.all +
-                    functions.values.mapNotNull { it.viperFunction }.distinctBy { it.name.debugMangled },
+                    functions.values.mapNotNull { it.viperFunction }.distinctBy { it.name },
             methods = SpecialMethods.all +
                     methods.values.mapNotNull { it.viperMethod }
-                        .distinctBy { it.name.debugMangled } + havocMethods.values,
+                        .distinctBy { it.name } + havocMethods.values,
             predicates = classes.values.flatMap {
                 listOf(
                     it.details.sharedPredicate,
