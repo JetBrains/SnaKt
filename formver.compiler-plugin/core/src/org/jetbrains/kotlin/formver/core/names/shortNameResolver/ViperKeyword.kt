@@ -3,7 +3,9 @@ package org.jetbrains.kotlin.formver.core.names.shortNameResolver
 import org.jetbrains.kotlin.formver.viper.AnyName
 
 
-class ViperKeyword(val keyword: String) : AnyName
+class ViperKeyword(val keyword: String) : AnyName {
+    override val inViper: Boolean = true
+}
 
 object ViperKeywords {
     val keywords = setOf(

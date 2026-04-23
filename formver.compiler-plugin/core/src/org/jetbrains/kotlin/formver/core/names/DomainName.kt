@@ -10,15 +10,20 @@ import org.jetbrains.kotlin.formver.viper.SymbolicName
 data class DomainName(val baseName: String) : SymbolicName {
     override val nameType: NameType
         get() = NameType.Base.Domain
+    override val inViper: Boolean = true
 }
 
 data class UnqualifiedDomainFuncName(val baseName: String) : SymbolicName {
+    override val inViper: Boolean = false
 }
 
 data class QualifiedDomainFuncName(val domainName: SymbolicName, val funcName: SymbolicName) : SymbolicName {
     override val nameType: NameType
         get() = NameType.Base.DomainFunction
+    override val inViper: Boolean = true
 
 }
 
-data class NamedDomainAxiomLabel(val domainName: SymbolicName, val baseName: String) : SymbolicName
+data class NamedDomainAxiomLabel(val domainName: SymbolicName, val baseName: String) : SymbolicName {
+    override val inViper: Boolean = true
+}

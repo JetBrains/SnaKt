@@ -12,6 +12,11 @@ interface AnyName {
     fun register(nameResolver: NameResolver) {
         nameResolver.register(this)
     }
+
+    /**
+     * True iff the name can appear in Viper.
+     */
+    val inViper: Boolean
 }
 
 

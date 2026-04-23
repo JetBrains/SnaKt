@@ -116,7 +116,7 @@ class ShortNameResolver : NameResolver {
     /**
      * All names that appear in Viper. 
      */
-    private fun viperElements() = elements.filter { endUpInViper(it) }
+    private fun viperElements() = elements.filter { it.inViper }
 
     /**
      * Stores all the relations between names.
@@ -168,7 +168,7 @@ class ShortNameResolver : NameResolver {
     }
 
     private fun registerEntity(entity: AnyName) {
-        if (elements.contains(entity)) return
+//        if (elements.contains(entity)) return
         addElement(entity)
         when (entity) {
             is NameScope -> {
@@ -242,7 +242,7 @@ class ShortNameResolver : NameResolver {
                         registerEntity(entity.pretype.name)
                     }
 
-                    is SimpleKotlinName, is ClassKotlinName, is TypedKotlinName, is DomainName -> {}
+                    is SimpleKotlinName, is ClassKotlinName, is TypedKotlinName, is DomainName, is UnqualifiedDomainFuncName, is PretypeName -> {}
                     else -> {
                         throw SnaktInternalException(null, "Unsupported entity type: ${entity.javaClass.name}")
                     }
@@ -302,7 +302,7 @@ class ShortNameResolver : NameResolver {
      * Generates short human-readable names. Must be called before using [lookup].
      */
     override fun resolve() {
-        createRepresentatives()
+//        createRepresentatives()
         var currentCollisions = collisions()
         while (currentCollisions.isNotEmpty()) {
             val toResolve = currentCollisions.entries.first().value
@@ -356,8 +356,7 @@ class ShortNameResolver : NameResolver {
      *   is captured with the representation system. Hence, names that are represented by someone else must not be considered.
      */
     private fun collisions(): Map<String, Set<AnyName>> {
-        val toConsider = elements.filter { endUpInViper(it) && !isRepresented(it) }
-        val names = toConsider.map { Pair(current(it), it) }
+        val names = viperElements().map { Pair(current(it), it) }
         val result = mutableMapOf<String, MutableSet<AnyName>>()
         names.forEach { (name, entity) ->
             result.getOrPut(name) {
@@ -382,7 +381,7 @@ class ShortNameResolver : NameResolver {
                 }
 
                 is KotlinName -> !isScoped(entity)
-                is ScopedName -> (!isScoped(entity) && entity.name !is ClassKotlinName)
+                is ScopedName -> (!isScoped(entity))
                 is DomainName -> true
                 is NamedDomainAxiomLabel -> true
                 is QualifiedDomainFuncName -> true
@@ -484,7 +483,7 @@ class ShortNameResolver : NameResolver {
             return "n${hashCode.absoluteValue}"
         }
 
-        fun nodeColor(entity: AnyName): String = if (endUpInViper(entity)) {
+        fun nodeColor(entity: AnyName): String = if (entity.inViper) {
             "lime"
         } else {
             "black"
