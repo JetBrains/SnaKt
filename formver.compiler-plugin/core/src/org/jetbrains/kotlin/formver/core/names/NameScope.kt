@@ -6,8 +6,6 @@
 package org.jetbrains.kotlin.formver.core.names
 
 import org.jetbrains.kotlin.formver.viper.AnyName
-import org.jetbrains.kotlin.formver.viper.NameResolver
-import org.jetbrains.kotlin.formver.viper.mangled
 import org.jetbrains.kotlin.name.FqName
 
 sealed interface NameScope : AnyName {
@@ -50,7 +48,8 @@ data class ClassScope(override val parent: NameScope, val className: ClassKotlin
  * We do not want to mangle field names with class and package, hence introducing
  * this special `NameScope`. Note that it still needs package and class for other purposes.
  */
-data class PublicScope(override val parent: NameScope) : NameScope {
+data object PublicScope : NameScope {
+    override val parent: NameScope? = null
     override val parentAccessible: Boolean
         get() = false
 }
