@@ -58,7 +58,14 @@ class ProgramConverter(
         }.toMutableMap()
     private val functions: MutableMap<SymbolicName, PureFunctionEmbedding> = mutableMapOf()
     private val classes: MutableMap<SymbolicName, ClassTypeEmbedding> = mutableMapOf()
-    private val properties: MutableMap<SymbolicName, PropertyEmbedding> = mutableMapOf()
+
+    /**
+     * [properties] contains all the properties. This includes properties defined on interfaces etc.
+     * They are stored in a map. The key is the pair of the name of the class and the field.
+     **/
+    private val properties: MutableMap<Pair<SymbolicName, SymbolicName>, PropertyEmbedding> = mutableMapOf()
+
+    /** [fields] contain the properties that actually have backing fields. **/
     private val fields: MutableSet<FieldEmbedding> = mutableSetOf()
     private val havocMethods: MutableMap<SymbolicName, Method> = mutableMapOf()
 
