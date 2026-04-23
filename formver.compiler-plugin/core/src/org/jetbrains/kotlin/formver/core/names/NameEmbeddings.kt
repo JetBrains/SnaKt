@@ -9,8 +9,8 @@ import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.core.conversion.ClassPropertyPair
 import org.jetbrains.kotlin.formver.core.conversion.ProgramConversionContext
-import org.jetbrains.kotlin.formver.core.conversion.PropertyName
 import org.jetbrains.kotlin.formver.core.conversion.ScopeIndex
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.name.CallableId
@@ -129,10 +129,11 @@ fun FirPropertySymbol.embedSetterName(ctx: ProgramConversionContext): ScopedName
  * Returns a pair that uniquely identifies the property.
  * The first element is the name of the class that contains the property, and the second is the name of the property itself.
  */
-fun FirPropertySymbol.embedMemberPropertyName(): PropertyName {
+fun FirPropertySymbol.embedMemberPropertyName(): ClassPropertyPair {
+    val callable = callableId
     val className =
-        callableId?.classId?.embedName() ?: throw SnaktInternalException(source, "Property is not part of a class")
-    val propertyName = callableId!!.embedMemberPropertyName(Visibilities.isPrivate(this.visibility))
+        callable?.classId?.embedName() ?: throw SnaktInternalException(source, "Property is not part of a class")
+    val propertyName = callable.embedMemberPropertyName(Visibilities.isPrivate(this.visibility))
     return Pair(className, propertyName)
 }
 
