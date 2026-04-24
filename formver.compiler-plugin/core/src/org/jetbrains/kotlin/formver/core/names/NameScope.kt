@@ -11,6 +11,9 @@ import org.jetbrains.kotlin.name.FqName
 sealed interface NameScope : AnyName {
     val parent: NameScope?
         get() = null
+
+    override val inViper: Boolean
+        get() = true
 }
 
 // Includes the scope itself.

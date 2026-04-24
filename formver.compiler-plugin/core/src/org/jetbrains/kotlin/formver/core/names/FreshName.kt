@@ -34,36 +34,51 @@ sealed interface NameTypeIsVariable : FreshName {
  * Representation for names not present in the original source,
  * e.g. storage for the result of subexpressions.
  */
-data class AnonymousName(override val n: Int) : NumberedName, NameTypeIsVariable
+data class AnonymousName(override val n: Int) : NumberedName, NameTypeIsVariable {
+    override val inViper: Boolean = true
+}
 
-data class AnonymousBuiltinName(override val n: Int) : NumberedName, NameTypeIsVariable
+data class AnonymousBuiltinName(override val n: Int) : NumberedName, NameTypeIsVariable {
+    override val inViper: Boolean = true
+}
 
 /**
  * Name for return variable that should *only* be used in signatures of methods without a body.
  */
 data object PlaceholderReturnVariableName : FreshName {
     override val nameType: NameType = NameType.Base.Variable
+    override val inViper: Boolean = true
 
 }
 
-data class ReturnVariableName(override val n: Int) : NumberedName, NameTypeIsVariable
+data class ReturnVariableName(override val n: Int) : NumberedName, NameTypeIsVariable {
+    override val inViper: Boolean = true
+}
 
 /**
  * Name for return variable that should *only* be used in signatures of pure functions
  * This variable will be translated into the special result variable in Viper
  */
-data object FunctionResultVariableName : FreshName, NameTypeIsVariable
+data object FunctionResultVariableName : FreshName, NameTypeIsVariable {
+    override val inViper: Boolean = true
+}
 
-data object DispatchReceiverName : FreshName, NameTypeIsVariable
+data object DispatchReceiverName : FreshName, NameTypeIsVariable {
+    override val inViper: Boolean = true
+}
 
-data object ExtensionReceiverName : FreshName, NameTypeIsVariable
+data object ExtensionReceiverName : FreshName, NameTypeIsVariable {
+    override val inViper: Boolean = true
+}
 
 data class SpecialFieldName(val name: String) : FreshName {
     override val nameType: NameType = NameType.Member.Property
+    override val inViper: Boolean = true
 }
 
 sealed class LabelName(override val n: Int) : NumberedName {
     override val nameType: NameType = NameType.Base.Label
+    override val inViper: Boolean = true
 }
 
 data class ReturnLabelName(override val n: Int) : LabelName(n)
@@ -75,18 +90,27 @@ data class TryExitLabelName(override val n: Int) : LabelName(n)
 
 data class DomainAssociatedFuncName(val name: String) : FreshName {
     override val nameType: NameType = NameType.Base.DomainFunction
+    override val inViper: Boolean = true
 }
 
-data class PlaceholderArgumentName(override val n: Int) : NumberedName, NameTypeIsVariable
+data class PlaceholderArgumentName(override val n: Int) : NumberedName, NameTypeIsVariable {
+    override val inViper: Boolean = true
+}
 
-data class DomainFuncParameterName(val name: String) : FreshName, NameTypeIsVariable
+data class DomainFuncParameterName(val name: String) : FreshName, NameTypeIsVariable {
+    override val inViper: Boolean = true
+}
 
-data class SsaVariableName(override val n: Int, val baseName: SymbolicName) : NumberedName, NameTypeIsVariable
+data class SsaVariableName(override val n: Int, val baseName: SymbolicName) : NumberedName, NameTypeIsVariable {
+    override val inViper: Boolean = true
+}
 
 data class PredicateName(val name: String) : FreshName {
+    override val inViper: Boolean = false
     override val nameType: NameType = NameType.Base.Predicate
 }
 
 data class HavocName(val type: TypeEmbedding) : FreshName {
+    override val inViper: Boolean = true
     override val nameType: NameType = NameType.Base.Havoc
 }
