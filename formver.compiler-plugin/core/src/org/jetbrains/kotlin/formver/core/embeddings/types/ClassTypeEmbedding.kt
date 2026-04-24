@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
 import org.jetbrains.kotlin.KtSourceElement
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
@@ -17,39 +18,29 @@ import org.jetbrains.kotlin.formver.viper.ast.Exp
 
 // TODO: incorporate generic parameters.
 data class ClassTypeEmbedding(override val name: ScopedName) : PretypeEmbedding {
-    private var _details: ClassEmbeddingDetails? = null
-    val details: ClassEmbeddingDetails
-        get() = _details ?: error("Details of $name have not been initialised yet.")
-
-    fun initDetails(details: ClassEmbeddingDetails) {
-        require(_details == null) { "Class details already initialized" }
-        _details = details
-    }
-
-    val hasDetails: Boolean
-        get() = _details != null
 
     override val runtimeType: Exp = this.embedClassTypeFunc()()
 
-    override fun accessInvariants(): List<TypeInvariantEmbedding> = details.accessInvariants()
+    override fun accessInvariants(ctx: TypeResolver): List<TypeInvariantEmbedding> =
+        ctx.details(name).accessInvariants(ctx)
 
-    // Note: this function will replace accessInvariants when nested unfold will be implemented
-    override fun sharedPredicateAccessInvariant() = details.sharedPredicateAccessInvariant()
+    override fun sharedPredicateAccessInvariant(ctx: TypeResolver) =
+        ctx.details(name).sharedPredicateAccessInvariant(ctx)
 
-    override fun uniquePredicateAccessInvariant() = details.uniquePredicateAccessInvariant()
+    override fun uniquePredicateAccessInvariant(ctx: TypeResolver) =
+        ctx.details(name).uniquePredicateAccessInvariant(ctx)
 }
 
-fun PretypeEmbedding.isInheritorOfCollectionTypeNamed(name: String): Boolean {
+fun PretypeEmbedding.isInheritorOfCollectionTypeNamed(name: String, ctx: TypeResolver): Boolean {
     val classEmbedding = this as? ClassTypeEmbedding ?: return false
-    return isCollectionTypeNamed(name) || classEmbedding.details.superTypes.any {
-        it.isInheritorOfCollectionTypeNamed(name)
+    return isCollectionTypeNamed("Collection") || ctx.lookupSuperTypes(this.name).any {
+        it.isInheritorOfCollectionTypeNamed(name, ctx)
     }
 }
 
-val PretypeEmbedding.isCollectionInheritor
-    get() = isInheritorOfCollectionTypeNamed("Collection")
+fun PretypeEmbedding.isCollectionInheritor(ctx: TypeResolver) = isInheritorOfCollectionTypeNamed("Collection", ctx)
 
-private fun PretypeEmbedding.isCollectionTypeNamed(name: String): Boolean {
+fun PretypeEmbedding.isCollectionTypeNamed(name: String): Boolean {
     val classEmbedding = this as? ClassTypeEmbedding ?: return false
     NameMatcher.Companion.matchGlobalScope(classEmbedding.name) {
         ifInCollectionsPkg {
@@ -65,10 +56,11 @@ fun ClassTypeEmbedding.embedClassTypeFunc(): DomainFunc = RuntimeTypeDomain.clas
 
 fun ClassTypeEmbedding.predicateAccess(
     receiver: ExpEmbedding,
+    ctx: TypeResolver,
     source: KtSourceElement?
 ): Exp.PredicateAccess {
-    val access = (sharedPredicateAccessInvariant().fillHole(receiver)
-        .pureToViper(toBuiltin = true, source) as? Exp.PredicateAccess
+    val access = (sharedPredicateAccessInvariant(ctx)?.fillHole(receiver)
+        ?.pureToViper(toBuiltin = true, ctx, source) as? Exp.PredicateAccess
         ?: error("Translating shared predicate of ${name.debugMangled} yielded no predicate access."))
     return access
 }

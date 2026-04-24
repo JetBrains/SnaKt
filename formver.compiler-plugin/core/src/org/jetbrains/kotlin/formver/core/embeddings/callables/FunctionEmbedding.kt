@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyConversionResult
 import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.InvalidFunctionBodyEmbedding
@@ -14,11 +15,11 @@ import org.jetbrains.kotlin.formver.viper.ast.Function
 import org.jetbrains.kotlin.formver.viper.ast.Method
 
 interface FunctionEmbedding : CallableEmbedding {
-    val viperMethod: Method?
+    fun viperMethod(ctx: TypeResolver): Method?
 }
 
 interface PureFunctionEmbedding : CallableEmbedding {
-    val viperFunction: Function?
+    fun viperFunction(ctx: TypeResolver): Function?
 }
 
 /**
@@ -31,15 +32,14 @@ class UserFunctionEmbedding(private val callable: RichCallableEmbedding) : Funct
      */
     var body: FunctionBodyConversionResult? = null
 
-    override val viperMethod: Method?
-        get() = when (val currentBody = body) {
+    override fun viperMethod(ctx: TypeResolver): Method? = when (val currentBody = body) {
             is InvalidFunctionBodyEmbedding -> throw SnaktInternalException(
                 currentBody.source,
                 "Invalid function body detected in user-defined function"
             )
 
-            is FunctionBodyEmbedding -> currentBody.toViperMethod(callable)
-            else -> callable.toViperMethodHeader()
+        is FunctionBodyEmbedding -> currentBody.toViperMethod(callable, ctx)
+        else -> callable.toViperMethodHeader(ctx)
         }
 }
 
@@ -52,6 +52,5 @@ class PureUserFunctionEmbedding(private val callable: RichCallableEmbedding) : P
 
     var body: Exp? = null
 
-    override val viperFunction: Function
-        get() = callable.toViperFunction(body)
+    override fun viperFunction(ctx: TypeResolver): Function = callable.toViperFunction(ctx, body)
 }
