@@ -83,8 +83,6 @@ internal enum class Relation {
 
     /** name NAME_TYPE nameType **/
     KIND_OF,
-
-    REPRESENTED_BY,
 }
 
 /**
@@ -139,12 +137,6 @@ class ShortNameResolver : NameResolver {
     private fun isScoped(entity: AnyName): Boolean =
         tripleStore.any { (a, rel, _) -> a == entity && rel == Relation.SCOPED_BY }
 
-
-    fun isRepresented(entity: AnyName): Boolean = representedBy(entity) != null
-    fun representedBy(entity: AnyName): AnyName? =
-        tripleStore.find { (a, rel, _) -> a == entity && rel == Relation.REPRESENTED_BY }?.third
-
-
     override fun register(name: AnyName) = registerEntity(name)
 
     private fun registerFreshName(entity: FreshName) {
@@ -168,7 +160,6 @@ class ShortNameResolver : NameResolver {
     }
 
     private fun registerEntity(entity: AnyName) {
-//        if (elements.contains(entity)) return
         addElement(entity)
         when (entity) {
             is NameScope -> {
@@ -266,12 +257,7 @@ class ShortNameResolver : NameResolver {
     }
 
     private fun currentCandidate(name: AnyName): CandidateName {
-        var representative = name
-        // find the root of representation
-        while (true) {
-            representative = representedBy(representative) ?: break
-        }
-        val index = currentCandidate.getOrPut(representative) { 0 }
+        val index = currentCandidate.getOrPut(name) { 0 }
         return name.candidates()[index]
     }
     // END RESOLVE NAMES
@@ -302,7 +288,6 @@ class ShortNameResolver : NameResolver {
      * Generates short human-readable names. Must be called before using [lookup].
      */
     override fun resolve() {
-//        createRepresentatives()
         var currentCollisions = collisions()
         while (currentCollisions.isNotEmpty()) {
             val toResolve = currentCollisions.entries.first().value
@@ -319,31 +304,6 @@ class ShortNameResolver : NameResolver {
 
         // Fix the names
         mangledNames = viperElements().associateWith { current(it) }
-    }
-
-    /**
-     * For some names (e.g., public fields with the same name), we want to merge them in the viper.
-     * If there are multiple such names, and we do nothing, then there will be unnecessary collisions.
-     * Hence, this function groups the names into groups that should be merged and choose a representative.
-     */
-    private fun createRepresentatives() {
-        // Field Names which are public
-        val publicFields = elements.filter {
-            it is ScopedName && it.scope is PublicScope
-        }
-        // Group them according to their name
-        val grouped = mutableMapOf<SymbolicName, Set<ScopedName>>()
-        publicFields.forEach {
-            grouped.merge((it as ScopedName).name, setOf(it), Set<ScopedName>::plus)
-        }
-        // The first is the representative.
-        // TODO: if one of them already has a representative, this must be taken into account. But can this even happen?
-        grouped.forEach { (_, fields) ->
-            val representative = fields.first()
-            fields.drop(1).forEach {
-                link(it, Relation.REPRESENTED_BY, representative)
-            }
-        }
     }
 
     /**
@@ -365,40 +325,6 @@ class ShortNameResolver : NameResolver {
         }
         return result.filterValues { it.size > 1 }
     }
-
-    /**
-     * Returns true iff the ``entity`` could end up in viper.
-     */
-    private fun endUpInViper(entity: AnyName): Boolean = when (entity) {
-        is NameScope -> false // Just scopes should never appear as an actual name in viper
-        is NameType -> false // Name Types are only used to distinguish what a name describes
-        is SymbolicName -> {
-            when (entity) {
-                is FreshName -> when (entity) {
-                    is PredicateName -> !isScoped(entity)
-                    is HavocName -> !isScoped(entity)
-                    else -> true
-                }
-
-                is KotlinName -> !isScoped(entity)
-                is ScopedName -> (!isScoped(entity))
-                is DomainName -> true
-                is NamedDomainAxiomLabel -> true
-                is QualifiedDomainFuncName -> true
-                is UnqualifiedDomainFuncName -> false
-                is TypeName -> false
-                is FunctionTypeName -> false
-                is PretypeName -> false
-                is ListOfNames<*> -> false
-                else -> true
-            }
-        }
-
-        is ViperKeyword -> true
-
-        else -> false
-    }
-
 
     /**
      * Moves `name` one position.
@@ -535,7 +461,6 @@ class ShortNameResolver : NameResolver {
             Relation.TYPE_OF -> "[color=pink]"
             Relation.SCOPED_BY -> "[color=lightblue]"
             Relation.KIND_OF -> "[color=green]"
-            Relation.REPRESENTED_BY -> "[color=purple]"
         }
 
 
