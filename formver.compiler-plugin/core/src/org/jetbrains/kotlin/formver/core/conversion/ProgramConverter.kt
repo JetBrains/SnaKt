@@ -60,7 +60,6 @@ class ProgramConverter(
             putAll(PartiallySpecialKotlinFunctions.generateAllByName())
         }.toMutableMap()
     private val functions: MutableMap<SymbolicName, PureFunctionEmbedding> = mutableMapOf()
-    private val classes: MutableMap<SymbolicName, ClassTypeEmbedding> = mutableMapOf()
 
     override val typeResolver: TypeResolver = TypeResolver()
 
@@ -238,12 +237,10 @@ class ProgramConverter(
      */
     private fun embedClass(symbol: FirRegularClassSymbol): ClassTypeEmbedding {
         val className = symbol.classId.embedName()
-        val embedding = classes.getOrPut(className) {
-            buildClassPretype {
+        if (typeResolver.isRegistered(className)) return typeResolver.lookupClassType(className)!!
+        val embedding = buildClassPretype {
                 withName(className)
             }
-        }
-        if (typeResolver.isRegistered(className)) return embedding
 
         typeResolver.register(className, embedding, symbol.classKind.isInterface)
 
