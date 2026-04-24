@@ -57,4 +57,3 @@ method f$createImpl$F$t$Unit() returns (ret$0: Ref)
 }
 
 method g$public$number(this$dispatch: Ref) returns (ret: Ref)
-

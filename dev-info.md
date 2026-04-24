@@ -61,4 +61,3 @@ Additional Info:
 * If you get a 401 response code while publishing, set the Space repository to private access.
   Due to a bug, it is currently not possible to publish to public repos.
 * If you want to experiment locally, you can install Silicon into the local maven repo with `sbt publishM2`
-

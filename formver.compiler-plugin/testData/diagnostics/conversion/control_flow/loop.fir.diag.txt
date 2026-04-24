@@ -39,4 +39,3 @@ method f$whileFunctionCondition$F$t$Unit() returns (ret$0: Ref)
 method f$whileLoop$F$t$Boolean$t$Boolean(par$b: Ref) returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$boolType())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
-

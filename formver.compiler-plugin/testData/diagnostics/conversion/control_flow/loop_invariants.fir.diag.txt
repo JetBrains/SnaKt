@@ -89,4 +89,3 @@ method f$conditionalFunctionAssignment$F$t$Boolean$t$F$t$Int$t$F$t$Int$t$Unit(pa
 
 method f$returnsBoolean$F$t$Boolean() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
-

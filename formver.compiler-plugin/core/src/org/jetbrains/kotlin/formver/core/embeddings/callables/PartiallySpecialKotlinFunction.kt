@@ -61,4 +61,3 @@ object PartiallySpecialKotlinFunctions {
             add(StringPlusAnyFunction())
         }.associateBy { it.embedName() }
 }
-

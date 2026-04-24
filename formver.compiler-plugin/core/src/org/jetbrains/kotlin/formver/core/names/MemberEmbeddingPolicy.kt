@@ -16,4 +16,3 @@ fun alwaysScopedPolicy(isPrivate: Boolean): MemberEmbeddingPolicy =
 
 fun onlyPrivateScopedPolicy(isPrivate: Boolean): MemberEmbeddingPolicy =
     if (isPrivate) MemberEmbeddingPolicy.PRIVATE else MemberEmbeddingPolicy.UNSCOPED
-

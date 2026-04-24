@@ -88,4 +88,3 @@ method g$c$A$private$field(this$dispatch: Ref) returns (ret: Ref)
 
 method s$c$A$private$field(this$dispatch: Ref, anon$0: Ref)
   returns (ret: Ref)
-

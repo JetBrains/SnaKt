@@ -111,4 +111,3 @@ fun <!VIPER_TEXT!>createImpls<!>() {
         cond5,
     )
 }
-

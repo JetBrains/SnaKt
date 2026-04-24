@@ -33,5 +33,3 @@ fun <!VIPER_TEXT!>extractInt<!>(base: Base, returnNull: Boolean): Int? {
     else if (base is OpenClassFinalFieldVarDerived) base.field
     else 0
 }
-
-

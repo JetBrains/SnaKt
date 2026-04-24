@@ -31,5 +31,3 @@ fun <!VIPER_TEXT!>checkClassWithExtension<!>() {
         verify(42.applyInlineDelta() == 84)
     }
 }
-
-

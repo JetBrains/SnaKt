@@ -340,4 +340,3 @@ fun StmtConversionContext.collectInvariantsAndTriggers(block: FirBlock): Invaria
 
     return InvariantsAndTriggers(invariants, triggers)
 }
-

@@ -65,4 +65,3 @@ method f$testWithPrecondition$F$t$Int$t$Int(par$int: Ref)
   requires df$rt$intFromRef(par$int) > 10
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
   ensures df$rt$intFromRef(ret) > 0
-

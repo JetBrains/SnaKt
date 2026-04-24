@@ -590,4 +590,3 @@ method havoc$t$String() returns (ret: Ref)
 
 method havoc$t$Unit() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
-

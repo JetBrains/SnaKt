@@ -53,4 +53,3 @@ method f$ifOnParameter$F$t$Boolean$t$Int(par$b: Ref) returns (ret: Ref)
 
 method f$simpleIf$F$t$Int() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-

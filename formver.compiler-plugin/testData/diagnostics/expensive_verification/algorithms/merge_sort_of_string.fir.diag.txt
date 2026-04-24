@@ -269,4 +269,3 @@ method f$subs$F$t$String$t$Int$t$Int$t$String(this$extension: Ref, par$lo: Ref,
       df$rt$stringFromRef(ret)[anon$builtin$7] ==
       df$rt$stringFromRef(this$extension)[anon$builtin$7 +
       df$rt$intFromRef(par$lo)])
-

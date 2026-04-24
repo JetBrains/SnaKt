@@ -437,4 +437,3 @@ method f$f$F$t$Unit() returns (ret$0: Ref)
 
 method havoc$t$Int() returns (ret: Ref)
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-

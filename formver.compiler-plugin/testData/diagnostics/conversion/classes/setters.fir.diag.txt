@@ -86,4 +86,3 @@ method s$public$aProp(this$dispatch: Ref, anon$0: Ref) returns (ret: Ref)
 
 
 method s$public$ppProp(this$dispatch: Ref, anon$0: Ref) returns (ret: Ref)
-

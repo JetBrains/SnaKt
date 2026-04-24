@@ -41,5 +41,3 @@ inline fun check(value: Boolean) {
 @NeverConvert
 inline fun check(value: Boolean, lazyMessage: () -> Any) {
 }
-
-

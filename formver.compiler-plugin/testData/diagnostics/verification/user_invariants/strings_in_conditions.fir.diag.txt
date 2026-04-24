@@ -123,4 +123,3 @@ method f$pkg$kotlin$c$String$plus$F$t$String$t$N$Any$t$String(this$dispatch: Ref
   requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$stringType())
   requires df$rt$isSubtype(df$rt$typeOf(par$other), df$rt$nullable(df$rt$anyType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$stringType())
-

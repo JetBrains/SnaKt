@@ -70,4 +70,3 @@ method g$public$nProp(this$dispatch: Ref) returns (ret: Ref)
 
 
 method g$public$rProp(this$dispatch: Ref) returns (ret: Ref)
-

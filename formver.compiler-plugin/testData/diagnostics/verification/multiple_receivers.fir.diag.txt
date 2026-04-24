@@ -141,4 +141,3 @@ method f$extensionReturnDelta$F$t$ClassWithExtension$t$Int(this$extension: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$ClassWithExtension())
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-

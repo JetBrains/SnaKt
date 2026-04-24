@@ -264,4 +264,3 @@ method f$pkg$kotlin_collections$c$List$isEmpty$F$t$pkg$kotlin_collections$List$t
     df$rt$intFromRef(this$dispatch.p$size) == 0
   ensures !df$rt$boolFromRef(ret) ==>
     df$rt$intFromRef(this$dispatch.p$size) > 0
-

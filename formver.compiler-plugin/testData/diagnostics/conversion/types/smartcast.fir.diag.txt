@@ -38,4 +38,3 @@ method f$isNullOrEmptyWrong$F$t$N$pkg$kotlin$CharSequence$t$Boolean(par$seq: Ref
 }
 
 method g$public$length(this$dispatch: Ref) returns (ret: Ref)
-

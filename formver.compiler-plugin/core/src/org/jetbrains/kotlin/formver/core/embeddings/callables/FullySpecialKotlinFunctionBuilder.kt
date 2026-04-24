@@ -77,4 +77,3 @@ class FullySpecialKotlinFunctionBuilder {
 
 fun buildFullySpecialFunctions(functionsBlock: FullySpecialKotlinFunctionBuilder.() -> Unit): Map<SymbolicName, FunctionEmbedding> =
     FullySpecialKotlinFunctionBuilder().apply(functionsBlock).complete()
-

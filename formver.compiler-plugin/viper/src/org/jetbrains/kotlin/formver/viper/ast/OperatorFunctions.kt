@@ -109,4 +109,3 @@ data object NeAny : Operator {
         return Exp.NeCmp(args[0], args[1], pos, info, trafos)
     }
 }
-

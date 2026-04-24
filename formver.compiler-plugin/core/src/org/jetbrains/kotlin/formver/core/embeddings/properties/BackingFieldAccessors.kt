@@ -29,4 +29,3 @@ class BackingFieldSetter(val field: FieldEmbedding) : SetterEmbedding {
     override fun setValue(receiver: ExpEmbedding, value: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding =
         FieldModification(receiver, field, value.withType(field.type))
 }
-

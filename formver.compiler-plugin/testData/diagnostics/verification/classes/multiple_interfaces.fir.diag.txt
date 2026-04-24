@@ -240,4 +240,3 @@ method f$take4$F$t$AbstractWithOpenImplementation4$t$Unit(par$obj: Ref)
 
 
 method g$public$field(this$dispatch: Ref) returns (ret: Ref)
-
