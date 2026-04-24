@@ -24,7 +24,7 @@ fun CallableEmbedding.insertCall(
     ctx: StmtConversionContext,
     actualReturnType: TypeEmbedding
 ) =
-    insertCall(args, ctx).withNewTypeInvariants(actualReturnType) {
+    insertCall(args, ctx).withNewTypeInvariants(actualReturnType, ctx.typeResolver) {
         access = true
         proven = true
     }

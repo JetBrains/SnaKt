@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.formver.core.linearization
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpWrapper
@@ -33,7 +34,8 @@ class PureExpLinearizerMisuseException(val offendingFunction: String) : IllegalS
  * specifications made in Kotlin into Viper expressions.
  */
 data class PureExpLinearizer(
-    override val source: KtSourceElement?
+    override val source: KtSourceElement?,
+    override val typeResolver: TypeResolver
 ) : LinearizationContext {
 
     override val logicOperatorPolicy: LogicOperatorPolicy
@@ -81,12 +83,12 @@ data class PureExpLinearizer(
 
     override fun addFieldAccess(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding): Exp {
         val receiverViper = receiver.toViper(this)
-        val hierarchyPath = receiverType.hierarchyPathTo(field)
+        val hierarchyPath = receiverType.hierarchyPathTo(field, typeResolver)
         val primitiveAccess: Exp = Exp.FieldAccess(receiverViper, field.toViper(), source.asPosition)
         if (hierarchyPath == null) return primitiveAccess
         val receiverWrapper = ExpWrapper(receiverViper, receiverType)
         return hierarchyPath.toList().foldRight(primitiveAccess) { classType, acc ->
-            val predAcc = classType.predicateAccess(receiverWrapper, source)
+            val predAcc = classType.predicateAccess(receiverWrapper, typeResolver, source)
             Exp.Unfolding(predAcc, acc)
         }
     }
@@ -99,9 +101,9 @@ data class PureExpLinearizer(
         name
 }
 
-fun ExpEmbedding.pureToViper(toBuiltin: Boolean, source: KtSourceElement? = null): Exp {
+fun ExpEmbedding.pureToViper(toBuiltin: Boolean, typeResolver: TypeResolver, source: KtSourceElement? = null): Exp {
     try {
-        val linearizer = PureExpLinearizer(source)
+        val linearizer = PureExpLinearizer(source, typeResolver)
         val lin = toLinearizable(source)
         return if (toBuiltin) lin.toViperBuiltinType(linearizer) else lin.toViper(linearizer)
     } catch (e: PureExpLinearizerMisuseException) {
@@ -113,5 +115,9 @@ fun ExpEmbedding.pureToViper(toBuiltin: Boolean, source: KtSourceElement? = null
     }
 }
 
-fun List<ExpEmbedding>.pureToViper(toBuiltin: Boolean, source: KtSourceElement? = null): List<Exp> =
-    map { it.pureToViper(toBuiltin, source) }
+fun List<ExpEmbedding>.pureToViper(
+    toBuiltin: Boolean,
+    typeResolver: TypeResolver,
+    source: KtSourceElement? = null
+): List<Exp> =
+    map { it.pureToViper(toBuiltin, typeResolver, source) }

@@ -9,7 +9,11 @@ import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
-import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
+import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpWrapper
+import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.core.embeddings.toViperGoto
@@ -29,6 +33,7 @@ data class Linearizer(
     val state: SharedLinearizationState,
     val seqnBuilder: SeqnBuilder,
     override val source: KtSourceElement?,
+    override val typeResolver: TypeResolver,
     val stmtModifierTracker: StmtModifierTracker? = null
 ) : LinearizationContext {
     override val logicOperatorPolicy: LogicOperatorPolicy
@@ -107,7 +112,7 @@ data class Linearizer(
                 // TODO: Handling a unique field on a shared receiver must be added here.
                 AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
                     receiver.toViperUnusedResult(this)
-                    field.type.havocMethod.toMethodCall(emptyList(), listOf(result.toLocalVarUse()))
+                    field.type.havocMethod(typeResolver).toMethodCall(emptyList(), listOf(result.toLocalVarUse()))
                 }
 
                 else -> {
@@ -116,7 +121,7 @@ data class Linearizer(
                     // we might need to unfold some predicate to access it.
                     if (field.unfoldToAccess) {
                         val receiverWrapper = ExpWrapper(receiverViper, receiverType)
-                        val hierarchyPath = receiverType.hierarchyPathTo(field)
+                        val hierarchyPath = receiverType.hierarchyPathTo(field, typeResolver)
                         hierarchyPath.unfoldHierarchyPath(receiverWrapper, this)
                     }
                     Stmt.assign(
@@ -132,7 +137,7 @@ data class Linearizer(
         ctx: LinearizationContext
     ) {
         this?.forEach { classType ->
-            val predAcc = classType.predicateAccess(receiverWrapper, source)
+            val predAcc = classType.predicateAccess(receiverWrapper, typeResolver, source)
             ctx.addStatement { Stmt.Unfold(predAcc, source.asPosition) }
         }
     }

@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.expression
 
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
@@ -89,11 +90,11 @@ private data class InhaleInvariantsForVariable(
 class InhaleInvariantsBuilder(val exp: ExpEmbedding) {
     val invariants = mutableListOf<TypeInvariantEmbedding>()
 
-    fun complete(): ExpEmbedding {
+    fun complete(ctx: TypeResolver): ExpEmbedding {
         if (proven) exp.type.subTypeInvariant().let { invariants.add(it) }
         if (access) {
-            invariants.addAll(exp.type.accessInvariants())
-            invariants.addIfNotNull(exp.type.sharedPredicateAccessInvariant())
+            invariants.addAll(exp.type.accessInvariants(ctx))
+            invariants.addIfNotNull(exp.type.sharedPredicateAccessInvariant(ctx))
         }
         return when (exp.underlyingVariable) {
             null -> InhaleInvariantsForExp(exp, invariants)
@@ -105,15 +106,19 @@ class InhaleInvariantsBuilder(val exp: ExpEmbedding) {
     var access: Boolean = false
 }
 
-inline fun ExpEmbedding.withInvariants(block: InhaleInvariantsBuilder.() -> Unit): ExpEmbedding {
+inline fun ExpEmbedding.withInvariants(ctx: TypeResolver, block: InhaleInvariantsBuilder.() -> Unit): ExpEmbedding {
     val builder = InhaleInvariantsBuilder(this)
     builder.block()
-    return builder.complete()
+    return builder.complete(ctx)
 }
 
-fun ExpEmbedding.withIsUnitInvariantIfUnit() = withInvariants {
+fun ExpEmbedding.withIsUnitInvariantIfUnit(ctx: TypeResolver) = withInvariants(ctx) {
     proven = type.equalToType { unit() }
 }
 
-inline fun ExpEmbedding.withNewTypeInvariants(newType: TypeEmbedding, block: InhaleInvariantsBuilder.() -> Unit) =
-    if (this.type == newType) this else withType(newType).withInvariants(block)
+inline fun ExpEmbedding.withNewTypeInvariants(
+    newType: TypeEmbedding,
+    ctx: TypeResolver,
+    block: InhaleInvariantsBuilder.() -> Unit
+) =
+    if (this.type == newType) this else withType(newType).withInvariants(ctx, block)

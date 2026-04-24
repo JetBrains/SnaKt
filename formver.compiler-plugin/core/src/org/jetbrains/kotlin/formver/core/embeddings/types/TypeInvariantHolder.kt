@@ -5,6 +5,8 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
+
 /**
  * Representation of an entity that, in Viper, should have invariants associated with it.
  */
@@ -12,11 +14,11 @@ interface TypeInvariantHolder {
     /**
      * Invariants that provide access to a resource and thus behave linearly.
      */
-    fun accessInvariants(): List<TypeInvariantEmbedding> = emptyList()
+    fun accessInvariants(ctx: TypeResolver): List<TypeInvariantEmbedding> = emptyList()
 
     // Note: these functions will replace accessInvariants when nested unfold will be implemented
-    fun sharedPredicateAccessInvariant(): TypeInvariantEmbedding? = null
-    fun uniquePredicateAccessInvariant(): TypeInvariantEmbedding? = null
+    fun sharedPredicateAccessInvariant(ctx: TypeResolver): TypeInvariantEmbedding? = null
+    fun uniquePredicateAccessInvariant(ctx: TypeResolver): TypeInvariantEmbedding? = null
 
     /**
      * Invariants that do not depend on the heap, and so do not need to be repeated
