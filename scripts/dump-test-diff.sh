@@ -6,8 +6,9 @@
 # serialization strips AssertionFailedError expected/actual values, so you
 # never see the diff in normal test output.
 #
-# This script works around that by temporarily injecting a JUnit 5 TestWatcher
-# extension that catches failures inside the test JVM and writes the diff to
+# This script works around that by temporarily registering a JUnit 5
+# TestWatcher extension (DumpAssertionDiffExtension, in test-fixtures) that
+# catches failures inside the test JVM and writes the diff to
 # /tmp/test-assertion-dump-*.txt files.
 #
 # Usage:
@@ -29,102 +30,20 @@ TEST_PATTERN="$1"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-EXTENSION_FILE="$ROOT_DIR/formver.compiler-plugin/test-fixtures/org/jetbrains/kotlin/formver/plugin/DumpAssertionDiffExtension.kt"
 SERVICES_DIR="$ROOT_DIR/formver.compiler-plugin/testData/META-INF/services"
 SERVICES_FILE="$SERVICES_DIR/org.junit.jupiter.api.extension.Extension"
 PLATFORM_PROPS="$ROOT_DIR/formver.compiler-plugin/testData/junit-platform.properties"
 
-# Clean up old dumps
 rm -f /tmp/test-assertion-dump-*.txt
 
-# Write the JUnit 5 extension
-mkdir -p "$(dirname "$EXTENSION_FILE")"
-cat > "$EXTENSION_FILE" << 'KOTLIN'
-package org.jetbrains.kotlin.formver.plugin
-
-import org.junit.jupiter.api.extension.ExtensionContext
-import org.junit.jupiter.api.extension.TestWatcher
-import org.opentest4j.AssertionFailedError
-import java.io.File
-
-class DumpAssertionDiffExtension : TestWatcher {
-    override fun testFailed(context: ExtensionContext, cause: Throwable) {
-        val baseName = context.displayName.replace(Regex("[^a-zA-Z0-9_]"), "_")
-        val assertions = collectAssertionErrors(cause)
-        for ((index, error) in assertions.withIndex()) {
-            val suffix = if (assertions.size > 1) "_$index" else ""
-            val name = "$baseName$suffix"
-            val expected = resolveValue(error.expected)
-            val actual = resolveValue(error.actual)
-            File("/tmp/test-assertion-dump-$name.txt").writeText(buildString {
-                appendLine("=== EXPECTED ===")
-                appendLine(expected)
-                appendLine()
-                appendLine("=== ACTUAL ===")
-                appendLine(actual)
-            })
-            System.err.println(">>> Assertion diff dumped to /tmp/test-assertion-dump-$name.txt")
-        }
-    }
-
-    private fun collectAssertionErrors(throwable: Throwable): List<AssertionFailedError> {
-        // Direct assertion error with expected/actual values
-        if (throwable is AssertionFailedError && throwable.isExpectedDefined && throwable.isActualDefined) {
-            return listOf(throwable)
-        }
-        // MultipleFailuresError (opentest4j, thrown by Assertions.assertAll) — has getFailures(): List<Throwable>
-        // Also covers DefaultMultiCauseException (Gradle) which has getCauses(): List<Throwable>
-        for (methodName in listOf("getFailures", "getCauses")) {
-            try {
-                val method = throwable.javaClass.getMethod(methodName)
-                @Suppress("UNCHECKED_CAST")
-                val children = method.invoke(throwable) as? List<Throwable>
-                if (children != null && children.isNotEmpty()) {
-                    return children.flatMap { collectAssertionErrors(it) }
-                }
-            } catch (_: Exception) {}
-        }
-        // Walk suppressed exceptions
-        val fromSuppressed = throwable.suppressed.flatMap { collectAssertionErrors(it) }
-        if (fromSuppressed.isNotEmpty()) return fromSuppressed
-        // Walk standard cause chain
-        val inner = throwable.cause
-        if (inner != null && inner !== throwable) {
-            return collectAssertionErrors(inner)
-        }
-        return emptyList()
-    }
-
-    private fun resolveValue(wrapper: org.opentest4j.ValueWrapper): String {
-        // First try the raw value — may be a FileInfo with getContentsAsString()
-        val value = wrapper.value
-        if (value != null && value !is String) {
-            try {
-                val m = value.javaClass.getMethod("getContentsAsString")
-                return m.invoke(value) as String
-            } catch (_: Exception) {}
-        }
-        val str = (value as? String) ?: wrapper.stringRepresentation
-        // If it looks like a FileInfo toString, read the file directly
-        val match = Regex("""FileInfo\[path='(.+?)',""").find(str)
-        if (match != null) {
-            val path = match.groupValues[1]
-            try { return File(path).readText() } catch (_: Exception) {}
-        }
-        return str
-    }
-}
-KOTLIN
-
-# Register as auto-detected extension
+# Register the extension via auto-detection. The DumpAssertionDiffExtension
+# class itself lives in test-fixtures and is inert unless both of these files
+# are present at test time.
 mkdir -p "$SERVICES_DIR"
 echo "org.jetbrains.kotlin.formver.plugin.DumpAssertionDiffExtension" > "$SERVICES_FILE"
-
-# Enable JUnit 5 extension autodetection (disabled by default)
 echo "junit.jupiter.extensions.autodetection.enabled=true" > "$PLATFORM_PROPS"
 
 cleanup() {
-    rm -f "$EXTENSION_FILE"
     rm -f "$SERVICES_FILE"
     rm -f "$PLATFORM_PROPS"
     rmdir "$SERVICES_DIR" 2>/dev/null || true
@@ -139,7 +58,7 @@ echo "Running test: $TEST_PATTERN"
 echo "Diff files will appear at /tmp/test-assertion-dump-*.txt"
 echo
 
-# --rerun-tasks forces recompilation of test-fixtures with the extension
+# --rerun-tasks forces recompilation of test resources with the registration
 cd "$ROOT_DIR"
 ./gradlew :formver.compiler-plugin:test \
     --tests "*$TEST_PATTERN*" \
