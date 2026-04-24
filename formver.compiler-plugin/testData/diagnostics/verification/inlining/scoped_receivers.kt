@@ -49,4 +49,3 @@ fun Int?.<!VIPER_TEXT!>with_run_extension_labeled<!>() {
         }
     }
 }
-

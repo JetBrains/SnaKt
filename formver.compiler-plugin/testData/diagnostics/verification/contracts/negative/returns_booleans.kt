@@ -16,4 +16,3 @@ fun <!VIPER_TEXT!>incorrectly_returns_true<!>(): Boolean {
     }
     return true
 }
-

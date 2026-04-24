@@ -52,4 +52,3 @@ private fun findLibFromProperty(platform: String, extension: String): File? {
                 it.name.endsWith(extension)
     }
 }
-

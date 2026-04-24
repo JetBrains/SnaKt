@@ -47,4 +47,3 @@ method f$nullableParameter$F$t$N$Boolean$t$Unit(par$b: Ref)
   returns (ret: Ref)
   requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$nullable(df$rt$boolType()))
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
-

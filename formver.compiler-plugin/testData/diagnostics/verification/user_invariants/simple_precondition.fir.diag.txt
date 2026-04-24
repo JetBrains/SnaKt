@@ -52,4 +52,3 @@ method f$test$F$t$Int$t$Unit(par$idx: Ref) returns (ret: Ref)
   requires 0 <= df$rt$intFromRef(par$idx)
   requires df$rt$intFromRef(par$idx) < 3
   ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
-
