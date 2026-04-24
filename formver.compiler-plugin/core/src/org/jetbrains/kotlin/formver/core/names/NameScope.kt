@@ -11,6 +11,9 @@ import org.jetbrains.kotlin.name.FqName
 sealed interface NameScope : AnyName {
     val parent: NameScope?
         get() = null
+
+    override val inViper: Boolean
+        get() = true
 }
 
 // Includes the scope itself.
@@ -48,3 +51,4 @@ data class LocalScope(val level: Int) : NameScope
  * Scope to use in cases when we need a scoped name, but don't actually want to introduce one.
  */
 data object FakeScope : NameScope
+
