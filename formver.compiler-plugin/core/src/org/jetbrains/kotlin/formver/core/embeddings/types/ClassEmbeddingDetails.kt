@@ -17,10 +17,8 @@ import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 class ClassEmbeddingDetails(
     val type: ClassTypeEmbedding,
     val fields: Map<SymbolicName, FieldEmbedding>,
-    val classSuperTypes: List<ClassEmbeddingDetails>,
-    val isInterface: Boolean,
-    val preType: ClassTypeEmbedding,
-    typeResolver: TypeResolver
+    val classSuperTypes: List<ClassTypeEmbedding>,
+    val isInterface: Boolean
 ) : TypeInvariantHolder {
     private val sharedPredicateName = ScopedName(type.name.asScope(), PredicateName("shared"))
     private val uniquePredicateName = ScopedName(type.name.asScope(), PredicateName("unique"))
@@ -70,8 +68,8 @@ class ClassEmbeddingDetails(
      */
     fun findField(name: SymbolicName): FieldEmbedding? = fields[name]
 
-    fun <R> flatMapFields(action: (SymbolicName, FieldEmbedding) -> List<R>): List<R> =
-        classSuperTypes.flatMap { it.flatMapFields(action) } + fields.flatMap { (name, field) ->
+    fun <R> flatMapFields(ctx: TypeResolver, action: (SymbolicName, FieldEmbedding) -> List<R>): List<R> =
+        classSuperTypes.flatMap { ctx.details(it.name).flatMapFields(ctx, action) } + fields.flatMap { (name, field) ->
             action(
                 name, field
             )
@@ -80,7 +78,7 @@ class ClassEmbeddingDetails(
     // We can't easily implement this by recursion on the supertype structure since some supertypes may be seen multiple times.
     // TODO: figure out a nicer way to handle this.
     override fun accessInvariants(ctx: TypeResolver): List<TypeInvariantEmbedding> =
-        flatMapUniqueFields { _, field -> field.accessInvariantsForParameter() }
+        flatMapUniqueFields(ctx) { _, field -> field.accessInvariantsForParameter() }
 
     // Note: this function will replace accessInvariants when nested unfold will be implemented
     override fun sharedPredicateAccessInvariant(ctx: TypeResolver) =
@@ -92,23 +90,23 @@ class ClassEmbeddingDetails(
     override fun subTypeInvariant(): TypeInvariantEmbedding = type.subTypeInvariant()
 
     // Returns the sequence of classes in a hierarchy that need to be unfolded in order to access the given field
-    fun hierarchyPathTo(field: FieldEmbedding): Sequence<ClassTypeEmbedding> = sequence {
+    fun hierarchyPathTo(field: FieldEmbedding, ctx: TypeResolver): Sequence<ClassTypeEmbedding> = sequence {
         val className = field.containingClass?.name
         require(className != null) { "Cannot find hierarchy unfold path of a field with no class information" }
         if (className == type.name) {
             yield(this@ClassEmbeddingDetails.type)
         } else {
-            val sup = classSuperTypes.firstOrNull { !it.isInterface }
+            val sup = classSuperTypes.map { ctx.details(it.name) }.firstOrNull { !it.isInterface }
                 ?: throw IllegalArgumentException("Reached top of the hierarchy without finding the field")
 
             yield(this@ClassEmbeddingDetails.type)
-            yieldAll(sup.hierarchyPathTo(field))
+            yieldAll(sup.hierarchyPathTo(field, ctx))
         }
     }
 
-    fun <R> flatMapUniqueFields(action: (SymbolicName, FieldEmbedding) -> List<R>): List<R> {
+    fun <R> flatMapUniqueFields(ctx: TypeResolver, action: (SymbolicName, FieldEmbedding) -> List<R>): List<R> {
         val seenFields = mutableSetOf<SymbolicName>()
-        return flatMapFields { name, field ->
+        return flatMapFields(ctx) { name, field ->
             seenFields.add(name).ifTrue {
                 action(name, field)
             } ?: listOf()

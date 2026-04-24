@@ -240,7 +240,7 @@ class ProgramConverter(
         if (typeResolver.isRegistered(className)) return typeResolver.lookupClassType(className)!!
         val embedding = buildClassPretype {
                 withName(className)
-            }
+        }
 
         typeResolver.register(className, embedding, symbol.classKind.isInterface)
 
@@ -255,8 +255,10 @@ class ProgramConverter(
         // `ProgramConverter`.
 
         // Phase 1
-        val superTypes = symbol.resolvedSuperTypes.map { embedType(it).pretype.name }
-        typeResolver.extendsTypeHierarchy(className, superTypes)
+        symbol.resolvedSuperTypes.forEach {
+            val superTypeName = embedType(it).pretype.name
+            typeResolver.addSubtypeRelation(className, superTypeName)
+        }
         // Phase 2
         val properties = symbol.propertySymbols
 
@@ -271,7 +273,6 @@ class ProgramConverter(
         }
 
 
-        typeResolver.finish(className)
         val details = typeResolver.details(className)
         details.fields.values.forEach {
             havocMethods.putIfAbsent(
@@ -296,7 +297,6 @@ class ProgramConverter(
     override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding = if (symbol.receiverParameterSymbol != null) {
         embedCustomProperty(symbol)
     } else {
-        // Ensure that the class has been processed.
         embedType(symbol.dispatchReceiverType!!)
         properties.getOrPut(symbol.embedMemberPropertyName()) {
             check(symbol is FirIntersectionOverridePropertySymbol) {
