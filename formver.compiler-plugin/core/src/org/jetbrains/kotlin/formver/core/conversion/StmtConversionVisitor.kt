@@ -41,6 +41,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
 import org.jetbrains.kotlin.formver.core.functionCallArguments
 import org.jetbrains.kotlin.formver.core.isInvariantBuilderFunctionNamed
+import org.jetbrains.kotlin.formver.viper.ast.PermExp
 import org.jetbrains.kotlin.text
 import org.jetbrains.kotlin.types.ConstantValueKind
 import org.jetbrains.kotlin.utils.addIfNotNull
@@ -286,17 +287,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         val symbol = functionCall.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
             ?: throw NotImplementedError("Only functions are expected as callables of function calls, got ${functionCall.toResolvedCallableSymbol()}")
 
-        when (val forAllLambda = functionCall.extractFormverFirBlock { isInvariantBuilderFunctionNamed("forAll") }) {
-            null -> {
-                val callee = data.embedAnyFunction(symbol)
-                return callee.insertCall(
-                    functionCall.functionCallArguments.withVarargsHandled(data, callee),
-                    data,
-                    data.embedType(functionCall.resolvedType),
-                )
-            }
-
-            else -> {
+        functionCall.extractFormverFirBlock { isInvariantBuilderFunctionNamed("forAll") }?.let { forAllLambda ->
                 if (!data.isValidForForAllBlock) throw SnaktInternalException(
                     forAllLambda.source,
                     "`forAll` scope is only allowed inside one of the `loopInvariants`, `preconditions` or `postconditions`."
@@ -307,8 +298,30 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                     forAllLambda.body?.source, "Lambda body should be accessible in `forAll` function call."
                 )
                 return data.insertForAllFunctionCall(forAllArg.symbol, forAllBody)
-            }
         }
+
+        functionCall.extractFormverFirStmt {  isInvariantBuilderFunctionNamed("acc") }?.let {
+            accLambda ->
+            //acc is only allowed to be used in the same context as forAll
+            if (!data.isValidForForAllBlock) throw SnaktInternalException(
+                accLambda.source,
+                "`acc` scope is only allowed inside one of the `loopInvariants`, `preconditions` or `postconditions`."
+            )
+            val fieldExpr = accLambda.arguments[0] as? FirPropertyAccessExpression ?: throw SnaktInternalException(
+                accLambda.source,
+                "must be a property access expression."
+            )
+            val permExpr = when (val perm = accLambda.arguments.getOrNull(1)?.source?.text?.toString()) {
+                "write" -> PermExp.FullPerm()
+                "read" -> PermExp.WildcardPerm()
+                null -> PermExp.FullPerm()
+                else -> throw SnaktInternalException(symbol.source, "$perm is not supported as permission amount.")
+            }
+            return data.insertAccFunctionCall(fieldExpr, permExpr)
+        }
+
+        val callee = data.embedAnyFunction(symbol)
+        return callee.insertCall( functionCall.functionCallArguments.withVarargsHandled(data, callee), data, data.embedType(functionCall.resolvedType), )
     }
 
     override fun visitImplicitInvokeCall(

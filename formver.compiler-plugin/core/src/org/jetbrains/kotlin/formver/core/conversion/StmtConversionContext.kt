@@ -21,6 +21,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.LabelEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FullNamedFunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.properties.BackingFieldGetter
 import org.jetbrains.kotlin.formver.core.embeddings.properties.ClassPropertyAccess
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyAccessEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.asPropertyAccess
@@ -32,6 +33,7 @@ import org.jetbrains.kotlin.formver.core.purity.checkValidity
 import org.jetbrains.kotlin.formver.core.purity.isPure
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Exp
+import org.jetbrains.kotlin.formver.viper.ast.PermExp
 import org.jetbrains.kotlin.utils.addIfNotNull
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 import org.jetbrains.kotlin.utils.filterIsInstanceAnd
@@ -238,6 +240,24 @@ fun StmtConversionContext.insertForAllFunctionCall(
             val (invariants, triggers) = collectInvariantsAndTriggers(block)
             ForAllEmbedding(anonVar, invariants, triggers)
         }
+    }
+}
+
+fun StmtConversionContext.insertAccFunctionCall(
+    field: FirPropertyAccessExpression,
+    perm: PermExp,
+): ExpEmbedding {
+    val fieldAccess = embedPropertyAccess(field)
+    val field = ((fieldAccess as? ClassPropertyAccess ?: throw SnaktInternalException(
+        field.source,
+        "could not embed as class property"
+    )).property.getter as? BackingFieldGetter ?: throw SnaktInternalException(
+        field.source,
+        "acc requires property access like x.a"
+    )).field
+    val receiver = fieldAccess.receiver
+    return withNoScope {
+        AccEmbedding(field, receiver, perm)
     }
 }
 
