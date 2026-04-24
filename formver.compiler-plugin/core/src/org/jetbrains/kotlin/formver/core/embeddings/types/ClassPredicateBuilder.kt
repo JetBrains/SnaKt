@@ -60,7 +60,7 @@ internal class ClassPredicateBuilder private constructor(private val details: Cl
 
     fun forEachSuperType(action: TypeInvariantsBuilder.() -> Unit) =
         details.classSuperTypes.forEach { type ->
-            val builder = TypeInvariantsBuilder(type.preType.asTypeEmbedding())
+            val builder = TypeInvariantsBuilder(type.asTypeEmbedding())
             builder.action()
             body.addAll(builder.toInvariantsList().fillHoles(subject))
         }

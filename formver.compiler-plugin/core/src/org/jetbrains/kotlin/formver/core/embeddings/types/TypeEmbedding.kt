@@ -103,7 +103,7 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
     fun hierarchyPathTo(field: FieldEmbedding, ctx: TypeResolver): Sequence<ClassTypeEmbedding>? {
         // TODO: Find a nicer solution to avoid this cast. It should really be: type.hierarchyPathTo(field)
         val className = (pretype as? ClassTypeEmbedding)?.name ?: return null
-        return ctx.details(className).hierarchyPathTo(field)
+        return ctx.details(className).hierarchyPathTo(field, ctx)
     }
 
 }
