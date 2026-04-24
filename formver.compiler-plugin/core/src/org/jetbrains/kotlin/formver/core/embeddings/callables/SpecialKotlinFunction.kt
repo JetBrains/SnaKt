@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
 import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.viper.ast.Method
 
@@ -28,8 +29,7 @@ interface SpecialKotlinFunction : FunctionEmbedding {
  * Kotlin function that will always be handled specially, like aforementioned `Int.plus(Int)`.
  */
 interface FullySpecialKotlinFunction : SpecialKotlinFunction {
-    override val viperMethod: Method?
-        get() = null
+    override fun viperMethod(ctx: TypeResolver): Method? = null
 }
 
 /**
@@ -54,6 +54,5 @@ interface PartiallySpecialKotlinFunction : SpecialKotlinFunction {
 
     fun initBaseEmbedding(embedding: FunctionEmbedding)
 
-    override val viperMethod: Method?
-        get() = baseEmbedding?.viperMethod
+    override fun viperMethod(ctx: TypeResolver): Method? = baseEmbedding?.viperMethod(ctx)
 }

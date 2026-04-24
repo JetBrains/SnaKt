@@ -62,6 +62,8 @@ class ProgramConverter(
     private val functions: MutableMap<SymbolicName, PureFunctionEmbedding> = mutableMapOf()
     private val classes: MutableMap<SymbolicName, ClassTypeEmbedding> = mutableMapOf()
 
+    override val typeResolver: TypeResolver = TypeResolver()
+
     /**
      * [properties] contains all the properties. This includes properties defined on interfaces etc.
      * They are stored in a map. The key is the pair of the name of the class and the field.
@@ -92,22 +94,23 @@ class ProgramConverter(
     override val returnTargetProducer = FreshEntityProducer(::ReturnTarget)
     override val nameResolver = SimpleNameResolver()
 
+
     val program: Program
         get() = Program(
-            domains = listOf(RuntimeTypeDomain(classes.values.toList())),
+            domains = listOf(RuntimeTypeDomain(typeResolver)),
             // We need to deduplicate fields since public fields with the same name are represented differently
             // at `FieldEmbedding` level but map to the same Viper.
             fields = SpecialFields.all.map { it.toViper() } +
                     fields.distinctBy { it.name }.map { it.toViper() },
             functions = SpecialFunctions.all +
-                    functions.values.mapNotNull { it.viperFunction }.distinctBy { it.name },
+                    functions.values.mapNotNull { it.viperFunction(typeResolver) }.distinctBy { it.name },
             methods = SpecialMethods.all +
-                    methods.values.mapNotNull { it.viperMethod }
+                    methods.values.mapNotNull { it.viperMethod(typeResolver) }
                         .distinctBy { it.name } + havocMethods.values,
-            predicates = classes.values.flatMap {
+            predicates = typeResolver.allDetails().flatMap {
                 listOf(
-                    it.details.sharedPredicate,
-                    it.details.uniquePredicate
+                    it.sharedPredicate(typeResolver),
+                    it.uniquePredicate(typeResolver)
                 )
             },
         )
@@ -240,14 +243,9 @@ class ProgramConverter(
                 withName(className)
             }
         }
-        if (embedding.hasDetails) return embedding
+        if (typeResolver.isRegistered(className)) return embedding
 
-        val newDetails =
-            ClassEmbeddingDetails(
-                embedding,
-                symbol.classKind.isInterface,
-            )
-        embedding.initDetails(newDetails)
+        typeResolver.register(className, embedding, symbol.classKind.isInterface)
 
         // The full class embedding is necessary to process the signatures of the properties of the class, since
         // these take the class as a parameter. We thus do this in three phases:
@@ -260,25 +258,33 @@ class ProgramConverter(
         // `ProgramConverter`.
 
         // Phase 1
-        newDetails.initSuperTypes(symbol.resolvedSuperTypes.map { embedType(it).pretype })
-
+        val superTypes = symbol.resolvedSuperTypes.map { embedType(it).pretype.name }
+        typeResolver.extendsTypeHierarchy(className, superTypes)
         // Phase 2
         val properties = symbol.propertySymbols
-        newDetails.initFields(properties.mapNotNull { propertySymbol ->
+
+        val fields = properties.mapNotNull { propertySymbol ->
             SpecialProperties.isSpecial(propertySymbol).ifFalse {
                 processBackingField(propertySymbol, symbol)
             }
-        }.toMap())
+        }.toMap()
 
-        // Create Havoc methods for all fields.
-        newDetails.fields.values.forEach {
+        fields.forEach { (fieldName, embedding) ->
+            typeResolver.addFieldToClass(className, fieldName, embedding)
+        }
+
+
+        typeResolver.finish(className)
+        val details = typeResolver.details(className)
+        details.fields.values.forEach {
             havocMethods.putIfAbsent(
                 it.type.havocMethodName,
-                it.type.havocMethod
+                it.type.havocMethod(typeResolver)
             )
         }
+
         // Phase 3
-        properties.forEach { processProperty(it, newDetails) }
+        properties.forEach { processProperty(it, details) }
 
         return embedding
     }
@@ -313,10 +319,10 @@ class ProgramConverter(
             return emptyMap()
         val constructedClassSymbol = symbol.resolvedReturnType.toRegularClassSymbol(session) ?: return emptyMap()
         val constructedClass = embedClass(constructedClassSymbol)
-
+        val details = typeResolver.details(constructedClass.name)
         return constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
             propertySymbol.withConstructorParam { paramSymbol ->
-                constructedClass.details.findField(callableId!!.embedUnscopedPropertyName())?.let { paramSymbol to it }
+                details.findField(callableId!!.embedUnscopedPropertyName())?.let { paramSymbol to it }
             }
         }.toMap()
     }
@@ -424,13 +430,13 @@ class ProgramConverter(
             override fun getPreconditions() = buildList {
                 subSignature.formalArgs.forEach {
                     addAll(it.pureInvariants())
-                    addAll(it.accessInvariants())
+                    addAll(it.accessInvariants(typeResolver))
                     addAll(it.provenInvariants())
                     if (it.isUnique) {
-                        addIfNotNull(it.type.uniquePredicateAccessInvariant()?.fillHole(it))
+                        addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
                     }
                 }
-                addAll(subSignature.stdLibPreconditions())
+                addAll(subSignature.stdLibPreconditions(typeResolver))
                 // We create a separate context to embed the preconditions here.
                 // Hence, some parts of FIR are translated later than the other and less explicitly.
                 // TODO: this process should be a separate step in the conversion.
@@ -441,21 +447,21 @@ class ProgramConverter(
 
             override fun getPostconditions(returnVariable: VariableEmbedding) = buildList {
                 subSignature.formalArgs.forEach {
-                    addAll(it.accessInvariants())
+                    addAll(it.accessInvariants(typeResolver))
                     if (it.isUnique && it.isBorrowed) {
-                        addIfNotNull(it.type.uniquePredicateAccessInvariant()?.fillHole(it))
+                        addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
                     }
                 }
                 addAll(returnVariable.pureInvariants())
                 addAll(returnVariable.provenInvariants())
                 if (!subSignature.symbol.isPure(session)) {
-                    addAll(returnVariable.allAccessInvariants())
+                    addAll(returnVariable.allAccessInvariants(typeResolver))
                     if (subSignature.callableType.returnsUnique) {
-                        addIfNotNull(returnVariable.uniquePredicateAccessInvariant())
+                        addIfNotNull(returnVariable.uniquePredicateAccessInvariant(typeResolver))
                     }
                 }
                 addAll(contractVisitor.getPostconditions(ContractVisitorContext(returnVariable, symbol)))
-                addAll(subSignature.stdLibPostconditions(returnVariable))
+                addAll(subSignature.stdLibPostconditions(returnVariable, typeResolver))
                 addIfNotNull(primaryConstructorInvariants(returnVariable))
                 // TODO: this process should be a separate step in the conversion (see above)
                 firSpec?.postcond?.let {
@@ -507,7 +513,7 @@ class ProgramConverter(
         val fieldIsAllowed = symbol.hasBackingField
                 && !symbol.isCustom
                 && (symbol.isFinal || classSymbol.isFinal)
-        val backingField = scopedName.specialEmbedding(embedding) ?: fieldIsAllowed.ifTrue {
+        val backingField = scopedName.specialEmbedding(embedding, typeResolver) ?: fieldIsAllowed.ifTrue {
             UserFieldEmbedding(
                 scopedName,
                 embedType(symbol.resolvedReturnType),
@@ -574,7 +580,11 @@ class ProgramConverter(
             NonInlineNamedFunction(
                 signature,
                 symbol.isPure(session)
-            ).also { if (symbol.isPure(session)) it.toViperFunctionHeader() else it.toViperMethodHeader() }
+            ).also {
+                if (symbol.isPure(session)) it.toViperFunctionHeader(typeResolver) else it.toViperMethodHeader(
+                    typeResolver
+                )
+            }
         }
     }
 

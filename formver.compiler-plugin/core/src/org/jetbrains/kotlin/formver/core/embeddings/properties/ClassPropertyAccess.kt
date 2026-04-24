@@ -15,7 +15,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 class ClassPropertyAccess(val receiver: ExpEmbedding, val property: PropertyEmbedding, val type: TypeEmbedding) :
     PropertyAccessEmbedding {
     override fun getValue(ctx: StmtConversionContext): ExpEmbedding =
-        property.getter!!.getValue(receiver, ctx).withNewTypeInvariants(type) {
+        property.getter!!.getValue(receiver, ctx).withNewTypeInvariants(type, ctx.typeResolver) {
             proven = true
             access = true
         }

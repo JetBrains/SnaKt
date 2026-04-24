@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.UserFieldEmbedding
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
@@ -23,7 +24,9 @@ internal class ClassPredicateBuilder private constructor(private val details: Cl
 
     companion object {
         fun build(
-            classType: ClassEmbeddingDetails, predicateName: SymbolicName,
+            classType: ClassEmbeddingDetails,
+            predicateName: SymbolicName,
+            ctx: TypeResolver,
             action: ClassPredicateBuilder.() -> Unit,
         ): Predicate {
             val builder = ClassPredicateBuilder(classType)
@@ -31,7 +34,7 @@ internal class ClassPredicateBuilder private constructor(private val details: Cl
             return Predicate(
                 predicateName,
                 listOf(builder.subject.toLocalVarDecl()),
-                builder.body.toConjunction().pureToViper(toBuiltin = true)
+                builder.body.toConjunction().pureToViper(toBuiltin = true, ctx)
             )
         }
     }
@@ -56,8 +59,8 @@ internal class ClassPredicateBuilder private constructor(private val details: Cl
     }
 
     fun forEachSuperType(action: TypeInvariantsBuilder.() -> Unit) =
-        details.superTypes.forEach { type ->
-            val builder = TypeInvariantsBuilder(type.asTypeEmbedding())
+        details.classSuperTypes.forEach { type ->
+            val builder = TypeInvariantsBuilder(type.preType.asTypeEmbedding())
             builder.action()
             body.addAll(builder.toInvariantsList().fillHoles(subject))
         }
@@ -88,12 +91,12 @@ class TypeInvariantsBuilder(private val type: TypeEmbedding) {
     private val invariants = mutableListOf<TypeInvariantEmbedding>()
     fun toInvariantsList() = invariants.toList()
 
-    fun addAccessToSharedPredicate() = invariants.addIfNotNull(
-        type.sharedPredicateAccessInvariant()
+    fun addAccessToSharedPredicate(ctx: TypeResolver) = invariants.addIfNotNull(
+        type.sharedPredicateAccessInvariant(ctx)
     )
 
-    fun addAccessToUniquePredicate() = invariants.addIfNotNull(
-        type.uniquePredicateAccessInvariant()
+    fun addAccessToUniquePredicate(ctx: TypeResolver) = invariants.addIfNotNull(
+        type.uniquePredicateAccessInvariant(ctx)
     )
 
     fun includeSubTypeInvariants() = invariants.add(
