@@ -12,11 +12,11 @@ import org.jetbrains.kotlin.fir.declarations.FirValueParameter
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirThisReceiverExpression
-import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
+import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 
 object ComponentLocalityResolver : FirVisitor<Locality?, CheckerContext>() {
@@ -32,7 +32,7 @@ object ComponentLocalityResolver : FirVisitor<Locality?, CheckerContext>() {
         val boundSymbol = thisReceiverExpression.calleeReference.boundSymbol
 
         return when (boundSymbol) {
-            is FirReceiverParameterSymbol -> boundSymbol.fir.extractActualLocality()
+            is FirReceiverParameterSymbol -> boundSymbol.fir.resolveActualLocality()
             else -> null
         }
     }
@@ -48,12 +48,10 @@ object ComponentLocalityResolver : FirVisitor<Locality?, CheckerContext>() {
             is FirVariableSymbol<*> ->
                 when (val declaration = calleeSymbol.fir) {
                     is FirValueParameter ->
-                        declaration.extractActualLocality()
+                        declaration.resolveActualLocality()
 
                     is FirProperty ->
-                        with(data) {
-                            declaration.extractLocality()
-                        }
+                        with(data) { declaration.resolveActualLocality() }
 
                     else -> null
                 }
@@ -62,6 +60,11 @@ object ComponentLocalityResolver : FirVisitor<Locality?, CheckerContext>() {
         }
     }
 }
+
+context(context: CheckerContext)
+private fun FirProperty.resolveActualLocality(): Locality =
+    if (returnTypeRef.coneType.attributes.locality == null) Global
+    else Local(resolveOwner() ?: UnknownSymbol)
 
 context(context: CheckerContext)
 fun FirExpression.resolveComponentLocality(): Locality? {
