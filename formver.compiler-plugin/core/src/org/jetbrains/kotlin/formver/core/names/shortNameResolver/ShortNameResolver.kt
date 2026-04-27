@@ -2,8 +2,6 @@ package org.jetbrains.kotlin.formver.core.names.shortNameResolver
 
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.names.*
-import org.jetbrains.kotlin.formver.names.CandidateName
-import org.jetbrains.kotlin.formver.names.NamePart
 import org.jetbrains.kotlin.formver.viper.AnyName
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SEPARATOR
@@ -130,24 +128,23 @@ class ShortNameResolver : NameResolver {
         addElement(b)
     }
 
-
     /**
-     * Returns true iff the ``entity`` is scoped. Meaning that there is a name, which wraps around `entity`
+     * Adds a relation between two entities and afterwards proceeds by registering [a]
      */
-    private fun isScoped(entity: AnyName): Boolean =
-        tripleStore.any { (a, rel, _) -> a == entity && rel == Relation.SCOPED_BY }
+    private fun linkAndRegisterFirst(a: AnyName, rel: Relation, b: AnyName) {
+        link(a, rel, b)
+        registerEntity(a)
+    }
 
     override fun register(name: AnyName) = registerEntity(name)
 
     private fun registerFreshName(entity: FreshName) {
         when (entity) {
             is SsaVariableName -> {
-                link(entity.baseName, Relation.IS_PART_OF, entity)
-                registerEntity(entity.baseName)
+                linkAndRegisterFirst(entity.baseName, Relation.IS_PART_OF, entity)
             }
             is HavocName -> {
-                link(entity.type.name, Relation.IS_PART_OF, entity)
-                registerEntity(entity.type.name)
+                linkAndRegisterFirst(entity.type.name, Relation.IS_PART_OF, entity)
             }
             // No else branch, because FreshName is sealed. When adding a new name, the compiler will complain here.
             PlaceholderReturnVariableName, ExtensionReceiverName, FunctionResultVariableName, DispatchReceiverName,
@@ -164,12 +161,10 @@ class ShortNameResolver : NameResolver {
         when (entity) {
             is NameScope -> {
                 entity.parent?.let {
-                    link(it, Relation.SCOPE_OF, entity)
-                    registerEntity(it)
+                    linkAndRegisterFirst(it, Relation.SCOPE_OF, entity)
                 }
                 if (entity is ClassScope) {
-                    link(entity.className, Relation.SCOPED_BY, entity)
-                    registerEntity(entity.className)
+                    linkAndRegisterFirst(entity.className, Relation.SCOPED_BY, entity)
                 }
             }
 
@@ -178,59 +173,45 @@ class ShortNameResolver : NameResolver {
 
             is SymbolicName -> {
                 entity.nameType?.let {
-                    link(it, Relation.KIND_OF, entity)
-                    registerEntity(it)
+                    linkAndRegisterFirst(it, Relation.KIND_OF, entity)
                 }
                 when (entity) {
                     is FreshName -> registerFreshName(entity)
                     is ScopedName -> {
-                        link(entity.name, Relation.SCOPED_BY, entity)
-                        registerEntity(entity.name)
-                        link(entity.scope, Relation.SCOPE_OF, entity)
-                        registerEntity(entity.scope)
+                        linkAndRegisterFirst(entity.name, Relation.SCOPED_BY, entity)
+                        linkAndRegisterFirst(entity.scope, Relation.SCOPE_OF, entity)
                     }
 
-
                     is ConstructorKotlinName -> {
-                        link(entity.type.name, Relation.TYPE_OF, entity)
-                        registerEntity(entity.type.name)
+                        linkAndRegisterFirst(entity.type.name, Relation.TYPE_OF, entity)
                     }
 
                     is TypedKotlinNameWithType -> {
-                        link(entity.type.name, Relation.TYPE_OF, entity)
-                        registerEntity(entity.type.name)
+                        linkAndRegisterFirst(entity.type.name, Relation.TYPE_OF, entity)
                     }
 
-
                     is NamedDomainAxiomLabel -> {
-                        link(entity.domainName, Relation.IS_PART_OF, entity)
-                        registerEntity(entity.domainName)
+                        linkAndRegisterFirst(entity.domainName, Relation.IS_PART_OF, entity)
                     }
 
                     is QualifiedDomainFuncName -> {
-                        link(entity.domainName, Relation.IS_PART_OF, entity)
-                        registerEntity(entity.domainName)
-                        link(entity.funcName, Relation.IS_PART_OF, entity)
-                        registerEntity(entity.funcName)
+                        linkAndRegisterFirst(entity.domainName, Relation.IS_PART_OF, entity)
+                        linkAndRegisterFirst(entity.funcName, Relation.IS_PART_OF, entity)
                     }
 
                     is ListOfNames<*> -> {
                         entity.names.forEach {
-                            link(it, Relation.IS_PART_OF, entity)
-                            registerEntity(it)
+                            linkAndRegisterFirst(it, Relation.IS_PART_OF, entity)
                         }
                     }
 
                     is FunctionTypeName -> {
-                        link(entity.args, Relation.IS_PART_OF, entity)
-                        registerEntity(entity.args)
-                        link(entity.returns, Relation.IS_PART_OF, entity)
-                        registerEntity(entity.returns)
+                        linkAndRegisterFirst(entity.args, Relation.IS_PART_OF, entity)
+                        linkAndRegisterFirst(entity.returns, Relation.IS_PART_OF, entity)
                     }
 
                     is TypeName -> {
-                        link(entity.pretype.name, Relation.IS_PART_OF, entity)
-                        registerEntity(entity.pretype.name)
+                        linkAndRegisterFirst(entity.pretype.name, Relation.IS_PART_OF, entity)
                     }
 
                     is SimpleKotlinName, is ClassKotlinName, is TypedKotlinName, is DomainName, is UnqualifiedDomainFuncName, is PretypeName -> {}
