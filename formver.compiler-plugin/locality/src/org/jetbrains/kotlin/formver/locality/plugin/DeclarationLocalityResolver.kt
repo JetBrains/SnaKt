@@ -54,5 +54,5 @@ fun FirValueParameter.resolveActualLocality(): Locality =
  * Resolves the invariant locality of a local property.
  */
 context(context: CheckerContext)
-fun FirProperty.resolveLocality(): Locality =
+fun FirProperty.resolveInvariantLocality(): Locality =
     returnTypeRef.resolveLocality { resolveOwner() }
