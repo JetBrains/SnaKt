@@ -64,7 +64,7 @@ object ComponentLocalityResolver : FirVisitor<Locality?, CheckerContext>() {
 context(context: CheckerContext)
 private fun FirProperty.resolveActualLocality(): Locality =
     if (returnTypeRef.coneType.attributes.locality == null) Global
-    else Local(resolveOwner() ?: UnknownSymbol)
+    else Local(resolveOwner())
 
 context(context: CheckerContext)
 fun FirExpression.resolveComponentLocality(): Locality? {
