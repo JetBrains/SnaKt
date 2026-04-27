@@ -6,7 +6,7 @@
 package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.names.PlaceholderArgumentName
-import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
+import org.jetbrains.kotlin.formver.core.names.ReturnVariableName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.BuiltInMethod
 import org.jetbrains.kotlin.formver.viper.ast.Exp
@@ -80,7 +80,7 @@ class MethodBuilder private constructor() {
 
     fun returns(action: () -> Type): Exp.Result {
         val retType = action()
-        val variable = Var(PlaceholderReturnVariableName, retType)
+        val variable = Var(ReturnVariableName(0), retType)
         retVar = variable
         return Exp.Result(retType)
     }

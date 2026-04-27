@@ -129,7 +129,6 @@ class SimpleNameResolver : NameResolver {
                 ExtensionReceiverName -> listOf("this", "extension")
                 FunctionResultVariableName -> listOf("result")
                 is HavocName -> resolveParts(name.type.name)
-                PlaceholderReturnVariableName -> listOf("ret")
                 is SpecialFieldName -> listOf(name.name)
             }
             return listOfNotNull(typeParts) + nameParts

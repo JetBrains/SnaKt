@@ -69,17 +69,6 @@ data class AnonymousBuiltinName(override val n: Int) : NumberedName, NameTypeIsV
     override val children: List<AnyName> = listOf(nameType)
 }
 
-/**
- * Name for return variable that should *only* be used in signatures of methods without a body.
- */
-data object PlaceholderReturnVariableName : FreshName {
-    override val nameType: NameType = NameType.Base.Variable
-    override val inViper: Boolean = true
-
-    override val candidates: List<CandidateName> = nameWithPrefixCandidates("ret", nameType)
-
-    override val children: List<AnyName> = listOf(nameType)
-}
 
 data class ReturnVariableName(override val n: Int) : NumberedName, NameTypeIsVariable {
     override val inViper: Boolean = true
