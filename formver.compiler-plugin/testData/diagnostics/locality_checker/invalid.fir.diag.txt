@@ -1,0 +1,5 @@
+/invalid.kt:(365,378): error: Locality can only be specified on types of function parameters, extension receivers, or local variables.
+
+/invalid.kt:(448,461): error: Locality can only be specified on types of function parameters, extension receivers, or local variables.
+
+/invalid.kt:(542,555): error: Locality can only be specified on types of function parameters, extension receivers, or local variables.
