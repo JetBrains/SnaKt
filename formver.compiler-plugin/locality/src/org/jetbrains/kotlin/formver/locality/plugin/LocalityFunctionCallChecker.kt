@@ -20,21 +20,6 @@ import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOL
 import kotlin.collections.iterator
 
 object LocalityFunctionCallChecker : FirFunctionCallChecker(MppCheckerKind.Common) {
-    context(context: CheckerContext, reporter: DiagnosticReporter)
-    private fun checkArgument(argument: FirExpression, requiredArgumentLocality: Locality) {
-        val actualArgumentLocality = argument.resolveLocality()
-
-        if (requiredArgumentLocality.accepts(actualArgumentLocality)) return
-
-        reporter.reportOn(
-            argument.source,
-            LOCALITY_VIOLATION,
-            "Argument",
-            requiredArgumentLocality,
-            actualArgumentLocality
-        )
-    }
-
     @OptIn(SymbolInternals::class)
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirFunctionCall) {
@@ -62,7 +47,18 @@ object LocalityFunctionCallChecker : FirFunctionCallChecker(MppCheckerKind.Commo
             ?: return
 
         for ((argument, argumentDeclaration) in argumentMappings) {
-            checkArgument(argument, argumentDeclaration.resolveRequiredLocality())
+            val actualArgumentLocality = argument.resolveLocality()
+            val requiredArgumentLocality = argumentDeclaration.resolveRequiredLocality()
+
+            if (requiredArgumentLocality.accepts(actualArgumentLocality)) continue
+
+            reporter.reportOn(
+                argument.source,
+                LOCALITY_VIOLATION,
+                "Argument",
+                requiredArgumentLocality,
+                actualArgumentLocality
+            )
         }
     }
 }

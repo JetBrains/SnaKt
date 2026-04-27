@@ -98,8 +98,16 @@ class GraphLocalityAnalyzer(
             }
         }
     }
+
+    fun analyzeLocalityOf(graph: ControlFlowGraph): Map<CFGNode<*>, LocalityFlow> =
+        graph.traverseToFixedPoint(this)
 }
 
+/**
+ * Analyzes the locality of each expression in `this` control flow graph.
+ *
+ * The result is a map between [CFGNode]s and the [LocalityFlow]s resulting after their execution.
+ */
 context(context: CheckerContext)
 fun ControlFlowGraph.analyzeLocality(): Map<CFGNode<*>, LocalityFlow> =
     traverseToFixedPoint(GraphLocalityAnalyzer(context))
