@@ -109,115 +109,14 @@ class ShortNameResolver : NameResolver {
      */
     private fun viperElements() = elements.filter { it.inViper }
 
-    /**
-     * Stores all the relations between names.
-     */
-    private val tripleStore = mutableSetOf<Triple<AnyName, Relation, AnyName>>()
 
-    /**
-     * Adds a relation between two entities.
-     */
-    private fun link(a: AnyName, rel: Relation, b: AnyName) {
-        tripleStore.add(Triple(a, rel, b))
-        addElement(a)
-        addElement(b)
-    }
-
-    /**
-     * Adds a relation between two entities and afterwards proceeds by registering [a]
-     */
-    private fun linkAndRegisterFirst(a: AnyName, rel: Relation, b: AnyName) {
-        link(a, rel, b)
-        registerEntity(a)
-    }
-
-    override fun register(name: AnyName) = registerEntity(name)
-
-    private fun registerFreshName(entity: FreshName) {
-        when (entity) {
-            is SsaVariableName -> {
-                linkAndRegisterFirst(entity.baseName, Relation.IS_PART_OF, entity)
-            }
-            is HavocName -> {
-                linkAndRegisterFirst(entity.type.name, Relation.IS_PART_OF, entity)
-            }
-            // No else branch, because FreshName is sealed. When adding a new name, the compiler will complain here.
-            PlaceholderReturnVariableName, ExtensionReceiverName, FunctionResultVariableName, DispatchReceiverName,
-            is AnonymousBuiltinName, is AnonymousName, is PlaceholderArgumentName,
-            is ReturnVariableName, is BreakLabelName, is CatchLabelName,
-            is ContinueLabelName, is TryExitLabelName, is ReturnLabelName,
-            is DomainAssociatedFuncName, is DomainFuncParameterName, is PredicateName, is SpecialFieldName -> {
-            }
+    override fun register(name: AnyName) {
+        addElement(name)
+        if (elements.contains(name)) return
+        name.children.forEach {
+            register(it)
         }
     }
-
-    private fun registerEntity(entity: AnyName) {
-        addElement(entity)
-        when (entity) {
-            is NameScope -> {
-                entity.parent?.let {
-                    linkAndRegisterFirst(it, Relation.SCOPE_OF, entity)
-                }
-                if (entity is ClassScope) {
-                    linkAndRegisterFirst(entity.className, Relation.SCOPED_BY, entity)
-                }
-            }
-
-            // Handled by addElement above
-            is NameType -> {}
-
-            is SymbolicName -> {
-                entity.nameType?.let {
-                    linkAndRegisterFirst(it, Relation.KIND_OF, entity)
-                }
-                when (entity) {
-                    is FreshName -> registerFreshName(entity)
-                    is ScopedName -> {
-                        linkAndRegisterFirst(entity.name, Relation.SCOPED_BY, entity)
-                        linkAndRegisterFirst(entity.scope, Relation.SCOPE_OF, entity)
-                    }
-
-                    is ConstructorKotlinName -> {
-                        linkAndRegisterFirst(entity.type.name, Relation.TYPE_OF, entity)
-                    }
-
-                    is TypedKotlinNameWithType -> {
-                        linkAndRegisterFirst(entity.type.name, Relation.TYPE_OF, entity)
-                    }
-
-                    is NamedDomainAxiomLabel -> {
-                        linkAndRegisterFirst(entity.domainName, Relation.IS_PART_OF, entity)
-                    }
-
-                    is QualifiedDomainFuncName -> {
-                        linkAndRegisterFirst(entity.domainName, Relation.IS_PART_OF, entity)
-                        linkAndRegisterFirst(entity.funcName, Relation.IS_PART_OF, entity)
-                    }
-
-                    is ListOfNames<*> -> {
-                        entity.names.forEach {
-                            linkAndRegisterFirst(it, Relation.IS_PART_OF, entity)
-                        }
-                    }
-
-                    is FunctionTypeName -> {
-                        linkAndRegisterFirst(entity.args, Relation.IS_PART_OF, entity)
-                        linkAndRegisterFirst(entity.returns, Relation.IS_PART_OF, entity)
-                    }
-
-                    is TypeName -> {
-                        linkAndRegisterFirst(entity.pretype.name, Relation.IS_PART_OF, entity)
-                    }
-
-                    is SimpleKotlinName, is ClassKotlinName, is TypedKotlinName, is DomainName, is UnqualifiedDomainFuncName, is PretypeName -> {}
-                    else -> {
-                        throw SnaktInternalException(null, "Unsupported entity type: ${entity.javaClass.name}")
-                    }
-                }
-            }
-        }
-    }
-
 
     // START RESOLVE NAMES
 
@@ -336,6 +235,19 @@ class ShortNameResolver : NameResolver {
     // START RENDER
 
     /**
+     * Stores all the relations between names.
+     */
+    private val tripleStore = mutableSetOf<Triple<AnyName, Relation, AnyName>>()
+
+    /**
+     * Adds a relation between two entities.
+     */
+    private fun link(a: AnyName, rel: Relation, b: AnyName) {
+        tripleStore.add(Triple(a, rel, b))
+
+    }
+
+    /**
      * This method generates a dot graph of the current state of the short name resolver.
      *
      * The graph shows the current candidate for each name, and the dependencies between them.
@@ -345,6 +257,8 @@ class ShortNameResolver : NameResolver {
      * If `showCurrent` is true, the graph will also show the current candidate for each name.
      */
     fun render(showCollisions: Boolean = true, showCurrent: Boolean = true): String {
+
+        if (tripleStore.isEmpty()) registerRelation()
 
         val nl = "\\n"
 
@@ -370,7 +284,6 @@ class ShortNameResolver : NameResolver {
                     else -> it.name.toString()
                 }
                 NamePart.Separator -> SEPARATOR
-                else -> "<unknown>"
             }
         }
 
@@ -459,6 +372,96 @@ class ShortNameResolver : NameResolver {
 
         sb.append("}\n")
         return sb.toString()
+    }
+
+    private fun registerRelation() {
+        elements.forEach { registerRelationEntity(it) }
+    }
+
+    private fun registerRelationFreshName(entity: FreshName) {
+        when (entity) {
+            is SsaVariableName -> {
+                link(entity.baseName, Relation.IS_PART_OF, entity)
+            }
+
+            is HavocName -> {
+                link(entity.type.name, Relation.IS_PART_OF, entity)
+            }
+            // No else branch, because FreshName is sealed. When adding a new name, the compiler will complain here.
+            PlaceholderReturnVariableName, ExtensionReceiverName, FunctionResultVariableName, DispatchReceiverName,
+            is AnonymousBuiltinName, is AnonymousName, is PlaceholderArgumentName,
+            is ReturnVariableName, is BreakLabelName, is CatchLabelName,
+            is ContinueLabelName, is TryExitLabelName, is ReturnLabelName,
+            is DomainAssociatedFuncName, is DomainFuncParameterName, is PredicateName, is SpecialFieldName -> {
+            }
+        }
+    }
+
+    private fun registerRelationEntity(entity: AnyName) {
+        addElement(entity)
+        when (entity) {
+            is NameScope -> {
+                entity.parent?.let {
+                    link(it, Relation.SCOPE_OF, entity)
+                }
+                if (entity is ClassScope) {
+                    link(entity.className, Relation.SCOPED_BY, entity)
+                }
+            }
+
+            // Handled by addElement above
+            is NameType -> {}
+
+            is SymbolicName -> {
+                entity.nameType?.let {
+                    link(it, Relation.KIND_OF, entity)
+                }
+                when (entity) {
+                    is FreshName -> registerRelationFreshName(entity)
+                    is ScopedName -> {
+                        link(entity.name, Relation.SCOPED_BY, entity)
+                        link(entity.scope, Relation.SCOPE_OF, entity)
+                    }
+
+                    is ConstructorKotlinName -> {
+                        link(entity.type.name, Relation.TYPE_OF, entity)
+                    }
+
+                    is TypedKotlinNameWithType -> {
+                        link(entity.type.name, Relation.TYPE_OF, entity)
+                    }
+
+                    is NamedDomainAxiomLabel -> {
+                        link(entity.domainName, Relation.IS_PART_OF, entity)
+                    }
+
+                    is QualifiedDomainFuncName -> {
+                        link(entity.domainName, Relation.IS_PART_OF, entity)
+                        link(entity.funcName, Relation.IS_PART_OF, entity)
+                    }
+
+                    is ListOfNames<*> -> {
+                        entity.names.forEach {
+                            link(it, Relation.IS_PART_OF, entity)
+                        }
+                    }
+
+                    is FunctionTypeName -> {
+                        link(entity.args, Relation.IS_PART_OF, entity)
+                        link(entity.returns, Relation.IS_PART_OF, entity)
+                    }
+
+                    is TypeName -> {
+                        link(entity.pretype.name, Relation.IS_PART_OF, entity)
+                    }
+
+                    is SimpleKotlinName, is ClassKotlinName, is TypedKotlinName, is DomainName, is UnqualifiedDomainFuncName, is PretypeName -> {}
+                    else -> {
+                        throw SnaktInternalException(null, "Unsupported entity type: ${entity.javaClass.name}")
+                    }
+                }
+            }
+        }
     }
 
     // END RENDER
