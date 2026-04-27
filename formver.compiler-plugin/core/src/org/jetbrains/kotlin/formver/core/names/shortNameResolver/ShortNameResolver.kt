@@ -312,8 +312,6 @@ class ShortNameResolver : NameResolver {
      * Which names must be considered?
      * - We do need to make all the names unique, but only once that actually end up in viper. E.g., a variable and
      *   a scope can have the same name.
-     * - Sometimes we want to have name collisions, e.g., public fields with the same name can be merged. This behavior
-     *   is captured with the representation system. Hence, names that are represented by someone else must not be considered.
      */
     private fun collisions(): Map<String, Set<AnyName>> {
         val names = viperElements().map { Pair(current(it), it) }
