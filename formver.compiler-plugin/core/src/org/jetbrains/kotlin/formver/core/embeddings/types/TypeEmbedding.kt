@@ -84,7 +84,7 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
     override val runtimeType: Exp = flags.adjustRuntimeType(pretype.runtimeType)
 
     override fun accessInvariants(ctx: TypeResolver): List<TypeInvariantEmbedding> =
-        flags.adjustManyInvariants(pretype.accessInvariants(ctx))
+        flags.adjustManyInvariants(ctx.accessInvariantsOfClass(pretype.name))
 
     override fun pureInvariants(): List<TypeInvariantEmbedding> = flags.adjustManyInvariants(pretype.pureInvariants())
 
@@ -102,8 +102,8 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
 
     fun hierarchyPathTo(field: FieldEmbedding, ctx: TypeResolver): Sequence<ClassTypeEmbedding>? {
         // TODO: Find a nicer solution to avoid this cast. It should really be: type.hierarchyPathTo(field)
-        val className = (pretype as? ClassTypeEmbedding)?.name ?: return null
-        return ctx.details(className).hierarchyPathTo(field, ctx)
+        val classType = (pretype as? ClassTypeEmbedding) ?: return null
+        return ctx.hierarchyPathTo(classType, field, ctx)
     }
 
 }

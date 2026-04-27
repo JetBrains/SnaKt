@@ -11,24 +11,30 @@ import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
+import org.jetbrains.kotlin.formver.core.names.PredicateName
 import org.jetbrains.kotlin.formver.core.names.ScopedName
+import org.jetbrains.kotlin.formver.core.names.asScope
 import org.jetbrains.kotlin.formver.names.debugMangled
 import org.jetbrains.kotlin.formver.viper.ast.DomainFunc
 import org.jetbrains.kotlin.formver.viper.ast.Exp
+import org.jetbrains.kotlin.formver.viper.ast.PermExp
 
 // TODO: incorporate generic parameters.
 data class ClassTypeEmbedding(override val name: ScopedName) : PretypeEmbedding {
 
     override val runtimeType: Exp = this.embedClassTypeFunc()()
 
+    val sharedPredicateName = ScopedName(name.asScope(), PredicateName("shared"))
+    val uniquePredicateName = ScopedName(name.asScope(), PredicateName("unique"))
+
     override fun accessInvariants(ctx: TypeResolver): List<TypeInvariantEmbedding> =
-        ctx.details(name).accessInvariants(ctx)
+        ctx.accessInvariantsOfClass(name)
 
     override fun sharedPredicateAccessInvariant(ctx: TypeResolver) =
-        ctx.details(name).sharedPredicateAccessInvariant(ctx)
+        PredicateAccessTypeInvariantEmbedding(sharedPredicateName, PermExp.WildcardPerm())
 
     override fun uniquePredicateAccessInvariant(ctx: TypeResolver) =
-        ctx.details(name).uniquePredicateAccessInvariant(ctx)
+        PredicateAccessTypeInvariantEmbedding(uniquePredicateName, PermExp.FullPerm())
 }
 
 fun PretypeEmbedding.isInheritorOfCollectionTypeNamed(name: String, ctx: TypeResolver): Boolean {

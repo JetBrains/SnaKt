@@ -11,7 +11,7 @@ class ScopeBuilder {
     private var scope: NameScope? = null
 
     fun complete(): NameScope {
-        require(scope == null) { "Empty scope can not be built" }
+        require(scope != null) { "Empty scope can not be built" }
         return scope!!
     }
 
@@ -67,7 +67,6 @@ class ScopedNameBuilder {
 
     fun complete(name: KotlinName): ScopedName {
         val scope = scopeBuilder.complete()
-        require(scope != null) { "No scope specified " }
         return ScopedName(scope, name)
     }
 

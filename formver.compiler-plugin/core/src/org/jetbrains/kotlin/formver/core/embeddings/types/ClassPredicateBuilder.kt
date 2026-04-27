@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.formver.core.embeddings.types
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.UserFieldEmbedding
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.DispatchReceiverName
@@ -16,18 +17,27 @@ import org.jetbrains.kotlin.formver.viper.ast.PermExp
 import org.jetbrains.kotlin.formver.viper.ast.Predicate
 import org.jetbrains.kotlin.utils.addIfNotNull
 
-internal class ClassPredicateBuilder private constructor(private val details: ClassEmbeddingDetails) {
-    private val subject = PlaceholderVariableEmbedding(DispatchReceiverName, details.type.asTypeEmbedding())
+internal class ClassPredicateBuilder private constructor(
+    typeEmbedding: TypeEmbedding,
+    val fields: List<FieldEmbedding>,
+    val classSuperTypes: List<ClassTypeEmbedding>
+) {
+    private val subject = PlaceholderVariableEmbedding(DispatchReceiverName, typeEmbedding)
     private val body = mutableListOf<ExpEmbedding>()
 
     companion object {
         fun build(
-            classType: ClassEmbeddingDetails,
+            name: SymbolicName,
             predicateName: SymbolicName,
             ctx: TypeResolver,
             action: ClassPredicateBuilder.() -> Unit,
         ): Predicate {
-            val builder = ClassPredicateBuilder(classType)
+            val typeEmbedding = ctx.lookupClassType(name)!!
+            val builder = ClassPredicateBuilder(
+                TypeEmbedding(typeEmbedding, TypeEmbeddingFlags(nullable = false)),
+                ctx.lookupClassFields(name),
+                ctx.lookupSuperTypes(name)
+            )
             builder.action()
             return Predicate(
                 predicateName,
@@ -38,7 +48,7 @@ internal class ClassPredicateBuilder private constructor(private val details: Cl
     }
 
     fun forEachField(action: FieldAssertionsBuilder.() -> Unit) =
-        details.fields.values
+        fields
             .filterIsInstance<UserFieldEmbedding>()
             .forEach { field ->
                 val builder = FieldAssertionsBuilder(subject, field)
@@ -47,7 +57,7 @@ internal class ClassPredicateBuilder private constructor(private val details: Cl
             }
 
     fun forEachSuperType(action: TypeInvariantsBuilder.() -> Unit) =
-        details.classSuperTypes.forEach { type ->
+        classSuperTypes.forEach { type ->
             val builder = TypeInvariantsBuilder(type.asTypeEmbedding())
             builder.action()
             body.addAll(builder.toInvariantsList().fillHoles(subject))

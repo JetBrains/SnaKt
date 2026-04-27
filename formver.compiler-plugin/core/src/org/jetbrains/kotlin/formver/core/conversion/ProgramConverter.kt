@@ -105,12 +105,7 @@ class ProgramConverter(
             methods = SpecialMethods.all +
                     methods.values.mapNotNull { it.viperMethod(typeResolver) }
                         .distinctBy { it.name } + havocMethods.values,
-            predicates = typeResolver.allDetails().flatMap {
-                listOf(
-                    it.sharedPredicate(typeResolver),
-                    it.uniquePredicate(typeResolver)
-                )
-            },
+            predicates = typeResolver.allClassAccessPredicates(),
         )
 
     fun registerForVerification(declaration: FirSimpleFunction) {
@@ -271,10 +266,7 @@ class ProgramConverter(
             typeResolver.addFieldToClass(name, embedding)
         }
 
-
-        val details = typeResolver.details(className)
-
-        details.fields.values.forEach {
+        fields.values.forEach {
             havocMethods.putIfAbsent(
                 it.type.havocMethodName,
                 it.type.havocMethod(typeResolver)
@@ -282,7 +274,7 @@ class ProgramConverter(
         }
 
         // Phase 3
-        properties.forEach { processProperty(it, details) }
+        properties.forEach { processProperty(it) }
 
         return embedding
     }
@@ -316,11 +308,10 @@ class ProgramConverter(
             return emptyMap()
         val constructedClassSymbol = symbol.resolvedReturnType.toRegularClassSymbol(session) ?: return emptyMap()
         val constructedClass = embedClass(constructedClassSymbol)
-        val details = typeResolver.details(constructedClass.name)
         return constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
-            val propertyName = propertySymbol.embedMemberPropertyName().second
+            val name = propertySymbol.embedMemberPropertyName()
             propertySymbol.withConstructorParam { paramSymbol ->
-                details.findField(propertyName)?.let { paramSymbol to it }
+                typeResolver.lookupField(name)?.let { paramSymbol to it }
             }
         }.toMap()
     }
@@ -529,17 +520,15 @@ class ProgramConverter(
      *
      * Note that the property either has associated Viper field (and then it is used to access the value) or not (in this case methods are used).
      * The field is only used for final properties with default getter and default setter (if any).
-     *
-     * Null value of parameter [embedding] means that there is no class details corresponding to this type (e.g. it is primitive).
      */
-    private fun processProperty(symbol: FirPropertySymbol, embedding: ClassEmbeddingDetails?) {
+    private fun processProperty(symbol: FirPropertySymbol) {
         val name = symbol.embedMemberPropertyName()
-        properties[name] =
-            SpecialProperties.byCallableId[symbol.callableId] ?: embedding.run {
-                val backingField = embedding?.findField(name.second)
-                backingField?.let { fields.add(it) }
-                embedProperty(symbol, backingField)
-            }
+        val property = SpecialProperties.byCallableId[symbol.callableId] ?: run {
+            val backingField = typeResolver.lookupField(name)
+            backingField?.let { fields.add(it) }
+            embedProperty(symbol, backingField)
+        }
+        properties[name] = property
     }
 
     private fun embedCustomProperty(symbol: FirPropertySymbol) = embedProperty(symbol, null)
@@ -595,7 +584,7 @@ class ProgramConverter(
         type.isString -> {
             val stringClassSymbol = type.toClassSymbol(session) as FirRegularClassSymbol
             stringClassSymbol.propertySymbols.forEach {
-                processProperty(it, embedding = null)
+                processProperty(it)
             }
             string()
         }
