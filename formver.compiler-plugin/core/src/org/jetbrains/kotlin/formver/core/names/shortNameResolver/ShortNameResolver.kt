@@ -111,8 +111,8 @@ class ShortNameResolver : NameResolver {
 
 
     override fun register(name: AnyName) {
-        addElement(name)
         if (elements.contains(name)) return
+        addElement(name)
         name.children.forEach {
             register(it)
         }
