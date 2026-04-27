@@ -17,7 +17,6 @@ fun NamePart.name(): String = when (this) {
     is NamePart.Dependent -> name()
     is NamePart.Basic -> this.name
     NamePart.Separator -> resolver.separator
-    else -> throw SnaktInternalException(null, "Unknown name part: $this")
 }
 
 /**
@@ -40,7 +39,6 @@ fun NamePart.fullName(): String = when (this) {
     is NamePart.Dependent -> fullName()
     is NamePart.Basic -> this.name
     NamePart.Separator -> SEPARATOR
-    else -> throw SnaktInternalException(null, "Unknown name part: $this")
 }
 
 /**

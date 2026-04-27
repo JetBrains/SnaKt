@@ -2,8 +2,6 @@ package org.jetbrains.kotlin.formver.core.names.shortNameResolver
 
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.names.*
-import org.jetbrains.kotlin.formver.names.CandidateName
-import org.jetbrains.kotlin.formver.names.buildCandidates
 import org.jetbrains.kotlin.formver.viper.AnyName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 
@@ -76,9 +74,8 @@ fun NameScope.candidates(): List<CandidateName> = when (this) {
 
     is FakeScope -> nameOnlyCandidates("fake")
     is LocalScope -> buildCandidates {
-        candidate {
+        candidateNoSeparator {
             +"l"
-            noSeparator
             +"$level"
         }
     }
@@ -154,9 +151,8 @@ fun SymbolicName.candidates(): List<CandidateName> = when (this) {
         candidate {
             +pretype.name
         }
-        candidate {
+        candidateNoSeparator {
             if (nullable) +"N"
-            noSeparator
             +pretype.name
         }
     }

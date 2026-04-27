@@ -1,4 +1,4 @@
-package org.jetbrains.kotlin.formver.names
+package org.jetbrains.kotlin.formver.core.names.shortNameResolver
 
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.viper.AnyName
@@ -20,24 +20,24 @@ sealed interface NamePart {
 
     /**
      * A separator between name parts.
+     * Do not use this. Use [CandidateNameBuilder] instead.
      */
     object Separator : NamePart
 }
 
 /**
  * A candidate name composed of multiple [NamePart]s.
- * There are no public available classes. A candidate name must always be created using [CandidateNameBuilder].
+ * A candidate name should always be created using [CandidateNameBuilder].
  */
-interface CandidateName {
+class CandidateName(val parts: List<NamePart>) {
     fun moveableParts(): List<NamePart.Dependent> = parts.filterIsInstance<NamePart.Dependent>()
-    val parts: List<NamePart>
 }
 
 
 /**
  * A builder for a list of [CandidateName]s.
  */
-class CandidatesBuilder {
+class CandidatesBuilder() {
     private val candidates = mutableListOf<CandidateName>()
 
     /**
@@ -46,7 +46,19 @@ class CandidatesBuilder {
      * @param init The initialization block for the [CandidateNameBuilder].
      */
     fun candidate(init: CandidateNameBuilder.() -> Unit) {
-        val builder = CandidateNameBuilder()
+        val builder = CandidateNameBuilder(true)
+        builder.init()
+        candidates.add(builder.build())
+    }
+
+    /**
+     * Creates a new candidate using a nested DSL block.
+     * No separator is added between parts.
+     *
+     * @param init The initialization block for the [CandidateNameBuilder].
+     */
+    fun candidateNoSeparator(init: CandidateNameBuilder.() -> Unit) {
+        val builder = CandidateNameBuilder(false)
         builder.init()
         candidates.add(builder.build())
     }
@@ -83,28 +95,19 @@ fun buildCandidates(init: CandidatesBuilder.() -> Unit): List<CandidateName> {
     return CandidatesBuilder().apply(init).build()
 }
 
+
 /**
  * A builder for a single [CandidateName], providing a DSL for adding parts.
- *
- * Separators are automatically added between parts, except when explicitly skipped (use +noSeparator).
  */
-class CandidateNameBuilder {
+class CandidateNameBuilder(val separator: Boolean = true) {
     private val parts = mutableListOf<NamePart>()
 
-    private object SkipSeparator : NamePart
-
-    /**
-     * Prevents the addition of a separator before the next part.
-     */
-    val noSeparator: Unit
-        get() {
-            parts.add(SkipSeparator)
-        }
 
     /**
      * Adds a string part to the name.
      */
     operator fun String.unaryPlus() {
+        if (separator && parts.isNotEmpty()) parts.add(NamePart.Separator)
         parts.add(NamePart.Basic(this))
     }
 
@@ -112,6 +115,7 @@ class CandidateNameBuilder {
      * Adds a named entity part to the name.
      */
     operator fun AnyName.unaryPlus() {
+        if (separator && parts.isNotEmpty()) parts.add(NamePart.Separator)
         parts.add(NamePart.Dependent(this))
     }
 
@@ -131,23 +135,9 @@ class CandidateNameBuilder {
     }
 
     /**
-     * Builds the [CandidateName], automatically inserting [NamePart.Separator]s
-     * between parts unless [noSeparator] was used.
+     * Builds the [CandidateName].
      */
     fun build(): CandidateName {
-        val separatorParts = parts.foldRight(Pair(mutableListOf<NamePart>(), false)) { part, (result, addSeparator) ->
-            if (part is SkipSeparator) {
-                return@foldRight Pair(result, false)
-            }
-            if (addSeparator) {
-                result.add(NamePart.Separator)
-            }
-            result.add(part)
-            Pair(result, true)
-        }
-
-        return object : CandidateName {
-            override val parts: List<NamePart> = separatorParts.first.reversed()
-        }
+        return CandidateName(parts)
     }
 }
