@@ -9,23 +9,22 @@ import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
-import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirValueParameterChecker
-import org.jetbrains.kotlin.fir.declarations.FirValueParameter
+import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirReturnExpressionChecker
+import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
 import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOLATION
 
-object LocalityValueParameterChecker : FirValueParameterChecker(MppCheckerKind.Common) {
+object ReturnLocalityChecker : FirReturnExpressionChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
-    override fun check(declaration: FirValueParameter) {
-        val defaultValue = declaration.defaultValue ?: return
-        val actualLocality = defaultValue.resolveLocality()
-        val requiredLocality = declaration.resolveRequiredLocality()
+    override fun check(expression: FirReturnExpression) {
+        val actualLocality = expression.result.resolveLocality()
+        val requiredLocality = Global
 
         if (requiredLocality.accepts(actualLocality)) return
 
         reporter.reportOn(
-            defaultValue.source ?: declaration.source,
+            expression.result.source,
             LOCALITY_VIOLATION,
-            "Initializer",
+            "Return",
             requiredLocality,
             actualLocality
         )

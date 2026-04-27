@@ -12,7 +12,7 @@ object LocalityExtensionRegistrar : FirExtensionRegistrar() {
         registerDiagnosticContainers(LocalityErrors)
         +LocalityAttributeExtension.getFactory()
         +PropertyOwnerResolver.getFactory()
-        +GraphLocalityResolver.getFactory()
+        +GraphLocalityInfoResolver.getFactory()
         +LocalityAdditionalCheckers.getFactory()
     }
 }

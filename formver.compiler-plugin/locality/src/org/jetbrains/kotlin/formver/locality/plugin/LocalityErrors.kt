@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.diagnostics.error3
 
 object LocalityErrors : KtDiagnosticsContainer() {
     val LOCALITY_VIOLATION by error3<PsiElement, String, Locality, Locality>()
-    val INVALID_LOCALITY_TARGET by error0<PsiElement>()
+    val INVALID_LOCALITY_TYPE_TARGET by error0<PsiElement>()
 
     override fun getRendererFactory() = LocalityErrorMessages
 }

@@ -16,13 +16,13 @@ import org.jetbrains.kotlin.fir.declarations.FirValueParameter
 import org.jetbrains.kotlin.fir.declarations.isLocal
 import org.jetbrains.kotlin.fir.types.FirResolvedTypeRef
 
-object LocalityAttributeChecker : FirResolvedTypeRefChecker(MppCheckerKind.Common) {
-    private fun CheckerContext.hasValidLocalityOwner(): Boolean {
-        val owner = containingElements.dropLast(1).lastOrNull()
+object TypeLocalityAttributeChecker : FirResolvedTypeRefChecker(MppCheckerKind.Common) {
+    private fun CheckerContext.isValidLocalityTarget(): Boolean {
+        val target = containingElements.dropLast(1).lastOrNull()
 
-        return owner is FirValueParameter ||
-                owner is FirReceiverParameter ||
-                (owner is FirProperty && owner.isLocal)
+        return target is FirValueParameter ||
+                target is FirReceiverParameter ||
+                (target is FirProperty && target.isLocal)
     }
 
     context(context: CheckerContext, reporter: DiagnosticReporter)
@@ -31,8 +31,8 @@ object LocalityAttributeChecker : FirResolvedTypeRefChecker(MppCheckerKind.Commo
 
         val source = typeRef.source ?: return
 
-        if (context.hasValidLocalityOwner()) return
+        if (context.isValidLocalityTarget()) return
 
-        reporter.reportOn(source, LocalityErrors.INVALID_LOCALITY_TARGET)
+        reporter.reportOn(source, LocalityErrors.INVALID_LOCALITY_TYPE_TARGET)
     }
 }

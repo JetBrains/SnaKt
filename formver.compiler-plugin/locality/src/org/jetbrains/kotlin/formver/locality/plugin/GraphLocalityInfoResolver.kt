@@ -18,12 +18,12 @@ import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 
-class GraphLocalityResolver(
+class GraphLocalityInfoResolver(
     session: FirSession
 ) : FirExtensionSessionComponent(session) {
     companion object {
         fun getFactory(): Factory {
-            return Factory { session -> GraphLocalityResolver(session) }
+            return Factory { session -> GraphLocalityInfoResolver(session) }
         }
     }
 
@@ -46,12 +46,12 @@ class GraphLocalityResolver(
         cache.getValue(graph, context)
 }
 
-val FirSession.graphLocalityResolver: GraphLocalityResolver
-        by FirSession.sessionComponentAccessor<GraphLocalityResolver>()
+val FirSession.graphLocalityInfoResolver: GraphLocalityInfoResolver
+        by FirSession.sessionComponentAccessor<GraphLocalityInfoResolver>()
 
 context(context: CheckerContext)
-fun ControlFlowGraph.resolveLocality(): LocalityInfo =
-    context.session.graphLocalityResolver.resolveLocalityInfoOf(this)
+fun ControlFlowGraph.resolveLocalityInfo(): LocalityInfo =
+    context.session.graphLocalityInfoResolver.resolveLocalityInfoOf(this)
 
 /**
  * Resolves the locality of `this` expression based on the resolved locality info of the enclosing declaration.
@@ -69,7 +69,7 @@ fun FirExpression.resolveLocality(): Locality {
         val declaration = symbol?.fir
         val graph = (declaration as? FirControlFlowGraphOwner)?.controlFlowGraphReference?.controlFlowGraph
             ?: return Global
-        val facts = graph.resolveLocality()
+        val facts = graph.resolveLocalityInfo()
 
         return facts[expression] ?: Global
     }
