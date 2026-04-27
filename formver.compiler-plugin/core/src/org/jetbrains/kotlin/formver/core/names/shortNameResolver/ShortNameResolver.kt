@@ -60,24 +60,6 @@ fun AnyName.fullName(): String = candidates().last().fullName()
 
 // END UTILITY SECTION
 
-internal enum class Relation {
-
-    /** scope SCOPE_OF scopedName **/
-    SCOPE_OF,
-
-    /** name SCOPED_BY nameScoped **/
-    SCOPED_BY,
-
-    /** Int TYPE_OF Function**/
-    TYPE_OF,
-
-    /** a IS_PART_OF (a,b) -> c **/
-    IS_PART_OF,
-
-    /** name NAME_TYPE nameType **/
-    KIND_OF,
-}
-
 /**
  * Resolves mangled names into Viper identifiers while maintaining uniqueness.
  * The priority lies on the short and readable names.
@@ -233,6 +215,25 @@ class ShortNameResolver : NameResolver {
 
 
     // START RENDER
+
+
+    internal enum class Relation {
+
+        /** scope SCOPE_OF scopedName **/
+        SCOPE_OF,
+
+        /** name SCOPED_BY nameScoped **/
+        SCOPED_BY,
+
+        /** Int TYPE_OF Function**/
+        TYPE_OF,
+
+        /** a IS_PART_OF (a,b) -> c **/
+        IS_PART_OF,
+
+        /** name NAME_TYPE nameType **/
+        KIND_OF,
+    }
 
     /**
      * Stores all the relations between names.
