@@ -275,11 +275,9 @@ class ShortNameResolver : NameResolver {
 
             val candidateToMove = toResolve.filter { canMove(it) }.ifNotEmpty { maxBy { priorityOrder(it) } }
 
-            if (candidateToMove != null) {
-                move(candidateToMove)
-            } else {
-                throw SnaktInternalException(null, "Unable to make names unique")
-            }
+            assert(candidateToMove != null) { "Unable to make names unique" }
+
+            move(candidateToMove!!)
             currentCollisions = collisions()
         }
 
