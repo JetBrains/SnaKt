@@ -82,4 +82,3 @@ val SymbolicName.mangled: String
  * Do not inherit from this interface. If you need a new name type, add it to the [NameType] interface.
  */
 interface NameTypeBase : AnyName
-
