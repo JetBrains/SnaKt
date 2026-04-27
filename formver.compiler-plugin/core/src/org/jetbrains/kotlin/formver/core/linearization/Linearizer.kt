@@ -121,7 +121,7 @@ data class Linearizer(
                     // we might need to unfold some predicate to access it.
                     if (field.unfoldToAccess) {
                         val receiverWrapper = ExpWrapper(receiverViper, receiverType)
-                        val hierarchyPath = receiverType.hierarchyPathTo(field, typeResolver)
+                        val hierarchyPath = typeResolver.hierarchyPathTo(receiverType.pretype, field)
                         hierarchyPath.unfoldHierarchyPath(receiverWrapper, this)
                     }
                     Stmt.assign(

@@ -3,7 +3,9 @@ package org.jetbrains.kotlin.formver.core.conversion
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassPredicateBuilder
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeInvariantEmbedding
+import org.jetbrains.kotlin.formver.core.names.NameMatcher
 import org.jetbrains.kotlin.formver.core.names.PropertyKotlinName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
@@ -70,20 +72,20 @@ class TypeResolver {
 
 
     fun hierarchyPathTo(
-        classType: ClassTypeEmbedding,
-        field: FieldEmbedding,
-        ctx: TypeResolver
+        typeEmbedding: PretypeEmbedding,
+        field: FieldEmbedding
     ): Sequence<ClassTypeEmbedding> = sequence {
+        val classType = (typeEmbedding as? ClassTypeEmbedding) ?: return@sequence
         val className = field.containingClass?.name
         require(className != null) { "Cannot find hierarchy unfold path of a field with no class information" }
-        if (className == classType.name) {
+        if (className == typeEmbedding.name) {
             yield(classType)
         } else {
             val sup = lookupSuperTypes(classType.name).firstOrNull { !interfaceEmbedding.containsKey(it.name) }
                 ?: throw IllegalArgumentException("Reached top of the hierarchy without finding the field")
 
             yield(classType)
-            yieldAll(hierarchyPathTo(sup, field, ctx))
+            yieldAll(hierarchyPathTo(sup, field))
         }
     }
 
