@@ -68,9 +68,9 @@ fun FirExpression.resolveLocality(): Locality {
         val symbol = context.findClosest<FirCallableSymbol<*>>()
         val declaration = symbol?.fir
         val graph = (declaration as? FirControlFlowGraphOwner)?.controlFlowGraphReference?.controlFlowGraph
-            ?: return Global
+            ?: return Locality.Global
         val facts = graph.resolveLocalityInfo()
 
-        return facts[expression] ?: Global
+        return facts[expression] ?: Locality.Global
     }
 }

@@ -17,7 +17,7 @@ object ThrowLocalityChecker : FirThrowExpressionChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirThrowExpression) {
         val actualLocality = expression.exception.resolveLocality()
-        val requiredLocality = Global
+        val requiredLocality = Locality.Global
 
         if (requiredLocality.accepts(actualLocality)) return
 

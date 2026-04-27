@@ -7,7 +7,6 @@ package org.jetbrains.kotlin.formver.locality.plugin
 
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentMapOf
-import org.jetbrains.kotlin.fir.analysis.cfa.util.ControlFlowInfo
 import org.jetbrains.kotlin.fir.analysis.cfa.util.PathAwareControlFlowGraphVisitor
 import org.jetbrains.kotlin.fir.analysis.cfa.util.merge
 import org.jetbrains.kotlin.fir.analysis.cfa.util.transformValues
@@ -79,11 +78,11 @@ class GraphLocalityAnalyzer(
 
                     when {
                         inheritsTailFact ->
-                            info.put(expression, info[TailExpression] ?: Global)
+                            info.put(expression, info[TailExpression] ?: Locality.Global)
                         else -> {
                             val expressionLocality = with(context) {
                                 expression.resolveComponentLocality()
-                            } ?: Global
+                            } ?: Locality.Global
 
                             info.put(expression, expressionLocality)
                                 .put(TailExpression, expressionLocality)

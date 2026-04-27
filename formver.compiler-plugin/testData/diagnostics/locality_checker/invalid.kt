@@ -11,10 +11,10 @@ fun `allow locality attribute on local variable type`() {
     val x: @Borrowed Any = Any()
 }
 
-fun `reject locality attribute on return type`(): <!INVALID_LOCALITY_TARGET!>@Borrowed Any<!> = Any()
+fun `reject locality attribute on return type`(): <!INVALID_LOCALITY_TYPE_TARGET!>@Borrowed Any<!> = Any()
 
-val `reject locality attribute on top-level property type`: <!INVALID_LOCALITY_TARGET!>@Borrowed Any<!> = Any()
+val `reject locality attribute on top-level property type`: <!INVALID_LOCALITY_TYPE_TARGET!>@Borrowed Any<!> = Any()
 
 class `reject locality attribute on member property type` {
-    val x: <!INVALID_LOCALITY_TARGET!>@Borrowed Any<!> = Any()
+    val x: <!INVALID_LOCALITY_TYPE_TARGET!>@Borrowed Any<!> = Any()
 }
