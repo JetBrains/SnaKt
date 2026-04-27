@@ -9,9 +9,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.asTypeEmbedding
-import org.jetbrains.kotlin.formver.core.names.shortNameResolver.buildCandidates
-import org.jetbrains.kotlin.formver.core.names.shortNameResolver.nameOnlyCandidates
-import org.jetbrains.kotlin.formver.core.names.shortNameResolver.nameWithPrefixCandidates
 import org.jetbrains.kotlin.formver.viper.AnyName
 import org.jetbrains.kotlin.formver.viper.CandidateName
 import org.jetbrains.kotlin.formver.viper.SymbolicName

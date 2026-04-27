@@ -1,7 +1,6 @@
-package org.jetbrains.kotlin.formver.core.names.shortNameResolver
+package org.jetbrains.kotlin.formver.core.names
 
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
-import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.*
 import org.jetbrains.kotlin.utils.addToStdlib.ifNotEmpty
 import kotlin.math.absoluteValue
@@ -199,7 +198,6 @@ class ShortNameResolver : NameResolver {
         }
         return false
     }
-
     /**
      * Returns true if `name` can be moved or one of the parts of the current candidate can be moved
      */

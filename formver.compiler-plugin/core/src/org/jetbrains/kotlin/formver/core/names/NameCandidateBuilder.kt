@@ -1,4 +1,4 @@
-package org.jetbrains.kotlin.formver.core.names.shortNameResolver
+package org.jetbrains.kotlin.formver.core.names
 
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.viper.AnyName

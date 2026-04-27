@@ -5,9 +5,6 @@
 
 package org.jetbrains.kotlin.formver.core.names
 
-import org.jetbrains.kotlin.formver.core.names.shortNameResolver.buildCandidates
-import org.jetbrains.kotlin.formver.core.names.shortNameResolver.nameOnlyCandidates
-import org.jetbrains.kotlin.formver.core.names.shortNameResolver.nameWithDependentPrefixCandidates
 import org.jetbrains.kotlin.formver.viper.AnyName
 import org.jetbrains.kotlin.formver.viper.CandidateName
 import org.jetbrains.kotlin.name.FqName

@@ -6,10 +6,6 @@
 package org.jetbrains.kotlin.formver.core.names
 
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
-import org.jetbrains.kotlin.formver.core.names.shortNameResolver.buildCandidates
-import org.jetbrains.kotlin.formver.core.names.shortNameResolver.nameOnlyCandidates
-import org.jetbrains.kotlin.formver.core.names.shortNameResolver.nameWithPrefixAndSuffixCandidates
-import org.jetbrains.kotlin.formver.core.names.shortNameResolver.nameWithPrefixCandidates
 import org.jetbrains.kotlin.formver.viper.AnyName
 import org.jetbrains.kotlin.formver.viper.CandidateName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
@@ -71,6 +67,7 @@ data class AnonymousBuiltinName(override val n: Int) : NumberedName, NameTypeIsV
 
 /**
  * Name for return variable that should *only* be used in signatures of methods without a body.
+ * If you need a the name for the return value of a function, use [FunctionResultVariableName] instead.
  */
 data object PlaceholderReturnVariableName : FreshName {
     override val nameType: NameType = NameType.Base.Variable
@@ -81,6 +78,9 @@ data object PlaceholderReturnVariableName : FreshName {
     override val children: List<AnyName> = listOf(nameType)
 }
 
+/**
+ * If you need a the name for the return value of a function, use [FunctionResultVariableName] instead.
+ */
 data class ReturnVariableName(override val n: Int) : NumberedName, NameTypeIsVariable {
     override val inViper: Boolean = true
 
