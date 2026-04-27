@@ -24,20 +24,35 @@ private inline fun FirTypeRef.resolveLocality(findOwner: () -> FirBasedSymbol<*>
 private fun CheckerContext.findClosestFunction(): FirBasedSymbol<*>? =
     findClosest<FirFunctionSymbol<*>>()
 
+/**
+ * Resolves the locality required for the receiver parameter of a function upon its invocation.
+ */
 context(context: CheckerContext)
 fun FirReceiverParameter.resolveRequiredLocality(): Locality =
     typeRef.resolveLocality { context.findClosestFunction() }
 
+/**
+ * Resolves the actual locality of a receiver parameter usage.
+ */
 fun FirReceiverParameter.resolveActualLocality(): Locality =
     typeRef.resolveLocality { containingDeclarationSymbol }
 
+/**
+ * Resolves the locality required for a value parameter of a function upon its invocation.
+ */
 context(context: CheckerContext)
 fun FirValueParameter.resolveRequiredLocality(): Locality =
     returnTypeRef.resolveLocality { context.findClosestFunction() }
 
+/**
+ * Resolves the actual locality of a value parameter usage.
+ */
 fun FirValueParameter.resolveActualLocality(): Locality =
     returnTypeRef.resolveLocality { containingDeclarationSymbol }
 
+/**
+ * Resolves the invariant locality of a local property.
+ */
 context(context: CheckerContext)
 fun FirProperty.resolveLocality(): Locality =
     returnTypeRef.resolveLocality { resolveOwner() }

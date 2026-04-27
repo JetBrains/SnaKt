@@ -14,6 +14,8 @@ import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirFunctionCallChec
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirReturnExpressionChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirThrowExpressionChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirVariableAssignmentChecker
+import org.jetbrains.kotlin.fir.analysis.checkers.type.FirResolvedTypeRefChecker
+import org.jetbrains.kotlin.fir.analysis.checkers.type.TypeCheckers
 import org.jetbrains.kotlin.fir.analysis.extensions.FirAdditionalCheckersExtension
 
 class LocalityAdditionalCheckers(session: FirSession) : FirAdditionalCheckersExtension(session) {
@@ -43,5 +45,10 @@ class LocalityAdditionalCheckers(session: FirSession) : FirAdditionalCheckersExt
 
         override val throwExpressionCheckers: Set<FirThrowExpressionChecker>
             get() = setOf(LocalityThrowChecker)
+    }
+
+    override val typeCheckers: TypeCheckers = object : TypeCheckers() {
+        override val resolvedTypeRefCheckers: Set<FirResolvedTypeRefChecker>
+            get() = setOf(LocalityAttributeChecker)
     }
 }

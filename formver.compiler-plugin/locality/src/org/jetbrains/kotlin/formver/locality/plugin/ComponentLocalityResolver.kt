@@ -16,13 +16,12 @@ import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
-import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 
 /**
- * Resolver for the locality of a single path component, i.e. a `this` reference or a property access.
+ * Resolver for the locality of a single path component i.e. a `this` reference or a property access.
  */
-object ComponentLocalityResolver : FirVisitor<Locality?, CheckerContext>() {
+private object ComponentLocalityResolver : FirVisitor<Locality?, CheckerContext>() {
     override fun visitElement(element: FirElement, data: CheckerContext): Locality? {
         return null
     }
@@ -54,7 +53,9 @@ object ComponentLocalityResolver : FirVisitor<Locality?, CheckerContext>() {
                         declaration.resolveActualLocality()
 
                     is FirProperty ->
-                        with(data) { declaration.resolveActualLocality() }
+                        with(data) {
+                            declaration.resolveLocality()
+                        }
 
                     else -> null
                 }
@@ -64,11 +65,9 @@ object ComponentLocalityResolver : FirVisitor<Locality?, CheckerContext>() {
     }
 }
 
-context(context: CheckerContext)
-private fun FirProperty.resolveActualLocality(): Locality =
-    if (returnTypeRef.coneType.attributes.locality == null) Global
-    else Local(resolveOwner())
-
+/**
+ * Returns the `this` component's locality if available, otherwise returns `null`.
+ */
 context(context: CheckerContext)
 fun FirExpression.resolveComponentLocality(): Locality? {
     return accept(ComponentLocalityResolver, context)

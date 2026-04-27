@@ -521,6 +521,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("invalid.kt")
+    public void testInvalid() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/invalid.kt");
+    }
+
+    @Test
     @TestMetadata("merge_unknown_owner.kt")
     public void testMerge_unknown_owner() {
       runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/merge_unknown_owner.kt");

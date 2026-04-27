@@ -38,17 +38,24 @@ class GraphLocalityResolver(
         flow.collapse()
     }
 
+    /**
+     * Resolve the [LocalityInfo] of a [graph], caching the result on the given [graph].
+     */
     context(context: CheckerContext)
-    fun resolveInfoOf(graph: ControlFlowGraph): LocalityInfo =
+    fun resolveLocalityInfoOf(graph: ControlFlowGraph): LocalityInfo =
         cache.getValue(graph, context)
 }
 
-val FirSession.localityInfoResolver: GraphLocalityResolver by FirSession.sessionComponentAccessor<GraphLocalityResolver>()
+val FirSession.graphLocalityResolver: GraphLocalityResolver
+        by FirSession.sessionComponentAccessor<GraphLocalityResolver>()
 
 context(context: CheckerContext)
-fun ControlFlowGraph.resolveLocalityInfo(): LocalityInfo =
-    context.session.localityInfoResolver.resolveInfoOf(this)
+fun ControlFlowGraph.resolveLocality(): LocalityInfo =
+    context.session.graphLocalityResolver.resolveLocalityInfoOf(this)
 
+/**
+ * Resolves the locality of `this` expression based on the resolved locality info of the enclosing declaration.
+ */
 @OptIn(SymbolInternals::class)
 context(context: CheckerContext)
 fun FirExpression.resolveLocality(): Locality {
@@ -62,7 +69,7 @@ fun FirExpression.resolveLocality(): Locality {
         val declaration = symbol?.fir
         val graph = (declaration as? FirControlFlowGraphOwner)?.controlFlowGraphReference?.controlFlowGraph
             ?: return Global
-        val facts = graph.resolveLocalityInfo()
+        val facts = graph.resolveLocality()
 
         return facts[expression] ?: Global
     }

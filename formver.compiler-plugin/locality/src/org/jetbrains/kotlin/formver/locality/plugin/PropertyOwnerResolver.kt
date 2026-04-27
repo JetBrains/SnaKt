@@ -17,6 +17,9 @@ import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 
+/**
+ * Resolves the owner of a local property.
+ */
 class PropertyOwnerResolver(
     session: FirSession
 ) : FirExtensionSessionComponent(session) {
@@ -53,8 +56,14 @@ class PropertyOwnerResolver(
         cache.getValue(property, context)
 }
 
-val FirSession.propertyOwnerResolver: PropertyOwnerResolver by FirSession.sessionComponentAccessor<PropertyOwnerResolver>()
+val FirSession.propertyOwnerResolver: PropertyOwnerResolver
+        by FirSession.sessionComponentAccessor<PropertyOwnerResolver>()
 
+/**
+ * Resolves the owning declaration of `this` local property.
+ *
+ * Returns `null` if the owner cannot be resolved.
+ */
 context(context: CheckerContext)
 fun FirProperty.resolveOwner(): FirBasedSymbol<*>? =
     context.session.propertyOwnerResolver.resolveOwnerOf(this)
