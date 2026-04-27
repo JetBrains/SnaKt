@@ -11,11 +11,9 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.UserFieldEmbedding
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.DispatchReceiverName
-import org.jetbrains.kotlin.formver.core.names.SimpleKotlinName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
 import org.jetbrains.kotlin.formver.viper.ast.Predicate
-import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.utils.addIfNotNull
 
 internal class ClassPredicateBuilder private constructor(private val details: ClassEmbeddingDetails) {
@@ -47,16 +45,6 @@ internal class ClassPredicateBuilder private constructor(private val details: Cl
                 builder.action()
                 body.addAll(builder.toAssertionsList())
             }
-
-    fun forUserFieldNamed(name: String, action: FieldAssertionsBuilder.() -> Unit) {
-        when (val field = details.fields[SimpleKotlinName(Name.identifier(name))]) {
-            is UserFieldEmbedding -> {
-                val builder = FieldAssertionsBuilder(subject, field)
-                builder.action()
-                body.addAll(builder.toAssertionsList())
-            }
-        }
-    }
 
     fun forEachSuperType(action: TypeInvariantsBuilder.() -> Unit) =
         details.classSuperTypes.forEach { type ->

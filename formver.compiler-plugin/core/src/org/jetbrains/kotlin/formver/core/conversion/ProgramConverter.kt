@@ -267,12 +267,13 @@ class ProgramConverter(
             }
         }.toMap()
 
-        fields.forEach { (fieldName, embedding) ->
-            typeResolver.addFieldToClass(className, fieldName, embedding)
+        fields.forEach { (name, embedding) ->
+            typeResolver.addFieldToClass(name, embedding)
         }
 
 
         val details = typeResolver.details(className)
+
         details.fields.values.forEach {
             havocMethods.putIfAbsent(
                 it.type.havocMethodName,
@@ -317,8 +318,9 @@ class ProgramConverter(
         val constructedClass = embedClass(constructedClassSymbol)
         val details = typeResolver.details(constructedClass.name)
         return constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
+            val propertyName = propertySymbol.embedMemberPropertyName().second
             propertySymbol.withConstructorParam { paramSymbol ->
-                details.findField(callableId!!.embedUnscopedPropertyName())?.let { paramSymbol to it }
+                details.findField(propertyName)?.let { paramSymbol to it }
             }
         }.toMap()
     }
@@ -500,9 +502,9 @@ class ProgramConverter(
     private fun processBackingField(
         symbol: FirPropertySymbol,
         classSymbol: FirRegularClassSymbol,
-    ): Pair<SimpleKotlinName, FieldEmbedding>? {
+    ): Pair<ClassPropertyPair, FieldEmbedding>? {
+        val name = symbol.embedMemberPropertyName()
         val embedding = embedClass(classSymbol)
-        val unscopedName = symbol.callableId!!.embedUnscopedPropertyName()
         val scopedName = symbol.callableId!!.embedMemberBackingFieldName(
             Visibilities.isPrivate(symbol.visibility)
         )
@@ -519,7 +521,7 @@ class ProgramConverter(
                 symbol.isManual(session)
             )
         }
-        return backingField?.let { unscopedName to it }
+        return backingField?.let { name to it }
     }
 
     /**
@@ -531,10 +533,10 @@ class ProgramConverter(
      * Null value of parameter [embedding] means that there is no class details corresponding to this type (e.g. it is primitive).
      */
     private fun processProperty(symbol: FirPropertySymbol, embedding: ClassEmbeddingDetails?) {
-        val unscopedName = symbol.callableId!!.embedUnscopedPropertyName()
-        properties[symbol.embedMemberPropertyName()] =
+        val name = symbol.embedMemberPropertyName()
+        properties[name] =
             SpecialProperties.byCallableId[symbol.callableId] ?: embedding.run {
-                val backingField = embedding?.findField(unscopedName)
+                val backingField = embedding?.findField(name.second)
                 backingField?.let { fields.add(it) }
                 embedProperty(symbol, backingField)
             }

@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 
 class ClassEmbeddingDetails(
     val type: ClassTypeEmbedding,
-    val fields: Map<SymbolicName, FieldEmbedding>,
+    val fields: Map<ScopedName, FieldEmbedding>,
     val classSuperTypes: List<ClassTypeEmbedding>,
     val isInterface: Boolean
 ) : TypeInvariantHolder {

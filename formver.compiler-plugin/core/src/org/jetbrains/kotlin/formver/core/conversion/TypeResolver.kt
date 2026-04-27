@@ -18,7 +18,7 @@ class TypeResolver {
 
     private val embeddingDetails = mutableMapOf<SymbolicName, ClassEmbeddingDetails>()
 
-    private val classToFields = mutableMapOf<SymbolicName, MutableSet<Pair<SymbolicName, FieldEmbedding>>>()
+    private val classToFields = mutableMapOf<ClassPropertyPair, FieldEmbedding>()
 
     fun addSubtypeRelation(subtype: SymbolicName, supertype: SymbolicName) =
         superTypes.getOrPut(subtype) {
@@ -26,10 +26,10 @@ class TypeResolver {
         }.add(supertype)
 
 
-    fun addFieldToClass(klass: SymbolicName, fieldName: SymbolicName, fieldEmbedding: FieldEmbedding) {
-        classToFields.getOrPut(klass) {
-            mutableSetOf()
-        }.add(fieldName to fieldEmbedding)
+    fun addFieldToClass(name: ClassPropertyPair, fieldEmbedding: FieldEmbedding) {
+        classToFields.getOrPut(name) {
+            fieldEmbedding
+        }
     }
 
     fun register(name: SymbolicName, typeEmbedding: ClassTypeEmbedding, isInterface: Boolean) = when (isInterface) {
@@ -52,11 +52,10 @@ class TypeResolver {
     fun allDetails(): List<ClassEmbeddingDetails> = embedding.values.map { details(it.name) }
     fun details(name: SymbolicName): ClassEmbeddingDetails = embeddingDetails.getOrPut(name)
     {
-        val fields = classToFields[name] ?: emptySet()
-        val fieldMapping = fields.associate { it.first to it.second }
+        val fields = classToFields.filterKeys { it.first == name }.map { it.key.second to it.value }.toMap()
         ClassEmbeddingDetails(
             type = embedding[name]!!,
-            fields = fieldMapping,
+            fields = fields,
             classSuperTypes = lookupSuperTypes(name),
             isInterface = interfaceEmbedding.containsKey(name)
         )
