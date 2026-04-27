@@ -18,7 +18,7 @@ import org.jetbrains.kotlin.fir.types.coneType
 private inline fun FirTypeRef.resolveLocality(findOwner: () -> FirBasedSymbol<*>?): Locality {
     if (coneType.attributes.locality == null) return Global
 
-    return Local(findOwner() ?: UnknownSymbol)
+    return Local(findOwner())
 }
 
 private fun CheckerContext.findClosestFunction(): FirBasedSymbol<*>? =
