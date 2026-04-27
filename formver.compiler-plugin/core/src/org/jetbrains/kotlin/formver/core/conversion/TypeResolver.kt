@@ -126,4 +126,27 @@ class TypeResolver {
 
     fun allClassAccessPredicates(): List<Predicate> =
         allEmbeddings().flatMap { listOf(sharedPredicate(it), uniquePredicate(it)) }
+
+
+    fun isInheritorOfCollectionTypeNamed(pretypeEmbedding: PretypeEmbedding, name: String): Boolean {
+        val classEmbedding = pretypeEmbedding as? ClassTypeEmbedding ?: return false
+        return classEmbedding.isCollectionTypeNamed("Collection") || lookupSuperTypes(classEmbedding.name).any {
+            isInheritorOfCollectionTypeNamed(it, name)
+        }
+    }
+
+    fun isCollectionInheritor(pretype: PretypeEmbedding) = isInheritorOfCollectionTypeNamed(pretype, "Collection")
+
+    fun PretypeEmbedding.isCollectionTypeNamed(name: String): Boolean {
+        val classEmbedding = this as? ClassTypeEmbedding ?: return false
+        NameMatcher.matchGlobalScope(classEmbedding.name) {
+            ifInCollectionsPkg {
+                ifClassName(name) {
+                    return true
+                }
+            }
+            return false
+        }
+    }
+
 }

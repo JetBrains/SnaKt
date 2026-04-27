@@ -15,7 +15,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.properties.ListSizeFieldEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.isInheritorOfCollectionTypeNamed
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
 
 private fun VariableEmbedding.sameSize(): ExpEmbedding =
@@ -34,7 +33,12 @@ sealed interface StdLibReceiverInterface {
 sealed interface PresentInterface : StdLibReceiverInterface {
     val interfaceName: String
     override fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean =
-        function.callableType.dispatchReceiverType?.pretype?.isInheritorOfCollectionTypeNamed(interfaceName, ctx)
+        function.callableType.dispatchReceiverType?.pretype?.let {
+            ctx.isInheritorOfCollectionTypeNamed(
+                it,
+                interfaceName
+            )
+        }
             ?: false
 }
 

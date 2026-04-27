@@ -10,7 +10,6 @@ import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
-import org.jetbrains.kotlin.formver.core.names.NameMatcher
 import org.jetbrains.kotlin.formver.core.names.PredicateName
 import org.jetbrains.kotlin.formver.core.names.ScopedName
 import org.jetbrains.kotlin.formver.core.names.asScope
@@ -37,26 +36,6 @@ data class ClassTypeEmbedding(override val name: ScopedName) : PretypeEmbedding 
         PredicateAccessTypeInvariantEmbedding(uniquePredicateName, PermExp.FullPerm())
 }
 
-fun PretypeEmbedding.isInheritorOfCollectionTypeNamed(name: String, ctx: TypeResolver): Boolean {
-    val classEmbedding = this as? ClassTypeEmbedding ?: return false
-    return isCollectionTypeNamed("Collection") || ctx.lookupSuperTypes(this.name).any {
-        it.isInheritorOfCollectionTypeNamed(name, ctx)
-    }
-}
-
-fun PretypeEmbedding.isCollectionInheritor(ctx: TypeResolver) = isInheritorOfCollectionTypeNamed("Collection", ctx)
-
-fun PretypeEmbedding.isCollectionTypeNamed(name: String): Boolean {
-    val classEmbedding = this as? ClassTypeEmbedding ?: return false
-    NameMatcher.Companion.matchGlobalScope(classEmbedding.name) {
-        ifInCollectionsPkg {
-            ifClassName(name) {
-                return true
-            }
-        }
-        return false
-    }
-}
 
 fun ClassTypeEmbedding.embedClassTypeFunc(): DomainFunc = RuntimeTypeDomain.classTypeFunc(name)
 
