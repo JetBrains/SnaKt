@@ -13,7 +13,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirVariableAssignme
 import org.jetbrains.kotlin.fir.expressions.FirVariableAssignment
 import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOLATION
 
-object LocalityVariableAssignmentChecker : FirVariableAssignmentChecker(MppCheckerKind.Common) {
+object VariableAssignmentLocalityChecker : FirVariableAssignmentChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirVariableAssignment) {
         val requiredLocality = expression.lValue.resolveLocality()

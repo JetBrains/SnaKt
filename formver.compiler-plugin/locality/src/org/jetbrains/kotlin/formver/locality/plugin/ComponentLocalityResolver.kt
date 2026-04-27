@@ -54,7 +54,7 @@ private object ComponentLocalityResolver : FirVisitor<Locality?, CheckerContext>
 
                     is FirProperty ->
                         with(data) {
-                            declaration.resolveLocality()
+                            declaration.resolveInvariantLocality()
                         }
 
                     else -> null
@@ -66,7 +66,7 @@ private object ComponentLocalityResolver : FirVisitor<Locality?, CheckerContext>
 }
 
 /**
- * Returns the `this` component's locality if available, otherwise returns `null`.
+ * Returns `this` component's locality if available, otherwise returns `null`.
  */
 context(context: CheckerContext)
 fun FirExpression.resolveComponentLocality(): Locality? {

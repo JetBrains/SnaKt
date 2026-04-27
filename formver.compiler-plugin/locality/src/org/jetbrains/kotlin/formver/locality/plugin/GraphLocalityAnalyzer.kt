@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.locality.plugin
 
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentMapOf
+import org.jetbrains.kotlin.fir.analysis.cfa.util.ControlFlowInfo
 import org.jetbrains.kotlin.fir.analysis.cfa.util.PathAwareControlFlowGraphVisitor
 import org.jetbrains.kotlin.fir.analysis.cfa.util.merge
 import org.jetbrains.kotlin.fir.analysis.cfa.util.transformValues
@@ -33,12 +34,12 @@ typealias LocalityInfo = PersistentMap<FirExpression, Locality>
 /**
  * Contains locality information for every type of execution flow.
  */
-typealias LocalityFlow = PersistentMap<EdgeLabel, LocalityInfo>
+typealias PathAwareLocalityInfo = PersistentMap<EdgeLabel, LocalityInfo>
 
 /**
  * Merges the locality information for every type of execution flow.
  */
-fun LocalityFlow.collapse(): LocalityInfo =
+fun PathAwareLocalityInfo.collapse(): LocalityInfo =
     values.fold(persistentMapOf()) { result, info ->
         result.merge(info, Locality::union)
     }
@@ -67,8 +68,8 @@ class GraphLocalityAnalyzer(
 
     override fun visitNode(
         node: CFGNode<*>,
-        data: LocalityFlow
-    ): LocalityFlow {
+        data: PathAwareLocalityInfo
+    ): PathAwareLocalityInfo {
         val inheritsTailFact = node.inheritsTailFact()
 
         return data.transformValues { info ->
@@ -99,15 +100,15 @@ class GraphLocalityAnalyzer(
         }
     }
 
-    fun analyzeLocalityOf(graph: ControlFlowGraph): Map<CFGNode<*>, LocalityFlow> =
+    fun analyzeLocalityOf(graph: ControlFlowGraph): Map<CFGNode<*>, PathAwareLocalityInfo> =
         graph.traverseToFixedPoint(this)
 }
 
 /**
  * Analyzes the locality of each expression in `this` control flow graph.
  *
- * The result is a map between [CFGNode]s and the [LocalityFlow]s resulting after their execution.
+ * The result is a map between [CFGNode]s and the [PathAwareLocalityInfo]s resulting after their execution.
  */
 context(context: CheckerContext)
-fun ControlFlowGraph.analyzeLocality(): Map<CFGNode<*>, LocalityFlow> =
+fun ControlFlowGraph.analyzeLocality(): Map<CFGNode<*>, PathAwareLocalityInfo> =
     traverseToFixedPoint(GraphLocalityAnalyzer(context))
