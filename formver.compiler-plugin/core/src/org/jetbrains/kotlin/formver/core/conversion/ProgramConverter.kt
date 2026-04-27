@@ -39,7 +39,7 @@ import org.jetbrains.kotlin.utils.addToStdlib.ifFalse
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 
 
-typealias ClassPropertyPair = Pair<ScopedName, ScopedName>
+typealias ClassPropertyPair = Pair<ScopedName, PropertyKotlinName>
 
 /**
  * Tracks the top-level information about the program.

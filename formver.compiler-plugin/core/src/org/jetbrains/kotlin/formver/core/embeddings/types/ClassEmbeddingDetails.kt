@@ -8,15 +8,15 @@ package org.jetbrains.kotlin.formver.core.embeddings.types
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.names.PredicateName
+import org.jetbrains.kotlin.formver.core.names.PropertyKotlinName
 import org.jetbrains.kotlin.formver.core.names.ScopedName
 import org.jetbrains.kotlin.formver.core.names.asScope
-import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 
 class ClassEmbeddingDetails(
     val type: ClassTypeEmbedding,
-    val fields: Map<ScopedName, FieldEmbedding>,
+    val fields: Map<PropertyKotlinName, FieldEmbedding>,
     val classSuperTypes: List<ClassTypeEmbedding>,
     val isInterface: Boolean
 ) : TypeInvariantHolder {
@@ -66,9 +66,9 @@ class ClassEmbeddingDetails(
      * While in Kotlin only classes can have backing fields, and so searching interface supertypes is not strictly necessary,
      * due to the way we handle list size we need to search all types.
      */
-    fun findField(name: SymbolicName): FieldEmbedding? = fields[name]
+    fun findField(name: PropertyKotlinName): FieldEmbedding? = fields[name]
 
-    fun <R> flatMapFields(ctx: TypeResolver, action: (SymbolicName, FieldEmbedding) -> List<R>): List<R> =
+    fun <R> flatMapFields(ctx: TypeResolver, action: (PropertyKotlinName, FieldEmbedding) -> List<R>): List<R> =
         classSuperTypes.flatMap { ctx.details(it.name).flatMapFields(ctx, action) } + fields.flatMap { (name, field) ->
             action(
                 name, field
@@ -104,8 +104,8 @@ class ClassEmbeddingDetails(
         }
     }
 
-    fun <R> flatMapUniqueFields(ctx: TypeResolver, action: (SymbolicName, FieldEmbedding) -> List<R>): List<R> {
-        val seenFields = mutableSetOf<SymbolicName>()
+    fun <R> flatMapUniqueFields(ctx: TypeResolver, action: (PropertyKotlinName, FieldEmbedding) -> List<R>): List<R> {
+        val seenFields = mutableSetOf<PropertyKotlinName>()
         return flatMapFields(ctx) { name, field ->
             seenFields.add(name).ifTrue {
                 action(name, field)
