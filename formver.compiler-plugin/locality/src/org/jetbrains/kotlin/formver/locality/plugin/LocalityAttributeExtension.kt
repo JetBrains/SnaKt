@@ -10,21 +10,30 @@ import org.jetbrains.kotlin.fir.declarations.toAnnotationClassId
 import org.jetbrains.kotlin.fir.extensions.FirTypeAttributeExtension
 import org.jetbrains.kotlin.fir.expressions.FirAnnotation
 import org.jetbrains.kotlin.fir.types.ConeAttribute
-import org.jetbrains.kotlin.formver.core.annotationId
+import org.jetbrains.kotlin.name.ClassId
+import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.name.Name
 
-private val localityAnnotationId = annotationId("Borrowed")
+private val defaultAnnotationId =
+    ClassId(
+        FqName("org.jetbrains.kotlin.formver.plugin"),
+        Name.identifier("Borrowed")
+    )
 
 class LocalityAttributeExtension(
-    session: FirSession
+    session: FirSession,
+    private val annotationId: ClassId
 ) : FirTypeAttributeExtension(session) {
     companion object {
-        fun getFactory(): Factory {
-            return Factory { session -> LocalityAttributeExtension(session) }
+        fun getFactory(
+            annotationId: ClassId = defaultAnnotationId
+        ): Factory {
+            return Factory { session -> LocalityAttributeExtension(session, annotationId) }
         }
     }
 
     override fun extractAttributeFromAnnotation(annotation: FirAnnotation): ConeAttribute<*>? {
-        if (annotation.toAnnotationClassId(session) != localityAnnotationId) return null
+        if (annotation.toAnnotationClassId(session) != annotationId) return null
 
         return LocalityAttribute
     }
