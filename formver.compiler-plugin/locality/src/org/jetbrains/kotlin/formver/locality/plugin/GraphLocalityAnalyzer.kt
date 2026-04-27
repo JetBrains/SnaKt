@@ -25,18 +25,28 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.TryExpressionExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.TryMainBlockExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.TypeOperatorCallNode
 
+/**
+ * Contains locality information for each `FirExpression` in the control flow, normalized through [unwrapExpression].
+ */
 typealias LocalityInfo = PersistentMap<FirExpression, Locality>
 
+/**
+ * Contains locality information for every type of execution flow.
+ */
 typealias LocalityFlow = PersistentMap<EdgeLabel, LocalityInfo>
 
+/**
+ * Merges the locality information for every type of execution flow.
+ */
 fun LocalityFlow.collapse(): LocalityInfo =
     values.fold(persistentMapOf()) { result, info ->
-        result.merge(info) { x, y ->
-            x.union(y)
-        }
+        result.merge(info, Locality::union)
     }
 
-val TailExpression: FirExpression = buildExpressionStub()
+/**
+ * Stub expression for tracking the current tail locality.
+ */
+private val TailExpression: FirExpression = buildExpressionStub()
 
 private fun CFGNode<*>.inheritsTailFact(): Boolean {
     return (this is TailrecExitNodeMarker && this !is ExitSafeCallNode) ||
