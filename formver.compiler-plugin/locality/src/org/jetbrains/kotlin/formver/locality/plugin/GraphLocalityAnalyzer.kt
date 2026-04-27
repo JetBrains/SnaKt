@@ -110,4 +110,4 @@ class GraphLocalityAnalyzer(
  */
 context(context: CheckerContext)
 fun ControlFlowGraph.analyzeLocality(): Map<CFGNode<*>, PathAwareLocalityInfo> =
-    traverseToFixedPoint(GraphLocalityAnalyzer(context))
+    GraphLocalityAnalyzer(context).analyzeLocalityOf(this)
