@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FunctionCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.MethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
-import org.jetbrains.kotlin.formver.core.names.ReturnVariableName
+import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
 import org.jetbrains.kotlin.formver.viper.ast.Function
 import org.jetbrains.kotlin.formver.viper.ast.Method
 
@@ -32,7 +32,7 @@ class NonInlineNamedFunction(val signature: FullNamedFunctionSignature, val hasP
     override fun toViperMethodHeader(): Method =
         signature.toViperMethod(
             null,
-            PlaceholderVariableEmbedding(ReturnVariableName(0), signature.callableType.returnType)
+            PlaceholderVariableEmbedding(PlaceholderReturnVariableName, signature.callableType.returnType)
         )
 
     override fun toViperFunctionHeader(): Function =

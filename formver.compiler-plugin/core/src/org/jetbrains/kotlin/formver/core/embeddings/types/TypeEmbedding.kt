@@ -15,6 +15,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.TreeView
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.HavocName
+import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
 import org.jetbrains.kotlin.formver.core.names.TypeName
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
@@ -52,14 +53,14 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
                 postcondition {
                     it.fillHole(
                         PlaceholderVariableEmbedding(
-                            result.name,
+                            PlaceholderReturnVariableName,
                             this@TypeEmbedding.pretype.asTypeEmbedding()
                         )
                     ).pureToViper(toBuiltin = true)
                 }
             }
             postcondition {
-                RuntimeTypeDomain.typeOf(Exp.LocalVar(result.name, Type.Ref))
+                RuntimeTypeDomain.typeOf(Exp.LocalVar(PlaceholderReturnVariableName, Type.Ref))
                     .subtype(this@TypeEmbedding.runtimeType)
             }
         }

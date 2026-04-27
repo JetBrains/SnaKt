@@ -13,7 +13,11 @@ abstract class ViperKeyword(keyword: String) : AnyName {
     override val children: List<AnyName> = emptyList()
 }
 
-object ViperResult : ViperKeyword("result"), SymbolicName
+object FunctionResultVariableName : ViperKeyword("result"), SymbolicName {
+    override val inViper: Boolean = true
+    override val candidates: List<CandidateName> = nameOnlyCandidates("result")
+    override val children: List<AnyName> = emptyList()
+}
 
 object ViperKeywords {
     val keywords = setOf(
@@ -57,6 +61,6 @@ object ViperKeywords {
         "write",
         "epsilon",
     ).map { object : ViperKeyword(it) {} } + listOf(
-        ViperResult
+        FunctionResultVariableName
     )
 }
