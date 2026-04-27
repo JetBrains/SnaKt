@@ -8,23 +8,26 @@ package org.jetbrains.kotlin.formver.locality.plugin
 import org.jetbrains.kotlin.diagnostics.rendering.Renderer
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
+import org.jetbrains.kotlin.formver.locality.plugin.Locality.Global
+import org.jetbrains.kotlin.formver.locality.plugin.Locality.Local
 
 /**
  * Symbolic locality value.
  */
-sealed interface Locality
+sealed interface Locality {
 
-/**
- * Symbolic locality value for a global reference.
- */
-data object Global : Locality
+    /**
+     * Symbolic locality value for a global reference.
+     */
+    data object Global : Locality
 
-/**
- * Symbolic locality value for a reference that is local to the declaration referred to by `owner`.
- */
-data class Local(
-    val owner: FirBasedSymbol<*>?
-) : Locality
+    /**
+     * Symbolic locality value for a reference that is local to the declaration referred to by `owner`.
+     */
+    data class Local(
+        val owner: FirBasedSymbol<*>?
+    ) : Locality
+}
 
 /**
  * Returns `true` if `this` locality accepts [other], `false` otherwise.
