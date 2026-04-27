@@ -19,6 +19,9 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 
+/**
+ * Resolver for the locality of a single path component, i.e. a `this` reference or a property access.
+ */
 object ComponentLocalityResolver : FirVisitor<Locality?, CheckerContext>() {
     override fun visitElement(element: FirElement, data: CheckerContext): Locality? {
         return null
