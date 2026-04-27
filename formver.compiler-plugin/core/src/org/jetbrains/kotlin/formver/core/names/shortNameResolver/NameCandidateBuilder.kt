@@ -2,42 +2,14 @@ package org.jetbrains.kotlin.formver.core.names.shortNameResolver
 
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.viper.AnyName
-
-/**
- * Represents a part of a candidate name.
- */
-sealed interface NamePart {
-
-    /**
-     * A simple string name part.
-     */
-    data class Basic(val name: String) : NamePart
-
-    /**
-     * A name part that depends on another [AnyName].
-     */
-    data class Dependent(val name: AnyName) : NamePart
-
-    /**
-     * A separator between name parts.
-     * Do not use this. Use [CandidateNameBuilder] instead.
-     */
-    object Separator : NamePart
-}
-
-/**
- * A candidate name composed of multiple [NamePart]s.
- * A candidate name should always be created using [CandidateNameBuilder].
- */
-class CandidateName(val parts: List<NamePart>) {
-    fun moveableParts(): List<NamePart.Dependent> = parts.filterIsInstance<NamePart.Dependent>()
-}
+import org.jetbrains.kotlin.formver.viper.CandidateName
+import org.jetbrains.kotlin.formver.viper.NamePart
 
 
 /**
  * A builder for a list of [CandidateName]s.
  */
-class CandidatesBuilder() {
+class CandidatesBuilder {
     private val candidates = mutableListOf<CandidateName>()
 
     /**

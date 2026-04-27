@@ -2,10 +2,7 @@ package org.jetbrains.kotlin.formver.core.names.shortNameResolver
 
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.names.*
-import org.jetbrains.kotlin.formver.viper.AnyName
-import org.jetbrains.kotlin.formver.viper.NameResolver
-import org.jetbrains.kotlin.formver.viper.SEPARATOR
-import org.jetbrains.kotlin.formver.viper.SymbolicName
+import org.jetbrains.kotlin.formver.viper.*
 import org.jetbrains.kotlin.utils.addToStdlib.ifNotEmpty
 import kotlin.math.absoluteValue
 
