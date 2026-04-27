@@ -17,7 +17,7 @@ object ReturnLocalityChecker : FirReturnExpressionChecker(MppCheckerKind.Common)
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirReturnExpression) {
         val actualLocality = expression.result.resolveLocality()
-        val requiredLocality = Global
+        val requiredLocality = Locality.Global
 
         if (requiredLocality.accepts(actualLocality)) return
 
