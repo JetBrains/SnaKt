@@ -543,6 +543,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     public void testReturn_local() {
       runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/return_local.kt");
     }
+
+    @Test
+    @TestMetadata("throw_local.kt")
+    public void testThrow_local() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/throw_local.kt");
+    }
   }
 
   @Nested
