@@ -6,11 +6,22 @@
 package org.jetbrains.kotlin.formver.locality.plugin
 
 import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
+import org.jetbrains.kotlin.name.ClassId
+import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.name.Name
 
-object LocalityExtensionRegistrar : FirExtensionRegistrar() {
+private val defaultLocalityAnnotationId =
+    ClassId(
+        FqName("org.jetbrains.kotlin.formver.plugin"),
+        Name.identifier("Borrowed")
+    )
+
+class LocalityExtensionRegistrar(
+    private val localityAnnotationId: ClassId = defaultLocalityAnnotationId
+) : FirExtensionRegistrar() {
     override fun ExtensionRegistrarContext.configurePlugin() {
         registerDiagnosticContainers(LocalityErrors)
-        +LocalityAttributeExtension.getFactory()
+        +LocalityAttributeExtension.getFactory(localityAnnotationId)
         +PropertyOwnerResolver.getFactory()
         +GraphLocalityInfoResolver.getFactory()
         +LocalityAdditionalCheckers.getFactory()

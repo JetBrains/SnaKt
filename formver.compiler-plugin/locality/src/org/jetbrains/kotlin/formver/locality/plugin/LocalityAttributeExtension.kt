@@ -11,14 +11,6 @@ import org.jetbrains.kotlin.fir.extensions.FirTypeAttributeExtension
 import org.jetbrains.kotlin.fir.expressions.FirAnnotation
 import org.jetbrains.kotlin.fir.types.ConeAttribute
 import org.jetbrains.kotlin.name.ClassId
-import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.name.Name
-
-private val defaultAnnotationId =
-    ClassId(
-        FqName("org.jetbrains.kotlin.formver.plugin"),
-        Name.identifier("Borrowed")
-    )
 
 class LocalityAttributeExtension(
     session: FirSession,
@@ -26,7 +18,7 @@ class LocalityAttributeExtension(
 ) : FirTypeAttributeExtension(session) {
     companion object {
         fun getFactory(
-            annotationId: ClassId = defaultAnnotationId
+            annotationId: ClassId
         ): Factory {
             return Factory { session -> LocalityAttributeExtension(session, annotationId) }
         }

@@ -49,7 +49,7 @@ class FormalVerificationPluginComponentRegistrar : CompilerPluginRegistrar() {
         )
         FirExtensionRegistrarAdapter.registerExtension(FormalVerificationPluginExtensionRegistrar(config))
         if (config.checkLocality) {
-            FirExtensionRegistrarAdapter.registerExtension(LocalityExtensionRegistrar)
+            FirExtensionRegistrarAdapter.registerExtension(LocalityExtensionRegistrar())
         }
     }
 }
