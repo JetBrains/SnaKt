@@ -12,8 +12,6 @@ class TypeResolver {
      */
     private val classEmbedding = mutableMapOf<SymbolicName, ClassTypeEmbedding>()
     private val interfaceEmbedding = mutableMapOf<SymbolicName, ClassTypeEmbedding>()
-    private val embedding
-        get() = classEmbedding + interfaceEmbedding
 
 
     /**
@@ -36,12 +34,10 @@ class TypeResolver {
         false -> classEmbedding.putIfAbsent(typeEmbedding.name, typeEmbedding)
     }
 
-    fun isRegistered(name: SymbolicName) = embedding.containsKey(name)
 
+    fun embeddings() = classEmbedding.values.toList() + interfaceEmbedding.values.toList()
 
-    fun embeddings() = embedding.values.toList()
-
-    fun lookupEmbedding(name: SymbolicName) = embedding[name]
+    fun lookupEmbedding(name: SymbolicName) = classEmbedding[name] ?: interfaceEmbedding[name]
 
     /**
      * Extends the subtype relation with [subtype] <: [supertype]
@@ -55,7 +51,8 @@ class TypeResolver {
      * Returns the set of super types of a given class or interface.
      * These are only the direct super types, transitive closure is not included.
      */
-    fun lookupSuperTypes(name: SymbolicName) = superTypes.getOrDefault(name, emptySet()).mapNotNull { embedding[it] }
+    fun lookupSuperTypes(name: SymbolicName) =
+        superTypes.getOrDefault(name, emptySet()).mapNotNull { lookupEmbedding(it) }
 
     /**
      * Adds a field to the class.
