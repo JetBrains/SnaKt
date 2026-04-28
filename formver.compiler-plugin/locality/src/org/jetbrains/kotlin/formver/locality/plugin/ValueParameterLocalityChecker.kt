@@ -17,8 +17,8 @@ object ValueParameterLocalityChecker : FirValueParameterChecker(MppCheckerKind.C
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(declaration: FirValueParameter) {
         val defaultValue = declaration.defaultValue ?: return
-        val actualLocality = defaultValue.resolveLocality()
         val requiredLocality = declaration.resolveRequiredLocality()
+        val actualLocality = defaultValue.resolveLocality()
 
         if (requiredLocality.accepts(actualLocality)) return
 
