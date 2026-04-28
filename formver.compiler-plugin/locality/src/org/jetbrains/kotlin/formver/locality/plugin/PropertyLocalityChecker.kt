@@ -17,8 +17,8 @@ object PropertyLocalityChecker : FirPropertyChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(declaration: FirProperty) {
         val initializer = declaration.initializer ?: return
-        val actualLocality = initializer.resolveLocality()
         val requiredLocality = declaration.resolveInvariantLocality()
+        val actualLocality = initializer.resolveLocality()
 
         if (requiredLocality.accepts(actualLocality)) return
 

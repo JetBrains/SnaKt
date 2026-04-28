@@ -28,8 +28,8 @@ object FunctionCallLocalityChecker : FirFunctionCallChecker(MppCheckerKind.Commo
         val receiver = expression.extensionReceiver
 
         if (receiver != null && receiverDeclaration != null) {
-            val actualReceiverLocality = receiver.resolveLocality()
             val requiredReceiverLocality = receiverDeclaration.resolveRequiredLocality()
+            val actualReceiverLocality = receiver.resolveLocality()
 
             if (!requiredReceiverLocality.accepts(actualReceiverLocality)) {
                 reporter.reportOn(
@@ -46,8 +46,8 @@ object FunctionCallLocalityChecker : FirFunctionCallChecker(MppCheckerKind.Commo
             ?: return
 
         for ((argument, argumentDeclaration) in argumentMappings) {
-            val actualArgumentLocality = argument.resolveLocality()
             val requiredArgumentLocality = argumentDeclaration.resolveRequiredLocality()
+            val actualArgumentLocality = argument.resolveLocality()
 
             if (requiredArgumentLocality.accepts(actualArgumentLocality)) continue
 
