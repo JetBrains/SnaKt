@@ -515,6 +515,18 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("call.kt")
+    public void testCall() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/call.kt");
+    }
+
+    @Test
+    @TestMetadata("call_with_context.kt")
+    public void testCall_with_context() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/call_with_context.kt");
+    }
+
+    @Test
     @TestMetadata("default_argument.kt")
     public void testDefault_argument() {
       runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/default_argument.kt");
@@ -524,18 +536,6 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     @TestMetadata("invalid.kt")
     public void testInvalid() {
       runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/invalid.kt");
-    }
-
-    @Test
-    @TestMetadata("merge_unknown_owner.kt")
-    public void testMerge_unknown_owner() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/merge_unknown_owner.kt");
-    }
-
-    @Test
-    @TestMetadata("pass_local.kt")
-    public void testPass_local() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/pass_local.kt");
     }
 
     @Test

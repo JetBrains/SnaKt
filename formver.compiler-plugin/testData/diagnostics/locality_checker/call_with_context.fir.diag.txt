@@ -1,0 +1,1 @@
+/call_with_context.kt:(302,324): error: Argument locality mismatch: expected 'global', actual 'local(pass local as implicit global context argument)'.
