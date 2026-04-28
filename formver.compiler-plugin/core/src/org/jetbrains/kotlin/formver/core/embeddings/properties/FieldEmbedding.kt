@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.formver.core.embeddings.properties
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
+import org.jetbrains.kotlin.formver.core.conversion.SpecialField
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
@@ -16,7 +17,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
 import org.jetbrains.kotlin.formver.core.names.ScopedName
-import org.jetbrains.kotlin.formver.core.names.SpecialFieldName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Field
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
@@ -80,19 +80,16 @@ class UserFieldEmbedding(
 }
 
 
-object ListSizeFieldEmbedding : FieldEmbedding {
-    override val name = SpecialFieldName("size")
-    override val type = buildType { int() }
-    override val viperType = Type.Ref
-    override val accessPolicy = AccessPolicy.ALWAYS_WRITEABLE
-    override val includeInShortDump: Boolean = true
-    override fun extraAccessInvariantsForParameter(): List<TypeInvariantEmbedding> =
-        listOf(NonNegativeSizeTypeInvariantEmbedding)
-
-    object NonNegativeSizeTypeInvariantEmbedding : TypeInvariantEmbedding {
+val ListSizeFieldEmbedding: FieldEmbedding = SpecialField(
+    baseName = "size",
+    type = buildType { int() },
+    viperType = Type.Ref,
+    includeInShortDump = true,
+) { field ->
+    listOf(object : TypeInvariantEmbedding {
         override fun fillHole(exp: ExpEmbedding): ExpEmbedding =
-            OperatorExpEmbeddings.GeIntInt(FieldAccess(exp, ListSizeFieldEmbedding), IntLit(0))
-    }
+            OperatorExpEmbeddings.GeIntInt(FieldAccess(exp, field), IntLit(0))
+    })
 }
 
 fun ScopedName.specialEmbedding(embedding: ClassTypeEmbedding, ctx: TypeResolver): FieldEmbedding? =
