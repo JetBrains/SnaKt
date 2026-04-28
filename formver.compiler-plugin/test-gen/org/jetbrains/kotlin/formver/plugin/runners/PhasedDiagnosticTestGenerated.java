@@ -527,6 +527,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("call_with_vararg.kt")
+    public void testCall_with_vararg() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/call_with_vararg.kt");
+    }
+
+    @Test
     @TestMetadata("default_argument.kt")
     public void testDefault_argument() {
       runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/default_argument.kt");
