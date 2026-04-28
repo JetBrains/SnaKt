@@ -1,0 +1,5 @@
+/throw_local.kt:(204,205): error: Throw locality mismatch: expected 'global', actual 'local(throw local value explicitly)'.
+
+/throw_local.kt:(281,285): error: Throw locality mismatch: expected 'global', actual 'local(throw local receiver explicitly)'.
+
+/throw_local.kt:(375,376): error: Throw locality mismatch: expected 'global', actual 'local(throw local value from lambda)'.
