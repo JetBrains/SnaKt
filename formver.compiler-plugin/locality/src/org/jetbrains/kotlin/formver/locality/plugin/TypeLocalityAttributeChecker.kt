@@ -29,10 +29,8 @@ object TypeLocalityAttributeChecker : FirResolvedTypeRefChecker(MppCheckerKind.C
     override fun check(typeRef: FirResolvedTypeRef) {
         if (typeRef.coneType.attributes.locality == null) return
 
-        val source = typeRef.source ?: return
-
         if (context.isValidLocalityTarget()) return
 
-        reporter.reportOn(source, LocalityErrors.INVALID_LOCALITY_TYPE_TARGET)
+        reporter.reportOn(typeRef.source, LocalityErrors.INVALID_LOCALITY_TYPE_TARGET)
     }
 }
