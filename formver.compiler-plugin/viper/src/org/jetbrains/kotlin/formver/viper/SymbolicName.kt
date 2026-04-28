@@ -26,6 +26,7 @@ interface AnyName {
 
 /**
  * Represents a part of a candidate name.
+ * Don't build NamePart directly. Use [CandidateNameBuilder] instead.
  */
 sealed interface NamePart {
 
@@ -41,7 +42,6 @@ sealed interface NamePart {
 
     /**
      * A separator between name parts.
-     * Do not use this. Use [CandidateNameBuilder] instead.
      */
     object Separator : NamePart
 }

@@ -214,22 +214,47 @@ class ShortNameResolver : NameResolver {
 
     // START RENDER
 
-
+    /**
+     * Relations are stored as triples of the form (name, relation, name).
+     */
     internal enum class Relation {
 
-        /** scope SCOPE_OF scopedName **/
+        /**
+         * The following name
+         * ``scopedName = ScopedName(scope, _)``
+         * results in the relation
+         * ``scope SCOPE_OF scopedName``
+         **/
         SCOPE_OF,
 
-        /** name SCOPED_BY nameScoped **/
+        /**
+         * The following name
+         * ``scopedName = ScopedName(_, symbolicName)``
+         * results in the relation
+         * ``symbolicName SCOPE_OF scopedName``
+         **/
         SCOPED_BY,
 
-        /** Int TYPE_OF Function**/
+        /**
+         * This relation is used when a name is associated with a type.
+         * For example, the constructor name contains the function type name.
+         * functionType TYPE_OF constructorName
+         */
         TYPE_OF,
 
-        /** a IS_PART_OF (a,b) -> c **/
+        /**
+         * This relation is used when a name contains another name.
+         * For example, an SsaVariable is a numbered version of the initial variable name.
+         * initialVariable IS_PART_OF SsaVariable
+         **/
         IS_PART_OF,
 
-        /** name NAME_TYPE nameType **/
+        /**
+         * This relation is used when a name is associated with `NameType`.
+         * For example, the name of a backing field is associated with the NameType backing field
+         *
+         * NameType KIND_OF name
+         */
         KIND_OF,
     }
 
