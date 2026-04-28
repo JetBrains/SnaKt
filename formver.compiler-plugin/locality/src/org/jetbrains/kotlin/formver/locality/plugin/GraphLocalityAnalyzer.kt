@@ -49,6 +49,9 @@ fun PathAwareLocalityInfo.collapse(): LocalityInfo =
  */
 private val TailExpression: FirExpression = buildExpressionStub()
 
+/**
+ * Returns true if `this` node propagates the locality to the successor.
+ */
 private fun CFGNode<*>.inheritsTailFact(): Boolean {
     return (this is TailrecExitNodeMarker && this !is ExitSafeCallNode) ||
             this is TryExpressionExitNode ||
