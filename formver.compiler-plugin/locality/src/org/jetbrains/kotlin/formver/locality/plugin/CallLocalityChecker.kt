@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirCallChecker
 import org.jetbrains.kotlin.fir.expressions.FirCall
 import org.jetbrains.kotlin.fir.expressions.resolvedArgumentMapping
+import org.jetbrains.kotlin.fir.expressions.unwrapAndFlattenArgument
 import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOLATION
 
 object CallLocalityChecker : FirCallChecker(MppCheckerKind.Common) {
@@ -21,17 +22,21 @@ object CallLocalityChecker : FirCallChecker(MppCheckerKind.Common) {
 
         for ((argument, argumentDeclaration) in argumentMappings.orEmpty()) {
             val requiredLocality = argumentDeclaration.resolveRequiredLocality()
-            val actualLocality = argument.resolveLocality()
+            val effectiveArguments = argument.unwrapAndFlattenArgument(flattenArrays = false)
 
-            if (requiredLocality.accepts(actualLocality)) continue
+            for (effectiveArgument in effectiveArguments) {
+                val actualLocality = effectiveArgument.resolveLocality()
 
-            reporter.reportOn(
-                argument.source,
-                LOCALITY_VIOLATION,
-                "Argument",
-                requiredLocality,
-                actualLocality
-            )
+                if (requiredLocality.accepts(actualLocality)) continue
+
+                reporter.reportOn(
+                    effectiveArgument.source ?: argument.source,
+                    LOCALITY_VIOLATION,
+                    "Argument",
+                    requiredLocality,
+                    actualLocality
+                )
+            }
         }
     }
 }
