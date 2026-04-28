@@ -1,1 +1,5 @@
-/call_with_context.kt:(302,324): error: Argument locality mismatch: expected 'global', actual 'local(pass local as implicit global context argument)'.
+/call_with_context.kt:(493,515): error: Argument locality mismatch: expected 'global', actual 'local(pass local as implicit global context argument)'.
+
+/call_with_context.kt:(830,831): error: Receiver locality mismatch: expected 'global', actual 'local(pass local as shared extension property receiver)'.
+
+/call_with_context.kt:(961,982): error: Argument locality mismatch: expected 'global', actual 'local(pass local as implicit global property context argument)'.
