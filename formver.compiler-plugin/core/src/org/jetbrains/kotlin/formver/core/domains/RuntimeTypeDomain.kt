@@ -287,7 +287,7 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
         listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType)
     val nonNullableTypes: List<DomainFunc> = buildList {
         addAll(builtinTypes)
-        addAll(typeResolver.allEmbeddings().map { it.embedClassTypeFunc() })
+        addAll(typeResolver.embeddings().map { it.embedClassTypeFunc() })
     }.distinctBy { it.name }
     override val functions: List<DomainFunc> = nonNullableTypes + listOf(
         nullValue, unitValue, isSubtype, typeOf, nullable
@@ -404,7 +404,7 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
         allInjections.forEach {
             it.apply { injectionAxioms() }
         }
-        typeResolver.allEmbeddings().forEach { type ->
+        typeResolver.embeddings().forEach { type ->
             typeResolver.lookupSuperTypes(type.name).forEach { superType ->
                 axiom {
                     type.runtimeType subtype superType.runtimeType

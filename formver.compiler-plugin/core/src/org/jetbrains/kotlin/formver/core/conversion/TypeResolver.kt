@@ -1,76 +1,103 @@
 package org.jetbrains.kotlin.formver.core.conversion
 
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.ClassPredicateBuilder
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.TypeInvariantEmbedding
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
-import org.jetbrains.kotlin.formver.core.names.PropertyKotlinName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
-import org.jetbrains.kotlin.formver.viper.ast.PermExp
-import org.jetbrains.kotlin.formver.viper.ast.Predicate
 
 class TypeResolver {
-
+    /**
+     * Collection of all ClassTypeEmbeddings and InterfaceTypeEmbeddings
+     */
     private val classEmbedding = mutableMapOf<SymbolicName, ClassTypeEmbedding>()
-
     private val interfaceEmbedding = mutableMapOf<SymbolicName, ClassTypeEmbedding>()
-
     private val embedding
         get() = classEmbedding + interfaceEmbedding
 
+
+    /**
+     * Supertype relation. Key is a subtype, value is a set of supertypes.
+     * The transitive closure is not included.
+     */
     private val superTypes = mutableMapOf<SymbolicName, MutableSet<SymbolicName>>()
 
-    private val classToFields = mutableMapOf<ClassPropertyPair, FieldEmbedding>()
+    /**
+     * All the fields. Key is the pair of the class name and the field name.
+     */
+    private val fields = mutableMapOf<ClassPropertyPair, FieldEmbedding>()
 
+    /**
+     * Register a class or interface type embedding.
+     * This is needed to know which classes were already registered.
+     */
+    fun register(typeEmbedding: ClassTypeEmbedding, isInterface: Boolean) = when (isInterface) {
+        true -> interfaceEmbedding.putIfAbsent(typeEmbedding.name, typeEmbedding)
+        false -> classEmbedding.putIfAbsent(typeEmbedding.name, typeEmbedding)
+    }
+
+    fun isRegistered(name: SymbolicName) = embedding.containsKey(name)
+
+
+    fun embeddings() = embedding.values.toList()
+
+    fun lookupEmbedding(name: SymbolicName) = embedding[name]
+
+    /**
+     * Extends the subtype relation with [subtype] <: [supertype]
+     */
     fun addSubtypeRelation(subtype: SymbolicName, supertype: SymbolicName) = superTypes.getOrPut(subtype) {
         mutableSetOf()
     }.add(supertype)
 
 
+    /**
+     * Returns the set of super types of a given class or interface.
+     * These are only the direct super types, transitive closure is not included.
+     */
+    fun lookupSuperTypes(name: SymbolicName) = superTypes.getOrDefault(name, emptySet()).mapNotNull { embedding[it] }
+
+    /**
+     * Adds a field to the class.
+     */
     fun addFieldToClass(name: ClassPropertyPair, fieldEmbedding: FieldEmbedding) {
-        classToFields.getOrPut(name) {
+        fields.getOrPut(name) {
             fieldEmbedding
         }
     }
 
-    fun register(name: SymbolicName, typeEmbedding: ClassTypeEmbedding, isInterface: Boolean) = when (isInterface) {
-        true -> interfaceEmbedding.putIfAbsent(name, typeEmbedding)
-        false -> classEmbedding.putIfAbsent(name, typeEmbedding)
-    }
+    fun fields() = fields.map { it.value }.toList()
 
-    fun lookupSuperTypes(name: SymbolicName) = superTypes.getOrDefault(name, emptySet()).mapNotNull { embedding[it] }
-    fun lookupClassType(name: SymbolicName) = embedding[name]
-    fun lookupField(name: ClassPropertyPair) = classToFields[name]
-    fun lookupClassFields(name: SymbolicName) = classToFields.filterKeys { it.first == name }.values.toList()
-    fun lookupClassFieldsWithNames(name: SymbolicName) =
-        classToFields.filterKeys { it.first == name }.map { Pair(it.key.second, it.value) }
+    /**
+     * Returns the field embedding for a given [ClassPropertyPair]
+     */
+    fun lookupField(name: ClassPropertyPair) = fields[name]
+
+    /**
+     * Returns all the fields belonging directly to a class.
+     */
+    fun lookupClassFields(name: SymbolicName) = fields.filterKeys { it.first == name }.values.toList()
 
 
-    fun embedding(name: SymbolicName) = embedding[name]
-    fun allEmbeddings() = embedding.values
-
-    fun isRegistered(name: SymbolicName) = embedding.containsKey(name)
-
-    private fun collectFields(className: SymbolicName): Set<Pair<PropertyKotlinName, FieldEmbedding>> {
-        return lookupSuperTypes(className).fold(lookupClassFieldsWithNames(className).toSet()) { acc, type ->
+    /**
+     * Collects all the fields belonging to a class and its super types.
+     * They are unique with regard to their name.
+     */
+    private fun collectFields(className: SymbolicName): List<FieldEmbedding> {
+        return lookupSuperTypes(className).fold(lookupClassFields(className)) { acc, type ->
             acc + collectFields(type.name)
-        }
+        }.distinctBy { it.name }
     }
 
     fun <R> flatMapUniqueFields(
         className: SymbolicName,
-        action: (PropertyKotlinName, FieldEmbedding) -> List<R>
-    ): List<R> = collectFields(className).flatMap { action(it.first, it.second) }
+        action: (FieldEmbedding) -> List<R>
+    ): List<R> = collectFields(className).flatMap { action(it) }
 
 
-    fun accessInvariantsOfClass(className: SymbolicName): List<TypeInvariantEmbedding> =
-        flatMapUniqueFields(className) { _, field ->
-            field.accessInvariantsForParameter()
-        }
-
-
+    /**
+     * Returns the sequence of class types that are between the [typeEmbedding] and the [field].
+     */
     fun hierarchyPathTo(
         typeEmbedding: PretypeEmbedding,
         field: FieldEmbedding
@@ -89,50 +116,12 @@ class TypeResolver {
         }
     }
 
-    fun sharedPredicate(classType: ClassTypeEmbedding): Predicate =
-        ClassPredicateBuilder.build(classType.name, classType.sharedPredicateName, this) {
-            forEachField {
-                if (isAlwaysReadable) {
-                    addAccessPermissions(PermExp.WildcardPerm())
-                    forType {
-                        addAccessToSharedPredicate(this@TypeResolver)
-                        includeSubTypeInvariants()
-                    }
-                }
-            }
-            forEachSuperType {
-                addAccessToSharedPredicate(this@TypeResolver)
-            }
-        }
-
-    fun uniquePredicate(classType: ClassTypeEmbedding): Predicate =
-        ClassPredicateBuilder.build(classType.name, classType.uniquePredicateName, this) {
-            forEachField {
-                if (isAlwaysReadable) {
-                    addAccessPermissions(PermExp.WildcardPerm())
-                } else {
-                    addAccessPermissions(PermExp.FullPerm())
-                }
-                forType {
-                    addAccessToSharedPredicate(this@TypeResolver)
-                    if (isUnique) {
-                        addAccessToUniquePredicate(this@TypeResolver)
-                    }
-                    includeSubTypeInvariants()
-                }
-            }
-            forEachSuperType {
-                addAccessToUniquePredicate(this@TypeResolver)
-            }
-        }
-
-    fun allClassAccessPredicates(): List<Predicate> =
-        allEmbeddings().flatMap { listOf(sharedPredicate(it), uniquePredicate(it)) }
-
-
+    /**
+     * Returns true if the [pretypeEmbedding] is a subtype of Collection with [name]
+     */
     fun isInheritorOfCollectionTypeNamed(pretypeEmbedding: PretypeEmbedding, name: String): Boolean {
         val classEmbedding = pretypeEmbedding as? ClassTypeEmbedding ?: return false
-        return classEmbedding.isCollectionTypeNamed("Collection") || lookupSuperTypes(classEmbedding.name).any {
+        return classEmbedding.isCollectionTypeNamed(name) || lookupSuperTypes(classEmbedding.name).any {
             isInheritorOfCollectionTypeNamed(it, name)
         }
     }

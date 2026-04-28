@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.conversion.ClassPropertyPair
 import org.jetbrains.kotlin.formver.core.conversion.ProgramConversionContext
+import org.jetbrains.kotlin.formver.core.conversion.PropertyKotlinName
 import org.jetbrains.kotlin.formver.core.conversion.ScopeIndex
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.name.CallableId

@@ -83,7 +83,7 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
     override val runtimeType: Exp = flags.adjustRuntimeType(pretype.runtimeType)
 
     override fun accessInvariants(ctx: TypeResolver): List<TypeInvariantEmbedding> =
-        flags.adjustManyInvariants(ctx.accessInvariantsOfClass(pretype.name))
+        flags.adjustManyInvariants(pretype.accessInvariants(ctx))
 
     override fun pureInvariants(): List<TypeInvariantEmbedding> = flags.adjustManyInvariants(pretype.pureInvariants())
 

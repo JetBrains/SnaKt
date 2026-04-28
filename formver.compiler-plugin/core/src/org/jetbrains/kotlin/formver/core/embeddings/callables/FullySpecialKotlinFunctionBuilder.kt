@@ -6,12 +6,10 @@
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
 import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
-import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.UnitLit
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.formver.viper.SymbolicName
-import org.jetbrains.kotlin.formver.viper.ast.Method
 
 class FullySpecialKotlinFunctionImpl(
     override val packageName: List<String>,
@@ -20,10 +18,7 @@ class FullySpecialKotlinFunctionImpl(
     override val callableType: FunctionTypeEmbedding,
     val body: (List<ExpEmbedding>, StmtConversionContext) -> ExpEmbedding,
 ) : FullySpecialKotlinFunction {
-    override fun insertCall(args: List<ExpEmbedding>, ctx: StmtConversionContext) =
-        body(args, ctx)
-
-    override fun viperMethod(ctx: TypeResolver): Method? = null
+    override fun insertCall(args: List<ExpEmbedding>, ctx: StmtConversionContext) = body(args, ctx)
 }
 
 class FullySpecialKotlinFunctionBuilder {
@@ -59,11 +54,7 @@ class FullySpecialKotlinFunctionBuilder {
             body: (List<ExpEmbedding>, StmtConversionContext) -> ExpEmbedding,
         ) {
             FullySpecialKotlinFunctionImpl(
-                packageName,
-                className,
-                name,
-                callableType,
-                body
+                packageName, className, name, callableType, body
             ).apply { byName[embedName()] = this }
         }
 
