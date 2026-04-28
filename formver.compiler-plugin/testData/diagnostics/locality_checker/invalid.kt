@@ -18,3 +18,8 @@ val `reject locality attribute on top-level property type`: <!INVALID_LOCALITY_T
 class `reject locality attribute on member property type` {
     val x: <!INVALID_LOCALITY_TYPE_TARGET!>@Borrowed Any<!> = Any()
 }
+
+// Note: the assigned `listOf` expression flags an error because the locality attribute is implicitly added on the
+// inferred generic parameter.
+val `reject locality attribute on generic type parameter`: List<<!INVALID_LOCALITY_TYPE_TARGET!>@Borrowed Any<!>>
+    = <!INVALID_LOCALITY_TYPE_TARGET!>listOf<!>()
