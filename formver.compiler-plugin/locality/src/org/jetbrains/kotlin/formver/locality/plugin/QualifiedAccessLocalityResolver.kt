@@ -17,7 +17,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 
 /**
- * Returns `this` component's locality if available, otherwise returns `null`.
+ * Resolves `this` access expression's locality.
  */
 @OptIn(SymbolInternals::class)
 context(context: CheckerContext)
