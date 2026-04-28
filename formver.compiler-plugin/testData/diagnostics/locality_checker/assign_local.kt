@@ -166,3 +166,9 @@ fun `assign local nested control-flow to global in lambda loop`(x: @Borrowed Any
         }
     }
 }
+
+fun `assign merged local owners to global`(x: @Borrowed Any) {
+    { y: @Borrowed Any ->
+        var z: Any = <!LOCALITY_VIOLATION!>if (false) { x } else { y }<!>
+    }
+}

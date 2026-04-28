@@ -1,0 +1,21 @@
+/call.kt:(517,518): error: Argument locality mismatch: expected 'global', actual 'local(pass local as shared argument)'.
+
+/call.kt:(927,928): error: Assignment locality mismatch: expected 'global', actual 'local(assign local to global after passing it as borrowed argument)'.
+
+/call.kt:(1037,1038): error: Argument locality mismatch: expected 'global', actual 'local(share local after initializing it with a global value)'.
+
+/call.kt:(1292,1293): error: Receiver locality mismatch: expected 'global', actual 'local(pass local as explicit shared target)'.
+
+/call.kt:(2018,2019): error: Argument locality mismatch: expected 'global', actual 'local(pass local as named local and global arguments)'.
+
+/call.kt:(2124,2125): error: Argument locality mismatch: expected 'global', actual 'local(pass local as named local along local default)'.
+
+/call.kt:(2193,2206): error: Receiver locality mismatch: expected 'global', actual 'local(pass local as implicit shared target)'.
+
+/call.kt:(2358,2362): error: Receiver locality mismatch: expected 'global', actual 'local(pass local this as explicit shared target)'.
+
+/call.kt:(2668,2669): error: Argument locality mismatch: expected 'local(anonymous)', actual 'local(pass outer local as local argument in lambda)'.
+
+/call.kt:(2906,2907): error: Argument locality mismatch: expected 'global', actual 'local(derive and call super)'.
+
+/call.kt:(3047,3048): error: Argument locality mismatch: expected 'global', actual 'local(chain this constructors with global parameter)'.
