@@ -3,85 +3,82 @@ field bf$a: Ref
 
 field bf$b: Ref
 
-method f$testPrimitiveFieldGetter$F$t$PrimitiveFields$t$Unit(par$pf: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$pf), df$rt$c$PrimitiveFields())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method testPrimitiveFieldGetter(pf: Ref) returns (ret$0: Ref)
+  requires isSubtype(typeOf(pf), $c$PrimitiveFields())
+  ensures isSubtype(typeOf(ret$0), unitType())
 {
-  var l0$a: Ref
-  var l0$b: Ref
-  inhale acc(pred$c$PrimitiveFields$shared(par$pf), wildcard)
-  unfold acc(pred$c$PrimitiveFields$shared(par$pf), wildcard)
-  l0$a := par$pf.bf$a
-  l0$b := havoc$t$Int()
+  var a: Ref
+  var b: Ref
+  inhale acc(shared(pf), wildcard)
+  unfold acc(shared(pf), wildcard)
+  a := pf.bf$a
+  b := havoc()
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale isSubtype(typeOf(ret$0), unitType())
 }
 
 /field_getters.kt:(230,254): info: Generated Viper text for testReferenceFieldGetter:
-field bf$a: Ref
+field a: Ref
 
-field bf$b: Ref
+field b: Ref
 
 field bf$f: Ref
 
 field bf$g: Ref
 
-method f$testReferenceFieldGetter$F$t$ReferenceFields$t$Unit(par$rf: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$rf), df$rt$c$ReferenceFields())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method testReferenceFieldGetter(rf: Ref) returns (ret$0: Ref)
+  requires isSubtype(typeOf(rf), $c$ReferenceFields())
+  ensures isSubtype(typeOf(ret$0), unitType())
 {
-  var l0$f: Ref
-  var l0$g: Ref
-  var l0$fa: Ref
-  var l0$fb: Ref
-  var l0$ga: Ref
-  var l0$gb: Ref
-  inhale acc(pred$c$ReferenceFields$shared(par$rf), wildcard)
-  unfold acc(pred$c$ReferenceFields$shared(par$rf), wildcard)
-  l0$f := par$rf.bf$f
-  l0$g := havoc$t$PrimitiveFields()
-  unfold acc(pred$c$PrimitiveFields$shared(l0$f), wildcard)
-  l0$fa := l0$f.bf$a
-  l0$fb := havoc$t$Int()
-  unfold acc(pred$c$PrimitiveFields$shared(l0$g), wildcard)
-  l0$ga := l0$g.bf$a
-  l0$gb := havoc$t$Int()
+  var f: Ref
+  var g: Ref
+  var fa: Ref
+  var fb: Ref
+  var ga: Ref
+  var gb: Ref
+  inhale acc(c$ReferenceFields$shared(rf), wildcard)
+  unfold acc(c$ReferenceFields$shared(rf), wildcard)
+  f := rf.bf$f
+  g := havoc$$c$PrimitiveFields()
+  unfold acc(shared(f), wildcard)
+  fa := f.a
+  fb := havoc()
+  unfold acc(shared(g), wildcard)
+  ga := g.a
+  gb := havoc()
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale isSubtype(typeOf(ret$0), unitType())
 }
 
 /field_getters.kt:(387,411): info: Generated Viper text for testCascadingFieldGetter:
-field bf$a: Ref
+field a: Ref
 
-field bf$b: Ref
+field b: Ref
 
-field bf$f: Ref
+field f: Ref
 
-field bf$g: Ref
+field g: Ref
 
-method f$testCascadingFieldGetter$F$t$ReferenceFields$t$Unit(par$rf: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$rf), df$rt$c$ReferenceFields())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method testCascadingFieldGetter(rf: Ref) returns (ret$0: Ref)
+  requires isSubtype(typeOf(rf), $c$ReferenceFields())
+  ensures isSubtype(typeOf(ret$0), unitType())
 {
-  var l0$fa: Ref
+  var fa: Ref
   var anon$0: Ref
-  var l0$fb: Ref
-  var l0$ga: Ref
-  var anon$1: Ref
-  var l0$gb: Ref
-  inhale acc(pred$c$ReferenceFields$shared(par$rf), wildcard)
-  unfold acc(pred$c$ReferenceFields$shared(par$rf), wildcard)
-  anon$0 := par$rf.bf$f
-  unfold acc(pred$c$PrimitiveFields$shared(anon$0), wildcard)
-  l0$fa := anon$0.bf$a
-  l0$fb := havoc$t$Int()
-  anon$1 := havoc$t$PrimitiveFields()
-  unfold acc(pred$c$PrimitiveFields$shared(anon$1), wildcard)
-  l0$ga := anon$1.bf$a
-  l0$gb := havoc$t$Int()
+  var fb: Ref
+  var ga: Ref
+  var anon: Ref
+  var gb: Ref
+  inhale acc(c$ReferenceFields$shared(rf), wildcard)
+  unfold acc(c$ReferenceFields$shared(rf), wildcard)
+  anon$0 := rf.f
+  unfold acc(shared(anon$0), wildcard)
+  fa := anon$0.a
+  fb := havoc$Int()
+  anon := havoc()
+  unfold acc(shared(anon), wildcard)
+  ga := anon.a
+  gb := havoc$Int()
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale isSubtype(typeOf(ret$0), unitType())
 }

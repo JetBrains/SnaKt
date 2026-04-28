@@ -1,62 +1,57 @@
 /as_type_contract.kt:(152,162): info: Generated Viper text for asOperator:
-method f$asOperator$F$t$Foo$t$Bar(par$foo: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$foo), df$rt$c$Foo())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$Bar())
-  ensures acc(pred$c$Bar$shared(ret$0), wildcard)
-  ensures true ==> df$rt$isSubtype(df$rt$typeOf(par$foo), df$rt$c$Bar())
+method asOperator(foo: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(foo), $c$Foo())
+  ensures isSubtype(typeOf(ret), $c$Bar())
+  ensures acc(c$Bar$shared(ret), wildcard)
+  ensures true ==> isSubtype(typeOf(foo), $c$Bar())
 {
-  inhale acc(pred$c$Foo$shared(par$foo), wildcard)
-  inhale df$rt$isSubtype(df$rt$typeOf(par$foo), df$rt$c$Bar())
-  inhale acc(pred$c$Bar$shared(par$foo), wildcard)
-  ret$0 := par$foo
-  goto lbl$ret$0
-  label lbl$ret$0
+  inhale acc(c$Foo$shared(foo), wildcard)
+  inhale isSubtype(typeOf(foo), $c$Bar())
+  inhale acc(c$Bar$shared(foo), wildcard)
+  ret := foo
+  goto ret$0
+  label ret$0
 }
 
 /as_type_contract.kt:(307,321): info: Generated Viper text for safeAsOperator:
-method f$safeAsOperator$F$t$Foo$t$N$Bar(par$foo: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$foo), df$rt$c$Foo())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$c$Bar()))
-  ensures ret$0 != df$rt$nullValue() ==>
-    acc(pred$c$Bar$shared(ret$0), wildcard)
-  ensures ret$0 != df$rt$nullValue() ==>
-    df$rt$isSubtype(df$rt$typeOf(par$foo), df$rt$c$Bar())
+method safeAsOperator(foo: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(foo), $c$Foo())
+  ensures isSubtype(typeOf(ret), nullable($c$Bar()))
+  ensures ret != nullValue() ==> acc(c$Bar$shared(ret), wildcard)
+  ensures ret != nullValue() ==> isSubtype(typeOf(foo), $c$Bar())
 {
-  inhale acc(pred$c$Foo$shared(par$foo), wildcard)
-  inhale df$rt$isSubtype(df$rt$typeOf(par$foo), df$rt$nullable(df$rt$c$Bar()))
-  inhale par$foo != df$rt$nullValue() ==>
-    acc(pred$c$Bar$shared(par$foo), wildcard)
-  ret$0 := par$foo
-  goto lbl$ret$0
-  label lbl$ret$0
+  inhale acc(c$Foo$shared(foo), wildcard)
+  inhale isSubtype(typeOf(foo), nullable($c$Bar()))
+  inhale foo != nullValue() ==> acc(c$Bar$shared(foo), wildcard)
+  ret := foo
+  goto ret$0
+  label ret$0
 }
 
 /as_type_contract.kt:(504,508): info: Generated Viper text for getX:
-field bf$x: Ref
+field x: Ref
 
-method f$getX$F$t$Any$t$N$Int(par$a: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$anyType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
-  ensures ret$0 != df$rt$nullValue() ==>
-    df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$c$IntHolder())
-  ensures ret$0 == df$rt$nullValue() ==>
-    !df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$c$IntHolder())
+method getX(a: Ref) returns (ret$0: Ref)
+  requires isSubtype(typeOf(a), anyType())
+  ensures isSubtype(typeOf(ret$0), nullable(intType()))
+  ensures ret$0 != nullValue() ==> isSubtype(typeOf(a), $c$IntHolder())
+  ensures ret$0 == nullValue() ==> !isSubtype(typeOf(a), $c$IntHolder())
 {
   var anon$0: Ref
-  if (df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$c$IntHolder())) {
-    anon$0 := par$a
+  if (isSubtype(typeOf(a), $c$IntHolder())) {
+    anon$0 := a
   } else {
-    anon$0 := df$rt$nullValue()}
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$nullable(df$rt$c$IntHolder()))
-  inhale anon$0 != df$rt$nullValue() ==>
-    acc(pred$c$IntHolder$shared(anon$0), wildcard)
-  if (anon$0 != df$rt$nullValue()) {
-    var anon$1: Ref
-    unfold acc(pred$c$IntHolder$shared(anon$0), wildcard)
-    anon$1 := anon$0.bf$x
-    ret$0 := anon$1
+    anon$0 := nullValue()}
+  inhale isSubtype(typeOf(anon$0), nullable($c$IntHolder()))
+  inhale anon$0 != nullValue() ==>
+    acc(c$IntHolder$shared(anon$0), wildcard)
+  if (anon$0 != nullValue()) {
+    var anon: Ref
+    unfold acc(c$IntHolder$shared(anon$0), wildcard)
+    anon := anon$0.x
+    ret$0 := anon
   } else {
-    ret$0 := df$rt$nullValue()}
+    ret$0 := nullValue()}
   goto lbl$ret$0
   label lbl$ret$0
 }

@@ -1,62 +1,57 @@
 /secondary_constructors.kt:(249,271): info: Generated Viper text for onlySecondConstructors:
-field bf$a: Ref
+field a: Ref
 
-method con$c$NoPrimaryConstructor$t$Boolean$t$NoPrimaryConstructor(par$b: Ref)
-  returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$NoPrimaryConstructor())
-  ensures acc(pred$c$NoPrimaryConstructor$shared(ret), wildcard)
-  ensures acc(pred$c$NoPrimaryConstructor$unique(ret), write)
-
-
-method con$c$NoPrimaryConstructor$t$Int$t$NoPrimaryConstructor(par$n: Ref)
-  returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$n), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$NoPrimaryConstructor())
-  ensures acc(pred$c$NoPrimaryConstructor$shared(ret), wildcard)
-  ensures acc(pred$c$NoPrimaryConstructor$unique(ret), write)
+method con(n: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(n), intType())
+  ensures isSubtype(typeOf(ret), $c$NoPrimaryConstructor())
+  ensures acc(shared(ret), wildcard)
+  ensures acc(c$NoPrimaryConstructor$unique(ret), write)
 
 
-method f$onlySecondConstructors$F$t$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method con$$c$NoPrimaryConstructor(b: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(ret), $c$NoPrimaryConstructor())
+  ensures acc(shared(ret), wildcard)
+  ensures acc(c$NoPrimaryConstructor$unique(ret), write)
+
+
+method onlySecondConstructors() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
 {
-  var l0$npc1: Ref
-  var l0$npc2: Ref
-  l0$npc1 := con$c$NoPrimaryConstructor$t$Boolean$t$NoPrimaryConstructor(df$rt$boolToRef(true))
-  l0$npc2 := con$c$NoPrimaryConstructor$t$Int$t$NoPrimaryConstructor(df$rt$intToRef(42))
+  var npc1: Ref
+  var npc2: Ref
+  npc1 := con$$c$NoPrimaryConstructor(boolToRef(true))
+  npc2 := con(intToRef(42))
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale isSubtype(typeOf(ret$0), unitType())
 }
 
 /secondary_constructors.kt:(365,392): info: Generated Viper text for primaryAndSecondConstructor:
 field bf$a: Ref
 
-method con$c$BothConstructors$t$Boolean$t$BothConstructors(par$b: Ref)
-  returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$BothConstructors())
-  ensures acc(pred$c$BothConstructors$shared(ret), wildcard)
-  ensures acc(pred$c$BothConstructors$unique(ret), write)
+method con(a: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(a), intType())
+  ensures isSubtype(typeOf(ret), $c$BothConstructors())
+  ensures acc(shared(ret), wildcard)
+  ensures acc(c$BothConstructors$unique(ret), write)
+  ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf$a)) ==
+    intFromRef(a)
 
 
-method con$c$BothConstructors$t$Int$t$BothConstructors(par$a: Ref)
-  returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$BothConstructors())
-  ensures acc(pred$c$BothConstructors$shared(ret), wildcard)
-  ensures acc(pred$c$BothConstructors$unique(ret), write)
-  ensures df$rt$intFromRef((unfolding acc(pred$c$BothConstructors$shared(ret), wildcard) in
-      ret.bf$a)) ==
-    df$rt$intFromRef(par$a)
+method con$$c$BothConstructors(b: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(ret), $c$BothConstructors())
+  ensures acc(shared(ret), wildcard)
+  ensures acc(c$BothConstructors$unique(ret), write)
 
 
-method f$primaryAndSecondConstructor$F$t$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method primaryAndSecondConstructor() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
 {
-  var l0$bc1: Ref
-  var l0$bc2: Ref
-  l0$bc1 := con$c$BothConstructors$t$Boolean$t$BothConstructors(df$rt$boolToRef(false))
-  l0$bc2 := con$c$BothConstructors$t$Int$t$BothConstructors(df$rt$intToRef(42))
+  var bc1: Ref
+  var bc2: Ref
+  bc1 := con$$c$BothConstructors(boolToRef(false))
+  bc2 := con(intToRef(42))
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale isSubtype(typeOf(ret$0), unitType())
 }

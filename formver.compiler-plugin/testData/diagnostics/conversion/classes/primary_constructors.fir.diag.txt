@@ -3,27 +3,23 @@ field bf$a: Ref
 
 field bf$b: Ref
 
-method con$c$PrimitiveFields$t$Int$t$Int$t$PrimitiveFields(par$a: Ref, par$b: Ref)
-  returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$PrimitiveFields())
-  ensures acc(pred$c$PrimitiveFields$shared(ret), wildcard)
-  ensures acc(pred$c$PrimitiveFields$unique(ret), write)
-  ensures df$rt$intFromRef((unfolding acc(pred$c$PrimitiveFields$shared(ret), wildcard) in
-      ret.bf$a)) ==
-    df$rt$intFromRef(par$a) &&
-    df$rt$intFromRef((unfolding acc(pred$c$PrimitiveFields$shared(ret), wildcard) in
-      ret.bf$b)) ==
-    df$rt$intFromRef(par$b)
+method con(a: Ref, b: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), intType())
+  ensures isSubtype(typeOf(ret), $c$PrimitiveFields())
+  ensures acc(shared(ret), wildcard)
+  ensures acc(c$PrimitiveFields$unique(ret), write)
+  ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf$a)) ==
+    intFromRef(a) &&
+    intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf$b)) ==
+    intFromRef(b)
 
 
-method f$createPrimitiveFields$F$t$PrimitiveFields() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$PrimitiveFields())
-  ensures acc(pred$c$PrimitiveFields$shared(ret$0), wildcard)
+method createPrimitiveFields() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), $c$PrimitiveFields())
+  ensures acc(shared(ret$0), wildcard)
 {
-  ret$0 := con$c$PrimitiveFields$t$Int$t$Int$t$PrimitiveFields(df$rt$intToRef(10),
-    df$rt$intToRef(20))
+  ret$0 := con(intToRef(10), intToRef(20))
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -31,46 +27,42 @@ method f$createPrimitiveFields$F$t$PrimitiveFields() returns (ret$0: Ref)
 /primary_constructors.kt:(178,193): info: Generated Viper text for createRecursive:
 field bf$a: Ref
 
-method con$c$Recursive$t$N$Recursive$t$Recursive(par$a: Ref)
-  returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$nullable(df$rt$c$Recursive()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Recursive())
-  ensures acc(pred$c$Recursive$shared(ret), wildcard)
-  ensures acc(pred$c$Recursive$unique(ret), write)
-  ensures (unfolding acc(pred$c$Recursive$shared(ret), wildcard) in
-      ret.bf$a) ==
-    par$a
+method con(a: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(a), nullable($c$Recursive()))
+  ensures isSubtype(typeOf(ret), $c$Recursive())
+  ensures acc(shared(ret), wildcard)
+  ensures acc(c$Recursive$unique(ret), write)
+  ensures (unfolding acc(shared(ret), wildcard) in ret.bf$a) == a
 
 
-method f$createRecursive$F$t$Recursive() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$Recursive())
-  ensures acc(pred$c$Recursive$shared(ret$0), wildcard)
+method createRecursive() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), $c$Recursive())
+  ensures acc(shared(ret$0), wildcard)
 {
-  ret$0 := con$c$Recursive$t$N$Recursive$t$Recursive(df$rt$nullValue())
+  ret$0 := con(nullValue())
   goto lbl$ret$0
   label lbl$ret$0
 }
 
 /primary_constructors.kt:(279,296): info: Generated Viper text for createFieldInBody:
-field bf$a: Ref
+field a: Ref
 
 field bf$c: Ref
 
-method con$c$FieldInBody$t$Int$t$FieldInBody(par$c: Ref) returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$FieldInBody())
-  ensures acc(pred$c$FieldInBody$shared(ret), wildcard)
-  ensures acc(pred$c$FieldInBody$unique(ret), write)
-  ensures df$rt$intFromRef((unfolding acc(pred$c$FieldInBody$shared(ret), wildcard) in
-      ret.bf$c)) ==
-    df$rt$intFromRef(par$c)
+method con(c: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(c), intType())
+  ensures isSubtype(typeOf(ret), $c$FieldInBody())
+  ensures acc(shared(ret), wildcard)
+  ensures acc(c$FieldInBody$unique(ret), write)
+  ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf$c)) ==
+    intFromRef(c)
 
 
-method f$createFieldInBody$F$t$FieldInBody() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$FieldInBody())
-  ensures acc(pred$c$FieldInBody$shared(ret$0), wildcard)
+method createFieldInBody() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), $c$FieldInBody())
+  ensures acc(shared(ret$0), wildcard)
 {
-  ret$0 := con$c$FieldInBody$t$Int$t$FieldInBody(df$rt$intToRef(10))
+  ret$0 := con(intToRef(10))
   goto lbl$ret$0
   label lbl$ret$0
 }

@@ -1,19 +1,19 @@
 /any.kt:(23,40): info: Generated Viper text for anyArgumentReturn:
-method f$anyArgumentReturn$F$t$Any$t$Any(par$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$anyType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$anyType())
+method anyArgumentReturn(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), anyType())
+  ensures isSubtype(typeOf(ret), anyType())
 {
-  ret$0 := par$x
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret := x
+  goto ret$0
+  label ret$0
 }
 
 /any.kt:(76,83): info: Generated Viper text for anyCast:
-method f$anyCast$F$t$Int$t$Any(par$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$anyType())
+method anyCast(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret), anyType())
 {
-  ret$0 := par$x
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret := x
+  goto ret$0
+  label ret$0
 }

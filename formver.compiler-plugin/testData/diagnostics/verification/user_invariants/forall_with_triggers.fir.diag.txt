@@ -1,82 +1,76 @@
 /forall_with_triggers.kt:(50,73): info: Generated Viper text for forAllWithSimpleTrigger:
-method f$forAllWithSimpleTrigger$F$t$Int() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
-  ensures (forall anon$builtin$1: Int ::
-      { anon$builtin$1 * anon$builtin$1 }
-      anon$builtin$1 * anon$builtin$1 >= 0 &&
-      anon$builtin$1 * anon$builtin$1 >= df$rt$intFromRef(ret$0))
+method forAllWithSimpleTrigger() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), intType())
+  ensures (forall anon: Int ::
+      { anon * anon }
+      anon * anon >= 0 && anon * anon >= intFromRef(ret))
 {
-  ret$0 := df$rt$intToRef(0)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret := intToRef(0)
+  goto ret$0
+  label ret$0
 }
 
 /forall_with_triggers.kt:(318,344): info: Generated Viper text for forAllWithMultipleTriggers:
-method f$forAllWithMultipleTriggers$F$t$Int() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
-  ensures (forall anon$builtin$1: Int ::
-      { anon$builtin$1 * anon$builtin$1 }
-      { anon$builtin$1 + 1 }
-      !(anon$builtin$1 == 0) ==>
-      anon$builtin$1 * anon$builtin$1 >= df$rt$intFromRef(ret$0))
+method forAllWithMultipleTriggers() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), intType())
+  ensures (forall anon: Int ::
+      { anon * anon }
+      { anon + 1 }
+      !(anon == 0) ==> anon * anon >= intFromRef(ret))
 {
-  ret$0 := df$rt$intToRef(1)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret := intToRef(1)
+  goto ret$0
+  label ret$0
 }
 
 /forall_with_triggers.kt:(590,614): info: Generated Viper text for forAllWithTriggersInLoop:
-method f$forAllWithTriggersInLoop$F$t$String$t$Int(par$str: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$str), df$rt$stringType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method forAllWithTriggersInLoop(str: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(str), stringType())
+  ensures isSubtype(typeOf(ret), intType())
 {
-  var l0$res: Ref
-  var l0$i: Ref
+  var res: Ref
+  var i: Ref
   var anon$1: Ref
-  l0$res := df$rt$intToRef(0)
-  l0$i := df$rt$intToRef(10)
-  label lbl$cont$0
-    invariant df$rt$isSubtype(df$rt$typeOf(l0$res), df$rt$intType())
-    invariant df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
-    invariant df$rt$isSubtype(df$rt$typeOf(par$str), df$rt$stringType())
-    invariant (forall anon$builtin$0: Int ::
-        { df$rt$stringFromRef(par$str)[anon$builtin$0] }
-        0 <= anon$builtin$0 &&
-        anon$builtin$0 < |df$rt$stringFromRef(par$str)| ==>
-        (df$rt$stringFromRef(par$str)[anon$builtin$0] - 97) *
-        (df$rt$stringFromRef(par$str)[anon$builtin$0] - 97) >=
-        df$rt$intFromRef(l0$res))
-  anon$1 := df$gtInts(l0$i, df$rt$intToRef(0))
-  if (df$rt$boolFromRef(anon$1)) {
-    var anon$0: Ref
-    anon$0 := l0$i
-    l0$i := df$minusInts(anon$0, df$rt$intToRef(1))
-    goto lbl$cont$0
+  res := intToRef(0)
+  i := intToRef(10)
+  label cont
+    invariant isSubtype(typeOf(res), intType())
+    invariant isSubtype(typeOf(i), intType())
+    invariant isSubtype(typeOf(str), stringType())
+    invariant (forall anon$builtin: Int ::
+        { stringFromRef(str)[anon$builtin] }
+        0 <= anon$builtin && anon$builtin < |stringFromRef(str)| ==>
+        (stringFromRef(str)[anon$builtin] - 97) *
+        (stringFromRef(str)[anon$builtin] - 97) >=
+        intFromRef(res))
+  anon$1 := gtInts(i, intToRef(0))
+  if (boolFromRef(anon$1)) {
+    var anon: Ref
+    anon := i
+    i := minusInts(anon, intToRef(1))
+    goto cont
   }
-  label lbl$break$0
-  assert df$rt$isSubtype(df$rt$typeOf(l0$res), df$rt$intType())
-  assert df$rt$isSubtype(df$rt$typeOf(l0$i), df$rt$intType())
-  assert df$rt$isSubtype(df$rt$typeOf(par$str), df$rt$stringType())
-  assert (forall anon$builtin$0: Int ::
-      { df$rt$stringFromRef(par$str)[anon$builtin$0] }
-      0 <= anon$builtin$0 &&
-      anon$builtin$0 < |df$rt$stringFromRef(par$str)| ==>
-      (df$rt$stringFromRef(par$str)[anon$builtin$0] - 97) *
-      (df$rt$stringFromRef(par$str)[anon$builtin$0] - 97) >=
-      df$rt$intFromRef(l0$res))
-  ret$0 := l0$res
-  goto lbl$ret$0
-  label lbl$ret$0
+  label break
+  assert isSubtype(typeOf(res), intType())
+  assert isSubtype(typeOf(i), intType())
+  assert isSubtype(typeOf(str), stringType())
+  assert (forall anon$builtin: Int ::
+      { stringFromRef(str)[anon$builtin] }
+      0 <= anon$builtin && anon$builtin < |stringFromRef(str)| ==>
+      (stringFromRef(str)[anon$builtin] - 97) *
+      (stringFromRef(str)[anon$builtin] - 97) >=
+      intFromRef(res))
+  ret := res
+  goto ret$0
+  label ret$0
 }
 
 /forall_with_triggers.kt:(990,1011): info: Generated Viper text for forAllWithoutTriggers:
-method f$forAllWithoutTriggers$F$t$Int() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
-  ensures (forall anon$builtin$1: Int ::anon$builtin$1 * anon$builtin$1 >=
-      0)
+method forAllWithoutTriggers() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), intType())
+  ensures (forall anon: Int ::anon * anon >= 0)
 {
-  ret$0 := df$rt$intToRef(0)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret := intToRef(0)
+  goto ret$0
+  label ret$0
 }

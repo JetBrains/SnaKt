@@ -1,96 +1,84 @@
 /custom_list.kt:(168,171): info: Generated Viper text for get:
-field bf$c$CustomList$private$value: Ref
+field size: Ref
 
-field p$size: Ref
+field value: Ref
 
-method f$c$CustomList$get$F$t$CustomList$t$Int$t$Int(this$dispatch: Ref, par$index: Ref)
-  returns (ret$0: Ref)
-  requires acc(this$dispatch.p$size, write)
-  requires df$rt$intFromRef(this$dispatch.p$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$CustomList())
-  requires df$rt$isSubtype(df$rt$typeOf(par$index), df$rt$intType())
-  requires df$rt$intFromRef(par$index) >= 0
-  requires df$rt$intFromRef(this$dispatch.p$size) >
-    df$rt$intFromRef(par$index)
-  ensures acc(this$dispatch.p$size, write)
-  ensures df$rt$intFromRef(this$dispatch.p$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
-  ensures df$rt$intFromRef(this$dispatch.p$size) ==
-    old(df$rt$intFromRef(this$dispatch.p$size))
+method get(this: Ref, index: Ref) returns (ret$0: Ref)
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(this), $c$CustomList())
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret$0), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
 {
-  inhale acc(pred$c$CustomList$shared(this$dispatch), wildcard)
-  unfold acc(pred$c$CustomList$shared(this$dispatch), wildcard)
-  ret$0 := this$dispatch.bf$c$CustomList$private$value
+  inhale acc(c$CustomList$shared(this), wildcard)
+  unfold acc(c$CustomList$shared(this), wildcard)
+  ret$0 := this.value
   goto lbl$ret$0
   label lbl$ret$0
 }
 
 /custom_list.kt:(248,252): info: Generated Viper text for test:
-field bf$c$CustomList$private$value: Ref
+field bf$value: Ref
 
-field p$size: Ref
+field size: Ref
 
-method con$c$CustomList$t$Int$t$Int$t$CustomList(par$size: Ref, par$value: Ref)
-  returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$size), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$value), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$CustomList())
-  ensures acc(ret.p$size, write)
-  ensures df$rt$intFromRef(ret.p$size) >= 0
-  ensures acc(pred$c$CustomList$shared(ret), wildcard)
-  ensures acc(pred$c$CustomList$unique(ret), write)
-
-
-method f$c$CustomList$get$F$t$CustomList$t$Int$t$Int(this$dispatch: Ref, par$index: Ref)
-  returns (ret: Ref)
-  requires acc(this$dispatch.p$size, write)
-  requires df$rt$intFromRef(this$dispatch.p$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$CustomList())
-  requires df$rt$isSubtype(df$rt$typeOf(par$index), df$rt$intType())
-  requires df$rt$intFromRef(par$index) >= 0
-  requires df$rt$intFromRef(this$dispatch.p$size) >
-    df$rt$intFromRef(par$index)
-  ensures acc(this$dispatch.p$size, write)
-  ensures df$rt$intFromRef(this$dispatch.p$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-  ensures df$rt$intFromRef(this$dispatch.p$size) ==
-    old(df$rt$intFromRef(this$dispatch.p$size))
+method con(par$size: Ref, value: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par$size), intType())
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(ret), $c$CustomList())
+  ensures acc(ret.size, write)
+  ensures intFromRef(ret.size) >= 0
+  ensures acc(c$CustomList$shared(ret), wildcard)
+  ensures acc(c$CustomList$unique(ret), write)
 
 
-method f$c$CustomList$isEmpty$F$t$CustomList$t$Boolean(this$dispatch: Ref)
-  returns (ret: Ref)
-  requires acc(this$dispatch.p$size, write)
-  requires df$rt$intFromRef(this$dispatch.p$size) >= 0
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$CustomList())
-  ensures acc(this$dispatch.p$size, write)
-  ensures df$rt$intFromRef(this$dispatch.p$size) >= 0
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
-  ensures df$rt$intFromRef(this$dispatch.p$size) ==
-    old(df$rt$intFromRef(this$dispatch.p$size))
-  ensures df$rt$boolFromRef(ret) ==>
-    df$rt$intFromRef(this$dispatch.p$size) == 0
-  ensures !df$rt$boolFromRef(ret) ==>
-    df$rt$intFromRef(this$dispatch.p$size) > 0
+method get(this: Ref, index: Ref) returns (ret: Ref)
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(this), $c$CustomList())
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
 
 
-method f$test$F$t$Int$t$Unit(par$n: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$n), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method isEmpty(this: Ref) returns (ret: Ref)
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(this), $c$CustomList())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures boolFromRef(ret) ==> intFromRef(this.size) == 0
+  ensures !boolFromRef(ret) ==> intFromRef(this.size) > 0
+
+
+method test(n: Ref) returns (ret$0: Ref)
+  requires isSubtype(typeOf(n), intType())
+  ensures isSubtype(typeOf(ret$0), unitType())
 {
-  var l0$customList: Ref
+  var customList: Ref
   var anon$0: Ref
-  l0$customList := con$c$CustomList$t$Int$t$Int$t$CustomList(par$n, df$rt$intToRef(0))
-  anon$0 := f$c$CustomList$isEmpty$F$t$CustomList$t$Boolean(l0$customList)
-  if (!df$rt$boolFromRef(anon$0)) {
+  customList := con(n, intToRef(0))
+  anon$0 := isEmpty(customList)
+  if (!boolFromRef(anon$0)) {
     var anon$1: Ref
     var anon$2: Ref
-    var anon$3: Ref
-    anon$2 := l0$customList.p$size
-    inhale df$rt$isSubtype(df$rt$typeOf(anon$2), df$rt$intType())
-    anon$1 := f$c$CustomList$get$F$t$CustomList$t$Int$t$Int(l0$customList, df$minusInts(anon$2,
-      df$rt$intToRef(1)))
-    anon$3 := f$c$CustomList$get$F$t$CustomList$t$Int$t$Int(l0$customList, df$rt$intToRef(0))
+    var anon: Ref
+    anon$2 := customList.size
+    inhale isSubtype(typeOf(anon$2), intType())
+    anon$1 := get(customList, minusInts(anon$2, intToRef(1)))
+    anon := get(customList, intToRef(0))
   }
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale isSubtype(typeOf(ret$0), unitType())
 }

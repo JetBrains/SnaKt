@@ -3,15 +3,14 @@ field bf$shared: Ref
 
 field bf$unique: Ref
 
-method f$testPrimitiveFieldSetterUnique$F$t$PrimitiveFields$t$Unit(par$pf: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$pf), df$rt$c$PrimitiveFields())
-  requires acc(pred$c$PrimitiveFields$unique(par$pf), write)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method testPrimitiveFieldSetterUnique(pf: Ref) returns (ret$0: Ref)
+  requires isSubtype(typeOf(pf), $c$PrimitiveFields())
+  requires acc(c$PrimitiveFields$unique(pf), write)
+  ensures isSubtype(typeOf(ret$0), unitType())
 {
-  inhale acc(pred$c$PrimitiveFields$shared(par$pf), wildcard)
+  inhale acc(shared(pf), wildcard)
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale isSubtype(typeOf(ret$0), unitType())
 }
 
 /field_setters_unique_shared.kt:(255,285): info: Generated Viper text for testPrimitiveFieldSetterShared:
@@ -19,14 +18,13 @@ field bf$shared: Ref
 
 field bf$unique: Ref
 
-method f$testPrimitiveFieldSetterShared$F$t$PrimitiveFields$t$Unit(par$pf: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$pf), df$rt$c$PrimitiveFields())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method testPrimitiveFieldSetterShared(pf: Ref) returns (ret$0: Ref)
+  requires isSubtype(typeOf(pf), $c$PrimitiveFields())
+  ensures isSubtype(typeOf(ret$0), unitType())
 {
-  inhale acc(pred$c$PrimitiveFields$shared(par$pf), wildcard)
+  inhale acc(shared(pf), wildcard)
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale isSubtype(typeOf(ret$0), unitType())
 }
 
 /field_setters_unique_shared.kt:(452,482): info: Generated Viper text for testReferenceFieldSetterUnique:
@@ -34,31 +32,26 @@ field bf$shared: Ref
 
 field bf$unique: Ref
 
-method con$c$PrimitiveFields$t$Int$t$Int$t$PrimitiveFields(par$shared: Ref,
-  par$unique: Ref)
-  returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$shared), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$unique), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$PrimitiveFields())
-  ensures acc(pred$c$PrimitiveFields$shared(ret), wildcard)
-  ensures acc(pred$c$PrimitiveFields$unique(ret), write)
+method con(shared: Ref, par$unique: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(shared), intType())
+  requires isSubtype(typeOf(par$unique), intType())
+  ensures isSubtype(typeOf(ret), $c$PrimitiveFields())
+  ensures acc(c$PrimitiveFields$shared(ret), wildcard)
+  ensures acc(c$PrimitiveFields$unique(ret), write)
 
 
-method f$testReferenceFieldSetterUnique$F$t$ReferenceFields$t$Unit(par$rf: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$rf), df$rt$c$ReferenceFields())
-  requires acc(pred$c$ReferenceFields$unique(par$rf), write)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method testReferenceFieldSetterUnique(rf: Ref) returns (ret$0: Ref)
+  requires isSubtype(typeOf(rf), $c$ReferenceFields())
+  requires acc(c$ReferenceFields$unique(rf), write)
+  ensures isSubtype(typeOf(ret$0), unitType())
 {
   var anon$0: Ref
-  var anon$1: Ref
-  inhale acc(pred$c$ReferenceFields$shared(par$rf), wildcard)
-  anon$0 := con$c$PrimitiveFields$t$Int$t$Int$t$PrimitiveFields(df$rt$intToRef(5),
-    df$rt$intToRef(6))
-  anon$1 := con$c$PrimitiveFields$t$Int$t$Int$t$PrimitiveFields(df$rt$intToRef(7),
-    df$rt$intToRef(8))
+  var anon: Ref
+  inhale acc(c$ReferenceFields$shared(rf), wildcard)
+  anon$0 := con(intToRef(5), intToRef(6))
+  anon := con(intToRef(7), intToRef(8))
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale isSubtype(typeOf(ret$0), unitType())
 }
 
 /field_setters_unique_shared.kt:(597,627): info: Generated Viper text for testReferenceFieldSetterShared:
@@ -66,28 +59,23 @@ field bf$shared: Ref
 
 field bf$unique: Ref
 
-method con$c$PrimitiveFields$t$Int$t$Int$t$PrimitiveFields(par$shared: Ref,
-  par$unique: Ref)
-  returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$shared), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$unique), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$PrimitiveFields())
-  ensures acc(pred$c$PrimitiveFields$shared(ret), wildcard)
-  ensures acc(pred$c$PrimitiveFields$unique(ret), write)
+method con(shared: Ref, par$unique: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(shared), intType())
+  requires isSubtype(typeOf(par$unique), intType())
+  ensures isSubtype(typeOf(ret), $c$PrimitiveFields())
+  ensures acc(c$PrimitiveFields$shared(ret), wildcard)
+  ensures acc(c$PrimitiveFields$unique(ret), write)
 
 
-method f$testReferenceFieldSetterShared$F$t$ReferenceFields$t$Unit(par$rf: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$rf), df$rt$c$ReferenceFields())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method testReferenceFieldSetterShared(rf: Ref) returns (ret$0: Ref)
+  requires isSubtype(typeOf(rf), $c$ReferenceFields())
+  ensures isSubtype(typeOf(ret$0), unitType())
 {
   var anon$0: Ref
-  var anon$1: Ref
-  inhale acc(pred$c$ReferenceFields$shared(par$rf), wildcard)
-  anon$0 := con$c$PrimitiveFields$t$Int$t$Int$t$PrimitiveFields(df$rt$intToRef(9),
-    df$rt$intToRef(10))
-  anon$1 := con$c$PrimitiveFields$t$Int$t$Int$t$PrimitiveFields(df$rt$intToRef(11),
-    df$rt$intToRef(12))
+  var anon: Ref
+  inhale acc(c$ReferenceFields$shared(rf), wildcard)
+  anon$0 := con(intToRef(9), intToRef(10))
+  anon := con(intToRef(11), intToRef(12))
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale isSubtype(typeOf(ret$0), unitType())
 }

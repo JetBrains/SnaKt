@@ -1,47 +1,43 @@
 /comparison.kt:(23,27): info: Generated Viper text for less:
-method f$less$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
+method less(x: Ref, y: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(ret), boolType())
 {
-  ret$0 := df$ltInts(par$x, par$y)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret := ltInts(x, y)
+  goto ret$0
+  label ret$0
 }
 
 /comparison.kt:(79,88): info: Generated Viper text for lessEqual:
-method f$lessEqual$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
+method lessEqual(x: Ref, y: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(ret), boolType())
 {
-  ret$0 := df$leInts(par$x, par$y)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret := leInts(x, y)
+  goto ret$0
+  label ret$0
 }
 
 /comparison.kt:(141,148): info: Generated Viper text for greater:
-method f$greater$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
+method greater(x: Ref, y: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(ret), boolType())
 {
-  ret$0 := df$gtInts(par$x, par$y)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret := gtInts(x, y)
+  goto ret$0
+  label ret$0
 }
 
 /comparison.kt:(200,212): info: Generated Viper text for greaterEqual:
-method f$greaterEqual$F$t$Int$t$Int$t$Boolean(par$x: Ref, par$y: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
+method greaterEqual(x: Ref, y: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(ret), boolType())
 {
-  ret$0 := df$geInts(par$x, par$y)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret := geInts(x, y)
+  goto ret$0
+  label ret$0
 }

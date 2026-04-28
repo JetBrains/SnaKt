@@ -1,72 +1,65 @@
 /pure_function_rely_on_branch.kt:(70,80): info: Generated Viper text for safeDivide:
-function f$safeDivide$F$t$Int$t$Int$t$Int(par$x: Ref, par$y: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+function safeDivide(x: Ref, y: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(result), intType())
 {
   (let l0$res$0 ==
-    (df$rt$intToRef(0)) in
+    (intToRef(0)) in
     (let l0$res$1 ==
-      ((!(df$rt$intFromRef(par$y) == 0) ? df$divInts(par$x, par$y) : null)) in
+      ((!(intFromRef(y) == 0) ? divInts(x, y) : null)) in
       (let l0$res$2 ==
-        ((!(df$rt$intFromRef(par$y) == 0) ? l0$res$1 : l0$res$0)) in
+        ((!(intFromRef(y) == 0) ? l0$res$1 : l0$res$0)) in
         l0$res$2)))
 }
 
 /pure_function_rely_on_branch.kt:(206,221): info: Generated Viper text for getStringLength:
-function f$getStringLength$F$t$Any$t$Int(par$obj: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(par$obj), df$rt$anyType())
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+function getStringLength(obj: Ref): Ref
+  requires isSubtype(typeOf(obj), anyType())
+  ensures isSubtype(typeOf(result), intType())
 {
   (let l0$len$0 ==
-    (df$rt$intToRef(-1)) in
+    (intToRef(-1)) in
     (let l0$len$1 ==
-      ((df$rt$isSubtype(df$rt$typeOf(par$obj), df$rt$stringType()) ?
-        df$stringLength(par$obj) :
-        null)) in
+      ((isSubtype(typeOf(obj), stringType()) ? stringLength(obj) : null)) in
       (let l0$len$2 ==
-        ((df$rt$isSubtype(df$rt$typeOf(par$obj), df$rt$stringType()) ?
-          l0$len$1 :
-          l0$len$0)) in
+        ((isSubtype(typeOf(obj), stringType()) ? l0$len$1 : l0$len$0)) in
         l0$len$2)))
 }
 
 /pure_function_rely_on_branch.kt:(354,370): info: Generated Viper text for safeNestedDivide:
-function f$safeNestedDivide$F$t$Int$t$Int$t$Int$t$Int(par$x: Ref, par$y: Ref,
-  par$z: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$z), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+function safeNestedDivide(x: Ref, y: Ref, z: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  requires isSubtype(typeOf(z), intType())
+  ensures isSubtype(typeOf(result), intType())
 {
   (let l0$res$0 ==
-    (df$rt$intToRef(0)) in
+    (intToRef(0)) in
     (let l0$res$1 ==
-      ((!(df$rt$intFromRef(par$z) == 0) && !(df$rt$intFromRef(par$y) == 0) ?
-        df$divInts(df$divInts(par$x, par$y), par$z) :
+      ((!(intFromRef(z) == 0) && !(intFromRef(y) == 0) ?
+        divInts(divInts(x, y), z) :
         null)) in
       (let l0$res$2 ==
-        ((!(df$rt$intFromRef(par$z) == 0) ? l0$res$1 : l0$res$0)) in
+        ((!(intFromRef(z) == 0) ? l0$res$1 : l0$res$0)) in
         (let l0$res$3 ==
-          ((!(df$rt$intFromRef(par$y) == 0) ? l0$res$2 : l0$res$0)) in
+          ((!(intFromRef(y) == 0) ? l0$res$2 : l0$res$0)) in
           l0$res$3))))
 }
 
 /pure_function_rely_on_branch.kt:(546,567): info: Generated Viper text for safeInverseDifference:
-function f$safeInverseDifference$F$t$Int$t$Int$t$Int(par$x: Ref, par$y: Ref): Ref
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+function safeInverseDifference(x: Ref, y: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(result), intType())
 {
   (let l0$res$0 ==
-    (df$rt$intToRef(0)) in
+    (intToRef(0)) in
     (let l0$res$1 ==
-      ((!(df$rt$intFromRef(par$x) == df$rt$intFromRef(par$y)) ?
-        df$divInts(df$rt$intToRef(100), df$minusInts(par$x, par$y)) :
+      ((!(intFromRef(x) == intFromRef(y)) ?
+        divInts(intToRef(100), minusInts(x, y)) :
         null)) in
       (let l0$res$2 ==
-        ((!(df$rt$intFromRef(par$x) == df$rt$intFromRef(par$y)) ?
-          l0$res$1 :
-          l0$res$0)) in
+        ((!(intFromRef(x) == intFromRef(y)) ? l0$res$1 : l0$res$0)) in
         l0$res$2)))
 }

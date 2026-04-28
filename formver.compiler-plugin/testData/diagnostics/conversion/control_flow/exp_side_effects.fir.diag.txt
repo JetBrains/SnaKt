@@ -1,30 +1,30 @@
 /exp_side_effects.kt:(185,189): info: Generated Viper text for test:
-field bf$x: Ref
+field x: Ref
 
-method f$getFoo$F$t$Foo() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Foo())
-  ensures acc(pred$c$Foo$shared(ret), wildcard)
-
-
-method f$sideEffect$F$t$Int() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
+method getFoo() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), $c$Foo())
+  ensures acc(shared(ret), wildcard)
 
 
-method f$test$F$t$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method sideEffect() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), intType())
+
+
+method test() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
 {
   var anon$0: Ref
   var anon$1: Ref
-  var l0$y: Ref
+  var y: Ref
   var anon$2: Ref
   var anon$3: Ref
-  var anon$4: Ref
-  anon$0 := f$getFoo$F$t$Foo()
-  anon$1 := f$sideEffect$F$t$Int()
-  anon$3 := f$getFoo$F$t$Foo()
-  anon$2 := havoc$t$Int()
-  anon$4 := f$sideEffect$F$t$Int()
-  l0$y := df$plusInts(anon$2, anon$4)
+  var anon: Ref
+  anon$0 := getFoo()
+  anon$1 := sideEffect()
+  anon$3 := getFoo()
+  anon$2 := havoc()
+  anon := sideEffect()
+  y := plusInts(anon$2, anon)
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale isSubtype(typeOf(ret$0), unitType())
 }

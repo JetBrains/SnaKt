@@ -1,14 +1,13 @@
 /generics.kt:(52,65): info: Generated Viper text for genericMethod:
 field bf$t: Ref
 
-method f$c$Box$genericMethod$F$t$Box$t$N$Any$t$N$Any(this$dispatch: Ref, par$x: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Box())
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$anyType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$anyType()))
+method genericMethod(this: Ref, x: Ref) returns (ret$0: Ref)
+  requires isSubtype(typeOf(this), $c$Box())
+  requires isSubtype(typeOf(x), nullable(anyType()))
+  ensures isSubtype(typeOf(ret$0), nullable(anyType()))
 {
-  inhale acc(pred$c$Box$shared(this$dispatch), wildcard)
-  ret$0 := par$x
+  inhale acc(shared(this), wildcard)
+  ret$0 := x
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -16,29 +15,29 @@ method f$c$Box$genericMethod$F$t$Box$t$N$Any$t$N$Any(this$dispatch: Ref, par$x: 
 /generics.kt:(107,116): info: Generated Viper text for createBox:
 field bf$t: Ref
 
-method con$c$Box$t$N$Any$t$Box(par$t: Ref) returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$t), df$rt$nullable(df$rt$anyType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Box())
-  ensures acc(pred$c$Box$shared(ret), wildcard)
-  ensures acc(pred$c$Box$unique(ret), write)
+method con(par$t: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par$t), nullable(anyType()))
+  ensures isSubtype(typeOf(ret), $c$Box())
+  ensures acc(shared(ret), wildcard)
+  ensures acc(c$Box$unique(ret), write)
 
 
-method f$createBox$F$t$Int() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method createBox() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), intType())
 {
-  var l0$boolBox: Ref
-  var l0$b: Ref
+  var boolBox: Ref
+  var b: Ref
   var anon$0: Ref
-  var l0$intBox: Ref
-  var anon$1: Ref
-  l0$boolBox := con$c$Box$t$N$Any$t$Box(df$rt$boolToRef(true))
-  anon$0 := havoc$t$N$Any()
-  l0$b := anon$0
-  inhale df$rt$isSubtype(df$rt$typeOf(l0$b), df$rt$boolType())
-  l0$intBox := con$c$Box$t$N$Any$t$Box(df$rt$intToRef(2))
-  anon$1 := havoc$t$N$Any()
-  ret$0 := anon$1
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+  var intBox: Ref
+  var anon: Ref
+  boolBox := con(boolToRef(true))
+  anon$0 := havoc()
+  b := anon$0
+  inhale isSubtype(typeOf(b), boolType())
+  intBox := con(intToRef(2))
+  anon := havoc()
+  ret$0 := anon
+  inhale isSubtype(typeOf(ret$0), intType())
   goto lbl$ret$0
   label lbl$ret$0
 }
@@ -46,68 +45,67 @@ method f$createBox$F$t$Int() returns (ret$0: Ref)
 /generics.kt:(227,242): info: Generated Viper text for setGenericField:
 field bf$t: Ref
 
-method con$c$Box$t$N$Any$t$Box(par$t: Ref) returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$t), df$rt$nullable(df$rt$anyType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Box())
-  ensures acc(pred$c$Box$shared(ret), wildcard)
-  ensures acc(pred$c$Box$unique(ret), write)
+method con(par$t: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par$t), nullable(anyType()))
+  ensures isSubtype(typeOf(ret), $c$Box())
+  ensures acc(shared(ret), wildcard)
+  ensures acc(c$Box$unique(ret), write)
 
 
-method f$setGenericField$F$t$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method setGenericField() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
 {
-  var l0$box: Ref
-  l0$box := con$c$Box$t$N$Any$t$Box(df$rt$intToRef(3))
+  var box: Ref
+  box := con(intToRef(3))
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale isSubtype(typeOf(ret$0), unitType())
 }
 
 /generics.kt:(293,303): info: Generated Viper text for genericFun:
-method f$genericFun$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$t), df$rt$nullable(df$rt$anyType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$anyType()))
+method genericFun(par$t: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par$t), nullable(anyType()))
+  ensures isSubtype(typeOf(ret), nullable(anyType()))
 {
-  ret$0 := par$t
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret := par$t
+  goto ret$0
+  label ret$0
 }
 
 /generics.kt:(322,337): info: Generated Viper text for callGenericFunc:
-method f$callGenericFunc$F$t$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method callGenericFunc() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
 {
-  var l0$x: Ref
-  var anon$0: Ref
-  anon$0 := f$genericFun$F$t$N$Any$t$N$Any(df$rt$intToRef(3))
-  l0$x := anon$0
-  inhale df$rt$isSubtype(df$rt$typeOf(l0$x), df$rt$intType())
+  var x: Ref
+  var anon: Ref
+  anon := genericFun(intToRef(3))
+  x := anon
+  inhale isSubtype(typeOf(x), intType())
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale isSubtype(typeOf(ret$0), unitType())
 }
 
-method f$genericFun$F$t$N$Any$t$N$Any(par$t: Ref) returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$t), df$rt$nullable(df$rt$anyType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$anyType()))
+method genericFun(par$t: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par$t), nullable(anyType()))
+  ensures isSubtype(typeOf(ret), nullable(anyType()))
 
 
 /generics.kt:(375,395): info: Generated Viper text for genericAsIfCondition:
 field bf$t: Ref
 
-method f$genericAsIfCondition$F$t$Box$t$Int(par$box: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$box), df$rt$c$Box())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method genericAsIfCondition(box: Ref) returns (ret$0: Ref)
+  requires isSubtype(typeOf(box), $c$Box())
+  ensures isSubtype(typeOf(ret$0), intType())
 {
   var anon$0: Ref
-  var anon$1: Ref
-  inhale acc(pred$c$Box$shared(par$box), wildcard)
-  anon$1 := havoc$t$N$Any()
-  anon$0 := anon$1
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$boolType())
-  if (df$rt$boolFromRef(anon$0)) {
-    ret$0 := df$rt$intToRef(20)
+  var anon: Ref
+  inhale acc(shared(box), wildcard)
+  anon := havoc()
+  anon$0 := anon
+  inhale isSubtype(typeOf(anon$0), boolType())
+  if (boolFromRef(anon$0)) {
+    ret$0 := intToRef(20)
   } else {
-    ret$0 := df$rt$intToRef(10)}
+    ret$0 := intToRef(10)}
   goto lbl$ret$0
   label lbl$ret$0
 }

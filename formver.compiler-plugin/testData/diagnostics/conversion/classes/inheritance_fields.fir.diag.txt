@@ -1,118 +1,115 @@
 /inheritance_fields.kt:(227,234): info: Generated Viper text for createB:
 field bf$fieldNotOverride: Ref
 
-method con$c$B$t$FieldB$t$B(par$fieldOverride: Ref) returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$fieldOverride), df$rt$c$FieldB())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$B())
-  ensures acc(pred$c$B$shared(ret), wildcard)
-  ensures acc(pred$c$B$unique(ret), write)
+method con(fieldOverride: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(fieldOverride), $c$FieldB())
+  ensures isSubtype(typeOf(ret), $c$B())
+  ensures acc(c$B$shared(ret), wildcard)
+  ensures acc(c$B$unique(ret), write)
 
 
-method con$c$FieldB$t$FieldB() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$FieldB())
-  ensures acc(pred$c$FieldB$shared(ret), wildcard)
-  ensures acc(pred$c$FieldB$unique(ret), write)
+method con$$c$FieldB() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), $c$FieldB())
+  ensures acc(c$FieldB$shared(ret), wildcard)
+  ensures acc(c$FieldB$unique(ret), write)
 
 
-method f$createB$F$t$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method createB() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
 {
-  var l0$fieldB: Ref
-  var l0$b: Ref
+  var fieldB: Ref
+  var b: Ref
   var l0$fieldOverride: Ref
-  var anon$0: Ref
-  var l0$fieldNotOverride: Ref
-  l0$fieldB := con$c$FieldB$t$FieldB()
-  l0$b := con$c$B$t$FieldB$t$B(l0$fieldB)
-  anon$0 := g$public$fieldOverride(l0$b)
-  l0$fieldOverride := anon$0
-  inhale df$rt$isSubtype(df$rt$typeOf(l0$fieldOverride), df$rt$c$FieldB())
-  inhale acc(pred$c$FieldB$shared(l0$fieldOverride), wildcard)
-  unfold acc(pred$c$B$shared(l0$b), wildcard)
-  unfold acc(pred$c$A$shared(l0$b), wildcard)
-  l0$fieldNotOverride := l0$b.bf$fieldNotOverride
+  var anon: Ref
+  var fieldNotOverride: Ref
+  fieldB := con$$c$FieldB()
+  b := con(fieldB)
+  anon := g$fieldOverride(b)
+  l0$fieldOverride := anon
+  inhale isSubtype(typeOf(l0$fieldOverride), $c$FieldB())
+  inhale acc(c$FieldB$shared(l0$fieldOverride), wildcard)
+  unfold acc(c$B$shared(b), wildcard)
+  unfold acc(c$A$shared(b), wildcard)
+  fieldNotOverride := b.bf$fieldNotOverride
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale isSubtype(typeOf(ret$0), unitType())
 }
 
-method g$public$fieldOverride(this$dispatch: Ref) returns (ret: Ref)
+method g$fieldOverride(this: Ref) returns (ret: Ref)
 
 
 /inheritance_fields.kt:(699,715): info: Generated Viper text for createBFsAndNoBF:
 field bf$x: Ref
 
-method con$c$FirstBackingFieldClass$t$FirstBackingFieldClass()
-  returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$FirstBackingFieldClass())
-  ensures acc(pred$c$FirstBackingFieldClass$shared(ret), wildcard)
-  ensures acc(pred$c$FirstBackingFieldClass$unique(ret), write)
+method con(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret), $c$SecondBackingFieldClass())
+  ensures acc(shared(ret), wildcard)
+  ensures acc(c$SecondBackingFieldClass$unique(ret), write)
+  ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf$x)) ==
+    intFromRef(x)
 
 
-method con$c$NoBackingFieldClass$t$NoBackingFieldClass() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$NoBackingFieldClass())
-  ensures acc(pred$c$NoBackingFieldClass$shared(ret), wildcard)
-  ensures acc(pred$c$NoBackingFieldClass$unique(ret), write)
+method con$$c$FirstBackingFieldClass() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), $c$FirstBackingFieldClass())
+  ensures acc(c$FirstBackingFieldClass$shared(ret), wildcard)
+  ensures acc(c$FirstBackingFieldClass$unique(ret), write)
 
 
-method con$c$SecondBackingFieldClass$t$Int$t$SecondBackingFieldClass(par$x: Ref)
-  returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$SecondBackingFieldClass())
-  ensures acc(pred$c$SecondBackingFieldClass$shared(ret), wildcard)
-  ensures acc(pred$c$SecondBackingFieldClass$unique(ret), write)
-  ensures df$rt$intFromRef((unfolding acc(pred$c$SecondBackingFieldClass$shared(ret), wildcard) in
-      ret.bf$x)) ==
-    df$rt$intFromRef(par$x)
+method con$$c$NoBackingFieldClass() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), $c$NoBackingFieldClass())
+  ensures acc(c$NoBackingFieldClass$shared(ret), wildcard)
+  ensures acc(c$NoBackingFieldClass$unique(ret), write)
 
 
-method f$createBFsAndNoBF$F$t$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method createBFsAndNoBF() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
 {
-  var l0$fbf: Ref
-  var l0$fbfx: Ref
+  var fbf: Ref
+  var fbfx: Ref
   var anon$0: Ref
-  var l0$nbf: Ref
-  var l0$nbfx: Ref
-  var anon$1: Ref
-  var l0$sbf: Ref
-  var l0$sbfx: Ref
-  l0$fbf := con$c$FirstBackingFieldClass$t$FirstBackingFieldClass()
-  anon$0 := g$public$x(l0$fbf)
-  l0$fbfx := anon$0
-  inhale df$rt$isSubtype(df$rt$typeOf(l0$fbfx), df$rt$intType())
-  l0$nbf := con$c$NoBackingFieldClass$t$NoBackingFieldClass()
-  anon$1 := g$public$x(l0$nbf)
-  l0$nbfx := anon$1
-  inhale df$rt$isSubtype(df$rt$typeOf(l0$nbfx), df$rt$intType())
-  l0$sbf := con$c$SecondBackingFieldClass$t$Int$t$SecondBackingFieldClass(df$rt$intToRef(10))
-  unfold acc(pred$c$SecondBackingFieldClass$shared(l0$sbf), wildcard)
-  l0$sbfx := l0$sbf.bf$x
+  var nbf: Ref
+  var nbfx: Ref
+  var anon: Ref
+  var sbf: Ref
+  var sbfx: Ref
+  fbf := con$$c$FirstBackingFieldClass()
+  anon$0 := g$x(fbf)
+  fbfx := anon$0
+  inhale isSubtype(typeOf(fbfx), intType())
+  nbf := con$$c$NoBackingFieldClass()
+  anon := g$x(nbf)
+  nbfx := anon
+  inhale isSubtype(typeOf(nbfx), intType())
+  sbf := con(intToRef(10))
+  unfold acc(shared(sbf), wildcard)
+  sbfx := sbf.bf$x
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale isSubtype(typeOf(ret$0), unitType())
 }
 
-method g$public$x(this$dispatch: Ref) returns (ret: Ref)
+method g$x(this: Ref) returns (ret: Ref)
 
 
 /inheritance_fields.kt:(1038,1045): info: Generated Viper text for createY:
 field bf$a: Ref
 
-method con$c$Y$t$Int$t$Y(par$a: Ref) returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Y())
-  ensures acc(pred$c$Y$shared(ret), wildcard)
-  ensures acc(pred$c$Y$unique(ret), write)
+method con(a: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(a), intType())
+  ensures isSubtype(typeOf(ret), $c$Y())
+  ensures acc(c$Y$shared(ret), wildcard)
+  ensures acc(c$Y$unique(ret), write)
 
 
-method f$createY$F$t$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method createY() returns (ret$0: Ref)
+  ensures isSubtype(typeOf(ret$0), unitType())
 {
-  var l0$y: Ref
-  var l0$ya: Ref
-  l0$y := con$c$Y$t$Int$t$Y(df$rt$intToRef(10))
-  unfold acc(pred$c$Y$shared(l0$y), wildcard)
-  unfold acc(pred$c$X$shared(l0$y), wildcard)
-  l0$ya := l0$y.bf$a
+  var y: Ref
+  var ya: Ref
+  y := con(intToRef(10))
+  unfold acc(c$Y$shared(y), wildcard)
+  unfold acc(shared(y), wildcard)
+  ya := y.bf$a
   label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale isSubtype(typeOf(ret$0), unitType())
 }

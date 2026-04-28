@@ -1,40 +1,37 @@
 /function_object.kt:(23,35): info: Generated Viper text for unitFunction:
-method f$unitFunction$F$t$F$t$Unit$t$Unit(par$f: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$f), df$rt$functionType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method unitFunction(f: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  label ret$0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /function_object.kt:(90,108): info: Generated Viper text for functionObjectCall:
-method f$functionObjectCall$F$t$F$t$Boolean$t$Int$t$Int$t$Int(par$g: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$g), df$rt$functionType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method functionObjectCall(g: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(g), functionType())
+  ensures isSubtype(typeOf(ret), intType())
 {
-  var anon$0: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
-  ret$0 := anon$0
-  goto lbl$ret$0
-  label lbl$ret$0
+  var anon: Ref
+  inhale isSubtype(typeOf(anon), intType())
+  ret := anon
+  goto ret$0
+  label ret$0
 }
 
 /function_object.kt:(171,195): info: Generated Viper text for functionObjectNestedCall:
-method f$functionObjectNestedCall$F$t$F$t$Int$t$Int$t$F$t$Boolean$t$Int$t$Int(par$f: Ref,
-  par$g: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$f), df$rt$functionType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$g), df$rt$functionType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method functionObjectNestedCall(f: Ref, g: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  requires isSubtype(typeOf(g), functionType())
+  ensures isSubtype(typeOf(ret), intType())
 {
   var anon$0: Ref
   var anon$1: Ref
-  var anon$2: Ref
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$2), df$rt$intType())
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$intType())
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$0), df$rt$intType())
-  ret$0 := anon$0
-  goto lbl$ret$0
-  label lbl$ret$0
+  var anon: Ref
+  inhale isSubtype(typeOf(anon), intType())
+  inhale isSubtype(typeOf(anon$1), intType())
+  inhale isSubtype(typeOf(anon$0), intType())
+  ret := anon$0
+  goto ret$0
+  label ret$0
 }
