@@ -56,7 +56,7 @@ private fun CFGNode<*>.inheritsTailFact(): Boolean {
     return (this is TailrecExitNodeMarker && this !is ExitSafeCallNode) ||
             this is TryExpressionExitNode ||
             this is TryMainBlockExitNode ||
-            (this is TypeOperatorCallNode && fir.operation == FirOperation.AS)
+            this is TypeOperatorCallNode && (fir.operation == FirOperation.AS || fir.operation == FirOperation.SAFE_AS)
 }
 
 class GraphLocalityAnalyzer(
