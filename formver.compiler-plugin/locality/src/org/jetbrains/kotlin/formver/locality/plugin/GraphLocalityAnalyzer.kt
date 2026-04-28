@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.fir.analysis.cfa.util.traverseToFixedPoint
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirOperation
+import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
 import org.jetbrains.kotlin.fir.expressions.builder.buildExpressionStub
 import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
@@ -80,9 +81,14 @@ class GraphLocalityAnalyzer(
                         inheritsTailFact ->
                             info.put(expression, info[TailExpression] ?: Locality.Global)
                         else -> {
-                            val expressionLocality = with(context) {
-                                expression.resolveComponentLocality()
-                            } ?: Locality.Global
+                            val expressionLocality =
+                                if (expression is FirQualifiedAccessExpression) {
+                                    with(context) {
+                                        expression.resolveImmediateLocality()
+                                    }
+                                } else {
+                                    Locality.Global
+                                }
 
                             info.put(expression, expressionLocality)
                                 .put(TailExpression, expressionLocality)

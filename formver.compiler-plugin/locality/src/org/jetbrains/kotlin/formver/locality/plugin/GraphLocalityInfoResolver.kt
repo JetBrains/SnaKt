@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.findClosest
 import org.jetbrains.kotlin.fir.caches.firCachesFactory
 import org.jetbrains.kotlin.fir.declarations.FirControlFlowGraphOwner
 import org.jetbrains.kotlin.fir.expressions.FirExpression
+import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
 import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
@@ -60,10 +61,9 @@ fun ControlFlowGraph.resolveLocalityInfo(): LocalityInfo =
 context(context: CheckerContext)
 fun FirExpression.resolveLocality(): Locality {
     val expression = unwrapExpression()
-    val immediateLocality = expression.resolveComponentLocality()
 
-    if (immediateLocality != null) {
-        return immediateLocality
+    if (expression is FirQualifiedAccessExpression) {
+        return expression.resolveImmediateLocality()
     } else {
         val symbol = context.findClosest<FirCallableSymbol<*>>()
         val declaration = symbol?.fir
