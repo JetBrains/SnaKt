@@ -68,7 +68,7 @@ class ShortNameResolver : NameResolver {
      */
     private lateinit var mangledNames: Map<AnyName, String>
 
-    val separator = "$"
+    val separator = "_"
 
     /**
      * Stores which candidate is currently used for a given name.

@@ -1,592 +1,561 @@
 /havoc.kt:(453,458): info: Generated Viper text for havoc:
-domain d$rt  {
+domain rt  {
 
-  unique function df$rt$intType(): d$rt
+  unique function intType(): rt
 
-  unique function df$rt$boolType(): d$rt
+  unique function boolType(): rt
 
-  unique function df$rt$charType(): d$rt
+  unique function charType(): rt
 
-  unique function df$rt$unitType(): d$rt
+  unique function unitType(): rt
 
-  unique function df$rt$nothingType(): d$rt
+  unique function nothingType(): rt
 
-  unique function df$rt$anyType(): d$rt
+  unique function anyType(): rt
 
-  unique function df$rt$functionType(): d$rt
+  unique function functionType(): rt
 
-  unique function df$rt$stringType(): d$rt
+  unique function stringType(): rt
 
-  unique function df$rt$c$A(): d$rt
+  unique function _c_A(): rt
 
-  unique function df$rt$c$B(): d$rt
+  unique function _c_B(): rt
 
-  function df$rt$nullValue(): Ref
+  function nullValue(): Ref
 
-  function df$rt$unitValue(): Ref
+  function unitValue(): Ref
 
-  function df$rt$isSubtype(t1: d$rt, t2: d$rt): Bool
+  function isSubtype(t1: rt, t2: rt): Bool
 
-  function df$rt$typeOf(r: Ref): d$rt
+  function typeOf(r: Ref): rt
 
-  function df$rt$nullable(t: d$rt): d$rt
+  function nullable(t: rt): rt
 
-  function df$rt$intToRef(v: Int): Ref
+  function intToRef(v: Int): Ref
 
-  function df$rt$intFromRef(r: Ref): Int
+  function intFromRef(r: Ref): Int
 
-  function df$rt$boolToRef(v: Bool): Ref
+  function boolToRef(v: Bool): Ref
 
-  function df$rt$boolFromRef(r: Ref): Bool
+  function boolFromRef(r: Ref): Bool
 
-  function df$rt$charToRef(v: Int): Ref
+  function charToRef(v: Int): Ref
 
-  function df$rt$charFromRef(r: Ref): Int
+  function charFromRef(r: Ref): Int
 
-  function df$rt$stringToRef(v: Seq[Int]): Ref
+  function stringToRef(v: Seq[Int]): Ref
 
-  function df$rt$stringFromRef(r: Ref): Seq[Int]
+  function stringFromRef(r: Ref): Seq[Int]
 
-  axiom rt$subtypeReflexive {
-    (forall t: d$rt ::df$rt$isSubtype(t, t))
+  axiom subtypeReflexive {
+    (forall t: rt ::isSubtype(t, t))
   }
 
-  axiom rt$subtypeTransitive {
-    (forall t1: d$rt, t2: d$rt, t3: d$rt ::
-      { df$rt$isSubtype(t1, t2), df$rt$isSubtype(t2, t3) }
-      { df$rt$isSubtype(t1, t2), df$rt$isSubtype(t1, t3) }
-      { df$rt$isSubtype(t2, t3), df$rt$isSubtype(t1, t3) }
-      df$rt$isSubtype(t1, t2) && df$rt$isSubtype(t2, t3) ==>
-      df$rt$isSubtype(t1, t3))
+  axiom subtypeTransitive {
+    (forall t1: rt, t2: rt, t3: rt ::
+      { isSubtype(t1, t2), isSubtype(t2, t3) }
+      { isSubtype(t1, t2), isSubtype(t1, t3) }
+      { isSubtype(t2, t3), isSubtype(t1, t3) }
+      isSubtype(t1, t2) && isSubtype(t2, t3) ==> isSubtype(t1, t3))
   }
 
-  axiom rt$subtypeAntisymmetric {
-    (forall t1: d$rt, t2: d$rt ::
-      { df$rt$isSubtype(t1, t2), df$rt$isSubtype(t2, t1) }
-      df$rt$isSubtype(t1, t2) && df$rt$isSubtype(t2, t1) ==> t1 == t2)
+  axiom subtypeAntisymmetric {
+    (forall t1: rt, t2: rt ::
+      { isSubtype(t1, t2), isSubtype(t2, t1) }
+      isSubtype(t1, t2) && isSubtype(t2, t1) ==> t1 == t2)
   }
 
-  axiom rt$nullableIdempotent {
-    (forall t: d$rt ::
-      { df$rt$nullable(df$rt$nullable(t)) }
-      df$rt$nullable(df$rt$nullable(t)) == df$rt$nullable(t))
+  axiom nullableIdempotent {
+    (forall t: rt ::
+      { nullable(nullable(t)) }
+      nullable(nullable(t)) == nullable(t))
   }
 
-  axiom rt$nullableSupertype {
-    (forall t: d$rt ::
-      { df$rt$nullable(t) }
-      df$rt$isSubtype(t, df$rt$nullable(t)))
+  axiom nullableSupertype {
+    (forall t: rt :: { nullable(t) } isSubtype(t, nullable(t)))
   }
 
-  axiom rt$nullablePreservesSubtype {
-    (forall t1: d$rt, t2: d$rt ::
-      { df$rt$isSubtype(df$rt$nullable(t1), df$rt$nullable(t2)) }
-      df$rt$isSubtype(t1, t2) ==>
-      df$rt$isSubtype(df$rt$nullable(t1), df$rt$nullable(t2)))
+  axiom nullablePreservesSubtype {
+    (forall t1: rt, t2: rt ::
+      { isSubtype(nullable(t1), nullable(t2)) }
+      isSubtype(t1, t2) ==> isSubtype(nullable(t1), nullable(t2)))
   }
 
-  axiom rt$nullableAnySupertype {
-    (forall t: d$rt ::df$rt$isSubtype(t, df$rt$nullable(df$rt$anyType())))
+  axiom nullableAnySupertype {
+    (forall t: rt ::isSubtype(t, nullable(anyType())))
   }
 
   axiom {
-    df$rt$isSubtype(df$rt$intType(), df$rt$anyType())
+    isSubtype(intType(), anyType())
   }
 
   axiom {
-    df$rt$isSubtype(df$rt$boolType(), df$rt$anyType())
+    isSubtype(boolType(), anyType())
   }
 
   axiom {
-    df$rt$isSubtype(df$rt$charType(), df$rt$anyType())
+    isSubtype(charType(), anyType())
   }
 
   axiom {
-    df$rt$isSubtype(df$rt$unitType(), df$rt$anyType())
+    isSubtype(unitType(), anyType())
   }
 
   axiom {
-    df$rt$isSubtype(df$rt$nothingType(), df$rt$anyType())
+    isSubtype(nothingType(), anyType())
   }
 
   axiom {
-    df$rt$isSubtype(df$rt$anyType(), df$rt$anyType())
+    isSubtype(anyType(), anyType())
   }
 
   axiom {
-    df$rt$isSubtype(df$rt$functionType(), df$rt$anyType())
+    isSubtype(functionType(), anyType())
   }
 
   axiom {
-    df$rt$isSubtype(df$rt$stringType(), df$rt$anyType())
+    isSubtype(stringType(), anyType())
   }
 
   axiom {
-    df$rt$isSubtype(df$rt$c$A(), df$rt$anyType())
+    isSubtype(_c_A(), anyType())
   }
 
   axiom {
-    df$rt$isSubtype(df$rt$c$B(), df$rt$anyType())
+    isSubtype(_c_B(), anyType())
   }
 
-  axiom rt$supertypeOfNothing {
-    (forall t: d$rt ::df$rt$isSubtype(df$rt$nothingType(), t))
+  axiom supertypeOfNothing {
+    (forall t: rt ::isSubtype(nothingType(), t))
   }
 
-  axiom rt$anyNotNullableTypeLevel {
-    (forall t: d$rt ::!df$rt$isSubtype(df$rt$nullable(t), df$rt$anyType()))
+  axiom anyNotNullableTypeLevel {
+    (forall t: rt ::!isSubtype(nullable(t), anyType()))
   }
 
-  axiom rt$nullSmartcastValueLevel {
-    (forall r: Ref, t: d$rt ::
-      { df$rt$isSubtype(df$rt$typeOf(r), df$rt$nullable(t)) }
-      df$rt$isSubtype(df$rt$typeOf(r), df$rt$nullable(t)) ==>
-      r == df$rt$nullValue() || df$rt$isSubtype(df$rt$typeOf(r), t))
+  axiom nullSmartcastValueLevel {
+    (forall r: Ref, t: rt ::
+      { isSubtype(typeOf(r), nullable(t)) }
+      isSubtype(typeOf(r), nullable(t)) ==>
+      r == nullValue() || isSubtype(typeOf(r), t))
   }
 
-  axiom rt$nothingEmpty {
-    (forall r: Ref ::!df$rt$isSubtype(df$rt$typeOf(r), df$rt$nothingType()))
+  axiom nothingEmpty {
+    (forall r: Ref ::!isSubtype(typeOf(r), nothingType()))
   }
 
-  axiom rt$nullSmartcastTypeLevel {
-    (forall t1: d$rt, t2: d$rt ::
-      { df$rt$isSubtype(t1, df$rt$anyType()), df$rt$isSubtype(t1, df$rt$nullable(t2)) }
-      df$rt$isSubtype(t1, df$rt$anyType()) &&
-      df$rt$isSubtype(t1, df$rt$nullable(t2)) ==>
-      df$rt$isSubtype(t1, t2))
+  axiom nullSmartcastTypeLevel {
+    (forall t1: rt, t2: rt ::
+      { isSubtype(t1, anyType()), isSubtype(t1, nullable(t2)) }
+      isSubtype(t1, anyType()) && isSubtype(t1, nullable(t2)) ==>
+      isSubtype(t1, t2))
   }
 
-  axiom rt$typeOfNull {
-    df$rt$isSubtype(df$rt$typeOf(df$rt$nullValue()), df$rt$nullable(df$rt$nothingType()))
+  axiom typeOfNull {
+    isSubtype(typeOf(nullValue()), nullable(nothingType()))
   }
 
-  axiom rt$anyNotNullableValueLevel {
-    !df$rt$isSubtype(df$rt$typeOf(df$rt$nullValue()), df$rt$anyType())
+  axiom anyNotNullableValueLevel {
+    !isSubtype(typeOf(nullValue()), anyType())
   }
 
-  axiom rt$typeOfUnit {
-    df$rt$isSubtype(df$rt$typeOf(df$rt$unitValue()), df$rt$unitType())
+  axiom typeOfUnit {
+    isSubtype(typeOf(unitValue()), unitType())
   }
 
-  axiom rt$uniquenessOfUnit {
+  axiom uniquenessOfUnit {
     (forall r: Ref ::
-      { df$rt$isSubtype(df$rt$typeOf(r), df$rt$unitType()) }
-      df$rt$isSubtype(df$rt$typeOf(r), df$rt$unitType()) ==>
-      r == df$rt$unitValue())
+      { isSubtype(typeOf(r), unitType()) }
+      isSubtype(typeOf(r), unitType()) ==> r == unitValue())
   }
 
   axiom {
     (forall v: Int ::
-      { df$rt$isSubtype(df$rt$typeOf(df$rt$intToRef(v)), df$rt$intType()) }
-      df$rt$isSubtype(df$rt$typeOf(df$rt$intToRef(v)), df$rt$intType()))
+      { isSubtype(typeOf(intToRef(v)), intType()) }
+      isSubtype(typeOf(intToRef(v)), intType()))
   }
 
   axiom {
     (forall v: Int ::
-      { df$rt$intFromRef(df$rt$intToRef(v)) }
-      df$rt$intFromRef(df$rt$intToRef(v)) == v)
+      { intFromRef(intToRef(v)) }
+      intFromRef(intToRef(v)) == v)
   }
 
   axiom {
     (forall r: Ref ::
-      { df$rt$intToRef(df$rt$intFromRef(r)) }
-      df$rt$isSubtype(df$rt$typeOf(r), df$rt$intType()) ==>
-      df$rt$intToRef(df$rt$intFromRef(r)) == r)
+      { intToRef(intFromRef(r)) }
+      isSubtype(typeOf(r), intType()) ==> intToRef(intFromRef(r)) == r)
   }
 
   axiom {
     (forall v: Bool ::
-      { df$rt$isSubtype(df$rt$typeOf(df$rt$boolToRef(v)), df$rt$boolType()) }
-      df$rt$isSubtype(df$rt$typeOf(df$rt$boolToRef(v)), df$rt$boolType()))
+      { isSubtype(typeOf(boolToRef(v)), boolType()) }
+      isSubtype(typeOf(boolToRef(v)), boolType()))
   }
 
   axiom {
     (forall v: Bool ::
-      { df$rt$boolFromRef(df$rt$boolToRef(v)) }
-      df$rt$boolFromRef(df$rt$boolToRef(v)) == v)
+      { boolFromRef(boolToRef(v)) }
+      boolFromRef(boolToRef(v)) == v)
   }
 
   axiom {
     (forall r: Ref ::
-      { df$rt$boolToRef(df$rt$boolFromRef(r)) }
-      df$rt$isSubtype(df$rt$typeOf(r), df$rt$boolType()) ==>
-      df$rt$boolToRef(df$rt$boolFromRef(r)) == r)
+      { boolToRef(boolFromRef(r)) }
+      isSubtype(typeOf(r), boolType()) ==> boolToRef(boolFromRef(r)) == r)
   }
 
   axiom {
     (forall v: Int ::
-      { df$rt$isSubtype(df$rt$typeOf(df$rt$charToRef(v)), df$rt$charType()) }
-      df$rt$isSubtype(df$rt$typeOf(df$rt$charToRef(v)), df$rt$charType()))
+      { isSubtype(typeOf(charToRef(v)), charType()) }
+      isSubtype(typeOf(charToRef(v)), charType()))
   }
 
   axiom {
     (forall v: Int ::
-      { df$rt$charFromRef(df$rt$charToRef(v)) }
-      df$rt$charFromRef(df$rt$charToRef(v)) == v)
+      { charFromRef(charToRef(v)) }
+      charFromRef(charToRef(v)) == v)
   }
 
   axiom {
     (forall r: Ref ::
-      { df$rt$charToRef(df$rt$charFromRef(r)) }
-      df$rt$isSubtype(df$rt$typeOf(r), df$rt$charType()) ==>
-      df$rt$charToRef(df$rt$charFromRef(r)) == r)
+      { charToRef(charFromRef(r)) }
+      isSubtype(typeOf(r), charType()) ==> charToRef(charFromRef(r)) == r)
   }
 
   axiom {
     (forall v: Seq[Int] ::
-      { df$rt$isSubtype(df$rt$typeOf(df$rt$stringToRef(v)), df$rt$stringType()) }
-      df$rt$isSubtype(df$rt$typeOf(df$rt$stringToRef(v)), df$rt$stringType()))
+      { isSubtype(typeOf(stringToRef(v)), stringType()) }
+      isSubtype(typeOf(stringToRef(v)), stringType()))
   }
 
   axiom {
     (forall v: Seq[Int] ::
-      { df$rt$stringFromRef(df$rt$stringToRef(v)) }
-      df$rt$stringFromRef(df$rt$stringToRef(v)) == v)
+      { stringFromRef(stringToRef(v)) }
+      stringFromRef(stringToRef(v)) == v)
   }
 
   axiom {
     (forall r: Ref ::
-      { df$rt$stringToRef(df$rt$stringFromRef(r)) }
-      df$rt$isSubtype(df$rt$typeOf(r), df$rt$stringType()) ==>
-      df$rt$stringToRef(df$rt$stringFromRef(r)) == r)
+      { stringToRef(stringFromRef(r)) }
+      isSubtype(typeOf(r), stringType()) ==>
+      stringToRef(stringFromRef(r)) == r)
   }
 }
 
-field bf$any: Ref
+field any: Ref
 
-field bf$anyNull: Ref
+field anyNull: Ref
 
-field bf$boolean: Ref
+field boolean: Ref
 
-field bf$booleanNull: Ref
+field booleanNull: Ref
 
-field bf$char: Ref
+field char: Ref
 
-field bf$charNull: Ref
+field charNull: Ref
 
-field bf$classType: Ref
+field classType: Ref
 
-field bf$classTypeNull: Ref
+field classTypeNull: Ref
 
-field bf$int: Ref
+field int: Ref
 
-field bf$intNull: Ref
+field intNull: Ref
 
-field bf$nothing: Ref
+field nothing: Ref
 
-field bf$nothingNull: Ref
+field nothingNull: Ref
 
-field bf$string: Ref
+field string: Ref
 
-field bf$stringNull: Ref
+field stringNull: Ref
 
-field bf$unit: Ref
+field unit: Ref
 
-field bf$unitNull: Ref
+field unitNull: Ref
 
-function df$addCharInt(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$charType())
-  ensures df$rt$charFromRef(result) ==
-    df$rt$charFromRef(arg$1) + df$rt$intFromRef(arg$2)
+function addCharInt(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), charType())
+  ensures charFromRef(result) == charFromRef(arg_1) + intFromRef(arg)
 
 
-function df$addStringChar(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$stringType())
-  ensures df$rt$stringFromRef(result) ==
-    df$rt$stringFromRef(arg$1) ++ Seq(df$rt$charFromRef(arg$2))
+function addStringChar(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), stringType())
+  ensures stringFromRef(result) ==
+    stringFromRef(arg_1) ++ Seq(charFromRef(arg))
 
 
-function df$addStrings(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$stringType())
-  ensures df$rt$stringFromRef(result) ==
-    df$rt$stringFromRef(arg$1) ++ df$rt$stringFromRef(arg$2)
+function addStrings(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), stringType())
+  ensures stringFromRef(result) ==
+    stringFromRef(arg_1) ++ stringFromRef(arg)
 
 
-function df$andBools(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
-  ensures df$rt$boolFromRef(result) ==
-    (df$rt$boolFromRef(arg$1) && df$rt$boolFromRef(arg$2))
+function andBools(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (boolFromRef(arg_1) && boolFromRef(arg))
 
 
-function df$divInts(arg$1: Ref, arg$2: Ref): Ref
-  requires df$rt$intFromRef(arg$2) != 0
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
-  ensures df$rt$intFromRef(result) ==
-    df$rt$intFromRef(arg$1) \ df$rt$intFromRef(arg$2)
+function divInts(arg_1: Ref, arg: Ref): Ref
+  requires intFromRef(arg) != 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg_1) \ intFromRef(arg)
 
 
-function df$geChars(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
-  ensures df$rt$boolFromRef(result) ==
-    df$rt$charFromRef(arg$1) >= df$rt$charFromRef(arg$2)
+function geChars(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg_1) >= charFromRef(arg)
 
 
-function df$geInts(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
-  ensures df$rt$boolFromRef(result) ==
-    df$rt$intFromRef(arg$1) >= df$rt$intFromRef(arg$2)
+function geInts(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg_1) >= intFromRef(arg)
 
 
-function df$gtChars(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
-  ensures df$rt$boolFromRef(result) ==
-    df$rt$charFromRef(arg$1) > df$rt$charFromRef(arg$2)
+function gtChars(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg_1) > charFromRef(arg)
 
 
-function df$gtInts(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
-  ensures df$rt$boolFromRef(result) ==
-    df$rt$intFromRef(arg$1) > df$rt$intFromRef(arg$2)
+function gtInts(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg_1) > intFromRef(arg)
 
 
-function df$impliesBools(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
-  ensures df$rt$boolFromRef(result) ==
-    (df$rt$boolFromRef(arg$1) ==> df$rt$boolFromRef(arg$2))
+function impliesBools(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (boolFromRef(arg_1) ==> boolFromRef(arg))
 
 
-function df$leChars(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
-  ensures df$rt$boolFromRef(result) ==
-    df$rt$charFromRef(arg$1) <= df$rt$charFromRef(arg$2)
+function leChars(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg_1) <= charFromRef(arg)
 
 
-function df$leInts(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
-  ensures df$rt$boolFromRef(result) ==
-    df$rt$intFromRef(arg$1) <= df$rt$intFromRef(arg$2)
+function leInts(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg_1) <= intFromRef(arg)
 
 
-function df$ltChars(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
-  ensures df$rt$boolFromRef(result) ==
-    df$rt$charFromRef(arg$1) < df$rt$charFromRef(arg$2)
+function ltChars(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg_1) < charFromRef(arg)
 
 
-function df$ltInts(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
-  ensures df$rt$boolFromRef(result) ==
-    df$rt$intFromRef(arg$1) < df$rt$intFromRef(arg$2)
+function ltInts(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg_1) < intFromRef(arg)
 
 
-function df$minusInts(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
-  ensures df$rt$intFromRef(result) ==
-    df$rt$intFromRef(arg$1) - df$rt$intFromRef(arg$2)
+function minusInts(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg_1) - intFromRef(arg)
 
 
-function df$negInt(arg$1: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
-  ensures df$rt$intFromRef(result) == -df$rt$intFromRef(arg$1)
+function negInt(arg_1: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == -intFromRef(arg_1)
 
 
-function df$notBool(arg$1: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
-  ensures df$rt$boolFromRef(result) == !df$rt$boolFromRef(arg$1)
+function notBool(arg_1: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == !boolFromRef(arg_1)
 
 
-function df$orBools(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
-  ensures df$rt$boolFromRef(result) ==
-    (df$rt$boolFromRef(arg$1) || df$rt$boolFromRef(arg$2))
+function orBools(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (boolFromRef(arg_1) || boolFromRef(arg))
 
 
-function df$plusInts(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
-  ensures df$rt$intFromRef(result) ==
-    df$rt$intFromRef(arg$1) + df$rt$intFromRef(arg$2)
+function plusInts(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg_1) + intFromRef(arg)
 
 
-function df$remInts(arg$1: Ref, arg$2: Ref): Ref
-  requires df$rt$intFromRef(arg$2) != 0
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
-  ensures df$rt$intFromRef(result) ==
-    df$rt$intFromRef(arg$1) % df$rt$intFromRef(arg$2)
+function remInts(arg_1: Ref, arg: Ref): Ref
+  requires intFromRef(arg) != 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg_1) % intFromRef(arg)
 
 
-function df$stringGet(arg$1: Ref, arg$2: Ref): Ref
-  requires df$rt$intFromRef(arg$2) >= 0 &&
-    df$rt$intFromRef(arg$2) < |df$rt$stringFromRef(arg$1)|
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$charType())
-  ensures df$rt$charFromRef(result) ==
-    df$rt$stringFromRef(arg$1)[df$rt$intFromRef(arg$2)]
+function stringGet(arg_1: Ref, arg: Ref): Ref
+  requires intFromRef(arg) >= 0 && intFromRef(arg) < |stringFromRef(arg_1)|
+  ensures isSubtype(typeOf(result), charType())
+  ensures charFromRef(result) == stringFromRef(arg_1)[intFromRef(arg)]
 
 
-function df$stringLength(arg$1: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
-  ensures df$rt$intFromRef(result) == |df$rt$stringFromRef(arg$1)|
+function stringLength(arg_1: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == |stringFromRef(arg_1)|
 
 
-function df$subCharInt(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$charType())
-  ensures df$rt$charFromRef(result) ==
-    df$rt$charFromRef(arg$1) - df$rt$intFromRef(arg$2)
+function subCharInt(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), charType())
+  ensures charFromRef(result) == charFromRef(arg_1) - intFromRef(arg)
 
 
-function df$subChars(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
-  ensures df$rt$intFromRef(result) ==
-    df$rt$charFromRef(arg$1) - df$rt$charFromRef(arg$2)
+function subChars(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == charFromRef(arg_1) - charFromRef(arg)
 
 
-function df$timesInts(arg$1: Ref, arg$2: Ref): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
-  ensures df$rt$intFromRef(result) ==
-    df$rt$intFromRef(arg$1) * df$rt$intFromRef(arg$2)
+function timesInts(arg_1: Ref, arg: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg_1) * intFromRef(arg)
 
 
-predicate pred$c$A$shared(this$dispatch: Ref) {
+predicate c_A_shared(this: Ref) {
   true
 }
 
-predicate pred$c$A$unique(this$dispatch: Ref) {
-  acc(this$dispatch.bf$unit, write) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$unit), df$rt$unitType()) &&
-  acc(this$dispatch.bf$nothing, write) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$nothing), df$rt$nothingType()) &&
-  acc(this$dispatch.bf$any, write) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$any), df$rt$anyType()) &&
-  acc(this$dispatch.bf$int, write) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$int), df$rt$intType()) &&
-  acc(this$dispatch.bf$boolean, write) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$boolean), df$rt$boolType()) &&
-  acc(this$dispatch.bf$char, write) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$char), df$rt$charType()) &&
-  acc(this$dispatch.bf$string, write) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$string), df$rt$stringType()) &&
-  acc(this$dispatch.bf$classType, write) &&
-  acc(pred$c$B$shared(this$dispatch.bf$classType), wildcard) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$classType), df$rt$c$B()) &&
-  acc(this$dispatch.bf$unitNull, write) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$unitNull), df$rt$nullable(df$rt$unitType())) &&
-  acc(this$dispatch.bf$nothingNull, write) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$nothingNull), df$rt$nullable(df$rt$nothingType())) &&
-  acc(this$dispatch.bf$anyNull, write) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$anyNull), df$rt$nullable(df$rt$anyType())) &&
-  acc(this$dispatch.bf$intNull, write) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$intNull), df$rt$nullable(df$rt$intType())) &&
-  acc(this$dispatch.bf$booleanNull, write) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$booleanNull), df$rt$nullable(df$rt$boolType())) &&
-  acc(this$dispatch.bf$charNull, write) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$charNull), df$rt$nullable(df$rt$charType())) &&
-  acc(this$dispatch.bf$stringNull, write) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$stringNull), df$rt$nullable(df$rt$stringType())) &&
-  acc(this$dispatch.bf$classTypeNull, write) &&
-  (this$dispatch.bf$classTypeNull != df$rt$nullValue() ==>
-  acc(pred$c$B$shared(this$dispatch.bf$classTypeNull), wildcard)) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$classTypeNull), df$rt$nullable(df$rt$c$B()))
+predicate c_A_unique(this: Ref) {
+  acc(this.unit, write) && isSubtype(typeOf(this.unit), unitType()) &&
+  acc(this.nothing, write) &&
+  isSubtype(typeOf(this.nothing), nothingType()) &&
+  acc(this.any, write) &&
+  isSubtype(typeOf(this.any), anyType()) &&
+  acc(this.int, write) &&
+  isSubtype(typeOf(this.int), intType()) &&
+  acc(this.boolean, write) &&
+  isSubtype(typeOf(this.boolean), boolType()) &&
+  acc(this.char, write) &&
+  isSubtype(typeOf(this.char), charType()) &&
+  acc(this.string, write) &&
+  isSubtype(typeOf(this.string), stringType()) &&
+  acc(this.classType, write) &&
+  acc(shared(this.classType), wildcard) &&
+  isSubtype(typeOf(this.classType), _c_B()) &&
+  acc(this.unitNull, write) &&
+  isSubtype(typeOf(this.unitNull), nullable(unitType())) &&
+  acc(this.nothingNull, write) &&
+  isSubtype(typeOf(this.nothingNull), nullable(nothingType())) &&
+  acc(this.anyNull, write) &&
+  isSubtype(typeOf(this.anyNull), nullable(anyType())) &&
+  acc(this.intNull, write) &&
+  isSubtype(typeOf(this.intNull), nullable(intType())) &&
+  acc(this.booleanNull, write) &&
+  isSubtype(typeOf(this.booleanNull), nullable(boolType())) &&
+  acc(this.charNull, write) &&
+  isSubtype(typeOf(this.charNull), nullable(charType())) &&
+  acc(this.stringNull, write) &&
+  isSubtype(typeOf(this.stringNull), nullable(stringType())) &&
+  acc(this.classTypeNull, write) &&
+  (this.classTypeNull != nullValue() ==>
+  acc(shared(this.classTypeNull), wildcard)) &&
+  isSubtype(typeOf(this.classTypeNull), nullable(_c_B()))
 }
 
-predicate pred$c$B$shared(this$dispatch: Ref) {
+predicate c_B_unique(this: Ref) {
   true
 }
 
-predicate pred$c$B$unique(this$dispatch: Ref) {
+predicate shared(this: Ref) {
   true
 }
 
-method f$havoc$F$t$A$t$Unit(par$a: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$c$A())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method f_havoc(a: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(a), _c_A())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var l0$localUnit: Ref
-  var l0$localNothing: Ref
-  var l0$localAny: Ref
-  var l0$localInt: Ref
-  var l0$localBoolean: Ref
-  var l0$localChar: Ref
-  var l0$localString: Ref
-  var l0$localClassType: Ref
-  var l0$localUnitNull: Ref
-  var l0$localNothingNull: Ref
-  var l0$localAnyNull: Ref
-  var l0$localIntNull: Ref
-  var l0$localBooleanNull: Ref
-  var l0$localCharNull: Ref
-  var l0$localStringNull: Ref
-  var l0$localClassTypeNull: Ref
-  inhale acc(pred$c$A$shared(par$a), wildcard)
-  l0$localUnit := havoc$t$Unit()
-  l0$localNothing := havoc$t$Nothing()
-  l0$localAny := havoc$t$Any()
-  l0$localInt := havoc$t$Int()
-  l0$localBoolean := havoc$t$Boolean()
-  l0$localChar := havoc$t$Char()
-  l0$localString := havoc$t$String()
-  l0$localClassType := havoc$t$B()
-  l0$localUnitNull := havoc$t$N$Unit()
-  l0$localNothingNull := havoc$t$N$Nothing()
-  l0$localAnyNull := havoc$t$N$Any()
-  l0$localIntNull := havoc$t$N$Int()
-  l0$localBooleanNull := havoc$t$N$Boolean()
-  l0$localCharNull := havoc$t$N$Char()
-  l0$localStringNull := havoc$t$N$String()
-  l0$localClassTypeNull := havoc$t$N$B()
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  var localUnit: Ref
+  var localNothing: Ref
+  var localAny: Ref
+  var localInt: Ref
+  var localBoolean: Ref
+  var localChar: Ref
+  var localString: Ref
+  var localClassType: Ref
+  var localUnitNull: Ref
+  var localNothingNull: Ref
+  var localAnyNull: Ref
+  var localIntNull: Ref
+  var localBooleanNull: Ref
+  var localCharNull: Ref
+  var localStringNull: Ref
+  var localClassTypeNull: Ref
+  inhale acc(c_A_shared(a), wildcard)
+  localUnit := havoc_Unit()
+  localNothing := havoc_Nothing()
+  localAny := havoc_Any()
+  localInt := havoc_Int()
+  localBoolean := havoc_Boolean()
+  localChar := havoc_Char()
+  localString := havoc_String()
+  localClassType := havoc__c_B()
+  localUnitNull := havoc_NUnit()
+  localNothingNull := havoc_NNothing()
+  localAnyNull := havoc_NAny()
+  localIntNull := havoc_NInt()
+  localBooleanNull := havoc_NBoolean()
+  localCharNull := havoc_NChar()
+  localStringNull := havoc_NString()
+  localClassTypeNull := havoc()
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-method havoc$t$Any() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$anyType())
+method havoc() returns (ret: Ref)
+  ensures ret != nullValue() ==> acc(shared(ret), wildcard)
+  ensures isSubtype(typeOf(ret), nullable(_c_B()))
 
 
-method havoc$t$B() returns (ret: Ref)
-  ensures acc(pred$c$B$shared(ret), wildcard)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$B())
+method havoc_Any() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), anyType())
 
 
-method havoc$t$Boolean() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
+method havoc_Boolean() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), boolType())
 
 
-method havoc$t$Char() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$charType())
+method havoc_Char() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), charType())
 
 
-method havoc$t$Int() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
+method havoc_Int() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), intType())
 
 
-method havoc$t$N$Any() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$anyType()))
+method havoc_NAny() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), nullable(anyType()))
 
 
-method havoc$t$N$B() returns (ret: Ref)
-  ensures ret != df$rt$nullValue() ==> acc(pred$c$B$shared(ret), wildcard)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$c$B()))
+method havoc_NBoolean() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), nullable(boolType()))
 
 
-method havoc$t$N$Boolean() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$boolType()))
+method havoc_NChar() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), nullable(charType()))
 
 
-method havoc$t$N$Char() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$charType()))
+method havoc_NInt() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), nullable(intType()))
 
 
-method havoc$t$N$Int() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$intType()))
+method havoc_NNothing() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), nullable(nothingType()))
 
 
-method havoc$t$N$Nothing() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$nothingType()))
+method havoc_NString() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), nullable(stringType()))
 
 
-method havoc$t$N$String() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$stringType()))
+method havoc_NUnit() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), nullable(unitType()))
 
 
-method havoc$t$N$Unit() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nullable(df$rt$unitType()))
+method havoc_Nothing() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), nothingType())
 
 
-method havoc$t$Nothing() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$nothingType())
+method havoc_String() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), stringType())
 
 
-method havoc$t$String() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$stringType())
+method havoc_Unit() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 
 
-method havoc$t$Unit() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
+method havoc__c_B() returns (ret: Ref)
+  ensures acc(shared(ret), wildcard)
+  ensures isSubtype(typeOf(ret), _c_B())

@@ -1,91 +1,88 @@
 /loop_invariants.kt:(146,168): info: Generated Viper text for dynamicLambdaInvariant:
-method f$dynamicLambdaInvariant$F$t$F$t$Int$t$Unit(par$f: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$f), df$rt$functionType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method dynamicLambdaInvariant(f: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var anon$0: Ref
-  label lbl$cont$0
-    invariant df$rt$isSubtype(df$rt$typeOf(par$f), df$rt$functionType())
-  anon$0 := f$returnsBoolean$F$t$Boolean()
-  if (df$rt$boolFromRef(anon$0)) {
-    var anon$1: Ref
-    inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$intType())
-    goto lbl$cont$0
+  var anon_0: Ref
+  label cont
+    invariant isSubtype(typeOf(f), functionType())
+  anon_0 := returnsBoolean()
+  if (boolFromRef(anon_0)) {
+    var anon: Ref
+    inhale isSubtype(typeOf(anon), intType())
+    goto cont
   }
-  label lbl$break$0
-  assert df$rt$isSubtype(df$rt$typeOf(par$f), df$rt$functionType())
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  label break
+  assert isSubtype(typeOf(f), functionType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-method f$returnsBoolean$F$t$Boolean() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
+method returnsBoolean() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), boolType())
 
 
 /loop_invariants.kt:(241,259): info: Generated Viper text for functionAssignment:
-method f$functionAssignment$F$t$F$t$Int$t$Unit(par$f: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$f), df$rt$functionType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method functionAssignment(f: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var l0$g: Ref
-  var anon$0: Ref
-  l0$g := par$f
-  label lbl$cont$0
-    invariant df$rt$isSubtype(df$rt$typeOf(l0$g), df$rt$functionType())
-    invariant df$rt$isSubtype(df$rt$typeOf(par$f), df$rt$functionType())
-  anon$0 := f$returnsBoolean$F$t$Boolean()
-  if (df$rt$boolFromRef(anon$0)) {
-    var anon$1: Ref
-    inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$intType())
-    goto lbl$cont$0
+  var g: Ref
+  var anon_0: Ref
+  g := f
+  label cont
+    invariant isSubtype(typeOf(g), functionType())
+    invariant isSubtype(typeOf(f), functionType())
+  anon_0 := returnsBoolean()
+  if (boolFromRef(anon_0)) {
+    var anon: Ref
+    inhale isSubtype(typeOf(anon), intType())
+    goto cont
   }
-  label lbl$break$0
-  assert df$rt$isSubtype(df$rt$typeOf(l0$g), df$rt$functionType())
-  assert df$rt$isSubtype(df$rt$typeOf(par$f), df$rt$functionType())
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  label break
+  assert isSubtype(typeOf(g), functionType())
+  assert isSubtype(typeOf(f), functionType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-method f$returnsBoolean$F$t$Boolean() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
+method returnsBoolean() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), boolType())
 
 
 /loop_invariants.kt:(346,375): info: Generated Viper text for conditionalFunctionAssignment:
-method f$conditionalFunctionAssignment$F$t$Boolean$t$F$t$Int$t$F$t$Int$t$Unit(par$b: Ref,
-  par$f: Ref, par$h: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$boolType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$f), df$rt$functionType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$h), df$rt$functionType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method conditionalFunctionAssignment(b: Ref, f: Ref, h: Ref)
+  returns (ret_0: Ref)
+  requires isSubtype(typeOf(b), boolType())
+  requires isSubtype(typeOf(f), functionType())
+  requires isSubtype(typeOf(h), functionType())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var l0$g: Ref
-  var anon$0: Ref
-  if (df$rt$boolFromRef(par$b)) {
-    l0$g := par$f
+  var g: Ref
+  var anon_0: Ref
+  if (boolFromRef(b)) {
+    g := f
   } else {
-    l0$g := par$h}
-  label lbl$cont$0
-    invariant df$rt$isSubtype(df$rt$typeOf(l0$g), df$rt$functionType())
-    invariant df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$boolType())
-    invariant df$rt$isSubtype(df$rt$typeOf(par$f), df$rt$functionType())
-    invariant df$rt$isSubtype(df$rt$typeOf(par$h), df$rt$functionType())
-  anon$0 := f$returnsBoolean$F$t$Boolean()
-  if (df$rt$boolFromRef(anon$0)) {
-    var anon$1: Ref
-    inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$intType())
-    goto lbl$cont$0
+    g := h}
+  label cont
+    invariant isSubtype(typeOf(g), functionType())
+    invariant isSubtype(typeOf(b), boolType())
+    invariant isSubtype(typeOf(f), functionType())
+    invariant isSubtype(typeOf(h), functionType())
+  anon_0 := returnsBoolean()
+  if (boolFromRef(anon_0)) {
+    var anon: Ref
+    inhale isSubtype(typeOf(anon), intType())
+    goto cont
   }
-  label lbl$break$0
-  assert df$rt$isSubtype(df$rt$typeOf(l0$g), df$rt$functionType())
-  assert df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$boolType())
-  assert df$rt$isSubtype(df$rt$typeOf(par$f), df$rt$functionType())
-  assert df$rt$isSubtype(df$rt$typeOf(par$h), df$rt$functionType())
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  label break
+  assert isSubtype(typeOf(g), functionType())
+  assert isSubtype(typeOf(b), boolType())
+  assert isSubtype(typeOf(f), functionType())
+  assert isSubtype(typeOf(h), functionType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-method f$returnsBoolean$F$t$Boolean() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$boolType())
+method returnsBoolean() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), boolType())

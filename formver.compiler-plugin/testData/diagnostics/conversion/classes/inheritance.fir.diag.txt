@@ -1,172 +1,170 @@
 /inheritance.kt:(93,97): info: Generated Viper text for getY:
-field bf$b: Ref
+field b: Ref
 
-field bf$x: Ref
+field x: Ref
 
-field bf$y: Ref
+field y: Ref
 
-method f$c$Foo$getY$F$t$Foo$t$Int(this$dispatch: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method getY(this: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(this), _c_Foo())
+  ensures isSubtype(typeOf(ret_0), intType())
 {
-  inhale acc(pred$c$Foo$shared(this$dispatch), wildcard)
-  unfold acc(pred$c$Foo$shared(this$dispatch), wildcard)
-  ret$0 := this$dispatch.bf$y
-  goto lbl$ret$0
-  label lbl$ret$0
+  inhale acc(shared(this), wildcard)
+  unfold acc(shared(this), wildcard)
+  ret_0 := this.y
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /inheritance.kt:(190,193): info: Generated Viper text for sum:
-field bf$b: Ref
+field b: Ref
 
-field bf$x: Ref
+field x: Ref
 
-field bf$y: Ref
+field y: Ref
 
-field bf$z: Ref
+field z: Ref
 
-method f$c$Bar$sum$F$t$Bar$t$Int(this$dispatch: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Bar())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method sum(this: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(this), _c_Bar())
+  ensures isSubtype(typeOf(ret_0), intType())
 {
-  var anon$0: Ref
-  var anon$1: Ref
-  inhale acc(pred$c$Bar$shared(this$dispatch), wildcard)
-  unfold acc(pred$c$Bar$shared(this$dispatch), wildcard)
-  unfold acc(pred$c$Foo$shared(this$dispatch), wildcard)
-  anon$0 := this$dispatch.bf$x
-  unfold acc(pred$c$Bar$shared(this$dispatch), wildcard)
-  anon$1 := this$dispatch.bf$z
-  ret$0 := df$plusInts(anon$0, anon$1)
-  goto lbl$ret$0
-  label lbl$ret$0
+  var anon_0: Ref
+  var anon: Ref
+  inhale acc(c_Bar_shared(this), wildcard)
+  unfold acc(c_Bar_shared(this), wildcard)
+  unfold acc(shared(this), wildcard)
+  anon_0 := this.x
+  unfold acc(c_Bar_shared(this), wildcard)
+  anon := this.z
+  ret_0 := plusInts(anon_0, anon)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /inheritance.kt:(236,251): info: Generated Viper text for callSuperMethod:
-field bf$b: Ref
+field b: Ref
 
-field bf$x: Ref
+field x: Ref
 
-field bf$y: Ref
+field y: Ref
 
-field bf$z: Ref
+field z: Ref
 
-method f$c$Foo$getY$F$t$Foo$t$Int(this$dispatch: Ref) returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Foo())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-
-
-method f$callSuperMethod$F$t$Bar$t$Int(par$bar: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$bar), df$rt$c$Bar())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method callSuperMethod(bar: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(bar), _c_Bar())
+  ensures isSubtype(typeOf(ret_0), intType())
 {
-  inhale acc(pred$c$Bar$shared(par$bar), wildcard)
-  ret$0 := f$c$Foo$getY$F$t$Foo$t$Int(par$bar)
-  goto lbl$ret$0
-  label lbl$ret$0
+  inhale acc(c_Bar_shared(bar), wildcard)
+  ret_0 := getY(bar)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
+method getY(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), _c_Foo())
+  ensures isSubtype(typeOf(ret), intType())
+
+
 /inheritance.kt:(298,314): info: Generated Viper text for accessSuperField:
-field bf$b: Ref
+field b: Ref
 
-field bf$x: Ref
+field x: Ref
 
-field bf$y: Ref
+field y: Ref
 
-field bf$z: Ref
+field z: Ref
 
-method f$accessSuperField$F$t$Bar$t$Boolean(par$bar: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$bar), df$rt$c$Bar())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
+method accessSuperField(bar: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(bar), _c_Bar())
+  ensures isSubtype(typeOf(ret_0), boolType())
 {
-  inhale acc(pred$c$Bar$shared(par$bar), wildcard)
-  ret$0 := havoc$t$Boolean()
-  goto lbl$ret$0
-  label lbl$ret$0
+  inhale acc(c_Bar_shared(bar), wildcard)
+  ret_0 := havoc_Boolean()
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /inheritance.kt:(360,374): info: Generated Viper text for accessNewField:
-field bf$b: Ref
+field b: Ref
 
-field bf$x: Ref
+field x: Ref
 
-field bf$y: Ref
+field y: Ref
 
-field bf$z: Ref
+field z: Ref
 
-method f$accessNewField$F$t$Bar$t$Int(par$bar: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$bar), df$rt$c$Bar())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method accessNewField(bar: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(bar), _c_Bar())
+  ensures isSubtype(typeOf(ret_0), intType())
 {
-  inhale acc(pred$c$Bar$shared(par$bar), wildcard)
-  unfold acc(pred$c$Bar$shared(par$bar), wildcard)
-  ret$0 := par$bar.bf$z
-  goto lbl$ret$0
-  label lbl$ret$0
+  inhale acc(c_Bar_shared(bar), wildcard)
+  unfold acc(c_Bar_shared(bar), wildcard)
+  ret_0 := bar.z
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /inheritance.kt:(416,429): info: Generated Viper text for callNewMethod:
-field bf$b: Ref
+field b: Ref
 
-field bf$x: Ref
+field x: Ref
 
-field bf$y: Ref
+field y: Ref
 
-field bf$z: Ref
+field z: Ref
 
-method f$c$Bar$sum$F$t$Bar$t$Int(this$dispatch: Ref) returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$Bar())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$intType())
-
-
-method f$callNewMethod$F$t$Bar$t$Int(par$bar: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$bar), df$rt$c$Bar())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method callNewMethod(bar: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(bar), _c_Bar())
+  ensures isSubtype(typeOf(ret_0), intType())
 {
-  inhale acc(pred$c$Bar$shared(par$bar), wildcard)
-  ret$0 := f$c$Bar$sum$F$t$Bar$t$Int(par$bar)
-  goto lbl$ret$0
-  label lbl$ret$0
+  inhale acc(c_Bar_shared(bar), wildcard)
+  ret_0 := sum(bar)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
+method sum(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), _c_Bar())
+  ensures isSubtype(typeOf(ret), intType())
+
+
 /inheritance.kt:(475,488): info: Generated Viper text for setSuperField:
-field bf$b: Ref
+field b: Ref
 
-field bf$x: Ref
+field x: Ref
 
-field bf$y: Ref
+field y: Ref
 
-field bf$z: Ref
+field z: Ref
 
-method f$setSuperField$F$t$Bar$t$Unit(par$bar: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$bar), df$rt$c$Bar())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method setSuperField(bar: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(bar), _c_Bar())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  inhale acc(pred$c$Bar$shared(par$bar), wildcard)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale acc(c_Bar_shared(bar), wildcard)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /inheritance.kt:(525,546): info: Generated Viper text for accessSuperSuperField:
-field bf$b: Ref
+field b: Ref
 
-field bf$x: Ref
+field x: Ref
 
-field bf$y: Ref
+field y: Ref
 
-field bf$z: Ref
+field z: Ref
 
-method f$accessSuperSuperField$F$t$Baz$t$Int(par$baz: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$baz), df$rt$c$Baz())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method accessSuperSuperField(baz: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(baz), _c_Baz())
+  ensures isSubtype(typeOf(ret_0), intType())
 {
-  inhale acc(pred$c$Baz$shared(par$baz), wildcard)
-  unfold acc(pred$c$Baz$shared(par$baz), wildcard)
-  unfold acc(pred$c$Bar$shared(par$baz), wildcard)
-  unfold acc(pred$c$Foo$shared(par$baz), wildcard)
-  ret$0 := par$baz.bf$x
-  goto lbl$ret$0
-  label lbl$ret$0
+  inhale acc(c_Baz_shared(baz), wildcard)
+  unfold acc(c_Baz_shared(baz), wildcard)
+  unfold acc(c_Bar_shared(baz), wildcard)
+  unfold acc(shared(baz), wildcard)
+  ret_0 := baz.x
+  goto lbl_ret_0
+  label lbl_ret_0
 }

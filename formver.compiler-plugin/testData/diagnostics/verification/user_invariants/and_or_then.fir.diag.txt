@@ -1,49 +1,43 @@
 /and_or_then.kt:(64,75): info: Generated Viper text for resultOrArg:
-method f$resultOrArg$F$t$Boolean$t$Boolean(par$arg: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$arg), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(ret$0) || df$rt$boolFromRef(par$arg)
+method resultOrArg(par_arg: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par_arg), boolType())
+  ensures isSubtype(typeOf(ret), boolType())
+  ensures boolFromRef(ret) || boolFromRef(par_arg)
 {
-  ret$0 := df$notBool(par$arg)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret := notBool(par_arg)
+  goto ret_0
+  label ret_0
 }
 
 /and_or_then.kt:(200,211): info: Generated Viper text for testImplies:
-method f$testImplies$F$t$Boolean$t$Boolean(par$arg: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$arg), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(par$arg) ==> !df$rt$boolFromRef(ret$0)
-  ensures df$rt$boolFromRef(ret$0) ==> !df$rt$boolFromRef(par$arg)
-  ensures !df$rt$boolFromRef(par$arg) ==> df$rt$boolFromRef(ret$0)
-  ensures !df$rt$boolFromRef(ret$0) ==> df$rt$boolFromRef(par$arg)
+method testImplies(par_arg: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par_arg), boolType())
+  ensures isSubtype(typeOf(ret), boolType())
+  ensures boolFromRef(par_arg) ==> !boolFromRef(ret)
+  ensures boolFromRef(ret) ==> !boolFromRef(par_arg)
+  ensures !boolFromRef(par_arg) ==> boolFromRef(ret)
+  ensures !boolFromRef(ret) ==> boolFromRef(par_arg)
 {
-  ret$0 := df$notBool(par$arg)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret := notBool(par_arg)
+  goto ret_0
+  label ret_0
 }
 
 /and_or_then.kt:(417,424): info: Generated Viper text for testAnd:
-method f$testAnd$F$t$Boolean$t$Boolean$t$Boolean(par$arg1: Ref, par$arg2: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$arg1), df$rt$boolType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$arg2), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(ret$0) ==>
-    df$rt$boolFromRef(par$arg1) && df$rt$boolFromRef(par$arg2)
-  ensures !df$rt$boolFromRef(ret$0) ==>
-    !df$rt$boolFromRef(par$arg1) || !df$rt$boolFromRef(par$arg2)
-  ensures df$rt$boolFromRef(par$arg1) && df$rt$boolFromRef(par$arg2) ==>
-    df$rt$boolFromRef(ret$0)
-  ensures !df$rt$boolFromRef(par$arg1) ==> !df$rt$boolFromRef(ret$0)
-  ensures !df$rt$boolFromRef(par$arg2) ==> !df$rt$boolFromRef(ret$0)
+method testAnd(arg1: Ref, arg2: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(arg1), boolType())
+  requires isSubtype(typeOf(arg2), boolType())
+  ensures isSubtype(typeOf(ret), boolType())
+  ensures boolFromRef(ret) ==> boolFromRef(arg1) && boolFromRef(arg2)
+  ensures !boolFromRef(ret) ==> !boolFromRef(arg1) || !boolFromRef(arg2)
+  ensures boolFromRef(arg1) && boolFromRef(arg2) ==> boolFromRef(ret)
+  ensures !boolFromRef(arg1) ==> !boolFromRef(ret)
+  ensures !boolFromRef(arg2) ==> !boolFromRef(ret)
 {
-  if (df$rt$boolFromRef(par$arg1)) {
-    ret$0 := par$arg2
+  if (boolFromRef(arg1)) {
+    ret := arg2
   } else {
-    ret$0 := df$rt$boolToRef(false)}
-  goto lbl$ret$0
-  label lbl$ret$0
+    ret := boolToRef(false)}
+  goto ret_0
+  label ret_0
 }

@@ -1,27 +1,25 @@
 /returns_null.kt:(121,146): info: Generated Viper text for returns_null_unverifiable:
-method f$returns_null_unverifiable$F$t$N$Int$t$N$Int(par$x: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$intType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
+method returns_null_unverifiable(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), nullable(intType()))
+  ensures isSubtype(typeOf(ret), nullable(intType()))
   ensures true ==> false
 {
-  ret$0 := df$rt$nullValue()
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret := nullValue()
+  goto ret_0
+  label ret_0
 }
 
 /returns_null.kt:(187,210): warning: Cannot verify that if the function returns then false.
 
 /returns_null.kt:(277,302): info: Generated Viper text for non_nullable_returns_null:
-method f$non_nullable_returns_null$F$t$Int$t$Int(par$x: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
-  ensures ret$0 == df$rt$nullValue()
+method non_nullable_returns_null(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret), intType())
+  ensures ret == nullValue()
 {
-  ret$0 := par$x
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret := x
+  goto ret_0
+  label ret_0
 }
 
 /returns_null.kt:(341,354): warning: Function may return a non-null value.
