@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.test.services.TestService
 import org.jetbrains.kotlin.test.services.TestServices
 import org.jetbrains.kotlin.test.services.assertions
 import org.jetbrains.kotlin.test.services.moduleStructure
-import org.jetbrains.kotlin.test.util.trimTrailingWhitespacesAndRemoveRedundantEmptyLinesAtTheEnd
+import org.jetbrains.kotlin.test.util.trimTrailingWhitespacesAndAddNewlineAtEOF
 import org.jetbrains.kotlin.util.capitalizeDecapitalize.toLowerCaseAsciiOnly
 
 const val CONVERSION_FILE_EXTENSION = ".fir.diag.txt"
@@ -127,4 +127,3 @@ class DiagnosticsCollector(val testServices: TestServices) : TestService {
 
     }
 }
-
