@@ -48,7 +48,7 @@ class DiagnosticsCollector(val testServices: TestServices) : TestService {
             .sortedWith(compareBy<DiagnosticData> { it.textRanges.first().startOffset }.thenBy { it.message })
         return reportedDiagnostics.joinToString(separator = "\n\n") {
             "/$fileName:${it.textRanges.first()}: ${it.severity}: ${it.message}"
-        }
+        }.trimTrailingWhitespacesAndAddNewlineAtEOF()
     }
 
     fun renderConversionDiagnostics(): String? = render(conversionDiagnostics)
@@ -91,7 +91,7 @@ class DiagnosticsCollector(val testServices: TestServices) : TestService {
 
         val expectedDiagnostics = expectedFile.readText()
 
-        return expectedDiagnostics.trimTrailingWhitespacesAndRemoveRedundantEmptyLinesAtTheEnd() != actualDiagnostics?.trimTrailingWhitespacesAndRemoveRedundantEmptyLinesAtTheEnd()
+        return expectedDiagnostics.trimTrailingWhitespacesAndAddNewlineAtEOF() != actualDiagnostics?.trimTrailingWhitespacesAndAddNewlineAtEOF()
     }
 
     /**
