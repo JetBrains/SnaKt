@@ -1,43 +1,61 @@
 /and_or_then.kt:(64,75): info: Generated Viper text for resultOrArg:
-method resultOrArg(par_arg: Ref) returns (ret: Ref)
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
+method resultOrArg(par_arg: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(par_arg), boolType())
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) || boolFromRef(par_arg)
+  ensures isSubtype(typeOf(ret_0), boolType())
+  ensures boolFromRef(ret_0) || boolFromRef(par_arg)
 {
-  ret := notBool(par_arg)
-  goto ret_0
-  label ret_0
+  ret_0 := notBool(par_arg)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /and_or_then.kt:(200,211): info: Generated Viper text for testImplies:
-method testImplies(par_arg: Ref) returns (ret: Ref)
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
+method testImplies(par_arg: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(par_arg), boolType())
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(par_arg) ==> !boolFromRef(ret)
-  ensures boolFromRef(ret) ==> !boolFromRef(par_arg)
-  ensures !boolFromRef(par_arg) ==> boolFromRef(ret)
-  ensures !boolFromRef(ret) ==> boolFromRef(par_arg)
+  ensures isSubtype(typeOf(ret_0), boolType())
+  ensures boolFromRef(par_arg) ==> !boolFromRef(ret_0)
+  ensures boolFromRef(ret_0) ==> !boolFromRef(par_arg)
+  ensures !boolFromRef(par_arg) ==> boolFromRef(ret_0)
+  ensures !boolFromRef(ret_0) ==> boolFromRef(par_arg)
 {
-  ret := notBool(par_arg)
-  goto ret_0
-  label ret_0
+  ret_0 := notBool(par_arg)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /and_or_then.kt:(417,424): info: Generated Viper text for testAnd:
-method testAnd(arg1: Ref, arg2: Ref) returns (ret: Ref)
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
+method testAnd(arg1: Ref, arg2: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(arg1), boolType())
   requires isSubtype(typeOf(arg2), boolType())
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) ==> boolFromRef(arg1) && boolFromRef(arg2)
-  ensures !boolFromRef(ret) ==> !boolFromRef(arg1) || !boolFromRef(arg2)
-  ensures boolFromRef(arg1) && boolFromRef(arg2) ==> boolFromRef(ret)
-  ensures !boolFromRef(arg1) ==> !boolFromRef(ret)
-  ensures !boolFromRef(arg2) ==> !boolFromRef(ret)
+  ensures isSubtype(typeOf(ret_0), boolType())
+  ensures boolFromRef(ret_0) ==> boolFromRef(arg1) && boolFromRef(arg2)
+  ensures !boolFromRef(ret_0) ==> !boolFromRef(arg1) || !boolFromRef(arg2)
+  ensures boolFromRef(arg1) && boolFromRef(arg2) ==> boolFromRef(ret_0)
+  ensures !boolFromRef(arg1) ==> !boolFromRef(ret_0)
+  ensures !boolFromRef(arg2) ==> !boolFromRef(ret_0)
 {
   if (boolFromRef(arg1)) {
-    ret := arg2
+    ret_0 := arg2
   } else {
-    ret := boolToRef(false)}
-  goto ret_0
-  label ret_0
+    ret_0 := boolToRef(false)}
+  goto lbl_ret_0
+  label lbl_ret_0
 }

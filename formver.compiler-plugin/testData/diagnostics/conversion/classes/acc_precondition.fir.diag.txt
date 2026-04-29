@@ -1,36 +1,35 @@
 /acc_precondition.kt:(127,148): info: Generated Viper text for test_acc_precondition:
-field bf$a: Ref
+field a: Ref
 
-predicate p$c$X$shared(this$dispatch: Ref) {
+predicate c_InvariantBuilder_unique(this: Ref) {
   true
 }
 
-predicate p$c$X$unique(this$dispatch: Ref) {
-  acc(this$dispatch.bf$a, write) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$a), df$rt$anyType())
-}
-
-predicate p$pkg$org_jetbrains_kotlin_formver_plugin$c$InvariantBuilder$shared(this$dispatch: Ref) {
+predicate c_X_shared(this: Ref) {
   true
 }
 
-predicate p$pkg$org_jetbrains_kotlin_formver_plugin$c$InvariantBuilder$unique(this$dispatch: Ref) {
+predicate c_X_unique(this: Ref) {
+  acc(this.a, write) && isSubtype(typeOf(this.a), anyType())
+}
+
+predicate shared(this: Ref) {
   true
 }
 
-method f$test_acc_precondition$TF$T$X(p$x: Ref) returns (ret$0: Ref)
-  requires acc(p$x.bf$a, wildcard)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
+method test_acc_precondition(x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), _c_X())
+  requires acc(x.a, write)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$X())
-  inhale acc(p$c$X$shared(p$x), wildcard)
-  p$x.bf$a := df$rt$intToRef(123)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale acc(c_X_shared(x), wildcard)
+  x.a := intToRef(123)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
-
-method pg$public$read(this$dispatch: Ref) returns (ret: Ref)
-
-
-method pg$public$write(this$dispatch: Ref) returns (ret: Ref)
-

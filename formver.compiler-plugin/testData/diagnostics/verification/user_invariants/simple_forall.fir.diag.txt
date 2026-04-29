@@ -1,30 +1,42 @@
 /simple_forall.kt:(64,92): info: Generated Viper text for anyIntegerSquaredAtLeastZero:
-method anyIntegerSquaredAtLeastZero() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
+method anyIntegerSquaredAtLeastZero() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), intType())
   ensures (forall anon: Int ::anon * anon >= 0 &&
-      anon * anon >= intFromRef(ret))
+      anon * anon >= intFromRef(ret_0))
 {
-  ret := intToRef(0)
-  goto ret_0
-  label ret_0
+  ret_0 := intToRef(0)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
 /simple_forall.kt:(259,298): info: Generated Viper text for anyIntegerSquaredIsAtLeastOneExceptZero:
-method anyIntegerSquaredIsAtLeastOneExceptZero() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
+method anyIntegerSquaredIsAtLeastOneExceptZero() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), intType())
   ensures (forall anon: Int ::!(anon == 0) ==>
-      anon * anon >= intFromRef(ret))
+      anon * anon >= intFromRef(ret_0))
 {
-  ret := intToRef(1)
-  goto ret_0
-  label ret_0
+  ret_0 := intToRef(1)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
+
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
 
 /simple_forall.kt:(460,503): info: Generated Viper text for anyIntegerSquaredIsAtLeastZeroStringVersion:
 method anyIntegerSquaredIsAtLeastZeroStringVersion(str: Ref)
-  returns (ret: Ref)
+  returns (ret_0: Ref)
   requires isSubtype(typeOf(str), stringType())
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(ret_0), intType())
 {
   var res: Ref
   var i: Ref
@@ -56,7 +68,13 @@ method anyIntegerSquaredIsAtLeastZeroStringVersion(str: Ref)
       (stringFromRef(str)[anon_builtin] - 97) *
       (stringFromRef(str)[anon_builtin] - 97) >=
       intFromRef(res))
-  ret := res
-  goto ret_0
-  label ret_0
+  ret_0 := res
+  goto lbl_ret_0
+  label lbl_ret_0
 }
+
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+

@@ -1,28 +1,40 @@
 /sum_of_1_to_n.kt:(64,91): info: Generated Viper text for recursiveSumOfIntegersUpToN:
-method recursiveSumOfIntegersUpToN(n: Ref) returns (ret: Ref)
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
+method recursiveSumOfIntegersUpToN(n: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(n), intType())
   requires intFromRef(n) >= 0
-  ensures isSubtype(typeOf(ret), intType())
-  ensures intFromRef(ret) == intFromRef(n) * (intFromRef(n) + 1) \ 2
+  ensures isSubtype(typeOf(ret_0), intType())
+  ensures intFromRef(ret_0) == intFromRef(n) * (intFromRef(n) + 1) \ 2
 {
   if (intFromRef(n) == 0) {
-    ret := intToRef(0)
-    goto ret_0
+    ret_0 := intToRef(0)
+    goto lbl_ret_0
   } else {
     var anon: Ref
     anon := recursiveSumOfIntegersUpToN(minusInts(n, intToRef(1)))
-    ret := plusInts(n, anon)
-    goto ret_0
+    ret_0 := plusInts(n, anon)
+    goto lbl_ret_0
   }
-  label ret_0
+  label lbl_ret_0
 }
 
 /sum_of_1_to_n.kt:(296,314): info: Generated Viper text for sumOfIntegersUpToN:
-method sumOfIntegersUpToN(n: Ref) returns (ret: Ref)
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
+method sumOfIntegersUpToN(n: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(n), intType())
   requires intFromRef(n) >= 0
-  ensures isSubtype(typeOf(ret), intType())
-  ensures intFromRef(ret) == intFromRef(n) * (intFromRef(n) + 1) \ 2
+  ensures isSubtype(typeOf(ret_0), intType())
+  ensures intFromRef(ret_0) == intFromRef(n) * (intFromRef(n) + 1) \ 2
 {
   var sum: Ref
   var i: Ref
@@ -47,7 +59,7 @@ method sumOfIntegersUpToN(n: Ref) returns (ret: Ref)
   assert isSubtype(typeOf(n), intType())
   assert intFromRef(i) <= intFromRef(n)
   assert intFromRef(sum) == intFromRef(i) * (intFromRef(i) + 1) \ 2
-  ret := sum
-  goto ret_0
-  label ret_0
+  ret_0 := sum
+  goto lbl_ret_0
+  label lbl_ret_0
 }

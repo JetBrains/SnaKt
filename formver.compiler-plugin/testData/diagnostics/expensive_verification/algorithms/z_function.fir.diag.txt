@@ -1,6 +1,12 @@
 /z_function.kt:(187,198): info: Generated Viper text for zFuncHelper:
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
 method zFuncHelper(s: Ref, res: Ref, i: Ref, checkedLeft: Ref, checkedRight: Ref)
-  returns (ret: Ref)
+  returns (ret_0: Ref)
   requires isSubtype(typeOf(s), stringType())
   requires isSubtype(typeOf(res), stringType())
   requires isSubtype(typeOf(i), intType())
@@ -30,11 +36,11 @@ method zFuncHelper(s: Ref, res: Ref, i: Ref, checkedLeft: Ref, checkedRight: Ref
       anon_builtin_6 < intFromRef(checkedRight) - intFromRef(checkedLeft) ==>
       stringFromRef(s)[intFromRef(checkedLeft) + anon_builtin_6] ==
       stringFromRef(s)[anon_builtin_6])
-  ensures isSubtype(typeOf(ret), intType())
-  ensures intFromRef(i) <= intFromRef(ret) &&
-    intFromRef(ret) <= |stringFromRef(s)|
+  ensures isSubtype(typeOf(ret_0), intType())
+  ensures intFromRef(i) <= intFromRef(ret_0) &&
+    intFromRef(ret_0) <= |stringFromRef(s)|
   ensures (forall anon_builtin: Int ::intFromRef(i) <= anon_builtin &&
-      anon_builtin < intFromRef(ret) ==>
+      anon_builtin < intFromRef(ret_0) ==>
       stringFromRef(s)[anon_builtin - intFromRef(i)] ==
       stringFromRef(s)[anon_builtin])
 {
@@ -44,25 +50,31 @@ method zFuncHelper(s: Ref, res: Ref, i: Ref, checkedLeft: Ref, checkedRight: Ref
   } else {
     anon := leInts(checkedRight, i)}
   if (boolFromRef(anon)) {
-    ret := i
+    ret_0 := i
   } else {
     var bound: Ref
     bound := plusInts(i, subChars(stringGet(res, minusInts(i, checkedLeft)),
       charToRef(48)))
     if (intFromRef(bound) < intFromRef(checkedRight)) {
-      ret := bound
+      ret_0 := bound
     } else {
-      ret := checkedRight}
+      ret_0 := checkedRight}
   }
-  goto ret_0
-  label ret_0
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /z_function.kt:(1389,1398): info: Generated Viper text for zFunction:
+method g_write(v_this: Ref) returns (v_ret: Ref)
+
+
 method plus(v_this: Ref, other: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(v_this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(v_ret), stringType())
+
+
+method read(v_this: Ref) returns (v_ret: Ref)
 
 
 method zFuncHelper(s: Ref, res: Ref, i: Ref, checkedLeft: Ref, checkedRight: Ref)
@@ -263,10 +275,16 @@ method zFunction(this: Ref) returns (ret: Ref)
 }
 
 /z_function.kt:(3481,3495): info: Generated Viper text for zFunctionNaive:
+method g_write(v_this: Ref) returns (v_ret: Ref)
+
+
 method plus(v_this: Ref, other: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(v_this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(v_ret), stringType())
+
+
+method read(v_this: Ref) returns (v_ret: Ref)
 
 
 method zFunctionNaive(this: Ref) returns (ret: Ref)

@@ -107,6 +107,12 @@ function isStrictlyAscendingAndPositive(node: Ref): Ref
                     v_anon_0_0)))))))))
 }
 
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
 /heap_dependent_specifications.kt:(948,965): info: Generated Viper text for isLocallyValidBST:
 field left: Ref
 

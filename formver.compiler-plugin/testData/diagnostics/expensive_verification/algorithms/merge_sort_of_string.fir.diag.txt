@@ -1,8 +1,14 @@
 /merge_sort_of_string.kt:(72,76): info: Generated Viper text for subs:
+method g_write(v_this: Ref) returns (v_ret: Ref)
+
+
 method plus(v_this: Ref, other: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(v_this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(v_ret), stringType())
+
+
+method read(v_this: Ref) returns (v_ret: Ref)
 
 
 method subs(this: Ref, lo: Ref, hi: Ref) returns (ret: Ref)
@@ -61,6 +67,9 @@ method subs(this: Ref, lo: Ref, hi: Ref) returns (ret: Ref)
 }
 
 /merge_sort_of_string.kt:(705,717): info: Generated Viper text for mergeStrings:
+method g_write(this: Ref) returns (v_ret: Ref)
+
+
 method mergeStrings(a: Ref, b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(a), stringType())
   requires isSubtype(typeOf(b), stringType())
@@ -176,7 +185,13 @@ method plus(this: Ref, other: Ref) returns (v_ret: Ref)
   ensures isSubtype(typeOf(v_ret), stringType())
 
 
+method read(this: Ref) returns (v_ret: Ref)
+
+
 /merge_sort_of_string.kt:(1883,1894): info: Generated Viper text for mergeSorted:
+method g_write(v_this: Ref) returns (ret: Ref)
+
+
 method mergeSorted(this: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(this), stringType())
   ensures isSubtype(typeOf(ret_0), stringType())
@@ -221,6 +236,9 @@ method mergeStrings(a: Ref, b: Ref) returns (ret: Ref)
       stringFromRef(ret)[anon_builtin])
 
 
+method read(v_this: Ref) returns (ret: Ref)
+
+
 method subs(this: Ref, lo: Ref, hi: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(lo), intType())
@@ -232,3 +250,4 @@ method subs(this: Ref, lo: Ref, hi: Ref) returns (ret: Ref)
   ensures (forall anon: Int ::0 <= anon && anon < |stringFromRef(ret)| ==>
       stringFromRef(ret)[anon] ==
       stringFromRef(this)[anon + intFromRef(lo)])
+
