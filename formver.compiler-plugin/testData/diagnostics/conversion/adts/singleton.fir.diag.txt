@@ -1,0 +1,123 @@
+/singleton.kt:(68,90): error: Invalid ADT annotation: @ADT may only be applied to data object declarations
+
+/singleton.kt:(68,90): error: Invalid ADT annotation: @ADT may only be applied to data object declarations
+
+/singleton.kt:(68,90): error: Invalid ADT annotation: @ADT may only be applied to data object declarations
+
+/singleton.kt:(97,117): error: Invalid ADT annotation: @ADT may only be applied to data object declarations
+
+/singleton.kt:(97,117): error: Invalid ADT annotation: @ADT may only be applied to data object declarations
+
+/singleton.kt:(97,117): error: Invalid ADT annotation: @ADT may only be applied to data object declarations
+
+/singleton.kt:(129,145): error: Invalid ADT annotation: An @ADT data object must not have fields
+
+/singleton.kt:(129,145): error: Invalid ADT annotation: An @ADT data object must not have fields
+
+/singleton.kt:(129,145): error: Invalid ADT annotation: An @ADT data object must not have fields
+
+/singleton.kt:(181,200): error: Invalid ADT annotation: An @ADT data object must not have member functions
+
+/singleton.kt:(181,200): error: Invalid ADT annotation: An @ADT data object must not have member functions
+
+/singleton.kt:(181,200): error: Invalid ADT annotation: An @ADT data object must not have member functions
+
+/singleton.kt:(181,200): error: Invalid ADT annotation: An @ADT data object must not have member functions
+
+/singleton.kt:(181,200): error: Invalid ADT annotation: An @ADT data object must not have member functions
+
+/singleton.kt:(181,200): error: Invalid ADT annotation: An @ADT data object must not have member functions
+
+/singleton.kt:(211,222): info: Generated Viper text for doSomething:
+method f$c$WithFunction$doSomething$F$t$WithFunction$t$Int(this$dispatch: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$WithFunction())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+{
+  ret$0 := df$rt$intToRef(1)
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+/singleton.kt:(272,292): error: Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface
+
+/singleton.kt:(272,292): error: Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface
+
+/singleton.kt:(272,292): error: Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface
+
+/singleton.kt:(338,356): info: Generated Viper text for triggerNotAnObject:
+method f$triggerNotAnObject$F$t$NotAnObject$t$Unit(par$x: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$NotAnObject())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/singleton.kt:(380,400): info: Generated Viper text for triggerNotDataObject:
+method f$triggerNotDataObject$F$t$NotDataObject$t$Unit(par$x: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$NotDataObject())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/singleton.kt:(426,442): info: Generated Viper text for triggerWithField:
+method f$triggerWithField$F$t$WithField$t$Unit(par$x: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$WithField())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/singleton.kt:(464,483): info: Generated Viper text for triggerWithFunction:
+method f$triggerWithFunction$F$t$WithFunction$t$Unit(par$x: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$WithFunction())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/singleton.kt:(508,528): info: Generated Viper text for triggerWithSupertype:
+method f$triggerWithSupertype$F$t$WithSupertype$t$Unit(par$x: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$WithSupertype())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/singleton.kt:(555,569): info: Generated Viper text for validParameter:
+method f$validParameter$F$t$Valid$t$Unit(par$a: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$c$Valid())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+adt adt$c$Valid {
+  adtc$Valid$c$Valid()
+}
+
+/singleton.kt:(588,606): info: Generated Viper text for validLocalVariable:
+method f$validLocalVariable$F$t$Unit() returns (ret$0: Ref)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$x: Ref
+  l0$x := df$rt$c$Valid$ToRef(adtc$Valid$c$Valid())
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+adt adt$c$Valid {
+  adtc$Valid$c$Valid()
+}

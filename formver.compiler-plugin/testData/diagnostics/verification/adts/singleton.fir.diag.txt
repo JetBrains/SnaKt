@@ -1,0 +1,16 @@
+/singleton.kt:(309,317): info: Generated Viper text for adtIsAny:
+method f$adtIsAny$F$t$Red$t$Red(par$r: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$r), df$rt$c$Red())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$Red())
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$Red())
+{
+  ret$0 := par$r
+  goto lbl$ret$0
+  label lbl$ret$0
+}
+
+adt adt$c$Red {
+  adtc$Red$c$Red()
+}
+
+/singleton.kt:(366,376): warning: Check for instance is always 'true'.

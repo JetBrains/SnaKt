@@ -79,15 +79,25 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/adts")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Adts {
+      @Test
+      public void testAllFilesPresentInAdts() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/conversion/adts"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("singleton.kt")
+      public void testSingleton() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/adts/singleton.kt");
+      }
+    }
+
+    @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/classes")
     @TestDataPath("$PROJECT_ROOT")
     public class Classes {
-      @Test
-      @TestMetadata("adt_validation.kt")
-      public void testAdt_validation() {
-        runTest("formver.compiler-plugin/testData/diagnostics/conversion/classes/adt_validation.kt");
-      }
-
       @Test
       public void testAllFilesPresentInClasses() {
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/conversion/classes"), Pattern.compile("^(.+)\\.kt$"), null, true);
@@ -711,15 +721,25 @@ public class FirLightTreeFormVerPluginDiagnosticsTestGenerated extends AbstractF
     }
 
     @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/adts")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Adts {
+      @Test
+      public void testAllFilesPresentInAdts() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/adts"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("singleton.kt")
+      public void testSingleton() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/singleton.kt");
+      }
+    }
+
+    @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/classes")
     @TestDataPath("$PROJECT_ROOT")
     public class Classes {
-      @Test
-      @TestMetadata("adt.kt")
-      public void testAdt() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/adt.kt");
-      }
-
       @Test
       public void testAllFilesPresentInClasses() {
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/classes"), Pattern.compile("^(.+)\\.kt$"), null, true);
