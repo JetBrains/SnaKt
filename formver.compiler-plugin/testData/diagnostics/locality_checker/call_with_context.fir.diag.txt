@@ -1,5 +1,25 @@
-/call_with_context.kt:(493,515): error: Argument locality mismatch: expected 'global', actual 'local(pass local as implicit global context argument)'.
+/call_with_context.kt:(502,524): error: Argument locality mismatch: expected 'global', actual 'local(pass local as implicit global context argument)'.
 
-/call_with_context.kt:(830,831): error: Receiver locality mismatch: expected 'global', actual 'local(pass local as shared extension property receiver)'.
+/call_with_context.kt:(839,840): error: Receiver locality mismatch: expected 'global', actual 'local(pass local as shared extension property receiver)'.
 
-/call_with_context.kt:(961,982): error: Argument locality mismatch: expected 'global', actual 'local(pass local as implicit global property context argument)'.
+/call_with_context.kt:(970,991): error: Argument locality mismatch: expected 'global', actual 'local(pass local as implicit global property context argument)'.
+
+/call_with_context.kt:(1535,1539): error: Locality can only be specified on types of function parameters, extension receivers, or local variables.
+
+/call_with_context.kt:(1540,1541): error: Argument locality mismatch: expected 'global', actual 'local(pass local with 'with' as global context argument)'.
+
+/call_with_context.kt:(1553,1569): error: Argument locality mismatch: expected 'global', actual 'local(anonymous)'.
+
+/call_with_context.kt:(1656,1660): error: Locality can only be specified on types of function parameters, extension receivers, or local variables.
+
+/call_with_context.kt:(1661,1662): error: Argument locality mismatch: expected 'global', actual 'local(pass local with 'with' as local context argument)'.
+
+/call_with_context.kt:(1790,1810): error: Argument locality mismatch: expected 'global', actual 'local(pass local as first of mixed context arguments)'.
+
+/call_with_context.kt:(2040,2063): error: Argument locality mismatch: expected 'global', actual 'local(pass local as first mixed property context argument)'.
+
+/call_with_context.kt:(2152,2156): error: Locality can only be specified on types of function parameters, extension receivers, or local variables.
+
+/call_with_context.kt:(2157,2158): error: Argument locality mismatch: expected 'global', actual 'local(pass local with with as global property context argument)'.
+
+/call_with_context.kt:(2178,2200): error: Argument locality mismatch: expected 'global', actual 'local(anonymous)'.
