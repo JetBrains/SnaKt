@@ -29,17 +29,17 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.TypeOperatorCallNode
 /**
  * Contains locality information for each `FirExpression` in the control flow, normalized through [unwrapExpression].
  */
-typealias LocalityInfo = PersistentMap<FirExpression, Locality>
+typealias LocalityFacts = PersistentMap<FirExpression, Locality>
 
 /**
  * Contains locality information for every type of execution flow.
  */
-typealias PathAwareLocalityInfo = PersistentMap<EdgeLabel, LocalityInfo>
+typealias PathAwareLocalityFacts = PersistentMap<EdgeLabel, LocalityFacts>
 
 /**
  * Merges the locality information for every type of execution flow.
  */
-fun PathAwareLocalityInfo.collapse(): LocalityInfo =
+fun PathAwareLocalityFacts.collapse(): LocalityFacts =
     values.fold(persistentMapOf()) { result, info ->
         result.merge(info, Locality::union)
     }
@@ -63,16 +63,16 @@ class GraphLocalityAnalyzer(
     private val context: CheckerContext
 ) : PathAwareControlFlowGraphVisitor<FirExpression, Locality>() {
     override fun mergeInfo(
-        a: LocalityInfo,
-        b: LocalityInfo,
+        a: LocalityFacts,
+        b: LocalityFacts,
         node: CFGNode<*>
-    ): LocalityInfo =
+    ): LocalityFacts =
         a.merge(b, Locality::union)
 
     override fun visitNode(
         node: CFGNode<*>,
-        data: PathAwareLocalityInfo
-    ): PathAwareLocalityInfo {
+        data: PathAwareLocalityFacts
+    ): PathAwareLocalityFacts {
         val inheritsTailFact = node.inheritsTailFact()
 
         return data.transformValues { info ->
@@ -108,15 +108,15 @@ class GraphLocalityAnalyzer(
         }
     }
 
-    fun analyzeLocalityOf(graph: ControlFlowGraph): Map<CFGNode<*>, PathAwareLocalityInfo> =
+    fun analyzeLocalityOf(graph: ControlFlowGraph): Map<CFGNode<*>, PathAwareLocalityFacts> =
         graph.traverseToFixedPoint(this)
 }
 
 /**
  * Analyzes the locality of each expression in `this` control flow graph.
  *
- * The result is a map between [CFGNode]s and the [PathAwareLocalityInfo]s resulting after their execution.
+ * The result is a map between [CFGNode]s and the [PathAwareLocalityFacts]s resulting after their execution.
  */
 context(context: CheckerContext)
-fun ControlFlowGraph.analyzeLocality(): Map<CFGNode<*>, PathAwareLocalityInfo> =
+fun ControlFlowGraph.analyzeLocality(): Map<CFGNode<*>, PathAwareLocalityFacts> =
     GraphLocalityAnalyzer(context).analyzeLocalityOf(this)
