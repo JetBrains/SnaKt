@@ -1,43 +1,43 @@
 /contracts_with_receivers.kt:(148,151): info: Generated Viper text for is2:
 method is2(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), $c$Class())
+  requires isSubtype(typeOf(this), _c_Class())
   ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true ==> isSubtype(typeOf(this), $c$Impl1())
+  ensures boolFromRef(ret) == true ==> isSubtype(typeOf(this), _c_Impl1())
 {
-  inhale acc(c$Class$shared(this), wildcard)
-  ret := boolToRef(isSubtype(typeOf(this), $c$Impl2()))
-  goto ret$0
-  label ret$0
+  inhale acc(c_Class_shared(this), wildcard)
+  ret := boolToRef(isSubtype(typeOf(this), _c_Impl2()))
+  goto ret_0
+  label ret_0
 }
 
 /contracts_with_receivers.kt:(196,239): warning: Cannot verify that if a true value is returned then this is Impl1.
 
 /contracts_with_receivers.kt:(341,359): info: Generated Viper text for is1butWithDispatch:
-method is1butWithDispatch(v$this: Ref, this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(v$this), $c$Class())
-  requires isSubtype(typeOf(this), $c$Class())
+method is1butWithDispatch(v_this: Ref, this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(v_this), _c_Class())
+  requires isSubtype(typeOf(this), _c_Class())
   ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true ==> isSubtype(typeOf(this), $c$Impl2())
+  ensures boolFromRef(ret) == true ==> isSubtype(typeOf(this), _c_Impl2())
 {
-  inhale acc(c$Class$shared(v$this), wildcard)
-  inhale acc(c$Class$shared(this), wildcard)
-  ret := boolToRef(isSubtype(typeOf(this), $c$Impl1()))
-  goto ret$0
-  label ret$0
+  inhale acc(c_Class_shared(v_this), wildcard)
+  inhale acc(c_Class_shared(this), wildcard)
+  ret := boolToRef(isSubtype(typeOf(this), _c_Impl1()))
+  goto ret_0
+  label ret_0
 }
 
 /contracts_with_receivers.kt:(404,460): warning: Cannot verify that if a true value is returned then this is Impl2.
 
 /contracts_with_receivers.kt:(618,621): info: Generated Viper text for is1:
 method is1(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), $c$Class())
+  requires isSubtype(typeOf(this), _c_Class())
   ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true ==> isSubtype(typeOf(this), $c$Impl2())
+  ensures boolFromRef(ret) == true ==> isSubtype(typeOf(this), _c_Impl2())
 {
-  inhale acc(c$Class$shared(this), wildcard)
-  ret := boolToRef(isSubtype(typeOf(this), $c$Impl1()))
-  goto ret$0
-  label ret$0
+  inhale acc(c_Class_shared(this), wildcard)
+  ret := boolToRef(isSubtype(typeOf(this), _c_Impl1()))
+  goto ret_0
+  label ret_0
 }
 
 /contracts_with_receivers.kt:(658,699): warning: Cannot verify that if a true value is returned then this is Impl2.

@@ -4,8 +4,8 @@ method anyArgumentReturn(x: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), anyType())
 {
   ret := x
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /any.kt:(76,83): info: Generated Viper text for anyCast:
@@ -14,6 +14,6 @@ method anyCast(x: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), anyType())
 {
   ret := x
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }

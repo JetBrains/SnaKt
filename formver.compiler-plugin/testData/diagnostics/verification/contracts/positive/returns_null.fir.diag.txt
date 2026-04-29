@@ -6,8 +6,8 @@ method simple_returns_null(x: Ref) returns (ret: Ref)
   ensures ret != nullValue() ==> false
 {
   ret := nullValue()
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /returns_null.kt:(300,320): info: Generated Viper text for returns_null_implies:
@@ -18,8 +18,8 @@ method returns_null_implies(x: Ref) returns (ret: Ref)
   ensures ret != nullValue() ==> x != nullValue()
 {
   ret := x
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /returns_null.kt:(511,531): info: Generated Viper text for returns_null_with_if:
@@ -34,12 +34,12 @@ method returns_null_with_if(x: Ref, y: Ref, z: Ref) returns (ret: Ref)
 {
   if (x == nullValue()) {
     ret := y
-    goto ret$0
+    goto ret_0
   } else {
     ret := z
-    goto ret$0
+    goto ret_0
   }
-  label ret$0
+  label ret_0
 }
 
 /returns_null.kt:(833,862): info: Generated Viper text for non_nullable_returns_not_null:
@@ -49,8 +49,8 @@ method non_nullable_returns_not_null(x: Ref) returns (ret: Ref)
   ensures ret != nullValue()
 {
   ret := x
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /returns_null.kt:(981,1010): info: Generated Viper text for non_nullable_compared_to_null:
@@ -61,8 +61,8 @@ method non_nullable_compared_to_null(x: Ref, y: Ref) returns (ret: Ref)
   ensures true ==> y == nullValue() || x != nullValue()
 {
   ret := x
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /returns_null.kt:(1076,1085): warning: Condition is always 'false'.

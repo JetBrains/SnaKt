@@ -13,8 +13,8 @@ method returnWhen(a: Ref, b: Ref, c: Ref) returns (ret: Ref)
     ret := intToRef(2)
   } else {
     ret := intToRef(3)}
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /when.kt:(171,181): info: Generated Viper text for whenReturn:
@@ -26,18 +26,18 @@ method whenReturn(a: Ref, b: Ref, c: Ref) returns (ret: Ref)
 {
   if (boolFromRef(a)) {
     ret := intToRef(0)
-    goto ret$0
+    goto ret_0
   } elseif (boolFromRef(b)) {
     ret := intToRef(1)
-    goto ret$0
+    goto ret_0
   } elseif (boolFromRef(c)) {
     ret := intToRef(2)
-    goto ret$0
+    goto ret_0
   } else {
     ret := intToRef(3)
-    goto ret$0
+    goto ret_0
   }
-  label ret$0
+  label ret_0
 }
 
 /when.kt:(340,356): info: Generated Viper text for singleBranchWhen:
@@ -51,8 +51,8 @@ method singleBranchWhen(a: Ref) returns (ret: Ref)
     x := intToRef(2)
   }
   ret := x
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /when.kt:(446,456): info: Generated Viper text for noElseWhen:
@@ -72,8 +72,8 @@ method noElseWhen(a: Ref, b: Ref, c: Ref) returns (ret: Ref)
     y := intToRef(3)
   }
   ret := y
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /when.kt:(608,626): info: Generated Viper text for whenWithSubjectVar:
@@ -89,33 +89,33 @@ method whenWithSubjectVar(x: Ref) returns (ret: Ref)
     ret := intToRef(3)
   } else {
     ret := intToRef(42)}
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /when.kt:(726,745): info: Generated Viper text for whenWithSubjectCall:
-method whenWithSubjectCall(x: Ref) returns (ret$0: Ref)
+method whenWithSubjectCall(x: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret$0), intType())
+  ensures isSubtype(typeOf(ret_0), intType())
 {
-  var anon$0: Ref
-  anon$0 := whenWithSubjectVar(x)
-  if (intFromRef(anon$0) == 1) {
-    ret$0 := intToRef(2)
-  } elseif (intFromRef(anon$0) == 2) {
-    ret$0 := intToRef(3)
+  var anon_0: Ref
+  anon_0 := whenWithSubjectVar(x)
+  if (intFromRef(anon_0) == 1) {
+    ret_0 := intToRef(2)
+  } elseif (intFromRef(anon_0) == 2) {
+    ret_0 := intToRef(3)
   } else {
     var anon: Ref
     anon := whenWithSubjectVar(intToRef(0))
     if (intFromRef(anon) == 3) {
-      ret$0 := intToRef(4)
+      ret_0 := intToRef(4)
     } elseif (intFromRef(anon) == 4) {
-      ret$0 := intToRef(5)
+      ret_0 := intToRef(5)
     } else {
-      ret$0 := intToRef(42)}
+      ret_0 := intToRef(42)}
   }
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 method whenWithSubjectVar(x: Ref) returns (ret: Ref)
@@ -128,8 +128,8 @@ method emptyWhen() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
 {
   ret := intToRef(1)
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /when.kt:(1015,1027): info: Generated Viper text for unusedResult:
@@ -139,24 +139,24 @@ method unusedResult() returns (ret: Ref)
   var x: Ref
   x := intToRef(0)
   ret := x
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /when.kt:(1221,1227): info: Generated Viper text for whenIs:
 method whenIs(x: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(x), $c$Foo())
+  requires isSubtype(typeOf(x), _c_Foo())
   ensures isSubtype(typeOf(ret), boolType())
 {
   var anon: Ref
-  inhale acc(c$Foo$shared(x), wildcard)
+  inhale acc(c_Foo_shared(x), wildcard)
   anon := x
-  if (isSubtype(typeOf(anon), $c$Bar())) {
+  if (isSubtype(typeOf(anon), _c_Bar())) {
     ret := boolToRef(true)
   } else {
     ret := boolToRef(false)}
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /when.kt:(1301,1315): info: Generated Viper text for whenSubjectVal:
@@ -169,8 +169,8 @@ method whenSubjectVal() returns (ret: Ref)
     ret := intToRef(1)
   } else {
     ret := x}
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /when.kt:(1392,1412): info: Generated Viper text for whenSubjectValNested:
@@ -199,7 +199,7 @@ method whenSubjectValNested() returns (ret: Ref)
     if (intFromRef(x) == intFromRef(anon)) {
     }
   }
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
@@ -207,10 +207,10 @@ method whenSubjectValNested() returns (ret: Ref)
 method whenSubjectVarShadowing() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 {
-  var l0$x: Ref
+  var l0_x: Ref
   var x: Ref
-  l0$x := intToRef(0)
+  l0_x := intToRef(0)
   x := intToRef(1)
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }

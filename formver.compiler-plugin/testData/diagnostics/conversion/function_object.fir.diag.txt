@@ -3,7 +3,7 @@ method unitFunction(f: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(f), functionType())
   ensures isSubtype(typeOf(ret), unitType())
 {
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
@@ -15,8 +15,8 @@ method functionObjectCall(g: Ref) returns (ret: Ref)
   var anon: Ref
   inhale isSubtype(typeOf(anon), intType())
   ret := anon
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /function_object.kt:(171,195): info: Generated Viper text for functionObjectNestedCall:
@@ -25,13 +25,13 @@ method functionObjectNestedCall(f: Ref, g: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(g), functionType())
   ensures isSubtype(typeOf(ret), intType())
 {
-  var anon$0: Ref
-  var anon$1: Ref
+  var anon_0: Ref
+  var anon_1: Ref
   var anon: Ref
   inhale isSubtype(typeOf(anon), intType())
-  inhale isSubtype(typeOf(anon$1), intType())
-  inhale isSubtype(typeOf(anon$0), intType())
-  ret := anon$0
-  goto ret$0
-  label ret$0
+  inhale isSubtype(typeOf(anon_1), intType())
+  inhale isSubtype(typeOf(anon_0), intType())
+  ret := anon_0
+  goto ret_0
+  label ret_0
 }

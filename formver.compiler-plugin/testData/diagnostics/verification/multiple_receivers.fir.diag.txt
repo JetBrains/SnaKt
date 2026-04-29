@@ -3,130 +3,130 @@ field delta: Ref
 
 field size: Ref
 
-method applyDelta(v$this: Ref, this: Ref) returns (ret$0: Ref)
-  requires isSubtype(typeOf(v$this), $c$ClassWithExtension())
+method applyDelta(v_this: Ref, this: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(v_this), _c_ClassWithExtension())
   requires isSubtype(typeOf(this), intType())
-  ensures isSubtype(typeOf(ret$0), unitType())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var withoutLabels: Ref
-  var anon$0: Ref
+  var anon_0: Ref
   var withLabels: Ref
   var anon: Ref
-  inhale acc(c$ClassWithExtension$shared(v$this), wildcard)
-  unfold acc(c$ClassWithExtension$shared(v$this), wildcard)
-  anon$0 := v$this.delta
-  withoutLabels := plusInts(this, anon$0)
-  unfold acc(c$ClassWithExtension$shared(v$this), wildcard)
-  anon := v$this.delta
+  inhale acc(c_ClassWithExtension_shared(v_this), wildcard)
+  unfold acc(c_ClassWithExtension_shared(v_this), wildcard)
+  anon_0 := v_this.delta
+  withoutLabels := plusInts(this, anon_0)
+  unfold acc(c_ClassWithExtension_shared(v_this), wildcard)
+  anon := v_this.delta
   withLabels := plusInts(anon, this)
   assert intFromRef(withoutLabels) == intFromRef(withLabels)
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /multiple_receivers.kt:(531,542): info: Generated Viper text for returnDelta:
 field delta: Ref
 
-method returnDelta(this: Ref) returns (ret$0: Ref)
-  requires isSubtype(typeOf(this), $c$ClassWithExtension())
-  ensures isSubtype(typeOf(ret$0), intType())
+method returnDelta(this: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(this), _c_ClassWithExtension())
+  ensures isSubtype(typeOf(ret_0), intType())
 {
   inhale acc(shared(this), wildcard)
   unfold acc(shared(this), wildcard)
-  ret$0 := this.delta
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret_0 := this.delta
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /multiple_receivers.kt:(579,599): info: Generated Viper text for extensionReturnDelta:
 field delta: Ref
 
-method extensionReturnDelta(this: Ref) returns (ret$0: Ref)
-  requires isSubtype(typeOf(this), $c$ClassWithExtension())
-  ensures isSubtype(typeOf(ret$0), intType())
+method extensionReturnDelta(this: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(this), _c_ClassWithExtension())
+  ensures isSubtype(typeOf(ret_0), intType())
 {
   inhale acc(shared(this), wildcard)
   unfold acc(shared(this), wildcard)
-  ret$0 := this.delta
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret_0 := this.delta
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /multiple_receivers.kt:(712,735): info: Generated Viper text for checkClassWithExtension:
-field bf$delta: Ref
+field bf_delta: Ref
 
 field size: Ref
 
-method applyDelta(v$this: Ref, this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(v$this), $c$ClassWithExtension())
+method applyDelta(v_this: Ref, this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(v_this), _c_ClassWithExtension())
   requires isSubtype(typeOf(this), intType())
   ensures isSubtype(typeOf(ret), unitType())
 
 
-method checkClassWithExtension() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), unitType())
+method checkClassWithExtension() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var anon$3: Ref
-  var anon$4: Ref
-  var ret$1: Ref
-  var anon$0: Ref
-  var anon$5: Ref
-  var anon$6: Ref
-  var ret$2: Ref
-  var anon$1: Ref
-  var anon$7: Ref
-  var anon$8: Ref
-  var anon$9: Ref
-  var anon$10: Ref
-  var ret$3: Ref
-  var anon$2: Ref
+  var anon_3: Ref
+  var anon_4: Ref
+  var ret_1: Ref
+  var anon_0: Ref
+  var anon_5: Ref
+  var anon_6: Ref
+  var ret_2: Ref
+  var anon_1: Ref
+  var anon_7: Ref
+  var anon_8: Ref
+  var anon_9: Ref
+  var anon_10: Ref
+  var ret_3: Ref
+  var anon_2: Ref
   var anon: Ref
-  anon$5 := con(intToRef(42))
-  anon$0 := anon$5
-  inhale isSubtype(typeOf(anon$0), nullable(anyType()))
-  inhale isSubtype(typeOf(anon$0), $c$ClassWithExtension())
-  inhale acc(c$ClassWithExtension$shared(anon$0), wildcard)
-  anon$1 := anon$0
-  anon$7 := applyDelta(anon$1, intToRef(42))
-  anon$8 := returnDelta(anon$1)
-  anon$9 := extensionReturnDelta(anon$1)
-  anon$2 := intToRef(42)
-  unfold acc(c$ClassWithExtension$shared(anon$1), wildcard)
-  anon := anon$1.bf$delta
-  ret$3 := plusInts(anon$2, anon)
-  goto lbl$ret$3
-  label lbl$ret$3
-  anon$10 := ret$3
-  assert intFromRef(anon$10) == 84
-  label lbl$ret$2
-  inhale isSubtype(typeOf(ret$2), unitType())
-  anon$6 := ret$2
-  ret$1 := anon$6
-  inhale isSubtype(typeOf(ret$1), nullable(anyType()))
-  goto lbl$ret$1
-  label lbl$ret$1
-  anon$4 := ret$1
-  anon$3 := anon$4
-  inhale isSubtype(typeOf(anon$3), unitType())
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  anon_5 := con(intToRef(42))
+  anon_0 := anon_5
+  inhale isSubtype(typeOf(anon_0), nullable(anyType()))
+  inhale isSubtype(typeOf(anon_0), _c_ClassWithExtension())
+  inhale acc(c_ClassWithExtension_shared(anon_0), wildcard)
+  anon_1 := anon_0
+  anon_7 := applyDelta(anon_1, intToRef(42))
+  anon_8 := returnDelta(anon_1)
+  anon_9 := extensionReturnDelta(anon_1)
+  anon_2 := intToRef(42)
+  unfold acc(c_ClassWithExtension_shared(anon_1), wildcard)
+  anon := anon_1.bf_delta
+  ret_3 := plusInts(anon_2, anon)
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon_10 := ret_3
+  assert intFromRef(anon_10) == 84
+  label lbl_ret_2
+  inhale isSubtype(typeOf(ret_2), unitType())
+  anon_6 := ret_2
+  ret_1 := anon_6
+  inhale isSubtype(typeOf(ret_1), nullable(anyType()))
+  goto lbl_ret_1
+  label lbl_ret_1
+  anon_4 := ret_1
+  anon_3 := anon_4
+  inhale isSubtype(typeOf(anon_3), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 method con(delta: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(delta), intType())
-  ensures isSubtype(typeOf(ret), $c$ClassWithExtension())
-  ensures acc(c$ClassWithExtension$shared(ret), wildcard)
-  ensures acc(c$ClassWithExtension$unique(ret), write)
-  ensures intFromRef((unfolding acc(c$ClassWithExtension$shared(ret), wildcard) in
-      ret.bf$delta)) ==
+  ensures isSubtype(typeOf(ret), _c_ClassWithExtension())
+  ensures acc(c_ClassWithExtension_shared(ret), wildcard)
+  ensures acc(c_ClassWithExtension_unique(ret), write)
+  ensures intFromRef((unfolding acc(c_ClassWithExtension_shared(ret), wildcard) in
+      ret.bf_delta)) ==
     intFromRef(delta)
 
 
 method extensionReturnDelta(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), $c$ClassWithExtension())
+  requires isSubtype(typeOf(this), _c_ClassWithExtension())
   ensures isSubtype(typeOf(ret), intType())
 
 
-method returnDelta(v$this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(v$this), $c$ClassWithExtension())
+method returnDelta(v_this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(v_this), _c_ClassWithExtension())
   ensures isSubtype(typeOf(ret), intType())

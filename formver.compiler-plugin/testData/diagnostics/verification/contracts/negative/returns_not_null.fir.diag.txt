@@ -4,8 +4,8 @@ method returns_null() returns (ret: Ref)
   ensures ret != nullValue()
 {
   ret := nullValue()
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /returns_not_null.kt:(167,183): warning: Function may return a null value.

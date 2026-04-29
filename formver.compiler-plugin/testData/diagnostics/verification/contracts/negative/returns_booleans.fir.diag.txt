@@ -4,8 +4,8 @@ method incorrectly_returns_false() returns (ret: Ref)
   ensures boolFromRef(ret) == true
 {
   ret := boolToRef(false)
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /returns_booleans.kt:(183,196): warning: Function may return a false value.
@@ -16,8 +16,8 @@ method incorrectly_returns_true() returns (ret: Ref)
   ensures boolFromRef(ret) == false
 {
   ret := boolToRef(true)
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /returns_booleans.kt:(325,339): warning: Function may return a true value.

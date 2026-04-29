@@ -2,7 +2,7 @@
 method returnUnit() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 {
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
@@ -11,8 +11,8 @@ method returnInt() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
 {
   ret := intToRef(0)
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /basic.kt:(77,94): info: Generated Viper text for takeIntReturnUnit:
@@ -20,7 +20,7 @@ method takeIntReturnUnit(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), unitType())
 {
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
@@ -30,8 +30,8 @@ method takeIntReturnInt(x: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
 {
   ret := x
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /basic.kt:(187,207): info: Generated Viper text for takeIntReturnIntExpr:
@@ -40,8 +40,8 @@ method takeIntReturnIntExpr(x: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
 {
   ret := x
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /basic.kt:(229,247): info: Generated Viper text for withIntDeclaration:
@@ -51,8 +51,8 @@ method withIntDeclaration() returns (ret: Ref)
   var x: Ref
   x := intToRef(0)
   ret := x
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /basic.kt:(290,303): info: Generated Viper text for intAssignment:
@@ -62,6 +62,6 @@ method intAssignment() returns (ret: Ref)
   var x: Ref
   x := intToRef(0)
   x := intToRef(1)
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }

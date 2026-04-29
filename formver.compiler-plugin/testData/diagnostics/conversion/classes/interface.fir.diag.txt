@@ -1,59 +1,59 @@
 /interface.kt:(84,98): info: Generated Viper text for testProperties:
-method g$varProp(this: Ref) returns (v$ret: Ref)
+method g_varProp(this: Ref) returns (v_ret: Ref)
 
 
 method testProperties(foo: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(foo), $c$Foo())
+  requires isSubtype(typeOf(foo), _c_Foo())
   ensures isSubtype(typeOf(ret), unitType())
 {
-  var anon$0: Ref
+  var anon_0: Ref
   var x: Ref
-  var anon$1: Ref
-  var anon$2: Ref
-  var anon$3: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  var anon_3: Ref
   var anon: Ref
   inhale acc(shared(foo), wildcard)
-  anon$0 := varProp(foo, intToRef(0))
-  anon$2 := g$varProp(foo)
-  anon$1 := anon$2
-  inhale isSubtype(typeOf(anon$1), intType())
+  anon_0 := varProp(foo, intToRef(0))
+  anon_2 := g_varProp(foo)
+  anon_1 := anon_2
+  inhale isSubtype(typeOf(anon_1), intType())
   anon := valProp(foo)
-  anon$3 := anon
-  inhale isSubtype(typeOf(anon$3), intType())
-  x := plusInts(anon$1, anon$3)
-  label ret$0
+  anon_3 := anon
+  inhale isSubtype(typeOf(anon_3), intType())
+  x := plusInts(anon_1, anon_3)
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-method valProp(this: Ref) returns (v$ret: Ref)
+method valProp(this: Ref) returns (v_ret: Ref)
 
 
-method varProp(this: Ref, anon$0: Ref) returns (v$ret: Ref)
+method varProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
 
 
 /interface.kt:(348,358): info: Generated Viper text for createImpl:
-field bf$number: Ref
+field bf_number: Ref
 
 method con(number: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(number), intType())
-  ensures isSubtype(typeOf(ret), $c$Impl())
-  ensures acc(c$Impl$shared(ret), wildcard)
-  ensures acc(c$Impl$unique(ret), write)
-  ensures intFromRef((unfolding acc(c$Impl$shared(ret), wildcard) in
-      ret.bf$number)) ==
+  ensures isSubtype(typeOf(ret), _c_Impl())
+  ensures acc(c_Impl_shared(ret), wildcard)
+  ensures acc(c_Impl_unique(ret), write)
+  ensures intFromRef((unfolding acc(c_Impl_shared(ret), wildcard) in
+      ret.bf_number)) ==
     intFromRef(number)
 
 
-method createImpl() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), unitType())
+method createImpl() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var impl: Ref
   var implField: Ref
   impl := con(intToRef(-1))
-  unfold acc(c$Impl$shared(impl), wildcard)
-  implField := impl.bf$number
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  unfold acc(c_Impl_shared(impl), wildcard)
+  implField := impl.bf_number
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-method g$number(this: Ref) returns (ret: Ref)
+method g_number(this: Ref) returns (ret: Ref)

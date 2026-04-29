@@ -4,7 +4,7 @@ field size: Ref
 method get(this: Ref, index: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections$c$List())
+  requires isSubtype(typeOf(this), collections_c_List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -17,7 +17,7 @@ method get(this: Ref, index: Ref) returns (ret: Ref)
 method isEmpty(this: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections$c$List())
+  requires isSubtype(typeOf(this), collections_c_List())
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret), boolType())
@@ -26,55 +26,55 @@ method isEmpty(this: Ref) returns (ret: Ref)
   ensures !boolFromRef(ret) ==> intFromRef(this.size) > 0
 
 
-method safe_binary_search(arr: Ref, target: Ref) returns (ret$0: Ref)
+method safe_binary_search(arr: Ref, target: Ref) returns (ret_0: Ref)
   requires acc(arr.size, write)
   requires intFromRef(arr.size) >= 0
-  requires isSubtype(typeOf(arr), collections$c$List())
+  requires isSubtype(typeOf(arr), collections_c_List())
   requires isSubtype(typeOf(target), intType())
   ensures acc(arr.size, write)
   ensures intFromRef(arr.size) >= 0
-  ensures isSubtype(typeOf(ret$0), boolType())
+  ensures isSubtype(typeOf(ret_0), boolType())
 {
-  var l0$size: Ref
+  var l0_size: Ref
   var mid: Ref
-  var anon$0: Ref
-  var anon$1: Ref
-  inhale acc(c$List$shared(arr), wildcard)
-  l0$size := arr.size
-  inhale isSubtype(typeOf(l0$size), intType())
-  anon$0 := arr.size
-  inhale isSubtype(typeOf(anon$0), intType())
-  mid := divInts(anon$0, intToRef(2))
-  anon$1 := isEmpty(arr)
-  if (boolFromRef(anon$1)) {
-    ret$0 := boolToRef(false)
+  var anon_0: Ref
+  var anon_1: Ref
+  inhale acc(c_List_shared(arr), wildcard)
+  l0_size := arr.size
+  inhale isSubtype(typeOf(l0_size), intType())
+  anon_0 := arr.size
+  inhale isSubtype(typeOf(anon_0), intType())
+  mid := divInts(anon_0, intToRef(2))
+  anon_1 := isEmpty(arr)
+  if (boolFromRef(anon_1)) {
+    ret_0 := boolToRef(false)
   } else {
-    var anon$2: Ref
-    anon$2 := get(arr, mid)
-    if (intFromRef(anon$2) == intFromRef(target)) {
-      ret$0 := boolToRef(true)
+    var anon_2: Ref
+    anon_2 := get(arr, mid)
+    if (intFromRef(anon_2) == intFromRef(target)) {
+      ret_0 := boolToRef(true)
     } else {
-      var anon$3: Ref
-      anon$3 := get(arr, mid)
-      if (intFromRef(anon$3) < intFromRef(target)) {
-        var anon$4: Ref
-        anon$4 := subList(arr, plusInts(mid, intToRef(1)), l0$size)
-        ret$0 := safe_binary_search(anon$4, target)
+      var anon_3: Ref
+      anon_3 := get(arr, mid)
+      if (intFromRef(anon_3) < intFromRef(target)) {
+        var anon_4: Ref
+        anon_4 := subList(arr, plusInts(mid, intToRef(1)), l0_size)
+        ret_0 := safe_binary_search(anon_4, target)
       } else {
         var anon: Ref
         anon := subList(arr, intToRef(0), mid)
-        ret$0 := safe_binary_search(anon, target)
+        ret_0 := safe_binary_search(anon, target)
       }
     }
   }
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections$c$List())
+  requires isSubtype(typeOf(this), collections_c_List())
   requires isSubtype(typeOf(fromIndex), intType())
   requires isSubtype(typeOf(toIndex), intType())
   requires intFromRef(fromIndex) <= intFromRef(toIndex)
@@ -82,10 +82,10 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
   requires intFromRef(toIndex) <= intFromRef(this.size)
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
-  ensures isSubtype(typeOf(ret), collections$c$List())
+  ensures isSubtype(typeOf(ret), collections_c_List())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c$List$shared(ret), wildcard)
+  ensures acc(c_List_shared(ret), wildcard)
   ensures intFromRef(this.size) == old(intFromRef(this.size))
   ensures intFromRef(ret.size) ==
     intFromRef(toIndex) - intFromRef(fromIndex)
@@ -97,7 +97,7 @@ field size: Ref
 method get(this: Ref, index: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections$c$List())
+  requires isSubtype(typeOf(this), collections_c_List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -108,52 +108,52 @@ method get(this: Ref, index: Ref) returns (ret: Ref)
 
 
 method unsafe_binary_search_fixed(arr: Ref, target: Ref, left: Ref, right: Ref)
-  returns (ret$0: Ref)
+  returns (ret_0: Ref)
   requires acc(arr.size, write)
   requires intFromRef(arr.size) >= 0
-  requires isSubtype(typeOf(arr), collections$c$List())
+  requires isSubtype(typeOf(arr), collections_c_List())
   requires isSubtype(typeOf(target), intType())
   requires isSubtype(typeOf(left), intType())
   requires isSubtype(typeOf(right), intType())
   ensures acc(arr.size, write)
   ensures intFromRef(arr.size) >= 0
-  ensures isSubtype(typeOf(ret$0), boolType())
+  ensures isSubtype(typeOf(ret_0), boolType())
 {
-  var anon$0: Ref
-  var anon$1: Ref
+  var anon_0: Ref
+  var anon_1: Ref
   var mid: Ref
-  var anon$3: Ref
-  inhale acc(c$List$shared(arr), wildcard)
+  var anon_3: Ref
+  inhale acc(c_List_shared(arr), wildcard)
   if (intFromRef(left) > intFromRef(right)) {
-    anon$1 := boolToRef(true)
+    anon_1 := boolToRef(true)
   } else {
-    anon$1 := ltInts(left, intToRef(0))}
-  if (boolFromRef(anon$1)) {
-    anon$0 := boolToRef(true)
+    anon_1 := ltInts(left, intToRef(0))}
+  if (boolFromRef(anon_1)) {
+    anon_0 := boolToRef(true)
   } else {
-    var anon$2: Ref
-    anon$2 := arr.size
-    inhale isSubtype(typeOf(anon$2), intType())
-    anon$0 := geInts(right, anon$2)
+    var anon_2: Ref
+    anon_2 := arr.size
+    inhale isSubtype(typeOf(anon_2), intType())
+    anon_0 := geInts(right, anon_2)
   }
-  if (boolFromRef(anon$0)) {
-    ret$0 := boolToRef(false)
-    goto lbl$ret$0
+  if (boolFromRef(anon_0)) {
+    ret_0 := boolToRef(false)
+    goto lbl_ret_0
   }
   mid := plusInts(left, divInts(minusInts(right, left), intToRef(2)))
-  anon$3 := get(arr, mid)
-  if (intFromRef(anon$3) == intFromRef(target)) {
-    ret$0 := boolToRef(true)
+  anon_3 := get(arr, mid)
+  if (intFromRef(anon_3) == intFromRef(target)) {
+    ret_0 := boolToRef(true)
   } else {
     var anon: Ref
     anon := get(arr, mid)
     if (intFromRef(anon) < intFromRef(target)) {
-      ret$0 := unsafe_binary_search_fixed(arr, target, plusInts(mid, intToRef(1)),
+      ret_0 := unsafe_binary_search_fixed(arr, target, plusInts(mid, intToRef(1)),
         right)
     } else {
-      ret$0 := unsafe_binary_search_fixed(arr, target, left, minusInts(mid,
+      ret_0 := unsafe_binary_search_fixed(arr, target, left, minusInts(mid,
         intToRef(1)))}
   }
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto lbl_ret_0
+  label lbl_ret_0
 }

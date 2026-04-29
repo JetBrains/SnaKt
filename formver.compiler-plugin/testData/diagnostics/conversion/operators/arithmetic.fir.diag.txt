@@ -5,7 +5,7 @@ method addition(x: Ref) returns (ret: Ref)
 {
   var y: Ref
   y := plusInts(x, x)
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
@@ -16,7 +16,7 @@ method subtraction(x: Ref) returns (ret: Ref)
 {
   var y: Ref
   y := minusInts(x, x)
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
@@ -27,7 +27,7 @@ method multiplication(x: Ref) returns (ret: Ref)
 {
   var y: Ref
   y := timesInts(x, x)
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
@@ -38,7 +38,7 @@ method division(x: Ref) returns (ret: Ref)
 {
   var y: Ref
   y := divInts(x, x)
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
@@ -49,7 +49,7 @@ method remainder(x: Ref) returns (ret: Ref)
 {
   var y: Ref
   y := remInts(x, x)
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
@@ -60,6 +60,6 @@ method unary_minus(x: Ref) returns (ret: Ref)
 {
   var y: Ref
   y := negInt(x)
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }

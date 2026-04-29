@@ -8,20 +8,20 @@ method useNullableTwice(x: Ref) returns (ret: Ref)
   a := x
   b := x
   ret := a
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /nullable.kt:(162,183): info: Generated Viper text for passNullableParameter:
-method passNullableParameter(x: Ref) returns (ret$0: Ref)
+method passNullableParameter(x: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))
-  ensures isSubtype(typeOf(ret$0), nullable(intType()))
+  ensures isSubtype(typeOf(ret_0), nullable(intType()))
 {
   var anon: Ref
   anon := useNullableTwice(x)
-  ret$0 := x
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret_0 := x
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 method useNullableTwice(x: Ref) returns (ret: Ref)
@@ -36,8 +36,8 @@ method nullableNullableComparison(x: Ref, y: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
 {
   ret := boolToRef(x == y)
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /nullable.kt:(326,355): info: Generated Viper text for nullableNonNullableComparison:
@@ -47,8 +47,8 @@ method nullableNonNullableComparison(x: Ref, y: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
 {
   ret := notBool(boolToRef(x == intToRef(3)))
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /nullable.kt:(410,424): info: Generated Viper text for nullComparison:
@@ -57,6 +57,6 @@ method nullComparison(x: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
 {
   ret := boolToRef(x == nullValue())
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }

@@ -3,55 +3,55 @@ field a: Ref
 
 method con(n: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(n), intType())
-  ensures isSubtype(typeOf(ret), $c$NoPrimaryConstructor())
+  ensures isSubtype(typeOf(ret), _c_NoPrimaryConstructor())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c$NoPrimaryConstructor$unique(ret), write)
+  ensures acc(c_NoPrimaryConstructor_unique(ret), write)
 
 
-method con$$c$NoPrimaryConstructor(b: Ref) returns (ret: Ref)
+method con__c_NoPrimaryConstructor(b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), $c$NoPrimaryConstructor())
+  ensures isSubtype(typeOf(ret), _c_NoPrimaryConstructor())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c$NoPrimaryConstructor$unique(ret), write)
+  ensures acc(c_NoPrimaryConstructor_unique(ret), write)
 
 
-method onlySecondConstructors() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), unitType())
+method onlySecondConstructors() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var npc1: Ref
   var npc2: Ref
-  npc1 := con$$c$NoPrimaryConstructor(boolToRef(true))
+  npc1 := con__c_NoPrimaryConstructor(boolToRef(true))
   npc2 := con(intToRef(42))
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /secondary_constructors.kt:(365,392): info: Generated Viper text for primaryAndSecondConstructor:
-field bf$a: Ref
+field bf_a: Ref
 
 method con(a: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(a), intType())
-  ensures isSubtype(typeOf(ret), $c$BothConstructors())
+  ensures isSubtype(typeOf(ret), _c_BothConstructors())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c$BothConstructors$unique(ret), write)
-  ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf$a)) ==
+  ensures acc(c_BothConstructors_unique(ret), write)
+  ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf_a)) ==
     intFromRef(a)
 
 
-method con$$c$BothConstructors(b: Ref) returns (ret: Ref)
+method con__c_BothConstructors(b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), $c$BothConstructors())
+  ensures isSubtype(typeOf(ret), _c_BothConstructors())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c$BothConstructors$unique(ret), write)
+  ensures acc(c_BothConstructors_unique(ret), write)
 
 
-method primaryAndSecondConstructor() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), unitType())
+method primaryAndSecondConstructor() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var bc1: Ref
   var bc2: Ref
-  bc1 := con$$c$BothConstructors(boolToRef(false))
+  bc1 := con__c_BothConstructors(boolToRef(false))
   bc2 := con(intToRef(42))
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }

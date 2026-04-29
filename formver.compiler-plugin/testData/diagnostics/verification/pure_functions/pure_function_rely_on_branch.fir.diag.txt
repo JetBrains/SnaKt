@@ -4,13 +4,13 @@ function safeDivide(x: Ref, y: Ref): Ref
   requires isSubtype(typeOf(y), intType())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$res$0 ==
+  (let l0_res_0 ==
     (intToRef(0)) in
-    (let l0$res$1 ==
+    (let l0_res_1 ==
       ((!(intFromRef(y) == 0) ? divInts(x, y) : null)) in
-      (let l0$res$2 ==
-        ((!(intFromRef(y) == 0) ? l0$res$1 : l0$res$0)) in
-        l0$res$2)))
+      (let l0_res_2 ==
+        ((!(intFromRef(y) == 0) ? l0_res_1 : l0_res_0)) in
+        l0_res_2)))
 }
 
 /pure_function_rely_on_branch.kt:(206,221): info: Generated Viper text for getStringLength:
@@ -18,13 +18,13 @@ function getStringLength(obj: Ref): Ref
   requires isSubtype(typeOf(obj), anyType())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$len$0 ==
+  (let l0_len_0 ==
     (intToRef(-1)) in
-    (let l0$len$1 ==
+    (let l0_len_1 ==
       ((isSubtype(typeOf(obj), stringType()) ? stringLength(obj) : null)) in
-      (let l0$len$2 ==
-        ((isSubtype(typeOf(obj), stringType()) ? l0$len$1 : l0$len$0)) in
-        l0$len$2)))
+      (let l0_len_2 ==
+        ((isSubtype(typeOf(obj), stringType()) ? l0_len_1 : l0_len_0)) in
+        l0_len_2)))
 }
 
 /pure_function_rely_on_branch.kt:(354,370): info: Generated Viper text for safeNestedDivide:
@@ -34,17 +34,17 @@ function safeNestedDivide(x: Ref, y: Ref, z: Ref): Ref
   requires isSubtype(typeOf(z), intType())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$res$0 ==
+  (let l0_res_0 ==
     (intToRef(0)) in
-    (let l0$res$1 ==
+    (let l0_res_1 ==
       ((!(intFromRef(z) == 0) && !(intFromRef(y) == 0) ?
         divInts(divInts(x, y), z) :
         null)) in
-      (let l0$res$2 ==
-        ((!(intFromRef(z) == 0) ? l0$res$1 : l0$res$0)) in
-        (let l0$res$3 ==
-          ((!(intFromRef(y) == 0) ? l0$res$2 : l0$res$0)) in
-          l0$res$3))))
+      (let l0_res_2 ==
+        ((!(intFromRef(z) == 0) ? l0_res_1 : l0_res_0)) in
+        (let l0_res_3 ==
+          ((!(intFromRef(y) == 0) ? l0_res_2 : l0_res_0)) in
+          l0_res_3))))
 }
 
 /pure_function_rely_on_branch.kt:(546,567): info: Generated Viper text for safeInverseDifference:
@@ -53,13 +53,13 @@ function safeInverseDifference(x: Ref, y: Ref): Ref
   requires isSubtype(typeOf(y), intType())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$res$0 ==
+  (let l0_res_0 ==
     (intToRef(0)) in
-    (let l0$res$1 ==
+    (let l0_res_1 ==
       ((!(intFromRef(x) == intFromRef(y)) ?
         divInts(intToRef(100), minusInts(x, y)) :
         null)) in
-      (let l0$res$2 ==
-        ((!(intFromRef(x) == intFromRef(y)) ? l0$res$1 : l0$res$0)) in
-        l0$res$2)))
+      (let l0_res_2 ==
+        ((!(intFromRef(x) == intFromRef(y)) ? l0_res_1 : l0_res_0)) in
+        l0_res_2)))
 }

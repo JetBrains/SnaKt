@@ -1,204 +1,204 @@
 /viper_casts_while_inlining.kt:(250,255): info: Generated Viper text for idFun:
-method idFun(par$arg: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(par$arg), nullable(anyType()))
+method idFun(par_arg: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par_arg), nullable(anyType()))
   ensures isSubtype(typeOf(ret), nullable(anyType()))
 {
-  ret := par$arg
-  goto ret$0
-  label ret$0
+  ret := par_arg
+  goto ret_0
+  label ret_0
 }
 
 /viper_casts_while_inlining.kt:(609,626): info: Generated Viper text for checkMemberAccess:
-field bf$member: Ref
+field bf_member: Ref
 
-method checkMemberAccess() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), boolType())
-  ensures boolFromRef(ret$0) == true
+method checkMemberAccess() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), boolType())
+  ensures boolFromRef(ret_0) == true
 {
   var obj: Ref
-  var anon$4: Ref
-  var anon$5: Ref
-  var ret$1: Ref
-  var anon$0: Ref
-  var anon$6: Ref
-  var ret$2: Ref
-  var anon$1: Ref
-  var anon$7: Ref
-  var anon$8: Ref
-  var anon$9: Ref
-  var ret$3: Ref
-  var anon$2: Ref
-  var anon$10: Ref
-  var ret$4: Ref
-  var anon$3: Ref
+  var anon_4: Ref
+  var anon_5: Ref
+  var ret_1: Ref
+  var anon_0: Ref
+  var anon_6: Ref
+  var ret_2: Ref
+  var anon_1: Ref
+  var anon_7: Ref
+  var anon_8: Ref
+  var anon_9: Ref
+  var ret_3: Ref
+  var anon_2: Ref
+  var anon_10: Ref
+  var ret_4: Ref
+  var anon_3: Ref
   var anon: Ref
   obj := con(intToRef(42))
   inhale isSubtype(typeOf(obj), nullable(anyType()))
-  anon$0 := obj
-  anon$7 := idFun(anon$0)
-  anon$1 := anon$7
-  inhale isSubtype(typeOf(anon$1), $c$ClassWithMember())
-  inhale acc(shared(anon$1), wildcard)
-  unfold acc(shared(anon$1), wildcard)
-  ret$2 := anon$1.bf$member
-  goto lbl$ret$2
-  label lbl$ret$2
-  anon$6 := ret$2
-  ret$1 := anon$6
-  inhale isSubtype(typeOf(ret$1), nullable(anyType()))
-  goto lbl$ret$1
-  label lbl$ret$1
-  anon$5 := ret$1
-  anon$4 := anon$5
-  inhale isSubtype(typeOf(anon$4), intType())
+  anon_0 := obj
+  anon_7 := idFun(anon_0)
+  anon_1 := anon_7
+  inhale isSubtype(typeOf(anon_1), _c_ClassWithMember())
+  inhale acc(shared(anon_1), wildcard)
+  unfold acc(shared(anon_1), wildcard)
+  ret_2 := anon_1.bf_member
+  goto lbl_ret_2
+  label lbl_ret_2
+  anon_6 := ret_2
+  ret_1 := anon_6
+  inhale isSubtype(typeOf(ret_1), nullable(anyType()))
+  goto lbl_ret_1
+  label lbl_ret_1
+  anon_5 := ret_1
+  anon_4 := anon_5
+  inhale isSubtype(typeOf(anon_4), intType())
   inhale isSubtype(typeOf(obj), nullable(anyType()))
-  anon$2 := obj
-  inhale isSubtype(typeOf(anon$2), $c$ClassWithMember())
-  inhale acc(shared(anon$2), wildcard)
-  anon$3 := anon$2
+  anon_2 := obj
+  inhale isSubtype(typeOf(anon_2), _c_ClassWithMember())
+  inhale acc(shared(anon_2), wildcard)
+  anon_3 := anon_2
   unfold acc(shared(obj), wildcard)
-  anon := obj.bf$member
-  ret$0 := boolToRef(intFromRef(anon) == 42)
-  goto lbl$ret$0
-  label lbl$ret$4
-  anon$10 := ret$4
-  ret$3 := anon$10
-  inhale isSubtype(typeOf(ret$3), nullable(anyType()))
-  goto lbl$ret$3
-  label lbl$ret$3
-  anon$9 := ret$3
-  anon$8 := anon$9
-  inhale isSubtype(typeOf(anon$8), nothingType())
-  label lbl$ret$0
+  anon := obj.bf_member
+  ret_0 := boolToRef(intFromRef(anon) == 42)
+  goto lbl_ret_0
+  label lbl_ret_4
+  anon_10 := ret_4
+  ret_3 := anon_10
+  inhale isSubtype(typeOf(ret_3), nullable(anyType()))
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon_9 := ret_3
+  anon_8 := anon_9
+  inhale isSubtype(typeOf(anon_8), nothingType())
+  label lbl_ret_0
 }
 
 method con(member: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(member), intType())
-  ensures isSubtype(typeOf(ret), $c$ClassWithMember())
+  ensures isSubtype(typeOf(ret), _c_ClassWithMember())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c$ClassWithMember$unique(ret), write)
+  ensures acc(c_ClassWithMember_unique(ret), write)
   ensures intFromRef((unfolding acc(shared(ret), wildcard) in
-      ret.bf$member)) ==
+      ret.bf_member)) ==
     intFromRef(member)
 
 
-method idFun(par$arg: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(par$arg), nullable(anyType()))
+method idFun(par_arg: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par_arg), nullable(anyType()))
   ensures isSubtype(typeOf(ret), nullable(anyType()))
 
 
 /viper_casts_while_inlining.kt:(895,919): info: Generated Viper text for checkGenericMemberAccess:
-field bf$wrapped: Ref
+field bf_wrapped: Ref
 
-method checkGenericMemberAccess(box: Ref) returns (ret$0: Ref)
-  requires isSubtype(typeOf(box), $c$Box())
-  ensures isSubtype(typeOf(ret$0), boolType())
-  ensures boolFromRef(ret$0) == true
+method checkGenericMemberAccess(box: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(box), _c_Box())
+  ensures isSubtype(typeOf(ret_0), boolType())
+  ensures boolFromRef(ret_0) == true
 {
-  var ret$1: Ref
-  var anon$0: Ref
-  var ret$2: Ref
-  var anon$1: Ref
-  var anon$4: Ref
-  var anon$5: Ref
-  var anon$6: Ref
-  var ret$3: Ref
-  var anon$2: Ref
-  var anon$7: Ref
-  var anon$8: Ref
-  var anon$9: Ref
-  var ret$4: Ref
-  var anon$3: Ref
-  var anon$10: Ref
+  var ret_1: Ref
+  var anon_0: Ref
+  var ret_2: Ref
+  var anon_1: Ref
+  var anon_4: Ref
+  var anon_5: Ref
+  var anon_6: Ref
+  var ret_3: Ref
+  var anon_2: Ref
+  var anon_7: Ref
+  var anon_8: Ref
+  var anon_9: Ref
+  var ret_4: Ref
+  var anon_3: Ref
+  var anon_10: Ref
   var anon: Ref
-  inhale acc(c$Box$shared(box), wildcard)
+  inhale acc(c_Box_shared(box), wildcard)
   inhale isSubtype(typeOf(box), nullable(anyType()))
-  anon$0 := box
-  anon$4 := idFun(anon$0)
-  anon$1 := anon$4
-  inhale isSubtype(typeOf(anon$1), $c$Box())
-  inhale acc(c$Box$shared(anon$1), wildcard)
-  unfold acc(c$Box$shared(anon$1), wildcard)
-  ret$2 := anon$1.bf$wrapped
-  goto lbl$ret$2
-  label lbl$ret$2
-  ret$1 := ret$2
-  goto lbl$ret$1
-  label lbl$ret$1
-  unfold acc(c$Box$shared(box), wildcard)
-  anon$8 := box.bf$wrapped
-  anon$7 := con(anon$8)
-  anon$2 := anon$7
-  inhale isSubtype(typeOf(anon$2), nullable(anyType()))
-  inhale isSubtype(typeOf(anon$2), $c$Box())
-  inhale acc(c$Box$shared(anon$2), wildcard)
-  anon$3 := anon$2
-  unfold acc(c$Box$shared(anon$3), wildcard)
-  anon$10 := anon$3.bf$wrapped
-  unfold acc(c$Box$shared(box), wildcard)
-  anon := box.bf$wrapped
-  ret$0 := boolToRef(anon$10 == anon)
-  goto lbl$ret$0
-  label lbl$ret$4
-  anon$9 := ret$4
-  ret$3 := anon$9
-  inhale isSubtype(typeOf(ret$3), nullable(anyType()))
-  goto lbl$ret$3
-  label lbl$ret$3
-  anon$6 := ret$3
-  anon$5 := anon$6
-  inhale isSubtype(typeOf(anon$5), nothingType())
-  label lbl$ret$0
+  anon_0 := box
+  anon_4 := idFun(anon_0)
+  anon_1 := anon_4
+  inhale isSubtype(typeOf(anon_1), _c_Box())
+  inhale acc(c_Box_shared(anon_1), wildcard)
+  unfold acc(c_Box_shared(anon_1), wildcard)
+  ret_2 := anon_1.bf_wrapped
+  goto lbl_ret_2
+  label lbl_ret_2
+  ret_1 := ret_2
+  goto lbl_ret_1
+  label lbl_ret_1
+  unfold acc(c_Box_shared(box), wildcard)
+  anon_8 := box.bf_wrapped
+  anon_7 := con(anon_8)
+  anon_2 := anon_7
+  inhale isSubtype(typeOf(anon_2), nullable(anyType()))
+  inhale isSubtype(typeOf(anon_2), _c_Box())
+  inhale acc(c_Box_shared(anon_2), wildcard)
+  anon_3 := anon_2
+  unfold acc(c_Box_shared(anon_3), wildcard)
+  anon_10 := anon_3.bf_wrapped
+  unfold acc(c_Box_shared(box), wildcard)
+  anon := box.bf_wrapped
+  ret_0 := boolToRef(anon_10 == anon)
+  goto lbl_ret_0
+  label lbl_ret_4
+  anon_9 := ret_4
+  ret_3 := anon_9
+  inhale isSubtype(typeOf(ret_3), nullable(anyType()))
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon_6 := ret_3
+  anon_5 := anon_6
+  inhale isSubtype(typeOf(anon_5), nothingType())
+  label lbl_ret_0
 }
 
 method con(wrapped: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(wrapped), nullable(anyType()))
-  ensures isSubtype(typeOf(ret), $c$Box())
-  ensures acc(c$Box$shared(ret), wildcard)
-  ensures acc(c$Box$unique(ret), write)
-  ensures (unfolding acc(c$Box$shared(ret), wildcard) in ret.bf$wrapped) ==
+  ensures isSubtype(typeOf(ret), _c_Box())
+  ensures acc(c_Box_shared(ret), wildcard)
+  ensures acc(c_Box_unique(ret), write)
+  ensures (unfolding acc(c_Box_shared(ret), wildcard) in ret.bf_wrapped) ==
     wrapped
 
 
-method idFun(par$arg: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(par$arg), nullable(anyType()))
+method idFun(par_arg: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par_arg), nullable(anyType()))
   ensures isSubtype(typeOf(ret), nullable(anyType()))
 
 
 /viper_casts_while_inlining.kt:(1161,1182): info: Generated Viper text for checkArgumentIsCopied:
 field a: Ref
 
-method checkArgumentIsCopied(x: Ref) returns (ret$0: Ref)
-  requires isSubtype(typeOf(x), $c$ClassWithVar())
-  ensures isSubtype(typeOf(ret$0), unitType())
+method checkArgumentIsCopied(x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), _c_ClassWithVar())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var anon$2: Ref
-  var anon$3: Ref
-  var ret$1: Ref
-  var anon$0: Ref
-  var anon$4: Ref
-  var anon$5: Ref
-  var ret$2: Ref
+  var anon_2: Ref
+  var anon_3: Ref
+  var ret_1: Ref
+  var anon_0: Ref
+  var anon_4: Ref
+  var anon_5: Ref
+  var ret_2: Ref
   var anon: Ref
   inhale acc(shared(x), wildcard)
-  anon$4 := havoc()
-  anon$0 := anon$4
-  inhale isSubtype(typeOf(anon$0), nullable(anyType()))
-  inhale isSubtype(typeOf(anon$0), intType())
-  anon := anon$0
-  ret$2 := anon
-  goto lbl$ret$2
-  label lbl$ret$2
-  anon$5 := ret$2
-  ret$1 := anon$5
-  inhale isSubtype(typeOf(ret$1), nullable(anyType()))
-  goto lbl$ret$1
-  label lbl$ret$1
-  anon$3 := ret$1
-  anon$2 := anon$3
-  inhale isSubtype(typeOf(anon$2), intType())
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  anon_4 := havoc()
+  anon_0 := anon_4
+  inhale isSubtype(typeOf(anon_0), nullable(anyType()))
+  inhale isSubtype(typeOf(anon_0), intType())
+  anon := anon_0
+  ret_2 := anon
+  goto lbl_ret_2
+  label lbl_ret_2
+  anon_5 := ret_2
+  ret_1 := anon_5
+  inhale isSubtype(typeOf(ret_1), nullable(anyType()))
+  goto lbl_ret_1
+  label lbl_ret_1
+  anon_3 := ret_1
+  anon_2 := anon_3
+  inhale isSubtype(typeOf(anon_2), intType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /viper_casts_while_inlining.kt:(1347,1364): info: Generated Viper text for accessManyMembers:
@@ -210,99 +210,99 @@ field c: Ref
 
 field i: Ref
 
-method accessManyMembers(m: Ref) returns (ret$0: Ref)
-  requires isSubtype(typeOf(m), $c$ManyMembers())
-  ensures isSubtype(typeOf(ret$0), unitType())
+method accessManyMembers(m: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(m), _c_ManyMembers())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var anon$4: Ref
-  var anon$5: Ref
-  var ret$1: Ref
-  var anon$0: Ref
-  var anon$6: Ref
-  var ret$2: Ref
-  var anon$1: Ref
-  var anon$7: Ref
-  var anon$8: Ref
-  var anon$9: Ref
-  var anon$10: Ref
-  var anon$11: Ref
-  var anon$12: Ref
-  var anon$13: Ref
-  var anon$14: Ref
-  var ret$3: Ref
-  var anon$2: Ref
-  var anon$15: Ref
-  var ret$4: Ref
-  var anon$3: Ref
-  var anon$16: Ref
-  var anon$17: Ref
-  var anon$18: Ref
-  var anon$19: Ref
-  var anon$20: Ref
-  var anon$21: Ref
+  var anon_4: Ref
+  var anon_5: Ref
+  var ret_1: Ref
+  var anon_0: Ref
+  var anon_6: Ref
+  var ret_2: Ref
+  var anon_1: Ref
+  var anon_7: Ref
+  var anon_8: Ref
+  var anon_9: Ref
+  var anon_10: Ref
+  var anon_11: Ref
+  var anon_12: Ref
+  var anon_13: Ref
+  var anon_14: Ref
+  var ret_3: Ref
+  var anon_2: Ref
+  var anon_15: Ref
+  var ret_4: Ref
+  var anon_3: Ref
+  var anon_16: Ref
+  var anon_17: Ref
+  var anon_18: Ref
+  var anon_19: Ref
+  var anon_20: Ref
+  var anon_21: Ref
   var anon: Ref
-  inhale acc(c$ManyMembers$shared(m), wildcard)
+  inhale acc(c_ManyMembers_shared(m), wildcard)
   inhale isSubtype(typeOf(m), nullable(anyType()))
-  anon$0 := m
-  inhale isSubtype(typeOf(anon$0), $c$ManyMembers())
-  inhale acc(c$ManyMembers$shared(anon$0), wildcard)
-  anon$1 := anon$0
-  unfold acc(c$ManyMembers$shared(anon$1), wildcard)
-  anon$9 := anon$1.i
-  anon$8 := idFun(anon$9)
-  anon$7 := anon$8
-  inhale isSubtype(typeOf(anon$7), intType())
-  anon$12 := havoc$Boolean()
-  anon$11 := idFun(anon$12)
-  anon$10 := anon$11
-  inhale isSubtype(typeOf(anon$10), boolType())
-  unfold acc(c$ManyMembers$shared(anon$1), wildcard)
-  ret$2 := anon$1.c
-  goto lbl$ret$2
-  label lbl$ret$2
-  anon$6 := ret$2
-  ret$1 := anon$6
-  inhale isSubtype(typeOf(ret$1), nullable(anyType()))
-  goto lbl$ret$1
-  label lbl$ret$1
-  anon$5 := ret$1
-  anon$4 := anon$5
-  inhale isSubtype(typeOf(anon$4), $c$ClassWithVar())
-  inhale acc(shared(anon$4), wildcard)
+  anon_0 := m
+  inhale isSubtype(typeOf(anon_0), _c_ManyMembers())
+  inhale acc(c_ManyMembers_shared(anon_0), wildcard)
+  anon_1 := anon_0
+  unfold acc(c_ManyMembers_shared(anon_1), wildcard)
+  anon_9 := anon_1.i
+  anon_8 := idFun(anon_9)
+  anon_7 := anon_8
+  inhale isSubtype(typeOf(anon_7), intType())
+  anon_12 := havoc_Boolean()
+  anon_11 := idFun(anon_12)
+  anon_10 := anon_11
+  inhale isSubtype(typeOf(anon_10), boolType())
+  unfold acc(c_ManyMembers_shared(anon_1), wildcard)
+  ret_2 := anon_1.c
+  goto lbl_ret_2
+  label lbl_ret_2
+  anon_6 := ret_2
+  ret_1 := anon_6
+  inhale isSubtype(typeOf(ret_1), nullable(anyType()))
+  goto lbl_ret_1
+  label lbl_ret_1
+  anon_5 := ret_1
+  anon_4 := anon_5
+  inhale isSubtype(typeOf(anon_4), _c_ClassWithVar())
+  inhale acc(shared(anon_4), wildcard)
   inhale isSubtype(typeOf(m), nullable(anyType()))
-  anon$2 := m
-  anon$16 := idFun(anon$2)
-  anon$3 := anon$16
-  inhale isSubtype(typeOf(anon$3), $c$ManyMembers())
-  inhale acc(c$ManyMembers$shared(anon$3), wildcard)
-  unfold acc(c$ManyMembers$shared(anon$3), wildcard)
-  anon$19 := anon$3.i
-  anon$18 := idFun(anon$19)
-  anon$17 := anon$18
-  inhale isSubtype(typeOf(anon$17), intType())
-  anon := havoc$Boolean()
-  anon$21 := idFun(anon)
-  anon$20 := anon$21
-  inhale isSubtype(typeOf(anon$20), boolType())
-  unfold acc(c$ManyMembers$shared(anon$3), wildcard)
-  ret$4 := anon$3.c
-  goto lbl$ret$4
-  label lbl$ret$4
-  anon$15 := ret$4
-  ret$3 := anon$15
-  inhale isSubtype(typeOf(ret$3), nullable(anyType()))
-  goto lbl$ret$3
-  label lbl$ret$3
-  anon$14 := ret$3
-  anon$13 := anon$14
-  inhale isSubtype(typeOf(anon$13), $c$ClassWithVar())
-  inhale acc(shared(anon$13), wildcard)
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  anon_2 := m
+  anon_16 := idFun(anon_2)
+  anon_3 := anon_16
+  inhale isSubtype(typeOf(anon_3), _c_ManyMembers())
+  inhale acc(c_ManyMembers_shared(anon_3), wildcard)
+  unfold acc(c_ManyMembers_shared(anon_3), wildcard)
+  anon_19 := anon_3.i
+  anon_18 := idFun(anon_19)
+  anon_17 := anon_18
+  inhale isSubtype(typeOf(anon_17), intType())
+  anon := havoc_Boolean()
+  anon_21 := idFun(anon)
+  anon_20 := anon_21
+  inhale isSubtype(typeOf(anon_20), boolType())
+  unfold acc(c_ManyMembers_shared(anon_3), wildcard)
+  ret_4 := anon_3.c
+  goto lbl_ret_4
+  label lbl_ret_4
+  anon_15 := ret_4
+  ret_3 := anon_15
+  inhale isSubtype(typeOf(ret_3), nullable(anyType()))
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon_14 := ret_3
+  anon_13 := anon_14
+  inhale isSubtype(typeOf(anon_13), _c_ClassWithVar())
+  inhale acc(shared(anon_13), wildcard)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-method idFun(par$arg: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(par$arg), nullable(anyType()))
+method idFun(par_arg: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par_arg), nullable(anyType()))
   ensures isSubtype(typeOf(ret), nullable(anyType()))
 
 
@@ -311,47 +311,47 @@ field a: Ref
 
 field b: Ref
 
-field bf$i: Ref
+field bf_i: Ref
 
 field c: Ref
 
 field size: Ref
 
-method checkEvaluatedOnce(i: Ref, mm: Ref) returns (ret$0: Ref)
+method checkEvaluatedOnce(i: Ref, mm: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(i), intType())
-  requires isSubtype(typeOf(mm), $c$ManyMembers())
-  ensures isSubtype(typeOf(ret$0), unitType())
+  requires isSubtype(typeOf(mm), _c_ManyMembers())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var anon$2: Ref
-  var anon$3: Ref
-  var ret$1: Ref
-  var anon$0: Ref
-  var anon$4: Ref
-  var anon$5: Ref
-  var anon$6: Ref
-  var ret$2: Ref
+  var anon_2: Ref
+  var anon_3: Ref
+  var ret_1: Ref
+  var anon_0: Ref
+  var anon_4: Ref
+  var anon_5: Ref
+  var anon_6: Ref
+  var ret_2: Ref
   var anon: Ref
-  inhale acc(c$ManyMembers$shared(mm), wildcard)
-  anon$5 := havoc$Boolean()
-  if (boolFromRef(anon$5)) {
-    anon$4 := intToRef(1)
+  inhale acc(c_ManyMembers_shared(mm), wildcard)
+  anon_5 := havoc_Boolean()
+  if (boolFromRef(anon_5)) {
+    anon_4 := intToRef(1)
   } else {
-    anon$4 := intToRef(-1)}
-  anon$0 := plusInts(i, anon$4)
-  inhale isSubtype(typeOf(anon$0), nullable(anyType()))
-  inhale isSubtype(typeOf(anon$0), intType())
-  anon := anon$0
+    anon_4 := intToRef(-1)}
+  anon_0 := plusInts(i, anon_4)
+  inhale isSubtype(typeOf(anon_0), nullable(anyType()))
+  inhale isSubtype(typeOf(anon_0), intType())
+  anon := anon_0
   assert intFromRef(anon) == intFromRef(anon)
-  label lbl$ret$2
-  inhale isSubtype(typeOf(ret$2), unitType())
-  anon$6 := ret$2
-  ret$1 := anon$6
-  inhale isSubtype(typeOf(ret$1), nullable(anyType()))
-  goto lbl$ret$1
-  label lbl$ret$1
-  anon$3 := ret$1
-  anon$2 := anon$3
-  inhale isSubtype(typeOf(anon$2), unitType())
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_2
+  inhale isSubtype(typeOf(ret_2), unitType())
+  anon_6 := ret_2
+  ret_1 := anon_6
+  inhale isSubtype(typeOf(ret_1), nullable(anyType()))
+  goto lbl_ret_1
+  label lbl_ret_1
+  anon_3 := ret_1
+  anon_2 := anon_3
+  inhale isSubtype(typeOf(anon_2), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }

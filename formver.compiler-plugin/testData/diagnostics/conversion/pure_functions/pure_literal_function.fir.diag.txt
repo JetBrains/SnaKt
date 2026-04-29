@@ -10,7 +10,7 @@ method emptyFunction() returns (ret: Ref)
 {
   var x: Ref
   x := emptyAnnotatedFunction()
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
@@ -56,8 +56,8 @@ field b: Ref
 
 function annotatedReferenceReturn(x: Ref): Ref
   requires acc(shared(x), wildcard)
-  requires isSubtype(typeOf(x), $c$X())
-  ensures isSubtype(typeOf(result), $c$X())
+  requires isSubtype(typeOf(x), _c_X())
+  ensures isSubtype(typeOf(result), _c_X())
 {
   x
 }

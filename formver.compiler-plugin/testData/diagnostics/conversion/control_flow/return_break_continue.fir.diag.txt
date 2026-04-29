@@ -3,10 +3,10 @@ method testReturn() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
 {
   ret := intToRef(0)
-  goto ret$0
+  goto ret_0
   ret := intToRef(1)
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /return_break_continue.kt:(76,90): info: Generated Viper text for returnFromLoop:
@@ -18,13 +18,13 @@ method returnFromLoop() returns (ret: Ref)
   anon := boolToRef(true)
   if (boolFromRef(anon)) {
     ret := intToRef(0)
-    goto ret$0
+    goto ret_0
     goto cont
   }
   label break
   ret := intToRef(1)
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /return_break_continue.kt:(162,172): info: Generated Viper text for whileBreak:
@@ -48,8 +48,8 @@ method whileBreak(b: Ref) returns (ret: Ref)
   assert isSubtype(typeOf(i), intType())
   assert isSubtype(typeOf(b), boolType())
   ret := i
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /return_break_continue.kt:(276,289): info: Generated Viper text for whileContinue:
@@ -69,7 +69,7 @@ method whileContinue() returns (ret: Ref)
   }
   label break
   assert isSubtype(typeOf(b), boolType())
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
@@ -78,23 +78,23 @@ method whileNested(b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(ret), unitType())
 {
-  var anon$0: Ref
-  label cont$0
+  var anon_0: Ref
+  label cont_0
     invariant isSubtype(typeOf(b), boolType())
-  anon$0 := b
-  if (boolFromRef(anon$0)) {
-    var anon$1: Ref
+  anon_0 := b
+  if (boolFromRef(anon_0)) {
+    var anon_1: Ref
     var anon: Ref
-    label cont$1
+    label cont_1
       invariant isSubtype(typeOf(b), boolType())
-    anon$1 := b
-    if (boolFromRef(anon$1)) {
-      goto break$1
-      goto cont$1
+    anon_1 := b
+    if (boolFromRef(anon_1)) {
+      goto break_1
+      goto cont_1
     }
-    label break$1
+    label break_1
     assert isSubtype(typeOf(b), boolType())
-    goto cont$0
+    goto cont_0
     label cont
       invariant isSubtype(typeOf(b), boolType())
     anon := b
@@ -104,12 +104,12 @@ method whileNested(b: Ref) returns (ret: Ref)
     }
     label break
     assert isSubtype(typeOf(b), boolType())
-    goto break$0
-    goto cont$0
+    goto break_0
+    goto cont_0
   }
-  label break$0
+  label break_0
   assert isSubtype(typeOf(b), boolType())
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
@@ -118,30 +118,30 @@ method labelledBreak(b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(ret), unitType())
 {
-  var anon$0: Ref
-  label cont$0
+  var anon_0: Ref
+  label cont_0
     invariant isSubtype(typeOf(b), boolType())
-  anon$0 := b
-  if (boolFromRef(anon$0)) {
+  anon_0 := b
+  if (boolFromRef(anon_0)) {
     var anon: Ref
     label cont
       invariant isSubtype(typeOf(b), boolType())
     anon := b
     if (boolFromRef(anon)) {
-      goto break$0
+      goto break_0
       goto break
       goto break
       goto cont
     }
     label break
     assert isSubtype(typeOf(b), boolType())
-    goto break$0
-    goto break$0
-    goto cont$0
+    goto break_0
+    goto break_0
+    goto cont_0
   }
-  label break$0
+  label break_0
   assert isSubtype(typeOf(b), boolType())
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
@@ -150,30 +150,30 @@ method labelledContinue(b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(ret), unitType())
 {
-  var anon$0: Ref
-  label cont$0
+  var anon_0: Ref
+  label cont_0
     invariant isSubtype(typeOf(b), boolType())
-  anon$0 := b
-  if (boolFromRef(anon$0)) {
+  anon_0 := b
+  if (boolFromRef(anon_0)) {
     var anon: Ref
     label cont
       invariant isSubtype(typeOf(b), boolType())
     anon := b
     if (boolFromRef(anon)) {
-      goto cont$0
+      goto cont_0
       goto cont
       goto cont
       goto cont
     }
     label break
     assert isSubtype(typeOf(b), boolType())
-    goto cont$0
-    goto cont$0
-    goto cont$0
+    goto cont_0
+    goto cont_0
+    goto cont_0
   }
-  label break$0
+  label break_0
   assert isSubtype(typeOf(b), boolType())
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
@@ -182,22 +182,22 @@ method labelledWhileShadowing(b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(ret), unitType())
 {
-  var anon$0: Ref
-  label cont$0
+  var anon_0: Ref
+  label cont_0
     invariant isSubtype(typeOf(b), boolType())
-  anon$0 := b
-  if (boolFromRef(anon$0)) {
-    var anon$1: Ref
+  anon_0 := b
+  if (boolFromRef(anon_0)) {
+    var anon_1: Ref
     var anon: Ref
-    label cont$1
+    label cont_1
       invariant isSubtype(typeOf(b), boolType())
-    anon$1 := b
-    if (boolFromRef(anon$1)) {
-      goto break$1
-      goto cont$1
-      goto cont$1
+    anon_1 := b
+    if (boolFromRef(anon_1)) {
+      goto break_1
+      goto cont_1
+      goto cont_1
     }
-    label break$1
+    label break_1
     assert isSubtype(typeOf(b), boolType())
     label cont
       invariant isSubtype(typeOf(b), boolType())
@@ -209,12 +209,12 @@ method labelledWhileShadowing(b: Ref) returns (ret: Ref)
     }
     label break
     assert isSubtype(typeOf(b), boolType())
-    goto break$0
-    goto cont$0
-    goto cont$0
+    goto break_0
+    goto cont_0
+    goto cont_0
   }
-  label break$0
+  label break_0
   assert isSubtype(typeOf(b), boolType())
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }

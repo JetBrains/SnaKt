@@ -3,11 +3,11 @@ function noAssignmentInBlocks(a: Ref): Ref
   requires isSubtype(typeOf(a), boolType())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$result$0 ==
+  (let l0_result_0 ==
     (intToRef(0)) in
-    (let l0$result$1 ==
-      (plusInts(l0$result$0, intToRef(1))) in
-      l0$result$1))
+    (let l0_result_1 ==
+      (plusInts(l0_result_0, intToRef(1))) in
+      l0_result_1))
 }
 
 /pure_function_with_branching.kt:(216,231): info: Generated Viper text for simpleBranching:
@@ -15,15 +15,15 @@ function simpleBranching(a: Ref): Ref
   requires isSubtype(typeOf(a), boolType())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$result$0 ==
+  (let l0_result_0 ==
     (intToRef(0)) in
-    (let l0$result$1 ==
-      ((boolFromRef(a) ? plusInts(l0$result$0, intToRef(1)) : null)) in
-      (let l0$result$2 ==
-        ((!boolFromRef(a) ? plusInts(l0$result$0, intToRef(2)) : null)) in
-        (let l0$result$3 ==
-          ((boolFromRef(a) ? l0$result$1 : l0$result$2)) in
-          l0$result$3))))
+    (let l0_result_1 ==
+      ((boolFromRef(a) ? plusInts(l0_result_0, intToRef(1)) : null)) in
+      (let l0_result_2 ==
+        ((!boolFromRef(a) ? plusInts(l0_result_0, intToRef(2)) : null)) in
+        (let l0_result_3 ==
+          ((boolFromRef(a) ? l0_result_1 : l0_result_2)) in
+          l0_result_3))))
 }
 
 /pure_function_with_branching.kt:(389,404): info: Generated Viper text for nestedBranching:
@@ -32,41 +32,41 @@ function nestedBranching(a: Ref, b: Ref): Ref
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$result$0 ==
+  (let l0_result_0 ==
     (intToRef(0)) in
-    (let l0$result$1 ==
-      ((boolFromRef(a) ? plusInts(intToRef(1), l0$result$0) : null)) in
-      (let l0$result$2 ==
+    (let l0_result_1 ==
+      ((boolFromRef(a) ? plusInts(intToRef(1), l0_result_0) : null)) in
+      (let l0_result_2 ==
         ((boolFromRef(b) && boolFromRef(a) ?
-          plusInts(intToRef(2), l0$result$1) :
+          plusInts(intToRef(2), l0_result_1) :
           null)) in
-        (let l0$result$3 ==
+        (let l0_result_3 ==
           ((!boolFromRef(b) && boolFromRef(a) ?
-            plusInts(intToRef(3), l0$result$1) :
+            plusInts(intToRef(3), l0_result_1) :
             null)) in
-          (let l0$result$4 ==
+          (let l0_result_4 ==
             ((boolFromRef(b) && !boolFromRef(a) ?
-              plusInts(intToRef(4), l0$result$0) :
+              plusInts(intToRef(4), l0_result_0) :
               null)) in
-            (let l0$result$5 ==
+            (let l0_result_5 ==
               ((!boolFromRef(b) && !boolFromRef(a) ?
-                plusInts(intToRef(5), l0$result$0) :
+                plusInts(intToRef(5), l0_result_0) :
                 null)) in
-              (let l0$result$6 ==
+              (let l0_result_6 ==
                 ((!boolFromRef(a) ?
-                  (boolFromRef(b) ? l0$result$4 : l0$result$5) :
+                  (boolFromRef(b) ? l0_result_4 : l0_result_5) :
                   null)) in
-                (let l0$result$7 ==
+                (let l0_result_7 ==
                   ((!boolFromRef(a) ?
-                    plusInts(intToRef(6), l0$result$6) :
+                    plusInts(intToRef(6), l0_result_6) :
                     null)) in
-                  (let l0$result$8 ==
-                    ((boolFromRef(b) ? l0$result$2 : l0$result$3)) in
-                    (let l0$result$9 ==
-                      ((boolFromRef(a) ? l0$result$8 : l0$result$7)) in
-                      (let l0$result$10 ==
-                        (plusInts(intToRef(7), l0$result$9)) in
-                        l0$result$10)))))))))))
+                  (let l0_result_8 ==
+                    ((boolFromRef(b) ? l0_result_2 : l0_result_3)) in
+                    (let l0_result_9 ==
+                      ((boolFromRef(a) ? l0_result_8 : l0_result_7)) in
+                      (let l0_result_10 ==
+                        (plusInts(intToRef(7), l0_result_9)) in
+                        l0_result_10)))))))))))
 }
 
 /pure_function_with_branching.kt:(814,834): info: Generated Viper text for whenExpressionSimple:
@@ -74,25 +74,25 @@ function whenExpressionSimple(x: Ref): Ref
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$y$0 ==
+  (let l0_y_0 ==
     (intToRef(0)) in
-    (let v$anon$0$0 ==
+    (let v_anon_0_0 ==
       (x) in
-      (let l0$y$1 ==
-        ((intFromRef(v$anon$0$0) == 1 ? intToRef(10) : null)) in
-        (let l0$y$2 ==
-          ((!(intFromRef(v$anon$0$0) == 2) &&
-          !(intFromRef(v$anon$0$0) == 1) ?
+      (let l0_y_1 ==
+        ((intFromRef(v_anon_0_0) == 1 ? intToRef(10) : null)) in
+        (let l0_y_2 ==
+          ((!(intFromRef(v_anon_0_0) == 2) &&
+          !(intFromRef(v_anon_0_0) == 1) ?
             intToRef(30) :
             null)) in
-          (let l0$y$3 ==
-            ((intFromRef(v$anon$0$0) == 2 ? l0$y$0 : l0$y$2)) in
-            (let l0$y$4 ==
-              ((intFromRef(v$anon$0$0) == 1 ? l0$y$1 : l0$y$3)) in
-              (intFromRef(v$anon$0$0) == 2 &&
-              !(intFromRef(v$anon$0$0) == 1) ?
+          (let l0_y_3 ==
+            ((intFromRef(v_anon_0_0) == 2 ? l0_y_0 : l0_y_2)) in
+            (let l0_y_4 ==
+              ((intFromRef(v_anon_0_0) == 1 ? l0_y_1 : l0_y_3)) in
+              (intFromRef(v_anon_0_0) == 2 &&
+              !(intFromRef(v_anon_0_0) == 1) ?
                 intToRef(20) :
-                plusInts(l0$y$4, intToRef(1)))))))))
+                plusInts(l0_y_4, intToRef(1)))))))))
 }
 
 /pure_function_with_branching.kt:(1053,1076): info: Generated Viper text for whenNoArgumentBranching:
@@ -101,7 +101,7 @@ function whenNoArgumentBranching(x: Ref, y: Ref): Ref
   requires isSubtype(typeOf(y), intType())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let l5$z$0 ==
+  (let l5_z_0 ==
     ((!(intFromRef(x) < 0 || intFromRef(y) < 0) &&
     (!(intFromRef(x) > 0 && intFromRef(y) > 0) && !(intFromRef(x) == 0)) ?
       intToRef(5) :
@@ -113,7 +113,7 @@ function whenNoArgumentBranching(x: Ref, y: Ref): Ref
         ((intFromRef(x) < 0 || intFromRef(y) < 0) &&
         (!(intFromRef(x) > 0 && intFromRef(y) > 0) && !(intFromRef(x) == 0)) ?
           intToRef(-1) :
-          l5$z$0))))
+          l5_z_0))))
 }
 
 /pure_function_with_branching.kt:(1299,1322): info: Generated Viper text for stringEqualityBranching:
@@ -121,44 +121,44 @@ function stringEqualityBranching(input: Ref): Ref
   requires isSubtype(typeOf(input), stringType())
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let l0$isValid$0 ==
+  (let l0_isValid_0 ==
     (boolToRef(false)) in
-    (let l0$isValid$1 ==
+    (let l0_isValid_1 ==
       ((stringFromRef(input) == Seq(117, 115, 101, 114) &&
       !(stringFromRef(input) == Seq(97, 100, 109, 105, 110)) ?
         boolToRef(true) :
         null)) in
-      (let l0$isValid$2 ==
+      (let l0_isValid_2 ==
         ((!(stringFromRef(input) == Seq(117, 115, 101, 114)) &&
         !(stringFromRef(input) == Seq(97, 100, 109, 105, 110)) ?
           boolToRef(false) :
           null)) in
-        (let l0$isValid$3 ==
+        (let l0_isValid_3 ==
           ((stringFromRef(input) == Seq(117, 115, 101, 114) ?
-            l0$isValid$1 :
-            l0$isValid$2)) in
-          (let l0$isValid$4 ==
+            l0_isValid_1 :
+            l0_isValid_2)) in
+          (let l0_isValid_4 ==
             ((stringFromRef(input) == Seq(97, 100, 109, 105, 110) ?
-              l0$isValid$0 :
-              l0$isValid$3)) in
+              l0_isValid_0 :
+              l0_isValid_3)) in
             (stringFromRef(input) == Seq(97, 100, 109, 105, 110) ?
               boolToRef(true) :
-              l0$isValid$4))))))
+              l0_isValid_4))))))
 }
 
 /pure_function_with_branching.kt:(1585,1609): info: Generated Viper text for sequentialIfWithMutation:
 function sequentialIfWithMutation(): Ref
   ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$x$0 ==
+  (let l0_x_0 ==
     (intToRef(10)) in
-    (let l0$x$1 ==
-      ((intFromRef(l0$x$0) > 5 ? intToRef(2) : null)) in
-      (let l0$x$2 ==
-        ((!(intFromRef(l0$x$0) > 5) ? intToRef(20) : null)) in
-        (let l0$x$3 ==
-          ((intFromRef(l0$x$0) > 5 ? l0$x$1 : l0$x$2)) in
-          (intFromRef(l0$x$3) == 2 ? intToRef(100) : intToRef(0))))))
+    (let l0_x_1 ==
+      ((intFromRef(l0_x_0) > 5 ? intToRef(2) : null)) in
+      (let l0_x_2 ==
+        ((!(intFromRef(l0_x_0) > 5) ? intToRef(20) : null)) in
+        (let l0_x_3 ==
+          ((intFromRef(l0_x_0) > 5 ? l0_x_1 : l0_x_2)) in
+          (intFromRef(l0_x_3) == 2 ? intToRef(100) : intToRef(0))))))
 }
 
 /pure_function_with_branching.kt:(1768,1788): info: Generated Viper text for complexBooleanReturn:
@@ -166,19 +166,19 @@ function complexBooleanReturn(x: Ref): Ref
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let l0$result$0 ==
+  (let l0_result_0 ==
     (boolToRef(false)) in
-    (let l0$result$1 ==
+    (let l0_result_1 ==
       ((intFromRef(x) > 50 ? boolToRef(true) : null)) in
-      (let l0$result$2 ==
+      (let l0_result_2 ==
         ((!(intFromRef(x) > 50) ? boolToRef(true) : null)) in
-        (let l0$result$3 ==
-          ((intFromRef(x) > 50 ? l0$result$1 : l0$result$2)) in
+        (let l0_result_3 ==
+          ((intFromRef(x) > 50 ? l0_result_1 : l0_result_2)) in
           (intFromRef(x) > 100 ?
             boolToRef(true) :
             (intFromRef(x) < 0 && !(intFromRef(x) > 50) ?
               boolToRef(false) :
-              (boolFromRef(l0$result$3) ?
+              (boolFromRef(l0_result_3) ?
                 boolToRef(false) :
                 boolToRef(true))))))))
 }

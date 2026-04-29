@@ -1,61 +1,61 @@
 /as_operator.kt:(57,63): info: Generated Viper text for testAs:
 method testAs(foo: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(foo), $c$Foo())
-  ensures isSubtype(typeOf(ret), $c$Bar())
+  requires isSubtype(typeOf(foo), _c_Foo())
+  ensures isSubtype(typeOf(ret), _c_Bar())
   ensures acc(shared(ret), wildcard)
 {
-  inhale acc(c$Foo$shared(foo), wildcard)
-  inhale isSubtype(typeOf(foo), $c$Bar())
+  inhale acc(c_Foo_shared(foo), wildcard)
+  inhale isSubtype(typeOf(foo), _c_Bar())
   inhale acc(shared(foo), wildcard)
   ret := foo
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /as_operator.kt:(97,111): info: Generated Viper text for testNullableAs:
 method testNullableAs(foo: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(foo), nullable($c$Foo()))
-  ensures isSubtype(typeOf(ret), nullable($c$Bar()))
+  requires isSubtype(typeOf(foo), nullable(_c_Foo()))
+  ensures isSubtype(typeOf(ret), nullable(_c_Bar()))
   ensures ret != nullValue() ==> acc(shared(ret), wildcard)
 {
-  inhale foo != nullValue() ==> acc(c$Foo$shared(foo), wildcard)
-  inhale isSubtype(typeOf(foo), nullable($c$Bar()))
+  inhale foo != nullValue() ==> acc(c_Foo_shared(foo), wildcard)
+  inhale isSubtype(typeOf(foo), nullable(_c_Bar()))
   inhale foo != nullValue() ==> acc(shared(foo), wildcard)
   ret := foo
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /as_operator.kt:(148,158): info: Generated Viper text for testSafeAs:
 method testSafeAs(foo: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(foo), $c$Foo())
-  ensures isSubtype(typeOf(ret), nullable($c$Bar()))
+  requires isSubtype(typeOf(foo), _c_Foo())
+  ensures isSubtype(typeOf(ret), nullable(_c_Bar()))
   ensures ret != nullValue() ==> acc(shared(ret), wildcard)
 {
-  inhale acc(c$Foo$shared(foo), wildcard)
-  if (isSubtype(typeOf(foo), $c$Bar())) {
+  inhale acc(c_Foo_shared(foo), wildcard)
+  if (isSubtype(typeOf(foo), _c_Bar())) {
     ret := foo
   } else {
     ret := nullValue()}
-  inhale isSubtype(typeOf(ret), nullable($c$Bar()))
+  inhale isSubtype(typeOf(ret), nullable(_c_Bar()))
   inhale ret != nullValue() ==> acc(shared(ret), wildcard)
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /as_operator.kt:(194,212): info: Generated Viper text for testNullableSafeAs:
 method testNullableSafeAs(foo: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(foo), nullable($c$Foo()))
-  ensures isSubtype(typeOf(ret), nullable($c$Bar()))
+  requires isSubtype(typeOf(foo), nullable(_c_Foo()))
+  ensures isSubtype(typeOf(ret), nullable(_c_Bar()))
   ensures ret != nullValue() ==> acc(shared(ret), wildcard)
 {
-  inhale foo != nullValue() ==> acc(c$Foo$shared(foo), wildcard)
-  if (isSubtype(typeOf(foo), $c$Bar())) {
+  inhale foo != nullValue() ==> acc(c_Foo_shared(foo), wildcard)
+  if (isSubtype(typeOf(foo), _c_Bar())) {
     ret := foo
   } else {
     ret := nullValue()}
-  inhale isSubtype(typeOf(ret), nullable($c$Bar()))
+  inhale isSubtype(typeOf(ret), nullable(_c_Bar()))
   inhale ret != nullValue() ==> acc(shared(ret), wildcard)
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }

@@ -7,14 +7,14 @@ method recursiveSumOfIntegersUpToN(n: Ref) returns (ret: Ref)
 {
   if (intFromRef(n) == 0) {
     ret := intToRef(0)
-    goto ret$0
+    goto ret_0
   } else {
     var anon: Ref
     anon := recursiveSumOfIntegersUpToN(minusInts(n, intToRef(1)))
     ret := plusInts(n, anon)
-    goto ret$0
+    goto ret_0
   }
-  label ret$0
+  label ret_0
 }
 
 /sum_of_1_to_n.kt:(296,314): info: Generated Viper text for sumOfIntegersUpToN:
@@ -48,6 +48,6 @@ method sumOfIntegersUpToN(n: Ref) returns (ret: Ref)
   assert intFromRef(i) <= intFromRef(n)
   assert intFromRef(sum) == intFromRef(i) * (intFromRef(i) + 1) \ 2
   ret := sum
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }

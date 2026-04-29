@@ -5,12 +5,12 @@ field value: Ref
 
 function getValue(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), $c$Node())
+  requires isSubtype(typeOf(node), _c_Node())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let v$anon$0$0 ==
+  (let v_anon_0_0 ==
     ((unfolding acc(shared(node), wildcard) in node.value)) in
-    v$anon$0$0)
+    v_anon_0_0)
 }
 
 /pure_function_with_heap_dependent_expressions.kt:(164,180): info: Generated Viper text for getSafeNextValue:
@@ -20,21 +20,21 @@ field value: Ref
 
 function getSafeNextValue(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), $c$Node())
+  requires isSubtype(typeOf(node), _c_Node())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let v$anon$2$0 ==
+  (let v_anon_2_0 ==
     ((unfolding acc(shared(node), wildcard) in node.next)) in
-    (let v$anon$3$0 ==
-      ((v$anon$2$0 != nullValue() ?
+    (let v_anon_3_0 ==
+      ((v_anon_2_0 != nullValue() ?
         (unfolding acc(shared(node), wildcard) in
-          (unfolding acc(shared(v$anon$2$0), wildcard) in v$anon$2$0.value)) :
+          (unfolding acc(shared(v_anon_2_0), wildcard) in v_anon_2_0.value)) :
         null)) in
-      (let v$anon$1$0 ==
-        ((v$anon$2$0 != nullValue() ? v$anon$3$0 : nullValue())) in
-        (let v$anon$0$0 ==
-          ((v$anon$1$0 != nullValue() ? v$anon$1$0 : intToRef(-1))) in
-          v$anon$0$0))))
+      (let v_anon_1_0 ==
+        ((v_anon_2_0 != nullValue() ? v_anon_3_0 : nullValue())) in
+        (let v_anon_0_0 ==
+          ((v_anon_1_0 != nullValue() ? v_anon_1_0 : intToRef(-1))) in
+          v_anon_0_0))))
 }
 
 /pure_function_with_heap_dependent_expressions.kt:(247,267): info: Generated Viper text for getSafeNextNextValue:
@@ -44,28 +44,28 @@ field value: Ref
 
 function getSafeNextNextValue(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), $c$Node())
+  requires isSubtype(typeOf(node), _c_Node())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let v$anon$3$0 ==
+  (let v_anon_3_0 ==
     ((unfolding acc(shared(node), wildcard) in node.next)) in
-    (let v$anon$4$0 ==
-      ((v$anon$3$0 != nullValue() ?
+    (let v_anon_4_0 ==
+      ((v_anon_3_0 != nullValue() ?
         (unfolding acc(shared(node), wildcard) in
-          (unfolding acc(shared(v$anon$3$0), wildcard) in v$anon$3$0.next)) :
+          (unfolding acc(shared(v_anon_3_0), wildcard) in v_anon_3_0.next)) :
         null)) in
-      (let v$anon$2$0 ==
-        ((v$anon$3$0 != nullValue() ? v$anon$4$0 : nullValue())) in
-        (let v$anon$5$0 ==
-          ((v$anon$2$0 != nullValue() ?
-            (unfolding acc(shared(v$anon$2$0), wildcard) in
-              v$anon$2$0.value) :
+      (let v_anon_2_0 ==
+        ((v_anon_3_0 != nullValue() ? v_anon_4_0 : nullValue())) in
+        (let v_anon_5_0 ==
+          ((v_anon_2_0 != nullValue() ?
+            (unfolding acc(shared(v_anon_2_0), wildcard) in
+              v_anon_2_0.value) :
             null)) in
-          (let v$anon$1$0 ==
-            ((v$anon$2$0 != nullValue() ? v$anon$5$0 : nullValue())) in
-            (let v$anon$0$0 ==
-              ((v$anon$1$0 != nullValue() ? v$anon$1$0 : intToRef(0))) in
-              v$anon$0$0))))))
+          (let v_anon_1_0 ==
+            ((v_anon_2_0 != nullValue() ? v_anon_5_0 : nullValue())) in
+            (let v_anon_0_0 ==
+              ((v_anon_1_0 != nullValue() ? v_anon_1_0 : intToRef(0))) in
+              v_anon_0_0))))))
 }
 
 /pure_function_with_heap_dependent_expressions.kt:(339,355): info: Generated Viper text for sumFirstTwoNodes:
@@ -75,35 +75,35 @@ field value: Ref
 
 function sumFirstTwoNodes(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), $c$Node())
+  requires isSubtype(typeOf(node), _c_Node())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$nextNode$0 ==
+  (let l0_nextNode_0 ==
     ((unfolding acc(shared(node), wildcard) in node.next)) in
-    (let v$anon$2$0 ==
-      ((!(l0$nextNode$0 == nullValue()) ?
+    (let v_anon_2_0 ==
+      ((!(l0_nextNode_0 == nullValue()) ?
         (unfolding acc(shared(node), wildcard) in node.value) :
         null)) in
-      (let v$anon$3$0 ==
-        ((!(l0$nextNode$0 == nullValue()) ?
+      (let v_anon_3_0 ==
+        ((!(l0_nextNode_0 == nullValue()) ?
           (unfolding acc(shared(node), wildcard) in
-            (unfolding acc(shared(l0$nextNode$0), wildcard) in
-              l0$nextNode$0.value)) :
+            (unfolding acc(shared(l0_nextNode_0), wildcard) in
+              l0_nextNode_0.value)) :
           null)) in
-        (let v$anon$1$0 ==
-          ((!(l0$nextNode$0 == nullValue()) ?
+        (let v_anon_1_0 ==
+          ((!(l0_nextNode_0 == nullValue()) ?
             (unfolding acc(shared(node), wildcard) in
-              (unfolding acc(shared(l0$nextNode$0), wildcard) in
+              (unfolding acc(shared(l0_nextNode_0), wildcard) in
                 (unfolding acc(shared(node), wildcard) in
-                  plusInts(v$anon$2$0, v$anon$3$0)))) :
+                  plusInts(v_anon_2_0, v_anon_3_0)))) :
             null)) in
-          (let v$anon$4$0 ==
-            ((!!(l0$nextNode$0 == nullValue()) ?
+          (let v_anon_4_0 ==
+            ((!!(l0_nextNode_0 == nullValue()) ?
               (unfolding acc(shared(node), wildcard) in node.value) :
               null)) in
-            (let v$anon$0$0 ==
-              ((!(l0$nextNode$0 == nullValue()) ? v$anon$1$0 : v$anon$4$0)) in
-              v$anon$0$0))))))
+            (let v_anon_0_0 ==
+              ((!(l0_nextNode_0 == nullValue()) ? v_anon_1_0 : v_anon_4_0)) in
+              v_anon_0_0))))))
 }
 
 /pure_function_with_heap_dependent_expressions.kt:(526,536): info: Generated Viper text for isLastNode:
@@ -113,12 +113,12 @@ field value: Ref
 
 function isLastNode(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), $c$Node())
+  requires isSubtype(typeOf(node), _c_Node())
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let v$anon$0$0 ==
+  (let v_anon_0_0 ==
     ((unfolding acc(shared(node), wildcard) in node.next)) in
-    boolToRef(v$anon$0$0 == nullValue()))
+    boolToRef(v_anon_0_0 == nullValue()))
 }
 
 /pure_function_with_heap_dependent_expressions.kt:(602,608): info: Generated Viper text for length:
@@ -128,21 +128,21 @@ field value: Ref
 
 function length(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), $c$Node())
+  requires isSubtype(typeOf(node), _c_Node())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$nextNode$0 ==
+  (let l0_nextNode_0 ==
     ((unfolding acc(shared(node), wildcard) in node.next)) in
-    (let v$anon$1$0 ==
-      ((l0$nextNode$0 == nullValue() ? intToRef(1) : null)) in
-      (let v$anon$2$0 ==
-        ((!(l0$nextNode$0 == nullValue()) ?
+    (let v_anon_1_0 ==
+      ((l0_nextNode_0 == nullValue() ? intToRef(1) : null)) in
+      (let v_anon_2_0 ==
+        ((!(l0_nextNode_0 == nullValue()) ?
           (unfolding acc(shared(node), wildcard) in
-            plusInts(intToRef(1), length(l0$nextNode$0))) :
+            plusInts(intToRef(1), length(l0_nextNode_0))) :
           null)) in
-        (let v$anon$0$0 ==
-          ((l0$nextNode$0 == nullValue() ? v$anon$1$0 : v$anon$2$0)) in
-          v$anon$0$0))))
+        (let v_anon_0_0 ==
+          ((l0_nextNode_0 == nullValue() ? v_anon_1_0 : v_anon_2_0)) in
+          v_anon_0_0))))
 }
 
 /pure_function_with_heap_dependent_expressions.kt:(763,774): info: Generated Viper text for sumAllNodes:
@@ -152,28 +152,28 @@ field value: Ref
 
 function sumAllNodes(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), $c$Node())
+  requires isSubtype(typeOf(node), _c_Node())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$nextNode$0 ==
+  (let l0_nextNode_0 ==
     ((unfolding acc(shared(node), wildcard) in node.next)) in
-    (let v$anon$1$0 ==
-      ((l0$nextNode$0 == nullValue() ?
+    (let v_anon_1_0 ==
+      ((l0_nextNode_0 == nullValue() ?
         (unfolding acc(shared(node), wildcard) in node.value) :
         null)) in
-      (let v$anon$3$0 ==
-        ((!(l0$nextNode$0 == nullValue()) ?
+      (let v_anon_3_0 ==
+        ((!(l0_nextNode_0 == nullValue()) ?
           (unfolding acc(shared(node), wildcard) in node.value) :
           null)) in
-        (let v$anon$2$0 ==
-          ((!(l0$nextNode$0 == nullValue()) ?
+        (let v_anon_2_0 ==
+          ((!(l0_nextNode_0 == nullValue()) ?
             (unfolding acc(shared(node), wildcard) in
               (unfolding acc(shared(node), wildcard) in
-                plusInts(v$anon$3$0, sumAllNodes(l0$nextNode$0)))) :
+                plusInts(v_anon_3_0, sumAllNodes(l0_nextNode_0)))) :
             null)) in
-          (let v$anon$0$0 ==
-            ((l0$nextNode$0 == nullValue() ? v$anon$1$0 : v$anon$2$0)) in
-            v$anon$0$0)))))
+          (let v_anon_0_0 ==
+            ((l0_nextNode_0 == nullValue() ? v_anon_1_0 : v_anon_2_0)) in
+            v_anon_0_0)))))
 }
 
 /pure_function_with_heap_dependent_expressions.kt:(952,965): info: Generated Viper text for containsValue:
@@ -183,26 +183,26 @@ field value: Ref
 
 function containsValue(node: Ref, target: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), $c$Node())
+  requires isSubtype(typeOf(node), _c_Node())
   requires isSubtype(typeOf(target), intType())
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let v$anon$0$0 ==
+  (let v_anon_0_0 ==
     ((unfolding acc(shared(node), wildcard) in node.value)) in
-    (let l0$nextNode$0 ==
+    (let l0_nextNode_0 ==
       ((unfolding acc(shared(node), wildcard) in node.next)) in
-      (let v$anon$2$0 ==
-        ((!(l0$nextNode$0 == nullValue()) ?
+      (let v_anon_2_0 ==
+        ((!(l0_nextNode_0 == nullValue()) ?
           (unfolding acc(shared(node), wildcard) in
-            containsValue(l0$nextNode$0, target)) :
+            containsValue(l0_nextNode_0, target)) :
           null)) in
-        (let v$anon$3$0 ==
-          ((!!(l0$nextNode$0 == nullValue()) ? boolToRef(false) : null)) in
-          (let v$anon$1$0 ==
-            ((!(l0$nextNode$0 == nullValue()) ? v$anon$2$0 : v$anon$3$0)) in
-            (intFromRef(v$anon$0$0) == intFromRef(target) ?
+        (let v_anon_3_0 ==
+          ((!!(l0_nextNode_0 == nullValue()) ? boolToRef(false) : null)) in
+          (let v_anon_1_0 ==
+            ((!(l0_nextNode_0 == nullValue()) ? v_anon_2_0 : v_anon_3_0)) in
+            (intFromRef(v_anon_0_0) == intFromRef(target) ?
               boolToRef(true) :
-              v$anon$1$0))))))
+              v_anon_1_0))))))
 }
 
 /pure_function_with_heap_dependent_expressions.kt:(1162,1178): info: Generated Viper text for aliasAndReassign:
@@ -212,26 +212,26 @@ field value: Ref
 
 function aliasAndReassign(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), $c$Node())
+  requires isSubtype(typeOf(node), _c_Node())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$alias1$0 ==
+  (let l0_alias1_0 ==
     (node) in
-    (let l0$alias2$0 ==
-      ((unfolding acc(shared(l0$alias1$0), wildcard) in l0$alias1$0.next)) in
-      (let l0$fallbackValue$0 ==
+    (let l0_alias2_0 ==
+      ((unfolding acc(shared(l0_alias1_0), wildcard) in l0_alias1_0.next)) in
+      (let l0_fallbackValue_0 ==
         (intToRef(-1)) in
-        (let l0$fallbackValue$1 ==
-          ((!(l0$alias2$0 == nullValue()) ?
-            (unfolding acc(shared(l0$alias1$0), wildcard) in
-              (unfolding acc(shared(l0$alias2$0), wildcard) in
-                l0$alias2$0.value)) :
+        (let l0_fallbackValue_1 ==
+          ((!(l0_alias2_0 == nullValue()) ?
+            (unfolding acc(shared(l0_alias1_0), wildcard) in
+              (unfolding acc(shared(l0_alias2_0), wildcard) in
+                l0_alias2_0.value)) :
             null)) in
-          (let l0$fallbackValue$2 ==
-            ((!(l0$alias2$0 == nullValue()) ?
-              l0$fallbackValue$1 :
-              l0$fallbackValue$0)) in
-            l0$fallbackValue$2)))))
+          (let l0_fallbackValue_2 ==
+            ((!(l0_alias2_0 == nullValue()) ?
+              l0_fallbackValue_1 :
+              l0_fallbackValue_0)) in
+            l0_fallbackValue_2)))))
 }
 
 /pure_function_with_heap_dependent_expressions.kt:(1384,1386): info: Generated Viper text for id:
@@ -241,8 +241,8 @@ field value: Ref
 
 function id(node: Ref): Ref
   requires node != nullValue() ==> acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), nullable($c$Node()))
-  ensures isSubtype(typeOf(result), nullable($c$Node()))
+  requires isSubtype(typeOf(node), nullable(_c_Node()))
+  ensures isSubtype(typeOf(result), nullable(_c_Node()))
 {
   node
 }
@@ -254,29 +254,29 @@ field value: Ref
 
 function id(node: Ref): Ref
   requires node != nullValue() ==> acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), nullable($c$Node()))
-  ensures isSubtype(typeOf(result), nullable($c$Node()))
+  requires isSubtype(typeOf(node), nullable(_c_Node()))
+  ensures isSubtype(typeOf(result), nullable(_c_Node()))
 {
   node
 }
 
 function useIdentityFunction(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), $c$Node())
+  requires isSubtype(typeOf(node), _c_Node())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let l0$sameNode$0 ==
+  (let l0_sameNode_0 ==
     (id(node)) in
-    (let v$anon$2$0 ==
-      ((l0$sameNode$0 != nullValue() ?
-        (unfolding acc(shared(l0$sameNode$0), wildcard) in
-          l0$sameNode$0.value) :
+    (let v_anon_2_0 ==
+      ((l0_sameNode_0 != nullValue() ?
+        (unfolding acc(shared(l0_sameNode_0), wildcard) in
+          l0_sameNode_0.value) :
         null)) in
-      (let v$anon$1$0 ==
-        ((l0$sameNode$0 != nullValue() ? v$anon$2$0 : nullValue())) in
-        (let v$anon$0$0 ==
-          ((v$anon$1$0 != nullValue() ? v$anon$1$0 : intToRef(0))) in
-          v$anon$0$0))))
+      (let v_anon_1_0 ==
+        ((l0_sameNode_0 != nullValue() ? v_anon_2_0 : nullValue())) in
+        (let v_anon_0_0 ==
+          ((v_anon_1_0 != nullValue() ? v_anon_1_0 : intToRef(0))) in
+          v_anon_0_0))))
 }
 
 /pure_function_with_heap_dependent_expressions.kt:(1550,1569): info: Generated Viper text for getNextValueUsingId:
@@ -286,30 +286,30 @@ field value: Ref
 
 function getNextValueUsingId(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), $c$Node())
+  requires isSubtype(typeOf(node), _c_Node())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let v$anon$0$0 ==
+  (let v_anon_0_0 ==
     ((unfolding acc(shared(node), wildcard) in node.next)) in
-    (let l0$nextNode$0 ==
-      ((unfolding acc(shared(node), wildcard) in id(v$anon$0$0))) in
-      (let v$anon$2$0 ==
-        ((l0$nextNode$0 == nullValue() ? intToRef(0) : null)) in
-        (let v$anon$3$0 ==
-          ((!(l0$nextNode$0 == nullValue()) ?
+    (let l0_nextNode_0 ==
+      ((unfolding acc(shared(node), wildcard) in id(v_anon_0_0))) in
+      (let v_anon_2_0 ==
+        ((l0_nextNode_0 == nullValue() ? intToRef(0) : null)) in
+        (let v_anon_3_0 ==
+          ((!(l0_nextNode_0 == nullValue()) ?
             (unfolding acc(shared(node), wildcard) in
-              (unfolding acc(shared(l0$nextNode$0), wildcard) in
-                l0$nextNode$0.value)) :
+              (unfolding acc(shared(l0_nextNode_0), wildcard) in
+                l0_nextNode_0.value)) :
             null)) in
-          (let v$anon$1$0 ==
-            ((l0$nextNode$0 == nullValue() ? v$anon$2$0 : v$anon$3$0)) in
-            v$anon$1$0)))))
+          (let v_anon_1_0 ==
+            ((l0_nextNode_0 == nullValue() ? v_anon_2_0 : v_anon_3_0)) in
+            v_anon_1_0)))))
 }
 
 function id(node: Ref): Ref
   requires node != nullValue() ==> acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), nullable($c$Node()))
-  ensures isSubtype(typeOf(result), nullable($c$Node()))
+  requires isSubtype(typeOf(node), nullable(_c_Node()))
+  ensures isSubtype(typeOf(result), nullable(_c_Node()))
 {
   node
 }

@@ -1,9 +1,9 @@
 /property_getters.kt:(102,129): info: Generated Viper text for testPrimitivePropertyGetter:
-method nProp(this: Ref) returns (v$ret: Ref)
+method nProp(this: Ref) returns (v_ret: Ref)
 
 
 method testPrimitivePropertyGetter(pp: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(pp), $c$PrimitiveProperty())
+  requires isSubtype(typeOf(pp), _c_PrimitiveProperty())
   ensures isSubtype(typeOf(ret), intType())
 {
   var anon: Ref
@@ -11,60 +11,60 @@ method testPrimitivePropertyGetter(pp: Ref) returns (ret: Ref)
   anon := nProp(pp)
   ret := anon
   inhale isSubtype(typeOf(ret), intType())
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /property_getters.kt:(286,313): info: Generated Viper text for testReferencePropertyGetter:
-method nProp(this: Ref) returns (v$ret: Ref)
+method nProp(this: Ref) returns (v_ret: Ref)
 
 
-method rProp(this: Ref) returns (v$ret: Ref)
+method rProp(this: Ref) returns (v_ret: Ref)
 
 
 method testReferencePropertyGetter(rp: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(rp), $c$ReferenceProperty())
+  requires isSubtype(typeOf(rp), _c_ReferenceProperty())
   ensures isSubtype(typeOf(ret), unitType())
 {
   var pp: Ref
-  var anon$0: Ref
+  var anon_0: Ref
   var ppn: Ref
   var anon: Ref
-  inhale acc(c$ReferenceProperty$shared(rp), wildcard)
-  anon$0 := rProp(rp)
-  pp := anon$0
-  inhale isSubtype(typeOf(pp), $c$PrimitiveProperty())
+  inhale acc(c_ReferenceProperty_shared(rp), wildcard)
+  anon_0 := rProp(rp)
+  pp := anon_0
+  inhale isSubtype(typeOf(pp), _c_PrimitiveProperty())
   inhale acc(shared(pp), wildcard)
   anon := nProp(pp)
   ppn := anon
   inhale isSubtype(typeOf(ppn), intType())
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
 /property_getters.kt:(391,418): info: Generated Viper text for testCascadingPropertyGetter:
-method nProp(this: Ref) returns (v$ret: Ref)
+method nProp(this: Ref) returns (v_ret: Ref)
 
 
-method rProp(this: Ref) returns (v$ret: Ref)
+method rProp(this: Ref) returns (v_ret: Ref)
 
 
 method testCascadingPropertyGetter(rp: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(rp), $c$ReferenceProperty())
+  requires isSubtype(typeOf(rp), _c_ReferenceProperty())
   ensures isSubtype(typeOf(ret), unitType())
 {
   var ppn: Ref
-  var anon$0: Ref
-  var anon$1: Ref
+  var anon_0: Ref
+  var anon_1: Ref
   var anon: Ref
-  inhale acc(c$ReferenceProperty$shared(rp), wildcard)
+  inhale acc(c_ReferenceProperty_shared(rp), wildcard)
   anon := rProp(rp)
-  anon$1 := anon
-  inhale isSubtype(typeOf(anon$1), $c$PrimitiveProperty())
-  inhale acc(shared(anon$1), wildcard)
-  anon$0 := nProp(anon$1)
-  ppn := anon$0
+  anon_1 := anon
+  inhale isSubtype(typeOf(anon_1), _c_PrimitiveProperty())
+  inhale acc(shared(anon_1), wildcard)
+  anon_0 := nProp(anon_1)
+  ppn := anon_0
   inhale isSubtype(typeOf(ppn), intType())
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }

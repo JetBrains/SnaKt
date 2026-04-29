@@ -1,192 +1,192 @@
 /captured.kt:(155,165): info: Generated Viper text for captureArg:
-method captureArg(g: Ref) returns (ret$0: Ref)
+method captureArg(g: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(g), functionType())
-  ensures isSubtype(typeOf(ret$0), intType())
+  ensures isSubtype(typeOf(ret_0), intType())
 {
-  var ret$1: Ref
+  var ret_1: Ref
   var ret: Ref
-  var anon$0: Ref
+  var anon_0: Ref
   var anon: Ref
-  anon$0 := intToRef(0)
+  anon_0 := intToRef(0)
   inhale isSubtype(typeOf(anon), intType())
   ret := anon
-  goto ret$2
-  label ret$2
-  ret$1 := ret
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto ret_2
+  label ret_2
+  ret_1 := ret
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret_0 := ret_1
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /captured.kt:(225,235): info: Generated Viper text for captureVar:
-method captureVar() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), intType())
+method captureVar() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), intType())
 {
   var x: Ref
-  var ret$1: Ref
+  var ret_1: Ref
   var ret: Ref
   var anon: Ref
   x := intToRef(1)
   anon := intToRef(0)
   ret := plusInts(anon, x)
-  goto ret$2
-  label ret$2
-  ret$1 := ret
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto ret_2
+  label ret_2
+  ret_1 := ret
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret_0 := ret_1
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /captured.kt:(295,311): info: Generated Viper text for captureAndShadow:
-method captureAndShadow(par$x: Ref) returns (ret$0: Ref)
-  requires isSubtype(typeOf(par$x), intType())
-  ensures isSubtype(typeOf(ret$0), intType())
+method captureAndShadow(par_x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(par_x), intType())
+  ensures isSubtype(typeOf(ret_0), intType())
 {
-  var ret$1: Ref
+  var ret_1: Ref
   var ret: Ref
   var anon: Ref
   var y: Ref
   var x: Ref
   anon := intToRef(0)
-  y := par$x
+  y := par_x
   x := intToRef(1)
   ret := plusInts(plusInts(anon, x), y)
-  goto ret$2
-  label ret$2
-  ret$1 := ret
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto ret_2
+  label ret_2
+  ret_1 := ret
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret_0 := ret_1
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /captured.kt:(513,528): info: Generated Viper text for captureVarClash:
-method captureVarClash(par$x: Ref) returns (ret$0: Ref)
-  requires isSubtype(typeOf(par$x), intType())
-  ensures isSubtype(typeOf(ret$0), intType())
+method captureVarClash(par_x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(par_x), intType())
+  ensures isSubtype(typeOf(ret_0), intType())
 {
-  var ret$1: Ref
+  var ret_1: Ref
   var x: Ref
-  var anon$1: Ref
+  var anon_1: Ref
   var ret: Ref
   var anon: Ref
   x := intToRef(1)
   anon := intToRef(0)
-  ret := timesInts(anon, par$x)
-  goto ret$2
-  label ret$2
-  anon$1 := ret
-  ret$1 := plusInts(anon$1, x)
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret := timesInts(anon, par_x)
+  goto ret_2
+  label ret_2
+  anon_1 := ret
+  ret_1 := plusInts(anon_1, x)
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret_0 := ret_1
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /captured.kt:(585,606): info: Generated Viper text for captureAndShadowClash:
-method captureAndShadowClash(par$x: Ref) returns (ret$0: Ref)
-  requires isSubtype(typeOf(par$x), intType())
-  ensures isSubtype(typeOf(ret$0), intType())
+method captureAndShadowClash(par_x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(par_x), intType())
+  ensures isSubtype(typeOf(ret_0), intType())
 {
-  var ret$1: Ref
-  var l1$x: Ref
-  var anon$1: Ref
+  var ret_1: Ref
+  var l1_x: Ref
+  var anon_1: Ref
   var ret: Ref
   var anon: Ref
   var y: Ref
   var x: Ref
-  l1$x := intToRef(1)
+  l1_x := intToRef(1)
   anon := intToRef(0)
-  y := par$x
+  y := par_x
   x := intToRef(2)
   ret := plusInts(plusInts(x, y), anon)
-  goto ret$2
-  label ret$2
-  anon$1 := ret
-  ret$1 := plusInts(anon$1, l1$x)
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto ret_2
+  label ret_2
+  anon_1 := ret
+  ret_1 := plusInts(anon_1, l1_x)
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret_0 := ret_1
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /captured.kt:(715,736): info: Generated Viper text for nestedLambdaShadowing:
-method nestedLambdaShadowing(par$x: Ref) returns (ret$0: Ref)
-  requires isSubtype(typeOf(par$x), intType())
-  ensures isSubtype(typeOf(ret$0), intType())
+method nestedLambdaShadowing(par_x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(par_x), intType())
+  ensures isSubtype(typeOf(ret_0), intType())
 {
-  var ret$1: Ref
-  var l1$x: Ref
-  var anon$2: Ref
-  var ret$2: Ref
-  var anon$0: Ref
-  var ret$3: Ref
-  var l3$x: Ref
-  var anon$3: Ref
+  var ret_1: Ref
+  var l1_x: Ref
+  var anon_2: Ref
+  var ret_2: Ref
+  var anon_0: Ref
+  var ret_3: Ref
+  var l3_x: Ref
+  var anon_3: Ref
   var ret: Ref
   var anon: Ref
-  var l4$x: Ref
+  var l4_x: Ref
   var y: Ref
   var x: Ref
-  l1$x := intToRef(1)
-  anon$0 := intToRef(0)
-  l3$x := intToRef(1)
+  l1_x := intToRef(1)
+  anon_0 := intToRef(0)
+  l3_x := intToRef(1)
   anon := intToRef(0)
-  l4$x := intToRef(3)
-  ret := plusInts(l4$x, anon)
-  goto ret$4
-  label ret$4
-  anon$3 := ret
-  ret$3 := plusInts(anon$3, l3$x)
-  goto lbl$ret$3
-  label lbl$ret$3
-  y := par$x
+  l4_x := intToRef(3)
+  ret := plusInts(l4_x, anon)
+  goto ret_4
+  label ret_4
+  anon_3 := ret
+  ret_3 := plusInts(anon_3, l3_x)
+  goto lbl_ret_3
+  label lbl_ret_3
+  y := par_x
   x := intToRef(4)
-  ret$2 := plusInts(plusInts(x, y), anon$0)
-  goto lbl$ret$2
-  label lbl$ret$2
-  anon$2 := ret$2
-  ret$1 := plusInts(anon$2, l1$x)
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret_2 := plusInts(plusInts(x, y), anon_0)
+  goto lbl_ret_2
+  label lbl_ret_2
+  anon_2 := ret_2
+  ret_1 := plusInts(anon_2, l1_x)
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret_0 := ret_1
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /captured.kt:(1008,1024): info: Generated Viper text for callDoubleInvoke:
-method callDoubleInvoke(par$x: Ref) returns (ret$0: Ref)
-  requires isSubtype(typeOf(par$x), intType())
-  ensures isSubtype(typeOf(ret$0), intType())
+method callDoubleInvoke(par_x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(par_x), intType())
+  ensures isSubtype(typeOf(ret_0), intType())
 {
-  var ret$1: Ref
-  var ret$2: Ref
-  var anon$0: Ref
-  var l2$x: Ref
+  var ret_1: Ref
+  var ret_2: Ref
+  var anon_0: Ref
+  var l2_x: Ref
   var ret: Ref
   var anon: Ref
   var x: Ref
-  anon$0 := intToRef(0)
-  l2$x := anon$0
-  ret$2 := l2$x
-  goto lbl$ret$2
-  label lbl$ret$2
+  anon_0 := intToRef(0)
+  l2_x := anon_0
+  ret_2 := l2_x
+  goto lbl_ret_2
+  label lbl_ret_2
   anon := intToRef(1)
   x := anon
   ret := x
-  goto ret$3
-  label ret$3
-  ret$1 := ret
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto ret_3
+  label ret_3
+  ret_1 := ret
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret_0 := ret_1
+  goto lbl_ret_0
+  label lbl_ret_0
 }

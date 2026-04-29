@@ -5,8 +5,8 @@ method anyIntegerSquaredAtLeastZero() returns (ret: Ref)
       anon * anon >= intFromRef(ret))
 {
   ret := intToRef(0)
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /simple_forall.kt:(259,298): info: Generated Viper text for anyIntegerSquaredIsAtLeastOneExceptZero:
@@ -16,8 +16,8 @@ method anyIntegerSquaredIsAtLeastOneExceptZero() returns (ret: Ref)
       anon * anon >= intFromRef(ret))
 {
   ret := intToRef(1)
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /simple_forall.kt:(460,503): info: Generated Viper text for anyIntegerSquaredIsAtLeastZeroStringVersion:
@@ -28,20 +28,20 @@ method anyIntegerSquaredIsAtLeastZeroStringVersion(str: Ref)
 {
   var res: Ref
   var i: Ref
-  var anon$1: Ref
+  var anon_1: Ref
   res := intToRef(0)
   i := intToRef(10)
   label cont
     invariant isSubtype(typeOf(res), intType())
     invariant isSubtype(typeOf(i), intType())
     invariant isSubtype(typeOf(str), stringType())
-    invariant (forall anon$builtin: Int ::0 <= anon$builtin &&
-        anon$builtin < |stringFromRef(str)| ==>
-        (stringFromRef(str)[anon$builtin] - 97) *
-        (stringFromRef(str)[anon$builtin] - 97) >=
+    invariant (forall anon_builtin: Int ::0 <= anon_builtin &&
+        anon_builtin < |stringFromRef(str)| ==>
+        (stringFromRef(str)[anon_builtin] - 97) *
+        (stringFromRef(str)[anon_builtin] - 97) >=
         intFromRef(res))
-  anon$1 := gtInts(i, intToRef(0))
-  if (boolFromRef(anon$1)) {
+  anon_1 := gtInts(i, intToRef(0))
+  if (boolFromRef(anon_1)) {
     var anon: Ref
     anon := i
     i := minusInts(anon, intToRef(1))
@@ -51,12 +51,12 @@ method anyIntegerSquaredIsAtLeastZeroStringVersion(str: Ref)
   assert isSubtype(typeOf(res), intType())
   assert isSubtype(typeOf(i), intType())
   assert isSubtype(typeOf(str), stringType())
-  assert (forall anon$builtin: Int ::0 <= anon$builtin &&
-      anon$builtin < |stringFromRef(str)| ==>
-      (stringFromRef(str)[anon$builtin] - 97) *
-      (stringFromRef(str)[anon$builtin] - 97) >=
+  assert (forall anon_builtin: Int ::0 <= anon_builtin &&
+      anon_builtin < |stringFromRef(str)| ==>
+      (stringFromRef(str)[anon_builtin] - 97) *
+      (stringFromRef(str)[anon_builtin] - 97) >=
       intFromRef(res))
   ret := res
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }

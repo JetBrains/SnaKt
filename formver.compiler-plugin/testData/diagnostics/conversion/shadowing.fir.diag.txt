@@ -3,75 +3,75 @@ method shadowLocal() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 {
   var foo: Ref
-  var l0$x: Ref
-  l0$x := intToRef(0)
-  if (intFromRef(l0$x) == 0) {
-    var l2$x: Ref
-    foo := l0$x
-    l2$x := intToRef(1)
-    foo := l2$x
+  var l0_x: Ref
+  l0_x := intToRef(0)
+  if (intFromRef(l0_x) == 0) {
+    var l2_x: Ref
+    foo := l0_x
+    l2_x := intToRef(1)
+    foo := l2_x
   } else {
     var x: Ref
-    foo := l0$x
+    foo := l0_x
     x := intToRef(2)
     foo := x
   }
-  foo := l0$x
-  label ret$0
+  foo := l0_x
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
 /shadowing.kt:(232,243): info: Generated Viper text for shadowParam:
-method shadowParam(par$x: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(par$x), intType())
+method shadowParam(par_x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par_x), intType())
   ensures isSubtype(typeOf(ret), unitType())
 {
   var foo: Ref
   var x: Ref
-  foo := par$x
+  foo := par_x
   x := intToRef(0)
   foo := x
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
 /shadowing.kt:(322,334): info: Generated Viper text for shadowNested:
-method shadowNested(par$x: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(par$x), intType())
+method shadowNested(par_x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par_x), intType())
   ensures isSubtype(typeOf(ret), unitType())
 {
   var foo: Ref
-  var l0$x: Ref
-  foo := par$x
-  l0$x := intToRef(0)
-  foo := l0$x
+  var l0_x: Ref
+  foo := par_x
+  l0_x := intToRef(0)
+  foo := l0_x
   if (true) {
-    var l2$x: Ref
+    var l2_x: Ref
     var anon: Ref
-    foo := l0$x
-    l2$x := intToRef(1)
-    foo := l2$x
+    foo := l0_x
+    l2_x := intToRef(1)
+    foo := l2_x
     label cont
-      invariant isSubtype(typeOf(l2$x), intType())
+      invariant isSubtype(typeOf(l2_x), intType())
       invariant isSubtype(typeOf(foo), intType())
-      invariant isSubtype(typeOf(l0$x), intType())
-      invariant isSubtype(typeOf(par$x), intType())
+      invariant isSubtype(typeOf(l0_x), intType())
+      invariant isSubtype(typeOf(par_x), intType())
     anon := boolToRef(true)
     if (boolFromRef(anon)) {
       var x: Ref
-      foo := l2$x
+      foo := l2_x
       x := intToRef(2)
       foo := x
       goto cont
     }
     label break
-    assert isSubtype(typeOf(l2$x), intType())
+    assert isSubtype(typeOf(l2_x), intType())
     assert isSubtype(typeOf(foo), intType())
-    assert isSubtype(typeOf(l0$x), intType())
-    assert isSubtype(typeOf(par$x), intType())
-    foo := l2$x
+    assert isSubtype(typeOf(l0_x), intType())
+    assert isSubtype(typeOf(par_x), intType())
+    foo := l2_x
   }
-  foo := l0$x
-  label ret$0
+  foo := l0_x
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }

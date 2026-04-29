@@ -2,7 +2,7 @@
 method without_contract() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 {
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
@@ -11,6 +11,6 @@ method with_contract() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
   ensures true
 {
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }

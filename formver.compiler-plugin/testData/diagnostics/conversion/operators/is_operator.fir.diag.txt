@@ -4,8 +4,8 @@ method isNonNullable(x: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
 {
   ret := boolToRef(isSubtype(typeOf(x), intType()))
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /is_operator.kt:(84,97): info: Generated Viper text for notIsNullable:
@@ -14,8 +14,8 @@ method notIsNullable(x: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
 {
   ret := notBool(boolToRef(isSubtype(typeOf(x), nothingType())))
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /is_operator.kt:(150,159): info: Generated Viper text for smartCast:
@@ -25,10 +25,10 @@ method smartCast(x: Ref) returns (ret: Ref)
 {
   if (isSubtype(typeOf(x), intType())) {
     ret := x
-    goto ret$0
+    goto ret_0
   } else {
     ret := intToRef(-1)
-    goto ret$0
+    goto ret_0
   }
-  label ret$0
+  label ret_0
 }

@@ -5,8 +5,8 @@ method less(x: Ref, y: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
 {
   ret := ltInts(x, y)
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /comparison.kt:(79,88): info: Generated Viper text for lessEqual:
@@ -16,8 +16,8 @@ method lessEqual(x: Ref, y: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
 {
   ret := leInts(x, y)
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /comparison.kt:(141,148): info: Generated Viper text for greater:
@@ -27,8 +27,8 @@ method greater(x: Ref, y: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
 {
   ret := gtInts(x, y)
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /comparison.kt:(200,212): info: Generated Viper text for greaterEqual:
@@ -38,6 +38,6 @@ method greaterEqual(x: Ref, y: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
 {
   ret := geInts(x, y)
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }

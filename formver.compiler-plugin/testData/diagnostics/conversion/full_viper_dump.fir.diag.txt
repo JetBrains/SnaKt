@@ -2,7 +2,7 @@
 Function(
     name = f,
     { Declare(Var(foo), [c$[pkg$]$[c$Foo]], MethodCall(callee = con, Int(0))) },
-    return = lbl$ret$0,
+    return = lbl_ret_0,
 )
 
 /full_viper_dump.kt:(172,173): info: Generated Viper text for f:
@@ -24,7 +24,7 @@ domain rt  {
 
   unique function stringType(): rt
 
-  unique function $c$Foo(): rt
+  unique function _c_Foo(): rt
 
   function nullValue(): Ref
 
@@ -123,7 +123,7 @@ domain rt  {
   }
 
   axiom {
-    isSubtype($c$Foo(), anyType())
+    isSubtype(_c_Foo(), anyType())
   }
 
   axiom supertypeOfNothing {
@@ -244,162 +244,162 @@ domain rt  {
   }
 }
 
-field bf$x: Ref
+field bf_x: Ref
 
-function addCharInt(arg$1: Ref, arg: Ref): Ref
+function addCharInt(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), charType())
-  ensures charFromRef(result) == charFromRef(arg$1) + intFromRef(arg)
+  ensures charFromRef(result) == charFromRef(arg_1) + intFromRef(arg)
 
 
-function addStringChar(arg$1: Ref, arg: Ref): Ref
+function addStringChar(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), stringType())
   ensures stringFromRef(result) ==
-    stringFromRef(arg$1) ++ Seq(charFromRef(arg))
+    stringFromRef(arg_1) ++ Seq(charFromRef(arg))
 
 
-function addStrings(arg$1: Ref, arg: Ref): Ref
+function addStrings(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), stringType())
   ensures stringFromRef(result) ==
-    stringFromRef(arg$1) ++ stringFromRef(arg)
+    stringFromRef(arg_1) ++ stringFromRef(arg)
 
 
-function andBools(arg$1: Ref, arg: Ref): Ref
+function andBools(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
-  ensures boolFromRef(result) == (boolFromRef(arg$1) && boolFromRef(arg))
+  ensures boolFromRef(result) == (boolFromRef(arg_1) && boolFromRef(arg))
 
 
-function divInts(arg$1: Ref, arg: Ref): Ref
+function divInts(arg_1: Ref, arg: Ref): Ref
   requires intFromRef(arg) != 0
   ensures isSubtype(typeOf(result), intType())
-  ensures intFromRef(result) == intFromRef(arg$1) \ intFromRef(arg)
+  ensures intFromRef(result) == intFromRef(arg_1) \ intFromRef(arg)
 
 
-function geChars(arg$1: Ref, arg: Ref): Ref
+function geChars(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
-  ensures boolFromRef(result) == charFromRef(arg$1) >= charFromRef(arg)
+  ensures boolFromRef(result) == charFromRef(arg_1) >= charFromRef(arg)
 
 
-function geInts(arg$1: Ref, arg: Ref): Ref
+function geInts(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
-  ensures boolFromRef(result) == intFromRef(arg$1) >= intFromRef(arg)
+  ensures boolFromRef(result) == intFromRef(arg_1) >= intFromRef(arg)
 
 
-function gtChars(arg$1: Ref, arg: Ref): Ref
+function gtChars(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
-  ensures boolFromRef(result) == charFromRef(arg$1) > charFromRef(arg)
+  ensures boolFromRef(result) == charFromRef(arg_1) > charFromRef(arg)
 
 
-function gtInts(arg$1: Ref, arg: Ref): Ref
+function gtInts(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
-  ensures boolFromRef(result) == intFromRef(arg$1) > intFromRef(arg)
+  ensures boolFromRef(result) == intFromRef(arg_1) > intFromRef(arg)
 
 
-function impliesBools(arg$1: Ref, arg: Ref): Ref
+function impliesBools(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
-  ensures boolFromRef(result) == (boolFromRef(arg$1) ==> boolFromRef(arg))
+  ensures boolFromRef(result) == (boolFromRef(arg_1) ==> boolFromRef(arg))
 
 
-function leChars(arg$1: Ref, arg: Ref): Ref
+function leChars(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
-  ensures boolFromRef(result) == charFromRef(arg$1) <= charFromRef(arg)
+  ensures boolFromRef(result) == charFromRef(arg_1) <= charFromRef(arg)
 
 
-function leInts(arg$1: Ref, arg: Ref): Ref
+function leInts(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
-  ensures boolFromRef(result) == intFromRef(arg$1) <= intFromRef(arg)
+  ensures boolFromRef(result) == intFromRef(arg_1) <= intFromRef(arg)
 
 
-function ltChars(arg$1: Ref, arg: Ref): Ref
+function ltChars(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
-  ensures boolFromRef(result) == charFromRef(arg$1) < charFromRef(arg)
+  ensures boolFromRef(result) == charFromRef(arg_1) < charFromRef(arg)
 
 
-function ltInts(arg$1: Ref, arg: Ref): Ref
+function ltInts(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
-  ensures boolFromRef(result) == intFromRef(arg$1) < intFromRef(arg)
+  ensures boolFromRef(result) == intFromRef(arg_1) < intFromRef(arg)
 
 
-function minusInts(arg$1: Ref, arg: Ref): Ref
+function minusInts(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), intType())
-  ensures intFromRef(result) == intFromRef(arg$1) - intFromRef(arg)
+  ensures intFromRef(result) == intFromRef(arg_1) - intFromRef(arg)
 
 
-function negInt(arg$1: Ref): Ref
+function negInt(arg_1: Ref): Ref
   ensures isSubtype(typeOf(result), intType())
-  ensures intFromRef(result) == -intFromRef(arg$1)
+  ensures intFromRef(result) == -intFromRef(arg_1)
 
 
-function notBool(arg$1: Ref): Ref
+function notBool(arg_1: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
-  ensures boolFromRef(result) == !boolFromRef(arg$1)
+  ensures boolFromRef(result) == !boolFromRef(arg_1)
 
 
-function orBools(arg$1: Ref, arg: Ref): Ref
+function orBools(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
-  ensures boolFromRef(result) == (boolFromRef(arg$1) || boolFromRef(arg))
+  ensures boolFromRef(result) == (boolFromRef(arg_1) || boolFromRef(arg))
 
 
-function plusInts(arg$1: Ref, arg: Ref): Ref
+function plusInts(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), intType())
-  ensures intFromRef(result) == intFromRef(arg$1) + intFromRef(arg)
+  ensures intFromRef(result) == intFromRef(arg_1) + intFromRef(arg)
 
 
-function remInts(arg$1: Ref, arg: Ref): Ref
+function remInts(arg_1: Ref, arg: Ref): Ref
   requires intFromRef(arg) != 0
   ensures isSubtype(typeOf(result), intType())
-  ensures intFromRef(result) == intFromRef(arg$1) % intFromRef(arg)
+  ensures intFromRef(result) == intFromRef(arg_1) % intFromRef(arg)
 
 
-function stringGet(arg$1: Ref, arg: Ref): Ref
-  requires intFromRef(arg) >= 0 && intFromRef(arg) < |stringFromRef(arg$1)|
+function stringGet(arg_1: Ref, arg: Ref): Ref
+  requires intFromRef(arg) >= 0 && intFromRef(arg) < |stringFromRef(arg_1)|
   ensures isSubtype(typeOf(result), charType())
-  ensures charFromRef(result) == stringFromRef(arg$1)[intFromRef(arg)]
+  ensures charFromRef(result) == stringFromRef(arg_1)[intFromRef(arg)]
 
 
-function stringLength(arg$1: Ref): Ref
+function stringLength(arg_1: Ref): Ref
   ensures isSubtype(typeOf(result), intType())
-  ensures intFromRef(result) == |stringFromRef(arg$1)|
+  ensures intFromRef(result) == |stringFromRef(arg_1)|
 
 
-function subCharInt(arg$1: Ref, arg: Ref): Ref
+function subCharInt(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), charType())
-  ensures charFromRef(result) == charFromRef(arg$1) - intFromRef(arg)
+  ensures charFromRef(result) == charFromRef(arg_1) - intFromRef(arg)
 
 
-function subChars(arg$1: Ref, arg: Ref): Ref
+function subChars(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), intType())
-  ensures intFromRef(result) == charFromRef(arg$1) - charFromRef(arg)
+  ensures intFromRef(result) == charFromRef(arg_1) - charFromRef(arg)
 
 
-function timesInts(arg$1: Ref, arg: Ref): Ref
+function timesInts(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), intType())
-  ensures intFromRef(result) == intFromRef(arg$1) * intFromRef(arg)
+  ensures intFromRef(result) == intFromRef(arg_1) * intFromRef(arg)
 
 
-predicate c$Foo$unique(this: Ref) {
-  acc(this.bf$x, wildcard) && isSubtype(typeOf(this.bf$x), intType())
+predicate c_Foo_unique(this: Ref) {
+  acc(this.bf_x, wildcard) && isSubtype(typeOf(this.bf_x), intType())
 }
 
 predicate shared(this: Ref) {
-  acc(this.bf$x, wildcard) && isSubtype(typeOf(this.bf$x), intType())
+  acc(this.bf_x, wildcard) && isSubtype(typeOf(this.bf_x), intType())
 }
 
 method con(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret), $c$Foo())
+  ensures isSubtype(typeOf(ret), _c_Foo())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c$Foo$unique(ret), write)
-  ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf$x)) ==
+  ensures acc(c_Foo_unique(ret), write)
+  ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf_x)) ==
     intFromRef(x)
 
 
-method f() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), unitType())
+method f() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var foo: Ref
   foo := con(intToRef(0))
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 method havoc() returns (ret: Ref)

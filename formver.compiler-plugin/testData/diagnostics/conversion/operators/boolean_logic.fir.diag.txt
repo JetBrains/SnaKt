@@ -4,8 +4,8 @@ method negation(x: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
 {
   ret := notBool(x)
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /boolean_logic.kt:(75,86): info: Generated Viper text for conjunction:
@@ -18,24 +18,24 @@ method conjunction(x: Ref, y: Ref) returns (ret: Ref)
     ret := y
   } else {
     ret := boolToRef(false)}
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /boolean_logic.kt:(146,168): info: Generated Viper text for conjunctionSideEffects:
-method conjunctionSideEffects(x: Ref, y: Ref) returns (ret$0: Ref)
+method conjunctionSideEffects(x: Ref, y: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(x), boolType())
   requires isSubtype(typeOf(y), boolType())
-  ensures isSubtype(typeOf(ret$0), boolType())
+  ensures isSubtype(typeOf(ret_0), boolType())
 {
   var anon: Ref
   anon := negation(x)
   if (boolFromRef(anon)) {
-    ret$0 := negation(y)
+    ret_0 := negation(y)
   } else {
-    ret$0 := boolToRef(false)}
-  goto lbl$ret$0
-  label lbl$ret$0
+    ret_0 := boolToRef(false)}
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 method negation(x: Ref) returns (ret: Ref)
@@ -53,6 +53,6 @@ method disjunction(x: Ref, y: Ref) returns (ret: Ref)
     ret := boolToRef(true)
   } else {
     ret := y}
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }

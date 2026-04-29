@@ -1,40 +1,40 @@
 /strings.kt:(237,245): info: Generated Viper text for testType:
-field bf$str: Ref
+field bf_str: Ref
 
 field size: Ref
 
-predicate c$BooleanArray$shared(this: Ref) {
+predicate c_BooleanArray_shared(this: Ref) {
   acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
-  acc(c$Cloneable$shared(this), wildcard) &&
+  acc(c_Cloneable_shared(this), wildcard) &&
   acc(shared(this), wildcard)
 }
 
-predicate c$BooleanArray$unique(this: Ref) {
+predicate c_BooleanArray_unique(this: Ref) {
   acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
-  acc(c$Cloneable$unique(this), write) &&
-  acc(c$Serializable$unique(this), write)
+  acc(c_Cloneable_unique(this), write) &&
+  acc(c_Serializable_unique(this), write)
 }
 
-predicate c$Cloneable$shared(this: Ref) {
+predicate c_Cloneable_shared(this: Ref) {
   true
 }
 
-predicate c$Cloneable$unique(this: Ref) {
+predicate c_Cloneable_unique(this: Ref) {
   true
 }
 
-predicate c$Serializable$unique(this: Ref) {
+predicate c_Serializable_unique(this: Ref) {
   true
 }
 
-predicate c$StringBox$shared(this: Ref) {
-  acc(this.bf$str, wildcard) &&
-  isSubtype(typeOf(this.bf$str), stringType())
+predicate c_StringBox_shared(this: Ref) {
+  acc(this.bf_str, wildcard) &&
+  isSubtype(typeOf(this.bf_str), stringType())
 }
 
-predicate c$StringBox$unique(this: Ref) {
-  acc(this.bf$str, wildcard) &&
-  isSubtype(typeOf(this.bf$str), stringType())
+predicate c_StringBox_unique(this: Ref) {
+  acc(this.bf_str, wildcard) &&
+  isSubtype(typeOf(this.bf_str), stringType())
 }
 
 predicate shared(this: Ref) {
@@ -43,75 +43,75 @@ predicate shared(this: Ref) {
 
 method con(str: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(str), stringType())
-  ensures isSubtype(typeOf(ret), $c$StringBox())
-  ensures acc(c$StringBox$shared(ret), wildcard)
-  ensures acc(c$StringBox$unique(ret), write)
-  ensures stringFromRef((unfolding acc(c$StringBox$shared(ret), wildcard) in
-      ret.bf$str)) ==
+  ensures isSubtype(typeOf(ret), _c_StringBox())
+  ensures acc(c_StringBox_shared(ret), wildcard)
+  ensures acc(c_StringBox_unique(ret), write)
+  ensures stringFromRef((unfolding acc(c_StringBox_shared(ret), wildcard) in
+      ret.bf_str)) ==
     stringFromRef(str)
 
 
-method testType(s: Ref) returns (ret$0: Ref)
+method testType(s: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(s), stringType())
-  ensures isSubtype(typeOf(ret$0), unitType())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var cond1: Ref
-  var anon$0: Ref
-  var anon$1: Ref
+  var anon_0: Ref
+  var anon_1: Ref
   var cond2: Ref
-  var anon$2: Ref
+  var anon_2: Ref
   var anon: Ref
-  anon$1 := con(s)
-  unfold acc(c$StringBox$shared(anon$1), wildcard)
-  anon$0 := anon$1.bf$str
-  cond1 := boolToRef(stringFromRef(anon$0) == stringFromRef(s))
+  anon_1 := con(s)
+  unfold acc(c_StringBox_shared(anon_1), wildcard)
+  anon_0 := anon_1.bf_str
+  cond1 := boolToRef(stringFromRef(anon_0) == stringFromRef(s))
   anon := con(stringToRef(Seq(115, 116, 114)))
-  unfold acc(c$StringBox$shared(anon), wildcard)
-  anon$2 := anon.bf$str
-  cond2 := boolToRef(stringFromRef(anon$2) == Seq(115, 116, 114))
+  unfold acc(c_StringBox_shared(anon), wildcard)
+  anon_2 := anon.bf_str
+  cond2 := boolToRef(stringFromRef(anon_2) == Seq(115, 116, 114))
   assert boolFromRef(cond1)
   assert boolFromRef(cond2)
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /strings.kt:(412,427): info: Generated Viper text for testLengthField:
-field bf$str: Ref
+field bf_str: Ref
 
 field size: Ref
 
-predicate c$BooleanArray$shared(this: Ref) {
+predicate c_BooleanArray_shared(this: Ref) {
   acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
-  acc(c$Cloneable$shared(this), wildcard) &&
+  acc(c_Cloneable_shared(this), wildcard) &&
   acc(shared(this), wildcard)
 }
 
-predicate c$BooleanArray$unique(this: Ref) {
+predicate c_BooleanArray_unique(this: Ref) {
   acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
-  acc(c$Cloneable$unique(this), write) &&
-  acc(c$Serializable$unique(this), write)
+  acc(c_Cloneable_unique(this), write) &&
+  acc(c_Serializable_unique(this), write)
 }
 
-predicate c$Cloneable$shared(this: Ref) {
+predicate c_Cloneable_shared(this: Ref) {
   true
 }
 
-predicate c$Cloneable$unique(this: Ref) {
+predicate c_Cloneable_unique(this: Ref) {
   true
 }
 
-predicate c$Serializable$unique(this: Ref) {
+predicate c_Serializable_unique(this: Ref) {
   true
 }
 
-predicate c$StringBox$shared(this: Ref) {
-  acc(this.bf$str, wildcard) &&
-  isSubtype(typeOf(this.bf$str), stringType())
+predicate c_StringBox_shared(this: Ref) {
+  acc(this.bf_str, wildcard) &&
+  isSubtype(typeOf(this.bf_str), stringType())
 }
 
-predicate c$StringBox$unique(this: Ref) {
-  acc(this.bf$str, wildcard) &&
-  isSubtype(typeOf(this.bf$str), stringType())
+predicate c_StringBox_unique(this: Ref) {
+  acc(this.bf_str, wildcard) &&
+  isSubtype(typeOf(this.bf_str), stringType())
 }
 
 predicate shared(this: Ref) {
@@ -120,56 +120,56 @@ predicate shared(this: Ref) {
 
 method con(str: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(str), stringType())
-  ensures isSubtype(typeOf(ret), $c$StringBox())
-  ensures acc(c$StringBox$shared(ret), wildcard)
-  ensures acc(c$StringBox$unique(ret), write)
-  ensures stringFromRef((unfolding acc(c$StringBox$shared(ret), wildcard) in
-      ret.bf$str)) ==
+  ensures isSubtype(typeOf(ret), _c_StringBox())
+  ensures acc(c_StringBox_shared(ret), wildcard)
+  ensures acc(c_StringBox_unique(ret), write)
+  ensures stringFromRef((unfolding acc(c_StringBox_shared(ret), wildcard) in
+      ret.bf_str)) ==
     stringFromRef(str)
 
 
-method testLengthField(s: Ref) returns (ret$0: Ref)
+method testLengthField(s: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(s), stringType())
-  ensures isSubtype(typeOf(ret$0), unitType())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var len: Ref
   var cond1: Ref
-  var anon$0: Ref
+  var anon_0: Ref
   var anon: Ref
   len := stringLength(s)
   anon := con(stringToRef(Seq(115, 116, 114)))
-  unfold acc(c$StringBox$shared(anon), wildcard)
-  anon$0 := anon.bf$str
-  cond1 := boolToRef(|stringFromRef(anon$0)| == 3)
+  unfold acc(c_StringBox_shared(anon), wildcard)
+  anon_0 := anon.bf_str
+  cond1 := boolToRef(|stringFromRef(anon_0)| == 3)
   assert boolFromRef(cond1)
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /strings.kt:(552,559): info: Generated Viper text for testOps:
 field size: Ref
 
-predicate c$BooleanArray$shared(this: Ref) {
+predicate c_BooleanArray_shared(this: Ref) {
   acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
-  acc(c$Cloneable$shared(this), wildcard) &&
+  acc(c_Cloneable_shared(this), wildcard) &&
   acc(shared(this), wildcard)
 }
 
-predicate c$BooleanArray$unique(this: Ref) {
+predicate c_BooleanArray_unique(this: Ref) {
   acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
-  acc(c$Cloneable$unique(this), write) &&
-  acc(c$Serializable$unique(this), write)
+  acc(c_Cloneable_unique(this), write) &&
+  acc(c_Serializable_unique(this), write)
 }
 
-predicate c$Cloneable$shared(this: Ref) {
+predicate c_Cloneable_shared(this: Ref) {
   true
 }
 
-predicate c$Cloneable$unique(this: Ref) {
+predicate c_Cloneable_unique(this: Ref) {
   true
 }
 
-predicate c$Serializable$unique(this: Ref) {
+predicate c_Serializable_unique(this: Ref) {
   true
 }
 
@@ -177,10 +177,10 @@ predicate shared(this: Ref) {
   true
 }
 
-method plus(this: Ref, other: Ref) returns (v$ret: Ref)
+method plus(this: Ref, other: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
-  ensures isSubtype(typeOf(v$ret), stringType())
+  ensures isSubtype(typeOf(v_ret), stringType())
 
 
 method testOps(s: Ref) returns (ret: Ref)
@@ -212,6 +212,6 @@ method testOps(s: Ref) returns (ret: Ref)
   assert stringFromRef(helloWorld) ==
     Seq(72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100, 33)
   stringPlusInteger := plus(stringToRef(Seq(52, 50)), intToRef(42))
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }

@@ -1,75 +1,75 @@
 /unit_return_type.kt:(171,176): info: Generated Viper text for idFun:
-method idFun(par$t: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(par$t), nullable(anyType()))
+method idFun(par_t: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par_t), nullable(anyType()))
   ensures isSubtype(typeOf(ret), nullable(anyType()))
 {
-  ret := par$t
-  goto ret$0
-  label ret$0
+  ret := par_t
+  goto ret_0
+  label ret_0
 }
 
 /unit_return_type.kt:(195,208): info: Generated Viper text for directReturns:
-method directReturns(b: Ref) returns (ret$0: Ref)
+method directReturns(b: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret$0), unitType())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   if (boolFromRef(b)) {
-    goto lbl$ret$0
+    goto lbl_ret_0
   } else {
-    var anon$0: Ref
+    var anon_0: Ref
     var anon: Ref
     anon := idFun(b)
-    anon$0 := anon
-    inhale isSubtype(typeOf(anon$0), boolType())
-    if (boolFromRef(anon$0)) {
-      goto lbl$ret$0
+    anon_0 := anon
+    inhale isSubtype(typeOf(anon_0), boolType())
+    if (boolFromRef(anon_0)) {
+      goto lbl_ret_0
     }
   }
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-method idFun(par$t: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(par$t), nullable(anyType()))
+method idFun(par_t: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par_t), nullable(anyType()))
   ensures isSubtype(typeOf(ret), nullable(anyType()))
 
 
 /unit_return_type.kt:(374,387): info: Generated Viper text for useInlineUnit:
 field size: Ref
 
-method idFun(par$t: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(par$t), nullable(anyType()))
+method idFun(par_t: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par_t), nullable(anyType()))
   ensures isSubtype(typeOf(ret), nullable(anyType()))
 
 
-method useInlineUnit(b: Ref) returns (ret$0: Ref)
+method useInlineUnit(b: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret$0), unitType())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var unitRes: Ref
-  var ret$1: Ref
-  var anon$0: Ref
-  var ret$2: Ref
-  var anon$1: Ref
+  var ret_1: Ref
+  var anon_0: Ref
+  var ret_2: Ref
+  var anon_1: Ref
   inhale isSubtype(typeOf(b), nullable(anyType()))
-  anon$0 := b
-  inhale isSubtype(typeOf(anon$0), boolType())
-  anon$1 := anon$0
-  if (boolFromRef(anon$1)) {
+  anon_0 := b
+  inhale isSubtype(typeOf(anon_0), boolType())
+  anon_1 := anon_0
+  if (boolFromRef(anon_1)) {
     var tmp: Ref
-    var anon$2: Ref
+    var anon_2: Ref
     var anon: Ref
     tmp := intToRef(42)
     anon := idFun(tmp)
-    anon$2 := anon
-    inhale isSubtype(typeOf(anon$2), intType())
+    anon_2 := anon
+    inhale isSubtype(typeOf(anon_2), intType())
   }
-  label lbl$ret$2
-  inhale isSubtype(typeOf(ret$2), unitType())
-  label lbl$ret$1
-  inhale isSubtype(typeOf(ret$1), unitType())
-  unitRes := ret$1
+  label lbl_ret_2
+  inhale isSubtype(typeOf(ret_2), unitType())
+  label lbl_ret_1
+  inhale isSubtype(typeOf(ret_1), unitType())
+  unitRes := ret_1
   assert unitRes == unitValue()
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }

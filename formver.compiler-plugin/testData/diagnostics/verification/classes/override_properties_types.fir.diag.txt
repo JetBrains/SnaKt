@@ -1,44 +1,44 @@
 /override_properties_types.kt:(520,530): info: Generated Viper text for extractInt:
-field bf$field: Ref
+field bf_field: Ref
 
 method extractInt(base: Ref, returnNull: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(base), $c$Base())
+  requires isSubtype(typeOf(base), _c_Base())
   requires isSubtype(typeOf(returnNull), boolType())
   ensures isSubtype(typeOf(ret), nullable(intType()))
   ensures ret == nullValue() ==> boolFromRef(returnNull)
 {
-  inhale acc(c$Base$shared(base), wildcard)
+  inhale acc(c_Base_shared(base), wildcard)
   if (boolFromRef(returnNull)) {
-    var anon$0: Ref
-    anon$0 := nullValue()
-    ret := anon$0
+    var anon_0: Ref
+    anon_0 := nullValue()
+    ret := anon_0
   } else {
-    var anon$1: Ref
-    if (isSubtype(typeOf(base), $c$OpenClassOpenFieldVarDerived())) {
+    var anon_1: Ref
+    if (isSubtype(typeOf(base), _c_OpenClassOpenFieldVarDerived())) {
       var anon: Ref
-      inhale acc(c$OpenClassOpenFieldVarDerived$shared(base), wildcard)
-      anon := g$field(base)
-      anon$1 := anon
-      inhale isSubtype(typeOf(anon$1), intType())
-    } elseif (isSubtype(typeOf(base), $c$FinalClassOpenFieldVarDerived())) {
-      inhale acc(c$FinalClassOpenFieldVarDerived$shared(base), wildcard)
-      anon$1 := havoc()
-    } elseif (isSubtype(typeOf(base), $c$FinalClassFinalFieldValDerived())) {
-      inhale acc(c$FinalClassFinalFieldValDerived$shared(base), wildcard)
-      unfold acc(c$FinalClassFinalFieldValDerived$shared(base), wildcard)
-      anon$1 := base.bf$field
-    } elseif (isSubtype(typeOf(base), $c$OpenClassFinalFieldVarDerived())) {
+      inhale acc(c_OpenClassOpenFieldVarDerived_shared(base), wildcard)
+      anon := g_field(base)
+      anon_1 := anon
+      inhale isSubtype(typeOf(anon_1), intType())
+    } elseif (isSubtype(typeOf(base), _c_FinalClassOpenFieldVarDerived())) {
+      inhale acc(c_FinalClassOpenFieldVarDerived_shared(base), wildcard)
+      anon_1 := havoc()
+    } elseif (isSubtype(typeOf(base), _c_FinalClassFinalFieldValDerived())) {
+      inhale acc(c_FinalClassFinalFieldValDerived_shared(base), wildcard)
+      unfold acc(c_FinalClassFinalFieldValDerived_shared(base), wildcard)
+      anon_1 := base.bf_field
+    } elseif (isSubtype(typeOf(base), _c_OpenClassFinalFieldVarDerived())) {
       inhale acc(shared(base), wildcard)
-      anon$1 := havoc()
+      anon_1 := havoc()
     } else {
-      anon$1 := intToRef(0)}
-    ret := anon$1
+      anon_1 := intToRef(0)}
+    ret := anon_1
   }
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
-method g$field(this: Ref) returns (v$ret: Ref)
+method g_field(this: Ref) returns (v_ret: Ref)
 
 
-method s$field(this: Ref, anon$0: Ref) returns (v$ret: Ref)
+method s_field(this: Ref, anon_0: Ref) returns (v_ret: Ref)

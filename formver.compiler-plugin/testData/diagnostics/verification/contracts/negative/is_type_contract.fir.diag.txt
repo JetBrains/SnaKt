@@ -5,8 +5,8 @@ method unverifiableTypeCheck(x: Ref) returns (ret: Ref)
   ensures true ==> isSubtype(typeOf(x), unitType())
 {
   ret := boolToRef(isSubtype(typeOf(x), stringType()))
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /is_type_contract.kt:(227,256): warning: Cannot verify that if the function returns then x is Unit.
@@ -17,7 +17,7 @@ method nullableNotNonNullable(x: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
   ensures true ==> isSubtype(typeOf(x), intType())
 {
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 

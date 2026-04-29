@@ -3,7 +3,7 @@ method recursive() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 {
   ret := recursive()
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }

@@ -1,21 +1,21 @@
 /manual_permissions.kt:(145,176): info: Generated Viper text for testManualPermissionFieldGetter:
-field bf$a: Ref
+field bf_a: Ref
 
-field bf$b: Ref
+field bf_b: Ref
 
-method testManualPermissionFieldGetter(mpf: Ref) returns (ret$0: Ref)
-  requires isSubtype(typeOf(mpf), $c$ManualPermissionFields())
-  ensures isSubtype(typeOf(ret$0), unitType())
+method testManualPermissionFieldGetter(mpf: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(mpf), _c_ManualPermissionFields())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var a: Ref
   var b: Ref
   inhale acc(shared(mpf), wildcard)
   unfold acc(shared(mpf), wildcard)
-  a := mpf.bf$a
-  b := mpf.bf$b
+  a := mpf.bf_a
+  b := mpf.bf_b
   inhale isSubtype(typeOf(b), intType())
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /manual_permissions.kt:(251,282): info: Generated Viper text for testManualPermissionFieldSetter:
@@ -23,12 +23,12 @@ field a: Ref
 
 field b: Ref
 
-method testManualPermissionFieldSetter(mpf: Ref) returns (ret$0: Ref)
-  requires isSubtype(typeOf(mpf), $c$ManualPermissionFields())
-  ensures isSubtype(typeOf(ret$0), unitType())
+method testManualPermissionFieldSetter(mpf: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(mpf), _c_ManualPermissionFields())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   inhale acc(shared(mpf), wildcard)
   mpf.b := intToRef(123)
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }

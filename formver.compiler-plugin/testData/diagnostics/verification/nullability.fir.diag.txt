@@ -3,6 +3,6 @@ method return_null() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), nullable(intType()))
 {
   ret := nullValue()
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }

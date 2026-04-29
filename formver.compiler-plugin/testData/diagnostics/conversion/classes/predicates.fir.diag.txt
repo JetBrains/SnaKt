@@ -7,59 +7,59 @@ field next: Ref
 
 field pf: Ref
 
-predicate c$Baz$shared(this: Ref) {
+predicate c_Baz_shared(this: Ref) {
   true
 }
 
-predicate c$Baz$unique(this: Ref) {
+predicate c_Baz_unique(this: Ref) {
   true
 }
 
-predicate c$PrimitiveFields$shared(this: Ref) {
+predicate c_PrimitiveFields_shared(this: Ref) {
   acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType())
 }
 
-predicate c$PrimitiveFields$unique(this: Ref) {
+predicate c_PrimitiveFields_unique(this: Ref) {
   acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType()) &&
   acc(this.b, write) &&
   isSubtype(typeOf(this.b), intType())
 }
 
-predicate c$Recursive$unique(this: Ref) {
+predicate c_Recursive_unique(this: Ref) {
   acc(this.next, wildcard) &&
   (this.next != nullValue() ==> acc(shared(this.next), wildcard)) &&
-  isSubtype(typeOf(this.next), nullable($c$Recursive()))
+  isSubtype(typeOf(this.next), nullable(_c_Recursive()))
 }
 
-predicate c$ReferenceField$shared(this: Ref) {
+predicate c_ReferenceField_shared(this: Ref) {
   acc(this.pf, wildcard) &&
-  acc(c$PrimitiveFields$shared(this.pf), wildcard) &&
-  isSubtype(typeOf(this.pf), $c$PrimitiveFields()) &&
-  acc(c$Baz$shared(this), wildcard)
+  acc(c_PrimitiveFields_shared(this.pf), wildcard) &&
+  isSubtype(typeOf(this.pf), _c_PrimitiveFields()) &&
+  acc(c_Baz_shared(this), wildcard)
 }
 
-predicate c$ReferenceField$unique(this: Ref) {
+predicate c_ReferenceField_unique(this: Ref) {
   acc(this.pf, wildcard) &&
-  acc(c$PrimitiveFields$shared(this.pf), wildcard) &&
-  isSubtype(typeOf(this.pf), $c$PrimitiveFields()) &&
-  acc(c$Baz$unique(this), write)
+  acc(c_PrimitiveFields_shared(this.pf), wildcard) &&
+  isSubtype(typeOf(this.pf), _c_PrimitiveFields()) &&
+  acc(c_Baz_unique(this), write)
 }
 
 predicate shared(this: Ref) {
   acc(this.next, wildcard) &&
   (this.next != nullValue() ==> acc(shared(this.next), wildcard)) &&
-  isSubtype(typeOf(this.next), nullable($c$Recursive()))
+  isSubtype(typeOf(this.next), nullable(_c_Recursive()))
 }
 
-method useClasses(rf: Ref, rec: Ref) returns (ret$0: Ref)
-  requires isSubtype(typeOf(rf), $c$ReferenceField())
-  requires isSubtype(typeOf(rec), $c$Recursive())
-  ensures isSubtype(typeOf(ret$0), unitType())
+method useClasses(rf: Ref, rec: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(rf), _c_ReferenceField())
+  requires isSubtype(typeOf(rec), _c_Recursive())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  inhale acc(c$ReferenceField$shared(rf), wildcard)
+  inhale acc(c_ReferenceField_shared(rf), wildcard)
   inhale acc(shared(rec), wildcard)
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /predicates.kt:(354,374): info: Generated Viper text for threeLayersHierarchy:
@@ -67,104 +67,104 @@ field x: Ref
 
 field y: Ref
 
-predicate c$A$unique(this: Ref) {
+predicate c_A_unique(this: Ref) {
   acc(this.x, wildcard) && isSubtype(typeOf(this.x), intType()) &&
   acc(this.y, write) &&
   isSubtype(typeOf(this.y), intType())
 }
 
-predicate c$B$shared(this: Ref) {
+predicate c_B_shared(this: Ref) {
   acc(shared(this), wildcard)
 }
 
-predicate c$B$unique(this: Ref) {
-  acc(c$A$unique(this), write)
+predicate c_B_unique(this: Ref) {
+  acc(c_A_unique(this), write)
 }
 
-predicate c$C$shared(this: Ref) {
-  acc(c$B$shared(this), wildcard)
+predicate c_C_shared(this: Ref) {
+  acc(c_B_shared(this), wildcard)
 }
 
-predicate c$C$unique(this: Ref) {
-  acc(c$B$unique(this), write)
+predicate c_C_unique(this: Ref) {
+  acc(c_B_unique(this), write)
 }
 
 predicate shared(this: Ref) {
   acc(this.x, wildcard) && isSubtype(typeOf(this.x), intType())
 }
 
-method threeLayersHierarchy(c: Ref) returns (ret$0: Ref)
-  requires isSubtype(typeOf(c), $c$C())
-  ensures isSubtype(typeOf(ret$0), unitType())
+method threeLayersHierarchy(c: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(c), _c_C())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  inhale acc(c$C$shared(c), wildcard)
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  inhale acc(c_C_shared(c), wildcard)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /predicates.kt:(390,403): info: Generated Viper text for listHierarchy:
 field size: Ref
 
-predicate c$Collection$shared(this: Ref) {
-  acc(c$Iterable$shared(this), wildcard)
+predicate c_Collection_shared(this: Ref) {
+  acc(c_Iterable_shared(this), wildcard)
 }
 
-predicate c$Collection$unique(this: Ref) {
-  acc(c$Iterable$unique(this), write)
+predicate c_Collection_unique(this: Ref) {
+  acc(c_Iterable_unique(this), write)
 }
 
-predicate c$Iterable$shared(this: Ref) {
+predicate c_Iterable_shared(this: Ref) {
   true
 }
 
-predicate c$Iterable$unique(this: Ref) {
+predicate c_Iterable_unique(this: Ref) {
   true
 }
 
-predicate c$List$shared(this: Ref) {
-  acc(c$Collection$shared(this), wildcard)
+predicate c_List_shared(this: Ref) {
+  acc(c_Collection_shared(this), wildcard)
 }
 
-predicate c$List$unique(this: Ref) {
-  acc(c$Collection$unique(this), write)
+predicate c_List_unique(this: Ref) {
+  acc(c_Collection_unique(this), write)
 }
 
-predicate c$MutableCollection$shared(this: Ref) {
-  acc(c$Collection$shared(this), wildcard) && acc(shared(this), wildcard)
+predicate c_MutableCollection_shared(this: Ref) {
+  acc(c_Collection_shared(this), wildcard) && acc(shared(this), wildcard)
 }
 
-predicate c$MutableCollection$unique(this: Ref) {
-  acc(c$Collection$unique(this), write) &&
-  acc(c$MutableIterable$unique(this), write)
+predicate c_MutableCollection_unique(this: Ref) {
+  acc(c_Collection_unique(this), write) &&
+  acc(c_MutableIterable_unique(this), write)
 }
 
-predicate c$MutableIterable$unique(this: Ref) {
-  acc(c$Iterable$unique(this), write)
+predicate c_MutableIterable_unique(this: Ref) {
+  acc(c_Iterable_unique(this), write)
 }
 
-predicate c$MutableList$shared(this: Ref) {
-  acc(c$List$shared(this), wildcard) &&
-  acc(c$MutableCollection$shared(this), wildcard)
+predicate c_MutableList_shared(this: Ref) {
+  acc(c_List_shared(this), wildcard) &&
+  acc(c_MutableCollection_shared(this), wildcard)
 }
 
-predicate c$MutableList$unique(this: Ref) {
-  acc(c$List$unique(this), write) &&
-  acc(c$MutableCollection$unique(this), write)
+predicate c_MutableList_unique(this: Ref) {
+  acc(c_List_unique(this), write) &&
+  acc(c_MutableCollection_unique(this), write)
 }
 
 predicate shared(this: Ref) {
-  acc(c$Iterable$shared(this), wildcard)
+  acc(c_Iterable_shared(this), wildcard)
 }
 
-method listHierarchy(xs: Ref) returns (ret$0: Ref)
+method listHierarchy(xs: Ref) returns (ret_0: Ref)
   requires acc(xs.size, write)
   requires intFromRef(xs.size) >= 0
-  requires isSubtype(typeOf(xs), collections$c$MutableList())
+  requires isSubtype(typeOf(xs), collections_c_MutableList())
   ensures acc(xs.size, write)
   ensures intFromRef(xs.size) >= 0
-  ensures isSubtype(typeOf(ret$0), unitType())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  inhale acc(c$MutableList$shared(xs), wildcard)
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  inhale acc(c_MutableList_shared(xs), wildcard)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }

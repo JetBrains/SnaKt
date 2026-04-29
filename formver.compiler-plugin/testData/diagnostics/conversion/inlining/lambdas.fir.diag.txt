@@ -1,46 +1,46 @@
 /lambdas.kt:(155,166): info: Generated Viper text for explicitArg:
-method explicitArg() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), intType())
+method explicitArg() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), intType())
 {
-  var ret$1: Ref
+  var ret_1: Ref
   var ret: Ref
   var anon: Ref
   anon := intToRef(0)
   ret := plusInts(anon, anon)
-  goto ret$2
-  label ret$2
-  ret$1 := ret
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto ret_2
+  label ret_2
+  ret_1 := ret
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret_0 := ret_1
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /lambdas.kt:(216,227): info: Generated Viper text for implicitArg:
-method implicitArg() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), intType())
+method implicitArg() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), intType())
 {
-  var ret$1: Ref
+  var ret_1: Ref
   var ret: Ref
   var anon: Ref
   anon := intToRef(0)
   ret := timesInts(anon, intToRef(2))
-  goto ret$2
-  label ret$2
-  ret$1 := ret
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto ret_2
+  label ret_2
+  ret_1 := ret
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret_0 := ret_1
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /lambdas.kt:(273,281): info: Generated Viper text for lambdaIf:
-method lambdaIf() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), intType())
+method lambdaIf() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), intType())
 {
-  var ret$1: Ref
+  var ret_1: Ref
   var ret: Ref
   var anon: Ref
   anon := intToRef(0)
@@ -48,103 +48,103 @@ method lambdaIf() returns (ret$0: Ref)
     ret := plusInts(anon, intToRef(1))
   } else {
     ret := plusInts(anon, intToRef(2))}
-  goto ret$2
-  label ret$2
-  ret$1 := ret
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto ret_2
+  label ret_2
+  ret_1 := ret
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret_0 := ret_1
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /lambdas.kt:(412,430): info: Generated Viper text for returnValueNotUsed:
-method returnValueNotUsed() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), unitType())
+method returnValueNotUsed() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var ret$1: Ref
+  var ret_1: Ref
   var ret: Ref
   var anon: Ref
   anon := intToRef(0)
   ret := anon
-  goto ret$2
-  label ret$2
-  ret$1 := ret
-  goto lbl$ret$1
-  label lbl$ret$1
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  goto ret_2
+  label ret_2
+  ret_1 := ret
+  goto lbl_ret_1
+  label lbl_ret_1
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /lambdas.kt:(466,475): info: Generated Viper text for shadowing:
-method shadowing() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), intType())
+method shadowing() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), intType())
 {
   var x: Ref
-  var l0$y: Ref
-  var ret$1: Ref
+  var l0_y: Ref
+  var ret_1: Ref
   var ret: Ref
   var anon: Ref
   var y: Ref
   x := intToRef(1)
-  l0$y := intToRef(1)
+  l0_y := intToRef(1)
   anon := intToRef(0)
   y := intToRef(0)
   ret := plusInts(anon, y)
-  goto ret$2
-  label ret$2
-  ret$1 := ret
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto ret_2
+  label ret_2
+  ret_1 := ret
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret_0 := ret_1
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /lambdas.kt:(711,717): info: Generated Viper text for nested:
-method nested() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), intType())
+method nested() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), intType())
 {
-  var l0$x: Ref
-  var ret$1: Ref
+  var l0_x: Ref
+  var ret_1: Ref
   var x: Ref
-  var ret$2: Ref
+  var ret_2: Ref
   var ret: Ref
   var anon: Ref
-  l0$x := intToRef(2)
+  l0_x := intToRef(2)
   x := intToRef(2)
   anon := intToRef(0)
   ret := plusInts(anon, intToRef(1))
-  goto ret$3
-  label ret$3
-  ret$2 := ret
-  goto lbl$ret$2
-  label lbl$ret$2
-  ret$1 := ret$2
-  goto lbl$ret$1
-  label lbl$ret$1
-  ret$0 := ret$1
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto ret_3
+  label ret_3
+  ret_2 := ret
+  goto lbl_ret_2
+  label lbl_ret_2
+  ret_1 := ret_2
+  goto lbl_ret_1
+  label lbl_ret_1
+  ret_0 := ret_1
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /lambdas.kt:(853,870): info: Generated Viper text for lambdaPassthrough:
-method lambdaPassthrough() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), unitType())
+method lambdaPassthrough() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var ret$1: Ref
-  var ret$2: Ref
+  var ret_1: Ref
+  var ret_2: Ref
   var ret: Ref
   var anon: Ref
   anon := intToRef(0)
   ret := plusInts(anon, intToRef(1))
-  goto ret$3
-  label ret$3
-  ret$2 := ret
-  goto lbl$ret$2
-  label lbl$ret$2
-  label lbl$ret$1
-  inhale isSubtype(typeOf(ret$1), unitType())
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  goto ret_3
+  label ret_3
+  ret_2 := ret
+  goto lbl_ret_2
+  label lbl_ret_2
+  label lbl_ret_1
+  inhale isSubtype(typeOf(ret_1), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }

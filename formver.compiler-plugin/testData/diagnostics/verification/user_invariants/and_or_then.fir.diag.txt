@@ -1,26 +1,26 @@
 /and_or_then.kt:(64,75): info: Generated Viper text for resultOrArg:
-method resultOrArg(par$arg: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(par$arg), boolType())
+method resultOrArg(par_arg: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par_arg), boolType())
   ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) || boolFromRef(par$arg)
+  ensures boolFromRef(ret) || boolFromRef(par_arg)
 {
-  ret := notBool(par$arg)
-  goto ret$0
-  label ret$0
+  ret := notBool(par_arg)
+  goto ret_0
+  label ret_0
 }
 
 /and_or_then.kt:(200,211): info: Generated Viper text for testImplies:
-method testImplies(par$arg: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(par$arg), boolType())
+method testImplies(par_arg: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par_arg), boolType())
   ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(par$arg) ==> !boolFromRef(ret)
-  ensures boolFromRef(ret) ==> !boolFromRef(par$arg)
-  ensures !boolFromRef(par$arg) ==> boolFromRef(ret)
-  ensures !boolFromRef(ret) ==> boolFromRef(par$arg)
+  ensures boolFromRef(par_arg) ==> !boolFromRef(ret)
+  ensures boolFromRef(ret) ==> !boolFromRef(par_arg)
+  ensures !boolFromRef(par_arg) ==> boolFromRef(ret)
+  ensures !boolFromRef(ret) ==> boolFromRef(par_arg)
 {
-  ret := notBool(par$arg)
-  goto ret$0
-  label ret$0
+  ret := notBool(par_arg)
+  goto ret_0
+  label ret_0
 }
 
 /and_or_then.kt:(417,424): info: Generated Viper text for testAnd:
@@ -38,6 +38,6 @@ method testAnd(arg1: Ref, arg2: Ref) returns (ret: Ref)
     ret := arg2
   } else {
     ret := boolToRef(false)}
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }

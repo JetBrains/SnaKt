@@ -10,7 +10,7 @@ method test_simple() returns (ret: Ref)
   x := plusInts(x, intToRef(1))
   x := timesInts(x, intToRef(2))
   x := divInts(x, intToRef(4))
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
@@ -20,18 +20,18 @@ method test_postincvrement() returns (ret: Ref)
 {
   var x: Ref
   var first: Ref
-  var anon$0: Ref
+  var anon_0: Ref
   var second: Ref
   var anon: Ref
   var unary: Ref
   x := intToRef(10)
-  anon$0 := x
-  x := plusInts(anon$0, intToRef(1))
-  first := anon$0
+  anon_0 := x
+  x := plusInts(anon_0, intToRef(1))
+  first := anon_0
   anon := x
   x := minusInts(anon, intToRef(1))
   second := anon
   unary := x
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }

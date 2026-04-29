@@ -2,28 +2,28 @@
 field size: Ref
 
 method emptyList() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), collections$c$List())
+  ensures isSubtype(typeOf(ret), collections_c_List())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c$List$shared(ret), wildcard)
+  ensures acc(c_List_shared(ret), wildcard)
   ensures intFromRef(ret.size) == 0
 
 
-method empty_list_expr_get() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), unitType())
+method empty_list_expr_get() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var s: Ref
   var anon: Ref
   anon := emptyList()
   s := get(anon, intToRef(0))
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 method get(this: Ref, index: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections$c$List())
+  requires isSubtype(typeOf(this), collections_c_List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -39,28 +39,28 @@ method get(this: Ref, index: Ref) returns (ret: Ref)
 field size: Ref
 
 method emptyList() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), collections$c$List())
+  ensures isSubtype(typeOf(ret), collections_c_List())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c$List$shared(ret), wildcard)
+  ensures acc(c_List_shared(ret), wildcard)
   ensures intFromRef(ret.size) == 0
 
 
-method empty_list_get() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), unitType())
+method empty_list_get() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var myList: Ref
   var s: Ref
   myList := emptyList()
   s := get(myList, intToRef(0))
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 method get(this: Ref, index: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections$c$List())
+  requires isSubtype(typeOf(this), collections_c_List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -78,7 +78,7 @@ field size: Ref
 method get(this: Ref, index: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections$c$List())
+  requires isSubtype(typeOf(this), collections_c_List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -88,21 +88,21 @@ method get(this: Ref, index: Ref) returns (ret: Ref)
   ensures intFromRef(this.size) == old(intFromRef(this.size))
 
 
-method unsafe_last(l: Ref) returns (ret$0: Ref)
+method unsafe_last(l: Ref) returns (ret_0: Ref)
   requires acc(l.size, write)
   requires intFromRef(l.size) >= 0
-  requires isSubtype(typeOf(l), collections$c$List())
+  requires isSubtype(typeOf(l), collections_c_List())
   ensures acc(l.size, write)
   ensures intFromRef(l.size) >= 0
-  ensures isSubtype(typeOf(ret$0), intType())
+  ensures isSubtype(typeOf(ret_0), intType())
 {
   var anon: Ref
-  inhale acc(c$List$shared(l), wildcard)
+  inhale acc(c_List_shared(l), wildcard)
   anon := l.size
   inhale isSubtype(typeOf(anon), intType())
-  ret$0 := get(l, minusInts(anon, intToRef(1)))
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret_0 := get(l, minusInts(anon, intToRef(1)))
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /list.kt:(315,328): warning: Invalid index for list 'l', the index may be less than zero.
@@ -113,7 +113,7 @@ field size: Ref
 method add(this: Ref, element: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections$c$MutableList())
+  requires isSubtype(typeOf(this), collections_c_MutableList())
   requires isSubtype(typeOf(element), intType())
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
@@ -121,27 +121,27 @@ method add(this: Ref, element: Ref) returns (ret: Ref)
   ensures intFromRef(this.size) == old(intFromRef(this.size)) + 1
 
 
-method add_get(l: Ref) returns (ret$0: Ref)
+method add_get(l: Ref) returns (ret_0: Ref)
   requires acc(l.size, write)
   requires intFromRef(l.size) >= 0
-  requires isSubtype(typeOf(l), collections$c$MutableList())
+  requires isSubtype(typeOf(l), collections_c_MutableList())
   ensures acc(l.size, write)
   ensures intFromRef(l.size) >= 0
-  ensures isSubtype(typeOf(ret$0), unitType())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var anon: Ref
   var n: Ref
-  inhale acc(c$MutableList$shared(l), wildcard)
+  inhale acc(c_MutableList_shared(l), wildcard)
   anon := add(l, intToRef(1))
   n := get(l, intToRef(1))
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 method get(this: Ref, index: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections$c$MutableList())
+  requires isSubtype(typeOf(this), collections_c_MutableList())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -157,28 +157,28 @@ method get(this: Ref, index: Ref) returns (ret: Ref)
 field size: Ref
 
 method emptyList() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), collections$c$List())
+  ensures isSubtype(typeOf(ret), collections_c_List())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c$List$shared(ret), wildcard)
+  ensures acc(c_List_shared(ret), wildcard)
   ensures intFromRef(ret.size) == 0
 
 
-method empty_list_sub() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), unitType())
+method empty_list_sub() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var l: Ref
   var anon: Ref
   anon := emptyList()
   l := subList(anon, intToRef(0), intToRef(1))
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections$c$List())
+  requires isSubtype(typeOf(this), collections_c_List())
   requires isSubtype(typeOf(fromIndex), intType())
   requires isSubtype(typeOf(toIndex), intType())
   requires intFromRef(fromIndex) <= intFromRef(toIndex)
@@ -186,10 +186,10 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
   requires intFromRef(toIndex) <= intFromRef(this.size)
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
-  ensures isSubtype(typeOf(ret), collections$c$List())
+  ensures isSubtype(typeOf(ret), collections_c_List())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c$List$shared(ret), wildcard)
+  ensures acc(c_List_shared(ret), wildcard)
   ensures intFromRef(this.size) == old(intFromRef(this.size))
   ensures intFromRef(ret.size) ==
     intFromRef(toIndex) - intFromRef(fromIndex)
@@ -201,28 +201,28 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
 field size: Ref
 
 method emptyList() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), collections$c$List())
+  ensures isSubtype(typeOf(ret), collections_c_List())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c$List$shared(ret), wildcard)
+  ensures acc(c_List_shared(ret), wildcard)
   ensures intFromRef(ret.size) == 0
 
 
-method empty_list_sub_negative() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), unitType())
+method empty_list_sub_negative() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var l: Ref
   var anon: Ref
   anon := emptyList()
   l := subList(anon, intToRef(-1), intToRef(1))
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections$c$List())
+  requires isSubtype(typeOf(this), collections_c_List())
   requires isSubtype(typeOf(fromIndex), intType())
   requires isSubtype(typeOf(toIndex), intType())
   requires intFromRef(fromIndex) <= intFromRef(toIndex)
@@ -230,10 +230,10 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
   requires intFromRef(toIndex) <= intFromRef(this.size)
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
-  ensures isSubtype(typeOf(ret), collections$c$List())
+  ensures isSubtype(typeOf(ret), collections_c_List())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c$List$shared(ret), wildcard)
+  ensures acc(c_List_shared(ret), wildcard)
   ensures intFromRef(this.size) == old(intFromRef(this.size))
   ensures intFromRef(ret.size) ==
     intFromRef(toIndex) - intFromRef(fromIndex)

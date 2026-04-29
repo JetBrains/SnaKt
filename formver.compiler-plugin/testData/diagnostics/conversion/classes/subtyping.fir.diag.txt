@@ -5,12 +5,12 @@ method smartCast(x: Ref) returns (ret: Ref)
 {
   if (x == nullValue()) {
     ret := intToRef(0)
-    goto ret$0
+    goto ret_0
   } else {
     ret := x
-    goto ret$0
+    goto ret_0
   }
-  label ret$0
+  label ret_0
 }
 
 /subtyping.kt:(187,202): info: Generated Viper text for returnSubtyping:
@@ -18,8 +18,8 @@ method returnSubtyping() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), nullable(intType()))
 {
   ret := intToRef(0)
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /subtyping.kt:(233,252): info: Generated Viper text for assignmentSubtyping:
@@ -29,18 +29,18 @@ method assignmentSubtyping() returns (ret: Ref)
   var x: Ref
   x := boolToRef(false)
   x := boolToRef(true)
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
 /subtyping.kt:(358,384): info: Generated Viper text for functionParameterSubtyping:
-method functionParameterSubtyping() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), unitType())
+method functionParameterSubtyping() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var anon: Ref
   anon := nullableParameter(boolToRef(false))
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 method nullableParameter(b: Ref) returns (ret: Ref)

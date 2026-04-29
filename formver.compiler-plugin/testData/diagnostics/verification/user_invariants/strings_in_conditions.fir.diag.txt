@@ -3,16 +3,16 @@ method firstNotSortedIndex(s: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(s), stringType())
   ensures isSubtype(typeOf(ret), intType())
   ensures 0 <= intFromRef(ret) && intFromRef(ret) <= |stringFromRef(s)|
-  ensures (forall anon$builtin: Int ::0 <= anon$builtin &&
-      anon$builtin + 1 < intFromRef(ret) ==>
-      stringFromRef(s)[anon$builtin] <= stringFromRef(s)[anon$builtin + 1])
+  ensures (forall anon_builtin: Int ::0 <= anon_builtin &&
+      anon_builtin + 1 < intFromRef(ret) ==>
+      stringFromRef(s)[anon_builtin] <= stringFromRef(s)[anon_builtin + 1])
 {
   if (|stringFromRef(s)| == 0) {
     ret := intToRef(0)
-    goto ret$0
+    goto ret_0
   } else {
     var i: Ref
-    var anon$0: Ref
+    var anon_0: Ref
     i := intToRef(1)
     label cont
       invariant isSubtype(typeOf(i), intType())
@@ -20,11 +20,11 @@ method firstNotSortedIndex(s: Ref) returns (ret: Ref)
       invariant (forall anon: Int ::0 <= anon && anon + 1 < intFromRef(i) ==>
           stringFromRef(s)[anon] <= stringFromRef(s)[anon + 1])
     if (intFromRef(i) < |stringFromRef(s)|) {
-      anon$0 := leChars(stringGet(s, minusInts(i, intToRef(1))), stringGet(s,
+      anon_0 := leChars(stringGet(s, minusInts(i, intToRef(1))), stringGet(s,
         i))
     } else {
-      anon$0 := boolToRef(false)}
-    if (boolFromRef(anon$0)) {
+      anon_0 := boolToRef(false)}
+    if (boolFromRef(anon_0)) {
       i := plusInts(i, intToRef(1))
       goto cont
     }
@@ -34,9 +34,9 @@ method firstNotSortedIndex(s: Ref) returns (ret: Ref)
     assert (forall anon: Int ::0 <= anon && anon + 1 < intFromRef(i) ==>
         stringFromRef(s)[anon] <= stringFromRef(s)[anon + 1])
     ret := i
-    goto ret$0
+    goto ret_0
   }
-  label ret$0
+  label ret_0
 }
 
 /strings_in_conditions.kt:(621,636): info: Generated Viper text for returnNewString:
@@ -44,8 +44,8 @@ method returnNewString() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), stringType())
 {
   ret := stringToRef(Seq(52, 50))
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /strings_in_conditions.kt:(672,689): info: Generated Viper text for addCharacterTimes:
@@ -56,13 +56,13 @@ method addCharacterTimes(s: Ref, c: Ref, n: Ref) returns (ret: Ref)
   requires intFromRef(n) >= 0
   ensures isSubtype(typeOf(ret), stringType())
   ensures |stringFromRef(ret)| == |stringFromRef(s)| + intFromRef(n)
-  ensures (forall anon$builtin: Int ::|stringFromRef(s)| <= anon$builtin &&
-      anon$builtin < |stringFromRef(ret)| ==>
-      stringFromRef(ret)[anon$builtin] == charFromRef(c))
+  ensures (forall anon_builtin: Int ::|stringFromRef(s)| <= anon_builtin &&
+      anon_builtin < |stringFromRef(ret)| ==>
+      stringFromRef(ret)[anon_builtin] == charFromRef(c))
 {
   var i: Ref
   var res: Ref
-  var anon$0: Ref
+  var anon_0: Ref
   i := intToRef(0)
   res := s
   label cont
@@ -76,8 +76,8 @@ method addCharacterTimes(s: Ref, c: Ref, n: Ref) returns (ret: Ref)
     invariant (forall anon: Int ::|stringFromRef(s)| <= anon &&
         anon < |stringFromRef(res)| ==>
         stringFromRef(res)[anon] == charFromRef(c))
-  anon$0 := ltInts(i, n)
-  if (boolFromRef(anon$0)) {
+  anon_0 := ltInts(i, n)
+  if (boolFromRef(anon_0)) {
     res := addStringChar(res, c)
     goto cont
   }
@@ -93,11 +93,11 @@ method addCharacterTimes(s: Ref, c: Ref, n: Ref) returns (ret: Ref)
       anon < |stringFromRef(res)| ==>
       stringFromRef(res)[anon] == charFromRef(c))
   ret := res
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
-method plus(this: Ref, other: Ref) returns (v$ret: Ref)
+method plus(this: Ref, other: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
-  ensures isSubtype(typeOf(v$ret), stringType())
+  ensures isSubtype(typeOf(v_ret), stringType())

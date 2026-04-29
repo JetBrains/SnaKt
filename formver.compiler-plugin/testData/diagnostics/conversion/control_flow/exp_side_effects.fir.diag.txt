@@ -2,7 +2,7 @@
 field x: Ref
 
 method getFoo() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), $c$Foo())
+  ensures isSubtype(typeOf(ret), _c_Foo())
   ensures acc(shared(ret), wildcard)
 
 
@@ -10,21 +10,21 @@ method sideEffect() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
 
 
-method test() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), unitType())
+method test() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var anon$0: Ref
-  var anon$1: Ref
+  var anon_0: Ref
+  var anon_1: Ref
   var y: Ref
-  var anon$2: Ref
-  var anon$3: Ref
+  var anon_2: Ref
+  var anon_3: Ref
   var anon: Ref
-  anon$0 := getFoo()
-  anon$1 := sideEffect()
-  anon$3 := getFoo()
-  anon$2 := havoc()
+  anon_0 := getFoo()
+  anon_1 := sideEffect()
+  anon_3 := getFoo()
+  anon_2 := havoc()
   anon := sideEffect()
-  y := plusInts(anon$2, anon)
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  y := plusInts(anon_2, anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }

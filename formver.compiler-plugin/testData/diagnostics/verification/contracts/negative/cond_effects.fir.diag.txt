@@ -4,7 +4,7 @@ method compoundConditionalEffect(b: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
   ensures true ==> boolFromRef(b) && false
 {
-  label ret$0
+  label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
@@ -17,8 +17,8 @@ method mayReturnNonNull(x: Ref) returns (ret: Ref)
   ensures ret == nullValue() ==> isSubtype(typeOf(x), intType())
 {
   ret := x
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /cond_effects.kt:(328,360): warning: Cannot verify that if a null value is returned then x is Int.
@@ -30,33 +30,33 @@ method mayReturnNull(x: Ref) returns (ret: Ref)
   ensures ret != nullValue() ==> isSubtype(typeOf(x), intType())
 {
   ret := x
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /cond_effects.kt:(478,513): warning: Cannot verify that if a non-null value is returned then x is Int.
 
 /cond_effects.kt:(723,741): info: Generated Viper text for isNullOrEmptyWrong:
 method isNullOrEmptyWrong(seq: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(seq), nullable(kotlin$c$CharSequence()))
+  requires isSubtype(typeOf(seq), nullable(kotlin_c_CharSequence()))
   ensures isSubtype(typeOf(ret), boolType())
   ensures boolFromRef(ret) == false ==> seq != nullValue()
 {
-  inhale seq != nullValue() ==> acc(c$CharSequence$shared(seq), wildcard)
+  inhale seq != nullValue() ==> acc(c_CharSequence_shared(seq), wildcard)
   if (!(seq == nullValue())) {
-    var anon$0: Ref
+    var anon_0: Ref
     var anon: Ref
     anon := length(seq)
-    anon$0 := anon
-    inhale isSubtype(typeOf(anon$0), intType())
-    ret := notBool(boolToRef(intFromRef(anon$0) == 0))
+    anon_0 := anon
+    inhale isSubtype(typeOf(anon_0), intType())
+    ret := notBool(boolToRef(intFromRef(anon_0) == 0))
   } else {
     ret := boolToRef(false)}
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
-method length(this: Ref) returns (v$ret: Ref)
+method length(this: Ref) returns (v_ret: Ref)
 
 
 /cond_effects.kt:(796,832): warning: Cannot verify that if a false value is returned then seq != null.
@@ -72,8 +72,8 @@ method recursiveContract(n: Ref, x: Ref) returns (ret: Ref)
     ret := boolToRef(isSubtype(typeOf(x), intType()))
   } else {
     ret := recursiveContract(minusInts(n, intToRef(1)), x)}
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /cond_effects.kt:(994,1029): warning: Cannot verify that if a true value is returned then x is String.

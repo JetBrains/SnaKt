@@ -1,57 +1,57 @@
 /as_type_contract.kt:(152,162): info: Generated Viper text for asOperator:
 method asOperator(foo: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(foo), $c$Foo())
-  ensures isSubtype(typeOf(ret), $c$Bar())
-  ensures acc(c$Bar$shared(ret), wildcard)
-  ensures true ==> isSubtype(typeOf(foo), $c$Bar())
+  requires isSubtype(typeOf(foo), _c_Foo())
+  ensures isSubtype(typeOf(ret), _c_Bar())
+  ensures acc(c_Bar_shared(ret), wildcard)
+  ensures true ==> isSubtype(typeOf(foo), _c_Bar())
 {
-  inhale acc(c$Foo$shared(foo), wildcard)
-  inhale isSubtype(typeOf(foo), $c$Bar())
-  inhale acc(c$Bar$shared(foo), wildcard)
+  inhale acc(c_Foo_shared(foo), wildcard)
+  inhale isSubtype(typeOf(foo), _c_Bar())
+  inhale acc(c_Bar_shared(foo), wildcard)
   ret := foo
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /as_type_contract.kt:(307,321): info: Generated Viper text for safeAsOperator:
 method safeAsOperator(foo: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(foo), $c$Foo())
-  ensures isSubtype(typeOf(ret), nullable($c$Bar()))
-  ensures ret != nullValue() ==> acc(c$Bar$shared(ret), wildcard)
-  ensures ret != nullValue() ==> isSubtype(typeOf(foo), $c$Bar())
+  requires isSubtype(typeOf(foo), _c_Foo())
+  ensures isSubtype(typeOf(ret), nullable(_c_Bar()))
+  ensures ret != nullValue() ==> acc(c_Bar_shared(ret), wildcard)
+  ensures ret != nullValue() ==> isSubtype(typeOf(foo), _c_Bar())
 {
-  inhale acc(c$Foo$shared(foo), wildcard)
-  inhale isSubtype(typeOf(foo), nullable($c$Bar()))
-  inhale foo != nullValue() ==> acc(c$Bar$shared(foo), wildcard)
+  inhale acc(c_Foo_shared(foo), wildcard)
+  inhale isSubtype(typeOf(foo), nullable(_c_Bar()))
+  inhale foo != nullValue() ==> acc(c_Bar_shared(foo), wildcard)
   ret := foo
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /as_type_contract.kt:(504,508): info: Generated Viper text for getX:
 field x: Ref
 
-method getX(a: Ref) returns (ret$0: Ref)
+method getX(a: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(a), anyType())
-  ensures isSubtype(typeOf(ret$0), nullable(intType()))
-  ensures ret$0 != nullValue() ==> isSubtype(typeOf(a), $c$IntHolder())
-  ensures ret$0 == nullValue() ==> !isSubtype(typeOf(a), $c$IntHolder())
+  ensures isSubtype(typeOf(ret_0), nullable(intType()))
+  ensures ret_0 != nullValue() ==> isSubtype(typeOf(a), _c_IntHolder())
+  ensures ret_0 == nullValue() ==> !isSubtype(typeOf(a), _c_IntHolder())
 {
-  var anon$0: Ref
-  if (isSubtype(typeOf(a), $c$IntHolder())) {
-    anon$0 := a
+  var anon_0: Ref
+  if (isSubtype(typeOf(a), _c_IntHolder())) {
+    anon_0 := a
   } else {
-    anon$0 := nullValue()}
-  inhale isSubtype(typeOf(anon$0), nullable($c$IntHolder()))
-  inhale anon$0 != nullValue() ==>
-    acc(c$IntHolder$shared(anon$0), wildcard)
-  if (anon$0 != nullValue()) {
+    anon_0 := nullValue()}
+  inhale isSubtype(typeOf(anon_0), nullable(_c_IntHolder()))
+  inhale anon_0 != nullValue() ==>
+    acc(c_IntHolder_shared(anon_0), wildcard)
+  if (anon_0 != nullValue()) {
     var anon: Ref
-    unfold acc(c$IntHolder$shared(anon$0), wildcard)
-    anon := anon$0.x
-    ret$0 := anon
+    unfold acc(c_IntHolder_shared(anon_0), wildcard)
+    anon := anon_0.x
+    ret_0 := anon
   } else {
-    ret$0 := nullValue()}
-  goto lbl$ret$0
-  label lbl$ret$0
+    ret_0 := nullValue()}
+  goto lbl_ret_0
+  label lbl_ret_0
 }

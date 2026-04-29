@@ -1,343 +1,343 @@
 /custom_run_functions.kt:(1194,1200): info: Generated Viper text for useRun:
 field size: Ref
 
-method useRun() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), unitType())
+method useRun() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var genericResult: Ref
-  var anon$10: Ref
-  var anon$11: Ref
-  var ret$1: Ref
-  var anon$12: Ref
-  var ret$2: Ref
-  var anon$13: Ref
-  var anon$14: Ref
-  var ret$3: Ref
-  var anon$15: Ref
-  var ret$4: Ref
-  var anon$16: Ref
-  var anon$17: Ref
-  var ret$5: Ref
-  var anon$18: Ref
-  var ret$6: Ref
+  var anon_10: Ref
+  var anon_11: Ref
+  var ret_1: Ref
+  var anon_12: Ref
+  var ret_2: Ref
+  var anon_13: Ref
+  var anon_14: Ref
+  var ret_3: Ref
+  var anon_15: Ref
+  var ret_4: Ref
+  var anon_16: Ref
+  var anon_17: Ref
+  var ret_5: Ref
+  var anon_18: Ref
+  var ret_6: Ref
   var capturedResult: Ref
-  var anon$19: Ref
-  var anon$20: Ref
-  var ret$7: Ref
-  var anon$21: Ref
-  var ret$8: Ref
-  var anon$22: Ref
-  var anon$23: Ref
-  var ret$9: Ref
-  var anon$24: Ref
-  var ret$10: Ref
-  var anon$25: Ref
-  var anon$26: Ref
-  var ret$11: Ref
-  var anon$27: Ref
-  var ret$12: Ref
+  var anon_19: Ref
+  var anon_20: Ref
+  var ret_7: Ref
+  var anon_21: Ref
+  var ret_8: Ref
+  var anon_22: Ref
+  var anon_23: Ref
+  var ret_9: Ref
+  var anon_24: Ref
+  var ret_10: Ref
+  var anon_25: Ref
+  var anon_26: Ref
+  var ret_11: Ref
+  var anon_27: Ref
+  var ret_12: Ref
   var intResult: Ref
-  var anon$28: Ref
-  var ret$13: Ref
-  var ret$14: Ref
-  var anon$29: Ref
-  var ret$15: Ref
-  var ret$16: Ref
-  var anon$30: Ref
-  var ret$17: Ref
-  var ret$18: Ref
+  var anon_28: Ref
+  var ret_13: Ref
+  var ret_14: Ref
+  var anon_29: Ref
+  var ret_15: Ref
+  var ret_16: Ref
+  var anon_30: Ref
+  var ret_17: Ref
+  var ret_18: Ref
   var stdlibResult: Ref
-  var anon$31: Ref
-  var anon$32: Ref
-  var ret$19: Ref
-  var anon$33: Ref
-  var ret$20: Ref
-  var anon$34: Ref
-  var anon$35: Ref
-  var ret$21: Ref
-  var anon$36: Ref
-  var ret$22: Ref
-  var anon$37: Ref
-  var anon$38: Ref
-  var ret$23: Ref
-  var anon$39: Ref
-  var ret$24: Ref
+  var anon_31: Ref
+  var anon_32: Ref
+  var ret_19: Ref
+  var anon_33: Ref
+  var ret_20: Ref
+  var anon_34: Ref
+  var anon_35: Ref
+  var ret_21: Ref
+  var anon_36: Ref
+  var ret_22: Ref
+  var anon_37: Ref
+  var anon_38: Ref
+  var ret_23: Ref
+  var anon_39: Ref
+  var ret_24: Ref
   var doubleIntRunResult: Ref
-  var anon$40: Ref
-  var ret$25: Ref
-  var anon$0: Ref
-  var ret$27: Ref
-  var anon$1: Ref
-  var ret$26: Ref
+  var anon_40: Ref
+  var ret_25: Ref
+  var anon_0: Ref
+  var ret_27: Ref
+  var anon_1: Ref
+  var ret_26: Ref
   var genericReceiverResult: Ref
-  var anon$41: Ref
-  var anon$42: Ref
-  var ret$28: Ref
-  var anon$2: Ref
-  var anon$43: Ref
-  var ret$29: Ref
-  var anon$3: Ref
+  var anon_41: Ref
+  var anon_42: Ref
+  var ret_28: Ref
+  var anon_2: Ref
+  var anon_43: Ref
+  var ret_29: Ref
+  var anon_3: Ref
   var cond1: Ref
-  var ret$30: Ref
-  var l30$result: Ref
-  var ret$31: Ref
+  var ret_30: Ref
+  var l30_result: Ref
+  var ret_31: Ref
   var cond2: Ref
-  var anon$44: Ref
-  var ret$32: Ref
-  var l32$result: Ref
-  var ret$33: Ref
+  var anon_44: Ref
+  var ret_32: Ref
+  var l32_result: Ref
+  var ret_33: Ref
   var cond3: Ref
-  var ret$34: Ref
-  var l34$result: Ref
-  var ret$35: Ref
-  var anon$4: Ref
+  var ret_34: Ref
+  var l34_result: Ref
+  var ret_35: Ref
+  var anon_4: Ref
   var cond4: Ref
-  var anon$45: Ref
-  var ret$36: Ref
-  var l36$result: Ref
-  var ret$37: Ref
-  var anon$5: Ref
+  var anon_45: Ref
+  var ret_36: Ref
+  var l36_result: Ref
+  var ret_37: Ref
+  var anon_5: Ref
   var cond5: Ref
-  var ret$38: Ref
-  var l38$result: Ref
-  var ret$39: Ref
-  var anon$6: Ref
+  var ret_38: Ref
+  var l38_result: Ref
+  var ret_39: Ref
+  var anon_6: Ref
   var cond6: Ref
-  var ret$40: Ref
-  var l40$result: Ref
-  var ret$41: Ref
-  var anon$7: Ref
+  var ret_40: Ref
+  var l40_result: Ref
+  var ret_41: Ref
+  var anon_7: Ref
   var cond7: Ref
-  var ret$42: Ref
-  var l42$result: Ref
-  var ret$44: Ref
-  var anon$9: Ref
-  var ret$43: Ref
+  var ret_42: Ref
+  var l42_result: Ref
+  var ret_44: Ref
+  var anon_9: Ref
+  var ret_43: Ref
   var anon: Ref
-  ret$2 := intToRef(1)
-  goto lbl$ret$2
-  label lbl$ret$2
-  anon$12 := ret$2
-  ret$1 := anon$12
-  inhale isSubtype(typeOf(ret$1), nullable(anyType()))
-  goto lbl$ret$1
-  label lbl$ret$1
-  anon$11 := ret$1
-  anon$10 := anon$11
-  inhale isSubtype(typeOf(anon$10), intType())
-  ret$4 := intToRef(2)
-  goto lbl$ret$4
-  label lbl$ret$4
-  anon$15 := ret$4
-  ret$3 := anon$15
-  inhale isSubtype(typeOf(ret$3), nullable(anyType()))
-  goto lbl$ret$3
-  label lbl$ret$3
-  anon$14 := ret$3
-  anon$13 := anon$14
-  inhale isSubtype(typeOf(anon$13), intType())
-  ret$6 := intToRef(3)
-  goto lbl$ret$6
-  label lbl$ret$6
-  anon$18 := ret$6
-  ret$5 := anon$18
-  inhale isSubtype(typeOf(ret$5), nullable(anyType()))
-  goto lbl$ret$5
-  label lbl$ret$5
-  anon$17 := ret$5
-  anon$16 := anon$17
-  inhale isSubtype(typeOf(anon$16), intType())
-  genericResult := boolToRef(intFromRef(anon$10) + intFromRef(anon$13) ==
-    intFromRef(anon$16))
-  ret$8 := intToRef(1)
-  goto lbl$ret$8
-  label lbl$ret$8
-  anon$21 := ret$8
-  ret$7 := anon$21
-  inhale isSubtype(typeOf(ret$7), nullable(anyType()))
-  goto lbl$ret$7
-  label lbl$ret$7
-  anon$20 := ret$7
-  anon$19 := anon$20
-  inhale isSubtype(typeOf(anon$19), intType())
-  ret$10 := intToRef(2)
-  goto lbl$ret$10
-  label lbl$ret$10
-  anon$24 := ret$10
-  ret$9 := anon$24
-  inhale isSubtype(typeOf(ret$9), nullable(anyType()))
-  goto lbl$ret$9
-  label lbl$ret$9
-  anon$23 := ret$9
-  anon$22 := anon$23
-  inhale isSubtype(typeOf(anon$22), intType())
-  ret$12 := intToRef(3)
-  goto lbl$ret$12
-  label lbl$ret$12
-  anon$27 := ret$12
-  ret$11 := anon$27
-  inhale isSubtype(typeOf(ret$11), nullable(anyType()))
-  goto lbl$ret$11
-  label lbl$ret$11
-  anon$26 := ret$11
-  anon$25 := anon$26
-  inhale isSubtype(typeOf(anon$25), intType())
-  capturedResult := boolToRef(intFromRef(anon$19) + intFromRef(anon$22) ==
-    intFromRef(anon$25))
-  ret$14 := intToRef(1)
-  goto lbl$ret$14
-  label lbl$ret$14
-  ret$13 := ret$14
-  goto lbl$ret$13
-  label lbl$ret$13
-  anon$28 := ret$13
-  ret$16 := intToRef(2)
-  goto lbl$ret$16
-  label lbl$ret$16
-  ret$15 := ret$16
-  goto lbl$ret$15
-  label lbl$ret$15
-  anon$29 := ret$15
-  ret$18 := intToRef(3)
-  goto lbl$ret$18
-  label lbl$ret$18
-  ret$17 := ret$18
-  goto lbl$ret$17
-  label lbl$ret$17
-  anon$30 := ret$17
-  intResult := boolToRef(intFromRef(anon$28) + intFromRef(anon$29) ==
-    intFromRef(anon$30))
-  ret$20 := intToRef(1)
-  goto lbl$ret$20
-  label lbl$ret$20
-  anon$33 := ret$20
-  ret$19 := anon$33
-  inhale isSubtype(typeOf(ret$19), nullable(anyType()))
-  goto lbl$ret$19
-  label lbl$ret$19
-  anon$32 := ret$19
-  anon$31 := anon$32
-  inhale isSubtype(typeOf(anon$31), intType())
-  ret$22 := intToRef(2)
-  goto lbl$ret$22
-  label lbl$ret$22
-  anon$36 := ret$22
-  ret$21 := anon$36
-  inhale isSubtype(typeOf(ret$21), nullable(anyType()))
-  goto lbl$ret$21
-  label lbl$ret$21
-  anon$35 := ret$21
-  anon$34 := anon$35
-  inhale isSubtype(typeOf(anon$34), intType())
-  ret$24 := intToRef(3)
-  goto lbl$ret$24
-  label lbl$ret$24
-  anon$39 := ret$24
-  ret$23 := anon$39
-  inhale isSubtype(typeOf(ret$23), nullable(anyType()))
-  goto lbl$ret$23
-  label lbl$ret$23
-  anon$38 := ret$23
-  anon$37 := anon$38
-  inhale isSubtype(typeOf(anon$37), intType())
-  stdlibResult := boolToRef(intFromRef(anon$31) + intFromRef(anon$34) ==
-    intFromRef(anon$37))
-  anon$0 := intToRef(1)
-  ret$26 := plusInts(anon$0, intToRef(1))
-  goto lbl$ret$26
-  label lbl$ret$26
-  anon$1 := ret$26
-  ret$27 := plusInts(anon$1, intToRef(1))
-  goto lbl$ret$27
-  label lbl$ret$27
-  ret$25 := ret$27
-  goto lbl$ret$25
-  label lbl$ret$25
-  anon$40 := ret$25
-  doubleIntRunResult := boolToRef(intFromRef(anon$40) == 3)
-  anon$2 := intToRef(1)
-  inhale isSubtype(typeOf(anon$2), nullable(anyType()))
-  inhale isSubtype(typeOf(anon$2), intType())
-  anon$3 := anon$2
-  ret$29 := plusInts(anon$3, intToRef(2))
-  goto lbl$ret$29
-  label lbl$ret$29
-  anon$43 := ret$29
-  ret$28 := anon$43
-  inhale isSubtype(typeOf(ret$28), nullable(anyType()))
-  goto lbl$ret$28
-  label lbl$ret$28
-  anon$42 := ret$28
-  anon$41 := anon$42
-  inhale isSubtype(typeOf(anon$41), intType())
-  genericReceiverResult := boolToRef(intFromRef(anon$41) == 3)
-  ret$31 := plusInts(intToRef(1), intToRef(2))
-  goto lbl$ret$31
-  label lbl$ret$31
-  l30$result := ret$31
-  ret$30 := boolToRef(intFromRef(l30$result) == 3)
-  goto lbl$ret$30
-  label lbl$ret$30
-  cond1 := ret$30
-  ret$33 := intToRef(4)
-  goto lbl$ret$33
-  label lbl$ret$33
-  l32$result := ret$33
-  ret$32 := boolToRef(intFromRef(l32$result) == 3)
-  goto lbl$ret$32
-  label lbl$ret$32
-  anon$44 := ret$32
-  cond2 := notBool(anon$44)
-  anon$4 := intToRef(1)
-  ret$35 := plusInts(anon$4, intToRef(2))
-  goto lbl$ret$35
-  label lbl$ret$35
-  l34$result := ret$35
-  ret$34 := boolToRef(intFromRef(l34$result) == 3)
-  goto lbl$ret$34
-  label lbl$ret$34
-  cond3 := ret$34
-  anon$5 := intToRef(1)
-  ret$37 := anon$5
-  goto lbl$ret$37
-  label lbl$ret$37
-  l36$result := ret$37
-  ret$36 := boolToRef(intFromRef(l36$result) == 3)
-  goto lbl$ret$36
-  label lbl$ret$36
-  anon$45 := ret$36
-  cond4 := notBool(anon$45)
-  anon$6 := intToRef(1)
-  ret$39 := plusInts(anon$6, intToRef(2))
-  goto lbl$ret$39
-  label lbl$ret$39
-  l38$result := ret$39
-  ret$38 := boolToRef(intFromRef(l38$result) == 3)
-  goto lbl$ret$38
-  label lbl$ret$38
-  cond5 := ret$38
-  anon$7 := intToRef(1)
-  ret$41 := plusInts(anon$7, intToRef(2))
-  goto lbl$ret$41
-  label lbl$ret$41
-  l40$result := ret$41
-  ret$40 := boolToRef(intFromRef(l40$result) == 3)
-  goto lbl$ret$40
-  label lbl$ret$40
-  cond6 := ret$40
+  ret_2 := intToRef(1)
+  goto lbl_ret_2
+  label lbl_ret_2
+  anon_12 := ret_2
+  ret_1 := anon_12
+  inhale isSubtype(typeOf(ret_1), nullable(anyType()))
+  goto lbl_ret_1
+  label lbl_ret_1
+  anon_11 := ret_1
+  anon_10 := anon_11
+  inhale isSubtype(typeOf(anon_10), intType())
+  ret_4 := intToRef(2)
+  goto lbl_ret_4
+  label lbl_ret_4
+  anon_15 := ret_4
+  ret_3 := anon_15
+  inhale isSubtype(typeOf(ret_3), nullable(anyType()))
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon_14 := ret_3
+  anon_13 := anon_14
+  inhale isSubtype(typeOf(anon_13), intType())
+  ret_6 := intToRef(3)
+  goto lbl_ret_6
+  label lbl_ret_6
+  anon_18 := ret_6
+  ret_5 := anon_18
+  inhale isSubtype(typeOf(ret_5), nullable(anyType()))
+  goto lbl_ret_5
+  label lbl_ret_5
+  anon_17 := ret_5
+  anon_16 := anon_17
+  inhale isSubtype(typeOf(anon_16), intType())
+  genericResult := boolToRef(intFromRef(anon_10) + intFromRef(anon_13) ==
+    intFromRef(anon_16))
+  ret_8 := intToRef(1)
+  goto lbl_ret_8
+  label lbl_ret_8
+  anon_21 := ret_8
+  ret_7 := anon_21
+  inhale isSubtype(typeOf(ret_7), nullable(anyType()))
+  goto lbl_ret_7
+  label lbl_ret_7
+  anon_20 := ret_7
+  anon_19 := anon_20
+  inhale isSubtype(typeOf(anon_19), intType())
+  ret_10 := intToRef(2)
+  goto lbl_ret_10
+  label lbl_ret_10
+  anon_24 := ret_10
+  ret_9 := anon_24
+  inhale isSubtype(typeOf(ret_9), nullable(anyType()))
+  goto lbl_ret_9
+  label lbl_ret_9
+  anon_23 := ret_9
+  anon_22 := anon_23
+  inhale isSubtype(typeOf(anon_22), intType())
+  ret_12 := intToRef(3)
+  goto lbl_ret_12
+  label lbl_ret_12
+  anon_27 := ret_12
+  ret_11 := anon_27
+  inhale isSubtype(typeOf(ret_11), nullable(anyType()))
+  goto lbl_ret_11
+  label lbl_ret_11
+  anon_26 := ret_11
+  anon_25 := anon_26
+  inhale isSubtype(typeOf(anon_25), intType())
+  capturedResult := boolToRef(intFromRef(anon_19) + intFromRef(anon_22) ==
+    intFromRef(anon_25))
+  ret_14 := intToRef(1)
+  goto lbl_ret_14
+  label lbl_ret_14
+  ret_13 := ret_14
+  goto lbl_ret_13
+  label lbl_ret_13
+  anon_28 := ret_13
+  ret_16 := intToRef(2)
+  goto lbl_ret_16
+  label lbl_ret_16
+  ret_15 := ret_16
+  goto lbl_ret_15
+  label lbl_ret_15
+  anon_29 := ret_15
+  ret_18 := intToRef(3)
+  goto lbl_ret_18
+  label lbl_ret_18
+  ret_17 := ret_18
+  goto lbl_ret_17
+  label lbl_ret_17
+  anon_30 := ret_17
+  intResult := boolToRef(intFromRef(anon_28) + intFromRef(anon_29) ==
+    intFromRef(anon_30))
+  ret_20 := intToRef(1)
+  goto lbl_ret_20
+  label lbl_ret_20
+  anon_33 := ret_20
+  ret_19 := anon_33
+  inhale isSubtype(typeOf(ret_19), nullable(anyType()))
+  goto lbl_ret_19
+  label lbl_ret_19
+  anon_32 := ret_19
+  anon_31 := anon_32
+  inhale isSubtype(typeOf(anon_31), intType())
+  ret_22 := intToRef(2)
+  goto lbl_ret_22
+  label lbl_ret_22
+  anon_36 := ret_22
+  ret_21 := anon_36
+  inhale isSubtype(typeOf(ret_21), nullable(anyType()))
+  goto lbl_ret_21
+  label lbl_ret_21
+  anon_35 := ret_21
+  anon_34 := anon_35
+  inhale isSubtype(typeOf(anon_34), intType())
+  ret_24 := intToRef(3)
+  goto lbl_ret_24
+  label lbl_ret_24
+  anon_39 := ret_24
+  ret_23 := anon_39
+  inhale isSubtype(typeOf(ret_23), nullable(anyType()))
+  goto lbl_ret_23
+  label lbl_ret_23
+  anon_38 := ret_23
+  anon_37 := anon_38
+  inhale isSubtype(typeOf(anon_37), intType())
+  stdlibResult := boolToRef(intFromRef(anon_31) + intFromRef(anon_34) ==
+    intFromRef(anon_37))
+  anon_0 := intToRef(1)
+  ret_26 := plusInts(anon_0, intToRef(1))
+  goto lbl_ret_26
+  label lbl_ret_26
+  anon_1 := ret_26
+  ret_27 := plusInts(anon_1, intToRef(1))
+  goto lbl_ret_27
+  label lbl_ret_27
+  ret_25 := ret_27
+  goto lbl_ret_25
+  label lbl_ret_25
+  anon_40 := ret_25
+  doubleIntRunResult := boolToRef(intFromRef(anon_40) == 3)
+  anon_2 := intToRef(1)
+  inhale isSubtype(typeOf(anon_2), nullable(anyType()))
+  inhale isSubtype(typeOf(anon_2), intType())
+  anon_3 := anon_2
+  ret_29 := plusInts(anon_3, intToRef(2))
+  goto lbl_ret_29
+  label lbl_ret_29
+  anon_43 := ret_29
+  ret_28 := anon_43
+  inhale isSubtype(typeOf(ret_28), nullable(anyType()))
+  goto lbl_ret_28
+  label lbl_ret_28
+  anon_42 := ret_28
+  anon_41 := anon_42
+  inhale isSubtype(typeOf(anon_41), intType())
+  genericReceiverResult := boolToRef(intFromRef(anon_41) == 3)
+  ret_31 := plusInts(intToRef(1), intToRef(2))
+  goto lbl_ret_31
+  label lbl_ret_31
+  l30_result := ret_31
+  ret_30 := boolToRef(intFromRef(l30_result) == 3)
+  goto lbl_ret_30
+  label lbl_ret_30
+  cond1 := ret_30
+  ret_33 := intToRef(4)
+  goto lbl_ret_33
+  label lbl_ret_33
+  l32_result := ret_33
+  ret_32 := boolToRef(intFromRef(l32_result) == 3)
+  goto lbl_ret_32
+  label lbl_ret_32
+  anon_44 := ret_32
+  cond2 := notBool(anon_44)
+  anon_4 := intToRef(1)
+  ret_35 := plusInts(anon_4, intToRef(2))
+  goto lbl_ret_35
+  label lbl_ret_35
+  l34_result := ret_35
+  ret_34 := boolToRef(intFromRef(l34_result) == 3)
+  goto lbl_ret_34
+  label lbl_ret_34
+  cond3 := ret_34
+  anon_5 := intToRef(1)
+  ret_37 := anon_5
+  goto lbl_ret_37
+  label lbl_ret_37
+  l36_result := ret_37
+  ret_36 := boolToRef(intFromRef(l36_result) == 3)
+  goto lbl_ret_36
+  label lbl_ret_36
+  anon_45 := ret_36
+  cond4 := notBool(anon_45)
+  anon_6 := intToRef(1)
+  ret_39 := plusInts(anon_6, intToRef(2))
+  goto lbl_ret_39
+  label lbl_ret_39
+  l38_result := ret_39
+  ret_38 := boolToRef(intFromRef(l38_result) == 3)
+  goto lbl_ret_38
+  label lbl_ret_38
+  cond5 := ret_38
+  anon_7 := intToRef(1)
+  ret_41 := plusInts(anon_7, intToRef(2))
+  goto lbl_ret_41
+  label lbl_ret_41
+  l40_result := ret_41
+  ret_40 := boolToRef(intFromRef(l40_result) == 3)
+  goto lbl_ret_40
+  label lbl_ret_40
+  cond6 := ret_40
   anon := intToRef(1)
-  ret$43 := plusInts(anon, intToRef(1))
-  goto lbl$ret$43
-  label lbl$ret$43
-  anon$9 := ret$43
-  ret$44 := plusInts(anon$9, intToRef(1))
-  goto lbl$ret$44
-  label lbl$ret$44
-  l42$result := ret$44
-  ret$42 := boolToRef(intFromRef(l42$result) == 3)
-  goto lbl$ret$42
-  label lbl$ret$42
-  cond7 := ret$42
+  ret_43 := plusInts(anon, intToRef(1))
+  goto lbl_ret_43
+  label lbl_ret_43
+  anon_9 := ret_43
+  ret_44 := plusInts(anon_9, intToRef(1))
+  goto lbl_ret_44
+  label lbl_ret_44
+  l42_result := ret_44
+  ret_42 := boolToRef(intFromRef(l42_result) == 3)
+  goto lbl_ret_42
+  label lbl_ret_42
+  cond7 := ret_42
   assert boolFromRef(intResult)
   assert boolFromRef(genericResult)
   assert boolFromRef(stdlibResult)
@@ -351,180 +351,180 @@ method useRun() returns (ret$0: Ref)
   assert boolFromRef(cond7)
   assert boolFromRef(doubleIntRunResult)
   assert boolFromRef(genericReceiverResult)
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /custom_run_functions.kt:(2354,2369): info: Generated Viper text for complexScenario:
-method complexScenario(par$arg: Ref) returns (ret$0: Ref)
-  requires isSubtype(typeOf(par$arg), boolType())
-  ensures isSubtype(typeOf(ret$0), boolType())
-  ensures boolFromRef(ret$0) == true ==> boolFromRef(par$arg)
-  ensures boolFromRef(ret$0) == false ==> !boolFromRef(par$arg)
+method complexScenario(par_arg: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(par_arg), boolType())
+  ensures isSubtype(typeOf(ret_0), boolType())
+  ensures boolFromRef(ret_0) == true ==> boolFromRef(par_arg)
+  ensures boolFromRef(ret_0) == false ==> !boolFromRef(par_arg)
 {
-  var anon$11: Ref
-  var anon$12: Ref
-  var ret$1: Ref
-  if (boolFromRef(par$arg)) {
-    var anon$13: Ref
-    var ret$2: Ref
-    var anon$14: Ref
-    var ret$3: Ref
-    var l5$result: Ref
-    var ret$4: Ref
-    var anon$0: Ref
-    var anon$15: Ref
-    var ret$5: Ref
-    var anon$1: Ref
-    var anon$16: Ref
-    var ret$6: Ref
-    var anon$2: Ref
-    var ret$7: Ref
-    var ret$9: Ref
-    var anon$3: Ref
-    var ret$8: Ref
-    anon$0 := intToRef(1)
-    inhale isSubtype(typeOf(anon$0), nullable(anyType()))
-    anon$1 := anon$0
-    inhale isSubtype(typeOf(anon$1), intType())
-    anon$2 := anon$1
-    ret$8 := plusInts(anon$2, intToRef(1))
-    goto lbl$ret$8
-    label lbl$ret$8
-    anon$3 := ret$8
-    ret$9 := plusInts(anon$3, intToRef(1))
-    goto lbl$ret$9
-    label lbl$ret$9
-    ret$7 := ret$9
-    goto lbl$ret$7
-    label lbl$ret$7
-    ret$6 := ret$7
-    goto lbl$ret$6
-    label lbl$ret$6
-    anon$16 := ret$6
-    ret$5 := anon$16
-    inhale isSubtype(typeOf(ret$5), nullable(anyType()))
-    goto lbl$ret$5
-    label lbl$ret$5
-    anon$15 := ret$5
-    ret$4 := anon$15
-    inhale isSubtype(typeOf(ret$4), intType())
-    goto lbl$ret$4
-    label lbl$ret$4
-    l5$result := ret$4
-    ret$3 := boolToRef(intFromRef(l5$result) == 3)
-    goto lbl$ret$3
-    label lbl$ret$3
-    anon$14 := ret$3
-    ret$2 := anon$14
-    goto lbl$ret$2
-    label lbl$ret$2
-    anon$13 := ret$2
-    ret$1 := anon$13
-    inhale isSubtype(typeOf(ret$1), nullable(anyType()))
+  var anon_11: Ref
+  var anon_12: Ref
+  var ret_1: Ref
+  if (boolFromRef(par_arg)) {
+    var anon_13: Ref
+    var ret_2: Ref
+    var anon_14: Ref
+    var ret_3: Ref
+    var l5_result: Ref
+    var ret_4: Ref
+    var anon_0: Ref
+    var anon_15: Ref
+    var ret_5: Ref
+    var anon_1: Ref
+    var anon_16: Ref
+    var ret_6: Ref
+    var anon_2: Ref
+    var ret_7: Ref
+    var ret_9: Ref
+    var anon_3: Ref
+    var ret_8: Ref
+    anon_0 := intToRef(1)
+    inhale isSubtype(typeOf(anon_0), nullable(anyType()))
+    anon_1 := anon_0
+    inhale isSubtype(typeOf(anon_1), intType())
+    anon_2 := anon_1
+    ret_8 := plusInts(anon_2, intToRef(1))
+    goto lbl_ret_8
+    label lbl_ret_8
+    anon_3 := ret_8
+    ret_9 := plusInts(anon_3, intToRef(1))
+    goto lbl_ret_9
+    label lbl_ret_9
+    ret_7 := ret_9
+    goto lbl_ret_7
+    label lbl_ret_7
+    ret_6 := ret_7
+    goto lbl_ret_6
+    label lbl_ret_6
+    anon_16 := ret_6
+    ret_5 := anon_16
+    inhale isSubtype(typeOf(ret_5), nullable(anyType()))
+    goto lbl_ret_5
+    label lbl_ret_5
+    anon_15 := ret_5
+    ret_4 := anon_15
+    inhale isSubtype(typeOf(ret_4), intType())
+    goto lbl_ret_4
+    label lbl_ret_4
+    l5_result := ret_4
+    ret_3 := boolToRef(intFromRef(l5_result) == 3)
+    goto lbl_ret_3
+    label lbl_ret_3
+    anon_14 := ret_3
+    ret_2 := anon_14
+    goto lbl_ret_2
+    label lbl_ret_2
+    anon_13 := ret_2
+    ret_1 := anon_13
+    inhale isSubtype(typeOf(ret_1), nullable(anyType()))
   } else {
-    var anon$17: Ref
-    anon$17 := nullValue()
-    ret$1 := anon$17
+    var anon_17: Ref
+    anon_17 := nullValue()
+    ret_1 := anon_17
   }
-  goto lbl$ret$1
-  label lbl$ret$1
-  anon$12 := ret$1
-  anon$11 := anon$12
-  inhale isSubtype(typeOf(anon$11), nullable(boolType()))
-  if (anon$11 != nullValue()) {
-    ret$0 := anon$11
+  goto lbl_ret_1
+  label lbl_ret_1
+  anon_12 := ret_1
+  anon_11 := anon_12
+  inhale isSubtype(typeOf(anon_11), nullable(boolType()))
+  if (anon_11 != nullValue()) {
+    ret_0 := anon_11
   } else {
-    var anon$18: Ref
-    var ret$10: Ref
-    var anon$19: Ref
-    var ret$11: Ref
-    var ret$12: Ref
-    var l15$result: Ref
-    var ret$13: Ref
-    var anon$4: Ref
-    var anon$20: Ref
-    var ret$14: Ref
-    var anon$5: Ref
-    var anon$21: Ref
-    var ret$15: Ref
-    var anon$6: Ref
-    var anon$22: Ref
-    var ret$16: Ref
-    var anon$7: Ref
-    var anon$23: Ref
-    var ret$17: Ref
-    var anon$8: Ref
-    var anon$24: Ref
-    var ret$18: Ref
-    var anon$9: Ref
-    var anon$25: Ref
+    var anon_18: Ref
+    var ret_10: Ref
+    var anon_19: Ref
+    var ret_11: Ref
+    var ret_12: Ref
+    var l15_result: Ref
+    var ret_13: Ref
+    var anon_4: Ref
+    var anon_20: Ref
+    var ret_14: Ref
+    var anon_5: Ref
+    var anon_21: Ref
+    var ret_15: Ref
+    var anon_6: Ref
+    var anon_22: Ref
+    var ret_16: Ref
+    var anon_7: Ref
+    var anon_23: Ref
+    var ret_17: Ref
+    var anon_8: Ref
+    var anon_24: Ref
+    var ret_18: Ref
+    var anon_9: Ref
+    var anon_25: Ref
     var ret: Ref
     var anon: Ref
-    anon$4 := intToRef(1)
-    inhale isSubtype(typeOf(anon$4), nullable(anyType()))
-    anon$5 := anon$4
-    inhale isSubtype(typeOf(anon$5), intType())
-    anon$6 := anon$5
-    anon$7 := plusInts(anon$6, intToRef(1))
-    inhale isSubtype(typeOf(anon$7), nullable(anyType()))
-    inhale isSubtype(typeOf(anon$7), intType())
-    anon$8 := anon$7
-    anon$9 := plusInts(anon$8, intToRef(1))
-    inhale isSubtype(typeOf(anon$9), nullable(anyType()))
-    inhale isSubtype(typeOf(anon$9), intType())
-    anon := anon$9
+    anon_4 := intToRef(1)
+    inhale isSubtype(typeOf(anon_4), nullable(anyType()))
+    anon_5 := anon_4
+    inhale isSubtype(typeOf(anon_5), intType())
+    anon_6 := anon_5
+    anon_7 := plusInts(anon_6, intToRef(1))
+    inhale isSubtype(typeOf(anon_7), nullable(anyType()))
+    inhale isSubtype(typeOf(anon_7), intType())
+    anon_8 := anon_7
+    anon_9 := plusInts(anon_8, intToRef(1))
+    inhale isSubtype(typeOf(anon_9), nullable(anyType()))
+    inhale isSubtype(typeOf(anon_9), intType())
+    anon := anon_9
     ret := plusInts(anon, intToRef(1))
-    goto ret$19
-    label ret$19
-    anon$25 := ret
-    ret$18 := anon$25
-    inhale isSubtype(typeOf(ret$18), nullable(anyType()))
-    goto lbl$ret$18
-    label lbl$ret$18
-    anon$24 := ret$18
-    ret$17 := anon$24
-    inhale isSubtype(typeOf(ret$17), intType())
-    goto lbl$ret$17
-    label lbl$ret$17
-    anon$23 := ret$17
-    ret$16 := anon$23
-    inhale isSubtype(typeOf(ret$16), nullable(anyType()))
-    goto lbl$ret$16
-    label lbl$ret$16
-    anon$22 := ret$16
-    ret$15 := anon$22
-    inhale isSubtype(typeOf(ret$15), intType())
-    goto lbl$ret$15
-    label lbl$ret$15
-    anon$21 := ret$15
-    ret$14 := anon$21
-    inhale isSubtype(typeOf(ret$14), nullable(anyType()))
-    goto lbl$ret$14
-    label lbl$ret$14
-    anon$20 := ret$14
-    ret$13 := anon$20
-    inhale isSubtype(typeOf(ret$13), intType())
-    goto lbl$ret$13
-    label lbl$ret$13
-    l15$result := ret$13
-    ret$12 := boolToRef(intFromRef(l15$result) == 3)
-    goto lbl$ret$12
-    label lbl$ret$12
-    ret$11 := ret$12
-    goto lbl$ret$11
-    label lbl$ret$11
-    anon$19 := ret$11
-    ret$10 := anon$19
-    inhale isSubtype(typeOf(ret$10), nullable(anyType()))
-    goto lbl$ret$10
-    label lbl$ret$10
-    anon$18 := ret$10
-    ret$0 := anon$18
-    inhale isSubtype(typeOf(ret$0), boolType())
+    goto ret_19
+    label ret_19
+    anon_25 := ret
+    ret_18 := anon_25
+    inhale isSubtype(typeOf(ret_18), nullable(anyType()))
+    goto lbl_ret_18
+    label lbl_ret_18
+    anon_24 := ret_18
+    ret_17 := anon_24
+    inhale isSubtype(typeOf(ret_17), intType())
+    goto lbl_ret_17
+    label lbl_ret_17
+    anon_23 := ret_17
+    ret_16 := anon_23
+    inhale isSubtype(typeOf(ret_16), nullable(anyType()))
+    goto lbl_ret_16
+    label lbl_ret_16
+    anon_22 := ret_16
+    ret_15 := anon_22
+    inhale isSubtype(typeOf(ret_15), intType())
+    goto lbl_ret_15
+    label lbl_ret_15
+    anon_21 := ret_15
+    ret_14 := anon_21
+    inhale isSubtype(typeOf(ret_14), nullable(anyType()))
+    goto lbl_ret_14
+    label lbl_ret_14
+    anon_20 := ret_14
+    ret_13 := anon_20
+    inhale isSubtype(typeOf(ret_13), intType())
+    goto lbl_ret_13
+    label lbl_ret_13
+    l15_result := ret_13
+    ret_12 := boolToRef(intFromRef(l15_result) == 3)
+    goto lbl_ret_12
+    label lbl_ret_12
+    ret_11 := ret_12
+    goto lbl_ret_11
+    label lbl_ret_11
+    anon_19 := ret_11
+    ret_10 := anon_19
+    inhale isSubtype(typeOf(ret_10), nullable(anyType()))
+    goto lbl_ret_10
+    label lbl_ret_10
+    anon_18 := ret_10
+    ret_0 := anon_18
+    inhale isSubtype(typeOf(ret_0), boolType())
   }
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /custom_run_functions.kt:(3410,3425): info: Generated Viper text for testCustomClass:
@@ -533,53 +533,53 @@ field member: Ref
 field size: Ref
 
 method con() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), $c$CustomClass())
-  ensures acc(c$CustomClass$shared(ret), wildcard)
-  ensures acc(c$CustomClass$unique(ret), write)
+  ensures isSubtype(typeOf(ret), _c_CustomClass())
+  ensures acc(c_CustomClass_shared(ret), wildcard)
+  ensures acc(c_CustomClass_unique(ret), write)
 
 
-method testCustomClass() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), unitType())
+method testCustomClass() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var custom: Ref
   var cond1: Ref
-  var anon$0: Ref
-  var anon$1: Ref
-  var ret$1: Ref
-  var anon$2: Ref
-  var ret$2: Ref
-  var anon$3: Ref
-  var anon$4: Ref
-  var ret$3: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var ret_1: Ref
+  var anon_2: Ref
+  var ret_2: Ref
+  var anon_3: Ref
+  var anon_4: Ref
+  var ret_3: Ref
   var anon: Ref
-  var ret$4: Ref
+  var ret_4: Ref
   custom := con()
-  unfold acc(c$CustomClass$shared(custom), wildcard)
-  ret$2 := custom.member
-  goto lbl$ret$2
-  label lbl$ret$2
-  anon$2 := ret$2
-  ret$1 := anon$2
-  inhale isSubtype(typeOf(ret$1), nullable(anyType()))
-  goto lbl$ret$1
-  label lbl$ret$1
-  anon$1 := ret$1
-  anon$0 := anon$1
-  inhale isSubtype(typeOf(anon$0), intType())
-  unfold acc(c$CustomClass$shared(custom), wildcard)
-  ret$4 := custom.member
-  goto lbl$ret$4
-  label lbl$ret$4
-  anon := ret$4
-  ret$3 := anon
-  inhale isSubtype(typeOf(ret$3), nullable(anyType()))
-  goto lbl$ret$3
-  label lbl$ret$3
-  anon$4 := ret$3
-  anon$3 := anon$4
-  inhale isSubtype(typeOf(anon$3), intType())
-  cond1 := boolToRef(intFromRef(anon$0) == intFromRef(anon$3))
+  unfold acc(c_CustomClass_shared(custom), wildcard)
+  ret_2 := custom.member
+  goto lbl_ret_2
+  label lbl_ret_2
+  anon_2 := ret_2
+  ret_1 := anon_2
+  inhale isSubtype(typeOf(ret_1), nullable(anyType()))
+  goto lbl_ret_1
+  label lbl_ret_1
+  anon_1 := ret_1
+  anon_0 := anon_1
+  inhale isSubtype(typeOf(anon_0), intType())
+  unfold acc(c_CustomClass_shared(custom), wildcard)
+  ret_4 := custom.member
+  goto lbl_ret_4
+  label lbl_ret_4
+  anon := ret_4
+  ret_3 := anon
+  inhale isSubtype(typeOf(ret_3), nullable(anyType()))
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon_4 := ret_3
+  anon_3 := anon_4
+  inhale isSubtype(typeOf(anon_3), intType())
+  cond1 := boolToRef(intFromRef(anon_0) == intFromRef(anon_3))
   assert boolFromRef(cond1)
-  label lbl$ret$0
-  inhale isSubtype(typeOf(ret$0), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }

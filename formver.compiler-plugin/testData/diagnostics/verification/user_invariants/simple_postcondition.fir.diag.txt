@@ -5,8 +5,8 @@ method testGreater(init: Ref) returns (ret: Ref)
   ensures intFromRef(ret) > intFromRef(init)
 {
   ret := plusInts(init, intToRef(5))
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /simple_postcondition.kt:(201,211): info: Generated Viper text for testString:
@@ -15,8 +15,8 @@ method testString() returns (ret: Ref)
   ensures charFromRef(ret) == 97
 {
   ret := stringGet(stringToRef(Seq(98, 97, 98)), intToRef(1))
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /simple_postcondition.kt:(323,343): info: Generated Viper text for testWithPrecondition:
@@ -27,8 +27,8 @@ method testWithPrecondition(int: Ref) returns (ret: Ref)
   ensures intFromRef(ret) > 0
 {
   ret := minusInts(int, intToRef(10))
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /simple_postcondition.kt:(492,507): info: Generated Viper text for returnGreater13:
@@ -37,8 +37,8 @@ method returnGreater13() returns (ret: Ref)
   ensures intFromRef(ret) > 13
 {
   ret := intToRef(16)
-  goto ret$0
-  label ret$0
+  goto ret_0
+  label ret_0
 }
 
 /simple_postcondition.kt:(600,637): info: Generated Viper text for testPostconditionIsUsedByPrecondition:
@@ -47,14 +47,14 @@ method returnGreater13() returns (ret: Ref)
   ensures intFromRef(ret) > 13
 
 
-method testPostconditionIsUsedByPrecondition() returns (ret$0: Ref)
-  ensures isSubtype(typeOf(ret$0), intType())
+method testPostconditionIsUsedByPrecondition() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), intType())
 {
   var anon: Ref
   anon := returnGreater13()
-  ret$0 := testWithPrecondition(anon)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret_0 := testWithPrecondition(anon)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 method testWithPrecondition(int: Ref) returns (ret: Ref)
