@@ -47,7 +47,7 @@ class DiagnosticsCollector(val testServices: TestServices) : TestService {
             }
             .sortedWith(compareBy<DiagnosticData> { it.textRanges.first().startOffset }.thenBy { it.message })
         return reportedDiagnostics.joinToString(separator = "\n\n") {
-            "/$fileName:${it.textRanges.first()}: ${it.severity}: ${it.message}"
+            "/$fileName: ${it.severity}: ${it.message}"
         }.trimTrailingWhitespacesAndAddNewlineAtEOF()
     }
 
