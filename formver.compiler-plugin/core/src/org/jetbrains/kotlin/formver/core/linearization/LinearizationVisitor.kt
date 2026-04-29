@@ -14,7 +14,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.asInfo
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
-import org.jetbrains.kotlin.formver.core.names.AdtConstructorName
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toFuncApp
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toMethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
@@ -184,19 +183,12 @@ data class LinearizationVisitor(
         override fun toViperUnusedResult(ctx: LinearizationContext) = Unit
     }
 
-    override fun visitAdtConstructorLit(e: AdtConstructorLit): Linearizable = object : DirectResultLinearizable(e, this@LinearizationVisitor) {
-        override fun toViperBuiltinType(ctx: LinearizationContext): Exp {
-            val adtName = e.adtTypeEmbedding.adtName
-            val viperConstructor = AdtConstructor(
-                AdtConstructorName(adtName, e.constructorEmbedding.className),
-                adtName,
-                emptyList(),
-            )
-            return Exp.AdtConstructorApp(viperConstructor, emptyList(), pos = ctx.source.asPosition)
-        }
+    override fun visitAdtConstructorLit(e: AdtLit): Linearizable = object : DirectResultLinearizable(e, this@LinearizationVisitor) {
+        override fun toViperBuiltinType(ctx: LinearizationContext): Exp =
+            Exp.AdtConstructorApp(e.adtTypeEmbedding.viperConstructorDecl, emptyList(), pos = ctx.source.asPosition)
 
         override fun toViper(ctx: LinearizationContext): Exp =
-            e.adtTypeEmbedding.toRefFunc(toViperBuiltinType(ctx), pos = ctx.source.asPosition)
+            e.adtTypeEmbedding.injection.toRef(toViperBuiltinType(ctx), pos = ctx.source.asPosition)
     }
 
     // endregion
@@ -205,11 +197,6 @@ data class LinearizationVisitor(
 
     override fun visitVariableEmbedding(e: VariableEmbedding): Linearizable = object : DirectResultLinearizable(e, this@LinearizationVisitor) {
         override fun toViper(ctx: LinearizationContext): Exp = e.toViperExp(ctx)
-
-        override fun toViperBuiltinType(ctx: LinearizationContext): Exp {
-            val adtPretype = e.type.pretype as? AdtTypeEmbedding ?: return defaultToViperBuiltinType(::toViper, e.type, e.sourceRole, ctx)
-            return adtPretype.fromRefFunc(toViper(ctx), pos = ctx.source.asPosition)
-        }
     }
 
     // endregion

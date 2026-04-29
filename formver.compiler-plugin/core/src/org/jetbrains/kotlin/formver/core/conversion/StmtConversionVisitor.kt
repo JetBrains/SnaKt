@@ -88,25 +88,22 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             return UnitLit
         }
         val classSymbol = resolvedQualifier.symbol as? FirClassSymbol<*>
-        if (classSymbol != null && classSymbol.classKind.isObject) {
-            val type = data.embedType(resolvedQualifier.resolvedType)
-            val adtEmbedding = type.pretype as? AdtTypeEmbedding
-                ?: throw SnaktInternalException(
-                    resolvedQualifier.source,
-                    "Objects can only be used as ADT constructors. Declare it as an ADT to use it."
-                )
-            if (!adtEmbedding.isInitialized) {
-                throw SnaktInternalException(
-                    resolvedQualifier.source,
-                    "ADT constructors for ${adtEmbedding.name.debugMangled} are not initialized. " +
-                            "This can happen if the referenced object is not actually a valid ADT."
-                )
-            }
-            val constructorEmbedding = adtEmbedding.constructors.firstOrNull()
-                ?: throw SnaktInternalException(resolvedQualifier.source, "ADT constructors not initialized")
-            return AdtConstructorLit(type, constructorEmbedding, adtEmbedding)
+        if (classSymbol == null || !classSymbol.classKind.isObject)
+            throw SnaktInternalException(resolvedQualifier.source, "Unsupported reference used as resolved qualifier.")
+        val type = data.embedType(resolvedQualifier.resolvedType)
+        val adtEmbedding = type.pretype as? AdtTypeEmbedding
+            ?: throw SnaktInternalException(
+                resolvedQualifier.source,
+                "Objects can only be used as ADT constructors. Declare it as an ADT to use it."
+            )
+        if (!adtEmbedding.isInitialized) {
+            throw SnaktInternalException(
+                resolvedQualifier.source,
+                "ADT constructors for ${adtEmbedding.name.debugMangled} are not initialized. " +
+                        "This can happen if the referenced object is not actually a valid ADT."
+            )
         }
-        throw SnaktInternalException(resolvedQualifier.source, "Unsupported reference used as resolved qualifier.")
+        return AdtLit(type)
     }
 
     override fun visitBlock(block: FirBlock, data: StmtConversionContext): ExpEmbedding =

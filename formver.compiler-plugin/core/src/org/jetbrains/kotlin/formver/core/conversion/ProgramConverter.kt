@@ -37,8 +37,6 @@ import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.names.SimpleNameResolver
 import org.jetbrains.kotlin.formver.names.debugMangled
 import org.jetbrains.kotlin.formver.viper.SymbolicName
-import org.jetbrains.kotlin.formver.viper.ast.AdtConstructor
-import org.jetbrains.kotlin.formver.viper.ast.AlgebraicDataType
 import org.jetbrains.kotlin.formver.viper.ast.Method
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.utils.addIfNotNull
@@ -107,18 +105,7 @@ class ProgramConverter(
                     it.details.uniquePredicate
                 )
             },
-            adts = adts.values.filter { it.isInitialized }.map { adt ->
-                AlgebraicDataType(
-                    name = adt.adtName,
-                    constructors = adt.constructors.map { contr ->
-                        AdtConstructor(
-                            AdtConstructorName(adt.adtName, contr.className),
-                            adt.adtName,
-                            emptyList(),
-                        )
-                    },
-                )
-            },
+            adts = adts.values.filter { it.isInitialized }.map { it.toViper() },
         )
 
     fun registerForVerification(declaration: FirSimpleFunction) {
@@ -294,42 +281,36 @@ class ProgramConverter(
 
     private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding {
         val className = symbol.classId.embedName()
-        return adts.getOrPut(className) {
-            AdtTypeEmbedding(className).also { embedding ->
-                checkAndRegisterAdt(symbol, embedding, className)
-            }
-        }
+        val embedding = adts.getOrPut(className) { AdtTypeEmbedding(className) }
+        if (embedding.isInitialized) return embedding
+        if (validateAdt(symbol)) embedding.markInitialized()
+        return embedding
     }
 
-    /** Validate constraints on a class annotated with `@ADT` and, if valid, create its constructor embeddings. */
     @OptIn(SymbolInternals::class)
-    private fun checkAndRegisterAdt(
-        symbol: FirRegularClassSymbol,
-        embedding: AdtTypeEmbedding,
-        className: SymbolicName,
-    ) {
+    private fun validateAdt(symbol: FirRegularClassSymbol): Boolean {
         if (!symbol.classKind.isObject || !symbol.isData) {
             errorCollector.addAdtError(symbol.source, "@ADT may only be applied to data object declarations")
-            return
+            return false
         }
         val fields = mutableListOf<FirPropertySymbol>()
         symbol.fir.processAllDeclarations(session) { if (it is FirPropertySymbol && it.hasBackingField) fields.add(it) }
         if (fields.isNotEmpty()) {
             errorCollector.addAdtError(symbol.source, "An @ADT data object must not have fields")
-            return
+            return false
         }
         val memberFunctions = mutableListOf<FirNamedFunctionSymbol>()
         symbol.fir.processAllDeclarations(session) { if (it is FirNamedFunctionSymbol) memberFunctions.add(it) }
         if (memberFunctions.isNotEmpty()) {
             errorCollector.addAdtError(symbol.source, "An @ADT data object must not have member functions")
-            return
+            return false
         }
         val hasSuperTypes = symbol.resolvedSuperTypes.any { !it.isAny }
         if (hasSuperTypes) {
             errorCollector.addAdtError(symbol.source, "An @ADT data object must not extend a class or implement an interface")
-            return
+            return false
         }
-        embedding.initConstructors(listOf(AdtConstructorEmbedding(className)))
+        return true
     }
 
     override fun embedType(type: ConeKotlinType): TypeEmbedding = buildType { embedTypeWithBuilder(type) }

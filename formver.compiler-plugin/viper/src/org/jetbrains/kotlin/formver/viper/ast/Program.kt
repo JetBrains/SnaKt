@@ -13,7 +13,7 @@ data class Program(
     val functions: List<Function>,
     val predicates: List<Predicate>,
     val methods: List<Method>,
-    val adts: List<AlgebraicDataType> = emptyList(),
+    val adts: List<AdtDecl> = emptyList(),
     /* no extensions */
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,

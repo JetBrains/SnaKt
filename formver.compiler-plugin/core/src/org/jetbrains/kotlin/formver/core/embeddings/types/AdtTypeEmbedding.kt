@@ -1,42 +1,35 @@
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
+import org.jetbrains.kotlin.formver.core.domains.Injection
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
+import org.jetbrains.kotlin.formver.core.names.AdtConstructorName
 import org.jetbrains.kotlin.formver.core.names.AdtName
 import org.jetbrains.kotlin.formver.core.names.ScopedName
-import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
 
-/**
- * Embedding-level representation of an ADT constructor.
- *
- * Each Kotlin class annotated declared as an ADT maps to exactly one constructor.
- */
-class AdtConstructorEmbedding(
-    val className: SymbolicName,
-)
-
 data class AdtTypeEmbedding(override val name: ScopedName) : PretypeEmbedding {
-    private var _constructors: List<AdtConstructorEmbedding>? = null
-    val constructors: List<AdtConstructorEmbedding>
-        get() = _constructors ?: error("ADT constructors of $name have not been initialised yet.")
+    private var _isInitialized: Boolean = false
 
     val isInitialized: Boolean
-        get() = _constructors != null
+        get() = _isInitialized
 
-    fun initConstructors(newConstructors: List<AdtConstructorEmbedding>) {
-        require(_constructors == null) { "ADT constructors of $name are already initialised." }
-        _constructors = newConstructors
+    fun markInitialized() {
+        require(!_isInitialized) { "ADT $name is already initialised." }
+        _isInitialized = true
     }
 
     val adtName: AdtName = AdtName(name)
     val viperType: Type.Adt = Type.Adt(adtName)
-
-    val toRefFunc: DomainFunc = RuntimeTypeDomain.adtToRefFunc(name, viperType)
-    val fromRefFunc: DomainFunc = RuntimeTypeDomain.adtFromRefFunc(name, viperType)
+    val injection: Injection = Injection(name, viperType, RuntimeTypeDomain.classTypeFunc(name))
 
     override val runtimeType = RuntimeTypeDomain.classTypeFunc(name)()
 
     override fun accessInvariants(): List<TypeInvariantEmbedding> = emptyList()
     override fun sharedPredicateAccessInvariant() = null
     override fun uniquePredicateAccessInvariant() = null
+
+    val viperConstructorDecl: AdtConstructorDecl
+        get() = AdtConstructorDecl(AdtConstructorName(adtName, name), adtName, emptyList())
+
+    fun toViper() = AdtDecl(name = adtName, constructors = listOf(viperConstructorDecl))
 }

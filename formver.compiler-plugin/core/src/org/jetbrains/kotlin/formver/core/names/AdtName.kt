@@ -12,5 +12,4 @@ data class AdtConstructorName(val adtName: AdtName, val className: SymbolicName)
         get() = NameType.Base.AdtCons
 }
 
-/** Name for ADT injection domain functions in the RuntimeType domain. */
 data class AdtInjectionName(val className: SymbolicName, val suffix: String) : SymbolicName

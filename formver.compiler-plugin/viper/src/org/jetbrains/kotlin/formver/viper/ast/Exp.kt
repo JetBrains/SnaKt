@@ -409,12 +409,10 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
     /**
      * Represents the application of an ADT constructor.
      *
-     * Singleton ADTs do not exist as an independent entity in the Kotlin program. Instead, when we encounter a
-     * reference to an ADT type, it will be replaced with a constructor application. This will be modified for the
-     * introduction of product types.
+     * A constructor is created when a `data object` with an `@ADT` annotation is referenced.
      */
     data class AdtConstructorApp(
-        val constructor: AdtConstructor,
+        val constructor: AdtConstructorDecl,
         val args: List<Exp>,
         val typeVarMap: Map<Type.TypeVar, Type> = emptyMap(),
         val pos: Position = Position.NoPosition,

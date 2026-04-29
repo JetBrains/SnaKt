@@ -7,7 +7,6 @@ package org.jetbrains.kotlin.formver.core.embeddings.expression
 
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
-import org.jetbrains.kotlin.formver.core.embeddings.types.AdtConstructorEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
@@ -61,16 +60,12 @@ data object NullLit : LiteralEmbedding {
     override val debugName = "Null"
 }
 
-/**
- * Embeds a reference to a Kotlin object which was declared to be an ADT.
- *
- * Holds the [AdtConstructorEmbedding] and delegates Viper code generation to the linearization visitor.
- */
-data class AdtConstructorLit(
+data class AdtLit(
     override val type: TypeEmbedding,
-    val constructorEmbedding: AdtConstructorEmbedding,
-    val adtTypeEmbedding: AdtTypeEmbedding,
 ) : ExpEmbedding {
+    val adtTypeEmbedding: AdtTypeEmbedding
+        get() = type.pretype as AdtTypeEmbedding
+
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitAdtConstructorLit(this)
 }
 

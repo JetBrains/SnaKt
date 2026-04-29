@@ -8,7 +8,6 @@ package org.jetbrains.kotlin.formver.core.domains
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.embedClassTypeFunc
-import org.jetbrains.kotlin.formver.core.names.AdtInjectionName
 import org.jetbrains.kotlin.formver.core.names.DomainName
 import org.jetbrains.kotlin.formver.core.names.QualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.core.names.UnqualifiedDomainFuncName
@@ -212,7 +211,7 @@ const val RUNTIME_TYPE_DOMAIN_NAME = "rt"
  */
 class RuntimeTypeDomain(
     val classes: List<ClassTypeEmbedding>,
-    val adts: List<AdtTypeEmbedding> = emptyList(),
+    val adts: List<AdtTypeEmbedding>,
 ) : BuiltinDomain(DomainName(RUNTIME_TYPE_DOMAIN_NAME)) {
     override val typeVars: List<Type.TypeVar> = emptyList()
 
@@ -276,22 +275,12 @@ class RuntimeTypeDomain(
         // for creation of user types
         fun classTypeFunc(name: SymbolicName) = createDomainFunc(name, emptyList(), RuntimeType, true)
 
-        // Helpers to build ADT injection functions, following the same pattern as classTypeFunc.
-        // Names are resolved lazily via the NameResolver at serialization time.
-        fun adtToRefFunc(className: SymbolicName, adtType: Type.Adt): DomainFunc {
-            val v = domainVar("v", adtType)
-            return createDomainFunc(AdtInjectionName(className, "ToRef"), listOf(v.decl()), Ref)
-        }
-
-        fun adtFromRefFunc(className: SymbolicName, adtType: Type.Adt): DomainFunc =
-            createDomainFunc(AdtInjectionName(className, "FromRef"), listOf(r.decl()), adtType)
-
         // bijections to primitive types
         val intInjection = Injection("int", Type.Int, intType)
         val boolInjection = Injection("bool", Type.Bool, boolType)
         val charInjection = Injection("char", Type.Int, charType)
         val stringInjection = Injection("string", Type.Seq(Type.Int), stringType)
-        val allInjections = listOf(intInjection, boolInjection, charInjection, stringInjection)
+        val primitiveTypeInjections = listOf(intInjection, boolInjection, charInjection, stringInjection)
 
         // special values
         val nullValue = createDomainFunc(UnqualifiedDomainFuncName("nullValue"), emptyList(), Ref)
@@ -301,10 +290,7 @@ class RuntimeTypeDomain(
     val classTypes: Map<ClassTypeEmbedding, DomainFunc> = classes.associateWith { it.embedClassTypeFunc() }
     val adtClassTypes: Map<AdtTypeEmbedding, DomainFunc> = adts.associateWith { classTypeFunc(it.name) }
 
-    // Only initialized ADTs get injection functions.
-    private val validAdtClasses: List<AdtTypeEmbedding> = adts.filter { it.isInitialized }
-    val adtToRefFuncs: Map<AdtTypeEmbedding, DomainFunc> = validAdtClasses.associateWith { it.toRefFunc }
-    val adtFromRefFuncs: Map<AdtTypeEmbedding, DomainFunc> = validAdtClasses.associateWith { it.fromRefFunc }
+    private val adtInjections: List<Injection> = adts.filter { it.isInitialized }.map { it.injection }
     val builtinTypes: List<DomainFunc> =
         listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType)
     val nonNullableTypes: List<DomainFunc> = buildList {
@@ -314,8 +300,8 @@ class RuntimeTypeDomain(
     }.distinctBy { it.name }
     override val functions: List<DomainFunc> = nonNullableTypes + listOf(
         nullValue, unitValue, isSubtype, typeOf, nullable
-    ) + allInjections.flatMap { listOf(it.toRef, it.fromRef) } +
-        adtToRefFuncs.values + adtFromRefFuncs.values
+    ) + primitiveTypeInjections.flatMap { listOf(it.toRef, it.fromRef) } +
+        adtInjections.flatMap { listOf(it.toRef, it.fromRef) }
     override val axioms: List<DomainAxiom> = AxiomListBuilder.build(this) {
         axiom("subtypeReflexive") {
             Exp.forall(t) { t -> t subtype t }
@@ -425,28 +411,8 @@ class RuntimeTypeDomain(
                 r eq unitValue()
             }
         }
-        allInjections.forEach {
+        (primitiveTypeInjections + adtInjections).forEach {
             it.apply { injectionAxioms() }
-        }
-        validAdtClasses.forEach { adtEmbedding ->
-            val v = domainVar("v", adtEmbedding.viperType)
-            val typeFunc = adtClassTypes[adtEmbedding]!!
-            val toRef = adtToRefFuncs[adtEmbedding]!!
-            val fromRef = adtFromRefFuncs[adtEmbedding]!!
-            axiom {
-                Exp.forall(v) { v -> simpleTrigger { toRef(v) isOf typeFunc() } }
-            }
-            axiom {
-                Exp.forall(v) { v ->
-                    simpleTrigger { fromRef(toRef(v)) } eq v
-                }
-            }
-            axiom {
-                Exp.forall(r) { r ->
-                    assumption { r isOf typeFunc() }
-                    simpleTrigger { toRef(fromRef(r)) } eq r
-                }
-            }
         }
         classTypes.forEach { (typeEmbedding, typeFunction) ->
             typeEmbedding.details.superTypes.forEach {
