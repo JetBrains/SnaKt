@@ -21,11 +21,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.LabelEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FullNamedFunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
-import org.jetbrains.kotlin.formver.core.embeddings.properties.BackingFieldGetter
-import org.jetbrains.kotlin.formver.core.embeddings.properties.ClassPropertyAccess
-import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyAccessEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.properties.asPropertyAccess
+import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.isCustom
 import org.jetbrains.kotlin.formver.core.isInvariantBuilderFunctionNamed
@@ -261,7 +257,7 @@ fun StmtConversionContext.insertAccFunctionCall(
     val field = firPropertyToField(field)
     val receiver = (fieldAccess as ClassPropertyAccess).receiver
     return withNoScope {
-        AccEmbedding(field, receiver, perm)
+        AccEmbedding(receiver, field, perm)
     }
 }
 
