@@ -77,4 +77,3 @@ method g_write(this: Ref) returns (ret: Ref)
 
 
 method read(this: Ref) returns (ret: Ref)
-

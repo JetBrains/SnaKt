@@ -250,4 +250,3 @@ method subs(this: Ref, lo: Ref, hi: Ref) returns (ret: Ref)
   ensures (forall anon: Int ::0 <= anon && anon < |stringFromRef(ret)| ==>
       stringFromRef(ret)[anon] ==
       stringFromRef(this)[anon + intFromRef(lo)])
-

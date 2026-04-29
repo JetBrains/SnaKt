@@ -113,4 +113,3 @@ method plus(this: Ref, other: Ref) returns (v_ret: Ref)
 
 
 method read(this: Ref) returns (v_ret: Ref)
-
