@@ -118,7 +118,7 @@ class ProgramConverter(
         symbol: FirFunctionSymbol<*>, signature: FullNamedFunctionSignature
     ): PureUserFunctionEmbedding {
         (functions[signature.name] as? PureUserFunctionEmbedding)?.also { return it }
-        val new = PureUserFunctionEmbedding(processCallable(symbol, signature))
+        val new = PureUserFunctionEmbedding(embedCallable(symbol, signature))
         // Insert into the map before processing the body, so recursive calls can find the embedding.
         functions[signature.name] = new
         val declaration = symbol.fir as? FirSimpleFunction ?: throw SnaktInternalException(
@@ -151,7 +151,7 @@ class ProgramConverter(
 
     fun embedUserFunction(symbol: FirFunctionSymbol<*>, signature: FullNamedFunctionSignature): UserFunctionEmbedding {
         (methods[signature.name] as? UserFunctionEmbedding)?.also { return it }
-        val new = UserFunctionEmbedding(processCallable(symbol, signature))
+        val new = UserFunctionEmbedding(embedCallable(symbol, signature))
         methods[signature.name] = new
         return new
     }
@@ -181,7 +181,7 @@ class ProgramConverter(
         return when (val existing = methods[lookupName]) {
             null -> {
                 val signature = embedFullSignature(symbol)
-                val callable = processCallable(symbol, signature)
+                val callable = embedCallable(symbol, signature)
                 UserFunctionEmbedding(callable).also {
                     methods[lookupName] = it
                 }
@@ -190,7 +190,7 @@ class ProgramConverter(
             is PartiallySpecialKotlinFunction -> {
                 if (existing.baseEmbedding != null) return existing
                 val signature = embedFullSignature(symbol)
-                val callable = processCallable(symbol, signature)
+                val callable = embedCallable(symbol, signature)
                 val userFunction = UserFunctionEmbedding(callable)
                 existing.also {
                     it.initBaseEmbedding(userFunction)
@@ -257,7 +257,7 @@ class ProgramConverter(
         } else {
             val name = symbol.embedMemberPropertyName()
             return typeResolver.getOrPutProperty(name) {
-                processBackingField(symbol)?.let {
+                embedBackingField(symbol)?.let {
                     return@getOrPutProperty PropertyEmbedding(
                         BackingFieldGetter(it), BackingFieldSetter(it)
                     )
@@ -450,7 +450,7 @@ class ProgramConverter(
     /**
      * Construct and register the field embedding for this property's backing field, if any exists.
      */
-    private fun processBackingField(
+    private fun embedBackingField(
         symbol: FirPropertySymbol
     ): FieldEmbedding? {
         val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol ?: return null
@@ -478,7 +478,7 @@ class ProgramConverter(
     )
 
     @OptIn(SymbolInternals::class)
-    private fun processCallable(
+    private fun embedCallable(
         symbol: FirFunctionSymbol<*>, signature: FullNamedFunctionSignature
     ): RichCallableEmbedding {
         return if (symbol.shouldBeInlined) {

@@ -29,11 +29,6 @@ class TypeResolver {
     private val properties = mutableMapOf<ClassPropertyPair, PropertyEmbedding>()
 
     /**
-     * Special fields
-     */
-    private val specialFields = mutableSetOf<FieldEmbedding>()
-
-    /**
      * Register a class or interface type embedding.
      * This is needed to know which classes were already registered.
      */
