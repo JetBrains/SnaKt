@@ -1,9 +1,12 @@
 package org.jetbrains.kotlin.formver.core.conversion
 
+import org.jetbrains.kotlin.formver.core.embeddings.properties.BackingFieldGetter
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeEmbedding
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
+import org.jetbrains.kotlin.formver.core.names.ScopedName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 
 class TypeResolver {
@@ -21,9 +24,14 @@ class TypeResolver {
     private val superTypes = mutableMapOf<SymbolicName, MutableSet<SymbolicName>>()
 
     /**
-     * All the fields. Key is the pair of the class name and the field name.
+     * All the properties. Key is the pair of the class name and the field name.
      */
-    private val fields = mutableMapOf<ClassPropertyPair, FieldEmbedding>()
+    private val properties = mutableMapOf<ClassPropertyPair, PropertyEmbedding>()
+
+    /**
+     * Special fields
+     */
+    private val specialFields = mutableSetOf<FieldEmbedding>()
 
     /**
      * Register a class or interface type embedding.
@@ -34,8 +42,13 @@ class TypeResolver {
         false -> classEmbedding.putIfAbsent(typeEmbedding.name, typeEmbedding)
     }
 
+    private fun toBackingField(property: PropertyEmbedding): FieldEmbedding? =
+        (property.getter as? BackingFieldGetter)?.field
 
-    fun embeddings() = classEmbedding.values.toList() + interfaceEmbedding.values.toList()
+
+    fun embeddings() = (classEmbedding.values.toList() + interfaceEmbedding.values.toList()).distinctBy { it.name }
+
+    fun getOrPutEmbedding(name: ScopedName, create: () -> ClassTypeEmbedding) = classEmbedding.getOrPut(name, create)
 
     fun lookupEmbedding(name: SymbolicName) = classEmbedding[name] ?: interfaceEmbedding[name]
 
@@ -55,25 +68,20 @@ class TypeResolver {
         superTypes.getOrDefault(name, emptySet()).mapNotNull { lookupEmbedding(it) }
 
     /**
-     * Adds a field to the class.
+     * Get or Put a property to the class.
      */
-    fun addFieldToClass(name: ClassPropertyPair, fieldEmbedding: FieldEmbedding) {
-        fields.getOrPut(name) {
-            fieldEmbedding
-        }
-    }
+    fun getOrPutProperty(name: ClassPropertyPair, create: () -> PropertyEmbedding) = properties.getOrPut(name, create)
 
-    fun fields() = fields.map { it.value }.toList()
-
-    /**
-     * Returns the field embedding for a given [ClassPropertyPair]
-     */
-    fun lookupField(name: ClassPropertyPair) = fields[name]
 
     /**
      * Returns all the fields belonging directly to a class.
      */
-    fun lookupClassFields(name: SymbolicName) = fields.filterKeys { it.first == name }.values.toList()
+    fun lookupClassFields(name: SymbolicName) =
+        properties.filterKeys { it.first == name }.values.mapNotNull { toBackingField(it) }
+
+    fun lookupBackingField(name: ClassPropertyPair): FieldEmbedding? = properties[name]?.let { toBackingField(it) }
+
+    fun backingFields(): List<FieldEmbedding> = properties.values.mapNotNull { toBackingField(it) }
 
 
     /**

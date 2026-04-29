@@ -32,11 +32,9 @@ import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
-import org.jetbrains.kotlin.formver.viper.ast.Method
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.utils.addIfNotNull
-import org.jetbrains.kotlin.utils.addToStdlib.ifFalse
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 
 /**
@@ -61,14 +59,6 @@ class ProgramConverter(
     private val functions: MutableMap<SymbolicName, PureFunctionEmbedding> = mutableMapOf()
 
     override val typeResolver: TypeResolver = TypeResolver()
-
-    /**
-     * [properties] contains all the properties. This includes properties defined on interfaces etc.
-     * They are stored in a map. The key is the pair of the name of the class and the field.
-     **/
-    private val properties: MutableMap<ClassPropertyPair, PropertyEmbedding> = mutableMapOf()
-
-    private val havocMethods: MutableMap<SymbolicName, Method> = mutableMapOf()
 
     // Cast is valid since we check that values are not null. We specify the type for `filterValues` explicitly to ensure there's no
     // loss of type information earlier.
@@ -95,12 +85,13 @@ class ProgramConverter(
             domains = listOf(RuntimeTypeDomain(typeResolver)),
             // We need to deduplicate fields since public fields with the same name are represented differently
             // at `FieldEmbedding` level but map to the same Viper.
-            fields = SpecialFields.all.map { it.toViper() } + typeResolver.fields().distinctBy { it.name }
+            fields = SpecialFields.all.map { it.toViper() } + typeResolver.backingFields().distinctBy { it.name }
                 .map { it.toViper() },
             functions = SpecialFunctions.all + functions.values.mapNotNull { it.viperFunction(typeResolver) }
                 .distinctBy { it.name },
             methods = SpecialMethods.all + methods.values.mapNotNull { it.viperMethod(typeResolver) }
-                .distinctBy { it.name } + havocMethods.values,
+                .distinctBy { it.name } + typeResolver.backingFields().map { it.type.havocMethod(typeResolver) }
+                .distinctBy { it.name },
             predicates = typeResolver.embeddings().flatMap {
                 listOf(
                     it.sharedPredicate(typeResolver), it.uniquePredicate(typeResolver)
@@ -226,50 +217,25 @@ class ProgramConverter(
      */
     private fun embedClass(symbol: FirRegularClassSymbol): ClassTypeEmbedding {
         val className = symbol.classId.embedName()
-        if (typeResolver.isRegistered(className)) return typeResolver.lookupEmbedding(className)!!
-        val embedding = buildClassPretype {
-            withName(className)
-        }
+        typeResolver.lookupEmbedding(className)?.let { return it }
 
-        typeResolver.register(embedding, symbol.classKind.isInterface)
-
-        // The full class embedding is necessary to process the signatures of the properties of the class, since
-        // these take the class as a parameter. We thus do this in three phases:
-        // 1. Initialise the supertypes (including running this whole four-step process on each)
-        // 2. Initialise the fields
-        // 3. Process the properties of the class.
-        //
-        // With respect to the embedding, each phase is pure by itself, and only updates the class embedding at the end.
-        // This ensures the code never sees half-built supertype or field data. The phases can, however, modify the
-        // `ProgramConverter`.
-
-        // Phase 1
-        symbol.resolvedSuperTypes.forEach {
-            val superTypeName = embedType(it).pretype.name
-            typeResolver.addSubtypeRelation(className, superTypeName)
-        }
-        // Phase 2
-        val properties = symbol.propertySymbols
-
-        val fields = properties.mapNotNull { propertySymbol ->
-            SpecialProperties.isSpecial(propertySymbol).ifFalse {
-                processBackingField(propertySymbol, symbol)
+        val embedding = typeResolver.getOrPutEmbedding(className) {
+            val embedding = buildClassPretype {
+                withName(className)
             }
-        }.toMap()
 
-        fields.forEach { (name, embedding) ->
-            typeResolver.addFieldToClass(name, embedding)
+            typeResolver.register(embedding, symbol.classKind.isInterface)
+
+            symbol.resolvedSuperTypes.forEach {
+                val superTypeName = embedType(it).pretype.name
+                typeResolver.addSubtypeRelation(className, superTypeName)
+            }
+
+            embedding
         }
-
-        fields.values.forEach {
-            havocMethods.putIfAbsent(
-                it.type.havocMethodName, it.type.havocMethod(typeResolver)
-            )
+        symbol.propertySymbols.forEach {
+            embedProperty(it)
         }
-
-        // Phase 3
-        properties.forEach { processProperty(it) }
-
         return embedding
     }
 
@@ -280,18 +246,27 @@ class ProgramConverter(
         embedFunctionPretypeWithBuilder(symbol)
     }
 
-    override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding =
+    override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding {
+
+        SpecialProperties.byCallableId[symbol.callableId]?.let {
+            return it
+        }
+
         if (symbol.receiverParameterSymbol != null) {
-            embedCustomProperty(symbol)
+            return embedCustomProperty(symbol)
         } else {
-            embedType(symbol.dispatchReceiverType!!)
-            properties.getOrPut(symbol.embedMemberPropertyName()) {
-                check(symbol is FirIntersectionOverridePropertySymbol) {
-                    "Unknown property ${symbol.callableId}."
+            val name = symbol.embedMemberPropertyName()
+            return typeResolver.getOrPutProperty(name) {
+                processBackingField(symbol)?.let {
+                    return@getOrPutProperty PropertyEmbedding(
+                        BackingFieldGetter(it), BackingFieldSetter(it)
+                    )
                 }
+                embedType(symbol.dispatchReceiverType!!)
                 embedCustomProperty(symbol)
             }
         }
+    }
 
     private fun <R> FirPropertySymbol.withConstructorParam(action: FirPropertySymbol.(FirValueParameterSymbol) -> R): R? =
         correspondingValueParameterFromPrimaryConstructor?.let { param ->
@@ -305,7 +280,7 @@ class ProgramConverter(
         return constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
             val name = propertySymbol.embedMemberPropertyName()
             propertySymbol.withConstructorParam { paramSymbol ->
-                typeResolver.lookupField(name)?.let { paramSymbol to it }
+                typeResolver.lookupBackingField(name)?.let { paramSymbol to it }
             }
         }.toMap()
     }
@@ -476,10 +451,9 @@ class ProgramConverter(
      * Construct and register the field embedding for this property's backing field, if any exists.
      */
     private fun processBackingField(
-        symbol: FirPropertySymbol,
-        classSymbol: FirRegularClassSymbol,
-    ): Pair<ClassPropertyPair, FieldEmbedding>? {
-        val name = symbol.embedMemberPropertyName()
+        symbol: FirPropertySymbol
+    ): FieldEmbedding? {
+        val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol ?: return null
         val embedding = embedClass(classSymbol)
         val scopedName = symbol.callableId!!.embedMemberBackingFieldName(
             Visibilities.isPrivate(symbol.visibility)
@@ -495,44 +469,13 @@ class ProgramConverter(
                 symbol.isManual(session)
             )
         }
-        return backingField?.let { name to it }
+        return backingField
     }
 
-    /**
-     * Construct and register the property embedding (i.e. getter + setter) for this property.
-     *
-     * Note that the property either has associated Viper field (and then it is used to access the value) or not (in this case methods are used).
-     * The field is only used for final properties with default getter and default setter (if any).
-     */
-    private fun processProperty(symbol: FirPropertySymbol) {
-        val name = symbol.embedMemberPropertyName()
-        val property = SpecialProperties.byCallableId[symbol.callableId] ?: run {
-            val backingField = typeResolver.lookupField(name)
-            embedProperty(symbol, backingField)
-        }
-        properties[name] = property
-    }
-
-    private fun embedCustomProperty(symbol: FirPropertySymbol) = embedProperty(symbol, null)
-
-    private fun embedProperty(symbol: FirPropertySymbol, backingField: FieldEmbedding?) = PropertyEmbedding(
-        embedGetter(symbol, backingField),
-        symbol.isVar.ifTrue { embedSetter(symbol, backingField) },
+    private fun embedCustomProperty(symbol: FirPropertySymbol) = PropertyEmbedding(
+        CustomGetter(embedGetterFunction(symbol)),
+        symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) },
     )
-
-    private fun embedGetter(symbol: FirPropertySymbol, backingField: FieldEmbedding?): GetterEmbedding =
-        if (backingField != null) {
-            BackingFieldGetter(backingField)
-        } else {
-            CustomGetter(embedGetterFunction(symbol))
-        }
-
-    private fun embedSetter(symbol: FirPropertySymbol, backingField: FieldEmbedding?): SetterEmbedding =
-        if (backingField != null) {
-            BackingFieldSetter(backingField)
-        } else {
-            CustomSetter(embedSetterFunction(symbol))
-        }
 
     @OptIn(SymbolInternals::class)
     private fun processCallable(
@@ -563,7 +506,7 @@ class ProgramConverter(
         type.isString -> {
             val stringClassSymbol = type.toClassSymbol(session) as FirRegularClassSymbol
             stringClassSymbol.propertySymbols.forEach {
-                processProperty(it)
+                embedProperty(it)
             }
             string()
         }
