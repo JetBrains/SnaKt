@@ -1,4 +1,4 @@
-/inheritance.kt:(93,97): info: Generated Viper text for getY:
+/inheritance.kt:(105,109): info: Generated Viper text for getY:
 field b: Ref
 
 field x: Ref
@@ -16,7 +16,7 @@ method getY(this: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/inheritance.kt:(190,193): info: Generated Viper text for sum:
+/inheritance.kt:(202,205): info: Generated Viper text for sum:
 field b: Ref
 
 field x: Ref
@@ -42,7 +42,7 @@ method sum(this: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/inheritance.kt:(236,251): info: Generated Viper text for callSuperMethod:
+/inheritance.kt:(248,263): info: Generated Viper text for callSuperMethod:
 field b: Ref
 
 field x: Ref
@@ -66,7 +66,7 @@ method getY(this: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
 
 
-/inheritance.kt:(298,314): info: Generated Viper text for accessSuperField:
+/inheritance.kt:(310,326): info: Generated Viper text for accessSuperField:
 field b: Ref
 
 field x: Ref
@@ -85,7 +85,7 @@ method accessSuperField(bar: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/inheritance.kt:(360,374): info: Generated Viper text for accessNewField:
+/inheritance.kt:(372,386): info: Generated Viper text for accessNewField:
 field b: Ref
 
 field x: Ref
@@ -105,7 +105,7 @@ method accessNewField(bar: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/inheritance.kt:(416,429): info: Generated Viper text for callNewMethod:
+/inheritance.kt:(428,441): info: Generated Viper text for callNewMethod:
 field b: Ref
 
 field x: Ref
@@ -129,7 +129,7 @@ method sum(this: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
 
 
-/inheritance.kt:(475,488): info: Generated Viper text for setSuperField:
+/inheritance.kt:(487,500): info: Generated Viper text for setSuperField:
 field b: Ref
 
 field x: Ref
@@ -147,7 +147,7 @@ method setSuperField(bar: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/inheritance.kt:(525,546): info: Generated Viper text for accessSuperSuperField:
+/inheritance.kt:(537,558): info: Generated Viper text for accessSuperSuperField:
 field b: Ref
 
 field x: Ref

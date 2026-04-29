@@ -1,4 +1,4 @@
-/arithmetic.kt:(23,31): info: Generated Viper text for addition:
+/arithmetic.kt:(35,43): info: Generated Viper text for addition:
 method addition(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), unitType())
@@ -9,7 +9,7 @@ method addition(x: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/arithmetic.kt:(66,77): info: Generated Viper text for subtraction:
+/arithmetic.kt:(78,89): info: Generated Viper text for subtraction:
 method subtraction(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), unitType())
@@ -20,7 +20,7 @@ method subtraction(x: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/arithmetic.kt:(112,126): info: Generated Viper text for multiplication:
+/arithmetic.kt:(124,138): info: Generated Viper text for multiplication:
 method multiplication(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), unitType())
@@ -31,7 +31,7 @@ method multiplication(x: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/arithmetic.kt:(161,169): info: Generated Viper text for division:
+/arithmetic.kt:(173,181): info: Generated Viper text for division:
 method division(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), unitType())
@@ -42,7 +42,7 @@ method division(x: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/arithmetic.kt:(273,282): info: Generated Viper text for remainder:
+/arithmetic.kt:(285,294): info: Generated Viper text for remainder:
 method remainder(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), unitType())
@@ -53,7 +53,7 @@ method remainder(x: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/arithmetic.kt:(386,397): info: Generated Viper text for unary_minus:
+/arithmetic.kt:(398,409): info: Generated Viper text for unary_minus:
 method unary_minus(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), unitType())

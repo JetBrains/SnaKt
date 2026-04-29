@@ -7,5 +7,3 @@ method returns_null() returns (ret: Ref)
   goto ret_0
   label ret_0
 }
-
-/returns_not_null.kt:(167,183): warning: Function may return a null value.

@@ -1,4 +1,4 @@
-/linked_list.kt:(249,255): info: Generated Viper text for getVal:
+/linked_list.kt:(261,267): info: Generated Viper text for getVal:
 field data: Ref
 
 field next: Ref
@@ -36,7 +36,7 @@ method getVal(l: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/linked_list.kt:(430,434): info: Generated Viper text for test:
+/linked_list.kt:(442,446): info: Generated Viper text for test:
 field bf_data: Ref
 
 field bf_next: Ref
@@ -126,5 +126,3 @@ method test() returns (ret_0: Ref)
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
-
-/linked_list.kt:(513,518): warning: Viper verification error: Assert might fail. Assertion boolFromRef(expr1) might not hold.

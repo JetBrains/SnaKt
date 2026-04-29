@@ -1,4 +1,4 @@
-/binary_tree.kt:(261,273): info: Generated Viper text for get_left_val:
+/binary_tree.kt:(273,285): info: Generated Viper text for get_left_val:
 field data: Ref
 
 field left: Ref
@@ -45,7 +45,7 @@ method get_left_val(n: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/binary_tree.kt:(445,449): info: Generated Viper text for test:
+/binary_tree.kt:(457,461): info: Generated Viper text for test:
 field bf_data: Ref
 
 field bf_left: Ref
@@ -156,5 +156,3 @@ method test() returns (ret_0: Ref)
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
-
-/binary_tree.kt:(585,590): warning: Viper verification error: Assert might fail. Assertion boolFromRef(expr1) might not hold.

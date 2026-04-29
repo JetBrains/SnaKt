@@ -1,4 +1,4 @@
-/merge_sort_of_string.kt:(72,76): info: Generated Viper text for subs:
+/merge_sort_of_string.kt:(84,88): info: Generated Viper text for subs:
 method plus(v_this: Ref, other: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(v_this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
@@ -60,7 +60,7 @@ method subs(this: Ref, lo: Ref, hi: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/merge_sort_of_string.kt:(705,717): info: Generated Viper text for mergeStrings:
+/merge_sort_of_string.kt:(717,729): info: Generated Viper text for mergeStrings:
 method mergeStrings(a: Ref, b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(a), stringType())
   requires isSubtype(typeOf(b), stringType())
@@ -176,7 +176,7 @@ method plus(this: Ref, other: Ref) returns (v_ret: Ref)
   ensures isSubtype(typeOf(v_ret), stringType())
 
 
-/merge_sort_of_string.kt:(1883,1894): info: Generated Viper text for mergeSorted:
+/merge_sort_of_string.kt:(1895,1906): info: Generated Viper text for mergeSorted:
 method mergeSorted(this: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(this), stringType())
   ensures isSubtype(typeOf(ret_0), stringType())

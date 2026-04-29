@@ -1,4 +1,4 @@
-/while.kt:(254,264): info: Generated Viper text for test_while:
+/while.kt:(267,277): info: Generated Viper text for test_while:
 field bf_field: Ref
 
 field size: Ref
@@ -73,7 +73,7 @@ method test_while(param: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/while.kt:(899,923): info: Generated Viper text for test_while_with_inlining:
+/while.kt:(912,936): info: Generated Viper text for test_while_with_inlining:
 field bf_field: Ref
 
 field size: Ref
@@ -164,7 +164,7 @@ method test_while_with_inlining(param: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/while.kt:(1311,1336): info: Generated Viper text for test_while_with_smartcast:
+/while.kt:(1324,1349): info: Generated Viper text for test_while_with_smartcast:
 field bf_field: Ref
 
 method test_while_with_smartcast(param: Ref, innerParam: Ref)

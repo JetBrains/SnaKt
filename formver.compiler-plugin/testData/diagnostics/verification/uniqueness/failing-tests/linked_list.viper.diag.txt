@@ -1,1 +1,1 @@
-/linked_list.kt:(525,530): warning: Viper verification error: Assert might fail. Assertion df$rt$boolFromRef(l0$expr1) might not hold.
+/linked_list.kt:(525,530): warning: Viper verification error: Assert might fail. Assertion boolFromRef(expr1) might not hold.

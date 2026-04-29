@@ -1,4 +1,4 @@
-/simple_postcondition.kt:(64,75): info: Generated Viper text for testGreater:
+/simple_postcondition.kt:(78,89): info: Generated Viper text for testGreater:
 method testGreater(init: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(init), intType())
   ensures isSubtype(typeOf(ret), intType())
@@ -9,7 +9,7 @@ method testGreater(init: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/simple_postcondition.kt:(201,211): info: Generated Viper text for testString:
+/simple_postcondition.kt:(215,225): info: Generated Viper text for testString:
 method testString() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), charType())
   ensures charFromRef(ret) == 97
@@ -19,7 +19,7 @@ method testString() returns (ret: Ref)
   label ret_0
 }
 
-/simple_postcondition.kt:(323,343): info: Generated Viper text for testWithPrecondition:
+/simple_postcondition.kt:(337,357): info: Generated Viper text for testWithPrecondition:
 method testWithPrecondition(int: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(int), intType())
   requires intFromRef(int) > 10
@@ -31,7 +31,7 @@ method testWithPrecondition(int: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/simple_postcondition.kt:(492,507): info: Generated Viper text for returnGreater13:
+/simple_postcondition.kt:(506,521): info: Generated Viper text for returnGreater13:
 method returnGreater13() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
   ensures intFromRef(ret) > 13
@@ -41,7 +41,7 @@ method returnGreater13() returns (ret: Ref)
   label ret_0
 }
 
-/simple_postcondition.kt:(600,637): info: Generated Viper text for testPostconditionIsUsedByPrecondition:
+/simple_postcondition.kt:(614,651): info: Generated Viper text for testPostconditionIsUsedByPrecondition:
 method returnGreater13() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
   ensures intFromRef(ret) > 13

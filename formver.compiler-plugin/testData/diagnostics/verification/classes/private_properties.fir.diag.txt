@@ -1,4 +1,4 @@
-/private_properties.kt:(222,237): info: Generated Viper text for getBooleanField:
+/private_properties.kt:(235,250): info: Generated Viper text for getBooleanField:
 method g_field(this: Ref) returns (v_ret: Ref)
 
 
@@ -18,7 +18,7 @@ method getBooleanField(this: Ref) returns (ret: Ref)
 method s_field(this: Ref, anon: Ref) returns (v_ret: Ref)
 
 
-/private_properties.kt:(316,330): info: Generated Viper text for getStringField:
+/private_properties.kt:(329,343): info: Generated Viper text for getStringField:
 field bf_field: Ref
 
 method g_field(this: Ref) returns (v_ret: Ref)
@@ -38,7 +38,7 @@ method getStringField(this: Ref) returns (ret: Ref)
 method s_field(this: Ref, anon: Ref) returns (v_ret: Ref)
 
 
-/private_properties.kt:(475,488): info: Generated Viper text for extractPublic:
+/private_properties.kt:(488,501): info: Generated Viper text for extractPublic:
 field bf_field: Ref
 
 field c_B_private_bf_field: Ref

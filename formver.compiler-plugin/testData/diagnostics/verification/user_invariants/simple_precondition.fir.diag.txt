@@ -1,4 +1,4 @@
-/simple_precondition.kt:(238,242): info: Generated Viper text for test:
+/simple_precondition.kt:(250,254): info: Generated Viper text for test:
 field size: Ref
 
 method test(idx: Ref) returns (ret_0: Ref)
@@ -15,7 +15,7 @@ method test(idx: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/simple_precondition.kt:(446,469): info: Generated Viper text for inlineWithSpecification:
+/simple_precondition.kt:(458,481): info: Generated Viper text for inlineWithSpecification:
 method inlineWithSpecification(bool: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(bool), boolType())
   requires true
@@ -26,7 +26,7 @@ method inlineWithSpecification(bool: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/simple_precondition.kt:(560,569): info: Generated Viper text for good_call:
+/simple_precondition.kt:(572,581): info: Generated Viper text for good_call:
 method good_call() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), unitType())
 {

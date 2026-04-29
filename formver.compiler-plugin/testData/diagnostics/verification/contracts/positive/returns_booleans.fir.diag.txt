@@ -1,4 +1,4 @@
-/returns_booleans.kt:(121,133): info: Generated Viper text for returns_true:
+/returns_booleans.kt:(133,145): info: Generated Viper text for returns_true:
 method returns_true() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
   ensures true
@@ -9,7 +9,7 @@ method returns_true() returns (ret: Ref)
   label ret_0
 }
 
-/returns_booleans.kt:(268,281): info: Generated Viper text for returns_false:
+/returns_booleans.kt:(280,293): info: Generated Viper text for returns_false:
 method returns_false() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
   ensures true
@@ -20,7 +20,7 @@ method returns_false() returns (ret: Ref)
   label ret_0
 }
 
-/returns_booleans.kt:(418,435): info: Generated Viper text for conditional_basic:
+/returns_booleans.kt:(430,447): info: Generated Viper text for conditional_basic:
 method conditional_basic(b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(ret), boolType())
@@ -32,7 +32,7 @@ method conditional_basic(b: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/returns_booleans.kt:(612,636): info: Generated Viper text for binary_logic_expressions:
+/returns_booleans.kt:(624,648): info: Generated Viper text for binary_logic_expressions:
 method binary_logic_expressions(a: Ref, b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(a), boolType())
   requires isSubtype(typeOf(b), boolType())
@@ -46,7 +46,7 @@ method binary_logic_expressions(a: Ref, b: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/returns_booleans.kt:(855,866): info: Generated Viper text for logical_not:
+/returns_booleans.kt:(867,878): info: Generated Viper text for logical_not:
 method logical_not(b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(ret), boolType())
@@ -58,7 +58,7 @@ method logical_not(b: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/returns_booleans.kt:(1052,1075): info: Generated Viper text for call_fun_with_contracts:
+/returns_booleans.kt:(1064,1087): info: Generated Viper text for call_fun_with_contracts:
 method binary_logic_expressions(a: Ref, b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(a), boolType())
   requires isSubtype(typeOf(b), boolType())
@@ -80,7 +80,7 @@ method call_fun_with_contracts(b: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/returns_booleans.kt:(1268,1281): info: Generated Viper text for isNullOrEmpty:
+/returns_booleans.kt:(1280,1293): info: Generated Viper text for isNullOrEmpty:
 field size: Ref
 
 method isEmpty(v_this: Ref) returns (ret: Ref)

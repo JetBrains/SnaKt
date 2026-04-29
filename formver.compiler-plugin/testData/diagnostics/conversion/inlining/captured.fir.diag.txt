@@ -1,4 +1,4 @@
-/captured.kt:(155,165): info: Generated Viper text for captureArg:
+/captured.kt:(167,177): info: Generated Viper text for captureArg:
 method captureArg(g: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(g), functionType())
   ensures isSubtype(typeOf(ret_0), intType())
@@ -20,7 +20,7 @@ method captureArg(g: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/captured.kt:(225,235): info: Generated Viper text for captureVar:
+/captured.kt:(237,247): info: Generated Viper text for captureVar:
 method captureVar() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), intType())
 {
@@ -41,7 +41,7 @@ method captureVar() returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/captured.kt:(295,311): info: Generated Viper text for captureAndShadow:
+/captured.kt:(307,323): info: Generated Viper text for captureAndShadow:
 method captureAndShadow(par_x: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(par_x), intType())
   ensures isSubtype(typeOf(ret_0), intType())
@@ -65,7 +65,7 @@ method captureAndShadow(par_x: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/captured.kt:(513,528): info: Generated Viper text for captureVarClash:
+/captured.kt:(525,540): info: Generated Viper text for captureVarClash:
 method captureVarClash(par_x: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(par_x), intType())
   ensures isSubtype(typeOf(ret_0), intType())
@@ -89,7 +89,7 @@ method captureVarClash(par_x: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/captured.kt:(585,606): info: Generated Viper text for captureAndShadowClash:
+/captured.kt:(597,618): info: Generated Viper text for captureAndShadowClash:
 method captureAndShadowClash(par_x: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(par_x), intType())
   ensures isSubtype(typeOf(ret_0), intType())
@@ -117,7 +117,7 @@ method captureAndShadowClash(par_x: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/captured.kt:(715,736): info: Generated Viper text for nestedLambdaShadowing:
+/captured.kt:(727,748): info: Generated Viper text for nestedLambdaShadowing:
 method nestedLambdaShadowing(par_x: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(par_x), intType())
   ensures isSubtype(typeOf(ret_0), intType())
@@ -161,7 +161,7 @@ method nestedLambdaShadowing(par_x: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/captured.kt:(1008,1024): info: Generated Viper text for callDoubleInvoke:
+/captured.kt:(1020,1036): info: Generated Viper text for callDoubleInvoke:
 method callDoubleInvoke(par_x: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(par_x), intType())
   ensures isSubtype(typeOf(ret_0), intType())

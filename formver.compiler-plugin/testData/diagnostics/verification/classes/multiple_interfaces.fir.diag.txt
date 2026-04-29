@@ -1,4 +1,4 @@
-/multiple_interfaces.kt:(799,804): info: Generated Viper text for take1:
+/multiple_interfaces.kt:(811,816): info: Generated Viper text for take1:
 method g_field(this: Ref) returns (v_ret: Ref)
 
 
@@ -16,7 +16,7 @@ method take1(obj: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/multiple_interfaces.kt:(863,868): info: Generated Viper text for take2:
+/multiple_interfaces.kt:(875,880): info: Generated Viper text for take2:
 method g_field(this: Ref) returns (v_ret: Ref)
 
 
@@ -34,7 +34,7 @@ method take2(obj: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/multiple_interfaces.kt:(930,935): info: Generated Viper text for take3:
+/multiple_interfaces.kt:(942,947): info: Generated Viper text for take3:
 field bf_field: Ref
 
 method take3(obj: Ref) returns (ret_0: Ref)
@@ -46,7 +46,7 @@ method take3(obj: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/multiple_interfaces.kt:(998,1003): info: Generated Viper text for take4:
+/multiple_interfaces.kt:(1010,1015): info: Generated Viper text for take4:
 method g_field(this: Ref) returns (v_ret: Ref)
 
 
@@ -64,7 +64,7 @@ method take4(obj: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/multiple_interfaces.kt:(1683,1694): info: Generated Viper text for createImpls:
+/multiple_interfaces.kt:(1695,1706): info: Generated Viper text for createImpls:
 field bf_field: Ref
 
 field size: Ref

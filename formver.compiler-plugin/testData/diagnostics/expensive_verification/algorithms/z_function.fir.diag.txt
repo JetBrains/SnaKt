@@ -1,4 +1,4 @@
-/z_function.kt:(187,198): info: Generated Viper text for zFuncHelper:
+/z_function.kt:(199,210): info: Generated Viper text for zFuncHelper:
 method zFuncHelper(s: Ref, res: Ref, i: Ref, checkedLeft: Ref, checkedRight: Ref)
   returns (ret: Ref)
   requires isSubtype(typeOf(s), stringType())
@@ -58,7 +58,7 @@ method zFuncHelper(s: Ref, res: Ref, i: Ref, checkedLeft: Ref, checkedRight: Ref
   label ret_0
 }
 
-/z_function.kt:(1389,1398): info: Generated Viper text for zFunction:
+/z_function.kt:(1401,1410): info: Generated Viper text for zFunction:
 method plus(v_this: Ref, other: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(v_this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
@@ -262,7 +262,7 @@ method zFunction(this: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/z_function.kt:(3481,3495): info: Generated Viper text for zFunctionNaive:
+/z_function.kt:(3493,3507): info: Generated Viper text for zFunctionNaive:
 method plus(v_this: Ref, other: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(v_this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))

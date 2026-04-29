@@ -10,8 +10,6 @@ method is2(this: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/contracts_with_receivers.kt:(196,239): warning: Cannot verify that if a true value is returned then this is Impl1.
-
 /contracts_with_receivers.kt:(341,359): info: Generated Viper text for is1butWithDispatch:
 method is1butWithDispatch(v_this: Ref, this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(v_this), _c_Class())
@@ -26,8 +24,6 @@ method is1butWithDispatch(v_this: Ref, this: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/contracts_with_receivers.kt:(404,460): warning: Cannot verify that if a true value is returned then this is Impl2.
-
 /contracts_with_receivers.kt:(618,621): info: Generated Viper text for is1:
 method is1(this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), _c_Class())
@@ -39,5 +35,3 @@ method is1(this: Ref) returns (ret: Ref)
   goto ret_0
   label ret_0
 }
-
-/contracts_with_receivers.kt:(658,699): warning: Cannot verify that if a true value is returned then this is Impl2.

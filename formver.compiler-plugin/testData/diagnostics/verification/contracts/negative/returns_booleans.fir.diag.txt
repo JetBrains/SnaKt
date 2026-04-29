@@ -1,4 +1,4 @@
-/returns_booleans.kt:(121,146): info: Generated Viper text for incorrectly_returns_false:
+/returns_booleans.kt:(133,158): info: Generated Viper text for incorrectly_returns_false:
 method incorrectly_returns_false() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
   ensures boolFromRef(ret) == true
@@ -8,9 +8,7 @@ method incorrectly_returns_false() returns (ret: Ref)
   label ret_0
 }
 
-/returns_booleans.kt:(183,196): warning: Function may return a false value.
-
-/returns_booleans.kt:(264,288): info: Generated Viper text for incorrectly_returns_true:
+/returns_booleans.kt:(276,300): info: Generated Viper text for incorrectly_returns_true:
 method incorrectly_returns_true() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
   ensures boolFromRef(ret) == false
@@ -19,5 +17,3 @@ method incorrectly_returns_true() returns (ret: Ref)
   goto ret_0
   label ret_0
 }
-
-/returns_booleans.kt:(325,339): warning: Function may return a true value.

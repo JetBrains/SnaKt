@@ -1,4 +1,4 @@
-/list.kt:(91,110): info: Generated Viper text for empty_list_expr_get:
+/list.kt:(103,122): info: Generated Viper text for empty_list_expr_get:
 field size: Ref
 
 method emptyList() returns (ret: Ref)
@@ -33,9 +33,7 @@ method get(this: Ref, index: Ref) returns (ret: Ref)
   ensures intFromRef(this.size) == old(intFromRef(this.size))
 
 
-/list.kt:(127,146): warning: Invalid index for the following list sub-expression, the index may be greater than the list's size.
-
-/list.kt:(168,182): info: Generated Viper text for empty_list_get:
+/list.kt:(180,194): info: Generated Viper text for empty_list_get:
 field size: Ref
 
 method emptyList() returns (ret: Ref)
@@ -70,9 +68,7 @@ method get(this: Ref, index: Ref) returns (ret: Ref)
   ensures intFromRef(this.size) == old(intFromRef(this.size))
 
 
-/list.kt:(239,248): warning: Invalid index for list 'myList', the index may be greater than the list's size.
-
-/list.kt:(270,281): info: Generated Viper text for unsafe_last:
+/list.kt:(282,293): info: Generated Viper text for unsafe_last:
 field size: Ref
 
 method get(this: Ref, index: Ref) returns (ret: Ref)
@@ -105,9 +101,7 @@ method unsafe_last(l: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/list.kt:(315,328): warning: Invalid index for list 'l', the index may be less than zero.
-
-/list.kt:(350,357): info: Generated Viper text for add_get:
+/list.kt:(362,369): info: Generated Viper text for add_get:
 field size: Ref
 
 method add(this: Ref, element: Ref) returns (ret: Ref)
@@ -151,9 +145,7 @@ method get(this: Ref, index: Ref) returns (ret: Ref)
   ensures intFromRef(this.size) == old(intFromRef(this.size))
 
 
-/list.kt:(406,410): warning: Invalid index for list 'l', the index may be greater than the list's size.
-
-/list.kt:(432,446): info: Generated Viper text for empty_list_sub:
+/list.kt:(444,458): info: Generated Viper text for empty_list_sub:
 field size: Ref
 
 method emptyList() returns (ret: Ref)
@@ -195,9 +187,7 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
     intFromRef(toIndex) - intFromRef(fromIndex)
 
 
-/list.kt:(463,493): warning: Invalid sub-list range for the following list sub-expression, the range may be greater than the list's size.
-
-/list.kt:(515,538): info: Generated Viper text for empty_list_sub_negative:
+/list.kt:(527,550): info: Generated Viper text for empty_list_sub_negative:
 field size: Ref
 
 method emptyList() returns (ret: Ref)
@@ -237,6 +227,3 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
   ensures intFromRef(this.size) == old(intFromRef(this.size))
   ensures intFromRef(ret.size) ==
     intFromRef(toIndex) - intFromRef(fromIndex)
-
-
-/list.kt:(555,586): warning: Invalid sub-list range for the following list sub-expression, the range may be including negative indices.

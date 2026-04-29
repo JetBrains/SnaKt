@@ -1,4 +1,4 @@
-/boolean_logic.kt:(23,31): info: Generated Viper text for negation:
+/boolean_logic.kt:(35,43): info: Generated Viper text for negation:
 method negation(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), boolType())
   ensures isSubtype(typeOf(ret), boolType())
@@ -8,7 +8,7 @@ method negation(x: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/boolean_logic.kt:(75,86): info: Generated Viper text for conjunction:
+/boolean_logic.kt:(87,98): info: Generated Viper text for conjunction:
 method conjunction(x: Ref, y: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), boolType())
   requires isSubtype(typeOf(y), boolType())
@@ -22,7 +22,7 @@ method conjunction(x: Ref, y: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/boolean_logic.kt:(146,168): info: Generated Viper text for conjunctionSideEffects:
+/boolean_logic.kt:(158,180): info: Generated Viper text for conjunctionSideEffects:
 method conjunctionSideEffects(x: Ref, y: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(x), boolType())
   requires isSubtype(typeOf(y), boolType())
@@ -43,7 +43,7 @@ method negation(x: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
 
 
-/boolean_logic.kt:(341,352): info: Generated Viper text for disjunction:
+/boolean_logic.kt:(353,364): info: Generated Viper text for disjunction:
 method disjunction(x: Ref, y: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), boolType())
   requires isSubtype(typeOf(y), boolType())

@@ -1,4 +1,4 @@
-/string_iterations.kt:(71,83): info: Generated Viper text for firstAtLeast:
+/string_iterations.kt:(83,95): info: Generated Viper text for firstAtLeast:
 method firstAtLeast(this: Ref, c: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(c), charType())
@@ -38,7 +38,7 @@ method firstAtLeast(this: Ref, c: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/string_iterations.kt:(606,614): info: Generated Viper text for lastLess:
+/string_iterations.kt:(618,626): info: Generated Viper text for lastLess:
 method lastLess(this: Ref, c: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(c), charType())

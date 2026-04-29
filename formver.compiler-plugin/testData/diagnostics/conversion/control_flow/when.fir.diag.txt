@@ -1,4 +1,4 @@
-/when.kt:(23,33): info: Generated Viper text for returnWhen:
+/when.kt:(35,45): info: Generated Viper text for returnWhen:
 method returnWhen(a: Ref, b: Ref, c: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(a), boolType())
   requires isSubtype(typeOf(b), boolType())
@@ -17,7 +17,7 @@ method returnWhen(a: Ref, b: Ref, c: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/when.kt:(171,181): info: Generated Viper text for whenReturn:
+/when.kt:(183,193): info: Generated Viper text for whenReturn:
 method whenReturn(a: Ref, b: Ref, c: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(a), boolType())
   requires isSubtype(typeOf(b), boolType())
@@ -40,7 +40,7 @@ method whenReturn(a: Ref, b: Ref, c: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/when.kt:(340,356): info: Generated Viper text for singleBranchWhen:
+/when.kt:(352,368): info: Generated Viper text for singleBranchWhen:
 method singleBranchWhen(a: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(a), boolType())
   ensures isSubtype(typeOf(ret), intType())
@@ -55,7 +55,7 @@ method singleBranchWhen(a: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/when.kt:(446,456): info: Generated Viper text for noElseWhen:
+/when.kt:(458,468): info: Generated Viper text for noElseWhen:
 method noElseWhen(a: Ref, b: Ref, c: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(a), boolType())
   requires isSubtype(typeOf(b), boolType())
@@ -76,7 +76,7 @@ method noElseWhen(a: Ref, b: Ref, c: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/when.kt:(608,626): info: Generated Viper text for whenWithSubjectVar:
+/when.kt:(620,638): info: Generated Viper text for whenWithSubjectVar:
 method whenWithSubjectVar(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), intType())
@@ -93,7 +93,7 @@ method whenWithSubjectVar(x: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/when.kt:(726,745): info: Generated Viper text for whenWithSubjectCall:
+/when.kt:(738,757): info: Generated Viper text for whenWithSubjectCall:
 method whenWithSubjectCall(x: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret_0), intType())
@@ -123,7 +123,7 @@ method whenWithSubjectVar(x: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
 
 
-/when.kt:(963,972): info: Generated Viper text for emptyWhen:
+/when.kt:(975,984): info: Generated Viper text for emptyWhen:
 method emptyWhen() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
 {
@@ -132,7 +132,7 @@ method emptyWhen() returns (ret: Ref)
   label ret_0
 }
 
-/when.kt:(1015,1027): info: Generated Viper text for unusedResult:
+/when.kt:(1027,1039): info: Generated Viper text for unusedResult:
 method unusedResult() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
 {
@@ -143,7 +143,7 @@ method unusedResult() returns (ret: Ref)
   label ret_0
 }
 
-/when.kt:(1221,1227): info: Generated Viper text for whenIs:
+/when.kt:(1233,1239): info: Generated Viper text for whenIs:
 method whenIs(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), _c_Foo())
   ensures isSubtype(typeOf(ret), boolType())
@@ -159,7 +159,7 @@ method whenIs(x: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/when.kt:(1301,1315): info: Generated Viper text for whenSubjectVal:
+/when.kt:(1313,1327): info: Generated Viper text for whenSubjectVal:
 method whenSubjectVal() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
 {
@@ -173,7 +173,7 @@ method whenSubjectVal() returns (ret: Ref)
   label ret_0
 }
 
-/when.kt:(1392,1412): info: Generated Viper text for whenSubjectValNested:
+/when.kt:(1404,1424): info: Generated Viper text for whenSubjectValNested:
 method whenSubjectValNested() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 {
@@ -203,7 +203,7 @@ method whenSubjectValNested() returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/when.kt:(1674,1697): info: Generated Viper text for whenSubjectVarShadowing:
+/when.kt:(1686,1709): info: Generated Viper text for whenSubjectVarShadowing:
 method whenSubjectVarShadowing() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 {

@@ -1,4 +1,4 @@
-/multiple_interfaces.kt:(162,173): info: Generated Viper text for testDiamond:
+/multiple_interfaces.kt:(175,186): info: Generated Viper text for testDiamond:
 method con() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), _c_D())
   ensures acc(c_D_shared(ret), wildcard)
@@ -21,7 +21,7 @@ method testDiamond() returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/multiple_interfaces.kt:(405,415): info: Generated Viper text for testVarVal:
+/multiple_interfaces.kt:(418,428): info: Generated Viper text for testVarVal:
 method con() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), _c_I())
   ensures acc(c_I_shared(ret), wildcard)

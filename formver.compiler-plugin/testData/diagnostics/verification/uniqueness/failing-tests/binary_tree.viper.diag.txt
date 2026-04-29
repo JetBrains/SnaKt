@@ -1,1 +1,1 @@
-/binary_tree.kt:(597,602): warning: Viper verification error: Assert might fail. Assertion df$rt$boolFromRef(l0$expr1) might not hold.
+/binary_tree.kt:(597,602): warning: Viper verification error: Assert might fail. Assertion boolFromRef(expr1) might not hold.
