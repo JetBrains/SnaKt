@@ -66,6 +66,6 @@ data class AdtLit(
     val adtTypeEmbedding: AdtTypeEmbedding
         get() = type.pretype as AdtTypeEmbedding
 
-    override fun <R> accept(v: ExpVisitor<R>): R = v.visitAdtConstructorLit(this)
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitAdtLit(this)
 }
 

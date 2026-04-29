@@ -288,9 +288,9 @@ class RuntimeTypeDomain(
     }
 
     val classTypes: Map<ClassTypeEmbedding, DomainFunc> = classes.associateWith { it.embedClassTypeFunc() }
-    val adtClassTypes: Map<AdtTypeEmbedding, DomainFunc> = adts.associateWith { classTypeFunc(it.name) }
-
-    private val adtInjections: List<Injection> = adts.filter { it.isInitialized }.map { it.injection }
+    private val validAdts: List<AdtTypeEmbedding> = adts.filter { it.isInitialized }
+    val adtClassTypes: Map<AdtTypeEmbedding, DomainFunc> = validAdts.associateWith { classTypeFunc(it.name) }
+    private val adtInjections: List<Injection> = validAdts.map { it.injection }
     val builtinTypes: List<DomainFunc> =
         listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType)
     val nonNullableTypes: List<DomainFunc> = buildList {
