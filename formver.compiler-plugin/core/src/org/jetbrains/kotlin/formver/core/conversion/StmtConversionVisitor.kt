@@ -288,7 +288,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             ?: throw NotImplementedError("Only functions are expected as callables of function calls, got ${functionCall.toResolvedCallableSymbol()}")
 
         functionCall.extractFormverFirBlock { isInvariantBuilderFunctionNamed("forAll") }?.let { forAllLambda ->
-                if (!data.isValidForForAllBlock) throw SnaktInternalException(
+                if (!data.isValidForFormVerStmt) throw SnaktInternalException(
                     forAllLambda.source,
                     "`forAll` scope is only allowed inside one of the `loopInvariants`, `preconditions` or `postconditions`."
                 )
@@ -303,7 +303,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         functionCall.extractFormverFirStmt {  isInvariantBuilderFunctionNamed("acc") }?.let {
             accLambda ->
             //acc is only allowed to be used in the same context as forAll
-            if (!data.isValidForForAllBlock) throw SnaktInternalException(
+            if (!data.isValidForFormVerStmt) throw SnaktInternalException(
                 accLambda.source,
                 "`acc` scope is only allowed inside one of the `loopInvariants`, `preconditions` or `postconditions`."
             )

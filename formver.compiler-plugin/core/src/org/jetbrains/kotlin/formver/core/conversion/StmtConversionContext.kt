@@ -23,6 +23,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.BackingFieldGetter
 import org.jetbrains.kotlin.formver.core.embeddings.properties.ClassPropertyAccess
+import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyAccessEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.asPropertyAccess
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
@@ -243,19 +244,22 @@ fun StmtConversionContext.insertForAllFunctionCall(
     }
 }
 
+fun StmtConversionContext.firPropertyToField(
+    expr: FirPropertyAccessExpression,
+): FieldEmbedding {
+    val access = embedPropertyAccess(expr) as? ClassPropertyAccess
+        ?: throw SnaktInternalException(expr.source, "could not embed as class property")
+    return (access.property.getter as? BackingFieldGetter)?.field
+        ?: throw SnaktInternalException(expr.source, "acc requires property access like x.a")
+}
+
 fun StmtConversionContext.insertAccFunctionCall(
     field: FirPropertyAccessExpression,
     perm: PermExp,
 ): ExpEmbedding {
     val fieldAccess = embedPropertyAccess(field)
-    val field = ((fieldAccess as? ClassPropertyAccess ?: throw SnaktInternalException(
-        field.source,
-        "could not embed as class property"
-    )).property.getter as? BackingFieldGetter ?: throw SnaktInternalException(
-        field.source,
-        "acc requires property access like x.a"
-    )).field
-    val receiver = fieldAccess.receiver
+    val field = firPropertyToField(field)
+    val receiver = (fieldAccess as ClassPropertyAccess).receiver
     return withNoScope {
         AccEmbedding(field, receiver, perm)
     }
