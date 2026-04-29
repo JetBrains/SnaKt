@@ -20,10 +20,5 @@ data class AccEmbedding(
         get() = buildType { boolean() }
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitAccEmbedding(this)
-<<<<<<< HEAD
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(access)
-}
-=======
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(receiver)
 }
->>>>>>> 3a052621375e28a660bec009e4b76fc92d71a303
