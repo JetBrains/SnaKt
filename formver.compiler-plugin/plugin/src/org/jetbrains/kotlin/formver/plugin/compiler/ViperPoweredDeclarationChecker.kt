@@ -110,7 +110,6 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
                 // If we are in a test, then the verification happens later.
                 val verifier = SiliconFrontend(emptyList())
                 verifier.use { it.verify(viperProgram, onFailure) }
-                verifier.close()
             }
 
         } catch (e: SnaktInternalException) {
