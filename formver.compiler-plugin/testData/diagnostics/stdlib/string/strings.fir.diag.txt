@@ -1,4 +1,4 @@
-/strings.kt:(249,257): info: Generated Viper text for testType:
+/strings.kt: info: Generated Viper text for testType:
 field bf_str: Ref
 
 field size: Ref
@@ -75,7 +75,7 @@ method testType(s: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/strings.kt:(424,439): info: Generated Viper text for testLengthField:
+/strings.kt: info: Generated Viper text for testLengthField:
 field bf_str: Ref
 
 field size: Ref
@@ -146,7 +146,7 @@ method testLengthField(s: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/strings.kt:(564,571): info: Generated Viper text for testOps:
+/strings.kt: info: Generated Viper text for testOps:
 field size: Ref
 
 predicate c_BooleanArray_shared(this: Ref) {

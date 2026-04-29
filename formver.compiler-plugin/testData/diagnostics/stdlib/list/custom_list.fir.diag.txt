@@ -1,4 +1,4 @@
-/custom_list.kt:(180,183): info: Generated Viper text for get:
+/custom_list.kt: info: Generated Viper text for get:
 field size: Ref
 
 field value: Ref
@@ -22,7 +22,7 @@ method get(this: Ref, index: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/custom_list.kt:(260,264): info: Generated Viper text for test:
+/custom_list.kt: info: Generated Viper text for test:
 field bf_value: Ref
 
 field size: Ref

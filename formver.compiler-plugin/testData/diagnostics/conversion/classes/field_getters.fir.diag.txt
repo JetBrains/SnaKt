@@ -1,4 +1,4 @@
-/field_getters.kt:(70,94): info: Generated Viper text for testPrimitiveFieldGetter:
+/field_getters.kt: info: Generated Viper text for testPrimitiveFieldGetter:
 field bf_a: Ref
 
 field bf_b: Ref
@@ -17,7 +17,7 @@ method testPrimitiveFieldGetter(pf: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/field_getters.kt:(230,254): info: Generated Viper text for testReferenceFieldGetter:
+/field_getters.kt: info: Generated Viper text for testReferenceFieldGetter:
 field a: Ref
 
 field b: Ref
@@ -50,7 +50,7 @@ method testReferenceFieldGetter(rf: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/field_getters.kt:(387,411): info: Generated Viper text for testCascadingFieldGetter:
+/field_getters.kt: info: Generated Viper text for testCascadingFieldGetter:
 field a: Ref
 
 field b: Ref

@@ -1,4 +1,4 @@
-/smartcast.kt:(23,38): info: Generated Viper text for smartcastReturn:
+/smartcast.kt: info: Generated Viper text for smartcastReturn:
 method smartcastReturn(n: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(n), nullable(intType()))
   ensures isSubtype(typeOf(ret), intType())
@@ -11,7 +11,7 @@ method smartcastReturn(n: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/smartcast.kt:(88,106): info: Generated Viper text for isNullOrEmptyWrong:
+/smartcast.kt: info: Generated Viper text for isNullOrEmptyWrong:
 method isNullOrEmptyWrong(seq: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(seq), nullable(kotlin_c_CharSequence()))
   ensures isSubtype(typeOf(ret), boolType())

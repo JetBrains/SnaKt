@@ -1,4 +1,4 @@
-/viper_verify.kt:(137,149): info: Generated Viper text for verify_false:
+/viper_verify.kt: info: Generated Viper text for verify_false:
 field size: Ref
 
 method verify_false() returns (ret_0: Ref)
@@ -9,7 +9,7 @@ method verify_false() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/viper_verify.kt:(193,208): info: Generated Viper text for verify_compound:
+/viper_verify.kt: info: Generated Viper text for verify_compound:
 field size: Ref
 
 method verify_compound() returns (ret_0: Ref)

@@ -1,4 +1,4 @@
-/function_overloading.kt:(49,52): info: Generated Viper text for baz:
+/function_overloading.kt: info: Generated Viper text for baz:
 method baz(this: Ref, f: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), _c_Bar())
   requires isSubtype(typeOf(f), _c_Foo())
@@ -10,7 +10,7 @@ method baz(this: Ref, f: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/function_overloading.kt:(74,77): info: Generated Viper text for baz:
+/function_overloading.kt: info: Generated Viper text for baz:
 method baz(this: Ref, b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), _c_Bar())
   requires isSubtype(typeOf(b), _c_Bar())
@@ -22,7 +22,7 @@ method baz(this: Ref, b: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/function_overloading.kt:(98,107): info: Generated Viper text for fakePrint:
+/function_overloading.kt: info: Generated Viper text for fakePrint:
 method fakePrint(b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(b), _c_Bar())
   ensures isSubtype(typeOf(ret), unitType())
@@ -32,7 +32,7 @@ method fakePrint(b: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/function_overloading.kt:(125,134): info: Generated Viper text for fakePrint:
+/function_overloading.kt: info: Generated Viper text for fakePrint:
 method fakePrint(f: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(f), _c_Foo())
   ensures isSubtype(typeOf(ret), unitType())
@@ -42,7 +42,7 @@ method fakePrint(f: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/function_overloading.kt:(152,161): info: Generated Viper text for fakePrint:
+/function_overloading.kt: info: Generated Viper text for fakePrint:
 method fakePrint(value: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(value), intType())
   ensures isSubtype(typeOf(ret), unitType())
@@ -51,7 +51,7 @@ method fakePrint(value: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/function_overloading.kt:(183,192): info: Generated Viper text for fakePrint:
+/function_overloading.kt: info: Generated Viper text for fakePrint:
 method fakePrint(truth: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(truth), boolType())
   ensures isSubtype(typeOf(ret), unitType())
@@ -60,7 +60,7 @@ method fakePrint(truth: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/function_overloading.kt:(219,238): info: Generated Viper text for differInNullability:
+/function_overloading.kt: info: Generated Viper text for differInNullability:
 method differInNullability(i: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(i), intType())
   ensures isSubtype(typeOf(ret), unitType())
@@ -69,7 +69,7 @@ method differInNullability(i: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/function_overloading.kt:(256,275): info: Generated Viper text for differInNullability:
+/function_overloading.kt: info: Generated Viper text for differInNullability:
 method differInNullability(i: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(i), nullable(intType()))
   ensures isSubtype(typeOf(ret), unitType())
@@ -78,7 +78,7 @@ method differInNullability(i: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/function_overloading.kt:(295,321): info: Generated Viper text for testGlobalScopeOverloading:
+/function_overloading.kt: info: Generated Viper text for testGlobalScopeOverloading:
 method con() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), _c_Bar())
   ensures acc(shared(ret), wildcard)
@@ -130,7 +130,7 @@ method testGlobalScopeOverloading() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/function_overloading.kt:(413,441): info: Generated Viper text for testClassFunctionOverloading:
+/function_overloading.kt: info: Generated Viper text for testClassFunctionOverloading:
 method baz(this: Ref, b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), _c_Bar())
   requires isSubtype(typeOf(b), _c_Bar())

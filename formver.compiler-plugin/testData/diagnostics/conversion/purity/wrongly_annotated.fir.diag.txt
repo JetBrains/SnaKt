@@ -1,4 +1,4 @@
-/wrongly_annotated.kt:(65,75): info: Generated Viper text for iAmAMethod:
+/wrongly_annotated.kt: info: Generated Viper text for iAmAMethod:
 method iAmAMethod() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
 {
@@ -7,13 +7,13 @@ method iAmAMethod() returns (ret: Ref)
   label ret_0
 }
 
-/wrongly_annotated.kt:(101,172): error: Impure function body detected in pure function
+/wrongly_annotated.kt: error: Impure function body detected in pure function
 
-/wrongly_annotated.kt:(174,251): error: Impure function body detected in pure function
+/wrongly_annotated.kt: error: Impure function body detected in pure function
 
-/wrongly_annotated.kt:(282,380): error: Impure function body detected in pure function
+/wrongly_annotated.kt: error: Impure function body detected in pure function
 
-/wrongly_annotated.kt:(392,407): info: Generated Viper text for impureExtension:
+/wrongly_annotated.kt: info: Generated Viper text for impureExtension:
 field value: Ref
 
 method impureExtension(this: Ref) returns (ret_0: Ref)
@@ -25,8 +25,8 @@ method impureExtension(this: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/wrongly_annotated.kt:(435,542): error: Impure function body detected in pure function
+/wrongly_annotated.kt: error: Impure function body detected in pure function
 
-/wrongly_annotated.kt:(544,611): error: Impure function body detected in pure function
+/wrongly_annotated.kt: error: Impure function body detected in pure function
 
-/wrongly_annotated.kt:(646,770): error: Impure function body detected in pure function
+/wrongly_annotated.kt: error: Impure function body detected in pure function

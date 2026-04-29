@@ -1,4 +1,4 @@
-/quick_sort_of_string.kt:(294,306): info: Generated Viper text for minOrMaxChar:
+/quick_sort_of_string.kt: info: Generated Viper text for minOrMaxChar:
 method minOrMaxChar(this: Ref, calcMin: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(calcMin), boolType())
@@ -69,7 +69,7 @@ method minOrMaxChar(this: Ref, calcMin: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/quick_sort_of_string.kt:(1147,1156): info: Generated Viper text for quickSort:
+/quick_sort_of_string.kt: info: Generated Viper text for quickSort:
 method minOrMaxChar(this: Ref, calcMin: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(calcMin), boolType())
@@ -125,7 +125,7 @@ method quickSortRec(this: Ref, minVal: Ref, maxVal: Ref) returns (ret: Ref)
       stringFromRef(ret)[anon - 1] <= stringFromRef(ret)[anon])
 
 
-/quick_sort_of_string.kt:(1519,1531): info: Generated Viper text for quickSortRec:
+/quick_sort_of_string.kt: info: Generated Viper text for quickSortRec:
 method chooseIndex(this: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires |stringFromRef(this)| >= 1

@@ -1,4 +1,4 @@
-/increment.kt:(35,46): info: Generated Viper text for test_simple:
+/increment.kt: info: Generated Viper text for test_simple:
 method test_simple() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 {
@@ -14,7 +14,7 @@ method test_simple() returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/increment.kt:(133,152): info: Generated Viper text for test_postincvrement:
+/increment.kt: info: Generated Viper text for test_postincvrement:
 method test_postincvrement() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 {

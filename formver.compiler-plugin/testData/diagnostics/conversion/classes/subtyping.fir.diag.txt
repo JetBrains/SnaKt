@@ -1,4 +1,4 @@
-/subtyping.kt:(80,89): info: Generated Viper text for smartCast:
+/subtyping.kt: info: Generated Viper text for smartCast:
 method smartCast(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))
   ensures isSubtype(typeOf(ret), intType())
@@ -13,7 +13,7 @@ method smartCast(x: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/subtyping.kt:(187,202): info: Generated Viper text for returnSubtyping:
+/subtyping.kt: info: Generated Viper text for returnSubtyping:
 method returnSubtyping() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), nullable(intType()))
 {
@@ -22,7 +22,7 @@ method returnSubtyping() returns (ret: Ref)
   label ret_0
 }
 
-/subtyping.kt:(233,252): info: Generated Viper text for assignmentSubtyping:
+/subtyping.kt: info: Generated Viper text for assignmentSubtyping:
 method assignmentSubtyping() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 {
@@ -33,7 +33,7 @@ method assignmentSubtyping() returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/subtyping.kt:(358,384): info: Generated Viper text for functionParameterSubtyping:
+/subtyping.kt: info: Generated Viper text for functionParameterSubtyping:
 method functionParameterSubtyping() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), unitType())
 {

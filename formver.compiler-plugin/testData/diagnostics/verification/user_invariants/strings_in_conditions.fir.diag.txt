@@ -1,4 +1,4 @@
-/strings_in_conditions.kt:(64,83): info: Generated Viper text for firstNotSortedIndex:
+/strings_in_conditions.kt: info: Generated Viper text for firstNotSortedIndex:
 method firstNotSortedIndex(s: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(s), stringType())
   ensures isSubtype(typeOf(ret), intType())
@@ -39,7 +39,7 @@ method firstNotSortedIndex(s: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/strings_in_conditions.kt:(635,650): info: Generated Viper text for returnNewString:
+/strings_in_conditions.kt: info: Generated Viper text for returnNewString:
 method returnNewString() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), stringType())
 {
@@ -48,7 +48,7 @@ method returnNewString() returns (ret: Ref)
   label ret_0
 }
 
-/strings_in_conditions.kt:(686,703): info: Generated Viper text for addCharacterTimes:
+/strings_in_conditions.kt: info: Generated Viper text for addCharacterTimes:
 method addCharacterTimes(s: Ref, c: Ref, n: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(s), stringType())
   requires isSubtype(typeOf(c), charType())

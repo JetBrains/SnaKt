@@ -1,4 +1,4 @@
-/forall_with_triggers.kt:(64,87): info: Generated Viper text for forAllWithSimpleTrigger:
+/forall_with_triggers.kt: info: Generated Viper text for forAllWithSimpleTrigger:
 method forAllWithSimpleTrigger() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
   ensures (forall anon: Int ::
@@ -10,7 +10,7 @@ method forAllWithSimpleTrigger() returns (ret: Ref)
   label ret_0
 }
 
-/forall_with_triggers.kt:(332,358): info: Generated Viper text for forAllWithMultipleTriggers:
+/forall_with_triggers.kt: info: Generated Viper text for forAllWithMultipleTriggers:
 method forAllWithMultipleTriggers() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
   ensures (forall anon: Int ::
@@ -23,7 +23,7 @@ method forAllWithMultipleTriggers() returns (ret: Ref)
   label ret_0
 }
 
-/forall_with_triggers.kt:(604,628): info: Generated Viper text for forAllWithTriggersInLoop:
+/forall_with_triggers.kt: info: Generated Viper text for forAllWithTriggersInLoop:
 method forAllWithTriggersInLoop(str: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(str), stringType())
   ensures isSubtype(typeOf(ret), intType())
@@ -65,7 +65,7 @@ method forAllWithTriggersInLoop(str: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/forall_with_triggers.kt:(1004,1025): info: Generated Viper text for forAllWithoutTriggers:
+/forall_with_triggers.kt: info: Generated Viper text for forAllWithoutTriggers:
 method forAllWithoutTriggers() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
   ensures (forall anon: Int ::anon * anon >= 0)

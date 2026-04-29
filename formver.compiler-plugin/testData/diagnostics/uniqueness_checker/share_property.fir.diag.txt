@@ -1,9 +1,9 @@
-/share_property.kt:(427,432): error: Argument uniqueness mismatch: expected 'shared global', actual 'shared local'.
+/share_property.kt: error: Argument uniqueness mismatch: expected 'shared global', actual 'shared local'.
 
-/share_property.kt:(580,585): error: Argument uniqueness mismatch: expected 'shared global', actual 'unique local'.
+/share_property.kt: error: Argument uniqueness mismatch: expected 'shared global', actual 'unique local'.
 
-/share_property.kt:(802,803): error: Argument uniqueness mismatch: partial type 'moved' is inconsistent with parent type 'unique global'.
+/share_property.kt: error: Argument uniqueness mismatch: partial type 'moved' is inconsistent with parent type 'unique global'.
 
-/share_property.kt:(878,879): error: Argument uniqueness mismatch: partial type 'shared global' is inconsistent with parent type 'unique global'.
+/share_property.kt: error: Argument uniqueness mismatch: partial type 'shared global' is inconsistent with parent type 'unique global'.
 
-/share_property.kt:(1012,1013): error: Assignment uniqueness mismatch: expected 'unique global', actual 'shared global'.
+/share_property.kt: error: Assignment uniqueness mismatch: expected 'unique global', actual 'shared global'.

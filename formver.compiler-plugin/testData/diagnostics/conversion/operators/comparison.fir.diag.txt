@@ -1,4 +1,4 @@
-/comparison.kt:(35,39): info: Generated Viper text for less:
+/comparison.kt: info: Generated Viper text for less:
 method less(x: Ref, y: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   requires isSubtype(typeOf(y), intType())
@@ -9,7 +9,7 @@ method less(x: Ref, y: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/comparison.kt:(91,100): info: Generated Viper text for lessEqual:
+/comparison.kt: info: Generated Viper text for lessEqual:
 method lessEqual(x: Ref, y: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   requires isSubtype(typeOf(y), intType())
@@ -20,7 +20,7 @@ method lessEqual(x: Ref, y: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/comparison.kt:(153,160): info: Generated Viper text for greater:
+/comparison.kt: info: Generated Viper text for greater:
 method greater(x: Ref, y: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   requires isSubtype(typeOf(y), intType())
@@ -31,7 +31,7 @@ method greater(x: Ref, y: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/comparison.kt:(212,224): info: Generated Viper text for greaterEqual:
+/comparison.kt: info: Generated Viper text for greaterEqual:
 method greaterEqual(x: Ref, y: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   requires isSubtype(typeOf(y), intType())

@@ -1,4 +1,4 @@
-/lambdas.kt:(167,178): info: Generated Viper text for explicitArg:
+/lambdas.kt: info: Generated Viper text for explicitArg:
 method explicitArg() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), intType())
 {
@@ -17,7 +17,7 @@ method explicitArg() returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/lambdas.kt:(228,239): info: Generated Viper text for implicitArg:
+/lambdas.kt: info: Generated Viper text for implicitArg:
 method implicitArg() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), intType())
 {
@@ -36,7 +36,7 @@ method implicitArg() returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/lambdas.kt:(285,293): info: Generated Viper text for lambdaIf:
+/lambdas.kt: info: Generated Viper text for lambdaIf:
 method lambdaIf() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), intType())
 {
@@ -58,7 +58,7 @@ method lambdaIf() returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/lambdas.kt:(424,442): info: Generated Viper text for returnValueNotUsed:
+/lambdas.kt: info: Generated Viper text for returnValueNotUsed:
 method returnValueNotUsed() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), unitType())
 {
@@ -76,7 +76,7 @@ method returnValueNotUsed() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/lambdas.kt:(478,487): info: Generated Viper text for shadowing:
+/lambdas.kt: info: Generated Viper text for shadowing:
 method shadowing() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), intType())
 {
@@ -101,7 +101,7 @@ method shadowing() returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/lambdas.kt:(723,729): info: Generated Viper text for nested:
+/lambdas.kt: info: Generated Viper text for nested:
 method nested() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), intType())
 {
@@ -128,7 +128,7 @@ method nested() returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/lambdas.kt:(865,882): info: Generated Viper text for lambdaPassthrough:
+/lambdas.kt: info: Generated Viper text for lambdaPassthrough:
 method lambdaPassthrough() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), unitType())
 {

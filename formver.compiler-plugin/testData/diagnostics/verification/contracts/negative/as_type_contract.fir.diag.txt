@@ -1,4 +1,4 @@
-/as_type_contract.kt:(150,154): info: Generated Viper text for getX:
+/as_type_contract.kt: info: Generated Viper text for getX:
 field x: Ref
 
 method getX(a: Ref) returns (ret_0: Ref)

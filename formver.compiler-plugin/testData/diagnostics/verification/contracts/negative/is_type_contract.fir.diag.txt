@@ -1,4 +1,4 @@
-/is_type_contract.kt:(162,183): info: Generated Viper text for unverifiableTypeCheck:
+/is_type_contract.kt: info: Generated Viper text for unverifiableTypeCheck:
 method unverifiableTypeCheck(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))
   ensures isSubtype(typeOf(ret), boolType())
@@ -9,7 +9,7 @@ method unverifiableTypeCheck(x: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/is_type_contract.kt:(330,352): info: Generated Viper text for nullableNotNonNullable:
+/is_type_contract.kt: info: Generated Viper text for nullableNotNonNullable:
 method nullableNotNonNullable(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))
   ensures isSubtype(typeOf(ret), unitType())

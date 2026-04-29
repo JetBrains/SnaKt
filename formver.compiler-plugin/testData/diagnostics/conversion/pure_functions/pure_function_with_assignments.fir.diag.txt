@@ -1,4 +1,4 @@
-/pure_function_with_assignments.kt:(90,105): info: Generated Viper text for returnNumberVal:
+/pure_function_with_assignments.kt: info: Generated Viper text for returnNumberVal:
 function returnNumberVal(): Ref
   ensures isSubtype(typeOf(result), intType())
 {
@@ -7,7 +7,7 @@ function returnNumberVal(): Ref
     l0_x_0)
 }
 
-/pure_function_with_assignments.kt:(156,190): info: Generated Viper text for multipleAssignmentsOfDifferentType:
+/pure_function_with_assignments.kt: info: Generated Viper text for multipleAssignmentsOfDifferentType:
 function multipleAssignmentsOfDifferentType(): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
@@ -22,7 +22,7 @@ function multipleAssignmentsOfDifferentType(): Ref
           l0_c_0))))
 }
 
-/pure_function_with_assignments.kt:(304,340): info: Generated Viper text for multipleAssignmentsWithLiteralReturn:
+/pure_function_with_assignments.kt: info: Generated Viper text for multipleAssignmentsWithLiteralReturn:
 function multipleAssignmentsWithLiteralReturn(): Ref
   ensures isSubtype(typeOf(result), intType())
 {
@@ -37,7 +37,7 @@ function multipleAssignmentsWithLiteralReturn(): Ref
           intToRef(42)))))
 }
 
-/pure_function_with_assignments.kt:(451,485): info: Generated Viper text for laterInitializersCanRelyOnPrevious:
+/pure_function_with_assignments.kt: info: Generated Viper text for laterInitializersCanRelyOnPrevious:
 function laterInitializersCanRelyOnPrevious(): Ref
   ensures isSubtype(typeOf(result), intType())
 {
@@ -50,7 +50,7 @@ function laterInitializersCanRelyOnPrevious(): Ref
         l0_c_0)))
 }
 
-/pure_function_with_assignments.kt:(572,603): info: Generated Viper text for initializersCanRelyOnParameters:
+/pure_function_with_assignments.kt: info: Generated Viper text for initializersCanRelyOnParameters:
 function initializersCanRelyOnParameters(x: Ref, y: Ref): Ref
   requires isSubtype(typeOf(x), intType())
   requires isSubtype(typeOf(y), intType())

@@ -1,4 +1,4 @@
-/interface.kt:(96,110): info: Generated Viper text for testProperties:
+/interface.kt: info: Generated Viper text for testProperties:
 method g_varProp(this: Ref) returns (v_ret: Ref)
 
 
@@ -31,7 +31,7 @@ method valProp(this: Ref) returns (v_ret: Ref)
 method varProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
 
 
-/interface.kt:(360,370): info: Generated Viper text for createImpl:
+/interface.kt: info: Generated Viper text for createImpl:
 field bf_number: Ref
 
 method con(number: Ref) returns (ret: Ref)

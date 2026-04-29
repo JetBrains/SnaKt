@@ -1,4 +1,4 @@
-/stdlib_replacement_tests.kt:(116,125): info: Generated Viper text for useChecks:
+/stdlib_replacement_tests.kt: info: Generated Viper text for useChecks:
 method useChecks() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), unitType())
 {
@@ -16,7 +16,7 @@ method useChecks() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/stdlib_replacement_tests.kt:(310,317): info: Generated Viper text for useRuns:
+/stdlib_replacement_tests.kt: info: Generated Viper text for useRuns:
 field size: Ref
 
 method useRuns(x: Ref) returns (ret_0: Ref)
@@ -71,7 +71,7 @@ method useRuns(x: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/stdlib_replacement_tests.kt:(471,478): info: Generated Viper text for useAlso:
+/stdlib_replacement_tests.kt: info: Generated Viper text for useAlso:
 field size: Ref
 
 method useAlso(x: Ref) returns (ret_0: Ref)
@@ -101,7 +101,7 @@ method useAlso(x: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/stdlib_replacement_tests.kt:(543,549): info: Generated Viper text for useLet:
+/stdlib_replacement_tests.kt: info: Generated Viper text for useLet:
 field size: Ref
 
 method useLet(x: Ref) returns (ret_0: Ref)
@@ -137,7 +137,7 @@ method useLet(x: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/stdlib_replacement_tests.kt:(633,640): info: Generated Viper text for useWith:
+/stdlib_replacement_tests.kt: info: Generated Viper text for useWith:
 field size: Ref
 
 method useWith(x: Ref) returns (ret_0: Ref)
@@ -170,7 +170,7 @@ method useWith(x: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/stdlib_replacement_tests.kt:(706,714): info: Generated Viper text for useApply:
+/stdlib_replacement_tests.kt: info: Generated Viper text for useApply:
 field size: Ref
 
 method useApply(x: Ref) returns (ret_0: Ref)

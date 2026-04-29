@@ -1,4 +1,4 @@
-/as_type_contract.kt:(152,162): info: Generated Viper text for asOperator:
+/as_type_contract.kt: info: Generated Viper text for asOperator:
 method asOperator(foo: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(foo), _c_Foo())
   ensures isSubtype(typeOf(ret), _c_Bar())
@@ -13,7 +13,7 @@ method asOperator(foo: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/as_type_contract.kt:(307,321): info: Generated Viper text for safeAsOperator:
+/as_type_contract.kt: info: Generated Viper text for safeAsOperator:
 method safeAsOperator(foo: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(foo), _c_Foo())
   ensures isSubtype(typeOf(ret), nullable(_c_Bar()))
@@ -28,7 +28,7 @@ method safeAsOperator(foo: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/as_type_contract.kt:(504,508): info: Generated Viper text for getX:
+/as_type_contract.kt: info: Generated Viper text for getX:
 field x: Ref
 
 method getX(a: Ref) returns (ret_0: Ref)

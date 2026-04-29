@@ -1,4 +1,4 @@
-/custom_run_functions.kt:(1206,1212): info: Generated Viper text for useRun:
+/custom_run_functions.kt: info: Generated Viper text for useRun:
 field size: Ref
 
 method useRun() returns (ret_0: Ref)
@@ -355,7 +355,7 @@ method useRun() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/custom_run_functions.kt:(2366,2381): info: Generated Viper text for complexScenario:
+/custom_run_functions.kt: info: Generated Viper text for complexScenario:
 method complexScenario(par_arg: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(par_arg), boolType())
   ensures isSubtype(typeOf(ret_0), boolType())
@@ -527,7 +527,7 @@ method complexScenario(par_arg: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/custom_run_functions.kt:(3422,3437): info: Generated Viper text for testCustomClass:
+/custom_run_functions.kt: info: Generated Viper text for testCustomClass:
 field member: Ref
 
 field size: Ref

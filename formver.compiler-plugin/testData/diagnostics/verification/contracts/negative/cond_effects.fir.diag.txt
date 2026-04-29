@@ -1,4 +1,4 @@
-/cond_effects.kt:(133,158): info: Generated Viper text for compoundConditionalEffect:
+/cond_effects.kt: info: Generated Viper text for compoundConditionalEffect:
 method compoundConditionalEffect(b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(ret), unitType())
@@ -8,7 +8,7 @@ method compoundConditionalEffect(b: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/cond_effects.kt:(283,299): info: Generated Viper text for mayReturnNonNull:
+/cond_effects.kt: info: Generated Viper text for mayReturnNonNull:
 method mayReturnNonNull(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), nullable(anyType()))
   ensures isSubtype(typeOf(ret), nullable(anyType()))
@@ -19,7 +19,7 @@ method mayReturnNonNull(x: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/cond_effects.kt:(436,449): info: Generated Viper text for mayReturnNull:
+/cond_effects.kt: info: Generated Viper text for mayReturnNull:
 method mayReturnNull(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), nullable(anyType()))
   ensures isSubtype(typeOf(ret), nullable(anyType()))
@@ -30,7 +30,7 @@ method mayReturnNull(x: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/cond_effects.kt:(735,753): info: Generated Viper text for isNullOrEmptyWrong:
+/cond_effects.kt: info: Generated Viper text for isNullOrEmptyWrong:
 method isNullOrEmptyWrong(seq: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(seq), nullable(kotlin_c_CharSequence()))
   ensures isSubtype(typeOf(ret), boolType())
@@ -53,7 +53,7 @@ method isNullOrEmptyWrong(seq: Ref) returns (ret: Ref)
 method length(this: Ref) returns (v_ret: Ref)
 
 
-/cond_effects.kt:(937,954): info: Generated Viper text for recursiveContract:
+/cond_effects.kt: info: Generated Viper text for recursiveContract:
 method recursiveContract(n: Ref, x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(n), intType())
   requires isSubtype(typeOf(x), nullable(anyType()))

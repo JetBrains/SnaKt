@@ -1,1 +1,1 @@
-/as_type_contract.kt:(194,236): warning: Cannot verify that if a non-null value is returned then a !is IntHolder.
+/as_type_contract.kt: warning: Cannot verify that if a non-null value is returned then a !is IntHolder.

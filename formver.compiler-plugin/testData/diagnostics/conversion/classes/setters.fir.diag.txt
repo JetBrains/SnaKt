@@ -1,4 +1,4 @@
-/setters.kt:(103,127): info: Generated Viper text for testPrimitiveFieldSetter:
+/setters.kt: info: Generated Viper text for testPrimitiveFieldSetter:
 field a: Ref
 
 method testPrimitiveFieldSetter(pf: Ref) returns (ret_0: Ref)
@@ -10,7 +10,7 @@ method testPrimitiveFieldSetter(pf: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/setters.kt:(170,194): info: Generated Viper text for testReferenceFieldSetter:
+/setters.kt: info: Generated Viper text for testReferenceFieldSetter:
 field bf_a: Ref
 
 field pf: Ref
@@ -33,7 +33,7 @@ method testReferenceFieldSetter(rf: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/setters.kt:(427,454): info: Generated Viper text for testPrimitivePropertySetter:
+/setters.kt: info: Generated Viper text for testPrimitivePropertySetter:
 method aProp(this: Ref, anon: Ref) returns (v_ret: Ref)
 
 
@@ -51,7 +51,7 @@ method testPrimitivePropertySetter(pp: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/setters.kt:(504,531): info: Generated Viper text for testReferencePropertySetter:
+/setters.kt: info: Generated Viper text for testReferencePropertySetter:
 method aProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
 
 

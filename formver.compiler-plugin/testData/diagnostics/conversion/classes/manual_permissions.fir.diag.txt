@@ -1,4 +1,4 @@
-/manual_permissions.kt:(145,176): info: Generated Viper text for testManualPermissionFieldGetter:
+/manual_permissions.kt: info: Generated Viper text for testManualPermissionFieldGetter:
 field bf_a: Ref
 
 field bf_b: Ref
@@ -18,7 +18,7 @@ method testManualPermissionFieldGetter(mpf: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/manual_permissions.kt:(251,282): info: Generated Viper text for testManualPermissionFieldSetter:
+/manual_permissions.kt: info: Generated Viper text for testManualPermissionFieldSetter:
 field a: Ref
 
 field b: Ref

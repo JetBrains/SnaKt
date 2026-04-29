@@ -1,4 +1,4 @@
-/multiple_receivers.kt:(249,259): info: Generated Viper text for applyDelta:
+/multiple_receivers.kt: info: Generated Viper text for applyDelta:
 field delta: Ref
 
 field size: Ref
@@ -24,7 +24,7 @@ method applyDelta(v_this: Ref, this: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/multiple_receivers.kt:(544,555): info: Generated Viper text for returnDelta:
+/multiple_receivers.kt: info: Generated Viper text for returnDelta:
 field delta: Ref
 
 method returnDelta(this: Ref) returns (ret_0: Ref)
@@ -38,7 +38,7 @@ method returnDelta(this: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/multiple_receivers.kt:(592,612): info: Generated Viper text for extensionReturnDelta:
+/multiple_receivers.kt: info: Generated Viper text for extensionReturnDelta:
 field delta: Ref
 
 method extensionReturnDelta(this: Ref) returns (ret_0: Ref)
@@ -52,7 +52,7 @@ method extensionReturnDelta(this: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/multiple_receivers.kt:(725,748): info: Generated Viper text for checkClassWithExtension:
+/multiple_receivers.kt: info: Generated Viper text for checkClassWithExtension:
 field bf_delta: Ref
 
 field size: Ref

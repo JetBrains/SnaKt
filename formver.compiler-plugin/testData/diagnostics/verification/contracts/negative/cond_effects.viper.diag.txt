@@ -1,9 +1,9 @@
-/cond_effects.kt:(202,232): warning: Cannot verify that if the function returns then (b && false).
+/cond_effects.kt: warning: Cannot verify that if the function returns then (b && false).
 
-/cond_effects.kt:(340,372): warning: Cannot verify that if a null value is returned then x is Int.
+/cond_effects.kt: warning: Cannot verify that if a null value is returned then x is Int.
 
-/cond_effects.kt:(490,525): warning: Cannot verify that if a non-null value is returned then x is Int.
+/cond_effects.kt: warning: Cannot verify that if a non-null value is returned then x is Int.
 
-/cond_effects.kt:(808,844): warning: Cannot verify that if a false value is returned then seq != null.
+/cond_effects.kt: warning: Cannot verify that if a false value is returned then seq != null.
 
-/cond_effects.kt:(1006,1041): warning: Cannot verify that if a true value is returned then x is String.
+/cond_effects.kt: warning: Cannot verify that if a true value is returned then x is String.

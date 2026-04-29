@@ -1,4 +1,4 @@
-/unit_return_type.kt:(184,189): info: Generated Viper text for idFun:
+/unit_return_type.kt: info: Generated Viper text for idFun:
 method idFun(par_t: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(par_t), nullable(anyType()))
   ensures isSubtype(typeOf(ret), nullable(anyType()))
@@ -8,7 +8,7 @@ method idFun(par_t: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/unit_return_type.kt:(208,221): info: Generated Viper text for directReturns:
+/unit_return_type.kt: info: Generated Viper text for directReturns:
 method directReturns(b: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(ret_0), unitType())
@@ -34,7 +34,7 @@ method idFun(par_t: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), nullable(anyType()))
 
 
-/unit_return_type.kt:(387,400): info: Generated Viper text for useInlineUnit:
+/unit_return_type.kt: info: Generated Viper text for useInlineUnit:
 field size: Ref
 
 method idFun(par_t: Ref) returns (ret: Ref)

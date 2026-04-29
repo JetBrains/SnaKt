@@ -1,11 +1,11 @@
-/full_viper_dump.kt:(172,173): info: Generated ExpEmbedding for f:
+/full_viper_dump.kt: info: Generated ExpEmbedding for f:
 Function(
     name = f,
     { Declare(Var(foo), [c$[pkg$]$[c$Foo]], MethodCall(callee = con, Int(0))) },
     return = lbl_ret_0,
 )
 
-/full_viper_dump.kt:(172,173): info: Generated Viper text for f:
+/full_viper_dump.kt: info: Generated Viper text for f:
 domain rt  {
 
   unique function intType(): rt

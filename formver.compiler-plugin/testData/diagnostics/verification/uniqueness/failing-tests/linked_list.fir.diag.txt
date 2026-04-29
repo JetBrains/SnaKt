@@ -1,4 +1,4 @@
-/linked_list.kt:(261,267): info: Generated Viper text for getVal:
+/linked_list.kt: info: Generated Viper text for getVal:
 field data: Ref
 
 field next: Ref
@@ -36,7 +36,7 @@ method getVal(l: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/linked_list.kt:(442,446): info: Generated Viper text for test:
+/linked_list.kt: info: Generated Viper text for test:
 field bf_data: Ref
 
 field bf_next: Ref

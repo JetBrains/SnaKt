@@ -1,4 +1,4 @@
-/pure_function_with_branching.kt:(90,110): info: Generated Viper text for noAssignmentInBlocks:
+/pure_function_with_branching.kt: info: Generated Viper text for noAssignmentInBlocks:
 function noAssignmentInBlocks(a: Ref): Ref
   requires isSubtype(typeOf(a), boolType())
   ensures isSubtype(typeOf(result), intType())
@@ -10,7 +10,7 @@ function noAssignmentInBlocks(a: Ref): Ref
       l0_result_1))
 }
 
-/pure_function_with_branching.kt:(228,243): info: Generated Viper text for simpleBranching:
+/pure_function_with_branching.kt: info: Generated Viper text for simpleBranching:
 function simpleBranching(a: Ref): Ref
   requires isSubtype(typeOf(a), boolType())
   ensures isSubtype(typeOf(result), intType())
@@ -26,7 +26,7 @@ function simpleBranching(a: Ref): Ref
           l0_result_3))))
 }
 
-/pure_function_with_branching.kt:(401,416): info: Generated Viper text for nestedBranching:
+/pure_function_with_branching.kt: info: Generated Viper text for nestedBranching:
 function nestedBranching(a: Ref, b: Ref): Ref
   requires isSubtype(typeOf(a), boolType())
   requires isSubtype(typeOf(b), boolType())
@@ -69,7 +69,7 @@ function nestedBranching(a: Ref, b: Ref): Ref
                         l0_result_10)))))))))))
 }
 
-/pure_function_with_branching.kt:(826,846): info: Generated Viper text for whenExpressionSimple:
+/pure_function_with_branching.kt: info: Generated Viper text for whenExpressionSimple:
 function whenExpressionSimple(x: Ref): Ref
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(result), intType())
@@ -95,7 +95,7 @@ function whenExpressionSimple(x: Ref): Ref
                 plusInts(l0_y_4, intToRef(1)))))))))
 }
 
-/pure_function_with_branching.kt:(1065,1088): info: Generated Viper text for whenNoArgumentBranching:
+/pure_function_with_branching.kt: info: Generated Viper text for whenNoArgumentBranching:
 function whenNoArgumentBranching(x: Ref, y: Ref): Ref
   requires isSubtype(typeOf(x), intType())
   requires isSubtype(typeOf(y), intType())
@@ -116,7 +116,7 @@ function whenNoArgumentBranching(x: Ref, y: Ref): Ref
           l5_z_0))))
 }
 
-/pure_function_with_branching.kt:(1311,1334): info: Generated Viper text for stringEqualityBranching:
+/pure_function_with_branching.kt: info: Generated Viper text for stringEqualityBranching:
 function stringEqualityBranching(input: Ref): Ref
   requires isSubtype(typeOf(input), stringType())
   ensures isSubtype(typeOf(result), boolType())
@@ -146,7 +146,7 @@ function stringEqualityBranching(input: Ref): Ref
               l0_isValid_4))))))
 }
 
-/pure_function_with_branching.kt:(1597,1621): info: Generated Viper text for sequentialIfWithMutation:
+/pure_function_with_branching.kt: info: Generated Viper text for sequentialIfWithMutation:
 function sequentialIfWithMutation(): Ref
   ensures isSubtype(typeOf(result), intType())
 {
@@ -161,7 +161,7 @@ function sequentialIfWithMutation(): Ref
           (intFromRef(l0_x_3) == 2 ? intToRef(100) : intToRef(0))))))
 }
 
-/pure_function_with_branching.kt:(1780,1800): info: Generated Viper text for complexBooleanReturn:
+/pure_function_with_branching.kt: info: Generated Viper text for complexBooleanReturn:
 function complexBooleanReturn(x: Ref): Ref
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(result), boolType())

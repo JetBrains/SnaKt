@@ -1,4 +1,4 @@
-/contracts_with_receivers.kt:(148,151): info: Generated Viper text for is2:
+/contracts_with_receivers.kt: info: Generated Viper text for is2:
 method is2(this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), _c_Class())
   ensures isSubtype(typeOf(ret), boolType())
@@ -10,7 +10,7 @@ method is2(this: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/contracts_with_receivers.kt:(341,359): info: Generated Viper text for is1butWithDispatch:
+/contracts_with_receivers.kt: info: Generated Viper text for is1butWithDispatch:
 method is1butWithDispatch(v_this: Ref, this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(v_this), _c_Class())
   requires isSubtype(typeOf(this), _c_Class())
@@ -24,7 +24,7 @@ method is1butWithDispatch(v_this: Ref, this: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/contracts_with_receivers.kt:(618,621): info: Generated Viper text for is1:
+/contracts_with_receivers.kt: info: Generated Viper text for is1:
 method is1(this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), _c_Class())
   ensures isSubtype(typeOf(ret), boolType())

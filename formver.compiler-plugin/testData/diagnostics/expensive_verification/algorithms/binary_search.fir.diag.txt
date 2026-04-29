@@ -1,4 +1,4 @@
-/binary_search.kt:(102,122): info: Generated Viper text for mid_increased_by_one:
+/binary_search.kt: info: Generated Viper text for mid_increased_by_one:
 field size: Ref
 
 method get(this: Ref, index: Ref) returns (ret: Ref)
@@ -91,7 +91,7 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
     intFromRef(toIndex) - intFromRef(fromIndex)
 
 
-/binary_search.kt:(523,543): info: Generated Viper text for mid_decreased_by_one:
+/binary_search.kt: info: Generated Viper text for mid_decreased_by_one:
 field size: Ref
 
 method get(this: Ref, index: Ref) returns (ret: Ref)
@@ -184,7 +184,7 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
     intFromRef(toIndex) - intFromRef(fromIndex)
 
 
-/binary_search.kt:(944,976): info: Generated Viper text for mid_decreased_by_one_in_rec_call:
+/binary_search.kt: info: Generated Viper text for mid_decreased_by_one_in_rec_call:
 field size: Ref
 
 method get(this: Ref, index: Ref) returns (ret: Ref)
@@ -278,7 +278,7 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
     intFromRef(toIndex) - intFromRef(fromIndex)
 
 
-/binary_search.kt:(1417,1437): info: Generated Viper text for unsafe_binary_search:
+/binary_search.kt: info: Generated Viper text for unsafe_binary_search:
 field size: Ref
 
 method get(this: Ref, index: Ref) returns (ret: Ref)

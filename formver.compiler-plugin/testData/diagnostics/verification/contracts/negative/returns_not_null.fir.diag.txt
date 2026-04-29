@@ -1,4 +1,4 @@
-/returns_not_null.kt:(121,133): info: Generated Viper text for returns_null:
+/returns_not_null.kt: info: Generated Viper text for returns_null:
 method returns_null() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), nullable(intType()))
   ensures ret != nullValue()

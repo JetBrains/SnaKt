@@ -1,4 +1,4 @@
-/inheritance_fields.kt:(227,234): info: Generated Viper text for createB:
+/inheritance_fields.kt: info: Generated Viper text for createB:
 field bf_fieldNotOverride: Ref
 
 method con(fieldOverride: Ref) returns (ret: Ref)
@@ -38,7 +38,7 @@ method createB() returns (ret_0: Ref)
 method g_fieldOverride(this: Ref) returns (ret: Ref)
 
 
-/inheritance_fields.kt:(699,715): info: Generated Viper text for createBFsAndNoBF:
+/inheritance_fields.kt: info: Generated Viper text for createBFsAndNoBF:
 field bf_x: Ref
 
 method con(x: Ref) returns (ret: Ref)
@@ -91,7 +91,7 @@ method createBFsAndNoBF() returns (ret_0: Ref)
 method g_x(this: Ref) returns (ret: Ref)
 
 
-/inheritance_fields.kt:(1038,1045): info: Generated Viper text for createY:
+/inheritance_fields.kt: info: Generated Viper text for createY:
 field bf_a: Ref
 
 method con(a: Ref) returns (ret: Ref)
