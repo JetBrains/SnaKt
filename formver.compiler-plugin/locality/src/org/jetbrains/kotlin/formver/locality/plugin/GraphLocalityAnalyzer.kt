@@ -18,13 +18,17 @@ import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
 import org.jetbrains.kotlin.fir.expressions.builder.buildExpressionStub
 import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.BlockExitNode
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.BooleanOperatorExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.EdgeLabel
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ExitSafeCallNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.TailrecExitNodeMarker
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ElvisExitNode
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.JumpNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.TryExpressionExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.TryMainBlockExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.TypeOperatorCallNode
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.WhenBranchResultExitNode
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.WhenExitNode
 
 /**
  * Contains locality information for each `FirExpression` in the control flow, normalized through [unwrapExpression].
@@ -53,7 +57,12 @@ private val TailExpression: FirExpression = buildExpressionStub()
  * Returns true if `this` node propagates the locality to the successor.
  */
 private fun CFGNode<*>.inheritsTailFact(): Boolean {
-    return (this is TailrecExitNodeMarker && this !is ExitSafeCallNode) ||
+    return this is BlockExitNode ||
+            this is WhenExitNode ||
+            this is WhenBranchResultExitNode ||
+            this is BooleanOperatorExitNode ||
+            this is JumpNode ||
+            this is ElvisExitNode ||
             this is TryExpressionExitNode ||
             this is TryMainBlockExitNode ||
             this is TypeOperatorCallNode && (fir.operation == FirOperation.AS || fir.operation == FirOperation.SAFE_AS)
