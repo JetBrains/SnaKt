@@ -545,6 +545,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("nested_scope.kt")
+    public void testNested_scope() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/nested_scope.kt");
+    }
+
+    @Test
     @TestMetadata("return.kt")
     public void testReturn() {
       runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/return.kt");
