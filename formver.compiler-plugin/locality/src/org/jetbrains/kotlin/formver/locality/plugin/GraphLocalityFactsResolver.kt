@@ -53,24 +53,3 @@ val FirSession.graphLocalityInfoResolver: GraphLocalityInfoResolver
 context(context: CheckerContext)
 fun ControlFlowGraph.resolveLocalityInfo(): LocalityFacts =
     context.session.graphLocalityInfoResolver.resolveLocalityInfoOf(this)
-
-/**
- * Resolves the locality of `this` expression based on the resolved locality info of the enclosing declaration.
- */
-@OptIn(SymbolInternals::class)
-context(context: CheckerContext)
-fun FirExpression.resolveLocality(): Locality {
-    val expression = unwrapExpression()
-
-    if (expression is FirQualifiedAccessExpression) {
-        return expression.resolveImmediateLocality()
-    } else {
-        val symbol = context.findClosest<FirCallableSymbol<*>>()
-        val declaration = symbol?.fir
-        val graph = (declaration as? FirControlFlowGraphOwner)?.controlFlowGraphReference?.controlFlowGraph
-            ?: return Locality.Global
-        val facts = graph.resolveLocalityInfo()
-
-        return facts[expression] ?: Locality.Global
-    }
-}
