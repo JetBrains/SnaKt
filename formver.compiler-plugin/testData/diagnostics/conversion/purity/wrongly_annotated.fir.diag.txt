@@ -1,10 +1,10 @@
 /wrongly_annotated.kt:(53,63): info: Generated Viper text for iAmAMethod:
-method f$iAmAMethod$F$t$Int() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method iAmAMethod() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), intType())
 {
-  ret$0 := df$rt$intToRef(1)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret := intToRef(1)
+  goto ret_0
+  label ret_0
 }
 
 /wrongly_annotated.kt:(89,160): error: Impure function body detected in pure function
@@ -14,16 +14,15 @@ method f$iAmAMethod$F$t$Int() returns (ret$0: Ref)
 /wrongly_annotated.kt:(270,368): error: Impure function body detected in pure function
 
 /wrongly_annotated.kt:(380,395): info: Generated Viper text for impureExtension:
-field bf$value: Ref
+field value: Ref
 
-method f$impureExtension$F$t$Field$t$Unit(this$extension: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$extension), df$rt$c$Field())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method impureExtension(this: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(this), _c_Field())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  inhale acc(pred$c$Field$shared(this$extension), wildcard)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  inhale acc(shared(this), wildcard)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /wrongly_annotated.kt:(423,530): error: Impure function body detected in pure function

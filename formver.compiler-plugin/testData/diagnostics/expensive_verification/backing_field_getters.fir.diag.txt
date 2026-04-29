@@ -1,281 +1,267 @@
 /backing_field_getters.kt:(270,280): info: Generated Viper text for cascadeGet:
-field bf$y: Ref
+field y: Ref
 
-field bf$z: Ref
+field z: Ref
 
-method f$cascadeGet$F$t$X$t$Z(par$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$X())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$c$Z())
-  ensures acc(pred$c$Z$shared(ret$0), wildcard)
+method cascadeGet(x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), _c_X())
+  ensures isSubtype(typeOf(ret_0), _c_Z())
+  ensures acc(shared(ret_0), wildcard)
 {
-  var anon$0: Ref
-  inhale acc(pred$c$X$shared(par$x), wildcard)
-  unfold acc(pred$c$X$shared(par$x), wildcard)
-  anon$0 := par$x.bf$y
-  unfold acc(pred$c$Y$shared(anon$0), wildcard)
-  ret$0 := anon$0.bf$z
-  goto lbl$ret$0
-  label lbl$ret$0
+  var anon: Ref
+  inhale acc(c_X_shared(x), wildcard)
+  unfold acc(c_X_shared(x), wildcard)
+  anon := x.y
+  unfold acc(c_Y_shared(anon), wildcard)
+  ret_0 := anon.z
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /backing_field_getters.kt:(353,374): info: Generated Viper text for receiverNotNullProved:
-field bf$y: Ref
+field y: Ref
 
-field bf$z: Ref
+field z: Ref
 
-method f$receiverNotNullProved$F$t$N$X$t$Boolean(par$x: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$c$X()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(ret$0) == true ==> par$x != df$rt$nullValue()
+method receiverNotNullProved(x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), nullable(_c_X()))
+  ensures isSubtype(typeOf(ret_0), boolType())
+  ensures boolFromRef(ret_0) == true ==> x != nullValue()
 {
-  var anon$0: Ref
-  inhale par$x != df$rt$nullValue() ==>
-    acc(pred$c$X$shared(par$x), wildcard)
-  if (par$x != df$rt$nullValue()) {
-    var anon$1: Ref
-    unfold acc(pred$c$X$shared(par$x), wildcard)
-    anon$1 := par$x.bf$y
-    anon$0 := anon$1
+  var anon_0: Ref
+  inhale x != nullValue() ==> acc(c_X_shared(x), wildcard)
+  if (x != nullValue()) {
+    var anon: Ref
+    unfold acc(c_X_shared(x), wildcard)
+    anon := x.y
+    anon_0 := anon
   } else {
-    anon$0 := df$rt$nullValue()}
-  ret$0 := df$notBool(df$rt$boolToRef(anon$0 == df$rt$nullValue()))
-  goto lbl$ret$0
-  label lbl$ret$0
+    anon_0 := nullValue()}
+  ret_0 := notBool(boolToRef(anon_0 == nullValue()))
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /backing_field_getters.kt:(622,640): info: Generated Viper text for cascadeNullableGet:
-field bf$y: Ref
+field y: Ref
 
-field bf$z: Ref
+field z: Ref
 
-method f$cascadeNullableGet$F$t$N$NullableX$t$N$Z(par$x: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$c$NullableX()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$c$Z()))
-  ensures ret$0 != df$rt$nullValue() ==>
-    acc(pred$c$Z$shared(ret$0), wildcard)
-  ensures ret$0 != df$rt$nullValue() ==> par$x != df$rt$nullValue()
+method cascadeNullableGet(x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), nullable(_c_NullableX()))
+  ensures isSubtype(typeOf(ret_0), nullable(_c_Z()))
+  ensures ret_0 != nullValue() ==> acc(c_Z_shared(ret_0), wildcard)
+  ensures ret_0 != nullValue() ==> x != nullValue()
 {
-  var anon$0: Ref
-  inhale par$x != df$rt$nullValue() ==>
-    acc(pred$c$NullableX$shared(par$x), wildcard)
-  if (par$x != df$rt$nullValue()) {
-    unfold acc(pred$c$NullableX$shared(par$x), wildcard)
-    anon$0 := par$x.bf$y
+  var anon: Ref
+  inhale x != nullValue() ==> acc(c_NullableX_shared(x), wildcard)
+  if (x != nullValue()) {
+    unfold acc(c_NullableX_shared(x), wildcard)
+    anon := x.y
   } else {
-    anon$0 := df$rt$nullValue()}
-  if (anon$0 != df$rt$nullValue()) {
-    unfold acc(pred$c$NullableY$shared(anon$0), wildcard)
-    ret$0 := anon$0.bf$z
+    anon := nullValue()}
+  if (anon != nullValue()) {
+    unfold acc(c_NullableY_shared(anon), wildcard)
+    ret_0 := anon.z
   } else {
-    ret$0 := df$rt$nullValue()}
-  goto lbl$ret$0
-  label lbl$ret$0
+    ret_0 := nullValue()}
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /backing_field_getters.kt:(791,818): info: Generated Viper text for cascadeNullableSmartcastGet:
-field bf$y: Ref
+field y: Ref
 
-field bf$z: Ref
+field z: Ref
 
-method f$cascadeNullableSmartcastGet$F$t$N$NullableX$t$N$Z(par$x: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$c$NullableX()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$c$Z()))
-  ensures ret$0 != df$rt$nullValue() ==>
-    acc(pred$c$Z$shared(ret$0), wildcard)
-  ensures ret$0 != df$rt$nullValue() ==> par$x != df$rt$nullValue()
+method cascadeNullableSmartcastGet(x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), nullable(_c_NullableX()))
+  ensures isSubtype(typeOf(ret_0), nullable(_c_Z()))
+  ensures ret_0 != nullValue() ==> acc(c_Z_shared(ret_0), wildcard)
+  ensures ret_0 != nullValue() ==> x != nullValue()
 {
-  inhale par$x != df$rt$nullValue() ==>
-    acc(pred$c$NullableX$shared(par$x), wildcard)
-  if (par$x == df$rt$nullValue()) {
-    var anon$0: Ref
-    anon$0 := df$rt$nullValue()
-    ret$0 := anon$0
+  inhale x != nullValue() ==> acc(c_NullableX_shared(x), wildcard)
+  if (x == nullValue()) {
+    var anon_0: Ref
+    anon_0 := nullValue()
+    ret_0 := anon_0
   } else {
-    var anon$1: Ref
-    unfold acc(pred$c$NullableX$shared(par$x), wildcard)
-    anon$1 := par$x.bf$y
-    if (anon$1 == df$rt$nullValue()) {
-      var anon$2: Ref
-      anon$2 := df$rt$nullValue()
-      ret$0 := anon$2
+    var anon_1: Ref
+    unfold acc(c_NullableX_shared(x), wildcard)
+    anon_1 := x.y
+    if (anon_1 == nullValue()) {
+      var anon_2: Ref
+      anon_2 := nullValue()
+      ret_0 := anon_2
     } else {
-      var anon$3: Ref
-      unfold acc(pred$c$NullableX$shared(par$x), wildcard)
-      anon$3 := par$x.bf$y
-      unfold acc(pred$c$NullableY$shared(anon$3), wildcard)
-      ret$0 := anon$3.bf$z
+      var anon: Ref
+      unfold acc(c_NullableX_shared(x), wildcard)
+      anon := x.y
+      unfold acc(c_NullableY_shared(anon), wildcard)
+      ret_0 := anon.z
     }
   }
-  goto lbl$ret$0
-  label lbl$ret$0
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /backing_field_getters.kt:(1030,1060): info: Generated Viper text for nullableReceiverNotNullSafeGet:
-field bf$size: Ref
+field size: Ref
 
-field bf$x: Ref
+field x: Ref
 
-method con$c$Baz$t$Baz() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Baz())
-  ensures acc(pred$c$Baz$shared(ret), wildcard)
-  ensures acc(pred$c$Baz$unique(ret), write)
+method con() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), _c_Baz())
+  ensures acc(c_Baz_shared(ret), wildcard)
+  ensures acc(c_Baz_unique(ret), write)
 
 
-method f$nullableReceiverNotNullSafeGet$F$t$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method nullableReceiverNotNullSafeGet() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var l0$f: Ref
-  var anon$0: Ref
-  var l0$cond1: Ref
-  var anon$1: Ref
-  anon$0 := con$c$Baz$t$Baz()
-  l0$f := anon$0
-  if (l0$f != df$rt$nullValue()) {
-    var anon$2: Ref
-    unfold acc(pred$c$Baz$shared(l0$f), wildcard)
-    anon$2 := l0$f.bf$x
-    anon$1 := anon$2
+  var f: Ref
+  var anon_0: Ref
+  var cond1: Ref
+  var anon_1: Ref
+  anon_0 := con()
+  f := anon_0
+  if (f != nullValue()) {
+    var anon: Ref
+    unfold acc(c_Baz_shared(f), wildcard)
+    anon := f.x
+    anon_1 := anon
   } else {
-    anon$1 := df$rt$nullValue()}
-  l0$cond1 := df$notBool(df$rt$boolToRef(anon$1 == df$rt$nullValue()))
-  assert df$rt$boolFromRef(l0$cond1)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+    anon_1 := nullValue()}
+  cond1 := notBool(boolToRef(anon_1 == nullValue()))
+  assert boolFromRef(cond1)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /backing_field_getters.kt:(1157,1184): info: Generated Viper text for nullableReceiverNullSafeGet:
-field bf$size: Ref
+field size: Ref
 
-field bf$x: Ref
+field x: Ref
 
-method f$nullableReceiverNullSafeGet$F$t$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method nullableReceiverNullSafeGet() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var l0$f: Ref
-  var l0$cond1: Ref
-  var anon$0: Ref
-  l0$f := df$rt$nullValue()
-  if (l0$f != df$rt$nullValue()) {
-    var anon$1: Ref
-    unfold acc(pred$c$Baz$shared(l0$f), wildcard)
-    anon$1 := l0$f.bf$x
-    anon$0 := anon$1
+  var f: Ref
+  var cond1: Ref
+  var anon_0: Ref
+  f := nullValue()
+  if (f != nullValue()) {
+    var anon: Ref
+    unfold acc(c_Baz_shared(f), wildcard)
+    anon := f.x
+    anon_0 := anon
   } else {
-    anon$0 := df$rt$nullValue()}
-  l0$cond1 := df$rt$boolToRef(anon$0 == df$rt$nullValue())
-  assert df$rt$boolFromRef(l0$cond1)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+    anon_0 := nullValue()}
+  cond1 := boolToRef(anon_0 == nullValue())
+  assert boolFromRef(cond1)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /backing_field_getters.kt:(1315,1341): info: Generated Viper text for nonNullableReceiverSafeGet:
-field bf$size: Ref
+field size: Ref
 
-field bf$x: Ref
+field x: Ref
 
-method con$c$Baz$t$Baz() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Baz())
-  ensures acc(pred$c$Baz$shared(ret), wildcard)
-  ensures acc(pred$c$Baz$unique(ret), write)
+method con() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), _c_Baz())
+  ensures acc(c_Baz_shared(ret), wildcard)
+  ensures acc(c_Baz_unique(ret), write)
 
 
-method f$nonNullableReceiverSafeGet$F$t$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method nonNullableReceiverSafeGet() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var l0$f: Ref
-  var l0$cond1: Ref
-  var anon$0: Ref
-  l0$f := con$c$Baz$t$Baz()
-  if (l0$f != df$rt$nullValue()) {
-    var anon$1: Ref
-    unfold acc(pred$c$Baz$shared(l0$f), wildcard)
-    anon$1 := l0$f.bf$x
-    anon$0 := anon$1
+  var f: Ref
+  var cond1: Ref
+  var anon_0: Ref
+  f := con()
+  if (f != nullValue()) {
+    var anon: Ref
+    unfold acc(c_Baz_shared(f), wildcard)
+    anon := f.x
+    anon_0 := anon
   } else {
-    anon$0 := df$rt$nullValue()}
-  l0$cond1 := df$notBool(df$rt$boolToRef(anon$0 == df$rt$nullValue()))
-  assert df$rt$boolFromRef(l0$cond1)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+    anon_0 := nullValue()}
+  cond1 := notBool(boolToRef(anon_0 == nullValue()))
+  assert boolFromRef(cond1)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /backing_field_getters.kt:(1565,1577): info: Generated Viper text for checkPrimary:
-field bf$size: Ref
+field bf_x: Ref
 
-field bf$x: Ref
+field bf_y: Ref
 
-field bf$y: Ref
+field bf_z: Ref
 
-field bf$z: Ref
+field size: Ref
 
-method con$c$ClassI$t$Int$t$Int$t$ClassI(par$x: Ref, par$y: Ref)
-  returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$ClassI())
-  ensures acc(pred$c$ClassI$shared(ret), wildcard)
-  ensures acc(pred$c$ClassI$unique(ret), write)
-  ensures df$rt$intFromRef((unfolding acc(pred$c$ClassI$shared(ret), wildcard) in
-      ret.bf$x)) ==
-    df$rt$intFromRef(par$x) &&
-    df$rt$intFromRef((unfolding acc(pred$c$ClassI$shared(ret), wildcard) in
-      ret.bf$y)) ==
-    df$rt$intFromRef(par$y)
-
-
-method con$c$ClassII$t$Z$t$ClassII(par$z: Ref) returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$z), df$rt$c$Z())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$ClassII())
-  ensures acc(pred$c$ClassII$shared(ret), wildcard)
-  ensures acc(pred$c$ClassII$unique(ret), write)
-  ensures (unfolding acc(pred$c$ClassII$shared(ret), wildcard) in ret.bf$z) ==
-    par$z
-
-
-method con$c$Z$t$Z() returns (ret: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Z())
-  ensures acc(pred$c$Z$shared(ret), wildcard)
-  ensures acc(pred$c$Z$unique(ret), write)
-
-
-method f$checkPrimary$F$t$Int$t$Int$t$Unit(par$x: Ref, par$y: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$intType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method checkPrimary(x: Ref, y: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var l0$classI: Ref
-  var l0$z: Ref
-  var l0$cond1: Ref
-  var l0$cond2: Ref
-  var anon$2: Ref
-  var anon$3: Ref
-  l0$classI := con$c$ClassI$t$Int$t$Int$t$ClassI(par$x, par$y)
-  l0$z := con$c$Z$t$Z()
-  if (!(df$rt$intFromRef(par$x) == df$rt$intFromRef(par$y))) {
-    l0$cond1 := df$rt$boolToRef(true)
+  var classI: Ref
+  var l0_z: Ref
+  var cond1: Ref
+  var cond2: Ref
+  var anon_2: Ref
+  var anon_3: Ref
+  classI := con__c_ClassI(x, y)
+  l0_z := con__c_Z()
+  if (!(intFromRef(x) == intFromRef(y))) {
+    cond1 := boolToRef(true)
   } else {
-    var anon$0: Ref
-    var anon$1: Ref
-    unfold acc(pred$c$ClassI$shared(l0$classI), wildcard)
-    anon$0 := l0$classI.bf$x
-    unfold acc(pred$c$ClassI$shared(l0$classI), wildcard)
-    anon$1 := l0$classI.bf$y
-    l0$cond1 := df$rt$boolToRef(df$rt$intFromRef(anon$0) ==
-      df$rt$intFromRef(anon$1))
+    var anon_0: Ref
+    var anon: Ref
+    unfold acc(c_ClassI_shared(classI), wildcard)
+    anon_0 := classI.bf_x
+    unfold acc(c_ClassI_shared(classI), wildcard)
+    anon := classI.bf_y
+    cond1 := boolToRef(intFromRef(anon_0) == intFromRef(anon))
   }
-  anon$3 := con$c$ClassII$t$Z$t$ClassII(l0$z)
-  unfold acc(pred$c$ClassII$shared(anon$3), wildcard)
-  anon$2 := anon$3.bf$z
-  l0$cond2 := df$rt$boolToRef(anon$2 == l0$z)
-  assert df$rt$boolFromRef(l0$cond1)
-  assert df$rt$boolFromRef(l0$cond2)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  anon_3 := con(l0_z)
+  unfold acc(c_ClassII_shared(anon_3), wildcard)
+  anon_2 := anon_3.bf_z
+  cond2 := boolToRef(anon_2 == l0_z)
+  assert boolFromRef(cond1)
+  assert boolFromRef(cond2)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-method g$public$z(this$dispatch: Ref) returns (ret: Ref)
+method con(z: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(z), _c_Z())
+  ensures isSubtype(typeOf(ret), _c_ClassII())
+  ensures acc(c_ClassII_shared(ret), wildcard)
+  ensures acc(c_ClassII_unique(ret), write)
+  ensures (unfolding acc(c_ClassII_shared(ret), wildcard) in ret.bf_z) == z
 
+
+method con__c_ClassI(x: Ref, y: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(ret), _c_ClassI())
+  ensures acc(c_ClassI_shared(ret), wildcard)
+  ensures acc(c_ClassI_unique(ret), write)
+  ensures intFromRef((unfolding acc(c_ClassI_shared(ret), wildcard) in
+      ret.bf_x)) ==
+    intFromRef(x) &&
+    intFromRef((unfolding acc(c_ClassI_shared(ret), wildcard) in ret.bf_y)) ==
+    intFromRef(y)
+
+
+method con__c_Z() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), _c_Z())
+  ensures acc(c_Z_shared(ret), wildcard)
+  ensures acc(c_Z_unique(ret), write)
+
+
+method g_z(this: Ref) returns (ret: Ref)

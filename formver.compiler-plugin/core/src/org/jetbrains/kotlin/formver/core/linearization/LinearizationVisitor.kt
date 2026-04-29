@@ -491,7 +491,7 @@ data class LinearizationVisitor(
     override fun visitAccEmbedding(e: AccEmbedding): Linearizable = object : OnlyToBuiltinLinearizable(e, this@LinearizationVisitor) {
         override fun toViperBuiltinType(ctx: LinearizationContext): Exp {
             val field = Exp.FieldAccess(
-                e.access.linearize().toViper(ctx),
+                e.receiver.linearize().toViper(ctx),
                 e.field.toViper(),
                 ctx.source.asPosition,
             )

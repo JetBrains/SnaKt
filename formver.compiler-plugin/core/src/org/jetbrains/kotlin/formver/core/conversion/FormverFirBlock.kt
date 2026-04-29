@@ -56,4 +56,3 @@ fun extractFirSpecification(parentBlock: FirBlock, returnType: ConeKotlinType): 
         parentBlock.statements.getOrNull(1)?.extractFormverFirBlock { isFormverFunctionNamed("postconditions") }
     return FirSpecification(precond.body, postcond?.body, postcond?.extractFormverReturnVar(returnType))
 }
-

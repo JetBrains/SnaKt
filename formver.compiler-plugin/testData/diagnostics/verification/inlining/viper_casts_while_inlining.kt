@@ -81,4 +81,3 @@ fun <!VIPER_TEXT!>checkEvaluatedOnce<!>(i: Int, mm: ManyMembers) {
         verify(this == this)
     }
 }
-

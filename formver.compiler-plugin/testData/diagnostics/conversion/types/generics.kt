@@ -27,4 +27,3 @@ fun <!VIPER_TEXT!>callGenericFunc<!>() {
 fun <!VIPER_TEXT!>genericAsIfCondition<!>(box: Box<Boolean>): Int {
     return if (box.t) 20 else 10
 }
-

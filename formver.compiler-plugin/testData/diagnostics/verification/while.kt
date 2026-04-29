@@ -57,6 +57,3 @@ fun <!VIPER_TEXT!>test_while_with_smartcast<!>(param: Any, innerParam: Any) {
         }
     }
 }
-
-
-

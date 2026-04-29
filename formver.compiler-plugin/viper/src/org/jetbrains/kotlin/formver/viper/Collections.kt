@@ -31,4 +31,3 @@ fun <T> emptySeq(): Seq<T> = CollectionConverters.asScala(emptyList<T>()).toSeq(
 fun <T> seqOf(vararg elements: T): Seq<T> = CollectionConverters.asScala(elements.asList()).toSeq()
 
 fun <T> List<T>.toScalaSeq(): Seq<T> = CollectionConverters.asScala(this).toSeq()
-

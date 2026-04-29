@@ -9,6 +9,8 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.asTypeEmbedding
+import org.jetbrains.kotlin.formver.viper.AnyName
+import org.jetbrains.kotlin.formver.viper.CandidateName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
@@ -21,50 +23,174 @@ import org.jetbrains.kotlin.name.Name
  */
 sealed interface KotlinName : SymbolicName
 
-data class SimpleKotlinName(val name: Name) : KotlinName
+data class SimpleKotlinName(val name: Name) : KotlinName {
+    override val inViper: Boolean = false
 
-abstract class TypedKotlinName(override val nameType: NameType, open val name: Name) : KotlinName
+    override val candidates: List<CandidateName> = nameOnlyCandidates(name.asStringStripSpecialMarkers())
+
+    override val children: List<AnyName> = emptyList()
+}
+
+abstract class TypedKotlinName(override val nameType: NameType, open val name: Name) : KotlinName {
+    override val candidates: List<CandidateName>
+        get() = nameWithPrefixCandidates(name.asStringStripSpecialMarkers(), nameType)
+
+    override val children: List<AnyName> = listOf(nameType)
+}
 
 abstract class TypedKotlinNameWithType(
     override val nameType: NameType, open val name: Name, val type: TypeEmbedding
-) : KotlinName
+) : KotlinName {
+    override val candidates: List<CandidateName>
+        get() = buildCandidates {
+            +nameWithPrefixCandidates(name.asStringStripSpecialMarkers(), nameType)
+            candidate {
+                +nameType
+                +name.asStringStripSpecialMarkers()
+                +type.name
+            }
+        }
+
+    override val children: List<AnyName> = listOf(nameType, type.name)
+}
 
 data class FunctionKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
     TypedKotlinNameWithType(
         NameType.Base.Function, name, functionType.asTypeEmbedding()
-    )
+    ) {
+    override val inViper: Boolean = false
+}
 
 /**
  * This name will never occur in the viper output, but rather is used to lookup properties.
  */
-data class PropertyKotlinName(override val name: Name) : TypedKotlinName(NameType.Member.Property, name)
-data class BackingFieldKotlinName(override val name: Name) : TypedKotlinName(NameType.Member.BackingField, name)
-data class GetterKotlinName(override val name: Name) : TypedKotlinName(NameType.Member.Getter, name)
-data class SetterKotlinName(override val name: Name) : TypedKotlinName(NameType.Member.Setter, name)
+data class PropertyKotlinName(override val name: Name) : TypedKotlinName(NameType.Member.Property, name) {
+    override val inViper: Boolean = false
+}
+
+data class BackingFieldKotlinName(override val name: Name) : TypedKotlinName(NameType.Member.BackingField, name) {
+    override val inViper: Boolean = false
+}
+
+data class GetterKotlinName(override val name: Name) : TypedKotlinName(NameType.Member.Getter, name) {
+    override val inViper: Boolean = false
+}
+
+data class SetterKotlinName(override val name: Name) : TypedKotlinName(NameType.Member.Setter, name) {
+    override val inViper: Boolean = false
+}
+
 data class ExtensionSetterKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
-    TypedKotlinNameWithType(NameType.Member.ExtensionSetter, name, functionType.asTypeEmbedding())
+    TypedKotlinNameWithType(NameType.Member.ExtensionSetter, name, functionType.asTypeEmbedding()) {
+    override val inViper: Boolean = false
+}
+
 
 data class ExtensionGetterKotlinName(override val name: Name, val functionType: FunctionTypeEmbedding) :
-    TypedKotlinNameWithType(NameType.Member.ExtensionGetter, name, functionType.asTypeEmbedding())
+    TypedKotlinNameWithType(NameType.Member.ExtensionGetter, name, functionType.asTypeEmbedding()) {
+    override val inViper: Boolean = false
+}
+
 
 data class ClassKotlinName(val name: FqName) : KotlinName {
+    override val inViper: Boolean = false
     override val nameType: NameType = NameType.TypeCategory.Class
 
     constructor(classSegments: List<String>) : this(FqName.fromSegments(classSegments))
+
+    override val candidates: List<CandidateName> = buildCandidates {
+        val className = name.asString()
+        candidate {
+            +className
+        }
+        candidate {
+            +nameType
+            +className
+        }
+    }
+
+    override val children: List<AnyName> = listOf(nameType)
 }
 
 data class ConstructorKotlinName(val type: FunctionTypeEmbedding) : KotlinName {
+    override val inViper: Boolean = false
     override val nameType: NameType = NameType.Base.Constructor
+
+    override val candidates: List<CandidateName> = buildCandidates {
+        candidate {
+            +nameType
+        }
+        candidate {
+            +nameType
+            +type.returnType.name
+        }
+        candidate {
+            +nameType
+            +type.returnType.name
+            +"args"
+            +type.paramTypes.map { it.name }
+        }
+    }
+
+    override val children: List<AnyName> = listOf(nameType)
 }
 
-data class PretypeName(val name: String) : SymbolicName
+data class PretypeName(val name: String) : SymbolicName {
+    override val inViper: Boolean = false
+
+    override val candidates: List<CandidateName> = nameOnlyCandidates(name)
+
+    override val children: List<AnyName> = emptyList()
+}
 
 data class ListOfNames<T : SymbolicName>(val names: List<T>) : SymbolicName {
     override val nameType: NameType = NameType.TypeCategory.GeneralType
+    override val inViper: Boolean = false
+
+    override val candidates: List<CandidateName> = buildCandidates {
+        candidate {
+            +names
+        }
+        candidate {
+            +nameType
+            +names
+        }
+    }
+
+    override val children: List<AnyName> = names + listOf(nameType)
 }
 
-data class FunctionTypeName(val args: ListOfNames<TypeName>, val returns: TypeName) : SymbolicName
+data class FunctionTypeName(val args: ListOfNames<TypeName>, val returns: TypeName) : SymbolicName {
+    override val inViper: Boolean = false
+
+    override val candidates: List<CandidateName> = buildCandidates {
+        candidate {
+            +returns
+        }
+        candidate {
+            +"args"
+            +args
+            +"ret"
+            +returns
+        }
+    }
+
+    override val children: List<AnyName> = listOf(args, returns)
+}
 
 data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : SymbolicName {
     override val nameType: NameType = NameType.TypeCategory.GeneralType
+    override val inViper: Boolean = false
+
+    override val candidates: List<CandidateName> = buildCandidates {
+        candidate {
+            +pretype.name
+        }
+        candidateNoSeparator {
+            if (nullable) +"N"
+            +pretype.name
+        }
+    }
+
+    override val children: List<AnyName> = listOf(nameType)
 }

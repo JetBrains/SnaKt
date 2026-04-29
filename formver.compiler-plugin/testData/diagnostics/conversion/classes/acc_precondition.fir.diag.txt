@@ -1,4 +1,5 @@
 /acc_precondition.kt:(127,148): info: Generated Viper text for test_acc_precondition:
+<<<<<<< HEAD
 field bf$a: Ref
 
 predicate p$c$X$shared(this$dispatch: Ref) {
@@ -34,3 +35,39 @@ method pg$public$read(this$dispatch: Ref) returns (ret: Ref)
 
 method pg$public$write(this$dispatch: Ref) returns (ret: Ref)
 
+=======
+field a: Ref
+
+predicate c_InvariantBuilder_unique(this: Ref) {
+  true
+}
+
+predicate c_X_shared(this: Ref) {
+  true
+}
+
+predicate c_X_unique(this: Ref) {
+  acc(this.a, write) && isSubtype(typeOf(this.a), anyType())
+}
+
+predicate shared(this: Ref) {
+  true
+}
+
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
+method test_acc_precondition(x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), _c_X())
+  requires acc(x.a, write)
+  ensures isSubtype(typeOf(ret_0), unitType())
+{
+  inhale acc(c_X_shared(x), wildcard)
+  x.a := intToRef(123)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
+}
+>>>>>>> 3a052621375e28a660bec009e4b76fc92d71a303

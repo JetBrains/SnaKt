@@ -31,8 +31,8 @@ class ScopedNameBuilder {
     }
 
     fun publicScope() {
-        require(scope is ClassScope) { "Public scope must be in a class scope." }
-        scope = PublicScope(scope!!)
+        require(scope == null) { "Public scope cannot be nested." }
+        scope = PublicScope
     }
 
     fun privateScope() {

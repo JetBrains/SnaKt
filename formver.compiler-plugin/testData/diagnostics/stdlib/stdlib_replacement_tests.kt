@@ -35,4 +35,3 @@ fun <!VIPER_TEXT!>useWith<!>(x: Int): Unit {
 fun <!VIPER_TEXT!>useApply<!>(x: Int): Unit {
     (x + 1).apply { verify(this == 1 + x) }
 }
-

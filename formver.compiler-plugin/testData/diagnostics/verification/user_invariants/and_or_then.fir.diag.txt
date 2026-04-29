@@ -1,49 +1,61 @@
 /and_or_then.kt:(64,75): info: Generated Viper text for resultOrArg:
-method f$resultOrArg$F$t$Boolean$t$Boolean(par$arg: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$arg), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(ret$0) || df$rt$boolFromRef(par$arg)
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
+method resultOrArg(par_arg: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(par_arg), boolType())
+  ensures isSubtype(typeOf(ret_0), boolType())
+  ensures boolFromRef(ret_0) || boolFromRef(par_arg)
 {
-  ret$0 := df$notBool(par$arg)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret_0 := notBool(par_arg)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /and_or_then.kt:(200,211): info: Generated Viper text for testImplies:
-method f$testImplies$F$t$Boolean$t$Boolean(par$arg: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$arg), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(par$arg) ==> !df$rt$boolFromRef(ret$0)
-  ensures df$rt$boolFromRef(ret$0) ==> !df$rt$boolFromRef(par$arg)
-  ensures !df$rt$boolFromRef(par$arg) ==> df$rt$boolFromRef(ret$0)
-  ensures !df$rt$boolFromRef(ret$0) ==> df$rt$boolFromRef(par$arg)
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
+method testImplies(par_arg: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(par_arg), boolType())
+  ensures isSubtype(typeOf(ret_0), boolType())
+  ensures boolFromRef(par_arg) ==> !boolFromRef(ret_0)
+  ensures boolFromRef(ret_0) ==> !boolFromRef(par_arg)
+  ensures !boolFromRef(par_arg) ==> boolFromRef(ret_0)
+  ensures !boolFromRef(ret_0) ==> boolFromRef(par_arg)
 {
-  ret$0 := df$notBool(par$arg)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret_0 := notBool(par_arg)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /and_or_then.kt:(417,424): info: Generated Viper text for testAnd:
-method f$testAnd$F$t$Boolean$t$Boolean$t$Boolean(par$arg1: Ref, par$arg2: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$arg1), df$rt$boolType())
-  requires df$rt$isSubtype(df$rt$typeOf(par$arg2), df$rt$boolType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$boolType())
-  ensures df$rt$boolFromRef(ret$0) ==>
-    df$rt$boolFromRef(par$arg1) && df$rt$boolFromRef(par$arg2)
-  ensures !df$rt$boolFromRef(ret$0) ==>
-    !df$rt$boolFromRef(par$arg1) || !df$rt$boolFromRef(par$arg2)
-  ensures df$rt$boolFromRef(par$arg1) && df$rt$boolFromRef(par$arg2) ==>
-    df$rt$boolFromRef(ret$0)
-  ensures !df$rt$boolFromRef(par$arg1) ==> !df$rt$boolFromRef(ret$0)
-  ensures !df$rt$boolFromRef(par$arg2) ==> !df$rt$boolFromRef(ret$0)
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
+method testAnd(arg1: Ref, arg2: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(arg1), boolType())
+  requires isSubtype(typeOf(arg2), boolType())
+  ensures isSubtype(typeOf(ret_0), boolType())
+  ensures boolFromRef(ret_0) ==> boolFromRef(arg1) && boolFromRef(arg2)
+  ensures !boolFromRef(ret_0) ==> !boolFromRef(arg1) || !boolFromRef(arg2)
+  ensures boolFromRef(arg1) && boolFromRef(arg2) ==> boolFromRef(ret_0)
+  ensures !boolFromRef(arg1) ==> !boolFromRef(ret_0)
+  ensures !boolFromRef(arg2) ==> !boolFromRef(ret_0)
 {
-  if (df$rt$boolFromRef(par$arg1)) {
-    ret$0 := par$arg2
+  if (boolFromRef(arg1)) {
+    ret_0 := arg2
   } else {
-    ret$0 := df$rt$boolToRef(false)}
-  goto lbl$ret$0
-  label lbl$ret$0
+    ret_0 := boolToRef(false)}
+  goto lbl_ret_0
+  label lbl_ret_0
 }

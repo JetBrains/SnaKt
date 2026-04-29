@@ -8,6 +8,8 @@ package org.jetbrains.kotlin.formver.core.names
 import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.symbols.impl.*
+import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.core.conversion.ClassPropertyPair
 import org.jetbrains.kotlin.formver.core.conversion.ProgramConversionContext
 import org.jetbrains.kotlin.formver.core.conversion.ScopeIndex
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
@@ -54,12 +56,13 @@ private fun CallableId.embedMemberPropertyNameBase(
 ): ScopedName {
     val id = classId ?: error("Embedding non-member property $callableName as a member.")
     return buildName {
-        if (scopePolicy.isScoped) {
-            embedScope(id)
-        }
         when (scopePolicy) {
             MemberEmbeddingPolicy.PUBLIC -> publicScope()
-            MemberEmbeddingPolicy.PRIVATE -> privateScope()
+            MemberEmbeddingPolicy.PRIVATE -> {
+                // When the field is private, we want to have the class scope as the parent.
+                embedScope(id)
+                privateScope()
+            }
             MemberEmbeddingPolicy.UNSCOPED -> fakeScope()
         }
         withAction(callableName)
@@ -122,9 +125,18 @@ fun FirPropertySymbol.embedSetterName(ctx: ProgramConversionContext): ScopedName
         callableId!!.embedMemberSetterName(Visibilities.isPrivate(visibility))
     }
 
-fun FirPropertySymbol.embedMemberPropertyName() = callableId!!.embedMemberPropertyName(
-    Visibilities.isPrivate(this.visibility)
-)
+/**
+ * Returns a pair that uniquely identifies the property.
+ * The first element is the name of the class that contains the property, and the second is the name of the property itself.
+ */
+fun FirPropertySymbol.embedMemberPropertyName(): ClassPropertyPair {
+    val callable = callableId
+    val className =
+        callable?.classId?.embedName() ?: throw SnaktInternalException(source, "Property is not part of a class")
+    val propertyName = callable.embedMemberPropertyName(Visibilities.isPrivate(this.visibility))
+    return Pair(className, propertyName)
+}
+
 
 fun FirConstructorSymbol.embedName(ctx: ProgramConversionContext): ScopedName = buildName {
     embedScope(callableId)

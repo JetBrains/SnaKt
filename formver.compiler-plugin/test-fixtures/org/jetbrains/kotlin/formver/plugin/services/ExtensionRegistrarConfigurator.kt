@@ -16,6 +16,7 @@ import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.FULL_VIPER
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.NEVER_VALIDATE
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.RENDER_PREDICATES
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.REPLACE_STDLIB_EXTENSIONS
+import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.LOCALITY_CHECK_ONLY
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.UNIQUE_CHECK_ONLY
 import org.jetbrains.kotlin.test.directives.model.DirectivesContainer
 import org.jetbrains.kotlin.test.directives.model.RegisteredDirectives
@@ -46,18 +47,22 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
         val conversionOnly = (System.getProperty("formver.conversionOnly")?.toBoolean() ?: false)
                 || NEVER_VALIDATE in module.directives
         val uniquenessOnly = UNIQUE_CHECK_ONLY in module.directives
+        val localityOnly = LOCALITY_CHECK_ONLY in module.directives
         val dumpUniquenessCFG = DUMP_UNIQUENESS_CFG in module.directives
         val verificationSelection = when {
             conversionOnly -> TargetsSelection.FORCE_DISABLE
             ALWAYS_VALIDATE in module.directives -> TargetsSelection.ALL_TARGETS
-            uniquenessOnly -> TargetsSelection.NO_TARGETS
+            uniquenessOnly || localityOnly -> TargetsSelection.NO_TARGETS
             else -> TargetsSelection.TARGETS_WITH_CONTRACT
         }
         val conversionSelection = when {
-            uniquenessOnly -> TargetsSelection.NO_TARGETS
+            uniquenessOnly || localityOnly -> TargetsSelection.NO_TARGETS
             else -> TargetsSelection.ALL_TARGETS
         }
         val checkUniqueness = uniquenessOnly
+        // TODO: Eventually turn on locality checking together with uniqueness checking once the latter will be able to
+        //  leverage locality information.
+        val checkLocality = localityOnly // || checkUniqueness
         val config = PluginConfiguration(
             logLevel,
             errorStyle,
@@ -66,6 +71,7 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
             verificationSelection = verificationSelection,
             checkUniqueness = checkUniqueness,
             dumpUniquenessCFG = dumpUniquenessCFG,
+            checkLocality = checkLocality,
         )
         FirExtensionRegistrarAdapter.registerExtension(FormalVerificationPluginExtensionRegistrar(config))
     }
@@ -86,6 +92,10 @@ object FormVerDirectives : SimpleDirectivesContainer() {
 
     val UNIQUE_CHECK_ONLY by directive(
         description = "Do uniqueness checking"
+    )
+
+    val LOCALITY_CHECK_ONLY by directive(
+        description = "Do locality checking"
     )
 
     val DUMP_UNIQUENESS_CFG by directive(
@@ -115,4 +125,3 @@ class StdlibReplacementsProvider(testServices: TestServices, baseDir: String = "
         else emptyList()
 
 }
-

@@ -138,5 +138,3 @@ val TypeEmbedding.injectionOrNull: Injection?
             BooleanTypeEmbedding -> RuntimeTypeDomain.boolInjection
             else -> null
         }
-
-
