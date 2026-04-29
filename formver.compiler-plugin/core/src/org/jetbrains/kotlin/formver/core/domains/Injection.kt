@@ -6,8 +6,6 @@
 package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.isOf
-import org.jetbrains.kotlin.formver.core.names.AdtInjectionName
-import org.jetbrains.kotlin.formver.core.names.UnqualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
 import org.jetbrains.kotlin.formver.viper.ast.Function
@@ -40,39 +38,17 @@ import org.jetbrains.kotlin.formver.viper.ast.Function
  * @param viperType: built-in type which needs to be mapped
  * @param typeFunction: representation of that type as a domain func
  */
-class Injection private constructor(
+class Injection(
+    toRefName: SymbolicName,
+    fromRefName: SymbolicName,
     val viperType: Type,
     val typeFunction: DomainFunc,
-    val toRef: DomainFunc,
-    val fromRef: DomainFunc,
 ) {
     private val v = domainVar("v", viperType)
     private val r = domainVar("r", Type.Ref)
 
-    // TODO: Update this to the new naming system and revert to previous implementation with one constructor
-    companion object {
-        // For built-in types (bool, int, char, string).
-        operator fun invoke(injectionName: String, viperType: Type, typeFunction: DomainFunc): Injection {
-            val v = domainVar("v", viperType)
-            val r = domainVar("r", Type.Ref)
-            return Injection(
-                viperType, typeFunction,
-                RuntimeTypeDomain.createDomainFunc(UnqualifiedDomainFuncName("${injectionName}ToRef"), listOf(v.decl()), Type.Ref),
-                RuntimeTypeDomain.createDomainFunc(UnqualifiedDomainFuncName("${injectionName}FromRef"), listOf(r.decl()), viperType),
-            )
-        }
-
-        // For ADT types, using AdtInjectionName so function names are qualified by the class name.
-        operator fun invoke(className: SymbolicName, viperType: Type, typeFunction: DomainFunc): Injection {
-            val v = domainVar("v", viperType)
-            val r = domainVar("r", Type.Ref)
-            return Injection(
-                viperType, typeFunction,
-                RuntimeTypeDomain.createDomainFunc(AdtInjectionName(className, "ToRef"), listOf(v.decl()), Type.Ref),
-                RuntimeTypeDomain.createDomainFunc(AdtInjectionName(className, "FromRef"), listOf(r.decl()), viperType),
-            )
-        }
-    }
+    val toRef: DomainFunc = RuntimeTypeDomain.createDomainFunc(toRefName, listOf(v.decl()), Type.Ref)
+    val fromRef: DomainFunc = RuntimeTypeDomain.createDomainFunc(fromRefName, listOf(r.decl()), viperType)
 
     internal fun AxiomListBuilder.injectionAxioms() {
         axiom {

@@ -108,11 +108,13 @@ class SimpleNameResolver : NameResolver {
             }
 
             is PretypeName -> listOf(name.name)
-            is AdtName -> resolveParts(name.nameType) + resolveParts(name.className)
+            is AdtName -> if (name.suffix == null)
+                resolveParts(name.nameType) + resolveParts(name.className)
+            else
+                resolveParts(name.className) + listOf(name.suffix)
             is AdtConstructorName -> resolveParts(name.nameType) +
                     with(NameTypeAction.SKIP) { resolveParts(name.adtName) } +
                     resolveParts(name.className)
-            is AdtInjectionName -> resolveParts(name.className) + listOf(name.suffix)
             is TypeName -> resolveParts(name.nameType) + listOfNotNull(buildString {
                 if (name.nullable) append("N")
                 if (name.pretype is FunctionTypeEmbedding) append("F")

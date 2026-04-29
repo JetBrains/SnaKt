@@ -29,14 +29,13 @@
 /singleton.kt:(181,200): error: Invalid ADT annotation: An @ADT data object must not have member functions
 
 /singleton.kt:(211,222): info: Generated Viper text for doSomething:
-method f$c$WithFunction$doSomething$F$t$WithFunction$t$Int(this$dispatch: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(this$dispatch), df$rt$c$WithFunction())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method doSomething(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), c_WithFunction())
+  ensures isSubtype(typeOf(ret), intType())
 {
-  ret$0 := df$rt$intToRef(1)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret := intToRef(1)
+  goto ret_0
+  label ret_0
 }
 
 /singleton.kt:(272,292): error: Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface
@@ -46,78 +45,73 @@ method f$c$WithFunction$doSomething$F$t$WithFunction$t$Int(this$dispatch: Ref)
 /singleton.kt:(272,292): error: Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface
 
 /singleton.kt:(338,356): info: Generated Viper text for triggerNotAnObject:
-method f$triggerNotAnObject$F$t$NotAnObject$t$Unit(par$x: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$NotAnObject())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method triggerNotAnObject(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), NotAnObject())
+  ensures isSubtype(typeOf(ret), unitType())
 {
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /singleton.kt:(380,400): info: Generated Viper text for triggerNotDataObject:
-method f$triggerNotDataObject$F$t$NotDataObject$t$Unit(par$x: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$NotDataObject())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method triggerNotDataObject(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), NotDataObject())
+  ensures isSubtype(typeOf(ret), unitType())
 {
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /singleton.kt:(426,442): info: Generated Viper text for triggerWithField:
-method f$triggerWithField$F$t$WithField$t$Unit(par$x: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$WithField())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method triggerWithField(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), WithField())
+  ensures isSubtype(typeOf(ret), unitType())
 {
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /singleton.kt:(464,483): info: Generated Viper text for triggerWithFunction:
-method f$triggerWithFunction$F$t$WithFunction$t$Unit(par$x: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$WithFunction())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method triggerWithFunction(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), WithFunction())
+  ensures isSubtype(typeOf(ret), unitType())
 {
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /singleton.kt:(508,528): info: Generated Viper text for triggerWithSupertype:
-method f$triggerWithSupertype$F$t$WithSupertype$t$Unit(par$x: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$WithSupertype())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method triggerWithSupertype(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), WithSupertype())
+  ensures isSubtype(typeOf(ret), unitType())
 {
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /singleton.kt:(555,569): info: Generated Viper text for validParameter:
-method f$validParameter$F$t$Valid$t$Unit(par$a: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$a), df$rt$c$Valid())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method validParameter(a: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(a), rt_c_pkg__c_Valid())
+  ensures isSubtype(typeOf(ret), unitType())
 {
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
-adt adt$c$Valid {
-  adtc$Valid$c$Valid()
+adt adt_c_pkg__c_Valid {
+  c_pkg__c_Valid()
 }
 
 /singleton.kt:(588,606): info: Generated Viper text for validLocalVariable:
-method f$validLocalVariable$F$t$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method validLocalVariable() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 {
-  var l0$x: Ref
-  l0$x := df$rt$c$Valid$ToRef(adtc$Valid$c$Valid())
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  var x: Ref
+  x := ToRef(c_pkg__c_Valid_c_pkg__c_Valid())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
-adt adt$c$Valid {
-  adtc$Valid$c$Valid()
+adt c_pkg__c_Valid {
+  c_pkg__c_Valid_c_pkg__c_Valid()
 }

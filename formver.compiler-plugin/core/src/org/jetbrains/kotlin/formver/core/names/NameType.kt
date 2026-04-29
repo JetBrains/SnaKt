@@ -30,6 +30,8 @@ sealed interface NameType : NameTypeBase {
                 Base.Variable -> "v"
                 Base.Domain -> "d"
                 Base.DomainFunction -> "df"
+                Base.Adt -> "adt"
+                Base.AdtCons -> "adtc"
             }
         )
 
