@@ -72,7 +72,7 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
                 })
             }
             if (toVerify.isNotEmpty()) {
-                val verifier = SiliconFrontend(listOf("--numberOfParallelVerifiers", "1"))
+                val verifier = SiliconFrontend(emptyList())
                 toVerify.forEach { (testFile, decl) ->
                     val diagnostics = verifyFunction(verifier, decl, module)
                     testServices.diagnosticsCollector.addVerificationDiagnostics(diagnostics)
