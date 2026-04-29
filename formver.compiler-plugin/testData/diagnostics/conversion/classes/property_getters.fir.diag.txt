@@ -1,73 +1,70 @@
 /property_getters.kt:(102,129): info: Generated Viper text for testPrimitivePropertyGetter:
-method f$testPrimitivePropertyGetter$F$t$PrimitiveProperty$t$Int(par$pp: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$pp), df$rt$c$PrimitiveProperty())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method nProp(this: Ref) returns (v_ret: Ref)
+
+
+method testPrimitivePropertyGetter(pp: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(pp), _c_PrimitiveProperty())
+  ensures isSubtype(typeOf(ret), intType())
 {
-  var anon$0: Ref
-  inhale acc(pred$c$PrimitiveProperty$shared(par$pp), wildcard)
-  anon$0 := g$public$nProp(par$pp)
-  ret$0 := anon$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
-  goto lbl$ret$0
-  label lbl$ret$0
+  var anon: Ref
+  inhale acc(shared(pp), wildcard)
+  anon := nProp(pp)
+  ret := anon
+  inhale isSubtype(typeOf(ret), intType())
+  goto ret_0
+  label ret_0
 }
-
-method g$public$nProp(this$dispatch: Ref) returns (ret: Ref)
-
 
 /property_getters.kt:(286,313): info: Generated Viper text for testReferencePropertyGetter:
-method f$testReferencePropertyGetter$F$t$ReferenceProperty$t$Unit(par$rp: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$rp), df$rt$c$ReferenceProperty())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method nProp(this: Ref) returns (v_ret: Ref)
+
+
+method rProp(this: Ref) returns (v_ret: Ref)
+
+
+method testReferencePropertyGetter(rp: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(rp), _c_ReferenceProperty())
+  ensures isSubtype(typeOf(ret), unitType())
 {
-  var l0$pp: Ref
-  var anon$0: Ref
-  var l0$ppn: Ref
-  var anon$1: Ref
-  inhale acc(pred$c$ReferenceProperty$shared(par$rp), wildcard)
-  anon$0 := g$public$rProp(par$rp)
-  l0$pp := anon$0
-  inhale df$rt$isSubtype(df$rt$typeOf(l0$pp), df$rt$c$PrimitiveProperty())
-  inhale acc(pred$c$PrimitiveProperty$shared(l0$pp), wildcard)
-  anon$1 := g$public$nProp(l0$pp)
-  l0$ppn := anon$1
-  inhale df$rt$isSubtype(df$rt$typeOf(l0$ppn), df$rt$intType())
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  var pp: Ref
+  var anon_0: Ref
+  var ppn: Ref
+  var anon: Ref
+  inhale acc(c_ReferenceProperty_shared(rp), wildcard)
+  anon_0 := rProp(rp)
+  pp := anon_0
+  inhale isSubtype(typeOf(pp), _c_PrimitiveProperty())
+  inhale acc(shared(pp), wildcard)
+  anon := nProp(pp)
+  ppn := anon
+  inhale isSubtype(typeOf(ppn), intType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
-
-method g$public$nProp(this$dispatch: Ref) returns (ret: Ref)
-
-
-method g$public$rProp(this$dispatch: Ref) returns (ret: Ref)
-
 
 /property_getters.kt:(391,418): info: Generated Viper text for testCascadingPropertyGetter:
-method f$testCascadingPropertyGetter$F$t$ReferenceProperty$t$Unit(par$rp: Ref)
-  returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$rp), df$rt$c$ReferenceProperty())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method nProp(this: Ref) returns (v_ret: Ref)
+
+
+method rProp(this: Ref) returns (v_ret: Ref)
+
+
+method testCascadingPropertyGetter(rp: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(rp), _c_ReferenceProperty())
+  ensures isSubtype(typeOf(ret), unitType())
 {
-  var l0$ppn: Ref
-  var anon$0: Ref
-  var anon$1: Ref
-  var anon$2: Ref
-  inhale acc(pred$c$ReferenceProperty$shared(par$rp), wildcard)
-  anon$2 := g$public$rProp(par$rp)
-  anon$1 := anon$2
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$c$PrimitiveProperty())
-  inhale acc(pred$c$PrimitiveProperty$shared(anon$1), wildcard)
-  anon$0 := g$public$nProp(anon$1)
-  l0$ppn := anon$0
-  inhale df$rt$isSubtype(df$rt$typeOf(l0$ppn), df$rt$intType())
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  var ppn: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon: Ref
+  inhale acc(c_ReferenceProperty_shared(rp), wildcard)
+  anon := rProp(rp)
+  anon_1 := anon
+  inhale isSubtype(typeOf(anon_1), _c_PrimitiveProperty())
+  inhale acc(shared(anon_1), wildcard)
+  anon_0 := nProp(anon_1)
+  ppn := anon_0
+  inhale isSubtype(typeOf(ppn), intType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
-
-method g$public$nProp(this$dispatch: Ref) returns (ret: Ref)
-
-
-method g$public$rProp(this$dispatch: Ref) returns (ret: Ref)
-

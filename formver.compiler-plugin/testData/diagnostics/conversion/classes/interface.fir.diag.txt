@@ -1,60 +1,59 @@
 /interface.kt:(84,98): info: Generated Viper text for testProperties:
-method f$testProperties$F$t$Foo$t$Unit(par$foo: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$foo), df$rt$c$Foo())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method g_varProp(this: Ref) returns (v_ret: Ref)
+
+
+method testProperties(foo: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(foo), _c_Foo())
+  ensures isSubtype(typeOf(ret), unitType())
 {
-  var anon$0: Ref
-  var l0$x: Ref
-  var anon$1: Ref
-  var anon$2: Ref
-  var anon$3: Ref
-  var anon$4: Ref
-  inhale acc(pred$c$Foo$shared(par$foo), wildcard)
-  anon$0 := s$public$varProp(par$foo, df$rt$intToRef(0))
-  anon$2 := g$public$varProp(par$foo)
-  anon$1 := anon$2
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$1), df$rt$intType())
-  anon$4 := g$public$valProp(par$foo)
-  anon$3 := anon$4
-  inhale df$rt$isSubtype(df$rt$typeOf(anon$3), df$rt$intType())
-  l0$x := df$plusInts(anon$1, anon$3)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  var anon_0: Ref
+  var x: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  var anon_3: Ref
+  var anon: Ref
+  inhale acc(shared(foo), wildcard)
+  anon_0 := varProp(foo, intToRef(0))
+  anon_2 := g_varProp(foo)
+  anon_1 := anon_2
+  inhale isSubtype(typeOf(anon_1), intType())
+  anon := valProp(foo)
+  anon_3 := anon
+  inhale isSubtype(typeOf(anon_3), intType())
+  x := plusInts(anon_1, anon_3)
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
-method g$public$valProp(this$dispatch: Ref) returns (ret: Ref)
+method valProp(this: Ref) returns (v_ret: Ref)
 
 
-method g$public$varProp(this$dispatch: Ref) returns (ret: Ref)
-
-
-method s$public$varProp(this$dispatch: Ref, anon$0: Ref) returns (ret: Ref)
+method varProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
 
 
 /interface.kt:(348,358): info: Generated Viper text for createImpl:
-field bf$number: Ref
+field bf_number: Ref
 
-method con$c$Impl$t$Int$t$Impl(par$number: Ref) returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$number), df$rt$intType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$Impl())
-  ensures acc(pred$c$Impl$shared(ret), wildcard)
-  ensures acc(pred$c$Impl$unique(ret), write)
-  ensures df$rt$intFromRef((unfolding acc(pred$c$Impl$shared(ret), wildcard) in
-      ret.bf$number)) ==
-    df$rt$intFromRef(par$number)
+method con(number: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(number), intType())
+  ensures isSubtype(typeOf(ret), _c_Impl())
+  ensures acc(c_Impl_shared(ret), wildcard)
+  ensures acc(c_Impl_unique(ret), write)
+  ensures intFromRef((unfolding acc(c_Impl_shared(ret), wildcard) in
+      ret.bf_number)) ==
+    intFromRef(number)
 
 
-method f$createImpl$F$t$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method createImpl() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var l0$impl: Ref
-  var l0$implField: Ref
-  l0$impl := con$c$Impl$t$Int$t$Impl(df$rt$intToRef(-1))
-  unfold acc(pred$c$Impl$shared(l0$impl), wildcard)
-  l0$implField := l0$impl.bf$number
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  var impl: Ref
+  var implField: Ref
+  impl := con(intToRef(-1))
+  unfold acc(c_Impl_shared(impl), wildcard)
+  implField := impl.bf_number
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-method g$public$number(this$dispatch: Ref) returns (ret: Ref)
-
+method g_number(this: Ref) returns (ret: Ref)

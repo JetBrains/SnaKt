@@ -17,4 +17,3 @@ fun <!VIPER_TEXT!>elvisOperatorReturn<!>(x: Int?): Int {
     val y = x ?: return 0
     return y
 }
-

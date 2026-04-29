@@ -10,4 +10,3 @@ fun `unique parameter`(@Unique box: Box) {}
 fun `borrowed parameter`(@Borrowed box: Box) {}
 
 fun `unique borrowed parameter`(@Unique @Borrowed box: Box) {}
-

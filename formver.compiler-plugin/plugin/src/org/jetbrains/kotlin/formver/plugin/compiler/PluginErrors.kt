@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.plugin.compiler
 
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.diagnostics.*
+import org.jetbrains.kotlin.formver.plugin.compiler.locality.Locality
 
 object PluginErrors : KtDiagnosticsContainer() {
     val VIPER_VERIFICATION_ERROR by warning1<PsiElement, String>()
@@ -21,6 +22,7 @@ object PluginErrors : KtDiagnosticsContainer() {
     val PURITY_VIOLATION by error1<PsiElement, String>()
     val ADT_INVALID_TARGET by error1<PsiElement, String>()
 
+    val LOCALITY_VIOLATION by error3<PsiElement, String, Locality, Locality>()
     val UNIQUENESS_VIOLATION by error1<PsiElement, String>()
     val UNIQUENESS_CFG by info1<PsiElement, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
 

@@ -1,50 +1,48 @@
 /subtyping.kt:(80,89): info: Generated Viper text for smartCast:
-method f$smartCast$F$t$N$Int$t$Int(par$x: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$nullable(df$rt$intType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$intType())
+method smartCast(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), nullable(intType()))
+  ensures isSubtype(typeOf(ret), intType())
 {
-  if (par$x == df$rt$nullValue()) {
-    ret$0 := df$rt$intToRef(0)
-    goto lbl$ret$0
+  if (x == nullValue()) {
+    ret := intToRef(0)
+    goto ret_0
   } else {
-    ret$0 := par$x
-    goto lbl$ret$0
+    ret := x
+    goto ret_0
   }
-  label lbl$ret$0
+  label ret_0
 }
 
 /subtyping.kt:(187,202): info: Generated Viper text for returnSubtyping:
-method f$returnSubtyping$F$t$N$Int() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$nullable(df$rt$intType()))
+method returnSubtyping() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), nullable(intType()))
 {
-  ret$0 := df$rt$intToRef(0)
-  goto lbl$ret$0
-  label lbl$ret$0
+  ret := intToRef(0)
+  goto ret_0
+  label ret_0
 }
 
 /subtyping.kt:(233,252): info: Generated Viper text for assignmentSubtyping:
-method f$assignmentSubtyping$F$t$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method assignmentSubtyping() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 {
-  var l0$x: Ref
-  l0$x := df$rt$boolToRef(false)
-  l0$x := df$rt$boolToRef(true)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  var x: Ref
+  x := boolToRef(false)
+  x := boolToRef(true)
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /subtyping.kt:(358,384): info: Generated Viper text for functionParameterSubtyping:
-method f$functionParameterSubtyping$F$t$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method functionParameterSubtyping() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var anon$0: Ref
-  anon$0 := f$nullableParameter$F$t$N$Boolean$t$Unit(df$rt$boolToRef(false))
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  var anon: Ref
+  anon := nullableParameter(boolToRef(false))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-method f$nullableParameter$F$t$N$Boolean$t$Unit(par$b: Ref)
-  returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$b), df$rt$nullable(df$rt$boolType()))
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$unitType())
-
+method nullableParameter(b: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(b), nullable(boolType()))
+  ensures isSubtype(typeOf(ret), unitType())

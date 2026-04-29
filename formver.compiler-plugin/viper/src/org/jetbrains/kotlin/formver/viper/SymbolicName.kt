@@ -12,7 +12,48 @@ interface AnyName {
     fun register(nameResolver: NameResolver) {
         nameResolver.register(this)
     }
+
+    val candidates: List<CandidateName>
+
+    val children: List<AnyName>
+
+    /**
+     * True iff the name can appear in Viper.
+     */
+    val inViper: Boolean
 }
+
+
+/**
+ * Represents a part of a candidate name.
+ * Don't build NamePart directly. Use [CandidateNameBuilder] instead.
+ */
+sealed interface NamePart {
+
+    /**
+     * A simple string name part.
+     */
+    data class Basic(val name: String) : NamePart
+
+    /**
+     * A name part that depends on another [AnyName].
+     */
+    data class Dependent(val name: AnyName) : NamePart
+
+    /**
+     * A separator between name parts.
+     */
+    object Separator : NamePart
+}
+
+/**
+ * A candidate name composed of multiple [NamePart]s.
+ * A candidate name should always be created using [CandidateNameBuilder].
+ */
+class CandidateName(val parts: List<NamePart>) {
+    fun moveableParts(): List<NamePart.Dependent> = parts.filterIsInstance<NamePart.Dependent>()
+}
+
 
 
 /**
@@ -41,4 +82,3 @@ val SymbolicName.mangled: String
  * Do not inherit from this interface. If you need a new name type, add it to the [NameType] interface.
  */
 interface NameTypeBase : AnyName
-

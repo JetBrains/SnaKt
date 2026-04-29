@@ -71,4 +71,3 @@ data object StringTypeEmbedding : PretypeEmbedding {
 }
 
 fun PretypeEmbedding.asTypeEmbedding() = TypeEmbedding(this, TypeEmbeddingFlags(nullable = false))
-

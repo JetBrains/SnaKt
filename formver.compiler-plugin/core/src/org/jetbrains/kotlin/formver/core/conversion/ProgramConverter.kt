@@ -34,14 +34,15 @@ import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.isADT
 import org.jetbrains.kotlin.formver.core.names.*
-import org.jetbrains.kotlin.formver.names.SimpleNameResolver
-import org.jetbrains.kotlin.formver.names.debugMangled
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Method
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.utils.addIfNotNull
 import org.jetbrains.kotlin.utils.addToStdlib.ifFalse
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
+
+
+typealias ClassPropertyPair = Pair<ScopedName, ScopedName>
 
 /**
  * Tracks the top-level information about the program.
@@ -63,7 +64,13 @@ class ProgramConverter(
     private val functions: MutableMap<SymbolicName, PureFunctionEmbedding> = mutableMapOf()
     private val classes: MutableMap<SymbolicName, ClassTypeEmbedding> = mutableMapOf()
     private val adts: MutableMap<SymbolicName, AdtTypeEmbedding> = mutableMapOf()
-    private val properties: MutableMap<SymbolicName, PropertyEmbedding> = mutableMapOf()
+    /**
+     * [properties] contains all the properties. This includes properties defined on interfaces etc.
+     * They are stored in a map. The key is the pair of the name of the class and the field.
+     **/
+    private val properties: MutableMap<ClassPropertyPair, PropertyEmbedding> = mutableMapOf()
+
+    /** [fields] contain the properties that actually have backing fields. **/
     private val fields: MutableSet<FieldEmbedding> = mutableSetOf()
     private val havocMethods: MutableMap<SymbolicName, Method> = mutableMapOf()
 
@@ -85,7 +92,7 @@ class ProgramConverter(
     override val anonVarProducer = FreshEntityProducer(::AnonymousVariableEmbedding)
     override val anonBuiltinVarProducer = FreshEntityProducer(::AnonymousBuiltinVariableEmbedding)
     override val returnTargetProducer = FreshEntityProducer(::ReturnTarget)
-    override val nameResolver = SimpleNameResolver()
+    override val nameResolver = ShortNameResolver()
 
     val program: Program
         get() = Program(
@@ -93,12 +100,12 @@ class ProgramConverter(
             // We need to deduplicate fields since public fields with the same name are represented differently
             // at `FieldEmbedding` level but map to the same Viper.
             fields = SpecialFields.all.map { it.toViper() } +
-                    fields.distinctBy { it.name.debugMangled }.map { it.toViper() },
+                    fields.distinctBy { it.name }.map { it.toViper() },
             functions = SpecialFunctions.all +
-                    functions.values.mapNotNull { it.viperFunction }.distinctBy { it.name.debugMangled },
+                    functions.values.mapNotNull { it.viperFunction }.distinctBy { it.name },
             methods = SpecialMethods.all +
                     methods.values.mapNotNull { it.viperMethod }
-                        .distinctBy { it.name.debugMangled } + havocMethods.values,
+                        .distinctBy { it.name } + havocMethods.values,
             predicates = classes.values.flatMap {
                 listOf(
                     it.details.sharedPredicate,

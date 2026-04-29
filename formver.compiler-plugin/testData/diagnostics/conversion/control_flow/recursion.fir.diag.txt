@@ -1,9 +1,9 @@
 /recursion.kt:(23,32): info: Generated Viper text for recursive:
-method f$recursive$F$t$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method recursive() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 {
-  ret$0 := f$recursive$F$t$Unit()
-  goto lbl$ret$0
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  ret := recursive()
+  goto ret_0
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }

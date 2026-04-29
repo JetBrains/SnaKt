@@ -50,4 +50,3 @@ jobs:
         if: failure()
         with:
           report_paths: '**/build/test-results/testBothModes/TEST-*.xml'
-

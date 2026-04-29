@@ -54,4 +54,3 @@ fun <!VIPER_TEXT!>typeOfField<!>(foo: Foo): Boolean {
     }
     return foo.bar is Bar
 }
-

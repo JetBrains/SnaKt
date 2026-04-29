@@ -1,63 +1,63 @@
 /pure_literal_function.kt:(72,85): info: Generated Viper text for emptyFunction:
-function f$emptyAnnotatedFunction$F$t$N$Int(): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$nullable(df$rt$intType()))
+function emptyAnnotatedFunction(): Ref
+  ensures isSubtype(typeOf(result), nullable(intType()))
 {
-  df$rt$nullValue()
+  nullValue()
 }
 
-method f$emptyFunction$F$t$Unit() returns (ret$0: Ref)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method emptyFunction() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 {
-  var l0$x: Ref
-  l0$x := f$emptyAnnotatedFunction$F$t$N$Int()
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  var x: Ref
+  x := emptyAnnotatedFunction()
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /pure_literal_function.kt:(136,158): info: Generated Viper text for emptyAnnotatedFunction:
-function f$emptyAnnotatedFunction$F$t$N$Int(): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$nullable(df$rt$intType()))
+function emptyAnnotatedFunction(): Ref
+  ensures isSubtype(typeOf(result), nullable(intType()))
 {
-  df$rt$nullValue()
+  nullValue()
 }
 
 /pure_literal_function.kt:(194,215): info: Generated Viper text for annotatedIntLitReturn:
-function f$annotatedIntLitReturn$F$t$Int(): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$intType())
+function annotatedIntLitReturn(): Ref
+  ensures isSubtype(typeOf(result), intType())
 {
-  df$rt$intToRef(42)
+  intToRef(42)
 }
 
 /pure_literal_function.kt:(248,270): info: Generated Viper text for annotatedBoolLitReturn:
-function f$annotatedBoolLitReturn$F$t$Boolean(): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$boolType())
+function annotatedBoolLitReturn(): Ref
+  ensures isSubtype(typeOf(result), boolType())
 {
-  df$rt$boolToRef(true)
+  boolToRef(true)
 }
 
 /pure_literal_function.kt:(309,331): info: Generated Viper text for annotatedCharLitReturn:
-function f$annotatedCharLitReturn$F$t$Char(): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$charType())
+function annotatedCharLitReturn(): Ref
+  ensures isSubtype(typeOf(result), charType())
 {
-  df$rt$charToRef(65)
+  charToRef(65)
 }
 
 /pure_literal_function.kt:(366,390): info: Generated Viper text for annotatedStringLitReturn:
-function f$annotatedStringLitReturn$F$t$String(): Ref
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$stringType())
+function annotatedStringLitReturn(): Ref
+  ensures isSubtype(typeOf(result), stringType())
 {
-  df$rt$stringToRef(Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116))
+  stringToRef(Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116))
 }
 
 /pure_literal_function.kt:(474,498): info: Generated Viper text for annotatedReferenceReturn:
-field bf$a: Ref
+field a: Ref
 
-field bf$b: Ref
+field b: Ref
 
-function f$annotatedReferenceReturn$F$t$X$t$X(par$x: Ref): Ref
-  requires acc(pred$c$X$shared(par$x), wildcard)
-  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$X())
-  ensures df$rt$isSubtype(df$rt$typeOf(result), df$rt$c$X())
+function annotatedReferenceReturn(x: Ref): Ref
+  requires acc(shared(x), wildcard)
+  requires isSubtype(typeOf(x), _c_X())
+  ensures isSubtype(typeOf(result), _c_X())
 {
-  par$x
+  x
 }

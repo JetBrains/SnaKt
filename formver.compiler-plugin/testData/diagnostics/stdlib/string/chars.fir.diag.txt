@@ -1,42 +1,41 @@
 /chars.kt:(212,221): info: Generated Viper text for testChars:
-field bf$char: Ref
+field bf_char: Ref
 
-field bf$size: Ref
+field size: Ref
 
-method con$c$CharBox$t$Char$t$CharBox(par$char: Ref) returns (ret: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$char), df$rt$charType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret), df$rt$c$CharBox())
-  ensures acc(pred$c$CharBox$shared(ret), wildcard)
-  ensures acc(pred$c$CharBox$unique(ret), write)
-  ensures df$rt$charFromRef((unfolding acc(pred$c$CharBox$shared(ret), wildcard) in
-      ret.bf$char)) ==
-    df$rt$charFromRef(par$char)
+method con(char: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(char), charType())
+  ensures isSubtype(typeOf(ret), _c_CharBox())
+  ensures acc(c_CharBox_shared(ret), wildcard)
+  ensures acc(c_CharBox_unique(ret), write)
+  ensures charFromRef((unfolding acc(c_CharBox_shared(ret), wildcard) in
+      ret.bf_char)) ==
+    charFromRef(char)
 
 
-method f$testChars$F$t$Char$t$Unit(par$c: Ref) returns (ret$0: Ref)
-  requires df$rt$isSubtype(df$rt$typeOf(par$c), df$rt$charType())
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+method testChars(c: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(c), charType())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var l0$box: Ref
-  var l0$charA: Ref
-  var l0$cond1: Ref
-  var anon$0: Ref
-  var l0$charZ: Ref
-  l0$box := con$c$CharBox$t$Char$t$CharBox(df$rt$charToRef(97))
-  l0$charA := df$rt$charToRef(97)
-  unfold acc(pred$c$CharBox$shared(l0$box), wildcard)
-  anon$0 := l0$box.bf$char
-  l0$cond1 := df$rt$boolToRef(df$rt$charFromRef(l0$charA) ==
-    df$rt$charFromRef(anon$0))
-  assert df$rt$boolFromRef(l0$cond1)
-  l0$charZ := df$rt$charToRef(122)
-  assert df$rt$charFromRef(l0$charA) == df$rt$charFromRef(l0$charZ) - 25
-  assert df$rt$charFromRef(l0$charA) - df$rt$charFromRef(l0$charZ) == -25
-  assert df$rt$charFromRef(l0$charZ) == df$rt$charFromRef(l0$charA) + 25
-  assert df$rt$charFromRef(l0$charA) <= df$rt$charFromRef(l0$charZ)
-  assert df$rt$charFromRef(l0$charA) < df$rt$charFromRef(l0$charZ)
-  assert df$rt$charFromRef(l0$charZ) > df$rt$charFromRef(l0$charA)
-  assert df$rt$charFromRef(l0$charZ) >= df$rt$charFromRef(l0$charZ)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+  var box: Ref
+  var charA: Ref
+  var cond1: Ref
+  var anon: Ref
+  var charZ: Ref
+  box := con(charToRef(97))
+  charA := charToRef(97)
+  unfold acc(c_CharBox_shared(box), wildcard)
+  anon := box.bf_char
+  cond1 := boolToRef(charFromRef(charA) == charFromRef(anon))
+  assert boolFromRef(cond1)
+  charZ := charToRef(122)
+  assert charFromRef(charA) == charFromRef(charZ) - 25
+  assert charFromRef(charA) - charFromRef(charZ) == -25
+  assert charFromRef(charZ) == charFromRef(charA) + 25
+  assert charFromRef(charA) <= charFromRef(charZ)
+  assert charFromRef(charA) < charFromRef(charZ)
+  assert charFromRef(charZ) > charFromRef(charA)
+  assert charFromRef(charZ) >= charFromRef(charZ)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }

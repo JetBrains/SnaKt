@@ -139,5 +139,3 @@ val TypeEmbedding.injectionOrNull: Injection?
             is AdtTypeEmbedding -> p.injection
             else -> null
         }
-
-

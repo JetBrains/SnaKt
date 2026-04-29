@@ -35,4 +35,3 @@ public abstract interface annotation class org/jetbrains/kotlin/formver/plugin/P
 
 public abstract interface annotation class org/jetbrains/kotlin/formver/plugin/Unique : java/lang/annotation/Annotation {
 }
-

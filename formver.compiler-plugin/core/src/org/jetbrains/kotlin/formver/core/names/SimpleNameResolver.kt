@@ -132,7 +132,6 @@ class SimpleNameResolver : NameResolver {
                 is DomainAssociatedFuncName -> listOf(name.name)
                 is DomainFuncParameterName -> listOf(name.name)
                 ExtensionReceiverName -> listOf("this", "extension")
-                FunctionResultVariableName -> listOf("result")
                 is HavocName -> resolveParts(name.type.name)
                 PlaceholderReturnVariableName -> listOf("ret")
                 is SpecialFieldName -> listOf(name.name)
