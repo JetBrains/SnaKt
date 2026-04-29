@@ -33,27 +33,34 @@ class PropertyOwnerResolver(
 
     private fun FirControlFlowGraphOwner.declaresProperty(property: FirProperty): Boolean =
         controlFlowGraphReference?.controlFlowGraph?.nodes?.any { node ->
-            node is VariableDeclarationNode && node.fir == property
+            node is VariableDeclarationNode && node.fir === property
         } ?: false
 
     @OptIn(SymbolInternals::class)
-    private fun CheckerContext.findOwnerOf(property: FirProperty): FirBasedSymbol<*>? =
-        findClosest { declarationSymbol ->
+    context(context: CheckerContext)
+    private fun findOwnerOf(property: FirProperty): FirBasedSymbol<*>? =
+        context.findClosest { declarationSymbol ->
             val declaration = declarationSymbol.fir as? FirControlFlowGraphOwner
                 ?: return@findClosest false
             declaration.declaresProperty(property)
         }
 
-    @OptIn(SymbolInternals::class)
-    private val cache = cachesFactory.createCache { key: FirProperty, context: CheckerContext ->
+    private data class CacheKey(
+        val property: FirProperty,
+        val outerDeclarationSymbols: List<FirBasedSymbol<*>>,
+    )
+
+    private val cache = cachesFactory.createCache { key: CacheKey, context: CheckerContext ->
+        val property = key.property
+
         with(context) {
-            findOwnerOf(key)
+            findOwnerOf(property)
         }
     }
 
     context(context: CheckerContext)
     fun resolveOwnerOf(property: FirProperty): FirBasedSymbol<*>? =
-        cache.getValue(property, context)
+        cache.getValue(CacheKey(property, context.containingDeclarations), context)
 }
 
 val FirSession.propertyOwnerResolver: PropertyOwnerResolver

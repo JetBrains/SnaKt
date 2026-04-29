@@ -2,7 +2,7 @@
 
 import org.jetbrains.kotlin.formver.plugin.Borrowed
 
-class A
+class A()
 
 fun borrow(x: @Borrowed A) {}
 
@@ -20,8 +20,8 @@ fun `resolve shadowing local's owner first`(x: @Borrowed A) {
     val x: @Borrowed A = x
 
     run {
-        val x: @Borrowed A = x
-        borrow(<!LOCALITY_VIOLATION!>x<!>)
+        val x: @Borrowed A = A()
+        borrow(x)
     }
 
     borrow(x)
