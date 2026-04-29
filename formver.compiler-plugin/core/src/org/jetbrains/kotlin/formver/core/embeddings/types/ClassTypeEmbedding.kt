@@ -27,22 +27,24 @@ data class ClassTypeEmbedding(override val name: ScopedName) : PretypeEmbedding 
     val sharedPredicateName = ScopedName(name.asScope(), PredicateName("shared"))
     val uniquePredicateName = ScopedName(name.asScope(), PredicateName("unique"))
 
-    fun sharedPredicate(ctx: TypeResolver): Predicate = ClassPredicateBuilder.build(name, sharedPredicateName, ctx) {
+    context(ctx: TypeResolver)
+    fun sharedPredicate(): Predicate = ClassPredicateBuilder.build(name, sharedPredicateName) {
         forEachField {
             if (isAlwaysReadable) {
                 addAccessPermissions(PermExp.WildcardPerm())
                 forType {
-                    addAccessToSharedPredicate(ctx)
+                    addAccessToSharedPredicate()
                     includeSubTypeInvariants()
                 }
             }
         }
         forEachSuperType {
-            addAccessToSharedPredicate(ctx)
+            addAccessToSharedPredicate()
         }
     }
 
-    fun uniquePredicate(ctx: TypeResolver): Predicate = ClassPredicateBuilder.build(name, uniquePredicateName, ctx) {
+    context(ctx: TypeResolver)
+    fun uniquePredicate(): Predicate = ClassPredicateBuilder.build(name, uniquePredicateName) {
         forEachField {
             if (isAlwaysReadable) {
                 addAccessPermissions(PermExp.WildcardPerm())
@@ -50,15 +52,15 @@ data class ClassTypeEmbedding(override val name: ScopedName) : PretypeEmbedding 
                 addAccessPermissions(PermExp.FullPerm())
             }
             forType {
-                addAccessToSharedPredicate(ctx)
+                addAccessToSharedPredicate()
                 if (isUnique) {
-                    addAccessToUniquePredicate(ctx)
+                    addAccessToUniquePredicate()
                 }
                 includeSubTypeInvariants()
             }
         }
         forEachSuperType {
-            addAccessToUniquePredicate(ctx)
+            addAccessToUniquePredicate()
         }
     }
 

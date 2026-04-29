@@ -26,10 +26,10 @@ internal class ClassPredicateBuilder private constructor(
     private val body = mutableListOf<ExpEmbedding>()
 
     companion object {
+        context(ctx: TypeResolver)
         fun build(
             name: SymbolicName,
             predicateName: SymbolicName,
-            ctx: TypeResolver,
             action: ClassPredicateBuilder.() -> Unit,
         ): Predicate {
             val typeEmbedding = ctx.lookupEmbedding(name)!!
@@ -89,11 +89,13 @@ class TypeInvariantsBuilder(private val type: TypeEmbedding) {
     private val invariants = mutableListOf<TypeInvariantEmbedding>()
     fun toInvariantsList() = invariants.toList()
 
-    fun addAccessToSharedPredicate(ctx: TypeResolver) = invariants.addIfNotNull(
+    context(ctx: TypeResolver)
+    fun addAccessToSharedPredicate() = invariants.addIfNotNull(
         type.sharedPredicateAccessInvariant(ctx)
     )
 
-    fun addAccessToUniquePredicate(ctx: TypeResolver) = invariants.addIfNotNull(
+    context(ctx: TypeResolver)
+    fun addAccessToUniquePredicate() = invariants.addIfNotNull(
         type.uniquePredicateAccessInvariant(ctx)
     )
 

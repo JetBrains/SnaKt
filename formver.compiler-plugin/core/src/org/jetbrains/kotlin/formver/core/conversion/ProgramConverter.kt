@@ -93,9 +93,11 @@ class ProgramConverter(
                 .distinctBy { it.name } + typeResolver.backingFields().map { it.type.havocMethod(typeResolver) }
                 .distinctBy { it.name },
             predicates = typeResolver.embeddings().flatMap {
-                listOf(
-                    it.sharedPredicate(typeResolver), it.uniquePredicate(typeResolver)
-                )
+                with(typeResolver) {
+                    listOf(
+                        it.sharedPredicate(), it.uniquePredicate()
+                    )
+                }
             },
         )
 
