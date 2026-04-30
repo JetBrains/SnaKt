@@ -20,6 +20,7 @@ import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.BlockExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.BooleanOperatorExitNode
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNodeWithSubgraphs
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.EdgeLabel
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ElvisExitNode
@@ -77,6 +78,10 @@ class GraphLocalityAnalyzer(
         node: CFGNode<*>
     ): LocalityFacts =
         a.merge(b, Locality::union)
+
+    override fun visitSubGraph(node: CFGNodeWithSubgraphs<*>, graph: ControlFlowGraph): Boolean {
+        return false
+    }
 
     override fun visitNode(
         node: CFGNode<*>,
