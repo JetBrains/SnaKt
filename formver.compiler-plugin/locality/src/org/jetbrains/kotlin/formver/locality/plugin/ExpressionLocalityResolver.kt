@@ -30,7 +30,7 @@ fun FirExpression.resolveLocality(): Locality {
         val declaration = symbol?.fir
         val graph = (declaration as? FirControlFlowGraphOwner)?.controlFlowGraphReference?.controlFlowGraph
             ?: return Locality.Global
-        val facts = graph.resolveLocalityInfo()
+        val facts = graph.resolveLocalityFacts()
 
         return facts[expression] ?: Locality.Global
     }
