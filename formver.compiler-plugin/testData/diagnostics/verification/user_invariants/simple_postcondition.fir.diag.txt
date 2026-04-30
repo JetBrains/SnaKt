@@ -1,44 +1,68 @@
 /simple_postcondition.kt:(64,75): info: Generated Viper text for testGreater:
-method testGreater(init: Ref) returns (ret: Ref)
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
+method testGreater(init: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(init), intType())
-  ensures isSubtype(typeOf(ret), intType())
-  ensures intFromRef(ret) > intFromRef(init)
+  ensures isSubtype(typeOf(ret_0), intType())
+  ensures intFromRef(ret_0) > intFromRef(init)
 {
-  ret := plusInts(init, intToRef(5))
-  goto ret_0
-  label ret_0
+  ret_0 := plusInts(init, intToRef(5))
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /simple_postcondition.kt:(201,211): info: Generated Viper text for testString:
-method testString() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), charType())
-  ensures charFromRef(ret) == 97
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
+method testString() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), charType())
+  ensures charFromRef(ret_0) == 97
 {
-  ret := stringGet(stringToRef(Seq(98, 97, 98)), intToRef(1))
-  goto ret_0
-  label ret_0
+  ret_0 := stringGet(stringToRef(Seq(98, 97, 98)), intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /simple_postcondition.kt:(323,343): info: Generated Viper text for testWithPrecondition:
-method testWithPrecondition(int: Ref) returns (ret: Ref)
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
+method testWithPrecondition(int: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(int), intType())
   requires intFromRef(int) > 10
-  ensures isSubtype(typeOf(ret), intType())
-  ensures intFromRef(ret) > 0
+  ensures isSubtype(typeOf(ret_0), intType())
+  ensures intFromRef(ret_0) > 0
 {
-  ret := minusInts(int, intToRef(10))
-  goto ret_0
-  label ret_0
+  ret_0 := minusInts(int, intToRef(10))
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /simple_postcondition.kt:(492,507): info: Generated Viper text for returnGreater13:
-method returnGreater13() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
-  ensures intFromRef(ret) > 13
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
+method returnGreater13() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), intType())
+  ensures intFromRef(ret_0) > 13
 {
-  ret := intToRef(16)
-  goto ret_0
-  label ret_0
+  ret_0 := intToRef(16)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /simple_postcondition.kt:(600,637): info: Generated Viper text for testPostconditionIsUsedByPrecondition:

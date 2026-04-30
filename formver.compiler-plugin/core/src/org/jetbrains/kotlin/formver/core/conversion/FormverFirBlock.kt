@@ -22,6 +22,11 @@ fun FirStatement.extractFormverFirBlock(predicate: FirFunctionSymbol<*>.() -> Bo
     return formverInvariantsArgument.anonymousFunction
 }
 
+fun FirStatement.extractFormverFirStmt(predicate: FirFunctionSymbol<*>.() -> Boolean): FirFunctionCall? =
+    (this as? FirFunctionCall)?.takeIf {
+        (it.toResolvedCallableSymbol() as? FirFunctionSymbol<*>)?.predicate() == true
+    }
+
 fun extractLoopInvariants(parentBlock: FirBlock): FirBlock? {
     val firstStmt = parentBlock.statements.firstOrNull() ?: return null
     return firstStmt.extractFormverFirBlock { isFormverFunctionNamed("loopInvariants") }?.body

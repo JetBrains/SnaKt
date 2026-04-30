@@ -12,13 +12,13 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
 
 data class AccEmbedding(
+    val receiver: ExpEmbedding,
     val field: FieldEmbedding,
-    val access: ExpEmbedding,
     val perm: PermExp,
 ) : ExpEmbedding {
     override val type: TypeEmbedding
         get() = buildType { boolean() }
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitAccEmbedding(this)
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(access)
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(receiver)
 }

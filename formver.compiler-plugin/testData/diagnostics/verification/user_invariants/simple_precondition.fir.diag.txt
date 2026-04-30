@@ -1,6 +1,12 @@
 /simple_precondition.kt:(238,242): info: Generated Viper text for test:
 field size: Ref
 
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
 method test(idx: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(idx), intType())
   requires 0 <= intFromRef(idx)
@@ -16,17 +22,26 @@ method test(idx: Ref) returns (ret_0: Ref)
 }
 
 /simple_precondition.kt:(446,469): info: Generated Viper text for inlineWithSpecification:
-method inlineWithSpecification(bool: Ref) returns (ret: Ref)
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method inlineWithSpecification(bool: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(bool), boolType())
   requires true
   requires boolFromRef(bool)
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
+method read(this: Ref) returns (ret: Ref)
+
+
 /simple_precondition.kt:(560,569): info: Generated Viper text for good_call:
+method g_write(this: Ref) returns (ret: Ref)
+
+
 method good_call() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), unitType())
 {
@@ -45,6 +60,9 @@ method good_call() returns (ret_0: Ref)
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
+
+method read(this: Ref) returns (ret: Ref)
+
 
 method test(idx: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(idx), intType())

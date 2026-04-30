@@ -1,32 +1,44 @@
 /forall_with_triggers.kt:(50,73): info: Generated Viper text for forAllWithSimpleTrigger:
-method forAllWithSimpleTrigger() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
+method forAllWithSimpleTrigger() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), intType())
   ensures (forall anon: Int ::
       { anon * anon }
-      anon * anon >= 0 && anon * anon >= intFromRef(ret))
+      anon * anon >= 0 && anon * anon >= intFromRef(ret_0))
 {
-  ret := intToRef(0)
-  goto ret_0
-  label ret_0
+  ret_0 := intToRef(0)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
 /forall_with_triggers.kt:(318,344): info: Generated Viper text for forAllWithMultipleTriggers:
-method forAllWithMultipleTriggers() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
+method forAllWithMultipleTriggers() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), intType())
   ensures (forall anon: Int ::
       { anon * anon }
       { anon + 1 }
-      !(anon == 0) ==> anon * anon >= intFromRef(ret))
+      !(anon == 0) ==> anon * anon >= intFromRef(ret_0))
 {
-  ret := intToRef(1)
-  goto ret_0
-  label ret_0
+  ret_0 := intToRef(1)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
 /forall_with_triggers.kt:(590,614): info: Generated Viper text for forAllWithTriggersInLoop:
-method forAllWithTriggersInLoop(str: Ref) returns (ret: Ref)
+method forAllWithTriggersInLoop(str: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(str), stringType())
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(ret_0), intType())
 {
   var res: Ref
   var i: Ref
@@ -60,17 +72,28 @@ method forAllWithTriggersInLoop(str: Ref) returns (ret: Ref)
       (stringFromRef(str)[anon_builtin] - 97) *
       (stringFromRef(str)[anon_builtin] - 97) >=
       intFromRef(res))
-  ret := res
-  goto ret_0
-  label ret_0
+  ret_0 := res
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
 /forall_with_triggers.kt:(990,1011): info: Generated Viper text for forAllWithoutTriggers:
-method forAllWithoutTriggers() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
+method forAllWithoutTriggers() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), intType())
   ensures (forall anon: Int ::anon * anon >= 0)
 {
-  ret := intToRef(0)
-  goto ret_0
-  label ret_0
+  ret_0 := intToRef(0)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
+
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)

@@ -1,14 +1,15 @@
 /string_iterations.kt:(71,83): info: Generated Viper text for firstAtLeast:
-method firstAtLeast(this: Ref, c: Ref) returns (ret: Ref)
+method firstAtLeast(this: Ref, c: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(c), charType())
-  ensures isSubtype(typeOf(ret), intType())
-  ensures 0 <= intFromRef(ret) && intFromRef(ret) <= |stringFromRef(this)|
+  ensures isSubtype(typeOf(ret_0), intType())
+  ensures 0 <= intFromRef(ret_0) &&
+    intFromRef(ret_0) <= |stringFromRef(this)|
   ensures (forall anon_builtin: Int ::0 <= anon_builtin &&
-      anon_builtin < intFromRef(ret) ==>
+      anon_builtin < intFromRef(ret_0) ==>
       stringFromRef(this)[anon_builtin] < charFromRef(c))
-  ensures !(intFromRef(ret) == |stringFromRef(this)|) ==>
-    stringFromRef(this)[intFromRef(ret)] >= charFromRef(c)
+  ensures !(intFromRef(ret_0) == |stringFromRef(this)|) ==>
+    stringFromRef(this)[intFromRef(ret_0)] >= charFromRef(c)
 {
   var i: Ref
   var anon_0: Ref
@@ -33,23 +34,32 @@ method firstAtLeast(this: Ref, c: Ref) returns (ret: Ref)
   assert 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef(this)|
   assert (forall anon: Int ::0 <= anon && anon < intFromRef(i) ==>
       stringFromRef(this)[anon] < charFromRef(c))
-  ret := i
-  goto ret_0
-  label ret_0
+  ret_0 := i
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
+method g_write(v_this: Ref) returns (ret: Ref)
+
+
+method read(v_this: Ref) returns (ret: Ref)
+
+
 /string_iterations.kt:(606,614): info: Generated Viper text for lastLess:
-method lastLess(this: Ref, c: Ref) returns (ret: Ref)
+method g_write(v_this: Ref) returns (ret: Ref)
+
+
+method lastLess(this: Ref, c: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(c), charType())
-  ensures isSubtype(typeOf(ret), intType())
-  ensures -1 <= intFromRef(ret) &&
-    intFromRef(ret) <= |stringFromRef(this)| - 1
-  ensures (forall anon_builtin: Int ::intFromRef(ret) < anon_builtin &&
+  ensures isSubtype(typeOf(ret_0), intType())
+  ensures -1 <= intFromRef(ret_0) &&
+    intFromRef(ret_0) <= |stringFromRef(this)| - 1
+  ensures (forall anon_builtin: Int ::intFromRef(ret_0) < anon_builtin &&
       anon_builtin < |stringFromRef(this)| ==>
       stringFromRef(this)[anon_builtin] >= charFromRef(c))
-  ensures !(intFromRef(ret) == -1) ==>
-    stringFromRef(this)[intFromRef(ret)] < charFromRef(c)
+  ensures !(intFromRef(ret_0) == -1) ==>
+    stringFromRef(this)[intFromRef(ret_0)] < charFromRef(c)
 {
   var i: Ref
   var anon_0: Ref
@@ -76,7 +86,9 @@ method lastLess(this: Ref, c: Ref) returns (ret: Ref)
   assert (forall anon: Int ::intFromRef(i) < anon &&
       anon < |stringFromRef(this)| ==>
       stringFromRef(this)[anon] >= charFromRef(c))
-  ret := i
-  goto ret_0
-  label ret_0
+  ret_0 := i
+  goto lbl_ret_0
+  label lbl_ret_0
 }
+
+method read(v_this: Ref) returns (ret: Ref)

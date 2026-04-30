@@ -1,6 +1,12 @@
 /simple_loop.kt:(239,243): info: Generated Viper text for test:
 field size: Ref
 
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
+
 method test(n: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(n), intType())
   ensures isSubtype(typeOf(ret_0), unitType())
@@ -54,8 +60,11 @@ method test(n: Ref) returns (ret_0: Ref)
 }
 
 /simple_loop.kt:(652,666): info: Generated Viper text for loopInsideLoop:
-method loopInsideLoop() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method loopInsideLoop() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var i: Ref
   var anon_0: Ref
@@ -89,12 +98,21 @@ method loopInsideLoop() returns (ret: Ref)
   label break_0
   assert isSubtype(typeOf(i), intType())
   assert intFromRef(i) <= 10
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
+
+method read(this: Ref) returns (ret: Ref)
+
 
 /simple_loop.kt:(974,983): info: Generated Viper text for withBreak:
 field size: Ref
+
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
 
 method withBreak() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), unitType())

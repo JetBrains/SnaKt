@@ -1,15 +1,15 @@
 /strings_in_conditions.kt:(50,69): info: Generated Viper text for firstNotSortedIndex:
-method firstNotSortedIndex(s: Ref) returns (ret: Ref)
+method firstNotSortedIndex(s: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(s), stringType())
-  ensures isSubtype(typeOf(ret), intType())
-  ensures 0 <= intFromRef(ret) && intFromRef(ret) <= |stringFromRef(s)|
+  ensures isSubtype(typeOf(ret_0), intType())
+  ensures 0 <= intFromRef(ret_0) && intFromRef(ret_0) <= |stringFromRef(s)|
   ensures (forall anon_builtin: Int ::0 <= anon_builtin &&
-      anon_builtin + 1 < intFromRef(ret) ==>
+      anon_builtin + 1 < intFromRef(ret_0) ==>
       stringFromRef(s)[anon_builtin] <= stringFromRef(s)[anon_builtin + 1])
 {
   if (|stringFromRef(s)| == 0) {
-    ret := intToRef(0)
-    goto ret_0
+    ret_0 := intToRef(0)
+    goto lbl_ret_0
   } else {
     var i: Ref
     var anon_0: Ref
@@ -33,11 +33,17 @@ method firstNotSortedIndex(s: Ref) returns (ret: Ref)
     assert isSubtype(typeOf(s), stringType())
     assert (forall anon: Int ::0 <= anon && anon + 1 < intFromRef(i) ==>
         stringFromRef(s)[anon] <= stringFromRef(s)[anon + 1])
-    ret := i
-    goto ret_0
+    ret_0 := i
+    goto lbl_ret_0
   }
-  label ret_0
+  label lbl_ret_0
 }
+
+method g_write(this: Ref) returns (ret: Ref)
+
+
+method read(this: Ref) returns (ret: Ref)
+
 
 /strings_in_conditions.kt:(621,636): info: Generated Viper text for returnNewString:
 method returnNewString() returns (ret: Ref)
@@ -97,7 +103,13 @@ method addCharacterTimes(s: Ref, c: Ref, n: Ref) returns (ret: Ref)
   label ret_0
 }
 
+method g_write(this: Ref) returns (v_ret: Ref)
+
+
 method plus(this: Ref, other: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(v_ret), stringType())
+
+
+method read(this: Ref) returns (v_ret: Ref)
