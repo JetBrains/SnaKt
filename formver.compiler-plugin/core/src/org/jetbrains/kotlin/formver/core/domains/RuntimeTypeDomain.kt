@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
+import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.embedClassTypeFunc
 import org.jetbrains.kotlin.formver.core.names.DomainName
 import org.jetbrains.kotlin.formver.core.names.QualifiedDomainFuncName
@@ -209,6 +210,7 @@ const val RUNTIME_TYPE_DOMAIN_NAME = "rt"
  * ```
  */
 class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(RUNTIME_TYPE_DOMAIN_NAME)) {
+    private val adts: List<AdtTypeEmbedding> = typeResolver.adtTypeEmbeddings()
     override val typeVars: List<Type.TypeVar> = emptyList()
 
     // Define types that are not dependent on the user defined classes in a companion object.
@@ -276,18 +278,20 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
         val boolInjection = Injection("bool", Type.Bool, boolType)
         val charInjection = Injection("char", Type.Int, charType)
         val stringInjection = Injection("string", Type.Seq(Type.Int), stringType)
-        val allInjections = listOf(intInjection, boolInjection, charInjection, stringInjection)
-
+        val primitiveTypeInjections = listOf(intInjection, boolInjection, charInjection, stringInjection)
         // special values
         val nullValue = createDomainFunc(UnqualifiedDomainFuncName("nullValue"), emptyList(), Ref)
         val unitValue = createDomainFunc(UnqualifiedDomainFuncName("unitValue"), emptyList(), Ref)
     }
 
+    val adtClassTypes: Map<AdtTypeEmbedding, DomainFunc> = adts.associateWith { classTypeFunc(it.name) }
+    private val allInjections: List<Injection> = primitiveTypeInjections + adts.map { it.injection }
     val builtinTypes: List<DomainFunc> =
         listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType)
     val nonNullableTypes: List<DomainFunc> = buildList {
         addAll(builtinTypes)
         addAll(typeResolver.classTypeEmbeddings().map { it.embedClassTypeFunc() })
+        addAll(adtClassTypes.values)
     }.distinctBy { it.name }
     override val functions: List<DomainFunc> = nonNullableTypes + listOf(
         nullValue, unitValue, isSubtype, typeOf, nullable
@@ -401,7 +405,7 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
                 r eq unitValue()
             }
         }
-        allInjections.forEach {
+        (allInjections).forEach {
             it.apply { injectionAxioms() }
         }
         typeResolver.classTypeEmbeddings().forEach { type ->
@@ -410,6 +414,9 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
                     type.runtimeType subtype superType.runtimeType
                 }
             }
+        }
+        adtClassTypes.forEach { (_, typeFunction) ->
+            axiom { typeFunction() subtype anyType() }
         }
     }
 }

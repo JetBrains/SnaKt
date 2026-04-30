@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.core.conversion
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.contracts.description.LogicOperationKind
+import org.jetbrains.kotlin.descriptors.isObject
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.declarations.FirProperty
 import org.jetbrains.kotlin.fir.expressions.*
@@ -37,6 +38,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.LtIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
+import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
 import org.jetbrains.kotlin.formver.core.functionCallArguments
@@ -81,12 +83,15 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     override fun visitResolvedQualifier(
         resolvedQualifier: FirResolvedQualifier, data: StmtConversionContext
     ): ExpEmbedding {
-        if (!resolvedQualifier.resolvedType.isUnit) {
-            throw SnaktInternalException(
-                resolvedQualifier.source, "Only `Unit` is supported among resolved qualifiers currently."
-            )
-        }
-        return UnitLit
+        if (resolvedQualifier.resolvedType.isUnit) return UnitLit
+        val classSymbol = resolvedQualifier.symbol as? FirClassSymbol<*>
+            ?: throw SnaktInternalException(resolvedQualifier.source, "Unsupported symbol given, expected ClassSymbol.")
+        if (!classSymbol.classKind.isObject)
+            throw SnaktInternalException(resolvedQualifier.source, "Given symbol ${classSymbol.name} is not an object.")
+        val type = data.embedType(resolvedQualifier.resolvedType)
+        if (type.pretype !is AdtTypeEmbedding)
+            throw SnaktInternalException(resolvedQualifier.source, "Given symbol ${classSymbol.name} is not an ADT, no other types are supported.")
+        return AdtLit(type)
     }
 
     override fun visitBlock(block: FirBlock, data: StmtConversionContext): ExpEmbedding =
@@ -345,7 +350,6 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             )
         }
 
-        val type = data.embedType(symbol.resolvedReturnType)
         return data.declareLocalProperty(symbol, property.initializer?.let { data.convert(it) })
     }
 

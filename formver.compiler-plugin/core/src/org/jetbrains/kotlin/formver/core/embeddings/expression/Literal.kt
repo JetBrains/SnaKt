@@ -7,6 +7,8 @@ package org.jetbrains.kotlin.formver.core.embeddings.expression
 
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
+import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 
 interface LiteralEmbedding : ExpEmbedding {
@@ -56,4 +58,13 @@ data object NullLit : LiteralEmbedding {
     override val value = null
     override val type = buildType { isNullable = true; nothing() }
     override val debugName = "Null"
+}
+
+data class AdtLit(
+    override val type: TypeEmbedding,
+) : ExpEmbedding {
+    val adtTypeEmbedding: AdtTypeEmbedding
+        get() = type.pretype as AdtTypeEmbedding
+
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitAdtLit(this)
 }

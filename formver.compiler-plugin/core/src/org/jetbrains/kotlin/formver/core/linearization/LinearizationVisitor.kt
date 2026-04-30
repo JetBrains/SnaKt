@@ -183,6 +183,14 @@ data class LinearizationVisitor(
         override fun toViperUnusedResult(ctx: LinearizationContext) = Unit
     }
 
+    override fun visitAdtLit(e: AdtLit): Linearizable = object : DirectResultLinearizable(e, this@LinearizationVisitor) {
+        override fun toViperBuiltinType(ctx: LinearizationContext): Exp =
+            Exp.AdtConstructorApp(e.adtTypeEmbedding.viperConstructorDecl, emptyList(), pos = ctx.source.asPosition)
+
+        override fun toViper(ctx: LinearizationContext): Exp =
+            e.adtTypeEmbedding.injection.toRef(toViperBuiltinType(ctx), pos = ctx.source.asPosition)
+    }
+
     // endregion
 
     // region Variables

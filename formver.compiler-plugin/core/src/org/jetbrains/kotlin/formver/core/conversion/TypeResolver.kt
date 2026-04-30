@@ -3,6 +3,7 @@ package org.jetbrains.kotlin.formver.core.conversion
 import org.jetbrains.kotlin.formver.core.embeddings.properties.BackingFieldGetter
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeEmbedding
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
@@ -23,6 +24,11 @@ class TypeResolver {
      */
     private val classEmbedding = mutableMapOf<SymbolicName, ClassTypeEmbedding>()
     private val interfaceEmbedding = mutableMapOf<SymbolicName, ClassTypeEmbedding>()
+
+    /**
+     * Collection of all AdtTypeEmbeddings.
+     */
+    private val adtEmbedding = mutableMapOf<SymbolicName, AdtTypeEmbedding>()
 
 
     /**
@@ -54,6 +60,12 @@ class TypeResolver {
     fun getEmbeddingOrExecute(name: ScopedName, action: () -> ClassTypeEmbedding) = classEmbedding[name] ?: action()
 
     fun lookupEmbedding(name: SymbolicName) = classEmbedding[name] ?: interfaceEmbedding[name]
+
+    fun registerAdt(typeEmbedding: AdtTypeEmbedding) = adtEmbedding.putIfAbsent(typeEmbedding.name, typeEmbedding)
+
+    fun lookupAdt(name: SymbolicName): AdtTypeEmbedding? = adtEmbedding[name]
+
+    fun adtTypeEmbeddings(): List<AdtTypeEmbedding> = adtEmbedding.values.toList()
 
     /**
      * Extends the subtype relation with [subtype] <: [supertype]

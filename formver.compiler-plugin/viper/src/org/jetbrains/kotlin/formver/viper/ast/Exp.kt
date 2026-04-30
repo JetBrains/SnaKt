@@ -406,6 +406,29 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             )
     }
 
+    /** Represents the application of an ADT constructor. Triggered by an ADT reference in an `AdtLit`. */
+    data class AdtConstructorApp(
+        val constructor: AdtConstructorDecl,
+        val args: List<Exp>,
+        val typeVarMap: Map<Type.TypeVar, Type> = emptyMap(),
+        val pos: Position = Position.NoPosition,
+        val info: Info = Info.NoInfo,
+        val trafos: Trafos = Trafos.NoTrafos,
+    ) : Exp {
+        override val type: Type = Type.Adt(constructor.adtName)
+
+        context(nameResolver: NameResolver)
+        override fun toSilver(): viper.silver.ast.Exp =
+            viper.silver.plugin.standard.adt.AdtConstructorApp.apply(
+                constructor.toSilver(),
+                args.toSilver().toScalaSeq(),
+                typeVarMap.mapKeys { it.key.toSilver() }.mapValues { it.value.toSilver() }.toScalaMap(),
+                pos.toSilver(),
+                info.toSilver(),
+                trafos.toSilver(),
+            )
+    }
+
     data class ExplicitSeq(
         val args: List<Exp>,
         val pos: Position = Position.NoPosition,

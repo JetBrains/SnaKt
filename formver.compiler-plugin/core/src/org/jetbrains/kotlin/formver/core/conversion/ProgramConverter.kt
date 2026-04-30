@@ -8,11 +8,13 @@ package org.jetbrains.kotlin.formver.core.conversion
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.descriptors.isInterface
+import org.jetbrains.kotlin.descriptors.isObject
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.processAllDeclarations
 import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.utils.hasBackingField
+import org.jetbrains.kotlin.fir.declarations.utils.isData
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
 import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
@@ -30,6 +32,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
+import org.jetbrains.kotlin.formver.core.isADT
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Program
@@ -94,6 +97,7 @@ class ProgramConverter(
                     )
                 }
             },
+            adts = typeResolver.adtTypeEmbeddings().map { it.toViper() },
         )
 
     fun registerForVerification(declaration: FirSimpleFunction) {
@@ -234,6 +238,41 @@ class ProgramConverter(
             embedProperty(it)
         }
         return embedding
+    }
+
+    private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding {
+        val className = symbol.classId.embedName()
+        typeResolver.lookupAdt(className)?.let { return it }
+        validateAdt(symbol)
+        val embedding = AdtTypeEmbedding(className)
+        typeResolver.registerAdt(embedding)
+        return embedding
+    }
+
+    @OptIn(SymbolInternals::class)
+    private fun validateAdt(symbol: FirRegularClassSymbol): Boolean {
+        if (!symbol.classKind.isObject || !symbol.isData) {
+            errorCollector.addAdtError(symbol.source, "@ADT may only be applied to data object declarations")
+            return false
+        }
+        val fields = mutableListOf<FirPropertySymbol>()
+        symbol.fir.processAllDeclarations(session) { if (it is FirPropertySymbol && it.hasBackingField) fields.add(it) }
+        if (fields.isNotEmpty()) {
+            errorCollector.addAdtError(symbol.source, "An @ADT data object must not have fields")
+            return false
+        }
+        val memberFunctions = mutableListOf<FirNamedFunctionSymbol>()
+        symbol.fir.processAllDeclarations(session) { if (it is FirNamedFunctionSymbol) memberFunctions.add(it) }
+        if (memberFunctions.isNotEmpty()) {
+            errorCollector.addAdtError(symbol.source, "An @ADT data object must not have member functions")
+            return false
+        }
+        val hasSuperTypes = symbol.resolvedSuperTypes.any { !it.isAny }
+        if (hasSuperTypes) {
+            errorCollector.addAdtError(symbol.source, "An @ADT data object must not extend a class or implement an interface")
+            return false
+        }
+        return true
     }
 
     override fun embedType(type: ConeKotlinType): TypeEmbedding = buildType { embedTypeWithBuilder(type) }
@@ -531,7 +570,11 @@ class ProgramConverter(
         type is ConeClassLikeType -> {
             val classLikeSymbol = type.toClassSymbol(session)
             if (classLikeSymbol is FirRegularClassSymbol) {
-                existing(embedClass(classLikeSymbol))
+                if (classLikeSymbol.isADT(session)) {
+                    existing(embedAdtClass(classLikeSymbol))
+                } else {
+                    existing(embedClass(classLikeSymbol))
+                }
             } else {
                 unimplementedTypeEmbedding(type)
             }

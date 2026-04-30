@@ -1,0 +1,117 @@
+/singleton.kt: error: Invalid ADT annotation: @ADT may only be applied to data object declarations
+
+/singleton.kt: error: Invalid ADT annotation: @ADT may only be applied to data object declarations
+
+/singleton.kt: error: Invalid ADT annotation: An @ADT data object must not have fields
+
+/singleton.kt: error: Invalid ADT annotation: An @ADT data object must not have member functions
+
+/singleton.kt: error: Invalid ADT annotation: An @ADT data object must not have member functions
+
+/singleton.kt: info: Generated Viper text for doSomething:
+method doSomething(this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), rt_c_pkg__c_WithFunction())
+  ensures isSubtype(typeOf(ret), intType())
+{
+  ret := intToRef(1)
+  goto ret_0
+  label ret_0
+}
+
+adt adt_c_pkg__c_WithFunction {
+  c_pkg__c_WithFunction()
+}
+
+/singleton.kt: error: Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface
+
+/singleton.kt: info: Generated Viper text for triggerNotAnObject:
+method triggerNotAnObject(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), rt_c_pkg__c_NotAnObject())
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+adt adt_c_pkg__c_NotAnObject {
+  c_pkg__c_NotAnObject()
+}
+
+/singleton.kt: info: Generated Viper text for triggerNotDataObject:
+method triggerNotDataObject(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), rt_c_pkg__c_NotDataObject())
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+adt adt_c_pkg__c_NotDataObject {
+  c_pkg__c_NotDataObject()
+}
+
+/singleton.kt: info: Generated Viper text for triggerWithField:
+method triggerWithField(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), rt_c_pkg__c_WithField())
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+adt adt_c_pkg__c_WithField {
+  c_pkg__c_WithField()
+}
+
+/singleton.kt: info: Generated Viper text for triggerWithFunction:
+method triggerWithFunction(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), rt_c_pkg__c_WithFunction())
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+adt adt_c_pkg__c_WithFunction {
+  c_pkg__c_WithFunction()
+}
+
+/singleton.kt: info: Generated Viper text for triggerWithSupertype:
+method triggerWithSupertype(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), rt_c_pkg__c_WithSupertype())
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+adt adt_c_pkg__c_WithSupertype {
+  c_pkg__c_WithSupertype()
+}
+
+/singleton.kt: info: Generated Viper text for validParameter:
+method validParameter(a: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(a), rt_c_pkg__c_Valid())
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+adt adt_c_pkg__c_Valid {
+  c_pkg__c_Valid()
+}
+
+/singleton.kt: info: Generated Viper text for validLocalVariable:
+method validLocalVariable() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  var x: Ref
+  x := ToRef(c_pkg__c_Valid_c_pkg__c_Valid())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+adt c_pkg__c_Valid {
+  c_pkg__c_Valid_c_pkg__c_Valid()
+}

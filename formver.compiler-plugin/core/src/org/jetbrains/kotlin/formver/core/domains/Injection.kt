@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.isOf
+import org.jetbrains.kotlin.formver.core.names.InjectionFuncName
 import org.jetbrains.kotlin.formver.core.names.UnqualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
@@ -40,22 +41,33 @@ import org.jetbrains.kotlin.formver.viper.ast.Function
  * @param typeFunction: representation of that type as a domain func
  */
 class Injection(
-    injectionName: String,
+    toRefName: SymbolicName,
+    fromRefName: SymbolicName,
     val viperType: Type,
-    val typeFunction: DomainFunc
+    val typeFunction: DomainFunc,
 ) {
     private val v = domainVar("v", viperType)
     private val r = domainVar("r", Type.Ref)
 
-    val toRef = RuntimeTypeDomain.createDomainFunc(
-        UnqualifiedDomainFuncName("${injectionName}ToRef"),
-        listOf(v.decl()),
-        Type.Ref
+    val toRef: DomainFunc = RuntimeTypeDomain.createDomainFunc(toRefName, listOf(v.decl()), Type.Ref)
+    val fromRef: DomainFunc = RuntimeTypeDomain.createDomainFunc(fromRefName, listOf(r.decl()), viperType)
+
+    /**
+     * Convenience constructors that derive `toRefName` and `fromRefName` from a single base.
+     * Two variants exist to support primitives with strings and ADTs with symbolic names.
+     */
+    constructor(prefix: String, viperType: Type, typeFunction: DomainFunc) : this(
+        UnqualifiedDomainFuncName("${prefix}ToRef"),
+        UnqualifiedDomainFuncName("${prefix}FromRef"),
+        viperType,
+        typeFunction,
     )
-    val fromRef = RuntimeTypeDomain.createDomainFunc(
-        UnqualifiedDomainFuncName("${injectionName}FromRef"),
-        listOf(r.decl()),
-        viperType
+
+    constructor(baseName: SymbolicName, viperType: Type, typeFunction: DomainFunc) : this(
+        InjectionFuncName(baseName, "ToRef"),
+        InjectionFuncName(baseName, "FromRef"),
+        viperType,
+        typeFunction,
     )
 
     internal fun AxiomListBuilder.injectionAxioms() {
