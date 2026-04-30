@@ -331,14 +331,20 @@ class ProgramConverter(
             action(param)
         }
 
-    private fun extractConstructorParamsAsFields(symbol: FirFunctionSymbol<*>): Map<FirValueParameterSymbol, FieldEmbedding> {
+    private fun extractConstructorParamsAsAssignableProperties(symbol: FirFunctionSymbol<*>): Map<FirValueParameterSymbol, PropertyEmbedding> {
         if (symbol !is FirConstructorSymbol || !symbol.isPrimary) return emptyMap()
         val constructedClassSymbol = symbol.resolvedReturnType.toRegularClassSymbol(session) ?: return emptyMap()
         val constructedClass = embedClass(constructedClassSymbol)
         return constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
             val name = propertySymbol.embedMemberPropertyName()
             propertySymbol.withConstructorParam { paramSymbol ->
-                typeResolver.lookupBackingField(name)?.let { paramSymbol to it }
+                typeResolver.lookupProperty(name)?.let {
+                    when(it.getter) {
+                        is BackingFieldGetter -> paramSymbol to it
+                        is FinalFieldGetter -> paramSymbol to it
+                        else -> null
+                    }
+                }
             }
         }.toMap()
     }
@@ -389,7 +395,7 @@ class ProgramConverter(
                 get() = super<NamedFunctionSignature>.labelName
             override val symbol = symbol
         }
-        val constructorParamSymbolsToFields = extractConstructorParamsAsFields(symbol)
+        val constructorParamSymbolsToProperties = extractConstructorParamsAsAssignableProperties(symbol)
         val contractVisitor = ContractDescriptionConversionVisitor(this@ProgramConverter, subSignature)
 
         @OptIn(SymbolInternals::class) val declaration = symbol.fir
@@ -473,10 +479,8 @@ class ProgramConverter(
             fun primaryConstructorInvariants(returnVariable: VariableEmbedding): ExpEmbedding? {
                 val invariants = params.mapNotNull { param ->
                     require(param is FirVariableEmbedding) { "Constructor parameters must be represented by FirVariableEmbeddings" }
-                    constructorParamSymbolsToFields[param.symbol]?.let { field ->
-                        (field.accessPolicy == AccessPolicy.ALWAYS_READABLE).ifTrue {
-                            EqCmp(FieldAccess(returnVariable, field), param)
-                        }
+                    constructorParamSymbolsToProperties[param.symbol]?.let { property ->
+                        EqCmp(property.getter!!.getValue(returnVariable, createCtx(returnVariable)), param)
                     }
                 }
                 return if (invariants.isEmpty()) null
