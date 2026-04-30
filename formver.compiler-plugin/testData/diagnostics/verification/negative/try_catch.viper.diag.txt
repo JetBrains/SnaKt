@@ -1,0 +1,1 @@
+/try_catch.kt: warning: Viper verification error: The precondition of method ignore might not hold. Assertion isSubtype(typeOf(l2_e), lang_c_Exception()) might not hold.
