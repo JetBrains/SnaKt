@@ -1,6 +1,8 @@
 
 import org.jetbrains.kotlin.formver.plugin.NeverConvert
 
+fun <!VIPER_TEXT!>return_null<!>(): Int? = null
+
 fun <!VIPER_TEXT!>useNullableTwice<!>(x: Int?): Int? {
     val a = x
     val b = x

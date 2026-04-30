@@ -1,0 +1,217 @@
+/local_variables.kt: info: Generated Viper text for returnNumberVal:
+function returnNumberVal(): Ref
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let l0_x_0 ==
+    (intToRef(42)) in
+    l0_x_0)
+}
+
+/local_variables.kt: info: Generated Viper text for multipleAssignmentsOfDifferentType:
+function multipleAssignmentsOfDifferentType(): Ref
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let l0_a_0 ==
+    (intToRef(42)) in
+    (let l0_b_0 ==
+      (stringToRef(Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116))) in
+      (let l0_c_0 ==
+        (boolToRef(true)) in
+        (let l0_d_0 ==
+          (charToRef(65)) in
+          l0_c_0))))
+}
+
+/local_variables.kt: info: Generated Viper text for multipleAssignmentsWithLiteralReturn:
+function multipleAssignmentsWithLiteralReturn(): Ref
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let l0_a_0 ==
+    (intToRef(42)) in
+    (let l0_b_0 ==
+      (stringToRef(Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116))) in
+      (let l0_c_0 ==
+        (boolToRef(true)) in
+        (let l0_d_0 ==
+          (charToRef(65)) in
+          intToRef(42)))))
+}
+
+/local_variables.kt: info: Generated Viper text for laterInitializersCanRelyOnPrevious:
+function laterInitializersCanRelyOnPrevious(): Ref
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let l0_a_0 ==
+    (intToRef(40)) in
+    (let l0_b_0 ==
+      (plusInts(l0_a_0, intToRef(2))) in
+      (let l0_c_0 ==
+        (timesInts(l0_b_0, intToRef(2))) in
+        l0_c_0)))
+}
+
+/local_variables.kt: info: Generated Viper text for initializersCanRelyOnParameters:
+function initializersCanRelyOnParameters(x: Ref, y: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let l0_sum_0 ==
+    (plusInts(x, y)) in
+    (let l0_diff_0 ==
+      (minusInts(x, y)) in
+      (let l0_res_0 ==
+        (timesInts(l0_sum_0, l0_diff_0)) in
+        l0_res_0)))
+}
+
+/local_variables.kt: info: Generated Viper text for doubleIncrement:
+function doubleIncrement(): Ref
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let l0_x_0 ==
+    (intToRef(1)) in
+    (let l0_x_1 ==
+      (plusInts(l0_x_0, intToRef(1))) in
+      (let l0_x_2 ==
+        (plusInts(l0_x_1, intToRef(1))) in
+        l0_x_2)))
+}
+
+/local_variables.kt: info: Generated Viper text for updateThenReadIntoOther:
+function updateThenReadIntoOther(): Ref
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let l0_x_0 ==
+    (intToRef(3)) in
+    (let l0_x_1 ==
+      (plusInts(l0_x_0, intToRef(4))) in
+      (let l0_y_0 ==
+        (plusInts(l0_x_1, intToRef(1))) in
+        l0_y_0)))
+}
+
+/local_variables.kt: info: Generated Viper text for readOldValueBeforeUpdate:
+function readOldValueBeforeUpdate(): Ref
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let l0_x_0 ==
+    (intToRef(10)) in
+    (let l0_y_0 ==
+      (plusInts(l0_x_0, intToRef(1))) in
+      (let l0_x_1 ==
+        (plusInts(l0_x_0, intToRef(5))) in
+        (let l0_x_2 ==
+          (plusInts(l0_y_0, l0_x_1)) in
+          l0_x_2))))
+}
+
+/local_variables.kt: info: Generated Viper text for chainThroughTemp:
+function chainThroughTemp(): Ref
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let l0_x_0 ==
+    (intToRef(2)) in
+    (let l0_t_0 ==
+      (plusInts(l0_x_0, intToRef(3))) in
+      (let l0_x_1 ==
+        (plusInts(l0_t_0, intToRef(4))) in
+        l0_x_1)))
+}
+
+/local_variables.kt: info: Generated Viper text for overwriteNotSelfReferential:
+function overwriteNotSelfReferential(): Ref
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let l0_x_0 ==
+    (intToRef(7)) in
+    (let l0_x_1 ==
+      (intToRef(100)) in
+      l0_x_1))
+}
+
+/local_variables.kt: info: Generated Viper text for nestedConditionalAssignment:
+function nestedConditionalAssignment(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), boolType())
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let v_anon_1_0 ==
+    ((boolFromRef(b) && boolFromRef(a) ? intToRef(4) : null)) in
+    (let v_anon_2_0 ==
+      ((!boolFromRef(b) && boolFromRef(a) ? intToRef(3) : null)) in
+      (let v_anon_0_0 ==
+        ((boolFromRef(a) ?
+          (boolFromRef(b) ? v_anon_1_0 : v_anon_2_0) :
+          null)) in
+        (let v_anon_4_0 ==
+          ((boolFromRef(b) && !boolFromRef(a) ? intToRef(2) : null)) in
+          (let v_anon_5_0 ==
+            ((!boolFromRef(b) && !boolFromRef(a) ? intToRef(1) : null)) in
+            (let v_anon_3_0 ==
+              ((!boolFromRef(a) ?
+                (boolFromRef(b) ? v_anon_4_0 : v_anon_5_0) :
+                null)) in
+              (let l0_x_0 ==
+                ((boolFromRef(a) ? v_anon_0_0 : v_anon_3_0)) in
+                l0_x_0)))))))
+}
+
+/local_variables.kt: info: Generated Viper text for blockConditionalAssignment:
+function blockConditionalAssignment(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), boolType())
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let v_anon_1_0 ==
+    ((boolFromRef(b) && boolFromRef(a) ? intToRef(10) : null)) in
+    (let v_anon_2_0 ==
+      ((!boolFromRef(b) && boolFromRef(a) ? intToRef(20) : null)) in
+      (let l2_y_0 ==
+        ((boolFromRef(a) ?
+          (boolFromRef(b) ? v_anon_1_0 : v_anon_2_0) :
+          null)) in
+        (let v_anon_0_0 ==
+          ((boolFromRef(a) ? plusInts(l2_y_0, intToRef(1)) : null)) in
+          (let v_anon_3_0 ==
+            ((!boolFromRef(a) ? intToRef(30) : null)) in
+            (let l0_x_0 ==
+              ((boolFromRef(a) ? v_anon_0_0 : v_anon_3_0)) in
+              l0_x_0))))))
+}
+
+/local_variables.kt: info: Generated Viper text for whenAssignment:
+function whenAssignment(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let v_anon_0_0 ==
+    (a) in
+    (let v_anon_2_0 ==
+      ((boolFromRef(b) && intFromRef(v_anon_0_0) == 1 ? intToRef(2) : null)) in
+      (let v_anon_3_0 ==
+        ((!boolFromRef(b) && intFromRef(v_anon_0_0) == 1 ?
+          intToRef(3) :
+          null)) in
+        (let v_anon_1_0 ==
+          ((intFromRef(v_anon_0_0) == 1 ?
+            (boolFromRef(b) ? v_anon_2_0 : v_anon_3_0) :
+            null)) in
+          (let v_anon_5_0 ==
+            ((intFromRef(v_anon_0_0) == 2 && !(intFromRef(v_anon_0_0) == 1) ?
+              intToRef(4) :
+              null)) in
+            (let v_anon_6_0 ==
+              ((!(intFromRef(v_anon_0_0) == 2) &&
+              !(intFromRef(v_anon_0_0) == 1) ?
+                intToRef(5) :
+                null)) in
+              (let v_anon_4_0 ==
+                ((!(intFromRef(v_anon_0_0) == 1) ?
+                  (intFromRef(v_anon_0_0) == 2 ? v_anon_5_0 : v_anon_6_0) :
+                  null)) in
+                (let l0_x_0 ==
+                  ((intFromRef(v_anon_0_0) == 1 ? v_anon_1_0 : v_anon_4_0)) in
+                  l0_x_0))))))))
+}

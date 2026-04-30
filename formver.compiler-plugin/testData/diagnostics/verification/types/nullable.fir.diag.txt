@@ -1,3 +1,12 @@
+/nullable.kt: info: Generated Viper text for return_null:
+method return_null() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), nullable(intType()))
+{
+  ret := nullValue()
+  goto ret_0
+  label ret_0
+}
+
 /nullable.kt: info: Generated Viper text for useNullableTwice:
 method useNullableTwice(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))

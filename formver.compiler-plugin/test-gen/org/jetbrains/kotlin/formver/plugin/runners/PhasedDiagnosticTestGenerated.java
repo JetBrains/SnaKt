@@ -347,12 +347,6 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
-    @TestMetadata("nullability.kt")
-    public void testNullability() {
-      runTest("formver.compiler-plugin/testData/diagnostics/verification/nullability.kt");
-    }
-
-    @Test
     @TestMetadata("shadowing.kt")
     public void testShadowing() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/shadowing.kt");
@@ -362,12 +356,6 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     @TestMetadata("unit_return_type.kt")
     public void testUnit_return_type() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/unit_return_type.kt");
-    }
-
-    @Test
-    @TestMetadata("while.kt")
-    public void testWhile() {
-      runTest("formver.compiler-plugin/testData/diagnostics/verification/while.kt");
     }
 
     @Nested
@@ -386,18 +374,6 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
-      @TestMetadata("field_getters_unique_shared.kt")
-      public void testField_getters_unique_shared() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/field_getters_unique_shared.kt");
-      }
-
-      @Test
-      @TestMetadata("field_setters_unique_shared.kt")
-      public void testField_setters_unique_shared() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/field_setters_unique_shared.kt");
-      }
-
-      @Test
       @TestMetadata("inheritance.kt")
       public void testInheritance() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/inheritance.kt");
@@ -410,9 +386,9 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
-      @TestMetadata("interface.kt")
-      public void testInterface() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/interface.kt");
+      @TestMetadata("interfaces.kt")
+      public void testInterfaces() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/interfaces.kt");
       }
 
       @Test
@@ -425,18 +401,6 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("member_functions.kt")
       public void testMember_functions() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/member_functions.kt");
-      }
-
-      @Test
-      @TestMetadata("multiple_interfaces.kt")
-      public void testMultiple_interfaces() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/multiple_interfaces.kt");
-      }
-
-      @Test
-      @TestMetadata("multiple_interfaces_1.kt")
-      public void testMultiple_interfaces_1() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/multiple_interfaces_1.kt");
       }
 
       @Test
@@ -470,9 +434,9 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
-      @TestMetadata("property_getters.kt")
-      public void testProperty_getters() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/property_getters.kt");
+      @TestMetadata("property_accessors.kt")
+      public void testProperty_accessors() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/property_accessors.kt");
       }
 
       @Test
@@ -482,15 +446,15 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
-      @TestMetadata("setters.kt")
-      public void testSetters() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/setters.kt");
-      }
-
-      @Test
       @TestMetadata("subtyping.kt")
       public void testSubtyping() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/subtyping.kt");
+      }
+
+      @Test
+      @TestMetadata("unique_fields.kt")
+      public void testUnique_fields() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/unique_fields.kt");
       }
 
       @Test
@@ -648,15 +612,9 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
-      @TestMetadata("loop.kt")
-      public void testLoop() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/loop.kt");
-      }
-
-      @Test
-      @TestMetadata("loop_invariants.kt")
-      public void testLoop_invariants() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/loop_invariants.kt");
+      @TestMetadata("loops.kt")
+      public void testLoops() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/loops.kt");
       }
 
       @Test
@@ -694,21 +652,9 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
-      @TestMetadata("captured.kt")
-      public void testCaptured() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/inlining/captured.kt");
-      }
-
-      @Test
       @TestMetadata("custom_run_functions.kt")
       public void testCustom_run_functions() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/inlining/custom_run_functions.kt");
-      }
-
-      @Test
-      @TestMetadata("inline.kt")
-      public void testInline() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/inlining/inline.kt");
       }
 
       @Test
@@ -774,45 +720,15 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
-      @TestMetadata("arithmetic.kt")
-      public void testArithmetic() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/arithmetic.kt");
-      }
-
-      @Test
-      @TestMetadata("as_operator.kt")
-      public void testAs_operator() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/as_operator.kt");
-      }
-
-      @Test
-      @TestMetadata("boolean_logic.kt")
-      public void testBoolean_logic() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/boolean_logic.kt");
-      }
-
-      @Test
-      @TestMetadata("comparison.kt")
-      public void testComparison() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/comparison.kt");
+      @TestMetadata("basic.kt")
+      public void testBasic() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/basic.kt");
       }
 
       @Test
       @TestMetadata("elvis.kt")
       public void testElvis() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/elvis.kt");
-      }
-
-      @Test
-      @TestMetadata("increment.kt")
-      public void testIncrement() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/increment.kt");
-      }
-
-      @Test
-      @TestMetadata("is_operator.kt")
-      public void testIs_operator() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/is_operator.kt");
       }
 
       @Test
@@ -832,39 +748,27 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("branching.kt")
+      public void testBranching() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/branching.kt");
+      }
+
+      @Test
       @TestMetadata("heap_dependent_specifications.kt")
       public void testHeap_dependent_specifications() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/heap_dependent_specifications.kt");
       }
 
       @Test
-      @TestMetadata("pure_function_rely_on_branch.kt")
-      public void testPure_function_rely_on_branch() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/pure_function_rely_on_branch.kt");
+      @TestMetadata("literal_returns.kt")
+      public void testLiteral_returns() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/literal_returns.kt");
       }
 
       @Test
-      @TestMetadata("pure_function_with_assignments.kt")
-      public void testPure_function_with_assignments() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/pure_function_with_assignments.kt");
-      }
-
-      @Test
-      @TestMetadata("pure_function_with_branching.kt")
-      public void testPure_function_with_branching() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/pure_function_with_branching.kt");
-      }
-
-      @Test
-      @TestMetadata("pure_function_with_reassignments.kt")
-      public void testPure_function_with_reassignments() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/pure_function_with_reassignments.kt");
-      }
-
-      @Test
-      @TestMetadata("pure_literal_function.kt")
-      public void testPure_literal_function() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/pure_literal_function.kt");
+      @TestMetadata("local_variables.kt")
+      public void testLocal_variables() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/local_variables.kt");
       }
     }
 
@@ -906,6 +810,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("casts.kt")
+      public void testCasts() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/types/casts.kt");
+      }
+
+      @Test
       @TestMetadata("generics.kt")
       public void testGenerics() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/types/generics.kt");
@@ -915,12 +825,6 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("nullable.kt")
       public void testNullable() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/types/nullable.kt");
-      }
-
-      @Test
-      @TestMetadata("smartcast.kt")
-      public void testSmartcast() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/types/smartcast.kt");
       }
     }
 
@@ -978,21 +882,15 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
-      @TestMetadata("pure_function_with_literal_return.kt")
-      public void testPure_function_with_literal_return() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/pure_function_with_literal_return.kt");
+      @TestMetadata("loops.kt")
+      public void testLoops() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/loops.kt");
       }
 
       @Test
       @TestMetadata("simple_forall.kt")
       public void testSimple_forall() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/simple_forall.kt");
-      }
-
-      @Test
-      @TestMetadata("simple_loop.kt")
-      public void testSimple_loop() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/simple_loop.kt");
       }
 
       @Test
