@@ -38,8 +38,8 @@ method checkMemberAccess() returns (ret_0: Ref)
   anon_7 := idFun(anon_0)
   anon_1 := anon_7
   inhale isSubtype(typeOf(anon_1), _c_ClassWithMember())
-  inhale acc(shared(anon_1), wildcard)
-  unfold acc(shared(anon_1), wildcard)
+  inhale acc(c_ClassWithMember_shared(anon_1), wildcard)
+  unfold acc(c_ClassWithMember_shared(anon_1), wildcard)
   ret_2 := anon_1.bf_member
   goto lbl_ret_2
   label lbl_ret_2
@@ -54,9 +54,9 @@ method checkMemberAccess() returns (ret_0: Ref)
   inhale isSubtype(typeOf(obj), nullable(anyType()))
   anon_2 := obj
   inhale isSubtype(typeOf(anon_2), _c_ClassWithMember())
-  inhale acc(shared(anon_2), wildcard)
+  inhale acc(c_ClassWithMember_shared(anon_2), wildcard)
   anon_3 := anon_2
-  unfold acc(shared(obj), wildcard)
+  unfold acc(c_ClassWithMember_shared(obj), wildcard)
   anon := obj.bf_member
   ret_0 := boolToRef(intFromRef(anon) == 42)
   goto lbl_ret_0
@@ -75,9 +75,9 @@ method checkMemberAccess() returns (ret_0: Ref)
 method con(member: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(member), intType())
   ensures isSubtype(typeOf(ret), _c_ClassWithMember())
-  ensures acc(shared(ret), wildcard)
+  ensures acc(c_ClassWithMember_shared(ret), wildcard)
   ensures acc(c_ClassWithMember_unique(ret), write)
-  ensures intFromRef((unfolding acc(shared(ret), wildcard) in
+  ensures intFromRef((unfolding acc(c_ClassWithMember_shared(ret), wildcard) in
       ret.bf_member)) ==
     intFromRef(member)
 
