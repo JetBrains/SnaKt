@@ -50,9 +50,9 @@ predicate shared(this: Ref) {
   true
 }
 
-method accessSuperTypeProperty(c: Ref) returns (ret_0: Ref)
+method accessSuperTypeProperty(c: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(c), c_C())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var temp: Ref
   inhale acc(_c_C_shared(c), wildcard)
@@ -60,11 +60,11 @@ method accessSuperTypeProperty(c: Ref) returns (ret_0: Ref)
   unfold acc(_c_B_shared(c), wildcard)
   unfold acc(_c_A_shared(c), wildcard)
   temp := c.a
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
-method d(this: Ref) returns (ret: Ref)
+method d(this: Ref) returns (v_ret: Ref)
 
 
 /predicates_access.kt: info: Generated Viper text for accessNested:
@@ -119,9 +119,9 @@ predicate shared(this: Ref) {
   true
 }
 
-method accessNested(c: Ref) returns (ret_0: Ref)
+method accessNested(c: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(c), c_C())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var temp: Ref
   var anon: Ref
@@ -130,11 +130,11 @@ method accessNested(c: Ref) returns (ret_0: Ref)
   anon := c.x
   unfold acc(_c_A_shared(anon), wildcard)
   temp := anon.a
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
-method d(this: Ref) returns (ret: Ref)
+method d(this: Ref) returns (v_ret: Ref)
 
 
 /predicates_access.kt: info: Generated Viper text for accessNullable:
@@ -148,9 +148,9 @@ predicate shared(this: Ref) {
   acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType())
 }
 
-method accessNullable(x: Ref) returns (ret_0: Ref)
+method accessNullable(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), nullable(c_A()))
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var n: Ref
   inhale x != nullValue() ==> acc(shared(x), wildcard)
@@ -158,8 +158,8 @@ method accessNullable(x: Ref) returns (ret_0: Ref)
     unfold acc(shared(x), wildcard)
     n := x.a
   }
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /predicates_access.kt: info: Generated Viper text for accessCast:
@@ -185,9 +185,9 @@ predicate shared(this: Ref) {
   acc(_c_A_shared(this), wildcard)
 }
 
-method accessCast(x: Ref) returns (ret_0: Ref)
+method accessCast(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), c_A())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var n: Ref
   inhale acc(_c_A_shared(x), wildcard)
@@ -195,8 +195,8 @@ method accessCast(x: Ref) returns (ret_0: Ref)
   inhale acc(shared(x), wildcard)
   unfold acc(shared(x), wildcard)
   n := x.b
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /predicates_access.kt: info: Generated Viper text for accessSafeCast:
@@ -222,9 +222,9 @@ predicate shared(this: Ref) {
   acc(_c_A_shared(this), wildcard)
 }
 
-method accessSafeCast(x: Ref) returns (ret_0: Ref)
+method accessSafeCast(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), c_A())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var n: Ref
   var y: Ref
@@ -240,8 +240,8 @@ method accessSafeCast(x: Ref) returns (ret_0: Ref)
     unfold acc(shared(y), wildcard)
     n := y.b
   }
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /predicates_access.kt: info: Generated Viper text for accessSmartCast:
@@ -267,9 +267,9 @@ predicate shared(this: Ref) {
   acc(_c_A_shared(this), wildcard)
 }
 
-method accessSmartCast(x: Ref) returns (ret_0: Ref)
+method accessSmartCast(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), c_A())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var n: Ref
   inhale acc(_c_A_shared(x), wildcard)
@@ -279,6 +279,6 @@ method accessSmartCast(x: Ref) returns (ret_0: Ref)
     unfold acc(shared(x), wildcard)
     n := x.b
   }
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }

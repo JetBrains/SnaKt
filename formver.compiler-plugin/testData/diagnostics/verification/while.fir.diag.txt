@@ -3,19 +3,19 @@ field bf_field: Ref
 
 field size: Ref
 
-method con(par_field: Ref) returns (ret: Ref)
+method con(par_field: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(par_field), intType())
-  ensures isSubtype(typeOf(ret), c_ClassWithField())
-  ensures acc(_c_ClassWithField_shared(ret), wildcard)
-  ensures acc(_c_ClassWithField_unique(ret), write)
-  ensures intFromRef((unfolding acc(_c_ClassWithField_shared(ret), wildcard) in
-      ret.bf_field)) ==
+  ensures isSubtype(typeOf(v_ret), c_ClassWithField())
+  ensures acc(_c_ClassWithField_shared(v_ret), wildcard)
+  ensures acc(_c_ClassWithField_unique(v_ret), write)
+  ensures intFromRef((unfolding acc(_c_ClassWithField_shared(v_ret), wildcard) in
+      v_ret.bf_field)) ==
     intFromRef(par_field)
 
 
-method test_while(param: Ref) returns (ret_0: Ref)
+method test_while(param: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(param), c_ClassWithField())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var c: Ref
   var initParamField: Ref
@@ -69,8 +69,8 @@ method test_while(param: Ref) returns (ret_0: Ref)
   cond2 := boolToRef(intFromRef(initParamField) == intFromRef(anon))
   assert boolFromRef(cond1)
   assert boolFromRef(cond2)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /while.kt: info: Generated Viper text for test_while_with_inlining:
@@ -78,13 +78,13 @@ field bf_field: Ref
 
 field size: Ref
 
-method con(par_field: Ref) returns (ret: Ref)
+method con(par_field: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(par_field), intType())
-  ensures isSubtype(typeOf(ret), c_ClassWithField())
-  ensures acc(_c_ClassWithField_shared(ret), wildcard)
-  ensures acc(_c_ClassWithField_unique(ret), write)
-  ensures intFromRef((unfolding acc(_c_ClassWithField_shared(ret), wildcard) in
-      ret.bf_field)) ==
+  ensures isSubtype(typeOf(v_ret), c_ClassWithField())
+  ensures acc(_c_ClassWithField_shared(v_ret), wildcard)
+  ensures acc(_c_ClassWithField_unique(v_ret), write)
+  ensures intFromRef((unfolding acc(_c_ClassWithField_shared(v_ret), wildcard) in
+      v_ret.bf_field)) ==
     intFromRef(par_field)
 
 
@@ -99,7 +99,7 @@ method test_while_with_inlining(param: Ref) returns (ret_0: Ref)
   var anon_0: Ref
   var anon_4: Ref
   var anon_5: Ref
-  var ret_2: Ref
+  var ret: Ref
   var anon_1: Ref
   var iteration: Ref
   var anon_6: Ref
@@ -150,9 +150,9 @@ method test_while_with_inlining(param: Ref) returns (ret_0: Ref)
   unfold acc(_c_ClassWithField_shared(local), wildcard)
   anon := local.bf_field
   assert intFromRef(anon) == 13
-  label lbl_ret_2
-  inhale isSubtype(typeOf(ret_2), unitType())
-  anon_5 := ret_2
+  label ret_2
+  inhale isSubtype(typeOf(ret), unitType())
+  anon_5 := ret
   ret_1 := anon_5
   inhale isSubtype(typeOf(ret_1), nullable(anyType()))
   goto lbl_ret_1
@@ -168,10 +168,10 @@ method test_while_with_inlining(param: Ref) returns (ret_0: Ref)
 field bf_field: Ref
 
 method test_while_with_smartcast(param: Ref, innerParam: Ref)
-  returns (ret_0: Ref)
+  returns (ret: Ref)
   requires isSubtype(typeOf(param), anyType())
   requires isSubtype(typeOf(innerParam), anyType())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   if (isSubtype(typeOf(param), c_ClassWithField())) {
     var iteration: Ref
@@ -201,6 +201,6 @@ method test_while_with_smartcast(param: Ref, innerParam: Ref)
     assert isSubtype(typeOf(param), anyType())
     assert isSubtype(typeOf(innerParam), anyType())
   }
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }

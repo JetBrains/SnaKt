@@ -1,57 +1,57 @@
 /secondary_constructors.kt: info: Generated Viper text for onlySecondConstructors:
 field a: Ref
 
-method con(n: Ref) returns (ret: Ref)
+method con(n: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(n), intType())
-  ensures isSubtype(typeOf(ret), c_NoPrimaryConstructor())
-  ensures acc(shared(ret), wildcard)
-  ensures acc(_c_NoPrimaryConstructor_unique(ret), write)
+  ensures isSubtype(typeOf(v_ret), c_NoPrimaryConstructor())
+  ensures acc(shared(v_ret), wildcard)
+  ensures acc(_c_NoPrimaryConstructor_unique(v_ret), write)
 
 
-method con_c_NoPrimaryConstructor(b: Ref) returns (ret: Ref)
+method con_c_NoPrimaryConstructor(b: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), c_NoPrimaryConstructor())
-  ensures acc(shared(ret), wildcard)
-  ensures acc(_c_NoPrimaryConstructor_unique(ret), write)
+  ensures isSubtype(typeOf(v_ret), c_NoPrimaryConstructor())
+  ensures acc(shared(v_ret), wildcard)
+  ensures acc(_c_NoPrimaryConstructor_unique(v_ret), write)
 
 
-method onlySecondConstructors() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method onlySecondConstructors() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var npc1: Ref
   var npc2: Ref
   npc1 := con_c_NoPrimaryConstructor(boolToRef(true))
   npc2 := con(intToRef(42))
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /secondary_constructors.kt: info: Generated Viper text for primaryAndSecondConstructor:
 field bf_a: Ref
 
-method con(a: Ref) returns (ret: Ref)
+method con(a: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(a), intType())
-  ensures isSubtype(typeOf(ret), c_BothConstructors())
-  ensures acc(shared(ret), wildcard)
-  ensures acc(_c_BothConstructors_unique(ret), write)
-  ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf_a)) ==
+  ensures isSubtype(typeOf(v_ret), c_BothConstructors())
+  ensures acc(shared(v_ret), wildcard)
+  ensures acc(_c_BothConstructors_unique(v_ret), write)
+  ensures intFromRef((unfolding acc(shared(v_ret), wildcard) in v_ret.bf_a)) ==
     intFromRef(a)
 
 
-method con_c_BothConstructors(b: Ref) returns (ret: Ref)
+method con_c_BothConstructors(b: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), c_BothConstructors())
-  ensures acc(shared(ret), wildcard)
-  ensures acc(_c_BothConstructors_unique(ret), write)
+  ensures isSubtype(typeOf(v_ret), c_BothConstructors())
+  ensures acc(shared(v_ret), wildcard)
+  ensures acc(_c_BothConstructors_unique(v_ret), write)
 
 
-method primaryAndSecondConstructor() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method primaryAndSecondConstructor() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var bc1: Ref
   var bc2: Ref
   bc1 := con_c_BothConstructors(boolToRef(false))
   bc2 := con(intToRef(42))
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }

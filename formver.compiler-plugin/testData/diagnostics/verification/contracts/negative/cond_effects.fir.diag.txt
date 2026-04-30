@@ -31,26 +31,27 @@ method mayReturnNull(x: Ref) returns (ret: Ref)
 }
 
 /cond_effects.kt: info: Generated Viper text for isNullOrEmptyWrong:
-method isNullOrEmptyWrong(seq: Ref) returns (ret_0: Ref)
+method isNullOrEmptyWrong(seq: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(seq), nullable(c_CharSequence()))
-  ensures isSubtype(typeOf(ret_0), boolType())
-  ensures boolFromRef(ret_0) == false ==> seq != nullValue()
+  ensures isSubtype(typeOf(ret), boolType())
+  ensures boolFromRef(ret) == false ==> seq != nullValue()
 {
-  inhale seq != nullValue() ==> acc(shared(seq), wildcard)
+  inhale seq != nullValue() ==>
+    acc(kotlin_c_CharSequence_shared(seq), wildcard)
   if (!(seq == nullValue())) {
     var anon_0: Ref
     var anon: Ref
     anon := length(seq)
     anon_0 := anon
     inhale isSubtype(typeOf(anon_0), intType())
-    ret_0 := notBool(boolToRef(intFromRef(anon_0) == 0))
+    ret := notBool(boolToRef(intFromRef(anon_0) == 0))
   } else {
-    ret_0 := boolToRef(false)}
-  goto lbl_ret_0
-  label lbl_ret_0
+    ret := boolToRef(false)}
+  goto ret_0
+  label ret_0
 }
 
-method length(this: Ref) returns (ret: Ref)
+method length(this: Ref) returns (v_ret: Ref)
 
 
 /cond_effects.kt: info: Generated Viper text for recursiveContract:

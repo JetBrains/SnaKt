@@ -1,20 +1,12 @@
-/multiple_receivers.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/multiple_receivers.kt: error: An internal error has occurred.
-Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
-
 /multiple_receivers.kt: info: Generated Viper text for applyDelta:
 field delta: Ref
 
 field size: Ref
 
-method applyDelta(this: Ref, [v$this]: Ref) returns (ret_0: Ref)
+method applyDelta(this: Ref, v_this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), c_ClassWithExtension())
-  requires isSubtype(typeOf([v$this]), intType())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  requires isSubtype(typeOf(v_this), intType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var withoutLabels: Ref
   var anon_0: Ref
@@ -23,96 +15,52 @@ method applyDelta(this: Ref, [v$this]: Ref) returns (ret_0: Ref)
   inhale acc(_c_ClassWithExtension_shared(this), wildcard)
   unfold acc(_c_ClassWithExtension_shared(this), wildcard)
   anon_0 := this.delta
-  withoutLabels := plusInts([v$this], anon_0)
+  withoutLabels := plusInts(v_this, anon_0)
   unfold acc(_c_ClassWithExtension_shared(this), wildcard)
   anon := this.delta
-  withLabels := plusInts(anon, [v$this])
+  withLabels := plusInts(anon, v_this)
   assert intFromRef(withoutLabels) == intFromRef(withLabels)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
-
-/multiple_receivers.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/multiple_receivers.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
 
 /multiple_receivers.kt: info: Generated Viper text for returnDelta:
 field delta: Ref
 
-method returnDelta(this: Ref) returns (ret_0: Ref)
+method returnDelta(this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), c_ClassWithExtension())
-  ensures isSubtype(typeOf(ret_0), intType())
+  ensures isSubtype(typeOf(ret), intType())
 {
   inhale acc(shared(this), wildcard)
   unfold acc(shared(this), wildcard)
-  ret_0 := this.delta
-  goto lbl_ret_0
-  label lbl_ret_0
+  ret := this.delta
+  goto ret_0
+  label ret_0
 }
-
-/multiple_receivers.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/multiple_receivers.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/multiple_receivers.kt: error: An internal error has occurred.
-Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
 
 /multiple_receivers.kt: info: Generated Viper text for extensionReturnDelta:
 field delta: Ref
 
-method extensionReturnDelta([v$this]: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf([v$this]), c_ClassWithExtension())
-  ensures isSubtype(typeOf(ret_0), intType())
+method extensionReturnDelta(v_this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(v_this), c_ClassWithExtension())
+  ensures isSubtype(typeOf(ret), intType())
 {
-  inhale acc(shared([v$this]), wildcard)
-  unfold acc(shared([v$this]), wildcard)
-  ret_0 := [v$this].delta
-  goto lbl_ret_0
-  label lbl_ret_0
+  inhale acc(shared(v_this), wildcard)
+  unfold acc(shared(v_this), wildcard)
+  ret := v_this.delta
+  goto ret_0
+  label ret_0
 }
 
-/multiple_receivers.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/multiple_receivers.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/multiple_receivers.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/multiple_receivers.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/multiple_receivers.kt: error: An internal error has occurred.
-Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/multiple_receivers.kt: error: An internal error has occurred.
-Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
-
 /multiple_receivers.kt: info: Generated Viper text for checkClassWithExtension:
-field bf_delta: Ref
+field delta: Ref
 
 field size: Ref
 
-method applyDelta(this: Ref, [v$this]: Ref) returns (ret: Ref)
+method applyDelta(this: Ref, v_this: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(this), c_ClassWithExtension())
-  requires isSubtype(typeOf([v$this]), intType())
-  ensures isSubtype(typeOf(ret), unitType())
+  requires isSubtype(typeOf(v_this), intType())
+  ensures isSubtype(typeOf(v_ret), unitType())
 
 
 method checkClassWithExtension() returns (ret_0: Ref)
@@ -128,11 +76,11 @@ method checkClassWithExtension() returns (ret_0: Ref)
   var anon_1: Ref
   var anon_7: Ref
   var anon_8: Ref
-  var anon: Ref
+  var anon_9: Ref
   var anon_10: Ref
-  var ret_3: Ref
+  var ret: Ref
   var anon_2: Ref
-  var anon_11: Ref
+  var anon: Ref
   anon_5 := con(intToRef(42))
   anon_0 := anon_5
   inhale isSubtype(typeOf(anon_0), nullable(anyType()))
@@ -141,14 +89,14 @@ method checkClassWithExtension() returns (ret_0: Ref)
   anon_1 := anon_0
   anon_7 := applyDelta(anon_1, intToRef(42))
   anon_8 := returnDelta(anon_1)
-  anon := extensionReturnDelta(anon_1)
+  anon_9 := extensionReturnDelta(anon_1)
   anon_2 := intToRef(42)
   unfold acc(_c_ClassWithExtension_shared(anon_1), wildcard)
-  anon_11 := anon_1.bf_delta
-  ret_3 := plusInts(anon_2, anon_11)
-  goto lbl_ret_3
-  label lbl_ret_3
-  anon_10 := ret_3
+  anon := anon_1.delta
+  ret := plusInts(anon_2, anon)
+  goto ret_3
+  label ret_3
+  anon_10 := ret
   assert intFromRef(anon_10) == 84
   label lbl_ret_2
   inhale isSubtype(typeOf(ret_2), unitType())
@@ -164,21 +112,21 @@ method checkClassWithExtension() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-method con(delta: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(delta), intType())
-  ensures isSubtype(typeOf(ret), c_ClassWithExtension())
-  ensures acc(_c_ClassWithExtension_shared(ret), wildcard)
-  ensures acc(_c_ClassWithExtension_unique(ret), write)
-  ensures intFromRef((unfolding acc(_c_ClassWithExtension_shared(ret), wildcard) in
-      ret.bf_delta)) ==
-    intFromRef(delta)
+method con(par_delta: Ref) returns (v_ret: Ref)
+  requires isSubtype(typeOf(par_delta), intType())
+  ensures isSubtype(typeOf(v_ret), c_ClassWithExtension())
+  ensures acc(_c_ClassWithExtension_shared(v_ret), wildcard)
+  ensures acc(_c_ClassWithExtension_unique(v_ret), write)
+  ensures intFromRef((unfolding acc(_c_ClassWithExtension_shared(v_ret), wildcard) in
+      v_ret.delta)) ==
+    intFromRef(par_delta)
 
 
-method extensionReturnDelta([v$this]: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf([v$this]), c_ClassWithExtension())
-  ensures isSubtype(typeOf(ret), intType())
+method extensionReturnDelta(v_this: Ref) returns (v_ret: Ref)
+  requires isSubtype(typeOf(v_this), c_ClassWithExtension())
+  ensures isSubtype(typeOf(v_ret), intType())
 
 
-method returnDelta(this: Ref) returns (ret: Ref)
+method returnDelta(this: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(this), c_ClassWithExtension())
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(v_ret), intType())

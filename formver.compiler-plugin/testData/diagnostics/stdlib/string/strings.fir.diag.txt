@@ -21,16 +21,14 @@ predicate io_c_Serializable_unique(this: Ref) {
   true
 }
 
-predicate kotlin_c_BooleanArray_shared(this: Ref) {
-  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
-  acc(shared(this), wildcard) &&
-  acc(io_c_Serializable_shared(this), wildcard)
-}
-
 predicate kotlin_c_BooleanArray_unique(this: Ref) {
   acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
   acc(kotlin_c_Cloneable_unique(this), write) &&
   acc(io_c_Serializable_unique(this), write)
+}
+
+predicate kotlin_c_Cloneable_shared(this: Ref) {
+  true
 }
 
 predicate kotlin_c_Cloneable_unique(this: Ref) {
@@ -38,22 +36,24 @@ predicate kotlin_c_Cloneable_unique(this: Ref) {
 }
 
 predicate shared(this: Ref) {
-  true
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(kotlin_c_Cloneable_shared(this), wildcard) &&
+  acc(io_c_Serializable_shared(this), wildcard)
 }
 
-method con(str: Ref) returns (ret: Ref)
+method con(str: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(str), stringType())
-  ensures isSubtype(typeOf(ret), c_StringBox())
-  ensures acc(_c_StringBox_shared(ret), wildcard)
-  ensures acc(_c_StringBox_unique(ret), write)
-  ensures stringFromRef((unfolding acc(_c_StringBox_shared(ret), wildcard) in
-      ret.bf_str)) ==
+  ensures isSubtype(typeOf(v_ret), c_StringBox())
+  ensures acc(_c_StringBox_shared(v_ret), wildcard)
+  ensures acc(_c_StringBox_unique(v_ret), write)
+  ensures stringFromRef((unfolding acc(_c_StringBox_shared(v_ret), wildcard) in
+      v_ret.bf_str)) ==
     stringFromRef(str)
 
 
-method testType(s: Ref) returns (ret_0: Ref)
+method testType(s: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(s), stringType())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var cond1: Ref
   var anon_0: Ref
@@ -71,8 +71,8 @@ method testType(s: Ref) returns (ret_0: Ref)
   cond2 := boolToRef(stringFromRef(anon_2) == Seq(115, 116, 114))
   assert boolFromRef(cond1)
   assert boolFromRef(cond2)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /strings.kt: info: Generated Viper text for testLengthField:
@@ -98,16 +98,14 @@ predicate io_c_Serializable_unique(this: Ref) {
   true
 }
 
-predicate kotlin_c_BooleanArray_shared(this: Ref) {
-  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
-  acc(shared(this), wildcard) &&
-  acc(io_c_Serializable_shared(this), wildcard)
-}
-
 predicate kotlin_c_BooleanArray_unique(this: Ref) {
   acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
   acc(kotlin_c_Cloneable_unique(this), write) &&
   acc(io_c_Serializable_unique(this), write)
+}
+
+predicate kotlin_c_Cloneable_shared(this: Ref) {
+  true
 }
 
 predicate kotlin_c_Cloneable_unique(this: Ref) {
@@ -115,22 +113,24 @@ predicate kotlin_c_Cloneable_unique(this: Ref) {
 }
 
 predicate shared(this: Ref) {
-  true
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(kotlin_c_Cloneable_shared(this), wildcard) &&
+  acc(io_c_Serializable_shared(this), wildcard)
 }
 
-method con(str: Ref) returns (ret: Ref)
+method con(str: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(str), stringType())
-  ensures isSubtype(typeOf(ret), c_StringBox())
-  ensures acc(_c_StringBox_shared(ret), wildcard)
-  ensures acc(_c_StringBox_unique(ret), write)
-  ensures stringFromRef((unfolding acc(_c_StringBox_shared(ret), wildcard) in
-      ret.bf_str)) ==
+  ensures isSubtype(typeOf(v_ret), c_StringBox())
+  ensures acc(_c_StringBox_shared(v_ret), wildcard)
+  ensures acc(_c_StringBox_unique(v_ret), write)
+  ensures stringFromRef((unfolding acc(_c_StringBox_shared(v_ret), wildcard) in
+      v_ret.bf_str)) ==
     stringFromRef(str)
 
 
-method testLengthField(s: Ref) returns (ret_0: Ref)
+method testLengthField(s: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(s), stringType())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var len: Ref
   var cond1: Ref
@@ -142,8 +142,8 @@ method testLengthField(s: Ref) returns (ret_0: Ref)
   anon_0 := anon.bf_str
   cond1 := boolToRef(|stringFromRef(anon_0)| == 3)
   assert boolFromRef(cond1)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /strings.kt: info: Generated Viper text for testOps:
@@ -157,16 +157,14 @@ predicate io_c_Serializable_unique(this: Ref) {
   true
 }
 
-predicate kotlin_c_BooleanArray_shared(this: Ref) {
-  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
-  acc(shared(this), wildcard) &&
-  acc(io_c_Serializable_shared(this), wildcard)
-}
-
 predicate kotlin_c_BooleanArray_unique(this: Ref) {
   acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
   acc(kotlin_c_Cloneable_unique(this), write) &&
   acc(io_c_Serializable_unique(this), write)
+}
+
+predicate kotlin_c_Cloneable_shared(this: Ref) {
+  true
 }
 
 predicate kotlin_c_Cloneable_unique(this: Ref) {
@@ -174,18 +172,20 @@ predicate kotlin_c_Cloneable_unique(this: Ref) {
 }
 
 predicate shared(this: Ref) {
-  true
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(kotlin_c_Cloneable_shared(this), wildcard) &&
+  acc(io_c_Serializable_shared(this), wildcard)
 }
 
-method plus(this: Ref, other: Ref) returns (ret: Ref)
+method plus(this: Ref, other: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
-  ensures isSubtype(typeOf(ret), stringType())
+  ensures isSubtype(typeOf(v_ret), stringType())
 
 
-method testOps(s: Ref) returns (ret_0: Ref)
+method testOps(s: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(s), stringType())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var c: Ref
   var anon: Ref
@@ -212,6 +212,6 @@ method testOps(s: Ref) returns (ret_0: Ref)
   assert stringFromRef(helloWorld) ==
     Seq(72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100, 33)
   stringPlusInteger := plus(stringToRef(Seq(52, 50)), intToRef(42))
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }

@@ -23,24 +23,24 @@ method conjunction(x: Ref, y: Ref) returns (ret: Ref)
 }
 
 /boolean_logic.kt: info: Generated Viper text for conjunctionSideEffects:
-method conjunctionSideEffects(x: Ref, y: Ref) returns (ret_0: Ref)
+method conjunctionSideEffects(x: Ref, y: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), boolType())
   requires isSubtype(typeOf(y), boolType())
-  ensures isSubtype(typeOf(ret_0), boolType())
+  ensures isSubtype(typeOf(ret), boolType())
 {
   var anon: Ref
   anon := negation(x)
   if (boolFromRef(anon)) {
-    ret_0 := negation(y)
+    ret := negation(y)
   } else {
-    ret_0 := boolToRef(false)}
-  goto lbl_ret_0
-  label lbl_ret_0
+    ret := boolToRef(false)}
+  goto ret_0
+  label ret_0
 }
 
-method negation(x: Ref) returns (ret: Ref)
+method negation(x: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(x), boolType())
-  ensures isSubtype(typeOf(ret), boolType())
+  ensures isSubtype(typeOf(v_ret), boolType())
 
 
 /boolean_logic.kt: info: Generated Viper text for disjunction:

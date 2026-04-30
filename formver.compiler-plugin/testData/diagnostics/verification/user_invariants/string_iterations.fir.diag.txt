@@ -1,38 +1,29 @@
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
-
 /string_iterations.kt: info: Generated Viper text for firstAtLeast:
-method firstAtLeast([v$this]: Ref, c: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf([v$this]), stringType())
+method firstAtLeast(v_this: Ref, c: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(v_this), stringType())
   requires isSubtype(typeOf(c), charType())
   ensures isSubtype(typeOf(ret), intType())
   ensures 0 <= intFromRef(ret) &&
-    intFromRef(ret) <= |stringFromRef([v$this])|
-  ensures (forall anon_builtin: Int ::0 <= anon_builtin &&
-      anon_builtin < intFromRef(ret) ==>
-      stringFromRef([v$this])[anon_builtin] < charFromRef(c))
-  ensures !(intFromRef(ret) == |stringFromRef([v$this])|) ==>
-    stringFromRef([v$this])[intFromRef(ret)] >= charFromRef(c)
+    intFromRef(ret) <= |stringFromRef(v_this)|
+  ensures (forall anon: Int ::0 <= anon && anon < intFromRef(ret) ==>
+      stringFromRef(v_this)[anon] < charFromRef(c))
+  ensures !(intFromRef(ret) == |stringFromRef(v_this)|) ==>
+    stringFromRef(v_this)[intFromRef(ret)] >= charFromRef(c)
 {
   var i: Ref
-  var anon: Ref
+  var anon_0: Ref
   i := intToRef(0)
   label cont
     invariant isSubtype(typeOf(i), intType())
     invariant isSubtype(typeOf(c), charType())
     invariant 0 <= intFromRef(i) &&
-      intFromRef(i) <= |stringFromRef([v$this])|
-    invariant (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
-        anon_builtin_1 < intFromRef(i) ==>
-        stringFromRef([v$this])[anon_builtin_1] < charFromRef(c))
-  anon := ltInts(i, stringLength([v$this]))
-  if (boolFromRef(anon)) {
-    if (stringFromRef([v$this])[intFromRef(i)] >= charFromRef(c)) {
+      intFromRef(i) <= |stringFromRef(v_this)|
+    invariant (forall anon_builtin: Int ::0 <= anon_builtin &&
+        anon_builtin < intFromRef(i) ==>
+        stringFromRef(v_this)[anon_builtin] < charFromRef(c))
+  anon_0 := ltInts(i, stringLength(v_this))
+  if (boolFromRef(anon_0)) {
+    if (stringFromRef(v_this)[intFromRef(i)] >= charFromRef(c)) {
       goto break
     }
     i := plusInts(i, intToRef(1))
@@ -41,98 +32,42 @@ method firstAtLeast([v$this]: Ref, c: Ref) returns (ret: Ref)
   label break
   assert isSubtype(typeOf(i), intType())
   assert isSubtype(typeOf(c), charType())
-  assert 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef([v$this])|
-  assert (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
-      anon_builtin_1 < intFromRef(i) ==>
-      stringFromRef([v$this])[anon_builtin_1] < charFromRef(c))
+  assert 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef(v_this)|
+  assert (forall anon_builtin: Int ::0 <= anon_builtin &&
+      anon_builtin < intFromRef(i) ==>
+      stringFromRef(v_this)[anon_builtin] < charFromRef(c))
   ret := i
   goto ret_0
   label ret_0
 }
 
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
-
 /string_iterations.kt: info: Generated Viper text for lastLess:
-method lastLess([v$this]: Ref, c: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf([v$this]), stringType())
+method lastLess(v_this: Ref, c: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(v_this), stringType())
   requires isSubtype(typeOf(c), charType())
   ensures isSubtype(typeOf(ret), intType())
   ensures -1 <= intFromRef(ret) &&
-    intFromRef(ret) <= |stringFromRef([v$this])| - 1
-  ensures (forall anon_builtin: Int ::intFromRef(ret) < anon_builtin &&
-      anon_builtin < |stringFromRef([v$this])| ==>
-      stringFromRef([v$this])[anon_builtin] >= charFromRef(c))
+    intFromRef(ret) <= |stringFromRef(v_this)| - 1
+  ensures (forall anon: Int ::intFromRef(ret) < anon &&
+      anon < |stringFromRef(v_this)| ==>
+      stringFromRef(v_this)[anon] >= charFromRef(c))
   ensures !(intFromRef(ret) == -1) ==>
-    stringFromRef([v$this])[intFromRef(ret)] < charFromRef(c)
+    stringFromRef(v_this)[intFromRef(ret)] < charFromRef(c)
 {
   var i: Ref
-  var anon: Ref
-  i := minusInts(stringLength([v$this]), intToRef(1))
+  var anon_0: Ref
+  i := minusInts(stringLength(v_this), intToRef(1))
   label cont
     invariant isSubtype(typeOf(i), intType())
     invariant isSubtype(typeOf(c), charType())
     invariant -1 <= intFromRef(i) &&
-      intFromRef(i) < |stringFromRef([v$this])|
-    invariant (forall anon_builtin_1: Int ::intFromRef(i) < anon_builtin_1 &&
-        anon_builtin_1 < |stringFromRef([v$this])| ==>
-        stringFromRef([v$this])[anon_builtin_1] >= charFromRef(c))
-  anon := gtInts(i, intToRef(-1))
-  if (boolFromRef(anon)) {
-    if (stringFromRef([v$this])[intFromRef(i)] < charFromRef(c)) {
+      intFromRef(i) < |stringFromRef(v_this)|
+    invariant (forall anon_builtin: Int ::intFromRef(i) < anon_builtin &&
+        anon_builtin < |stringFromRef(v_this)| ==>
+        stringFromRef(v_this)[anon_builtin] >= charFromRef(c))
+  anon_0 := gtInts(i, intToRef(-1))
+  if (boolFromRef(anon_0)) {
+    if (stringFromRef(v_this)[intFromRef(i)] < charFromRef(c)) {
       goto break
     }
     i := minusInts(i, intToRef(1))
@@ -141,71 +76,11 @@ method lastLess([v$this]: Ref, c: Ref) returns (ret: Ref)
   label break
   assert isSubtype(typeOf(i), intType())
   assert isSubtype(typeOf(c), charType())
-  assert -1 <= intFromRef(i) && intFromRef(i) < |stringFromRef([v$this])|
-  assert (forall anon_builtin_1: Int ::intFromRef(i) < anon_builtin_1 &&
-      anon_builtin_1 < |stringFromRef([v$this])| ==>
-      stringFromRef([v$this])[anon_builtin_1] >= charFromRef(c))
+  assert -1 <= intFromRef(i) && intFromRef(i) < |stringFromRef(v_this)|
+  assert (forall anon_builtin: Int ::intFromRef(i) < anon_builtin &&
+      anon_builtin < |stringFromRef(v_this)| ==>
+      stringFromRef(v_this)[anon_builtin] >= charFromRef(c))
   ret := i
   goto ret_0
   label ret_0
 }
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/string_iterations.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin

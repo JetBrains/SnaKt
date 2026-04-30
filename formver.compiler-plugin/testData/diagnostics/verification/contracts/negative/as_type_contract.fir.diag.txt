@@ -1,10 +1,10 @@
 /as_type_contract.kt: info: Generated Viper text for getX:
 field x: Ref
 
-method getX(a: Ref) returns (ret_0: Ref)
+method getX(a: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(a), anyType())
-  ensures isSubtype(typeOf(ret_0), nullable(intType()))
-  ensures ret_0 != nullValue() ==> !isSubtype(typeOf(a), c_IntHolder())
+  ensures isSubtype(typeOf(ret), nullable(intType()))
+  ensures ret != nullValue() ==> !isSubtype(typeOf(a), c_IntHolder())
 {
   var anon_0: Ref
   if (isSubtype(typeOf(a), c_IntHolder())) {
@@ -18,9 +18,9 @@ method getX(a: Ref) returns (ret_0: Ref)
     var anon: Ref
     unfold acc(_c_IntHolder_shared(anon_0), wildcard)
     anon := anon_0.x
-    ret_0 := anon
+    ret := anon
   } else {
-    ret_0 := nullValue()}
-  goto lbl_ret_0
-  label lbl_ret_0
+    ret := nullValue()}
+  goto ret_0
+  label ret_0
 }

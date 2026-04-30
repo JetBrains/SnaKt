@@ -1,72 +1,72 @@
 /member_functions.kt: info: Generated Viper text for memberFun:
 field x: Ref
 
-method memberFun(this: Ref) returns (ret_0: Ref)
+method memberFun(this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), c_Foo())
-  ensures isSubtype(typeOf(ret_0), intType())
+  ensures isSubtype(typeOf(ret), intType())
 {
   inhale acc(shared(this), wildcard)
   unfold acc(shared(this), wildcard)
-  ret_0 := this.x
-  goto lbl_ret_0
-  label lbl_ret_0
+  ret := this.x
+  goto ret_0
+  label ret_0
 }
 
 /member_functions.kt: info: Generated Viper text for callMemberFun:
 field x: Ref
 
-method callMemberFun(this: Ref) returns (ret_0: Ref)
+method callMemberFun(this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), c_Foo())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var anon: Ref
   inhale acc(shared(this), wildcard)
   anon := memberFun(this)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
-method memberFun(this: Ref) returns (ret: Ref)
+method memberFun(this: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(this), c_Foo())
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(v_ret), intType())
 
 
 /member_functions.kt: info: Generated Viper text for siblingCall:
 field x: Ref
 
-method memberFun(this: Ref) returns (ret: Ref)
+method memberFun(this: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(this), c_Foo())
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(v_ret), intType())
 
 
-method siblingCall(this: Ref, other: Ref) returns (ret_0: Ref)
+method siblingCall(this: Ref, other: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), c_Foo())
   requires isSubtype(typeOf(other), c_Foo())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var anon: Ref
   inhale acc(shared(this), wildcard)
   inhale acc(shared(other), wildcard)
   anon := memberFun(other)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /member_functions.kt: info: Generated Viper text for outerMemberFunCall:
 field x: Ref
 
-method memberFun(this: Ref) returns (ret: Ref)
+method memberFun(this: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(this), c_Foo())
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(v_ret), intType())
 
 
-method outerMemberFunCall(f: Ref) returns (ret_0: Ref)
+method outerMemberFunCall(f: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(f), c_Foo())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var anon: Ref
   inhale acc(shared(f), wildcard)
   anon := memberFun(f)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }

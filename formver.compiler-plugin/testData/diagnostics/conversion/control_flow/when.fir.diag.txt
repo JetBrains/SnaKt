@@ -94,33 +94,33 @@ method whenWithSubjectVar(x: Ref) returns (ret: Ref)
 }
 
 /when.kt: info: Generated Viper text for whenWithSubjectCall:
-method whenWithSubjectCall(x: Ref) returns (ret_0: Ref)
+method whenWithSubjectCall(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret_0), intType())
+  ensures isSubtype(typeOf(ret), intType())
 {
   var anon_0: Ref
   anon_0 := whenWithSubjectVar(x)
   if (intFromRef(anon_0) == 1) {
-    ret_0 := intToRef(2)
+    ret := intToRef(2)
   } elseif (intFromRef(anon_0) == 2) {
-    ret_0 := intToRef(3)
+    ret := intToRef(3)
   } else {
     var anon: Ref
     anon := whenWithSubjectVar(intToRef(0))
     if (intFromRef(anon) == 3) {
-      ret_0 := intToRef(4)
+      ret := intToRef(4)
     } elseif (intFromRef(anon) == 4) {
-      ret_0 := intToRef(5)
+      ret := intToRef(5)
     } else {
-      ret_0 := intToRef(42)}
+      ret := intToRef(42)}
   }
-  goto lbl_ret_0
-  label lbl_ret_0
+  goto ret_0
+  label ret_0
 }
 
-method whenWithSubjectVar(x: Ref) returns (ret: Ref)
+method whenWithSubjectVar(x: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(v_ret), intType())
 
 
 /when.kt: info: Generated Viper text for emptyWhen:

@@ -7,24 +7,16 @@ field y: Ref
 
 field z: Ref
 
-predicate _c_Foo_shared(this: Ref) {
-  acc(this.w, wildcard) && isSubtype(typeOf(this.w), intType()) &&
-  acc(this.y, wildcard) &&
-  acc(shared(this.y), wildcard) &&
-  isSubtype(typeOf(this.y), c_T()) &&
-  acc(_c_S_shared(this), wildcard)
-}
-
 predicate _c_Foo_unique(this: Ref) {
   acc(this.w, wildcard) && isSubtype(typeOf(this.w), intType()) &&
   acc(this.x, write) &&
   isSubtype(typeOf(this.x), intType()) &&
   acc(this.y, wildcard) &&
-  acc(shared(this.y), wildcard) &&
+  acc(_c_T_shared(this.y), wildcard) &&
   acc(_c_T_unique(this.y), write) &&
   isSubtype(typeOf(this.y), c_T()) &&
   acc(this.z, write) &&
-  acc(shared(this.z), wildcard) &&
+  acc(_c_T_shared(this.z), wildcard) &&
   acc(_c_T_unique(this.z), write) &&
   isSubtype(typeOf(this.z), c_T()) &&
   acc(_c_S_unique(this), write)
@@ -38,22 +30,30 @@ predicate _c_S_unique(this: Ref) {
   true
 }
 
+predicate _c_T_shared(this: Ref) {
+  true
+}
+
 predicate _c_T_unique(this: Ref) {
   true
 }
 
 predicate shared(this: Ref) {
-  true
+  acc(this.w, wildcard) && isSubtype(typeOf(this.w), intType()) &&
+  acc(this.y, wildcard) &&
+  acc(_c_T_shared(this.y), wildcard) &&
+  isSubtype(typeOf(this.y), c_T()) &&
+  acc(_c_S_shared(this), wildcard)
 }
 
-method unique_foo_arg(foo: Ref) returns (ret_0: Ref)
+method unique_foo_arg(foo: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(foo), c_Foo())
   requires acc(_c_Foo_unique(foo), write)
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
-  inhale acc(_c_Foo_shared(foo), wildcard)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale acc(shared(foo), wildcard)
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /unique_predicates.kt: info: Generated Viper text for nullable_unique_arg:
@@ -95,22 +95,6 @@ method borrowed_unique_arg(par_t: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/unique_predicates.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/unique_predicates.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/unique_predicates.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/unique_predicates.kt: error: An internal error has occurred.
-Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
-
 /unique_predicates.kt: info: Generated Viper text for unique_receiver:
 predicate _c_T_unique(this: Ref) {
   true
@@ -120,35 +104,15 @@ predicate shared(this: Ref) {
   true
 }
 
-method unique_receiver([v$this]: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf([v$this]), c_T())
-  requires acc(_c_T_unique([v$this]), write)
+method unique_receiver(v_this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(v_this), c_T())
+  requires acc(_c_T_unique(v_this), write)
   ensures isSubtype(typeOf(ret), unitType())
 {
-  inhale acc(shared([v$this]), wildcard)
+  inhale acc(shared(v_this), wildcard)
   label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
-
-/unique_predicates.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/unique_predicates.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/unique_predicates.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/unique_predicates.kt: error: An internal error has occurred.
-Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
-Please report this at https://github.com/jesyspa/kotlin
-
-/unique_predicates.kt: error: An internal error has occurred.
-Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
-Please report this at https://github.com/jesyspa/kotlin
 
 /unique_predicates.kt: info: Generated Viper text for borrowed_unique_receiver:
 predicate _c_T_unique(this: Ref) {
@@ -159,13 +123,13 @@ predicate shared(this: Ref) {
   true
 }
 
-method borrowed_unique_receiver([v$this]: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf([v$this]), c_T())
-  requires acc(_c_T_unique([v$this]), write)
-  ensures acc(_c_T_unique([v$this]), write)
+method borrowed_unique_receiver(v_this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(v_this), c_T())
+  requires acc(_c_T_unique(v_this), write)
+  ensures acc(_c_T_unique(v_this), write)
   ensures isSubtype(typeOf(ret), unitType())
 {
-  inhale acc(shared([v$this]), wildcard)
+  inhale acc(shared(v_this), wildcard)
   label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
@@ -179,20 +143,20 @@ predicate shared(this: Ref) {
   true
 }
 
-method con() returns (ret: Ref)
+method con() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), c_T())
+  ensures acc(shared(v_ret), wildcard)
+  ensures acc(_c_T_unique(v_ret), write)
+
+
+method unique_result() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), c_T())
   ensures acc(shared(ret), wildcard)
   ensures acc(_c_T_unique(ret), write)
-
-
-method unique_result() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), c_T())
-  ensures acc(shared(ret_0), wildcard)
-  ensures acc(_c_T_unique(ret_0), write)
 {
-  ret_0 := con()
-  goto lbl_ret_0
-  label lbl_ret_0
+  ret := con()
+  goto ret_0
+  label ret_0
 }
 
 /unique_predicates.kt: info: Generated Viper text for unique_nullable_result:
