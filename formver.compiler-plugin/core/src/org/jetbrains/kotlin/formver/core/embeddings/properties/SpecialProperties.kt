@@ -5,14 +5,58 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.properties
 
+
+import org.jetbrains.kotlin.descriptors.Visibilities
+import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.declarations.utils.visibility
+import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.kotlinCallableId
-import org.jetbrains.kotlin.name.CallableId
+import org.jetbrains.kotlin.formver.core.names.NameMatcher
+import org.jetbrains.kotlin.formver.core.names.embedMemberBackingFieldName
+import org.jetbrains.kotlin.formver.core.names.embedName
+
+abstract class SpecialProperty(val property: PropertyEmbedding) {
+    context(typeResolver: TypeResolver, session: FirSession)
+    abstract fun match(symbol: FirPropertySymbol) : Boolean
+}
+
+
+val StringSizeProperty = object: SpecialProperty(PropertyEmbedding(LengthFieldGetter, setter = null)) {
+    context(typeResolver: TypeResolver, session: FirSession)
+    override fun match(symbol: FirPropertySymbol) : Boolean {
+        return symbol.callableId == kotlinCallableId("String", "length")
+    }
+}
+
+val CollectionSizeProperty = object: SpecialProperty(PropertyEmbedding(BackingFieldGetter(ListSizeFieldEmbedding), setter = null)) {
+    context(typeResolver: TypeResolver, session: FirSession)
+    override fun match(symbol: FirPropertySymbol) : Boolean {
+        val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol ?: return false
+
+        val embedding = typeResolver.lookupClassTypeEmbedding(classSymbol.classId.embedName()) ?: return false
+        val scopedName = symbol.callableId!!.embedMemberBackingFieldName(
+            Visibilities.isPrivate(symbol.visibility)
+        )
+        NameMatcher.Companion.matchClassScope(scopedName) {
+            ifBackingFieldName("size") {
+                val result = typeResolver.isCollectionInheritor(embedding)
+                return result
+            }
+            return false
+        }
+    }
+}
+
+
 
 object SpecialProperties {
-    val byCallableId: Map<CallableId, PropertyEmbedding> = mapOf(
-        kotlinCallableId("String", "length") to PropertyEmbedding(LengthFieldGetter, setter = null)
-    )
 
-    fun isSpecial(symbol: FirPropertySymbol) = symbol.callableId in byCallableId.keys
+    val all: List<SpecialProperty> = listOf(StringSizeProperty, CollectionSizeProperty)
+
+    context(typeResolver: TypeResolver, session: FirSession)
+    fun lookup(symbol: FirPropertySymbol) : PropertyEmbedding? = all.firstOrNull { it.match(symbol) }?.property
+
 }

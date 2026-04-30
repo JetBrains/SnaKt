@@ -95,11 +95,11 @@ object ListSizeFieldEmbedding : FieldEmbedding {
     }
 }
 
-fun ScopedName.specialEmbedding(embedding: ClassTypeEmbedding, ctx: TypeResolver): FieldEmbedding? =
+fun ScopedName.specialEmbedding(embedding: ClassTypeEmbedding, ctx: TypeResolver): PropertyEmbedding? =
     NameMatcher.Companion.matchClassScope(this) {
         ifBackingFieldName("size") {
             return ctx.isCollectionInheritor(embedding).ifTrue {
-                ListSizeFieldEmbedding
+                PropertyEmbedding(BackingFieldGetter(ListSizeFieldEmbedding), null)
             }
         }
         return null

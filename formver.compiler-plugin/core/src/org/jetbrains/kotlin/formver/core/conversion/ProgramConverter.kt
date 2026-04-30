@@ -245,15 +245,18 @@ class ProgramConverter(
 
     override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding {
 
-        SpecialProperties.byCallableId[symbol.callableId]?.let {
-            return it
-        }
-
         if (symbol.receiverParameterSymbol != null) {
             return embedCustomProperty(symbol)
         } else {
+
             val name = symbol.embedMemberPropertyName()
             return typeResolver.getOrPutProperty(name) {
+                with(typeResolver) {
+                    with(session) {
+                        SpecialProperties.lookup(symbol)?.let { return@getOrPutProperty it }
+                    }
+                }
+
                 embedBackingField(symbol)?.let {
                     return@getOrPutProperty PropertyEmbedding(
                         BackingFieldGetter(it), BackingFieldSetter(it)
@@ -456,7 +459,7 @@ class ProgramConverter(
             Visibilities.isPrivate(symbol.visibility)
         )
         val fieldIsAllowed = symbol.hasBackingField && !symbol.isCustom && (symbol.isFinal || classSymbol.isFinal)
-        val backingField = scopedName.specialEmbedding(embedding, typeResolver) ?: fieldIsAllowed.ifTrue {
+        val backingField = fieldIsAllowed.ifTrue {
             UserFieldEmbedding(
                 scopedName,
                 embedType(symbol.resolvedReturnType),
