@@ -4,15 +4,15 @@ field y: Ref
 field z: Ref
 
 method cascadeGet(x: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(x), _c_X())
-  ensures isSubtype(typeOf(ret_0), _c_Z())
+  requires isSubtype(typeOf(x), c_X())
+  ensures isSubtype(typeOf(ret_0), c_Z())
   ensures acc(shared(ret_0), wildcard)
 {
   var anon: Ref
-  inhale acc(c_X_shared(x), wildcard)
-  unfold acc(c_X_shared(x), wildcard)
+  inhale acc(_c_X_shared(x), wildcard)
+  unfold acc(_c_X_shared(x), wildcard)
   anon := x.y
-  unfold acc(c_Y_shared(anon), wildcard)
+  unfold acc(_c_Y_shared(anon), wildcard)
   ret_0 := anon.z
   goto lbl_ret_0
   label lbl_ret_0
@@ -24,15 +24,15 @@ field y: Ref
 field z: Ref
 
 method receiverNotNullProved(x: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(x), nullable(_c_X()))
+  requires isSubtype(typeOf(x), nullable(c_X()))
   ensures isSubtype(typeOf(ret_0), boolType())
   ensures boolFromRef(ret_0) == true ==> x != nullValue()
 {
   var anon_0: Ref
-  inhale x != nullValue() ==> acc(c_X_shared(x), wildcard)
+  inhale x != nullValue() ==> acc(_c_X_shared(x), wildcard)
   if (x != nullValue()) {
     var anon: Ref
-    unfold acc(c_X_shared(x), wildcard)
+    unfold acc(_c_X_shared(x), wildcard)
     anon := x.y
     anon_0 := anon
   } else {
@@ -48,20 +48,20 @@ field y: Ref
 field z: Ref
 
 method cascadeNullableGet(x: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(x), nullable(_c_NullableX()))
-  ensures isSubtype(typeOf(ret_0), nullable(_c_Z()))
-  ensures ret_0 != nullValue() ==> acc(c_Z_shared(ret_0), wildcard)
+  requires isSubtype(typeOf(x), nullable(c_NullableX()))
+  ensures isSubtype(typeOf(ret_0), nullable(c_Z()))
+  ensures ret_0 != nullValue() ==> acc(_c_Z_shared(ret_0), wildcard)
   ensures ret_0 != nullValue() ==> x != nullValue()
 {
   var anon: Ref
-  inhale x != nullValue() ==> acc(c_NullableX_shared(x), wildcard)
+  inhale x != nullValue() ==> acc(_c_NullableX_shared(x), wildcard)
   if (x != nullValue()) {
-    unfold acc(c_NullableX_shared(x), wildcard)
+    unfold acc(_c_NullableX_shared(x), wildcard)
     anon := x.y
   } else {
     anon := nullValue()}
   if (anon != nullValue()) {
-    unfold acc(c_NullableY_shared(anon), wildcard)
+    unfold acc(_c_NullableY_shared(anon), wildcard)
     ret_0 := anon.z
   } else {
     ret_0 := nullValue()}
@@ -75,19 +75,19 @@ field y: Ref
 field z: Ref
 
 method cascadeNullableSmartcastGet(x: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(x), nullable(_c_NullableX()))
-  ensures isSubtype(typeOf(ret_0), nullable(_c_Z()))
-  ensures ret_0 != nullValue() ==> acc(c_Z_shared(ret_0), wildcard)
+  requires isSubtype(typeOf(x), nullable(c_NullableX()))
+  ensures isSubtype(typeOf(ret_0), nullable(c_Z()))
+  ensures ret_0 != nullValue() ==> acc(_c_Z_shared(ret_0), wildcard)
   ensures ret_0 != nullValue() ==> x != nullValue()
 {
-  inhale x != nullValue() ==> acc(c_NullableX_shared(x), wildcard)
+  inhale x != nullValue() ==> acc(_c_NullableX_shared(x), wildcard)
   if (x == nullValue()) {
     var anon_0: Ref
     anon_0 := nullValue()
     ret_0 := anon_0
   } else {
     var anon_1: Ref
-    unfold acc(c_NullableX_shared(x), wildcard)
+    unfold acc(_c_NullableX_shared(x), wildcard)
     anon_1 := x.y
     if (anon_1 == nullValue()) {
       var anon_2: Ref
@@ -95,9 +95,9 @@ method cascadeNullableSmartcastGet(x: Ref) returns (ret_0: Ref)
       ret_0 := anon_2
     } else {
       var anon: Ref
-      unfold acc(c_NullableX_shared(x), wildcard)
+      unfold acc(_c_NullableX_shared(x), wildcard)
       anon := x.y
-      unfold acc(c_NullableY_shared(anon), wildcard)
+      unfold acc(_c_NullableY_shared(anon), wildcard)
       ret_0 := anon.z
     }
   }
@@ -111,9 +111,9 @@ field size: Ref
 field x: Ref
 
 method con() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_Baz())
-  ensures acc(c_Baz_shared(ret), wildcard)
-  ensures acc(c_Baz_unique(ret), write)
+  ensures isSubtype(typeOf(ret), c_Baz())
+  ensures acc(_c_Baz_shared(ret), wildcard)
+  ensures acc(_c_Baz_unique(ret), write)
 
 
 method nullableReceiverNotNullSafeGet() returns (ret_0: Ref)
@@ -127,7 +127,7 @@ method nullableReceiverNotNullSafeGet() returns (ret_0: Ref)
   f := anon_0
   if (f != nullValue()) {
     var anon: Ref
-    unfold acc(c_Baz_shared(f), wildcard)
+    unfold acc(_c_Baz_shared(f), wildcard)
     anon := f.x
     anon_1 := anon
   } else {
@@ -152,7 +152,7 @@ method nullableReceiverNullSafeGet() returns (ret_0: Ref)
   f := nullValue()
   if (f != nullValue()) {
     var anon: Ref
-    unfold acc(c_Baz_shared(f), wildcard)
+    unfold acc(_c_Baz_shared(f), wildcard)
     anon := f.x
     anon_0 := anon
   } else {
@@ -169,9 +169,9 @@ field size: Ref
 field x: Ref
 
 method con() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_Baz())
-  ensures acc(c_Baz_shared(ret), wildcard)
-  ensures acc(c_Baz_unique(ret), write)
+  ensures isSubtype(typeOf(ret), c_Baz())
+  ensures acc(_c_Baz_shared(ret), wildcard)
+  ensures acc(_c_Baz_unique(ret), write)
 
 
 method nonNullableReceiverSafeGet() returns (ret_0: Ref)
@@ -183,7 +183,7 @@ method nonNullableReceiverSafeGet() returns (ret_0: Ref)
   f := con()
   if (f != nullValue()) {
     var anon: Ref
-    unfold acc(c_Baz_shared(f), wildcard)
+    unfold acc(_c_Baz_shared(f), wildcard)
     anon := f.x
     anon_0 := anon
   } else {
@@ -213,23 +213,23 @@ method checkPrimary(x: Ref, y: Ref) returns (ret_0: Ref)
   var cond1: Ref
   var cond2: Ref
   var anon_2: Ref
-  var anon_3: Ref
-  classI := con__c_ClassI(x, y)
-  l0_z := con__c_Z()
+  var anon: Ref
+  classI := con_c_ClassI(x, y)
+  l0_z := con()
   if (!(intFromRef(x) == intFromRef(y))) {
     cond1 := boolToRef(true)
   } else {
     var anon_0: Ref
-    var anon: Ref
-    unfold acc(c_ClassI_shared(classI), wildcard)
+    var anon_1: Ref
+    unfold acc(_c_ClassI_shared(classI), wildcard)
     anon_0 := classI.bf_x
-    unfold acc(c_ClassI_shared(classI), wildcard)
-    anon := classI.bf_y
-    cond1 := boolToRef(intFromRef(anon_0) == intFromRef(anon))
+    unfold acc(_c_ClassI_shared(classI), wildcard)
+    anon_1 := classI.bf_y
+    cond1 := boolToRef(intFromRef(anon_0) == intFromRef(anon_1))
   }
-  anon_3 := con(l0_z)
-  unfold acc(c_ClassII_shared(anon_3), wildcard)
-  anon_2 := anon_3.bf_z
+  anon := con_c_ClassII(l0_z)
+  unfold acc(_c_ClassII_shared(anon), wildcard)
+  anon_2 := anon.bf_z
   cond2 := boolToRef(anon_2 == l0_z)
   assert boolFromRef(cond1)
   assert boolFromRef(cond2)
@@ -237,31 +237,32 @@ method checkPrimary(x: Ref, y: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-method con(z: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(z), _c_Z())
-  ensures isSubtype(typeOf(ret), _c_ClassII())
-  ensures acc(c_ClassII_shared(ret), wildcard)
-  ensures acc(c_ClassII_unique(ret), write)
-  ensures (unfolding acc(c_ClassII_shared(ret), wildcard) in ret.bf_z) == z
+method con() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), c_Z())
+  ensures acc(_c_Z_shared(ret), wildcard)
+  ensures acc(_c_Z_unique(ret), write)
 
 
-method con__c_ClassI(x: Ref, y: Ref) returns (ret: Ref)
+method con_c_ClassI(x: Ref, y: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   requires isSubtype(typeOf(y), intType())
-  ensures isSubtype(typeOf(ret), _c_ClassI())
-  ensures acc(c_ClassI_shared(ret), wildcard)
-  ensures acc(c_ClassI_unique(ret), write)
-  ensures intFromRef((unfolding acc(c_ClassI_shared(ret), wildcard) in
+  ensures isSubtype(typeOf(ret), c_ClassI())
+  ensures acc(_c_ClassI_shared(ret), wildcard)
+  ensures acc(_c_ClassI_unique(ret), write)
+  ensures intFromRef((unfolding acc(_c_ClassI_shared(ret), wildcard) in
       ret.bf_x)) ==
     intFromRef(x) &&
-    intFromRef((unfolding acc(c_ClassI_shared(ret), wildcard) in ret.bf_y)) ==
+    intFromRef((unfolding acc(_c_ClassI_shared(ret), wildcard) in ret.bf_y)) ==
     intFromRef(y)
 
 
-method con__c_Z() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_Z())
-  ensures acc(c_Z_shared(ret), wildcard)
-  ensures acc(c_Z_unique(ret), write)
+method con_c_ClassII(z: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(z), c_Z())
+  ensures isSubtype(typeOf(ret), c_ClassII())
+  ensures acc(_c_ClassII_shared(ret), wildcard)
+  ensures acc(_c_ClassII_unique(ret), write)
+  ensures (unfolding acc(_c_ClassII_shared(ret), wildcard) in ret.bf_z) ==
+    z
 
 
 method g_z(this: Ref) returns (ret: Ref)

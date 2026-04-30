@@ -12,27 +12,31 @@ method firstNotSortedIndex(s: Ref) returns (ret: Ref)
     goto ret_0
   } else {
     var i: Ref
-    var anon_0: Ref
+    var anon: Ref
     i := intToRef(1)
     label cont
       invariant isSubtype(typeOf(i), intType())
       invariant isSubtype(typeOf(s), stringType())
-      invariant (forall anon: Int ::0 <= anon && anon + 1 < intFromRef(i) ==>
-          stringFromRef(s)[anon] <= stringFromRef(s)[anon + 1])
+      invariant (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
+          anon_builtin_1 + 1 < intFromRef(i) ==>
+          stringFromRef(s)[anon_builtin_1] <=
+          stringFromRef(s)[anon_builtin_1 + 1])
     if (intFromRef(i) < |stringFromRef(s)|) {
-      anon_0 := leChars(stringGet(s, minusInts(i, intToRef(1))), stringGet(s,
+      anon := leChars(stringGet(s, minusInts(i, intToRef(1))), stringGet(s,
         i))
     } else {
-      anon_0 := boolToRef(false)}
-    if (boolFromRef(anon_0)) {
+      anon := boolToRef(false)}
+    if (boolFromRef(anon)) {
       i := plusInts(i, intToRef(1))
       goto cont
     }
     label break
     assert isSubtype(typeOf(i), intType())
     assert isSubtype(typeOf(s), stringType())
-    assert (forall anon: Int ::0 <= anon && anon + 1 < intFromRef(i) ==>
-        stringFromRef(s)[anon] <= stringFromRef(s)[anon + 1])
+    assert (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
+        anon_builtin_1 + 1 < intFromRef(i) ==>
+        stringFromRef(s)[anon_builtin_1] <=
+        stringFromRef(s)[anon_builtin_1 + 1])
     ret := i
     goto ret_0
   }
@@ -49,20 +53,20 @@ method returnNewString() returns (ret: Ref)
 }
 
 /strings_in_conditions.kt: info: Generated Viper text for addCharacterTimes:
-method addCharacterTimes(s: Ref, c: Ref, n: Ref) returns (ret: Ref)
+method addCharacterTimes(s: Ref, c: Ref, n: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(s), stringType())
   requires isSubtype(typeOf(c), charType())
   requires isSubtype(typeOf(n), intType())
   requires intFromRef(n) >= 0
-  ensures isSubtype(typeOf(ret), stringType())
-  ensures |stringFromRef(ret)| == |stringFromRef(s)| + intFromRef(n)
+  ensures isSubtype(typeOf(ret_0), stringType())
+  ensures |stringFromRef(ret_0)| == |stringFromRef(s)| + intFromRef(n)
   ensures (forall anon_builtin: Int ::|stringFromRef(s)| <= anon_builtin &&
-      anon_builtin < |stringFromRef(ret)| ==>
-      stringFromRef(ret)[anon_builtin] == charFromRef(c))
+      anon_builtin < |stringFromRef(ret_0)| ==>
+      stringFromRef(ret_0)[anon_builtin] == charFromRef(c))
 {
   var i: Ref
   var res: Ref
-  var anon_0: Ref
+  var anon: Ref
   i := intToRef(0)
   res := s
   label cont
@@ -73,11 +77,12 @@ method addCharacterTimes(s: Ref, c: Ref, n: Ref) returns (ret: Ref)
     invariant isSubtype(typeOf(n), intType())
     invariant 0 <= intFromRef(i) && intFromRef(i) <= intFromRef(n)
     invariant |stringFromRef(res)| == |stringFromRef(s)| + intFromRef(i)
-    invariant (forall anon: Int ::|stringFromRef(s)| <= anon &&
-        anon < |stringFromRef(res)| ==>
-        stringFromRef(res)[anon] == charFromRef(c))
-  anon_0 := ltInts(i, n)
-  if (boolFromRef(anon_0)) {
+    invariant (forall anon_builtin_1: Int ::|stringFromRef(s)| <=
+        anon_builtin_1 &&
+        anon_builtin_1 < |stringFromRef(res)| ==>
+        stringFromRef(res)[anon_builtin_1] == charFromRef(c))
+  anon := ltInts(i, n)
+  if (boolFromRef(anon)) {
     res := addStringChar(res, c)
     goto cont
   }
@@ -89,15 +94,15 @@ method addCharacterTimes(s: Ref, c: Ref, n: Ref) returns (ret: Ref)
   assert isSubtype(typeOf(n), intType())
   assert 0 <= intFromRef(i) && intFromRef(i) <= intFromRef(n)
   assert |stringFromRef(res)| == |stringFromRef(s)| + intFromRef(i)
-  assert (forall anon: Int ::|stringFromRef(s)| <= anon &&
-      anon < |stringFromRef(res)| ==>
-      stringFromRef(res)[anon] == charFromRef(c))
-  ret := res
-  goto ret_0
-  label ret_0
+  assert (forall anon_builtin_1: Int ::|stringFromRef(s)| <= anon_builtin_1 &&
+      anon_builtin_1 < |stringFromRef(res)| ==>
+      stringFromRef(res)[anon_builtin_1] == charFromRef(c))
+  ret_0 := res
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
-method plus(this: Ref, other: Ref) returns (v_ret: Ref)
+method plus(this: Ref, other: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
-  ensures isSubtype(typeOf(v_ret), stringType())
+  ensures isSubtype(typeOf(ret), stringType())

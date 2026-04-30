@@ -2,12 +2,12 @@
 field x: Ref
 
 method f(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_Foo())
+  requires isSubtype(typeOf(this), c_Foo())
   ensures isSubtype(typeOf(ret), unitType())
 
 
 method testSafeCall(foo: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(foo), nullable(_c_Foo()))
+  requires isSubtype(typeOf(foo), nullable(c_Foo()))
   ensures isSubtype(typeOf(ret_0), nullable(unitType()))
 {
   inhale foo != nullValue() ==> acc(shared(foo), wildcard)
@@ -25,12 +25,12 @@ method testSafeCall(foo: Ref) returns (ret_0: Ref)
 field x: Ref
 
 method f(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_Foo())
+  requires isSubtype(typeOf(this), c_Foo())
   ensures isSubtype(typeOf(ret), unitType())
 
 
 method testSafeCallNonNullable(foo: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(foo), _c_Foo())
+  requires isSubtype(typeOf(foo), c_Foo())
   ensures isSubtype(typeOf(ret_0), nullable(unitType()))
 {
   inhale acc(shared(foo), wildcard)
@@ -48,7 +48,7 @@ method testSafeCallNonNullable(foo: Ref) returns (ret_0: Ref)
 field x: Ref
 
 method testSafeCallProperty(foo: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(foo), nullable(_c_Foo()))
+  requires isSubtype(typeOf(foo), nullable(c_Foo()))
   ensures isSubtype(typeOf(ret_0), nullable(intType()))
 {
   inhale foo != nullValue() ==> acc(shared(foo), wildcard)
@@ -67,7 +67,7 @@ method testSafeCallProperty(foo: Ref) returns (ret_0: Ref)
 field x: Ref
 
 method testSafeCallPropertyNonNullable(foo: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(foo), _c_Foo())
+  requires isSubtype(typeOf(foo), c_Foo())
   ensures isSubtype(typeOf(ret_0), nullable(intType()))
 {
   inhale acc(shared(foo), wildcard)
@@ -86,13 +86,13 @@ method testSafeCallPropertyNonNullable(foo: Ref) returns (ret_0: Ref)
 field bf_v: Ref
 
 method f_nullable(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_Rec())
-  ensures isSubtype(typeOf(ret), nullable(_c_Rec()))
+  requires isSubtype(typeOf(this), c_Rec())
+  ensures isSubtype(typeOf(ret), nullable(c_Rec()))
   ensures ret != nullValue() ==> acc(shared(ret), wildcard)
 
 
 method safeCallChain(rec: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(rec), nullable(_c_Rec()))
+  requires isSubtype(typeOf(rec), nullable(c_Rec()))
   ensures isSubtype(typeOf(ret_0), nullable(intType()))
 {
   var anon_0: Ref

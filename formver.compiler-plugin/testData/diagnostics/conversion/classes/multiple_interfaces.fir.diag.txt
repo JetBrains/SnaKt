@@ -1,8 +1,8 @@
 /multiple_interfaces.kt: info: Generated Viper text for testDiamond:
 method con() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_D())
-  ensures acc(c_D_shared(ret), wildcard)
-  ensures acc(c_D_unique(ret), write)
+  ensures isSubtype(typeOf(ret), c_D())
+  ensures acc(shared(ret), wildcard)
+  ensures acc(_c_D_unique(ret), write)
 
 
 method g_field(this: Ref) returns (ret: Ref)
@@ -23,15 +23,15 @@ method testDiamond() returns (ret_0: Ref)
 
 /multiple_interfaces.kt: info: Generated Viper text for testVarVal:
 method con() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_I())
-  ensures acc(c_I_shared(ret), wildcard)
-  ensures acc(c_I_unique(ret), write)
+  ensures isSubtype(typeOf(ret), c_I())
+  ensures acc(shared(ret), wildcard)
+  ensures acc(_c_I_unique(ret), write)
 
 
-method con__c_G() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_G())
-  ensures acc(c_G_shared(ret), wildcard)
-  ensures acc(c_G_unique(ret), write)
+method con_c_G() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), c_G())
+  ensures acc(_c_G_shared(ret), wildcard)
+  ensures acc(_c_G_unique(ret), write)
 
 
 method g_field(this: Ref) returns (ret: Ref)
@@ -51,7 +51,7 @@ method testVarVal() returns (ret_0: Ref)
   var anon_3: Ref
   var anon_4: Ref
   var anon: Ref
-  g := con__c_G()
+  g := con_c_G()
   anon_1 := g_field(g)
   anon_0 := anon_1
   inhale isSubtype(typeOf(anon_0), intType())

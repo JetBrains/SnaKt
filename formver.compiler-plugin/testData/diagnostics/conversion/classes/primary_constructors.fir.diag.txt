@@ -6,9 +6,9 @@ field bf_b: Ref
 method con(a: Ref, b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(a), intType())
   requires isSubtype(typeOf(b), intType())
-  ensures isSubtype(typeOf(ret), _c_PrimitiveFields())
+  ensures isSubtype(typeOf(ret), c_PrimitiveFields())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c_PrimitiveFields_unique(ret), write)
+  ensures acc(_c_PrimitiveFields_unique(ret), write)
   ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf_a)) ==
     intFromRef(a) &&
     intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf_b)) ==
@@ -16,7 +16,7 @@ method con(a: Ref, b: Ref) returns (ret: Ref)
 
 
 method createPrimitiveFields() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), _c_PrimitiveFields())
+  ensures isSubtype(typeOf(ret_0), c_PrimitiveFields())
   ensures acc(shared(ret_0), wildcard)
 {
   ret_0 := con(intToRef(10), intToRef(20))
@@ -28,15 +28,15 @@ method createPrimitiveFields() returns (ret_0: Ref)
 field bf_a: Ref
 
 method con(a: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(a), nullable(_c_Recursive()))
-  ensures isSubtype(typeOf(ret), _c_Recursive())
+  requires isSubtype(typeOf(a), nullable(c_Recursive()))
+  ensures isSubtype(typeOf(ret), c_Recursive())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c_Recursive_unique(ret), write)
+  ensures acc(_c_Recursive_unique(ret), write)
   ensures (unfolding acc(shared(ret), wildcard) in ret.bf_a) == a
 
 
 method createRecursive() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), _c_Recursive())
+  ensures isSubtype(typeOf(ret_0), c_Recursive())
   ensures acc(shared(ret_0), wildcard)
 {
   ret_0 := con(nullValue())
@@ -51,15 +51,15 @@ field bf_c: Ref
 
 method con(c: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(c), intType())
-  ensures isSubtype(typeOf(ret), _c_FieldInBody())
+  ensures isSubtype(typeOf(ret), c_FieldInBody())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c_FieldInBody_unique(ret), write)
+  ensures acc(_c_FieldInBody_unique(ret), write)
   ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf_c)) ==
     intFromRef(c)
 
 
 method createFieldInBody() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), _c_FieldInBody())
+  ensures isSubtype(typeOf(ret_0), c_FieldInBody())
   ensures acc(shared(ret_0), wildcard)
 {
   ret_0 := con(intToRef(10))

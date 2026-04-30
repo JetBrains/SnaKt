@@ -56,8 +56,8 @@ field b: Ref
 
 function annotatedReferenceReturn(x: Ref): Ref
   requires acc(shared(x), wildcard)
-  requires isSubtype(typeOf(x), _c_X())
-  ensures isSubtype(typeOf(result), _c_X())
+  requires isSubtype(typeOf(x), c_X())
+  ensures isSubtype(typeOf(result), c_X())
 {
   x
 }

@@ -28,7 +28,7 @@ method anyIntegerSquaredIsAtLeastZeroStringVersion(str: Ref)
 {
   var res: Ref
   var i: Ref
-  var anon_1: Ref
+  var anon: Ref
   res := intToRef(0)
   i := intToRef(10)
   label cont
@@ -40,11 +40,11 @@ method anyIntegerSquaredIsAtLeastZeroStringVersion(str: Ref)
         (stringFromRef(str)[anon_builtin] - 97) *
         (stringFromRef(str)[anon_builtin] - 97) >=
         intFromRef(res))
-  anon_1 := gtInts(i, intToRef(0))
-  if (boolFromRef(anon_1)) {
-    var anon: Ref
-    anon := i
-    i := minusInts(anon, intToRef(1))
+  anon := gtInts(i, intToRef(0))
+  if (boolFromRef(anon)) {
+    var anon_0: Ref
+    anon_0 := i
+    i := minusInts(anon_0, intToRef(1))
     goto cont
   }
   label break

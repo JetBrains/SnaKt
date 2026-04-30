@@ -61,28 +61,28 @@ method nestedTryCatch() returns (ret_0: Ref)
   var anon: Ref
   var e: Ref
   if (boolFromRef(anon_0)) {
-    goto catch
+    goto catch_0
   }
   anon_1 := call(intToRef(0))
   if (boolFromRef(anon_2)) {
-    goto catch_1
+    goto catch
   }
   anon_3 := call(intToRef(1))
   if (boolFromRef(anon_4)) {
-    goto catch_1
-  }
-  goto tryExit_1
-  label catch_1
-  anon_5 := call(intToRef(2))
-  goto tryExit_1
-  label tryExit_1
-  if (boolFromRef(anon)) {
     goto catch
   }
   goto tryExit
   label catch
+  anon_5 := call(intToRef(2))
   goto tryExit
   label tryExit
+  if (boolFromRef(anon)) {
+    goto catch_0
+  }
+  goto tryExit_0
+  label catch_0
+  goto tryExit_0
+  label tryExit_0
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
@@ -222,7 +222,7 @@ method cause(this: Ref) returns (ret: Ref)
 
 
 method ignore(e: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(e), lang_c_Exception())
+  requires isSubtype(typeOf(e), c_Exception())
   ensures isSubtype(typeOf(ret), unitType())
 
 

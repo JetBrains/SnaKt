@@ -127,13 +127,13 @@ field size: Ref
 
 method con(e: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(e), intType())
-  ensures isSubtype(typeOf(ret), _c_WithVar())
-  ensures acc(c_WithVar_shared(ret), wildcard)
-  ensures acc(c_WithVar_unique(ret), write)
+  ensures isSubtype(typeOf(ret), c_WithVar())
+  ensures acc(_c_WithVar_shared(ret), wildcard)
+  ensures acc(_c_WithVar_unique(ret), write)
 
 
 method doSomething(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_WithVar())
+  requires isSubtype(typeOf(this), c_WithVar())
   ensures isSubtype(typeOf(ret), boolType())
 
 
@@ -146,8 +146,8 @@ method test_boolean_postcondition() returns (ret_0: Ref)
   withVar := con(intToRef(42))
   boolean := boolToRef(true)
   label cont
-    invariant acc(c_WithVar_shared(withVar), wildcard)
-    invariant isSubtype(typeOf(withVar), _c_WithVar())
+    invariant acc(_c_WithVar_shared(withVar), wildcard)
+    invariant isSubtype(typeOf(withVar), c_WithVar())
     invariant isSubtype(typeOf(boolean), boolType())
   anon := boolean
   if (boolFromRef(anon)) {
@@ -155,8 +155,8 @@ method test_boolean_postcondition() returns (ret_0: Ref)
     goto cont
   }
   label break
-  assert acc(c_WithVar_shared(withVar), wildcard)
-  assert isSubtype(typeOf(withVar), _c_WithVar())
+  assert acc(_c_WithVar_shared(withVar), wildcard)
+  assert isSubtype(typeOf(withVar), c_WithVar())
   assert isSubtype(typeOf(boolean), boolType())
   assert !boolFromRef(boolean)
   label lbl_ret_0

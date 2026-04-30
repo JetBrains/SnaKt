@@ -3,16 +3,16 @@ field a: Ref
 
 method con(n: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(n), intType())
-  ensures isSubtype(typeOf(ret), _c_NoPrimaryConstructor())
+  ensures isSubtype(typeOf(ret), c_NoPrimaryConstructor())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c_NoPrimaryConstructor_unique(ret), write)
+  ensures acc(_c_NoPrimaryConstructor_unique(ret), write)
 
 
-method con__c_NoPrimaryConstructor(b: Ref) returns (ret: Ref)
+method con_c_NoPrimaryConstructor(b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), _c_NoPrimaryConstructor())
+  ensures isSubtype(typeOf(ret), c_NoPrimaryConstructor())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c_NoPrimaryConstructor_unique(ret), write)
+  ensures acc(_c_NoPrimaryConstructor_unique(ret), write)
 
 
 method onlySecondConstructors() returns (ret_0: Ref)
@@ -20,7 +20,7 @@ method onlySecondConstructors() returns (ret_0: Ref)
 {
   var npc1: Ref
   var npc2: Ref
-  npc1 := con__c_NoPrimaryConstructor(boolToRef(true))
+  npc1 := con_c_NoPrimaryConstructor(boolToRef(true))
   npc2 := con(intToRef(42))
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
@@ -31,18 +31,18 @@ field bf_a: Ref
 
 method con(a: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(a), intType())
-  ensures isSubtype(typeOf(ret), _c_BothConstructors())
+  ensures isSubtype(typeOf(ret), c_BothConstructors())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c_BothConstructors_unique(ret), write)
+  ensures acc(_c_BothConstructors_unique(ret), write)
   ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf_a)) ==
     intFromRef(a)
 
 
-method con__c_BothConstructors(b: Ref) returns (ret: Ref)
+method con_c_BothConstructors(b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), _c_BothConstructors())
+  ensures isSubtype(typeOf(ret), c_BothConstructors())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c_BothConstructors_unique(ret), write)
+  ensures acc(_c_BothConstructors_unique(ret), write)
 
 
 method primaryAndSecondConstructor() returns (ret_0: Ref)
@@ -50,7 +50,7 @@ method primaryAndSecondConstructor() returns (ret_0: Ref)
 {
   var bc1: Ref
   var bc2: Ref
-  bc1 := con__c_BothConstructors(boolToRef(false))
+  bc1 := con_c_BothConstructors(boolToRef(false))
   bc2 := con(intToRef(42))
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())

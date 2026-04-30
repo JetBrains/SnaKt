@@ -5,7 +5,7 @@ field value: Ref
 
 function getValue(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), _c_Node())
+  requires isSubtype(typeOf(node), c_Node())
   ensures isSubtype(typeOf(result), intType())
 {
   (let v_anon_0_0 ==
@@ -20,7 +20,7 @@ field value: Ref
 
 function getSafeNextValue(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), _c_Node())
+  requires isSubtype(typeOf(node), c_Node())
   ensures isSubtype(typeOf(result), intType())
 {
   (let v_anon_2_0 ==
@@ -44,7 +44,7 @@ field value: Ref
 
 function getSafeNextNextValue(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), _c_Node())
+  requires isSubtype(typeOf(node), c_Node())
   ensures isSubtype(typeOf(result), intType())
 {
   (let v_anon_3_0 ==
@@ -75,7 +75,7 @@ field value: Ref
 
 function sumFirstTwoNodes(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), _c_Node())
+  requires isSubtype(typeOf(node), c_Node())
   ensures isSubtype(typeOf(result), intType())
 {
   (let l0_nextNode_0 ==
@@ -113,7 +113,7 @@ field value: Ref
 
 function isLastNode(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), _c_Node())
+  requires isSubtype(typeOf(node), c_Node())
   ensures isSubtype(typeOf(result), boolType())
 {
   (let v_anon_0_0 ==
@@ -128,7 +128,7 @@ field value: Ref
 
 function length(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), _c_Node())
+  requires isSubtype(typeOf(node), c_Node())
   ensures isSubtype(typeOf(result), intType())
 {
   (let l0_nextNode_0 ==
@@ -152,7 +152,7 @@ field value: Ref
 
 function sumAllNodes(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), _c_Node())
+  requires isSubtype(typeOf(node), c_Node())
   ensures isSubtype(typeOf(result), intType())
 {
   (let l0_nextNode_0 ==
@@ -183,7 +183,7 @@ field value: Ref
 
 function containsValue(node: Ref, target: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), _c_Node())
+  requires isSubtype(typeOf(node), c_Node())
   requires isSubtype(typeOf(target), intType())
   ensures isSubtype(typeOf(result), boolType())
 {
@@ -212,7 +212,7 @@ field value: Ref
 
 function aliasAndReassign(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), _c_Node())
+  requires isSubtype(typeOf(node), c_Node())
   ensures isSubtype(typeOf(result), intType())
 {
   (let l0_alias1_0 ==
@@ -241,8 +241,8 @@ field value: Ref
 
 function id(node: Ref): Ref
   requires node != nullValue() ==> acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), nullable(_c_Node()))
-  ensures isSubtype(typeOf(result), nullable(_c_Node()))
+  requires isSubtype(typeOf(node), nullable(c_Node()))
+  ensures isSubtype(typeOf(result), nullable(c_Node()))
 {
   node
 }
@@ -254,15 +254,15 @@ field value: Ref
 
 function id(node: Ref): Ref
   requires node != nullValue() ==> acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), nullable(_c_Node()))
-  ensures isSubtype(typeOf(result), nullable(_c_Node()))
+  requires isSubtype(typeOf(node), nullable(c_Node()))
+  ensures isSubtype(typeOf(result), nullable(c_Node()))
 {
   node
 }
 
 function useIdentityFunction(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), _c_Node())
+  requires isSubtype(typeOf(node), c_Node())
   ensures isSubtype(typeOf(result), intType())
 {
   (let l0_sameNode_0 ==
@@ -286,7 +286,7 @@ field value: Ref
 
 function getNextValueUsingId(node: Ref): Ref
   requires acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), _c_Node())
+  requires isSubtype(typeOf(node), c_Node())
   ensures isSubtype(typeOf(result), intType())
 {
   (let v_anon_0_0 ==
@@ -308,8 +308,8 @@ function getNextValueUsingId(node: Ref): Ref
 
 function id(node: Ref): Ref
   requires node != nullValue() ==> acc(shared(node), wildcard)
-  requires isSubtype(typeOf(node), nullable(_c_Node()))
-  ensures isSubtype(typeOf(result), nullable(_c_Node()))
+  requires isSubtype(typeOf(node), nullable(c_Node()))
+  ensures isSubtype(typeOf(result), nullable(c_Node()))
 {
   node
 }

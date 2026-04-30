@@ -4,7 +4,7 @@ field size: Ref
 method get(this: Ref, index: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections_c_List())
+  requires isSubtype(typeOf(this), c_List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -17,7 +17,7 @@ method get(this: Ref, index: Ref) returns (ret: Ref)
 method isEmpty(this: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections_c_List())
+  requires isSubtype(typeOf(this), c_List())
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret), boolType())
@@ -29,7 +29,7 @@ method isEmpty(this: Ref) returns (ret: Ref)
 method mid_increased_by_one(arr: Ref, target: Ref) returns (ret_0: Ref)
   requires acc(arr.size, write)
   requires intFromRef(arr.size) >= 0
-  requires isSubtype(typeOf(arr), collections_c_List())
+  requires isSubtype(typeOf(arr), c_List())
   requires isSubtype(typeOf(target), intType())
   ensures acc(arr.size, write)
   ensures intFromRef(arr.size) >= 0
@@ -39,7 +39,7 @@ method mid_increased_by_one(arr: Ref, target: Ref) returns (ret_0: Ref)
   var mid: Ref
   var anon_0: Ref
   var anon_1: Ref
-  inhale acc(c_List_shared(arr), wildcard)
+  inhale acc(shared(arr), wildcard)
   l0_size := arr.size
   inhale isSubtype(typeOf(l0_size), intType())
   anon_0 := arr.size
@@ -74,7 +74,7 @@ method mid_increased_by_one(arr: Ref, target: Ref) returns (ret_0: Ref)
 method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections_c_List())
+  requires isSubtype(typeOf(this), c_List())
   requires isSubtype(typeOf(fromIndex), intType())
   requires isSubtype(typeOf(toIndex), intType())
   requires intFromRef(fromIndex) <= intFromRef(toIndex)
@@ -82,10 +82,10 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
   requires intFromRef(toIndex) <= intFromRef(this.size)
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
-  ensures isSubtype(typeOf(ret), collections_c_List())
+  ensures isSubtype(typeOf(ret), c_List())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c_List_shared(ret), wildcard)
+  ensures acc(shared(ret), wildcard)
   ensures intFromRef(this.size) == old(intFromRef(this.size))
   ensures intFromRef(ret.size) ==
     intFromRef(toIndex) - intFromRef(fromIndex)
@@ -97,7 +97,7 @@ field size: Ref
 method get(this: Ref, index: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections_c_List())
+  requires isSubtype(typeOf(this), c_List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -110,7 +110,7 @@ method get(this: Ref, index: Ref) returns (ret: Ref)
 method isEmpty(this: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections_c_List())
+  requires isSubtype(typeOf(this), c_List())
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret), boolType())
@@ -122,7 +122,7 @@ method isEmpty(this: Ref) returns (ret: Ref)
 method mid_decreased_by_one(arr: Ref, target: Ref) returns (ret_0: Ref)
   requires acc(arr.size, write)
   requires intFromRef(arr.size) >= 0
-  requires isSubtype(typeOf(arr), collections_c_List())
+  requires isSubtype(typeOf(arr), c_List())
   requires isSubtype(typeOf(target), intType())
   ensures acc(arr.size, write)
   ensures intFromRef(arr.size) >= 0
@@ -132,7 +132,7 @@ method mid_decreased_by_one(arr: Ref, target: Ref) returns (ret_0: Ref)
   var mid: Ref
   var anon_0: Ref
   var anon_1: Ref
-  inhale acc(c_List_shared(arr), wildcard)
+  inhale acc(shared(arr), wildcard)
   l0_size := arr.size
   inhale isSubtype(typeOf(l0_size), intType())
   anon_0 := arr.size
@@ -167,7 +167,7 @@ method mid_decreased_by_one(arr: Ref, target: Ref) returns (ret_0: Ref)
 method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections_c_List())
+  requires isSubtype(typeOf(this), c_List())
   requires isSubtype(typeOf(fromIndex), intType())
   requires isSubtype(typeOf(toIndex), intType())
   requires intFromRef(fromIndex) <= intFromRef(toIndex)
@@ -175,10 +175,10 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
   requires intFromRef(toIndex) <= intFromRef(this.size)
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
-  ensures isSubtype(typeOf(ret), collections_c_List())
+  ensures isSubtype(typeOf(ret), c_List())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c_List_shared(ret), wildcard)
+  ensures acc(shared(ret), wildcard)
   ensures intFromRef(this.size) == old(intFromRef(this.size))
   ensures intFromRef(ret.size) ==
     intFromRef(toIndex) - intFromRef(fromIndex)
@@ -190,7 +190,7 @@ field size: Ref
 method get(this: Ref, index: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections_c_List())
+  requires isSubtype(typeOf(this), c_List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -203,7 +203,7 @@ method get(this: Ref, index: Ref) returns (ret: Ref)
 method isEmpty(this: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections_c_List())
+  requires isSubtype(typeOf(this), c_List())
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret), boolType())
@@ -216,7 +216,7 @@ method mid_decreased_by_one_in_rec_call(arr: Ref, target: Ref)
   returns (ret_0: Ref)
   requires acc(arr.size, write)
   requires intFromRef(arr.size) >= 0
-  requires isSubtype(typeOf(arr), collections_c_List())
+  requires isSubtype(typeOf(arr), c_List())
   requires isSubtype(typeOf(target), intType())
   ensures acc(arr.size, write)
   ensures intFromRef(arr.size) >= 0
@@ -226,7 +226,7 @@ method mid_decreased_by_one_in_rec_call(arr: Ref, target: Ref)
   var mid: Ref
   var anon_0: Ref
   var anon_1: Ref
-  inhale acc(c_List_shared(arr), wildcard)
+  inhale acc(shared(arr), wildcard)
   l0_size := arr.size
   inhale isSubtype(typeOf(l0_size), intType())
   anon_0 := arr.size
@@ -261,7 +261,7 @@ method mid_decreased_by_one_in_rec_call(arr: Ref, target: Ref)
 method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections_c_List())
+  requires isSubtype(typeOf(this), c_List())
   requires isSubtype(typeOf(fromIndex), intType())
   requires isSubtype(typeOf(toIndex), intType())
   requires intFromRef(fromIndex) <= intFromRef(toIndex)
@@ -269,10 +269,10 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
   requires intFromRef(toIndex) <= intFromRef(this.size)
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
-  ensures isSubtype(typeOf(ret), collections_c_List())
+  ensures isSubtype(typeOf(ret), c_List())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c_List_shared(ret), wildcard)
+  ensures acc(shared(ret), wildcard)
   ensures intFromRef(this.size) == old(intFromRef(this.size))
   ensures intFromRef(ret.size) ==
     intFromRef(toIndex) - intFromRef(fromIndex)
@@ -284,7 +284,7 @@ field size: Ref
 method get(this: Ref, index: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections_c_List())
+  requires isSubtype(typeOf(this), c_List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -298,7 +298,7 @@ method unsafe_binary_search(arr: Ref, target: Ref, left: Ref, right: Ref)
   returns (ret_0: Ref)
   requires acc(arr.size, write)
   requires intFromRef(arr.size) >= 0
-  requires isSubtype(typeOf(arr), collections_c_List())
+  requires isSubtype(typeOf(arr), c_List())
   requires isSubtype(typeOf(target), intType())
   requires isSubtype(typeOf(left), intType())
   requires isSubtype(typeOf(right), intType())
@@ -308,7 +308,7 @@ method unsafe_binary_search(arr: Ref, target: Ref, left: Ref, right: Ref)
 {
   var mid: Ref
   var anon_0: Ref
-  inhale acc(c_List_shared(arr), wildcard)
+  inhale acc(shared(arr), wildcard)
   if (intFromRef(left) > intFromRef(right)) {
     ret_0 := boolToRef(false)
     goto lbl_ret_0

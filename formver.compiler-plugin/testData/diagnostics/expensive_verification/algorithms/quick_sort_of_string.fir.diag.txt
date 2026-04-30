@@ -1,52 +1,69 @@
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
 /quick_sort_of_string.kt: info: Generated Viper text for minOrMaxChar:
-method minOrMaxChar(this: Ref, calcMin: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), stringType())
+method minOrMaxChar([v$this]: Ref, calcMin: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf([v$this]), stringType())
   requires isSubtype(typeOf(calcMin), boolType())
-  requires |stringFromRef(this)| >= 1
+  requires |stringFromRef([v$this])| >= 1
   ensures isSubtype(typeOf(ret), charType())
   ensures boolFromRef(calcMin) ==>
     (forall anon_builtin_4: Int ::0 <= anon_builtin_4 &&
-      anon_builtin_4 < |stringFromRef(this)| ==>
-      charFromRef(ret) <= stringFromRef(this)[anon_builtin_4])
+      anon_builtin_4 < |stringFromRef([v$this])| ==>
+      charFromRef(ret) <= stringFromRef([v$this])[anon_builtin_4])
   ensures !boolFromRef(calcMin) ==>
-    (forall anon_builtin_5: Int ::0 <= anon_builtin_5 &&
-      anon_builtin_5 < |stringFromRef(this)| ==>
-      charFromRef(ret) >= stringFromRef(this)[anon_builtin_5])
+    (forall anon_builtin: Int ::0 <= anon_builtin &&
+      anon_builtin < |stringFromRef([v$this])| ==>
+      charFromRef(ret) >= stringFromRef([v$this])[anon_builtin])
 {
   var res: Ref
   var i: Ref
   var anon_0: Ref
-  res := stringGet(this, intToRef(0))
+  res := stringGet([v$this], intToRef(0))
   i := intToRef(1)
   label cont
     invariant isSubtype(typeOf(res), charType())
     invariant isSubtype(typeOf(i), intType())
     invariant isSubtype(typeOf(calcMin), boolType())
-    invariant 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef(this)|
+    invariant 0 <= intFromRef(i) &&
+      intFromRef(i) <= |stringFromRef([v$this])|
     invariant boolFromRef(calcMin) ==>
       (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
         anon_builtin_2 < intFromRef(i) ==>
-        charFromRef(res) <= stringFromRef(this)[anon_builtin_2])
+        charFromRef(res) <= stringFromRef([v$this])[anon_builtin_2])
     invariant !boolFromRef(calcMin) ==>
-      (forall anon_builtin: Int ::0 <= anon_builtin &&
-        anon_builtin < intFromRef(i) ==>
-        charFromRef(res) >= stringFromRef(this)[anon_builtin])
-  anon_0 := ltInts(i, stringLength(this))
+      (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
+        anon_builtin_3 < intFromRef(i) ==>
+        charFromRef(res) >= stringFromRef([v$this])[anon_builtin_3])
+  anon_0 := ltInts(i, stringLength([v$this]))
   if (boolFromRef(anon_0)) {
     var anon_1: Ref
     var anon: Ref
     if (boolFromRef(calcMin)) {
-      anon := ltChars(stringGet(this, i), res)
+      anon := ltChars(stringGet([v$this], i), res)
     } else {
       anon := boolToRef(false)}
     if (boolFromRef(anon)) {
       anon_1 := boolToRef(true)
     } elseif (!boolFromRef(calcMin)) {
-      anon_1 := gtChars(stringGet(this, i), res)
+      anon_1 := gtChars(stringGet([v$this], i), res)
     } else {
       anon_1 := boolToRef(false)}
     if (boolFromRef(anon_1)) {
-      res := stringGet(this, i)
+      res := stringGet([v$this], i)
     }
     i := plusInts(i, intToRef(1))
     goto cont
@@ -55,109 +72,277 @@ method minOrMaxChar(this: Ref, calcMin: Ref) returns (ret: Ref)
   assert isSubtype(typeOf(res), charType())
   assert isSubtype(typeOf(i), intType())
   assert isSubtype(typeOf(calcMin), boolType())
-  assert 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef(this)|
+  assert 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef([v$this])|
   assert boolFromRef(calcMin) ==>
     (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
       anon_builtin_2 < intFromRef(i) ==>
-      charFromRef(res) <= stringFromRef(this)[anon_builtin_2])
+      charFromRef(res) <= stringFromRef([v$this])[anon_builtin_2])
   assert !boolFromRef(calcMin) ==>
-    (forall anon_builtin: Int ::0 <= anon_builtin &&
-      anon_builtin < intFromRef(i) ==>
-      charFromRef(res) >= stringFromRef(this)[anon_builtin])
+    (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
+      anon_builtin_3 < intFromRef(i) ==>
+      charFromRef(res) >= stringFromRef([v$this])[anon_builtin_3])
   ret := res
   goto ret_0
   label ret_0
 }
 
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
 /quick_sort_of_string.kt: info: Generated Viper text for quickSort:
-method minOrMaxChar(this: Ref, calcMin: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), stringType())
+method minOrMaxChar([v$this]: Ref, calcMin: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf([v$this]), stringType())
   requires isSubtype(typeOf(calcMin), boolType())
-  requires |stringFromRef(this)| >= 1
+  requires |stringFromRef([v$this])| >= 1
   ensures isSubtype(typeOf(ret), charType())
   ensures boolFromRef(calcMin) ==>
     (forall anon_builtin_7: Int ::0 <= anon_builtin_7 &&
-      anon_builtin_7 < |stringFromRef(this)| ==>
-      charFromRef(ret) <= stringFromRef(this)[anon_builtin_7])
+      anon_builtin_7 < |stringFromRef([v$this])| ==>
+      charFromRef(ret) <= stringFromRef([v$this])[anon_builtin_7])
   ensures !boolFromRef(calcMin) ==>
-    (forall anon_builtin_8: Int ::0 <= anon_builtin_8 &&
-      anon_builtin_8 < |stringFromRef(this)| ==>
-      charFromRef(ret) >= stringFromRef(this)[anon_builtin_8])
+    (forall anon_builtin: Int ::0 <= anon_builtin &&
+      anon_builtin < |stringFromRef([v$this])| ==>
+      charFromRef(ret) >= stringFromRef([v$this])[anon_builtin])
 
 
-method quickSort(this: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), stringType())
+method quickSort([v$this]: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf([v$this]), stringType())
   ensures isSubtype(typeOf(ret_0), stringType())
-  ensures |stringFromRef(ret_0)| == |stringFromRef(this)|
+  ensures |stringFromRef(ret_0)| == |stringFromRef([v$this])|
   ensures (forall anon_builtin_6: Int ::1 <= anon_builtin_6 &&
-      anon_builtin_6 < |stringFromRef(this)| ==>
+      anon_builtin_6 < |stringFromRef([v$this])| ==>
       stringFromRef(ret_0)[anon_builtin_6 - 1] <=
       stringFromRef(ret_0)[anon_builtin_6])
 {
   var l0_minVal: Ref
   var l0_maxVal: Ref
-  if (|stringFromRef(this)| <= 1) {
-    ret_0 := this
+  if (|stringFromRef([v$this])| <= 1) {
+    ret_0 := [v$this]
     goto lbl_ret_0
   }
-  l0_minVal := minOrMaxChar(this, boolToRef(true))
-  l0_maxVal := minOrMaxChar(this, boolToRef(false))
-  ret_0 := quickSortRec(this, l0_minVal, l0_maxVal)
+  l0_minVal := minOrMaxChar([v$this], boolToRef(true))
+  l0_maxVal := minOrMaxChar([v$this], boolToRef(false))
+  ret_0 := quickSortRec([v$this], l0_minVal, l0_maxVal)
   goto lbl_ret_0
   label lbl_ret_0
 }
 
-method quickSortRec(this: Ref, minVal: Ref, maxVal: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), stringType())
+method quickSortRec([v$this]: Ref, minVal: Ref, maxVal: Ref)
+  returns (ret: Ref)
+  requires isSubtype(typeOf([v$this]), stringType())
   requires isSubtype(typeOf(minVal), charType())
   requires isSubtype(typeOf(maxVal), charType())
-  requires (forall anon_builtin_9: Int ::0 <= anon_builtin_9 &&
-      anon_builtin_9 < |stringFromRef(this)| ==>
-      charFromRef(minVal) <= stringFromRef(this)[anon_builtin_9] &&
-      stringFromRef(this)[anon_builtin_9] <= charFromRef(maxVal))
+  requires (forall anon: Int ::0 <= anon &&
+      anon < |stringFromRef([v$this])| ==>
+      charFromRef(minVal) <= stringFromRef([v$this])[anon] &&
+      stringFromRef([v$this])[anon] <= charFromRef(maxVal))
   ensures isSubtype(typeOf(ret), stringType())
-  ensures |stringFromRef(ret)| == |stringFromRef(this)|
-  ensures (forall anon_builtin: Int ::0 <= anon_builtin &&
-      anon_builtin < |stringFromRef(this)| ==>
-      charFromRef(minVal) <= stringFromRef(ret)[anon_builtin] &&
-      stringFromRef(ret)[anon_builtin] <= charFromRef(maxVal))
-  ensures (forall anon: Int ::1 <= anon && anon < |stringFromRef(this)| ==>
-      stringFromRef(ret)[anon - 1] <= stringFromRef(ret)[anon])
+  ensures |stringFromRef(ret)| == |stringFromRef([v$this])|
+  ensures (forall anon_builtin_10: Int ::0 <= anon_builtin_10 &&
+      anon_builtin_10 < |stringFromRef([v$this])| ==>
+      charFromRef(minVal) <= stringFromRef(ret)[anon_builtin_10] &&
+      stringFromRef(ret)[anon_builtin_10] <= charFromRef(maxVal))
+  ensures (forall anon_builtin_11: Int ::1 <= anon_builtin_11 &&
+      anon_builtin_11 < |stringFromRef([v$this])| ==>
+      stringFromRef(ret)[anon_builtin_11 - 1] <=
+      stringFromRef(ret)[anon_builtin_11])
 
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
 
 /quick_sort_of_string.kt: info: Generated Viper text for quickSortRec:
-method chooseIndex(this: Ref) returns (v_ret: Ref)
+method chooseIndex([v$this]: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf([v$this]), stringType())
+  requires |stringFromRef([v$this])| >= 1
+  ensures isSubtype(typeOf(ret), intType())
+  ensures 0 <= intFromRef(ret) &&
+    intFromRef(ret) < |stringFromRef([v$this])|
+
+
+method plus(this: Ref, other: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), stringType())
-  requires |stringFromRef(this)| >= 1
-  ensures isSubtype(typeOf(v_ret), intType())
-  ensures 0 <= intFromRef(v_ret) &&
-    intFromRef(v_ret) < |stringFromRef(this)|
-
-
-method plus(v_this: Ref, other: Ref) returns (v_ret: Ref)
-  requires isSubtype(typeOf(v_this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
-  ensures isSubtype(typeOf(v_ret), stringType())
+  ensures isSubtype(typeOf(ret), stringType())
 
 
-method quickSortRec(this: Ref, minVal: Ref, maxVal: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), stringType())
+method quickSortRec([v$this]: Ref, minVal: Ref, maxVal: Ref)
+  returns (ret_0: Ref)
+  requires isSubtype(typeOf([v$this]), stringType())
   requires isSubtype(typeOf(minVal), charType())
   requires isSubtype(typeOf(maxVal), charType())
   requires (forall anon_builtin_6: Int ::0 <= anon_builtin_6 &&
-      anon_builtin_6 < |stringFromRef(this)| ==>
-      charFromRef(minVal) <= stringFromRef(this)[anon_builtin_6] &&
-      stringFromRef(this)[anon_builtin_6] <= charFromRef(maxVal))
-  ensures isSubtype(typeOf(ret), stringType())
-  ensures |stringFromRef(ret)| == |stringFromRef(this)|
+      anon_builtin_6 < |stringFromRef([v$this])| ==>
+      charFromRef(minVal) <= stringFromRef([v$this])[anon_builtin_6] &&
+      stringFromRef([v$this])[anon_builtin_6] <= charFromRef(maxVal))
+  ensures isSubtype(typeOf(ret_0), stringType())
+  ensures |stringFromRef(ret_0)| == |stringFromRef([v$this])|
   ensures (forall anon_builtin_7: Int ::0 <= anon_builtin_7 &&
-      anon_builtin_7 < |stringFromRef(this)| ==>
-      charFromRef(minVal) <= stringFromRef(ret)[anon_builtin_7] &&
-      stringFromRef(ret)[anon_builtin_7] <= charFromRef(maxVal))
-  ensures (forall anon_builtin_8: Int ::1 <= anon_builtin_8 &&
-      anon_builtin_8 < |stringFromRef(this)| ==>
-      stringFromRef(ret)[anon_builtin_8 - 1] <=
-      stringFromRef(ret)[anon_builtin_8])
+      anon_builtin_7 < |stringFromRef([v$this])| ==>
+      charFromRef(minVal) <= stringFromRef(ret_0)[anon_builtin_7] &&
+      stringFromRef(ret_0)[anon_builtin_7] <= charFromRef(maxVal))
+  ensures (forall anon_builtin: Int ::1 <= anon_builtin &&
+      anon_builtin < |stringFromRef([v$this])| ==>
+      stringFromRef(ret_0)[anon_builtin - 1] <=
+      stringFromRef(ret_0)[anon_builtin])
 {
   var medVal: Ref
   var anon_1: Ref
@@ -167,13 +352,13 @@ method quickSortRec(this: Ref, minVal: Ref, maxVal: Ref) returns (ret: Ref)
   var eqString: Ref
   var anon_2: Ref
   var anon_4: Ref
-  var anon_5: Ref
-  if (|stringFromRef(this)| <= 1) {
-    ret := this
-    goto ret_0
+  var anon: Ref
+  if (|stringFromRef([v$this])| <= 1) {
+    ret_0 := [v$this]
+    goto lbl_ret_0
   }
-  anon_1 := chooseIndex(this)
-  medVal := stringGet(this, anon_1)
+  anon_1 := chooseIndex([v$this])
+  medVal := stringGet([v$this], anon_1)
   i := intToRef(0)
   lessString := stringToRef(Seq[Int]())
   greaterString := stringToRef(Seq[Int]())
@@ -186,7 +371,8 @@ method quickSortRec(this: Ref, minVal: Ref, maxVal: Ref) returns (ret: Ref)
     invariant isSubtype(typeOf(eqString), stringType())
     invariant isSubtype(typeOf(minVal), charType())
     invariant isSubtype(typeOf(maxVal), charType())
-    invariant 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef(this)|
+    invariant 0 <= intFromRef(i) &&
+      intFromRef(i) <= |stringFromRef([v$this])|
     invariant |stringFromRef(lessString)| + |stringFromRef(greaterString)| +
       |stringFromRef(eqString)| ==
       intFromRef(i)
@@ -198,18 +384,18 @@ method quickSortRec(this: Ref, minVal: Ref, maxVal: Ref) returns (ret: Ref)
         anon_builtin_4 < |stringFromRef(greaterString)| ==>
         charFromRef(medVal) <= stringFromRef(greaterString)[anon_builtin_4] &&
         stringFromRef(greaterString)[anon_builtin_4] <= charFromRef(maxVal))
-    invariant (forall anon_builtin: Int ::0 <= anon_builtin &&
-        anon_builtin < |stringFromRef(eqString)| ==>
-        stringFromRef(eqString)[anon_builtin] == charFromRef(medVal))
-  anon_2 := ltInts(i, stringLength(this))
+    invariant (forall anon_builtin_5: Int ::0 <= anon_builtin_5 &&
+        anon_builtin_5 < |stringFromRef(eqString)| ==>
+        stringFromRef(eqString)[anon_builtin_5] == charFromRef(medVal))
+  anon_2 := ltInts(i, stringLength([v$this]))
   if (boolFromRef(anon_2)) {
     var curChar: Ref
     var anon_3: Ref
-    var anon: Ref
-    anon := i
-    i := plusInts(anon, intToRef(1))
-    anon_3 := anon
-    curChar := stringGet(this, anon_3)
+    var anon_0: Ref
+    anon_0 := i
+    i := plusInts(anon_0, intToRef(1))
+    anon_3 := anon_0
+    curChar := stringGet([v$this], anon_3)
     if (charFromRef(curChar) < charFromRef(medVal)) {
       lessString := addStringChar(lessString, curChar)
     } elseif (charFromRef(curChar) > charFromRef(medVal)) {
@@ -226,7 +412,7 @@ method quickSortRec(this: Ref, minVal: Ref, maxVal: Ref) returns (ret: Ref)
   assert isSubtype(typeOf(eqString), stringType())
   assert isSubtype(typeOf(minVal), charType())
   assert isSubtype(typeOf(maxVal), charType())
-  assert 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef(this)|
+  assert 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef([v$this])|
   assert |stringFromRef(lessString)| + |stringFromRef(greaterString)| +
     |stringFromRef(eqString)| ==
     intFromRef(i)
@@ -238,12 +424,96 @@ method quickSortRec(this: Ref, minVal: Ref, maxVal: Ref) returns (ret: Ref)
       anon_builtin_4 < |stringFromRef(greaterString)| ==>
       charFromRef(medVal) <= stringFromRef(greaterString)[anon_builtin_4] &&
       stringFromRef(greaterString)[anon_builtin_4] <= charFromRef(maxVal))
-  assert (forall anon_builtin: Int ::0 <= anon_builtin &&
-      anon_builtin < |stringFromRef(eqString)| ==>
-      stringFromRef(eqString)[anon_builtin] == charFromRef(medVal))
+  assert (forall anon_builtin_5: Int ::0 <= anon_builtin_5 &&
+      anon_builtin_5 < |stringFromRef(eqString)| ==>
+      stringFromRef(eqString)[anon_builtin_5] == charFromRef(medVal))
   anon_4 := quickSortRec(lessString, minVal, medVal)
-  anon_5 := quickSortRec(greaterString, medVal, maxVal)
-  ret := addStrings(addStrings(anon_4, eqString), anon_5)
-  goto ret_0
-  label ret_0
+  anon := quickSortRec(greaterString, medVal, maxVal)
+  ret_0 := addStrings(addStrings(anon_4, eqString), anon)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/quick_sort_of_string.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin

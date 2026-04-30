@@ -7,38 +7,38 @@ field y: Ref
 
 field z: Ref
 
-predicate c_Foo_shared(this: Ref) {
+predicate _c_Foo_shared(this: Ref) {
   acc(this.w, wildcard) && isSubtype(typeOf(this.w), intType()) &&
   acc(this.y, wildcard) &&
-  acc(c_T_shared(this.y), wildcard) &&
-  isSubtype(typeOf(this.y), _c_T()) &&
-  acc(shared(this), wildcard)
+  acc(shared(this.y), wildcard) &&
+  isSubtype(typeOf(this.y), c_T()) &&
+  acc(_c_S_shared(this), wildcard)
 }
 
-predicate c_Foo_unique(this: Ref) {
+predicate _c_Foo_unique(this: Ref) {
   acc(this.w, wildcard) && isSubtype(typeOf(this.w), intType()) &&
   acc(this.x, write) &&
   isSubtype(typeOf(this.x), intType()) &&
   acc(this.y, wildcard) &&
-  acc(c_T_shared(this.y), wildcard) &&
-  acc(c_T_unique(this.y), write) &&
-  isSubtype(typeOf(this.y), _c_T()) &&
+  acc(shared(this.y), wildcard) &&
+  acc(_c_T_unique(this.y), write) &&
+  isSubtype(typeOf(this.y), c_T()) &&
   acc(this.z, write) &&
-  acc(c_T_shared(this.z), wildcard) &&
-  acc(c_T_unique(this.z), write) &&
-  isSubtype(typeOf(this.z), _c_T()) &&
-  acc(c_S_unique(this), write)
+  acc(shared(this.z), wildcard) &&
+  acc(_c_T_unique(this.z), write) &&
+  isSubtype(typeOf(this.z), c_T()) &&
+  acc(_c_S_unique(this), write)
 }
 
-predicate c_S_unique(this: Ref) {
+predicate _c_S_shared(this: Ref) {
   true
 }
 
-predicate c_T_shared(this: Ref) {
+predicate _c_S_unique(this: Ref) {
   true
 }
 
-predicate c_T_unique(this: Ref) {
+predicate _c_T_unique(this: Ref) {
   true
 }
 
@@ -47,17 +47,17 @@ predicate shared(this: Ref) {
 }
 
 method unique_foo_arg(foo: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(foo), _c_Foo())
-  requires acc(c_Foo_unique(foo), write)
+  requires isSubtype(typeOf(foo), c_Foo())
+  requires acc(_c_Foo_unique(foo), write)
   ensures isSubtype(typeOf(ret_0), unitType())
 {
-  inhale acc(c_Foo_shared(foo), wildcard)
+  inhale acc(_c_Foo_shared(foo), wildcard)
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /unique_predicates.kt: info: Generated Viper text for nullable_unique_arg:
-predicate c_T_unique(this: Ref) {
+predicate _c_T_unique(this: Ref) {
   true
 }
 
@@ -66,8 +66,8 @@ predicate shared(this: Ref) {
 }
 
 method nullable_unique_arg(par_t: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(par_t), nullable(_c_T()))
-  requires par_t != nullValue() ==> acc(c_T_unique(par_t), write)
+  requires isSubtype(typeOf(par_t), nullable(c_T()))
+  requires par_t != nullValue() ==> acc(_c_T_unique(par_t), write)
   ensures isSubtype(typeOf(ret), unitType())
 {
   inhale par_t != nullValue() ==> acc(shared(par_t), wildcard)
@@ -76,7 +76,7 @@ method nullable_unique_arg(par_t: Ref) returns (ret: Ref)
 }
 
 /unique_predicates.kt: info: Generated Viper text for borrowed_unique_arg:
-predicate c_T_unique(this: Ref) {
+predicate _c_T_unique(this: Ref) {
   true
 }
 
@@ -85,9 +85,9 @@ predicate shared(this: Ref) {
 }
 
 method borrowed_unique_arg(par_t: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(par_t), _c_T())
-  requires acc(c_T_unique(par_t), write)
-  ensures acc(c_T_unique(par_t), write)
+  requires isSubtype(typeOf(par_t), c_T())
+  requires acc(_c_T_unique(par_t), write)
+  ensures acc(_c_T_unique(par_t), write)
   ensures isSubtype(typeOf(ret), unitType())
 {
   inhale acc(shared(par_t), wildcard)
@@ -95,47 +95,83 @@ method borrowed_unique_arg(par_t: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
+/unique_predicates.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/unique_predicates.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/unique_predicates.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/unique_predicates.kt: error: An internal error has occurred.
+Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
 /unique_predicates.kt: info: Generated Viper text for unique_receiver:
-predicate c_T_unique(v_this: Ref) {
+predicate _c_T_unique(this: Ref) {
   true
 }
 
-predicate shared(v_this: Ref) {
+predicate shared(this: Ref) {
   true
 }
 
-method unique_receiver(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_T())
-  requires acc(c_T_unique(this), write)
+method unique_receiver([v$this]: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf([v$this]), c_T())
+  requires acc(_c_T_unique([v$this]), write)
   ensures isSubtype(typeOf(ret), unitType())
 {
-  inhale acc(shared(this), wildcard)
+  inhale acc(shared([v$this]), wildcard)
   label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
+/unique_predicates.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/unique_predicates.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/unique_predicates.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/unique_predicates.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/unique_predicates.kt: error: An internal error has occurred.
+Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
 /unique_predicates.kt: info: Generated Viper text for borrowed_unique_receiver:
-predicate c_T_unique(v_this: Ref) {
+predicate _c_T_unique(this: Ref) {
   true
 }
 
-predicate shared(v_this: Ref) {
+predicate shared(this: Ref) {
   true
 }
 
-method borrowed_unique_receiver(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_T())
-  requires acc(c_T_unique(this), write)
-  ensures acc(c_T_unique(this), write)
+method borrowed_unique_receiver([v$this]: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf([v$this]), c_T())
+  requires acc(_c_T_unique([v$this]), write)
+  ensures acc(_c_T_unique([v$this]), write)
   ensures isSubtype(typeOf(ret), unitType())
 {
-  inhale acc(shared(this), wildcard)
+  inhale acc(shared([v$this]), wildcard)
   label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
 /unique_predicates.kt: info: Generated Viper text for unique_result:
-predicate c_T_unique(this: Ref) {
+predicate _c_T_unique(this: Ref) {
   true
 }
 
@@ -144,15 +180,15 @@ predicate shared(this: Ref) {
 }
 
 method con() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_T())
+  ensures isSubtype(typeOf(ret), c_T())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c_T_unique(ret), write)
+  ensures acc(_c_T_unique(ret), write)
 
 
 method unique_result() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), _c_T())
+  ensures isSubtype(typeOf(ret_0), c_T())
   ensures acc(shared(ret_0), wildcard)
-  ensures acc(c_T_unique(ret_0), write)
+  ensures acc(_c_T_unique(ret_0), write)
 {
   ret_0 := con()
   goto lbl_ret_0
@@ -160,7 +196,7 @@ method unique_result() returns (ret_0: Ref)
 }
 
 /unique_predicates.kt: info: Generated Viper text for unique_nullable_result:
-predicate c_T_unique(this: Ref) {
+predicate _c_T_unique(this: Ref) {
   true
 }
 
@@ -169,9 +205,9 @@ predicate shared(this: Ref) {
 }
 
 method unique_nullable_result() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), nullable(_c_T()))
+  ensures isSubtype(typeOf(ret), nullable(c_T()))
   ensures ret != nullValue() ==> acc(shared(ret), wildcard)
-  ensures ret != nullValue() ==> acc(c_T_unique(ret), write)
+  ensures ret != nullValue() ==> acc(_c_T_unique(ret), write)
 {
   ret := nullValue()
   goto ret_0
