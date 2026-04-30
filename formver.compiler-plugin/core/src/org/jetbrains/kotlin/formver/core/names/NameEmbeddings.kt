@@ -139,7 +139,7 @@ fun FirPropertySymbol.embedMemberPropertyName(): ClassPropertyPair {
     val className =
         callable?.classId?.embedName() ?: throw SnaktInternalException(source, "Property is not part of a class")
     val propertyName = callable.embedMemberPropertyName(Visibilities.isPrivate(this.visibility))
-    return Pair(className, propertyName)
+    return ClassPropertyPair(className, propertyName)
 }
 
 

@@ -33,15 +33,10 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Program
-import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.utils.addIfNotNull
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 
-/**
- * Name used to look up properties.
- */
-data class PropertyKotlinName(val scope: NameScope, val name: Name)
-typealias ClassPropertyPair = Pair<ScopedName, PropertyKotlinName>
+
 
 /**
  * Tracks the top-level information about the program.
@@ -92,7 +87,7 @@ class ProgramConverter(
             methods = SpecialMethods.all + methods.values.mapNotNull { it.viperMethod(typeResolver) }
                 .distinctBy { it.name } + typeResolver.backingFields().map { it.type.havocMethod(typeResolver) }
                 .distinctBy { it.name },
-            predicates = typeResolver.embeddings().flatMap {
+            predicates = typeResolver.classTypeEmbeddings().flatMap {
                 with(typeResolver) {
                     listOf(
                         it.sharedPredicate(), it.uniquePredicate()
@@ -221,19 +216,19 @@ class ProgramConverter(
         val className = symbol.classId.embedName()
         typeResolver.lookupEmbedding(className)?.let { return it }
 
-        val embedding = typeResolver.getOrPutEmbedding(className) {
-            val embedding = buildClassPretype {
+        val embedding = typeResolver.getEmbeddingOrExecute(className) {
+            val classEmbedding = buildClassPretype {
                 withName(className)
             }
 
-            typeResolver.register(embedding, symbol.classKind.isInterface)
+            typeResolver.register(classEmbedding, symbol.classKind.isInterface)
 
             symbol.resolvedSuperTypes.forEach {
                 val superTypeName = embedType(it).pretype.name
                 typeResolver.addSubtypeRelation(className, superTypeName)
             }
 
-            embedding
+            classEmbedding
         }
         symbol.propertySymbols.forEach {
             embedProperty(it)

@@ -6,8 +6,16 @@ import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeEmbedding
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
+import org.jetbrains.kotlin.formver.core.names.NameScope
 import org.jetbrains.kotlin.formver.core.names.ScopedName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
+import org.jetbrains.kotlin.name.Name
+
+/**
+ * Name used to look up properties.
+ */
+data class PropertyKotlinName(val scope: NameScope, val name: Name)
+data class ClassPropertyPair(val className : ScopedName, val propertyName : PropertyKotlinName)
 
 class TypeResolver {
     /**
@@ -41,9 +49,9 @@ class TypeResolver {
         (property.getter as? BackingFieldGetter)?.field
 
 
-    fun embeddings() = (classEmbedding.values.toList() + interfaceEmbedding.values.toList()).distinctBy { it.name }
+    fun classTypeEmbeddings() = (classEmbedding.values.toList() + interfaceEmbedding.values.toList()).distinctBy { it.name }
 
-    fun getOrPutEmbedding(name: ScopedName, create: () -> ClassTypeEmbedding) = classEmbedding.getOrPut(name, create)
+    fun getEmbeddingOrExecute(name: ScopedName, action: () -> ClassTypeEmbedding) = classEmbedding[name] ?: action()
 
     fun lookupEmbedding(name: SymbolicName) = classEmbedding[name] ?: interfaceEmbedding[name]
 
@@ -72,7 +80,7 @@ class TypeResolver {
      * Returns all the fields belonging directly to a class.
      */
     fun lookupClassFields(name: SymbolicName) =
-        properties.filterKeys { it.first == name }.values.mapNotNull { toBackingField(it) }
+        properties.filterKeys { it.className == name }.values.mapNotNull { toBackingField(it) }
 
     fun lookupBackingField(name: ClassPropertyPair): FieldEmbedding? = properties[name]?.let { toBackingField(it) }
 
