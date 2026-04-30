@@ -5,18 +5,39 @@
 
 package org.jetbrains.kotlin.formver.core.conversion
 
+
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
+import org.jetbrains.kotlin.formver.core.embeddings.expression.IntLit
+import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.TypeInvariantEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.core.names.SpecialFieldName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Type
 
-class SpecialField(baseName: String, override val type: TypeEmbedding, override val viperType: Type) : FieldEmbedding {
+class SpecialField(
+    baseName: String,
+    override val type: TypeEmbedding,
+    override val viperType: Type,
+    override val includeInShortDump: Boolean = false,
+    private val extraInvariantsBuilder: (FieldEmbedding) -> List<TypeInvariantEmbedding> = { listOf() },
+) : FieldEmbedding {
     override val name: SymbolicName = SpecialFieldName(baseName)
     override val accessPolicy: AccessPolicy = AccessPolicy.ALWAYS_WRITEABLE
-    override val includeInShortDump: Boolean = false
+    override fun extraAccessInvariantsForParameter(): List<TypeInvariantEmbedding> = extraInvariantsBuilder(this)
 }
 
-object SpecialFields {
-    val all: List<SpecialField> = listOf()
+val CollectionSizeFieldEmbedding: FieldEmbedding = SpecialField(
+    baseName = "size",
+    type = buildType { int() },
+    viperType = Type.Ref,
+    includeInShortDump = true,
+) { field ->
+    listOf(object : TypeInvariantEmbedding {
+        override fun fillHole(exp: ExpEmbedding): ExpEmbedding =
+            OperatorExpEmbeddings.GeIntInt(FieldAccess(exp, field), IntLit(0))
+    })
 }
