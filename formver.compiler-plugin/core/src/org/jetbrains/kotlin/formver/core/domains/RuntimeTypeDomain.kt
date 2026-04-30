@@ -286,8 +286,6 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
 
     val adtClassTypes: Map<AdtTypeEmbedding, DomainFunc> = adts.associateWith { classTypeFunc(it.name) }
     private val allInjections: List<Injection> = primitiveTypeInjections + adts.map { it.injection }
-    // Invalid ADTs are excluded from nonNullableTypes (no axioms generated for them), but their
-    // type functions must still be registered so that functions referencing them pass consistency checks.
     val builtinTypes: List<DomainFunc> =
         listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType)
     val nonNullableTypes: List<DomainFunc> = buildList {
