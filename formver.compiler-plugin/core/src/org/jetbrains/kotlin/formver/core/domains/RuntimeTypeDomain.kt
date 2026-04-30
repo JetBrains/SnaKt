@@ -5,7 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.domains
 
-import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.types.embedClassTypeFunc
 import org.jetbrains.kotlin.formver.core.names.DomainName
 import org.jetbrains.kotlin.formver.core.names.QualifiedDomainFuncName
@@ -208,7 +208,7 @@ const val RUNTIME_TYPE_DOMAIN_NAME = "rt"
  * // same for subtraction, multiplication and so on
  * ```
  */
-class RuntimeTypeDomain(val classes: List<ClassTypeEmbedding>) : BuiltinDomain(DomainName(RUNTIME_TYPE_DOMAIN_NAME)) {
+class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(RUNTIME_TYPE_DOMAIN_NAME)) {
     override val typeVars: List<Type.TypeVar> = emptyList()
 
     // Define types that are not dependent on the user defined classes in a companion object.
@@ -283,12 +283,11 @@ class RuntimeTypeDomain(val classes: List<ClassTypeEmbedding>) : BuiltinDomain(D
         val unitValue = createDomainFunc(UnqualifiedDomainFuncName("unitValue"), emptyList(), Ref)
     }
 
-    val classTypes: Map<ClassTypeEmbedding, DomainFunc> = classes.associateWith { it.embedClassTypeFunc() }
     val builtinTypes: List<DomainFunc> =
         listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType)
     val nonNullableTypes: List<DomainFunc> = buildList {
         addAll(builtinTypes)
-        addAll(classTypes.values)
+        addAll(typeResolver.classTypeEmbeddings().map { it.embedClassTypeFunc() })
     }.distinctBy { it.name }
     override val functions: List<DomainFunc> = nonNullableTypes + listOf(
         nullValue, unitValue, isSubtype, typeOf, nullable
@@ -405,12 +404,10 @@ class RuntimeTypeDomain(val classes: List<ClassTypeEmbedding>) : BuiltinDomain(D
         allInjections.forEach {
             it.apply { injectionAxioms() }
         }
-        classTypes.forEach { (typeEmbedding, typeFunction) ->
-            typeEmbedding.details.superTypes.forEach {
-                classTypes[it]?.let { supertypeFunction ->
-                    axiom {
-                        typeFunction() subtype supertypeFunction()
-                    }
+        typeResolver.classTypeEmbeddings().forEach { type ->
+            typeResolver.lookupSuperTypes(type.name).forEach { superType ->
+                axiom {
+                    type.runtimeType subtype superType.runtimeType
                 }
             }
         }

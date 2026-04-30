@@ -18,8 +18,7 @@ class FullySpecialKotlinFunctionImpl(
     override val callableType: FunctionTypeEmbedding,
     val body: (List<ExpEmbedding>, StmtConversionContext) -> ExpEmbedding,
 ) : FullySpecialKotlinFunction {
-    override fun insertCall(args: List<ExpEmbedding>, ctx: StmtConversionContext) =
-        body(args, ctx)
+    override fun insertCall(args: List<ExpEmbedding>, ctx: StmtConversionContext) = body(args, ctx)
 }
 
 class FullySpecialKotlinFunctionBuilder {
@@ -55,11 +54,7 @@ class FullySpecialKotlinFunctionBuilder {
             body: (List<ExpEmbedding>, StmtConversionContext) -> ExpEmbedding,
         ) {
             FullySpecialKotlinFunctionImpl(
-                packageName,
-                className,
-                name,
-                callableType,
-                body
+                packageName, className, name, callableType, body
             ).apply { byName[embedName()] = this }
         }
 

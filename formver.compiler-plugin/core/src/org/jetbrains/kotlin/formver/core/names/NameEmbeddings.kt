@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.conversion.ClassPropertyPair
 import org.jetbrains.kotlin.formver.core.conversion.ProgramConversionContext
+import org.jetbrains.kotlin.formver.core.conversion.PropertyKotlinName
 import org.jetbrains.kotlin.formver.core.conversion.ScopeIndex
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.name.CallableId
@@ -30,7 +31,7 @@ fun ScopedNameBuilder.embedScope(id: CallableId) {
     id.classId?.let { classScope(it.embedLocalName()) }
 }
 
-fun ScopedNameBuilder.embedScope(id: ClassId) {
+fun ScopeBuilder.embedScope(id: ClassId) {
     packageScope(id.packageFqName)
     classScope(id.embedLocalName())
 }
@@ -50,12 +51,11 @@ fun CallableId.embedExtensionSetterName(type: FunctionTypeEmbedding): ScopedName
     ExtensionSetterKotlinName(callableName, type)
 }
 
-private fun CallableId.embedMemberPropertyNameBase(
-    scopePolicy: MemberEmbeddingPolicy,
-    withAction: (Name) -> KotlinName
-): ScopedName {
+private fun CallableId.embedMemberPropertyScope(
+    scopePolicy: MemberEmbeddingPolicy
+): NameScope {
     val id = classId ?: error("Embedding non-member property $callableName as a member.")
-    return buildName {
+    return buildScope {
         when (scopePolicy) {
             MemberEmbeddingPolicy.PUBLIC -> publicScope()
             MemberEmbeddingPolicy.PRIVATE -> {
@@ -65,12 +65,18 @@ private fun CallableId.embedMemberPropertyNameBase(
             }
             MemberEmbeddingPolicy.UNSCOPED -> fakeScope()
         }
-        withAction(callableName)
     }
 }
 
-fun CallableId.embedMemberPropertyName(isPrivate: Boolean) =
-    embedMemberPropertyNameBase(alwaysScopedPolicy(isPrivate), ::PropertyKotlinName)
+fun CallableId.embedMemberPropertyNameBase(isPrivate: MemberEmbeddingPolicy, action: (Name) -> KotlinName): ScopedName {
+    val scope = embedMemberPropertyScope(isPrivate)
+    return ScopedName(scope, action(callableName))
+}
+
+fun CallableId.embedMemberPropertyName(isPrivate: Boolean): PropertyKotlinName {
+    val scope = embedMemberPropertyScope(alwaysScopedPolicy(isPrivate))
+    return PropertyKotlinName(scope, callableName)
+}
 
 fun CallableId.embedMemberGetterName(isPrivate: Boolean) =
     embedMemberPropertyNameBase(alwaysScopedPolicy(isPrivate), ::GetterKotlinName)
@@ -81,7 +87,6 @@ fun CallableId.embedMemberSetterName(isPrivate: Boolean) =
 fun CallableId.embedMemberBackingFieldName(isPrivate: Boolean) =
     embedMemberPropertyNameBase(onlyPrivateScopedPolicy(isPrivate), ::BackingFieldKotlinName)
 
-fun CallableId.embedUnscopedPropertyName(): SimpleKotlinName = SimpleKotlinName(callableName)
 fun CallableId.embedFunctionName(type: FunctionTypeEmbedding): ScopedName = buildName {
     embedScope(this@embedFunctionName)
     FunctionKotlinName(callableName, type)
@@ -134,7 +139,7 @@ fun FirPropertySymbol.embedMemberPropertyName(): ClassPropertyPair {
     val className =
         callable?.classId?.embedName() ?: throw SnaktInternalException(source, "Property is not part of a class")
     val propertyName = callable.embedMemberPropertyName(Visibilities.isPrivate(this.visibility))
-    return Pair(className, propertyName)
+    return ClassPropertyPair(className, propertyName)
 }
 
 

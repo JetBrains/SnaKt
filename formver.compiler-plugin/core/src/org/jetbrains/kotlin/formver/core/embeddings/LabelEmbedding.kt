@@ -23,5 +23,5 @@ fun LabelLink.toViperGoto(ctx: LinearizationContext): Stmt.Goto =
     Label(name, emptyList()).toGoto(pos = ctx.source.asPosition)
 
 fun LabelEmbedding.toViper(ctx: LinearizationContext): Label {
-    return Label(name, invariants.pureToViper(toBuiltin = true, ctx.source))
+    return Label(name, invariants.pureToViper(toBuiltin = true, ctx.typeResolver, ctx.source))
 }

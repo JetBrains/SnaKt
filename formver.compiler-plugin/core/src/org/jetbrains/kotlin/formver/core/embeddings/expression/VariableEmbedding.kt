@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.asSourceRole
 import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.domains.Injection
 import org.jetbrains.kotlin.formver.core.domains.viperType
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
@@ -65,11 +66,12 @@ sealed interface VariableEmbedding : ExpEmbedding, PropertyAccessEmbedding {
 
     fun pureInvariants(): List<ExpEmbedding> = type.pureInvariants().fillHoles(this)
     fun provenInvariants(): List<ExpEmbedding> = listOf(type.subTypeInvariant().fillHole(this))
-    fun accessInvariants(): List<ExpEmbedding> = type.accessInvariants().fillHoles(this)
-    fun sharedPredicateAccessInvariant() = type.sharedPredicateAccessInvariant()?.fillHole(this)
-    fun uniquePredicateAccessInvariant() = type.uniquePredicateAccessInvariant()?.fillHole(this)
+    fun accessInvariants(ctx: TypeResolver): List<ExpEmbedding> = type.accessInvariants(ctx).fillHoles(this)
+    fun sharedPredicateAccessInvariant(ctx: TypeResolver) = type.sharedPredicateAccessInvariant(ctx)?.fillHole(this)
+    fun uniquePredicateAccessInvariant(ctx: TypeResolver) = type.uniquePredicateAccessInvariant(ctx)?.fillHole(this)
 
-    fun allAccessInvariants() = accessInvariants() + listOfNotNull(sharedPredicateAccessInvariant())
+    fun allAccessInvariants(ctx: TypeResolver) =
+        accessInvariants(ctx) + listOfNotNull(sharedPredicateAccessInvariant(ctx))
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitVariableEmbedding(this)
 }

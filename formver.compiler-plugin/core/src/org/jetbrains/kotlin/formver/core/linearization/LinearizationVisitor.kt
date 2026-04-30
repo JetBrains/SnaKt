@@ -10,15 +10,13 @@ import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.isOf
-import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
-import org.jetbrains.kotlin.formver.core.embeddings.asInfo
-import org.jetbrains.kotlin.formver.core.embeddings.expression.*
-import org.jetbrains.kotlin.formver.core.embeddings.types.*
+import org.jetbrains.kotlin.formver.core.embeddings.*
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toFuncApp
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toMethodCall
-import org.jetbrains.kotlin.formver.core.embeddings.toLink
-import org.jetbrains.kotlin.formver.core.embeddings.toViper
-import org.jetbrains.kotlin.formver.core.embeddings.toViperGoto
+import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.types.fillHoles
+import org.jetbrains.kotlin.formver.core.embeddings.types.injection
+import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
 import org.jetbrains.kotlin.formver.viper.ast.viperLiteral
@@ -66,7 +64,7 @@ data class LinearizationVisitor(
 
             e.invariants.forEach {
                 ctx.addStatement {
-                    Stmt.Assert(it.pureToViper(toBuiltin = true))
+                    Stmt.Assert(it.pureToViper(toBuiltin = true, ctx.typeResolver))
                 }
             }
         }
@@ -128,7 +126,7 @@ data class LinearizationVisitor(
             val variable = ctx.freshAnonVar(e.type)
             e.receiver.linearize().toViperUnusedResult(ctx)
             for (arg in e.args) arg.linearize().toViperUnusedResult(ctx)
-            return variable.withInvariants {
+            return variable.withInvariants(ctx.typeResolver) {
                 proven = true
                 access = true
             }.linearize().toViper(ctx)
@@ -143,7 +141,7 @@ data class LinearizationVisitor(
     override fun visitFunctionExp(e: FunctionExp): Linearizable = object : OptionalResultLinearizable(e) {
         override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
             e.signature?.formalArgs?.forEach { arg ->
-                listOfNotNull(arg.sharedPredicateAccessInvariant()).forEach { invariant ->
+                listOfNotNull(arg.sharedPredicateAccessInvariant(ctx.typeResolver)).forEach { invariant ->
                     ctx.addStatement { Stmt.Inhale(invariant.linearize().toViperBuiltinType(ctx), ctx.source.asPosition) }
                 }
             }
@@ -258,7 +256,15 @@ data class LinearizationVisitor(
                 override fun toViper(ctx: LinearizationContext): Exp {
                     val variable = e.exp.underlyingVariable ?: error("Use of InhaleInvariantsForVariable for non-variable")
                     for (invariant in e.invariants.fillHoles(variable)) {
-                        ctx.addStatement { Stmt.Inhale(invariant.pureToViper(toBuiltin = true, ctx.source), ctx.source.asPosition) }
+                        ctx.addStatement {
+                            Stmt.Inhale(
+                                invariant.pureToViper(
+                                    toBuiltin = true,
+                                    ctx.typeResolver,
+                                    ctx.source
+                                ), ctx.source.asPosition
+                            )
+                        }
                     }
                     return e.exp.linearize().toViper(ctx)
                 }
@@ -273,7 +279,15 @@ data class LinearizationVisitor(
             override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
                 e.exp.linearize().toViperStoringIn(result, ctx)
                 for (invariant in e.invariants.fillHoles(result)) {
-                    ctx.addStatement { Stmt.Inhale(invariant.pureToViper(toBuiltin = true, ctx.source), ctx.source.asPosition) }
+                    ctx.addStatement {
+                        Stmt.Inhale(
+                            invariant.pureToViper(
+                                toBuiltin = true,
+                                ctx.typeResolver,
+                                ctx.source
+                            ), ctx.source.asPosition
+                        )
+                    }
                 }
             }
         }
@@ -419,9 +433,9 @@ data class LinearizationVisitor(
                     val receiverViper = e.receiver.linearize().toViper(ctx)
                     if (e.field.unfoldToAccess) {
                         val receiverWrapper = ExpWrapper(receiverViper, e.receiver.type)
-                        val hierarchyPath = e.receiver.type.hierarchyPathTo(e.field)
+                        val hierarchyPath = ctx.typeResolver.hierarchyPathTo(e.receiver.type.pretype, e.field)
                         hierarchyPath?.forEach { classType ->
-                            val predAcc = classType.predicateAccess(receiverWrapper, ctx.source)
+                            val predAcc = classType.predicateAccess(receiverWrapper, ctx.typeResolver, ctx.source)
                             ctx.addStatement { Stmt.Unfold(predAcc) }
                         }
                     }
@@ -565,7 +579,9 @@ data class LinearizationVisitor(
         }
 
         override fun toViperUnusedResult(ctx: LinearizationContext) {
-            e.context.tryInitShared { e.inner.linearize().toViperUnusedResult(ctx); UnitLit.pureToViper(toBuiltin = false) }
+            e.context.tryInitShared {
+                e.inner.linearize().toViperUnusedResult(ctx); UnitLit.pureToViper(toBuiltin = false, ctx.typeResolver)
+            }
         }
     }
 

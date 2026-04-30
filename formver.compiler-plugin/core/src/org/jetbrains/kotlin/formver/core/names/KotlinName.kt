@@ -61,12 +61,7 @@ data class FunctionKotlinName(override val name: Name, val functionType: Functio
     override val inViper: Boolean = false
 }
 
-/**
- * This name will never occur in the viper output, but rather is used to lookup properties.
- */
-data class PropertyKotlinName(override val name: Name) : TypedKotlinName(NameType.Member.Property, name) {
-    override val inViper: Boolean = false
-}
+
 
 data class BackingFieldKotlinName(override val name: Name) : TypedKotlinName(NameType.Member.BackingField, name) {
     override val inViper: Boolean = false
