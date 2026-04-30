@@ -2,7 +2,7 @@
 field x: Ref
 
 method memberFun(this: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), _c_Foo())
+  requires isSubtype(typeOf(this), c_Foo())
   ensures isSubtype(typeOf(ret_0), intType())
 {
   inhale acc(shared(this), wildcard)
@@ -16,7 +16,7 @@ method memberFun(this: Ref) returns (ret_0: Ref)
 field x: Ref
 
 method callMemberFun(this: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), _c_Foo())
+  requires isSubtype(typeOf(this), c_Foo())
   ensures isSubtype(typeOf(ret_0), unitType())
 {
   var anon: Ref
@@ -27,7 +27,7 @@ method callMemberFun(this: Ref) returns (ret_0: Ref)
 }
 
 method memberFun(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_Foo())
+  requires isSubtype(typeOf(this), c_Foo())
   ensures isSubtype(typeOf(ret), intType())
 
 
@@ -35,13 +35,13 @@ method memberFun(this: Ref) returns (ret: Ref)
 field x: Ref
 
 method memberFun(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_Foo())
+  requires isSubtype(typeOf(this), c_Foo())
   ensures isSubtype(typeOf(ret), intType())
 
 
 method siblingCall(this: Ref, other: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), _c_Foo())
-  requires isSubtype(typeOf(other), _c_Foo())
+  requires isSubtype(typeOf(this), c_Foo())
+  requires isSubtype(typeOf(other), c_Foo())
   ensures isSubtype(typeOf(ret_0), unitType())
 {
   var anon: Ref
@@ -56,12 +56,12 @@ method siblingCall(this: Ref, other: Ref) returns (ret_0: Ref)
 field x: Ref
 
 method memberFun(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_Foo())
+  requires isSubtype(typeOf(this), c_Foo())
   ensures isSubtype(typeOf(ret), intType())
 
 
 method outerMemberFunCall(f: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(f), _c_Foo())
+  requires isSubtype(typeOf(f), c_Foo())
   ensures isSubtype(typeOf(ret_0), unitType())
 {
   var anon: Ref

@@ -1,10 +1,10 @@
 /interface.kt: info: Generated Viper text for testProperties:
-method g_varProp(this: Ref) returns (v_ret: Ref)
+method g_varProp(this: Ref) returns (ret: Ref)
 
 
-method testProperties(foo: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(foo), _c_Foo())
-  ensures isSubtype(typeOf(ret), unitType())
+method testProperties(foo: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(foo), c_Foo())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var anon_0: Ref
   var x: Ref
@@ -21,14 +21,14 @@ method testProperties(foo: Ref) returns (ret: Ref)
   anon_3 := anon
   inhale isSubtype(typeOf(anon_3), intType())
   x := plusInts(anon_1, anon_3)
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-method valProp(this: Ref) returns (v_ret: Ref)
+method valProp(this: Ref) returns (ret: Ref)
 
 
-method varProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
+method varProp(this: Ref, anon_0: Ref) returns (ret: Ref)
 
 
 /interface.kt: info: Generated Viper text for createImpl:
@@ -36,10 +36,10 @@ field bf_number: Ref
 
 method con(number: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(number), intType())
-  ensures isSubtype(typeOf(ret), _c_Impl())
-  ensures acc(c_Impl_shared(ret), wildcard)
-  ensures acc(c_Impl_unique(ret), write)
-  ensures intFromRef((unfolding acc(c_Impl_shared(ret), wildcard) in
+  ensures isSubtype(typeOf(ret), c_Impl())
+  ensures acc(_c_Impl_shared(ret), wildcard)
+  ensures acc(_c_Impl_unique(ret), write)
+  ensures intFromRef((unfolding acc(_c_Impl_shared(ret), wildcard) in
       ret.bf_number)) ==
     intFromRef(number)
 
@@ -50,7 +50,7 @@ method createImpl() returns (ret_0: Ref)
   var impl: Ref
   var implField: Ref
   impl := con(intToRef(-1))
-  unfold acc(c_Impl_shared(impl), wildcard)
+  unfold acc(_c_Impl_shared(impl), wildcard)
   implField := impl.bf_number
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())

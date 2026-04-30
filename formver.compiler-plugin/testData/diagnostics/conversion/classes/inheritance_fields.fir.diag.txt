@@ -1,17 +1,17 @@
 /inheritance_fields.kt: info: Generated Viper text for createB:
-field bf_fieldNotOverride: Ref
+field fieldNotOverride: Ref
 
-method con(fieldOverride: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(fieldOverride), _c_FieldB())
-  ensures isSubtype(typeOf(ret), _c_B())
-  ensures acc(c_B_shared(ret), wildcard)
-  ensures acc(c_B_unique(ret), write)
+method con() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), c_FieldB())
+  ensures acc(shared(ret), wildcard)
+  ensures acc(_c_FieldB_unique(ret), write)
 
 
-method con__c_FieldB() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_FieldB())
-  ensures acc(c_FieldB_shared(ret), wildcard)
-  ensures acc(c_FieldB_unique(ret), write)
+method con_c_B(fieldOverride: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(fieldOverride), c_FieldB())
+  ensures isSubtype(typeOf(ret), c_B())
+  ensures acc(_c_B_shared(ret), wildcard)
+  ensures acc(_c_B_unique(ret), write)
 
 
 method createB() returns (ret_0: Ref)
@@ -21,16 +21,16 @@ method createB() returns (ret_0: Ref)
   var b: Ref
   var l0_fieldOverride: Ref
   var anon: Ref
-  var fieldNotOverride: Ref
-  fieldB := con__c_FieldB()
-  b := con(fieldB)
+  var l0_fieldNotOverride: Ref
+  fieldB := con()
+  b := con_c_B(fieldB)
   anon := g_fieldOverride(b)
   l0_fieldOverride := anon
-  inhale isSubtype(typeOf(l0_fieldOverride), _c_FieldB())
-  inhale acc(c_FieldB_shared(l0_fieldOverride), wildcard)
-  unfold acc(c_B_shared(b), wildcard)
-  unfold acc(c_A_shared(b), wildcard)
-  fieldNotOverride := b.bf_fieldNotOverride
+  inhale isSubtype(typeOf(l0_fieldOverride), c_FieldB())
+  inhale acc(shared(l0_fieldOverride), wildcard)
+  unfold acc(_c_B_shared(b), wildcard)
+  unfold acc(_c_A_shared(b), wildcard)
+  l0_fieldNotOverride := b.fieldNotOverride
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
@@ -43,23 +43,23 @@ field bf_x: Ref
 
 method con(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret), _c_SecondBackingFieldClass())
+  ensures isSubtype(typeOf(ret), c_SecondBackingFieldClass())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c_SecondBackingFieldClass_unique(ret), write)
+  ensures acc(_c_SecondBackingFieldClass_unique(ret), write)
   ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf_x)) ==
     intFromRef(x)
 
 
-method con__c_FirstBackingFieldClass() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_FirstBackingFieldClass())
-  ensures acc(c_FirstBackingFieldClass_shared(ret), wildcard)
-  ensures acc(c_FirstBackingFieldClass_unique(ret), write)
+method con_c_FirstBackingFieldClass() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), c_FirstBackingFieldClass())
+  ensures acc(_c_FirstBackingFieldClass_shared(ret), wildcard)
+  ensures acc(_c_FirstBackingFieldClass_unique(ret), write)
 
 
-method con__c_NoBackingFieldClass() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_NoBackingFieldClass())
-  ensures acc(c_NoBackingFieldClass_shared(ret), wildcard)
-  ensures acc(c_NoBackingFieldClass_unique(ret), write)
+method con_c_NoBackingFieldClass() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), c_NoBackingFieldClass())
+  ensures acc(_c_NoBackingFieldClass_shared(ret), wildcard)
+  ensures acc(_c_NoBackingFieldClass_unique(ret), write)
 
 
 method createBFsAndNoBF() returns (ret_0: Ref)
@@ -73,11 +73,11 @@ method createBFsAndNoBF() returns (ret_0: Ref)
   var anon: Ref
   var sbf: Ref
   var sbfx: Ref
-  fbf := con__c_FirstBackingFieldClass()
+  fbf := con_c_FirstBackingFieldClass()
   anon_0 := g_x(fbf)
   fbfx := anon_0
   inhale isSubtype(typeOf(fbfx), intType())
-  nbf := con__c_NoBackingFieldClass()
+  nbf := con_c_NoBackingFieldClass()
   anon := g_x(nbf)
   nbfx := anon
   inhale isSubtype(typeOf(nbfx), intType())
@@ -96,9 +96,9 @@ field bf_a: Ref
 
 method con(a: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(a), intType())
-  ensures isSubtype(typeOf(ret), _c_Y())
-  ensures acc(c_Y_shared(ret), wildcard)
-  ensures acc(c_Y_unique(ret), write)
+  ensures isSubtype(typeOf(ret), c_Y())
+  ensures acc(shared(ret), wildcard)
+  ensures acc(_c_Y_unique(ret), write)
 
 
 method createY() returns (ret_0: Ref)
@@ -107,8 +107,8 @@ method createY() returns (ret_0: Ref)
   var y: Ref
   var ya: Ref
   y := con(intToRef(10))
-  unfold acc(c_Y_shared(y), wildcard)
   unfold acc(shared(y), wildcard)
+  unfold acc(_c_X_shared(y), wildcard)
   ya := y.bf_a
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())

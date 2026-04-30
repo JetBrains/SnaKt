@@ -2,7 +2,7 @@
 field x: Ref
 
 method getFoo() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_Foo())
+  ensures isSubtype(typeOf(ret), c_Foo())
   ensures acc(shared(ret), wildcard)
 
 

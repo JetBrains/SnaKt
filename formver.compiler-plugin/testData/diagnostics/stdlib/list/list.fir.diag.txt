@@ -15,24 +15,24 @@ method declaration() returns (ret_0: Ref)
 field size: Ref
 
 method emptyList() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), collections_c_List())
+  ensures isSubtype(typeOf(ret), c_List())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c_List_shared(ret), wildcard)
+  ensures acc(shared(ret), wildcard)
   ensures intFromRef(ret.size) == 0
 
 
 method initialization(l: Ref) returns (ret_0: Ref)
   requires acc(l.size, write)
   requires intFromRef(l.size) >= 0
-  requires isSubtype(typeOf(l), collections_c_List())
+  requires isSubtype(typeOf(l), c_List())
   ensures acc(l.size, write)
   ensures intFromRef(l.size) >= 0
   ensures isSubtype(typeOf(ret_0), unitType())
 {
   var myList: Ref
   var myEmptyList: Ref
-  inhale acc(c_List_shared(l), wildcard)
+  inhale acc(shared(l), wildcard)
   myList := l
   myEmptyList := emptyList()
   label lbl_ret_0
@@ -45,7 +45,7 @@ field size: Ref
 method add(this: Ref, element: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections_c_MutableList())
+  requires isSubtype(typeOf(this), c_MutableList())
   requires isSubtype(typeOf(element), intType())
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
@@ -56,14 +56,14 @@ method add(this: Ref, element: Ref) returns (ret: Ref)
 method add_get(l: Ref) returns (ret_0: Ref)
   requires acc(l.size, write)
   requires intFromRef(l.size) >= 0
-  requires isSubtype(typeOf(l), collections_c_MutableList())
+  requires isSubtype(typeOf(l), c_MutableList())
   ensures acc(l.size, write)
   ensures intFromRef(l.size) >= 0
   ensures isSubtype(typeOf(ret_0), unitType())
 {
   var anon: Ref
   var n: Ref
-  inhale acc(c_MutableList_shared(l), wildcard)
+  inhale acc(shared(l), wildcard)
   anon := add(l, intToRef(1))
   n := get(l, intToRef(0))
   label lbl_ret_0
@@ -73,7 +73,7 @@ method add_get(l: Ref) returns (ret_0: Ref)
 method get(this: Ref, index: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections_c_MutableList())
+  requires isSubtype(typeOf(this), c_MutableList())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -89,7 +89,7 @@ field size: Ref
 method get(this: Ref, index: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections_c_List())
+  requires isSubtype(typeOf(this), c_List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -102,13 +102,13 @@ method get(this: Ref, index: Ref) returns (ret: Ref)
 method last_or_null(l: Ref) returns (ret_0: Ref)
   requires acc(l.size, write)
   requires intFromRef(l.size) >= 0
-  requires isSubtype(typeOf(l), collections_c_List())
+  requires isSubtype(typeOf(l), c_List())
   ensures acc(l.size, write)
   ensures intFromRef(l.size) >= 0
   ensures isSubtype(typeOf(ret_0), nullable(intType()))
 {
   var l0_size: Ref
-  inhale acc(c_List_shared(l), wildcard)
+  inhale acc(shared(l), wildcard)
   l0_size := l.size
   inhale isSubtype(typeOf(l0_size), intType())
   if (!(intFromRef(l0_size) == 0)) {
@@ -129,7 +129,7 @@ field size: Ref
 method get(this: Ref, index: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections_c_List())
+  requires isSubtype(typeOf(this), c_List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -142,7 +142,7 @@ method get(this: Ref, index: Ref) returns (ret: Ref)
 method isEmpty(this: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections_c_List())
+  requires isSubtype(typeOf(this), c_List())
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret), boolType())
@@ -154,13 +154,13 @@ method isEmpty(this: Ref) returns (ret: Ref)
 method is_empty(l: Ref) returns (ret_0: Ref)
   requires acc(l.size, write)
   requires intFromRef(l.size) >= 0
-  requires isSubtype(typeOf(l), collections_c_List())
+  requires isSubtype(typeOf(l), c_List())
   ensures acc(l.size, write)
   ensures intFromRef(l.size) >= 0
   ensures isSubtype(typeOf(ret_0), intType())
 {
   var anon: Ref
-  inhale acc(c_List_shared(l), wildcard)
+  inhale acc(shared(l), wildcard)
   anon := isEmpty(l)
   if (!boolFromRef(anon)) {
     ret_0 := get(l, intToRef(0))
@@ -176,7 +176,7 @@ field size: Ref
 method get(this: Ref, index: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections_c_List())
+  requires isSubtype(typeOf(this), c_List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -189,7 +189,7 @@ method get(this: Ref, index: Ref) returns (ret: Ref)
 method isEmpty(this: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), collections_c_List())
+  requires isSubtype(typeOf(this), c_List())
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret), boolType())
@@ -201,13 +201,13 @@ method isEmpty(this: Ref) returns (ret: Ref)
 method nullable_list(l: Ref) returns (ret_0: Ref)
   requires l != nullValue() ==> acc(l.size, write)
   requires l != nullValue() ==> intFromRef(l.size) >= 0
-  requires isSubtype(typeOf(l), nullable(collections_c_List()))
+  requires isSubtype(typeOf(l), nullable(c_List()))
   ensures l != nullValue() ==> acc(l.size, write)
   ensures l != nullValue() ==> intFromRef(l.size) >= 0
   ensures isSubtype(typeOf(ret_0), unitType())
 {
   var anon_0: Ref
-  inhale l != nullValue() ==> acc(c_List_shared(l), wildcard)
+  inhale l != nullValue() ==> acc(shared(l), wildcard)
   if (!(l == nullValue())) {
     var anon_1: Ref
     anon_1 := isEmpty(l)

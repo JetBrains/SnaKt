@@ -145,13 +145,13 @@ method unusedResult() returns (ret: Ref)
 
 /when.kt: info: Generated Viper text for whenIs:
 method whenIs(x: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(x), _c_Foo())
+  requires isSubtype(typeOf(x), c_Foo())
   ensures isSubtype(typeOf(ret), boolType())
 {
   var anon: Ref
-  inhale acc(c_Foo_shared(x), wildcard)
+  inhale acc(shared(x), wildcard)
   anon := x
-  if (isSubtype(typeOf(anon), _c_Bar())) {
+  if (isSubtype(typeOf(anon), c_Bar())) {
     ret := boolToRef(true)
   } else {
     ret := boolToRef(false)}

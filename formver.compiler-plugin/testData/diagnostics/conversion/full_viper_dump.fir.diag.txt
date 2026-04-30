@@ -24,7 +24,7 @@ domain rt  {
 
   unique function stringType(): rt
 
-  unique function _c_Foo(): rt
+  unique function c_Foo(): rt
 
   function nullValue(): Ref
 
@@ -123,7 +123,7 @@ domain rt  {
   }
 
   axiom {
-    isSubtype(_c_Foo(), anyType())
+    isSubtype(c_Foo(), anyType())
   }
 
   axiom supertypeOfNothing {
@@ -376,7 +376,7 @@ function timesInts(arg_1: Ref, arg: Ref): Ref
   ensures intFromRef(result) == intFromRef(arg_1) * intFromRef(arg)
 
 
-predicate c_Foo_unique(this: Ref) {
+predicate _c_Foo_unique(this: Ref) {
   acc(this.bf_x, wildcard) && isSubtype(typeOf(this.bf_x), intType())
 }
 
@@ -386,9 +386,9 @@ predicate shared(this: Ref) {
 
 method con(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret), _c_Foo())
+  ensures isSubtype(typeOf(ret), c_Foo())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c_Foo_unique(ret), write)
+  ensures acc(_c_Foo_unique(ret), write)
   ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf_x)) ==
     intFromRef(x)
 

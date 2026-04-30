@@ -25,35 +25,35 @@ method intValProp(this: Ref) returns (ret: Ref)
 
 
 /extension_properties.kt: info: Generated Viper text for extensionSetterProperty:
-method es_intVarProp(this: Ref, anon: Ref) returns (ret: Ref)
+method eg_intVarProp(this: Ref) returns (ret: Ref)
 
 
 method extensionSetterProperty() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), unitType())
 {
   var anon: Ref
-  anon := es_intVarProp(intToRef(42), intToRef(0))
+  anon := intVarProp(intToRef(42), intToRef(0))
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-method intVarProp(this: Ref) returns (ret: Ref)
+method intVarProp(this: Ref, anon: Ref) returns (ret: Ref)
 
 
 /extension_properties.kt: info: Generated Viper text for extensionGetterPropertyUserDefinedClass:
-field bf_x: Ref
+field x: Ref
 
 method extensionGetterPropertyUserDefinedClass(pf: Ref)
   returns (ret_0: Ref)
-  requires isSubtype(typeOf(pf), _c_PrimitiveField())
+  requires isSubtype(typeOf(pf), c_PrimitiveField())
   ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var x: Ref
+  var l0_x: Ref
   var anon: Ref
   inhale acc(shared(pf), wildcard)
   anon := pfValProp(pf)
-  x := anon
-  inhale isSubtype(typeOf(x), intType())
+  l0_x := anon
+  inhale isSubtype(typeOf(l0_x), intType())
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
@@ -64,19 +64,19 @@ method pfValProp(this: Ref) returns (ret: Ref)
 /extension_properties.kt: info: Generated Viper text for extensionSetterPropertyUserDefinedClass:
 field x: Ref
 
-method es_pfVarProp(this: Ref, anon: Ref) returns (ret: Ref)
+method eg_pfVarProp(this: Ref) returns (ret: Ref)
 
 
 method extensionSetterPropertyUserDefinedClass(pf: Ref)
   returns (ret_0: Ref)
-  requires isSubtype(typeOf(pf), _c_PrimitiveField())
+  requires isSubtype(typeOf(pf), c_PrimitiveField())
   ensures isSubtype(typeOf(ret_0), unitType())
 {
   var anon: Ref
   inhale acc(shared(pf), wildcard)
-  anon := es_pfVarProp(pf, intToRef(42))
+  anon := pfVarProp(pf, intToRef(42))
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-method pfVarProp(this: Ref) returns (ret: Ref)
+method pfVarProp(this: Ref, anon: Ref) returns (ret: Ref)

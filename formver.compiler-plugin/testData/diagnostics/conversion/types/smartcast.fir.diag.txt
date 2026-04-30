@@ -12,9 +12,9 @@ method smartcastReturn(n: Ref) returns (ret: Ref)
 }
 
 /smartcast.kt: info: Generated Viper text for isNullOrEmptyWrong:
-method isNullOrEmptyWrong(seq: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(seq), nullable(kotlin_c_CharSequence()))
-  ensures isSubtype(typeOf(ret), boolType())
+method isNullOrEmptyWrong(seq: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(seq), nullable(c_CharSequence()))
+  ensures isSubtype(typeOf(ret_0), boolType())
 {
   inhale seq != nullValue() ==> acc(shared(seq), wildcard)
   if (seq == nullValue()) {
@@ -28,11 +28,11 @@ method isNullOrEmptyWrong(seq: Ref) returns (ret: Ref)
       anon_0 := anon_1
     } else {
       anon_0 := nullValue()}
-    ret := boolToRef(anon_0 == intToRef(0))
+    ret_0 := boolToRef(anon_0 == intToRef(0))
   } else {
-    ret := boolToRef(false)}
-  goto ret_0
-  label ret_0
+    ret_0 := boolToRef(false)}
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
-method length(this: Ref) returns (v_ret: Ref)
+method length(this: Ref) returns (ret: Ref)

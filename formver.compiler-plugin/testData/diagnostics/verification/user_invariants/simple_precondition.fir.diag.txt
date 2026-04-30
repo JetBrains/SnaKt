@@ -30,16 +30,16 @@ method inlineWithSpecification(bool: Ref) returns (ret: Ref)
 method good_call() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), unitType())
 {
-  var anon_2: Ref
+  var anon: Ref
   var ret_1: Ref
   var anon_0: Ref
   var ret_2: Ref
-  var anon: Ref
-  anon_2 := test(intToRef(2))
+  var anon_1: Ref
+  anon := test(intToRef(2))
   anon_0 := boolToRef(true)
   label lbl_ret_1
   inhale isSubtype(typeOf(ret_1), unitType())
-  anon := boolToRef(false)
+  anon_1 := boolToRef(false)
   label lbl_ret_2
   inhale isSubtype(typeOf(ret_2), unitType())
   label lbl_ret_0

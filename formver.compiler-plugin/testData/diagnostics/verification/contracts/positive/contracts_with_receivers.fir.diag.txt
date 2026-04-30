@@ -1,37 +1,79 @@
 /contracts_with_receivers.kt: info: Generated Viper text for is2:
 method is2(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_Class())
+  requires isSubtype(typeOf(this), c_Class())
   ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true ==> isSubtype(typeOf(this), _c_Impl2())
+  ensures boolFromRef(ret) == true ==> isSubtype(typeOf(this), c_Impl2())
 {
-  inhale acc(c_Class_shared(this), wildcard)
-  ret := boolToRef(isSubtype(typeOf(this), _c_Impl2()))
+  inhale acc(_c_Class_shared(this), wildcard)
+  ret := boolToRef(isSubtype(typeOf(this), c_Impl2()))
   goto ret_0
   label ret_0
 }
+
+/contracts_with_receivers.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/contracts_with_receivers.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/contracts_with_receivers.kt: error: An internal error has occurred.
+Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
 
 /contracts_with_receivers.kt: info: Generated Viper text for is1butWithDispatch:
-method is1butWithDispatch(v_this: Ref, this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(v_this), _c_Class())
-  requires isSubtype(typeOf(this), _c_Class())
+method is1butWithDispatch(this: Ref, [v$this]: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), c_Class())
+  requires isSubtype(typeOf([v$this]), c_Class())
   ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true ==> isSubtype(typeOf(this), _c_Impl1())
+  ensures boolFromRef(ret) == true ==>
+    isSubtype(typeOf([v$this]), c_Impl1())
 {
-  inhale acc(c_Class_shared(v_this), wildcard)
-  inhale acc(c_Class_shared(this), wildcard)
-  ret := boolToRef(isSubtype(typeOf(this), _c_Impl1()))
+  inhale acc(_c_Class_shared(this), wildcard)
+  inhale acc(_c_Class_shared([v$this]), wildcard)
+  ret := boolToRef(isSubtype(typeOf([v$this]), c_Impl1()))
   goto ret_0
   label ret_0
 }
 
+/contracts_with_receivers.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/contracts_with_receivers.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/contracts_with_receivers.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/contracts_with_receivers.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/contracts_with_receivers.kt: error: An internal error has occurred.
+Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
 /contracts_with_receivers.kt: info: Generated Viper text for is1:
-method is1(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_Class())
+method is1([v$this]: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf([v$this]), c_Class())
   ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true ==> isSubtype(typeOf(this), _c_Impl1())
+  ensures boolFromRef(ret) == true ==>
+    isSubtype(typeOf([v$this]), c_Impl1())
 {
-  inhale acc(c_Class_shared(this), wildcard)
-  ret := boolToRef(isSubtype(typeOf(this), _c_Impl1()))
+  inhale acc(_c_Class_shared([v$this]), wildcard)
+  ret := boolToRef(isSubtype(typeOf([v$this]), c_Impl1()))
   goto ret_0
   label ret_0
 }
+
+/contracts_with_receivers.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/contracts_with_receivers.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin

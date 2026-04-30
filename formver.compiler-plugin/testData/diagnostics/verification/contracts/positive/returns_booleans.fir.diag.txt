@@ -80,35 +80,96 @@ method call_fun_with_contracts(b: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
+/returns_booleans.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/returns_booleans.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/returns_booleans.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/returns_booleans.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/returns_booleans.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/returns_booleans.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/returns_booleans.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/returns_booleans.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/returns_booleans.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/returns_booleans.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/returns_booleans.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/returns_booleans.kt: error: An internal error has occurred.
+Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
 /returns_booleans.kt: info: Generated Viper text for isNullOrEmpty:
 field size: Ref
 
-method isEmpty(v_this: Ref) returns (ret: Ref)
-  requires acc(v_this.size, write)
-  requires intFromRef(v_this.size) >= 0
-  requires isSubtype(typeOf(v_this), collections_c_Collection())
-  ensures acc(v_this.size, write)
-  ensures intFromRef(v_this.size) >= 0
+method isEmpty(this: Ref) returns (ret: Ref)
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(this), c_Collection())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret), boolType())
-  ensures intFromRef(v_this.size) == old(intFromRef(v_this.size))
-  ensures boolFromRef(ret) ==> intFromRef(v_this.size) == 0
-  ensures !boolFromRef(ret) ==> intFromRef(v_this.size) > 0
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures boolFromRef(ret) ==> intFromRef(this.size) == 0
+  ensures !boolFromRef(ret) ==> intFromRef(this.size) > 0
 
 
-method isNullOrEmpty(this: Ref) returns (ret_0: Ref)
-  requires this != nullValue() ==> acc(this.size, write)
-  requires this != nullValue() ==> intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), nullable(collections_c_Collection()))
-  ensures this != nullValue() ==> acc(this.size, write)
-  ensures this != nullValue() ==> intFromRef(this.size) >= 0
+method isNullOrEmpty([v$this]: Ref) returns (ret_0: Ref)
+  requires [v$this] != nullValue() ==> acc([v$this].size, write)
+  requires [v$this] != nullValue() ==> intFromRef([v$this].size) >= 0
+  requires isSubtype(typeOf([v$this]), nullable(c_Collection()))
+  ensures [v$this] != nullValue() ==> acc([v$this].size, write)
+  ensures [v$this] != nullValue() ==> intFromRef([v$this].size) >= 0
   ensures isSubtype(typeOf(ret_0), boolType())
-  ensures boolFromRef(ret_0) == false ==> this != nullValue()
+  ensures boolFromRef(ret_0) == false ==> [v$this] != nullValue()
 {
-  inhale this != nullValue() ==> acc(c_Collection_shared(this), wildcard)
-  if (this == nullValue()) {
+  inhale [v$this] != nullValue() ==>
+    acc(collections_c_Collection_shared([v$this]), wildcard)
+  if ([v$this] == nullValue()) {
     ret_0 := boolToRef(true)
   } else {
-    ret_0 := isEmpty(this)}
+    ret_0 := isEmpty([v$this])}
   goto lbl_ret_0
   label lbl_ret_0
 }
+
+/returns_booleans.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/returns_booleans.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/returns_booleans.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin

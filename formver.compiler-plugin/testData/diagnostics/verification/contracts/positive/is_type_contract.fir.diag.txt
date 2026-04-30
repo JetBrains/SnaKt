@@ -9,17 +9,33 @@ method isString(x: Ref) returns (ret: Ref)
   label ret_0
 }
 
+/is_type_contract.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/is_type_contract.kt: error: An internal error has occurred.
+Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
 /is_type_contract.kt: info: Generated Viper text for isString:
-method isString(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), anyType())
+method isString([v$this]: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf([v$this]), anyType())
   ensures isSubtype(typeOf(ret), boolType())
   ensures boolFromRef(ret) == true ==>
-    isSubtype(typeOf(this), stringType())
+    isSubtype(typeOf([v$this]), stringType())
 {
-  ret := boolToRef(isSubtype(typeOf(this), stringType()))
+  ret := boolToRef(isSubtype(typeOf([v$this]), stringType()))
   goto ret_0
   label ret_0
 }
+
+/is_type_contract.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/is_type_contract.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
 
 /is_type_contract.kt: info: Generated Viper text for subtypeTransitive:
 method f_subtypeTransitive(x: Ref) returns (ret: Ref)
@@ -35,9 +51,9 @@ method f_subtypeTransitive(x: Ref) returns (ret: Ref)
 field bar: Ref
 
 method con() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_Foo())
-  ensures acc(c_Foo_shared(ret), wildcard)
-  ensures acc(c_Foo_unique(ret), write)
+  ensures isSubtype(typeOf(ret), c_Foo())
+  ensures acc(_c_Foo_shared(ret), wildcard)
+  ensures acc(_c_Foo_unique(ret), write)
 
 
 method constructorReturnType() returns (ret_0: Ref)
@@ -46,7 +62,7 @@ method constructorReturnType() returns (ret_0: Ref)
 {
   var anon: Ref
   anon := con()
-  ret_0 := boolToRef(isSubtype(typeOf(anon), _c_Foo()))
+  ret_0 := boolToRef(isSubtype(typeOf(anon), c_Foo()))
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -55,11 +71,11 @@ method constructorReturnType() returns (ret_0: Ref)
 field bf_bar: Ref
 
 method subtypeSuperType(bar: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(bar), _c_Bar())
+  requires isSubtype(typeOf(bar), c_Bar())
   ensures isSubtype(typeOf(ret_0), unitType())
-  ensures true ==> isSubtype(typeOf(bar), _c_Foo())
+  ensures true ==> isSubtype(typeOf(bar), c_Foo())
 {
-  inhale acc(c_Bar_shared(bar), wildcard)
+  inhale acc(_c_Bar_shared(bar), wildcard)
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
@@ -68,15 +84,15 @@ method subtypeSuperType(bar: Ref) returns (ret_0: Ref)
 field bar: Ref
 
 method typeOfField(foo: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(foo), _c_Foo())
+  requires isSubtype(typeOf(foo), c_Foo())
   ensures isSubtype(typeOf(ret_0), boolType())
   ensures boolFromRef(ret_0) == true
 {
   var anon: Ref
-  inhale acc(c_Foo_shared(foo), wildcard)
-  unfold acc(c_Foo_shared(foo), wildcard)
+  inhale acc(_c_Foo_shared(foo), wildcard)
+  unfold acc(_c_Foo_shared(foo), wildcard)
   anon := foo.bar
-  ret_0 := boolToRef(isSubtype(typeOf(anon), _c_Bar()))
+  ret_0 := boolToRef(isSubtype(typeOf(anon), c_Bar()))
   goto lbl_ret_0
   label lbl_ret_0
 }

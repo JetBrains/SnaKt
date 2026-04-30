@@ -42,19 +42,19 @@ method captureVar() returns (ret_0: Ref)
 }
 
 /captured.kt: info: Generated Viper text for captureAndShadow:
-method captureAndShadow(par_x: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(par_x), intType())
+method captureAndShadow(x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret_0), intType())
 {
   var ret_1: Ref
   var ret: Ref
   var anon: Ref
   var y: Ref
-  var x: Ref
+  var l2_x: Ref
   anon := intToRef(0)
-  y := par_x
-  x := intToRef(1)
-  ret := plusInts(plusInts(anon, x), y)
+  y := x
+  l2_x := intToRef(1)
+  ret := plusInts(plusInts(anon, l2_x), y)
   goto ret_2
   label ret_2
   ret_1 := ret
@@ -66,22 +66,22 @@ method captureAndShadow(par_x: Ref) returns (ret_0: Ref)
 }
 
 /captured.kt: info: Generated Viper text for captureVarClash:
-method captureVarClash(par_x: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(par_x), intType())
+method captureVarClash(x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret_0), intType())
 {
   var ret_1: Ref
-  var x: Ref
-  var anon_1: Ref
-  var ret: Ref
+  var l1_x: Ref
   var anon: Ref
-  x := intToRef(1)
-  anon := intToRef(0)
-  ret := timesInts(anon, par_x)
+  var ret: Ref
+  var anon_0: Ref
+  l1_x := intToRef(1)
+  anon_0 := intToRef(0)
+  ret := timesInts(anon_0, x)
   goto ret_2
   label ret_2
-  anon_1 := ret
-  ret_1 := plusInts(anon_1, x)
+  anon := ret
+  ret_1 := plusInts(anon, l1_x)
   goto lbl_ret_1
   label lbl_ret_1
   ret_0 := ret_1
@@ -90,26 +90,26 @@ method captureVarClash(par_x: Ref) returns (ret_0: Ref)
 }
 
 /captured.kt: info: Generated Viper text for captureAndShadowClash:
-method captureAndShadowClash(par_x: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(par_x), intType())
+method captureAndShadowClash(x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret_0), intType())
 {
   var ret_1: Ref
   var l1_x: Ref
-  var anon_1: Ref
-  var ret: Ref
   var anon: Ref
+  var ret: Ref
+  var anon_0: Ref
   var y: Ref
-  var x: Ref
+  var l2_x: Ref
   l1_x := intToRef(1)
-  anon := intToRef(0)
-  y := par_x
-  x := intToRef(2)
-  ret := plusInts(plusInts(x, y), anon)
+  anon_0 := intToRef(0)
+  y := x
+  l2_x := intToRef(2)
+  ret := plusInts(plusInts(l2_x, y), anon_0)
   goto ret_2
   label ret_2
-  anon_1 := ret
-  ret_1 := plusInts(anon_1, l1_x)
+  anon := ret
+  ret_1 := plusInts(anon, l1_x)
   goto lbl_ret_1
   label lbl_ret_1
   ret_0 := ret_1
@@ -118,8 +118,8 @@ method captureAndShadowClash(par_x: Ref) returns (ret_0: Ref)
 }
 
 /captured.kt: info: Generated Viper text for nestedLambdaShadowing:
-method nestedLambdaShadowing(par_x: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(par_x), intType())
+method nestedLambdaShadowing(x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret_0), intType())
 {
   var ret_1: Ref
@@ -129,27 +129,27 @@ method nestedLambdaShadowing(par_x: Ref) returns (ret_0: Ref)
   var anon_0: Ref
   var ret_3: Ref
   var l3_x: Ref
-  var anon_3: Ref
-  var ret: Ref
   var anon: Ref
+  var ret: Ref
+  var anon_1: Ref
   var l4_x: Ref
   var y: Ref
-  var x: Ref
+  var l2_x: Ref
   l1_x := intToRef(1)
   anon_0 := intToRef(0)
   l3_x := intToRef(1)
-  anon := intToRef(0)
+  anon_1 := intToRef(0)
   l4_x := intToRef(3)
-  ret := plusInts(l4_x, anon)
+  ret := plusInts(l4_x, anon_1)
   goto ret_4
   label ret_4
-  anon_3 := ret
-  ret_3 := plusInts(anon_3, l3_x)
+  anon := ret
+  ret_3 := plusInts(anon, l3_x)
   goto lbl_ret_3
   label lbl_ret_3
-  y := par_x
-  x := intToRef(4)
-  ret_2 := plusInts(plusInts(x, y), anon_0)
+  y := x
+  l2_x := intToRef(4)
+  ret_2 := plusInts(plusInts(l2_x, y), anon_0)
   goto lbl_ret_2
   label lbl_ret_2
   anon_2 := ret_2
@@ -162,8 +162,8 @@ method nestedLambdaShadowing(par_x: Ref) returns (ret_0: Ref)
 }
 
 /captured.kt: info: Generated Viper text for callDoubleInvoke:
-method callDoubleInvoke(par_x: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(par_x), intType())
+method callDoubleInvoke(x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret_0), intType())
 {
   var ret_1: Ref
@@ -172,15 +172,15 @@ method callDoubleInvoke(par_x: Ref) returns (ret_0: Ref)
   var l2_x: Ref
   var ret: Ref
   var anon: Ref
-  var x: Ref
+  var l3_x: Ref
   anon_0 := intToRef(0)
   l2_x := anon_0
   ret_2 := l2_x
   goto lbl_ret_2
   label lbl_ret_2
   anon := intToRef(1)
-  x := anon
-  ret := x
+  l3_x := anon
+  ret := l3_x
   goto ret_3
   label ret_3
   ret_1 := ret

@@ -1,10 +1,10 @@
 /multiple_interfaces.kt: info: Generated Viper text for take1:
-method g_field(this: Ref) returns (v_ret: Ref)
+method g_field(this: Ref) returns (ret: Ref)
 
 
-method take1(obj: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(obj), _c_InterfaceWithImplementation1())
-  ensures isSubtype(typeOf(ret), unitType())
+method take1(obj: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(obj), c_InterfaceWithImplementation1())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var anon_0: Ref
   var anon: Ref
@@ -12,17 +12,17 @@ method take1(obj: Ref) returns (ret: Ref)
   anon := g_field(obj)
   anon_0 := anon
   inhale isSubtype(typeOf(anon_0), intType())
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /multiple_interfaces.kt: info: Generated Viper text for take2:
-method g_field(this: Ref) returns (v_ret: Ref)
+method g_field(this: Ref) returns (ret: Ref)
 
 
-method take2(obj: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(obj), _c_InterfaceWithoutImplementation2())
-  ensures isSubtype(typeOf(ret), unitType())
+method take2(obj: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(obj), c_InterfaceWithoutImplementation2())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var anon_0: Ref
   var anon: Ref
@@ -30,15 +30,15 @@ method take2(obj: Ref) returns (ret: Ref)
   anon := g_field(obj)
   anon_0 := anon
   inhale isSubtype(typeOf(anon_0), intType())
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /multiple_interfaces.kt: info: Generated Viper text for take3:
 field bf_field: Ref
 
 method take3(obj: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(obj), _c_AbstractWithFinalImplementation3())
+  requires isSubtype(typeOf(obj), c_AbstractWithFinalImplementation3())
   ensures isSubtype(typeOf(ret_0), unitType())
 {
   inhale acc(shared(obj), wildcard)
@@ -47,12 +47,12 @@ method take3(obj: Ref) returns (ret_0: Ref)
 }
 
 /multiple_interfaces.kt: info: Generated Viper text for take4:
-method g_field(this: Ref) returns (v_ret: Ref)
+method g_field(this: Ref) returns (ret: Ref)
 
 
-method take4(obj: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(obj), _c_AbstractWithOpenImplementation4())
-  ensures isSubtype(typeOf(ret), unitType())
+method take4(obj: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(obj), c_AbstractWithOpenImplementation4())
+  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var anon_0: Ref
   var anon: Ref
@@ -60,8 +60,8 @@ method take4(obj: Ref) returns (ret: Ref)
   anon := g_field(obj)
   anon_0 := anon
   inhale isSubtype(typeOf(anon_0), intType())
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /multiple_interfaces.kt: info: Generated Viper text for createImpls:
@@ -70,38 +70,38 @@ field bf_field: Ref
 field size: Ref
 
 method con() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_Impl14())
-  ensures acc(c_Impl14_shared(ret), wildcard)
-  ensures acc(c_Impl14_unique(ret), write)
+  ensures isSubtype(typeOf(ret), c_Impl3())
+  ensures acc(_c_Impl3_shared(ret), wildcard)
+  ensures acc(_c_Impl3_unique(ret), write)
 
 
-method con__c_Impl12() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_Impl12())
-  ensures acc(c_Impl12_shared(ret), wildcard)
-  ensures acc(c_Impl12_unique(ret), write)
+method con_c_Impl12() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), c_Impl12())
+  ensures acc(_c_Impl12_shared(ret), wildcard)
+  ensures acc(_c_Impl12_unique(ret), write)
 
 
-method con__c_Impl23() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_Impl23())
-  ensures acc(c_Impl23_shared(ret), wildcard)
-  ensures acc(c_Impl23_unique(ret), write)
+method con_c_Impl14() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), c_Impl14())
+  ensures acc(_c_Impl14_shared(ret), wildcard)
+  ensures acc(_c_Impl14_unique(ret), write)
 
 
-method con__c_Impl24() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_Impl24())
-  ensures acc(c_Impl24_shared(ret), wildcard)
-  ensures acc(c_Impl24_unique(ret), write)
+method con_c_Impl23() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), c_Impl23())
+  ensures acc(_c_Impl23_shared(ret), wildcard)
+  ensures acc(_c_Impl23_unique(ret), write)
 
 
-method con__c_Impl3() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_Impl3())
-  ensures acc(c_Impl3_shared(ret), wildcard)
-  ensures acc(c_Impl3_unique(ret), write)
+method con_c_Impl24() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), c_Impl24())
+  ensures acc(_c_Impl24_shared(ret), wildcard)
+  ensures acc(_c_Impl24_unique(ret), write)
 
 
 method create6() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_InheritingInterfaceWithoutImplementation6())
-  ensures acc(c_InheritingInterfaceWithoutImplementation6_shared(ret), wildcard)
+  ensures isSubtype(typeOf(ret), c_InheritingInterfaceWithoutImplementation6())
+  ensures acc(_c_InheritingInterfaceWithoutImplementation6_shared(ret), wildcard)
 
 
 method createImpls() returns (ret_0: Ref)
@@ -124,7 +124,7 @@ method createImpls() returns (ret_0: Ref)
   var impl24: Ref
   var start24: Ref
   var anon_8: Ref
-  var anon_9: Ref
+  var anon: Ref
   var anon_10: Ref
   var anon_11: Ref
   var impl14: Ref
@@ -143,36 +143,36 @@ method createImpls() returns (ret_0: Ref)
   var cond3: Ref
   var anon_19: Ref
   var cond4: Ref
-  var anon: Ref
+  var anon_20: Ref
   var cond5: Ref
-  impl12 := con__c_Impl12()
-  unfold acc(c_Impl12_shared(impl12), wildcard)
+  impl12 := con_c_Impl12()
+  unfold acc(_c_Impl12_shared(impl12), wildcard)
   anon_0 := impl12.bf_field
   start12 := minusInts(plusInts(anon_0, intToRef(1)), intToRef(1))
   anon_1 := take1(impl12)
   anon_2 := take2(impl12)
-  impl23 := con__c_Impl23()
-  unfold acc(c_Impl23_shared(impl23), wildcard)
-  unfold acc(c_AbstractWithFinalImplementation3_shared(impl23), wildcard)
+  impl23 := con_c_Impl23()
+  unfold acc(_c_Impl23_shared(impl23), wildcard)
+  unfold acc(_c_AbstractWithFinalImplementation3_shared(impl23), wildcard)
   anon_3 := impl23.bf_field
   start23 := minusInts(plusInts(anon_3, intToRef(1)), intToRef(1))
   anon_4 := take2(impl23)
   anon_5 := take3(impl23)
-  impl3 := con__c_Impl3()
-  unfold acc(c_Impl3_shared(impl3), wildcard)
-  unfold acc(c_AbstractWithFinalImplementation3_shared(impl3), wildcard)
+  impl3 := con()
+  unfold acc(_c_Impl3_shared(impl3), wildcard)
+  unfold acc(_c_AbstractWithFinalImplementation3_shared(impl3), wildcard)
   anon_6 := impl3.bf_field
   start3 := minusInts(plusInts(anon_6, intToRef(1)), intToRef(1))
   anon_7 := take3(impl3)
-  impl24 := con__c_Impl24()
-  anon_9 := g_field(impl24)
-  anon_8 := anon_9
+  impl24 := con_c_Impl24()
+  anon := g_field(impl24)
+  anon_8 := anon
   inhale isSubtype(typeOf(anon_8), intType())
   start24 := minusInts(plusInts(anon_8, intToRef(1)), intToRef(1))
   anon_10 := take2(impl24)
   anon_11 := take4(impl24)
-  impl14 := con()
-  unfold acc(c_Impl14_shared(impl14), wildcard)
+  impl14 := con_c_Impl14()
+  unfold acc(_c_Impl14_shared(impl14), wildcard)
   anon_12 := impl14.bf_field
   start14 := minusInts(plusInts(anon_12, intToRef(1)), intToRef(1))
   anon_13 := take1(impl14)
@@ -182,20 +182,20 @@ method createImpls() returns (ret_0: Ref)
   anon_15 := anon_16
   inhale isSubtype(typeOf(anon_15), intType())
   start6 := minusInts(plusInts(anon_15, intToRef(1)), intToRef(1))
-  unfold acc(c_Impl12_shared(impl12), wildcard)
+  unfold acc(_c_Impl12_shared(impl12), wildcard)
   anon_17 := impl12.bf_field
   cond1 := boolToRef(intFromRef(start12) == intFromRef(anon_17))
-  unfold acc(c_Impl23_shared(impl23), wildcard)
-  unfold acc(c_AbstractWithFinalImplementation3_shared(impl23), wildcard)
+  unfold acc(_c_Impl23_shared(impl23), wildcard)
+  unfold acc(_c_AbstractWithFinalImplementation3_shared(impl23), wildcard)
   anon_18 := impl23.bf_field
   cond2 := boolToRef(intFromRef(start23) == intFromRef(anon_18))
-  unfold acc(c_Impl3_shared(impl3), wildcard)
-  unfold acc(c_AbstractWithFinalImplementation3_shared(impl3), wildcard)
+  unfold acc(_c_Impl3_shared(impl3), wildcard)
+  unfold acc(_c_AbstractWithFinalImplementation3_shared(impl3), wildcard)
   anon_19 := impl3.bf_field
   cond3 := boolToRef(intFromRef(start3) == intFromRef(anon_19))
-  unfold acc(c_Impl14_shared(impl14), wildcard)
-  anon := impl14.bf_field
-  cond4 := boolToRef(intFromRef(start14) == intFromRef(anon))
+  unfold acc(_c_Impl14_shared(impl14), wildcard)
+  anon_20 := impl14.bf_field
+  cond4 := boolToRef(intFromRef(start14) == intFromRef(anon_20))
   cond5 := boolToRef(isSubtype(typeOf(start6), intType()))
   assert boolFromRef(cond1)
   assert boolFromRef(cond2)
@@ -210,20 +210,20 @@ method g_field(this: Ref) returns (ret: Ref)
 
 
 method take1(obj: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(obj), _c_InterfaceWithImplementation1())
+  requires isSubtype(typeOf(obj), c_InterfaceWithImplementation1())
   ensures isSubtype(typeOf(ret), unitType())
 
 
 method take2(obj: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(obj), _c_InterfaceWithoutImplementation2())
+  requires isSubtype(typeOf(obj), c_InterfaceWithoutImplementation2())
   ensures isSubtype(typeOf(ret), unitType())
 
 
 method take3(obj: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(obj), _c_AbstractWithFinalImplementation3())
+  requires isSubtype(typeOf(obj), c_AbstractWithFinalImplementation3())
   ensures isSubtype(typeOf(ret), unitType())
 
 
 method take4(obj: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(obj), _c_AbstractWithOpenImplementation4())
+  requires isSubtype(typeOf(obj), c_AbstractWithOpenImplementation4())
   ensures isSubtype(typeOf(ret), unitType())

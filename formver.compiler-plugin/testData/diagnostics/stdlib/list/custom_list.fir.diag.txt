@@ -6,7 +6,7 @@ field value: Ref
 method get(this: Ref, index: Ref) returns (ret_0: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), _c_CustomList())
+  requires isSubtype(typeOf(this), c_CustomList())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -15,8 +15,8 @@ method get(this: Ref, index: Ref) returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), intType())
   ensures intFromRef(this.size) == old(intFromRef(this.size))
 {
-  inhale acc(c_CustomList_shared(this), wildcard)
-  unfold acc(c_CustomList_shared(this), wildcard)
+  inhale acc(_c_CustomList_shared(this), wildcard)
+  unfold acc(_c_CustomList_shared(this), wildcard)
   ret_0 := this.value
   goto lbl_ret_0
   label lbl_ret_0
@@ -30,17 +30,17 @@ field size: Ref
 method con(par_size: Ref, value: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(par_size), intType())
   requires isSubtype(typeOf(value), intType())
-  ensures isSubtype(typeOf(ret), _c_CustomList())
+  ensures isSubtype(typeOf(ret), c_CustomList())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c_CustomList_shared(ret), wildcard)
-  ensures acc(c_CustomList_unique(ret), write)
+  ensures acc(_c_CustomList_shared(ret), wildcard)
+  ensures acc(_c_CustomList_unique(ret), write)
 
 
 method get(this: Ref, index: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), _c_CustomList())
+  requires isSubtype(typeOf(this), c_CustomList())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -53,7 +53,7 @@ method get(this: Ref, index: Ref) returns (ret: Ref)
 method isEmpty(this: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), _c_CustomList())
+  requires isSubtype(typeOf(this), c_CustomList())
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret), boolType())

@@ -2,7 +2,7 @@
 field bf_t: Ref
 
 method genericMethod(this: Ref, x: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), _c_Box())
+  requires isSubtype(typeOf(this), c_Box())
   requires isSubtype(typeOf(x), nullable(anyType()))
   ensures isSubtype(typeOf(ret_0), nullable(anyType()))
 {
@@ -17,9 +17,9 @@ field bf_t: Ref
 
 method con(par_t: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(par_t), nullable(anyType()))
-  ensures isSubtype(typeOf(ret), _c_Box())
+  ensures isSubtype(typeOf(ret), c_Box())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c_Box_unique(ret), write)
+  ensures acc(_c_Box_unique(ret), write)
 
 
 method createBox() returns (ret_0: Ref)
@@ -47,9 +47,9 @@ field bf_t: Ref
 
 method con(par_t: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(par_t), nullable(anyType()))
-  ensures isSubtype(typeOf(ret), _c_Box())
+  ensures isSubtype(typeOf(ret), c_Box())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c_Box_unique(ret), write)
+  ensures acc(_c_Box_unique(ret), write)
 
 
 method setGenericField() returns (ret_0: Ref)
@@ -93,7 +93,7 @@ method genericFun(par_t: Ref) returns (ret: Ref)
 field bf_t: Ref
 
 method genericAsIfCondition(box: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(box), _c_Box())
+  requires isSubtype(typeOf(box), c_Box())
   ensures isSubtype(typeOf(ret_0), intType())
 {
   var anon_0: Ref

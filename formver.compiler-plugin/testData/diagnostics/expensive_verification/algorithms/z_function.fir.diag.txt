@@ -58,15 +58,23 @@ method zFuncHelper(s: Ref, res: Ref, i: Ref, checkedLeft: Ref, checkedRight: Ref
   label ret_0
 }
 
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
 /z_function.kt: info: Generated Viper text for zFunction:
-method plus(v_this: Ref, other: Ref) returns (v_ret: Ref)
-  requires isSubtype(typeOf(v_this), stringType())
+method plus(this: Ref, other: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
-  ensures isSubtype(typeOf(v_ret), stringType())
+  ensures isSubtype(typeOf(ret), stringType())
 
 
 method zFuncHelper(s: Ref, res: Ref, i: Ref, checkedLeft: Ref, checkedRight: Ref)
-  returns (v_ret: Ref)
+  returns (ret: Ref)
   requires isSubtype(typeOf(s), stringType())
   requires isSubtype(typeOf(res), stringType())
   requires isSubtype(typeOf(i), intType())
@@ -92,49 +100,50 @@ method zFuncHelper(s: Ref, res: Ref, i: Ref, checkedLeft: Ref, checkedRight: Ref
       !(stringFromRef(s)[anon_builtin_13 +
       (stringFromRef(res)[anon_builtin_13] - 48)] ==
       stringFromRef(s)[stringFromRef(res)[anon_builtin_13] - 48])))
-  requires (forall anon_builtin: Int ::0 <= anon_builtin &&
-      anon_builtin < intFromRef(checkedRight) - intFromRef(checkedLeft) ==>
-      stringFromRef(s)[intFromRef(checkedLeft) + anon_builtin] ==
-      stringFromRef(s)[anon_builtin])
-  ensures isSubtype(typeOf(v_ret), intType())
-  ensures intFromRef(i) <= intFromRef(v_ret) &&
-    intFromRef(v_ret) <= |stringFromRef(s)|
-  ensures (forall anon: Int ::intFromRef(i) <= anon &&
-      anon < intFromRef(v_ret) ==>
-      stringFromRef(s)[anon - intFromRef(i)] == stringFromRef(s)[anon])
+  requires (forall anon_builtin_15: Int ::0 <= anon_builtin_15 &&
+      anon_builtin_15 < intFromRef(checkedRight) - intFromRef(checkedLeft) ==>
+      stringFromRef(s)[intFromRef(checkedLeft) + anon_builtin_15] ==
+      stringFromRef(s)[anon_builtin_15])
+  ensures isSubtype(typeOf(ret), intType())
+  ensures intFromRef(i) <= intFromRef(ret) &&
+    intFromRef(ret) <= |stringFromRef(s)|
+  ensures (forall anon_builtin_16: Int ::intFromRef(i) <= anon_builtin_16 &&
+      anon_builtin_16 < intFromRef(ret) ==>
+      stringFromRef(s)[anon_builtin_16 - intFromRef(i)] ==
+      stringFromRef(s)[anon_builtin_16])
 
 
-method zFunction(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), stringType())
-  ensures isSubtype(typeOf(ret), stringType())
-  ensures |stringFromRef(ret)| == |stringFromRef(this)|
+method zFunction([v$this]: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf([v$this]), stringType())
+  ensures isSubtype(typeOf(ret_0), stringType())
+  ensures |stringFromRef(ret_0)| == |stringFromRef([v$this])|
   ensures (forall anon_builtin_11: Int ::0 <= anon_builtin_11 &&
-      anon_builtin_11 < |stringFromRef(this)| ==>
-      48 <= stringFromRef(ret)[anon_builtin_11] &&
-      stringFromRef(ret)[anon_builtin_11] <=
-      48 + |stringFromRef(this)| - anon_builtin_11 &&
+      anon_builtin_11 < |stringFromRef([v$this])| ==>
+      48 <= stringFromRef(ret_0)[anon_builtin_11] &&
+      stringFromRef(ret_0)[anon_builtin_11] <=
+      48 + |stringFromRef([v$this])| - anon_builtin_11 &&
       (forall anon_builtin_12: Int ::0 <= anon_builtin_12 &&
-        anon_builtin_12 < stringFromRef(ret)[anon_builtin_11] - 48 ==>
-        stringFromRef(this)[anon_builtin_12] ==
-        stringFromRef(this)[anon_builtin_11 + anon_builtin_12]) &&
-      (stringFromRef(ret)[anon_builtin_11] - 48 ==
-      |stringFromRef(this)| - anon_builtin_11 ||
-      !(stringFromRef(this)[anon_builtin_11 +
-      (stringFromRef(ret)[anon_builtin_11] - 48)] ==
-      stringFromRef(this)[stringFromRef(ret)[anon_builtin_11] - 48])))
+        anon_builtin_12 < stringFromRef(ret_0)[anon_builtin_11] - 48 ==>
+        stringFromRef([v$this])[anon_builtin_12] ==
+        stringFromRef([v$this])[anon_builtin_11 + anon_builtin_12]) &&
+      (stringFromRef(ret_0)[anon_builtin_11] - 48 ==
+      |stringFromRef([v$this])| - anon_builtin_11 ||
+      !(stringFromRef([v$this])[anon_builtin_11 +
+      (stringFromRef(ret_0)[anon_builtin_11] - 48)] ==
+      stringFromRef([v$this])[stringFromRef(ret_0)[anon_builtin_11] - 48])))
 {
   var l0_i: Ref
   var l0_res: Ref
   var l0_checkedLeft: Ref
   var l0_checkedRight: Ref
   var anon_0: Ref
-  if (|stringFromRef(this)| == 0) {
-    ret := this
-    goto ret_0
+  if (|stringFromRef([v$this])| == 0) {
+    ret_0 := [v$this]
+    goto lbl_ret_0
   }
   l0_i := intToRef(1)
   l0_res := addStringChar(stringToRef(Seq[Int]()), addCharInt(charToRef(48),
-    stringLength(this)))
+    stringLength([v$this])))
   l0_checkedLeft := intToRef(0)
   l0_checkedRight := intToRef(0)
   label cont_0
@@ -144,35 +153,35 @@ method zFunction(this: Ref) returns (ret: Ref)
     invariant isSubtype(typeOf(l0_checkedRight), intType())
     invariant |stringFromRef(l0_res)| == intFromRef(l0_i)
     invariant 1 <= intFromRef(l0_i) &&
-      intFromRef(l0_i) <= |stringFromRef(this)|
+      intFromRef(l0_i) <= |stringFromRef([v$this])|
     invariant (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
         anon_builtin_2 < intFromRef(l0_i) ==>
         48 <= stringFromRef(l0_res)[anon_builtin_2] &&
         stringFromRef(l0_res)[anon_builtin_2] <=
-        48 + |stringFromRef(this)| - anon_builtin_2 &&
+        48 + |stringFromRef([v$this])| - anon_builtin_2 &&
         (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
           anon_builtin_3 < stringFromRef(l0_res)[anon_builtin_2] - 48 ==>
-          stringFromRef(this)[anon_builtin_3] ==
-          stringFromRef(this)[anon_builtin_2 + anon_builtin_3]) &&
+          stringFromRef([v$this])[anon_builtin_3] ==
+          stringFromRef([v$this])[anon_builtin_2 + anon_builtin_3]) &&
         (stringFromRef(l0_res)[anon_builtin_2] - 48 ==
-        |stringFromRef(this)| - anon_builtin_2 ||
-        !(stringFromRef(this)[anon_builtin_2 +
+        |stringFromRef([v$this])| - anon_builtin_2 ||
+        !(stringFromRef([v$this])[anon_builtin_2 +
         (stringFromRef(l0_res)[anon_builtin_2] - 48)] ==
-        stringFromRef(this)[stringFromRef(l0_res)[anon_builtin_2] - 48])))
+        stringFromRef([v$this])[stringFromRef(l0_res)[anon_builtin_2] - 48])))
     invariant 0 <= intFromRef(l0_checkedLeft) &&
       intFromRef(l0_checkedLeft) <= intFromRef(l0_checkedRight) &&
-      intFromRef(l0_checkedRight) <= |stringFromRef(this)|
+      intFromRef(l0_checkedRight) <= |stringFromRef([v$this])|
     invariant intFromRef(l0_checkedLeft) < intFromRef(l0_i)
     invariant (forall anon_builtin_4: Int ::0 <= anon_builtin_4 &&
         anon_builtin_4 <
         intFromRef(l0_checkedRight) - intFromRef(l0_checkedLeft) ==>
-        stringFromRef(this)[intFromRef(l0_checkedLeft) + anon_builtin_4] ==
-        stringFromRef(this)[anon_builtin_4])
-  anon_0 := ltInts(l0_i, stringLength(this))
+        stringFromRef([v$this])[intFromRef(l0_checkedLeft) + anon_builtin_4] ==
+        stringFromRef([v$this])[anon_builtin_4])
+  anon_0 := ltInts(l0_i, stringLength([v$this]))
   if (boolFromRef(anon_0)) {
     var j: Ref
-    var anon_1: Ref
-    j := zFuncHelper(this, l0_res, l0_i, l0_checkedLeft, l0_checkedRight)
+    var anon: Ref
+    j := zFuncHelper([v$this], l0_res, l0_i, l0_checkedLeft, l0_checkedRight)
     label cont
       invariant isSubtype(typeOf(j), intType())
       invariant isSubtype(typeOf(l0_i), intType())
@@ -180,24 +189,24 @@ method zFunction(this: Ref) returns (ret: Ref)
       invariant isSubtype(typeOf(l0_checkedLeft), intType())
       invariant isSubtype(typeOf(l0_checkedRight), intType())
       invariant intFromRef(l0_i) <= intFromRef(j) &&
-        intFromRef(j) <= |stringFromRef(this)|
-      invariant (forall anon_builtin_9: Int ::intFromRef(l0_checkedLeft) <=
-          anon_builtin_9 &&
-          anon_builtin_9 < intFromRef(l0_checkedRight) ==>
-          stringFromRef(this)[anon_builtin_9 - intFromRef(l0_checkedLeft)] ==
-          stringFromRef(this)[anon_builtin_9])
+        intFromRef(j) <= |stringFromRef([v$this])|
+      invariant (forall anon_builtin: Int ::intFromRef(l0_checkedLeft) <=
+          anon_builtin &&
+          anon_builtin < intFromRef(l0_checkedRight) ==>
+          stringFromRef([v$this])[anon_builtin - intFromRef(l0_checkedLeft)] ==
+          stringFromRef([v$this])[anon_builtin])
       invariant (forall anon_builtin_10: Int ::intFromRef(l0_i) <=
           anon_builtin_10 &&
           anon_builtin_10 < intFromRef(j) ==>
-          stringFromRef(this)[anon_builtin_10 - intFromRef(l0_i)] ==
-          stringFromRef(this)[anon_builtin_10])
-    if (intFromRef(j) < |stringFromRef(this)|) {
-      anon_1 := boolToRef(stringFromRef(this)[intFromRef(j) -
+          stringFromRef([v$this])[anon_builtin_10 - intFromRef(l0_i)] ==
+          stringFromRef([v$this])[anon_builtin_10])
+    if (intFromRef(j) < |stringFromRef([v$this])|) {
+      anon := boolToRef(stringFromRef([v$this])[intFromRef(j) -
         intFromRef(l0_i)] ==
-        stringFromRef(this)[intFromRef(j)])
+        stringFromRef([v$this])[intFromRef(j)])
     } else {
-      anon_1 := boolToRef(false)}
-    if (boolFromRef(anon_1)) {
+      anon := boolToRef(false)}
+    if (boolFromRef(anon)) {
       j := plusInts(j, intToRef(1))
       goto cont
     }
@@ -208,17 +217,17 @@ method zFunction(this: Ref) returns (ret: Ref)
     assert isSubtype(typeOf(l0_checkedLeft), intType())
     assert isSubtype(typeOf(l0_checkedRight), intType())
     assert intFromRef(l0_i) <= intFromRef(j) &&
-      intFromRef(j) <= |stringFromRef(this)|
-    assert (forall anon_builtin_9: Int ::intFromRef(l0_checkedLeft) <=
-        anon_builtin_9 &&
-        anon_builtin_9 < intFromRef(l0_checkedRight) ==>
-        stringFromRef(this)[anon_builtin_9 - intFromRef(l0_checkedLeft)] ==
-        stringFromRef(this)[anon_builtin_9])
+      intFromRef(j) <= |stringFromRef([v$this])|
+    assert (forall anon_builtin: Int ::intFromRef(l0_checkedLeft) <=
+        anon_builtin &&
+        anon_builtin < intFromRef(l0_checkedRight) ==>
+        stringFromRef([v$this])[anon_builtin - intFromRef(l0_checkedLeft)] ==
+        stringFromRef([v$this])[anon_builtin])
     assert (forall anon_builtin_10: Int ::intFromRef(l0_i) <=
         anon_builtin_10 &&
         anon_builtin_10 < intFromRef(j) ==>
-        stringFromRef(this)[anon_builtin_10 - intFromRef(l0_i)] ==
-        stringFromRef(this)[anon_builtin_10])
+        stringFromRef([v$this])[anon_builtin_10 - intFromRef(l0_i)] ==
+        stringFromRef([v$this])[anon_builtin_10])
     l0_res := addStringChar(l0_res, addCharInt(charToRef(48), minusInts(j, l0_i)))
     if (intFromRef(j) > intFromRef(l0_checkedRight)) {
       l0_checkedLeft := l0_i
@@ -233,110 +242,365 @@ method zFunction(this: Ref) returns (ret: Ref)
   assert isSubtype(typeOf(l0_checkedLeft), intType())
   assert isSubtype(typeOf(l0_checkedRight), intType())
   assert |stringFromRef(l0_res)| == intFromRef(l0_i)
-  assert 1 <= intFromRef(l0_i) && intFromRef(l0_i) <= |stringFromRef(this)|
+  assert 1 <= intFromRef(l0_i) &&
+    intFromRef(l0_i) <= |stringFromRef([v$this])|
   assert (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
       anon_builtin_2 < intFromRef(l0_i) ==>
       48 <= stringFromRef(l0_res)[anon_builtin_2] &&
       stringFromRef(l0_res)[anon_builtin_2] <=
-      48 + |stringFromRef(this)| - anon_builtin_2 &&
+      48 + |stringFromRef([v$this])| - anon_builtin_2 &&
       (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
         anon_builtin_3 < stringFromRef(l0_res)[anon_builtin_2] - 48 ==>
-        stringFromRef(this)[anon_builtin_3] ==
-        stringFromRef(this)[anon_builtin_2 + anon_builtin_3]) &&
+        stringFromRef([v$this])[anon_builtin_3] ==
+        stringFromRef([v$this])[anon_builtin_2 + anon_builtin_3]) &&
       (stringFromRef(l0_res)[anon_builtin_2] - 48 ==
-      |stringFromRef(this)| - anon_builtin_2 ||
-      !(stringFromRef(this)[anon_builtin_2 +
+      |stringFromRef([v$this])| - anon_builtin_2 ||
+      !(stringFromRef([v$this])[anon_builtin_2 +
       (stringFromRef(l0_res)[anon_builtin_2] - 48)] ==
-      stringFromRef(this)[stringFromRef(l0_res)[anon_builtin_2] - 48])))
+      stringFromRef([v$this])[stringFromRef(l0_res)[anon_builtin_2] - 48])))
   assert 0 <= intFromRef(l0_checkedLeft) &&
     intFromRef(l0_checkedLeft) <= intFromRef(l0_checkedRight) &&
-    intFromRef(l0_checkedRight) <= |stringFromRef(this)|
+    intFromRef(l0_checkedRight) <= |stringFromRef([v$this])|
   assert intFromRef(l0_checkedLeft) < intFromRef(l0_i)
   assert (forall anon_builtin_4: Int ::0 <= anon_builtin_4 &&
       anon_builtin_4 <
       intFromRef(l0_checkedRight) - intFromRef(l0_checkedLeft) ==>
-      stringFromRef(this)[intFromRef(l0_checkedLeft) + anon_builtin_4] ==
-      stringFromRef(this)[anon_builtin_4])
-  ret := l0_res
-  goto ret_0
-  label ret_0
+      stringFromRef([v$this])[intFromRef(l0_checkedLeft) + anon_builtin_4] ==
+      stringFromRef([v$this])[anon_builtin_4])
+  ret_0 := l0_res
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: [v$this] is not a valid identifier. (<no position>)
+Please report this at https://github.com/jesyspa/kotlin
+
 /z_function.kt: info: Generated Viper text for zFunctionNaive:
-method plus(v_this: Ref, other: Ref) returns (v_ret: Ref)
-  requires isSubtype(typeOf(v_this), stringType())
-  requires isSubtype(typeOf(other), nullable(anyType()))
-  ensures isSubtype(typeOf(v_ret), stringType())
-
-
-method zFunctionNaive(this: Ref) returns (ret: Ref)
+method plus(this: Ref, other: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), stringType())
+  requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(ret), stringType())
-  ensures |stringFromRef(ret)| == |stringFromRef(this)|
+
+
+method zFunctionNaive([v$this]: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf([v$this]), stringType())
+  ensures isSubtype(typeOf(ret_0), stringType())
+  ensures |stringFromRef(ret_0)| == |stringFromRef([v$this])|
   ensures (forall anon_builtin_5: Int ::0 <= anon_builtin_5 &&
-      anon_builtin_5 < |stringFromRef(this)| ==>
-      48 <= stringFromRef(ret)[anon_builtin_5] &&
-      stringFromRef(ret)[anon_builtin_5] <=
-      48 + |stringFromRef(this)| - anon_builtin_5 &&
-      (forall anon_builtin_6: Int ::0 <= anon_builtin_6 &&
-        anon_builtin_6 < stringFromRef(ret)[anon_builtin_5] - 48 ==>
-        stringFromRef(this)[anon_builtin_6] ==
-        stringFromRef(this)[anon_builtin_5 + anon_builtin_6]) &&
-      (stringFromRef(ret)[anon_builtin_5] - 48 ==
-      |stringFromRef(this)| - anon_builtin_5 ||
-      !(stringFromRef(this)[anon_builtin_5 +
-      (stringFromRef(ret)[anon_builtin_5] - 48)] ==
-      stringFromRef(this)[stringFromRef(ret)[anon_builtin_5] - 48])))
+      anon_builtin_5 < |stringFromRef([v$this])| ==>
+      48 <= stringFromRef(ret_0)[anon_builtin_5] &&
+      stringFromRef(ret_0)[anon_builtin_5] <=
+      48 + |stringFromRef([v$this])| - anon_builtin_5 &&
+      (forall anon_builtin: Int ::0 <= anon_builtin &&
+        anon_builtin < stringFromRef(ret_0)[anon_builtin_5] - 48 ==>
+        stringFromRef([v$this])[anon_builtin] ==
+        stringFromRef([v$this])[anon_builtin_5 + anon_builtin]) &&
+      (stringFromRef(ret_0)[anon_builtin_5] - 48 ==
+      |stringFromRef([v$this])| - anon_builtin_5 ||
+      !(stringFromRef([v$this])[anon_builtin_5 +
+      (stringFromRef(ret_0)[anon_builtin_5] - 48)] ==
+      stringFromRef([v$this])[stringFromRef(ret_0)[anon_builtin_5] - 48])))
 {
   var i: Ref
   var res: Ref
   var anon_0: Ref
-  if (|stringFromRef(this)| == 0) {
-    ret := this
-    goto ret_0
+  if (|stringFromRef([v$this])| == 0) {
+    ret_0 := [v$this]
+    goto lbl_ret_0
   }
   i := intToRef(1)
-  res := addStringChar(stringToRef(Seq[Int]()), addCharInt(charToRef(48), stringLength(this)))
+  res := addStringChar(stringToRef(Seq[Int]()), addCharInt(charToRef(48), stringLength([v$this])))
   label cont_0
     invariant isSubtype(typeOf(i), intType())
     invariant isSubtype(typeOf(res), stringType())
     invariant |stringFromRef(res)| == intFromRef(i)
-    invariant 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef(this)|
+    invariant 0 <= intFromRef(i) &&
+      intFromRef(i) <= |stringFromRef([v$this])|
     invariant (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
         anon_builtin_2 < intFromRef(i) ==>
         48 <= stringFromRef(res)[anon_builtin_2] &&
         stringFromRef(res)[anon_builtin_2] <=
-        48 + |stringFromRef(this)| - anon_builtin_2 &&
-        (forall anon_builtin: Int ::0 <= anon_builtin &&
-          anon_builtin < stringFromRef(res)[anon_builtin_2] - 48 ==>
-          stringFromRef(this)[anon_builtin] ==
-          stringFromRef(this)[anon_builtin_2 + anon_builtin]) &&
+        48 + |stringFromRef([v$this])| - anon_builtin_2 &&
+        (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
+          anon_builtin_3 < stringFromRef(res)[anon_builtin_2] - 48 ==>
+          stringFromRef([v$this])[anon_builtin_3] ==
+          stringFromRef([v$this])[anon_builtin_2 + anon_builtin_3]) &&
         (stringFromRef(res)[anon_builtin_2] - 48 ==
-        |stringFromRef(this)| - anon_builtin_2 ||
-        !(stringFromRef(this)[anon_builtin_2 +
+        |stringFromRef([v$this])| - anon_builtin_2 ||
+        !(stringFromRef([v$this])[anon_builtin_2 +
         (stringFromRef(res)[anon_builtin_2] - 48)] ==
-        stringFromRef(this)[stringFromRef(res)[anon_builtin_2] - 48])))
-  anon_0 := ltInts(i, stringLength(this))
+        stringFromRef([v$this])[stringFromRef(res)[anon_builtin_2] - 48])))
+  anon_0 := ltInts(i, stringLength([v$this]))
   if (boolFromRef(anon_0)) {
     var j: Ref
-    var anon_1: Ref
+    var anon: Ref
     j := i
     label cont
       invariant isSubtype(typeOf(j), intType())
       invariant isSubtype(typeOf(i), intType())
       invariant isSubtype(typeOf(res), stringType())
       invariant intFromRef(i) <= intFromRef(j) &&
-        intFromRef(j) <= |stringFromRef(this)|
-      invariant (forall anon: Int ::0 <= anon &&
-          anon < intFromRef(j) - intFromRef(i) ==>
-          stringFromRef(this)[intFromRef(i) + anon] ==
-          stringFromRef(this)[anon])
-    if (intFromRef(j) < |stringFromRef(this)|) {
-      anon_1 := boolToRef(stringFromRef(this)[intFromRef(j) - intFromRef(i)] ==
-        stringFromRef(this)[intFromRef(j)])
+        intFromRef(j) <= |stringFromRef([v$this])|
+      invariant (forall anon_builtin_4: Int ::0 <= anon_builtin_4 &&
+          anon_builtin_4 < intFromRef(j) - intFromRef(i) ==>
+          stringFromRef([v$this])[intFromRef(i) + anon_builtin_4] ==
+          stringFromRef([v$this])[anon_builtin_4])
+    if (intFromRef(j) < |stringFromRef([v$this])|) {
+      anon := boolToRef(stringFromRef([v$this])[intFromRef(j) -
+        intFromRef(i)] ==
+        stringFromRef([v$this])[intFromRef(j)])
     } else {
-      anon_1 := boolToRef(false)}
-    if (boolFromRef(anon_1)) {
+      anon := boolToRef(false)}
+    if (boolFromRef(anon)) {
       j := plusInts(j, intToRef(1))
       goto cont
     }
@@ -345,11 +609,11 @@ method zFunctionNaive(this: Ref) returns (ret: Ref)
     assert isSubtype(typeOf(i), intType())
     assert isSubtype(typeOf(res), stringType())
     assert intFromRef(i) <= intFromRef(j) &&
-      intFromRef(j) <= |stringFromRef(this)|
-    assert (forall anon: Int ::0 <= anon &&
-        anon < intFromRef(j) - intFromRef(i) ==>
-        stringFromRef(this)[intFromRef(i) + anon] ==
-        stringFromRef(this)[anon])
+      intFromRef(j) <= |stringFromRef([v$this])|
+    assert (forall anon_builtin_4: Int ::0 <= anon_builtin_4 &&
+        anon_builtin_4 < intFromRef(j) - intFromRef(i) ==>
+        stringFromRef([v$this])[intFromRef(i) + anon_builtin_4] ==
+        stringFromRef([v$this])[anon_builtin_4])
     res := addStringChar(res, addCharInt(charToRef(48), minusInts(j, i)))
     i := plusInts(i, intToRef(1))
     goto cont_0
@@ -358,22 +622,202 @@ method zFunctionNaive(this: Ref) returns (ret: Ref)
   assert isSubtype(typeOf(i), intType())
   assert isSubtype(typeOf(res), stringType())
   assert |stringFromRef(res)| == intFromRef(i)
-  assert 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef(this)|
+  assert 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef([v$this])|
   assert (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
       anon_builtin_2 < intFromRef(i) ==>
       48 <= stringFromRef(res)[anon_builtin_2] &&
       stringFromRef(res)[anon_builtin_2] <=
-      48 + |stringFromRef(this)| - anon_builtin_2 &&
-      (forall anon_builtin: Int ::0 <= anon_builtin &&
-        anon_builtin < stringFromRef(res)[anon_builtin_2] - 48 ==>
-        stringFromRef(this)[anon_builtin] ==
-        stringFromRef(this)[anon_builtin_2 + anon_builtin]) &&
+      48 + |stringFromRef([v$this])| - anon_builtin_2 &&
+      (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
+        anon_builtin_3 < stringFromRef(res)[anon_builtin_2] - 48 ==>
+        stringFromRef([v$this])[anon_builtin_3] ==
+        stringFromRef([v$this])[anon_builtin_2 + anon_builtin_3]) &&
       (stringFromRef(res)[anon_builtin_2] - 48 ==
-      |stringFromRef(this)| - anon_builtin_2 ||
-      !(stringFromRef(this)[anon_builtin_2 +
+      |stringFromRef([v$this])| - anon_builtin_2 ||
+      !(stringFromRef([v$this])[anon_builtin_2 +
       (stringFromRef(res)[anon_builtin_2] - 48)] ==
-      stringFromRef(this)[stringFromRef(res)[anon_builtin_2] - 48])))
-  ret := res
-  goto ret_0
-  label ret_0
+      stringFromRef([v$this])[stringFromRef(res)[anon_builtin_2] - 48])))
+  ret_0 := res
+  goto lbl_ret_0
+  label lbl_ret_0
 }
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin
+
+/z_function.kt: error: An internal error has occurred.
+Details: Consistency error: Local var name must be valid identifier. (<wrapped value>)
+Please report this at https://github.com/jesyspa/kotlin

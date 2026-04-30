@@ -5,10 +5,10 @@ field size: Ref
 
 method con(char: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(char), charType())
-  ensures isSubtype(typeOf(ret), _c_CharBox())
-  ensures acc(c_CharBox_shared(ret), wildcard)
-  ensures acc(c_CharBox_unique(ret), write)
-  ensures charFromRef((unfolding acc(c_CharBox_shared(ret), wildcard) in
+  ensures isSubtype(typeOf(ret), c_CharBox())
+  ensures acc(_c_CharBox_shared(ret), wildcard)
+  ensures acc(_c_CharBox_unique(ret), write)
+  ensures charFromRef((unfolding acc(_c_CharBox_shared(ret), wildcard) in
       ret.bf_char)) ==
     charFromRef(char)
 
@@ -24,7 +24,7 @@ method testChars(c: Ref) returns (ret_0: Ref)
   var charZ: Ref
   box := con(charToRef(97))
   charA := charToRef(97)
-  unfold acc(c_CharBox_shared(box), wildcard)
+  unfold acc(_c_CharBox_shared(box), wildcard)
   anon := box.bf_char
   cond1 := boolToRef(charFromRef(charA) == charFromRef(anon))
   assert boolFromRef(cond1)
