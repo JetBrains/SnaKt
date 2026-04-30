@@ -1,7 +1,7 @@
-/return.kt:(214,215): error: Return locality mismatch: expected 'global', actual 'local(return local value explicitly)'.
+/return.kt: error: Return locality mismatch: expected 'global', actual 'local(return local value explicitly)'.
 
-/return.kt:(294,295): error: Return locality mismatch: expected 'global', actual 'local(return local value from expression body)'.
+/return.kt: error: Return locality mismatch: expected 'global', actual 'local(return local value from expression body)'.
 
-/return.kt:(382,383): error: Return locality mismatch: expected 'global', actual 'local(return local value from lambda body)'.
+/return.kt: error: Return locality mismatch: expected 'global', actual 'local(return local value from lambda body)'.
 
-/return.kt:(478,482): error: Return locality mismatch: expected 'global', actual 'local(return local receiver)'.
+/return.kt: error: Return locality mismatch: expected 'global', actual 'local(return local receiver)'.
