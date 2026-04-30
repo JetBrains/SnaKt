@@ -521,6 +521,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("call_anonymous.kt")
+    public void testCall_anonymous() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/call_anonymous.kt");
+    }
+
+    @Test
     @TestMetadata("call_with_context.kt")
     public void testCall_with_context() {
       runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/call_with_context.kt");
