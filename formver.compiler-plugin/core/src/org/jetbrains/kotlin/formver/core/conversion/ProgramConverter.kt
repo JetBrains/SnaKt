@@ -80,7 +80,7 @@ class ProgramConverter(
             domains = listOf(RuntimeTypeDomain(typeResolver)),
             // We need to deduplicate fields since public fields with the same name are represented differently
             // at `FieldEmbedding` level but map to the same Viper.
-            fields = SpecialFields.all.map { it.toViper() } + typeResolver.backingFields().distinctBy { it.name }
+            fields = typeResolver.backingFields().distinctBy { it.name }
                 .map { it.toViper() },
             functions = SpecialFunctions.all + functions.values.mapNotNull { it.viperFunction(typeResolver) }
                 .distinctBy { it.name },
@@ -214,7 +214,7 @@ class ProgramConverter(
      */
     private fun embedClass(symbol: FirRegularClassSymbol): ClassTypeEmbedding {
         val className = symbol.classId.embedName()
-        typeResolver.lookupEmbedding(className)?.let { return it }
+        typeResolver.lookupClassTypeEmbedding(className)?.let { return it }
 
         val embedding = typeResolver.getEmbeddingOrExecute(className) {
             val classEmbedding = buildClassPretype {
@@ -245,21 +245,27 @@ class ProgramConverter(
 
     override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding {
 
-        SpecialProperties.byCallableId[symbol.callableId]?.let {
-            return it
-        }
-
         if (symbol.receiverParameterSymbol != null) {
             return embedCustomProperty(symbol)
         } else {
+
             val name = symbol.embedMemberPropertyName()
             return typeResolver.getOrPutProperty(name) {
+
+                // Check if the symbol should receive a special treatment
+                with(typeResolver) {
+                    with(session) {
+                        SpecialProperties.lookup(symbol)?.let { return@getOrPutProperty it }
+                    }
+                }
+
+                // Check if the symbol can be represented using a backing field
                 embedBackingField(symbol)?.let {
                     return@getOrPutProperty PropertyEmbedding(
                         BackingFieldGetter(it), BackingFieldSetter(it)
                     )
                 }
-                embedType(symbol.dispatchReceiverType!!)
+                // Create a custom getter+setter
                 embedCustomProperty(symbol)
             }
         }
@@ -456,7 +462,7 @@ class ProgramConverter(
             Visibilities.isPrivate(symbol.visibility)
         )
         val fieldIsAllowed = symbol.hasBackingField && !symbol.isCustom && (symbol.isFinal || classSymbol.isFinal)
-        val backingField = scopedName.specialEmbedding(embedding, typeResolver) ?: fieldIsAllowed.ifTrue {
+        val backingField = fieldIsAllowed.ifTrue {
             UserFieldEmbedding(
                 scopedName,
                 embedType(symbol.resolvedReturnType),
