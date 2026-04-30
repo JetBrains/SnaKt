@@ -16,6 +16,8 @@
 
 /assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local cast-expression to global)'.
 
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local safe-cast-expression to global)'.
+
 /assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local not-null-expression to global)'.
 
 /assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local nested control-flow to global in loop)'.
@@ -25,3 +27,5 @@
 /assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local nested control-flow to global in lambda loop)'.
 
 /assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local nested control-flow to global in lambda loop)'.
+
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(unknown)'.
