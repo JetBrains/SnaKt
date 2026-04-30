@@ -1,0 +1,136 @@
+/casts.kt: info: Generated Viper text for smartcastReturn:
+method smartcastReturn(n: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(n), nullable(intType()))
+  ensures isSubtype(typeOf(ret), intType())
+{
+  if (!(n == nullValue())) {
+    ret := n
+  } else {
+    ret := intToRef(0)}
+  goto ret_0
+  label ret_0
+}
+
+/casts.kt: info: Generated Viper text for isNullOrEmptyWrong:
+method isNullOrEmptyWrong(seq: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(seq), nullable(kotlin_c_CharSequence()))
+  ensures isSubtype(typeOf(ret), boolType())
+{
+  inhale seq != nullValue() ==> acc(shared(seq), wildcard)
+  if (seq == nullValue()) {
+    var anon_0: Ref
+    if (seq != nullValue()) {
+      var anon_1: Ref
+      var anon: Ref
+      anon := length(seq)
+      anon_1 := anon
+      inhale isSubtype(typeOf(anon_1), intType())
+      anon_0 := anon_1
+    } else {
+      anon_0 := nullValue()}
+    ret := boolToRef(anon_0 == intToRef(0))
+  } else {
+    ret := boolToRef(false)}
+  goto ret_0
+  label ret_0
+}
+
+method length(this: Ref) returns (v_ret: Ref)
+
+
+/casts.kt: info: Generated Viper text for isNonNullable:
+method isNonNullable(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), nullable(intType()))
+  ensures isSubtype(typeOf(ret), boolType())
+{
+  ret := boolToRef(isSubtype(typeOf(x), intType()))
+  goto ret_0
+  label ret_0
+}
+
+/casts.kt: info: Generated Viper text for notIsNullable:
+method notIsNullable(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), nullable(intType()))
+  ensures isSubtype(typeOf(ret), boolType())
+{
+  ret := notBool(boolToRef(isSubtype(typeOf(x), nothingType())))
+  goto ret_0
+  label ret_0
+}
+
+/casts.kt: info: Generated Viper text for smartCast:
+method smartCast(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), nullable(anyType()))
+  ensures isSubtype(typeOf(ret), intType())
+{
+  if (isSubtype(typeOf(x), intType())) {
+    ret := x
+    goto ret_0
+  } else {
+    ret := intToRef(-1)
+    goto ret_0
+  }
+  label ret_0
+}
+
+/casts.kt: info: Generated Viper text for testAs:
+method testAs(foo: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(foo), _c_Foo())
+  ensures isSubtype(typeOf(ret), _c_Bar())
+  ensures acc(shared(ret), wildcard)
+{
+  inhale acc(c_Foo_shared(foo), wildcard)
+  inhale isSubtype(typeOf(foo), _c_Bar())
+  inhale acc(shared(foo), wildcard)
+  ret := foo
+  goto ret_0
+  label ret_0
+}
+
+/casts.kt: info: Generated Viper text for testNullableAs:
+method testNullableAs(foo: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(foo), nullable(_c_Foo()))
+  ensures isSubtype(typeOf(ret), nullable(_c_Bar()))
+  ensures ret != nullValue() ==> acc(shared(ret), wildcard)
+{
+  inhale foo != nullValue() ==> acc(c_Foo_shared(foo), wildcard)
+  inhale isSubtype(typeOf(foo), nullable(_c_Bar()))
+  inhale foo != nullValue() ==> acc(shared(foo), wildcard)
+  ret := foo
+  goto ret_0
+  label ret_0
+}
+
+/casts.kt: info: Generated Viper text for testSafeAs:
+method testSafeAs(foo: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(foo), _c_Foo())
+  ensures isSubtype(typeOf(ret), nullable(_c_Bar()))
+  ensures ret != nullValue() ==> acc(shared(ret), wildcard)
+{
+  inhale acc(c_Foo_shared(foo), wildcard)
+  if (isSubtype(typeOf(foo), _c_Bar())) {
+    ret := foo
+  } else {
+    ret := nullValue()}
+  inhale isSubtype(typeOf(ret), nullable(_c_Bar()))
+  inhale ret != nullValue() ==> acc(shared(ret), wildcard)
+  goto ret_0
+  label ret_0
+}
+
+/casts.kt: info: Generated Viper text for testNullableSafeAs:
+method testNullableSafeAs(foo: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(foo), nullable(_c_Foo()))
+  ensures isSubtype(typeOf(ret), nullable(_c_Bar()))
+  ensures ret != nullValue() ==> acc(shared(ret), wildcard)
+{
+  inhale foo != nullValue() ==> acc(c_Foo_shared(foo), wildcard)
+  if (isSubtype(typeOf(foo), _c_Bar())) {
+    ret := foo
+  } else {
+    ret := nullValue()}
+  inhale isSubtype(typeOf(ret), nullable(_c_Bar()))
+  inhale ret != nullValue() ==> acc(shared(ret), wildcard)
+  goto ret_0
+  label ret_0
+}

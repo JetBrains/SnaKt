@@ -1,0 +1,112 @@
+/literal_returns.kt: info: Generated Viper text for emptyFunction:
+function emptyAnnotatedFunction(): Ref
+  ensures isSubtype(typeOf(result), nullable(intType()))
+{
+  nullValue()
+}
+
+method emptyFunction() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  var x: Ref
+  x := emptyAnnotatedFunction()
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+/literal_returns.kt: info: Generated Viper text for emptyAnnotatedFunction:
+function emptyAnnotatedFunction(): Ref
+  ensures isSubtype(typeOf(result), nullable(intType()))
+{
+  nullValue()
+}
+
+/literal_returns.kt: info: Generated Viper text for annotatedIntLitReturn:
+function annotatedIntLitReturn(): Ref
+  ensures isSubtype(typeOf(result), intType())
+{
+  intToRef(42)
+}
+
+/literal_returns.kt: info: Generated Viper text for annotatedBoolLitReturn:
+function annotatedBoolLitReturn(): Ref
+  ensures isSubtype(typeOf(result), boolType())
+{
+  boolToRef(true)
+}
+
+/literal_returns.kt: info: Generated Viper text for annotatedCharLitReturn:
+function annotatedCharLitReturn(): Ref
+  ensures isSubtype(typeOf(result), charType())
+{
+  charToRef(65)
+}
+
+/literal_returns.kt: info: Generated Viper text for annotatedStringLitReturn:
+function annotatedStringLitReturn(): Ref
+  ensures isSubtype(typeOf(result), stringType())
+{
+  stringToRef(Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116))
+}
+
+/literal_returns.kt: info: Generated Viper text for annotatedReferenceReturn:
+field a: Ref
+
+field b: Ref
+
+function annotatedReferenceReturn(x: Ref): Ref
+  requires acc(shared(x), wildcard)
+  requires isSubtype(typeOf(x), _c_X())
+  ensures isSubtype(typeOf(result), _c_X())
+{
+  x
+}
+
+/literal_returns.kt: info: Generated Viper text for verifiedAnnotatedIntLitReturn:
+function verifiedAnnotatedIntLitReturn(par_arg: Ref): Ref
+  requires isSubtype(typeOf(par_arg), intType())
+  requires true
+  requires intFromRef(par_arg) >= 42
+  requires intFromRef(par_arg) <= 42
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == 42
+  ensures (forall anon: Int ::
+      { anon == intFromRef(result) }
+      anon == intFromRef(result) ==> anon == intFromRef(par_arg))
+{
+  intToRef(42)
+}
+
+/literal_returns.kt: info: Generated Viper text for verifiedAnnotatedBoolLitReturn:
+function verifiedAnnotatedBoolLitReturn(par_arg: Ref): Ref
+  requires isSubtype(typeOf(par_arg), intType())
+  requires intFromRef(par_arg) <= 0
+  requires intFromRef(par_arg) >= 0
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result)
+  ensures intFromRef(par_arg) == 0
+{
+  boolToRef(true)
+}
+
+/literal_returns.kt: info: Generated Viper text for verifiedAnnotatedCharLitReturn:
+function verifiedAnnotatedCharLitReturn(par_arg: Ref): Ref
+  requires isSubtype(typeOf(par_arg), stringType())
+  requires stringFromRef(par_arg) ==
+    Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116)
+  ensures isSubtype(typeOf(result), charType())
+  ensures charFromRef(result) == 65
+{
+  charToRef(65)
+}
+
+/literal_returns.kt: info: Generated Viper text for verifiedAnnotatedStringLitReturn:
+function verifiedAnnotatedStringLitReturn(par_arg: Ref): Ref
+  requires isSubtype(typeOf(par_arg), boolType())
+  requires boolFromRef(par_arg)
+  ensures isSubtype(typeOf(result), stringType())
+  ensures stringFromRef(result) ==
+    Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116)
+{
+  stringToRef(Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116))
+}

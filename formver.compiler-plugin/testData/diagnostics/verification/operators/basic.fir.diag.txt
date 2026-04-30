@@ -1,0 +1,208 @@
+/basic.kt: info: Generated Viper text for addition:
+method addition(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  var y: Ref
+  y := plusInts(x, x)
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+/basic.kt: info: Generated Viper text for subtraction:
+method subtraction(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  var y: Ref
+  y := minusInts(x, x)
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+/basic.kt: info: Generated Viper text for multiplication:
+method multiplication(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  var y: Ref
+  y := timesInts(x, x)
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+/basic.kt: info: Generated Viper text for division:
+method division(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  var y: Ref
+  y := divInts(x, x)
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+/basic.kt: info: Generated Viper text for remainder:
+method remainder(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  var y: Ref
+  y := remInts(x, x)
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+/basic.kt: info: Generated Viper text for unary_minus:
+method unary_minus(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  var y: Ref
+  y := negInt(x)
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+/basic.kt: info: Generated Viper text for less:
+method less(x: Ref, y: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(ret), boolType())
+{
+  ret := ltInts(x, y)
+  goto ret_0
+  label ret_0
+}
+
+/basic.kt: info: Generated Viper text for lessEqual:
+method lessEqual(x: Ref, y: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(ret), boolType())
+{
+  ret := leInts(x, y)
+  goto ret_0
+  label ret_0
+}
+
+/basic.kt: info: Generated Viper text for greater:
+method greater(x: Ref, y: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(ret), boolType())
+{
+  ret := gtInts(x, y)
+  goto ret_0
+  label ret_0
+}
+
+/basic.kt: info: Generated Viper text for greaterEqual:
+method greaterEqual(x: Ref, y: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(ret), boolType())
+{
+  ret := geInts(x, y)
+  goto ret_0
+  label ret_0
+}
+
+/basic.kt: info: Generated Viper text for negation:
+method negation(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), boolType())
+  ensures isSubtype(typeOf(ret), boolType())
+{
+  ret := notBool(x)
+  goto ret_0
+  label ret_0
+}
+
+/basic.kt: info: Generated Viper text for conjunction:
+method conjunction(x: Ref, y: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), boolType())
+  requires isSubtype(typeOf(y), boolType())
+  ensures isSubtype(typeOf(ret), boolType())
+{
+  if (boolFromRef(x)) {
+    ret := y
+  } else {
+    ret := boolToRef(false)}
+  goto ret_0
+  label ret_0
+}
+
+/basic.kt: info: Generated Viper text for conjunctionSideEffects:
+method conjunctionSideEffects(x: Ref, y: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), boolType())
+  requires isSubtype(typeOf(y), boolType())
+  ensures isSubtype(typeOf(ret_0), boolType())
+{
+  var anon: Ref
+  anon := negation(x)
+  if (boolFromRef(anon)) {
+    ret_0 := negation(y)
+  } else {
+    ret_0 := boolToRef(false)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method negation(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), boolType())
+  ensures isSubtype(typeOf(ret), boolType())
+
+
+/basic.kt: info: Generated Viper text for disjunction:
+method disjunction(x: Ref, y: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), boolType())
+  requires isSubtype(typeOf(y), boolType())
+  ensures isSubtype(typeOf(ret), boolType())
+{
+  if (boolFromRef(x)) {
+    ret := boolToRef(true)
+  } else {
+    ret := y}
+  goto ret_0
+  label ret_0
+}
+
+/basic.kt: info: Generated Viper text for test_simple:
+method test_simple() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  var x: Ref
+  var anon_0: Ref
+  var anon: Ref
+  x := intToRef(10)
+  anon_0 := x
+  x := plusInts(anon_0, intToRef(1))
+  anon := x
+  x := minusInts(anon, intToRef(1))
+  x := plusInts(x, intToRef(1))
+  x := minusInts(x, intToRef(1))
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+/basic.kt: info: Generated Viper text for test_postincvrement:
+method test_postincvrement() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  var x: Ref
+  var first: Ref
+  var anon_0: Ref
+  var second: Ref
+  var anon: Ref
+  var unary: Ref
+  x := intToRef(10)
+  anon_0 := x
+  x := plusInts(anon_0, intToRef(1))
+  first := anon_0
+  anon := x
+  x := minusInts(anon, intToRef(1))
+  second := anon
+  unary := x
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
