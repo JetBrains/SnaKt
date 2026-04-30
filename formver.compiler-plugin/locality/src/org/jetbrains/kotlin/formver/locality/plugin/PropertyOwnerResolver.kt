@@ -45,22 +45,15 @@ class PropertyOwnerResolver(
             declaration.declaresProperty(property)
         }
 
-    private data class CacheKey(
-        val property: FirProperty,
-        val outerDeclarationSymbols: List<FirBasedSymbol<*>>,
-    )
-
-    private val cache = cachesFactory.createCache { key: CacheKey, context: CheckerContext ->
-        val property = key.property
-
+    private val cache = cachesFactory.createCache { key: FirProperty, context: CheckerContext ->
         with(context) {
-            findOwnerOf(property)
+            findOwnerOf(key)
         }
     }
 
     context(context: CheckerContext)
     fun resolveOwnerOf(property: FirProperty): FirBasedSymbol<*>? =
-        cache.getValue(CacheKey(property, context.containingDeclarations), context)
+        cache.getValue(property, context)
 }
 
 val FirSession.propertyOwnerResolver: PropertyOwnerResolver
