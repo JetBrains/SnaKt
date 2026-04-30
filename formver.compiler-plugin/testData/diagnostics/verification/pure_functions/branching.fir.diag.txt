@@ -1,4 +1,4 @@
-/pure_function_with_branching.kt: info: Generated Viper text for noAssignmentInBlocks:
+/branching.kt: info: Generated Viper text for noAssignmentInBlocks:
 function noAssignmentInBlocks(a: Ref): Ref
   requires isSubtype(typeOf(a), boolType())
   ensures isSubtype(typeOf(result), intType())
@@ -10,7 +10,7 @@ function noAssignmentInBlocks(a: Ref): Ref
       l0_result_1))
 }
 
-/pure_function_with_branching.kt: info: Generated Viper text for simpleBranching:
+/branching.kt: info: Generated Viper text for simpleBranching:
 function simpleBranching(a: Ref): Ref
   requires isSubtype(typeOf(a), boolType())
   ensures isSubtype(typeOf(result), intType())
@@ -26,7 +26,7 @@ function simpleBranching(a: Ref): Ref
           l0_result_3))))
 }
 
-/pure_function_with_branching.kt: info: Generated Viper text for nestedBranching:
+/branching.kt: info: Generated Viper text for nestedBranching:
 function nestedBranching(a: Ref, b: Ref): Ref
   requires isSubtype(typeOf(a), boolType())
   requires isSubtype(typeOf(b), boolType())
@@ -69,7 +69,7 @@ function nestedBranching(a: Ref, b: Ref): Ref
                         l0_result_10)))))))))))
 }
 
-/pure_function_with_branching.kt: info: Generated Viper text for whenExpressionSimple:
+/branching.kt: info: Generated Viper text for whenExpressionSimple:
 function whenExpressionSimple(x: Ref): Ref
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(result), intType())
@@ -93,7 +93,7 @@ function whenExpressionSimple(x: Ref): Ref
                 plusInts(y_4, intToRef(1)))))))))
 }
 
-/pure_function_with_branching.kt: info: Generated Viper text for whenNoArgumentBranching:
+/branching.kt: info: Generated Viper text for whenNoArgumentBranching:
 function whenNoArgumentBranching(x: Ref, y: Ref): Ref
   requires isSubtype(typeOf(x), intType())
   requires isSubtype(typeOf(y), intType())
@@ -114,7 +114,7 @@ function whenNoArgumentBranching(x: Ref, y: Ref): Ref
           z_0))))
 }
 
-/pure_function_with_branching.kt: info: Generated Viper text for stringEqualityBranching:
+/branching.kt: info: Generated Viper text for stringEqualityBranching:
 function stringEqualityBranching(input: Ref): Ref
   requires isSubtype(typeOf(input), stringType())
   ensures isSubtype(typeOf(result), boolType())
@@ -144,7 +144,7 @@ function stringEqualityBranching(input: Ref): Ref
               isValid_4))))))
 }
 
-/pure_function_with_branching.kt: info: Generated Viper text for sequentialIfWithMutation:
+/branching.kt: info: Generated Viper text for sequentialIfWithMutation:
 function sequentialIfWithMutation(): Ref
   ensures isSubtype(typeOf(result), intType())
 {
@@ -159,7 +159,7 @@ function sequentialIfWithMutation(): Ref
           (intFromRef(x_3) == 2 ? intToRef(100) : intToRef(0))))))
 }
 
-/pure_function_with_branching.kt: info: Generated Viper text for complexBooleanReturn:
+/branching.kt: info: Generated Viper text for complexBooleanReturn:
 function complexBooleanReturn(x: Ref): Ref
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(result), boolType())
@@ -179,4 +179,70 @@ function complexBooleanReturn(x: Ref): Ref
               (boolFromRef(l0_result_3) ?
                 boolToRef(false) :
                 boolToRef(true))))))))
+}
+
+/branching.kt: info: Generated Viper text for safeDivide:
+function safeDivide(x: Ref, y: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let l0_res_0 ==
+    (intToRef(0)) in
+    (let l0_res_1 ==
+      ((!(intFromRef(y) == 0) ? divInts(x, y) : null)) in
+      (let l0_res_2 ==
+        ((!(intFromRef(y) == 0) ? l0_res_1 : l0_res_0)) in
+        l0_res_2)))
+}
+
+/branching.kt: info: Generated Viper text for getStringLength:
+function getStringLength(obj: Ref): Ref
+  requires isSubtype(typeOf(obj), anyType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let l0_len_0 ==
+    (intToRef(-1)) in
+    (let l0_len_1 ==
+      ((isSubtype(typeOf(obj), stringType()) ? stringLength(obj) : null)) in
+      (let l0_len_2 ==
+        ((isSubtype(typeOf(obj), stringType()) ? l0_len_1 : l0_len_0)) in
+        l0_len_2)))
+}
+
+/branching.kt: info: Generated Viper text for safeNestedDivide:
+function safeNestedDivide(x: Ref, y: Ref, z: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  requires isSubtype(typeOf(z), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let l0_res_0 ==
+    (intToRef(0)) in
+    (let l0_res_1 ==
+      ((!(intFromRef(z) == 0) && !(intFromRef(y) == 0) ?
+        divInts(divInts(x, y), z) :
+        null)) in
+      (let l0_res_2 ==
+        ((!(intFromRef(z) == 0) ? l0_res_1 : l0_res_0)) in
+        (let l0_res_3 ==
+          ((!(intFromRef(y) == 0) ? l0_res_2 : l0_res_0)) in
+          l0_res_3))))
+}
+
+/branching.kt: info: Generated Viper text for safeInverseDifference:
+function safeInverseDifference(x: Ref, y: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let l0_res_0 ==
+    (intToRef(0)) in
+    (let l0_res_1 ==
+      ((!(intFromRef(x) == intFromRef(y)) ?
+        divInts(intToRef(100), minusInts(x, y)) :
+        null)) in
+      (let l0_res_2 ==
+        ((!(intFromRef(x) == intFromRef(y)) ? l0_res_1 : l0_res_0)) in
+        l0_res_2)))
 }

@@ -1,7 +1,35 @@
 // FULL_JDK
-import org.jetbrains.kotlin.formver.plugin.NeverConvert
+
 import org.jetbrains.kotlin.formver.plugin.AlwaysVerify
+import org.jetbrains.kotlin.formver.plugin.NeverConvert
 import org.jetbrains.kotlin.formver.plugin.verify
+
+interface Foo {
+    var varProp: Int
+    val valProp: Int
+}
+
+fun <!VIPER_TEXT!>testProperties<!>(foo: Foo) {
+    foo.varProp = 0
+    val x = foo.varProp + foo.valProp
+}
+
+interface First {
+    val number: Int
+        get() = 1
+}
+
+interface Second {
+    val number: Int
+        get() = 2
+}
+
+class Impl(override val number: Int) : First, Second
+
+fun <!VIPER_TEXT!>createImpl<!>() {
+    val impl = Impl(-1)
+    val implField = impl.number
+}
 
 /*
 All parent classes are enumerated in this test to
@@ -85,7 +113,7 @@ fun <!VIPER_TEXT!>createImpls<!>() {
     val start3 = impl3.field + 1 - 1
     take3(impl3)
 
-    //TODO: it seems that we should be able to prove start == finish here
+    // TODO: it seems that we should be able to prove start == finish here
     val impl24 = Impl24()
     val start24 = impl24.field + 1 - 1
     take2(impl24)
@@ -111,4 +139,47 @@ fun <!VIPER_TEXT!>createImpls<!>() {
         cond4,
         cond5,
     )
+}
+
+interface A {
+    val field: Int
+        get() = 0
+}
+
+interface B : A
+
+abstract class C : A {
+    override val field = 0
+}
+
+class D : B, C()
+
+fun <!VIPER_TEXT!>testDiamond<!>() = D().field
+
+interface E {
+    val field: Any
+}
+
+abstract class F {
+    open var field: Int = 0
+}
+
+abstract class H {
+    var field: Int = 0
+        set(value) {
+            Unit
+        }
+}
+
+class G : E, F()
+class I : E, H()
+
+fun <!VIPER_TEXT!>testVarVal<!>() {
+    val g = G()
+    g.field
+    g.field = 1
+
+    val i = I()
+    i.field
+    i.field = 1
 }

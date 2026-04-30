@@ -1,3 +1,64 @@
+/custom_run_functions.kt: info: Generated Viper text for quadruple:
+method quadruple(x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret_0), intType())
+{
+  var anon_0: Ref
+  var ret_1: Ref
+  var l1_y: Ref
+  var anon: Ref
+  var ret: Ref
+  var y: Ref
+  l1_y := plusInts(x, x)
+  ret_1 := l1_y
+  goto lbl_ret_1
+  label lbl_ret_1
+  anon_0 := ret_1
+  y := plusInts(x, x)
+  ret := y
+  goto ret_2
+  label ret_2
+  anon := ret
+  ret_0 := plusInts(anon_0, anon)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/custom_run_functions.kt: info: Generated Viper text for useBranching:
+method useBranching() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), intType())
+{
+  var anon_2: Ref
+  var ret_1: Ref
+  var anon_0: Ref
+  var anon_3: Ref
+  var ret: Ref
+  var anon: Ref
+  anon_0 := boolToRef(false)
+  if (boolFromRef(anon_0)) {
+    ret_1 := intToRef(1)
+    goto lbl_ret_1
+  } else {
+    ret_1 := intToRef(0)
+    goto lbl_ret_1
+  }
+  label lbl_ret_1
+  anon_2 := ret_1
+  anon := boolToRef(true)
+  if (boolFromRef(anon)) {
+    ret := intToRef(1)
+    goto ret_2
+  } else {
+    ret := intToRef(0)
+    goto ret_2
+  }
+  label ret_2
+  anon_3 := ret
+  ret_0 := plusInts(anon_2, anon_3)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
 /custom_run_functions.kt: info: Generated Viper text for useRun:
 field size: Ref
 
