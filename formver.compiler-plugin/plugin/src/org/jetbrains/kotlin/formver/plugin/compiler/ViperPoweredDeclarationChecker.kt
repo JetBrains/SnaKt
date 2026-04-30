@@ -116,7 +116,7 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
             }
 
         } catch (e: SnaktInternalException) {
-            reporter.reportOn(e.source, PluginErrors.INTERNAL_ERROR, e.message)
+            reporter.reportOn(e.source ?: declaration.source, PluginErrors.INTERNAL_ERROR, e.message)
         } catch (e: Exception) {
             val error = e.message ?: "No message provided"
             reporter.reportOn(declaration.source, PluginErrors.INTERNAL_ERROR, error)

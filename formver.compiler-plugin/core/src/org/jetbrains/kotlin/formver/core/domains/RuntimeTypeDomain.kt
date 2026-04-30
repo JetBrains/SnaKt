@@ -291,6 +291,10 @@ class RuntimeTypeDomain(
     private val validAdts: List<AdtTypeEmbedding> = adts.filter { it.isInitialized }
     val adtClassTypes: Map<AdtTypeEmbedding, DomainFunc> = validAdts.associateWith { classTypeFunc(it.name) }
     private val adtInjections: List<Injection> = validAdts.map { it.injection }
+    // Invalid ADTs are excluded from nonNullableTypes (no axioms generated for them), but their
+    // type functions must still be registered so that functions referencing them pass consistency checks.
+    private val invalidAdtTypeFuncs: List<DomainFunc> =
+        adts.filterNot { it.isInitialized }.map { classTypeFunc(it.name) }
     val builtinTypes: List<DomainFunc> =
         listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType)
     val nonNullableTypes: List<DomainFunc> = buildList {
@@ -301,7 +305,8 @@ class RuntimeTypeDomain(
     override val functions: List<DomainFunc> = nonNullableTypes + listOf(
         nullValue, unitValue, isSubtype, typeOf, nullable
     ) + primitiveTypeInjections.flatMap { listOf(it.toRef, it.fromRef) } +
-        adtInjections.flatMap { listOf(it.toRef, it.fromRef) }
+        adtInjections.flatMap { listOf(it.toRef, it.fromRef) } +
+        invalidAdtTypeFuncs
     override val axioms: List<DomainAxiom> = AxiomListBuilder.build(this) {
         axiom("subtypeReflexive") {
             Exp.forall(t) { t -> t subtype t }

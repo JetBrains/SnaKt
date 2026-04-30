@@ -1,16 +1,16 @@
-/singleton.kt:(68,90): error: Invalid ADT annotation: @ADT may only be applied to data object declarations
+/singleton.kt: error: Invalid ADT annotation: @ADT may only be applied to data object declarations
 
-/singleton.kt:(97,117): error: Invalid ADT annotation: @ADT may only be applied to data object declarations
+/singleton.kt: error: Invalid ADT annotation: @ADT may only be applied to data object declarations
 
-/singleton.kt:(129,145): error: Invalid ADT annotation: An @ADT data object must not have fields
+/singleton.kt: error: Invalid ADT annotation: An @ADT data object must not have fields
 
-/singleton.kt:(181,200): error: Invalid ADT annotation: An @ADT data object must not have member functions
+/singleton.kt: error: Invalid ADT annotation: An @ADT data object must not have member functions
 
-/singleton.kt:(181,200): error: Invalid ADT annotation: An @ADT data object must not have member functions
+/singleton.kt: error: Invalid ADT annotation: An @ADT data object must not have member functions
 
-/singleton.kt:(211,222): info: Generated Viper text for doSomething:
+/singleton.kt: info: Generated Viper text for doSomething:
 method doSomething(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), c_WithFunction())
+  requires isSubtype(typeOf(this), _c_WithFunction())
   ensures isSubtype(typeOf(ret), intType())
 {
   ret := intToRef(1)
@@ -18,9 +18,9 @@ method doSomething(this: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/singleton.kt:(272,292): error: Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface
+/singleton.kt: error: Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface
 
-/singleton.kt:(338,356): info: Generated Viper text for triggerNotAnObject:
+/singleton.kt: info: Generated Viper text for triggerNotAnObject:
 method triggerNotAnObject(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), NotAnObject())
   ensures isSubtype(typeOf(ret), unitType())
@@ -29,7 +29,7 @@ method triggerNotAnObject(x: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/singleton.kt:(380,400): info: Generated Viper text for triggerNotDataObject:
+/singleton.kt: info: Generated Viper text for triggerNotDataObject:
 method triggerNotDataObject(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), NotDataObject())
   ensures isSubtype(typeOf(ret), unitType())
@@ -38,7 +38,7 @@ method triggerNotDataObject(x: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/singleton.kt:(426,442): info: Generated Viper text for triggerWithField:
+/singleton.kt: info: Generated Viper text for triggerWithField:
 method triggerWithField(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), WithField())
   ensures isSubtype(typeOf(ret), unitType())
@@ -47,7 +47,7 @@ method triggerWithField(x: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/singleton.kt:(464,483): info: Generated Viper text for triggerWithFunction:
+/singleton.kt: info: Generated Viper text for triggerWithFunction:
 method triggerWithFunction(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), WithFunction())
   ensures isSubtype(typeOf(ret), unitType())
@@ -56,7 +56,7 @@ method triggerWithFunction(x: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/singleton.kt:(508,528): info: Generated Viper text for triggerWithSupertype:
+/singleton.kt: info: Generated Viper text for triggerWithSupertype:
 method triggerWithSupertype(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), WithSupertype())
   ensures isSubtype(typeOf(ret), unitType())
@@ -65,7 +65,7 @@ method triggerWithSupertype(x: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/singleton.kt:(555,569): info: Generated Viper text for validParameter:
+/singleton.kt: info: Generated Viper text for validParameter:
 method validParameter(a: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(a), rt_c_pkg__c_Valid())
   ensures isSubtype(typeOf(ret), unitType())
@@ -78,7 +78,7 @@ adt adt_c_pkg__c_Valid {
   c_pkg__c_Valid()
 }
 
-/singleton.kt:(588,606): info: Generated Viper text for validLocalVariable:
+/singleton.kt: info: Generated Viper text for validLocalVariable:
 method validLocalVariable() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 {

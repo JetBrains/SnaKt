@@ -1,4 +1,4 @@
-/singleton.kt:(309,317): info: Generated Viper text for adtIsAny:
+/singleton.kt: info: Generated Viper text for adtIsAny:
 method adtIsAny(par_r: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(par_r), rt_c_pkg__c_Red())
   ensures isSubtype(typeOf(ret), rt_c_pkg__c_Red())
@@ -13,4 +13,4 @@ adt adt_c_pkg__c_Red {
   c_pkg__c_Red()
 }
 
-/singleton.kt:(366,376): warning: Check for instance is always 'true'.
+/singleton.kt: warning: Check for instance is always 'true'.
