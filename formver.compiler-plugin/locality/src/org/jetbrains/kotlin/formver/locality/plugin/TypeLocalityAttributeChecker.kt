@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.locality.plugin
 
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.reportOn
+import org.jetbrains.kotlin.fir.FirFunctionTypeParameter
 import org.jetbrains.kotlin.fir.declarations.FirReceiverParameter
 import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
@@ -14,6 +15,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.type.FirResolvedTypeRefChecker
 import org.jetbrains.kotlin.fir.declarations.FirProperty
 import org.jetbrains.kotlin.fir.declarations.FirValueParameter
 import org.jetbrains.kotlin.fir.declarations.isLocal
+import org.jetbrains.kotlin.fir.types.FirFunctionTypeRef
 import org.jetbrains.kotlin.fir.types.FirResolvedTypeRef
 
 object TypeLocalityAttributeChecker : FirResolvedTypeRefChecker(MppCheckerKind.Common) {
@@ -22,6 +24,8 @@ object TypeLocalityAttributeChecker : FirResolvedTypeRefChecker(MppCheckerKind.C
 
         return target is FirValueParameter ||
                 target is FirReceiverParameter ||
+                target is FirFunctionTypeRef ||
+                target is FirFunctionTypeParameter ||
                 (target is FirProperty && target.isLocal)
     }
 

@@ -12,17 +12,28 @@ import org.jetbrains.kotlin.fir.declarations.FirReceiverParameter
 import org.jetbrains.kotlin.fir.declarations.FirValueParameter
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
+import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.types.coneType
 
-private inline fun FirTypeRef.resolveLocality(findOwner: () -> FirBasedSymbol<*>?): Locality {
-    if (coneType.attributes.locality == null) return Locality.Global
+private inline fun ConeKotlinType.resolveLocality(findOwner: () -> FirBasedSymbol<*>?): Locality {
+    if (attributes.locality == null) return Locality.Global
 
     return Locality.Local(findOwner())
 }
 
+private inline fun FirTypeRef.resolveLocality(findOwner: () -> FirBasedSymbol<*>?): Locality =
+    coneType.resolveLocality(findOwner)
+
 private fun CheckerContext.findClosestFunction(): FirBasedSymbol<*>? =
     findClosest<FirFunctionSymbol<*>>()
+
+/**
+ * Resolves the locality required for a type used in an invocation position.
+ */
+context(context: CheckerContext)
+fun ConeKotlinType.resolveRequiredLocality(): Locality =
+    resolveLocality { context.findClosestFunction() }
 
 /**
  * Resolves the locality required for the receiver parameter of a function upon its invocation.
