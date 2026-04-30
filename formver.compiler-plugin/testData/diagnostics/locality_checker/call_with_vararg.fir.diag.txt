@@ -1,0 +1,7 @@
+/call_with_vararg.kt: error: Argument locality mismatch: expected 'global', actual 'local(control pass local as shared regular argument)'.
+
+/call_with_vararg.kt: error: Argument locality mismatch: expected 'global', actual 'local(pass local as shared vararg argument)'.
+
+/call_with_vararg.kt: error: Argument locality mismatch: expected 'global', actual 'local(pass local as first of multiple shared vararg arguments)'.
+
+/call_with_vararg.kt: error: Argument locality mismatch: expected 'global', actual 'local(pass borrowed array as spread vararg argument)'.

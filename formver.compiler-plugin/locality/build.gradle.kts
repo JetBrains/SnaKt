@@ -4,9 +4,7 @@ plugins {
 
 dependencies {
     compileOnly(kotlin("compiler"))
-    implementation(project(":formver.common"))
-    implementation(project(":formver.compiler-plugin:plugin"))
-    implementation(project(":formver.compiler-plugin:locality"))
+    compileOnly("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.7")
 }
 
 sourceSets {

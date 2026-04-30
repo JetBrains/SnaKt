@@ -515,21 +515,51 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("call.kt")
+    public void testCall() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/call.kt");
+    }
+
+    @Test
+    @TestMetadata("call_with_context.kt")
+    public void testCall_with_context() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/call_with_context.kt");
+    }
+
+    @Test
+    @TestMetadata("call_with_vararg.kt")
+    public void testCall_with_vararg() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/call_with_vararg.kt");
+    }
+
+    @Test
     @TestMetadata("default_argument.kt")
     public void testDefault_argument() {
       runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/default_argument.kt");
     }
 
     @Test
-    @TestMetadata("pass_local.kt")
-    public void testPass_local() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/pass_local.kt");
+    @TestMetadata("invalid.kt")
+    public void testInvalid() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/invalid.kt");
     }
 
     @Test
-    @TestMetadata("return_local.kt")
-    public void testReturn_local() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/return_local.kt");
+    @TestMetadata("nested_scope.kt")
+    public void testNested_scope() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/nested_scope.kt");
+    }
+
+    @Test
+    @TestMetadata("return.kt")
+    public void testReturn() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/return.kt");
+    }
+
+    @Test
+    @TestMetadata("throw.kt")
+    public void testThrow() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/throw.kt");
     }
   }
 

@@ -7,9 +7,9 @@ package org.jetbrains.kotlin.formver.plugin.compiler
 
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.diagnostics.*
-import org.jetbrains.kotlin.formver.plugin.compiler.locality.Locality
 
 object PluginErrors : KtDiagnosticsContainer() {
+    val VIPER_VERIFICATION_ERROR by warning1<PsiElement, String>()
     val VIPER_TEXT by info2<PsiElement, String, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
     val EXP_EMBEDDING by info2<PsiElement, String, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
     val INTERNAL_ERROR by error1<PsiElement, String>()
@@ -17,7 +17,6 @@ object PluginErrors : KtDiagnosticsContainer() {
     val PURITY_VIOLATION by error1<PsiElement, String>()
     val UNIQUENESS_VIOLATION by error1<PsiElement, String>()
     val UNIQUENESS_CFG by info1<PsiElement, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
-    val LOCALITY_VIOLATION by error3<PsiElement, String, Locality, Locality>()
     override fun getRendererFactory() = FormalVerificationPluginErrorMessages
 }
 
@@ -28,6 +27,11 @@ object VerificationErrors : KtDiagnosticsContainer() {
     val POSSIBLE_INDEX_OUT_OF_BOUND by warning2<PsiElement, String, String>()
     val UNEXPECTED_RETURNED_VALUE by warning1<PsiElement, String>()
     val INVALID_SUBLIST_RANGE by warning2<PsiElement, String, String>()
+    val PURITY_VIOLATION by error1<PsiElement, String>()
+
+    val UNIQUENESS_VIOLATION by error1<PsiElement, String>()
+    val UNIQUENESS_CFG by info1<PsiElement, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
+
     override fun getRendererFactory() = FormalVerificationPluginErrorMessages
     fun tags() = listOf(
         CONDITIONAL_EFFECT_ERROR.name,
