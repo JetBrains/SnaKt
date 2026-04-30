@@ -24,24 +24,7 @@ data class ClassTypeEmbedding(override val name: ScopedName) : PretypeEmbedding 
 
     override val runtimeType: Exp = this.embedClassTypeFunc()()
 
-    val sharedPredicateName = ScopedName(name.asScope(), PredicateName("shared"))
     val uniquePredicateName = ScopedName(name.asScope(), PredicateName("unique"))
-
-    context(ctx: TypeResolver)
-    fun sharedPredicate(): Predicate = ClassPredicateBuilder.build(name, sharedPredicateName) {
-        forEachField {
-            if (isAlwaysReadable) {
-                addAccessPermissions(PermExp.WildcardPerm())
-                forType {
-                    addAccessToSharedPredicate()
-                    includeSubTypeInvariants()
-                }
-            }
-        }
-        forEachSuperType {
-            addAccessToSharedPredicate()
-        }
-    }
 
     context(ctx: TypeResolver)
     fun uniquePredicate(): Predicate = ClassPredicateBuilder.build(name, uniquePredicateName) {
@@ -52,7 +35,6 @@ data class ClassTypeEmbedding(override val name: ScopedName) : PretypeEmbedding 
                 addAccessPermissions(PermExp.FullPerm())
             }
             forType {
-                addAccessToSharedPredicate()
                 if (isUnique) {
                     addAccessToUniquePredicate()
                 }
@@ -68,9 +50,6 @@ data class ClassTypeEmbedding(override val name: ScopedName) : PretypeEmbedding 
         ctx.flatMapUniqueFields(name) { field ->
             field.accessInvariantsForParameter()
         }
-
-    override fun sharedPredicateAccessInvariant(ctx: TypeResolver) =
-        PredicateAccessTypeInvariantEmbedding(sharedPredicateName, PermExp.WildcardPerm())
 
     override fun uniquePredicateAccessInvariant(ctx: TypeResolver) =
         PredicateAccessTypeInvariantEmbedding(uniquePredicateName, PermExp.FullPerm())

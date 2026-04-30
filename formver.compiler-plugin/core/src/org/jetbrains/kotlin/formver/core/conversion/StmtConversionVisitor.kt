@@ -366,7 +366,6 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         val condition = data.convert(whileLoop.condition).withType { boolean() }
         val invariants = buildList {
             data.retrievePropertiesAndParameters().forEach {
-                addIfNotNull(it.sharedPredicateAccessInvariant(data.typeResolver))
                 addAll(it.provenInvariants())
             }
             extractLoopInvariants(whileLoop.block)?.let {

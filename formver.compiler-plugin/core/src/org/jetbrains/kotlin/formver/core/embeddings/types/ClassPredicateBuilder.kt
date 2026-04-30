@@ -90,11 +90,6 @@ class TypeInvariantsBuilder(private val type: TypeEmbedding) {
     fun toInvariantsList() = invariants.toList()
 
     context(ctx: TypeResolver)
-    fun addAccessToSharedPredicate() = invariants.addIfNotNull(
-        type.sharedPredicateAccessInvariant(ctx)
-    )
-
-    context(ctx: TypeResolver)
     fun addAccessToUniquePredicate() = invariants.addIfNotNull(
         type.uniquePredicateAccessInvariant(ctx)
     )

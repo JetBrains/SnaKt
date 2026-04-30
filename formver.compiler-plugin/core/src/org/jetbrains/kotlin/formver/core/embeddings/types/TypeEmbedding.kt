@@ -49,16 +49,6 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
             returns {
                 Type.Ref
             }
-            sharedPredicateAccessInvariant(ctx)?.let {
-                postcondition {
-                    it.fillHole(
-                        PlaceholderVariableEmbedding(
-                            PlaceholderReturnVariableName,
-                            this@TypeEmbedding.pretype.asTypeEmbedding()
-                        )
-                    ).pureToViper(toBuiltin = true, ctx)
-                }
-            }
             postcondition {
                 RuntimeTypeDomain.typeOf(Exp.LocalVar(PlaceholderReturnVariableName, Type.Ref))
                     .subtype(this@TypeEmbedding.runtimeType)
@@ -86,9 +76,6 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
         flags.adjustManyInvariants(pretype.accessInvariants(ctx))
 
     override fun pureInvariants(): List<TypeInvariantEmbedding> = flags.adjustManyInvariants(pretype.pureInvariants())
-
-    override fun sharedPredicateAccessInvariant(ctx: TypeResolver): TypeInvariantEmbedding? =
-        flags.adjustOptionalInvariant(pretype.sharedPredicateAccessInvariant(ctx))
 
     override fun uniquePredicateAccessInvariant(ctx: TypeResolver): TypeInvariantEmbedding? =
         flags.adjustOptionalInvariant(pretype.uniquePredicateAccessInvariant(ctx))

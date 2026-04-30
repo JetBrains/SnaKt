@@ -96,7 +96,7 @@ class ProgramConverter(
             predicates = typeResolver.classTypeEmbeddings().flatMap {
                 with(typeResolver) {
                     listOf(
-                        it.sharedPredicate(), it.uniquePredicate()
+                        it.uniquePredicate()
                     )
                 }
             },

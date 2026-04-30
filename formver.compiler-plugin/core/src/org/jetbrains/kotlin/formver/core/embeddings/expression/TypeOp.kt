@@ -94,7 +94,6 @@ class InhaleInvariantsBuilder(val exp: ExpEmbedding) {
         if (proven) exp.type.subTypeInvariant().let { invariants.add(it) }
         if (access) {
             invariants.addAll(exp.type.accessInvariants(ctx))
-            invariants.addIfNotNull(exp.type.sharedPredicateAccessInvariant(ctx))
         }
         return when (exp.underlyingVariable) {
             null -> InhaleInvariantsForExp(exp, invariants)
