@@ -1,0 +1,1 @@
+/pure_function_with_heap_dependent_expressions.kt: warning: Viper verification error: Function might not be well-formed. There might be insufficient permission to access shared(v_anon_2_0)
