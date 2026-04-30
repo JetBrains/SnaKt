@@ -146,9 +146,9 @@ class ShortNameResolver : NameResolver {
     override fun resolve() {
         var currentCollisions = collisions()
         while (currentCollisions.isNotEmpty()) {
-            val toResolve = currentCollisions.entries.first().value
+            val toResolve = currentCollisions.entries.minByOrNull { it.key }!!.value
 
-            val candidateToMove = toResolve.filter { canMove(it) }.ifNotEmpty { maxBy { priorityOrder(it) } }
+            val candidateToMove = toResolve.filter { canMove(it) }.sortedBy { it.hashCode() }.ifNotEmpty { maxBy { priorityOrder(it) } }
 
             assert(candidateToMove != null) { "Unable to make names unique" }
 
