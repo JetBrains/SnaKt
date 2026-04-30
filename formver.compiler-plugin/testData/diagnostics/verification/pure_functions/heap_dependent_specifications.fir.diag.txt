@@ -53,19 +53,18 @@ field next: Ref
 field value: Ref
 
 function isStrictlyAscendingAndPositive(node: Ref): Ref
-  requires acc(_c_Node_shared(node), wildcard)
+  requires acc(shared(node), wildcard)
   requires isSubtype(typeOf(node), c_Node())
-  requires intFromRef((unfolding acc(_c_Node_shared(node), wildcard) in
-      node.value)) >=
+  requires intFromRef((unfolding acc(shared(node), wildcard) in node.value)) >=
     0
   ensures isSubtype(typeOf(result), boolType())
 {
   (let l0_nextNode_0 ==
-    ((unfolding acc(_c_Node_shared(node), wildcard) in node.next)) in
+    ((unfolding acc(shared(node), wildcard) in node.next)) in
     (let v_anon_2_0 ==
       ((!(l0_nextNode_0 == nullValue()) ?
-        (unfolding acc(_c_Node_shared(node), wildcard) in
-          (unfolding acc(_c_Node_shared(l0_nextNode_0), wildcard) in
+        (unfolding acc(shared(node), wildcard) in
+          (unfolding acc(shared(l0_nextNode_0), wildcard) in
             l0_nextNode_0.value)) :
         null)) in
       (let v_anon_3_0 ==
@@ -75,21 +74,21 @@ function isStrictlyAscendingAndPositive(node: Ref): Ref
         (let v_anon_5_0 ==
           ((!(intFromRef(v_anon_2_0) < 0) &&
           !(l0_nextNode_0 == nullValue()) ?
-            (unfolding acc(_c_Node_shared(node), wildcard) in
-              (unfolding acc(_c_Node_shared(l0_nextNode_0), wildcard) in
+            (unfolding acc(shared(node), wildcard) in
+              (unfolding acc(shared(l0_nextNode_0), wildcard) in
                 l0_nextNode_0.value)) :
             null)) in
           (let v_anon_6_0 ==
             ((!(intFromRef(v_anon_2_0) < 0) &&
             !(l0_nextNode_0 == nullValue()) ?
-              (unfolding acc(_c_Node_shared(node), wildcard) in node.value) :
+              (unfolding acc(shared(node), wildcard) in node.value) :
               null)) in
             (let v_anon_4_0 ==
               ((!(intFromRef(v_anon_2_0) < 0) &&
               !(l0_nextNode_0 == nullValue()) ?
-                (unfolding acc(_c_Node_shared(node), wildcard) in
-                  (unfolding acc(_c_Node_shared(node), wildcard) in
-                    (unfolding acc(_c_Node_shared(l0_nextNode_0), wildcard) in
+                (unfolding acc(shared(node), wildcard) in
+                  (unfolding acc(shared(node), wildcard) in
+                    (unfolding acc(shared(l0_nextNode_0), wildcard) in
                       andBools(gtInts(v_anon_5_0, v_anon_6_0), isStrictlyAscendingAndPositive(l0_nextNode_0))))) :
                 null)) in
               (let v_anon_1_0 ==

@@ -34,15 +34,15 @@ method assignmentSubtyping() returns (ret: Ref)
 }
 
 /subtyping.kt: info: Generated Viper text for functionParameterSubtyping:
-method functionParameterSubtyping() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method functionParameterSubtyping() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var anon: Ref
   anon := nullableParameter(boolToRef(false))
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
-method nullableParameter(b: Ref) returns (ret: Ref)
+method nullableParameter(b: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(b), nullable(boolType()))
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret), unitType())

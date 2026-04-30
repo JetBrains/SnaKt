@@ -19,7 +19,7 @@ domain rt  {
 
   unique function c_A(): rt
 
-  unique function c_B(): rt
+  unique function c_pkg__c_B(): rt
 
   function nullValue(): Ref
 
@@ -122,7 +122,7 @@ domain rt  {
   }
 
   axiom {
-    isSubtype(c_B(), anyType())
+    isSubtype(c_pkg__c_B(), anyType())
   }
 
   axiom supertypeOfNothing {
@@ -405,11 +405,11 @@ function timesInts(arg_1: Ref, arg: Ref): Ref
   ensures intFromRef(result) == intFromRef(arg_1) * intFromRef(arg)
 
 
-predicate _c_A_shared(this: Ref) {
+predicate pkg__c_A_shared(this: Ref) {
   true
 }
 
-predicate _c_A_unique(this: Ref) {
+predicate pkg__c_A_unique(this: Ref) {
   acc(this.unit, write) && isSubtype(typeOf(this.unit), unitType()) &&
   acc(this.nothing, write) &&
   isSubtype(typeOf(this.nothing), nothingType()) &&
@@ -425,7 +425,7 @@ predicate _c_A_unique(this: Ref) {
   isSubtype(typeOf(this.string), stringType()) &&
   acc(this.classType, write) &&
   acc(shared(this.classType), wildcard) &&
-  isSubtype(typeOf(this.classType), c_B()) &&
+  isSubtype(typeOf(this.classType), c_pkg__c_B()) &&
   acc(this.unitNull, write) &&
   isSubtype(typeOf(this.unitNull), nullable(unitType())) &&
   acc(this.nothingNull, write) &&
@@ -443,10 +443,10 @@ predicate _c_A_unique(this: Ref) {
   acc(this.classTypeNull, write) &&
   (this.classTypeNull != nullValue() ==>
   acc(shared(this.classTypeNull), wildcard)) &&
-  isSubtype(typeOf(this.classTypeNull), nullable(c_B()))
+  isSubtype(typeOf(this.classTypeNull), nullable(c_pkg__c_B()))
 }
 
-predicate _c_B_unique(this: Ref) {
+predicate pkg__c_B_unique(this: Ref) {
   true
 }
 
@@ -454,9 +454,9 @@ predicate shared(this: Ref) {
   true
 }
 
-method f_havoc(a: Ref) returns (ret_0: Ref)
+method f_havoc(a: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(a), c_A())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var localUnit: Ref
   var localNothing: Ref
@@ -474,88 +474,88 @@ method f_havoc(a: Ref) returns (ret_0: Ref)
   var localCharNull: Ref
   var localStringNull: Ref
   var localClassTypeNull: Ref
-  inhale acc(_c_A_shared(a), wildcard)
+  inhale acc(pkg__c_A_shared(a), wildcard)
   localUnit := havoc_Unit()
   localNothing := havoc_Nothing()
   localAny := havoc_Any()
   localInt := havoc_Int()
   localBoolean := havoc_Boolean()
   localChar := havoc_Char()
-  localString := havoc_String()
-  localClassType := havoc()
+  localString := havoc()
+  localClassType := havoc_c_pkg__c_B()
   localUnitNull := havoc_NUnit()
   localNothingNull := havoc_NNothing()
   localAnyNull := havoc_NAny()
   localIntNull := havoc_NInt()
   localBooleanNull := havoc_NBoolean()
   localCharNull := havoc_NChar()
-  localStringNull := havoc_NString()
-  localClassTypeNull := havoc_c_B()
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  localStringNull := havoc_String()
+  localClassTypeNull := havoc_Nc_pkg__c_B()
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
-method havoc() returns (ret: Ref)
-  ensures acc(shared(ret), wildcard)
-  ensures isSubtype(typeOf(ret), c_B())
+method havoc() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), stringType())
 
 
-method havoc_Any() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), anyType())
+method havoc_Any() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), anyType())
 
 
-method havoc_Boolean() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), boolType())
+method havoc_Boolean() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), boolType())
 
 
-method havoc_Char() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), charType())
+method havoc_Char() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), charType())
 
 
-method havoc_Int() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
+method havoc_Int() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), intType())
 
 
-method havoc_NAny() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), nullable(anyType()))
+method havoc_NAny() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), nullable(anyType()))
 
 
-method havoc_NBoolean() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), nullable(boolType()))
+method havoc_NBoolean() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), nullable(boolType()))
 
 
-method havoc_NChar() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), nullable(charType()))
+method havoc_NChar() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), nullable(charType()))
 
 
-method havoc_NInt() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), nullable(intType()))
+method havoc_NInt() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), nullable(intType()))
 
 
-method havoc_NNothing() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), nullable(nothingType()))
+method havoc_NNothing() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), nullable(nothingType()))
 
 
-method havoc_NString() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), nullable(stringType()))
+method havoc_NUnit() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), nullable(unitType()))
 
 
-method havoc_NUnit() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), nullable(unitType()))
+method havoc_Nc_pkg__c_B() returns (v_ret: Ref)
+  ensures v_ret != nullValue() ==> acc(shared(v_ret), wildcard)
+  ensures isSubtype(typeOf(v_ret), nullable(c_pkg__c_B()))
 
 
-method havoc_Nothing() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), nothingType())
+method havoc_Nothing() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), nothingType())
 
 
-method havoc_String() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), stringType())
+method havoc_String() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), nullable(stringType()))
 
 
-method havoc_Unit() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method havoc_Unit() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), unitType())
 
 
-method havoc_c_B() returns (ret: Ref)
-  ensures ret != nullValue() ==> acc(shared(ret), wildcard)
-  ensures isSubtype(typeOf(ret), nullable(c_B()))
+method havoc_c_pkg__c_B() returns (v_ret: Ref)
+  ensures acc(shared(v_ret), wildcard)
+  ensures isSubtype(typeOf(v_ret), c_pkg__c_B())

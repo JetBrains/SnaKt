@@ -1,7 +1,7 @@
 /loop_invariants.kt: info: Generated Viper text for dynamicLambdaInvariant:
-method dynamicLambdaInvariant(f: Ref) returns (ret_0: Ref)
+method dynamicLambdaInvariant(f: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(f), functionType())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var anon_0: Ref
   label cont
@@ -14,18 +14,18 @@ method dynamicLambdaInvariant(f: Ref) returns (ret_0: Ref)
   }
   label break
   assert isSubtype(typeOf(f), functionType())
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
-method returnsBoolean() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), boolType())
+method returnsBoolean() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), boolType())
 
 
 /loop_invariants.kt: info: Generated Viper text for functionAssignment:
-method functionAssignment(f: Ref) returns (ret_0: Ref)
+method functionAssignment(f: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(f), functionType())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var g: Ref
   var anon_0: Ref
@@ -42,21 +42,21 @@ method functionAssignment(f: Ref) returns (ret_0: Ref)
   label break
   assert isSubtype(typeOf(g), functionType())
   assert isSubtype(typeOf(f), functionType())
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
-method returnsBoolean() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), boolType())
+method returnsBoolean() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), boolType())
 
 
 /loop_invariants.kt: info: Generated Viper text for conditionalFunctionAssignment:
 method conditionalFunctionAssignment(b: Ref, f: Ref, h: Ref)
-  returns (ret_0: Ref)
+  returns (ret: Ref)
   requires isSubtype(typeOf(b), boolType())
   requires isSubtype(typeOf(f), functionType())
   requires isSubtype(typeOf(h), functionType())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var g: Ref
   var anon_0: Ref
@@ -80,9 +80,9 @@ method conditionalFunctionAssignment(b: Ref, f: Ref, h: Ref)
   assert isSubtype(typeOf(b), boolType())
   assert isSubtype(typeOf(f), functionType())
   assert isSubtype(typeOf(h), functionType())
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
-method returnsBoolean() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), boolType())
+method returnsBoolean() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), boolType())

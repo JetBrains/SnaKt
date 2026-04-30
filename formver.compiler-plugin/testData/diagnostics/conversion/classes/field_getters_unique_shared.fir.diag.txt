@@ -1,113 +1,113 @@
 /field_getters_unique_shared.kt: info: Generated Viper text for testPrimitiveFieldGetterUnique:
+field bf_uniqueVal: Ref
+
+field bf_uniqueVar: Ref
+
 field sharedVal: Ref
 
 field sharedVar: Ref
 
-field uniqueVal: Ref
-
-field uniqueVar: Ref
-
-method testPrimitiveFieldGetterUnique(pf: Ref) returns (ret_0: Ref)
+method testPrimitiveFieldGetterUnique(pf: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(pf), c_PrimitiveFields())
   requires acc(_c_PrimitiveFields_unique(pf), write)
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var l0_sharedVal: Ref
   var l0_sharedVar: Ref
-  var l0_uniqueVal: Ref
-  var l0_uniqueVar: Ref
+  var uniqueVal: Ref
+  var uniqueVar: Ref
   inhale acc(shared(pf), wildcard)
   unfold acc(shared(pf), wildcard)
   l0_sharedVal := pf.sharedVal
   l0_sharedVar := havoc()
   unfold acc(shared(pf), wildcard)
-  l0_uniqueVal := pf.uniqueVal
-  l0_uniqueVar := havoc()
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  uniqueVal := pf.bf_uniqueVal
+  uniqueVar := havoc()
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /field_getters_unique_shared.kt: info: Generated Viper text for testPrimitiveFieldGetterShared:
+field bf_uniqueVal: Ref
+
+field bf_uniqueVar: Ref
+
 field sharedVal: Ref
 
 field sharedVar: Ref
 
-field uniqueVal: Ref
-
-field uniqueVar: Ref
-
-method testPrimitiveFieldGetterShared(pf: Ref) returns (ret_0: Ref)
+method testPrimitiveFieldGetterShared(pf: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(pf), c_PrimitiveFields())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var l0_sharedVal: Ref
   var l0_sharedVar: Ref
-  var l0_uniqueVal: Ref
-  var l0_uniqueVar: Ref
+  var uniqueVal: Ref
+  var uniqueVar: Ref
   inhale acc(shared(pf), wildcard)
   unfold acc(shared(pf), wildcard)
   l0_sharedVal := pf.sharedVal
   l0_sharedVar := havoc()
   unfold acc(shared(pf), wildcard)
-  l0_uniqueVal := pf.uniqueVal
-  l0_uniqueVar := havoc()
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  uniqueVal := pf.bf_uniqueVal
+  uniqueVar := havoc()
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /field_getters_unique_shared.kt: info: Generated Viper text for testReferenceFieldGetterUnique:
+field bf_uniqueVal: Ref
+
+field bf_uniqueVar: Ref
+
 field sharedVal: Ref
 
 field sharedVar: Ref
 
-field uniqueVal: Ref
-
-field uniqueVar: Ref
-
-method testReferenceFieldGetterUnique(rf: Ref) returns (ret_0: Ref)
+method testReferenceFieldGetterUnique(rf: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(rf), c_ReferenceFields())
   requires acc(_c_ReferenceFields_unique(rf), write)
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var l0_sharedVal: Ref
   var l0_sharedVar: Ref
-  var l0_uniqueVal: Ref
-  var l0_uniqueVar: Ref
+  var uniqueVal: Ref
+  var uniqueVar: Ref
   inhale acc(shared(rf), wildcard)
   unfold acc(shared(rf), wildcard)
   l0_sharedVal := rf.sharedVal
   l0_sharedVar := havoc()
   unfold acc(shared(rf), wildcard)
-  l0_uniqueVal := rf.uniqueVal
-  l0_uniqueVar := havoc()
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  uniqueVal := rf.bf_uniqueVal
+  uniqueVar := havoc()
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /field_getters_unique_shared.kt: info: Generated Viper text for testReferenceFieldGetterShared:
+field bf_uniqueVal: Ref
+
+field bf_uniqueVar: Ref
+
 field sharedVal: Ref
 
 field sharedVar: Ref
 
-field uniqueVal: Ref
-
-field uniqueVar: Ref
-
-method testReferenceFieldGetterShared(rf: Ref) returns (ret_0: Ref)
+method testReferenceFieldGetterShared(rf: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(rf), c_ReferenceFields())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var l0_sharedVal: Ref
   var l0_sharedVar: Ref
-  var l0_uniqueVal: Ref
-  var l0_uniqueVar: Ref
+  var uniqueVal: Ref
+  var uniqueVar: Ref
   inhale acc(shared(rf), wildcard)
   unfold acc(shared(rf), wildcard)
   l0_sharedVal := rf.sharedVal
   l0_sharedVar := havoc()
   unfold acc(shared(rf), wildcard)
-  l0_uniqueVal := rf.uniqueVal
-  l0_uniqueVar := havoc()
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  uniqueVal := rf.bf_uniqueVal
+  uniqueVar := havoc()
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }

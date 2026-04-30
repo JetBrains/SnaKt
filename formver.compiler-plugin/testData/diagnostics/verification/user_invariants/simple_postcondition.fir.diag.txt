@@ -42,23 +42,23 @@ method returnGreater13() returns (ret: Ref)
 }
 
 /simple_postcondition.kt: info: Generated Viper text for testPostconditionIsUsedByPrecondition:
-method returnGreater13() returns (ret: Ref)
+method returnGreater13() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), intType())
+  ensures intFromRef(v_ret) > 13
+
+
+method testPostconditionIsUsedByPrecondition() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
-  ensures intFromRef(ret) > 13
-
-
-method testPostconditionIsUsedByPrecondition() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), intType())
 {
   var anon: Ref
   anon := returnGreater13()
-  ret_0 := testWithPrecondition(anon)
-  goto lbl_ret_0
-  label lbl_ret_0
+  ret := testWithPrecondition(anon)
+  goto ret_0
+  label ret_0
 }
 
-method testWithPrecondition(int: Ref) returns (ret: Ref)
+method testWithPrecondition(int: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(int), intType())
   requires intFromRef(int) > 10
-  ensures isSubtype(typeOf(ret), intType())
-  ensures intFromRef(ret) > 0
+  ensures isSubtype(typeOf(v_ret), intType())
+  ensures intFromRef(v_ret) > 0

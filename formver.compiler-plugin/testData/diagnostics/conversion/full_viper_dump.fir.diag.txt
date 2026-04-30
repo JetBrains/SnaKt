@@ -1,9 +1,5 @@
 /full_viper_dump.kt: info: Generated ExpEmbedding for f:
-Function(
-    name = f,
-    { Declare(Var(foo), [c$[pkg$]$[c$Foo]], MethodCall(callee = con, Int(0))) },
-    return = lbl_ret_0,
-)
+Function(name = f, { Declare(Var(foo), [c$[pkg$]$[c$Foo]], MethodCall(callee = con, Int(0))) }, return = ret_0)
 
 /full_viper_dump.kt: info: Generated Viper text for f:
 domain rt  {
@@ -384,23 +380,23 @@ predicate shared(this: Ref) {
   acc(this.bf_x, wildcard) && isSubtype(typeOf(this.bf_x), intType())
 }
 
-method con(x: Ref) returns (ret: Ref)
+method con(x: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret), c_Foo())
-  ensures acc(shared(ret), wildcard)
-  ensures acc(_c_Foo_unique(ret), write)
-  ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf_x)) ==
+  ensures isSubtype(typeOf(v_ret), c_Foo())
+  ensures acc(shared(v_ret), wildcard)
+  ensures acc(_c_Foo_unique(v_ret), write)
+  ensures intFromRef((unfolding acc(shared(v_ret), wildcard) in v_ret.bf_x)) ==
     intFromRef(x)
 
 
-method f() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method f() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var foo: Ref
   foo := con(intToRef(0))
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
-method havoc() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
+method havoc() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), intType())

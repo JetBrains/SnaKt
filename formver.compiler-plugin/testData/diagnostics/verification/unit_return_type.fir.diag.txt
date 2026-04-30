@@ -9,12 +9,12 @@ method idFun(par_t: Ref) returns (ret: Ref)
 }
 
 /unit_return_type.kt: info: Generated Viper text for directReturns:
-method directReturns(b: Ref) returns (ret_0: Ref)
+method directReturns(b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   if (boolFromRef(b)) {
-    goto lbl_ret_0
+    goto ret_0
   } else {
     var anon_0: Ref
     var anon: Ref
@@ -22,24 +22,24 @@ method directReturns(b: Ref) returns (ret_0: Ref)
     anon_0 := anon
     inhale isSubtype(typeOf(anon_0), boolType())
     if (boolFromRef(anon_0)) {
-      goto lbl_ret_0
+      goto ret_0
     }
   }
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
-method idFun(par_t: Ref) returns (ret: Ref)
+method idFun(par_t: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(par_t), nullable(anyType()))
-  ensures isSubtype(typeOf(ret), nullable(anyType()))
+  ensures isSubtype(typeOf(v_ret), nullable(anyType()))
 
 
 /unit_return_type.kt: info: Generated Viper text for useInlineUnit:
 field size: Ref
 
-method idFun(par_t: Ref) returns (ret: Ref)
+method idFun(par_t: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(par_t), nullable(anyType()))
-  ensures isSubtype(typeOf(ret), nullable(anyType()))
+  ensures isSubtype(typeOf(v_ret), nullable(anyType()))
 
 
 method useInlineUnit(b: Ref) returns (ret_0: Ref)
@@ -49,7 +49,7 @@ method useInlineUnit(b: Ref) returns (ret_0: Ref)
   var unitRes: Ref
   var ret_1: Ref
   var anon_0: Ref
-  var ret_2: Ref
+  var ret: Ref
   var anon_1: Ref
   inhale isSubtype(typeOf(b), nullable(anyType()))
   anon_0 := b
@@ -64,8 +64,8 @@ method useInlineUnit(b: Ref) returns (ret_0: Ref)
     anon_2 := anon
     inhale isSubtype(typeOf(anon_2), intType())
   }
-  label lbl_ret_2
-  inhale isSubtype(typeOf(ret_2), unitType())
+  label ret_2
+  inhale isSubtype(typeOf(ret), unitType())
   label lbl_ret_1
   inhale isSubtype(typeOf(ret_1), unitType())
   unitRes := ret_1

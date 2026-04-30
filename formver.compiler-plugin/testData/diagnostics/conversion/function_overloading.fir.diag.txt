@@ -79,40 +79,40 @@ method differInNullability(i: Ref) returns (ret: Ref)
 }
 
 /function_overloading.kt: info: Generated Viper text for testGlobalScopeOverloading:
-method con() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), c_Foo())
-  ensures acc(shared(ret), wildcard)
-  ensures acc(_c_Foo_unique(ret), write)
+method con() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), c_Foo())
+  ensures acc(shared(v_ret), wildcard)
+  ensures acc(_c_Foo_unique(v_ret), write)
 
 
-method con_c_Bar() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), c_Bar())
-  ensures acc(_c_Bar_shared(ret), wildcard)
-  ensures acc(_c_Bar_unique(ret), write)
+method con_c_Bar() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), c_Bar())
+  ensures acc(_c_Bar_shared(v_ret), wildcard)
+  ensures acc(_c_Bar_unique(v_ret), write)
 
 
-method f_fakePrint(b: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(b), c_Bar())
-  ensures isSubtype(typeOf(ret), unitType())
-
-
-method f_fakePrint_Unit(value: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(value), intType())
-  ensures isSubtype(typeOf(ret), unitType())
-
-
-method f_fakePrint_args_Boolean_ret_Unit(truth: Ref) returns (ret: Ref)
+method f_fakePrint(truth: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(truth), boolType())
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret), unitType())
 
 
-method fakePrint(f: Ref) returns (ret: Ref)
+method f_fakePrint_Unit(f: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(f), c_Foo())
+  ensures isSubtype(typeOf(v_ret), unitType())
+
+
+method f_fakePrint_args_c_Bar_ret_Unit(b: Ref) returns (v_ret: Ref)
+  requires isSubtype(typeOf(b), c_Bar())
+  ensures isSubtype(typeOf(v_ret), unitType())
+
+
+method fakePrint(value: Ref) returns (v_ret: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret), unitType())
+
+
+method testGlobalScopeOverloading() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
-
-
-method testGlobalScopeOverloading() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var anon_0: Ref
   var anon_1: Ref
@@ -120,43 +120,43 @@ method testGlobalScopeOverloading() returns (ret_0: Ref)
   var anon_3: Ref
   var anon_4: Ref
   var anon: Ref
-  anon_0 := f_fakePrint_Unit(intToRef(42))
-  anon_1 := f_fakePrint_args_Boolean_ret_Unit(boolToRef(true))
+  anon_0 := fakePrint(intToRef(42))
+  anon_1 := f_fakePrint(boolToRef(true))
   anon_3 := con()
-  anon_2 := fakePrint(anon_3)
+  anon_2 := f_fakePrint_Unit(anon_3)
   anon := con_c_Bar()
-  anon_4 := f_fakePrint(anon)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  anon_4 := f_fakePrint_args_c_Bar_ret_Unit(anon)
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /function_overloading.kt: info: Generated Viper text for testClassFunctionOverloading:
-method baz(this: Ref, f: Ref) returns (ret: Ref)
+method baz(this: Ref, f: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(this), c_Bar())
   requires isSubtype(typeOf(f), c_Foo())
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret), unitType())
 
 
-method con() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), c_Foo())
-  ensures acc(shared(ret), wildcard)
-  ensures acc(_c_Foo_unique(ret), write)
+method con() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), c_Foo())
+  ensures acc(shared(v_ret), wildcard)
+  ensures acc(_c_Foo_unique(v_ret), write)
 
 
-method con_c_Bar() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), c_Bar())
-  ensures acc(_c_Bar_shared(ret), wildcard)
-  ensures acc(_c_Bar_unique(ret), write)
+method con_c_Bar() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), c_Bar())
+  ensures acc(_c_Bar_shared(v_ret), wildcard)
+  ensures acc(_c_Bar_unique(v_ret), write)
 
 
-method f_baz(this: Ref, b: Ref) returns (ret: Ref)
+method f_baz(this: Ref, b: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(this), c_Bar())
   requires isSubtype(typeOf(b), c_Bar())
+  ensures isSubtype(typeOf(v_ret), unitType())
+
+
+method testClassFunctionOverloading() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
-
-
-method testClassFunctionOverloading() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
 {
   var l0_b: Ref
   var anon_0: Ref
@@ -168,6 +168,6 @@ method testClassFunctionOverloading() returns (ret_0: Ref)
   anon_0 := baz(l0_b, anon_1)
   anon := con_c_Bar()
   anon_2 := f_baz(l0_b, anon)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }

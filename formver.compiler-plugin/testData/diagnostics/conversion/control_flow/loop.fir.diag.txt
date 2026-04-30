@@ -22,8 +22,8 @@ method whileLoop(b: Ref) returns (ret: Ref)
 }
 
 /loop.kt: info: Generated Viper text for whileFunctionCondition:
-method whileFunctionCondition() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method whileFunctionCondition() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var anon: Ref
   label cont
@@ -32,10 +32,10 @@ method whileFunctionCondition() returns (ret_0: Ref)
     goto cont
   }
   label break
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
-method whileLoop(b: Ref) returns (ret: Ref)
+method whileLoop(b: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), boolType())
+  ensures isSubtype(typeOf(v_ret), boolType())

@@ -28,28 +28,28 @@ method ifOnParameter(b: Ref) returns (ret: Ref)
 }
 
 /if.kt: info: Generated Viper text for ifAsExpression:
-method ifAsExpression() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), boolType())
+method ifAsExpression() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), boolType())
 {
   var l0_b: Ref
   l0_b := boolToRef(false)
   if (boolFromRef(l0_b)) {
     var anon_0: Ref
     anon_0 := simpleIf()
-    ret_0 := boolToRef(false)
+    ret := boolToRef(false)
   } else {
     var anon: Ref
     anon := ifOnParameter(l0_b)
-    ret_0 := boolToRef(true)
+    ret := boolToRef(true)
   }
-  goto lbl_ret_0
-  label lbl_ret_0
+  goto ret_0
+  label ret_0
 }
 
-method ifOnParameter(b: Ref) returns (ret: Ref)
+method ifOnParameter(b: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(v_ret), intType())
 
 
-method simpleIf() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
+method simpleIf() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), intType())

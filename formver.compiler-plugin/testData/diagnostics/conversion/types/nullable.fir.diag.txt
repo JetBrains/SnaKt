@@ -13,20 +13,20 @@ method useNullableTwice(x: Ref) returns (ret: Ref)
 }
 
 /nullable.kt: info: Generated Viper text for passNullableParameter:
-method passNullableParameter(x: Ref) returns (ret_0: Ref)
+method passNullableParameter(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))
-  ensures isSubtype(typeOf(ret_0), nullable(intType()))
+  ensures isSubtype(typeOf(ret), nullable(intType()))
 {
   var anon: Ref
   anon := useNullableTwice(x)
-  ret_0 := x
-  goto lbl_ret_0
-  label lbl_ret_0
+  ret := x
+  goto ret_0
+  label ret_0
 }
 
-method useNullableTwice(x: Ref) returns (ret: Ref)
+method useNullableTwice(x: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))
-  ensures isSubtype(typeOf(ret), nullable(intType()))
+  ensures isSubtype(typeOf(v_ret), nullable(intType()))
 
 
 /nullable.kt: info: Generated Viper text for nullableNullableComparison:

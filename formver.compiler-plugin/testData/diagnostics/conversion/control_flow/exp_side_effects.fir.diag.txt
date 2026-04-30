@@ -1,17 +1,17 @@
 /exp_side_effects.kt: info: Generated Viper text for test:
 field x: Ref
 
-method getFoo() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), c_Foo())
-  ensures acc(shared(ret), wildcard)
+method getFoo() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), c_Foo())
+  ensures acc(shared(v_ret), wildcard)
 
 
-method sideEffect() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
+method sideEffect() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), intType())
 
 
-method test() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method test() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var anon_0: Ref
   var anon_1: Ref
@@ -25,6 +25,6 @@ method test() returns (ret_0: Ref)
   anon_2 := havoc()
   anon := sideEffect()
   y := plusInts(anon_2, anon)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
