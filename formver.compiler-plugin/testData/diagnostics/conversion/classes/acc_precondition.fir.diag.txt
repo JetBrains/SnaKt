@@ -1,41 +1,4 @@
 /acc_precondition.kt:(127,148): info: Generated Viper text for test_acc_precondition:
-<<<<<<< HEAD
-field bf$a: Ref
-
-predicate p$c$X$shared(this$dispatch: Ref) {
-  true
-}
-
-predicate p$c$X$unique(this$dispatch: Ref) {
-  acc(this$dispatch.bf$a, write) &&
-  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$a), df$rt$anyType())
-}
-
-predicate p$pkg$org_jetbrains_kotlin_formver_plugin$c$InvariantBuilder$shared(this$dispatch: Ref) {
-  true
-}
-
-predicate p$pkg$org_jetbrains_kotlin_formver_plugin$c$InvariantBuilder$unique(this$dispatch: Ref) {
-  true
-}
-
-method f$test_acc_precondition$TF$T$X(p$x: Ref) returns (ret$0: Ref)
-  requires acc(p$x.bf$a, wildcard)
-  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
-{
-  inhale df$rt$isSubtype(df$rt$typeOf(p$x), df$rt$c$X())
-  inhale acc(p$c$X$shared(p$x), wildcard)
-  p$x.bf$a := df$rt$intToRef(123)
-  label lbl$ret$0
-  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
-}
-
-method pg$public$read(this$dispatch: Ref) returns (ret: Ref)
-
-
-method pg$public$write(this$dispatch: Ref) returns (ret: Ref)
-
-=======
 field a: Ref
 
 predicate c_InvariantBuilder_unique(this: Ref) {
@@ -70,4 +33,3 @@ method test_acc_precondition(x: Ref) returns (ret_0: Ref)
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
->>>>>>> 3a052621375e28a660bec009e4b76fc92d71a303
