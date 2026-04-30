@@ -1,4 +1,4 @@
-/loop.kt:(23,32): info: Generated Viper text for whileLoop:
+/loop.kt: info: Generated Viper text for whileLoop:
 method whileLoop(b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(ret), boolType())
@@ -21,7 +21,7 @@ method whileLoop(b: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/loop.kt:(138,160): info: Generated Viper text for whileFunctionCondition:
+/loop.kt: info: Generated Viper text for whileFunctionCondition:
 method whileFunctionCondition() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), unitType())
 {

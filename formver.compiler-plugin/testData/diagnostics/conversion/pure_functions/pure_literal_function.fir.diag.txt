@@ -1,4 +1,4 @@
-/pure_literal_function.kt:(72,85): info: Generated Viper text for emptyFunction:
+/pure_literal_function.kt: info: Generated Viper text for emptyFunction:
 function emptyAnnotatedFunction(): Ref
   ensures isSubtype(typeOf(result), nullable(intType()))
 {
@@ -14,42 +14,42 @@ method emptyFunction() returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/pure_literal_function.kt:(136,158): info: Generated Viper text for emptyAnnotatedFunction:
+/pure_literal_function.kt: info: Generated Viper text for emptyAnnotatedFunction:
 function emptyAnnotatedFunction(): Ref
   ensures isSubtype(typeOf(result), nullable(intType()))
 {
   nullValue()
 }
 
-/pure_literal_function.kt:(194,215): info: Generated Viper text for annotatedIntLitReturn:
+/pure_literal_function.kt: info: Generated Viper text for annotatedIntLitReturn:
 function annotatedIntLitReturn(): Ref
   ensures isSubtype(typeOf(result), intType())
 {
   intToRef(42)
 }
 
-/pure_literal_function.kt:(248,270): info: Generated Viper text for annotatedBoolLitReturn:
+/pure_literal_function.kt: info: Generated Viper text for annotatedBoolLitReturn:
 function annotatedBoolLitReturn(): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   boolToRef(true)
 }
 
-/pure_literal_function.kt:(309,331): info: Generated Viper text for annotatedCharLitReturn:
+/pure_literal_function.kt: info: Generated Viper text for annotatedCharLitReturn:
 function annotatedCharLitReturn(): Ref
   ensures isSubtype(typeOf(result), charType())
 {
   charToRef(65)
 }
 
-/pure_literal_function.kt:(366,390): info: Generated Viper text for annotatedStringLitReturn:
+/pure_literal_function.kt: info: Generated Viper text for annotatedStringLitReturn:
 function annotatedStringLitReturn(): Ref
   ensures isSubtype(typeOf(result), stringType())
 {
   stringToRef(Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116))
 }
 
-/pure_literal_function.kt:(474,498): info: Generated Viper text for annotatedReferenceReturn:
+/pure_literal_function.kt: info: Generated Viper text for annotatedReferenceReturn:
 field a: Ref
 
 field b: Ref

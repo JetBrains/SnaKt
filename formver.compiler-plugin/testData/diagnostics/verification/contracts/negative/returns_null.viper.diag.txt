@@ -1,0 +1,3 @@
+/returns_null.kt: warning: Cannot verify that if the function returns then false.
+
+/returns_null.kt: warning: Function may return a non-null value.

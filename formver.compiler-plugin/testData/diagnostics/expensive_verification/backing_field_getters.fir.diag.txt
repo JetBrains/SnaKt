@@ -1,4 +1,4 @@
-/backing_field_getters.kt:(270,280): info: Generated Viper text for cascadeGet:
+/backing_field_getters.kt: info: Generated Viper text for cascadeGet:
 field y: Ref
 
 field z: Ref
@@ -18,7 +18,7 @@ method cascadeGet(x: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/backing_field_getters.kt:(353,374): info: Generated Viper text for receiverNotNullProved:
+/backing_field_getters.kt: info: Generated Viper text for receiverNotNullProved:
 field y: Ref
 
 field z: Ref
@@ -42,7 +42,7 @@ method receiverNotNullProved(x: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/backing_field_getters.kt:(622,640): info: Generated Viper text for cascadeNullableGet:
+/backing_field_getters.kt: info: Generated Viper text for cascadeNullableGet:
 field y: Ref
 
 field z: Ref
@@ -69,7 +69,7 @@ method cascadeNullableGet(x: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/backing_field_getters.kt:(791,818): info: Generated Viper text for cascadeNullableSmartcastGet:
+/backing_field_getters.kt: info: Generated Viper text for cascadeNullableSmartcastGet:
 field y: Ref
 
 field z: Ref
@@ -105,7 +105,7 @@ method cascadeNullableSmartcastGet(x: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/backing_field_getters.kt:(1030,1060): info: Generated Viper text for nullableReceiverNotNullSafeGet:
+/backing_field_getters.kt: info: Generated Viper text for nullableReceiverNotNullSafeGet:
 field size: Ref
 
 field x: Ref
@@ -138,7 +138,7 @@ method nullableReceiverNotNullSafeGet() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/backing_field_getters.kt:(1157,1184): info: Generated Viper text for nullableReceiverNullSafeGet:
+/backing_field_getters.kt: info: Generated Viper text for nullableReceiverNullSafeGet:
 field size: Ref
 
 field x: Ref
@@ -163,7 +163,7 @@ method nullableReceiverNullSafeGet() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/backing_field_getters.kt:(1315,1341): info: Generated Viper text for nonNullableReceiverSafeGet:
+/backing_field_getters.kt: info: Generated Viper text for nonNullableReceiverSafeGet:
 field size: Ref
 
 field x: Ref
@@ -194,7 +194,7 @@ method nonNullableReceiverSafeGet() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/backing_field_getters.kt:(1565,1577): info: Generated Viper text for checkPrimary:
+/backing_field_getters.kt: info: Generated Viper text for checkPrimary:
 field bf_x: Ref
 
 field bf_y: Ref

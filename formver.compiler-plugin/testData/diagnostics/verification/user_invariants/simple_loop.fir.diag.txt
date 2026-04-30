@@ -1,4 +1,4 @@
-/simple_loop.kt:(239,243): info: Generated Viper text for test:
+/simple_loop.kt: info: Generated Viper text for test:
 field size: Ref
 
 method test(n: Ref) returns (ret_0: Ref)
@@ -53,7 +53,7 @@ method test(n: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/simple_loop.kt:(652,666): info: Generated Viper text for loopInsideLoop:
+/simple_loop.kt: info: Generated Viper text for loopInsideLoop:
 method loopInsideLoop() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 {
@@ -93,7 +93,7 @@ method loopInsideLoop() returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/simple_loop.kt:(974,983): info: Generated Viper text for withBreak:
+/simple_loop.kt: info: Generated Viper text for withBreak:
 field size: Ref
 
 method withBreak() returns (ret_0: Ref)
@@ -120,7 +120,7 @@ method withBreak() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/simple_loop.kt:(1230,1256): info: Generated Viper text for test_boolean_postcondition:
+/simple_loop.kt: info: Generated Viper text for test_boolean_postcondition:
 field bf_e: Ref
 
 field size: Ref

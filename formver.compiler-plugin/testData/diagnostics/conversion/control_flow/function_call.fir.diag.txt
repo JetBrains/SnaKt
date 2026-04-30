@@ -1,4 +1,4 @@
-/function_call.kt:(118,130): info: Generated Viper text for functionCall:
+/function_call.kt: info: Generated Viper text for functionCall:
 method f(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), intType())
@@ -15,7 +15,7 @@ method functionCall() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/function_call.kt:(160,178): info: Generated Viper text for functionCallNested:
+/function_call.kt: info: Generated Viper text for functionCallNested:
 method f(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), intType())
@@ -34,7 +34,7 @@ method functionCallNested() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/function_call.kt:(205,215): info: Generated Viper text for callItself:
+/function_call.kt: info: Generated Viper text for callItself:
 method callItself() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 {

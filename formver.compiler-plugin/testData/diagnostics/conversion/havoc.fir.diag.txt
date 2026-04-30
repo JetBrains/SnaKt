@@ -1,4 +1,4 @@
-/havoc.kt:(453,458): info: Generated Viper text for havoc:
+/havoc.kt: info: Generated Viper text for havoc:
 domain rt  {
 
   unique function intType(): rt

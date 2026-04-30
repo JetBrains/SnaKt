@@ -1,4 +1,4 @@
-/viper_verify.kt:(125,137): info: Generated Viper text for verify_false:
+/viper_verify.kt: info: Generated Viper text for verify_false:
 field size: Ref
 
 method verify_false() returns (ret_0: Ref)
@@ -9,9 +9,7 @@ method verify_false() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/viper_verify.kt:(153,158): warning: Viper verification error: Assert might fail. Assertion false might not hold.
-
-/viper_verify.kt:(181,196): info: Generated Viper text for verify_compound:
+/viper_verify.kt: info: Generated Viper text for verify_compound:
 field size: Ref
 
 method verify_compound() returns (ret_0: Ref)
@@ -26,5 +24,3 @@ method verify_compound() returns (ret_0: Ref)
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
-
-/viper_verify.kt:(212,225): warning: Viper verification error: Assert might fail. Assertion boolFromRef(anon) might not hold.

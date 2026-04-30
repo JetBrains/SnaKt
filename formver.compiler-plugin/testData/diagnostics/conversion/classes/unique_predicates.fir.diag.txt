@@ -1,4 +1,4 @@
-/unique_predicates.kt:(269,283): info: Generated Viper text for unique_foo_arg:
+/unique_predicates.kt: info: Generated Viper text for unique_foo_arg:
 field w: Ref
 
 field x: Ref
@@ -56,7 +56,7 @@ method unique_foo_arg(foo: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/unique_predicates.kt:(310,329): info: Generated Viper text for nullable_unique_arg:
+/unique_predicates.kt: info: Generated Viper text for nullable_unique_arg:
 predicate c_T_unique(this: Ref) {
   true
 }
@@ -75,7 +75,7 @@ method nullable_unique_arg(par_t: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/unique_predicates.kt:(353,372): info: Generated Viper text for borrowed_unique_arg:
+/unique_predicates.kt: info: Generated Viper text for borrowed_unique_arg:
 predicate c_T_unique(this: Ref) {
   true
 }
@@ -95,7 +95,7 @@ method borrowed_unique_arg(par_t: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/unique_predicates.kt:(424,439): info: Generated Viper text for unique_receiver:
+/unique_predicates.kt: info: Generated Viper text for unique_receiver:
 predicate c_T_unique(v_this: Ref) {
   true
 }
@@ -114,7 +114,7 @@ method unique_receiver(this: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/unique_predicates.kt:(488,512): info: Generated Viper text for borrowed_unique_receiver:
+/unique_predicates.kt: info: Generated Viper text for borrowed_unique_receiver:
 predicate c_T_unique(v_this: Ref) {
   true
 }
@@ -134,7 +134,7 @@ method borrowed_unique_receiver(this: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/unique_predicates.kt:(531,544): info: Generated Viper text for unique_result:
+/unique_predicates.kt: info: Generated Viper text for unique_result:
 predicate c_T_unique(this: Ref) {
   true
 }
@@ -159,7 +159,7 @@ method unique_result() returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/unique_predicates.kt:(579,601): info: Generated Viper text for unique_nullable_result:
+/unique_predicates.kt: info: Generated Viper text for unique_nullable_result:
 predicate c_T_unique(this: Ref) {
   true
 }

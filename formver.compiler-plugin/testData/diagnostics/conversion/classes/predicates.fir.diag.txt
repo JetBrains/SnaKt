@@ -1,4 +1,4 @@
-/predicates.kt:(203,213): info: Generated Viper text for useClasses:
+/predicates.kt: info: Generated Viper text for useClasses:
 field a: Ref
 
 field b: Ref
@@ -62,7 +62,7 @@ method useClasses(rf: Ref, rec: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/predicates.kt:(354,374): info: Generated Viper text for threeLayersHierarchy:
+/predicates.kt: info: Generated Viper text for threeLayersHierarchy:
 field x: Ref
 
 field y: Ref
@@ -102,7 +102,7 @@ method threeLayersHierarchy(c: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/predicates.kt:(390,403): info: Generated Viper text for listHierarchy:
+/predicates.kt: info: Generated Viper text for listHierarchy:
 field size: Ref
 
 predicate c_Collection_shared(this: Ref) {

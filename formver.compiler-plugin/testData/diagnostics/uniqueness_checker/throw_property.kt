@@ -1,3 +1,4 @@
+// FULL_JDK
 // UNIQUE_CHECK_ONLY
 
 import org.jetbrains.kotlin.formver.plugin.Borrowed

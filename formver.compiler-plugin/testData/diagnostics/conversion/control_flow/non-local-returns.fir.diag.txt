@@ -1,4 +1,4 @@
-/non-local-returns.kt:(155,167): info: Generated Viper text for simpleReturn:
+/non-local-returns.kt: info: Generated Viper text for simpleReturn:
 method simpleReturn() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), intType())
 {
@@ -19,7 +19,7 @@ method simpleReturn() returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/non-local-returns.kt:(238,252): info: Generated Viper text for returnAtInline:
+/non-local-returns.kt: info: Generated Viper text for returnAtInline:
 method returnAtInline() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), intType())
 {
@@ -40,7 +40,7 @@ method returnAtInline() returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/non-local-returns.kt:(330,342): info: Generated Viper text for doubleInvoke:
+/non-local-returns.kt: info: Generated Viper text for doubleInvoke:
 method doubleInvoke() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), intType())
 {
@@ -73,7 +73,7 @@ method doubleInvoke() returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/non-local-returns.kt:(567,573): info: Generated Viper text for nested:
+/non-local-returns.kt: info: Generated Viper text for nested:
 method nested() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), intType())
 {

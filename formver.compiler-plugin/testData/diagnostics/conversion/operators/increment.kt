@@ -1,3 +1,4 @@
+// FULL_JDK
 // NEVER_VALIDATE
 
 fun <!VIPER_TEXT!>test_simple<!>() {

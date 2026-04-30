@@ -1,4 +1,4 @@
-/basic.kt:(23,33): info: Generated Viper text for returnUnit:
+/basic.kt: info: Generated Viper text for returnUnit:
 method returnUnit() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 {
@@ -6,7 +6,7 @@ method returnUnit() returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/basic.kt:(43,52): info: Generated Viper text for returnInt:
+/basic.kt: info: Generated Viper text for returnInt:
 method returnInt() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
 {
@@ -15,7 +15,7 @@ method returnInt() returns (ret: Ref)
   label ret_0
 }
 
-/basic.kt:(77,94): info: Generated Viper text for takeIntReturnUnit:
+/basic.kt: info: Generated Viper text for takeIntReturnUnit:
 method takeIntReturnUnit(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), unitType())
@@ -24,7 +24,7 @@ method takeIntReturnUnit(x: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/basic.kt:(140,156): info: Generated Viper text for takeIntReturnInt:
+/basic.kt: info: Generated Viper text for takeIntReturnInt:
 method takeIntReturnInt(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), intType())
@@ -34,7 +34,7 @@ method takeIntReturnInt(x: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/basic.kt:(187,207): info: Generated Viper text for takeIntReturnIntExpr:
+/basic.kt: info: Generated Viper text for takeIntReturnIntExpr:
 method takeIntReturnIntExpr(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), intType())
@@ -44,7 +44,7 @@ method takeIntReturnIntExpr(x: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/basic.kt:(229,247): info: Generated Viper text for withIntDeclaration:
+/basic.kt: info: Generated Viper text for withIntDeclaration:
 method withIntDeclaration() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
 {
@@ -55,7 +55,7 @@ method withIntDeclaration() returns (ret: Ref)
   label ret_0
 }
 
-/basic.kt:(290,303): info: Generated Viper text for intAssignment:
+/basic.kt: info: Generated Viper text for intAssignment:
 method intAssignment() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 {

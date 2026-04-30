@@ -1,4 +1,4 @@
-/is_type_contract.kt:(157,165): info: Generated Viper text for isString:
+/is_type_contract.kt: info: Generated Viper text for isString:
 method isString(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), nullable(anyType()))
   ensures isSubtype(typeOf(ret), boolType())
@@ -9,7 +9,7 @@ method isString(x: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/is_type_contract.kt:(322,330): info: Generated Viper text for isString:
+/is_type_contract.kt: info: Generated Viper text for isString:
 method isString(this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret), boolType())
@@ -21,7 +21,7 @@ method isString(this: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/is_type_contract.kt:(491,508): info: Generated Viper text for subtypeTransitive:
+/is_type_contract.kt: info: Generated Viper text for subtypeTransitive:
 method f_subtypeTransitive(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), unitType())
   ensures isSubtype(typeOf(ret), unitType())
@@ -31,7 +31,7 @@ method f_subtypeTransitive(x: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/is_type_contract.kt:(686,707): info: Generated Viper text for constructorReturnType:
+/is_type_contract.kt: info: Generated Viper text for constructorReturnType:
 field bar: Ref
 
 method con() returns (ret: Ref)
@@ -51,7 +51,7 @@ method constructorReturnType() returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/is_type_contract.kt:(832,848): info: Generated Viper text for subtypeSuperType:
+/is_type_contract.kt: info: Generated Viper text for subtypeSuperType:
 field bf_bar: Ref
 
 method subtypeSuperType(bar: Ref) returns (ret_0: Ref)
@@ -64,7 +64,7 @@ method subtypeSuperType(bar: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/is_type_contract.kt:(965,976): info: Generated Viper text for typeOfField:
+/is_type_contract.kt: info: Generated Viper text for typeOfField:
 field bar: Ref
 
 method typeOfField(foo: Ref) returns (ret_0: Ref)

@@ -1,3 +1,4 @@
+// FULL_JDK
 import kotlin.contracts.contract
 import kotlin.contracts.ExperimentalContracts
 import org.jetbrains.kotlin.formver.plugin.AlwaysVerify

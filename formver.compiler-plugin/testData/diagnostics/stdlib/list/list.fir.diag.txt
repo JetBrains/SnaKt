@@ -1,4 +1,4 @@
-/list.kt:(77,88): info: Generated Viper text for declaration:
+/list.kt: info: Generated Viper text for declaration:
 field size: Ref
 
 method declaration() returns (ret_0: Ref)
@@ -11,7 +11,7 @@ method declaration() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/list.kt:(187,201): info: Generated Viper text for initialization:
+/list.kt: info: Generated Viper text for initialization:
 field size: Ref
 
 method emptyList() returns (ret: Ref)
@@ -39,7 +39,7 @@ method initialization(l: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/list.kt:(297,304): info: Generated Viper text for add_get:
+/list.kt: info: Generated Viper text for add_get:
 field size: Ref
 
 method add(this: Ref, element: Ref) returns (ret: Ref)
@@ -83,7 +83,7 @@ method get(this: Ref, index: Ref) returns (ret: Ref)
   ensures intFromRef(this.size) == old(intFromRef(this.size))
 
 
-/list.kt:(379,391): info: Generated Viper text for last_or_null:
+/list.kt: info: Generated Viper text for last_or_null:
 field size: Ref
 
 method get(this: Ref, index: Ref) returns (ret: Ref)
@@ -123,7 +123,7 @@ method last_or_null(l: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/list.kt:(545,553): info: Generated Viper text for is_empty:
+/list.kt: info: Generated Viper text for is_empty:
 field size: Ref
 
 method get(this: Ref, index: Ref) returns (ret: Ref)
@@ -170,7 +170,7 @@ method is_empty(l: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/list.kt:(670,683): info: Generated Viper text for nullable_list:
+/list.kt: info: Generated Viper text for nullable_list:
 field size: Ref
 
 method get(this: Ref, index: Ref) returns (ret: Ref)

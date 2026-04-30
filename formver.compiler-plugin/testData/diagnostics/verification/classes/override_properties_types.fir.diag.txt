@@ -1,4 +1,4 @@
-/override_properties_types.kt:(520,530): info: Generated Viper text for extractInt:
+/override_properties_types.kt: info: Generated Viper text for extractInt:
 field bf_field: Ref
 
 method extractInt(base: Ref, returnNull: Ref) returns (ret: Ref)

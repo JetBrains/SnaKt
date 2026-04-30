@@ -1,4 +1,4 @@
-/try_catch.kt:(158,166): info: Generated Viper text for tryCatch:
+/try_catch.kt: info: Generated Viper text for tryCatch:
 method call(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), unitType())
@@ -36,7 +36,7 @@ method tryCatch() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/try_catch.kt:(271,285): info: Generated Viper text for nestedTryCatch:
+/try_catch.kt: info: Generated Viper text for nestedTryCatch:
 method call(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), unitType())
@@ -87,7 +87,7 @@ method nestedTryCatch() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/try_catch.kt:(574,592): info: Generated Viper text for tryCatchWithInline:
+/try_catch.kt: info: Generated Viper text for tryCatchWithInline:
 method call(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), unitType())
@@ -128,7 +128,7 @@ method tryCatchWithInline() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/try_catch.kt:(685,702): info: Generated Viper text for tryCatchShadowing:
+/try_catch.kt: info: Generated Viper text for tryCatchShadowing:
 method cause(this: Ref) returns (ret: Ref)
 
 
@@ -161,7 +161,7 @@ method tryCatchShadowing() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/try_catch.kt:(813,828): info: Generated Viper text for multipleCatches:
+/try_catch.kt: info: Generated Viper text for multipleCatches:
 method call(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), unitType())
@@ -212,7 +212,7 @@ method multipleCatches() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/try_catch.kt:(1044,1056): info: Generated Viper text for useException:
+/try_catch.kt: info: Generated Viper text for useException:
 method call(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), unitType())

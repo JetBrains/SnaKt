@@ -1,4 +1,4 @@
-/nullability.kt:(24,35): info: Generated Viper text for return_null:
+/nullability.kt: info: Generated Viper text for return_null:
 method return_null() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), nullable(intType()))
 {

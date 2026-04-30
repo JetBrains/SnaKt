@@ -1,4 +1,4 @@
-/secondary_constructors.kt:(249,271): info: Generated Viper text for onlySecondConstructors:
+/secondary_constructors.kt: info: Generated Viper text for onlySecondConstructors:
 field a: Ref
 
 method con(n: Ref) returns (ret: Ref)
@@ -26,7 +26,7 @@ method onlySecondConstructors() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/secondary_constructors.kt:(365,392): info: Generated Viper text for primaryAndSecondConstructor:
+/secondary_constructors.kt: info: Generated Viper text for primaryAndSecondConstructor:
 field bf_a: Ref
 
 method con(a: Ref) returns (ret: Ref)

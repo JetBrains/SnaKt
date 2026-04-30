@@ -1,4 +1,4 @@
-/as_operator.kt:(57,63): info: Generated Viper text for testAs:
+/as_operator.kt: info: Generated Viper text for testAs:
 method testAs(foo: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(foo), _c_Foo())
   ensures isSubtype(typeOf(ret), _c_Bar())
@@ -12,7 +12,7 @@ method testAs(foo: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/as_operator.kt:(97,111): info: Generated Viper text for testNullableAs:
+/as_operator.kt: info: Generated Viper text for testNullableAs:
 method testNullableAs(foo: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(foo), nullable(_c_Foo()))
   ensures isSubtype(typeOf(ret), nullable(_c_Bar()))
@@ -26,7 +26,7 @@ method testNullableAs(foo: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/as_operator.kt:(148,158): info: Generated Viper text for testSafeAs:
+/as_operator.kt: info: Generated Viper text for testSafeAs:
 method testSafeAs(foo: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(foo), _c_Foo())
   ensures isSubtype(typeOf(ret), nullable(_c_Bar()))
@@ -43,7 +43,7 @@ method testSafeAs(foo: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/as_operator.kt:(194,212): info: Generated Viper text for testNullableSafeAs:
+/as_operator.kt: info: Generated Viper text for testNullableSafeAs:
 method testNullableSafeAs(foo: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(foo), nullable(_c_Foo()))
   ensures isSubtype(typeOf(ret), nullable(_c_Bar()))

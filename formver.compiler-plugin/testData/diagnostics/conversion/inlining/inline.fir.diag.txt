@@ -1,4 +1,4 @@
-/inline.kt:(230,239): info: Generated Viper text for quadruple:
+/inline.kt: info: Generated Viper text for quadruple:
 method quadruple(x: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret_0), intType())
@@ -24,7 +24,7 @@ method quadruple(x: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/inline.kt:(469,481): info: Generated Viper text for useBranching:
+/inline.kt: info: Generated Viper text for useBranching:
 method useBranching() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), intType())
 {
