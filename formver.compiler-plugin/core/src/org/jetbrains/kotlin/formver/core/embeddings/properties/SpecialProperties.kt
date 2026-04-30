@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
+import org.jetbrains.kotlin.formver.core.conversion.CollectionSizeFieldEmbedding
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.kotlinCallableId
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
@@ -31,7 +32,7 @@ val StringSizeProperty = object: SpecialProperty(PropertyEmbedding(LengthFieldGe
     }
 }
 
-val CollectionSizeProperty = object: SpecialProperty(PropertyEmbedding(BackingFieldGetter(ListSizeFieldEmbedding), setter = null)) {
+val CollectionSizeProperty = object: SpecialProperty(PropertyEmbedding(BackingFieldGetter(CollectionSizeFieldEmbedding), setter = null)) {
     context(typeResolver: TypeResolver, session: FirSession)
     override fun match(symbol: FirPropertySymbol) : Boolean {
         val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol ?: return false

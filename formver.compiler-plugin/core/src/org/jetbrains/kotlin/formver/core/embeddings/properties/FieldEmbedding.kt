@@ -78,29 +78,3 @@ class UserFieldEmbedding(
         get() = accessPolicy == AccessPolicy.ALWAYS_READABLE || accessPolicy == AccessPolicy.BY_RECEIVER_UNIQUENESS
     override val includeInShortDump: Boolean = true
 }
-
-
-object ListSizeFieldEmbedding : FieldEmbedding {
-    override val name = SpecialFieldName("size")
-    override val type = buildType { int() }
-    override val viperType = Type.Ref
-    override val accessPolicy = AccessPolicy.ALWAYS_WRITEABLE
-    override val includeInShortDump: Boolean = true
-    override fun extraAccessInvariantsForParameter(): List<TypeInvariantEmbedding> =
-        listOf(NonNegativeSizeTypeInvariantEmbedding)
-
-    object NonNegativeSizeTypeInvariantEmbedding : TypeInvariantEmbedding {
-        override fun fillHole(exp: ExpEmbedding): ExpEmbedding =
-            OperatorExpEmbeddings.GeIntInt(FieldAccess(exp, ListSizeFieldEmbedding), IntLit(0))
-    }
-}
-
-fun ScopedName.specialEmbedding(embedding: ClassTypeEmbedding, ctx: TypeResolver): PropertyEmbedding? =
-    NameMatcher.Companion.matchClassScope(this) {
-        ifBackingFieldName("size") {
-            return ctx.isCollectionInheritor(embedding).ifTrue {
-                PropertyEmbedding(BackingFieldGetter(ListSizeFieldEmbedding), null)
-            }
-        }
-        return null
-    }
