@@ -68,4 +68,3 @@ data class AdtLit(
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitAdtLit(this)
 }
-
