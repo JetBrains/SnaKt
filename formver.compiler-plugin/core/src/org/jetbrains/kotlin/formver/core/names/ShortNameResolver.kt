@@ -79,7 +79,9 @@ class ShortNameResolver : NameResolver {
     /**
      * Stores all the names that exist in the system.
      */
-    private val elements: MutableSet<AnyName> = ViperKeywords.keywords.toMutableSet()
+    private val elements: MutableSet<AnyName> = sortedSetOf<AnyName>(compareBy { it.fullName() }).also {
+        it.addAll(ViperKeywords.keywords)
+    }
 
     fun elements() = elements.toList()
 
