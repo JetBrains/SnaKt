@@ -7,7 +7,6 @@ package org.jetbrains.kotlin.formver.plugin.compiler
 
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.diagnostics.*
-import org.jetbrains.kotlin.formver.plugin.compiler.locality.Locality
 
 object PluginErrors : KtDiagnosticsContainer() {
     val VIPER_VERIFICATION_ERROR by warning1<PsiElement, String>()
