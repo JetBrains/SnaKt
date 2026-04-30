@@ -1,28 +1,8 @@
 /singleton.kt:(68,90): error: Invalid ADT annotation: @ADT may only be applied to data object declarations
 
-/singleton.kt:(68,90): error: Invalid ADT annotation: @ADT may only be applied to data object declarations
-
-/singleton.kt:(68,90): error: Invalid ADT annotation: @ADT may only be applied to data object declarations
-
-/singleton.kt:(97,117): error: Invalid ADT annotation: @ADT may only be applied to data object declarations
-
-/singleton.kt:(97,117): error: Invalid ADT annotation: @ADT may only be applied to data object declarations
-
 /singleton.kt:(97,117): error: Invalid ADT annotation: @ADT may only be applied to data object declarations
 
 /singleton.kt:(129,145): error: Invalid ADT annotation: An @ADT data object must not have fields
-
-/singleton.kt:(129,145): error: Invalid ADT annotation: An @ADT data object must not have fields
-
-/singleton.kt:(129,145): error: Invalid ADT annotation: An @ADT data object must not have fields
-
-/singleton.kt:(181,200): error: Invalid ADT annotation: An @ADT data object must not have member functions
-
-/singleton.kt:(181,200): error: Invalid ADT annotation: An @ADT data object must not have member functions
-
-/singleton.kt:(181,200): error: Invalid ADT annotation: An @ADT data object must not have member functions
-
-/singleton.kt:(181,200): error: Invalid ADT annotation: An @ADT data object must not have member functions
 
 /singleton.kt:(181,200): error: Invalid ADT annotation: An @ADT data object must not have member functions
 
@@ -37,10 +17,6 @@ method doSomething(this: Ref) returns (ret: Ref)
   goto ret_0
   label ret_0
 }
-
-/singleton.kt:(272,292): error: Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface
-
-/singleton.kt:(272,292): error: Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface
 
 /singleton.kt:(272,292): error: Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface
 

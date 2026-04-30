@@ -129,5 +129,5 @@ sealed interface Type : IntoSilver<viper.silver.ast.Type> {
                 }
             )
     }
-
 }
+

@@ -6,6 +6,8 @@
 package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.isOf
+import org.jetbrains.kotlin.formver.core.names.AdtName
+import org.jetbrains.kotlin.formver.core.names.UnqualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
 import org.jetbrains.kotlin.formver.viper.ast.Function
@@ -49,6 +51,25 @@ class Injection(
 
     val toRef: DomainFunc = RuntimeTypeDomain.createDomainFunc(toRefName, listOf(v.decl()), Type.Ref)
     val fromRef: DomainFunc = RuntimeTypeDomain.createDomainFunc(fromRefName, listOf(r.decl()), viperType)
+
+    /**
+     * Convenience constructors that derive `toRefName` and `fromRefName` from a single base.
+     * Two variants exist because primitives use [UnqualifiedDomainFuncName] (flat, single-part)
+     * while ADTs use [AdtName] (structured, multi-part).
+     */
+    constructor(prefix: String, viperType: Type, typeFunction: DomainFunc) : this(
+        UnqualifiedDomainFuncName("${prefix}ToRef"),
+        UnqualifiedDomainFuncName("${prefix}FromRef"),
+        viperType,
+        typeFunction,
+    )
+
+    constructor(baseName: SymbolicName, viperType: Type, typeFunction: DomainFunc) : this(
+        AdtName(baseName, "ToRef"),
+        AdtName(baseName, "FromRef"),
+        viperType,
+        typeFunction,
+    )
 
     internal fun AxiomListBuilder.injectionAxioms() {
         axiom {

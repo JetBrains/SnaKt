@@ -3,26 +3,26 @@
 import org.jetbrains.kotlin.formver.plugin.ADT
 
 
-<!ADT_INVALID_TARGET, ADT_INVALID_TARGET, ADT_INVALID_TARGET!>@ADT
+<!ADT_INVALID_TARGET!>@ADT
 class NotAnObject<!>
 
 @ADT
-<!ADT_INVALID_TARGET, ADT_INVALID_TARGET, ADT_INVALID_TARGET!>object NotDataObject<!>
+<!ADT_INVALID_TARGET!>object NotDataObject<!>
 
 @ADT
-data <!ADT_INVALID_TARGET, ADT_INVALID_TARGET, ADT_INVALID_TARGET!>object WithField<!> {
+data <!ADT_INVALID_TARGET!>object WithField<!> {
     val x: Int = 42
 }
 
 @ADT
-data <!ADT_INVALID_TARGET, ADT_INVALID_TARGET, ADT_INVALID_TARGET, ADT_INVALID_TARGET, ADT_INVALID_TARGET, ADT_INVALID_TARGET!>object WithFunction<!> {
+data <!ADT_INVALID_TARGET, ADT_INVALID_TARGET!>object WithFunction<!> {
     fun <!VIPER_TEXT!>doSomething<!>(): Int = 1
 }
 
 interface SomeInterface
 
 @ADT
-data <!ADT_INVALID_TARGET, ADT_INVALID_TARGET, ADT_INVALID_TARGET!>object WithSupertype<!> : SomeInterface
+data <!ADT_INVALID_TARGET!>object WithSupertype<!> : SomeInterface
 
 @ADT
 data object Valid

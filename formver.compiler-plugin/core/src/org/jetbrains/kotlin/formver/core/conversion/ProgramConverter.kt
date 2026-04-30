@@ -288,10 +288,7 @@ class ProgramConverter(
 
     private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding {
         val className = symbol.classId.embedName()
-        val embedding = adts.getOrPut(className) { AdtTypeEmbedding(className) }
-        if (embedding.isInitialized) return embedding
-        if (validateAdt(symbol)) embedding.markInitialized()
-        return embedding
+        return adts.getOrPut(className) { AdtTypeEmbedding(className, isInitialized = validateAdt(symbol)) }
     }
 
     @OptIn(SymbolInternals::class)

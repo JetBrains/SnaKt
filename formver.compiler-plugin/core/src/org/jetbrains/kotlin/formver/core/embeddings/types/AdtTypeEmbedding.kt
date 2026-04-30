@@ -7,20 +7,10 @@ import org.jetbrains.kotlin.formver.core.names.AdtName
 import org.jetbrains.kotlin.formver.core.names.ScopedName
 import org.jetbrains.kotlin.formver.viper.ast.*
 
-data class AdtTypeEmbedding(override val name: ScopedName) : PretypeEmbedding {
-    private var _isInitialized: Boolean = false
-
-    val isInitialized: Boolean
-        get() = _isInitialized
-
-    fun markInitialized() {
-        require(!_isInitialized) { "ADT $name is already initialised." }
-        _isInitialized = true
-    }
-
+data class AdtTypeEmbedding(override val name: ScopedName, val isInitialized: Boolean = false) : PretypeEmbedding {
     val adtName: AdtName = AdtName(name)
     val viperType: Type.Adt = Type.Adt(adtName)
-    val injection: Injection = Injection(AdtName(name, "ToRef"), AdtName(name, "FromRef"), viperType, RuntimeTypeDomain.classTypeFunc(name))
+    val injection: Injection = Injection(name, viperType, RuntimeTypeDomain.classTypeFunc(name))
 
     override val runtimeType = RuntimeTypeDomain.classTypeFunc(name)()
 

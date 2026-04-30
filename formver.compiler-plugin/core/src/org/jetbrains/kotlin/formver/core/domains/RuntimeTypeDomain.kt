@@ -276,10 +276,10 @@ class RuntimeTypeDomain(
         fun classTypeFunc(name: SymbolicName) = createDomainFunc(name, emptyList(), RuntimeType, true)
 
         // bijections to primitive types
-        val intInjection = Injection(UnqualifiedDomainFuncName("intToRef"), UnqualifiedDomainFuncName("intFromRef"), Type.Int, intType)
-        val boolInjection = Injection(UnqualifiedDomainFuncName("boolToRef"), UnqualifiedDomainFuncName("boolFromRef"), Type.Bool, boolType)
-        val charInjection = Injection(UnqualifiedDomainFuncName("charToRef"), UnqualifiedDomainFuncName("charFromRef"), Type.Int, charType)
-        val stringInjection = Injection(UnqualifiedDomainFuncName("stringToRef"), UnqualifiedDomainFuncName("stringFromRef"), Type.Seq(Type.Int), stringType)
+        val intInjection = Injection("int", Type.Int, intType)
+        val boolInjection = Injection("bool", Type.Bool, boolType)
+        val charInjection = Injection("char", Type.Int, charType)
+        val stringInjection = Injection("string", Type.Seq(Type.Int), stringType)
         val primitiveTypeInjections = listOf(intInjection, boolInjection, charInjection, stringInjection)
 
         // special values
