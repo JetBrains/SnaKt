@@ -12,6 +12,8 @@ import org.jetbrains.kotlin.descriptors.isObject
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
+import org.jetbrains.kotlin.fir.declarations.impl.FirDefaultPropertyGetter
+import org.jetbrains.kotlin.fir.declarations.processAllDeclarations
 import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.utils.hasBackingField
 import org.jetbrains.kotlin.fir.declarations.utils.isData
@@ -287,6 +289,7 @@ class ProgramConverter(
         embedFunctionPretypeWithBuilder(symbol)
     }
 
+    @OptIn(SymbolInternals::class)
     override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding {
 
         if (symbol.receiverParameterSymbol != null) {
@@ -300,14 +303,25 @@ class ProgramConverter(
                         SpecialProperties.lookup(symbol)?.let { return@getOrPutProperty it }
                     }
                 }
-                // Check if the symbol can be represented using a backing field
-                embedBackingField(symbol)?.let {
-                    return@getOrPutProperty PropertyEmbedding(
-                        BackingFieldGetter(it), BackingFieldSetter(it)
-                    )
+                val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol
+                val final = symbol.isFinal || classSymbol?.isFinal == true
+                val hasGetter = symbol.getterSymbol?.fir !is FirDefaultPropertyGetter
+
+
+                // for symbols that are final, immutable, and do not have a getter can be represented with a pure function
+                if (final && symbol.isVal && !hasGetter) {
+                    return@getOrPutProperty embedFinalProperty(symbol)
                 }
-                // Create a custom getter+setter
-                embedCustomProperty(symbol)
+
+                // final symbols that are mutable and do not have a getter, can be represented by a getter
+                if (final && symbol.isVar && !hasGetter && symbol.hasBackingField){
+                    val backingField = embedBackingField(symbol)
+                    return@getOrPutProperty PropertyEmbedding(BackingFieldGetter(backingField), BackingFieldSetter(backingField))
+                }
+
+
+                // All other instances should just get access methods. We can not reason about those fields.
+                return@getOrPutProperty embedCustomProperty(symbol)
             }
         }
     }
@@ -486,19 +500,18 @@ class ProgramConverter(
         get() = containingPropertyOrSelf.resolvedReceiverTypeRef?.coneType
 
     /**
-     * Construct and register the field embedding for this property's backing field, if any exists.
+     * Construct and register the field embedding for this property's backing field
+     * this method assumes that the property belongs to a class.
      */
     private fun embedBackingField(
         symbol: FirPropertySymbol
-    ): FieldEmbedding? {
-        val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol ?: return null
+    ): FieldEmbedding {
+        val classSymbol = symbol.dispatchReceiverType!!.toClassSymbol(session) as FirRegularClassSymbol
         val embedding = embedClass(classSymbol)
         val scopedName = symbol.callableId!!.embedMemberBackingFieldName(
             Visibilities.isPrivate(symbol.visibility)
         )
-        val fieldIsAllowed = symbol.hasBackingField && !symbol.isCustom && (symbol.isFinal || classSymbol.isFinal)
-        val backingField = fieldIsAllowed.ifTrue {
-            UserFieldEmbedding(
+        val backingField = UserFieldEmbedding(
                 scopedName,
                 embedType(symbol.resolvedReturnType),
                 symbol,
@@ -506,9 +519,31 @@ class ProgramConverter(
                 embedding,
                 symbol.isManual(session)
             )
-        }
+
         return backingField
     }
+
+    private fun embedFinalProperty(
+        symbol: FirPropertySymbol
+    ) : PropertyEmbedding {
+        val name = symbol.embedGetterName(this)
+        val getter = PureUserFunctionEmbedding(
+            NonInlineNamedFunction(
+                GetterFunctionSignature(name, symbol),
+                true
+            )
+        )
+
+        functions.putIfAbsent(name, getter)
+
+        return PropertyEmbedding(
+            FinalFieldGetter(
+                getter
+            ),
+            null
+        )
+    }
+
 
     private fun embedCustomProperty(symbol: FirPropertySymbol) = PropertyEmbedding(
         CustomGetter(embedGetterFunction(symbol)),
