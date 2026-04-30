@@ -1,4 +1,4 @@
-/property_getters.kt:(102,129): info: Generated Viper text for testPrimitivePropertyGetter:
+/property_getters.kt: info: Generated Viper text for testPrimitivePropertyGetter:
 method nProp(this: Ref) returns (v_ret: Ref)
 
 
@@ -15,7 +15,7 @@ method testPrimitivePropertyGetter(pp: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/property_getters.kt:(286,313): info: Generated Viper text for testReferencePropertyGetter:
+/property_getters.kt: info: Generated Viper text for testReferencePropertyGetter:
 method nProp(this: Ref) returns (v_ret: Ref)
 
 
@@ -42,7 +42,7 @@ method testReferencePropertyGetter(rp: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/property_getters.kt:(391,418): info: Generated Viper text for testCascadingPropertyGetter:
+/property_getters.kt: info: Generated Viper text for testCascadingPropertyGetter:
 method nProp(this: Ref) returns (v_ret: Ref)
 
 

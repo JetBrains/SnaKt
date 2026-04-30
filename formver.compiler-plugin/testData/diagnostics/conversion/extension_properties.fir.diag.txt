@@ -1,4 +1,4 @@
-/extension_properties.kt:(114,137): info: Generated Viper text for extensionGetterProperty:
+/extension_properties.kt: info: Generated Viper text for extensionGetterProperty:
 method extensionGetterProperty() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), unitType())
 {
@@ -24,7 +24,7 @@ method extensionGetterProperty() returns (ret_0: Ref)
 method intValProp(this: Ref) returns (ret: Ref)
 
 
-/extension_properties.kt:(210,233): info: Generated Viper text for extensionSetterProperty:
+/extension_properties.kt: info: Generated Viper text for extensionSetterProperty:
 method es_intVarProp(this: Ref, anon: Ref) returns (ret: Ref)
 
 
@@ -40,7 +40,7 @@ method extensionSetterProperty() returns (ret_0: Ref)
 method intVarProp(this: Ref) returns (ret: Ref)
 
 
-/extension_properties.kt:(414,453): info: Generated Viper text for extensionGetterPropertyUserDefinedClass:
+/extension_properties.kt: info: Generated Viper text for extensionGetterPropertyUserDefinedClass:
 field bf_x: Ref
 
 method extensionGetterPropertyUserDefinedClass(pf: Ref)
@@ -61,7 +61,7 @@ method extensionGetterPropertyUserDefinedClass(pf: Ref)
 method pfValProp(this: Ref) returns (ret: Ref)
 
 
-/extension_properties.kt:(508,547): info: Generated Viper text for extensionSetterPropertyUserDefinedClass:
+/extension_properties.kt: info: Generated Viper text for extensionSetterPropertyUserDefinedClass:
 field x: Ref
 
 method es_pfVarProp(this: Ref, anon: Ref) returns (ret: Ref)

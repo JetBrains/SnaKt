@@ -1,4 +1,4 @@
-/and_or_then.kt:(64,75): info: Generated Viper text for resultOrArg:
+/and_or_then.kt: info: Generated Viper text for resultOrArg:
 method resultOrArg(par_arg: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(par_arg), boolType())
   ensures isSubtype(typeOf(ret), boolType())
@@ -9,7 +9,7 @@ method resultOrArg(par_arg: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/and_or_then.kt:(200,211): info: Generated Viper text for testImplies:
+/and_or_then.kt: info: Generated Viper text for testImplies:
 method testImplies(par_arg: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(par_arg), boolType())
   ensures isSubtype(typeOf(ret), boolType())
@@ -23,7 +23,7 @@ method testImplies(par_arg: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/and_or_then.kt:(417,424): info: Generated Viper text for testAnd:
+/and_or_then.kt: info: Generated Viper text for testAnd:
 method testAnd(arg1: Ref, arg2: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(arg1), boolType())
   requires isSubtype(typeOf(arg2), boolType())

@@ -1,4 +1,4 @@
-/pure_function_with_reassignments.kt:(78,93): info: Generated Viper text for doubleIncrement:
+/pure_function_with_reassignments.kt: info: Generated Viper text for doubleIncrement:
 function doubleIncrement(): Ref
   ensures isSubtype(typeOf(result), intType())
 {
@@ -11,7 +11,7 @@ function doubleIncrement(): Ref
         l0_x_2)))
 }
 
-/pure_function_with_reassignments.kt:(171,194): info: Generated Viper text for updateThenReadIntoOther:
+/pure_function_with_reassignments.kt: info: Generated Viper text for updateThenReadIntoOther:
 function updateThenReadIntoOther(): Ref
   ensures isSubtype(typeOf(result), intType())
 {
@@ -24,7 +24,7 @@ function updateThenReadIntoOther(): Ref
         l0_y_0)))
 }
 
-/pure_function_with_reassignments.kt:(276,300): info: Generated Viper text for readOldValueBeforeUpdate:
+/pure_function_with_reassignments.kt: info: Generated Viper text for readOldValueBeforeUpdate:
 function readOldValueBeforeUpdate(): Ref
   ensures isSubtype(typeOf(result), intType())
 {
@@ -39,7 +39,7 @@ function readOldValueBeforeUpdate(): Ref
           l0_x_2))))
 }
 
-/pure_function_with_reassignments.kt:(397,413): info: Generated Viper text for chainThroughTemp:
+/pure_function_with_reassignments.kt: info: Generated Viper text for chainThroughTemp:
 function chainThroughTemp(): Ref
   ensures isSubtype(typeOf(result), intType())
 {
@@ -52,7 +52,7 @@ function chainThroughTemp(): Ref
         l0_x_1)))
 }
 
-/pure_function_with_reassignments.kt:(495,522): info: Generated Viper text for overwriteNotSelfReferential:
+/pure_function_with_reassignments.kt: info: Generated Viper text for overwriteNotSelfReferential:
 function overwriteNotSelfReferential(): Ref
   ensures isSubtype(typeOf(result), intType())
 {
@@ -63,7 +63,7 @@ function overwriteNotSelfReferential(): Ref
       l0_x_1))
 }
 
-/pure_function_with_reassignments.kt:(584,611): info: Generated Viper text for nestedConditionalAssignment:
+/pure_function_with_reassignments.kt: info: Generated Viper text for nestedConditionalAssignment:
 function nestedConditionalAssignment(a: Ref, b: Ref): Ref
   requires isSubtype(typeOf(a), boolType())
   requires isSubtype(typeOf(b), boolType())
@@ -90,7 +90,7 @@ function nestedConditionalAssignment(a: Ref, b: Ref): Ref
                 l0_x_0)))))))
 }
 
-/pure_function_with_reassignments.kt:(729,755): info: Generated Viper text for blockConditionalAssignment:
+/pure_function_with_reassignments.kt: info: Generated Viper text for blockConditionalAssignment:
 function blockConditionalAssignment(a: Ref, b: Ref): Ref
   requires isSubtype(typeOf(a), boolType())
   requires isSubtype(typeOf(b), boolType())
@@ -113,7 +113,7 @@ function blockConditionalAssignment(a: Ref, b: Ref): Ref
               l0_x_0))))))
 }
 
-/pure_function_with_reassignments.kt:(912,926): info: Generated Viper text for whenAssignment:
+/pure_function_with_reassignments.kt: info: Generated Viper text for whenAssignment:
 function whenAssignment(a: Ref, b: Ref): Ref
   requires isSubtype(typeOf(a), intType())
   requires isSubtype(typeOf(b), boolType())

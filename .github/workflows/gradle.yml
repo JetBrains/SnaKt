@@ -43,10 +43,10 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
-      - name: Run all tests (both modes)
-        run: ./gradlew :formver.compiler-plugin:testBothModes
+      - name: Run all tests (conversion + verification)
+        run: ./gradlew :formver.compiler-plugin:test
       - name: Report failing test results
         uses: mikepenz/action-junit-report@v4
         if: failure()
         with:
-          report_paths: '**/build/test-results/testBothModes/TEST-*.xml'
+          report_paths: '**/build/test-results/test/TEST-*.xml'

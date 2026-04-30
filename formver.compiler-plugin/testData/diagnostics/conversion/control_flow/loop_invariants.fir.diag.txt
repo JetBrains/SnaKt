@@ -1,4 +1,4 @@
-/loop_invariants.kt:(146,168): info: Generated Viper text for dynamicLambdaInvariant:
+/loop_invariants.kt: info: Generated Viper text for dynamicLambdaInvariant:
 method dynamicLambdaInvariant(f: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(f), functionType())
   ensures isSubtype(typeOf(ret_0), unitType())
@@ -22,7 +22,7 @@ method returnsBoolean() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
 
 
-/loop_invariants.kt:(241,259): info: Generated Viper text for functionAssignment:
+/loop_invariants.kt: info: Generated Viper text for functionAssignment:
 method functionAssignment(f: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(f), functionType())
   ensures isSubtype(typeOf(ret_0), unitType())
@@ -50,7 +50,7 @@ method returnsBoolean() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
 
 
-/loop_invariants.kt:(346,375): info: Generated Viper text for conditionalFunctionAssignment:
+/loop_invariants.kt: info: Generated Viper text for conditionalFunctionAssignment:
 method conditionalFunctionAssignment(b: Ref, f: Ref, h: Ref)
   returns (ret_0: Ref)
   requires isSubtype(typeOf(b), boolType())

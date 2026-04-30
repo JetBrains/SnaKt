@@ -1,4 +1,4 @@
-/binary_search.kt:(90,110): info: Generated Viper text for mid_increased_by_one:
+/binary_search.kt: info: Generated Viper text for mid_increased_by_one:
 field size: Ref
 
 method get(this: Ref, index: Ref) returns (ret: Ref)
@@ -91,9 +91,7 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
     intFromRef(toIndex) - intFromRef(fromIndex)
 
 
-/binary_search.kt:(305,313): warning: Invalid index for list 'arr', the index may be greater than the list's size.
-
-/binary_search.kt:(511,531): info: Generated Viper text for mid_decreased_by_one:
+/binary_search.kt: info: Generated Viper text for mid_decreased_by_one:
 field size: Ref
 
 method get(this: Ref, index: Ref) returns (ret: Ref)
@@ -186,9 +184,7 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
     intFromRef(toIndex) - intFromRef(fromIndex)
 
 
-/binary_search.kt:(726,734): warning: Invalid index for list 'arr', the index may be less than zero.
-
-/binary_search.kt:(932,964): info: Generated Viper text for mid_decreased_by_one_in_rec_call:
+/binary_search.kt: info: Generated Viper text for mid_decreased_by_one_in_rec_call:
 field size: Ref
 
 method get(this: Ref, index: Ref) returns (ret: Ref)
@@ -282,9 +278,7 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
     intFromRef(toIndex) - intFromRef(fromIndex)
 
 
-/binary_search.kt:(1345,1368): warning: Invalid sub-list range for list 'arr', the range may be greater than the list's size.
-
-/binary_search.kt:(1405,1425): info: Generated Viper text for unsafe_binary_search:
+/binary_search.kt: info: Generated Viper text for unsafe_binary_search:
 field size: Ref
 
 method get(this: Ref, index: Ref) returns (ret: Ref)
@@ -335,5 +329,3 @@ method unsafe_binary_search(arr: Ref, target: Ref, left: Ref, right: Ref)
   goto lbl_ret_0
   label lbl_ret_0
 }
-
-/binary_search.kt:(1608,1616): warning: Invalid index for list 'arr', the index may be less than zero.

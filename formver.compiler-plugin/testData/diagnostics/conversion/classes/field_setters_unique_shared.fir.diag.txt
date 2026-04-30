@@ -1,4 +1,4 @@
-/field_setters_unique_shared.kt:(150,180): info: Generated Viper text for testPrimitiveFieldSetterUnique:
+/field_setters_unique_shared.kt: info: Generated Viper text for testPrimitiveFieldSetterUnique:
 field bf_shared: Ref
 
 field bf_unique: Ref
@@ -13,7 +13,7 @@ method testPrimitiveFieldSetterUnique(pf: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/field_setters_unique_shared.kt:(255,285): info: Generated Viper text for testPrimitiveFieldSetterShared:
+/field_setters_unique_shared.kt: info: Generated Viper text for testPrimitiveFieldSetterShared:
 field bf_shared: Ref
 
 field bf_unique: Ref
@@ -27,7 +27,7 @@ method testPrimitiveFieldSetterShared(pf: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/field_setters_unique_shared.kt:(452,482): info: Generated Viper text for testReferenceFieldSetterUnique:
+/field_setters_unique_shared.kt: info: Generated Viper text for testReferenceFieldSetterUnique:
 field bf_shared: Ref
 
 field bf_unique: Ref
@@ -54,7 +54,7 @@ method testReferenceFieldSetterUnique(rf: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/field_setters_unique_shared.kt:(597,627): info: Generated Viper text for testReferenceFieldSetterShared:
+/field_setters_unique_shared.kt: info: Generated Viper text for testReferenceFieldSetterShared:
 field bf_shared: Ref
 
 field bf_unique: Ref

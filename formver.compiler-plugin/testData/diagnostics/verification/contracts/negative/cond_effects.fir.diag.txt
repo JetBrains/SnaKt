@@ -1,4 +1,4 @@
-/cond_effects.kt:(121,146): info: Generated Viper text for compoundConditionalEffect:
+/cond_effects.kt: info: Generated Viper text for compoundConditionalEffect:
 method compoundConditionalEffect(b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(ret), unitType())
@@ -8,9 +8,7 @@ method compoundConditionalEffect(b: Ref) returns (ret: Ref)
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-/cond_effects.kt:(190,220): warning: Cannot verify that if the function returns then (b && false).
-
-/cond_effects.kt:(271,287): info: Generated Viper text for mayReturnNonNull:
+/cond_effects.kt: info: Generated Viper text for mayReturnNonNull:
 method mayReturnNonNull(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), nullable(anyType()))
   ensures isSubtype(typeOf(ret), nullable(anyType()))
@@ -21,9 +19,7 @@ method mayReturnNonNull(x: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/cond_effects.kt:(328,360): warning: Cannot verify that if a null value is returned then x is Int.
-
-/cond_effects.kt:(424,437): info: Generated Viper text for mayReturnNull:
+/cond_effects.kt: info: Generated Viper text for mayReturnNull:
 method mayReturnNull(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), nullable(anyType()))
   ensures isSubtype(typeOf(ret), nullable(anyType()))
@@ -34,9 +30,7 @@ method mayReturnNull(x: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/cond_effects.kt:(478,513): warning: Cannot verify that if a non-null value is returned then x is Int.
-
-/cond_effects.kt:(723,741): info: Generated Viper text for isNullOrEmptyWrong:
+/cond_effects.kt: info: Generated Viper text for isNullOrEmptyWrong:
 method isNullOrEmptyWrong(seq: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(seq), nullable(kotlin_c_CharSequence()))
   ensures isSubtype(typeOf(ret), boolType())
@@ -59,9 +53,7 @@ method isNullOrEmptyWrong(seq: Ref) returns (ret: Ref)
 method length(this: Ref) returns (v_ret: Ref)
 
 
-/cond_effects.kt:(796,832): warning: Cannot verify that if a false value is returned then seq != null.
-
-/cond_effects.kt:(925,942): info: Generated Viper text for recursiveContract:
+/cond_effects.kt: info: Generated Viper text for recursiveContract:
 method recursiveContract(n: Ref, x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(n), intType())
   requires isSubtype(typeOf(x), nullable(anyType()))
@@ -75,5 +67,3 @@ method recursiveContract(n: Ref, x: Ref) returns (ret: Ref)
   goto ret_0
   label ret_0
 }
-
-/cond_effects.kt:(994,1029): warning: Cannot verify that if a true value is returned then x is String.

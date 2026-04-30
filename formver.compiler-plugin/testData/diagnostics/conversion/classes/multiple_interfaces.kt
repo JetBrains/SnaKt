@@ -1,4 +1,6 @@
+// FULL_JDK
 // NEVER_VALIDATE
+
 
 interface A {
     val field: Int

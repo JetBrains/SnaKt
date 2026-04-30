@@ -1,4 +1,4 @@
-/primary_constructors.kt:(70,91): info: Generated Viper text for createPrimitiveFields:
+/primary_constructors.kt: info: Generated Viper text for createPrimitiveFields:
 field bf_a: Ref
 
 field bf_b: Ref
@@ -24,7 +24,7 @@ method createPrimitiveFields() returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/primary_constructors.kt:(178,193): info: Generated Viper text for createRecursive:
+/primary_constructors.kt: info: Generated Viper text for createRecursive:
 field bf_a: Ref
 
 method con(a: Ref) returns (ret: Ref)
@@ -44,7 +44,7 @@ method createRecursive() returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/primary_constructors.kt:(279,296): info: Generated Viper text for createFieldInBody:
+/primary_constructors.kt: info: Generated Viper text for createFieldInBody:
 field a: Ref
 
 field bf_c: Ref

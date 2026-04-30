@@ -1,3 +1,4 @@
+// FULL_JDK
 // NEVER_VALIDATE
 
 val Int.intValProp: Int get() = this

@@ -1,4 +1,4 @@
-/generics.kt:(52,65): info: Generated Viper text for genericMethod:
+/generics.kt: info: Generated Viper text for genericMethod:
 field bf_t: Ref
 
 method genericMethod(this: Ref, x: Ref) returns (ret_0: Ref)
@@ -12,7 +12,7 @@ method genericMethod(this: Ref, x: Ref) returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/generics.kt:(107,116): info: Generated Viper text for createBox:
+/generics.kt: info: Generated Viper text for createBox:
 field bf_t: Ref
 
 method con(par_t: Ref) returns (ret: Ref)
@@ -42,7 +42,7 @@ method createBox() returns (ret_0: Ref)
   label lbl_ret_0
 }
 
-/generics.kt:(227,242): info: Generated Viper text for setGenericField:
+/generics.kt: info: Generated Viper text for setGenericField:
 field bf_t: Ref
 
 method con(par_t: Ref) returns (ret: Ref)
@@ -61,7 +61,7 @@ method setGenericField() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/generics.kt:(293,303): info: Generated Viper text for genericFun:
+/generics.kt: info: Generated Viper text for genericFun:
 method genericFun(par_t: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(par_t), nullable(anyType()))
   ensures isSubtype(typeOf(ret), nullable(anyType()))
@@ -71,7 +71,7 @@ method genericFun(par_t: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/generics.kt:(322,337): info: Generated Viper text for callGenericFunc:
+/generics.kt: info: Generated Viper text for callGenericFunc:
 method callGenericFunc() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), unitType())
 {
@@ -89,7 +89,7 @@ method genericFun(par_t: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), nullable(anyType()))
 
 
-/generics.kt:(375,395): info: Generated Viper text for genericAsIfCondition:
+/generics.kt: info: Generated Viper text for genericAsIfCondition:
 field bf_t: Ref
 
 method genericAsIfCondition(box: Ref) returns (ret_0: Ref)

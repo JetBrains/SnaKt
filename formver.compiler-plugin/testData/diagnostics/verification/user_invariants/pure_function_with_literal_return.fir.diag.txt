@@ -1,4 +1,4 @@
-/pure_function_with_literal_return.kt:(70,91): info: Generated Viper text for annotatedIntLitReturn:
+/pure_function_with_literal_return.kt: info: Generated Viper text for annotatedIntLitReturn:
 function annotatedIntLitReturn(par_arg: Ref): Ref
   requires isSubtype(typeOf(par_arg), intType())
   requires true
@@ -13,7 +13,7 @@ function annotatedIntLitReturn(par_arg: Ref): Ref
   intToRef(42)
 }
 
-/pure_function_with_literal_return.kt:(403,425): info: Generated Viper text for annotatedBoolLitReturn:
+/pure_function_with_literal_return.kt: info: Generated Viper text for annotatedBoolLitReturn:
 function annotatedBoolLitReturn(par_arg: Ref): Ref
   requires isSubtype(typeOf(par_arg), intType())
   requires intFromRef(par_arg) <= 0
@@ -25,7 +25,7 @@ function annotatedBoolLitReturn(par_arg: Ref): Ref
   boolToRef(true)
 }
 
-/pure_function_with_literal_return.kt:(628,650): info: Generated Viper text for annotatedCharLitReturn:
+/pure_function_with_literal_return.kt: info: Generated Viper text for annotatedCharLitReturn:
 function annotatedCharLitReturn(par_arg: Ref): Ref
   requires isSubtype(typeOf(par_arg), stringType())
   requires stringFromRef(par_arg) ==
@@ -36,7 +36,7 @@ function annotatedCharLitReturn(par_arg: Ref): Ref
   charToRef(65)
 }
 
-/pure_function_with_literal_return.kt:(834,858): info: Generated Viper text for annotatedStringLitReturn:
+/pure_function_with_literal_return.kt: info: Generated Viper text for annotatedStringLitReturn:
 function annotatedStringLitReturn(par_arg: Ref): Ref
   requires isSubtype(typeOf(par_arg), boolType())
   requires boolFromRef(par_arg)

@@ -1,4 +1,4 @@
-/chars.kt:(212,221): info: Generated Viper text for testChars:
+/chars.kt: info: Generated Viper text for testChars:
 field bf_char: Ref
 
 field size: Ref

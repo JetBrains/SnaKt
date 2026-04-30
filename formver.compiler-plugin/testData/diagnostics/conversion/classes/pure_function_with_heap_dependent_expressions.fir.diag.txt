@@ -1,4 +1,4 @@
-/pure_function_with_heap_dependent_expressions.kt:(101,109): info: Generated Viper text for getValue:
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for getValue:
 field next: Ref
 
 field value: Ref
@@ -13,7 +13,7 @@ function getValue(node: Ref): Ref
     v_anon_0_0)
 }
 
-/pure_function_with_heap_dependent_expressions.kt:(164,180): info: Generated Viper text for getSafeNextValue:
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for getSafeNextValue:
 field next: Ref
 
 field value: Ref
@@ -37,7 +37,7 @@ function getSafeNextValue(node: Ref): Ref
           v_anon_0_0))))
 }
 
-/pure_function_with_heap_dependent_expressions.kt:(247,267): info: Generated Viper text for getSafeNextNextValue:
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for getSafeNextNextValue:
 field next: Ref
 
 field value: Ref
@@ -68,7 +68,7 @@ function getSafeNextNextValue(node: Ref): Ref
               v_anon_0_0))))))
 }
 
-/pure_function_with_heap_dependent_expressions.kt:(339,355): info: Generated Viper text for sumFirstTwoNodes:
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for sumFirstTwoNodes:
 field next: Ref
 
 field value: Ref
@@ -106,7 +106,7 @@ function sumFirstTwoNodes(node: Ref): Ref
               v_anon_0_0))))))
 }
 
-/pure_function_with_heap_dependent_expressions.kt:(526,536): info: Generated Viper text for isLastNode:
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for isLastNode:
 field next: Ref
 
 field value: Ref
@@ -121,7 +121,7 @@ function isLastNode(node: Ref): Ref
     boolToRef(v_anon_0_0 == nullValue()))
 }
 
-/pure_function_with_heap_dependent_expressions.kt:(602,608): info: Generated Viper text for length:
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for length:
 field next: Ref
 
 field value: Ref
@@ -145,7 +145,7 @@ function length(node: Ref): Ref
           v_anon_0_0))))
 }
 
-/pure_function_with_heap_dependent_expressions.kt:(763,774): info: Generated Viper text for sumAllNodes:
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for sumAllNodes:
 field next: Ref
 
 field value: Ref
@@ -176,7 +176,7 @@ function sumAllNodes(node: Ref): Ref
             v_anon_0_0)))))
 }
 
-/pure_function_with_heap_dependent_expressions.kt:(952,965): info: Generated Viper text for containsValue:
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for containsValue:
 field next: Ref
 
 field value: Ref
@@ -205,7 +205,7 @@ function containsValue(node: Ref, target: Ref): Ref
               v_anon_1_0))))))
 }
 
-/pure_function_with_heap_dependent_expressions.kt:(1162,1178): info: Generated Viper text for aliasAndReassign:
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for aliasAndReassign:
 field next: Ref
 
 field value: Ref
@@ -234,7 +234,7 @@ function aliasAndReassign(node: Ref): Ref
             l0_fallbackValue_2)))))
 }
 
-/pure_function_with_heap_dependent_expressions.kt:(1384,1386): info: Generated Viper text for id:
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for id:
 field next: Ref
 
 field value: Ref
@@ -247,7 +247,7 @@ function id(node: Ref): Ref
   node
 }
 
-/pure_function_with_heap_dependent_expressions.kt:(1438,1457): info: Generated Viper text for useIdentityFunction:
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for useIdentityFunction:
 field next: Ref
 
 field value: Ref
@@ -279,7 +279,7 @@ function useIdentityFunction(node: Ref): Ref
           v_anon_0_0))))
 }
 
-/pure_function_with_heap_dependent_expressions.kt:(1550,1569): info: Generated Viper text for getNextValueUsingId:
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for getNextValueUsingId:
 field next: Ref
 
 field value: Ref

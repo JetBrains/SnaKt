@@ -1,4 +1,4 @@
-/predicates_access.kt:(249,272): info: Generated Viper text for accessSuperTypeProperty:
+/predicates_access.kt: info: Generated Viper text for accessSuperTypeProperty:
 field a: Ref
 
 field b: Ref
@@ -67,7 +67,7 @@ method accessSuperTypeProperty(c: Ref) returns (ret: Ref)
 method d(this: Ref) returns (v_ret: Ref)
 
 
-/predicates_access.kt:(306,318): info: Generated Viper text for accessNested:
+/predicates_access.kt: info: Generated Viper text for accessNested:
 field a: Ref
 
 field b: Ref
@@ -137,7 +137,7 @@ method accessNested(c: Ref) returns (ret: Ref)
 method d(this: Ref) returns (v_ret: Ref)
 
 
-/predicates_access.kt:(354,368): info: Generated Viper text for accessNullable:
+/predicates_access.kt: info: Generated Viper text for accessNullable:
 field a: Ref
 
 predicate c_A_unique(this: Ref) {
@@ -162,7 +162,7 @@ method accessNullable(x: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/predicates_access.kt:(442,452): info: Generated Viper text for accessCast:
+/predicates_access.kt: info: Generated Viper text for accessCast:
 field a: Ref
 
 field b: Ref
@@ -199,7 +199,7 @@ method accessCast(x: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/predicates_access.kt:(501,515): info: Generated Viper text for accessSafeCast:
+/predicates_access.kt: info: Generated Viper text for accessSafeCast:
 field a: Ref
 
 field b: Ref
@@ -244,7 +244,7 @@ method accessSafeCast(x: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/predicates_access.kt:(612,627): info: Generated Viper text for accessSmartCast:
+/predicates_access.kt: info: Generated Viper text for accessSmartCast:
 field a: Ref
 
 field b: Ref

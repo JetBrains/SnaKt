@@ -1,4 +1,4 @@
-/dump_cfg.kt:(229,235): info:
+/dump_cfg.kt: info:
 digraph nonDet {
     graph [nodesep=3]
     node [shape=box penwidth=2]
@@ -28,7 +28,7 @@ digraph nonDet {
 }
 
 
-/dump_cfg.kt:(273,277): info:
+/dump_cfg.kt: info:
 digraph test {
     graph [nodesep=3]
     node [shape=box penwidth=2]

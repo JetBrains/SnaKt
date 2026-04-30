@@ -1,3 +1,4 @@
+// FULL_JDK
 // USE_STDLIB
 
 import org.jetbrains.kotlin.formver.plugin.AlwaysVerify

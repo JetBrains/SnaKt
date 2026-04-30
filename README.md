@@ -140,15 +140,18 @@ manager, operating system, etc.
 
 ## Running tests
 
-The test pipeline for each function does conversion (Kotlin FIR → Viper AST),
-consistency checking (AST validation, no z3), and verification (Silicon/z3).
-Three Gradle tasks cover different combinations:
+Depending on the situation, different test modes should be run. The test pipeline is split into conversion and
+verification
+Conversion includes: Uniqueness checking, conversion, purity checking, viper consistency checking
+Verification includes: The actual verification
 
-- `./gradlew test` — full pipeline (conversion + consistency + verification).
-- `./gradlew testNoVerification` — conversion + consistency only, no z3.
-  Useful for fast local iteration (~65% faster).
-- `./gradlew testBothModes` — runs `test`, then re-runs verification tests
-  in conversion-only mode to catch conversion regressions.
+The table below summarizes the modes:
+
+| Gradle Task                | Mode                   | Conversion          | Verification                    | Primary Use Case                                                                   |
+|:---------------------------|:-----------------------|:--------------------|:--------------------------------|:-----------------------------------------------------------------------------------|
+| `/gradlew test`            | **`FULL`**             | Runs for every test | Runs for every test             | Ensures total consistency (used in CI/CD)                                          |
+| `/gradlew update`          | **`UPDATE`**           | Runs for every test | Runs only if conversion changed | **Manual Review:** Validates that code changes produced the expected effect.       |
+| `/gradlew untilConversion` | **`CHECK_CONVERSION`** | Runs for every test | Never runs                      | **Refactoring:** Confirms that logic changes didn't accidentally break the output. |
 
 To update golden files after a change, pass `-Pkotlin.test.update.test.data=true`.
 

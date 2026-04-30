@@ -1,3 +1,4 @@
+// FULL_JDK
 import org.jetbrains.kotlin.formver.plugin.Pure
 
 fun <!VIPER_TEXT!>iAmAMethod<!>(): Int {

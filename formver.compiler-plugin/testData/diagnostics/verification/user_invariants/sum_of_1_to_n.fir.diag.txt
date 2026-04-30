@@ -1,4 +1,4 @@
-/sum_of_1_to_n.kt:(64,91): info: Generated Viper text for recursiveSumOfIntegersUpToN:
+/sum_of_1_to_n.kt: info: Generated Viper text for recursiveSumOfIntegersUpToN:
 method recursiveSumOfIntegersUpToN(n: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(n), intType())
   requires intFromRef(n) >= 0
@@ -17,7 +17,7 @@ method recursiveSumOfIntegersUpToN(n: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/sum_of_1_to_n.kt:(296,314): info: Generated Viper text for sumOfIntegersUpToN:
+/sum_of_1_to_n.kt: info: Generated Viper text for sumOfIntegersUpToN:
 method sumOfIntegersUpToN(n: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(n), intType())
   requires intFromRef(n) >= 0

@@ -1,4 +1,4 @@
-/viper_casts_while_inlining.kt:(250,255): info: Generated Viper text for idFun:
+/viper_casts_while_inlining.kt: info: Generated Viper text for idFun:
 method idFun(par_arg: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(par_arg), nullable(anyType()))
   ensures isSubtype(typeOf(ret), nullable(anyType()))
@@ -8,7 +8,7 @@ method idFun(par_arg: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/viper_casts_while_inlining.kt:(609,626): info: Generated Viper text for checkMemberAccess:
+/viper_casts_while_inlining.kt: info: Generated Viper text for checkMemberAccess:
 field bf_member: Ref
 
 method checkMemberAccess() returns (ret_0: Ref)
@@ -87,7 +87,7 @@ method idFun(par_arg: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), nullable(anyType()))
 
 
-/viper_casts_while_inlining.kt:(895,919): info: Generated Viper text for checkGenericMemberAccess:
+/viper_casts_while_inlining.kt: info: Generated Viper text for checkGenericMemberAccess:
 field bf_wrapped: Ref
 
 method checkGenericMemberAccess(box: Ref) returns (ret_0: Ref)
@@ -165,7 +165,7 @@ method idFun(par_arg: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), nullable(anyType()))
 
 
-/viper_casts_while_inlining.kt:(1161,1182): info: Generated Viper text for checkArgumentIsCopied:
+/viper_casts_while_inlining.kt: info: Generated Viper text for checkArgumentIsCopied:
 field a: Ref
 
 method checkArgumentIsCopied(x: Ref) returns (ret_0: Ref)
@@ -201,7 +201,7 @@ method checkArgumentIsCopied(x: Ref) returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-/viper_casts_while_inlining.kt:(1347,1364): info: Generated Viper text for accessManyMembers:
+/viper_casts_while_inlining.kt: info: Generated Viper text for accessManyMembers:
 field a: Ref
 
 field b: Ref
@@ -306,7 +306,7 @@ method idFun(par_arg: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), nullable(anyType()))
 
 
-/viper_casts_while_inlining.kt:(1540,1558): info: Generated Viper text for checkEvaluatedOnce:
+/viper_casts_while_inlining.kt: info: Generated Viper text for checkEvaluatedOnce:
 field a: Ref
 
 field b: Ref

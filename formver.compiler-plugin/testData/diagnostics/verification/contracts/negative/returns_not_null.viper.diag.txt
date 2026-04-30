@@ -1,0 +1,1 @@
+/returns_not_null.kt: warning: Function may return a null value.

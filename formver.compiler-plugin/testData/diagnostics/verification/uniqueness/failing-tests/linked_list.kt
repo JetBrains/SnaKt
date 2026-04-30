@@ -1,4 +1,5 @@
 // RENDER_PREDICATES
+// FULL_JDK
 
 import org.jetbrains.kotlin.formver.plugin.AlwaysVerify
 import org.jetbrains.kotlin.formver.plugin.Unique

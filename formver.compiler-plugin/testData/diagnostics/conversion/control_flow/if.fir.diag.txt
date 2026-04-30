@@ -1,4 +1,4 @@
-/if.kt:(23,31): info: Generated Viper text for simpleIf:
+/if.kt: info: Generated Viper text for simpleIf:
 method simpleIf() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())
 {
@@ -12,7 +12,7 @@ method simpleIf() returns (ret: Ref)
   label ret_0
 }
 
-/if.kt:(116,129): info: Generated Viper text for ifOnParameter:
+/if.kt: info: Generated Viper text for ifOnParameter:
 method ifOnParameter(b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(ret), intType())
@@ -27,7 +27,7 @@ method ifOnParameter(b: Ref) returns (ret: Ref)
   label ret_0
 }
 
-/if.kt:(221,235): info: Generated Viper text for ifAsExpression:
+/if.kt: info: Generated Viper text for ifAsExpression:
 method ifAsExpression() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), boolType())
 {
