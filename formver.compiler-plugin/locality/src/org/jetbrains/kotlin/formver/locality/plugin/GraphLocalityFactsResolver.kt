@@ -36,7 +36,7 @@ class GraphLocalityInfoResolver(
      * Resolve the [LocalityFacts] of a [graph], caching the result on the given [graph].
      */
     context(context: CheckerContext)
-    fun resolveLocalityInfoOf(graph: ControlFlowGraph): LocalityFacts =
+    fun resolveLocalityFactsOf(graph: ControlFlowGraph): LocalityFacts =
         cache.getValue(graph, context)
 }
 
@@ -44,5 +44,5 @@ val FirSession.graphLocalityInfoResolver: GraphLocalityInfoResolver
         by FirSession.sessionComponentAccessor<GraphLocalityInfoResolver>()
 
 context(context: CheckerContext)
-fun ControlFlowGraph.resolveLocalityInfo(): LocalityFacts =
-    context.session.graphLocalityInfoResolver.resolveLocalityInfoOf(this)
+fun ControlFlowGraph.resolveLocalityFacts(): LocalityFacts =
+    context.session.graphLocalityInfoResolver.resolveLocalityFactsOf(this)
