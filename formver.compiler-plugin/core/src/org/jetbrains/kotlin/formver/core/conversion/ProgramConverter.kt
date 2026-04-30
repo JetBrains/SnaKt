@@ -55,7 +55,6 @@ class ProgramConverter(
         putAll(PartiallySpecialKotlinFunctions.generateAllByName())
     }.toMutableMap()
     private val functions: MutableMap<SymbolicName, PureFunctionEmbedding> = mutableMapOf()
-    private val adts: MutableMap<SymbolicName, AdtTypeEmbedding> = mutableMapOf()
 
     override val typeResolver: TypeResolver = TypeResolver()
 
@@ -81,7 +80,7 @@ class ProgramConverter(
 
     val program: Program
         get() = Program(
-            domains = listOf(RuntimeTypeDomain(typeResolver, adts.values.toList())),
+            domains = listOf(RuntimeTypeDomain(typeResolver)),
             // We need to deduplicate fields since public fields with the same name are represented differently
             // at `FieldEmbedding` level but map to the same Viper.
             fields = SpecialFields.all.map { it.toViper() } + typeResolver.backingFields().distinctBy { it.name }
@@ -98,7 +97,7 @@ class ProgramConverter(
                     )
                 }
             },
-            adts = adts.values.map { it.toViper() },
+            adts = typeResolver.adtTypeEmbeddings().map { it.toViper() },
         )
 
     fun registerForVerification(declaration: FirSimpleFunction) {
@@ -243,10 +242,11 @@ class ProgramConverter(
 
     private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding {
         val className = symbol.classId.embedName()
-        return adts.getOrPut(className) {
-            validateAdt(symbol)
-            AdtTypeEmbedding(className)
-        }
+        typeResolver.lookupAdt(className)?.let { return it }
+        validateAdt(symbol)
+        val embedding = AdtTypeEmbedding(className)
+        typeResolver.registerAdt(embedding)
+        return embedding
     }
 
     @OptIn(SymbolInternals::class)

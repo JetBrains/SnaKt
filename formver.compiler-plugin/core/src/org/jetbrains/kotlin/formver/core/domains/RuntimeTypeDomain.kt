@@ -209,10 +209,8 @@ const val RUNTIME_TYPE_DOMAIN_NAME = "rt"
  * // same for subtraction, multiplication and so on
  * ```
  */
-class RuntimeTypeDomain(
-    typeResolver: TypeResolver,
-    adts: List<AdtTypeEmbedding>,
-) : BuiltinDomain(DomainName(RUNTIME_TYPE_DOMAIN_NAME)) {
+class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(RUNTIME_TYPE_DOMAIN_NAME)) {
+    private val adts: List<AdtTypeEmbedding> = typeResolver.adtTypeEmbeddings()
     override val typeVars: List<Type.TypeVar> = emptyList()
 
     // Define types that are not dependent on the user defined classes in a companion object.
