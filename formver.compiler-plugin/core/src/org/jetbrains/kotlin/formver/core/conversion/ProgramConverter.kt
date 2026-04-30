@@ -112,7 +112,7 @@ class ProgramConverter(
                     it.details.uniquePredicate
                 )
             },
-            adts = adts.values.filter { it.isInitialized }.map { it.toViper() },
+            adts = adts.values.map { it.toViper() },
         )
 
     fun registerForVerification(declaration: FirSimpleFunction) {
@@ -288,7 +288,10 @@ class ProgramConverter(
 
     private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding {
         val className = symbol.classId.embedName()
-        return adts.getOrPut(className) { AdtTypeEmbedding(className, isInitialized = validateAdt(symbol)) }
+        return adts.getOrPut(className) {
+            validateAdt(symbol)
+            AdtTypeEmbedding(className)
+        }
     }
 
     @OptIn(SymbolInternals::class)

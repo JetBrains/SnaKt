@@ -48,6 +48,15 @@ data class QualifiedDomainFuncName(val domainName: SymbolicName, val funcName: S
     override val children: List<AnyName> = listOfNotNull(domainName, funcName, nameType)
 }
 
+data class InjectionFuncName(val baseName: SymbolicName, val suffix: String) : SymbolicName {
+    override val inViper: Boolean = false
+    override val candidates: List<CandidateName> = buildCandidates {
+        candidate { +suffix }
+        candidate { +baseName; +suffix }
+    }
+    override val children: List<AnyName> = listOf(baseName)
+}
+
 data class NamedDomainAxiomLabel(val domainName: SymbolicName, val baseName: String) : SymbolicName {
     override val inViper: Boolean = true
 

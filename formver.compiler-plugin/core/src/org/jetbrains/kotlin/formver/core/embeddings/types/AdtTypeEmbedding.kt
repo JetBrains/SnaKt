@@ -7,16 +7,12 @@ import org.jetbrains.kotlin.formver.core.names.AdtName
 import org.jetbrains.kotlin.formver.core.names.ScopedName
 import org.jetbrains.kotlin.formver.viper.ast.*
 
-data class AdtTypeEmbedding(override val name: ScopedName, val isInitialized: Boolean = false) : PretypeEmbedding {
+data class AdtTypeEmbedding(override val name: ScopedName) : PretypeEmbedding {
     val adtName: AdtName = AdtName(name)
     val viperType: Type.Adt = Type.Adt(adtName)
     val injection: Injection = Injection(name, viperType, RuntimeTypeDomain.classTypeFunc(name))
 
     override val runtimeType = RuntimeTypeDomain.classTypeFunc(name)()
-
-    override fun accessInvariants(): List<TypeInvariantEmbedding> = emptyList()
-    override fun sharedPredicateAccessInvariant() = null
-    override fun uniquePredicateAccessInvariant() = null
 
     val viperConstructorDecl: AdtConstructorDecl
         get() = AdtConstructorDecl(AdtConstructorName(adtName, name), adtName, emptyList())

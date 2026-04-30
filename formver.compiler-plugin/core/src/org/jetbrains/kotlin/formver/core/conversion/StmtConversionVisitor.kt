@@ -39,7 +39,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
-import org.jetbrains.kotlin.formver.names.debugMangled
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
 import org.jetbrains.kotlin.formver.core.functionCallArguments
@@ -84,25 +83,14 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     override fun visitResolvedQualifier(
         resolvedQualifier: FirResolvedQualifier, data: StmtConversionContext
     ): ExpEmbedding {
-        if (resolvedQualifier.resolvedType.isUnit) {
-            return UnitLit
-        }
+        if (resolvedQualifier.resolvedType.isUnit) return UnitLit
         val classSymbol = resolvedQualifier.symbol as? FirClassSymbol<*>
-        if (classSymbol == null || !classSymbol.classKind.isObject)
-            throw SnaktInternalException(resolvedQualifier.source, "Unsupported reference used as resolved qualifier.")
+            ?: throw SnaktInternalException(resolvedQualifier.source, "Unsupported symbol given, expected ClassSymbol.")
+        if (!classSymbol.classKind.isObject)
+            throw SnaktInternalException(resolvedQualifier.source, "Given symbol ${classSymbol.name} is not an object.")
         val type = data.embedType(resolvedQualifier.resolvedType)
-        val adtEmbedding = type.pretype as? AdtTypeEmbedding
-            ?: throw SnaktInternalException(
-                resolvedQualifier.source,
-                "Objects can only be used as ADT constructors. Declare it as an ADT to use it."
-            )
-        if (!adtEmbedding.isInitialized) {
-            throw SnaktInternalException(
-                resolvedQualifier.source,
-                "ADT constructors for ${adtEmbedding.name.debugMangled} are not initialized. " +
-                        "This can happen if the referenced object is not actually a valid ADT."
-            )
-        }
+        if (type.pretype !is AdtTypeEmbedding)
+            throw SnaktInternalException(resolvedQualifier.source, "Given symbol ${classSymbol.name} is not an ADT, no other types are supported.")
         return AdtLit(type)
     }
 
@@ -362,7 +350,6 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             )
         }
 
-        val type = data.embedType(symbol.resolvedReturnType)
         return data.declareLocalProperty(symbol, property.initializer?.let { data.convert(it) })
     }
 

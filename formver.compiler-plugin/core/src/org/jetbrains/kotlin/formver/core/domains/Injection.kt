@@ -6,7 +6,7 @@
 package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.isOf
-import org.jetbrains.kotlin.formver.core.names.AdtName
+import org.jetbrains.kotlin.formver.core.names.InjectionFuncName
 import org.jetbrains.kotlin.formver.core.names.UnqualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
@@ -54,8 +54,7 @@ class Injection(
 
     /**
      * Convenience constructors that derive `toRefName` and `fromRefName` from a single base.
-     * Two variants exist because primitives use [UnqualifiedDomainFuncName] (flat, single-part)
-     * while ADTs use [AdtName] (structured, multi-part).
+     * Two variants exist to support primitives with strings and ADTs with symbolic names.
      */
     constructor(prefix: String, viperType: Type, typeFunction: DomainFunc) : this(
         UnqualifiedDomainFuncName("${prefix}ToRef"),
@@ -65,8 +64,8 @@ class Injection(
     )
 
     constructor(baseName: SymbolicName, viperType: Type, typeFunction: DomainFunc) : this(
-        AdtName(baseName, "ToRef"),
-        AdtName(baseName, "FromRef"),
+        InjectionFuncName(baseName, "ToRef"),
+        InjectionFuncName(baseName, "FromRef"),
         viperType,
         typeFunction,
     )
