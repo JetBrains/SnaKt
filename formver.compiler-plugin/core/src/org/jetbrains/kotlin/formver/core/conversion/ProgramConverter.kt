@@ -86,7 +86,8 @@ class ProgramConverter(
             fields = SpecialFields.all.map { it.toViper() } + typeResolver.backingFields().distinctBy { it.name }
                 .map { it.toViper() },
             functions = SpecialFunctions.all + functions.values.mapNotNull { it.viperFunction(typeResolver) }
-                .distinctBy { it.name },
+                .distinctBy { it.name } +
+                    typeResolver.adtTypeEmbeddings().map { it.equalityFunction() },
             methods = SpecialMethods.all + methods.values.mapNotNull { it.viperMethod(typeResolver) }
                 .distinctBy { it.name } + typeResolver.backingFields().map { it.type.havocMethod(typeResolver) }
                 .distinctBy { it.name },

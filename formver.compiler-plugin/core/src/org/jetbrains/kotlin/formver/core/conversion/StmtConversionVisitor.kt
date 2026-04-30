@@ -40,6 +40,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
 import org.jetbrains.kotlin.formver.core.functionCallArguments
 import org.jetbrains.kotlin.formver.core.isInvariantBuilderFunctionNamed
@@ -211,8 +212,19 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     }
 
     private fun convertEqCmp(left: ExpEmbedding, right: ExpEmbedding): ExpEmbedding {
-        //TODO: replace with call to left.equals()
-        return EqCmp(left, right)
+        val adtPretype = left.type.pretype as? AdtTypeEmbedding
+            ?: return EqCmp(left, right) // TODO: lower `a == b` as `a?.equals(b) ?: (b === null)` for non-ADT types as well.
+        val nonNullableLeftType = left.type.getNonNullable()
+        return share(left) { sharedLeft ->
+            share(right) { sharedRight ->
+                If(
+                    sharedLeft.notNullCmp(),
+                    AdtEqCmp(sharedLeft.withType(nonNullableLeftType), sharedRight, adtPretype),
+                    EqCmp(sharedRight, NullLit),
+                    buildType { boolean() }
+                )
+            }
+        }
     }
 
     override fun visitComparisonExpression(

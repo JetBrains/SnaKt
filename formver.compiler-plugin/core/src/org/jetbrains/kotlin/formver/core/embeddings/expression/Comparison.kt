@@ -7,6 +7,8 @@ package org.jetbrains.kotlin.formver.core.embeddings.expression
 
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
+import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.viper.ast.EqAny
 import org.jetbrains.kotlin.formver.viper.ast.NeAny
@@ -44,3 +46,14 @@ data class NeCmp(
 }
 
 fun ExpEmbedding.notNullCmp(): ExpEmbedding = NeCmp(this, NullLit)
+
+data class AdtEqCmp(
+    val left: ExpEmbedding,
+    val right: ExpEmbedding,
+    val adtTypeEmbedding: AdtTypeEmbedding,
+    override val sourceRole: SourceRole? = null,
+) : ExpEmbedding {
+    override val type: TypeEmbedding = buildType { boolean() }
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitAdtEqCmp(this)
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(left, right)
+}

@@ -14,3 +14,52 @@ adt adt_c_pkg__c_Red {
 }
 
 /singleton.kt: warning: Check for instance is always 'true'.
+
+/singleton.kt: info: Generated Viper text for redIsRed:
+field size: Ref
+
+method redIsRed() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), unitType())
+{
+  var r1: Ref
+  var r2: Ref
+  var anon: Ref
+  r1 := ToRef(c_pkg__c_Red())
+  r2 := ToRef(c_pkg__c_Red())
+  if (r1 != nullValue()) {
+    anon := boolToRef(equals(r1, r2))
+  } else {
+    anon := boolToRef(r2 == nullValue())}
+  assert boolFromRef(anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
+}
+
+adt adt_c_pkg__c_Red {
+  c_pkg__c_Red()
+}
+
+/singleton.kt: info: Generated Viper text for redIsNotBlue:
+field size: Ref
+
+method redIsNotBlue(par_r: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(par_r), rt_c_pkg__c_Red())
+  ensures isSubtype(typeOf(ret_0), unitType())
+{
+  var anon: Ref
+  if (par_r != nullValue()) {
+    anon := boolToRef(adt_c_pkg__c_Red_equals(par_r, ToRef(c_pkg__c_Blue())))
+  } else {
+    anon := boolToRef(ToRef(c_pkg__c_Blue()) == nullValue())}
+  assert !boolFromRef(anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
+}
+
+adt adt_c_pkg__c_Blue {
+  c_pkg__c_Blue()
+}
+
+adt adt_c_pkg__c_Red {
+  c_pkg__c_Red()
+}

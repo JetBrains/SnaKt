@@ -11,13 +11,20 @@ data class AdtName(val className: SymbolicName) : SymbolicName {
     override val children: List<AnyName> = listOf(nameType, className)
 }
 
-data class AdtConstructorName(val adtName: AdtName, val className: SymbolicName) : SymbolicName {
+data class AdtConstructorName(val adtName: AdtName) : SymbolicName {
     override val nameType: NameType = NameType.Base.AdtCons
     override val inViper: Boolean = true
     override val candidates: List<CandidateName> = buildCandidates {
-        candidate { +className }
-        candidate { +adtName; +className }
-        candidate { +nameType; +adtName; +className }
+        candidate { +adtName.className }
+        candidate { +adtName; +adtName.className }
+        candidate { +nameType; +adtName; +adtName.className }
     }
-    override val children: List<AnyName> = listOf(nameType, adtName, className)
+    override val children: List<AnyName> = listOf(nameType, adtName)
+}
+
+data class AdtEqualityFunctionName(val adtName: AdtName) : SymbolicName {
+    override val nameType: NameType = NameType.Base.AdtEquals
+    override val inViper: Boolean = true
+    override val candidates: List<CandidateName> = nameWithDependentPrefixCandidates(nameType, adtName)
+    override val children: List<AnyName> = listOf(nameType, adtName)
 }

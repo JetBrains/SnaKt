@@ -55,4 +55,5 @@ interface ExpVisitor<R> {
     fun visitVariableEmbedding(e: VariableEmbedding): R = visitDefault(e)
     fun visitAccEmbedding(e: AccEmbedding): R = visitDefault(e)
     fun visitAdtLit(e: AdtLit): R = visitDefault(e)
+    fun visitAdtEqCmp(e: AdtEqCmp): R = visitDefault(e)
 }

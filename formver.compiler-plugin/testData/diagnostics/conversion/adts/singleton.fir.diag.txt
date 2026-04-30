@@ -107,11 +107,31 @@ method validLocalVariable() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 {
   var x: Ref
-  x := ToRef(c_pkg__c_Valid_c_pkg__c_Valid())
+  x := ToRef(c_pkg__c_Valid())
   label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-adt c_pkg__c_Valid {
-  c_pkg__c_Valid_c_pkg__c_Valid()
+adt adt_c_pkg__c_Valid {
+  c_pkg__c_Valid()
+}
+
+/singleton.kt: info: Generated Viper text for equalityNullable:
+method equalityNullable() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), boolType())
+{
+  var a: Ref
+  var b: Ref
+  a := ToRef(c_pkg__c_Valid())
+  b := ToRef(c_pkg__c_Valid())
+  if (a != nullValue()) {
+    ret := boolToRef(equals(a, b))
+  } else {
+    ret := boolToRef(b == nullValue())}
+  goto ret_0
+  label ret_0
+}
+
+adt adt_c_pkg__c_Valid {
+  c_pkg__c_Valid()
 }

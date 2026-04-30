@@ -111,8 +111,9 @@ class SimpleNameResolver : NameResolver {
             is AdtName -> resolveParts(name.nameType) + resolveParts(name.className)
             is InjectionFuncName -> resolveParts(name.baseName) + listOf(name.suffix)
             is AdtConstructorName -> resolveParts(name.nameType) +
-                    with(NameTypeAction.SKIP) { resolveParts(name.adtName) } +
-                    resolveParts(name.className)
+                    with(NameTypeAction.SKIP) { resolveParts(name.adtName) }
+            is AdtEqualityFunctionName -> resolveParts(name.nameType) +
+                    with(NameTypeAction.SKIP) { resolveParts(name.adtName) }
             is TypeName -> resolveParts(name.nameType) + listOfNotNull(buildString {
                 if (name.nullable) append("N")
                 if (name.pretype is FunctionTypeEmbedding) append("F")

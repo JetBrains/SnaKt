@@ -38,3 +38,9 @@ fun <!VIPER_TEXT!>validParameter<!>(a: Valid) {}
 fun <!VIPER_TEXT!>validLocalVariable<!>() {
     val x = Valid
 }
+
+fun <!VIPER_TEXT!>equalityNullable<!>(): Boolean {
+    val a: Valid? = Valid
+    val b: Valid? = Valid
+    return a == b
+}
