@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.asPosition
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildFunctionPretype
@@ -83,17 +84,19 @@ class SetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
 fun FullNamedFunctionSignature.toViperMethod(
     body: Stmt.Seqn?,
     returnVariable: VariableEmbedding,
+    ctx: TypeResolver,
 ) = UserMethod(
     name,
     formalArgs.map { it.toLocalVarDecl() },
     returnVariable.toLocalVarDecl(),
-    getPreconditions().pureToViper(toBuiltin = true),
-    getPostconditions(returnVariable).pureToViper(toBuiltin = true),
+    getPreconditions().pureToViper(toBuiltin = true, ctx),
+    getPostconditions(returnVariable).pureToViper(toBuiltin = true, ctx),
     body,
     declarationSource.asPosition
 )
 
 fun FullNamedFunctionSignature.toViperFunction(
+    ctx: TypeResolver,
     body: Exp?,
 ): UserFunction {
     val postconditions = getPostconditions(
@@ -109,14 +112,14 @@ fun FullNamedFunctionSignature.toViperFunction(
             "Postcondition tries to acquire permissions, which is not allowed in a function"
         )
     }
-    val preconditions = formalArgs.mapNotNull { it.sharedPredicateAccessInvariant() } + getPreconditions()
+    val preconditions = formalArgs.mapNotNull { it.sharedPredicateAccessInvariant(ctx) } + getPreconditions()
     return UserFunction(
         name,
         formalArgs.map { it.toLocalVarDecl() },
         // TODO: Be explicit about the return types of functions instead of boxing them into a Ref
         Type.Ref,
-        preconditions.pureToViper(toBuiltin = true),
-        postconditions.pureToViper(toBuiltin = true),
+        preconditions.pureToViper(toBuiltin = true, ctx),
+        postconditions.pureToViper(toBuiltin = true, ctx),
         body,
         declarationSource.asPosition
     )

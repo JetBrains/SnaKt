@@ -357,7 +357,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         val condition = data.convert(whileLoop.condition).withType { boolean() }
         val invariants = buildList {
             data.retrievePropertiesAndParameters().forEach {
-                addIfNotNull(it.sharedPredicateAccessInvariant())
+                addIfNotNull(it.sharedPredicateAccessInvariant(data.typeResolver))
                 addAll(it.provenInvariants())
             }
             extractLoopInvariants(whileLoop.block)?.let {
@@ -427,7 +427,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             exp.withType(newType)
         } else {
             // TODO: when there is a cast from B to A, only inhale invariants of A - invariants of B
-            exp.withNewTypeInvariants(newType) {
+            exp.withNewTypeInvariants(newType, data.typeResolver) {
                 access = true
             }
         }
@@ -491,12 +491,12 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return when (typeOperatorCall.operation) {
             FirOperation.IS -> Is(argument, conversionType)
             FirOperation.NOT_IS -> Not(Is(argument, conversionType))
-            FirOperation.AS -> Cast(argument, conversionType).withInvariants {
+            FirOperation.AS -> Cast(argument, conversionType).withInvariants(data.typeResolver) {
                 proven = true
                 access = true
             }
 
-            FirOperation.SAFE_AS -> SafeCast(argument, conversionType).withInvariants {
+            FirOperation.SAFE_AS -> SafeCast(argument, conversionType).withInvariants(data.typeResolver) {
                 proven = true
                 access = true
             }

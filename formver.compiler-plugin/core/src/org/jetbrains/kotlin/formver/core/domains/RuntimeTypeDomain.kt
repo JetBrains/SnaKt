@@ -5,8 +5,8 @@
 
 package org.jetbrains.kotlin.formver.core.domains
 
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.embedClassTypeFunc
 import org.jetbrains.kotlin.formver.core.names.DomainName
 import org.jetbrains.kotlin.formver.core.names.QualifiedDomainFuncName
@@ -210,7 +210,7 @@ const val RUNTIME_TYPE_DOMAIN_NAME = "rt"
  * ```
  */
 class RuntimeTypeDomain(
-    classes: List<ClassTypeEmbedding>,
+    typeResolver: TypeResolver,
     adts: List<AdtTypeEmbedding>,
 ) : BuiltinDomain(DomainName(RUNTIME_TYPE_DOMAIN_NAME)) {
     override val typeVars: List<Type.TypeVar> = emptyList()
@@ -286,7 +286,6 @@ class RuntimeTypeDomain(
         val unitValue = createDomainFunc(UnqualifiedDomainFuncName("unitValue"), emptyList(), Ref)
     }
 
-    val classTypes: Map<ClassTypeEmbedding, DomainFunc> = classes.associateWith { it.embedClassTypeFunc() }
     val adtClassTypes: Map<AdtTypeEmbedding, DomainFunc> = adts.associateWith { classTypeFunc(it.name) }
     private val allInjections: List<Injection> = primitiveTypeInjections + adts.map { it.injection }
     // Invalid ADTs are excluded from nonNullableTypes (no axioms generated for them), but their
@@ -295,7 +294,7 @@ class RuntimeTypeDomain(
         listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType)
     val nonNullableTypes: List<DomainFunc> = buildList {
         addAll(builtinTypes)
-        addAll(classTypes.values)
+        addAll(typeResolver.classTypeEmbeddings().map { it.embedClassTypeFunc() })
         addAll(adtClassTypes.values)
     }.distinctBy { it.name }
     override val functions: List<DomainFunc> = nonNullableTypes + listOf(
@@ -413,12 +412,10 @@ class RuntimeTypeDomain(
         (allInjections).forEach {
             it.apply { injectionAxioms() }
         }
-        classTypes.forEach { (typeEmbedding, typeFunction) ->
-            typeEmbedding.details.superTypes.forEach {
-                classTypes[it]?.let { supertypeFunction ->
-                    axiom {
-                        typeFunction() subtype supertypeFunction()
-                    }
+        typeResolver.classTypeEmbeddings().forEach { type ->
+            typeResolver.lookupSuperTypes(type.name).forEach { superType ->
+                axiom {
+                    type.runtimeType subtype superType.runtimeType
                 }
             }
         }

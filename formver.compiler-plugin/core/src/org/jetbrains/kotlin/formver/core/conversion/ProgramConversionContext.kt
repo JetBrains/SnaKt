@@ -39,6 +39,7 @@ interface ProgramConversionContext {
     val anonBuiltinVarProducer: FreshEntityProducer<AnonymousBuiltinVariableEmbedding, TypeEmbedding>
     val returnTargetProducer: FreshEntityProducer<ReturnTarget, TypeEmbedding>
     val nameResolver: NameResolver
+    val typeResolver: TypeResolver
 
     fun embedFunction(symbol: FirFunctionSymbol<*>): FunctionEmbedding
     fun embedPureFunction(symbol: FirFunctionSymbol<*>): PureFunctionEmbedding

@@ -7,12 +7,12 @@ package org.jetbrains.kotlin.formver.core.names
 
 import org.jetbrains.kotlin.name.FqName
 
-class ScopedNameBuilder {
+class ScopeBuilder {
     private var scope: NameScope? = null
 
-    fun complete(name: KotlinName): ScopedName {
-        require(scope != null) { "No scope specified " }
-        return ScopedName(scope!!, name)
+    fun complete(): NameScope {
+        require(scope != null) { "Empty scope can not be built" }
+        return scope!!
     }
 
     fun packageScope(packageName: FqName) {
@@ -61,6 +61,35 @@ class ScopedNameBuilder {
     }
 }
 
+
+class ScopedNameBuilder {
+    private val scopeBuilder = ScopeBuilder()
+
+    fun complete(name: KotlinName): ScopedName {
+        val scope = scopeBuilder.complete()
+        return ScopedName(scope, name)
+    }
+
+    fun packageScope(packageName: FqName) = scopeBuilder.packageScope(packageName)
+
+    fun packageScope(packageName: List<String>) = scopeBuilder.packageScope(packageName)
+    fun classScope(className: ClassKotlinName) = scopeBuilder.classScope(className)
+
+    fun publicScope() = scopeBuilder.publicScope()
+
+    fun privateScope() = scopeBuilder.privateScope()
+
+
+    fun parameterScope() = scopeBuilder.parameterScope()
+
+    fun localScope(level: Int) = scopeBuilder.localScope(level)
+
+    fun badScope() = scopeBuilder.badScope()
+
+    fun fakeScope() = scopeBuilder.fakeScope()
+}
+
 // TODO: generalise this to work for all names.
-fun buildName(init: ScopedNameBuilder.() -> KotlinName): ScopedName =
-    ScopedNameBuilder().run { complete(init()) }
+fun buildName(init: ScopedNameBuilder.() -> KotlinName): ScopedName = ScopedNameBuilder().run { complete(init()) }
+
+fun buildScope(init: ScopeBuilder.() -> Unit) = ScopeBuilder().apply { init() }.complete()

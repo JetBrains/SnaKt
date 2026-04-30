@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.formver.core.embeddings.properties
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
 import org.jetbrains.kotlin.formver.core.embeddings.expression.IntLit
@@ -94,10 +95,10 @@ object ListSizeFieldEmbedding : FieldEmbedding {
     }
 }
 
-fun ScopedName.specialEmbedding(embedding: ClassTypeEmbedding): FieldEmbedding? =
+fun ScopedName.specialEmbedding(embedding: ClassTypeEmbedding, ctx: TypeResolver): FieldEmbedding? =
     NameMatcher.Companion.matchClassScope(this) {
         ifBackingFieldName("size") {
-            return embedding.isCollectionInheritor.ifTrue {
+            return ctx.isCollectionInheritor(embedding).ifTrue {
                 ListSizeFieldEmbedding
             }
         }

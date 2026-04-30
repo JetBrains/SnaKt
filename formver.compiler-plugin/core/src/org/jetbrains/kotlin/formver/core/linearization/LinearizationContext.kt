@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.core.linearization
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
@@ -36,6 +37,8 @@ interface LinearizationContext {
     //  passing Position explicitly to ctx methods that need it.
     val source: KtSourceElement?
     val logicOperatorPolicy: LogicOperatorPolicy
+
+    val typeResolver: TypeResolver
 
     fun freshAnonVar(type: TypeEmbedding): AnonymousVariableEmbedding
 

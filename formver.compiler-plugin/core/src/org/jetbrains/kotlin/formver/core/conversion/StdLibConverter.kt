@@ -15,7 +15,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.properties.ListSizeFieldEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.isInheritorOfCollectionTypeNamed
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
 
 private fun VariableEmbedding.sameSize(): ExpEmbedding =
@@ -28,13 +27,19 @@ private fun VariableEmbedding.increasedSize(amount: Int): ExpEmbedding =
     )
 
 sealed interface StdLibReceiverInterface {
-    fun match(function: NamedFunctionSignature): Boolean
+    fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean
 }
 
 sealed interface PresentInterface : StdLibReceiverInterface {
     val interfaceName: String
-    override fun match(function: NamedFunctionSignature): Boolean =
-        function.callableType.dispatchReceiverType?.pretype?.isInheritorOfCollectionTypeNamed(interfaceName) ?: false
+    override fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean =
+        function.callableType.dispatchReceiverType?.pretype?.let {
+            ctx.isInheritorOfCollectionTypeNamed(
+                it,
+                interfaceName
+            )
+        }
+            ?: false
 }
 
 data object CollectionInterface : PresentInterface {
@@ -50,7 +55,7 @@ data object MutableListInterface : PresentInterface {
 }
 
 data object NoInterface : StdLibReceiverInterface {
-    override fun match(function: NamedFunctionSignature): Boolean =
+    override fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean =
         NameMatcher.matchClassScope(function.name) {
             ifInCollectionsPkg {
                 ifNoReceiver {
@@ -207,11 +212,11 @@ data object AddPostcondition : StdLibPostcondition {
     override val functionName = "add"
 }
 
-fun NamedFunctionSignature.stdLibPreconditions(): List<ExpEmbedding> {
+fun NamedFunctionSignature.stdLibPreconditions(ctx: TypeResolver): List<ExpEmbedding> {
     StdLibPrecondition.all.groupBy {
         it.stdLibInterface
     }.forEach { (stdLibInterface, preconditions) ->
-        if (stdLibInterface.match(this)) {
+        if (stdLibInterface.match(this, ctx)) {
             preconditions.forEach {
                 if (it.match(this)) {
                     return it.getEmbeddings(this)
@@ -223,11 +228,14 @@ fun NamedFunctionSignature.stdLibPreconditions(): List<ExpEmbedding> {
 }
 
 
-fun NamedFunctionSignature.stdLibPostconditions(returnVariable: VariableEmbedding): List<ExpEmbedding> {
+fun NamedFunctionSignature.stdLibPostconditions(
+    returnVariable: VariableEmbedding,
+    ctx: TypeResolver
+): List<ExpEmbedding> {
     StdLibPostcondition.all.groupBy {
         it.stdLibInterface
     }.forEach { (stdLibInterface, postconditions) ->
-        if (stdLibInterface.match(this)) {
+        if (stdLibInterface.match(this, ctx)) {
             postconditions.forEach {
                 if (it.match(this)) {
                     return it.getEmbeddings(returnVariable, this)

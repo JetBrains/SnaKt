@@ -158,7 +158,7 @@ fun StmtConversionContext.argumentDeclaration(
     when (arg.ignoringMetaNodes()) {
         is LambdaExp -> null to arg
         else -> {
-            val argWithInvariants = arg.withNewTypeInvariants(callType) {
+            val argWithInvariants = arg.withNewTypeInvariants(callType, typeResolver) {
                 proven = true
                 access = true
             }
@@ -210,7 +210,7 @@ fun StmtConversionContext.insertInlineFunctionCall(
             addAll(declarations)
             add(FunctionExp(null, convert(body), returnTarget.label))
             // if unit is what we return we might not guarantee it yet
-            add(returnTarget.variable.withIsUnitInvariantIfUnit())
+            add(returnTarget.variable.withIsUnitInvariantIfUnit(typeResolver))
         }
     }
 }
@@ -250,11 +250,13 @@ fun StmtConversionContext.convertMethodWithBody(
     val body = convert(firBody)
     val bodyExp = FunctionExp(signature, body, returnTarget.label)
     val seqnBuilder = SeqnBuilder(declaration.source)
-    val linearizer = Linearizer(SharedLinearizationState(anonVarProducer), seqnBuilder, declaration.source)
+    val linearizer =
+        Linearizer(SharedLinearizationState(anonVarProducer), seqnBuilder, declaration.source, typeResolver)
     bodyExp.toLinearizable(declaration.source).toViperUnusedResult(linearizer)
     // note: we must guarantee somewhere that returned value is Unit
     // as we may not encounter any `return` statement in the body
-    returnTarget.variable.withIsUnitInvariantIfUnit().toLinearizable(declaration.source).toViperUnusedResult(linearizer)
+    returnTarget.variable.withIsUnitInvariantIfUnit(typeResolver).toLinearizable(declaration.source)
+        .toViperUnusedResult(linearizer)
     val isValid = body.checkValidity(declaration.source, errorCollector)
     return if (isValid) {
         FunctionBodyEmbedding(seqnBuilder.block, returnTarget, bodyExp)
@@ -279,6 +281,7 @@ fun StmtConversionContext.convertFunctionWithBody(
         declaration.source,
         SharedLinearizationState(anonVarProducer),
         SsaConverter(declaration.source),
+        typeResolver
     )
     body.toLinearizable(declaration.source).toViperUnusedResult(pureFunBodyLinearizer)
     return pureFunBodyLinearizer.constructExpression()

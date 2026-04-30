@@ -28,7 +28,7 @@ method extractInt(base: Ref, returnNull: Ref) returns (ret: Ref)
       unfold acc(c_FinalClassFinalFieldValDerived_shared(base), wildcard)
       anon_1 := base.bf_field
     } elseif (isSubtype(typeOf(base), _c_OpenClassFinalFieldVarDerived())) {
-      inhale acc(shared(base), wildcard)
+      inhale acc(c_OpenClassFinalFieldVarDerived_shared(base), wildcard)
       anon_1 := havoc()
     } else {
       anon_1 := intToRef(0)}
