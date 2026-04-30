@@ -89,14 +89,14 @@ class GraphLocalityAnalyzer(
     ): PathAwareLocalityFacts {
         val inheritsTailFact = node.inheritsTailFact()
 
-        return data.transformValues { info ->
+        return data.transformValues { facts ->
             when (val element = node.fir) {
                 is FirExpression -> {
                     val expression = element.unwrapExpression()
 
                     when {
                         inheritsTailFact ->
-                            info.put(expression, info[TailExpression] ?: Locality.Global)
+                            facts.put(expression, facts[TailExpression] ?: Locality.Global)
                         else -> {
                             val expressionLocality =
                                 if (expression is FirQualifiedAccessExpression) {
@@ -107,7 +107,7 @@ class GraphLocalityAnalyzer(
                                     Locality.Global
                                 }
 
-                            info.put(expression, expressionLocality)
+                            facts.put(expression, expressionLocality)
                                 .put(TailExpression, expressionLocality)
                         }
                     }
@@ -115,8 +115,8 @@ class GraphLocalityAnalyzer(
 
                 else ->
                     when {
-                        inheritsTailFact -> info
-                        else -> info.remove(TailExpression)
+                        inheritsTailFact -> facts
+                        else -> facts.remove(TailExpression)
                     }
             }
         }
