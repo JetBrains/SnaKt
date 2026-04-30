@@ -214,7 +214,7 @@ class ProgramConverter(
      */
     private fun embedClass(symbol: FirRegularClassSymbol): ClassTypeEmbedding {
         val className = symbol.classId.embedName()
-        typeResolver.lookupEmbedding(className)?.let { return it }
+        typeResolver.lookupClassTypeEmbedding(className)?.let { return it }
 
         val embedding = typeResolver.getEmbeddingOrExecute(className) {
             val classEmbedding = buildClassPretype {
