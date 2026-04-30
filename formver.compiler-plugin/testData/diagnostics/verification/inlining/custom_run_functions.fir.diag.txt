@@ -92,7 +92,7 @@ method useRun() returns (ret_0: Ref)
   var ret_35: Ref
   var anon_4: Ref
   var cond4: Ref
-  var anon_45: Ref
+  var anon: Ref
   var ret_36: Ref
   var l36_result: Ref
   var ret_37: Ref
@@ -110,10 +110,10 @@ method useRun() returns (ret_0: Ref)
   var cond7: Ref
   var ret_42: Ref
   var l42_result: Ref
-  var ret_44: Ref
+  var ret: Ref
   var anon_9: Ref
   var ret_43: Ref
-  var anon: Ref
+  var anon_8: Ref
   ret_2 := intToRef(1)
   goto lbl_ret_2
   label lbl_ret_2
@@ -305,8 +305,8 @@ method useRun() returns (ret_0: Ref)
   ret_36 := boolToRef(intFromRef(l36_result) == 3)
   goto lbl_ret_36
   label lbl_ret_36
-  anon_45 := ret_36
-  cond4 := notBool(anon_45)
+  anon := ret_36
+  cond4 := notBool(anon)
   anon_6 := intToRef(1)
   ret_39 := plusInts(anon_6, intToRef(2))
   goto lbl_ret_39
@@ -325,15 +325,15 @@ method useRun() returns (ret_0: Ref)
   goto lbl_ret_40
   label lbl_ret_40
   cond6 := ret_40
-  anon := intToRef(1)
-  ret_43 := plusInts(anon, intToRef(1))
+  anon_8 := intToRef(1)
+  ret_43 := plusInts(anon_8, intToRef(1))
   goto lbl_ret_43
   label lbl_ret_43
   anon_9 := ret_43
-  ret_44 := plusInts(anon_9, intToRef(1))
-  goto lbl_ret_44
-  label lbl_ret_44
-  l42_result := ret_44
+  ret := plusInts(anon_9, intToRef(1))
+  goto ret_44
+  label ret_44
+  l42_result := ret
   ret_42 := boolToRef(intFromRef(l42_result) == 3)
   goto lbl_ret_42
   label lbl_ret_42
@@ -458,9 +458,9 @@ method complexScenario(par_arg: Ref) returns (ret_0: Ref)
     var anon_24: Ref
     var ret_18: Ref
     var anon_9: Ref
-    var anon_25: Ref
-    var ret: Ref
     var anon: Ref
+    var ret: Ref
+    var anon_10: Ref
     anon_4 := intToRef(1)
     inhale isSubtype(typeOf(anon_4), nullable(anyType()))
     anon_5 := anon_4
@@ -473,12 +473,12 @@ method complexScenario(par_arg: Ref) returns (ret_0: Ref)
     anon_9 := plusInts(anon_8, intToRef(1))
     inhale isSubtype(typeOf(anon_9), nullable(anyType()))
     inhale isSubtype(typeOf(anon_9), intType())
-    anon := anon_9
-    ret := plusInts(anon, intToRef(1))
+    anon_10 := anon_9
+    ret := plusInts(anon_10, intToRef(1))
     goto ret_19
     label ret_19
-    anon_25 := ret
-    ret_18 := anon_25
+    anon := ret
+    ret_18 := anon
     inhale isSubtype(typeOf(ret_18), nullable(anyType()))
     goto lbl_ret_18
     label lbl_ret_18
@@ -532,10 +532,10 @@ field member: Ref
 
 field size: Ref
 
-method con() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), _c_CustomClass())
-  ensures acc(c_CustomClass_shared(ret), wildcard)
-  ensures acc(c_CustomClass_unique(ret), write)
+method con() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), c_CustomClass())
+  ensures acc(_c_CustomClass_shared(v_ret), wildcard)
+  ensures acc(_c_CustomClass_unique(v_ret), write)
 
 
 method testCustomClass() returns (ret_0: Ref)
@@ -552,9 +552,9 @@ method testCustomClass() returns (ret_0: Ref)
   var anon_4: Ref
   var ret_3: Ref
   var anon: Ref
-  var ret_4: Ref
+  var ret: Ref
   custom := con()
-  unfold acc(c_CustomClass_shared(custom), wildcard)
+  unfold acc(_c_CustomClass_shared(custom), wildcard)
   ret_2 := custom.member
   goto lbl_ret_2
   label lbl_ret_2
@@ -566,11 +566,11 @@ method testCustomClass() returns (ret_0: Ref)
   anon_1 := ret_1
   anon_0 := anon_1
   inhale isSubtype(typeOf(anon_0), intType())
-  unfold acc(c_CustomClass_shared(custom), wildcard)
-  ret_4 := custom.member
-  goto lbl_ret_4
-  label lbl_ret_4
-  anon := ret_4
+  unfold acc(_c_CustomClass_shared(custom), wildcard)
+  ret := custom.member
+  goto ret_4
+  label ret_4
+  anon := ret
   ret_3 := anon
   inhale isSubtype(typeOf(ret_3), nullable(anyType()))
   goto lbl_ret_3

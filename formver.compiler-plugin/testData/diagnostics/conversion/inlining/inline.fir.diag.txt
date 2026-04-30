@@ -31,9 +31,9 @@ method useBranching() returns (ret_0: Ref)
   var anon_2: Ref
   var ret_1: Ref
   var anon_0: Ref
-  var anon_3: Ref
-  var ret: Ref
   var anon: Ref
+  var ret: Ref
+  var anon_1: Ref
   anon_0 := boolToRef(false)
   if (boolFromRef(anon_0)) {
     ret_1 := intToRef(1)
@@ -44,8 +44,8 @@ method useBranching() returns (ret_0: Ref)
   }
   label lbl_ret_1
   anon_2 := ret_1
-  anon := boolToRef(true)
-  if (boolFromRef(anon)) {
+  anon_1 := boolToRef(true)
+  if (boolFromRef(anon_1)) {
     ret := intToRef(1)
     goto ret_2
   } else {
@@ -53,8 +53,8 @@ method useBranching() returns (ret_0: Ref)
     goto ret_2
   }
   label ret_2
-  anon_3 := ret
-  ret_0 := plusInts(anon_2, anon_3)
+  anon := ret
+  ret_0 := plusInts(anon_2, anon)
   goto lbl_ret_0
   label lbl_ret_0
 }

@@ -3,24 +3,24 @@ field data: Ref
 
 field next: Ref
 
-predicate c_Link_unique(this: Ref) {
+predicate _c_Link_unique(this: Ref) {
   acc(this.data, write) && isSubtype(typeOf(this.data), intType()) &&
   acc(this.next, wildcard) &&
   (this.next != nullValue() ==> acc(shared(this.next), wildcard)) &&
-  (this.next != nullValue() ==> acc(c_Link_unique(this.next), write)) &&
-  isSubtype(typeOf(this.next), nullable(_c_Link()))
+  (this.next != nullValue() ==> acc(_c_Link_unique(this.next), write)) &&
+  isSubtype(typeOf(this.next), nullable(c_Link()))
 }
 
 predicate shared(this: Ref) {
   acc(this.next, wildcard) &&
   (this.next != nullValue() ==> acc(shared(this.next), wildcard)) &&
-  isSubtype(typeOf(this.next), nullable(_c_Link()))
+  isSubtype(typeOf(this.next), nullable(c_Link()))
 }
 
-method getVal(l: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(l), _c_Link())
-  requires acc(c_Link_unique(l), write)
-  ensures isSubtype(typeOf(ret_0), nullable(intType()))
+method getVal(l: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(l), c_Link())
+  requires acc(_c_Link_unique(l), write)
+  ensures isSubtype(typeOf(ret), nullable(intType()))
 {
   var anon_0: Ref
   inhale acc(shared(l), wildcard)
@@ -29,11 +29,11 @@ method getVal(l: Ref) returns (ret_0: Ref)
   if (anon_0 != nullValue()) {
     var anon: Ref
     anon := havoc_Int()
-    ret_0 := anon
+    ret := anon
   } else {
-    ret_0 := nullValue()}
-  goto lbl_ret_0
-  label lbl_ret_0
+    ret := nullValue()}
+  goto ret_0
+  label ret_0
 }
 
 /linked_list.kt: info: Generated Viper text for test:
@@ -43,63 +43,63 @@ field bf_next: Ref
 
 field size: Ref
 
-predicate c_BooleanArray_shared(this: Ref) {
-  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
-  acc(c_Cloneable_shared(this), wildcard) &&
-  acc(shared(this), wildcard)
-}
-
-predicate c_BooleanArray_unique(this: Ref) {
-  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
-  acc(c_Cloneable_unique(this), write) &&
-  acc(c_Serializable_unique(this), write)
-}
-
-predicate c_Cloneable_shared(this: Ref) {
-  true
-}
-
-predicate c_Cloneable_unique(this: Ref) {
-  true
-}
-
-predicate c_Link_shared(this: Ref) {
+predicate _c_Link_shared(this: Ref) {
   acc(this.bf_next, wildcard) &&
   (this.bf_next != nullValue() ==>
-  acc(c_Link_shared(this.bf_next), wildcard)) &&
-  isSubtype(typeOf(this.bf_next), nullable(_c_Link()))
+  acc(_c_Link_shared(this.bf_next), wildcard)) &&
+  isSubtype(typeOf(this.bf_next), nullable(c_Link()))
 }
 
-predicate c_Link_unique(this: Ref) {
+predicate _c_Link_unique(this: Ref) {
   acc(this.bf_data, write) && isSubtype(typeOf(this.bf_data), intType()) &&
   acc(this.bf_next, wildcard) &&
   (this.bf_next != nullValue() ==>
-  acc(c_Link_shared(this.bf_next), wildcard)) &&
-  (this.bf_next != nullValue() ==> acc(c_Link_unique(this.bf_next), write)) &&
-  isSubtype(typeOf(this.bf_next), nullable(_c_Link()))
+  acc(_c_Link_shared(this.bf_next), wildcard)) &&
+  (this.bf_next != nullValue() ==> acc(_c_Link_unique(this.bf_next), write)) &&
+  isSubtype(typeOf(this.bf_next), nullable(c_Link()))
 }
 
-predicate c_Serializable_unique(this: Ref) {
+predicate io_c_Serializable_shared(this: Ref) {
+  true
+}
+
+predicate io_c_Serializable_unique(this: Ref) {
+  true
+}
+
+predicate kotlin_c_BooleanArray_unique(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(kotlin_c_Cloneable_unique(this), write) &&
+  acc(io_c_Serializable_unique(this), write)
+}
+
+predicate kotlin_c_Cloneable_shared(this: Ref) {
+  true
+}
+
+predicate kotlin_c_Cloneable_unique(this: Ref) {
   true
 }
 
 predicate shared(this: Ref) {
-  true
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(kotlin_c_Cloneable_shared(this), wildcard) &&
+  acc(io_c_Serializable_shared(this), wildcard)
 }
 
-method con(data: Ref, next: Ref) returns (ret: Ref)
+method con(data: Ref, next: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(data), intType())
-  requires isSubtype(typeOf(next), nullable(_c_Link()))
-  requires next != nullValue() ==> acc(c_Link_unique(next), write)
-  ensures isSubtype(typeOf(ret), _c_Link())
-  ensures acc(c_Link_shared(ret), wildcard)
-  ensures acc(c_Link_unique(ret), write)
-  ensures (unfolding acc(c_Link_shared(ret), wildcard) in ret.bf_next) ==
+  requires isSubtype(typeOf(next), nullable(c_Link()))
+  requires next != nullValue() ==> acc(_c_Link_unique(next), write)
+  ensures isSubtype(typeOf(v_ret), c_Link())
+  ensures acc(_c_Link_shared(v_ret), wildcard)
+  ensures acc(_c_Link_unique(v_ret), write)
+  ensures (unfolding acc(_c_Link_shared(v_ret), wildcard) in v_ret.bf_next) ==
     next
 
 
-method test() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method test() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var l: Ref
   var anon_0: Ref
@@ -113,7 +113,7 @@ method test() returns (ret_0: Ref)
   anon_1 := havoc_Int()
   expr1 := boolToRef(intFromRef(anon_1) == 5)
   assert boolFromRef(expr1)
-  unfold acc(c_Link_shared(l), wildcard)
+  unfold acc(_c_Link_shared(l), wildcard)
   anon_3 := l.bf_next
   if (anon_3 != nullValue()) {
     var anon: Ref
@@ -123,6 +123,6 @@ method test() returns (ret_0: Ref)
     anon_2 := nullValue()}
   expr2 := boolToRef(anon_2 == intToRef(3))
   assert boolFromRef(expr2)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }

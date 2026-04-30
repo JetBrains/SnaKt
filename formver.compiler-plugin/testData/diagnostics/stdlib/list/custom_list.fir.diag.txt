@@ -3,44 +3,10 @@ field size: Ref
 
 field value: Ref
 
-method get(this: Ref, index: Ref) returns (ret_0: Ref)
-  requires acc(this.size, write)
-  requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), _c_CustomList())
-  requires isSubtype(typeOf(index), intType())
-  requires intFromRef(index) >= 0
-  requires intFromRef(this.size) > intFromRef(index)
-  ensures acc(this.size, write)
-  ensures intFromRef(this.size) >= 0
-  ensures isSubtype(typeOf(ret_0), intType())
-  ensures intFromRef(this.size) == old(intFromRef(this.size))
-{
-  inhale acc(c_CustomList_shared(this), wildcard)
-  unfold acc(c_CustomList_shared(this), wildcard)
-  ret_0 := this.value
-  goto lbl_ret_0
-  label lbl_ret_0
-}
-
-/custom_list.kt: info: Generated Viper text for test:
-field bf_value: Ref
-
-field size: Ref
-
-method con(par_size: Ref, value: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(par_size), intType())
-  requires isSubtype(typeOf(value), intType())
-  ensures isSubtype(typeOf(ret), _c_CustomList())
-  ensures acc(ret.size, write)
-  ensures intFromRef(ret.size) >= 0
-  ensures acc(c_CustomList_shared(ret), wildcard)
-  ensures acc(c_CustomList_unique(ret), write)
-
-
 method get(this: Ref, index: Ref) returns (ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), _c_CustomList())
+  requires isSubtype(typeOf(this), c_CustomList())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -48,23 +14,57 @@ method get(this: Ref, index: Ref) returns (ret: Ref)
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret), intType())
   ensures intFromRef(this.size) == old(intFromRef(this.size))
+{
+  inhale acc(_c_CustomList_shared(this), wildcard)
+  unfold acc(_c_CustomList_shared(this), wildcard)
+  ret := this.value
+  goto ret_0
+  label ret_0
+}
+
+/custom_list.kt: info: Generated Viper text for test:
+field bf_value: Ref
+
+field size: Ref
+
+method con(par_size: Ref, value: Ref) returns (v_ret: Ref)
+  requires isSubtype(typeOf(par_size), intType())
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret), c_CustomList())
+  ensures acc(v_ret.size, write)
+  ensures intFromRef(v_ret.size) >= 0
+  ensures acc(_c_CustomList_shared(v_ret), wildcard)
+  ensures acc(_c_CustomList_unique(v_ret), write)
 
 
-method isEmpty(this: Ref) returns (ret: Ref)
+method get(this: Ref, index: Ref) returns (v_ret: Ref)
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), _c_CustomList())
+  requires isSubtype(typeOf(this), c_CustomList())
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
-  ensures isSubtype(typeOf(ret), boolType())
+  ensures isSubtype(typeOf(v_ret), intType())
   ensures intFromRef(this.size) == old(intFromRef(this.size))
-  ensures boolFromRef(ret) ==> intFromRef(this.size) == 0
-  ensures !boolFromRef(ret) ==> intFromRef(this.size) > 0
 
 
-method test(n: Ref) returns (ret_0: Ref)
+method isEmpty(this: Ref) returns (v_ret: Ref)
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(this), c_CustomList())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(v_ret), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures boolFromRef(v_ret) ==> intFromRef(this.size) == 0
+  ensures !boolFromRef(v_ret) ==> intFromRef(this.size) > 0
+
+
+method test(n: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(n), intType())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var customList: Ref
   var anon_0: Ref
@@ -79,6 +79,6 @@ method test(n: Ref) returns (ret_0: Ref)
     anon_1 := get(customList, minusInts(anon_2, intToRef(1)))
     anon := get(customList, intToRef(0))
   }
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }

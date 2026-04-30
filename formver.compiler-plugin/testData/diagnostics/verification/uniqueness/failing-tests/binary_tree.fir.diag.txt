@@ -5,31 +5,31 @@ field left: Ref
 
 field right: Ref
 
-predicate c_Node_unique(this: Ref) {
+predicate _c_Node_unique(this: Ref) {
   acc(this.data, write) && isSubtype(typeOf(this.data), intType()) &&
   acc(this.left, wildcard) &&
   (this.left != nullValue() ==> acc(shared(this.left), wildcard)) &&
-  (this.left != nullValue() ==> acc(c_Node_unique(this.left), write)) &&
-  isSubtype(typeOf(this.left), nullable(_c_Node())) &&
+  (this.left != nullValue() ==> acc(_c_Node_unique(this.left), write)) &&
+  isSubtype(typeOf(this.left), nullable(c_Node())) &&
   acc(this.right, wildcard) &&
   (this.right != nullValue() ==> acc(shared(this.right), wildcard)) &&
-  (this.right != nullValue() ==> acc(c_Node_unique(this.right), write)) &&
-  isSubtype(typeOf(this.right), nullable(_c_Node()))
+  (this.right != nullValue() ==> acc(_c_Node_unique(this.right), write)) &&
+  isSubtype(typeOf(this.right), nullable(c_Node()))
 }
 
 predicate shared(this: Ref) {
   acc(this.left, wildcard) &&
   (this.left != nullValue() ==> acc(shared(this.left), wildcard)) &&
-  isSubtype(typeOf(this.left), nullable(_c_Node())) &&
+  isSubtype(typeOf(this.left), nullable(c_Node())) &&
   acc(this.right, wildcard) &&
   (this.right != nullValue() ==> acc(shared(this.right), wildcard)) &&
-  isSubtype(typeOf(this.right), nullable(_c_Node()))
+  isSubtype(typeOf(this.right), nullable(c_Node()))
 }
 
-method get_left_val(n: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(n), _c_Node())
-  requires acc(c_Node_unique(n), write)
-  ensures isSubtype(typeOf(ret_0), nullable(intType()))
+method get_left_val(n: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(n), c_Node())
+  requires acc(_c_Node_unique(n), write)
+  ensures isSubtype(typeOf(ret), nullable(intType()))
 {
   var anon_0: Ref
   inhale acc(shared(n), wildcard)
@@ -38,11 +38,11 @@ method get_left_val(n: Ref) returns (ret_0: Ref)
   if (anon_0 != nullValue()) {
     var anon: Ref
     anon := havoc_Int()
-    ret_0 := anon
+    ret := anon
   } else {
-    ret_0 := nullValue()}
-  goto lbl_ret_0
-  label lbl_ret_0
+    ret := nullValue()}
+  goto ret_0
+  label ret_0
 }
 
 /binary_tree.kt: info: Generated Viper text for test:
@@ -50,80 +50,79 @@ field bf_data: Ref
 
 field bf_left: Ref
 
-field bf_right: Ref
+field right: Ref
 
 field size: Ref
 
-predicate c_BooleanArray_shared(this: Ref) {
-  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
-  acc(c_Cloneable_shared(this), wildcard) &&
-  acc(shared(this), wildcard)
-}
-
-predicate c_BooleanArray_unique(this: Ref) {
-  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
-  acc(c_Cloneable_unique(this), write) &&
-  acc(c_Serializable_unique(this), write)
-}
-
-predicate c_Cloneable_shared(this: Ref) {
-  true
-}
-
-predicate c_Cloneable_unique(this: Ref) {
-  true
-}
-
-predicate c_Node_shared(this: Ref) {
+predicate _c_Node_shared(this: Ref) {
   acc(this.bf_left, wildcard) &&
   (this.bf_left != nullValue() ==>
-  acc(c_Node_shared(this.bf_left), wildcard)) &&
-  isSubtype(typeOf(this.bf_left), nullable(_c_Node())) &&
-  acc(this.bf_right, wildcard) &&
-  (this.bf_right != nullValue() ==>
-  acc(c_Node_shared(this.bf_right), wildcard)) &&
-  isSubtype(typeOf(this.bf_right), nullable(_c_Node()))
+  acc(_c_Node_shared(this.bf_left), wildcard)) &&
+  isSubtype(typeOf(this.bf_left), nullable(c_Node())) &&
+  acc(this.right, wildcard) &&
+  (this.right != nullValue() ==> acc(_c_Node_shared(this.right), wildcard)) &&
+  isSubtype(typeOf(this.right), nullable(c_Node()))
 }
 
-predicate c_Node_unique(this: Ref) {
+predicate _c_Node_unique(this: Ref) {
   acc(this.bf_data, write) && isSubtype(typeOf(this.bf_data), intType()) &&
   acc(this.bf_left, wildcard) &&
   (this.bf_left != nullValue() ==>
-  acc(c_Node_shared(this.bf_left), wildcard)) &&
-  (this.bf_left != nullValue() ==> acc(c_Node_unique(this.bf_left), write)) &&
-  isSubtype(typeOf(this.bf_left), nullable(_c_Node())) &&
-  acc(this.bf_right, wildcard) &&
-  (this.bf_right != nullValue() ==>
-  acc(c_Node_shared(this.bf_right), wildcard)) &&
-  (this.bf_right != nullValue() ==>
-  acc(c_Node_unique(this.bf_right), write)) &&
-  isSubtype(typeOf(this.bf_right), nullable(_c_Node()))
+  acc(_c_Node_shared(this.bf_left), wildcard)) &&
+  (this.bf_left != nullValue() ==> acc(_c_Node_unique(this.bf_left), write)) &&
+  isSubtype(typeOf(this.bf_left), nullable(c_Node())) &&
+  acc(this.right, wildcard) &&
+  (this.right != nullValue() ==> acc(_c_Node_shared(this.right), wildcard)) &&
+  (this.right != nullValue() ==> acc(_c_Node_unique(this.right), write)) &&
+  isSubtype(typeOf(this.right), nullable(c_Node()))
 }
 
-predicate c_Serializable_unique(this: Ref) {
+predicate io_c_Serializable_shared(this: Ref) {
+  true
+}
+
+predicate io_c_Serializable_unique(this: Ref) {
+  true
+}
+
+predicate kotlin_c_BooleanArray_unique(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(kotlin_c_Cloneable_unique(this), write) &&
+  acc(io_c_Serializable_unique(this), write)
+}
+
+predicate kotlin_c_Cloneable_shared(this: Ref) {
+  true
+}
+
+predicate kotlin_c_Cloneable_unique(this: Ref) {
   true
 }
 
 predicate shared(this: Ref) {
-  true
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(kotlin_c_Cloneable_shared(this), wildcard) &&
+  acc(io_c_Serializable_shared(this), wildcard)
 }
 
-method con(data: Ref, left: Ref, right: Ref) returns (ret: Ref)
+method con(data: Ref, left: Ref, par_right: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(data), intType())
-  requires isSubtype(typeOf(left), nullable(_c_Node()))
-  requires left != nullValue() ==> acc(c_Node_unique(left), write)
-  requires isSubtype(typeOf(right), nullable(_c_Node()))
-  requires right != nullValue() ==> acc(c_Node_unique(right), write)
-  ensures isSubtype(typeOf(ret), _c_Node())
-  ensures acc(c_Node_shared(ret), wildcard)
-  ensures acc(c_Node_unique(ret), write)
-  ensures (unfolding acc(c_Node_shared(ret), wildcard) in ret.bf_left) ==
+  requires isSubtype(typeOf(left), nullable(c_Node()))
+  requires left != nullValue() ==> acc(_c_Node_unique(left), write)
+  requires isSubtype(typeOf(par_right), nullable(c_Node()))
+  requires par_right != nullValue() ==>
+    acc(_c_Node_unique(par_right), write)
+  ensures isSubtype(typeOf(v_ret), c_Node())
+  ensures acc(_c_Node_shared(v_ret), wildcard)
+  ensures acc(_c_Node_unique(v_ret), write)
+  ensures (unfolding acc(_c_Node_shared(v_ret), wildcard) in v_ret.bf_left) ==
     left &&
-    (unfolding acc(c_Node_shared(ret), wildcard) in ret.bf_right) == right
+    (unfolding acc(_c_Node_shared(v_ret), wildcard) in v_ret.right) ==
+    par_right
 
 
-method test() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method test() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var n: Ref
   var anon_0: Ref
@@ -143,7 +142,7 @@ method test() returns (ret_0: Ref)
   anon_4 := havoc_Int()
   expr1 := boolToRef(intFromRef(anon_4) == 5)
   assert boolFromRef(expr1)
-  unfold acc(c_Node_shared(n), wildcard)
+  unfold acc(_c_Node_shared(n), wildcard)
   anon_6 := n.bf_left
   if (anon_6 != nullValue()) {
     var anon: Ref
@@ -153,6 +152,6 @@ method test() returns (ret_0: Ref)
     anon_5 := nullValue()}
   expr2 := boolToRef(anon_5 == intToRef(4))
   assert boolFromRef(expr2)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }

@@ -1,13 +1,13 @@
 /setters.kt: info: Generated Viper text for testPrimitiveFieldSetter:
 field a: Ref
 
-method testPrimitiveFieldSetter(pf: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(pf), _c_PrimitiveField())
-  ensures isSubtype(typeOf(ret_0), unitType())
+method testPrimitiveFieldSetter(pf: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(pf), c_PrimitiveField())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   inhale acc(shared(pf), wildcard)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /setters.kt: info: Generated Viper text for testReferenceFieldSetter:
@@ -15,22 +15,22 @@ field bf_a: Ref
 
 field pf: Ref
 
-method con(a: Ref) returns (ret: Ref)
+method con(a: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(a), intType())
-  ensures isSubtype(typeOf(ret), _c_PrimitiveField())
-  ensures acc(shared(ret), wildcard)
-  ensures acc(c_PrimitiveField_unique(ret), write)
+  ensures isSubtype(typeOf(v_ret), c_PrimitiveField())
+  ensures acc(shared(v_ret), wildcard)
+  ensures acc(_c_PrimitiveField_unique(v_ret), write)
 
 
-method testReferenceFieldSetter(rf: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(rf), _c_ReferenceField())
-  ensures isSubtype(typeOf(ret_0), unitType())
+method testReferenceFieldSetter(rf: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(rf), c_ReferenceField())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var anon: Ref
-  inhale acc(c_ReferenceField_shared(rf), wildcard)
+  inhale acc(_c_ReferenceField_shared(rf), wildcard)
   anon := con(intToRef(0))
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /setters.kt: info: Generated Viper text for testPrimitivePropertySetter:
@@ -41,7 +41,7 @@ method g_aProp(this: Ref) returns (v_ret: Ref)
 
 
 method testPrimitivePropertySetter(pp: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(pp), _c_PrimitiveProperty())
+  requires isSubtype(typeOf(pp), c_PrimitiveProperty())
   ensures isSubtype(typeOf(ret), unitType())
 {
   var anon: Ref
@@ -56,9 +56,9 @@ method aProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
 
 
 method con() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), _c_PrimitiveProperty())
-  ensures acc(shared(v_ret), wildcard)
-  ensures acc(c_PrimitiveProperty_unique(v_ret), write)
+  ensures isSubtype(typeOf(v_ret), c_PrimitiveProperty())
+  ensures acc(_c_PrimitiveProperty_shared(v_ret), wildcard)
+  ensures acc(_c_PrimitiveProperty_unique(v_ret), write)
 
 
 method g_aProp(this: Ref) returns (v_ret: Ref)
@@ -71,12 +71,12 @@ method ppProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
 
 
 method testReferencePropertySetter(rp: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(rp), _c_ReferenceProperty())
+  requires isSubtype(typeOf(rp), c_ReferenceProperty())
   ensures isSubtype(typeOf(ret), unitType())
 {
   var anon_0: Ref
   var anon: Ref
-  inhale acc(c_ReferenceProperty_shared(rp), wildcard)
+  inhale acc(shared(rp), wildcard)
   anon := con()
   anon_0 := ppProp(rp, anon)
   label ret_0

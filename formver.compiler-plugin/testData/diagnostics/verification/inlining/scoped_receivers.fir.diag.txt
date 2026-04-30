@@ -1,8 +1,8 @@
 /scoped_receivers.kt: info: Generated Viper text for with_run_extension_labeled:
 field size: Ref
 
-method with_run_extension_labeled(this: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), nullable(intType()))
+method with_run_extension_labeled(v_this: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(v_this), nullable(intType()))
   ensures isSubtype(typeOf(ret_0), unitType())
 {
   var cond1: Ref
@@ -52,10 +52,10 @@ method with_run_extension_labeled(this: Ref) returns (ret_0: Ref)
   var anon_32: Ref
   var ret_16: Ref
   var anon_11: Ref
-  var anon_33: Ref
-  var ret_17: Ref
   var anon: Ref
-  ret_1 := boolToRef(this == nullValue())
+  var ret: Ref
+  var anon_12: Ref
+  ret_1 := boolToRef(v_this == nullValue())
   goto lbl_ret_1
   label lbl_ret_1
   anon_13 := ret_1
@@ -63,7 +63,7 @@ method with_run_extension_labeled(this: Ref) returns (ret_0: Ref)
     cond1 := boolToRef(true)
   } else {
     var ret_2: Ref
-    ret_2 := notBool(boolToRef(this == nullValue()))
+    ret_2 := notBool(boolToRef(v_this == nullValue()))
     goto lbl_ret_2
     label lbl_ret_2
     cond1 := ret_2
@@ -117,7 +117,7 @@ method with_run_extension_labeled(this: Ref) returns (ret_0: Ref)
   assert !boolFromRef(anon_8)
   assert !boolFromRef(anon_8)
   assert boolFromRef(anon_1)
-  ret_12 := boolToRef(this == nullValue())
+  ret_12 := boolToRef(v_this == nullValue())
   goto lbl_ret_12
   label lbl_ret_12
   anon_27 := ret_12
@@ -125,7 +125,7 @@ method with_run_extension_labeled(this: Ref) returns (ret_0: Ref)
     anon_26 := boolToRef(true)
   } else {
     var ret_13: Ref
-    ret_13 := notBool(boolToRef(this == nullValue()))
+    ret_13 := notBool(boolToRef(v_this == nullValue()))
     goto lbl_ret_13
     label lbl_ret_13
     anon_26 := ret_13
@@ -141,14 +141,14 @@ method with_run_extension_labeled(this: Ref) returns (ret_0: Ref)
   anon_11 := boolToRef(true)
   inhale isSubtype(typeOf(anon_11), nullable(anyType()))
   inhale isSubtype(typeOf(anon_11), boolType())
-  anon := anon_11
+  anon_12 := anon_11
   assert !boolFromRef(anon_10)
-  assert boolFromRef(anon)
-  assert boolFromRef(anon)
-  label lbl_ret_17
-  inhale isSubtype(typeOf(ret_17), unitType())
-  anon_33 := ret_17
-  ret_16 := anon_33
+  assert boolFromRef(anon_12)
+  assert boolFromRef(anon_12)
+  label ret_17
+  inhale isSubtype(typeOf(ret), unitType())
+  anon := ret
+  ret_16 := anon
   inhale isSubtype(typeOf(ret_16), nullable(anyType()))
   goto lbl_ret_16
   label lbl_ret_16

@@ -1,29 +1,29 @@
 /generics.kt: info: Generated Viper text for genericMethod:
 field bf_t: Ref
 
-method genericMethod(this: Ref, x: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), _c_Box())
+method genericMethod(this: Ref, x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(this), c_Box())
   requires isSubtype(typeOf(x), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_0), nullable(anyType()))
+  ensures isSubtype(typeOf(ret), nullable(anyType()))
 {
   inhale acc(shared(this), wildcard)
-  ret_0 := x
-  goto lbl_ret_0
-  label lbl_ret_0
+  ret := x
+  goto ret_0
+  label ret_0
 }
 
 /generics.kt: info: Generated Viper text for createBox:
 field bf_t: Ref
 
-method con(par_t: Ref) returns (ret: Ref)
+method con(par_t: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(par_t), nullable(anyType()))
-  ensures isSubtype(typeOf(ret), _c_Box())
-  ensures acc(shared(ret), wildcard)
-  ensures acc(c_Box_unique(ret), write)
+  ensures isSubtype(typeOf(v_ret), c_Box())
+  ensures acc(shared(v_ret), wildcard)
+  ensures acc(_c_Box_unique(v_ret), write)
 
 
-method createBox() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), intType())
+method createBox() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), intType())
 {
   var boolBox: Ref
   var b: Ref
@@ -36,29 +36,29 @@ method createBox() returns (ret_0: Ref)
   inhale isSubtype(typeOf(b), boolType())
   intBox := con(intToRef(2))
   anon := havoc()
-  ret_0 := anon
-  inhale isSubtype(typeOf(ret_0), intType())
-  goto lbl_ret_0
-  label lbl_ret_0
+  ret := anon
+  inhale isSubtype(typeOf(ret), intType())
+  goto ret_0
+  label ret_0
 }
 
 /generics.kt: info: Generated Viper text for setGenericField:
 field bf_t: Ref
 
-method con(par_t: Ref) returns (ret: Ref)
+method con(par_t: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(par_t), nullable(anyType()))
-  ensures isSubtype(typeOf(ret), _c_Box())
-  ensures acc(shared(ret), wildcard)
-  ensures acc(c_Box_unique(ret), write)
+  ensures isSubtype(typeOf(v_ret), c_Box())
+  ensures acc(shared(v_ret), wildcard)
+  ensures acc(_c_Box_unique(v_ret), write)
 
 
-method setGenericField() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method setGenericField() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var box: Ref
   box := con(intToRef(3))
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /generics.kt: info: Generated Viper text for genericFun:
@@ -72,29 +72,29 @@ method genericFun(par_t: Ref) returns (ret: Ref)
 }
 
 /generics.kt: info: Generated Viper text for callGenericFunc:
-method callGenericFunc() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method callGenericFunc() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var x: Ref
   var anon: Ref
   anon := genericFun(intToRef(3))
   x := anon
   inhale isSubtype(typeOf(x), intType())
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
-method genericFun(par_t: Ref) returns (ret: Ref)
+method genericFun(par_t: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(par_t), nullable(anyType()))
-  ensures isSubtype(typeOf(ret), nullable(anyType()))
+  ensures isSubtype(typeOf(v_ret), nullable(anyType()))
 
 
 /generics.kt: info: Generated Viper text for genericAsIfCondition:
 field bf_t: Ref
 
-method genericAsIfCondition(box: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(box), _c_Box())
-  ensures isSubtype(typeOf(ret_0), intType())
+method genericAsIfCondition(box: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(box), c_Box())
+  ensures isSubtype(typeOf(ret), intType())
 {
   var anon_0: Ref
   var anon: Ref
@@ -103,9 +103,9 @@ method genericAsIfCondition(box: Ref) returns (ret_0: Ref)
   anon_0 := anon
   inhale isSubtype(typeOf(anon_0), boolType())
   if (boolFromRef(anon_0)) {
-    ret_0 := intToRef(20)
+    ret := intToRef(20)
   } else {
-    ret_0 := intToRef(10)}
-  goto lbl_ret_0
-  label lbl_ret_0
+    ret := intToRef(10)}
+  goto ret_0
+  label ret_0
 }

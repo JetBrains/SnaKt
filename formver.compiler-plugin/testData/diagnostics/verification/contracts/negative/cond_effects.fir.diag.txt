@@ -32,11 +32,12 @@ method mayReturnNull(x: Ref) returns (ret: Ref)
 
 /cond_effects.kt: info: Generated Viper text for isNullOrEmptyWrong:
 method isNullOrEmptyWrong(seq: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(seq), nullable(kotlin_c_CharSequence()))
+  requires isSubtype(typeOf(seq), nullable(c_CharSequence()))
   ensures isSubtype(typeOf(ret), boolType())
   ensures boolFromRef(ret) == false ==> seq != nullValue()
 {
-  inhale seq != nullValue() ==> acc(c_CharSequence_shared(seq), wildcard)
+  inhale seq != nullValue() ==>
+    acc(kotlin_c_CharSequence_shared(seq), wildcard)
   if (!(seq == nullValue())) {
     var anon_0: Ref
     var anon: Ref

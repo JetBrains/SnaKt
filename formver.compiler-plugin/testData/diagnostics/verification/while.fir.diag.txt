@@ -3,19 +3,19 @@ field bf_field: Ref
 
 field size: Ref
 
-method con(par_field: Ref) returns (ret: Ref)
+method con(par_field: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(par_field), intType())
-  ensures isSubtype(typeOf(ret), _c_ClassWithField())
-  ensures acc(c_ClassWithField_shared(ret), wildcard)
-  ensures acc(c_ClassWithField_unique(ret), write)
-  ensures intFromRef((unfolding acc(c_ClassWithField_shared(ret), wildcard) in
-      ret.bf_field)) ==
+  ensures isSubtype(typeOf(v_ret), c_ClassWithField())
+  ensures acc(_c_ClassWithField_shared(v_ret), wildcard)
+  ensures acc(_c_ClassWithField_unique(v_ret), write)
+  ensures intFromRef((unfolding acc(_c_ClassWithField_shared(v_ret), wildcard) in
+      v_ret.bf_field)) ==
     intFromRef(par_field)
 
 
-method test_while(param: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(param), _c_ClassWithField())
-  ensures isSubtype(typeOf(ret_0), unitType())
+method test_while(param: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(param), c_ClassWithField())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var c: Ref
   var initParamField: Ref
@@ -25,9 +25,9 @@ method test_while(param: Ref) returns (ret_0: Ref)
   var anon_1: Ref
   var cond2: Ref
   var anon: Ref
-  inhale acc(c_ClassWithField_shared(param), wildcard)
+  inhale acc(_c_ClassWithField_shared(param), wildcard)
   c := con(intToRef(13))
-  unfold acc(c_ClassWithField_shared(param), wildcard)
+  unfold acc(_c_ClassWithField_shared(param), wildcard)
   initParamField := param.bf_field
   if (intFromRef(initParamField) > 0) {
     iteration := intToRef(0)
@@ -37,40 +37,40 @@ method test_while(param: Ref) returns (ret_0: Ref)
     iteration := timesInts(intermediate, intermediate)
   }
   label cont
-    invariant acc(c_ClassWithField_shared(c), wildcard)
-    invariant isSubtype(typeOf(c), _c_ClassWithField())
+    invariant acc(_c_ClassWithField_shared(c), wildcard)
+    invariant isSubtype(typeOf(c), c_ClassWithField())
     invariant isSubtype(typeOf(initParamField), intType())
     invariant isSubtype(typeOf(iteration), intType())
-    invariant acc(c_ClassWithField_shared(param), wildcard)
-    invariant isSubtype(typeOf(param), _c_ClassWithField())
+    invariant acc(_c_ClassWithField_shared(param), wildcard)
+    invariant isSubtype(typeOf(param), c_ClassWithField())
   anon_0 := ltInts(iteration, intToRef(10))
   if (boolFromRef(anon_0)) {
     var l4_field: Ref
     var paramField: Ref
-    unfold acc(c_ClassWithField_shared(c), wildcard)
+    unfold acc(_c_ClassWithField_shared(c), wildcard)
     l4_field := c.bf_field
-    unfold acc(c_ClassWithField_shared(param), wildcard)
+    unfold acc(_c_ClassWithField_shared(param), wildcard)
     paramField := param.bf_field
     iteration := plusInts(iteration, intToRef(1))
     goto cont
   }
   label break
-  assert acc(c_ClassWithField_shared(c), wildcard)
-  assert isSubtype(typeOf(c), _c_ClassWithField())
+  assert acc(_c_ClassWithField_shared(c), wildcard)
+  assert isSubtype(typeOf(c), c_ClassWithField())
   assert isSubtype(typeOf(initParamField), intType())
   assert isSubtype(typeOf(iteration), intType())
-  assert acc(c_ClassWithField_shared(param), wildcard)
-  assert isSubtype(typeOf(param), _c_ClassWithField())
-  unfold acc(c_ClassWithField_shared(c), wildcard)
+  assert acc(_c_ClassWithField_shared(param), wildcard)
+  assert isSubtype(typeOf(param), c_ClassWithField())
+  unfold acc(_c_ClassWithField_shared(c), wildcard)
   anon_1 := c.bf_field
   cond1 := boolToRef(intFromRef(anon_1) == 13)
-  unfold acc(c_ClassWithField_shared(param), wildcard)
+  unfold acc(_c_ClassWithField_shared(param), wildcard)
   anon := param.bf_field
   cond2 := boolToRef(intFromRef(initParamField) == intFromRef(anon))
   assert boolFromRef(cond1)
   assert boolFromRef(cond2)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /while.kt: info: Generated Viper text for test_while_with_inlining:
@@ -78,18 +78,18 @@ field bf_field: Ref
 
 field size: Ref
 
-method con(par_field: Ref) returns (ret: Ref)
+method con(par_field: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(par_field), intType())
-  ensures isSubtype(typeOf(ret), _c_ClassWithField())
-  ensures acc(c_ClassWithField_shared(ret), wildcard)
-  ensures acc(c_ClassWithField_unique(ret), write)
-  ensures intFromRef((unfolding acc(c_ClassWithField_shared(ret), wildcard) in
-      ret.bf_field)) ==
+  ensures isSubtype(typeOf(v_ret), c_ClassWithField())
+  ensures acc(_c_ClassWithField_shared(v_ret), wildcard)
+  ensures acc(_c_ClassWithField_unique(v_ret), write)
+  ensures intFromRef((unfolding acc(_c_ClassWithField_shared(v_ret), wildcard) in
+      v_ret.bf_field)) ==
     intFromRef(par_field)
 
 
 method test_while_with_inlining(param: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(param), _c_ClassWithField())
+  requires isSubtype(typeOf(param), c_ClassWithField())
   ensures isSubtype(typeOf(ret_0), unitType())
 {
   var local: Ref
@@ -99,60 +99,60 @@ method test_while_with_inlining(param: Ref) returns (ret_0: Ref)
   var anon_0: Ref
   var anon_4: Ref
   var anon_5: Ref
-  var ret_2: Ref
+  var ret: Ref
   var anon_1: Ref
   var iteration: Ref
   var anon_6: Ref
   var anon_7: Ref
   var anon: Ref
-  inhale acc(c_ClassWithField_shared(param), wildcard)
+  inhale acc(_c_ClassWithField_shared(param), wildcard)
   local := con(intToRef(13))
   anon_4 := con(intToRef(42))
   anon_0 := anon_4
   inhale isSubtype(typeOf(anon_0), nullable(anyType()))
-  inhale isSubtype(typeOf(anon_0), _c_ClassWithField())
-  inhale acc(c_ClassWithField_shared(anon_0), wildcard)
+  inhale isSubtype(typeOf(anon_0), c_ClassWithField())
+  inhale acc(_c_ClassWithField_shared(anon_0), wildcard)
   anon_1 := anon_0
   iteration := intToRef(0)
   label cont
     invariant isSubtype(typeOf(iteration), intType())
-    invariant acc(c_ClassWithField_shared(anon_1), wildcard)
-    invariant isSubtype(typeOf(anon_1), _c_ClassWithField())
-    invariant acc(c_ClassWithField_shared(local), wildcard)
-    invariant isSubtype(typeOf(local), _c_ClassWithField())
-    invariant acc(c_ClassWithField_shared(param), wildcard)
-    invariant isSubtype(typeOf(param), _c_ClassWithField())
+    invariant acc(_c_ClassWithField_shared(anon_1), wildcard)
+    invariant isSubtype(typeOf(anon_1), c_ClassWithField())
+    invariant acc(_c_ClassWithField_shared(local), wildcard)
+    invariant isSubtype(typeOf(local), c_ClassWithField())
+    invariant acc(_c_ClassWithField_shared(param), wildcard)
+    invariant isSubtype(typeOf(param), c_ClassWithField())
   anon_6 := ltInts(iteration, intToRef(10))
   if (boolFromRef(anon_6)) {
     var paramField: Ref
     var localField: Ref
     var thisField: Ref
-    unfold acc(c_ClassWithField_shared(param), wildcard)
+    unfold acc(_c_ClassWithField_shared(param), wildcard)
     paramField := param.bf_field
-    unfold acc(c_ClassWithField_shared(local), wildcard)
+    unfold acc(_c_ClassWithField_shared(local), wildcard)
     localField := local.bf_field
-    unfold acc(c_ClassWithField_shared(anon_1), wildcard)
+    unfold acc(_c_ClassWithField_shared(anon_1), wildcard)
     thisField := anon_1.bf_field
     iteration := plusInts(iteration, intToRef(1))
     goto cont
   }
   label break
   assert isSubtype(typeOf(iteration), intType())
-  assert acc(c_ClassWithField_shared(anon_1), wildcard)
-  assert isSubtype(typeOf(anon_1), _c_ClassWithField())
-  assert acc(c_ClassWithField_shared(local), wildcard)
-  assert isSubtype(typeOf(local), _c_ClassWithField())
-  assert acc(c_ClassWithField_shared(param), wildcard)
-  assert isSubtype(typeOf(param), _c_ClassWithField())
-  unfold acc(c_ClassWithField_shared(anon_1), wildcard)
+  assert acc(_c_ClassWithField_shared(anon_1), wildcard)
+  assert isSubtype(typeOf(anon_1), c_ClassWithField())
+  assert acc(_c_ClassWithField_shared(local), wildcard)
+  assert isSubtype(typeOf(local), c_ClassWithField())
+  assert acc(_c_ClassWithField_shared(param), wildcard)
+  assert isSubtype(typeOf(param), c_ClassWithField())
+  unfold acc(_c_ClassWithField_shared(anon_1), wildcard)
   anon_7 := anon_1.bf_field
   assert intFromRef(anon_7) == 42
-  unfold acc(c_ClassWithField_shared(local), wildcard)
+  unfold acc(_c_ClassWithField_shared(local), wildcard)
   anon := local.bf_field
   assert intFromRef(anon) == 13
-  label lbl_ret_2
-  inhale isSubtype(typeOf(ret_2), unitType())
-  anon_5 := ret_2
+  label ret_2
+  inhale isSubtype(typeOf(ret), unitType())
+  anon_5 := ret
   ret_1 := anon_5
   inhale isSubtype(typeOf(ret_1), nullable(anyType()))
   goto lbl_ret_1
@@ -168,12 +168,12 @@ method test_while_with_inlining(param: Ref) returns (ret_0: Ref)
 field bf_field: Ref
 
 method test_while_with_smartcast(param: Ref, innerParam: Ref)
-  returns (ret_0: Ref)
+  returns (ret: Ref)
   requires isSubtype(typeOf(param), anyType())
   requires isSubtype(typeOf(innerParam), anyType())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
-  if (isSubtype(typeOf(param), _c_ClassWithField())) {
+  if (isSubtype(typeOf(param), c_ClassWithField())) {
     var iteration: Ref
     var anon: Ref
     iteration := intToRef(0)
@@ -187,7 +187,7 @@ method test_while_with_smartcast(param: Ref, innerParam: Ref)
       inhale acc(shared(param), wildcard)
       unfold acc(shared(param), wildcard)
       paramField := param.bf_field
-      if (isSubtype(typeOf(innerParam), _c_ClassWithField())) {
+      if (isSubtype(typeOf(innerParam), c_ClassWithField())) {
         var innerParamField: Ref
         inhale acc(shared(innerParam), wildcard)
         unfold acc(shared(innerParam), wildcard)
@@ -201,6 +201,6 @@ method test_while_with_smartcast(param: Ref, innerParam: Ref)
     assert isSubtype(typeOf(param), anyType())
     assert isSubtype(typeOf(innerParam), anyType())
   }
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }

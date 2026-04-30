@@ -3,45 +3,45 @@ field bf_a: Ref
 
 field bf_b: Ref
 
-method con(a: Ref, b: Ref) returns (ret: Ref)
+method con(a: Ref, b: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(a), intType())
   requires isSubtype(typeOf(b), intType())
-  ensures isSubtype(typeOf(ret), _c_PrimitiveFields())
-  ensures acc(shared(ret), wildcard)
-  ensures acc(c_PrimitiveFields_unique(ret), write)
-  ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf_a)) ==
+  ensures isSubtype(typeOf(v_ret), c_PrimitiveFields())
+  ensures acc(shared(v_ret), wildcard)
+  ensures acc(_c_PrimitiveFields_unique(v_ret), write)
+  ensures intFromRef((unfolding acc(shared(v_ret), wildcard) in v_ret.bf_a)) ==
     intFromRef(a) &&
-    intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf_b)) ==
+    intFromRef((unfolding acc(shared(v_ret), wildcard) in v_ret.bf_b)) ==
     intFromRef(b)
 
 
-method createPrimitiveFields() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), _c_PrimitiveFields())
-  ensures acc(shared(ret_0), wildcard)
+method createPrimitiveFields() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), c_PrimitiveFields())
+  ensures acc(shared(ret), wildcard)
 {
-  ret_0 := con(intToRef(10), intToRef(20))
-  goto lbl_ret_0
-  label lbl_ret_0
+  ret := con(intToRef(10), intToRef(20))
+  goto ret_0
+  label ret_0
 }
 
 /primary_constructors.kt: info: Generated Viper text for createRecursive:
 field bf_a: Ref
 
-method con(a: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(a), nullable(_c_Recursive()))
-  ensures isSubtype(typeOf(ret), _c_Recursive())
+method con(a: Ref) returns (v_ret: Ref)
+  requires isSubtype(typeOf(a), nullable(c_Recursive()))
+  ensures isSubtype(typeOf(v_ret), c_Recursive())
+  ensures acc(shared(v_ret), wildcard)
+  ensures acc(_c_Recursive_unique(v_ret), write)
+  ensures (unfolding acc(shared(v_ret), wildcard) in v_ret.bf_a) == a
+
+
+method createRecursive() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), c_Recursive())
   ensures acc(shared(ret), wildcard)
-  ensures acc(c_Recursive_unique(ret), write)
-  ensures (unfolding acc(shared(ret), wildcard) in ret.bf_a) == a
-
-
-method createRecursive() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), _c_Recursive())
-  ensures acc(shared(ret_0), wildcard)
 {
-  ret_0 := con(nullValue())
-  goto lbl_ret_0
-  label lbl_ret_0
+  ret := con(nullValue())
+  goto ret_0
+  label ret_0
 }
 
 /primary_constructors.kt: info: Generated Viper text for createFieldInBody:
@@ -49,20 +49,20 @@ field a: Ref
 
 field bf_c: Ref
 
-method con(c: Ref) returns (ret: Ref)
+method con(c: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(c), intType())
-  ensures isSubtype(typeOf(ret), _c_FieldInBody())
-  ensures acc(shared(ret), wildcard)
-  ensures acc(c_FieldInBody_unique(ret), write)
-  ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf_c)) ==
+  ensures isSubtype(typeOf(v_ret), c_FieldInBody())
+  ensures acc(shared(v_ret), wildcard)
+  ensures acc(_c_FieldInBody_unique(v_ret), write)
+  ensures intFromRef((unfolding acc(shared(v_ret), wildcard) in v_ret.bf_c)) ==
     intFromRef(c)
 
 
-method createFieldInBody() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), _c_FieldInBody())
-  ensures acc(shared(ret_0), wildcard)
+method createFieldInBody() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), c_FieldInBody())
+  ensures acc(shared(ret), wildcard)
 {
-  ret_0 := con(intToRef(10))
-  goto lbl_ret_0
-  label lbl_ret_0
+  ret := con(intToRef(10))
+  goto ret_0
+  label ret_0
 }

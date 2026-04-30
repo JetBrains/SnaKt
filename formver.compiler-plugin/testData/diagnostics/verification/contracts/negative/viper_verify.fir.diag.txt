@@ -1,19 +1,19 @@
 /viper_verify.kt: info: Generated Viper text for verify_false:
 field size: Ref
 
-method verify_false() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method verify_false() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 {
   assert false
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /viper_verify.kt: info: Generated Viper text for verify_compound:
 field size: Ref
 
-method verify_compound() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method verify_compound() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var anon: Ref
   if (true) {
@@ -21,6 +21,6 @@ method verify_compound() returns (ret_0: Ref)
   } else {
     anon := boolToRef(false)}
   assert boolFromRef(anon)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }

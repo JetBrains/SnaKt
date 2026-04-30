@@ -7,11 +7,11 @@ method simple_return() returns (ret_0: Ref)
   var cond1: Ref
   var ret_1: Ref
   var anon: Ref
-  var ret_2: Ref
-  ret_2 := boolToRef(false)
-  goto lbl_ret_2
-  label lbl_ret_2
-  anon := ret_2
+  var ret: Ref
+  ret := boolToRef(false)
+  goto ret_2
+  label ret_2
+  anon := ret
   ret_1 := notBool(anon)
   goto lbl_ret_1
   label lbl_ret_1

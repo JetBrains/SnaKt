@@ -1,9 +1,9 @@
 /simple_loop.kt: info: Generated Viper text for test:
 field size: Ref
 
-method test(n: Ref) returns (ret_0: Ref)
+method test(n: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(n), intType())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var it: Ref
   var holds: Ref
@@ -49,8 +49,8 @@ method test(n: Ref) returns (ret_0: Ref)
     assert boolFromRef(holds)
     assert intFromRef(it) == intFromRef(n)
   }
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /simple_loop.kt: info: Generated Viper text for loopInsideLoop:
@@ -96,8 +96,8 @@ method loopInsideLoop() returns (ret: Ref)
 /simple_loop.kt: info: Generated Viper text for withBreak:
 field size: Ref
 
-method withBreak() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method withBreak() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var i: Ref
   var anon: Ref
@@ -116,8 +116,8 @@ method withBreak() returns (ret_0: Ref)
   assert isSubtype(typeOf(i), intType())
   assert intFromRef(i) <= 10
   assert intFromRef(i) == 10
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /simple_loop.kt: info: Generated Viper text for test_boolean_postcondition:
@@ -125,20 +125,20 @@ field bf_e: Ref
 
 field size: Ref
 
-method con(e: Ref) returns (ret: Ref)
+method con(e: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(e), intType())
-  ensures isSubtype(typeOf(ret), _c_WithVar())
-  ensures acc(c_WithVar_shared(ret), wildcard)
-  ensures acc(c_WithVar_unique(ret), write)
+  ensures isSubtype(typeOf(v_ret), c_WithVar())
+  ensures acc(_c_WithVar_shared(v_ret), wildcard)
+  ensures acc(_c_WithVar_unique(v_ret), write)
 
 
-method doSomething(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_WithVar())
-  ensures isSubtype(typeOf(ret), boolType())
+method doSomething(this: Ref) returns (v_ret: Ref)
+  requires isSubtype(typeOf(this), c_WithVar())
+  ensures isSubtype(typeOf(v_ret), boolType())
 
 
-method test_boolean_postcondition() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method test_boolean_postcondition() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
 {
   var withVar: Ref
   var boolean: Ref
@@ -146,8 +146,8 @@ method test_boolean_postcondition() returns (ret_0: Ref)
   withVar := con(intToRef(42))
   boolean := boolToRef(true)
   label cont
-    invariant acc(c_WithVar_shared(withVar), wildcard)
-    invariant isSubtype(typeOf(withVar), _c_WithVar())
+    invariant acc(_c_WithVar_shared(withVar), wildcard)
+    invariant isSubtype(typeOf(withVar), c_WithVar())
     invariant isSubtype(typeOf(boolean), boolType())
   anon := boolean
   if (boolFromRef(anon)) {
@@ -155,10 +155,10 @@ method test_boolean_postcondition() returns (ret_0: Ref)
     goto cont
   }
   label break
-  assert acc(c_WithVar_shared(withVar), wildcard)
-  assert isSubtype(typeOf(withVar), _c_WithVar())
+  assert acc(_c_WithVar_shared(withVar), wildcard)
+  assert isSubtype(typeOf(withVar), c_WithVar())
   assert isSubtype(typeOf(boolean), boolType())
   assert !boolFromRef(boolean)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }

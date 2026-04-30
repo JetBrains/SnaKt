@@ -16,13 +16,13 @@ method iAmAMethod() returns (ret: Ref)
 /wrongly_annotated.kt: info: Generated Viper text for impureExtension:
 field value: Ref
 
-method impureExtension(this: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), _c_Field())
-  ensures isSubtype(typeOf(ret_0), unitType())
+method impureExtension(v_this: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(v_this), c_Field())
+  ensures isSubtype(typeOf(ret), unitType())
 {
-  inhale acc(shared(this), wildcard)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale acc(shared(v_this), wildcard)
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /wrongly_annotated.kt: error: Impure function body detected in pure function

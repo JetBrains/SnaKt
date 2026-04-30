@@ -1,14 +1,14 @@
 /string_iterations.kt: info: Generated Viper text for firstAtLeast:
-method firstAtLeast(this: Ref, c: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), stringType())
+method firstAtLeast(v_this: Ref, c: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(v_this), stringType())
   requires isSubtype(typeOf(c), charType())
   ensures isSubtype(typeOf(ret), intType())
-  ensures 0 <= intFromRef(ret) && intFromRef(ret) <= |stringFromRef(this)|
-  ensures (forall anon_builtin: Int ::0 <= anon_builtin &&
-      anon_builtin < intFromRef(ret) ==>
-      stringFromRef(this)[anon_builtin] < charFromRef(c))
-  ensures !(intFromRef(ret) == |stringFromRef(this)|) ==>
-    stringFromRef(this)[intFromRef(ret)] >= charFromRef(c)
+  ensures 0 <= intFromRef(ret) &&
+    intFromRef(ret) <= |stringFromRef(v_this)|
+  ensures (forall anon: Int ::0 <= anon && anon < intFromRef(ret) ==>
+      stringFromRef(v_this)[anon] < charFromRef(c))
+  ensures !(intFromRef(ret) == |stringFromRef(v_this)|) ==>
+    stringFromRef(v_this)[intFromRef(ret)] >= charFromRef(c)
 {
   var i: Ref
   var anon_0: Ref
@@ -16,12 +16,14 @@ method firstAtLeast(this: Ref, c: Ref) returns (ret: Ref)
   label cont
     invariant isSubtype(typeOf(i), intType())
     invariant isSubtype(typeOf(c), charType())
-    invariant 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef(this)|
-    invariant (forall anon: Int ::0 <= anon && anon < intFromRef(i) ==>
-        stringFromRef(this)[anon] < charFromRef(c))
-  anon_0 := ltInts(i, stringLength(this))
+    invariant 0 <= intFromRef(i) &&
+      intFromRef(i) <= |stringFromRef(v_this)|
+    invariant (forall anon_builtin: Int ::0 <= anon_builtin &&
+        anon_builtin < intFromRef(i) ==>
+        stringFromRef(v_this)[anon_builtin] < charFromRef(c))
+  anon_0 := ltInts(i, stringLength(v_this))
   if (boolFromRef(anon_0)) {
-    if (stringFromRef(this)[intFromRef(i)] >= charFromRef(c)) {
+    if (stringFromRef(v_this)[intFromRef(i)] >= charFromRef(c)) {
       goto break
     }
     i := plusInts(i, intToRef(1))
@@ -30,40 +32,42 @@ method firstAtLeast(this: Ref, c: Ref) returns (ret: Ref)
   label break
   assert isSubtype(typeOf(i), intType())
   assert isSubtype(typeOf(c), charType())
-  assert 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef(this)|
-  assert (forall anon: Int ::0 <= anon && anon < intFromRef(i) ==>
-      stringFromRef(this)[anon] < charFromRef(c))
+  assert 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef(v_this)|
+  assert (forall anon_builtin: Int ::0 <= anon_builtin &&
+      anon_builtin < intFromRef(i) ==>
+      stringFromRef(v_this)[anon_builtin] < charFromRef(c))
   ret := i
   goto ret_0
   label ret_0
 }
 
 /string_iterations.kt: info: Generated Viper text for lastLess:
-method lastLess(this: Ref, c: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), stringType())
+method lastLess(v_this: Ref, c: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(v_this), stringType())
   requires isSubtype(typeOf(c), charType())
   ensures isSubtype(typeOf(ret), intType())
   ensures -1 <= intFromRef(ret) &&
-    intFromRef(ret) <= |stringFromRef(this)| - 1
-  ensures (forall anon_builtin: Int ::intFromRef(ret) < anon_builtin &&
-      anon_builtin < |stringFromRef(this)| ==>
-      stringFromRef(this)[anon_builtin] >= charFromRef(c))
+    intFromRef(ret) <= |stringFromRef(v_this)| - 1
+  ensures (forall anon: Int ::intFromRef(ret) < anon &&
+      anon < |stringFromRef(v_this)| ==>
+      stringFromRef(v_this)[anon] >= charFromRef(c))
   ensures !(intFromRef(ret) == -1) ==>
-    stringFromRef(this)[intFromRef(ret)] < charFromRef(c)
+    stringFromRef(v_this)[intFromRef(ret)] < charFromRef(c)
 {
   var i: Ref
   var anon_0: Ref
-  i := minusInts(stringLength(this), intToRef(1))
+  i := minusInts(stringLength(v_this), intToRef(1))
   label cont
     invariant isSubtype(typeOf(i), intType())
     invariant isSubtype(typeOf(c), charType())
-    invariant -1 <= intFromRef(i) && intFromRef(i) < |stringFromRef(this)|
-    invariant (forall anon: Int ::intFromRef(i) < anon &&
-        anon < |stringFromRef(this)| ==>
-        stringFromRef(this)[anon] >= charFromRef(c))
+    invariant -1 <= intFromRef(i) &&
+      intFromRef(i) < |stringFromRef(v_this)|
+    invariant (forall anon_builtin: Int ::intFromRef(i) < anon_builtin &&
+        anon_builtin < |stringFromRef(v_this)| ==>
+        stringFromRef(v_this)[anon_builtin] >= charFromRef(c))
   anon_0 := gtInts(i, intToRef(-1))
   if (boolFromRef(anon_0)) {
-    if (stringFromRef(this)[intFromRef(i)] < charFromRef(c)) {
+    if (stringFromRef(v_this)[intFromRef(i)] < charFromRef(c)) {
       goto break
     }
     i := minusInts(i, intToRef(1))
@@ -72,10 +76,10 @@ method lastLess(this: Ref, c: Ref) returns (ret: Ref)
   label break
   assert isSubtype(typeOf(i), intType())
   assert isSubtype(typeOf(c), charType())
-  assert -1 <= intFromRef(i) && intFromRef(i) < |stringFromRef(this)|
-  assert (forall anon: Int ::intFromRef(i) < anon &&
-      anon < |stringFromRef(this)| ==>
-      stringFromRef(this)[anon] >= charFromRef(c))
+  assert -1 <= intFromRef(i) && intFromRef(i) < |stringFromRef(v_this)|
+  assert (forall anon_builtin: Int ::intFromRef(i) < anon_builtin &&
+      anon_builtin < |stringFromRef(v_this)| ==>
+      stringFromRef(v_this)[anon_builtin] >= charFromRef(c))
   ret := i
   goto ret_0
   label ret_0
