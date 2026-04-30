@@ -89,6 +89,7 @@ fun Test.configureFormverTest() {
     setLibraryProperty("org.jetbrains.kotlin.test.kotlin-annotations-jvm", "kotlin-annotations-jvm")
 
     systemProperty("idea.ignore.disabled.plugins", "true")
+    systemProperty("formver.testRun", "true")
     systemProperty("idea.home.path", rootDir)
 
     project.findProperty("kotlin.test.update.test.data")?.let {
