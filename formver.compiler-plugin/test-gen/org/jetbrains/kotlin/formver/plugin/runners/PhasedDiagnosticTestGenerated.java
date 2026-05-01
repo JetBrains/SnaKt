@@ -334,6 +334,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("identity_equality.kt")
+      public void testIdentity_equality() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/operators/identity_equality.kt");
+      }
+
+      @Test
       @TestMetadata("increment.kt")
       public void testIncrement() {
         runTest("formver.compiler-plugin/testData/diagnostics/conversion/operators/increment.kt");
