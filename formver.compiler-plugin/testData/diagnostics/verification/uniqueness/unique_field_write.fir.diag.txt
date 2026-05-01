@@ -1,0 +1,241 @@
+/unique_field_write.kt: info: Generated Viper text for writeThenRead:
+field bf_v: Ref
+
+field size: Ref
+
+predicate c_BooleanArray_shared(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(c_Cloneable_shared(this), wildcard) &&
+  acc(shared(this), wildcard)
+}
+
+predicate c_BooleanArray_unique(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(c_Cloneable_unique(this), write) &&
+  acc(c_Serializable_unique(this), write)
+}
+
+predicate c_Cloneable_shared(this: Ref) {
+  true
+}
+
+predicate c_Cloneable_unique(this: Ref) {
+  true
+}
+
+predicate c_Serializable_unique(this: Ref) {
+  true
+}
+
+predicate c_X_shared(this: Ref) {
+  true
+}
+
+predicate c_X_unique(this: Ref) {
+  acc(this.bf_v, write) && isSubtype(typeOf(this.bf_v), intType())
+}
+
+predicate shared(this: Ref) {
+  true
+}
+
+method writeThenRead(x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), _c_X())
+  requires acc(c_X_unique(x), write)
+  ensures isSubtype(typeOf(ret_0), unitType())
+{
+  var k: Ref
+  inhale acc(c_X_shared(x), wildcard)
+  unfold acc(c_X_unique(x), write)
+  x.bf_v := intToRef(7)
+  k := x.bf_v
+  assert intFromRef(k) == 7
+  fold acc(c_X_unique(x), write)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
+}
+
+/unique_field_write.kt: info: Generated Viper text for writeTwiceReadOnce:
+field bf_v: Ref
+
+field size: Ref
+
+predicate c_BooleanArray_shared(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(c_Cloneable_shared(this), wildcard) &&
+  acc(shared(this), wildcard)
+}
+
+predicate c_BooleanArray_unique(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(c_Cloneable_unique(this), write) &&
+  acc(c_Serializable_unique(this), write)
+}
+
+predicate c_Cloneable_shared(this: Ref) {
+  true
+}
+
+predicate c_Cloneable_unique(this: Ref) {
+  true
+}
+
+predicate c_Serializable_unique(this: Ref) {
+  true
+}
+
+predicate c_X_shared(this: Ref) {
+  true
+}
+
+predicate c_X_unique(this: Ref) {
+  acc(this.bf_v, write) && isSubtype(typeOf(this.bf_v), intType())
+}
+
+predicate shared(this: Ref) {
+  true
+}
+
+method writeTwiceReadOnce(x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), _c_X())
+  requires acc(c_X_unique(x), write)
+  ensures isSubtype(typeOf(ret_0), unitType())
+{
+  var k: Ref
+  inhale acc(c_X_shared(x), wildcard)
+  unfold acc(c_X_unique(x), write)
+  x.bf_v := intToRef(1)
+  x.bf_v := intToRef(9)
+  k := x.bf_v
+  assert intFromRef(k) == 9
+  fold acc(c_X_unique(x), write)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
+}
+
+/unique_field_write.kt: info: Generated Viper text for readWriteRead:
+field bf_v: Ref
+
+field size: Ref
+
+predicate c_BooleanArray_shared(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(c_Cloneable_shared(this), wildcard) &&
+  acc(shared(this), wildcard)
+}
+
+predicate c_BooleanArray_unique(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(c_Cloneable_unique(this), write) &&
+  acc(c_Serializable_unique(this), write)
+}
+
+predicate c_Cloneable_shared(this: Ref) {
+  true
+}
+
+predicate c_Cloneable_unique(this: Ref) {
+  true
+}
+
+predicate c_Serializable_unique(this: Ref) {
+  true
+}
+
+predicate c_X_shared(this: Ref) {
+  true
+}
+
+predicate c_X_unique(this: Ref) {
+  acc(this.bf_v, write) && isSubtype(typeOf(this.bf_v), intType())
+}
+
+predicate shared(this: Ref) {
+  true
+}
+
+method readWriteRead(x: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), _c_X())
+  requires acc(c_X_unique(x), write)
+  ensures isSubtype(typeOf(ret_0), unitType())
+{
+  var k1: Ref
+  var k2: Ref
+  inhale acc(c_X_shared(x), wildcard)
+  unfold acc(c_X_unique(x), write)
+  x.bf_v := intToRef(3)
+  k1 := x.bf_v
+  x.bf_v := intToRef(11)
+  k2 := x.bf_v
+  assert intFromRef(k1) == 3
+  assert intFromRef(k2) == 11
+  fold acc(c_X_unique(x), write)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
+}
+
+/unique_field_write.kt: info: Generated Viper text for writeOneReadAnother:
+field bf_v: Ref
+
+field size: Ref
+
+predicate c_BooleanArray_shared(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(c_Cloneable_shared(this), wildcard) &&
+  acc(shared(this), wildcard)
+}
+
+predicate c_BooleanArray_unique(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(c_Cloneable_unique(this), write) &&
+  acc(c_Serializable_unique(this), write)
+}
+
+predicate c_Cloneable_shared(this: Ref) {
+  true
+}
+
+predicate c_Cloneable_unique(this: Ref) {
+  true
+}
+
+predicate c_Serializable_unique(this: Ref) {
+  true
+}
+
+predicate c_X_shared(this: Ref) {
+  true
+}
+
+predicate c_X_unique(this: Ref) {
+  acc(this.bf_v, write) && isSubtype(typeOf(this.bf_v), intType())
+}
+
+predicate shared(this: Ref) {
+  true
+}
+
+method writeOneReadAnother(x: Ref, y: Ref) returns (ret_0: Ref)
+  requires isSubtype(typeOf(x), _c_X())
+  requires acc(c_X_unique(x), write)
+  requires isSubtype(typeOf(y), _c_X())
+  requires acc(c_X_unique(y), write)
+  ensures isSubtype(typeOf(ret_0), unitType())
+{
+  var anon_0: Ref
+  var anon: Ref
+  inhale acc(c_X_shared(x), wildcard)
+  inhale acc(c_X_shared(y), wildcard)
+  unfold acc(c_X_unique(x), write)
+  x.bf_v := intToRef(5)
+  unfold acc(c_X_unique(y), write)
+  y.bf_v := intToRef(8)
+  anon_0 := x.bf_v
+  assert intFromRef(anon_0) == 5
+  anon := y.bf_v
+  assert intFromRef(anon) == 8
+  fold acc(c_X_unique(x), write)
+  fold acc(c_X_unique(y), write)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(ret_0), unitType())
+}

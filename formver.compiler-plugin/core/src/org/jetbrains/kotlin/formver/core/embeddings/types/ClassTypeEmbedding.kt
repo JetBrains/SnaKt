@@ -88,3 +88,12 @@ fun ClassTypeEmbedding.predicateAccess(
         ?: error("Translating shared predicate of ${name.debugMangled} yielded no predicate access."))
     return access
 }
+
+fun ClassTypeEmbedding.uniquePredicateAccessOrNull(
+    receiver: ExpEmbedding,
+    ctx: TypeResolver,
+    source: KtSourceElement?,
+): Exp.PredicateAccess? {
+    val invariant = uniquePredicateAccessInvariant(ctx) ?: return null
+    return invariant.fillHole(receiver).pureToViper(toBuiltin = true, ctx, source) as? Exp.PredicateAccess
+}

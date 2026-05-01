@@ -14,9 +14,11 @@ import org.jetbrains.kotlin.formver.core.embeddings.*
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toFuncApp
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toMethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.fillHoles
 import org.jetbrains.kotlin.formver.core.embeddings.types.injection
 import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
+import org.jetbrains.kotlin.formver.core.embeddings.types.uniquePredicateAccessOrNull
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
 import org.jetbrains.kotlin.formver.viper.ast.viperLiteral
@@ -145,7 +147,23 @@ data class LinearizationVisitor(
                     ctx.addStatement { Stmt.Inhale(invariant.linearize().toViperBuiltinType(ctx), ctx.source.asPosition) }
                 }
             }
+            // Register `@Unique` parameters whose type carries a unique predicate as eligible
+            // for function-scope unfolding. The actual `Stmt.Unfold` is deferred until first
+            // access (see Linearizer.tryUseFunctionScopedReceiver), so functions that never
+            // touch the parameter don't emit a useless unfold/fold pair. The first access
+            // emits the unfold; the function epilogue (and each early return) emits a
+            // matching fold only for receivers that were actually unfolded.
+            e.signature?.formalArgs?.forEach { arg ->
+                if (!arg.isUnique) return@forEach
+                val classType = arg.type.pretype as? ClassTypeEmbedding ?: return@forEach
+                val predAcc = classType.uniquePredicateAccessOrNull(arg, ctx.typeResolver, ctx.source)
+                    ?: return@forEach
+                ctx.registerEligibleReceiver(ctx.resolveVariableName(arg.name), predAcc)
+            }
             e.body.linearize().toViperMaybeStoringIn(result, ctx)
+            // Fold matching the entry-time unfolds before falling through to the return label.
+            // Early returns emit their own folds via Linearizer.addReturn.
+            ctx.foldUsedFunctionScopedReceivers()
             ctx.addLabel(e.returnLabel.toViper(ctx))
         }
     }
@@ -402,11 +420,11 @@ data class LinearizationVisitor(
             if (e.field.accessPolicy == AccessPolicy.ALWAYS_WRITEABLE) {
                 return PrimitiveFieldAccess(e.receiver, e.field).linearize().toViper(ctx)
             }
-            return ctx.addFieldAccess(receiverLinearizable, e.receiver.type, e.field)
+            return ctx.addFieldAccess(receiverLinearizable, e.receiver.type, e.field, e.receiverIsUnique)
         }
 
         override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-            ctx.addFieldAccessStoringIn(receiverLinearizable, e.receiver.type, e.field, result)
+            ctx.addFieldAccessStoringIn(receiverLinearizable, e.receiver.type, e.field, result, e.receiverIsUnique)
         }
 
         override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
@@ -426,6 +444,11 @@ data class LinearizationVisitor(
         override fun toViperUnusedResult(ctx: LinearizationContext) {
             when (e.field.accessPolicy) {
                 AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
+                    if (e.receiverIsUnique && emitUniqueReceiverFieldWrite(e, ctx)) return
+                    // The conservative path for shared receivers: a write to a `var` field
+                    // whose receiver might be aliased can't be represented in a way the read
+                    // side can frame, so we drop the write entirely (the read will havoc).
+                    // TODO: see Linearizer's matching TODO on the read side.
                     e.receiver.linearize().toViperUnusedResult(ctx)
                     e.newValue.linearize().toViperUnusedResult(ctx)
                 }
@@ -449,6 +472,49 @@ data class LinearizationVisitor(
                     }
                 }
             }
+        }
+
+        /**
+         * Mirror of `Linearizer.emitUniqueReceiverFieldRead` for writes. Unfolds the unique
+         * class predicate, emits a real `Stmt.FieldAssign`, and folds back so subsequent
+         * reads / writes on this receiver still hold the predicate. Returns false on
+         * multi-step hierarchies (see comment on the read-side helper).
+         */
+        private fun emitUniqueReceiverFieldWrite(e: FieldModification, ctx: LinearizationContext): Boolean {
+            val classType = e.receiver.type.pretype as? ClassTypeEmbedding ?: return false
+            val hierarchyPath = ctx.typeResolver.hierarchyPathTo(e.receiver.type.pretype, e.field).toList()
+            if (hierarchyPath.size != 1 || hierarchyPath.single() !== classType) return false
+
+            val receiverViper = e.receiver.linearize().toViper(ctx)
+            val functionScoped = receiverViper is Exp.LocalVar &&
+                    ctx.tryUseFunctionScopedReceiver(receiverViper.name)
+
+            if (functionScoped) {
+                // Function-scope unfold is in place (or was just emitted by the lazy hook on
+                // this access); just emit the assign.
+                val newValueViper = e.newValue.linearize().toViper(ctx)
+                ctx.addStatement {
+                    Stmt.FieldAssign(
+                        Exp.FieldAccess(receiverViper, e.field.toViper()),
+                        newValueViper,
+                        ctx.source.asPosition
+                    )
+                }
+            } else {
+                val receiverWrapper = ExpWrapper(receiverViper, e.receiver.type)
+                val uniquePredAcc = classType.uniquePredicateAccessOrNull(receiverWrapper, ctx.typeResolver, ctx.source) ?: return false
+                ctx.addStatement { Stmt.Unfold(uniquePredAcc, ctx.source.asPosition) }
+                val newValueViper = e.newValue.linearize().toViper(ctx)
+                ctx.addStatement {
+                    Stmt.FieldAssign(
+                        Exp.FieldAccess(receiverViper, e.field.toViper()),
+                        newValueViper,
+                        ctx.source.asPosition
+                    )
+                }
+                ctx.addStatement { Stmt.Fold(uniquePredAcc, ctx.source.asPosition) }
+            }
+            return true
         }
     }
 

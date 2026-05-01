@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.RENDER_PRE
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.REPLACE_STDLIB_EXTENSIONS
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.LOCALITY_CHECK_ONLY
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.UNIQUE_CHECK_ONLY
+import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.CHECK_UNIQUENESS
 import org.jetbrains.kotlin.test.directives.model.DirectivesContainer
 import org.jetbrains.kotlin.test.directives.model.RegisteredDirectives
 import org.jetbrains.kotlin.test.directives.model.SimpleDirectivesContainer
@@ -59,7 +60,7 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
             uniquenessOnly || localityOnly -> TargetsSelection.NO_TARGETS
             else -> TargetsSelection.ALL_TARGETS
         }
-        val checkUniqueness = uniquenessOnly
+        val checkUniqueness = uniquenessOnly || CHECK_UNIQUENESS in module.directives
         // TODO: Eventually turn on locality checking together with uniqueness checking once the latter will be able to
         //  leverage locality information.
         val checkLocality = localityOnly // || checkUniqueness
@@ -92,6 +93,10 @@ object FormVerDirectives : SimpleDirectivesContainer() {
 
     val UNIQUE_CHECK_ONLY by directive(
         description = "Do uniqueness checking"
+    )
+
+    val CHECK_UNIQUENESS by directive(
+        description = "Run the uniqueness checker alongside verification (without forcing NO_TARGETS for selection)"
     )
 
     val LOCALITY_CHECK_ONLY by directive(

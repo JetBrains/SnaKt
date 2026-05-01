@@ -58,7 +58,11 @@ data class PrimitiveFieldAccess(val inner: ExpEmbedding, val field: FieldEmbeddi
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(inner)
 }
 
-data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : ExpEmbedding {
+data class FieldAccess(
+    val receiver: ExpEmbedding,
+    val field: FieldEmbedding,
+    val receiverIsUnique: Boolean = false,
+) : ExpEmbedding {
     override val type: TypeEmbedding = field.type
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitFieldAccess(this)
@@ -68,8 +72,12 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
 /**
  * Represents a combination of `Assign` + `FieldAccess`.
  */
-data class FieldModification(val receiver: ExpEmbedding, val field: FieldEmbedding, val newValue: ExpEmbedding) :
-    ExpEmbedding {
+data class FieldModification(
+    val receiver: ExpEmbedding,
+    val field: FieldEmbedding,
+    val newValue: ExpEmbedding,
+    val receiverIsUnique: Boolean = false,
+) : ExpEmbedding {
     override val type: TypeEmbedding = buildType { unit() }
 
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(receiver, newValue)
