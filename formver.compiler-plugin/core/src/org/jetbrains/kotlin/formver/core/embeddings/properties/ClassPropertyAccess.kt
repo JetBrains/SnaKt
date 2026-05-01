@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.formver.core.embeddings.properties
 import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
+import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldModification
 import org.jetbrains.kotlin.formver.core.embeddings.expression.withNewTypeInvariants
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 
@@ -32,6 +33,8 @@ class ClassPropertyAccess(
     }
 
     // set value must already have correct type so no need to worry
-    override fun setValue(value: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding =
-        property.setter!!.setValue(receiver, value, ctx)
+    override fun setValue(value: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding {
+        val raw = property.setter!!.setValue(receiver, value, ctx)
+        return if (receiverIsUnique && raw is FieldModification) raw.copy(receiverIsUnique = true) else raw
+    }
 }

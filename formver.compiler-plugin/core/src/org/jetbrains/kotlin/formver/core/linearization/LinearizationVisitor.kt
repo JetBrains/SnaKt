@@ -14,9 +14,11 @@ import org.jetbrains.kotlin.formver.core.embeddings.*
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toFuncApp
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toMethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.fillHoles
 import org.jetbrains.kotlin.formver.core.embeddings.types.injection
 import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
+import org.jetbrains.kotlin.formver.core.embeddings.types.uniquePredicateAccessOrNull
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
 import org.jetbrains.kotlin.formver.viper.ast.viperLiteral
@@ -426,6 +428,11 @@ data class LinearizationVisitor(
         override fun toViperUnusedResult(ctx: LinearizationContext) {
             when (e.field.accessPolicy) {
                 AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
+                    if (e.receiverIsUnique && emitUniqueReceiverFieldWrite(e, ctx)) return
+                    // The conservative path for shared receivers: a write to a `var` field
+                    // whose receiver might be aliased can't be represented in a way the read
+                    // side can frame, so we drop the write entirely (the read will havoc).
+                    // TODO: see Linearizer's matching TODO on the read side.
                     e.receiver.linearize().toViperUnusedResult(ctx)
                     e.newValue.linearize().toViperUnusedResult(ctx)
                 }
@@ -449,6 +456,33 @@ data class LinearizationVisitor(
                     }
                 }
             }
+        }
+
+        /**
+         * Mirror of `Linearizer.emitUniqueReceiverFieldRead` for writes. Unfolds the unique
+         * class predicate, emits a real `Stmt.FieldAssign`, and folds back so subsequent
+         * reads / writes on this receiver still hold the predicate. Returns false on
+         * multi-step hierarchies (see comment on the read-side helper).
+         */
+        private fun emitUniqueReceiverFieldWrite(e: FieldModification, ctx: LinearizationContext): Boolean {
+            val classType = e.receiver.type.pretype as? ClassTypeEmbedding ?: return false
+            val hierarchyPath = ctx.typeResolver.hierarchyPathTo(e.receiver.type.pretype, e.field).toList()
+            if (hierarchyPath.size != 1 || hierarchyPath.single() !== classType) return false
+
+            val receiverViper = e.receiver.linearize().toViper(ctx)
+            val receiverWrapper = ExpWrapper(receiverViper, e.receiver.type)
+            val uniquePredAcc = classType.uniquePredicateAccessOrNull(receiverWrapper, ctx.typeResolver, ctx.source) ?: return false
+            ctx.addStatement { Stmt.Unfold(uniquePredAcc, ctx.source.asPosition) }
+            val newValueViper = e.newValue.linearize().toViper(ctx)
+            ctx.addStatement {
+                Stmt.FieldAssign(
+                    Exp.FieldAccess(receiverViper, e.field.toViper()),
+                    newValueViper,
+                    ctx.source.asPosition
+                )
+            }
+            ctx.addStatement { Stmt.Fold(uniquePredAcc, ctx.source.asPosition) }
+            return true
         }
     }
 

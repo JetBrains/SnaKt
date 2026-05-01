@@ -963,6 +963,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
         runTest("formver.compiler-plugin/testData/diagnostics/verification/uniqueness/unique_field_read.kt");
       }
 
+      @Test
+      @TestMetadata("unique_field_write.kt")
+      public void testUnique_field_write() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/uniqueness/unique_field_write.kt");
+      }
+
       @Nested
       @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/uniqueness/failing-tests")
       @TestDataPath("$PROJECT_ROOT")

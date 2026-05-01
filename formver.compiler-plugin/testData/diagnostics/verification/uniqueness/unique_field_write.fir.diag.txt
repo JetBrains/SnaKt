@@ -1,0 +1,270 @@
+/unique_field_write.kt:(332,345): info: Generated Viper text for writeThenRead:
+field bf$size: Ref
+
+field bf$v: Ref
+
+predicate pred$c$X$shared(this$dispatch: Ref) {
+  true
+}
+
+predicate pred$c$X$unique(this$dispatch: Ref) {
+  acc(this$dispatch.bf$v, write) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$v), df$rt$intType())
+}
+
+predicate pred$pkg$java_io$c$Serializable$shared(this$dispatch: Ref) {
+  true
+}
+
+predicate pred$pkg$java_io$c$Serializable$unique(this$dispatch: Ref) {
+  true
+}
+
+predicate pred$pkg$kotlin$c$BooleanArray$shared(this$dispatch: Ref) {
+  acc(this$dispatch.bf$size, wildcard) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$size), df$rt$intType()) &&
+  acc(pred$pkg$kotlin$c$Cloneable$shared(this$dispatch), wildcard) &&
+  acc(pred$pkg$java_io$c$Serializable$shared(this$dispatch), wildcard)
+}
+
+predicate pred$pkg$kotlin$c$BooleanArray$unique(this$dispatch: Ref) {
+  acc(this$dispatch.bf$size, wildcard) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$size), df$rt$intType()) &&
+  acc(pred$pkg$kotlin$c$Cloneable$unique(this$dispatch), write) &&
+  acc(pred$pkg$java_io$c$Serializable$unique(this$dispatch), write)
+}
+
+predicate pred$pkg$kotlin$c$Cloneable$shared(this$dispatch: Ref) {
+  true
+}
+
+predicate pred$pkg$kotlin$c$Cloneable$unique(this$dispatch: Ref) {
+  true
+}
+
+method f$writeThenRead$F$t$X$t$Unit(par$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$X())
+  requires acc(pred$c$X$unique(par$x), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$k: Ref
+  inhale acc(pred$c$X$shared(par$x), wildcard)
+  unfold acc(pred$c$X$unique(par$x), write)
+  par$x.bf$v := df$rt$intToRef(7)
+  fold acc(pred$c$X$unique(par$x), write)
+  unfold acc(pred$c$X$unique(par$x), write)
+  l0$k := par$x.bf$v
+  fold acc(pred$c$X$unique(par$x), write)
+  assert df$rt$intFromRef(l0$k) == 7
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/unique_field_write.kt:(499,517): info: Generated Viper text for writeTwiceReadOnce:
+field bf$size: Ref
+
+field bf$v: Ref
+
+predicate pred$c$X$shared(this$dispatch: Ref) {
+  true
+}
+
+predicate pred$c$X$unique(this$dispatch: Ref) {
+  acc(this$dispatch.bf$v, write) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$v), df$rt$intType())
+}
+
+predicate pred$pkg$java_io$c$Serializable$shared(this$dispatch: Ref) {
+  true
+}
+
+predicate pred$pkg$java_io$c$Serializable$unique(this$dispatch: Ref) {
+  true
+}
+
+predicate pred$pkg$kotlin$c$BooleanArray$shared(this$dispatch: Ref) {
+  acc(this$dispatch.bf$size, wildcard) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$size), df$rt$intType()) &&
+  acc(pred$pkg$kotlin$c$Cloneable$shared(this$dispatch), wildcard) &&
+  acc(pred$pkg$java_io$c$Serializable$shared(this$dispatch), wildcard)
+}
+
+predicate pred$pkg$kotlin$c$BooleanArray$unique(this$dispatch: Ref) {
+  acc(this$dispatch.bf$size, wildcard) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$size), df$rt$intType()) &&
+  acc(pred$pkg$kotlin$c$Cloneable$unique(this$dispatch), write) &&
+  acc(pred$pkg$java_io$c$Serializable$unique(this$dispatch), write)
+}
+
+predicate pred$pkg$kotlin$c$Cloneable$shared(this$dispatch: Ref) {
+  true
+}
+
+predicate pred$pkg$kotlin$c$Cloneable$unique(this$dispatch: Ref) {
+  true
+}
+
+method f$writeTwiceReadOnce$F$t$X$t$Unit(par$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$X())
+  requires acc(pred$c$X$unique(par$x), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$k: Ref
+  inhale acc(pred$c$X$shared(par$x), wildcard)
+  unfold acc(pred$c$X$unique(par$x), write)
+  par$x.bf$v := df$rt$intToRef(1)
+  fold acc(pred$c$X$unique(par$x), write)
+  unfold acc(pred$c$X$unique(par$x), write)
+  par$x.bf$v := df$rt$intToRef(9)
+  fold acc(pred$c$X$unique(par$x), write)
+  unfold acc(pred$c$X$unique(par$x), write)
+  l0$k := par$x.bf$v
+  fold acc(pred$c$X$unique(par$x), write)
+  assert df$rt$intFromRef(l0$k) == 9
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/unique_field_write.kt:(744,757): info: Generated Viper text for readWriteRead:
+field bf$size: Ref
+
+field bf$v: Ref
+
+predicate pred$c$X$shared(this$dispatch: Ref) {
+  true
+}
+
+predicate pred$c$X$unique(this$dispatch: Ref) {
+  acc(this$dispatch.bf$v, write) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$v), df$rt$intType())
+}
+
+predicate pred$pkg$java_io$c$Serializable$shared(this$dispatch: Ref) {
+  true
+}
+
+predicate pred$pkg$java_io$c$Serializable$unique(this$dispatch: Ref) {
+  true
+}
+
+predicate pred$pkg$kotlin$c$BooleanArray$shared(this$dispatch: Ref) {
+  acc(this$dispatch.bf$size, wildcard) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$size), df$rt$intType()) &&
+  acc(pred$pkg$kotlin$c$Cloneable$shared(this$dispatch), wildcard) &&
+  acc(pred$pkg$java_io$c$Serializable$shared(this$dispatch), wildcard)
+}
+
+predicate pred$pkg$kotlin$c$BooleanArray$unique(this$dispatch: Ref) {
+  acc(this$dispatch.bf$size, wildcard) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$size), df$rt$intType()) &&
+  acc(pred$pkg$kotlin$c$Cloneable$unique(this$dispatch), write) &&
+  acc(pred$pkg$java_io$c$Serializable$unique(this$dispatch), write)
+}
+
+predicate pred$pkg$kotlin$c$Cloneable$shared(this$dispatch: Ref) {
+  true
+}
+
+predicate pred$pkg$kotlin$c$Cloneable$unique(this$dispatch: Ref) {
+  true
+}
+
+method f$readWriteRead$F$t$X$t$Unit(par$x: Ref) returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$X())
+  requires acc(pred$c$X$unique(par$x), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var l0$k1: Ref
+  var l0$k2: Ref
+  inhale acc(pred$c$X$shared(par$x), wildcard)
+  unfold acc(pred$c$X$unique(par$x), write)
+  par$x.bf$v := df$rt$intToRef(3)
+  fold acc(pred$c$X$unique(par$x), write)
+  unfold acc(pred$c$X$unique(par$x), write)
+  l0$k1 := par$x.bf$v
+  fold acc(pred$c$X$unique(par$x), write)
+  unfold acc(pred$c$X$unique(par$x), write)
+  par$x.bf$v := df$rt$intToRef(11)
+  fold acc(pred$c$X$unique(par$x), write)
+  unfold acc(pred$c$X$unique(par$x), write)
+  l0$k2 := par$x.bf$v
+  fold acc(pred$c$X$unique(par$x), write)
+  assert df$rt$intFromRef(l0$k1) == 3
+  assert df$rt$intFromRef(l0$k2) == 11
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}
+
+/unique_field_write.kt:(970,989): info: Generated Viper text for writeOneReadAnother:
+field bf$size: Ref
+
+field bf$v: Ref
+
+predicate pred$c$X$shared(this$dispatch: Ref) {
+  true
+}
+
+predicate pred$c$X$unique(this$dispatch: Ref) {
+  acc(this$dispatch.bf$v, write) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$v), df$rt$intType())
+}
+
+predicate pred$pkg$java_io$c$Serializable$shared(this$dispatch: Ref) {
+  true
+}
+
+predicate pred$pkg$java_io$c$Serializable$unique(this$dispatch: Ref) {
+  true
+}
+
+predicate pred$pkg$kotlin$c$BooleanArray$shared(this$dispatch: Ref) {
+  acc(this$dispatch.bf$size, wildcard) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$size), df$rt$intType()) &&
+  acc(pred$pkg$kotlin$c$Cloneable$shared(this$dispatch), wildcard) &&
+  acc(pred$pkg$java_io$c$Serializable$shared(this$dispatch), wildcard)
+}
+
+predicate pred$pkg$kotlin$c$BooleanArray$unique(this$dispatch: Ref) {
+  acc(this$dispatch.bf$size, wildcard) &&
+  df$rt$isSubtype(df$rt$typeOf(this$dispatch.bf$size), df$rt$intType()) &&
+  acc(pred$pkg$kotlin$c$Cloneable$unique(this$dispatch), write) &&
+  acc(pred$pkg$java_io$c$Serializable$unique(this$dispatch), write)
+}
+
+predicate pred$pkg$kotlin$c$Cloneable$shared(this$dispatch: Ref) {
+  true
+}
+
+predicate pred$pkg$kotlin$c$Cloneable$unique(this$dispatch: Ref) {
+  true
+}
+
+method f$writeOneReadAnother$F$t$X$t$X$t$Unit(par$x: Ref, par$y: Ref)
+  returns (ret$0: Ref)
+  requires df$rt$isSubtype(df$rt$typeOf(par$x), df$rt$c$X())
+  requires acc(pred$c$X$unique(par$x), write)
+  requires df$rt$isSubtype(df$rt$typeOf(par$y), df$rt$c$X())
+  requires acc(pred$c$X$unique(par$y), write)
+  ensures df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+{
+  var anon$0: Ref
+  var anon$1: Ref
+  inhale acc(pred$c$X$shared(par$x), wildcard)
+  inhale acc(pred$c$X$shared(par$y), wildcard)
+  unfold acc(pred$c$X$unique(par$x), write)
+  par$x.bf$v := df$rt$intToRef(5)
+  fold acc(pred$c$X$unique(par$x), write)
+  unfold acc(pred$c$X$unique(par$y), write)
+  par$y.bf$v := df$rt$intToRef(8)
+  fold acc(pred$c$X$unique(par$y), write)
+  unfold acc(pred$c$X$unique(par$x), write)
+  anon$0 := par$x.bf$v
+  fold acc(pred$c$X$unique(par$x), write)
+  assert df$rt$intFromRef(anon$0) == 5
+  unfold acc(pred$c$X$unique(par$y), write)
+  anon$1 := par$y.bf$v
+  fold acc(pred$c$X$unique(par$y), write)
+  assert df$rt$intFromRef(anon$1) == 8
+  label lbl$ret$0
+  inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
+}

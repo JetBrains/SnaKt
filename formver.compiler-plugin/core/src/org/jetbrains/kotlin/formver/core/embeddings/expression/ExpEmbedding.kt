@@ -72,8 +72,12 @@ data class FieldAccess(
 /**
  * Represents a combination of `Assign` + `FieldAccess`.
  */
-data class FieldModification(val receiver: ExpEmbedding, val field: FieldEmbedding, val newValue: ExpEmbedding) :
-    ExpEmbedding {
+data class FieldModification(
+    val receiver: ExpEmbedding,
+    val field: FieldEmbedding,
+    val newValue: ExpEmbedding,
+    val receiverIsUnique: Boolean = false,
+) : ExpEmbedding {
     override val type: TypeEmbedding = buildType { unit() }
 
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(receiver, newValue)

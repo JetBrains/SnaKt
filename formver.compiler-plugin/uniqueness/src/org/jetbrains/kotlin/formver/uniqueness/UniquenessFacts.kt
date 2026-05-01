@@ -8,7 +8,9 @@ package org.jetbrains.kotlin.formver.uniqueness
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
 
 /**
  * Per-FIR-expression view of the uniqueness analysis result.
@@ -43,18 +45,38 @@ class UniquenessFacts private constructor(
 
                 val receiverUniqueAt = mutableMapOf<FirElement, Boolean>()
                 for (node in graph.nodes) {
-                    val fir = node.fir as? FirPropertyAccessExpression ?: continue
-                    val receiverPath = fir.explicitReceiver?.receiverPath ?: continue
-                    val trie = facts.flowBefore(node)
-                    val nodeData = trie.ensure(receiverPath)
-                    val receiverType = nodeData.parentsJoin
-                    receiverUniqueAt[fir] = receiverType is UniquenessType.Active &&
-                            receiverType.uniqueLevel == UniqueLevel.Unique
+                    when (val fir = node.fir) {
+                        is FirPropertyAccessExpression ->
+                            recordIfApplicable(receiverUniqueAt, fir, node, facts)
+                        else -> {
+                            // For assignment nodes, the lValue is the property access we care
+                            // about (e.g. `x.v = 7` puts the receiver-uniqueness query on the
+                            // lValue, not on a standalone access node).
+                            if (node is VariableAssignmentNode) {
+                                val lValue = node.fir.lValue as? FirPropertyAccessExpression ?: continue
+                                recordIfApplicable(receiverUniqueAt, lValue, node, facts)
+                            }
+                        }
+                    }
                 }
                 UniquenessFacts(receiverUniqueAt)
             } catch (_: Exception) {
                 null
             }
+        }
+
+        private fun recordIfApplicable(
+            into: MutableMap<FirElement, Boolean>,
+            access: FirPropertyAccessExpression,
+            node: CFGNode<*>,
+            facts: FlowFacts<UniquenessTrie>,
+        ) {
+            val receiverPath = access.explicitReceiver?.receiverPath ?: return
+            val trie = facts.flowBefore(node)
+            val nodeData = trie.ensure(receiverPath)
+            val receiverType = nodeData.parentsJoin
+            into[access] = receiverType is UniquenessType.Active &&
+                    receiverType.uniqueLevel == UniqueLevel.Unique
         }
     }
 }
