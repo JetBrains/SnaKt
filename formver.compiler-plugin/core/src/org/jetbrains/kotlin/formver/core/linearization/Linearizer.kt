@@ -20,6 +20,8 @@ import org.jetbrains.kotlin.formver.core.embeddings.toViperGoto
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
+import org.jetbrains.kotlin.formver.core.embeddings.types.uniquePredicateAccessOrNull
+import org.jetbrains.kotlin.formver.names.debugMangled
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
 import org.jetbrains.kotlin.formver.viper.ast.Exp
@@ -96,9 +98,14 @@ data class Linearizer(
             Stmt.If(condViper, thenViper, elseViper, source.asPosition)
         }
 
-    override fun addFieldAccess(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding): Exp {
+    override fun addFieldAccess(
+        receiver: Linearizable,
+        receiverType: TypeEmbedding,
+        field: FieldEmbedding,
+        receiverIsUnique: Boolean,
+    ): Exp {
         val result = freshAnonVar(field.type)
-        addFieldAccessStoringIn(receiver, receiverType, field, result)
+        addFieldAccessStoringIn(receiver, receiverType, field, result, receiverIsUnique)
         return result.toViperExp(this)
     }
 
@@ -106,11 +113,22 @@ data class Linearizer(
         stmtModifierTracker?.add(mod) ?: error("Not in a statement")
     }
 
-    override fun addFieldAccessStoringIn(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding, result: VariableEmbedding) {
+    override fun addFieldAccessStoringIn(
+        receiver: Linearizable,
+        receiverType: TypeEmbedding,
+        field: FieldEmbedding,
+        result: VariableEmbedding,
+        receiverIsUnique: Boolean,
+    ) {
+        if (field.accessPolicy == AccessPolicy.BY_RECEIVER_UNIQUENESS && receiverIsUnique) {
+            if (emitUniqueReceiverFieldRead(receiver, receiverType, field, result)) return
+            // fall through to the conservative havoc on the rare cases where we don't have a
+            // unique-predicate handle (e.g. multi-step hierarchy not yet plumbed).
+        }
         addStatement {
             when (field.accessPolicy) {
-                // TODO: Handling a unique field on a shared receiver must be added here.
                 AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
+                    // TODO: Handling a unique field on a shared receiver must be added here.
                     receiver.toViperUnusedResult(this)
                     field.type.havocMethod(typeResolver).toMethodCall(emptyList(), listOf(result.toLocalVarUse()))
                 }
@@ -130,6 +148,44 @@ data class Linearizer(
                 }
             }
         }
+    }
+
+    /**
+     * Read a `var` field through a unique receiver without dropping the value to havoc.
+     * The unique predicate carries `acc(receiver.field, write)`, so we unfold it, perform a
+     * direct field-read, and fold it back so subsequent code (and other unique reads) still
+     * holds the predicate. Returns false if we can't resolve a unique-predicate handle for
+     * this field's containing class — in that case the caller falls back to havoc.
+     *
+     * Limited to single-step hierarchy: when the field lives in a strict supertype, we punt
+     * to the conservative path. Deeper hierarchies want the same fold/unfold chain that the
+     * shared-predicate path already does, just with full perm and an inverse-order refold.
+     */
+    private fun emitUniqueReceiverFieldRead(
+        receiver: Linearizable,
+        receiverType: TypeEmbedding,
+        field: FieldEmbedding,
+        result: VariableEmbedding,
+    ): Boolean {
+        val classType = receiverType.pretype as? ClassTypeEmbedding ?: return false
+        val hierarchyPath = typeResolver.hierarchyPathTo(receiverType.pretype, field).toList()
+        if (hierarchyPath.size != 1 || hierarchyPath.single() !== classType) return false
+
+        addStatement {
+            val receiverViper = receiver.toViper(this)
+            val receiverWrapper = ExpWrapper(receiverViper, receiverType)
+            val uniquePredAcc = classType.uniquePredicateAccessOrNull(receiverWrapper, typeResolver, source)
+                ?: error("ClassTypeEmbedding ${classType.name.debugMangled} has no unique-predicate access")
+            addStatement { Stmt.Unfold(uniquePredAcc, source.asPosition) }
+            addStatement {
+                Stmt.assign(
+                    result.toLocalVarUse(),
+                    Exp.FieldAccess(receiverViper, field.toViper(), source.asPosition)
+                )
+            }
+            Stmt.Fold(uniquePredAcc, source.asPosition)
+        }
+        return true
     }
 
     private fun Sequence<ClassTypeEmbedding>?.unfoldHierarchyPath(

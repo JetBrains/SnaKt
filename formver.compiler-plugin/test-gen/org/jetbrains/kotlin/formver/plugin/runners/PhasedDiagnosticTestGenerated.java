@@ -957,6 +957,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/uniqueness"), Pattern.compile("^(.+)\\.kt$"), null, true);
       }
 
+      @Test
+      @TestMetadata("unique_field_read.kt")
+      public void testUnique_field_read() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/uniqueness/unique_field_read.kt");
+      }
+
       @Nested
       @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/uniqueness/failing-tests")
       @TestDataPath("$PROJECT_ROOT")

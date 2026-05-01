@@ -17,6 +17,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.names.ReturnLabelName
 import org.jetbrains.kotlin.formver.core.names.ReturnVariableName
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessFacts
 
 class ReturnTarget(depth: Int, type: TypeEmbedding) {
     val variable = PlaceholderVariableEmbedding(ReturnVariableName(depth), type)
@@ -35,6 +36,13 @@ interface MethodConversionContext : ProgramConversionContext {
     val signature: FunctionSignature
     val defaultResolvedReturnTarget: ReturnTarget
     val isValidForForAllBlock: Boolean
+
+    /**
+     * Per-function uniqueness analysis result. Null when uniqueness checking is disabled,
+     * the function has no CFG, or the analyzer could not complete. Consumers must treat
+     * `null` as "no uniqueness information available" and fall back accordingly.
+     */
+    val uniquenessFacts: UniquenessFacts?
 
     fun resolveParameter(symbol: FirValueParameterSymbol): ExpEmbedding
     fun resolveLocal(symbol: FirVariableSymbol<*>): VariableEmbedding

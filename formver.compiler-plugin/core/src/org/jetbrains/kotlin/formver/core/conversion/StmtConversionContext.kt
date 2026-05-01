@@ -129,17 +129,18 @@ fun StmtConversionContext.embedPropertyAccess(accessExpression: FirPropertyAcces
         is FirValueParameterSymbol -> embedParameter(calleeSymbol).asPropertyAccess()
         is FirPropertySymbol -> {
             val type = embedType(calleeSymbol.resolvedReturnType)
+            val receiverIsUnique = uniquenessFacts?.isReceiverUniqueAt(accessExpression) ?: false
             when {
                 accessExpression.dispatchReceiver != null -> {
                     val property = calleeSymbol.findFinalParentProperty()?.let {
                         embedProperty(it)
                     } ?: embedProperty(calleeSymbol)
-                    ClassPropertyAccess(convert(accessExpression.dispatchReceiver!!), property, type)
+                    ClassPropertyAccess(convert(accessExpression.dispatchReceiver!!), property, type, receiverIsUnique)
                 }
 
                 accessExpression.extensionReceiver != null -> {
                     val property = embedProperty(calleeSymbol)
-                    ClassPropertyAccess(convert(accessExpression.extensionReceiver!!), property, type)
+                    ClassPropertyAccess(convert(accessExpression.extensionReceiver!!), property, type, receiverIsUnique)
                 }
 
                 else -> embedLocalProperty(calleeSymbol)

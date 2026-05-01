@@ -77,11 +77,22 @@ data class PureExpLinearizer(
         throw PureExpLinearizerMisuseException("addBranch")
     }
 
-    override fun addFieldAccessStoringIn(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding, result: VariableEmbedding) {
+    override fun addFieldAccessStoringIn(
+        receiver: Linearizable,
+        receiverType: TypeEmbedding,
+        field: FieldEmbedding,
+        result: VariableEmbedding,
+        receiverIsUnique: Boolean,
+    ) {
         throw PureExpLinearizerMisuseException("addFieldAccessWithResult")
     }
 
-    override fun addFieldAccess(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding): Exp {
+    override fun addFieldAccess(
+        receiver: Linearizable,
+        receiverType: TypeEmbedding,
+        field: FieldEmbedding,
+        receiverIsUnique: Boolean,
+    ): Exp {
         val receiverViper = receiver.toViper(this)
         val hierarchyPath = typeResolver.hierarchyPathTo(receiverType.pretype, field)
         val primitiveAccess: Exp = Exp.FieldAccess(receiverViper, field.toViper(), source.asPosition)
