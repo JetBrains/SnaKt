@@ -147,7 +147,23 @@ data class LinearizationVisitor(
                     ctx.addStatement { Stmt.Inhale(invariant.linearize().toViperBuiltinType(ctx), ctx.source.asPosition) }
                 }
             }
+            // Register `@Unique` parameters whose type carries a unique predicate as eligible
+            // for function-scope unfolding. The actual `Stmt.Unfold` is deferred until first
+            // access (see Linearizer.tryUseFunctionScopedReceiver), so functions that never
+            // touch the parameter don't emit a useless unfold/fold pair. The first access
+            // emits the unfold; the function epilogue (and each early return) emits a
+            // matching fold only for receivers that were actually unfolded.
+            e.signature?.formalArgs?.forEach { arg ->
+                if (!arg.isUnique) return@forEach
+                val classType = arg.type.pretype as? ClassTypeEmbedding ?: return@forEach
+                val predAcc = classType.uniquePredicateAccessOrNull(arg, ctx.typeResolver, ctx.source)
+                    ?: return@forEach
+                ctx.registerEligibleReceiver(ctx.resolveVariableName(arg.name), predAcc)
+            }
             e.body.linearize().toViperMaybeStoringIn(result, ctx)
+            // Fold matching the entry-time unfolds before falling through to the return label.
+            // Early returns emit their own folds via Linearizer.addReturn.
+            ctx.foldUsedFunctionScopedReceivers()
             ctx.addLabel(e.returnLabel.toViper(ctx))
         }
     }
@@ -470,18 +486,34 @@ data class LinearizationVisitor(
             if (hierarchyPath.size != 1 || hierarchyPath.single() !== classType) return false
 
             val receiverViper = e.receiver.linearize().toViper(ctx)
-            val receiverWrapper = ExpWrapper(receiverViper, e.receiver.type)
-            val uniquePredAcc = classType.uniquePredicateAccessOrNull(receiverWrapper, ctx.typeResolver, ctx.source) ?: return false
-            ctx.addStatement { Stmt.Unfold(uniquePredAcc, ctx.source.asPosition) }
-            val newValueViper = e.newValue.linearize().toViper(ctx)
-            ctx.addStatement {
-                Stmt.FieldAssign(
-                    Exp.FieldAccess(receiverViper, e.field.toViper()),
-                    newValueViper,
-                    ctx.source.asPosition
-                )
+            val functionScoped = receiverViper is Exp.LocalVar &&
+                    ctx.tryUseFunctionScopedReceiver(receiverViper.name)
+
+            if (functionScoped) {
+                // Function-scope unfold is in place (or was just emitted by the lazy hook on
+                // this access); just emit the assign.
+                val newValueViper = e.newValue.linearize().toViper(ctx)
+                ctx.addStatement {
+                    Stmt.FieldAssign(
+                        Exp.FieldAccess(receiverViper, e.field.toViper()),
+                        newValueViper,
+                        ctx.source.asPosition
+                    )
+                }
+            } else {
+                val receiverWrapper = ExpWrapper(receiverViper, e.receiver.type)
+                val uniquePredAcc = classType.uniquePredicateAccessOrNull(receiverWrapper, ctx.typeResolver, ctx.source) ?: return false
+                ctx.addStatement { Stmt.Unfold(uniquePredAcc, ctx.source.asPosition) }
+                val newValueViper = e.newValue.linearize().toViper(ctx)
+                ctx.addStatement {
+                    Stmt.FieldAssign(
+                        Exp.FieldAccess(receiverViper, e.field.toViper()),
+                        newValueViper,
+                        ctx.source.asPosition
+                    )
+                }
+                ctx.addStatement { Stmt.Fold(uniquePredAcc, ctx.source.asPosition) }
             }
-            ctx.addStatement { Stmt.Fold(uniquePredAcc, ctx.source.asPosition) }
             return true
         }
     }

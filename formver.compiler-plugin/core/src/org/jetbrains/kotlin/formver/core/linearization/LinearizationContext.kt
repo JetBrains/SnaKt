@@ -74,6 +74,35 @@ interface LinearizationContext {
     fun addModifier(mod: StmtModifier)
 
     fun resolveVariableName(name: SymbolicName): SymbolicName
+
+    /**
+     * Register that [receiverName] is an `@Unique` parameter eligible for function-scope
+     * unfolding. The actual `Stmt.Unfold` is *not* emitted here; it's deferred until the
+     * first access via [tryUseFunctionScopedReceiver], so functions that never touch the
+     * parameter don't emit a no-op unfold/fold pair.
+     *
+     * Default: no-op (only the main body Linearizer uses this; pure-expression linearizers
+     * don't need it since they never emit unfold/fold).
+     */
+    fun registerEligibleReceiver(receiverName: SymbolicName, predAcc: Exp.PredicateAccess) {}
+
+    /**
+     * If [receiverName] is registered (and the receiver is therefore at function-scope
+     * unfolded by convention), return true and emit the deferred `Stmt.Unfold` if this is
+     * the first access. The caller then emits the field op directly without its own
+     * unfold/fold pair. Returns false for receivers that aren't eligible — the caller
+     * falls back to the per-access cycle (or the conservative havoc).
+     *
+     * Default: false.
+     */
+    fun tryUseFunctionScopedReceiver(receiverName: SymbolicName): Boolean = false
+
+    /**
+     * Emit a `fold` for every receiver that was actually unfolded by
+     * [tryUseFunctionScopedReceiver]. Used at function exit (epilogue and each early-return
+     * goto). Receivers registered but never accessed are skipped. Default: no-op.
+     */
+    fun foldUsedFunctionScopedReceivers() {}
 }
 
 fun LinearizationContext.freshAnonVar(init: TypeBuilder.() -> PretypeBuilder): AnonymousVariableEmbedding =

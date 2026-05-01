@@ -82,7 +82,31 @@ data class Linearizer(
 
     override fun addReturn(returnExp: Linearizable, target: ReturnTarget) {
         returnExp.toViperStoringIn(target.variable, this)
+        // Fold any function-scope unfolded predicates before the goto so the predicate
+        // postcondition holds at the return target. The fold itself doesn't disturb the
+        // returnExp evaluation — it ran above and stored its result already.
+        foldUsedFunctionScopedReceivers()
         addStatement { target.label.toLink().toViperGoto(this) }
+    }
+
+    override fun registerEligibleReceiver(receiverName: SymbolicName, predAcc: Exp.PredicateAccess) {
+        state.preUnfoldedReceivers.add(PreUnfoldedReceiver(receiverName, predAcc))
+    }
+
+    override fun tryUseFunctionScopedReceiver(receiverName: SymbolicName): Boolean {
+        val entry = state.preUnfoldedReceivers.firstOrNull { it.receiverName == receiverName } ?: return false
+        if (!entry.unfolded) {
+            addStatement { Stmt.Unfold(entry.predicateAccess, source.asPosition) }
+            entry.unfolded = true
+        }
+        return true
+    }
+
+    override fun foldUsedFunctionScopedReceivers() {
+        for (entry in state.preUnfoldedReceivers) {
+            if (!entry.unfolded) continue
+            addStatement { Stmt.Fold(entry.predicateAccess, source.asPosition) }
+        }
     }
 
     override fun addBranch(
@@ -173,17 +197,28 @@ data class Linearizer(
 
         addStatement {
             val receiverViper = receiver.toViper(this)
-            val receiverWrapper = ExpWrapper(receiverViper, receiverType)
-            val uniquePredAcc = classType.uniquePredicateAccessOrNull(receiverWrapper, typeResolver, source)
-                ?: error("ClassTypeEmbedding ${classType.name.debugMangled} has no unique-predicate access")
-            addStatement { Stmt.Unfold(uniquePredAcc, source.asPosition) }
-            addStatement {
+            val functionScoped = receiverViper is Exp.LocalVar &&
+                    tryUseFunctionScopedReceiver(receiverViper.name)
+            if (functionScoped) {
+                // Function-scope unfold is in place (or was just emitted by the lazy hook
+                // on this very access); just emit the read.
                 Stmt.assign(
                     result.toLocalVarUse(),
                     Exp.FieldAccess(receiverViper, field.toViper(), source.asPosition)
                 )
+            } else {
+                val receiverWrapper = ExpWrapper(receiverViper, receiverType)
+                val uniquePredAcc = classType.uniquePredicateAccessOrNull(receiverWrapper, typeResolver, source)
+                    ?: error("ClassTypeEmbedding ${classType.name.debugMangled} has no unique-predicate access")
+                addStatement { Stmt.Unfold(uniquePredAcc, source.asPosition) }
+                addStatement {
+                    Stmt.assign(
+                        result.toLocalVarUse(),
+                        Exp.FieldAccess(receiverViper, field.toViper(), source.asPosition)
+                    )
+                }
+                Stmt.Fold(uniquePredAcc, source.asPosition)
             }
-            Stmt.Fold(uniquePredAcc, source.asPosition)
         }
         return true
     }

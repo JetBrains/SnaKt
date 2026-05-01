@@ -51,11 +51,9 @@ method f$writeThenRead$F$t$X$t$Unit(par$x: Ref) returns (ret$0: Ref)
   inhale acc(pred$c$X$shared(par$x), wildcard)
   unfold acc(pred$c$X$unique(par$x), write)
   par$x.bf$v := df$rt$intToRef(7)
-  fold acc(pred$c$X$unique(par$x), write)
-  unfold acc(pred$c$X$unique(par$x), write)
   l0$k := par$x.bf$v
-  fold acc(pred$c$X$unique(par$x), write)
   assert df$rt$intFromRef(l0$k) == 7
+  fold acc(pred$c$X$unique(par$x), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -113,14 +111,10 @@ method f$writeTwiceReadOnce$F$t$X$t$Unit(par$x: Ref) returns (ret$0: Ref)
   inhale acc(pred$c$X$shared(par$x), wildcard)
   unfold acc(pred$c$X$unique(par$x), write)
   par$x.bf$v := df$rt$intToRef(1)
-  fold acc(pred$c$X$unique(par$x), write)
-  unfold acc(pred$c$X$unique(par$x), write)
   par$x.bf$v := df$rt$intToRef(9)
-  fold acc(pred$c$X$unique(par$x), write)
-  unfold acc(pred$c$X$unique(par$x), write)
   l0$k := par$x.bf$v
-  fold acc(pred$c$X$unique(par$x), write)
   assert df$rt$intFromRef(l0$k) == 9
+  fold acc(pred$c$X$unique(par$x), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -179,18 +173,12 @@ method f$readWriteRead$F$t$X$t$Unit(par$x: Ref) returns (ret$0: Ref)
   inhale acc(pred$c$X$shared(par$x), wildcard)
   unfold acc(pred$c$X$unique(par$x), write)
   par$x.bf$v := df$rt$intToRef(3)
-  fold acc(pred$c$X$unique(par$x), write)
-  unfold acc(pred$c$X$unique(par$x), write)
   l0$k1 := par$x.bf$v
-  fold acc(pred$c$X$unique(par$x), write)
-  unfold acc(pred$c$X$unique(par$x), write)
   par$x.bf$v := df$rt$intToRef(11)
-  fold acc(pred$c$X$unique(par$x), write)
-  unfold acc(pred$c$X$unique(par$x), write)
   l0$k2 := par$x.bf$v
-  fold acc(pred$c$X$unique(par$x), write)
   assert df$rt$intFromRef(l0$k1) == 3
   assert df$rt$intFromRef(l0$k2) == 11
+  fold acc(pred$c$X$unique(par$x), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
@@ -253,18 +241,14 @@ method f$writeOneReadAnother$F$t$X$t$X$t$Unit(par$x: Ref, par$y: Ref)
   inhale acc(pred$c$X$shared(par$y), wildcard)
   unfold acc(pred$c$X$unique(par$x), write)
   par$x.bf$v := df$rt$intToRef(5)
-  fold acc(pred$c$X$unique(par$x), write)
   unfold acc(pred$c$X$unique(par$y), write)
   par$y.bf$v := df$rt$intToRef(8)
-  fold acc(pred$c$X$unique(par$y), write)
-  unfold acc(pred$c$X$unique(par$x), write)
   anon$0 := par$x.bf$v
-  fold acc(pred$c$X$unique(par$x), write)
   assert df$rt$intFromRef(anon$0) == 5
-  unfold acc(pred$c$X$unique(par$y), write)
   anon$1 := par$y.bf$v
-  fold acc(pred$c$X$unique(par$y), write)
   assert df$rt$intFromRef(anon$1) == 8
+  fold acc(pred$c$X$unique(par$x), write)
+  fold acc(pred$c$X$unique(par$y), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }

@@ -52,11 +52,9 @@ method f$readMemberUnique$F$t$X$t$Unit(par$x: Ref) returns (ret$0: Ref)
   inhale acc(pred$c$X$shared(par$x), wildcard)
   unfold acc(pred$c$X$unique(par$x), write)
   l0$k := par$x.bf$v
-  fold acc(pred$c$X$unique(par$x), write)
-  unfold acc(pred$c$X$unique(par$x), write)
   anon$0 := par$x.bf$v
-  fold acc(pred$c$X$unique(par$x), write)
   assert df$rt$intFromRef(l0$k) == df$rt$intFromRef(anon$0)
+  fold acc(pred$c$X$unique(par$x), write)
   label lbl$ret$0
   inhale df$rt$isSubtype(df$rt$typeOf(ret$0), df$rt$unitType())
 }
