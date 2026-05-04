@@ -34,7 +34,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
-import org.jetbrains.kotlin.formver.core.isADT
+import org.jetbrains.kotlin.formver.core.isAdt
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Program
@@ -577,7 +577,7 @@ class ProgramConverter(
         type is ConeClassLikeType -> {
             val classLikeSymbol = type.toClassSymbol(session)
             if (classLikeSymbol is FirRegularClassSymbol) {
-                if (classLikeSymbol.isADT(session)) {
+                if (classLikeSymbol.isAdt(session)) {
                     existing(embedAdtClass(classLikeSymbol))
                 } else {
                     existing(embedClass(classLikeSymbol))

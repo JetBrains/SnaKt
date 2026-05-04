@@ -80,7 +80,7 @@ fun FirBasedSymbol<*>.isPure(session: FirSession) = hasAnnotation(annotationId("
 
 fun FirBasedSymbol<*>.isManual(session: FirSession) = hasAnnotation(annotationId("Manual"), session)
 
-fun FirBasedSymbol<*>.isADT(session: FirSession) = hasAnnotation(annotationId("ADT"), session)
+fun FirBasedSymbol<*>.isAdt(session: FirSession) = hasAnnotation(annotationId("ADT"), session)
 
 fun FirAnnotationContainer.isUnique(session: FirSession) = hasAnnotation(annotationId("Unique"), session)
 

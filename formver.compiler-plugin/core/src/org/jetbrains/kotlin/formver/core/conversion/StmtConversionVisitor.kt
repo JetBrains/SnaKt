@@ -85,12 +85,21 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     ): ExpEmbedding {
         if (resolvedQualifier.resolvedType.isUnit) return UnitLit
         val classSymbol = resolvedQualifier.symbol as? FirClassSymbol<*>
-            ?: throw SnaktInternalException(resolvedQualifier.source, "Unsupported symbol given, expected ClassSymbol.")
+            ?: throw SnaktInternalException(
+                resolvedQualifier.source,
+                "Unsupported qualifier type ${resolvedQualifier.symbol?.javaClass?.simpleName ?: "<no symbol>"}"
+            )
         if (!classSymbol.classKind.isObject)
-            throw SnaktInternalException(resolvedQualifier.source, "Given symbol ${classSymbol.name} is not an object.")
+            throw SnaktInternalException(
+                resolvedQualifier.source,
+                "Qualifier ${classSymbol.name} has class kind ${classSymbol.classKind}, expected object"
+            )
         val type = data.embedType(resolvedQualifier.resolvedType)
         if (type.pretype !is AdtTypeEmbedding)
-            throw SnaktInternalException(resolvedQualifier.source, "Given symbol ${classSymbol.name} is not an ADT, no other types are supported.")
+            throw SnaktInternalException(
+                resolvedQualifier.source,
+                "Object ${classSymbol.name} has pretype ${type.pretype.javaClass.simpleName} which is not declared to be an ADT."
+            )
         return AdtConstructorRef(type)
     }
 

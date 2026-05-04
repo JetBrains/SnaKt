@@ -14,8 +14,8 @@ data class AdtTypeEmbedding(override val name: ScopedName, val isValid: Boolean)
 
     override val runtimeType = RuntimeTypeDomain.classTypeFunc(name)()
 
-    val viperConstructorDecl: AdtConstructorDecl
-        get() = AdtConstructorDecl(AdtConstructorName(adtName, name), adtName, emptyList())
+    val viperConstructorDecl: AdtConstructorDecl =
+        AdtConstructorDecl(AdtConstructorName(adtName, name), adtName, emptyList())
 
     fun toViper() = AdtDecl(name = adtName, constructors = listOf(viperConstructorDecl))
 }
