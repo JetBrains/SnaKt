@@ -1,14 +1,15 @@
 /string_iterations.kt: info: Generated Viper text for firstAtLeast:
-method firstAtLeast(v_this: Ref, c: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(v_this), stringType())
+method firstAtLeast(v_this_dispatch: Ref, c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(v_this_dispatch), stringType())
   requires isSubtype(typeOf(c), charType())
-  ensures isSubtype(typeOf(ret), intType())
-  ensures 0 <= intFromRef(ret) &&
-    intFromRef(ret) <= |stringFromRef(v_this)|
-  ensures (forall anon: Int ::0 <= anon && anon < intFromRef(ret) ==>
-      stringFromRef(v_this)[anon] < charFromRef(c))
-  ensures !(intFromRef(ret) == |stringFromRef(v_this)|) ==>
-    stringFromRef(v_this)[intFromRef(ret)] >= charFromRef(c)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures 0 <= intFromRef(v_ret_0) &&
+    intFromRef(v_ret_0) <= |stringFromRef(v_this_dispatch)|
+  ensures (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
+      anon_builtin_2 < intFromRef(v_ret_0) ==>
+      stringFromRef(v_this_dispatch)[anon_builtin_2] < charFromRef(c))
+  ensures !(intFromRef(v_ret_0) == |stringFromRef(v_this_dispatch)|) ==>
+    stringFromRef(v_this_dispatch)[intFromRef(v_ret_0)] >= charFromRef(c)
 {
   var i: Ref
   var anon_0: Ref
@@ -17,13 +18,13 @@ method firstAtLeast(v_this: Ref, c: Ref) returns (ret: Ref)
     invariant isSubtype(typeOf(i), intType())
     invariant isSubtype(typeOf(c), charType())
     invariant 0 <= intFromRef(i) &&
-      intFromRef(i) <= |stringFromRef(v_this)|
-    invariant (forall anon_builtin: Int ::0 <= anon_builtin &&
-        anon_builtin < intFromRef(i) ==>
-        stringFromRef(v_this)[anon_builtin] < charFromRef(c))
-  anon_0 := ltInts(i, stringLength(v_this))
+      intFromRef(i) <= |stringFromRef(v_this_dispatch)|
+    invariant (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
+        anon_builtin_1 < intFromRef(i) ==>
+        stringFromRef(v_this_dispatch)[anon_builtin_1] < charFromRef(c))
+  anon_0 := ltInts(i, stringLength(v_this_dispatch))
   if (boolFromRef(anon_0)) {
-    if (stringFromRef(v_this)[intFromRef(i)] >= charFromRef(c)) {
+    if (stringFromRef(v_this_dispatch)[intFromRef(i)] >= charFromRef(c)) {
       goto break
     }
     i := plusInts(i, intToRef(1))
@@ -32,42 +33,44 @@ method firstAtLeast(v_this: Ref, c: Ref) returns (ret: Ref)
   label break
   assert isSubtype(typeOf(i), intType())
   assert isSubtype(typeOf(c), charType())
-  assert 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef(v_this)|
-  assert (forall anon_builtin: Int ::0 <= anon_builtin &&
-      anon_builtin < intFromRef(i) ==>
-      stringFromRef(v_this)[anon_builtin] < charFromRef(c))
-  ret := i
-  goto ret_0
-  label ret_0
+  assert 0 <= intFromRef(i) &&
+    intFromRef(i) <= |stringFromRef(v_this_dispatch)|
+  assert (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
+      anon_builtin_1 < intFromRef(i) ==>
+      stringFromRef(v_this_dispatch)[anon_builtin_1] < charFromRef(c))
+  v_ret_0 := i
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /string_iterations.kt: info: Generated Viper text for lastLess:
-method lastLess(v_this: Ref, c: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(v_this), stringType())
+method lastLess(v_this_dispatch: Ref, c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(v_this_dispatch), stringType())
   requires isSubtype(typeOf(c), charType())
-  ensures isSubtype(typeOf(ret), intType())
-  ensures -1 <= intFromRef(ret) &&
-    intFromRef(ret) <= |stringFromRef(v_this)| - 1
-  ensures (forall anon: Int ::intFromRef(ret) < anon &&
-      anon < |stringFromRef(v_this)| ==>
-      stringFromRef(v_this)[anon] >= charFromRef(c))
-  ensures !(intFromRef(ret) == -1) ==>
-    stringFromRef(v_this)[intFromRef(ret)] < charFromRef(c)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures -1 <= intFromRef(v_ret_0) &&
+    intFromRef(v_ret_0) <= |stringFromRef(v_this_dispatch)| - 1
+  ensures (forall anon_builtin_2: Int ::intFromRef(v_ret_0) <
+      anon_builtin_2 &&
+      anon_builtin_2 < |stringFromRef(v_this_dispatch)| ==>
+      stringFromRef(v_this_dispatch)[anon_builtin_2] >= charFromRef(c))
+  ensures !(intFromRef(v_ret_0) == -1) ==>
+    stringFromRef(v_this_dispatch)[intFromRef(v_ret_0)] < charFromRef(c)
 {
   var i: Ref
   var anon_0: Ref
-  i := minusInts(stringLength(v_this), intToRef(1))
+  i := minusInts(stringLength(v_this_dispatch), intToRef(1))
   label cont
     invariant isSubtype(typeOf(i), intType())
     invariant isSubtype(typeOf(c), charType())
     invariant -1 <= intFromRef(i) &&
-      intFromRef(i) < |stringFromRef(v_this)|
-    invariant (forall anon_builtin: Int ::intFromRef(i) < anon_builtin &&
-        anon_builtin < |stringFromRef(v_this)| ==>
-        stringFromRef(v_this)[anon_builtin] >= charFromRef(c))
+      intFromRef(i) < |stringFromRef(v_this_dispatch)|
+    invariant (forall anon_builtin_1: Int ::intFromRef(i) < anon_builtin_1 &&
+        anon_builtin_1 < |stringFromRef(v_this_dispatch)| ==>
+        stringFromRef(v_this_dispatch)[anon_builtin_1] >= charFromRef(c))
   anon_0 := gtInts(i, intToRef(-1))
   if (boolFromRef(anon_0)) {
-    if (stringFromRef(v_this)[intFromRef(i)] < charFromRef(c)) {
+    if (stringFromRef(v_this_dispatch)[intFromRef(i)] < charFromRef(c)) {
       goto break
     }
     i := minusInts(i, intToRef(1))
@@ -76,11 +79,12 @@ method lastLess(v_this: Ref, c: Ref) returns (ret: Ref)
   label break
   assert isSubtype(typeOf(i), intType())
   assert isSubtype(typeOf(c), charType())
-  assert -1 <= intFromRef(i) && intFromRef(i) < |stringFromRef(v_this)|
-  assert (forall anon_builtin: Int ::intFromRef(i) < anon_builtin &&
-      anon_builtin < |stringFromRef(v_this)| ==>
-      stringFromRef(v_this)[anon_builtin] >= charFromRef(c))
-  ret := i
-  goto ret_0
-  label ret_0
+  assert -1 <= intFromRef(i) &&
+    intFromRef(i) < |stringFromRef(v_this_dispatch)|
+  assert (forall anon_builtin_1: Int ::intFromRef(i) < anon_builtin_1 &&
+      anon_builtin_1 < |stringFromRef(v_this_dispatch)| ==>
+      stringFromRef(v_this_dispatch)[anon_builtin_1] >= charFromRef(c))
+  v_ret_0 := i
+  goto lbl_ret_0
+  label lbl_ret_0
 }

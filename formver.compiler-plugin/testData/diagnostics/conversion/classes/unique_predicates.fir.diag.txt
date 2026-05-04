@@ -7,57 +7,57 @@ field y: Ref
 
 field z: Ref
 
-predicate _c_Foo_unique(this: Ref) {
+predicate Foo_shared(this: Ref) {
+  acc(this.w, wildcard) && isSubtype(typeOf(this.w), intType()) &&
+  acc(this.y, wildcard) &&
+  acc(T_shared(this.y), wildcard) &&
+  isSubtype(typeOf(this.y), T()) &&
+  acc(S_shared(this), wildcard)
+}
+
+predicate Foo_unique(this: Ref) {
   acc(this.w, wildcard) && isSubtype(typeOf(this.w), intType()) &&
   acc(this.x, write) &&
   isSubtype(typeOf(this.x), intType()) &&
   acc(this.y, wildcard) &&
-  acc(_c_T_shared(this.y), wildcard) &&
-  acc(_c_T_unique(this.y), write) &&
-  isSubtype(typeOf(this.y), c_T()) &&
+  acc(T_shared(this.y), wildcard) &&
+  acc(T_unique(this.y), write) &&
+  isSubtype(typeOf(this.y), T()) &&
   acc(this.z, write) &&
-  acc(_c_T_shared(this.z), wildcard) &&
-  acc(_c_T_unique(this.z), write) &&
-  isSubtype(typeOf(this.z), c_T()) &&
-  acc(_c_S_unique(this), write)
+  acc(T_shared(this.z), wildcard) &&
+  acc(T_unique(this.z), write) &&
+  isSubtype(typeOf(this.z), T()) &&
+  acc(S_unique(this), write)
 }
 
-predicate _c_S_shared(this: Ref) {
+predicate S_shared(this: Ref) {
   true
 }
 
-predicate _c_S_unique(this: Ref) {
+predicate S_unique(this: Ref) {
   true
 }
 
-predicate _c_T_shared(this: Ref) {
+predicate T_shared(this: Ref) {
   true
 }
 
-predicate _c_T_unique(this: Ref) {
+predicate T_unique(this: Ref) {
   true
 }
 
-predicate shared(this: Ref) {
-  acc(this.w, wildcard) && isSubtype(typeOf(this.w), intType()) &&
-  acc(this.y, wildcard) &&
-  acc(_c_T_shared(this.y), wildcard) &&
-  isSubtype(typeOf(this.y), c_T()) &&
-  acc(_c_S_shared(this), wildcard)
-}
-
-method unique_foo_arg(foo: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(foo), c_Foo())
-  requires acc(_c_Foo_unique(foo), write)
-  ensures isSubtype(typeOf(ret), unitType())
+method unique_foo_arg(foo: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(foo), Foo())
+  requires acc(Foo_unique(foo), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  inhale acc(shared(foo), wildcard)
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  inhale acc(Foo_shared(foo), wildcard)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /unique_predicates.kt: info: Generated Viper text for nullable_unique_arg:
-predicate _c_T_unique(this: Ref) {
+predicate T_unique(this: Ref) {
   true
 }
 
@@ -65,18 +65,18 @@ predicate shared(this: Ref) {
   true
 }
 
-method nullable_unique_arg(par_t: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(par_t), nullable(c_T()))
-  requires par_t != nullValue() ==> acc(_c_T_unique(par_t), write)
-  ensures isSubtype(typeOf(ret), unitType())
+method nullable_unique_arg(par_t: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_t), nullable(T()))
+  requires par_t != nullValue() ==> acc(T_unique(par_t), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   inhale par_t != nullValue() ==> acc(shared(par_t), wildcard)
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /unique_predicates.kt: info: Generated Viper text for borrowed_unique_arg:
-predicate _c_T_unique(this: Ref) {
+predicate T_unique(this: Ref) {
   true
 }
 
@@ -84,58 +84,59 @@ predicate shared(this: Ref) {
   true
 }
 
-method borrowed_unique_arg(par_t: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(par_t), c_T())
-  requires acc(_c_T_unique(par_t), write)
-  ensures acc(_c_T_unique(par_t), write)
-  ensures isSubtype(typeOf(ret), unitType())
+method borrowed_unique_arg(par_t: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_t), T())
+  requires acc(T_unique(par_t), write)
+  ensures acc(T_unique(par_t), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   inhale acc(shared(par_t), wildcard)
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /unique_predicates.kt: info: Generated Viper text for unique_receiver:
-predicate _c_T_unique(this: Ref) {
+predicate T_unique(v_this: Ref) {
   true
 }
 
-predicate shared(this: Ref) {
+predicate shared(v_this: Ref) {
   true
 }
 
-method unique_receiver(v_this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(v_this), c_T())
-  requires acc(_c_T_unique(v_this), write)
-  ensures isSubtype(typeOf(ret), unitType())
+method unique_receiver(v_this_dispatch: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(v_this_dispatch), T())
+  requires acc(T_unique(v_this_dispatch), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  inhale acc(shared(v_this), wildcard)
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  inhale acc(shared(v_this_dispatch), wildcard)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /unique_predicates.kt: info: Generated Viper text for borrowed_unique_receiver:
-predicate _c_T_unique(this: Ref) {
+predicate T_unique(v_this: Ref) {
   true
 }
 
-predicate shared(this: Ref) {
+predicate shared(v_this: Ref) {
   true
 }
 
-method borrowed_unique_receiver(v_this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(v_this), c_T())
-  requires acc(_c_T_unique(v_this), write)
-  ensures acc(_c_T_unique(v_this), write)
-  ensures isSubtype(typeOf(ret), unitType())
+method borrowed_unique_receiver(v_this_dispatch: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(v_this_dispatch), T())
+  requires acc(T_unique(v_this_dispatch), write)
+  ensures acc(T_unique(v_this_dispatch), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  inhale acc(shared(v_this), wildcard)
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  inhale acc(shared(v_this_dispatch), wildcard)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /unique_predicates.kt: info: Generated Viper text for unique_result:
-predicate _c_T_unique(this: Ref) {
+predicate T_unique(this: Ref) {
   true
 }
 
@@ -144,23 +145,23 @@ predicate shared(this: Ref) {
 }
 
 method con() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), c_T())
+  ensures isSubtype(typeOf(v_ret), T())
   ensures acc(shared(v_ret), wildcard)
-  ensures acc(_c_T_unique(v_ret), write)
+  ensures acc(T_unique(v_ret), write)
 
 
-method unique_result() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), c_T())
-  ensures acc(shared(ret), wildcard)
-  ensures acc(_c_T_unique(ret), write)
+method unique_result() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), T())
+  ensures acc(shared(v_ret_0), wildcard)
+  ensures acc(T_unique(v_ret_0), write)
 {
-  ret := con()
-  goto ret_0
-  label ret_0
+  v_ret_0 := con()
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /unique_predicates.kt: info: Generated Viper text for unique_nullable_result:
-predicate _c_T_unique(this: Ref) {
+predicate T_unique(this: Ref) {
   true
 }
 
@@ -168,12 +169,12 @@ predicate shared(this: Ref) {
   true
 }
 
-method unique_nullable_result() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), nullable(c_T()))
-  ensures ret != nullValue() ==> acc(shared(ret), wildcard)
-  ensures ret != nullValue() ==> acc(_c_T_unique(ret), write)
+method unique_nullable_result() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), nullable(T()))
+  ensures v_ret_0 != nullValue() ==> acc(shared(v_ret_0), wildcard)
+  ensures v_ret_0 != nullValue() ==> acc(T_unique(v_ret_0), write)
 {
-  ret := nullValue()
-  goto ret_0
-  label ret_0
+  v_ret_0 := nullValue()
+  goto lbl_ret_0
+  label lbl_ret_0
 }

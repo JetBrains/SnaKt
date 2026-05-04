@@ -1,115 +1,121 @@
 /returns_booleans.kt: info: Generated Viper text for returns_true:
-method returns_true() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), boolType())
+method returns_true() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
   ensures true
-  ensures boolFromRef(ret) == true
+  ensures boolFromRef(v_ret_0) == true
 {
-  ret := boolToRef(true)
-  goto ret_0
-  label ret_0
+  v_ret_0 := boolToRef(true)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /returns_booleans.kt: info: Generated Viper text for returns_false:
-method returns_false() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), boolType())
+method returns_false() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
   ensures true
-  ensures boolFromRef(ret) == false
+  ensures boolFromRef(v_ret_0) == false
 {
-  ret := boolToRef(false)
-  goto ret_0
-  label ret_0
+  v_ret_0 := boolToRef(false)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /returns_booleans.kt: info: Generated Viper text for conditional_basic:
-method conditional_basic(b: Ref) returns (ret: Ref)
+method conditional_basic(b: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true ==> true
-  ensures boolFromRef(ret) == false ==> boolFromRef(b)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true ==> true
+  ensures boolFromRef(v_ret_0) == false ==> boolFromRef(b)
 {
-  ret := boolToRef(true)
-  goto ret_0
-  label ret_0
+  v_ret_0 := boolToRef(true)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /returns_booleans.kt: info: Generated Viper text for binary_logic_expressions:
-method binary_logic_expressions(a: Ref, b: Ref) returns (ret: Ref)
+method binary_logic_expressions(a: Ref, b: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(a), boolType())
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == false ==> boolFromRef(b) && false
-  ensures boolFromRef(ret) == true ==>
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == false ==> boolFromRef(b) && false
+  ensures boolFromRef(v_ret_0) == true ==>
     (true || boolFromRef(a)) && (boolFromRef(b) || true)
 {
-  ret := boolToRef(true)
-  goto ret_0
-  label ret_0
+  v_ret_0 := boolToRef(true)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /returns_booleans.kt: info: Generated Viper text for logical_not:
-method logical_not(b: Ref) returns (ret: Ref)
+method logical_not(b: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true ==> !boolFromRef(b) && boolFromRef(b)
-  ensures boolFromRef(ret) == false ==> boolFromRef(b) || !boolFromRef(b)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true ==>
+    !boolFromRef(b) && boolFromRef(b)
+  ensures boolFromRef(v_ret_0) == false ==>
+    boolFromRef(b) || !boolFromRef(b)
 {
-  ret := boolToRef(false)
-  goto ret_0
-  label ret_0
+  v_ret_0 := boolToRef(false)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /returns_booleans.kt: info: Generated Viper text for call_fun_with_contracts:
-method binary_logic_expressions(a: Ref, b: Ref) returns (v_ret: Ref)
-  requires isSubtype(typeOf(a), boolType())
+method binary_logic_expressions(par_a: Ref, b: Ref) returns (v_ret: Ref)
+  requires isSubtype(typeOf(par_a), boolType())
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(v_ret), boolType())
   ensures boolFromRef(v_ret) == false ==> boolFromRef(b) && false
   ensures boolFromRef(v_ret) == true ==>
-    (true || boolFromRef(a)) && (boolFromRef(b) || true)
+    (true || boolFromRef(par_a)) && (boolFromRef(b) || true)
 
 
-method call_fun_with_contracts(b: Ref) returns (ret: Ref)
+method call_fun_with_contracts(b: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true
 {
   var l0_a: Ref
   l0_a := binary_logic_expressions(b, b)
-  ret := l0_a
-  goto ret_0
-  label ret_0
+  v_ret_0 := l0_a
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /returns_booleans.kt: info: Generated Viper text for isNullOrEmpty:
 field size: Ref
 
-method isEmpty(this: Ref) returns (v_ret: Ref)
-  requires acc(this.size, write)
-  requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), c_Collection())
-  ensures acc(this.size, write)
-  ensures intFromRef(this.size) >= 0
+method isEmpty(v_this: Ref) returns (v_ret: Ref)
+  requires acc(v_this.size, write)
+  requires intFromRef(v_this.size) >= 0
+  requires isSubtype(typeOf(v_this), Collection())
+  ensures acc(v_this.size, write)
+  ensures intFromRef(v_this.size) >= 0
   ensures isSubtype(typeOf(v_ret), boolType())
-  ensures intFromRef(this.size) == old(intFromRef(this.size))
-  ensures boolFromRef(v_ret) ==> intFromRef(this.size) == 0
-  ensures !boolFromRef(v_ret) ==> intFromRef(this.size) > 0
+  ensures intFromRef(v_this.size) == old(intFromRef(v_this.size))
+  ensures boolFromRef(v_ret) ==> intFromRef(v_this.size) == 0
+  ensures !boolFromRef(v_ret) ==> intFromRef(v_this.size) > 0
 
 
-method isNullOrEmpty(v_this: Ref) returns (ret: Ref)
-  requires v_this != nullValue() ==> acc(v_this.size, write)
-  requires v_this != nullValue() ==> intFromRef(v_this.size) >= 0
-  requires isSubtype(typeOf(v_this), nullable(c_Collection()))
-  ensures v_this != nullValue() ==> acc(v_this.size, write)
-  ensures v_this != nullValue() ==> intFromRef(v_this.size) >= 0
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == false ==> v_this != nullValue()
+method isNullOrEmpty(v_this_dispatch: Ref) returns (v_ret_0: Ref)
+  requires v_this_dispatch != nullValue() ==>
+    acc(v_this_dispatch.size, write)
+  requires v_this_dispatch != nullValue() ==>
+    intFromRef(v_this_dispatch.size) >= 0
+  requires isSubtype(typeOf(v_this_dispatch), nullable(Collection()))
+  ensures v_this_dispatch != nullValue() ==>
+    acc(v_this_dispatch.size, write)
+  ensures v_this_dispatch != nullValue() ==>
+    intFromRef(v_this_dispatch.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == false ==> v_this_dispatch != nullValue()
 {
-  inhale v_this != nullValue() ==>
-    acc(collections_c_Collection_shared(v_this), wildcard)
-  if (v_this == nullValue()) {
-    ret := boolToRef(true)
+  inhale v_this_dispatch != nullValue() ==>
+    acc(Collection_shared(v_this_dispatch), wildcard)
+  if (v_this_dispatch == nullValue()) {
+    v_ret_0 := boolToRef(true)
   } else {
-    ret := isEmpty(v_this)}
-  goto ret_0
-  label ret_0
+    v_ret_0 := isEmpty(v_this_dispatch)}
+  goto lbl_ret_0
+  label lbl_ret_0
 }

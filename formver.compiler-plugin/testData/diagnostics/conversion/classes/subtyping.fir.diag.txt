@@ -1,46 +1,46 @@
 /subtyping.kt: info: Generated Viper text for smartCast:
-method smartCast(x: Ref) returns (ret: Ref)
+method smartCast(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
   if (x == nullValue()) {
-    ret := intToRef(0)
-    goto ret_0
+    v_ret_0 := intToRef(0)
+    goto lbl_ret_0
   } else {
-    ret := x
-    goto ret_0
+    v_ret_0 := x
+    goto lbl_ret_0
   }
-  label ret_0
+  label lbl_ret_0
 }
 
 /subtyping.kt: info: Generated Viper text for returnSubtyping:
-method returnSubtyping() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), nullable(intType()))
+method returnSubtyping() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
 {
-  ret := intToRef(0)
-  goto ret_0
-  label ret_0
+  v_ret_0 := intToRef(0)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /subtyping.kt: info: Generated Viper text for assignmentSubtyping:
-method assignmentSubtyping() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method assignmentSubtyping() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var x: Ref
   x := boolToRef(false)
   x := boolToRef(true)
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /subtyping.kt: info: Generated Viper text for functionParameterSubtyping:
-method functionParameterSubtyping() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method functionParameterSubtyping() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon: Ref
   anon := nullableParameter(boolToRef(false))
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 method nullableParameter(b: Ref) returns (v_ret: Ref)

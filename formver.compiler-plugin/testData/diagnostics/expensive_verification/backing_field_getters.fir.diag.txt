@@ -3,19 +3,19 @@ field y: Ref
 
 field z: Ref
 
-method cascadeGet(x: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(x), c_X())
-  ensures isSubtype(typeOf(ret), c_Z())
-  ensures acc(shared(ret), wildcard)
+method cascadeGet(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), X())
+  ensures isSubtype(typeOf(v_ret_0), Z())
+  ensures acc(Z_shared(v_ret_0), wildcard)
 {
   var anon: Ref
-  inhale acc(_c_X_shared(x), wildcard)
-  unfold acc(_c_X_shared(x), wildcard)
+  inhale acc(X_shared(x), wildcard)
+  unfold acc(X_shared(x), wildcard)
   anon := x.y
-  unfold acc(_c_Y_shared(anon), wildcard)
-  ret := anon.z
-  goto ret_0
-  label ret_0
+  unfold acc(Y_shared(anon), wildcard)
+  v_ret_0 := anon.z
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /backing_field_getters.kt: info: Generated Viper text for receiverNotNullProved:
@@ -23,23 +23,23 @@ field y: Ref
 
 field z: Ref
 
-method receiverNotNullProved(x: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(x), nullable(c_X()))
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true ==> x != nullValue()
+method receiverNotNullProved(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), nullable(X()))
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true ==> x != nullValue()
 {
   var anon_0: Ref
-  inhale x != nullValue() ==> acc(_c_X_shared(x), wildcard)
+  inhale x != nullValue() ==> acc(X_shared(x), wildcard)
   if (x != nullValue()) {
-    var anon: Ref
-    unfold acc(_c_X_shared(x), wildcard)
-    anon := x.y
-    anon_0 := anon
+    var anon_1: Ref
+    unfold acc(X_shared(x), wildcard)
+    anon_1 := x.y
+    anon_0 := anon_1
   } else {
     anon_0 := nullValue()}
-  ret := notBool(boolToRef(anon_0 == nullValue()))
-  goto ret_0
-  label ret_0
+  v_ret_0 := notBool(boolToRef(anon_0 == nullValue()))
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /backing_field_getters.kt: info: Generated Viper text for cascadeNullableGet:
@@ -47,26 +47,26 @@ field y: Ref
 
 field z: Ref
 
-method cascadeNullableGet(x: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(x), nullable(c_NullableX()))
-  ensures isSubtype(typeOf(ret), nullable(c_Z()))
-  ensures ret != nullValue() ==> acc(_c_Z_shared(ret), wildcard)
-  ensures ret != nullValue() ==> x != nullValue()
+method cascadeNullableGet(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), nullable(NullableX()))
+  ensures isSubtype(typeOf(v_ret_0), nullable(Z()))
+  ensures v_ret_0 != nullValue() ==> acc(Z_shared(v_ret_0), wildcard)
+  ensures v_ret_0 != nullValue() ==> x != nullValue()
 {
   var anon: Ref
-  inhale x != nullValue() ==> acc(_c_NullableX_shared(x), wildcard)
+  inhale x != nullValue() ==> acc(NullableX_shared(x), wildcard)
   if (x != nullValue()) {
-    unfold acc(_c_NullableX_shared(x), wildcard)
+    unfold acc(NullableX_shared(x), wildcard)
     anon := x.y
   } else {
     anon := nullValue()}
   if (anon != nullValue()) {
-    unfold acc(_c_NullableY_shared(anon), wildcard)
-    ret := anon.z
+    unfold acc(NullableY_shared(anon), wildcard)
+    v_ret_0 := anon.z
   } else {
-    ret := nullValue()}
-  goto ret_0
-  label ret_0
+    v_ret_0 := nullValue()}
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /backing_field_getters.kt: info: Generated Viper text for cascadeNullableSmartcastGet:
@@ -74,35 +74,35 @@ field y: Ref
 
 field z: Ref
 
-method cascadeNullableSmartcastGet(x: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(x), nullable(c_NullableX()))
-  ensures isSubtype(typeOf(ret), nullable(c_Z()))
-  ensures ret != nullValue() ==> acc(_c_Z_shared(ret), wildcard)
-  ensures ret != nullValue() ==> x != nullValue()
+method cascadeNullableSmartcastGet(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), nullable(NullableX()))
+  ensures isSubtype(typeOf(v_ret_0), nullable(Z()))
+  ensures v_ret_0 != nullValue() ==> acc(Z_shared(v_ret_0), wildcard)
+  ensures v_ret_0 != nullValue() ==> x != nullValue()
 {
-  inhale x != nullValue() ==> acc(_c_NullableX_shared(x), wildcard)
+  inhale x != nullValue() ==> acc(NullableX_shared(x), wildcard)
   if (x == nullValue()) {
     var anon_0: Ref
     anon_0 := nullValue()
-    ret := anon_0
+    v_ret_0 := anon_0
   } else {
     var anon_1: Ref
-    unfold acc(_c_NullableX_shared(x), wildcard)
+    unfold acc(NullableX_shared(x), wildcard)
     anon_1 := x.y
     if (anon_1 == nullValue()) {
       var anon_2: Ref
       anon_2 := nullValue()
-      ret := anon_2
+      v_ret_0 := anon_2
     } else {
-      var anon: Ref
-      unfold acc(_c_NullableX_shared(x), wildcard)
-      anon := x.y
-      unfold acc(_c_NullableY_shared(anon), wildcard)
-      ret := anon.z
+      var anon_3: Ref
+      unfold acc(NullableX_shared(x), wildcard)
+      anon_3 := x.y
+      unfold acc(NullableY_shared(anon_3), wildcard)
+      v_ret_0 := anon_3.z
     }
   }
-  goto ret_0
-  label ret_0
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /backing_field_getters.kt: info: Generated Viper text for nullableReceiverNotNullSafeGet:
@@ -111,13 +111,13 @@ field size: Ref
 field x: Ref
 
 method con() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), c_Baz())
-  ensures acc(_c_Baz_shared(v_ret), wildcard)
-  ensures acc(_c_Baz_unique(v_ret), write)
+  ensures isSubtype(typeOf(v_ret), Baz())
+  ensures acc(Baz_shared(v_ret), wildcard)
+  ensures acc(Baz_unique(v_ret), write)
 
 
-method nullableReceiverNotNullSafeGet() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method nullableReceiverNotNullSafeGet() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var f: Ref
   var anon_0: Ref
@@ -126,16 +126,16 @@ method nullableReceiverNotNullSafeGet() returns (ret: Ref)
   anon_0 := con()
   f := anon_0
   if (f != nullValue()) {
-    var anon: Ref
-    unfold acc(_c_Baz_shared(f), wildcard)
-    anon := f.x
-    anon_1 := anon
+    var anon_2: Ref
+    unfold acc(Baz_shared(f), wildcard)
+    anon_2 := f.x
+    anon_1 := anon_2
   } else {
     anon_1 := nullValue()}
   cond1 := notBool(boolToRef(anon_1 == nullValue()))
   assert boolFromRef(cond1)
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /backing_field_getters.kt: info: Generated Viper text for nullableReceiverNullSafeGet:
@@ -143,24 +143,24 @@ field size: Ref
 
 field x: Ref
 
-method nullableReceiverNullSafeGet() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method nullableReceiverNullSafeGet() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var f: Ref
   var cond1: Ref
   var anon_0: Ref
   f := nullValue()
   if (f != nullValue()) {
-    var anon: Ref
-    unfold acc(_c_Baz_shared(f), wildcard)
-    anon := f.x
-    anon_0 := anon
+    var anon_1: Ref
+    unfold acc(Baz_shared(f), wildcard)
+    anon_1 := f.x
+    anon_0 := anon_1
   } else {
     anon_0 := nullValue()}
   cond1 := boolToRef(anon_0 == nullValue())
   assert boolFromRef(cond1)
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /backing_field_getters.kt: info: Generated Viper text for nonNullableReceiverSafeGet:
@@ -169,29 +169,29 @@ field size: Ref
 field x: Ref
 
 method con() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), c_Baz())
-  ensures acc(_c_Baz_shared(v_ret), wildcard)
-  ensures acc(_c_Baz_unique(v_ret), write)
+  ensures isSubtype(typeOf(v_ret), Baz())
+  ensures acc(Baz_shared(v_ret), wildcard)
+  ensures acc(Baz_unique(v_ret), write)
 
 
-method nonNullableReceiverSafeGet() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method nonNullableReceiverSafeGet() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var f: Ref
   var cond1: Ref
   var anon_0: Ref
   f := con()
   if (f != nullValue()) {
-    var anon: Ref
-    unfold acc(_c_Baz_shared(f), wildcard)
-    anon := f.x
-    anon_0 := anon
+    var anon_1: Ref
+    unfold acc(Baz_shared(f), wildcard)
+    anon_1 := f.x
+    anon_0 := anon_1
   } else {
     anon_0 := nullValue()}
   cond1 := notBool(boolToRef(anon_0 == nullValue()))
   assert boolFromRef(cond1)
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /backing_field_getters.kt: info: Generated Viper text for checkPrimary:
@@ -203,67 +203,67 @@ field bf_z: Ref
 
 field size: Ref
 
-method checkPrimary(x: Ref, y: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(x), intType())
-  requires isSubtype(typeOf(y), intType())
-  ensures isSubtype(typeOf(ret), unitType())
+method checkPrimary(par_x: Ref, par_y: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_x), intType())
+  requires isSubtype(typeOf(par_y), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var classI: Ref
   var l0_z: Ref
   var cond1: Ref
   var cond2: Ref
   var anon_2: Ref
-  var anon: Ref
-  classI := con_c_ClassI(x, y)
-  l0_z := con()
-  if (!(intFromRef(x) == intFromRef(y))) {
+  var anon_3: Ref
+  classI := con_ClassI(par_x, par_y)
+  l0_z := con_Z()
+  if (!(intFromRef(par_x) == intFromRef(par_y))) {
     cond1 := boolToRef(true)
   } else {
     var anon_0: Ref
     var anon_1: Ref
-    unfold acc(_c_ClassI_shared(classI), wildcard)
+    unfold acc(ClassI_shared(classI), wildcard)
     anon_0 := classI.bf_x
-    unfold acc(_c_ClassI_shared(classI), wildcard)
+    unfold acc(ClassI_shared(classI), wildcard)
     anon_1 := classI.bf_y
     cond1 := boolToRef(intFromRef(anon_0) == intFromRef(anon_1))
   }
-  anon := con_c_ClassII(l0_z)
-  unfold acc(_c_ClassII_shared(anon), wildcard)
-  anon_2 := anon.bf_z
+  anon_3 := con_ClassII(l0_z)
+  unfold acc(ClassII_shared(anon_3), wildcard)
+  anon_2 := anon_3.bf_z
   cond2 := boolToRef(anon_2 == l0_z)
   assert boolFromRef(cond1)
   assert boolFromRef(cond2)
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method con() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), c_Z())
-  ensures acc(_c_Z_shared(v_ret), wildcard)
-  ensures acc(_c_Z_unique(v_ret), write)
-
-
-method con_c_ClassI(x: Ref, y: Ref) returns (v_ret: Ref)
-  requires isSubtype(typeOf(x), intType())
-  requires isSubtype(typeOf(y), intType())
-  ensures isSubtype(typeOf(v_ret), c_ClassI())
-  ensures acc(_c_ClassI_shared(v_ret), wildcard)
-  ensures acc(_c_ClassI_unique(v_ret), write)
-  ensures intFromRef((unfolding acc(_c_ClassI_shared(v_ret), wildcard) in
+method con_ClassI(par_x: Ref, par_y: Ref) returns (v_ret: Ref)
+  requires isSubtype(typeOf(par_x), intType())
+  requires isSubtype(typeOf(par_y), intType())
+  ensures isSubtype(typeOf(v_ret), ClassI())
+  ensures acc(ClassI_shared(v_ret), wildcard)
+  ensures acc(ClassI_unique(v_ret), write)
+  ensures intFromRef((unfolding acc(ClassI_shared(v_ret), wildcard) in
       v_ret.bf_x)) ==
-    intFromRef(x) &&
-    intFromRef((unfolding acc(_c_ClassI_shared(v_ret), wildcard) in
+    intFromRef(par_x) &&
+    intFromRef((unfolding acc(ClassI_shared(v_ret), wildcard) in
       v_ret.bf_y)) ==
-    intFromRef(y)
+    intFromRef(par_y)
 
 
-method con_c_ClassII(z: Ref) returns (v_ret: Ref)
-  requires isSubtype(typeOf(z), c_Z())
-  ensures isSubtype(typeOf(v_ret), c_ClassII())
-  ensures acc(_c_ClassII_shared(v_ret), wildcard)
-  ensures acc(_c_ClassII_unique(v_ret), write)
-  ensures (unfolding acc(_c_ClassII_shared(v_ret), wildcard) in v_ret.bf_z) ==
-    z
+method con_ClassII(par_z: Ref) returns (v_ret: Ref)
+  requires isSubtype(typeOf(par_z), Z())
+  ensures isSubtype(typeOf(v_ret), ClassII())
+  ensures acc(ClassII_shared(v_ret), wildcard)
+  ensures acc(ClassII_unique(v_ret), write)
+  ensures (unfolding acc(ClassII_shared(v_ret), wildcard) in v_ret.bf_z) ==
+    par_z
+
+
+method con_Z() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), Z())
+  ensures acc(Z_shared(v_ret), wildcard)
+  ensures acc(Z_unique(v_ret), write)
 
 
 method g_z(this: Ref) returns (v_ret: Ref)

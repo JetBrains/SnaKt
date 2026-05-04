@@ -1,82 +1,83 @@
 /is_type_contract.kt: info: Generated Viper text for isString:
-method isString(x: Ref) returns (ret: Ref)
+method isString(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), nullable(anyType()))
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true ==> isSubtype(typeOf(x), stringType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true ==>
+    isSubtype(typeOf(x), stringType())
 {
-  ret := boolToRef(isSubtype(typeOf(x), stringType()))
-  goto ret_0
-  label ret_0
+  v_ret_0 := boolToRef(isSubtype(typeOf(x), stringType()))
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /is_type_contract.kt: info: Generated Viper text for isString:
-method isString(v_this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(v_this), anyType())
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true ==>
-    isSubtype(typeOf(v_this), stringType())
+method isString(v_this_dispatch: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(v_this_dispatch), anyType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true ==>
+    isSubtype(typeOf(v_this_dispatch), stringType())
 {
-  ret := boolToRef(isSubtype(typeOf(v_this), stringType()))
-  goto ret_0
-  label ret_0
+  v_ret_0 := boolToRef(isSubtype(typeOf(v_this_dispatch), stringType()))
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /is_type_contract.kt: info: Generated Viper text for subtypeTransitive:
-method f_subtypeTransitive(x: Ref) returns (ret: Ref)
+method f_subtypeTransitive(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), unitType())
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
   ensures true ==> isSubtype(typeOf(x), nullable(anyType()))
 {
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /is_type_contract.kt: info: Generated Viper text for constructorReturnType:
 field bar: Ref
 
 method con() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), c_Foo())
-  ensures acc(_c_Foo_shared(v_ret), wildcard)
-  ensures acc(_c_Foo_unique(v_ret), write)
+  ensures isSubtype(typeOf(v_ret), Foo())
+  ensures acc(Foo_shared(v_ret), wildcard)
+  ensures acc(Foo_unique(v_ret), write)
 
 
-method constructorReturnType() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true
+method constructorReturnType() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true
 {
   var anon: Ref
   anon := con()
-  ret := boolToRef(isSubtype(typeOf(anon), c_Foo()))
-  goto ret_0
-  label ret_0
+  v_ret_0 := boolToRef(isSubtype(typeOf(anon), Foo()))
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /is_type_contract.kt: info: Generated Viper text for subtypeSuperType:
 field bf_bar: Ref
 
-method subtypeSuperType(bar: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(bar), c_Bar())
-  ensures isSubtype(typeOf(ret), unitType())
-  ensures true ==> isSubtype(typeOf(bar), c_Foo())
+method subtypeSuperType(par_bar: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_bar), Bar())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures true ==> isSubtype(typeOf(par_bar), Foo())
 {
-  inhale acc(_c_Bar_shared(bar), wildcard)
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  inhale acc(Bar_shared(par_bar), wildcard)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /is_type_contract.kt: info: Generated Viper text for typeOfField:
 field bar: Ref
 
-method typeOfField(foo: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(foo), c_Foo())
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true
+method typeOfField(foo: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(foo), Foo())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true
 {
   var anon: Ref
-  inhale acc(_c_Foo_shared(foo), wildcard)
-  unfold acc(_c_Foo_shared(foo), wildcard)
+  inhale acc(Foo_shared(foo), wildcard)
+  unfold acc(Foo_shared(foo), wildcard)
   anon := foo.bar
-  ret := boolToRef(isSubtype(typeOf(anon), c_Bar()))
-  goto ret_0
-  label ret_0
+  v_ret_0 := boolToRef(isSubtype(typeOf(anon), Bar()))
+  goto lbl_ret_0
+  label lbl_ret_0
 }

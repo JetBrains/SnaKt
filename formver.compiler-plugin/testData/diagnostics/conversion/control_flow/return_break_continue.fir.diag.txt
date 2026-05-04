@@ -1,36 +1,36 @@
 /return_break_continue.kt: info: Generated Viper text for testReturn:
-method testReturn() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
+method testReturn() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  ret := intToRef(0)
-  goto ret_0
-  ret := intToRef(1)
-  goto ret_0
-  label ret_0
+  v_ret_0 := intToRef(0)
+  goto lbl_ret_0
+  v_ret_0 := intToRef(1)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /return_break_continue.kt: info: Generated Viper text for returnFromLoop:
-method returnFromLoop() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
+method returnFromLoop() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
   var anon: Ref
   label cont
   anon := boolToRef(true)
   if (boolFromRef(anon)) {
-    ret := intToRef(0)
-    goto ret_0
+    v_ret_0 := intToRef(0)
+    goto lbl_ret_0
     goto cont
   }
   label break
-  ret := intToRef(1)
-  goto ret_0
-  label ret_0
+  v_ret_0 := intToRef(1)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /return_break_continue.kt: info: Generated Viper text for whileBreak:
-method whileBreak(b: Ref) returns (ret: Ref)
+method whileBreak(b: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
   var i: Ref
   var anon: Ref
@@ -47,14 +47,14 @@ method whileBreak(b: Ref) returns (ret: Ref)
   label break
   assert isSubtype(typeOf(i), intType())
   assert isSubtype(typeOf(b), boolType())
-  ret := i
-  goto ret_0
-  label ret_0
+  v_ret_0 := i
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /return_break_continue.kt: info: Generated Viper text for whileContinue:
-method whileContinue() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method whileContinue() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var b: Ref
   var anon: Ref
@@ -69,14 +69,14 @@ method whileContinue() returns (ret: Ref)
   }
   label break
   assert isSubtype(typeOf(b), boolType())
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /return_break_continue.kt: info: Generated Viper text for whileNested:
-method whileNested(b: Ref) returns (ret: Ref)
+method whileNested(b: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_0: Ref
   label cont_0
@@ -84,7 +84,7 @@ method whileNested(b: Ref) returns (ret: Ref)
   anon_0 := b
   if (boolFromRef(anon_0)) {
     var anon_1: Ref
-    var anon: Ref
+    var anon_2: Ref
     label cont_1
       invariant isSubtype(typeOf(b), boolType())
     anon_1 := b
@@ -95,92 +95,28 @@ method whileNested(b: Ref) returns (ret: Ref)
     label break_1
     assert isSubtype(typeOf(b), boolType())
     goto cont_0
-    label cont
+    label cont_2
       invariant isSubtype(typeOf(b), boolType())
-    anon := b
-    if (boolFromRef(anon)) {
-      goto cont
-      goto cont
+    anon_2 := b
+    if (boolFromRef(anon_2)) {
+      goto cont_2
+      goto cont_2
     }
-    label break
+    label break_2
     assert isSubtype(typeOf(b), boolType())
     goto break_0
     goto cont_0
   }
   label break_0
   assert isSubtype(typeOf(b), boolType())
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /return_break_continue.kt: info: Generated Viper text for labelledBreak:
-method labelledBreak(b: Ref) returns (ret: Ref)
+method labelledBreak(b: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), unitType())
-{
-  var anon_0: Ref
-  label cont_0
-    invariant isSubtype(typeOf(b), boolType())
-  anon_0 := b
-  if (boolFromRef(anon_0)) {
-    var anon: Ref
-    label cont
-      invariant isSubtype(typeOf(b), boolType())
-    anon := b
-    if (boolFromRef(anon)) {
-      goto break_0
-      goto break
-      goto break
-      goto cont
-    }
-    label break
-    assert isSubtype(typeOf(b), boolType())
-    goto break_0
-    goto break_0
-    goto cont_0
-  }
-  label break_0
-  assert isSubtype(typeOf(b), boolType())
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
-}
-
-/return_break_continue.kt: info: Generated Viper text for labelledContinue:
-method labelledContinue(b: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), unitType())
-{
-  var anon_0: Ref
-  label cont_0
-    invariant isSubtype(typeOf(b), boolType())
-  anon_0 := b
-  if (boolFromRef(anon_0)) {
-    var anon: Ref
-    label cont
-      invariant isSubtype(typeOf(b), boolType())
-    anon := b
-    if (boolFromRef(anon)) {
-      goto cont_0
-      goto cont
-      goto cont
-      goto cont
-    }
-    label break
-    assert isSubtype(typeOf(b), boolType())
-    goto cont_0
-    goto cont_0
-    goto cont_0
-  }
-  label break_0
-  assert isSubtype(typeOf(b), boolType())
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
-}
-
-/return_break_continue.kt: info: Generated Viper text for labelledWhileShadowing:
-method labelledWhileShadowing(b: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_0: Ref
   label cont_0
@@ -188,7 +124,71 @@ method labelledWhileShadowing(b: Ref) returns (ret: Ref)
   anon_0 := b
   if (boolFromRef(anon_0)) {
     var anon_1: Ref
-    var anon: Ref
+    label cont_1
+      invariant isSubtype(typeOf(b), boolType())
+    anon_1 := b
+    if (boolFromRef(anon_1)) {
+      goto break_0
+      goto break_1
+      goto break_1
+      goto cont_1
+    }
+    label break_1
+    assert isSubtype(typeOf(b), boolType())
+    goto break_0
+    goto break_0
+    goto cont_0
+  }
+  label break_0
+  assert isSubtype(typeOf(b), boolType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/return_break_continue.kt: info: Generated Viper text for labelledContinue:
+method labelledContinue(b: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  label cont_0
+    invariant isSubtype(typeOf(b), boolType())
+  anon_0 := b
+  if (boolFromRef(anon_0)) {
+    var anon_1: Ref
+    label cont_1
+      invariant isSubtype(typeOf(b), boolType())
+    anon_1 := b
+    if (boolFromRef(anon_1)) {
+      goto cont_0
+      goto cont_1
+      goto cont_1
+      goto cont_1
+    }
+    label break_1
+    assert isSubtype(typeOf(b), boolType())
+    goto cont_0
+    goto cont_0
+    goto cont_0
+  }
+  label break_0
+  assert isSubtype(typeOf(b), boolType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/return_break_continue.kt: info: Generated Viper text for labelledWhileShadowing:
+method labelledWhileShadowing(b: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  label cont_0
+    invariant isSubtype(typeOf(b), boolType())
+  anon_0 := b
+  if (boolFromRef(anon_0)) {
+    var anon_1: Ref
+    var anon_2: Ref
     label cont_1
       invariant isSubtype(typeOf(b), boolType())
     anon_1 := b
@@ -199,15 +199,15 @@ method labelledWhileShadowing(b: Ref) returns (ret: Ref)
     }
     label break_1
     assert isSubtype(typeOf(b), boolType())
-    label cont
+    label cont_2
       invariant isSubtype(typeOf(b), boolType())
-    anon := b
-    if (boolFromRef(anon)) {
-      goto break
-      goto cont
-      goto cont
+    anon_2 := b
+    if (boolFromRef(anon_2)) {
+      goto break_2
+      goto cont_2
+      goto cont_2
     }
-    label break
+    label break_2
     assert isSubtype(typeOf(b), boolType())
     goto break_0
     goto cont_0
@@ -215,6 +215,6 @@ method labelledWhileShadowing(b: Ref) returns (ret: Ref)
   }
   label break_0
   assert isSubtype(typeOf(b), boolType())
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }

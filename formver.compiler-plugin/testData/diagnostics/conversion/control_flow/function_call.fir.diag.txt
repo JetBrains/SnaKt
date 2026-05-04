@@ -4,15 +4,15 @@ method f(x: Ref) returns (v_ret: Ref)
   ensures isSubtype(typeOf(v_ret), intType())
 
 
-method functionCall() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method functionCall() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_0: Ref
-  var anon: Ref
+  var anon_1: Ref
   anon_0 := f(intToRef(0))
-  anon := f(intToRef(0))
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  anon_1 := f(intToRef(0))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /function_call.kt: info: Generated Viper text for functionCallNested:
@@ -21,25 +21,25 @@ method f(x: Ref) returns (v_ret: Ref)
   ensures isSubtype(typeOf(v_ret), intType())
 
 
-method functionCallNested() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method functionCallNested() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_0: Ref
   var anon_1: Ref
-  var anon: Ref
-  anon := f(intToRef(0))
-  anon_1 := f(anon)
+  var anon_2: Ref
+  anon_2 := f(intToRef(0))
+  anon_1 := f(anon_2)
   anon_0 := f(anon_1)
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /function_call.kt: info: Generated Viper text for callItself:
-method callItself() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method callItself() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon: Ref
   anon := callItself()
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }

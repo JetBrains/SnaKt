@@ -1,6 +1,6 @@
 /shadowing.kt: info: Generated Viper text for shadowLocal:
-method shadowLocal() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method shadowLocal() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var foo: Ref
   var l0_x: Ref
@@ -11,38 +11,38 @@ method shadowLocal() returns (ret: Ref)
     l2_x := intToRef(1)
     foo := l2_x
   } else {
-    var x: Ref
+    var l3_x: Ref
     foo := l0_x
-    x := intToRef(2)
-    foo := x
+    l3_x := intToRef(2)
+    foo := l3_x
   }
   foo := l0_x
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /shadowing.kt: info: Generated Viper text for shadowParam:
-method shadowParam(x: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret), unitType())
+method shadowParam(par_x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_x), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var foo: Ref
   var l0_x: Ref
-  foo := x
+  foo := par_x
   l0_x := intToRef(0)
   foo := l0_x
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /shadowing.kt: info: Generated Viper text for shadowNested:
-method shadowNested(x: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret), unitType())
+method shadowNested(par_x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_x), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var foo: Ref
   var l0_x: Ref
-  foo := x
+  foo := par_x
   l0_x := intToRef(0)
   foo := l0_x
   if (true) {
@@ -55,7 +55,7 @@ method shadowNested(x: Ref) returns (ret: Ref)
       invariant isSubtype(typeOf(l2_x), intType())
       invariant isSubtype(typeOf(foo), intType())
       invariant isSubtype(typeOf(l0_x), intType())
-      invariant isSubtype(typeOf(x), intType())
+      invariant isSubtype(typeOf(par_x), intType())
     anon := boolToRef(true)
     if (boolFromRef(anon)) {
       var l3_x: Ref
@@ -68,10 +68,10 @@ method shadowNested(x: Ref) returns (ret: Ref)
     assert isSubtype(typeOf(l2_x), intType())
     assert isSubtype(typeOf(foo), intType())
     assert isSubtype(typeOf(l0_x), intType())
-    assert isSubtype(typeOf(x), intType())
+    assert isSubtype(typeOf(par_x), intType())
     foo := l2_x
   }
   foo := l0_x
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }

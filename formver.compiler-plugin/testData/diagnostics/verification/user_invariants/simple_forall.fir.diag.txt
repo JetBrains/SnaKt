@@ -1,34 +1,34 @@
 /simple_forall.kt: info: Generated Viper text for anyIntegerSquaredAtLeastZero:
-method anyIntegerSquaredAtLeastZero() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
+method anyIntegerSquaredAtLeastZero() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
   ensures (forall anon: Int ::anon * anon >= 0 &&
-      anon * anon >= intFromRef(ret))
+      anon * anon >= intFromRef(v_ret_0))
 {
-  ret := intToRef(0)
-  goto ret_0
-  label ret_0
+  v_ret_0 := intToRef(0)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /simple_forall.kt: info: Generated Viper text for anyIntegerSquaredIsAtLeastOneExceptZero:
-method anyIntegerSquaredIsAtLeastOneExceptZero() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
+method anyIntegerSquaredIsAtLeastOneExceptZero() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
   ensures (forall anon: Int ::!(anon == 0) ==>
-      anon * anon >= intFromRef(ret))
+      anon * anon >= intFromRef(v_ret_0))
 {
-  ret := intToRef(1)
-  goto ret_0
-  label ret_0
+  v_ret_0 := intToRef(1)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /simple_forall.kt: info: Generated Viper text for anyIntegerSquaredIsAtLeastZeroStringVersion:
 method anyIntegerSquaredIsAtLeastZeroStringVersion(str: Ref)
-  returns (ret: Ref)
+  returns (v_ret_0: Ref)
   requires isSubtype(typeOf(str), stringType())
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
   var res: Ref
   var i: Ref
-  var anon: Ref
+  var anon_1: Ref
   res := intToRef(0)
   i := intToRef(10)
   label cont
@@ -40,8 +40,8 @@ method anyIntegerSquaredIsAtLeastZeroStringVersion(str: Ref)
         (stringFromRef(str)[anon_builtin] - 97) *
         (stringFromRef(str)[anon_builtin] - 97) >=
         intFromRef(res))
-  anon := gtInts(i, intToRef(0))
-  if (boolFromRef(anon)) {
+  anon_1 := gtInts(i, intToRef(0))
+  if (boolFromRef(anon_1)) {
     var anon_0: Ref
     anon_0 := i
     i := minusInts(anon_0, intToRef(1))
@@ -56,7 +56,7 @@ method anyIntegerSquaredIsAtLeastZeroStringVersion(str: Ref)
       (stringFromRef(str)[anon_builtin] - 97) *
       (stringFromRef(str)[anon_builtin] - 97) >=
       intFromRef(res))
-  ret := res
-  goto ret_0
-  label ret_0
+  v_ret_0 := res
+  goto lbl_ret_0
+  label lbl_ret_0
 }

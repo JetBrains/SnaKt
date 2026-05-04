@@ -1,14 +1,14 @@
 /elvis.kt: info: Generated Viper text for elvisOperator:
-method elvisOperator(x: Ref) returns (ret: Ref)
+method elvisOperator(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
   if (x != nullValue()) {
-    ret := x
+    v_ret_0 := x
   } else {
-    ret := intToRef(3)}
-  goto ret_0
-  label ret_0
+    v_ret_0 := intToRef(3)}
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /elvis.kt: info: Generated Viper text for elvisOperatorComplex:
@@ -17,18 +17,18 @@ method elvisOperator(x: Ref) returns (v_ret: Ref)
   ensures isSubtype(typeOf(v_ret), intType())
 
 
-method elvisOperatorComplex(x: Ref) returns (ret: Ref)
+method elvisOperatorComplex(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
   var anon: Ref
   anon := id(x)
   if (anon != nullValue()) {
-    ret := anon
+    v_ret_0 := anon
   } else {
-    ret := elvisOperator(intToRef(2))}
-  goto ret_0
-  label ret_0
+    v_ret_0 := elvisOperator(intToRef(2))}
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 method id(x: Ref) returns (v_ret: Ref)
@@ -37,20 +37,20 @@ method id(x: Ref) returns (v_ret: Ref)
 
 
 /elvis.kt: info: Generated Viper text for elvisOperatorReturn:
-method elvisOperatorReturn(x: Ref) returns (ret: Ref)
+method elvisOperatorReturn(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
   var y: Ref
   if (x != nullValue()) {
     y := x
   } else {
     var anon: Ref
-    ret := intToRef(0)
-    goto ret_0
+    v_ret_0 := intToRef(0)
+    goto lbl_ret_0
     y := anon
   }
-  ret := y
-  goto ret_0
-  label ret_0
+  v_ret_0 := y
+  goto lbl_ret_0
+  label lbl_ret_0
 }

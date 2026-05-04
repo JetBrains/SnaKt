@@ -1,16 +1,16 @@
 /simple.kt: info: Generated Viper text for without_contract:
-method without_contract() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method without_contract() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /simple.kt: info: Generated Viper text for with_contract:
-method with_contract() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method with_contract() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
   ensures true
 {
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }

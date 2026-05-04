@@ -7,59 +7,57 @@ field next: Ref
 
 field pf: Ref
 
-predicate _c_Baz_shared(this: Ref) {
+predicate Baz_shared(this: Ref) {
   true
 }
 
-predicate _c_Baz_unique(this: Ref) {
+predicate Baz_unique(this: Ref) {
   true
 }
 
-predicate _c_PrimitiveFields_unique(this: Ref) {
+predicate PrimitiveFields_shared(this: Ref) {
+  acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType())
+}
+
+predicate PrimitiveFields_unique(this: Ref) {
   acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType()) &&
   acc(this.b, write) &&
   isSubtype(typeOf(this.b), intType())
 }
 
-predicate _c_Recursive_shared(this: Ref) {
+predicate Recursive_shared(this: Ref) {
   acc(this.next, wildcard) &&
-  (this.next != nullValue() ==>
-  acc(_c_Recursive_shared(this.next), wildcard)) &&
-  isSubtype(typeOf(this.next), nullable(c_Recursive()))
+  (this.next != nullValue() ==> acc(Recursive_shared(this.next), wildcard)) &&
+  isSubtype(typeOf(this.next), nullable(Recursive()))
 }
 
-predicate _c_Recursive_unique(this: Ref) {
+predicate Recursive_unique(this: Ref) {
   acc(this.next, wildcard) &&
-  (this.next != nullValue() ==>
-  acc(_c_Recursive_shared(this.next), wildcard)) &&
-  isSubtype(typeOf(this.next), nullable(c_Recursive()))
+  (this.next != nullValue() ==> acc(Recursive_shared(this.next), wildcard)) &&
+  isSubtype(typeOf(this.next), nullable(Recursive()))
 }
 
-predicate _c_ReferenceField_shared(this: Ref) {
-  acc(this.pf, wildcard) && acc(shared(this.pf), wildcard) &&
-  isSubtype(typeOf(this.pf), c_PrimitiveFields()) &&
-  acc(_c_Baz_shared(this), wildcard)
+predicate ReferenceField_shared(this: Ref) {
+  acc(this.pf, wildcard) && acc(PrimitiveFields_shared(this.pf), wildcard) &&
+  isSubtype(typeOf(this.pf), PrimitiveFields()) &&
+  acc(Baz_shared(this), wildcard)
 }
 
-predicate _c_ReferenceField_unique(this: Ref) {
-  acc(this.pf, wildcard) && acc(shared(this.pf), wildcard) &&
-  isSubtype(typeOf(this.pf), c_PrimitiveFields()) &&
-  acc(_c_Baz_unique(this), write)
+predicate ReferenceField_unique(this: Ref) {
+  acc(this.pf, wildcard) && acc(PrimitiveFields_shared(this.pf), wildcard) &&
+  isSubtype(typeOf(this.pf), PrimitiveFields()) &&
+  acc(Baz_unique(this), write)
 }
 
-predicate shared(this: Ref) {
-  acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType())
-}
-
-method useClasses(rf: Ref, rec: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(rf), c_ReferenceField())
-  requires isSubtype(typeOf(rec), c_Recursive())
-  ensures isSubtype(typeOf(ret), unitType())
+method useClasses(rf: Ref, rec: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(rf), ReferenceField())
+  requires isSubtype(typeOf(rec), Recursive())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  inhale acc(_c_ReferenceField_shared(rf), wildcard)
-  inhale acc(_c_Recursive_shared(rec), wildcard)
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  inhale acc(ReferenceField_shared(rf), wildcard)
+  inhale acc(Recursive_shared(rec), wildcard)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /predicates.kt: info: Generated Viper text for threeLayersHierarchy:
@@ -67,105 +65,105 @@ field x: Ref
 
 field y: Ref
 
-predicate _c_A_shared(this: Ref) {
+predicate A_shared(this: Ref) {
   acc(this.x, wildcard) && isSubtype(typeOf(this.x), intType())
 }
 
-predicate _c_A_unique(this: Ref) {
+predicate A_unique(this: Ref) {
   acc(this.x, wildcard) && isSubtype(typeOf(this.x), intType()) &&
   acc(this.y, write) &&
   isSubtype(typeOf(this.y), intType())
 }
 
-predicate _c_B_shared(this: Ref) {
-  acc(_c_A_shared(this), wildcard)
+predicate B_shared(this: Ref) {
+  acc(A_shared(this), wildcard)
 }
 
-predicate _c_B_unique(this: Ref) {
-  acc(_c_A_unique(this), write)
+predicate B_unique(this: Ref) {
+  acc(A_unique(this), write)
 }
 
-predicate _c_C_unique(this: Ref) {
-  acc(_c_B_unique(this), write)
+predicate C_shared(this: Ref) {
+  acc(B_shared(this), wildcard)
 }
 
-predicate shared(this: Ref) {
-  acc(_c_B_shared(this), wildcard)
+predicate C_unique(this: Ref) {
+  acc(B_unique(this), write)
 }
 
-method threeLayersHierarchy(c: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(c), c_C())
-  ensures isSubtype(typeOf(ret), unitType())
+method threeLayersHierarchy(c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(c), C())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  inhale acc(shared(c), wildcard)
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  inhale acc(C_shared(c), wildcard)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /predicates.kt: info: Generated Viper text for listHierarchy:
 field size: Ref
 
-predicate collections_c_Collection_shared(this: Ref) {
-  acc(collections_c_Iterable_shared(this), wildcard)
+predicate Collection_shared(this: Ref) {
+  acc(Iterable_shared(this), wildcard)
 }
 
-predicate collections_c_Collection_unique(this: Ref) {
-  acc(collections_c_Iterable_unique(this), write)
+predicate Collection_unique(this: Ref) {
+  acc(Iterable_unique(this), write)
 }
 
-predicate collections_c_Iterable_shared(this: Ref) {
+predicate Iterable_shared(this: Ref) {
   true
 }
 
-predicate collections_c_Iterable_unique(this: Ref) {
+predicate Iterable_unique(this: Ref) {
   true
 }
 
-predicate collections_c_List_unique(this: Ref) {
-  acc(collections_c_Collection_unique(this), write)
+predicate List_shared(this: Ref) {
+  acc(Collection_shared(this), wildcard)
 }
 
-predicate collections_c_MutableCollection_shared(this: Ref) {
-  acc(collections_c_Collection_shared(this), wildcard) &&
-  acc(collections_c_MutableIterable_shared(this), wildcard)
+predicate List_unique(this: Ref) {
+  acc(Collection_unique(this), write)
 }
 
-predicate collections_c_MutableCollection_unique(this: Ref) {
-  acc(collections_c_Collection_unique(this), write) &&
-  acc(collections_c_MutableIterable_unique(this), write)
+predicate MutableCollection_shared(this: Ref) {
+  acc(Collection_shared(this), wildcard) &&
+  acc(MutableIterable_shared(this), wildcard)
 }
 
-predicate collections_c_MutableIterable_shared(this: Ref) {
-  acc(collections_c_Iterable_shared(this), wildcard)
+predicate MutableCollection_unique(this: Ref) {
+  acc(Collection_unique(this), write) &&
+  acc(MutableIterable_unique(this), write)
 }
 
-predicate collections_c_MutableIterable_unique(this: Ref) {
-  acc(collections_c_Iterable_unique(this), write)
+predicate MutableIterable_shared(this: Ref) {
+  acc(Iterable_shared(this), wildcard)
 }
 
-predicate collections_c_MutableList_shared(this: Ref) {
-  acc(shared(this), wildcard) &&
-  acc(collections_c_MutableCollection_shared(this), wildcard)
+predicate MutableIterable_unique(this: Ref) {
+  acc(Iterable_unique(this), write)
 }
 
-predicate collections_c_MutableList_unique(this: Ref) {
-  acc(collections_c_List_unique(this), write) &&
-  acc(collections_c_MutableCollection_unique(this), write)
+predicate MutableList_shared(this: Ref) {
+  acc(List_shared(this), wildcard) &&
+  acc(MutableCollection_shared(this), wildcard)
 }
 
-predicate shared(this: Ref) {
-  acc(collections_c_Collection_shared(this), wildcard)
+predicate MutableList_unique(this: Ref) {
+  acc(List_unique(this), write) &&
+  acc(MutableCollection_unique(this), write)
 }
 
-method listHierarchy(xs: Ref) returns (ret: Ref)
+method listHierarchy(xs: Ref) returns (v_ret_0: Ref)
   requires acc(xs.size, write)
   requires intFromRef(xs.size) >= 0
-  requires isSubtype(typeOf(xs), c_MutableList())
+  requires isSubtype(typeOf(xs), MutableList())
   ensures acc(xs.size, write)
   ensures intFromRef(xs.size) >= 0
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  inhale acc(collections_c_MutableList_shared(xs), wildcard)
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  inhale acc(MutableList_shared(xs), wildcard)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }

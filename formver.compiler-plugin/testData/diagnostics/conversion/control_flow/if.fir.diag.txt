@@ -1,53 +1,53 @@
 /if.kt: info: Generated Viper text for simpleIf:
-method simpleIf() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
+method simpleIf() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
   if (true) {
-    ret := intToRef(0)
-    goto ret_0
+    v_ret_0 := intToRef(0)
+    goto lbl_ret_0
   } else {
-    ret := intToRef(1)
-    goto ret_0
+    v_ret_0 := intToRef(1)
+    goto lbl_ret_0
   }
-  label ret_0
+  label lbl_ret_0
 }
 
 /if.kt: info: Generated Viper text for ifOnParameter:
-method ifOnParameter(b: Ref) returns (ret: Ref)
+method ifOnParameter(b: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
   if (boolFromRef(b)) {
-    ret := intToRef(0)
-    goto ret_0
+    v_ret_0 := intToRef(0)
+    goto lbl_ret_0
   } else {
-    ret := intToRef(1)
-    goto ret_0
+    v_ret_0 := intToRef(1)
+    goto lbl_ret_0
   }
-  label ret_0
+  label lbl_ret_0
 }
 
 /if.kt: info: Generated Viper text for ifAsExpression:
-method ifAsExpression() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), boolType())
+method ifAsExpression() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
 {
   var l0_b: Ref
   l0_b := boolToRef(false)
   if (boolFromRef(l0_b)) {
     var anon_0: Ref
     anon_0 := simpleIf()
-    ret := boolToRef(false)
+    v_ret_0 := boolToRef(false)
   } else {
-    var anon: Ref
-    anon := ifOnParameter(l0_b)
-    ret := boolToRef(true)
+    var anon_1: Ref
+    anon_1 := ifOnParameter(l0_b)
+    v_ret_0 := boolToRef(true)
   }
-  goto ret_0
-  label ret_0
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
-method ifOnParameter(b: Ref) returns (v_ret: Ref)
-  requires isSubtype(typeOf(b), boolType())
+method ifOnParameter(par_b: Ref) returns (v_ret: Ref)
+  requires isSubtype(typeOf(par_b), boolType())
   ensures isSubtype(typeOf(v_ret), intType())
 
 

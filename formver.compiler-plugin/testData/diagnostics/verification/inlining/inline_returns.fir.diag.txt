@@ -1,158 +1,158 @@
 /inline_returns.kt: info: Generated Viper text for simple_return:
 field size: Ref
 
-method simple_return() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method simple_return() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var cond1: Ref
-  var ret_1: Ref
+  var v_ret_1: Ref
   var anon: Ref
-  var ret: Ref
-  ret := boolToRef(false)
-  goto ret_2
-  label ret_2
-  anon := ret
-  ret_1 := notBool(anon)
+  var v_ret_2: Ref
+  v_ret_2 := boolToRef(false)
+  goto lbl_ret_2
+  label lbl_ret_2
+  anon := v_ret_2
+  v_ret_1 := notBool(anon)
   goto lbl_ret_1
   label lbl_ret_1
-  cond1 := ret_1
+  cond1 := v_ret_1
   assert boolFromRef(cond1)
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /inline_returns.kt: info: Generated Viper text for unnamed_return:
-method unnamed_return() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), boolType())
-  ensures boolFromRef(ret_0) == true
+method unnamed_return() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true
 {
-  var ret_1: Ref
+  var v_ret_1: Ref
   var anon: Ref
-  var ret: Ref
-  ret_0 := boolToRef(true)
+  var v_ret_2: Ref
+  v_ret_0 := boolToRef(true)
   goto lbl_ret_0
-  ret := boolToRef(true)
-  goto ret_2
-  label ret_2
-  anon := ret
-  ret_1 := notBool(anon)
+  v_ret_2 := boolToRef(true)
+  goto lbl_ret_2
+  label lbl_ret_2
+  anon := v_ret_2
+  v_ret_1 := notBool(anon)
   goto lbl_ret_1
   label lbl_ret_1
-  ret_0 := ret_1
+  v_ret_0 := v_ret_1
   goto lbl_ret_0
   label lbl_ret_0
 }
 
 /inline_returns.kt: info: Generated Viper text for named_local_return:
-method named_local_return() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), boolType())
-  ensures boolFromRef(ret_0) == true
+method named_local_return() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true
 {
-  var ret_1: Ref
+  var v_ret_1: Ref
   var anon: Ref
-  var ret: Ref
-  ret := boolToRef(false)
-  goto ret_2
-  ret := boolToRef(true)
-  goto ret_2
-  label ret_2
-  anon := ret
-  ret_1 := notBool(anon)
+  var v_ret_2: Ref
+  v_ret_2 := boolToRef(false)
+  goto lbl_ret_2
+  v_ret_2 := boolToRef(true)
+  goto lbl_ret_2
+  label lbl_ret_2
+  anon := v_ret_2
+  v_ret_1 := notBool(anon)
   goto lbl_ret_1
   label lbl_ret_1
-  ret_0 := ret_1
+  v_ret_0 := v_ret_1
   goto lbl_ret_0
   label lbl_ret_0
 }
 
 /inline_returns.kt: info: Generated Viper text for named_nonlocal_return:
-method named_nonlocal_return() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), boolType())
-  ensures boolFromRef(ret_0) == true
+method named_nonlocal_return() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true
 {
-  var ret_1: Ref
+  var v_ret_1: Ref
   var anon: Ref
-  var ret: Ref
-  ret_0 := boolToRef(true)
+  var v_ret_2: Ref
+  v_ret_0 := boolToRef(true)
   goto lbl_ret_0
-  ret := boolToRef(true)
-  goto ret_2
-  label ret_2
-  anon := ret
-  ret_1 := notBool(anon)
+  v_ret_2 := boolToRef(true)
+  goto lbl_ret_2
+  label lbl_ret_2
+  anon := v_ret_2
+  v_ret_1 := notBool(anon)
   goto lbl_ret_1
   label lbl_ret_1
-  ret_0 := ret_1
+  v_ret_0 := v_ret_1
   goto lbl_ret_0
   label lbl_ret_0
 }
 
 /inline_returns.kt: info: Generated Viper text for double_nonlocal_return:
-method double_nonlocal_return() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), boolType())
-  ensures boolFromRef(ret_0) == true
+method double_nonlocal_return() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true
 {
-  var ret_1: Ref
+  var v_ret_1: Ref
   var anon_0: Ref
-  var ret_2: Ref
+  var v_ret_2: Ref
   var x: Ref
-  var ret_3: Ref
-  var anon: Ref
-  var ret: Ref
-  ret_0 := boolToRef(true)
+  var v_ret_3: Ref
+  var anon_1: Ref
+  var v_ret_4: Ref
+  v_ret_0 := boolToRef(true)
   goto lbl_ret_0
-  ret := boolToRef(false)
-  goto ret_4
-  label ret_4
-  anon := ret
-  ret_3 := notBool(anon)
+  v_ret_4 := boolToRef(false)
+  goto lbl_ret_4
+  label lbl_ret_4
+  anon_1 := v_ret_4
+  v_ret_3 := notBool(anon_1)
   goto lbl_ret_3
   label lbl_ret_3
-  x := ret_3
-  ret_0 := boolToRef(false)
+  x := v_ret_3
+  v_ret_0 := boolToRef(false)
   goto lbl_ret_0
-  ret_2 := x
+  v_ret_2 := x
   goto lbl_ret_2
   label lbl_ret_2
-  anon_0 := ret_2
-  ret_1 := notBool(anon_0)
+  anon_0 := v_ret_2
+  v_ret_1 := notBool(anon_0)
   goto lbl_ret_1
   label lbl_ret_1
-  ret_0 := ret_1
+  v_ret_0 := v_ret_1
   goto lbl_ret_0
   label lbl_ret_0
 }
 
 /inline_returns.kt: info: Generated Viper text for named_double_nonlocal_return:
-method named_double_nonlocal_return() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), boolType())
-  ensures boolFromRef(ret_0) == true
+method named_double_nonlocal_return() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true
 {
-  var ret_1: Ref
+  var v_ret_1: Ref
   var anon: Ref
-  var ret_2: Ref
-  var ret_3: Ref
-  var ret: Ref
-  ret_2 := boolToRef(false)
+  var v_ret_2: Ref
+  var v_ret_3: Ref
+  var v_ret_4: Ref
+  v_ret_2 := boolToRef(false)
   goto lbl_ret_2
-  ret_0 := boolToRef(false)
+  v_ret_0 := boolToRef(false)
   goto lbl_ret_0
-  label ret_4
-  inhale isSubtype(typeOf(ret), unitType())
-  ret_3 := ret
+  label lbl_ret_4
+  inhale isSubtype(typeOf(v_ret_4), unitType())
+  v_ret_3 := v_ret_4
   goto lbl_ret_3
   label lbl_ret_3
-  inhale isSubtype(typeOf(ret_3), unitType())
-  ret_0 := boolToRef(false)
+  inhale isSubtype(typeOf(v_ret_3), unitType())
+  v_ret_0 := boolToRef(false)
   goto lbl_ret_0
-  ret_2 := boolToRef(true)
+  v_ret_2 := boolToRef(true)
   goto lbl_ret_2
   label lbl_ret_2
-  anon := ret_2
-  ret_1 := notBool(anon)
+  anon := v_ret_2
+  v_ret_1 := notBool(anon)
   goto lbl_ret_1
   label lbl_ret_1
-  ret_0 := ret_1
+  v_ret_0 := v_ret_1
   goto lbl_ret_0
   label lbl_ret_0
 }

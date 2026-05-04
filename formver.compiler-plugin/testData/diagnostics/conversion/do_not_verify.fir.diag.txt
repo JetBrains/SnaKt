@@ -1,9 +1,9 @@
 /do_not_verify.kt: info: Generated Viper text for bad_returns:
-method bad_returns() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true
+method bad_returns() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true
 {
-  ret := boolToRef(false)
-  goto ret_0
-  label ret_0
+  v_ret_0 := boolToRef(false)
+  goto lbl_ret_0
+  label lbl_ret_0
 }

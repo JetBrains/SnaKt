@@ -1,19 +1,19 @@
 /returns_booleans.kt: info: Generated Viper text for incorrectly_returns_false:
-method incorrectly_returns_false() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true
+method incorrectly_returns_false() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true
 {
-  ret := boolToRef(false)
-  goto ret_0
-  label ret_0
+  v_ret_0 := boolToRef(false)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /returns_booleans.kt: info: Generated Viper text for incorrectly_returns_true:
-method incorrectly_returns_true() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == false
+method incorrectly_returns_true() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == false
 {
-  ret := boolToRef(true)
-  goto ret_0
-  label ret_0
+  v_ret_0 := boolToRef(true)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
