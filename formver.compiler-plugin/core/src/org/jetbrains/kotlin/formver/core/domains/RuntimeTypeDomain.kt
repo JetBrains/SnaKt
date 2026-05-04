@@ -288,11 +288,9 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
     private val allInjections: List<Injection> = primitiveTypeInjections + adts.map { it.injection }
     val builtinTypes: List<DomainFunc> =
         listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType)
-    val nonNullableTypes: List<DomainFunc> = buildList {
-        addAll(builtinTypes)
-        addAll(typeResolver.classTypeEmbeddings().map { it.embedClassTypeFunc() })
-        addAll(adtClassTypes.values)
-    }.distinctBy { it.name }
+    private val userTypes: List<DomainFunc> =
+        typeResolver.classTypeEmbeddings().map { it.embedClassTypeFunc() } + adtClassTypes.values
+    val nonNullableTypes: List<DomainFunc> = (builtinTypes + userTypes).distinctBy { it.name }
     override val functions: List<DomainFunc> = nonNullableTypes + listOf(
         nullValue, unitValue, isSubtype, typeOf, nullable
     ) + allInjections.flatMap { listOf(it.toRef, it.fromRef) }
@@ -405,7 +403,7 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
                 r eq unitValue()
             }
         }
-        (allInjections).forEach {
+        allInjections.forEach {
             it.apply { injectionAxioms() }
         }
         typeResolver.classTypeEmbeddings().forEach { type ->
@@ -414,9 +412,6 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
                     type.runtimeType subtype superType.runtimeType
                 }
             }
-        }
-        adtClassTypes.forEach { (_, typeFunction) ->
-            axiom { typeFunction() subtype anyType() }
         }
     }
 }
