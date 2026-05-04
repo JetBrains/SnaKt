@@ -103,7 +103,7 @@ data object ExtensionReceiverName : FreshName, NameTypeIsVariable {
 
     override val candidates: List<CandidateName> = buildCandidates {
         val shortName = "this"
-        val longName = listOf("this", "dispatch")
+        val longName = listOf("this", "extension")
         candidate {
             +shortName
         }

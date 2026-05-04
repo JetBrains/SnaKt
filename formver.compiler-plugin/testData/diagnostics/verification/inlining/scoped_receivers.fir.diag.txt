@@ -1,9 +1,9 @@
 /scoped_receivers.kt: info: Generated Viper text for with_run_extension_labeled:
 field size: Ref
 
-method with_run_extension_labeled(v_this_dispatch: Ref)
+method with_run_extension_labeled(v_this_extension: Ref)
   returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(v_this_dispatch), nullable(intType()))
+  requires isSubtype(typeOf(v_this_extension), nullable(intType()))
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var cond1: Ref
@@ -56,7 +56,7 @@ method with_run_extension_labeled(v_this_dispatch: Ref)
   var anon_33: Ref
   var v_ret_17: Ref
   var anon_12: Ref
-  v_ret_1 := boolToRef(v_this_dispatch == nullValue())
+  v_ret_1 := boolToRef(v_this_extension == nullValue())
   goto lbl_ret_1
   label lbl_ret_1
   anon_13 := v_ret_1
@@ -64,7 +64,7 @@ method with_run_extension_labeled(v_this_dispatch: Ref)
     cond1 := boolToRef(true)
   } else {
     var v_ret_2: Ref
-    v_ret_2 := notBool(boolToRef(v_this_dispatch == nullValue()))
+    v_ret_2 := notBool(boolToRef(v_this_extension == nullValue()))
     goto lbl_ret_2
     label lbl_ret_2
     cond1 := v_ret_2
@@ -118,7 +118,7 @@ method with_run_extension_labeled(v_this_dispatch: Ref)
   assert !boolFromRef(anon_8)
   assert !boolFromRef(anon_8)
   assert boolFromRef(anon_1)
-  v_ret_12 := boolToRef(v_this_dispatch == nullValue())
+  v_ret_12 := boolToRef(v_this_extension == nullValue())
   goto lbl_ret_12
   label lbl_ret_12
   anon_27 := v_ret_12
@@ -126,7 +126,7 @@ method with_run_extension_labeled(v_this_dispatch: Ref)
     anon_26 := boolToRef(true)
   } else {
     var v_ret_13: Ref
-    v_ret_13 := notBool(boolToRef(v_this_dispatch == nullValue()))
+    v_ret_13 := notBool(boolToRef(v_this_extension == nullValue()))
     goto lbl_ret_13
     label lbl_ret_13
     anon_26 := v_ret_13

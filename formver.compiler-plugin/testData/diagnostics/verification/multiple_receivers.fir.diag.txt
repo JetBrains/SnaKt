@@ -3,9 +3,10 @@ field delta: Ref
 
 field size: Ref
 
-method applyDelta(v_this: Ref, v_this_dispatch: Ref) returns (v_ret_0: Ref)
+method applyDelta(v_this: Ref, v_this_extension: Ref)
+  returns (v_ret_0: Ref)
   requires isSubtype(typeOf(v_this), ClassWithExtension())
-  requires isSubtype(typeOf(v_this_dispatch), intType())
+  requires isSubtype(typeOf(v_this_extension), intType())
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var withoutLabels: Ref
@@ -15,10 +16,10 @@ method applyDelta(v_this: Ref, v_this_dispatch: Ref) returns (v_ret_0: Ref)
   inhale acc(ClassWithExtension_shared(v_this), wildcard)
   unfold acc(ClassWithExtension_shared(v_this), wildcard)
   anon_0 := v_this.delta
-  withoutLabels := plusInts(v_this_dispatch, anon_0)
+  withoutLabels := plusInts(v_this_extension, anon_0)
   unfold acc(ClassWithExtension_shared(v_this), wildcard)
   anon_1 := v_this.delta
-  withLabels := plusInts(anon_1, v_this_dispatch)
+  withLabels := plusInts(anon_1, v_this_extension)
   assert intFromRef(withoutLabels) == intFromRef(withLabels)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -41,13 +42,13 @@ method returnDelta(this: Ref) returns (v_ret_0: Ref)
 /multiple_receivers.kt: info: Generated Viper text for extensionReturnDelta:
 field delta: Ref
 
-method extensionReturnDelta(v_this_dispatch: Ref) returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(v_this_dispatch), ClassWithExtension())
+method extensionReturnDelta(v_this_extension: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(v_this_extension), ClassWithExtension())
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  inhale acc(shared(v_this_dispatch), wildcard)
-  unfold acc(shared(v_this_dispatch), wildcard)
-  v_ret_0 := v_this_dispatch.delta
+  inhale acc(shared(v_this_extension), wildcard)
+  unfold acc(shared(v_this_extension), wildcard)
+  v_ret_0 := v_this_extension.delta
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -57,9 +58,9 @@ field bf_delta: Ref
 
 field size: Ref
 
-method applyDelta(v_this: Ref, v_this_dispatch: Ref) returns (v_ret: Ref)
+method applyDelta(v_this: Ref, v_this_extension: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(v_this), ClassWithExtension())
-  requires isSubtype(typeOf(v_this_dispatch), intType())
+  requires isSubtype(typeOf(v_this_extension), intType())
   ensures isSubtype(typeOf(v_ret), unitType())
 
 
@@ -122,8 +123,8 @@ method con(par_delta: Ref) returns (v_ret: Ref)
     intFromRef(par_delta)
 
 
-method extensionReturnDelta(v_this_dispatch: Ref) returns (v_ret: Ref)
-  requires isSubtype(typeOf(v_this_dispatch), ClassWithExtension())
+method extensionReturnDelta(v_this_extension: Ref) returns (v_ret: Ref)
+  requires isSubtype(typeOf(v_this_extension), ClassWithExtension())
   ensures isSubtype(typeOf(v_ret), intType())
 
 

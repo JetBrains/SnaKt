@@ -11,13 +11,13 @@ method isString(x: Ref) returns (v_ret_0: Ref)
 }
 
 /is_type_contract.kt: info: Generated Viper text for isString:
-method isString(v_this_dispatch: Ref) returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(v_this_dispatch), anyType())
+method isString(v_this_extension: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(v_this_extension), anyType())
   ensures isSubtype(typeOf(v_ret_0), boolType())
   ensures boolFromRef(v_ret_0) == true ==>
-    isSubtype(typeOf(v_this_dispatch), stringType())
+    isSubtype(typeOf(v_this_extension), stringType())
 {
-  v_ret_0 := boolToRef(isSubtype(typeOf(v_this_dispatch), stringType()))
+  v_ret_0 := boolToRef(isSubtype(typeOf(v_this_extension), stringType()))
   goto lbl_ret_0
   label lbl_ret_0
 }

@@ -97,25 +97,25 @@ method isEmpty(v_this: Ref) returns (v_ret: Ref)
   ensures !boolFromRef(v_ret) ==> intFromRef(v_this.size) > 0
 
 
-method isNullOrEmpty(v_this_dispatch: Ref) returns (v_ret_0: Ref)
-  requires v_this_dispatch != nullValue() ==>
-    acc(v_this_dispatch.size, write)
-  requires v_this_dispatch != nullValue() ==>
-    intFromRef(v_this_dispatch.size) >= 0
-  requires isSubtype(typeOf(v_this_dispatch), nullable(Collection()))
-  ensures v_this_dispatch != nullValue() ==>
-    acc(v_this_dispatch.size, write)
-  ensures v_this_dispatch != nullValue() ==>
-    intFromRef(v_this_dispatch.size) >= 0
+method isNullOrEmpty(v_this_extension: Ref) returns (v_ret_0: Ref)
+  requires v_this_extension != nullValue() ==>
+    acc(v_this_extension.size, write)
+  requires v_this_extension != nullValue() ==>
+    intFromRef(v_this_extension.size) >= 0
+  requires isSubtype(typeOf(v_this_extension), nullable(Collection()))
+  ensures v_this_extension != nullValue() ==>
+    acc(v_this_extension.size, write)
+  ensures v_this_extension != nullValue() ==>
+    intFromRef(v_this_extension.size) >= 0
   ensures isSubtype(typeOf(v_ret_0), boolType())
-  ensures boolFromRef(v_ret_0) == false ==> v_this_dispatch != nullValue()
+  ensures boolFromRef(v_ret_0) == false ==> v_this_extension != nullValue()
 {
-  inhale v_this_dispatch != nullValue() ==>
-    acc(Collection_shared(v_this_dispatch), wildcard)
-  if (v_this_dispatch == nullValue()) {
+  inhale v_this_extension != nullValue() ==>
+    acc(Collection_shared(v_this_extension), wildcard)
+  if (v_this_extension == nullValue()) {
     v_ret_0 := boolToRef(true)
   } else {
-    v_ret_0 := isEmpty(v_this_dispatch)}
+    v_ret_0 := isEmpty(v_this_extension)}
   goto lbl_ret_0
   label lbl_ret_0
 }

@@ -104,12 +104,12 @@ predicate shared(v_this: Ref) {
   true
 }
 
-method unique_receiver(v_this_dispatch: Ref) returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(v_this_dispatch), T())
-  requires acc(T_unique(v_this_dispatch), write)
+method unique_receiver(v_this_extension: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(v_this_extension), T())
+  requires acc(T_unique(v_this_extension), write)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  inhale acc(shared(v_this_dispatch), wildcard)
+  inhale acc(shared(v_this_extension), wildcard)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
@@ -123,14 +123,14 @@ predicate shared(v_this: Ref) {
   true
 }
 
-method borrowed_unique_receiver(v_this_dispatch: Ref)
+method borrowed_unique_receiver(v_this_extension: Ref)
   returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(v_this_dispatch), T())
-  requires acc(T_unique(v_this_dispatch), write)
-  ensures acc(T_unique(v_this_dispatch), write)
+  requires isSubtype(typeOf(v_this_extension), T())
+  requires acc(T_unique(v_this_extension), write)
+  ensures acc(T_unique(v_this_extension), write)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  inhale acc(shared(v_this_dispatch), wildcard)
+  inhale acc(shared(v_this_extension), wildcard)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }

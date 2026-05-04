@@ -16,11 +16,11 @@ method iAmAMethod() returns (v_ret_0: Ref)
 /wrongly_annotated.kt: info: Generated Viper text for impureExtension:
 field value: Ref
 
-method impureExtension(v_this_dispatch: Ref) returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(v_this_dispatch), Field())
+method impureExtension(v_this_extension: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(v_this_extension), Field())
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  inhale acc(shared(v_this_dispatch), wildcard)
+  inhale acc(shared(v_this_extension), wildcard)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
