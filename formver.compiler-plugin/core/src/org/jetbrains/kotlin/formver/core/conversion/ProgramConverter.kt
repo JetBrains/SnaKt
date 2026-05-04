@@ -171,7 +171,7 @@ class ProgramConverter(
     }
 
     private fun embedGetterFunction(symbol: FirPropertySymbol): FunctionEmbedding {
-        val name = symbol.embedGetterName(this)
+        val name = symbol.embedGetterName(this, symbol.representedAsFunction(session))
         return methods.getOrPut(name) {
             val signature = GetterFunctionSignature(name, symbol)
             UserFunctionEmbedding(
@@ -181,7 +181,7 @@ class ProgramConverter(
     }
 
     private fun embedSetterFunction(symbol: FirPropertySymbol): FunctionEmbedding {
-        val name = symbol.embedSetterName(this)
+        val name = symbol.embedSetterName(this, symbol.representedAsFunction(session))
         return methods.getOrPut(name) {
             val signature = SetterFunctionSignature(name, symbol)
             UserFunctionEmbedding(
@@ -191,7 +191,7 @@ class ProgramConverter(
     }
 
     override fun embedFunction(symbol: FirFunctionSymbol<*>): FunctionEmbedding {
-        val lookupName = symbol.embedName(this)
+        val lookupName = symbol.embedName(this, session)
         return when (val existing = methods[lookupName]) {
             null -> {
                 val signature = embedFullSignature(symbol)
@@ -289,6 +289,8 @@ class ProgramConverter(
         embedFunctionPretypeWithBuilder(symbol)
     }
 
+
+
     @OptIn(SymbolInternals::class)
     override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding {
 
@@ -298,8 +300,8 @@ class ProgramConverter(
 
             val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol
 
-            val final = symbol.isFinal || classSymbol?.isFinal == true
-            val name = symbol.embedMemberPropertyName(final)
+            val final = symbol.isFinal(session)
+            val name = symbol.embedMemberPropertyName(session)
             return typeResolver.getOrPutProperty(name) {
                 classSymbol?.let { embedClass(it) }
                 // Check if the symbol should receive a special treatment
@@ -308,22 +310,22 @@ class ProgramConverter(
                         SpecialProperties.lookup(symbol)?.let { return@getOrPutProperty it }
                     }
                 }
-                val hasGetter = symbol.getterSymbol?.fir !is FirDefaultPropertyGetter
+                val hasCustomGetter = symbol.hasCustomGetter()
 
 
                 // for symbols that are final, immutable, and do not have a getter can be represented with a pure function
-                if (final && symbol.isVal && !hasGetter) {
+                if (final && symbol.isVal && !hasCustomGetter) {
                     return@getOrPutProperty embedFinalProperty(symbol)
                 }
 
                 // final symbols that are mutable and do not have a getter, can be represented by a getter
-                if (final && symbol.isVar && !hasGetter && symbol.hasBackingField){
+                if (final && symbol.isVar && !hasCustomGetter && symbol.hasBackingField){
                     val backingField = embedBackingField(symbol)
                     return@getOrPutProperty PropertyEmbedding(BackingFieldGetter(backingField), BackingFieldSetter(backingField))
                 }
 
 
-                // All other instances should just get access methods. We can not reason about those fields.
+                // All other instances should just get access methods. We cannot reason about those fields.
                 return@getOrPutProperty embedCustomProperty(symbol)
             }
         }
@@ -339,8 +341,7 @@ class ProgramConverter(
         val constructedClassSymbol = symbol.resolvedReturnType.toRegularClassSymbol(session) ?: return emptyMap()
         val constructedClass = embedClass(constructedClassSymbol)
         return constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
-            val isFinal = propertySymbol.isFinal || constructedClassSymbol.isFinal
-            val name = propertySymbol.embedMemberPropertyName(isFinal)
+            val name = propertySymbol.embedMemberPropertyName(session)
             propertySymbol.withConstructorParam { paramSymbol ->
                 typeResolver.lookupProperty(name)?.let {
                     when(it.getter) {
@@ -396,7 +397,7 @@ class ProgramConverter(
 
     private fun embedFullSignature(symbol: FirFunctionSymbol<*>): FullNamedFunctionSignature {
         val subSignature = object : NamedFunctionSignature, FunctionSignature by embedFunctionSignature(symbol) {
-            override val name = symbol.embedName(this@ProgramConverter)
+            override val name = symbol.embedName(this@ProgramConverter, session)
             override val labelName: String
                 get() = super<NamedFunctionSignature>.labelName
             override val symbol = symbol
@@ -519,7 +520,7 @@ class ProgramConverter(
         val classSymbol = symbol.dispatchReceiverType!!.toClassSymbol(session) as FirRegularClassSymbol
         val embedding = embedClass(classSymbol)
         val scopedName = symbol.callableId!!.embedMemberBackingFieldName(
-            Visibilities.isPrivate(symbol.visibility), true
+            Visibilities.isPrivate(symbol.visibility), symbol.representedAsFunction(session)
         )
         val backingField = UserFieldEmbedding(
                 scopedName,
@@ -536,7 +537,7 @@ class ProgramConverter(
     private fun embedFinalProperty(
         symbol: FirPropertySymbol
     ) : PropertyEmbedding {
-        val name = symbol.embedGetterName(this)
+        val name = symbol.embedGetterName(this, symbol.representedAsFunction(session))
         val getter = PureUserFunctionEmbedding(
             NonInlineNamedFunction(
                 GetterFunctionSignature(name, symbol),
@@ -654,4 +655,20 @@ class ProgramConverter(
             unit()
         }
     }
+}
+
+/**
+ * Returns true if we are sure, that the access to the property will always return the same value.
+ * This is true for properties that are final or belong to a final class.
+ */
+fun FirPropertySymbol.isFinal(session: FirSession) : Boolean {
+    val classSymbol = dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol ?: return false
+    return (classSymbol.isFinal || isFinal)
+}
+
+@OptIn(SymbolInternals::class)
+fun FirPropertySymbol.hasCustomGetter() : Boolean = getterSymbol?.fir !is FirDefaultPropertyGetter
+
+fun FirPropertySymbol.representedAsFunction(session: FirSession) : Boolean {
+    return isFinal(session) && !hasCustomGetter() && isVal
 }

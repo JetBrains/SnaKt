@@ -6,15 +6,15 @@
 package org.jetbrains.kotlin.formver.core.names
 
 import org.jetbrains.kotlin.descriptors.Visibilities
-import org.jetbrains.kotlin.fir.declarations.utils.isFinal
+import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.utils.visibility
-import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.conversion.ClassPropertyPair
 import org.jetbrains.kotlin.formver.core.conversion.ProgramConversionContext
 import org.jetbrains.kotlin.formver.core.conversion.PropertyKotlinName
 import org.jetbrains.kotlin.formver.core.conversion.ScopeIndex
+import org.jetbrains.kotlin.formver.core.conversion.representedAsFunction
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId
@@ -130,14 +130,14 @@ fun Name.embedParameterName() = buildName {
 
 fun FirValueParameterSymbol.embedName(): ScopedName = name.embedParameterName()
 
-fun FirPropertySymbol.embedGetterName(ctx: ProgramConversionContext): ScopedName =
+fun FirPropertySymbol.embedGetterName(ctx: ProgramConversionContext, isFinal: Boolean): ScopedName =
     if (receiverParameterSymbol != null) {
         callableId!!.embedExtensionGetterName(ctx.embedFunctionPretype(getterSymbol!!))
     } else {
         callableId!!.embedMemberGetterName(Visibilities.isPrivate(visibility), isFinal)
     }
 
-fun FirPropertySymbol.embedSetterName(ctx: ProgramConversionContext): ScopedName =
+fun FirPropertySymbol.embedSetterName(ctx: ProgramConversionContext, isFinal: Boolean): ScopedName =
     if (receiverParameterSymbol != null) {
         callableId!!.embedExtensionSetterName(
             ctx.embedFunctionPretype(
@@ -152,11 +152,11 @@ fun FirPropertySymbol.embedSetterName(ctx: ProgramConversionContext): ScopedName
  * Returns a pair that uniquely identifies the property.
  * The first element is the name of the class that contains the property, and the second is the name of the property itself.
  */
-fun FirPropertySymbol.embedMemberPropertyName(isFinal: Boolean): ClassPropertyPair {
+fun FirPropertySymbol.embedMemberPropertyName(session: FirSession): ClassPropertyPair {
     val callable = callableId
     val className =
         callable?.classId?.embedName() ?: throw SnaktInternalException(source, "Property is not part of a class")
-    val propertyName = callable.embedMemberPropertyName(Visibilities.isPrivate(this.visibility), isFinal)
+    val propertyName = callable.embedMemberPropertyName(Visibilities.isPrivate(this.visibility), representedAsFunction(session))
     return ClassPropertyPair(className, propertyName)
 }
 
@@ -166,9 +166,9 @@ fun FirConstructorSymbol.embedName(ctx: ProgramConversionContext): ScopedName = 
     ConstructorKotlinName(ctx.embedFunctionPretype(this@embedName))
 }
 
-fun FirFunctionSymbol<*>.embedName(ctx: ProgramConversionContext): ScopedName = when (this) {
-    is FirPropertyAccessorSymbol -> if (isGetter) propertySymbol.embedGetterName(ctx) else propertySymbol.embedSetterName(
-        ctx
+fun FirFunctionSymbol<*>.embedName(ctx: ProgramConversionContext, session: FirSession): ScopedName = when (this) {
+    is FirPropertyAccessorSymbol -> if (isGetter) propertySymbol.embedGetterName(ctx, propertySymbol.representedAsFunction(session)) else propertySymbol.embedSetterName(
+        ctx, propertySymbol.representedAsFunction(session)
     )
 
     is FirConstructorSymbol -> embedName(ctx)
