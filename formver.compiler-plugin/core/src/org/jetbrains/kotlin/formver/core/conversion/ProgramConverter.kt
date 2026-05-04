@@ -248,17 +248,14 @@ class ProgramConverter(
         if (symbol.receiverParameterSymbol != null) {
             return embedCustomProperty(symbol)
         } else {
-
             val name = symbol.embedMemberPropertyName()
             return typeResolver.getOrPutProperty(name) {
-
                 // Check if the symbol should receive a special treatment
                 with(typeResolver) {
                     with(session) {
                         SpecialProperties.lookup(symbol)?.let { return@getOrPutProperty it }
                     }
                 }
-
                 // Check if the symbol can be represented using a backing field
                 embedBackingField(symbol)?.let {
                     return@getOrPutProperty PropertyEmbedding(

@@ -21,20 +21,19 @@ import org.jetbrains.kotlin.formver.core.names.embedName
 
 abstract class SpecialProperty(val property: PropertyEmbedding) {
     context(typeResolver: TypeResolver, session: FirSession)
-    abstract fun match(symbol: FirPropertySymbol) : Boolean
+    abstract fun match(symbol: FirPropertySymbol): Boolean
 }
 
 
-val StringSizeProperty = object: SpecialProperty(PropertyEmbedding(LengthFieldGetter, setter = null)) {
+object StringSizeProperty : SpecialProperty(PropertyEmbedding(LengthFieldGetter, setter = null)) {
     context(typeResolver: TypeResolver, session: FirSession)
-    override fun match(symbol: FirPropertySymbol) : Boolean {
-        return symbol.callableId == kotlinCallableId("String", "length")
-    }
+    override fun match(symbol: FirPropertySymbol): Boolean = symbol.callableId == kotlinCallableId("String", "length")
 }
 
-val CollectionSizeProperty = object: SpecialProperty(PropertyEmbedding(BackingFieldGetter(CollectionSizeFieldEmbedding), setter = null)) {
+object CollectionSizeProperty :
+    SpecialProperty(PropertyEmbedding(BackingFieldGetter(CollectionSizeFieldEmbedding), setter = null)) {
     context(typeResolver: TypeResolver, session: FirSession)
-    override fun match(symbol: FirPropertySymbol) : Boolean {
+    override fun match(symbol: FirPropertySymbol): Boolean {
         val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol ?: return false
 
         val embedding = typeResolver.lookupClassTypeEmbedding(classSymbol.classId.embedName()) ?: return false
@@ -52,12 +51,11 @@ val CollectionSizeProperty = object: SpecialProperty(PropertyEmbedding(BackingFi
 }
 
 
-
 object SpecialProperties {
 
     val all: List<SpecialProperty> = listOf(StringSizeProperty, CollectionSizeProperty)
 
     context(typeResolver: TypeResolver, session: FirSession)
-    fun lookup(symbol: FirPropertySymbol) : PropertyEmbedding? = all.firstOrNull { it.match(symbol) }?.property
+    fun lookup(symbol: FirPropertySymbol): PropertyEmbedding? = all.firstOrNull { it.match(symbol) }?.property
 
 }
