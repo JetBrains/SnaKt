@@ -51,8 +51,7 @@ data class QualifiedDomainFuncName(val domainName: SymbolicName, val funcName: S
 data class InjectionFuncName(val baseName: SymbolicName, val suffix: String) : SymbolicName {
     override val inViper: Boolean = false
     override val candidates: List<CandidateName> = buildCandidates {
-        candidate { +suffix }
-        candidate { +baseName; +suffix }
+        candidateNoSeparator { +baseName; +suffix }
     }
     override val children: List<AnyName> = listOf(baseName)
 }

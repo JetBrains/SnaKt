@@ -274,10 +274,10 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
         fun classTypeFunc(name: SymbolicName) = createDomainFunc(name, emptyList(), RuntimeType, true)
 
         // bijections to primitive types
-        val intInjection = Injection("int", Type.Int, intType)
-        val boolInjection = Injection("bool", Type.Bool, boolType)
-        val charInjection = Injection("char", Type.Int, charType)
-        val stringInjection = Injection("string", Type.Seq(Type.Int), stringType)
+        val intInjection = Injection(UnqualifiedDomainFuncName("int"), Type.Int, intType)
+        val boolInjection = Injection(UnqualifiedDomainFuncName("bool"), Type.Bool, boolType)
+        val charInjection = Injection(UnqualifiedDomainFuncName("char"), Type.Int, charType)
+        val stringInjection = Injection(UnqualifiedDomainFuncName("string"), Type.Seq(Type.Int), stringType)
         val primitiveTypeInjections = listOf(intInjection, boolInjection, charInjection, stringInjection)
         // special values
         val nullValue = createDomainFunc(UnqualifiedDomainFuncName("nullValue"), emptyList(), Ref)
