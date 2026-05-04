@@ -123,14 +123,17 @@ class ShortNameResolver : NameResolver {
 
     // START MANGLE
 
-
-    private fun costOfName(name: AnyName) : Int = when(name) {
-        is NameScope -> when(name) {
+    /**
+     * The cost of having [name] in a viper name.
+     * Higher cost means that [name] is more likely to not be used in the final viper name.
+     */
+    private fun costOfName(name: AnyName): Int = when (name) {
+        is NameScope -> when (name) {
             BadScope -> 100
             is ClassScope -> 2
             FakeScope -> 50
             is LocalScope -> 3
-            is PackageScope -> 10
+            is PackageScope -> 20
             ParameterScope -> 3
             is PrivateScope -> 1
             PublicScope -> 3
@@ -138,6 +141,10 @@ class ShortNameResolver : NameResolver {
         else -> 1
     }
 
+    /**
+     * This function calculates the cost of adding [part] to a name.
+     * The cost is the sum of the cost of the names that are inside of [part] plus the cost of [part].
+     */
     private fun costOfNamePart(part: NamePart): Int = when (part) {
         is NamePart.Basic -> 1
         is NamePart.Dependent -> {
@@ -146,41 +153,35 @@ class ShortNameResolver : NameResolver {
             val subCost = subParts.sumOf { costOfNamePart(it) }
             subCost + costOfName(name)
         }
+
         NamePart.Separator -> 0
     }
 
     /**
-     * TODO: Update
-     * The higher the priority, the earlier it is chosen to move.
-     * There are no fundamental reasons for this priority order. These just resulted in "good" names.
+     * The cost of moving [name].
+     * The cost of moving is the sum of the costs of the **new** added parts
      */
     private fun costOfMovingName(name: AnyName): Int {
         val currentCandidate = currentCandidate(name)
         val nextCandidate = nextCandidate(name)
 
         val newParts = (nextCandidate.parts.toSet() - currentCandidate.parts.toSet())
-        return newParts.sumOf { costOfNamePart(it)}
+        return newParts.sumOf { costOfNamePart(it) }
     }
 
-    private fun buildGraph(name: AnyName): Map<AnyName, Set<AnyName>> {
-        val graph = mutableMapOf<AnyName, MutableSet<AnyName>>()
-        val queue = mutableListOf(name)
-        while (queue.isNotEmpty()) {
-            val current = queue.removeFirst()
-            val subNames = current.children
-            subNames.forEach {
-                graph.getOrPut(it) { mutableSetOf() }.add(current)
+    fun removeNonLeaves(toMove: Set<AnyName>): Set<AnyName> {
+        val numVisites = mutableMapOf<AnyName, Int>()
+
+        for (name in toMove) {
+            val queue = mutableListOf(name)
+            while (queue.isNotEmpty()) {
+                val current = queue.removeFirst()
+                numVisites[current] = (numVisites[current] ?: 0) + 1
+                queue.addAll(current.children)
             }
-            queue.addAll(subNames)
         }
-        return graph
-    }
 
-    private fun buildGraph(names: Set<AnyName>) : Map<AnyName, Set<AnyName>> {
-        return names.fold(emptyMap()
-        ) {
-            acc, name -> acc +  buildGraph(name)
-        }
+        return toMove.filter { numVisites.getOrDefault(it, 0) < 2 }.toSet()
     }
 
     /**
@@ -188,18 +189,14 @@ class ShortNameResolver : NameResolver {
      */
     override fun resolve() {
         var currentCollisions = collisions()
-        loop@ while (currentCollisions.isNotEmpty()) {
-            val toMove = currentCollisions.flatMap { it.value }.mapNotNull { findMoveableName(it)?.second }.toSet()
-            // outer name maps to inner name
-            val graph = buildGraph(toMove)
+        while (currentCollisions.isNotEmpty()) {
+            val allToMove = currentCollisions.flatMap { it.value }.mapNotNull { findMoveableName(it)?.second }.toSet()
+
+            val toMove = removeNonLeaves(allToMove)
             assert(toMove.isNotEmpty()) { "No moveable names found, unable to resolve collisions" }
 
             toMove.forEach { name ->
-                if (graph[name]?.isNotEmpty() != true) {
-//                    print(current(name))
-                    move(name)
-//                    println(" -> ${current(name)}")
-                }
+                move(name)
             }
 
 
@@ -236,18 +233,19 @@ class ShortNameResolver : NameResolver {
     private fun move(entity: AnyName) {
         currentCandidate[entity] = (currentCandidate[entity] ?: 0) + 1
     }
+
     /**
-     * Returns the name that will be moved. This can be the [entity] or a name on which [entity] depends.
-     * If no such name exists, it returns null.
+     * This function returns the move that results in the lowest cost. If the name cannot be moved, it returns null.
      */
     private fun findMoveableName(entity: AnyName): Pair<Int, AnyName>? {
         val currentIndex = currentCandidate[entity] ?: 0
         val options = currentCandidate(entity).moveableParts().mapNotNull { namePart ->
             findMoveableName(namePart.name)
-        } + (if (currentIndex + 1 < entity.candidates().size)  {
+        } + (if (currentIndex + 1 < entity.candidates().size) {
             // entity can be moved, so it is added to the options
             listOf(Pair(costOfMovingName(entity), entity))
         } else emptyList())
+
         return options.minByOrNull { it.first }
     }
 }
