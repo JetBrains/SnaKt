@@ -406,7 +406,7 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             )
     }
 
-    /** Represents the application of an ADT constructor. Triggered by an ADT reference in an `AdtLit`. */
+    /** Represents the application of an ADT constructor. Triggered by an ADT reference in an `AdtConstructorRef`. */
     data class AdtConstructorApp(
         val constructor: AdtConstructorDecl,
         val args: List<Exp>,

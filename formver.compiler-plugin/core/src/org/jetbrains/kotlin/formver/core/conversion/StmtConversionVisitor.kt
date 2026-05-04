@@ -91,7 +91,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         val type = data.embedType(resolvedQualifier.resolvedType)
         if (type.pretype !is AdtTypeEmbedding)
             throw SnaktInternalException(resolvedQualifier.source, "Given symbol ${classSymbol.name} is not an ADT, no other types are supported.")
-        return AdtLit(type)
+        return AdtConstructorRef(type)
     }
 
     override fun visitBlock(block: FirBlock, data: StmtConversionContext): ExpEmbedding =

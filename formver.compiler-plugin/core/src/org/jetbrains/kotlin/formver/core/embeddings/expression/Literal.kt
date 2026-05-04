@@ -60,11 +60,22 @@ data object NullLit : LiteralEmbedding {
     override val debugName = "Null"
 }
 
-data class AdtLit(
+/**
+ * Reference to a literal/constructor of an object/class which was declared to be an ADT in the Kotlin source.
+ * As ADTs are value-based, this is treated as an ADT instantiation and triggers an ADT constructor associated
+ * with the source object/class.
+ */
+data class AdtConstructorRef(
     override val type: TypeEmbedding,
 ) : ExpEmbedding {
+    init {
+        require(type.pretype is AdtTypeEmbedding) {
+            "AdtConstructorRef requires an AdtTypeEmbedding pretype, got ${type.pretype.javaClass.simpleName}"
+        }
+    }
+
     val adtTypeEmbedding: AdtTypeEmbedding
         get() = type.pretype as AdtTypeEmbedding
 
-    override fun <R> accept(v: ExpVisitor<R>): R = v.visitAdtLit(this)
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitAdtConstructorRef(this)
 }
