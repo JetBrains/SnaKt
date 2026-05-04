@@ -31,7 +31,7 @@ sealed interface NameType : NameTypeBase {
                 Base.Domain -> "d"
                 Base.DomainFunction -> "df"
                 Base.Adt -> "adt"
-                Base.AdtCons -> "adtc"
+                Base.AdtCons -> "constr"
             }
         )
 
