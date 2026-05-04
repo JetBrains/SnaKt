@@ -61,6 +61,11 @@ data class PrivateScope(override val parent: NameScope) : NameScope {
     override val children: List<AnyName> = listOf(parent)
 }
 
+data class FinalScope(override val parent: NameScope) : NameScope {
+    override val candidates: List<CandidateName> = nameWithDependentPrefixCandidates("final", parent)
+    override val children: List<AnyName> = listOf(parent)
+}
+
 data object ParameterScope : NameScope {
     override val candidates: List<CandidateName> = nameOnlyCandidates("par")
     override val children: List<AnyName> = emptyList()

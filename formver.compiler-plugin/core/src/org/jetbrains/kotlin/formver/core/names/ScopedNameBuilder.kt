@@ -40,6 +40,11 @@ class ScopeBuilder {
         scope = PrivateScope(scope!!)
     }
 
+    fun finalScope() {
+        require(scope != null) { "Final scope cannot be top-level." }
+        scope = FinalScope(scope!!)
+    }
+
     fun parameterScope() {
         require(scope == null) { "Parameter scope cannot be nested." }
         scope = ParameterScope

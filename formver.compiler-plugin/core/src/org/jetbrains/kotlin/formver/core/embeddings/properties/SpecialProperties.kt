@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.formver.core.embeddings.properties
 
 import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.declarations.utils.isFinal
 import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
@@ -35,10 +36,11 @@ object CollectionSizeProperty :
     context(typeResolver: TypeResolver, session: FirSession)
     override fun match(symbol: FirPropertySymbol): Boolean {
         val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol ?: return false
-
+        val isFinal = classSymbol.isFinal || symbol.isFinal
         val embedding = typeResolver.lookupClassTypeEmbedding(classSymbol.classId.embedName()) ?: return false
         val scopedName = symbol.callableId!!.embedMemberBackingFieldName(
-            Visibilities.isPrivate(symbol.visibility)
+            Visibilities.isPrivate(symbol.visibility),
+            isFinal
         )
         NameMatcher.Companion.matchClassScope(scopedName) {
             ifBackingFieldName("size") {

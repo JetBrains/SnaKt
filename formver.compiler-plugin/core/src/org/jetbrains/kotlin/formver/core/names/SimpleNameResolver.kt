@@ -71,6 +71,7 @@ class SimpleNameResolver : NameResolver {
                 is ParameterScope -> listOf("par")
                 is PrivateScope -> listOf("private")
                 is PublicScope -> listOf("public")
+                is FinalScope -> listOf("final")
             }
             return parentScopes + scope
         }

@@ -295,16 +295,19 @@ class ProgramConverter(
         if (symbol.receiverParameterSymbol != null) {
             return embedCustomProperty(symbol)
         } else {
-            val name = symbol.embedMemberPropertyName()
+
+            val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol
+
+            val final = symbol.isFinal || classSymbol?.isFinal == true
+            val name = symbol.embedMemberPropertyName(final)
             return typeResolver.getOrPutProperty(name) {
+                classSymbol?.let { embedClass(it) }
                 // Check if the symbol should receive a special treatment
                 with(typeResolver) {
                     with(session) {
                         SpecialProperties.lookup(symbol)?.let { return@getOrPutProperty it }
                     }
                 }
-                val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol
-                val final = symbol.isFinal || classSymbol?.isFinal == true
                 val hasGetter = symbol.getterSymbol?.fir !is FirDefaultPropertyGetter
 
 
@@ -336,7 +339,8 @@ class ProgramConverter(
         val constructedClassSymbol = symbol.resolvedReturnType.toRegularClassSymbol(session) ?: return emptyMap()
         val constructedClass = embedClass(constructedClassSymbol)
         return constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
-            val name = propertySymbol.embedMemberPropertyName()
+            val isFinal = propertySymbol.isFinal || constructedClassSymbol.isFinal
+            val name = propertySymbol.embedMemberPropertyName(isFinal)
             propertySymbol.withConstructorParam { paramSymbol ->
                 typeResolver.lookupProperty(name)?.let {
                     when(it.getter) {
@@ -348,6 +352,8 @@ class ProgramConverter(
             }
         }.toMap()
     }
+
+
 
     override fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): FunctionSignature {
         val dispatchReceiverType = symbol.receiverType
@@ -513,7 +519,7 @@ class ProgramConverter(
         val classSymbol = symbol.dispatchReceiverType!!.toClassSymbol(session) as FirRegularClassSymbol
         val embedding = embedClass(classSymbol)
         val scopedName = symbol.callableId!!.embedMemberBackingFieldName(
-            Visibilities.isPrivate(symbol.visibility)
+            Visibilities.isPrivate(symbol.visibility), true
         )
         val backingField = UserFieldEmbedding(
                 scopedName,
