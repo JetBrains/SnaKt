@@ -1,7 +1,6 @@
 // NEVER_VALIDATE
 
-import org.jetbrains.kotlin.formver.plugin.ADT
-
+import org.jetbrains.kotlin.formver.plugin.*
 
 <!ADT_INVALID_TARGET!>@ADT
 class NotAnObject<!>
@@ -15,9 +14,13 @@ data <!ADT_INVALID_TARGET!>object WithField<!> {
 }
 
 @ADT
-data <!ADT_INVALID_TARGET, ADT_INVALID_TARGET!>object WithFunction<!> {
-    fun <!VIPER_TEXT!>doSomething<!>(): Int = 1
+data <!ADT_INVALID_TARGET!>object WithFunction<!> {
+    @NeverConvert
+    fun doSomething(): Int = 1
 }
+
+@ADT
+<!ADT_INVALID_TARGET!>object TriggeredByAssignment<!>
 
 interface SomeInterface
 
@@ -27,11 +30,14 @@ data <!ADT_INVALID_TARGET!>object WithSupertype<!> : SomeInterface
 @ADT
 data object Valid
 
-fun <!VIPER_TEXT!>triggerNotAnObject<!>(x: NotAnObject) {}
-fun <!VIPER_TEXT!>triggerNotDataObject<!>(x: NotDataObject) {}
-fun <!VIPER_TEXT!>triggerWithField<!>(x: WithField) {}
-fun <!VIPER_TEXT!>triggerWithFunction<!>(x: WithFunction) {}
-fun <!VIPER_TEXT!>triggerWithSupertype<!>(x: WithSupertype) {}
+<!ADT_INVALID_USAGE!>fun triggerNotAnObject(x: NotAnObject) {}<!>
+<!ADT_INVALID_USAGE!>fun triggerNotDataObject(x: NotDataObject) {}<!>
+<!ADT_INVALID_USAGE!>fun triggerWithField(x: WithField) {}<!>
+<!ADT_INVALID_USAGE!>fun triggerWithFunction(x: WithFunction) {}<!>
+<!ADT_INVALID_USAGE!>fun triggerWithSupertype(x: WithSupertype) {}<!>
+<!ADT_INVALID_USAGE!>fun triggerWithAssignment() {
+    val x = TriggeredByAssignment
+}<!>
 
 fun <!VIPER_TEXT!>validParameter<!>(a: Valid) {}
 

@@ -210,7 +210,7 @@ const val RUNTIME_TYPE_DOMAIN_NAME = "rt"
  * ```
  */
 class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(RUNTIME_TYPE_DOMAIN_NAME)) {
-    private val adts: List<AdtTypeEmbedding> = typeResolver.adtTypeEmbeddings()
+    private val adts: List<AdtTypeEmbedding> = typeResolver.adtTypeEmbeddings().filter { it.isValid }
     override val typeVars: List<Type.TypeVar> = emptyList()
 
     // Define types that are not dependent on the user defined classes in a companion object.

@@ -19,6 +19,7 @@ object PluginErrors : KtDiagnosticsContainer() {
     val UNIQUENESS_CFG by info1<PsiElement, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
     val LOCALITY_VIOLATION by error3<PsiElement, String, Locality, Locality>()
     val ADT_INVALID_TARGET by error1<PsiElement, String>()
+    val ADT_INVALID_USAGE by error1<PsiElement, String>()
     override fun getRendererFactory() = FormalVerificationPluginErrorMessages
 }
 

@@ -13,10 +13,12 @@ import org.jetbrains.kotlin.KtSourceElement
  *
  * TODO: Replace this with some kind of more systematic approach to generating diagnostics.
  */
+enum class AdtErrorKind { INVALID_TARGET, INVALID_USAGE }
+
 class ErrorCollector {
     private val minorErrors = mutableListOf<String>()
     private val purityErrors = mutableListOf<Pair<KtSourceElement?, String>>()
-    private val adtErrors = mutableListOf<Pair<KtSourceElement?, String>>()
+    private val adtErrors = mutableListOf<Triple<AdtErrorKind, KtSourceElement?, String>>()
 
     fun addMinorError(error: String) {
         minorErrors.add(error)
@@ -38,13 +40,16 @@ class ErrorCollector {
 
     fun collectedPurityError() = purityErrors.isNotEmpty()
 
-    fun addAdtError(position: KtSourceElement?, msg: String) {
-        adtErrors.add(Pair(position, msg))
+    fun addAdtError(kind: AdtErrorKind, position: KtSourceElement?, msg: String) {
+        adtErrors.add(Triple(kind, position, msg))
     }
 
-    fun forEachAdtError(action: (KtSourceElement?, String) -> Unit) {
-        adtErrors.forEach { (key, value) ->
-            action(key, value)
+    fun forEachAdtError(action: (AdtErrorKind, KtSourceElement?, String) -> Unit) {
+        adtErrors.forEach { (kind, pos, msg) ->
+            action(kind, pos, msg)
         }
     }
+
+    fun collectedAdtError() = adtErrors.isNotEmpty()
+    fun collectedAdtErrorOfKind(kind: AdtErrorKind) = adtErrors.any { it.first == kind }
 }

@@ -19,9 +19,11 @@ import org.jetbrains.kotlin.fir.declarations.utils.isFinal
 import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
+import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.*
+import org.jetbrains.kotlin.formver.common.AdtErrorKind
 import org.jetbrains.kotlin.formver.common.ErrorCollector
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
@@ -97,7 +99,7 @@ class ProgramConverter(
                     )
                 }
             },
-            adts = typeResolver.adtTypeEmbeddings().map { it.toViper() },
+            adts = typeResolver.adtTypeEmbeddings().filter { it.isValid }.map { it.toViper() },
         )
 
     fun registerForVerification(declaration: FirSimpleFunction) {
@@ -111,6 +113,16 @@ class ProgramConverter(
             embedUserFunction(declaration.symbol, signature).apply {
                 body = stmtCtx.convertMethodWithBody(declaration, signature, returnTarget)
             }
+        }
+        // Any invalid-ADT touch (signature, body, transitive callee, transitive field) registers an entry in
+        // `errorCollector.adtErrors` via `validateAdt`
+        // TODO: Optimize this, e.g. with a body traversal or a check at expression level
+        if (errorCollector.collectedAdtErrorOfKind(AdtErrorKind.INVALID_TARGET)) {
+            errorCollector.addAdtError(
+                AdtErrorKind.INVALID_USAGE,
+                declaration.source,
+                "Function '${declaration.name.asString()}'"
+            )
         }
     }
 
@@ -243,33 +255,27 @@ class ProgramConverter(
     private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding {
         val className = symbol.classId.embedName()
         typeResolver.lookupAdt(className)?.let { return it }
-        validateAdt(symbol)
-        val embedding = AdtTypeEmbedding(className)
+        val embedding = AdtTypeEmbedding(className, isValid = validateAdt(symbol))
         typeResolver.registerAdt(embedding)
         return embedding
     }
 
-    @OptIn(SymbolInternals::class)
     private fun validateAdt(symbol: FirRegularClassSymbol): Boolean {
         if (!symbol.classKind.isObject || !symbol.isData) {
-            errorCollector.addAdtError(symbol.source, "@ADT may only be applied to data object declarations")
+            errorCollector.addAdtError(AdtErrorKind.INVALID_TARGET, symbol.source, "@ADT may only be applied to data object declarations")
             return false
         }
-        val fields = mutableListOf<FirPropertySymbol>()
-        symbol.fir.processAllDeclarations(session) { if (it is FirPropertySymbol && it.hasBackingField) fields.add(it) }
-        if (fields.isNotEmpty()) {
-            errorCollector.addAdtError(symbol.source, "An @ADT data object must not have fields")
+        val declarations = symbol.declarations
+        if (declarations.filterIsInstance<FirPropertySymbol>().isNotEmpty()) {
+            errorCollector.addAdtError(AdtErrorKind.INVALID_TARGET, symbol.source, "An @ADT data object must not have fields")
             return false
         }
-        val memberFunctions = mutableListOf<FirNamedFunctionSymbol>()
-        symbol.fir.processAllDeclarations(session) { if (it is FirNamedFunctionSymbol) memberFunctions.add(it) }
-        if (memberFunctions.isNotEmpty()) {
-            errorCollector.addAdtError(symbol.source, "An @ADT data object must not have member functions")
+        if (declarations.filterIsInstance<FirNamedFunctionSymbol>().isNotEmpty()) {
+            errorCollector.addAdtError(AdtErrorKind.INVALID_TARGET, symbol.source, "An @ADT data object must not have member functions")
             return false
         }
-        val hasSuperTypes = symbol.resolvedSuperTypes.any { !it.isAny }
-        if (hasSuperTypes) {
-            errorCollector.addAdtError(symbol.source, "An @ADT data object must not extend a class or implement an interface")
+        if (symbol.resolvedSuperTypes.any { !it.isAny }) {
+            errorCollector.addAdtError(AdtErrorKind.INVALID_TARGET, symbol.source, "An @ADT data object must not extend a class or implement an interface")
             return false
         }
         return true
@@ -357,14 +363,15 @@ class ProgramConverter(
     }
 
     @OptIn(SymbolInternals::class)
-    private val FirRegularClassSymbol.propertySymbols: List<FirPropertySymbol>
+    private val FirRegularClassSymbol.declarations: List<FirBasedSymbol<*>>
         get() {
-            val result = mutableListOf<FirPropertySymbol>()
-            this.fir.processAllDeclarations(session) {
-                if (it is FirPropertySymbol) result.add(it)
-            }
+            val result = mutableListOf<FirBasedSymbol<*>>()
+            this.fir.processAllDeclarations(session) { result.add(it) }
             return result
         }
+
+    private val FirRegularClassSymbol.propertySymbols: List<FirPropertySymbol>
+        get() = declarations.filterIsInstance<FirPropertySymbol>()
 
     private fun embedFullSignature(symbol: FirFunctionSymbol<*>): FullNamedFunctionSignature {
         val subSignature = object : NamedFunctionSignature, FunctionSignature by embedFunctionSignature(symbol) {
