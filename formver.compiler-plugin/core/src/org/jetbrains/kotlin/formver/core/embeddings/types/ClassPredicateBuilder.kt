@@ -32,7 +32,7 @@ internal class ClassPredicateBuilder private constructor(
             predicateName: SymbolicName,
             action: ClassPredicateBuilder.() -> Unit,
         ): Predicate {
-            val typeEmbedding = ctx.lookupEmbedding(name)!!
+            val typeEmbedding = ctx.lookupClassTypeEmbedding(name)!!
             val builder = ClassPredicateBuilder(
                 TypeEmbedding(typeEmbedding, TypeEmbeddingFlags(nullable = false)),
                 ctx.lookupClassFields(name),

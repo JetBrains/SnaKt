@@ -53,7 +53,7 @@ class TypeResolver {
 
     fun getEmbeddingOrExecute(name: ScopedName, action: () -> ClassTypeEmbedding) = classEmbedding[name] ?: action()
 
-    fun lookupEmbedding(name: SymbolicName) = classEmbedding[name] ?: interfaceEmbedding[name]
+    fun lookupClassTypeEmbedding(name: SymbolicName) = classEmbedding[name] ?: interfaceEmbedding[name]
 
     /**
      * Extends the subtype relation with [subtype] <: [supertype]
@@ -68,7 +68,7 @@ class TypeResolver {
      * These are only the direct super types, transitive closure is not included.
      */
     fun lookupSuperTypes(name: SymbolicName) =
-        superTypes.getOrDefault(name, emptySet()).mapNotNull { lookupEmbedding(it) }
+        superTypes.getOrDefault(name, emptySet()).mapNotNull { lookupClassTypeEmbedding(it) }
 
     /**
      * Get or Put a property to the class.
