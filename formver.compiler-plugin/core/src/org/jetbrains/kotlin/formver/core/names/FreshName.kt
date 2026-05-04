@@ -101,7 +101,21 @@ data object DispatchReceiverName : FreshName, NameTypeIsVariable {
 data object ExtensionReceiverName : FreshName, NameTypeIsVariable {
     override val inViper: Boolean = true
 
-    override val candidates: List<CandidateName> = nameWithPrefixCandidates("this", nameType)
+    override val candidates: List<CandidateName> = buildCandidates {
+        val shortName = "this"
+        val longName = listOf("this", "dispatch")
+        candidate {
+            +shortName
+        }
+        candidate {
+            +nameType
+            +shortName
+        }
+        candidate {
+            +nameType
+            +longName
+        }
+    }
 
     override val children: List<AnyName> = listOf(nameType)
 }

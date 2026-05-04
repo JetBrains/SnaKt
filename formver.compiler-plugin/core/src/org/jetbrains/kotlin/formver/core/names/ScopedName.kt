@@ -21,14 +21,13 @@ data class ScopedName(val scope: NameScope, val name: SymbolicName) : SymbolicNa
     override val inViper: Boolean = name !is ClassKotlinName
 
     override val candidates: List<CandidateName> = buildCandidates {
-        +nameWithDependentPrefixCandidates(name, scope)
-        if (nameType != null) {
+        if (scope is BadScope || scope is FakeScope) {
             candidate {
-                +nameType
-                +scope
                 +name
             }
+            return@buildCandidates
         }
+        +nameWithDependentPrefixCandidates(name, scope)
     }
 
     override val children: List<AnyName> = listOf(scope, name)

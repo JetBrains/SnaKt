@@ -14,7 +14,7 @@ sealed interface NameScope : AnyName {
         get() = null
 
     override val inViper: Boolean
-        get() = true
+        get() = false
 }
 
 // Includes the scope itself.
@@ -36,7 +36,15 @@ val NameScope.packageNameIfAny: FqName?
 
 data class PackageScope(val packageName: FqName) : NameScope {
     override val candidates: List<CandidateName> = buildCandidates {
-        val split = packageName.asString().split(".")
+        val name = packageName.asString()
+
+        if (name.isEmpty()) {
+            candidate { +"pkg" }
+            return@buildCandidates
+        }
+
+        val split = name.split(".")
+
         split.indices.forEach { i -> candidate { +split.takeLast(i + 1) } }
         candidate {
             +"pkg"

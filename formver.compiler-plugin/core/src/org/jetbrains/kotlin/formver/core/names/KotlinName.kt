@@ -178,9 +178,6 @@ data class TypeName(val pretype: PretypeEmbedding, val nullable: Boolean) : Symb
     override val inViper: Boolean = false
 
     override val candidates: List<CandidateName> = buildCandidates {
-        candidate {
-            +pretype.name
-        }
         candidateNoSeparator {
             if (nullable) +"N"
             +pretype.name

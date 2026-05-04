@@ -1,7 +1,6 @@
 package org.jetbrains.kotlin.formver.core.names
 
 import org.jetbrains.kotlin.formver.viper.*
-import org.jetbrains.kotlin.utils.addToStdlib.ifNotEmpty
 
 /**
  * Gives the current name.
@@ -114,44 +113,99 @@ class ShortNameResolver : NameResolver {
         val index = currentCandidate.getOrPut(name) { 0 }
         return name.candidates()[index]
     }
+
+    private fun nextCandidate(name: AnyName): CandidateName {
+        val index = currentCandidate.getOrPut(name) { 0 }
+        return name.candidates()[index + 1]
+    }
     // END RESOLVE NAMES
 
 
     // START MANGLE
 
+
+    private fun costOfName(name: AnyName) : Int = when(name) {
+        is NameScope -> when(name) {
+            BadScope -> 100
+            is ClassScope -> 2
+            FakeScope -> 50
+            is LocalScope -> 3
+            is PackageScope -> 10
+            ParameterScope -> 3
+            is PrivateScope -> 1
+            PublicScope -> 3
+        }
+        else -> 1
+    }
+
+    private fun costOfNamePart(part: NamePart): Int = when (part) {
+        is NamePart.Basic -> 1
+        is NamePart.Dependent -> {
+            val name = part.name
+            val subParts = currentCandidate(name).parts
+            val subCost = subParts.sumOf { costOfNamePart(it) }
+            subCost + costOfName(name)
+        }
+        NamePart.Separator -> 0
+    }
+
     /**
+     * TODO: Update
      * The higher the priority, the earlier it is chosen to move.
      * There are no fundamental reasons for this priority order. These just resulted in "good" names.
      */
-    private fun priorityOrder(name: AnyName): Int = when (name) {
-        is SymbolicName -> when (name) {
-            is FreshName -> when (name) {
-                is LabelName -> 5
-                else -> 1
-            }
-            is KotlinName -> 1
-            is ScopedName -> 2
-            is DomainName -> 4
-            else -> -1
-        }
-        else -> -1
+    private fun costOfMovingName(name: AnyName): Int {
+        val currentCandidate = currentCandidate(name)
+        val nextCandidate = nextCandidate(name)
+
+        val newParts = (nextCandidate.parts.toSet() - currentCandidate.parts.toSet())
+        return newParts.sumOf { costOfNamePart(it)}
     }
 
+    private fun buildGraph(name: AnyName): Map<AnyName, Set<AnyName>> {
+        val graph = mutableMapOf<AnyName, MutableSet<AnyName>>()
+        val queue = mutableListOf(name)
+        while (queue.isNotEmpty()) {
+            val current = queue.removeFirst()
+            val subNames = current.children
+            subNames.forEach {
+                graph.getOrPut(it) { mutableSetOf() }.add(current)
+            }
+            queue.addAll(subNames)
+        }
+        return graph
+    }
+
+    private fun buildGraph(names: Set<AnyName>) : Map<AnyName, Set<AnyName>> {
+        return names.fold(emptyMap()
+        ) {
+            acc, name -> acc +  buildGraph(name)
+        }
+    }
 
     /**
      * Generates short human-readable names. Must be called before using [lookup].
      */
     override fun resolve() {
         var currentCollisions = collisions()
-        while (currentCollisions.isNotEmpty()) {
-            val toResolve = currentCollisions.entries.minByOrNull { it.key }!!.value
+        loop@ while (currentCollisions.isNotEmpty()) {
+            val toMove = currentCollisions.flatMap { it.value }.mapNotNull { findMoveableName(it)?.second }.toSet()
+            // outer name maps to inner name
+            val graph = buildGraph(toMove)
+            assert(toMove.isNotEmpty()) { "No moveable names found, unable to resolve collisions" }
 
-            val candidateToMove = toResolve.filter { canMove(it) }.sortedBy { it.hashCode() }.ifNotEmpty { maxBy { priorityOrder(it) } }
+            toMove.forEach { name ->
+                if (graph[name]?.isNotEmpty() != true) {
+//                    print(current(name))
+                    move(name)
+//                    println(" -> ${current(name)}")
+                }
+            }
 
-            assert(candidateToMove != null) { "Unable to make names unique" }
 
-            move(candidateToMove!!)
+
             currentCollisions = collisions()
+
         }
 
         // Fix the names
@@ -178,32 +232,22 @@ class ShortNameResolver : NameResolver {
 
     /**
      * Moves `name` one position.
-     * We generally try to move first the parts, and only if not successful do we move the `name`
-     *
-     * Returns true if the entity (or a dependent name) could be moved
      */
-    private fun move(entity: AnyName): Boolean {
-        val movableParts = currentCandidate(entity).moveableParts()
-
-        // Try to move the subparts first
-        for (part in movableParts) {
-            if (move(part.name)) return true
-        }
-
-        if (canMove(entity)) {
-            currentCandidate[entity] = (currentCandidate[entity] ?: 0) + 1
-            return true
-        }
-        return false
+    private fun move(entity: AnyName) {
+        currentCandidate[entity] = (currentCandidate[entity] ?: 0) + 1
     }
     /**
-     * Returns true if `name` can be moved or one of the parts of the current candidate can be moved
+     * Returns the name that will be moved. This can be the [entity] or a name on which [entity] depends.
+     * If no such name exists, it returns null.
      */
-    private fun canMove(entity: AnyName): Boolean {
+    private fun findMoveableName(entity: AnyName): Pair<Int, AnyName>? {
         val currentIndex = currentCandidate[entity] ?: 0
-        if (currentIndex + 1 < entity.candidates().size) return true
-        return currentCandidate(entity).moveableParts().any {
-            canMove(it.name)
-        }
+        val options = currentCandidate(entity).moveableParts().mapNotNull { namePart ->
+            findMoveableName(namePart.name)
+        } + (if (currentIndex + 1 < entity.candidates().size)  {
+            // entity can be moved, so it is added to the options
+            listOf(Pair(costOfMovingName(entity), entity))
+        } else emptyList())
+        return options.minByOrNull { it.first }
     }
 }
