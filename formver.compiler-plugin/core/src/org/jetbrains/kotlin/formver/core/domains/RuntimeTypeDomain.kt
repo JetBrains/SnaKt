@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.properties.FinalFieldGetter
 import org.jetbrains.kotlin.formver.core.embeddings.types.embedClassTypeFunc
 import org.jetbrains.kotlin.formver.core.names.DomainName
 import org.jetbrains.kotlin.formver.core.names.QualifiedDomainFuncName
@@ -413,5 +414,27 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
                 }
             }
         }
+
+        val groupedProperties = typeResolver.propertiesAsFunctions().toList().groupBy { it.first.propertyName }
+
+        groupedProperties.forEach { (name, properties) ->
+            val property = properties.first().second
+            axiom {
+                Exp.forall(r) {
+                    r ->
+                    val functionApplication = (property.getter!! as FinalFieldGetter).getter.viperFunction(typeResolver)!!.toFuncApp(listOf(r))
+                    simpleTrigger {
+                        functionApplication
+                    }
+
+                    properties.map { (name, property) ->
+                        val classType = typeResolver.lookupClassTypeEmbedding(name.className)!!
+                        ((r isOf classType.runtimeType) implies (functionApplication isOf property.type.runtimeType)) as Exp
+                    }.reduce { acc, exp -> acc and exp }
+
+                }
+            }
+        }
+
     }
 }
