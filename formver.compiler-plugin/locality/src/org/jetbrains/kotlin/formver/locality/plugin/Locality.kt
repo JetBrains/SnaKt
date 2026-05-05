@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.formver.locality.plugin.Locality.Local
 /**
  * Symbolic locality value.
  */
-sealed interface Locality {
+sealed interface Locality : SymbolicValue<Locality> {
 
     /**
      * Symbolic locality value for a global reference.
@@ -27,33 +27,32 @@ sealed interface Locality {
     data class Local(
         val owner: FirBasedSymbol<*>?
     ) : Locality
-}
 
-/**
- * Returns `true` if `this` locality accepts [other], `false` otherwise.
- */
-fun Locality.accepts(other: Locality): Boolean {
-    return when (this) {
-        Global -> other == Global
-        is Local ->
-            when (other) {
-                Global -> true
-                is Local -> owner == null || owner == other.owner
-            }
-    }
-}
+    /**
+     * Returns `true` if `this` locality accepts [other], `false` otherwise.
+     */
+    override fun accepts(other: Locality): Boolean =
+        when (this) {
+            Global -> other == Global
+            is Local ->
+                when (other) {
+                    Global -> true
+                    is Local -> owner == null || owner == other.owner
+                }
+        }
 
-/**
- * Merges `this` locality with [other]. If both `this` and [other] are local to different declarations the result will
- * be `Local(null)` (local to unknown).
- */
-fun Locality.union(other: Locality): Locality {
-    return when {
-        this == other -> this
-        this is Global -> other
-        other is Global -> this
-        else -> Local(null)
-    }
+    /**
+     * Merges `this` locality with [other]. If both `this` and [other] are local to different declarations the result will
+     * be `Local(null)` (local to unknown).
+     */
+    override fun union(other: Locality): Locality =
+        when {
+            this == other -> this
+            this is Global -> other
+            other is Global -> this
+            else -> Local(null)
+        }
+
 }
 
 /**
