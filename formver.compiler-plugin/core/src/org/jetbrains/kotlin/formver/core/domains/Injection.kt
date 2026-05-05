@@ -65,7 +65,7 @@ class Injection(
         axiom {
             Exp.forall(r) { r ->
                 assumption { r isOf typeFunction() }
-                simpleTrigger { toRef(fromRef(r)) } eq r
+                toRef(simpleTrigger { fromRef(r) }) eq r
             }
         }
     }
