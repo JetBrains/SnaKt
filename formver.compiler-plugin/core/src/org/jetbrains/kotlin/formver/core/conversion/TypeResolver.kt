@@ -99,6 +99,7 @@ class TypeResolver {
 
     fun lookupProperty(name: ClassPropertyPair) : PropertyEmbedding? = properties[name]
 
+    fun propertiesByPropertyName(name: PropertyKotlinName) = properties.filterKeys { it.propertyName == name }
     fun backingFields(): List<FieldEmbedding> = properties.values.mapNotNull { toBackingField(it) }
     fun propertiesAsFunctions() = properties.filter { it.value.getter is FinalFieldGetter }
 

@@ -36,12 +36,15 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.isAdt
+import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
+import org.jetbrains.kotlin.formver.viper.ast.BuiltInMethod
+import org.jetbrains.kotlin.formver.viper.ast.Function
+import org.jetbrains.kotlin.formver.viper.ast.Method
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.utils.addIfNotNull
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
-
 
 
 /**
@@ -86,8 +89,7 @@ class ProgramConverter(
             domains = listOf(RuntimeTypeDomain(typeResolver)),
             // We need to deduplicate fields since public fields with the same name are represented differently
             // at `FieldEmbedding` level but map to the same Viper.
-            fields = typeResolver.backingFields().distinctBy { it.name }
-                .map { it.toViper() },
+            fields = typeResolver.backingFields().distinctBy { it.name }.map { it.toViper() },
             functions = SpecialFunctions.all + functions.values.mapNotNull { it.viperFunction(typeResolver) }
                 .distinctBy { it.name },
             methods = SpecialMethods.all + methods.values.mapNotNull { it.viperMethod(typeResolver) }
@@ -171,17 +173,58 @@ class ProgramConverter(
     }
 
     private fun embedGetterFunction(symbol: FirPropertySymbol): FunctionEmbedding {
-        val name = symbol.embedGetterName(this, symbol.representedAsFunction(session))
+        val name = symbol.embedGetterName(this, symbol.representableAsFunction(session))
         return methods.getOrPut(name) {
             val signature = GetterFunctionSignature(name, symbol)
-            UserFunctionEmbedding(
-                NonInlineNamedFunction(signature)
-            )
+            UserFunctionEmbedding(object : RichCallableEmbedding, FullNamedFunctionSignature by signature {
+                override fun toViperMethodHeader(ctx: TypeResolver): Method {
+                    val returnVariable =
+                        PlaceholderVariableEmbedding(PlaceholderReturnVariableName, signature.callableType.returnType)
+                    return BuiltInMethod(
+                        name,
+                        formalArgs.map { it.toLocalVarDecl() },
+                        returnVariable.toLocalVarDecl(),
+                        getPreconditions().pureToViper(toBuiltin = true, ctx),
+                        getPostconditions(returnVariable).pureToViper(toBuiltin = true, ctx),
+                        null,
+                        declarationSource.asPosition
+                    )
+                }
+
+                override fun toViperFunctionHeader(ctx: TypeResolver): Function? = null
+
+                override fun insertCall(
+                    args: List<ExpEmbedding>, ctx: StmtConversionContext
+                ): ExpEmbedding = MethodCall(signature, args)
+
+                override fun getPostconditions(returnVariable: VariableEmbedding): List<ExpEmbedding> {
+                    val finalPropertyName =
+                        symbol.callableId!!.embedMemberPropertyName(Visibilities.isPrivate(symbol.visibility), true)
+                    val openPropertyName =
+                        symbol.callableId!!.embedMemberPropertyName(Visibilities.isPrivate(symbol.visibility), false)
+                    val openProperties = typeResolver.propertiesByPropertyName(openPropertyName)
+                    val closedProperties = typeResolver.propertiesByPropertyName(finalPropertyName)
+                    return openProperties.map { (name, property) ->
+                        val classTypeEmbedding = typeResolver.lookupClassTypeEmbedding(name.className)!!
+                        OperatorExpEmbeddings.Implies(
+                            Is(signature.formalArgs.first(), classTypeEmbedding.asTypeEmbedding()),
+                            Is(returnVariable, property.type)
+                        )
+                    } + closedProperties.map { (name, property) ->
+                        val classTypeEmbedding = typeResolver.lookupClassTypeEmbedding(name.className)!!
+                        val function = (property.getter!! as FinalFieldGetter).getter as PureUserFunctionEmbedding
+                        OperatorExpEmbeddings.Implies(
+                            Is(signature.formalArgs.first(), classTypeEmbedding.asTypeEmbedding()),
+                            EqCmp(returnVariable, FunctionCall(function.callable, signature.formalArgs.take(1)))
+                        )
+                    }
+                }
+            })
         }
     }
 
     private fun embedSetterFunction(symbol: FirPropertySymbol): FunctionEmbedding {
-        val name = symbol.embedSetterName(this, symbol.representedAsFunction(session))
+        val name = symbol.embedSetterName(this, symbol.representableAsFunction(session))
         return methods.getOrPut(name) {
             val signature = SetterFunctionSignature(name, symbol)
             UserFunctionEmbedding(
@@ -290,7 +333,6 @@ class ProgramConverter(
     }
 
 
-
     @OptIn(SymbolInternals::class)
     override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding {
 
@@ -319,9 +361,13 @@ class ProgramConverter(
                 }
 
                 // final symbols that are mutable and do not have a getter, can be represented by a getter
-                if (final && symbol.isVar && !hasCustomGetter && symbol.hasBackingField){
+                if (final && symbol.isVar && !hasCustomGetter && symbol.hasBackingField) {
                     val backingField = embedBackingField(symbol)
-                    return@getOrPutProperty PropertyEmbedding(BackingFieldGetter(backingField), BackingFieldSetter(backingField), embedType(symbol.resolvedReturnType))
+                    return@getOrPutProperty PropertyEmbedding(
+                        BackingFieldGetter(backingField),
+                        BackingFieldSetter(backingField),
+                        embedType(symbol.resolvedReturnType)
+                    )
                 }
 
 
@@ -344,7 +390,7 @@ class ProgramConverter(
             val name = propertySymbol.embedMemberPropertyName(session)
             propertySymbol.withConstructorParam { paramSymbol ->
                 typeResolver.lookupProperty(name)?.let {
-                    when(it.getter) {
+                    when (it.getter) {
                         is BackingFieldGetter -> paramSymbol to it
                         is FinalFieldGetter -> paramSymbol to it
                         else -> null
@@ -520,28 +566,27 @@ class ProgramConverter(
         val classSymbol = symbol.dispatchReceiverType!!.toClassSymbol(session) as FirRegularClassSymbol
         val embedding = embedClass(classSymbol)
         val scopedName = symbol.callableId!!.embedMemberBackingFieldName(
-            Visibilities.isPrivate(symbol.visibility), symbol.representedAsFunction(session)
+            Visibilities.isPrivate(symbol.visibility), symbol.representableAsFunction(session)
         )
         val backingField = UserFieldEmbedding(
-                scopedName,
-                embedType(symbol.resolvedReturnType),
-                symbol,
-                symbol.isUnique(session),
-                embedding,
-                symbol.isManual(session)
-            )
+            scopedName,
+            embedType(symbol.resolvedReturnType),
+            symbol,
+            symbol.isUnique(session),
+            embedding,
+            symbol.isManual(session)
+        )
 
         return backingField
     }
 
     private fun embedFinalProperty(
         symbol: FirPropertySymbol
-    ) : PropertyEmbedding {
-        val name = symbol.embedGetterName(this, symbol.representedAsFunction(session))
+    ): PropertyEmbedding {
+        val name = symbol.embedGetterName(this, symbol.representableAsFunction(session))
         val getter = PureUserFunctionEmbedding(
             NonInlineNamedFunction(
-                GetterFunctionSignature(name, symbol),
-                true
+                GetterFunctionSignature(name, symbol), true
             )
         )
 
@@ -550,9 +595,7 @@ class ProgramConverter(
         return PropertyEmbedding(
             FinalFieldGetter(
                 getter
-            ),
-            null,
-            embedType(symbol.resolvedReturnType)
+            ), null, embedType(symbol.resolvedReturnType)
         )
     }
 
@@ -663,14 +706,17 @@ class ProgramConverter(
  * Returns true if we are sure, that the access to the property will always return the same value.
  * This is true for properties that are final or belong to a final class.
  */
-fun FirPropertySymbol.isFinal(session: FirSession) : Boolean {
+fun FirPropertySymbol.isFinal(session: FirSession): Boolean {
     val classSymbol = dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol ?: return false
     return (classSymbol.isFinal || isFinal)
 }
 
 @OptIn(SymbolInternals::class)
-fun FirPropertySymbol.hasCustomGetter() : Boolean = getterSymbol?.fir !is FirDefaultPropertyGetter
+fun FirPropertySymbol.hasCustomGetter(): Boolean = getterSymbol?.fir !is FirDefaultPropertyGetter
 
-fun FirPropertySymbol.representedAsFunction(session: FirSession) : Boolean {
+/**
+ * Returns true if the property should be represented as a viper function.
+ */
+fun FirPropertySymbol.representableAsFunction(session: FirSession): Boolean {
     return isFinal(session) && !hasCustomGetter() && isVal
 }

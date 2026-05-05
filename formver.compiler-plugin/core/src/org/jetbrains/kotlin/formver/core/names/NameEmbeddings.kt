@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.formver.core.conversion.ClassPropertyPair
 import org.jetbrains.kotlin.formver.core.conversion.ProgramConversionContext
 import org.jetbrains.kotlin.formver.core.conversion.PropertyKotlinName
 import org.jetbrains.kotlin.formver.core.conversion.ScopeIndex
-import org.jetbrains.kotlin.formver.core.conversion.representedAsFunction
+import org.jetbrains.kotlin.formver.core.conversion.representableAsFunction
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId
@@ -156,7 +156,7 @@ fun FirPropertySymbol.embedMemberPropertyName(session: FirSession): ClassPropert
     val callable = callableId
     val className =
         callable?.classId?.embedName() ?: throw SnaktInternalException(source, "Property is not part of a class")
-    val propertyName = callable.embedMemberPropertyName(Visibilities.isPrivate(this.visibility), representedAsFunction(session))
+    val propertyName = callable.embedMemberPropertyName(Visibilities.isPrivate(this.visibility), representableAsFunction(session))
     return ClassPropertyPair(className, propertyName)
 }
 
@@ -167,8 +167,8 @@ fun FirConstructorSymbol.embedName(ctx: ProgramConversionContext): ScopedName = 
 }
 
 fun FirFunctionSymbol<*>.embedName(ctx: ProgramConversionContext, session: FirSession): ScopedName = when (this) {
-    is FirPropertyAccessorSymbol -> if (isGetter) propertySymbol.embedGetterName(ctx, propertySymbol.representedAsFunction(session)) else propertySymbol.embedSetterName(
-        ctx, propertySymbol.representedAsFunction(session)
+    is FirPropertyAccessorSymbol -> if (isGetter) propertySymbol.embedGetterName(ctx, propertySymbol.representableAsFunction(session)) else propertySymbol.embedSetterName(
+        ctx, propertySymbol.representableAsFunction(session)
     )
 
     is FirConstructorSymbol -> embedName(ctx)

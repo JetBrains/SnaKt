@@ -47,7 +47,7 @@ class UserFunctionEmbedding(private val callable: RichCallableEmbedding) : Funct
 /**
  * An embedding of a user-defined pure function
  */
-class PureUserFunctionEmbedding(private val callable: RichCallableEmbedding) : PureFunctionEmbedding,
+class PureUserFunctionEmbedding(val callable: RichCallableEmbedding) : PureFunctionEmbedding,
     CallableEmbedding by callable {
 
     var body: Exp? = null
