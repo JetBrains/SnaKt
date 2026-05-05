@@ -10,21 +10,18 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.findClosest
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.formver.locality.plugin.Locality.Global
 import org.jetbrains.kotlin.formver.locality.plugin.Locality.Local
+import org.jetbrains.kotlin.formver.locality.plugin.LocalityRequirement.RequireGlobal
+import org.jetbrains.kotlin.formver.locality.plugin.LocalityRequirement.RequireLocal
 
-enum class LocalityRequirement : AbstractValue<LocalityRequirement>, Constraint<Locality> {
-    RequireLocal, RequireGlobal;
-
+object LocalityWitnessGenerator : WitnessGenerator<Locality, LocalityRequirement> {
     context(context: CheckerContext)
-    override fun accepts(value: Locality): Boolean =
-        when (this) {
-            RequireGlobal -> value == Global
-            RequireLocal ->
-                when (value) {
-                    Global -> true
-                    is Local -> value.owner == context.findClosest<FirFunctionSymbol<*>>()
-                }
-    }
-
-    override fun union(other: LocalityRequirement): LocalityRequirement =
-        minOf(this, other)
+    override fun generateWitnessFor(requirement: LocalityRequirement): Locality =
+        when (requirement) {
+            RequireGlobal -> Global
+            RequireLocal -> Local(context.findClosest<FirFunctionSymbol<*>>())
+        }
 }
+
+context(_: CheckerContext)
+fun LocalityRequirement.generateWitness(): Locality =
+    LocalityWitnessGenerator.generateWitnessFor(this)

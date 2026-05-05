@@ -31,7 +31,7 @@ object QualifiedAccessLocalityChecker : FirQualifiedAccessExpressionChecker(MppC
         val receiver = expression.extensionReceiver
 
         if (receiver != null && receiverDeclaration != null) {
-            val requiredLocality = receiverDeclaration.resolveRequiredLocality()
+            val requiredLocality = receiverDeclaration.typeRef.resolveLocalityRequirement()
             val actualLocality = receiver.resolveLocality()
 
             if (!requiredLocality.accepts(actualLocality)) {
@@ -39,7 +39,7 @@ object QualifiedAccessLocalityChecker : FirQualifiedAccessExpressionChecker(MppC
                     receiver.source ?: expression.source,
                     LOCALITY_VIOLATION,
                     "Receiver",
-                    requiredLocality,
+                    requiredLocality.generateWitness(),
                     actualLocality
                 )
             }
@@ -55,7 +55,7 @@ object QualifiedAccessLocalityChecker : FirQualifiedAccessExpressionChecker(MppC
             .zip(callableSymbol.contextParameterSymbols.map { it.fir })
 
         for ((argument, argumentDeclaration) in contextArgumentMappings) {
-            val requiredLocality = argumentDeclaration.resolveRequiredLocality()
+            val requiredLocality = argumentDeclaration.returnTypeRef.resolveLocalityRequirement()
             val actualLocality = argument.resolveLocality()
 
             if (requiredLocality.accepts(actualLocality)) continue
@@ -64,7 +64,7 @@ object QualifiedAccessLocalityChecker : FirQualifiedAccessExpressionChecker(MppC
                 argument.source,
                 LOCALITY_VIOLATION,
                 "Argument",
-                requiredLocality,
+                requiredLocality.generateWitness(),
                 actualLocality
             )
         }

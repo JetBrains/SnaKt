@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOL
 object ReturnLocalityChecker : FirReturnExpressionChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirReturnExpression) {
-        val requiredLocality = Locality.Global
+        val requiredLocality = LocalityRequirement.RequireGlobal
         val actualLocality = expression.result.resolveLocality()
 
         if (requiredLocality.accepts(actualLocality)) return
@@ -25,7 +25,7 @@ object ReturnLocalityChecker : FirReturnExpressionChecker(MppCheckerKind.Common)
             expression.result.source,
             LOCALITY_VIOLATION,
             "Return",
-            requiredLocality,
+            requiredLocality.generateWitness(),
             actualLocality
         )
     }

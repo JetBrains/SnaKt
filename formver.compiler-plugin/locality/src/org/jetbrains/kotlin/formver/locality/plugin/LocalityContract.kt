@@ -5,13 +5,16 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
+import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
+
 data class LocalityContract(
     val requiredLocalities: List<LocalityRequirement>
-) : SymbolicValue<LocalityContract> {
-    override fun accepts(other: LocalityContract): Boolean =
-        requiredLocalities.size != other.requiredLocalities.size &&
-                requiredLocalities.zip(other.requiredLocalities).all { (thisRequirement, otherRequirement) ->
-                    thisRequirement.accepts(otherRequirement)
+) : AbstractValue<LocalityContract>, Constraint<LocalityContract> {
+    context(context: CheckerContext)
+    override fun accepts(value: LocalityContract): Boolean =
+        requiredLocalities.size == value.requiredLocalities.size &&
+                requiredLocalities.zip(value.requiredLocalities).all { (thisRequirement, otherRequirement) ->
+                    thisRequirement < otherRequirement
                 }
 
     override fun union(other: LocalityContract): LocalityContract {

@@ -21,19 +21,19 @@ object CallLocalityChecker : FirCallChecker(MppCheckerKind.Common) {
         val argumentMappings = expression.resolvedArgumentMapping
 
         for ((argument, argumentDeclaration) in argumentMappings.orEmpty()) {
-            val requiredLocality = argumentDeclaration.resolveRequiredLocality()
+            val localityRequirement = argumentDeclaration.returnTypeRef.resolveLocalityRequirement()
             val effectiveArguments = argument.unwrapAndFlattenArgument(flattenArrays = false)
 
             for (effectiveArgument in effectiveArguments) {
                 val actualLocality = effectiveArgument.resolveLocality()
 
-                if (requiredLocality.accepts(actualLocality)) continue
+                if (localityRequirement.accepts(actualLocality)) continue
 
                 reporter.reportOn(
                     effectiveArgument.source ?: argument.source,
                     LOCALITY_VIOLATION,
                     "Argument",
-                    requiredLocality,
+                    localityRequirement.generateWitness(),
                     actualLocality
                 )
             }

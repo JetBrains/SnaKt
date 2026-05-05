@@ -17,16 +17,16 @@ object PropertyLocalityChecker : FirPropertyChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(declaration: FirProperty) {
         val initializer = declaration.initializer ?: return
-        val requiredLocality = declaration.resolveInvariantLocality()
+        val localityRequirement = declaration.returnTypeRef.resolveLocalityRequirement()
         val actualLocality = initializer.resolveLocality()
 
-        if (requiredLocality.accepts(actualLocality)) return
+        if (localityRequirement.accepts(actualLocality)) return
 
         reporter.reportOn(
             initializer.source,
             LOCALITY_VIOLATION,
             "Assignment",
-            requiredLocality,
+            localityRequirement.generateWitness(),
             actualLocality
         )
     }

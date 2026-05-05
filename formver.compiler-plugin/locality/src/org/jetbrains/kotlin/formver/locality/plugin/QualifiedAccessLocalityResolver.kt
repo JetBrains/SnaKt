@@ -25,7 +25,7 @@ fun FirQualifiedAccessExpression.resolveImmediateLocality(): Locality =
     when (this) {
         is FirThisReceiverExpression -> {
             when (val boundSymbol = calleeReference.boundSymbol) {
-                is FirReceiverParameterSymbol -> boundSymbol.fir.resolveActualLocality()
+                is FirReceiverParameterSymbol -> boundSymbol.fir.resolveLocality()
                 else -> Locality.Global
             }
         }
@@ -33,8 +33,8 @@ fun FirQualifiedAccessExpression.resolveImmediateLocality(): Locality =
             when (val calleeSymbol = calleeReference.symbol) {
                 is FirVariableSymbol<*> ->
                     when (val declaration = calleeSymbol.fir) {
-                        is FirValueParameter -> declaration.resolveActualLocality()
-                        is FirProperty -> declaration.resolveInvariantLocality()
+                        is FirValueParameter -> declaration.resolveLocality()
+                        is FirProperty -> declaration.resolveLocality()
                         else -> Locality.Global
                     }
                 else -> Locality.Global
