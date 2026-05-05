@@ -5,10 +5,9 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
-interface AbstractValue<Self : AbstractValue<Self>> {
+interface MeetSemilatticeElement<Self : MeetSemilatticeElement<Self>> {
     /**
-     * Merges `this` abstract value with [other]. If both `this` and [other] are local to different declarations the
-     * result will be `Local(null)` (local to unknown).
+     * Computes the greatest lower bound of `this` and [other].
      */
-    fun union(other: Self): Self
+    fun meet(other: Self): Self
 }

@@ -5,9 +5,9 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
-import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
-
-interface WitnessGenerator<V, R : Constraint<V>> {
-    context(context: CheckerContext)
-    fun generateWitnessFor(requirement: R): V
+interface JoinSemilatticeElement<Self : JoinSemilatticeElement<Self>> {
+    /**
+     * Computes the least upper bound of `this` and [other].
+     */
+    fun union(other: Self): Self
 }

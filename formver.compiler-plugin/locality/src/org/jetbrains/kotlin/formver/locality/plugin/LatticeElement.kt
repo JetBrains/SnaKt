@@ -5,9 +5,4 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
-import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
-
-interface WitnessGenerator<V, R : Constraint<V>> {
-    context(context: CheckerContext)
-    fun generateWitnessFor(requirement: R): V
-}
+interface LatticeElement<Self : LatticeElement<Self>> : JoinSemilatticeElement<Self>, MeetSemilatticeElement<Self>

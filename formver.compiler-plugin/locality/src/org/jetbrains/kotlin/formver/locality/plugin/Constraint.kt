@@ -7,7 +7,7 @@ package org.jetbrains.kotlin.formver.locality.plugin
 
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 
-interface Constraint<T: AbstractValue<*>> {
+interface Constraint<T> {
     /**
      * Returns `true` if `this` requirement accepts [value], `false` otherwise.
      */

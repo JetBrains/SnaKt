@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 
 data class LocalityContract(
     val requiredLocalities: List<LocalityRequirement>
-) : AbstractValue<LocalityContract>, Constraint<LocalityContract> {
+) : LatticeElement<LocalityContract>, Constraint<LocalityContract> {
     context(context: CheckerContext)
     override fun accepts(value: LocalityContract): Boolean =
         requiredLocalities.size == value.requiredLocalities.size &&
@@ -26,6 +26,19 @@ data class LocalityContract(
             requiredLocalities.zip(other.requiredLocalities)
                 .map { (thisRequirement, otherRequirement) ->
                     thisRequirement.union(otherRequirement)
+                }
+        )
+    }
+
+    override fun meet(other: LocalityContract): LocalityContract {
+        if (requiredLocalities.size != other.requiredLocalities.size) {
+            return LocalityContract(emptyList())
+        }
+
+        return LocalityContract(
+            requiredLocalities.zip(other.requiredLocalities)
+                .map { (thisRequirement, otherRequirement) ->
+                    thisRequirement.meet(otherRequirement)
                 }
         )
     }

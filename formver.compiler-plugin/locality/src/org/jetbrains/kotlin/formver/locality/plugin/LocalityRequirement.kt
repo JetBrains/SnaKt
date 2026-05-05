@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.formver.locality.plugin.Locality.Global
 import org.jetbrains.kotlin.formver.locality.plugin.Locality.Local
 
-enum class LocalityRequirement : AbstractValue<LocalityRequirement>, Constraint<Locality> {
+enum class LocalityRequirement : LatticeElement<LocalityRequirement>, Constraint<Locality> {
     RequireLocal, RequireGlobal;
 
     context(context: CheckerContext)
@@ -27,4 +27,7 @@ enum class LocalityRequirement : AbstractValue<LocalityRequirement>, Constraint<
 
     override fun union(other: LocalityRequirement): LocalityRequirement =
         minOf(this, other)
+
+    override fun meet(other: LocalityRequirement): LocalityRequirement =
+        maxOf(this, other)
 }

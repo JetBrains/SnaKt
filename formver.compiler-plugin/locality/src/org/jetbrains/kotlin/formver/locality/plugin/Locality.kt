@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.formver.locality.plugin.Locality.Local
 /**
  * Symbolic locality value.
  */
-sealed interface Locality : AbstractValue<Locality> {
+sealed interface Locality : JoinSemilatticeElement<Locality> {
 
     /**
      * Symbolic locality value for a global reference.
@@ -39,7 +39,6 @@ sealed interface Locality : AbstractValue<Locality> {
             other is Global -> this
             else -> Local(null)
         }
-
 }
 
 /**
