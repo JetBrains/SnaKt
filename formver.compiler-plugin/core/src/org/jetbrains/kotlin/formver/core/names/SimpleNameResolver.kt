@@ -108,6 +108,12 @@ class SimpleNameResolver : NameResolver {
             }
 
             is PretypeName -> listOf(name.name)
+            is AdtName -> resolveParts(name.nameType) + resolveParts(name.className)
+            is ToRefFuncName -> resolveParts(name.baseName) + listOf("ToRef")
+            is FromRefFuncName -> resolveParts(name.baseName) + listOf("FromRef")
+            is AdtConstructorName -> resolveParts(name.nameType) +
+                    with(NameTypeAction.SKIP) { resolveParts(name.adtName) } +
+                    resolveParts(name.className)
             is TypeName -> resolveParts(name.nameType) + listOfNotNull(buildString {
                 if (name.nullable) append("N")
                 if (name.pretype is FunctionTypeEmbedding) append("F")
@@ -188,6 +194,8 @@ class SimpleNameResolver : NameResolver {
             NameType.Base.Variable -> "v"
             NameType.Base.Domain -> "d"
             NameType.Base.DomainFunction -> "df"
+            NameType.Base.Adt -> "adt"
+            NameType.Base.AdtCons -> "constr"
             is NameTypeBase -> throw SnaktInternalException(
                 null, "NameTypeBase should never been inherited by something else than NameType"
             )

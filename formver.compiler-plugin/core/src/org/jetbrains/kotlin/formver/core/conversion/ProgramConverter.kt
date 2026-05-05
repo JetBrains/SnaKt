@@ -8,11 +8,13 @@ package org.jetbrains.kotlin.formver.core.conversion
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.descriptors.isInterface
+import org.jetbrains.kotlin.descriptors.isObject
 import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
-import org.jetbrains.kotlin.fir.declarations.processAllDeclarations
 import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.utils.hasBackingField
+import org.jetbrains.kotlin.fir.declarations.utils.isData
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
 import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
@@ -20,6 +22,7 @@ import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.*
+import org.jetbrains.kotlin.formver.common.AdtErrorKind
 import org.jetbrains.kotlin.formver.common.ErrorCollector
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
@@ -30,6 +33,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
+import org.jetbrains.kotlin.formver.core.isAdt
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Program
@@ -94,6 +98,7 @@ class ProgramConverter(
                     )
                 }
             },
+            adts = typeResolver.adtTypeEmbeddings().filter { it.isValid }.map { it.toViper() },
         )
 
     fun registerForVerification(declaration: FirSimpleFunction) {
@@ -107,6 +112,16 @@ class ProgramConverter(
             embedUserFunction(declaration.symbol, signature).apply {
                 body = stmtCtx.convertMethodWithBody(declaration, signature, returnTarget)
             }
+        }
+        // Ensures every function that touches an invalid ADT (signature, body, transitive callee, transitive field)
+        // receives an ADT usage error to communicate the misuse to the user.
+        // TODO: Move this to the linearizer level and annotate the specific touch instead
+        if (errorCollector.collectedAdtErrorOfKind(AdtErrorKind.INVALID_TARGET)) {
+            errorCollector.addAdtError(
+                AdtErrorKind.INVALID_USAGE,
+                declaration.source,
+                "Function '${declaration.name.asString()}'"
+            )
         }
     }
 
@@ -236,6 +251,35 @@ class ProgramConverter(
         return embedding
     }
 
+    private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding {
+        val className = symbol.classId.embedName()
+        typeResolver.lookupAdt(className)?.let { return it }
+        return AdtTypeEmbedding(className, isValid = validateAdt(symbol)).also { typeResolver.registerAdt(it) }
+    }
+
+    @OptIn(DirectDeclarationsAccess::class)
+    private fun validateAdt(symbol: FirRegularClassSymbol): Boolean {
+        if (!symbol.classKind.isObject || !symbol.isData) {
+            errorCollector.addAdtError(AdtErrorKind.INVALID_TARGET, symbol.source, "@ADT may only be applied to data object declarations")
+            return false
+        }
+        for (declaration in symbol.declarationSymbols) when (declaration) {
+            is FirPropertySymbol -> {
+                errorCollector.addAdtError(AdtErrorKind.INVALID_TARGET, symbol.source, "An @ADT data object must not have fields")
+                return false
+            }
+            is FirNamedFunctionSymbol -> {
+                errorCollector.addAdtError(AdtErrorKind.INVALID_TARGET, symbol.source, "An @ADT data object must not have member functions")
+                return false
+            }
+        }
+        if (symbol.resolvedSuperTypes.any { !it.isAny }) {
+            errorCollector.addAdtError(AdtErrorKind.INVALID_TARGET, symbol.source, "An @ADT data object must not extend a class or implement an interface")
+            return false
+        }
+        return true
+    }
+
     override fun embedType(type: ConeKotlinType): TypeEmbedding = buildType { embedTypeWithBuilder(type) }
 
     // Note: keep in mind that this function is necessary to resolve the name of the function!
@@ -320,15 +364,9 @@ class ProgramConverter(
         }
     }
 
-    @OptIn(SymbolInternals::class)
+    @OptIn(DirectDeclarationsAccess::class)
     private val FirRegularClassSymbol.propertySymbols: List<FirPropertySymbol>
-        get() {
-            val result = mutableListOf<FirPropertySymbol>()
-            this.fir.processAllDeclarations(session) {
-                if (it is FirPropertySymbol) result.add(it)
-            }
-            return result
-        }
+        get() = declarationSymbols.filterIsInstance<FirPropertySymbol>()
 
     private fun embedFullSignature(symbol: FirFunctionSymbol<*>): FullNamedFunctionSignature {
         val subSignature = object : NamedFunctionSignature, FunctionSignature by embedFunctionSignature(symbol) {
@@ -534,7 +572,11 @@ class ProgramConverter(
         type is ConeClassLikeType -> {
             val classLikeSymbol = type.toClassSymbol(session)
             if (classLikeSymbol is FirRegularClassSymbol) {
-                existing(embedClass(classLikeSymbol))
+                if (classLikeSymbol.isAdt(session)) {
+                    existing(embedAdtClass(classLikeSymbol))
+                } else {
+                    existing(embedClass(classLikeSymbol))
+                }
             } else {
                 unimplementedTypeEmbedding(type)
             }

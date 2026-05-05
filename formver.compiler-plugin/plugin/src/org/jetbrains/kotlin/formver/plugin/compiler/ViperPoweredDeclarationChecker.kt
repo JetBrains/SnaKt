@@ -59,7 +59,15 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
             errorCollector.forEachPurityError { source, errorMessage ->
                 reporter.reportOn(source, PluginErrors.PURITY_VIOLATION, errorMessage)
             }
+            errorCollector.forEachAdtError { kind, source, errorMessage ->
+                val errorId = when (kind) {
+                    AdtErrorKind.INVALID_TARGET -> PluginErrors.ADT_INVALID_TARGET
+                    AdtErrorKind.INVALID_USAGE -> PluginErrors.ADT_INVALID_USAGE
+                }
+                reporter.reportOn(source, errorId, errorMessage)
+            }
             if (errorCollector.collectedPurityError()) return
+            if (errorCollector.collectedAdtError()) return
             val program = programConversionContext.program
 
             with(programConversionContext.nameResolver) {

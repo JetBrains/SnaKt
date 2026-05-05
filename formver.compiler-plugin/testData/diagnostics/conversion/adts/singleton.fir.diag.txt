@@ -1,0 +1,50 @@
+/singleton.kt: error: Invalid ADT annotation: @ADT may only be applied to data object declarations
+
+/singleton.kt: error: Invalid ADT annotation: @ADT may only be applied to data object declarations
+
+/singleton.kt: error: Invalid ADT annotation: An @ADT data object must not have fields
+
+/singleton.kt: error: Invalid ADT annotation: An @ADT data object must not have member functions
+
+/singleton.kt: error: Invalid ADT annotation: @ADT may only be applied to data object declarations
+
+/singleton.kt: error: Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface
+
+/singleton.kt: error: Function 'triggerNotAnObject' used an invalid ADT
+
+/singleton.kt: error: Function 'triggerNotDataObject' used an invalid ADT
+
+/singleton.kt: error: Function 'triggerWithField' used an invalid ADT
+
+/singleton.kt: error: Function 'triggerWithFunction' used an invalid ADT
+
+/singleton.kt: error: Function 'triggerWithSupertype' used an invalid ADT
+
+/singleton.kt: error: Function 'triggerWithAssignment' used an invalid ADT
+
+/singleton.kt: info: Generated Viper text for validParameter:
+method validParameter(a: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(a), Valid())
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+adt adt_Valid {
+  constr_Valid()
+}
+
+/singleton.kt: info: Generated Viper text for validLocalVariable:
+method validLocalVariable() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  var x: Ref
+  x := ValidToRef(constr_Valid())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+adt adt_Valid {
+  constr_Valid()
+}

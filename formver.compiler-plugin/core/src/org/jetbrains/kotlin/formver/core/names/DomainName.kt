@@ -1,3 +1,8 @@
+/*
+ * Copyright 2010-2026 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
+ */
+
 package org.jetbrains.kotlin.formver.core.names
 
 import org.jetbrains.kotlin.formver.viper.AnyName
@@ -46,6 +51,22 @@ data class QualifiedDomainFuncName(val domainName: SymbolicName, val funcName: S
     }
 
     override val children: List<AnyName> = listOfNotNull(domainName, funcName, nameType)
+}
+
+data class ToRefFuncName(val baseName: SymbolicName) : SymbolicName {
+    override val inViper: Boolean = false
+    override val candidates: List<CandidateName> = buildCandidates {
+        candidateNoSeparator { +baseName; +"ToRef" }
+    }
+    override val children: List<AnyName> = listOf(baseName)
+}
+
+data class FromRefFuncName(val baseName: SymbolicName) : SymbolicName {
+    override val inViper: Boolean = false
+    override val candidates: List<CandidateName> = buildCandidates {
+        candidateNoSeparator { +baseName; +"FromRef" }
+    }
+    override val children: List<AnyName> = listOf(baseName)
 }
 
 data class NamedDomainAxiomLabel(val domainName: SymbolicName, val baseName: String) : SymbolicName {

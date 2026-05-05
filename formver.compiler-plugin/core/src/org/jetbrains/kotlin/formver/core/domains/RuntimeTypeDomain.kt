@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
+import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.embedClassTypeFunc
 import org.jetbrains.kotlin.formver.core.names.DomainName
 import org.jetbrains.kotlin.formver.core.names.QualifiedDomainFuncName
@@ -209,6 +210,7 @@ const val RUNTIME_TYPE_DOMAIN_NAME = "rt"
  * ```
  */
 class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(RUNTIME_TYPE_DOMAIN_NAME)) {
+    private val adts: List<AdtTypeEmbedding> = typeResolver.adtTypeEmbeddings().filter { it.isValid }
     override val typeVars: List<Type.TypeVar> = emptyList()
 
     // Define types that are not dependent on the user defined classes in a companion object.
@@ -272,23 +274,23 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
         fun classTypeFunc(name: SymbolicName) = createDomainFunc(name, emptyList(), RuntimeType, true)
 
         // bijections to primitive types
-        val intInjection = Injection("int", Type.Int, intType)
-        val boolInjection = Injection("bool", Type.Bool, boolType)
-        val charInjection = Injection("char", Type.Int, charType)
-        val stringInjection = Injection("string", Type.Seq(Type.Int), stringType)
-        val allInjections = listOf(intInjection, boolInjection, charInjection, stringInjection)
-
+        val intInjection = Injection(UnqualifiedDomainFuncName("int"), Type.Int, intType)
+        val boolInjection = Injection(UnqualifiedDomainFuncName("bool"), Type.Bool, boolType)
+        val charInjection = Injection(UnqualifiedDomainFuncName("char"), Type.Int, charType)
+        val stringInjection = Injection(UnqualifiedDomainFuncName("string"), Type.Seq(Type.Int), stringType)
+        val primitiveTypeInjections = listOf(intInjection, boolInjection, charInjection, stringInjection)
         // special values
         val nullValue = createDomainFunc(UnqualifiedDomainFuncName("nullValue"), emptyList(), Ref)
         val unitValue = createDomainFunc(UnqualifiedDomainFuncName("unitValue"), emptyList(), Ref)
     }
 
+    val adtClassTypes: Map<AdtTypeEmbedding, DomainFunc> = adts.associateWith { classTypeFunc(it.name) }
+    private val allInjections: List<Injection> = primitiveTypeInjections + adts.map { it.injection }
     val builtinTypes: List<DomainFunc> =
         listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType)
-    val nonNullableTypes: List<DomainFunc> = buildList {
-        addAll(builtinTypes)
-        addAll(typeResolver.classTypeEmbeddings().map { it.embedClassTypeFunc() })
-    }.distinctBy { it.name }
+    private val userTypes: List<DomainFunc> =
+        typeResolver.classTypeEmbeddings().map { it.embedClassTypeFunc() } + adtClassTypes.values
+    val nonNullableTypes: List<DomainFunc> = (builtinTypes + userTypes).distinctBy { it.name }
     override val functions: List<DomainFunc> = nonNullableTypes + listOf(
         nullValue, unitValue, isSubtype, typeOf, nullable
     ) + allInjections.flatMap { listOf(it.toRef, it.fromRef) }

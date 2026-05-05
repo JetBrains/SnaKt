@@ -127,10 +127,11 @@ val TypeEmbedding.injection
 val TypeEmbedding.injectionOrNull: Injection?
     get() =
         if (flags.nullable) null
-        else when (this.pretype) {
+        else when (val p = this.pretype) {
             StringTypeEmbedding -> RuntimeTypeDomain.stringInjection
             CharTypeEmbedding -> RuntimeTypeDomain.charInjection
             IntTypeEmbedding -> RuntimeTypeDomain.intInjection
             BooleanTypeEmbedding -> RuntimeTypeDomain.boolInjection
+            is AdtTypeEmbedding -> p.injection
             else -> null
         }

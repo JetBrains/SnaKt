@@ -79,6 +79,22 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/adts")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Adts {
+      @Test
+      public void testAllFilesPresentInAdts() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/conversion/adts"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("singleton.kt")
+      public void testSingleton() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/adts/singleton.kt");
+      }
+    }
+
+    @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/classes")
     @TestDataPath("$PROJECT_ROOT")
     public class Classes {
@@ -742,6 +758,22 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     @TestMetadata("while.kt")
     public void testWhile() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/while.kt");
+    }
+
+    @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/adts")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Adts {
+      @Test
+      public void testAllFilesPresentInAdts() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/adts"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("singleton.kt")
+      public void testSingleton() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/singleton.kt");
+      }
     }
 
     @Nested

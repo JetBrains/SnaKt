@@ -149,6 +149,10 @@ class NameGraphRenderer(val shortNameResolver: ShortNameResolver) {
                         is NamedDomainAxiomLabel -> "Axiom: "
                         is QualifiedDomainFuncName -> "Qual Func: "
                         is UnqualifiedDomainFuncName -> "Unqual Func: "
+                        is ToRefFuncName -> "ToRef Func: "
+                        is FromRefFuncName -> "FromRef Func: "
+                        is AdtName -> "Adt: "
+                        is AdtConstructorName -> "Adt Cons: "
                         else -> "Unknown: "
                     }
                 }
@@ -271,6 +275,23 @@ class NameGraphRenderer(val shortNameResolver: ShortNameResolver) {
 
                     is TypeName -> {
                         link(entity.pretype.name, Relation.IS_PART_OF, entity)
+                    }
+
+                    is ToRefFuncName -> {
+                        link(entity.baseName, Relation.IS_PART_OF, entity)
+                    }
+
+                    is FromRefFuncName -> {
+                        link(entity.baseName, Relation.IS_PART_OF, entity)
+                    }
+
+                    is AdtName -> {
+                        link(entity.className, Relation.IS_PART_OF, entity)
+                    }
+
+                    is AdtConstructorName -> {
+                        link(entity.adtName, Relation.IS_PART_OF, entity)
+                        link(entity.className, Relation.IS_PART_OF, entity)
                     }
 
                     is SimpleKotlinName, is ClassKotlinName, is TypedKotlinName, is DomainName, is UnqualifiedDomainFuncName, is PretypeName, is FunctionResultVariableName -> {}

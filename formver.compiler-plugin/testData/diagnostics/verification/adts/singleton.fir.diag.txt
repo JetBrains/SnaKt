@@ -1,0 +1,36 @@
+/singleton.kt: info: Generated Viper text for nullableRed:
+field size: Ref
+
+method nullableRed() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), nullable(Red()))
+{
+  var l0_r: Ref
+  l0_r := nullValue()
+  l0_r := RedToRef(constr_Red())
+  assert !(l0_r == nullValue())
+  ret_0 := l0_r
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+adt adt_Red {
+  constr_Red()
+}
+
+/singleton.kt: info: Generated Viper text for returnsRed:
+field size: Ref
+
+method returnsRed() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), Red())
+{
+  var x: Ref
+  x := RedToRef(constr_Red())
+  assert RedFromRef(x) == constr_Red()
+  ret_0 := x
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+adt adt_Red {
+  constr_Red()
+}
