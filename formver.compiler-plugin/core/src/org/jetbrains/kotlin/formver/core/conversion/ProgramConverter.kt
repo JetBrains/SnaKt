@@ -39,9 +39,6 @@ import org.jetbrains.kotlin.formver.core.isAdt
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
-import org.jetbrains.kotlin.formver.viper.ast.BuiltInMethod
-import org.jetbrains.kotlin.formver.viper.ast.Function
-import org.jetbrains.kotlin.formver.viper.ast.Method
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.utils.addIfNotNull
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
@@ -172,56 +169,33 @@ class ProgramConverter(
         return new
     }
 
-    private fun embedGetterFunction(symbol: FirPropertySymbol): FunctionEmbedding {
+    /**
+     * Embed the method to use when accessing the property. This should be used for properties that belong to a class and
+     * can be overwritten.
+     * The method postcondition contains the known subtypes.
+     */
+    private fun embedOpenGetterFunction(symbol: FirPropertySymbol): FunctionEmbedding {
+        val name = symbol.embedGetterName(this, symbol.representableAsFunction(session))
+        return methods.getOrPut(name) {
+            val signature = OpenGetterFunctionSignature(name, symbol)
+            UserFunctionEmbedding(
+                NonInlineNamedFunction(
+                    signature
+                )
+            )
+        }
+    }
+
+    /**
+     * Embed the method to use when accessing the property. This should be used for extension properties.
+     */
+    private fun embedExtensionGetterFunction(symbol: FirPropertySymbol): FunctionEmbedding {
         val name = symbol.embedGetterName(this, symbol.representableAsFunction(session))
         return methods.getOrPut(name) {
             val signature = GetterFunctionSignature(name, symbol)
-            UserFunctionEmbedding(object : RichCallableEmbedding, FullNamedFunctionSignature by signature {
-                override fun toViperMethodHeader(ctx: TypeResolver): Method {
-                    val returnVariable =
-                        PlaceholderVariableEmbedding(PlaceholderReturnVariableName, signature.callableType.returnType)
-                    return BuiltInMethod(
-                        name,
-                        formalArgs.map { it.toLocalVarDecl() },
-                        returnVariable.toLocalVarDecl(),
-                        getPreconditions().pureToViper(toBuiltin = true, ctx),
-                        getPostconditions(returnVariable).pureToViper(toBuiltin = true, ctx),
-                        null,
-                        declarationSource.asPosition
-                    )
-                }
-
-                override fun toViperFunctionHeader(ctx: TypeResolver): Function? = null
-
-                override fun insertCall(
-                    args: List<ExpEmbedding>, ctx: StmtConversionContext
-                ): ExpEmbedding = MethodCall(signature, args)
-
-                override fun getPostconditions(returnVariable: VariableEmbedding): List<ExpEmbedding> {
-                    val finalPropertyName =
-                        symbol.callableId!!.embedMemberPropertyName(Visibilities.isPrivate(symbol.visibility), true)
-                    val openPropertyName =
-                        symbol.callableId!!.embedMemberPropertyName(Visibilities.isPrivate(symbol.visibility), false)
-                    val openProperties = typeResolver.propertiesByPropertyName(openPropertyName)
-                    val closedProperties = typeResolver.propertiesByPropertyName(finalPropertyName)
-                    return openProperties.map { (name, property) ->
-                        val classTypeEmbedding = typeResolver.lookupClassTypeEmbedding(name.className)!!
-                        OperatorExpEmbeddings.Implies(
-                            Is(signature.formalArgs.first(), classTypeEmbedding.asTypeEmbedding()),
-                            Is(returnVariable, property.type)
-                        )
-                    } + closedProperties.mapNotNull { (name, property) ->
-                        val classTypeEmbedding = typeResolver.lookupClassTypeEmbedding(name.className)!!
-                        val function = (property.getter!! as? FinalFieldGetter)?.getter as? PureUserFunctionEmbedding
-                        function?.let {
-                            OperatorExpEmbeddings.Implies(
-                            Is(signature.formalArgs.first(), classTypeEmbedding.asTypeEmbedding()),
-                            EqCmp(returnVariable, FunctionCall(it.callable, signature.formalArgs.take(1)))
-                        )
-                    }
-                    }
-                }
-            })
+            UserFunctionEmbedding(
+                NonInlineNamedFunction(signature)
+            )
         }
     }
 
@@ -372,9 +346,9 @@ class ProgramConverter(
                     )
                 }
 
-
-                // All other instances should just get access methods. We cannot reason about those fields.
-                return@getOrPutProperty embedCustomProperty(symbol)
+                // All other properties are implemented with the method getter, that contains preconditions about
+                // possible subtypes.
+                return@getOrPutProperty embedOpenProperty(symbol)
             }
         }
     }
@@ -489,7 +463,7 @@ class ProgramConverter(
         }
 
         return object : FullNamedFunctionSignature, NamedFunctionSignature by subSignature {
-            override fun getPreconditions() = buildList {
+            override fun getPreconditions(typeResolver: TypeResolver) = buildList {
                 subSignature.formalArgs.forEach {
                     addAll(it.pureInvariants())
                     addAll(it.accessInvariants(typeResolver))
@@ -507,7 +481,7 @@ class ProgramConverter(
                 }
             }
 
-            override fun getPostconditions(returnVariable: VariableEmbedding) = buildList {
+            override fun getPostconditions(returnVariable: VariableEmbedding, typeResolver: TypeResolver) = buildList {
                 subSignature.formalArgs.forEach {
                     addAll(it.accessInvariants(typeResolver))
                     if (it.isUnique && it.isBorrowed) {
@@ -607,9 +581,14 @@ class ProgramConverter(
         )
     }
 
+    private fun embedOpenProperty(symbol: FirPropertySymbol) = PropertyEmbedding(
+        CustomGetter(embedOpenGetterFunction(symbol)),
+        symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) },
+        embedType(symbol.resolvedReturnType)
+    )
 
     private fun embedCustomProperty(symbol: FirPropertySymbol) = PropertyEmbedding(
-        CustomGetter(embedGetterFunction(symbol)),
+        CustomGetter(embedExtensionGetterFunction(symbol)),
         symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) },
         embedType(symbol.resolvedReturnType)
     )
