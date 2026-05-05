@@ -2,6 +2,7 @@ package org.jetbrains.kotlin.formver.core.conversion
 
 import org.jetbrains.kotlin.formver.core.embeddings.properties.BackingFieldGetter
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.properties.FinalFieldGetter
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
@@ -99,6 +100,7 @@ class TypeResolver {
     fun lookupProperty(name: ClassPropertyPair) : PropertyEmbedding? = properties[name]
 
     fun backingFields(): List<FieldEmbedding> = properties.values.mapNotNull { toBackingField(it) }
+    fun propertiesAsFunctions() = properties.filter { it.value.getter is FinalFieldGetter }
 
 
     /**
