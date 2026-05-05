@@ -50,7 +50,7 @@ interface FieldEmbedding {
     fun accessInvariantsForParameter(): List<TypeInvariantEmbedding> =
         when (accessPolicy) {
             AccessPolicy.ALWAYS_WRITEABLE -> listOf(FieldAccessTypeInvariantEmbedding(this, PermExp.FullPerm()))
-            AccessPolicy.BY_RECEIVER_UNIQUENESS, AccessPolicy.ALWAYS_READABLE, AccessPolicy.MANUAL -> listOf()
+            AccessPolicy.BY_RECEIVER_UNIQUENESS, AccessPolicy.MANUAL -> listOf()
         } + extraAccessInvariantsForParameter()
 
 }
@@ -67,14 +67,14 @@ class UserFieldEmbedding(
     override val accessPolicy: AccessPolicy =
         when {
             isManual -> AccessPolicy.MANUAL
-            symbol.isVal -> AccessPolicy.ALWAYS_READABLE
             symbol.isVar -> AccessPolicy.BY_RECEIVER_UNIQUENESS
+            symbol.isVal -> throw SnaktInternalException(symbol.initializerSource, "Val field should always become method or function")
             else -> throw SnaktInternalException(
                 symbol.initializerSource,
                 "Failed to determine AccessPolicy. Field is neither val nor var."
             )
         }
     override val unfoldToAccess: Boolean
-        get() = accessPolicy == AccessPolicy.ALWAYS_READABLE || accessPolicy == AccessPolicy.BY_RECEIVER_UNIQUENESS
+        get() =  accessPolicy == AccessPolicy.BY_RECEIVER_UNIQUENESS
     override val includeInShortDump: Boolean = true
 }

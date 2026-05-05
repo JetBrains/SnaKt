@@ -68,7 +68,6 @@ class FieldAssertionsBuilder(private val subject: VariableEmbedding, private val
     private val assertions = mutableListOf<ExpEmbedding>()
     fun toAssertionsList() = assertions.toList()
 
-    val isAlwaysReadable = field.accessPolicy == AccessPolicy.ALWAYS_READABLE
     val isUnique = field.isUnique
 
     fun forType(action: TypeInvariantsBuilder.() -> Unit) {
