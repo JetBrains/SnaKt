@@ -41,7 +41,8 @@ method intVarProp(this: Ref) returns (ret: Ref)
 
 
 /extension_properties.kt: info: Generated Viper text for extensionGetterPropertyUserDefinedClass:
-field bf_x: Ref
+function g_x(this: Ref): Ref
+
 
 method extensionGetterPropertyUserDefinedClass(pf: Ref)
   returns (ret_0: Ref)
@@ -50,7 +51,6 @@ method extensionGetterPropertyUserDefinedClass(pf: Ref)
 {
   var x: Ref
   var anon: Ref
-  inhale acc(shared(pf), wildcard)
   anon := pfValProp(pf)
   x := anon
   inhale isSubtype(typeOf(x), intType())
@@ -62,7 +62,8 @@ method pfValProp(this: Ref) returns (ret: Ref)
 
 
 /extension_properties.kt: info: Generated Viper text for extensionSetterPropertyUserDefinedClass:
-field x: Ref
+function x(this: Ref): Ref
+
 
 method es_pfVarProp(this: Ref, anon: Ref) returns (ret: Ref)
 
@@ -73,7 +74,6 @@ method extensionSetterPropertyUserDefinedClass(pf: Ref)
   ensures isSubtype(typeOf(ret_0), unitType())
 {
   var anon: Ref
-  inhale acc(shared(pf), wildcard)
   anon := es_pfVarProp(pf, intToRef(42))
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())

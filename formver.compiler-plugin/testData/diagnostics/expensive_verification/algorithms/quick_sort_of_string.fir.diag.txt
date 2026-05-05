@@ -70,44 +70,45 @@ method minOrMaxChar(this: Ref, calcMin: Ref) returns (ret: Ref)
 }
 
 /quick_sort_of_string.kt: info: Generated Viper text for quickSort:
-method minOrMaxChar(this: Ref, calcMin: Ref) returns (ret: Ref)
+method minOrMaxChar(this: Ref, calcMin: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(calcMin), boolType())
   requires |stringFromRef(this)| >= 1
-  ensures isSubtype(typeOf(ret), charType())
+  ensures isSubtype(typeOf(v_ret), charType())
   ensures boolFromRef(calcMin) ==>
     (forall anon_builtin_7: Int ::0 <= anon_builtin_7 &&
       anon_builtin_7 < |stringFromRef(this)| ==>
-      charFromRef(ret) <= stringFromRef(this)[anon_builtin_7])
+      charFromRef(v_ret) <= stringFromRef(this)[anon_builtin_7])
   ensures !boolFromRef(calcMin) ==>
     (forall anon_builtin_8: Int ::0 <= anon_builtin_8 &&
       anon_builtin_8 < |stringFromRef(this)| ==>
-      charFromRef(ret) >= stringFromRef(this)[anon_builtin_8])
+      charFromRef(v_ret) >= stringFromRef(this)[anon_builtin_8])
 
 
-method quickSort(this: Ref) returns (ret_0: Ref)
+method quickSort(this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), stringType())
-  ensures isSubtype(typeOf(ret_0), stringType())
-  ensures |stringFromRef(ret_0)| == |stringFromRef(this)|
+  ensures isSubtype(typeOf(ret), stringType())
+  ensures |stringFromRef(ret)| == |stringFromRef(this)|
   ensures (forall anon_builtin_6: Int ::1 <= anon_builtin_6 &&
       anon_builtin_6 < |stringFromRef(this)| ==>
-      stringFromRef(ret_0)[anon_builtin_6 - 1] <=
-      stringFromRef(ret_0)[anon_builtin_6])
+      stringFromRef(ret)[anon_builtin_6 - 1] <=
+      stringFromRef(ret)[anon_builtin_6])
 {
   var l0_minVal: Ref
   var l0_maxVal: Ref
   if (|stringFromRef(this)| <= 1) {
-    ret_0 := this
-    goto lbl_ret_0
+    ret := this
+    goto ret_0
   }
   l0_minVal := minOrMaxChar(this, boolToRef(true))
   l0_maxVal := minOrMaxChar(this, boolToRef(false))
-  ret_0 := quickSortRec(this, l0_minVal, l0_maxVal)
-  goto lbl_ret_0
-  label lbl_ret_0
+  ret := quickSortRec(this, l0_minVal, l0_maxVal)
+  goto ret_0
+  label ret_0
 }
 
-method quickSortRec(this: Ref, minVal: Ref, maxVal: Ref) returns (ret: Ref)
+method quickSortRec(this: Ref, minVal: Ref, maxVal: Ref)
+  returns (v_ret: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(minVal), charType())
   requires isSubtype(typeOf(maxVal), charType())
@@ -115,14 +116,14 @@ method quickSortRec(this: Ref, minVal: Ref, maxVal: Ref) returns (ret: Ref)
       anon_builtin_9 < |stringFromRef(this)| ==>
       charFromRef(minVal) <= stringFromRef(this)[anon_builtin_9] &&
       stringFromRef(this)[anon_builtin_9] <= charFromRef(maxVal))
-  ensures isSubtype(typeOf(ret), stringType())
-  ensures |stringFromRef(ret)| == |stringFromRef(this)|
+  ensures isSubtype(typeOf(v_ret), stringType())
+  ensures |stringFromRef(v_ret)| == |stringFromRef(this)|
   ensures (forall anon_builtin: Int ::0 <= anon_builtin &&
       anon_builtin < |stringFromRef(this)| ==>
-      charFromRef(minVal) <= stringFromRef(ret)[anon_builtin] &&
-      stringFromRef(ret)[anon_builtin] <= charFromRef(maxVal))
+      charFromRef(minVal) <= stringFromRef(v_ret)[anon_builtin] &&
+      stringFromRef(v_ret)[anon_builtin] <= charFromRef(maxVal))
   ensures (forall anon: Int ::1 <= anon && anon < |stringFromRef(this)| ==>
-      stringFromRef(ret)[anon - 1] <= stringFromRef(ret)[anon])
+      stringFromRef(v_ret)[anon - 1] <= stringFromRef(v_ret)[anon])
 
 
 /quick_sort_of_string.kt: info: Generated Viper text for quickSortRec:

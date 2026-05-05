@@ -10,13 +10,13 @@ method testGreater(init: Ref) returns (ret: Ref)
 }
 
 /simple_postcondition.kt: info: Generated Viper text for testString:
-method testString() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), charType())
-  ensures charFromRef(ret) == 97
+method testString() returns (ret_0: Ref)
+  ensures isSubtype(typeOf(ret_0), charType())
+  ensures charFromRef(ret_0) == 97
 {
-  ret := stringGet(stringToRef(Seq(98, 97, 98)), intToRef(1))
-  goto ret_0
-  label ret_0
+  ret_0 := stringGet(stringToRef(Seq(98, 97, 98)), intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /simple_postcondition.kt: info: Generated Viper text for testWithPrecondition:

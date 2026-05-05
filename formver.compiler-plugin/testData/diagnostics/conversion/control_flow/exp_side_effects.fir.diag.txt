@@ -3,7 +3,6 @@ field x: Ref
 
 method getFoo() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), _c_Foo())
-  ensures acc(shared(ret), wildcard)
 
 
 method sideEffect() returns (ret: Ref)

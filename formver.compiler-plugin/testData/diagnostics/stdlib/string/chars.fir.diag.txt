@@ -1,16 +1,15 @@
 /chars.kt: info: Generated Viper text for testChars:
-field bf_char: Ref
+function g_char(this: Ref): Ref
 
-field size: Ref
+
+function size(this: Ref): Ref
+
 
 method con(char: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(char), charType())
   ensures isSubtype(typeOf(ret), _c_CharBox())
-  ensures acc(c_CharBox_shared(ret), wildcard)
   ensures acc(c_CharBox_unique(ret), write)
-  ensures charFromRef((unfolding acc(c_CharBox_shared(ret), wildcard) in
-      ret.bf_char)) ==
-    charFromRef(char)
+  ensures g_char(ret) == char
 
 
 method testChars(c: Ref) returns (ret_0: Ref)
@@ -20,13 +19,10 @@ method testChars(c: Ref) returns (ret_0: Ref)
   var box: Ref
   var charA: Ref
   var cond1: Ref
-  var anon: Ref
   var charZ: Ref
   box := con(charToRef(97))
   charA := charToRef(97)
-  unfold acc(c_CharBox_shared(box), wildcard)
-  anon := box.bf_char
-  cond1 := boolToRef(charFromRef(charA) == charFromRef(anon))
+  cond1 := boolToRef(charA == g_char(box))
   assert boolFromRef(cond1)
   charZ := charToRef(122)
   assert charFromRef(charA) == charFromRef(charZ) - 25

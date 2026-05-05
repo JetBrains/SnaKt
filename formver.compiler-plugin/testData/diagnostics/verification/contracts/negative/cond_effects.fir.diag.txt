@@ -36,22 +36,15 @@ method isNullOrEmptyWrong(seq: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
   ensures boolFromRef(ret) == false ==> seq != nullValue()
 {
-  inhale seq != nullValue() ==> acc(c_CharSequence_shared(seq), wildcard)
   if (!(seq == nullValue())) {
-    var anon_0: Ref
     var anon: Ref
     anon := length(seq)
-    anon_0 := anon
-    inhale isSubtype(typeOf(anon_0), intType())
-    ret := notBool(boolToRef(intFromRef(anon_0) == 0))
+    ret := notBool(boolToRef(anon == intToRef(0)))
   } else {
     ret := boolToRef(false)}
   goto ret_0
   label ret_0
 }
-
-method length(this: Ref) returns (v_ret: Ref)
-
 
 /cond_effects.kt: info: Generated Viper text for recursiveContract:
 method recursiveContract(n: Ref, x: Ref) returns (ret: Ref)

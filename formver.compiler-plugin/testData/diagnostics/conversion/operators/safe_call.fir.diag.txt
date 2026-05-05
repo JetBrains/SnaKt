@@ -1,5 +1,6 @@
 /safe_call.kt: info: Generated Viper text for testSafeCall:
-field x: Ref
+function x(this: Ref): Ref
+
 
 method f(this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), _c_Foo())
@@ -10,7 +11,6 @@ method testSafeCall(foo: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(foo), nullable(_c_Foo()))
   ensures isSubtype(typeOf(ret_0), nullable(unitType()))
 {
-  inhale foo != nullValue() ==> acc(shared(foo), wildcard)
   if (foo != nullValue()) {
     var anon: Ref
     anon := f(foo)
@@ -22,7 +22,8 @@ method testSafeCall(foo: Ref) returns (ret_0: Ref)
 }
 
 /safe_call.kt: info: Generated Viper text for testSafeCallNonNullable:
-field x: Ref
+function x(this: Ref): Ref
+
 
 method f(this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), _c_Foo())
@@ -33,7 +34,6 @@ method testSafeCallNonNullable(foo: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(foo), _c_Foo())
   ensures isSubtype(typeOf(ret_0), nullable(unitType()))
 {
-  inhale acc(shared(foo), wildcard)
   if (foo != nullValue()) {
     var anon: Ref
     anon := f(foo)
@@ -45,50 +45,44 @@ method testSafeCallNonNullable(foo: Ref) returns (ret_0: Ref)
 }
 
 /safe_call.kt: info: Generated Viper text for testSafeCallProperty:
-field x: Ref
+function x(this: Ref): Ref
 
-method testSafeCallProperty(foo: Ref) returns (ret_0: Ref)
+
+method testSafeCallProperty(foo: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(foo), nullable(_c_Foo()))
-  ensures isSubtype(typeOf(ret_0), nullable(intType()))
+  ensures isSubtype(typeOf(ret), nullable(intType()))
 {
-  inhale foo != nullValue() ==> acc(shared(foo), wildcard)
   if (foo != nullValue()) {
-    var anon: Ref
-    unfold acc(shared(foo), wildcard)
-    anon := foo.x
-    ret_0 := anon
+    ret := x(foo)
   } else {
-    ret_0 := nullValue()}
-  goto lbl_ret_0
-  label lbl_ret_0
+    ret := nullValue()}
+  goto ret_0
+  label ret_0
 }
 
 /safe_call.kt: info: Generated Viper text for testSafeCallPropertyNonNullable:
-field x: Ref
+function x(this: Ref): Ref
 
-method testSafeCallPropertyNonNullable(foo: Ref) returns (ret_0: Ref)
+
+method testSafeCallPropertyNonNullable(foo: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(foo), _c_Foo())
-  ensures isSubtype(typeOf(ret_0), nullable(intType()))
+  ensures isSubtype(typeOf(ret), nullable(intType()))
 {
-  inhale acc(shared(foo), wildcard)
   if (foo != nullValue()) {
-    var anon: Ref
-    unfold acc(shared(foo), wildcard)
-    anon := foo.x
-    ret_0 := anon
+    ret := x(foo)
   } else {
-    ret_0 := nullValue()}
-  goto lbl_ret_0
-  label lbl_ret_0
+    ret := nullValue()}
+  goto ret_0
+  label ret_0
 }
 
 /safe_call.kt: info: Generated Viper text for safeCallChain:
-field bf_v: Ref
+function g_v(this: Ref): Ref
+
 
 method f_nullable(this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), _c_Rec())
   ensures isSubtype(typeOf(ret), nullable(_c_Rec()))
-  ensures ret != nullValue() ==> acc(shared(ret), wildcard)
 
 
 method safeCallChain(rec: Ref) returns (ret_0: Ref)
@@ -96,21 +90,17 @@ method safeCallChain(rec: Ref) returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), nullable(intType()))
 {
   var anon_0: Ref
-  var anon_1: Ref
-  inhale rec != nullValue() ==> acc(shared(rec), wildcard)
+  var anon: Ref
   if (rec != nullValue()) {
-    anon_1 := f_nullable(rec)
+    anon := f_nullable(rec)
   } else {
-    anon_1 := nullValue()}
-  if (anon_1 != nullValue()) {
-    anon_0 := f_nullable(anon_1)
+    anon := nullValue()}
+  if (anon != nullValue()) {
+    anon_0 := f_nullable(anon)
   } else {
     anon_0 := nullValue()}
   if (anon_0 != nullValue()) {
-    var anon: Ref
-    unfold acc(shared(anon_0), wildcard)
-    anon := anon_0.bf_v
-    ret_0 := anon
+    ret_0 := g_v(anon_0)
   } else {
     ret_0 := nullValue()}
   goto lbl_ret_0

@@ -1,28 +1,26 @@
 /field_setters_unique_shared.kt: info: Generated Viper text for testPrimitiveFieldSetterUnique:
-field bf_shared: Ref
-
 field bf_unique: Ref
+
+field shared: Ref
 
 method testPrimitiveFieldSetterUnique(pf: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(pf), _c_PrimitiveFields())
   requires acc(c_PrimitiveFields_unique(pf), write)
   ensures isSubtype(typeOf(ret_0), unitType())
 {
-  inhale acc(shared(pf), wildcard)
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
 /field_setters_unique_shared.kt: info: Generated Viper text for testPrimitiveFieldSetterShared:
-field bf_shared: Ref
-
 field bf_unique: Ref
+
+field shared: Ref
 
 method testPrimitiveFieldSetterShared(pf: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(pf), _c_PrimitiveFields())
   ensures isSubtype(typeOf(ret_0), unitType())
 {
-  inhale acc(shared(pf), wildcard)
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
@@ -36,8 +34,13 @@ method con(shared: Ref, par_unique: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(shared), intType())
   requires isSubtype(typeOf(par_unique), intType())
   ensures isSubtype(typeOf(ret), _c_PrimitiveFields())
-  ensures acc(c_PrimitiveFields_shared(ret), wildcard)
   ensures acc(c_PrimitiveFields_unique(ret), write)
+  ensures intFromRef((unfolding acc(c_PrimitiveFields_unique(ret), write) in
+      ret.bf_shared)) ==
+    intFromRef(shared) &&
+    intFromRef((unfolding acc(c_PrimitiveFields_unique(ret), write) in
+      ret.bf_unique)) ==
+    intFromRef(par_unique)
 
 
 method testReferenceFieldSetterUnique(rf: Ref) returns (ret_0: Ref)
@@ -47,7 +50,6 @@ method testReferenceFieldSetterUnique(rf: Ref) returns (ret_0: Ref)
 {
   var anon_0: Ref
   var anon: Ref
-  inhale acc(c_ReferenceFields_shared(rf), wildcard)
   anon_0 := con(intToRef(5), intToRef(6))
   anon := con(intToRef(7), intToRef(8))
   label lbl_ret_0
@@ -63,8 +65,13 @@ method con(shared: Ref, par_unique: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(shared), intType())
   requires isSubtype(typeOf(par_unique), intType())
   ensures isSubtype(typeOf(ret), _c_PrimitiveFields())
-  ensures acc(c_PrimitiveFields_shared(ret), wildcard)
   ensures acc(c_PrimitiveFields_unique(ret), write)
+  ensures intFromRef((unfolding acc(c_PrimitiveFields_unique(ret), write) in
+      ret.bf_shared)) ==
+    intFromRef(shared) &&
+    intFromRef((unfolding acc(c_PrimitiveFields_unique(ret), write) in
+      ret.bf_unique)) ==
+    intFromRef(par_unique)
 
 
 method testReferenceFieldSetterShared(rf: Ref) returns (ret_0: Ref)
@@ -73,7 +80,6 @@ method testReferenceFieldSetterShared(rf: Ref) returns (ret_0: Ref)
 {
   var anon_0: Ref
   var anon: Ref
-  inhale acc(c_ReferenceFields_shared(rf), wildcard)
   anon_0 := con(intToRef(9), intToRef(10))
   anon := con(intToRef(11), intToRef(12))
   label lbl_ret_0

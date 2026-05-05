@@ -1,13 +1,15 @@
 /override_properties_types.kt: info: Generated Viper text for extractInt:
 field bf_field: Ref
 
+function final_g_field(this: Ref): Ref
+
+
 method extractInt(base: Ref, returnNull: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(base), _c_Base())
   requires isSubtype(typeOf(returnNull), boolType())
   ensures isSubtype(typeOf(ret), nullable(intType()))
   ensures ret == nullValue() ==> boolFromRef(returnNull)
 {
-  inhale acc(c_Base_shared(base), wildcard)
   if (boolFromRef(returnNull)) {
     var anon_0: Ref
     anon_0 := nullValue()
@@ -15,20 +17,16 @@ method extractInt(base: Ref, returnNull: Ref) returns (ret: Ref)
   } else {
     var anon_1: Ref
     if (isSubtype(typeOf(base), _c_OpenClassOpenFieldVarDerived())) {
-      var anon: Ref
-      inhale acc(c_OpenClassOpenFieldVarDerived_shared(base), wildcard)
-      anon := g_field(base)
-      anon_1 := anon
-      inhale isSubtype(typeOf(anon_1), intType())
+      var anon_2: Ref
+      anon_2 := g_field(base)
+      anon_1 := anon_2
     } elseif (isSubtype(typeOf(base), _c_FinalClassOpenFieldVarDerived())) {
-      inhale acc(c_FinalClassOpenFieldVarDerived_shared(base), wildcard)
       anon_1 := havoc()
     } elseif (isSubtype(typeOf(base), _c_FinalClassFinalFieldValDerived())) {
-      inhale acc(c_FinalClassFinalFieldValDerived_shared(base), wildcard)
-      unfold acc(c_FinalClassFinalFieldValDerived_shared(base), wildcard)
-      anon_1 := base.bf_field
+      var anon: Ref
+      anon := final_g_field(base)
+      anon_1 := anon
     } elseif (isSubtype(typeOf(base), _c_OpenClassFinalFieldVarDerived())) {
-      inhale acc(c_OpenClassFinalFieldVarDerived_shared(base), wildcard)
       anon_1 := havoc()
     } else {
       anon_1 := intToRef(0)}
@@ -37,8 +35,5 @@ method extractInt(base: Ref, returnNull: Ref) returns (ret: Ref)
   goto ret_0
   label ret_0
 }
-
-method g_field(this: Ref) returns (v_ret: Ref)
-
 
 method s_field(this: Ref, anon_0: Ref) returns (v_ret: Ref)

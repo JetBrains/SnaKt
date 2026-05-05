@@ -184,7 +184,7 @@ domain rt  {
 
   axiom {
     (forall r: Ref ::
-      { intToRef(intFromRef(r)) }
+      { intFromRef(r) }
       isSubtype(typeOf(r), intType()) ==> intToRef(intFromRef(r)) == r)
   }
 
@@ -202,7 +202,7 @@ domain rt  {
 
   axiom {
     (forall r: Ref ::
-      { boolToRef(boolFromRef(r)) }
+      { boolFromRef(r) }
       isSubtype(typeOf(r), boolType()) ==> boolToRef(boolFromRef(r)) == r)
   }
 
@@ -220,7 +220,7 @@ domain rt  {
 
   axiom {
     (forall r: Ref ::
-      { charToRef(charFromRef(r)) }
+      { charFromRef(r) }
       isSubtype(typeOf(r), charType()) ==> charToRef(charFromRef(r)) == r)
   }
 
@@ -238,13 +238,18 @@ domain rt  {
 
   axiom {
     (forall r: Ref ::
-      { stringToRef(stringFromRef(r)) }
+      { stringFromRef(r) }
       isSubtype(typeOf(r), stringType()) ==>
       stringToRef(stringFromRef(r)) == r)
   }
-}
 
-field bf_x: Ref
+  axiom {
+    (forall r: Ref ::
+      { g_x(r) }
+      isSubtype(typeOf(r), _c_Foo()) ==>
+      isSubtype(typeOf(g_x(r)), intType()))
+  }
+}
 
 function addCharInt(arg_1: Ref, arg: Ref): Ref
   ensures isSubtype(typeOf(result), charType())
@@ -272,6 +277,9 @@ function divInts(arg_1: Ref, arg: Ref): Ref
   requires intFromRef(arg) != 0
   ensures isSubtype(typeOf(result), intType())
   ensures intFromRef(result) == intFromRef(arg_1) \ intFromRef(arg)
+
+
+function g_x(this: Ref): Ref
 
 
 function geChars(arg_1: Ref, arg: Ref): Ref
@@ -377,20 +385,14 @@ function timesInts(arg_1: Ref, arg: Ref): Ref
 
 
 predicate c_Foo_unique(this: Ref) {
-  acc(this.bf_x, wildcard) && isSubtype(typeOf(this.bf_x), intType())
-}
-
-predicate shared(this: Ref) {
-  acc(this.bf_x, wildcard) && isSubtype(typeOf(this.bf_x), intType())
+  true
 }
 
 method con(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), _c_Foo())
-  ensures acc(shared(ret), wildcard)
   ensures acc(c_Foo_unique(ret), write)
-  ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf_x)) ==
-    intFromRef(x)
+  ensures g_x(ret) == x
 
 
 method f() returns (ret_0: Ref)
@@ -401,6 +403,3 @@ method f() returns (ret_0: Ref)
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
-
-method havoc() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())

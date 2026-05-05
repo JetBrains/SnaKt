@@ -177,17 +177,17 @@ method plus(this: Ref, other: Ref) returns (v_ret: Ref)
 
 
 /merge_sort_of_string.kt: info: Generated Viper text for mergeSorted:
-method mergeSorted(this: Ref) returns (ret_0: Ref)
+method mergeSorted(this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), stringType())
-  ensures isSubtype(typeOf(ret_0), stringType())
-  ensures |stringFromRef(ret_0)| == |stringFromRef(this)|
+  ensures isSubtype(typeOf(ret), stringType())
+  ensures |stringFromRef(ret)| == |stringFromRef(this)|
   ensures (forall anon_builtin_4: Int ::1 <= anon_builtin_4 &&
-      anon_builtin_4 < |stringFromRef(ret_0)| ==>
-      stringFromRef(ret_0)[anon_builtin_4 - 1] <=
-      stringFromRef(ret_0)[anon_builtin_4])
+      anon_builtin_4 < |stringFromRef(ret)| ==>
+      stringFromRef(ret)[anon_builtin_4 - 1] <=
+      stringFromRef(ret)[anon_builtin_4])
 {
   if (|stringFromRef(this)| <= 1) {
-    ret_0 := this
+    ret := this
   } else {
     var anon_0: Ref
     var anon_1: Ref
@@ -197,13 +197,13 @@ method mergeSorted(this: Ref) returns (ret_0: Ref)
     anon_0 := mergeSorted(anon_1)
     anon_3 := subs(this, divInts(stringLength(this), intToRef(2)), stringLength(this))
     anon_2 := mergeSorted(anon_3)
-    ret_0 := mergeStrings(anon_0, anon_2)
+    ret := mergeStrings(anon_0, anon_2)
   }
-  goto lbl_ret_0
-  label lbl_ret_0
+  goto ret_0
+  label ret_0
 }
 
-method mergeStrings(a: Ref, b: Ref) returns (ret: Ref)
+method mergeStrings(a: Ref, b: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(a), stringType())
   requires isSubtype(typeOf(b), stringType())
   requires (forall anon_builtin_5: Int ::(1 <= anon_builtin_5 &&
@@ -213,22 +213,22 @@ method mergeStrings(a: Ref, b: Ref) returns (ret: Ref)
       (1 <= anon_builtin_5 && anon_builtin_5 < |stringFromRef(b)| ==>
       stringFromRef(b)[anon_builtin_5 - 1] <=
       stringFromRef(b)[anon_builtin_5]))
-  ensures isSubtype(typeOf(ret), stringType())
-  ensures |stringFromRef(ret)| == |stringFromRef(a)| + |stringFromRef(b)|
+  ensures isSubtype(typeOf(v_ret), stringType())
+  ensures |stringFromRef(v_ret)| == |stringFromRef(a)| + |stringFromRef(b)|
   ensures (forall anon_builtin: Int ::1 <= anon_builtin &&
-      anon_builtin < |stringFromRef(ret)| ==>
-      stringFromRef(ret)[anon_builtin - 1] <=
-      stringFromRef(ret)[anon_builtin])
+      anon_builtin < |stringFromRef(v_ret)| ==>
+      stringFromRef(v_ret)[anon_builtin - 1] <=
+      stringFromRef(v_ret)[anon_builtin])
 
 
-method subs(this: Ref, lo: Ref, hi: Ref) returns (ret: Ref)
+method subs(this: Ref, lo: Ref, hi: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(lo), intType())
   requires isSubtype(typeOf(hi), intType())
   requires 0 <= intFromRef(lo) && intFromRef(lo) <= intFromRef(hi) &&
     intFromRef(hi) <= |stringFromRef(this)|
-  ensures isSubtype(typeOf(ret), stringType())
-  ensures |stringFromRef(ret)| == intFromRef(hi) - intFromRef(lo)
-  ensures (forall anon: Int ::0 <= anon && anon < |stringFromRef(ret)| ==>
-      stringFromRef(ret)[anon] ==
+  ensures isSubtype(typeOf(v_ret), stringType())
+  ensures |stringFromRef(v_ret)| == intFromRef(hi) - intFromRef(lo)
+  ensures (forall anon: Int ::0 <= anon && anon < |stringFromRef(v_ret)| ==>
+      stringFromRef(v_ret)[anon] ==
       stringFromRef(this)[anon + intFromRef(lo)])

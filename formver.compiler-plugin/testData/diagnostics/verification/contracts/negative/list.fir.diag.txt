@@ -5,7 +5,6 @@ method emptyList() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), collections_c_List())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c_List_shared(ret), wildcard)
   ensures intFromRef(ret.size) == 0
 
 
@@ -40,7 +39,6 @@ method emptyList() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), collections_c_List())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c_List_shared(ret), wildcard)
   ensures intFromRef(ret.size) == 0
 
 
@@ -93,7 +91,6 @@ method unsafe_last(l: Ref) returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), intType())
 {
   var anon: Ref
-  inhale acc(c_List_shared(l), wildcard)
   anon := l.size
   inhale isSubtype(typeOf(anon), intType())
   ret_0 := get(l, minusInts(anon, intToRef(1)))
@@ -125,7 +122,6 @@ method add_get(l: Ref) returns (ret_0: Ref)
 {
   var anon: Ref
   var n: Ref
-  inhale acc(c_MutableList_shared(l), wildcard)
   anon := add(l, intToRef(1))
   n := get(l, intToRef(1))
   label lbl_ret_0
@@ -152,7 +148,6 @@ method emptyList() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), collections_c_List())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c_List_shared(ret), wildcard)
   ensures intFromRef(ret.size) == 0
 
 
@@ -181,7 +176,6 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), collections_c_List())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c_List_shared(ret), wildcard)
   ensures intFromRef(this.size) == old(intFromRef(this.size))
   ensures intFromRef(ret.size) ==
     intFromRef(toIndex) - intFromRef(fromIndex)
@@ -194,7 +188,6 @@ method emptyList() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), collections_c_List())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c_List_shared(ret), wildcard)
   ensures intFromRef(ret.size) == 0
 
 
@@ -223,7 +216,6 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), collections_c_List())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c_List_shared(ret), wildcard)
   ensures intFromRef(this.size) == old(intFromRef(this.size))
   ensures intFromRef(ret.size) ==
     intFromRef(toIndex) - intFromRef(fromIndex)

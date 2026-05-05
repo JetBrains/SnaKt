@@ -50,12 +50,12 @@ function annotatedStringLitReturn(): Ref
 }
 
 /pure_literal_function.kt: info: Generated Viper text for annotatedReferenceReturn:
-field a: Ref
-
 field b: Ref
 
+function a(this: Ref): Ref
+
+
 function annotatedReferenceReturn(x: Ref): Ref
-  requires acc(shared(x), wildcard)
   requires isSubtype(typeOf(x), _c_X())
   ensures isSubtype(typeOf(result), _c_X())
 {

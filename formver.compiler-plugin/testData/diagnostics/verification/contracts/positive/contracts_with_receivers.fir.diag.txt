@@ -4,7 +4,6 @@ method is2(this: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
   ensures boolFromRef(ret) == true ==> isSubtype(typeOf(this), _c_Impl2())
 {
-  inhale acc(c_Class_shared(this), wildcard)
   ret := boolToRef(isSubtype(typeOf(this), _c_Impl2()))
   goto ret_0
   label ret_0
@@ -17,8 +16,6 @@ method is1butWithDispatch(v_this: Ref, this: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
   ensures boolFromRef(ret) == true ==> isSubtype(typeOf(this), _c_Impl1())
 {
-  inhale acc(c_Class_shared(v_this), wildcard)
-  inhale acc(c_Class_shared(this), wildcard)
   ret := boolToRef(isSubtype(typeOf(this), _c_Impl1()))
   goto ret_0
   label ret_0
@@ -30,7 +27,6 @@ method is1(this: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
   ensures boolFromRef(ret) == true ==> isSubtype(typeOf(this), _c_Impl1())
 {
-  inhale acc(c_Class_shared(this), wildcard)
   ret := boolToRef(isSubtype(typeOf(this), _c_Impl1()))
   goto ret_0
   label ret_0

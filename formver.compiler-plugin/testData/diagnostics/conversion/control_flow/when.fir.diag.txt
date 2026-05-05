@@ -149,7 +149,6 @@ method whenIs(x: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), boolType())
 {
   var anon: Ref
-  inhale acc(c_Foo_shared(x), wildcard)
   anon := x
   if (isSubtype(typeOf(anon), _c_Bar())) {
     ret := boolToRef(true)

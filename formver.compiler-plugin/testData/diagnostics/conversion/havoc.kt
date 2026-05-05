@@ -1,5 +1,6 @@
 // NEVER_VALIDATE
 // FULL_VIPER_DUMP
+// FULL_JDK
 
 class B()
 

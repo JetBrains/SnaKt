@@ -1,16 +1,11 @@
 /private_properties.kt: info: Generated Viper text for getBooleanField:
-method g_field(this: Ref) returns (v_ret: Ref)
-
-
 method getBooleanField(this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), _c_A())
   ensures isSubtype(typeOf(ret), boolType())
 {
   var anon: Ref
-  inhale acc(shared(this), wildcard)
   anon := g_field(this)
   ret := anon
-  inhale isSubtype(typeOf(ret), boolType())
   goto ret_0
   label ret_0
 }
@@ -19,18 +14,14 @@ method s_field(this: Ref, anon: Ref) returns (v_ret: Ref)
 
 
 /private_properties.kt: info: Generated Viper text for getStringField:
-field bf_field: Ref
-
-method g_field(this: Ref) returns (v_ret: Ref)
+function final_g_field(this: Ref): Ref
 
 
 method getStringField(this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), _c_B())
   ensures isSubtype(typeOf(ret), stringType())
 {
-  inhale acc(c_B_shared(this), wildcard)
-  unfold acc(c_B_shared(this), wildcard)
-  ret := this.bf_field
+  ret := final_g_field(this)
   goto ret_0
   label ret_0
 }
@@ -41,19 +32,22 @@ method s_field(this: Ref, anon: Ref) returns (v_ret: Ref)
 /private_properties.kt: info: Generated Viper text for extractPublic:
 field bf_field: Ref
 
-field c_B_private_bf_field: Ref
+function c_B_private_final_g_field(this: Ref): Ref
 
-field size: Ref
+
+function final_g_field(this: Ref): Ref
+
+
+function size(this: Ref): Ref
+
 
 method con() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), _c_D())
-  ensures acc(c_D_shared(ret), wildcard)
   ensures acc(c_D_unique(ret), write)
 
 
 method con__c_C() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), _c_C())
-  ensures acc(c_C_shared(ret), wildcard)
   ensures acc(c_C_unique(ret), write)
 
 
@@ -64,22 +58,16 @@ method extractPublic() returns (ret_0: Ref)
   var anon_0: Ref
   var anon_1: Ref
   var cond2: Ref
-  var anon_2: Ref
   var anon: Ref
   anon_1 := con__c_C()
-  anon_0 := havoc_Int()
+  anon_0 := havoc()
   cond1 := boolToRef(isSubtype(typeOf(anon_0), intType()))
   anon := con()
-  unfold acc(c_D_shared(anon), wildcard)
-  anon_2 := anon.bf_field
-  cond2 := boolToRef(isSubtype(typeOf(anon_2), intType()))
+  cond2 := boolToRef(isSubtype(typeOf(final_g_field(anon)), intType()))
   assert boolFromRef(cond1)
   assert boolFromRef(cond2)
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
-
-method g_field(this: Ref) returns (ret: Ref)
-
 
 method s_field(this: Ref, anon_0: Ref) returns (ret: Ref)

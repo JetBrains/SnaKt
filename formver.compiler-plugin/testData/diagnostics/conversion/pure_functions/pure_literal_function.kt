@@ -1,4 +1,5 @@
 // NEVER_VALIDATE
+// FULL_JDK
 
 import org.jetbrains.kotlin.formver.plugin.Pure
 

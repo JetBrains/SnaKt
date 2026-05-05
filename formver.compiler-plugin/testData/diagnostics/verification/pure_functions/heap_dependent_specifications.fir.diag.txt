@@ -1,173 +1,109 @@
 /heap_dependent_specifications.kt: info: Generated Viper text for isAlternating:
-field next: Ref
-
-field value: Ref
-
 function isAlternating(node: Ref, expectsPositive: Ref): Ref
-  requires acc(shared(node), wildcard)
   requires isSubtype(typeOf(node), _c_Node())
   requires isSubtype(typeOf(expectsPositive), boolType())
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let v_anon_1_0 ==
+  (let v_anon_0_0 ==
     ((boolFromRef(expectsPositive) ?
-      (unfolding acc(shared(node), wildcard) in node.value) :
+      gtInts(value(node), intToRef(0)) :
       null)) in
-    (let v_anon_0_0 ==
-      ((boolFromRef(expectsPositive) ?
-        (unfolding acc(shared(node), wildcard) in
-          gtInts(v_anon_1_0, intToRef(0))) :
+    (let v_anon_1_0 ==
+      ((!boolFromRef(expectsPositive) ?
+        ltInts(value(node), intToRef(0)) :
         null)) in
-      (let v_anon_3_0 ==
-        ((!boolFromRef(expectsPositive) ?
-          (unfolding acc(shared(node), wildcard) in node.value) :
-          null)) in
-        (let v_anon_2_0 ==
-          ((!boolFromRef(expectsPositive) ?
-            (unfolding acc(shared(node), wildcard) in
-              ltInts(v_anon_3_0, intToRef(0))) :
-            null)) in
-          (let l0_isCurrentValid_0 ==
-            ((boolFromRef(expectsPositive) ? v_anon_0_0 : v_anon_2_0)) in
-            (let l0_nextNode_0 ==
-              ((unfolding acc(shared(node), wildcard) in node.next)) in
-              (let v_anon_5_0 ==
+      (let l0_isCurrentValid_0 ==
+        ((boolFromRef(expectsPositive) ? v_anon_0_0 : v_anon_1_0)) in
+        (let l0_nextNode_0 ==
+          (next(node)) in
+          (let v_anon_3_0 ==
+            ((!(l0_nextNode_0 == nullValue()) ?
+              isAlternating(l0_nextNode_0, notBool(expectsPositive)) :
+              null)) in
+            (let v_anon_4_0 ==
+              ((!!(l0_nextNode_0 == nullValue()) ? boolToRef(true) : null)) in
+              (let v_anon_2_0 ==
                 ((!(l0_nextNode_0 == nullValue()) ?
-                  (unfolding acc(shared(node), wildcard) in
-                    isAlternating(l0_nextNode_0, notBool(expectsPositive))) :
-                  null)) in
-                (let v_anon_6_0 ==
-                  ((!!(l0_nextNode_0 == nullValue()) ?
-                    boolToRef(true) :
-                    null)) in
-                  (let v_anon_4_0 ==
-                    ((!(l0_nextNode_0 == nullValue()) ?
-                      v_anon_5_0 :
-                      v_anon_6_0)) in
-                    andBools(l0_isCurrentValid_0, v_anon_4_0))))))))))
+                  v_anon_3_0 :
+                  v_anon_4_0)) in
+                andBools(l0_isCurrentValid_0, v_anon_2_0))))))))
 }
 
+function next(this: Ref): Ref
+
+
+function value(this: Ref): Ref
+
+
 /heap_dependent_specifications.kt: info: Generated Viper text for isStrictlyAscendingAndPositive:
-field next: Ref
-
-field value: Ref
-
 function isStrictlyAscendingAndPositive(node: Ref): Ref
-  requires acc(c_Node_shared(node), wildcard)
   requires isSubtype(typeOf(node), _c_Node())
-  requires intFromRef((unfolding acc(c_Node_shared(node), wildcard) in
-      node.value)) >=
-    0
+  requires value(node) >= 0
   ensures isSubtype(typeOf(result), boolType())
 {
   (let l0_nextNode_0 ==
-    ((unfolding acc(c_Node_shared(node), wildcard) in node.next)) in
+    (next(node)) in
     (let v_anon_2_0 ==
-      ((!(l0_nextNode_0 == nullValue()) ?
-        (unfolding acc(c_Node_shared(node), wildcard) in
-          (unfolding acc(c_Node_shared(l0_nextNode_0), wildcard) in
-            l0_nextNode_0.value)) :
+      ((value(l0_nextNode_0) < 0 && !(l0_nextNode_0 == nullValue()) ?
+        boolToRef(false) :
         null)) in
       (let v_anon_3_0 ==
-        ((intFromRef(v_anon_2_0) < 0 && !(l0_nextNode_0 == nullValue()) ?
-          boolToRef(false) :
+        ((!(value(l0_nextNode_0) < 0) && !(l0_nextNode_0 == nullValue()) ?
+          andBools(gtInts(value(l0_nextNode_0), value(node)), isStrictlyAscendingAndPositive(l0_nextNode_0)) :
           null)) in
-        (let v_anon_5_0 ==
-          ((!(intFromRef(v_anon_2_0) < 0) &&
-          !(l0_nextNode_0 == nullValue()) ?
-            (unfolding acc(c_Node_shared(node), wildcard) in
-              (unfolding acc(c_Node_shared(l0_nextNode_0), wildcard) in
-                l0_nextNode_0.value)) :
+        (let v_anon_1_0 ==
+          ((!(l0_nextNode_0 == nullValue()) ?
+            (value(l0_nextNode_0) < 0 ? v_anon_2_0 : v_anon_3_0) :
             null)) in
-          (let v_anon_6_0 ==
-            ((!(intFromRef(v_anon_2_0) < 0) &&
-            !(l0_nextNode_0 == nullValue()) ?
-              (unfolding acc(c_Node_shared(node), wildcard) in node.value) :
-              null)) in
-            (let v_anon_4_0 ==
-              ((!(intFromRef(v_anon_2_0) < 0) &&
-              !(l0_nextNode_0 == nullValue()) ?
-                (unfolding acc(c_Node_shared(node), wildcard) in
-                  (unfolding acc(c_Node_shared(node), wildcard) in
-                    (unfolding acc(c_Node_shared(l0_nextNode_0), wildcard) in
-                      andBools(gtInts(v_anon_5_0, v_anon_6_0), isStrictlyAscendingAndPositive(l0_nextNode_0))))) :
-                null)) in
-              (let v_anon_1_0 ==
-                ((!(l0_nextNode_0 == nullValue()) ?
-                  (intFromRef(v_anon_2_0) < 0 ? v_anon_3_0 : v_anon_4_0) :
-                  null)) in
-                (let v_anon_7_0 ==
-                  ((!!(l0_nextNode_0 == nullValue()) ?
-                    boolToRef(true) :
-                    null)) in
-                  (let v_anon_0_0 ==
-                    ((!(l0_nextNode_0 == nullValue()) ?
-                      v_anon_1_0 :
-                      v_anon_7_0)) in
-                    v_anon_0_0)))))))))
+          (let v_anon_4_0 ==
+            ((!!(l0_nextNode_0 == nullValue()) ? boolToRef(true) : null)) in
+            (let v_anon_0_0 ==
+              ((!(l0_nextNode_0 == nullValue()) ? v_anon_1_0 : v_anon_4_0)) in
+              v_anon_0_0))))))
 }
 
+function next(this: Ref): Ref
+
+
+function value(this: Ref): Ref
+
+
 /heap_dependent_specifications.kt: info: Generated Viper text for isLocallyValidBST:
-field left: Ref
-
-field right: Ref
-
-field value: Ref
-
 function isLocallyValidBST(node: Ref): Ref
-  requires acc(shared(node), wildcard)
   requires isSubtype(typeOf(node), _c_TreeNode())
   ensures isSubtype(typeOf(result), boolType())
 {
   (let l0_leftNode_0 ==
-    ((unfolding acc(shared(node), wildcard) in node.left)) in
-    (let v_anon_1_0 ==
+    (left(node)) in
+    (let v_anon_0_0 ==
       ((!(l0_leftNode_0 == nullValue()) ?
-        (unfolding acc(shared(node), wildcard) in
-          (unfolding acc(shared(l0_leftNode_0), wildcard) in
-            l0_leftNode_0.value)) :
+        andBools(ltInts(value(l0_leftNode_0), value(node)), isLocallyValidBST(l0_leftNode_0)) :
         null)) in
-      (let v_anon_2_0 ==
-        ((!(l0_leftNode_0 == nullValue()) ?
-          (unfolding acc(shared(node), wildcard) in node.value) :
-          null)) in
-        (let v_anon_0_0 ==
-          ((!(l0_leftNode_0 == nullValue()) ?
-            (unfolding acc(shared(node), wildcard) in
-              (unfolding acc(shared(node), wildcard) in
-                (unfolding acc(shared(l0_leftNode_0), wildcard) in
-                  andBools(ltInts(v_anon_1_0, v_anon_2_0), isLocallyValidBST(l0_leftNode_0))))) :
-            null)) in
-          (let v_anon_3_0 ==
-            ((!!(l0_leftNode_0 == nullValue()) ? boolToRef(true) : null)) in
-            (let l0_leftValid_0 ==
-              ((!(l0_leftNode_0 == nullValue()) ? v_anon_0_0 : v_anon_3_0)) in
-              (let l0_rightNode_0 ==
-                ((unfolding acc(shared(node), wildcard) in node.right)) in
-                (let v_anon_5_0 ==
+      (let v_anon_1_0 ==
+        ((!!(l0_leftNode_0 == nullValue()) ? boolToRef(true) : null)) in
+        (let l0_leftValid_0 ==
+          ((!(l0_leftNode_0 == nullValue()) ? v_anon_0_0 : v_anon_1_0)) in
+          (let l0_rightNode_0 ==
+            (right(node)) in
+            (let v_anon_2_0 ==
+              ((!(l0_rightNode_0 == nullValue()) ?
+                andBools(gtInts(value(l0_rightNode_0), value(node)), isLocallyValidBST(l0_rightNode_0)) :
+                null)) in
+              (let v_anon_3_0 ==
+                ((!!(l0_rightNode_0 == nullValue()) ?
+                  boolToRef(true) :
+                  null)) in
+                (let l0_rightValid_0 ==
                   ((!(l0_rightNode_0 == nullValue()) ?
-                    (unfolding acc(shared(node), wildcard) in
-                      (unfolding acc(shared(l0_rightNode_0), wildcard) in
-                        l0_rightNode_0.value)) :
-                    null)) in
-                  (let v_anon_6_0 ==
-                    ((!(l0_rightNode_0 == nullValue()) ?
-                      (unfolding acc(shared(node), wildcard) in node.value) :
-                      null)) in
-                    (let v_anon_4_0 ==
-                      ((!(l0_rightNode_0 == nullValue()) ?
-                        (unfolding acc(shared(node), wildcard) in
-                          (unfolding acc(shared(node), wildcard) in
-                            (unfolding acc(shared(l0_rightNode_0), wildcard) in
-                              andBools(gtInts(v_anon_5_0, v_anon_6_0), isLocallyValidBST(l0_rightNode_0))))) :
-                        null)) in
-                      (let v_anon_7_0 ==
-                        ((!!(l0_rightNode_0 == nullValue()) ?
-                          boolToRef(true) :
-                          null)) in
-                        (let l0_rightValid_0 ==
-                          ((!(l0_rightNode_0 == nullValue()) ?
-                            v_anon_4_0 :
-                            v_anon_7_0)) in
-                          andBools(l0_leftValid_0, l0_rightValid_0)))))))))))))
+                    v_anon_2_0 :
+                    v_anon_3_0)) in
+                  andBools(l0_leftValid_0, l0_rightValid_0)))))))))
 }
+
+function left(this: Ref): Ref
+
+
+function right(this: Ref): Ref
+
+
+function value(this: Ref): Ref

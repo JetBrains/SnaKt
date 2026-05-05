@@ -1,5 +1,6 @@
 /scoped_receivers.kt: info: Generated Viper text for with_run_extension_labeled:
-field size: Ref
+function size(v_this: Ref): Ref
+
 
 method with_run_extension_labeled(this: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(this), nullable(intType()))
@@ -124,11 +125,11 @@ method with_run_extension_labeled(this: Ref) returns (ret_0: Ref)
   if (boolFromRef(anon_27)) {
     anon_26 := boolToRef(true)
   } else {
-    var ret_13: Ref
-    ret_13 := notBool(boolToRef(this == nullValue()))
-    goto lbl_ret_13
-    label lbl_ret_13
-    anon_26 := ret_13
+    var ret: Ref
+    ret := notBool(boolToRef(this == nullValue()))
+    goto ret_13
+    label ret_13
+    anon_26 := ret
   }
   assert boolFromRef(anon_26)
   anon_9 := boolToRef(false)

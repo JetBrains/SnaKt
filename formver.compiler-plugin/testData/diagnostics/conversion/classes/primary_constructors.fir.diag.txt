@@ -1,23 +1,20 @@
 /primary_constructors.kt: info: Generated Viper text for createPrimitiveFields:
-field bf_a: Ref
+function g_a(this: Ref): Ref
 
-field bf_b: Ref
+
+function g_b(this: Ref): Ref
+
 
 method con(a: Ref, b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(a), intType())
   requires isSubtype(typeOf(b), intType())
   ensures isSubtype(typeOf(ret), _c_PrimitiveFields())
-  ensures acc(shared(ret), wildcard)
   ensures acc(c_PrimitiveFields_unique(ret), write)
-  ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf_a)) ==
-    intFromRef(a) &&
-    intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf_b)) ==
-    intFromRef(b)
+  ensures g_a(ret) == a && g_b(ret) == b
 
 
 method createPrimitiveFields() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), _c_PrimitiveFields())
-  ensures acc(shared(ret_0), wildcard)
 {
   ret_0 := con(intToRef(10), intToRef(20))
   goto lbl_ret_0
@@ -25,19 +22,18 @@ method createPrimitiveFields() returns (ret_0: Ref)
 }
 
 /primary_constructors.kt: info: Generated Viper text for createRecursive:
-field bf_a: Ref
+function g_a(this: Ref): Ref
+
 
 method con(a: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(a), nullable(_c_Recursive()))
   ensures isSubtype(typeOf(ret), _c_Recursive())
-  ensures acc(shared(ret), wildcard)
   ensures acc(c_Recursive_unique(ret), write)
-  ensures (unfolding acc(shared(ret), wildcard) in ret.bf_a) == a
+  ensures g_a(ret) == a
 
 
 method createRecursive() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), _c_Recursive())
-  ensures acc(shared(ret_0), wildcard)
 {
   ret_0 := con(nullValue())
   goto lbl_ret_0
@@ -45,22 +41,21 @@ method createRecursive() returns (ret_0: Ref)
 }
 
 /primary_constructors.kt: info: Generated Viper text for createFieldInBody:
-field a: Ref
+function a(this: Ref): Ref
 
-field bf_c: Ref
+
+function g_c(this: Ref): Ref
+
 
 method con(c: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(c), intType())
   ensures isSubtype(typeOf(ret), _c_FieldInBody())
-  ensures acc(shared(ret), wildcard)
   ensures acc(c_FieldInBody_unique(ret), write)
-  ensures intFromRef((unfolding acc(shared(ret), wildcard) in ret.bf_c)) ==
-    intFromRef(c)
+  ensures g_c(ret) == c
 
 
 method createFieldInBody() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), _c_FieldInBody())
-  ensures acc(shared(ret_0), wildcard)
 {
   ret_0 := con(intToRef(10))
   goto lbl_ret_0

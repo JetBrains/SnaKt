@@ -1,5 +1,6 @@
 /custom_run_functions.kt: info: Generated Viper text for useRun:
-field size: Ref
+function size(this: Ref): Ref
+
 
 method useRun() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), unitType())
@@ -112,7 +113,7 @@ method useRun() returns (ret_0: Ref)
   var l42_result: Ref
   var ret_44: Ref
   var anon_9: Ref
-  var ret_43: Ref
+  var ret: Ref
   var anon: Ref
   ret_2 := intToRef(1)
   goto lbl_ret_2
@@ -326,10 +327,10 @@ method useRun() returns (ret_0: Ref)
   label lbl_ret_40
   cond6 := ret_40
   anon := intToRef(1)
-  ret_43 := plusInts(anon, intToRef(1))
-  goto lbl_ret_43
-  label lbl_ret_43
-  anon_9 := ret_43
+  ret := plusInts(anon, intToRef(1))
+  goto ret_43
+  label ret_43
+  anon_9 := ret
   ret_44 := plusInts(anon_9, intToRef(1))
   goto lbl_ret_44
   label lbl_ret_44
@@ -528,13 +529,14 @@ method complexScenario(par_arg: Ref) returns (ret_0: Ref)
 }
 
 /custom_run_functions.kt: info: Generated Viper text for testCustomClass:
-field member: Ref
+function member(this: Ref): Ref
 
-field size: Ref
+
+function size(this: Ref): Ref
+
 
 method con() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), _c_CustomClass())
-  ensures acc(c_CustomClass_shared(ret), wildcard)
   ensures acc(c_CustomClass_unique(ret), write)
 
 
@@ -554,8 +556,7 @@ method testCustomClass() returns (ret_0: Ref)
   var anon: Ref
   var ret_4: Ref
   custom := con()
-  unfold acc(c_CustomClass_shared(custom), wildcard)
-  ret_2 := custom.member
+  ret_2 := member(custom)
   goto lbl_ret_2
   label lbl_ret_2
   anon_2 := ret_2
@@ -566,8 +567,7 @@ method testCustomClass() returns (ret_0: Ref)
   anon_1 := ret_1
   anon_0 := anon_1
   inhale isSubtype(typeOf(anon_0), intType())
-  unfold acc(c_CustomClass_shared(custom), wildcard)
-  ret_4 := custom.member
+  ret_4 := member(custom)
   goto lbl_ret_4
   label lbl_ret_4
   anon := ret_4

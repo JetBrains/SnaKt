@@ -20,7 +20,6 @@ method impureExtension(this: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(this), _c_Field())
   ensures isSubtype(typeOf(ret_0), unitType())
 {
-  inhale acc(shared(this), wildcard)
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }

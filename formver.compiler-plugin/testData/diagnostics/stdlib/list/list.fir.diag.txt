@@ -18,7 +18,6 @@ method emptyList() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), collections_c_List())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c_List_shared(ret), wildcard)
   ensures intFromRef(ret.size) == 0
 
 
@@ -32,7 +31,6 @@ method initialization(l: Ref) returns (ret_0: Ref)
 {
   var myList: Ref
   var myEmptyList: Ref
-  inhale acc(c_List_shared(l), wildcard)
   myList := l
   myEmptyList := emptyList()
   label lbl_ret_0
@@ -63,7 +61,6 @@ method add_get(l: Ref) returns (ret_0: Ref)
 {
   var anon: Ref
   var n: Ref
-  inhale acc(c_MutableList_shared(l), wildcard)
   anon := add(l, intToRef(1))
   n := get(l, intToRef(0))
   label lbl_ret_0
@@ -108,7 +105,6 @@ method last_or_null(l: Ref) returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), nullable(intType()))
 {
   var l0_size: Ref
-  inhale acc(c_List_shared(l), wildcard)
   l0_size := l.size
   inhale isSubtype(typeOf(l0_size), intType())
   if (!(intFromRef(l0_size) == 0)) {
@@ -160,7 +156,6 @@ method is_empty(l: Ref) returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), intType())
 {
   var anon: Ref
-  inhale acc(c_List_shared(l), wildcard)
   anon := isEmpty(l)
   if (!boolFromRef(anon)) {
     ret_0 := get(l, intToRef(0))
@@ -207,7 +202,6 @@ method nullable_list(l: Ref) returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), unitType())
 {
   var anon_0: Ref
-  inhale l != nullValue() ==> acc(c_List_shared(l), wildcard)
   if (!(l == nullValue())) {
     var anon_1: Ref
     anon_1 := isEmpty(l)

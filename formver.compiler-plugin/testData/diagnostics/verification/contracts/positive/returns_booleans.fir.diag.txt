@@ -104,7 +104,6 @@ method isNullOrEmpty(this: Ref) returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), boolType())
   ensures boolFromRef(ret_0) == false ==> this != nullValue()
 {
-  inhale this != nullValue() ==> acc(c_Collection_shared(this), wildcard)
   if (this == nullValue()) {
     ret_0 := boolToRef(true)
   } else {
