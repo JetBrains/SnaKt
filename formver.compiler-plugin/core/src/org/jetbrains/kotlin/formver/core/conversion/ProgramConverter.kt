@@ -210,13 +210,15 @@ class ProgramConverter(
                             Is(signature.formalArgs.first(), classTypeEmbedding.asTypeEmbedding()),
                             Is(returnVariable, property.type)
                         )
-                    } + closedProperties.map { (name, property) ->
+                    } + closedProperties.mapNotNull { (name, property) ->
                         val classTypeEmbedding = typeResolver.lookupClassTypeEmbedding(name.className)!!
-                        val function = (property.getter!! as FinalFieldGetter).getter as PureUserFunctionEmbedding
-                        OperatorExpEmbeddings.Implies(
+                        val function = (property.getter!! as? FinalFieldGetter)?.getter as? PureUserFunctionEmbedding
+                        function?.let {
+                            OperatorExpEmbeddings.Implies(
                             Is(signature.formalArgs.first(), classTypeEmbedding.asTypeEmbedding()),
-                            EqCmp(returnVariable, FunctionCall(function.callable, signature.formalArgs.take(1)))
+                            EqCmp(returnVariable, FunctionCall(it.callable, signature.formalArgs.take(1)))
                         )
+                    }
                     }
                 }
             })
@@ -533,7 +535,13 @@ class ProgramConverter(
                 val invariants = params.mapNotNull { param ->
                     require(param is FirVariableEmbedding) { "Constructor parameters must be represented by FirVariableEmbeddings" }
                     constructorParamSymbolsToProperties[param.symbol]?.let { property ->
-                        EqCmp(property.getter!!.getValue(returnVariable, createCtx(returnVariable)), param)
+                        val fieldAccess = when (val field = property.getter!!) {
+                            // For the BackingFieldGetter, we cannot use the getValue method because typeInvariants might be added resulting in a non-pure expression.
+                            is BackingFieldGetter -> FieldAccess(returnVariable, field.field)
+                            is FinalFieldGetter -> field.getValue(returnVariable, createCtx(returnVariable))
+                            else -> null
+                        }
+                        fieldAccess?.let{EqCmp(fieldAccess, param)}
                     }
                 }
                 return if (invariants.isEmpty()) null
