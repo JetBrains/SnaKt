@@ -15,6 +15,8 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
 import org.jetbrains.kotlin.formver.core.conversion.CollectionSizeFieldEmbedding
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
+import org.jetbrains.kotlin.formver.core.embeddings.types.IntTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.asTypeEmbedding
 import org.jetbrains.kotlin.formver.core.kotlinCallableId
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
 import org.jetbrains.kotlin.formver.core.names.embedMemberBackingFieldName
@@ -26,13 +28,13 @@ abstract class SpecialProperty(val property: PropertyEmbedding) {
 }
 
 
-object StringSizeProperty : SpecialProperty(PropertyEmbedding(LengthFieldGetter, setter = null)) {
+object StringSizeProperty : SpecialProperty(PropertyEmbedding(LengthFieldGetter, setter = null, IntTypeEmbedding.asTypeEmbedding())) {
     context(typeResolver: TypeResolver, session: FirSession)
     override fun match(symbol: FirPropertySymbol): Boolean = symbol.callableId == kotlinCallableId("String", "length")
 }
 
 object CollectionSizeProperty :
-    SpecialProperty(PropertyEmbedding(BackingFieldGetter(CollectionSizeFieldEmbedding), setter = null)) {
+    SpecialProperty(PropertyEmbedding(BackingFieldGetter(CollectionSizeFieldEmbedding), setter = null, IntTypeEmbedding.asTypeEmbedding())) {
     context(typeResolver: TypeResolver, session: FirSession)
     override fun match(symbol: FirPropertySymbol): Boolean {
         val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol ?: return false

@@ -321,7 +321,7 @@ class ProgramConverter(
                 // final symbols that are mutable and do not have a getter, can be represented by a getter
                 if (final && symbol.isVar && !hasCustomGetter && symbol.hasBackingField){
                     val backingField = embedBackingField(symbol)
-                    return@getOrPutProperty PropertyEmbedding(BackingFieldGetter(backingField), BackingFieldSetter(backingField))
+                    return@getOrPutProperty PropertyEmbedding(BackingFieldGetter(backingField), BackingFieldSetter(backingField), embedType(symbol.resolvedReturnType))
                 }
 
 
@@ -551,7 +551,8 @@ class ProgramConverter(
             FinalFieldGetter(
                 getter
             ),
-            null
+            null,
+            embedType(symbol.resolvedReturnType)
         )
     }
 
@@ -559,6 +560,7 @@ class ProgramConverter(
     private fun embedCustomProperty(symbol: FirPropertySymbol) = PropertyEmbedding(
         CustomGetter(embedGetterFunction(symbol)),
         symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) },
+        embedType(symbol.resolvedReturnType)
     )
 
     @OptIn(SymbolInternals::class)
