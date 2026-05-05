@@ -6,7 +6,8 @@
 package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.isOf
-import org.jetbrains.kotlin.formver.core.names.InjectionFuncName
+import org.jetbrains.kotlin.formver.core.names.FromRefFuncName
+import org.jetbrains.kotlin.formver.core.names.ToRefFuncName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
 import org.jetbrains.kotlin.formver.viper.ast.Function
@@ -48,9 +49,9 @@ class Injection(
     private val r = domainVar("r", Type.Ref)
 
     val toRef: DomainFunc =
-        RuntimeTypeDomain.createDomainFunc(InjectionFuncName(baseName, "ToRef"), listOf(v.decl()), Type.Ref)
+        RuntimeTypeDomain.createDomainFunc(ToRefFuncName(baseName), listOf(v.decl()), Type.Ref)
     val fromRef: DomainFunc =
-        RuntimeTypeDomain.createDomainFunc(InjectionFuncName(baseName, "FromRef"), listOf(r.decl()), viperType)
+        RuntimeTypeDomain.createDomainFunc(FromRefFuncName(baseName), listOf(r.decl()), viperType)
 
     internal fun AxiomListBuilder.injectionAxioms() {
         axiom {

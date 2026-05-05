@@ -61,7 +61,7 @@ class TypeResolver {
 
     fun lookupEmbedding(name: SymbolicName) = classEmbedding[name] ?: interfaceEmbedding[name]
 
-    fun registerAdt(typeEmbedding: AdtTypeEmbedding) = adtEmbedding.putIfAbsent(typeEmbedding.name, typeEmbedding)
+    fun registerAdt(typeEmbedding: AdtTypeEmbedding) = adtEmbedding.put(typeEmbedding.name, typeEmbedding)
 
     fun lookupAdt(name: SymbolicName): AdtTypeEmbedding? = adtEmbedding[name]
 

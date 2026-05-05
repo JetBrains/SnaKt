@@ -109,7 +109,8 @@ class SimpleNameResolver : NameResolver {
 
             is PretypeName -> listOf(name.name)
             is AdtName -> resolveParts(name.nameType) + resolveParts(name.className)
-            is InjectionFuncName -> resolveParts(name.baseName) + listOf(name.suffix)
+            is ToRefFuncName -> resolveParts(name.baseName) + listOf("ToRef")
+            is FromRefFuncName -> resolveParts(name.baseName) + listOf("FromRef")
             is AdtConstructorName -> resolveParts(name.nameType) +
                     with(NameTypeAction.SKIP) { resolveParts(name.adtName) } +
                     resolveParts(name.className)

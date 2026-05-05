@@ -149,7 +149,8 @@ class NameGraphRenderer(val shortNameResolver: ShortNameResolver) {
                         is NamedDomainAxiomLabel -> "Axiom: "
                         is QualifiedDomainFuncName -> "Qual Func: "
                         is UnqualifiedDomainFuncName -> "Unqual Func: "
-                        is InjectionFuncName -> "Injection Func: "
+                        is ToRefFuncName -> "ToRef Func: "
+                        is FromRefFuncName -> "FromRef Func: "
                         is AdtName -> "Adt: "
                         is AdtConstructorName -> "Adt Cons: "
                         else -> "Unknown: "
@@ -276,7 +277,11 @@ class NameGraphRenderer(val shortNameResolver: ShortNameResolver) {
                         link(entity.pretype.name, Relation.IS_PART_OF, entity)
                     }
 
-                    is InjectionFuncName -> {
+                    is ToRefFuncName -> {
+                        link(entity.baseName, Relation.IS_PART_OF, entity)
+                    }
+
+                    is FromRefFuncName -> {
                         link(entity.baseName, Relation.IS_PART_OF, entity)
                     }
 
