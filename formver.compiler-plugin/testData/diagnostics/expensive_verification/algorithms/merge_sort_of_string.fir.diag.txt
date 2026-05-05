@@ -1,4 +1,9 @@
 /merge_sort_of_string.kt: info: Generated Viper text for subs:
+method length(v_this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
+
 method plus(v_this: Ref, other: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(v_this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
@@ -61,6 +66,11 @@ method subs(this: Ref, lo: Ref, hi: Ref) returns (ret: Ref)
 }
 
 /merge_sort_of_string.kt: info: Generated Viper text for mergeStrings:
+method length(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
+
 method mergeStrings(a: Ref, b: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(a), stringType())
   requires isSubtype(typeOf(b), stringType())
@@ -177,6 +187,11 @@ method plus(this: Ref, other: Ref) returns (v_ret: Ref)
 
 
 /merge_sort_of_string.kt: info: Generated Viper text for mergeSorted:
+method length(v_this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
+
 method mergeSorted(this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), stringType())
   ensures isSubtype(typeOf(ret), stringType())

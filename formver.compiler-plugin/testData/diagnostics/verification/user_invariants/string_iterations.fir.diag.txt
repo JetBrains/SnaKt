@@ -38,6 +38,11 @@ method firstAtLeast(this: Ref, c: Ref) returns (ret: Ref)
   label ret_0
 }
 
+method length(v_this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
+
 /string_iterations.kt: info: Generated Viper text for lastLess:
 method lastLess(this: Ref, c: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), stringType())
@@ -80,3 +85,7 @@ method lastLess(this: Ref, c: Ref) returns (ret: Ref)
   goto ret_0
   label ret_0
 }
+
+method length(v_this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())

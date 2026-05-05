@@ -65,6 +65,11 @@ method forAllWithTriggersInLoop(str: Ref) returns (ret: Ref)
   label ret_0
 }
 
+method length(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
+
 /forall_with_triggers.kt: info: Generated Viper text for forAllWithoutTriggers:
 method forAllWithoutTriggers() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), intType())

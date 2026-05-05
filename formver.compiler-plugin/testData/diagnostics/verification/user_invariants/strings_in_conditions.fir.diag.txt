@@ -39,7 +39,17 @@ method firstNotSortedIndex(s: Ref) returns (ret: Ref)
   label ret_0
 }
 
+method length(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
+
 /strings_in_conditions.kt: info: Generated Viper text for returnNewString:
+method length(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
+
 method returnNewString() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), stringType())
 {
@@ -96,6 +106,11 @@ method addCharacterTimes(s: Ref, c: Ref, n: Ref) returns (ret: Ref)
   goto ret_0
   label ret_0
 }
+
+method length(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
 
 method plus(this: Ref, other: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(this), stringType())

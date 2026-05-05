@@ -1,4 +1,9 @@
 /interface.kt: info: Generated Viper text for testProperties:
+method g_varProp(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), _c_Foo()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
+
 method testProperties(foo: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(foo), _c_Foo())
   ensures isSubtype(typeOf(ret), unitType())
@@ -14,6 +19,11 @@ method testProperties(foo: Ref) returns (ret: Ref)
   label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
+
+method valProp(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), _c_Foo()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
 
 method varProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
 
@@ -39,3 +49,11 @@ method createImpl() returns (ret_0: Ref)
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
+
+method g_number(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), _c_First()) ==>
+    isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(this), _c_Second()) ==>
+    isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(this), _c_Impl()) ==>
+    ret == final_g_number(this)

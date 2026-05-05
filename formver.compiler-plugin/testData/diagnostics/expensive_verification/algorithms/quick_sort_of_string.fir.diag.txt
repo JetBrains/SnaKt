@@ -1,4 +1,9 @@
 /quick_sort_of_string.kt: info: Generated Viper text for minOrMaxChar:
+method length(v_this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
+
 method minOrMaxChar(this: Ref, calcMin: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(calcMin), boolType())
@@ -70,6 +75,11 @@ method minOrMaxChar(this: Ref, calcMin: Ref) returns (ret: Ref)
 }
 
 /quick_sort_of_string.kt: info: Generated Viper text for quickSort:
+method length(v_this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
+
 method minOrMaxChar(this: Ref, calcMin: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(calcMin), boolType())
@@ -133,6 +143,11 @@ method chooseIndex(this: Ref) returns (v_ret: Ref)
   ensures isSubtype(typeOf(v_ret), intType())
   ensures 0 <= intFromRef(v_ret) &&
     intFromRef(v_ret) < |stringFromRef(this)|
+
+
+method length(v_this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
 
 
 method plus(v_this: Ref, other: Ref) returns (v_ret: Ref)

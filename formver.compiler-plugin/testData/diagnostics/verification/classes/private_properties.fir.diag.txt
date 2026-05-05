@@ -1,4 +1,9 @@
 /private_properties.kt: info: Generated Viper text for getBooleanField:
+method g_field(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), _c_A()) ==>
+    isSubtype(typeOf(v_ret), boolType())
+
+
 method getBooleanField(this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), _c_A())
   ensures isSubtype(typeOf(ret), boolType())
@@ -17,6 +22,11 @@ method s_field(this: Ref, anon: Ref) returns (v_ret: Ref)
 function final_g_field(this: Ref): Ref
 
 
+method g_field(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), _c_A()) ==>
+    isSubtype(typeOf(v_ret), boolType())
+
+
 method getStringField(this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), _c_B())
   ensures isSubtype(typeOf(ret), stringType())
@@ -25,6 +35,11 @@ method getStringField(this: Ref) returns (ret: Ref)
   goto ret_0
   label ret_0
 }
+
+method length(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
 
 method s_field(this: Ref, anon: Ref) returns (v_ret: Ref)
 
@@ -69,5 +84,15 @@ method extractPublic() returns (ret_0: Ref)
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
+
+method g_field(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), _c_A()) ==>
+    isSubtype(typeOf(ret), boolType())
+
+
+method length(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(ret), intType())
+
 
 method s_field(this: Ref, anon_0: Ref) returns (ret: Ref)

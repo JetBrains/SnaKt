@@ -27,6 +27,11 @@ function getStringLength(obj: Ref): Ref
         l0_len_2)))
 }
 
+method length(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(ret), intType())
+
+
 /pure_function_rely_on_branch.kt: info: Generated Viper text for safeNestedDivide:
 function safeNestedDivide(x: Ref, y: Ref, z: Ref): Ref
   requires isSubtype(typeOf(x), intType())

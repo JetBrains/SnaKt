@@ -49,6 +49,11 @@ function annotatedStringLitReturn(): Ref
   stringToRef(Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116))
 }
 
+method length(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(ret), intType())
+
+
 /pure_literal_function.kt: info: Generated Viper text for annotatedReferenceReturn:
 field b: Ref
 

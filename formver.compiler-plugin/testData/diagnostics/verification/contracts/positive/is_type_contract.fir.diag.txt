@@ -9,6 +9,11 @@ method isString(x: Ref) returns (ret: Ref)
   label ret_0
 }
 
+method length(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
+
 /is_type_contract.kt: info: Generated Viper text for isString:
 method isString(this: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(this), anyType())
@@ -21,6 +26,11 @@ method isString(this: Ref) returns (ret: Ref)
   label ret_0
 }
 
+method length(v_this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
+
 /is_type_contract.kt: info: Generated Viper text for subtypeTransitive:
 method f_subtypeTransitive(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), unitType())
@@ -32,11 +42,11 @@ method f_subtypeTransitive(x: Ref) returns (ret: Ref)
 }
 
 /is_type_contract.kt: info: Generated Viper text for constructorReturnType:
-field bar: Ref
+function bar(this: Ref): Ref
+
 
 method con() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), _c_Foo())
-  ensures acc(c_Foo_shared(ret), wildcard)
   ensures acc(c_Foo_unique(ret), write)
 
 
@@ -52,31 +62,28 @@ method constructorReturnType() returns (ret_0: Ref)
 }
 
 /is_type_contract.kt: info: Generated Viper text for subtypeSuperType:
-field bf_bar: Ref
+function g_bar(this: Ref): Ref
 
-method subtypeSuperType(bar: Ref) returns (ret_0: Ref)
+
+method subtypeSuperType(bar: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(bar), _c_Bar())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(ret), unitType())
   ensures true ==> isSubtype(typeOf(bar), _c_Foo())
 {
-  inhale acc(c_Bar_shared(bar), wildcard)
-  label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
 }
 
 /is_type_contract.kt: info: Generated Viper text for typeOfField:
-field bar: Ref
+function bar(this: Ref): Ref
 
-method typeOfField(foo: Ref) returns (ret_0: Ref)
+
+method typeOfField(foo: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(foo), _c_Foo())
-  ensures isSubtype(typeOf(ret_0), boolType())
-  ensures boolFromRef(ret_0) == true
+  ensures isSubtype(typeOf(ret), boolType())
+  ensures boolFromRef(ret) == true
 {
-  var anon: Ref
-  inhale acc(c_Foo_shared(foo), wildcard)
-  unfold acc(c_Foo_shared(foo), wildcard)
-  anon := foo.bar
-  ret_0 := boolToRef(isSubtype(typeOf(anon), _c_Bar()))
-  goto lbl_ret_0
-  label lbl_ret_0
+  ret := boolToRef(isSubtype(typeOf(bar(foo)), _c_Bar()))
+  goto ret_0
+  label ret_0
 }

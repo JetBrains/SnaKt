@@ -4,6 +4,21 @@ method call(x: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 
 
+method cause(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_Throwable()) ==>
+    isSubtype(typeOf(ret), nullable(kotlin_c_Throwable()))
+
+
+method length(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(ret), intType())
+
+
+method message(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_Throwable()) ==>
+    isSubtype(typeOf(ret), nullable(stringType()))
+
+
 method tryCatch() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), unitType())
 {
@@ -34,6 +49,21 @@ method tryCatch() returns (ret_0: Ref)
 method call(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), unitType())
+
+
+method cause(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_Throwable()) ==>
+    isSubtype(typeOf(ret), nullable(kotlin_c_Throwable()))
+
+
+method length(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(ret), intType())
+
+
+method message(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_Throwable()) ==>
+    isSubtype(typeOf(ret), nullable(stringType()))
 
 
 method nestedTryCatch() returns (ret_0: Ref)
@@ -81,6 +111,21 @@ method call(x: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 
 
+method cause(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_Throwable()) ==>
+    isSubtype(typeOf(ret), nullable(kotlin_c_Throwable()))
+
+
+method length(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(ret), intType())
+
+
+method message(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_Throwable()) ==>
+    isSubtype(typeOf(ret), nullable(stringType()))
+
+
 method tryCatchWithInline() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), unitType())
 {
@@ -111,6 +156,21 @@ method tryCatchWithInline() returns (ret_0: Ref)
 }
 
 /try_catch.kt: info: Generated Viper text for tryCatchShadowing:
+method cause(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_Throwable()) ==>
+    isSubtype(typeOf(ret), nullable(kotlin_c_Throwable()))
+
+
+method length(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(ret), intType())
+
+
+method message(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_Throwable()) ==>
+    isSubtype(typeOf(ret), nullable(stringType()))
+
+
 method tryCatchShadowing() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), unitType())
 {
@@ -141,6 +201,21 @@ method tryCatchShadowing() returns (ret_0: Ref)
 method call(x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(ret), unitType())
+
+
+method cause(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_Throwable()) ==>
+    isSubtype(typeOf(ret), nullable(kotlin_c_Throwable()))
+
+
+method length(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(ret), intType())
+
+
+method message(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_Throwable()) ==>
+    isSubtype(typeOf(ret), nullable(stringType()))
 
 
 method multipleCatches() returns (ret_0: Ref)
@@ -188,9 +263,24 @@ method call(x: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), unitType())
 
 
+method cause(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_Throwable()) ==>
+    isSubtype(typeOf(ret), nullable(kotlin_c_Throwable()))
+
+
 method ignore(e: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(e), lang_c_Exception())
   ensures isSubtype(typeOf(ret), unitType())
+
+
+method length(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(ret), intType())
+
+
+method message(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_Throwable()) ==>
+    isSubtype(typeOf(ret), nullable(stringType()))
 
 
 method useException() returns (ret_0: Ref)

@@ -40,10 +40,12 @@ method con(str: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(str), stringType())
   ensures isSubtype(typeOf(v_ret), _c_StringBox())
   ensures acc(c_StringBox_unique(v_ret), write)
-  ensures g_str(v_ret) == str
+  ensures stringFromRef(g_str(v_ret)) == stringFromRef(str)
 
 
 method length(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
 
 
 method testType(s: Ref) returns (ret: Ref)
@@ -52,18 +54,12 @@ method testType(s: Ref) returns (ret: Ref)
 {
   var cond1: Ref
   var anon_0: Ref
-  var anon_1: Ref
   var cond2: Ref
-  var anon_2: Ref
   var anon: Ref
-  anon_1 := con(s)
-  anon_0 := g_str(anon_1)
-  inhale isSubtype(typeOf(anon_0), stringType())
-  cond1 := boolToRef(stringFromRef(anon_0) == stringFromRef(s))
+  anon_0 := con(s)
+  cond1 := boolToRef(stringFromRef(g_str(anon_0)) == stringFromRef(s))
   anon := con(stringToRef(Seq(115, 116, 114)))
-  anon_2 := g_str(anon)
-  inhale isSubtype(typeOf(anon_2), stringType())
-  cond2 := boolToRef(stringFromRef(anon_2) == Seq(115, 116, 114))
+  cond2 := boolToRef(stringFromRef(g_str(anon)) == Seq(115, 116, 114))
   assert boolFromRef(cond1)
   assert boolFromRef(cond2)
   label ret_0
@@ -112,10 +108,12 @@ method con(str: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(str), stringType())
   ensures isSubtype(typeOf(v_ret), _c_StringBox())
   ensures acc(c_StringBox_unique(v_ret), write)
-  ensures g_str(v_ret) == str
+  ensures stringFromRef(g_str(v_ret)) == stringFromRef(str)
 
 
 method length(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
 
 
 method testLengthField(s: Ref) returns (ret: Ref)
@@ -124,13 +122,10 @@ method testLengthField(s: Ref) returns (ret: Ref)
 {
   var len: Ref
   var cond1: Ref
-  var anon_0: Ref
   var anon: Ref
   len := stringLength(s)
   anon := con(stringToRef(Seq(115, 116, 114)))
-  anon_0 := g_str(anon)
-  inhale isSubtype(typeOf(anon_0), stringType())
-  cond1 := boolToRef(|stringFromRef(anon_0)| == 3)
+  cond1 := boolToRef(|stringFromRef(g_str(anon))| == 3)
   assert boolFromRef(cond1)
   label ret_0
   inhale isSubtype(typeOf(ret), unitType())
@@ -168,6 +163,8 @@ predicate c_String_unique(this: Ref) {
 }
 
 method length(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
 
 
 method plus(this: Ref, other: Ref) returns (v_ret: Ref)

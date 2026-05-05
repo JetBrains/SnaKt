@@ -30,3 +30,7 @@ method isNullOrEmptyWrong(seq: Ref) returns (ret: Ref)
   goto ret_0
   label ret_0
 }
+
+method length(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())

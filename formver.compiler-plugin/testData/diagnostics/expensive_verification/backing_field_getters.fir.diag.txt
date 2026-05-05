@@ -229,3 +229,9 @@ method con__c_ClassI(x: Ref, y: Ref) returns (ret: Ref)
 method con__c_Z() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), _c_Z())
   ensures acc(c_Z_unique(ret), write)
+
+
+method g_z(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), _c_ClassI()) ==>
+    isSubtype(typeOf(ret), _c_Z())
+  ensures isSubtype(typeOf(this), _c_ClassII()) ==> ret == final_g_z(this)

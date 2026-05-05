@@ -46,7 +46,17 @@ method isNullOrEmptyWrong(seq: Ref) returns (ret: Ref)
   label ret_0
 }
 
+method length(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
+
 /cond_effects.kt: info: Generated Viper text for recursiveContract:
+method length(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
+
 method recursiveContract(n: Ref, x: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(n), intType())
   requires isSubtype(typeOf(x), nullable(anyType()))

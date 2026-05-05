@@ -1,4 +1,9 @@
 /property_getters.kt: info: Generated Viper text for testPrimitivePropertyGetter:
+method nProp(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), _c_PrimitiveProperty()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
+
 method testPrimitivePropertyGetter(pp: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(pp), _c_PrimitiveProperty())
   ensures isSubtype(typeOf(ret), intType())
@@ -11,6 +16,16 @@ method testPrimitivePropertyGetter(pp: Ref) returns (ret: Ref)
 }
 
 /property_getters.kt: info: Generated Viper text for testReferencePropertyGetter:
+method nProp(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), _c_PrimitiveProperty()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
+
+method rProp(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), _c_ReferenceProperty()) ==>
+    isSubtype(typeOf(v_ret), _c_PrimitiveProperty())
+
+
 method testReferencePropertyGetter(rp: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(rp), _c_ReferenceProperty())
   ensures isSubtype(typeOf(ret), unitType())
@@ -28,6 +43,16 @@ method testReferencePropertyGetter(rp: Ref) returns (ret: Ref)
 }
 
 /property_getters.kt: info: Generated Viper text for testCascadingPropertyGetter:
+method nProp(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), _c_PrimitiveProperty()) ==>
+    isSubtype(typeOf(v_ret), intType())
+
+
+method rProp(this: Ref) returns (v_ret: Ref)
+  ensures isSubtype(typeOf(this), _c_ReferenceProperty()) ==>
+    isSubtype(typeOf(v_ret), _c_PrimitiveProperty())
+
+
 method testCascadingPropertyGetter(rp: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(rp), _c_ReferenceProperty())
   ensures isSubtype(typeOf(ret), unitType())

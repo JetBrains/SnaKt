@@ -22,6 +22,11 @@ function multipleAssignmentsOfDifferentType(): Ref
           l0_c_0))))
 }
 
+method length(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(ret), intType())
+
+
 /pure_function_with_assignments.kt: info: Generated Viper text for multipleAssignmentsWithLiteralReturn:
 function multipleAssignmentsWithLiteralReturn(): Ref
   ensures isSubtype(typeOf(result), intType())
@@ -36,6 +41,11 @@ function multipleAssignmentsWithLiteralReturn(): Ref
           (charToRef(65)) in
           intToRef(42)))))
 }
+
+method length(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(ret), intType())
+
 
 /pure_function_with_assignments.kt: info: Generated Viper text for laterInitializersCanRelyOnPrevious:
 function laterInitializersCanRelyOnPrevious(): Ref

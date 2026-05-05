@@ -10,6 +10,11 @@ method testGreater(init: Ref) returns (ret: Ref)
 }
 
 /simple_postcondition.kt: info: Generated Viper text for testString:
+method length(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(ret), intType())
+
+
 method testString() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), charType())
   ensures charFromRef(ret_0) == 97

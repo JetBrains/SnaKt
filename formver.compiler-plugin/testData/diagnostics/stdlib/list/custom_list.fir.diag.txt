@@ -1,7 +1,8 @@
 /custom_list.kt: info: Generated Viper text for get:
 field size: Ref
 
-field value: Ref
+function value(this: Ref): Ref
+
 
 method get(this: Ref, index: Ref) returns (ret_0: Ref)
   requires acc(this.size, write)
@@ -15,17 +16,16 @@ method get(this: Ref, index: Ref) returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), intType())
   ensures intFromRef(this.size) == old(intFromRef(this.size))
 {
-  inhale acc(c_CustomList_shared(this), wildcard)
-  unfold acc(c_CustomList_shared(this), wildcard)
-  ret_0 := this.value
+  ret_0 := value(this)
   goto lbl_ret_0
   label lbl_ret_0
 }
 
 /custom_list.kt: info: Generated Viper text for test:
-field bf_value: Ref
-
 field size: Ref
+
+function g_value(this: Ref): Ref
+
 
 method con(par_size: Ref, value: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(par_size), intType())
@@ -33,8 +33,8 @@ method con(par_size: Ref, value: Ref) returns (ret: Ref)
   ensures isSubtype(typeOf(ret), _c_CustomList())
   ensures acc(ret.size, write)
   ensures intFromRef(ret.size) >= 0
-  ensures acc(c_CustomList_shared(ret), wildcard)
   ensures acc(c_CustomList_unique(ret), write)
+  ensures intFromRef(ret.size) == intFromRef(par_size)
 
 
 method get(this: Ref, index: Ref) returns (ret: Ref)

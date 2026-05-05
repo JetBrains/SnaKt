@@ -4,6 +4,15 @@ method con() returns (ret: Ref)
   ensures acc(c_D_unique(ret), write)
 
 
+method g_field(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), _c_A()) ==>
+    isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(this), _c_C()) ==>
+    isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(this), _c_D()) ==>
+    isSubtype(typeOf(ret), intType())
+
+
 method testDiamond() returns (ret_0: Ref)
   ensures isSubtype(typeOf(ret_0), intType())
 {
@@ -27,6 +36,19 @@ method con() returns (ret: Ref)
 method con__c_G() returns (ret: Ref)
   ensures isSubtype(typeOf(ret), _c_G())
   ensures acc(c_G_unique(ret), write)
+
+
+method g_field(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), _c_E()) ==>
+    isSubtype(typeOf(ret), anyType())
+  ensures isSubtype(typeOf(this), _c_F()) ==>
+    isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(this), _c_G()) ==>
+    isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(this), _c_H()) ==>
+    isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(this), _c_I()) ==>
+    isSubtype(typeOf(ret), intType())
 
 
 method s_field(this: Ref, anon_0: Ref) returns (ret: Ref)

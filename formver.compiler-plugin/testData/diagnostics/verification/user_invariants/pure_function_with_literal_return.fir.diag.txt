@@ -36,6 +36,11 @@ function annotatedCharLitReturn(par_arg: Ref): Ref
   charToRef(65)
 }
 
+method length(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(ret), intType())
+
+
 /pure_function_with_literal_return.kt: info: Generated Viper text for annotatedStringLitReturn:
 function annotatedStringLitReturn(par_arg: Ref): Ref
   requires isSubtype(typeOf(par_arg), boolType())
@@ -46,3 +51,7 @@ function annotatedStringLitReturn(par_arg: Ref): Ref
 {
   stringToRef(Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116))
 }
+
+method length(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), kotlin_c_CharSequence()) ==>
+    isSubtype(typeOf(ret), intType())

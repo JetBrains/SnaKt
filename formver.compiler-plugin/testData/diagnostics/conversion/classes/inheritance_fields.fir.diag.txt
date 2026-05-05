@@ -30,6 +30,13 @@ method createB() returns (ret_0: Ref)
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
+method g_fieldOverride(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), _c_A()) ==>
+    isSubtype(typeOf(ret), _c_FieldA())
+  ensures isSubtype(typeOf(this), _c_B()) ==>
+    isSubtype(typeOf(ret), _c_FieldB())
+
+
 /inheritance_fields.kt: info: Generated Viper text for createBFsAndNoBF:
 function final_g_x(this: Ref): Ref
 
@@ -73,6 +80,15 @@ method createBFsAndNoBF() returns (ret_0: Ref)
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
+
+method g_x(this: Ref) returns (ret: Ref)
+  ensures isSubtype(typeOf(this), _c_FirstBackingFieldClass()) ==>
+    isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(this), _c_NoBackingFieldClass()) ==>
+    isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(this), _c_SecondBackingFieldClass()) ==>
+    ret == final_g_x(this)
+
 
 /inheritance_fields.kt: info: Generated Viper text for createY:
 function g_a(this: Ref): Ref
