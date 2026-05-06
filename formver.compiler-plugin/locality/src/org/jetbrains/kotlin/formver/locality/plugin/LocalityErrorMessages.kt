@@ -19,6 +19,13 @@ object LocalityErrorMessages : BaseDiagnosticRendererFactory() {
             LocalityRenderer,
         )
         map.put(
+            LocalityErrors.LOCALITY_CONTRACT_VIOLATION,
+            "{0} locality contract mismatch: expected {1}, actual {2}.",
+            CommonRenderers.STRING,
+            LocalityContractRenderer,
+            LocalityContractRenderer,
+        )
+        map.put(
             LocalityErrors.INVALID_LOCALITY_TYPE_TARGET,
             "Locality can only be specified on types of function parameters, extension receivers, or local variables.",
         )

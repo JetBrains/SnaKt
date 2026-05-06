@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.formver.locality.plugin
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirFunction
 import org.jetbrains.kotlin.fir.expressions.FirAnonymousFunctionExpression
+import org.jetbrains.kotlin.fir.expressions.FirCallableReferenceAccess
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
 import org.jetbrains.kotlin.fir.expressions.UnresolvedExpressionTypeAccess
@@ -27,17 +28,19 @@ object ImmediateLocalityContractResolver {
         when (expression) {
             is FirAnonymousFunctionExpression ->
                 expression.anonymousFunction.resolveLocalityContract()
+            is FirCallableReferenceAccess ->
+                expression.resolveCallableReferenceContract()
             is FirQualifiedAccessExpression ->
-                expression.resolveQualifiedAccessContract()
+                expression.resolveQualifiedAccessTypeContract()
             else ->
                 EmptyContract
         }
 
-    private fun FirQualifiedAccessExpression.resolveQualifiedAccessContract(): LocalityContract {
+    private fun FirCallableReferenceAccess.resolveCallableReferenceContract(): LocalityContract {
         val callableSymbol = toResolvedCallableSymbol()
-        val typeContract = callableSymbol?.moduleData?.session?.let { session ->
-            resolveTypeContract(session)
-        } ?: EmptyContract
+        val session = callableSymbol?.moduleData?.session
+            ?: return EmptyContract
+        val typeContract = resolveTypeContract(session)
 
         if (typeContract != EmptyContract) return typeContract
 
@@ -47,9 +50,15 @@ object ImmediateLocalityContractResolver {
         }
     }
 
-    private fun FirExpression.resolveTypeContract(session: FirSession): LocalityContract {
-        return coneTypeOrNull?.resolveLocalityContract(session) ?: EmptyContract
+    private fun FirQualifiedAccessExpression.resolveQualifiedAccessTypeContract(): LocalityContract {
+        val session = toResolvedCallableSymbol()?.moduleData?.session
+            ?: return EmptyContract
+
+        return resolveTypeContract(session)
     }
+
+    private fun FirExpression.resolveTypeContract(session: FirSession): LocalityContract =
+        coneTypeOrNull?.resolveLocalityContract(session) ?: EmptyContract
 
     private fun FirFunction.resolveLocalityContract(): LocalityContract =
         LocalityContract(
@@ -81,4 +90,3 @@ object ImmediateLocalityContractResolver {
 
 fun FirExpression.resolveImmediateLocalityContract(): LocalityContract =
     ImmediateLocalityContractResolver.resolve(this)
-
