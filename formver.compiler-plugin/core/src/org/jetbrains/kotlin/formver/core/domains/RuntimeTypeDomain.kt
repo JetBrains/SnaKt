@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
+import org.jetbrains.kotlin.formver.core.embeddings.types.AdtFieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbeddingImpl
 import org.jetbrains.kotlin.formver.core.embeddings.types.embedClassTypeFunc
 import org.jetbrains.kotlin.formver.core.names.DomainName
@@ -211,6 +212,8 @@ const val RUNTIME_TYPE_DOMAIN_NAME = "rt"
  */
 class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(RUNTIME_TYPE_DOMAIN_NAME)) {
     private val adts: List<AdtTypeEmbeddingImpl> = typeResolver.adtTypeEmbeddings()
+    private val adtFields: Map<AdtTypeEmbeddingImpl, List<AdtFieldEmbedding>> =
+        adts.associateWith { typeResolver.lookupAdtFields(it.name) }
     override val typeVars: List<Type.TypeVar> = emptyList()
 
     // Define types that are not dependent on the user defined classes in a companion object.
@@ -410,6 +413,21 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
             typeResolver.lookupSuperTypes(type.name).forEach { superType ->
                 axiom {
                     type.runtimeType subtype superType.runtimeType
+                }
+            }
+        }
+        // Encodes type information of ADT deconstructors
+        adtFields.forEach { (embedding, fields) ->
+            if (fields.isEmpty()) return@forEach
+            val p = domainVar("p", Type.Adt(embedding.adtName))
+            axiom {
+                Exp.forall(p) { p ->
+                    fields.forEach { field ->
+                        simpleTrigger { typeOf(Exp.AdtDestructorApp(field.name, p, embedding.adtName)) }
+                    }
+                    fields.map { field ->
+                        typeOf(Exp.AdtDestructorApp(field.name, p, embedding.adtName)) subtype field.type.runtimeType
+                    }.reduce { acc, next -> Exp.And(acc, next) }
                 }
             }
         }

@@ -58,6 +58,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("full_embedding.kt")
+      public void testFull_embedding() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/adts/full_embedding.kt");
+      }
+
+      @Test
       @TestMetadata("singleton.kt")
       public void testSingleton() {
         runTest("formver.compiler-plugin/testData/diagnostics/conversion/adts/singleton.kt");
@@ -461,6 +467,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @Test
       public void testAllFilesPresentInAdts() {
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/adts"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("product_types.kt")
+      public void testProduct_types() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/product_types.kt");
       }
 
       @Test

@@ -1,75 +1,75 @@
 /data_class_validation.kt: info: Generated Viper text for copy:
 method copy(this: Ref, n: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), rt_c_pkg__c_Box())
+  requires isSubtype(typeOf(this), _c_Box())
   requires isSubtype(typeOf(n), intType())
-  ensures isSubtype(typeOf(ret), rt_c_pkg__c_Box())
+  ensures isSubtype(typeOf(ret), _c_Box())
 
 
-adt adt_c_pkg__c_Box {
-  c_pkg__c_Box(adt_c_pkg__c_Box_n: Ref)
+adt adt__c_Box {
+  constr__c_Box(af_adt__c_Box_n: Ref)
 }
 
 /data_class_validation.kt: info: Generated Viper text for component1:
 method component1(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), rt_c_pkg__c_Box())
+  requires isSubtype(typeOf(this), _c_Box())
   ensures isSubtype(typeOf(ret), intType())
 
 
-adt adt_c_pkg__c_Box {
-  c_pkg__c_Box(adt_c_pkg__c_Box_n: Ref)
+adt adt__c_Box {
+  constr__c_Box(af_adt__c_Box_n: Ref)
 }
 
 /data_class_validation.kt: info: Generated Viper text for copy:
 method copy(this: Ref, a: Ref, b: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), rt_c_pkg__c_TwoFields())
+  requires isSubtype(typeOf(this), _c_TwoFields())
   requires isSubtype(typeOf(a), intType())
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(ret), rt_c_pkg__c_TwoFields())
+  ensures isSubtype(typeOf(ret), _c_TwoFields())
 
 
-adt adt_c_pkg__c_TwoFields {
-  c_pkg__c_TwoFields(adt_c_pkg__c_TwoFields_a: Ref, adt_c_pkg__c_TwoFields_b: Ref)
+adt adt__c_TwoFields {
+  constr__c_TwoFields(af_adt__c_TwoFields_a: Ref, af_adt__c_TwoFields_b: Ref)
 }
 
 /data_class_validation.kt: info: Generated Viper text for component1:
 method component1(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), rt_c_pkg__c_TwoFields())
+  requires isSubtype(typeOf(this), _c_TwoFields())
   ensures isSubtype(typeOf(ret), intType())
 
 
-adt adt_c_pkg__c_TwoFields {
-  c_pkg__c_TwoFields(adt_c_pkg__c_TwoFields_a: Ref, adt_c_pkg__c_TwoFields_b: Ref)
+adt adt__c_TwoFields {
+  constr__c_TwoFields(af_adt__c_TwoFields_a: Ref, af_adt__c_TwoFields_b: Ref)
 }
 
 /data_class_validation.kt: info: Generated Viper text for component2:
 method component2(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), rt_c_pkg__c_TwoFields())
+  requires isSubtype(typeOf(this), _c_TwoFields())
   ensures isSubtype(typeOf(ret), boolType())
 
 
-adt adt_c_pkg__c_TwoFields {
-  c_pkg__c_TwoFields(adt_c_pkg__c_TwoFields_a: Ref, adt_c_pkg__c_TwoFields_b: Ref)
+adt adt__c_TwoFields {
+  constr__c_TwoFields(af_adt__c_TwoFields_a: Ref, af_adt__c_TwoFields_b: Ref)
 }
 
 /data_class_validation.kt: info: Generated Viper text for copy:
 method copy(this: Ref, n: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), rt_c_pkg__c_OptInt())
+  requires isSubtype(typeOf(this), _c_OptInt())
   requires isSubtype(typeOf(n), nullable(intType()))
-  ensures isSubtype(typeOf(ret), rt_c_pkg__c_OptInt())
+  ensures isSubtype(typeOf(ret), _c_OptInt())
 
 
-adt adt_c_pkg__c_OptInt {
-  c_pkg__c_OptInt(adt_c_pkg__c_OptInt_n: Ref)
+adt adt__c_OptInt {
+  constr__c_OptInt(af_adt__c_OptInt_n: Ref)
 }
 
 /data_class_validation.kt: info: Generated Viper text for component1:
 method component1(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), rt_c_pkg__c_OptInt())
+  requires isSubtype(typeOf(this), _c_OptInt())
   ensures isSubtype(typeOf(ret), nullable(intType()))
 
 
-adt adt_c_pkg__c_OptInt {
-  c_pkg__c_OptInt(adt_c_pkg__c_OptInt_n: Ref)
+adt adt__c_OptInt {
+  constr__c_OptInt(af_adt__c_OptInt_n: Ref)
 }
 
 /data_class_validation.kt: error: Invalid ADT annotation: An @ADT declaration may only declare immutable (val) fields
@@ -98,41 +98,41 @@ adt adt_c_pkg__c_OptInt {
 
 /data_class_validation.kt: info: Generated Viper text for useBox:
 method useBox(b: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(b), rt_c_pkg__c_Box())
+  requires isSubtype(typeOf(b), Box())
   ensures isSubtype(typeOf(ret), unitType())
 {
   label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-adt adt_c_pkg__c_Box {
-  c_pkg__c_Box(adt_c_pkg__c_Box_n: Ref)
+adt adt_Box {
+  constr_Box(af_adt_Box_n: Ref)
 }
 
 /data_class_validation.kt: info: Generated Viper text for useTwoFields:
-method useTwoFields(p: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(p), rt_c_pkg__c_TwoFields())
+method useTwoFields(par_p: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(par_p), TwoFields())
   ensures isSubtype(typeOf(ret), unitType())
 {
   label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-adt adt_c_pkg__c_TwoFields {
-  c_pkg__c_TwoFields(adt_c_pkg__c_TwoFields_a: Ref, adt_c_pkg__c_TwoFields_b: Ref)
+adt adt_TwoFields {
+  constr_TwoFields(af_adt_TwoFields_a: Ref, af_adt_TwoFields_b: Ref)
 }
 
 /data_class_validation.kt: info: Generated Viper text for useOptInt:
 method useOptInt(o: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(o), rt_c_pkg__c_OptInt())
+  requires isSubtype(typeOf(o), OptInt())
   ensures isSubtype(typeOf(ret), unitType())
 {
   label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-adt adt_c_pkg__c_OptInt {
-  c_pkg__c_OptInt(adt_c_pkg__c_OptInt_n: Ref)
+adt adt_OptInt {
+  constr_OptInt(af_adt_OptInt_n: Ref)
 }
 
 /data_class_validation.kt: error: Function 'useWithVar' used an invalid ADT
@@ -150,13 +150,13 @@ method constrUsage() returns (ret: Ref)
   var i: Ref
   var tf: Ref
   i := intToRef(2)
-  tf := c_pkg__c_TwoFieldsToRef(constr_c_pkg__c_TwoFields(i, boolToRef(true)))
+  tf := TwoFieldsToRef(constr_TwoFields(i, boolToRef(true)))
   label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-adt c_pkg__c_TwoFields {
-  constr_c_pkg__c_TwoFields(c_pkg__c_TwoFields_a: Ref, c_pkg__c_TwoFields_b: Ref)
+adt adt_TwoFields {
+  constr_TwoFields(af_adt_TwoFields_a: Ref, af_adt_TwoFields_b: Ref)
 }
 
 /data_class_validation.kt: info: Generated Viper text for destrUsage:
@@ -166,13 +166,13 @@ method destrUsage() returns (ret: Ref)
   var tf: Ref
   var i: Ref
   var b: Ref
-  tf := c_pkg__c_TwoFieldsToRef(constr_c_pkg__c_TwoFields(intToRef(2), boolToRef(true)))
-  i := c_pkg__c_TwoFieldsFromRef(tf).c_pkg__c_TwoFields_a
-  b := c_pkg__c_TwoFieldsFromRef(tf).c_pkg__c_TwoFields_b
+  tf := TwoFieldsToRef(constr_TwoFields(intToRef(2), boolToRef(true)))
+  i := TwoFieldsFromRef(tf).af_adt_TwoFields_a
+  b := TwoFieldsFromRef(tf).af_adt_TwoFields_b
   label ret_0
   inhale isSubtype(typeOf(ret), unitType())
 }
 
-adt c_pkg__c_TwoFields {
-  constr_c_pkg__c_TwoFields(c_pkg__c_TwoFields_a: Ref, c_pkg__c_TwoFields_b: Ref)
+adt adt_TwoFields {
+  constr_TwoFields(af_adt_TwoFields_a: Ref, af_adt_TwoFields_b: Ref)
 }
