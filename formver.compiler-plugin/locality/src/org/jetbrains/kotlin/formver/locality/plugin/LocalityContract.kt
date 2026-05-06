@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
+import org.jetbrains.kotlin.diagnostics.rendering.Renderer
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 
 sealed interface LocalityContract : LatticeElement<LocalityContract>, Constraint<LocalityContract> {
@@ -69,5 +70,24 @@ data class ActiveContract(
                     thisRequirement.meet(otherRequirement)
                 }
         )
+    }
+}
+
+/**
+ * Renders a locality contract for diagnostics.
+ */
+val LocalityContractRenderer = Renderer<LocalityContract> { contract ->
+    when (contract) {
+        EmptyContract -> "'empty'"
+        is ActiveContract -> contract.requiredLocalities.joinToString(
+            prefix = "'(",
+            separator = ", ",
+            postfix = ")'",
+        ) { requirement ->
+            when (requirement) {
+                LocalityRequirement.RequireGlobal -> "global"
+                LocalityRequirement.RequireLocal -> "local"
+            }
+        }
     }
 }
