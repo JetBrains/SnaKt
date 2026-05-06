@@ -88,7 +88,9 @@ class ProgramConverter(
                     )
                 }
             },
-            adts = typeResolver.adtTypeEmbeddings().map { it.toViper() },
+            adts = typeResolver.adtTypeEmbeddings().map { embedding ->
+                embedding.toViper(typeResolver.lookupAdtFields(embedding.name))
+            },
         )
 
 

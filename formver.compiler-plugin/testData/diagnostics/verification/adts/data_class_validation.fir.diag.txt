@@ -6,7 +6,7 @@ method copy(this: Ref, n: Ref) returns (ret: Ref)
 
 
 adt adt_c_pkg__c_Box {
-  c_pkg__c_Box()
+  c_pkg__c_Box(adt_c_pkg__c_Box_n: Ref)
 }
 
 /data_class_validation.kt: info: Generated Viper text for component1:
@@ -16,7 +16,7 @@ method component1(this: Ref) returns (ret: Ref)
 
 
 adt adt_c_pkg__c_Box {
-  c_pkg__c_Box()
+  c_pkg__c_Box(adt_c_pkg__c_Box_n: Ref)
 }
 
 /data_class_validation.kt: info: Generated Viper text for copy:
@@ -28,7 +28,7 @@ method copy(this: Ref, a: Ref, b: Ref) returns (ret: Ref)
 
 
 adt adt_c_pkg__c_TwoFields {
-  c_pkg__c_TwoFields()
+  c_pkg__c_TwoFields(adt_c_pkg__c_TwoFields_a: Ref, adt_c_pkg__c_TwoFields_b: Ref)
 }
 
 /data_class_validation.kt: info: Generated Viper text for component1:
@@ -38,7 +38,7 @@ method component1(this: Ref) returns (ret: Ref)
 
 
 adt adt_c_pkg__c_TwoFields {
-  c_pkg__c_TwoFields()
+  c_pkg__c_TwoFields(adt_c_pkg__c_TwoFields_a: Ref, adt_c_pkg__c_TwoFields_b: Ref)
 }
 
 /data_class_validation.kt: info: Generated Viper text for component2:
@@ -48,7 +48,7 @@ method component2(this: Ref) returns (ret: Ref)
 
 
 adt adt_c_pkg__c_TwoFields {
-  c_pkg__c_TwoFields()
+  c_pkg__c_TwoFields(adt_c_pkg__c_TwoFields_a: Ref, adt_c_pkg__c_TwoFields_b: Ref)
 }
 
 /data_class_validation.kt: info: Generated Viper text for copy:
@@ -59,7 +59,7 @@ method copy(this: Ref, n: Ref) returns (ret: Ref)
 
 
 adt adt_c_pkg__c_OptInt {
-  c_pkg__c_OptInt()
+  c_pkg__c_OptInt(adt_c_pkg__c_OptInt_n: Ref)
 }
 
 /data_class_validation.kt: info: Generated Viper text for component1:
@@ -69,7 +69,7 @@ method component1(this: Ref) returns (ret: Ref)
 
 
 adt adt_c_pkg__c_OptInt {
-  c_pkg__c_OptInt()
+  c_pkg__c_OptInt(adt_c_pkg__c_OptInt_n: Ref)
 }
 
 /data_class_validation.kt: error: Invalid ADT annotation: An @ADT declaration may only declare immutable (val) fields
@@ -106,7 +106,7 @@ method useBox(b: Ref) returns (ret: Ref)
 }
 
 adt adt_c_pkg__c_Box {
-  c_pkg__c_Box()
+  c_pkg__c_Box(adt_c_pkg__c_Box_n: Ref)
 }
 
 /data_class_validation.kt: info: Generated Viper text for useTwoFields:
@@ -119,7 +119,7 @@ method useTwoFields(p: Ref) returns (ret: Ref)
 }
 
 adt adt_c_pkg__c_TwoFields {
-  c_pkg__c_TwoFields()
+  c_pkg__c_TwoFields(adt_c_pkg__c_TwoFields_a: Ref, adt_c_pkg__c_TwoFields_b: Ref)
 }
 
 /data_class_validation.kt: info: Generated Viper text for useOptInt:
@@ -132,7 +132,7 @@ method useOptInt(o: Ref) returns (ret: Ref)
 }
 
 adt adt_c_pkg__c_OptInt {
-  c_pkg__c_OptInt()
+  c_pkg__c_OptInt(adt_c_pkg__c_OptInt_n: Ref)
 }
 
 /data_class_validation.kt: error: Function 'useWithVar' used an invalid ADT
