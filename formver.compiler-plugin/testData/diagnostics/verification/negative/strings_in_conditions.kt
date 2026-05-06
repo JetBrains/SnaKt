@@ -1,7 +1,7 @@
 // FULL_JDK
 
-
 import org.jetbrains.kotlin.formver.plugin.*
+
 
 fun <!VIPER_TEXT!>firstNotSortedIndex<!>(s: String): Int {
     postconditions<Int> { res ->
@@ -17,6 +17,7 @@ fun <!VIPER_TEXT!>firstNotSortedIndex<!>(s: String): Int {
         var i = 1
         while (i < s.length && s[i - 1] <= s[i]) {
             loopInvariants {
+                i <= s.length && i >= 1
                 forAll<Int> {
                     (0 <= it && it + 1 < i) implies (s[it] <= s[it + 1])
                 }
@@ -27,10 +28,11 @@ fun <!VIPER_TEXT!>firstNotSortedIndex<!>(s: String): Int {
     }
 }
 
-@AlwaysVerify
+
 fun <!VIPER_TEXT!>returnNewString<!>(): String {
     return "42"
 }
+
 
 fun <!VIPER_TEXT!>addCharacterTimes<!>(s: String, c: Char, n: Int): String {
     preconditions {
@@ -54,6 +56,7 @@ fun <!VIPER_TEXT!>addCharacterTimes<!>(s: String, c: Char, n: Int): String {
             }
         }
         res += c
+        i += 1
     }
 
     return res
