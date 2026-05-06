@@ -1,3 +1,4 @@
+// FULL_JDK
 @file:Suppress("USELESS_IS_CHECK")
 
 import kotlin.contracts.ExperimentalContracts

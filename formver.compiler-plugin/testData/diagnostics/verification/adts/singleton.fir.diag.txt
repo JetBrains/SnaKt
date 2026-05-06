@@ -1,16 +1,17 @@
 /singleton.kt: info: Generated Viper text for nullableRed:
-field size: Ref
+function size(this: Ref): Ref
 
-method nullableRed() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), nullable(Red()))
+
+method nullableRed() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), nullable(Red()))
 {
   var l0_r: Ref
   l0_r := nullValue()
   l0_r := RedToRef(constr_Red())
   assert !(l0_r == nullValue())
-  ret_0 := l0_r
-  goto lbl_ret_0
-  label lbl_ret_0
+  ret := l0_r
+  goto ret_0
+  label ret_0
 }
 
 adt adt_Red {
@@ -18,17 +19,18 @@ adt adt_Red {
 }
 
 /singleton.kt: info: Generated Viper text for returnsRed:
-field size: Ref
+function size(this: Ref): Ref
 
-method returnsRed() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), Red())
+
+method returnsRed() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), Red())
 {
   var x: Ref
   x := RedToRef(constr_Red())
   assert RedFromRef(x) == constr_Red()
-  ret_0 := x
-  goto lbl_ret_0
-  label lbl_ret_0
+  ret := x
+  goto ret_0
+  label ret_0
 }
 
 adt adt_Red {
