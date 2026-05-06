@@ -3,7 +3,7 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
-package org.jetbrains.kotlin.formver.plugin.compiler.locality
+package org.jetbrains.kotlin.formver.locality.plugin
 
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.reportOn
@@ -11,19 +11,14 @@ import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirValueParameterChecker
 import org.jetbrains.kotlin.fir.declarations.FirValueParameter
-import org.jetbrains.kotlin.formver.common.PluginConfiguration
-import org.jetbrains.kotlin.formver.plugin.compiler.PluginErrors.LOCALITY_VIOLATION
+import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOLATION
 
-class LocalityValueParameterChecker(
-    private val config : PluginConfiguration
-) : FirValueParameterChecker(MppCheckerKind.Common) {
+object ValueParameterLocalityChecker : FirValueParameterChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(declaration: FirValueParameter) {
-        if (!config.checkLocality) return
-
         val defaultValue = declaration.defaultValue ?: return
-        val requiredLocality = declaration.extractRequiredLocality()
-        val actualLocality = defaultValue.extractLocality()
+        val requiredLocality = declaration.resolveRequiredLocality()
+        val actualLocality = defaultValue.resolveLocality()
 
         if (requiredLocality.accepts(actualLocality)) return
 

@@ -1,0 +1,1 @@
+/nested_scope.kt: error: Argument locality mismatch: expected 'local(anonymous)', actual 'local(resolve captured local owner from nested lambda)'.

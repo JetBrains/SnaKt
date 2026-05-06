@@ -7,7 +7,7 @@ package org.jetbrains.kotlin.formver.plugin.compiler
 
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.diagnostics.*
-import org.jetbrains.kotlin.formver.plugin.compiler.locality.Locality
+import org.jetbrains.kotlin.formver.locality.plugin.Locality
 
 object PluginErrors : KtDiagnosticsContainer() {
     val VIPER_TEXT by info2<PsiElement, String, String>(SourceElementPositioningStrategies.DECLARATION_NAME)

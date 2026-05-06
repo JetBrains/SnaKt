@@ -33,6 +33,7 @@ dependencies {
     implementation(project(":formver.compiler-plugin:viper")) { isTransitive = true }
     implementation(project(":formver.compiler-plugin:cli")) { isTransitive = false }
     implementation(project(":formver.compiler-plugin:plugin")) { isTransitive = false }
+    implementation(project(":formver.compiler-plugin:locality")) { isTransitive = false }
     implementation(project(":formver.common")) { isTransitive = false }
     implementation(kotlin("compiler"))
 
@@ -44,10 +45,12 @@ dependencies {
     testFixturesApi(project(":formver.compiler-plugin:viper"))
     testFixturesApi("viper:silicon_2.13:1.2-SNAPSHOT")
     testFixturesImplementation(project(":formver.compiler-plugin:core"))
+    testFixturesImplementation(project(":formver.compiler-plugin:locality"))
 
     annotationsRuntimeClasspath(project(":formver.annotations"))
 
     testImplementation(project(":formver.compiler-plugin:plugin"))
+    testImplementation(project(":formver.compiler-plugin:locality"))
     testImplementation(project(":formver.common"))
     testImplementation(project(":formver.compiler-plugin:uniqueness"))
     testRuntimeOnly(project(":formver.compiler-plugin:core"))
@@ -96,28 +99,35 @@ fun Test.configureFormverTest() {
     jvmArgs = listOf("-Xss30M", "-Xmx2g", "-XX:MaxMetaspaceSize=512m")
 }
 
-// ./gradlew test — normal mode (full verification)
+// ./gradlew test — normal mode (full verification, no conversion-only class)
 tasks.test {
     configureFormverTest()
-    systemProperty("formver.testMode", "FULL")
+    inputs.property("formver.testMode", "normal")
+    systemProperty("formver.conversionOnly", "false")
+    exclude("**/FirLightTreeFormVerPluginNoVerificationDiagnosticsTestGenerated*")
 }
 
-tasks.register<Test>("untilConversion") {
-    description = "Runs until conversion"
+// ./gradlew testNoVerification — all tests in conversion-only mode
+tasks.register<Test>("testNoVerification") {
+    description = "Run all tests in conversion-only mode (no verification)."
     group = "verification"
     testClassesDirs = tasks.test.get().testClassesDirs
     classpath = tasks.test.get().classpath
     configureFormverTest()
-    systemProperty("formver.testMode", "CHECK_CONVERSION")
+    inputs.property("formver.testMode", "noVerification")
+    systemProperty("formver.conversionOnly", "true")
+    exclude("**/FirLightTreeFormVerPluginNoVerificationDiagnosticsTestGenerated*")
 }
 
-tasks.register<Test>("update") {
-    description = "Runs conversion and verification iff conversion changed"
+// ./gradlew testBothModes — normal + verification tests again as conversion-only
+tasks.register<Test>("testBothModes") {
+    description = "Run all tests normally, then verification tests again as conversion-only."
     group = "verification"
     testClassesDirs = tasks.test.get().testClassesDirs
     classpath = tasks.test.get().classpath
     configureFormverTest()
-    systemProperty("formver.testMode", "UPDATE")
+    inputs.property("formver.testMode", "bothModes")
+    systemProperty("formver.conversionOnly", "false")
 }
 
 kotlin {

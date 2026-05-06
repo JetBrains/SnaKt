@@ -3,33 +3,28 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
-package org.jetbrains.kotlin.formver.plugin.compiler.locality
+package org.jetbrains.kotlin.formver.locality.plugin
 
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
-import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirThrowExpressionChecker
-import org.jetbrains.kotlin.fir.expressions.FirThrowExpression
-import org.jetbrains.kotlin.formver.common.PluginConfiguration
-import org.jetbrains.kotlin.formver.plugin.compiler.PluginErrors.LOCALITY_VIOLATION
+import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirReturnExpressionChecker
+import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
+import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOLATION
 
-class LocalityThrowChecker(
-    private val config : PluginConfiguration
-) : FirThrowExpressionChecker(MppCheckerKind.Common) {
+object ReturnLocalityChecker : FirReturnExpressionChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
-    override fun check(expression: FirThrowExpression) {
-        if (!config.checkLocality) return
-
+    override fun check(expression: FirReturnExpression) {
         val requiredLocality = Locality.Global
-        val actualLocality = expression.exception.extractLocality()
+        val actualLocality = expression.result.resolveLocality()
 
         if (requiredLocality.accepts(actualLocality)) return
 
         reporter.reportOn(
-            expression.exception.source,
+            expression.result.source,
             LOCALITY_VIOLATION,
-            "Throw",
+            "Return",
             requiredLocality,
             actualLocality
         )
