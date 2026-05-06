@@ -40,3 +40,8 @@ fun <!VIPER_TEXT!>useOptInt<!>(o: OptInt) {}
 <!ADT_VIOLATION!>fun useWithBodyField(x: WithBodyField) {}<!>
 <!ADT_VIOLATION!>fun useWithFunction(x: WithFunction) {}<!>
 <!ADT_VIOLATION!>fun useGeneric(x: Generic<Int>) {}<!>
+
+fun <!VIPER_TEXT!>constrUsage<!>() {
+    val i = 2
+    val tf = TwoFields(i, true)
+}

@@ -184,8 +184,11 @@ data class LinearizationVisitor(
     }
 
     override fun visitAdtConstructorRef(e: AdtConstructorRef): Linearizable = object : DirectResultLinearizable(e, this@LinearizationVisitor) {
-        override fun toViperBuiltinType(ctx: LinearizationContext): Exp =
-            Exp.AdtConstructorApp(e.adtTypeEmbedding.viperConstructorDecl, emptyList(), pos = ctx.source.asPosition)
+        override fun toViperBuiltinType(ctx: LinearizationContext): Exp {
+            val fields = ctx.typeResolver.lookupAdtFields(e.adtTypeEmbedding.name)
+            val viperArgs = e.args.map { it.linearize().toViper(ctx) }
+            return Exp.AdtConstructorApp(e.adtTypeEmbedding.viperConstructorDecl(fields), viperArgs, pos = ctx.source.asPosition)
+        }
 
         override fun toViper(ctx: LinearizationContext): Exp =
             e.adtTypeEmbedding.injection.toRef(toViperBuiltinType(ctx), pos = ctx.source.asPosition)

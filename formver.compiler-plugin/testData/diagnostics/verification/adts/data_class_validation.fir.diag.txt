@@ -142,3 +142,19 @@ adt adt_c_pkg__c_OptInt {
 /data_class_validation.kt: error: Function 'useWithFunction' used an invalid ADT
 
 /data_class_validation.kt: error: Function 'useGeneric' used an invalid ADT
+
+/data_class_validation.kt: info: Generated Viper text for constrUsage:
+method constrUsage() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  var i: Ref
+  var tf: Ref
+  i := intToRef(2)
+  tf := c_pkg__c_TwoFieldsToRef(constr_c_pkg__c_TwoFields(i, boolToRef(true)))
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+adt c_pkg__c_TwoFields {
+  constr_c_pkg__c_TwoFields(c_pkg__c_TwoFields_a: Ref, c_pkg__c_TwoFields_b: Ref)
+}

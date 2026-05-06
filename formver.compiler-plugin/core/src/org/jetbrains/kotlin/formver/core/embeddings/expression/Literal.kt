@@ -67,6 +67,7 @@ data object NullLit : LiteralEmbedding {
  */
 data class AdtConstructorRef(
     override val type: TypeEmbedding,
+    val args: List<ExpEmbedding> = emptyList(),
 ) : ExpEmbedding {
     init {
         require(type.pretype is AdtTypeEmbeddingImpl) {
@@ -77,5 +78,6 @@ data class AdtConstructorRef(
     val adtTypeEmbedding: AdtTypeEmbeddingImpl
         get() = type.pretype as AdtTypeEmbeddingImpl
 
+    override fun children(): Sequence<ExpEmbedding> = args.asSequence()
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitAdtConstructorRef(this)
 }

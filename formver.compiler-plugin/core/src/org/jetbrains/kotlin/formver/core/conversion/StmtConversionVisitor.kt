@@ -308,6 +308,14 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         val symbol = functionCall.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
             ?: throw NotImplementedError("Only functions are expected as callables of function calls, got ${functionCall.toResolvedCallableSymbol()}")
 
+        if (symbol is FirConstructorSymbol && symbol.isPrimary) {
+            val type = data.embedType(functionCall.resolvedType)
+            if (type.pretype is AdtTypeEmbedding) {
+                val args = functionCall.argumentList.arguments.map { data.convert(it) }
+                return AdtConstructorRef(type, args)
+            }
+        }
+
         when (val forAllLambda = functionCall.extractFormverFirBlock { isInvariantBuilderFunctionNamed("forAll") }) {
             null -> {
                 val callee = data.embedAnyFunction(symbol)
