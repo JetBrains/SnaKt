@@ -46,7 +46,7 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
         }
         val errorStyle = ErrorStyle.USER_FRIENDLY
         val conversionOnly = (System.getProperty("formver.conversionOnly")?.toBoolean() ?: false)
-                || NEVER_VALIDATE in module.directives
+                || NEVER_VALIDATE in module.directives || module.files.any {it.originalFile.canonicalPath.contains("conversion")}
         val uniquenessOnly = UNIQUE_CHECK_ONLY in module.directives
         val localityOnly = LOCALITY_CHECK_ONLY in module.directives
         val dumpUniquenessCFG = DUMP_UNIQUENESS_CFG in module.directives
