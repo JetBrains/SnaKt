@@ -7,7 +7,7 @@ package org.jetbrains.kotlin.formver.core.embeddings.properties
 
 import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.withNewTypeInvariants
+import org.jetbrains.kotlin.formver.core.embeddings.expression.withType
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 
 // We assume that thanks to the checks done by the Kotlin compiler, a property with a
@@ -15,7 +15,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 class ClassPropertyAccess(val receiver: ExpEmbedding, val property: PropertyEmbedding, val type: TypeEmbedding) :
     PropertyAccessEmbedding {
     override fun getValue(ctx: StmtConversionContext): ExpEmbedding =
-        property.getter!!.getValue(receiver, ctx)
+        property.getter!!.getValue(receiver, ctx).withType(type)
 
     // set value must already have correct type so no need to worry
     override fun setValue(value: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding =
