@@ -32,24 +32,6 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.WhenBranchResultExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.WhenExitNode
 
 /**
- * Contains locality information for each `FirExpression` in the control flow, normalized through [unwrapExpression].
- */
-typealias LocalityFacts = PersistentMap<FirExpression, Locality>
-
-/**
- * Contains locality information for every type of execution flow.
- */
-typealias PathAwareLocalityFacts = PersistentMap<EdgeLabel, LocalityFacts>
-
-/**
- * Merges the locality information for every type of execution flow.
- */
-fun PathAwareLocalityFacts.collapse(): LocalityFacts =
-    values.fold(persistentMapOf()) { result, info ->
-        result.merge(info, Locality::union)
-    }
-
-/**
  * Stub expression for tracking the current tail locality.
  */
 private val TailExpression: FirExpression = buildExpressionStub()
