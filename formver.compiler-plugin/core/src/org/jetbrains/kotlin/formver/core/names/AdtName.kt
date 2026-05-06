@@ -13,7 +13,7 @@ data class AdtName(val className: SymbolicName) : SymbolicName {
     override val nameType: NameType = NameType.Base.Adt
     override val inViper: Boolean = true
     override val candidates: List<CandidateName> = buildCandidates {
-        candidate { +"adt"; +className }
+        candidate { +nameType; +className }
     }
     override val children: List<AnyName> = listOf(nameType, className)
 }
@@ -22,7 +22,16 @@ data class AdtConstructorName(val adtName: AdtName, val className: SymbolicName)
     override val nameType: NameType = NameType.Base.AdtCons
     override val inViper: Boolean = true
     override val candidates: List<CandidateName> = buildCandidates {
-        candidate { +"constr"; +className }
+        candidate { +nameType; +className }
     }
     override val children: List<AnyName> = listOf(nameType, adtName, className)
+}
+
+data class AdtFieldName(val adtName: AdtName, val propertyName: SimpleKotlinName) : SymbolicName {
+    override val nameType: NameType = NameType.Base.AdtField
+    override val inViper: Boolean = true
+    override val candidates: List<CandidateName> = buildCandidates {
+        candidate { +nameType; +adtName; +propertyName }
+    }
+    override val children: List<AnyName> = listOf(nameType, adtName, propertyName)
 }

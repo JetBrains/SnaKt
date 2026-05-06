@@ -3,6 +3,7 @@ package org.jetbrains.kotlin.formver.core.conversion
 import org.jetbrains.kotlin.formver.core.embeddings.properties.BackingFieldGetter
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.AdtFieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbeddingImpl
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
@@ -43,6 +44,12 @@ class TypeResolver {
      * All the properties. Key is the pair of the class name and the field name.
      */
     private val properties = mutableMapOf<ClassPropertyPair, PropertyEmbedding>()
+
+    /**
+     * All ADT fields, indexed both by (class, property) pair and by class name.
+     */
+    private val adtFields = mutableMapOf<ClassPropertyPair, AdtFieldEmbedding>()
+    private val adtFieldsByClass = mutableMapOf<ScopedName, MutableList<AdtFieldEmbedding>>()
 
     /**
      * Register a class or interface type embedding.
@@ -87,6 +94,14 @@ class TypeResolver {
      * Get or Put a property to the class.
      */
     fun getOrPutProperty(name: ClassPropertyPair, create: () -> PropertyEmbedding) = properties.getOrPut(name, create)
+
+    fun getOrPutAdtField(name: ClassPropertyPair, create: () -> AdtFieldEmbedding): AdtFieldEmbedding =
+        adtFields.getOrPut(name) {
+            create().also { adtFieldsByClass.getOrPut(name.className) { mutableListOf() }.add(it) }
+        }
+
+    fun lookupAdtFields(className: ScopedName): List<AdtFieldEmbedding> =
+        adtFieldsByClass[className] ?: emptyList()
 
 
     /**

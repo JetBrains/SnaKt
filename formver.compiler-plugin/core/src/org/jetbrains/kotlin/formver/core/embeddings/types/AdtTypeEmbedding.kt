@@ -8,10 +8,16 @@ package org.jetbrains.kotlin.formver.core.embeddings.types
 import org.jetbrains.kotlin.formver.core.domains.Injection
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.names.AdtConstructorName
+import org.jetbrains.kotlin.formver.core.names.AdtFieldName
 import org.jetbrains.kotlin.formver.core.names.AdtName
 import org.jetbrains.kotlin.formver.core.names.PretypeName
 import org.jetbrains.kotlin.formver.core.names.ScopedName
 import org.jetbrains.kotlin.formver.viper.ast.*
+
+data class AdtFieldEmbedding(
+    val name: AdtFieldName,
+    val type: TypeEmbedding,
+)
 
 sealed interface AdtTypeEmbedding : PretypeEmbedding
 

@@ -155,6 +155,7 @@ class NameGraphRenderer(val shortNameResolver: ShortNameResolver) {
                         is FromRefFuncName -> "FromRef Func: "
                         is AdtName -> "Adt: "
                         is AdtConstructorName -> "Adt Cons: "
+                        is AdtFieldName -> "Adt Field: "
                         else -> "Unknown: "
                     }
                 }
@@ -294,6 +295,11 @@ class NameGraphRenderer(val shortNameResolver: ShortNameResolver) {
                     is AdtConstructorName -> {
                         link(entity.adtName, Relation.IS_PART_OF, entity)
                         link(entity.className, Relation.IS_PART_OF, entity)
+                    }
+
+                    is AdtFieldName -> {
+                        link(entity.adtName, Relation.IS_PART_OF, entity)
+                        link(entity.propertyName, Relation.IS_PART_OF, entity)
                     }
 
                     is SimpleKotlinName, is ClassKotlinName, is TypedKotlinName, is DomainName, is UnqualifiedDomainFuncName, is PretypeName, is FunctionResultVariableName -> {}
