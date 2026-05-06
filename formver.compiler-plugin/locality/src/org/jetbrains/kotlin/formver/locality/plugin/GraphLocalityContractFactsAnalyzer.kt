@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 
-object GraphExpressionLocalityContractAnalyzer : GraphExpressionTailAnalyzer<LocalityContract>() {
+object GraphLocalityContractFactsAnalyzer : GraphExpressionTailAnalyzer<LocalityContract>() {
     override val bottom = EmptyContract
 
     override fun LocalityContract.merge(other: LocalityContract): LocalityContract =
@@ -24,5 +24,5 @@ object GraphExpressionLocalityContractAnalyzer : GraphExpressionTailAnalyzer<Loc
  *
  * The result is a map between [CFGNode]s and the [PathAwareLocalityContractFacts]s resulting after their execution.
  */
-fun ControlFlowGraph.analyzeExpressionLocalityContracts(): Map<CFGNode<*>, PathAwareLocalityContractFacts> =
-    GraphExpressionLocalityContractAnalyzer.analyzeFactsOf(this)
+fun ControlFlowGraph.analyzeLocalityContractFacts(): Map<CFGNode<*>, PathAwareLocalityContractFacts> =
+    GraphLocalityContractFactsAnalyzer.analyzeFactsOf(this)

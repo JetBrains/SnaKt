@@ -8,17 +8,17 @@ package org.jetbrains.kotlin.formver.locality.plugin
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 
-class GraphExpressionLocalityContractFactsResolver(
+class GraphLocalityContractFactsResolver(
     session: FirSession
 ) : CacheSessionComponent<ControlFlowGraph, LocalityContractFacts, Unit>(session) {
     companion object {
         fun getFactory(): Factory {
-            return Factory { session -> GraphExpressionLocalityContractFactsResolver(session) }
+            return Factory { session -> GraphLocalityContractFactsResolver(session) }
         }
     }
 
     override fun compute(key: ControlFlowGraph, context: Unit): LocalityContractFacts {
-        val flow = key.analyzeExpressionLocalityContracts().getValue(key.exitNode)
+        val flow = key.analyzeLocalityContractFacts().getValue(key.exitNode)
         return flow.collapse(LocalityContract::union)
     }
 
@@ -29,9 +29,9 @@ class GraphExpressionLocalityContractFactsResolver(
         getValue(graph, Unit)
 }
 
-val FirSession.graphExpressionLocalityContractFactsResolver: GraphExpressionLocalityContractFactsResolver
-        by FirSession.sessionComponentAccessor<GraphExpressionLocalityContractFactsResolver>()
+val FirSession.graphLocalityContractFactsResolver: GraphLocalityContractFactsResolver
+        by FirSession.sessionComponentAccessor<GraphLocalityContractFactsResolver>()
 
 context(session: FirSession)
 fun ControlFlowGraph.resolveLocalityContractFacts(): LocalityContractFacts =
-    session.graphExpressionLocalityContractFactsResolver.resolveLocalityContractFactsOf(this)
+    session.graphLocalityContractFactsResolver.resolveLocalityContractFactsOf(this)

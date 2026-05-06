@@ -9,19 +9,20 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 
-class GraphExpressionLocalityFactsResolver(
+class GraphLocalityFactsResolver(
     session: FirSession
 ) : CacheSessionComponent<ControlFlowGraph, LocalityFacts, CheckerContext>(session) {
     companion object {
         fun getFactory(): Factory {
-            return Factory { session -> GraphExpressionLocalityFactsResolver(session) }
+            return Factory { session -> GraphLocalityFactsResolver(session) }
         }
     }
 
     override fun compute(key: ControlFlowGraph, context: CheckerContext): LocalityFacts {
         val flow = with(context) {
-            key.analyzeExpressionLocality().getValue(key.exitNode)
+            key.analyzeLocalityFacts().getValue(key.exitNode)
         }
+
         return flow.collapse(Locality::union)
     }
 
@@ -33,9 +34,9 @@ class GraphExpressionLocalityFactsResolver(
         getValue(graph, context)
 }
 
-val FirSession.graphExpressionLocalityFactsResolver: GraphExpressionLocalityFactsResolver
-        by FirSession.sessionComponentAccessor<GraphExpressionLocalityFactsResolver>()
+val FirSession.graphLocalityFactsResolver: GraphLocalityFactsResolver
+        by FirSession.sessionComponentAccessor<GraphLocalityFactsResolver>()
 
 context(context: CheckerContext)
 fun ControlFlowGraph.resolveLocalityFacts(): LocalityFacts =
-    context.session.graphExpressionLocalityFactsResolver.resolveLocalityFactsOf(this)
+    context.session.graphLocalityFactsResolver.resolveLocalityFactsOf(this)

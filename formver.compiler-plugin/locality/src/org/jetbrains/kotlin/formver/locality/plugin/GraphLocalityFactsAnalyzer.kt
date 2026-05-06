@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 
-class GraphExpressionLocalityAnalyzer(
+class GraphLocalityFactsAnalyzer(
     private val context: CheckerContext
 ) : GraphExpressionTailAnalyzer<Locality>() {
     override val bottom = Locality.Global
@@ -38,5 +38,5 @@ class GraphExpressionLocalityAnalyzer(
  * The result is a map between [CFGNode]s and the [PathAwareLocalityFacts]s resulting after their execution.
  */
 context(context: CheckerContext)
-fun ControlFlowGraph.analyzeExpressionLocality(): Map<CFGNode<*>, PathAwareLocalityFacts> =
-    GraphExpressionLocalityAnalyzer(context).analyzeLocalityOf(this)
+fun ControlFlowGraph.analyzeLocalityFacts(): Map<CFGNode<*>, PathAwareLocalityFacts> =
+    GraphLocalityFactsAnalyzer(context).analyzeLocalityOf(this)
