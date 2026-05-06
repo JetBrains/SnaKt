@@ -25,7 +25,7 @@ sealed interface LocalityContract : LatticeElement<LocalityContract>, Constraint
                     }
         }
 
-    override fun union(other: LocalityContract): LocalityContract =
+    override fun meet(other: LocalityContract): LocalityContract =
         when {
             this == EmptyContract -> other
             other == EmptyContract -> this
@@ -33,7 +33,7 @@ sealed interface LocalityContract : LatticeElement<LocalityContract>, Constraint
             else -> EmptyContract
         }
 
-    override fun meet(other: LocalityContract): LocalityContract =
+    override fun union(other: LocalityContract): LocalityContract =
         when {
             this == EmptyContract || other == EmptyContract -> EmptyContract
             this is ActiveContract && other is ActiveContract -> meet(other)
