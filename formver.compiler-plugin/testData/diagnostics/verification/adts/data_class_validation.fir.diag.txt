@@ -158,3 +158,21 @@ method constrUsage() returns (ret: Ref)
 adt c_pkg__c_TwoFields {
   constr_c_pkg__c_TwoFields(c_pkg__c_TwoFields_a: Ref, c_pkg__c_TwoFields_b: Ref)
 }
+
+/data_class_validation.kt: info: Generated Viper text for destrUsage:
+method destrUsage() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), unitType())
+{
+  var tf: Ref
+  var i: Ref
+  var b: Ref
+  tf := c_pkg__c_TwoFieldsToRef(constr_c_pkg__c_TwoFields(intToRef(2), boolToRef(true)))
+  i := c_pkg__c_TwoFieldsFromRef(tf).c_pkg__c_TwoFields_a
+  b := c_pkg__c_TwoFieldsFromRef(tf).c_pkg__c_TwoFields_b
+  label ret_0
+  inhale isSubtype(typeOf(ret), unitType())
+}
+
+adt c_pkg__c_TwoFields {
+  constr_c_pkg__c_TwoFields(c_pkg__c_TwoFields_a: Ref, c_pkg__c_TwoFields_b: Ref)
+}

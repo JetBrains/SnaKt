@@ -183,6 +183,19 @@ data class LinearizationVisitor(
         override fun toViperUnusedResult(ctx: LinearizationContext) = Unit
     }
 
+    override fun visitAdtFieldAccess(e: AdtFieldAccess): Linearizable = object : DirectResultLinearizable(e, this@LinearizationVisitor) {
+        override fun toViper(ctx: LinearizationContext): Exp {
+            val receiverRef = e.receiver.linearize().toViper(ctx)
+            val unwrapped = e.adtTypeEmbedding.injection.fromRef(receiverRef, pos = ctx.source.asPosition)
+            return Exp.AdtDestructorApp(
+                fieldName = e.field.name,
+                rcv = unwrapped,
+                adtName = e.adtTypeEmbedding.adtName,
+                pos = ctx.source.asPosition,
+            )
+        }
+    }
+
     override fun visitAdtConstructorRef(e: AdtConstructorRef): Linearizable = object : DirectResultLinearizable(e, this@LinearizationVisitor) {
         override fun toViperBuiltinType(ctx: LinearizationContext): Exp {
             val fields = ctx.typeResolver.lookupAdtFields(e.adtTypeEmbedding.name)

@@ -18,6 +18,8 @@ data class OptInt<!VIPER_TEXT!>(val <!VIPER_TEXT!>n<!>: Int?)<!>
 @ADT
 data class WithVar(<!ADT_VIOLATION, ADT_VIOLATION, ADT_VIOLATION!>var x: Int<!>)
 
+// The following three violations are expected behavior and originate from the modular verification of functions
+// Each automatically generated function (equals, copy, componentN) triggers a re-evaluation.
 @ADT
 data class WithBodyField(val a: Int) {
     <!ADT_VIOLATION, ADT_VIOLATION, ADT_VIOLATION!>val b: Int = 42<!>
@@ -44,4 +46,10 @@ fun <!VIPER_TEXT!>useOptInt<!>(o: OptInt) {}
 fun <!VIPER_TEXT!>constrUsage<!>() {
     val i = 2
     val tf = TwoFields(i, true)
+}
+
+fun <!VIPER_TEXT!>destrUsage<!>() {
+    val tf = TwoFields(2, true)
+    val i = tf.a
+    val b = tf.b
 }

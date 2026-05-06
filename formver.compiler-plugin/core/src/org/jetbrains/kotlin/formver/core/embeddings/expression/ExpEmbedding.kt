@@ -9,6 +9,8 @@ import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.AdtFieldEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.core.purity.PurityContext
@@ -56,6 +58,16 @@ data class PrimitiveFieldAccess(val inner: ExpEmbedding, val field: FieldEmbeddi
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitPrimitiveFieldAccess(this)
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(inner)
+}
+
+data class AdtFieldAccess(
+    val receiver: ExpEmbedding,
+    val adtTypeEmbedding: AdtTypeEmbedding,
+    val field: AdtFieldEmbedding,
+) : ExpEmbedding {
+    override val type: TypeEmbedding = field.type
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(receiver)
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitAdtFieldAccess(this)
 }
 
 data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : ExpEmbedding {

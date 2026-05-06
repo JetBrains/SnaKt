@@ -55,4 +55,5 @@ interface ExpVisitor<R> {
     fun visitVariableEmbedding(e: VariableEmbedding): R = visitDefault(e)
     fun visitAccEmbedding(e: AccEmbedding): R = visitDefault(e)
     fun visitAdtConstructorRef(e: AdtConstructorRef): R = visitDefault(e)
+    fun visitAdtFieldAccess(e: AdtFieldAccess): R = visitDefault(e)
 }

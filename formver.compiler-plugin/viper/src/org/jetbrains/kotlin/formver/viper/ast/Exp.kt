@@ -429,6 +429,32 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
             )
     }
 
+    /** Represents the application of an ADT destructor (i.e. field read on ADT). */
+    data class AdtDestructorApp(
+        val fieldName: SymbolicName,
+        val rcv: Exp,
+        val adtName: SymbolicName,
+        val typeVarMap: Map<Type.TypeVar, Type> = emptyMap(),
+        val pos: Position = Position.NoPosition,
+        val info: Info = Info.NoInfo,
+        val trafos: Trafos = Trafos.NoTrafos,
+    ) : Exp {
+        context(nameResolver: NameResolver)
+        override fun toSilver(): viper.silver.ast.Exp =
+            viper.silver.plugin.standard.adt.AdtDestructorApp(
+                fieldName.mangled,
+                rcv.toSilver(),
+                typeVarMap.mapKeys { it.key.toSilver() }.mapValues { it.value.toSilver() }.toScalaMap(),
+                pos.toSilver(),
+                info.toSilver(),
+                type.toSilver(),
+                adtName.mangled,
+                trafos.toSilver(),
+            )
+
+        override val type = Type.Ref
+    }
+
     data class ExplicitSeq(
         val args: List<Exp>,
         val pos: Position = Position.NoPosition,

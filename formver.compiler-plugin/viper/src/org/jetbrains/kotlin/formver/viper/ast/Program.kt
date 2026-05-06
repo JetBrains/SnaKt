@@ -128,6 +128,11 @@ private fun registerExpNames(exp: Exp) {
             nameResolver.register(exp.constructor.name)
             exp.args.forEach { registerExpNames(it) }
         }
+        is Exp.AdtDestructorApp -> {
+            nameResolver.register(exp.fieldName)
+            nameResolver.register(exp.adtName)
+            registerExpNames(exp.rcv)
+        }
         // no else branch to make decisions explicit.
         is Exp.Result, is Exp.BoolLit, is Exp.EmptySeq, is Exp.IntLit, is Exp.NullLit -> {}
     }
