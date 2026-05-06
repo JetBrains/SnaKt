@@ -14,8 +14,7 @@ import org.jetbrains.kotlin.formver.locality.plugin.Locality.Local
 /**
  * Symbolic locality value.
  */
-sealed interface Locality : JoinSemilatticeElement<Locality> {
-
+sealed interface Locality {
     /**
      * Symbolic locality value for a global reference.
      */
@@ -32,7 +31,7 @@ sealed interface Locality : JoinSemilatticeElement<Locality> {
      * Merges `this` locality with [other]. If both `this` and [other] are local to different declarations the result will
      * be `Local(null)` (local to unknown).
      */
-    override fun union(other: Locality): Locality =
+    fun join(other: Locality): Locality =
         when {
             this == other -> this
             this is Global -> other

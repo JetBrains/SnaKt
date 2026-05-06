@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.types.coneType
 
 fun ConeKotlinType.resolveLocalityRequirement(): LocalityRequirement {
-    if (attributes.locality == null) return LocalityRequirement.RequireGlobal
+    attributes.locality ?: return LocalityRequirement.RequireGlobal
 
     return LocalityRequirement.RequireLocal
 }

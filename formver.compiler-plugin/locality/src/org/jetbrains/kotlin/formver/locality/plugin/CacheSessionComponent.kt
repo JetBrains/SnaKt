@@ -9,15 +9,15 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.caches.firCachesFactory
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 
-abstract class CacheSessionComponent<K : Any, V, Context>(
+abstract class CacheSessionComponent<K : Any, V, C>(
     session: FirSession
 ) : FirExtensionSessionComponent(session) {
-    private val cache = session.firCachesFactory.createCache { key: K, context: Context ->
+    private val cache = session.firCachesFactory.createCache { key: K, context: C ->
         compute(key, context)
     }
 
-    protected abstract fun compute(key: K, context: Context): V
+    protected abstract fun compute(key: K, context: C): V
 
-    fun getValue(key: K, context: Context): V =
+    fun getValue(key: K, context: C): V =
         cache.getValue(key, context)
 }

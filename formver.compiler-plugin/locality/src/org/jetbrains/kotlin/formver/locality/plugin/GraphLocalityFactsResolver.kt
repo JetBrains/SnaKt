@@ -23,7 +23,7 @@ class GraphLocalityFactsResolver(
             key.analyzeLocalityFacts().getValue(key.exitNode)
         }
 
-        return flow.collapse(Locality::union)
+        return flow.collapse(Locality::join)
     }
 
     /**

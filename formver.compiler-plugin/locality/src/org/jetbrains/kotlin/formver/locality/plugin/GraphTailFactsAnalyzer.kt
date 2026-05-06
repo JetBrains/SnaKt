@@ -48,7 +48,7 @@ private fun CFGNode<*>.inheritsTailFact(): Boolean {
             this is TypeOperatorCallNode && (fir.operation == FirOperation.AS || fir.operation == FirOperation.SAFE_AS)
 }
 
-abstract class GraphExpressionTailAnalyzer<F : Any> : PathAwareControlFlowGraphVisitor<FirExpression, F>() {
+abstract class GraphTailFactsAnalyzer<F : Any> : PathAwareControlFlowGraphVisitor<FirExpression, F>() {
     protected abstract val bottom: F
 
     protected abstract fun F.merge(other: F): F

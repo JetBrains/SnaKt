@@ -13,11 +13,11 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 
 class GraphLocalityFactsAnalyzer(
     private val context: CheckerContext
-) : GraphExpressionTailAnalyzer<Locality>() {
+) : GraphTailFactsAnalyzer<Locality>() {
     override val bottom = Locality.Global
 
     override fun Locality.merge(other: Locality): Locality =
-        union(other)
+        join(other)
 
     override fun traverse(expression: FirExpression): Locality =
         if (expression is FirQualifiedAccessExpression) {
@@ -27,9 +27,6 @@ class GraphLocalityFactsAnalyzer(
         } else {
             Locality.Global
         }
-
-    fun analyzeLocalityOf(graph: ControlFlowGraph): Map<CFGNode<*>, PathAwareLocalityFacts> =
-        analyzeFactsOf(graph)
 }
 
 /**
@@ -39,4 +36,4 @@ class GraphLocalityFactsAnalyzer(
  */
 context(context: CheckerContext)
 fun ControlFlowGraph.analyzeLocalityFacts(): Map<CFGNode<*>, PathAwareLocalityFacts> =
-    GraphLocalityFactsAnalyzer(context).analyzeLocalityOf(this)
+    GraphLocalityFactsAnalyzer(context).analyzeFactsOf(this)

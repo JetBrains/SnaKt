@@ -36,10 +36,7 @@ class LocalityAdditionalCheckers(session: FirSession) : FirAdditionalCheckersExt
 
     override val expressionCheckers: ExpressionCheckers = object : ExpressionCheckers() {
         override val variableAssignmentCheckers: Set<FirVariableAssignmentChecker>
-            get() = setOf(
-                VariableAssignmentLocalityChecker,
-                VariableAssignmentLocalityContractChecker,
-            )
+            get() = setOf(VariableAssignmentLocalityChecker)
 
         override val callCheckers: Set<FirCallChecker>
             get() = setOf(CallLocalityChecker)

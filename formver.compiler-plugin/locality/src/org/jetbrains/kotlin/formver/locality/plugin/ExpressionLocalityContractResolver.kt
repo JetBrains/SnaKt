@@ -8,27 +8,34 @@ package org.jetbrains.kotlin.formver.locality.plugin
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.context.findClosest
 import org.jetbrains.kotlin.fir.declarations.FirControlFlowGraphOwner
+import org.jetbrains.kotlin.fir.declarations.FirProperty
 import org.jetbrains.kotlin.fir.expressions.FirExpression
+import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
 import org.jetbrains.kotlin.fir.expressions.unwrapExpression
+import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 
-/**
- * Resolves the locality contract of `this` expression based on the resolved locality contract info of the enclosing declaration.
- */
 @OptIn(SymbolInternals::class)
 context(context: CheckerContext)
 fun FirExpression.resolveLocalityContract(): LocalityContract {
     val expression = unwrapExpression()
-    val immediateContract = expression.resolveImmediateLocalityContract()
     val symbol = context.findClosest<FirCallableSymbol<*>>()
     val declaration = symbol?.fir
     val graph = (declaration as? FirControlFlowGraphOwner)?.controlFlowGraphReference?.controlFlowGraph
-        ?: return immediateContract
-    val facts = with(context.session) {
-        graph.resolveLocalityContractFacts()
+        ?: return LocalityContract.Undefined
+    val facts = graph.resolveLocalityContractFacts()
+
+    if (expression is FirPropertyAccessExpression) {
+        val property = (expression.calleeReference.symbol as? FirVariableSymbol<*>)?.fir as? FirProperty
+        val initializer = property?.initializer?.unwrapExpression()
+
+        if (initializer != null) {
+            return facts[initializer] ?: facts[expression] ?: LocalityContract.Undefined
+        }
     }
 
-    return facts[expression] ?: immediateContract
+    return facts[expression] ?: LocalityContract.Undefined
 }

@@ -6,88 +6,45 @@
 package org.jetbrains.kotlin.formver.locality.plugin
 
 import org.jetbrains.kotlin.diagnostics.rendering.Renderer
-import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 
-sealed interface LocalityContract : LatticeElement<LocalityContract>, Constraint<LocalityContract> {
-    companion object {
-        operator fun invoke(requiredLocalities: List<LocalityRequirement>): LocalityContract =
-            ActiveContract(requiredLocalities)
-    }
+sealed interface LocalityContract {
+    data object Undefined : LocalityContract
 
-    context(context: CheckerContext)
-    override fun accepts(value: LocalityContract): Boolean =
-        when (this) {
-            EmptyContract -> value == EmptyContract
-            is ActiveContract -> value is ActiveContract &&
-                    requiredLocalities.size == value.requiredLocalities.size &&
-                    requiredLocalities.zip(value.requiredLocalities).all { (thisRequirement, otherRequirement) ->
-                        thisRequirement < otherRequirement
+    data class FunctionContract(
+        val requirements: List<LocalityRequirement>
+    ) : LocalityContract
+}
+
+fun LocalityContract.join(other: LocalityContract): LocalityContract =
+    when {
+        this is LocalityContract.Undefined -> other
+        other is LocalityContract.Undefined -> this
+        this is LocalityContract.FunctionContract && other is LocalityContract.FunctionContract ->
+            if (requirements.size == other.requirements.size) {
+                LocalityContract.FunctionContract(
+                    requirements.zip(other.requirements).map { (thisRequirement, otherRequirement) ->
+                        thisRequirement.join(otherRequirement)
                     }
-        }
-
-    override fun union(other: LocalityContract): LocalityContract =
-        when {
-            this == EmptyContract -> other
-            other == EmptyContract -> this
-            this is ActiveContract && other is ActiveContract -> union(other)
-            else -> EmptyContract
-        }
-
-    override fun meet(other: LocalityContract): LocalityContract =
-        when {
-            this == EmptyContract || other == EmptyContract -> EmptyContract
-            this is ActiveContract && other is ActiveContract -> meet(other)
-            else -> EmptyContract
-        }
-}
-
-data object EmptyContract : LocalityContract
-
-data class ActiveContract(
-    val requiredLocalities: List<LocalityRequirement>
-) : LocalityContract {
-    fun union(other: ActiveContract): LocalityContract {
-        if (requiredLocalities.size != other.requiredLocalities.size) {
-            return EmptyContract
-        }
-
-        return LocalityContract(
-            requiredLocalities.zip(other.requiredLocalities)
-                .map { (thisRequirement, otherRequirement) ->
-                    thisRequirement.union(otherRequirement)
-                }
-        )
+                )
+            } else {
+                LocalityContract.Undefined
+            }
+        else -> LocalityContract.Undefined
     }
 
-    fun meet(other: ActiveContract): LocalityContract {
-        if (requiredLocalities.size != other.requiredLocalities.size) {
-            return EmptyContract
-        }
-
-        return LocalityContract(
-            requiredLocalities.zip(other.requiredLocalities)
-                .map { (thisRequirement, otherRequirement) ->
-                    thisRequirement.meet(otherRequirement)
-                }
-        )
-    }
-}
-
-/**
- * Renders a locality contract for diagnostics.
- */
 val LocalityContractRenderer = Renderer<LocalityContract> { contract ->
     when (contract) {
-        EmptyContract -> "'empty'"
-        is ActiveContract -> contract.requiredLocalities.joinToString(
-            prefix = "'(",
-            separator = ", ",
-            postfix = ")'",
-        ) { requirement ->
-            when (requirement) {
-                LocalityRequirement.RequireGlobal -> "global"
-                LocalityRequirement.RequireLocal -> "local"
+        is LocalityContract.FunctionContract ->
+            contract.requirements.joinToString(
+                prefix = "'(",
+                separator = ", ",
+                postfix = ")'",
+            ) { requirement ->
+                when (requirement) {
+                    LocalityRequirement.RequireGlobal -> "global"
+                    LocalityRequirement.RequireLocal -> "local"
+                }
             }
-        }
+        is LocalityContract.Undefined -> "undefined"
     }
 }

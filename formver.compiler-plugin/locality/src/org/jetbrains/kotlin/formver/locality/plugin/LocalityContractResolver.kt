@@ -6,32 +6,37 @@
 package org.jetbrains.kotlin.formver.locality.plugin
 
 import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 
 class GraphLocalityContractFactsResolver(
     session: FirSession
-) : CacheSessionComponent<ControlFlowGraph, LocalityContractFacts, Unit>(session) {
+) : CacheSessionComponent<ControlFlowGraph, LocalityContractFacts, CheckerContext>(session) {
     companion object {
         fun getFactory(): Factory {
             return Factory { session -> GraphLocalityContractFactsResolver(session) }
         }
     }
 
-    override fun compute(key: ControlFlowGraph, context: Unit): LocalityContractFacts {
-        val flow = key.analyzeLocalityContractFacts().getValue(key.exitNode)
-        return flow.collapse(LocalityContract::union)
+    override fun compute(key: ControlFlowGraph, context: CheckerContext): LocalityContractFacts {
+        val flow = with(context) {
+            key.analyzeLocalityContractFacts().getValue(key.exitNode)
+        }
+
+        return flow.collapse(LocalityContract::join)
     }
 
     /**
      * Resolve the [LocalityContractFacts] of a [graph], caching the result on the given [graph].
      */
+    context(context: CheckerContext)
     fun resolveLocalityContractFactsOf(graph: ControlFlowGraph): LocalityContractFacts =
-        getValue(graph, Unit)
+        getValue(graph, context)
 }
 
 val FirSession.graphLocalityContractFactsResolver: GraphLocalityContractFactsResolver
         by FirSession.sessionComponentAccessor<GraphLocalityContractFactsResolver>()
 
-context(session: FirSession)
+context(context: CheckerContext)
 fun ControlFlowGraph.resolveLocalityContractFacts(): LocalityContractFacts =
-    session.graphLocalityContractFactsResolver.resolveLocalityContractFactsOf(this)
+    context.session.graphLocalityContractFactsResolver.resolveLocalityContractFactsOf(this)
