@@ -12,12 +12,12 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 
-class GraphLocalityFactsResolver(
+class GraphExpressionLocalityFactsResolver(
     session: FirSession
 ) : FirExtensionSessionComponent(session) {
     companion object {
         fun getFactory(): Factory {
-            return Factory { session -> GraphLocalityFactsResolver(session) }
+            return Factory { session -> GraphExpressionLocalityFactsResolver(session) }
         }
     }
 
@@ -26,7 +26,7 @@ class GraphLocalityFactsResolver(
     @OptIn(SymbolInternals::class)
     private val cache = cachesFactory.createCache { key: ControlFlowGraph, context: CheckerContext ->
         val flow = with(context) {
-            key.analyzeLocality().getValue(key.exitNode)
+            key.analyzeExpressionLocality().getValue(key.exitNode)
         }
 
         flow.collapse()
@@ -40,9 +40,9 @@ class GraphLocalityFactsResolver(
         cache.getValue(graph, context)
 }
 
-val FirSession.graphLocalityFactsResolver: GraphLocalityFactsResolver
-        by FirSession.sessionComponentAccessor<GraphLocalityFactsResolver>()
+val FirSession.graphExpressionLocalityFactsResolver: GraphExpressionLocalityFactsResolver
+        by FirSession.sessionComponentAccessor<GraphExpressionLocalityFactsResolver>()
 
 context(context: CheckerContext)
 fun ControlFlowGraph.resolveLocalityFacts(): LocalityFacts =
-    context.session.graphLocalityFactsResolver.resolveLocalityFactsOf(this)
+    context.session.graphExpressionLocalityFactsResolver.resolveLocalityFactsOf(this)

@@ -5,8 +5,6 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
-import kotlinx.collections.immutable.PersistentMap
-import kotlinx.collections.immutable.persistentMapOf
 import org.jetbrains.kotlin.fir.analysis.cfa.util.PathAwareControlFlowGraphVisitor
 import org.jetbrains.kotlin.fir.analysis.cfa.util.merge
 import org.jetbrains.kotlin.fir.analysis.cfa.util.transformValues
@@ -22,7 +20,6 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.BlockExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.BooleanOperatorExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNodeWithSubgraphs
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.EdgeLabel
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ElvisExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.JumpNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.TryExpressionExitNode
@@ -51,7 +48,7 @@ private fun CFGNode<*>.inheritsTailFact(): Boolean {
             this is TypeOperatorCallNode && (fir.operation == FirOperation.AS || fir.operation == FirOperation.SAFE_AS)
 }
 
-class GraphLocalityAnalyzer(
+class GraphExpressionLocalityAnalyzer(
     private val context: CheckerContext
 ) : PathAwareControlFlowGraphVisitor<FirExpression, Locality>() {
     override fun mergeInfo(
@@ -114,5 +111,5 @@ class GraphLocalityAnalyzer(
  * The result is a map between [CFGNode]s and the [PathAwareLocalityFacts]s resulting after their execution.
  */
 context(context: CheckerContext)
-fun ControlFlowGraph.analyzeLocality(): Map<CFGNode<*>, PathAwareLocalityFacts> =
-    GraphLocalityAnalyzer(context).analyzeLocalityOf(this)
+fun ControlFlowGraph.analyzeExpressionLocality(): Map<CFGNode<*>, PathAwareLocalityFacts> =
+    GraphExpressionLocalityAnalyzer(context).analyzeLocalityOf(this)

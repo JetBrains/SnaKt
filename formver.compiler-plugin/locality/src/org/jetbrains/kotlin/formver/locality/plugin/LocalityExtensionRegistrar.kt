@@ -23,7 +23,7 @@ class LocalityExtensionRegistrar(
         registerDiagnosticContainers(LocalityErrors)
         +LocalityAttributeExtension.getFactory(localityAnnotationId)
         +PropertyOwnerResolver.getFactory()
-        +GraphLocalityFactsResolver.getFactory()
+        +GraphExpressionLocalityFactsResolver.getFactory()
         +LocalityAdditionalCheckers.getFactory()
     }
 }
