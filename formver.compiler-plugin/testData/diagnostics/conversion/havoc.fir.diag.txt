@@ -183,7 +183,7 @@ domain rt  {
 
   axiom {
     (forall r: Ref ::
-      { intToRef(intFromRef(r)) }
+      { intFromRef(r) }
       isSubtype(typeOf(r), intType()) ==> intToRef(intFromRef(r)) == r)
   }
 
@@ -201,7 +201,7 @@ domain rt  {
 
   axiom {
     (forall r: Ref ::
-      { boolToRef(boolFromRef(r)) }
+      { boolFromRef(r) }
       isSubtype(typeOf(r), boolType()) ==> boolToRef(boolFromRef(r)) == r)
   }
 
@@ -219,7 +219,7 @@ domain rt  {
 
   axiom {
     (forall r: Ref ::
-      { charToRef(charFromRef(r)) }
+      { charFromRef(r) }
       isSubtype(typeOf(r), charType()) ==> charToRef(charFromRef(r)) == r)
   }
 
@@ -237,7 +237,7 @@ domain rt  {
 
   axiom {
     (forall r: Ref ::
-      { stringToRef(stringFromRef(r)) }
+      { stringFromRef(r) }
       isSubtype(typeOf(r), stringType()) ==>
       stringToRef(stringFromRef(r)) == r)
   }
