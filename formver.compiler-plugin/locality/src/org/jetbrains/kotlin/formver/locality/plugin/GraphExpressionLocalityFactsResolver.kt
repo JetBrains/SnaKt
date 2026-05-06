@@ -7,29 +7,22 @@ package org.jetbrains.kotlin.formver.locality.plugin
 
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
-import org.jetbrains.kotlin.fir.caches.firCachesFactory
-import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
-import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 
 class GraphExpressionLocalityFactsResolver(
     session: FirSession
-) : FirExtensionSessionComponent(session) {
+) : CacheSessionComponent<ControlFlowGraph, LocalityFacts, CheckerContext>(session) {
     companion object {
         fun getFactory(): Factory {
             return Factory { session -> GraphExpressionLocalityFactsResolver(session) }
         }
     }
 
-    private val cachesFactory = session.firCachesFactory
-
-    @OptIn(SymbolInternals::class)
-    private val cache = cachesFactory.createCache { key: ControlFlowGraph, context: CheckerContext ->
+    override fun compute(key: ControlFlowGraph, context: CheckerContext): LocalityFacts {
         val flow = with(context) {
             key.analyzeExpressionLocality().getValue(key.exitNode)
         }
-
-        flow.collapse()
+        return flow.collapse(Locality::union)
     }
 
     /**
@@ -37,7 +30,7 @@ class GraphExpressionLocalityFactsResolver(
      */
     context(context: CheckerContext)
     fun resolveLocalityFactsOf(graph: ControlFlowGraph): LocalityFacts =
-        cache.getValue(graph, context)
+        getValue(graph, context)
 }
 
 val FirSession.graphExpressionLocalityFactsResolver: GraphExpressionLocalityFactsResolver

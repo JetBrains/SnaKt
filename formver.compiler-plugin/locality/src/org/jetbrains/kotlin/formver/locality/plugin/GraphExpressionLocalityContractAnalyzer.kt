@@ -6,6 +6,8 @@
 package org.jetbrains.kotlin.formver.locality.plugin
 
 import org.jetbrains.kotlin.fir.expressions.FirExpression
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 
 object GraphExpressionLocalityContractAnalyzer : GraphExpressionTailAnalyzer<LocalityContract>() {
     override val bottom = EmptyContract
@@ -16,3 +18,11 @@ object GraphExpressionLocalityContractAnalyzer : GraphExpressionTailAnalyzer<Loc
     override fun traverse(expression: FirExpression): LocalityContract =
         expression.resolveImmediateLocalityContract()
 }
+
+/**
+ * Analyzes the locality contract of each expression in `this` control flow graph.
+ *
+ * The result is a map between [CFGNode]s and the [PathAwareLocalityContractFacts]s resulting after their execution.
+ */
+fun ControlFlowGraph.analyzeExpressionLocalityContracts(): Map<CFGNode<*>, PathAwareLocalityContractFacts> =
+    GraphExpressionLocalityContractAnalyzer.analyzeFactsOf(this)

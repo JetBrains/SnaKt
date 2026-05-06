@@ -10,11 +10,11 @@ import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.EdgeLabel
 
 /**
- * Contains locality information for each `FirExpression` in the control flow, normalized through [unwrapExpression].
+ * Contains locality contract information for each `FirExpression` in the control flow, normalized through [unwrapExpression].
  */
-typealias LocalityFacts = ControlFlowFacts<FirExpression, Locality>
+typealias LocalityContractFacts = ControlFlowFacts<FirExpression, LocalityContract>
 
 /**
- * Contains locality information for every type of execution flow.
+ * Contains locality contract information for every type of execution flow.
  */
-typealias PathAwareLocalityFacts = ControlFlowFacts<EdgeLabel, LocalityFacts>
+typealias PathAwareLocalityContractFacts = ControlFlowFacts<EdgeLabel, LocalityContractFacts>
