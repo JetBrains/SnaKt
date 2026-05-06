@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 class GraphExpressionLocalityAnalyzer(
     private val context: CheckerContext
 ) : GraphExpressionTailAnalyzer<Locality>() {
-    override val bottom: Locality = Locality.Global
+    override val bottom = Locality.Global
 
     override fun Locality.merge(other: Locality): Locality =
         union(other)

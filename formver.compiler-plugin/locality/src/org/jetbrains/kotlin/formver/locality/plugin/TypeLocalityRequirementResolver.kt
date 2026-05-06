@@ -5,11 +5,15 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
+import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.types.coneType
 
-fun FirTypeRef.resolveLocalityRequirement(): LocalityRequirement {
-    if (coneType.attributes.locality == null) return LocalityRequirement.RequireGlobal
+fun ConeKotlinType.resolveLocalityRequirement(): LocalityRequirement {
+    if (attributes.locality == null) return LocalityRequirement.RequireGlobal
 
     return LocalityRequirement.RequireLocal
 }
+
+fun FirTypeRef.resolveLocalityRequirement(): LocalityRequirement =
+    coneType.resolveLocalityRequirement()
