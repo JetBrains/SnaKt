@@ -5,7 +5,6 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
-import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentMapOf
 import org.jetbrains.kotlin.fir.analysis.cfa.util.merge
 import org.jetbrains.kotlin.fir.expressions.FirExpression
@@ -15,12 +14,12 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.EdgeLabel
 /**
  * Contains locality information for each `FirExpression` in the control flow, normalized through [unwrapExpression].
  */
-typealias LocalityFacts = PersistentMap<FirExpression, Locality>
+typealias LocalityFacts = ControlFlowFacts<FirExpression, Locality>
 
 /**
  * Contains locality information for every type of execution flow.
  */
-typealias PathAwareLocalityFacts = PersistentMap<EdgeLabel, LocalityFacts>
+typealias PathAwareLocalityFacts = ControlFlowFacts<EdgeLabel, LocalityFacts>
 
 /**
  * Merges the locality information for every type of execution flow.

@@ -5,104 +5,31 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
-import org.jetbrains.kotlin.fir.analysis.cfa.util.PathAwareControlFlowGraphVisitor
-import org.jetbrains.kotlin.fir.analysis.cfa.util.merge
-import org.jetbrains.kotlin.fir.analysis.cfa.util.transformValues
-import org.jetbrains.kotlin.fir.analysis.cfa.util.traverseToFixedPoint
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.expressions.FirExpression
-import org.jetbrains.kotlin.fir.expressions.FirOperation
 import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
-import org.jetbrains.kotlin.fir.expressions.builder.buildExpressionStub
-import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.BlockExitNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.BooleanOperatorExitNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNodeWithSubgraphs
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ElvisExitNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.JumpNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.TryExpressionExitNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.TryMainBlockExitNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.TypeOperatorCallNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.WhenBranchResultExitNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.WhenExitNode
-
-/**
- * Stub expression for tracking the current tail locality.
- */
-private val TailExpression: FirExpression = buildExpressionStub()
-
-/**
- * Returns true if `this` node propagates the locality to the successor.
- */
-private fun CFGNode<*>.inheritsTailFact(): Boolean {
-    return this is BlockExitNode ||
-            this is WhenExitNode ||
-            this is WhenBranchResultExitNode ||
-            this is BooleanOperatorExitNode ||
-            this is JumpNode ||
-            this is ElvisExitNode ||
-            this is TryExpressionExitNode ||
-            this is TryMainBlockExitNode ||
-            this is TypeOperatorCallNode && (fir.operation == FirOperation.AS || fir.operation == FirOperation.SAFE_AS)
-}
 
 class GraphExpressionLocalityAnalyzer(
     private val context: CheckerContext
-) : PathAwareControlFlowGraphVisitor<FirExpression, Locality>() {
-    override fun mergeInfo(
-        a: LocalityFacts,
-        b: LocalityFacts,
-        node: CFGNode<*>
-    ): LocalityFacts =
-        a.merge(b, Locality::union)
+) : GraphExpressionTailAnalyzer<Locality>() {
+    override val bottom: Locality = Locality.Global
 
-    override fun visitSubGraph(node: CFGNodeWithSubgraphs<*>, graph: ControlFlowGraph): Boolean {
-        return false
-    }
+    override fun Locality.merge(other: Locality): Locality =
+        union(other)
 
-    override fun visitNode(
-        node: CFGNode<*>,
-        data: PathAwareLocalityFacts
-    ): PathAwareLocalityFacts {
-        val inheritsTailFact = node.inheritsTailFact()
-
-        return data.transformValues { facts ->
-            when (val element = node.fir) {
-                is FirExpression -> {
-                    val expression = element.unwrapExpression()
-
-                    when {
-                        inheritsTailFact ->
-                            facts.put(expression, facts[TailExpression] ?: Locality.Global)
-                        else -> {
-                            val expressionLocality =
-                                if (expression is FirQualifiedAccessExpression) {
-                                    with(context) {
-                                        expression.resolveImmediateLocality()
-                                    }
-                                } else {
-                                    Locality.Global
-                                }
-
-                            facts.put(expression, expressionLocality)
-                                .put(TailExpression, expressionLocality)
-                        }
-                    }
-                }
-
-                else ->
-                    when {
-                        inheritsTailFact -> facts
-                        else -> facts.remove(TailExpression)
-                    }
+    override fun traverse(expression: FirExpression): Locality =
+        if (expression is FirQualifiedAccessExpression) {
+            with(context) {
+                expression.resolveImmediateLocality()
             }
+        } else {
+            Locality.Global
         }
-    }
 
     fun analyzeLocalityOf(graph: ControlFlowGraph): Map<CFGNode<*>, PathAwareLocalityFacts> =
-        graph.traverseToFixedPoint(this)
+        analyzeFactsOf(graph)
 }
 
 /**
