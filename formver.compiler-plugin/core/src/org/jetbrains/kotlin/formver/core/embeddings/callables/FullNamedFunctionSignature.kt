@@ -20,7 +20,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.core.embeddings.types.nullableAny
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.DispatchReceiverName
-import org.jetbrains.kotlin.formver.core.names.FunctionResultVariableName
 import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
 import org.jetbrains.kotlin.formver.core.purity.preorder
 import org.jetbrains.kotlin.formver.viper.SymbolicName
@@ -31,12 +30,12 @@ interface FullNamedFunctionSignature : NamedFunctionSignature {
     /**
      * Preconditions of function in form of `ExpEmbedding`s with type `boolType()`.
      */
-    fun getPreconditions(): List<ExpEmbedding>
+    val preconditions : List<ExpEmbedding>
 
     /**
      * Postconditions of function in form of `ExpEmbedding`s with type `boolType()`.
      */
-    fun getPostconditions(returnVariable: VariableEmbedding): List<ExpEmbedding>
+    val postconditions : List<ExpEmbedding>
 
     val declarationSource: KtSourceElement?
 }
@@ -49,7 +48,7 @@ class ConstructorSignature(
     val typeResolver: TypeResolver
 ) : FullNamedFunctionSignature, NamedFunctionSignature by signature {
 
-    override fun getPreconditions() = buildList {
+   override val preconditions = buildList {
         formalArgs.forEach {
             addAll(it.pureInvariants())
             addAll(it.accessInvariants(typeResolver))
@@ -61,20 +60,20 @@ class ConstructorSignature(
         addAll(stdLibPreconditions(typeResolver))
     }
 
-    override fun getPostconditions(returnVariable: VariableEmbedding) = buildList {
+    override val postconditions: List<ExpEmbedding> = buildList {
         formalArgs.forEach {
             addAll(it.accessInvariants(typeResolver))
             if (it.isUnique && it.isBorrowed) {
                 addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
             }
         }
-        addAll(returnVariable.pureInvariants())
-        addAll(returnVariable.provenInvariants())
+        addAll(signature.returns.pureInvariants())
+        addAll(signature.returns.provenInvariants())
 
-        addAll(returnVariable.allAccessInvariants(typeResolver))
-        addIfNotNull(returnVariable.uniquePredicateAccessInvariant(typeResolver))
+        addAll(signature.returns.allAccessInvariants(typeResolver))
+        addIfNotNull(signature.returns.uniquePredicateAccessInvariant(typeResolver))
 
-        addAll(stdLibPostconditions(returnVariable, typeResolver))
+        addAll(stdLibPostconditions(signature.returns, typeResolver))
         addAll(propertiesPostconditions)
     }
 
@@ -93,8 +92,8 @@ abstract class PropertyAccessorFunctionSignature(
     override val name: SymbolicName,
     propertySymbol: FirPropertySymbol,
 ) : FullNamedFunctionSignature, GenericFunctionSignatureMixin() {
-    override fun getPreconditions() = emptyList<ExpEmbedding>()
-    override fun getPostconditions(returnVariable: VariableEmbedding) = emptyList<ExpEmbedding>()
+    override val preconditions = emptyList<ExpEmbedding>()
+    override val postconditions = emptyList<ExpEmbedding>()
     override val dispatchReceiver: VariableEmbedding
         get() = PlaceholderVariableEmbedding(DispatchReceiverName, buildType { nullableAny() })
     override val extensionReceiver = null
@@ -135,8 +134,8 @@ fun FullNamedFunctionSignature.toViperMethod(
     name,
     formalArgs.map { it.toLocalVarDecl() },
     returns.toLocalVarDecl(),
-    getPreconditions().pureToViper(toBuiltin = true, ctx),
-    getPostconditions(returns).pureToViper(toBuiltin = true, ctx),
+    preconditions.pureToViper(toBuiltin = true, ctx),
+    postconditions.pureToViper(toBuiltin = true, ctx),
     body,
     declarationSource.asPosition
 )
@@ -145,12 +144,6 @@ fun FullNamedFunctionSignature.toViperFunction(
     ctx: TypeResolver,
     body: Exp?,
 ): UserFunction {
-    val postconditions = getPostconditions(
-        PlaceholderVariableEmbedding(
-            FunctionResultVariableName,
-            this.callableType.returnType
-        )
-    )
     postconditions.forEach { postcondition ->
         val isValid = postcondition.preorder().all { it.first !is AccEmbedding && it.first !is PredicateAccessPermissions}
         if (!isValid) throw SnaktInternalException(
@@ -158,7 +151,7 @@ fun FullNamedFunctionSignature.toViperFunction(
             "Postcondition tries to acquire permissions, which is not allowed in a function"
         )
     }
-    val preconditions = formalArgs.mapNotNull { it.sharedPredicateAccessInvariant(ctx) } + getPreconditions()
+    val preconditions = formalArgs.mapNotNull { it.sharedPredicateAccessInvariant(ctx) } + preconditions
     return UserFunction(
         name,
         formalArgs.map { it.toLocalVarDecl() },

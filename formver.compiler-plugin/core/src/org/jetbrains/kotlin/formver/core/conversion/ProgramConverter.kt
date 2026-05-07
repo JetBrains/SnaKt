@@ -485,40 +485,45 @@ class ProgramConverter(
 
         val (preconditions, postconditions) = embedProvidedContract(symbol, subSignature)
 
+        val allPreconditions = buildList {
+            subSignature.formalArgs.forEach {
+                addAll(it.pureInvariants())
+                addAll(it.accessInvariants(typeResolver))
+                addAll(it.provenInvariants())
+                if (it.isUnique) {
+                    addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
+                }
+            }
+            addAll(subSignature.stdLibPreconditions(typeResolver))
+            addAll(preconditions)
+        }
+
+        val allPostcondition = buildList<ExpEmbedding> {
+            subSignature.formalArgs.forEach {
+                addAll(it.accessInvariants(typeResolver))
+                if (it.isUnique && it.isBorrowed) {
+                    addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
+                }
+            }
+            addAll(signature.returns.pureInvariants())
+            addAll(signature.returns.provenInvariants())
+            if (!subSignature.symbol.isPure(session)) {
+                addAll(signature.returns.allAccessInvariants(typeResolver))
+                if (subSignature.callableType.returnsUnique) {
+                    addIfNotNull(signature.returns.uniquePredicateAccessInvariant(typeResolver))
+                }
+            }
+
+            addAll(subSignature.stdLibPostconditions(signature.returns, typeResolver))
+            addAll(postconditions)
+        }
+
 
         return object : FullNamedFunctionSignature, NamedFunctionSignature by subSignature {
-            override fun getPreconditions() = buildList {
-                subSignature.formalArgs.forEach {
-                    addAll(it.pureInvariants())
-                    addAll(it.accessInvariants(typeResolver))
-                    addAll(it.provenInvariants())
-                    if (it.isUnique) {
-                        addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
-                    }
-                }
-                addAll(subSignature.stdLibPreconditions(typeResolver))
-                addAll(preconditions)
-            }
+            override val preconditions = allPreconditions
 
-            override fun getPostconditions(returnVariable: VariableEmbedding) = buildList {
-                subSignature.formalArgs.forEach {
-                    addAll(it.accessInvariants(typeResolver))
-                    if (it.isUnique && it.isBorrowed) {
-                        addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
-                    }
-                }
-                addAll(returnVariable.pureInvariants())
-                addAll(returnVariable.provenInvariants())
-                if (!subSignature.symbol.isPure(session)) {
-                    addAll(returnVariable.allAccessInvariants(typeResolver))
-                    if (subSignature.callableType.returnsUnique) {
-                        addIfNotNull(returnVariable.uniquePredicateAccessInvariant(typeResolver))
-                    }
-                }
 
-                addAll(subSignature.stdLibPostconditions(returnVariable, typeResolver))
-                addAll(postconditions)
-            }
+            override val postconditions = allPostcondition
 
             override val declarationSource: KtSourceElement? = symbol.source
         }
