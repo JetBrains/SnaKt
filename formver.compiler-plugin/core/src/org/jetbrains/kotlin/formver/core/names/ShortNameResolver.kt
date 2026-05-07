@@ -118,6 +118,11 @@ class ShortNameResolver : NameResolver {
         val index = currentCandidate.getOrPut(name) { 0 }
         return name.candidates()[index + 1]
     }
+
+    private fun hasNextCandidate(name: AnyName): Boolean {
+        val currentIndex = currentCandidate[name] ?: 0
+        return currentIndex + 1 < name.candidates().size
+    }
     // END RESOLVE NAMES
 
 
@@ -195,11 +200,7 @@ class ShortNameResolver : NameResolver {
             val toMove = removeNonLeaves(allToMove)
             assert(toMove.isNotEmpty()) { "No moveable names found, unable to resolve collisions" }
 
-            toMove.forEach { name ->
-                move(name)
-            }
-
-
+            toMove.forEach(::move)
 
             currentCollisions = collisions()
 
@@ -238,13 +239,17 @@ class ShortNameResolver : NameResolver {
      * This function returns the move that results in the lowest cost. If the name cannot be moved, it returns null.
      */
     private fun findMoveableName(entity: AnyName): Pair<Int, AnyName>? {
-        val currentIndex = currentCandidate[entity] ?: 0
-        val options = currentCandidate(entity).moveableParts().mapNotNull { namePart ->
-            findMoveableName(namePart.name)
-        } + (if (currentIndex + 1 < entity.candidates().size) {
-            // entity can be moved, so it is added to the options
-            listOf(Pair(costOfMovingName(entity), entity))
-        } else emptyList())
+        val options = buildList {
+            val subOptions = currentCandidate(entity).moveableParts().mapNotNull { namePart ->
+                findMoveableName(namePart.name)
+            }
+
+            addAll(subOptions)
+
+            if (hasNextCandidate(entity)) {
+                add(Pair(costOfMovingName(entity), entity))
+            }
+        }
 
         return options.minByOrNull { it.first }
     }
