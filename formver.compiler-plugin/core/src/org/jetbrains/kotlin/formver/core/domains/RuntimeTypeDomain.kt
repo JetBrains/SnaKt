@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.formver.core.names.QualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.core.names.UnqualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
+import org.jetbrains.kotlin.formver.viper.ast.Exp.Companion.toConjunction
 
 
 const val RUNTIME_TYPE_DOMAIN_NAME = "rt"
@@ -422,12 +423,9 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
             val p = domainVar("p", Type.Adt(embedding.adtName))
             axiom {
                 Exp.forall(p) { p ->
-                    fields.forEach { field ->
-                        simpleTrigger { typeOf(Exp.AdtDestructorApp(field.name, p, embedding.adtName)) }
-                    }
                     fields.map { field ->
-                        typeOf(Exp.AdtDestructorApp(field.name, p, embedding.adtName)) subtype field.type.runtimeType
-                    }.reduce { acc, next -> Exp.And(acc, next) }
+                        simpleTrigger { typeOf(Exp.AdtDestructorApp(field.name, p, embedding.adtName)) } subtype field.type.runtimeType
+                    }.toConjunction()
                 }
             }
         }

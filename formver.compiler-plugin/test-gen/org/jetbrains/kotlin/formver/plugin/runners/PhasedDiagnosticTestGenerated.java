@@ -52,9 +52,9 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
-      @TestMetadata("data_class_validation.kt")
-      public void testData_class_validation() {
-        runTest("formver.compiler-plugin/testData/diagnostics/conversion/adts/data_class_validation.kt");
+      @TestMetadata("data_classes.kt")
+      public void testData_classes() {
+        runTest("formver.compiler-plugin/testData/diagnostics/conversion/adts/data_classes.kt");
       }
 
       @Test
