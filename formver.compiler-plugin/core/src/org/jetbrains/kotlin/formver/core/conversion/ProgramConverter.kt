@@ -108,9 +108,9 @@ class ProgramConverter(
         if (declaration.symbol.isPure(session)) {
             embedPureUserFunction(declaration.symbol, signature)
         } else {
-            val (returnTarget, stmtCtx) = createBodyConversionContext(signature)
+            val stmtCtx = createBodyConversionContext(signature)
             embedUserFunction(declaration.symbol, signature).apply {
-                body = stmtCtx.convertMethodWithBody(declaration, signature, returnTarget)
+                body = stmtCtx.convertMethodWithBody(declaration, signature)
             }
         }
         // Ensures every function that touches an invalid ADT (signature, body, transitive callee, transitive field)
@@ -137,14 +137,15 @@ class ProgramConverter(
             symbol.source, "Expected FirSimpleFunction, got unexpected type ${symbol.fir.javaClass.simpleName}"
         )
         if (declaration.body != null) {
-            val (_, stmtCtx) = createBodyConversionContext(signature)
+            val stmtCtx = createBodyConversionContext(signature)
             new.body = stmtCtx.convertFunctionWithBody(declaration)
         }
         return new
     }
 
-    private fun createBodyConversionContext(signature: FullNamedFunctionSignature): Pair<ReturnTarget, StmtConversionContext> {
-        val returnTarget = signature.returns.toReturnTarget()
+    private fun createBodyConversionContext(signature: FullNamedFunctionSignature): StmtConversionContext {
+        // This body is only used for top level bodies.
+        val returnTarget = ReturnTargetImpl(0, signature.returns.type)
 
         val paramResolver = RootParameterResolver(
             this@ProgramConverter,
@@ -159,7 +160,7 @@ class ProgramConverter(
             paramResolver,
             scopeIndexProducer.getFresh(),
         ).statementCtxt()
-        return Pair(returnTarget, stmtCtx)
+        return stmtCtx
     }
 
     fun embedUserFunction(symbol: FirFunctionSymbol<*>, signature: FullNamedFunctionSignature): UserFunctionEmbedding {
