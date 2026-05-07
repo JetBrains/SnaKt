@@ -86,14 +86,13 @@ class SetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
 
 fun FullNamedFunctionSignature.toViperMethod(
     body: Stmt.Seqn?,
-    returnVariable: VariableEmbedding,
     ctx: TypeResolver,
 ) = UserMethod(
     name,
     formalArgs.map { it.toLocalVarDecl() },
-    returnVariable.toLocalVarDecl(),
+    returns.toLocalVarDecl(),
     getPreconditions().pureToViper(toBuiltin = true, ctx),
-    getPostconditions(returnVariable).pureToViper(toBuiltin = true, ctx),
+    getPostconditions(returns).pureToViper(toBuiltin = true, ctx),
     body,
     declarationSource.asPosition
 )

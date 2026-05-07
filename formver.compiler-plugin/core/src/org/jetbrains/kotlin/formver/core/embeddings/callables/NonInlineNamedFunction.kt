@@ -33,7 +33,6 @@ class NonInlineNamedFunction(val signature: FullNamedFunctionSignature, val hasP
     override fun toViperMethodHeader(ctx: TypeResolver): Method =
         signature.toViperMethod(
             null,
-            PlaceholderVariableEmbedding(PlaceholderReturnVariableName, signature.callableType.returnType),
             ctx
         )
 
