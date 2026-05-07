@@ -244,22 +244,21 @@ fun StmtConversionContext.insertForAllFunctionCall(
 fun StmtConversionContext.convertMethodWithBody(
     declaration: FirSimpleFunction,
     signature: FullNamedFunctionSignature,
-    returnTarget: ReturnTarget,
 ): FunctionBodyConversionResult? {
     val firBody = declaration.body ?: return null
     val body = convert(firBody)
-    val bodyExp = FunctionExp(signature, body, returnTarget.label)
+    val bodyExp = FunctionExp(signature, body, defaultResolvedReturnTarget.label)
     val seqnBuilder = SeqnBuilder(declaration.source)
     val linearizer =
         Linearizer(SharedLinearizationState(anonVarProducer), seqnBuilder, declaration.source, typeResolver)
     bodyExp.toLinearizable(declaration.source).toViperUnusedResult(linearizer)
     // note: we must guarantee somewhere that returned value is Unit
     // as we may not encounter any `return` statement in the body
-    returnTarget.variable.withIsUnitInvariantIfUnit(typeResolver).toLinearizable(declaration.source)
+    signature.returns.withIsUnitInvariantIfUnit(typeResolver).toLinearizable(declaration.source)
         .toViperUnusedResult(linearizer)
     val isValid = body.checkValidity(declaration.source, errorCollector)
     return if (isValid) {
-        FunctionBodyEmbedding(seqnBuilder.block, returnTarget, bodyExp)
+        FunctionBodyEmbedding(seqnBuilder.block, bodyExp)
     } else {
         InvalidFunctionBodyEmbedding(declaration.source, bodyExp)
     }

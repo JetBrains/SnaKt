@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.descriptors.isInterface
 import org.jetbrains.kotlin.descriptors.isObject
 import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.analysis.checkers.isPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
@@ -49,7 +50,7 @@ import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
  * We need the FirSession to get access to the TypeContext.
  */
 class ProgramConverter(
-    val session: FirSession, override val config: PluginConfiguration, override val errorCollector: ErrorCollector
+    val session: FirSession, override val config: PluginConfiguration, override val errorCollector: ErrorCollector, val declaration: FirSimpleFunction
 ) : ProgramConversionContext {
     private val methods: MutableMap<SymbolicName, FunctionEmbedding> = buildMap {
         putAll(SpecialKotlinFunctions.byName)
@@ -101,7 +102,9 @@ class ProgramConverter(
             adts = typeResolver.adtTypeEmbeddings().filter { it.isValid }.map { it.toViper() },
         )
 
-    fun registerForVerification(declaration: FirSimpleFunction) {
+    fun isVerifiedMethod(symbol: FirFunctionSymbol<*>) : Boolean = declaration.symbol == symbol
+
+    fun registerForVerification() {
         val signature = embedFullSignature(declaration.symbol)
         // Note: it is important that `body` is only set after embedding is complete, as we need to
         // place the embedding in the map before processing the body.
@@ -390,6 +393,28 @@ class ProgramConverter(
                 get() = super<NamedFunctionSignature>.labelName
             override val symbol = symbol
         }
+        if (symbol is FirConstructorSymbol && symbol.isPrimary) {
+            // Constructor
+            val constructedClassSymbol = symbol.resolvedReturnType.toRegularClassSymbol(session) ?: throw SnaktInternalException(symbol.source, "Constructor does not return a regular class")
+            val parameterMatching =  constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
+                val name = propertySymbol.embedMemberPropertyName()
+                propertySymbol.withConstructorParam { paramSymbol ->
+                    typeResolver.lookupBackingField(name)?.let { paramSymbol to it }
+                }
+            }.toMap()
+
+            val fieldPostconditions = signature.params.mapNotNull { param ->
+                require(param is FirVariableEmbedding) { "Constructor parameters must be represented by FirVariableEmbeddings" }
+                parameterMatching[param.symbol]?.let { field ->
+                    (field.accessPolicy == AccessPolicy.ALWAYS_READABLE).ifTrue {
+                        EqCmp(FieldAccess(signature.returns, field), param)
+                    }
+                }
+            }
+
+            return ConstructorSignature(subSignature, fieldPostconditions, symbol, typeResolver)
+        }
+
         val constructorParamSymbolsToFields = extractConstructorParamsAsFields(symbol)
         val contractVisitor = ContractDescriptionConversionVisitor(this@ProgramConverter, subSignature)
 
@@ -412,7 +437,7 @@ class ProgramConverter(
             subSignature,
             subSignature.symbol.valueParameterSymbols,
             subSignature.labelName,
-            ReturnTarget(depth = 0, subSignature.callableType.returnType),
+            returnTarget,
         )
 
         fun createCtx(returnVariable: VariableEmbedding? = null): StmtConversionContext {
