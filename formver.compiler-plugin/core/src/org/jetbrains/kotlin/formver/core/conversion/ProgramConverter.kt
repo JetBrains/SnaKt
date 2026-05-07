@@ -13,34 +13,25 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.isPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
-import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
-import org.jetbrains.kotlin.fir.declarations.utils.hasBackingField
-import org.jetbrains.kotlin.fir.declarations.utils.isData
-import org.jetbrains.kotlin.fir.declarations.utils.isFinal
-import org.jetbrains.kotlin.fir.declarations.utils.visibility
+import org.jetbrains.kotlin.fir.declarations.utils.*
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.*
-import org.jetbrains.kotlin.formver.common.AdtErrorKind
-import org.jetbrains.kotlin.formver.common.ErrorCollector
-import org.jetbrains.kotlin.formver.common.PluginConfiguration
-import org.jetbrains.kotlin.formver.common.SnaktInternalException
-import org.jetbrains.kotlin.formver.common.UnsupportedFeatureBehaviour
+import org.jetbrains.kotlin.formver.common.*
 import org.jetbrains.kotlin.formver.core.*
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
-import org.jetbrains.kotlin.formver.core.isAdt
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.utils.addIfNotNull
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
-
+import org.jetbrains.kotlin.utils.identity
 
 
 /**
@@ -50,7 +41,10 @@ import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
  * We need the FirSession to get access to the TypeContext.
  */
 class ProgramConverter(
-    val session: FirSession, override val config: PluginConfiguration, override val errorCollector: ErrorCollector, val declaration: FirSimpleFunction
+    val session: FirSession,
+    override val config: PluginConfiguration,
+    override val errorCollector: ErrorCollector,
+    val declaration: FirSimpleFunction
 ) : ProgramConversionContext {
     private val methods: MutableMap<SymbolicName, FunctionEmbedding> = buildMap {
         putAll(SpecialKotlinFunctions.byName)
@@ -85,8 +79,7 @@ class ProgramConverter(
             domains = listOf(RuntimeTypeDomain(typeResolver)),
             // We need to deduplicate fields since public fields with the same name are represented differently
             // at `FieldEmbedding` level but map to the same Viper.
-            fields = typeResolver.backingFields().distinctBy { it.name }
-                .map { it.toViper() },
+            fields = typeResolver.backingFields().distinctBy { it.name }.map { it.toViper() },
             functions = SpecialFunctions.all + functions.values.mapNotNull { it.viperFunction(typeResolver) }
                 .distinctBy { it.name },
             methods = SpecialMethods.all + methods.values.mapNotNull { it.viperMethod(typeResolver) }
@@ -102,7 +95,7 @@ class ProgramConverter(
             adts = typeResolver.adtTypeEmbeddings().filter { it.isValid }.map { it.toViper() },
         )
 
-    fun isVerifiedMethod(symbol: FirFunctionSymbol<*>) : Boolean = declaration.symbol == symbol
+    fun isVerifiedMethod(symbol: FirFunctionSymbol<*>): Boolean = declaration.symbol == symbol
 
     fun registerForVerification() {
         val signature = embedFullSignature(declaration.symbol)
@@ -121,9 +114,7 @@ class ProgramConverter(
         // TODO: Move this to the linearizer level and annotate the specific touch instead
         if (errorCollector.collectedAdtErrorOfKind(AdtErrorKind.INVALID_TARGET)) {
             errorCollector.addAdtError(
-                AdtErrorKind.INVALID_USAGE,
-                declaration.source,
-                "Function '${declaration.name.asString()}'"
+                AdtErrorKind.INVALID_USAGE, declaration.source, "Function '${declaration.name.asString()}'"
             )
         }
     }
@@ -146,7 +137,11 @@ class ProgramConverter(
         return new
     }
 
-    private fun createBodyConversionContext(signature: FullNamedFunctionSignature): StmtConversionContext {
+    private fun createBodyConversionContext(
+        signature: NamedFunctionSignature,
+        withScope: Boolean = true,
+        wrapParamResolver: ((ParameterResolver) -> ParameterResolver) = identity()
+    ): StmtConversionContext {
         // This body is only used for top level bodies.
         val returnTarget = ReturnTargetImpl(0, signature.returns.type)
 
@@ -160,8 +155,8 @@ class ProgramConverter(
         val stmtCtx = MethodConverter(
             this@ProgramConverter,
             signature,
-            paramResolver,
-            scopeIndexProducer.getFresh(),
+            wrapParamResolver(paramResolver),
+            if (withScope) scopeIndexProducer.getFresh() else ScopeIndex.NoScope,
         ).statementCtxt()
         return stmtCtx
     }
@@ -265,21 +260,38 @@ class ProgramConverter(
     @OptIn(DirectDeclarationsAccess::class)
     private fun validateAdt(symbol: FirRegularClassSymbol): Boolean {
         if (!symbol.classKind.isObject || !symbol.isData) {
-            errorCollector.addAdtError(AdtErrorKind.INVALID_TARGET, symbol.source, "@ADT may only be applied to data object declarations")
+            errorCollector.addAdtError(
+                AdtErrorKind.INVALID_TARGET,
+                symbol.source,
+                "@ADT may only be applied to data object declarations"
+            )
             return false
         }
         for (declaration in symbol.declarationSymbols) when (declaration) {
             is FirPropertySymbol -> {
-                errorCollector.addAdtError(AdtErrorKind.INVALID_TARGET, symbol.source, "An @ADT data object must not have fields")
+                errorCollector.addAdtError(
+                    AdtErrorKind.INVALID_TARGET,
+                    symbol.source,
+                    "An @ADT data object must not have fields"
+                )
                 return false
             }
+
             is FirNamedFunctionSymbol -> {
-                errorCollector.addAdtError(AdtErrorKind.INVALID_TARGET, symbol.source, "An @ADT data object must not have member functions")
+                errorCollector.addAdtError(
+                    AdtErrorKind.INVALID_TARGET,
+                    symbol.source,
+                    "An @ADT data object must not have member functions"
+                )
                 return false
             }
         }
         if (symbol.resolvedSuperTypes.any { !it.isAny }) {
-            errorCollector.addAdtError(AdtErrorKind.INVALID_TARGET, symbol.source, "An @ADT data object must not extend a class or implement an interface")
+            errorCollector.addAdtError(
+                AdtErrorKind.INVALID_TARGET,
+                symbol.source,
+                "An @ADT data object must not extend a class or implement an interface"
+            )
             return false
         }
         return true
@@ -349,7 +361,7 @@ class ProgramConverter(
             else -> ReturnTargetNoLabel.forNoBodyFunction(returnType)
         }
 
-        val signature =  object : FunctionSignature {
+        val signature = object : FunctionSignature {
             override val callableType: FunctionTypeEmbedding = embedFunctionPretype(symbol)
 
             // TODO: figure out whether we want a symbol here and how to get it.
@@ -385,6 +397,58 @@ class ProgramConverter(
     private val FirRegularClassSymbol.propertySymbols: List<FirPropertySymbol>
         get() = declarationSymbols.filterIsInstance<FirPropertySymbol>()
 
+
+    private fun embedUserContract(
+        symbol: FirFunctionSymbol<*>,
+        signature: NamedFunctionSignature
+    ): Pair<List<ExpEmbedding>, List<ExpEmbedding>> {
+        @OptIn(SymbolInternals::class) val declaration = symbol.fir
+        val body = declaration.body
+
+        /** Specifications are only allowed inside simple functions.
+         * We are also unable to retrieve them when body is not visible,
+         * although ideally we should be able to see preconditions and postconditions
+         * from other modules.
+         */
+        val firSpec = when {
+            declaration !is FirSimpleFunction -> null
+            body == null -> null
+            else -> extractFirSpecification(body, declaration.symbol.resolvedReturnType)
+        }
+
+        val preconditionContext = createBodyConversionContext(signature, false)
+        val postConditionContext = createBodyConversionContext(signature, false) { rootResolver ->
+            val returnVarCtx = firSpec?.returnVar?.let { ReturnVarSubstitutor(it, signature.returns) }
+            return@createBodyConversionContext if (returnVarCtx != null) SubstitutedReturnParameterResolver(
+                rootResolver,
+                returnVarCtx
+            )
+            else rootResolver
+        }
+
+        val preconditions = firSpec?.precond?.let { preconditionContext.collectInvariants(it) } ?: emptyList()
+        val postconditions = firSpec?.postcond?.let { postConditionContext.collectInvariants(it) } ?: emptyList()
+
+        return Pair(preconditions, postconditions)
+    }
+
+    private fun embedKotlinContract(
+        signature: NamedFunctionSignature
+    ) : Pair<List<ExpEmbedding>, List<ExpEmbedding>> {
+        val contractVisitor = ContractDescriptionConversionVisitor(this@ProgramConverter, signature)
+        val postConditions = contractVisitor.getPostconditions()
+        return Pair(emptyList(), postConditions)
+    }
+
+    private fun embedProvidedContract(
+        symbol: FirFunctionSymbol<*>,
+        signature: NamedFunctionSignature
+    ) : Pair<List<ExpEmbedding>, List<ExpEmbedding>> {
+        val kotlinContract = embedKotlinContract(signature)
+        val userContract = embedUserContract(symbol, signature)
+        return Pair(kotlinContract.first + userContract.first, kotlinContract.second + userContract.second)
+    }
+
     private fun embedFullSignature(symbol: FirFunctionSymbol<*>): FullNamedFunctionSignature {
         val (returnTarget, signature) = embedFunctionSignature(symbol)
         val subSignature = object : NamedFunctionSignature, FunctionSignature by signature {
@@ -395,8 +459,12 @@ class ProgramConverter(
         }
         if (symbol is FirConstructorSymbol && symbol.isPrimary) {
             // Constructor
-            val constructedClassSymbol = symbol.resolvedReturnType.toRegularClassSymbol(session) ?: throw SnaktInternalException(symbol.source, "Constructor does not return a regular class")
-            val parameterMatching =  constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
+            val constructedClassSymbol =
+                symbol.resolvedReturnType.toRegularClassSymbol(session) ?: throw SnaktInternalException(
+                    symbol.source,
+                    "Constructor does not return a regular class"
+                )
+            val parameterMatching = constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
                 val name = propertySymbol.embedMemberPropertyName()
                 propertySymbol.withConstructorParam { paramSymbol ->
                     typeResolver.lookupBackingField(name)?.let { paramSymbol to it }
@@ -415,43 +483,8 @@ class ProgramConverter(
             return ConstructorSignature(subSignature, fieldPostconditions, symbol, typeResolver)
         }
 
-        val constructorParamSymbolsToFields = extractConstructorParamsAsFields(symbol)
-        val contractVisitor = ContractDescriptionConversionVisitor(this@ProgramConverter, subSignature)
+        val (preconditions, postconditions) = embedProvidedContract(symbol, subSignature)
 
-        @OptIn(SymbolInternals::class) val declaration = symbol.fir
-        val body = declaration.body
-
-        /** Specifications are only allowed inside simple functions.
-         * We are also unable to retrieve them when body is not visible,
-         * although ideally we should be able to see preconditions and postconditions
-         * from other modules.
-         */
-        val firSpec = when {
-            declaration !is FirSimpleFunction -> null
-            body == null -> null
-            else -> extractFirSpecification(body, declaration.symbol.resolvedReturnType)
-        }
-
-        val rootResolver = RootParameterResolver(
-            this@ProgramConverter,
-            subSignature,
-            subSignature.symbol.valueParameterSymbols,
-            subSignature.labelName,
-            returnTarget,
-        )
-
-        fun createCtx(returnVariable: VariableEmbedding? = null): StmtConversionContext {
-            val returnVarCtx = returnVariable?.let { ret -> firSpec?.returnVar?.let { ReturnVarSubstitutor(it, ret) } }
-            val paramResolver = if (returnVarCtx != null) SubstitutedReturnParameterResolver(rootResolver, returnVarCtx)
-            else rootResolver
-
-            return MethodConverter(
-                this@ProgramConverter,
-                subSignature,
-                paramResolver,
-                scopeDepth = ScopeIndex.NoScope,
-            ).statementCtxt()
-        }
 
         return object : FullNamedFunctionSignature, NamedFunctionSignature by subSignature {
             override fun getPreconditions() = buildList {
@@ -464,12 +497,7 @@ class ProgramConverter(
                     }
                 }
                 addAll(subSignature.stdLibPreconditions(typeResolver))
-                // We create a separate context to embed the preconditions here.
-                // Hence, some parts of FIR are translated later than the other and less explicitly.
-                // TODO: this process should be a separate step in the conversion.
-                firSpec?.precond?.let {
-                    addAll(createCtx().collectInvariants(it))
-                }
+                addAll(preconditions)
             }
 
             override fun getPostconditions(returnVariable: VariableEmbedding) = buildList {
@@ -487,26 +515,9 @@ class ProgramConverter(
                         addIfNotNull(returnVariable.uniquePredicateAccessInvariant(typeResolver))
                     }
                 }
-                addAll(contractVisitor.getPostconditions(ContractVisitorContext(returnVariable, symbol)))
-                addAll(subSignature.stdLibPostconditions(returnVariable, typeResolver))
-                addIfNotNull(primaryConstructorInvariants(returnVariable))
-                // TODO: this process should be a separate step in the conversion (see above)
-                firSpec?.postcond?.let {
-                    addAll(createCtx(returnVariable).collectInvariants(it))
-                }
-            }
 
-            fun primaryConstructorInvariants(returnVariable: VariableEmbedding): ExpEmbedding? {
-                val invariants = params.mapNotNull { param ->
-                    require(param is FirVariableEmbedding) { "Constructor parameters must be represented by FirVariableEmbeddings" }
-                    constructorParamSymbolsToFields[param.symbol]?.let { field ->
-                        (field.accessPolicy == AccessPolicy.ALWAYS_READABLE).ifTrue {
-                            EqCmp(FieldAccess(returnVariable, field), param)
-                        }
-                    }
-                }
-                return if (invariants.isEmpty()) null
-                else invariants.toConjunction()
+                addAll(subSignature.stdLibPostconditions(returnVariable, typeResolver))
+                addAll(postconditions)
             }
 
             override val declarationSource: KtSourceElement? = symbol.source

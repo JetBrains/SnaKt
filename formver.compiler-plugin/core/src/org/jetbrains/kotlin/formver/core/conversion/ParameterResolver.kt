@@ -60,11 +60,11 @@ class ReturnVarSubstitutor(val substitutionSymbol: FirValueParameterSymbol, val 
 }
 
 class SubstitutedReturnParameterResolver(
-    private val rootResolver: RootParameterResolver,
+    private val parentResolver: ParameterResolver,
     private val substitutionContext: ReturnVarSubstitutionContext,
-) : ParameterResolver by rootResolver {
+) : ParameterResolver by parentResolver {
     override fun tryResolveParameter(symbol: FirValueParameterSymbol): ExpEmbedding? =
-        substitutionContext.resolve(symbol) ?: rootResolver.tryResolveParameter(symbol)
+        substitutionContext.resolve(symbol) ?: parentResolver.tryResolveParameter(symbol)
 }
 
 /**
