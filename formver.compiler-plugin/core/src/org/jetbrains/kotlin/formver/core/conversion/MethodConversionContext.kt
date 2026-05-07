@@ -9,12 +9,15 @@ import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirValueParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
+import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.embeddings.LabelEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
+import org.jetbrains.kotlin.formver.core.names.FunctionResultVariableName
+import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
 import org.jetbrains.kotlin.formver.core.names.ReturnLabelName
 import org.jetbrains.kotlin.formver.core.names.ReturnVariableName
 
@@ -22,6 +25,15 @@ class ReturnTarget(depth: Int, type: TypeEmbedding) {
     val variable = PlaceholderVariableEmbedding(ReturnVariableName(depth), type)
     val label = LabelEmbedding(ReturnLabelName(depth))
 }
+
+fun VariableEmbedding.toReturnTarget() = when(name) {
+        is ReturnVariableName -> ReturnTarget((name as ReturnVariableName).n, type)
+        is PlaceholderReturnVariableName -> ReturnTarget(depth = 0, type)
+        is FunctionResultVariableName -> ReturnTarget(depth = 0, type)
+        else -> throw SnaktInternalException(null, "Tried to convert a non-return variable to a return target: $name")
+    }
+
+
 
 /**
  * Context for converting a method body.

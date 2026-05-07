@@ -144,7 +144,8 @@ class ProgramConverter(
     }
 
     private fun createBodyConversionContext(signature: FullNamedFunctionSignature): Pair<ReturnTarget, StmtConversionContext> {
-        val returnTarget = returnTargetProducer.getFresh(signature.callableType.returnType)
+        val returnTarget = signature.returns.toReturnTarget()
+
         val paramResolver = RootParameterResolver(
             this@ProgramConverter,
             signature,
@@ -334,6 +335,14 @@ class ProgramConverter(
         val extensionReceiverType = symbol.extensionReceiverType
         val isExtensionReceiverUnique = symbol.receiverParameterSymbol?.isUnique(session) ?: false
         val isExtensionReceiverBorrowed = symbol.receiverParameterSymbol?.isBorrowed(session) ?: false
+
+        val returnType = embedType(symbol.resolvedReturnType)
+        val returnVariable = when {
+            symbol.isPure(session) -> FunctionResultVariableName
+            symbol.shouldBeInlined -> returnTargetProducer.getFresh(returnType).variable.name
+            else -> PlaceholderReturnVariableName
+        }
+
         return object : FunctionSignature {
             override val callableType: FunctionTypeEmbedding = embedFunctionPretype(symbol)
 
@@ -361,6 +370,8 @@ class ProgramConverter(
                     it.embedName(), embedType(it.resolvedReturnType), it, it.isUnique(session), it.isBorrowed(session)
                 )
             }
+            override val returns: VariableEmbedding
+                get() = PlaceholderVariableEmbedding(returnVariable, returnType)
         }
     }
 

@@ -19,6 +19,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.nullableAny
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.DispatchReceiverName
 import org.jetbrains.kotlin.formver.core.names.FunctionResultVariableName
+import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
 import org.jetbrains.kotlin.formver.core.purity.preorder
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
@@ -54,6 +55,8 @@ abstract class PropertyAccessorFunctionSignature(
         get() = PlaceholderVariableEmbedding(DispatchReceiverName, buildType { nullableAny() })
     override val extensionReceiver = null
     override val declarationSource: KtSourceElement? = propertySymbol.source
+
+    override val returns: VariableEmbedding = PlaceholderVariableEmbedding(PlaceholderReturnVariableName, buildType { nullableAny() })
 }
 
 class GetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
