@@ -331,20 +331,22 @@ class ProgramConverter(
         }.toMap()
     }
 
-    override fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): FunctionSignature {
+    override fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): Pair<ReturnTarget, FunctionSignature> {
         val dispatchReceiverType = symbol.receiverType
         val extensionReceiverType = symbol.extensionReceiverType
         val isExtensionReceiverUnique = symbol.receiverParameterSymbol?.isUnique(session) ?: false
         val isExtensionReceiverBorrowed = symbol.receiverParameterSymbol?.isBorrowed(session) ?: false
 
         val returnType = embedType(symbol.resolvedReturnType)
-        val returnVariable = when {
-            symbol.isPure(session) -> FunctionResultVariableName
-            symbol.shouldBeInlined -> returnTargetProducer.getFresh(returnType).variable.name
-            else -> PlaceholderReturnVariableName
+
+        val returnTarget = when {
+            symbol.isPure(session) -> ReturnTargetNoLabel.forPureFunction(returnType)
+            symbol.isPrimaryConstructor() -> ReturnTargetNoLabel.forNoBodyFunction(returnType)
+            isVerifiedMethod(symbol) -> returnTargetProducer.getFresh(returnType)
+            else -> ReturnTargetNoLabel.forNoBodyFunction(returnType)
         }
 
-        return object : FunctionSignature {
+        val signature =  object : FunctionSignature {
             override val callableType: FunctionTypeEmbedding = embedFunctionPretype(symbol)
 
             // TODO: figure out whether we want a symbol here and how to get it.
@@ -371,9 +373,9 @@ class ProgramConverter(
                     it.embedName(), embedType(it.resolvedReturnType), it, it.isUnique(session), it.isBorrowed(session)
                 )
             }
-            override val returns: VariableEmbedding
-                get() = PlaceholderVariableEmbedding(returnVariable, returnType)
+            override val returns: VariableEmbedding = returnTarget.variable
         }
+        return Pair(returnTarget, signature)
     }
 
     @OptIn(DirectDeclarationsAccess::class)
@@ -381,7 +383,8 @@ class ProgramConverter(
         get() = declarationSymbols.filterIsInstance<FirPropertySymbol>()
 
     private fun embedFullSignature(symbol: FirFunctionSymbol<*>): FullNamedFunctionSignature {
-        val subSignature = object : NamedFunctionSignature, FunctionSignature by embedFunctionSignature(symbol) {
+        val (returnTarget, signature) = embedFunctionSignature(symbol)
+        val subSignature = object : NamedFunctionSignature, FunctionSignature by signature {
             override val name = symbol.embedName(this@ProgramConverter)
             override val labelName: String
                 get() = super<NamedFunctionSignature>.labelName
