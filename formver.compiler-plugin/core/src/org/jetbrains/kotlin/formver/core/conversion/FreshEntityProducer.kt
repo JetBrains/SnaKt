@@ -5,7 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.conversion
 
-class FreshEntityProducer<R, S>(private val build: (Int, S) -> R) {
+class FreshEntityProducer<out R, in S>(private val build: (Int, S) -> R) {
     private var next = 0
     fun getFresh(s: S): R = build(next++, s)
 }
