@@ -21,17 +21,28 @@ import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
 import org.jetbrains.kotlin.formver.core.names.ReturnLabelName
 import org.jetbrains.kotlin.formver.core.names.ReturnVariableName
 
-class ReturnTarget(depth: Int, type: TypeEmbedding) {
-    val variable = PlaceholderVariableEmbedding(ReturnVariableName(depth), type)
-    val label = LabelEmbedding(ReturnLabelName(depth))
+
+interface ReturnTarget {
+    val variable: VariableEmbedding
+    val label: LabelEmbedding
 }
 
-fun VariableEmbedding.toReturnTarget() = when(name) {
-        is ReturnVariableName -> ReturnTarget((name as ReturnVariableName).n, type)
-        is PlaceholderReturnVariableName -> ReturnTarget(depth = 0, type)
-        is FunctionResultVariableName -> ReturnTarget(depth = 0, type)
-        else -> throw SnaktInternalException(null, "Tried to convert a non-return variable to a return target: $name")
+class ReturnTargetImpl(depth: Int, type: TypeEmbedding) : ReturnTarget {
+    override val variable = PlaceholderVariableEmbedding(ReturnVariableName(depth), type)
+    override val label = LabelEmbedding(ReturnLabelName(depth))
+}
+
+class ReturnTargetNoLabel(override val variable: VariableEmbedding) : ReturnTarget {
+    companion object {
+        fun forPureFunction(type: TypeEmbedding) = ReturnTargetNoLabel(PlaceholderVariableEmbedding(
+            FunctionResultVariableName, type))
+        fun forNoBodyFunction(type: TypeEmbedding) = ReturnTargetNoLabel(PlaceholderVariableEmbedding(
+            PlaceholderReturnVariableName, type))
     }
+
+    override val label : LabelEmbedding
+        get() = throw SnaktInternalException(null, "ReturnTargetNoLabel.label should not be accessed")
+}
 
 
 

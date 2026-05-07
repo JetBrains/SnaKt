@@ -75,7 +75,7 @@ class ProgramConverter(
     // The type annotation is necessary for the code to compile.
     override val anonVarProducer = FreshEntityProducer(::AnonymousVariableEmbedding)
     override val anonBuiltinVarProducer = FreshEntityProducer(::AnonymousBuiltinVariableEmbedding)
-    override val returnTargetProducer = FreshEntityProducer(::ReturnTarget)
+    override val returnTargetProducer = FreshEntityProducer(::ReturnTargetImpl)
     override val nameResolver = ShortNameResolver()
 
 
