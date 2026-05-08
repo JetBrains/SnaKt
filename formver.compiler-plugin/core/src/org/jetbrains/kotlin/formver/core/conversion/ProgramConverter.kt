@@ -99,7 +99,7 @@ class ProgramConverter(
         val signature = embedFullSignature(declaration.symbol)
         // Note: it is important that `body` is only set after embedding is complete, as we need to
         // place the embedding in the map before processing the body.
-        if (declaration.symbol.isPure(session)) {
+        if (signature.isPure) {
             embedPureUserFunction(declaration.symbol, signature)
         } else {
             val stmtCtx = createBodyConversionContext(signature)
@@ -547,9 +547,9 @@ class ProgramConverter(
             // that are used only in contracts cause an error because they are not processed until too late.
             // TODO: fit this into the flow in some logical way instead.
             NonInlineNamedFunction(
-                signature, symbol.isPure(session)
+                signature
             ).also {
-                if (symbol.isPure(session)) it.toViperFunctionHeader(typeResolver) else it.toViperMethodHeader(
+                if (signature.isPure) it.toViperFunctionHeader(typeResolver) else it.toViperMethodHeader(
                     typeResolver
                 )
             }
