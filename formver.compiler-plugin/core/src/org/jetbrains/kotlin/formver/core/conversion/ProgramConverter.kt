@@ -543,16 +543,7 @@ class ProgramConverter(
         return if (symbol.shouldBeInlined) {
             InlineNamedFunction(signature, symbol.fir.body!!)
         } else {
-            // We generate a dummy method header here to ensure all required types are processed already. If we skip this, any types
-            // that are used only in contracts cause an error because they are not processed until too late.
-            // TODO: fit this into the flow in some logical way instead.
-            NonInlineNamedFunction(
-                signature
-            ).also {
-                if (signature.isPure) it.toViperFunctionHeader(typeResolver) else it.toViperMethodHeader(
-                    typeResolver
-                )
-            }
+            NonInlineNamedFunction(signature)
         }
     }
 
