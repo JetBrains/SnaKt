@@ -5,7 +5,6 @@
 
 package org.jetbrains.kotlin.formver.core.conversion
 
-import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.descriptors.isInterface
 import org.jetbrains.kotlin.descriptors.isObject
@@ -29,7 +28,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Program
-import org.jetbrains.kotlin.utils.addIfNotNull
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 import org.jetbrains.kotlin.utils.identity
 
@@ -389,6 +387,7 @@ class ProgramConverter(
                 )
             }
             override val returns: VariableEmbedding = returnVariable
+            override val isPure: Boolean =  symbol.isPure(session)
         }
         return signature
     }
@@ -485,48 +484,14 @@ class ProgramConverter(
 
         val (preconditions, postconditions) = embedProvidedContract(symbol, subSignature)
 
-        val allPreconditions = buildList {
-            subSignature.formalArgs.forEach {
-                addAll(it.pureInvariants())
-                addAll(it.accessInvariants(typeResolver))
-                addAll(it.provenInvariants())
-                if (it.isUnique) {
-                    addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
-                }
-            }
-            addAll(subSignature.stdLibPreconditions(typeResolver))
-            addAll(preconditions)
-        }
 
-        val allPostcondition = buildList<ExpEmbedding> {
-            subSignature.formalArgs.forEach {
-                addAll(it.accessInvariants(typeResolver))
-                if (it.isUnique && it.isBorrowed) {
-                    addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
-                }
-            }
-            addAll(signature.returns.pureInvariants())
-            addAll(signature.returns.provenInvariants())
-            if (!subSignature.symbol.isPure(session)) {
-                addAll(signature.returns.allAccessInvariants(typeResolver))
-                if (subSignature.callableType.returnsUnique) {
-                    addIfNotNull(signature.returns.uniquePredicateAccessInvariant(typeResolver))
-                }
-            }
-
-            addAll(subSignature.stdLibPostconditions(signature.returns, typeResolver))
-            addAll(postconditions)
-        }
-
-
-        return object : FullNamedFunctionSignature, NamedFunctionSignature by subSignature {
-            override val preconditions = allPreconditions
-
-
-            override val postconditions = allPostcondition
-
-            override val declarationSource: KtSourceElement? = symbol.source
-        }
+        return UserFunctionSignature(
+            subSignature,
+            symbol,
+            preconditions,
+            postconditions,
+            typeResolver,
+        )
     }
 
     private val FirFunctionSymbol<*>.containingPropertyOrSelf

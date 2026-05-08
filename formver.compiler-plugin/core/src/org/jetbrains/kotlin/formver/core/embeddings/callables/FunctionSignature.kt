@@ -21,6 +21,8 @@ interface FunctionSignature {
 
     val returns : VariableEmbedding
 
+    val isPure: Boolean
+
     val labelName: String?
         get() = null
 

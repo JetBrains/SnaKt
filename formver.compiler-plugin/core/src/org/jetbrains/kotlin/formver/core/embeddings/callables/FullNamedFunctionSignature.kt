@@ -45,7 +45,7 @@ class ConstructorSignature(
     val signature : NamedFunctionSignature,
     val propertiesPostconditions : List<ExpEmbedding>,
     override val symbol: FirFunctionSymbol<*>,
-    val typeResolver: TypeResolver
+    typeResolver: TypeResolver
 ) : FullNamedFunctionSignature, NamedFunctionSignature by signature {
 
    override val preconditions = buildList {
@@ -75,6 +75,51 @@ class ConstructorSignature(
 
         addAll(stdLibPostconditions(signature.returns, typeResolver))
         addAll(propertiesPostconditions)
+    }
+
+    override val declarationSource: KtSourceElement? = symbol.source
+}
+
+
+class UserFunctionSignature(
+    val signature: NamedFunctionSignature,
+    override val symbol: FirFunctionSymbol<*>,
+    userPreconditions: List<ExpEmbedding>,
+    userPostconditions: List<ExpEmbedding>,
+    typeResolver: TypeResolver,
+) : FullNamedFunctionSignature, NamedFunctionSignature by signature {
+
+    override val preconditions: List<ExpEmbedding> = buildList {
+        signature.formalArgs.forEach {
+            addAll(it.pureInvariants())
+            addAll(it.accessInvariants(typeResolver))
+            addAll(it.provenInvariants())
+            if (it.isUnique) {
+                addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
+            }
+        }
+        addAll(signature.stdLibPreconditions(typeResolver))
+        addAll(userPreconditions)
+    }
+
+    override val postconditions : List<ExpEmbedding> = buildList {
+        signature.formalArgs.forEach {
+            addAll(it.accessInvariants(typeResolver))
+            if (it.isUnique && it.isBorrowed) {
+                addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
+            }
+        }
+        addAll(signature.returns.pureInvariants())
+        addAll(signature.returns.provenInvariants())
+        if (!signature.isPure) {
+            addAll(signature.returns.allAccessInvariants(typeResolver))
+            if (signature.callableType.returnsUnique) {
+                addIfNotNull(signature.returns.uniquePredicateAccessInvariant(typeResolver))
+            }
+        }
+
+        addAll(signature.stdLibPostconditions(signature.returns, typeResolver))
+        addAll(userPostconditions)
     }
 
     override val declarationSource: KtSourceElement? = symbol.source
@@ -112,6 +157,8 @@ class GetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
         withDispatchReceiver { nullableAny() }
         withReturnType { nullableAny() }
     }
+
+    override val isPure: Boolean = false
 }
 
 class SetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
@@ -125,6 +172,8 @@ class SetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
         withParam { nullableAny() }
         withReturnType { unit() }
     }
+
+    override val isPure: Boolean = false
 }
 
 fun FullNamedFunctionSignature.toViperMethod(
