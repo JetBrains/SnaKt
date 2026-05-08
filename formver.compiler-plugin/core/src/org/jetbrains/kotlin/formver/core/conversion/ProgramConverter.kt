@@ -141,8 +141,7 @@ class ProgramConverter(
             this@ProgramConverter,
             signature,
             signature.symbol.valueParameterSymbols,
-            signature.labelName,
-            signature.returns,
+            signature.labelName
         )
         val stmtCtx = MethodConverter(
             this@ProgramConverter,
@@ -162,8 +161,7 @@ class ProgramConverter(
             this@ProgramConverter,
             signature,
             signature.symbol.valueParameterSymbols,
-            signature.labelName,
-            signature.returns,
+            signature.labelName
         )
 
 
