@@ -346,7 +346,7 @@ class ProgramConverter(
         }.toMap()
     }
 
-    override fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): Pair<ReturnTarget, FunctionSignature> {
+    override fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): FunctionSignature {
         val dispatchReceiverType = symbol.receiverType
         val extensionReceiverType = symbol.extensionReceiverType
         val isExtensionReceiverUnique = symbol.receiverParameterSymbol?.isUnique(session) ?: false
@@ -354,11 +354,11 @@ class ProgramConverter(
 
         val returnType = embedType(symbol.resolvedReturnType)
 
-        val returnTarget = when {
-            symbol.isPure(session) -> ReturnTargetNoLabel.forPureFunction(returnType)
-            symbol.isPrimaryConstructor() -> ReturnTargetNoLabel.forNoBodyFunction(returnType)
-            isVerifiedMethod(symbol) -> returnTargetProducer.getFresh(returnType)
-            else -> ReturnTargetNoLabel.forNoBodyFunction(returnType)
+        val returnVariable = when {
+            symbol.isPure(session) -> ReturnTargetNoLabel.forPureFunction(returnType).variable
+            symbol.isPrimaryConstructor() -> ReturnTargetNoLabel.forNoBodyFunction(returnType).variable
+            isVerifiedMethod(symbol) -> returnTargetProducer.getFresh(returnType).variable
+            else -> ReturnTargetNoLabel.forNoBodyFunction(returnType).variable
         }
 
         val signature = object : FunctionSignature {
@@ -388,9 +388,9 @@ class ProgramConverter(
                     it.embedName(), embedType(it.resolvedReturnType), it, it.isUnique(session), it.isBorrowed(session)
                 )
             }
-            override val returns: VariableEmbedding = returnTarget.variable
+            override val returns: VariableEmbedding = returnVariable
         }
-        return Pair(returnTarget, signature)
+        return signature
     }
 
     @OptIn(DirectDeclarationsAccess::class)
@@ -450,7 +450,7 @@ class ProgramConverter(
     }
 
     private fun embedFullSignature(symbol: FirFunctionSymbol<*>): FullNamedFunctionSignature {
-        val (returnTarget, signature) = embedFunctionSignature(symbol)
+        val signature = embedFunctionSignature(symbol)
         val subSignature = object : NamedFunctionSignature, FunctionSignature by signature {
             override val name = symbol.embedName(this@ProgramConverter)
             override val labelName: String
