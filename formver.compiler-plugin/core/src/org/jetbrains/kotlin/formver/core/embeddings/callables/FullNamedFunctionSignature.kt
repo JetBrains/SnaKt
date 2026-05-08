@@ -10,9 +10,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.asPosition
-import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
-import org.jetbrains.kotlin.formver.core.conversion.stdLibPostconditions
-import org.jetbrains.kotlin.formver.core.conversion.stdLibPreconditions
+import org.jetbrains.kotlin.formver.core.conversion.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildFunctionPretype
@@ -20,7 +18,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.core.embeddings.types.nullableAny
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.DispatchReceiverName
-import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
 import org.jetbrains.kotlin.formver.core.purity.preorder
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
@@ -67,13 +64,13 @@ class ConstructorSignature(
                 addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
             }
         }
-        addAll(signature.returns.pureInvariants())
-        addAll(signature.returns.provenInvariants())
+        addAll(signature.returns.variable.pureInvariants())
+        addAll(signature.returns.variable.provenInvariants())
 
-        addAll(signature.returns.allAccessInvariants(typeResolver))
-        addIfNotNull(signature.returns.uniquePredicateAccessInvariant(typeResolver))
+        addAll(signature.returns.variable.allAccessInvariants(typeResolver))
+        addIfNotNull(signature.returns.variable.uniquePredicateAccessInvariant(typeResolver))
 
-        addAll(stdLibPostconditions(signature.returns, typeResolver))
+        addAll(stdLibPostconditions(signature.returns.variable, typeResolver))
         addAll(propertiesPostconditions)
     }
 
@@ -109,16 +106,16 @@ class UserFunctionSignature(
                 addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
             }
         }
-        addAll(signature.returns.pureInvariants())
-        addAll(signature.returns.provenInvariants())
+        addAll(signature.returns.variable.pureInvariants())
+        addAll(signature.returns.variable.provenInvariants())
         if (!signature.isPure) {
-            addAll(signature.returns.allAccessInvariants(typeResolver))
+            addAll(signature.returns.variable.allAccessInvariants(typeResolver))
             if (signature.callableType.returnsUnique) {
-                addIfNotNull(signature.returns.uniquePredicateAccessInvariant(typeResolver))
+                addIfNotNull(signature.returns.variable.uniquePredicateAccessInvariant(typeResolver))
             }
         }
 
-        addAll(signature.stdLibPostconditions(signature.returns, typeResolver))
+        addAll(signature.stdLibPostconditions(signature.returns.variable, typeResolver))
         addAll(userPostconditions)
     }
 
@@ -144,7 +141,7 @@ abstract class PropertyAccessorFunctionSignature(
     override val extensionReceiver = null
     override val declarationSource: KtSourceElement? = propertySymbol.source
 
-    override val returns: VariableEmbedding = PlaceholderVariableEmbedding(PlaceholderReturnVariableName, buildType { nullableAny() })
+    override val returns: ReturnTarget = ReturnTargetNoLabel.forNoBodyFunction(buildType { nullableAny() })
 }
 
 class GetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
@@ -182,7 +179,7 @@ fun FullNamedFunctionSignature.toViperMethod(
 ) = UserMethod(
     name,
     formalArgs.map { it.toLocalVarDecl() },
-    returns.toLocalVarDecl(),
+    returns.variable.toLocalVarDecl(),
     preconditions.pureToViper(toBuiltin = true, ctx),
     postconditions.pureToViper(toBuiltin = true, ctx),
     body,

@@ -50,24 +50,24 @@ class ContractDescriptionConversionVisitor(
              * values and null. In a function that has a non-nullable return type, returnsNotNull() is mapped to true and returns(null)
              * is mapped to false
              */
-            ConeContractConstantValues.NULL -> signature.returns.nullCmp(
+            ConeContractConstantValues.NULL -> signature.returns.variable.nullCmp(
                 false,
                 SourceRole.ReturnsEffect.Null(negated = false)
             )
 
-            ConeContractConstantValues.NOT_NULL -> signature.returns.nullCmp(
+            ConeContractConstantValues.NOT_NULL -> signature.returns.variable.nullCmp(
                 true,
                 SourceRole.ReturnsEffect.Null(negated = true)
             )
 
             ConeContractConstantValues.TRUE -> EqCmp(
-                signature.returns,
+                signature.returns.variable,
                 BooleanLit(true),
                 SourceRole.ReturnsEffect.Bool(true)
             )
 
             ConeContractConstantValues.FALSE -> EqCmp(
-                signature.returns,
+                signature.returns.variable,
                 BooleanLit(false),
                 SourceRole.ReturnsEffect.Bool(false)
             )

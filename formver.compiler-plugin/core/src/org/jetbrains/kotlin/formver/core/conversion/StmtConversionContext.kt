@@ -254,7 +254,7 @@ fun StmtConversionContext.convertMethodWithBody(
     bodyExp.toLinearizable(declaration.source).toViperUnusedResult(linearizer)
     // note: we must guarantee somewhere that returned value is Unit
     // as we may not encounter any `return` statement in the body
-    signature.returns.withIsUnitInvariantIfUnit(typeResolver).toLinearizable(declaration.source)
+    signature.returns.variable.withIsUnitInvariantIfUnit(typeResolver).toLinearizable(declaration.source)
         .toViperUnusedResult(linearizer)
     val isValid = body.checkValidity(declaration.source, errorCollector)
     return if (isValid) {

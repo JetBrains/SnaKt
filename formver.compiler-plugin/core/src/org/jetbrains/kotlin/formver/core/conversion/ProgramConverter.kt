@@ -9,7 +9,6 @@ import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.descriptors.isInterface
 import org.jetbrains.kotlin.descriptors.isObject
 import org.jetbrains.kotlin.fir.FirSession
-import org.jetbrains.kotlin.fir.analysis.checkers.isPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.utils.*
@@ -135,17 +134,15 @@ class ProgramConverter(
     }
 
     private fun createBodyConversionContext(
-        signature: NamedFunctionSignature,
+        signature: NamedFunctionSignature
     ): StmtConversionContext {
-        // This body is only used for top level bodies.
-        val returnTarget = ReturnTargetImpl(0, signature.returns.type)
 
         val paramResolver = RootParameterResolver(
             this@ProgramConverter,
             signature,
             signature.symbol.valueParameterSymbols,
             signature.labelName,
-            returnTarget,
+            signature.returns,
         )
         val stmtCtx = MethodConverter(
             this@ProgramConverter,
@@ -160,19 +157,18 @@ class ProgramConverter(
         signature: NamedFunctionSignature,
         firSpec: FirSpecification,
     ): Pair<StmtConversionContext, StmtConversionContext> {
-        val returnTarget = ReturnTargetImpl(0, signature.returns.type)
 
         val rootResolver = RootParameterResolver(
             this@ProgramConverter,
             signature,
             signature.symbol.valueParameterSymbols,
             signature.labelName,
-            returnTarget,
+            signature.returns,
         )
 
 
         val wrappedResolver = firSpec.returnVar
-            ?.let { ReturnVarSubstitutor(it, signature.returns) }
+            ?.let { ReturnVarSubstitutor(it, signature.returns.variable) }
             ?.let { ctx -> SubstitutedReturnParameterResolver(rootResolver, ctx) }
             ?: rootResolver
 
@@ -370,11 +366,10 @@ class ProgramConverter(
 
         val returnType = embedType(symbol.resolvedReturnType)
 
-        val returnVariable = when {
-            symbol.isPure(session) -> ReturnTargetNoLabel.forPureFunction(returnType).variable
-            symbol.isPrimaryConstructor() -> ReturnTargetNoLabel.forNoBodyFunction(returnType).variable
-            isVerifiedMethod(symbol) -> returnTargetProducer.getFresh(returnType).variable
-            else -> ReturnTargetNoLabel.forNoBodyFunction(returnType).variable
+        val returnTarget = when {
+            symbol.isPure(session) -> ReturnTargetNoLabel.forPureFunction(returnType)
+            isVerifiedMethod(symbol) -> returnTargetProducer.getFresh(returnType)
+            else -> ReturnTargetNoLabel.forNoBodyFunction(returnType)
         }
 
         val signature = object : FunctionSignature {
@@ -404,7 +399,7 @@ class ProgramConverter(
                     it.embedName(), embedType(it.resolvedReturnType), it, it.isUnique(session), it.isBorrowed(session)
                 )
             }
-            override val returns: VariableEmbedding = returnVariable
+            override val returns: ReturnTarget = returnTarget
             override val isPure: Boolean = symbol.isPure(session)
         }
         return signature
@@ -464,7 +459,7 @@ class ProgramConverter(
                 get() = super<NamedFunctionSignature>.labelName
             override val symbol = symbol
         }
-        if (symbol is FirConstructorSymbol && symbol.isPrimary) {
+        val fullSignature = if (symbol is FirConstructorSymbol && symbol.isPrimary) {
             // Constructor
             val constructedClassSymbol =
                 symbol.resolvedReturnType.toRegularClassSymbol(session) ?: throw SnaktInternalException(
@@ -481,24 +476,26 @@ class ProgramConverter(
                 require(param is FirVariableEmbedding) { "Constructor parameters must be represented by FirVariableEmbeddings" }
                 parameterMatching[param.symbol]?.let { field ->
                     (field.accessPolicy == AccessPolicy.ALWAYS_READABLE).ifTrue {
-                        EqCmp(FieldAccess(signature.returns, field), param)
+                        EqCmp(FieldAccess(signature.returns.variable, field), param)
                     }
                 }
             }
 
-            return ConstructorSignature(subSignature, fieldPostconditions, symbol, typeResolver)
+            ConstructorSignature(subSignature, fieldPostconditions, symbol, typeResolver)
+        } else {
+            val (preconditions, postconditions) = embedProvidedContract(symbol, subSignature)
+
+            UserFunctionSignature(
+                subSignature,
+                symbol,
+                preconditions,
+                postconditions,
+                typeResolver,
+            )
         }
 
-        val (preconditions, postconditions) = embedProvidedContract(symbol, subSignature)
+        return fullSignature
 
-
-        return UserFunctionSignature(
-            subSignature,
-            symbol,
-            preconditions,
-            postconditions,
-            typeResolver,
-        )
     }
 
     private val FirFunctionSymbol<*>.containingPropertyOrSelf
