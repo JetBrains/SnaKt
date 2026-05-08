@@ -6,15 +6,15 @@ method minOrMaxChar(v_this_extension: Ref, calcMin: Ref)
   requires |stringFromRef(v_this_extension)| >= 1
   ensures isSubtype(typeOf(v_ret_0), charType())
   ensures boolFromRef(calcMin) ==>
-    (forall anon_builtin_4: Int ::0 <= anon_builtin_4 &&
-      anon_builtin_4 < |stringFromRef(v_this_extension)| ==>
+    (forall anon_builtin_0: Int ::0 <= anon_builtin_0 &&
+      anon_builtin_0 < |stringFromRef(v_this_extension)| ==>
       charFromRef(v_ret_0) <=
-      stringFromRef(v_this_extension)[anon_builtin_4])
+      stringFromRef(v_this_extension)[anon_builtin_0])
   ensures !boolFromRef(calcMin) ==>
-    (forall anon_builtin_5: Int ::0 <= anon_builtin_5 &&
-      anon_builtin_5 < |stringFromRef(v_this_extension)| ==>
+    (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
+      anon_builtin_1 < |stringFromRef(v_this_extension)| ==>
       charFromRef(v_ret_0) >=
-      stringFromRef(v_this_extension)[anon_builtin_5])
+      stringFromRef(v_this_extension)[anon_builtin_1])
 {
   var res: Ref
   var i: Ref
@@ -82,23 +82,23 @@ method minOrMaxChar(v_this_extension: Ref, calcMin: Ref)
   requires |stringFromRef(v_this_extension)| >= 1
   ensures isSubtype(typeOf(v_ret), charType())
   ensures boolFromRef(calcMin) ==>
-    (forall anon_builtin_7: Int ::0 <= anon_builtin_7 &&
-      anon_builtin_7 < |stringFromRef(v_this_extension)| ==>
-      charFromRef(v_ret) <= stringFromRef(v_this_extension)[anon_builtin_7])
+    (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
+      anon_builtin_1 < |stringFromRef(v_this_extension)| ==>
+      charFromRef(v_ret) <= stringFromRef(v_this_extension)[anon_builtin_1])
   ensures !boolFromRef(calcMin) ==>
-    (forall anon_builtin_8: Int ::0 <= anon_builtin_8 &&
-      anon_builtin_8 < |stringFromRef(v_this_extension)| ==>
-      charFromRef(v_ret) >= stringFromRef(v_this_extension)[anon_builtin_8])
+    (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
+      anon_builtin_2 < |stringFromRef(v_this_extension)| ==>
+      charFromRef(v_ret) >= stringFromRef(v_this_extension)[anon_builtin_2])
 
 
 method quickSort(v_this_extension: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(v_this_extension), stringType())
   ensures isSubtype(typeOf(v_ret_0), stringType())
   ensures |stringFromRef(v_ret_0)| == |stringFromRef(v_this_extension)|
-  ensures (forall anon_builtin_6: Int ::1 <= anon_builtin_6 &&
-      anon_builtin_6 < |stringFromRef(v_this_extension)| ==>
-      stringFromRef(v_ret_0)[anon_builtin_6 - 1] <=
-      stringFromRef(v_ret_0)[anon_builtin_6])
+  ensures (forall anon_builtin_0: Int ::1 <= anon_builtin_0 &&
+      anon_builtin_0 < |stringFromRef(v_this_extension)| ==>
+      stringFromRef(v_ret_0)[anon_builtin_0 - 1] <=
+      stringFromRef(v_ret_0)[anon_builtin_0])
 {
   var l0_minVal: Ref
   var l0_maxVal: Ref
@@ -118,22 +118,22 @@ method quickSortRec(v_this_extension: Ref, par_minVal: Ref, par_maxVal: Ref)
   requires isSubtype(typeOf(v_this_extension), stringType())
   requires isSubtype(typeOf(par_minVal), charType())
   requires isSubtype(typeOf(par_maxVal), charType())
-  requires (forall anon_builtin_9: Int ::0 <= anon_builtin_9 &&
-      anon_builtin_9 < |stringFromRef(v_this_extension)| ==>
+  requires (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
+      anon_builtin_3 < |stringFromRef(v_this_extension)| ==>
       charFromRef(par_minVal) <=
-      stringFromRef(v_this_extension)[anon_builtin_9] &&
-      stringFromRef(v_this_extension)[anon_builtin_9] <=
+      stringFromRef(v_this_extension)[anon_builtin_3] &&
+      stringFromRef(v_this_extension)[anon_builtin_3] <=
       charFromRef(par_maxVal))
   ensures isSubtype(typeOf(v_ret), stringType())
   ensures |stringFromRef(v_ret)| == |stringFromRef(v_this_extension)|
-  ensures (forall anon_builtin_10: Int ::0 <= anon_builtin_10 &&
-      anon_builtin_10 < |stringFromRef(v_this_extension)| ==>
-      charFromRef(par_minVal) <= stringFromRef(v_ret)[anon_builtin_10] &&
-      stringFromRef(v_ret)[anon_builtin_10] <= charFromRef(par_maxVal))
-  ensures (forall anon_builtin_11: Int ::1 <= anon_builtin_11 &&
-      anon_builtin_11 < |stringFromRef(v_this_extension)| ==>
-      stringFromRef(v_ret)[anon_builtin_11 - 1] <=
-      stringFromRef(v_ret)[anon_builtin_11])
+  ensures (forall anon_builtin_4: Int ::0 <= anon_builtin_4 &&
+      anon_builtin_4 < |stringFromRef(v_this_extension)| ==>
+      charFromRef(par_minVal) <= stringFromRef(v_ret)[anon_builtin_4] &&
+      stringFromRef(v_ret)[anon_builtin_4] <= charFromRef(par_maxVal))
+  ensures (forall anon_builtin_5: Int ::1 <= anon_builtin_5 &&
+      anon_builtin_5 < |stringFromRef(v_this_extension)| ==>
+      stringFromRef(v_ret)[anon_builtin_5 - 1] <=
+      stringFromRef(v_ret)[anon_builtin_5])
 
 
 /quick_sort_of_string.kt: info: Generated Viper text for quickSortRec:
@@ -156,22 +156,22 @@ method quickSortRec(v_this_extension: Ref, minVal: Ref, maxVal: Ref)
   requires isSubtype(typeOf(v_this_extension), stringType())
   requires isSubtype(typeOf(minVal), charType())
   requires isSubtype(typeOf(maxVal), charType())
-  requires (forall anon_builtin_6: Int ::0 <= anon_builtin_6 &&
-      anon_builtin_6 < |stringFromRef(v_this_extension)| ==>
+  requires (forall anon_builtin_0: Int ::0 <= anon_builtin_0 &&
+      anon_builtin_0 < |stringFromRef(v_this_extension)| ==>
       charFromRef(minVal) <=
-      stringFromRef(v_this_extension)[anon_builtin_6] &&
-      stringFromRef(v_this_extension)[anon_builtin_6] <=
+      stringFromRef(v_this_extension)[anon_builtin_0] &&
+      stringFromRef(v_this_extension)[anon_builtin_0] <=
       charFromRef(maxVal))
   ensures isSubtype(typeOf(v_ret_0), stringType())
   ensures |stringFromRef(v_ret_0)| == |stringFromRef(v_this_extension)|
-  ensures (forall anon_builtin_7: Int ::0 <= anon_builtin_7 &&
-      anon_builtin_7 < |stringFromRef(v_this_extension)| ==>
-      charFromRef(minVal) <= stringFromRef(v_ret_0)[anon_builtin_7] &&
-      stringFromRef(v_ret_0)[anon_builtin_7] <= charFromRef(maxVal))
-  ensures (forall anon_builtin_8: Int ::1 <= anon_builtin_8 &&
-      anon_builtin_8 < |stringFromRef(v_this_extension)| ==>
-      stringFromRef(v_ret_0)[anon_builtin_8 - 1] <=
-      stringFromRef(v_ret_0)[anon_builtin_8])
+  ensures (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
+      anon_builtin_1 < |stringFromRef(v_this_extension)| ==>
+      charFromRef(minVal) <= stringFromRef(v_ret_0)[anon_builtin_1] &&
+      stringFromRef(v_ret_0)[anon_builtin_1] <= charFromRef(maxVal))
+  ensures (forall anon_builtin_2: Int ::1 <= anon_builtin_2 &&
+      anon_builtin_2 < |stringFromRef(v_this_extension)| ==>
+      stringFromRef(v_ret_0)[anon_builtin_2 - 1] <=
+      stringFromRef(v_ret_0)[anon_builtin_2])
 {
   var medVal: Ref
   var anon_1: Ref

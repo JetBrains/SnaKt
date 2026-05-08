@@ -116,8 +116,8 @@ method con(par_data: Ref, par_left: Ref, par_right: Ref)
   ensures acc(Node_shared(v_ret), wildcard)
   ensures acc(Node_unique(v_ret), write)
   ensures (unfolding acc(Node_shared(v_ret), wildcard) in v_ret.bf_left) ==
-    par_left &&
-    (unfolding acc(Node_shared(v_ret), wildcard) in v_ret.bf_right) ==
+    par_left
+  ensures (unfolding acc(Node_shared(v_ret), wildcard) in v_ret.bf_right) ==
     par_right
 
 

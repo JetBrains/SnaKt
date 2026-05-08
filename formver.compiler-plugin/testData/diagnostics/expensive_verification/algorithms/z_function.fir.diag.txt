@@ -12,31 +12,31 @@ method zFuncHelper(s: Ref, res: Ref, i: Ref, checkedLeft: Ref, checkedRight: Ref
     intFromRef(checkedLeft) <= intFromRef(checkedRight) &&
     intFromRef(checkedRight) <= |stringFromRef(s)|
   requires intFromRef(checkedLeft) < intFromRef(i)
-  requires (forall anon_builtin_4: Int ::0 <= anon_builtin_4 &&
-      anon_builtin_4 < intFromRef(i) ==>
-      48 <= stringFromRef(res)[anon_builtin_4] &&
-      stringFromRef(res)[anon_builtin_4] <=
-      48 + |stringFromRef(s)| - anon_builtin_4 &&
-      (forall anon_builtin_5: Int ::0 <= anon_builtin_5 &&
-        anon_builtin_5 < stringFromRef(res)[anon_builtin_4] - 48 ==>
-        stringFromRef(s)[anon_builtin_5] ==
-        stringFromRef(s)[anon_builtin_4 + anon_builtin_5]) &&
-      (stringFromRef(res)[anon_builtin_4] - 48 ==
-      |stringFromRef(s)| - anon_builtin_4 ||
-      !(stringFromRef(s)[anon_builtin_4 +
-      (stringFromRef(res)[anon_builtin_4] - 48)] ==
-      stringFromRef(s)[stringFromRef(res)[anon_builtin_4] - 48])))
-  requires (forall anon_builtin_6: Int ::0 <= anon_builtin_6 &&
-      anon_builtin_6 < intFromRef(checkedRight) - intFromRef(checkedLeft) ==>
-      stringFromRef(s)[intFromRef(checkedLeft) + anon_builtin_6] ==
-      stringFromRef(s)[anon_builtin_6])
+  requires (forall anon_builtin_0: Int ::0 <= anon_builtin_0 &&
+      anon_builtin_0 < intFromRef(i) ==>
+      48 <= stringFromRef(res)[anon_builtin_0] &&
+      stringFromRef(res)[anon_builtin_0] <=
+      48 + |stringFromRef(s)| - anon_builtin_0 &&
+      (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
+        anon_builtin_1 < stringFromRef(res)[anon_builtin_0] - 48 ==>
+        stringFromRef(s)[anon_builtin_1] ==
+        stringFromRef(s)[anon_builtin_0 + anon_builtin_1]) &&
+      (stringFromRef(res)[anon_builtin_0] - 48 ==
+      |stringFromRef(s)| - anon_builtin_0 ||
+      !(stringFromRef(s)[anon_builtin_0 +
+      (stringFromRef(res)[anon_builtin_0] - 48)] ==
+      stringFromRef(s)[stringFromRef(res)[anon_builtin_0] - 48])))
+  requires (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
+      anon_builtin_2 < intFromRef(checkedRight) - intFromRef(checkedLeft) ==>
+      stringFromRef(s)[intFromRef(checkedLeft) + anon_builtin_2] ==
+      stringFromRef(s)[anon_builtin_2])
   ensures isSubtype(typeOf(v_ret_0), intType())
   ensures intFromRef(i) <= intFromRef(v_ret_0) &&
     intFromRef(v_ret_0) <= |stringFromRef(s)|
-  ensures (forall anon_builtin_7: Int ::intFromRef(i) <= anon_builtin_7 &&
-      anon_builtin_7 < intFromRef(v_ret_0) ==>
-      stringFromRef(s)[anon_builtin_7 - intFromRef(i)] ==
-      stringFromRef(s)[anon_builtin_7])
+  ensures (forall anon_builtin_3: Int ::intFromRef(i) <= anon_builtin_3 &&
+      anon_builtin_3 < intFromRef(v_ret_0) ==>
+      stringFromRef(s)[anon_builtin_3 - intFromRef(i)] ==
+      stringFromRef(s)[anon_builtin_3])
 {
   var anon_0: Ref
   if (intFromRef(checkedLeft) == 0) {
@@ -78,53 +78,52 @@ method zFuncHelper(s: Ref, par_res: Ref, par_i: Ref, par_checkedLeft: Ref, par_c
     intFromRef(par_checkedLeft) <= intFromRef(par_checkedRight) &&
     intFromRef(par_checkedRight) <= |stringFromRef(s)|
   requires intFromRef(par_checkedLeft) < intFromRef(par_i)
-  requires (forall anon_builtin_13: Int ::0 <= anon_builtin_13 &&
-      anon_builtin_13 < intFromRef(par_i) ==>
-      48 <= stringFromRef(par_res)[anon_builtin_13] &&
-      stringFromRef(par_res)[anon_builtin_13] <=
-      48 + |stringFromRef(s)| - anon_builtin_13 &&
-      (forall anon_builtin_14: Int ::0 <= anon_builtin_14 &&
-        anon_builtin_14 < stringFromRef(par_res)[anon_builtin_13] - 48 ==>
-        stringFromRef(s)[anon_builtin_14] ==
-        stringFromRef(s)[anon_builtin_13 + anon_builtin_14]) &&
-      (stringFromRef(par_res)[anon_builtin_13] - 48 ==
-      |stringFromRef(s)| - anon_builtin_13 ||
-      !(stringFromRef(s)[anon_builtin_13 +
-      (stringFromRef(par_res)[anon_builtin_13] - 48)] ==
-      stringFromRef(s)[stringFromRef(par_res)[anon_builtin_13] - 48])))
-  requires (forall anon_builtin_15: Int ::0 <= anon_builtin_15 &&
-      anon_builtin_15 <
+  requires (forall anon_builtin_5: Int ::0 <= anon_builtin_5 &&
+      anon_builtin_5 < intFromRef(par_i) ==>
+      48 <= stringFromRef(par_res)[anon_builtin_5] &&
+      stringFromRef(par_res)[anon_builtin_5] <=
+      48 + |stringFromRef(s)| - anon_builtin_5 &&
+      (forall anon_builtin_6: Int ::0 <= anon_builtin_6 &&
+        anon_builtin_6 < stringFromRef(par_res)[anon_builtin_5] - 48 ==>
+        stringFromRef(s)[anon_builtin_6] ==
+        stringFromRef(s)[anon_builtin_5 + anon_builtin_6]) &&
+      (stringFromRef(par_res)[anon_builtin_5] - 48 ==
+      |stringFromRef(s)| - anon_builtin_5 ||
+      !(stringFromRef(s)[anon_builtin_5 +
+      (stringFromRef(par_res)[anon_builtin_5] - 48)] ==
+      stringFromRef(s)[stringFromRef(par_res)[anon_builtin_5] - 48])))
+  requires (forall anon_builtin_7: Int ::0 <= anon_builtin_7 &&
+      anon_builtin_7 <
       intFromRef(par_checkedRight) - intFromRef(par_checkedLeft) ==>
-      stringFromRef(s)[intFromRef(par_checkedLeft) + anon_builtin_15] ==
-      stringFromRef(s)[anon_builtin_15])
+      stringFromRef(s)[intFromRef(par_checkedLeft) + anon_builtin_7] ==
+      stringFromRef(s)[anon_builtin_7])
   ensures isSubtype(typeOf(v_ret), intType())
   ensures intFromRef(par_i) <= intFromRef(v_ret) &&
     intFromRef(v_ret) <= |stringFromRef(s)|
-  ensures (forall anon_builtin_16: Int ::intFromRef(par_i) <=
-      anon_builtin_16 &&
-      anon_builtin_16 < intFromRef(v_ret) ==>
-      stringFromRef(s)[anon_builtin_16 - intFromRef(par_i)] ==
-      stringFromRef(s)[anon_builtin_16])
+  ensures (forall anon_builtin_8: Int ::intFromRef(par_i) <= anon_builtin_8 &&
+      anon_builtin_8 < intFromRef(v_ret) ==>
+      stringFromRef(s)[anon_builtin_8 - intFromRef(par_i)] ==
+      stringFromRef(s)[anon_builtin_8])
 
 
 method zFunction(v_this_extension: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(v_this_extension), stringType())
   ensures isSubtype(typeOf(v_ret_0), stringType())
   ensures |stringFromRef(v_ret_0)| == |stringFromRef(v_this_extension)|
-  ensures (forall anon_builtin_11: Int ::0 <= anon_builtin_11 &&
-      anon_builtin_11 < |stringFromRef(v_this_extension)| ==>
-      48 <= stringFromRef(v_ret_0)[anon_builtin_11] &&
-      stringFromRef(v_ret_0)[anon_builtin_11] <=
-      48 + |stringFromRef(v_this_extension)| - anon_builtin_11 &&
-      (forall anon_builtin_12: Int ::0 <= anon_builtin_12 &&
-        anon_builtin_12 < stringFromRef(v_ret_0)[anon_builtin_11] - 48 ==>
-        stringFromRef(v_this_extension)[anon_builtin_12] ==
-        stringFromRef(v_this_extension)[anon_builtin_11 + anon_builtin_12]) &&
-      (stringFromRef(v_ret_0)[anon_builtin_11] - 48 ==
-      |stringFromRef(v_this_extension)| - anon_builtin_11 ||
-      !(stringFromRef(v_this_extension)[anon_builtin_11 +
-      (stringFromRef(v_ret_0)[anon_builtin_11] - 48)] ==
-      stringFromRef(v_this_extension)[stringFromRef(v_ret_0)[anon_builtin_11] -
+  ensures (forall anon_builtin_0: Int ::0 <= anon_builtin_0 &&
+      anon_builtin_0 < |stringFromRef(v_this_extension)| ==>
+      48 <= stringFromRef(v_ret_0)[anon_builtin_0] &&
+      stringFromRef(v_ret_0)[anon_builtin_0] <=
+      48 + |stringFromRef(v_this_extension)| - anon_builtin_0 &&
+      (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
+        anon_builtin_1 < stringFromRef(v_ret_0)[anon_builtin_0] - 48 ==>
+        stringFromRef(v_this_extension)[anon_builtin_1] ==
+        stringFromRef(v_this_extension)[anon_builtin_0 + anon_builtin_1]) &&
+      (stringFromRef(v_ret_0)[anon_builtin_0] - 48 ==
+      |stringFromRef(v_this_extension)| - anon_builtin_0 ||
+      !(stringFromRef(v_this_extension)[anon_builtin_0 +
+      (stringFromRef(v_ret_0)[anon_builtin_0] - 48)] ==
+      stringFromRef(v_this_extension)[stringFromRef(v_ret_0)[anon_builtin_0] -
       48])))
 {
   var l0_i: Ref
@@ -285,20 +284,20 @@ method zFunctionNaive(v_this_extension: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(v_this_extension), stringType())
   ensures isSubtype(typeOf(v_ret_0), stringType())
   ensures |stringFromRef(v_ret_0)| == |stringFromRef(v_this_extension)|
-  ensures (forall anon_builtin_5: Int ::0 <= anon_builtin_5 &&
-      anon_builtin_5 < |stringFromRef(v_this_extension)| ==>
-      48 <= stringFromRef(v_ret_0)[anon_builtin_5] &&
-      stringFromRef(v_ret_0)[anon_builtin_5] <=
-      48 + |stringFromRef(v_this_extension)| - anon_builtin_5 &&
-      (forall anon_builtin_6: Int ::0 <= anon_builtin_6 &&
-        anon_builtin_6 < stringFromRef(v_ret_0)[anon_builtin_5] - 48 ==>
-        stringFromRef(v_this_extension)[anon_builtin_6] ==
-        stringFromRef(v_this_extension)[anon_builtin_5 + anon_builtin_6]) &&
-      (stringFromRef(v_ret_0)[anon_builtin_5] - 48 ==
-      |stringFromRef(v_this_extension)| - anon_builtin_5 ||
-      !(stringFromRef(v_this_extension)[anon_builtin_5 +
-      (stringFromRef(v_ret_0)[anon_builtin_5] - 48)] ==
-      stringFromRef(v_this_extension)[stringFromRef(v_ret_0)[anon_builtin_5] -
+  ensures (forall anon_builtin_0: Int ::0 <= anon_builtin_0 &&
+      anon_builtin_0 < |stringFromRef(v_this_extension)| ==>
+      48 <= stringFromRef(v_ret_0)[anon_builtin_0] &&
+      stringFromRef(v_ret_0)[anon_builtin_0] <=
+      48 + |stringFromRef(v_this_extension)| - anon_builtin_0 &&
+      (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
+        anon_builtin_1 < stringFromRef(v_ret_0)[anon_builtin_0] - 48 ==>
+        stringFromRef(v_this_extension)[anon_builtin_1] ==
+        stringFromRef(v_this_extension)[anon_builtin_0 + anon_builtin_1]) &&
+      (stringFromRef(v_ret_0)[anon_builtin_0] - 48 ==
+      |stringFromRef(v_this_extension)| - anon_builtin_0 ||
+      !(stringFromRef(v_this_extension)[anon_builtin_0 +
+      (stringFromRef(v_ret_0)[anon_builtin_0] - 48)] ==
+      stringFromRef(v_this_extension)[stringFromRef(v_ret_0)[anon_builtin_0] -
       48])))
 {
   var i: Ref

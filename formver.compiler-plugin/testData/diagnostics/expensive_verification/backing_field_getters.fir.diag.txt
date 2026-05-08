@@ -245,8 +245,8 @@ method con_ClassI(par_x: Ref, par_y: Ref) returns (v_ret: Ref)
   ensures acc(ClassI_unique(v_ret), write)
   ensures intFromRef((unfolding acc(ClassI_shared(v_ret), wildcard) in
       v_ret.bf_x)) ==
-    intFromRef(par_x) &&
-    intFromRef((unfolding acc(ClassI_shared(v_ret), wildcard) in
+    intFromRef(par_x)
+  ensures intFromRef((unfolding acc(ClassI_shared(v_ret), wildcard) in
       v_ret.bf_y)) ==
     intFromRef(par_y)
 

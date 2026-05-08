@@ -10,8 +10,8 @@ method con(par_a: Ref, par_b: Ref) returns (v_ret: Ref)
   ensures acc(shared(v_ret), wildcard)
   ensures acc(PrimitiveFields_unique(v_ret), write)
   ensures intFromRef((unfolding acc(shared(v_ret), wildcard) in v_ret.bf_a)) ==
-    intFromRef(par_a) &&
-    intFromRef((unfolding acc(shared(v_ret), wildcard) in v_ret.bf_b)) ==
+    intFromRef(par_a)
+  ensures intFromRef((unfolding acc(shared(v_ret), wildcard) in v_ret.bf_b)) ==
     intFromRef(par_b)
 
 
