@@ -5,13 +5,13 @@ function emptyAnnotatedFunction(): Ref
   nullValue()
 }
 
-method emptyFunction() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method emptyFunction() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var x: Ref
   x := emptyAnnotatedFunction()
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /pure_literal_function.kt: info: Generated Viper text for emptyAnnotatedFunction:
@@ -56,8 +56,8 @@ field b: Ref
 
 function annotatedReferenceReturn(x: Ref): Ref
   requires acc(shared(x), wildcard)
-  requires isSubtype(typeOf(x), _c_X())
-  ensures isSubtype(typeOf(result), _c_X())
+  requires isSubtype(typeOf(x), X())
+  ensures isSubtype(typeOf(result), X())
 {
   x
 }

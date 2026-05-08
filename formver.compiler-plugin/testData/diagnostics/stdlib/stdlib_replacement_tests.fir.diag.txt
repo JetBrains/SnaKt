@@ -1,201 +1,201 @@
 /stdlib_replacement_tests.kt: info: Generated Viper text for useChecks:
-method useChecks() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method useChecks() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  var ret_1: Ref
+  var v_ret_1: Ref
   var anon_0: Ref
-  var ret: Ref
-  var anon: Ref
+  var v_ret_2: Ref
+  var anon_1: Ref
   anon_0 := boolToRef(true)
   label lbl_ret_1
-  inhale isSubtype(typeOf(ret_1), unitType())
-  anon := boolToRef(true)
-  label ret_2
-  inhale isSubtype(typeOf(ret), unitType())
+  inhale isSubtype(typeOf(v_ret_1), unitType())
+  anon_1 := boolToRef(true)
+  label lbl_ret_2
+  inhale isSubtype(typeOf(v_ret_2), unitType())
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /stdlib_replacement_tests.kt: info: Generated Viper text for useRuns:
 field size: Ref
 
-method useRuns(x: Ref) returns (ret_0: Ref)
+method useRuns(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var cond1: Ref
   var anon_2: Ref
   var anon_3: Ref
-  var ret_1: Ref
+  var v_ret_1: Ref
   var anon_4: Ref
-  var ret_2: Ref
+  var v_ret_2: Ref
   var cond2: Ref
   var anon_5: Ref
   var anon_6: Ref
-  var ret_3: Ref
+  var v_ret_3: Ref
   var anon_0: Ref
   var anon_7: Ref
-  var ret_4: Ref
-  var anon: Ref
-  ret_2 := plusInts(x, intToRef(1))
+  var v_ret_4: Ref
+  var anon_1: Ref
+  v_ret_2 := plusInts(x, intToRef(1))
   goto lbl_ret_2
   label lbl_ret_2
-  anon_4 := ret_2
-  ret_1 := anon_4
-  inhale isSubtype(typeOf(ret_1), nullable(anyType()))
+  anon_4 := v_ret_2
+  v_ret_1 := anon_4
+  inhale isSubtype(typeOf(v_ret_1), nullable(anyType()))
   goto lbl_ret_1
   label lbl_ret_1
-  anon_3 := ret_1
+  anon_3 := v_ret_1
   anon_2 := anon_3
   inhale isSubtype(typeOf(anon_2), intType())
   cond1 := boolToRef(intFromRef(anon_2) == 1 + intFromRef(x))
   inhale isSubtype(typeOf(x), nullable(anyType()))
   anon_0 := x
   inhale isSubtype(typeOf(anon_0), intType())
-  anon := anon_0
-  ret_4 := plusInts(anon, intToRef(1))
+  anon_1 := anon_0
+  v_ret_4 := plusInts(anon_1, intToRef(1))
   goto lbl_ret_4
   label lbl_ret_4
-  anon_7 := ret_4
-  ret_3 := anon_7
-  inhale isSubtype(typeOf(ret_3), nullable(anyType()))
+  anon_7 := v_ret_4
+  v_ret_3 := anon_7
+  inhale isSubtype(typeOf(v_ret_3), nullable(anyType()))
   goto lbl_ret_3
   label lbl_ret_3
-  anon_6 := ret_3
+  anon_6 := v_ret_3
   anon_5 := anon_6
   inhale isSubtype(typeOf(anon_5), intType())
   cond2 := boolToRef(intFromRef(anon_5) == 1 + intFromRef(x))
   assert boolFromRef(cond1)
   assert boolFromRef(cond2)
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /stdlib_replacement_tests.kt: info: Generated Viper text for useAlso:
 field size: Ref
 
-method useAlso(x: Ref) returns (ret_0: Ref)
+method useAlso(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_2: Ref
   var anon_3: Ref
-  var ret_1: Ref
+  var v_ret_1: Ref
   var anon_0: Ref
-  var ret_2: Ref
-  var anon: Ref
+  var v_ret_2: Ref
+  var anon_1: Ref
   anon_0 := plusInts(x, intToRef(1))
   inhale isSubtype(typeOf(anon_0), nullable(anyType()))
   inhale isSubtype(typeOf(anon_0), intType())
-  anon := anon_0
-  assert intFromRef(anon) == 1 + intFromRef(x)
+  anon_1 := anon_0
+  assert intFromRef(anon_1) == 1 + intFromRef(x)
   label lbl_ret_2
-  inhale isSubtype(typeOf(ret_2), unitType())
-  ret_1 := anon_0
+  inhale isSubtype(typeOf(v_ret_2), unitType())
+  v_ret_1 := anon_0
   goto lbl_ret_1
   label lbl_ret_1
-  anon_3 := ret_1
+  anon_3 := v_ret_1
   anon_2 := anon_3
   inhale isSubtype(typeOf(anon_2), intType())
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /stdlib_replacement_tests.kt: info: Generated Viper text for useLet:
 field size: Ref
 
-method useLet(x: Ref) returns (ret_0: Ref)
+method useLet(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var cond1: Ref
   var anon_2: Ref
   var anon_3: Ref
-  var ret_1: Ref
+  var v_ret_1: Ref
   var anon_0: Ref
   var anon_4: Ref
-  var ret_2: Ref
-  var anon: Ref
+  var v_ret_2: Ref
+  var anon_1: Ref
   inhale isSubtype(typeOf(x), nullable(anyType()))
   anon_0 := x
   inhale isSubtype(typeOf(anon_0), intType())
-  anon := anon_0
-  ret_2 := plusInts(anon, intToRef(1))
+  anon_1 := anon_0
+  v_ret_2 := plusInts(anon_1, intToRef(1))
   goto lbl_ret_2
   label lbl_ret_2
-  anon_4 := ret_2
-  ret_1 := anon_4
-  inhale isSubtype(typeOf(ret_1), nullable(anyType()))
+  anon_4 := v_ret_2
+  v_ret_1 := anon_4
+  inhale isSubtype(typeOf(v_ret_1), nullable(anyType()))
   goto lbl_ret_1
   label lbl_ret_1
-  anon_3 := ret_1
+  anon_3 := v_ret_1
   anon_2 := anon_3
   inhale isSubtype(typeOf(anon_2), intType())
   cond1 := boolToRef(intFromRef(anon_2) == 1 + intFromRef(x))
   assert boolFromRef(cond1)
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /stdlib_replacement_tests.kt: info: Generated Viper text for useWith:
 field size: Ref
 
-method useWith(x: Ref) returns (ret_0: Ref)
+method useWith(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_2: Ref
   var anon_3: Ref
-  var ret_1: Ref
+  var v_ret_1: Ref
   var anon_0: Ref
   var anon_4: Ref
-  var ret_2: Ref
-  var anon: Ref
+  var v_ret_2: Ref
+  var anon_1: Ref
   anon_0 := plusInts(x, intToRef(1))
   inhale isSubtype(typeOf(anon_0), nullable(anyType()))
   inhale isSubtype(typeOf(anon_0), intType())
-  anon := anon_0
-  assert intFromRef(anon) == 1 + intFromRef(x)
+  anon_1 := anon_0
+  assert intFromRef(anon_1) == 1 + intFromRef(x)
   label lbl_ret_2
-  inhale isSubtype(typeOf(ret_2), unitType())
-  anon_4 := ret_2
-  ret_1 := anon_4
-  inhale isSubtype(typeOf(ret_1), nullable(anyType()))
+  inhale isSubtype(typeOf(v_ret_2), unitType())
+  anon_4 := v_ret_2
+  v_ret_1 := anon_4
+  inhale isSubtype(typeOf(v_ret_1), nullable(anyType()))
   goto lbl_ret_1
   label lbl_ret_1
-  anon_3 := ret_1
+  anon_3 := v_ret_1
   anon_2 := anon_3
   inhale isSubtype(typeOf(anon_2), unitType())
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /stdlib_replacement_tests.kt: info: Generated Viper text for useApply:
 field size: Ref
 
-method useApply(x: Ref) returns (ret_0: Ref)
+method useApply(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_2: Ref
   var anon_3: Ref
-  var ret_1: Ref
+  var v_ret_1: Ref
   var anon_0: Ref
-  var ret_2: Ref
-  var anon: Ref
+  var v_ret_2: Ref
+  var anon_1: Ref
   anon_0 := plusInts(x, intToRef(1))
   inhale isSubtype(typeOf(anon_0), nullable(anyType()))
   inhale isSubtype(typeOf(anon_0), intType())
-  anon := anon_0
-  assert intFromRef(anon) == 1 + intFromRef(x)
+  anon_1 := anon_0
+  assert intFromRef(anon_1) == 1 + intFromRef(x)
   label lbl_ret_2
-  inhale isSubtype(typeOf(ret_2), unitType())
-  ret_1 := anon_0
+  inhale isSubtype(typeOf(v_ret_2), unitType())
+  v_ret_1 := anon_0
   goto lbl_ret_1
   label lbl_ret_1
-  anon_3 := ret_1
+  anon_3 := v_ret_1
   anon_2 := anon_3
   inhale isSubtype(typeOf(anon_2), intType())
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }

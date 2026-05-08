@@ -1,72 +1,73 @@
 /scoped_receivers.kt: info: Generated Viper text for with_run_extension_labeled:
 field size: Ref
 
-method with_run_extension_labeled(this: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), nullable(intType()))
-  ensures isSubtype(typeOf(ret_0), unitType())
+method with_run_extension_labeled(v_this_extension: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(intType()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var cond1: Ref
   var anon_13: Ref
-  var ret_1: Ref
+  var v_ret_1: Ref
   var anon_14: Ref
   var anon_15: Ref
-  var ret_3: Ref
+  var v_ret_3: Ref
   var anon_0: Ref
   var anon_16: Ref
-  var ret_4: Ref
+  var v_ret_4: Ref
   var anon_1: Ref
   var anon_17: Ref
   var anon_18: Ref
-  var ret_5: Ref
+  var v_ret_5: Ref
   var anon_2: Ref
   var anon_19: Ref
-  var ret_6: Ref
+  var v_ret_6: Ref
   var anon_3: Ref
   var anon_20: Ref
-  var ret_7: Ref
+  var v_ret_7: Ref
   var anon_4: Ref
   var anon_21: Ref
-  var ret_8: Ref
+  var v_ret_8: Ref
   var anon_5: Ref
   var anon_22: Ref
-  var ret_9: Ref
+  var v_ret_9: Ref
   var anon_6: Ref
   var anon_23: Ref
   var anon_24: Ref
-  var ret_10: Ref
+  var v_ret_10: Ref
   var anon_7: Ref
   var anon_25: Ref
-  var ret_11: Ref
+  var v_ret_11: Ref
   var anon_8: Ref
   var anon_26: Ref
   var anon_27: Ref
-  var ret_12: Ref
+  var v_ret_12: Ref
   var anon_28: Ref
   var anon_29: Ref
-  var ret_14: Ref
+  var v_ret_14: Ref
   var anon_9: Ref
   var anon_30: Ref
-  var ret_15: Ref
+  var v_ret_15: Ref
   var anon_10: Ref
   var anon_31: Ref
   var anon_32: Ref
-  var ret_16: Ref
+  var v_ret_16: Ref
   var anon_11: Ref
   var anon_33: Ref
-  var ret_17: Ref
-  var anon: Ref
-  ret_1 := boolToRef(this == nullValue())
+  var v_ret_17: Ref
+  var anon_12: Ref
+  v_ret_1 := boolToRef(v_this_extension == nullValue())
   goto lbl_ret_1
   label lbl_ret_1
-  anon_13 := ret_1
+  anon_13 := v_ret_1
   if (boolFromRef(anon_13)) {
     cond1 := boolToRef(true)
   } else {
-    var ret_2: Ref
-    ret_2 := notBool(boolToRef(this == nullValue()))
+    var v_ret_2: Ref
+    v_ret_2 := notBool(boolToRef(v_this_extension == nullValue()))
     goto lbl_ret_2
     label lbl_ret_2
-    cond1 := ret_2
+    cond1 := v_ret_2
   }
   assert boolFromRef(cond1)
   anon_0 := boolToRef(true)
@@ -79,33 +80,33 @@ method with_run_extension_labeled(this: Ref) returns (ret_0: Ref)
   anon_3 := anon_2
   inhale isSubtype(typeOf(anon_3), nullable(intType()))
   anon_4 := anon_3
-  ret_7 := boolToRef(anon_4 == nullValue())
+  v_ret_7 := boolToRef(anon_4 == nullValue())
   goto lbl_ret_7
   label lbl_ret_7
-  anon_20 := ret_7
+  anon_20 := v_ret_7
   assert boolFromRef(anon_20)
   inhale isSubtype(typeOf(anon_3), nullable(intType()))
   anon_5 := anon_3
-  ret_8 := boolToRef(anon_5 == nullValue())
+  v_ret_8 := boolToRef(anon_5 == nullValue())
   goto lbl_ret_8
   label lbl_ret_8
-  anon_21 := ret_8
+  anon_21 := v_ret_8
   assert boolFromRef(anon_21)
   inhale isSubtype(typeOf(anon_3), nullable(intType()))
   anon_6 := anon_3
-  ret_9 := boolToRef(anon_6 == nullValue())
+  v_ret_9 := boolToRef(anon_6 == nullValue())
   goto lbl_ret_9
   label lbl_ret_9
-  anon_22 := ret_9
+  anon_22 := v_ret_9
   assert boolFromRef(anon_22)
   label lbl_ret_6
-  inhale isSubtype(typeOf(ret_6), unitType())
-  anon_19 := ret_6
-  ret_5 := anon_19
-  inhale isSubtype(typeOf(ret_5), nullable(anyType()))
+  inhale isSubtype(typeOf(v_ret_6), unitType())
+  anon_19 := v_ret_6
+  v_ret_5 := anon_19
+  inhale isSubtype(typeOf(v_ret_5), nullable(anyType()))
   goto lbl_ret_5
   label lbl_ret_5
-  anon_18 := ret_5
+  anon_18 := v_ret_5
   anon_17 := anon_18
   inhale isSubtype(typeOf(anon_17), unitType())
   assert boolFromRef(anon_1)
@@ -117,18 +118,18 @@ method with_run_extension_labeled(this: Ref) returns (ret_0: Ref)
   assert !boolFromRef(anon_8)
   assert !boolFromRef(anon_8)
   assert boolFromRef(anon_1)
-  ret_12 := boolToRef(this == nullValue())
+  v_ret_12 := boolToRef(v_this_extension == nullValue())
   goto lbl_ret_12
   label lbl_ret_12
-  anon_27 := ret_12
+  anon_27 := v_ret_12
   if (boolFromRef(anon_27)) {
     anon_26 := boolToRef(true)
   } else {
-    var ret_13: Ref
-    ret_13 := notBool(boolToRef(this == nullValue()))
+    var v_ret_13: Ref
+    v_ret_13 := notBool(boolToRef(v_this_extension == nullValue()))
     goto lbl_ret_13
     label lbl_ret_13
-    anon_26 := ret_13
+    anon_26 := v_ret_13
   }
   assert boolFromRef(anon_26)
   anon_9 := boolToRef(false)
@@ -141,50 +142,50 @@ method with_run_extension_labeled(this: Ref) returns (ret_0: Ref)
   anon_11 := boolToRef(true)
   inhale isSubtype(typeOf(anon_11), nullable(anyType()))
   inhale isSubtype(typeOf(anon_11), boolType())
-  anon := anon_11
+  anon_12 := anon_11
   assert !boolFromRef(anon_10)
-  assert boolFromRef(anon)
-  assert boolFromRef(anon)
+  assert boolFromRef(anon_12)
+  assert boolFromRef(anon_12)
   label lbl_ret_17
-  inhale isSubtype(typeOf(ret_17), unitType())
-  anon_33 := ret_17
-  ret_16 := anon_33
-  inhale isSubtype(typeOf(ret_16), nullable(anyType()))
+  inhale isSubtype(typeOf(v_ret_17), unitType())
+  anon_33 := v_ret_17
+  v_ret_16 := anon_33
+  inhale isSubtype(typeOf(v_ret_16), nullable(anyType()))
   goto lbl_ret_16
   label lbl_ret_16
-  anon_32 := ret_16
+  anon_32 := v_ret_16
   anon_31 := anon_32
   inhale isSubtype(typeOf(anon_31), unitType())
   label lbl_ret_15
-  inhale isSubtype(typeOf(ret_15), unitType())
-  anon_30 := ret_15
-  ret_14 := anon_30
-  inhale isSubtype(typeOf(ret_14), nullable(anyType()))
+  inhale isSubtype(typeOf(v_ret_15), unitType())
+  anon_30 := v_ret_15
+  v_ret_14 := anon_30
+  inhale isSubtype(typeOf(v_ret_14), nullable(anyType()))
   goto lbl_ret_14
   label lbl_ret_14
-  anon_29 := ret_14
+  anon_29 := v_ret_14
   anon_28 := anon_29
   inhale isSubtype(typeOf(anon_28), unitType())
   label lbl_ret_11
-  inhale isSubtype(typeOf(ret_11), unitType())
-  anon_25 := ret_11
-  ret_10 := anon_25
-  inhale isSubtype(typeOf(ret_10), nullable(anyType()))
+  inhale isSubtype(typeOf(v_ret_11), unitType())
+  anon_25 := v_ret_11
+  v_ret_10 := anon_25
+  inhale isSubtype(typeOf(v_ret_10), nullable(anyType()))
   goto lbl_ret_10
   label lbl_ret_10
-  anon_24 := ret_10
+  anon_24 := v_ret_10
   anon_23 := anon_24
   inhale isSubtype(typeOf(anon_23), unitType())
   label lbl_ret_4
-  inhale isSubtype(typeOf(ret_4), unitType())
-  anon_16 := ret_4
-  ret_3 := anon_16
-  inhale isSubtype(typeOf(ret_3), nullable(anyType()))
+  inhale isSubtype(typeOf(v_ret_4), unitType())
+  anon_16 := v_ret_4
+  v_ret_3 := anon_16
+  inhale isSubtype(typeOf(v_ret_3), nullable(anyType()))
   goto lbl_ret_3
   label lbl_ret_3
-  anon_15 := ret_3
+  anon_15 := v_ret_3
   anon_14 := anon_15
   inhale isSubtype(typeOf(anon_14), unitType())
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }

@@ -7,61 +7,61 @@ field x: Ref
 
 field y: Ref
 
-predicate c_A_shared(this: Ref) {
+predicate A_shared(this: Ref) {
   acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType())
 }
 
-predicate c_A_unique(this: Ref) {
+predicate A_unique(this: Ref) {
   acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType())
 }
 
-predicate c_B_unique(this: Ref) {
+predicate B_shared(this: Ref) {
   acc(this.b, wildcard) && isSubtype(typeOf(this.b), intType()) &&
-  acc(c_A_unique(this), write)
+  acc(A_shared(this), wildcard)
 }
 
-predicate c_C_shared(this: Ref) {
-  acc(this.x, wildcard) && acc(c_A_shared(this.x), wildcard) &&
-  isSubtype(typeOf(this.x), _c_A()) &&
-  acc(c_D_shared(this), wildcard) &&
-  acc(shared(this), wildcard)
+predicate B_unique(this: Ref) {
+  acc(this.b, wildcard) && isSubtype(typeOf(this.b), intType()) &&
+  acc(A_unique(this), write)
 }
 
-predicate c_C_unique(this: Ref) {
-  acc(this.x, wildcard) && acc(c_A_shared(this.x), wildcard) &&
-  isSubtype(typeOf(this.x), _c_A()) &&
+predicate C_shared(this: Ref) {
+  acc(this.x, wildcard) && acc(A_shared(this.x), wildcard) &&
+  isSubtype(typeOf(this.x), A()) &&
+  acc(D_shared(this), wildcard) &&
+  acc(B_shared(this), wildcard)
+}
+
+predicate C_unique(this: Ref) {
+  acc(this.x, wildcard) && acc(A_shared(this.x), wildcard) &&
+  isSubtype(typeOf(this.x), A()) &&
   acc(this.y, write) &&
-  acc(c_A_shared(this.y), wildcard) &&
-  isSubtype(typeOf(this.y), _c_A()) &&
-  acc(c_D_unique(this), write) &&
-  acc(c_B_unique(this), write)
+  acc(A_shared(this.y), wildcard) &&
+  isSubtype(typeOf(this.y), A()) &&
+  acc(D_unique(this), write) &&
+  acc(B_unique(this), write)
 }
 
-predicate c_D_shared(this: Ref) {
+predicate D_shared(this: Ref) {
   true
 }
 
-predicate c_D_unique(this: Ref) {
+predicate D_unique(this: Ref) {
   true
 }
 
-predicate shared(this: Ref) {
-  acc(this.b, wildcard) && isSubtype(typeOf(this.b), intType()) &&
-  acc(c_A_shared(this), wildcard)
-}
-
-method accessSuperTypeProperty(c: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(c), _c_C())
-  ensures isSubtype(typeOf(ret), unitType())
+method accessSuperTypeProperty(c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(c), C())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var temp: Ref
-  inhale acc(c_C_shared(c), wildcard)
-  unfold acc(c_C_shared(c), wildcard)
-  unfold acc(shared(c), wildcard)
-  unfold acc(c_A_shared(c), wildcard)
+  inhale acc(C_shared(c), wildcard)
+  unfold acc(C_shared(c), wildcard)
+  unfold acc(B_shared(c), wildcard)
+  unfold acc(A_shared(c), wildcard)
   temp := c.a
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 method d(this: Ref) returns (v_ret: Ref)
@@ -76,62 +76,62 @@ field x: Ref
 
 field y: Ref
 
-predicate c_A_shared(this: Ref) {
+predicate A_shared(this: Ref) {
   acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType())
 }
 
-predicate c_A_unique(this: Ref) {
+predicate A_unique(this: Ref) {
   acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType())
 }
 
-predicate c_B_unique(this: Ref) {
+predicate B_shared(this: Ref) {
   acc(this.b, wildcard) && isSubtype(typeOf(this.b), intType()) &&
-  acc(c_A_unique(this), write)
+  acc(A_shared(this), wildcard)
 }
 
-predicate c_C_shared(this: Ref) {
-  acc(this.x, wildcard) && acc(c_A_shared(this.x), wildcard) &&
-  isSubtype(typeOf(this.x), _c_A()) &&
-  acc(c_D_shared(this), wildcard) &&
-  acc(shared(this), wildcard)
+predicate B_unique(this: Ref) {
+  acc(this.b, wildcard) && isSubtype(typeOf(this.b), intType()) &&
+  acc(A_unique(this), write)
 }
 
-predicate c_C_unique(this: Ref) {
-  acc(this.x, wildcard) && acc(c_A_shared(this.x), wildcard) &&
-  isSubtype(typeOf(this.x), _c_A()) &&
+predicate C_shared(this: Ref) {
+  acc(this.x, wildcard) && acc(A_shared(this.x), wildcard) &&
+  isSubtype(typeOf(this.x), A()) &&
+  acc(D_shared(this), wildcard) &&
+  acc(B_shared(this), wildcard)
+}
+
+predicate C_unique(this: Ref) {
+  acc(this.x, wildcard) && acc(A_shared(this.x), wildcard) &&
+  isSubtype(typeOf(this.x), A()) &&
   acc(this.y, write) &&
-  acc(c_A_shared(this.y), wildcard) &&
-  isSubtype(typeOf(this.y), _c_A()) &&
-  acc(c_D_unique(this), write) &&
-  acc(c_B_unique(this), write)
+  acc(A_shared(this.y), wildcard) &&
+  isSubtype(typeOf(this.y), A()) &&
+  acc(D_unique(this), write) &&
+  acc(B_unique(this), write)
 }
 
-predicate c_D_shared(this: Ref) {
+predicate D_shared(this: Ref) {
   true
 }
 
-predicate c_D_unique(this: Ref) {
+predicate D_unique(this: Ref) {
   true
 }
 
-predicate shared(this: Ref) {
-  acc(this.b, wildcard) && isSubtype(typeOf(this.b), intType()) &&
-  acc(c_A_shared(this), wildcard)
-}
-
-method accessNested(c: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(c), _c_C())
-  ensures isSubtype(typeOf(ret), unitType())
+method accessNested(c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(c), C())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var temp: Ref
   var anon: Ref
-  inhale acc(c_C_shared(c), wildcard)
-  unfold acc(c_C_shared(c), wildcard)
+  inhale acc(C_shared(c), wildcard)
+  unfold acc(C_shared(c), wildcard)
   anon := c.x
-  unfold acc(c_A_shared(anon), wildcard)
+  unfold acc(A_shared(anon), wildcard)
   temp := anon.a
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 method d(this: Ref) returns (v_ret: Ref)
@@ -140,7 +140,7 @@ method d(this: Ref) returns (v_ret: Ref)
 /predicates_access.kt: info: Generated Viper text for accessNullable:
 field a: Ref
 
-predicate c_A_unique(this: Ref) {
+predicate A_unique(this: Ref) {
   acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType())
 }
 
@@ -148,9 +148,9 @@ predicate shared(this: Ref) {
   acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType())
 }
 
-method accessNullable(x: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(x), nullable(_c_A()))
-  ensures isSubtype(typeOf(ret_0), unitType())
+method accessNullable(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), nullable(A()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var n: Ref
   inhale x != nullValue() ==> acc(shared(x), wildcard)
@@ -159,7 +159,7 @@ method accessNullable(x: Ref) returns (ret_0: Ref)
     n := x.a
   }
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /predicates_access.kt: info: Generated Viper text for accessCast:
@@ -167,36 +167,36 @@ field a: Ref
 
 field b: Ref
 
-predicate c_A_shared(this: Ref) {
+predicate A_shared(this: Ref) {
   acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType())
 }
 
-predicate c_A_unique(this: Ref) {
+predicate A_unique(this: Ref) {
   acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType())
 }
 
-predicate c_B_unique(this: Ref) {
+predicate B_shared(this: Ref) {
   acc(this.b, wildcard) && isSubtype(typeOf(this.b), intType()) &&
-  acc(c_A_unique(this), write)
+  acc(A_shared(this), wildcard)
 }
 
-predicate shared(this: Ref) {
+predicate B_unique(this: Ref) {
   acc(this.b, wildcard) && isSubtype(typeOf(this.b), intType()) &&
-  acc(c_A_shared(this), wildcard)
+  acc(A_unique(this), write)
 }
 
-method accessCast(x: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(x), _c_A())
-  ensures isSubtype(typeOf(ret_0), unitType())
+method accessCast(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), A())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var n: Ref
-  inhale acc(c_A_shared(x), wildcard)
-  inhale isSubtype(typeOf(x), _c_B())
-  inhale acc(shared(x), wildcard)
-  unfold acc(shared(x), wildcard)
+  inhale acc(A_shared(x), wildcard)
+  inhale isSubtype(typeOf(x), B())
+  inhale acc(B_shared(x), wildcard)
+  unfold acc(B_shared(x), wildcard)
   n := x.b
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /predicates_access.kt: info: Generated Viper text for accessSafeCast:
@@ -204,44 +204,44 @@ field a: Ref
 
 field b: Ref
 
-predicate c_A_shared(this: Ref) {
+predicate A_shared(this: Ref) {
   acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType())
 }
 
-predicate c_A_unique(this: Ref) {
+predicate A_unique(this: Ref) {
   acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType())
 }
 
-predicate c_B_unique(this: Ref) {
+predicate B_shared(this: Ref) {
   acc(this.b, wildcard) && isSubtype(typeOf(this.b), intType()) &&
-  acc(c_A_unique(this), write)
+  acc(A_shared(this), wildcard)
 }
 
-predicate shared(this: Ref) {
+predicate B_unique(this: Ref) {
   acc(this.b, wildcard) && isSubtype(typeOf(this.b), intType()) &&
-  acc(c_A_shared(this), wildcard)
+  acc(A_unique(this), write)
 }
 
-method accessSafeCast(x: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(x), _c_A())
-  ensures isSubtype(typeOf(ret_0), unitType())
+method accessSafeCast(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), A())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var n: Ref
   var y: Ref
-  inhale acc(c_A_shared(x), wildcard)
+  inhale acc(A_shared(x), wildcard)
   n := intToRef(0)
-  if (isSubtype(typeOf(x), _c_B())) {
+  if (isSubtype(typeOf(x), B())) {
     y := x
   } else {
     y := nullValue()}
-  inhale isSubtype(typeOf(y), nullable(_c_B()))
-  inhale y != nullValue() ==> acc(shared(y), wildcard)
+  inhale isSubtype(typeOf(y), nullable(B()))
+  inhale y != nullValue() ==> acc(B_shared(y), wildcard)
   if (!(y == nullValue())) {
-    unfold acc(shared(y), wildcard)
+    unfold acc(B_shared(y), wildcard)
     n := y.b
   }
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /predicates_access.kt: info: Generated Viper text for accessSmartCast:
@@ -249,36 +249,36 @@ field a: Ref
 
 field b: Ref
 
-predicate c_A_shared(this: Ref) {
+predicate A_shared(this: Ref) {
   acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType())
 }
 
-predicate c_A_unique(this: Ref) {
+predicate A_unique(this: Ref) {
   acc(this.a, wildcard) && isSubtype(typeOf(this.a), intType())
 }
 
-predicate c_B_unique(this: Ref) {
+predicate B_shared(this: Ref) {
   acc(this.b, wildcard) && isSubtype(typeOf(this.b), intType()) &&
-  acc(c_A_unique(this), write)
+  acc(A_shared(this), wildcard)
 }
 
-predicate shared(this: Ref) {
+predicate B_unique(this: Ref) {
   acc(this.b, wildcard) && isSubtype(typeOf(this.b), intType()) &&
-  acc(c_A_shared(this), wildcard)
+  acc(A_unique(this), write)
 }
 
-method accessSmartCast(x: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(x), _c_A())
-  ensures isSubtype(typeOf(ret_0), unitType())
+method accessSmartCast(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), A())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var n: Ref
-  inhale acc(c_A_shared(x), wildcard)
+  inhale acc(A_shared(x), wildcard)
   n := intToRef(0)
-  if (isSubtype(typeOf(x), _c_B())) {
-    inhale acc(shared(x), wildcard)
-    unfold acc(shared(x), wildcard)
+  if (isSubtype(typeOf(x), B())) {
+    inhale acc(B_shared(x), wildcard)
+    unfold acc(B_shared(x), wildcard)
     n := x.b
   }
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }

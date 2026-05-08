@@ -1,53 +1,53 @@
 /simple_precondition.kt: info: Generated Viper text for test:
 field size: Ref
 
-method test(idx: Ref) returns (ret_0: Ref)
+method test(idx: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(idx), intType())
   requires 0 <= intFromRef(idx)
   requires intFromRef(idx) < 3
-  ensures isSubtype(typeOf(ret_0), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   assert 0 <= intFromRef(idx)
   assert intFromRef(idx) < 3
   assert !(intFromRef(idx) == 100)
   assert Seq(97, 97, 97)[intFromRef(idx)] == 97
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /simple_precondition.kt: info: Generated Viper text for inlineWithSpecification:
-method inlineWithSpecification(bool: Ref) returns (ret: Ref)
+method inlineWithSpecification(bool: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(bool), boolType())
   requires true
   requires boolFromRef(bool)
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /simple_precondition.kt: info: Generated Viper text for good_call:
-method good_call() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method good_call() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_2: Ref
-  var ret_1: Ref
+  var v_ret_1: Ref
   var anon_0: Ref
-  var ret_2: Ref
-  var anon: Ref
+  var v_ret_2: Ref
+  var anon_1: Ref
   anon_2 := test(intToRef(2))
   anon_0 := boolToRef(true)
   label lbl_ret_1
-  inhale isSubtype(typeOf(ret_1), unitType())
-  anon := boolToRef(false)
+  inhale isSubtype(typeOf(v_ret_1), unitType())
+  anon_1 := boolToRef(false)
   label lbl_ret_2
-  inhale isSubtype(typeOf(ret_2), unitType())
+  inhale isSubtype(typeOf(v_ret_2), unitType())
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method test(idx: Ref) returns (ret: Ref)
+method test(idx: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(idx), intType())
   requires 0 <= intFromRef(idx)
   requires intFromRef(idx) < 3
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret), unitType())

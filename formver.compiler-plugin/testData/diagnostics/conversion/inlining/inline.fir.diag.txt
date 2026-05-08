@@ -1,60 +1,60 @@
 /inline.kt: info: Generated Viper text for quadruple:
-method quadruple(x: Ref) returns (ret_0: Ref)
+method quadruple(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret_0), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
   var anon_0: Ref
-  var ret_1: Ref
+  var v_ret_1: Ref
   var l1_y: Ref
-  var anon: Ref
-  var ret: Ref
-  var y: Ref
+  var anon_1: Ref
+  var v_ret_2: Ref
+  var l2_y: Ref
   l1_y := plusInts(x, x)
-  ret_1 := l1_y
+  v_ret_1 := l1_y
   goto lbl_ret_1
   label lbl_ret_1
-  anon_0 := ret_1
-  y := plusInts(x, x)
-  ret := y
-  goto ret_2
-  label ret_2
-  anon := ret
-  ret_0 := plusInts(anon_0, anon)
+  anon_0 := v_ret_1
+  l2_y := plusInts(x, x)
+  v_ret_2 := l2_y
+  goto lbl_ret_2
+  label lbl_ret_2
+  anon_1 := v_ret_2
+  v_ret_0 := plusInts(anon_0, anon_1)
   goto lbl_ret_0
   label lbl_ret_0
 }
 
 /inline.kt: info: Generated Viper text for useBranching:
-method useBranching() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), intType())
+method useBranching() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
   var anon_2: Ref
-  var ret_1: Ref
+  var v_ret_1: Ref
   var anon_0: Ref
   var anon_3: Ref
-  var ret: Ref
-  var anon: Ref
+  var v_ret_2: Ref
+  var anon_1: Ref
   anon_0 := boolToRef(false)
   if (boolFromRef(anon_0)) {
-    ret_1 := intToRef(1)
+    v_ret_1 := intToRef(1)
     goto lbl_ret_1
   } else {
-    ret_1 := intToRef(0)
+    v_ret_1 := intToRef(0)
     goto lbl_ret_1
   }
   label lbl_ret_1
-  anon_2 := ret_1
-  anon := boolToRef(true)
-  if (boolFromRef(anon)) {
-    ret := intToRef(1)
-    goto ret_2
+  anon_2 := v_ret_1
+  anon_1 := boolToRef(true)
+  if (boolFromRef(anon_1)) {
+    v_ret_2 := intToRef(1)
+    goto lbl_ret_2
   } else {
-    ret := intToRef(0)
-    goto ret_2
+    v_ret_2 := intToRef(0)
+    goto lbl_ret_2
   }
-  label ret_2
-  anon_3 := ret
-  ret_0 := plusInts(anon_2, anon_3)
+  label lbl_ret_2
+  anon_3 := v_ret_2
+  v_ret_0 := plusInts(anon_2, anon_3)
   goto lbl_ret_0
   label lbl_ret_0
 }

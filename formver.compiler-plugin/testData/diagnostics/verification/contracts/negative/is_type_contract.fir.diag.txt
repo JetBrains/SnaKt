@@ -1,20 +1,20 @@
 /is_type_contract.kt: info: Generated Viper text for unverifiableTypeCheck:
-method unverifiableTypeCheck(x: Ref) returns (ret: Ref)
+method unverifiableTypeCheck(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))
-  ensures isSubtype(typeOf(ret), boolType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
   ensures true ==> isSubtype(typeOf(x), unitType())
 {
-  ret := boolToRef(isSubtype(typeOf(x), stringType()))
-  goto ret_0
-  label ret_0
+  v_ret_0 := boolToRef(isSubtype(typeOf(x), stringType()))
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /is_type_contract.kt: info: Generated Viper text for nullableNotNonNullable:
-method nullableNotNonNullable(x: Ref) returns (ret: Ref)
+method nullableNotNonNullable(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
   ensures true ==> isSubtype(typeOf(x), intType())
 {
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }

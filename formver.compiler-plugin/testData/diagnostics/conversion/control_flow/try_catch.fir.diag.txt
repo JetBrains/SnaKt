@@ -1,24 +1,24 @@
 /try_catch.kt: info: Generated Viper text for tryCatch:
-method call(x: Ref) returns (ret: Ref)
+method call(x: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret), unitType())
 
 
-method cause(this: Ref) returns (ret: Ref)
+method cause(this: Ref) returns (v_ret: Ref)
 
 
-method message(this: Ref) returns (ret: Ref)
+method message(this: Ref) returns (v_ret: Ref)
 
 
-method tryCatch() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method tryCatch() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_0: Ref
   var anon_1: Ref
   var anon_2: Ref
   var anon_3: Ref
   var e: Ref
-  var anon: Ref
+  var anon_4: Ref
   if (boolFromRef(anon_0)) {
     goto catch
   }
@@ -29,27 +29,27 @@ method tryCatch() returns (ret_0: Ref)
   }
   goto tryExit
   label catch
-  anon := call(intToRef(2))
+  anon_4 := call(intToRef(2))
   goto tryExit
   label tryExit
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /try_catch.kt: info: Generated Viper text for nestedTryCatch:
-method call(x: Ref) returns (ret: Ref)
+method call(x: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret), unitType())
 
 
-method cause(this: Ref) returns (ret: Ref)
+method cause(this: Ref) returns (v_ret: Ref)
 
 
-method message(this: Ref) returns (ret: Ref)
+method message(this: Ref) returns (v_ret: Ref)
 
 
-method nestedTryCatch() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method nestedTryCatch() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_0: Ref
   var anon_1: Ref
@@ -58,10 +58,10 @@ method nestedTryCatch() returns (ret_0: Ref)
   var anon_4: Ref
   var l3_e: Ref
   var anon_5: Ref
-  var anon: Ref
-  var e: Ref
+  var anon_6: Ref
+  var l4_e: Ref
   if (boolFromRef(anon_0)) {
-    goto catch
+    goto catch_0
   }
   anon_1 := call(intToRef(0))
   if (boolFromRef(anon_2)) {
@@ -76,105 +76,105 @@ method nestedTryCatch() returns (ret_0: Ref)
   anon_5 := call(intToRef(2))
   goto tryExit_1
   label tryExit_1
-  if (boolFromRef(anon)) {
-    goto catch
+  if (boolFromRef(anon_6)) {
+    goto catch_0
   }
-  goto tryExit
-  label catch
-  goto tryExit
-  label tryExit
+  goto tryExit_0
+  label catch_0
+  goto tryExit_0
+  label tryExit_0
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /try_catch.kt: info: Generated Viper text for tryCatchWithInline:
-method call(x: Ref) returns (ret: Ref)
+method call(x: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret), unitType())
 
 
-method cause(this: Ref) returns (ret: Ref)
+method cause(this: Ref) returns (v_ret: Ref)
 
 
-method message(this: Ref) returns (ret: Ref)
+method message(this: Ref) returns (v_ret: Ref)
 
 
-method tryCatchWithInline() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method tryCatchWithInline() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_0: Ref
-  var ret_1: Ref
+  var v_ret_1: Ref
   var anon_1: Ref
   var anon_2: Ref
   var anon_3: Ref
   var e: Ref
-  var anon: Ref
+  var anon_4: Ref
   if (boolFromRef(anon_0)) {
     goto catch
   }
   anon_1 := call(intToRef(0))
   anon_2 := call(intToRef(1))
   label lbl_ret_1
-  inhale isSubtype(typeOf(ret_1), unitType())
+  inhale isSubtype(typeOf(v_ret_1), unitType())
   if (boolFromRef(anon_3)) {
     goto catch
   }
   goto tryExit
   label catch
-  anon := call(intToRef(2))
+  anon_4 := call(intToRef(2))
   goto tryExit
   label tryExit
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /try_catch.kt: info: Generated Viper text for tryCatchShadowing:
-method cause(this: Ref) returns (ret: Ref)
+method cause(this: Ref) returns (v_ret: Ref)
 
 
-method message(this: Ref) returns (ret: Ref)
+method message(this: Ref) returns (v_ret: Ref)
 
 
-method tryCatchShadowing() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method tryCatchShadowing() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var l0_x: Ref
   var anon_0: Ref
   var l1_x: Ref
-  var anon: Ref
+  var anon_1: Ref
   var e: Ref
-  var x: Ref
+  var l2_x: Ref
   l0_x := intToRef(0)
   if (boolFromRef(anon_0)) {
     goto catch
   }
   l1_x := intToRef(1)
-  if (boolFromRef(anon)) {
+  if (boolFromRef(anon_1)) {
     goto catch
   }
   goto tryExit
   label catch
-  x := intToRef(2)
+  l2_x := intToRef(2)
   goto tryExit
   label tryExit
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /try_catch.kt: info: Generated Viper text for multipleCatches:
-method call(x: Ref) returns (ret: Ref)
+method call(x: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret), unitType())
 
 
-method cause(this: Ref) returns (ret: Ref)
+method cause(this: Ref) returns (v_ret: Ref)
 
 
-method message(this: Ref) returns (ret: Ref)
+method message(this: Ref) returns (v_ret: Ref)
 
 
-method multipleCatches() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method multipleCatches() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_0: Ref
   var anon_1: Ref
@@ -184,13 +184,13 @@ method multipleCatches() returns (ret_0: Ref)
   var anon_5: Ref
   var l2_e: Ref
   var anon_6: Ref
-  var e: Ref
-  var anon: Ref
+  var l3_e: Ref
+  var anon_7: Ref
   if (boolFromRef(anon_0)) {
     goto catch_0
   }
   if (boolFromRef(anon_1)) {
-    goto catch
+    goto catch_1
   }
   anon_2 := call(intToRef(0))
   anon_3 := call(intToRef(1))
@@ -198,45 +198,45 @@ method multipleCatches() returns (ret_0: Ref)
     goto catch_0
   }
   if (boolFromRef(anon_5)) {
-    goto catch
+    goto catch_1
   }
   goto tryExit
   label catch_0
   anon_6 := call(intToRef(2))
   goto tryExit
-  label catch
-  anon := call(intToRef(3))
+  label catch_1
+  anon_7 := call(intToRef(3))
   goto tryExit
   label tryExit
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /try_catch.kt: info: Generated Viper text for useException:
-method call(x: Ref) returns (ret: Ref)
+method call(x: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret), unitType())
 
 
-method cause(this: Ref) returns (ret: Ref)
+method cause(this: Ref) returns (v_ret: Ref)
 
 
-method ignore(e: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(e), lang_c_Exception())
-  ensures isSubtype(typeOf(ret), unitType())
+method ignore(par_e: Ref) returns (v_ret: Ref)
+  requires isSubtype(typeOf(par_e), Exception())
+  ensures isSubtype(typeOf(v_ret), unitType())
 
 
-method message(this: Ref) returns (ret: Ref)
+method message(this: Ref) returns (v_ret: Ref)
 
 
-method useException() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method useException() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_0: Ref
   var anon_1: Ref
   var anon_2: Ref
   var l2_e: Ref
-  var anon: Ref
+  var anon_3: Ref
   if (boolFromRef(anon_0)) {
     goto catch
   }
@@ -246,9 +246,9 @@ method useException() returns (ret_0: Ref)
   }
   goto tryExit
   label catch
-  anon := ignore(l2_e)
+  anon_3 := ignore(l2_e)
   goto tryExit
   label tryExit
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }

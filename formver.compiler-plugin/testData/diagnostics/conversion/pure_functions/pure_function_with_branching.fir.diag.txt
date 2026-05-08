@@ -74,25 +74,23 @@ function whenExpressionSimple(x: Ref): Ref
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let l0_y_0 ==
+  (let y_0 ==
     (intToRef(0)) in
-    (let v_anon_0_0 ==
+    (let anon_0_0 ==
       (x) in
-      (let l0_y_1 ==
-        ((intFromRef(v_anon_0_0) == 1 ? intToRef(10) : null)) in
-        (let l0_y_2 ==
-          ((!(intFromRef(v_anon_0_0) == 2) &&
-          !(intFromRef(v_anon_0_0) == 1) ?
+      (let y_1 ==
+        ((intFromRef(anon_0_0) == 1 ? intToRef(10) : null)) in
+        (let y_2 ==
+          ((!(intFromRef(anon_0_0) == 2) && !(intFromRef(anon_0_0) == 1) ?
             intToRef(30) :
             null)) in
-          (let l0_y_3 ==
-            ((intFromRef(v_anon_0_0) == 2 ? l0_y_0 : l0_y_2)) in
-            (let l0_y_4 ==
-              ((intFromRef(v_anon_0_0) == 1 ? l0_y_1 : l0_y_3)) in
-              (intFromRef(v_anon_0_0) == 2 &&
-              !(intFromRef(v_anon_0_0) == 1) ?
+          (let y_3 ==
+            ((intFromRef(anon_0_0) == 2 ? y_0 : y_2)) in
+            (let y_4 ==
+              ((intFromRef(anon_0_0) == 1 ? y_1 : y_3)) in
+              (intFromRef(anon_0_0) == 2 && !(intFromRef(anon_0_0) == 1) ?
                 intToRef(20) :
-                plusInts(l0_y_4, intToRef(1)))))))))
+                plusInts(y_4, intToRef(1)))))))))
 }
 
 /pure_function_with_branching.kt: info: Generated Viper text for whenNoArgumentBranching:
@@ -101,7 +99,7 @@ function whenNoArgumentBranching(x: Ref, y: Ref): Ref
   requires isSubtype(typeOf(y), intType())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let l5_z_0 ==
+  (let z_0 ==
     ((!(intFromRef(x) < 0 || intFromRef(y) < 0) &&
     (!(intFromRef(x) > 0 && intFromRef(y) > 0) && !(intFromRef(x) == 0)) ?
       intToRef(5) :
@@ -113,7 +111,7 @@ function whenNoArgumentBranching(x: Ref, y: Ref): Ref
         ((intFromRef(x) < 0 || intFromRef(y) < 0) &&
         (!(intFromRef(x) > 0 && intFromRef(y) > 0) && !(intFromRef(x) == 0)) ?
           intToRef(-1) :
-          l5_z_0))))
+          z_0))))
 }
 
 /pure_function_with_branching.kt: info: Generated Viper text for stringEqualityBranching:
@@ -121,44 +119,44 @@ function stringEqualityBranching(input: Ref): Ref
   requires isSubtype(typeOf(input), stringType())
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let l0_isValid_0 ==
+  (let isValid_0 ==
     (boolToRef(false)) in
-    (let l0_isValid_1 ==
+    (let isValid_1 ==
       ((stringFromRef(input) == Seq(117, 115, 101, 114) &&
       !(stringFromRef(input) == Seq(97, 100, 109, 105, 110)) ?
         boolToRef(true) :
         null)) in
-      (let l0_isValid_2 ==
+      (let isValid_2 ==
         ((!(stringFromRef(input) == Seq(117, 115, 101, 114)) &&
         !(stringFromRef(input) == Seq(97, 100, 109, 105, 110)) ?
           boolToRef(false) :
           null)) in
-        (let l0_isValid_3 ==
+        (let isValid_3 ==
           ((stringFromRef(input) == Seq(117, 115, 101, 114) ?
-            l0_isValid_1 :
-            l0_isValid_2)) in
-          (let l0_isValid_4 ==
+            isValid_1 :
+            isValid_2)) in
+          (let isValid_4 ==
             ((stringFromRef(input) == Seq(97, 100, 109, 105, 110) ?
-              l0_isValid_0 :
-              l0_isValid_3)) in
+              isValid_0 :
+              isValid_3)) in
             (stringFromRef(input) == Seq(97, 100, 109, 105, 110) ?
               boolToRef(true) :
-              l0_isValid_4))))))
+              isValid_4))))))
 }
 
 /pure_function_with_branching.kt: info: Generated Viper text for sequentialIfWithMutation:
 function sequentialIfWithMutation(): Ref
   ensures isSubtype(typeOf(result), intType())
 {
-  (let l0_x_0 ==
+  (let x_0 ==
     (intToRef(10)) in
-    (let l0_x_1 ==
-      ((intFromRef(l0_x_0) > 5 ? intToRef(2) : null)) in
-      (let l0_x_2 ==
-        ((!(intFromRef(l0_x_0) > 5) ? intToRef(20) : null)) in
-        (let l0_x_3 ==
-          ((intFromRef(l0_x_0) > 5 ? l0_x_1 : l0_x_2)) in
-          (intFromRef(l0_x_3) == 2 ? intToRef(100) : intToRef(0))))))
+    (let x_1 ==
+      ((intFromRef(x_0) > 5 ? intToRef(2) : null)) in
+      (let x_2 ==
+        ((!(intFromRef(x_0) > 5) ? intToRef(20) : null)) in
+        (let x_3 ==
+          ((intFromRef(x_0) > 5 ? x_1 : x_2)) in
+          (intFromRef(x_3) == 2 ? intToRef(100) : intToRef(0))))))
 }
 
 /pure_function_with_branching.kt: info: Generated Viper text for complexBooleanReturn:

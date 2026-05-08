@@ -1,9 +1,9 @@
 /recursion.kt: info: Generated Viper text for recursive:
-method recursive() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method recursive() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  ret := recursive()
-  goto ret_0
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  v_ret_0 := recursive()
+  goto lbl_ret_0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }

@@ -3,18 +3,18 @@ field bf_a: Ref
 
 field bf_b: Ref
 
-method testPrimitiveFieldGetter(pf: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(pf), _c_PrimitiveFields())
-  ensures isSubtype(typeOf(ret_0), unitType())
+method testPrimitiveFieldGetter(pf: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(pf), PrimitiveFields())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  var a: Ref
-  var b: Ref
+  var l0_a: Ref
+  var l0_b: Ref
   inhale acc(shared(pf), wildcard)
   unfold acc(shared(pf), wildcard)
-  a := pf.bf_a
-  b := havoc()
+  l0_a := pf.bf_a
+  l0_b := havoc()
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /field_getters.kt: info: Generated Viper text for testReferenceFieldGetter:
@@ -26,28 +26,28 @@ field bf_f: Ref
 
 field bf_g: Ref
 
-method testReferenceFieldGetter(rf: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(rf), _c_ReferenceFields())
-  ensures isSubtype(typeOf(ret_0), unitType())
+method testReferenceFieldGetter(rf: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(rf), ReferenceFields())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  var f: Ref
-  var g: Ref
+  var l0_f: Ref
+  var l0_g: Ref
   var fa: Ref
   var fb: Ref
   var ga: Ref
   var gb: Ref
-  inhale acc(c_ReferenceFields_shared(rf), wildcard)
-  unfold acc(c_ReferenceFields_shared(rf), wildcard)
-  f := rf.bf_f
-  g := havoc__c_PrimitiveFields()
-  unfold acc(shared(f), wildcard)
-  fa := f.a
-  fb := havoc()
-  unfold acc(shared(g), wildcard)
-  ga := g.a
-  gb := havoc()
+  inhale acc(ReferenceFields_shared(rf), wildcard)
+  unfold acc(ReferenceFields_shared(rf), wildcard)
+  l0_f := rf.bf_f
+  l0_g := havoc_PrimitiveFields()
+  unfold acc(PrimitiveFields_shared(l0_f), wildcard)
+  fa := l0_f.a
+  fb := havoc_Int()
+  unfold acc(PrimitiveFields_shared(l0_g), wildcard)
+  ga := l0_g.a
+  gb := havoc_Int()
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /field_getters.kt: info: Generated Viper text for testCascadingFieldGetter:
@@ -59,26 +59,26 @@ field f: Ref
 
 field g: Ref
 
-method testCascadingFieldGetter(rf: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(rf), _c_ReferenceFields())
-  ensures isSubtype(typeOf(ret_0), unitType())
+method testCascadingFieldGetter(rf: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(rf), ReferenceFields())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var fa: Ref
   var anon_0: Ref
   var fb: Ref
   var ga: Ref
-  var anon: Ref
+  var anon_1: Ref
   var gb: Ref
-  inhale acc(c_ReferenceFields_shared(rf), wildcard)
-  unfold acc(c_ReferenceFields_shared(rf), wildcard)
+  inhale acc(ReferenceFields_shared(rf), wildcard)
+  unfold acc(ReferenceFields_shared(rf), wildcard)
   anon_0 := rf.f
-  unfold acc(shared(anon_0), wildcard)
+  unfold acc(PrimitiveFields_shared(anon_0), wildcard)
   fa := anon_0.a
   fb := havoc_Int()
-  anon := havoc()
-  unfold acc(shared(anon), wildcard)
-  ga := anon.a
+  anon_1 := havoc_PrimitiveFields()
+  unfold acc(PrimitiveFields_shared(anon_1), wildcard)
+  ga := anon_1.a
   gb := havoc_Int()
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }

@@ -23,12 +23,12 @@
 /singleton.kt: error: Function 'triggerWithAssignment' used an invalid ADT
 
 /singleton.kt: info: Generated Viper text for validParameter:
-method validParameter(a: Ref) returns (ret: Ref)
+method validParameter(a: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(a), Valid())
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 adt adt_Valid {
@@ -36,13 +36,13 @@ adt adt_Valid {
 }
 
 /singleton.kt: info: Generated Viper text for validLocalVariable:
-method validLocalVariable() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method validLocalVariable() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var x: Ref
   x := ValidToRef(constr_Valid())
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 adt adt_Valid {

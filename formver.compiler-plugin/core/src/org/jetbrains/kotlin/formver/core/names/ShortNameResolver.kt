@@ -1,7 +1,6 @@
 package org.jetbrains.kotlin.formver.core.names
 
 import org.jetbrains.kotlin.formver.viper.*
-import org.jetbrains.kotlin.utils.addToStdlib.ifNotEmpty
 
 /**
  * Gives the current name.
@@ -114,29 +113,81 @@ class ShortNameResolver : NameResolver {
         val index = currentCandidate.getOrPut(name) { 0 }
         return name.candidates()[index]
     }
+
+    private fun nextCandidate(name: AnyName): CandidateName {
+        val index = currentCandidate.getOrPut(name) { 0 }
+        return name.candidates()[index + 1]
+    }
+
+    private fun hasNextCandidate(name: AnyName): Boolean {
+        val currentIndex = currentCandidate[name] ?: 0
+        return currentIndex + 1 < name.candidates().size
+    }
     // END RESOLVE NAMES
 
 
     // START MANGLE
 
     /**
-     * The higher the priority, the earlier it is chosen to move.
-     * There are no fundamental reasons for this priority order. These just resulted in "good" names.
+     * The cost of having [name] in a viper name.
+     * Higher cost means that [name] is more likely to not be used in the final viper name.
      */
-    private fun priorityOrder(name: AnyName): Int = when (name) {
-        is SymbolicName -> when (name) {
-            is FreshName -> when (name) {
-                is LabelName -> 5
-                else -> 1
-            }
-            is KotlinName -> 1
-            is ScopedName -> 2
-            is DomainName -> 4
-            else -> -1
+    private fun costOfName(name: AnyName): Int = when (name) {
+        is NameScope -> when (name) {
+            BadScope -> 100
+            is ClassScope -> 2
+            FakeScope -> 50
+            is LocalScope -> 3
+            is PackageScope -> 20
+            ParameterScope -> 3
+            is PrivateScope -> 1
+            PublicScope -> 3
         }
-        else -> -1
+        else -> 1
     }
 
+    /**
+     * This function calculates the cost of adding [part] to a name.
+     * The cost is the sum of the cost of the names that are inside of [part] plus the cost of [part].
+     */
+    private fun costOfNamePart(part: NamePart): Int = when (part) {
+        is NamePart.Basic -> 1
+        is NamePart.Dependent -> {
+            val name = part.name
+            val subParts = currentCandidate(name).parts
+            val subCost = subParts.sumOf { costOfNamePart(it) }
+            subCost + costOfName(name)
+        }
+
+        NamePart.Separator -> 0
+    }
+
+    /**
+     * The cost of moving [name].
+     * The cost of moving is the sum of the costs of the **new** added parts
+     */
+    private fun costOfMovingName(name: AnyName): Int {
+        val currentCandidate = currentCandidate(name)
+        val nextCandidate = nextCandidate(name)
+
+        val newParts = (nextCandidate.parts.toSet() - currentCandidate.parts.toSet())
+        return newParts.sumOf { costOfNamePart(it) }
+    }
+
+    fun removeNonLeaves(toMove: Set<AnyName>): Set<AnyName> {
+        val numVisites = mutableMapOf<AnyName, Int>()
+
+        for (name in toMove) {
+            val queue = mutableListOf(name)
+            while (queue.isNotEmpty()) {
+                val current = queue.removeFirst()
+                numVisites[current] = (numVisites[current] ?: 0) + 1
+                queue.addAll(current.children)
+            }
+        }
+
+        return toMove.filter { numVisites.getOrDefault(it, 0) < 2 }.toSet()
+    }
 
     /**
      * Generates short human-readable names. Must be called before using [lookup].
@@ -144,14 +195,15 @@ class ShortNameResolver : NameResolver {
     override fun resolve() {
         var currentCollisions = collisions()
         while (currentCollisions.isNotEmpty()) {
-            val toResolve = currentCollisions.entries.first().value
+            val allToMove = currentCollisions.flatMap { it.value }.mapNotNull { findMoveableName(it)?.second }.toSet()
 
-            val candidateToMove = toResolve.filter { canMove(it) }.ifNotEmpty { maxBy { priorityOrder(it) } }
+            val toMove = removeNonLeaves(allToMove)
+            assert(toMove.isNotEmpty()) { "No moveable names found, unable to resolve collisions" }
 
-            assert(candidateToMove != null) { "Unable to make names unique" }
+            toMove.forEach(::move)
 
-            move(candidateToMove!!)
             currentCollisions = collisions()
+
         }
 
         // Fix the names
@@ -178,32 +230,27 @@ class ShortNameResolver : NameResolver {
 
     /**
      * Moves `name` one position.
-     * We generally try to move first the parts, and only if not successful do we move the `name`
-     *
-     * Returns true if the entity (or a dependent name) could be moved
      */
-    private fun move(entity: AnyName): Boolean {
-        val movableParts = currentCandidate(entity).moveableParts()
-
-        // Try to move the subparts first
-        for (part in movableParts) {
-            if (move(part.name)) return true
-        }
-
-        if (canMove(entity)) {
-            currentCandidate[entity] = (currentCandidate[entity] ?: 0) + 1
-            return true
-        }
-        return false
+    private fun move(entity: AnyName) {
+        currentCandidate[entity] = (currentCandidate[entity] ?: 0) + 1
     }
+
     /**
-     * Returns true if `name` can be moved or one of the parts of the current candidate can be moved
+     * This function returns the move that results in the lowest cost. If the name cannot be moved, it returns null.
      */
-    private fun canMove(entity: AnyName): Boolean {
-        val currentIndex = currentCandidate[entity] ?: 0
-        if (currentIndex + 1 < entity.candidates().size) return true
-        return currentCandidate(entity).moveableParts().any {
-            canMove(it.name)
+    private fun findMoveableName(entity: AnyName): Pair<Int, AnyName>? {
+        val options = buildList {
+            val subOptions = currentCandidate(entity).moveableParts().mapNotNull { namePart ->
+                findMoveableName(namePart.name)
+            }
+
+            addAll(subOptions)
+
+            if (hasNextCandidate(entity)) {
+                add(Pair(costOfMovingName(entity), entity))
+            }
         }
+
+        return options.minByOrNull { it.first }
     }
 }

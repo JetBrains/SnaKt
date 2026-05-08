@@ -1,9 +1,9 @@
 /returns_not_null.kt: info: Generated Viper text for returns_null:
-method returns_null() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), nullable(intType()))
-  ensures ret != nullValue()
+method returns_null() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
+  ensures v_ret_0 != nullValue()
 {
-  ret := nullValue()
-  goto ret_0
-  label ret_0
+  v_ret_0 := nullValue()
+  goto lbl_ret_0
+  label lbl_ret_0
 }

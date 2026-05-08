@@ -1,111 +1,111 @@
 /non-local-returns.kt: info: Generated Viper text for simpleReturn:
-method simpleReturn() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), intType())
+method simpleReturn() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  var ret_1: Ref
-  var ret: Ref
+  var v_ret_1: Ref
+  var v_ret_2: Ref
   var anon: Ref
   anon := intToRef(0)
-  ret_0 := intToRef(1)
+  v_ret_0 := intToRef(1)
   goto lbl_ret_0
-  ret := anon
-  goto ret_2
-  label ret_2
-  ret_1 := ret
+  v_ret_2 := anon
+  goto lbl_ret_2
+  label lbl_ret_2
+  v_ret_1 := v_ret_2
   goto lbl_ret_1
   label lbl_ret_1
-  ret_0 := ret_1
+  v_ret_0 := v_ret_1
   goto lbl_ret_0
   label lbl_ret_0
 }
 
 /non-local-returns.kt: info: Generated Viper text for returnAtInline:
-method returnAtInline() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), intType())
+method returnAtInline() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  var ret_1: Ref
-  var ret: Ref
+  var v_ret_1: Ref
+  var v_ret_2: Ref
   var anon: Ref
   anon := intToRef(0)
-  ret := intToRef(1)
-  goto ret_2
-  ret := anon
-  goto ret_2
-  label ret_2
-  ret_1 := ret
+  v_ret_2 := intToRef(1)
+  goto lbl_ret_2
+  v_ret_2 := anon
+  goto lbl_ret_2
+  label lbl_ret_2
+  v_ret_1 := v_ret_2
   goto lbl_ret_1
   label lbl_ret_1
-  ret_0 := ret_1
+  v_ret_0 := v_ret_1
   goto lbl_ret_0
   label lbl_ret_0
 }
 
 /non-local-returns.kt: info: Generated Viper text for doubleInvoke:
-method doubleInvoke() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), intType())
+method doubleInvoke() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  var ret_1: Ref
-  var ret_2: Ref
+  var v_ret_1: Ref
+  var v_ret_2: Ref
   var anon_0: Ref
-  var ret_3: Ref
-  var ret: Ref
-  var anon: Ref
+  var v_ret_3: Ref
+  var v_ret_4: Ref
+  var anon_1: Ref
   anon_0 := intToRef(0)
-  anon := intToRef(0)
-  ret := intToRef(1)
-  goto ret_4
-  ret := anon
-  goto ret_4
-  label ret_4
-  ret_3 := ret
+  anon_1 := intToRef(0)
+  v_ret_4 := intToRef(1)
+  goto lbl_ret_4
+  v_ret_4 := anon_1
+  goto lbl_ret_4
+  label lbl_ret_4
+  v_ret_3 := v_ret_4
   goto lbl_ret_3
   label lbl_ret_3
-  ret_2 := intToRef(2)
+  v_ret_2 := intToRef(2)
   goto lbl_ret_2
-  ret_2 := anon_0
+  v_ret_2 := anon_0
   goto lbl_ret_2
   label lbl_ret_2
-  ret_1 := ret_2
+  v_ret_1 := v_ret_2
   goto lbl_ret_1
   label lbl_ret_1
-  ret_0 := ret_1
+  v_ret_0 := v_ret_1
   goto lbl_ret_0
   label lbl_ret_0
 }
 
 /non-local-returns.kt: info: Generated Viper text for nested:
-method nested() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), intType())
+method nested() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  var ret_1: Ref
-  var ret_2: Ref
+  var v_ret_1: Ref
+  var v_ret_2: Ref
   var anon_0: Ref
-  var ret_3: Ref
-  var ret: Ref
-  var anon: Ref
+  var v_ret_3: Ref
+  var v_ret_4: Ref
+  var anon_1: Ref
   anon_0 := intToRef(0)
-  anon := intToRef(1)
-  ret := intToRef(2)
-  goto ret_4
-  ret_2 := intToRef(3)
+  anon_1 := intToRef(1)
+  v_ret_4 := intToRef(2)
+  goto lbl_ret_4
+  v_ret_2 := intToRef(3)
   goto lbl_ret_2
-  ret_0 := intToRef(4)
+  v_ret_0 := intToRef(4)
   goto lbl_ret_0
-  ret := anon
-  goto ret_4
-  label ret_4
-  ret_3 := ret
+  v_ret_4 := anon_1
+  goto lbl_ret_4
+  label lbl_ret_4
+  v_ret_3 := v_ret_4
   goto lbl_ret_3
   label lbl_ret_3
-  ret_2 := intToRef(5)
+  v_ret_2 := intToRef(5)
   goto lbl_ret_2
-  ret_2 := anon_0
+  v_ret_2 := anon_0
   goto lbl_ret_2
   label lbl_ret_2
-  ret_1 := ret_2
+  v_ret_1 := v_ret_2
   goto lbl_ret_1
   label lbl_ret_1
-  ret_0 := ret_1
+  v_ret_0 := v_ret_1
   goto lbl_ret_0
   label lbl_ret_0
 }

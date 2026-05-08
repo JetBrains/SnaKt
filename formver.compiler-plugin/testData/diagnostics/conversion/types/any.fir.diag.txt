@@ -1,19 +1,19 @@
 /any.kt: info: Generated Viper text for anyArgumentReturn:
-method anyArgumentReturn(x: Ref) returns (ret: Ref)
+method anyArgumentReturn(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), anyType())
-  ensures isSubtype(typeOf(ret), anyType())
+  ensures isSubtype(typeOf(v_ret_0), anyType())
 {
-  ret := x
-  goto ret_0
-  label ret_0
+  v_ret_0 := x
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /any.kt: info: Generated Viper text for anyCast:
-method anyCast(x: Ref) returns (ret: Ref)
+method anyCast(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret), anyType())
+  ensures isSubtype(typeOf(v_ret_0), anyType())
 {
-  ret := x
-  goto ret_0
-  label ret_0
+  v_ret_0 := x
+  goto lbl_ret_0
+  label lbl_ret_0
 }

@@ -2,58 +2,58 @@
 method g_varProp(this: Ref) returns (v_ret: Ref)
 
 
-method testProperties(foo: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(foo), _c_Foo())
-  ensures isSubtype(typeOf(ret), unitType())
+method s_varProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
+
+
+method testProperties(foo: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(foo), Foo())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_0: Ref
   var x: Ref
   var anon_1: Ref
   var anon_2: Ref
   var anon_3: Ref
-  var anon: Ref
+  var anon_4: Ref
   inhale acc(shared(foo), wildcard)
-  anon_0 := varProp(foo, intToRef(0))
+  anon_0 := s_varProp(foo, intToRef(0))
   anon_2 := g_varProp(foo)
   anon_1 := anon_2
   inhale isSubtype(typeOf(anon_1), intType())
-  anon := valProp(foo)
-  anon_3 := anon
+  anon_4 := valProp(foo)
+  anon_3 := anon_4
   inhale isSubtype(typeOf(anon_3), intType())
   x := plusInts(anon_1, anon_3)
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 method valProp(this: Ref) returns (v_ret: Ref)
 
 
-method varProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
-
-
 /interface.kt: info: Generated Viper text for createImpl:
 field bf_number: Ref
 
-method con(number: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(number), intType())
-  ensures isSubtype(typeOf(ret), _c_Impl())
-  ensures acc(c_Impl_shared(ret), wildcard)
-  ensures acc(c_Impl_unique(ret), write)
-  ensures intFromRef((unfolding acc(c_Impl_shared(ret), wildcard) in
-      ret.bf_number)) ==
-    intFromRef(number)
+method con(par_number: Ref) returns (v_ret: Ref)
+  requires isSubtype(typeOf(par_number), intType())
+  ensures isSubtype(typeOf(v_ret), Impl())
+  ensures acc(Impl_shared(v_ret), wildcard)
+  ensures acc(Impl_unique(v_ret), write)
+  ensures intFromRef((unfolding acc(Impl_shared(v_ret), wildcard) in
+      v_ret.bf_number)) ==
+    intFromRef(par_number)
 
 
-method createImpl() returns (ret_0: Ref)
-  ensures isSubtype(typeOf(ret_0), unitType())
+method createImpl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var impl: Ref
   var implField: Ref
   impl := con(intToRef(-1))
-  unfold acc(c_Impl_shared(impl), wildcard)
+  unfold acc(Impl_shared(impl), wildcard)
   implField := impl.bf_number
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method g_number(this: Ref) returns (ret: Ref)
+method g_number(this: Ref) returns (v_ret: Ref)

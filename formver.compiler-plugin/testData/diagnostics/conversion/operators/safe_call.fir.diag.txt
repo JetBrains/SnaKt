@@ -1,22 +1,22 @@
 /safe_call.kt: info: Generated Viper text for testSafeCall:
 field x: Ref
 
-method f(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_Foo())
-  ensures isSubtype(typeOf(ret), unitType())
+method f(this: Ref) returns (v_ret: Ref)
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(v_ret), unitType())
 
 
-method testSafeCall(foo: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(foo), nullable(_c_Foo()))
-  ensures isSubtype(typeOf(ret_0), nullable(unitType()))
+method testSafeCall(foo: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(foo), nullable(Foo()))
+  ensures isSubtype(typeOf(v_ret_0), nullable(unitType()))
 {
   inhale foo != nullValue() ==> acc(shared(foo), wildcard)
   if (foo != nullValue()) {
     var anon: Ref
     anon := f(foo)
-    ret_0 := anon
+    v_ret_0 := anon
   } else {
-    ret_0 := nullValue()}
+    v_ret_0 := nullValue()}
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -24,22 +24,22 @@ method testSafeCall(foo: Ref) returns (ret_0: Ref)
 /safe_call.kt: info: Generated Viper text for testSafeCallNonNullable:
 field x: Ref
 
-method f(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_Foo())
-  ensures isSubtype(typeOf(ret), unitType())
+method f(this: Ref) returns (v_ret: Ref)
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(v_ret), unitType())
 
 
-method testSafeCallNonNullable(foo: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(foo), _c_Foo())
-  ensures isSubtype(typeOf(ret_0), nullable(unitType()))
+method testSafeCallNonNullable(foo: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(foo), Foo())
+  ensures isSubtype(typeOf(v_ret_0), nullable(unitType()))
 {
   inhale acc(shared(foo), wildcard)
   if (foo != nullValue()) {
     var anon: Ref
     anon := f(foo)
-    ret_0 := anon
+    v_ret_0 := anon
   } else {
-    ret_0 := nullValue()}
+    v_ret_0 := nullValue()}
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -47,18 +47,18 @@ method testSafeCallNonNullable(foo: Ref) returns (ret_0: Ref)
 /safe_call.kt: info: Generated Viper text for testSafeCallProperty:
 field x: Ref
 
-method testSafeCallProperty(foo: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(foo), nullable(_c_Foo()))
-  ensures isSubtype(typeOf(ret_0), nullable(intType()))
+method testSafeCallProperty(foo: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(foo), nullable(Foo()))
+  ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
 {
   inhale foo != nullValue() ==> acc(shared(foo), wildcard)
   if (foo != nullValue()) {
     var anon: Ref
     unfold acc(shared(foo), wildcard)
     anon := foo.x
-    ret_0 := anon
+    v_ret_0 := anon
   } else {
-    ret_0 := nullValue()}
+    v_ret_0 := nullValue()}
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -66,18 +66,18 @@ method testSafeCallProperty(foo: Ref) returns (ret_0: Ref)
 /safe_call.kt: info: Generated Viper text for testSafeCallPropertyNonNullable:
 field x: Ref
 
-method testSafeCallPropertyNonNullable(foo: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(foo), _c_Foo())
-  ensures isSubtype(typeOf(ret_0), nullable(intType()))
+method testSafeCallPropertyNonNullable(foo: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(foo), Foo())
+  ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
 {
   inhale acc(shared(foo), wildcard)
   if (foo != nullValue()) {
     var anon: Ref
     unfold acc(shared(foo), wildcard)
     anon := foo.x
-    ret_0 := anon
+    v_ret_0 := anon
   } else {
-    ret_0 := nullValue()}
+    v_ret_0 := nullValue()}
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -85,15 +85,15 @@ method testSafeCallPropertyNonNullable(foo: Ref) returns (ret_0: Ref)
 /safe_call.kt: info: Generated Viper text for safeCallChain:
 field bf_v: Ref
 
-method f_nullable(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_Rec())
-  ensures isSubtype(typeOf(ret), nullable(_c_Rec()))
-  ensures ret != nullValue() ==> acc(shared(ret), wildcard)
+method f_nullable(this: Ref) returns (v_ret: Ref)
+  requires isSubtype(typeOf(this), Rec())
+  ensures isSubtype(typeOf(v_ret), rt_nullable(Rec()))
+  ensures v_ret != nullValue() ==> acc(shared(v_ret), wildcard)
 
 
-method safeCallChain(rec: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(rec), nullable(_c_Rec()))
-  ensures isSubtype(typeOf(ret_0), nullable(intType()))
+method safeCallChain(rec: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(rec), rt_nullable(Rec()))
+  ensures isSubtype(typeOf(v_ret_0), rt_nullable(intType()))
 {
   var anon_0: Ref
   var anon_1: Ref
@@ -107,12 +107,12 @@ method safeCallChain(rec: Ref) returns (ret_0: Ref)
   } else {
     anon_0 := nullValue()}
   if (anon_0 != nullValue()) {
-    var anon: Ref
+    var anon_2: Ref
     unfold acc(shared(anon_0), wildcard)
-    anon := anon_0.bf_v
-    ret_0 := anon
+    anon_2 := anon_0.bf_v
+    v_ret_0 := anon_2
   } else {
-    ret_0 := nullValue()}
+    v_ret_0 := nullValue()}
   goto lbl_ret_0
   label lbl_ret_0
 }

@@ -1,67 +1,67 @@
 /basic.kt: info: Generated Viper text for returnUnit:
-method returnUnit() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method returnUnit() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /basic.kt: info: Generated Viper text for returnInt:
-method returnInt() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
+method returnInt() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  ret := intToRef(0)
-  goto ret_0
-  label ret_0
+  v_ret_0 := intToRef(0)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /basic.kt: info: Generated Viper text for takeIntReturnUnit:
-method takeIntReturnUnit(x: Ref) returns (ret: Ref)
+method takeIntReturnUnit(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /basic.kt: info: Generated Viper text for takeIntReturnInt:
-method takeIntReturnInt(x: Ref) returns (ret: Ref)
+method takeIntReturnInt(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  ret := x
-  goto ret_0
-  label ret_0
+  v_ret_0 := x
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /basic.kt: info: Generated Viper text for takeIntReturnIntExpr:
-method takeIntReturnIntExpr(x: Ref) returns (ret: Ref)
+method takeIntReturnIntExpr(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  ret := x
-  goto ret_0
-  label ret_0
+  v_ret_0 := x
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /basic.kt: info: Generated Viper text for withIntDeclaration:
-method withIntDeclaration() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
+method withIntDeclaration() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
   var x: Ref
   x := intToRef(0)
-  ret := x
-  goto ret_0
-  label ret_0
+  v_ret_0 := x
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /basic.kt: info: Generated Viper text for intAssignment:
-method intAssignment() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method intAssignment() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var x: Ref
   x := intToRef(0)
   x := intToRef(1)
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }

@@ -1,37 +1,40 @@
 /contracts_with_receivers.kt: info: Generated Viper text for is2:
-method is2(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_Class())
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true ==> isSubtype(typeOf(this), _c_Impl2())
+method is2(this: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), Class())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true ==> isSubtype(typeOf(this), Impl2())
 {
-  inhale acc(c_Class_shared(this), wildcard)
-  ret := boolToRef(isSubtype(typeOf(this), _c_Impl2()))
-  goto ret_0
-  label ret_0
+  inhale acc(Class_shared(this), wildcard)
+  v_ret_0 := boolToRef(isSubtype(typeOf(this), Impl2()))
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /contracts_with_receivers.kt: info: Generated Viper text for is1butWithDispatch:
-method is1butWithDispatch(v_this: Ref, this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(v_this), _c_Class())
-  requires isSubtype(typeOf(this), _c_Class())
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true ==> isSubtype(typeOf(this), _c_Impl1())
+method is1butWithDispatch(v_this: Ref, v_this_extension: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(v_this), Class())
+  requires isSubtype(typeOf(v_this_extension), Class())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true ==>
+    isSubtype(typeOf(v_this_extension), Impl1())
 {
-  inhale acc(c_Class_shared(v_this), wildcard)
-  inhale acc(c_Class_shared(this), wildcard)
-  ret := boolToRef(isSubtype(typeOf(this), _c_Impl1()))
-  goto ret_0
-  label ret_0
+  inhale acc(Class_shared(v_this), wildcard)
+  inhale acc(Class_shared(v_this_extension), wildcard)
+  v_ret_0 := boolToRef(isSubtype(typeOf(v_this_extension), Impl1()))
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /contracts_with_receivers.kt: info: Generated Viper text for is1:
-method is1(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_Class())
-  ensures isSubtype(typeOf(ret), boolType())
-  ensures boolFromRef(ret) == true ==> isSubtype(typeOf(this), _c_Impl1())
+method is1(v_this_extension: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(v_this_extension), Class())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true ==>
+    isSubtype(typeOf(v_this_extension), Impl1())
 {
-  inhale acc(c_Class_shared(this), wildcard)
-  ret := boolToRef(isSubtype(typeOf(this), _c_Impl1()))
-  goto ret_0
-  label ret_0
+  inhale acc(Class_shared(v_this_extension), wildcard)
+  v_ret_0 := boolToRef(isSubtype(typeOf(v_this_extension), Impl1()))
+  goto lbl_ret_0
+  label lbl_ret_0
 }

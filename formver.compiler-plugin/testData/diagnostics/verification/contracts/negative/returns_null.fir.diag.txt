@@ -1,21 +1,21 @@
 /returns_null.kt: info: Generated Viper text for returns_null_unverifiable:
-method returns_null_unverifiable(x: Ref) returns (ret: Ref)
+method returns_null_unverifiable(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))
-  ensures isSubtype(typeOf(ret), nullable(intType()))
+  ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
   ensures true ==> false
 {
-  ret := nullValue()
-  goto ret_0
-  label ret_0
+  v_ret_0 := nullValue()
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /returns_null.kt: info: Generated Viper text for non_nullable_returns_null:
-method non_nullable_returns_null(x: Ref) returns (ret: Ref)
+method non_nullable_returns_null(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(ret), intType())
-  ensures ret == nullValue()
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures v_ret_0 == nullValue()
 {
-  ret := x
-  goto ret_0
-  label ret_0
+  v_ret_0 := x
+  goto lbl_ret_0
+  label lbl_ret_0
 }

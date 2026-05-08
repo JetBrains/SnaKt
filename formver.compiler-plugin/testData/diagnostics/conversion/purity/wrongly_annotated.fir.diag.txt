@@ -1,10 +1,10 @@
 /wrongly_annotated.kt: info: Generated Viper text for iAmAMethod:
-method iAmAMethod() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
+method iAmAMethod() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  ret := intToRef(1)
-  goto ret_0
-  label ret_0
+  v_ret_0 := intToRef(1)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /wrongly_annotated.kt: error: Impure function body detected in pure function
@@ -16,13 +16,13 @@ method iAmAMethod() returns (ret: Ref)
 /wrongly_annotated.kt: info: Generated Viper text for impureExtension:
 field value: Ref
 
-method impureExtension(this: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), _c_Field())
-  ensures isSubtype(typeOf(ret_0), unitType())
+method impureExtension(v_this_extension: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(v_this_extension), Field())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  inhale acc(shared(this), wildcard)
+  inhale acc(shared(v_this_extension), wildcard)
   label lbl_ret_0
-  inhale isSubtype(typeOf(ret_0), unitType())
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /wrongly_annotated.kt: error: Impure function body detected in pure function
