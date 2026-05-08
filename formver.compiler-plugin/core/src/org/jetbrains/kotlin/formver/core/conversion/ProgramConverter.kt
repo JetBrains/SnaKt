@@ -332,17 +332,6 @@ class ProgramConverter(
             action(param)
         }
 
-    private fun extractConstructorParamsAsFields(symbol: FirFunctionSymbol<*>): Map<FirValueParameterSymbol, FieldEmbedding> {
-        if (symbol !is FirConstructorSymbol || !symbol.isPrimary) return emptyMap()
-        val constructedClassSymbol = symbol.resolvedReturnType.toRegularClassSymbol(session) ?: return emptyMap()
-        val constructedClass = embedClass(constructedClassSymbol)
-        return constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
-            val name = propertySymbol.embedMemberPropertyName()
-            propertySymbol.withConstructorParam { paramSymbol ->
-                typeResolver.lookupBackingField(name)?.let { paramSymbol to it }
-            }
-        }.toMap()
-    }
 
     override fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): FunctionSignature {
         val dispatchReceiverType = symbol.receiverType
