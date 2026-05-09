@@ -80,7 +80,7 @@ sealed interface VariableEmbedding : ExpEmbedding, PropertyAccessEmbedding {
  * Embedding of a variable that is only used as a local placeholder, e.g. the return value or parameters
  * in a type signature.
  */
-class PlaceholderVariableEmbedding(
+data class PlaceholderVariableEmbedding(
     override val name: SymbolicName,
     override val type: TypeEmbedding,
     override val isUnique: Boolean = false,
@@ -115,7 +115,7 @@ class AnonymousBuiltinVariableEmbedding(n: Int, override val type: TypeEmbedding
 /**
  * Embedding of a variable that comes from some FIR element.
  */
-class FirVariableEmbedding(
+data class FirVariableEmbedding(
     override val name: SymbolicName,
     override val type: TypeEmbedding,
     val symbol: FirBasedSymbol<*>,
@@ -131,7 +131,7 @@ class FirVariableEmbedding(
  *
  * This can still correspond to an earlier variable, but it no longer carries any interesting information.
  */
-class LinearizationVariableEmbedding(override val name: SymbolicName, override val type: TypeEmbedding) :
+data class LinearizationVariableEmbedding(override val name: SymbolicName, override val type: TypeEmbedding) :
     VariableEmbedding
 
 val ExpEmbedding.underlyingVariable

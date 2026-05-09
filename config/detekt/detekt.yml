@@ -39,7 +39,7 @@ complexity:
 style:
   active: true
   MagicNumber:
-    active: false
+    active: true
   ReturnCount:
     active: true
     max: 8
@@ -53,13 +53,13 @@ style:
   UnusedPrivateMember:
     active: true
   UnusedParameter:
-    active: false
+    active: true
   ForbiddenComment:
     active: false
   DataClassContainsFunctions:
     active: false
   UseDataClass:
-    active: false
+    active: true
   LoopWithTooManyJumpStatements:
     active: false
   DestructuringDeclarationWithTooManyEntries:

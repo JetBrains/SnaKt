@@ -143,7 +143,9 @@ class ShortNameResolver : NameResolver {
     /**
      * The cost of having [name] in a viper name.
      * Higher cost means that [name] is more likely to not be used in the final viper name.
+     * Only the relative ordering of these values matters; the absolute numbers are arbitrary.
      */
+    @Suppress("detekt:MagicNumber")
     private fun costOfName(name: AnyName): Int = when (name) {
         is NameScope -> when (name) {
             BadScope -> 100
