@@ -1,4 +1,4 @@
-package org.jetbrains.kotlin.formver.names
+package org.jetbrains.kotlin.formver.core.names
 
 import org.jetbrains.kotlin.formver.core.names.longName
 import org.jetbrains.kotlin.formver.viper.AnyName

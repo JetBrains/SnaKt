@@ -27,7 +27,7 @@ class ReturnsEffectError(private val sourceRole: SourceRole.ReturnsEffect) : For
         get() = when (this) {
             is SourceRole.ReturnsEffect.Bool -> if (bool) "false" else "true"
             is SourceRole.ReturnsEffect.Null -> if (negated) "null" else "non-null"
-            else -> throw IllegalStateException("Unknown returns effect: $this")
+            else -> error("Unknown returns effect: $this")
         }
 
     context(context: CheckerContext, reporter: DiagnosticReporter)

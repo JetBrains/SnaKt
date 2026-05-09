@@ -1,0 +1,121 @@
+build:
+  maxIssues: 0
+  excludeCorrectable: false
+
+config:
+  validation: true
+  warningsAsErrors: false
+  checkExhaustiveness: false
+
+processors:
+  active: true
+
+console-reports:
+  active: true
+
+output-reports:
+  active: true
+
+complexity:
+  active: true
+  LongMethod:
+    active: true
+    threshold: 80
+  LongParameterList:
+    active: true
+    functionThreshold: 8
+    constructorThreshold: 8
+    ignoreDefaultParameters: true
+    ignoreDataClasses: true
+  TooManyFunctions:
+    active: false
+  CyclomaticComplexMethod:
+    active: true
+    threshold: 35
+  NestedBlockDepth:
+    active: true
+    threshold: 5
+
+style:
+  active: true
+  MagicNumber:
+    active: false
+  ReturnCount:
+    active: true
+    max: 8
+  WildcardImport:
+    # Compiler-plugin code routinely uses wildcard imports for the Kotlin compiler
+    # APIs (e.g. org.jetbrains.kotlin.fir.*) and for sibling formver packages.
+    # Treating these as findings would create churn without a real readability win.
+    active: false
+  MaxLineLength:
+    active: false
+  UnusedPrivateMember:
+    active: true
+  UnusedParameter:
+    active: false
+  ForbiddenComment:
+    active: false
+  DataClassContainsFunctions:
+    active: false
+  UseDataClass:
+    active: false
+  LoopWithTooManyJumpStatements:
+    active: false
+  DestructuringDeclarationWithTooManyEntries:
+    active: false
+  ThrowsCount:
+    active: true
+    max: 4
+
+naming:
+  active: true
+  FunctionNaming:
+    active: true
+    functionPattern: '[a-z][a-zA-Z0-9]*'
+    excludeClassPattern: '$^'
+  TopLevelPropertyNaming:
+    active: true
+  VariableNaming:
+    active: true
+  EnumNaming:
+    active: true
+  ConstructorParameterNaming:
+    active: true
+  MatchingDeclarationName:
+    # Kotlin files frequently group related declarations under a category name
+    # (e.g. SpecialAccessors.kt, Invariant.kt) — requiring a 1:1 file/class
+    # match doesn't fit how this codebase is organized.
+    active: false
+
+exceptions:
+  active: true
+  TooGenericExceptionCaught:
+    active: false
+  SwallowedException:
+    active: false
+  InstanceOfCheckForException:
+    active: false
+  ThrowingExceptionsWithoutMessageOrCause:
+    active: false
+
+performance:
+  active: true
+
+potential-bugs:
+  active: true
+
+empty-blocks:
+  active: true
+  EmptyFunctionBlock:
+    active: true
+    ignoreOverridden: true
+
+comments:
+  active: true
+  UndocumentedPublicClass:
+    active: false
+  UndocumentedPublicFunction:
+    active: false
+  UndocumentedPublicProperty:
+    active: false

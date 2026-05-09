@@ -34,7 +34,7 @@ class CallableImpl(private val callableNode: viper.silver.ast.Node) : Callable {
             is viper.silver.ast.FuncApp -> callableNode.args()
             is viper.silver.ast.MethodCall -> callableNode.args()
             is viper.silver.ast.DomainFuncApp -> callableNode.args()
-            else -> throw IllegalStateException("Unknown type for callable node.")
+            else -> error("Unknown type for callable node.")
         }
         JavaConverters.asJava(arguments).map { AstWrapper.Exp(it) }
     }
