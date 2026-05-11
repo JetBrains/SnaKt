@@ -223,8 +223,7 @@ class ProgramConverter(
         val lookupName = symbol.embedName(this)
         return when (val existing = methods[lookupName]) {
             null -> {
-                val (_, signature) = embedFullSignature(symbol)
-                val callable = embedCallable(symbol, signature)
+                val callable = embedCallable(symbol)
                 UserFunctionEmbedding(callable).also {
                     methods[lookupName] = it
                 }
@@ -232,8 +231,7 @@ class ProgramConverter(
 
             is PartiallySpecialKotlinFunction -> {
                 if (existing.baseEmbedding != null) return existing
-                val (_, signature) = embedFullSignature(symbol)
-                val callable = embedCallable(symbol, signature)
+                val callable = embedCallable(symbol)
                 val userFunction = UserFunctionEmbedding(callable)
                 existing.also {
                     it.initBaseEmbedding(userFunction)
@@ -451,7 +449,7 @@ class ProgramConverter(
         return Pair(userContract.first, kotlinContractPostcondition + userContract.second)
     }
 
-    private fun embedFullSignature(symbol: FirFunctionSymbol<*>): Pair<ReturnTarget,FullNamedFunctionSignature> {
+    private fun embedFullSignature(symbol: FirFunctionSymbol<*>): Pair<ReturnTarget, FullNamedFunctionSignature> {
         val (returnTarget, signature) = embedFunctionSignature(symbol)
         val subSignature = object : NamedFunctionSignature, FunctionSignature by signature {
             override val name = symbol.embedName(this@ProgramConverter)
@@ -548,6 +546,11 @@ class ProgramConverter(
         } else {
             NonInlineNamedFunction(signature)
         }
+    }
+
+    private fun embedCallable(symbol: FirFunctionSymbol<*>) : RichCallableEmbedding {
+        val (_, fullSignature) = embedFullSignature(symbol)
+        return embedCallable(symbol, fullSignature)
     }
 
     private fun TypeBuilder.embedTypeWithBuilder(type: ConeKotlinType): PretypeBuilder = when {
