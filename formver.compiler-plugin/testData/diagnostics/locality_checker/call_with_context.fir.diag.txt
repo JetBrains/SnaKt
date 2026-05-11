@@ -4,21 +4,15 @@
 
 /call_with_context.kt: error: Locality mismatch for context parameter of type 'A': expected 'global', actual 'local'.
 
-/call_with_context.kt: error: Locality can only be specified on types of function parameters, extension receivers, or local variables.
+/call_with_context.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/call_with_context.kt: error: Locality mismatch for context parameter of type 'A': expected 'global', actual 'local'.
 
 /call_with_context.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
 
 /call_with_context.kt: error: Locality mismatch for context parameter of type 'A': expected 'global', actual 'local'.
 
-/call_with_context.kt: error: Locality can only be specified on types of function parameters, extension receivers, or local variables.
-
-/call_with_context.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
-
 /call_with_context.kt: error: Locality mismatch for context parameter of type 'A': expected 'global', actual 'local'.
-
-/call_with_context.kt: error: Locality mismatch for context parameter of type 'A': expected 'global', actual 'local'.
-
-/call_with_context.kt: error: Locality can only be specified on types of function parameters, extension receivers, or local variables.
 
 /call_with_context.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
 
