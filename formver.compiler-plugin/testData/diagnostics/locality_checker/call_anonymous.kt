@@ -11,7 +11,7 @@ fun `call local-receiver lambda directly with global receiver`(x: Any, f: (@Borr
 }
 
 fun `call global-receiver lambda directly with local receiver`(x: @Borrowed Any, f: (Any).() -> Unit) {
-    <!LOCALITY_VIOLATION!>x<!>.f()
+    <!LOCALITY_MISMATCH!>x<!>.f()
 }
 
 fun `call global-argument lambda directly with global argument`(x: Any, f: (Any) -> Unit) {
@@ -23,7 +23,7 @@ fun `call local-argument lambda directly with local argument`(x: @Borrowed Any, 
 }
 
 fun `call global-argument lambda directly with local argument`(x: @Borrowed Any, f: (Any) -> Unit) {
-    f(<!LOCALITY_VIOLATION!>x<!>)
+    f(<!LOCALITY_MISMATCH!>x<!>)
 }
 
 fun `call local-local-argument lambda directly with local arguments`(
@@ -39,7 +39,7 @@ fun `call global-local-argument lambda directly with local arguments`(
     y: @Borrowed Any,
     f: (Any, @Borrowed Any) -> Unit
 ) {
-    f(<!LOCALITY_VIOLATION!>x<!>, y)
+    f(<!LOCALITY_MISMATCH!>x<!>, y)
 }
 
 fun `call local-global-argument lambda directly with local arguments`(
@@ -47,7 +47,7 @@ fun `call local-global-argument lambda directly with local arguments`(
     y: @Borrowed Any,
     f: (@Borrowed Any, Any) -> Unit
 ) {
-    f(x, <!LOCALITY_VIOLATION!>y<!>)
+    f(x, <!LOCALITY_MISMATCH!>y<!>)
 }
 
 fun `call local-receiver-local-argument lambda directly with local receiver and local argument`(
@@ -63,7 +63,7 @@ fun `call local-receiver-global-argument lambda directly with local receiver and
     y: @Borrowed Any,
     f: (@Borrowed Any).(Any) -> Unit
 ) {
-    x.f(<!LOCALITY_VIOLATION!>y<!>)
+    x.f(<!LOCALITY_MISMATCH!>y<!>)
 }
 
 fun `call global-receiver-local-argument lambda directly with local receiver and local argument`(
@@ -71,7 +71,7 @@ fun `call global-receiver-local-argument lambda directly with local receiver and
     y: @Borrowed Any,
     f: (Any).(@Borrowed Any) -> Unit
 ) {
-    <!LOCALITY_VIOLATION!>x<!>.f(y)
+    <!LOCALITY_MISMATCH!>x<!>.f(y)
 }
 
 fun `call mixed-argument lambda expression with local argument`(x: @Borrowed Any, f: (Any) -> Unit, g: (@Borrowed Any) -> Unit) {

@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirThrowExpressionChecker
 import org.jetbrains.kotlin.fir.expressions.FirThrowExpression
-import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOLATION
+import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_MISMATCH
 
 object ThrowLocalityChecker : FirThrowExpressionChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
@@ -23,7 +23,7 @@ object ThrowLocalityChecker : FirThrowExpressionChecker(MppCheckerKind.Common) {
 
         reporter.reportOn(
             expression.exception.source,
-            LOCALITY_VIOLATION,
+            LOCALITY_MISMATCH,
             "Throw",
             requiredLocality,
             actualLocality

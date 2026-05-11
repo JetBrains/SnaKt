@@ -23,7 +23,7 @@ fun A.shareTarget() {}
 fun @Borrowed A.borrowTargetAndArg(y: @Borrowed A) {}
 
 fun `pass local as shared argument`(x: @Borrowed A) {
-    share(<!LOCALITY_VIOLATION!>x<!>)
+    share(<!LOCALITY_MISMATCH!>x<!>)
 }
 
 fun `pass global as borrowed argument`(x: A) {
@@ -44,12 +44,12 @@ fun `pass local as named borrowed argument`(x: @Borrowed A) {
 
 fun `assign local to global after passing it as borrowed argument`(x: @Borrowed A) {
     borrow(x)
-    var y: A = <!LOCALITY_VIOLATION!>x<!>
+    var y: A = <!LOCALITY_MISMATCH!>x<!>
 }
 
 fun `share local after initializing it with a global value`(x: A) {
     var y: @Borrowed A = x
-    share(<!LOCALITY_VIOLATION!>y<!>)
+    share(<!LOCALITY_MISMATCH!>y<!>)
 }
 
 fun `pass local twice as borrowed arguments`(x: @Borrowed A) {
@@ -61,7 +61,7 @@ fun `pass local twice as named borrowed arguments`(x: @Borrowed A) {
 }
 
 fun `pass local as explicit shared target`(x: @Borrowed A) {
-    <!LOCALITY_VIOLATION!>x<!>.shareTarget()
+    <!LOCALITY_MISMATCH!>x<!>.shareTarget()
 }
 
 fun `pass global as explicit borrowed target`(x: A) {
@@ -93,15 +93,15 @@ fun `pass global as borrowed target and argument`(x: A) {
 }
 
 fun `pass local as named local and global arguments`(x: @Borrowed A) {
-    shareAndBorrow(y = x, x = <!LOCALITY_VIOLATION!>x<!>)
+    shareAndBorrow(y = x, x = <!LOCALITY_MISMATCH!>x<!>)
 }
 
 fun `pass local as named local along local default`(x: @Borrowed A) {
-    borrowDefaultAndShare(y = <!LOCALITY_VIOLATION!>x<!>)
+    borrowDefaultAndShare(y = <!LOCALITY_MISMATCH!>x<!>)
 }
 
 fun @Borrowed A.`pass local as implicit shared target`() {
-    <!LOCALITY_VIOLATION!>shareTarget()<!>
+    <!LOCALITY_MISMATCH!>shareTarget()<!>
 }
 
 fun @Borrowed A.`pass local as implicit local target`() {
@@ -109,7 +109,7 @@ fun @Borrowed A.`pass local as implicit local target`() {
 }
 
 fun @Borrowed A.`pass local this as explicit shared target`() {
-    <!LOCALITY_VIOLATION!>this<!>.shareTarget()
+    <!LOCALITY_MISMATCH!>this<!>.shareTarget()
 }
 
 fun @Borrowed A.`pass local this as explicit local target`() {
@@ -122,7 +122,7 @@ fun `pass local as local argument in local property initializer`(x: @Borrowed A)
 
 fun `pass outer local as local argument in lambda`(x: @Borrowed A) {
     {
-        borrow(<!LOCALITY_CAPTURE_VIOLATION!>x<!>)
+        borrow(<!INVALID_LOCALITY_CAPTURE!>x<!>)
     }
 }
 open class `base with global constructor parameter`(x: Any)
@@ -130,13 +130,13 @@ open class `base with global constructor parameter`(x: Any)
 class `derive and call super` : `base with global constructor parameter` {
     constructor(x: Any, marker: Int) : super(x)
 
-    constructor(x: @Borrowed Any) : super(<!LOCALITY_VIOLATION!>x<!>)
+    constructor(x: @Borrowed Any) : super(<!LOCALITY_MISMATCH!>x<!>)
 }
 
 class `chain this constructors with global parameter` {
     constructor(x: Any)
 
-    constructor(x: @Borrowed Any, marker: Int) : this(<!LOCALITY_VIOLATION!>x<!>)
+    constructor(x: @Borrowed Any, marker: Int) : this(<!LOCALITY_MISMATCH!>x<!>)
 }
 
 open class `base with borrowed constructor parameter`(x: @Borrowed Any)

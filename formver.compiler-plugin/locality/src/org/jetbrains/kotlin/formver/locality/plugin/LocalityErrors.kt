@@ -11,10 +11,12 @@ import org.jetbrains.kotlin.diagnostics.error1
 import org.jetbrains.kotlin.diagnostics.error0
 import org.jetbrains.kotlin.diagnostics.error3
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
+import org.jetbrains.kotlin.fir.types.ConeKotlinType
 
 object LocalityErrors : KtDiagnosticsContainer() {
-    val LOCALITY_VIOLATION by error3<PsiElement, String, LocalityAttribute?, LocalityAttribute?>()
-    val LOCALITY_CAPTURE_VIOLATION by error1<PsiElement, FirBasedSymbol<*>>()
+    val LOCALITY_MISMATCH by error3<PsiElement, String, LocalityAttribute?, LocalityAttribute?>()
+    val CONTEXT_LOCALITY_MISMATCH by error3<PsiElement, ConeKotlinType, LocalityAttribute?, LocalityAttribute?>()
+    val INVALID_LOCALITY_CAPTURE by error1<PsiElement, FirBasedSymbol<*>>()
     val INVALID_LOCALITY_TYPE_TARGET by error0<PsiElement>()
 
     override fun getRendererFactory() = LocalityErrorMessages

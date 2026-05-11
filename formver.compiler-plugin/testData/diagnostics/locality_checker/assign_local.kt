@@ -11,7 +11,7 @@ fun `assign global to local`(x: Any) {
 fun `assign local to global`(x: @Borrowed Any) {
     var y: Any
 
-    y = <!LOCALITY_VIOLATION!>x<!>
+    y = <!LOCALITY_MISMATCH!>x<!>
 }
 
 fun `assign local to local`(x: @Borrowed Any) {
@@ -37,7 +37,7 @@ fun `assign local to local in loop`(x: @Borrowed Any) {
 
 fun `assign local to local in lambda`(x: @Borrowed Any) {
     { y: Any ->
-        var z: @Borrowed Any = <!LOCALITY_CAPTURE_VIOLATION!>x<!>
+        var z: @Borrowed Any = <!INVALID_LOCALITY_CAPTURE!>x<!>
     }
 }
 
@@ -46,12 +46,12 @@ fun `assign local if-expression to local`(x: @Borrowed Any) {
 }
 
 fun `assign local if-expression to global`(x: @Borrowed Any) {
-    var z: Any = <!LOCALITY_VIOLATION!>if (false) { x } else { Any() }<!>
+    var z: Any = <!LOCALITY_MISMATCH!>if (false) { x } else { Any() }<!>
 }
 
 fun `assign local if-expression to local in lambda`(x: @Borrowed Any) {
     { y: Any ->
-        var z: @Borrowed Any = if (false) { <!LOCALITY_CAPTURE_VIOLATION!>x<!> } else { Any() }
+        var z: @Borrowed Any = if (false) { <!INVALID_LOCALITY_CAPTURE!>x<!> } else { Any() }
     }
 }
 
@@ -71,7 +71,7 @@ fun `assign local when-expression to local`(x: @Borrowed Any) {
 }
 
 fun `assign local when-expression to global`(x: @Borrowed Any) {
-    var z: Any = <!LOCALITY_VIOLATION!>when {
+    var z: Any = <!LOCALITY_MISMATCH!>when {
         false -> x
         else -> Any()
     }<!>
@@ -81,7 +81,7 @@ fun `assign local when-expression to global in loop`(x: @Borrowed Any) {
     var z: Any = Any()
 
     while (true) {
-        z = <!LOCALITY_VIOLATION!>when {
+        z = <!LOCALITY_MISMATCH!>when {
             false -> x
             else -> Any()
         }<!>
@@ -89,7 +89,7 @@ fun `assign local when-expression to global in loop`(x: @Borrowed Any) {
 }
 
 fun `assign local try-expression to global`(x: @Borrowed Any) {
-    var z: Any = <!LOCALITY_VIOLATION!>try {
+    var z: Any = <!LOCALITY_MISMATCH!>try {
         x
     } catch (_: Throwable) {
         Any()
@@ -100,7 +100,7 @@ fun `assign local try-expression to global in loop`(x: @Borrowed Any) {
     var z: Any = Any()
 
     while (true) {
-        z = <!LOCALITY_VIOLATION!>try {
+        z = <!LOCALITY_MISMATCH!>try {
             x
         } catch (_: Throwable) {
             Any()
@@ -109,22 +109,22 @@ fun `assign local try-expression to global in loop`(x: @Borrowed Any) {
 }
 
 fun `assign local cast-expression to global`(x: @Borrowed Any) {
-    var z: String = <!LOCALITY_VIOLATION!>x as String<!>
+    var z: String = <!LOCALITY_MISMATCH!>x as String<!>
 }
 
 fun `assign local safe-cast-expression to global`(x: @Borrowed Any) {
-    var z: String? = <!LOCALITY_VIOLATION!>x as? String<!>
+    var z: String? = <!LOCALITY_MISMATCH!>x as? String<!>
 }
 
 fun `assign local not-null-expression to global`(x: @Borrowed Any?) {
-    var z: Any = <!LOCALITY_VIOLATION!>x!!<!>
+    var z: Any = <!LOCALITY_MISMATCH!>x!!<!>
 }
 
 fun `assign local nested control-flow to global in loop`(x: @Borrowed Any) {
     var z: Any = Any()
 
     while (true) {
-        z = <!LOCALITY_VIOLATION!>if (false) {
+        z = <!LOCALITY_MISMATCH!>if (false) {
             when {
                 false -> x
                 else -> Any()
@@ -133,7 +133,7 @@ fun `assign local nested control-flow to global in loop`(x: @Borrowed Any) {
             Any()
         }<!>
 
-        z = <!LOCALITY_VIOLATION!>try {
+        z = <!LOCALITY_MISMATCH!>try {
             if (false) { x } else { Any() }
         } catch (_: Throwable) {
             Any()
@@ -157,15 +157,15 @@ fun `assign local nested control-flow to global in lambda loop`(x: @Borrowed Any
         var z: Any = Any()
 
         while (true) {
-            z = <!LOCALITY_VIOLATION!>when {
-                false -> try { <!LOCALITY_CAPTURE_VIOLATION!>x<!> } catch (_: Throwable) { Any() }
+            z = <!LOCALITY_MISMATCH!>when {
+                false -> try { <!INVALID_LOCALITY_CAPTURE!>x<!> } catch (_: Throwable) { Any() }
                 else -> Any()
             }<!>
 
-            z = <!LOCALITY_VIOLATION!>if (false) {
-                <!LOCALITY_CAPTURE_VIOLATION!>x<!>
+            z = <!LOCALITY_MISMATCH!>if (false) {
+                <!INVALID_LOCALITY_CAPTURE!>x<!>
             } else {
-                try { Any() } catch (_: Throwable) { <!LOCALITY_CAPTURE_VIOLATION!>x<!> }
+                try { Any() } catch (_: Throwable) { <!INVALID_LOCALITY_CAPTURE!>x<!> }
             }<!>
         }
     }
@@ -173,7 +173,7 @@ fun `assign local nested control-flow to global in lambda loop`(x: @Borrowed Any
 
 fun `assign merged local owners to global`(x: @Borrowed Any) {
     { y: @Borrowed Any ->
-        var z: Any = <!LOCALITY_VIOLATION!>if (false) { <!LOCALITY_CAPTURE_VIOLATION!>x<!> } else { y }<!>
+        var z: Any = <!LOCALITY_MISMATCH!>if (false) { <!INVALID_LOCALITY_CAPTURE!>x<!> } else { y }<!>
     }
 }
 
@@ -188,13 +188,13 @@ class A
 fun `assign local cast to implicit global`(x: @Borrowed Any, y: A) {
     var a = y
 
-    a = <!LOCALITY_VIOLATION!>x as A<!>
+    a = <!LOCALITY_MISMATCH!>x as A<!>
 }
 
 fun `assign implicit local to explicit global`(x: @Borrowed Any) {
     var a = x as A
 
-    var b: Any = <!LOCALITY_VIOLATION!>a<!>
+    var b: Any = <!LOCALITY_MISMATCH!>a<!>
 }
 
 fun `assign global to implicit local`(x: @Borrowed Any, y: A) {

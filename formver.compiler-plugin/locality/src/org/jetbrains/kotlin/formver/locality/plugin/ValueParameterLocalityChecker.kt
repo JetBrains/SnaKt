@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirValueParameterChecker
 import org.jetbrains.kotlin.fir.declarations.FirValueParameter
 import org.jetbrains.kotlin.fir.types.coneType
-import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOLATION
+import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_MISMATCH
 
 object ValueParameterLocalityChecker : FirValueParameterChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
@@ -25,7 +25,7 @@ object ValueParameterLocalityChecker : FirValueParameterChecker(MppCheckerKind.C
 
         reporter.reportOn(
             defaultValue.source ?: declaration.source,
-            LOCALITY_VIOLATION,
+            LOCALITY_MISMATCH,
             "Initializer",
             requiredLocality,
             actualLocality

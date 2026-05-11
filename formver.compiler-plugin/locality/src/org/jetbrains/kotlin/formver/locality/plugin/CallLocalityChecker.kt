@@ -17,7 +17,9 @@ import org.jetbrains.kotlin.fir.expressions.arguments
 import org.jetbrains.kotlin.fir.expressions.resolvedArgumentMapping
 import org.jetbrains.kotlin.fir.expressions.unwrapAndFlattenArgument
 import org.jetbrains.kotlin.fir.types.coneType
-import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOLATION
+import org.jetbrains.kotlin.fir.types.resolvedType
+import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.CONTEXT_LOCALITY_MISMATCH
+import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_MISMATCH
 
 object CallLocalityChecker : FirCallChecker(MppCheckerKind.Common) {
     context(context: CheckerContext)

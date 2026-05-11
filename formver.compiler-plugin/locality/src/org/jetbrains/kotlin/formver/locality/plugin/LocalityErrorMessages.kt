@@ -13,14 +13,21 @@ import org.jetbrains.kotlin.fir.analysis.diagnostics.FirDiagnosticRenderers
 object LocalityErrorMessages : BaseDiagnosticRendererFactory() {
     override val MAP: KtDiagnosticFactoryToRendererMap by KtDiagnosticFactoryToRendererMap("FormalVerificationLocality") { map ->
         map.put(
-            LocalityErrors.LOCALITY_VIOLATION,
-            "{0} locality mismatch: expected {1}, actual {2}.",
+            LocalityErrors.LOCALITY_MISMATCH,
+            "{0} locality mismatch: expected ''{1}'', actual ''{2}''.",
             CommonRenderers.STRING,
             LocalityAttributeRenderer,
             LocalityAttributeRenderer,
         )
         map.put(
-            LocalityErrors.LOCALITY_CAPTURE_VIOLATION,
+            LocalityErrors.CONTEXT_LOCALITY_MISMATCH,
+            "Locality mismatch for context parameter of type ''{0}'': expected ''{1}'', actual ''{2}''.",
+            FirDiagnosticRenderers.RENDER_TYPE,
+            LocalityAttributeRenderer,
+            LocalityAttributeRenderer,
+        )
+        map.put(
+            LocalityErrors.INVALID_LOCALITY_CAPTURE,
             "Unable to capture outer local declaration from ''{0}''.",
             FirDiagnosticRenderers.DECLARATION_NAME,
         )

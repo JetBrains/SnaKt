@@ -18,7 +18,8 @@ import org.jetbrains.kotlin.fir.expressions.toResolvedCallableSymbol
 import org.jetbrains.kotlin.fir.isEnabled
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.types.coneType
-import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOLATION
+import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.CONTEXT_LOCALITY_MISMATCH
+import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_MISMATCH
 
 object QualifiedAccessLocalityChecker : FirQualifiedAccessExpressionChecker(MppCheckerKind.Common) {
     @OptIn(SymbolInternals::class)
@@ -37,7 +38,7 @@ object QualifiedAccessLocalityChecker : FirQualifiedAccessExpressionChecker(MppC
             if (!expectedLocality.accepts(actualLocality)) {
                 reporter.reportOn(
                     receiver.source ?: expression.source,
-                    LOCALITY_VIOLATION,
+                    LOCALITY_MISMATCH,
                     "Receiver",
                     expectedLocality,
                     actualLocality
@@ -61,9 +62,9 @@ object QualifiedAccessLocalityChecker : FirQualifiedAccessExpressionChecker(MppC
             if (expectedLocality.accepts(actualLocality)) continue
 
             reporter.reportOn(
-                argument.source,
-                LOCALITY_VIOLATION,
-                "Argument",
+                argument.source ?: expression.source,
+                CONTEXT_LOCALITY_MISMATCH,
+                argumentDeclaration.returnTypeRef.coneType,
                 expectedLocality,
                 actualLocality
             )

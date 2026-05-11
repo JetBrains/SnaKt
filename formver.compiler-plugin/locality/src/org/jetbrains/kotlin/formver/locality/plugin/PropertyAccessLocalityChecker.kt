@@ -23,7 +23,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirValueParameterSymbol
-import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_CAPTURE_VIOLATION
+import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.INVALID_LOCALITY_CAPTURE
 
 object PropertyAccessLocalityChecker : FirPropertyAccessExpressionChecker(MppCheckerKind.Common) {
     private fun FirDeclaration.declaresProperty(propertySymbol: FirPropertySymbol): Boolean {
@@ -57,7 +57,7 @@ object PropertyAccessLocalityChecker : FirPropertyAccessExpressionChecker(MppChe
 
         reporter.reportOn(
             expression.source,
-            LOCALITY_CAPTURE_VIOLATION,
+            INVALID_LOCALITY_CAPTURE,
             outerDeclaration.symbol,
         )
     }

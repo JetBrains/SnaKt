@@ -26,7 +26,7 @@ val localContextProperty: Any
 
 context(_: @Borrowed A)
 fun `pass local as implicit global context argument`() {
-    <!LOCALITY_VIOLATION!>requireGlobalContext()<!>
+    <!CONTEXT_LOCALITY_MISMATCH!>requireGlobalContext()<!>
 }
 
 context(_: @Borrowed A)
@@ -41,12 +41,12 @@ fun `pass global as implicit global context argument`() {
 
 fun `pass local as shared extension property receiver`() {
     val x: @Borrowed A = A()
-    val y = <!LOCALITY_VIOLATION!>x<!>.globalExtensionProperty
+    val y = <!LOCALITY_MISMATCH!>x<!>.globalExtensionProperty
 }
 
 context(_: @Borrowed A)
 fun `pass local as implicit global property context argument`() {
-    val x = <!LOCALITY_VIOLATION!>globalContextProperty<!>
+    val x = <!CONTEXT_LOCALITY_MISMATCH!>globalContextProperty<!>
 }
 
 context(_: @Borrowed A)
@@ -75,20 +75,20 @@ val globalContextPropertyAB: Any
     get() = Any()
 
 fun `pass local with 'with' as global context argument`(x: @Borrowed A) {
-    <!INVALID_LOCALITY_TYPE_TARGET!>with<!>(<!LOCALITY_VIOLATION!>x<!>) {
-        <!LOCALITY_VIOLATION!>requireGlobalA()<!>
+    <!INVALID_LOCALITY_TYPE_TARGET!>with<!>(<!LOCALITY_MISMATCH!>x<!>) {
+        <!CONTEXT_LOCALITY_MISMATCH!>requireGlobalA()<!>
     }
 }
 
 fun `pass local with 'with' as local context argument`(x: @Borrowed A) {
-    <!INVALID_LOCALITY_TYPE_TARGET!>with<!>(<!LOCALITY_VIOLATION!>x<!>) {
+    <!INVALID_LOCALITY_TYPE_TARGET!>with<!>(<!LOCALITY_MISMATCH!>x<!>) {
         requireLocalA()
     }
 }
 
 context(_: @Borrowed A, _: B)
 fun `pass local as first of mixed context arguments`() {
-    <!LOCALITY_VIOLATION!>requireGlobalAAndB()<!>
+    <!CONTEXT_LOCALITY_MISMATCH!>requireGlobalAAndB()<!>
 }
 
 context(_: @Borrowed A, _: B)
@@ -98,11 +98,21 @@ fun `pass local and global as mixed context arguments`() {
 
 context(_: @Borrowed A, _: B)
 fun `pass local as first mixed property context argument`() {
-    val x = <!LOCALITY_VIOLATION!>globalContextPropertyAB<!>
+    val x = <!CONTEXT_LOCALITY_MISMATCH!>globalContextPropertyAB<!>
 }
 
 fun `pass local with with as global property context argument`(x: @Borrowed A) {
-    <!INVALID_LOCALITY_TYPE_TARGET!>with<!>(<!LOCALITY_VIOLATION!>x<!>) {
-        val y = <!LOCALITY_VIOLATION!>globalContextPropertyA<!>
+    <!INVALID_LOCALITY_TYPE_TARGET!>with<!>(<!LOCALITY_MISMATCH!>x<!>) {
+        val y = <!CONTEXT_LOCALITY_MISMATCH!>globalContextPropertyA<!>
     }
+}
+
+context(_: @Borrowed A)
+fun `pass local context as global invocation context`(f: context(A) () -> Unit) {
+    <!CONTEXT_LOCALITY_MISMATCH!>f()<!>
+}
+
+context(_: @Borrowed A)
+fun `pass local context as local invocation context`(f: context(@Borrowed A) () -> Unit) {
+    f()
 }

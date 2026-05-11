@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirVariableAssignmentChecker
 import org.jetbrains.kotlin.fir.expressions.FirVariableAssignment
-import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOLATION
+import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_MISMATCH
 
 object AssignmentLocalityChecker : FirVariableAssignmentChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
@@ -23,7 +23,7 @@ object AssignmentLocalityChecker : FirVariableAssignmentChecker(MppCheckerKind.C
 
         reporter.reportOn(
             expression.rValue.source,
-            LOCALITY_VIOLATION,
+            LOCALITY_MISMATCH,
             "Assignment",
             requiredLocality,
             actualLocality

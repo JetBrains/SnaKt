@@ -5,15 +5,15 @@ import org.jetbrains.kotlin.formver.plugin.Borrowed
 fun `return shared value from expression body`(x: Any): Any = x
 
 fun `return local value explicitly`(x: @Borrowed Any): Any {
-    return <!LOCALITY_VIOLATION!>x<!>
+    return <!LOCALITY_MISMATCH!>x<!>
 }
 
 fun `return local value from expression body`(x: @Borrowed Any): Any =
-    <!LOCALITY_VIOLATION!>x<!>
+    <!LOCALITY_MISMATCH!>x<!>
 
 fun `return local value from lambda body`(x: @Borrowed Any) {
     run<Any> {
-        <!LOCALITY_CAPTURE_VIOLATION, LOCALITY_VIOLATION!>x<!>
+        <!INVALID_LOCALITY_CAPTURE, LOCALITY_MISMATCH!>x<!>
     }
 }
 
@@ -22,7 +22,7 @@ class A(
 )
 
 fun @Borrowed A.`return local receiver`(): A {
-    return <!LOCALITY_VIOLATION!>this<!>
+    return <!LOCALITY_MISMATCH!>this<!>
 }
 
 fun @Borrowed A.`return explicit local receiver property`(): Any {
