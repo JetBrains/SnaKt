@@ -6,10 +6,13 @@ import org.opentest4j.AssertionFailedError
 import java.io.File
 
 // Dumps expected vs actual content from golden-file assertion failures to
-// /tmp/test-assertion-dump-*.txt. Inert unless registered via
-// META-INF/services and enabled via junit-platform.properties autodetection;
-// scripts/dump-test-diff.sh manages that registration transiently.
+// $SNAKT_TEST_DUMP_DIR/test-assertion-dump-*.txt (default /tmp). Inert unless
+// registered via META-INF/services and enabled via junit-platform.properties
+// autodetection; scripts/dump-test-diff.sh manages that registration
+// transiently.
 class DumpAssertionDiffExtension : TestWatcher {
+    private val dumpDir: File = File(System.getenv("SNAKT_TEST_DUMP_DIR") ?: "/tmp")
+
     override fun testFailed(context: ExtensionContext, cause: Throwable) {
         val baseName = context.displayName.replace(Regex("[^a-zA-Z0-9_]"), "_")
         val assertions = collectAssertionErrors(cause)
@@ -18,14 +21,15 @@ class DumpAssertionDiffExtension : TestWatcher {
             val name = "$baseName$suffix"
             val expected = resolveValue(error.expected)
             val actual = resolveValue(error.actual)
-            File("/tmp/test-assertion-dump-$name.txt").writeText(buildString {
+            val out = File(dumpDir, "test-assertion-dump-$name.txt")
+            out.writeText(buildString {
                 appendLine("=== EXPECTED ===")
                 appendLine(expected)
                 appendLine()
                 appendLine("=== ACTUAL ===")
                 appendLine(actual)
             })
-            System.err.println(">>> Assertion diff dumped to /tmp/test-assertion-dump-$name.txt")
+            System.err.println(">>> Assertion diff dumped to ${out.absolutePath}")
         }
     }
 

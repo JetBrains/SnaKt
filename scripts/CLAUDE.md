@@ -1,12 +1,14 @@
 # Scripts
 
-Use `dump-test-diff.sh` to debug golden file test failures. It runs a single test and dumps the expected vs actual content when an assertion fails, working around Gradle's cross-JVM serialization which strips diff details.
+`dump-test-diff.sh` debugs golden-file test failures by surfacing the expected/actual diff that Gradle's cross-JVM serialization normally strips.
 
-When both `.kt` and `.fir.diag.txt` golden files are broken, it captures each diff in a separate numbered file.
-
-Usage:
 ```
 ./scripts/dump-test-diff.sh "testName"
 ```
 
-Raw expected/actual content lands at `/tmp/test-assertion-dump-*.txt`. The script also writes a normalized unified diff to `/tmp/test-assertion-diff-*.txt` with source-position offsets (e.g. `/foo.kt:(23,31):`) stripped, so methods that only had their offsets shifted by unrelated edits do not show up as spurious changes — read the normalized diff first; fall back to the raw dump only if you need original offsets.
+Output lands in `$SNAKT_TEST_DUMP_DIR` (default `/tmp`):
+
+- `test-assertion-diff-*.txt` — unified diff with source-position offsets (`/foo.kt:(23,31):`) collapsed to `:(_,_):` so unrelated offset shifts don't show as changes. Read this first.
+- `test-assertion-dump-*.txt` — raw expected/actual content. Fall back to this when you need the original offsets.
+
+Multiple failing assertions (e.g. both `.kt` and `.fir.diag.txt` broken) get separate numbered files.
