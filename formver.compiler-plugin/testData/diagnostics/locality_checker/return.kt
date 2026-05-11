@@ -13,7 +13,7 @@ fun `return local value from expression body`(x: @Borrowed Any): Any =
 
 fun `return local value from lambda body`(x: @Borrowed Any) {
     run<Any> {
-        <!LOCALITY_VIOLATION!>x<!>
+        <!LOCALITY_CAPTURE_VIOLATION, LOCALITY_VIOLATION!>x<!>
     }
 }
 

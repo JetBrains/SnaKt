@@ -75,13 +75,13 @@ fun `call global-receiver-local-argument lambda directly with local receiver and
 }
 
 fun `call mixed-argument lambda expression with local argument`(x: @Borrowed Any, f: (Any) -> Unit, g: (@Borrowed Any) -> Unit) {
-    (if (true) { f } else { g })(<!LOCALITY_VIOLATION!>x<!>)
+    (if (true) { f } else { g })(x)
 }
 
 fun `call mixed-argument lambda variable with local argument`(x: @Borrowed Any, f: (Any) -> Unit, g: (@Borrowed Any) -> Unit) {
     val h = if (true) { f } else { g }
 
-    h(<!LOCALITY_VIOLATION!>x<!>)
+    h(x)
 }
 
 fun `call mixed-global-local-argument lambda expression with local arguments`(
@@ -90,7 +90,7 @@ fun `call mixed-global-local-argument lambda expression with local arguments`(
     f: (Any, @Borrowed Any) -> Unit,
     g: (@Borrowed Any, @Borrowed Any) -> Unit
 ) {
-    (if (true) { f } else { g })(<!LOCALITY_VIOLATION!>x<!>, y)
+    (if (true) { f } else { g })(x, y)
 }
 
 fun `call mixed-global-local-argument lambda variable with local arguments`(
@@ -101,7 +101,7 @@ fun `call mixed-global-local-argument lambda variable with local arguments`(
 ) {
     val h = if (true) { f } else { g }
 
-    h(<!LOCALITY_VIOLATION!>x<!>, y)
+    h(x, y)
 }
 
 fun `call mixed-local-global-argument lambda expression with local arguments`(
@@ -110,7 +110,7 @@ fun `call mixed-local-global-argument lambda expression with local arguments`(
     f: (@Borrowed Any, Any) -> Unit,
     g: (@Borrowed Any, @Borrowed Any) -> Unit
 ) {
-    (if (true) { f } else { g })(x, <!LOCALITY_VIOLATION!>y<!>)
+    (if (true) { f } else { g })(x, y)
 }
 
 fun `call mixed-local-global-argument lambda variable with local arguments`(
@@ -121,7 +121,7 @@ fun `call mixed-local-global-argument lambda variable with local arguments`(
 ) {
     val h = if (true) { f } else { g }
 
-    h(x, <!LOCALITY_VIOLATION!>y<!>)
+    h(x, y)
 }
 
 fun `call mixed-global-global-argument lambda expression with local arguments`(
@@ -130,7 +130,7 @@ fun `call mixed-global-global-argument lambda expression with local arguments`(
     f: (Any, @Borrowed Any) -> Unit,
     g: (@Borrowed Any, Any) -> Unit
 ) {
-    (if (true) { f } else { g })(<!LOCALITY_VIOLATION!>x<!>, <!LOCALITY_VIOLATION!>y<!>)
+    (if (true) { f } else { g })(x, y)
 }
 
 fun `call mixed-global-global-argument lambda variable with local arguments`(
@@ -141,7 +141,7 @@ fun `call mixed-global-global-argument lambda variable with local arguments`(
 ) {
     val h = if (true) { f } else { g }
 
-    h(<!LOCALITY_VIOLATION!>x<!>, <!LOCALITY_VIOLATION!>y<!>)
+    h(x, y)
 }
 
 fun `call local-argument lambda expression with local argument`(x: @Borrowed Any, f: (@Borrowed Any) -> Unit, g: (@Borrowed Any) -> Unit) {

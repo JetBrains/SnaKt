@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.formver.locality.plugin
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactoryToRendererMap
 import org.jetbrains.kotlin.diagnostics.rendering.BaseDiagnosticRendererFactory
 import org.jetbrains.kotlin.diagnostics.rendering.CommonRenderers
+import org.jetbrains.kotlin.fir.analysis.diagnostics.FirDiagnosticRenderers
 
 object LocalityErrorMessages : BaseDiagnosticRendererFactory() {
     override val MAP: KtDiagnosticFactoryToRendererMap by KtDiagnosticFactoryToRendererMap("FormalVerificationLocality") { map ->
@@ -15,15 +16,13 @@ object LocalityErrorMessages : BaseDiagnosticRendererFactory() {
             LocalityErrors.LOCALITY_VIOLATION,
             "{0} locality mismatch: expected {1}, actual {2}.",
             CommonRenderers.STRING,
-            LocalityRenderer,
-            LocalityRenderer,
+            LocalityAttributeRenderer,
+            LocalityAttributeRenderer,
         )
         map.put(
-            LocalityErrors.LOCALITY_CONTRACT_VIOLATION,
-            "{0} locality contract mismatch: expected {1}, actual {2}.",
-            CommonRenderers.STRING,
-            LocalityContractRenderer,
-            LocalityContractRenderer,
+            LocalityErrors.LOCALITY_CAPTURE_VIOLATION,
+            "Unable to capture outer local declaration from ''{0}''.",
+            FirDiagnosticRenderers.DECLARATION_NAME,
         )
         map.put(
             LocalityErrors.INVALID_LOCALITY_TYPE_TARGET,

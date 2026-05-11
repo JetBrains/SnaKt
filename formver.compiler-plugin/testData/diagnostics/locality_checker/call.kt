@@ -122,7 +122,7 @@ fun `pass local as local argument in local property initializer`(x: @Borrowed A)
 
 fun `pass outer local as local argument in lambda`(x: @Borrowed A) {
     {
-        borrow(<!LOCALITY_VIOLATION!>x<!>)
+        borrow(<!LOCALITY_CAPTURE_VIOLATION!>x<!>)
     }
 }
 open class `base with global constructor parameter`(x: Any)

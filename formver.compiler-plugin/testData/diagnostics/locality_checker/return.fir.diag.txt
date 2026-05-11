@@ -1,7 +1,9 @@
-/return.kt: error: Return locality mismatch: expected 'global', actual 'local(return local value explicitly)'.
+/return.kt: error: Return locality mismatch: expected 'global', actual 'local'.
 
-/return.kt: error: Return locality mismatch: expected 'global', actual 'local(return local value from expression body)'.
+/return.kt: error: Return locality mismatch: expected 'global', actual 'local'.
 
-/return.kt: error: Return locality mismatch: expected 'global', actual 'local(return local value from lambda body)'.
+/return.kt: error: Return locality mismatch: expected 'global', actual 'local'.
 
-/return.kt: error: Return locality mismatch: expected 'global', actual 'local(return local receiver)'.
+/return.kt: error: Unable to capture outer local declaration from 'anonymous'.
+
+/return.kt: error: Return locality mismatch: expected 'global', actual 'local'.

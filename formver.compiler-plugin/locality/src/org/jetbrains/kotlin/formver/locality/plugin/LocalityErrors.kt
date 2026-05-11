@@ -7,12 +7,14 @@ package org.jetbrains.kotlin.formver.locality.plugin
 
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticsContainer
+import org.jetbrains.kotlin.diagnostics.error1
 import org.jetbrains.kotlin.diagnostics.error0
 import org.jetbrains.kotlin.diagnostics.error3
+import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 
 object LocalityErrors : KtDiagnosticsContainer() {
-    val LOCALITY_VIOLATION by error3<PsiElement, String, Locality, Locality>()
-    val LOCALITY_CONTRACT_VIOLATION by error3<PsiElement, String, LocalityContract, LocalityContract>()
+    val LOCALITY_VIOLATION by error3<PsiElement, String, LocalityAttribute?, LocalityAttribute?>()
+    val LOCALITY_CAPTURE_VIOLATION by error1<PsiElement, FirBasedSymbol<*>>()
     val INVALID_LOCALITY_TYPE_TARGET by error0<PsiElement>()
 
     override fun getRendererFactory() = LocalityErrorMessages

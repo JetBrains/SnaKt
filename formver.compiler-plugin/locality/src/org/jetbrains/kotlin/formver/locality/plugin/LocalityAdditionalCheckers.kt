@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirPropertyChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirValueParameterChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirCallChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.ExpressionCheckers
+import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirPropertyAccessExpressionChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirQualifiedAccessExpressionChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirReturnExpressionChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirThrowExpressionChecker
@@ -36,13 +37,16 @@ class LocalityAdditionalCheckers(session: FirSession) : FirAdditionalCheckersExt
 
     override val expressionCheckers: ExpressionCheckers = object : ExpressionCheckers() {
         override val variableAssignmentCheckers: Set<FirVariableAssignmentChecker>
-            get() = setOf(VariableAssignmentLocalityChecker)
+            get() = setOf(AssignmentLocalityChecker)
 
         override val callCheckers: Set<FirCallChecker>
             get() = setOf(CallLocalityChecker)
 
         override val qualifiedAccessExpressionCheckers: Set<FirQualifiedAccessExpressionChecker>
             get() = setOf(QualifiedAccessLocalityChecker)
+
+        override val propertyAccessExpressionCheckers: Set<FirPropertyAccessExpressionChecker>
+            get() = setOf(PropertyAccessLocalityChecker)
 
         override val returnExpressionCheckers: Set<FirReturnExpressionChecker>
             get() = setOf(ReturnLocalityChecker)

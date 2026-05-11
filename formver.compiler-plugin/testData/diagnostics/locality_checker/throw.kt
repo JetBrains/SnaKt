@@ -16,6 +16,6 @@ fun @Borrowed Throwable.`throw local receiver explicitly`() {
 
 fun `throw local value from lambda`(x: @Borrowed Throwable) {
     run {
-        throw <!LOCALITY_VIOLATION!>x<!>
+        throw <!LOCALITY_CAPTURE_VIOLATION, LOCALITY_VIOLATION!>x<!>
     }
 }

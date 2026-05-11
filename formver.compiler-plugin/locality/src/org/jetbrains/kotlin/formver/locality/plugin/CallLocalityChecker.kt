@@ -16,45 +16,44 @@ import org.jetbrains.kotlin.fir.expressions.FirImplicitInvokeCall
 import org.jetbrains.kotlin.fir.expressions.arguments
 import org.jetbrains.kotlin.fir.expressions.resolvedArgumentMapping
 import org.jetbrains.kotlin.fir.expressions.unwrapAndFlattenArgument
+import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOLATION
 
 object CallLocalityChecker : FirCallChecker(MppCheckerKind.Common) {
     context(context: CheckerContext)
-    private fun FirCall.collectLocalityRequirements(): Map<FirExpression, LocalityRequirement>? {
+    private fun FirCall.collectRequiredLocalities(): Map<FirExpression, LocalityAttribute?>? {
         if (this is FirImplicitInvokeCall) {
             val contract = dispatchReceiver?.resolveLocalityContract()
 
-            if (contract is LocalityContract.FunctionContract) {
-                val callableInputs = listOfNotNull(extensionReceiver) + arguments
+            if (contract != null) {
+                val invokeArguments = listOfNotNull(extensionReceiver) + arguments
 
-                return callableInputs.zip(contract.requirements).associate { (argument, argumentRequirement) ->
-                    argument to argumentRequirement
-                }
+                return invokeArguments.zip(contract).toMap()
             }
         }
 
         return resolvedArgumentMapping?.map { (argument, argumentDeclaration) ->
-            argument to argumentDeclaration.returnTypeRef.resolveLocalityRequirement()
+            argument to argumentDeclaration.returnTypeRef.coneType.locality
         }?.toMap()
     }
 
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirCall) {
-        val argumentRequirements = expression.collectLocalityRequirements()
+        val requiredLocalities = expression.collectRequiredLocalities()
 
-        for ((argument, localityRequirement) in argumentRequirements.orEmpty()) {
+        for ((argument, requiredLocality) in requiredLocalities.orEmpty()) {
             val effectiveArguments = argument.unwrapAndFlattenArgument(flattenArrays = false)
 
             for (effectiveArgument in effectiveArguments) {
                 val actualLocality = effectiveArgument.resolveLocality()
 
-                if (localityRequirement.accepts(actualLocality)) continue
+                if (requiredLocality.accepts(actualLocality)) continue
 
                 reporter.reportOn(
                     effectiveArgument.source ?: argument.source,
                     LOCALITY_VIOLATION,
                     "Argument",
-                    localityRequirement.generateWitness(),
+                    requiredLocality,
                     actualLocality
                 )
             }

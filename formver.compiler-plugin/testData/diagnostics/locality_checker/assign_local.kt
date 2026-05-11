@@ -37,7 +37,7 @@ fun `assign local to local in loop`(x: @Borrowed Any) {
 
 fun `assign local to local in lambda`(x: @Borrowed Any) {
     { y: Any ->
-        var z: @Borrowed Any = <!LOCALITY_VIOLATION!>x<!>
+        var z: @Borrowed Any = <!LOCALITY_CAPTURE_VIOLATION!>x<!>
     }
 }
 
@@ -51,7 +51,7 @@ fun `assign local if-expression to global`(x: @Borrowed Any) {
 
 fun `assign local if-expression to local in lambda`(x: @Borrowed Any) {
     { y: Any ->
-        var z: @Borrowed Any = <!LOCALITY_VIOLATION!>if (false) { x } else { Any() }<!>
+        var z: @Borrowed Any = if (false) { <!LOCALITY_CAPTURE_VIOLATION!>x<!> } else { Any() }
     }
 }
 
@@ -158,14 +158,14 @@ fun `assign local nested control-flow to global in lambda loop`(x: @Borrowed Any
 
         while (true) {
             z = <!LOCALITY_VIOLATION!>when {
-                false -> try { x } catch (_: Throwable) { Any() }
+                false -> try { <!LOCALITY_CAPTURE_VIOLATION!>x<!> } catch (_: Throwable) { Any() }
                 else -> Any()
             }<!>
 
             z = <!LOCALITY_VIOLATION!>if (false) {
-                x
+                <!LOCALITY_CAPTURE_VIOLATION!>x<!>
             } else {
-                try { Any() } catch (_: Throwable) { x }
+                try { Any() } catch (_: Throwable) { <!LOCALITY_CAPTURE_VIOLATION!>x<!> }
             }<!>
         }
     }
@@ -173,6 +173,18 @@ fun `assign local nested control-flow to global in lambda loop`(x: @Borrowed Any
 
 fun `assign merged local owners to global`(x: @Borrowed Any) {
     { y: @Borrowed Any ->
-        var z: Any = <!LOCALITY_VIOLATION!>if (false) { x } else { y }<!>
+        var z: Any = <!LOCALITY_VIOLATION!>if (false) { <!LOCALITY_CAPTURE_VIOLATION!>x<!> } else { y }<!>
     }
+}
+
+class A
+
+class B
+
+class C
+
+fun nondet() = false
+
+fun `test`(x: @Borrowed A, y: B, z: C) {
+    var a = x as A
 }

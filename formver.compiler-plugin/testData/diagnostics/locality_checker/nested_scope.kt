@@ -10,7 +10,7 @@ fun `resolve captured local owner from nested lambda`(x: @Borrowed A) {
     val x: @Borrowed A = x
 
     run {
-        borrow(<!LOCALITY_VIOLATION!>x<!>)
+        borrow(<!LOCALITY_CAPTURE_VIOLATION!>x<!>)
     }
 
     borrow(x)

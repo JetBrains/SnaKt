@@ -16,16 +16,16 @@ import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOL
 object ThrowLocalityChecker : FirThrowExpressionChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirThrowExpression) {
-        val localityRequirement = LocalityRequirement.RequireGlobal
+        val requiredLocality: LocalityAttribute? = null
         val actualLocality = expression.exception.resolveLocality()
 
-        if (localityRequirement.accepts(actualLocality)) return
+        if (requiredLocality.accepts(actualLocality)) return
 
         reporter.reportOn(
             expression.exception.source,
             LOCALITY_VIOLATION,
             "Throw",
-            localityRequirement.generateWitness(),
+            requiredLocality,
             actualLocality
         )
     }

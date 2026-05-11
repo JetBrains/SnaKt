@@ -1,31 +1,11 @@
-/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local(call global-receiver lambda directly with local receiver)'.
+/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
 
-/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local(call global-argument lambda directly with local argument)'.
+/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
 
-/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local(call global-local-argument lambda directly with local arguments)'.
+/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
 
-/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local(call local-global-argument lambda directly with local arguments)'.
+/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
 
-/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local(call local-receiver-global-argument lambda directly with local receiver and local argument)'.
+/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
 
-/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local(call global-receiver-local-argument lambda directly with local receiver and local argument)'.
-
-/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local(call mixed-argument lambda expression with local argument)'.
-
-/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local(call mixed-argument lambda variable with local argument)'.
-
-/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local(call mixed-global-local-argument lambda expression with local arguments)'.
-
-/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local(call mixed-global-local-argument lambda variable with local arguments)'.
-
-/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local(call mixed-local-global-argument lambda expression with local arguments)'.
-
-/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local(call mixed-local-global-argument lambda variable with local arguments)'.
-
-/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local(call mixed-global-global-argument lambda expression with local arguments)'.
-
-/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local(call mixed-global-global-argument lambda expression with local arguments)'.
-
-/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local(call mixed-global-global-argument lambda variable with local arguments)'.
-
-/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local(call mixed-global-global-argument lambda variable with local arguments)'.
+/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local'.

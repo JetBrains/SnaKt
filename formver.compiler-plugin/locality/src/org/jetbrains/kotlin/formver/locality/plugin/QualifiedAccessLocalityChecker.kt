@@ -17,6 +17,7 @@ import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
 import org.jetbrains.kotlin.fir.expressions.toResolvedCallableSymbol
 import org.jetbrains.kotlin.fir.isEnabled
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
+import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOLATION
 
 object QualifiedAccessLocalityChecker : FirQualifiedAccessExpressionChecker(MppCheckerKind.Common) {
@@ -25,21 +26,20 @@ object QualifiedAccessLocalityChecker : FirQualifiedAccessExpressionChecker(MppC
     override fun check(expression: FirQualifiedAccessExpression) {
         if (expression !is FirFunctionCall && expression !is FirPropertyAccessExpression) return
 
-        val callableSymbol = expression.toResolvedCallableSymbol()
-            ?: return
+        val callableSymbol = expression.toResolvedCallableSymbol() ?: return
         val receiverDeclaration = callableSymbol.receiverParameterSymbol?.fir
         val receiver = expression.extensionReceiver
 
         if (receiver != null && receiverDeclaration != null) {
-            val requiredLocality = receiverDeclaration.typeRef.resolveLocalityRequirement()
+            val expectedLocality = receiverDeclaration.typeRef.coneType.locality
             val actualLocality = receiver.resolveLocality()
 
-            if (!requiredLocality.accepts(actualLocality)) {
+            if (!expectedLocality.accepts(actualLocality)) {
                 reporter.reportOn(
                     receiver.source ?: expression.source,
                     LOCALITY_VIOLATION,
                     "Receiver",
-                    requiredLocality.generateWitness(),
+                    expectedLocality,
                     actualLocality
                 )
             }
@@ -55,16 +55,16 @@ object QualifiedAccessLocalityChecker : FirQualifiedAccessExpressionChecker(MppC
             .zip(callableSymbol.contextParameterSymbols.map { it.fir })
 
         for ((argument, argumentDeclaration) in contextArgumentMappings) {
-            val requiredLocality = argumentDeclaration.returnTypeRef.resolveLocalityRequirement()
+            val expectedLocality = argumentDeclaration.returnTypeRef.coneType.locality
             val actualLocality = argument.resolveLocality()
 
-            if (requiredLocality.accepts(actualLocality)) continue
+            if (expectedLocality.accepts(actualLocality)) continue
 
             reporter.reportOn(
                 argument.source,
                 LOCALITY_VIOLATION,
                 "Argument",
-                requiredLocality.generateWitness(),
+                expectedLocality,
                 actualLocality
             )
         }
