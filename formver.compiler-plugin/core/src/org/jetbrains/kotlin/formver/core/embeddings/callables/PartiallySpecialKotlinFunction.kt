@@ -21,13 +21,13 @@ abstract class AbstractPartiallySpecialKotlinFunction(
     override val className: String? = null,
     override val name: String,
 ) : PartiallySpecialKotlinFunction {
-    private var _baseEmbedding: FunctionEmbedding? = null
+    private var _baseEmbedding: UserFunctionEmbedding? = null
     override val baseEmbedding
         get() = _baseEmbedding
 
     override val packageName = packageName.toList()
 
-    override fun initBaseEmbedding(embedding: FunctionEmbedding) {
+    override fun initBaseEmbedding(embedding: UserFunctionEmbedding) {
         check(_baseEmbedding == null) { "Base embedding for partially special function $name already initialized." }
         _baseEmbedding = embedding
     }
@@ -56,7 +56,7 @@ class StringPlusAnyFunction : AbstractPartiallySpecialKotlinFunction("kotlin", c
  * but those functions are generated once per run anyway.
  */
 object PartiallySpecialKotlinFunctions {
-    fun generateAllByName(): Map<SymbolicName, FunctionEmbedding> =
+    fun generateAllByName(): Map<SymbolicName, CallableEmbedding> =
         buildList {
             add(StringPlusAnyFunction())
         }.associateBy { it.embedName() }

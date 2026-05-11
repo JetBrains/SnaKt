@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.conversion
 
+import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.fir.FirLabel
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
@@ -26,8 +27,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.isCustom
 import org.jetbrains.kotlin.formver.core.isInvariantBuilderFunctionNamed
 import org.jetbrains.kotlin.formver.core.linearization.*
-import org.jetbrains.kotlin.formver.core.purity.checkValidity
-import org.jetbrains.kotlin.formver.core.purity.isPure
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.utils.addIfNotNull
@@ -247,66 +246,51 @@ fun StmtConversionContext.convertImpureBody(
     declaration: FirSimpleFunction,
     signature: FullNamedFunctionSignature,
     returnTarget: ReturnTarget,
-) {
-    val firBody = declaration.body ?: return
+): ConvertedMethodBody? {
+    val firBody = declaration.body ?: return null
     val body = convert(firBody)
     val returnLabel = returnTarget.label ?: throw SnaktInternalException(
         declaration.source, "Return target label not found for method ${declaration.name}"
     )
     val bodyExp = FunctionExp(signature, body, returnLabel)
-    convertedBodyResolver.storeImpure(signature.name, ImpureConvertedBody(bodyExp, returnTarget))
+    return ConvertedMethodBody(bodyExp, returnTarget)
 }
 
-fun StmtConversionContext.linearizeImpureBody(
-    declaration: FirSimpleFunction,
-    name: SymbolicName,
-) {
-    val converted = convertedBodyResolver.lookupImpure(name) ?: return
-    val seqnBuilder = SeqnBuilder(declaration.source)
-    val linearizer =
-        Linearizer(SharedLinearizationState(anonVarProducer), seqnBuilder, declaration.source, typeResolver)
-    converted.bodyExp.toLinearizable(declaration.source).toViperUnusedResult(linearizer)
-    // note: we must guarantee somewhere that returned value is Unit
-    // as we may not encounter any `return` statement in the body
-    converted.returnTarget.variable.withIsUnitInvariantIfUnit(typeResolver)
-        .toLinearizable(declaration.source).toViperUnusedResult(linearizer)
-    val isValid = converted.bodyExp.checkValidity(declaration.source, errorCollector)
-    if (isValid) {
-        linearizedBodyResolver.storeImpure(
-            name,
-            FunctionBodyEmbedding(seqnBuilder.block),
-        )
-    }
-}
-
-fun StmtConversionContext.convertPureBody(
-    declaration: FirSimpleFunction,
-    name: SymbolicName,
-) {
+fun StmtConversionContext.convertPureBody(declaration: FirSimpleFunction): ExpEmbedding {
     val firBody = declaration.body ?: throw SnaktInternalException(
         declaration.source,
         "Pure functions expect a function body to exist"
     )
-    convertedBodyResolver.storePure(name, convert(firBody))
+    return convert(firBody)
 }
 
-fun StmtConversionContext.linearizePureBody(
-    declaration: FirSimpleFunction,
-    name: SymbolicName,
-) {
-    val body = convertedBodyResolver.lookupPure(name) ?: return
-    if (!body.isPure()) {
-        errorCollector.addPurityError(declaration.source, "Impure function body detected in pure function")
-        return
-    }
+fun ProgramConversionContext.linearizeImpureBody(
+    source: KtSourceElement?,
+    converted: ConvertedMethodBody,
+): FunctionBodyEmbedding {
+    val seqnBuilder = SeqnBuilder(source)
+    val linearizer =
+        Linearizer(SharedLinearizationState(anonVarProducer), seqnBuilder, source, typeResolver)
+    converted.bodyExp.toLinearizable(source).toViperUnusedResult(linearizer)
+    // note: we must guarantee somewhere that returned value is Unit
+    // as we may not encounter any `return` statement in the body
+    converted.returnTarget.variable.withIsUnitInvariantIfUnit(typeResolver)
+        .toLinearizable(source).toViperUnusedResult(linearizer)
+    return FunctionBodyEmbedding(seqnBuilder.block)
+}
+
+fun ProgramConversionContext.linearizePureBody(
+    source: KtSourceElement?,
+    body: ExpEmbedding,
+): Exp {
     val pureFunBodyLinearizer = PureFunBodyLinearizer(
-        declaration.source,
+        source,
         SharedLinearizationState(anonVarProducer),
-        SsaConverter(declaration.source),
+        SsaConverter(source),
         typeResolver
     )
-    body.toLinearizable(declaration.source).toViperUnusedResult(pureFunBodyLinearizer)
-    linearizedBodyResolver.storePure(name, pureFunBodyLinearizer.constructExpression())
+    body.toLinearizable(source).toViperUnusedResult(pureFunBodyLinearizer)
+    return pureFunBodyLinearizer.constructExpression()
 }
 
 private const val INVALID_STATEMENT_MSG =

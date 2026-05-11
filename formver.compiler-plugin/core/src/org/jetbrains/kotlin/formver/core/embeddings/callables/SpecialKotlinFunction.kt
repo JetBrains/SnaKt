@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
  * In particular, that means that there won't be a call to the Viper method
  * sometimes.
  */
-sealed interface SpecialKotlinFunction : FunctionEmbedding {
+sealed interface SpecialKotlinFunction : CallableEmbedding {
     val packageName: List<String>
     val className: String?
         get() = null
@@ -41,12 +41,12 @@ interface PartiallySpecialKotlinFunction : SpecialKotlinFunction {
      * `baseEmbedding` stores a usual (user) embedding for the partially special function.
      * It is initialised iff the partially special function is used in the program in any way.
      */
-    val baseEmbedding: FunctionEmbedding?
+    val baseEmbedding: UserFunctionEmbedding?
     fun tryInsertCall(args: List<ExpEmbedding>, ctx: StmtConversionContext): ExpEmbedding?
     override fun insertCall(args: List<ExpEmbedding>, ctx: StmtConversionContext): ExpEmbedding {
         return tryInsertCall(args, ctx) ?: baseEmbedding?.insertCall(args, ctx)
         ?: error("Base embedding for partially special function $name not specified")
     }
 
-    fun initBaseEmbedding(embedding: FunctionEmbedding)
+    fun initBaseEmbedding(embedding: UserFunctionEmbedding)
 }
