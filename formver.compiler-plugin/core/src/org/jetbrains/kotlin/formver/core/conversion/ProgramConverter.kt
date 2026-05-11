@@ -65,7 +65,7 @@ class ProgramConverter(
     // The type annotation is necessary for the code to compile.
     override val anonVarProducer = FreshEntityProducer(::AnonymousVariableEmbedding)
     override val anonBuiltinVarProducer = FreshEntityProducer(::AnonymousBuiltinVariableEmbedding)
-    override val returnTargetProducer = FreshEntityProducer(::ReturnTargetImpl)
+    override val returnTargetProducer = FreshEntityProducer(ReturnTarget::createForDepth)
     override val nameResolver = ShortNameResolver()
 
 
@@ -367,7 +367,7 @@ class ProgramConverter(
         val returnType = embedType(symbol.resolvedReturnType)
 
         val returnTarget = when {
-            symbol.isPure(session) -> ReturnTargetNoLabel.forPureFunction(returnType)
+            symbol.isPure(session) -> ReturnTarget.createForPureFunction(returnType)
             else -> returnTargetProducer.getFresh(returnType)
         }
 
@@ -438,8 +438,8 @@ class ProgramConverter(
         signature: NamedFunctionSignature
     ): Pair<List<ExpEmbedding>, List<ExpEmbedding>> {
         val contractVisitor = ContractDescriptionConversionVisitor(this@ProgramConverter, signature)
-        val postConditions = contractVisitor.getPostconditions()
-        return Pair(emptyList(), postConditions)
+        val postconditions = contractVisitor.getPostconditions()
+        return Pair(emptyList(), postconditions)
     }
 
     private fun embedProvidedContract(

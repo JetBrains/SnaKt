@@ -197,6 +197,9 @@ fun StmtConversionContext.insertInlineFunctionCall(
 ): ExpEmbedding {
     // TODO: It seems like it may be possible to avoid creating a local here, but it is not clear how.
     val returnTarget = returnTargetProducer.getFresh(calleeSignature.callableType.returnType)
+    assert(returnTarget.label != null) {
+        "Return target label not found for function ${calleeSignature.callableType.name}"
+    }
     val (declarations, callArgs) = getInlineFunctionCallArgs(args, calleeSignature.callableType.formalArgTypes)
     val subs = paramNames.zip(callArgs).toMap()
     val methodCtxFactory = MethodContextFactory(
@@ -204,11 +207,12 @@ fun StmtConversionContext.insertInlineFunctionCall(
         InlineParameterResolver(subs, returnTargetName, returnTarget),
         parent = parentCtx,
     )
+
     return withMethodCtx(methodCtxFactory) {
         Block {
             add(Declare(returnTarget.variable, null))
             addAll(declarations)
-            add(FunctionExp(null, convert(body), returnTarget.label))
+            add(FunctionExp(null, convert(body), returnTarget.label!!))
             // if unit is what we return we might not guarantee it yet
             add(returnTarget.variable.withIsUnitInvariantIfUnit(typeResolver))
         }
@@ -247,7 +251,8 @@ fun StmtConversionContext.convertMethodWithBody(
 ): FunctionBodyConversionResult? {
     val firBody = declaration.body ?: return null
     val body = convert(firBody)
-    val bodyExp = FunctionExp(signature, body, defaultResolvedReturnTarget.label)
+    val returnLabel = defaultResolvedReturnTarget.label ?: throw SnaktInternalException(declaration.source, "Return target label not found for method ${declaration.name}")
+    val bodyExp = FunctionExp(signature, body, returnLabel)
     val seqnBuilder = SeqnBuilder(declaration.source)
     val linearizer =
         Linearizer(SharedLinearizationState(anonVarProducer), seqnBuilder, declaration.source, typeResolver)
