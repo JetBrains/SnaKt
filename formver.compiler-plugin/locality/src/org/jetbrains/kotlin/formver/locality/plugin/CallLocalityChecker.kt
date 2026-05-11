@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
+import org.jetbrains.kotlin.KtFakeSourceElementKind
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
@@ -51,13 +52,23 @@ object CallLocalityChecker : FirCallChecker(MppCheckerKind.Common) {
 
                 if (requiredLocality.accepts(actualLocality)) continue
 
-                reporter.reportOn(
-                    effectiveArgument.source ?: argument.source,
-                    LOCALITY_VIOLATION,
-                    "Argument",
-                    requiredLocality,
-                    actualLocality
-                )
+                if (argument.source?.kind is KtFakeSourceElementKind.ImplicitContextParameterArgument) {
+                    reporter.reportOn(
+                        expression.source,
+                        CONTEXT_LOCALITY_MISMATCH,
+                        argument.resolvedType,
+                        requiredLocality,
+                        actualLocality
+                    )
+                } else {
+                    reporter.reportOn(
+                        effectiveArgument.source ?: argument.source,
+                        LOCALITY_MISMATCH,
+                        "Argument",
+                        requiredLocality,
+                        actualLocality
+                    )
+                }
             }
         }
     }
