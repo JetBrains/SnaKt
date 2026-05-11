@@ -584,16 +584,16 @@ class ProgramConverter(
             val parameterMatching = constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
                 val name = propertySymbol.embedMemberPropertyName(this)
                 propertySymbol.withConstructorParam { paramSymbol ->
-                    typeResolver.lookupBackingField(name)?.let { paramSymbol to it }
+                    typeResolver.lookupFinalProperties(name)?.let { paramSymbol to it }
                 }
             }.toMap()
 
+            val context = createBodyConversionContext(subSignature, returnTarget)
+
             val fieldPostconditions = signature.params.mapNotNull { param ->
                 require(param is FirVariableEmbedding) { "Constructor parameters must be represented by FirVariableEmbeddings" }
-                parameterMatching[param.symbol]?.let { field ->
-                    (field.accessPolicy == AccessPolicy.ALWAYS_READABLE).ifTrue {
-                        EqCmp(FieldAccess(signature.returns, field), param)
-                    }
+                parameterMatching[param.symbol]?.let { property ->
+                    EqCmp(property.getter!!.getValue(returnTarget.variable, context), param)
                 }
             }
             ConstructorSignature(subSignature, symbol, fieldPostconditions, typeResolver)

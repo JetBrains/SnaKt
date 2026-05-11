@@ -1,6 +1,8 @@
 package org.jetbrains.kotlin.formver.core.conversion
 
+import org.jetbrains.kotlin.formver.core.embeddings.callables.PureFunctionEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.BackingFieldGetter
+import org.jetbrains.kotlin.formver.core.embeddings.properties.CustomGetter
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
@@ -96,6 +98,16 @@ class TypeResolver {
         properties.filterKeys { it.className == name }.values.mapNotNull { toBackingField(it) }
 
     fun lookupBackingField(name: ClassPropertyPair): FieldEmbedding? = properties[name]?.let { toBackingField(it) }
+
+    fun lookupFinalProperties(name: ClassPropertyPair) : PropertyEmbedding? {
+        val property = properties[name]
+        // TODO: Make this nicer
+        if (property?.getter is BackingFieldGetter || (property?.getter as? CustomGetter)?.getterMethod is PureFunctionEmbedding) {
+            return property
+        }
+        return null
+    }
+
 
     fun backingFields(): List<FieldEmbedding> = properties.values.mapNotNull { toBackingField(it) }
 
