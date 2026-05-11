@@ -1,136 +1,136 @@
 /casts.kt: info: Generated Viper text for smartcastReturn:
-method smartcastReturn(n: Ref) returns (ret: Ref)
+method smartcastReturn(n: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(n), nullable(intType()))
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
   if (!(n == nullValue())) {
-    ret := n
+    v_ret_0 := n
   } else {
-    ret := intToRef(0)}
-  goto ret_0
-  label ret_0
+    v_ret_0 := intToRef(0)}
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /casts.kt: info: Generated Viper text for isNullOrEmptyWrong:
-method isNullOrEmptyWrong(seq: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(seq), nullable(kotlin_c_CharSequence()))
-  ensures isSubtype(typeOf(ret), boolType())
+method isNullOrEmptyWrong(seq: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(seq), nullable(CharSequence()))
+  ensures isSubtype(typeOf(v_ret_0), boolType())
 {
   inhale seq != nullValue() ==> acc(shared(seq), wildcard)
   if (seq == nullValue()) {
     var anon_0: Ref
     if (seq != nullValue()) {
       var anon_1: Ref
-      var anon: Ref
-      anon := length(seq)
-      anon_1 := anon
+      var anon_2: Ref
+      anon_2 := length(seq)
+      anon_1 := anon_2
       inhale isSubtype(typeOf(anon_1), intType())
       anon_0 := anon_1
     } else {
       anon_0 := nullValue()}
-    ret := boolToRef(anon_0 == intToRef(0))
+    v_ret_0 := boolToRef(anon_0 == intToRef(0))
   } else {
-    ret := boolToRef(false)}
-  goto ret_0
-  label ret_0
+    v_ret_0 := boolToRef(false)}
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 method length(this: Ref) returns (v_ret: Ref)
 
 
 /casts.kt: info: Generated Viper text for isNonNullable:
-method isNonNullable(x: Ref) returns (ret: Ref)
+method isNonNullable(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))
-  ensures isSubtype(typeOf(ret), boolType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
 {
-  ret := boolToRef(isSubtype(typeOf(x), intType()))
-  goto ret_0
-  label ret_0
+  v_ret_0 := boolToRef(isSubtype(typeOf(x), intType()))
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /casts.kt: info: Generated Viper text for notIsNullable:
-method notIsNullable(x: Ref) returns (ret: Ref)
+method notIsNullable(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))
-  ensures isSubtype(typeOf(ret), boolType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
 {
-  ret := notBool(boolToRef(isSubtype(typeOf(x), nothingType())))
-  goto ret_0
-  label ret_0
+  v_ret_0 := notBool(boolToRef(isSubtype(typeOf(x), nothingType())))
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /casts.kt: info: Generated Viper text for smartCast:
-method smartCast(x: Ref) returns (ret: Ref)
+method smartCast(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), nullable(anyType()))
-  ensures isSubtype(typeOf(ret), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
   if (isSubtype(typeOf(x), intType())) {
-    ret := x
-    goto ret_0
+    v_ret_0 := x
+    goto lbl_ret_0
   } else {
-    ret := intToRef(-1)
-    goto ret_0
+    v_ret_0 := intToRef(-1)
+    goto lbl_ret_0
   }
-  label ret_0
+  label lbl_ret_0
 }
 
 /casts.kt: info: Generated Viper text for testAs:
-method testAs(foo: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(foo), _c_Foo())
-  ensures isSubtype(typeOf(ret), _c_Bar())
-  ensures acc(shared(ret), wildcard)
+method testAs(foo: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(foo), Foo())
+  ensures isSubtype(typeOf(v_ret_0), Bar())
+  ensures acc(Bar_shared(v_ret_0), wildcard)
 {
-  inhale acc(c_Foo_shared(foo), wildcard)
-  inhale isSubtype(typeOf(foo), _c_Bar())
-  inhale acc(shared(foo), wildcard)
-  ret := foo
-  goto ret_0
-  label ret_0
+  inhale acc(Foo_shared(foo), wildcard)
+  inhale isSubtype(typeOf(foo), Bar())
+  inhale acc(Bar_shared(foo), wildcard)
+  v_ret_0 := foo
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /casts.kt: info: Generated Viper text for testNullableAs:
-method testNullableAs(foo: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(foo), nullable(_c_Foo()))
-  ensures isSubtype(typeOf(ret), nullable(_c_Bar()))
-  ensures ret != nullValue() ==> acc(shared(ret), wildcard)
+method testNullableAs(foo: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(foo), nullable(Foo()))
+  ensures isSubtype(typeOf(v_ret_0), nullable(Bar()))
+  ensures v_ret_0 != nullValue() ==> acc(Bar_shared(v_ret_0), wildcard)
 {
-  inhale foo != nullValue() ==> acc(c_Foo_shared(foo), wildcard)
-  inhale isSubtype(typeOf(foo), nullable(_c_Bar()))
-  inhale foo != nullValue() ==> acc(shared(foo), wildcard)
-  ret := foo
-  goto ret_0
-  label ret_0
+  inhale foo != nullValue() ==> acc(Foo_shared(foo), wildcard)
+  inhale isSubtype(typeOf(foo), nullable(Bar()))
+  inhale foo != nullValue() ==> acc(Bar_shared(foo), wildcard)
+  v_ret_0 := foo
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /casts.kt: info: Generated Viper text for testSafeAs:
-method testSafeAs(foo: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(foo), _c_Foo())
-  ensures isSubtype(typeOf(ret), nullable(_c_Bar()))
-  ensures ret != nullValue() ==> acc(shared(ret), wildcard)
+method testSafeAs(foo: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(foo), Foo())
+  ensures isSubtype(typeOf(v_ret_0), nullable(Bar()))
+  ensures v_ret_0 != nullValue() ==> acc(Bar_shared(v_ret_0), wildcard)
 {
-  inhale acc(c_Foo_shared(foo), wildcard)
-  if (isSubtype(typeOf(foo), _c_Bar())) {
-    ret := foo
+  inhale acc(Foo_shared(foo), wildcard)
+  if (isSubtype(typeOf(foo), Bar())) {
+    v_ret_0 := foo
   } else {
-    ret := nullValue()}
-  inhale isSubtype(typeOf(ret), nullable(_c_Bar()))
-  inhale ret != nullValue() ==> acc(shared(ret), wildcard)
-  goto ret_0
-  label ret_0
+    v_ret_0 := nullValue()}
+  inhale isSubtype(typeOf(v_ret_0), nullable(Bar()))
+  inhale v_ret_0 != nullValue() ==> acc(Bar_shared(v_ret_0), wildcard)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
 /casts.kt: info: Generated Viper text for testNullableSafeAs:
-method testNullableSafeAs(foo: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(foo), nullable(_c_Foo()))
-  ensures isSubtype(typeOf(ret), nullable(_c_Bar()))
-  ensures ret != nullValue() ==> acc(shared(ret), wildcard)
+method testNullableSafeAs(foo: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(foo), nullable(Foo()))
+  ensures isSubtype(typeOf(v_ret_0), nullable(Bar()))
+  ensures v_ret_0 != nullValue() ==> acc(Bar_shared(v_ret_0), wildcard)
 {
-  inhale foo != nullValue() ==> acc(c_Foo_shared(foo), wildcard)
-  if (isSubtype(typeOf(foo), _c_Bar())) {
-    ret := foo
+  inhale foo != nullValue() ==> acc(Foo_shared(foo), wildcard)
+  if (isSubtype(typeOf(foo), Bar())) {
+    v_ret_0 := foo
   } else {
-    ret := nullValue()}
-  inhale isSubtype(typeOf(ret), nullable(_c_Bar()))
-  inhale ret != nullValue() ==> acc(shared(ret), wildcard)
-  goto ret_0
-  label ret_0
+    v_ret_0 := nullValue()}
+  inhale isSubtype(typeOf(v_ret_0), nullable(Bar()))
+  inhale v_ret_0 != nullValue() ==> acc(Bar_shared(v_ret_0), wildcard)
+  goto lbl_ret_0
+  label lbl_ret_0
 }

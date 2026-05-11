@@ -1,4 +1,65 @@
-/multiple_interfaces.kt: info: Generated Viper text for take1:
+/interfaces.kt: info: Generated Viper text for testProperties:
+method g_varProp(this: Ref) returns (v_ret: Ref)
+
+
+method s_varProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
+
+
+method testProperties(foo: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(foo), Foo())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  var x: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  var anon_3: Ref
+  var anon_4: Ref
+  inhale acc(shared(foo), wildcard)
+  anon_0 := s_varProp(foo, intToRef(0))
+  anon_2 := g_varProp(foo)
+  anon_1 := anon_2
+  inhale isSubtype(typeOf(anon_1), intType())
+  anon_4 := valProp(foo)
+  anon_3 := anon_4
+  inhale isSubtype(typeOf(anon_3), intType())
+  x := plusInts(anon_1, anon_3)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method valProp(this: Ref) returns (v_ret: Ref)
+
+
+/interfaces.kt: info: Generated Viper text for createImpl:
+field bf_number: Ref
+
+method con(par_number: Ref) returns (v_ret: Ref)
+  requires isSubtype(typeOf(par_number), intType())
+  ensures isSubtype(typeOf(v_ret), Impl())
+  ensures acc(Impl_shared(v_ret), wildcard)
+  ensures acc(Impl_unique(v_ret), write)
+  ensures intFromRef((unfolding acc(Impl_shared(v_ret), wildcard) in
+      v_ret.bf_number)) ==
+    intFromRef(par_number)
+
+
+method createImpl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var impl: Ref
+  var implField: Ref
+  impl := con(intToRef(-1))
+  unfold acc(Impl_shared(impl), wildcard)
+  implField := impl.bf_number
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method g_number(this: Ref) returns (v_ret: Ref)
+
+
+/interfaces.kt: info: Generated Viper text for take1:
 method g_field(this: Ref) returns (v_ret: Ref)
 
 
@@ -16,7 +77,7 @@ method take1(obj: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-/multiple_interfaces.kt: info: Generated Viper text for take2:
+/interfaces.kt: info: Generated Viper text for take2:
 method g_field(this: Ref) returns (v_ret: Ref)
 
 
@@ -34,7 +95,7 @@ method take2(obj: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-/multiple_interfaces.kt: info: Generated Viper text for take3:
+/interfaces.kt: info: Generated Viper text for take3:
 field bf_field: Ref
 
 method take3(obj: Ref) returns (v_ret_0: Ref)
@@ -46,7 +107,7 @@ method take3(obj: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-/multiple_interfaces.kt: info: Generated Viper text for take4:
+/interfaces.kt: info: Generated Viper text for take4:
 method g_field(this: Ref) returns (v_ret: Ref)
 
 
@@ -64,7 +125,7 @@ method take4(obj: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-/multiple_interfaces.kt: info: Generated Viper text for createImpls:
+/interfaces.kt: info: Generated Viper text for createImpls:
 field bf_field: Ref
 
 field size: Ref
@@ -227,3 +288,71 @@ method take3(obj: Ref) returns (v_ret: Ref)
 method take4(obj: Ref) returns (v_ret: Ref)
   requires isSubtype(typeOf(obj), AbstractWithOpenImplementation4())
   ensures isSubtype(typeOf(v_ret), unitType())
+
+
+/interfaces.kt: info: Generated Viper text for testDiamond:
+method con() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), D())
+  ensures acc(D_shared(v_ret), wildcard)
+  ensures acc(D_unique(v_ret), write)
+
+
+method g_field(this: Ref) returns (v_ret: Ref)
+
+
+method testDiamond() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  anon_1 := con()
+  anon_0 := g_field(anon_1)
+  v_ret_0 := anon_0
+  inhale isSubtype(typeOf(v_ret_0), intType())
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/interfaces.kt: info: Generated Viper text for testVarVal:
+method con_G() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), G())
+  ensures acc(G_shared(v_ret), wildcard)
+  ensures acc(G_unique(v_ret), write)
+
+
+method con_I() returns (v_ret: Ref)
+  ensures isSubtype(typeOf(v_ret), I())
+  ensures acc(I_shared(v_ret), wildcard)
+  ensures acc(I_unique(v_ret), write)
+
+
+method g_field(this: Ref) returns (v_ret: Ref)
+
+
+method s_field(this: Ref, anon_0: Ref) returns (v_ret: Ref)
+
+
+method testVarVal() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var g: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  var i: Ref
+  var anon_3: Ref
+  var anon_4: Ref
+  var anon_5: Ref
+  g := con_G()
+  anon_1 := g_field(g)
+  anon_0 := anon_1
+  inhale isSubtype(typeOf(anon_0), intType())
+  anon_2 := s_field(g, intToRef(1))
+  i := con_I()
+  anon_4 := g_field(i)
+  anon_3 := anon_4
+  inhale isSubtype(typeOf(anon_3), intType())
+  anon_5 := s_field(i, intToRef(1))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

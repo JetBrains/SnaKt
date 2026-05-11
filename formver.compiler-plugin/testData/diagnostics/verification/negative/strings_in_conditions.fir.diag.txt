@@ -19,6 +19,7 @@ method firstNotSortedIndex(s: Ref) returns (v_ret_0: Ref)
     label cont
       invariant isSubtype(typeOf(i), intType())
       invariant isSubtype(typeOf(s), stringType())
+      invariant intFromRef(i) <= |stringFromRef(s)| && intFromRef(i) >= 1
       invariant (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
           anon_builtin_1 + 1 < intFromRef(i) ==>
           stringFromRef(s)[anon_builtin_1] <=
@@ -35,6 +36,7 @@ method firstNotSortedIndex(s: Ref) returns (v_ret_0: Ref)
     label break
     assert isSubtype(typeOf(i), intType())
     assert isSubtype(typeOf(s), stringType())
+    assert intFromRef(i) <= |stringFromRef(s)| && intFromRef(i) >= 1
     assert (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
         anon_builtin_1 + 1 < intFromRef(i) ==>
         stringFromRef(s)[anon_builtin_1] <=
@@ -87,6 +89,7 @@ method addCharacterTimes(s: Ref, c: Ref, n: Ref) returns (v_ret_0: Ref)
   anon_0 := ltInts(i, n)
   if (boolFromRef(anon_0)) {
     res := addStringChar(res, c)
+    i := plusInts(i, intToRef(1))
     goto cont
   }
   label break
