@@ -101,7 +101,10 @@ for dump in "$DUMP_DIR"/test-assertion-dump-*.txt; do
     split_dump "$dump" "$exp_file" "$act_file"
     normalize_positions < "$exp_file" > "$exp_norm"
     normalize_positions < "$act_file" > "$act_norm"
-    diff -u --label "expected (positions normalized)" --label "actual (positions normalized)" \
+    # -B drops hunks that are pure blank-line drift (golden files don't always
+    # end in exactly the same number of newlines); real whitespace differences
+    # inside content lines are still reported.
+    diff -u -B --label "expected (positions normalized)" --label "actual (positions normalized)" \
         "$exp_norm" "$act_norm" > "$DUMP_DIR/test-assertion-diff-$base.txt" || true
     rm -f "$exp_file" "$act_file" "$exp_norm" "$act_norm"
 done
