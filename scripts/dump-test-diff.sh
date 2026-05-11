@@ -66,14 +66,17 @@ echo "Running test: $TEST_PATTERN"
 echo "Raw dumps at $DUMP_DIR/test-assertion-dump-*.txt; normalized diffs at $DUMP_DIR/test-assertion-diff-*.txt"
 echo
 
-# --rerun-tasks forces recompilation of test resources with the registration.
+# --rerun forces the test task to run even on identical inputs (so re-running
+# the script always captures a fresh assertion); upstream tasks like
+# processTestResources still honor input tracking and stay UP-TO-DATE when
+# they can, which keeps repeat runs cheap.
 # -q suppresses per-task lifecycle logs; we expect a failing test, and the
 # captured diff is the interesting output. Compile/configuration errors still
 # print at ERROR level.
 cd "$ROOT_DIR"
 ./gradlew :formver.compiler-plugin:test \
     --tests "*$TEST_PATTERN*" \
-    --rerun-tasks \
+    --rerun \
     --no-daemon \
     -q \
     2>&1 || true
