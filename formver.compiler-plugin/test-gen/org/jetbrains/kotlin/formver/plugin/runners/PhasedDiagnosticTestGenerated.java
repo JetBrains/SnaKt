@@ -786,12 +786,6 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
-      @TestMetadata("strings_in_conditions.kt")
-      public void testStrings_in_conditions() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/negative/strings_in_conditions.kt");
-      }
-
-      @Test
       @TestMetadata("try_catch.kt")
       public void testTry_catch() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/negative/try_catch.kt");
@@ -965,6 +959,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("string_iterations.kt")
       public void testString_iterations() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/string_iterations.kt");
+      }
+
+      @Test
+      @TestMetadata("strings_in_conditions.kt")
+      public void testStrings_in_conditions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/strings_in_conditions.kt");
       }
 
       @Test
