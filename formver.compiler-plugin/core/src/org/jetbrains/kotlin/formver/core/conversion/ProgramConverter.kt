@@ -50,12 +50,10 @@ class ProgramConverter(
 
     override val typeResolver: TypeResolver = TypeResolver()
 
-    // Cast is valid since we check that values are not null. We specify the type for `filterValues` explicitly to ensure there's no
-    // loss of type information earlier.
-    @Suppress("UNCHECKED_CAST")
     val debugExpEmbeddings: Map<SymbolicName, ExpEmbedding>
-        get() = methods.mapValues { (it.value as? UserFunctionEmbedding)?.body?.debugExpEmbedding() }
-            .filterValues { value: ExpEmbedding? -> value != null } as Map<SymbolicName, ExpEmbedding>
+        get() = buildMap {
+            convertedBodyResolver.forEachImpure { name, body -> put(name, body.bodyExp) }
+        }
 
 
     override val whileIndexProducer = indexProducer()
@@ -68,6 +66,8 @@ class ProgramConverter(
     override val anonBuiltinVarProducer = FreshEntityProducer(::AnonymousBuiltinVariableEmbedding)
     override val returnTargetProducer = FreshEntityProducer(ReturnTarget::createForDepth)
     override val nameResolver = ShortNameResolver()
+    override val convertedBodyResolver = ConvertedBodyResolver()
+    override val linearizedBodyResolver = LinearizedBodyResolver()
 
 
     val program: Program
@@ -76,10 +76,20 @@ class ProgramConverter(
             // We need to deduplicate fields since public fields with the same name are represented differently
             // at `FieldEmbedding` level but map to the same Viper.
             fields = typeResolver.backingFields().distinctBy { it.name }.map { it.toViper() },
-            functions = SpecialFunctions.all + functions.values.mapNotNull { it.viperFunction(typeResolver) }
-                .distinctBy { it.name },
-            methods = SpecialMethods.all + methods.values.mapNotNull { it.viperMethod(typeResolver) }
-                .distinctBy { it.name } + typeResolver.backingFields().map { it.type.havocMethod(typeResolver) }
+            functions = SpecialFunctions.all + functions.entries.mapNotNull { (name, embedding) ->
+                val linearized = linearizedBodyResolver.lookupPure(name)
+                check(linearized != null || convertedBodyResolver.lookupPure(name) == null) {
+                    "Internal error: pure function $name was converted but not linearized"
+                }
+                embedding.viperFunction(typeResolver, linearized)
+            }.distinctBy { it.name },
+            methods = SpecialMethods.all + methods.entries.mapNotNull { (name, embedding) ->
+                val linearized = linearizedBodyResolver.lookupImpure(name)
+                check(linearized != null || convertedBodyResolver.lookupImpure(name) == null) {
+                    "Internal error: impure function $name was converted but not linearized"
+                }
+                embedding.viperMethod(typeResolver, linearized)
+            }.distinctBy { it.name } + typeResolver.backingFields().map { it.type.havocMethod(typeResolver) }
                 .distinctBy { it.name },
             predicates = typeResolver.classTypeEmbeddings().flatMap {
                 with(typeResolver) {
@@ -93,12 +103,16 @@ class ProgramConverter(
 
 
     fun registerForVerification(declaration: FirSimpleFunction) {
-        // Note: it is important that `body` is only set after embedding is complete, as we need to
-        // place the embedding in the map before processing the body.
+        val (returnTarget, fullSignature) = embedFullSignature(declaration.symbol)
+        // Note: it is important that the body is only converted after the embedding is in place,
+        // as we need to place the embedding in the map before processing the body.
         if (declaration.symbol.isPure(session)) {
-            embedPureFunction(declaration.symbol)
+            embedPureUserFunction(declaration.symbol, fullSignature, returnTarget)
         } else {
-            embedUserFunction(declaration)
+            val stmtCtx = createBodyConversionContext(fullSignature, returnTarget)
+            embedUserFunction(declaration.symbol, fullSignature)
+            stmtCtx.convertImpureBody(declaration, fullSignature, returnTarget)
+            stmtCtx.linearizeImpureBody(declaration, fullSignature.name)
         }
         if (errorCollector.collectedAdtError()) {
             errorCollector.addAdtError(
@@ -121,7 +135,8 @@ class ProgramConverter(
         )
         if (declaration.body != null) {
             val stmtCtx = createBodyConversionContext(signature, returnTarget)
-            new.body = stmtCtx.convertFunctionWithBody(declaration)
+            stmtCtx.convertPureBody(declaration, signature.name)
+            stmtCtx.linearizePureBody(declaration, signature.name)
         }
         return new
     }
@@ -185,15 +200,13 @@ class ProgramConverter(
         return Pair(preconditionContext, postconditionContext)
     }
 
-    fun embedUserFunction(declaration: FirSimpleFunction): UserFunctionEmbedding {
-        val symbol = declaration.symbol
+    fun embedUserFunction(
+        symbol: FirFunctionSymbol<*>,
+        signature: FullNamedFunctionSignature,
+    ): UserFunctionEmbedding {
         val name = symbol.embedName(this)
         (methods[name] as? UserFunctionEmbedding)?.also { return it }
-        val (returnTarget, fullSignature) = embedFullSignature(symbol)
-        val new = UserFunctionEmbedding(embedCallable(symbol, fullSignature)).apply {
-            val stmtCtx = createBodyConversionContext(fullSignature, returnTarget)
-            body = stmtCtx.convertMethodWithBody(declaration, fullSignature)
-        }
+        val new = UserFunctionEmbedding(embedCallable(symbol, signature))
         methods[name] = new
         return new
     }

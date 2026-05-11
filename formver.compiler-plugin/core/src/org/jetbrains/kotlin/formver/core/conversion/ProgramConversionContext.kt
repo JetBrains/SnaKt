@@ -40,6 +40,8 @@ interface ProgramConversionContext {
     val returnTargetProducer: FreshEntityProducer<ReturnTarget, TypeEmbedding>
     val nameResolver: NameResolver
     val typeResolver: TypeResolver
+    val convertedBodyResolver: ConvertedBodyResolver
+    val linearizedBodyResolver: LinearizedBodyResolver
 
     fun embedFunction(symbol: FirFunctionSymbol<*>): FunctionEmbedding
     fun embedPureFunction(symbol: FirFunctionSymbol<*>): PureFunctionEmbedding
