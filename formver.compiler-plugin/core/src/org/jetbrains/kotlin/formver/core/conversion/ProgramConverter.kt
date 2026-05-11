@@ -584,7 +584,7 @@ class ProgramConverter(
             val fieldPostconditions = signature.params.mapNotNull { param ->
                 require(param is FirVariableEmbedding) { "Constructor parameters must be represented by FirVariableEmbeddings" }
                 parameterMatching[param.symbol]?.let { property ->
-                    EqCmp(property.getter!!.getValue(returnTarget.variable, context), param)
+                    EqCmp(property.getter!!.getValueSimple(returnTarget.variable, context), param)
                 }
             }
             ConstructorSignature(subSignature, symbol, fieldPostconditions, typeResolver)

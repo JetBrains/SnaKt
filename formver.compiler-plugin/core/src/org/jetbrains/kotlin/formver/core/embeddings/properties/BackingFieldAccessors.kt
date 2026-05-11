@@ -19,6 +19,11 @@ class BackingFieldGetter(val field: FieldEmbedding) : GetterEmbedding {
             }
         }
     }
+
+    override fun getValueSimple(
+        receiver: ExpEmbedding,
+        ctx: StmtConversionContext
+    ): ExpEmbedding = FieldAccess(receiver, field)
 }
 
 class BackingFieldSetter(val field: FieldEmbedding) : SetterEmbedding {
