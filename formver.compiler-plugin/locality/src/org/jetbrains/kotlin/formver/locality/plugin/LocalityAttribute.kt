@@ -42,7 +42,7 @@ val ConeKotlinType.locality: LocalityAttribute?
 
 val LocalityAttributeRenderer = Renderer<LocalityAttribute?> { locality ->
     when (locality) {
-        null -> "'global'"
-        LocalityAttribute -> "'local'"
+        null -> "global"
+        LocalityAttribute -> "local"
     }
 }
