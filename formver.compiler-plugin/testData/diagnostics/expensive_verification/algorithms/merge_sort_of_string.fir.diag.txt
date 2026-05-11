@@ -224,15 +224,15 @@ method mergeStrings(a: Ref, b: Ref) returns (ret_2: Ref)
       stringFromRef(ret_2)[anon_builtin_2])
 
 
-method subs(v_this_extension: Ref, lo: Ref, hi: Ref) returns (ret_3: Ref)
+method subs(v_this_extension: Ref, lo: Ref, hi: Ref) returns (ret_4: Ref)
   requires isSubtype(typeOf(v_this_extension), stringType())
   requires isSubtype(typeOf(lo), intType())
   requires isSubtype(typeOf(hi), intType())
   requires 0 <= intFromRef(lo) && intFromRef(lo) <= intFromRef(hi) &&
     intFromRef(hi) <= |stringFromRef(v_this_extension)|
-  ensures isSubtype(typeOf(ret_3), stringType())
-  ensures |stringFromRef(ret_3)| == intFromRef(hi) - intFromRef(lo)
-  ensures (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
-      anon_builtin_3 < |stringFromRef(ret_3)| ==>
-      stringFromRef(ret_3)[anon_builtin_3] ==
-      stringFromRef(v_this_extension)[anon_builtin_3 + intFromRef(lo)])
+  ensures isSubtype(typeOf(ret_4), stringType())
+  ensures |stringFromRef(ret_4)| == intFromRef(hi) - intFromRef(lo)
+  ensures (forall anon_builtin_4: Int ::0 <= anon_builtin_4 &&
+      anon_builtin_4 < |stringFromRef(ret_4)| ==>
+      stringFromRef(ret_4)[anon_builtin_4] ==
+      stringFromRef(v_this_extension)[anon_builtin_4 + intFromRef(lo)])
