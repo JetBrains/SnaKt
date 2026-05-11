@@ -30,7 +30,7 @@ class SsaBlockNode(
     fun generateBranchingBlockNodeFromThisNode(condition: Exp): SsaBlockNode =
         SsaBlockNode(
             this,
-            if (fullBranchingCondition == Exp.BoolLit(true)) condition else Exp.And(condition, fullBranchingCondition),
+            if (fullBranchingCondition == Exp.BoolLit(true)) condition else Exp.And(fullBranchingCondition, condition),
         )
 
     context(ssaConverter: SsaConverter)
