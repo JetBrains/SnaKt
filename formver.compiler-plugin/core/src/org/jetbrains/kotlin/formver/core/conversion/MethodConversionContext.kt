@@ -17,7 +17,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariab
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.names.FunctionResultVariableName
-import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
 import org.jetbrains.kotlin.formver.core.names.ReturnLabelName
 import org.jetbrains.kotlin.formver.core.names.ReturnVariableName
 
@@ -36,8 +35,6 @@ class ReturnTargetNoLabel(override val variable: VariableEmbedding) : ReturnTarg
     companion object {
         fun forPureFunction(type: TypeEmbedding) = ReturnTargetNoLabel(PlaceholderVariableEmbedding(
             FunctionResultVariableName, type))
-        fun forNoBodyFunction(type: TypeEmbedding) = ReturnTargetNoLabel(PlaceholderVariableEmbedding(
-            PlaceholderReturnVariableName, type))
     }
 
     override val label : LabelEmbedding

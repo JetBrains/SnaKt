@@ -54,8 +54,8 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
         if (!config.shouldConvert(declaration)) return
         val errorCollector = ErrorCollector()
         try {
-            val programConversionContext = ProgramConverter(session, config, errorCollector, declaration)
-            programConversionContext.registerForVerification()
+            val programConversionContext = ProgramConverter(session, config, errorCollector)
+            programConversionContext.registerForVerification(declaration)
             errorCollector.forEachPurityError { source, errorMessage ->
                 reporter.reportOn(source, PluginErrors.PURITY_VIOLATION, errorMessage)
             }

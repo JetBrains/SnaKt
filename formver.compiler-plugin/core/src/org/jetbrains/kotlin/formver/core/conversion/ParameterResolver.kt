@@ -36,8 +36,8 @@ class RootParameterResolver(
     private val signature: FunctionSignature,
     firArgs: List<FirValueParameterSymbol>,
     override val labelName: String?,
+    override val defaultResolvedReturnTarget: ReturnTarget
 ) : ParameterResolver {
-    override val defaultResolvedReturnTarget: ReturnTarget = signature.returns
     private val parameters = firArgs.zip(signature.params).toMap()
     override fun tryResolveParameter(symbol: FirValueParameterSymbol): ExpEmbedding? = parameters[symbol]
     override fun tryResolveDispatchReceiver() = signature.dispatchReceiver

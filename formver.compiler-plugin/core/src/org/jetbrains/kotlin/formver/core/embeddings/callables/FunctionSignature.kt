@@ -5,7 +5,6 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
-import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
 import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
@@ -20,7 +19,7 @@ interface FunctionSignature {
 
     val params: List<VariableEmbedding>
 
-    val returns : ReturnTarget
+    val returns : VariableEmbedding
 
     val isPure: Boolean
 

@@ -521,7 +521,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         data: StmtConversionContext,
     ): ExpEmbedding {
         val function = anonymousFunctionExpression.anonymousFunction
-        val signature = data.embedFunctionSignature(function.symbol)
+        val (returnTarget, signature) = data.embedFunctionSignature(function.symbol)
         return LambdaExp(signature, function, data, function.symbol.label!!.name)
     }
 

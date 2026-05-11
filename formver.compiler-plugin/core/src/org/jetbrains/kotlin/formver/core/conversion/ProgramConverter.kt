@@ -39,8 +39,7 @@ import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 class ProgramConverter(
     val session: FirSession,
     override val config: PluginConfiguration,
-    override val errorCollector: ErrorCollector,
-    val declaration: FirSimpleFunction
+    override val errorCollector: ErrorCollector
 ) : ProgramConversionContext {
     private val methods: MutableMap<SymbolicName, FunctionEmbedding> = buildMap {
         putAll(SpecialKotlinFunctions.byName)
@@ -91,16 +90,15 @@ class ProgramConverter(
             adts = typeResolver.adtTypeEmbeddings().filter { it.isValid }.map { it.toViper() },
         )
 
-    fun isVerifiedMethod(symbol: FirFunctionSymbol<*>): Boolean = declaration.symbol == symbol
 
-    fun registerForVerification() {
-        val signature = embedFullSignature(declaration.symbol)
+    fun registerForVerification(declaration: FirSimpleFunction) {
+        val (returnTarget, signature) = embedFullSignature(declaration.symbol)
         // Note: it is important that `body` is only set after embedding is complete, as we need to
         // place the embedding in the map before processing the body.
         if (signature.isPure) {
-            embedPureUserFunction(declaration.symbol, signature)
+            embedPureUserFunction(declaration.symbol, signature, returnTarget)
         } else {
-            val stmtCtx = createBodyConversionContext(signature)
+            val stmtCtx = createBodyConversionContext(signature, returnTarget)
             embedUserFunction(declaration.symbol, signature).apply {
                 body = stmtCtx.convertMethodWithBody(declaration, signature)
             }
@@ -117,7 +115,7 @@ class ProgramConverter(
 
     @OptIn(SymbolInternals::class)
     private fun embedPureUserFunction(
-        symbol: FirFunctionSymbol<*>, signature: FullNamedFunctionSignature
+        symbol: FirFunctionSymbol<*>, signature: FullNamedFunctionSignature, returnTarget: ReturnTarget
     ): PureUserFunctionEmbedding {
         (functions[signature.name] as? PureUserFunctionEmbedding)?.also { return it }
         val new = PureUserFunctionEmbedding(embedCallable(symbol, signature))
@@ -127,21 +125,23 @@ class ProgramConverter(
             symbol.source, "Expected FirSimpleFunction, got unexpected type ${symbol.fir.javaClass.simpleName}"
         )
         if (declaration.body != null) {
-            val stmtCtx = createBodyConversionContext(signature)
+            val stmtCtx = createBodyConversionContext(signature, returnTarget)
             new.body = stmtCtx.convertFunctionWithBody(declaration)
         }
         return new
     }
 
     private fun createBodyConversionContext(
-        signature: NamedFunctionSignature
+        signature: NamedFunctionSignature,
+        target: ReturnTarget
     ): StmtConversionContext {
 
         val paramResolver = RootParameterResolver(
             this@ProgramConverter,
             signature,
             signature.symbol.valueParameterSymbols,
-            signature.labelName
+            signature.labelName,
+            target
         )
         val stmtCtx = MethodConverter(
             this@ProgramConverter,
@@ -155,18 +155,20 @@ class ProgramConverter(
     private fun createContractConversionContext(
         signature: NamedFunctionSignature,
         firSpec: FirSpecification,
+        returnTarget: ReturnTarget,
     ): Pair<StmtConversionContext, StmtConversionContext> {
 
         val rootResolver = RootParameterResolver(
             this@ProgramConverter,
             signature,
             signature.symbol.valueParameterSymbols,
-            signature.labelName
+            signature.labelName,
+            returnTarget,
         )
 
 
         val wrappedResolver = firSpec.returnVar
-            ?.let { ReturnVarSubstitutor(it, signature.returns.variable) }
+            ?.let { ReturnVarSubstitutor(it, signature.returns) }
             ?.let { ctx -> SubstitutedReturnParameterResolver(rootResolver, ctx) }
             ?: rootResolver
 
@@ -219,7 +221,7 @@ class ProgramConverter(
         val lookupName = symbol.embedName(this)
         return when (val existing = methods[lookupName]) {
             null -> {
-                val signature = embedFullSignature(symbol)
+                val (_, signature) = embedFullSignature(symbol)
                 val callable = embedCallable(symbol, signature)
                 UserFunctionEmbedding(callable).also {
                     methods[lookupName] = it
@@ -228,7 +230,7 @@ class ProgramConverter(
 
             is PartiallySpecialKotlinFunction -> {
                 if (existing.baseEmbedding != null) return existing
-                val signature = embedFullSignature(symbol)
+                val (_, signature) = embedFullSignature(symbol)
                 val callable = embedCallable(symbol, signature)
                 val userFunction = UserFunctionEmbedding(callable)
                 existing.also {
@@ -241,8 +243,8 @@ class ProgramConverter(
     }
 
     override fun embedPureFunction(symbol: FirFunctionSymbol<*>): PureFunctionEmbedding {
-        val signature = embedFullSignature(symbol)
-        return embedPureUserFunction(symbol, signature)
+        val (returnTarget, signature) = embedFullSignature(symbol)
+        return embedPureUserFunction(symbol, signature, returnTarget)
     }
 
     override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding = if (symbol.isPure(session)) {
@@ -356,7 +358,7 @@ class ProgramConverter(
         }
 
 
-    override fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): FunctionSignature {
+    override fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): Pair<ReturnTarget, FunctionSignature> {
         val dispatchReceiverType = symbol.receiverType
         val extensionReceiverType = symbol.extensionReceiverType
         val isExtensionReceiverUnique = symbol.receiverParameterSymbol?.isUnique(session) ?: false
@@ -366,8 +368,7 @@ class ProgramConverter(
 
         val returnTarget = when {
             symbol.isPure(session) -> ReturnTargetNoLabel.forPureFunction(returnType)
-            isVerifiedMethod(symbol) -> returnTargetProducer.getFresh(returnType)
-            else -> ReturnTargetNoLabel.forNoBodyFunction(returnType)
+            else -> returnTargetProducer.getFresh(returnType)
         }
 
         val signature = object : FunctionSignature {
@@ -397,10 +398,10 @@ class ProgramConverter(
                     it.embedName(), embedType(it.resolvedReturnType), it, it.isUnique(session), it.isBorrowed(session)
                 )
             }
-            override val returns: ReturnTarget = returnTarget
+            override val returns: VariableEmbedding = returnTarget.variable
             override val isPure: Boolean = symbol.isPure(session)
         }
-        return signature
+        return Pair(returnTarget, signature)
     }
 
     @OptIn(DirectDeclarationsAccess::class)
@@ -409,7 +410,7 @@ class ProgramConverter(
 
 
     private fun embedFormverContract(
-        symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature
+        symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, returnTarget: ReturnTarget
     ): Pair<List<ExpEmbedding>, List<ExpEmbedding>> {
         @OptIn(SymbolInternals::class) val declaration = symbol.fir
         val body = declaration.body
@@ -425,7 +426,7 @@ class ProgramConverter(
             else -> extractFirSpecification(body, declaration.symbol.resolvedReturnType)
         }
 
-        val (preconditionContext, postconditionContext) = createContractConversionContext(signature, firSpec)
+        val (preconditionContext, postconditionContext) = createContractConversionContext(signature, firSpec, returnTarget)
 
         val preconditions = firSpec.precond?.let { preconditionContext.collectInvariants(it) } ?: emptyList()
         val postconditions = firSpec.postcond?.let { postconditionContext.collectInvariants(it) } ?: emptyList()
@@ -442,15 +443,15 @@ class ProgramConverter(
     }
 
     private fun embedProvidedContract(
-        symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature
+        symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, returnTarget : ReturnTarget
     ): Pair<List<ExpEmbedding>, List<ExpEmbedding>> {
         val kotlinContract = embedKotlinContract(signature)
-        val userContract = embedFormverContract(symbol, signature)
+        val userContract = embedFormverContract(symbol, signature, returnTarget)
         return Pair(kotlinContract.first + userContract.first, kotlinContract.second + userContract.second)
     }
 
-    private fun embedFullSignature(symbol: FirFunctionSymbol<*>): FullNamedFunctionSignature {
-        val signature = embedFunctionSignature(symbol)
+    private fun embedFullSignature(symbol: FirFunctionSymbol<*>): Pair<ReturnTarget,FullNamedFunctionSignature> {
+        val (returnTarget, signature) = embedFunctionSignature(symbol)
         val subSignature = object : NamedFunctionSignature, FunctionSignature by signature {
             override val name = symbol.embedName(this@ProgramConverter)
             override val labelName: String
@@ -474,14 +475,13 @@ class ProgramConverter(
                 require(param is FirVariableEmbedding) { "Constructor parameters must be represented by FirVariableEmbeddings" }
                 parameterMatching[param.symbol]?.let { field ->
                     (field.accessPolicy == AccessPolicy.ALWAYS_READABLE).ifTrue {
-                        EqCmp(FieldAccess(signature.returns.variable, field), param)
+                        EqCmp(FieldAccess(signature.returns, field), param)
                     }
                 }
             }
-
             ConstructorSignature(subSignature, fieldPostconditions, symbol, typeResolver)
         } else {
-            val (preconditions, postconditions) = embedProvidedContract(symbol, subSignature)
+            val (preconditions, postconditions) = embedProvidedContract(symbol, subSignature, returnTarget)
 
             UserFunctionSignature(
                 subSignature,
@@ -492,7 +492,7 @@ class ProgramConverter(
             )
         }
 
-        return fullSignature
+        return Pair(returnTarget, fullSignature)
 
     }
 
