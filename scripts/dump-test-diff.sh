@@ -66,12 +66,16 @@ echo "Running test: $TEST_PATTERN"
 echo "Raw dumps at $DUMP_DIR/test-assertion-dump-*.txt; normalized diffs at $DUMP_DIR/test-assertion-diff-*.txt"
 echo
 
-# --rerun-tasks forces recompilation of test resources with the registration
+# --rerun-tasks forces recompilation of test resources with the registration.
+# -q suppresses per-task lifecycle logs; we expect a failing test, and the
+# captured diff is the interesting output. Compile/configuration errors still
+# print at ERROR level.
 cd "$ROOT_DIR"
 ./gradlew :formver.compiler-plugin:test \
     --tests "*$TEST_PATTERN*" \
     --rerun-tasks \
     --no-daemon \
+    -q \
     2>&1 || true
 
 # Replace source-position offsets like ":(23,31):" with ":(_,_):" so methods
