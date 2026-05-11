@@ -137,8 +137,9 @@ class NameGraphRenderer(val shortNameResolver: ShortNameResolver) {
             is NameScope -> "Scope: "
             is NameType -> "Type: "
             is SymbolicName -> {
-                if (entity.nameType != null) {
-                    entity.nameType!!.fullName() + ": "
+                val nameType = entity.nameType
+                if (nameType != null) {
+                    nameType.debugId() + ": "
                 } else {
                     when (entity) {
                         is FreshName -> "Fresh: "
@@ -160,7 +161,7 @@ class NameGraphRenderer(val shortNameResolver: ShortNameResolver) {
 
             is ViperKeyword -> "Viper Keyword: "
             else -> throw SnaktInternalException(null, "Unsupported entity type: ${entity.javaClass.name}")
-        } + entity.fullName() + nl + nodeLabel(entity)
+        } + entity.debugId() + nl + nodeLabel(entity)
 
 
         fun relationLabel(relation: Relation) = when (relation) {
