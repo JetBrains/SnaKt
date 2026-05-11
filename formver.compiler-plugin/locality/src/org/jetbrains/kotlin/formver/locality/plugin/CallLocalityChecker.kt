@@ -29,9 +29,7 @@ object CallLocalityChecker : FirCallChecker(MppCheckerKind.Common) {
             val contract = dispatchReceiver?.resolveLocalityContract()
 
             if (contract != null) {
-                val invokeArguments = listOfNotNull(extensionReceiver) + arguments
-
-                return invokeArguments.zip(contract).toMap()
+                return arguments.zip(contract).toMap()
             }
         }
 
