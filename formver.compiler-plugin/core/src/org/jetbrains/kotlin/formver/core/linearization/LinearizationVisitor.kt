@@ -140,11 +140,6 @@ data class LinearizationVisitor(
 
     override fun visitFunctionExp(e: FunctionExp): Linearizable = object : OptionalResultLinearizable(e) {
         override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
-            e.signature?.formalArgs?.forEach { arg ->
-                listOfNotNull(arg.sharedPredicateAccessInvariant(ctx.typeResolver)).forEach { invariant ->
-                    ctx.addStatement { Stmt.Inhale(invariant.linearize().toViperBuiltinType(ctx), ctx.source.asPosition) }
-                }
-            }
             e.body.linearize().toViperMaybeStoringIn(result, ctx)
             ctx.addLabel(e.returnLabel.toViper(ctx))
         }

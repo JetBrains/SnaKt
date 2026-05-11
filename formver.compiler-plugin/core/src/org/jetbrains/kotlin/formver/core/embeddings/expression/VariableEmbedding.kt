@@ -67,11 +67,9 @@ sealed interface VariableEmbedding : ExpEmbedding, PropertyAccessEmbedding {
     fun pureInvariants(): List<ExpEmbedding> = type.pureInvariants().fillHoles(this)
     fun provenInvariants(): List<ExpEmbedding> = listOf(type.subTypeInvariant().fillHole(this))
     fun accessInvariants(ctx: TypeResolver): List<ExpEmbedding> = type.accessInvariants(ctx).fillHoles(this)
-    fun sharedPredicateAccessInvariant(ctx: TypeResolver) = type.sharedPredicateAccessInvariant(ctx)?.fillHole(this)
     fun uniquePredicateAccessInvariant(ctx: TypeResolver) = type.uniquePredicateAccessInvariant(ctx)?.fillHole(this)
 
-    fun allAccessInvariants(ctx: TypeResolver) =
-        accessInvariants(ctx) + listOfNotNull(sharedPredicateAccessInvariant(ctx))
+    fun allAccessInvariants(ctx: TypeResolver) = accessInvariants(ctx)
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitVariableEmbedding(this)
 }

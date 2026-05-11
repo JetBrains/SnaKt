@@ -100,7 +100,7 @@ class ProgramConverter(
             methods = viperMethods,
             predicates = typeResolver.classTypeEmbeddings().flatMap {
                 with(typeResolver) {
-                    listOf(it.sharedPredicate(), it.uniquePredicate())
+                        it.uniquePredicate()
                 }
             },
             adts = typeResolver.adtTypeEmbeddings().map { it.toViper() },

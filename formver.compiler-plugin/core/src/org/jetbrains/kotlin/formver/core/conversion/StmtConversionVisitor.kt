@@ -45,7 +45,6 @@ import org.jetbrains.kotlin.formver.core.functionCallArguments
 import org.jetbrains.kotlin.formver.core.isInvariantBuilderFunctionNamed
 import org.jetbrains.kotlin.text
 import org.jetbrains.kotlin.types.ConstantValueKind
-import org.jetbrains.kotlin.utils.addIfNotNull
 
 /**
  * Convert a statement, emitting the resulting Viper statements and
@@ -372,7 +371,6 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         val condition = data.convert(whileLoop.condition).withType { boolean() }
         val invariants = buildList {
             data.retrievePropertiesAndParameters().forEach {
-                addIfNotNull(it.sharedPredicateAccessInvariant(data.typeResolver))
                 addAll(it.provenInvariants())
             }
             extractLoopInvariants(whileLoop.block)?.let {
