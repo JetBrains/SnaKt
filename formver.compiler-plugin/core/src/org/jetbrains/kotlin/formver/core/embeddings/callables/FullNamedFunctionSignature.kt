@@ -14,12 +14,10 @@ import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.conversion.stdLibPostconditions
 import org.jetbrains.kotlin.formver.core.conversion.stdLibPreconditions
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
-import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.buildFunctionPretype
-import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
-import org.jetbrains.kotlin.formver.core.embeddings.types.nullableAny
+import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.DispatchReceiverName
+import org.jetbrains.kotlin.formver.core.names.FunctionResultVariableName
 import org.jetbrains.kotlin.formver.core.names.ReturnVariableName
 import org.jetbrains.kotlin.formver.core.purity.preorder
 import org.jetbrains.kotlin.formver.viper.SymbolicName
@@ -153,7 +151,7 @@ class OpenGetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol)
     override val isPure: Boolean = false
 }
 
-class ClosedGetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
+class ClosedGetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol, classType: TypeEmbedding, returnType: TypeEmbedding) :
     PropertyAccessorFunctionSignature(name, symbol) {
     override val symbol: FirFunctionSymbol<*>
         get() = error {
@@ -161,8 +159,14 @@ class ClosedGetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbo
         }
     override val callableType: FunctionTypeEmbedding = buildFunctionPretype {
         withDispatchReceiver { nullableAny() }
-        withReturnType { nullableAny() }
+        withReturnType(returnType)
     }
+    override val returns: VariableEmbedding = PlaceholderVariableEmbedding(FunctionResultVariableName, returnType)
+    override val dispatchReceiver: VariableEmbedding = PlaceholderVariableEmbedding(DispatchReceiverName, classType)
+
+    override val preconditions: List<ExpEmbedding> = dispatchReceiver.provenInvariants()
+
+    override val postconditions: List<ExpEmbedding> = returns.provenInvariants()
 
     override val isPure: Boolean = true
 }

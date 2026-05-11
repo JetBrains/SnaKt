@@ -74,6 +74,11 @@ class FunctionPretypeBuilder : PretypeBuilder {
         returnType = buildType { returnTypeInit() }
     }
 
+    fun withReturnType(returnType: TypeEmbedding) {
+        require(this.returnType == null) { "Return type already set" }
+        this.returnType = returnType
+    }
+
     override fun complete(): FunctionTypeEmbedding {
         require(returnType != null) { "Return type not set" }
         return FunctionTypeEmbedding(

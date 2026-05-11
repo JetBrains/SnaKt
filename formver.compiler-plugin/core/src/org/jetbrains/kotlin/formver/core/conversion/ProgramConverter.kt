@@ -297,7 +297,9 @@ class ProgramConverter(
     private fun embedClosedGetterFunction(symbol: FirPropertySymbol): CallableEmbedding {
         val name = symbol.embedGetterName(this)
         return pureFunctions.getOrPut(name) {
-            val signature = ClosedGetterFunctionSignature(name, symbol)
+            val classType = embedType(symbol.dispatchReceiverType!!)
+            val returnType = embedType(symbol.resolvedReturnType)
+            val signature = ClosedGetterFunctionSignature(name, symbol, classType, returnType)
             PureUserFunctionEmbedding(
                 NonInlineNamedFunction(signature)
             )
