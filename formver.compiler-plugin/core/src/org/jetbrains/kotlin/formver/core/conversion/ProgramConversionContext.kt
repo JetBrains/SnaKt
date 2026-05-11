@@ -15,7 +15,7 @@ import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.core.embeddings.callables.CallableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
-import org.jetbrains.kotlin.formver.core.embeddings.callables.PureFunctionEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.callables.PureUserFunctionEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousBuiltinVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
@@ -44,7 +44,7 @@ interface ProgramConversionContext {
     val linearizedBodyResolver: LinearizedBodyResolver
 
     fun embedFunction(symbol: FirFunctionSymbol<*>): FunctionEmbedding
-    fun embedPureFunction(symbol: FirFunctionSymbol<*>): PureFunctionEmbedding
+    fun embedPureFunction(symbol: FirFunctionSymbol<*>): PureUserFunctionEmbedding
     fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding
     fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): Pair<ReturnTarget,FunctionSignature>
     fun embedType(type: ConeKotlinType): TypeEmbedding

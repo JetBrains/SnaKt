@@ -46,7 +46,7 @@ class ProgramConverter(
         putAll(SpecialKotlinFunctions.byName)
         putAll(PartiallySpecialKotlinFunctions.generateAllByName())
     }.toMutableMap()
-    private val functions: MutableMap<SymbolicName, PureFunctionEmbedding> = mutableMapOf()
+    private val functions: MutableMap<SymbolicName, PureUserFunctionEmbedding> = mutableMapOf()
 
     override val typeResolver: TypeResolver = TypeResolver()
 
@@ -88,7 +88,8 @@ class ProgramConverter(
                 check(linearized != null || convertedBodyResolver.lookupImpure(name) == null) {
                     "Internal error: impure function $name was converted but not linearized"
                 }
-                embedding.viperMethod(typeResolver, linearized)
+                val callable = embedding.userCallable() ?: return@mapNotNull null
+                linearized?.toViperMethod(callable, typeResolver) ?: callable.toViperMethodHeader(typeResolver)
             }.distinctBy { it.name } + typeResolver.backingFields().map { it.type.havocMethod(typeResolver) }
                 .distinctBy { it.name },
             predicates = typeResolver.classTypeEmbeddings().flatMap {
@@ -254,7 +255,7 @@ class ProgramConverter(
         }
     }
 
-    override fun embedPureFunction(symbol: FirFunctionSymbol<*>): PureFunctionEmbedding {
+    override fun embedPureFunction(symbol: FirFunctionSymbol<*>): PureUserFunctionEmbedding {
         val (returnTarget, signature) = embedFullSignature(symbol)
         return embedPureUserFunction(symbol, signature, returnTarget)
     }

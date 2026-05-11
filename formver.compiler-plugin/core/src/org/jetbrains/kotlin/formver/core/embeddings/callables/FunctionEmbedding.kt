@@ -6,33 +6,37 @@
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
-import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyEmbedding
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Function
-import org.jetbrains.kotlin.formver.viper.ast.Method
 
-interface FunctionEmbedding : CallableEmbedding {
-    fun viperMethod(ctx: TypeResolver, body: FunctionBodyEmbedding?): Method?
-}
-
-interface PureFunctionEmbedding : CallableEmbedding {
-    fun viperFunction(ctx: TypeResolver, body: Exp?): Function?
-}
+/**
+ * Marker for embeddings that live in the `methods` bucket of a `ProgramConverter`.
+ * The hierarchy is sealed so renderers can dispatch over the leaves exhaustively.
+ */
+sealed interface FunctionEmbedding : CallableEmbedding
 
 /**
  * An embedding of a user-defined function.
  */
-class UserFunctionEmbedding(private val callable: RichCallableEmbedding) : FunctionEmbedding,
-    CallableEmbedding by callable {
-    override fun viperMethod(ctx: TypeResolver, body: FunctionBodyEmbedding?): Method? =
-        body?.toViperMethod(callable, ctx) ?: callable.toViperMethodHeader(ctx)
-}
+class UserFunctionEmbedding(val callable: RichCallableEmbedding) : FunctionEmbedding,
+    CallableEmbedding by callable
 
 
 /**
- * An embedding of a user-defined pure function
+ * An embedding of a user-defined pure function.
  */
-class PureUserFunctionEmbedding(private val callable: RichCallableEmbedding) : PureFunctionEmbedding,
-    CallableEmbedding by callable {
-    override fun viperFunction(ctx: TypeResolver, body: Exp?): Function = callable.toViperFunction(ctx, body)
+class PureUserFunctionEmbedding(val callable: RichCallableEmbedding) : CallableEmbedding by callable {
+    fun viperFunction(ctx: TypeResolver, body: Exp?): Function = callable.toViperFunction(ctx, body)
+}
+
+/**
+ * The underlying user-function callable that this embedding renders to, if any.
+ *
+ * Returns `null` for `FullySpecialKotlinFunction`s (which never emit a Viper method) and for
+ * `PartiallySpecialKotlinFunction`s whose `baseEmbedding` has not been initialised.
+ */
+fun FunctionEmbedding.userCallable(): RichCallableEmbedding? = when (this) {
+    is UserFunctionEmbedding -> callable
+    is FullySpecialKotlinFunction -> null
+    is PartiallySpecialKotlinFunction -> (baseEmbedding as? UserFunctionEmbedding)?.callable
 }
