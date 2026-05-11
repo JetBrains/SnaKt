@@ -177,14 +177,28 @@ fun `assign merged local owners to global`(x: @Borrowed Any) {
     }
 }
 
-class A
-
-class B
-
-class C
-
 fun nondet() = false
 
-fun `test`(x: @Borrowed A, y: B, z: C) {
+fun `assign local to implicit local`(x: @Borrowed Any) {
     var a = x as A
+}
+
+class A
+
+fun `assign local cast to implicit global`(x: @Borrowed Any, y: A) {
+    var a = y
+
+    a = <!LOCALITY_VIOLATION!>x as A<!>
+}
+
+fun `assign implicit local to explicit global`(x: @Borrowed Any) {
+    var a = x as A
+
+    var b: Any = <!LOCALITY_VIOLATION!>a<!>
+}
+
+fun `assign global to implicit local`(x: @Borrowed Any, y: A) {
+    var a = x as A
+
+    a = y
 }
