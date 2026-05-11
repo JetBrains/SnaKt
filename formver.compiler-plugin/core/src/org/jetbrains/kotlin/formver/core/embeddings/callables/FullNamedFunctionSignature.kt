@@ -40,42 +40,63 @@ interface FullNamedFunctionSignature : NamedFunctionSignature {
     val declarationSource: KtSourceElement?
 }
 
+fun NamedFunctionSignature.basicPreconditions(typeResolver: TypeResolver) = buildList{
+    formalArgs.forEach {
+        addAll(it.pureInvariants())
+        addAll(it.accessInvariants(typeResolver))
+        addAll(it.provenInvariants())
+        if (it.isUnique) {
+            addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
+        }
+    }
+    addAll(stdLibPreconditions(typeResolver))
+}
+
+fun NamedFunctionSignature.constructorPostcondition(typeResolver: TypeResolver) = buildList{
+    formalArgs.forEach {
+        addAll(it.accessInvariants(typeResolver))
+        if (it.isUnique && it.isBorrowed) {
+            addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
+        }
+    }
+    addAll(returns.pureInvariants())
+    addAll(returns.provenInvariants())
+
+    addAll(returns.allAccessInvariants(typeResolver))
+    addIfNotNull(returns.uniquePredicateAccessInvariant(typeResolver))
+
+    addAll(stdLibPostconditions(returns, typeResolver))
+}
+
+fun NamedFunctionSignature.userFunctionPostcondition(typeResolver: TypeResolver) = buildList{
+    formalArgs.forEach {
+        addAll(it.accessInvariants(typeResolver))
+        if (it.isUnique && it.isBorrowed) {
+            addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
+        }
+    }
+    addAll(returns.pureInvariants())
+    addAll(returns.provenInvariants())
+
+    if (!isPure) {
+        addAll(returns.allAccessInvariants(typeResolver))
+        if (callableType.returnsUnique) {
+            addIfNotNull(returns.uniquePredicateAccessInvariant(typeResolver))
+        }
+    }
+
+    addAll(stdLibPostconditions(returns, typeResolver))
+}
+
 
 class ConstructorSignature(
     val signature : NamedFunctionSignature,
-    val propertiesPostconditions : List<ExpEmbedding>,
     override val symbol: FirFunctionSymbol<*>,
+    propertiesPostconditions : List<ExpEmbedding>,
     typeResolver: TypeResolver
 ) : FullNamedFunctionSignature, NamedFunctionSignature by signature {
-
-   override val preconditions = buildList {
-        formalArgs.forEach {
-            addAll(it.pureInvariants())
-            addAll(it.accessInvariants(typeResolver))
-            addAll(it.provenInvariants())
-            if (it.isUnique) {
-                addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
-            }
-        }
-        addAll(stdLibPreconditions(typeResolver))
-    }
-
-    override val postconditions: List<ExpEmbedding> = buildList {
-        formalArgs.forEach {
-            addAll(it.accessInvariants(typeResolver))
-            if (it.isUnique && it.isBorrowed) {
-                addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
-            }
-        }
-        addAll(signature.returns.pureInvariants())
-        addAll(signature.returns.provenInvariants())
-
-        addAll(signature.returns.allAccessInvariants(typeResolver))
-        addIfNotNull(signature.returns.uniquePredicateAccessInvariant(typeResolver))
-
-        addAll(stdLibPostconditions(signature.returns, typeResolver))
-        addAll(propertiesPostconditions)
-    }
+   override val preconditions = signature.basicPreconditions(typeResolver)
+    override val postconditions = signature.constructorPostcondition(typeResolver) + propertiesPostconditions
 
     override val declarationSource: KtSourceElement? = symbol.source
 }
@@ -89,38 +110,9 @@ class UserFunctionSignature(
     typeResolver: TypeResolver,
 ) : FullNamedFunctionSignature, NamedFunctionSignature by signature {
 
-    override val preconditions: List<ExpEmbedding> = buildList {
-        signature.formalArgs.forEach {
-            addAll(it.pureInvariants())
-            addAll(it.accessInvariants(typeResolver))
-            addAll(it.provenInvariants())
-            if (it.isUnique) {
-                addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
-            }
-        }
-        addAll(signature.stdLibPreconditions(typeResolver))
-        addAll(userPreconditions)
-    }
+    override val preconditions: List<ExpEmbedding> = signature.basicPreconditions(typeResolver) + userPreconditions
 
-    override val postconditions : List<ExpEmbedding> = buildList {
-        signature.formalArgs.forEach {
-            addAll(it.accessInvariants(typeResolver))
-            if (it.isUnique && it.isBorrowed) {
-                addIfNotNull(it.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(it))
-            }
-        }
-        addAll(signature.returns.pureInvariants())
-        addAll(signature.returns.provenInvariants())
-        if (!signature.isPure) {
-            addAll(signature.returns.allAccessInvariants(typeResolver))
-            if (signature.callableType.returnsUnique) {
-                addIfNotNull(signature.returns.uniquePredicateAccessInvariant(typeResolver))
-            }
-        }
-
-        addAll(signature.stdLibPostconditions(signature.returns, typeResolver))
-        addAll(userPostconditions)
-    }
+    override val postconditions : List<ExpEmbedding> = signature.userFunctionPostcondition(typeResolver) + userPostconditions
 
     override val declarationSource: KtSourceElement? = symbol.source
 }

@@ -438,18 +438,17 @@ class ProgramConverter(
 
     private fun embedKotlinContract(
         signature: NamedFunctionSignature
-    ): Pair<List<ExpEmbedding>, List<ExpEmbedding>> {
+    ): List<ExpEmbedding> {
         val contractVisitor = ContractDescriptionConversionVisitor(this@ProgramConverter, signature)
-        val postconditions = contractVisitor.getPostconditions()
-        return Pair(emptyList(), postconditions)
+        return contractVisitor.getPostconditions()
     }
 
     private fun embedProvidedContract(
         symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, returnTarget : ReturnTarget
     ): Pair<List<ExpEmbedding>, List<ExpEmbedding>> {
-        val kotlinContract = embedKotlinContract(signature)
+        val kotlinContractPostcondition = embedKotlinContract(signature)
         val userContract = embedFormverContract(symbol, signature, returnTarget)
-        return Pair(kotlinContract.first + userContract.first, kotlinContract.second + userContract.second)
+        return Pair(userContract.first, kotlinContractPostcondition + userContract.second)
     }
 
     private fun embedFullSignature(symbol: FirFunctionSymbol<*>): Pair<ReturnTarget,FullNamedFunctionSignature> {
@@ -481,7 +480,7 @@ class ProgramConverter(
                     }
                 }
             }
-            ConstructorSignature(subSignature, fieldPostconditions, symbol, typeResolver)
+            ConstructorSignature(subSignature, symbol, fieldPostconditions, typeResolver)
         } else {
             val (preconditions, postconditions) = embedProvidedContract(symbol, subSignature, returnTarget)
 
