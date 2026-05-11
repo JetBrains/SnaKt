@@ -428,21 +428,19 @@ class ProgramConverter(
                 }
 
                 val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol ?: throw SnaktInternalException(symbol.source, "Properties dispatch receiver is not a class")
-
-                val isFinal = symbol.isFinal || classSymbol.isFinal
-                val isCustom = symbol.isCustom // this checks if the property has a custom getter/setter. But does the setter matter?
+                val wellBehaved = isWellBehavedProperty(symbol)
                 val isImmut = symbol.isVal
 
 
                 return@getOrPutProperty when {
-                    isFinal && !isCustom && isImmut -> {
+                    wellBehaved && isImmut -> {
                         // we can replace with function call
                         PropertyEmbedding(
                             CustomGetter(embedClosedGetterFunction(symbol)),
                             null
                         )
                     }
-                    isFinal && !isCustom -> {
+                    wellBehaved -> {
                         // we can use a backing field to represent it
                         val field = embedBackingField(symbol, classSymbol)
                         PropertyEmbedding(
@@ -450,16 +448,9 @@ class ProgramConverter(
                         )
                     }
 
-                    isFinal && isCustom -> {
-                        // we should implement the user provided getter method, it might have pre+post conditions
-                        val getter = symbol.getterSymbol
-                        val setter = symbol.setterSymbol
-                        // TODO: add logic to embed user provided getter + setter
-                        embedCustomProperty(symbol)
-                    }
-
                     else -> {
-                        // The property could be overwritten by anything. We can only reason about the upper bound of the type.
+                        // The property could be overwritten by anything, or has a custom getter/setter.
+                        // We can only reason about the upper bound of the type.
                         PropertyEmbedding(
                             CustomGetter(embedOpenGetterFunction(symbol)),
                             symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) },
@@ -635,7 +626,7 @@ class ProgramConverter(
         val embedding = embedClass(classSymbol)
         val scopedName = symbol.callableId!!.embedMemberBackingFieldName(
             Visibilities.isPrivate(symbol.visibility),
-            isFinalProperty(symbol)
+            isWellBehavedProperty(symbol)
         )
         val backingField = UserFieldEmbedding(
                 scopedName,
@@ -744,8 +735,8 @@ class ProgramConverter(
         }
     }
 
-    override fun isFinalProperty(symbol: FirPropertySymbol) : Boolean {
+    override fun isWellBehavedProperty(symbol: FirPropertySymbol) : Boolean {
         val classSymbolFinal = symbol.dispatchReceiverType?.toClassSymbol(session)?.isFinal ?: false
-        return symbol.isFinal || classSymbolFinal
+        return (symbol.isFinal || classSymbolFinal) && !symbol.isCustom
     }
 }

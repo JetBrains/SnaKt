@@ -50,7 +50,13 @@ interface ProgramConversionContext {
     fun embedFunctionPretype(symbol: FirFunctionSymbol<*>): FunctionTypeEmbedding
     fun embedType(exp: FirExpression): TypeEmbedding = embedType(exp.resolvedType)
     fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding
-    fun isFinalProperty(symbol: FirPropertySymbol): Boolean
+
+    /**
+     * Returns true if the property is well-behaved. With this we mean that it is:
+     * Cannot be overwritten and does not have custom getters or setters
+     * If this is the case, then we know exactly how the property will behave.
+     */
+    fun isWellBehavedProperty(symbol: FirPropertySymbol): Boolean
 }
 
 fun ProgramConversionContext.freshAnonVar(type: TypeEmbedding): VariableEmbedding = anonVarProducer.getFresh(type)

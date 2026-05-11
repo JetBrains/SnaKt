@@ -53,12 +53,12 @@ fun CallableId.embedExtensionSetterName(type: FunctionTypeEmbedding): ScopedName
 
 private fun CallableId.embedMemberPropertyScope(
     scopePolicy: MemberEmbeddingPolicy,
-    isFinal: Boolean
+    isWellBehaved: Boolean
 ): NameScope {
     val id = classId ?: error("Embedding non-member property $callableName as a member.")
     return buildScope {
         when (scopePolicy) {
-            MemberEmbeddingPolicy.PUBLIC if isFinal -> {
+            MemberEmbeddingPolicy.PUBLIC if isWellBehaved -> {
                 embedScope(id)
                 finalScope()
             }
@@ -75,24 +75,24 @@ private fun CallableId.embedMemberPropertyScope(
     }
 }
 
-fun CallableId.embedMemberPropertyNameBase(isPrivate: MemberEmbeddingPolicy, isFinal: Boolean, action: (Name) -> KotlinName): ScopedName {
-    val scope = embedMemberPropertyScope(isPrivate, isFinal)
+fun CallableId.embedMemberPropertyNameBase(isPrivate: MemberEmbeddingPolicy, isWellBehaved: Boolean, action: (Name) -> KotlinName): ScopedName {
+    val scope = embedMemberPropertyScope(isPrivate, isWellBehaved)
     return ScopedName(scope, action(callableName))
 }
 
-fun CallableId.embedMemberPropertyName(isPrivate: Boolean, isFinal: Boolean): PropertyKotlinName {
-    val scope = embedMemberPropertyScope(alwaysScopedPolicy(isPrivate), isFinal)
+fun CallableId.embedMemberPropertyName(isPrivate: Boolean, isWellBehaved: Boolean): PropertyKotlinName {
+    val scope = embedMemberPropertyScope(alwaysScopedPolicy(isPrivate), isWellBehaved)
     return PropertyKotlinName(scope, callableName)
 }
 
-fun CallableId.embedMemberGetterName(isPrivate: Boolean, isFinal: Boolean) =
-    embedMemberPropertyNameBase(alwaysScopedPolicy(isPrivate), isFinal, ::GetterKotlinName)
+fun CallableId.embedMemberGetterName(isPrivate: Boolean, isWellBehaved: Boolean) =
+    embedMemberPropertyNameBase(alwaysScopedPolicy(isPrivate), isWellBehaved, ::GetterKotlinName)
 
-fun CallableId.embedMemberSetterName(isPrivate: Boolean, isFinal: Boolean) =
-    embedMemberPropertyNameBase(alwaysScopedPolicy(isPrivate), isFinal, ::SetterKotlinName)
+fun CallableId.embedMemberSetterName(isPrivate: Boolean, isWellBehaved: Boolean) =
+    embedMemberPropertyNameBase(alwaysScopedPolicy(isPrivate), isWellBehaved, ::SetterKotlinName)
 
-fun CallableId.embedMemberBackingFieldName(isPrivate: Boolean, isFinal: Boolean) =
-    embedMemberPropertyNameBase(onlyPrivateScopedPolicy(isPrivate), isFinal,::BackingFieldKotlinName)
+fun CallableId.embedMemberBackingFieldName(isPrivate: Boolean, isWellBehaved: Boolean) =
+    embedMemberPropertyNameBase(onlyPrivateScopedPolicy(isPrivate), isWellBehaved,::BackingFieldKotlinName)
 
 fun CallableId.embedFunctionName(type: FunctionTypeEmbedding): ScopedName = buildName {
     embedScope(this@embedFunctionName)
@@ -123,7 +123,7 @@ fun FirPropertySymbol.embedGetterName(ctx: ProgramConversionContext): ScopedName
     if (receiverParameterSymbol != null) {
         callableId!!.embedExtensionGetterName(ctx.embedFunctionPretype(getterSymbol!!))
     } else {
-        callableId!!.embedMemberGetterName(Visibilities.isPrivate(visibility), ctx.isFinalProperty(this))
+        callableId!!.embedMemberGetterName(Visibilities.isPrivate(visibility), ctx.isWellBehavedProperty(this))
     }
 
 fun FirPropertySymbol.embedSetterName(ctx: ProgramConversionContext): ScopedName =
@@ -134,7 +134,7 @@ fun FirPropertySymbol.embedSetterName(ctx: ProgramConversionContext): ScopedName
             )
         )
     } else {
-        callableId!!.embedMemberSetterName(Visibilities.isPrivate(visibility), ctx.isFinalProperty(this))
+        callableId!!.embedMemberSetterName(Visibilities.isPrivate(visibility), ctx.isWellBehavedProperty(this))
     }
 
 /**
@@ -145,7 +145,7 @@ fun FirPropertySymbol.embedMemberPropertyName(ctx: ProgramConversionContext): Cl
     val callable = callableId
     val className =
         callable?.classId?.embedName() ?: throw SnaktInternalException(source, "Property is not part of a class")
-    val propertyName = callable.embedMemberPropertyName(Visibilities.isPrivate(this.visibility), ctx.isFinalProperty(this))
+    val propertyName = callable.embedMemberPropertyName(Visibilities.isPrivate(this.visibility), ctx.isWellBehavedProperty(this))
     return ClassPropertyPair(className, propertyName)
 }
 
