@@ -26,32 +26,44 @@ fun CandidateName.name(): String = parts.joinToString("") { it.name() }
 
 
 /**
- * Gives the most specific name.
+ * The fully-disambiguated form of a name, rendered as a valid Viper
+ * identifier. Distinct from [debugId], which adds readability decorations
+ * that aren't valid in Viper identifiers.
+ *
+ * Use this when a resolver needs a guaranteed-unique name without doing
+ * collision resolution (see [SimpleNameResolver]).
  */
-fun NamePart.fullName(): String = when (this) {
-    is NamePart.Dependent -> fullName()
-    is NamePart.Basic -> this.name
+private fun NamePart.longName(): String = when (this) {
+    is NamePart.Dependent -> name.longName()
+    is NamePart.Basic -> name
     NamePart.Separator -> SEPARATOR
 }
 
-/**
- * Gives the most specific name.
- */
-fun NamePart.Dependent.fullName(): String = name.candidates().last().fullName()
+private fun CandidateName.longName(): String = parts.joinToString("") { it.longName() }
+
+fun AnyName.longName(): String = candidates().last().longName()
+
 
 /**
- * Gives the most specific name.
+ * Debug rendering of a name. Same structure as [longName] but wraps
+ * multi-part dependent candidates in `[…]` for readability.
+ *
+ * The result is not a valid Viper identifier and is intended for
+ * debug/dump output only.
  */
-fun CandidateName.fullName(): String = if (parts.size > 1) {
-    "[" + parts.joinToString("") { it.fullName() } + "]"
-} else {
-    parts.joinToString("") { it.fullName() }
+private fun NamePart.debugId(): String = when (this) {
+    is NamePart.Dependent -> name.debugId()
+    is NamePart.Basic -> name
+    NamePart.Separator -> SEPARATOR
 }
 
-/**
- * Gives the most specific name.
- */
-fun AnyName.fullName(): String = candidates().last().fullName()
+private fun CandidateName.debugId(): String = if (parts.size > 1) {
+    "[" + parts.joinToString("") { it.debugId() } + "]"
+} else {
+    parts.joinToString("") { it.debugId() }
+}
+
+fun AnyName.debugId(): String = candidates().last().debugId()
 
 
 // END UTILITY SECTION
@@ -100,9 +112,9 @@ class ShortNameResolver : NameResolver {
 
     // START RESOLVE NAMES
     override fun lookup(name: SymbolicName): String = mangledNames.getOrElse(name) {
-        // The name.fullName() contains characters which are not allowed in viper. This should only happen when we dump the ExpEmbedding, which can contain
+        // The name.debugId() contains characters which are not allowed in viper. This should only happen when we dump the ExpEmbedding, which can contain
         // entities that the final program does not.
-        name.fullName()
+        name.debugId()
     }
 
     internal fun current(entity: AnyName): String {
