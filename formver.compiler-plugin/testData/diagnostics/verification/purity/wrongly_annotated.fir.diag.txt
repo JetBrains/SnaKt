@@ -20,7 +20,6 @@ method impureExtension(v_this_extension: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(v_this_extension), Field())
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  inhale acc(shared(v_this_extension), wildcard)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }

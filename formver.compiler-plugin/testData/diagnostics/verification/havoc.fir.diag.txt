@@ -412,10 +412,6 @@ function xorBools(arg_1: Ref, arg_2: Ref): Ref
   ensures boolFromRef(result) == (boolFromRef(arg_1) != boolFromRef(arg_2))
 
 
-predicate A_shared(this: Ref) {
-  true
-}
-
 predicate A_unique(this: Ref) {
   acc(this.unit, write) && isSubtype(typeOf(this.unit), unitType()) &&
   acc(this.nothing, write) &&
@@ -431,7 +427,6 @@ predicate A_unique(this: Ref) {
   acc(this.string, write) &&
   isSubtype(typeOf(this.string), stringType()) &&
   acc(this.classType, write) &&
-  acc(B_shared(this.classType), wildcard) &&
   isSubtype(typeOf(this.classType), B()) &&
   acc(this.unitNull, write) &&
   isSubtype(typeOf(this.unitNull), nullable(unitType())) &&
@@ -448,13 +443,7 @@ predicate A_unique(this: Ref) {
   acc(this.stringNull, write) &&
   isSubtype(typeOf(this.stringNull), nullable(stringType())) &&
   acc(this.classTypeNull, write) &&
-  (this.classTypeNull != nullValue() ==>
-  acc(B_shared(this.classTypeNull), wildcard)) &&
   isSubtype(typeOf(this.classTypeNull), nullable(B()))
-}
-
-predicate B_shared(this: Ref) {
-  true
 }
 
 predicate B_unique(this: Ref) {
@@ -481,7 +470,6 @@ method f_havoc(a: Ref) returns (v_ret_0: Ref)
   var localCharNull: Ref
   var localStringNull: Ref
   var localClassTypeNull: Ref
-  inhale acc(A_shared(a), wildcard)
   localUnit := havoc_Unit()
   localNothing := havoc_Nothing()
   localAny := havoc_Any()
@@ -507,7 +495,6 @@ method havoc_Any() returns (v_ret_0: Ref)
 
 
 method havoc_B() returns (v_ret_0: Ref)
-  ensures acc(B_shared(v_ret_0), wildcard)
   ensures isSubtype(typeOf(v_ret_0), B())
 
 
@@ -528,7 +515,6 @@ method havoc_NAny() returns (v_ret_0: Ref)
 
 
 method havoc_NB() returns (v_ret_0: Ref)
-  ensures v_ret_0 != nullValue() ==> acc(B_shared(v_ret_0), wildcard)
   ensures isSubtype(typeOf(v_ret_0), nullable(B()))
 
 

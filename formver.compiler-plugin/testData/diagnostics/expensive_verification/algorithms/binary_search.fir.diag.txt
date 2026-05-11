@@ -39,7 +39,6 @@ method mid_increased_by_one(arr: Ref, target: Ref) returns (v_ret_0: Ref)
   var mid: Ref
   var anon_0: Ref
   var anon_1: Ref
-  inhale acc(List_shared(arr), wildcard)
   l0_size := arr.p_size
   inhale isSubtype(typeOf(l0_size), intType())
   anon_0 := arr.p_size
@@ -86,7 +85,6 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
   ensures isSubtype(typeOf(ret_3), List())
   ensures acc(ret_3.p_size, write)
   ensures intFromRef(ret_3.p_size) >= 0
-  ensures acc(List_shared(ret_3), wildcard)
   ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
   ensures intFromRef(ret_3.p_size) ==
     intFromRef(toIndex) - intFromRef(fromIndex)
@@ -133,7 +131,6 @@ method mid_decreased_by_one(arr: Ref, target: Ref) returns (v_ret_0: Ref)
   var mid: Ref
   var anon_0: Ref
   var anon_1: Ref
-  inhale acc(List_shared(arr), wildcard)
   l0_size := arr.p_size
   inhale isSubtype(typeOf(l0_size), intType())
   anon_0 := arr.p_size
@@ -180,7 +177,6 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
   ensures isSubtype(typeOf(ret_3), List())
   ensures acc(ret_3.p_size, write)
   ensures intFromRef(ret_3.p_size) >= 0
-  ensures acc(List_shared(ret_3), wildcard)
   ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
   ensures intFromRef(ret_3.p_size) ==
     intFromRef(toIndex) - intFromRef(fromIndex)
@@ -228,7 +224,6 @@ method mid_decreased_by_one_in_rec_call(arr: Ref, target: Ref)
   var mid: Ref
   var anon_0: Ref
   var anon_1: Ref
-  inhale acc(List_shared(arr), wildcard)
   l0_size := arr.p_size
   inhale isSubtype(typeOf(l0_size), intType())
   anon_0 := arr.p_size
@@ -275,7 +270,6 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
   ensures isSubtype(typeOf(ret_3), List())
   ensures acc(ret_3.p_size, write)
   ensures intFromRef(ret_3.p_size) >= 0
-  ensures acc(List_shared(ret_3), wildcard)
   ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
   ensures intFromRef(ret_3.p_size) ==
     intFromRef(toIndex) - intFromRef(fromIndex)
@@ -311,7 +305,6 @@ method unsafe_binary_search(arr: Ref, target: Ref, left: Ref, right: Ref)
 {
   var mid: Ref
   var anon_0: Ref
-  inhale acc(List_shared(arr), wildcard)
   if (intFromRef(left) > intFromRef(right)) {
     v_ret_0 := boolToRef(false)
     goto lbl_ret_0

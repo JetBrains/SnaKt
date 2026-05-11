@@ -17,7 +17,10 @@ method useChecks() returns (v_ret_0: Ref)
 }
 
 /stdlib_replacement_tests.kt: info: Generated Viper text for useRuns:
-field size: Ref
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method useRuns(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
@@ -72,7 +75,10 @@ method useRuns(x: Ref) returns (v_ret_0: Ref)
 }
 
 /stdlib_replacement_tests.kt: info: Generated Viper text for useAlso:
-field size: Ref
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method useAlso(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
@@ -102,7 +108,10 @@ method useAlso(x: Ref) returns (v_ret_0: Ref)
 }
 
 /stdlib_replacement_tests.kt: info: Generated Viper text for useLet:
-field size: Ref
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method useLet(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
@@ -138,7 +147,10 @@ method useLet(x: Ref) returns (v_ret_0: Ref)
 }
 
 /stdlib_replacement_tests.kt: info: Generated Viper text for useWith:
-field size: Ref
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method useWith(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
@@ -171,7 +183,10 @@ method useWith(x: Ref) returns (v_ret_0: Ref)
 }
 
 /stdlib_replacement_tests.kt: info: Generated Viper text for useApply:
-field size: Ref
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method useApply(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())

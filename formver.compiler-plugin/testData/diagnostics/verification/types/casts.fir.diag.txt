@@ -16,7 +16,6 @@ method isNullOrEmptyWrong(seq: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(seq), nullable(CharSequence()))
   ensures isSubtype(typeOf(v_ret_0), boolType())
 {
-  inhale seq != nullValue() ==> acc(shared(seq), wildcard)
   if (seq == nullValue()) {
     var anon_0: Ref
     if (seq != nullValue()) {
@@ -77,11 +76,8 @@ method smartCast(x: Ref) returns (v_ret_0: Ref)
 method testAs(foo: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(foo), Foo())
   ensures isSubtype(typeOf(v_ret_0), Bar())
-  ensures acc(Bar_shared(v_ret_0), wildcard)
 {
-  inhale acc(Foo_shared(foo), wildcard)
   inhale isSubtype(typeOf(foo), Bar())
-  inhale acc(Bar_shared(foo), wildcard)
   v_ret_0 := foo
   goto lbl_ret_0
   label lbl_ret_0
@@ -91,11 +87,8 @@ method testAs(foo: Ref) returns (v_ret_0: Ref)
 method testNullableAs(foo: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(foo), nullable(Foo()))
   ensures isSubtype(typeOf(v_ret_0), nullable(Bar()))
-  ensures v_ret_0 != nullValue() ==> acc(Bar_shared(v_ret_0), wildcard)
 {
-  inhale foo != nullValue() ==> acc(Foo_shared(foo), wildcard)
   inhale isSubtype(typeOf(foo), nullable(Bar()))
-  inhale foo != nullValue() ==> acc(Bar_shared(foo), wildcard)
   v_ret_0 := foo
   goto lbl_ret_0
   label lbl_ret_0
@@ -105,15 +98,12 @@ method testNullableAs(foo: Ref) returns (v_ret_0: Ref)
 method testSafeAs(foo: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(foo), Foo())
   ensures isSubtype(typeOf(v_ret_0), nullable(Bar()))
-  ensures v_ret_0 != nullValue() ==> acc(Bar_shared(v_ret_0), wildcard)
 {
-  inhale acc(Foo_shared(foo), wildcard)
   if (isSubtype(typeOf(foo), Bar())) {
     v_ret_0 := foo
   } else {
     v_ret_0 := nullValue()}
   inhale isSubtype(typeOf(v_ret_0), nullable(Bar()))
-  inhale v_ret_0 != nullValue() ==> acc(Bar_shared(v_ret_0), wildcard)
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -122,15 +112,12 @@ method testSafeAs(foo: Ref) returns (v_ret_0: Ref)
 method testNullableSafeAs(foo: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(foo), nullable(Foo()))
   ensures isSubtype(typeOf(v_ret_0), nullable(Bar()))
-  ensures v_ret_0 != nullValue() ==> acc(Bar_shared(v_ret_0), wildcard)
 {
-  inhale foo != nullValue() ==> acc(Foo_shared(foo), wildcard)
   if (isSubtype(typeOf(foo), Bar())) {
     v_ret_0 := foo
   } else {
     v_ret_0 := nullValue()}
   inhale isSubtype(typeOf(v_ret_0), nullable(Bar()))
-  inhale v_ret_0 != nullValue() ==> acc(Bar_shared(v_ret_0), wildcard)
   goto lbl_ret_0
   label lbl_ret_0
 }

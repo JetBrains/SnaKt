@@ -1,17 +1,21 @@
 /inheritance.kt: info: Generated Viper text for getY:
 field b: Ref
 
-field x: Ref
+function x(this: Ref): Ref
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(result), intType())
 
-field y: Ref
+
+function y(this: Ref): Ref
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method getY(this: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(this), Foo())
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  inhale acc(shared(this), wildcard)
-  unfold acc(shared(this), wildcard)
-  v_ret_0 := this.y
+  v_ret_0 := y(this)
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -19,25 +23,26 @@ method getY(this: Ref) returns (v_ret_0: Ref)
 /inheritance.kt: info: Generated Viper text for sum:
 field b: Ref
 
-field x: Ref
+function x(this: Ref): Ref
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(result), intType())
 
-field y: Ref
 
-field z: Ref
+function y(this: Ref): Ref
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function z(this: Ref): Ref
+  requires isSubtype(typeOf(this), Bar())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method sum(this: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(this), Bar())
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  var anon_0: Ref
-  var anon_1: Ref
-  inhale acc(Bar_shared(this), wildcard)
-  unfold acc(Bar_shared(this), wildcard)
-  unfold acc(Foo_shared(this), wildcard)
-  anon_0 := this.x
-  unfold acc(Bar_shared(this), wildcard)
-  anon_1 := this.z
-  v_ret_0 := plusInts(anon_0, anon_1)
+  v_ret_0 := plusInts(x(this), z(this))
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -45,17 +50,25 @@ method sum(this: Ref) returns (v_ret_0: Ref)
 /inheritance.kt: info: Generated Viper text for callSuperMethod:
 field b: Ref
 
-field x: Ref
+function x(this: Ref): Ref
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(result), intType())
 
-field y: Ref
 
-field z: Ref
+function y(this: Ref): Ref
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function z(this: Ref): Ref
+  requires isSubtype(typeOf(this), Bar())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method callSuperMethod(bar: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(bar), Bar())
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  inhale acc(Bar_shared(bar), wildcard)
   v_ret_0 := getY(bar)
   goto lbl_ret_0
   label lbl_ret_0
@@ -69,18 +82,26 @@ method getY(this: Ref) returns (ret_1: Ref)
 /inheritance.kt: info: Generated Viper text for accessSuperField:
 field b: Ref
 
-field x: Ref
+function x(this: Ref): Ref
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(result), intType())
 
-field y: Ref
 
-field z: Ref
+function y(this: Ref): Ref
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function z(this: Ref): Ref
+  requires isSubtype(typeOf(this), Bar())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method accessSuperField(bar: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(bar), Bar())
   ensures isSubtype(typeOf(v_ret_0), boolType())
 {
-  inhale acc(Bar_shared(bar), wildcard)
-  v_ret_0 := havoc_Boolean()
+  v_ret_0 := havoc()
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -88,19 +109,26 @@ method accessSuperField(bar: Ref) returns (v_ret_0: Ref)
 /inheritance.kt: info: Generated Viper text for accessNewField:
 field b: Ref
 
-field x: Ref
+function x(this: Ref): Ref
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(result), intType())
 
-field y: Ref
 
-field z: Ref
+function y(this: Ref): Ref
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function z(this: Ref): Ref
+  requires isSubtype(typeOf(this), Bar())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method accessNewField(bar: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(bar), Bar())
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  inhale acc(Bar_shared(bar), wildcard)
-  unfold acc(Bar_shared(bar), wildcard)
-  v_ret_0 := bar.z
+  v_ret_0 := z(bar)
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -108,17 +136,25 @@ method accessNewField(bar: Ref) returns (v_ret_0: Ref)
 /inheritance.kt: info: Generated Viper text for callNewMethod:
 field b: Ref
 
-field x: Ref
+function x(this: Ref): Ref
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(result), intType())
 
-field y: Ref
 
-field z: Ref
+function y(this: Ref): Ref
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function z(this: Ref): Ref
+  requires isSubtype(typeOf(this), Bar())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method callNewMethod(bar: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(bar), Bar())
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  inhale acc(Bar_shared(bar), wildcard)
   v_ret_0 := sum(bar)
   goto lbl_ret_0
   label lbl_ret_0
@@ -132,17 +168,25 @@ method sum(this: Ref) returns (ret_1: Ref)
 /inheritance.kt: info: Generated Viper text for setSuperField:
 field b: Ref
 
-field x: Ref
+function x(this: Ref): Ref
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(result), intType())
 
-field y: Ref
 
-field z: Ref
+function y(this: Ref): Ref
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function z(this: Ref): Ref
+  requires isSubtype(typeOf(this), Bar())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method setSuperField(bar: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(bar), Bar())
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  inhale acc(Bar_shared(bar), wildcard)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
@@ -150,21 +194,26 @@ method setSuperField(bar: Ref) returns (v_ret_0: Ref)
 /inheritance.kt: info: Generated Viper text for accessSuperSuperField:
 field b: Ref
 
-field x: Ref
+function x(this: Ref): Ref
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(result), intType())
 
-field y: Ref
 
-field z: Ref
+function y(this: Ref): Ref
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function z(this: Ref): Ref
+  requires isSubtype(typeOf(this), Bar())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method accessSuperSuperField(baz: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(baz), Baz())
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  inhale acc(Baz_shared(baz), wildcard)
-  unfold acc(Baz_shared(baz), wildcard)
-  unfold acc(Bar_shared(baz), wildcard)
-  unfold acc(Foo_shared(baz), wildcard)
-  v_ret_0 := baz.x
+  v_ret_0 := x(baz)
   goto lbl_ret_0
   label lbl_ret_0
 }
