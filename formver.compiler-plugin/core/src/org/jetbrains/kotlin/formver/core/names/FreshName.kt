@@ -129,31 +129,21 @@ data class SpecialFieldName(val name: String) : FreshName {
     override val children: List<AnyName> = listOf(nameType)
 }
 
-sealed class LabelName(override val n: Int) : NumberedName {
+sealed class LabelName(val labelString: String) : NumberedName {
     override val nameType: NameType = NameType.Base.Label
     override val inViper: Boolean = true
 
     override val candidates: List<CandidateName>
-        get() {
-            val name = when (this) {
-                is BreakLabelName -> "break"
-                is CatchLabelName -> "catch"
-                is ContinueLabelName -> "cont"
-                is ReturnLabelName -> "ret"
-                is TryExitLabelName -> "tryExit"
-            }
-            return nameWithPrefixAndSuffixCandidates(name, nameType, n.toString())
-        }
+        get() = nameWithPrefixAndSuffixCandidates(labelString, nameType, n.toString())
 
-    override val children: List<AnyName>
-        get() = listOf(nameType)
+    override val children: List<AnyName> = listOf(nameType)
 }
 
-data class ReturnLabelName(override val n: Int) : LabelName(n)
-data class BreakLabelName(override val n: Int) : LabelName(n)
-data class ContinueLabelName(override val n: Int) : LabelName(n)
-data class CatchLabelName(override val n: Int) : LabelName(n)
-data class TryExitLabelName(override val n: Int) : LabelName(n)
+data class ReturnLabelName(override val n: Int) : LabelName("ret")
+data class BreakLabelName(override val n: Int) : LabelName("break")
+data class ContinueLabelName(override val n: Int) : LabelName("cont")
+data class CatchLabelName(override val n: Int) : LabelName("catch")
+data class TryExitLabelName(override val n: Int) : LabelName("tryExit")
 
 
 data class DomainAssociatedFuncName(val name: String) : FreshName {

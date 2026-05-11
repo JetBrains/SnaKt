@@ -23,20 +23,11 @@ fun nameWithPrefixAndSuffixCandidates(name: String, nameType: AnyName, suffix: S
         }
     }
 
-fun nameWithPrefixCandidates(name: String, nameType: AnyName): List<CandidateName> =
+fun nameWithPrefixCandidates(name: String, prefix: AnyName): List<CandidateName> =
     buildCandidates {
         candidate {
             +name
         }
-        candidate {
-            +nameType
-            +name
-        }
-    }
-
-fun nameWithDependentPrefixCandidates(name: String, prefix: AnyName): List<CandidateName> =
-    buildCandidates {
-        candidate { +name }
         candidate {
             +prefix
             +name
@@ -51,5 +42,3 @@ fun nameWithDependentPrefixCandidates(name: AnyName, prefix: AnyName): List<Cand
             +name
         }
     }
-
-fun AnyName.candidates(): List<CandidateName> = candidates

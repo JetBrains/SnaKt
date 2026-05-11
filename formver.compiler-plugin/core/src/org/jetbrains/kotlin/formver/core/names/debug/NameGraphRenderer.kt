@@ -106,7 +106,7 @@ class NameGraphRenderer(val shortNameResolver: ShortNameResolver) {
             }
         }
 
-        fun candidates(entity: AnyName): String = entity.candidates().joinToString(nl) { candidateNameTemplate(it) }
+        fun candidates(entity: AnyName): String = entity.candidates.joinToString(nl) { candidateNameTemplate(it) }
 
         fun id(entity: AnyName): String {
             val hashCode = entity.hashCode() + entity::class.qualifiedName.hashCode()
