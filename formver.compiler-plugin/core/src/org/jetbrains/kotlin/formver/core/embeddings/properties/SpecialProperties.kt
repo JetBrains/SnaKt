@@ -38,7 +38,8 @@ object CollectionSizeProperty :
 
         val embedding = typeResolver.lookupClassTypeEmbedding(classSymbol.classId.embedName()) ?: return false
         val scopedName = symbol.callableId!!.embedMemberBackingFieldName(
-            Visibilities.isPrivate(symbol.visibility)
+            Visibilities.isPrivate(symbol.visibility),
+            true
         )
         NameMatcher.Companion.matchClassScope(scopedName) {
             ifBackingFieldName("size") {

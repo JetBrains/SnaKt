@@ -11,7 +11,10 @@ import org.jetbrains.kotlin.descriptors.isObject
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
-import org.jetbrains.kotlin.fir.declarations.utils.*
+import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
+import org.jetbrains.kotlin.fir.declarations.utils.isData
+import org.jetbrains.kotlin.fir.declarations.utils.isFinal
+import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
@@ -281,11 +284,21 @@ class ProgramConverter(
         }
     }
 
-    private fun embedGetterFunction(symbol: FirPropertySymbol): CallableEmbedding {
+    private fun embedOpenGetterFunction(symbol: FirPropertySymbol): CallableEmbedding {
         val name = symbol.embedGetterName(this)
         return impureFunctions.getOrPut(name) {
-            val signature = GetterFunctionSignature(name, symbol)
+            val signature = OpenGetterFunctionSignature(name, symbol)
             UserFunctionEmbedding(
+                NonInlineNamedFunction(signature)
+            )
+        }
+    }
+
+    private fun embedClosedGetterFunction(symbol: FirPropertySymbol): CallableEmbedding {
+        val name = symbol.embedGetterName(this)
+        return pureFunctions.getOrPut(name) {
+            val signature = ClosedGetterFunctionSignature(name, symbol)
+            PureUserFunctionEmbedding(
                 NonInlineNamedFunction(signature)
             )
         }
@@ -399,12 +412,13 @@ class ProgramConverter(
         embedFunctionPretypeWithBuilder(symbol)
     }
 
+    @OptIn(SymbolInternals::class)
     override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding {
 
         if (symbol.receiverParameterSymbol != null) {
             return embedCustomProperty(symbol)
         } else {
-            val name = symbol.embedMemberPropertyName()
+            val name = symbol.embedMemberPropertyName(this)
             return typeResolver.getOrPutProperty(name) {
                 // Check if the symbol should receive a special treatment
                 with(typeResolver) {
@@ -412,14 +426,46 @@ class ProgramConverter(
                         SpecialProperties.lookup(symbol)?.let { return@getOrPutProperty it }
                     }
                 }
-                // Check if the symbol can be represented using a backing field
-                embedBackingField(symbol)?.let {
-                    return@getOrPutProperty PropertyEmbedding(
-                        BackingFieldGetter(it), BackingFieldSetter(it)
-                    )
+
+                val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol ?: throw SnaktInternalException(symbol.source, "Properties dispatch receiver is not a class")
+
+                val isFinal = symbol.isFinal || classSymbol.isFinal
+                val isCustom = symbol.isCustom // this checks if the property has a custom getter/setter. But does the setter matter?
+                val isImmut = symbol.isVal
+
+
+                return@getOrPutProperty when {
+                    isFinal && !isCustom && isImmut -> {
+                        // we can replace with function call
+                        PropertyEmbedding(
+                            CustomGetter(embedClosedGetterFunction(symbol)),
+                            null
+                        )
+                    }
+                    isFinal && !isCustom -> {
+                        // we can use a backing field to represent it
+                        val field = embedBackingField(symbol, classSymbol)
+                        PropertyEmbedding(
+                            BackingFieldGetter(field), BackingFieldSetter(field)
+                        )
+                    }
+
+                    isFinal && isCustom -> {
+                        // we should implement the user provided getter method, it might have pre+post conditions
+                        val getter = symbol.getterSymbol
+                        val setter = symbol.setterSymbol
+                        // TODO: add logic to embed user provided getter + setter
+                        embedCustomProperty(symbol)
+                    }
+
+                    else -> {
+                        // The property could be overwritten by anything. We can only reason about the upper bound of the type.
+                        PropertyEmbedding(
+                            CustomGetter(embedOpenGetterFunction(symbol)),
+                            symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) },
+                        )
+                    }
                 }
-                // Create a custom getter+setter
-                embedCustomProperty(symbol)
             }
         }
     }
@@ -536,7 +582,7 @@ class ProgramConverter(
                     symbol.source, "Constructor does not return a regular class"
                 )
             val parameterMatching = constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
-                val name = propertySymbol.embedMemberPropertyName()
+                val name = propertySymbol.embedMemberPropertyName(this)
                 propertySymbol.withConstructorParam { paramSymbol ->
                     typeResolver.lookupBackingField(name)?.let { paramSymbol to it }
                 }
@@ -583,16 +629,15 @@ class ProgramConverter(
      * Construct and register the field embedding for this property's backing field, if any exists.
      */
     private fun embedBackingField(
-        symbol: FirPropertySymbol
-    ): FieldEmbedding? {
-        val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol ?: return null
+        symbol: FirPropertySymbol,
+        classSymbol : FirRegularClassSymbol
+    ): FieldEmbedding {
         val embedding = embedClass(classSymbol)
         val scopedName = symbol.callableId!!.embedMemberBackingFieldName(
-            Visibilities.isPrivate(symbol.visibility)
+            Visibilities.isPrivate(symbol.visibility),
+            isFinalProperty(symbol)
         )
-        val fieldIsAllowed = symbol.hasBackingField && !symbol.isCustom && (symbol.isFinal || classSymbol.isFinal)
-        val backingField = fieldIsAllowed.ifTrue {
-            UserFieldEmbedding(
+        val backingField = UserFieldEmbedding(
                 scopedName,
                 embedType(symbol.resolvedReturnType),
                 symbol,
@@ -600,12 +645,11 @@ class ProgramConverter(
                 embedding,
                 symbol.isManual(session)
             )
-        }
         return backingField
     }
 
     private fun embedCustomProperty(symbol: FirPropertySymbol) = PropertyEmbedding(
-        CustomGetter(embedGetterFunction(symbol)),
+        CustomGetter(embedOpenGetterFunction(symbol)),
         symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) },
     )
 
@@ -698,5 +742,10 @@ class ProgramConverter(
             errorCollector.addMinorError("Requested type $type, for which we do not yet have an embedding.")
             unit()
         }
+    }
+
+    override fun isFinalProperty(symbol: FirPropertySymbol) : Boolean {
+        val classSymbolFinal = symbol.dispatchReceiverType?.toClassSymbol(session)?.isFinal ?: false
+        return symbol.isFinal || classSymbolFinal
     }
 }

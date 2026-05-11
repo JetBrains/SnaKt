@@ -139,7 +139,7 @@ abstract class PropertyAccessorFunctionSignature(
     override val returns: VariableEmbedding = PlaceholderVariableEmbedding(ReturnVariableName(0), buildType { nullableAny() })
 }
 
-class GetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
+class OpenGetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
     PropertyAccessorFunctionSignature(name, symbol) {
     override val symbol: FirFunctionSymbol<*>
         get() = error {
@@ -151,6 +151,20 @@ class GetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
     }
 
     override val isPure: Boolean = false
+}
+
+class ClosedGetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
+    PropertyAccessorFunctionSignature(name, symbol) {
+    override val symbol: FirFunctionSymbol<*>
+        get() = error {
+            "Getter symbol should not be accessed directly as it is allowed to be null in some cases."
+        }
+    override val callableType: FunctionTypeEmbedding = buildFunctionPretype {
+        withDispatchReceiver { nullableAny() }
+        withReturnType { nullableAny() }
+    }
+
+    override val isPure: Boolean = true
 }
 
 class SetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
