@@ -92,16 +92,12 @@ class ProgramConverter(
 
 
     fun registerForVerification(declaration: FirSimpleFunction) {
-        val (returnTarget, signature) = embedFullSignature(declaration.symbol)
         // Note: it is important that `body` is only set after embedding is complete, as we need to
         // place the embedding in the map before processing the body.
-        if (signature.isPure) {
-            embedPureUserFunction(declaration.symbol, signature, returnTarget)
+        if (declaration.symbol.isPure(session)) {
+            embedPureFunction(declaration.symbol)
         } else {
-            val stmtCtx = createBodyConversionContext(signature, returnTarget)
-            embedUserFunction(declaration.symbol, signature).apply {
-                body = stmtCtx.convertMethodWithBody(declaration, signature)
-            }
+            embedUserFunction(declaration)
         }
         // Ensures every function that touches an invalid ADT (signature, body, transitive callee, transitive field)
         // receives an ADT usage error to communicate the misuse to the user.
@@ -190,10 +186,16 @@ class ProgramConverter(
         return Pair(preconditionContext, postconditionContext)
     }
 
-    fun embedUserFunction(symbol: FirFunctionSymbol<*>, signature: FullNamedFunctionSignature): UserFunctionEmbedding {
-        (methods[signature.name] as? UserFunctionEmbedding)?.also { return it }
-        val new = UserFunctionEmbedding(embedCallable(symbol, signature))
-        methods[signature.name] = new
+    fun embedUserFunction(declaration: FirSimpleFunction): UserFunctionEmbedding {
+        val symbol = declaration.symbol
+        val name = symbol.embedName(this)
+        (methods[name] as? UserFunctionEmbedding)?.also { return it }
+        val (returnTarget, fullSignature) = embedFullSignature(symbol)
+        val new = UserFunctionEmbedding(embedCallable(symbol, fullSignature)).apply {
+            val stmtCtx = createBodyConversionContext(fullSignature, returnTarget)
+            body = stmtCtx.convertMethodWithBody(declaration, fullSignature)
+        }
+        methods[name] = new
         return new
     }
 
