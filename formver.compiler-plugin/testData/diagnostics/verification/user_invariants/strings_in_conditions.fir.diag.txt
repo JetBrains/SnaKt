@@ -108,7 +108,7 @@ method addCharacterTimes(s: Ref, c: Ref, n: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
-method plus(this: Ref, other: Ref) returns (v_ret: Ref)
+method plus(this: Ref, other: Ref) returns (ret_4: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
-  ensures isSubtype(typeOf(v_ret), stringType())
+  ensures isSubtype(typeOf(ret_4), stringType())

@@ -1,8 +1,8 @@
 /interface.kt: info: Generated Viper text for testProperties:
-method g_varProp(this: Ref) returns (v_ret: Ref)
+method g_varProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method s_varProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
+method s_varProp(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)
 
 
 method testProperties(foo: Ref) returns (v_ret_0: Ref)
@@ -28,19 +28,19 @@ method testProperties(foo: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method valProp(this: Ref) returns (v_ret: Ref)
+method valProp(this: Ref) returns (v_ret_0: Ref)
 
 
 /interface.kt: info: Generated Viper text for createImpl:
 field bf_number: Ref
 
-method con(par_number: Ref) returns (v_ret: Ref)
+method con(par_number: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_number), intType())
-  ensures isSubtype(typeOf(v_ret), Impl())
-  ensures acc(Impl_shared(v_ret), wildcard)
-  ensures acc(Impl_unique(v_ret), write)
-  ensures intFromRef((unfolding acc(Impl_shared(v_ret), wildcard) in
-      v_ret.bf_number)) ==
+  ensures isSubtype(typeOf(ret_1), Impl())
+  ensures acc(Impl_shared(ret_1), wildcard)
+  ensures acc(Impl_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(Impl_shared(ret_1), wildcard) in
+      ret_1.bf_number)) ==
     intFromRef(par_number)
 
 
@@ -56,4 +56,4 @@ method createImpl() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method g_number(this: Ref) returns (v_ret: Ref)
+method g_number(this: Ref) returns (v_ret_0: Ref)

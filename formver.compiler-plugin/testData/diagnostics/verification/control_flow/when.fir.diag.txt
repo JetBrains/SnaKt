@@ -118,9 +118,9 @@ method whenWithSubjectCall(x: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
-method whenWithSubjectVar(x: Ref) returns (v_ret: Ref)
+method whenWithSubjectVar(x: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(x), intType())
-  ensures isSubtype(typeOf(v_ret), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
 
 
 /when.kt: info: Generated Viper text for emptyWhen:

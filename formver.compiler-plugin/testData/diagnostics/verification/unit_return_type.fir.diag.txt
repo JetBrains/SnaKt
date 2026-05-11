@@ -29,17 +29,17 @@ method directReturns(b: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method idFun(par_t: Ref) returns (v_ret: Ref)
+method idFun(par_t: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_t), nullable(anyType()))
-  ensures isSubtype(typeOf(v_ret), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 /unit_return_type.kt: info: Generated Viper text for useInlineUnit:
 field size: Ref
 
-method idFun(par_t: Ref) returns (v_ret: Ref)
+method idFun(par_t: Ref) returns (ret_5: Ref)
   requires isSubtype(typeOf(par_t), nullable(anyType()))
-  ensures isSubtype(typeOf(v_ret), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_5), nullable(anyType()))
 
 
 method useInlineUnit(b: Ref) returns (v_ret_0: Ref)
@@ -47,9 +47,9 @@ method useInlineUnit(b: Ref) returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var unitRes: Ref
-  var v_ret_1: Ref
+  var v_ret_3: Ref
   var anon_0: Ref
-  var v_ret_2: Ref
+  var v_ret_4: Ref
   var anon_1: Ref
   inhale isSubtype(typeOf(b), nullable(anyType()))
   anon_0 := b
@@ -64,11 +64,11 @@ method useInlineUnit(b: Ref) returns (v_ret_0: Ref)
     anon_2 := anon_3
     inhale isSubtype(typeOf(anon_2), intType())
   }
-  label lbl_ret_2
-  inhale isSubtype(typeOf(v_ret_2), unitType())
-  label lbl_ret_1
-  inhale isSubtype(typeOf(v_ret_1), unitType())
-  unitRes := v_ret_1
+  label lbl_ret_4
+  inhale isSubtype(typeOf(v_ret_4), unitType())
+  label lbl_ret_3
+  inhale isSubtype(typeOf(v_ret_3), unitType())
+  unitRes := v_ret_3
   assert unitRes == unitValue()
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())

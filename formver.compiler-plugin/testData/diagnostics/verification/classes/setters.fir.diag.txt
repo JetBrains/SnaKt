@@ -15,11 +15,11 @@ field bf_a: Ref
 
 field pf: Ref
 
-method con(par_a: Ref) returns (v_ret: Ref)
+method con(par_a: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_a), intType())
-  ensures isSubtype(typeOf(v_ret), PrimitiveField())
-  ensures acc(PrimitiveField_shared(v_ret), wildcard)
-  ensures acc(PrimitiveField_unique(v_ret), write)
+  ensures isSubtype(typeOf(ret_1), PrimitiveField())
+  ensures acc(PrimitiveField_shared(ret_1), wildcard)
+  ensures acc(PrimitiveField_unique(ret_1), write)
 
 
 method testReferenceFieldSetter(rf: Ref) returns (v_ret_0: Ref)
@@ -34,10 +34,10 @@ method testReferenceFieldSetter(rf: Ref) returns (v_ret_0: Ref)
 }
 
 /setters.kt: info: Generated Viper text for testPrimitivePropertySetter:
-method g_aProp(this: Ref) returns (v_ret: Ref)
+method g_aProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method s_aProp(this: Ref, anon: Ref) returns (v_ret: Ref)
+method s_aProp(this: Ref, anon: Ref) returns (v_ret_0: Ref)
 
 
 method testPrimitivePropertySetter(pp: Ref) returns (v_ret_0: Ref)
@@ -52,22 +52,22 @@ method testPrimitivePropertySetter(pp: Ref) returns (v_ret_0: Ref)
 }
 
 /setters.kt: info: Generated Viper text for testReferencePropertySetter:
-method con() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), PrimitiveProperty())
-  ensures acc(PrimitiveProperty_shared(v_ret), wildcard)
-  ensures acc(PrimitiveProperty_unique(v_ret), write)
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), PrimitiveProperty())
+  ensures acc(PrimitiveProperty_shared(ret_1), wildcard)
+  ensures acc(PrimitiveProperty_unique(ret_1), write)
 
 
-method g_aProp(this: Ref) returns (v_ret: Ref)
+method g_aProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method g_ppProp(this: Ref) returns (v_ret: Ref)
+method g_ppProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method s_aProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
+method s_aProp(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)
 
 
-method s_ppProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
+method s_ppProp(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)
 
 
 method testReferencePropertySetter(rp: Ref) returns (v_ret_0: Ref)

@@ -21,14 +21,14 @@ method extensionGetterProperty() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method intValProp(this: Ref) returns (v_ret: Ref)
+method intValProp(this: Ref) returns (v_ret_0: Ref)
 
 
 /extension_properties.kt: info: Generated Viper text for extensionSetterProperty:
-method eg_intVarProp(this: Ref) returns (v_ret: Ref)
+method eg_intVarProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method es_intVarProp(this: Ref, anon: Ref) returns (v_ret: Ref)
+method es_intVarProp(this: Ref, anon: Ref) returns (v_ret_0: Ref)
 
 
 method extensionSetterProperty() returns (v_ret_0: Ref)
@@ -58,16 +58,16 @@ method extensionGetterPropertyUserDefinedClass(pf: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method pfValProp(this: Ref) returns (v_ret: Ref)
+method pfValProp(this: Ref) returns (v_ret_0: Ref)
 
 
 /extension_properties.kt: info: Generated Viper text for extensionSetterPropertyUserDefinedClass:
 field x: Ref
 
-method eg_pfVarProp(this: Ref) returns (v_ret: Ref)
+method eg_pfVarProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method es_pfVarProp(this: Ref, anon: Ref) returns (v_ret: Ref)
+method es_pfVarProp(this: Ref, anon: Ref) returns (v_ret_0: Ref)
 
 
 method extensionSetterPropertyUserDefinedClass(pf: Ref)

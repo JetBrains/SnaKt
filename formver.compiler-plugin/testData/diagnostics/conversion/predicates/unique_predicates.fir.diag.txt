@@ -144,10 +144,10 @@ predicate shared(this: Ref) {
   true
 }
 
-method con() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), T())
-  ensures acc(shared(v_ret), wildcard)
-  ensures acc(T_unique(v_ret), write)
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), T())
+  ensures acc(shared(ret_1), wildcard)
+  ensures acc(T_unique(ret_1), write)
 
 
 method unique_result() returns (v_ret_0: Ref)

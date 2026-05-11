@@ -1,13 +1,13 @@
 /exp_side_effects.kt: info: Generated Viper text for test:
 field x: Ref
 
-method getFoo() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), Foo())
-  ensures acc(shared(v_ret), wildcard)
+method getFoo() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), Foo())
+  ensures acc(shared(ret_1), wildcard)
 
 
-method sideEffect() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), intType())
+method sideEffect() returns (ret_2: Ref)
+  ensures isSubtype(typeOf(ret_2), intType())
 
 
 method test() returns (v_ret_0: Ref)

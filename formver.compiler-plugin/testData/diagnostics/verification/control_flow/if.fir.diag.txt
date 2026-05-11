@@ -46,10 +46,10 @@ method ifAsExpression() returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
-method ifOnParameter(par_b: Ref) returns (v_ret: Ref)
+method ifOnParameter(par_b: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(par_b), boolType())
-  ensures isSubtype(typeOf(v_ret), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
 
 
-method simpleIf() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), intType())
+method simpleIf() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), intType())

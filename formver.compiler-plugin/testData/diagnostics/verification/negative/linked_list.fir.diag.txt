@@ -85,14 +85,14 @@ predicate Serializable_unique(this: Ref) {
   true
 }
 
-method con(par_data: Ref, par_next: Ref) returns (v_ret: Ref)
+method con(par_data: Ref, par_next: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_data), intType())
   requires isSubtype(typeOf(par_next), nullable(Link()))
   requires par_next != nullValue() ==> acc(Link_unique(par_next), write)
-  ensures isSubtype(typeOf(v_ret), Link())
-  ensures acc(Link_shared(v_ret), wildcard)
-  ensures acc(Link_unique(v_ret), write)
-  ensures (unfolding acc(Link_shared(v_ret), wildcard) in v_ret.bf_next) ==
+  ensures isSubtype(typeOf(ret_1), Link())
+  ensures acc(Link_shared(ret_1), wildcard)
+  ensures acc(Link_unique(ret_1), write)
+  ensures (unfolding acc(Link_shared(ret_1), wildcard) in ret_1.bf_next) ==
     par_next
 
 

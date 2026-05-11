@@ -58,10 +58,10 @@ field bf_delta: Ref
 
 field size: Ref
 
-method applyDelta(v_this: Ref, v_this_extension: Ref) returns (v_ret: Ref)
+method applyDelta(v_this: Ref, v_this_extension: Ref) returns (ret_6: Ref)
   requires isSubtype(typeOf(v_this), ClassWithExtension())
   requires isSubtype(typeOf(v_this_extension), intType())
-  ensures isSubtype(typeOf(v_ret), unitType())
+  ensures isSubtype(typeOf(ret_6), unitType())
 
 
 method checkClassWithExtension() returns (v_ret_0: Ref)
@@ -69,17 +69,17 @@ method checkClassWithExtension() returns (v_ret_0: Ref)
 {
   var anon_3: Ref
   var anon_4: Ref
-  var v_ret_1: Ref
+  var v_ret_4: Ref
   var anon_0: Ref
   var anon_5: Ref
   var anon_6: Ref
-  var v_ret_2: Ref
+  var v_ret_5: Ref
   var anon_1: Ref
   var anon_7: Ref
   var anon_8: Ref
   var anon_9: Ref
   var anon_10: Ref
-  var v_ret_3: Ref
+  var v_ret_10: Ref
   var anon_2: Ref
   var anon_11: Ref
   anon_5 := con(intToRef(42))
@@ -94,40 +94,40 @@ method checkClassWithExtension() returns (v_ret_0: Ref)
   anon_2 := intToRef(42)
   unfold acc(ClassWithExtension_shared(anon_1), wildcard)
   anon_11 := anon_1.bf_delta
-  v_ret_3 := plusInts(anon_2, anon_11)
-  goto lbl_ret_3
-  label lbl_ret_3
-  anon_10 := v_ret_3
+  v_ret_10 := plusInts(anon_2, anon_11)
+  goto lbl_ret_10
+  label lbl_ret_10
+  anon_10 := v_ret_10
   assert intFromRef(anon_10) == 84
-  label lbl_ret_2
-  inhale isSubtype(typeOf(v_ret_2), unitType())
-  anon_6 := v_ret_2
-  v_ret_1 := anon_6
-  inhale isSubtype(typeOf(v_ret_1), nullable(anyType()))
-  goto lbl_ret_1
-  label lbl_ret_1
-  anon_4 := v_ret_1
+  label lbl_ret_5
+  inhale isSubtype(typeOf(v_ret_5), unitType())
+  anon_6 := v_ret_5
+  v_ret_4 := anon_6
+  inhale isSubtype(typeOf(v_ret_4), nullable(anyType()))
+  goto lbl_ret_4
+  label lbl_ret_4
+  anon_4 := v_ret_4
   anon_3 := anon_4
   inhale isSubtype(typeOf(anon_3), unitType())
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method con(par_delta: Ref) returns (v_ret: Ref)
+method con(par_delta: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(par_delta), intType())
-  ensures isSubtype(typeOf(v_ret), ClassWithExtension())
-  ensures acc(ClassWithExtension_shared(v_ret), wildcard)
-  ensures acc(ClassWithExtension_unique(v_ret), write)
-  ensures intFromRef((unfolding acc(ClassWithExtension_shared(v_ret), wildcard) in
-      v_ret.bf_delta)) ==
+  ensures isSubtype(typeOf(ret_2), ClassWithExtension())
+  ensures acc(ClassWithExtension_shared(ret_2), wildcard)
+  ensures acc(ClassWithExtension_unique(ret_2), write)
+  ensures intFromRef((unfolding acc(ClassWithExtension_shared(ret_2), wildcard) in
+      ret_2.bf_delta)) ==
     intFromRef(par_delta)
 
 
-method extensionReturnDelta(v_this_extension: Ref) returns (v_ret: Ref)
+method extensionReturnDelta(v_this_extension: Ref) returns (ret_8: Ref)
   requires isSubtype(typeOf(v_this_extension), ClassWithExtension())
-  ensures isSubtype(typeOf(v_ret), intType())
+  ensures isSubtype(typeOf(ret_8), intType())
 
 
-method returnDelta(v_this: Ref) returns (v_ret: Ref)
+method returnDelta(v_this: Ref) returns (ret_7: Ref)
   requires isSubtype(typeOf(v_this), ClassWithExtension())
-  ensures isSubtype(typeOf(v_ret), intType())
+  ensures isSubtype(typeOf(ret_7), intType())

@@ -32,12 +32,12 @@ field bf_shared: Ref
 
 field bf_unique: Ref
 
-method con(par_shared: Ref, par_unique: Ref) returns (v_ret: Ref)
+method con(par_shared: Ref, par_unique: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_shared), intType())
   requires isSubtype(typeOf(par_unique), intType())
-  ensures isSubtype(typeOf(v_ret), PrimitiveFields())
-  ensures acc(PrimitiveFields_shared(v_ret), wildcard)
-  ensures acc(PrimitiveFields_unique(v_ret), write)
+  ensures isSubtype(typeOf(ret_1), PrimitiveFields())
+  ensures acc(PrimitiveFields_shared(ret_1), wildcard)
+  ensures acc(PrimitiveFields_unique(ret_1), write)
 
 
 method testReferenceFieldSetterUnique(rf: Ref) returns (v_ret_0: Ref)
@@ -59,12 +59,12 @@ field bf_shared: Ref
 
 field bf_unique: Ref
 
-method con(par_shared: Ref, par_unique: Ref) returns (v_ret: Ref)
+method con(par_shared: Ref, par_unique: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_shared), intType())
   requires isSubtype(typeOf(par_unique), intType())
-  ensures isSubtype(typeOf(v_ret), PrimitiveFields())
-  ensures acc(PrimitiveFields_shared(v_ret), wildcard)
-  ensures acc(PrimitiveFields_unique(v_ret), write)
+  ensures isSubtype(typeOf(ret_1), PrimitiveFields())
+  ensures acc(PrimitiveFields_shared(ret_1), wildcard)
+  ensures acc(PrimitiveFields_unique(ret_1), write)
 
 
 method testReferenceFieldSetterShared(rf: Ref) returns (v_ret_0: Ref)

@@ -497,67 +497,67 @@ method f_havoc(a: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method havoc_Any() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), anyType())
+method havoc_Any() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), anyType())
 
 
-method havoc_B() returns (v_ret: Ref)
-  ensures acc(B_shared(v_ret), wildcard)
-  ensures isSubtype(typeOf(v_ret), B())
+method havoc_B() returns (v_ret_0: Ref)
+  ensures acc(B_shared(v_ret_0), wildcard)
+  ensures isSubtype(typeOf(v_ret_0), B())
 
 
-method havoc_Boolean() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), boolType())
+method havoc_Boolean() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
 
 
-method havoc_Char() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), charType())
+method havoc_Char() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), charType())
 
 
-method havoc_Int() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), intType())
+method havoc_Int() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
 
 
-method havoc_NAny() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), nullable(anyType()))
+method havoc_NAny() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), nullable(anyType()))
 
 
-method havoc_NB() returns (v_ret: Ref)
-  ensures v_ret != nullValue() ==> acc(B_shared(v_ret), wildcard)
-  ensures isSubtype(typeOf(v_ret), nullable(B()))
+method havoc_NB() returns (v_ret_0: Ref)
+  ensures v_ret_0 != nullValue() ==> acc(B_shared(v_ret_0), wildcard)
+  ensures isSubtype(typeOf(v_ret_0), nullable(B()))
 
 
-method havoc_NBoolean() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), nullable(boolType()))
+method havoc_NBoolean() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), nullable(boolType()))
 
 
-method havoc_NChar() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), nullable(charType()))
+method havoc_NChar() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), nullable(charType()))
 
 
-method havoc_NInt() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), nullable(intType()))
+method havoc_NInt() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
 
 
-method havoc_NNothing() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), nullable(nothingType()))
+method havoc_NNothing() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), nullable(nothingType()))
 
 
-method havoc_NString() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), nullable(stringType()))
+method havoc_NString() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), nullable(stringType()))
 
 
-method havoc_NUnit() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), nullable(unitType()))
+method havoc_NUnit() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), nullable(unitType()))
 
 
-method havoc_Nothing() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), nothingType())
+method havoc_Nothing() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), nothingType())
 
 
-method havoc_String() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), stringType())
+method havoc_String() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), stringType())
 
 
-method havoc_Unit() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), unitType())
+method havoc_Unit() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())

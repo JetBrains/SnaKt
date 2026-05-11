@@ -3,15 +3,15 @@ field bf_a: Ref
 
 field bf_b: Ref
 
-method con(par_a: Ref, par_b: Ref) returns (v_ret: Ref)
+method con(par_a: Ref, par_b: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_a), intType())
   requires isSubtype(typeOf(par_b), intType())
-  ensures isSubtype(typeOf(v_ret), PrimitiveFields())
-  ensures acc(shared(v_ret), wildcard)
-  ensures acc(PrimitiveFields_unique(v_ret), write)
-  ensures intFromRef((unfolding acc(shared(v_ret), wildcard) in v_ret.bf_a)) ==
+  ensures isSubtype(typeOf(ret_1), PrimitiveFields())
+  ensures acc(shared(ret_1), wildcard)
+  ensures acc(PrimitiveFields_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(shared(ret_1), wildcard) in ret_1.bf_a)) ==
     intFromRef(par_a)
-  ensures intFromRef((unfolding acc(shared(v_ret), wildcard) in v_ret.bf_b)) ==
+  ensures intFromRef((unfolding acc(shared(ret_1), wildcard) in ret_1.bf_b)) ==
     intFromRef(par_b)
 
 
@@ -27,12 +27,12 @@ method createPrimitiveFields() returns (v_ret_0: Ref)
 /primary_constructors.kt: info: Generated Viper text for createRecursive:
 field bf_a: Ref
 
-method con(par_a: Ref) returns (v_ret: Ref)
+method con(par_a: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_a), nullable(Recursive()))
-  ensures isSubtype(typeOf(v_ret), Recursive())
-  ensures acc(shared(v_ret), wildcard)
-  ensures acc(Recursive_unique(v_ret), write)
-  ensures (unfolding acc(shared(v_ret), wildcard) in v_ret.bf_a) == par_a
+  ensures isSubtype(typeOf(ret_1), Recursive())
+  ensures acc(shared(ret_1), wildcard)
+  ensures acc(Recursive_unique(ret_1), write)
+  ensures (unfolding acc(shared(ret_1), wildcard) in ret_1.bf_a) == par_a
 
 
 method createRecursive() returns (v_ret_0: Ref)
@@ -49,12 +49,12 @@ field a: Ref
 
 field bf_c: Ref
 
-method con(par_c: Ref) returns (v_ret: Ref)
+method con(par_c: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_c), intType())
-  ensures isSubtype(typeOf(v_ret), FieldInBody())
-  ensures acc(shared(v_ret), wildcard)
-  ensures acc(FieldInBody_unique(v_ret), write)
-  ensures intFromRef((unfolding acc(shared(v_ret), wildcard) in v_ret.bf_c)) ==
+  ensures isSubtype(typeOf(ret_1), FieldInBody())
+  ensures acc(shared(ret_1), wildcard)
+  ensures acc(FieldInBody_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(shared(ret_1), wildcard) in ret_1.bf_c)) ==
     intFromRef(par_c)
 
 

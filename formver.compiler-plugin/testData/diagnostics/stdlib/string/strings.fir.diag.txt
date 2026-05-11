@@ -41,13 +41,13 @@ predicate StringBox_unique(this: Ref) {
   isSubtype(typeOf(this.bf_str), stringType())
 }
 
-method con(par_str: Ref) returns (v_ret: Ref)
+method con(par_str: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_str), stringType())
-  ensures isSubtype(typeOf(v_ret), StringBox())
-  ensures acc(StringBox_shared(v_ret), wildcard)
-  ensures acc(StringBox_unique(v_ret), write)
-  ensures stringFromRef((unfolding acc(StringBox_shared(v_ret), wildcard) in
-      v_ret.bf_str)) ==
+  ensures isSubtype(typeOf(ret_1), StringBox())
+  ensures acc(StringBox_shared(ret_1), wildcard)
+  ensures acc(StringBox_unique(ret_1), write)
+  ensures stringFromRef((unfolding acc(StringBox_shared(ret_1), wildcard) in
+      ret_1.bf_str)) ==
     stringFromRef(par_str)
 
 
@@ -118,13 +118,13 @@ predicate StringBox_unique(this: Ref) {
   isSubtype(typeOf(this.bf_str), stringType())
 }
 
-method con(par_str: Ref) returns (v_ret: Ref)
+method con(par_str: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_str), stringType())
-  ensures isSubtype(typeOf(v_ret), StringBox())
-  ensures acc(StringBox_shared(v_ret), wildcard)
-  ensures acc(StringBox_unique(v_ret), write)
-  ensures stringFromRef((unfolding acc(StringBox_shared(v_ret), wildcard) in
-      v_ret.bf_str)) ==
+  ensures isSubtype(typeOf(ret_1), StringBox())
+  ensures acc(StringBox_shared(ret_1), wildcard)
+  ensures acc(StringBox_unique(ret_1), write)
+  ensures stringFromRef((unfolding acc(StringBox_shared(ret_1), wildcard) in
+      ret_1.bf_str)) ==
     stringFromRef(par_str)
 
 
@@ -177,10 +177,10 @@ predicate Serializable_unique(this: Ref) {
   true
 }
 
-method plus(this: Ref, other: Ref) returns (v_ret: Ref)
+method plus(this: Ref, other: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
-  ensures isSubtype(typeOf(v_ret), stringType())
+  ensures isSubtype(typeOf(ret_1), stringType())
 
 
 method testOps(s: Ref) returns (v_ret_0: Ref)

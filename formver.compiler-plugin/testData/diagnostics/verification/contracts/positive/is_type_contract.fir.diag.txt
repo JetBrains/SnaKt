@@ -35,10 +35,10 @@ method f_subtypeTransitive(x: Ref) returns (v_ret_0: Ref)
 /is_type_contract.kt: info: Generated Viper text for constructorReturnType:
 field bar: Ref
 
-method con() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), Foo())
-  ensures acc(Foo_shared(v_ret), wildcard)
-  ensures acc(Foo_unique(v_ret), write)
+method con() returns (ret_2: Ref)
+  ensures isSubtype(typeOf(ret_2), Foo())
+  ensures acc(Foo_shared(ret_2), wildcard)
+  ensures acc(Foo_unique(ret_2), write)
 
 
 method constructorReturnType() returns (v_ret_0: Ref)

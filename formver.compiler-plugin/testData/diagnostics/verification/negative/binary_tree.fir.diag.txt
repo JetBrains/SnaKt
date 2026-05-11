@@ -106,18 +106,18 @@ predicate Serializable_unique(this: Ref) {
 }
 
 method con(par_data: Ref, par_left: Ref, par_right: Ref)
-  returns (v_ret: Ref)
+  returns (ret_1: Ref)
   requires isSubtype(typeOf(par_data), intType())
   requires isSubtype(typeOf(par_left), nullable(Node()))
   requires par_left != nullValue() ==> acc(Node_unique(par_left), write)
   requires isSubtype(typeOf(par_right), nullable(Node()))
   requires par_right != nullValue() ==> acc(Node_unique(par_right), write)
-  ensures isSubtype(typeOf(v_ret), Node())
-  ensures acc(Node_shared(v_ret), wildcard)
-  ensures acc(Node_unique(v_ret), write)
-  ensures (unfolding acc(Node_shared(v_ret), wildcard) in v_ret.bf_left) ==
+  ensures isSubtype(typeOf(ret_1), Node())
+  ensures acc(Node_shared(ret_1), wildcard)
+  ensures acc(Node_unique(ret_1), write)
+  ensures (unfolding acc(Node_shared(ret_1), wildcard) in ret_1.bf_left) ==
     par_left
-  ensures (unfolding acc(Node_shared(v_ret), wildcard) in v_ret.bf_right) ==
+  ensures (unfolding acc(Node_shared(ret_1), wildcard) in ret_1.bf_right) ==
     par_right
 
 

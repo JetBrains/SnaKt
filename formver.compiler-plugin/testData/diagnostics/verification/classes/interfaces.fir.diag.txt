@@ -61,6 +61,8 @@ method g_number(this: Ref) returns (v_ret: Ref)
 
 /interfaces.kt: info: Generated Viper text for take1:
 method g_field(this: Ref) returns (v_ret: Ref)
+/multiple_interfaces.kt: info: Generated Viper text for take1:
+method g_field(this: Ref) returns (v_ret_0: Ref)
 
 
 method take1(obj: Ref) returns (v_ret_0: Ref)
@@ -77,6 +79,8 @@ method take1(obj: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
+/multiple_interfaces.kt: info: Generated Viper text for take2:
+method g_field(this: Ref) returns (v_ret_0: Ref)
 /interfaces.kt: info: Generated Viper text for take2:
 method g_field(this: Ref) returns (v_ret: Ref)
 
@@ -107,6 +111,8 @@ method take3(obj: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
+/multiple_interfaces.kt: info: Generated Viper text for take4:
+method g_field(this: Ref) returns (v_ret_0: Ref)
 /interfaces.kt: info: Generated Viper text for take4:
 method g_field(this: Ref) returns (v_ret: Ref)
 
@@ -130,39 +136,39 @@ field bf_field: Ref
 
 field size: Ref
 
-method con_Impl12() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), Impl12())
-  ensures acc(Impl12_shared(v_ret), wildcard)
-  ensures acc(Impl12_unique(v_ret), write)
+method con_Impl12() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), Impl12())
+  ensures acc(Impl12_shared(ret_1), wildcard)
+  ensures acc(Impl12_unique(ret_1), write)
 
 
-method con_Impl14() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), Impl14())
-  ensures acc(Impl14_shared(v_ret), wildcard)
-  ensures acc(Impl14_unique(v_ret), write)
+method con_Impl14() returns (ret_9: Ref)
+  ensures isSubtype(typeOf(ret_9), Impl14())
+  ensures acc(Impl14_shared(ret_9), wildcard)
+  ensures acc(Impl14_unique(ret_9), write)
 
 
-method con_Impl23() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), Impl23())
-  ensures acc(Impl23_shared(v_ret), wildcard)
-  ensures acc(Impl23_unique(v_ret), write)
+method con_Impl23() returns (ret_4: Ref)
+  ensures isSubtype(typeOf(ret_4), Impl23())
+  ensures acc(Impl23_shared(ret_4), wildcard)
+  ensures acc(Impl23_unique(ret_4), write)
 
 
-method con_Impl24() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), Impl24())
-  ensures acc(Impl24_shared(v_ret), wildcard)
-  ensures acc(Impl24_unique(v_ret), write)
+method con_Impl24() returns (ret_7: Ref)
+  ensures isSubtype(typeOf(ret_7), Impl24())
+  ensures acc(Impl24_shared(ret_7), wildcard)
+  ensures acc(Impl24_unique(ret_7), write)
 
 
-method con_Impl3() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), Impl3())
-  ensures acc(Impl3_shared(v_ret), wildcard)
-  ensures acc(Impl3_unique(v_ret), write)
+method con_Impl3() returns (ret_6: Ref)
+  ensures isSubtype(typeOf(ret_6), Impl3())
+  ensures acc(Impl3_shared(ret_6), wildcard)
+  ensures acc(Impl3_unique(ret_6), write)
 
 
-method create6() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), InheritingInterfaceWithoutImplementation6())
-  ensures acc(InheritingInterfaceWithoutImplementation6_shared(v_ret), wildcard)
+method create6() returns (ret_10: Ref)
+  ensures isSubtype(typeOf(ret_10), InheritingInterfaceWithoutImplementation6())
+  ensures acc(InheritingInterfaceWithoutImplementation6_shared(ret_10), wildcard)
 
 
 method createImpls() returns (v_ret_0: Ref)
@@ -267,27 +273,27 @@ method createImpls() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method g_field(this: Ref) returns (v_ret: Ref)
+method g_field(this: Ref) returns (v_ret_0: Ref)
 
 
-method take1(obj: Ref) returns (v_ret: Ref)
+method take1(obj: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(obj), InterfaceWithImplementation1())
-  ensures isSubtype(typeOf(v_ret), unitType())
+  ensures isSubtype(typeOf(ret_2), unitType())
 
 
-method take2(obj: Ref) returns (v_ret: Ref)
+method take2(obj: Ref) returns (ret_3: Ref)
   requires isSubtype(typeOf(obj), InterfaceWithoutImplementation2())
-  ensures isSubtype(typeOf(v_ret), unitType())
+  ensures isSubtype(typeOf(ret_3), unitType())
 
 
-method take3(obj: Ref) returns (v_ret: Ref)
+method take3(obj: Ref) returns (ret_5: Ref)
   requires isSubtype(typeOf(obj), AbstractWithFinalImplementation3())
-  ensures isSubtype(typeOf(v_ret), unitType())
+  ensures isSubtype(typeOf(ret_5), unitType())
 
 
-method take4(obj: Ref) returns (v_ret: Ref)
+method take4(obj: Ref) returns (ret_8: Ref)
   requires isSubtype(typeOf(obj), AbstractWithOpenImplementation4())
-  ensures isSubtype(typeOf(v_ret), unitType())
+  ensures isSubtype(typeOf(ret_8), unitType())
 
 
 /interfaces.kt: info: Generated Viper text for testDiamond:

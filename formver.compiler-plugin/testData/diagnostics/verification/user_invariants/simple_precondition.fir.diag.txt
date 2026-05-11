@@ -31,23 +31,23 @@ method good_call() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_2: Ref
-  var v_ret_1: Ref
+  var v_ret_3: Ref
   var anon_0: Ref
-  var v_ret_2: Ref
+  var v_ret_5: Ref
   var anon_1: Ref
   anon_2 := test(intToRef(2))
   anon_0 := boolToRef(true)
-  label lbl_ret_1
-  inhale isSubtype(typeOf(v_ret_1), unitType())
+  label lbl_ret_3
+  inhale isSubtype(typeOf(v_ret_3), unitType())
   anon_1 := boolToRef(false)
-  label lbl_ret_2
-  inhale isSubtype(typeOf(v_ret_2), unitType())
+  label lbl_ret_5
+  inhale isSubtype(typeOf(v_ret_5), unitType())
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method test(idx: Ref) returns (v_ret: Ref)
+method test(idx: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(idx), intType())
   requires 0 <= intFromRef(idx)
   requires intFromRef(idx) < 3
-  ensures isSubtype(typeOf(v_ret), unitType())
+  ensures isSubtype(typeOf(ret_1), unitType())

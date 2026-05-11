@@ -76,19 +76,19 @@ method minOrMaxChar(v_this_extension: Ref, calcMin: Ref)
 
 /quick_sort_of_string.kt: info: Generated Viper text for quickSort:
 method minOrMaxChar(v_this_extension: Ref, calcMin: Ref)
-  returns (v_ret: Ref)
+  returns (ret_2: Ref)
   requires isSubtype(typeOf(v_this_extension), stringType())
   requires isSubtype(typeOf(calcMin), boolType())
   requires |stringFromRef(v_this_extension)| >= 1
-  ensures isSubtype(typeOf(v_ret), charType())
+  ensures isSubtype(typeOf(ret_2), charType())
   ensures boolFromRef(calcMin) ==>
     (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
       anon_builtin_1 < |stringFromRef(v_this_extension)| ==>
-      charFromRef(v_ret) <= stringFromRef(v_this_extension)[anon_builtin_1])
+      charFromRef(ret_2) <= stringFromRef(v_this_extension)[anon_builtin_1])
   ensures !boolFromRef(calcMin) ==>
     (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
       anon_builtin_2 < |stringFromRef(v_this_extension)| ==>
-      charFromRef(v_ret) >= stringFromRef(v_this_extension)[anon_builtin_2])
+      charFromRef(ret_2) >= stringFromRef(v_this_extension)[anon_builtin_2])
 
 
 method quickSort(v_this_extension: Ref) returns (v_ret_0: Ref)
@@ -114,7 +114,7 @@ method quickSort(v_this_extension: Ref) returns (v_ret_0: Ref)
 }
 
 method quickSortRec(v_this_extension: Ref, par_minVal: Ref, par_maxVal: Ref)
-  returns (v_ret: Ref)
+  returns (ret_3: Ref)
   requires isSubtype(typeOf(v_this_extension), stringType())
   requires isSubtype(typeOf(par_minVal), charType())
   requires isSubtype(typeOf(par_maxVal), charType())
@@ -124,31 +124,31 @@ method quickSortRec(v_this_extension: Ref, par_minVal: Ref, par_maxVal: Ref)
       stringFromRef(v_this_extension)[anon_builtin_3] &&
       stringFromRef(v_this_extension)[anon_builtin_3] <=
       charFromRef(par_maxVal))
-  ensures isSubtype(typeOf(v_ret), stringType())
-  ensures |stringFromRef(v_ret)| == |stringFromRef(v_this_extension)|
+  ensures isSubtype(typeOf(ret_3), stringType())
+  ensures |stringFromRef(ret_3)| == |stringFromRef(v_this_extension)|
   ensures (forall anon_builtin_4: Int ::0 <= anon_builtin_4 &&
       anon_builtin_4 < |stringFromRef(v_this_extension)| ==>
-      charFromRef(par_minVal) <= stringFromRef(v_ret)[anon_builtin_4] &&
-      stringFromRef(v_ret)[anon_builtin_4] <= charFromRef(par_maxVal))
+      charFromRef(par_minVal) <= stringFromRef(ret_3)[anon_builtin_4] &&
+      stringFromRef(ret_3)[anon_builtin_4] <= charFromRef(par_maxVal))
   ensures (forall anon_builtin_5: Int ::1 <= anon_builtin_5 &&
       anon_builtin_5 < |stringFromRef(v_this_extension)| ==>
-      stringFromRef(v_ret)[anon_builtin_5 - 1] <=
-      stringFromRef(v_ret)[anon_builtin_5])
+      stringFromRef(ret_3)[anon_builtin_5 - 1] <=
+      stringFromRef(ret_3)[anon_builtin_5])
 
 
 /quick_sort_of_string.kt: info: Generated Viper text for quickSortRec:
-method chooseIndex(v_this_extension: Ref) returns (v_ret: Ref)
+method chooseIndex(v_this_extension: Ref) returns (ret_3: Ref)
   requires isSubtype(typeOf(v_this_extension), stringType())
   requires |stringFromRef(v_this_extension)| >= 1
-  ensures isSubtype(typeOf(v_ret), intType())
-  ensures 0 <= intFromRef(v_ret) &&
-    intFromRef(v_ret) < |stringFromRef(v_this_extension)|
+  ensures isSubtype(typeOf(ret_3), intType())
+  ensures 0 <= intFromRef(ret_3) &&
+    intFromRef(ret_3) < |stringFromRef(v_this_extension)|
 
 
-method plus(v_this: Ref, other: Ref) returns (v_ret: Ref)
+method plus(v_this: Ref, other: Ref) returns (ret_5: Ref)
   requires isSubtype(typeOf(v_this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
-  ensures isSubtype(typeOf(v_ret), stringType())
+  ensures isSubtype(typeOf(ret_5), stringType())
 
 
 method quickSortRec(v_this_extension: Ref, minVal: Ref, maxVal: Ref)

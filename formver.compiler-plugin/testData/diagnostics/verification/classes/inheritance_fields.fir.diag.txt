@@ -1,17 +1,17 @@
 /inheritance_fields.kt: info: Generated Viper text for createB:
 field bf_fieldNotOverride: Ref
 
-method con_B(par_fieldOverride: Ref) returns (v_ret: Ref)
+method con_B(par_fieldOverride: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(par_fieldOverride), FieldB())
-  ensures isSubtype(typeOf(v_ret), B())
-  ensures acc(B_shared(v_ret), wildcard)
-  ensures acc(B_unique(v_ret), write)
+  ensures isSubtype(typeOf(ret_2), B())
+  ensures acc(B_shared(ret_2), wildcard)
+  ensures acc(B_unique(ret_2), write)
 
 
-method con_FieldB() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), FieldB())
-  ensures acc(FieldB_shared(v_ret), wildcard)
-  ensures acc(FieldB_unique(v_ret), write)
+method con_FieldB() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), FieldB())
+  ensures acc(FieldB_shared(ret_1), wildcard)
+  ensures acc(FieldB_unique(ret_1), write)
 
 
 method createB() returns (v_ret_0: Ref)
@@ -35,31 +35,31 @@ method createB() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method g_fieldOverride(this: Ref) returns (v_ret: Ref)
+method g_fieldOverride(this: Ref) returns (v_ret_0: Ref)
 
 
 /inheritance_fields.kt: info: Generated Viper text for createBFsAndNoBF:
 field bf_x: Ref
 
-method con_FirstBackingFieldClass() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), FirstBackingFieldClass())
-  ensures acc(FirstBackingFieldClass_shared(v_ret), wildcard)
-  ensures acc(FirstBackingFieldClass_unique(v_ret), write)
+method con_FirstBackingFieldClass() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), FirstBackingFieldClass())
+  ensures acc(FirstBackingFieldClass_shared(ret_1), wildcard)
+  ensures acc(FirstBackingFieldClass_unique(ret_1), write)
 
 
-method con_NoBackingFieldClass() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), NoBackingFieldClass())
-  ensures acc(NoBackingFieldClass_shared(v_ret), wildcard)
-  ensures acc(NoBackingFieldClass_unique(v_ret), write)
+method con_NoBackingFieldClass() returns (ret_2: Ref)
+  ensures isSubtype(typeOf(ret_2), NoBackingFieldClass())
+  ensures acc(NoBackingFieldClass_shared(ret_2), wildcard)
+  ensures acc(NoBackingFieldClass_unique(ret_2), write)
 
 
-method con_SecondBackingFieldClass(par_x: Ref) returns (v_ret: Ref)
+method con_SecondBackingFieldClass(par_x: Ref) returns (ret_3: Ref)
   requires isSubtype(typeOf(par_x), intType())
-  ensures isSubtype(typeOf(v_ret), SecondBackingFieldClass())
-  ensures acc(SecondBackingFieldClass_shared(v_ret), wildcard)
-  ensures acc(SecondBackingFieldClass_unique(v_ret), write)
-  ensures intFromRef((unfolding acc(SecondBackingFieldClass_shared(v_ret), wildcard) in
-      v_ret.bf_x)) ==
+  ensures isSubtype(typeOf(ret_3), SecondBackingFieldClass())
+  ensures acc(SecondBackingFieldClass_shared(ret_3), wildcard)
+  ensures acc(SecondBackingFieldClass_unique(ret_3), write)
+  ensures intFromRef((unfolding acc(SecondBackingFieldClass_shared(ret_3), wildcard) in
+      ret_3.bf_x)) ==
     intFromRef(par_x)
 
 
@@ -89,17 +89,17 @@ method createBFsAndNoBF() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method g_x(this: Ref) returns (v_ret: Ref)
+method g_x(this: Ref) returns (v_ret_0: Ref)
 
 
 /inheritance_fields.kt: info: Generated Viper text for createY:
 field bf_a: Ref
 
-method con(par_a: Ref) returns (v_ret: Ref)
+method con(par_a: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_a), intType())
-  ensures isSubtype(typeOf(v_ret), Y())
-  ensures acc(Y_shared(v_ret), wildcard)
-  ensures acc(Y_unique(v_ret), write)
+  ensures isSubtype(typeOf(ret_1), Y())
+  ensures acc(Y_shared(ret_1), wildcard)
+  ensures acc(Y_unique(ret_1), write)
 
 
 method createY() returns (v_ret_0: Ref)
