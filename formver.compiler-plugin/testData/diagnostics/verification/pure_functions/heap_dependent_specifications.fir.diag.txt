@@ -65,21 +65,21 @@ function isStrictlyAscendingAndPositive(node: Ref): Ref
             nextNode_0.value)) :
         null)) in
       (let anon_3_0 ==
-        ((intFromRef(anon_2_0) < 0 && !(nextNode_0 == nullValue()) ?
+        ((!(nextNode_0 == nullValue()) && intFromRef(anon_2_0) < 0 ?
           boolToRef(false) :
           null)) in
         (let anon_5_0 ==
-          ((!(intFromRef(anon_2_0) < 0) && !(nextNode_0 == nullValue()) ?
+          ((!(nextNode_0 == nullValue()) && !(intFromRef(anon_2_0) < 0) ?
             (unfolding acc(Node_shared(node), wildcard) in
               (unfolding acc(Node_shared(nextNode_0), wildcard) in
                 nextNode_0.value)) :
             null)) in
           (let anon_6_0 ==
-            ((!(intFromRef(anon_2_0) < 0) && !(nextNode_0 == nullValue()) ?
+            ((!(nextNode_0 == nullValue()) && !(intFromRef(anon_2_0) < 0) ?
               (unfolding acc(Node_shared(node), wildcard) in node.value) :
               null)) in
             (let anon_4_0 ==
-              ((!(intFromRef(anon_2_0) < 0) && !(nextNode_0 == nullValue()) ?
+              ((!(nextNode_0 == nullValue()) && !(intFromRef(anon_2_0) < 0) ?
                 (unfolding acc(Node_shared(node), wildcard) in
                   (unfolding acc(Node_shared(node), wildcard) in
                     (unfolding acc(Node_shared(nextNode_0), wildcard) in
