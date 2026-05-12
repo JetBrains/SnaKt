@@ -30,7 +30,6 @@ import org.jetbrains.kotlin.formver.viper.SiliconFrontend
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.formver.viper.ast.registerAllNames
 import org.jetbrains.kotlin.formver.viper.ast.unwrapOr
-import org.jetbrains.kotlin.formver.viper.errors.GenericConsistencyError
 import org.jetbrains.kotlin.formver.viper.errors.VerifierError
 import org.jetbrains.kotlin.formver.viper.mangled
 import org.jetbrains.kotlin.name.ClassId
@@ -95,23 +94,21 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
 
             val viperProgram = with(programConversionContext.nameResolver) { program.toSilver() }
 
-            val onFailure = { err: VerifierError ->
-                val source = err.position.unwrapOr { declaration.source }
-                reporter.reportVerifierError(source, err, config.errorStyle)
-            }
 
             if (inTestRun) {
                 declaration.viperProgram = viperProgram
                 declaration.shouldVerify = config.shouldVerify(declaration)
-                val consistencyErrors = viperProgram.checkTransitively()
-                for (error in consistencyErrors) {
-                    onFailure(GenericConsistencyError(error))
-                }
             }
 
 
             if (!inTestRun) {
                 // If we are in a test, then the verification happens later.
+
+                val onFailure = { err: VerifierError ->
+                    val source = err.position.unwrapOr { declaration.source }
+                    reporter.reportVerifierError(source, err, config.errorStyle)
+                }
+
                 val verifier = SiliconFrontend(emptyList())
                 verifier.use { it.verify(viperProgram, onFailure) }
             }
