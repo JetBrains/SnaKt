@@ -72,7 +72,7 @@ data class FromRefFuncName(val baseName: SymbolicName) : SymbolicName {
 data class NamedDomainAxiomLabel(val domainName: SymbolicName, val baseName: String) : SymbolicName {
     override val inViper: Boolean = true
 
-    override val candidates: List<CandidateName> = nameWithDependentPrefixCandidates(baseName, domainName)
+    override val candidates: List<CandidateName> = nameWithPrefixCandidates(baseName, domainName)
 
     override val children: List<AnyName> = listOf(domainName)
 }

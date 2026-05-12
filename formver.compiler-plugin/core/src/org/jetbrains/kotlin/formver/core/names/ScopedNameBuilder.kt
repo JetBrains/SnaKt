@@ -7,7 +7,7 @@ package org.jetbrains.kotlin.formver.core.names
 
 import org.jetbrains.kotlin.name.FqName
 
-class ScopeBuilder {
+open class ScopeBuilder {
     private var scope: NameScope? = null
 
     fun complete(): NameScope {
@@ -62,31 +62,8 @@ class ScopeBuilder {
 }
 
 
-class ScopedNameBuilder {
-    private val scopeBuilder = ScopeBuilder()
-
-    fun complete(name: KotlinName): ScopedName {
-        val scope = scopeBuilder.complete()
-        return ScopedName(scope, name)
-    }
-
-    fun packageScope(packageName: FqName) = scopeBuilder.packageScope(packageName)
-
-    fun packageScope(packageName: List<String>) = scopeBuilder.packageScope(packageName)
-    fun classScope(className: ClassKotlinName) = scopeBuilder.classScope(className)
-
-    fun publicScope() = scopeBuilder.publicScope()
-
-    fun privateScope() = scopeBuilder.privateScope()
-
-
-    fun parameterScope() = scopeBuilder.parameterScope()
-
-    fun localScope(level: Int) = scopeBuilder.localScope(level)
-
-    fun badScope() = scopeBuilder.badScope()
-
-    fun fakeScope() = scopeBuilder.fakeScope()
+class ScopedNameBuilder : ScopeBuilder() {
+    fun complete(name: KotlinName): ScopedName = ScopedName(complete(), name)
 }
 
 // TODO: generalise this to work for all names.

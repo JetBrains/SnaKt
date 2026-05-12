@@ -41,7 +41,7 @@ private fun NamePart.longName(): String = when (this) {
 
 private fun CandidateName.longName(): String = parts.joinToString("") { it.longName() }
 
-fun AnyName.longName(): String = candidates().last().longName()
+fun AnyName.longName(): String = candidates.last().longName()
 
 
 /**
@@ -63,7 +63,7 @@ private fun CandidateName.debugId(): String = if (parts.size > 1) {
     parts.joinToString("") { it.debugId() }
 }
 
-fun AnyName.debugId(): String = candidates().last().debugId()
+fun AnyName.debugId(): String = candidates.last().debugId()
 
 
 // END UTILITY SECTION
@@ -123,17 +123,17 @@ class ShortNameResolver : NameResolver {
 
     private fun currentCandidate(name: AnyName): CandidateName {
         val index = currentCandidate.getOrPut(name) { 0 }
-        return name.candidates()[index]
+        return name.candidates[index]
     }
 
     private fun nextCandidate(name: AnyName): CandidateName {
         val index = currentCandidate.getOrPut(name) { 0 }
-        return name.candidates()[index + 1]
+        return name.candidates[index + 1]
     }
 
     private fun hasNextCandidate(name: AnyName): Boolean {
         val currentIndex = currentCandidate[name] ?: 0
-        return currentIndex + 1 < name.candidates().size
+        return currentIndex + 1 < name.candidates.size
     }
     // END RESOLVE NAMES
 
