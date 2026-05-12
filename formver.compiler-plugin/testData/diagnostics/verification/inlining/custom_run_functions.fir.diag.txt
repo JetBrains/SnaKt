@@ -4,21 +4,21 @@ method quadruple(x: Ref) returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
   var anon_0: Ref
-  var v_ret_1: Ref
+  var v_ret_2: Ref
   var l1_y: Ref
   var anon_1: Ref
-  var v_ret_2: Ref
+  var v_ret_3: Ref
   var l2_y: Ref
   l1_y := plusInts(x, x)
-  v_ret_1 := l1_y
-  goto lbl_ret_1
-  label lbl_ret_1
-  anon_0 := v_ret_1
-  l2_y := plusInts(x, x)
-  v_ret_2 := l2_y
+  v_ret_2 := l1_y
   goto lbl_ret_2
   label lbl_ret_2
-  anon_1 := v_ret_2
+  anon_0 := v_ret_2
+  l2_y := plusInts(x, x)
+  v_ret_3 := l2_y
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon_1 := v_ret_3
   v_ret_0 := plusInts(anon_0, anon_1)
   goto lbl_ret_0
   label lbl_ret_0
@@ -29,23 +29,13 @@ method useBranching() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
   var anon_2: Ref
-  var v_ret_1: Ref
+  var v_ret_2: Ref
   var anon_0: Ref
   var anon_3: Ref
-  var v_ret_2: Ref
+  var v_ret_3: Ref
   var anon_1: Ref
   anon_0 := boolToRef(false)
   if (boolFromRef(anon_0)) {
-    v_ret_1 := intToRef(1)
-    goto lbl_ret_1
-  } else {
-    v_ret_1 := intToRef(0)
-    goto lbl_ret_1
-  }
-  label lbl_ret_1
-  anon_2 := v_ret_1
-  anon_1 := boolToRef(true)
-  if (boolFromRef(anon_1)) {
     v_ret_2 := intToRef(1)
     goto lbl_ret_2
   } else {
@@ -53,7 +43,17 @@ method useBranching() returns (v_ret_0: Ref)
     goto lbl_ret_2
   }
   label lbl_ret_2
-  anon_3 := v_ret_2
+  anon_2 := v_ret_2
+  anon_1 := boolToRef(true)
+  if (boolFromRef(anon_1)) {
+    v_ret_3 := intToRef(1)
+    goto lbl_ret_3
+  } else {
+    v_ret_3 := intToRef(0)
+    goto lbl_ret_3
+  }
+  label lbl_ret_3
+  anon_3 := v_ret_3
   v_ret_0 := plusInts(anon_2, anon_3)
   goto lbl_ret_0
   label lbl_ret_0

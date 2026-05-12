@@ -1,8 +1,8 @@
 /interfaces.kt: info: Generated Viper text for testProperties:
-method g_varProp(this: Ref) returns (v_ret: Ref)
+method g_varProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method s_varProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
+method s_varProp(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)
 
 
 method testProperties(foo: Ref) returns (v_ret_0: Ref)
@@ -28,19 +28,19 @@ method testProperties(foo: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method valProp(this: Ref) returns (v_ret: Ref)
+method valProp(this: Ref) returns (v_ret_0: Ref)
 
 
 /interfaces.kt: info: Generated Viper text for createImpl:
 field bf_number: Ref
 
-method con(par_number: Ref) returns (v_ret: Ref)
+method con(par_number: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_number), intType())
-  ensures isSubtype(typeOf(v_ret), Impl())
-  ensures acc(Impl_shared(v_ret), wildcard)
-  ensures acc(Impl_unique(v_ret), write)
-  ensures intFromRef((unfolding acc(Impl_shared(v_ret), wildcard) in
-      v_ret.bf_number)) ==
+  ensures isSubtype(typeOf(ret_1), Impl())
+  ensures acc(Impl_shared(ret_1), wildcard)
+  ensures acc(Impl_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(Impl_shared(ret_1), wildcard) in
+      ret_1.bf_number)) ==
     intFromRef(par_number)
 
 
@@ -56,12 +56,10 @@ method createImpl() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method g_number(this: Ref) returns (v_ret: Ref)
+method g_number(this: Ref) returns (v_ret_0: Ref)
 
 
 /interfaces.kt: info: Generated Viper text for take1:
-method g_field(this: Ref) returns (v_ret: Ref)
-/multiple_interfaces.kt: info: Generated Viper text for take1:
 method g_field(this: Ref) returns (v_ret_0: Ref)
 
 
@@ -79,10 +77,8 @@ method take1(obj: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-/multiple_interfaces.kt: info: Generated Viper text for take2:
-method g_field(this: Ref) returns (v_ret_0: Ref)
 /interfaces.kt: info: Generated Viper text for take2:
-method g_field(this: Ref) returns (v_ret: Ref)
+method g_field(this: Ref) returns (v_ret_0: Ref)
 
 
 method take2(obj: Ref) returns (v_ret_0: Ref)
@@ -111,10 +107,8 @@ method take3(obj: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-/multiple_interfaces.kt: info: Generated Viper text for take4:
-method g_field(this: Ref) returns (v_ret_0: Ref)
 /interfaces.kt: info: Generated Viper text for take4:
-method g_field(this: Ref) returns (v_ret: Ref)
+method g_field(this: Ref) returns (v_ret_0: Ref)
 
 
 method take4(obj: Ref) returns (v_ret_0: Ref)
@@ -297,13 +291,13 @@ method take4(obj: Ref) returns (ret_8: Ref)
 
 
 /interfaces.kt: info: Generated Viper text for testDiamond:
-method con() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), D())
-  ensures acc(D_shared(v_ret), wildcard)
-  ensures acc(D_unique(v_ret), write)
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), D())
+  ensures acc(D_shared(ret_1), wildcard)
+  ensures acc(D_unique(ret_1), write)
 
 
-method g_field(this: Ref) returns (v_ret: Ref)
+method g_field(this: Ref) returns (v_ret_0: Ref)
 
 
 method testDiamond() returns (v_ret_0: Ref)
@@ -320,22 +314,22 @@ method testDiamond() returns (v_ret_0: Ref)
 }
 
 /interfaces.kt: info: Generated Viper text for testVarVal:
-method con_G() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), G())
-  ensures acc(G_shared(v_ret), wildcard)
-  ensures acc(G_unique(v_ret), write)
+method con_G() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), G())
+  ensures acc(G_shared(ret_1), wildcard)
+  ensures acc(G_unique(ret_1), write)
 
 
-method con_I() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), I())
-  ensures acc(I_shared(v_ret), wildcard)
-  ensures acc(I_unique(v_ret), write)
+method con_I() returns (ret_2: Ref)
+  ensures isSubtype(typeOf(ret_2), I())
+  ensures acc(I_shared(ret_2), wildcard)
+  ensures acc(I_unique(ret_2), write)
 
 
-method g_field(this: Ref) returns (v_ret: Ref)
+method g_field(this: Ref) returns (v_ret_0: Ref)
 
 
-method s_field(this: Ref, anon_0: Ref) returns (v_ret: Ref)
+method s_field(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)
 
 
 method testVarVal() returns (v_ret_0: Ref)
