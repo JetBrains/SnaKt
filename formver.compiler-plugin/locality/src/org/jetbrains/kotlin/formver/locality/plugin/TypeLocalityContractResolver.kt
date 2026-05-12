@@ -5,3 +5,16 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
+import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.types.ConeKotlinType
+import org.jetbrains.kotlin.fir.types.isSomeFunctionType
+import org.jetbrains.kotlin.fir.types.type
+
+fun ConeKotlinType.resolveLocalityContract(session: FirSession): LocalityContract =
+    if (isSomeFunctionType(session)) {
+        typeArguments.map { typeArgument ->
+            typeArgument.type?.locality
+        }
+    } else {
+        null
+    }
