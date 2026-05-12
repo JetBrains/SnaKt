@@ -8,9 +8,12 @@ package org.jetbrains.kotlin.formver.locality.plugin
 import org.jetbrains.kotlin.KtFakeSourceElementKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
+import org.jetbrains.kotlin.fir.types.ConeErrorType
 
 context(context: CheckerContext)
 fun FirVariableSymbol<*>.resolveLocality(): Locality {
+    if (resolvedReturnType is ConeErrorType) return null
+
     if (resolvedReturnTypeRef.source?.kind !is KtFakeSourceElementKind.ImplicitTypeRef) {
         return resolvedReturnType.locality
     }

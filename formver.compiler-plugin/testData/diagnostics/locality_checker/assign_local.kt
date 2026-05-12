@@ -202,3 +202,15 @@ fun `assign global to implicit local`(x: @Borrowed Any, y: A) {
 
     a = y
 }
+
+fun `assign recursively`() {
+    var a = <!UNRESOLVED_REFERENCE!>a<!>
+}
+
+val `recursive property` = <!TYPECHECKER_HAS_RUN_INTO_RECURSIVE_PROBLEM!>`recursive property`<!>
+
+fun `assign recursive implicit property`() {
+    var a: Any
+
+    a = <!TYPECHECKER_HAS_RUN_INTO_RECURSIVE_PROBLEM!>`recursive property`<!>
+}

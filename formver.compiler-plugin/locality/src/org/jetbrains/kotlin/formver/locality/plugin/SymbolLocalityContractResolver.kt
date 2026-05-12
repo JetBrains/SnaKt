@@ -7,8 +7,12 @@ package org.jetbrains.kotlin.formver.locality.plugin
 
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
+import org.jetbrains.kotlin.fir.types.ConeErrorType
 
 context(context: CheckerContext)
 fun FirVariableSymbol<*>.resolveLocalityContract(): LocalityContract {
-    return resolvedInitializer?.resolveLocalityContract() ?: resolvedReturnType.resolveLocalityContract(context.session)
+    if (resolvedReturnType is ConeErrorType) return null
+
+    return resolvedInitializer?.resolveLocalityContract()
+        ?: resolvedReturnType.resolveLocalityContract(context.session)
 }
