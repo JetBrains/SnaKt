@@ -420,11 +420,12 @@ class ProgramConverter(
          * although ideally we should be able to see preconditions and postconditions
          * from other modules.
          */
-        val firSpec = when {
-            declaration !is FirSimpleFunction -> return Pair(emptyList(), emptyList())
-            body == null -> return Pair(emptyList(), emptyList())
-            else -> extractFirSpecification(body, declaration.symbol.resolvedReturnType)
+        if (declaration !is FirSimpleFunction || body == null) {
+            return Pair(emptyList(), emptyList())
         }
+
+        val firSpec = extractFirSpecification(body, declaration.symbol.resolvedReturnType)
+
 
         val (preconditionContext, postconditionContext) = createContractConversionContext(signature, firSpec, returnTarget)
 
