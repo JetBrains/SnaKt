@@ -1,5 +1,12 @@
 /full_viper_dump.kt: info: Generated ExpEmbedding for f:
-Function(name = f, { Declare(Var(foo), [pkg$[c$Foo]], MethodCall(callee = con, Int(0))) }, return = lbl_ret_0)
+Function(
+    name = f,
+    {
+        Declare(Var(foo), [c$[pkg$]$[c$Foo]], MethodCall(callee = con, Int(0)));
+        Declare(Var(l0_p), [c$[pkg$]$[c$Pair]], AdtConstructorRef(Int(1), Int(2)));
+    },
+    return = lbl_ret_0,
+)
 
 /full_viper_dump.kt: info: Generated Viper text for f:
 domain rt  {
@@ -21,6 +28,8 @@ domain rt  {
   unique function stringType(): rt
 
   unique function Foo(): rt
+
+  unique function Pair(): rt
 
   function nullValue(): Ref
 
@@ -47,6 +56,10 @@ domain rt  {
   function stringToRef(v: Seq[Int]): Ref
 
   function stringFromRef(r: Ref): Seq[Int]
+
+  function PairToRef(v: a_Pair): Ref
+
+  function PairFromRef(r: Ref): a_Pair
 
   axiom subtypeReflexive {
     (forall t: rt ::isSubtype(t, t))
@@ -120,6 +133,10 @@ domain rt  {
 
   axiom {
     isSubtype(Foo(), anyType())
+  }
+
+  axiom {
+    isSubtype(Pair(), anyType())
   }
 
   axiom supertypeOfNothing {
@@ -237,6 +254,36 @@ domain rt  {
       { stringFromRef(r) }
       isSubtype(typeOf(r), stringType()) ==>
       stringToRef(stringFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall v: a_Pair ::
+      { isSubtype(typeOf(PairToRef(v)), Pair()) }
+      isSubtype(typeOf(PairToRef(v)), Pair()))
+  }
+
+  axiom {
+    (forall v: a_Pair ::
+      { PairFromRef(PairToRef(v)) }
+      PairFromRef(PairToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { PairFromRef(r) }
+      isSubtype(typeOf(r), Pair()) ==> PairToRef(PairFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall p: a_Pair ::
+      { typeOf(p.af_a_Pair_a) }
+      isSubtype(typeOf(p.af_a_Pair_a), intType()))
+  }
+
+  axiom {
+    (forall p: a_Pair ::
+      { typeOf(p.af_a_Pair_b) }
+      isSubtype(typeOf(p.af_a_Pair_b), intType()))
   }
 }
 
@@ -395,10 +442,17 @@ method f() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var foo: Ref
+  var l0_p: Ref
   foo := con(intToRef(0))
+  l0_p := PairToRef(ac_Pair(intToRef(1), intToRef(2)))
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method havoc() returns (v_ret_0: Ref)
-  ensures isSubtype(typeOf(v_ret_0), intType())
+method havoc() returns (ret: Ref)
+  ensures isSubtype(typeOf(ret), intType())
+
+
+adt a_Pair {
+  ac_Pair(af_a_Pair_a: Ref, af_a_Pair_b: Ref)
+}

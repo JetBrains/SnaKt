@@ -162,6 +162,7 @@ Test source files support directives that control how they are run:
 - `NEVER_VALIDATE` — skip verification, keep consistency and uniqueness checking.
 - `UNIQUE_CHECK_ONLY` — run only the uniqueness checker (skip conversion and verification).
 - `ALWAYS_VALIDATE` — force verification for all functions.
+- `FULL_JDK` — add all JDK classes to the compilation classpath (required if a test uses Java standard library types)
 
 ## Contact
 

@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.utils.*
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
+import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.*
@@ -27,6 +28,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
+import org.jetbrains.kotlin.formver.viper.ast.AdtDecl
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 
@@ -69,7 +71,6 @@ class ProgramConverter(
     override val returnTargetProducer = FreshEntityProducer(ReturnTarget::createForDepth)
     override val nameResolver = ShortNameResolver()
 
-
     val program: Program
         get() = Program(
             domains = listOf(RuntimeTypeDomain(typeResolver)),
@@ -88,13 +89,12 @@ class ProgramConverter(
                     )
                 }
             },
-            adts = typeResolver.adtTypeEmbeddings().map { embedding ->
-                embedding.toViper(typeResolver.lookupAdtFields(embedding.name))
-            },
+            adts = typeResolver.adtTypeEmbeddings().map { constructAdtDecl(it) },
         )
 
 
     fun registerForVerification(declaration: FirSimpleFunction) {
+
         // Note: it is important that `body` is only set after embedding is complete, as we need to
         // place the embedding in the map before processing the body.
         if (declaration.symbol.isPure(session)) {
@@ -248,10 +248,13 @@ class ProgramConverter(
         return embedPureUserFunction(symbol, signature, returnTarget)
     }
 
-    override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding = if (symbol.isPure(session)) {
-        embedPureFunction(symbol)
-    } else {
-        embedFunction(symbol)
+    override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding {
+        if (symbol is FirConstructorSymbol && symbol.isPrimary) {
+            val type = embedType(symbol.resolvedReturnType)
+            val adtType = type.pretype as? AdtTypeEmbedding
+            if (adtType != null) return AdtConstructorEmbedding(adtType, typeResolver.lookupAdtFields(adtType.name))
+        }
+        return if (symbol.isPure(session)) embedPureFunction(symbol) else embedFunction(symbol)
     }
 
     /**
@@ -281,94 +284,85 @@ class ProgramConverter(
         return embedding
     }
 
+    @OptIn(DirectDeclarationsAccess::class)
     private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding =
         typeResolver.getOrRegisterAdt(symbol.classId.embedName()) {
-            if (!validateAdtHeader(symbol)) InvalidAdtTypeEmbedding
-            else AdtTypeEmbeddingImpl(symbol.classId.embedName())
+            if (!adtSignatureIsValid(symbol)) return@getOrRegisterAdt InvalidAdtTypeEmbedding
+            val adtEmbedding = AdtTypeEmbeddingImpl(symbol.classId.embedName())
+            var allValid = true
+            symbol.declarationSymbols.forEach { sym ->
+                if (!embedAdtProperty(sym, adtEmbedding)) allValid = false
+            }
+            if (allValid) adtEmbedding else InvalidAdtTypeEmbedding
         }
 
-    private fun validateAdtHeader(symbol: FirRegularClassSymbol): Boolean {
-        var isValid = true
+    private fun adtSignatureIsValid(symbol: FirRegularClassSymbol): Boolean {
         if (!symbol.isData) {
             errorCollector.addAdtError(
                 symbol.source,
                 "Invalid ADT annotation: @ADT may only be applied to data class or data object declarations",
             )
-            isValid = false
+            return false
         }
         if (symbol.typeParameterSymbols.isNotEmpty()) {
             errorCollector.addAdtError(
                 symbol.source,
                 "Invalid ADT annotation: An @ADT declaration must not have type parameters",
             )
-            isValid = false
+            return false
         }
         if (symbol.resolvedSuperTypes.any { !it.isAny }) {
             errorCollector.addAdtError(
                 symbol.source,
                 "Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface",
             )
-            isValid = false
+            return false
         }
-        return isValid
+        return true
     }
 
-    @OptIn(DirectDeclarationsAccess::class)
-    private fun validateAdtProperties(symbol: FirRegularClassSymbol, adtName: AdtName): Boolean {
-        var isValid = true
-        val checkedPropertyNames = mutableSetOf<String>()
-        for (declaration in symbol.declarationSymbols) when (declaration) {
-            is FirPropertySymbol -> if (checkedPropertyNames.add(declaration.name.asString())) {
-                var isPropertyValid = true
-                if (declaration.correspondingValueParameterFromPrimaryConstructor == null) {
-                    errorCollector.addAdtError(
-                        declaration.source ?: symbol.source,
-                        "Invalid ADT annotation: An @ADT declaration may only declare fields in its primary constructor",
-                    )
-                    isValid = false
-                    isPropertyValid = false
-                }
-                if (declaration.isVar) {
-                    errorCollector.addAdtError(
-                        declaration.source ?: symbol.source,
-                        "Invalid ADT annotation: An @ADT declaration may only declare immutable (val) fields",
-                    )
-                    isValid = false
-                    isPropertyValid = false
-                }
-                if (isPropertyValid) {
-                    typeResolver.getOrPutAdtField(declaration.embedMemberPropertyName()) {
-                        AdtFieldEmbedding(
-                            name = AdtFieldName(adtName, SimpleKotlinName(declaration.name)),
-                            type = embedType(declaration.resolvedReturnType),
-                        )
-                    }
-                }
-            }
-            is FirNamedFunctionSymbol -> if (declaration.origin == FirDeclarationOrigin.Source) {
-                errorCollector.addAdtError(
-                    declaration.source ?: symbol.source,
-                    "Invalid ADT annotation: An @ADT declaration must not have user-declared member functions",
-                )
-                isValid = false
-            }
-            is FirConstructorSymbol -> if (!declaration.isPrimary) {
-                errorCollector.addAdtError(
-                    declaration.source ?: symbol.source,
-                    "Invalid ADT annotation: An @ADT declaration must not have secondary constructors",
-                )
-                isValid = false
-            }
-            else -> {
-                errorCollector.addAdtError(
-                    declaration.source ?: symbol.source,
-                    "Invalid ADT annotation: An @ADT declaration does not support symbols of type ${declaration.javaClass.simpleName}",
-                )
-                isValid = false
-            }
+    private fun embedAdtProperty(symbol: FirBasedSymbol<*>, adtEmbedding: AdtTypeEmbedding): Boolean {
+        var valid = true
+        fun rejectProperty(reason: String) {
+            errorCollector.addAdtError(symbol.source, "Invalid ADT annotation: $reason")
+            valid = false
         }
-        return isValid
+        when (symbol) {
+            is FirPropertySymbol -> {
+                var rejected = false
+                if (symbol.correspondingValueParameterFromPrimaryConstructor == null) {
+                    rejectProperty("An @ADT declaration may only declare fields in its primary constructor")
+                    rejected = true
+                }
+                if (symbol.isVar) {
+                    rejectProperty("An @ADT declaration may only declare immutable (val) fields")
+                    rejected = true
+                }
+                if (rejected) return false
+                val field = typeResolver.getOrPutAdtField(symbol.embedMemberPropertyName()) {
+                    AdtFieldEmbedding(
+                        name = AdtFieldName(adtEmbedding.adtName, SimpleKotlinName(symbol.name)),
+                        type = embedType(symbol.resolvedReturnType),
+                    )
+                }
+                typeResolver.getOrPutProperty(symbol.embedMemberPropertyName()) {
+                    PropertyEmbedding(AdtFieldGetter(field, adtEmbedding), setter = null)
+                }
+            }
+            is FirConstructorSymbol -> if (!symbol.isPrimary)
+                rejectProperty("An @ADT declaration must not have secondary constructors")
+            is FirNamedFunctionSymbol -> if (symbol.origin == FirDeclarationOrigin.Source)
+                rejectProperty("An @ADT declaration must not have user-declared member functions")
+            else -> rejectProperty("An @ADT declaration does not support symbols of type ${symbol.javaClass.simpleName}")
+        }
+        return valid
     }
+
+    private fun constructAdtDecl(embedding: AdtTypeEmbedding): AdtDecl =
+        AdtDecl(
+            name = embedding.adtName,
+            constructors = listOf(embedding.getViperConstructorDecl(typeResolver.lookupAdtFields(embedding.name))),
+        )
 
     override fun embedType(type: ConeKotlinType): TypeEmbedding = buildType { embedTypeWithBuilder(type) }
 

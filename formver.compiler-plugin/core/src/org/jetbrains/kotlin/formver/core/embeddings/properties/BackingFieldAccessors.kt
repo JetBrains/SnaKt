@@ -8,6 +8,8 @@ package org.jetbrains.kotlin.formver.core.embeddings.properties
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
 import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.types.AdtFieldEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
 
 class BackingFieldGetter(val field: FieldEmbedding) : GetterEmbedding {
     override fun getValue(receiver: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding {
@@ -19,6 +21,11 @@ class BackingFieldGetter(val field: FieldEmbedding) : GetterEmbedding {
             }
         }
     }
+}
+
+class AdtFieldGetter(val field: AdtFieldEmbedding, val adtType: AdtTypeEmbedding) : GetterEmbedding {
+    override fun getValue(receiver: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding =
+        AdtFieldAccess(receiver, adtType, field)
 }
 
 class BackingFieldSetter(val field: FieldEmbedding) : SetterEmbedding {

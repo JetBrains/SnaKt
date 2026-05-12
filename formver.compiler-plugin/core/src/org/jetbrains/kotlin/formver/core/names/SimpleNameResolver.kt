@@ -192,8 +192,8 @@ class SimpleNameResolver : NameResolver {
             NameType.Base.Variable -> "v"
             NameType.Base.Domain -> "d"
             NameType.Base.DomainFunction -> "df"
-            NameType.Base.Adt -> "adt"
-            NameType.Base.AdtCons -> "constr"
+            NameType.Base.Adt -> "a"
+            NameType.Base.AdtCons -> "ac"
             NameType.Base.AdtField -> "af"
             is NameTypeBase -> throw SnaktInternalException(
                 null, "NameTypeBase should never been inherited by something else than NameType"

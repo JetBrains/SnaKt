@@ -24,7 +24,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.ClassPropertyAccess
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyAccessEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.asPropertyAccess
-import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.isCustom
 import org.jetbrains.kotlin.formver.core.isInvariantBuilderFunctionNamed
@@ -132,22 +131,10 @@ fun StmtConversionContext.embedPropertyAccess(accessExpression: FirPropertyAcces
             val type = embedType(calleeSymbol.resolvedReturnType)
             when {
                 accessExpression.dispatchReceiver != null -> {
-                    val adtPretype = embedType(accessExpression.dispatchReceiver!!.resolvedType).pretype as? AdtTypeEmbedding
-                    if (adtPretype != null) {
-                        val field = typeResolver.lookupAdtFields(adtPretype.name)
-                            .firstOrNull { it.name.propertyName.name == calleeSymbol.name }
-                            ?: throw SnaktInternalException(
-                                accessExpression.source,
-                                "Property ${calleeSymbol.name} does not exist on ADT ${adtPretype.name}",
-                            )
-                        // ADT fields are immutable value types without a heap location, so withNewTypeInvariants is not needed.
-                        AdtFieldAccess(convert(accessExpression.dispatchReceiver!!), adtPretype, field).asPropertyAccess()
-                    } else {
-                        val property = calleeSymbol.findFinalParentProperty()?.let {
-                            embedProperty(it)
-                        } ?: embedProperty(calleeSymbol)
-                        ClassPropertyAccess(convert(accessExpression.dispatchReceiver!!), property, type)
-                    }
+                    val property = calleeSymbol.findFinalParentProperty()?.let {
+                        embedProperty(it)
+                    } ?: embedProperty(calleeSymbol)
+                    ClassPropertyAccess(convert(accessExpression.dispatchReceiver!!), property, type)
                 }
 
                 accessExpression.extensionReceiver != null -> {

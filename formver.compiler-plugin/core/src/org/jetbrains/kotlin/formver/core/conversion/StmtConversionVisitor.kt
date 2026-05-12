@@ -108,7 +108,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 resolvedQualifier.source,
                 "Object ${classSymbol.name} has pretype ${type.pretype.javaClass.simpleName} which is not declared to be an ADT."
             )
-        return AdtConstructorRef(type)
+        return AdtConstructorRef(type, emptyList())
     }
 
     override fun visitBlock(block: FirBlock, data: StmtConversionContext): ExpEmbedding =
@@ -307,14 +307,6 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     override fun visitFunctionCall(functionCall: FirFunctionCall, data: StmtConversionContext): ExpEmbedding {
         val symbol = functionCall.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
             ?: throw NotImplementedError("Only functions are expected as callables of function calls, got ${functionCall.toResolvedCallableSymbol()}")
-
-        if (symbol is FirConstructorSymbol && symbol.isPrimary) {
-            val type = data.embedType(functionCall.resolvedType)
-            if (type.pretype is AdtTypeEmbedding) {
-                val args = functionCall.argumentList.arguments.map { data.convert(it) }
-                return AdtConstructorRef(type, args)
-            }
-        }
 
         when (val forAllLambda = functionCall.extractFormverFirBlock { isInvariantBuilderFunctionNamed("forAll") }) {
             null -> {

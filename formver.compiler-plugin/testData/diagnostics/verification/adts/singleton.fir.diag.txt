@@ -6,15 +6,15 @@ method nullableRed() returns (v_ret_0: Ref)
 {
   var l0_r: Ref
   l0_r := nullValue()
-  l0_r := RedToRef(constr_Red())
+  l0_r := RedToRef(ac_Red())
   assert !(l0_r == nullValue())
   v_ret_0 := l0_r
   goto lbl_ret_0
   label lbl_ret_0
 }
 
-adt adt_Red {
-  constr_Red()
+adt a_Red {
+  ac_Red()
 }
 
 /singleton.kt: info: Generated Viper text for returnsRed:
@@ -24,13 +24,13 @@ method returnsRed() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), Red())
 {
   var x: Ref
-  x := RedToRef(constr_Red())
-  assert RedFromRef(x) == constr_Red()
-  v_ret_0 := x
+  x := RedToRef(ac_Red())
+  assert RedFromRef(x) == ac_Red()
+  ret_0 := x
   goto lbl_ret_0
   label lbl_ret_0
 }
 
-adt adt_Red {
-  constr_Red()
+adt a_Red {
+  ac_Red()
 }

@@ -67,7 +67,7 @@ data object NullLit : LiteralEmbedding {
  */
 data class AdtConstructorRef(
     override val type: TypeEmbedding,
-    val args: List<ExpEmbedding> = emptyList(),
+    val args: List<ExpEmbedding>,
 ) : ExpEmbedding {
     init {
         require(type.pretype is AdtTypeEmbeddingImpl) {

@@ -14,7 +14,6 @@ import org.jetbrains.kotlin.formver.core.names.QualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.core.names.UnqualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
-import org.jetbrains.kotlin.formver.viper.ast.Exp.Companion.toConjunction
 
 
 const val RUNTIME_TYPE_DOMAIN_NAME = "rt"
@@ -419,13 +418,12 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
         }
         // Encodes type information of ADT deconstructors
         adtFields.forEach { (embedding, fields) ->
-            if (fields.isEmpty()) return@forEach
             val p = domainVar("p", Type.Adt(embedding.adtName))
-            axiom {
-                Exp.forall(p) { p ->
-                    fields.map { field ->
+            fields.forEach { field ->
+                axiom {
+                    Exp.forall(p) { p ->
                         simpleTrigger { typeOf(Exp.AdtDestructorApp(field.name, p, embedding.adtName)) } subtype field.type.runtimeType
-                    }.toConjunction()
+                    }
                 }
             }
         }

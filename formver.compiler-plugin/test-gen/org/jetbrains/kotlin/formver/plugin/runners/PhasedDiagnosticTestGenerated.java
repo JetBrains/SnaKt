@@ -58,12 +58,6 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
-      @TestMetadata("full_embedding.kt")
-      public void testFull_embedding() {
-        runTest("formver.compiler-plugin/testData/diagnostics/conversion/adts/full_embedding.kt");
-      }
-
-      @Test
       @TestMetadata("singleton.kt")
       public void testSingleton() {
         runTest("formver.compiler-plugin/testData/diagnostics/conversion/adts/singleton.kt");

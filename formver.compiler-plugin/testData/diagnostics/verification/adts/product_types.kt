@@ -3,7 +3,7 @@
 import org.jetbrains.kotlin.formver.plugin.*
 
 @ADT
-data class Pair<!VIPER_TEXT!>(val <!VIPER_TEXT!>a<!>: Int, val <!VIPER_TEXT!>b<!>: Int)<!>
+data class Pair(val a: Int, val b: Int)
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>testConstrAndDestr<!>() {

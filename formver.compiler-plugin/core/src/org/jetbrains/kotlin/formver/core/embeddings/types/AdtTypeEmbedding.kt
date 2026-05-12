@@ -33,15 +33,11 @@ data class AdtTypeEmbeddingImpl(override val name: ScopedName) : AdtTypeEmbeddin
 
     override val runtimeType = RuntimeTypeDomain.classTypeFunc(name)()
 
-    fun viperConstructorDecl(fields: List<AdtFieldEmbedding>): AdtConstructorDecl =
+    fun getViperConstructorDecl(fields: List<AdtFieldEmbedding>): AdtConstructorDecl =
         AdtConstructorDecl(
             AdtConstructorName(adtName, name),
             adtName,
             fields.map { Declaration.LocalVarDecl(it.name, Type.Ref) },
         )
-
-    fun toViper(fields: List<AdtFieldEmbedding>) = AdtDecl(
-        name = adtName,
-        constructors = listOf(viperConstructorDecl(fields)),
-    )
 }
+

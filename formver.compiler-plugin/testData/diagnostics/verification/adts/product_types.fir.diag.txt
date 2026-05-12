@@ -1,35 +1,3 @@
-/product_types.kt: info: Generated Viper text for copy:
-method copy(this: Ref, a: Ref, b: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_Pair())
-  requires isSubtype(typeOf(a), intType())
-  requires isSubtype(typeOf(b), intType())
-  ensures isSubtype(typeOf(ret), _c_Pair())
-
-
-adt adt__c_Pair {
-  constr__c_Pair(af_adt__c_Pair_a: Ref, af_adt__c_Pair_b: Ref)
-}
-
-/product_types.kt: info: Generated Viper text for component1:
-method component1(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_Pair())
-  ensures isSubtype(typeOf(ret), intType())
-
-
-adt adt__c_Pair {
-  constr__c_Pair(af_adt__c_Pair_a: Ref, af_adt__c_Pair_b: Ref)
-}
-
-/product_types.kt: info: Generated Viper text for component2:
-method component2(this: Ref) returns (ret: Ref)
-  requires isSubtype(typeOf(this), _c_Pair())
-  ensures isSubtype(typeOf(ret), intType())
-
-
-adt adt__c_Pair {
-  constr__c_Pair(af_adt__c_Pair_a: Ref, af_adt__c_Pair_b: Ref)
-}
-
 /product_types.kt: info: Generated Viper text for testConstrAndDestr:
 field size: Ref
 
@@ -43,17 +11,17 @@ method testConstrAndDestr() returns (ret_0: Ref)
   var b_p: Ref
   a := intToRef(1)
   b := intToRef(2)
-  l0_p := PairToRef(constr_Pair(a, b))
-  a_p := PairFromRef(l0_p).af_adt_Pair_a
-  b_p := PairFromRef(l0_p).af_adt_Pair_b
+  l0_p := PairToRef(ac_Pair(a, b))
+  a_p := PairFromRef(l0_p).af_a_Pair_a
+  b_p := PairFromRef(l0_p).af_a_Pair_b
   assert intFromRef(a) == intFromRef(a_p)
   assert intFromRef(b) == intFromRef(b_p)
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-adt adt_Pair {
-  constr_Pair(af_adt_Pair_a: Ref, af_adt_Pair_b: Ref)
+adt a_Pair {
+  ac_Pair(af_a_Pair_a: Ref, af_a_Pair_b: Ref)
 }
 
 /product_types.kt: info: Generated Viper text for destrGivenAdt:
@@ -63,28 +31,28 @@ method destrGivenAdt(pair: Ref) returns (ret_0: Ref)
   requires isSubtype(typeOf(pair), Pair())
   ensures isSubtype(typeOf(ret_0), unitType())
 {
-  assert isSubtype(typeOf(PairFromRef(pair).af_adt_Pair_a), intType())
-  assert isSubtype(typeOf(PairFromRef(pair).af_adt_Pair_b), intType())
+  assert isSubtype(typeOf(PairFromRef(pair).af_a_Pair_a), intType())
+  assert isSubtype(typeOf(PairFromRef(pair).af_a_Pair_b), intType())
   label lbl_ret_0
   inhale isSubtype(typeOf(ret_0), unitType())
 }
 
-adt adt_Pair {
-  constr_Pair(af_adt_Pair_a: Ref, af_adt_Pair_b: Ref)
+adt a_Pair {
+  ac_Pair(af_a_Pair_a: Ref, af_a_Pair_b: Ref)
 }
 
 /product_types.kt: info: Generated Viper text for adtInPostcondition:
 method adtInPostcondition(p1: Ref) returns (ret: Ref)
   requires isSubtype(typeOf(p1), Pair())
   ensures isSubtype(typeOf(ret), Pair())
-  ensures intFromRef(PairFromRef(p1).af_adt_Pair_b) ==
-    intFromRef(PairFromRef(ret).af_adt_Pair_b)
+  ensures intFromRef(PairFromRef(p1).af_a_Pair_b) ==
+    intFromRef(PairFromRef(ret).af_a_Pair_b)
 {
-  ret := PairToRef(constr_Pair(intToRef(0), PairFromRef(p1).af_adt_Pair_b))
+  ret := PairToRef(ac_Pair(intToRef(0), PairFromRef(p1).af_a_Pair_b))
   goto ret_0
   label ret_0
 }
 
-adt adt_Pair {
-  constr_Pair(af_adt_Pair_a: Ref, af_adt_Pair_b: Ref)
+adt a_Pair {
+  ac_Pair(af_a_Pair_a: Ref, af_a_Pair_b: Ref)
 }
