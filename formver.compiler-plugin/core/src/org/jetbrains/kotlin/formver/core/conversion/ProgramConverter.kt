@@ -429,7 +429,7 @@ class ProgramConverter(
                             null
                         )
                     }
-                    wellBehaved -> {
+                    wellBehaved || symbol.isManual(session) -> {
                         // we can use a backing field to represent it
                         val field = embedBackingField(symbol, classSymbol)
                         PropertyEmbedding(
