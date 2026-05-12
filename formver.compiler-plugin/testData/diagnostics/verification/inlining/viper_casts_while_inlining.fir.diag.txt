@@ -162,7 +162,7 @@ method checkArgumentIsCopied(x: Ref) returns (v_ret_0: Ref)
   var anon_5: Ref
   var v_ret_4: Ref
   var anon_1: Ref
-  anon_4 := havoc()
+  anon_4 := havoc(intType())
   anon_0 := anon_4
   inhale isSubtype(typeOf(anon_0), nullable(anyType()))
   inhale isSubtype(typeOf(anon_0), intType())
@@ -233,7 +233,7 @@ method accessManyMembers(m: Ref) returns (v_ret_0: Ref)
   anon_8 := idFun(i(anon_1))
   anon_7 := anon_8
   inhale isSubtype(typeOf(anon_7), intType())
-  anon_11 := havoc_Boolean()
+  anon_11 := havoc(boolType())
   anon_10 := idFun(anon_11)
   anon_9 := anon_10
   inhale isSubtype(typeOf(anon_9), boolType())
@@ -256,7 +256,7 @@ method accessManyMembers(m: Ref) returns (v_ret_0: Ref)
   anon_17 := idFun(i(anon_3))
   anon_16 := anon_17
   inhale isSubtype(typeOf(anon_16), intType())
-  anon_20 := havoc_Boolean()
+  anon_20 := havoc(boolType())
   anon_19 := idFun(anon_20)
   anon_18 := anon_19
   inhale isSubtype(typeOf(anon_18), boolType())
@@ -314,7 +314,7 @@ method checkEvaluatedOnce(par_i: Ref, mm: Ref) returns (v_ret_0: Ref)
   var anon_6: Ref
   var v_ret_4: Ref
   var anon_1: Ref
-  anon_5 := havoc_Boolean()
+  anon_5 := havoc(boolType())
   if (boolFromRef(anon_5)) {
     anon_4 := intToRef(1)
   } else {

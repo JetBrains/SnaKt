@@ -24,11 +24,11 @@ method extractInt(base: Ref, returnNull: Ref) returns (v_ret_0: Ref)
       anon_1 := anon_2
       inhale isSubtype(typeOf(anon_1), intType())
     } elseif (isSubtype(typeOf(base), FinalClassOpenFieldVarDerived())) {
-      anon_1 := havoc()
+      anon_1 := havoc(intType())
     } elseif (isSubtype(typeOf(base), FinalClassFinalFieldValDerived())) {
       anon_1 := final_g_field(base)
     } elseif (isSubtype(typeOf(base), OpenClassFinalFieldVarDerived())) {
-      anon_1 := havoc()
+      anon_1 := havoc(intType())
     } else {
       anon_1 := intToRef(0)}
     v_ret_0 := anon_1

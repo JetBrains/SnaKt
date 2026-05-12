@@ -17,7 +17,7 @@ method getVal(l: Ref) returns (v_ret_0: Ref)
 {
   if (next(l) != nullValue()) {
     var anon: Ref
-    anon := havoc()
+    anon := havoc(intType())
     v_ret_0 := anon
   } else {
     v_ret_0 := nullValue()}
@@ -78,12 +78,12 @@ method test() returns (v_ret_0: Ref)
   var anon_2: Ref
   anon_0 := con(intToRef(3), nullValue())
   l := con(intToRef(5), anon_0)
-  anon_1 := havoc()
+  anon_1 := havoc(intType())
   expr1 := boolToRef(intFromRef(anon_1) == 5)
   assert boolFromRef(expr1)
   if (g_next(l) != nullValue()) {
     var anon_3: Ref
-    anon_3 := havoc()
+    anon_3 := havoc(intType())
     anon_2 := anon_3
   } else {
     anon_2 := nullValue()}

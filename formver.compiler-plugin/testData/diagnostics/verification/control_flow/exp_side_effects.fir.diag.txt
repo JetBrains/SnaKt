@@ -21,7 +21,7 @@ method test() returns (v_ret_0: Ref)
   anon_0 := getFoo()
   anon_1 := sideEffect()
   anon_3 := getFoo()
-  anon_2 := havoc()
+  anon_2 := havoc(intType())
   anon_4 := sideEffect()
   y := plusInts(anon_2, anon_4)
   label lbl_ret_0

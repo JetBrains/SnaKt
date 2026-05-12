@@ -101,7 +101,7 @@ method accessSuperField(bar: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(bar), Bar())
   ensures isSubtype(typeOf(v_ret_0), boolType())
 {
-  v_ret_0 := havoc()
+  v_ret_0 := havoc(boolType())
   goto lbl_ret_0
   label lbl_ret_0
 }

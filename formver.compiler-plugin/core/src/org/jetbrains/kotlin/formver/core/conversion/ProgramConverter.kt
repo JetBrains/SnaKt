@@ -79,33 +79,20 @@ class ProgramConverter(
     override val linearizedBodyResolver = LinearizedBodyResolver()
 
 
-    fun buildProgram(): Program {
-        val backingFields = typeResolver.backingFields()
-
-        val viperMethods = buildList {
-            addAll(SpecialMethods.all)
-            addAll(linearizedBodyResolver.methods)
-            // Multiple backing fields can share a type, so havoc methods collide on name.
-            backingFields.map { it.type.havocMethod(typeResolver) }
-                .distinctBy { it.name }
-                .forEach(::add)
-        }
-
-        return Program(
+    fun buildProgram(): Program = Program(
             domains = listOf(RuntimeTypeDomain(typeResolver)),
             // Public fields with the same name are represented differently at `FieldEmbedding` level
             // but map to the same Viper field, so we deduplicate before emitting.
-            fields = backingFields.distinctBy { it.name }.map { it.toViper() },
+            fields = typeResolver.backingFields().distinctBy { it.name }.map { it.toViper() },
             functions = SpecialFunctions.all + linearizedBodyResolver.functions,
-            methods = viperMethods,
-            predicates = typeResolver.classTypeEmbeddings().flatMap {
+            methods = SpecialMethods.all + linearizedBodyResolver.methods,
+            predicates = typeResolver.classTypeEmbeddings().map {
                 with(typeResolver) {
                         it.uniquePredicate()
                 }
             },
             adts = typeResolver.adtTypeEmbeddings().map { it.toViper() },
         )
-    }
 
     /**
      * Embed the declaration's signature and queue its body for later processing by [convertAll].

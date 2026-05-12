@@ -5,7 +5,6 @@
 
 package org.jetbrains.kotlin.formver.core.names
 
-import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.viper.AnyName
 import org.jetbrains.kotlin.formver.viper.CandidateName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
@@ -185,23 +184,6 @@ data class PredicateName(val name: String) : FreshName {
     override val nameType: NameType = NameType.Base.Predicate
 
     override val candidates: List<CandidateName> = nameOnlyCandidates(name)
-
-    override val children: List<AnyName> = listOf(nameType)
-}
-
-data class HavocName(val type: TypeEmbedding) : FreshName {
-    override val inViper: Boolean = true
-    override val nameType: NameType = NameType.Base.Havoc
-
-    override val candidates: List<CandidateName> = buildCandidates {
-        candidate {
-            +nameType
-        }
-        candidate {
-            +nameType
-            +type.name
-        }
-    }
 
     override val children: List<AnyName> = listOf(nameType)
 }

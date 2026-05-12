@@ -30,11 +30,11 @@ method createBox() returns (v_ret_0: Ref)
   var intBox: Ref
   var anon_1: Ref
   boolBox := con(boolToRef(true))
-  anon_0 := havoc()
+  anon_0 := havoc(nullable(anyType()))
   b := anon_0
   inhale isSubtype(typeOf(b), boolType())
   intBox := con(intToRef(2))
-  anon_1 := havoc()
+  anon_1 := havoc(nullable(anyType()))
   v_ret_0 := anon_1
   inhale isSubtype(typeOf(v_ret_0), intType())
   goto lbl_ret_0
@@ -97,7 +97,7 @@ method genericAsIfCondition(box: Ref) returns (v_ret_0: Ref)
 {
   var anon_0: Ref
   var anon_1: Ref
-  anon_1 := havoc()
+  anon_1 := havoc(nullable(anyType()))
   anon_0 := anon_1
   inhale isSubtype(typeOf(anon_0), boolType())
   if (boolFromRef(anon_0)) {

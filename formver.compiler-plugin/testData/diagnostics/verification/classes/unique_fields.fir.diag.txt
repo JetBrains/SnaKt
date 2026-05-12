@@ -23,9 +23,9 @@ method testPrimitiveFieldGetterUnique(pf: Ref) returns (v_ret_0: Ref)
   var l0_uniqueVal: Ref
   var l0_uniqueVar: Ref
   l0_sharedVal := g_sharedVal(pf)
-  l0_sharedVar := havoc()
+  l0_sharedVar := havoc(intType())
   l0_uniqueVal := g_uniqueVal(pf)
-  l0_uniqueVar := havoc()
+  l0_uniqueVar := havoc(intType())
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
@@ -54,9 +54,9 @@ method testPrimitiveFieldGetterShared(pf: Ref) returns (v_ret_0: Ref)
   var l0_uniqueVal: Ref
   var l0_uniqueVar: Ref
   l0_sharedVal := g_sharedVal(pf)
-  l0_sharedVar := havoc()
+  l0_sharedVar := havoc(intType())
   l0_uniqueVal := g_uniqueVal(pf)
-  l0_uniqueVar := havoc()
+  l0_uniqueVar := havoc(intType())
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
@@ -143,9 +143,9 @@ method testReferenceFieldGetterUnique(rf: Ref) returns (v_ret_0: Ref)
   var l0_uniqueVal: Ref
   var l0_uniqueVar: Ref
   l0_sharedVal := UniqueReferenceFields_final_g_sharedVal(rf)
-  l0_sharedVar := havoc_UniquePrimitiveFields()
+  l0_sharedVar := havoc(UniquePrimitiveFields())
   l0_uniqueVal := UniqueReferenceFields_final_g_uniqueVal(rf)
-  l0_uniqueVar := havoc_UniquePrimitiveFields()
+  l0_uniqueVar := havoc(UniquePrimitiveFields())
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
@@ -184,9 +184,9 @@ method testReferenceFieldGetterShared(rf: Ref) returns (v_ret_0: Ref)
   var l0_uniqueVal: Ref
   var l0_uniqueVar: Ref
   l0_sharedVal := UniqueReferenceFields_final_g_sharedVal(rf)
-  l0_sharedVar := havoc_UniquePrimitiveFields()
+  l0_sharedVar := havoc(UniquePrimitiveFields())
   l0_uniqueVal := UniqueReferenceFields_final_g_uniqueVal(rf)
-  l0_uniqueVar := havoc_UniquePrimitiveFields()
+  l0_uniqueVar := havoc(UniquePrimitiveFields())
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }

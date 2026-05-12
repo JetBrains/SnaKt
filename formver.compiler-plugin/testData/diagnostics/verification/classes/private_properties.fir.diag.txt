@@ -78,7 +78,7 @@ method extractPublic() returns (v_ret_0: Ref)
   var cond2: Ref
   var anon_2: Ref
   anon_1 := con_C()
-  anon_0 := havoc()
+  anon_0 := havoc(intType())
   cond1 := boolToRef(isSubtype(typeOf(anon_0), intType()))
   anon_2 := con_D()
   cond2 := boolToRef(isSubtype(typeOf(final_g_field(anon_2)), intType()))

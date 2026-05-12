@@ -401,3 +401,6 @@ method f() returns (v_ret_0: Ref)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
+
+method havoc(arg_1: rt) returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), arg_1)

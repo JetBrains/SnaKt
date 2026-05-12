@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
+import org.jetbrains.kotlin.formver.core.embeddings.callables.SpecialMethods
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpWrapper
@@ -114,7 +115,10 @@ data class Linearizer(
                 // TODO: Handling a unique field on a shared receiver must be added here.
                 AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
                     receiver.toViperUnusedResult(this)
-                    field.type.havocMethod(typeResolver).toMethodCall(emptyList(), listOf(result.toLocalVarUse()))
+                    SpecialMethods.havocMethod.toMethodCall(
+                        listOf(field.type.runtimeType),
+                        listOf(result.toLocalVarUse())
+                    )
                 }
 
                 else -> {
