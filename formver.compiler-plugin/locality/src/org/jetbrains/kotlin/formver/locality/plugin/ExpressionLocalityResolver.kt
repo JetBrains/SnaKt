@@ -10,9 +10,12 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.caches.firCachesFactory
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.expressions.FirExpression
-import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
-import org.jetbrains.kotlin.fir.references.toResolvedVariableSymbol
-import org.jetbrains.kotlin.fir.types.resolvedType
+import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
+import org.jetbrains.kotlin.fir.expressions.FirThisReceiverExpression
+import org.jetbrains.kotlin.fir.expressions.unwrapExpression
+import org.jetbrains.kotlin.fir.references.symbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 
 class ExpressionLocalityResolver(session: FirSession) : FirExtensionSessionComponent(session) {
     companion object {
@@ -35,12 +38,14 @@ class ExpressionLocalityResolver(session: FirSession) : FirExtensionSessionCompo
 
     context(context: CheckerContext)
     fun extractLocalityOf(expression: FirExpression): Locality =
-        when (val expression = expression.unwrapCast()) {
-            is FirPropertyAccessExpression ->
-                expression.calleeReference.toResolvedVariableSymbol(discardErrorReference = true)
+        when (val expression = expression.unwrapExpression().removeCast()) {
+            is FirThisReceiverExpression ->
+                (expression.calleeReference.symbol as? FirReceiverParameterSymbol)
+                    ?.resolveLocality()
+            is FirQualifiedAccessExpression ->
+                (expression.calleeReference.symbol as? FirVariableSymbol)
                     ?.resolveLocality()
             else -> {
-                expression.resolvedType.locality ?:
                 expression.collectTails()
                     .map { tail -> resolveLocalityOf(tail) }
                     .reduceOrNull(Locality::join)

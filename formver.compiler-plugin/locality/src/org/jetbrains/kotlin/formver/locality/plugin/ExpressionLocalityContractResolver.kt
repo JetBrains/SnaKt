@@ -8,11 +8,13 @@ package org.jetbrains.kotlin.formver.locality.plugin
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.caches.firCachesFactory
+import org.jetbrains.kotlin.fir.expressions.FirAnonymousFunctionExpression
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
-import org.jetbrains.kotlin.fir.references.toResolvedVariableSymbol
-import org.jetbrains.kotlin.fir.symbols.SymbolInternals
+import org.jetbrains.kotlin.fir.expressions.unwrapExpression
+import org.jetbrains.kotlin.fir.references.symbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.fir.types.resolvedType
 
 class ExpressionLocalityContractResolver(session: FirSession) : FirExtensionSessionComponent(session) {
@@ -37,14 +39,15 @@ class ExpressionLocalityContractResolver(session: FirSession) : FirExtensionSess
 
     context(context: CheckerContext)
     fun extractLocalityContractOf(expression: FirExpression): List<Locality>? =
-        when (val expression = expression.unwrapCast()) {
+        when (val expression = expression.unwrapExpression().removeCast()) {
             is FirPropertyAccessExpression ->
-                expression.calleeReference.toResolvedVariableSymbol(discardErrorReference = true)
+                (expression.calleeReference.symbol as? FirVariableSymbol)
                     ?.resolveLocalityContract()
+            is FirAnonymousFunctionExpression ->
+                expression.resolvedType.resolveLocalityContract(session)
             else -> expression.collectTails()
                 .map { tail -> resolveLocalityContractOf(tail) }
                 .reduceOrNull(LocalityContract::join)
-                ?: expression.resolvedType.resolveLocalityContract(context.session)
         }
 }
 

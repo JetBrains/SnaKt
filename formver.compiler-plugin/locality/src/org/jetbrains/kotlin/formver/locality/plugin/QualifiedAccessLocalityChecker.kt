@@ -22,17 +22,16 @@ import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.CONTEXT_LOCAL
 import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_MISMATCH
 
 object QualifiedAccessLocalityChecker : FirQualifiedAccessExpressionChecker(MppCheckerKind.Common) {
-    @OptIn(SymbolInternals::class)
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirQualifiedAccessExpression) {
         if (expression !is FirFunctionCall && expression !is FirPropertyAccessExpression) return
 
         val callableSymbol = expression.toResolvedCallableSymbol() ?: return
-        val receiverDeclaration = callableSymbol.receiverParameterSymbol?.fir
+        val receiverSymbol = callableSymbol.receiverParameterSymbol
         val receiver = expression.extensionReceiver
 
-        if (receiver != null && receiverDeclaration != null) {
-            val expectedLocality = receiverDeclaration.typeRef.coneType.locality
+        if (receiver != null && receiverSymbol != null) {
+            val expectedLocality = receiverSymbol.resolveLocality()
             val actualLocality = receiver.resolveLocality()
 
             if (!expectedLocality.accepts(actualLocality)) {
@@ -53,10 +52,10 @@ object QualifiedAccessLocalityChecker : FirQualifiedAccessExpressionChecker(MppC
         }
 
         val contextArgumentMappings = expression.contextArguments
-            .zip(callableSymbol.contextParameterSymbols.map { it.fir })
+            .zip(callableSymbol.contextParameterSymbols)
 
-        for ((argument, argumentDeclaration) in contextArgumentMappings) {
-            val expectedLocality = argumentDeclaration.returnTypeRef.coneType.locality
+        for ((argument, argumentSymbol) in contextArgumentMappings) {
+            val expectedLocality = argumentSymbol.resolveLocality()
             val actualLocality = argument.resolveLocality()
 
             if (expectedLocality.accepts(actualLocality)) continue
@@ -64,7 +63,7 @@ object QualifiedAccessLocalityChecker : FirQualifiedAccessExpressionChecker(MppC
             reporter.reportOn(
                 argument.source ?: expression.source,
                 CONTEXT_LOCALITY_MISMATCH,
-                argumentDeclaration.returnTypeRef.coneType,
+                argumentSymbol.resolvedReturnType,
                 expectedLocality,
                 actualLocality
             )

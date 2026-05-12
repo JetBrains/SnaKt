@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.locality.plugin
 
 import org.jetbrains.kotlin.KtFakeSourceElementKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
+import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.fir.types.ConeErrorType
 
@@ -20,3 +21,6 @@ fun FirVariableSymbol<*>.resolveLocality(): Locality {
 
     return resolvedInitializer?.resolveLocality()
 }
+
+fun FirReceiverParameterSymbol.resolveLocality(): Locality =
+    resolvedType.locality

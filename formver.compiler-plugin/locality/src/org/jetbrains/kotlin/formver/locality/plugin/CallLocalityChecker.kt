@@ -34,7 +34,7 @@ object CallLocalityChecker : FirCallChecker(MppCheckerKind.Common) {
         }
 
         return resolvedArgumentMapping?.map { (argument, argumentDeclaration) ->
-            argument to argumentDeclaration.returnTypeRef.coneType.locality
+            argument to argumentDeclaration.symbol.resolveLocality()
         }?.toMap()
     }
 

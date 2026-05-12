@@ -15,11 +15,11 @@ import org.jetbrains.kotlin.fir.expressions.argument
 import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.lastExpression
 
-fun FirExpression.unwrapCast(): FirExpression =
+fun FirExpression.removeCast(): FirExpression =
     when (this) {
         is FirTypeOperatorCall -> when (operation) {
             FirOperation.AS, FirOperation.SAFE_AS ->
-                argument.unwrapExpression().unwrapCast()
+                argument.unwrapExpression().removeCast()
             else ->
                 this
         }
