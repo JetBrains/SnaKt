@@ -12,21 +12,6 @@ A test consists of two files:
 There is a generated Java file that is the actual test runner;
 you can regenerate it using the `generateTests` gradle action.
 
-### Test Directory Guidelines
-
-Generally, the majority of tests should be placed in the `verification` directory. Any tests located here will have
-their generated output automatically sent to Viper.
-
-- When to use `verification`: It is often beneficial to place a test in this directory even if it lacks explicit
-  contracts or verification logic.
-  This allows Viper to check for potential issues related to type information or missing permissions that might
-  otherwise go unnoticed.
-
-- When to use `conversion`: If running Viper provides no added benefit, the test should be placed in the `conversion`
-  directory instead.
-  A primary example of this is when a test is specifically designed to trigger and validate our internal error
-  messages (e.g., "Invalid ADT").
-
 ## Silicon
 
 Since Silicon and its dependencies are not centrally published, we provide them in
