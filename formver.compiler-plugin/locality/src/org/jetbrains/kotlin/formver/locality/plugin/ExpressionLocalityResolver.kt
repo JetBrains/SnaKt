@@ -25,23 +25,6 @@ class ExpressionLocalityResolver(session: FirSession) : FirExtensionSessionCompo
 
     private val cacheFactory = session.firCachesFactory
 
-    @OptIn(SymbolInternals::class)
-    context(context: CheckerContext)
-    private fun extractLocalityOf(expression: FirExpression): LocalityAttribute? {
-        val expression = expression.unwrapCast()
-
-        return when (expression) {
-            is FirPropertyAccessExpression ->
-                (expression.calleeReference.symbol as? FirVariableSymbol<*>)?.fir?.resolveLocality()
-            else -> {
-                expression.resolvedType.locality ?:
-                expression.collectTails()
-                    .map { tail -> resolveLocalityOf(tail) }
-                    .reduceOrNull { result, locality -> result?.union(locality) }
-            }
-        }
-    }
-
     private val cache = cacheFactory.createCache { expression: FirExpression, context: CheckerContext ->
         with(context) {
             extractLocalityOf(expression)
@@ -49,12 +32,26 @@ class ExpressionLocalityResolver(session: FirSession) : FirExtensionSessionCompo
     }
 
     context(context: CheckerContext)
-    fun resolveLocalityOf(expression: FirExpression): LocalityAttribute? =
+    fun resolveLocalityOf(expression: FirExpression): Locality =
         cache.getValue(expression, context)
+
+    context(context: CheckerContext)
+    fun extractLocalityOf(expression: FirExpression): Locality =
+        when (val expression = expression.unwrapCast()) {
+            is FirPropertyAccessExpression ->
+                expression.calleeReference.toResolvedVariableSymbol(discardErrorReference = true)
+                    ?.resolveLocality()
+            else -> {
+                expression.resolvedType.locality ?:
+                expression.collectTails()
+                    .map { tail -> resolveLocalityOf(tail) }
+                    .reduceOrNull(Locality::join)
+            }
+        }
 }
 
 private val FirSession.expressionLocalityResolver: ExpressionLocalityResolver by FirSession.sessionComponentAccessor()
 
 context(context: CheckerContext)
-fun FirExpression.resolveLocality(): LocalityAttribute? =
+fun FirExpression.resolveLocality(): Locality =
     context.session.expressionLocalityResolver.resolveLocalityOf(this)

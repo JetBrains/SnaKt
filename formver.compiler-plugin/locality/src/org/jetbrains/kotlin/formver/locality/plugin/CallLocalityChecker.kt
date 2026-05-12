@@ -24,7 +24,7 @@ import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_MISM
 
 object CallLocalityChecker : FirCallChecker(MppCheckerKind.Common) {
     context(context: CheckerContext)
-    private fun FirCall.collectRequiredLocalities(): Map<FirExpression, LocalityAttribute?>? {
+    private fun FirCall.collectRequiredLocalities(): Map<FirExpression, Locality>? {
         if (this is FirImplicitInvokeCall) {
             val contract = dispatchReceiver?.resolveLocalityContract()
 

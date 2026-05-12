@@ -14,8 +14,8 @@ import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 
 object LocalityErrors : KtDiagnosticsContainer() {
-    val LOCALITY_MISMATCH by error3<PsiElement, String, LocalityAttribute?, LocalityAttribute?>()
-    val CONTEXT_LOCALITY_MISMATCH by error3<PsiElement, ConeKotlinType, LocalityAttribute?, LocalityAttribute?>()
+    val LOCALITY_MISMATCH by error3<PsiElement, String, Locality, Locality>()
+    val CONTEXT_LOCALITY_MISMATCH by error3<PsiElement, ConeKotlinType, Locality, Locality>()
     val INVALID_LOCALITY_CAPTURE by error1<PsiElement, FirBasedSymbol<*>>()
     val INVALID_LOCALITY_TYPE_TARGET by error0<PsiElement>()
 

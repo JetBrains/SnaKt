@@ -16,15 +16,15 @@ object LocalityErrorMessages : BaseDiagnosticRendererFactory() {
             LocalityErrors.LOCALITY_MISMATCH,
             "{0} locality mismatch: expected ''{1}'', actual ''{2}''.",
             CommonRenderers.STRING,
-            LocalityAttributeRenderer,
-            LocalityAttributeRenderer,
+            LocalityRenderer,
+            LocalityRenderer,
         )
         map.put(
             LocalityErrors.CONTEXT_LOCALITY_MISMATCH,
             "Locality mismatch for context parameter of type ''{0}'': expected ''{1}'', actual ''{2}''.",
             FirDiagnosticRenderers.RENDER_TYPE,
-            LocalityAttributeRenderer,
-            LocalityAttributeRenderer,
+            LocalityRenderer,
+            LocalityRenderer,
         )
         map.put(
             LocalityErrors.INVALID_LOCALITY_CAPTURE,
