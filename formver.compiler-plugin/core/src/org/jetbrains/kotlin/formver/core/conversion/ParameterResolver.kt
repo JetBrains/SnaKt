@@ -36,7 +36,7 @@ class RootParameterResolver(
     private val signature: FunctionSignature,
     firArgs: List<FirValueParameterSymbol>,
     override val labelName: String?,
-    override val defaultResolvedReturnTarget: ReturnTarget,
+    override val defaultResolvedReturnTarget: ReturnTarget
 ) : ParameterResolver {
     private val parameters = firArgs.zip(signature.params).toMap()
     override fun tryResolveParameter(symbol: FirValueParameterSymbol): ExpEmbedding? = parameters[symbol]
@@ -60,11 +60,11 @@ class ReturnVarSubstitutor(val substitutionSymbol: FirValueParameterSymbol, val 
 }
 
 class SubstitutedReturnParameterResolver(
-    private val rootResolver: RootParameterResolver,
+    private val parentResolver: ParameterResolver,
     private val substitutionContext: ReturnVarSubstitutionContext,
-) : ParameterResolver by rootResolver {
+) : ParameterResolver by parentResolver {
     override fun tryResolveParameter(symbol: FirValueParameterSymbol): ExpEmbedding? =
-        substitutionContext.resolve(symbol) ?: rootResolver.tryResolveParameter(symbol)
+        substitutionContext.resolve(symbol) ?: parentResolver.tryResolveParameter(symbol)
 }
 
 /**

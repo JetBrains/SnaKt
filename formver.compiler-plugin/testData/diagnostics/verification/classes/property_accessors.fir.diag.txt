@@ -1,11 +1,11 @@
 /property_accessors.kt: info: Generated Viper text for testPrimitivePropertyGetter:
-method g_aProp(this: Ref) returns (v_ret: Ref)
+method g_aProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method nProp(this: Ref) returns (v_ret: Ref)
+method nProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method s_aProp(this: Ref, anon: Ref) returns (v_ret: Ref)
+method s_aProp(this: Ref, anon: Ref) returns (v_ret_0: Ref)
 
 
 method testPrimitivePropertyGetter(pp: Ref) returns (v_ret_0: Ref)
@@ -22,13 +22,13 @@ method testPrimitivePropertyGetter(pp: Ref) returns (v_ret_0: Ref)
 }
 
 /property_accessors.kt: info: Generated Viper text for testPrimitivePropertySetter:
-method g_aProp(this: Ref) returns (v_ret: Ref)
+method g_aProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method nProp(this: Ref) returns (v_ret: Ref)
+method nProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method s_aProp(this: Ref, anon: Ref) returns (v_ret: Ref)
+method s_aProp(this: Ref, anon: Ref) returns (v_ret_0: Ref)
 
 
 method testPrimitivePropertySetter(pp: Ref) returns (v_ret_0: Ref)
@@ -43,22 +43,22 @@ method testPrimitivePropertySetter(pp: Ref) returns (v_ret_0: Ref)
 }
 
 /property_accessors.kt: info: Generated Viper text for testReferencePropertyGetter:
-method g_aProp(this: Ref) returns (v_ret: Ref)
+method g_aProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method g_ppProp(this: Ref) returns (v_ret: Ref)
+method g_ppProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method nProp(this: Ref) returns (v_ret: Ref)
+method nProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method rProp(this: Ref) returns (v_ret: Ref)
+method rProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method s_aProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
+method s_aProp(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)
 
 
-method s_ppProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
+method s_ppProp(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)
 
 
 method testReferencePropertyGetter(rp: Ref) returns (v_ret_0: Ref)
@@ -82,22 +82,22 @@ method testReferencePropertyGetter(rp: Ref) returns (v_ret_0: Ref)
 }
 
 /property_accessors.kt: info: Generated Viper text for testCascadingPropertyGetter:
-method g_aProp(this: Ref) returns (v_ret: Ref)
+method g_aProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method g_ppProp(this: Ref) returns (v_ret: Ref)
+method g_ppProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method nProp(this: Ref) returns (v_ret: Ref)
+method nProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method rProp(this: Ref) returns (v_ret: Ref)
+method rProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method s_aProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
+method s_aProp(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)
 
 
-method s_ppProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
+method s_ppProp(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)
 
 
 method testCascadingPropertyGetter(rp: Ref) returns (v_ret_0: Ref)
@@ -121,28 +121,28 @@ method testCascadingPropertyGetter(rp: Ref) returns (v_ret_0: Ref)
 }
 
 /property_accessors.kt: info: Generated Viper text for testReferencePropertySetter:
-method con() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), PrimitiveProperty())
-  ensures acc(PrimitiveProperty_shared(v_ret), wildcard)
-  ensures acc(PrimitiveProperty_unique(v_ret), write)
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), PrimitiveProperty())
+  ensures acc(PrimitiveProperty_shared(ret_1), wildcard)
+  ensures acc(PrimitiveProperty_unique(ret_1), write)
 
 
-method g_aProp(this: Ref) returns (v_ret: Ref)
+method g_aProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method g_ppProp(this: Ref) returns (v_ret: Ref)
+method g_ppProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method nProp(this: Ref) returns (v_ret: Ref)
+method nProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method rProp(this: Ref) returns (v_ret: Ref)
+method rProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method s_aProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
+method s_aProp(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)
 
 
-method s_ppProp(this: Ref, anon_0: Ref) returns (v_ret: Ref)
+method s_ppProp(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)
 
 
 method testReferencePropertySetter(rp: Ref) returns (v_ret_0: Ref)

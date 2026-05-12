@@ -4,10 +4,10 @@ method firstNotSortedIndex(s: Ref) returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
   ensures 0 <= intFromRef(v_ret_0) &&
     intFromRef(v_ret_0) <= |stringFromRef(s)|
-  ensures (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
-      anon_builtin_2 + 1 < intFromRef(v_ret_0) ==>
-      stringFromRef(s)[anon_builtin_2] <=
-      stringFromRef(s)[anon_builtin_2 + 1])
+  ensures (forall anon_builtin_0: Int ::0 <= anon_builtin_0 &&
+      anon_builtin_0 + 1 < intFromRef(v_ret_0) ==>
+      stringFromRef(s)[anon_builtin_0] <=
+      stringFromRef(s)[anon_builtin_0 + 1])
 {
   if (|stringFromRef(s)| == 0) {
     v_ret_0 := intToRef(0)
@@ -64,10 +64,10 @@ method addCharacterTimes(s: Ref, c: Ref, n: Ref) returns (v_ret_0: Ref)
   requires intFromRef(n) >= 0
   ensures isSubtype(typeOf(v_ret_0), stringType())
   ensures |stringFromRef(v_ret_0)| == |stringFromRef(s)| + intFromRef(n)
-  ensures (forall anon_builtin_2: Int ::|stringFromRef(s)| <=
-      anon_builtin_2 &&
-      anon_builtin_2 < |stringFromRef(v_ret_0)| ==>
-      stringFromRef(v_ret_0)[anon_builtin_2] == charFromRef(c))
+  ensures (forall anon_builtin_0: Int ::|stringFromRef(s)| <=
+      anon_builtin_0 &&
+      anon_builtin_0 < |stringFromRef(v_ret_0)| ==>
+      stringFromRef(v_ret_0)[anon_builtin_0] == charFromRef(c))
 {
   var i: Ref
   var res: Ref
@@ -108,7 +108,7 @@ method addCharacterTimes(s: Ref, c: Ref, n: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
-method plus(this: Ref, other: Ref) returns (v_ret: Ref)
+method plus(this: Ref, other: Ref) returns (ret_4: Ref)
   requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
-  ensures isSubtype(typeOf(v_ret), stringType())
+  ensures isSubtype(typeOf(ret_4), stringType())

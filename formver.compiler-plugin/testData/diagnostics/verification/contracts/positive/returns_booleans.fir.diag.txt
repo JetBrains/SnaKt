@@ -61,12 +61,12 @@ method logical_not(b: Ref) returns (v_ret_0: Ref)
 }
 
 /returns_booleans.kt: info: Generated Viper text for call_fun_with_contracts:
-method binary_logic_expressions(par_a: Ref, b: Ref) returns (v_ret: Ref)
+method binary_logic_expressions(par_a: Ref, b: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(par_a), boolType())
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(v_ret), boolType())
-  ensures boolFromRef(v_ret) == false ==> boolFromRef(b) && false
-  ensures boolFromRef(v_ret) == true ==>
+  ensures isSubtype(typeOf(ret_2), boolType())
+  ensures boolFromRef(ret_2) == false ==> boolFromRef(b) && false
+  ensures boolFromRef(ret_2) == true ==>
     (true || boolFromRef(par_a)) && (boolFromRef(b) || true)
 
 
@@ -85,16 +85,16 @@ method call_fun_with_contracts(b: Ref) returns (v_ret_0: Ref)
 /returns_booleans.kt: info: Generated Viper text for isNullOrEmpty:
 field size: Ref
 
-method isEmpty(v_this: Ref) returns (v_ret: Ref)
+method isEmpty(v_this: Ref) returns (ret_2: Ref)
   requires acc(v_this.size, write)
   requires intFromRef(v_this.size) >= 0
   requires isSubtype(typeOf(v_this), Collection())
   ensures acc(v_this.size, write)
   ensures intFromRef(v_this.size) >= 0
-  ensures isSubtype(typeOf(v_ret), boolType())
+  ensures isSubtype(typeOf(ret_2), boolType())
   ensures intFromRef(v_this.size) == old(intFromRef(v_this.size))
-  ensures boolFromRef(v_ret) ==> intFromRef(v_this.size) == 0
-  ensures !boolFromRef(v_ret) ==> intFromRef(v_this.size) > 0
+  ensures boolFromRef(ret_2) ==> intFromRef(v_this.size) == 0
+  ensures !boolFromRef(ret_2) ==> intFromRef(v_this.size) > 0
 
 
 method isNullOrEmpty(v_this_extension: Ref) returns (v_ret_0: Ref)

@@ -2,19 +2,19 @@
 method simpleReturn() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  var v_ret_1: Ref
-  var v_ret_2: Ref
+  var v_ret_3: Ref
+  var v_ret_4: Ref
   var anon: Ref
   anon := intToRef(0)
   v_ret_0 := intToRef(1)
   goto lbl_ret_0
-  v_ret_2 := anon
-  goto lbl_ret_2
-  label lbl_ret_2
-  v_ret_1 := v_ret_2
-  goto lbl_ret_1
-  label lbl_ret_1
-  v_ret_0 := v_ret_1
+  v_ret_4 := anon
+  goto lbl_ret_4
+  label lbl_ret_4
+  v_ret_3 := v_ret_4
+  goto lbl_ret_3
+  label lbl_ret_3
+  v_ret_0 := v_ret_3
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -23,19 +23,19 @@ method simpleReturn() returns (v_ret_0: Ref)
 method returnAtInline() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  var v_ret_1: Ref
-  var v_ret_2: Ref
+  var v_ret_3: Ref
+  var v_ret_4: Ref
   var anon: Ref
   anon := intToRef(0)
-  v_ret_2 := intToRef(1)
-  goto lbl_ret_2
-  v_ret_2 := anon
-  goto lbl_ret_2
-  label lbl_ret_2
-  v_ret_1 := v_ret_2
-  goto lbl_ret_1
-  label lbl_ret_1
-  v_ret_0 := v_ret_1
+  v_ret_4 := intToRef(1)
+  goto lbl_ret_4
+  v_ret_4 := anon
+  goto lbl_ret_4
+  label lbl_ret_4
+  v_ret_3 := v_ret_4
+  goto lbl_ret_3
+  label lbl_ret_3
+  v_ret_0 := v_ret_3
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -44,31 +44,31 @@ method returnAtInline() returns (v_ret_0: Ref)
 method doubleInvoke() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  var v_ret_1: Ref
-  var v_ret_2: Ref
-  var anon_0: Ref
   var v_ret_3: Ref
   var v_ret_4: Ref
+  var anon_0: Ref
+  var v_ret_6: Ref
+  var v_ret_7: Ref
   var anon_1: Ref
   anon_0 := intToRef(0)
   anon_1 := intToRef(0)
-  v_ret_4 := intToRef(1)
+  v_ret_7 := intToRef(1)
+  goto lbl_ret_7
+  v_ret_7 := anon_1
+  goto lbl_ret_7
+  label lbl_ret_7
+  v_ret_6 := v_ret_7
+  goto lbl_ret_6
+  label lbl_ret_6
+  v_ret_4 := intToRef(2)
   goto lbl_ret_4
-  v_ret_4 := anon_1
+  v_ret_4 := anon_0
   goto lbl_ret_4
   label lbl_ret_4
   v_ret_3 := v_ret_4
   goto lbl_ret_3
   label lbl_ret_3
-  v_ret_2 := intToRef(2)
-  goto lbl_ret_2
-  v_ret_2 := anon_0
-  goto lbl_ret_2
-  label lbl_ret_2
-  v_ret_1 := v_ret_2
-  goto lbl_ret_1
-  label lbl_ret_1
-  v_ret_0 := v_ret_1
+  v_ret_0 := v_ret_3
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -77,35 +77,35 @@ method doubleInvoke() returns (v_ret_0: Ref)
 method nested() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  var v_ret_1: Ref
-  var v_ret_2: Ref
-  var anon_0: Ref
   var v_ret_3: Ref
   var v_ret_4: Ref
+  var anon_0: Ref
+  var v_ret_7: Ref
+  var v_ret_8: Ref
   var anon_1: Ref
   anon_0 := intToRef(0)
   anon_1 := intToRef(1)
-  v_ret_4 := intToRef(2)
+  v_ret_8 := intToRef(2)
+  goto lbl_ret_8
+  v_ret_4 := intToRef(3)
   goto lbl_ret_4
-  v_ret_2 := intToRef(3)
-  goto lbl_ret_2
   v_ret_0 := intToRef(4)
   goto lbl_ret_0
-  v_ret_4 := anon_1
+  v_ret_8 := anon_1
+  goto lbl_ret_8
+  label lbl_ret_8
+  v_ret_7 := v_ret_8
+  goto lbl_ret_7
+  label lbl_ret_7
+  v_ret_4 := intToRef(5)
+  goto lbl_ret_4
+  v_ret_4 := anon_0
   goto lbl_ret_4
   label lbl_ret_4
   v_ret_3 := v_ret_4
   goto lbl_ret_3
   label lbl_ret_3
-  v_ret_2 := intToRef(5)
-  goto lbl_ret_2
-  v_ret_2 := anon_0
-  goto lbl_ret_2
-  label lbl_ret_2
-  v_ret_1 := v_ret_2
-  goto lbl_ret_1
-  label lbl_ret_1
-  v_ret_0 := v_ret_1
+  v_ret_0 := v_ret_3
   goto lbl_ret_0
   label lbl_ret_0
 }

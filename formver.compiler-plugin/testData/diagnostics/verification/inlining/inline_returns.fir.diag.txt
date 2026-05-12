@@ -5,17 +5,17 @@ method simple_return() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var cond1: Ref
-  var v_ret_1: Ref
+  var v_ret_3: Ref
   var anon: Ref
-  var v_ret_2: Ref
-  v_ret_2 := boolToRef(false)
-  goto lbl_ret_2
-  label lbl_ret_2
-  anon := v_ret_2
-  v_ret_1 := notBool(anon)
-  goto lbl_ret_1
-  label lbl_ret_1
-  cond1 := v_ret_1
+  var v_ret_4: Ref
+  v_ret_4 := boolToRef(false)
+  goto lbl_ret_4
+  label lbl_ret_4
+  anon := v_ret_4
+  v_ret_3 := notBool(anon)
+  goto lbl_ret_3
+  label lbl_ret_3
+  cond1 := v_ret_3
   assert boolFromRef(cond1)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -26,19 +26,19 @@ method unnamed_return() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), boolType())
   ensures boolFromRef(v_ret_0) == true
 {
-  var v_ret_1: Ref
+  var v_ret_4: Ref
   var anon: Ref
-  var v_ret_2: Ref
+  var v_ret_5: Ref
   v_ret_0 := boolToRef(true)
   goto lbl_ret_0
-  v_ret_2 := boolToRef(true)
-  goto lbl_ret_2
-  label lbl_ret_2
-  anon := v_ret_2
-  v_ret_1 := notBool(anon)
-  goto lbl_ret_1
-  label lbl_ret_1
-  v_ret_0 := v_ret_1
+  v_ret_5 := boolToRef(true)
+  goto lbl_ret_5
+  label lbl_ret_5
+  anon := v_ret_5
+  v_ret_4 := notBool(anon)
+  goto lbl_ret_4
+  label lbl_ret_4
+  v_ret_0 := v_ret_4
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -48,19 +48,19 @@ method named_local_return() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), boolType())
   ensures boolFromRef(v_ret_0) == true
 {
-  var v_ret_1: Ref
+  var v_ret_4: Ref
   var anon: Ref
-  var v_ret_2: Ref
-  v_ret_2 := boolToRef(false)
-  goto lbl_ret_2
-  v_ret_2 := boolToRef(true)
-  goto lbl_ret_2
-  label lbl_ret_2
-  anon := v_ret_2
-  v_ret_1 := notBool(anon)
-  goto lbl_ret_1
-  label lbl_ret_1
-  v_ret_0 := v_ret_1
+  var v_ret_5: Ref
+  v_ret_5 := boolToRef(false)
+  goto lbl_ret_5
+  v_ret_5 := boolToRef(true)
+  goto lbl_ret_5
+  label lbl_ret_5
+  anon := v_ret_5
+  v_ret_4 := notBool(anon)
+  goto lbl_ret_4
+  label lbl_ret_4
+  v_ret_0 := v_ret_4
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -70,19 +70,19 @@ method named_nonlocal_return() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), boolType())
   ensures boolFromRef(v_ret_0) == true
 {
-  var v_ret_1: Ref
+  var v_ret_4: Ref
   var anon: Ref
-  var v_ret_2: Ref
+  var v_ret_5: Ref
   v_ret_0 := boolToRef(true)
   goto lbl_ret_0
-  v_ret_2 := boolToRef(true)
-  goto lbl_ret_2
-  label lbl_ret_2
-  anon := v_ret_2
-  v_ret_1 := notBool(anon)
-  goto lbl_ret_1
-  label lbl_ret_1
-  v_ret_0 := v_ret_1
+  v_ret_5 := boolToRef(true)
+  goto lbl_ret_5
+  label lbl_ret_5
+  anon := v_ret_5
+  v_ret_4 := notBool(anon)
+  goto lbl_ret_4
+  label lbl_ret_4
+  v_ret_0 := v_ret_4
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -92,33 +92,33 @@ method double_nonlocal_return() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), boolType())
   ensures boolFromRef(v_ret_0) == true
 {
-  var v_ret_1: Ref
-  var anon_0: Ref
-  var v_ret_2: Ref
-  var x: Ref
-  var v_ret_3: Ref
-  var anon_1: Ref
   var v_ret_4: Ref
+  var anon_0: Ref
+  var v_ret_5: Ref
+  var x: Ref
+  var v_ret_7: Ref
+  var anon_1: Ref
+  var v_ret_8: Ref
   v_ret_0 := boolToRef(true)
   goto lbl_ret_0
-  v_ret_4 := boolToRef(false)
-  goto lbl_ret_4
-  label lbl_ret_4
-  anon_1 := v_ret_4
-  v_ret_3 := notBool(anon_1)
-  goto lbl_ret_3
-  label lbl_ret_3
-  x := v_ret_3
+  v_ret_8 := boolToRef(false)
+  goto lbl_ret_8
+  label lbl_ret_8
+  anon_1 := v_ret_8
+  v_ret_7 := notBool(anon_1)
+  goto lbl_ret_7
+  label lbl_ret_7
+  x := v_ret_7
   v_ret_0 := boolToRef(false)
   goto lbl_ret_0
-  v_ret_2 := x
-  goto lbl_ret_2
-  label lbl_ret_2
-  anon_0 := v_ret_2
-  v_ret_1 := notBool(anon_0)
-  goto lbl_ret_1
-  label lbl_ret_1
-  v_ret_0 := v_ret_1
+  v_ret_5 := x
+  goto lbl_ret_5
+  label lbl_ret_5
+  anon_0 := v_ret_5
+  v_ret_4 := notBool(anon_0)
+  goto lbl_ret_4
+  label lbl_ret_4
+  v_ret_0 := v_ret_4
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -128,31 +128,31 @@ method named_double_nonlocal_return() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), boolType())
   ensures boolFromRef(v_ret_0) == true
 {
-  var v_ret_1: Ref
-  var anon: Ref
-  var v_ret_2: Ref
-  var v_ret_3: Ref
   var v_ret_4: Ref
-  v_ret_2 := boolToRef(false)
-  goto lbl_ret_2
+  var anon: Ref
+  var v_ret_5: Ref
+  var v_ret_8: Ref
+  var v_ret_9: Ref
+  v_ret_5 := boolToRef(false)
+  goto lbl_ret_5
   v_ret_0 := boolToRef(false)
   goto lbl_ret_0
+  label lbl_ret_9
+  inhale isSubtype(typeOf(v_ret_9), unitType())
+  v_ret_8 := v_ret_9
+  goto lbl_ret_8
+  label lbl_ret_8
+  inhale isSubtype(typeOf(v_ret_8), unitType())
+  v_ret_0 := boolToRef(false)
+  goto lbl_ret_0
+  v_ret_5 := boolToRef(true)
+  goto lbl_ret_5
+  label lbl_ret_5
+  anon := v_ret_5
+  v_ret_4 := notBool(anon)
+  goto lbl_ret_4
   label lbl_ret_4
-  inhale isSubtype(typeOf(v_ret_4), unitType())
-  v_ret_3 := v_ret_4
-  goto lbl_ret_3
-  label lbl_ret_3
-  inhale isSubtype(typeOf(v_ret_3), unitType())
-  v_ret_0 := boolToRef(false)
-  goto lbl_ret_0
-  v_ret_2 := boolToRef(true)
-  goto lbl_ret_2
-  label lbl_ret_2
-  anon := v_ret_2
-  v_ret_1 := notBool(anon)
-  goto lbl_ret_1
-  label lbl_ret_1
-  v_ret_0 := v_ret_1
+  v_ret_0 := v_ret_4
   goto lbl_ret_0
   label lbl_ret_0
 }

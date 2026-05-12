@@ -27,17 +27,17 @@ field bf_value: Ref
 
 field p_size: Ref
 
-method con(par_size: Ref, par_value: Ref) returns (v_ret: Ref)
+method con(par_size: Ref, par_value: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_size), intType())
   requires isSubtype(typeOf(par_value), intType())
-  ensures isSubtype(typeOf(v_ret), CustomList())
-  ensures acc(v_ret.p_size, write)
-  ensures intFromRef(v_ret.p_size) >= 0
-  ensures acc(CustomList_shared(v_ret), wildcard)
-  ensures acc(CustomList_unique(v_ret), write)
+  ensures isSubtype(typeOf(ret_1), CustomList())
+  ensures acc(ret_1.p_size, write)
+  ensures intFromRef(ret_1.p_size) >= 0
+  ensures acc(CustomList_shared(ret_1), wildcard)
+  ensures acc(CustomList_unique(ret_1), write)
 
 
-method get(this: Ref, index: Ref) returns (v_ret: Ref)
+method get(this: Ref, index: Ref) returns (ret_3: Ref)
   requires acc(this.p_size, write)
   requires intFromRef(this.p_size) >= 0
   requires isSubtype(typeOf(this), CustomList())
@@ -46,20 +46,20 @@ method get(this: Ref, index: Ref) returns (v_ret: Ref)
   requires intFromRef(this.p_size) > intFromRef(index)
   ensures acc(this.p_size, write)
   ensures intFromRef(this.p_size) >= 0
-  ensures isSubtype(typeOf(v_ret), intType())
+  ensures isSubtype(typeOf(ret_3), intType())
   ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
 
 
-method isEmpty(this: Ref) returns (v_ret: Ref)
+method isEmpty(this: Ref) returns (ret_2: Ref)
   requires acc(this.p_size, write)
   requires intFromRef(this.p_size) >= 0
   requires isSubtype(typeOf(this), CustomList())
   ensures acc(this.p_size, write)
   ensures intFromRef(this.p_size) >= 0
-  ensures isSubtype(typeOf(v_ret), boolType())
+  ensures isSubtype(typeOf(ret_2), boolType())
   ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
-  ensures boolFromRef(v_ret) ==> intFromRef(this.p_size) == 0
-  ensures !boolFromRef(v_ret) ==> intFromRef(this.p_size) > 0
+  ensures boolFromRef(ret_2) ==> intFromRef(this.p_size) == 0
+  ensures !boolFromRef(ret_2) ==> intFromRef(this.p_size) > 0
 
 
 method test(n: Ref) returns (v_ret_0: Ref)

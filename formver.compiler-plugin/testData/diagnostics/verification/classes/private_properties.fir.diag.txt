@@ -1,5 +1,5 @@
 /private_properties.kt: info: Generated Viper text for getBooleanField:
-method g_field(this: Ref) returns (v_ret: Ref)
+method g_field(this: Ref) returns (v_ret_0: Ref)
 
 
 method getBooleanField(this: Ref) returns (v_ret_0: Ref)
@@ -15,13 +15,13 @@ method getBooleanField(this: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
-method s_field(this: Ref, anon: Ref) returns (v_ret: Ref)
+method s_field(this: Ref, anon: Ref) returns (v_ret_0: Ref)
 
 
 /private_properties.kt: info: Generated Viper text for getStringField:
 field bf_field: Ref
 
-method g_field(this: Ref) returns (v_ret: Ref)
+method g_field(this: Ref) returns (v_ret_0: Ref)
 
 
 method getStringField(this: Ref) returns (v_ret_0: Ref)
@@ -35,7 +35,7 @@ method getStringField(this: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
-method s_field(this: Ref, anon: Ref) returns (v_ret: Ref)
+method s_field(this: Ref, anon: Ref) returns (v_ret_0: Ref)
 
 
 /private_properties.kt: info: Generated Viper text for extractPublic:
@@ -45,16 +45,16 @@ field private_bf_field: Ref
 
 field size: Ref
 
-method con_C() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), C())
-  ensures acc(C_shared(v_ret), wildcard)
-  ensures acc(C_unique(v_ret), write)
+method con_C() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), C())
+  ensures acc(C_shared(ret_1), wildcard)
+  ensures acc(C_unique(ret_1), write)
 
 
-method con_D() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), D())
-  ensures acc(D_shared(v_ret), wildcard)
-  ensures acc(D_unique(v_ret), write)
+method con_D() returns (ret_2: Ref)
+  ensures isSubtype(typeOf(ret_2), D())
+  ensures acc(D_shared(ret_2), wildcard)
+  ensures acc(D_unique(ret_2), write)
 
 
 method extractPublic() returns (v_ret_0: Ref)
@@ -79,7 +79,7 @@ method extractPublic() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method g_field(this: Ref) returns (v_ret: Ref)
+method g_field(this: Ref) returns (v_ret_0: Ref)
 
 
-method s_field(this: Ref, anon_0: Ref) returns (v_ret: Ref)
+method s_field(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)

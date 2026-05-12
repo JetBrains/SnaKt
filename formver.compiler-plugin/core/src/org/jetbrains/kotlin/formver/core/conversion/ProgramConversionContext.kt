@@ -44,7 +44,7 @@ interface ProgramConversionContext {
     fun embedFunction(symbol: FirFunctionSymbol<*>): FunctionEmbedding
     fun embedPureFunction(symbol: FirFunctionSymbol<*>): PureFunctionEmbedding
     fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding
-    fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): FunctionSignature
+    fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): Pair<ReturnTarget,FunctionSignature>
     fun embedType(type: ConeKotlinType): TypeEmbedding
     fun embedFunctionPretype(symbol: FirFunctionSymbol<*>): FunctionTypeEmbedding
     fun embedType(exp: FirExpression): TypeEmbedding = embedType(exp.resolvedType)

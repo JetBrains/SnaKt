@@ -159,19 +159,19 @@ field bf_uniqueVal: Ref
 field bf_uniqueVar: Ref
 
 method con(par_sharedVal: Ref, par_sharedVar: Ref, par_uniqueVal: Ref, par_uniqueVar: Ref)
-  returns (v_ret: Ref)
+  returns (ret_1: Ref)
   requires isSubtype(typeOf(par_sharedVal), intType())
   requires isSubtype(typeOf(par_sharedVar), intType())
   requires isSubtype(typeOf(par_uniqueVal), intType())
   requires isSubtype(typeOf(par_uniqueVar), intType())
-  ensures isSubtype(typeOf(v_ret), UniquePrimitiveFields())
-  ensures acc(UniquePrimitiveFields_shared(v_ret), wildcard)
-  ensures acc(UniquePrimitiveFields_unique(v_ret), write)
-  ensures intFromRef((unfolding acc(UniquePrimitiveFields_shared(v_ret), wildcard) in
-      v_ret.bf_sharedVal)) ==
-    intFromRef(par_sharedVal) &&
-    intFromRef((unfolding acc(UniquePrimitiveFields_shared(v_ret), wildcard) in
-      v_ret.bf_uniqueVal)) ==
+  ensures isSubtype(typeOf(ret_1), UniquePrimitiveFields())
+  ensures acc(UniquePrimitiveFields_shared(ret_1), wildcard)
+  ensures acc(UniquePrimitiveFields_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(UniquePrimitiveFields_shared(ret_1), wildcard) in
+      ret_1.bf_sharedVal)) ==
+    intFromRef(par_sharedVal)
+  ensures intFromRef((unfolding acc(UniquePrimitiveFields_shared(ret_1), wildcard) in
+      ret_1.bf_uniqueVal)) ==
     intFromRef(par_uniqueVal)
 
 
@@ -199,19 +199,19 @@ field bf_uniqueVal: Ref
 field bf_uniqueVar: Ref
 
 method con(par_sharedVal: Ref, par_sharedVar: Ref, par_uniqueVal: Ref, par_uniqueVar: Ref)
-  returns (v_ret: Ref)
+  returns (ret_1: Ref)
   requires isSubtype(typeOf(par_sharedVal), intType())
   requires isSubtype(typeOf(par_sharedVar), intType())
   requires isSubtype(typeOf(par_uniqueVal), intType())
   requires isSubtype(typeOf(par_uniqueVar), intType())
-  ensures isSubtype(typeOf(v_ret), UniquePrimitiveFields())
-  ensures acc(UniquePrimitiveFields_shared(v_ret), wildcard)
-  ensures acc(UniquePrimitiveFields_unique(v_ret), write)
-  ensures intFromRef((unfolding acc(UniquePrimitiveFields_shared(v_ret), wildcard) in
-      v_ret.bf_sharedVal)) ==
-    intFromRef(par_sharedVal) &&
-    intFromRef((unfolding acc(UniquePrimitiveFields_shared(v_ret), wildcard) in
-      v_ret.bf_uniqueVal)) ==
+  ensures isSubtype(typeOf(ret_1), UniquePrimitiveFields())
+  ensures acc(UniquePrimitiveFields_shared(ret_1), wildcard)
+  ensures acc(UniquePrimitiveFields_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(UniquePrimitiveFields_shared(ret_1), wildcard) in
+      ret_1.bf_sharedVal)) ==
+    intFromRef(par_sharedVal)
+  ensures intFromRef((unfolding acc(UniquePrimitiveFields_shared(ret_1), wildcard) in
+      ret_1.bf_uniqueVal)) ==
     intFromRef(par_uniqueVal)
 
 

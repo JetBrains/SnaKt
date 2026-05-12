@@ -3,13 +3,13 @@ field bf_char: Ref
 
 field size: Ref
 
-method con(par_char: Ref) returns (v_ret: Ref)
+method con(par_char: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_char), charType())
-  ensures isSubtype(typeOf(v_ret), CharBox())
-  ensures acc(CharBox_shared(v_ret), wildcard)
-  ensures acc(CharBox_unique(v_ret), write)
-  ensures charFromRef((unfolding acc(CharBox_shared(v_ret), wildcard) in
-      v_ret.bf_char)) ==
+  ensures isSubtype(typeOf(ret_1), CharBox())
+  ensures acc(CharBox_shared(ret_1), wildcard)
+  ensures acc(CharBox_unique(ret_1), write)
+  ensures charFromRef((unfolding acc(CharBox_shared(ret_1), wildcard) in
+      ret_1.bf_char)) ==
     charFromRef(par_char)
 
 

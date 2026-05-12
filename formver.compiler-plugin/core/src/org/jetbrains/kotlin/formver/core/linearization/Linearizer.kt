@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.linearization
 
 import org.jetbrains.kotlin.KtSourceElement
+import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
@@ -80,7 +81,8 @@ data class Linearizer(
 
     override fun addReturn(returnExp: Linearizable, target: ReturnTarget) {
         returnExp.toViperStoringIn(target.variable, this)
-        addStatement { target.label.toLink().toViperGoto(this) }
+        val returnLabel = target.label ?: throw SnaktInternalException(null, "Return target without label")
+        addStatement { returnLabel.toLink().toViperGoto(this) }
     }
 
     override fun addBranch(

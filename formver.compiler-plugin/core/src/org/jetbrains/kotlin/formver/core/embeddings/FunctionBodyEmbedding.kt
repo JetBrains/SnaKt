@@ -20,11 +20,10 @@ sealed interface FunctionBodyConversionResult {
 
 data class FunctionBodyEmbedding(
     val viperBody: Stmt.Seqn,
-    val returnTarget: ReturnTarget,
     val debugExpEmbedding: ExpEmbedding? = null
 ) : FunctionBodyConversionResult {
     fun toViperMethod(signature: FullNamedFunctionSignature, ctx: TypeResolver): Method =
-        signature.toViperMethod(viperBody, returnTarget.variable, ctx)
+        signature.toViperMethod(viperBody, ctx)
 
     override fun debugExpEmbedding(): ExpEmbedding? = debugExpEmbedding
 }

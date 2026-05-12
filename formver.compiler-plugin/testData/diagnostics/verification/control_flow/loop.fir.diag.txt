@@ -36,6 +36,6 @@ method whileFunctionCondition() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method whileLoop(b: Ref) returns (v_ret: Ref)
+method whileLoop(b: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(v_ret), boolType())
+  ensures isSubtype(typeOf(ret_1), boolType())

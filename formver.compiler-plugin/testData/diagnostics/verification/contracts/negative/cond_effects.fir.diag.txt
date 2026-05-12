@@ -50,7 +50,7 @@ method isNullOrEmptyWrong(seq: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
-method length(this: Ref) returns (v_ret: Ref)
+method length(this: Ref) returns (v_ret_0: Ref)
 
 
 /cond_effects.kt: info: Generated Viper text for recursiveContract:

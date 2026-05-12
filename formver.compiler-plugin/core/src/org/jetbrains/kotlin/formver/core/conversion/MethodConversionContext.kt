@@ -15,13 +15,22 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
+import org.jetbrains.kotlin.formver.core.names.FunctionResultVariableName
 import org.jetbrains.kotlin.formver.core.names.ReturnLabelName
 import org.jetbrains.kotlin.formver.core.names.ReturnVariableName
 
-class ReturnTarget(depth: Int, type: TypeEmbedding) {
-    val variable = PlaceholderVariableEmbedding(ReturnVariableName(depth), type)
-    val label = LabelEmbedding(ReturnLabelName(depth))
+
+class ReturnTarget private constructor(val variable: VariableEmbedding, val label: LabelEmbedding?) {
+    companion object {
+        fun createForDepth(depth: Int, type: TypeEmbedding) = ReturnTarget(
+            PlaceholderVariableEmbedding(ReturnVariableName(depth), type), LabelEmbedding(ReturnLabelName(depth))
+        )
+
+        fun createForPureFunction(type: TypeEmbedding) =
+            ReturnTarget(PlaceholderVariableEmbedding(FunctionResultVariableName, type), null)
+    }
 }
+
 
 /**
  * Context for converting a method body.
@@ -59,12 +68,11 @@ fun MethodConversionContext.embedLocalProperty(symbol: FirPropertySymbol): Varia
 fun MethodConversionContext.embedParameter(symbol: FirValueParameterSymbol): ExpEmbedding = resolveParameter(symbol)
 fun MethodConversionContext.embedLocalVariable(symbol: FirVariableSymbol<*>): VariableEmbedding = resolveLocal(symbol)
 
-fun MethodConversionContext.embedLocalSymbol(symbol: FirBasedSymbol<*>): ExpEmbedding =
-    when (symbol) {
-        is FirValueParameterSymbol -> embedParameter(symbol)
-        is FirPropertySymbol -> embedLocalProperty(symbol)
-        is FirVariableSymbol<*> -> embedLocalVariable(symbol)
-        else -> throw IllegalArgumentException("Symbol $symbol cannot be embedded as a local symbol.")
-    }
+fun MethodConversionContext.embedLocalSymbol(symbol: FirBasedSymbol<*>): ExpEmbedding = when (symbol) {
+    is FirValueParameterSymbol -> embedParameter(symbol)
+    is FirPropertySymbol -> embedLocalProperty(symbol)
+    is FirVariableSymbol<*> -> embedLocalVariable(symbol)
+    else -> throw IllegalArgumentException("Symbol $symbol cannot be embedded as a local symbol.")
+}
 
 fun MethodConversionContext.statementCtxt(): StmtConversionContext = StmtConverter(this)

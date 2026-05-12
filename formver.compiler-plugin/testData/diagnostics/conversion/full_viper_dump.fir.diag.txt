@@ -382,12 +382,12 @@ predicate shared(this: Ref) {
   acc(this.bf_x, wildcard) && isSubtype(typeOf(this.bf_x), intType())
 }
 
-method con(par_x: Ref) returns (v_ret: Ref)
+method con(par_x: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_x), intType())
-  ensures isSubtype(typeOf(v_ret), Foo())
-  ensures acc(shared(v_ret), wildcard)
-  ensures acc(Foo_unique(v_ret), write)
-  ensures intFromRef((unfolding acc(shared(v_ret), wildcard) in v_ret.bf_x)) ==
+  ensures isSubtype(typeOf(ret_1), Foo())
+  ensures acc(shared(ret_1), wildcard)
+  ensures acc(Foo_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(shared(ret_1), wildcard) in ret_1.bf_x)) ==
     intFromRef(par_x)
 
 
@@ -400,5 +400,5 @@ method f() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method havoc() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), intType())
+method havoc() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())

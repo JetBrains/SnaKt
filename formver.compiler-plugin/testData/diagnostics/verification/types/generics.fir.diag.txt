@@ -15,11 +15,11 @@ method genericMethod(this: Ref, x: Ref) returns (v_ret_0: Ref)
 /generics.kt: info: Generated Viper text for createBox:
 field bf_t: Ref
 
-method con(par_t: Ref) returns (v_ret: Ref)
+method con(par_t: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_t), nullable(anyType()))
-  ensures isSubtype(typeOf(v_ret), Box())
-  ensures acc(shared(v_ret), wildcard)
-  ensures acc(Box_unique(v_ret), write)
+  ensures isSubtype(typeOf(ret_1), Box())
+  ensures acc(shared(ret_1), wildcard)
+  ensures acc(Box_unique(ret_1), write)
 
 
 method createBox() returns (v_ret_0: Ref)
@@ -45,11 +45,11 @@ method createBox() returns (v_ret_0: Ref)
 /generics.kt: info: Generated Viper text for setGenericField:
 field bf_t: Ref
 
-method con(par_t: Ref) returns (v_ret: Ref)
+method con(par_t: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_t), nullable(anyType()))
-  ensures isSubtype(typeOf(v_ret), Box())
-  ensures acc(shared(v_ret), wildcard)
-  ensures acc(Box_unique(v_ret), write)
+  ensures isSubtype(typeOf(ret_1), Box())
+  ensures acc(shared(ret_1), wildcard)
+  ensures acc(Box_unique(ret_1), write)
 
 
 method setGenericField() returns (v_ret_0: Ref)
@@ -84,9 +84,9 @@ method callGenericFunc() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method genericFun(par_t: Ref) returns (v_ret: Ref)
+method genericFun(par_t: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_t), nullable(anyType()))
-  ensures isSubtype(typeOf(v_ret), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 /generics.kt: info: Generated Viper text for genericAsIfCondition:

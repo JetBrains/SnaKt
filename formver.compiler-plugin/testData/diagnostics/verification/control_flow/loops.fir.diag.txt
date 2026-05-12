@@ -36,9 +36,9 @@ method whileFunctionCondition() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method whileLoop(b: Ref) returns (v_ret: Ref)
+method whileLoop(b: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(b), boolType())
-  ensures isSubtype(typeOf(v_ret), boolType())
+  ensures isSubtype(typeOf(ret_1), boolType())
 
 
 /loops.kt: info: Generated Viper text for dynamicLambdaInvariant:
@@ -61,8 +61,8 @@ method dynamicLambdaInvariant(f: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method returnsBoolean() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), boolType())
+method returnsBoolean() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), boolType())
 
 
 /loops.kt: info: Generated Viper text for functionAssignment:
@@ -89,8 +89,8 @@ method functionAssignment(f: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method returnsBoolean() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), boolType())
+method returnsBoolean() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), boolType())
 
 
 /loops.kt: info: Generated Viper text for conditionalFunctionAssignment:
@@ -127,5 +127,5 @@ method conditionalFunctionAssignment(b: Ref, f: Ref, h: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method returnsBoolean() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), boolType())
+method returnsBoolean() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), boolType())

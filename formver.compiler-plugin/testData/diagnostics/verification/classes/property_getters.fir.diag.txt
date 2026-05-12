@@ -1,5 +1,5 @@
 /property_getters.kt: info: Generated Viper text for testPrimitivePropertyGetter:
-method nProp(this: Ref) returns (v_ret: Ref)
+method nProp(this: Ref) returns (v_ret_0: Ref)
 
 
 method testPrimitivePropertyGetter(pp: Ref) returns (v_ret_0: Ref)
@@ -16,10 +16,10 @@ method testPrimitivePropertyGetter(pp: Ref) returns (v_ret_0: Ref)
 }
 
 /property_getters.kt: info: Generated Viper text for testReferencePropertyGetter:
-method nProp(this: Ref) returns (v_ret: Ref)
+method nProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method rProp(this: Ref) returns (v_ret: Ref)
+method rProp(this: Ref) returns (v_ret_0: Ref)
 
 
 method testReferencePropertyGetter(rp: Ref) returns (v_ret_0: Ref)
@@ -43,10 +43,10 @@ method testReferencePropertyGetter(rp: Ref) returns (v_ret_0: Ref)
 }
 
 /property_getters.kt: info: Generated Viper text for testCascadingPropertyGetter:
-method nProp(this: Ref) returns (v_ret: Ref)
+method nProp(this: Ref) returns (v_ret_0: Ref)
 
 
-method rProp(this: Ref) returns (v_ret: Ref)
+method rProp(this: Ref) returns (v_ret_0: Ref)
 
 
 method testCascadingPropertyGetter(rp: Ref) returns (v_ret_0: Ref)

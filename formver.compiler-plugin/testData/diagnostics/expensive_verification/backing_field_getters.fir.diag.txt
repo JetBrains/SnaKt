@@ -110,10 +110,10 @@ field size: Ref
 
 field x: Ref
 
-method con() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), Baz())
-  ensures acc(Baz_shared(v_ret), wildcard)
-  ensures acc(Baz_unique(v_ret), write)
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), Baz())
+  ensures acc(Baz_shared(ret_1), wildcard)
+  ensures acc(Baz_unique(ret_1), write)
 
 
 method nullableReceiverNotNullSafeGet() returns (v_ret_0: Ref)
@@ -168,10 +168,10 @@ field size: Ref
 
 field x: Ref
 
-method con() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), Baz())
-  ensures acc(Baz_shared(v_ret), wildcard)
-  ensures acc(Baz_unique(v_ret), write)
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), Baz())
+  ensures acc(Baz_shared(ret_1), wildcard)
+  ensures acc(Baz_unique(ret_1), write)
 
 
 method nonNullableReceiverSafeGet() returns (v_ret_0: Ref)
@@ -237,33 +237,33 @@ method checkPrimary(par_x: Ref, par_y: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method con_ClassI(par_x: Ref, par_y: Ref) returns (v_ret: Ref)
+method con_ClassI(par_x: Ref, par_y: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_x), intType())
   requires isSubtype(typeOf(par_y), intType())
-  ensures isSubtype(typeOf(v_ret), ClassI())
-  ensures acc(ClassI_shared(v_ret), wildcard)
-  ensures acc(ClassI_unique(v_ret), write)
-  ensures intFromRef((unfolding acc(ClassI_shared(v_ret), wildcard) in
-      v_ret.bf_x)) ==
-    intFromRef(par_x) &&
-    intFromRef((unfolding acc(ClassI_shared(v_ret), wildcard) in
-      v_ret.bf_y)) ==
+  ensures isSubtype(typeOf(ret_1), ClassI())
+  ensures acc(ClassI_shared(ret_1), wildcard)
+  ensures acc(ClassI_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(ClassI_shared(ret_1), wildcard) in
+      ret_1.bf_x)) ==
+    intFromRef(par_x)
+  ensures intFromRef((unfolding acc(ClassI_shared(ret_1), wildcard) in
+      ret_1.bf_y)) ==
     intFromRef(par_y)
 
 
-method con_ClassII(par_z: Ref) returns (v_ret: Ref)
+method con_ClassII(par_z: Ref) returns (ret_3: Ref)
   requires isSubtype(typeOf(par_z), Z())
-  ensures isSubtype(typeOf(v_ret), ClassII())
-  ensures acc(ClassII_shared(v_ret), wildcard)
-  ensures acc(ClassII_unique(v_ret), write)
-  ensures (unfolding acc(ClassII_shared(v_ret), wildcard) in v_ret.bf_z) ==
+  ensures isSubtype(typeOf(ret_3), ClassII())
+  ensures acc(ClassII_shared(ret_3), wildcard)
+  ensures acc(ClassII_unique(ret_3), write)
+  ensures (unfolding acc(ClassII_shared(ret_3), wildcard) in ret_3.bf_z) ==
     par_z
 
 
-method con_Z() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), Z())
-  ensures acc(Z_shared(v_ret), wildcard)
-  ensures acc(Z_unique(v_ret), write)
+method con_Z() returns (ret_2: Ref)
+  ensures isSubtype(typeOf(ret_2), Z())
+  ensures acc(Z_shared(ret_2), wildcard)
+  ensures acc(Z_unique(ret_2), write)
 
 
-method g_z(this: Ref) returns (v_ret: Ref)
+method g_z(this: Ref) returns (v_ret_0: Ref)

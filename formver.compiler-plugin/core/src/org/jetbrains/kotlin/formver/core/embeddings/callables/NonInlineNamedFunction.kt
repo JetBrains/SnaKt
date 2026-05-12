@@ -10,20 +10,18 @@ import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FunctionCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.MethodCall
-import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
-import org.jetbrains.kotlin.formver.core.names.PlaceholderReturnVariableName
 import org.jetbrains.kotlin.formver.viper.ast.Function
 import org.jetbrains.kotlin.formver.viper.ast.Method
 
 // TODO: Consider making a PureNonInlineNamedFunctionEmbedding and remove the pure distinction here
-class NonInlineNamedFunction(val signature: FullNamedFunctionSignature, val hasPureAnnotation: Boolean = false) :
+class NonInlineNamedFunction(val signature: FullNamedFunctionSignature) :
     RichCallableEmbedding,
     FullNamedFunctionSignature by signature {
     override fun insertCall(
         args: List<ExpEmbedding>,
         ctx: StmtConversionContext,
     ): ExpEmbedding {
-        return if (hasPureAnnotation) {
+        return if (signature.isPure) {
             FunctionCall(signature, args)
         } else {
             MethodCall(signature, args)
@@ -33,7 +31,6 @@ class NonInlineNamedFunction(val signature: FullNamedFunctionSignature, val hasP
     override fun toViperMethodHeader(ctx: TypeResolver): Method =
         signature.toViperMethod(
             null,
-            PlaceholderVariableEmbedding(PlaceholderReturnVariableName, signature.callableType.returnType),
             ctx
         )
 

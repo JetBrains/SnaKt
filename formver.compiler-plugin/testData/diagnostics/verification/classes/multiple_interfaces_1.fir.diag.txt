@@ -1,11 +1,11 @@
 /multiple_interfaces.kt: info: Generated Viper text for testDiamond:
-method con() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), D())
-  ensures acc(D_shared(v_ret), wildcard)
-  ensures acc(D_unique(v_ret), write)
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), D())
+  ensures acc(D_shared(ret_1), wildcard)
+  ensures acc(D_unique(ret_1), write)
 
 
-method g_field(this: Ref) returns (v_ret: Ref)
+method g_field(this: Ref) returns (v_ret_0: Ref)
 
 
 method testDiamond() returns (v_ret_0: Ref)
@@ -22,22 +22,22 @@ method testDiamond() returns (v_ret_0: Ref)
 }
 
 /multiple_interfaces.kt: info: Generated Viper text for testVarVal:
-method con_G() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), G())
-  ensures acc(G_shared(v_ret), wildcard)
-  ensures acc(G_unique(v_ret), write)
+method con_G() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), G())
+  ensures acc(G_shared(ret_1), wildcard)
+  ensures acc(G_unique(ret_1), write)
 
 
-method con_I() returns (v_ret: Ref)
-  ensures isSubtype(typeOf(v_ret), I())
-  ensures acc(I_shared(v_ret), wildcard)
-  ensures acc(I_unique(v_ret), write)
+method con_I() returns (ret_2: Ref)
+  ensures isSubtype(typeOf(ret_2), I())
+  ensures acc(I_shared(ret_2), wildcard)
+  ensures acc(I_unique(ret_2), write)
 
 
-method g_field(this: Ref) returns (v_ret: Ref)
+method g_field(this: Ref) returns (v_ret_0: Ref)
 
 
-method s_field(this: Ref, anon_0: Ref) returns (v_ret: Ref)
+method s_field(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)
 
 
 method testVarVal() returns (v_ret_0: Ref)

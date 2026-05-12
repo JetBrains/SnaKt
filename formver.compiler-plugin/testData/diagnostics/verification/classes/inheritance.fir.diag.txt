@@ -61,9 +61,9 @@ method callSuperMethod(bar: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
-method getY(this: Ref) returns (v_ret: Ref)
+method getY(this: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), Foo())
-  ensures isSubtype(typeOf(v_ret), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
 
 
 /inheritance.kt: info: Generated Viper text for accessSuperField:
@@ -124,9 +124,9 @@ method callNewMethod(bar: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
-method sum(this: Ref) returns (v_ret: Ref)
+method sum(this: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), Bar())
-  ensures isSubtype(typeOf(v_ret), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
 
 
 /inheritance.kt: info: Generated Viper text for setSuperField:

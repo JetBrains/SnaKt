@@ -26,17 +26,17 @@ method callMemberFun(this: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method memberFun(this: Ref) returns (v_ret: Ref)
+method memberFun(this: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), Foo())
-  ensures isSubtype(typeOf(v_ret), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
 
 
 /member_functions.kt: info: Generated Viper text for siblingCall:
 field x: Ref
 
-method memberFun(this: Ref) returns (v_ret: Ref)
+method memberFun(this: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), Foo())
-  ensures isSubtype(typeOf(v_ret), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
 
 
 method siblingCall(this: Ref, other: Ref) returns (v_ret_0: Ref)
@@ -55,9 +55,9 @@ method siblingCall(this: Ref, other: Ref) returns (v_ret_0: Ref)
 /member_functions.kt: info: Generated Viper text for outerMemberFunCall:
 field x: Ref
 
-method memberFun(this: Ref) returns (v_ret: Ref)
+method memberFun(this: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), Foo())
-  ensures isSubtype(typeOf(v_ret), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
 
 
 method outerMemberFunCall(f: Ref) returns (v_ret_0: Ref)

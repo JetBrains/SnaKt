@@ -38,7 +38,7 @@ method extractInt(base: Ref, returnNull: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
-method g_field(this: Ref) returns (v_ret: Ref)
+method g_field(this: Ref) returns (v_ret_0: Ref)
 
 
-method s_field(this: Ref, anon_0: Ref) returns (v_ret: Ref)
+method s_field(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)

@@ -1,9 +1,9 @@
 /safe_call.kt: info: Generated Viper text for testSafeCall:
 field x: Ref
 
-method f(this: Ref) returns (v_ret: Ref)
+method f(this: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), Foo())
-  ensures isSubtype(typeOf(v_ret), unitType())
+  ensures isSubtype(typeOf(ret_1), unitType())
 
 
 method testSafeCall(foo: Ref) returns (v_ret_0: Ref)
@@ -24,9 +24,9 @@ method testSafeCall(foo: Ref) returns (v_ret_0: Ref)
 /safe_call.kt: info: Generated Viper text for testSafeCallNonNullable:
 field x: Ref
 
-method f(this: Ref) returns (v_ret: Ref)
+method f(this: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), Foo())
-  ensures isSubtype(typeOf(v_ret), unitType())
+  ensures isSubtype(typeOf(ret_1), unitType())
 
 
 method testSafeCallNonNullable(foo: Ref) returns (v_ret_0: Ref)
@@ -85,10 +85,10 @@ method testSafeCallPropertyNonNullable(foo: Ref) returns (v_ret_0: Ref)
 /safe_call.kt: info: Generated Viper text for safeCallChain:
 field bf_v: Ref
 
-method f_nullable(this: Ref) returns (v_ret: Ref)
+method f_nullable(this: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), Rec())
-  ensures isSubtype(typeOf(v_ret), rt_nullable(Rec()))
-  ensures v_ret != nullValue() ==> acc(shared(v_ret), wildcard)
+  ensures isSubtype(typeOf(ret_1), rt_nullable(Rec()))
+  ensures ret_1 != nullValue() ==> acc(shared(ret_1), wildcard)
 
 
 method safeCallChain(rec: Ref) returns (v_ret_0: Ref)

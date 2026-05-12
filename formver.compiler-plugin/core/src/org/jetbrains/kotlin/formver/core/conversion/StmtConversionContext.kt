@@ -197,6 +197,9 @@ fun StmtConversionContext.insertInlineFunctionCall(
 ): ExpEmbedding {
     // TODO: It seems like it may be possible to avoid creating a local here, but it is not clear how.
     val returnTarget = returnTargetProducer.getFresh(calleeSignature.callableType.returnType)
+    assert(returnTarget.label != null) {
+        "Return target label not found for function ${calleeSignature.callableType.name}"
+    }
     val (declarations, callArgs) = getInlineFunctionCallArgs(args, calleeSignature.callableType.formalArgTypes)
     val subs = paramNames.zip(callArgs).toMap()
     val methodCtxFactory = MethodContextFactory(
@@ -204,11 +207,12 @@ fun StmtConversionContext.insertInlineFunctionCall(
         InlineParameterResolver(subs, returnTargetName, returnTarget),
         parent = parentCtx,
     )
+
     return withMethodCtx(methodCtxFactory) {
         Block {
             add(Declare(returnTarget.variable, null))
             addAll(declarations)
-            add(FunctionExp(null, convert(body), returnTarget.label))
+            add(FunctionExp(null, convert(body), returnTarget.label!!))
             // if unit is what we return we might not guarantee it yet
             add(returnTarget.variable.withIsUnitInvariantIfUnit(typeResolver))
         }
@@ -244,22 +248,22 @@ fun StmtConversionContext.insertForAllFunctionCall(
 fun StmtConversionContext.convertMethodWithBody(
     declaration: FirSimpleFunction,
     signature: FullNamedFunctionSignature,
-    returnTarget: ReturnTarget,
 ): FunctionBodyConversionResult? {
     val firBody = declaration.body ?: return null
     val body = convert(firBody)
-    val bodyExp = FunctionExp(signature, body, returnTarget.label)
+    val returnLabel = defaultResolvedReturnTarget.label ?: throw SnaktInternalException(declaration.source, "Return target label not found for method ${declaration.name}")
+    val bodyExp = FunctionExp(signature, body, returnLabel)
     val seqnBuilder = SeqnBuilder(declaration.source)
     val linearizer =
         Linearizer(SharedLinearizationState(anonVarProducer), seqnBuilder, declaration.source, typeResolver)
     bodyExp.toLinearizable(declaration.source).toViperUnusedResult(linearizer)
     // note: we must guarantee somewhere that returned value is Unit
     // as we may not encounter any `return` statement in the body
-    returnTarget.variable.withIsUnitInvariantIfUnit(typeResolver).toLinearizable(declaration.source)
+    signature.returns.withIsUnitInvariantIfUnit(typeResolver).toLinearizable(declaration.source)
         .toViperUnusedResult(linearizer)
     val isValid = body.checkValidity(declaration.source, errorCollector)
     return if (isValid) {
-        FunctionBodyEmbedding(seqnBuilder.block, returnTarget, bodyExp)
+        FunctionBodyEmbedding(seqnBuilder.block, bodyExp)
     } else {
         InvalidFunctionBodyEmbedding(declaration.source, bodyExp)
     }
