@@ -14,10 +14,10 @@ import org.jetbrains.kotlin.formver.plugin.compiler.FormalVerificationPluginExte
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.ALWAYS_VALIDATE
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.DUMP_UNIQUENESS_CFG
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.FULL_VIPER_DUMP
+import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.LOCALITY_CHECK_ONLY
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.NEVER_VALIDATE
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.RENDER_PREDICATES
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.REPLACE_STDLIB_EXTENSIONS
-import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.LOCALITY_CHECK_ONLY
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.UNIQUE_CHECK_ONLY
 import org.jetbrains.kotlin.test.directives.model.DirectivesContainer
 import org.jetbrains.kotlin.test.directives.model.RegisteredDirectives
@@ -46,7 +46,7 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
         }
         val errorStyle = ErrorStyle.USER_FRIENDLY
         val conversionOnly = (System.getProperty("formver.conversionOnly")?.toBoolean() ?: false)
-                || NEVER_VALIDATE in module.directives
+                || NEVER_VALIDATE in module.directives || module.files.any {it.originalFile.canonicalPath.contains("conversion")}
         val uniquenessOnly = UNIQUE_CHECK_ONLY in module.directives
         val localityOnly = LOCALITY_CHECK_ONLY in module.directives
         val dumpUniquenessCFG = DUMP_UNIQUENESS_CFG in module.directives
@@ -54,7 +54,7 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
             conversionOnly -> TargetsSelection.FORCE_DISABLE
             ALWAYS_VALIDATE in module.directives -> TargetsSelection.ALL_TARGETS
             uniquenessOnly || localityOnly -> TargetsSelection.NO_TARGETS
-            else -> TargetsSelection.TARGETS_WITH_CONTRACT
+            else -> TargetsSelection.ALL_TARGETS
         }
         val conversionSelection = when {
             uniquenessOnly || localityOnly -> TargetsSelection.NO_TARGETS

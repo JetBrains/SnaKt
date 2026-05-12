@@ -1,4 +1,3 @@
-// NEVER_VALIDATE
 
 fun <!VIPER_TEXT!>returnUnit<!>() {}
 fun <!VIPER_TEXT!>returnInt<!>(): Int { return 0 }
