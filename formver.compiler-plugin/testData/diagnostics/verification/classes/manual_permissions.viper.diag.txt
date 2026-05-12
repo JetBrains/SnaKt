@@ -1,3 +1,3 @@
-/manual_permissions.kt: warning: Viper verification error: Assignment might fail. There might be insufficient permission to access mpf.bf_b
+/manual_permissions.kt: warning: Viper verification error: Assignment might fail. There might be insufficient permission to access mpf.bf_a
 
 /manual_permissions.kt: warning: Viper verification error: Assignment might fail. There might be insufficient permission to access mpf.b

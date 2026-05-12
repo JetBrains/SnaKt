@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.formver.plugin.Manual
 import org.jetbrains.kotlin.formver.plugin.NeverVerify
 
-class ManualPermissionFields(val a: Int, @property:Manual var b: Int)
+class ManualPermissionFields(@Manual val a: Int, @Manual var b: Int)
 
 // Manual fold+unfold is not implemented yet
 <!VIPER_VERIFICATION_ERROR!>fun <!VIPER_TEXT!>testManualPermissionFieldGetter<!>(mpf: ManualPermissionFields) {
