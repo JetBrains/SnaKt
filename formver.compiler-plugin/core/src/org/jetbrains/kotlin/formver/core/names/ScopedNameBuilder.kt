@@ -35,11 +35,6 @@ open class ScopeBuilder {
         scope = PublicScope
     }
 
-    fun finalScope() {
-        require(scope is ClassScope) { "Final scope must be in a class scope." }
-        scope = FinalScope(scope!!)
-    }
-
     fun privateScope() {
         require(scope is ClassScope) { "Private scope must be in a class scope." }
         scope = PrivateScope(scope!!)

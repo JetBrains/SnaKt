@@ -37,7 +37,7 @@ method g_fieldOverride(this: Ref) returns (v_ret_0: Ref)
 
 
 /inheritance_fields.kt: info: Generated Viper text for createBFsAndNoBF:
-function final_g_x(this: Ref): Ref
+function SecondBackingFieldClass_g_x(this: Ref): Ref
   requires isSubtype(typeOf(this), SecondBackingFieldClass())
   ensures isSubtype(typeOf(result), intType())
 
@@ -56,7 +56,8 @@ method con_SecondBackingFieldClass(par_x: Ref) returns (ret_3: Ref)
   requires isSubtype(typeOf(par_x), intType())
   ensures isSubtype(typeOf(ret_3), SecondBackingFieldClass())
   ensures acc(SecondBackingFieldClass_unique(ret_3), write)
-  ensures intFromRef(final_g_x(ret_3)) == intFromRef(par_x)
+  ensures intFromRef(SecondBackingFieldClass_g_x(ret_3)) ==
+    intFromRef(par_x)
 
 
 method createBFsAndNoBF() returns (v_ret_0: Ref)
@@ -79,7 +80,7 @@ method createBFsAndNoBF() returns (v_ret_0: Ref)
   nbfx := anon_1
   inhale isSubtype(typeOf(nbfx), intType())
   sbf := con_SecondBackingFieldClass(intToRef(10))
-  sbfx := final_g_x(sbf)
+  sbfx := SecondBackingFieldClass_g_x(sbf)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }

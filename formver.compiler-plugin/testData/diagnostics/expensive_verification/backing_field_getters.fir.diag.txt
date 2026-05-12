@@ -200,7 +200,7 @@ method nonNullableReceiverSafeGet() returns (v_ret_0: Ref)
 }
 
 /backing_field_getters.kt: info: Generated Viper text for checkPrimary:
-function final_g_z(this: Ref): Ref
+function ClassII_g_z(this: Ref): Ref
   requires isSubtype(typeOf(this), ClassII())
   ensures isSubtype(typeOf(result), Z())
 
@@ -237,7 +237,7 @@ method checkPrimary(par_x: Ref, par_y: Ref) returns (v_ret_0: Ref)
   } else {
     cond1 := boolToRef(intFromRef(g_x(classI)) == intFromRef(g_y(classI)))}
   anon := con_ClassII(l0_z)
-  cond2 := boolToRef(final_g_z(anon) == l0_z)
+  cond2 := boolToRef(ClassII_g_z(anon) == l0_z)
   assert boolFromRef(cond1)
   assert boolFromRef(cond2)
   label lbl_ret_0
@@ -257,7 +257,7 @@ method con_ClassII(par_z: Ref) returns (ret_3: Ref)
   requires isSubtype(typeOf(par_z), Z())
   ensures isSubtype(typeOf(ret_3), ClassII())
   ensures acc(ClassII_unique(ret_3), write)
-  ensures final_g_z(ret_3) == par_z
+  ensures ClassII_g_z(ret_3) == par_z
 
 
 method con_Z() returns (ret_2: Ref)

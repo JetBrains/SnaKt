@@ -160,7 +160,6 @@ class ShortNameResolver : NameResolver {
             ParameterScope -> 3
             is PrivateScope -> 1
             PublicScope -> 3
-            is FinalScope -> 3
         }
         else -> 1
     }

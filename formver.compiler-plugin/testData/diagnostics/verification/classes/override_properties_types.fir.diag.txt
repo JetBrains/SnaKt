@@ -1,7 +1,7 @@
 /override_properties_types.kt: info: Generated Viper text for extractInt:
 field bf_field: Ref
 
-function final_g_field(this: Ref): Ref
+function FinalClassFinalFieldValDerived_g_field(this: Ref): Ref
   requires isSubtype(typeOf(this), FinalClassFinalFieldValDerived())
   ensures isSubtype(typeOf(result), intType())
 
@@ -26,7 +26,7 @@ method extractInt(base: Ref, returnNull: Ref) returns (v_ret_0: Ref)
     } elseif (isSubtype(typeOf(base), FinalClassOpenFieldVarDerived())) {
       anon_1 := havoc(intType())
     } elseif (isSubtype(typeOf(base), FinalClassFinalFieldValDerived())) {
-      anon_1 := final_g_field(base)
+      anon_1 := FinalClassFinalFieldValDerived_g_field(base)
     } elseif (isSubtype(typeOf(base), OpenClassFinalFieldVarDerived())) {
       anon_1 := havoc(intType())
     } else {

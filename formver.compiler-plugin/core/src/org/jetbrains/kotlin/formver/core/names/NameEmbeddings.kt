@@ -61,7 +61,6 @@ private fun CallableId.embedMemberPropertyScope(
 
             MemberEmbeddingPolicy.FUNCTION -> {
                 embedScope(id)
-                finalScope()
             }
 
             MemberEmbeddingPolicy.BACKING_FIELD -> {

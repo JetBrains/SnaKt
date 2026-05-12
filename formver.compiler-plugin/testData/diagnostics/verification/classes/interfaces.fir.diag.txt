@@ -31,7 +31,7 @@ method valProp(this: Ref) returns (v_ret_0: Ref)
 
 
 /interfaces.kt: info: Generated Viper text for createImpl:
-function final_g_number(this: Ref): Ref
+function Impl_g_number(this: Ref): Ref
   requires isSubtype(typeOf(this), Impl())
   ensures isSubtype(typeOf(result), intType())
 
@@ -40,7 +40,7 @@ method con(par_number: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_number), intType())
   ensures isSubtype(typeOf(ret_1), Impl())
   ensures acc(Impl_unique(ret_1), write)
-  ensures intFromRef(final_g_number(ret_1)) == intFromRef(par_number)
+  ensures intFromRef(Impl_g_number(ret_1)) == intFromRef(par_number)
 
 
 method createImpl() returns (v_ret_0: Ref)
@@ -49,7 +49,7 @@ method createImpl() returns (v_ret_0: Ref)
   var impl: Ref
   var implField: Ref
   impl := con(intToRef(-1))
-  implField := final_g_number(impl)
+  implField := Impl_g_number(impl)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
@@ -123,17 +123,17 @@ method take4(obj: Ref) returns (v_ret_0: Ref)
 }
 
 /interfaces.kt: info: Generated Viper text for createImpls:
-function AbstractWithFinalImplementation3_final_g_field(this: Ref): Ref
+function AbstractWithFinalImplementation3_g_field(this: Ref): Ref
   requires isSubtype(typeOf(this), AbstractWithFinalImplementation3())
   ensures isSubtype(typeOf(result), intType())
 
 
-function Impl12_final_g_field(this: Ref): Ref
+function Impl12_g_field(this: Ref): Ref
   requires isSubtype(typeOf(this), Impl12())
   ensures isSubtype(typeOf(result), intType())
 
 
-function Impl14_final_g_field(this: Ref): Ref
+function Impl14_g_field(this: Ref): Ref
   requires isSubtype(typeOf(this), Impl14())
   ensures isSubtype(typeOf(result), intType())
 
@@ -206,17 +206,16 @@ method createImpls() returns (v_ret_0: Ref)
   var cond4: Ref
   var cond5: Ref
   impl12 := con_Impl12()
-  start12 := minusInts(plusInts(Impl12_final_g_field(impl12), intToRef(1)),
-    intToRef(1))
+  start12 := minusInts(plusInts(Impl12_g_field(impl12), intToRef(1)), intToRef(1))
   anon_0 := take1(impl12)
   anon_1 := take2(impl12)
   impl23 := con_Impl23()
-  start23 := minusInts(plusInts(AbstractWithFinalImplementation3_final_g_field(impl23),
+  start23 := minusInts(plusInts(AbstractWithFinalImplementation3_g_field(impl23),
     intToRef(1)), intToRef(1))
   anon_2 := take2(impl23)
   anon_3 := take3(impl23)
   impl3 := con_Impl3()
-  start3 := minusInts(plusInts(AbstractWithFinalImplementation3_final_g_field(impl3),
+  start3 := minusInts(plusInts(AbstractWithFinalImplementation3_g_field(impl3),
     intToRef(1)), intToRef(1))
   anon_4 := take3(impl3)
   impl24 := con_Impl24()
@@ -227,8 +226,7 @@ method createImpls() returns (v_ret_0: Ref)
   anon_7 := take2(impl24)
   anon_8 := take4(impl24)
   impl14 := con_Impl14()
-  start14 := minusInts(plusInts(Impl14_final_g_field(impl14), intToRef(1)),
-    intToRef(1))
+  start14 := minusInts(plusInts(Impl14_g_field(impl14), intToRef(1)), intToRef(1))
   anon_9 := take1(impl14)
   anon_10 := take4(impl14)
   impl6 := create6()
@@ -237,13 +235,13 @@ method createImpls() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(anon_11), intType())
   start6 := minusInts(plusInts(anon_11, intToRef(1)), intToRef(1))
   cond1 := boolToRef(intFromRef(start12) ==
-    intFromRef(Impl12_final_g_field(impl12)))
+    intFromRef(Impl12_g_field(impl12)))
   cond2 := boolToRef(intFromRef(start23) ==
-    intFromRef(AbstractWithFinalImplementation3_final_g_field(impl23)))
+    intFromRef(AbstractWithFinalImplementation3_g_field(impl23)))
   cond3 := boolToRef(intFromRef(start3) ==
-    intFromRef(AbstractWithFinalImplementation3_final_g_field(impl3)))
+    intFromRef(AbstractWithFinalImplementation3_g_field(impl3)))
   cond4 := boolToRef(intFromRef(start14) ==
-    intFromRef(Impl14_final_g_field(impl14)))
+    intFromRef(Impl14_g_field(impl14)))
   cond5 := boolToRef(isSubtype(typeOf(start6), intType()))
   assert boolFromRef(cond1)
   assert boolFromRef(cond2)

@@ -113,22 +113,22 @@ field bf_sharedVar: Ref
 
 field bf_uniqueVar: Ref
 
-function UniquePrimitiveFields_final_g_sharedVal(this: Ref): Ref
+function UniquePrimitiveFields_g_sharedVal(this: Ref): Ref
   requires isSubtype(typeOf(this), UniquePrimitiveFields())
   ensures isSubtype(typeOf(result), intType())
 
 
-function UniquePrimitiveFields_final_g_uniqueVal(this: Ref): Ref
+function UniquePrimitiveFields_g_uniqueVal(this: Ref): Ref
   requires isSubtype(typeOf(this), UniquePrimitiveFields())
   ensures isSubtype(typeOf(result), intType())
 
 
-function UniqueReferenceFields_final_g_sharedVal(this: Ref): Ref
+function UniqueReferenceFields_g_sharedVal(this: Ref): Ref
   requires isSubtype(typeOf(this), UniqueReferenceFields())
   ensures isSubtype(typeOf(result), UniquePrimitiveFields())
 
 
-function UniqueReferenceFields_final_g_uniqueVal(this: Ref): Ref
+function UniqueReferenceFields_g_uniqueVal(this: Ref): Ref
   requires isSubtype(typeOf(this), UniqueReferenceFields())
   ensures isSubtype(typeOf(result), UniquePrimitiveFields())
 
@@ -142,9 +142,9 @@ method testReferenceFieldGetterUnique(rf: Ref) returns (v_ret_0: Ref)
   var l0_sharedVar: Ref
   var l0_uniqueVal: Ref
   var l0_uniqueVar: Ref
-  l0_sharedVal := UniqueReferenceFields_final_g_sharedVal(rf)
+  l0_sharedVal := UniqueReferenceFields_g_sharedVal(rf)
   l0_sharedVar := havoc(UniquePrimitiveFields())
-  l0_uniqueVal := UniqueReferenceFields_final_g_uniqueVal(rf)
+  l0_uniqueVal := UniqueReferenceFields_g_uniqueVal(rf)
   l0_uniqueVar := havoc(UniquePrimitiveFields())
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -155,22 +155,22 @@ field bf_sharedVar: Ref
 
 field bf_uniqueVar: Ref
 
-function UniquePrimitiveFields_final_g_sharedVal(this: Ref): Ref
+function UniquePrimitiveFields_g_sharedVal(this: Ref): Ref
   requires isSubtype(typeOf(this), UniquePrimitiveFields())
   ensures isSubtype(typeOf(result), intType())
 
 
-function UniquePrimitiveFields_final_g_uniqueVal(this: Ref): Ref
+function UniquePrimitiveFields_g_uniqueVal(this: Ref): Ref
   requires isSubtype(typeOf(this), UniquePrimitiveFields())
   ensures isSubtype(typeOf(result), intType())
 
 
-function UniqueReferenceFields_final_g_sharedVal(this: Ref): Ref
+function UniqueReferenceFields_g_sharedVal(this: Ref): Ref
   requires isSubtype(typeOf(this), UniqueReferenceFields())
   ensures isSubtype(typeOf(result), UniquePrimitiveFields())
 
 
-function UniqueReferenceFields_final_g_uniqueVal(this: Ref): Ref
+function UniqueReferenceFields_g_uniqueVal(this: Ref): Ref
   requires isSubtype(typeOf(this), UniqueReferenceFields())
   ensures isSubtype(typeOf(result), UniquePrimitiveFields())
 
@@ -183,9 +183,9 @@ method testReferenceFieldGetterShared(rf: Ref) returns (v_ret_0: Ref)
   var l0_sharedVar: Ref
   var l0_uniqueVal: Ref
   var l0_uniqueVar: Ref
-  l0_sharedVal := UniqueReferenceFields_final_g_sharedVal(rf)
+  l0_sharedVal := UniqueReferenceFields_g_sharedVal(rf)
   l0_sharedVar := havoc(UniquePrimitiveFields())
-  l0_uniqueVal := UniqueReferenceFields_final_g_uniqueVal(rf)
+  l0_uniqueVal := UniqueReferenceFields_g_uniqueVal(rf)
   l0_uniqueVar := havoc(UniquePrimitiveFields())
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -196,22 +196,22 @@ field bf_sharedVar: Ref
 
 field bf_uniqueVar: Ref
 
-function UniquePrimitiveFields_final_g_sharedVal(this: Ref): Ref
+function UniquePrimitiveFields_g_sharedVal(this: Ref): Ref
   requires isSubtype(typeOf(this), UniquePrimitiveFields())
   ensures isSubtype(typeOf(result), intType())
 
 
-function UniquePrimitiveFields_final_g_uniqueVal(this: Ref): Ref
+function UniquePrimitiveFields_g_uniqueVal(this: Ref): Ref
   requires isSubtype(typeOf(this), UniquePrimitiveFields())
   ensures isSubtype(typeOf(result), intType())
 
 
-function UniqueReferenceFields_final_g_sharedVal(this: Ref): Ref
+function UniqueReferenceFields_g_sharedVal(this: Ref): Ref
   requires isSubtype(typeOf(this), UniqueReferenceFields())
   ensures isSubtype(typeOf(result), UniquePrimitiveFields())
 
 
-function UniqueReferenceFields_final_g_uniqueVal(this: Ref): Ref
+function UniqueReferenceFields_g_uniqueVal(this: Ref): Ref
   requires isSubtype(typeOf(this), UniqueReferenceFields())
   ensures isSubtype(typeOf(result), UniquePrimitiveFields())
 
@@ -224,12 +224,12 @@ method con(par_sharedVal: Ref, par_sharedVar: Ref, par_uniqueVal: Ref, par_uniqu
   requires isSubtype(typeOf(par_uniqueVar), intType())
   ensures isSubtype(typeOf(ret_1), UniquePrimitiveFields())
   ensures acc(UniquePrimitiveFields_unique(ret_1), write)
-  ensures intFromRef(UniquePrimitiveFields_final_g_sharedVal(ret_1)) ==
+  ensures intFromRef(UniquePrimitiveFields_g_sharedVal(ret_1)) ==
     intFromRef(par_sharedVal)
   ensures intFromRef((unfolding acc(UniquePrimitiveFields_unique(ret_1), write) in
       ret_1.bf_sharedVar)) ==
     intFromRef(par_sharedVar)
-  ensures intFromRef(UniquePrimitiveFields_final_g_uniqueVal(ret_1)) ==
+  ensures intFromRef(UniquePrimitiveFields_g_uniqueVal(ret_1)) ==
     intFromRef(par_uniqueVal)
   ensures intFromRef((unfolding acc(UniquePrimitiveFields_unique(ret_1), write) in
       ret_1.bf_uniqueVar)) ==
@@ -254,22 +254,22 @@ field bf_sharedVar: Ref
 
 field bf_uniqueVar: Ref
 
-function UniquePrimitiveFields_final_g_sharedVal(this: Ref): Ref
+function UniquePrimitiveFields_g_sharedVal(this: Ref): Ref
   requires isSubtype(typeOf(this), UniquePrimitiveFields())
   ensures isSubtype(typeOf(result), intType())
 
 
-function UniquePrimitiveFields_final_g_uniqueVal(this: Ref): Ref
+function UniquePrimitiveFields_g_uniqueVal(this: Ref): Ref
   requires isSubtype(typeOf(this), UniquePrimitiveFields())
   ensures isSubtype(typeOf(result), intType())
 
 
-function UniqueReferenceFields_final_g_sharedVal(this: Ref): Ref
+function UniqueReferenceFields_g_sharedVal(this: Ref): Ref
   requires isSubtype(typeOf(this), UniqueReferenceFields())
   ensures isSubtype(typeOf(result), UniquePrimitiveFields())
 
 
-function UniqueReferenceFields_final_g_uniqueVal(this: Ref): Ref
+function UniqueReferenceFields_g_uniqueVal(this: Ref): Ref
   requires isSubtype(typeOf(this), UniqueReferenceFields())
   ensures isSubtype(typeOf(result), UniquePrimitiveFields())
 
@@ -282,12 +282,12 @@ method con(par_sharedVal: Ref, par_sharedVar: Ref, par_uniqueVal: Ref, par_uniqu
   requires isSubtype(typeOf(par_uniqueVar), intType())
   ensures isSubtype(typeOf(ret_1), UniquePrimitiveFields())
   ensures acc(UniquePrimitiveFields_unique(ret_1), write)
-  ensures intFromRef(UniquePrimitiveFields_final_g_sharedVal(ret_1)) ==
+  ensures intFromRef(UniquePrimitiveFields_g_sharedVal(ret_1)) ==
     intFromRef(par_sharedVal)
   ensures intFromRef((unfolding acc(UniquePrimitiveFields_unique(ret_1), write) in
       ret_1.bf_sharedVar)) ==
     intFromRef(par_sharedVar)
-  ensures intFromRef(UniquePrimitiveFields_final_g_uniqueVal(ret_1)) ==
+  ensures intFromRef(UniquePrimitiveFields_g_uniqueVal(ret_1)) ==
     intFromRef(par_uniqueVal)
   ensures intFromRef((unfolding acc(UniquePrimitiveFields_unique(ret_1), write) in
       ret_1.bf_uniqueVar)) ==
