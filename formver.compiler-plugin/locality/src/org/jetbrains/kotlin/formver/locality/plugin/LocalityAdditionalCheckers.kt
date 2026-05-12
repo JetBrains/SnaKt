@@ -57,6 +57,6 @@ class LocalityAdditionalCheckers(session: FirSession) : FirAdditionalCheckersExt
 
     override val typeCheckers: TypeCheckers = object : TypeCheckers() {
         override val resolvedTypeRefCheckers: Set<FirResolvedTypeRefChecker>
-            get() = setOf(TypeLocalityAttributeChecker)
+            get() = setOf(TypeRefLocalityAttributeChecker)
     }
 }

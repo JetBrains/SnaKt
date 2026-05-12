@@ -20,7 +20,7 @@ import org.jetbrains.kotlin.fir.declarations.isLocal
 import org.jetbrains.kotlin.fir.types.FirFunctionTypeRef
 import org.jetbrains.kotlin.fir.types.FirResolvedTypeRef
 
-object TypeLocalityAttributeChecker : FirResolvedTypeRefChecker(MppCheckerKind.Common) {
+object TypeRefLocalityAttributeChecker : FirResolvedTypeRefChecker(MppCheckerKind.Common) {
     private fun FirElement.isValidLocalityHost(typeRef: FirResolvedTypeRef): Boolean =
         this is FirValueParameter ||
                 this is FirReceiverParameter ||
