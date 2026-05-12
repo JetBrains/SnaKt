@@ -418,12 +418,12 @@ class ProgramConverter(
 
                 val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol ?: throw SnaktInternalException(symbol.source, "Properties dispatch receiver is not a class")
                 val wellBehaved = isWellBehavedProperty(symbol)
-                val isImmut = symbol.isVal
+                val isImmutable = symbol.isVal
 
 
                 return@getOrPutProperty when {
-                    wellBehaved && isImmut -> {
-                        // we can replace with function call
+                    wellBehaved && isImmutable -> {
+                        // we can replace it with a function call
                         PropertyEmbedding(
                             CustomGetter(embedClosedGetterFunction(symbol)),
                             null
