@@ -1,0 +1,47 @@
+/identity_equality.kt: info: Generated Viper text for identity:
+method identity(x: Ref, y: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), _c_C())
+  requires isSubtype(typeOf(y), _c_C())
+  ensures isSubtype(typeOf(ret), boolType())
+{
+  inhale acc(shared(x), wildcard)
+  inhale acc(shared(y), wildcard)
+  ret := boolToRef(x == y)
+  goto ret_0
+  label ret_0
+}
+
+/identity_equality.kt: info: Generated Viper text for nonIdentity:
+method nonIdentity(x: Ref, y: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), _c_C())
+  requires isSubtype(typeOf(y), _c_C())
+  ensures isSubtype(typeOf(ret), boolType())
+{
+  inhale acc(shared(x), wildcard)
+  inhale acc(shared(y), wildcard)
+  ret := notBool(boolToRef(x == y))
+  goto ret_0
+  label ret_0
+}
+
+/identity_equality.kt: info: Generated Viper text for identityWithNull:
+method identityWithNull(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), nullable(_c_C()))
+  ensures isSubtype(typeOf(ret), boolType())
+{
+  inhale x != nullValue() ==> acc(shared(x), wildcard)
+  ret := boolToRef(x == nullValue())
+  goto ret_0
+  label ret_0
+}
+
+/identity_equality.kt: info: Generated Viper text for nonIdentityWithNull:
+method nonIdentityWithNull(x: Ref) returns (ret: Ref)
+  requires isSubtype(typeOf(x), nullable(_c_C()))
+  ensures isSubtype(typeOf(ret), boolType())
+{
+  inhale x != nullValue() ==> acc(shared(x), wildcard)
+  ret := notBool(boolToRef(x == nullValue()))
+  goto ret_0
+  label ret_0
+}
