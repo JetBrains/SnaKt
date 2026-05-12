@@ -5,7 +5,6 @@
 
 package org.jetbrains.kotlin.formver.core.conversion
 
-import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.descriptors.isInterface
 import org.jetbrains.kotlin.descriptors.isObject
 import org.jetbrains.kotlin.fir.FirSession
@@ -14,7 +13,6 @@ import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.utils.isData
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
-import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
@@ -614,10 +612,7 @@ class ProgramConverter(
         classSymbol : FirRegularClassSymbol
     ): FieldEmbedding {
         val embedding = embedClass(classSymbol)
-        val scopedName = symbol.callableId!!.embedMemberBackingFieldName(
-            Visibilities.isPrivate(symbol.visibility),
-            isWellBehavedProperty(symbol)
-        )
+        val scopedName = symbol.callableId!!.embedMemberBackingFieldName(scopePolicy(symbol, this))
         val backingField = UserFieldEmbedding(
                 scopedName,
                 embedType(symbol.resolvedReturnType),

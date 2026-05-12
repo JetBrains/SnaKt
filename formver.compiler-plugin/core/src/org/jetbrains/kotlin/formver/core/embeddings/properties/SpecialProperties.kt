@@ -6,15 +6,14 @@
 package org.jetbrains.kotlin.formver.core.embeddings.properties
 
 
-import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.fir.FirSession
-import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
 import org.jetbrains.kotlin.formver.core.conversion.CollectionSizeFieldEmbedding
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.kotlinCallableId
+import org.jetbrains.kotlin.formver.core.names.MemberEmbeddingPolicy
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
 import org.jetbrains.kotlin.formver.core.names.embedMemberBackingFieldName
 import org.jetbrains.kotlin.formver.core.names.embedName
@@ -38,8 +37,7 @@ object CollectionSizeProperty :
 
         val embedding = typeResolver.lookupClassTypeEmbedding(classSymbol.classId.embedName()) ?: return false
         val scopedName = symbol.callableId!!.embedMemberBackingFieldName(
-            Visibilities.isPrivate(symbol.visibility),
-            true
+            MemberEmbeddingPolicy.BACKING_FIELD
         )
         NameMatcher.Companion.matchClassScope(scopedName) {
             ifBackingFieldName("size") {

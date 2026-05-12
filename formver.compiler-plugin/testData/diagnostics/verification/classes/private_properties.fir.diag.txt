@@ -18,22 +18,22 @@ method s_field(this: Ref, anon: Ref) returns (v_ret_0: Ref)
 
 
 /private_properties.kt: info: Generated Viper text for getStringField:
-function B_private_g_field(this: Ref): Ref
+function final_g_field(this: Ref): Ref
   requires isSubtype(typeOf(this), B())
   ensures isSubtype(typeOf(result), stringType())
-
-
-method A_private_g_field(this: Ref) returns (v_ret_0: Ref)
 
 
 method getStringField(this: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(this), B())
   ensures isSubtype(typeOf(v_ret_0), stringType())
 {
-  v_ret_0 := B_private_g_field(this)
+  v_ret_0 := final_g_field(this)
   goto lbl_ret_0
   label lbl_ret_0
 }
+
+method public_g_field(this: Ref) returns (v_ret_0: Ref)
+
 
 method s_field(this: Ref, anon: Ref) returns (v_ret_0: Ref)
 
@@ -41,12 +41,12 @@ method s_field(this: Ref, anon: Ref) returns (v_ret_0: Ref)
 /private_properties.kt: info: Generated Viper text for extractPublic:
 field bf_field: Ref
 
-function B_private_g_field(this: Ref): Ref
+function B_final_g_field(this: Ref): Ref
   requires isSubtype(typeOf(this), B())
   ensures isSubtype(typeOf(result), stringType())
 
 
-function final_g_field(this: Ref): Ref
+function D_final_g_field(this: Ref): Ref
   requires isSubtype(typeOf(this), D())
   ensures isSubtype(typeOf(result), intType())
 
@@ -54,9 +54,6 @@ function final_g_field(this: Ref): Ref
 function size(this: Ref): Ref
   requires isSubtype(typeOf(this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
-
-
-method A_private_g_field(this: Ref) returns (v_ret_0: Ref)
 
 
 method con_C() returns (ret_1: Ref)
@@ -81,11 +78,14 @@ method extractPublic() returns (v_ret_0: Ref)
   anon_0 := havoc(intType())
   cond1 := boolToRef(isSubtype(typeOf(anon_0), intType()))
   anon_2 := con_D()
-  cond2 := boolToRef(isSubtype(typeOf(final_g_field(anon_2)), intType()))
+  cond2 := boolToRef(isSubtype(typeOf(D_final_g_field(anon_2)), intType()))
   assert boolFromRef(cond1)
   assert boolFromRef(cond2)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
+
+method public_g_field(this: Ref) returns (v_ret_0: Ref)
+
 
 method s_field(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)
