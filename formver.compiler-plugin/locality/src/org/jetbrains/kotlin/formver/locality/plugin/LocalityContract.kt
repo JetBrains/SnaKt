@@ -22,9 +22,8 @@ fun LocalityContract.join(other: LocalityContract): LocalityContract =
 fun LocalityContract.accept(other: LocalityContract): Boolean =
     when {
         this == null || other == null -> true
-        size != other.size -> true
-        else -> zip(other).all { (expectedLocality, actualLocality) ->
-            actualLocality.accepts(expectedLocality)
+        else -> zip(other).all { (thisLocality, actualLocality) ->
+            actualLocality.accepts(thisLocality)
         }
     }
 
