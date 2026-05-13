@@ -744,12 +744,6 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
-      @TestMetadata("pure_function_with_heap_dependent_expressions.kt")
-      public void testPure_function_with_heap_dependent_expressions() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/negative/pure_function_with_heap_dependent_expressions.kt");
-      }
-
-      @Test
       @TestMetadata("try_catch.kt")
       public void testTry_catch() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/negative/try_catch.kt");
@@ -800,6 +794,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("elvis_receiver_chain.kt")
+      public void testElvis_receiver_chain() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/elvis_receiver_chain.kt");
+      }
+
+      @Test
       @TestMetadata("heap_dependent_specifications.kt")
       public void testHeap_dependent_specifications() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/heap_dependent_specifications.kt");
@@ -815,6 +815,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("local_variables.kt")
       public void testLocal_variables() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/local_variables.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_function_with_heap_dependent_expressions.kt")
+      public void testPure_function_with_heap_dependent_expressions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/pure_function_with_heap_dependent_expressions.kt");
       }
     }
 
