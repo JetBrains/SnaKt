@@ -58,14 +58,26 @@ function nestedBranching(a: Ref, b: Ref): Ref
                   null)) in
                 (let l0_result_7 ==
                   ((!boolFromRef(a) ?
-                    plusInts(intToRef(6), l0_result_6) :
+                    (true && !boolFromRef(b) ?
+                      plusInts(intToRef(6), l0_result_6) :
+                      (true && boolFromRef(b) ?
+                        plusInts(intToRef(6), l0_result_6) :
+                        null)) :
                     null)) in
                   (let l0_result_8 ==
                     ((boolFromRef(b) ? l0_result_2 : l0_result_3)) in
                     (let l0_result_9 ==
                       ((boolFromRef(a) ? l0_result_8 : l0_result_7)) in
                       (let l0_result_10 ==
-                        (plusInts(intToRef(7), l0_result_9)) in
+                        ((true && !boolFromRef(b) && !boolFromRef(a) ?
+                          plusInts(intToRef(7), l0_result_9) :
+                          (true && boolFromRef(b) && !boolFromRef(a) ?
+                            plusInts(intToRef(7), l0_result_9) :
+                            (true && !boolFromRef(b) && boolFromRef(a) ?
+                              plusInts(intToRef(7), l0_result_9) :
+                              (true && boolFromRef(b) && boolFromRef(a) ?
+                                plusInts(intToRef(7), l0_result_9) :
+                                null))))) in
                         l0_result_10)))))))))))
 }
 

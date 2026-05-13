@@ -1,0 +1,64 @@
+/elvis_receiver_chain.kt: info: Generated Viper text for elvisThenField:
+field inner: Ref
+
+function elvisThenField(x: Ref, y: Ref): Ref
+  requires acc(shared(x), wildcard)
+  requires acc(shared(y), wildcard)
+  requires isSubtype(typeOf(x), Box())
+  requires isSubtype(typeOf(y), Box())
+  ensures isSubtype(typeOf(result), nullable(Box()))
+{
+  (let anon_2_0 ==
+    ((unfolding acc(shared(x), wildcard) in x.inner)) in
+    (let anon_1_0 ==
+      ((anon_2_0 != nullValue() ? anon_2_0 : y)) in
+      (let anon_0_0 ==
+        ((unfolding acc(shared(x), wildcard) in
+          (unfolding acc(shared(anon_1_0), wildcard) in anon_1_0.inner))) in
+        anon_0_0)))
+}
+
+/elvis_receiver_chain.kt: info: Generated Viper text for elvisThenSafeField:
+field inner: Ref
+
+function elvisThenSafeField(x: Ref, y: Ref): Ref
+  requires x != nullValue() ==> acc(shared(x), wildcard)
+  requires acc(shared(y), wildcard)
+  requires isSubtype(typeOf(x), nullable(Box()))
+  requires isSubtype(typeOf(y), Box())
+  ensures isSubtype(typeOf(result), nullable(Box()))
+{
+  (let anon_1_0 ==
+    ((x != nullValue() ? x : y)) in
+    (let anon_0_0 ==
+      ((unfolding acc(shared(anon_1_0), wildcard) in anon_1_0.inner)) in
+      anon_0_0))
+}
+
+/elvis_receiver_chain.kt: info: Generated Viper text for elvisThenSafeChain:
+field inner: Ref
+
+function elvisThenSafeChain(x: Ref, y: Ref): Ref
+  requires x != nullValue() ==> acc(shared(x), wildcard)
+  requires y != nullValue() ==> acc(shared(y), wildcard)
+  requires isSubtype(typeOf(x), nullable(Box()))
+  requires isSubtype(typeOf(y), nullable(Box()))
+  ensures isSubtype(typeOf(result), nullable(Box()))
+{
+  (let anon_2_0 ==
+    ((x != nullValue() ? x : y)) in
+    (let anon_3_0 ==
+      ((anon_2_0 != nullValue() ?
+        (unfolding acc(shared(anon_2_0), wildcard) in anon_2_0.inner) :
+        null)) in
+      (let anon_1_0 ==
+        ((anon_2_0 != nullValue() ? anon_3_0 : nullValue())) in
+        (let anon_4_0 ==
+          ((anon_1_0 != nullValue() ?
+            (unfolding acc(shared(anon_2_0), wildcard) in
+              (unfolding acc(shared(anon_1_0), wildcard) in anon_1_0.inner)) :
+            null)) in
+          (let anon_0_0 ==
+            ((anon_1_0 != nullValue() ? anon_4_0 : nullValue())) in
+            anon_0_0)))))
+}

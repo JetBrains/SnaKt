@@ -168,7 +168,11 @@ function blockConditionalAssignment(a: Ref, b: Ref): Ref
       (let y_0 ==
         ((boolFromRef(a) ? (boolFromRef(b) ? anon_1_0 : anon_2_0) : null)) in
         (let anon_0_0 ==
-          ((boolFromRef(a) ? plusInts(y_0, intToRef(1)) : null)) in
+          ((boolFromRef(a) ?
+            (true && !boolFromRef(b) ?
+              plusInts(y_0, intToRef(1)) :
+              (true && boolFromRef(b) ? plusInts(y_0, intToRef(1)) : null)) :
+            null)) in
           (let anon_3_0 ==
             ((!boolFromRef(a) ? intToRef(30) : null)) in
             (let x_0 ==
