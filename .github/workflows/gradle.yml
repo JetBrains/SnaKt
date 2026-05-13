@@ -48,7 +48,7 @@ jobs:
       - name: Check public API compatibility
         run: ./gradlew apiCheck
       - name: Run locality tests
-        run: ./gradlew :formver.compiler-plugin.locality:test
+        run: ./gradlew :formver.compiler-plugin:locality:test
       - name: Run all tests (conversion + verification)
         run: ./gradlew :formver.compiler-plugin:test
       - name: Report failing test results
