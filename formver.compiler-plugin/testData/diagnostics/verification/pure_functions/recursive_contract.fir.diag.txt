@@ -1,0 +1,20 @@
+/recursive_contract.kt: info: Generated Viper text for fact:
+function fact(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(n) == 0 ==> intFromRef(result) == 1
+  ensures intFromRef(n) > 0 ==>
+    intFromRef(result) ==
+    intFromRef(n) * intFromRef(fact(minusInts(n, intToRef(1))))
+{
+  (let anon_1_0 ==
+    ((intFromRef(n) == 0 ? intToRef(1) : null)) in
+    (let anon_2_0 ==
+      ((!(intFromRef(n) == 0) ?
+        timesInts(n, fact(minusInts(n, intToRef(1)))) :
+        null)) in
+      (let anon_0_0 ==
+        ((intFromRef(n) == 0 ? anon_1_0 : anon_2_0)) in
+        anon_0_0)))
+}

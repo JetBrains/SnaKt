@@ -852,6 +852,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       public void testLocal_variables() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/local_variables.kt");
       }
+
+      @Test
+      @TestMetadata("recursive_contract.kt")
+      public void testRecursive_contract() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/recursive_contract.kt");
+      }
     }
 
     @Nested
