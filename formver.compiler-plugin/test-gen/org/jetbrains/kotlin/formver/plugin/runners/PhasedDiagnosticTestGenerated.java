@@ -816,6 +816,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       public void testLocal_variables() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/local_variables.kt");
       }
+
+      @Test
+      @TestMetadata("operators.kt")
+      public void testOperators() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/operators.kt");
+      }
     }
 
     @Nested

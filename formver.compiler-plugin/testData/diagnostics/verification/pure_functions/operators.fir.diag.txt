@@ -1,0 +1,70 @@
+/operators.kt: info: Generated Viper text for testAnd:
+function testAnd(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), boolType())
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(result), boolType())
+{
+  andBools(andBools(a, b), andBools(a, b))
+}
+
+/operators.kt: info: Generated Viper text for testOr:
+function testOr(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), boolType())
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(result), boolType())
+{
+  orBools(orBools(a, b), orBools(a, b))
+}
+
+/operators.kt: info: Generated Viper text for testXor:
+function testXor(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), boolType())
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(result), boolType())
+{
+  xorBools(a, xorBools(a, b))
+}
+
+/operators.kt: info: Generated Viper text for testNot:
+function testNot(a: Ref): Ref
+  requires isSubtype(typeOf(a), boolType())
+  ensures isSubtype(typeOf(result), boolType())
+{
+  notBool(notBool(a))
+}
+
+/operators.kt: info: Generated Viper text for testNegation:
+function testNegation(a: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  negInt(negInt(a))
+}
+
+/operators.kt: info: Generated Viper text for testPlus:
+function testPlus(a: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  a
+}
+
+/operators.kt: info: Generated Viper text for testReminder:
+function testReminder(a: Ref, b: Ref, c: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), intType())
+  requires isSubtype(typeOf(c), intType())
+  requires !(intFromRef(b) == 0) && !(intFromRef(c) == 0)
+  ensures isSubtype(typeOf(result), intType())
+{
+  remInts(remInts(a, b), c)
+}
+
+/operators.kt: info: Generated Viper text for testCompare:
+function testCompare(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  minusInts(a, b)
+}
