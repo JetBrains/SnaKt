@@ -62,7 +62,10 @@ class TypeResolver {
 
     fun lookupClassTypeEmbedding(name: SymbolicName) = classEmbedding[name] ?: interfaceEmbedding[name]
 
-    fun registerAdt(typeEmbedding: AdtTypeEmbedding) = adtEmbedding.putIfAbsent(typeEmbedding.name, typeEmbedding)
+    fun registerAdt(typeEmbedding: AdtTypeEmbedding) {
+        check(!isAdtKnown(typeEmbedding.name)) { "ADT '${typeEmbedding.name}' was already registered" }
+        adtEmbedding.putIfAbsent(typeEmbedding.name, typeEmbedding)
+    }
     fun invalidateAdt(name: SymbolicName) = adtEmbedding.put(name, null)
     fun isAdtKnown(name: SymbolicName): Boolean = adtEmbedding.containsKey(name)
 
