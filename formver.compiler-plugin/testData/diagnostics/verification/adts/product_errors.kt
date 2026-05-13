@@ -48,3 +48,9 @@ fun <!VIPER_TEXT!>testDestrUsage<!>() {
     val i = tf.a
     val b = tf.b
 }
+
+fun <!VIPER_TEXT!>testNullableComparisoin<!>(): Boolean {
+    var adt1: TwoFields? = TwoFields(0, true)
+    var adt2 = TwoFields(1, false)
+    return adt1 == adt2
+}

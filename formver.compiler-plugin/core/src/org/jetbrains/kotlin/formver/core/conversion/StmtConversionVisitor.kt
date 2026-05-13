@@ -215,8 +215,8 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         val right = data.convert(equalityOperatorCall.arguments[1])
 
         return when (equalityOperatorCall.operation) {
-            FirOperation.EQ -> convertEqCmp(left, right)
-            FirOperation.NOT_EQ -> Not(convertEqCmp(left, right))
+            FirOperation.EQ -> convertEqCmp(left, right, data)
+            FirOperation.NOT_EQ -> Not(convertEqCmp(left, right, data))
             else -> handleUnimplementedElement(
                 equalityOperatorCall.source,
                 "Equality comparison operation ${equalityOperatorCall.operation} not yet implemented.",
@@ -225,9 +225,28 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
     }
 
-    private fun convertEqCmp(left: ExpEmbedding, right: ExpEmbedding): ExpEmbedding {
-        //TODO: replace with call to left.equals()
-        return EqCmp(left, right)
+    private fun convertEqCmp(left: ExpEmbedding, right: ExpEmbedding, data: StmtConversionContext): ExpEmbedding {
+        val adtPretype = left.type.pretype as? AdtTypeEmbeddingImpl ?: return EqCmp(left, right)
+        if (left.type.flags.nullable) {
+            val nonNullableLeftType = left.type.getNonNullable()
+            return share(left) { sharedLeft ->
+                share(right) { sharedRight ->
+                    SequentialOr(
+                        SequentialAnd(
+                            sharedLeft.notNullCmp(),
+                            convertEqCmp(sharedLeft.withType(nonNullableLeftType), sharedRight, data),
+                        ),
+                        SequentialAnd(
+                            EqCmp(sharedLeft, NullLit),
+                            EqCmp(sharedRight, NullLit),
+                        ),
+                    )
+                }
+            }
+        }
+        return data.typeResolver.lookupAdtEquality(adtPretype.name)
+            ?.insertCall(listOf(left, right), data)
+            ?: EqCmp(left, right)
     }
 
     override fun visitComparisonExpression(

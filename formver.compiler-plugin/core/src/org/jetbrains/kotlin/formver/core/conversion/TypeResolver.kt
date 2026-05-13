@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.properties.AdtFieldGetter
 import org.jetbrains.kotlin.formver.core.embeddings.properties.BackingFieldGetter
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.callables.AdtEqualityEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtFieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbeddingImpl
@@ -34,6 +35,8 @@ class TypeResolver {
      * A key mapped to `InvalidAdtTypeEmbedding` means the ADT was encountered but is invalid.
      */
     private val adtEmbedding = mutableMapOf<SymbolicName, AdtTypeEmbedding>()
+
+    private val adtEqualityMap = mutableMapOf<ScopedName, AdtEqualityEmbedding>()
 
 
     /**
@@ -80,6 +83,9 @@ class TypeResolver {
     fun adtTypeEmbeddings(): List<AdtTypeEmbeddingImpl> = adtEmbedding.values.filterIsInstance<AdtTypeEmbeddingImpl>()
 
     fun adtDeclarations(): List<AdtDecl> = adtTypeEmbeddings().map { it.toAdtDecl(lookupAdtFields(it.name)) }
+
+    fun registerAdtEquality(name: ScopedName, embedding: AdtEqualityEmbedding) { adtEqualityMap[name] = embedding }
+    fun lookupAdtEquality(name: ScopedName): AdtEqualityEmbedding? = adtEqualityMap[name]
 
     /**
      * Extends the subtype relation with [subtype] <: [supertype]

@@ -24,7 +24,9 @@ import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.common.UnsupportedFeatureBehaviour
 import org.jetbrains.kotlin.formver.core.*
+import org.jetbrains.kotlin.formver.core.domains.FunctionBuilder
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
+import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.isOf
 import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.*
@@ -33,7 +35,10 @@ import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.core.purity.checkValidity
 import org.jetbrains.kotlin.formver.core.purity.isPure
 import org.jetbrains.kotlin.formver.viper.SymbolicName
+import org.jetbrains.kotlin.formver.viper.ast.AdtDecl
+import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Program
+import org.jetbrains.kotlin.formver.viper.ast.Type
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 
 
@@ -83,7 +88,8 @@ class ProgramConverter(
         // Public fields with the same name are represented differently at `FieldEmbedding` level
         // but map to the same Viper field, so we deduplicate before emitting.
         fields = typeResolver.backingFields().distinctBy { it.name }.map { it.toViper() },
-        functions = SpecialFunctions.all + linearizedBodyResolver.functions,
+        functions = SpecialFunctions.all + linearizedBodyResolver.functions +
+            typeResolver.adtTypeEmbeddings().map { buildAdtEqualityFunction(it, typeResolver.lookupAdtFields(it.name)) },
         methods = SpecialMethods.all + linearizedBodyResolver.methods,
         predicates = typeResolver.classTypeEmbeddings().map {
             with(typeResolver) {
@@ -384,6 +390,7 @@ class ProgramConverter(
         symbol.declarationSymbols.filterIsInstance<FirPropertySymbol>().forEach {
             embedAdtField(it, adtEmbedding)
         }
+        typeResolver.registerAdtEquality(name, AdtEqualityEmbedding(adtEmbedding))
         return adtEmbedding
     }
 
@@ -460,6 +467,47 @@ class ProgramConverter(
         }
     }
 
+    private fun compareAdtField(lhsField: Exp, rhsField: Exp, fieldType: TypeEmbedding): Exp {
+        val pretype = fieldType.pretype
+        val comparison = if (pretype is AdtTypeEmbeddingImpl) {
+            RuntimeTypeDomain.boolInjection.fromRef(
+                Exp.FuncApp(pretype.equalityFunctionName, listOf(lhsField, rhsField), Type.Ref)
+            )
+        } else {
+            val primitiveInjection = fieldType.injectionOrNull
+            if (primitiveInjection != null) {
+                Exp.EqCmp(primitiveInjection.fromRef(lhsField), primitiveInjection.fromRef(rhsField))
+            } else {
+                Exp.EqCmp(lhsField, rhsField)
+            }
+        }
+        if (!fieldType.isNullable) return comparison
+        val nullVal = RuntimeTypeDomain.nullValue()
+        return Exp.TernaryExp(Exp.EqCmp(lhsField, nullVal), Exp.EqCmp(rhsField, nullVal), comparison)
+    }
+
+    private fun buildAdtEqualityFunction(embedding: AdtTypeEmbeddingImpl, fields: List<AdtFieldEmbedding>) =
+        FunctionBuilder.build(embedding.equalityFunctionName) {
+            val lhs = argument(Type.Ref)
+            val rhs = argument(Type.Ref)
+            returns(Type.Ref)
+            precondition { lhs isOf embedding.runtimeType }
+            postcondition { result isOf RuntimeTypeDomain.boolInjection.typeFunction() }
+            val rhsIsCorrectType = rhs isOf embedding.runtimeType
+            val boolResult = if (fields.isEmpty()) {
+                rhsIsCorrectType
+            } else {
+                val lhsUnwrapped = embedding.injection.fromRef(lhs)
+                val rhsUnwrapped = embedding.injection.fromRef(rhs)
+                val fieldComparisons = fields.map { field ->
+                    val lhsField = Exp.AdtDestructorApp(field.name, lhsUnwrapped, embedding.adtName)
+                    val rhsField = Exp.AdtDestructorApp(field.name, rhsUnwrapped, embedding.adtName)
+                    compareAdtField(lhsField, rhsField, field.type)
+                }.reduce { acc, next -> Exp.And(acc, next) }
+                Exp.TernaryExp(rhsIsCorrectType, fieldComparisons, Exp.BoolLit(false))
+            }
+            body(RuntimeTypeDomain.boolInjection.toRef(boolResult))
+        }
 
     override fun embedType(type: ConeKotlinType): TypeEmbedding = buildType { embedTypeWithBuilder(type) }
 

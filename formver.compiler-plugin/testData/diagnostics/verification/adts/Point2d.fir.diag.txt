@@ -1,0 +1,258 @@
+/Point2d.kt: info: Generated Viper text for translate:
+function translate(par_p: Ref, dx: Ref, dy: Ref): Ref
+  requires isSubtype(typeOf(par_p), Point())
+  requires isSubtype(typeOf(dx), intType())
+  requires isSubtype(typeOf(dy), intType())
+  ensures isSubtype(typeOf(result), Point())
+{
+  PointToRef(ac_Point(plusInts(PointFromRef(par_p).af_a_Point_x, dx), plusInts(PointFromRef(par_p).af_a_Point_y,
+  dy)))
+}
+
+adt a_Point {
+  ac_Point(af_a_Point_x: Ref, af_a_Point_y: Ref)
+}
+
+/Point2d.kt: info: Generated Viper text for abs:
+function abs(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) >= 0
+{
+  (let anon_1_0 ==
+    ((intFromRef(n) >= 0 ? n : null)) in
+    (let anon_2_0 ==
+      ((!(intFromRef(n) >= 0) ? negInt(n) : null)) in
+      (let anon_0_0 ==
+        ((intFromRef(n) >= 0 ? anon_1_0 : anon_2_0)) in
+        anon_0_0)))
+}
+
+/Point2d.kt: info: Generated Viper text for manhattan:
+function abs(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) >= 0
+{
+  (let anon_1_0 ==
+    ((intFromRef(n) >= 0 ? n : null)) in
+    (let anon_2_0 ==
+      ((!(intFromRef(n) >= 0) ? negInt(n) : null)) in
+      (let anon_0_0 ==
+        ((intFromRef(n) >= 0 ? anon_1_0 : anon_2_0)) in
+        anon_0_0)))
+}
+
+function manhattan(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), Point())
+  requires isSubtype(typeOf(b), Point())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(abs(minusInts(PointFromRef(a).af_a_Point_x, PointFromRef(b).af_a_Point_x)),
+  abs(minusInts(PointFromRef(a).af_a_Point_y, PointFromRef(b).af_a_Point_y)))
+}
+
+adt a_Point {
+  ac_Point(af_a_Point_x: Ref, af_a_Point_y: Ref)
+}
+
+/Point2d.kt: info: Generated Viper text for dot:
+function dot(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), Point())
+  requires isSubtype(typeOf(b), Point())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(timesInts(PointFromRef(a).af_a_Point_x, PointFromRef(b).af_a_Point_x),
+  timesInts(PointFromRef(a).af_a_Point_y, PointFromRef(b).af_a_Point_y))
+}
+
+adt a_Point {
+  ac_Point(af_a_Point_x: Ref, af_a_Point_y: Ref)
+}
+
+/Point2d.kt: info: Generated Viper text for normSq:
+function normSq(par_p: Ref): Ref
+  requires isSubtype(typeOf(par_p), Point())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) >= 0
+{
+  plusInts(timesInts(PointFromRef(par_p).af_a_Point_x, PointFromRef(par_p).af_a_Point_x),
+  timesInts(PointFromRef(par_p).af_a_Point_y, PointFromRef(par_p).af_a_Point_y))
+}
+
+adt a_Point {
+  ac_Point(af_a_Point_x: Ref, af_a_Point_y: Ref)
+}
+
+/Point2d.kt: info: Generated Viper text for translateZeroIsId:
+function translate(par_p: Ref, dx: Ref, dy: Ref): Ref
+  requires isSubtype(typeOf(par_p), Point())
+  requires isSubtype(typeOf(dx), intType())
+  requires isSubtype(typeOf(dy), intType())
+  ensures isSubtype(typeOf(result), Point())
+{
+  PointToRef(ac_Point(plusInts(PointFromRef(par_p).af_a_Point_x, dx), plusInts(PointFromRef(par_p).af_a_Point_y,
+  dy)))
+}
+
+method translateZeroIsId(par_p: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_p), Point())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures boolFromRef(aeq_a_Point(translate(par_p, intToRef(0), intToRef(0)),
+    par_p))
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Point {
+  ac_Point(af_a_Point_x: Ref, af_a_Point_y: Ref)
+}
+
+/Point2d.kt: info: Generated Viper text for manhattanSymmetric:
+function abs(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) >= 0
+{
+  (let anon_1_0 ==
+    ((intFromRef(n) >= 0 ? n : null)) in
+    (let anon_2_0 ==
+      ((!(intFromRef(n) >= 0) ? negInt(n) : null)) in
+      (let anon_0_0 ==
+        ((intFromRef(n) >= 0 ? anon_1_0 : anon_2_0)) in
+        anon_0_0)))
+}
+
+function manhattan(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), Point())
+  requires isSubtype(typeOf(b), Point())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(abs(minusInts(PointFromRef(a).af_a_Point_x, PointFromRef(b).af_a_Point_x)),
+  abs(minusInts(PointFromRef(a).af_a_Point_y, PointFromRef(b).af_a_Point_y)))
+}
+
+method manhattanSymmetric(a: Ref, b: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), Point())
+  requires isSubtype(typeOf(b), Point())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures intFromRef(manhattan(a, b)) == intFromRef(manhattan(b, a))
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Point {
+  ac_Point(af_a_Point_x: Ref, af_a_Point_y: Ref)
+}
+
+/Point2d.kt: info: Generated Viper text for dotCommutes:
+function dot(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), Point())
+  requires isSubtype(typeOf(b), Point())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(timesInts(PointFromRef(a).af_a_Point_x, PointFromRef(b).af_a_Point_x),
+  timesInts(PointFromRef(a).af_a_Point_y, PointFromRef(b).af_a_Point_y))
+}
+
+method dotCommutes(a: Ref, b: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), Point())
+  requires isSubtype(typeOf(b), Point())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures intFromRef(dot(a, b)) == intFromRef(dot(b, a))
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Point {
+  ac_Point(af_a_Point_x: Ref, af_a_Point_y: Ref)
+}
+
+/Point2d.kt: info: Generated Viper text for nonNegativeSquare:
+method nonNegativeSquare(u: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(u), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures intFromRef(u) * intFromRef(u) >= 0
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/Point2d.kt: info: Generated Viper text for cauchySchwarz:
+function dot(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), Point())
+  requires isSubtype(typeOf(b), Point())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(timesInts(PointFromRef(a).af_a_Point_x, PointFromRef(b).af_a_Point_x),
+  timesInts(PointFromRef(a).af_a_Point_y, PointFromRef(b).af_a_Point_y))
+}
+
+function normSq(par_p: Ref): Ref
+  requires isSubtype(typeOf(par_p), Point())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) >= 0
+{
+  plusInts(timesInts(PointFromRef(par_p).af_a_Point_x, PointFromRef(par_p).af_a_Point_x),
+  timesInts(PointFromRef(par_p).af_a_Point_y, PointFromRef(par_p).af_a_Point_y))
+}
+
+method cauchySchwarz(a: Ref, b: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), Point())
+  requires isSubtype(typeOf(b), Point())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures intFromRef(dot(a, b)) * intFromRef(dot(a, b)) <=
+    intFromRef(normSq(a)) * intFromRef(normSq(b))
+{
+  var anon: Ref
+  anon := nonNegativeSquare(minusInts(timesInts(PointFromRef(a).af_a_Point_x,
+    PointFromRef(b).af_a_Point_y), timesInts(PointFromRef(a).af_a_Point_y, PointFromRef(b).af_a_Point_x)))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method nonNegativeSquare(u: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(u), intType())
+  ensures isSubtype(typeOf(ret_3), unitType())
+  ensures intFromRef(u) * intFromRef(u) >= 0
+
+
+adt a_Point {
+  ac_Point(af_a_Point_x: Ref, af_a_Point_y: Ref)
+}
+
+/Point2d.kt: info: Generated Viper text for rot90:
+function rot90(par_p: Ref): Ref
+  requires isSubtype(typeOf(par_p), Point())
+  ensures isSubtype(typeOf(result), Point())
+{
+  PointToRef(ac_Point(negInt(PointFromRef(par_p).af_a_Point_y), PointFromRef(par_p).af_a_Point_x))
+}
+
+adt a_Point {
+  ac_Point(af_a_Point_x: Ref, af_a_Point_y: Ref)
+}
+
+/Point2d.kt: info: Generated Viper text for rot90FourTimesIsId:
+function rot90(par_p: Ref): Ref
+  requires isSubtype(typeOf(par_p), Point())
+  ensures isSubtype(typeOf(result), Point())
+{
+  PointToRef(ac_Point(negInt(PointFromRef(par_p).af_a_Point_y), PointFromRef(par_p).af_a_Point_x))
+}
+
+method rot90FourTimesIsId(par_p: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_p), Point())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures boolFromRef(aeq_a_Point(rot90(rot90(rot90(rot90(par_p)))), par_p))
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Point {
+  ac_Point(af_a_Point_x: Ref, af_a_Point_y: Ref)
+}

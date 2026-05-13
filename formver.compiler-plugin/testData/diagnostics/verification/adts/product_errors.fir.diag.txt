@@ -108,3 +108,30 @@ method testDestrUsage() returns (v_ret_0: Ref)
 adt a_TwoFields {
   ac_TwoFields(af_a_TwoFields_a: Ref, af_a_TwoFields_b: Ref)
 }
+
+/data_classes.kt: info: Generated Viper text for testNullableComparisoin:
+method testNullableComparisoin() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  var adt1: Ref
+  var adt2: Ref
+  var anon: Ref
+  adt1 := TwoFieldsToRef(ac_TwoFields(intToRef(0), boolToRef(true)))
+  adt2 := TwoFieldsToRef(ac_TwoFields(intToRef(1), boolToRef(false)))
+  if (adt1 != nullValue()) {
+    anon := aeq_a_TwoFields(adt1, adt2)
+  } else {
+    anon := boolToRef(false)}
+  if (boolFromRef(anon)) {
+    v_ret_0 := boolToRef(true)
+  } elseif (adt1 == nullValue()) {
+    v_ret_0 := boolToRef(adt2 == nullValue())
+  } else {
+    v_ret_0 := boolToRef(false)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+adt a_TwoFields {
+  ac_TwoFields(af_a_TwoFields_a: Ref, af_a_TwoFields_b: Ref)
+}

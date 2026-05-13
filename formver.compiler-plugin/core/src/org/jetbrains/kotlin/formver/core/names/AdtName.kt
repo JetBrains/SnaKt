@@ -27,6 +27,15 @@ data class AdtConstructorName(val adtName: AdtName, val className: SymbolicName)
     override val children: List<AnyName> = listOf(nameType, adtName, className)
 }
 
+data class AdtEqualityFunctionName(val adtName: AdtName) : SymbolicName {
+    override val nameType: NameType = NameType.Base.AdtEquals
+    override val inViper: Boolean = true
+    override val candidates: List<CandidateName> = buildCandidates {
+        candidate { +nameType; +adtName }
+    }
+    override val children: List<AnyName> = listOf(nameType, adtName)
+}
+
 data class AdtFieldName(val adtName: AdtName, val propertyName: SimpleKotlinName) : SymbolicName {
     override val nameType: NameType = NameType.Base.AdtField
     override val inViper: Boolean = true

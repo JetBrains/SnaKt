@@ -304,6 +304,18 @@ function addStrings(arg_1: Ref, arg_2: Ref): Ref
     stringFromRef(arg_1) ++ stringFromRef(arg_2)
 
 
+function aeq_a_Pair(arg_1: Ref, arg_2: Ref): Ref
+  requires isSubtype(typeOf(arg_1), Pair())
+  ensures isSubtype(typeOf(result), boolType())
+{
+  boolToRef((isSubtype(typeOf(arg_2), Pair()) ?
+    intFromRef(PairFromRef(arg_1).af_a_Pair_a) ==
+    intFromRef(PairFromRef(arg_2).af_a_Pair_a) &&
+    intFromRef(PairFromRef(arg_1).af_a_Pair_b) ==
+    intFromRef(PairFromRef(arg_2).af_a_Pair_b) :
+    false))
+}
+
 function andBools(arg_1: Ref, arg_2: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
   ensures boolFromRef(result) == (boolFromRef(arg_1) && boolFromRef(arg_2))

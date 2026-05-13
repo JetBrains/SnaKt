@@ -1,0 +1,1880 @@
+/LinkedList.kt: info: Generated Viper text for length:
+function length(xs: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_1_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      intToRef(0) :
+      null)) in
+    (let anon_2_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        plusInts(intToRef(1), length(NodeFromRef(xs).af_a_Node_tail)) :
+        null)) in
+      (let anon_0_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_1_0 :
+          anon_2_0)) in
+        anon_0_0)))
+}
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: info: Generated Viper text for append:
+function append(xs: Ref, ys: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  requires isSubtype(typeOf(ys), nullable(Node()))
+  ensures isSubtype(typeOf(result), nullable(Node()))
+{
+  (let anon_1_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      ys :
+      null)) in
+    (let anon_2_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, append(NodeFromRef(xs).af_a_Node_tail,
+        ys))) :
+        null)) in
+      (let anon_0_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_1_0 :
+          anon_2_0)) in
+        anon_0_0)))
+}
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: info: Generated Viper text for reverse:
+function append(xs: Ref, ys: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  requires isSubtype(typeOf(ys), nullable(Node()))
+  ensures isSubtype(typeOf(result), nullable(Node()))
+{
+  (let anon_1_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      ys :
+      null)) in
+    (let anon_2_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, append(NodeFromRef(xs).af_a_Node_tail,
+        ys))) :
+        null)) in
+      (let anon_0_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_1_0 :
+          anon_2_0)) in
+        anon_0_0)))
+}
+
+function reverse(xs: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  ensures isSubtype(typeOf(result), nullable(Node()))
+{
+  (let anon_4_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      nullValue() :
+      null)) in
+    (let anon_5_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        append(reverse(NodeFromRef(xs).af_a_Node_tail), NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, nullValue()))) :
+        null)) in
+      (let anon_3_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_4_0 :
+          anon_5_0)) in
+        anon_3_0)))
+}
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: info: Generated Viper text for allNonNeg:
+function allNonNeg(xs: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_1_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      boolToRef(true) :
+      null)) in
+    (let anon_2_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        andBools(geInts(NodeFromRef(xs).af_a_Node_head, intToRef(0)), allNonNeg(NodeFromRef(xs).af_a_Node_tail)) :
+        null)) in
+      (let anon_0_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_1_0 :
+          anon_2_0)) in
+        anon_0_0)))
+}
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: info: Generated Viper text for sumOf:
+function sumOf(xs: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_1_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      intToRef(0) :
+      null)) in
+    (let anon_2_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        plusInts(NodeFromRef(xs).af_a_Node_head, sumOf(NodeFromRef(xs).af_a_Node_tail)) :
+        null)) in
+      (let anon_0_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_1_0 :
+          anon_2_0)) in
+        anon_0_0)))
+}
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: info: Generated Viper text for prepend:
+function prepend(xs: Ref, x: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), Node())
+{
+  NodeToRef(ac_Node(x, xs))
+}
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: info: Generated Viper text for lengthNonNeg:
+function length(xs: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_1_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      intToRef(0) :
+      null)) in
+    (let anon_2_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        plusInts(intToRef(1), length(NodeFromRef(xs).af_a_Node_tail)) :
+        null)) in
+      (let anon_0_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_1_0 :
+          anon_2_0)) in
+        anon_0_0)))
+}
+
+method lengthNonNeg(xs: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures intFromRef(length(xs)) >= 0
+{
+  var anon_3: Ref
+  var anon_4: Ref
+  if (xs != nullValue()) {
+    anon_4 := aeq_a_Node(xs, nullValue())
+  } else {
+    anon_4 := boolToRef(false)}
+  if (boolFromRef(anon_4)) {
+    anon_3 := boolToRef(true)
+  } elseif (xs == nullValue()) {
+    anon_3 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_3 := boolToRef(false)}
+  if (!boolFromRef(anon_3)) {
+    var anon_5: Ref
+    anon_5 := lengthNonNeg(NodeFromRef(xs).af_a_Node_tail)
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: info: Generated Viper text for appendLength:
+function append(xs: Ref, ys: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  requires isSubtype(typeOf(ys), nullable(Node()))
+  ensures isSubtype(typeOf(result), nullable(Node()))
+{
+  (let anon_4_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      ys :
+      null)) in
+    (let anon_5_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, append(NodeFromRef(xs).af_a_Node_tail,
+        ys))) :
+        null)) in
+      (let anon_3_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_4_0 :
+          anon_5_0)) in
+        anon_3_0)))
+}
+
+function length(xs: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_1_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      intToRef(0) :
+      null)) in
+    (let anon_2_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        plusInts(intToRef(1), length(NodeFromRef(xs).af_a_Node_tail)) :
+        null)) in
+      (let anon_0_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_1_0 :
+          anon_2_0)) in
+        anon_0_0)))
+}
+
+method appendLength(xs: Ref, ys: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  requires isSubtype(typeOf(ys), nullable(Node()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures intFromRef(length(append(xs, ys))) ==
+    intFromRef(length(xs)) + intFromRef(length(ys))
+{
+  var anon_6: Ref
+  var anon_7: Ref
+  if (xs != nullValue()) {
+    anon_7 := aeq_a_Node(xs, nullValue())
+  } else {
+    anon_7 := boolToRef(false)}
+  if (boolFromRef(anon_7)) {
+    anon_6 := boolToRef(true)
+  } elseif (xs == nullValue()) {
+    anon_6 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_6 := boolToRef(false)}
+  if (!boolFromRef(anon_6)) {
+    var anon_8: Ref
+    anon_8 := appendLength(NodeFromRef(xs).af_a_Node_tail, ys)
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: info: Generated Viper text for appendNull:
+function append(xs: Ref, ys: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  requires isSubtype(typeOf(ys), nullable(Node()))
+  ensures isSubtype(typeOf(result), nullable(Node()))
+{
+  (let anon_1_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      ys :
+      null)) in
+    (let anon_2_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, append(NodeFromRef(xs).af_a_Node_tail,
+        ys))) :
+        null)) in
+      (let anon_0_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_1_0 :
+          anon_2_0)) in
+        anon_0_0)))
+}
+
+method appendNull(xs: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures append(xs, nullValue()) != nullValue() &&
+    boolFromRef(aeq_a_Node(append(xs, nullValue()), xs)) ||
+    append(xs, nullValue()) == nullValue() && xs == nullValue()
+{
+  var anon_3: Ref
+  var anon_4: Ref
+  if (xs != nullValue()) {
+    anon_4 := aeq_a_Node(xs, nullValue())
+  } else {
+    anon_4 := boolToRef(false)}
+  if (boolFromRef(anon_4)) {
+    anon_3 := boolToRef(true)
+  } elseif (xs == nullValue()) {
+    anon_3 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_3 := boolToRef(false)}
+  if (!boolFromRef(anon_3)) {
+    var anon_5: Ref
+    anon_5 := appendNull(NodeFromRef(xs).af_a_Node_tail)
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: info: Generated Viper text for nodeRefl:
+method nodeRefl(xs: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures xs != nullValue() && boolFromRef(aeq_a_Node(xs, xs)) ||
+    xs == nullValue() && xs == nullValue()
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  if (xs != nullValue()) {
+    anon_1 := aeq_a_Node(xs, nullValue())
+  } else {
+    anon_1 := boolToRef(false)}
+  if (boolFromRef(anon_1)) {
+    anon_0 := boolToRef(true)
+  } elseif (xs == nullValue()) {
+    anon_0 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_0 := boolToRef(false)}
+  if (!boolFromRef(anon_0)) {
+    var anon_2: Ref
+    anon_2 := nodeRefl(NodeFromRef(xs).af_a_Node_tail)
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: info: Generated Viper text for appendAssoc:
+function append(xs: Ref, ys: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  requires isSubtype(typeOf(ys), nullable(Node()))
+  ensures isSubtype(typeOf(result), nullable(Node()))
+{
+  (let anon_1_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      ys :
+      null)) in
+    (let anon_2_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, append(NodeFromRef(xs).af_a_Node_tail,
+        ys))) :
+        null)) in
+      (let anon_0_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_1_0 :
+          anon_2_0)) in
+        anon_0_0)))
+}
+
+method appendAssoc(xs: Ref, ys: Ref, zs: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  requires isSubtype(typeOf(ys), nullable(Node()))
+  requires isSubtype(typeOf(zs), nullable(Node()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures append(append(xs, ys), zs) != nullValue() &&
+    boolFromRef(aeq_a_Node(append(append(xs, ys), zs), append(xs, append(ys,
+    zs)))) ||
+    append(append(xs, ys), zs) == nullValue() &&
+    append(xs, append(ys, zs)) == nullValue()
+{
+  var anon_3: Ref
+  var anon_4: Ref
+  if (xs != nullValue()) {
+    anon_4 := aeq_a_Node(xs, nullValue())
+  } else {
+    anon_4 := boolToRef(false)}
+  if (boolFromRef(anon_4)) {
+    anon_3 := boolToRef(true)
+  } elseif (xs == nullValue()) {
+    anon_3 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_3 := boolToRef(false)}
+  if (!boolFromRef(anon_3)) {
+    var anon_5: Ref
+    anon_5 := appendAssoc(NodeFromRef(xs).af_a_Node_tail, ys, zs)
+  } else {
+    var anon_6: Ref
+    anon_6 := nodeRefl(append(ys, zs))
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method nodeRefl(xs: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  ensures isSubtype(typeOf(ret_3), unitType())
+  ensures xs != nullValue() && boolFromRef(aeq_a_Node(xs, xs)) ||
+    xs == nullValue() && xs == nullValue()
+
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: info: Generated Viper text for reverseLength:
+field size: Ref
+
+function append(xs: Ref, ys: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  requires isSubtype(typeOf(ys), nullable(Node()))
+  ensures isSubtype(typeOf(result), nullable(Node()))
+{
+  (let anon_4_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      ys :
+      null)) in
+    (let anon_5_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, append(NodeFromRef(xs).af_a_Node_tail,
+        ys))) :
+        null)) in
+      (let anon_3_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_4_0 :
+          anon_5_0)) in
+        anon_3_0)))
+}
+
+function length(xs: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_1_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      intToRef(0) :
+      null)) in
+    (let anon_2_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        plusInts(intToRef(1), length(NodeFromRef(xs).af_a_Node_tail)) :
+        null)) in
+      (let anon_0_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_1_0 :
+          anon_2_0)) in
+        anon_0_0)))
+}
+
+function reverse(xs: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  ensures isSubtype(typeOf(result), nullable(Node()))
+{
+  (let anon_7_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      nullValue() :
+      null)) in
+    (let anon_8_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        append(reverse(NodeFromRef(xs).af_a_Node_tail), NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, nullValue()))) :
+        null)) in
+      (let anon_6_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_7_0 :
+          anon_8_0)) in
+        anon_6_0)))
+}
+
+method appendLength(xs: Ref, ys: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  requires isSubtype(typeOf(ys), nullable(Node()))
+  ensures isSubtype(typeOf(ret_3), unitType())
+  ensures intFromRef(length(append(xs, ys))) ==
+    intFromRef(length(xs)) + intFromRef(length(ys))
+
+
+method reverseLength(xs: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures intFromRef(length(reverse(xs))) == intFromRef(length(xs))
+{
+  var anon_9: Ref
+  var anon_10: Ref
+  if (xs != nullValue()) {
+    anon_10 := aeq_a_Node(xs, nullValue())
+  } else {
+    anon_10 := boolToRef(false)}
+  if (boolFromRef(anon_10)) {
+    anon_9 := boolToRef(true)
+  } elseif (xs == nullValue()) {
+    anon_9 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_9 := boolToRef(false)}
+  if (!boolFromRef(anon_9)) {
+    var anon_11: Ref
+    var anon_12: Ref
+    anon_11 := reverseLength(NodeFromRef(xs).af_a_Node_tail)
+    anon_12 := appendLength(reverse(NodeFromRef(xs).af_a_Node_tail), NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, nullValue())))
+    assert intFromRef(length(reverse(xs))) ==
+      intFromRef(length(append(reverse(NodeFromRef(xs).af_a_Node_tail), NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, nullValue())))))
+    assert intFromRef(length(nullValue())) == 0
+    assert intFromRef(length(NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, nullValue())))) ==
+      1
+    assert intFromRef(length(xs)) ==
+      1 + intFromRef(length(NodeFromRef(xs).af_a_Node_tail))
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: info: Generated Viper text for node_refl:
+method node_refl(par_r: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_r), Node())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures boolFromRef(aeq_a_Node(par_r, par_r))
+{
+  var l0_t: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  l0_t := NodeFromRef(par_r).af_a_Node_tail
+  if (l0_t != nullValue()) {
+    anon_1 := aeq_a_Node(l0_t, nullValue())
+  } else {
+    anon_1 := boolToRef(false)}
+  if (boolFromRef(anon_1)) {
+    anon_0 := boolToRef(true)
+  } elseif (l0_t == nullValue()) {
+    anon_0 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_0 := boolToRef(false)}
+  if (!boolFromRef(anon_0)) {
+    var anon_2: Ref
+    anon_2 := node_refl(l0_t)
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: info: Generated Viper text for node_sym:
+field size: Ref
+
+method node_sym(a: Ref, b: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), nullable(Node()))
+  requires isSubtype(typeOf(b), nullable(Node()))
+  requires a != nullValue() && boolFromRef(aeq_a_Node(a, b)) ||
+    a == nullValue() && b == nullValue()
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures b != nullValue() && boolFromRef(aeq_a_Node(b, a)) ||
+    b == nullValue() && a == nullValue()
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  if (a != nullValue()) {
+    anon_1 := aeq_a_Node(a, nullValue())
+  } else {
+    anon_1 := boolToRef(false)}
+  if (boolFromRef(anon_1)) {
+    anon_0 := boolToRef(true)
+  } elseif (a == nullValue()) {
+    anon_0 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_0 := boolToRef(false)}
+  if (!boolFromRef(anon_0)) {
+    var anon_2: Ref
+    var anon_3: Ref
+    if (b != nullValue()) {
+      anon_3 := aeq_a_Node(b, nullValue())
+    } else {
+      anon_3 := boolToRef(false)}
+    if (boolFromRef(anon_3)) {
+      anon_2 := boolToRef(true)
+    } elseif (b == nullValue()) {
+      anon_2 := boolToRef(nullValue() == nullValue())
+    } else {
+      anon_2 := boolToRef(false)}
+    if (!boolFromRef(anon_2)) {
+      var ta: Ref
+      var tb: Ref
+      var anon_4: Ref
+      var anon_5: Ref
+      ta := NodeFromRef(a).af_a_Node_tail
+      tb := NodeFromRef(b).af_a_Node_tail
+      if (ta != nullValue()) {
+        anon_5 := aeq_a_Node(ta, nullValue())
+      } else {
+        anon_5 := boolToRef(false)}
+      if (boolFromRef(anon_5)) {
+        anon_4 := boolToRef(true)
+      } elseif (ta == nullValue()) {
+        anon_4 := boolToRef(nullValue() == nullValue())
+      } else {
+        anon_4 := boolToRef(false)}
+      if (!boolFromRef(anon_4)) {
+        var anon_6: Ref
+        var anon_7: Ref
+        if (tb != nullValue()) {
+          anon_7 := aeq_a_Node(tb, nullValue())
+        } else {
+          anon_7 := boolToRef(false)}
+        if (boolFromRef(anon_7)) {
+          anon_6 := boolToRef(true)
+        } elseif (tb == nullValue()) {
+          anon_6 := boolToRef(nullValue() == nullValue())
+        } else {
+          anon_6 := boolToRef(false)}
+        if (!boolFromRef(anon_6)) {
+          var anon_8: Ref
+          assert boolFromRef(aeq_a_Node(ta, tb))
+          anon_8 := node_sym(ta, tb)
+        }
+      }
+    }
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: info: Generated Viper text for node_trans:
+field size: Ref
+
+method node_trans(a: Ref, b: Ref, c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), nullable(Node()))
+  requires isSubtype(typeOf(b), nullable(Node()))
+  requires isSubtype(typeOf(c), nullable(Node()))
+  requires a != nullValue() && boolFromRef(aeq_a_Node(a, b)) ||
+    a == nullValue() && b == nullValue()
+  requires b != nullValue() && boolFromRef(aeq_a_Node(b, c)) ||
+    b == nullValue() && c == nullValue()
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures a != nullValue() && boolFromRef(aeq_a_Node(a, c)) ||
+    a == nullValue() && c == nullValue()
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  if (a != nullValue()) {
+    anon_1 := aeq_a_Node(a, nullValue())
+  } else {
+    anon_1 := boolToRef(false)}
+  if (boolFromRef(anon_1)) {
+    anon_0 := boolToRef(true)
+  } elseif (a == nullValue()) {
+    anon_0 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_0 := boolToRef(false)}
+  if (!boolFromRef(anon_0)) {
+    var anon_2: Ref
+    var anon_3: Ref
+    if (b != nullValue()) {
+      anon_3 := aeq_a_Node(b, nullValue())
+    } else {
+      anon_3 := boolToRef(false)}
+    if (boolFromRef(anon_3)) {
+      anon_2 := boolToRef(true)
+    } elseif (b == nullValue()) {
+      anon_2 := boolToRef(nullValue() == nullValue())
+    } else {
+      anon_2 := boolToRef(false)}
+    if (!boolFromRef(anon_2)) {
+      var anon_4: Ref
+      var anon_5: Ref
+      if (c != nullValue()) {
+        anon_5 := aeq_a_Node(c, nullValue())
+      } else {
+        anon_5 := boolToRef(false)}
+      if (boolFromRef(anon_5)) {
+        anon_4 := boolToRef(true)
+      } elseif (c == nullValue()) {
+        anon_4 := boolToRef(nullValue() == nullValue())
+      } else {
+        anon_4 := boolToRef(false)}
+      if (!boolFromRef(anon_4)) {
+        var ta: Ref
+        var tb: Ref
+        var tc: Ref
+        var anon_6: Ref
+        var anon_7: Ref
+        ta := NodeFromRef(a).af_a_Node_tail
+        tb := NodeFromRef(b).af_a_Node_tail
+        tc := NodeFromRef(c).af_a_Node_tail
+        if (ta != nullValue()) {
+          anon_7 := aeq_a_Node(ta, nullValue())
+        } else {
+          anon_7 := boolToRef(false)}
+        if (boolFromRef(anon_7)) {
+          anon_6 := boolToRef(true)
+        } elseif (ta == nullValue()) {
+          anon_6 := boolToRef(nullValue() == nullValue())
+        } else {
+          anon_6 := boolToRef(false)}
+        if (!boolFromRef(anon_6)) {
+          var anon_8: Ref
+          var anon_9: Ref
+          if (tb != nullValue()) {
+            anon_9 := aeq_a_Node(tb, nullValue())
+          } else {
+            anon_9 := boolToRef(false)}
+          if (boolFromRef(anon_9)) {
+            anon_8 := boolToRef(true)
+          } elseif (tb == nullValue()) {
+            anon_8 := boolToRef(nullValue() == nullValue())
+          } else {
+            anon_8 := boolToRef(false)}
+          if (!boolFromRef(anon_8)) {
+            var anon_10: Ref
+            var anon_11: Ref
+            if (tc != nullValue()) {
+              anon_11 := aeq_a_Node(tc, nullValue())
+            } else {
+              anon_11 := boolToRef(false)}
+            if (boolFromRef(anon_11)) {
+              anon_10 := boolToRef(true)
+            } elseif (tc == nullValue()) {
+              anon_10 := boolToRef(nullValue() == nullValue())
+            } else {
+              anon_10 := boolToRef(false)}
+            if (!boolFromRef(anon_10)) {
+              var anon_12: Ref
+              assert boolFromRef(aeq_a_Node(ta, tb))
+              assert boolFromRef(aeq_a_Node(tb, tc))
+              anon_12 := node_trans(ta, tb, tc)
+            }
+          }
+        }
+      }
+    }
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: info: Generated Viper text for appendCongL:
+field size: Ref
+
+function append(xs: Ref, ys: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  requires isSubtype(typeOf(ys), nullable(Node()))
+  ensures isSubtype(typeOf(result), nullable(Node()))
+{
+  (let anon_1_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      ys :
+      null)) in
+    (let anon_2_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, append(NodeFromRef(xs).af_a_Node_tail,
+        ys))) :
+        null)) in
+      (let anon_0_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_1_0 :
+          anon_2_0)) in
+        anon_0_0)))
+}
+
+method appendCongL(a: Ref, b: Ref, c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), nullable(Node()))
+  requires isSubtype(typeOf(b), nullable(Node()))
+  requires isSubtype(typeOf(c), nullable(Node()))
+  requires a != nullValue() && boolFromRef(aeq_a_Node(a, b)) ||
+    a == nullValue() && b == nullValue()
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures append(a, c) != nullValue() &&
+    boolFromRef(aeq_a_Node(append(a, c), append(b, c))) ||
+    append(a, c) == nullValue() && append(b, c) == nullValue()
+{
+  var anon_3: Ref
+  var anon_4: Ref
+  if (a != nullValue()) {
+    anon_4 := aeq_a_Node(a, nullValue())
+  } else {
+    anon_4 := boolToRef(false)}
+  if (boolFromRef(anon_4)) {
+    anon_3 := boolToRef(true)
+  } elseif (a == nullValue()) {
+    anon_3 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_3 := boolToRef(false)}
+  if (!boolFromRef(anon_3)) {
+    var anon_5: Ref
+    var anon_6: Ref
+    if (b != nullValue()) {
+      anon_6 := aeq_a_Node(b, nullValue())
+    } else {
+      anon_6 := boolToRef(false)}
+    if (boolFromRef(anon_6)) {
+      anon_5 := boolToRef(true)
+    } elseif (b == nullValue()) {
+      anon_5 := boolToRef(nullValue() == nullValue())
+    } else {
+      anon_5 := boolToRef(false)}
+    if (!boolFromRef(anon_5)) {
+      var ta: Ref
+      var tb: Ref
+      var anon_7: Ref
+      var anon_8: Ref
+      var tailA: Ref
+      var anon_19: Ref
+      var anon_20: Ref
+      var tailB: Ref
+      var anon_22: Ref
+      var anon_23: Ref
+      var ac: Ref
+      var bc: Ref
+      var anon_25: Ref
+      var anon_26: Ref
+      ta := NodeFromRef(a).af_a_Node_tail
+      tb := NodeFromRef(b).af_a_Node_tail
+      if (ta != nullValue()) {
+        anon_8 := aeq_a_Node(ta, nullValue())
+      } else {
+        anon_8 := boolToRef(false)}
+      if (boolFromRef(anon_8)) {
+        anon_7 := boolToRef(true)
+      } elseif (ta == nullValue()) {
+        anon_7 := boolToRef(nullValue() == nullValue())
+      } else {
+        anon_7 := boolToRef(false)}
+      if (!boolFromRef(anon_7)) {
+        var anon_9: Ref
+        var anon_10: Ref
+        if (tb != nullValue()) {
+          anon_10 := aeq_a_Node(tb, nullValue())
+        } else {
+          anon_10 := boolToRef(false)}
+        if (boolFromRef(anon_10)) {
+          anon_9 := boolToRef(true)
+        } elseif (tb == nullValue()) {
+          anon_9 := boolToRef(nullValue() == nullValue())
+        } else {
+          anon_9 := boolToRef(false)}
+        if (!boolFromRef(anon_9)) {
+          var anon_11: Ref
+          assert boolFromRef(aeq_a_Node(ta, tb))
+          anon_11 := appendCongL(ta, tb, c)
+        }
+      } else {
+        var anon_12: Ref
+        var anon_13: Ref
+        var anon_15: Ref
+        var anon_16: Ref
+        var anon_17: Ref
+        var anon_18: Ref
+        if (c != nullValue()) {
+          anon_13 := aeq_a_Node(c, nullValue())
+        } else {
+          anon_13 := boolToRef(false)}
+        if (boolFromRef(anon_13)) {
+          anon_12 := boolToRef(true)
+        } elseif (c == nullValue()) {
+          anon_12 := boolToRef(nullValue() == nullValue())
+        } else {
+          anon_12 := boolToRef(false)}
+        if (!boolFromRef(anon_12)) {
+          var anon_14: Ref
+          anon_14 := node_refl(c)
+        }
+        if (append(ta, c) != nullValue()) {
+          anon_16 := aeq_a_Node(append(ta, c), c)
+        } else {
+          anon_16 := boolToRef(false)}
+        if (boolFromRef(anon_16)) {
+          anon_15 := boolToRef(true)
+        } elseif (append(ta, c) == nullValue()) {
+          anon_15 := boolToRef(c == nullValue())
+        } else {
+          anon_15 := boolToRef(false)}
+        assert boolFromRef(anon_15)
+        if (append(tb, c) != nullValue()) {
+          anon_18 := aeq_a_Node(append(tb, c), c)
+        } else {
+          anon_18 := boolToRef(false)}
+        if (boolFromRef(anon_18)) {
+          anon_17 := boolToRef(true)
+        } elseif (append(tb, c) == nullValue()) {
+          anon_17 := boolToRef(c == nullValue())
+        } else {
+          anon_17 := boolToRef(false)}
+        assert boolFromRef(anon_17)
+      }
+      tailA := append(ta, c)
+      if (tailA != nullValue()) {
+        anon_20 := aeq_a_Node(tailA, nullValue())
+      } else {
+        anon_20 := boolToRef(false)}
+      if (boolFromRef(anon_20)) {
+        anon_19 := boolToRef(true)
+      } elseif (tailA == nullValue()) {
+        anon_19 := boolToRef(nullValue() == nullValue())
+      } else {
+        anon_19 := boolToRef(false)}
+      if (!boolFromRef(anon_19)) {
+        var anon_21: Ref
+        anon_21 := node_refl(tailA)
+      }
+      tailB := append(tb, c)
+      if (tailB != nullValue()) {
+        anon_23 := aeq_a_Node(tailB, nullValue())
+      } else {
+        anon_23 := boolToRef(false)}
+      if (boolFromRef(anon_23)) {
+        anon_22 := boolToRef(true)
+      } elseif (tailB == nullValue()) {
+        anon_22 := boolToRef(nullValue() == nullValue())
+      } else {
+        anon_22 := boolToRef(false)}
+      if (!boolFromRef(anon_22)) {
+        var anon_24: Ref
+        anon_24 := node_refl(tailB)
+      }
+      ac := append(a, c)
+      bc := append(b, c)
+      if (ac != nullValue()) {
+        anon_26 := aeq_a_Node(ac, nullValue())
+      } else {
+        anon_26 := boolToRef(false)}
+      if (boolFromRef(anon_26)) {
+        anon_25 := boolToRef(true)
+      } elseif (ac == nullValue()) {
+        anon_25 := boolToRef(nullValue() == nullValue())
+      } else {
+        anon_25 := boolToRef(false)}
+      if (!boolFromRef(anon_25)) {
+        var anon_27: Ref
+        var anon_28: Ref
+        if (bc != nullValue()) {
+          anon_28 := aeq_a_Node(bc, nullValue())
+        } else {
+          anon_28 := boolToRef(false)}
+        if (boolFromRef(anon_28)) {
+          anon_27 := boolToRef(true)
+        } elseif (bc == nullValue()) {
+          anon_27 := boolToRef(nullValue() == nullValue())
+        } else {
+          anon_27 := boolToRef(false)}
+        if (!boolFromRef(anon_27)) {
+          var anon_29: Ref
+          var anon_30: Ref
+          var anon_31: Ref
+          var anon_32: Ref
+          assert intFromRef(NodeFromRef(ac).af_a_Node_head) ==
+            intFromRef(NodeFromRef(a).af_a_Node_head)
+          assert intFromRef(NodeFromRef(bc).af_a_Node_head) ==
+            intFromRef(NodeFromRef(b).af_a_Node_head)
+          if (NodeFromRef(ac).af_a_Node_tail != nullValue()) {
+            anon_30 := aeq_a_Node(NodeFromRef(ac).af_a_Node_tail, append(ta,
+              c))
+          } else {
+            anon_30 := boolToRef(false)}
+          if (boolFromRef(anon_30)) {
+            anon_29 := boolToRef(true)
+          } elseif (NodeFromRef(ac).af_a_Node_tail == nullValue()) {
+            anon_29 := boolToRef(append(ta, c) == nullValue())
+          } else {
+            anon_29 := boolToRef(false)}
+          assert boolFromRef(anon_29)
+          if (NodeFromRef(bc).af_a_Node_tail != nullValue()) {
+            anon_32 := aeq_a_Node(NodeFromRef(bc).af_a_Node_tail, append(tb,
+              c))
+          } else {
+            anon_32 := boolToRef(false)}
+          if (boolFromRef(anon_32)) {
+            anon_31 := boolToRef(true)
+          } elseif (NodeFromRef(bc).af_a_Node_tail == nullValue()) {
+            anon_31 := boolToRef(append(tb, c) == nullValue())
+          } else {
+            anon_31 := boolToRef(false)}
+          assert boolFromRef(anon_31)
+        }
+      }
+    }
+  } else {
+    var anon_33: Ref
+    var anon_34: Ref
+    var anon_36: Ref
+    var anon_37: Ref
+    var anon_38: Ref
+    var anon_39: Ref
+    if (c != nullValue()) {
+      anon_34 := aeq_a_Node(c, nullValue())
+    } else {
+      anon_34 := boolToRef(false)}
+    if (boolFromRef(anon_34)) {
+      anon_33 := boolToRef(true)
+    } elseif (c == nullValue()) {
+      anon_33 := boolToRef(nullValue() == nullValue())
+    } else {
+      anon_33 := boolToRef(false)}
+    if (!boolFromRef(anon_33)) {
+      var anon_35: Ref
+      anon_35 := node_refl(c)
+    }
+    if (append(a, c) != nullValue()) {
+      anon_37 := aeq_a_Node(append(a, c), c)
+    } else {
+      anon_37 := boolToRef(false)}
+    if (boolFromRef(anon_37)) {
+      anon_36 := boolToRef(true)
+    } elseif (append(a, c) == nullValue()) {
+      anon_36 := boolToRef(c == nullValue())
+    } else {
+      anon_36 := boolToRef(false)}
+    assert boolFromRef(anon_36)
+    if (append(b, c) != nullValue()) {
+      anon_39 := aeq_a_Node(append(b, c), c)
+    } else {
+      anon_39 := boolToRef(false)}
+    if (boolFromRef(anon_39)) {
+      anon_38 := boolToRef(true)
+    } elseif (append(b, c) == nullValue()) {
+      anon_38 := boolToRef(c == nullValue())
+    } else {
+      anon_38 := boolToRef(false)}
+    assert boolFromRef(anon_38)
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method node_refl(par_r: Ref) returns (ret_4: Ref)
+  requires isSubtype(typeOf(par_r), Node())
+  ensures isSubtype(typeOf(ret_4), unitType())
+  ensures boolFromRef(aeq_a_Node(par_r, par_r))
+
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: info: Generated Viper text for reverseAppend:
+function append(xs: Ref, ys: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  requires isSubtype(typeOf(ys), nullable(Node()))
+  ensures isSubtype(typeOf(result), nullable(Node()))
+{
+  (let anon_1_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      ys :
+      null)) in
+    (let anon_2_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, append(NodeFromRef(xs).af_a_Node_tail,
+        ys))) :
+        null)) in
+      (let anon_0_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_1_0 :
+          anon_2_0)) in
+        anon_0_0)))
+}
+
+function reverse(xs: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  ensures isSubtype(typeOf(result), nullable(Node()))
+{
+  (let anon_4_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      nullValue() :
+      null)) in
+    (let anon_5_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        append(reverse(NodeFromRef(xs).af_a_Node_tail), NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, nullValue()))) :
+        null)) in
+      (let anon_3_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_4_0 :
+          anon_5_0)) in
+        anon_3_0)))
+}
+
+method appendAssoc(xs: Ref, ys: Ref, zs: Ref) returns (ret_6: Ref)
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  requires isSubtype(typeOf(ys), nullable(Node()))
+  requires isSubtype(typeOf(zs), nullable(Node()))
+  ensures isSubtype(typeOf(ret_6), unitType())
+  ensures append(append(xs, ys), zs) != nullValue() &&
+    boolFromRef(aeq_a_Node(append(append(xs, ys), zs), append(xs, append(ys,
+    zs)))) ||
+    append(append(xs, ys), zs) == nullValue() &&
+    append(xs, append(ys, zs)) == nullValue()
+
+
+method appendCongL(a: Ref, b: Ref, c: Ref) returns (ret_5: Ref)
+  requires isSubtype(typeOf(a), nullable(Node()))
+  requires isSubtype(typeOf(b), nullable(Node()))
+  requires isSubtype(typeOf(c), nullable(Node()))
+  requires a != nullValue() && boolFromRef(aeq_a_Node(a, b)) ||
+    a == nullValue() && b == nullValue()
+  ensures isSubtype(typeOf(ret_5), unitType())
+  ensures append(a, c) != nullValue() &&
+    boolFromRef(aeq_a_Node(append(a, c), append(b, c))) ||
+    append(a, c) == nullValue() && append(b, c) == nullValue()
+
+
+method appendNull(xs: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  ensures isSubtype(typeOf(ret_2), unitType())
+  ensures append(xs, nullValue()) != nullValue() &&
+    boolFromRef(aeq_a_Node(append(xs, nullValue()), xs)) ||
+    append(xs, nullValue()) == nullValue() && xs == nullValue()
+
+
+method node_sym(a: Ref, b: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(a), nullable(Node()))
+  requires isSubtype(typeOf(b), nullable(Node()))
+  requires a != nullValue() && boolFromRef(aeq_a_Node(a, b)) ||
+    a == nullValue() && b == nullValue()
+  ensures isSubtype(typeOf(ret_3), unitType())
+  ensures b != nullValue() && boolFromRef(aeq_a_Node(b, a)) ||
+    b == nullValue() && a == nullValue()
+
+
+method node_trans(a: Ref, b: Ref, c: Ref) returns (ret_7: Ref)
+  requires isSubtype(typeOf(a), nullable(Node()))
+  requires isSubtype(typeOf(b), nullable(Node()))
+  requires isSubtype(typeOf(c), nullable(Node()))
+  requires a != nullValue() && boolFromRef(aeq_a_Node(a, b)) ||
+    a == nullValue() && b == nullValue()
+  requires b != nullValue() && boolFromRef(aeq_a_Node(b, c)) ||
+    b == nullValue() && c == nullValue()
+  ensures isSubtype(typeOf(ret_7), unitType())
+  ensures a != nullValue() && boolFromRef(aeq_a_Node(a, c)) ||
+    a == nullValue() && c == nullValue()
+
+
+method reverseAppend(xs: Ref, ys: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  requires isSubtype(typeOf(ys), nullable(Node()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures reverse(append(xs, ys)) != nullValue() &&
+    boolFromRef(aeq_a_Node(reverse(append(xs, ys)), append(reverse(ys), reverse(xs)))) ||
+    reverse(append(xs, ys)) == nullValue() &&
+    append(reverse(ys), reverse(xs)) == nullValue()
+{
+  var anon_6: Ref
+  var anon_7: Ref
+  if (xs != nullValue()) {
+    anon_7 := aeq_a_Node(xs, nullValue())
+  } else {
+    anon_7 := boolToRef(false)}
+  if (boolFromRef(anon_7)) {
+    anon_6 := boolToRef(true)
+  } elseif (xs == nullValue()) {
+    anon_6 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_6 := boolToRef(false)}
+  if (boolFromRef(anon_6)) {
+    var anon_8: Ref
+    var anon_9: Ref
+    anon_8 := appendNull(reverse(ys))
+    anon_9 := node_sym(append(reverse(ys), nullValue()), reverse(ys))
+  } else {
+    var anon_10: Ref
+    var anon_11: Ref
+    var anon_12: Ref
+    var anon_13: Ref
+    anon_10 := reverseAppend(NodeFromRef(xs).af_a_Node_tail, ys)
+    anon_11 := appendCongL(reverse(append(NodeFromRef(xs).af_a_Node_tail, ys)),
+      append(reverse(ys), reverse(NodeFromRef(xs).af_a_Node_tail)), NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, nullValue())))
+    anon_12 := appendAssoc(reverse(ys), reverse(NodeFromRef(xs).af_a_Node_tail),
+      NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, nullValue())))
+    anon_13 := node_trans(append(reverse(append(NodeFromRef(xs).af_a_Node_tail,
+      ys)), NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, nullValue()))),
+      append(append(reverse(ys), reverse(NodeFromRef(xs).af_a_Node_tail)), NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, nullValue()))),
+      append(reverse(ys), append(reverse(NodeFromRef(xs).af_a_Node_tail), NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, nullValue())))))
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: info: Generated Viper text for appendCongR:
+field size: Ref
+
+function append(xs: Ref, ys: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  requires isSubtype(typeOf(ys), nullable(Node()))
+  ensures isSubtype(typeOf(result), nullable(Node()))
+{
+  (let anon_1_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      ys :
+      null)) in
+    (let anon_2_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, append(NodeFromRef(xs).af_a_Node_tail,
+        ys))) :
+        null)) in
+      (let anon_0_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_1_0 :
+          anon_2_0)) in
+        anon_0_0)))
+}
+
+method appendCongR(a: Ref, b: Ref, c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), nullable(Node()))
+  requires isSubtype(typeOf(b), nullable(Node()))
+  requires isSubtype(typeOf(c), nullable(Node()))
+  requires b != nullValue() && boolFromRef(aeq_a_Node(b, c)) ||
+    b == nullValue() && c == nullValue()
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures append(a, b) != nullValue() &&
+    boolFromRef(aeq_a_Node(append(a, b), append(a, c))) ||
+    append(a, b) == nullValue() && append(a, c) == nullValue()
+{
+  var anon_3: Ref
+  var anon_4: Ref
+  if (a != nullValue()) {
+    anon_4 := aeq_a_Node(a, nullValue())
+  } else {
+    anon_4 := boolToRef(false)}
+  if (boolFromRef(anon_4)) {
+    anon_3 := boolToRef(true)
+  } elseif (a == nullValue()) {
+    anon_3 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_3 := boolToRef(false)}
+  if (!boolFromRef(anon_3)) {
+    var anon_5: Ref
+    var tailB: Ref
+    var tailC: Ref
+    var anon_6: Ref
+    var anon_7: Ref
+    var anon_9: Ref
+    var anon_10: Ref
+    var ab: Ref
+    var ac: Ref
+    var anon_12: Ref
+    var anon_13: Ref
+    anon_5 := appendCongR(NodeFromRef(a).af_a_Node_tail, b, c)
+    tailB := append(NodeFromRef(a).af_a_Node_tail, b)
+    tailC := append(NodeFromRef(a).af_a_Node_tail, c)
+    if (tailB != nullValue()) {
+      anon_7 := aeq_a_Node(tailB, nullValue())
+    } else {
+      anon_7 := boolToRef(false)}
+    if (boolFromRef(anon_7)) {
+      anon_6 := boolToRef(true)
+    } elseif (tailB == nullValue()) {
+      anon_6 := boolToRef(nullValue() == nullValue())
+    } else {
+      anon_6 := boolToRef(false)}
+    if (!boolFromRef(anon_6)) {
+      var anon_8: Ref
+      anon_8 := node_refl(tailB)
+    }
+    if (tailC != nullValue()) {
+      anon_10 := aeq_a_Node(tailC, nullValue())
+    } else {
+      anon_10 := boolToRef(false)}
+    if (boolFromRef(anon_10)) {
+      anon_9 := boolToRef(true)
+    } elseif (tailC == nullValue()) {
+      anon_9 := boolToRef(nullValue() == nullValue())
+    } else {
+      anon_9 := boolToRef(false)}
+    if (!boolFromRef(anon_9)) {
+      var anon_11: Ref
+      anon_11 := node_refl(tailC)
+    }
+    ab := append(a, b)
+    ac := append(a, c)
+    if (ab != nullValue()) {
+      anon_13 := aeq_a_Node(ab, nullValue())
+    } else {
+      anon_13 := boolToRef(false)}
+    if (boolFromRef(anon_13)) {
+      anon_12 := boolToRef(true)
+    } elseif (ab == nullValue()) {
+      anon_12 := boolToRef(nullValue() == nullValue())
+    } else {
+      anon_12 := boolToRef(false)}
+    if (!boolFromRef(anon_12)) {
+      var anon_14: Ref
+      var anon_15: Ref
+      if (ac != nullValue()) {
+        anon_15 := aeq_a_Node(ac, nullValue())
+      } else {
+        anon_15 := boolToRef(false)}
+      if (boolFromRef(anon_15)) {
+        anon_14 := boolToRef(true)
+      } elseif (ac == nullValue()) {
+        anon_14 := boolToRef(nullValue() == nullValue())
+      } else {
+        anon_14 := boolToRef(false)}
+      if (!boolFromRef(anon_14)) {
+        var anon_16: Ref
+        var anon_17: Ref
+        var anon_18: Ref
+        var anon_19: Ref
+        assert intFromRef(NodeFromRef(ab).af_a_Node_head) ==
+          intFromRef(NodeFromRef(a).af_a_Node_head)
+        assert intFromRef(NodeFromRef(ac).af_a_Node_head) ==
+          intFromRef(NodeFromRef(a).af_a_Node_head)
+        if (NodeFromRef(ab).af_a_Node_tail != nullValue()) {
+          anon_17 := aeq_a_Node(NodeFromRef(ab).af_a_Node_tail, tailB)
+        } else {
+          anon_17 := boolToRef(false)}
+        if (boolFromRef(anon_17)) {
+          anon_16 := boolToRef(true)
+        } elseif (NodeFromRef(ab).af_a_Node_tail == nullValue()) {
+          anon_16 := boolToRef(tailB == nullValue())
+        } else {
+          anon_16 := boolToRef(false)}
+        assert boolFromRef(anon_16)
+        if (NodeFromRef(ac).af_a_Node_tail != nullValue()) {
+          anon_19 := aeq_a_Node(NodeFromRef(ac).af_a_Node_tail, tailC)
+        } else {
+          anon_19 := boolToRef(false)}
+        if (boolFromRef(anon_19)) {
+          anon_18 := boolToRef(true)
+        } elseif (NodeFromRef(ac).af_a_Node_tail == nullValue()) {
+          anon_18 := boolToRef(tailC == nullValue())
+        } else {
+          anon_18 := boolToRef(false)}
+        assert boolFromRef(anon_18)
+      }
+    }
+  } else {
+    var anon_20: Ref
+    var anon_21: Ref
+    var anon_23: Ref
+    var anon_24: Ref
+    var anon_26: Ref
+    var anon_27: Ref
+    var anon_28: Ref
+    var anon_29: Ref
+    if (b != nullValue()) {
+      anon_21 := aeq_a_Node(b, nullValue())
+    } else {
+      anon_21 := boolToRef(false)}
+    if (boolFromRef(anon_21)) {
+      anon_20 := boolToRef(true)
+    } elseif (b == nullValue()) {
+      anon_20 := boolToRef(nullValue() == nullValue())
+    } else {
+      anon_20 := boolToRef(false)}
+    if (!boolFromRef(anon_20)) {
+      var anon_22: Ref
+      anon_22 := node_refl(b)
+    }
+    if (c != nullValue()) {
+      anon_24 := aeq_a_Node(c, nullValue())
+    } else {
+      anon_24 := boolToRef(false)}
+    if (boolFromRef(anon_24)) {
+      anon_23 := boolToRef(true)
+    } elseif (c == nullValue()) {
+      anon_23 := boolToRef(nullValue() == nullValue())
+    } else {
+      anon_23 := boolToRef(false)}
+    if (!boolFromRef(anon_23)) {
+      var anon_25: Ref
+      anon_25 := node_refl(c)
+    }
+    if (append(a, b) != nullValue()) {
+      anon_27 := aeq_a_Node(append(a, b), b)
+    } else {
+      anon_27 := boolToRef(false)}
+    if (boolFromRef(anon_27)) {
+      anon_26 := boolToRef(true)
+    } elseif (append(a, b) == nullValue()) {
+      anon_26 := boolToRef(b == nullValue())
+    } else {
+      anon_26 := boolToRef(false)}
+    assert boolFromRef(anon_26)
+    if (append(a, c) != nullValue()) {
+      anon_29 := aeq_a_Node(append(a, c), c)
+    } else {
+      anon_29 := boolToRef(false)}
+    if (boolFromRef(anon_29)) {
+      anon_28 := boolToRef(true)
+    } elseif (append(a, c) == nullValue()) {
+      anon_28 := boolToRef(c == nullValue())
+    } else {
+      anon_28 := boolToRef(false)}
+    assert boolFromRef(anon_28)
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method node_refl(par_r: Ref) returns (ret_4: Ref)
+  requires isSubtype(typeOf(par_r), Node())
+  ensures isSubtype(typeOf(ret_4), unitType())
+  ensures boolFromRef(aeq_a_Node(par_r, par_r))
+
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: info: Generated Viper text for reverseReverseIsId:
+field size: Ref
+
+function append(xs: Ref, ys: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  requires isSubtype(typeOf(ys), nullable(Node()))
+  ensures isSubtype(typeOf(result), nullable(Node()))
+{
+  (let anon_1_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      ys :
+      null)) in
+    (let anon_2_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, append(NodeFromRef(xs).af_a_Node_tail,
+        ys))) :
+        null)) in
+      (let anon_0_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_1_0 :
+          anon_2_0)) in
+        anon_0_0)))
+}
+
+function reverse(xs: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  ensures isSubtype(typeOf(result), nullable(Node()))
+{
+  (let anon_4_0 ==
+    ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+    xs == nullValue() && nullValue() == nullValue() ?
+      nullValue() :
+      null)) in
+    (let anon_5_0 ==
+      ((!(xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+      xs == nullValue() && nullValue() == nullValue()) ?
+        append(reverse(NodeFromRef(xs).af_a_Node_tail), NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, nullValue()))) :
+        null)) in
+      (let anon_3_0 ==
+        ((xs != nullValue() && boolFromRef(aeq_a_Node(xs, nullValue())) ||
+        xs == nullValue() && nullValue() == nullValue() ?
+          anon_4_0 :
+          anon_5_0)) in
+        anon_3_0)))
+}
+
+method appendCongL(a: Ref, b: Ref, c: Ref) returns (ret_6: Ref)
+  requires isSubtype(typeOf(a), nullable(Node()))
+  requires isSubtype(typeOf(b), nullable(Node()))
+  requires isSubtype(typeOf(c), nullable(Node()))
+  requires a != nullValue() && boolFromRef(aeq_a_Node(a, b)) ||
+    a == nullValue() && b == nullValue()
+  ensures isSubtype(typeOf(ret_6), unitType())
+  ensures append(a, c) != nullValue() &&
+    boolFromRef(aeq_a_Node(append(a, c), append(b, c))) ||
+    append(a, c) == nullValue() && append(b, c) == nullValue()
+
+
+method appendCongR(a: Ref, b: Ref, c: Ref) returns (ret_7: Ref)
+  requires isSubtype(typeOf(a), nullable(Node()))
+  requires isSubtype(typeOf(b), nullable(Node()))
+  requires isSubtype(typeOf(c), nullable(Node()))
+  requires b != nullValue() && boolFromRef(aeq_a_Node(b, c)) ||
+    b == nullValue() && c == nullValue()
+  ensures isSubtype(typeOf(ret_7), unitType())
+  ensures append(a, b) != nullValue() &&
+    boolFromRef(aeq_a_Node(append(a, b), append(a, c))) ||
+    append(a, b) == nullValue() && append(a, c) == nullValue()
+
+
+method node_refl(par_r: Ref) returns (ret_4: Ref)
+  requires isSubtype(typeOf(par_r), Node())
+  ensures isSubtype(typeOf(ret_4), unitType())
+  ensures boolFromRef(aeq_a_Node(par_r, par_r))
+
+
+method node_trans(a: Ref, b: Ref, c: Ref) returns (ret_5: Ref)
+  requires isSubtype(typeOf(a), nullable(Node()))
+  requires isSubtype(typeOf(b), nullable(Node()))
+  requires isSubtype(typeOf(c), nullable(Node()))
+  requires a != nullValue() && boolFromRef(aeq_a_Node(a, b)) ||
+    a == nullValue() && b == nullValue()
+  requires b != nullValue() && boolFromRef(aeq_a_Node(b, c)) ||
+    b == nullValue() && c == nullValue()
+  ensures isSubtype(typeOf(ret_5), unitType())
+  ensures a != nullValue() && boolFromRef(aeq_a_Node(a, c)) ||
+    a == nullValue() && c == nullValue()
+
+
+method reverseAppend(xs: Ref, ys: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  requires isSubtype(typeOf(ys), nullable(Node()))
+  ensures isSubtype(typeOf(ret_3), unitType())
+  ensures reverse(append(xs, ys)) != nullValue() &&
+    boolFromRef(aeq_a_Node(reverse(append(xs, ys)), append(reverse(ys), reverse(xs)))) ||
+    reverse(append(xs, ys)) == nullValue() &&
+    append(reverse(ys), reverse(xs)) == nullValue()
+
+
+method reverseReverseIsId(xs: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), nullable(Node()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures reverse(reverse(xs)) != nullValue() &&
+    boolFromRef(aeq_a_Node(reverse(reverse(xs)), xs)) ||
+    reverse(reverse(xs)) == nullValue() && xs == nullValue()
+{
+  var anon_6: Ref
+  var anon_7: Ref
+  if (xs != nullValue()) {
+    anon_7 := aeq_a_Node(xs, nullValue())
+  } else {
+    anon_7 := boolToRef(false)}
+  if (boolFromRef(anon_7)) {
+    anon_6 := boolToRef(true)
+  } elseif (xs == nullValue()) {
+    anon_6 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_6 := boolToRef(false)}
+  if (!boolFromRef(anon_6)) {
+    var h: Ref
+    var anon_8: Ref
+    var anon_9: Ref
+    var anon_10: Ref
+    var anon_11: Ref
+    var xst: Ref
+    var anon_12: Ref
+    var anon_13: Ref
+    var rxs: Ref
+    var anon_15: Ref
+    var anon_16: Ref
+    var rrxs: Ref
+    var anon_18: Ref
+    var anon_19: Ref
+    var rar: Ref
+    var anon_21: Ref
+    var anon_22: Ref
+    var singleton: Ref
+    var anon_25: Ref
+    var anon_26: Ref
+    var anon_27: Ref
+    var anon_28: Ref
+    var anon_29: Ref
+    var anon_30: Ref
+    var anon_31: Ref
+    var anon_32: Ref
+    var anon_33: Ref
+    var anon_34: Ref
+    var anon_35: Ref
+    var anon_36: Ref
+    var anon_37: Ref
+    var anon_38: Ref
+    var anon_39: Ref
+    var anon_40: Ref
+    var hxst: Ref
+    var anon_41: Ref
+    var anon_42: Ref
+    var anon_45: Ref
+    var anon_46: Ref
+    var anon_47: Ref
+    var anon_48: Ref
+    var anon_49: Ref
+    var anon_50: Ref
+    var anon_51: Ref
+    var anon_52: Ref
+    h := NodeToRef(ac_Node(NodeFromRef(xs).af_a_Node_head, nullValue()))
+    anon_8 := reverseReverseIsId(NodeFromRef(xs).af_a_Node_tail)
+    anon_9 := reverseAppend(reverse(NodeFromRef(xs).af_a_Node_tail), h)
+    anon_10 := node_refl(h)
+    anon_11 := node_refl(xs)
+    xst := NodeFromRef(xs).af_a_Node_tail
+    if (xst != nullValue()) {
+      anon_13 := aeq_a_Node(xst, nullValue())
+    } else {
+      anon_13 := boolToRef(false)}
+    if (boolFromRef(anon_13)) {
+      anon_12 := boolToRef(true)
+    } elseif (xst == nullValue()) {
+      anon_12 := boolToRef(nullValue() == nullValue())
+    } else {
+      anon_12 := boolToRef(false)}
+    if (!boolFromRef(anon_12)) {
+      var anon_14: Ref
+      anon_14 := node_refl(xst)
+    }
+    rxs := reverse(xs)
+    if (rxs != nullValue()) {
+      anon_16 := aeq_a_Node(rxs, nullValue())
+    } else {
+      anon_16 := boolToRef(false)}
+    if (boolFromRef(anon_16)) {
+      anon_15 := boolToRef(true)
+    } elseif (rxs == nullValue()) {
+      anon_15 := boolToRef(nullValue() == nullValue())
+    } else {
+      anon_15 := boolToRef(false)}
+    if (!boolFromRef(anon_15)) {
+      var anon_17: Ref
+      anon_17 := node_refl(rxs)
+    }
+    rrxs := reverse(reverse(xs))
+    if (rrxs != nullValue()) {
+      anon_19 := aeq_a_Node(rrxs, nullValue())
+    } else {
+      anon_19 := boolToRef(false)}
+    if (boolFromRef(anon_19)) {
+      anon_18 := boolToRef(true)
+    } elseif (rrxs == nullValue()) {
+      anon_18 := boolToRef(nullValue() == nullValue())
+    } else {
+      anon_18 := boolToRef(false)}
+    if (!boolFromRef(anon_18)) {
+      var anon_20: Ref
+      anon_20 := node_refl(rrxs)
+    }
+    rar := reverse(append(reverse(NodeFromRef(xs).af_a_Node_tail), h))
+    if (rar != nullValue()) {
+      anon_22 := aeq_a_Node(rar, nullValue())
+    } else {
+      anon_22 := boolToRef(false)}
+    if (boolFromRef(anon_22)) {
+      anon_21 := boolToRef(true)
+    } elseif (rar == nullValue()) {
+      anon_21 := boolToRef(nullValue() == nullValue())
+    } else {
+      anon_21 := boolToRef(false)}
+    if (!boolFromRef(anon_21)) {
+      var anon_23: Ref
+      anon_23 := node_refl(rar)
+    }
+    singleton := NodeToRef(ac_Node(NodeFromRef(h).af_a_Node_head, nullValue()))
+    if (!boolFromRef(aeq_a_Node(singleton, nullValue()))) {
+      var anon_24: Ref
+      anon_24 := node_refl(singleton)
+    }
+    if (reverse(NodeFromRef(h).af_a_Node_tail) != nullValue()) {
+      anon_26 := aeq_a_Node(reverse(NodeFromRef(h).af_a_Node_tail), nullValue())
+    } else {
+      anon_26 := boolToRef(false)}
+    if (boolFromRef(anon_26)) {
+      anon_25 := boolToRef(true)
+    } elseif (reverse(NodeFromRef(h).af_a_Node_tail) == nullValue()) {
+      anon_25 := boolToRef(nullValue() == nullValue())
+    } else {
+      anon_25 := boolToRef(false)}
+    assert boolFromRef(anon_25)
+    if (append(reverse(NodeFromRef(h).af_a_Node_tail), singleton) !=
+    nullValue()) {
+      anon_28 := aeq_a_Node(append(reverse(NodeFromRef(h).af_a_Node_tail), singleton),
+        singleton)
+    } else {
+      anon_28 := boolToRef(false)}
+    if (boolFromRef(anon_28)) {
+      anon_27 := boolToRef(true)
+    } elseif (append(reverse(NodeFromRef(h).af_a_Node_tail), singleton) ==
+    nullValue()) {
+      anon_27 := boolToRef(singleton == nullValue())
+    } else {
+      anon_27 := boolToRef(false)}
+    assert boolFromRef(anon_27)
+    if (reverse(h) != nullValue()) {
+      anon_30 := aeq_a_Node(reverse(h), append(reverse(NodeFromRef(h).af_a_Node_tail),
+        singleton))
+    } else {
+      anon_30 := boolToRef(false)}
+    if (boolFromRef(anon_30)) {
+      anon_29 := boolToRef(true)
+    } elseif (reverse(h) == nullValue()) {
+      anon_29 := boolToRef(append(reverse(NodeFromRef(h).af_a_Node_tail), singleton) ==
+        nullValue())
+    } else {
+      anon_29 := boolToRef(false)}
+    assert boolFromRef(anon_29)
+    assert boolFromRef(aeq_a_Node(singleton, h))
+    anon_31 := node_trans(reverse(h), append(reverse(NodeFromRef(h).af_a_Node_tail),
+      singleton), singleton)
+    anon_32 := node_trans(reverse(h), singleton, h)
+    if (reverse(h) != nullValue()) {
+      anon_34 := aeq_a_Node(reverse(h), h)
+    } else {
+      anon_34 := boolToRef(false)}
+    if (boolFromRef(anon_34)) {
+      anon_33 := boolToRef(true)
+    } elseif (reverse(h) == nullValue()) {
+      anon_33 := boolToRef(h == nullValue())
+    } else {
+      anon_33 := boolToRef(false)}
+    assert boolFromRef(anon_33)
+    if (reverse(xs) != nullValue()) {
+      anon_36 := aeq_a_Node(reverse(xs), append(reverse(NodeFromRef(xs).af_a_Node_tail),
+        h))
+    } else {
+      anon_36 := boolToRef(false)}
+    if (boolFromRef(anon_36)) {
+      anon_35 := boolToRef(true)
+    } elseif (reverse(xs) == nullValue()) {
+      anon_35 := boolToRef(append(reverse(NodeFromRef(xs).af_a_Node_tail), h) ==
+        nullValue())
+    } else {
+      anon_35 := boolToRef(false)}
+    assert boolFromRef(anon_35)
+    if (reverse(reverse(xs)) != nullValue()) {
+      anon_38 := aeq_a_Node(reverse(reverse(xs)), reverse(append(reverse(NodeFromRef(xs).af_a_Node_tail),
+        h)))
+    } else {
+      anon_38 := boolToRef(false)}
+    if (boolFromRef(anon_38)) {
+      anon_37 := boolToRef(true)
+    } elseif (reverse(reverse(xs)) == nullValue()) {
+      anon_37 := boolToRef(reverse(append(reverse(NodeFromRef(xs).af_a_Node_tail),
+        h)) ==
+        nullValue())
+    } else {
+      anon_37 := boolToRef(false)}
+    assert boolFromRef(anon_37)
+    if (append(NodeFromRef(h).af_a_Node_tail, NodeFromRef(xs).af_a_Node_tail) !=
+    nullValue()) {
+      anon_40 := aeq_a_Node(append(NodeFromRef(h).af_a_Node_tail, NodeFromRef(xs).af_a_Node_tail),
+        NodeFromRef(xs).af_a_Node_tail)
+    } else {
+      anon_40 := boolToRef(false)}
+    if (boolFromRef(anon_40)) {
+      anon_39 := boolToRef(true)
+    } elseif (append(NodeFromRef(h).af_a_Node_tail, NodeFromRef(xs).af_a_Node_tail) ==
+    nullValue()) {
+      anon_39 := boolToRef(NodeFromRef(xs).af_a_Node_tail == nullValue())
+    } else {
+      anon_39 := boolToRef(false)}
+    assert boolFromRef(anon_39)
+    hxst := append(h, NodeFromRef(xs).af_a_Node_tail)
+    if (hxst != nullValue()) {
+      anon_42 := aeq_a_Node(hxst, nullValue())
+    } else {
+      anon_42 := boolToRef(false)}
+    if (boolFromRef(anon_42)) {
+      anon_41 := boolToRef(true)
+    } elseif (hxst == nullValue()) {
+      anon_41 := boolToRef(nullValue() == nullValue())
+    } else {
+      anon_41 := boolToRef(false)}
+    if (!boolFromRef(anon_41)) {
+      var anon_43: Ref
+      var anon_44: Ref
+      assert intFromRef(NodeFromRef(hxst).af_a_Node_head) ==
+        intFromRef(NodeFromRef(xs).af_a_Node_head)
+      if (NodeFromRef(hxst).af_a_Node_tail != nullValue()) {
+        anon_44 := aeq_a_Node(NodeFromRef(hxst).af_a_Node_tail, append(NodeFromRef(h).af_a_Node_tail,
+          NodeFromRef(xs).af_a_Node_tail))
+      } else {
+        anon_44 := boolToRef(false)}
+      if (boolFromRef(anon_44)) {
+        anon_43 := boolToRef(true)
+      } elseif (NodeFromRef(hxst).af_a_Node_tail == nullValue()) {
+        anon_43 := boolToRef(append(NodeFromRef(h).af_a_Node_tail, NodeFromRef(xs).af_a_Node_tail) ==
+          nullValue())
+      } else {
+        anon_43 := boolToRef(false)}
+      assert boolFromRef(anon_43)
+    }
+    if (append(h, NodeFromRef(xs).af_a_Node_tail) != nullValue()) {
+      anon_46 := aeq_a_Node(append(h, NodeFromRef(xs).af_a_Node_tail), xs)
+    } else {
+      anon_46 := boolToRef(false)}
+    if (boolFromRef(anon_46)) {
+      anon_45 := boolToRef(true)
+    } elseif (append(h, NodeFromRef(xs).af_a_Node_tail) == nullValue()) {
+      anon_45 := boolToRef(xs == nullValue())
+    } else {
+      anon_45 := boolToRef(false)}
+    assert boolFromRef(anon_45)
+    anon_47 := appendCongL(reverse(h), h, reverse(reverse(NodeFromRef(xs).af_a_Node_tail)))
+    anon_48 := appendCongR(h, reverse(reverse(NodeFromRef(xs).af_a_Node_tail)),
+      NodeFromRef(xs).af_a_Node_tail)
+    anon_49 := node_trans(reverse(reverse(xs)), reverse(append(reverse(NodeFromRef(xs).af_a_Node_tail),
+      h)), append(reverse(h), reverse(reverse(NodeFromRef(xs).af_a_Node_tail))))
+    anon_50 := node_trans(reverse(reverse(xs)), append(reverse(h), reverse(reverse(NodeFromRef(xs).af_a_Node_tail))),
+      append(h, reverse(reverse(NodeFromRef(xs).af_a_Node_tail))))
+    anon_51 := node_trans(reverse(reverse(xs)), append(h, reverse(reverse(NodeFromRef(xs).af_a_Node_tail))),
+      append(h, NodeFromRef(xs).af_a_Node_tail))
+    anon_52 := node_trans(reverse(reverse(xs)), append(h, NodeFromRef(xs).af_a_Node_tail),
+      xs)
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Node {
+  ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
+}
+
+/LinkedList.kt: warning: Condition is always 'true'.

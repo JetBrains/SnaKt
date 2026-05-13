@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.formver.core.embeddings.types
 import org.jetbrains.kotlin.formver.core.domains.Injection
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.names.AdtConstructorName
+import org.jetbrains.kotlin.formver.core.names.AdtEqualityFunctionName
 import org.jetbrains.kotlin.formver.core.names.AdtFieldName
 import org.jetbrains.kotlin.formver.core.names.AdtName
 import org.jetbrains.kotlin.formver.core.names.PretypeName
@@ -32,6 +33,8 @@ data class AdtTypeEmbeddingImpl(override val name: ScopedName) : AdtTypeEmbeddin
     val injection: Injection = Injection(name, viperType, RuntimeTypeDomain.classTypeFunc(name))
 
     override val runtimeType = RuntimeTypeDomain.classTypeFunc(name)()
+
+    val equalityFunctionName: AdtEqualityFunctionName = AdtEqualityFunctionName(adtName)
 
     fun getViperConstructorDecl(fields: List<AdtFieldEmbedding>): AdtConstructorDecl =
         AdtConstructorDecl(

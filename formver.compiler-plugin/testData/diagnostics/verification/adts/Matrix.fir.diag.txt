@@ -1,0 +1,243 @@
+/Matrix.kt: info: Generated Viper text for identity:
+function identity(): Ref
+  ensures isSubtype(typeOf(result), Mat2())
+{
+  Mat2ToRef(ac_Mat2(intToRef(1), intToRef(0), intToRef(0), intToRef(1)))
+}
+
+adt a_Mat2 {
+  ac_Mat2(af_a_Mat2_a: Ref, af_a_Mat2_b: Ref, af_a_Mat2_c: Ref, af_a_Mat2_d: Ref)
+}
+
+/Matrix.kt: info: Generated Viper text for zeroMat:
+function zeroMat(): Ref
+  ensures isSubtype(typeOf(result), Mat2())
+{
+  Mat2ToRef(ac_Mat2(intToRef(0), intToRef(0), intToRef(0), intToRef(0)))
+}
+
+adt a_Mat2 {
+  ac_Mat2(af_a_Mat2_a: Ref, af_a_Mat2_b: Ref, af_a_Mat2_c: Ref, af_a_Mat2_d: Ref)
+}
+
+/Matrix.kt: info: Generated Viper text for transpose:
+function transpose(m: Ref): Ref
+  requires isSubtype(typeOf(m), Mat2())
+  ensures isSubtype(typeOf(result), Mat2())
+{
+  Mat2ToRef(ac_Mat2(Mat2FromRef(m).af_a_Mat2_a, Mat2FromRef(m).af_a_Mat2_c, Mat2FromRef(m).af_a_Mat2_b, Mat2FromRef(m).af_a_Mat2_d))
+}
+
+adt a_Mat2 {
+  ac_Mat2(af_a_Mat2_a: Ref, af_a_Mat2_b: Ref, af_a_Mat2_c: Ref, af_a_Mat2_d: Ref)
+}
+
+/Matrix.kt: info: Generated Viper text for addM:
+function addM(x: Ref, y: Ref): Ref
+  requires isSubtype(typeOf(x), Mat2())
+  requires isSubtype(typeOf(y), Mat2())
+  ensures isSubtype(typeOf(result), Mat2())
+{
+  Mat2ToRef(ac_Mat2(plusInts(Mat2FromRef(x).af_a_Mat2_a, Mat2FromRef(y).af_a_Mat2_a), plusInts(Mat2FromRef(x).af_a_Mat2_b,
+  Mat2FromRef(y).af_a_Mat2_b), plusInts(Mat2FromRef(x).af_a_Mat2_c, Mat2FromRef(y).af_a_Mat2_c), plusInts(Mat2FromRef(x).af_a_Mat2_d,
+  Mat2FromRef(y).af_a_Mat2_d)))
+}
+
+adt a_Mat2 {
+  ac_Mat2(af_a_Mat2_a: Ref, af_a_Mat2_b: Ref, af_a_Mat2_c: Ref, af_a_Mat2_d: Ref)
+}
+
+/Matrix.kt: info: Generated Viper text for negM:
+function negM(m: Ref): Ref
+  requires isSubtype(typeOf(m), Mat2())
+  ensures isSubtype(typeOf(result), Mat2())
+{
+  Mat2ToRef(ac_Mat2(negInt(Mat2FromRef(m).af_a_Mat2_a), negInt(Mat2FromRef(m).af_a_Mat2_b), negInt(Mat2FromRef(m).af_a_Mat2_c), negInt(Mat2FromRef(m).af_a_Mat2_d)))
+}
+
+adt a_Mat2 {
+  ac_Mat2(af_a_Mat2_a: Ref, af_a_Mat2_b: Ref, af_a_Mat2_c: Ref, af_a_Mat2_d: Ref)
+}
+
+/Matrix.kt: info: Generated Viper text for subM:
+function addM(x: Ref, y: Ref): Ref
+  requires isSubtype(typeOf(x), Mat2())
+  requires isSubtype(typeOf(y), Mat2())
+  ensures isSubtype(typeOf(result), Mat2())
+{
+  Mat2ToRef(ac_Mat2(plusInts(Mat2FromRef(x).af_a_Mat2_a, Mat2FromRef(y).af_a_Mat2_a), plusInts(Mat2FromRef(x).af_a_Mat2_b,
+  Mat2FromRef(y).af_a_Mat2_b), plusInts(Mat2FromRef(x).af_a_Mat2_c, Mat2FromRef(y).af_a_Mat2_c), plusInts(Mat2FromRef(x).af_a_Mat2_d,
+  Mat2FromRef(y).af_a_Mat2_d)))
+}
+
+function negM(m: Ref): Ref
+  requires isSubtype(typeOf(m), Mat2())
+  ensures isSubtype(typeOf(result), Mat2())
+{
+  Mat2ToRef(ac_Mat2(negInt(Mat2FromRef(m).af_a_Mat2_a), negInt(Mat2FromRef(m).af_a_Mat2_b), negInt(Mat2FromRef(m).af_a_Mat2_c), negInt(Mat2FromRef(m).af_a_Mat2_d)))
+}
+
+function subM(x: Ref, y: Ref): Ref
+  requires isSubtype(typeOf(x), Mat2())
+  requires isSubtype(typeOf(y), Mat2())
+  ensures isSubtype(typeOf(result), Mat2())
+{
+  addM(x, negM(y))
+}
+
+adt a_Mat2 {
+  ac_Mat2(af_a_Mat2_a: Ref, af_a_Mat2_b: Ref, af_a_Mat2_c: Ref, af_a_Mat2_d: Ref)
+}
+
+/Matrix.kt: info: Generated Viper text for scaleM:
+function scaleM(k: Ref, m: Ref): Ref
+  requires isSubtype(typeOf(k), intType())
+  requires isSubtype(typeOf(m), Mat2())
+  ensures isSubtype(typeOf(result), Mat2())
+{
+  Mat2ToRef(ac_Mat2(timesInts(k, Mat2FromRef(m).af_a_Mat2_a), timesInts(k, Mat2FromRef(m).af_a_Mat2_b), timesInts(k,
+  Mat2FromRef(m).af_a_Mat2_c), timesInts(k, Mat2FromRef(m).af_a_Mat2_d)))
+}
+
+adt a_Mat2 {
+  ac_Mat2(af_a_Mat2_a: Ref, af_a_Mat2_b: Ref, af_a_Mat2_c: Ref, af_a_Mat2_d: Ref)
+}
+
+/Matrix.kt: info: Generated Viper text for mulM:
+function mulM(x: Ref, y: Ref): Ref
+  requires isSubtype(typeOf(x), Mat2())
+  requires isSubtype(typeOf(y), Mat2())
+  ensures isSubtype(typeOf(result), Mat2())
+{
+  Mat2ToRef(ac_Mat2(plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_a, Mat2FromRef(y).af_a_Mat2_a),
+  timesInts(Mat2FromRef(x).af_a_Mat2_b, Mat2FromRef(y).af_a_Mat2_c)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_a,
+  Mat2FromRef(y).af_a_Mat2_b), timesInts(Mat2FromRef(x).af_a_Mat2_b, Mat2FromRef(y).af_a_Mat2_d)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_c,
+  Mat2FromRef(y).af_a_Mat2_a), timesInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_c)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_c,
+  Mat2FromRef(y).af_a_Mat2_b), timesInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_d))))
+}
+
+adt a_Mat2 {
+  ac_Mat2(af_a_Mat2_a: Ref, af_a_Mat2_b: Ref, af_a_Mat2_c: Ref, af_a_Mat2_d: Ref)
+}
+
+/Matrix.kt: info: Generated Viper text for adj:
+function adj(m: Ref): Ref
+  requires isSubtype(typeOf(m), Mat2())
+  ensures isSubtype(typeOf(result), Mat2())
+{
+  Mat2ToRef(ac_Mat2(Mat2FromRef(m).af_a_Mat2_d, negInt(Mat2FromRef(m).af_a_Mat2_b), negInt(Mat2FromRef(m).af_a_Mat2_c), Mat2FromRef(m).af_a_Mat2_a))
+}
+
+adt a_Mat2 {
+  ac_Mat2(af_a_Mat2_a: Ref, af_a_Mat2_b: Ref, af_a_Mat2_c: Ref, af_a_Mat2_d: Ref)
+}
+
+/Matrix.kt: info: Generated Viper text for det:
+function det(m: Ref): Ref
+  requires isSubtype(typeOf(m), Mat2())
+  ensures isSubtype(typeOf(result), intType())
+{
+  minusInts(timesInts(Mat2FromRef(m).af_a_Mat2_a, Mat2FromRef(m).af_a_Mat2_d),
+  timesInts(Mat2FromRef(m).af_a_Mat2_b, Mat2FromRef(m).af_a_Mat2_c))
+}
+
+adt a_Mat2 {
+  ac_Mat2(af_a_Mat2_a: Ref, af_a_Mat2_b: Ref, af_a_Mat2_c: Ref, af_a_Mat2_d: Ref)
+}
+
+/Matrix.kt: info: Generated Viper text for trace:
+function trace(m: Ref): Ref
+  requires isSubtype(typeOf(m), Mat2())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(Mat2FromRef(m).af_a_Mat2_a, Mat2FromRef(m).af_a_Mat2_d)
+}
+
+adt a_Mat2 {
+  ac_Mat2(af_a_Mat2_a: Ref, af_a_Mat2_b: Ref, af_a_Mat2_c: Ref, af_a_Mat2_d: Ref)
+}
+
+/Matrix.kt: info: Generated Viper text for transposeInvolution:
+function transpose(m: Ref): Ref
+  requires isSubtype(typeOf(m), Mat2())
+  ensures isSubtype(typeOf(result), Mat2())
+{
+  Mat2ToRef(ac_Mat2(Mat2FromRef(m).af_a_Mat2_a, Mat2FromRef(m).af_a_Mat2_c, Mat2FromRef(m).af_a_Mat2_b, Mat2FromRef(m).af_a_Mat2_d))
+}
+
+method transposeInvolution(m: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(m), Mat2())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures boolFromRef(aeq_a_Mat2(transpose(transpose(m)), m))
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Mat2 {
+  ac_Mat2(af_a_Mat2_a: Ref, af_a_Mat2_b: Ref, af_a_Mat2_c: Ref, af_a_Mat2_d: Ref)
+}
+
+/Matrix.kt: info: Generated Viper text for identityLeftUnit:
+function identity(): Ref
+  ensures isSubtype(typeOf(result), Mat2())
+{
+  Mat2ToRef(ac_Mat2(intToRef(1), intToRef(0), intToRef(0), intToRef(1)))
+}
+
+function mulM(x: Ref, y: Ref): Ref
+  requires isSubtype(typeOf(x), Mat2())
+  requires isSubtype(typeOf(y), Mat2())
+  ensures isSubtype(typeOf(result), Mat2())
+{
+  Mat2ToRef(ac_Mat2(plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_a, Mat2FromRef(y).af_a_Mat2_a),
+  timesInts(Mat2FromRef(x).af_a_Mat2_b, Mat2FromRef(y).af_a_Mat2_c)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_a,
+  Mat2FromRef(y).af_a_Mat2_b), timesInts(Mat2FromRef(x).af_a_Mat2_b, Mat2FromRef(y).af_a_Mat2_d)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_c,
+  Mat2FromRef(y).af_a_Mat2_a), timesInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_c)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_c,
+  Mat2FromRef(y).af_a_Mat2_b), timesInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_d))))
+}
+
+method identityLeftUnit(m: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(m), Mat2())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures boolFromRef(aeq_a_Mat2(mulM(identity(), m), m))
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Mat2 {
+  ac_Mat2(af_a_Mat2_a: Ref, af_a_Mat2_b: Ref, af_a_Mat2_c: Ref, af_a_Mat2_d: Ref)
+}
+
+/Matrix.kt: info: Generated Viper text for identityRightUnit:
+function identity(): Ref
+  ensures isSubtype(typeOf(result), Mat2())
+{
+  Mat2ToRef(ac_Mat2(intToRef(1), intToRef(0), intToRef(0), intToRef(1)))
+}
+
+function mulM(x: Ref, y: Ref): Ref
+  requires isSubtype(typeOf(x), Mat2())
+  requires isSubtype(typeOf(y), Mat2())
+  ensures isSubtype(typeOf(result), Mat2())
+{
+  Mat2ToRef(ac_Mat2(plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_a, Mat2FromRef(y).af_a_Mat2_a),
+  timesInts(Mat2FromRef(x).af_a_Mat2_b, Mat2FromRef(y).af_a_Mat2_c)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_a,
+  Mat2FromRef(y).af_a_Mat2_b), timesInts(Mat2FromRef(x).af_a_Mat2_b, Mat2FromRef(y).af_a_Mat2_d)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_c,
+  Mat2FromRef(y).af_a_Mat2_a), timesInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_c)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_c,
+  Mat2FromRef(y).af_a_Mat2_b), timesInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_d))))
+}
+
+method identityRightUnit(m: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(m), Mat2())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures boolFromRef(aeq_a_Mat2(mulM(m, identity()), m))
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Mat2 {
+  ac_Mat2(af_a_Mat2_a: Ref, af_a_Mat2_b: Ref, af_a_Mat2_c: Ref, af_a_Mat2_d: Ref)
+}
