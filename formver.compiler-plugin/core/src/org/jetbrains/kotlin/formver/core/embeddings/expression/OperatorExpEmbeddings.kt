@@ -128,6 +128,12 @@ object OperatorExpEmbeddings {
         viperImplementation { Exp.Or(args[0], args[1], pos, info, trafos) }
     }
 
+    val Xor = buildBinaryOperator {
+        setName("xorBools")
+        setSignature(booleanBooleanToBooleanType)
+        viperImplementation { Exp.NeCmp(args[0], args[1], pos, info, trafos) }
+    }
+
     val Implies = buildBinaryOperator {
         setName("impliesBools")
         setSignature(booleanBooleanToBooleanType)
@@ -243,7 +249,7 @@ object OperatorExpEmbeddings {
         get() = listOf(
             AddIntInt, SubIntInt, MulIntInt, DivIntInt, RemIntInt, NegInt,
             LeIntInt, GeIntInt, LtIntInt, GtIntInt,
-            Not, And, Or, Implies,
+            Not, And, Or, Implies, Xor,
             AddCharInt, SubCharChar, SubCharInt,
             LeCharChar, GeCharChar, LtCharChar, GtCharChar,
             StringLength, StringGet, AddStringString, AddStringChar,
