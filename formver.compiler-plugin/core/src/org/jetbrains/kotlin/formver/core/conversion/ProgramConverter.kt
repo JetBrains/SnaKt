@@ -37,15 +37,15 @@ import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
  * We need the FirSession to get access to the TypeContext.
  */
 class ProgramConverter(
-    val session: FirSession,
-    override val config: PluginConfiguration,
-    override val errorCollector: ErrorCollector
+    val session: FirSession, override val config: PluginConfiguration, override val errorCollector: ErrorCollector
 ) : ProgramConversionContext {
     private val methods: MutableMap<SymbolicName, FunctionEmbedding> = buildMap {
         putAll(SpecialKotlinFunctions.byName)
         putAll(PartiallySpecialKotlinFunctions.generateAllByName())
     }.toMutableMap()
     private val functions: MutableMap<SymbolicName, PureFunctionEmbedding> = mutableMapOf()
+
+    private val callable: MutableMap<SymbolicName, CallableEmbedding> = mutableMapOf()
 
     override val typeResolver: TypeResolver = TypeResolver()
 
@@ -128,16 +128,11 @@ class ProgramConverter(
     }
 
     private fun createBodyConversionContext(
-        signature: NamedFunctionSignature,
-        target: ReturnTarget
+        signature: NamedFunctionSignature, target: ReturnTarget
     ): StmtConversionContext {
 
         val paramResolver = RootParameterResolver(
-            this@ProgramConverter,
-            signature,
-            signature.symbol.valueParameterSymbols,
-            signature.labelName,
-            target
+            this@ProgramConverter, signature, signature.symbol.valueParameterSymbols, signature.labelName, target
         )
         val stmtCtx = MethodConverter(
             this@ProgramConverter,
@@ -163,10 +158,8 @@ class ProgramConverter(
         )
 
 
-        val wrappedResolver = firSpec.returnVar
-            ?.let { ReturnVarSubstitutor(it, signature.returns) }
-            ?.let { ctx -> SubstitutedReturnParameterResolver(rootResolver, ctx) }
-            ?: rootResolver
+        val wrappedResolver = firSpec.returnVar?.let { ReturnVarSubstitutor(it, signature.returns) }
+            ?.let { ctx -> SubstitutedReturnParameterResolver(rootResolver, ctx) } ?: rootResolver
 
 
         val preconditionContext = MethodConverter(
@@ -247,11 +240,14 @@ class ProgramConverter(
         return embedPureUserFunction(symbol, signature, returnTarget)
     }
 
-    override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding = if (symbol.isPure(session)) {
-        embedPureFunction(symbol)
-    } else {
-        embedFunction(symbol)
-    }
+    override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding =
+        callable.getOrPut(symbol.embedName(this)) {
+            if (symbol.isPure(session)) {
+                embedPureFunction(symbol)
+            } else {
+                embedFunction(symbol)
+            }
+        }
 
     /**
      * Returns an embedding of the class type, with details set.
@@ -427,7 +423,11 @@ class ProgramConverter(
         val firSpec = extractFirSpecification(body, declaration.symbol.resolvedReturnType)
 
 
-        val (preconditionContext, postconditionContext) = createContractConversionContext(signature, firSpec, returnTarget)
+        val (preconditionContext, postconditionContext) = createContractConversionContext(
+            signature,
+            firSpec,
+            returnTarget
+        )
 
         val preconditions = firSpec.precond?.let { preconditionContext.collectInvariants(it) } ?: emptyList()
         val postconditions = firSpec.postcond?.let { postconditionContext.collectInvariants(it) } ?: emptyList()
@@ -443,7 +443,7 @@ class ProgramConverter(
     }
 
     private fun embedProvidedContract(
-        symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, returnTarget : ReturnTarget
+        symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, returnTarget: ReturnTarget
     ): Pair<List<ExpEmbedding>, List<ExpEmbedding>> {
         val kotlinContractPostcondition = embedKotlinContract(signature)
         val userContract = embedFormverContract(symbol, signature, returnTarget)
@@ -452,12 +452,26 @@ class ProgramConverter(
 
     private fun embedFullSignature(symbol: FirFunctionSymbol<*>): Pair<ReturnTarget, FullNamedFunctionSignature> {
         val (returnTarget, signature) = embedFunctionSignature(symbol)
-        val subSignature = object : NamedFunctionSignature, FunctionSignature by signature {
+        val subSignature = object : CallableEmbedding, NamedFunctionSignature, FunctionSignature by signature {
             override val name = symbol.embedName(this@ProgramConverter)
             override val labelName: String
                 get() = super<NamedFunctionSignature>.labelName
             override val symbol = symbol
+
+            override fun insertCall(
+                args: List<ExpEmbedding>, ctx: StmtConversionContext
+            ): ExpEmbedding = when {
+                symbol.shouldBeInlined -> throw SnaktInternalException(
+                    symbol.source, "Inlined functions cannot be called directly"
+                )
+
+                isPure -> FunctionCall(this, args)
+                else -> MethodCall(this, args)
+            }
         }
+
+        callable.putIfAbsent(subSignature.name, subSignature)
+
         val fullSignature = if (symbol is FirConstructorSymbol && symbol.isPrimary) {
             // Constructor
             val constructedClassSymbol =
@@ -549,7 +563,7 @@ class ProgramConverter(
         }
     }
 
-    private fun embedCallable(symbol: FirFunctionSymbol<*>) : RichCallableEmbedding {
+    private fun embedCallable(symbol: FirFunctionSymbol<*>): RichCallableEmbedding {
         val (_, fullSignature) = embedFullSignature(symbol)
         return embedCallable(symbol, fullSignature)
     }
