@@ -19,7 +19,7 @@ fun Locality.meet(other: Locality): Locality =
 fun Locality.join(other: Locality): Locality =
     this?.union(other) ?: other
 
-fun Locality.accepts(other: Locality?): Boolean =
+fun Locality.accepts(other: Locality): Boolean =
     this != null || other == null
 
 val LocalityRenderer = Renderer<Locality> { locality ->

@@ -12,8 +12,10 @@ import org.jetbrains.kotlin.fir.expressions.FirAnonymousFunctionExpression
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
+import org.jetbrains.kotlin.fir.expressions.FirThisReceiverExpression
 import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.references.symbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.fir.types.resolvedType
 
@@ -42,6 +44,9 @@ class ExpressionLocalityContractResolver(session: FirSession) : FirExtensionSess
         when (val expression = expression.unwrapExpression().removeCast()) {
             is FirPropertyAccessExpression ->
                 (expression.calleeReference.symbol as? FirVariableSymbol)
+                    ?.resolveLocalityContract()
+            is FirThisReceiverExpression ->
+                (expression.calleeReference.symbol as? FirReceiverParameterSymbol)
                     ?.resolveLocalityContract()
             is FirAnonymousFunctionExpression ->
                 expression.resolvedType.resolveLocalityContract(session)

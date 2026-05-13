@@ -539,6 +539,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("closure_capture.kt")
+    public void testClosure_capture() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/closure_capture.kt");
+    }
+
+    @Test
     @TestMetadata("default_argument.kt")
     public void testDefault_argument() {
       runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/default_argument.kt");

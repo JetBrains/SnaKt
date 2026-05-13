@@ -11,54 +11,44 @@ import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.context.findClosest
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirPropertyAccessExpressionChecker
-import org.jetbrains.kotlin.fir.declarations.FirControlFlowGraphOwner
-import org.jetbrains.kotlin.fir.declarations.FirDeclaration
-import org.jetbrains.kotlin.fir.declarations.FirProperty
 import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
-import org.jetbrains.kotlin.fir.symbols.SymbolInternals
+import org.jetbrains.kotlin.fir.symbols.impl.FirErrorFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
-import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirLocalPropertySymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirValueParameterSymbol
 import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.INVALID_LOCALITY_CAPTURE
 
 object PropertyAccessLocalityChecker : FirPropertyAccessExpressionChecker(MppCheckerKind.Common) {
-    private fun FirDeclaration.declaresProperty(propertySymbol: FirPropertySymbol): Boolean {
-        val graph = (this as? FirControlFlowGraphOwner)?.controlFlowGraphReference?.controlFlowGraph
-            ?: return false
+    context(context: CheckerContext)
+    private fun FirFunctionSymbol<*>.declares(propertySymbol: FirBasedSymbol<*>): Boolean =
+        when (propertySymbol) {
+            is FirReceiverParameterSymbol -> propertySymbol.containingDeclarationSymbol == this
+            is FirValueParameterSymbol -> propertySymbol.containingDeclarationSymbol == this
+            is FirLocalPropertySymbol -> {
+                val graph = resolvedControlFlowGraphReference?.controlFlowGraph ?: return false
 
-        return graph.nodes.any { node ->
-            (node.fir as? FirProperty)?.symbol == propertySymbol
-        }
-    }
-
-    private fun FirDeclaration.declares(propertySymbol: FirBasedSymbol<*>): Boolean {
-        return when (propertySymbol) {
-            is FirReceiverParameterSymbol -> propertySymbol.containingDeclarationSymbol == symbol
-            is FirValueParameterSymbol -> propertySymbol.containingDeclarationSymbol == symbol
-            is FirPropertySymbol -> declaresProperty(propertySymbol)
+                propertySymbol in graph.resolveLocalPropertySymbols()
+            }
             else -> false
-        }
     }
 
-    @OptIn(SymbolInternals::class)
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirPropertyAccessExpression) {
+        if (expression.resolveLocality() === null) return
+
         val accessSymbol = expression.calleeReference.symbol ?: return
+        val outerSymbol = context.findClosest<FirFunctionSymbol<*>>()
 
-        if (expression.resolveLocality() == null) return
-
-        val outerDeclaration = context.findClosest<FirFunctionSymbol<*>>()?.fir ?: return
-
-        if (outerDeclaration.declares(accessSymbol)) return
+        if (outerSymbol != null && outerSymbol.declares(accessSymbol)) return
 
         reporter.reportOn(
             expression.source,
             INVALID_LOCALITY_CAPTURE,
-            outerDeclaration.symbol,
+            outerSymbol ?: FirErrorFunctionSymbol()
         )
     }
 }

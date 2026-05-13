@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.caches.firCachesFactory
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.expressions.FirExpression
-import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
+import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirThisReceiverExpression
 import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.references.symbol
@@ -42,7 +42,7 @@ class ExpressionLocalityResolver(session: FirSession) : FirExtensionSessionCompo
             is FirThisReceiverExpression ->
                 (expression.calleeReference.symbol as? FirReceiverParameterSymbol)
                     ?.resolveLocality()
-            is FirQualifiedAccessExpression ->
+            is FirPropertyAccessExpression ->
                 (expression.calleeReference.symbol as? FirVariableSymbol)
                     ?.resolveLocality()
             else -> {
