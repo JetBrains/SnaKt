@@ -80,6 +80,9 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
     val isNullable: Boolean
         get() = flags.nullable
 
+    val isValid: Boolean
+        get() = pretype !is InvalidPretypeEmbedding
+
     override val runtimeType: Exp = flags.adjustRuntimeType(pretype.runtimeType)
 
     override fun accessInvariants(ctx: TypeResolver): List<TypeInvariantEmbedding> =

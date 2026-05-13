@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.formver.core.names.AdtName
 import org.jetbrains.kotlin.formver.core.names.ScopedName
 import org.jetbrains.kotlin.formver.viper.ast.*
 
-data class AdtTypeEmbedding(override val name: ScopedName, val isValid: Boolean) : PretypeEmbedding {
+data class AdtTypeEmbedding(override val name: ScopedName) : PretypeEmbedding {
     val adtName: AdtName = AdtName(name)
     val viperType: Type.Adt = Type.Adt(adtName)
     val injection: Injection = Injection(name, viperType, RuntimeTypeDomain.classTypeFunc(name))

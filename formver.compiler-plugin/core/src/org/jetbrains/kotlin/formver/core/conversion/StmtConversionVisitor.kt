@@ -95,6 +95,13 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 "Qualifier ${classSymbol.name} has class kind ${classSymbol.classKind}, expected object"
             )
         val type = data.embedType(resolvedQualifier.resolvedType)
+        if (!type.isValid) {
+            data.errorCollector.addAdtError(
+                resolvedQualifier.source,
+                "Invalid ADT annotation: reference to '${classSymbol.name}' which has an invalid @ADT annotation",
+            )
+            return ErrorExp
+        }
         if (type.pretype !is AdtTypeEmbedding)
             throw SnaktInternalException(
                 resolvedQualifier.source,

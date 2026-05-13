@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.embeddings.properties
 
 import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ErrorExp
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.withNewTypeInvariants
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
@@ -14,11 +15,13 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 // missing getter or setter will never be accessed.
 class ClassPropertyAccess(val receiver: ExpEmbedding, val property: PropertyEmbedding, val type: TypeEmbedding) :
     PropertyAccessEmbedding {
-    override fun getValue(ctx: StmtConversionContext): ExpEmbedding =
-        property.getter!!.getValue(receiver, ctx).withNewTypeInvariants(type, ctx.typeResolver) {
+    override fun getValue(ctx: StmtConversionContext): ExpEmbedding {
+        if (!receiver.type.isValid) return ErrorExp
+        return property.getter!!.getValue(receiver, ctx).withNewTypeInvariants(type, ctx.typeResolver) {
             proven = true
             access = true
         }
+    }
 
     // set value must already have correct type so no need to worry
     override fun setValue(value: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding =

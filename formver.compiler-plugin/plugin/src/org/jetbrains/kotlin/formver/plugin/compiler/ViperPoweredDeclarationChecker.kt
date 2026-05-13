@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirSimpleFunctionChecker
 import org.jetbrains.kotlin.fir.contracts.FirResolvedContractDescription
 import org.jetbrains.kotlin.fir.declarations.FirContractDescriptionOwner
+import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.formver.common.*
@@ -59,12 +60,8 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
             errorCollector.forEachPurityError { source, errorMessage ->
                 reporter.reportOn(source, PluginErrors.PURITY_VIOLATION, errorMessage)
             }
-            errorCollector.forEachAdtError { kind, source, errorMessage ->
-                val errorId = when (kind) {
-                    AdtErrorKind.INVALID_TARGET -> PluginErrors.ADT_INVALID_TARGET
-                    AdtErrorKind.INVALID_USAGE -> PluginErrors.ADT_INVALID_USAGE
-                }
-                reporter.reportOn(source, errorId, errorMessage)
+            errorCollector.forEachAdtError { source, errorMessage ->
+                reporter.reportOn(source, PluginErrors.ADT_VIOLATION, errorMessage)
             }
             if (errorCollector.collectedPurityError()) return
             if (errorCollector.collectedAdtError()) return
@@ -148,6 +145,8 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
     private val dumpExpEmbeddingsId: ClassId = getAnnotationId("DumpExpEmbeddings")
 
     private fun PluginConfiguration.shouldConvert(declaration: FirSimpleFunction): Boolean = when {
+        // Prevent compiler-derived or library functions from being verified
+        declaration.origin != FirDeclarationOrigin.Source -> false
         declaration.hasAnnotation(neverConvertId, session) -> false
         else -> conversionSelection.applicable(declaration)
     }

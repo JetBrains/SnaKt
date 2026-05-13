@@ -27,8 +27,9 @@ class TypeResolver {
 
     /**
      * Collection of all AdtTypeEmbeddings.
+     * A key mapped to `null` means the ADT was encountered but is invalid.
      */
-    private val adtEmbedding = mutableMapOf<SymbolicName, AdtTypeEmbedding>()
+    private val adtEmbedding = mutableMapOf<SymbolicName, AdtTypeEmbedding?>()
 
 
     /**
@@ -61,11 +62,13 @@ class TypeResolver {
 
     fun lookupClassTypeEmbedding(name: SymbolicName) = classEmbedding[name] ?: interfaceEmbedding[name]
 
-    fun registerAdt(typeEmbedding: AdtTypeEmbedding) = adtEmbedding.put(typeEmbedding.name, typeEmbedding)
+    fun registerAdt(typeEmbedding: AdtTypeEmbedding) = adtEmbedding.putIfAbsent(typeEmbedding.name, typeEmbedding)
+    fun invalidateAdt(name: SymbolicName) = adtEmbedding.put(name, null)
+    fun isAdtKnown(name: SymbolicName): Boolean = adtEmbedding.containsKey(name)
 
     fun lookupAdt(name: SymbolicName): AdtTypeEmbedding? = adtEmbedding[name]
 
-    fun adtTypeEmbeddings(): List<AdtTypeEmbedding> = adtEmbedding.values.toList()
+    fun adtTypeEmbeddings(): List<AdtTypeEmbedding> = adtEmbedding.values.filterNotNull()
 
     /**
      * Extends the subtype relation with [subtype] <: [supertype]

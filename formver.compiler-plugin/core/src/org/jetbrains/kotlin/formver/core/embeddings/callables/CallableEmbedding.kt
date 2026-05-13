@@ -19,6 +19,11 @@ interface CallableEmbedding {
     fun insertCall(args: List<ExpEmbedding>, ctx: StmtConversionContext): ExpEmbedding
 }
 
+fun CallableEmbedding.signatureIsValid(): Boolean {
+    val ct = callableType
+    return (listOfNotNull(ct.dispatchReceiverType, ct.extensionReceiverType) + ct.paramTypes + ct.returnType).all { it.isValid }
+}
+
 fun CallableEmbedding.insertCall(
     args: List<ExpEmbedding>,
     ctx: StmtConversionContext,

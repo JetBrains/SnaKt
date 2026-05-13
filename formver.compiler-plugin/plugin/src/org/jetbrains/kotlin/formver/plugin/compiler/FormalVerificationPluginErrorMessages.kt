@@ -78,13 +78,8 @@ object FormalVerificationPluginErrorMessages : BaseDiagnosticRendererFactory() {
             CommonRenderers.STRING,
         )
         map.put(
-            PluginErrors.ADT_INVALID_TARGET,
-            "Invalid ADT annotation: {0}",
-            CommonRenderers.STRING,
-        )
-        map.put(
-            PluginErrors.ADT_INVALID_USAGE,
-            "{0} used an invalid ADT",
+            PluginErrors.ADT_VIOLATION,
+            "{0}",
             CommonRenderers.STRING,
         )
     }

@@ -17,6 +17,7 @@ import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.*
+import org.jetbrains.kotlin.fir.types.isAny
 import org.jetbrains.kotlin.formver.common.*
 import org.jetbrains.kotlin.formver.core.*
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
@@ -87,24 +88,22 @@ class ProgramConverter(
                     )
                 }
             },
-            adts = typeResolver.adtTypeEmbeddings().filter { it.isValid }.map { it.toViper() },
+            adts = typeResolver.adtTypeEmbeddings().map { it.toViper() },
         )
 
 
     fun registerForVerification(declaration: FirSimpleFunction) {
         // Note: it is important that `body` is only set after embedding is complete, as we need to
         // place the embedding in the map before processing the body.
-        if (declaration.symbol.isPure(session)) {
+        val embedding: CallableEmbedding = if (declaration.symbol.isPure(session)) {
             embedPureFunction(declaration.symbol)
         } else {
             embedUserFunction(declaration)
         }
-        // Ensures every function that touches an invalid ADT (signature, body, transitive callee, transitive field)
-        // receives an ADT usage error to communicate the misuse to the user.
-        // TODO: Move this to the linearizer level and annotate the specific touch instead
-        if (errorCollector.collectedAdtErrorOfKind(AdtErrorKind.INVALID_TARGET)) {
+        if (!embedding.signatureIsValid()) {
             errorCollector.addAdtError(
-                AdtErrorKind.INVALID_USAGE, declaration.source, "Function '${declaration.name.asString()}'"
+                declaration.source,
+                "Function '${declaration.name.asString()}' references an invalid type in its signature",
             )
         }
     }
@@ -280,40 +279,41 @@ class ProgramConverter(
         return embedding
     }
 
-    private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding {
+    private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding? {
         val className = symbol.classId.embedName()
-        typeResolver.lookupAdt(className)?.let { return it }
-        return AdtTypeEmbedding(className, isValid = validateAdt(symbol)).also { typeResolver.registerAdt(it) }
+        if (typeResolver.isAdtKnown(className)) return typeResolver.lookupAdt(className)
+        if (!validateAdtSignature(symbol)) {
+            typeResolver.invalidateAdt(className)
+            return null
+        }
+        return AdtTypeEmbedding(className).also { typeResolver.registerAdt(it) }
     }
 
     @OptIn(DirectDeclarationsAccess::class)
-    private fun validateAdt(symbol: FirRegularClassSymbol): Boolean {
+    private fun validateAdtSignature(symbol: FirRegularClassSymbol): Boolean {
         if (!symbol.classKind.isObject || !symbol.isData) {
             errorCollector.addAdtError(
-                AdtErrorKind.INVALID_TARGET, symbol.source, "@ADT may only be applied to data object declarations"
+                symbol.source, "Invalid ADT annotation: @ADT may only be applied to data object declarations"
             )
             return false
         }
         for (declaration in symbol.declarationSymbols) when (declaration) {
             is FirPropertySymbol -> {
                 errorCollector.addAdtError(
-                    AdtErrorKind.INVALID_TARGET, symbol.source, "An @ADT data object must not have fields"
+                    declaration.source, "Invalid ADT annotation: An @ADT data object must not have fields"
                 )
                 return false
             }
-
             is FirNamedFunctionSymbol -> {
                 errorCollector.addAdtError(
-                    AdtErrorKind.INVALID_TARGET, symbol.source, "An @ADT data object must not have member functions"
+                    declaration.source, "Invalid ADT annotation: An @ADT data object must not have member functions"
                 )
                 return false
             }
         }
         if (symbol.resolvedSuperTypes.any { !it.isAny }) {
             errorCollector.addAdtError(
-                AdtErrorKind.INVALID_TARGET,
-                symbol.source,
-                "An @ADT data object must not extend a class or implement an interface"
+                symbol.source, "Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface"
             )
             return false
         }
@@ -592,7 +592,7 @@ class ProgramConverter(
             val classLikeSymbol = type.toClassSymbol(session)
             if (classLikeSymbol is FirRegularClassSymbol) {
                 if (classLikeSymbol.isAdt(session)) {
-                    existing(embedAdtClass(classLikeSymbol))
+                    existing(embedAdtClass(classLikeSymbol) ?: InvalidPretypeEmbedding)
                 } else {
                     existing(embedClass(classLikeSymbol))
                 }
