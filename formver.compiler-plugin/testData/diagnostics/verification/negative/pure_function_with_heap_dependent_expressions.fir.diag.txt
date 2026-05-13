@@ -31,9 +31,16 @@ function getSafeNextValue(node: Ref): Ref
           (unfolding acc(shared(anon_2_0), wildcard) in anon_2_0.value)) :
         null)) in
       (let anon_1_0 ==
-        ((anon_2_0 != nullValue() ? anon_3_0 : nullValue())) in
+        ((anon_2_0 != nullValue() || !(anon_2_0 != nullValue()) ?
+          (anon_2_0 != nullValue() ? anon_3_0 : nullValue()) :
+          null)) in
         (let anon_0_0 ==
-          ((anon_1_0 != nullValue() ? anon_1_0 : intToRef(-1))) in
+          ((anon_1_0 != nullValue() &&
+          (anon_2_0 != nullValue() || !(anon_2_0 != nullValue())) ||
+          !(anon_1_0 != nullValue()) &&
+          (anon_2_0 != nullValue() || !(anon_2_0 != nullValue())) ?
+            (anon_1_0 != nullValue() ? anon_1_0 : intToRef(-1)) :
+            null)) in
           anon_0_0))))
 }
 
@@ -55,15 +62,34 @@ function getSafeNextNextValue(node: Ref): Ref
           (unfolding acc(shared(anon_3_0), wildcard) in anon_3_0.next)) :
         null)) in
       (let anon_2_0 ==
-        ((anon_3_0 != nullValue() ? anon_4_0 : nullValue())) in
+        ((anon_3_0 != nullValue() || !(anon_3_0 != nullValue()) ?
+          (anon_3_0 != nullValue() ? anon_4_0 : nullValue()) :
+          null)) in
         (let anon_5_0 ==
-          ((anon_2_0 != nullValue() ?
+          ((anon_2_0 != nullValue() &&
+          (anon_3_0 != nullValue() || !(anon_3_0 != nullValue())) ?
             (unfolding acc(shared(anon_2_0), wildcard) in anon_2_0.value) :
             null)) in
           (let anon_1_0 ==
-            ((anon_2_0 != nullValue() ? anon_5_0 : nullValue())) in
+            ((anon_2_0 != nullValue() &&
+            (anon_3_0 != nullValue() || !(anon_3_0 != nullValue())) ||
+            !(anon_2_0 != nullValue()) &&
+            (anon_3_0 != nullValue() || !(anon_3_0 != nullValue())) ?
+              (anon_2_0 != nullValue() ? anon_5_0 : nullValue()) :
+              null)) in
             (let anon_0_0 ==
-              ((anon_1_0 != nullValue() ? anon_1_0 : intToRef(0))) in
+              ((anon_1_0 != nullValue() &&
+              (anon_2_0 != nullValue() &&
+              (anon_3_0 != nullValue() || !(anon_3_0 != nullValue())) ||
+              !(anon_2_0 != nullValue()) &&
+              (anon_3_0 != nullValue() || !(anon_3_0 != nullValue()))) ||
+              !(anon_1_0 != nullValue()) &&
+              (anon_2_0 != nullValue() &&
+              (anon_3_0 != nullValue() || !(anon_3_0 != nullValue())) ||
+              !(anon_2_0 != nullValue()) &&
+              (anon_3_0 != nullValue() || !(anon_3_0 != nullValue()))) ?
+                (anon_1_0 != nullValue() ? anon_1_0 : intToRef(0)) :
+                null)) in
               anon_0_0))))))
 }
 
@@ -101,7 +127,10 @@ function sumFirstTwoNodes(node: Ref): Ref
               (unfolding acc(shared(node), wildcard) in node.value) :
               null)) in
             (let anon_0_0 ==
-              ((!(nextNode_0 == nullValue()) ? anon_1_0 : anon_4_0)) in
+              ((!(nextNode_0 == nullValue()) ||
+              !!(nextNode_0 == nullValue()) ?
+                (!(nextNode_0 == nullValue()) ? anon_1_0 : anon_4_0) :
+                null)) in
               anon_0_0))))))
 }
 
@@ -140,7 +169,9 @@ function length(node: Ref): Ref
             plusInts(intToRef(1), length(nextNode_0))) :
           null)) in
         (let anon_0_0 ==
-          ((nextNode_0 == nullValue() ? anon_1_0 : anon_2_0)) in
+          ((nextNode_0 == nullValue() || !(nextNode_0 == nullValue()) ?
+            (nextNode_0 == nullValue() ? anon_1_0 : anon_2_0) :
+            null)) in
           anon_0_0))))
 }
 
@@ -171,7 +202,9 @@ function sumAllNodes(node: Ref): Ref
                 plusInts(anon_3_0, sumAllNodes(nextNode_0)))) :
             null)) in
           (let anon_0_0 ==
-            ((nextNode_0 == nullValue() ? anon_1_0 : anon_2_0)) in
+            ((nextNode_0 == nullValue() || !(nextNode_0 == nullValue()) ?
+              (nextNode_0 == nullValue() ? anon_1_0 : anon_2_0) :
+              null)) in
             anon_0_0)))))
 }
 
@@ -189,16 +222,27 @@ function containsValue(node: Ref, target: Ref): Ref
   (let anon_0_0 ==
     ((unfolding acc(shared(node), wildcard) in node.value)) in
     (let nextNode_0 ==
-      ((unfolding acc(shared(node), wildcard) in node.next)) in
+      ((!(intFromRef(anon_0_0) == intFromRef(target)) ?
+        (unfolding acc(shared(node), wildcard) in node.next) :
+        null)) in
       (let anon_2_0 ==
-        ((!(nextNode_0 == nullValue()) ?
+        ((!(nextNode_0 == nullValue()) &&
+        !(intFromRef(anon_0_0) == intFromRef(target)) ?
           (unfolding acc(shared(node), wildcard) in
             containsValue(nextNode_0, target)) :
           null)) in
         (let anon_3_0 ==
-          ((!!(nextNode_0 == nullValue()) ? boolToRef(false) : null)) in
+          ((!!(nextNode_0 == nullValue()) &&
+          !(intFromRef(anon_0_0) == intFromRef(target)) ?
+            boolToRef(false) :
+            null)) in
           (let anon_1_0 ==
-            ((!(nextNode_0 == nullValue()) ? anon_2_0 : anon_3_0)) in
+            ((!(nextNode_0 == nullValue()) &&
+            !(intFromRef(anon_0_0) == intFromRef(target)) ||
+            !!(nextNode_0 == nullValue()) &&
+            !(intFromRef(anon_0_0) == intFromRef(target)) ?
+              (!(nextNode_0 == nullValue()) ? anon_2_0 : anon_3_0) :
+              null)) in
             (intFromRef(anon_0_0) == intFromRef(target) ?
               boolToRef(true) :
               anon_1_0))))))
@@ -226,9 +270,11 @@ function aliasAndReassign(node: Ref): Ref
               (unfolding acc(shared(alias2_0), wildcard) in alias2_0.value)) :
             null)) in
           (let fallbackValue_2 ==
-            ((!(alias2_0 == nullValue()) ?
-              fallbackValue_1 :
-              fallbackValue_0)) in
+            ((!(alias2_0 == nullValue()) || !!(alias2_0 == nullValue()) ?
+              (!(alias2_0 == nullValue()) ?
+                fallbackValue_1 :
+                fallbackValue_0) :
+              null)) in
             fallbackValue_2)))))
 }
 
@@ -270,9 +316,16 @@ function useIdentityFunction(node: Ref): Ref
         (unfolding acc(shared(sameNode_0), wildcard) in sameNode_0.value) :
         null)) in
       (let anon_1_0 ==
-        ((sameNode_0 != nullValue() ? anon_2_0 : nullValue())) in
+        ((sameNode_0 != nullValue() || !(sameNode_0 != nullValue()) ?
+          (sameNode_0 != nullValue() ? anon_2_0 : nullValue()) :
+          null)) in
         (let anon_0_0 ==
-          ((anon_1_0 != nullValue() ? anon_1_0 : intToRef(0))) in
+          ((anon_1_0 != nullValue() &&
+          (sameNode_0 != nullValue() || !(sameNode_0 != nullValue())) ||
+          !(anon_1_0 != nullValue()) &&
+          (sameNode_0 != nullValue() || !(sameNode_0 != nullValue())) ?
+            (anon_1_0 != nullValue() ? anon_1_0 : intToRef(0)) :
+            null)) in
           anon_0_0))))
 }
 
@@ -299,7 +352,9 @@ function getNextValueUsingId(node: Ref): Ref
                 nextNode_0.value)) :
             null)) in
           (let anon_1_0 ==
-            ((nextNode_0 == nullValue() ? anon_2_0 : anon_3_0)) in
+            ((nextNode_0 == nullValue() || !(nextNode_0 == nullValue()) ?
+              (nextNode_0 == nullValue() ? anon_2_0 : anon_3_0) :
+              null)) in
             anon_1_0)))))
 }
 
