@@ -20,6 +20,13 @@ object LocalityErrorMessages : BaseDiagnosticRendererFactory() {
             LocalityRenderer,
         )
         map.put(
+            LocalityErrors.LOCALITY_CONTRACT_MISMATCH,
+            "{0} locality contract mismatch: expected ''{1}'', actual ''{2}''.",
+            CommonRenderers.STRING,
+            LocalityContractRenderer,
+            LocalityContractRenderer,
+        )
+        map.put(
             LocalityErrors.CONTEXT_LOCALITY_MISMATCH,
             "Locality mismatch for context parameter of type ''{0}'': expected ''{1}'', actual ''{2}''.",
             FirDiagnosticRenderers.RENDER_TYPE,

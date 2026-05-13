@@ -11,10 +11,10 @@ import org.jetbrains.kotlin.fir.caches.firCachesFactory
 import org.jetbrains.kotlin.fir.expressions.FirAnonymousFunctionExpression
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.expressions.FirExpression
-import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
-import org.jetbrains.kotlin.fir.expressions.FirThisReceiverExpression
+import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
 import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.references.symbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.fir.types.resolvedType
@@ -42,21 +42,28 @@ class ExpressionLocalityContractResolver(session: FirSession) : FirExtensionSess
     context(context: CheckerContext)
     fun extractLocalityContractOf(expression: FirExpression): List<Locality>? =
         when (val expression = expression.unwrapExpression().removeCast()) {
-            is FirPropertyAccessExpression ->
-                (expression.calleeReference.symbol as? FirVariableSymbol)
-                    ?.resolveLocalityContract()
-            is FirThisReceiverExpression ->
-                (expression.calleeReference.symbol as? FirReceiverParameterSymbol)
-                    ?.resolveLocalityContract()
+            is FirQualifiedAccessExpression ->
+                when (val symbol = expression.calleeReference.symbol) {
+                    is FirVariableSymbol ->
+                        symbol.resolveLocalityContract()
+                    is FirCallableSymbol ->
+                        symbol.resolveLocalityContract()
+                    is FirReceiverParameterSymbol ->
+                        symbol.resolveLocalityContract()
+                    else -> null
+                }
             is FirAnonymousFunctionExpression ->
                 expression.resolvedType.resolveLocalityContract(session)
-            else -> expression.collectTails()
-                .map { tail -> resolveLocalityContractOf(tail) }
-                .reduceOrNull(LocalityContract::join)
+            else -> {
+                expression.collectTails()
+                    .map { tail -> resolveLocalityContractOf(tail) }
+                    .reduceOrNull(LocalityContract::join)
+            }
         }
 }
 
-private val FirSession.expressionLocalityContractResolver: ExpressionLocalityContractResolver by FirSession.sessionComponentAccessor()
+private val FirSession.expressionLocalityContractResolver: ExpressionLocalityContractResolver
+        by FirSession.sessionComponentAccessor()
 
 context(context: CheckerContext)
 fun FirExpression.resolveLocalityContract(): LocalityContract =

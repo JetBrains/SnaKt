@@ -6,15 +6,18 @@
 package org.jetbrains.kotlin.formver.locality.plugin
 
 import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.types.ConeClassLikeType
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
+import org.jetbrains.kotlin.fir.resolve.fullyExpandedType
 import org.jetbrains.kotlin.fir.types.isSomeFunctionType
-import org.jetbrains.kotlin.fir.types.type
+import org.jetbrains.kotlin.fir.types.lowerBoundIfFlexible
+import org.jetbrains.kotlin.fir.types.valueParameterTypesIncludingReceiver
 
-fun ConeKotlinType.resolveLocalityContract(session: FirSession): LocalityContract =
-    if (isSomeFunctionType(session)) {
-        typeArguments.map { typeArgument ->
-            typeArgument.type?.locality
-        }
-    } else {
-        null
-    }
+fun ConeKotlinType.resolveLocalityContract(session: FirSession): LocalityContract {
+    val functionType = fullyExpandedType(session).lowerBoundIfFlexible() as? ConeClassLikeType
+        ?: return null
+
+    if (!functionType.isSomeFunctionType(session)) return null
+
+    return functionType.valueParameterTypesIncludingReceiver(session).map(ConeKotlinType::locality)
+}

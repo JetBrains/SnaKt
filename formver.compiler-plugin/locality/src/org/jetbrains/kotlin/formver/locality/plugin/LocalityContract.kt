@@ -5,13 +5,34 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
+import org.jetbrains.kotlin.diagnostics.rendering.Renderer
+
 typealias LocalityContract = List<Locality>?
 
 fun LocalityContract.join(other: LocalityContract): LocalityContract =
     when {
         this == null -> other
         other == null -> this
+        size != other.size -> null
         else -> this.zip(other).map { (thisLocality, otherLocality) ->
             thisLocality.meet(otherLocality)
         }
     }
+
+fun LocalityContract.accept(other: LocalityContract): Boolean =
+    when {
+        this == null || other == null -> true
+        size != other.size -> true
+        else -> zip(other).all { (expectedLocality, actualLocality) ->
+            actualLocality.accepts(expectedLocality)
+        }
+    }
+
+val LocalityContractRenderer = Renderer<LocalityContract> { contract ->
+    contract?.joinToString(prefix = "[", postfix = "]") { locality ->
+        when (locality) {
+            null -> "global"
+            LocalityAttribute -> "local"
+        }
+    } ?: "unknown"
+}

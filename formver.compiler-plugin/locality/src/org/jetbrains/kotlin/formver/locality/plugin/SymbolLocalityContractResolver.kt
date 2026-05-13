@@ -5,7 +5,9 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
+import org.jetbrains.kotlin.KtFakeSourceElementKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
+import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.fir.types.ConeErrorType
@@ -14,9 +16,17 @@ context(context: CheckerContext)
 fun FirVariableSymbol<*>.resolveLocalityContract(): LocalityContract {
     if (resolvedReturnType is ConeErrorType) return null
 
+    if (resolvedReturnTypeRef.source?.kind !is KtFakeSourceElementKind.ImplicitTypeRef) {
+        return resolvedReturnType.resolveLocalityContract(context.session)
+    }
+
     return resolvedInitializer?.resolveLocalityContract()
         ?: resolvedReturnType.resolveLocalityContract(context.session)
 }
+
+context(context: CheckerContext)
+fun FirCallableSymbol<*>.resolveLocalityContract(): LocalityContract =
+    resolvedReturnType.resolveLocalityContract(context.session)
 
 context(context: CheckerContext)
 fun FirReceiverParameterSymbol.resolveLocalityContract(): LocalityContract =

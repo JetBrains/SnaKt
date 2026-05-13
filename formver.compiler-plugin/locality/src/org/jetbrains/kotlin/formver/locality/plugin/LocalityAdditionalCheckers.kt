@@ -29,27 +29,27 @@ class LocalityAdditionalCheckers(session: FirSession) : FirAdditionalCheckersExt
 
     override val declarationCheckers: DeclarationCheckers = object : DeclarationCheckers() {
         override val propertyCheckers: Set<FirPropertyChecker>
-            get() = setOf(PropertyLocalityChecker)
+            get() = setOf(PropertyLocalityChecker, PropertyLocalityContractChecker)
 
         override val valueParameterCheckers: Set<FirValueParameterChecker>
-            get() = setOf(ValueParameterLocalityChecker)
+            get() = setOf(ValueParameterLocalityChecker, ValueParameterLocalityContractChecker)
     }
 
     override val expressionCheckers: ExpressionCheckers = object : ExpressionCheckers() {
         override val variableAssignmentCheckers: Set<FirVariableAssignmentChecker>
-            get() = setOf(AssignmentLocalityChecker)
+            get() = setOf(AssignmentLocalityChecker, AssignmentLocalityContractChecker)
 
         override val callCheckers: Set<FirCallChecker>
-            get() = setOf(CallLocalityChecker)
+            get() = setOf(CallLocalityChecker, CallLocalityContractChecker)
 
         override val qualifiedAccessExpressionCheckers: Set<FirQualifiedAccessExpressionChecker>
-            get() = setOf(QualifiedAccessLocalityChecker)
+            get() = setOf(QualifiedAccessLocalityChecker, QualifiedAccessLocalityContractChecker)
 
         override val propertyAccessExpressionCheckers: Set<FirPropertyAccessExpressionChecker>
             get() = setOf(PropertyAccessLocalityChecker)
 
         override val returnExpressionCheckers: Set<FirReturnExpressionChecker>
-            get() = setOf(ReturnLocalityChecker)
+            get() = setOf(ReturnLocalityChecker, ReturnLocalityContractChecker)
 
         override val throwExpressionCheckers: Set<FirThrowExpressionChecker>
             get() = setOf(ThrowLocalityChecker)

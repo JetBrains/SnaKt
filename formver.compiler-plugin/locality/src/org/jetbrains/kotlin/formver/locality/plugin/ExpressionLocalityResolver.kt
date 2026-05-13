@@ -11,9 +11,11 @@ import org.jetbrains.kotlin.fir.caches.firCachesFactory
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
+import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirThisReceiverExpression
 import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.references.symbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 
@@ -39,12 +41,14 @@ class ExpressionLocalityResolver(session: FirSession) : FirExtensionSessionCompo
     context(context: CheckerContext)
     fun extractLocalityOf(expression: FirExpression): Locality =
         when (val expression = expression.unwrapExpression().removeCast()) {
-            is FirThisReceiverExpression ->
-                (expression.calleeReference.symbol as? FirReceiverParameterSymbol)
-                    ?.resolveLocality()
-            is FirPropertyAccessExpression ->
-                (expression.calleeReference.symbol as? FirVariableSymbol)
-                    ?.resolveLocality()
+            is FirQualifiedAccessExpression ->
+                when (val symbol = expression.calleeReference.symbol) {
+                    is FirVariableSymbol ->
+                        symbol.resolveLocality()
+                    is FirReceiverParameterSymbol ->
+                        symbol.resolveLocality()
+                    else -> null
+                }
             else -> {
                 expression.collectTails()
                     .map { tail -> resolveLocalityOf(tail) }
