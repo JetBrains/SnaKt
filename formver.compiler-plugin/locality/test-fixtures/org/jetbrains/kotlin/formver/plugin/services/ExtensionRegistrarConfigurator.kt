@@ -21,5 +21,3 @@ class LocalityExtensionRegistrarConfigurator(testServices: TestServices) : Envir
         FirExtensionRegistrarAdapter.registerExtension(LocalityExtensionRegistrar())
     }
 }
-
-
