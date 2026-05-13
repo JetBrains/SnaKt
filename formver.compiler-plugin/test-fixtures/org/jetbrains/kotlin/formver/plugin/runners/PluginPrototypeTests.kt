@@ -30,7 +30,7 @@ fun getTestMode(): TestMode {
         "UPDATE" -> TestMode.UPDATE
         "FULL" -> TestMode.FULL
         null -> TestMode.FULL
-        else -> throw IllegalStateException("Unknown test mode: ${System.getProperty("formver.testMode")}")
+        else -> error("Unknown test mode: ${System.getProperty("formver.testMode")}")
     }
 }
 
@@ -53,7 +53,7 @@ fun getTestMode(): TestMode {
  * - FULL: runs all conversions and verification
  * Use case: Use before open PR and in the CI
  */
-abstract class AbstractPhasedDiagnosticTest() : AbstractKotlinCompilerWithTargetBackendTest(TargetBackend.JVM_IR) {
+abstract class AbstractPhasedDiagnosticTest : AbstractKotlinCompilerWithTargetBackendTest(TargetBackend.JVM_IR) {
     override fun configure(builder: TestConfigurationBuilder) = with(builder) {
         defaultDirectives {
             LATEST_PHASE_IN_PIPELINE with TestPhase.FRONTEND

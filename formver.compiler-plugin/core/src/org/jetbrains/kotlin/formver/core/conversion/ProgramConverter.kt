@@ -357,7 +357,6 @@ class ProgramConverter(
             action(param)
         }
 
-
     override fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): Pair<ReturnTarget, FunctionSignature> {
         val dispatchReceiverType = symbol.receiverType
         val extensionReceiverType = symbol.extensionReceiverType

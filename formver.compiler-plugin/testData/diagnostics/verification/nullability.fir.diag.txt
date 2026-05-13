@@ -1,8 +1,0 @@
-/nullability.kt: info: Generated Viper text for return_null:
-method return_null() returns (v_ret_0: Ref)
-  ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
-{
-  v_ret_0 := nullValue()
-  goto lbl_ret_0
-  label lbl_ret_0
-}

@@ -31,7 +31,7 @@ class DiagnosticsCollector(val testServices: TestServices) : TestService {
         if (diagnostics.isEmpty()) return null
         val fileName = testServices.moduleStructure.originalTestDataFiles.single().name
 
-        class DiagnosticData(val textRanges: List<TextRange>, val severity: String, val message: String)
+        data class DiagnosticData(val textRanges: List<TextRange>, val severity: String, val message: String)
 
         val reportedDiagnostics = diagnostics
             .map {
