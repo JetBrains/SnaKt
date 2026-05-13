@@ -26,6 +26,7 @@ dependencies {
     testFixturesApi(kotlin("compiler-internal-test-framework"))
     testFixturesApi(kotlin("compiler"))
     implementation(project(":formver.common"))
+    implementation(project(":formver.annotations"))
 
 
     testRuntimeOnly("junit:junit:4.13.2")
@@ -39,15 +40,11 @@ idea {
     module.generatedSourceDirs.add(projectDir.resolve("test-gen"))
 }
 
-val annotationsRuntimeClasspath: Configuration by configurations.creating { isTransitive = false }
-
 fun Test.configureFormverTest() {
-    dependsOn(annotationsRuntimeClasspath)
 
     useJUnitPlatform()
     workingDir = rootDir
 
-    systemProperty("annotationsRuntime.classpath", annotationsRuntimeClasspath.asPath)
 
     // Properties required to run the internal test framework.
     setLibraryProperty("org.jetbrains.kotlin.test.kotlin-stdlib", "kotlin-stdlib")
@@ -79,7 +76,7 @@ val generateTests by tasks.registering(JavaExec::class) {
     workingDir = rootDir
 }
 
-// ./gradlew test — normal mode (full verification)
+// Run locality checks
 tasks.test {
     configureFormverTest()
 }
