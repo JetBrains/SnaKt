@@ -35,8 +35,8 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
         get() = listOf(FormVerDirectives)
 
     override fun ExtensionStorage.registerCompilerExtensions(module: TestModule, configuration: CompilerConfiguration) {
-        if (FULL_VIPER_DUMP in module.directives && RENDER_PREDICATES in module.directives) {
-            throw IllegalArgumentException("Directives FULL_VIPER_DUMP and RENDER_PREDICATES cannot be present in the same test file.")
+        require(!(FULL_VIPER_DUMP in module.directives && RENDER_PREDICATES in module.directives)) {
+            "Directives FULL_VIPER_DUMP and RENDER_PREDICATES cannot be present in the same test file."
         }
 
         val logLevel = when {

@@ -43,6 +43,8 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
+      - name: Run detekt
+        run: ./gradlew detekt
       - name: Run all tests (conversion + verification)
         run: ./gradlew :formver.compiler-plugin:test
       - name: Report failing test results

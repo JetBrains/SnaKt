@@ -101,7 +101,7 @@ class TagCollector(
      */
     private fun expectedFileWithoutVerificationError(): String {
         parseExistingMetadataInfosFromAllSources()
-        val existingInfosWithoutVerification = existingInfos.mapValues { it ->
+        val existingInfosWithoutVerification = existingInfos.mapValues {
             it.value.filter { it.tag !in VerificationErrors.tags() }
         }
 

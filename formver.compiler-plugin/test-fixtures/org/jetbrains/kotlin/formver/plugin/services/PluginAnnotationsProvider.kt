@@ -24,12 +24,11 @@ private const val ANNOTATIONS_JAR_DIR = "formver.annotations/build/libs/"
 private val JVM_ANNOTATIONS_JAR_FILTER = createFilter("formver.annotations", ".jar")
 
 private fun findJvmLib(): File {
-    return findLib("jvm", ".jar", JVM_ANNOTATIONS_JAR_FILTER)
+    return findLib(".jar", JVM_ANNOTATIONS_JAR_FILTER)
 }
 
-@Suppress("warnings") // TODO
-private fun findLib(platform: String, extension: String, filter: FilenameFilter): File {
-    return findLibFromProperty(platform, extension)
+private fun findLib(extension: String, filter: FilenameFilter): File {
+    return findLibFromProperty(extension)
         ?: findLibByPath(filter)
         ?: error("Lib with annotations does not exist. Please run :formver.annotations:build or specify annotationsRuntime.classpath system property")
 }
@@ -44,7 +43,7 @@ private fun findLibByPath(filter: FilenameFilter): File? {
     return libDir.listFiles(filter)?.firstOrNull()
 }
 
-private fun findLibFromProperty(platform: String, extension: String): File? {
+private fun findLibFromProperty(extension: String): File? {
     val formverPluginAnnotationsPath = System.getProperty("annotationsRuntime.classpath") ?: return null
     return File(formverPluginAnnotationsPath).takeIf {
         it.isFile &&

@@ -55,7 +55,7 @@ interface FieldEmbedding {
 
 }
 
-class UserFieldEmbedding(
+data class UserFieldEmbedding(
     override val name: ScopedName,
     override val type: TypeEmbedding,
     override val symbol: FirPropertySymbol,

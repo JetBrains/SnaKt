@@ -53,7 +53,6 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
         inputArtifact: FirOutputArtifact
     ): FirOutputArtifact {
         inputArtifact.partsForDependsOnModules.forEach { part ->
-            val currentModule = part.module
             val toVerify: MutableList<Pair<TestFile, FirSimpleFunction>> = mutableListOf()
             part.firFiles.map { (testFile, firFile) ->
                 firFile.accept(object : FirDefaultVisitorVoid() {
@@ -99,10 +98,11 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
         val program = decl.viperProgram!!
         val onFailure = { err: VerifierError ->
             when (err) {
-                is ConsistencyError -> {}
+                is ConsistencyError -> Unit
                 is VerificationError -> {
                     val diagnostics = formatVerificationError(err, decl, module)
-                    val unsued = results.add(diagnostics)
+                    results.add(diagnostics)
+                    Unit
                 }
             }
         }

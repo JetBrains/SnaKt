@@ -67,7 +67,7 @@ interface Function : IntoSilver<viper.silver.ast.Function>, Applicable {
     ): Exp.FuncApp = Exp.FuncApp(name, args, retType, pos, info, trafos)
 }
 
-class UserFunction(
+data class UserFunction(
     override val name: SymbolicName,
     override val formalArgs: List<Declaration.LocalVarDecl>,
     override val retType: Type,

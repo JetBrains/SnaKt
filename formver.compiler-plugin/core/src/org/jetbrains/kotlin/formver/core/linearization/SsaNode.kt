@@ -16,7 +16,7 @@ sealed interface SsaNode {
     fun resolveVariableName(name: SymbolicName): SymbolicName
 }
 
-class SsaStartNode() : SsaNode {
+class SsaStartNode : SsaNode {
     override fun resolveVariableName(name: SymbolicName): SymbolicName =
         name
 }

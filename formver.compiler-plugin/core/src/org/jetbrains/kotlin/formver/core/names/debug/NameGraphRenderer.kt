@@ -74,6 +74,7 @@ class NameGraphRenderer(val shortNameResolver: ShortNameResolver) {
      *
      * If `showCurrent` is true, the graph will also show the current candidate for each name.
      */
+    @Suppress("detekt:CyclomaticComplexMethod")
     fun render(showCollisions: Boolean = true, showCurrent: Boolean = true): String {
 
         if (tripleStore.isEmpty()) registerRelation()
