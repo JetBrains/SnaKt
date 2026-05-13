@@ -95,7 +95,7 @@ class ProgramConverter(
     fun registerForVerification(declaration: FirSimpleFunction) {
         // Note: it is important that `body` is only set after embedding is complete, as we need to
         // place the embedding in the map before processing the body.
-        if (declaration.symbol.isPure(session)) {
+        val embedding: CallableEmbedding = if (declaration.symbol.isPure(session)) {
             embedPureFunction(declaration.symbol)
         } else {
             embedUserFunction(declaration)
@@ -587,7 +587,7 @@ class ProgramConverter(
             val classLikeSymbol = type.toClassSymbol(session)
             if (classLikeSymbol is FirRegularClassSymbol) {
                 if (classLikeSymbol.isAdt(session)) {
-                    existing(embedAdtClass(classLikeSymbol))
+                    existing(embedAdtClass(classLikeSymbol) ?: InvalidPretypeEmbedding)
                 } else {
                     existing(embedClass(classLikeSymbol))
                 }
