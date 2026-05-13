@@ -1,0 +1,48 @@
+/empty.kt: info: Generated Viper text for bothEmpty:
+method bothEmpty(par_arg: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_arg), boolType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  v_ret_0 := par_arg
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/empty.kt: info: Generated Viper text for preEmpty:
+method preEmpty(par_arg: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_arg), boolType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == boolFromRef(par_arg)
+{
+  v_ret_0 := par_arg
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/empty.kt: info: Generated Viper text for postEmpty:
+method postEmpty(par_arg: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_arg), boolType())
+  requires boolFromRef(par_arg) == true
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  v_ret_0 := par_arg
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/empty.kt: info: Generated Viper text for testInsertedReturn:
+method testInsertedReturn() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  goto lbl_ret_0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/empty.kt: error: 'return' is prohibited here.
+
+/empty.kt: error: 'return' is prohibited here.
+
+/empty.kt: error: An internal error has occurred.
+Details: Every statement in invariant block must be a pure boolean invariant.
+Please report this at https://github.com/jesyspa/kotlin
