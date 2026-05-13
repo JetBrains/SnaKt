@@ -2,8 +2,8 @@
 Function(
     name = f,
     {
-        Declare(Var(foo), [c$[pkg$]$[c$Foo]], MethodCall(callee = con, Int(0)));
-        Declare(Var(l0_p), [c$[pkg$]$[c$Pair]], AdtConstructorRef(Int(1), Int(2)));
+        Declare(Var(foo), [pkg$[c$Foo]], MethodCall(callee = con, Int(0)));
+        Declare(Var(l0_p), [pkg$[c$Pair]], AdtConstructorRef(Int(1), Int(2)));
     },
     return = lbl_ret_0,
 )
@@ -275,15 +275,15 @@ domain rt  {
   }
 
   axiom {
-    (forall p: a_Pair ::
-      { typeOf(p.af_a_Pair_a) }
-      isSubtype(typeOf(p.af_a_Pair_a), intType()))
+    (forall v_p: a_Pair ::
+      { typeOf(v_p.af_a_Pair_a) }
+      isSubtype(typeOf(v_p.af_a_Pair_a), intType()))
   }
 
   axiom {
-    (forall p: a_Pair ::
-      { typeOf(p.af_a_Pair_b) }
-      isSubtype(typeOf(p.af_a_Pair_b), intType()))
+    (forall v_p: a_Pair ::
+      { typeOf(v_p.af_a_Pair_b) }
+      isSubtype(typeOf(v_p.af_a_Pair_b), intType()))
   }
 }
 
@@ -449,8 +449,8 @@ method f() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method havoc() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), intType())
+method havoc() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
 
 
 adt a_Pair {

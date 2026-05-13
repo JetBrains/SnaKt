@@ -70,8 +70,11 @@ class TypeResolver {
 
     fun lookupClassTypeEmbedding(name: SymbolicName) = classEmbedding[name] ?: interfaceEmbedding[name]
 
-    fun getOrRegisterAdt(name: SymbolicName, create: () -> AdtTypeEmbedding): AdtTypeEmbedding =
-        adtEmbedding.getOrPut(name, create)
+    fun lookupAdtTypeEmbedding(name: SymbolicName): AdtTypeEmbedding? = adtEmbedding[name]
+
+    fun registerAdt(name: SymbolicName, embedding: AdtTypeEmbedding) {
+        adtEmbedding[name] = embedding
+    }
 
     fun adtTypeEmbeddings(): List<AdtTypeEmbeddingImpl> = adtEmbedding.values.filterIsInstance<AdtTypeEmbeddingImpl>()
 

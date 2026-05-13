@@ -22,72 +22,6 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
   }
 
   @Nested
-  @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion")
-  @TestDataPath("$PROJECT_ROOT")
-  public class Conversion {
-    @Test
-    public void testAllFilesPresentInConversion() {
-      KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/conversion"), Pattern.compile("^(.+)\\.kt$"), null, true);
-    }
-
-    @Test
-    @TestMetadata("basic.kt")
-    public void testBasic() {
-      runTest("formver.compiler-plugin/testData/diagnostics/conversion/basic.kt");
-    }
-
-    @Test
-    @TestMetadata("full_viper_dump.kt")
-    public void testFull_viper_dump() {
-      runTest("formver.compiler-plugin/testData/diagnostics/conversion/full_viper_dump.kt");
-    }
-
-    @Nested
-    @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/adts")
-    @TestDataPath("$PROJECT_ROOT")
-    public class Adts {
-      @Test
-      public void testAllFilesPresentInAdts() {
-        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/conversion/adts"), Pattern.compile("^(.+)\\.kt$"), null, true);
-      }
-
-      @Test
-      @TestMetadata("data_classes.kt")
-      public void testData_classes() {
-        runTest("formver.compiler-plugin/testData/diagnostics/conversion/adts/data_classes.kt");
-      }
-
-      @Test
-      @TestMetadata("singleton.kt")
-      public void testSingleton() {
-        runTest("formver.compiler-plugin/testData/diagnostics/conversion/adts/singleton.kt");
-      }
-    }
-
-    @Nested
-    @TestMetadata("formver.compiler-plugin/testData/diagnostics/conversion/predicates")
-    @TestDataPath("$PROJECT_ROOT")
-    public class Predicates {
-      @Test
-      public void testAllFilesPresentInPredicates() {
-        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/conversion/predicates"), Pattern.compile("^(.+)\\.kt$"), null, true);
-      }
-
-      @Test
-      @TestMetadata("predicates.kt")
-      public void testPredicates() {
-        runTest("formver.compiler-plugin/testData/diagnostics/conversion/predicates/predicates.kt");
-      }
-
-      @Test
-      @TestMetadata("unique_predicates.kt")
-      public void testUnique_predicates() {
-        runTest("formver.compiler-plugin/testData/diagnostics/conversion/predicates/unique_predicates.kt");
-      }
-    }
-  }
-
-  @Nested
   @TestMetadata("formver.compiler-plugin/testData/diagnostics/expensive_verification")
   @TestDataPath("$PROJECT_ROOT")
   public class Expensive_verification {
@@ -461,6 +395,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @Test
       public void testAllFilesPresentInAdts() {
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/adts"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("data_classes.kt")
+      public void testData_classes() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/data_classes.kt");
       }
 
       @Test

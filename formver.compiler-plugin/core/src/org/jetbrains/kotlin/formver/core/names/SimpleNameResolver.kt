@@ -1,9 +1,9 @@
 package org.jetbrains.kotlin.formver.core.names
 
-import org.jetbrains.kotlin.formver.core.names.longName
-import org.jetbrains.kotlin.formver.viper.AnyName
-import org.jetbrains.kotlin.formver.viper.NameResolver
-import org.jetbrains.kotlin.formver.viper.SymbolicName
+import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
+import org.jetbrains.kotlin.formver.core.names.*
+import org.jetbrains.kotlin.formver.viper.*
 
 /**
  * Resolver that gives every name its fully-disambiguated form, without
@@ -132,7 +132,7 @@ class SimpleNameResolver : NameResolver {
                 is DomainFuncParameterName -> listOf(name.name)
                 ExtensionReceiverName -> listOf("this", "extension")
                 is HavocName -> resolveParts(name.type.name)
-                PlaceholderReturnVariableName -> listOf("ret")
+                FunctionResultVariableName -> listOf("ret")
                 is SpecialFieldName -> listOf(name.name)
             }
             return listOfNotNull(typeParts) + nameParts

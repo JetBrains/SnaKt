@@ -30,9 +30,6 @@ interface FunctionSignature {
         get() = listOfNotNull(dispatchReceiver, extensionReceiver) + params
 }
 
-fun FunctionSignature.signatureIsValid(): Boolean =
-    (formalArgs.map { it.type } + callableType.returnType).all { it.isValid }
-
 abstract class GenericFunctionSignatureMixin : FunctionSignature {
     override val dispatchReceiver: VariableEmbedding?
         get() = callableType.dispatchReceiverType?.let { PlaceholderVariableEmbedding(DispatchReceiverName, it) }

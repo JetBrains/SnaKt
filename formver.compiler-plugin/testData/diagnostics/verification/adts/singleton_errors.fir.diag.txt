@@ -1,0 +1,52 @@
+/singleton_errors.kt: error: Invalid ADT annotation: @ADT may only be applied to data class or data object declarations
+
+/singleton_errors.kt: error: Invalid ADT annotation: @ADT may only be applied to data class or data object declarations
+
+/singleton_errors.kt: error: Invalid ADT annotation: An @ADT declaration may only declare fields in its primary constructor
+
+/singleton_errors.kt: error: Invalid ADT annotation: An @ADT declaration must not have user-declared member functions
+
+/singleton_errors.kt: error: Invalid ADT annotation: @ADT may only be applied to data class or data object declarations
+
+/singleton_errors.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/singleton_errors.kt: error: Function 'triggerNotAnObject' references an invalid ADT
+
+/singleton_errors.kt: error: Function 'triggerNotDataObject' references an invalid ADT
+
+/singleton_errors.kt: error: Function 'triggerWithField' references an invalid ADT
+
+/singleton_errors.kt: error: Function 'triggerWithFunction' references an invalid ADT
+
+/singleton_errors.kt: error: Function 'triggerWithSupertype' references an invalid ADT
+
+/singleton_errors.kt: error: Function 'triggerWithAssignment' references an invalid ADT
+
+/singleton_errors.kt: error: Invalid ADT annotation: reference to 'TriggeredByAssignment' which has an invalid @ADT annotation
+
+/singleton_errors.kt: info: Generated Viper text for validParameter:
+method validParameter(a: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), Valid())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Valid {
+  ac_Valid()
+}
+
+/singleton_errors.kt: info: Generated Viper text for validLocalVariable:
+method validLocalVariable() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var x: Ref
+  x := ValidToRef(ac_Valid())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Valid {
+  ac_Valid()
+}

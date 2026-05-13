@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtFieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbeddingImpl
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.core.purity.PurityContext
@@ -62,7 +63,7 @@ data class PrimitiveFieldAccess(val inner: ExpEmbedding, val field: FieldEmbeddi
 
 data class AdtFieldAccess(
     val receiver: ExpEmbedding,
-    val adtTypeEmbedding: AdtTypeEmbedding,
+    val adtTypeEmbedding: AdtTypeEmbeddingImpl,
     val field: AdtFieldEmbedding,
 ) : ExpEmbedding {
     override val type: TypeEmbedding = field.type

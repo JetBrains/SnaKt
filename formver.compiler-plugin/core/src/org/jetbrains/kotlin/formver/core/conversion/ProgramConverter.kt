@@ -251,7 +251,7 @@ class ProgramConverter(
     override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding {
         if (symbol is FirConstructorSymbol && symbol.isPrimary) {
             val type = embedType(symbol.resolvedReturnType)
-            val adtType = type.pretype as? AdtTypeEmbedding
+            val adtType = type.pretype as? AdtTypeEmbeddingImpl
             if (adtType != null) return AdtConstructorEmbedding(adtType, typeResolver.lookupAdtFields(adtType.name))
         }
         return if (symbol.isPure(session)) embedPureFunction(symbol) else embedFunction(symbol)
@@ -285,16 +285,22 @@ class ProgramConverter(
     }
 
     @OptIn(DirectDeclarationsAccess::class)
-    private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding =
-        typeResolver.getOrRegisterAdt(symbol.classId.embedName()) {
-            if (!adtSignatureIsValid(symbol)) return@getOrRegisterAdt InvalidAdtTypeEmbedding
-            val adtEmbedding = AdtTypeEmbeddingImpl(symbol.classId.embedName())
-            var allValid = true
-            symbol.declarationSymbols.forEach { sym ->
-                if (!embedAdtProperty(sym, adtEmbedding)) allValid = false
-            }
-            if (allValid) adtEmbedding else InvalidAdtTypeEmbedding
+    private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding {
+        val name = symbol.classId.embedName()
+        typeResolver.lookupAdtTypeEmbedding(name)?.let { return it }
+        if (!adtSignatureIsValid(symbol)) {
+            typeResolver.registerAdt(name, InvalidAdtTypeEmbedding)
+            return InvalidAdtTypeEmbedding
         }
+        val adtEmbedding = AdtTypeEmbeddingImpl(name)
+        typeResolver.registerAdt(name, adtEmbedding)
+        var allValid = true
+        symbol.declarationSymbols.forEach { sym ->
+            if (!embedAdtProperty(sym, adtEmbedding)) allValid = false
+        }
+        if (!allValid) typeResolver.registerAdt(name, InvalidAdtTypeEmbedding)
+        return if (allValid) adtEmbedding else InvalidAdtTypeEmbedding
+    }
 
     private fun adtSignatureIsValid(symbol: FirRegularClassSymbol): Boolean {
         if (!symbol.isData) {
@@ -321,7 +327,7 @@ class ProgramConverter(
         return true
     }
 
-    private fun embedAdtProperty(symbol: FirBasedSymbol<*>, adtEmbedding: AdtTypeEmbedding): Boolean {
+    private fun embedAdtProperty(symbol: FirBasedSymbol<*>, adtEmbedding: AdtTypeEmbeddingImpl): Boolean {
         var valid = true
         fun rejectProperty(reason: String) {
             errorCollector.addAdtError(symbol.source, "Invalid ADT annotation: $reason")
@@ -358,7 +364,7 @@ class ProgramConverter(
         return valid
     }
 
-    private fun constructAdtDecl(embedding: AdtTypeEmbedding): AdtDecl =
+    private fun constructAdtDecl(embedding: AdtTypeEmbeddingImpl): AdtDecl =
         AdtDecl(
             name = embedding.adtName,
             constructors = listOf(embedding.getViperConstructorDecl(typeResolver.lookupAdtFields(embedding.name))),

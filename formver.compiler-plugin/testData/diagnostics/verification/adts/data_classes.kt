@@ -15,8 +15,6 @@ data class Node(val head: Int, val tail: Node?)
 @ADT
 data class WithVar(<!ADT_VIOLATION!>var x: Int<!>)
 
-// The following three violations are expected behavior and originate from the modular verification of functions
-// Each automatically generated function (copy, component1, component2) triggers a re-evaluation.
 @ADT
 data class WithBodyField(val a: Int) {
     <!ADT_VIOLATION!>val b: Int = 42<!>

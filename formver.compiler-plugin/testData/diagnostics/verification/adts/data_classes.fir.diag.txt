@@ -7,12 +7,12 @@
 /data_classes.kt: error: Invalid ADT annotation: An @ADT declaration must not have type parameters
 
 /data_classes.kt: info: Generated Viper text for useTwoFields:
-method useTwoFields(par_p: Ref) returns (ret: Ref)
+method useTwoFields(par_p: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(par_p), TwoFields())
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 adt a_TwoFields {
@@ -20,12 +20,12 @@ adt a_TwoFields {
 }
 
 /data_classes.kt: info: Generated Viper text for useOptInt:
-method useOptInt(o: Ref) returns (ret: Ref)
+method useOptInt(o: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(o), OptInt())
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 adt a_OptInt {
@@ -33,36 +33,36 @@ adt a_OptInt {
 }
 
 /data_classes.kt: info: Generated Viper text for useNode:
-method useNode(n: Ref) returns (ret: Ref)
+method useNode(n: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(n), Node())
-  ensures isSubtype(typeOf(ret), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 adt a_Node {
   ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
 }
 
-/data_classes.kt: error: Function 'useWithVar' references an invalid type in its signature
+/data_classes.kt: error: Function 'useWithVar' references an invalid ADT
 
-/data_classes.kt: error: Function 'useWithBodyField' references an invalid type in its signature
+/data_classes.kt: error: Function 'useWithBodyField' references an invalid ADT
 
-/data_classes.kt: error: Function 'useWithFunction' references an invalid type in its signature
+/data_classes.kt: error: Function 'useWithFunction' references an invalid ADT
 
-/data_classes.kt: error: Function 'useGeneric' references an invalid type in its signature
+/data_classes.kt: error: Function 'useGeneric' references an invalid ADT
 
 /data_classes.kt: info: Generated Viper text for testConstrUsage:
-method testConstrUsage() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method testConstrUsage() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var i: Ref
   var tf: Ref
   i := intToRef(2)
   tf := TwoFieldsToRef(ac_TwoFields(i, boolToRef(true)))
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 adt a_TwoFields {
@@ -70,8 +70,8 @@ adt a_TwoFields {
 }
 
 /data_classes.kt: info: Generated Viper text for testDestrUsage:
-method testDestrUsage() returns (ret: Ref)
-  ensures isSubtype(typeOf(ret), unitType())
+method testDestrUsage() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var tf: Ref
   var i: Ref
@@ -79,8 +79,8 @@ method testDestrUsage() returns (ret: Ref)
   tf := TwoFieldsToRef(ac_TwoFields(intToRef(2), boolToRef(true)))
   i := TwoFieldsFromRef(tf).af_a_TwoFields_a
   b := TwoFieldsFromRef(tf).af_a_TwoFields_b
-  label ret_0
-  inhale isSubtype(typeOf(ret), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 adt a_TwoFields {

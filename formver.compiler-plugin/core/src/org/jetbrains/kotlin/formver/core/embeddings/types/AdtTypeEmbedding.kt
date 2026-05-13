@@ -40,4 +40,3 @@ data class AdtTypeEmbeddingImpl(override val name: ScopedName) : AdtTypeEmbeddin
             fields.map { Declaration.LocalVarDecl(it.name, Type.Ref) },
         )
 }
-
