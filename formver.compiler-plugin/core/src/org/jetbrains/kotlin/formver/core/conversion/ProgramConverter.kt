@@ -95,7 +95,7 @@ class ProgramConverter(
     fun registerForVerification(declaration: FirSimpleFunction) {
         // Note: it is important that `body` is only set after embedding is complete, as we need to
         // place the embedding in the map before processing the body.
-        val embedding: CallableEmbedding = if (declaration.symbol.isPure(session)) {
+        val embedding = if (declaration.symbol.isPure(session)) {
             embedPureFunction(declaration.symbol)
         } else {
             embedUserFunction(declaration)
