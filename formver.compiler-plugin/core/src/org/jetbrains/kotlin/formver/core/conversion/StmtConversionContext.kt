@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.isBoolean
+import org.jetbrains.kotlin.fir.types.isUnit
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyEmbedding
@@ -302,6 +303,10 @@ data class InvariantsAndTriggers(
 )
 
 fun StmtConversionContext.collectInvariants(block: FirBlock) = buildList {
+    // if the lambda is empty the compiler inserts a return Unit
+    if (block.statements.size == 1 && (block.statements.first() as? FirReturnExpression)?.result?.resolvedType?.isUnit ?: false) {
+        return@buildList
+    }
     block.statements.forEach { stmt ->
         check(stmt is FirExpression && stmt.resolvedType.isBoolean) {
             INVALID_STATEMENT_MSG
