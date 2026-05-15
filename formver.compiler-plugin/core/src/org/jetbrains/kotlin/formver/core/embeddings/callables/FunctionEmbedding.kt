@@ -33,13 +33,14 @@ class UserFunctionEmbedding(private val callable: RichCallableEmbedding) : Funct
     var body: FunctionBodyConversionResult? = null
 
     override fun viperMethod(ctx: TypeResolver): Method? = when (val currentBody = body) {
-        is InvalidFunctionBodyEmbedding -> throw SnaktInternalException(
-            currentBody.source,
-            "Invalid function body detected in user-defined function"
-        )
+            is InvalidFunctionBodyEmbedding -> throw SnaktInternalException(
+                currentBody.source,
+                "Invalid function body detected in user-defined function"
+            )
+
         is FunctionBodyEmbedding -> currentBody.toViperMethod(callable, ctx)
         else -> callable.toViperMethodHeader(ctx)
-    }
+        }
 }
 
 
