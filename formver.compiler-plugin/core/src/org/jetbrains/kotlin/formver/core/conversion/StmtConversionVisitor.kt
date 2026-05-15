@@ -39,6 +39,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.InvalidTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
 import org.jetbrains.kotlin.formver.core.functionCallArguments
@@ -95,7 +96,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 "Qualifier ${classSymbol.name} has class kind ${classSymbol.classKind}, expected object"
             )
         val type = data.embedType(resolvedQualifier.resolvedType)
-        if (!type.isValid) {
+        if (type.pretype is InvalidTypeEmbedding) {
             data.errorCollector.addAdtError(
                 resolvedQualifier.source,
                 "Invalid ADT annotation: reference to '${classSymbol.name}' which has an invalid @ADT annotation",

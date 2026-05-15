@@ -32,16 +32,13 @@ class UserFunctionEmbedding(private val callable: RichCallableEmbedding) : Funct
      */
     var body: FunctionBodyConversionResult? = null
 
-    override fun viperMethod(ctx: TypeResolver): Method? {
-        if (!callable.signatureIsValid()) return null
-        return when (val currentBody = body) {
-            is InvalidFunctionBodyEmbedding -> throw SnaktInternalException(
-                currentBody.source,
-                "Invalid function body detected in user-defined function"
-            )
-            is FunctionBodyEmbedding -> currentBody.toViperMethod(callable, ctx)
-            else -> callable.toViperMethodHeader(ctx)
-        }
+    override fun viperMethod(ctx: TypeResolver): Method? = when (val currentBody = body) {
+        is InvalidFunctionBodyEmbedding -> throw SnaktInternalException(
+            currentBody.source,
+            "Invalid function body detected in user-defined function"
+        )
+        is FunctionBodyEmbedding -> currentBody.toViperMethod(callable, ctx)
+        else -> callable.toViperMethodHeader(ctx)
     }
 }
 
@@ -54,8 +51,5 @@ class PureUserFunctionEmbedding(private val callable: RichCallableEmbedding) : P
 
     var body: Exp? = null
 
-    override fun viperFunction(ctx: TypeResolver): Function? {
-        if (!callable.signatureIsValid()) return null
-        return callable.toViperFunction(ctx, body)
-    }
+    override fun viperFunction(ctx: TypeResolver): Function = callable.toViperFunction(ctx, body)
 }

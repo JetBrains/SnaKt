@@ -10,15 +10,17 @@
 
 /singleton_errors.kt: error: Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface
 
-/singleton_errors.kt: error: Function 'triggerNotAnObject' references an invalid type in its signature
+/singleton_errors.kt: error: Function 'triggerNotAnObject' references an invalid ADT
 
-/singleton_errors.kt: error: Function 'triggerNotDataObject' references an invalid type in its signature
+/singleton_errors.kt: error: Function 'triggerNotDataObject' references an invalid ADT
 
-/singleton_errors.kt: error: Function 'triggerWithField' references an invalid type in its signature
+/singleton_errors.kt: error: Function 'triggerWithField' references an invalid ADT
 
-/singleton_errors.kt: error: Function 'triggerWithFunction' references an invalid type in its signature
+/singleton_errors.kt: error: Function 'triggerWithFunction' references an invalid ADT
 
-/singleton_errors.kt: error: Function 'triggerWithSupertype' references an invalid type in its signature
+/singleton_errors.kt: error: Function 'triggerWithSupertype' references an invalid ADT
+
+/singleton_errors.kt: error: Function 'triggerWithAssignment' references an invalid ADT
 
 /singleton_errors.kt: error: Invalid ADT annotation: reference to 'TriggeredByAssignment' which has an invalid @ADT annotation
 

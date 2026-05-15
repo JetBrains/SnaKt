@@ -35,9 +35,9 @@ data object Valid
 <!ADT_VIOLATION!>fun triggerWithField(x: WithField) {}<!>
 <!ADT_VIOLATION!>fun triggerWithFunction(x: WithFunction) {}<!>
 <!ADT_VIOLATION!>fun triggerWithSupertype(x: WithSupertype) {}<!>
-fun triggerWithAssignment() {
+<!ADT_VIOLATION!>fun triggerWithAssignment() {
     val x = <!ADT_VIOLATION!>TriggeredByAssignment<!>
-}
+}<!>
 
 fun <!VIPER_TEXT!>validParameter<!>(a: Valid) {}
 

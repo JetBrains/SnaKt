@@ -19,8 +19,6 @@ interface CallableEmbedding {
     fun insertCall(args: List<ExpEmbedding>, ctx: StmtConversionContext): ExpEmbedding
 }
 
-fun CallableEmbedding.signatureIsValid(): Boolean = callableType.isValid
-
 fun CallableEmbedding.insertCall(
     args: List<ExpEmbedding>,
     ctx: StmtConversionContext,

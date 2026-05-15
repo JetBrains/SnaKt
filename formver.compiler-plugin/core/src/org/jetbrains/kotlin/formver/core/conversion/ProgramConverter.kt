@@ -95,15 +95,15 @@ class ProgramConverter(
     fun registerForVerification(declaration: FirSimpleFunction) {
         // Note: it is important that `body` is only set after embedding is complete, as we need to
         // place the embedding in the map before processing the body.
-        val embedding = if (declaration.symbol.isPure(session)) {
+        if (declaration.symbol.isPure(session)) {
             embedPureFunction(declaration.symbol)
         } else {
             embedUserFunction(declaration)
         }
-        if (!embedding.signatureIsValid()) {
+        if (errorCollector.collectedAdtError()) {
             errorCollector.addAdtError(
                 declaration.source,
-                "Function '${declaration.name.asString()}' references an invalid type in its signature",
+                "Function '${declaration.name.asString()}' references an invalid ADT",
             )
         }
     }
@@ -279,18 +279,14 @@ class ProgramConverter(
         return embedding
     }
 
-    private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding? {
-        val className = symbol.classId.embedName()
-        if (typeResolver.isAdtKnown(className)) return typeResolver.lookupAdt(className)
-        if (!validateAdtSignature(symbol)) {
-            typeResolver.invalidateAdt(className)
-            return null
+    private fun embedAdtClass(symbol: FirRegularClassSymbol): PretypeEmbedding =
+        typeResolver.getOrRegisterAdt(symbol.classId.embedName()) {
+            if (!validateAdtHeader(symbol)) InvalidTypeEmbedding
+            else AdtTypeEmbedding(symbol.classId.embedName())
         }
-        return AdtTypeEmbedding(className).also { typeResolver.registerAdt(it) }
-    }
 
     @OptIn(DirectDeclarationsAccess::class)
-    private fun validateAdtSignature(symbol: FirRegularClassSymbol): Boolean {
+    private fun validateAdtHeader(symbol: FirRegularClassSymbol): Boolean {
         if (!symbol.classKind.isObject || !symbol.isData) {
             errorCollector.addAdtError(
                 symbol.source, "Invalid ADT annotation: @ADT may only be applied to data object declarations"
@@ -591,7 +587,7 @@ class ProgramConverter(
             val classLikeSymbol = type.toClassSymbol(session)
             if (classLikeSymbol is FirRegularClassSymbol) {
                 if (classLikeSymbol.isAdt(session)) {
-                    existing(embedAdtClass(classLikeSymbol) ?: InvalidPretypeEmbedding)
+                    existing(embedAdtClass(classLikeSymbol))
                 } else {
                     existing(embedClass(classLikeSymbol))
                 }
