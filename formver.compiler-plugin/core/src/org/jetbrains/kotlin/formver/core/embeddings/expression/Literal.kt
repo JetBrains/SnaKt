@@ -7,7 +7,7 @@ package org.jetbrains.kotlin.formver.core.embeddings.expression
 
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
-import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbeddingImpl
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 
@@ -69,13 +69,13 @@ data class AdtConstructorRef(
     override val type: TypeEmbedding,
 ) : ExpEmbedding {
     init {
-        require(type.pretype is AdtTypeEmbedding) {
+        require(type.pretype is AdtTypeEmbeddingImpl) {
             "AdtConstructorRef requires an AdtTypeEmbedding pretype, got ${type.pretype.javaClass.simpleName}"
         }
     }
 
-    val adtTypeEmbedding: AdtTypeEmbedding
-        get() = type.pretype as AdtTypeEmbedding
+    val adtTypeEmbedding: AdtTypeEmbeddingImpl
+        get() = type.pretype as AdtTypeEmbeddingImpl
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitAdtConstructorRef(this)
 }

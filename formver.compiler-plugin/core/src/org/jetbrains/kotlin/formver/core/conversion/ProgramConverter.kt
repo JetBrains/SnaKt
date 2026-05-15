@@ -279,10 +279,10 @@ class ProgramConverter(
         return embedding
     }
 
-    private fun embedAdtClass(symbol: FirRegularClassSymbol): PretypeEmbedding =
+    private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding =
         typeResolver.getOrRegisterAdt(symbol.classId.embedName()) {
-            if (!validateAdtHeader(symbol)) InvalidTypeEmbedding
-            else AdtTypeEmbedding(symbol.classId.embedName())
+            if (!validateAdtHeader(symbol)) InvalidAdtTypeEmbedding
+            else AdtTypeEmbeddingImpl(symbol.classId.embedName())
         }
 
     @OptIn(DirectDeclarationsAccess::class)
