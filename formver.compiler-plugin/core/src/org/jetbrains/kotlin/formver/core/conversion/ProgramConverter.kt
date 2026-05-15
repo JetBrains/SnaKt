@@ -75,42 +75,59 @@ class ProgramConverter(
     override val linearizedBodyResolver = LinearizedBodyResolver()
 
 
-    fun program(): Program = Program(
-        domains = listOf(RuntimeTypeDomain(typeResolver)),
-        // We need to deduplicate fields since public fields with the same name are represented differently
-        // at `FieldEmbedding` level but map to the same Viper.
-        fields = typeResolver.backingFields().distinctBy { it.name }
-            .map { it.toViper() },
-        functions = SpecialFunctions.all + functions.entries.mapNotNull { (name, embedding) ->
-            val linearized = linearizedBodyResolver.lookupPure(name)
-            check(linearized != null || convertedBodyResolver.lookupPure(name) == null) {
-                "Internal error: pure function $name was converted but not linearized"
+    fun buildProgram(): Program {
+        val backingFields = typeResolver.backingFields()
+
+        val viperFunctions = buildList {
+            addAll(SpecialFunctions.all)
+            functions.forEach { (name, embedding) ->
+                val linearized = linearizedBodyResolver.lookupPure(name)
+                check(linearized != null || convertedBodyResolver.lookupPure(name) == null) {
+                    "Internal error: pure function $name was converted but not linearized"
+                }
+                add(embedding.viperFunction(typeResolver, linearized))
             }
-            embedding.viperFunction(typeResolver, linearized)
-        }.distinctBy { it.name },
-        methods = SpecialMethods.all + methods.entries.mapNotNull { (name, embedding) ->
-            val linearized = linearizedBodyResolver.lookupImpure(name)
-            check(linearized != null || convertedBodyResolver.lookupImpure(name) == null) {
-                "Internal error: impure function $name was converted but not linearized"
+        }
+
+        val viperMethods = buildList {
+            addAll(SpecialMethods.all)
+            methods.forEach { (name, embedding) ->
+                val linearized = linearizedBodyResolver.lookupImpure(name)
+                check(linearized != null || convertedBodyResolver.lookupImpure(name) == null) {
+                    "Internal error: impure function $name was converted but not linearized"
+                }
+                val callable = embedding.userCallable() ?: return@forEach
+                val method = linearized?.toViperMethod(callable, typeResolver) ?: callable.toViperMethodHeader(typeResolver)
+                if (method != null) add(method)
             }
-            val callable = when (embedding) {
-                is UserFunctionEmbedding -> embedding.callable
-                is FullySpecialKotlinFunction -> null
-                is PartiallySpecialKotlinFunction -> embedding.baseEmbedding?.callable
-                else -> error("Unexpected embedding in methods map for $name: $embedding")
-            } ?: return@mapNotNull null
-            linearized?.toViperMethod(callable, typeResolver) ?: callable.toViperMethodHeader(typeResolver)
-        }.distinctBy { it.name } + typeResolver.backingFields().map { it.type.havocMethod(typeResolver) }
-            .distinctBy { it.name },
-        predicates = typeResolver.classTypeEmbeddings().flatMap {
-            with(typeResolver) {
-                listOf(
-                    it.sharedPredicate(), it.uniquePredicate()
-                )
-            }
-        },
-        adts = typeResolver.adtTypeEmbeddings().map { it.toViper() },
-    )
+            // Multiple backing fields can share a type, so havoc methods collide on name.
+            backingFields.map { it.type.havocMethod(typeResolver) }
+                .distinctBy { it.name }
+                .forEach(::add)
+        }
+
+        return Program(
+            domains = listOf(RuntimeTypeDomain(typeResolver)),
+            // Public fields with the same name are represented differently at `FieldEmbedding` level
+            // but map to the same Viper field, so we deduplicate before emitting.
+            fields = backingFields.distinctBy { it.name }.map { it.toViper() },
+            functions = viperFunctions,
+            methods = viperMethods,
+            predicates = typeResolver.classTypeEmbeddings().flatMap {
+                with(typeResolver) {
+                    listOf(it.sharedPredicate(), it.uniquePredicate())
+                }
+            },
+            adts = typeResolver.adtTypeEmbeddings().map { it.toViper() },
+        )
+    }
+
+    private fun CallableEmbedding.userCallable(): RichCallableEmbedding? = when (this) {
+        is UserFunctionEmbedding -> callable
+        is FullySpecialKotlinFunction -> null
+        is PartiallySpecialKotlinFunction -> baseEmbedding?.callable
+        else -> error("Unexpected embedding in methods map: $this")
+    }
 
     /**
      * Embed the declaration's signature and queue its body for later processing by [convertAll].
@@ -127,13 +144,11 @@ class ProgramConverter(
 
     /**
      * Convert each registered declaration's body to an `ExpEmbedding`, populating [convertedBodyResolver].
-     * Pure callees reached transitively are converted via [embedPureFunction]; their entries land in the
-     * same resolver.
      */
     fun convertAll() {
         for ((declaration, signature, returnTarget) in registered) {
             val stmtCtx = createBodyConversionContext(signature, returnTarget)
-            if (declaration.symbol.isPure(session)) {
+            if (signature.isPure) {
                 convertedBodyResolver.storePure(signature.name, stmtCtx.convertPureBody(declaration))
             } else {
                 stmtCtx.convertImpureBody(declaration, signature, returnTarget)?.let {
@@ -184,11 +199,8 @@ class ProgramConverter(
 
     private fun ensurePureUserFunctionEmbedding(
         symbol: FirFunctionSymbol<*>, signature: FullNamedFunctionSignature
-    ): PureUserFunctionEmbedding {
-        (functions[signature.name] as? PureUserFunctionEmbedding)?.also { return it }
-        val new = PureUserFunctionEmbedding(embedCallable(symbol, signature))
-        functions[signature.name] = new
-        return new
+    ): PureUserFunctionEmbedding = functions.getOrPut(signature.name) {
+        PureUserFunctionEmbedding(embedCallable(symbol, signature))
     }
 
     @OptIn(SymbolInternals::class)
@@ -271,10 +283,10 @@ class ProgramConverter(
         signature: FullNamedFunctionSignature,
     ): UserFunctionEmbedding {
         val name = symbol.embedName(this)
-        (methods[name] as? UserFunctionEmbedding)?.also { return it }
-        val new = UserFunctionEmbedding(embedCallable(symbol, signature))
-        methods[name] = new
-        return new
+        (methods[name] as? UserFunctionEmbedding)?.let { return it }
+        return UserFunctionEmbedding(embedCallable(symbol, signature)).also {
+            methods[name] = it
+        }
     }
 
     private fun embedGetterFunction(symbol: FirPropertySymbol): CallableEmbedding {

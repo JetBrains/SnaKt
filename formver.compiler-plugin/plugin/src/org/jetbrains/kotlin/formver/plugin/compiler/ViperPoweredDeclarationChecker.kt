@@ -68,7 +68,7 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
             if (errorCollector.collectedPurityError()) return
             if (errorCollector.collectedAdtError()) return
             programConversionContext.linearizeAll()
-            val program = programConversionContext.program()
+            val program = programConversionContext.buildProgram()
 
             with(programConversionContext.nameResolver) {
                 program.registerAllNames()

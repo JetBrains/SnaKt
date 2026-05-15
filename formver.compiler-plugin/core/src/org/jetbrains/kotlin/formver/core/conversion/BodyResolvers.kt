@@ -12,8 +12,12 @@ import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 
 /**
- * The output of converting an impure (method-style) function body: the `FunctionExp` wrap built
- * during conversion, together with the `ReturnTarget` it was converted against.
+ * The output of converting an impure (method-style) function body.
+ *
+ * The [returnTarget] is preserved alongside [bodyExp] because linearization needs to attach a
+ * Unit invariant to the return variable when the function returns Unit and the body has no
+ * explicit `return`. The body alone does not expose that variable, so conversion has to hand
+ * it off explicitly.
  */
 data class ConvertedMethodBody(
     val bodyExp: FunctionExp,
