@@ -6,7 +6,7 @@
 package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
-import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbeddingImpl
 import org.jetbrains.kotlin.formver.core.embeddings.types.embedClassTypeFunc
 import org.jetbrains.kotlin.formver.core.names.DomainName
 import org.jetbrains.kotlin.formver.core.names.QualifiedDomainFuncName
@@ -210,7 +210,7 @@ const val RUNTIME_TYPE_DOMAIN_NAME = "rt"
  * ```
  */
 class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(RUNTIME_TYPE_DOMAIN_NAME)) {
-    private val adts: List<AdtTypeEmbedding> = typeResolver.adtTypeEmbeddings().filter { it.isValid }
+    private val adts: List<AdtTypeEmbeddingImpl> = typeResolver.adtTypeEmbeddings()
     override val typeVars: List<Type.TypeVar> = emptyList()
 
     // Define types that are not dependent on the user defined classes in a companion object.
@@ -284,7 +284,7 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
         val unitValue = createDomainFunc(UnqualifiedDomainFuncName("unitValue"), emptyList(), Ref)
     }
 
-    val adtClassTypes: Map<AdtTypeEmbedding, DomainFunc> = adts.associateWith { classTypeFunc(it.name) }
+    val adtClassTypes: Map<AdtTypeEmbeddingImpl, DomainFunc> = adts.associateWith { classTypeFunc(it.name) }
     private val allInjections: List<Injection> = primitiveTypeInjections + adts.map { it.injection }
     val builtinTypes: List<DomainFunc> =
         listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType)

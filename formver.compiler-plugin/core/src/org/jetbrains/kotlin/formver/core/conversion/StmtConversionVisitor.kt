@@ -38,7 +38,8 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.LtIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
-import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbeddingImpl
+import org.jetbrains.kotlin.formver.core.embeddings.types.InvalidAdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
 import org.jetbrains.kotlin.formver.core.functionCallArguments
@@ -95,7 +96,14 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 "Qualifier ${classSymbol.name} has class kind ${classSymbol.classKind}, expected object"
             )
         val type = data.embedType(resolvedQualifier.resolvedType)
-        if (type.pretype !is AdtTypeEmbedding)
+        if (type.pretype is InvalidAdtTypeEmbedding) {
+            data.errorCollector.addAdtError(
+                resolvedQualifier.source,
+                "Invalid ADT annotation: reference to '${classSymbol.name}' which has an invalid @ADT annotation",
+            )
+            return ErrorExp
+        }
+        if (type.pretype !is AdtTypeEmbeddingImpl)
             throw SnaktInternalException(
                 resolvedQualifier.source,
                 "Object ${classSymbol.name} has pretype ${type.pretype.javaClass.simpleName} which is not declared to be an ADT."

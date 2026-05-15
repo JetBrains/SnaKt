@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.properties.BackingFieldGette
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbeddingImpl
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeEmbedding
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
@@ -27,6 +28,7 @@ class TypeResolver {
 
     /**
      * Collection of all AdtTypeEmbeddings.
+     * A key mapped to `InvalidAdtTypeEmbedding` means the ADT was encountered but is invalid.
      */
     private val adtEmbedding = mutableMapOf<SymbolicName, AdtTypeEmbedding>()
 
@@ -61,11 +63,10 @@ class TypeResolver {
 
     fun lookupClassTypeEmbedding(name: SymbolicName) = classEmbedding[name] ?: interfaceEmbedding[name]
 
-    fun registerAdt(typeEmbedding: AdtTypeEmbedding) = adtEmbedding.put(typeEmbedding.name, typeEmbedding)
+    fun getOrRegisterAdt(name: SymbolicName, create: () -> AdtTypeEmbedding): AdtTypeEmbedding =
+        adtEmbedding.getOrPut(name, create)
 
-    fun lookupAdt(name: SymbolicName): AdtTypeEmbedding? = adtEmbedding[name]
-
-    fun adtTypeEmbeddings(): List<AdtTypeEmbedding> = adtEmbedding.values.toList()
+    fun adtTypeEmbeddings(): List<AdtTypeEmbeddingImpl> = adtEmbedding.values.filterIsInstance<AdtTypeEmbeddingImpl>()
 
     /**
      * Extends the subtype relation with [subtype] <: [supertype]
