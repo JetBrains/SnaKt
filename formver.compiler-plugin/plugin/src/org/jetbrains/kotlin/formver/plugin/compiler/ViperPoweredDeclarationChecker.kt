@@ -53,20 +53,12 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
     override fun check(declaration: FirSimpleFunction) {
         val inTestRun = System.getProperty("formver.testRun").toBoolean()
         if (!config.shouldConvert(declaration)) return
-        val errorCollector = ErrorCollector()
         try {
-            val programConversionContext = ProgramConverter(session, config, errorCollector)
+            val programConversionContext = ProgramConverter(session, config, context, reporter)
             programConversionContext.register(declaration)
             programConversionContext.convertAll()
             programConversionContext.validateAll()
-            errorCollector.forEachPurityError { source, errorMessage ->
-                reporter.reportOn(source, PluginErrors.PURITY_VIOLATION, errorMessage)
-            }
-            errorCollector.forEachAdtError { source, errorMessage ->
-                reporter.reportOn(source, PluginErrors.ADT_VIOLATION, errorMessage)
-            }
-            if (errorCollector.collectedPurityError()) return
-            if (errorCollector.collectedAdtError()) return
+            if (programConversionContext.hadConversionError) return
             programConversionContext.linearizeAll()
             val program = programConversionContext.buildProgram()
 
@@ -125,10 +117,6 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
         } catch (e: Exception) {
             val error = e.message ?: "No message provided"
             reporter.reportOn(declaration.source, PluginErrors.INTERNAL_ERROR, error)
-        }
-
-        errorCollector.forEachMinorError {
-            reporter.reportOn(declaration.source, PluginErrors.MINOR_INTERNAL_ERROR, it)
         }
     }
 

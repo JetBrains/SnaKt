@@ -18,17 +18,16 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.JumpNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ThrowExceptionNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
-import org.jetbrains.kotlin.formver.common.ErrorCollector
 
 /**
  * A visitor for checking uniqueness types in a [CFGNode].
  *
  * @param resolver The resolver used for fetching the default uniqueness type of parameter symbols.
- * @param errorCollector A collector for the checker's errors.
+ *
+ * TODO: collect errors here instead of throwing, so multiple violations per declaration surface.
  */
 class UniquenessTypeChecker(
     val resolver: UniquenessResolver,
-    val errorCollector: ErrorCollector
 ) : ControlFlowGraphVisitor<Unit, UniquenessTrie>() {
     override fun visitNode(node: CFGNode<*>, data: UniquenessTrie) {}
 
@@ -43,7 +42,7 @@ class UniquenessTypeChecker(
             val actualType = valueData.parentsJoin
 
             when (actualType) {
-                // TODO: Use errorCollector for errors, allowing to report more than one error per declaration.
+                // TODO: collect errors rather than throwing, so multiple violations per declaration surface.
                 is UniquenessType.Moved -> {
                     return onError(actualType)
                 }
@@ -212,13 +211,12 @@ class UniquenessTypeChecker(
 class UniquenessGraphChecker(
     session: FirSession,
     initial: UniquenessTrie,
-    errorCollector: ErrorCollector
 ) {
     val resolver = UniquenessResolver(session)
 
     val analyzer = UniquenessGraphAnalyzer(resolver, initial)
 
-    val typeChecker = UniquenessTypeChecker(resolver, errorCollector)
+    val typeChecker = UniquenessTypeChecker(resolver)
 
     fun check(graph: ControlFlowGraph) {
         val facts = analyzer.analyze(graph)

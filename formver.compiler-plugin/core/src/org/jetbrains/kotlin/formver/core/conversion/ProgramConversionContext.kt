@@ -5,12 +5,12 @@
 
 package org.jetbrains.kotlin.formver.core.conversion
 
+import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.fir.types.resolvedType
-import org.jetbrains.kotlin.formver.common.ErrorCollector
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.core.embeddings.callables.CallableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
@@ -27,7 +27,6 @@ import org.jetbrains.kotlin.formver.viper.NameResolver
 
 interface ProgramConversionContext {
     val config: PluginConfiguration
-    val errorCollector: ErrorCollector
 
     val whileIndexProducer: SimpleFreshEntityProducer<Int>
     val catchLabelNameProducer: SimpleFreshEntityProducer<CatchLabelName>
@@ -41,6 +40,18 @@ interface ProgramConversionContext {
     val typeResolver: TypeResolver
     val convertedBodyResolver: ConvertedBodyResolver
     val linearizedBodyResolver: LinearizedBodyResolver
+
+    /** Number of ADT-violation diagnostics reported so far; used to detect ADT touches per iteration. */
+    val adtErrorCount: Int
+
+    /** Report a purity violation. Flips [hadConversionError]. */
+    fun reportPurityViolation(source: KtSourceElement?, msg: String)
+
+    /** Report an ADT violation. Flips [hadConversionError] and bumps [adtErrorCount]. */
+    fun reportAdtViolation(source: KtSourceElement?, msg: String)
+
+    /** Report a non-blocking internal-error notice. Does not flip [hadConversionError]. */
+    fun reportMinorInternalError(msg: String)
 
     fun embedFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding
     fun embedPureFunction(symbol: FirFunctionSymbol<*>): PureUserFunctionEmbedding

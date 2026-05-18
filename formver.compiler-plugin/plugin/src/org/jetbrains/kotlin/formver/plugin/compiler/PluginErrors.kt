@@ -13,12 +13,9 @@ object PluginErrors : KtDiagnosticsContainer() {
     val VIPER_TEXT by info2<PsiElement, String, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
     val EXP_EMBEDDING by info2<PsiElement, String, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
     val INTERNAL_ERROR by error1<PsiElement, String>()
-    val MINOR_INTERNAL_ERROR by error1<PsiElement, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
-    val PURITY_VIOLATION by error1<PsiElement, String>()
     val UNIQUENESS_VIOLATION by error1<PsiElement, String>()
     val UNIQUENESS_CFG by info1<PsiElement, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
     val LOCALITY_VIOLATION by error3<PsiElement, String, Locality, Locality>()
-    val ADT_VIOLATION by error1<PsiElement, String>()
     override fun getRendererFactory() = FormalVerificationPluginErrorMessages
 }
 

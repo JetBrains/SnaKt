@@ -13,7 +13,6 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirSimpleFunctionChecker
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
-import org.jetbrains.kotlin.formver.common.ErrorCollector
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.uniqueness.*
 import org.jetbrains.kotlin.formver.uniqueness.utils.render
@@ -27,7 +26,6 @@ class UniquenessDeclarationChecker(private val session: FirSession, private val 
         if (!config.checkUniqueness) return
 
         try {
-            val errorCollector = ErrorCollector()
             val graph = declaration.controlFlowGraphReference?.controlFlowGraph
                 ?: error("Control flow graph is null for declaration: ${declaration.name}")
             val resolver = UniquenessResolver(session)
@@ -43,7 +41,7 @@ class UniquenessDeclarationChecker(private val session: FirSession, private val 
 
             }
             val initial = UniquenessTrie(resolver)
-            val graphChecker = UniquenessGraphChecker(session, initial, errorCollector)
+            val graphChecker = UniquenessGraphChecker(session, initial)
             graphChecker.check(graph)
         } catch (e: UniquenessCheckException) {
             reporter.reportOn(e.source, PluginErrors.UNIQUENESS_VIOLATION, e.message)
