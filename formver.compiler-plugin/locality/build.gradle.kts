@@ -25,6 +25,7 @@ dependencies {
     testFixturesApi(kotlin("test-junit5"))
     testFixturesApi(kotlin("compiler-internal-test-framework"))
     testFixturesApi(kotlin("compiler"))
+    testFixturesApi(project(":formver.common"))
     implementation(project(":formver.common"))
     implementation(project(":formver.annotations"))
 

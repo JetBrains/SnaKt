@@ -1,10 +1,16 @@
 plugins {
     kotlin("jvm")
     id("maven-publish")
+    `java-library`
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
     compileOnly(kotlin("compiler"))
+    api(kotlin("compiler-internal-test-framework"))
 }
 
 sourceSets {
