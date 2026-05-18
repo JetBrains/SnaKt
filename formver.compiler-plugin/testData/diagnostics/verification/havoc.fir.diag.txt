@@ -407,6 +407,11 @@ function timesInts(arg_1: Ref, arg_2: Ref): Ref
   ensures intFromRef(result) == intFromRef(arg_1) * intFromRef(arg_2)
 
 
+function xorBools(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (boolFromRef(arg_1) != boolFromRef(arg_2))
+
+
 predicate A_shared(this: Ref) {
   true
 }
