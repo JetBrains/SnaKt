@@ -2,35 +2,29 @@
 
 /assign_local.kt: error: Unable to capture outer local declaration from 'anonymous'.
 
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
+/assign_local.kt: error: Initializer locality mismatch: expected 'global', actual 'local'.
 
 /assign_local.kt: error: Unable to capture outer local declaration from 'anonymous'.
 
+/assign_local.kt: error: Initializer locality mismatch: expected 'global', actual 'local'.
+
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
+
+/assign_local.kt: error: Initializer locality mismatch: expected 'global', actual 'local'.
+
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
+
+/assign_local.kt: error: Initializer locality mismatch: expected 'global', actual 'local'.
+
+/assign_local.kt: error: Initializer locality mismatch: expected 'global', actual 'local'.
+
+/assign_local.kt: error: Initializer locality mismatch: expected 'global', actual 'local'.
+
 /assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
 
 /assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
 
 /assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
-
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
-
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
-
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
-
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
-
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
-
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
-
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
-
-/assign_local.kt: error: Unable to capture outer local declaration from 'anonymous'.
-
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
-
-/assign_local.kt: error: Unable to capture outer local declaration from 'anonymous'.
 
 /assign_local.kt: error: Unable to capture outer local declaration from 'anonymous'.
 
@@ -38,8 +32,12 @@
 
 /assign_local.kt: error: Unable to capture outer local declaration from 'anonymous'.
 
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
+/assign_local.kt: error: Unable to capture outer local declaration from 'anonymous'.
+
+/assign_local.kt: error: Initializer locality mismatch: expected 'global', actual 'local'.
+
+/assign_local.kt: error: Unable to capture outer local declaration from 'anonymous'.
 
 /assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
 
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
+/assign_local.kt: error: Initializer locality mismatch: expected 'global', actual 'local'.

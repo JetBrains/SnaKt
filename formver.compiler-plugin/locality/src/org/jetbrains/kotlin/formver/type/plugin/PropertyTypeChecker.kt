@@ -42,7 +42,7 @@ class PropertyTypeChecker<Type>(
         reporter.reportOn(
             initializer.source,
             diagnosticFactory,
-            "Assignment",
+            "Initializer",
             requiredType,
             actualType
         )
