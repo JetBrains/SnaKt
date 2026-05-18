@@ -28,10 +28,9 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
-import org.jetbrains.kotlin.formver.core.isAdt
+import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.core.purity.checkValidity
 import org.jetbrains.kotlin.formver.core.purity.isPure
-import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
@@ -271,22 +270,22 @@ class ProgramConverter(
         }
     }
 
-    private fun embedOpenGetterFunction(symbol: FirPropertySymbol): CallableEmbedding {
+    private fun embedImpureGetterFunction(symbol: FirPropertySymbol): CallableEmbedding {
         val name = symbol.embedGetterName(this)
         return impureFunctions.getOrPut(name) {
-            val signature = OpenGetterFunctionSignature(name, symbol)
+            val signature = ImpureGetterFunctionSignature(name, symbol)
             UserFunctionEmbedding(
                 NonInlineNamedFunction(signature)
             )
         }
     }
 
-    private fun embedClosedGetterFunction(symbol: FirPropertySymbol): CallableEmbedding {
+    private fun embedPureGetterFunction(symbol: FirPropertySymbol): CallableEmbedding {
         val name = symbol.embedGetterName(this)
         return pureFunctions.getOrPut(name) {
             val classType = embedType(symbol.dispatchReceiverType!!)
             val returnType = embedType(symbol.resolvedReturnType)
-            val signature = ClosedGetterFunctionSignature(name, symbol, classType, returnType)
+            val signature = PureGetterFunctionSignature(name, symbol, classType, returnType)
             PureUserFunctionEmbedding(
                 NonInlineNamedFunction(signature)
             )
@@ -423,12 +422,12 @@ class ProgramConverter(
                     "Properties dispatch receiver is not a regular class"
                 )
 
-                val wellBehaved = isGuaranteedDefaultProperty(symbol)
+                val isDefaultProperty = isGuaranteedDefaultProperty(symbol)
                 val isImmutable = symbol.isVal
                 val isManual = symbol.isManual(session)
 
                 return@getOrPutProperty when {
-                    (wellBehaved && !isImmutable) || isManual -> {
+                    (isDefaultProperty && !isImmutable) || isManual -> {
                         // we can use a backing field to represent it
                         val field = embedBackingField(symbol, regularClass)
                         PropertyEmbedding(
@@ -436,10 +435,10 @@ class ProgramConverter(
                         )
                     }
 
-                    wellBehaved -> {
+                    isDefaultProperty -> {
                         // we can replace it with a function call
                         PropertyEmbedding(
-                            CustomGetter(embedClosedGetterFunction(symbol)),
+                            CustomGetter(embedPureGetterFunction(symbol)),
                             null,
                             hasDefaultBehaviour = true
                         )
@@ -449,7 +448,7 @@ class ProgramConverter(
                         // The property could be overwritten by anything, or has a custom getter/setter.
                         // We can only reason about the upper bound of the type.
                         PropertyEmbedding(
-                            CustomGetter(embedOpenGetterFunction(symbol)),
+                            CustomGetter(embedImpureGetterFunction(symbol)),
                             symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) },
                             hasDefaultBehaviour = false
                         )
@@ -635,7 +634,7 @@ class ProgramConverter(
     }
 
     private fun embedCustomProperty(symbol: FirPropertySymbol) = PropertyEmbedding(
-        CustomGetter(embedOpenGetterFunction(symbol)),
+        CustomGetter(embedImpureGetterFunction(symbol)),
         symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) },
         hasDefaultBehaviour = false
     )

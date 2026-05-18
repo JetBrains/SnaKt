@@ -137,7 +137,7 @@ abstract class PropertyAccessorFunctionSignature(
     override val returns: VariableEmbedding = PlaceholderVariableEmbedding(ReturnVariableName(0), buildType { nullableAny() })
 }
 
-class OpenGetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
+class ImpureGetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
     PropertyAccessorFunctionSignature(name, symbol) {
     override val symbol: FirFunctionSymbol<*>
         get() = error {
@@ -151,7 +151,12 @@ class OpenGetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol)
     override val isPure: Boolean = false
 }
 
-class ClosedGetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol, classType: TypeEmbedding, returnType: TypeEmbedding) :
+class PureGetterFunctionSignature(
+    name: SymbolicName,
+    symbol: FirPropertySymbol,
+    classType: TypeEmbedding,
+    returnType: TypeEmbedding
+) :
     PropertyAccessorFunctionSignature(name, symbol) {
     override val symbol: FirFunctionSymbol<*>
         get() = error {
