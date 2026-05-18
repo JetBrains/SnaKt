@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     compileOnly(kotlin("compiler"))
-    implementation(project(":formver.common"))
+    implementation(project(":formver.compiler-plugin:locality"))
 }
 
 sourceSets {
