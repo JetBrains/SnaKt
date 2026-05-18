@@ -2,7 +2,7 @@
 import org.jetbrains.kotlin.formver.plugin.*
 
 @NeverVerify
-fun test() {
+fun <!VERIFICATION_SKIPPED!>test<!>() {
     var x = 42
     // Pure
     verify(true,false, 2 <= x)
@@ -11,7 +11,7 @@ fun test() {
 }
 
 @NeverVerify
-fun testImpure() {
+fun <!VERIFICATION_SKIPPED!>testImpure<!>() {
     var x = 42
     verify(<!PURITY_VIOLATION!>++x<43<!>)
 }

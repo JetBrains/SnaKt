@@ -26,5 +26,10 @@ object ConversionErrorMessages : BaseDiagnosticRendererFactory() {
             "Formal verification non-fatal internal error: {0}",
             CommonRenderers.STRING,
         )
+        map.put(
+            ConversionErrors.VERIFICATION_SKIPPED,
+            "{0}",
+            CommonRenderers.STRING,
+        )
     }
 }

@@ -54,14 +54,15 @@ class ProgramConverter(
 ) : ProgramConversionContext {
 
     /**
-     * True once any blocking error (purity or ADT) has been reported. The checker reads this to
-     * decide whether to skip [linearizeAll] / [buildProgram].
+     * Whether any blocking diagnostic (a purity or ADT violation) has been reported.
+     *
+     * Stays `false` for non-blocking diagnostics like [reportMinorInternalError]
+     * or for the derived [ConversionErrors.VERIFICATION_SKIPPED] summary.
      */
-    var hadConversionError: Boolean = false
-        private set
+    val hadConversionError: Boolean get() = blockingErrorCount > 0
 
-    private var _adtErrorCount: Int = 0
-    override val adtErrorCount: Int get() = _adtErrorCount
+    /** Monotonic count of blocking diagnostics (purity or ADT) reported so far. */
+    private var blockingErrorCount: Int = 0
 
     /** Source attached to source-less diagnostics (e.g. minor internal errors raised deep in conversion). */
     private var currentDeclarationSource: KtSourceElement? = null
@@ -70,20 +71,25 @@ class ProgramConverter(
         context(diagnosticContext) {
             reporter.reportOn(source, ConversionErrors.PURITY_VIOLATION, msg)
         }
-        hadConversionError = true
+        blockingErrorCount++
     }
 
     override fun reportAdtViolation(source: KtSourceElement?, msg: String) {
         context(diagnosticContext) {
             reporter.reportOn(source, ConversionErrors.ADT_VIOLATION, msg)
         }
-        hadConversionError = true
-        _adtErrorCount++
+        blockingErrorCount++
     }
 
     override fun reportMinorInternalError(msg: String) {
         context(diagnosticContext) {
             reporter.reportOn(currentDeclarationSource, ConversionErrors.MINOR_INTERNAL_ERROR, msg)
+        }
+    }
+
+    private fun reportVerificationSkipped(source: KtSourceElement?, msg: String) {
+        context(diagnosticContext) {
+            reporter.reportOn(source, ConversionErrors.VERIFICATION_SKIPPED, msg)
         }
     }
 
@@ -98,8 +104,8 @@ class ProgramConverter(
         val declaration: FirSimpleFunction,
         val signature: FullNamedFunctionSignature,
         val returnTarget: ReturnTarget,
-        /** [adtErrorCount] snapshot taken just before this declaration's signature was embedded. */
-        val adtErrorsBeforeRegister: Int,
+        /** [blockingErrorCount] snapshot taken just before this declaration's signature was embedded. */
+        val blockingErrorsBeforeRegister: Int,
     )
 
     private val registered: MutableList<RegisteredFunction> = mutableListOf()
@@ -145,14 +151,14 @@ class ProgramConverter(
      * Embed the declaration's signature and queue its body for later processing by [convertAll].
      */
     fun register(declaration: FirSimpleFunction) {
-        val adtErrorsBefore = adtErrorCount
+        val blockingErrorsBefore = blockingErrorCount
         val (returnTarget, signature) = embedFullSignature(declaration.symbol)
         if (declaration.symbol.isPure(session)) {
             ensurePureUserFunctionEmbedding(declaration.symbol, signature)
         } else {
             embedUserFunction(declaration.symbol, signature)
         }
-        registered += RegisteredFunction(declaration, signature, returnTarget, adtErrorsBefore)
+        registered += RegisteredFunction(declaration, signature, returnTarget, blockingErrorsBefore)
     }
 
     /**
@@ -160,7 +166,7 @@ class ProgramConverter(
      */
     fun convertAll() {
         for (entry in registered) {
-            val (declaration, signature, returnTarget, adtErrorsBefore) = entry
+            val (declaration, signature, returnTarget, _) = entry
             currentDeclarationSource = declaration.source
             val stmtCtx = createBodyConversionContext(signature, returnTarget)
             if (signature.isPure) {
@@ -170,21 +176,14 @@ class ProgramConverter(
                     convertedBodyResolver.storeImpure(signature.name, it)
                 }
             }
-            // Snapshot is taken in [register] before signature embedding so that ADT errors
-            // raised while embedding the signature (parameters, return type, etc.) also count.
-            if (adtErrorCount > adtErrorsBefore) {
-                reportAdtViolation(
-                    declaration.source,
-                    "Function '${declaration.name.asString()}' references an invalid ADT",
-                )
-            }
         }
         currentDeclarationSource = null
     }
 
     /**
-     * Walk converted bodies to surface validity / purity errors via the diagnostic reporter.
-     * Bodies that fail are still present in [convertedBodyResolver]; callers should inspect
+     * Walk converted bodies to surface validity / purity errors via the diagnostic reporter, then
+     * emit a per-function summary for any registered declaration whose processing produced blocking
+     * errors. Bodies that fail are still present in [convertedBodyResolver]; callers should inspect
      * [hadConversionError] after this returns and bail before invoking [linearizeAll].
      */
     fun validateAll() {
@@ -196,6 +195,16 @@ class ProgramConverter(
             if (!body.isPure()) {
                 val source = pureFunctions[name]?.callable?.declarationSource
                 reportPurityViolation(source, "Impure function body detected in pure function")
+            }
+        }
+        // Snapshot is taken in [register] before signature embedding, so the comparison covers
+        // errors raised during signature embedding, body conversion, and validation alike.
+        for (entry in registered) {
+            if (blockingErrorCount > entry.blockingErrorsBeforeRegister) {
+                reportVerificationSkipped(
+                    entry.declaration.source,
+                    "Function '${entry.declaration.name.asString()}' was not verified because of errors in its declaration",
+                )
             }
         }
     }

@@ -21,5 +21,11 @@ object ConversionErrors : KtDiagnosticsContainer() {
     val ADT_VIOLATION by error1<PsiElement, String>()
     val MINOR_INTERNAL_ERROR by error1<PsiElement, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
 
+    /**
+     * Per-function summary fired by `ProgramConverter.validateAll` whenever a registered declaration's
+     * pipeline (signature embedding, body conversion, or validation) produced any blocking errors.
+     */
+    val VERIFICATION_SKIPPED by error1<PsiElement, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
+
     override fun getRendererFactory() = ConversionErrorMessages
 }
