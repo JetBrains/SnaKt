@@ -105,4 +105,3 @@ fun runChecks(testService: TestServices, vararg checks: () -> Unit) {
     val errors = checks.mapNotNull { runCatching { it() }.exceptionOrNull() }
     testService.assertions.failAll(errors)
 }
-

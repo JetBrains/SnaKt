@@ -118,5 +118,3 @@ abstract class AbstractPhasedDiagnosticTest : AbstractKotlinCompilerWithTargetBa
         return EnvironmentBasedStandardLibrariesPathProvider
     }
 }
-
-
