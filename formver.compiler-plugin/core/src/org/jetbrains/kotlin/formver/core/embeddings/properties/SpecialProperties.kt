@@ -24,13 +24,20 @@ abstract class SpecialProperty(val property: PropertyEmbedding) {
 }
 
 
-object StringSizeProperty : SpecialProperty(PropertyEmbedding(LengthFieldGetter, setter = null)) {
+object StringSizeProperty :
+    SpecialProperty(PropertyEmbedding(LengthFieldGetter, setter = null, hasDefaultBehaviour = true)) {
     context(typeResolver: TypeResolver, session: FirSession)
     override fun match(symbol: FirPropertySymbol): Boolean = symbol.callableId == kotlinCallableId("String", "length")
 }
 
 object CollectionSizeProperty :
-    SpecialProperty(PropertyEmbedding(BackingFieldGetter(CollectionSizeFieldEmbedding), setter = null)) {
+    SpecialProperty(
+        PropertyEmbedding(
+            BackingFieldGetter(CollectionSizeFieldEmbedding),
+            setter = null,
+            hasDefaultBehaviour = true
+        )
+    ) {
     context(typeResolver: TypeResolver, session: FirSession)
     override fun match(symbol: FirPropertySymbol): Boolean {
         val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol ?: return false

@@ -440,7 +440,8 @@ class ProgramConverter(
                         // we can replace it with a function call
                         PropertyEmbedding(
                             CustomGetter(embedClosedGetterFunction(symbol)),
-                            null
+                            null,
+                            hasDefaultBehaviour = true
                         )
                     }
 
@@ -450,6 +451,7 @@ class ProgramConverter(
                         PropertyEmbedding(
                             CustomGetter(embedOpenGetterFunction(symbol)),
                             symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) },
+                            hasDefaultBehaviour = false
                         )
                     }
                 }
@@ -571,7 +573,7 @@ class ProgramConverter(
             val parameterMatching = constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
                 val name = propertySymbol.embedMemberPropertyName(this)
                 propertySymbol.withConstructorParam { paramSymbol ->
-                    typeResolver.lookupFinalProperties(name)?.let { paramSymbol to it }
+                    typeResolver.lookupDefaultBehavingProperties(name)?.let { paramSymbol to it }
                 }
             }.toMap()
 
@@ -635,6 +637,7 @@ class ProgramConverter(
     private fun embedCustomProperty(symbol: FirPropertySymbol) = PropertyEmbedding(
         CustomGetter(embedOpenGetterFunction(symbol)),
         symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) },
+        hasDefaultBehaviour = false
     )
 
     @OptIn(SymbolInternals::class)
