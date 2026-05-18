@@ -814,7 +814,7 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @Test
       @TestMetadata("operators.kt")
       public void testOperators() {
-          runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/operators.kt");
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/operators.kt");
       }
 
       @Test
