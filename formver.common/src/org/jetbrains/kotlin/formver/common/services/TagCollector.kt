@@ -41,8 +41,9 @@ abstract class TagCollector(
     private lateinit var existingInfos: Map<TestFile, List<CodeMetaInfo>>
 
     private fun reportMetaInfos(file: TestFile, codeMetaInfos: List<CodeMetaInfo>) {
-        val infos = reportedInfos.getOrPut(file) { codeMetaInfos.toMutableList() }
-        infos += codeMetaInfos
+        val filteredInfos = codeMetaInfos.filter { tagsToConsider == null || it.tag in tagsToConsider!! }
+        val infos = reportedInfos.getOrPut(file) { mutableListOf() }
+        infos += filteredInfos
     }
 
     fun parseExistingMetadataInfosFromAllSources() {
