@@ -58,7 +58,10 @@ function getSafeNextNextValue(node: Ref): Ref
         ((anon_3_0 != nullValue() ? anon_4_0 : nullValue())) in
         (let anon_5_0 ==
           ((anon_2_0 != nullValue() ?
-            (unfolding acc(shared(anon_2_0), wildcard) in anon_2_0.value) :
+            (unfolding acc(shared(node), wildcard) in
+              (unfolding acc(shared(anon_3_0), wildcard) in
+                (unfolding acc(shared(anon_2_0), wildcard) in
+                  anon_2_0.value))) :
             null)) in
           (let anon_1_0 ==
             ((anon_2_0 != nullValue() ? anon_5_0 : nullValue())) in

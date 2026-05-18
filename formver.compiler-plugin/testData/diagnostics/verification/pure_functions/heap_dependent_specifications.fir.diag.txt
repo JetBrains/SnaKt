@@ -159,3 +159,273 @@ function isLocallyValidBST(node: Ref): Ref
                             anon_7_0)) in
                           andBools(leftValid_0, rightValid_0)))))))))))))
 }
+
+/heap_dependent_specifications.kt: info: Generated Viper text for testNode:
+field next: Ref
+
+field value: Ref
+
+function testNode(nodeLeft: Ref, nodeRight: Ref): Ref
+  requires acc(shared(nodeLeft), wildcard)
+  requires acc(shared(nodeRight), wildcard)
+  requires isSubtype(typeOf(nodeLeft), Node())
+  requires isSubtype(typeOf(nodeRight), Node())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let node_0 ==
+    (nodeLeft) in
+    (let anon_0_0 ==
+      ((unfolding acc(shared(nodeLeft), wildcard) in nodeLeft.next)) in
+      (let anon_1_0 ==
+        ((!(anon_0_0 == nullValue()) ?
+          (unfolding acc(shared(nodeLeft), wildcard) in nodeLeft.next) :
+          null)) in
+        (let node_1 ==
+          ((!(anon_0_0 == nullValue()) ? anon_1_0 : null)) in
+          (let anon_2_0 ==
+            ((!!(anon_0_0 == nullValue()) ?
+              (unfolding acc(shared(nodeRight), wildcard) in
+                nodeRight.next) :
+              null)) in
+            (let anon_3_0 ==
+              ((!(anon_2_0 == nullValue()) && !!(anon_0_0 == nullValue()) ?
+                (unfolding acc(shared(nodeRight), wildcard) in
+                  nodeRight.next) :
+                null)) in
+              (let node_2 ==
+                ((!(anon_2_0 == nullValue()) && !!(anon_0_0 == nullValue()) ?
+                  anon_3_0 :
+                  null)) in
+                (let node_3 ==
+                  ((!(anon_2_0 == nullValue()) ? node_2 : node_0)) in
+                  (let node_4 ==
+                    ((!(anon_0_0 == nullValue()) ? node_1 : node_3)) in
+                    (let anon_4_0 ==
+                      ((true && !!(anon_2_0 == nullValue()) &&
+                      !!(anon_0_0 == nullValue()) ?
+                        (unfolding acc(shared(node_4), wildcard) in
+                          node_4.value) :
+                        (true && !(anon_2_0 == nullValue()) &&
+                        !!(anon_0_0 == nullValue()) ?
+                          (unfolding acc(shared(nodeRight), wildcard) in
+                            (unfolding acc(shared(node_4), wildcard) in
+                              node_4.value)) :
+                          (true && !(anon_0_0 == nullValue()) ?
+                            (unfolding acc(shared(nodeLeft), wildcard) in
+                              (unfolding acc(shared(node_4), wildcard) in
+                                node_4.value)) :
+                            null)))) in
+                      anon_4_0))))))))))
+}
+
+/heap_dependent_specifications.kt: info: Generated Viper text for testSequentialBranches:
+field next: Ref
+
+field value: Ref
+
+function testSequentialBranches(nodeA: Ref, nodeB: Ref): Ref
+  requires acc(shared(nodeA), wildcard)
+  requires acc(shared(nodeB), wildcard)
+  requires isSubtype(typeOf(nodeA), Node())
+  requires isSubtype(typeOf(nodeB), Node())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let node_0 ==
+    (nodeA) in
+    (let anon_0_0 ==
+      ((unfolding acc(shared(nodeA), wildcard) in nodeA.value)) in
+      (let node_1 ==
+        ((intFromRef(anon_0_0) > 0 ? nodeB : null)) in
+        (let node_2 ==
+          ((intFromRef(anon_0_0) > 0 ? node_1 : node_0)) in
+          (let anon_1_0 ==
+            ((true && !(intFromRef(anon_0_0) > 0) ?
+              (unfolding acc(shared(node_2), wildcard) in node_2.next) :
+              (true && intFromRef(anon_0_0) > 0 ?
+                (unfolding acc(shared(node_2), wildcard) in node_2.next) :
+                null))) in
+            (let node_3 ==
+              ((!(anon_1_0 == nullValue()) ?
+                (intFromRef(anon_0_0) > 0 ? node_1 : node_0) :
+                null)) in
+              (let anon_2_0 ==
+                ((!(anon_1_0 == nullValue()) ?
+                  (true && !(intFromRef(anon_0_0) > 0) ?
+                    (unfolding acc(shared(node_3), wildcard) in
+                      node_3.next) :
+                    (true && intFromRef(anon_0_0) > 0 ?
+                      (unfolding acc(shared(node_3), wildcard) in
+                        node_3.next) :
+                      null)) :
+                  null)) in
+                (let node_4 ==
+                  ((!(anon_1_0 == nullValue()) ? anon_2_0 : null)) in
+                  (let node_5 ==
+                    ((intFromRef(anon_0_0) > 0 ? node_1 : node_0)) in
+                    (let node_6 ==
+                      ((!(anon_1_0 == nullValue()) ? node_4 : node_5)) in
+                      (let anon_3_0 ==
+                        ((true && !(intFromRef(anon_0_0) > 0) &&
+                        !!(anon_1_0 == nullValue()) ?
+                          (unfolding acc(shared(node_6), wildcard) in
+                            node_6.value) :
+                          (true && intFromRef(anon_0_0) > 0 &&
+                          !!(anon_1_0 == nullValue()) ?
+                            (unfolding acc(shared(node_6), wildcard) in
+                              node_6.value) :
+                            (true && !(intFromRef(anon_0_0) > 0) &&
+                            !(anon_1_0 == nullValue()) ?
+                              (unfolding acc(shared(node_3), wildcard) in
+                                (unfolding acc(shared(node_6), wildcard) in
+                                  node_6.value)) :
+                              (true && intFromRef(anon_0_0) > 0 &&
+                              !(anon_1_0 == nullValue()) ?
+                                (unfolding acc(shared(node_3), wildcard) in
+                                  (unfolding acc(shared(node_6), wildcard) in
+                                    node_6.value)) :
+                                null))))) in
+                        anon_3_0)))))))))))
+}
+
+/heap_dependent_specifications.kt: info: Generated Viper text for testNestedConditions:
+field next: Ref
+
+field value: Ref
+
+function testNestedConditions(nodeA: Ref, nodeB: Ref): Ref
+  requires acc(shared(nodeA), wildcard)
+  requires acc(shared(nodeB), wildcard)
+  requires isSubtype(typeOf(nodeA), Node())
+  requires isSubtype(typeOf(nodeB), Node())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let node_0 ==
+    (nodeA) in
+    (let anon_0_0 ==
+      ((unfolding acc(shared(nodeA), wildcard) in nodeA.next)) in
+      (let anon_2_0 ==
+        ((!(anon_0_0 == nullValue()) ?
+          (unfolding acc(shared(nodeA), wildcard) in nodeA.next) :
+          null)) in
+        (let anon_1_0 ==
+          ((!(anon_0_0 == nullValue()) ?
+            (unfolding acc(shared(nodeA), wildcard) in
+              (unfolding acc(shared(anon_2_0), wildcard) in anon_2_0.next)) :
+            null)) in
+          (let anon_4_0 ==
+            ((!(anon_1_0 == nullValue()) && !(anon_0_0 == nullValue()) ?
+              (unfolding acc(shared(nodeA), wildcard) in nodeA.next) :
+              null)) in
+            (let anon_3_0 ==
+              ((!(anon_1_0 == nullValue()) && !(anon_0_0 == nullValue()) ?
+                (unfolding acc(shared(nodeA), wildcard) in
+                  (unfolding acc(shared(anon_4_0), wildcard) in
+                    anon_4_0.next)) :
+                null)) in
+              (let node_1 ==
+                ((!(anon_1_0 == nullValue()) && !(anon_0_0 == nullValue()) ?
+                  anon_3_0 :
+                  null)) in
+                (let node_2 ==
+                  ((!!(anon_1_0 == nullValue()) &&
+                  !(anon_0_0 == nullValue()) ?
+                    nodeB :
+                    null)) in
+                  (let anon_5_0 ==
+                    ((!!(anon_0_0 == nullValue()) ?
+                      (unfolding acc(shared(nodeB), wildcard) in
+                        nodeB.next) :
+                      null)) in
+                    (let anon_6_0 ==
+                      ((!(anon_5_0 == nullValue()) &&
+                      !!(anon_0_0 == nullValue()) ?
+                        (unfolding acc(shared(nodeB), wildcard) in
+                          nodeB.next) :
+                        null)) in
+                      (let node_3 ==
+                        ((!(anon_5_0 == nullValue()) &&
+                        !!(anon_0_0 == nullValue()) ?
+                          anon_6_0 :
+                          null)) in
+                        (let node_4 ==
+                          ((!(anon_1_0 == nullValue()) ? node_1 : node_2)) in
+                          (let node_5 ==
+                            ((!(anon_5_0 == nullValue()) ? node_3 : node_0)) in
+                            (let node_6 ==
+                              ((!(anon_0_0 == nullValue()) ?
+                                node_4 :
+                                node_5)) in
+                              (let anon_7_0 ==
+                                ((true && !!(anon_5_0 == nullValue()) &&
+                                !!(anon_0_0 == nullValue()) ?
+                                  (unfolding acc(shared(node_6), wildcard) in
+                                    node_6.value) :
+                                  (true && !(anon_5_0 == nullValue()) &&
+                                  !!(anon_0_0 == nullValue()) ?
+                                    (unfolding acc(shared(nodeB), wildcard) in
+                                      (unfolding acc(shared(node_6), wildcard) in
+                                        node_6.value)) :
+                                    (true && !!(anon_1_0 == nullValue()) &&
+                                    !(anon_0_0 == nullValue()) ?
+                                      (unfolding acc(shared(node_6), wildcard) in
+                                        node_6.value) :
+                                      (true && !(anon_1_0 == nullValue()) &&
+                                      !(anon_0_0 == nullValue()) ?
+                                        (unfolding acc(shared(nodeA), wildcard) in
+                                          (unfolding acc(shared(anon_4_0), wildcard) in
+                                            (unfolding acc(shared(node_6), wildcard) in
+                                              node_6.value))) :
+                                        null))))) in
+                                anon_7_0)))))))))))))))
+}
+
+/heap_dependent_specifications.kt: info: Generated Viper text for testMultipleVarMerge:
+field next: Ref
+
+field value: Ref
+
+function testMultipleVarMerge(left: Ref, right: Ref): Ref
+  requires acc(shared(left), wildcard)
+  requires acc(shared(right), wildcard)
+  requires isSubtype(typeOf(left), Node())
+  requires isSubtype(typeOf(right), Node())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let n1_0 ==
+    (left) in
+    (let n2_0 ==
+      (right) in
+      (let anon_0_0 ==
+        ((unfolding acc(shared(left), wildcard) in left.value)) in
+        (let anon_1_0 ==
+          ((unfolding acc(shared(right), wildcard) in right.value)) in
+          (let n1_1 ==
+            ((intFromRef(anon_0_0) > intFromRef(anon_1_0) ? right : null)) in
+            (let n2_1 ==
+              ((intFromRef(anon_0_0) > intFromRef(anon_1_0) ? left : null)) in
+              (let n1_2 ==
+                ((intFromRef(anon_0_0) > intFromRef(anon_1_0) ?
+                  n1_1 :
+                  n1_0)) in
+                (let anon_2_0 ==
+                  ((true && !(intFromRef(anon_0_0) > intFromRef(anon_1_0)) ?
+                    (unfolding acc(shared(n1_2), wildcard) in n1_2.value) :
+                    (true && intFromRef(anon_0_0) > intFromRef(anon_1_0) ?
+                      (unfolding acc(shared(n1_2), wildcard) in n1_2.value) :
+                      null))) in
+                  (let n2_2 ==
+                    ((intFromRef(anon_0_0) > intFromRef(anon_1_0) ?
+                      n2_1 :
+                      n2_0)) in
+                    (let anon_3_0 ==
+                      ((true &&
+                      !(intFromRef(anon_0_0) > intFromRef(anon_1_0)) ?
+                        (unfolding acc(shared(n2_2), wildcard) in
+                          n2_2.value) :
+                        (true &&
+                        intFromRef(anon_0_0) > intFromRef(anon_1_0) ?
+                          (unfolding acc(shared(n2_2), wildcard) in
+                            n2_2.value) :
+                          null))) in
+                      plusInts(anon_2_0, anon_3_0)))))))))))
+}
