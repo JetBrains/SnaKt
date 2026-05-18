@@ -6,10 +6,10 @@
 package org.jetbrains.kotlin.formver.plugin.runners
 
 import org.jetbrains.kotlin.formver.common.services.DiagnosticsCollector
+import org.jetbrains.kotlin.formver.common.services.PluginAnnotationsProvider
 import org.jetbrains.kotlin.formver.common.services.TagCollector
 import org.jetbrains.kotlin.formver.common.services.runChecks
 import org.jetbrains.kotlin.formver.plugin.services.LocalityExtensionRegistrarConfigurator
-import org.jetbrains.kotlin.formver.plugin.services.PluginAnnotationsProvider
 import org.jetbrains.kotlin.test.FirParser
 import org.jetbrains.kotlin.test.TargetBackend
 import org.jetbrains.kotlin.test.builders.TestConfigurationBuilder
@@ -69,8 +69,7 @@ class DiagnosticHandler(testServices: TestServices) : FirAnalysisHandler(testSer
 }
 
 
-
-abstract class AbstractLocalityDiagnosticTest() : AbstractKotlinCompilerWithTargetBackendTest(TargetBackend.JVM_IR) {
+abstract class AbstractLocalityDiagnosticTest : AbstractKotlinCompilerWithTargetBackendTest(TargetBackend.JVM_IR) {
     override fun configure(builder: TestConfigurationBuilder) = with(builder) {
         defaultDirectives {
             LATEST_PHASE_IN_PIPELINE with TestPhase.FRONTEND

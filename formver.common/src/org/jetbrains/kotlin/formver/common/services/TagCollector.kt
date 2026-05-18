@@ -125,8 +125,8 @@ abstract class TagCollector(
     private fun expectedFileFilteredForTags(): String {
         require(tagsToConsider != null) { "tagsToConsider must be set" }
         parseExistingMetadataInfosFromAllSources()
-        val existingInfosWithoutVerification = existingInfos.mapValues { it ->
-            it.value.filter { it.tag in tagsToConsider!! }
+        val existingInfosWithoutVerification = existingInfos.mapValues {
+            it.value.filter { info -> info.tag in tagsToConsider!! }
         }
 
         return renderText(existingInfosWithoutVerification, this::sourceFileWithoutTags)

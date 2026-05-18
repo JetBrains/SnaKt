@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.plugin.runners
 
 
 import org.jetbrains.kotlin.formver.common.services.DiagnosticsCollector
+import org.jetbrains.kotlin.formver.common.services.PluginAnnotationsProvider
 import org.jetbrains.kotlin.formver.common.services.TagCollector
 import org.jetbrains.kotlin.formver.plugin.compiler.PluginErrors
 import org.jetbrains.kotlin.formver.plugin.services.*
