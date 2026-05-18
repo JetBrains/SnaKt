@@ -6,17 +6,19 @@
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
 import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AdtConstructorRef
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtFieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.asTypeEmbedding
+import org.jetbrains.kotlin.formver.viper.ast.Method
 
 class AdtConstructorEmbedding(
     val adtType: AdtTypeEmbedding,
     val fields: List<AdtFieldEmbedding>,
-) : CallableEmbedding {
+) : FunctionEmbedding {
     override val callableType: FunctionTypeEmbedding = FunctionTypeEmbedding(
         dispatchReceiverType = null,
         extensionReceiverType = null,
@@ -27,4 +29,6 @@ class AdtConstructorEmbedding(
 
     override fun insertCall(args: List<ExpEmbedding>, ctx: StmtConversionContext): ExpEmbedding =
         AdtConstructorRef(callableType.returnType, args)
+
+    override fun viperMethod(ctx: TypeResolver): Method? = null
 }

@@ -248,14 +248,8 @@ class ProgramConverter(
         return embedPureUserFunction(symbol, signature, returnTarget)
     }
 
-    override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding {
-        if (symbol is FirConstructorSymbol && symbol.isPrimary) {
-            val type = embedType(symbol.resolvedReturnType)
-            val adtType = type.pretype as? AdtTypeEmbeddingImpl
-            if (adtType != null) return AdtConstructorEmbedding(adtType, typeResolver.lookupAdtFields(adtType.name))
-        }
-        return if (symbol.isPure(session)) embedPureFunction(symbol) else embedFunction(symbol)
-    }
+    override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding =
+        if (symbol.isPure(session)) embedPureFunction(symbol) else embedFunction(symbol)
 
     /**
      * Returns an embedding of the class type, with details set.
@@ -299,6 +293,13 @@ class ProgramConverter(
             if (!embedAdtProperty(sym, adtEmbedding)) allValid = false
         }
         if (!allValid) typeResolver.registerAdt(name, InvalidAdtTypeEmbedding)
+        else {
+            val primaryCtor = symbol.declarationSymbols
+                .filterIsInstance<FirConstructorSymbol>()
+                .first { it.isPrimary }
+            methods[primaryCtor.embedName(this)] =
+                AdtConstructorEmbedding(adtEmbedding, typeResolver.lookupAdtFields(adtEmbedding.name))
+        }
         return if (allValid) adtEmbedding else InvalidAdtTypeEmbedding
     }
 

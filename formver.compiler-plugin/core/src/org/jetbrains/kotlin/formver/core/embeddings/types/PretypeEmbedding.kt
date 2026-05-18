@@ -70,9 +70,4 @@ data object StringTypeEmbedding : PretypeEmbedding {
     override val name = PretypeName("String")
 }
 
-data object InvalidTypeEmbedding : PretypeEmbedding {
-    override val runtimeType = RuntimeTypeDomain.nothingType()
-    override val name = PretypeName("Invalid")
-}
-
 fun PretypeEmbedding.asTypeEmbedding() = TypeEmbedding(this, TypeEmbeddingFlags(nullable = false))
