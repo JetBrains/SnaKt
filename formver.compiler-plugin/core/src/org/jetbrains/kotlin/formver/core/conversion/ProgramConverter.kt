@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.utils.*
+import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
@@ -29,6 +30,7 @@ import org.jetbrains.kotlin.formver.core.isAdt
 import org.jetbrains.kotlin.formver.core.purity.checkValidity
 import org.jetbrains.kotlin.formver.core.purity.isPure
 import org.jetbrains.kotlin.formver.core.names.*
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessFacts
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
@@ -122,7 +124,7 @@ class ProgramConverter(
      */
     fun convertAll() {
         for ((declaration, signature, returnTarget) in registered) {
-            val stmtCtx = createBodyConversionContext(signature, returnTarget)
+            val stmtCtx = createBodyConversionContext(signature, declaration, returnTarget)
             if (signature.isPure) {
                 convertedBodyResolver.storePure(signature.name, stmtCtx.convertPureBody(declaration))
             } else {
@@ -205,7 +207,7 @@ class ProgramConverter(
             symbol.source, "Expected FirSimpleFunction, got unexpected type ${symbol.fir.javaClass.simpleName}"
         )
         if (declaration.body != null) {
-            val stmtCtx = createBodyConversionContext(signature, returnTarget)
+            val stmtCtx = createBodyConversionContext(signature, declaration, returnTarget)
             convertedBodyResolver.storePure(signature.name, stmtCtx.convertPureBody(declaration))
         }
         return new
@@ -213,9 +215,9 @@ class ProgramConverter(
 
     private fun createBodyConversionContext(
         signature: NamedFunctionSignature,
-        target: ReturnTarget
+        declaration: FirSimpleFunction,
+        target: ReturnTarget,
     ): StmtConversionContext {
-
         val paramResolver = RootParameterResolver(
             this@ProgramConverter,
             signature,
@@ -223,11 +225,17 @@ class ProgramConverter(
             signature.labelName,
             target
         )
+        val facts = if (config.checkUniqueness) {
+            declaration.controlFlowGraphReference?.controlFlowGraph?.let {
+                UniquenessFacts.analyze(session, it)
+            }
+        } else null
         val stmtCtx = MethodConverter(
             this@ProgramConverter,
             signature,
             paramResolver,
             scopeIndexProducer.getFresh(),
+            ownFacts = facts,
         ).statementCtxt()
         return stmtCtx
     }

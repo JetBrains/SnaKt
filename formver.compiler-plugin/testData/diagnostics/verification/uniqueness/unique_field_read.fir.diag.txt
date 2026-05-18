@@ -1,0 +1,123 @@
+/unique_field_read.kt: info: Generated Viper text for readMemberUnique:
+field bf_v: Ref
+
+field size: Ref
+
+predicate BooleanArray_shared(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(Cloneable_shared(this), wildcard) &&
+  acc(Serializable_shared(this), wildcard)
+}
+
+predicate BooleanArray_unique(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_shared(this: Ref) {
+  true
+}
+
+predicate Cloneable_unique(this: Ref) {
+  true
+}
+
+predicate Serializable_shared(this: Ref) {
+  true
+}
+
+predicate Serializable_unique(this: Ref) {
+  true
+}
+
+predicate X_shared(this: Ref) {
+  true
+}
+
+predicate X_unique(this: Ref) {
+  acc(this.bf_v, write) && isSubtype(typeOf(this.bf_v), intType())
+}
+
+method readMemberUnique(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), X())
+  requires acc(X_unique(x), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var k: Ref
+  var anon: Ref
+  inhale acc(X_shared(x), wildcard)
+  unfold acc(X_unique(x), write)
+  k := x.bf_v
+  anon := x.bf_v
+  assert intFromRef(k) == intFromRef(anon)
+  fold acc(X_unique(x), write)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/unique_field_read.kt: info: Generated Viper text for constructAndRead:
+field bf_v: Ref
+
+field size: Ref
+
+predicate BooleanArray_shared(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(Cloneable_shared(this), wildcard) &&
+  acc(Serializable_shared(this), wildcard)
+}
+
+predicate BooleanArray_unique(this: Ref) {
+  acc(this.size, wildcard) && isSubtype(typeOf(this.size), intType()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_shared(this: Ref) {
+  true
+}
+
+predicate Cloneable_unique(this: Ref) {
+  true
+}
+
+predicate Serializable_shared(this: Ref) {
+  true
+}
+
+predicate Serializable_unique(this: Ref) {
+  true
+}
+
+predicate X_shared(this: Ref) {
+  true
+}
+
+predicate X_unique(this: Ref) {
+  acc(this.bf_v, write) && isSubtype(typeOf(this.bf_v), intType())
+}
+
+method con(par_v: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_v), intType())
+  ensures isSubtype(typeOf(ret_1), X())
+  ensures acc(X_shared(ret_1), wildcard)
+  ensures acc(X_unique(ret_1), write)
+
+
+method constructAndRead() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var x: Ref
+  var k: Ref
+  var anon: Ref
+  x := con(intToRef(42))
+  unfold acc(X_unique(x), write)
+  k := x.bf_v
+  fold acc(X_unique(x), write)
+  unfold acc(X_unique(x), write)
+  anon := x.bf_v
+  fold acc(X_unique(x), write)
+  assert intFromRef(k) == intFromRef(anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
