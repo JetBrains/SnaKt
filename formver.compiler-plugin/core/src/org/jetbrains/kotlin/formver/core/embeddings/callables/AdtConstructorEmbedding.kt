@@ -19,7 +19,7 @@ class AdtConstructorEmbedding(
     val adtType: AdtTypeEmbedding,
     val fields: List<AdtFieldEmbedding>,
 ) : FunctionEmbedding {
-    override val callableType: FunctionTypeEmbedding = FunctionTypeEmbedding(
+    override val callableType = FunctionTypeEmbedding(
         dispatchReceiverType = null,
         extensionReceiverType = null,
         paramTypes = fields.map { it.type },

@@ -1,4 +1,4 @@
-/product_types.kt: info: Generated Viper text for testConstrAndDestr:
+/product.kt: info: Generated Viper text for testConstrAndDestr:
 field size: Ref
 
 method testConstrAndDestr() returns (v_ret_0: Ref)
@@ -24,7 +24,7 @@ adt a_Pair {
   ac_Pair(af_a_Pair_a: Ref, af_a_Pair_b: Ref)
 }
 
-/product_types.kt: info: Generated Viper text for destrGivenAdt:
+/product.kt: info: Generated Viper text for destrGivenAdt:
 field size: Ref
 
 method destrGivenAdt(pair: Ref) returns (v_ret_0: Ref)
@@ -41,7 +41,7 @@ adt a_Pair {
   ac_Pair(af_a_Pair_a: Ref, af_a_Pair_b: Ref)
 }
 
-/product_types.kt: info: Generated Viper text for adtInPostcondition:
+/product.kt: info: Generated Viper text for adtInPostcondition:
 method adtInPostcondition(p1: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(p1), Pair())
   ensures isSubtype(typeOf(v_ret_0), Pair())

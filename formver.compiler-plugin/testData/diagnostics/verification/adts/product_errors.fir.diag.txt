@@ -1,12 +1,12 @@
-/data_classes.kt: error: Invalid ADT annotation: An @ADT declaration may only declare immutable (val) fields
+/product_errors.kt: error: Invalid ADT annotation: An @ADT declaration may only declare immutable (val) fields
 
-/data_classes.kt: error: Invalid ADT annotation: An @ADT declaration may only declare fields in its primary constructor
+/product_errors.kt: error: Invalid ADT annotation: An @ADT declaration may only declare fields in its primary constructor
 
-/data_classes.kt: error: Invalid ADT annotation: An @ADT declaration must not have user-declared member functions
+/product_errors.kt: error: Invalid ADT annotation: An @ADT declaration must not have user-declared member functions
 
-/data_classes.kt: error: Invalid ADT annotation: An @ADT declaration must not have type parameters
+/product_errors.kt: error: Invalid ADT annotation: An @ADT declaration must not have type parameters
 
-/data_classes.kt: info: Generated Viper text for useTwoFields:
+/product_errors.kt: info: Generated Viper text for useTwoFields:
 method useTwoFields(par_p: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(par_p), TwoFields())
   ensures isSubtype(typeOf(v_ret_0), unitType())
@@ -19,7 +19,7 @@ adt a_TwoFields {
   ac_TwoFields(af_a_TwoFields_a: Ref, af_a_TwoFields_b: Ref)
 }
 
-/data_classes.kt: info: Generated Viper text for useOptInt:
+/product_errors.kt: info: Generated Viper text for useOptInt:
 method useOptInt(o: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(o), OptInt())
   ensures isSubtype(typeOf(v_ret_0), unitType())
@@ -32,7 +32,7 @@ adt a_OptInt {
   ac_OptInt(af_a_OptInt_n: Ref)
 }
 
-/data_classes.kt: info: Generated Viper text for useNode:
+/product_errors.kt: info: Generated Viper text for useNode:
 method useNode(n: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(n), Node())
   ensures isSubtype(typeOf(v_ret_0), unitType())
@@ -45,15 +45,15 @@ adt a_Node {
   ac_Node(af_a_Node_head: Ref, af_a_Node_tail: Ref)
 }
 
-/data_classes.kt: error: Function 'useWithVar' references an invalid ADT
+/product_errors.kt: error: Function 'useWithVar' references an invalid ADT
 
-/data_classes.kt: error: Function 'useWithBodyField' references an invalid ADT
+/product_errors.kt: error: Function 'useWithBodyField' references an invalid ADT
 
-/data_classes.kt: error: Function 'useWithFunction' references an invalid ADT
+/product_errors.kt: error: Function 'useWithFunction' references an invalid ADT
 
-/data_classes.kt: error: Function 'useGeneric' references an invalid ADT
+/product_errors.kt: error: Function 'useGeneric' references an invalid ADT
 
-/data_classes.kt: info: Generated Viper text for testConstrUsage:
+/product_errors.kt: info: Generated Viper text for testConstrUsage:
 method testConstrUsage() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
@@ -69,7 +69,7 @@ adt a_TwoFields {
   ac_TwoFields(af_a_TwoFields_a: Ref, af_a_TwoFields_b: Ref)
 }
 
-/data_classes.kt: info: Generated Viper text for testDestrUsage:
+/product_errors.kt: info: Generated Viper text for testDestrUsage:
 method testDestrUsage() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {

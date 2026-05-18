@@ -98,7 +98,11 @@ class TypeResolver {
     fun getOrPutProperty(name: ClassPropertyPair, create: () -> PropertyEmbedding) = properties.getOrPut(name, create)
 
     fun getOrPutAdtField(name: ClassPropertyPair, create: () -> AdtFieldEmbedding): AdtFieldEmbedding =
-        create().also { adtFieldsByAdt.getOrPut(name.className) { mutableListOf() }.add(it) }
+        create().apply {
+            adtFieldsByAdt
+                .getOrPut(name.className) { mutableListOf() }
+                .add(this)
+        }
 
     fun lookupAdtFields(className: ScopedName): List<AdtFieldEmbedding> =
         adtFieldsByAdt[className] ?: emptyList()

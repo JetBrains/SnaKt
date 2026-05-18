@@ -398,15 +398,15 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
-      @TestMetadata("data_classes.kt")
-      public void testData_classes() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/data_classes.kt");
+      @TestMetadata("product.kt")
+      public void testProduct() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/product.kt");
       }
 
       @Test
-      @TestMetadata("product_types.kt")
-      public void testProduct_types() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/product_types.kt");
+      @TestMetadata("product_errors.kt")
+      public void testProduct_errors() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/product_errors.kt");
       }
 
       @Test

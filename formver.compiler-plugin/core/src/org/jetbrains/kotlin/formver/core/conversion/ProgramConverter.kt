@@ -284,7 +284,7 @@ class ProgramConverter(
     private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding {
         val name = symbol.classId.embedName()
         typeResolver.lookupAdtTypeEmbedding(name)?.let { return it }
-        if (!adtHeaderIsValid(symbol)) {
+        if (!validateAdtHeader(symbol)) {
             typeResolver.registerAdt(name, InvalidAdtTypeEmbedding)
             return InvalidAdtTypeEmbedding
         }
@@ -295,17 +295,10 @@ class ProgramConverter(
             if (!embedAdtProperty(sym, adtEmbedding)) allValid = false
         }
         if (!allValid) typeResolver.registerAdt(name, InvalidAdtTypeEmbedding)
-        else {
-            val primaryCtor = symbol.declarationSymbols
-                .filterIsInstance<FirConstructorSymbol>()
-                .first { it.isPrimary }
-            methods[primaryCtor.embedName(this)] =
-                AdtConstructorEmbedding(adtEmbedding, typeResolver.lookupAdtFields(adtEmbedding.name))
-        }
         return if (allValid) adtEmbedding else InvalidAdtTypeEmbedding
     }
 
-    private fun adtHeaderIsValid(symbol: FirRegularClassSymbol): Boolean {
+    private fun validateAdtHeader(symbol: FirRegularClassSymbol): Boolean {
         if (!symbol.isData) {
             errorCollector.addAdtError(
                 symbol.source,
@@ -355,8 +348,15 @@ class ProgramConverter(
                     PropertyEmbedding(AdtFieldGetter(field, adtEmbedding), setter = null)
                 }
             }
-            is FirConstructorSymbol -> if (!symbol.isPrimary)
-                rejectProperty("An @ADT declaration must not have secondary constructors")
+            is FirConstructorSymbol -> {
+                if (!symbol.isPrimary) {
+                    rejectProperty("An @ADT declaration must not have secondary constructors")
+                } else {
+                    // Proactively embed custom constructor for this ADT
+                    methods[symbol.embedName(this)] =
+                        AdtConstructorEmbedding(adtEmbedding, typeResolver.lookupAdtFields(adtEmbedding.name))
+                }
+            }
             is FirNamedFunctionSymbol -> if (symbol.origin == FirDeclarationOrigin.Source)
                 rejectProperty("An @ADT declaration must not have user-declared member functions")
             else -> rejectProperty("An @ADT declaration does not support symbols of type ${symbol.javaClass.simpleName}")
