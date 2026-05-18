@@ -72,7 +72,7 @@ method safe_binary_search(arr: Ref, target: Ref) returns (v_ret_0: Ref)
 }
 
 method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
-  returns (ret_4: Ref)
+  returns (ret_3: Ref)
   requires acc(this.p_size, write)
   requires intFromRef(this.p_size) >= 0
   requires isSubtype(typeOf(this), List())
@@ -83,12 +83,12 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
   requires intFromRef(toIndex) <= intFromRef(this.p_size)
   ensures acc(this.p_size, write)
   ensures intFromRef(this.p_size) >= 0
-  ensures isSubtype(typeOf(ret_4), List())
-  ensures acc(ret_4.p_size, write)
-  ensures intFromRef(ret_4.p_size) >= 0
-  ensures acc(List_shared(ret_4), wildcard)
+  ensures isSubtype(typeOf(ret_3), List())
+  ensures acc(ret_3.p_size, write)
+  ensures intFromRef(ret_3.p_size) >= 0
+  ensures acc(List_shared(ret_3), wildcard)
   ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
-  ensures intFromRef(ret_4.p_size) ==
+  ensures intFromRef(ret_3.p_size) ==
     intFromRef(toIndex) - intFromRef(fromIndex)
 
 

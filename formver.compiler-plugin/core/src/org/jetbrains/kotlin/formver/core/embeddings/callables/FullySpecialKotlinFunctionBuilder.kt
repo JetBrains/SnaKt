@@ -22,7 +22,7 @@ class FullySpecialKotlinFunctionImpl(
 }
 
 class FullySpecialKotlinFunctionBuilder {
-    private val byName = mutableMapOf<SymbolicName, FunctionEmbedding>()
+    private val byName = mutableMapOf<SymbolicName, FullySpecialKotlinFunction>()
 
     fun withCallableType(
         callableType: FunctionTypeEmbedding,
@@ -67,8 +67,8 @@ class FullySpecialKotlinFunctionBuilder {
         }
     }
 
-    fun complete(): Map<SymbolicName, FunctionEmbedding> = byName
+    fun complete(): Map<SymbolicName, FullySpecialKotlinFunction> = byName
 }
 
-fun buildFullySpecialFunctions(functionsBlock: FullySpecialKotlinFunctionBuilder.() -> Unit): Map<SymbolicName, FunctionEmbedding> =
+fun buildFullySpecialFunctions(functionsBlock: FullySpecialKotlinFunctionBuilder.() -> Unit): Map<SymbolicName, FullySpecialKotlinFunction> =
     FullySpecialKotlinFunctionBuilder().apply(functionsBlock).complete()

@@ -24,7 +24,6 @@ import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.common.UnsupportedFeatureBehaviour
 import org.jetbrains.kotlin.formver.core.embeddings.LabelLink
 import org.jetbrains.kotlin.formver.core.embeddings.callables.CallableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.insertCall
 import org.jetbrains.kotlin.formver.core.embeddings.callables.isVerifyFunction
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
@@ -291,8 +290,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         flatMap { arg ->
             when (arg) {
                 is FirVarargArgumentsExpression -> {
-                    // Short circuit as isVerifyFunction property only exists on embedding of type FunctionEmbedding
-                    if (function == null || function is FunctionEmbedding && !function.isVerifyFunction) {
+                    if (function == null || !function.isVerifyFunction) {
                         throw SnaktInternalException(
                             arg.source, "Vararg arguments are currently supported for `verify` function only."
                         )

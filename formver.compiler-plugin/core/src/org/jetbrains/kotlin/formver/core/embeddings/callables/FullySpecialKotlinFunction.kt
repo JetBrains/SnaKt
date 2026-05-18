@@ -57,7 +57,7 @@ object SpecialKotlinFunctions {
         ClassKotlinName(listOf("InvariantBuilder"))
     }
 
-    val byName: Map<SymbolicName, FunctionEmbedding> = buildFullySpecialFunctions {
+    val byName: Map<SymbolicName, FullySpecialKotlinFunction> = buildFullySpecialFunctions {
         val intIntToIntType = buildFunctionPretype {
             withDispatchReceiver { int() }
             withParam { int() }
@@ -261,10 +261,10 @@ object SpecialKotlinFunctions {
     }
 }
 
-val FunctionEmbedding.isVerifyFunction: Boolean
+val CallableEmbedding.isVerifyFunction: Boolean
     get() = isFormverPluginFunctionNamed(name = "verify")
 
-fun FunctionEmbedding.isFormverPluginFunctionNamed(className: String? = null, name: String): Boolean =
+fun CallableEmbedding.isFormverPluginFunctionNamed(className: String? = null, name: String): Boolean =
     this is FullySpecialKotlinFunction && NameMatcher.Companion.matchClassScope(this.embedName()) {
         ifPackageName(SpecialPackages.formver) {
             if (className == null) {
