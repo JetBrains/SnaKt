@@ -5,14 +5,16 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
+import org.jetbrains.kotlin.diagnostics.rendering.Renderer
 import org.jetbrains.kotlin.fir.types.ConeAttribute
 import org.jetbrains.kotlin.fir.types.ConeAttributes
+import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import kotlin.reflect.KClass
 
-object LocalityAttribute : ConeAttribute<LocalityAttribute>() {
+data object LocalityAttribute : ConeAttribute<LocalityAttribute>() {
     override fun union(other: LocalityAttribute?): LocalityAttribute = this
 
-    override fun intersect(other: LocalityAttribute?): LocalityAttribute? = other
+    override fun intersect(other: LocalityAttribute?): LocalityAttribute = this
 
     override fun add(other: LocalityAttribute?): LocalityAttribute = this
 
@@ -25,6 +27,22 @@ object LocalityAttribute : ConeAttribute<LocalityAttribute>() {
 
     override val keepInInferredDeclarationType: Boolean
         get() = true
+
+    override val implementsEquality: Boolean
+        get() = true
 }
 
 val ConeAttributes.locality: LocalityAttribute? by ConeAttributes.attributeAccessor<LocalityAttribute>()
+
+fun LocalityAttribute?.accepts(other: LocalityAttribute?): Boolean =
+    this != null || other == null
+
+val ConeKotlinType.locality: LocalityAttribute?
+    get() = attributes.locality
+
+val LocalityAttributeRenderer = Renderer<LocalityAttribute?> { locality ->
+    when (locality) {
+        null -> "global"
+        LocalityAttribute -> "local"
+    }
+}

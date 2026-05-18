@@ -5,33 +5,56 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
+import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
-import org.jetbrains.kotlin.fir.analysis.checkers.context.findClosest
-import org.jetbrains.kotlin.fir.declarations.FirControlFlowGraphOwner
+import org.jetbrains.kotlin.fir.caches.firCachesFactory
+import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.expressions.FirExpression
-import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
-import org.jetbrains.kotlin.fir.expressions.unwrapExpression
-import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
+import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
+import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
-import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
+import org.jetbrains.kotlin.fir.types.resolvedType
 
-/**
- * Resolves the locality of `this` expression based on the resolved locality info of the enclosing declaration.
- */
-@OptIn(SymbolInternals::class)
-context(context: CheckerContext)
-fun FirExpression.resolveLocality(): Locality {
-    val expression = unwrapExpression()
-
-    if (expression is FirQualifiedAccessExpression) {
-        return expression.resolveImmediateLocality()
-    } else {
-        val symbol = context.findClosest<FirCallableSymbol<*>>()
-        val declaration = symbol?.fir
-        val graph = (declaration as? FirControlFlowGraphOwner)?.controlFlowGraphReference?.controlFlowGraph
-            ?: return Locality.Global
-        val facts = graph.resolveLocalityFacts()
-
-        return facts[expression] ?: Locality.Global
+class ExpressionLocalityResolver(session: FirSession) : FirExtensionSessionComponent(session) {
+    companion object {
+        fun getFactory(): Factory {
+            return Factory { session -> ExpressionLocalityResolver(session) }
+        }
     }
+
+    private val cacheFactory = session.firCachesFactory
+
+    @OptIn(SymbolInternals::class)
+    context(context: CheckerContext)
+    private fun extractLocalityOf(expression: FirExpression): Locality {
+        val expression = expression.unwrapCast()
+
+        return when (expression) {
+            is FirPropertyAccessExpression ->
+                (expression.calleeReference.symbol as? FirVariableSymbol<*>)?.fir?.resolveLocality()
+            else -> {
+                expression.resolvedType.locality ?:
+                expression.collectTails()
+                    .map { tail -> resolveLocalityOf(tail) }
+                    .reduceOrNull { result, locality -> result.join(locality) }
+            }
+        }
+    }
+
+    private val cache = cacheFactory.createCache { expression: FirExpression, context: CheckerContext ->
+        with(context) {
+            extractLocalityOf(expression)
+        }
+    }
+
+    context(context: CheckerContext)
+    fun resolveLocalityOf(expression: FirExpression): Locality =
+        cache.getValue(expression, context)
 }
+
+private val FirSession.expressionLocalityResolver: ExpressionLocalityResolver by FirSession.sessionComponentAccessor()
+
+context(context: CheckerContext)
+fun FirExpression.resolveLocality(): Locality =
+    context.session.expressionLocalityResolver.resolveLocalityOf(this)

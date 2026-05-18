@@ -27,19 +27,18 @@ object QualifiedAccessLocalityChecker : FirQualifiedAccessExpressionChecker(MppC
     override fun check(expression: FirQualifiedAccessExpression) {
         if (expression !is FirFunctionCall && expression !is FirPropertyAccessExpression) return
 
-        val callableSymbol = expression.toResolvedCallableSymbol()
-            ?: return
+        val callableSymbol = expression.toResolvedCallableSymbol() ?: return
         val receiverDeclaration = callableSymbol.receiverParameterSymbol?.fir
         val receiver = expression.extensionReceiver
 
         if (receiver != null && receiverDeclaration != null) {
-            val requiredLocality = receiverDeclaration.resolveRequiredLocality()
+            val requiredLocality = receiverDeclaration.typeRef.coneType.locality
             val actualLocality = receiver.resolveLocality()
 
             if (!requiredLocality.accepts(actualLocality)) {
                 reporter.reportOn(
                     receiver.source ?: expression.source,
-                    LOCALITY_VIOLATION,
+                    LOCALITY_MISMATCH,
                     "Receiver",
                     requiredLocality,
                     actualLocality
@@ -57,7 +56,7 @@ object QualifiedAccessLocalityChecker : FirQualifiedAccessExpressionChecker(MppC
             .zip(callableSymbol.contextParameterSymbols.map { it.fir })
 
         for ((argument, argumentDeclaration) in contextArgumentMappings) {
-            val requiredLocality = argumentDeclaration.resolveRequiredLocality()
+            val requiredLocality = argumentDeclaration.returnTypeRef.coneType.locality
             val actualLocality = argument.resolveLocality()
 
             if (requiredLocality.accepts(actualLocality)) continue
@@ -66,7 +65,7 @@ object QualifiedAccessLocalityChecker : FirQualifiedAccessExpressionChecker(MppC
                 argument.source ?: expression.source,
                 CONTEXT_LOCALITY_MISMATCH,
                 argumentDeclaration.returnTypeRef.coneType,
-                expectedLocality,
+                requiredLocality,
                 actualLocality
             )
         }

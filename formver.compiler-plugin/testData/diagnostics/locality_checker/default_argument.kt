@@ -12,7 +12,7 @@ fun `assign global value as local default argument`(
 
 fun `assign local argument as global default argument`(
     x: @Borrowed Any,
-    y: Any = <!LOCALITY_VIOLATION!>x<!>
+    y: Any = <!LOCALITY_MISMATCH!>x<!>
 ) {}
 
 fun `assign local argument as local default argument`(
@@ -26,5 +26,5 @@ class `assign global value as global default argument in constructor`(
 
 class `assign local argument as global default argument in constructor`(
     x: @Borrowed Any,
-    y: Any = <!LOCALITY_VIOLATION!>x<!>,
+    y: Any = <!LOCALITY_MISMATCH!>x<!>,
 )
