@@ -94,7 +94,6 @@ class ProgramConverter(
 
 
     fun registerForVerification(declaration: FirSimpleFunction) {
-
         // Note: it is important that `body` is only set after embedding is complete, as we need to
         // place the embedding in the map before processing the body.
         if (declaration.symbol.isPure(session)) {
@@ -248,8 +247,11 @@ class ProgramConverter(
         return embedPureUserFunction(symbol, signature, returnTarget)
     }
 
-    override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding =
-        if (symbol.isPure(session)) embedPureFunction(symbol) else embedFunction(symbol)
+    override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding = if (symbol.isPure(session)) {
+        embedPureFunction(symbol)
+    } else {
+        embedFunction(symbol)
+    }
 
     /**
      * Returns an embedding of the class type, with details set.
@@ -282,7 +284,7 @@ class ProgramConverter(
     private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding {
         val name = symbol.classId.embedName()
         typeResolver.lookupAdtTypeEmbedding(name)?.let { return it }
-        if (!adtSignatureIsValid(symbol)) {
+        if (!adtHeaderIsValid(symbol)) {
             typeResolver.registerAdt(name, InvalidAdtTypeEmbedding)
             return InvalidAdtTypeEmbedding
         }
@@ -303,7 +305,7 @@ class ProgramConverter(
         return if (allValid) adtEmbedding else InvalidAdtTypeEmbedding
     }
 
-    private fun adtSignatureIsValid(symbol: FirRegularClassSymbol): Boolean {
+    private fun adtHeaderIsValid(symbol: FirRegularClassSymbol): Boolean {
         if (!symbol.isData) {
             errorCollector.addAdtError(
                 symbol.source,
@@ -336,16 +338,13 @@ class ProgramConverter(
         }
         when (symbol) {
             is FirPropertySymbol -> {
-                var rejected = false
                 if (symbol.correspondingValueParameterFromPrimaryConstructor == null) {
                     rejectProperty("An @ADT declaration may only declare fields in its primary constructor")
-                    rejected = true
                 }
                 if (symbol.isVar) {
                     rejectProperty("An @ADT declaration may only declare immutable (val) fields")
-                    rejected = true
                 }
-                if (rejected) return false
+                if (!valid) return false
                 val field = typeResolver.getOrPutAdtField(symbol.embedMemberPropertyName()) {
                     AdtFieldEmbedding(
                         name = AdtFieldName(adtEmbedding.adtName, SimpleKotlinName(symbol.name)),
@@ -379,6 +378,7 @@ class ProgramConverter(
     }
 
     override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding {
+
         if (symbol.receiverParameterSymbol != null) {
             return embedCustomProperty(symbol)
         } else {

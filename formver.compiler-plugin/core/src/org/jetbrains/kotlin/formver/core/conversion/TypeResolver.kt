@@ -46,10 +46,9 @@ class TypeResolver {
     private val properties = mutableMapOf<ClassPropertyPair, PropertyEmbedding>()
 
     /**
-     * All ADT fields, indexed both by (class, property) pair and by class name.
+     * All ADT fields, indexed by class name.
      */
-    private val adtFields = mutableMapOf<ClassPropertyPair, AdtFieldEmbedding>()
-    private val adtFieldsByClass = mutableMapOf<ScopedName, MutableList<AdtFieldEmbedding>>()
+    private val adtFieldsByAdt = mutableMapOf<ScopedName, MutableList<AdtFieldEmbedding>>()
 
     /**
      * Register a class or interface type embedding.
@@ -99,12 +98,10 @@ class TypeResolver {
     fun getOrPutProperty(name: ClassPropertyPair, create: () -> PropertyEmbedding) = properties.getOrPut(name, create)
 
     fun getOrPutAdtField(name: ClassPropertyPair, create: () -> AdtFieldEmbedding): AdtFieldEmbedding =
-        adtFields.getOrPut(name) {
-            create().also { adtFieldsByClass.getOrPut(name.className) { mutableListOf() }.add(it) }
-        }
+        create().also { adtFieldsByAdt.getOrPut(name.className) { mutableListOf() }.add(it) }
 
     fun lookupAdtFields(className: ScopedName): List<AdtFieldEmbedding> =
-        adtFieldsByClass[className] ?: emptyList()
+        adtFieldsByAdt[className] ?: emptyList()
 
 
     /**
