@@ -5,26 +5,69 @@
 
 package org.jetbrains.kotlin.formver.plugin.runners
 
+import org.jetbrains.kotlin.formver.common.services.DiagnosticsCollector
+import org.jetbrains.kotlin.formver.common.services.TagCollector
+import org.jetbrains.kotlin.formver.common.services.runChecks
 import org.jetbrains.kotlin.formver.plugin.services.LocalityExtensionRegistrarConfigurator
 import org.jetbrains.kotlin.formver.plugin.services.PluginAnnotationsProvider
 import org.jetbrains.kotlin.test.FirParser
 import org.jetbrains.kotlin.test.TargetBackend
 import org.jetbrains.kotlin.test.builders.TestConfigurationBuilder
 import org.jetbrains.kotlin.test.configuration.commonServicesConfigurationForCodegenAndDebugTest
-import org.jetbrains.kotlin.test.configuration.configureCommonDiagnosticTestPaths
 import org.jetbrains.kotlin.test.directives.DiagnosticsDirectives.RENDER_DIAGNOSTICS_FULL_TEXT
 import org.jetbrains.kotlin.test.directives.FirDiagnosticsDirectives.ENABLE_PLUGIN_PHASES
 import org.jetbrains.kotlin.test.directives.LanguageSettingsDirectives.LANGUAGE
 import org.jetbrains.kotlin.test.directives.TestPhaseDirectives.LATEST_PHASE_IN_PIPELINE
 import org.jetbrains.kotlin.test.directives.configureFirParser
 import org.jetbrains.kotlin.test.frontend.fir.FirCliJvmFacade
-import org.jetbrains.kotlin.test.frontend.fir.handlers.FirDiagnosticsHandler
+import org.jetbrains.kotlin.test.frontend.fir.FirOutputArtifact
+import org.jetbrains.kotlin.test.frontend.fir.handlers.FirAnalysisHandler
+import org.jetbrains.kotlin.test.frontend.fir.handlers.FirDiagnosticCollectorService
 import org.jetbrains.kotlin.test.model.FrontendKinds
+import org.jetbrains.kotlin.test.model.TestModule
 import org.jetbrains.kotlin.test.runners.AbstractKotlinCompilerWithTargetBackendTest
-import org.jetbrains.kotlin.test.services.CompilationStage
-import org.jetbrains.kotlin.test.services.EnvironmentBasedStandardLibrariesPathProvider
-import org.jetbrains.kotlin.test.services.KotlinStandardLibrariesPathProvider
-import org.jetbrains.kotlin.test.services.TestPhase
+import org.jetbrains.kotlin.test.services.*
+
+
+class ConversionDiagnosticsCollector(testServices: TestServices) : DiagnosticsCollector(testServices) {
+    override val fileExtension: String = ".fir.diag.txt"
+}
+
+class LocalityTagsCollector(testServices: TestServices) : TagCollector(testServices)
+
+
+val TestServices.conversionDiagnosticsCollector: ConversionDiagnosticsCollector by TestServices.testServiceAccessor()
+
+val TestServices.tagCollector: LocalityTagsCollector by TestServices.testServiceAccessor()
+
+
+class DiagnosticHandler(testServices: TestServices) : FirAnalysisHandler(testServices) {
+
+    override fun processAfterAllModules(someAssertionWasFailed: Boolean) {}
+
+    override fun processModule(
+        module: TestModule, info: FirOutputArtifact
+    ) {
+        testServices.conversionDiagnosticsCollector.addDiagnostics(info)
+
+        val frontendDiagnosticsPerFile =
+            FirDiagnosticCollectorService(testServices).getFrontendDiagnosticsForModule(info)
+
+        module.files.forEach { file ->
+            val testFile = info.allFirFiles[file]!!
+            val diagnostics = frontendDiagnosticsPerFile[testFile]
+            val simpleDiagnostics = diagnostics.map { it.diagnostic }
+            testServices.tagCollector.reportDiagnostics(file, simpleDiagnostics)
+        }
+
+        runChecks(
+            testServices,
+            { testServices.conversionDiagnosticsCollector.assertEquality() },
+            { testServices.tagCollector.assertEqual() },
+        )
+    }
+}
+
 
 
 abstract class AbstractLocalityDiagnosticTest() : AbstractKotlinCompilerWithTargetBackendTest(TargetBackend.JVM_IR) {
@@ -37,14 +80,15 @@ abstract class AbstractLocalityDiagnosticTest() : AbstractKotlinCompilerWithTarg
         }
         commonServicesConfigurationForCodegenAndDebugTest(FrontendKinds.FIR)
 
+        useAdditionalService(::ConversionDiagnosticsCollector)
+        useAdditionalService(::LocalityTagsCollector)
+
         facadeStep(::FirCliJvmFacade)
         handlersStep(FrontendKinds.FIR, compilationStage = CompilationStage.FIRST) {
-            useHandlers(::FirDiagnosticsHandler)
+            useHandlers(::DiagnosticHandler)
         }
-        enableMetaInfoHandler()
 
         configureFirParser(FirParser.LightTree)
-        configureCommonDiagnosticTestPaths()
 
         useConfigurators(
             ::PluginAnnotationsProvider, ::LocalityExtensionRegistrarConfigurator
