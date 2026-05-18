@@ -99,7 +99,13 @@ data class PureFunBodyLinearizer(
         }
     }
 
-    override fun addFieldAccessStoringIn(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding, result: VariableEmbedding) {
+    override fun addFieldAccessStoringIn(
+        receiver: Linearizable,
+        receiverType: TypeEmbedding,
+        field: FieldEmbedding,
+        result: VariableEmbedding,
+        receiverIsUnique: Boolean,
+    ) {
         val viperReceiver = receiver.toViper(this)
         if (viperReceiver !is Exp.LocalVar) throw SnaktInternalException(
             source,
@@ -113,9 +119,14 @@ data class PureFunBodyLinearizer(
         ssaConverter.addAssignment(result.name, primitiveAccess, accessInvariants)
     }
 
-    override fun addFieldAccess(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding): Exp {
+    override fun addFieldAccess(
+        receiver: Linearizable,
+        receiverType: TypeEmbedding,
+        field: FieldEmbedding,
+        receiverIsUnique: Boolean,
+    ): Exp {
         val result = freshAnonVar(field.type)
-        addFieldAccessStoringIn(receiver, receiverType, field, result)
+        addFieldAccessStoringIn(receiver, receiverType, field, result, receiverIsUnique)
         return result.toViperExp(this)
     }
 
