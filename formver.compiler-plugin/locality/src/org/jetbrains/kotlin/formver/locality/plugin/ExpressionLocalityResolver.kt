@@ -8,61 +8,64 @@ package org.jetbrains.kotlin.formver.locality.plugin
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.caches.firCachesFactory
-import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.expressions.FirExpression
-import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
-import org.jetbrains.kotlin.fir.expressions.FirThisReceiverExpression
-import org.jetbrains.kotlin.fir.expressions.unwrapExpression
+import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
+import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
+import org.jetbrains.kotlin.fir.expressions.FirThrowExpression
+import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
+import org.jetbrains.kotlin.formver.type.plugin.ExpressionTypeResolver
+import org.jetbrains.kotlin.formver.type.plugin.ReturnResultTypeResolver
+import org.jetbrains.kotlin.formver.type.plugin.ThrowExceptionTypeResolver
+import org.jetbrains.kotlin.formver.type.plugin.UnifyingExpressionTypeResolver
 
-class ExpressionLocalityResolver(session: FirSession) : FirExtensionSessionComponent(session) {
-    companion object {
+private object TerminalLocalityResolver : ExpressionTypeResolver<Locality> {
+    context(context: CheckerContext)
+    override fun resolveTypeOf(expression: FirExpression): Locality =
+        when (expression) {
+            is FirQualifiedAccessExpression ->
+                when (val symbol = expression.calleeReference.symbol) {
+                    is FirVariableSymbol -> symbol.resolveLocality()
+                    is FirReceiverParameterSymbol -> symbol.resolveLocality()
+                    else -> null
+                }
+
+            else -> null
+        }
+}
+
+class ExpressionLocalityResolver(session: FirSession) :
+    ExpressionTypeResolver<Locality> by UnifyingExpressionTypeResolver(
+        session.firCachesFactory,
+        LocalityUnifier,
+        TerminalLocalityResolver
+    ), FirExtensionSessionComponent(session) {
+    companion object : ExpressionTypeResolver<Locality> {
         fun getFactory(): Factory {
             return Factory { session -> ExpressionLocalityResolver(session) }
         }
+
+        context(context: CheckerContext)
+        override fun resolveTypeOf(expression: FirExpression): Locality =
+            context.session.expressionLocalityResolver.resolveTypeOf(expression)
     }
-
-    private val cacheFactory = session.firCachesFactory
-
-    context(context: CheckerContext)
-    private fun extractLocalityOf(expression: FirExpression): Locality {
-        val expression = expression.unwrapExpression().removeCasts()
-        val tails = expression.collectTails()
-
-        return if (tails.any()) {
-            tails.map { tail -> resolveLocalityOf(tail) }
-                .reduceOrNull { result, locality -> result.join(locality) }
-                ?: Locality.Global
-        } else {
-            when (expression) {
-                is FirPropertyAccessExpression ->
-                    (expression.calleeReference.symbol as? FirVariableSymbol<*>)
-                        ?.resolveLocality()
-                        ?: Locality.Global
-                is FirThisReceiverExpression ->
-                    (expression.calleeReference.symbol as? FirReceiverParameterSymbol)
-                        ?.resolvedType?.locality
-                        ?: Locality.Global
-                else -> Locality.Global
-            }
-        }
-    }
-
-    private val cache = cacheFactory.createCache { expression: FirExpression, context: CheckerContext ->
-        with(context) {
-            extractLocalityOf(expression)
-        }
-    }
-
-    context(context: CheckerContext)
-    fun resolveLocalityOf(expression: FirExpression): Locality =
-        cache.getValue(expression, context)
 }
 
-private val FirSession.expressionLocalityResolver: ExpressionLocalityResolver by FirSession.sessionComponentAccessor()
+private val FirSession.expressionLocalityResolver: ExpressionLocalityResolver
+    by FirSession.sessionComponentAccessor()
 
 context(context: CheckerContext)
 fun FirExpression.resolveLocality(): Locality =
-    context.session.expressionLocalityResolver.resolveLocalityOf(this)
+    ExpressionLocalityResolver.resolveTypeOf(this)
+
+object ReturnResultLocalityResolver : ReturnResultTypeResolver<Locality> {
+    context(context: CheckerContext)
+    override fun resolveResultTypeOf(expression: FirReturnExpression): Locality = Locality.Global
+}
+
+object ThrowExceptionLocalityResolver : ThrowExceptionTypeResolver<Locality> {
+    context(context: CheckerContext)
+    override fun resolveExceptionTypeOf(expression: FirThrowExpression): Locality = Locality.Global
+}
