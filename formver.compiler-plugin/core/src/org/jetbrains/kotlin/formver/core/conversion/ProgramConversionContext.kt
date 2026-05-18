@@ -52,11 +52,10 @@ interface ProgramConversionContext {
     fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding
 
     /**
-     * Returns true if the property is well-behaved. With this we mean that it is:
-     * Cannot be overwritten and does not have custom getters or setters
-     * If this is the case, then we know exactly how the property will behave.
+     * Returns true if the property is having default behavior. That is:
+     * It cannot be overwritten and does not have custom getters or setters
      */
-    fun isWellBehavedProperty(symbol: FirPropertySymbol): Boolean
+    fun isGuaranteedDefaultProperty(symbol: FirPropertySymbol): Boolean
 }
 
 fun ProgramConversionContext.freshAnonVar(type: TypeEmbedding): VariableEmbedding = anonVarProducer.getFresh(type)

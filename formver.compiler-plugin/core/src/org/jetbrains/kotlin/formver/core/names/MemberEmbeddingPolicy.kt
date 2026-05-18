@@ -19,7 +19,7 @@ enum class MemberEmbeddingPolicy {
 
 
 fun scopePolicy(property: FirPropertySymbol, ctx: ProgramConversionContext): MemberEmbeddingPolicy {
-    val wellBehaved = ctx.isWellBehavedProperty(property)
+    val wellBehaved = ctx.isGuaranteedDefaultProperty(property)
     val isPrivate = Visibilities.isPrivate(property.visibility)
     val isMutable = property.isVar
 

@@ -18,8 +18,10 @@ import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.*
-import org.jetbrains.kotlin.fir.types.isAny
-import org.jetbrains.kotlin.formver.common.*
+import org.jetbrains.kotlin.formver.common.ErrorCollector
+import org.jetbrains.kotlin.formver.common.PluginConfiguration
+import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.common.UnsupportedFeatureBehaviour
 import org.jetbrains.kotlin.formver.core.*
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.callables.*
@@ -415,7 +417,7 @@ class ProgramConverter(
                 }
 
                 val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol ?: throw SnaktInternalException(symbol.source, "Properties dispatch receiver is not a class")
-                val wellBehaved = isWellBehavedProperty(symbol)
+                val wellBehaved = isGuaranteedDefaultProperty(symbol)
                 val isImmutable = symbol.isVal
                 val isManual = symbol.isManual(session)
 
@@ -720,7 +722,7 @@ class ProgramConverter(
         }
     }
 
-    override fun isWellBehavedProperty(symbol: FirPropertySymbol) : Boolean {
+    override fun isGuaranteedDefaultProperty(symbol: FirPropertySymbol): Boolean {
         val classSymbolFinal = symbol.dispatchReceiverType?.toClassSymbol(session)?.isFinal ?: false
         return (symbol.isFinal || classSymbolFinal) && !symbol.isCustom
     }
