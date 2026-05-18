@@ -416,7 +416,13 @@ class ProgramConverter(
                     }
                 }
 
-                val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session) as? FirRegularClassSymbol ?: throw SnaktInternalException(symbol.source, "Properties dispatch receiver is not a class")
+                val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session)
+
+                val regularClass = classSymbol as? FirRegularClassSymbol ?: throw SnaktInternalException(
+                    symbol.source,
+                    "Properties dispatch receiver is not a regular class"
+                )
+
                 val wellBehaved = isGuaranteedDefaultProperty(symbol)
                 val isImmutable = symbol.isVal
                 val isManual = symbol.isManual(session)
@@ -424,9 +430,9 @@ class ProgramConverter(
                 return@getOrPutProperty when {
                     (wellBehaved && !isImmutable) || isManual -> {
                         // we can use a backing field to represent it
-                        val field = embedBackingField(symbol, classSymbol)
+                        val field = embedBackingField(symbol, regularClass)
                         PropertyEmbedding(
-                            BackingFieldGetter(field), BackingFieldSetter(field)
+                            BackingFieldGetter(field), BackingFieldSetter(field), hasDefaultBehaviour = true
                         )
                     }
 
