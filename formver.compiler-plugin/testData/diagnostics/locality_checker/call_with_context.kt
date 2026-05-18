@@ -75,13 +75,13 @@ val globalContextPropertyAB: Any
     get() = Any()
 
 fun `pass local with 'with' as global context argument`(x: @Borrowed A) {
-    <!INVALID_LOCALITY_TYPE_TARGET!>with<!>(<!LOCALITY_MISMATCH!>x<!>) {
+    with(<!LOCALITY_MISMATCH!>x<!>) {
         <!CONTEXT_LOCALITY_MISMATCH!>requireGlobalA()<!>
     }
 }
 
 fun `pass local with 'with' as local context argument`(x: @Borrowed A) {
-    <!INVALID_LOCALITY_TYPE_TARGET!>with<!>(<!LOCALITY_MISMATCH!>x<!>) {
+    with(<!LOCALITY_MISMATCH!>x<!>) {
         requireLocalA()
     }
 }
