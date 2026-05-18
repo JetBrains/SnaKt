@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.diagnostics.DiagnosticContext
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
+import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactory1
 import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
@@ -54,38 +55,34 @@ class ProgramConverter(
 ) : ProgramConversionContext {
 
     /**
-     * Whether any blocking diagnostic (a purity or ADT violation) has been reported.
+     * Whether any primary diagnostic has been reported during conversion.
      *
-     * Stays `false` for non-blocking diagnostics like [reportMinorInternalError]
-     * or for the derived [ConversionErrors.VERIFICATION_SKIPPED] summary.
+     * Excludes the derived [ConversionErrors.VERIFICATION_SKIPPED] summary, which is itself fired
+     * in reaction to primary diagnostics.
      */
     val hadConversionError: Boolean get() = blockingErrorCount > 0
 
-    /** Monotonic count of blocking diagnostics (purity or ADT) reported so far. */
+    /** Monotonic count of primary diagnostics reported so far. */
     private var blockingErrorCount: Int = 0
 
-    /** Source attached to source-less diagnostics (e.g. minor internal errors raised deep in conversion). */
+    /** Source attached to source-less diagnostics (e.g. unimplemented features raised deep in conversion). */
     private var currentDeclarationSource: KtSourceElement? = null
 
-    override fun reportPurityViolation(source: KtSourceElement?, msg: String) {
+    private fun emit(source: KtSourceElement?, factory: KtDiagnosticFactory1<String>, msg: String) {
         context(diagnosticContext) {
-            reporter.reportOn(source, ConversionErrors.PURITY_VIOLATION, msg)
+            reporter.reportOn(source, factory, msg)
         }
         blockingErrorCount++
     }
 
-    override fun reportAdtViolation(source: KtSourceElement?, msg: String) {
-        context(diagnosticContext) {
-            reporter.reportOn(source, ConversionErrors.ADT_VIOLATION, msg)
-        }
-        blockingErrorCount++
-    }
+    override fun reportPurityViolation(source: KtSourceElement?, msg: String) =
+        emit(source, ConversionErrors.PURITY_VIOLATION, msg)
 
-    override fun reportMinorInternalError(msg: String) {
-        context(diagnosticContext) {
-            reporter.reportOn(currentDeclarationSource, ConversionErrors.MINOR_INTERNAL_ERROR, msg)
-        }
-    }
+    override fun reportAdtViolation(source: KtSourceElement?, msg: String) =
+        emit(source, ConversionErrors.ADT_VIOLATION, msg)
+
+    override fun reportMinorInternalError(msg: String) =
+        emit(currentDeclarationSource, ConversionErrors.MINOR_INTERNAL_ERROR, msg)
 
     private fun reportVerificationSkipped(source: KtSourceElement?, msg: String) {
         context(diagnosticContext) {
