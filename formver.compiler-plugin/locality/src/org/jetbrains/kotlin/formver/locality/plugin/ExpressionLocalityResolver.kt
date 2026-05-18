@@ -16,7 +16,9 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
+import org.jetbrains.kotlin.formver.type.plugin.CallParametersTypeResolver
 import org.jetbrains.kotlin.formver.type.plugin.ExpressionTypeFactResolver
+import org.jetbrains.kotlin.formver.type.plugin.InvokeParameterTypesResolver
 import org.jetbrains.kotlin.formver.type.plugin.ReturnResultTypeFactResolver
 import org.jetbrains.kotlin.formver.type.plugin.ThrowExceptionTypeFactResolver
 import org.jetbrains.kotlin.formver.type.plugin.UnifyingExpressionTypeFactResolver
@@ -69,3 +71,14 @@ object ThrowExceptionLocalityResolver : ThrowExceptionTypeFactResolver<Locality>
     context(context: CheckerContext)
     override fun resolveExceptionTypeFactOf(expression: FirThrowExpression): Locality = Locality.Global
 }
+
+object InvokeParametersLocalityResolver : InvokeParameterTypesResolver<Locality> {
+    context(context: CheckerContext)
+    override fun resolveInvokeParameters(receiver: FirExpression): List<Locality>? =
+        receiver.resolveLocalityContract()?.parameters?.map { it.type }
+}
+
+val CallParametersLocalityResolver = CallParametersTypeResolver(
+    VariableLocalityResolver,
+    InvokeParametersLocalityResolver
+)
