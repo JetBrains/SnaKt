@@ -54,7 +54,7 @@ object SpecialKotlinFunctions {
         ClassKotlinName(listOf("InvariantBuilder"))
     }
 
-    val byName: Map<SymbolicName, CallableEmbedding> = buildFullySpecialFunctions {
+    val byName: Map<SymbolicName, FullySpecialKotlinFunction> = buildFullySpecialFunctions {
         val intIntToIntType = buildFunctionPretype {
             withDispatchReceiver { int() }
             withParam { int() }

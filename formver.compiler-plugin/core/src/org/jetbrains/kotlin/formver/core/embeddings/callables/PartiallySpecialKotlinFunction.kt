@@ -56,7 +56,7 @@ class StringPlusAnyFunction : AbstractPartiallySpecialKotlinFunction("kotlin", c
  * but those functions are generated once per run anyway.
  */
 object PartiallySpecialKotlinFunctions {
-    fun generateAllByName(): Map<SymbolicName, CallableEmbedding> =
+    fun generateAllByName(): Map<SymbolicName, PartiallySpecialKotlinFunction> =
         buildList {
             add(StringPlusAnyFunction())
         }.associateBy { it.embedName() }
