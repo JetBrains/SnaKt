@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.formver.core.names.NameMatcher
 import org.jetbrains.kotlin.formver.core.names.NameScope
 import org.jetbrains.kotlin.formver.core.names.ScopedName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
+import org.jetbrains.kotlin.formver.viper.ast.AdtDecl
 import org.jetbrains.kotlin.name.Name
 
 /**
@@ -46,7 +47,12 @@ class TypeResolver {
     private val properties = mutableMapOf<ClassPropertyPair, PropertyEmbedding>()
 
     /**
-     * All ADT fields, indexed by class name.
+     * All ADT fields, keyed by (class, property) pair for deduplication.
+     */
+    private val adtFields = mutableMapOf<ClassPropertyPair, AdtFieldEmbedding>()
+
+    /**
+     * ADT fields in declaration order, grouped by ADT class name.
      */
     private val adtFieldsByAdt = mutableMapOf<ScopedName, MutableList<AdtFieldEmbedding>>()
 
@@ -77,6 +83,8 @@ class TypeResolver {
 
     fun adtTypeEmbeddings(): List<AdtTypeEmbeddingImpl> = adtEmbedding.values.filterIsInstance<AdtTypeEmbeddingImpl>()
 
+    fun adtDeclarations(): List<AdtDecl> = adtTypeEmbeddings().map { it.toAdtDecl(lookupAdtFields(it.name)) }
+
     /**
      * Extends the subtype relation with [subtype] <: [supertype]
      */
@@ -98,10 +106,10 @@ class TypeResolver {
     fun getOrPutProperty(name: ClassPropertyPair, create: () -> PropertyEmbedding) = properties.getOrPut(name, create)
 
     fun getOrPutAdtField(name: ClassPropertyPair, create: () -> AdtFieldEmbedding): AdtFieldEmbedding =
-        create().apply {
-            adtFieldsByAdt
-                .getOrPut(name.className) { mutableListOf() }
-                .add(this)
+        adtFields.getOrPut(name) {
+            create().also { field ->
+                adtFieldsByAdt.getOrPut(name.className) { mutableListOf() }.add(field)
+            }
         }
 
     fun lookupAdtFields(className: ScopedName): List<AdtFieldEmbedding> =

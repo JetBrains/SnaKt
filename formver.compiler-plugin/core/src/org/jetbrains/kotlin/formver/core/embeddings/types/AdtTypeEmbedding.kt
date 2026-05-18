@@ -39,4 +39,10 @@ data class AdtTypeEmbeddingImpl(override val name: ScopedName) : AdtTypeEmbeddin
             adtName,
             fields.map { Declaration.LocalVarDecl(it.name, Type.Ref) },
         )
+
+    fun toAdtDecl(fields: List<AdtFieldEmbedding>): AdtDecl =
+        AdtDecl(
+            name = adtName,
+            constructors = listOf(getViperConstructorDecl(fields)),
+        )
 }

@@ -28,7 +28,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
-import org.jetbrains.kotlin.formver.viper.ast.AdtDecl
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 
@@ -89,7 +88,7 @@ class ProgramConverter(
                     )
                 }
             },
-            adts = typeResolver.adtTypeEmbeddings().map { constructAdtDecl(it) },
+            adts = typeResolver.adtDeclarations(),
         )
 
 
@@ -284,18 +283,37 @@ class ProgramConverter(
     private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding {
         val name = symbol.classId.embedName()
         typeResolver.lookupAdtTypeEmbedding(name)?.let { return it }
+
+        // To avoid rollbacks on a discovered violation, we split the handling into a verification and
+        // embedding phase
+        // 1. Validate ADT and members
         if (!validateAdtHeader(symbol)) {
             typeResolver.registerAdt(name, InvalidAdtTypeEmbedding)
             return InvalidAdtTypeEmbedding
         }
+        val allMembersValid = symbol.declarationSymbols.fold(true) { acc, sym ->
+            acc and validateAdtMember(sym)
+        }
+        if (!allMembersValid) {
+            typeResolver.registerAdt(name, InvalidAdtTypeEmbedding)
+            return InvalidAdtTypeEmbedding
+        }
+
+        // 2. Embed ADT and members
         val adtEmbedding = AdtTypeEmbeddingImpl(name)
         typeResolver.registerAdt(name, adtEmbedding)
-        var allValid = true
-        symbol.declarationSymbols.forEach { sym ->
-            if (!embedAdtProperty(sym, adtEmbedding)) allValid = false
+        symbol.declarationSymbols.filterIsInstance<FirPropertySymbol>().forEach {
+            embedAdtField(it, adtEmbedding)
         }
-        if (!allValid) typeResolver.registerAdt(name, InvalidAdtTypeEmbedding)
-        return if (allValid) adtEmbedding else InvalidAdtTypeEmbedding
+        // Proactively embed the constructor to support ADT-specific generation
+        symbol.declarationSymbols
+            .filterIsInstance<FirConstructorSymbol>()
+            .firstOrNull { it.isPrimary }
+            ?.let { cs ->
+                methods[cs.embedName(this)] =
+                    AdtConstructorEmbedding(adtEmbedding, typeResolver.lookupAdtFields(adtEmbedding.name))
+            }
+        return adtEmbedding
     }
 
     private fun validateAdtHeader(symbol: FirRegularClassSymbol): Boolean {
@@ -323,52 +341,45 @@ class ProgramConverter(
         return true
     }
 
-    private fun embedAdtProperty(symbol: FirBasedSymbol<*>, adtEmbedding: AdtTypeEmbeddingImpl): Boolean {
+    private fun validateAdtMember(symbol: FirBasedSymbol<*>): Boolean {
         var valid = true
-        fun rejectProperty(reason: String) {
+        fun reportViolation(reason: String) {
             errorCollector.addAdtError(symbol.source, "Invalid ADT annotation: $reason")
             valid = false
         }
         when (symbol) {
             is FirPropertySymbol -> {
                 if (symbol.correspondingValueParameterFromPrimaryConstructor == null) {
-                    rejectProperty("An @ADT declaration may only declare fields in its primary constructor")
+                    reportViolation("An @ADT declaration may only declare fields in its primary constructor")
                 }
                 if (symbol.isVar) {
-                    rejectProperty("An @ADT declaration may only declare immutable (val) fields")
-                }
-                if (!valid) return false
-                val field = typeResolver.getOrPutAdtField(symbol.embedMemberPropertyName()) {
-                    AdtFieldEmbedding(
-                        name = AdtFieldName(adtEmbedding.adtName, SimpleKotlinName(symbol.name)),
-                        type = embedType(symbol.resolvedReturnType),
-                    )
-                }
-                typeResolver.getOrPutProperty(symbol.embedMemberPropertyName()) {
-                    PropertyEmbedding(AdtFieldGetter(field, adtEmbedding), setter = null)
+                    reportViolation("An @ADT declaration may only declare immutable (val) fields")
                 }
             }
             is FirConstructorSymbol -> {
                 if (!symbol.isPrimary) {
-                    rejectProperty("An @ADT declaration must not have secondary constructors")
-                } else {
-                    // Proactively embed custom constructor for this ADT
-                    methods[symbol.embedName(this)] =
-                        AdtConstructorEmbedding(adtEmbedding, typeResolver.lookupAdtFields(adtEmbedding.name))
+                    reportViolation("An @ADT declaration must not have secondary constructors")
                 }
             }
             is FirNamedFunctionSymbol -> if (symbol.origin == FirDeclarationOrigin.Source)
-                rejectProperty("An @ADT declaration must not have user-declared member functions")
-            else -> rejectProperty("An @ADT declaration does not support symbols of type ${symbol.javaClass.simpleName}")
+                reportViolation("An @ADT declaration must not have user-declared member functions")
+            else -> reportViolation("An @ADT declaration does not support symbols of type ${symbol.javaClass.simpleName}")
         }
         return valid
     }
 
-    private fun constructAdtDecl(embedding: AdtTypeEmbeddingImpl): AdtDecl =
-        AdtDecl(
-            name = embedding.adtName,
-            constructors = listOf(embedding.getViperConstructorDecl(typeResolver.lookupAdtFields(embedding.name))),
-        )
+    private fun embedAdtField(symbol: FirPropertySymbol, adtEmbedding: AdtTypeEmbeddingImpl) {
+        val field = typeResolver.getOrPutAdtField(symbol.embedMemberPropertyName()) {
+            AdtFieldEmbedding(
+                name = AdtFieldName(adtEmbedding.adtName, SimpleKotlinName(symbol.name)),
+                type = embedType(symbol.resolvedReturnType),
+            )
+        }
+        typeResolver.getOrPutProperty(symbol.embedMemberPropertyName()) {
+            PropertyEmbedding(AdtFieldGetter(field, adtEmbedding), setter = null)
+        }
+    }
+
 
     override fun embedType(type: ConeKotlinType): TypeEmbedding = buildType { embedTypeWithBuilder(type) }
 
