@@ -54,13 +54,24 @@ adt a_Node {
 /product_errors.kt: error: Function 'useGeneric' references an invalid ADT
 
 /product_errors.kt: info: Generated Viper text for testConstrUsage:
+function con(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(result), TwoFields())
+  ensures intFromRef(TwoFieldsFromRef(result).af_a_TwoFields_a) ==
+    intFromRef(a)
+  ensures boolFromRef(TwoFieldsFromRef(result).af_a_TwoFields_b) ==
+    boolFromRef(b)
+  ensures TwoFieldsFromRef(result) == ac_TwoFields(a, b)
+
+
 method testConstrUsage() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var i: Ref
   var tf: Ref
   i := intToRef(2)
-  tf := TwoFieldsToRef(ac_TwoFields(i, boolToRef(true)))
+  tf := con(i, boolToRef(true))
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
@@ -70,15 +81,26 @@ adt a_TwoFields {
 }
 
 /product_errors.kt: info: Generated Viper text for testDestrUsage:
+function con(a: Ref, par_b: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(par_b), boolType())
+  ensures isSubtype(typeOf(result), TwoFields())
+  ensures intFromRef(TwoFieldsFromRef(result).af_a_TwoFields_a) ==
+    intFromRef(a)
+  ensures boolFromRef(TwoFieldsFromRef(result).af_a_TwoFields_b) ==
+    boolFromRef(par_b)
+  ensures TwoFieldsFromRef(result) == ac_TwoFields(a, par_b)
+
+
 method testDestrUsage() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var tf: Ref
   var i: Ref
-  var b: Ref
-  tf := TwoFieldsToRef(ac_TwoFields(intToRef(2), boolToRef(true)))
+  var l0_b: Ref
+  tf := con(intToRef(2), boolToRef(true))
   i := TwoFieldsFromRef(tf).af_a_TwoFields_a
-  b := TwoFieldsFromRef(tf).af_a_TwoFields_b
+  l0_b := TwoFieldsFromRef(tf).af_a_TwoFields_b
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }

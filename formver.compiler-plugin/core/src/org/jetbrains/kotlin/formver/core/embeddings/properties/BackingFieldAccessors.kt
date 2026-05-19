@@ -31,6 +31,9 @@ class BackingFieldGetter(val field: FieldEmbedding) : GetterEmbedding {
 class AdtFieldGetter(val field: AdtFieldEmbedding, val adtType: AdtTypeEmbeddingImpl) : GetterEmbedding {
     override fun getValue(receiver: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding =
         AdtFieldAccess(receiver, adtType, field)
+
+    override fun getValueSimple(receiver: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding =
+        AdtFieldAccess(receiver, adtType, field)
 }
 
 class BackingFieldSetter(val field: FieldEmbedding) : SetterEmbedding {

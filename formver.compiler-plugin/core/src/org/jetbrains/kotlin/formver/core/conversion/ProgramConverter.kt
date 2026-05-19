@@ -316,10 +316,26 @@ class ProgramConverter(
         return embedPureUserFunction(symbol, signature, returnTarget)
     }
 
-    override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding = if (symbol.isPure(session)) {
-        embedPureFunction(symbol)
-    } else {
-        embedFunction(symbol)
+    override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding {
+        if (symbol is FirConstructorSymbol) {
+            val cls = symbol.resolvedReturnType.toRegularClassSymbol(session)
+            if (cls?.isAdt(session) == true) return embedAdtConstructorPureFunction(symbol)
+        }
+        return if (symbol.isPure(session)) embedPureFunction(symbol) else embedFunction(symbol)
+    }
+
+    private fun embedAdtConstructorPureFunction(symbol: FirConstructorSymbol): PureUserFunctionEmbedding {
+        pureFunctions[symbol.embedName(this)]?.also { return it }
+        val (_, constructorSig) = embedFullSignature(symbol)
+        val adtPostcondition = EqCmp(
+            constructorSig.returns,
+            AdtConstructorRef(constructorSig.returns.type, constructorSig.params)
+        )
+        val sig = object : FullNamedFunctionSignature by constructorSig {
+            override val postconditions = constructorSig.postconditions + adtPostcondition
+            override val isPure = true
+        }
+        return ensurePureUserFunctionEmbedding(symbol, sig)
     }
 
     /**
@@ -368,14 +384,6 @@ class ProgramConverter(
         symbol.declarationSymbols.filterIsInstance<FirPropertySymbol>().forEach {
             embedAdtField(it, adtEmbedding)
         }
-        // Proactively embed the constructor to support ADT-specific generation
-        symbol.declarationSymbols
-            .filterIsInstance<FirConstructorSymbol>()
-            .firstOrNull { it.isPrimary }
-            ?.let { cs ->
-                methods[cs.embedName(this)] =
-                    AdtConstructorEmbedding(adtEmbedding, typeResolver.lookupAdtFields(adtEmbedding.name))
-            }
         return adtEmbedding
     }
 
@@ -441,14 +449,14 @@ class ProgramConverter(
     }
 
     private fun embedAdtField(symbol: FirPropertySymbol, adtEmbedding: AdtTypeEmbeddingImpl) {
-        val field = typeResolver.getOrPutAdtField(symbol.embedMemberPropertyName()) {
+        val field = typeResolver.getOrPutAdtField(symbol.embedMemberPropertyName(this)) {
             AdtFieldEmbedding(
                 name = AdtFieldName(adtEmbedding.adtName, SimpleKotlinName(symbol.name)),
                 type = embedType(symbol.resolvedReturnType),
             )
         }
-        typeResolver.getOrPutProperty(symbol.embedMemberPropertyName()) {
-            PropertyEmbedding(AdtFieldGetter(field, adtEmbedding), setter = null)
+        typeResolver.getOrPutProperty(symbol.embedMemberPropertyName(this)) {
+            PropertyEmbedding(AdtFieldGetter(field, adtEmbedding), setter = null, hasDefaultBehaviour = true)
         }
     }
 
@@ -539,6 +547,9 @@ class ProgramConverter(
 
         val returnTarget = when {
             symbol.isPure(session) -> ReturnTarget.createForPureFunction(returnType)
+            symbol is FirConstructorSymbol &&
+                    symbol.resolvedReturnType.toRegularClassSymbol(session)?.isAdt(session) == true ->
+                ReturnTarget.createForPureFunction(returnType)
             else -> returnTargetProducer.getFresh(returnType)
         }
 
