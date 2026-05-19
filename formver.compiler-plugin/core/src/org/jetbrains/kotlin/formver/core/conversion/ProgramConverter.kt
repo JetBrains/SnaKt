@@ -43,9 +43,7 @@ import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
  * We need the FirSession to get access to the TypeContext.
  */
 class ProgramConverter(
-    val session: FirSession,
-    override val config: PluginConfiguration,
-    override val errorCollector: ErrorCollector
+    val session: FirSession, override val config: PluginConfiguration, override val errorCollector: ErrorCollector
 ) : ProgramConversionContext {
     private val specialFunctions: Map<SymbolicName, SpecialKotlinFunction> = buildMap {
         putAll(SpecialKotlinFunctions.byName)
@@ -54,7 +52,8 @@ class ProgramConverter(
     private val impureFunctions: MutableMap<SymbolicName, UserFunctionEmbedding> = mutableMapOf()
     private val pureFunctions: MutableMap<SymbolicName, PureUserFunctionEmbedding> = mutableMapOf()
 
-    private val registered: MutableList<Triple<FirSimpleFunction, FullNamedFunctionSignature, ReturnTarget>> = mutableListOf()
+    private val registered: MutableList<Triple<FirSimpleFunction, FullNamedFunctionSignature, ReturnTarget>> =
+        mutableListOf()
 
     override val typeResolver: TypeResolver = TypeResolver()
 
@@ -79,19 +78,19 @@ class ProgramConverter(
 
 
     fun buildProgram(): Program = Program(
-            domains = listOf(RuntimeTypeDomain(typeResolver)),
-            // Public fields with the same name are represented differently at `FieldEmbedding` level
-            // but map to the same Viper field, so we deduplicate before emitting.
-            fields = typeResolver.backingFields().distinctBy { it.name }.map { it.toViper() },
-            functions = SpecialFunctions.all + linearizedBodyResolver.functions,
-            methods = SpecialMethods.all + linearizedBodyResolver.methods,
-            predicates = typeResolver.classTypeEmbeddings().map {
-                with(typeResolver) {
-                        it.uniquePredicate()
-                }
-            },
-            adts = typeResolver.adtTypeEmbeddings().map { it.toViper() },
-        )
+        domains = listOf(RuntimeTypeDomain(typeResolver)),
+        // Public fields with the same name are represented differently at `FieldEmbedding` level
+        // but map to the same Viper field, so we deduplicate before emitting.
+        fields = typeResolver.backingFields().distinctBy { it.name }.map { it.toViper() },
+        functions = SpecialFunctions.all + linearizedBodyResolver.functions,
+        methods = SpecialMethods.all + linearizedBodyResolver.methods,
+        predicates = typeResolver.classTypeEmbeddings().map {
+            with(typeResolver) {
+                it.uniquePredicate()
+            }
+        },
+        adts = typeResolver.adtTypeEmbeddings().map { it.toViper() },
+    )
 
     /**
      * Embed the declaration's signature and queue its body for later processing by [convertAll].
@@ -201,16 +200,11 @@ class ProgramConverter(
     }
 
     private fun createBodyConversionContext(
-        signature: NamedFunctionSignature,
-        target: ReturnTarget
+        signature: NamedFunctionSignature, target: ReturnTarget
     ): StmtConversionContext {
 
         val paramResolver = RootParameterResolver(
-            this@ProgramConverter,
-            signature,
-            signature.symbol.valueParameterSymbols,
-            signature.labelName,
-            target
+            this@ProgramConverter, signature, signature.symbol.valueParameterSymbols, signature.labelName, target
         )
         val stmtCtx = MethodConverter(
             this@ProgramConverter,
@@ -236,10 +230,8 @@ class ProgramConverter(
         )
 
 
-        val wrappedResolver = firSpec.returnVar
-            ?.let { ReturnVarSubstitutor(it, signature.returns) }
-            ?.let { ctx -> SubstitutedReturnParameterResolver(rootResolver, ctx) }
-            ?: rootResolver
+        val wrappedResolver = firSpec.returnVar?.let { ReturnVarSubstitutor(it, signature.returns) }
+            ?.let { ctx -> SubstitutedReturnParameterResolver(rootResolver, ctx) } ?: rootResolver
 
 
         val preconditionContext = MethodConverter(
@@ -377,6 +369,7 @@ class ProgramConverter(
                 )
                 return false
             }
+
             is FirNamedFunctionSymbol -> {
                 errorCollector.addAdtError(
                     declaration.source, "Invalid ADT annotation: An @ADT data object must not have member functions"
@@ -386,7 +379,8 @@ class ProgramConverter(
         }
         if (symbol.resolvedSuperTypes.any { !it.isAny }) {
             errorCollector.addAdtError(
-                symbol.source, "Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface"
+                symbol.source,
+                "Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface"
             )
             return false
         }
@@ -400,7 +394,16 @@ class ProgramConverter(
         embedFunctionPretypeWithBuilder(symbol)
     }
 
-    @OptIn(SymbolInternals::class)
+    /**
+     * This function embeds properties. Depending on the behavior of the property, it can be handled differently.
+     *
+     *
+     * * Closed `val` (No Getter): Maps to a pure function. This can be done because the value cannot be changed.
+     * * Closed `val` (With Getter): Maps to an impure function to execute the custom getter logic.
+     * * Closed `var`: Maps to a backing field. This value needs permissions and can be changed.
+     * * Open `val` / `var`: Maps to an impure method. Abstracted because subclasses can override the behavior, introduce side effects, or turn a `val` into a `var`.
+     * * Extension properties are handled like open properties.
+     */
     override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding {
 
         if (symbol.receiverParameterSymbol != null) {
@@ -418,8 +421,7 @@ class ProgramConverter(
                 val classSymbol = symbol.dispatchReceiverType?.toClassSymbol(session)
 
                 val regularClass = classSymbol as? FirRegularClassSymbol ?: throw SnaktInternalException(
-                    symbol.source,
-                    "Properties dispatch receiver is not a regular class"
+                    symbol.source, "Properties dispatch receiver is not a regular class"
                 )
 
                 val isDefaultProperty = isGuaranteedDefaultProperty(symbol)
@@ -428,7 +430,7 @@ class ProgramConverter(
 
                 return@getOrPutProperty when {
                     (isDefaultProperty && !isImmutable) || isManual -> {
-                        // we can use a backing field to represent it
+                        // use a backing field
                         val field = embedBackingField(symbol, regularClass)
                         PropertyEmbedding(
                             BackingFieldGetter(field), BackingFieldSetter(field), hasDefaultBehaviour = true
@@ -436,17 +438,15 @@ class ProgramConverter(
                     }
 
                     isDefaultProperty -> {
-                        // we can replace it with a function call
+                        // use pure function
                         PropertyEmbedding(
-                            CustomGetter(embedPureGetterFunction(symbol)),
-                            null,
-                            hasDefaultBehaviour = true
+                            CustomGetter(embedPureGetterFunction(symbol)), null, hasDefaultBehaviour = true
                         )
                     }
 
                     else -> {
-                        // The property could be overwritten by anything, or has a custom getter/setter.
-                        // We can only reason about the upper bound of the type.
+                        // The property could be overridden by anything, or has a custom getter/setter.
+                        // use impure function
                         PropertyEmbedding(
                             CustomGetter(embedImpureGetterFunction(symbol)),
                             symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) },
@@ -532,7 +532,11 @@ class ProgramConverter(
         val firSpec = extractFirSpecification(body, declaration.symbol.resolvedReturnType)
 
 
-        val (preconditionContext, postconditionContext) = createContractConversionContext(signature, firSpec, returnTarget)
+        val (preconditionContext, postconditionContext) = createContractConversionContext(
+            signature,
+            firSpec,
+            returnTarget
+        )
 
         val preconditions = firSpec.precond?.let { preconditionContext.collectInvariants(it) } ?: emptyList()
         val postconditions = firSpec.postcond?.let { postconditionContext.collectInvariants(it) } ?: emptyList()
@@ -548,7 +552,7 @@ class ProgramConverter(
     }
 
     private fun embedProvidedContract(
-        symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, returnTarget : ReturnTarget
+        symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, returnTarget: ReturnTarget
     ): Pair<List<ExpEmbedding>, List<ExpEmbedding>> {
         val kotlinContractPostcondition = embedKotlinContract(signature)
         val userContract = embedFormverContract(symbol, signature, returnTarget)
@@ -617,19 +621,18 @@ class ProgramConverter(
      * Construct and register the field embedding for this property's backing field, if any exists.
      */
     private fun embedBackingField(
-        symbol: FirPropertySymbol,
-        classSymbol : FirRegularClassSymbol
+        symbol: FirPropertySymbol, classSymbol: FirRegularClassSymbol
     ): FieldEmbedding {
         val embedding = embedClass(classSymbol)
         val scopedName = symbol.callableId!!.embedMemberBackingFieldName(scopePolicy(symbol, this))
         val backingField = UserFieldEmbedding(
-                scopedName,
-                embedType(symbol.resolvedReturnType),
-                symbol,
-                symbol.isUnique(session),
-                embedding,
-                symbol.isManual(session)
-            )
+            scopedName,
+            embedType(symbol.resolvedReturnType),
+            symbol,
+            symbol.isUnique(session),
+            embedding,
+            symbol.isManual(session)
+        )
         return backingField
     }
 
@@ -650,7 +653,7 @@ class ProgramConverter(
         }
     }
 
-    private fun embedCallable(symbol: FirFunctionSymbol<*>) : RichCallableEmbedding {
+    private fun embedCallable(symbol: FirFunctionSymbol<*>): RichCallableEmbedding {
         val (_, fullSignature) = embedFullSignature(symbol)
         return embedCallable(symbol, fullSignature)
     }

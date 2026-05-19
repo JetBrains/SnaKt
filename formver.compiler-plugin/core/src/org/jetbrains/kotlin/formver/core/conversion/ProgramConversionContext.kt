@@ -52,7 +52,7 @@ interface ProgramConversionContext {
     fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding
 
     /**
-     * Returns true if the property is having default behavior. That is:
+     * Returns true if the property has default behavior. That is:
      * It cannot be overwritten and does not have custom getters or setters
      */
     fun isGuaranteedDefaultProperty(symbol: FirPropertySymbol): Boolean
