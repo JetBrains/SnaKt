@@ -405,11 +405,11 @@ data class LinearizationVisitor(
             if (e.field.accessPolicy == AccessPolicy.ALWAYS_WRITEABLE) {
                 return PrimitiveFieldAccess(e.receiver, e.field).linearize().toViper(ctx)
             }
-            return ctx.addFieldAccess(receiverLinearizable, e.receiver.type, e.field)
+            return ctx.addFieldAccess(receiverLinearizable, e.receiver.type, e.receiverIsUnique, e.field)
         }
 
         override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-            ctx.addFieldAccessStoringIn(receiverLinearizable, e.receiver.type, e.field, result)
+            ctx.addFieldAccessStoringIn(receiverLinearizable, e.receiver.type, e.receiverIsUnique, e.field, result)
         }
 
         override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {

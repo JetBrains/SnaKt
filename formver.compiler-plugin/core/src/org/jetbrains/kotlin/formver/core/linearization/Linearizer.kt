@@ -99,9 +99,14 @@ data class Linearizer(
             Stmt.If(condViper, thenViper, elseViper, source.asPosition)
         }
 
-    override fun addFieldAccess(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding): Exp {
+    override fun addFieldAccess(
+        receiver: Linearizable,
+        receiverType: TypeEmbedding,
+        receiverIsUnique: Boolean,
+        field: FieldEmbedding
+    ): Exp {
         val result = freshAnonVar(field.type)
-        addFieldAccessStoringIn(receiver, receiverType, field, result)
+        addFieldAccessStoringIn(receiver, receiverType, receiverIsUnique, field, result)
         return result.toViperExp(this)
     }
 
@@ -109,7 +114,13 @@ data class Linearizer(
         stmtModifierTracker?.add(mod) ?: error("Not in a statement")
     }
 
-    override fun addFieldAccessStoringIn(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding, result: VariableEmbedding) {
+    override fun addFieldAccessStoringIn(
+        receiver: Linearizable,
+        receiverType: TypeEmbedding,
+        receiverIsUnique: Boolean,
+        field: FieldEmbedding,
+        result: VariableEmbedding
+    ) {
         addStatement {
             when (field.accessPolicy) {
                 // TODO: Handling a unique field on a shared receiver must be added here.

@@ -9,14 +9,14 @@ import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 
 interface PropertyAccessEmbedding {
-    fun getValue(ctx: StmtConversionContext): ExpEmbedding
+    fun getValue(ctx: StmtConversionContext, receiverIsUnique: Boolean): ExpEmbedding
     fun setValue(value: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding
 }
 
 fun ExpEmbedding.asPropertyAccess() = when (this) {
     is PropertyAccessEmbedding -> this
     else -> object : PropertyAccessEmbedding {
-        override fun getValue(ctx: StmtConversionContext): ExpEmbedding =
+        override fun getValue(ctx: StmtConversionContext, receiverIsUnique: Boolean): ExpEmbedding =
             this@asPropertyAccess
 
         override fun setValue(value: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding {

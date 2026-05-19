@@ -61,7 +61,7 @@ sealed interface VariableEmbedding : ExpEmbedding, PropertyAccessEmbedding {
     val isOriginallyRef: Boolean
         get() = true
 
-    override fun getValue(ctx: StmtConversionContext): ExpEmbedding = this
+    override fun getValue(ctx: StmtConversionContext, receiverIsUnique: Boolean): ExpEmbedding = this
     override fun setValue(value: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding = Assign(this, value.withType(type))
 
     fun pureInvariants(): List<ExpEmbedding> = type.pureInvariants().fillHoles(this)
