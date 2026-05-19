@@ -9,9 +9,6 @@ enum class AccessPolicy {
     /** var fields **/
     BY_RECEIVER_UNIQUENESS,
 
-    /** val fields **/
-    ALWAYS_READABLE,
-
     /** special fields (like the length of a list) **/
     ALWAYS_WRITEABLE,
 

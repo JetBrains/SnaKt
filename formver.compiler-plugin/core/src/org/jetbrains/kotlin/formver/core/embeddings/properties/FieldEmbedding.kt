@@ -8,20 +8,15 @@ package org.jetbrains.kotlin.formver.core.embeddings.properties
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
-import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
-import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
-import org.jetbrains.kotlin.formver.core.embeddings.expression.IntLit
-import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings
-import org.jetbrains.kotlin.formver.core.embeddings.types.*
-import org.jetbrains.kotlin.formver.core.names.NameMatcher
+import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.FieldAccessTypeInvariantEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.TypeInvariantEmbedding
 import org.jetbrains.kotlin.formver.core.names.ScopedName
-import org.jetbrains.kotlin.formver.core.names.SpecialFieldName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Field
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
 import org.jetbrains.kotlin.formver.viper.ast.Type
-import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 
 /**
  * Embedding of a backing field of a property.
@@ -50,7 +45,7 @@ interface FieldEmbedding {
     fun accessInvariantsForParameter(): List<TypeInvariantEmbedding> =
         when (accessPolicy) {
             AccessPolicy.ALWAYS_WRITEABLE -> listOf(FieldAccessTypeInvariantEmbedding(this, PermExp.FullPerm()))
-            AccessPolicy.BY_RECEIVER_UNIQUENESS, AccessPolicy.ALWAYS_READABLE, AccessPolicy.MANUAL -> listOf()
+            AccessPolicy.BY_RECEIVER_UNIQUENESS, AccessPolicy.MANUAL -> listOf()
         } + extraAccessInvariantsForParameter()
 
 }
@@ -67,7 +62,6 @@ data class UserFieldEmbedding(
     override val accessPolicy: AccessPolicy =
         when {
             isManual -> AccessPolicy.MANUAL
-            symbol.isVal -> AccessPolicy.ALWAYS_READABLE
             symbol.isVar -> AccessPolicy.BY_RECEIVER_UNIQUENESS
             else -> throw SnaktInternalException(
                 symbol.initializerSource,
@@ -75,6 +69,6 @@ data class UserFieldEmbedding(
             )
         }
     override val unfoldToAccess: Boolean
-        get() = accessPolicy == AccessPolicy.ALWAYS_READABLE || accessPolicy == AccessPolicy.BY_RECEIVER_UNIQUENESS
+        get() = accessPolicy == AccessPolicy.BY_RECEIVER_UNIQUENESS
     override val includeInShortDump: Boolean = true
 }
