@@ -123,8 +123,7 @@ data class Linearizer(
     ) {
         addStatement {
             when (field.accessPolicy) {
-                // TODO: Handling a unique field on a shared receiver must be added here.
-                AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
+                AccessPolicy.BY_RECEIVER_UNIQUENESS if !receiverIsUnique -> {
                     receiver.toViperUnusedResult(this)
                     SpecialMethods.havocMethod.toMethodCall(
                         listOf(field.type.runtimeType),
@@ -132,7 +131,7 @@ data class Linearizer(
                     )
                 }
 
-                else -> {
+                AccessPolicy.BY_RECEIVER_UNIQUENESS if receiverIsUnique -> {
                     val receiverViper = receiver.toViper(this)
                     // If the field access is not replaced with havoc,
                     // we might need to unfold some predicate to access it.
@@ -144,6 +143,18 @@ data class Linearizer(
                     Stmt.assign(
                         result.toLocalVarUse(), Exp.FieldAccess(receiverViper, field.toViper(), source.asPosition)
                     )
+                }
+
+                AccessPolicy.MANUAL, AccessPolicy.ALWAYS_WRITEABLE, AccessPolicy.ALWAYS_READABLE -> {
+                    val receiverViper = receiver.toViper(this)
+                    Stmt.assign(
+                        result.toLocalVarUse(), Exp.FieldAccess(receiverViper, field.toViper(), source.asPosition)
+                    )
+                }
+
+                else -> {
+                    // The when is exhaustive
+                    throw SnaktInternalException(source, "Unexpected access policy: ${field.accessPolicy}")
                 }
             }
         }
