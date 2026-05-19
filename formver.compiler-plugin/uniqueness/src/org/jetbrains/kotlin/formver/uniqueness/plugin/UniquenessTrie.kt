@@ -11,3 +11,14 @@ object UniquenessTrieUnifier {
     fun join(left: UniquenessTrie, right: UniquenessTrie): UniquenessTrie =
         left.join(right)
 }
+
+fun UniquenessTrie.meet(other: UniquenessTrie): UniquenessTrie =
+    meet(other, UniquenessIntersector)
+
+object UniquenessTrieIntersector {
+    fun meet(left: UniquenessTrie, right: UniquenessTrie): UniquenessTrie =
+        left.meet(right)
+}
+
+fun UniquenessTrie.toUniqueness(): Uniqueness =
+    joinChildren(UniquenessUnifier)

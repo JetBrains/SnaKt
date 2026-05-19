@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.formver.uniqueness.plugin
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentMapOf
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
+import org.jetbrains.kotlin.formver.type.plugin.TypeIntersector
 import org.jetbrains.kotlin.formver.type.plugin.TypeUnifier
 
 data class PathTrie<Type>(
@@ -45,4 +46,28 @@ fun <Type> PathTrie<Type>.join(other: PathTrie<Type>, typeUnifier: TypeUnifier<T
         data = typeUnifier.join(data, other.data),
         children = joinedChildren
     )
+}
+
+fun <Type> PathTrie<Type>.meet(other: PathTrie<Type>, typeIntersector: TypeIntersector<Type>): PathTrie<Type> {
+    var metChildren = persistentMapOf<FirBasedSymbol<*>, PathTrie<Type>>()
+
+    for ((symbol, child) in children) {
+        val otherChild = other.children[symbol] ?: continue
+        metChildren = metChildren.put(symbol, child.meet(otherChild, typeIntersector))
+    }
+
+    return copy(
+        data = typeIntersector.meet(data, other.data),
+        children = metChildren
+    )
+}
+
+fun <Type> PathTrie<Type>.joinChildren(typeUnifier: TypeUnifier<Type>): Type {
+    var joinedData = data
+
+    for (child in children.values) {
+        joinedData = typeUnifier.join(joinedData,child.joinChildren(typeUnifier))
+    }
+
+    return joinedData
 }
