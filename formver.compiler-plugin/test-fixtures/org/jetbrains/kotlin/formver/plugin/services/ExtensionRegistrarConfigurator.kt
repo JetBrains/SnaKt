@@ -19,6 +19,7 @@ import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.NEVER_VALI
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.RENDER_PREDICATES
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.REPLACE_STDLIB_EXTENSIONS
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.UNIQUE_CHECK_ONLY
+import org.jetbrains.kotlin.formver.uniqueness.plugin.UniquenessExtensionRegistrar
 import org.jetbrains.kotlin.test.directives.model.DirectivesContainer
 import org.jetbrains.kotlin.test.directives.model.RegisteredDirectives
 import org.jetbrains.kotlin.test.directives.model.SimpleDirectivesContainer
@@ -75,6 +76,9 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
             checkLocality = checkLocality,
         )
         FirExtensionRegistrarAdapter.registerExtension(FormalVerificationPluginExtensionRegistrar(config))
+        if (config.checkUniqueness) {
+            FirExtensionRegistrarAdapter.registerExtension(UniquenessExtensionRegistrar())
+        }
         if (config.checkLocality) {
             FirExtensionRegistrarAdapter.registerExtension(LocalityExtensionRegistrar())
         }
