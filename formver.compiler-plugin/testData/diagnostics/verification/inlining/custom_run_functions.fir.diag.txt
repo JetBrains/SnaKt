@@ -60,7 +60,10 @@ method useBranching() returns (v_ret_0: Ref)
 }
 
 /custom_run_functions.kt: info: Generated Viper text for useRun:
-field size: Ref
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method useRun() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
@@ -589,13 +592,18 @@ method complexScenario(par_arg: Ref) returns (v_ret_0: Ref)
 }
 
 /custom_run_functions.kt: info: Generated Viper text for testCustomClass:
-field member: Ref
+function member(this: Ref): Ref
+  requires isSubtype(typeOf(this), CustomClass())
+  ensures isSubtype(typeOf(result), intType())
 
-field size: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method con() returns (ret_1: Ref)
   ensures isSubtype(typeOf(ret_1), CustomClass())
-  ensures acc(CustomClass_shared(ret_1), wildcard)
   ensures acc(CustomClass_unique(ret_1), write)
 
 
@@ -615,8 +623,7 @@ method testCustomClass() returns (v_ret_0: Ref)
   var anon_5: Ref
   var v_ret_9: Ref
   custom := con()
-  unfold acc(CustomClass_shared(custom), wildcard)
-  v_ret_5 := custom.member
+  v_ret_5 := member(custom)
   goto lbl_ret_5
   label lbl_ret_5
   anon_2 := v_ret_5
@@ -627,8 +634,7 @@ method testCustomClass() returns (v_ret_0: Ref)
   anon_1 := v_ret_4
   anon_0 := anon_1
   inhale isSubtype(typeOf(anon_0), intType())
-  unfold acc(CustomClass_shared(custom), wildcard)
-  v_ret_9 := custom.member
+  v_ret_9 := member(custom)
   goto lbl_ret_9
   label lbl_ret_9
   anon_5 := v_ret_9

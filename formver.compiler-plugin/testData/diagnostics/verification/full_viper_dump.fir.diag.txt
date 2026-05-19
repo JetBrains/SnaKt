@@ -240,8 +240,6 @@ domain rt  {
   }
 }
 
-field bf_x: Ref
-
 function addCharInt(arg_1: Ref, arg_2: Ref): Ref
   ensures isSubtype(typeOf(result), charType())
   ensures charFromRef(result) == charFromRef(arg_1) + intFromRef(arg_2)
@@ -268,6 +266,11 @@ function divInts(arg_1: Ref, arg_2: Ref): Ref
   requires intFromRef(arg_2) != 0
   ensures isSubtype(typeOf(result), intType())
   ensures intFromRef(result) == intFromRef(arg_1) \ intFromRef(arg_2)
+
+
+function g_x(this: Ref): Ref
+  requires isSubtype(typeOf(this), Foo())
+  ensures isSubtype(typeOf(result), intType())
 
 
 function geChars(arg_1: Ref, arg_2: Ref): Ref
@@ -380,20 +383,14 @@ function xorBools(arg_1: Ref, arg_2: Ref): Ref
 
 
 predicate Foo_unique(this: Ref) {
-  acc(this.bf_x, wildcard) && isSubtype(typeOf(this.bf_x), intType())
-}
-
-predicate shared(this: Ref) {
-  acc(this.bf_x, wildcard) && isSubtype(typeOf(this.bf_x), intType())
+  true
 }
 
 method con(par_x: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_x), intType())
   ensures isSubtype(typeOf(ret_1), Foo())
-  ensures acc(shared(ret_1), wildcard)
   ensures acc(Foo_unique(ret_1), write)
-  ensures intFromRef((unfolding acc(shared(ret_1), wildcard) in ret_1.bf_x)) ==
-    intFromRef(par_x)
+  ensures intFromRef(g_x(ret_1)) == intFromRef(par_x)
 
 
 method f() returns (v_ret_0: Ref)
@@ -405,5 +402,5 @@ method f() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method havoc() returns (v_ret_0: Ref)
-  ensures isSubtype(typeOf(v_ret_0), intType())
+method havoc(arg_1: rt) returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), arg_1)

@@ -9,9 +9,8 @@ method testManualPermissionFieldGetter(mpf: Ref) returns (v_ret_0: Ref)
 {
   var l0_a: Ref
   var l0_b: Ref
-  inhale acc(shared(mpf), wildcard)
-  unfold acc(shared(mpf), wildcard)
   l0_a := mpf.bf_a
+  inhale isSubtype(typeOf(l0_a), intType())
   l0_b := mpf.bf_b
   inhale isSubtype(typeOf(l0_b), intType())
   label lbl_ret_0
@@ -27,7 +26,6 @@ method testManualPermissionFieldSetter(mpf: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(mpf), ManualPermissionFields())
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  inhale acc(shared(mpf), wildcard)
   mpf.b := intToRef(123)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())

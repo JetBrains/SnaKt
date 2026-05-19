@@ -1,5 +1,8 @@
 /scoped_receivers.kt: info: Generated Viper text for with_run_extension_labeled:
-field size: Ref
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method with_run_extension_labeled(v_this_extension: Ref)
   returns (v_ret_0: Ref)

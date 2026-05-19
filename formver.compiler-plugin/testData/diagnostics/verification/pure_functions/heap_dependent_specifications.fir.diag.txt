@@ -1,161 +1,118 @@
 /heap_dependent_specifications.kt: info: Generated Viper text for isAlternating:
-field next: Ref
-
-field value: Ref
-
 function isAlternating(node: Ref, expectsPositive: Ref): Ref
-  requires acc(shared(node), wildcard)
   requires isSubtype(typeOf(node), Node())
   requires isSubtype(typeOf(expectsPositive), boolType())
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_1_0 ==
+  (let anon_0_0 ==
     ((boolFromRef(expectsPositive) ?
-      (unfolding acc(shared(node), wildcard) in node.value) :
+      gtInts(value(node), intToRef(0)) :
       null)) in
-    (let anon_0_0 ==
-      ((boolFromRef(expectsPositive) ?
-        (unfolding acc(shared(node), wildcard) in
-          gtInts(anon_1_0, intToRef(0))) :
+    (let anon_1_0 ==
+      ((!boolFromRef(expectsPositive) ?
+        ltInts(value(node), intToRef(0)) :
         null)) in
-      (let anon_3_0 ==
-        ((!boolFromRef(expectsPositive) ?
-          (unfolding acc(shared(node), wildcard) in node.value) :
-          null)) in
-        (let anon_2_0 ==
-          ((!boolFromRef(expectsPositive) ?
-            (unfolding acc(shared(node), wildcard) in
-              ltInts(anon_3_0, intToRef(0))) :
-            null)) in
-          (let isCurrentValid_0 ==
-            ((boolFromRef(expectsPositive) ? anon_0_0 : anon_2_0)) in
-            (let nextNode_0 ==
-              ((unfolding acc(shared(node), wildcard) in node.next)) in
-              (let anon_5_0 ==
-                ((!(nextNode_0 == nullValue()) ?
-                  (unfolding acc(shared(node), wildcard) in
-                    isAlternating(nextNode_0, notBool(expectsPositive))) :
-                  null)) in
-                (let anon_6_0 ==
-                  ((!!(nextNode_0 == nullValue()) ? boolToRef(true) : null)) in
-                  (let anon_4_0 ==
-                    ((!(nextNode_0 == nullValue()) ? anon_5_0 : anon_6_0)) in
-                    andBools(isCurrentValid_0, anon_4_0))))))))))
+      (let isCurrentValid_0 ==
+        ((boolFromRef(expectsPositive) ? anon_0_0 : anon_1_0)) in
+        (let nextNode_0 ==
+          (next(node)) in
+          (let anon_3_0 ==
+            ((!(nextNode_0 == nullValue()) ?
+              isAlternating(nextNode_0, notBool(expectsPositive)) :
+              null)) in
+            (let anon_4_0 ==
+              ((!!(nextNode_0 == nullValue()) ? boolToRef(true) : null)) in
+              (let anon_2_0 ==
+                ((!(nextNode_0 == nullValue()) ? anon_3_0 : anon_4_0)) in
+                andBools(isCurrentValid_0, anon_2_0))))))))
 }
 
+function next(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), nullable(Node()))
+
+
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), intType())
+
+
 /heap_dependent_specifications.kt: info: Generated Viper text for isStrictlyAscendingAndPositive:
-field next: Ref
-
-field value: Ref
-
 function isStrictlyAscendingAndPositive(node: Ref): Ref
-  requires acc(Node_shared(node), wildcard)
   requires isSubtype(typeOf(node), Node())
-  requires intFromRef((unfolding acc(Node_shared(node), wildcard) in
-      node.value)) >=
-    0
+  requires intFromRef(value(node)) >= 0
   ensures isSubtype(typeOf(result), boolType())
 {
   (let nextNode_0 ==
-    ((unfolding acc(Node_shared(node), wildcard) in node.next)) in
+    (next(node)) in
     (let anon_2_0 ==
-      ((!(nextNode_0 == nullValue()) ?
-        (unfolding acc(Node_shared(node), wildcard) in
-          (unfolding acc(Node_shared(nextNode_0), wildcard) in
-            nextNode_0.value)) :
+      ((!(nextNode_0 == nullValue()) && intFromRef(value(nextNode_0)) < 0 ?
+        boolToRef(false) :
         null)) in
       (let anon_3_0 ==
-        ((!(nextNode_0 == nullValue()) && intFromRef(anon_2_0) < 0 ?
-          boolToRef(false) :
+        ((!(nextNode_0 == nullValue()) &&
+        !(intFromRef(value(nextNode_0)) < 0) ?
+          andBools(gtInts(value(nextNode_0), value(node)), isStrictlyAscendingAndPositive(nextNode_0)) :
           null)) in
-        (let anon_5_0 ==
-          ((!(nextNode_0 == nullValue()) && !(intFromRef(anon_2_0) < 0) ?
-            (unfolding acc(Node_shared(node), wildcard) in
-              (unfolding acc(Node_shared(nextNode_0), wildcard) in
-                nextNode_0.value)) :
+        (let anon_1_0 ==
+          ((!(nextNode_0 == nullValue()) ?
+            (intFromRef(value(nextNode_0)) < 0 ? anon_2_0 : anon_3_0) :
             null)) in
-          (let anon_6_0 ==
-            ((!(nextNode_0 == nullValue()) && !(intFromRef(anon_2_0) < 0) ?
-              (unfolding acc(Node_shared(node), wildcard) in node.value) :
-              null)) in
-            (let anon_4_0 ==
-              ((!(nextNode_0 == nullValue()) && !(intFromRef(anon_2_0) < 0) ?
-                (unfolding acc(Node_shared(node), wildcard) in
-                  (unfolding acc(Node_shared(node), wildcard) in
-                    (unfolding acc(Node_shared(nextNode_0), wildcard) in
-                      andBools(gtInts(anon_5_0, anon_6_0), isStrictlyAscendingAndPositive(nextNode_0))))) :
-                null)) in
-              (let anon_1_0 ==
-                ((!(nextNode_0 == nullValue()) ?
-                  (intFromRef(anon_2_0) < 0 ? anon_3_0 : anon_4_0) :
-                  null)) in
-                (let anon_7_0 ==
-                  ((!!(nextNode_0 == nullValue()) ? boolToRef(true) : null)) in
-                  (let anon_0_0 ==
-                    ((!(nextNode_0 == nullValue()) ? anon_1_0 : anon_7_0)) in
-                    anon_0_0)))))))))
+          (let anon_4_0 ==
+            ((!!(nextNode_0 == nullValue()) ? boolToRef(true) : null)) in
+            (let anon_0_0 ==
+              ((!(nextNode_0 == nullValue()) ? anon_1_0 : anon_4_0)) in
+              anon_0_0))))))
 }
 
+function next(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), nullable(Node()))
+
+
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), intType())
+
+
 /heap_dependent_specifications.kt: info: Generated Viper text for isLocallyValidBST:
-field left: Ref
-
-field right: Ref
-
-field value: Ref
-
 function isLocallyValidBST(node: Ref): Ref
-  requires acc(shared(node), wildcard)
   requires isSubtype(typeOf(node), TreeNode())
   ensures isSubtype(typeOf(result), boolType())
 {
   (let leftNode_0 ==
-    ((unfolding acc(shared(node), wildcard) in node.left)) in
-    (let anon_1_0 ==
+    (left(node)) in
+    (let anon_0_0 ==
       ((!(leftNode_0 == nullValue()) ?
-        (unfolding acc(shared(node), wildcard) in
-          (unfolding acc(shared(leftNode_0), wildcard) in leftNode_0.value)) :
+        andBools(ltInts(value(leftNode_0), value(node)), isLocallyValidBST(leftNode_0)) :
         null)) in
-      (let anon_2_0 ==
-        ((!(leftNode_0 == nullValue()) ?
-          (unfolding acc(shared(node), wildcard) in node.value) :
-          null)) in
-        (let anon_0_0 ==
-          ((!(leftNode_0 == nullValue()) ?
-            (unfolding acc(shared(node), wildcard) in
-              (unfolding acc(shared(node), wildcard) in
-                (unfolding acc(shared(leftNode_0), wildcard) in
-                  andBools(ltInts(anon_1_0, anon_2_0), isLocallyValidBST(leftNode_0))))) :
-            null)) in
-          (let anon_3_0 ==
-            ((!!(leftNode_0 == nullValue()) ? boolToRef(true) : null)) in
-            (let leftValid_0 ==
-              ((!(leftNode_0 == nullValue()) ? anon_0_0 : anon_3_0)) in
-              (let rightNode_0 ==
-                ((unfolding acc(shared(node), wildcard) in node.right)) in
-                (let anon_5_0 ==
-                  ((!(rightNode_0 == nullValue()) ?
-                    (unfolding acc(shared(node), wildcard) in
-                      (unfolding acc(shared(rightNode_0), wildcard) in
-                        rightNode_0.value)) :
-                    null)) in
-                  (let anon_6_0 ==
-                    ((!(rightNode_0 == nullValue()) ?
-                      (unfolding acc(shared(node), wildcard) in node.value) :
-                      null)) in
-                    (let anon_4_0 ==
-                      ((!(rightNode_0 == nullValue()) ?
-                        (unfolding acc(shared(node), wildcard) in
-                          (unfolding acc(shared(node), wildcard) in
-                            (unfolding acc(shared(rightNode_0), wildcard) in
-                              andBools(gtInts(anon_5_0, anon_6_0), isLocallyValidBST(rightNode_0))))) :
-                        null)) in
-                      (let anon_7_0 ==
-                        ((!!(rightNode_0 == nullValue()) ?
-                          boolToRef(true) :
-                          null)) in
-                        (let rightValid_0 ==
-                          ((!(rightNode_0 == nullValue()) ?
-                            anon_4_0 :
-                            anon_7_0)) in
-                          andBools(leftValid_0, rightValid_0)))))))))))))
+      (let anon_1_0 ==
+        ((!!(leftNode_0 == nullValue()) ? boolToRef(true) : null)) in
+        (let leftValid_0 ==
+          ((!(leftNode_0 == nullValue()) ? anon_0_0 : anon_1_0)) in
+          (let rightNode_0 ==
+            (right(node)) in
+            (let anon_2_0 ==
+              ((!(rightNode_0 == nullValue()) ?
+                andBools(gtInts(value(rightNode_0), value(node)), isLocallyValidBST(rightNode_0)) :
+                null)) in
+              (let anon_3_0 ==
+                ((!!(rightNode_0 == nullValue()) ? boolToRef(true) : null)) in
+                (let rightValid_0 ==
+                  ((!(rightNode_0 == nullValue()) ? anon_2_0 : anon_3_0)) in
+                  andBools(leftValid_0, rightValid_0)))))))))
 }
+
+function left(this: Ref): Ref
+  requires isSubtype(typeOf(this), TreeNode())
+  ensures isSubtype(typeOf(result), nullable(TreeNode()))
+
+
+function right(this: Ref): Ref
+  requires isSubtype(typeOf(this), TreeNode())
+  ensures isSubtype(typeOf(result), nullable(TreeNode()))
+
+
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), TreeNode())
+  ensures isSubtype(typeOf(result), intType())

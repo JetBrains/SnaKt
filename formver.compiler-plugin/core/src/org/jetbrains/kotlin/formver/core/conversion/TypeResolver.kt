@@ -97,6 +97,10 @@ class TypeResolver {
 
     fun lookupBackingField(name: ClassPropertyPair): FieldEmbedding? = properties[name]?.let { toBackingField(it) }
 
+    fun lookupDefaultBehavingProperties(name: ClassPropertyPair): PropertyEmbedding? =
+        properties[name]?.takeIf { it.hasDefaultBehaviour }
+
+
     fun backingFields(): List<FieldEmbedding> = properties.values.mapNotNull { toBackingField(it) }
 
 

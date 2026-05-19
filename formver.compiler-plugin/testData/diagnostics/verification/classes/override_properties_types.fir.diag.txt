@@ -1,13 +1,17 @@
 /override_properties_types.kt: info: Generated Viper text for extractInt:
 field bf_field: Ref
 
+function FinalClassFinalFieldValDerived_g_field(this: Ref): Ref
+  requires isSubtype(typeOf(this), FinalClassFinalFieldValDerived())
+  ensures isSubtype(typeOf(result), intType())
+
+
 method extractInt(base: Ref, returnNull: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(base), Base())
   requires isSubtype(typeOf(returnNull), boolType())
   ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
   ensures v_ret_0 == nullValue() ==> boolFromRef(returnNull)
 {
-  inhale acc(Base_shared(base), wildcard)
   if (boolFromRef(returnNull)) {
     var anon_0: Ref
     anon_0 := nullValue()
@@ -16,20 +20,15 @@ method extractInt(base: Ref, returnNull: Ref) returns (v_ret_0: Ref)
     var anon_1: Ref
     if (isSubtype(typeOf(base), OpenClassOpenFieldVarDerived())) {
       var anon_2: Ref
-      inhale acc(OpenClassOpenFieldVarDerived_shared(base), wildcard)
-      anon_2 := g_field(base)
+      anon_2 := public_g_field(base)
       anon_1 := anon_2
       inhale isSubtype(typeOf(anon_1), intType())
     } elseif (isSubtype(typeOf(base), FinalClassOpenFieldVarDerived())) {
-      inhale acc(FinalClassOpenFieldVarDerived_shared(base), wildcard)
-      anon_1 := havoc()
+      anon_1 := havoc(intType())
     } elseif (isSubtype(typeOf(base), FinalClassFinalFieldValDerived())) {
-      inhale acc(FinalClassFinalFieldValDerived_shared(base), wildcard)
-      unfold acc(FinalClassFinalFieldValDerived_shared(base), wildcard)
-      anon_1 := base.bf_field
+      anon_1 := FinalClassFinalFieldValDerived_g_field(base)
     } elseif (isSubtype(typeOf(base), OpenClassFinalFieldVarDerived())) {
-      inhale acc(OpenClassFinalFieldVarDerived_shared(base), wildcard)
-      anon_1 := havoc()
+      anon_1 := havoc(intType())
     } else {
       anon_1 := intToRef(0)}
     v_ret_0 := anon_1
@@ -38,7 +37,7 @@ method extractInt(base: Ref, returnNull: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
-method g_field(this: Ref) returns (v_ret_0: Ref)
+method public_g_field(this: Ref) returns (v_ret_0: Ref)
 
 
 method s_field(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)

@@ -7,21 +7,12 @@ package org.jetbrains.kotlin.formver.core.embeddings.types
 
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.domains.Injection
-import org.jetbrains.kotlin.formver.core.domains.MethodBuilder
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
-import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.subtype
-import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.PlaintextLeaf
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.TreeView
-import org.jetbrains.kotlin.formver.core.linearization.pureToViper
-import org.jetbrains.kotlin.formver.core.names.HavocName
-import org.jetbrains.kotlin.formver.core.names.ReturnVariableName
 import org.jetbrains.kotlin.formver.core.names.TypeName
 import org.jetbrains.kotlin.formver.viper.NameResolver
-import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Exp
-import org.jetbrains.kotlin.formver.viper.ast.Method
-import org.jetbrains.kotlin.formver.viper.ast.Type
 import org.jetbrains.kotlin.formver.viper.mangled
 
 /**
@@ -39,31 +30,6 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
      */
     val name: TypeName
         get() = TypeName(pretype, flags.nullable)
-
-    val havocMethodName: SymbolicName by lazy {
-        HavocName(this)
-    }
-
-    fun havocMethod(ctx: TypeResolver): Method =
-        MethodBuilder.build(havocMethodName) {
-            returns {
-                Type.Ref
-            }
-            sharedPredicateAccessInvariant(ctx)?.let {
-                postcondition {
-                    it.fillHole(
-                        PlaceholderVariableEmbedding(
-                            ReturnVariableName(0),
-                            this@TypeEmbedding.pretype.asTypeEmbedding()
-                        )
-                    ).pureToViper(toBuiltin = true, ctx)
-                }
-            }
-            postcondition {
-                RuntimeTypeDomain.typeOf(Exp.LocalVar(ReturnVariableName(0), Type.Ref))
-                    .subtype(this@TypeEmbedding.runtimeType)
-            }
-    }
 
     /**
      * Get a nullable version of this type embedding.
@@ -86,9 +52,6 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
         flags.adjustManyInvariants(pretype.accessInvariants(ctx))
 
     override fun pureInvariants(): List<TypeInvariantEmbedding> = flags.adjustManyInvariants(pretype.pureInvariants())
-
-    override fun sharedPredicateAccessInvariant(ctx: TypeResolver): TypeInvariantEmbedding? =
-        flags.adjustOptionalInvariant(pretype.sharedPredicateAccessInvariant(ctx))
 
     override fun uniquePredicateAccessInvariant(ctx: TypeResolver): TypeInvariantEmbedding? =
         flags.adjustOptionalInvariant(pretype.uniquePredicateAccessInvariant(ctx))

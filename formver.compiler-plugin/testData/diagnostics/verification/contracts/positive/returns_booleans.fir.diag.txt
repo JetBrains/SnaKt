@@ -110,8 +110,6 @@ method isNullOrEmpty(v_this_extension: Ref) returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), boolType())
   ensures boolFromRef(v_ret_0) == false ==> v_this_extension != nullValue()
 {
-  inhale v_this_extension != nullValue() ==>
-    acc(Collection_shared(v_this_extension), wildcard)
   if (v_this_extension == nullValue()) {
     v_ret_0 := boolToRef(true)
   } else {

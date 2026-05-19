@@ -13,7 +13,6 @@ method testPrimitivePropertyGetter(pp: Ref) returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
   var anon: Ref
-  inhale acc(shared(pp), wildcard)
   anon := nProp(pp)
   v_ret_0 := anon
   inhale isSubtype(typeOf(v_ret_0), intType())
@@ -36,7 +35,6 @@ method testPrimitivePropertySetter(pp: Ref) returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon: Ref
-  inhale acc(shared(pp), wildcard)
   anon := s_aProp(pp, intToRef(0))
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -69,11 +67,9 @@ method testReferencePropertyGetter(rp: Ref) returns (v_ret_0: Ref)
   var anon_0: Ref
   var ppn: Ref
   var anon_1: Ref
-  inhale acc(ReferenceProperty_shared(rp), wildcard)
   anon_0 := rProp(rp)
   pp := anon_0
   inhale isSubtype(typeOf(pp), PrimitiveProperty())
-  inhale acc(PrimitiveProperty_shared(pp), wildcard)
   anon_1 := nProp(pp)
   ppn := anon_1
   inhale isSubtype(typeOf(ppn), intType())
@@ -108,11 +104,9 @@ method testCascadingPropertyGetter(rp: Ref) returns (v_ret_0: Ref)
   var anon_0: Ref
   var anon_1: Ref
   var anon_2: Ref
-  inhale acc(ReferenceProperty_shared(rp), wildcard)
   anon_2 := rProp(rp)
   anon_1 := anon_2
   inhale isSubtype(typeOf(anon_1), PrimitiveProperty())
-  inhale acc(PrimitiveProperty_shared(anon_1), wildcard)
   anon_0 := nProp(anon_1)
   ppn := anon_0
   inhale isSubtype(typeOf(ppn), intType())
@@ -123,7 +117,6 @@ method testCascadingPropertyGetter(rp: Ref) returns (v_ret_0: Ref)
 /property_accessors.kt: info: Generated Viper text for testReferencePropertySetter:
 method con() returns (ret_1: Ref)
   ensures isSubtype(typeOf(ret_1), PrimitiveProperty())
-  ensures acc(PrimitiveProperty_shared(ret_1), wildcard)
   ensures acc(PrimitiveProperty_unique(ret_1), write)
 
 
@@ -151,7 +144,6 @@ method testReferencePropertySetter(rp: Ref) returns (v_ret_0: Ref)
 {
   var anon_0: Ref
   var anon_1: Ref
-  inhale acc(ReferenceProperty_shared(rp), wildcard)
   anon_1 := con()
   anon_0 := s_ppProp(rp, anon_1)
   label lbl_ret_0

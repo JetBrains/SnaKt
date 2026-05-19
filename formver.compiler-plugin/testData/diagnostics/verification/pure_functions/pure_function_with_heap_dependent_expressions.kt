@@ -13,10 +13,10 @@ fun <!VIPER_TEXT!>getSafeNextValue<!>(node: Node): Int {
     return node.next?.value ?: -1
 }
 
-<!VIPER_VERIFICATION_ERROR!>@Pure
+@Pure
 fun <!VIPER_TEXT!>getSafeNextNextValue<!>(node: Node): Int {
     return node.next?.next?.value ?: 0
-}<!>
+}
 
 @Pure
 fun <!VIPER_TEXT!>sumFirstTwoNodes<!>(node: Node): Int {

@@ -5,14 +5,28 @@
 
 package org.jetbrains.kotlin.formver.core.names
 
+import org.jetbrains.kotlin.descriptors.Visibilities
+import org.jetbrains.kotlin.fir.declarations.utils.visibility
+import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
+import org.jetbrains.kotlin.formver.core.conversion.ProgramConversionContext
+
 enum class MemberEmbeddingPolicy {
-    PRIVATE,
-    PUBLIC,
-    UNSCOPED,
+    FUNCTION,
+    BACKING_FIELD,
+    PRIVATE_BACKING_FIELD,
+    METHOD,
 }
 
-fun alwaysScopedPolicy(isPrivate: Boolean): MemberEmbeddingPolicy =
-    if (isPrivate) MemberEmbeddingPolicy.PRIVATE else MemberEmbeddingPolicy.PUBLIC
 
-fun onlyPrivateScopedPolicy(isPrivate: Boolean): MemberEmbeddingPolicy =
-    if (isPrivate) MemberEmbeddingPolicy.PRIVATE else MemberEmbeddingPolicy.UNSCOPED
+fun scopePolicy(property: FirPropertySymbol, ctx: ProgramConversionContext): MemberEmbeddingPolicy {
+    val wellBehaved = ctx.isGuaranteedDefaultProperty(property)
+    val isPrivate = Visibilities.isPrivate(property.visibility)
+    val isMutable = property.isVar
+
+    return when {
+        wellBehaved && isMutable && isPrivate -> MemberEmbeddingPolicy.PRIVATE_BACKING_FIELD
+        wellBehaved && isMutable -> MemberEmbeddingPolicy.BACKING_FIELD
+        wellBehaved && !isMutable -> MemberEmbeddingPolicy.FUNCTION
+        else -> MemberEmbeddingPolicy.METHOD
+    }
+}

@@ -36,7 +36,6 @@ method isNullOrEmptyWrong(seq: Ref) returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), boolType())
   ensures boolFromRef(v_ret_0) == false ==> seq != nullValue()
 {
-  inhale seq != nullValue() ==> acc(CharSequence_shared(seq), wildcard)
   if (!(seq == nullValue())) {
     var anon_0: Ref
     var anon_1: Ref

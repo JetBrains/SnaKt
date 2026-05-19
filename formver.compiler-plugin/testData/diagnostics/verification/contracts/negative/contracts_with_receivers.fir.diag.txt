@@ -4,7 +4,6 @@ method is2(this: Ref) returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), boolType())
   ensures boolFromRef(v_ret_0) == true ==> isSubtype(typeOf(this), Impl1())
 {
-  inhale acc(Class_shared(this), wildcard)
   v_ret_0 := boolToRef(isSubtype(typeOf(this), Impl2()))
   goto lbl_ret_0
   label lbl_ret_0
@@ -19,8 +18,6 @@ method is1butWithDispatch(v_this: Ref, v_this_extension: Ref)
   ensures boolFromRef(v_ret_0) == true ==>
     isSubtype(typeOf(v_this_extension), Impl2())
 {
-  inhale acc(Class_shared(v_this), wildcard)
-  inhale acc(Class_shared(v_this_extension), wildcard)
   v_ret_0 := boolToRef(isSubtype(typeOf(v_this_extension), Impl1()))
   goto lbl_ret_0
   label lbl_ret_0
@@ -33,7 +30,6 @@ method is1(v_this_extension: Ref) returns (v_ret_0: Ref)
   ensures boolFromRef(v_ret_0) == true ==>
     isSubtype(typeOf(v_this_extension), Impl2())
 {
-  inhale acc(Class_shared(v_this_extension), wildcard)
   v_ret_0 := boolToRef(isSubtype(typeOf(v_this_extension), Impl1()))
   goto lbl_ret_0
   label lbl_ret_0

@@ -50,6 +50,12 @@ interface ProgramConversionContext {
     fun embedFunctionPretype(symbol: FirFunctionSymbol<*>): FunctionTypeEmbedding
     fun embedType(exp: FirExpression): TypeEmbedding = embedType(exp.resolvedType)
     fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding
+
+    /**
+     * Returns true if the property has default behavior. That is:
+     * It cannot be overwritten and does not have custom getters or setters
+     */
+    fun isGuaranteedDefaultProperty(symbol: FirPropertySymbol): Boolean
 }
 
 fun ProgramConversionContext.freshAnonVar(type: TypeEmbedding): VariableEmbedding = anonVarProducer.getFresh(type)
