@@ -198,7 +198,8 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         data: StmtConversionContext,
     ): ExpEmbedding {
         val propertyAccess = data.embedPropertyAccess(propertyAccessExpression)
-        return propertyAccess.getValue(data)
+        val isUnique = data.uniquenessInformation?.receiverIsUnique(propertyAccessExpression) ?: false
+        return propertyAccess.getValue(data, isUnique)
     }
 
     override fun visitEqualityOperatorCall(
