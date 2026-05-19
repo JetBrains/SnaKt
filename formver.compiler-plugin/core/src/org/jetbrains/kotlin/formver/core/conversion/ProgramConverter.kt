@@ -410,7 +410,7 @@ class ProgramConverter(
     override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding {
 
         if (symbol.receiverParameterSymbol != null) {
-            return embedCustomProperty(symbol)
+            return embedExtensionProperty(symbol)
         } else {
             val name = symbol.embedMemberPropertyName(this)
             return typeResolver.getOrPutProperty(name) {
@@ -430,33 +430,44 @@ class ProgramConverter(
                 val isDefaultProperty = isGuaranteedDefaultProperty(symbol)
                 val isImmutable = symbol.isVal
                 val isManual = symbol.isManual(session)
+                val isUnique = symbol.isUnique(session)
 
-                return@getOrPutProperty when {
+                val type = embedType(symbol.resolvedReturnType)
+
+                val (getter, setter) = when {
                     (isDefaultProperty && !isImmutable) || isManual -> {
                         // use a backing field
                         val field = embedBackingField(symbol, regularClass)
-                        PropertyEmbedding(
-                            BackingFieldGetter(field), BackingFieldSetter(field), hasDefaultBehaviour = true
-                        )
+                        Pair(BackingFieldGetter(field), BackingFieldSetter(field))
                     }
 
                     isDefaultProperty -> {
                         // use pure function
-                        PropertyEmbedding(
-                            CustomGetter(embedPureGetterFunction(symbol)), null, hasDefaultBehaviour = true
+                        Pair(
+                            CustomGetter(embedPureGetterFunction(symbol)),
+                            null
                         )
                     }
 
                     else -> {
                         // The property could be overridden by anything, or has a custom getter/setter.
                         // use impure function
-                        PropertyEmbedding(
+                        Pair(
                             CustomGetter(embedImpureGetterFunction(symbol)),
-                            symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) },
-                            hasDefaultBehaviour = false
+                            symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) }
                         )
                     }
                 }
+
+                return@getOrPutProperty PropertyEmbedding(
+                    getter,
+                    setter,
+                    isDefaultProperty || isManual,
+                    isUnique,
+                    isImmutable,
+                    type
+                )
+
             }
         }
     }

@@ -5,8 +5,13 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.properties
 
+import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
+
 data class PropertyEmbedding(
     val getter: GetterEmbedding?,
     val setter: SetterEmbedding?,
-    val hasDefaultBehaviour: Boolean
+    val hasDefaultBehaviour: Boolean,
+    val isUnique: Boolean,
+    val isVal: Boolean,
+    val type: TypeEmbedding,
 )
