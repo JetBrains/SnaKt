@@ -17,19 +17,20 @@ function pf(this: Ref): Ref
 
 
 predicate Baz_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), Baz())
 }
 
 predicate PrimitiveFields_unique(this: Ref) {
-  acc(this.b, write) && isSubtype(typeOf(this.b), intType())
+  isSubtype(typeOf(this), PrimitiveFields()) && acc(this.b, write) &&
+  isSubtype(typeOf(this.b), intType())
 }
 
 predicate Recursive_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), Recursive())
 }
 
 predicate ReferenceField_unique(this: Ref) {
-  acc(Baz_unique(this), write)
+  isSubtype(typeOf(this), ReferenceField()) && acc(Baz_unique(this), write)
 }
 
 method useClasses(rf: Ref, rec: Ref) returns (v_ret_0: Ref)
@@ -50,15 +51,16 @@ function x(this: Ref): Ref
 
 
 predicate A_unique(this: Ref) {
-  acc(this.y, write) && isSubtype(typeOf(this.y), intType())
+  isSubtype(typeOf(this), A()) && acc(this.y, write) &&
+  isSubtype(typeOf(this.y), intType())
 }
 
 predicate B_unique(this: Ref) {
-  acc(A_unique(this), write)
+  isSubtype(typeOf(this), B()) && acc(A_unique(this), write)
 }
 
 predicate C_unique(this: Ref) {
-  acc(B_unique(this), write)
+  isSubtype(typeOf(this), C()) && acc(B_unique(this), write)
 }
 
 method threeLayersHierarchy(c: Ref) returns (v_ret_0: Ref)
@@ -73,28 +75,31 @@ method threeLayersHierarchy(c: Ref) returns (v_ret_0: Ref)
 field size: Ref
 
 predicate Collection_unique(this: Ref) {
+  isSubtype(typeOf(this), Collection()) &&
   acc(Iterable_unique(this), write)
 }
 
 predicate Iterable_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), Iterable())
 }
 
 predicate List_unique(this: Ref) {
-  acc(Collection_unique(this), write)
+  isSubtype(typeOf(this), List()) && acc(Collection_unique(this), write)
 }
 
 predicate MutableCollection_unique(this: Ref) {
+  isSubtype(typeOf(this), MutableCollection()) &&
   acc(Collection_unique(this), write) &&
   acc(MutableIterable_unique(this), write)
 }
 
 predicate MutableIterable_unique(this: Ref) {
+  isSubtype(typeOf(this), MutableIterable()) &&
   acc(Iterable_unique(this), write)
 }
 
 predicate MutableList_unique(this: Ref) {
-  acc(List_unique(this), write) &&
+  isSubtype(typeOf(this), MutableList()) && acc(List_unique(this), write) &&
   acc(MutableCollection_unique(this), write)
 }
 
@@ -126,19 +131,21 @@ function y(this: Ref): Ref
 
 
 predicate Foo_unique(this: Ref) {
-  acc(this.x, write) && isSubtype(typeOf(this.x), intType()) &&
+  isSubtype(typeOf(this), Foo()) && acc(this.x, write) &&
+  isSubtype(typeOf(this.x), intType()) &&
+  acc(T_unique(y(this)), write) &&
   acc(this.z, write) &&
-  acc(T_unique(this.z), write) &&
   isSubtype(typeOf(this.z), T()) &&
+  acc(T_unique(this.z), write) &&
   acc(S_unique(this), write)
 }
 
 predicate S_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), S())
 }
 
 predicate T_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), T())
 }
 
 method unique_foo_arg(foo: Ref) returns (v_ret_0: Ref)
@@ -152,7 +159,7 @@ method unique_foo_arg(foo: Ref) returns (v_ret_0: Ref)
 
 /predicates.kt: info: Generated Viper text for nullable_unique_arg:
 predicate T_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), T())
 }
 
 method nullable_unique_arg(par_t: Ref) returns (v_ret_0: Ref)
@@ -166,7 +173,7 @@ method nullable_unique_arg(par_t: Ref) returns (v_ret_0: Ref)
 
 /predicates.kt: info: Generated Viper text for borrowed_unique_arg:
 predicate T_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), T())
 }
 
 method borrowed_unique_arg(par_t: Ref) returns (v_ret_0: Ref)
@@ -181,7 +188,7 @@ method borrowed_unique_arg(par_t: Ref) returns (v_ret_0: Ref)
 
 /predicates.kt: info: Generated Viper text for unique_receiver:
 predicate T_unique(v_this: Ref) {
-  true
+  isSubtype(typeOf(v_this), T())
 }
 
 method unique_receiver(v_this_extension: Ref) returns (v_ret_0: Ref)
@@ -195,7 +202,7 @@ method unique_receiver(v_this_extension: Ref) returns (v_ret_0: Ref)
 
 /predicates.kt: info: Generated Viper text for borrowed_unique_receiver:
 predicate T_unique(v_this: Ref) {
-  true
+  isSubtype(typeOf(v_this), T())
 }
 
 method borrowed_unique_receiver(v_this_extension: Ref)
@@ -211,7 +218,7 @@ method borrowed_unique_receiver(v_this_extension: Ref)
 
 /predicates.kt: info: Generated Viper text for unique_result:
 predicate T_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), T())
 }
 
 method con() returns (ret_1: Ref)
@@ -230,7 +237,7 @@ method unique_result() returns (v_ret_0: Ref)
 
 /predicates.kt: info: Generated Viper text for unique_nullable_result:
 predicate T_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), T())
 }
 
 method unique_nullable_result() returns (v_ret_0: Ref)

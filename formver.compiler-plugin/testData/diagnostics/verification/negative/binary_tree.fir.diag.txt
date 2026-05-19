@@ -12,7 +12,10 @@ function right(this: Ref): Ref
 
 
 predicate Node_unique(this: Ref) {
-  acc(this.data, write) && isSubtype(typeOf(this.data), intType())
+  isSubtype(typeOf(this), Node()) && acc(this.data, write) &&
+  isSubtype(typeOf(this.data), intType()) &&
+  (left(this) != nullValue() ==> acc(Node_unique(left(this)), write)) &&
+  (right(this) != nullValue() ==> acc(Node_unique(right(this)), write))
 }
 
 method get_left_val(n: Ref) returns (v_ret_0: Ref)
@@ -49,20 +52,24 @@ function size(this: Ref): Ref
 
 
 predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
   acc(Cloneable_unique(this), write) &&
   acc(Serializable_unique(this), write)
 }
 
 predicate Cloneable_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), Cloneable())
 }
 
 predicate Node_unique(this: Ref) {
-  acc(this.bf_data, write) && isSubtype(typeOf(this.bf_data), intType())
+  isSubtype(typeOf(this), Node()) && acc(this.bf_data, write) &&
+  isSubtype(typeOf(this.bf_data), intType()) &&
+  (g_left(this) != nullValue() ==> acc(Node_unique(g_left(this)), write)) &&
+  (g_right(this) != nullValue() ==> acc(Node_unique(g_right(this)), write))
 }
 
 predicate Serializable_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), Serializable())
 }
 
 method con(par_data: Ref, par_left: Ref, par_right: Ref)
