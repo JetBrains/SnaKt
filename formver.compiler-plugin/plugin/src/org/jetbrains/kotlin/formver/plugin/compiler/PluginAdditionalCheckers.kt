@@ -21,6 +21,6 @@ class PluginAdditionalCheckers(session: FirSession, config: PluginConfiguration)
 
     override val declarationCheckers: DeclarationCheckers = object : DeclarationCheckers() {
         override val simpleFunctionCheckers: Set<FirSimpleFunctionChecker>
-            get() = setOf(ViperPoweredDeclarationChecker(session, config), UniquenessDeclarationChecker(session, config))
+            get() = setOf(ViperPoweredDeclarationChecker(session, config))
     }
 }
