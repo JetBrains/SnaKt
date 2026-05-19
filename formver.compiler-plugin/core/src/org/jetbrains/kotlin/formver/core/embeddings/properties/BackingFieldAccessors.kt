@@ -7,10 +7,11 @@ package org.jetbrains.kotlin.formver.core.embeddings.properties
 
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
 import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 
 class BackingFieldGetter(val field: FieldEmbedding) : GetterEmbedding {
-    override fun getValue(receiver: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding {
+    override fun getValue(receiver: ExpEmbedding, ctx: TypeResolver): ExpEmbedding {
         return when (field.accessPolicy) {
             else -> FieldAccess(receiver, field).withInvariants(ctx.typeResolver) {
             AccessPolicy.BY_RECEIVER_UNIQUENESS -> FieldAccess(receiver, field)
@@ -22,7 +23,7 @@ class BackingFieldGetter(val field: FieldEmbedding) : GetterEmbedding {
 
     override fun getValueSimple(
         receiver: ExpEmbedding,
-        ctx: StmtConversionContext
+        ctx: TypeResolver
     ): ExpEmbedding = FieldAccess(receiver, field)
 }
 

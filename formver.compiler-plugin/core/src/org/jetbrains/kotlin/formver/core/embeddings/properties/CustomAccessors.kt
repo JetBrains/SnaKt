@@ -6,24 +6,25 @@
 package org.jetbrains.kotlin.formver.core.embeddings.properties
 
 import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
-import org.jetbrains.kotlin.formver.core.embeddings.callables.CallableEmbedding
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
+import org.jetbrains.kotlin.formver.core.embeddings.callables.NonInlineNamedFunction
 import org.jetbrains.kotlin.formver.core.embeddings.callables.insertCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 
-class CustomGetter(val getterMethod: CallableEmbedding) : GetterEmbedding {
+class CustomGetter(val getterMethod: NonInlineNamedFunction) : GetterEmbedding {
     override fun getValue(
         receiver: ExpEmbedding,
-        ctx: StmtConversionContext,
-    ): ExpEmbedding = getterMethod.insertCall(listOf(receiver), ctx, getterMethod.callableType.returnType)
+        ctx: TypeResolver
+    ): ExpEmbedding = getterMethod.insertCall(listOf(receiver))
 
 
     override fun getValueSimple(
         receiver : ExpEmbedding,
-        ctx: StmtConversionContext,
-    ) : ExpEmbedding = getterMethod.insertCall(listOf(receiver), ctx)
+        ctx: TypeResolver,
+    ): ExpEmbedding = getterMethod.insertCall(listOf(receiver))
 }
 
-class CustomSetter(val setterMethod: CallableEmbedding) : SetterEmbedding {
+class CustomSetter(val setterMethod: NonInlineNamedFunction) : SetterEmbedding {
     override fun setValue(
         receiver: ExpEmbedding,
         value: ExpEmbedding,

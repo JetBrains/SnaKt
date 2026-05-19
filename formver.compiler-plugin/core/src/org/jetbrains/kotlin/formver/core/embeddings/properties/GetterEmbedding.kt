@@ -5,14 +5,14 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.properties
 
-import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 
 interface GetterEmbedding {
-    fun getValue(receiver: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding
+    fun getValue(receiver: ExpEmbedding, ctx: TypeResolver): ExpEmbedding
 
     /**
      * Gets the values without adding type invariants.
      */
-    fun getValueSimple(receiver: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding
+    fun getValueSimple(receiver: ExpEmbedding, ctx: TypeResolver): ExpEmbedding
 }

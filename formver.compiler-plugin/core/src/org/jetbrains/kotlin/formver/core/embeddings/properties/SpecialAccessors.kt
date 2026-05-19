@@ -5,16 +5,16 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.properties
 
-import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings
 
 object LengthFieldGetter : GetterEmbedding {
-    override fun getValue(receiver: ExpEmbedding, ctx: StmtConversionContext) =
+    override fun getValue(receiver: ExpEmbedding, ctx: TypeResolver) =
         OperatorExpEmbeddings.StringLength(receiver)
 
     override fun getValueSimple(
         receiver: ExpEmbedding,
-        ctx: StmtConversionContext
+        ctx: TypeResolver
     ): ExpEmbedding = OperatorExpEmbeddings.StringLength(receiver)
 }

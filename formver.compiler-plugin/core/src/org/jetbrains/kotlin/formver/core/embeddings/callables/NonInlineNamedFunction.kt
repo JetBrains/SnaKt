@@ -20,13 +20,17 @@ class NonInlineNamedFunction(val signature: FullNamedFunctionSignature) :
     override fun insertCall(
         args: List<ExpEmbedding>,
         ctx: StmtConversionContext,
-    ): ExpEmbedding {
-        return if (signature.isPure) {
+    ): ExpEmbedding = insertCall(args)
+
+    fun insertCall(
+        args: List<ExpEmbedding>,
+    ): ExpEmbedding =
+        if (signature.isPure) {
             FunctionCall(signature, args)
         } else {
             MethodCall(signature, args)
         }
-    }
+
 
     override fun toViperMethodHeader(ctx: TypeResolver): Method =
         signature.toViperMethod(
