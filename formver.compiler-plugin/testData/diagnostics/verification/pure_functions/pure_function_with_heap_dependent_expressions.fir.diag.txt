@@ -1,0 +1,307 @@
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for getValue:
+function getValue(node: Ref): Ref
+  requires isSubtype(typeOf(node), Node())
+  ensures isSubtype(typeOf(result), intType())
+{
+  value(node)
+}
+
+function next(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), nullable(Node()))
+
+
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), intType())
+
+
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for getSafeNextValue:
+function getSafeNextValue(node: Ref): Ref
+  requires isSubtype(typeOf(node), Node())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_1_0 ==
+    ((next(node) != nullValue() ? value(next(node)) : nullValue())) in
+    (let anon_0_0 ==
+      ((anon_1_0 != nullValue() ? anon_1_0 : intToRef(-1))) in
+      anon_0_0))
+}
+
+function next(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), nullable(Node()))
+
+
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), intType())
+
+
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for getSafeNextNextValue:
+function getSafeNextNextValue(node: Ref): Ref
+  requires isSubtype(typeOf(node), Node())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_2_0 ==
+    ((next(node) != nullValue() ? next(next(node)) : nullValue())) in
+    (let anon_1_0 ==
+      ((anon_2_0 != nullValue() ? value(anon_2_0) : nullValue())) in
+      (let anon_0_0 ==
+        ((anon_1_0 != nullValue() ? anon_1_0 : intToRef(0))) in
+        anon_0_0)))
+}
+
+function next(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), nullable(Node()))
+
+
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), intType())
+
+
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for sumFirstTwoNodes:
+function next(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), nullable(Node()))
+
+
+function sumFirstTwoNodes(node: Ref): Ref
+  requires isSubtype(typeOf(node), Node())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let nextNode_0 ==
+    (next(node)) in
+    (let anon_1_0 ==
+      ((!(nextNode_0 == nullValue()) ?
+        plusInts(value(node), value(nextNode_0)) :
+        null)) in
+      (let anon_2_0 ==
+        ((!!(nextNode_0 == nullValue()) ? value(node) : null)) in
+        (let anon_0_0 ==
+          ((!(nextNode_0 == nullValue()) ? anon_1_0 : anon_2_0)) in
+          anon_0_0))))
+}
+
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), intType())
+
+
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for isLastNode:
+function isLastNode(node: Ref): Ref
+  requires isSubtype(typeOf(node), Node())
+  ensures isSubtype(typeOf(result), boolType())
+{
+  boolToRef(next(node) == nullValue())
+}
+
+function next(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), nullable(Node()))
+
+
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), intType())
+
+
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for length:
+function length(node: Ref): Ref
+  requires isSubtype(typeOf(node), Node())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let nextNode_0 ==
+    (next(node)) in
+    (let anon_1_0 ==
+      ((nextNode_0 == nullValue() ? intToRef(1) : null)) in
+      (let anon_2_0 ==
+        ((!(nextNode_0 == nullValue()) ?
+          plusInts(intToRef(1), length(nextNode_0)) :
+          null)) in
+        (let anon_0_0 ==
+          ((nextNode_0 == nullValue() ? anon_1_0 : anon_2_0)) in
+          anon_0_0))))
+}
+
+function next(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), nullable(Node()))
+
+
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), intType())
+
+
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for sumAllNodes:
+function next(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), nullable(Node()))
+
+
+function sumAllNodes(node: Ref): Ref
+  requires isSubtype(typeOf(node), Node())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let nextNode_0 ==
+    (next(node)) in
+    (let anon_1_0 ==
+      ((nextNode_0 == nullValue() ? value(node) : null)) in
+      (let anon_2_0 ==
+        ((!(nextNode_0 == nullValue()) ?
+          plusInts(value(node), sumAllNodes(nextNode_0)) :
+          null)) in
+        (let anon_0_0 ==
+          ((nextNode_0 == nullValue() ? anon_1_0 : anon_2_0)) in
+          anon_0_0))))
+}
+
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), intType())
+
+
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for containsValue:
+function containsValue(node: Ref, target: Ref): Ref
+  requires isSubtype(typeOf(node), Node())
+  requires isSubtype(typeOf(target), intType())
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let nextNode_0 ==
+    (next(node)) in
+    (let anon_1_0 ==
+      ((!(nextNode_0 == nullValue()) ?
+        containsValue(nextNode_0, target) :
+        null)) in
+      (let anon_2_0 ==
+        ((!!(nextNode_0 == nullValue()) ? boolToRef(false) : null)) in
+        (let anon_0_0 ==
+          ((!(nextNode_0 == nullValue()) ? anon_1_0 : anon_2_0)) in
+          (intFromRef(value(node)) == intFromRef(target) ?
+            boolToRef(true) :
+            anon_0_0)))))
+}
+
+function next(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), nullable(Node()))
+
+
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), intType())
+
+
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for aliasAndReassign:
+function aliasAndReassign(node: Ref): Ref
+  requires isSubtype(typeOf(node), Node())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let alias1_0 ==
+    (node) in
+    (let alias2_0 ==
+      (next(alias1_0)) in
+      (let fallbackValue_0 ==
+        (intToRef(-1)) in
+        (let fallbackValue_1 ==
+          ((!(alias2_0 == nullValue()) ? value(alias2_0) : null)) in
+          (let fallbackValue_2 ==
+            ((!(alias2_0 == nullValue()) ?
+              fallbackValue_1 :
+              fallbackValue_0)) in
+            fallbackValue_2)))))
+}
+
+function next(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), nullable(Node()))
+
+
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), intType())
+
+
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for id:
+function id(node: Ref): Ref
+  requires isSubtype(typeOf(node), nullable(Node()))
+  ensures isSubtype(typeOf(result), nullable(Node()))
+{
+  node
+}
+
+function next(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), nullable(Node()))
+
+
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), intType())
+
+
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for useIdentityFunction:
+function id(node: Ref): Ref
+  requires isSubtype(typeOf(node), nullable(Node()))
+  ensures isSubtype(typeOf(result), nullable(Node()))
+{
+  node
+}
+
+function next(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), nullable(Node()))
+
+
+function useIdentityFunction(node: Ref): Ref
+  requires isSubtype(typeOf(node), Node())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let sameNode_0 ==
+    (id(node)) in
+    (let anon_1_0 ==
+      ((sameNode_0 != nullValue() ? value(sameNode_0) : nullValue())) in
+      (let anon_0_0 ==
+        ((anon_1_0 != nullValue() ? anon_1_0 : intToRef(0))) in
+        anon_0_0)))
+}
+
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), intType())
+
+
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for getNextValueUsingId:
+function getNextValueUsingId(node: Ref): Ref
+  requires isSubtype(typeOf(node), Node())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let nextNode_0 ==
+    (id(next(node))) in
+    (let anon_1_0 ==
+      ((nextNode_0 == nullValue() ? intToRef(0) : null)) in
+      (let anon_2_0 ==
+        ((!(nextNode_0 == nullValue()) ? value(nextNode_0) : null)) in
+        (let anon_0_0 ==
+          ((nextNode_0 == nullValue() ? anon_1_0 : anon_2_0)) in
+          anon_0_0))))
+}
+
+function id(node: Ref): Ref
+  requires isSubtype(typeOf(node), nullable(Node()))
+  ensures isSubtype(typeOf(result), nullable(Node()))
+{
+  node
+}
+
+function next(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), nullable(Node()))
+
+
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), intType())

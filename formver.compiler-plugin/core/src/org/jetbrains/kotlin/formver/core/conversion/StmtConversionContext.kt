@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.conversion
 
+import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.fir.FirLabel
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
@@ -14,9 +15,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.isBoolean
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
-import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyConversionResult
 import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.InvalidFunctionBodyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.LabelEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FullNamedFunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
@@ -28,8 +27,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.isCustom
 import org.jetbrains.kotlin.formver.core.isInvariantBuilderFunctionNamed
 import org.jetbrains.kotlin.formver.core.linearization.*
-import org.jetbrains.kotlin.formver.core.purity.checkValidity
-import org.jetbrains.kotlin.formver.core.purity.isPure
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.utils.addIfNotNull
@@ -245,49 +242,54 @@ fun StmtConversionContext.insertForAllFunctionCall(
     }
 }
 
-fun StmtConversionContext.convertMethodWithBody(
+fun StmtConversionContext.convertImpureBody(
     declaration: FirSimpleFunction,
     signature: FullNamedFunctionSignature,
-): FunctionBodyConversionResult? {
+    returnTarget: ReturnTarget,
+): ConvertedMethodBody? {
     val firBody = declaration.body ?: return null
     val body = convert(firBody)
-    val returnLabel = defaultResolvedReturnTarget.label ?: throw SnaktInternalException(declaration.source, "Return target label not found for method ${declaration.name}")
+    val returnLabel = returnTarget.label ?: throw SnaktInternalException(
+        declaration.source, "Return target label not found for method ${declaration.name}"
+    )
     val bodyExp = FunctionExp(signature, body, returnLabel)
-    val seqnBuilder = SeqnBuilder(declaration.source)
-    val linearizer =
-        Linearizer(SharedLinearizationState(anonVarProducer), seqnBuilder, declaration.source, typeResolver)
-    bodyExp.toLinearizable(declaration.source).toViperUnusedResult(linearizer)
-    // note: we must guarantee somewhere that returned value is Unit
-    // as we may not encounter any `return` statement in the body
-    signature.returns.withIsUnitInvariantIfUnit(typeResolver).toLinearizable(declaration.source)
-        .toViperUnusedResult(linearizer)
-    val isValid = body.checkValidity(declaration.source, errorCollector)
-    return if (isValid) {
-        FunctionBodyEmbedding(seqnBuilder.block, bodyExp)
-    } else {
-        InvalidFunctionBodyEmbedding(declaration.source, bodyExp)
-    }
+    return ConvertedMethodBody(bodyExp, returnTarget)
 }
 
-fun StmtConversionContext.convertFunctionWithBody(
-    declaration: FirSimpleFunction
-): Exp? {
+fun StmtConversionContext.convertPureBody(declaration: FirSimpleFunction): ExpEmbedding {
     val firBody = declaration.body ?: throw SnaktInternalException(
         declaration.source,
         "Pure functions expect a function body to exist"
     )
-    val body = convert(firBody)
-    if (!body.isPure()) {
-        errorCollector.addPurityError(declaration.source, "Impure function body detected in pure function")
-        return null
-    }
+    return convert(firBody)
+}
+
+fun ProgramConversionContext.linearizeImpureBody(
+    source: KtSourceElement?,
+    converted: ConvertedMethodBody,
+): FunctionBodyEmbedding {
+    val seqnBuilder = SeqnBuilder(source)
+    val linearizer =
+        Linearizer(SharedLinearizationState(anonVarProducer), seqnBuilder, source, typeResolver)
+    converted.bodyExp.toLinearizable(source).toViperUnusedResult(linearizer)
+    // note: we must guarantee somewhere that returned value is Unit
+    // as we may not encounter any `return` statement in the body
+    converted.returnTarget.variable.withIsUnitInvariantIfUnit(typeResolver)
+        .toLinearizable(source).toViperUnusedResult(linearizer)
+    return FunctionBodyEmbedding(seqnBuilder.block)
+}
+
+fun ProgramConversionContext.linearizePureBody(
+    source: KtSourceElement?,
+    body: ExpEmbedding,
+): Exp {
     val pureFunBodyLinearizer = PureFunBodyLinearizer(
-        declaration.source,
+        source,
         SharedLinearizationState(anonVarProducer),
-        SsaConverter(declaration.source),
+        SsaConverter(source),
         typeResolver
     )
-    body.toLinearizable(declaration.source).toViperUnusedResult(pureFunBodyLinearizer)
+    body.toLinearizable(source).toViperUnusedResult(pureFunBodyLinearizer)
     return pureFunBodyLinearizer.constructExpression()
 }
 

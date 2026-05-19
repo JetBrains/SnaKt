@@ -1,23 +1,22 @@
 /as_type_contract.kt: info: Generated Viper text for getX:
-field x: Ref
+function x(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntHolder())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method getX(a: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(a), anyType())
   ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
   ensures v_ret_0 != nullValue() ==> !isSubtype(typeOf(a), IntHolder())
 {
-  var anon_0: Ref
+  var anon: Ref
   if (isSubtype(typeOf(a), IntHolder())) {
-    anon_0 := a
+    anon := a
   } else {
-    anon_0 := nullValue()}
-  inhale isSubtype(typeOf(anon_0), nullable(IntHolder()))
-  inhale anon_0 != nullValue() ==> acc(IntHolder_shared(anon_0), wildcard)
-  if (anon_0 != nullValue()) {
-    var anon_1: Ref
-    unfold acc(IntHolder_shared(anon_0), wildcard)
-    anon_1 := anon_0.x
-    v_ret_0 := anon_1
+    anon := nullValue()}
+  inhale isSubtype(typeOf(anon), nullable(IntHolder()))
+  if (anon != nullValue()) {
+    v_ret_0 := x(anon)
   } else {
     v_ret_0 := nullValue()}
   goto lbl_ret_0

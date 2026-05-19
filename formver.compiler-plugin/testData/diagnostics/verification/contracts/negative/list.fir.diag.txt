@@ -5,7 +5,6 @@ method emptyList() returns (ret_2: Ref)
   ensures isSubtype(typeOf(ret_2), List())
   ensures acc(ret_2.size, write)
   ensures intFromRef(ret_2.size) >= 0
-  ensures acc(List_shared(ret_2), wildcard)
   ensures intFromRef(ret_2.size) == 0
 
 
@@ -40,7 +39,6 @@ method emptyList() returns (ret_1: Ref)
   ensures isSubtype(typeOf(ret_1), List())
   ensures acc(ret_1.size, write)
   ensures intFromRef(ret_1.size) >= 0
-  ensures acc(List_shared(ret_1), wildcard)
   ensures intFromRef(ret_1.size) == 0
 
 
@@ -93,7 +91,6 @@ method unsafe_last(l: Ref) returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
   var anon: Ref
-  inhale acc(List_shared(l), wildcard)
   anon := l.size
   inhale isSubtype(typeOf(anon), intType())
   v_ret_0 := get(l, minusInts(anon, intToRef(1)))
@@ -125,7 +122,6 @@ method add_get(l: Ref) returns (v_ret_0: Ref)
 {
   var anon: Ref
   var n: Ref
-  inhale acc(MutableList_shared(l), wildcard)
   anon := add(l, intToRef(1))
   n := get(l, intToRef(1))
   label lbl_ret_0
@@ -152,7 +148,6 @@ method emptyList() returns (ret_2: Ref)
   ensures isSubtype(typeOf(ret_2), List())
   ensures acc(ret_2.size, write)
   ensures intFromRef(ret_2.size) >= 0
-  ensures acc(List_shared(ret_2), wildcard)
   ensures intFromRef(ret_2.size) == 0
 
 
@@ -182,7 +177,6 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
   ensures isSubtype(typeOf(ret_1), List())
   ensures acc(ret_1.size, write)
   ensures intFromRef(ret_1.size) >= 0
-  ensures acc(List_shared(ret_1), wildcard)
   ensures intFromRef(this.size) == old(intFromRef(this.size))
   ensures intFromRef(ret_1.size) ==
     intFromRef(toIndex) - intFromRef(fromIndex)
@@ -195,7 +189,6 @@ method emptyList() returns (ret_2: Ref)
   ensures isSubtype(typeOf(ret_2), List())
   ensures acc(ret_2.size, write)
   ensures intFromRef(ret_2.size) >= 0
-  ensures acc(List_shared(ret_2), wildcard)
   ensures intFromRef(ret_2.size) == 0
 
 
@@ -225,7 +218,6 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
   ensures isSubtype(typeOf(ret_1), List())
   ensures acc(ret_1.size, write)
   ensures intFromRef(ret_1.size) >= 0
-  ensures acc(List_shared(ret_1), wildcard)
   ensures intFromRef(this.size) == old(intFromRef(this.size))
   ensures intFromRef(ret_1.size) ==
     intFromRef(toIndex) - intFromRef(fromIndex)

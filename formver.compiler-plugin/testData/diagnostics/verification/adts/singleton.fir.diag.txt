@@ -1,5 +1,8 @@
 /singleton.kt: info: Generated Viper text for nullableRed:
-field size: Ref
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method nullableRed() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), nullable(Red()))
@@ -18,7 +21,10 @@ adt a_Red {
 }
 
 /singleton.kt: info: Generated Viper text for returnsRed:
-field size: Ref
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method returnsRed() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), Red())

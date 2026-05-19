@@ -7,7 +7,6 @@ method getBooleanField(this: Ref) returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), boolType())
 {
   var anon: Ref
-  inhale acc(shared(this), wildcard)
   anon := g_field(this)
   v_ret_0 := anon
   inhale isSubtype(typeOf(v_ret_0), boolType())
@@ -19,21 +18,22 @@ method s_field(this: Ref, anon: Ref) returns (v_ret_0: Ref)
 
 
 /private_properties.kt: info: Generated Viper text for getStringField:
-field bf_field: Ref
-
-method g_field(this: Ref) returns (v_ret_0: Ref)
+function B_g_field(this: Ref): Ref
+  requires isSubtype(typeOf(this), B())
+  ensures isSubtype(typeOf(result), stringType())
 
 
 method getStringField(this: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(this), B())
   ensures isSubtype(typeOf(v_ret_0), stringType())
 {
-  inhale acc(B_shared(this), wildcard)
-  unfold acc(B_shared(this), wildcard)
-  v_ret_0 := this.bf_field
+  v_ret_0 := B_g_field(this)
   goto lbl_ret_0
   label lbl_ret_0
 }
+
+method public_g_field(this: Ref) returns (v_ret_0: Ref)
+
 
 method s_field(this: Ref, anon: Ref) returns (v_ret_0: Ref)
 
@@ -41,19 +41,28 @@ method s_field(this: Ref, anon: Ref) returns (v_ret_0: Ref)
 /private_properties.kt: info: Generated Viper text for extractPublic:
 field bf_field: Ref
 
-field private_bf_field: Ref
+function B_g_field(this: Ref): Ref
+  requires isSubtype(typeOf(this), B())
+  ensures isSubtype(typeOf(result), stringType())
 
-field size: Ref
+
+function D_g_field(this: Ref): Ref
+  requires isSubtype(typeOf(this), D())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method con_C() returns (ret_1: Ref)
   ensures isSubtype(typeOf(ret_1), C())
-  ensures acc(C_shared(ret_1), wildcard)
   ensures acc(C_unique(ret_1), write)
 
 
 method con_D() returns (ret_2: Ref)
   ensures isSubtype(typeOf(ret_2), D())
-  ensures acc(D_shared(ret_2), wildcard)
   ensures acc(D_unique(ret_2), write)
 
 
@@ -65,21 +74,18 @@ method extractPublic() returns (v_ret_0: Ref)
   var anon_1: Ref
   var cond2: Ref
   var anon_2: Ref
-  var anon_3: Ref
   anon_1 := con_C()
-  anon_0 := havoc_Int()
+  anon_0 := havoc(intType())
   cond1 := boolToRef(isSubtype(typeOf(anon_0), intType()))
-  anon_3 := con_D()
-  unfold acc(D_shared(anon_3), wildcard)
-  anon_2 := anon_3.bf_field
-  cond2 := boolToRef(isSubtype(typeOf(anon_2), intType()))
+  anon_2 := con_D()
+  cond2 := boolToRef(isSubtype(typeOf(D_g_field(anon_2)), intType()))
   assert boolFromRef(cond1)
   assert boolFromRef(cond2)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method g_field(this: Ref) returns (v_ret_0: Ref)
+method public_g_field(this: Ref) returns (v_ret_0: Ref)
 
 
 method s_field(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)

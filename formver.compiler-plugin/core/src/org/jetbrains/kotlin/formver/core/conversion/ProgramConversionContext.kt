@@ -13,9 +13,8 @@ import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.formver.common.ErrorCollector
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.core.embeddings.callables.CallableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
-import org.jetbrains.kotlin.formver.core.embeddings.callables.PureFunctionEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.callables.PureUserFunctionEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousBuiltinVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
@@ -40,15 +39,23 @@ interface ProgramConversionContext {
     val returnTargetProducer: FreshEntityProducer<ReturnTarget, TypeEmbedding>
     val nameResolver: NameResolver
     val typeResolver: TypeResolver
+    val convertedBodyResolver: ConvertedBodyResolver
+    val linearizedBodyResolver: LinearizedBodyResolver
 
-    fun embedFunction(symbol: FirFunctionSymbol<*>): FunctionEmbedding
-    fun embedPureFunction(symbol: FirFunctionSymbol<*>): PureFunctionEmbedding
+    fun embedFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding
+    fun embedPureFunction(symbol: FirFunctionSymbol<*>): PureUserFunctionEmbedding
     fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding
     fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): Pair<ReturnTarget,FunctionSignature>
     fun embedType(type: ConeKotlinType): TypeEmbedding
     fun embedFunctionPretype(symbol: FirFunctionSymbol<*>): FunctionTypeEmbedding
     fun embedType(exp: FirExpression): TypeEmbedding = embedType(exp.resolvedType)
     fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding
+
+    /**
+     * Returns true if the property has default behavior. That is:
+     * It cannot be overwritten and does not have custom getters or setters
+     */
+    fun isGuaranteedDefaultProperty(symbol: FirPropertySymbol): Boolean
 }
 
 fun ProgramConversionContext.freshAnonVar(type: TypeEmbedding): VariableEmbedding = anonVarProducer.getFresh(type)

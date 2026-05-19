@@ -5,4 +5,8 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.properties
 
-data class PropertyEmbedding(val getter: GetterEmbedding?, val setter: SetterEmbedding?)
+data class PropertyEmbedding(
+    val getter: GetterEmbedding?,
+    val setter: SetterEmbedding?,
+    val hasDefaultBehaviour: Boolean
+)

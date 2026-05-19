@@ -1,17 +1,18 @@
 /secondary_constructors.kt: info: Generated Viper text for onlySecondConstructors:
-field a: Ref
+function a(this: Ref): Ref
+  requires isSubtype(typeOf(this), c_NoPrimaryConstructor())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method con_c_NoPrimaryConstructor_args_Boolean(b: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(ret_1), c_NoPrimaryConstructor())
-  ensures acc(shared(ret_1), wildcard)
   ensures acc(c_NoPrimaryConstructor_unique(ret_1), write)
 
 
 method con_c_NoPrimaryConstructor_args_Int(n: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(n), intType())
   ensures isSubtype(typeOf(ret_2), c_NoPrimaryConstructor())
-  ensures acc(shared(ret_2), wildcard)
   ensures acc(c_NoPrimaryConstructor_unique(ret_2), write)
 
 
@@ -27,22 +28,22 @@ method onlySecondConstructors() returns (v_ret_0: Ref)
 }
 
 /secondary_constructors.kt: info: Generated Viper text for primaryAndSecondConstructor:
-field bf_a: Ref
+function g_a(this: Ref): Ref
+  requires isSubtype(typeOf(this), c_BothConstructors())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method con_c_BothConstructors_args_Boolean(b: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(ret_1), c_BothConstructors())
-  ensures acc(shared(ret_1), wildcard)
   ensures acc(c_BothConstructors_unique(ret_1), write)
 
 
 method con_c_BothConstructors_args_Int(par_a: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(par_a), intType())
   ensures isSubtype(typeOf(ret_2), c_BothConstructors())
-  ensures acc(shared(ret_2), wildcard)
   ensures acc(c_BothConstructors_unique(ret_2), write)
-  ensures intFromRef((unfolding acc(shared(ret_2), wildcard) in ret_2.bf_a)) ==
-    intFromRef(par_a)
+  ensures intFromRef(g_a(ret_2)) == intFromRef(par_a)
 
 
 method primaryAndSecondConstructor() returns (v_ret_0: Ref)

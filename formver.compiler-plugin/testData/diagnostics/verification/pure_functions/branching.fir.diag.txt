@@ -37,19 +37,19 @@ function nestedBranching(a: Ref, b: Ref): Ref
     (let l0_result_1 ==
       ((boolFromRef(a) ? plusInts(intToRef(1), l0_result_0) : null)) in
       (let l0_result_2 ==
-        ((boolFromRef(b) && boolFromRef(a) ?
+        ((boolFromRef(a) && boolFromRef(b) ?
           plusInts(intToRef(2), l0_result_1) :
           null)) in
         (let l0_result_3 ==
-          ((!boolFromRef(b) && boolFromRef(a) ?
+          ((boolFromRef(a) && !boolFromRef(b) ?
             plusInts(intToRef(3), l0_result_1) :
             null)) in
           (let l0_result_4 ==
-            ((boolFromRef(b) && !boolFromRef(a) ?
+            ((!boolFromRef(a) && boolFromRef(b) ?
               plusInts(intToRef(4), l0_result_0) :
               null)) in
             (let l0_result_5 ==
-              ((!boolFromRef(b) && !boolFromRef(a) ?
+              ((!boolFromRef(a) && !boolFromRef(b) ?
                 plusInts(intToRef(5), l0_result_0) :
                 null)) in
               (let l0_result_6 ==
@@ -81,14 +81,14 @@ function whenExpressionSimple(x: Ref): Ref
       (let y_1 ==
         ((intFromRef(anon_0_0) == 1 ? intToRef(10) : null)) in
         (let y_2 ==
-          ((!(intFromRef(anon_0_0) == 2) && !(intFromRef(anon_0_0) == 1) ?
+          ((!(intFromRef(anon_0_0) == 1) && !(intFromRef(anon_0_0) == 2) ?
             intToRef(30) :
             null)) in
           (let y_3 ==
             ((intFromRef(anon_0_0) == 2 ? y_0 : y_2)) in
             (let y_4 ==
               ((intFromRef(anon_0_0) == 1 ? y_1 : y_3)) in
-              (intFromRef(anon_0_0) == 2 && !(intFromRef(anon_0_0) == 1) ?
+              (!(intFromRef(anon_0_0) == 1) && intFromRef(anon_0_0) == 2 ?
                 intToRef(20) :
                 plusInts(y_4, intToRef(1)))))))))
 }
@@ -100,16 +100,16 @@ function whenNoArgumentBranching(x: Ref, y: Ref): Ref
   ensures isSubtype(typeOf(result), intType())
 {
   (let z_0 ==
-    ((!(intFromRef(x) < 0 || intFromRef(y) < 0) &&
-    (!(intFromRef(x) > 0 && intFromRef(y) > 0) && !(intFromRef(x) == 0)) ?
+    ((!(intFromRef(x) == 0) && !(intFromRef(x) > 0 && intFromRef(y) > 0) &&
+    !(intFromRef(x) < 0 || intFromRef(y) < 0) ?
       intToRef(5) :
       null)) in
     (intFromRef(x) == 0 ?
       intToRef(0) :
-      (intFromRef(x) > 0 && intFromRef(y) > 0 && !(intFromRef(x) == 0) ?
+      (!(intFromRef(x) == 0) && (intFromRef(x) > 0 && intFromRef(y) > 0) ?
         intToRef(1) :
-        ((intFromRef(x) < 0 || intFromRef(y) < 0) &&
-        (!(intFromRef(x) > 0 && intFromRef(y) > 0) && !(intFromRef(x) == 0)) ?
+        (!(intFromRef(x) == 0) && !(intFromRef(x) > 0 && intFromRef(y) > 0) &&
+        (intFromRef(x) < 0 || intFromRef(y) < 0) ?
           intToRef(-1) :
           z_0))))
 }
@@ -122,13 +122,13 @@ function stringEqualityBranching(input: Ref): Ref
   (let isValid_0 ==
     (boolToRef(false)) in
     (let isValid_1 ==
-      ((stringFromRef(input) == Seq(117, 115, 101, 114) &&
-      !(stringFromRef(input) == Seq(97, 100, 109, 105, 110)) ?
+      ((!(stringFromRef(input) == Seq(97, 100, 109, 105, 110)) &&
+      stringFromRef(input) == Seq(117, 115, 101, 114) ?
         boolToRef(true) :
         null)) in
       (let isValid_2 ==
-        ((!(stringFromRef(input) == Seq(117, 115, 101, 114)) &&
-        !(stringFromRef(input) == Seq(97, 100, 109, 105, 110)) ?
+        ((!(stringFromRef(input) == Seq(97, 100, 109, 105, 110)) &&
+        !(stringFromRef(input) == Seq(117, 115, 101, 114)) ?
           boolToRef(false) :
           null)) in
         (let isValid_3 ==
@@ -174,7 +174,7 @@ function complexBooleanReturn(x: Ref): Ref
           ((intFromRef(x) > 50 ? l0_result_1 : l0_result_2)) in
           (intFromRef(x) > 100 ?
             boolToRef(true) :
-            (intFromRef(x) < 0 && !(intFromRef(x) > 50) ?
+            (!(intFromRef(x) > 50) && intFromRef(x) < 0 ?
               boolToRef(false) :
               (boolFromRef(l0_result_3) ?
                 boolToRef(false) :
@@ -220,7 +220,7 @@ function safeNestedDivide(x: Ref, y: Ref, z: Ref): Ref
   (let res_0 ==
     (intToRef(0)) in
     (let res_1 ==
-      ((!(intFromRef(z) == 0) && !(intFromRef(y) == 0) ?
+      ((!(intFromRef(y) == 0) && !(intFromRef(z) == 0) ?
         divInts(divInts(x, y), z) :
         null)) in
       (let res_2 ==

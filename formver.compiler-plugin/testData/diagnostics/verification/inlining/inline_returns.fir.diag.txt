@@ -1,5 +1,8 @@
 /inline_returns.kt: info: Generated Viper text for simple_return:
-field size: Ref
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
 
 method simple_return() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())

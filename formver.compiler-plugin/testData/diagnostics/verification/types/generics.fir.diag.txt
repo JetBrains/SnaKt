@@ -6,7 +6,6 @@ method genericMethod(this: Ref, x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), nullable(anyType()))
   ensures isSubtype(typeOf(v_ret_0), nullable(anyType()))
 {
-  inhale acc(shared(this), wildcard)
   v_ret_0 := x
   goto lbl_ret_0
   label lbl_ret_0
@@ -18,8 +17,8 @@ field bf_t: Ref
 method con(par_t: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_t), nullable(anyType()))
   ensures isSubtype(typeOf(ret_1), Box())
-  ensures acc(shared(ret_1), wildcard)
   ensures acc(Box_unique(ret_1), write)
+  ensures (unfolding acc(Box_unique(ret_1), write) in ret_1.bf_t) == par_t
 
 
 method createBox() returns (v_ret_0: Ref)
@@ -31,11 +30,11 @@ method createBox() returns (v_ret_0: Ref)
   var intBox: Ref
   var anon_1: Ref
   boolBox := con(boolToRef(true))
-  anon_0 := havoc()
+  anon_0 := havoc(nullable(anyType()))
   b := anon_0
   inhale isSubtype(typeOf(b), boolType())
   intBox := con(intToRef(2))
-  anon_1 := havoc()
+  anon_1 := havoc(nullable(anyType()))
   v_ret_0 := anon_1
   inhale isSubtype(typeOf(v_ret_0), intType())
   goto lbl_ret_0
@@ -48,8 +47,8 @@ field bf_t: Ref
 method con(par_t: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_t), nullable(anyType()))
   ensures isSubtype(typeOf(ret_1), Box())
-  ensures acc(shared(ret_1), wildcard)
   ensures acc(Box_unique(ret_1), write)
+  ensures (unfolding acc(Box_unique(ret_1), write) in ret_1.bf_t) == par_t
 
 
 method setGenericField() returns (v_ret_0: Ref)
@@ -98,8 +97,7 @@ method genericAsIfCondition(box: Ref) returns (v_ret_0: Ref)
 {
   var anon_0: Ref
   var anon_1: Ref
-  inhale acc(shared(box), wildcard)
-  anon_1 := havoc()
+  anon_1 := havoc(nullable(anyType()))
   anon_0 := anon_1
   inhale isSubtype(typeOf(anon_0), boolType())
   if (boolFromRef(anon_0)) {

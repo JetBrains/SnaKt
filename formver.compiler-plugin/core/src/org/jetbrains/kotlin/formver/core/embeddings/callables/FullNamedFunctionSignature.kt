@@ -14,12 +14,10 @@ import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.conversion.stdLibPostconditions
 import org.jetbrains.kotlin.formver.core.conversion.stdLibPreconditions
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
-import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.buildFunctionPretype
-import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
-import org.jetbrains.kotlin.formver.core.embeddings.types.nullableAny
+import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.DispatchReceiverName
+import org.jetbrains.kotlin.formver.core.names.FunctionResultVariableName
 import org.jetbrains.kotlin.formver.core.names.ReturnVariableName
 import org.jetbrains.kotlin.formver.core.purity.preorder
 import org.jetbrains.kotlin.formver.viper.SymbolicName
@@ -139,7 +137,7 @@ abstract class PropertyAccessorFunctionSignature(
     override val returns: VariableEmbedding = PlaceholderVariableEmbedding(ReturnVariableName(0), buildType { nullableAny() })
 }
 
-class GetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
+class ImpureGetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
     PropertyAccessorFunctionSignature(name, symbol) {
     override val symbol: FirFunctionSymbol<*>
         get() = error {
@@ -151,6 +149,31 @@ class GetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
     }
 
     override val isPure: Boolean = false
+}
+
+class PureGetterFunctionSignature(
+    name: SymbolicName,
+    symbol: FirPropertySymbol,
+    classType: TypeEmbedding,
+    returnType: TypeEmbedding
+) :
+    PropertyAccessorFunctionSignature(name, symbol) {
+    override val symbol: FirFunctionSymbol<*>
+        get() = error {
+            "Getter symbol should not be accessed directly as it is allowed to be null in some cases."
+        }
+    override val callableType: FunctionTypeEmbedding = buildFunctionPretype {
+        withDispatchReceiver { nullableAny() }
+        withReturnType(returnType)
+    }
+    override val returns: VariableEmbedding = PlaceholderVariableEmbedding(FunctionResultVariableName, returnType)
+    override val dispatchReceiver: VariableEmbedding = PlaceholderVariableEmbedding(DispatchReceiverName, classType)
+
+    override val preconditions: List<ExpEmbedding> = dispatchReceiver.provenInvariants()
+
+    override val postconditions: List<ExpEmbedding> = returns.provenInvariants()
+
+    override val isPure: Boolean = true
 }
 
 class SetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
@@ -192,7 +215,6 @@ fun FullNamedFunctionSignature.toViperFunction(
             "Postcondition tries to acquire permissions, which is not allowed in a function"
         )
     }
-    val preconditions = formalArgs.mapNotNull { it.sharedPredicateAccessInvariant(ctx) } + preconditions
     return UserFunction(
         name,
         formalArgs.map { it.toLocalVarDecl() },

@@ -756,12 +756,6 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
-      @TestMetadata("pure_function_with_heap_dependent_expressions.kt")
-      public void testPure_function_with_heap_dependent_expressions() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/negative/pure_function_with_heap_dependent_expressions.kt");
-      }
-
-      @Test
       @TestMetadata("try_catch.kt")
       public void testTry_catch() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/negative/try_catch.kt");
@@ -827,6 +821,18 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("local_variables.kt")
       public void testLocal_variables() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/local_variables.kt");
+      }
+
+      @Test
+      @TestMetadata("operators.kt")
+      public void testOperators() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/operators.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_function_with_heap_dependent_expressions.kt")
+      public void testPure_function_with_heap_dependent_expressions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/pure_function_with_heap_dependent_expressions.kt");
       }
     }
 

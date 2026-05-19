@@ -407,9 +407,10 @@ function timesInts(arg_1: Ref, arg_2: Ref): Ref
   ensures intFromRef(result) == intFromRef(arg_1) * intFromRef(arg_2)
 
 
-predicate A_shared(this: Ref) {
-  true
-}
+function xorBools(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (boolFromRef(arg_1) != boolFromRef(arg_2))
+
 
 predicate A_unique(this: Ref) {
   acc(this.unit, write) && isSubtype(typeOf(this.unit), unitType()) &&
@@ -426,7 +427,6 @@ predicate A_unique(this: Ref) {
   acc(this.string, write) &&
   isSubtype(typeOf(this.string), stringType()) &&
   acc(this.classType, write) &&
-  acc(B_shared(this.classType), wildcard) &&
   isSubtype(typeOf(this.classType), B()) &&
   acc(this.unitNull, write) &&
   isSubtype(typeOf(this.unitNull), nullable(unitType())) &&
@@ -443,18 +443,16 @@ predicate A_unique(this: Ref) {
   acc(this.stringNull, write) &&
   isSubtype(typeOf(this.stringNull), nullable(stringType())) &&
   acc(this.classTypeNull, write) &&
-  (this.classTypeNull != nullValue() ==>
-  acc(B_shared(this.classTypeNull), wildcard)) &&
   isSubtype(typeOf(this.classTypeNull), nullable(B()))
-}
-
-predicate B_shared(this: Ref) {
-  true
 }
 
 predicate B_unique(this: Ref) {
   true
 }
+
+method df_havoc(arg_1: rt) returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), arg_1)
+
 
 method f_havoc(a: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(a), A())
@@ -476,88 +474,22 @@ method f_havoc(a: Ref) returns (v_ret_0: Ref)
   var localCharNull: Ref
   var localStringNull: Ref
   var localClassTypeNull: Ref
-  inhale acc(A_shared(a), wildcard)
-  localUnit := havoc_Unit()
-  localNothing := havoc_Nothing()
-  localAny := havoc_Any()
-  localInt := havoc_Int()
-  localBoolean := havoc_Boolean()
-  localChar := havoc_Char()
-  localString := havoc_String()
-  localClassType := havoc_B()
-  localUnitNull := havoc_NUnit()
-  localNothingNull := havoc_NNothing()
-  localAnyNull := havoc_NAny()
-  localIntNull := havoc_NInt()
-  localBooleanNull := havoc_NBoolean()
-  localCharNull := havoc_NChar()
-  localStringNull := havoc_NString()
-  localClassTypeNull := havoc_NB()
+  localUnit := df_havoc(unitType())
+  localNothing := df_havoc(nothingType())
+  localAny := df_havoc(anyType())
+  localInt := df_havoc(intType())
+  localBoolean := df_havoc(boolType())
+  localChar := df_havoc(charType())
+  localString := df_havoc(stringType())
+  localClassType := df_havoc(B())
+  localUnitNull := df_havoc(nullable(unitType()))
+  localNothingNull := df_havoc(nullable(nothingType()))
+  localAnyNull := df_havoc(nullable(anyType()))
+  localIntNull := df_havoc(nullable(intType()))
+  localBooleanNull := df_havoc(nullable(boolType()))
+  localCharNull := df_havoc(nullable(charType()))
+  localStringNull := df_havoc(nullable(stringType()))
+  localClassTypeNull := df_havoc(nullable(B()))
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
-
-method havoc_Any() returns (v_ret_0: Ref)
-  ensures isSubtype(typeOf(v_ret_0), anyType())
-
-
-method havoc_B() returns (v_ret_0: Ref)
-  ensures acc(B_shared(v_ret_0), wildcard)
-  ensures isSubtype(typeOf(v_ret_0), B())
-
-
-method havoc_Boolean() returns (v_ret_0: Ref)
-  ensures isSubtype(typeOf(v_ret_0), boolType())
-
-
-method havoc_Char() returns (v_ret_0: Ref)
-  ensures isSubtype(typeOf(v_ret_0), charType())
-
-
-method havoc_Int() returns (v_ret_0: Ref)
-  ensures isSubtype(typeOf(v_ret_0), intType())
-
-
-method havoc_NAny() returns (v_ret_0: Ref)
-  ensures isSubtype(typeOf(v_ret_0), nullable(anyType()))
-
-
-method havoc_NB() returns (v_ret_0: Ref)
-  ensures v_ret_0 != nullValue() ==> acc(B_shared(v_ret_0), wildcard)
-  ensures isSubtype(typeOf(v_ret_0), nullable(B()))
-
-
-method havoc_NBoolean() returns (v_ret_0: Ref)
-  ensures isSubtype(typeOf(v_ret_0), nullable(boolType()))
-
-
-method havoc_NChar() returns (v_ret_0: Ref)
-  ensures isSubtype(typeOf(v_ret_0), nullable(charType()))
-
-
-method havoc_NInt() returns (v_ret_0: Ref)
-  ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
-
-
-method havoc_NNothing() returns (v_ret_0: Ref)
-  ensures isSubtype(typeOf(v_ret_0), nullable(nothingType()))
-
-
-method havoc_NString() returns (v_ret_0: Ref)
-  ensures isSubtype(typeOf(v_ret_0), nullable(stringType()))
-
-
-method havoc_NUnit() returns (v_ret_0: Ref)
-  ensures isSubtype(typeOf(v_ret_0), nullable(unitType()))
-
-
-method havoc_Nothing() returns (v_ret_0: Ref)
-  ensures isSubtype(typeOf(v_ret_0), nothingType())
-
-
-method havoc_String() returns (v_ret_0: Ref)
-  ensures isSubtype(typeOf(v_ret_0), stringType())
-
-
-method havoc_Unit() returns (v_ret_0: Ref)
-  ensures isSubtype(typeOf(v_ret_0), unitType())

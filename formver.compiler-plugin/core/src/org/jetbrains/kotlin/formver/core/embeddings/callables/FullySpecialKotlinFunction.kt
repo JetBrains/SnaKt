@@ -9,16 +9,19 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.Assert
 import org.jetbrains.kotlin.formver.core.embeddings.expression.IntLit
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.AddCharInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.AddIntInt
+import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.And
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.DivIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Implies
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.MulIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.NegInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
+import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Or
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.RemIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.StringGet
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubCharChar
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubCharInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubIntInt
+import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Xor
 import org.jetbrains.kotlin.formver.core.embeddings.expression.UnitLit
 import org.jetbrains.kotlin.formver.core.embeddings.expression.toBlock
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildFunctionPretype
@@ -54,7 +57,7 @@ object SpecialKotlinFunctions {
         ClassKotlinName(listOf("InvariantBuilder"))
     }
 
-    val byName: Map<SymbolicName, FunctionEmbedding> = buildFullySpecialFunctions {
+    val byName: Map<SymbolicName, FullySpecialKotlinFunction> = buildFullySpecialFunctions {
         val intIntToIntType = buildFunctionPretype {
             withDispatchReceiver { int() }
             withParam { int() }
@@ -76,6 +79,9 @@ object SpecialKotlinFunctions {
             addFunction(SpecialPackages.kotlin, className = "Int", name = "rem") { args, _ ->
                 RemIntInt(args[0], args[1])
             }
+            addFunction(SpecialPackages.kotlin, className = "Int", name = "compareTo") { args, _ ->
+                SubIntInt(args[0], args[1])
+            }
         }
 
         val intToIntType = buildFunctionPretype {
@@ -93,13 +99,50 @@ object SpecialKotlinFunctions {
             addFunction(SpecialPackages.kotlin, className = "Int", name = "unaryMinus") { args, _ ->
                 NegInt(args[0])
             }
+            addFunction(SpecialPackages.kotlin, className = "Int", name = "unaryPlus") { args, _ ->
+                args[0]
+            }
         }
 
         val booleanToBooleanType = buildFunctionPretype {
             withDispatchReceiver { boolean() }
             withReturnType { boolean() }
         }
+        val booleanBooleanToBooleanType = buildFunctionPretype {
+            withDispatchReceiver { boolean() }
+            withParam { boolean() }
+            withReturnType { boolean() }
+        }
 
+        withCallableType(booleanBooleanToBooleanType) {
+            addFunction(
+                booleanBooleanToBooleanType,
+                SpecialPackages.kotlin,
+                className = "Boolean",
+                name = "and"
+            ) { args, _ ->
+                And(args[0], args[1])
+            }
+
+            addFunction(
+                booleanBooleanToBooleanType,
+                SpecialPackages.kotlin,
+                className = "Boolean",
+                name = "or"
+            ) { args, _ ->
+                Or(args[0], args[1])
+            }
+
+            addFunction(
+                booleanBooleanToBooleanType,
+                SpecialPackages.kotlin,
+                className = "Boolean",
+                name = "xor"
+            ) { args, _ ->
+                Xor(args[0], args[1])
+            }
+
+        }
         addFunction(booleanToBooleanType, SpecialPackages.kotlin, className = "Boolean", name = "not") { args, _ ->
             Not(args[0])
         }
@@ -218,10 +261,10 @@ object SpecialKotlinFunctions {
     }
 }
 
-val FunctionEmbedding.isVerifyFunction: Boolean
+val CallableEmbedding.isVerifyFunction: Boolean
     get() = isFormverPluginFunctionNamed(name = "verify")
 
-fun FunctionEmbedding.isFormverPluginFunctionNamed(className: String? = null, name: String): Boolean =
+fun CallableEmbedding.isFormverPluginFunctionNamed(className: String? = null, name: String): Boolean =
     this is FullySpecialKotlinFunction && NameMatcher.Companion.matchClassScope(this.embedName()) {
         ifPackageName(SpecialPackages.formver) {
             if (className == null) {
