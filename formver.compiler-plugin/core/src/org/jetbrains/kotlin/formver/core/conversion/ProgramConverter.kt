@@ -651,7 +651,10 @@ class ProgramConverter(
     private fun embedExtensionProperty(symbol: FirPropertySymbol) = PropertyEmbedding(
         CustomGetter(embedImpureGetterFunction(symbol)),
         symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) },
-        hasDefaultBehaviour = false
+        hasDefaultBehaviour = false,
+        false,
+        symbol.isVal,
+        embedType(symbol.resolvedReturnType)
     )
 
     @OptIn(SymbolInternals::class)
