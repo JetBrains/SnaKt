@@ -287,14 +287,7 @@ class ProgramConverter(
         // To avoid rollbacks on a discovered violation, we split the handling into a verification and
         // embedding phase
         // 1. Validate ADT and members
-        if (!validateAdtHeader(symbol)) {
-            typeResolver.registerAdt(name, InvalidAdtTypeEmbedding)
-            return InvalidAdtTypeEmbedding
-        }
-        val allMembersValid = symbol.declarationSymbols.fold(true) { acc, sym ->
-            acc and validateAdtMember(sym)
-        }
-        if (!allMembersValid) {
+        if (!validateAdtClass(symbol)) {
             typeResolver.registerAdt(name, InvalidAdtTypeEmbedding)
             return InvalidAdtTypeEmbedding
         }
@@ -314,6 +307,15 @@ class ProgramConverter(
                     AdtConstructorEmbedding(adtEmbedding, typeResolver.lookupAdtFields(adtEmbedding.name))
             }
         return adtEmbedding
+    }
+
+    @OptIn(DirectDeclarationsAccess::class)
+    private fun validateAdtClass(symbol: FirRegularClassSymbol): Boolean {
+        var valid = validateAdtHeader(symbol)
+        valid = valid && symbol.declarationSymbols.fold(true) { acc, sym ->
+            acc and validateAdtMember(sym)
+        }
+        return valid
     }
 
     private fun validateAdtHeader(symbol: FirRegularClassSymbol): Boolean {
