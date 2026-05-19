@@ -8,10 +8,9 @@ package org.jetbrains.kotlin.formver.core.diagnostics
 import org.jetbrains.kotlin.KtSourceElement
 
 /**
- * Surface for emitting conversion diagnostics.
- *
- * Kept separate from `ProgramConversionContext` so that subordinate code (purity checks, embedding
- * builders, etc.) can take only what it needs.
+ * Surface for emitting conversion diagnostics, narrower than `ProgramConversionContext` so that
+ * subordinate code (purity checks, embedding builders, etc.) can depend on just diagnostic
+ * reporting without pulling in the rest of the conversion machinery.
  */
 interface ErrorCollectionContext {
     /** Report a purity violation at [source]. */
@@ -20,6 +19,6 @@ interface ErrorCollectionContext {
     /** Report an ADT violation at [source]. */
     fun reportAdtViolation(source: KtSourceElement?, msg: String)
 
-    /** Report a non-blocking internal-error notice; the source is supplied by the implementation. */
+    /** Report a minor internal error; the source is supplied by the implementation. */
     fun reportMinorInternalError(msg: String)
 }

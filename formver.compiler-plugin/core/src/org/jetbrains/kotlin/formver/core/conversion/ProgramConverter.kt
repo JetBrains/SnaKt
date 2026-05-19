@@ -60,10 +60,8 @@ class ProgramConverter(
      * Excludes the derived [ConversionErrors.VERIFICATION_SKIPPED] summary, which is itself fired
      * in reaction to primary diagnostics.
      */
-    val hadConversionError: Boolean get() = blockingErrorCount > 0
-
-    /** Monotonic count of primary diagnostics reported so far. */
-    private var blockingErrorCount: Int = 0
+    var hadConversionError: Boolean = false
+        private set
 
     /** Source attached to source-less diagnostics (e.g. unimplemented features raised deep in conversion). */
     private var currentDeclarationSource: KtSourceElement? = null
@@ -72,7 +70,7 @@ class ProgramConverter(
         context(diagnosticContext) {
             reporter.reportOn(source, factory, msg)
         }
-        blockingErrorCount++
+        hadConversionError = true
     }
 
     override fun reportPurityViolation(source: KtSourceElement?, msg: String) =
@@ -101,8 +99,6 @@ class ProgramConverter(
         val declaration: FirSimpleFunction,
         val signature: FullNamedFunctionSignature,
         val returnTarget: ReturnTarget,
-        /** [blockingErrorCount] snapshot taken just before this declaration's signature was embedded. */
-        val blockingErrorsBeforeRegister: Int,
     )
 
     private val registered: MutableList<RegisteredFunction> = mutableListOf()
@@ -148,14 +144,13 @@ class ProgramConverter(
      * Embed the declaration's signature and queue its body for later processing by [convertAll].
      */
     fun register(declaration: FirSimpleFunction) {
-        val blockingErrorsBefore = blockingErrorCount
         val (returnTarget, signature) = embedFullSignature(declaration.symbol)
         if (declaration.symbol.isPure(session)) {
             ensurePureUserFunctionEmbedding(declaration.symbol, signature)
         } else {
             embedUserFunction(declaration.symbol, signature)
         }
-        registered += RegisteredFunction(declaration, signature, returnTarget, blockingErrorsBefore)
+        registered += RegisteredFunction(declaration, signature, returnTarget)
     }
 
     /**
@@ -163,7 +158,7 @@ class ProgramConverter(
      */
     fun convertAll() {
         for (entry in registered) {
-            val (declaration, signature, returnTarget, _) = entry
+            val (declaration, signature, returnTarget) = entry
             currentDeclarationSource = declaration.source
             val stmtCtx = createBodyConversionContext(signature, returnTarget)
             if (signature.isPure) {
@@ -178,10 +173,10 @@ class ProgramConverter(
     }
 
     /**
-     * Walk converted bodies to surface validity / purity errors via the diagnostic reporter, then
-     * emit a per-function summary for any registered declaration whose processing produced blocking
-     * errors. Bodies that fail are still present in [convertedBodyResolver]; callers should inspect
-     * [hadConversionError] after this returns and bail before invoking [linearizeAll].
+     * Walk converted bodies to surface validity / purity errors via the diagnostic reporter. If any
+     * conversion error has been reported by the time this returns, emit a [ConversionErrors.VERIFICATION_SKIPPED]
+     * summary on every registered declaration so the user sees per-function attribution for the bail-out.
+     * Callers should inspect [hadConversionError] afterwards and skip [linearizeAll] when set.
      */
     fun validateAll() {
         convertedBodyResolver.forEachImpure { name, body ->
@@ -194,10 +189,8 @@ class ProgramConverter(
                 reportPurityViolation(source, "Impure function body detected in pure function")
             }
         }
-        // Snapshot is taken in [register] before signature embedding, so the comparison covers
-        // errors raised during signature embedding, body conversion, and validation alike.
-        for (entry in registered) {
-            if (blockingErrorCount > entry.blockingErrorsBeforeRegister) {
+        if (hadConversionError) {
+            for (entry in registered) {
                 reportVerificationSkipped(
                     entry.declaration.source,
                     "Function '${entry.declaration.name.asString()}' was not verified because of errors in its declaration",
