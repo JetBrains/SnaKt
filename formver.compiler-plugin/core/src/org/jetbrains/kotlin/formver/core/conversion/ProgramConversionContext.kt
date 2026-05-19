@@ -24,6 +24,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.names.CatchLabelName
 import org.jetbrains.kotlin.formver.core.names.TryExitLabelName
 import org.jetbrains.kotlin.formver.viper.NameResolver
+import org.jetbrains.kotlin.formver.viper.SymbolicName
 
 interface ProgramConversionContext {
     val config: PluginConfiguration
@@ -41,6 +42,7 @@ interface ProgramConversionContext {
     val typeResolver: TypeResolver
     val convertedBodyResolver: ConvertedBodyResolver
     val linearizedBodyResolver: LinearizedBodyResolver
+    val uniquenessInformationResolver: MutableMap<SymbolicName, UniquenessInformation>
 
     fun embedFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding
     fun embedPureFunction(symbol: FirFunctionSymbol<*>): PureUserFunctionEmbedding

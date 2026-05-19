@@ -13,7 +13,6 @@ import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.utils.isData
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
-import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
@@ -33,6 +32,10 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.core.purity.checkValidity
 import org.jetbrains.kotlin.formver.core.purity.isPure
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessGraphAnalyzer
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessGraphChecker
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessResolver
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessTrie
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
@@ -77,6 +80,7 @@ class ProgramConverter(
     override val nameResolver = ShortNameResolver()
     override val convertedBodyResolver = ConvertedBodyResolver()
     override val linearizedBodyResolver = LinearizedBodyResolver()
+    override val uniquenessInformationResolver: MutableMap<SymbolicName, UniquenessInformation> = mutableMapOf()
 
 
     fun buildProgram(): Program = Program(
@@ -106,10 +110,10 @@ class ProgramConverter(
         return UniquenessInformation(graph.nodes.first(), facts)
     }
 
-    fun registerForVerification(declaration: FirSimpleFunction) {
-        val signature = embedFullSignature(declaration.symbol)
-        // Note: it is important that `body` is only set after embedding is complete, as we need to
-        // place the embedding in the map before processing the body.
+    fun register(declaration: FirSimpleFunction) {
+        val (returnTarget, signature) = embedFullSignature(declaration.symbol)
+        val uniqueness = extractUniquenessInformation(declaration)
+        uniquenessInformationResolver.putIfAbsent(signature.name, uniqueness)
         if (declaration.symbol.isPure(session)) {
             ensurePureUserFunctionEmbedding(declaration.symbol, signature)
         } else {
@@ -213,10 +217,10 @@ class ProgramConverter(
     }
 
     private fun createBodyConversionContext(
-        signature: NamedFunctionSignature, target: ReturnTarget
+        signature: NamedFunctionSignature,
+        target: ReturnTarget
     ): StmtConversionContext {
 
-        val uniqueness = extractUniquenessInformation(declaration)
         val paramResolver = RootParameterResolver(
             this@ProgramConverter, signature, signature.symbol.valueParameterSymbols, signature.labelName, target
         )
@@ -225,7 +229,8 @@ class ProgramConverter(
             signature,
             paramResolver,
             scopeIndexProducer.getFresh(),
-            uniqueness,
+            null,
+            uniquenessInformationResolver[signature.name]
         ).statementCtxt()
         return stmtCtx
     }
