@@ -415,7 +415,6 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     ): ExpEmbedding {
         val embedding = when (val lValue = variableAssignment.lValue) {
             is FirPropertyAccessExpression -> {
-                val receiverIsUnique = data.uniquenessInformation?.receiverIsUnique(variableAssignment.lValue) ?: false
                 data.embedPropertyAccess(lValue)
             }
 
@@ -427,8 +426,9 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 variableAssignment.source, "Lvalue must be either property access or desugared assignment."
             )
         }
+        val receiverIsUnique = data.uniquenessInformation?.receiverIsUnique(variableAssignment.lValue) ?: false
         val convertedRValue = data.convert(variableAssignment.rValue)
-        return embedding.setValue(convertedRValue, false, data)
+        return embedding.setValue(convertedRValue, receiverIsUnique, data)
     }
 
     override fun visitSmartCastExpression(
