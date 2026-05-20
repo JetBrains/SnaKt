@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_MISM
 object ReturnLocalityChecker : FirReturnExpressionChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirReturnExpression) {
-        val requiredLocality = null
+        val requiredLocality = Locality.Global
         val actualLocality = expression.result.resolveLocality()
 
         if (requiredLocality.accepts(actualLocality)) return

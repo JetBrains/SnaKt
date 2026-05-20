@@ -11,10 +11,13 @@ import org.jetbrains.kotlin.fir.caches.firCachesFactory
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
+import org.jetbrains.kotlin.fir.expressions.FirThisReceiverExpression
+import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
+import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
-import org.jetbrains.kotlin.fir.types.resolvedType
+import org.jetbrains.kotlin.fir.types.coneType
 
 class ExpressionLocalityResolver(session: FirSession) : FirExtensionSessionComponent(session) {
     companion object {
@@ -28,16 +31,24 @@ class ExpressionLocalityResolver(session: FirSession) : FirExtensionSessionCompo
     @OptIn(SymbolInternals::class)
     context(context: CheckerContext)
     private fun extractLocalityOf(expression: FirExpression): Locality {
-        val expression = expression.unwrapCast()
+        val expression = expression.unwrapExpression().removeCasts()
+        val tails = expression.collectTails()
 
-        return when (expression) {
-            is FirPropertyAccessExpression ->
-                (expression.calleeReference.symbol as? FirVariableSymbol<*>)?.fir?.resolveLocality()
-            else -> {
-                expression.resolvedType.locality ?:
-                expression.collectTails()
-                    .map { tail -> resolveLocalityOf(tail) }
-                    .reduceOrNull { result, locality -> result.join(locality) }
+        return if (tails.any()) {
+            tails.map { tail -> resolveLocalityOf(tail) }
+                .reduceOrNull { result, locality -> result.join(locality) }
+                ?: Locality.Global
+        } else {
+            when (expression) {
+                is FirPropertyAccessExpression ->
+                    (expression.calleeReference.symbol as? FirVariableSymbol<*>)?.fir
+                        ?.resolveLocality()
+                        ?: Locality.Global
+                is FirThisReceiverExpression ->
+                    (expression.calleeReference.symbol as? FirReceiverParameterSymbol)?.fir
+                        ?.typeRef?.coneType?.locality
+                        ?: Locality.Global
+                else -> Locality.Global
             }
         }
     }

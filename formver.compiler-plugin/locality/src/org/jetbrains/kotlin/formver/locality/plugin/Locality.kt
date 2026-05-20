@@ -5,7 +5,29 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
-typealias Locality = LocalityAttribute?
+import org.jetbrains.kotlin.diagnostics.rendering.Renderer
+import org.jetbrains.kotlin.fir.types.ConeKotlinType
+
+enum class Locality {
+    Local, Global
+}
 
 fun Locality.join(other: Locality): Locality =
-    this?.union(other) ?: other
+    minOf(this, other)
+
+fun Locality.accepts(other: Locality): Boolean =
+    this <= other
+
+val ConeKotlinType.locality: Locality
+    get() = if (attributes.locality != null) {
+        Locality.Local
+    } else {
+        Locality.Global
+    }
+
+val LocalityRenderer = Renderer<Locality> { locality ->
+    when (locality) {
+        Locality.Global -> "global"
+        Locality.Local -> "local"
+    }
+}

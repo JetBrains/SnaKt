@@ -33,16 +33,3 @@ data object LocalityAttribute : ConeAttribute<LocalityAttribute>() {
 }
 
 val ConeAttributes.locality: LocalityAttribute? by ConeAttributes.attributeAccessor<LocalityAttribute>()
-
-fun LocalityAttribute?.accepts(other: LocalityAttribute?): Boolean =
-    this != null || other == null
-
-val ConeKotlinType.locality: LocalityAttribute?
-    get() = attributes.locality
-
-val LocalityAttributeRenderer = Renderer<LocalityAttribute?> { locality ->
-    when (locality) {
-        null -> "global"
-        LocalityAttribute -> "local"
-    }
-}

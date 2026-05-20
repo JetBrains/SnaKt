@@ -49,7 +49,7 @@ object PropertyAccessLocalityChecker : FirPropertyAccessExpressionChecker(MppChe
     override fun check(expression: FirPropertyAccessExpression) {
         val accessSymbol = expression.calleeReference.symbol ?: return
 
-        if (expression.resolveLocality() == null) return
+        if (expression.resolveLocality() == Locality.Global) return
 
         val outerDeclaration = context.findClosest<FirFunctionSymbol<*>>()?.fir ?: return
 
