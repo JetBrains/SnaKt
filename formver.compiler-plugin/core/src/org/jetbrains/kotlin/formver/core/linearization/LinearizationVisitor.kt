@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.linearization
 
 import org.jetbrains.kotlin.KtSourceElement
+import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
@@ -405,11 +406,11 @@ data class LinearizationVisitor(
             if (e.field.accessPolicy == AccessPolicy.ALWAYS_WRITEABLE) {
                 return PrimitiveFieldAccess(e.receiver, e.field).linearize().toViper(ctx)
             }
-            return ctx.addFieldAccess(receiverLinearizable, e.receiver.type, e.field)
+            return ctx.addFieldAccess(receiverLinearizable, e.receiver.type, e.receiverIsUnique, e.field)
         }
 
         override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-            ctx.addFieldAccessStoringIn(receiverLinearizable, e.receiver.type, e.field, result)
+            ctx.addFieldAccessStoringIn(receiverLinearizable, e.receiver.type, e.receiverIsUnique, e.field, result)
         }
 
         override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
@@ -429,19 +430,32 @@ data class LinearizationVisitor(
         override fun toViperUnusedResult(ctx: LinearizationContext) {
             when (e.field.accessPolicy) {
                 AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
-                    e.receiver.linearize().toViperUnusedResult(ctx)
-                    e.newValue.linearize().toViperUnusedResult(ctx)
-                }
-                else -> {
-                    val receiverViper = e.receiver.linearize().toViper(ctx)
-                    if (e.field.unfoldToAccess) {
-                        val receiverWrapper = ExpWrapper(receiverViper, e.receiver.type)
-                        val hierarchyPath = ctx.typeResolver.hierarchyPathTo(e.receiver.type.pretype, e.field)
-                        hierarchyPath?.forEach { classType ->
-                            val predAcc = classType.predicateAccess(receiverWrapper, ctx.typeResolver, ctx.source)
-                            ctx.addStatement { Stmt.Unfold(predAcc) }
+                    if (e.receiverIsUnique) {
+                        val receiverViper = e.receiver.linearize().toViper(ctx)
+                        if (e.field.unfoldToAccess) {
+                            val receiverWrapper = ExpWrapper(receiverViper, e.receiver.type)
+                            val hierarchyPath = ctx.typeResolver.hierarchyPathTo(e.receiver.type.pretype, e.field)
+                            hierarchyPath?.forEach { classType ->
+                                val predAcc = classType.predicateAccess(receiverWrapper, ctx.typeResolver, ctx.source)
+                                ctx.addStatement { Stmt.Unfold(predAcc) }
+                            }
                         }
+                        val newValueViper = e.newValue.linearize().toViper(ctx)
+                        ctx.addStatement {
+                            Stmt.FieldAssign(
+                                Exp.FieldAccess(receiverViper, e.field.toViper()),
+                                newValueViper,
+                                ctx.source.asPosition
+                            )
+                        }
+                    } else {
+                        e.receiver.linearize().toViperUnusedResult(ctx)
+                        e.newValue.linearize().toViperUnusedResult(ctx)
                     }
+                }
+
+                AccessPolicy.MANUAL, AccessPolicy.ALWAYS_WRITEABLE -> {
+                    val receiverViper = e.receiver.linearize().toViper(ctx)
                     val newValueViper = e.newValue.linearize().toViper(ctx)
                     ctx.addStatement {
                         Stmt.FieldAssign(
@@ -451,6 +465,11 @@ data class LinearizationVisitor(
                         )
                     }
                 }
+
+                AccessPolicy.ALWAYS_READABLE -> throw SnaktInternalException(
+                    null,
+                    "Always readable field access not supported"
+                )
             }
         }
     }

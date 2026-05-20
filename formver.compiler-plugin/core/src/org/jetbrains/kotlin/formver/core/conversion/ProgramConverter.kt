@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.utils.isData
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
+import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
@@ -31,6 +32,10 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.core.purity.checkValidity
 import org.jetbrains.kotlin.formver.core.purity.isPure
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessGraphAnalyzer
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessGraphChecker
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessResolver
+import org.jetbrains.kotlin.formver.uniqueness.UniquenessTrie
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
@@ -75,6 +80,7 @@ class ProgramConverter(
     override val nameResolver = ShortNameResolver()
     override val convertedBodyResolver = ConvertedBodyResolver()
     override val linearizedBodyResolver = LinearizedBodyResolver()
+    override val uniquenessInformationResolver: MutableMap<SymbolicName, UniquenessInformation> = mutableMapOf()
 
 
     fun buildProgram(): Program = Program(
@@ -92,11 +98,22 @@ class ProgramConverter(
         adts = typeResolver.adtTypeEmbeddings().map { it.toViper() },
     )
 
-    /**
-     * Embed the declaration's signature and queue its body for later processing by [convertAll].
-     */
+    fun extractUniquenessInformation(declaration: FirSimpleFunction): UniquenessInformation {
+        val graph = declaration.controlFlowGraphReference?.controlFlowGraph
+            ?: error("Control flow graph is null for declaration: ${declaration.name}")
+        val resolver = UniquenessResolver(session)
+        val initial = UniquenessTrie(resolver)
+        val graphChecker = UniquenessGraphChecker(session, initial, errorCollector)
+        graphChecker.check(graph)
+        val analyzer = UniquenessGraphAnalyzer(resolver, initial)
+        val facts = analyzer.analyze(graph)
+        return UniquenessInformation(graph.nodes.first(), facts)
+    }
+
     fun register(declaration: FirSimpleFunction) {
         val (returnTarget, signature) = embedFullSignature(declaration.symbol)
+        val uniqueness = extractUniquenessInformation(declaration)
+        uniquenessInformationResolver.putIfAbsent(signature.name, uniqueness)
         if (declaration.symbol.isPure(session)) {
             ensurePureUserFunctionEmbedding(declaration.symbol, signature)
         } else {
@@ -200,7 +217,8 @@ class ProgramConverter(
     }
 
     private fun createBodyConversionContext(
-        signature: NamedFunctionSignature, target: ReturnTarget
+        signature: NamedFunctionSignature,
+        target: ReturnTarget
     ): StmtConversionContext {
 
         val paramResolver = RootParameterResolver(
@@ -211,6 +229,8 @@ class ProgramConverter(
             signature,
             paramResolver,
             scopeIndexProducer.getFresh(),
+            null,
+            uniquenessInformationResolver[signature.name]
         ).statementCtxt()
         return stmtCtx
     }

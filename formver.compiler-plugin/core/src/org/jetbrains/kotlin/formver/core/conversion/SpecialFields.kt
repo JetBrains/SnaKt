@@ -7,9 +7,9 @@ package org.jetbrains.kotlin.formver.core.conversion
 
 
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
 import org.jetbrains.kotlin.formver.core.embeddings.expression.IntLit
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings
+import org.jetbrains.kotlin.formver.core.embeddings.expression.PrimitiveFieldAccess
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeInvariantEmbedding
@@ -38,6 +38,6 @@ val CollectionSizeFieldEmbedding: FieldEmbedding = SpecialField(
 ) { field ->
     listOf(object : TypeInvariantEmbedding {
         override fun fillHole(exp: ExpEmbedding): ExpEmbedding =
-            OperatorExpEmbeddings.GeIntInt(FieldAccess(exp, field), IntLit(0))
+            OperatorExpEmbeddings.GeIntInt(PrimitiveFieldAccess(exp, field), IntLit(0))
     })
 }

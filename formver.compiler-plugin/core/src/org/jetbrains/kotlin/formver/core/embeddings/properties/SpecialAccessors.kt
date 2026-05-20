@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings
 
 object LengthFieldGetter : GetterEmbedding {
-    override fun getValue(receiver: ExpEmbedding, ctx: StmtConversionContext) =
+    override fun getValue(receiver: ExpEmbedding, receiverIsUnique: Boolean, ctx: StmtConversionContext) =
         OperatorExpEmbeddings.StringLength(receiver)
 
     override fun getValueSimple(

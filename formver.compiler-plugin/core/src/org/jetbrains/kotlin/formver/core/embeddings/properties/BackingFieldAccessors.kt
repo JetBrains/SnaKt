@@ -10,10 +10,15 @@ import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 
 class BackingFieldGetter(val field: FieldEmbedding) : GetterEmbedding {
-    override fun getValue(receiver: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding {
+    override fun getValue(receiver: ExpEmbedding, receiverIsUnique: Boolean, ctx: StmtConversionContext): ExpEmbedding {
         return when (field.accessPolicy) {
-            AccessPolicy.ALWAYS_READABLE, AccessPolicy.BY_RECEIVER_UNIQUENESS -> FieldAccess(receiver, field)
-            else -> FieldAccess(receiver, field).withInvariants(ctx.typeResolver) {
+            AccessPolicy.ALWAYS_READABLE, AccessPolicy.BY_RECEIVER_UNIQUENESS -> FieldAccess(
+                receiver,
+                receiverIsUnique,
+                field
+            )
+
+            else -> FieldAccess(receiver, receiverIsUnique, field).withInvariants(ctx.typeResolver) {
                 proven = true
                 access = true
             }
@@ -23,10 +28,15 @@ class BackingFieldGetter(val field: FieldEmbedding) : GetterEmbedding {
     override fun getValueSimple(
         receiver: ExpEmbedding,
         ctx: StmtConversionContext
-    ): ExpEmbedding = FieldAccess(receiver, field)
+    ): ExpEmbedding = FieldAccess(receiver, true, field)
 }
 
 class BackingFieldSetter(val field: FieldEmbedding) : SetterEmbedding {
-    override fun setValue(receiver: ExpEmbedding, value: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding =
-        FieldModification(receiver, field, value.withType(field.type))
+    override fun setValue(
+        receiver: ExpEmbedding,
+        receiverIsUnique: Boolean,
+        value: ExpEmbedding,
+        ctx: StmtConversionContext
+    ): ExpEmbedding =
+        FieldModification(receiver, receiverIsUnique, field, value.withType(field.type))
 }

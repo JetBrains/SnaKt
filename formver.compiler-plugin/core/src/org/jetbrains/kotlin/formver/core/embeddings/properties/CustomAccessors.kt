@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 class CustomGetter(val getterMethod: CallableEmbedding) : GetterEmbedding {
     override fun getValue(
         receiver: ExpEmbedding,
+        receiverIsUnique: Boolean,
         ctx: StmtConversionContext,
     ): ExpEmbedding = getterMethod.insertCall(listOf(receiver), ctx, getterMethod.callableType.returnType)
 
@@ -26,6 +27,7 @@ class CustomGetter(val getterMethod: CallableEmbedding) : GetterEmbedding {
 class CustomSetter(val setterMethod: CallableEmbedding) : SetterEmbedding {
     override fun setValue(
         receiver: ExpEmbedding,
+        receiverIsUnique: Boolean,
         value: ExpEmbedding,
         ctx: StmtConversionContext,
     ): ExpEmbedding = setterMethod.insertCall(listOf(receiver, value), ctx, setterMethod.callableType.returnType)

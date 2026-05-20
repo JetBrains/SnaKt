@@ -779,6 +779,28 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/permissions")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Permissions {
+      @Test
+      public void testAllFilesPresentInPermissions() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/permissions"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("fieldRead.kt")
+      public void testFieldRead() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/permissions/fieldRead.kt");
+      }
+
+      @Test
+      @TestMetadata("fieldWrite.kt")
+      public void testFieldWrite() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/permissions/fieldWrite.kt");
+      }
+    }
+
+    @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/pure_functions")
     @TestDataPath("$PROJECT_ROOT")
     public class Pure_functions {

@@ -1,0 +1,83 @@
+/*
+ * Copyright 2010-2023 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
+ */
+
+package org.jetbrains.kotlin.formver.core.conversion
+
+import org.jetbrains.kotlin.fir.FirElement
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.EnterNodeMarker
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ExitNodeMarker
+import org.jetbrains.kotlin.formver.uniqueness.*
+
+/**
+ * Represents information about the uniqueness of paths through a control flow graph (CFG).
+ * It provides mechanisms to access dataflow facts and analyze paths before and after a specific
+ * FirElement
+ *
+ * @property root The root node of the control flow graph (CFG) from which traversal begins.
+ * @property flowFacts The dataflow facts associated with each node in the CFG, which store
+ *                     information before and after execution of those nodes.
+ */
+class UniquenessInformation(val root: CFGNode<*>, val flowFacts: FlowFacts<UniquenessTrie>) {
+
+    private val nodeCollectionMap by lazy { extract() }
+
+    fun receiverIsUnique(firElement: FirElement): Boolean {
+        val flowBefore = flowBefore(firElement) ?: return false
+        val accessedPath = firElement.receiverPath ?: return false
+        val type = flowBefore.ensure(accessedPath).parentsJoin
+        val activeUniquenessLevel = (type as? UniquenessType.Active)?.uniqueLevel ?: return false
+        return activeUniquenessLevel == UniqueLevel.Unique
+    }
+
+
+    fun flowBefore(firElement: FirElement): UniquenessTrie? {
+        return nodeCollectionMap[firElement]?.entry?.let { flowFacts.flowBefore(it) }
+    }
+
+    fun flowAfter(firElement: FirElement): UniquenessTrie? {
+        return nodeCollectionMap[firElement]?.exit?.let { flowFacts.flowAfter(it) }
+    }
+
+    class NodeCollection {
+        private var _entry: CFGNode<*>? = null
+        private var _exit: CFGNode<*>? = null
+        private val all: MutableList<CFGNode<*>> = mutableListOf()
+
+
+        val entry: CFGNode<*>? get() = _entry ?: all.firstOrNull()
+        val exit: CFGNode<*>? get() = _exit ?: all.lastOrNull()
+
+        fun update(node: CFGNode<*>) {
+            when (node) {
+                is EnterNodeMarker -> _entry = node
+                is ExitNodeMarker -> _exit = node
+                else -> {}
+            }
+            all.add(node)
+        }
+    }
+
+    fun extract(): Map<FirElement, NodeCollection> {
+        val visited = mutableSetOf<CFGNode<*>>()
+        val result = mutableMapOf<FirElement, NodeCollection>()
+
+        val stack = mutableListOf(root)
+
+        while (stack.isNotEmpty()) {
+            val node = stack.removeAt(stack.size - 1)
+            if (!visited.add(node)) continue
+
+            result.getOrPut(node.fir) { NodeCollection() }.update(node)
+
+            for (followingNode in node.followingNodes) {
+                stack.add(followingNode)
+            }
+        }
+
+        return result
+    }
+}
+

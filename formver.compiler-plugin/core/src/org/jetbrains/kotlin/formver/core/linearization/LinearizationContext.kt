@@ -56,9 +56,20 @@ interface LinearizationContext {
         result: VariableEmbedding?
     )
 
-    fun addFieldAccess(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding): Exp
+    fun addFieldAccess(
+        receiver: Linearizable,
+        receiverType: TypeEmbedding,
+        receiverIsUnique: Boolean,
+        field: FieldEmbedding
+    ): Exp
 
-    fun addFieldAccessStoringIn(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding, result: VariableEmbedding)
+    fun addFieldAccessStoringIn(
+        receiver: Linearizable,
+        receiverType: TypeEmbedding,
+        receiverIsUnique: Boolean,
+        field: FieldEmbedding,
+        result: VariableEmbedding
+    )
 
     fun addModifier(mod: StmtModifier)
 

@@ -99,9 +99,14 @@ data class Linearizer(
             Stmt.If(condViper, thenViper, elseViper, source.asPosition)
         }
 
-    override fun addFieldAccess(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding): Exp {
+    override fun addFieldAccess(
+        receiver: Linearizable,
+        receiverType: TypeEmbedding,
+        receiverIsUnique: Boolean,
+        field: FieldEmbedding
+    ): Exp {
         val result = freshAnonVar(field.type)
-        addFieldAccessStoringIn(receiver, receiverType, field, result)
+        addFieldAccessStoringIn(receiver, receiverType, receiverIsUnique, field, result)
         return result.toViperExp(this)
     }
 
@@ -109,11 +114,16 @@ data class Linearizer(
         stmtModifierTracker?.add(mod) ?: error("Not in a statement")
     }
 
-    override fun addFieldAccessStoringIn(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding, result: VariableEmbedding) {
+    override fun addFieldAccessStoringIn(
+        receiver: Linearizable,
+        receiverType: TypeEmbedding,
+        receiverIsUnique: Boolean,
+        field: FieldEmbedding,
+        result: VariableEmbedding
+    ) {
         addStatement {
             when (field.accessPolicy) {
-                // TODO: Handling a unique field on a shared receiver must be added here.
-                AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
+                AccessPolicy.BY_RECEIVER_UNIQUENESS if !receiverIsUnique -> {
                     receiver.toViperUnusedResult(this)
                     SpecialMethods.havocMethod.toMethodCall(
                         listOf(field.type.runtimeType),
@@ -121,7 +131,7 @@ data class Linearizer(
                     )
                 }
 
-                else -> {
+                AccessPolicy.BY_RECEIVER_UNIQUENESS if receiverIsUnique -> {
                     val receiverViper = receiver.toViper(this)
                     // If the field access is not replaced with havoc,
                     // we might need to unfold some predicate to access it.
@@ -133,6 +143,18 @@ data class Linearizer(
                     Stmt.assign(
                         result.toLocalVarUse(), Exp.FieldAccess(receiverViper, field.toViper(), source.asPosition)
                     )
+                }
+
+                AccessPolicy.MANUAL, AccessPolicy.ALWAYS_WRITEABLE, AccessPolicy.ALWAYS_READABLE -> {
+                    val receiverViper = receiver.toViper(this)
+                    Stmt.assign(
+                        result.toLocalVarUse(), Exp.FieldAccess(receiverViper, field.toViper(), source.asPosition)
+                    )
+                }
+
+                else -> {
+                    // The when is exhaustive
+                    throw SnaktInternalException(source, "Unexpected access policy: ${field.accessPolicy}")
                 }
             }
         }
