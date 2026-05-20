@@ -1,5 +1,9 @@
-/full_viper_dump.kt: info: Generated ExpEmbedding for f:
-Function(name = f, { Declare(Var(foo), [pkg$[c$Foo]], MethodCall(callee = con, Int(0))) }, return = lbl_ret_0)
+/full_viper_dump.kt: info: Generated ExpEmbedding for pkg$f$f$args$t$ret$Unit:
+Function(
+    name = pkg$f$f$args$t$ret$Unit,
+    { Declare(Var(l0$foo), pkg$c$Foo, MethodCall(callee = pkg$c$Foo$con$pkg$c$Foo$args$Int, Int(0))) },
+    return = lbl$ret$0,
+)
 
 /full_viper_dump.kt: info: Generated Viper text for f:
 domain rt  {

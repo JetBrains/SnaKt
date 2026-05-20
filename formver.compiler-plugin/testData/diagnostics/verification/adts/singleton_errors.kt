@@ -30,14 +30,14 @@ data <!ADT_VIOLATION!>object WithSupertype<!> : SomeInterface
 @ADT
 data object Valid
 
-<!ADT_VIOLATION!>fun triggerNotAnObject(x: NotAnObject) {}<!>
-<!ADT_VIOLATION!>fun triggerNotDataObject(x: NotDataObject) {}<!>
-<!ADT_VIOLATION!>fun triggerWithField(x: WithField) {}<!>
-<!ADT_VIOLATION!>fun triggerWithFunction(x: WithFunction) {}<!>
-<!ADT_VIOLATION!>fun triggerWithSupertype(x: WithSupertype) {}<!>
-<!ADT_VIOLATION!>fun triggerWithAssignment() {
+fun <!VERIFICATION_SKIPPED!>triggerNotAnObject<!>(x: NotAnObject) {}
+fun <!VERIFICATION_SKIPPED!>triggerNotDataObject<!>(x: NotDataObject) {}
+fun <!VERIFICATION_SKIPPED!>triggerWithField<!>(x: WithField) {}
+fun <!VERIFICATION_SKIPPED!>triggerWithFunction<!>(x: WithFunction) {}
+fun <!VERIFICATION_SKIPPED!>triggerWithSupertype<!>(x: WithSupertype) {}
+fun <!VERIFICATION_SKIPPED!>triggerWithAssignment<!>() {
     val x = <!ADT_VIOLATION!>TriggeredByAssignment<!>
-}<!>
+}
 
 fun <!VIPER_TEXT!>validParameter<!>(a: Valid) {}
 

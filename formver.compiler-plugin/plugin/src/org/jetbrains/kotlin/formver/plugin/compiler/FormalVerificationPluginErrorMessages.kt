@@ -34,11 +34,6 @@ object FormalVerificationPluginErrorMessages : BaseDiagnosticRendererFactory() {
             CommonRenderers.STRING,
         )
         map.put(
-            PluginErrors.MINOR_INTERNAL_ERROR,
-            "Formal verification non-fatal internal error: {0}",
-            CommonRenderers.STRING,
-        )
-        map.put(
             VerificationErrors.UNEXPECTED_RETURNED_VALUE,
             "Function may return a {0} value.",
             CommonRenderers.STRING,
@@ -62,11 +57,6 @@ object FormalVerificationPluginErrorMessages : BaseDiagnosticRendererFactory() {
             CommonRenderers.STRING,
         )
         map.put(
-            PluginErrors.PURITY_VIOLATION,
-            "{0}",
-            CommonRenderers.STRING,
-        )
-        map.put(
             PluginErrors.UNIQUENESS_VIOLATION,
             "{0}",
             CommonRenderers.STRING,
@@ -75,11 +65,6 @@ object FormalVerificationPluginErrorMessages : BaseDiagnosticRendererFactory() {
         map.put(
             PluginErrors.UNIQUENESS_CFG,
             "\n{0}",
-            CommonRenderers.STRING,
-        )
-        map.put(
-            PluginErrors.ADT_VIOLATION,
-            "{0}",
             CommonRenderers.STRING,
         )
     }

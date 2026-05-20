@@ -6,19 +6,19 @@ fun <!VIPER_TEXT!>iAmAMethod<!>(): Int {
 }
 
 <!PURITY_VIOLATION!>@Pure
-fun testWronglyAnnotatedAsPure(): Int {
+fun <!VERIFICATION_SKIPPED!>testWronglyAnnotatedAsPure<!>(): Int {
     return iAmAMethod()
 }<!>
 
 <!PURITY_VIOLATION!>@Pure
-fun testExecutingLambda(action: () -> Int): Int {
+fun <!VERIFICATION_SKIPPED!>testExecutingLambda<!>(action: () -> Int): Int {
     return action()
 }<!>
 
 class Field(var value: Int)
 
 <!PURITY_VIOLATION!>@Pure
-fun testFieldModification(field: Field): Int {
+fun <!VERIFICATION_SKIPPED!>testFieldModification<!>(field: Field): Int {
     field.value += 1
     return field.value
 }<!>
@@ -28,20 +28,20 @@ fun Field.<!VIPER_TEXT!>impureExtension<!>() {
 }
 
 <!PURITY_VIOLATION!>@Pure
-fun testImpureExtensionCall(field: Field): Int {
+fun <!VERIFICATION_SKIPPED!>testImpureExtensionCall<!>(field: Field): Int {
     field.impureExtension()
     return field.value
 }<!>
 
 <!PURITY_VIOLATION!>@Pure
-fun Field.wronglyAnnotatedExtension() {
+fun Field.<!VERIFICATION_SKIPPED!>wronglyAnnotatedExtension<!>() {
     this.value += 1
 }<!>
 
 class Wrapper(val field: Field)
 
 <!PURITY_VIOLATION!>@Pure
-fun testNestedFieldModification(wrapper: Wrapper): Int {
+fun <!VERIFICATION_SKIPPED!>testNestedFieldModification<!>(wrapper: Wrapper): Int {
     wrapper.field.value += 1
     return wrapper.field.value
 }<!>

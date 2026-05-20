@@ -6,7 +6,7 @@
 package org.jetbrains.kotlin.formver.core.purity
 
 import org.jetbrains.kotlin.KtSourceElement
-import org.jetbrains.kotlin.formver.common.ErrorCollector
+import org.jetbrains.kotlin.formver.core.diagnostics.ErrorCollectionContext
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.SharingContext
 import org.jetbrains.kotlin.formver.core.embeddings.expression.WithPosition
@@ -30,14 +30,14 @@ fun ExpEmbedding.preorder(currentSource: KtSourceElement? = null): Sequence<Pair
  * Validates all nodes using the isValid function.
  * Avoids `all` to prevent short-circuiting, ensuring all errors are reported.
  */
-fun ExpEmbedding.checkValidity(source: KtSourceElement?, errorCollector: ErrorCollector): Boolean =
+fun ExpEmbedding.checkValidity(source: KtSourceElement?, errors: ErrorCollectionContext): Boolean =
     preorder(source)
         .exhaustiveAll {
             val embedding = it.first
             val source = checkNotNull(it.second) {
                 "Purity-check expected a KtSourceElement, but none was present"
             }
-            embedding.isValid(DefaultPurityContext(source, errorCollector))
+            embedding.isValid(DefaultPurityContext(source, errors))
         }
 
 /**

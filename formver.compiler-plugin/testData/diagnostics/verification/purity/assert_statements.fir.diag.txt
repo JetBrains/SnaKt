@@ -1,5 +1,9 @@
+/assert_statements.kt: error: Function 'test' was not verified because of errors in its declaration
+
 /assert_statements.kt: error: Assert condition is impure
 
 /assert_statements.kt: error: Assert condition is impure
+
+/assert_statements.kt: error: Function 'testImpure' was not verified because of errors in its declaration
 
 /assert_statements.kt: error: Assert condition is impure

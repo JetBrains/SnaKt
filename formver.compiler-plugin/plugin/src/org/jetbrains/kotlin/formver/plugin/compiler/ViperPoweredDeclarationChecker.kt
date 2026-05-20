@@ -19,6 +19,7 @@ import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.formver.common.*
 import org.jetbrains.kotlin.formver.core.conversion.ProgramConverter
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.print
+import org.jetbrains.kotlin.formver.core.names.SimpleNameResolver
 import org.jetbrains.kotlin.formver.core.shouldVerify
 import org.jetbrains.kotlin.formver.core.viperProgram
 import org.jetbrains.kotlin.formver.plugin.compiler.reporting.reportVerifierError
@@ -53,20 +54,26 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
     override fun check(declaration: FirSimpleFunction) {
         val inTestRun = System.getProperty("formver.testRun").toBoolean()
         if (!config.shouldConvert(declaration)) return
-        val errorCollector = ErrorCollector()
         try {
-            val programConversionContext = ProgramConverter(session, config, errorCollector)
+            val programConversionContext = ProgramConverter(session, config, context, reporter)
             programConversionContext.register(declaration)
             programConversionContext.convertAll()
             programConversionContext.validateAll()
-            errorCollector.forEachPurityError { source, errorMessage ->
-                reporter.reportOn(source, PluginErrors.PURITY_VIOLATION, errorMessage)
+
+            if (shouldDumpExpEmbeddings(declaration)) {
+                with(SimpleNameResolver()) {
+                    for ((name, embedding) in programConversionContext.debugExpEmbeddings) {
+                        reporter.reportOn(
+                            declaration.source,
+                            PluginErrors.EXP_EMBEDDING,
+                            name.mangled,
+                            embedding.debugTreeView.print()
+                        )
+                    }
+                }
             }
-            errorCollector.forEachAdtError { source, errorMessage ->
-                reporter.reportOn(source, PluginErrors.ADT_VIOLATION, errorMessage)
-            }
-            if (errorCollector.collectedPurityError()) return
-            if (errorCollector.collectedAdtError()) return
+
+            if (programConversionContext.hadConversionError) return
             programConversionContext.linearizeAll()
             val program = programConversionContext.buildProgram()
 
@@ -82,19 +89,6 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
                     declaration.name.asString(),
                     with(programConversionContext.nameResolver) { it.toDebugOutput() }
                 )
-            }
-
-            if (shouldDumpExpEmbeddings(declaration)) {
-                with(programConversionContext.nameResolver) {
-                    for ((name, embedding) in programConversionContext.debugExpEmbeddings) {
-                        reporter.reportOn(
-                            declaration.source,
-                            PluginErrors.EXP_EMBEDDING,
-                            name.mangled,
-                            embedding.debugTreeView.print()
-                        )
-                    }
-                }
             }
 
             val viperProgram = with(programConversionContext.nameResolver) { program.toSilver() }
@@ -125,10 +119,6 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
         } catch (e: Exception) {
             val error = e.message ?: "No message provided"
             reporter.reportOn(declaration.source, PluginErrors.INTERNAL_ERROR, error)
-        }
-
-        errorCollector.forEachMinorError {
-            reporter.reportOn(declaration.source, PluginErrors.MINOR_INTERNAL_ERROR, it)
         }
     }
 

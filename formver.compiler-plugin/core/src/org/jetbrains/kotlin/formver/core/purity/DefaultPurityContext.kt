@@ -6,13 +6,13 @@
 package org.jetbrains.kotlin.formver.core.purity
 
 import org.jetbrains.kotlin.KtSourceElement
-import org.jetbrains.kotlin.formver.common.ErrorCollector
+import org.jetbrains.kotlin.formver.core.diagnostics.ErrorCollectionContext
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 
 class DefaultPurityContext(
     private val source: KtSourceElement,
-    private val errorCollector: ErrorCollector,
+    private val errors: ErrorCollectionContext,
 ) : PurityContext {
     override fun addPurityError(embedding: ExpEmbedding, msg: String) =
-        errorCollector.addPurityError(embedding.expressionSource(source), msg)
+        errors.reportPurityViolation(embedding.expressionSource(source), msg)
 }

@@ -95,7 +95,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             )
         val type = data.embedType(resolvedQualifier.resolvedType)
         if (type.pretype is InvalidAdtTypeEmbedding) {
-            data.errorCollector.addAdtError(
+            data.reportAdtViolation(
                 resolvedQualifier.source,
                 "Invalid ADT annotation: reference to '${classSymbol.name}' which has an invalid @ADT annotation",
             )
@@ -612,7 +612,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             throw SnaktInternalException(source, msg)
 
         UnsupportedFeatureBehaviour.ASSUME_UNREACHABLE -> {
-            data.errorCollector.addMinorError(msg)
+            data.reportMinorInternalError(msg)
             ErrorExp
         }
     }

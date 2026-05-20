@@ -9,9 +9,15 @@ method iAmAMethod() returns (v_ret_0: Ref)
 
 /wrongly_annotated.kt: error: Impure function body detected in pure function
 
-/wrongly_annotated.kt: error: Impure function body detected in pure function
+/wrongly_annotated.kt: error: Function 'testWronglyAnnotatedAsPure' was not verified because of errors in its declaration
 
 /wrongly_annotated.kt: error: Impure function body detected in pure function
+
+/wrongly_annotated.kt: error: Function 'testExecutingLambda' was not verified because of errors in its declaration
+
+/wrongly_annotated.kt: error: Impure function body detected in pure function
+
+/wrongly_annotated.kt: error: Function 'testFieldModification' was not verified because of errors in its declaration
 
 /wrongly_annotated.kt: info: Generated Viper text for impureExtension:
 field value: Ref
@@ -26,6 +32,12 @@ method impureExtension(v_this_extension: Ref) returns (v_ret_0: Ref)
 
 /wrongly_annotated.kt: error: Impure function body detected in pure function
 
-/wrongly_annotated.kt: error: Impure function body detected in pure function
+/wrongly_annotated.kt: error: Function 'testImpureExtensionCall' was not verified because of errors in its declaration
 
 /wrongly_annotated.kt: error: Impure function body detected in pure function
+
+/wrongly_annotated.kt: error: Function 'wronglyAnnotatedExtension' was not verified because of errors in its declaration
+
+/wrongly_annotated.kt: error: Impure function body detected in pure function
+
+/wrongly_annotated.kt: error: Function 'testNestedFieldModification' was not verified because of errors in its declaration

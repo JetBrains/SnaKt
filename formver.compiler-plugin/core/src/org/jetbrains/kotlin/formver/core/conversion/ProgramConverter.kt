@@ -15,14 +15,19 @@ import org.jetbrains.kotlin.fir.declarations.utils.isData
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
+import org.jetbrains.kotlin.KtSourceElement
+import org.jetbrains.kotlin.diagnostics.DiagnosticContext
+import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
+import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactory1
+import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.*
-import org.jetbrains.kotlin.formver.common.ErrorCollector
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.common.UnsupportedFeatureBehaviour
 import org.jetbrains.kotlin.formver.core.*
+import org.jetbrains.kotlin.formver.core.diagnostics.ConversionErrors
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
@@ -43,8 +48,46 @@ import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
  * We need the FirSession to get access to the TypeContext.
  */
 class ProgramConverter(
-    val session: FirSession, override val config: PluginConfiguration, override val errorCollector: ErrorCollector
+    val session: FirSession,
+    override val config: PluginConfiguration,
+    private val diagnosticContext: DiagnosticContext,
+    private val reporter: DiagnosticReporter,
 ) : ProgramConversionContext {
+
+    /**
+     * Whether any primary diagnostic has been reported during conversion.
+     *
+     * Excludes the derived [ConversionErrors.VERIFICATION_SKIPPED] summary, which is itself fired
+     * in reaction to primary diagnostics.
+     */
+    var hadConversionError: Boolean = false
+        private set
+
+    /** Source attached to source-less diagnostics (e.g. unimplemented features raised deep in conversion). */
+    private var currentDeclarationSource: KtSourceElement? = null
+
+    private fun emit(source: KtSourceElement?, factory: KtDiagnosticFactory1<String>, msg: String) {
+        context(diagnosticContext) {
+            reporter.reportOn(source, factory, msg)
+        }
+        hadConversionError = true
+    }
+
+    override fun reportPurityViolation(source: KtSourceElement?, msg: String) =
+        emit(source, ConversionErrors.PURITY_VIOLATION, msg)
+
+    override fun reportAdtViolation(source: KtSourceElement?, msg: String) =
+        emit(source, ConversionErrors.ADT_VIOLATION, msg)
+
+    override fun reportMinorInternalError(msg: String) =
+        emit(currentDeclarationSource, ConversionErrors.MINOR_INTERNAL_ERROR, msg)
+
+    private fun reportVerificationSkipped(source: KtSourceElement?, msg: String) {
+        context(diagnosticContext) {
+            reporter.reportOn(source, ConversionErrors.VERIFICATION_SKIPPED, msg)
+        }
+    }
+
     private val specialFunctions: Map<SymbolicName, SpecialKotlinFunction> = buildMap {
         putAll(SpecialKotlinFunctions.byName)
         putAll(PartiallySpecialKotlinFunctions.generateAllByName())
@@ -52,8 +95,13 @@ class ProgramConverter(
     private val impureFunctions: MutableMap<SymbolicName, UserFunctionEmbedding> = mutableMapOf()
     private val pureFunctions: MutableMap<SymbolicName, PureUserFunctionEmbedding> = mutableMapOf()
 
-    private val registered: MutableList<Triple<FirSimpleFunction, FullNamedFunctionSignature, ReturnTarget>> =
-        mutableListOf()
+    private data class RegisteredFunction(
+        val declaration: FirSimpleFunction,
+        val signature: FullNamedFunctionSignature,
+        val returnTarget: ReturnTarget,
+    )
+
+    private val registered: MutableList<RegisteredFunction> = mutableListOf()
 
     override val typeResolver: TypeResolver = TypeResolver()
 
@@ -102,14 +150,16 @@ class ProgramConverter(
         } else {
             embedUserFunction(declaration.symbol, signature)
         }
-        registered += Triple(declaration, signature, returnTarget)
+        registered += RegisteredFunction(declaration, signature, returnTarget)
     }
 
     /**
      * Convert each registered declaration's body to an `ExpEmbedding`, populating [convertedBodyResolver].
      */
     fun convertAll() {
-        for ((declaration, signature, returnTarget) in registered) {
+        for (entry in registered) {
+            val (declaration, signature, returnTarget) = entry
+            currentDeclarationSource = declaration.source
             val stmtCtx = createBodyConversionContext(signature, returnTarget)
             if (signature.isPure) {
                 convertedBodyResolver.storePure(signature.name, stmtCtx.convertPureBody(declaration))
@@ -118,36 +168,40 @@ class ProgramConverter(
                     convertedBodyResolver.storeImpure(signature.name, it)
                 }
             }
-            if (errorCollector.collectedAdtError()) {
-                errorCollector.addAdtError(
-                    declaration.source,
-                    "Function '${declaration.name.asString()}' references an invalid ADT",
+        }
+        currentDeclarationSource = null
+    }
+
+    /**
+     * Walk converted bodies to surface validity / purity errors via the diagnostic reporter. If any
+     * conversion error has been reported by the time this returns, emit a [ConversionErrors.VERIFICATION_SKIPPED]
+     * summary on every registered declaration so the user sees per-function attribution for the bail-out.
+     * Callers should inspect [hadConversionError] afterwards and skip [linearizeAll] when set.
+     */
+    fun validateAll() {
+        convertedBodyResolver.forEachImpure { name, body ->
+            val source = impureFunctions[name]?.callable?.declarationSource
+            body.bodyExp.checkValidity(source, this)
+        }
+        convertedBodyResolver.forEachPure { name, body ->
+            if (!body.isPure()) {
+                val source = pureFunctions[name]?.callable?.declarationSource
+                reportPurityViolation(source, "Impure function body detected in pure function")
+            }
+        }
+        if (hadConversionError) {
+            for (entry in registered) {
+                reportVerificationSkipped(
+                    entry.declaration.source,
+                    "Function '${entry.declaration.name.asString()}' was not verified because of errors in its declaration",
                 )
             }
         }
     }
 
     /**
-     * Walk converted bodies to surface validity / purity errors via [errorCollector].
-     * Bodies that fail are still present in [convertedBodyResolver]; callers are expected to inspect
-     * [errorCollector] after this returns and bail before invoking [linearizeAll].
-     */
-    fun validateAll() {
-        convertedBodyResolver.forEachImpure { name, body ->
-            val source = impureFunctions[name]?.callable?.declarationSource
-            body.bodyExp.checkValidity(source, errorCollector)
-        }
-        convertedBodyResolver.forEachPure { name, body ->
-            if (!body.isPure()) {
-                val source = pureFunctions[name]?.callable?.declarationSource
-                errorCollector.addPurityError(source, "Impure function body detected in pure function")
-            }
-        }
-    }
-
-    /**
      * Build the finalized Viper `Method` / `Function` for every embedded callable, storing each in
-     * [linearizedBodyResolver]. Should only be invoked when [errorCollector] is clean.
+     * [linearizedBodyResolver]. Should only be invoked when [hadConversionError] is false.
      *
      * Iterates the embedding maps directly (rather than the converted-body map) so that callables
      * without a body still get a Viper header.
@@ -357,30 +411,29 @@ class ProgramConverter(
     @OptIn(DirectDeclarationsAccess::class)
     private fun validateAdtHeader(symbol: FirRegularClassSymbol): Boolean {
         if (!symbol.classKind.isObject || !symbol.isData) {
-            errorCollector.addAdtError(
+            reportAdtViolation(
                 symbol.source, "Invalid ADT annotation: @ADT may only be applied to data object declarations"
             )
             return false
         }
         for (declaration in symbol.declarationSymbols) when (declaration) {
             is FirPropertySymbol -> {
-                errorCollector.addAdtError(
+                reportAdtViolation(
                     declaration.source, "Invalid ADT annotation: An @ADT data object must not have fields"
                 )
                 return false
             }
 
             is FirNamedFunctionSymbol -> {
-                errorCollector.addAdtError(
+                reportAdtViolation(
                     declaration.source, "Invalid ADT annotation: An @ADT data object must not have member functions"
                 )
                 return false
             }
         }
         if (symbol.resolvedSuperTypes.any { !it.isAny }) {
-            errorCollector.addAdtError(
-                symbol.source,
-                "Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface"
+            reportAdtViolation(
+                symbol.source, "Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface"
             )
             return false
         }
@@ -728,7 +781,7 @@ class ProgramConverter(
         UnsupportedFeatureBehaviour.THROW_EXCEPTION -> throw NotImplementedError("The embedding for type $type is not yet implemented.")
 
         UnsupportedFeatureBehaviour.ASSUME_UNREACHABLE -> {
-            errorCollector.addMinorError("Requested type $type, for which we do not yet have an embedding.")
+            reportMinorInternalError("Requested type $type, for which we do not yet have an embedding.")
             unit()
         }
     }
