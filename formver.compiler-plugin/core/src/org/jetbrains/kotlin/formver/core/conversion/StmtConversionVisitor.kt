@@ -415,6 +415,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     ): ExpEmbedding {
         val embedding = when (val lValue = variableAssignment.lValue) {
             is FirPropertyAccessExpression -> {
+                val receiverIsUnique = data.uniquenessInformation?.receiverIsUnique(variableAssignment.lValue) ?: false
                 data.embedPropertyAccess(lValue)
             }
 
