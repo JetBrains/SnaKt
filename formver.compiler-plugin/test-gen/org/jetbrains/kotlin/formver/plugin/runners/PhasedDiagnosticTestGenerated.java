@@ -792,6 +792,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       public void testFieldRead() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/permissions/fieldRead.kt");
       }
+
+      @Test
+      @TestMetadata("fieldWrite.kt")
+      public void testFieldWrite() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/permissions/fieldWrite.kt");
+      }
     }
 
     @Nested

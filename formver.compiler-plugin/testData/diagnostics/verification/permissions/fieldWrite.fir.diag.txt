@@ -1,0 +1,237 @@
+/fieldWrite.kt: info: Generated Viper text for uniq_uniq:
+field bf_unique: Ref
+
+field shared: Ref
+
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), B())
+  ensures acc(B_unique(ret_1), write)
+
+
+method uniq_uniq(c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(c), C())
+  requires acc(C_unique(c), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := con()
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/fieldWrite.kt: info: Generated Viper text for uniq_shared:
+field bf_unique: Ref
+
+field shared: Ref
+
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), B())
+  ensures acc(B_unique(ret_1), write)
+
+
+method uniq_shared(c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(c), C())
+  requires acc(C_unique(c), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := con()
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/fieldWrite.kt: info: Generated Viper text for uniq_uniq_uniq:
+field bf_unique: Ref
+
+field shared: Ref
+
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), A())
+  ensures acc(A_unique(ret_1), write)
+
+
+method uniq_uniq_uniq(c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(c), C())
+  requires acc(C_unique(c), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := con()
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/fieldWrite.kt: info: Generated Viper text for uniq_shared_uniq:
+field bf_unique: Ref
+
+field shared: Ref
+
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), A())
+  ensures acc(A_unique(ret_1), write)
+
+
+method uniq_shared_uniq(c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(c), C())
+  requires acc(C_unique(c), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := con()
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/fieldWrite.kt: info: Generated Viper text for uniq_uniq_shared:
+field bf_unique: Ref
+
+field shared: Ref
+
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), A())
+  ensures acc(A_unique(ret_1), write)
+
+
+method uniq_uniq_shared(c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(c), C())
+  requires acc(C_unique(c), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := con()
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/fieldWrite.kt: info: Generated Viper text for uniq_shared_shared:
+field bf_unique: Ref
+
+field shared: Ref
+
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), A())
+  ensures acc(A_unique(ret_1), write)
+
+
+method uniq_shared_shared(c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(c), C())
+  requires acc(C_unique(c), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := con()
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/fieldWrite.kt: info: Generated Viper text for uniq_uniq_uniq_uniq:
+field bf_unique: Ref
+
+field shared: Ref
+
+method uniq_uniq_uniq_uniq(c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(c), C())
+  requires acc(C_unique(c), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/fieldWrite.kt: info: Generated Viper text for uniq_shared_uniq_uniq:
+field bf_unique: Ref
+
+field shared: Ref
+
+method uniq_shared_uniq_uniq(c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(c), C())
+  requires acc(C_unique(c), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/fieldWrite.kt: info: Generated Viper text for uniq_uniq_shared_uniq:
+field bf_unique: Ref
+
+field shared: Ref
+
+method uniq_uniq_shared_uniq(c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(c), C())
+  requires acc(C_unique(c), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/fieldWrite.kt: info: Generated Viper text for uniq_shared_shared_uniq:
+field bf_unique: Ref
+
+field shared: Ref
+
+method uniq_shared_shared_uniq(c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(c), C())
+  requires acc(C_unique(c), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/fieldWrite.kt: info: Generated Viper text for uniq_uniq_uniq_shared:
+field bf_unique: Ref
+
+field shared: Ref
+
+method uniq_uniq_uniq_shared(c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(c), C())
+  requires acc(C_unique(c), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/fieldWrite.kt: info: Generated Viper text for uniq_shared_uniq_shared:
+field bf_unique: Ref
+
+field shared: Ref
+
+method uniq_shared_uniq_shared(c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(c), C())
+  requires acc(C_unique(c), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/fieldWrite.kt: info: Generated Viper text for uniq_uniq_shared_shared:
+field bf_unique: Ref
+
+field shared: Ref
+
+method uniq_uniq_shared_shared(c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(c), C())
+  requires acc(C_unique(c), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/fieldWrite.kt: info: Generated Viper text for uniq_shared_shared_shared:
+field bf_unique: Ref
+
+field shared: Ref
+
+method uniq_shared_shared_shared(c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(c), C())
+  requires acc(C_unique(c), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
