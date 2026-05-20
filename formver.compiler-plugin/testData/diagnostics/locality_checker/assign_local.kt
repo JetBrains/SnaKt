@@ -202,3 +202,33 @@ fun `assign global to implicit local`(x: @Borrowed Any, y: A) {
 
     a = y
 }
+
+fun `assign local smartcast expression to local`(x: @Borrowed Any) {
+    var a: @Borrowed A
+    var b: @Borrowed A = A()
+
+    a = when (x) {
+        is A -> x
+        else -> b
+    }
+}
+
+fun `assign global smartcast expression to local`(x: Any) {
+    var a: @Borrowed A
+    var b: @Borrowed A = A()
+
+    a = when (x) {
+        is A -> x
+        else -> A()
+    }
+}
+
+fun `assign local smartcast expression to global`(x: @Borrowed Any) {
+    var a: A
+    var b: @Borrowed A = A()
+
+    a = <!LOCALITY_MISMATCH!>when (x) {
+        is A -> x
+        else -> b
+    }<!>
+}
