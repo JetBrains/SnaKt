@@ -6,7 +6,6 @@
 package org.jetbrains.kotlin.formver.core.conversion
 
 import org.jetbrains.kotlin.fir.FirElement
-import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.EnterNodeMarker
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ExitNodeMarker
@@ -25,9 +24,9 @@ class UniquenessInformation(val root: CFGNode<*>, val flowFacts: FlowFacts<Uniqu
 
     private val nodeCollectionMap by lazy { extract() }
 
-    fun receiverIsUnique(propertyAccess: FirPropertyAccessExpression): Boolean {
-        val flowBefore = flowBefore(propertyAccess) ?: return false
-        val accessedPath = propertyAccess.receiverPath ?: return false
+    fun receiverIsUnique(firElement: FirElement): Boolean {
+        val flowBefore = flowBefore(firElement) ?: return false
+        val accessedPath = firElement.receiverPath ?: return false
         val type = flowBefore.ensure(accessedPath).parentsJoin
         val activeUniquenessLevel = (type as? UniquenessType.Active)?.uniqueLevel ?: return false
         return activeUniquenessLevel == UniqueLevel.Unique
