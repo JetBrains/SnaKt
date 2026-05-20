@@ -62,7 +62,8 @@ sealed interface VariableEmbedding : ExpEmbedding, PropertyAccessEmbedding {
         get() = true
 
     override fun getValue(ctx: StmtConversionContext, receiverIsUnique: Boolean): ExpEmbedding = this
-    override fun setValue(value: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding = Assign(this, value.withType(type))
+    override fun setValue(value: ExpEmbedding, receiverIsUnique: Boolean, ctx: StmtConversionContext): ExpEmbedding =
+        Assign(this, value.withType(type))
 
     fun pureInvariants(): List<ExpEmbedding> = type.pureInvariants().fillHoles(this)
     fun provenInvariants(): List<ExpEmbedding> = listOf(type.subTypeInvariant().fillHole(this))

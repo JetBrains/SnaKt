@@ -9,5 +9,10 @@ import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 
 interface SetterEmbedding {
-    fun setValue(receiver: ExpEmbedding, value: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding
+    fun setValue(
+        receiver: ExpEmbedding,
+        receiverIsUnique: Boolean,
+        value: ExpEmbedding,
+        ctx: StmtConversionContext
+    ): ExpEmbedding
 }

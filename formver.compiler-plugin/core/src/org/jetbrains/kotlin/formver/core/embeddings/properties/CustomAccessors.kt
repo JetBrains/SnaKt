@@ -27,6 +27,7 @@ class CustomGetter(val getterMethod: CallableEmbedding) : GetterEmbedding {
 class CustomSetter(val setterMethod: CallableEmbedding) : SetterEmbedding {
     override fun setValue(
         receiver: ExpEmbedding,
+        receiverIsUnique: Boolean,
         value: ExpEmbedding,
         ctx: StmtConversionContext,
     ): ExpEmbedding = setterMethod.insertCall(listOf(receiver, value), ctx, setterMethod.callableType.returnType)

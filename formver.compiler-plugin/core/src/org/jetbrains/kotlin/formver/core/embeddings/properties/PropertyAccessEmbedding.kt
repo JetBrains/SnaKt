@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 
 interface PropertyAccessEmbedding {
     fun getValue(ctx: StmtConversionContext, receiverIsUnique: Boolean): ExpEmbedding
-    fun setValue(value: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding
+    fun setValue(value: ExpEmbedding, receiverIsUnique: Boolean, ctx: StmtConversionContext): ExpEmbedding
 }
 
 fun ExpEmbedding.asPropertyAccess() = when (this) {
@@ -19,7 +19,11 @@ fun ExpEmbedding.asPropertyAccess() = when (this) {
         override fun getValue(ctx: StmtConversionContext, receiverIsUnique: Boolean): ExpEmbedding =
             this@asPropertyAccess
 
-        override fun setValue(value: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding {
+        override fun setValue(
+            value: ExpEmbedding,
+            receiverIsUnique: Boolean,
+            ctx: StmtConversionContext
+        ): ExpEmbedding {
             error("Property does not have a settable value")
         }
     }

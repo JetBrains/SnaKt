@@ -21,6 +21,6 @@ class ClassPropertyAccess(val receiver: ExpEmbedding, val property: PropertyEmbe
         }
 
     // set value must already have correct type so no need to worry
-    override fun setValue(value: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding =
-        property.setter!!.setValue(receiver, value, ctx)
+    override fun setValue(value: ExpEmbedding, receiverIsUnique: Boolean, ctx: StmtConversionContext): ExpEmbedding =
+        property.setter!!.setValue(receiver, receiverIsUnique, value, ctx)
 }

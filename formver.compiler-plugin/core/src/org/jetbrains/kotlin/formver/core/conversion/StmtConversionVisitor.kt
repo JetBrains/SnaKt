@@ -427,7 +427,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             )
         }
         val convertedRValue = data.convert(variableAssignment.rValue)
-        return embedding.setValue(convertedRValue, data)
+        return embedding.setValue(convertedRValue, false, data)
     }
 
     override fun visitSmartCastExpression(

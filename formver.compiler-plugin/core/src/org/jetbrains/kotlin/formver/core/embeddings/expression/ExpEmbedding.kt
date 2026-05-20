@@ -72,7 +72,12 @@ data class FieldAccess(val receiver: ExpEmbedding, val receiverIsUnique: Boolean
 /**
  * Represents a combination of `Assign` + `FieldAccess`.
  */
-data class FieldModification(val receiver: ExpEmbedding, val field: FieldEmbedding, val newValue: ExpEmbedding) :
+data class FieldModification(
+    val receiver: ExpEmbedding,
+    val receiverIsUnique: Boolean,
+    val field: FieldEmbedding,
+    val newValue: ExpEmbedding
+) :
     ExpEmbedding {
     override val type: TypeEmbedding = buildType { unit() }
 
