@@ -19,6 +19,7 @@ import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.formver.common.*
 import org.jetbrains.kotlin.formver.core.conversion.ProgramConverter
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.print
+import org.jetbrains.kotlin.formver.core.names.SimpleNameResolver
 import org.jetbrains.kotlin.formver.core.shouldVerify
 import org.jetbrains.kotlin.formver.core.viperProgram
 import org.jetbrains.kotlin.formver.plugin.compiler.reporting.reportVerifierError
@@ -58,6 +59,20 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
             programConversionContext.register(declaration)
             programConversionContext.convertAll()
             programConversionContext.validateAll()
+
+            if (shouldDumpExpEmbeddings(declaration)) {
+                with(SimpleNameResolver()) {
+                    for ((name, embedding) in programConversionContext.debugExpEmbeddings) {
+                        reporter.reportOn(
+                            declaration.source,
+                            PluginErrors.EXP_EMBEDDING,
+                            name.mangled,
+                            embedding.debugTreeView.print()
+                        )
+                    }
+                }
+            }
+
             if (programConversionContext.hadConversionError) return
             programConversionContext.linearizeAll()
             val program = programConversionContext.buildProgram()
@@ -74,19 +89,6 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
                     declaration.name.asString(),
                     with(programConversionContext.nameResolver) { it.toDebugOutput() }
                 )
-            }
-
-            if (shouldDumpExpEmbeddings(declaration)) {
-                with(programConversionContext.nameResolver) {
-                    for ((name, embedding) in programConversionContext.debugExpEmbeddings) {
-                        reporter.reportOn(
-                            declaration.source,
-                            PluginErrors.EXP_EMBEDDING,
-                            name.mangled,
-                            embedding.debugTreeView.print()
-                        )
-                    }
-                }
             }
 
             val viperProgram = with(programConversionContext.nameResolver) { program.toSilver() }
