@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.formver.locality.plugin
 import org.jetbrains.kotlin.KtFakeSourceElementKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.declarations.FirVariable
+import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.fir.types.FirImplicitTypeRef
 import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.types.coneType
@@ -17,10 +18,10 @@ private fun FirTypeRef.isImplicit(): Boolean =
             source?.kind == KtFakeSourceElementKind.ImplicitTypeRef
 
 context(context: CheckerContext)
-fun FirVariable.resolveLocality(): Locality {
-    if (!returnTypeRef.isImplicit()) return returnTypeRef.coneType.locality
+fun FirVariableSymbol<*>.resolveLocality(): Locality {
+    if (!resolvedReturnTypeRef.isImplicit()) return resolvedReturnTypeRef.coneType.locality
 
-    val typeLocality = returnTypeRef.coneType.locality
+    val typeLocality = resolvedReturnType.locality
 
-    return initializer?.resolveLocality() ?: typeLocality
+    return resolvedInitializer?.resolveLocality() ?: typeLocality
 }

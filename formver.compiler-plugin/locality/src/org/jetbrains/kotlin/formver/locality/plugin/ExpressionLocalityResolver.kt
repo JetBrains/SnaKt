@@ -28,7 +28,6 @@ class ExpressionLocalityResolver(session: FirSession) : FirExtensionSessionCompo
 
     private val cacheFactory = session.firCachesFactory
 
-    @OptIn(SymbolInternals::class)
     context(context: CheckerContext)
     private fun extractLocalityOf(expression: FirExpression): Locality {
         val expression = expression.unwrapExpression().removeCasts()
@@ -41,12 +40,12 @@ class ExpressionLocalityResolver(session: FirSession) : FirExtensionSessionCompo
         } else {
             when (expression) {
                 is FirPropertyAccessExpression ->
-                    (expression.calleeReference.symbol as? FirVariableSymbol<*>)?.fir
+                    (expression.calleeReference.symbol as? FirVariableSymbol<*>)
                         ?.resolveLocality()
                         ?: Locality.Global
                 is FirThisReceiverExpression ->
-                    (expression.calleeReference.symbol as? FirReceiverParameterSymbol)?.fir
-                        ?.typeRef?.coneType?.locality
+                    (expression.calleeReference.symbol as? FirReceiverParameterSymbol)
+                        ?.resolvedType?.locality
                         ?: Locality.Global
                 else -> Locality.Global
             }
