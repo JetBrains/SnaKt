@@ -28,27 +28,14 @@ object TypeLocalityAttributeChecker : FirResolvedTypeRefChecker(MppCheckerKind.C
     private fun CheckerContext.isValidLocalityTarget(): Boolean {
         val target = containingElements.dropLast(1).lastOrNull()
 
-        return target?.isValidLocalityTarget() == true
-    }
-
-    private fun CheckerContext.isValidFunctionTypeArgumentTarget(typeRef: FirResolvedTypeRef): Boolean {
-        if (containingElements.none { it.isValidLocalityTarget() }) return false
-
-        return when (val target = containingElements.dropLast(1).lastOrNull()) {
-            is FirFunctionTypeParameter ->
-                true
-            is FirFunctionTypeRef ->
-                target.receiverTypeRef === typeRef || target.contextParameterTypeRefs.any { it === typeRef }
-            else ->
-                false
-        }
+        return target?.isValidLocalityTarget() ?: false
     }
 
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(typeRef: FirResolvedTypeRef) {
         if (typeRef.coneType.attributes.locality == null) return
 
-        if (context.isValidLocalityTarget() || context.isValidFunctionTypeArgumentTarget(typeRef)) return
+        if (context.isValidLocalityTarget()) return
 
         reporter.reportOn(typeRef.source, LocalityErrors.INVALID_LOCALITY_TYPE_TARGET)
     }

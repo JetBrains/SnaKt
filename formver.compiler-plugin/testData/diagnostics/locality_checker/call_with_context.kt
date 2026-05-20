@@ -106,13 +106,3 @@ fun `pass local with with as global property context argument`(x: @Borrowed A) {
         val y = <!CONTEXT_LOCALITY_MISMATCH!>globalContextPropertyA<!>
     }
 }
-
-context(_: @Borrowed A)
-fun `pass local context as global invocation context`(f: context(A) () -> Unit) {
-    <!CONTEXT_LOCALITY_MISMATCH!>f()<!>
-}
-
-context(_: @Borrowed A)
-fun `pass local context as local invocation context`(f: context(@Borrowed A) () -> Unit) {
-    f()
-}
