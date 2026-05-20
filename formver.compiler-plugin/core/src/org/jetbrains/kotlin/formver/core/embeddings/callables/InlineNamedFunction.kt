@@ -5,17 +5,19 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
+import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.fir.expressions.FirBlock
 import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
 import org.jetbrains.kotlin.formver.core.conversion.SubstitutedArgument
-import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.conversion.insertInlineFunctionCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 
 class InlineNamedFunction(
-    val signature: FullNamedFunctionSignature,
+    val signature: NamedFunctionSignature,
     val firBody: FirBlock,
-) : RichCallableEmbedding, FullNamedFunctionSignature by signature {
+    override val preconditions: List<ExpEmbedding>,
+    override val postconditions: List<ExpEmbedding>,
+) : FullNamedFunctionSignature, CallableNamedSignature, NamedFunctionSignature by signature {
     override fun insertCall(
         args: List<ExpEmbedding>,
         ctx: StmtConversionContext,
@@ -30,7 +32,6 @@ class InlineNamedFunction(
         return ctx.insertInlineFunctionCall(signature, paramNames, args, firBody, signature.labelName)
     }
 
-    override fun toViperMethodHeader(ctx: TypeResolver): Nothing? = null
-
-    override fun toViperFunctionHeader(ctx: TypeResolver): Nothing? = null
+    override val declarationSource: KtSourceElement?
+        get() = symbol.source
 }

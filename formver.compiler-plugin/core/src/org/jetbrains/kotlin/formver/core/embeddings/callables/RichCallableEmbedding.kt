@@ -22,7 +22,7 @@ import org.jetbrains.kotlin.formver.viper.ast.Method
  * These are not fundamentally related, but providing two interfaces would mean having to deal with diamond-shaped inheritance
  * in a number of classes that would be quite inconvenient. We thus force users to implement both at once.
  */
-interface RichCallableEmbedding : CallableEmbedding, FullNamedFunctionSignature {
+interface RichCallableEmbedding : CallableEmbedding {
     /**
      * Produces a method header (i.e. method without body) corresponding to this function if necessary.
      */

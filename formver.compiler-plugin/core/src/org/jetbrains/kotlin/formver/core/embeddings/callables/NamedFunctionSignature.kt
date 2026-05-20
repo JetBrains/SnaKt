@@ -30,3 +30,6 @@ fun NamedFunctionSignature.toFuncApp(
     pos: Position = Position.NoPosition,
     info: Info = Info.NoInfo,
 ) = Exp.FuncApp(name, parameters, Type.Ref, pos, info)
+
+
+interface CallableNamedSignature : NamedFunctionSignature, CallableEmbedding

@@ -84,6 +84,8 @@ fun FirAnnotationContainer.isUnique(session: FirSession) = hasAnnotation(annotat
 
 fun FirAnnotationContainer.isBorrowed(session: FirSession) = hasAnnotation(annotationId("Borrowed"), session)
 
+fun FirFunctionSymbol<*>.neverConvert(session: FirSession) = hasAnnotation(annotationId("NeverConvert"), session)
+
 fun FirFunctionSymbol<*>.isFormverFunctionNamed(name: String) =
     this is FirNamedFunctionSymbol && callableId == formverCallableId(className = null, name)
 

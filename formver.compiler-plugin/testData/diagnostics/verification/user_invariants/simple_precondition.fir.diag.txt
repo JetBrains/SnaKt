@@ -49,6 +49,13 @@ method good_call() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
+method inlineWithSpecification(bool: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(bool), boolType())
+  requires true
+  requires boolFromRef(bool)
+  ensures isSubtype(typeOf(ret_2), unitType())
+
+
 method test(idx: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(idx), intType())
   requires 0 <= intFromRef(idx)

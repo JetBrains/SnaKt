@@ -6,7 +6,9 @@
 package org.jetbrains.kotlin.formver.core.embeddings.expression
 
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
-import org.jetbrains.kotlin.formver.core.embeddings.*
+import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
+import org.jetbrains.kotlin.formver.core.embeddings.LabelEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.LabelLink
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FullNamedFunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.callables.NamedFunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding

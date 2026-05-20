@@ -14,7 +14,6 @@ import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.core.diagnostics.ErrorCollectionContext
 import org.jetbrains.kotlin.formver.core.embeddings.callables.CallableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
-import org.jetbrains.kotlin.formver.core.embeddings.callables.PureUserFunctionEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousBuiltinVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
@@ -25,7 +24,22 @@ import org.jetbrains.kotlin.formver.core.names.CatchLabelName
 import org.jetbrains.kotlin.formver.core.names.TryExitLabelName
 import org.jetbrains.kotlin.formver.viper.NameResolver
 
+data class SignatureWithTarget<S : FunctionSignature>(
+    val signature: S,
+    val returnTarget: ReturnTarget
+) {
+    /**
+     * Refines the signature by applying the given action to the current signature.
+     * The return target is preserved.
+     *
+     * It should be used to make a signature more specific, e.g., to add pre+post conditions to an existing signature
+     */
+    fun <T : S> refineSignature(action: (SignatureWithTarget<S>) -> T): SignatureWithTarget<T> =
+        SignatureWithTarget(action(this), returnTarget)
+}
+
 interface ProgramConversionContext : ErrorCollectionContext {
+
     val config: PluginConfiguration
 
     val whileIndexProducer: SimpleFreshEntityProducer<Int>
@@ -41,10 +55,8 @@ interface ProgramConversionContext : ErrorCollectionContext {
     val convertedBodyResolver: ConvertedBodyResolver
     val linearizedBodyResolver: LinearizedBodyResolver
 
-    fun embedFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding
-    fun embedPureFunction(symbol: FirFunctionSymbol<*>): PureUserFunctionEmbedding
     fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding
-    fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): Pair<ReturnTarget,FunctionSignature>
+    fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<FunctionSignature>
     fun embedType(type: ConeKotlinType): TypeEmbedding
     fun embedFunctionPretype(symbol: FirFunctionSymbol<*>): FunctionTypeEmbedding
     fun embedType(exp: FirExpression): TypeEmbedding = embedType(exp.resolvedType)

@@ -6,41 +6,22 @@
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
 import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
-import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FunctionCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.MethodCall
-import org.jetbrains.kotlin.formver.viper.ast.Function
-import org.jetbrains.kotlin.formver.viper.ast.Method
 
 // TODO: Consider making a PureNonInlineNamedFunctionEmbedding and remove the pure distinction here
-class NonInlineNamedFunction(val signature: FullNamedFunctionSignature) :
-    RichCallableEmbedding,
-    FullNamedFunctionSignature by signature {
+class NonInlineNamedFunctionSignature(val signature: NamedFunctionSignature) :
+    CallableNamedSignature,
+    NamedFunctionSignature by signature {
     override fun insertCall(
         args: List<ExpEmbedding>,
         ctx: StmtConversionContext,
-    ): ExpEmbedding = insertCall(args)
-
-    fun insertCall(
-        args: List<ExpEmbedding>,
-    ): ExpEmbedding =
-        if (signature.isPure) {
+    ): ExpEmbedding {
+        return if (signature.isPure) {
             FunctionCall(signature, args)
         } else {
             MethodCall(signature, args)
         }
-
-
-    override fun toViperMethodHeader(ctx: TypeResolver): Method =
-        signature.toViperMethod(
-            null,
-            ctx
-        )
-
-    override fun toViperFunctionHeader(ctx: TypeResolver): Function =
-        signature.toViperFunction(
-            ctx,
-            null
-        )
+    }
 }

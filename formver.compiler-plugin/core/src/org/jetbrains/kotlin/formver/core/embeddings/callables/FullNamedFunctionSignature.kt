@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.asPosition
+import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.conversion.stdLibPostconditions
 import org.jetbrains.kotlin.formver.core.conversion.stdLibPreconditions
@@ -22,9 +23,10 @@ import org.jetbrains.kotlin.formver.core.names.ReturnVariableName
 import org.jetbrains.kotlin.formver.core.purity.preorder
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
+import org.jetbrains.kotlin.formver.viper.ast.Function
 import org.jetbrains.kotlin.utils.addIfNotNull
 
-interface FullNamedFunctionSignature : NamedFunctionSignature {
+interface FullNamedFunctionSignature : RichCallableEmbedding, CallableNamedSignature {
     /**
      * Preconditions of function in form of `ExpEmbedding`s with type `boolType()`.
      */
@@ -36,7 +38,56 @@ interface FullNamedFunctionSignature : NamedFunctionSignature {
     val postconditions : List<ExpEmbedding>
 
     val declarationSource: KtSourceElement?
+
+    override fun toViperMethodHeader(ctx: TypeResolver): Method? {
+        if (isPure) return null
+        return UserMethod(
+            name,
+            formalArgs.map { it.toLocalVarDecl() },
+            returns.toLocalVarDecl(),
+            preconditions.pureToViper(toBuiltin = true, ctx),
+            postconditions.pureToViper(toBuiltin = true, ctx),
+            null,
+        )
+    }
+
+    override fun toViperFunctionHeader(ctx: TypeResolver): Function? {
+        if (!isPure) return null
+        return UserFunction(
+            name,
+            formalArgs.map { it.toLocalVarDecl() },
+            returns.toLocalVarDecl().type,
+            preconditions.pureToViper(toBuiltin = true, ctx),
+            postconditions.pureToViper(toBuiltin = true, ctx),
+            null,
+        )
+    }
 }
+
+fun FullNamedFunctionSignature.toViperFunction(
+    ctx: TypeResolver,
+    body: Exp?,
+): UserFunction {
+    postconditions.forEach { postcondition ->
+        val isValid =
+            postcondition.preorder().all { it.first !is AccEmbedding && it.first !is PredicateAccessPermissions }
+        if (!isValid) throw SnaktInternalException(
+            declarationSource,
+            "Postcondition tries to acquire permissions, which is not allowed in a function"
+        )
+    }
+    return UserFunction(
+        name,
+        formalArgs.map { it.toLocalVarDecl() },
+        // TODO: Be explicit about the return types of functions instead of boxing them into a Ref
+        Type.Ref,
+        preconditions.pureToViper(toBuiltin = true, ctx),
+        postconditions.pureToViper(toBuiltin = true, ctx),
+        body,
+        declarationSource.asPosition
+    )
+}
+
 
 fun NamedFunctionSignature.basicPreconditions(typeResolver: TypeResolver) = buildList{
     formalArgs.forEach {
@@ -88,11 +139,11 @@ fun NamedFunctionSignature.userFunctionPostcondition(typeResolver: TypeResolver)
 
 
 class ConstructorSignature(
-    val signature : NamedFunctionSignature,
+    val signature: CallableNamedSignature,
     override val symbol: FirFunctionSymbol<*>,
     propertiesPostconditions : List<ExpEmbedding>,
     typeResolver: TypeResolver
-) : FullNamedFunctionSignature, NamedFunctionSignature by signature {
+) : FullNamedFunctionSignature, CallableNamedSignature by signature {
    override val preconditions = signature.basicPreconditions(typeResolver)
     override val postconditions = signature.constructorPostcondition(typeResolver) + propertiesPostconditions
 
@@ -101,18 +152,19 @@ class ConstructorSignature(
 
 
 class UserFunctionSignature(
-    val signature: NamedFunctionSignature,
+    val signature: CallableNamedSignature,
     override val symbol: FirFunctionSymbol<*>,
     userPreconditions: List<ExpEmbedding>,
     userPostconditions: List<ExpEmbedding>,
     typeResolver: TypeResolver,
-) : FullNamedFunctionSignature, NamedFunctionSignature by signature {
+) : FullNamedFunctionSignature, CallableNamedSignature by signature {
 
     override val preconditions: List<ExpEmbedding> = signature.basicPreconditions(typeResolver) + userPreconditions
 
     override val postconditions : List<ExpEmbedding> = signature.userFunctionPostcondition(typeResolver) + userPostconditions
 
     override val declarationSource: KtSourceElement? = symbol.source
+
 }
 
 
@@ -126,7 +178,7 @@ class UserFunctionSignature(
 abstract class PropertyAccessorFunctionSignature(
     override val name: SymbolicName,
     propertySymbol: FirPropertySymbol,
-) : FullNamedFunctionSignature, GenericFunctionSignatureMixin() {
+) : FullNamedFunctionSignature, CallableNamedSignature, GenericFunctionSignatureMixin() {
     override val preconditions = emptyList<ExpEmbedding>()
     override val postconditions = emptyList<ExpEmbedding>()
     override val dispatchReceiver: VariableEmbedding
@@ -135,6 +187,15 @@ abstract class PropertyAccessorFunctionSignature(
     override val declarationSource: KtSourceElement? = propertySymbol.source
 
     override val returns: VariableEmbedding = PlaceholderVariableEmbedding(ReturnVariableName(0), buildType { nullableAny() })
+
+    override fun insertCall(
+        args: List<ExpEmbedding>,
+        ctx: StmtConversionContext
+    ): ExpEmbedding = if (isPure) {
+        FunctionCall(this, args)
+    } else {
+        MethodCall(this, args)
+    }
 }
 
 class ImpureGetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbol) :
@@ -203,26 +264,3 @@ fun FullNamedFunctionSignature.toViperMethod(
     body,
     declarationSource.asPosition
 )
-
-fun FullNamedFunctionSignature.toViperFunction(
-    ctx: TypeResolver,
-    body: Exp?,
-): UserFunction {
-    postconditions.forEach { postcondition ->
-        val isValid = postcondition.preorder().all { it.first !is AccEmbedding && it.first !is PredicateAccessPermissions}
-        if (!isValid) throw SnaktInternalException(
-            declarationSource,
-            "Postcondition tries to acquire permissions, which is not allowed in a function"
-        )
-    }
-    return UserFunction(
-        name,
-        formalArgs.map { it.toLocalVarDecl() },
-        // TODO: Be explicit about the return types of functions instead of boxing them into a Ref
-        Type.Ref,
-        preconditions.pureToViper(toBuiltin = true, ctx),
-        postconditions.pureToViper(toBuiltin = true, ctx),
-        body,
-        declarationSource.asPosition
-    )
-}
