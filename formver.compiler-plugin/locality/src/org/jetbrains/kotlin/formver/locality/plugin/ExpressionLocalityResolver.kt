@@ -14,10 +14,8 @@ import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirThisReceiverExpression
 import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.references.symbol
-import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
-import org.jetbrains.kotlin.fir.types.coneType
 
 class ExpressionLocalityResolver(session: FirSession) : FirExtensionSessionComponent(session) {
     companion object {

@@ -5,10 +5,8 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
-import org.jetbrains.kotlin.diagnostics.rendering.Renderer
 import org.jetbrains.kotlin.fir.types.ConeAttribute
 import org.jetbrains.kotlin.fir.types.ConeAttributes
-import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import kotlin.reflect.KClass
 
 data object LocalityAttribute : ConeAttribute<LocalityAttribute>() {
