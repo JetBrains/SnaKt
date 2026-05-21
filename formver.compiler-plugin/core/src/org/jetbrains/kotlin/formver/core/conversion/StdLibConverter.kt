@@ -14,7 +14,8 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.LeIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubIntInt
-import org.jetbrains.kotlin.formver.core.names.NameMatcher
+import org.jetbrains.kotlin.formver.core.kotlinCallableId
+import org.jetbrains.kotlin.formver.core.names.*
 
 private fun VariableEmbedding.sameSize(): ExpEmbedding =
     EqCmp(FieldAccess(this, CollectionSizeFieldEmbedding), Old(FieldAccess(this, CollectionSizeFieldEmbedding)))
@@ -27,6 +28,29 @@ private fun VariableEmbedding.increasedSize(amount: Int): ExpEmbedding =
 
 sealed interface StdLibReceiverInterface {
     fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean
+}
+
+sealed interface StdLibFunctionMatcher {
+    fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean
+}
+
+data object ConstructorMatcher : StdLibFunctionMatcher {
+    override fun match(
+        function: NamedFunctionSignature,
+        ctx: TypeResolver
+    ): Boolean = function.name.nameType == NameType.Base.Constructor
+}
+
+data object IntArrayConstructor : StdLibFunctionMatcher {
+    override fun match(
+        function: NamedFunctionSignature,
+        ctx: TypeResolver
+    ): Boolean {
+        ClassScopeNameMatcher(function.name).ifFunctionName("IntArray") {
+            return ConstructorMatcher.match(function, ctx)
+        }
+        return false
+    }
 }
 
 sealed interface PresentInterface : StdLibReceiverInterface {
@@ -79,6 +103,7 @@ sealed interface StdLibCondition {
     }
 }
 
+
 sealed interface StdLibPrecondition : StdLibCondition {
     companion object {
         val all = listOf(GetPrecondition, SubListPrecondition)
@@ -98,7 +123,11 @@ sealed interface StdLibPostcondition : StdLibCondition {
         )
     }
 
-    fun getEmbeddings(returnVariable: VariableEmbedding, function: NamedFunctionSignature): List<ExpEmbedding>
+    fun getEmbeddings(
+        returnVariable: VariableEmbedding,
+        function: NamedFunctionSignature,
+        ctx: TypeResolver
+    ): List<ExpEmbedding>
 }
 
 data object GetPrecondition : StdLibPrecondition {
@@ -142,7 +171,7 @@ data object SubListPrecondition : StdLibPrecondition {
 data object EmptyListPostcondition : StdLibPostcondition {
     override fun getEmbeddings(
         returnVariable: VariableEmbedding,
-        function: NamedFunctionSignature
+        function: NamedFunctionSignature, ctx: TypeResolver
     ): List<ExpEmbedding> {
         return listOf(
             EqCmp(FieldAccess(returnVariable, CollectionSizeFieldEmbedding), IntLit(0))
@@ -156,7 +185,7 @@ data object EmptyListPostcondition : StdLibPostcondition {
 data object IsEmptyPostcondition : StdLibPostcondition {
     override fun getEmbeddings(
         returnVariable: VariableEmbedding,
-        function: NamedFunctionSignature
+        function: NamedFunctionSignature, ctx: TypeResolver
     ): List<ExpEmbedding> {
         val receiver = function.dispatchReceiver!!
         return listOf(
@@ -173,7 +202,7 @@ data object IsEmptyPostcondition : StdLibPostcondition {
 data object GetPostcondition : StdLibPostcondition {
     override fun getEmbeddings(
         returnVariable: VariableEmbedding,
-        function: NamedFunctionSignature
+        function: NamedFunctionSignature, ctx: TypeResolver
     ): List<ExpEmbedding> {
         return listOf(function.dispatchReceiver!!.sameSize())
     }
@@ -185,7 +214,7 @@ data object GetPostcondition : StdLibPostcondition {
 data object SubListPostcondition : StdLibPostcondition {
     override fun getEmbeddings(
         returnVariable: VariableEmbedding,
-        function: NamedFunctionSignature
+        function: NamedFunctionSignature, ctx: TypeResolver
     ): List<ExpEmbedding> {
         val fromIndexArg = function.formalArgs[1]
         val toIndexArg = function.formalArgs[2]
@@ -202,13 +231,36 @@ data object SubListPostcondition : StdLibPostcondition {
 data object AddPostcondition : StdLibPostcondition {
     override fun getEmbeddings(
         returnVariable: VariableEmbedding,
-        function: NamedFunctionSignature
+        function: NamedFunctionSignature, ctx: TypeResolver
     ): List<ExpEmbedding> {
         return listOf(function.dispatchReceiver!!.increasedSize(1))
     }
 
     override val stdLibInterface = MutableListInterface
     override val functionName = "add"
+}
+
+
+data object IntArrayLengthConstructor {
+    fun getEmbeddings(
+        returnVariable: VariableEmbedding,
+        function: NamedFunctionSignature, ctx: TypeResolver
+    ): List<ExpEmbedding> {
+        if (!condition.match(function, ctx)) return listOf()
+        val callable = kotlinCallableId("IntArray", "size")
+        val propertyName = callable.embedMemberPropertyName(MemberEmbeddingPolicy.FUNCTION)
+        val className = callable.classId!!.embedName()
+        val sizeName = ClassPropertyPair(className, propertyName)
+        val property = ctx.lookupProperty(sizeName)
+        return listOf(
+            EqCmp(property!!.getter!!.getValueSimple(returnVariable, ctx), function.formalArgs[0])
+
+        )
+    }
+
+    val condition = IntArrayConstructor
+
+
 }
 
 fun NamedFunctionSignature.stdLibPreconditions(ctx: TypeResolver): List<ExpEmbedding> {
@@ -231,16 +283,26 @@ fun NamedFunctionSignature.stdLibPostconditions(
     returnVariable: VariableEmbedding,
     ctx: TypeResolver
 ): List<ExpEmbedding> {
-    StdLibPostcondition.all.groupBy {
+    val postcon = StdLibPostcondition.all.groupBy {
         it.stdLibInterface
-    }.forEach { (stdLibInterface, postconditions) ->
+    }.flatMap { (stdLibInterface, postconditions) ->
         if (stdLibInterface.match(this, ctx)) {
-            postconditions.forEach {
+            postconditions.flatMap {
                 if (it.match(this)) {
-                    return it.getEmbeddings(returnVariable, this)
+                    it.getEmbeddings(returnVariable, this, ctx)
+                } else {
+                    emptyList()
                 }
             }
+        } else {
+            emptyList()
         }
     }
-    return listOf()
+
+    val functionPostcon = listOf(IntArrayLengthConstructor).flatMap {
+        it.getEmbeddings(returnVariable, this, ctx)
+    }
+
+
+    return postcon + functionPostcon
 }

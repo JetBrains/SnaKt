@@ -36,6 +36,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/backing_field_getters.kt");
     }
 
+    @Test
+    @TestMetadata("int_array.kt")
+    public void testInt_array() {
+      runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/int_array.kt");
+    }
+
     @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/expensive_verification/algorithms")
     @TestDataPath("$PROJECT_ROOT")

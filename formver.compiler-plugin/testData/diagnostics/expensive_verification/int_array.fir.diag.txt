@@ -1,0 +1,20 @@
+/int_array.kt: info: Generated Viper text for testConstructor:
+function g_size(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_size: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_size), intType())
+  ensures isSubtype(typeOf(ret_1), IntArray())
+  ensures acc(IntArray_unique(ret_1), write)
+
+
+method testConstructor() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var array: Ref
+  array := con(intToRef(5))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

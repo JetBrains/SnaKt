@@ -109,6 +109,8 @@ class TypeResolver {
 
     fun backingFields(): List<FieldEmbedding> = properties.values.mapNotNull { toBackingField(it) }
 
+    fun lookupProperty(name: ClassPropertyPair): PropertyEmbedding? = properties[name]
+
 
     /**
      * Collects all the fields belonging to a class and its super types.
