@@ -7,5 +7,6 @@ import org.jetbrains.kotlin.formver.plugin.*
 
 fun <!VIPER_TEXT!>testConstructor<!>() {
     val array = IntArray(5)
-    verify(array.size == 5)
+    val test = array[0] == 0
+    verify(test)
 }

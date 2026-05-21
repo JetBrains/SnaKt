@@ -252,6 +252,6 @@ object OperatorExpEmbeddings {
             Not, And, Or, Implies, Xor,
             AddCharInt, SubCharChar, SubCharInt,
             LeCharChar, GeCharChar, LtCharChar, GtCharChar,
-            StringLength, StringGet, AddStringString, AddStringChar,
+            StringLength, StringGet, AddStringString, AddStringChar
         )
 }

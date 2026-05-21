@@ -474,14 +474,24 @@ method con(par_size: Ref) returns (ret_1: Ref)
   requires intFromRef(par_size) >= 0
   ensures isSubtype(typeOf(ret_1), IntArray())
   ensures acc(IntArray_unique(ret_1), write)
-  ensures |(unfolding acc(IntArray_unique(ret_1), write) in ret_1.data)| ==
+  ensures (unfolding acc(IntArray_unique(ret_1), write) in |ret_1.data|) ==
     intFromRef(par_size)
-  ensures (forall anon: Ref ::isSubtype(typeOf(anon), intType()) ==>
-      intFromRef(anon) >= 0 &&
-      intFromRef(anon) <
-      |(unfolding acc(IntArray_unique(ret_1), write) in ret_1.data)| ==>
-      (unfolding acc(IntArray_unique(ret_1), write) in ret_1.data)[intFromRef(anon)] ==
-      0)
+  ensures (unfolding acc(IntArray_unique(ret_1), write) in
+      (forall anon_builtin: Ref ::isSubtype(typeOf(anon_builtin), intType()) ==>
+        intFromRef(anon_builtin) >= 0 &&
+        intFromRef(anon_builtin) < |ret_1.data| ==>
+        ret_1.data[intFromRef(anon_builtin)] == 0))
+
+
+method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), IntArray())
+  requires isSubtype(typeOf(index), intType())
+  requires acc(this.data, write)
+  requires intFromRef(index) >= 0 && intFromRef(index) < |this.data|
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures acc(this.data, write)
+  ensures this.data == old(this.data)
+  ensures this.data[intFromRef(index)] == intFromRef(ret_2)
 
 
 method havoc(arg_1: rt) returns (v_ret_0: Ref)
@@ -492,8 +502,12 @@ method testConstructor() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var array: Ref
+  var test: Ref
+  var anon_0: Ref
   array := con(intToRef(5))
-  assert intFromRef(IntArray_g_size(array)) == 5
+  anon_0 := get(array, intToRef(0))
+  test := boolToRef(intFromRef(anon_0) == 0)
+  assert boolFromRef(test)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }

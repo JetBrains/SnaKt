@@ -59,6 +59,12 @@ data class Size(val exp: ExpEmbedding) : ExpEmbedding {
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitSize(this)
 }
 
+data class Unfolding(val exp: ExpEmbedding, val predicate: PredicateAccessPermissions) : ExpEmbedding {
+    override val type: TypeEmbedding = exp.type
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(exp, predicate)
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitUnfolding(this)
+}
+
 data class SeqLookup(val exp: ExpEmbedding, val index: ExpEmbedding) : ExpEmbedding {
     override val type: TypeEmbedding = buildType { int() }
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(exp, index)

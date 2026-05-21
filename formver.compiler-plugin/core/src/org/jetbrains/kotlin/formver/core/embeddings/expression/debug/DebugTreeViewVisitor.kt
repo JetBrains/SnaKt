@@ -60,6 +60,10 @@ class DebugTreeViewVisitor(private val nameResolver: NameResolver) : ExpVisitor<
         defaultTree("SeqLookup", extraSubtrees = listOf(e.exp.debugTreeView, e.index.debugTreeView))
     }
 
+    override fun visitUnfolding(e: Unfolding): TreeView = with(nameResolver) {
+        defaultTree("Unfolding", extraSubtrees = listOf(e.exp.debugTreeView, e.predicate.debugTreeView))
+    }
+
     override fun visitLabelExp(e: LabelExp): TreeView = with(nameResolver) {
         NamedBranchingNode("Label", e.label.debugTreeView)
     }

@@ -47,6 +47,7 @@ internal class ExprPurityVisitor(val declaredVariables: MutableSet<VariableEmbed
     override fun visitShared(e: Shared) = e.allChildrenPure(this)
     override fun visitSize(e: Size): Boolean = e.allChildrenPure(this)
     override fun visitSeqLookup(e: SeqLookup): Boolean = e.allChildrenPure(this)
+    override fun visitUnfolding(e: Unfolding): Boolean = e.allChildrenPure(this)
 
     /* ————— impure nodes ————— */
     override fun visitSafeCast(e: SafeCast) = false
