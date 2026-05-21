@@ -21,6 +21,8 @@ class UniquenessExtensionRegistrar(
 ) : FirExtensionRegistrar() {
     override fun ExtensionRegistrarContext.configurePlugin() {
         registerDiagnosticContainers(UniquenessErrors)
+        +ExpressionAccessStateResolver.getFactory()
+        +GraphUniquenessStateResolver.getFactory()
         +UniquenessAdditionalCheckers.getFactory()
         +UniquenessAttributeExtension.getFactory(uniquenessAnnotationId)
     }

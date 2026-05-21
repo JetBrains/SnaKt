@@ -5,65 +5,63 @@
 
 package org.jetbrains.kotlin.formver.uniqueness.plugin
 
-import org.jetbrains.kotlin.fir.analysis.cfa.util.ControlFlowInfo
-import org.jetbrains.kotlin.fir.analysis.cfa.util.PathAwareControlFlowGraphVisitor
+import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.cfa.util.PathAwareControlFlowInfo
-import org.jetbrains.kotlin.fir.analysis.cfa.util.merge
-import org.jetbrains.kotlin.fir.analysis.cfa.util.transformValues
+import org.jetbrains.kotlin.fir.analysis.cfa.util.traverseToFixedPoint
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
+import org.jetbrains.kotlin.fir.caches.firCachesFactory
+import org.jetbrains.kotlin.fir.declarations.FirFunction
+import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallExitNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
-import org.jetbrains.kotlin.formver.locality.plugin.Locality
-import org.jetbrains.kotlin.formver.type.plugin.CallParametersTypeResolver
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
+import org.jetbrains.kotlin.formver.locality.plugin.CallParametersLocalityResolver
 
-class GraphUniquenessStateResolver(
-    private val initial: UniquenessTrie,
-    private val context: CheckerContext,
-    private val callArgumentsLocalityResolver: CallParametersTypeResolver<Locality>
-) : PathAwareControlFlowGraphVisitor<Unit, UniquenessTrie>() {
-    override fun mergeInfo(
-        a: ControlFlowInfo<Unit, UniquenessTrie>,
-        b: ControlFlowInfo<Unit, UniquenessTrie>,
-        node: CFGNode<*>
-    ): ControlFlowInfo<Unit, UniquenessTrie> {
-        return a.merge(b) { leftTrie, rightTrie ->
-            leftTrie.join(rightTrie)
+typealias GraphUniquenessStates = Map<CFGNode<*>, PathAwareControlFlowInfo<Unit, UniquenessState>>
+
+class GraphUniquenessStateResolver(session: FirSession) : FirExtensionSessionComponent(session) {
+    companion object {
+        fun getFactory(): Factory {
+            return Factory { session -> GraphUniquenessStateResolver(session) }
         }
     }
 
-    private fun ControlFlowInfo<Unit, UniquenessTrie>.read(): UniquenessTrie =
-        this[Unit] ?: initial
-
-    override fun visitVariableAssignmentNode(
-        node: VariableAssignmentNode,
-        data: PathAwareControlFlowInfo<Unit, UniquenessTrie>
-    ): PathAwareControlFlowInfo<Unit, UniquenessTrie> {
-        val assignment = node.fir
-        val moveState = assignment.rValue.resolveMoveUniqueness()
-
-        return data.transformValues { data ->
-            data.put(Unit, data.read().join(moveState))
-        }
+    private val cache = session.firCachesFactory.createCache { graph: ControlFlowGraph, context: CheckerContext ->
+        analyzeUniquenessStatesOf(graph, context)
     }
 
-    override fun visitFunctionCallExitNode(
-        node: FunctionCallExitNode,
-        data: PathAwareControlFlowInfo<Unit, UniquenessTrie>
-    ): PathAwareControlFlowInfo<Unit, UniquenessTrie> {
-        val call = node.fir
-        var moveState = UniquenessRoot
+    fun resolveUniquenessStatesOf(graph: ControlFlowGraph, context: CheckerContext): GraphUniquenessStates =
+        cache.getValue(graph, context)
 
-        with (context) {
-            for ((argument, requiredLocality) in callArgumentsLocalityResolver.resolveParameterTypesOf(call)) {
-                if (requiredLocality != null) {
-                    moveState = moveState.join(argument.resolveMoveUniqueness())
+    private fun analyzeUniquenessStatesOf(graph: ControlFlowGraph, context: CheckerContext): GraphUniquenessStates {
+        val declaration = graph.declaration
+        var initial = EmptyUniquenessState
+
+        if (declaration is FirFunction) {
+            for (valueParameter in declaration.valueParameters) {
+                val valueParameterSymbol = valueParameter.symbol
+
+                initial = context(context) {
+                    initial.associate(
+                        valueParameterSymbol,
+                        UniquenessState(valueParameterSymbol.resolveUniqueness())
+                    )
                 }
             }
         }
 
-        return data.transformValues { data ->
-            data.put(Unit, data.read().join(moveState))
-        }
+        val analyzer = GraphUniquenessStateAnalyzer(
+            initial,
+            context,
+            CallParametersLocalityResolver
+        )
+
+        return graph.traverseToFixedPoint(analyzer)
     }
 }
+
+private val FirSession.graphUniquenessStateResolver: GraphUniquenessStateResolver
+        by FirSession.sessionComponentAccessor()
+
+context(context: CheckerContext)
+fun ControlFlowGraph.resolveUniquenessStates(): Map<CFGNode<*>, PathAwareControlFlowInfo<Unit, UniquenessState>> =
+    context.session.graphUniquenessStateResolver.resolveUniquenessStatesOf(this, context)

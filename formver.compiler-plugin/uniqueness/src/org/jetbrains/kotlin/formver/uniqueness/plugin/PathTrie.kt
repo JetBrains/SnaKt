@@ -16,6 +16,12 @@ data class PathTrie<Type>(
     val children: PersistentMap<FirBasedSymbol<*>, PathTrie<Type>> = persistentMapOf(),
 )
 
+fun <Type> PathTrie<Type>.associate(symbol: FirBasedSymbol<*>, child: PathTrie<Type>): PathTrie<Type> =
+    copy(children = children.put(symbol, child))
+
+val PathTrie<*>.symbols: Sequence<FirBasedSymbol<*>>
+    get() = children.keys.asSequence() + children.values.flatMap { it.symbols }
+
 fun <Type> PathTrie<Type>.append(symbol: FirBasedSymbol<*>, other: PathTrie<Type>): PathTrie<Type> {
     if (children.isEmpty()) {
         return copy(children = children.put(symbol, other))
