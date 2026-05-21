@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
+import org.jetbrains.kotlin.formver.core.conversion.SpecialField
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.BackingFieldGetter
@@ -104,6 +105,8 @@ class PropertyAssertionsBuilder(private val subject: VariableEmbedding, private 
 
 class BackingFieldAssertionsBuilder(private val subject: VariableEmbedding, private val field: FieldEmbedding) {
     private val assertions = mutableListOf<ExpEmbedding>()
+
+    val isSpecial = field is SpecialField
 
     val isAlwaysWriteable = field.accessPolicy == AccessPolicy.ALWAYS_WRITEABLE
 

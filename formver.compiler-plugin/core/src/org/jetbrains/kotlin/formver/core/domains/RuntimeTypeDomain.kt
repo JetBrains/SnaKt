@@ -266,6 +266,7 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
         val boolType: DomainFunc = createNewTypeDomainFunc("boolType")
         val unitType: DomainFunc = createNewTypeDomainFunc("unitType")
         val stringType: DomainFunc = createNewTypeDomainFunc("stringType")
+        val intArrayType: DomainFunc = createNewTypeDomainFunc("intArrayType")
         val nothingType: DomainFunc = createNewTypeDomainFunc("nothingType")
         val anyType: DomainFunc = createNewTypeDomainFunc("anyType")
         val functionType: DomainFunc = createNewTypeDomainFunc("functionType")
@@ -278,7 +279,9 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
         val boolInjection = Injection(UnqualifiedDomainFuncName("bool"), Type.Bool, boolType)
         val charInjection = Injection(UnqualifiedDomainFuncName("char"), Type.Int, charType)
         val stringInjection = Injection(UnqualifiedDomainFuncName("string"), Type.Seq(Type.Int), stringType)
-        val primitiveTypeInjections = listOf(intInjection, boolInjection, charInjection, stringInjection)
+        val intArrayInjection = Injection(UnqualifiedDomainFuncName("intArray"), Type.Seq(Type.Int), intArrayType)
+        val primitiveTypeInjections =
+            listOf(intInjection, boolInjection, charInjection, stringInjection, intArrayInjection)
         // special values
         val nullValue = createDomainFunc(UnqualifiedDomainFuncName("nullValue"), emptyList(), Ref)
         val unitValue = createDomainFunc(UnqualifiedDomainFuncName("unitValue"), emptyList(), Ref)
@@ -287,7 +290,7 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
     val adtClassTypes: Map<AdtTypeEmbeddingImpl, DomainFunc> = adts.associateWith { classTypeFunc(it.name) }
     private val allInjections: List<Injection> = primitiveTypeInjections + adts.map { it.injection }
     val builtinTypes: List<DomainFunc> =
-        listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType)
+        listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType, intArrayType)
     private val userTypes: List<DomainFunc> =
         typeResolver.classTypeEmbeddings().map { it.embedClassTypeFunc() } + adtClassTypes.values
     val nonNullableTypes: List<DomainFunc> = (builtinTypes + userTypes).distinctBy { it.name }

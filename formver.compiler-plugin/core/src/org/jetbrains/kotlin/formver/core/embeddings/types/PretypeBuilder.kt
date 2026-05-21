@@ -48,6 +48,10 @@ object StringPretypeBuilder : PretypeBuilder {
     override fun complete() = StringTypeEmbedding
 }
 
+object InArrayPretypeBuilder : PretypeBuilder {
+    override fun complete() = IntArrayTypeEmbedding
+}
+
 class FunctionPretypeBuilder : PretypeBuilder {
     private val paramTypes = mutableListOf<TypeEmbedding>()
     private var extensionReceiverType: TypeEmbedding? = null

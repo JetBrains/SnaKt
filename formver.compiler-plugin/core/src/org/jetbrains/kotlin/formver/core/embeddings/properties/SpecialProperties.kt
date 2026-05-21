@@ -10,19 +10,24 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
+import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.conversion.CollectionSizeFieldEmbedding
+import org.jetbrains.kotlin.formver.core.conversion.IntArrayData
+import org.jetbrains.kotlin.formver.core.conversion.PropertyKotlinName
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.types.IntTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.asTypeEmbedding
 import org.jetbrains.kotlin.formver.core.kotlinCallableId
-import org.jetbrains.kotlin.formver.core.names.MemberEmbeddingPolicy
-import org.jetbrains.kotlin.formver.core.names.NameMatcher
-import org.jetbrains.kotlin.formver.core.names.embedMemberBackingFieldName
-import org.jetbrains.kotlin.formver.core.names.embedName
+import org.jetbrains.kotlin.formver.core.names.*
+import org.jetbrains.kotlin.name.Name
 
 abstract class SpecialProperty(val property: PropertyEmbedding) {
     context(typeResolver: TypeResolver, session: FirSession)
     abstract fun match(symbol: FirPropertySymbol): Boolean
+
+    abstract fun matchClassExtension(symbol: FirRegularClassSymbol): Boolean
+
+    abstract fun name(): PropertyKotlinName
 }
 
 
@@ -39,6 +44,11 @@ object StringSizeProperty :
     ) {
     context(typeResolver: TypeResolver, session: FirSession)
     override fun match(symbol: FirPropertySymbol): Boolean = symbol.callableId == kotlinCallableId("String", "length")
+
+
+    override fun matchClassExtension(symbol: FirRegularClassSymbol): Boolean = false
+    override fun name(): PropertyKotlinName =
+        throw SnaktInternalException(null, "String size property does not have a name")
 }
 
 object CollectionSizeProperty :
@@ -68,12 +78,54 @@ object CollectionSizeProperty :
             return false
         }
     }
+
+
+    override fun matchClassExtension(symbol: FirRegularClassSymbol): Boolean = false
+    override fun name(): PropertyKotlinName =
+        throw SnaktInternalException(null, "Collection size property does not have a name")
 }
+
+object IntArrayProperty :
+    SpecialProperty(
+        PropertyEmbedding(
+            BackingFieldGetter(
+                IntArrayData
+            ),
+            setter = null,
+            hasDefaultBehaviour = true,
+            isUnique = true,
+            isVal = true,
+            type = IntArrayData.type,
+        )
+    ) {
+    context(typeResolver: TypeResolver, session: FirSession)
+    override fun match(symbol: FirPropertySymbol): Boolean = false
+
+    override fun matchClassExtension(symbol: FirRegularClassSymbol): Boolean {
+        NameMatcher.matchClassScope(symbol.classId.embedName()) {
+            ifClassName("IntArray") {
+                return true
+            }
+            return false
+        }
+    }
+
+    override fun name(): PropertyKotlinName = PropertyKotlinName(FakeScope, Name.identifier(IntArrayData.baseName))
+}
+
+
 
 
 object SpecialProperties {
 
-    val all: List<SpecialProperty> = listOf(StringSizeProperty, CollectionSizeProperty)
+    val all: List<SpecialProperty> = listOf(StringSizeProperty, CollectionSizeProperty, IntArrayProperty)
+
+
+    fun lookupAdditionalPropertiesToClass(symbol: FirRegularClassSymbol): List<Pair<PropertyKotlinName, PropertyEmbedding>> =
+        all.filter { it.matchClassExtension(symbol) }.map {
+            Pair(it.name(), it.property)
+
+        }
 
     context(typeResolver: TypeResolver, session: FirSession)
     fun lookup(symbol: FirPropertySymbol): PropertyEmbedding? = all.firstOrNull { it.match(symbol) }?.property

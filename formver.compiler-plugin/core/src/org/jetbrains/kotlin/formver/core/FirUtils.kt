@@ -26,6 +26,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
 import org.jetbrains.kotlin.formver.core.names.SpecialPackages
 import org.jetbrains.kotlin.formver.viper.ast.Position
+import org.jetbrains.kotlin.javac.resolve.classId
 import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
@@ -71,6 +72,8 @@ fun formverCallableId(className: String?, name: String): CallableId =
     callableId(SpecialPackages.formver, className, name)
 
 fun kotlinCallableId(className: String?, name: String): CallableId = callableId(SpecialPackages.kotlin, className, name)
+
+fun kotlinClassId(className: String): ClassId = classId(SpecialPackages.kotlin.first(), className)
 
 fun FirBasedSymbol<*>.isUnique(session: FirSession) = hasAnnotation(annotationId("Unique"), session)
 

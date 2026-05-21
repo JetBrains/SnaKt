@@ -51,3 +51,16 @@ data class InhaleDirect(val exp: ExpEmbedding) : ExpEmbedding {
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(exp)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitInhaleDirect(this)
 }
+
+
+data class Size(val exp: ExpEmbedding) : ExpEmbedding {
+    override val type: TypeEmbedding = buildType { int() }
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(exp)
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitSize(this)
+}
+
+data class SeqLookup(val exp: ExpEmbedding, val index: ExpEmbedding) : ExpEmbedding {
+    override val type: TypeEmbedding = buildType { int() }
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(exp, index)
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitSeqLookup(this)
+}

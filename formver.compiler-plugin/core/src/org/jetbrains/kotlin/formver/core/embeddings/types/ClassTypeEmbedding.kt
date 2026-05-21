@@ -34,8 +34,10 @@ data class ClassTypeEmbedding(override val name: ScopedName) : PretypeEmbedding 
                 if (!isAlwaysWriteable) {
                     addAccessPermissions(PermExp.FullPerm())
 
-                    forType {
-                        includeSubTypeInvariants()
+                    if (!isSpecial) {
+                        forType {
+                            includeSubTypeInvariants()
+                        }
                     }
                 }
             }

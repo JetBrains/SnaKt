@@ -348,6 +348,7 @@ class ProgramConverter(
         symbol.propertySymbols.forEach {
             embedProperty(it)
         }
+        embedAdditionalProperty(symbol)
         return embedding
     }
 
@@ -395,6 +396,15 @@ class ProgramConverter(
     // Note: keep in mind that this function is necessary to resolve the name of the function!
     override fun embedFunctionPretype(symbol: FirFunctionSymbol<*>): FunctionTypeEmbedding = buildFunctionPretype {
         embedFunctionPretypeWithBuilder(symbol)
+    }
+
+    fun embedAdditionalProperty(symbol: FirRegularClassSymbol) {
+        val className = symbol.classId.embedName()
+        val additional = SpecialProperties.lookupAdditionalPropertiesToClass(symbol)
+        additional.forEach {
+            val name = ClassPropertyPair(className, it.first)
+            typeResolver.getOrPutProperty(name) { it.second }
+        }
     }
 
     /**

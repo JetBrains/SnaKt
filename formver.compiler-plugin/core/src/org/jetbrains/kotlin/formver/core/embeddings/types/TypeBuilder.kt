@@ -30,6 +30,8 @@ class TypeBuilder {
     fun boolean() = BooleanPretypeBuilder
     fun char() = CharPretypeBuilder
     fun string() = StringPretypeBuilder
+    fun intArray() = InArrayPretypeBuilder
+
 
     fun function(init: FunctionPretypeBuilder.() -> Unit) = FunctionPretypeBuilder().also { it.init() }
     fun klass(init: ClassPretypeBuilder.() -> Unit) = ClassPretypeBuilder().also { it.init() }

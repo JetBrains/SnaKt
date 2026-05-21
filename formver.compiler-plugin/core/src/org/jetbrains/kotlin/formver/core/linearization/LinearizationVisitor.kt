@@ -76,6 +76,25 @@ data class LinearizationVisitor(
         }
     }
 
+    override fun visitSize(e: Size): Linearizable = object : DirectResultLinearizable(e, this@LinearizationVisitor) {
+        override fun toViper(ctx: LinearizationContext): Exp = RuntimeTypeDomain.intInjection.toRef(
+            Exp.SeqLength(e.exp.linearize().toViperBuiltinType(ctx), ctx.source.asPosition)
+        )
+
+    }
+
+    override fun visitSeqLookup(e: SeqLookup): Linearizable =
+        object : DirectResultLinearizable(e, this@LinearizationVisitor) {
+            override fun toViper(ctx: LinearizationContext): Exp = RuntimeTypeDomain.intInjection.toRef(
+                Exp.SeqIndex(
+                    e.exp.linearize().toViperBuiltinType(ctx),
+                    e.index.linearize().toViperBuiltinType(ctx),
+                    ctx.source.asPosition
+                )
+            )
+        }
+
+
     override fun visitLabelExp(e: LabelExp): Linearizable = object : UnitResultLinearizable(e) {
         override fun toViperUnusedResult(ctx: LinearizationContext) {
             ctx.addLabel(e.label.toViper(ctx))

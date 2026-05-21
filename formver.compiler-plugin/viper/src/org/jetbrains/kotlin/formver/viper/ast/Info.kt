@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.formver.viper.IntoSilver
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import scala.collection.JavaConverters
 import scala.collection.immutable.Seq
+import viper.silver.ast.`AutoTriggered$`
 import viper.silver.ast.`NoInfo$`
 
 sealed class Info : IntoSilver<viper.silver.ast.Info> {
@@ -20,7 +21,7 @@ sealed class Info : IntoSilver<viper.silver.ast.Info> {
 
     companion object {
         fun fromSilver(info: viper.silver.ast.Info): Info = when (info) {
-            `NoInfo$`.`MODULE$` -> NoInfo
+            `NoInfo$`.`MODULE$`, `AutoTriggered$`.`MODULE$` -> NoInfo
             is Wrapper -> Wrapped(info.wrappedValue)
             else -> TODO("Unreachable")
         }

@@ -7,7 +7,6 @@ package org.jetbrains.kotlin.formver.core.embeddings.expression.debug
 
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
-import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.mangled
 
@@ -51,6 +50,14 @@ class DebugTreeViewVisitor(private val nameResolver: NameResolver) : ExpVisitor<
 
     override fun visitGoto(e: Goto): TreeView = with(nameResolver) {
         defaultTree("Goto", extraSubtrees = listOf(e.target.debugTreeView))
+    }
+
+    override fun visitSize(e: Size): TreeView = with(nameResolver) {
+        defaultTree("Size", extraSubtrees = listOf(e.exp.debugTreeView))
+    }
+
+    override fun visitSeqLookup(e: SeqLookup): TreeView = with(nameResolver) {
+        defaultTree("SeqLookup", extraSubtrees = listOf(e.exp.debugTreeView, e.index.debugTreeView))
     }
 
     override fun visitLabelExp(e: LabelExp): TreeView = with(nameResolver) {
