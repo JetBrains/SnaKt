@@ -88,4 +88,11 @@ data object IntArrayTypeEmbedding : ClassTypeEmbedding {
 
     context(ctx: TypeResolver)
     override fun uniquePredicate(): Predicate = ClassPredicateBuilder.build(name, uniquePredicateName) {}
+
+    override fun uniquePredicateAccessInvariant(ctx: TypeResolver): TypeInvariantEmbedding =
+        PredicateAccessTypeInvariantEmbedding(
+            uniquePredicateName,
+            PermExp.FullPerm()
+        )
+
 }

@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
 import org.jetbrains.kotlin.formver.core.conversion.IntArrayElement
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.AddCharInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.AddIntInt
@@ -22,6 +23,8 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubCharInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Xor
+import org.jetbrains.kotlin.formver.core.embeddings.types.IntArrayTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.asTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildFunctionPretype
 import org.jetbrains.kotlin.formver.core.embeddings.types.nullableAny
 import org.jetbrains.kotlin.formver.core.names.*
@@ -55,7 +58,7 @@ object SpecialKotlinFunctions {
         ClassKotlinName(listOf("InvariantBuilder"))
     }
 
-    val byName: Map<SymbolicName, FullySpecialKotlinFunction> = buildFullySpecialFunctions {
+    fun byName(ctx: TypeResolver): Map<SymbolicName, FullySpecialKotlinFunction> = buildFullySpecialFunctions {
         val intIntToIntType = buildFunctionPretype {
             withDispatchReceiver { int() }
             withParam { int() }
@@ -264,7 +267,11 @@ object SpecialKotlinFunctions {
             withReturnType { int() }
         }
         addFunction(intArrayIntToInt, SpecialPackages.kotlin, className = "IntArray", "get") { args, _ ->
-            FieldAccess(OperatorExpEmbeddings.getSlot(args[0], args[1]), IntArrayElement)
+            Unfolding(
+                FieldAccess(OperatorExpEmbeddings.getSlot(args[0], args[1]), IntArrayElement),
+                IntArrayTypeEmbedding.asTypeEmbedding().uniquePredicateAccessInvariant(ctx)!!
+                    .fillHole(args[0]) as PredicateAccessPermissions
+            )
         }
     }
 }

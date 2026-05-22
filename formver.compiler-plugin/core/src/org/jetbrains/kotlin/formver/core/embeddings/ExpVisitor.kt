@@ -39,6 +39,7 @@ interface ExpVisitor<R> {
     fun visitErrorExp(e: ErrorExp): R = visitDefault(e)
     fun visitGoto(e: Goto): R = visitDefault(e)
     fun visitInhaleDirect(e: InhaleDirect): R = visitDefault(e)
+    fun visitUnfolding(e: Unfolding): R = visitDefault(e)
     fun visitInhaleInvariants(e: InhaleInvariants): R = visitDefault(e)
     fun visitNonDeterministically(e: NonDeterministically): R = visitDefault(e)
     fun visitWhile(e: While): R = visitDefault(e)

@@ -51,3 +51,9 @@ data class InhaleDirect(val exp: ExpEmbedding) : ExpEmbedding {
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(exp)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitInhaleDirect(this)
 }
+
+data class Unfolding(val exp: ExpEmbedding, val predicate: PredicateAccessPermissions) : ExpEmbedding {
+    override val type: TypeEmbedding = exp.type
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(exp, predicate)
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitUnfolding(this)
+}
