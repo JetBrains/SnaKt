@@ -66,6 +66,9 @@ internal class ClassPredicateBuilder private constructor(
             builder.action()
             body.addAll(builder.toInvariantsList().fillHoles(subject))
         }
+
+    fun add(invariant: TypeInvariantEmbedding) = body.add(invariant.fillHole(subject))
+
 }
 
 class PropertyAssertionsBuilder(private val subject: VariableEmbedding, private val property: PropertyEmbedding) {

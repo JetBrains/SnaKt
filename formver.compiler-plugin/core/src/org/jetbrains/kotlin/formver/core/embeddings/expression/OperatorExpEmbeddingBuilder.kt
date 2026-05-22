@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.formver.core.domains.InjectionImageFunction
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionPretypeBuilder
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildFunctionPretype
-import org.jetbrains.kotlin.formver.core.embeddings.types.injection
+import org.jetbrains.kotlin.formver.core.embeddings.types.injectionOrNull
 import org.jetbrains.kotlin.formver.core.names.DomainAssociatedFuncName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
@@ -34,8 +34,9 @@ class OperatorExpEmbeddingBuilder {
         val refsOperation = InjectionImageFunction(
             runtimeTypeFunctionName ?: error("No name specified for the underlying viper function."),
             viperApplicable ?: error("No viper operator specified to build ExpEmbedding."),
-            argumentTypes.map { it.injection },
-            returnType.injection,
+            argumentTypes.map { it.injectionOrNull },
+            returnType.injectionOrNull,
+            returnType,
             additionalConditions ?: { }
         )
         return OperatorExpEmbeddingTemplate.create(returnType, refsOperation)

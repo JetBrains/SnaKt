@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.isOf
+import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.names.FromRefFuncName
 import org.jetbrains.kotlin.formver.core.names.ToRefFuncName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
@@ -97,14 +98,15 @@ val Injection?.viperType: Type
 class InjectionImageFunction(
     name: SymbolicName,
     val original: Applicable,
-    argsInjections: List<Injection>,
-    resultInjection: Injection,
+    argsInjections: List<Injection?>,
+    resultInjection: Injection?,
+    resultType: TypeEmbedding,
     additionalConditions: FunctionBuilder.() -> Unit = { }
 ) : Function by FunctionBuilder.build(name, {
-    val viperResult = original.toFuncApp(argsInjections.map { it.fromRef(argument(Type.Ref)) })
+    val viperResult = original.toFuncApp(argsInjections.map { it?.fromRef(argument(Type.Ref)) ?: argument(Type.Ref) })
     returns(Type.Ref)
-    postcondition { result isOf resultInjection.typeFunction() }
-    postcondition { resultInjection.fromRef(result) eq viperResult }
+    postcondition { result isOf resultType.runtimeType }
+    postcondition { (resultInjection?.fromRef(result) ?: result) eq viperResult }
     additionalConditions()
 
 })

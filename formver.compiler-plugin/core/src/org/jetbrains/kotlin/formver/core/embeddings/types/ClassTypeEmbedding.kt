@@ -87,7 +87,10 @@ data object IntArrayTypeEmbedding : ClassTypeEmbedding {
     override val runtimeType = RuntimeTypeDomain.intArrayType()
 
     context(ctx: TypeResolver)
-    override fun uniquePredicate(): Predicate = ClassPredicateBuilder.build(name, uniquePredicateName) {}
+    override fun uniquePredicate(): Predicate = ClassPredicateBuilder.build(name, uniquePredicateName) {
+        add(subTypeInvariant())
+        add(IntArrayAccessInvariantEmbedding)
+    }
 
     override fun uniquePredicateAccessInvariant(ctx: TypeResolver): TypeInvariantEmbedding =
         PredicateAccessTypeInvariantEmbedding(

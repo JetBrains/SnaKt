@@ -5,8 +5,10 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
+import org.jetbrains.kotlin.formver.core.conversion.IntArrayElement
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
+import org.jetbrains.kotlin.formver.core.names.AnonymousBuiltinName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
 
@@ -42,6 +44,35 @@ data class FieldEqualsInvariant(val field: FieldEmbedding, val comparedWith: Exp
 
 data class FieldAccessTypeInvariantEmbedding(val field: FieldEmbedding, val perm: PermExp) : TypeInvariantEmbedding {
     override fun fillHole(exp: ExpEmbedding): ExpEmbedding = FieldAccessPermissions(exp, field, perm)
+}
+
+//(forall i: Int :: 0 <= i && i < arrayLen(arr) ==>
+//// The solver looks for 'arraySlot(arr, i)' in your code to trigger this permission
+//{ arraySlot(arr, i).arrayElementVal }
+//acc(arraySlot(arr, i).arrayElementVal)
+//)
+data object IntArrayAccessInvariantEmbedding : TypeInvariantEmbedding {
+    override fun fillHole(exp: ExpEmbedding): ExpEmbedding {
+        val index = PlaceholderVariableEmbedding(AnonymousBuiltinName(0), buildType { int() })
+        return ForAllEmbedding(
+            index,
+            listOf(
+                OperatorExpEmbeddings.Implies(
+                    OperatorExpEmbeddings.And(
+                        OperatorExpEmbeddings.LtIntInt(index, OperatorExpEmbeddings.intArraySize(exp)),
+                        OperatorExpEmbeddings.LeIntInt(IntLit(0), index)
+                    ),
+
+                    AccEmbedding(
+                        IntArrayElement,
+                        OperatorExpEmbeddings.getSlot(exp, index),
+                        PermExp.FullPerm(),
+                    )
+                )
+            ),
+            listOf()
+        )
+    }
 }
 
 // Note that at present, the predicate name and class name are the same.
