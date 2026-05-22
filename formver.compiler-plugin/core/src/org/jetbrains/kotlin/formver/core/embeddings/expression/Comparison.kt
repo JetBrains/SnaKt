@@ -20,8 +20,6 @@ sealed interface AnyComparisonExpression : ExpEmbedding {
         get() = buildType { boolean() }
 
     val comparisonOperation: Operator
-
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(left, right)
 }
 
 data class EqCmp(

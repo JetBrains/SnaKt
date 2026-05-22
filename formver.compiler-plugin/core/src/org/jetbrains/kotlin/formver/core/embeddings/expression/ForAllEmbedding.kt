@@ -19,6 +19,5 @@ data class ForAllEmbedding(
     override val type: TypeEmbedding
         get() = buildType { boolean() }
 
-    override fun children(): Sequence<ExpEmbedding> = conditions.asSequence()
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitForAllEmbedding(this)
 }

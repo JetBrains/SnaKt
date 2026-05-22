@@ -28,8 +28,6 @@ sealed class SequentialLogicOperatorEmbedding : ExpEmbedding {
         LogicOperatorPolicy.CONVERT_TO_IF -> ifReplacement
         LogicOperatorPolicy.CONVERT_TO_EXPRESSION -> expressionReplacement
     }
-
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(left, right)
 }
 
 data class SequentialAnd(override val left: ExpEmbedding, override val right: ExpEmbedding) :

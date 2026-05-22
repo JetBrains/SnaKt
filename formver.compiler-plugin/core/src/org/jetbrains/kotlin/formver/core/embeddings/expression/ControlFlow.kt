@@ -28,7 +28,6 @@ sealed interface Block : ExpEmbedding {
     override val type: TypeEmbedding
         get() = exps.lastOrNull()?.type ?: buildType { unit() }
 
-    override fun children(): Sequence<ExpEmbedding> = exps.asSequence()
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitBlock(this)
 }
 
@@ -40,7 +39,6 @@ data class If(
 ) :
     ExpEmbedding {
 
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(condition, thenBranch, elseBranch)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitIf(this)
 }
 
@@ -56,7 +54,6 @@ data class While(
     val continueLabel = LabelEmbedding(continueLabelName, invariants)
     val breakLabel = LabelEmbedding(breakLabelName)
 
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(condition, body)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitWhile(this)
 }
 
@@ -82,14 +79,12 @@ data class GotoChainNode(val label: LabelEmbedding?, val exp: ExpEmbedding, val 
     ExpEmbedding {
     override val type: TypeEmbedding = exp.type
 
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(exp)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitGotoChainNode(this)
 }
 
 data class NonDeterministically(val exp: ExpEmbedding) : ExpEmbedding {
     override val type: TypeEmbedding = buildType { unit() }
 
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(exp)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitNonDeterministically(this)
 }
 
@@ -97,7 +92,6 @@ data class NonDeterministically(val exp: ExpEmbedding) : ExpEmbedding {
 data class MethodCall(val method: NamedFunctionSignature, val args: List<ExpEmbedding>) : ExpEmbedding {
     override val type: TypeEmbedding = method.callableType.returnType
 
-    override fun children(): Sequence<ExpEmbedding> = args.asSequence()
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitMethodCall(this)
 }
 
@@ -106,8 +100,6 @@ data class FunctionCall(val function: NamedFunctionSignature, val args: List<Exp
 
     override fun <R> accept(v: ExpVisitor<R>): R =
         v.visitFunctionCall(this)
-
-    override fun children(): Sequence<ExpEmbedding> = args.asSequence()
 }
 
 /**
@@ -122,7 +114,6 @@ data class InvokeFunctionObject(
 ) :
     ExpEmbedding {
 
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(receiver) + args.asSequence()
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitInvokeFunctionObject(this)
 }
 
@@ -134,14 +125,12 @@ data class FunctionExp(
     ExpEmbedding {
     override val type: TypeEmbedding = body.type
 
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(body)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitFunctionExp(this)
 }
 
 data class Elvis(val left: ExpEmbedding, val right: ExpEmbedding, override val type: TypeEmbedding) :
     ExpEmbedding {
 
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(left, right)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitElvis(this)
 }
 
@@ -151,6 +140,4 @@ data class Return(
     override val type = buildType { nothing() }
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitReturn(this)
-
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(returnExp)
 }

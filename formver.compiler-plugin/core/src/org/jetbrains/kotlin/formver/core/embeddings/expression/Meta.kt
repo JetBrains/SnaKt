@@ -17,8 +17,6 @@ data class WithPosition(val inner: ExpEmbedding, val source: KtSourceElement) : 
     override fun ignoringMetaNodes(): ExpEmbedding = inner.ignoringMetaNodes()
     override fun ignoringCastsAndMetaNodes(): ExpEmbedding = inner.ignoringCastsAndMetaNodes()
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitWithPosition(this)
-
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(inner)
 }
 
 fun ExpEmbedding.withPosition(source: KtSourceElement?): ExpEmbedding =
@@ -57,7 +55,6 @@ data class SharingContext(val inner: ExpEmbedding) : ExpEmbedding {
     override fun ignoringCastsAndMetaNodes() = inner
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitSharingContext(this)
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(inner)
 }
 
 /**
@@ -79,7 +76,6 @@ data class Shared(val inner: ExpEmbedding) : ExpEmbedding {
 
     override fun ignoringMetaNodes() = inner
     override fun ignoringCastsAndMetaNodes() = inner
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(inner)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitShared(this)
 
     fun initContext(ctx: SharingContext) {

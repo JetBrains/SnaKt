@@ -31,7 +31,6 @@ data object ErrorExp : ExpEmbedding {
 data class Assert(val exp: ExpEmbedding) : ExpEmbedding {
     override val type: TypeEmbedding = buildType { unit() }
 
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(exp)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitAssert(this)
 
     override fun isValid(ctx: PurityContext): Boolean = exp.isPure().also {
@@ -48,6 +47,5 @@ data class Assert(val exp: ExpEmbedding) : ExpEmbedding {
 data class InhaleDirect(val exp: ExpEmbedding) : ExpEmbedding {
     override val type: TypeEmbedding = buildType { unit() }
 
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(exp)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitInhaleDirect(this)
 }

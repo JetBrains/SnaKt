@@ -12,5 +12,4 @@ data class Old(val inner: ExpEmbedding) : ExpEmbedding {
     override val type: TypeEmbedding = inner.type
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitOld(this)
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(inner)
 }

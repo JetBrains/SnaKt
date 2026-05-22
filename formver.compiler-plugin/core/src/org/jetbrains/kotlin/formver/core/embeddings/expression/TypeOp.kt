@@ -18,7 +18,6 @@ data class Is(
     override val type = buildType { boolean() }
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitIs(this)
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(inner)
 }
 
 
@@ -31,7 +30,6 @@ data class Cast(val inner: ExpEmbedding, override val type: TypeEmbedding) : Exp
     override fun ignoringCastsAndMetaNodes(): ExpEmbedding = inner.ignoringCastsAndMetaNodes()
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitCast(this)
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(inner)
 }
 
 fun ExpEmbedding.withType(newType: TypeEmbedding): ExpEmbedding = if (type == newType) this else Cast(this, newType)
@@ -49,7 +47,6 @@ data class SafeCast(val exp: ExpEmbedding, val targetType: TypeEmbedding) : ExpE
     override val type: TypeEmbedding
         get() = targetType.getNullable()
 
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(exp)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitSafeCast(this)
 }
 
@@ -64,7 +61,6 @@ interface InhaleInvariants : ExpEmbedding {
         get() = if (invariants.isEmpty()) exp
         else this
 
-    // TODO: add children() override (sequenceOf(exp)) once we fix corresponding tests
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitInhaleInvariants(this)
 }
 

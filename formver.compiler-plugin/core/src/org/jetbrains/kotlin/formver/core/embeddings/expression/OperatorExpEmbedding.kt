@@ -22,16 +22,12 @@ interface BinaryOperatorExpEmbedding : InjectionBasedExpEmbedding {
     val right: ExpEmbedding
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitBinaryOperatorExpEmbedding(this)
-
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(left, right)
 }
 
 interface UnaryOperatorExpEmbedding : InjectionBasedExpEmbedding {
     val inner: ExpEmbedding
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitUnaryOperatorExpEmbedding(this)
-
-    override fun children(): Sequence<ExpEmbedding> = sequenceOf(inner)
 }
 
 sealed interface OperatorExpEmbeddingTemplate {
