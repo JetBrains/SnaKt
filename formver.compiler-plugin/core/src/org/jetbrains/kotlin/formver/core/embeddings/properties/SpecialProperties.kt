@@ -70,10 +70,16 @@ object CollectionSizeProperty :
     }
 }
 
+object IntArraySizeProperty :
+    SpecialProperty(PropertyEmbedding(IntArraySizeGetter, setter = null, hasDefaultBehaviour = true)) {
+    context(typeResolver: TypeResolver, session: FirSession)
+    override fun match(symbol: FirPropertySymbol): Boolean = symbol.callableId == kotlinCallableId("IntArray", "size")
+}
+
 
 object SpecialProperties {
 
-    val all: List<SpecialProperty> = listOf(StringSizeProperty, CollectionSizeProperty)
+    val all: List<SpecialProperty> = listOf(StringSizeProperty, CollectionSizeProperty, IntArraySizeProperty)
 
     context(typeResolver: TypeResolver, session: FirSession)
     fun lookup(symbol: FirPropertySymbol): PropertyEmbedding? = all.firstOrNull { it.match(symbol) }?.property

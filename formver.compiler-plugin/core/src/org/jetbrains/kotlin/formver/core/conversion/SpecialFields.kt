@@ -41,3 +41,10 @@ val CollectionSizeFieldEmbedding: FieldEmbedding = SpecialField(
             OperatorExpEmbeddings.GeIntInt(FieldAccess(exp, field), IntLit(0))
     })
 }
+
+val IntArrayElement: FieldEmbedding = SpecialField(
+    baseName = "intArrayElement",
+    type = buildType { int() },
+    viperType = Type.Ref,
+    includeInShortDump = true,
+)

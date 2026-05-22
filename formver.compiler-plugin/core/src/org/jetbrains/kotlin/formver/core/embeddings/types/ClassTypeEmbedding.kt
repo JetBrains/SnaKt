@@ -9,25 +9,33 @@ import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.kotlinClassId
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
-import org.jetbrains.kotlin.formver.core.names.PredicateName
-import org.jetbrains.kotlin.formver.core.names.ScopedName
-import org.jetbrains.kotlin.formver.core.names.asScope
-import org.jetbrains.kotlin.formver.core.names.debugMangled
+import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.ast.DomainFunc
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
 import org.jetbrains.kotlin.formver.viper.ast.Predicate
 
+
+interface ClassTypeEmbedding : PretypeEmbedding {
+    override val name: ScopedName
+
+    context(ctx: TypeResolver)
+    fun uniquePredicate(): Predicate
+    val uniquePredicateName
+        get() = ScopedName(name.asScope(), PredicateName("unique"))
+}
+
 // TODO: incorporate generic parameters.
-data class ClassTypeEmbedding(override val name: ScopedName) : PretypeEmbedding {
+data class ClassTypeEmbeddingImpl(override val name: ScopedName) : ClassTypeEmbedding {
 
     override val runtimeType: Exp = this.embedClassTypeFunc()()
 
-    val uniquePredicateName = ScopedName(name.asScope(), PredicateName("unique"))
+
 
     context(ctx: TypeResolver)
-    fun uniquePredicate(): Predicate = ClassPredicateBuilder.build(name, uniquePredicateName) {
+    override fun uniquePredicate(): Predicate = ClassPredicateBuilder.build(name, uniquePredicateName) {
         includeSubTypeInvariants()
         forEachPropertyField {
             forBackingField {
@@ -43,6 +51,7 @@ data class ClassTypeEmbedding(override val name: ScopedName) : PretypeEmbedding 
                 if (isUnique) {
                     addAccessToUniquePredicate()
                 }
+                includeSubTypeInvariants()
             }
         }
         forEachSuperType {
@@ -66,8 +75,17 @@ fun ClassTypeEmbedding.embedClassTypeFunc(): DomainFunc = RuntimeTypeDomain.clas
 fun ClassTypeEmbedding.predicateAccess(
     receiver: ExpEmbedding, ctx: TypeResolver, source: KtSourceElement?
 ): Exp.PredicateAccess {
-    val access = (uniquePredicateAccessInvariant(ctx).fillHole(receiver)
-        .pureToViper(toBuiltin = true, ctx, source) as? Exp.PredicateAccess
+    val access = (uniquePredicateAccessInvariant(ctx)?.fillHole(receiver)
+        ?.pureToViper(toBuiltin = true, ctx, source) as? Exp.PredicateAccess
         ?: error("Translating shared predicate of ${name.debugMangled} yielded no predicate access."))
     return access
+}
+
+
+data object IntArrayTypeEmbedding : ClassTypeEmbedding {
+    override val name = kotlinClassId("IntArray").embedName()
+    override val runtimeType = RuntimeTypeDomain.intArrayType()
+
+    context(ctx: TypeResolver)
+    override fun uniquePredicate(): Predicate = ClassPredicateBuilder.build(name, uniquePredicateName) {}
 }

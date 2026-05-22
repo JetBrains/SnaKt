@@ -5,8 +5,11 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.expression
 
+
+import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.intInjection
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.stringInjection
+import org.jetbrains.kotlin.formver.core.embeddings.types.IntArrayTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildFunctionPretype
 import org.jetbrains.kotlin.formver.viper.ast.*
 import org.jetbrains.kotlin.formver.viper.ast.Exp.Companion.toConjunction
@@ -245,6 +248,39 @@ object OperatorExpEmbeddings {
         viperImplementation { Exp.SeqAppend(args[0], Exp.ExplicitSeq(listOf(args[1])), pos, info, trafos) }
     }
 
+    val getSlot = buildBinaryOperator {
+        setName("getSlot")
+        withSignature {
+            withParam { intArray() }
+            withParam { int() }
+            withReturnType { intArraySlot() }
+        }
+        viperImplementation { RuntimeTypeDomain.intArraySlot(args[0], args[1]) }
+    }
+
+    //    val intArrayGet = buildBinaryOperator {
+//        setName("intArrayGet")
+//        withSignature {
+//            withDispatchReceiver { intArray() }
+//            withParam { int() }
+//            withReturnType { int() }
+//        }
+//        viperImplementation {
+//            Exp.FieldAccess(RuntimeTypeDomain.intArraySlot(args[0], args[1]), IntArrayElement.toViper())
+//        }
+//    }
+//
+    val intArraySize = buildUnaryOperator {
+        setName("intArraySize")
+        withSignature {
+            withDispatchReceiver {
+                existing(IntArrayTypeEmbedding)
+            }
+            withReturnType { int() }
+        }
+        viperImplementation { RuntimeTypeDomain.intArrayLength(args[0]) }
+    }
+
     val allTemplates
         get() = listOf(
             AddIntInt, SubIntInt, MulIntInt, DivIntInt, RemIntInt, NegInt,
@@ -253,5 +289,6 @@ object OperatorExpEmbeddings {
             AddCharInt, SubCharChar, SubCharInt,
             LeCharChar, GeCharChar, LtCharChar, GtCharChar,
             StringLength, StringGet, AddStringString, AddStringChar,
+            intArraySize, getSlot
         )
 }

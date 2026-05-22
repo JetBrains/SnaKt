@@ -70,4 +70,9 @@ data object StringTypeEmbedding : PretypeEmbedding {
     override val name = PretypeName("String")
 }
 
+data object IntArraySlotTypeEmbedding : PretypeEmbedding {
+    override val runtimeType = RuntimeTypeDomain.intArraySlotType()
+    override val name = PretypeName("IntArraySlot")
+}
+
 fun PretypeEmbedding.asTypeEmbedding() = TypeEmbedding(this, TypeEmbeddingFlags(nullable = false))

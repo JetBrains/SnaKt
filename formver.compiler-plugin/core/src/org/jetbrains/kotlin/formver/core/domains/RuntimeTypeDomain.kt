@@ -7,10 +7,13 @@ package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbeddingImpl
+import org.jetbrains.kotlin.formver.core.embeddings.types.IntArrayTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.embedClassTypeFunc
+import org.jetbrains.kotlin.formver.core.kotlinClassId
 import org.jetbrains.kotlin.formver.core.names.DomainName
 import org.jetbrains.kotlin.formver.core.names.QualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.core.names.UnqualifiedDomainFuncName
+import org.jetbrains.kotlin.formver.core.names.embedName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
 
@@ -244,6 +247,11 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
         private val t3 = domainVar("t3", RuntimeType)
 
         private val r = domainVar("r", Ref)
+        private val r1 = domainVar("r1", Ref)
+        private val r2 = domainVar("r2", Ref)
+
+        private val i = domainVar("i", Type.Int)
+
 
         // three basic functions
         /** `isSubtype: (Type, Type) -> Bool` */
@@ -270,15 +278,40 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
         val anyType: DomainFunc = createNewTypeDomainFunc("anyType")
         val functionType: DomainFunc = createNewTypeDomainFunc("functionType")
 
+        val intArrayType: DomainFunc = classTypeFunc(kotlinClassId("IntArray").embedName())
+        val intArraySlotType: DomainFunc = createNewTypeDomainFunc("intArraySlot")
+
+        //        val intArraySignature = object: NamedFunctionSignature, FunctionSignature by buildFunctionPretype {
+//            withDispatchReceiver { intArray() }
+//            withReturnType { int() }
+//        }
+        val intArrayLength = createDomainFunc(UnqualifiedDomainFuncName("arraySize"), listOf(r.decl()), Type.Int)
+
+        val intArraySlot =
+            createDomainFunc(UnqualifiedDomainFuncName("arraySlot"), listOf(r1.decl(), i.decl()), Type.Ref)
+
+        val intArrayFromSlot = createDomainFunc(UnqualifiedDomainFuncName("arrayFromSlot"), listOf(r.decl()), Type.Ref)
+
+        val indexFromSlot = createDomainFunc(UnqualifiedDomainFuncName("indexFromSlot"), listOf(r.decl()), Type.Int)
+
         // for creation of user types
         fun classTypeFunc(name: SymbolicName) = createDomainFunc(name, emptyList(), RuntimeType, true)
 
         // bijections to primitive types
+        val intArrayInjection = Injection(UnqualifiedDomainFuncName("IntArray"), Type.Ref, intArrayType)
+        val intArraySlotInjection = Injection(UnqualifiedDomainFuncName("IntArraySlot"), Type.Ref, intArraySlotType)
         val intInjection = Injection(UnqualifiedDomainFuncName("int"), Type.Int, intType)
         val boolInjection = Injection(UnqualifiedDomainFuncName("bool"), Type.Bool, boolType)
         val charInjection = Injection(UnqualifiedDomainFuncName("char"), Type.Int, charType)
         val stringInjection = Injection(UnqualifiedDomainFuncName("string"), Type.Seq(Type.Int), stringType)
-        val primitiveTypeInjections = listOf(intInjection, boolInjection, charInjection, stringInjection)
+        val primitiveTypeInjections = listOf(
+            intInjection,
+            boolInjection,
+            charInjection,
+            stringInjection,
+            intArrayInjection,
+            intArraySlotInjection
+        )
         // special values
         val nullValue = createDomainFunc(UnqualifiedDomainFuncName("nullValue"), emptyList(), Ref)
         val unitValue = createDomainFunc(UnqualifiedDomainFuncName("unitValue"), emptyList(), Ref)
@@ -287,12 +320,12 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
     val adtClassTypes: Map<AdtTypeEmbeddingImpl, DomainFunc> = adts.associateWith { classTypeFunc(it.name) }
     private val allInjections: List<Injection> = primitiveTypeInjections + adts.map { it.injection }
     val builtinTypes: List<DomainFunc> =
-        listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType)
+        listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType, intArraySlotType)
     private val userTypes: List<DomainFunc> =
         typeResolver.classTypeEmbeddings().map { it.embedClassTypeFunc() } + adtClassTypes.values
     val nonNullableTypes: List<DomainFunc> = (builtinTypes + userTypes).distinctBy { it.name }
     override val functions: List<DomainFunc> = nonNullableTypes + listOf(
-        nullValue, unitValue, isSubtype, typeOf, nullable
+        nullValue, unitValue, isSubtype, typeOf, nullable, intArrayLength, intArraySlot, intArrayFromSlot, indexFromSlot
     ) + allInjections.flatMap { listOf(it.toRef, it.fromRef) }
     override val axioms: List<DomainAxiom> = AxiomListBuilder.build(this) {
         axiom("subtypeReflexive") {
@@ -413,5 +446,30 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
                 }
             }
         }
+
+        axiom("arrayLenNoneg") {
+            Exp.forall(r) { r ->
+                assumption {
+                    typeOf(r) subtype IntArrayTypeEmbedding.runtimeType
+                }
+                simpleTrigger { intArrayLength(r) } gt Exp.IntLit(0)
+
+            }
+        }
+
+        axiom("arraySlotInjectivity") {
+            Exp.forall(r1, i) { r1, r2 ->
+                assumption {
+                    (typeOf(r1) subtype IntArrayTypeEmbedding.runtimeType)
+                }
+                (intArrayFromSlot(simpleTrigger { intArraySlot(r1, r2) }) eq r1) and (indexFromSlot(
+                    intArraySlot(
+                        r1,
+                        r2
+                    )
+                ) eq r2)
+            }
+        }
+
     }
 }

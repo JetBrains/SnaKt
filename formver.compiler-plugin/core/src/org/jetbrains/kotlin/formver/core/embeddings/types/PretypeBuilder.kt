@@ -48,6 +48,14 @@ object StringPretypeBuilder : PretypeBuilder {
     override fun complete() = StringTypeEmbedding
 }
 
+object IntArrayPretypeBuilder : PretypeBuilder {
+    override fun complete() = IntArrayTypeEmbedding
+}
+
+object IntArraySlotPretypeBuilder : PretypeBuilder {
+    override fun complete() = IntArraySlotTypeEmbedding
+}
+
 class FunctionPretypeBuilder : PretypeBuilder {
     private val paramTypes = mutableListOf<TypeEmbedding>()
     private var extensionReceiverType: TypeEmbedding? = null
@@ -104,7 +112,7 @@ class ClassPretypeBuilder : PretypeBuilder {
 
     override fun complete(): ClassTypeEmbedding {
         require(className != null) { "Class name not set" }
-        return ClassTypeEmbedding(className!!)
+        return ClassTypeEmbeddingImpl(className!!)
     }
 }
 

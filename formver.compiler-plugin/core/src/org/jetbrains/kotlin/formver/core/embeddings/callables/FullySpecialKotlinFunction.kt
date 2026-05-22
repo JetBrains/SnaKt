@@ -5,8 +5,8 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
-import org.jetbrains.kotlin.formver.core.embeddings.expression.Assert
-import org.jetbrains.kotlin.formver.core.embeddings.expression.IntLit
+import org.jetbrains.kotlin.formver.core.conversion.IntArrayElement
+import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.AddCharInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.AddIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.And
@@ -22,8 +22,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubCharInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Xor
-import org.jetbrains.kotlin.formver.core.embeddings.expression.UnitLit
-import org.jetbrains.kotlin.formver.core.embeddings.expression.toBlock
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildFunctionPretype
 import org.jetbrains.kotlin.formver.core.embeddings.types.nullableAny
 import org.jetbrains.kotlin.formver.core.names.*
@@ -257,6 +255,16 @@ object SpecialKotlinFunctions {
 
         addFunction(stringIntToCharType, SpecialPackages.kotlin, className = "String", name = "get") { args, _ ->
             StringGet(args[0], args[1])
+        }
+
+
+        val intArrayIntToInt = buildFunctionPretype {
+            withDispatchReceiver { intArray() }
+            withParam { int() }
+            withReturnType { int() }
+        }
+        addFunction(intArrayIntToInt, SpecialPackages.kotlin, className = "IntArray", "get") { args, _ ->
+            FieldAccess(OperatorExpEmbeddings.getSlot(args[0], args[1]), IntArrayElement)
         }
     }
 }

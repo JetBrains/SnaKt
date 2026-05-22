@@ -3,10 +3,8 @@ package org.jetbrains.kotlin.formver.core.conversion
 import org.jetbrains.kotlin.formver.core.embeddings.properties.BackingFieldGetter
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbeddingImpl
-import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.*
+import org.jetbrains.kotlin.formver.core.embeddings.types.IntArray
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
 import org.jetbrains.kotlin.formver.core.names.NameScope
 import org.jetbrains.kotlin.formver.core.names.ScopedName
@@ -23,7 +21,9 @@ class TypeResolver {
     /**
      * Collection of all ClassTypeEmbeddings and InterfaceTypeEmbeddings
      */
-    private val classEmbedding = mutableMapOf<SymbolicName, ClassTypeEmbedding>()
+    private val classEmbedding = mapOf(
+        IntArray.typeEmbedding.name to IntArray.typeEmbedding
+    ).toMutableMap()
     private val interfaceEmbedding = mutableMapOf<SymbolicName, ClassTypeEmbedding>()
 
     /**

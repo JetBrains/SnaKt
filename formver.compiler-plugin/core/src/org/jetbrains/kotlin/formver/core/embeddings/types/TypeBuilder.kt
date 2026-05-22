@@ -34,6 +34,9 @@ class TypeBuilder {
     fun function(init: FunctionPretypeBuilder.() -> Unit) = FunctionPretypeBuilder().also { it.init() }
     fun klass(init: ClassPretypeBuilder.() -> Unit) = ClassPretypeBuilder().also { it.init() }
     fun existing(embedding: PretypeEmbedding) = ExistingPretypeBuilder(embedding)
+
+    fun intArray() = IntArrayPretypeBuilder
+    fun intArraySlot() = IntArraySlotPretypeBuilder
 }
 
 fun TypeBuilder.nullableAny(): AnyPretypeBuilder {

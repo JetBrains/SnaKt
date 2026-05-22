@@ -20,6 +20,10 @@ domain rt  {
 
   unique function stringType(): rt
 
+  unique function intArray(): rt
+
+  unique function intArraySlot(): rt
+
   unique function Foo(): rt
 
   function nullValue(): Ref
@@ -31,6 +35,14 @@ domain rt  {
   function typeOf(r: Ref): rt
 
   function nullable(t: rt): rt
+
+  function arraySize(r: Ref): Int
+
+  function arraySlot(r1: Ref, r2: Ref): Ref
+
+  function arrayFromSlot(r: Ref): Ref
+
+  function indexFromSlot(r: Ref): Ref
 
   function intToRef(v: Int): Ref
 
@@ -116,6 +128,14 @@ domain rt  {
 
   axiom {
     isSubtype(stringType(), anyType())
+  }
+
+  axiom {
+    isSubtype(intArray(), anyType())
+  }
+
+  axiom {
+    isSubtype(intArraySlot(), anyType())
   }
 
   axiom {
@@ -237,6 +257,20 @@ domain rt  {
       { stringFromRef(r) }
       isSubtype(typeOf(r), stringType()) ==>
       stringToRef(stringFromRef(r)) == r)
+  }
+
+  axiom arrayLenNoneg {
+    (forall r: Ref ::
+      { arraySize(r) }
+      isSubtype(typeOf(r), intArray()) ==> arraySize(r) > 0)
+  }
+
+  axiom arraySlotInjectivity {
+    (forall r1: Ref, r2: Ref ::
+      { arraySlot(r1, r2) }
+      isSubtype(typeOf(r1), intArray()) && isSubtype(typeOf(r2), intType()) ==>
+      arrayFromSlot(arraySlot(r1, r2)) == r1 &&
+      indexFromSlot(arraySlot(r1, r2)) == r2)
   }
 }
 

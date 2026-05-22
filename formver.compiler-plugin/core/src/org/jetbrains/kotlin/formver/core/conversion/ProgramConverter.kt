@@ -5,8 +5,13 @@
 
 package org.jetbrains.kotlin.formver.core.conversion
 
+import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.descriptors.isInterface
 import org.jetbrains.kotlin.descriptors.isObject
+import org.jetbrains.kotlin.diagnostics.DiagnosticContext
+import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
+import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactory1
+import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
@@ -81,7 +86,8 @@ class ProgramConverter(
         domains = listOf(RuntimeTypeDomain(typeResolver)),
         // Public fields with the same name are represented differently at `FieldEmbedding` level
         // but map to the same Viper field, so we deduplicate before emitting.
-        fields = typeResolver.backingFields().distinctBy { it.name }.map { it.toViper() },
+        fields = typeResolver.backingFields().distinctBy { it.name }
+            .map { it.toViper() } + listOf(IntArrayElement.toViper()),
         functions = SpecialFunctions.all + linearizedBodyResolver.functions,
         methods = SpecialMethods.all + linearizedBodyResolver.methods,
         predicates = typeResolver.classTypeEmbeddings().map {
@@ -328,6 +334,7 @@ class ProgramConverter(
      * Returns an embedding of the class type, with details set.
      */
     private fun embedClass(symbol: FirRegularClassSymbol): ClassTypeEmbedding {
+
         val className = symbol.classId.embedName()
         typeResolver.lookupClassTypeEmbedding(className)?.let { return it }
 
@@ -345,6 +352,7 @@ class ProgramConverter(
 
             classEmbedding
         }
+
         symbol.propertySymbols.forEach {
             embedProperty(it)
         }
@@ -705,15 +713,16 @@ class ProgramConverter(
             isNullable = true
             embedTypeWithBuilder(type.withNullability(false, session.typeContext))
         }
-
+        SpecialTypes.lookup(type, session) != null -> {
+            existing(SpecialTypes.lookup(type, session)!!.typeEmbedding)
+        }
         type.isAny -> any()
         type is ConeClassLikeType -> {
             val classLikeSymbol = type.toClassSymbol(session)
             if (classLikeSymbol is FirRegularClassSymbol) {
-                if (classLikeSymbol.isAdt(session)) {
-                    existing(embedAdtClass(classLikeSymbol))
-                } else {
-                    existing(embedClass(classLikeSymbol))
+                when {
+                    classLikeSymbol.isAdt(session) -> existing(embedAdtClass(classLikeSymbol))
+                    else -> existing(embedClass(classLikeSymbol))
                 }
             } else {
                 unimplementedTypeEmbedding(type)

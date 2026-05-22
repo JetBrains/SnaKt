@@ -96,5 +96,7 @@ val TypeEmbedding.injectionOrNull: Injection?
             IntTypeEmbedding -> RuntimeTypeDomain.intInjection
             BooleanTypeEmbedding -> RuntimeTypeDomain.boolInjection
             is AdtTypeEmbeddingImpl -> p.injection
+            IntArrayTypeEmbedding -> RuntimeTypeDomain.intArrayInjection
+            IntArraySlotTypeEmbedding -> RuntimeTypeDomain.intArraySlotInjection
             else -> null
         }
