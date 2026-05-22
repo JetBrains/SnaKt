@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.viper.ast
 
+import org.jetbrains.kotlin.formver.viper.AnyName
 import org.jetbrains.kotlin.formver.viper.IntoSilver
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
@@ -29,7 +30,10 @@ data class AdtConstructorDecl(
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
     val trafos: Trafos = Trafos.NoTrafos,
-) : IntoSilver<viper.silver.plugin.standard.adt.AdtConstructor> {
+) : IntoSilver<viper.silver.plugin.standard.adt.AdtConstructor>, NameHolder {
+    override val directlyReferencedNames: List<AnyName> get() = listOf(name)
+    override val children: List<NameHolder> get() = formalArgs
+
     context(nameResolver: NameResolver)
     override fun toSilver(): viper.silver.plugin.standard.adt.AdtConstructor = viper.silver.plugin.standard.adt.AdtConstructor(
             name.mangled,
@@ -50,7 +54,10 @@ data class AdtDecl(
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
     val trafos: Trafos = Trafos.NoTrafos,
-) : IntoSilver<Adt> {
+) : IntoSilver<Adt>, NameHolder {
+    override val directlyReferencedNames: List<AnyName> get() = listOf(name)
+    override val children: List<NameHolder> get() = constructors
+
     context(nameResolver: NameResolver)
     override fun toSilver(): Adt =
         Adt(

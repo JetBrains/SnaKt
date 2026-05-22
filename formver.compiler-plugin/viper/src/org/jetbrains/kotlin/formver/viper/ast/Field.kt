@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.viper.ast
 
+import org.jetbrains.kotlin.formver.viper.AnyName
 import org.jetbrains.kotlin.formver.viper.IntoSilver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.NameResolver
@@ -17,7 +18,9 @@ class Field(
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
     val trafos: Trafos = Trafos.NoTrafos,
-) : IntoSilver<viper.silver.ast.Field> {
+) : IntoSilver<viper.silver.ast.Field>, NameHolder {
+    override val directlyReferencedNames: List<AnyName> get() = listOf(name)
+    override val children: List<NameHolder> get() = emptyList()
     context(nameResolver: NameResolver)
     override fun toSilver(): viper.silver.ast.Field =
         viper.silver.ast.Field(name.mangled, type.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())

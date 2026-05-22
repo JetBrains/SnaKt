@@ -11,10 +11,15 @@ import viper.silver.ast.*
 sealed interface BinaryExp : Exp {
     val left: Exp
     val right: Exp
+    override val directlyReferencedNames: List<AnyName> get() = emptyList()
+    override val children: List<NameHolder> get() = listOf(left, right)
 }
-sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
+sealed interface Exp : IntoSilver<viper.silver.ast.Exp>, NameHolder {
 
     val type: Type
+
+    override val directlyReferencedNames: List<AnyName>
+    override val children: List<NameHolder>
 
     data class Minus(
         val arg: Exp,
@@ -23,6 +28,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
         override val type = Type.Int
+        override val directlyReferencedNames: List<AnyName> get() = emptyList()
+        override val children: List<NameHolder> get() = listOf(arg)
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.Minus =
             Minus(arg.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
@@ -224,6 +231,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
         override val type = Type.Bool
+        override val directlyReferencedNames: List<AnyName> get() = emptyList()
+        override val children: List<NameHolder> get() = listOf(arg)
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.Not =
             Not(arg.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
@@ -251,6 +260,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
         override val type = Type.Bool
+        override val directlyReferencedNames: List<AnyName> get() = variables.map { it.name }
+        override val children: List<NameHolder> get() = listOf(exp)
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.Forall =
             Forall(
@@ -272,6 +283,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
         override val type = Type.Bool
+        override val directlyReferencedNames: List<AnyName> get() = variables.map { it.name }
+        override val children: List<NameHolder> get() = listOf(exp)
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.Exists =
             Exists(
@@ -292,6 +305,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
         override val type = Type.Int
+        override val directlyReferencedNames: List<AnyName> get() = emptyList()
+        override val children: List<NameHolder> get() = emptyList()
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.IntLit =
             IntLit(value.toScalaBigInt(), pos.toSilver(), info.toSilver(), trafos.toSilver())
@@ -303,6 +318,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
         override val type = Type.Ref
+        override val directlyReferencedNames: List<AnyName> get() = emptyList()
+        override val children: List<NameHolder> get() = emptyList()
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.NullLit = NullLit(pos.toSilver(), info.toSilver(), trafos.toSilver())
     }
@@ -314,6 +331,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
         override val type = Type.Bool
+        override val directlyReferencedNames: List<AnyName> get() = emptyList()
+        override val children: List<NameHolder> get() = emptyList()
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.BoolLit =
             viper.silver.ast.BoolLit.apply(value, pos.toSilver(), info.toSilver(), trafos.toSilver())
@@ -327,6 +346,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val info: Info = Info.NoInfo,
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
+        override val directlyReferencedNames: List<AnyName> get() = listOf(name)
+        override val children: List<NameHolder> get() = emptyList()
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.LocalVar =
             LocalVar(name.mangled, type.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
@@ -340,6 +361,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
         override val type = field.type
+        override val directlyReferencedNames: List<AnyName> get() = listOf(this.field.name)
+        override val children: List<NameHolder> get() = listOf(rcv)
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.FieldAccess =
             FieldAccess(rcv.toSilver(), field.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
@@ -351,6 +374,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val info: Info = Info.NoInfo,
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
+        override val directlyReferencedNames: List<AnyName> get() = emptyList()
+        override val children: List<NameHolder> get() = emptyList()
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.Result =
             Result(type.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
@@ -364,6 +389,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val info: Info = Info.NoInfo,
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
+        override val directlyReferencedNames: List<AnyName> get() = listOf(functionName)
+        override val children: List<NameHolder> get() = args
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.FuncApp = FuncApp(
             functionName.mangled,
@@ -394,6 +421,9 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         private val scalaTypeVarMap: scala.collection.immutable.Map<TypeVar, viper.silver.ast.Type>
             get() = typeVarMap.mapKeys { it.key.toSilver() }.mapValues { it.value.toSilver() }.toScalaMap()
         override val type = function.returnType.substitute(typeVarMap)
+        override val directlyReferencedNames: List<AnyName>
+            get() = listOf(function.name) + function.formalArgs.map { it.name }
+        override val children: List<NameHolder> get() = args
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.Exp =
             viper.silver.ast.DomainFuncApp.apply(
@@ -416,6 +446,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
         override val type: Type = Type.Adt(constructor.adtName)
+        override val directlyReferencedNames: List<AnyName> get() = listOf(constructor.name)
+        override val children: List<NameHolder> get() = args
 
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.Exp =
@@ -435,6 +467,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val info: Info = Info.NoInfo,
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
+        override val directlyReferencedNames: List<AnyName> get() = emptyList()
+        override val children: List<NameHolder> get() = args
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.ExplicitSeq =
             ExplicitSeq(
@@ -453,6 +487,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val info: Info = Info.NoInfo,
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
+        override val directlyReferencedNames: List<AnyName> get() = emptyList()
+        override val children: List<NameHolder> get() = emptyList()
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.EmptySeq =
             viper.silver.ast.EmptySeq.apply(
@@ -471,6 +507,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val info: Info = Info.NoInfo,
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
+        override val directlyReferencedNames: List<AnyName> get() = emptyList()
+        override val children: List<NameHolder> get() = listOf(seq)
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.SeqLength =
             viper.silver.ast.SeqLength.apply(
@@ -490,6 +528,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val info: Info = Info.NoInfo,
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
+        override val directlyReferencedNames: List<AnyName> get() = emptyList()
+        override val children: List<NameHolder> get() = listOf(seq, idx)
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.SeqTake =
             viper.silver.ast.SeqTake.apply(
@@ -510,6 +550,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val info: Info = Info.NoInfo,
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
+        override val directlyReferencedNames: List<AnyName> get() = emptyList()
+        override val children: List<NameHolder> get() = listOf(seq, idx)
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.SeqIndex =
             viper.silver.ast.SeqIndex.apply(
@@ -550,6 +592,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
         override val type = exp.type
+        override val directlyReferencedNames: List<AnyName> get() = emptyList()
+        override val children: List<NameHolder> get() = listOf(exp)
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.Old =
             Old(exp.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
@@ -565,6 +609,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
     ) : Exp {
         // The type is set to Bool just to be consistent with Silver type. Probably it will never be used
         override val type: Type = Type.Bool
+        override val directlyReferencedNames: List<AnyName> get() = listOf(predicateName)
+        override val children: List<NameHolder> get() = formalArgs
 
         // Note: since the simple syntax P(...) has the same meaning as acc(P(...)), which in turn has the same meaning as acc(P(...), write)
         // It is always better to deal with PredicateAccessPredicate because PredicateAccess seems not working well with Silver
@@ -595,6 +641,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
         override val type = body.type
+        override val directlyReferencedNames: List<AnyName> get() = emptyList()
+        override val children: List<NameHolder> get() = listOf(predicateAccess, body)
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.Unfolding =
             Unfolding(predicateAccess.toSilver(), body.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
@@ -608,6 +656,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Exp {
         override val type = Type.Bool
+        override val directlyReferencedNames: List<AnyName> get() = emptyList()
+        override val children: List<NameHolder> get() = listOf(this.field)
 
         context(nameResolver: NameResolver)
         override fun toSilver() = FieldAccessPredicate(
@@ -628,6 +678,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val trafos: Trafos = Trafos.NoTrafos,
     ): Exp {
         override val type: Type = variable.type
+        override val directlyReferencedNames: List<AnyName> get() = emptyList()
+        override val children: List<NameHolder> get() = listOf(variable, varExp, body)
 
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.Let =
@@ -643,6 +695,8 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         val trafos: Trafos = Trafos.NoTrafos
     ): Exp {
         override val type: Type = thenExp.type.also { assert(it == elseExp.type) }
+        override val directlyReferencedNames: List<AnyName> get() = emptyList()
+        override val children: List<NameHolder> get() = listOf(condExp, thenExp, elseExp)
 
         context(nameResolver: NameResolver)
         override fun toSilver(): CondExp =

@@ -15,7 +15,10 @@ class Predicate(
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
     val trafos: Trafos = Trafos.NoTrafos,
-) : IntoSilver<viper.silver.ast.Predicate> {
+) : IntoSilver<viper.silver.ast.Predicate>, NameHolder {
+    override val directlyReferencedNames: List<AnyName> get() = listOf(name)
+    override val children: List<NameHolder> get() = formalArgs + listOf(body)
+
     context(nameResolver: NameResolver)
     override fun toSilver(): viper.silver.ast.Predicate =
         viper.silver.ast.Predicate(

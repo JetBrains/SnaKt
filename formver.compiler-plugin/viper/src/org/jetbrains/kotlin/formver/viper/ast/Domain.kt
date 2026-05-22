@@ -20,7 +20,10 @@ data class DomainFunc(
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
     val trafos: Trafos = Trafos.NoTrafos,
-) : IntoSilver<viper.silver.ast.DomainFunc>, Applicable {
+) : IntoSilver<viper.silver.ast.DomainFunc>, Applicable, NameHolder {
+    override val directlyReferencedNames: List<AnyName> get() = listOf(name)
+    override val children: List<NameHolder> get() = formalArgs
+
     context(nameResolver: NameResolver)
     override fun toSilver(): viper.silver.ast.DomainFunc =
         viper.silver.ast.DomainFunc(
@@ -46,7 +49,10 @@ class DomainAxiom(
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
     val trafos: Trafos = Trafos.NoTrafos,
-) : IntoSilver<viper.silver.ast.DomainAxiom> {
+) : IntoSilver<viper.silver.ast.DomainAxiom>, NameHolder {
+    override val directlyReferencedNames: List<AnyName> get() = listOfNotNull(name)
+    override val children: List<NameHolder> get() = listOf(exp)
+
     context(nameResolver: NameResolver)
     override fun toSilver(): viper.silver.ast.DomainAxiom =
         when (name) {
@@ -74,13 +80,15 @@ abstract class Domain(
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
     val trafos: Trafos = Trafos.NoTrafos,
-) : IntoSilver<viper.silver.ast.Domain> {
+) : IntoSilver<viper.silver.ast.Domain>, NameHolder {
 
 
     open val includeInShortDump: Boolean = true
     abstract val typeVars: List<Type.TypeVar>
     abstract val functions: List<DomainFunc>
     abstract val axioms: List<DomainAxiom>
+    override val directlyReferencedNames: List<AnyName> get() = listOf(name)
+    override val children: List<NameHolder> get() = functions + axioms
     context(nameResolver: NameResolver)
     override fun toSilver(): viper.silver.ast.Domain =
         viper.silver.ast.Domain(

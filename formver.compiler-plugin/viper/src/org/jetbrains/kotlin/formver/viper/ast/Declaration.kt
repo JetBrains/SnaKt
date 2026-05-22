@@ -7,7 +7,10 @@ package org.jetbrains.kotlin.formver.viper.ast
 
 import org.jetbrains.kotlin.formver.viper.*
 
-sealed interface Declaration : IntoSilver<viper.silver.ast.Declaration> {
+sealed interface Declaration : IntoSilver<viper.silver.ast.Declaration>, NameHolder {
+    override val directlyReferencedNames: List<AnyName>
+    override val children: List<NameHolder>
+
     data class LocalVarDecl(
         val name: SymbolicName,
         val type: Type,
@@ -15,6 +18,8 @@ sealed interface Declaration : IntoSilver<viper.silver.ast.Declaration> {
         val info: Info = Info.NoInfo,
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Declaration {
+        override val directlyReferencedNames: List<AnyName> get() = listOf(name)
+        override val children: List<NameHolder> get() = emptyList()
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.LocalVarDecl =
             viper.silver.ast.LocalVarDecl(
@@ -33,6 +38,8 @@ sealed interface Declaration : IntoSilver<viper.silver.ast.Declaration> {
         val info: Info = Info.NoInfo,
         val trafos: Trafos = Trafos.NoTrafos,
     ) : Declaration {
+        override val directlyReferencedNames: List<AnyName> get() = listOf(name)
+        override val children: List<NameHolder> get() = invariants
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.Label = viper.silver.ast.Label(
             name.mangled,

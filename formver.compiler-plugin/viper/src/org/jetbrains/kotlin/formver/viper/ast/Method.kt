@@ -12,13 +12,17 @@ abstract class Method(
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
     val trafos: Trafos = Trafos.NoTrafos,
-) : IntoSilver<viper.silver.ast.Method> {
+) : IntoSilver<viper.silver.ast.Method>, NameHolder {
     open val includeInShortDump: Boolean = true
     abstract val formalArgs: List<Declaration.LocalVarDecl>
     abstract val formalReturns: List<Declaration.LocalVarDecl>
     open val pres: List<Exp> = listOf()
     open val posts: List<Exp> = listOf()
     open val body: Stmt.Seqn? = null
+
+    override val directlyReferencedNames: List<AnyName> get() = listOf(name)
+    override val children: List<NameHolder>
+        get() = formalArgs + formalReturns + pres + posts + listOfNotNull(body)
     context(nameResolver: NameResolver)
     override fun toSilver(): viper.silver.ast.Method =
         viper.silver.ast.Method(

@@ -28,7 +28,7 @@ interface Applicable {
         toFuncApp(args.toList(), pos, info, trafos)
 }
 
-interface Function : IntoSilver<viper.silver.ast.Function>, Applicable {
+interface Function : IntoSilver<viper.silver.ast.Function>, Applicable, NameHolder {
     val name: SymbolicName
     val pos: Position
         get() = Position.NoPosition
@@ -45,6 +45,10 @@ interface Function : IntoSilver<viper.silver.ast.Function>, Applicable {
         get() = listOf()
     val body: Exp?
         get() = null
+
+    override val directlyReferencedNames: List<AnyName> get() = listOf(name)
+    override val children: List<NameHolder>
+        get() = formalArgs + pres + posts + listOfNotNull(body)
 
     context(nameResolver: NameResolver)
     override fun toSilver(): viper.silver.ast.Function = viper.silver.ast.Function(

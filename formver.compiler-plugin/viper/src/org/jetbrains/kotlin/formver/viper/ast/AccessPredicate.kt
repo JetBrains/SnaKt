@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.viper.ast
 
+import org.jetbrains.kotlin.formver.viper.AnyName
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.toScalaOption
 
@@ -20,6 +21,8 @@ sealed interface AccessPredicate : Exp {
         val trafos: Trafos = Trafos.NoTrafos,
     ) : AccessPredicate {
         override val type: Type.Bool = Type.Bool
+        override val directlyReferencedNames: List<AnyName> get() = emptyList()
+        override val children: List<NameHolder> get() = listOf(access)
 
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.AccessPredicate =
