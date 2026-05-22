@@ -24,6 +24,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirNamedFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
+import org.jetbrains.kotlin.formver.core.embeddings.callables.SpecialFunctions
 import org.jetbrains.kotlin.formver.core.names.SpecialPackages
 import org.jetbrains.kotlin.formver.viper.ast.Position
 import org.jetbrains.kotlin.javac.resolve.classId
@@ -79,7 +80,10 @@ fun FirBasedSymbol<*>.isUnique(session: FirSession) = hasAnnotation(annotationId
 
 fun FirBasedSymbol<*>.isBorrowed(session: FirSession) = hasAnnotation(annotationId("Borrowed"), session)
 
-fun FirBasedSymbol<*>.isPure(session: FirSession) = hasAnnotation(annotationId("Pure"), session)
+fun FirBasedSymbol<*>.isPure(session: FirSession) = hasAnnotation(
+    annotationId("Pure"),
+    session
+) || ((this as? FirFunctionSymbol)?.let { SpecialFunctions.stdLibPureFunctions.contains(it.callableId) } ?: false)
 
 fun FirBasedSymbol<*>.isManual(session: FirSession) = hasAnnotation(annotationId("Manual"), session)
 

@@ -6,9 +6,15 @@
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings
+import org.jetbrains.kotlin.formver.core.kotlinCallableId
 
 
 object SpecialFunctions {
+
+    val stdLibPureFunctions = listOf(
+        kotlinCallableId("IntArray", "get")
+    )
+
     val all
         get() = OperatorExpEmbeddings.allTemplates.map { it.refsOperation }
 }

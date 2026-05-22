@@ -370,10 +370,7 @@ data object IntArrayGetFunction : StdFunctionConditions {
     ): List<ExpEmbedding> {
         if (!condition.match(function, ctx)) return listOf()
         val receiver = function.formalArgs[0]
-        return buildList {
-            add(permission(receiver, ctx))
-            addAll(constantList(receiver, ctx))
-        } + listOf(
+        return listOf(
             EqCmp(
                 SeqLookup(
                     wrapUnfold(
