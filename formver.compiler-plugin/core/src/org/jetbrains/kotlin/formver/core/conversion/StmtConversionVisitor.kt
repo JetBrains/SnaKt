@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.conversion
 
+import com.intellij.util.containers.addIfNotNull
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.contracts.description.LogicOperationKind
 import org.jetbrains.kotlin.descriptors.isObject
@@ -43,6 +44,8 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
 import org.jetbrains.kotlin.formver.core.functionCallArguments
 import org.jetbrains.kotlin.formver.core.isInvariantBuilderFunctionNamed
+import org.jetbrains.kotlin.formver.core.kotlinClassId
+import org.jetbrains.kotlin.formver.core.names.embedName
 import org.jetbrains.kotlin.text
 import org.jetbrains.kotlin.types.ConstantValueKind
 
@@ -369,9 +372,15 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
 
     override fun visitWhileLoop(whileLoop: FirWhileLoop, data: StmtConversionContext): ExpEmbedding {
         val condition = data.convert(whileLoop.condition).withType { boolean() }
+        val intArrayName = kotlinClassId("IntArray").embedName()
+        val embedding = data.typeResolver.lookupClassTypeEmbedding(intArrayName)
         val invariants = buildList {
             data.retrievePropertiesAndParameters().forEach {
                 addAll(it.provenInvariants())
+                if (it.type.pretype.name == embedding?.name) {
+                    addIfNotNull(it.uniquePredicateAccessInvariant(data.typeResolver))
+                }
+
             }
             extractLoopInvariants(whileLoop.block)?.let {
                 addAll(data.withScopeImpl(ScopeIndex.NoScope) { data.collectInvariants(it) })

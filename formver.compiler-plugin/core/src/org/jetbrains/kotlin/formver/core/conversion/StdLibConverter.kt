@@ -17,6 +17,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.properties.IntArrayProperty
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
+import org.jetbrains.kotlin.formver.core.kotlinCallableId
 import org.jetbrains.kotlin.formver.core.kotlinClassId
 import org.jetbrains.kotlin.formver.core.names.*
 
@@ -63,6 +64,21 @@ data class IntArrayAnyFunctionMatcher(val funcName: String) : StdLibFunctionMatc
         NameMatcher.matchClassScope(function.name) {
             ifClassName("IntArray") {
                 ifFunctionName(funcName) {
+                    return true
+                }
+            }
+            return false
+        }
+    }
+}
+
+data class IntArrayGetterMatcher(val fieldName: String) : StdLibFunctionMatcher {
+    override fun match(
+        function: NamedFunctionSignature, ctx: TypeResolver
+    ): Boolean {
+        NameMatcher.matchClassScope(function.name) {
+            ifClassName("IntArray") {
+                ifGetterName(fieldName) {
                     return true
                 }
             }
@@ -279,17 +295,31 @@ data object IntArrayLengthConstructor : StdFunctionConditions {
         returnVariable: VariableEmbedding, function: NamedFunctionSignature, ctx: TypeResolver
     ): List<ExpEmbedding> {
         if (!condition.match(function, ctx)) return listOf()
-        val classTypeEmbedding = ctx.lookupClassTypeEmbedding(kotlinClassId("IntArray").embedName())!!
+        val className = kotlinClassId("IntArray").embedName()
+        val sizePropertyName =
+            kotlinCallableId("IntArray", "size").embedMemberPropertyName(MemberEmbeddingPolicy.FUNCTION)
+        val classTypeEmbedding = ctx.lookupClassTypeEmbedding(className)!!
+        val sizeProperty = ctx.lookupProperty(ClassPropertyPair(className, sizePropertyName))
         val forallVariable = PlaceholderVariableEmbedding(AnonymousBuiltinName(0), buildType { int() })
 //        ctx.freshAnonBuiltinVar(buildType { int() })
         return listOf(
+            // equal to variable
             EqCmp(
                 Unfolding(
                     Size(IntArrayProperty.property.getter!!.getValue(returnVariable, ctx)),
                     classTypeEmbedding.uniquePredicateAccessInvariant(ctx)
                         .fillHole(returnVariable) as PredicateAccessPermissions
                 ), function.formalArgs[0]
-            ), Unfolding(
+            ),
+            // equal to getter function
+            EqCmp(
+                Unfolding(
+                    Size(IntArrayProperty.property.getter!!.getValue(returnVariable, ctx)),
+                    classTypeEmbedding.uniquePredicateAccessInvariant(ctx)
+                        .fillHole(returnVariable) as PredicateAccessPermissions
+                ), sizeProperty!!.getter!!.getValue(returnVariable, ctx)
+            ),
+            Unfolding(
                 ForAllEmbedding(
                     forallVariable, listOf(
 
@@ -320,6 +350,48 @@ data object IntArrayLengthConstructor : StdFunctionConditions {
 
 }
 
+data object IntArraySizeFunction : StdFunctionConditions {
+
+    fun permission(receiver: ExpEmbedding, ctx: TypeResolver) =
+        (receiver.type.pretype as ClassTypeEmbedding).uniquePredicateAccessInvariant(ctx)
+            .fillHole(receiver) as PredicateAccessPermissions
+
+
+    fun wrapUnfold(predicate: PredicateAccessPermissions, inner: ExpEmbedding): ExpEmbedding =
+        Unfolding(
+            inner, predicate
+        )
+
+    override fun getPreconditions(
+        function: NamedFunctionSignature, ctx: TypeResolver
+    ): List<ExpEmbedding> {
+        if (!condition.match(function, ctx)) return listOf()
+        return buildList {
+            val receiver = function.formalArgs[0]
+            add(permission(receiver, ctx))
+        }
+    }
+
+    override fun getPostconditions(
+        returnVariable: VariableEmbedding, function: NamedFunctionSignature, ctx: TypeResolver
+    ): List<ExpEmbedding> {
+        if (!condition.match(function, ctx)) return listOf()
+        val receiver = function.formalArgs[0]
+        return listOf(
+            EqCmp(
+                Size(
+                    wrapUnfold(
+                        permission(receiver, ctx),
+                        IntArrayProperty.property.getter!!.getValue(function.formalArgs[0], ctx)
+                    ),
+                ), returnVariable
+            )
+        )
+    }
+
+    override val condition = IntArrayGetterMatcher("size")
+}
+
 data object IntArrayGetFunction : StdFunctionConditions {
 
     fun permission(receiver: ExpEmbedding, ctx: TypeResolver) =
@@ -341,16 +413,6 @@ data object IntArrayGetFunction : StdFunctionConditions {
             wrapUnfold(permission(receiver, ctx), Size(IntArrayProperty.property.getter!!.getValue(receiver, ctx)))
         )
     )
-
-    fun constantList(receiver: ExpEmbedding, ctx: TypeResolver): List<ExpEmbedding> {
-        return listOf(
-            EqCmp(
-                wrapUnfold(permission(receiver, ctx), IntArrayProperty.property.getter!!.getValue(receiver, ctx)),
-                Old(wrapUnfold(permission(receiver, ctx), IntArrayProperty.property.getter!!.getValue(receiver, ctx)))
-            )
-        )
-    }
-
 
     override fun getPreconditions(
         function: NamedFunctionSignature, ctx: TypeResolver
@@ -486,7 +548,8 @@ fun NamedFunctionSignature.stdLibPreconditions(ctx: TypeResolver): List<ExpEmbed
             emptyList()
         }
     }
-    val functionPrecon = listOf(IntArrayLengthConstructor, IntArrayGetFunction, IntArraySetFunction).flatMap {
+    val functionPrecon =
+        listOf(IntArrayLengthConstructor, IntArrayGetFunction, IntArraySetFunction, IntArraySizeFunction).flatMap {
         it.getPreconditions(this, ctx)
     }
 
@@ -513,7 +576,8 @@ fun NamedFunctionSignature.stdLibPostconditions(
         }
     }
 
-    val functionPostcon = listOf(IntArrayLengthConstructor, IntArrayGetFunction, IntArraySetFunction).flatMap {
+    val functionPostcon =
+        listOf(IntArrayLengthConstructor, IntArrayGetFunction, IntArraySetFunction, IntArraySizeFunction).flatMap {
         it.getPostconditions(returnVariable, this, ctx)
     }
 

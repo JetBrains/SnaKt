@@ -277,7 +277,7 @@ class ProgramConverter(
         val name = symbol.embedGetterName(this)
         val classType = embedType(symbol.dispatchReceiverType!!)
         val returnType = embedType(symbol.resolvedReturnType)
-        val signature = PureGetterFunctionSignature(name, symbol, classType, returnType)
+        val signature = PureGetterFunctionSignature(name, symbol, classType, returnType, typeResolver)
         val callable = NonInlineNamedFunction(signature)
         val function = PureUserFunctionEmbedding(
             callable

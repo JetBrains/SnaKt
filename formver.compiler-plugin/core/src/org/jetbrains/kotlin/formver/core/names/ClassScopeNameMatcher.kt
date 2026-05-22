@@ -63,6 +63,11 @@ internal class ClassScopeNameMatcher(name: SymbolicName) : NameMatcher(name) {
             this.action()
     }
 
+    inline fun ifGetterName(fieldName: String, action: ClassScopeNameMatcher.() -> Unit) {
+        if (scopedName?.name is GetterKotlinName && scopedName.name.name == Name.identifier(fieldName))
+            this.action()
+    }
+
     inline fun ifConstructorName(action: ClassScopeNameMatcher.() -> Unit) {
         if (scopedName?.name is ConstructorKotlinName)
             this.action()

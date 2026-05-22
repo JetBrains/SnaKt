@@ -114,8 +114,6 @@ object IntArrayProperty :
 }
 
 
-
-
 object SpecialProperties {
 
     val all: List<SpecialProperty> = listOf(StringSizeProperty, CollectionSizeProperty, IntArrayProperty)

@@ -1,0 +1,1 @@
+/tests.kt: error: Argument uniqueness mismatch: expected 'unique global', actual 'shared global'.

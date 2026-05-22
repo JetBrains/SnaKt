@@ -13,7 +13,10 @@ import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.conversion.stdLibPostconditions
 import org.jetbrains.kotlin.formver.core.conversion.stdLibPreconditions
-import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.expression.AccEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.DispatchReceiverName
@@ -155,7 +158,8 @@ class PureGetterFunctionSignature(
     name: SymbolicName,
     symbol: FirPropertySymbol,
     classType: TypeEmbedding,
-    returnType: TypeEmbedding
+    returnType: TypeEmbedding,
+    typeResolver: TypeResolver,
 ) :
     PropertyAccessorFunctionSignature(name, symbol) {
     override val symbol: FirFunctionSymbol<*>
@@ -169,9 +173,11 @@ class PureGetterFunctionSignature(
     override val returns: VariableEmbedding = PlaceholderVariableEmbedding(FunctionResultVariableName, returnType)
     override val dispatchReceiver: VariableEmbedding = PlaceholderVariableEmbedding(DispatchReceiverName, classType)
 
-    override val preconditions: List<ExpEmbedding> = dispatchReceiver.provenInvariants()
+    override val preconditions: List<ExpEmbedding> =
+        dispatchReceiver.provenInvariants() + this.stdLibPreconditions(typeResolver)
 
-    override val postconditions: List<ExpEmbedding> = returns.provenInvariants()
+    override val postconditions: List<ExpEmbedding> =
+        returns.provenInvariants() + this.stdLibPostconditions(returns, typeResolver)
 
     override val isPure: Boolean = true
 }
@@ -209,7 +215,7 @@ fun FullNamedFunctionSignature.toViperFunction(
     body: Exp?,
 ): UserFunction {
     postconditions.forEach { postcondition ->
-        val isValid = postcondition.preorder().all { it.first !is AccEmbedding && it.first !is PredicateAccessPermissions}
+        val isValid = postcondition.preorder().all { it.first !is AccEmbedding }
         if (!isValid) throw SnaktInternalException(
             declarationSource,
             "Postcondition tries to acquire permissions, which is not allowed in a function"
