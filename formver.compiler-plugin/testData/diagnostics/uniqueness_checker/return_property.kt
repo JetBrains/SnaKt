@@ -4,26 +4,26 @@ import org.jetbrains.kotlin.formver.plugin.Borrowed
 import org.jetbrains.kotlin.formver.plugin.Unique
 
 class A {
-    @Unique var x = Any()
-    @Unique var w = Any()
+    var x: @Unique Any = Any()
+    var w: @Unique Any = Any()
 }
 
 class B {
-    @Unique var y = A()
+    var y: @Unique A = A()
 }
 
 fun `return shared subproperty`(a: B): Any {
     return a.y
 }
 
-fun `return borrowed subproperty`(@Borrowed a: B): Any {
-    return <!UNIQUENESS_VIOLATION!>a.y<!>
-}
-
-fun `return unique subproperty`(@Unique a: B): Any {
+fun `return borrowed subproperty`(a: @Borrowed B): Any {
     return a.y
 }
 
-fun `return unique-borrowed subproperty`(@Unique @Borrowed a: B): Any {
-    return <!UNIQUENESS_VIOLATION!>a.y<!>
+fun `return unique subproperty`(a: @Unique B): Any {
+    return a.y
+}
+
+fun `return unique-borrowed subproperty`(a: @Unique @Borrowed B): Any {
+    return a.y
 }

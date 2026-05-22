@@ -13,14 +13,14 @@ fun `share shared`(y: A) {
     share(y)
 }
 
-fun `share borrowed`(@Borrowed y: A) {
-    share(<!UNIQUENESS_VIOLATION!>y<!>)
+fun `share borrowed`(y: @Borrowed A) {
+    share(<!LOCALITY_MISMATCH!>y<!>)
 }
 
-fun `share unique`(@Unique y: A) {
+fun `share unique`(y: @Unique A) {
     share(y)
 }
 
-fun `share unique-borrowed`(@Borrowed @Unique y: A) {
-    share(<!UNIQUENESS_VIOLATION!>y<!>)
+fun `share unique-borrowed`(y: @Borrowed @Unique A) {
+    share(<!LOCALITY_MISMATCH!>y<!>)
 }

@@ -4,56 +4,56 @@ import org.jetbrains.kotlin.formver.plugin.Borrowed
 import org.jetbrains.kotlin.formver.plugin.Unique
 
 class A {
-    @Unique var x = Any()
-    @Unique var w = Any()
+    var x: @Unique Any = Any()
+    var w: @Unique Any = Any()
 }
 
 class B {
-    @Unique var y = A()
+    var y: @Unique A = A()
 }
 
-fun consume(@Unique a: Any) {}
+fun consume(a: @Unique Any) {}
 
 fun share(a: Any) {}
 
 // Consuming subproperties
 
 fun `consume shared subproperty`(z: B) {
-    consume(<!UNIQUENESS_VIOLATION!>z.y.x<!>)
+    consume(<!UNIQUENESS_MISMATCH!>z.y.x<!>)
 }
 
-fun `consume borrowed subproperty`(@Borrowed z: B) {
-    consume(<!UNIQUENESS_VIOLATION!>z.y.x<!>)
+fun `consume borrowed subproperty`(z: @Borrowed B) {
+    consume(<!UNIQUENESS_MISMATCH!>z.y.x<!>)
 }
 
-fun `consume unique subproperty`(@Unique z: B) {
+fun `consume unique subproperty`(z: @Unique B) {
     consume(z.y.x)
 }
 
-fun `consume unique-borrowed subproperty`(@Borrowed @Unique z: B) {
-    consume(<!UNIQUENESS_VIOLATION!>z.y.x<!>)
+fun `consume unique-borrowed subproperty`(z: @Borrowed @Unique B) {
+    consume(z.y.x)
 }
 
-fun `consume multiple unique subproperties`(@Unique z: B) {
+fun `consume multiple unique subproperties`(z: @Unique B) {
     consume(z.y.x)
-    consume(z.y.w)
+    consume(<!UNIQUENESS_MISMATCH!>z.y.w<!>)
 }
 
 // Consuming partially-inconsistent subproperties
 
-fun `consume partially moved`(@Unique z: B) {
+fun `consume partially moved`(z: @Unique B) {
     consume(z.y)
-    consume(<!UNIQUENESS_VIOLATION!>z<!>)
+    consume(<!UNIQUENESS_MISMATCH!>z<!>)
 }
 
-fun `consume partially shared`(@Unique z: B) {
+fun `consume partially shared`(z: @Unique B) {
     share(z.y)
-    consume(<!UNIQUENESS_VIOLATION!>z<!>)
+    consume(z)
 }
 
 // Consuming subproperty after assignment
 
-fun `consume unique parent after assigning subproperty to unique`(@Unique x: B, @Unique y: A) {
+fun `consume unique parent after assigning subproperty to unique`(x: @Unique B, y: @Unique A) {
     x.y = y
     consume(x.y)
 }
@@ -61,22 +61,22 @@ fun `consume unique parent after assigning subproperty to unique`(@Unique x: B, 
 // Consuming subproperty after smart-cast
 
 class Node(
-    @Unique val next : Node?
+    val next: @Unique Node?
 )
 
-fun `consume unique parent after cast`(@Unique node: Any) {
-    @Unique val local = (node as Node).next
-    consume(<!UNIQUENESS_VIOLATION!>node<!>)
+fun `consume unique parent after cast`(node: @Unique Any) {
+    val local: @Unique Node? = (node as Node).next
+    consume(node)
 }
 
-fun `consume unique parent after cast to not-null`(@Unique node: Node) {
-    @Unique val local = node.next as Node
-    consume(<!UNIQUENESS_VIOLATION!>node<!>)
+fun `consume unique parent after cast to not-null`(node: @Unique Node) {
+    val local: @Unique Node = node.next as Node
+    consume(node)
 }
 
-fun `consume unique parent after smart-cast`(@Unique node: Node?) {
+fun `consume unique parent after smart-cast`(node: @Unique Node?) {
     if (node != null) {
-        @Unique val local = node.next
-        consume(<!UNIQUENESS_VIOLATION!>node<!>)
+        val local: @Unique Node? = node.next
+        consume(node)
     }
 }

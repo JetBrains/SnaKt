@@ -5,9 +5,9 @@ import org.jetbrains.kotlin.formver.plugin.Unique
 
 class A()
 
-fun borrow(@Borrowed y: Any) {}
+fun borrow(y: @Borrowed Any) {}
 
-fun consume(@Unique y: Any) {}
+fun consume(y: @Unique Any) {}
 
 fun share(y: Any) {}
 
@@ -17,23 +17,23 @@ fun `borrow shared`(z: A) {
     borrow(z)
 }
 
-fun `borrow borrowed`(@Borrowed z: A) {
+fun `borrow borrowed`(z: @Borrowed A) {
     borrow(z)
 }
 
-fun `borrow unique`(@Unique z: A) {
+fun `borrow unique`(z: @Unique A) {
     borrow(z)
 }
 
-fun `borrow unique-borrowed`(@Borrowed @Unique z: A) {
+fun `borrow unique-borrowed`(z: @Borrowed @Unique A) {
     borrow(z)
 }
 
 // Borrowing local after consuming
 
-fun `borrow after consuming unique`(@Unique a: A) {
+fun `borrow after consuming unique`(a: @Unique A) {
     consume(a)
-    borrow(<!UNIQUENESS_VIOLATION!>a<!>)
+    borrow(<!UNIQUENESS_MISMATCH!>a<!>)
 }
 
 // Borrowing local after sharing
@@ -43,7 +43,7 @@ fun `borrow after sharing shared`(a: A) {
     borrow(a)
 }
 
-fun `borrow after sharing unique`(@Unique a: A) {
+fun `borrow after sharing unique`(a: @Unique A) {
     share(a)
     borrow(a)
 }

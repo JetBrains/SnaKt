@@ -12,13 +12,13 @@ import org.jetbrains.kotlin.formver.type.plugin.TypeJudgment
 import org.jetbrains.kotlin.formver.type.plugin.TypeUnifier
 
 enum class Uniqueness {
-    Global,
     Unique,
+    Shared,
     Moved
 }
 
 val ConeKotlinType.defaultUniqueness: Uniqueness
-    get() = attributes.uniquenessAttribute?.uniqueness ?: Uniqueness.Global
+    get() = attributes.uniquenessAttribute?.uniqueness ?: Uniqueness.Shared
 
 fun Uniqueness.accepts(other: Uniqueness): Boolean =
     this >= other
@@ -49,7 +49,7 @@ object UniquenessIntersector : TypeIntersector<Uniqueness> {
 val UniquenessRenderer = Renderer<Uniqueness> { uniqueness ->
     when (uniqueness) {
         Uniqueness.Unique -> "unique"
-        Uniqueness.Global -> "global"
+        Uniqueness.Shared -> "shared"
         Uniqueness.Moved -> "moved"
     }
 }

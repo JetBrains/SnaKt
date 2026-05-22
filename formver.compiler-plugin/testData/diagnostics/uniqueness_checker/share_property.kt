@@ -4,15 +4,15 @@ import org.jetbrains.kotlin.formver.plugin.Borrowed
 import org.jetbrains.kotlin.formver.plugin.Unique
 
 class A {
-    @Unique var x = Any()
-    @Unique var w = Any()
+    var x: @Unique Any = Any()
+    var w: @Unique Any = Any()
 }
 
 class B {
-    @Unique var y = A()
+    var y: @Unique A = A()
 }
 
-fun consume(@Unique a: Any) {}
+fun consume(a: @Unique Any) {}
 
 fun share(a: Any) {}
 
@@ -22,43 +22,43 @@ fun `share shared subproperty`(z: B) {
     share(z.y.x)
 }
 
-fun `share borrowed subproperty`(@Borrowed z: B) {
-    share(<!UNIQUENESS_VIOLATION!>z.y.x<!>)
-}
-
-fun `share unique subproperty`(@Unique z: B) {
+fun `share borrowed subproperty`(z: @Borrowed B) {
     share(z.y.x)
 }
 
-fun `share unique-borrowed subproperty`(@Unique @Borrowed z: B) {
-    share(<!UNIQUENESS_VIOLATION!>z.y.x<!>)
+fun `share unique subproperty`(z: @Unique B) {
+    share(z.y.x)
 }
 
-fun `share multiple unique subproperties`(@Unique z: B) {
+fun `share unique-borrowed subproperty`(z: @Unique @Borrowed B) {
+    share(z.y.x)
+}
+
+fun `share multiple unique subproperties`(z: @Unique B) {
     share(z.y.x)
     share(z.y.w)
 }
 
 // Sharing partially-inconsistent properties
 
-fun `share partially moved`(@Unique z: B) {
+fun `share partially moved`(z: @Unique B) {
     consume(z.y)
-    share(<!UNIQUENESS_VIOLATION!>z<!>)
+    share(<!UNIQUENESS_MISMATCH!>z<!>)
 }
 
-fun `share partially shared`(@Unique z: B) {
+fun `share partially shared`(z: @Unique B) {
     share(z.y)
-    share(<!UNIQUENESS_VIOLATION!>z<!>)
+    share(z)
 }
 
 // Sharing subproperties after assignment
 
-fun `share subproperty after assigning it to shared`(@Unique x: B, v: A) {
-    x.y = <!UNIQUENESS_VIOLATION!>v<!>
+fun `share subproperty after assigning it to shared`(x: @Unique B, v: A) {
+    x.y = v
     share(x.y)
 }
 
-fun `share subproperty after assigning it to unique`(@Unique x: B, @Unique v: A) {
+fun `share subproperty after assigning it to unique`(x: @Unique B, v: @Unique A) {
     x.y = v
     share(x.y)
 }

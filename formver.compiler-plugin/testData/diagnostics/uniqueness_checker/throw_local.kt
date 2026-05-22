@@ -7,14 +7,14 @@ fun `throw shared`(a: Throwable) {
     throw a
 }
 
-fun `throw borrowed`(@Borrowed a: Throwable) {
-    throw <!UNIQUENESS_VIOLATION!>a<!>
+fun `throw borrowed`(a: @Borrowed Throwable) {
+    throw <!LOCALITY_MISMATCH!>a<!>
 }
 
-fun `throw unique`(@Unique a: Throwable) {
+fun `throw unique`(a: @Unique Throwable) {
     throw a
 }
 
-fun `throw unique-borrowed`(@Unique @Borrowed a: Throwable) {
-    throw <!UNIQUENESS_VIOLATION!>a<!>
+fun `throw unique-borrowed`(a: @Unique @Borrowed Throwable) {
+    throw <!LOCALITY_MISMATCH!>a<!>
 }

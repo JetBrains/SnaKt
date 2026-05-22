@@ -3,20 +3,20 @@
 import org.jetbrains.kotlin.formver.plugin.Borrowed
 import org.jetbrains.kotlin.formver.plugin.Unique
 
-fun borrowBoth(@Borrowed a: Any, @Borrowed b: Any) {}
+fun borrowBoth(a: @Borrowed Any, b: @Borrowed Any) {}
 
-fun consumeBoth(@Unique a: Any, @Unique b: Any) {}
+fun consumeBoth(a: @Unique Any, b: @Unique Any) {}
 
 fun shareBoth(a: Any, b: Any) {}
 
 fun `pass shared twice to shareBoth`(a: Any) {
-    shareBoth(a, a)
+    shareBoth(a, <!UNIQUENESS_MISMATCH!>a<!>)
 }
 
-fun `pass borrowed twice to borrowBoth`(@Borrowed a: Any) {
-    borrowBoth(a, a)
+fun `pass borrowed twice to borrowBoth`(a: @Borrowed Any) {
+    borrowBoth(a, <!UNIQUENESS_MISMATCH!>a<!>)
 }
 
-fun `pass unique twice to consumeBoth`(@Unique a: Any) {
-    consumeBoth(a, <!UNIQUENESS_VIOLATION!>a<!>)
+fun `pass unique twice to consumeBoth`(a: @Unique Any) {
+    consumeBoth(a, <!UNIQUENESS_MISMATCH!>a<!>)
 }

@@ -4,32 +4,32 @@ import org.jetbrains.kotlin.formver.plugin.Borrowed
 import org.jetbrains.kotlin.formver.plugin.Unique
 
 class A {
-    @Unique var x = Any()
-    @Unique var w = Any()
+    var x: @Unique Any = Any()
+    var w: @Unique Any = Any()
 }
 
 class B {
-    @Unique var y = A()
+    var y: @Unique A = A()
 }
 
-fun borrowBoth(@Borrowed a: Any, @Borrowed b: Any) {}
+fun borrowBoth(a: @Borrowed Any, b: @Borrowed Any) {}
 
-fun consumeBoth(@Unique a: Any, @Unique b: Any) {}
+fun consumeBoth(a: @Unique Any, b: @Unique Any) {}
 
 fun shareBoth(a: Any, b: Any) {}
 
 fun `pass shared subproperty and parent to shareBoth`(a: B) {
-    shareBoth(a.y, a)
+    shareBoth(a.y, <!UNIQUENESS_MISMATCH!>a<!>)
 }
 
-fun `pass borrowed subproperty and parent to borrowBoth`(@Borrowed a: B) {
-    borrowBoth(a.y, a)
+fun `pass borrowed subproperty and parent to borrowBoth`(a: @Borrowed B) {
+    borrowBoth(a.y, <!UNIQUENESS_MISMATCH!>a<!>)
 }
 
-fun `pass unique subproperty and parent to consumeBoth`(@Unique a: B) {
-    consumeBoth(a.y, <!UNIQUENESS_VIOLATION!>a<!>)
+fun `pass unique subproperty and parent to consumeBoth`(a: @Unique B) {
+    consumeBoth(a.y, <!UNIQUENESS_MISMATCH!>a<!>)
 }
 
-fun `pass unique-borrowed subproperty and parent to borrowBoth`(@Unique @Borrowed a: B) {
-    borrowBoth(a.y, a)
+fun `pass unique-borrowed subproperty and parent to borrowBoth`(a: @Unique @Borrowed B) {
+    borrowBoth(a.y, <!UNIQUENESS_MISMATCH!>a<!>)
 }

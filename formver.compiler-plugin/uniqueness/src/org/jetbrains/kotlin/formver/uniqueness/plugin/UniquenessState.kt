@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.formver.type.plugin.TypeUnifier
 
 typealias UniquenessState = PathTrie<Uniqueness>
 
-val EmptyUniquenessState = UniquenessState(Uniqueness.Global)
+val EmptyUniquenessState = UniquenessState(Uniqueness.Shared)
 
 fun UniquenessState.join(other: UniquenessState): UniquenessState =
     join(other, UniquenessUnifier)

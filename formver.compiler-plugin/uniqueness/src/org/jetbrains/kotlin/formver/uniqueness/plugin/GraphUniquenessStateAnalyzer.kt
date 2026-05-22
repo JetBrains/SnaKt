@@ -17,13 +17,12 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallEnterNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
-import org.jetbrains.kotlin.formver.locality.plugin.Locality
 import org.jetbrains.kotlin.formver.type.plugin.CallParametersTypeResolver
 
 class GraphUniquenessStateAnalyzer(
     private val initial: UniquenessState,
     private val context: CheckerContext,
-    private val callArgumentsLocalityResolver: CallParametersTypeResolver<Locality>
+    private val callParametersUniquenessResolver: CallParametersTypeResolver<Uniqueness>
 ) : PathAwareControlFlowGraphVisitor<Unit, UniquenessState>() {
     override fun mergeInfo(
         a: ControlFlowInfo<Unit, UniquenessState>,
@@ -105,12 +104,11 @@ class GraphUniquenessStateAnalyzer(
         data: PathAwareControlFlowInfo<Unit, UniquenessState>
     ): PathAwareControlFlowInfo<Unit, UniquenessState> {
         val call = node.fir
-
         var initializationState = EmptyUniquenessState
 
         with(context) {
-            for ((argument, requiredLocality) in callArgumentsLocalityResolver.resolveParameterTypesOf(call)) {
-                if (requiredLocality == null) continue
+            for ((argument, requiredUniqueness) in callParametersUniquenessResolver.resolveParameterTypesOf(call)) {
+                if (requiredUniqueness != Uniqueness.Shared) continue
 
                 initializationState = argument.resolveAccessState().maskInitialization(initializationState)
             }
@@ -121,3 +119,9 @@ class GraphUniquenessStateAnalyzer(
         }
     }
 }
+
+fun PathAwareControlFlowInfo<Unit, UniquenessState>?.asUniquenessState(): UniquenessState =
+    this?.values
+        ?.map { it[Unit] ?: EmptyUniquenessState }
+        ?.reduceOrNull(UniquenessState::join)
+        ?: EmptyUniquenessState

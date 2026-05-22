@@ -3,8 +3,8 @@ import org.jetbrains.kotlin.formver.plugin.Unique
 class UniquePrimitiveFields(
     val sharedVal: Int,
     var sharedVar: Int,
-    @Unique val uniqueVal: Int,
-    @Unique var uniqueVar: Int
+    val uniqueVal: @Unique Int,
+    var uniqueVar: @Unique Int
 )
 
 fun <!VIPER_TEXT!>testPrimitiveFieldGetterUnique<!>(@Unique pf: UniquePrimitiveFields) {
@@ -34,8 +34,8 @@ fun <!VIPER_TEXT!>testPrimitiveFieldSetterShared<!>(pf: UniquePrimitiveFields) {
 class UniqueReferenceFields(
     val sharedVal: UniquePrimitiveFields,
     var sharedVar: UniquePrimitiveFields,
-    @Unique val uniqueVal: UniquePrimitiveFields,
-    @Unique var uniqueVar: UniquePrimitiveFields
+    val uniqueVal: @Unique UniquePrimitiveFields,
+    var uniqueVar: @Unique UniquePrimitiveFields
 )
 
 fun <!VIPER_TEXT!>testReferenceFieldGetterUnique<!>(@Unique rf: UniqueReferenceFields) {

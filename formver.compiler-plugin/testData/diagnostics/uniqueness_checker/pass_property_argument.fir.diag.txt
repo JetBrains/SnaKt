@@ -1,1 +1,7 @@
-/pass_property_argument.kt: error: Argument uniqueness mismatch: partial type 'moved' is inconsistent with parent type 'unique global'.
+/pass_property_argument.kt: error: Argument uniqueness mismatch: expected 'shared', actual 'moved'.
+
+/pass_property_argument.kt: error: Argument uniqueness mismatch: expected 'shared', actual 'moved'.
+
+/pass_property_argument.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/pass_property_argument.kt: error: Argument uniqueness mismatch: expected 'shared', actual 'moved'.

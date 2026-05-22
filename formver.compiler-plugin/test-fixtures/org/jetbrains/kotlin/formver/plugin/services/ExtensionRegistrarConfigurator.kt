@@ -62,9 +62,9 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
             else -> TargetsSelection.ALL_TARGETS
         }
         val checkUniqueness = uniquenessOnly
-        // TODO: Eventually turn on locality checking together with uniqueness checking once the latter will be able to
-        //  leverage locality information.
-        val checkLocality = localityOnly // || checkUniqueness
+        // Locality must run before uniqueness in tests.
+        // UNIQUE_CHECK_ONLY enables both checkers (in this order), while LOCALITY_CHECK_ONLY keeps uniqueness off.
+        val checkLocality = localityOnly || checkUniqueness
         val config = PluginConfiguration(
             logLevel,
             errorStyle,
@@ -76,11 +76,11 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
             checkLocality = checkLocality,
         )
         FirExtensionRegistrarAdapter.registerExtension(FormalVerificationPluginExtensionRegistrar(config))
-        if (config.checkUniqueness) {
-            FirExtensionRegistrarAdapter.registerExtension(UniquenessExtensionRegistrar())
-        }
         if (config.checkLocality) {
             FirExtensionRegistrarAdapter.registerExtension(LocalityExtensionRegistrar())
+        }
+        if (config.checkUniqueness) {
+            FirExtensionRegistrarAdapter.registerExtension(UniquenessExtensionRegistrar())
         }
     }
 }
@@ -99,7 +99,7 @@ object FormVerDirectives : SimpleDirectivesContainer() {
     )
 
     val UNIQUE_CHECK_ONLY by directive(
-        description = "Do uniqueness checking"
+        description = "Do uniqueness checking (and run locality first)"
     )
 
     val LOCALITY_CHECK_ONLY by directive(

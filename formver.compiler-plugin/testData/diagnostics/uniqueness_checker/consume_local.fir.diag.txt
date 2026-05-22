@@ -1,15 +1,21 @@
-/consume_local.kt: error: Argument uniqueness mismatch: expected 'unique global', actual 'shared global'.
+/consume_local.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
 
-/consume_local.kt: error: Argument uniqueness mismatch: expected 'unique global', actual 'shared local'.
+/consume_local.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
 
-/consume_local.kt: error: Argument uniqueness mismatch: expected 'unique global', actual 'unique local'.
+/consume_local.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
 
-/consume_local.kt: error: Argument uniqueness mismatch: expected 'unique global', actual 'shared global'.
+/consume_local.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
 
-/consume_local.kt: error: Argument uniqueness mismatch: expected 'unique global', actual 'shared local'.
+/consume_local.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
 
-/consume_local.kt: error: Argument uniqueness mismatch: expected 'unique global', actual 'unique local'.
+/consume_local.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
 
-/consume_local.kt: error: Argument uniqueness mismatch: expected 'unique global', actual 'unique local'.
+/consume_local.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
 
-/consume_local.kt: error: Argument uniqueness mismatch: expected 'unique global', actual 'moved'.
+/consume_local.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/consume_local.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/consume_local.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/consume_local.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.

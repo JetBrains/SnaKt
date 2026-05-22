@@ -18,7 +18,7 @@ fun FirBasedSymbol<*>.resolveComponentUniqueness(): Uniqueness =
     when (this) {
         is FirVariableSymbol<*> -> resolveUniqueness()
         is FirReceiverParameterSymbol -> resolveUniqueness()
-        else -> Uniqueness.Global
+        else -> Uniqueness.Shared
     }
 
 fun FirReceiverParameterSymbol.resolveUniqueness(): Uniqueness =
@@ -33,13 +33,13 @@ object ReceiverUniquenessResolver :
 
 context(context: CheckerContext)
 fun FirVariableSymbol<*>.resolveUniqueness(): Uniqueness {
-    if (resolvedReturnType is ConeErrorType) return Uniqueness.Global
+    if (resolvedReturnType is ConeErrorType) return Uniqueness.Shared
 
     if (resolvedReturnTypeRef.source?.kind !is KtFakeSourceElementKind.ImplicitTypeRef) {
         return resolvedReturnType.defaultUniqueness
     }
 
-    return resolvedInitializer?.resolveAccessState()?.resolveUniqueness() ?: Uniqueness.Global
+    return resolvedInitializer?.resolveAccessState()?.resolveUniqueness() ?: Uniqueness.Shared
 }
 
 object VariableUniquenessResolver :
@@ -48,3 +48,4 @@ object VariableUniquenessResolver :
     override fun resolveTypeOf(symbol: FirVariableSymbol<*>): Uniqueness =
         symbol.resolveUniqueness()
 }
+

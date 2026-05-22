@@ -4,17 +4,17 @@ import org.jetbrains.kotlin.formver.plugin.Borrowed
 import org.jetbrains.kotlin.formver.plugin.Unique
 
 class A {
-    @Unique var x = Any()
-    @Unique var w = Any()
+    var x: @Unique Any = Any()
+    var w: @Unique Any = Any()
 }
 
 class B {
-    @Unique var y = A()
+    var y: @Unique A = A()
 }
 
-fun borrow(@Borrowed y: Any) {}
+fun borrow(y: @Borrowed Any) {}
 
-fun consume(@Unique y: Any) {}
+fun consume(y: @Unique Any) {}
 
 fun share(a: Any) {}
 
@@ -24,43 +24,43 @@ fun `borrow shared subproperty`(z: B) {
     borrow(z.y)
 }
 
-fun `borrow borrowed subproperty`(@Borrowed z: B) {
+fun `borrow borrowed subproperty`(z: @Borrowed B) {
     borrow(z.y)
 }
 
-fun `borrow unique subproperty`(@Unique z: B) {
+fun `borrow unique subproperty`(z: @Unique B) {
     borrow(z.y)
 }
 
-fun `borrow unique-borrowed subproperty`(@Borrowed @Unique z: B) {
+fun `borrow unique-borrowed subproperty`(z: @Borrowed @Unique B) {
     borrow(z.y)
 }
 
-fun `borrow multiple unique subproperties`(@Unique z: B) {
+fun `borrow multiple unique subproperties`(z: @Unique B) {
     borrow(z.y.x)
     borrow(z.y.w)
 }
 
 // Borrowing partially-inconsistent subproperties
 
-fun `borrow partially moved`(@Unique z: B) {
+fun `borrow partially moved`(z: @Unique B) {
     consume(z.y)
-    borrow(<!UNIQUENESS_VIOLATION!>z<!>)
+    borrow(<!UNIQUENESS_MISMATCH!>z<!>)
 }
 
-fun `borrow partially shared`(@Unique z: B) {
+fun `borrow partially shared`(z: @Unique B) {
     share(z.y)
-    borrow(<!UNIQUENESS_VIOLATION!>z<!>)
+    borrow(z)
 }
 
 // Borrowing after assignment
 
-fun `borrow unique parent after assigning subproperty to unique`(@Unique x: B, @Unique v: A) {
+fun `borrow unique parent after assigning subproperty to unique`(x: @Unique B, v: @Unique A) {
     x.y = v
     borrow(x)
 }
 
-fun `borrow unique parent twice after assigning subproperty to unique`(@Unique @Borrowed x: B, @Unique v: A) {
+fun `borrow unique parent twice after assigning subproperty to unique`(x: @Unique @Borrowed B, v: @Unique A) {
     x.y = v
     borrow(x)
     borrow(x)

@@ -3,10 +3,10 @@
 import org.jetbrains.kotlin.formver.plugin.Borrowed
 import org.jetbrains.kotlin.formver.plugin.Unique
 
-class Box(@Unique val a: Any)
+class Box(val a: @Unique Any)
 
-fun `unique parameter`(@Unique box: Box) {}
+fun `unique parameter`(box: @Unique Box) {}
 
-fun `borrowed parameter`(@Borrowed box: Box) {}
+fun `borrowed parameter`(box: @Borrowed Box) {}
 
-fun `unique borrowed parameter`(@Unique @Borrowed box: Box) {}
+fun `unique borrowed parameter`(box: @Unique @Borrowed Box) {}

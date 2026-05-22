@@ -14,7 +14,6 @@ import org.jetbrains.kotlin.fir.declarations.FirFunction
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
-import org.jetbrains.kotlin.formver.locality.plugin.CallParametersLocalityResolver
 
 typealias GraphUniquenessStates = Map<CFGNode<*>, PathAwareControlFlowInfo<Unit, UniquenessState>>
 
@@ -52,7 +51,7 @@ class GraphUniquenessStateResolver(session: FirSession) : FirExtensionSessionCom
         val analyzer = GraphUniquenessStateAnalyzer(
             initial,
             context,
-            CallParametersLocalityResolver
+            CallParametersUniquenessResolver
         )
 
         return graph.traverseToFixedPoint(analyzer)
@@ -63,5 +62,5 @@ private val FirSession.graphUniquenessStateResolver: GraphUniquenessStateResolve
         by FirSession.sessionComponentAccessor()
 
 context(context: CheckerContext)
-fun ControlFlowGraph.resolveUniquenessStates(): Map<CFGNode<*>, PathAwareControlFlowInfo<Unit, UniquenessState>> =
+fun ControlFlowGraph.resolveUniquenessStates(): GraphUniquenessStates =
     context.session.graphUniquenessStateResolver.resolveUniquenessStatesOf(this, context)
