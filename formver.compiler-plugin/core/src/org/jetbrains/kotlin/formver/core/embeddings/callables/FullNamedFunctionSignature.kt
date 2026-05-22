@@ -19,7 +19,7 @@ import org.jetbrains.kotlin.formver.core.linearization.pureToViper
 import org.jetbrains.kotlin.formver.core.names.DispatchReceiverName
 import org.jetbrains.kotlin.formver.core.names.FunctionResultVariableName
 import org.jetbrains.kotlin.formver.core.names.ReturnVariableName
-import org.jetbrains.kotlin.formver.core.purity.preorder
+import org.jetbrains.kotlin.formver.core.embeddings.expression.preorder
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
 import org.jetbrains.kotlin.utils.addIfNotNull
