@@ -14,7 +14,6 @@ class Predicate(
     val includeInDumpPolicy: IncludeInDumpPolicy = IncludeInDumpPolicy.PREDICATE_DUMP,
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
-    val trafos: Trafos = Trafos.NoTrafos,
 ) : IntoSilver<viper.silver.ast.Predicate> {
     context(nameResolver: NameResolver)
     override fun toSilver(): viper.silver.ast.Predicate =
@@ -24,6 +23,6 @@ class Predicate(
             body.toSilver().toScalaOption(),
             pos.toSilver(),
             info.toSilver(),
-            trafos.toSilver()
+            silverNoTrafos
         )
 }

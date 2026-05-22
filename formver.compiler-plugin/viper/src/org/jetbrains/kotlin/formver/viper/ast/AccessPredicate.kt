@@ -17,7 +17,6 @@ sealed interface AccessPredicate : Exp {
         val perm: PermExp,
         val pos: Position = Position.NoPosition,
         val info: Info = Info.NoInfo,
-        val trafos: Trafos = Trafos.NoTrafos,
     ) : AccessPredicate {
         override val type: Type.Bool = Type.Bool
 
@@ -28,7 +27,7 @@ sealed interface AccessPredicate : Exp {
                 perm.toSilver().toScalaOption(),
                 pos.toSilver(),
                 info.toSilver(),
-                trafos.toSilver()
+                silverNoTrafos
             )
     }
 }

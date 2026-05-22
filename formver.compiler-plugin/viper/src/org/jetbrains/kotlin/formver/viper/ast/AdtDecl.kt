@@ -28,7 +28,6 @@ data class AdtConstructorDecl(
     val formalArgs: List<Declaration.LocalVarDecl>,
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
-    val trafos: Trafos = Trafos.NoTrafos,
 ) : IntoSilver<viper.silver.plugin.standard.adt.AdtConstructor> {
     context(nameResolver: NameResolver)
     override fun toSilver(): viper.silver.plugin.standard.adt.AdtConstructor = viper.silver.plugin.standard.adt.AdtConstructor(
@@ -38,7 +37,7 @@ data class AdtConstructorDecl(
             info.toSilver(),
             AdtType(adtName.mangled, emptyScalaMap(), emptySeq()),
             adtName.mangled,
-            trafos.toSilver(),
+            silverNoTrafos,
         )
 }
 
@@ -49,7 +48,6 @@ data class AdtDecl(
     val includeInShortDump: Boolean = true,
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
-    val trafos: Trafos = Trafos.NoTrafos,
 ) : IntoSilver<Adt> {
     context(nameResolver: NameResolver)
     override fun toSilver(): Adt =
@@ -60,6 +58,6 @@ data class AdtDecl(
             emptyScalaMap(),
             pos.toSilver(),
             info.toSilver(),
-            trafos.toSilver(),
+            silverNoTrafos,
         )
 }

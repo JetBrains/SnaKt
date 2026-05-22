@@ -12,20 +12,18 @@ sealed class PermExp : IntoSilver<viper.silver.ast.PermExp> {
     data class WildcardPerm(
         val pos: Position = Position.NoPosition,
         val info: Info = Info.NoInfo,
-        val trafos: Trafos = Trafos.NoTrafos,
     ) : PermExp() {
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.PermExp =
-            viper.silver.ast.WildcardPerm(pos.toSilver(), info.toSilver(), trafos.toSilver())
+            viper.silver.ast.WildcardPerm(pos.toSilver(), info.toSilver(), silverNoTrafos)
     }
 
     data class FullPerm(
         val pos: Position = Position.NoPosition,
         val info: Info = Info.NoInfo,
-        val trafos: Trafos = Trafos.NoTrafos,
     ) : PermExp() {
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.PermExp =
-            viper.silver.ast.FullPerm(pos.toSilver(), info.toSilver(), trafos.toSilver())
+            viper.silver.ast.FullPerm(pos.toSilver(), info.toSilver(), silverNoTrafos)
     }
 }

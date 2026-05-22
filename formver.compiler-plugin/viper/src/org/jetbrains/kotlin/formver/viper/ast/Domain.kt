@@ -19,7 +19,6 @@ data class DomainFunc(
     val unique: Boolean,
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
-    val trafos: Trafos = Trafos.NoTrafos,
 ) : IntoSilver<viper.silver.ast.DomainFunc>, Applicable {
     context(nameResolver: NameResolver)
     override fun toSilver(): viper.silver.ast.DomainFunc =
@@ -32,10 +31,10 @@ data class DomainFunc(
             pos.toSilver(),
             info.toSilver(),
             domainName.mangled,
-            trafos.toSilver()
+            silverNoTrafos
         )
 
-    override fun toFuncApp(args: List<Exp>, pos: Position, info: Info, trafos: Trafos): Exp.DomainFuncApp =
+    override fun toFuncApp(args: List<Exp>, pos: Position, info: Info): Exp.DomainFuncApp =
         Exp.DomainFuncApp(this, args, typeArgs.associateWith { it }, pos, info)
 }
 
@@ -45,7 +44,6 @@ class DomainAxiom(
     val exp: Exp,
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
-    val trafos: Trafos = Trafos.NoTrafos,
 ) : IntoSilver<viper.silver.ast.DomainAxiom> {
     context(nameResolver: NameResolver)
     override fun toSilver(): viper.silver.ast.DomainAxiom =
@@ -55,7 +53,7 @@ class DomainAxiom(
                 pos.toSilver(),
                 info.toSilver(),
                 domainName.mangled,
-                trafos.toSilver()
+                silverNoTrafos
             )
 
             else -> NamedDomainAxiom(
@@ -64,7 +62,7 @@ class DomainAxiom(
                 pos.toSilver(),
                 info.toSilver(),
                 domainName.mangled,
-                trafos.toSilver()
+                silverNoTrafos
             )
         }
 }
@@ -73,7 +71,6 @@ abstract class Domain(
     val name: SymbolicName,
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
-    val trafos: Trafos = Trafos.NoTrafos,
 ) : IntoSilver<viper.silver.ast.Domain> {
 
 
@@ -92,7 +89,7 @@ abstract class Domain(
             null.toScalaOption(),
             pos.toSilver(),
             info.toSilver(),
-            trafos.toSilver()
+            silverNoTrafos
         )
 
     fun funcApp(
@@ -101,15 +98,13 @@ abstract class Domain(
         typeVarMap: Map<Type.TypeVar, Type> = typeVars.associateWith { it },
         pos: Position = Position.NoPosition,
         info: Info = Info.NoInfo,
-        trafos: Trafos = Trafos.NoTrafos,
-    ): Exp.DomainFuncApp = Exp.DomainFuncApp(func, args, typeVarMap, pos, info, trafos)
+    ): Exp.DomainFuncApp = Exp.DomainFuncApp(func, args, typeVarMap, pos, info)
 }
 
 abstract class BuiltinDomain(
     baseName: SymbolicName,
     pos: Position = Position.NoPosition,
     info: Info = Info.NoInfo,
-    trafos: Trafos = Trafos.NoTrafos,
-) : Domain(baseName, pos, info, trafos) {
+) : Domain(baseName, pos, info) {
     override val includeInShortDump: Boolean = false
 }

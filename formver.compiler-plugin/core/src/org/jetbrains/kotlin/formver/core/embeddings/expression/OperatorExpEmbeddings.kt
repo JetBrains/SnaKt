@@ -23,25 +23,25 @@ object OperatorExpEmbeddings {
     val AddIntInt = buildBinaryOperator {
         setName("plusInts")
         setSignature(intIntToIntType)
-        viperImplementation { Exp.Add(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.Add(args[0], args[1], pos, info) }
     }
 
     val SubIntInt = buildBinaryOperator {
         setName("minusInts")
         setSignature(intIntToIntType)
-        viperImplementation { Exp.Sub(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.Sub(args[0], args[1], pos, info) }
     }
 
     val MulIntInt = buildBinaryOperator {
         setName("timesInts")
         setSignature(intIntToIntType)
-        viperImplementation { Exp.Mul(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.Mul(args[0], args[1], pos, info) }
     }
 
     val DivIntInt = buildBinaryOperator {
         setName("divInts")
         setSignature(intIntToIntType)
-        viperImplementation { Exp.Div(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.Div(args[0], args[1], pos, info) }
         additionalConditions {
             precondition {
                 intInjection.fromRef(args[1]) ne 0.toExp()
@@ -52,7 +52,7 @@ object OperatorExpEmbeddings {
     val RemIntInt = buildBinaryOperator {
         setName("remInts")
         setSignature(intIntToIntType)
-        viperImplementation { Exp.Mod(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.Mod(args[0], args[1], pos, info) }
         additionalConditions {
             precondition {
                 intInjection.fromRef(args[1]) ne 0.toExp()
@@ -70,25 +70,25 @@ object OperatorExpEmbeddings {
     val LeIntInt = buildBinaryOperator {
         setName("leInts")
         setSignature(intIntToBooleanType)
-        viperImplementation { Exp.LeCmp(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.LeCmp(args[0], args[1], pos, info) }
     }
 
     val LtIntInt = buildBinaryOperator {
         setName("ltInts")
         setSignature(intIntToBooleanType)
-        viperImplementation { Exp.LtCmp(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.LtCmp(args[0], args[1], pos, info) }
     }
 
     val GeIntInt = buildBinaryOperator {
         setName("geInts")
         setSignature(intIntToBooleanType)
-        viperImplementation { Exp.GeCmp(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.GeCmp(args[0], args[1], pos, info) }
     }
 
     val GtIntInt = buildBinaryOperator {
         setName("gtInts")
         setSignature(intIntToBooleanType)
-        viperImplementation { Exp.GtCmp(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.GtCmp(args[0], args[1], pos, info) }
     }
 
     val NegInt = buildUnaryOperator {
@@ -97,7 +97,7 @@ object OperatorExpEmbeddings {
             withParam { int() }
             withReturnType { int() }
         }
-        viperImplementation { Exp.Minus(args[0], pos, info, trafos) }
+        viperImplementation { Exp.Minus(args[0], pos, info) }
     }
 
     val Not = buildUnaryOperator {
@@ -106,7 +106,7 @@ object OperatorExpEmbeddings {
             withParam { boolean() }
             withReturnType { boolean() }
         }
-        viperImplementation { Exp.Not(args[0], pos, info, trafos) }
+        viperImplementation { Exp.Not(args[0], pos, info) }
     }
 
     private val booleanBooleanToBooleanType
@@ -119,25 +119,25 @@ object OperatorExpEmbeddings {
     val And = buildBinaryOperator {
         setName("andBools")
         setSignature(booleanBooleanToBooleanType)
-        viperImplementation { Exp.And(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.And(args[0], args[1], pos, info) }
     }
 
     val Or = buildBinaryOperator {
         setName("orBools")
         setSignature(booleanBooleanToBooleanType)
-        viperImplementation { Exp.Or(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.Or(args[0], args[1], pos, info) }
     }
 
     val Xor = buildBinaryOperator {
         setName("xorBools")
         setSignature(booleanBooleanToBooleanType)
-        viperImplementation { Exp.NeCmp(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.NeCmp(args[0], args[1], pos, info) }
     }
 
     val Implies = buildBinaryOperator {
         setName("impliesBools")
         setSignature(booleanBooleanToBooleanType)
-        viperImplementation { Exp.Implies(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.Implies(args[0], args[1], pos, info) }
     }
 
     val SubCharChar = buildBinaryOperator {
@@ -147,7 +147,7 @@ object OperatorExpEmbeddings {
             withParam { char() }
             withReturnType { int() }
         }
-        viperImplementation { Exp.Sub(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.Sub(args[0], args[1], pos, info) }
     }
 
     private val charIntToCharType = buildFunctionPretype {
@@ -159,13 +159,13 @@ object OperatorExpEmbeddings {
     val AddCharInt = buildBinaryOperator {
         setName("addCharInt")
         setSignature(charIntToCharType)
-        viperImplementation { Exp.Add(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.Add(args[0], args[1], pos, info) }
     }
 
     val SubCharInt = buildBinaryOperator {
         setName("subCharInt")
         setSignature(charIntToCharType)
-        viperImplementation { Exp.Sub(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.Sub(args[0], args[1], pos, info) }
     }
 
     private val charCharToBooleanType = buildFunctionPretype {
@@ -177,25 +177,25 @@ object OperatorExpEmbeddings {
     val GeCharChar = buildBinaryOperator {
         setName("geChars")
         setSignature(charCharToBooleanType)
-        viperImplementation { Exp.GeCmp(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.GeCmp(args[0], args[1], pos, info) }
     }
 
     val GtCharChar = buildBinaryOperator {
         setName("gtChars")
         setSignature(charCharToBooleanType)
-        viperImplementation { Exp.GtCmp(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.GtCmp(args[0], args[1], pos, info) }
     }
 
     val LeCharChar = buildBinaryOperator {
         setName("leChars")
         setSignature(charCharToBooleanType)
-        viperImplementation { Exp.LeCmp(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.LeCmp(args[0], args[1], pos, info) }
     }
 
     val LtCharChar = buildBinaryOperator {
         setName("ltChars")
         setSignature(charCharToBooleanType)
-        viperImplementation { Exp.LtCmp(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.LtCmp(args[0], args[1], pos, info) }
     }
 
     val StringLength = buildUnaryOperator {
@@ -204,7 +204,7 @@ object OperatorExpEmbeddings {
             withParam { string() }
             withReturnType { int() }
         }
-        viperImplementation { Exp.SeqLength(args[0], pos, info, trafos) }
+        viperImplementation { Exp.SeqLength(args[0], pos, info) }
     }
 
     val StringGet = buildBinaryOperator {
@@ -214,7 +214,7 @@ object OperatorExpEmbeddings {
             withParam { int() }
             withReturnType { char() }
         }
-        viperImplementation { Exp.SeqIndex(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.SeqIndex(args[0], args[1], pos, info) }
         additionalConditions {
             precondition {
                 listOf(
@@ -232,7 +232,7 @@ object OperatorExpEmbeddings {
             withParam { string() }
             withReturnType { string() }
         }
-        viperImplementation { Exp.SeqAppend(args[0], args[1], pos, info, trafos) }
+        viperImplementation { Exp.SeqAppend(args[0], args[1], pos, info) }
     }
 
     val AddStringChar = buildBinaryOperator {
@@ -242,7 +242,7 @@ object OperatorExpEmbeddings {
             withParam { char() }
             withReturnType { string() }
         }
-        viperImplementation { Exp.SeqAppend(args[0], Exp.ExplicitSeq(listOf(args[1])), pos, info, trafos) }
+        viperImplementation { Exp.SeqAppend(args[0], Exp.ExplicitSeq(listOf(args[1])), pos, info) }
     }
 
     val allTemplates

@@ -16,16 +16,14 @@ interface Applicable {
         args: List<Exp>,
         pos: Position = Position.NoPosition,
         info: Info = Info.NoInfo,
-        trafos: Trafos = Trafos.NoTrafos
     ): Exp
 
     operator fun invoke(
         vararg args: Exp,
         pos: Position = Position.NoPosition,
         info: Info = Info.NoInfo,
-        trafos: Trafos = Trafos.NoTrafos
     ) =
-        toFuncApp(args.toList(), pos, info, trafos)
+        toFuncApp(args.toList(), pos, info)
 }
 
 interface Function : IntoSilver<viper.silver.ast.Function>, Applicable {
@@ -34,8 +32,6 @@ interface Function : IntoSilver<viper.silver.ast.Function>, Applicable {
         get() = Position.NoPosition
     val info: Info
         get() = Info.NoInfo
-    val trafos: Trafos
-        get() = Trafos.NoTrafos
     val includeInDumpPolicy: IncludeInDumpPolicy
     val formalArgs: List<Declaration.LocalVarDecl>
     val retType: Type
@@ -56,15 +52,14 @@ interface Function : IntoSilver<viper.silver.ast.Function>, Applicable {
         body.toScalaOption().toSilver(),
         pos.toSilver(),
         info.toSilver(),
-        trafos.toSilver()
+        silverNoTrafos
     )
 
     override fun toFuncApp(
         args: List<Exp>,
         pos: Position,
         info: Info,
-        trafos: Trafos,
-    ): Exp.FuncApp = Exp.FuncApp(name, args, retType, pos, info, trafos)
+    ): Exp.FuncApp = Exp.FuncApp(name, args, retType, pos, info)
 }
 
 data class UserFunction(
@@ -76,7 +71,6 @@ data class UserFunction(
     override val body: Exp?,
     override val pos: Position = Position.NoPosition,
     override val info: Info = Info.NoInfo,
-    override val trafos: Trafos = Trafos.NoTrafos,
 ) : Function {
     override val includeInDumpPolicy: IncludeInDumpPolicy = IncludeInDumpPolicy.ALWAYS
 }
@@ -85,7 +79,6 @@ abstract class BuiltinFunction(
     override val name: SymbolicName,
     override val pos: Position = Position.NoPosition,
     override val info: Info = Info.NoInfo,
-    override val trafos: Trafos = Trafos.NoTrafos,
 ) : Function {
     override val includeInDumpPolicy: IncludeInDumpPolicy = IncludeInDumpPolicy.ONLY_IN_FULL_DUMP
 }
