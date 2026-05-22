@@ -20,7 +20,7 @@ import org.jetbrains.kotlin.formver.viper.mangled
  *
  * Due to name mangling, the mapping between Kotlin types and TypeEmbeddings must be 1:1.
  */
-data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbeddingFlags) : RuntimeTypeHolder,
+data class TypeEmbedding(val pretype: PretypeEmbedding, val nullable: Boolean) : RuntimeTypeHolder,
     TypeInvariantHolder {
     /**
      * Name representing the type, used for distinguishing overloads.
@@ -29,32 +29,31 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
      * represent these names, but we do it inline for now.
      */
     val name: TypeName
-        get() = TypeName(pretype, flags.nullable)
+        get() = TypeName(pretype, nullable)
 
     /**
      * Get a nullable version of this type embedding.
      *
      * Note that nullability doesn't stack, hence nullable types must return themselves.
      */
-    fun getNullable(): TypeEmbedding = copy(flags = flags.copy(nullable = true))
+    fun getNullable(): TypeEmbedding = copy(nullable = true)
 
     /**
      * Drop nullability, if it is present.
      */
-    fun getNonNullable(): TypeEmbedding = copy(flags = flags.copy(nullable = false))
+    fun getNonNullable(): TypeEmbedding = copy(nullable = false)
 
-    val isNullable: Boolean
-        get() = flags.nullable
-
-    override val runtimeType: Exp = flags.adjustRuntimeType(pretype.runtimeType)
+    override val runtimeType: Exp =
+        if (nullable) RuntimeTypeDomain.nullable(pretype.runtimeType) else pretype.runtimeType
 
     override fun accessInvariants(ctx: TypeResolver): List<TypeInvariantEmbedding> =
-        flags.adjustManyInvariants(pretype.accessInvariants(ctx))
+        pretype.rawAccessInvariants(ctx).adjustForNullable()
 
-    override fun pureInvariants(): List<TypeInvariantEmbedding> = flags.adjustManyInvariants(pretype.pureInvariants())
+    override fun pureInvariants(): List<TypeInvariantEmbedding> =
+        pretype.rawPureInvariants().adjustForNullable()
 
     override fun uniquePredicateAccessInvariant(ctx: TypeResolver): TypeInvariantEmbedding? =
-        flags.adjustOptionalInvariant(pretype.uniquePredicateAccessInvariant(ctx))
+        pretype.rawUniquePredicateAccessInvariant()?.adjustForNullable()
 
     override fun subTypeInvariant(): TypeInvariantEmbedding = SubTypeInvariantEmbedding(this)
 
@@ -62,22 +61,11 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
     override val debugTreeView: TreeView
         get() = PlaintextLeaf(name.mangled)
 
-}
+    private fun TypeInvariantEmbedding.adjustForNullable(): TypeInvariantEmbedding =
+        if (nullable) IfNonNullInvariant(this) else this
 
-data class TypeEmbeddingFlags(val nullable: Boolean) {
-    fun adjustRuntimeType(runtimeType: Exp): Exp =
-        if (nullable) RuntimeTypeDomain.nullable(runtimeType)
-        else runtimeType
-
-    fun adjustInvariant(invariant: TypeInvariantEmbedding): TypeInvariantEmbedding =
-        if (nullable) IfNonNullInvariant(invariant)
-        else invariant
-
-    fun adjustManyInvariants(invariants: List<TypeInvariantEmbedding>): List<TypeInvariantEmbedding> =
-        invariants.map { adjustInvariant(it) }
-
-    fun adjustOptionalInvariant(invariant: TypeInvariantEmbedding?): TypeInvariantEmbedding? =
-        invariant?.let { adjustInvariant(it) }
+    private fun List<TypeInvariantEmbedding>.adjustForNullable(): List<TypeInvariantEmbedding> =
+        if (nullable) map { IfNonNullInvariant(it) } else this
 }
 
 inline fun TypeEmbedding.injectionOr(default: (TypeEmbedding) -> Injection) = injectionOrNull ?: default(this)
@@ -89,7 +77,7 @@ val TypeEmbedding.injection
 
 val TypeEmbedding.injectionOrNull: Injection?
     get() =
-        if (flags.nullable) null
+        if (nullable) null
         else when (val p = this.pretype) {
             StringTypeEmbedding -> RuntimeTypeDomain.stringInjection
             CharTypeEmbedding -> RuntimeTypeDomain.charInjection

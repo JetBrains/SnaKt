@@ -9,9 +9,9 @@ package org.jetbrains.kotlin.formver.core.embeddings.types
 /**
  * Builder for a `TypeEmbedding`.
  *
- * We split most of the work into `PretypeBuilder`, which builds the type modulo nullability
- * (and potentially other flags).  As a result, the builder does not contain the full building
- * state at any point, though a `TypeBuilder`, `PretypeBuilder` pair does.
+ * We split most of the work into `PretypeBuilder`, which builds the type modulo nullability.
+ * As a result, the builder does not contain the full building state at any point, though a
+ * `TypeBuilder`, `PretypeBuilder` pair does.
  */
 class TypeBuilder {
     var isNullable = false
@@ -20,7 +20,7 @@ class TypeBuilder {
 
     private fun completeWithPretypeBuilder(subBuilder: PretypeBuilder): TypeEmbedding {
         val subResult = subBuilder.complete()
-        return TypeEmbedding(subResult, TypeEmbeddingFlags(isNullable))
+        return TypeEmbedding(subResult, isNullable)
     }
 
     fun unit() = UnitPretypeBuilder

@@ -45,15 +45,6 @@ data class ClassTypeEmbedding(override val name: ScopedName) : PretypeEmbedding 
             addAccessToUniquePredicate()
         }
     }
-
-    override fun accessInvariants(ctx: TypeResolver): List<TypeInvariantEmbedding> =
-        ctx.flatMapUniqueFields(name) { field ->
-            field.accessInvariantsForParameter()
-        }
-
-    override fun uniquePredicateAccessInvariant(ctx: TypeResolver) =
-        PredicateAccessTypeInvariantEmbedding(uniquePredicateName, PermExp.FullPerm())
-
 }
 
 
@@ -62,7 +53,7 @@ fun ClassTypeEmbedding.embedClassTypeFunc(): DomainFunc = RuntimeTypeDomain.clas
 fun ClassTypeEmbedding.predicateAccess(
     receiver: ExpEmbedding, ctx: TypeResolver, source: KtSourceElement?
 ): Exp.PredicateAccess {
-    val access = (uniquePredicateAccessInvariant(ctx).fillHole(receiver)
+    val access = (PredicateAccessTypeInvariantEmbedding(uniquePredicateName, PermExp.FullPerm()).fillHole(receiver)
         .pureToViper(toBuiltin = true, ctx, source) as? Exp.PredicateAccess
         ?: error("Translating shared predicate of ${name.debugMangled} yielded no predicate access."))
     return access
