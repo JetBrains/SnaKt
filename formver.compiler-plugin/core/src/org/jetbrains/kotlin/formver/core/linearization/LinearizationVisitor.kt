@@ -78,11 +78,33 @@ data class LinearizationVisitor(
 
 
     override fun visitUnfolding(e: Unfolding): Linearizable =
-        object : DirectResultLinearizable(e, this@LinearizationVisitor) {
+        object : Linearizable {
             override fun toViper(ctx: LinearizationContext): Exp = Exp.Unfolding(
                 e.predicate.linearize().toViperBuiltinType(ctx) as Exp.PredicateAccess,
                 e.exp.linearize().toViper(ctx)
             )
+
+            override fun toViperStoringIn(
+                result: VariableEmbedding,
+                ctx: LinearizationContext
+            ) {
+                ctx.store(result, e.linearize())
+            }
+
+            override fun toViperMaybeStoringIn(
+                result: VariableEmbedding?,
+                ctx: LinearizationContext
+            ) {
+
+            }
+
+            override fun toViperBuiltinType(ctx: LinearizationContext): Exp = Exp.Unfolding(
+                e.predicate.linearize().toViperBuiltinType(ctx) as Exp.PredicateAccess,
+                e.exp.linearize().toViperBuiltinType(ctx)
+            )
+
+            override fun toViperUnusedResult(ctx: LinearizationContext) {
+            }
 
         }
 

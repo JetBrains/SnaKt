@@ -63,12 +63,21 @@ data object IntArrayAccessInvariantEmbedding : TypeInvariantEmbedding {
                         OperatorExpEmbeddings.LeIntInt(IntLit(0), index)
                     ),
 
+                    OperatorExpEmbeddings.And(
+
                     AccEmbedding(
                         IntArrayElement,
                         OperatorExpEmbeddings.getSlot(exp, index),
                         PermExp.FullPerm(),
+                    ),
+                        Is(
+                            PrimitiveFieldAccess(OperatorExpEmbeddings.getSlot(exp, index), IntArrayElement),
+                            IntTypeEmbedding
+                        )
+
                     )
-                )
+
+                ),
             ),
             listOf()
         )

@@ -5,13 +5,8 @@
 
 package org.jetbrains.kotlin.formver.core.conversion
 
-import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.descriptors.isInterface
 import org.jetbrains.kotlin.descriptors.isObject
-import org.jetbrains.kotlin.diagnostics.DiagnosticContext
-import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
-import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactory1
-import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
@@ -50,8 +45,10 @@ import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 class ProgramConverter(
     val session: FirSession, override val config: PluginConfiguration, override val errorCollector: ErrorCollector
 ) : ProgramConversionContext {
+    override val typeResolver: TypeResolver = TypeResolver()
+
     private val specialFunctions: Map<SymbolicName, SpecialKotlinFunction> = buildMap {
-        putAll(SpecialKotlinFunctions.byName)
+        putAll(SpecialKotlinFunctions.byName(typeResolver))
         putAll(PartiallySpecialKotlinFunctions.generateAllByName())
     }
     private val impureFunctions: MutableMap<SymbolicName, UserFunctionEmbedding> = mutableMapOf()
@@ -60,7 +57,6 @@ class ProgramConverter(
     private val registered: MutableList<Triple<FirSimpleFunction, FullNamedFunctionSignature, ReturnTarget>> =
         mutableListOf()
 
-    override val typeResolver: TypeResolver = TypeResolver()
 
     val debugExpEmbeddings: Map<SymbolicName, ExpEmbedding>
         get() = buildMap {

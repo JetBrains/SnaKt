@@ -71,7 +71,16 @@ object CollectionSizeProperty :
 }
 
 object IntArraySizeProperty :
-    SpecialProperty(PropertyEmbedding(IntArraySizeGetter, setter = null, hasDefaultBehaviour = true)) {
+    SpecialProperty(
+        PropertyEmbedding(
+            IntArraySizeGetter,
+            setter = null,
+            hasDefaultBehaviour = true,
+            isUnique = true,
+            isVal = true,
+            type = IntTypeEmbedding.asTypeEmbedding()
+        )
+    ) {
     context(typeResolver: TypeResolver, session: FirSession)
     override fun match(symbol: FirPropertySymbol): Boolean = symbol.callableId == kotlinCallableId("IntArray", "size")
 }

@@ -6,11 +6,10 @@
 package org.jetbrains.kotlin.formver.core.embeddings.properties
 
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
-import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.callables.GenericFunctionSignatureMixin
 import org.jetbrains.kotlin.formver.core.embeddings.callables.NamedFunctionSignature
-import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings
 import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
@@ -53,11 +52,11 @@ object IntArraySizeGetter : GetterEmbedding {
     }
 
 
-    override fun getValue(receiver: ExpEmbedding, ctx: StmtConversionContext) =
+    override fun getValue(receiver: ExpEmbedding, ctx: TypeResolver) =
         OperatorExpEmbeddings.intArraySize(receiver)
 
     override fun getValueSimple(
         receiver: ExpEmbedding,
-        ctx: StmtConversionContext
+        ctx: TypeResolver
     ): ExpEmbedding = OperatorExpEmbeddings.intArraySize(receiver)
 }

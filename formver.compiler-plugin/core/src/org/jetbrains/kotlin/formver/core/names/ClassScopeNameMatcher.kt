@@ -34,7 +34,8 @@ internal sealed class NameMatcher(val name: SymbolicName) {
     }
 
     inline fun ifClassName(vararg segments: String, action: NameMatcher.() -> Unit) {
-        if (className == ClassKotlinName(segments.toList()))
+        val target = ClassKotlinName(segments.toList())
+        if (scopedName?.name == target || className == target)
             this.action()
     }
 
@@ -59,6 +60,16 @@ internal class ClassScopeNameMatcher(name: SymbolicName) : NameMatcher(name) {
     inline fun ifFunctionName(name: String, action: ClassScopeNameMatcher.() -> Unit) {
         val functionName = scopedName?.name as? FunctionKotlinName
         if (functionName?.name == Name.identifier(name))
+            this.action()
+    }
+
+    inline fun ifGetterName(fieldName: String, action: ClassScopeNameMatcher.() -> Unit) {
+        if (scopedName?.name is GetterKotlinName && scopedName.name.name == Name.identifier(fieldName))
+            this.action()
+    }
+
+    inline fun ifConstructorName(action: ClassScopeNameMatcher.() -> Unit) {
+        if (scopedName?.name is ConstructorKotlinName)
             this.action()
     }
 

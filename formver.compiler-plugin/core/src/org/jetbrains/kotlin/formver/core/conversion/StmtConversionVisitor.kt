@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.conversion
 
+import com.intellij.util.containers.addIfNotNull
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.contracts.description.LogicOperationKind
 import org.jetbrains.kotlin.descriptors.isObject
@@ -37,10 +38,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.LtIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
-import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbeddingImpl
-import org.jetbrains.kotlin.formver.core.embeddings.types.InvalidAdtTypeEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
+import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.functionCallArguments
 import org.jetbrains.kotlin.formver.core.isInvariantBuilderFunctionNamed
 import org.jetbrains.kotlin.text
@@ -372,6 +370,9 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         val invariants = buildList {
             data.retrievePropertiesAndParameters().forEach {
                 addAll(it.provenInvariants())
+                if (it.type.pretype is IntArrayTypeEmbedding) {
+                    addIfNotNull(it.uniquePredicateAccessInvariant(data.typeResolver))
+                }
             }
             extractLoopInvariants(whileLoop.block)?.let {
                 addAll(data.withScopeImpl(ScopeIndex.NoScope) { data.collectInvariants(it) })
