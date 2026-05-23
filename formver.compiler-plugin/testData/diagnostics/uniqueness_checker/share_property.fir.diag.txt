@@ -1,1 +1,7 @@
 /share_property.kt: error: Argument uniqueness mismatch: expected 'shared', actual 'moved'.
+
+/share_property.kt: error: Argument uniqueness mismatch: expected 'shared', actual 'moved'.
+
+/share_property.kt: error: Argument uniqueness mismatch: expected 'shared', actual 'moved'.
+
+/share_property.kt: error: Assignment uniqueness mismatch: expected 'unique', actual 'shared'.

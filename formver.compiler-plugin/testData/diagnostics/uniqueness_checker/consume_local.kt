@@ -48,7 +48,7 @@ fun `consume after borrowing unique`(a: @Unique A) {
 
 fun `consume after borrowing unique as unique`(a: @Unique A) {
     borrowUnique(a)
-    consume(<!UNIQUENESS_MISMATCH!>a<!>)
+    consume(a)
 }
 
 fun `consume after borrowing unique-borrowed`(a: @Unique @Borrowed A) {
@@ -58,7 +58,7 @@ fun `consume after borrowing unique-borrowed`(a: @Unique @Borrowed A) {
 
 fun `consume after after borrowing unique-borrowed as unique`(a: @Unique @Borrowed A) {
     borrowUnique(a)
-    consume(<!LOCALITY_MISMATCH, UNIQUENESS_MISMATCH!>a<!>)
+    consume(<!LOCALITY_MISMATCH!>a<!>)
 }
 
 fun `consume unique after storing type check`(a: @Unique Any) {
@@ -67,6 +67,8 @@ fun `consume unique after storing type check`(a: @Unique Any) {
 }
 
 fun `consume unique after safe cast`(a: @Unique Any) {
-    val maybe = a as? A
-    consume(a)
+    val cast = a as? A ?: return
+    consume(cast)
+    consume(<!UNIQUENESS_MISMATCH!>a<!>)
+    consume(<!UNIQUENESS_MISMATCH!>cast<!>)
 }

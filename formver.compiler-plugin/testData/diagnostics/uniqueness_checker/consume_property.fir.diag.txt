@@ -5,3 +5,11 @@
 /consume_property.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
 
 /consume_property.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/consume_property.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/consume_property.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/consume_property.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/consume_property.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.

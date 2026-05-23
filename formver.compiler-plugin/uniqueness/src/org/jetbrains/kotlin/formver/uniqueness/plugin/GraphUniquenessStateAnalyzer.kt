@@ -17,12 +17,13 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallEnterNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
+import org.jetbrains.kotlin.formver.locality.plugin.Locality
 import org.jetbrains.kotlin.formver.type.plugin.CallParametersTypeResolver
 
 class GraphUniquenessStateAnalyzer(
     private val initial: UniquenessState,
     private val context: CheckerContext,
-    private val callParametersUniquenessResolver: CallParametersTypeResolver<Uniqueness>
+    private val callParametersLocalityResolver: CallParametersTypeResolver<Locality>,
 ) : PathAwareControlFlowGraphVisitor<Unit, UniquenessState>() {
     override fun mergeInfo(
         a: ControlFlowInfo<Unit, UniquenessState>,
@@ -41,18 +42,26 @@ class GraphUniquenessStateAnalyzer(
         data: PathAwareControlFlowInfo<Unit, UniquenessState>
     ): PathAwareControlFlowInfo<Unit, UniquenessState> {
         val declaration = node.fir
+        val initializer = declaration.initializer
 
-        with (context) {
+        with(context) {
             val declarationSymbol = declaration.symbol
-            val declarationUniquenessState = EmptyUniquenessState.associate(
+            val declarationAccessState = EmptyAccessState.associate(
                 declarationSymbol,
-                UniquenessState(declarationSymbol.resolveUniqueness())
+                AccessState(true)
             )
 
             return data.transformValues { data ->
-                val uniquenessState = data.read()
+                var uniquenessState = data.read()
 
-                data.put(Unit, uniquenessState.join(declarationUniquenessState))
+                uniquenessState = declarationAccessState.initialize(uniquenessState)
+
+                if (initializer != null) {
+                    val initializerAccessState = initializer.resolveAccessState()
+                    uniquenessState = initializerAccessState.move(uniquenessState)
+                }
+
+                data.put(Unit, uniquenessState)
             }
         }
     }
@@ -69,10 +78,10 @@ class GraphUniquenessStateAnalyzer(
 
             return data.transformValues { data ->
                 var uniquenessState = data.read()
-                uniquenessState = rightAccessState.maskMove(uniquenessState)
+                uniquenessState = rightAccessState.move(uniquenessState)
 
                 if (leftAccessState.isChain()) {
-                    uniquenessState = leftAccessState.maskInitialization(uniquenessState)
+                    uniquenessState = leftAccessState.initialize(uniquenessState)
                 }
 
                 data.put(Unit, uniquenessState)
@@ -90,7 +99,7 @@ class GraphUniquenessStateAnalyzer(
 
         with(context) {
             for (argument in call.arguments) {
-                moveState = argument.resolveAccessState().maskMove(moveState)
+                moveState = argument.resolveAccessState().move(moveState)
             }
 
             return data.transformValues { data ->
@@ -107,10 +116,10 @@ class GraphUniquenessStateAnalyzer(
         var initializationState = EmptyUniquenessState
 
         with(context) {
-            for ((argument, requiredUniqueness) in callParametersUniquenessResolver.resolveParameterTypesOf(call)) {
-                if (requiredUniqueness != Uniqueness.Shared) continue
+            for ((argument, requiredLocality) in callParametersLocalityResolver.resolveParameterTypesOf(call)) {
+                if (requiredLocality == null) continue
 
-                initializationState = argument.resolveAccessState().maskInitialization(initializationState)
+                initializationState = argument.resolveAccessState().initialize(initializationState)
             }
 
             return data.transformValues { data ->

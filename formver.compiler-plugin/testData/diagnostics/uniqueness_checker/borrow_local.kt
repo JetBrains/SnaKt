@@ -40,10 +40,10 @@ fun `borrow after consuming unique`(a: @Unique A) {
 
 fun `borrow after sharing shared`(a: A) {
     share(a)
-    borrow(a)
+    borrow(<!UNIQUENESS_MISMATCH!>a<!>)
 }
 
 fun `borrow after sharing unique`(a: @Unique A) {
     share(a)
-    borrow(a)
+    borrow(<!UNIQUENESS_MISMATCH!>a<!>)
 }

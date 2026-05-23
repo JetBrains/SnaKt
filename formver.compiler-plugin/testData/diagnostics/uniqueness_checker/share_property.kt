@@ -36,7 +36,7 @@ fun `share unique-borrowed subproperty`(z: @Unique @Borrowed B) {
 
 fun `share multiple unique subproperties`(z: @Unique B) {
     share(z.y.x)
-    share(z.y.w)
+    share(<!UNIQUENESS_MISMATCH!>z.y.w<!>)
 }
 
 // Sharing partially-inconsistent properties
@@ -48,13 +48,13 @@ fun `share partially moved`(z: @Unique B) {
 
 fun `share partially shared`(z: @Unique B) {
     share(z.y)
-    share(z)
+    share(<!UNIQUENESS_MISMATCH!>z<!>)
 }
 
 // Sharing subproperties after assignment
 
 fun `share subproperty after assigning it to shared`(x: @Unique B, v: A) {
-    x.y = v
+    x.y = <!UNIQUENESS_MISMATCH!>v<!>
     share(x.y)
 }
 

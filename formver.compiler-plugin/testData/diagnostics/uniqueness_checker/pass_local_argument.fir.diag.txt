@@ -1,5 +1,0 @@
-/pass_local_argument.kt: error: Argument uniqueness mismatch: expected 'shared', actual 'moved'.
-
-/pass_local_argument.kt: error: Argument uniqueness mismatch: expected 'shared', actual 'moved'.
-
-/pass_local_argument.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.

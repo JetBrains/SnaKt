@@ -1,1 +1,1 @@
-/consume_deeply_nested.kt: error: Assignment uniqueness mismatch: expected 'shared', actual 'moved'.
+/consume_deeply_nested.kt: error: Assignment uniqueness mismatch: expected 'unique', actual 'moved'.

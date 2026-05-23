@@ -10,8 +10,11 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.caches.firCachesFactory
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
+import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.references.symbol
+import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
+import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.formver.type.plugin.ExpressionTypeResolver
 import org.jetbrains.kotlin.formver.type.plugin.UnifyingExpressionTypeResolver
@@ -34,7 +37,7 @@ object TerminalAccessResolver : ExpressionTypeResolver<AccessState> {
                             ?.asReceiverState()
                             ?: AccessState(false)
 
-                        receiverState.append(symbol,AccessState(true))
+                        receiverState.append(symbol, AccessState(true))
                     }
                     else -> EmptyAccessState
                 }
@@ -64,3 +67,43 @@ context(context: CheckerContext)
 fun FirExpression.resolveAccessState(): AccessState {
     return context.session.expressionAccessStateResolver.resolveTypeOf(this)
 }
+
+/**
+ * Resolves the uniqueness environment (input [UniquenessState]) at a given expression by looking it
+ * up in the mapping produced by [GraphUniquenessStateMappingResolver].
+ *
+ * This component walks the [CheckerContext.containingDeclarations] to find the nearest enclosing
+ * function's CFG, builds the mapping once (cached), and then looks up the given expression.
+ */
+class ExpressionUniquenessEnvironmentResolver(session: FirSession) : FirExtensionSessionComponent(session) {
+    companion object {
+        fun getFactory(): Factory =
+            Factory { session -> ExpressionUniquenessEnvironmentResolver(session) }
+
+        context(context: CheckerContext)
+        fun resolveEnvironmentOf(expression: FirExpression): UniquenessState =
+            context.session.expressionUniquenessEnvironmentResolver.resolveEnvironmentOf(expression.unwrapExpression())
+    }
+
+    context(context: CheckerContext)
+    fun resolveEnvironmentOf(expression: FirExpression): UniquenessState {
+        for (symbol in context.containingDeclarations.asReversed()) {
+            if (symbol !is FirFunctionSymbol<*>) continue
+            val graph = symbol.resolvedControlFlowGraphReference?.controlFlowGraph ?: continue
+            val mapping = session.graphUniquenessStateMappingResolver.resolveMappingOf(graph)
+            val state = mapping[expression]
+            if (state != null) return state
+        }
+        return EmptyUniquenessState
+    }
+}
+
+private val FirSession.expressionUniquenessEnvironmentResolver: ExpressionUniquenessEnvironmentResolver
+    by FirSession.sessionComponentAccessor()
+
+private val FirSession.graphUniquenessStateMappingResolver: GraphUniquenessStateMappingResolver
+    by FirSession.sessionComponentAccessor()
+
+context(context: CheckerContext)
+fun FirExpression.resolveUniquenessEnvironment(): UniquenessState =
+    ExpressionUniquenessEnvironmentResolver.resolveEnvironmentOf(this)

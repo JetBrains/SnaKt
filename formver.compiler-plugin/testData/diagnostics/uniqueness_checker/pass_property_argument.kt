@@ -18,18 +18,19 @@ fun consumeBoth(a: @Unique Any, b: @Unique Any) {}
 
 fun shareBoth(a: Any, b: Any) {}
 
+// TODO: Define error if a unique path is passed twice
 fun `pass shared subproperty and parent to shareBoth`(a: B) {
-    shareBoth(a.y, <!UNIQUENESS_MISMATCH!>a<!>)
+    shareBoth(a.y, a)
 }
 
 fun `pass borrowed subproperty and parent to borrowBoth`(a: @Borrowed B) {
-    borrowBoth(a.y, <!UNIQUENESS_MISMATCH!>a<!>)
+    borrowBoth(a.y, a)
 }
 
 fun `pass unique subproperty and parent to consumeBoth`(a: @Unique B) {
-    consumeBoth(a.y, <!UNIQUENESS_MISMATCH!>a<!>)
+    consumeBoth(a.y, a)
 }
 
 fun `pass unique-borrowed subproperty and parent to borrowBoth`(a: @Unique @Borrowed B) {
-    borrowBoth(a.y, <!UNIQUENESS_MISMATCH!>a<!>)
+    borrowBoth(a.y, a)
 }

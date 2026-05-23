@@ -1,3 +1,7 @@
+/assign_property.kt: error: Assignment uniqueness mismatch: expected 'unique', actual 'shared'.
+
 /assign_property.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
+
+/assign_property.kt: error: Assignment uniqueness mismatch: expected 'unique', actual 'shared'.
 
 /assign_property.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.

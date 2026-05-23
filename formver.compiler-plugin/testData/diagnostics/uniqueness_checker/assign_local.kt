@@ -66,7 +66,7 @@ fun `assign unique in unique declaration`(x: @Unique Any) {
 fun `assign unique in shared declaration`(x: @Unique Any) {
     var y = x
 
-    consume(<!UNIQUENESS_MISMATCH!>y<!>)
+    consume(y)
 }
 
 fun `assign unique-borrowed in borrowed declaration`(x: @Unique @Borrowed Any) {
@@ -140,7 +140,7 @@ fun `assign unique or shared`(x: @Unique Any, y: Any) {
 // Looping assignments
 
 fun `assign unique to shared in loop`(x: @Unique Any, y: @Unique Any) {
-    var z: @Unique Any = y;
+    var z = y;
 
     while (nondet()) {
         z = <!UNIQUENESS_MISMATCH!>x<!>

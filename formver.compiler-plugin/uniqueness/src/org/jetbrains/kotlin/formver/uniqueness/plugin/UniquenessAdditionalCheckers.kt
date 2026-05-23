@@ -8,6 +8,12 @@ package org.jetbrains.kotlin.formver.uniqueness.plugin
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.cfa.FirControlFlowChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.DeclarationCheckers
+import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirPropertyChecker
+import org.jetbrains.kotlin.fir.analysis.checkers.expression.ExpressionCheckers
+import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirCallChecker
+import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirReturnExpressionChecker
+import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirThrowExpressionChecker
+import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirVariableAssignmentChecker
 import org.jetbrains.kotlin.fir.analysis.extensions.FirAdditionalCheckersExtension
 
 class UniquenessAdditionalCheckers(session: FirSession) : FirAdditionalCheckersExtension(session) {
@@ -20,5 +26,22 @@ class UniquenessAdditionalCheckers(session: FirSession) : FirAdditionalCheckersE
     override val declarationCheckers: DeclarationCheckers = object : DeclarationCheckers() {
         override val controlFlowAnalyserCheckers: Set<FirControlFlowChecker> =
             setOf(GraphUniquenessChecker)
+
+        override val propertyCheckers: Set<FirPropertyChecker> =
+            setOf(PropertyUniquenessChecker)
+    }
+
+    override val expressionCheckers: ExpressionCheckers = object : ExpressionCheckers() {
+        override val variableAssignmentCheckers: Set<FirVariableAssignmentChecker> =
+            setOf(AssignmentUniquenessChecker)
+
+        override val callCheckers: Set<FirCallChecker> =
+            setOf(CallUniquenessChecker)
+
+        override val returnExpressionCheckers: Set<FirReturnExpressionChecker> =
+            setOf(ReturnUniquenessChecker)
+
+        override val throwExpressionCheckers: Set<FirThrowExpressionChecker> =
+            setOf(ThrowUniquenessChecker)
     }
 }

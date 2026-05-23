@@ -12,11 +12,11 @@ class A(
 
 class B()
 
-fun <!UNIQUENESS_CFG!>nonDet<!>() : Boolean {
+fun nonDet() : Boolean {
     return true
 }
 
-fun <!UNIQUENESS_CFG!>test<!>(@Unique a: A) : A{
+fun test(@Unique a: A) : A{
 
     if (nonDet()) {
         var x = a.first
@@ -24,6 +24,6 @@ fun <!UNIQUENESS_CFG!>test<!>(@Unique a: A) : A{
         @Unique var y = a.second
     }
 
-    return a
+    return <!UNIQUENESS_MISMATCH!>a<!>
 
 }

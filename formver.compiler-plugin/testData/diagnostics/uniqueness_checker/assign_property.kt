@@ -19,11 +19,11 @@ fun consume(a: @Unique Any) {}
 // Property assignments
 
 fun `assign shared to unique subproperty`(x: @Unique B, v: A): Unit {
-    x.y = v
+    x.y = <!UNIQUENESS_MISMATCH!>v<!>
 }
 
 fun `assign borrowed to unique subproperty`(x: @Unique B, v: @Borrowed A): Unit {
-    x.y = <!LOCALITY_MISMATCH!>v<!>
+    x.y = <!LOCALITY_MISMATCH, UNIQUENESS_MISMATCH!>v<!>
 }
 
 fun `assign unique to unique subproperty`(x: @Unique B, v: @Unique A): Unit {

@@ -3,7 +3,9 @@
 import org.jetbrains.kotlin.formver.plugin.Borrowed
 import org.jetbrains.kotlin.formver.plugin.Unique
 
-class Box(val a: @Unique Any)
+class Box(
+    val a: @Unique Any = Any()
+)
 
 fun `unique parameter`(box: @Unique Box) {}
 

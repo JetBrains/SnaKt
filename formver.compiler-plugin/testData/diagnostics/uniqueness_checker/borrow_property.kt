@@ -50,7 +50,7 @@ fun `borrow partially moved`(z: @Unique B) {
 
 fun `borrow partially shared`(z: @Unique B) {
     share(z.y)
-    borrow(z)
+    borrow(<!UNIQUENESS_MISMATCH!>z<!>)
 }
 
 // Borrowing after assignment

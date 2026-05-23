@@ -22,8 +22,9 @@ class UniquenessExtensionRegistrar(
     override fun ExtensionRegistrarContext.configurePlugin() {
         registerDiagnosticContainers(UniquenessErrors)
         +ExpressionAccessStateResolver.getFactory()
-        +ExpressionUniquenessResolver.getFactory()
+        +ExpressionUniquenessEnvironmentResolver.getFactory()
         +GraphUniquenessStateResolver.getFactory()
+        +GraphUniquenessStateMappingResolver.getFactory()
         +UniquenessAdditionalCheckers.getFactory()
         +UniquenessAttributeExtension.getFactory(uniquenessAnnotationId)
     }

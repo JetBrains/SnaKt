@@ -48,7 +48,7 @@ fun `consume partially moved`(z: @Unique B) {
 
 fun `consume partially shared`(z: @Unique B) {
     share(z.y)
-    consume(z)
+    consume(<!UNIQUENESS_MISMATCH!>z<!>)
 }
 
 // Consuming subproperty after assignment
@@ -66,17 +66,17 @@ class Node(
 
 fun `consume unique parent after cast`(node: @Unique Any) {
     val local: @Unique Node? = (node as Node).next
-    consume(node)
+    consume(<!UNIQUENESS_MISMATCH!>node<!>)
 }
 
 fun `consume unique parent after cast to not-null`(node: @Unique Node) {
     val local: @Unique Node = node.next as Node
-    consume(node)
+    consume(<!UNIQUENESS_MISMATCH!>node<!>)
 }
 
 fun `consume unique parent after smart-cast`(node: @Unique Node?) {
     if (node != null) {
         val local: @Unique Node? = node.next
-        consume(node)
+        consume(<!UNIQUENESS_MISMATCH!>node<!>)
     }
 }

@@ -12,8 +12,6 @@
 
 /assign_local.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
 
-/assign_local.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
-
 /assign_local.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
 
 /assign_local.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
@@ -30,4 +28,4 @@
 
 /assign_local.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
 
-/assign_local.kt: error: Assignment uniqueness mismatch: expected 'shared', actual 'moved'.
+/assign_local.kt: error: Assignment uniqueness mismatch: expected 'unique', actual 'moved'.
