@@ -29,37 +29,43 @@ interface FullNamedFunctionSignature : CallableNamedSignature {
     /**
      * Preconditions of function in form of `ExpEmbedding`s with type `boolType()`.
      */
-    val preconditions : List<ExpEmbedding>
+    val preconditions: List<ExpEmbedding>
 
     /**
      * Postconditions of function in form of `ExpEmbedding`s with type `boolType()`.
      */
-    val postconditions : List<ExpEmbedding>
+    val postconditions: List<ExpEmbedding>
 
     val declarationSource: KtSourceElement?
-    fun toViperMethodHeader(ctx: TypeResolver): Method? {
-        if (isPure) return null
-        return UserMethod(
-            name,
-            formalArgs.map { it.toLocalVarDecl() },
-            returns.toLocalVarDecl(),
-            preconditions.pureToViper(toBuiltin = true, ctx),
-            postconditions.pureToViper(toBuiltin = true, ctx),
-            null,
-        )
+}
+
+
+fun FullNamedFunctionSignature.toViperMethodHeader(ctx: TypeResolver): Method {
+    require(!isPure) {
+        "Pure functions should not be converted to methods"
     }
+    return UserMethod(
+        name,
+        formalArgs.map { it.toLocalVarDecl() },
+        returns.toLocalVarDecl(),
+        preconditions.pureToViper(toBuiltin = true, ctx),
+        postconditions.pureToViper(toBuiltin = true, ctx),
+        null,
+    )
 }
 
 fun FullNamedFunctionSignature.toViperFunction(
     ctx: TypeResolver,
     body: Exp?,
 ): UserFunction {
+    require(isPure) {
+        "Impure functions should not be converted to functions"
+    }
     postconditions.forEach { postcondition ->
         val isValid =
             postcondition.preorder().all { it.first !is AccEmbedding && it.first !is PredicateAccessPermissions }
         if (!isValid) throw SnaktInternalException(
-            declarationSource,
-            "Postcondition tries to acquire permissions, which is not allowed in a function"
+            declarationSource, "Postcondition tries to acquire permissions, which is not allowed in a function"
         )
     }
     return UserFunction(
@@ -75,7 +81,7 @@ fun FullNamedFunctionSignature.toViperFunction(
 }
 
 
-fun NamedFunctionSignature.basicPreconditions(typeResolver: TypeResolver) = buildList{
+fun NamedFunctionSignature.basicPreconditions(typeResolver: TypeResolver) = buildList {
     formalArgs.forEach {
         addAll(it.pureInvariants())
         addAll(it.accessInvariants(typeResolver))
@@ -87,7 +93,7 @@ fun NamedFunctionSignature.basicPreconditions(typeResolver: TypeResolver) = buil
     addAll(stdLibPreconditions(typeResolver))
 }
 
-fun NamedFunctionSignature.constructorPostcondition(typeResolver: TypeResolver) = buildList{
+fun NamedFunctionSignature.constructorPostcondition(typeResolver: TypeResolver) = buildList {
     formalArgs.forEach {
         addAll(it.accessInvariants(typeResolver))
         if (it.isUnique && it.isBorrowed) {
@@ -103,7 +109,7 @@ fun NamedFunctionSignature.constructorPostcondition(typeResolver: TypeResolver) 
     addAll(stdLibPostconditions(returns, typeResolver))
 }
 
-fun NamedFunctionSignature.userFunctionPostcondition(typeResolver: TypeResolver) = buildList{
+fun NamedFunctionSignature.userFunctionPostcondition(typeResolver: TypeResolver) = buildList {
     formalArgs.forEach {
         addAll(it.accessInvariants(typeResolver))
         if (it.isUnique && it.isBorrowed) {
@@ -127,10 +133,10 @@ fun NamedFunctionSignature.userFunctionPostcondition(typeResolver: TypeResolver)
 class ConstructorSignature(
     val signature: CallableNamedSignature,
     override val symbol: FirFunctionSymbol<*>,
-    propertiesPostconditions : List<ExpEmbedding>,
+    propertiesPostconditions: List<ExpEmbedding>,
     typeResolver: TypeResolver
 ) : FullNamedFunctionSignature, CallableNamedSignature by signature {
-   override val preconditions = signature.basicPreconditions(typeResolver)
+    override val preconditions = signature.basicPreconditions(typeResolver)
     override val postconditions = signature.constructorPostcondition(typeResolver) + propertiesPostconditions
 
     override val declarationSource: KtSourceElement? = symbol.source
@@ -147,7 +153,8 @@ class UserFunctionSignature(
 
     override val preconditions: List<ExpEmbedding> = signature.basicPreconditions(typeResolver) + userPreconditions
 
-    override val postconditions : List<ExpEmbedding> = signature.userFunctionPostcondition(typeResolver) + userPostconditions
+    override val postconditions: List<ExpEmbedding> =
+        signature.userFunctionPostcondition(typeResolver) + userPostconditions
 
     override val declarationSource: KtSourceElement? = symbol.source
 
@@ -172,11 +179,11 @@ abstract class PropertyAccessorFunctionSignature(
     override val extensionReceiver = null
     override val declarationSource: KtSourceElement? = propertySymbol.source
 
-    override val returns: VariableEmbedding = PlaceholderVariableEmbedding(ReturnVariableName(0), buildType { nullableAny() })
+    override val returns: VariableEmbedding =
+        PlaceholderVariableEmbedding(ReturnVariableName(0), buildType { nullableAny() })
 
     override fun insertCall(
-        args: List<ExpEmbedding>,
-        ctx: StmtConversionContext
+        args: List<ExpEmbedding>, ctx: StmtConversionContext
     ): ExpEmbedding = if (isPure) {
         FunctionCall(this, args)
     } else {
@@ -199,12 +206,8 @@ class ImpureGetterFunctionSignature(name: SymbolicName, symbol: FirPropertySymbo
 }
 
 class PureGetterFunctionSignature(
-    name: SymbolicName,
-    symbol: FirPropertySymbol,
-    classType: TypeEmbedding,
-    returnType: TypeEmbedding
-) :
-    PropertyAccessorFunctionSignature(name, symbol) {
+    name: SymbolicName, symbol: FirPropertySymbol, classType: TypeEmbedding, returnType: TypeEmbedding
+) : PropertyAccessorFunctionSignature(name, symbol) {
     override val symbol: FirFunctionSymbol<*>
         get() = error {
             "Getter symbol should not be accessed directly as it is allowed to be null in some cases."
