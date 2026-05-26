@@ -29,6 +29,14 @@ fun <T> postconditions(@Suppress("UNUSED_PARAMETER") body: InvariantBuilder.(T) 
 class InvariantBuilder {
     fun <T> forAll(@Suppress("UNUSED_PARAMETER") body: (T) -> Unit): Boolean =
         throw FormverFunctionCalledInRuntimeException("forAll")
+    fun <T, U> forAll(@Suppress("UNUSED_PARAMETER") body: (T, U) -> Unit): Boolean =
+        throw FormverFunctionCalledInRuntimeException("forAll")
+
+    fun <T, U, V> forAll(@Suppress("UNUSED_PARAMETER") body: (T, U, V) -> Unit): Boolean =
+        throw FormverFunctionCalledInRuntimeException("forAll")
+
+    fun <T, U, V, W> forAll(@Suppress("UNUSED_PARAMETER") body: (T, U, V, W) -> Unit): Boolean =
+        throw FormverFunctionCalledInRuntimeException("forAll")
 
     /**
      * Specifies trigger expressions for quantifiers.

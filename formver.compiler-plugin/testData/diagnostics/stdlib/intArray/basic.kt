@@ -5,7 +5,8 @@
 import org.jetbrains.kotlin.formver.plugin.*
 
 
-fun <!VIPER_TEXT!>main<!>() {
+@NeverConvert
+fun main() {
     val list = IntArray(3)
     list.set(0, 3)
     list.set(1, 1)
@@ -15,6 +16,70 @@ fun <!VIPER_TEXT!>main<!>() {
 
     val res = list.get(0) <= list.get(1) && list.get(1) <= list.get(2)
     verify(res)
+}
+
+fun <!VIPER_TEXT!>binarySearch<!>(@Unique @Borrowed list: IntArray, target: Int): Int? {
+    preconditions {
+        // Essential: Binary search requires the input array to be sorted
+        forAll<Int, Int> { i1, i2 ->
+            (0 <= i1 && i1 <= i2 && i2 < list.size) implies (list.get(i1) <= list.get(i2))
+        }
+    }
+    postconditions<Int?> { ret ->
+
+        (ret != null) implies (0 <= ret && ret < list.size)
+
+        // 1. If an index is returned, it must contain the target value
+        ((ret != null) implies (list.get(<!ARGUMENT_TYPE_MISMATCH!>ret<!>) == target)) &&
+
+        ((ret == null) implies forAll<Int> { index ->
+            (0 <= index && index < list.size) implies (list.get(index) != target)
+        })
+    }
+
+    var low = 0
+    var high = list.size - 1
+
+    while (low <= high) {
+        loopInvariants {
+
+            forAll<Int> { i1 ->
+                forAll<Int> { i2 ->
+                    (0 <= i1 && i1 <= i2 && i2 < list.size) implies (list.get(i1) <= list.get(i2))
+                }
+            }
+
+            // Ensure pointers stay within valid mathematical thresholds
+            0 <= low && high < list.size && low <= high + 1
+
+            // Invariant: The target value does not exist to the left of 'low'
+            forAll<Int> { k ->
+                (0 <= k && k < low) implies (list.get(k) != target)
+            }
+
+            // Invariant: The target value does not exist to the right of 'high'
+            forAll<Int> { k ->
+                (high < k && k < list.size) implies (list.get(k) != target)
+            }
+        }
+
+        val mid = low + (high - low) / 2
+        val midVal = list.get(mid)
+
+        if (midVal == target) {
+            return mid
+        } else if (midVal < target) {
+            // Since midVal < target and the array is sorted,
+            // target cannot be at 'mid' or anywhere to its left.
+            low = mid + 1
+        } else {
+            // Since midVal > target and the array is sorted,
+            // target cannot be at 'mid' or anywhere to its right.
+            high = mid - 1
+        }
+    }
+
+    return null
 }
 
 @NeverConvert
