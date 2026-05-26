@@ -7,11 +7,11 @@ package org.jetbrains.kotlin.formver.core.embeddings.properties
 
 import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
-import org.jetbrains.kotlin.formver.core.embeddings.callables.NonInlineNamedFunction
+import org.jetbrains.kotlin.formver.core.embeddings.callables.NonInlineNamedFunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.callables.insertCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 
-class CustomGetter(val getterMethod: NonInlineNamedFunction) : GetterEmbedding {
+class CustomGetter(val getterMethod: NonInlineNamedFunctionSignature) : GetterEmbedding {
     override fun getValue(
         receiver: ExpEmbedding,
         ctx: TypeResolver
@@ -24,7 +24,7 @@ class CustomGetter(val getterMethod: NonInlineNamedFunction) : GetterEmbedding {
     ): ExpEmbedding = getterMethod.insertCall(listOf(receiver))
 }
 
-class CustomSetter(val setterMethod: NonInlineNamedFunction) : SetterEmbedding {
+class CustomSetter(val setterMethod: NonInlineNamedFunctionSignature) : SetterEmbedding {
     override fun setValue(
         receiver: ExpEmbedding,
         value: ExpEmbedding,

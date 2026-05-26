@@ -14,14 +14,17 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.MethodCall
 class NonInlineNamedFunctionSignature(val signature: NamedFunctionSignature) :
     CallableNamedSignature,
     NamedFunctionSignature by signature {
+
+    fun insertCall(
+        args: List<ExpEmbedding>
+    ): ExpEmbedding = if (signature.isPure) {
+        FunctionCall(signature, args)
+    } else {
+        MethodCall(signature, args)
+    }
+
     override fun insertCall(
         args: List<ExpEmbedding>,
         ctx: StmtConversionContext,
-    ): ExpEmbedding {
-        return if (signature.isPure) {
-            FunctionCall(signature, args)
-        } else {
-            MethodCall(signature, args)
-        }
-    }
+    ): ExpEmbedding = insertCall(args)
 }
