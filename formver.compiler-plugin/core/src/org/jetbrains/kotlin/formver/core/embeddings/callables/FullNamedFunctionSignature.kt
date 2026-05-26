@@ -23,10 +23,9 @@ import org.jetbrains.kotlin.formver.core.names.ReturnVariableName
 import org.jetbrains.kotlin.formver.core.purity.preorder
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
-import org.jetbrains.kotlin.formver.viper.ast.Function
 import org.jetbrains.kotlin.utils.addIfNotNull
 
-interface FullNamedFunctionSignature : RichCallableEmbedding, CallableNamedSignature {
+interface FullNamedFunctionSignature : CallableNamedSignature {
     /**
      * Preconditions of function in form of `ExpEmbedding`s with type `boolType()`.
      */
@@ -38,25 +37,12 @@ interface FullNamedFunctionSignature : RichCallableEmbedding, CallableNamedSigna
     val postconditions : List<ExpEmbedding>
 
     val declarationSource: KtSourceElement?
-
-    override fun toViperMethodHeader(ctx: TypeResolver): Method? {
+    fun toViperMethodHeader(ctx: TypeResolver): Method? {
         if (isPure) return null
         return UserMethod(
             name,
             formalArgs.map { it.toLocalVarDecl() },
             returns.toLocalVarDecl(),
-            preconditions.pureToViper(toBuiltin = true, ctx),
-            postconditions.pureToViper(toBuiltin = true, ctx),
-            null,
-        )
-    }
-
-    override fun toViperFunctionHeader(ctx: TypeResolver): Function? {
-        if (!isPure) return null
-        return UserFunction(
-            name,
-            formalArgs.map { it.toLocalVarDecl() },
-            returns.toLocalVarDecl().type,
             preconditions.pureToViper(toBuiltin = true, ctx),
             postconditions.pureToViper(toBuiltin = true, ctx),
             null,
