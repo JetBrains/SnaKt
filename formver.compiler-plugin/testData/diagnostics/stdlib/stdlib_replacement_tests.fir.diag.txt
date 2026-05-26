@@ -1,4 +1,16 @@
 /stdlib_replacement_tests.kt: info: Generated Viper text for useChecks:
+method f_check_args_Boolean_Any_ret_Unit(value: Ref, lazyMessage: Ref)
+  returns (ret_3: Ref)
+  requires isSubtype(typeOf(value), boolType())
+  requires isSubtype(typeOf(lazyMessage), functionType())
+  ensures isSubtype(typeOf(ret_3), unitType())
+
+
+method f_check_args_Boolean_ret_Unit(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), boolType())
+  ensures isSubtype(typeOf(ret_1), unitType())
+
+
 method useChecks() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
@@ -17,9 +29,21 @@ method useChecks() returns (v_ret_0: Ref)
 }
 
 /stdlib_replacement_tests.kt: info: Generated Viper text for useRuns:
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
+
+
+method f_run_args_NAny_NAny_ret_NAny(v_this_extension: Ref, block: Ref)
+  returns (ret_5: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_5), nullable(anyType()))
+
+
+method f_run_args_NAny_ret_NAny(block: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 method useRuns(x: Ref) returns (v_ret_0: Ref)
@@ -75,9 +99,15 @@ method useRuns(x: Ref) returns (v_ret_0: Ref)
 }
 
 /stdlib_replacement_tests.kt: info: Generated Viper text for useAlso:
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
+
+
+method also(v_this_extension: Ref, block: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 method useAlso(x: Ref) returns (v_ret_0: Ref)
@@ -108,9 +138,15 @@ method useAlso(x: Ref) returns (v_ret_0: Ref)
 }
 
 /stdlib_replacement_tests.kt: info: Generated Viper text for useLet:
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
+
+
+method f_let(v_this_extension: Ref, block: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 method useLet(x: Ref) returns (v_ret_0: Ref)
@@ -182,10 +218,22 @@ method useWith(x: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
+method with(receiver: Ref, block: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(receiver), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
 /stdlib_replacement_tests.kt: info: Generated Viper text for useApply:
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
+
+
+method f_apply(v_this_extension: Ref, block: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 method useApply(x: Ref) returns (v_ret_0: Ref)

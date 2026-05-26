@@ -17,6 +17,11 @@ method explicitArg() returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
+method invoke(f: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
 /lambdas.kt: info: Generated Viper text for implicitArg:
 method implicitArg() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
@@ -36,7 +41,17 @@ method implicitArg() returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
+method invoke(f: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
 /lambdas.kt: info: Generated Viper text for lambdaIf:
+method invoke(f: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
 method lambdaIf() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
@@ -59,6 +74,11 @@ method lambdaIf() returns (v_ret_0: Ref)
 }
 
 /lambdas.kt: info: Generated Viper text for returnValueNotUsed:
+method invoke(f: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
 method returnValueNotUsed() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
@@ -77,6 +97,11 @@ method returnValueNotUsed() returns (v_ret_0: Ref)
 }
 
 /lambdas.kt: info: Generated Viper text for shadowing:
+method invoke(f: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
 method shadowing() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
@@ -102,6 +127,11 @@ method shadowing() returns (v_ret_0: Ref)
 }
 
 /lambdas.kt: info: Generated Viper text for nested:
+method invoke(f: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_3), intType())
+
+
 method nested() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
@@ -128,7 +158,16 @@ method nested() returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
+method nestedHelper() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
 /lambdas.kt: info: Generated Viper text for lambdaPassthrough:
+method invoke(f: Ref) returns (ret_4: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_4), intType())
+
+
 method lambdaPassthrough() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
@@ -148,6 +187,11 @@ method lambdaPassthrough() returns (v_ret_0: Ref)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
+
+method passthroughHelper(f: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_1), unitType())
+
 
 /lambdas.kt: info: Generated Viper text for captureArg:
 method captureArg(g: Ref) returns (v_ret_0: Ref)
@@ -171,6 +215,11 @@ method captureArg(g: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
+method invoke(f: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
 /lambdas.kt: info: Generated Viper text for captureVar:
 method captureVar() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
@@ -191,6 +240,11 @@ method captureVar() returns (v_ret_0: Ref)
   goto lbl_ret_0
   label lbl_ret_0
 }
+
+method invoke(f: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
 
 /lambdas.kt: info: Generated Viper text for captureAndShadow:
 method captureAndShadow(par_x: Ref) returns (v_ret_0: Ref)
@@ -216,6 +270,11 @@ method captureAndShadow(par_x: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
+method invoke(f: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
 /lambdas.kt: info: Generated Viper text for captureVarClash:
 method captureVarClash(par_x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(par_x), intType())
@@ -239,6 +298,11 @@ method captureVarClash(par_x: Ref) returns (v_ret_0: Ref)
   goto lbl_ret_0
   label lbl_ret_0
 }
+
+method invokeClash(f: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
 
 /lambdas.kt: info: Generated Viper text for captureAndShadowClash:
 method captureAndShadowClash(par_x: Ref) returns (v_ret_0: Ref)
@@ -268,7 +332,17 @@ method captureAndShadowClash(par_x: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
+method invokeClash(f: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
 /lambdas.kt: info: Generated Viper text for nestedLambdaShadowing:
+method invokeClash(f: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
 method nestedLambdaShadowing(par_x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(par_x), intType())
   ensures isSubtype(typeOf(v_ret_0), intType())
@@ -341,3 +415,7 @@ method callDoubleInvoke(par_x: Ref) returns (v_ret_0: Ref)
   goto lbl_ret_0
   label lbl_ret_0
 }
+
+method doubleInvoke(f: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())

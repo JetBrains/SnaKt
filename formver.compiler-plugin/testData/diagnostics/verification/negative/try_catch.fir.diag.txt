@@ -93,6 +93,10 @@ method call(x: Ref) returns (ret_3: Ref)
   ensures isSubtype(typeOf(ret_3), unitType())
 
 
+method callTwice() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), unitType())
+
+
 method cause(this: Ref) returns (v_ret_0: Ref)
 
 

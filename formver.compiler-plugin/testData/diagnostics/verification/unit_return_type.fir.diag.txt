@@ -35,14 +35,20 @@ method idFun(par_t: Ref) returns (ret_1: Ref)
 
 
 /unit_return_type.kt: info: Generated Viper text for useInlineUnit:
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 
 
 method idFun(par_t: Ref) returns (ret_5: Ref)
   requires isSubtype(typeOf(par_t), nullable(anyType()))
   ensures isSubtype(typeOf(ret_5), nullable(anyType()))
+
+
+method unitRun(v_this_extension: Ref, block: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_1), unitType())
 
 
 method useInlineUnit(b: Ref) returns (v_ret_0: Ref)

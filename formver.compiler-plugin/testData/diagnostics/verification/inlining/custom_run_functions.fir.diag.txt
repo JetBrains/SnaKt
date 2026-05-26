@@ -1,4 +1,9 @@
 /custom_run_functions.kt: info: Generated Viper text for quadruple:
+method double(x: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
 method quadruple(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(v_ret_0), intType())
@@ -25,6 +30,11 @@ method quadruple(x: Ref) returns (v_ret_0: Ref)
 }
 
 /custom_run_functions.kt: info: Generated Viper text for useBranching:
+method branching(b: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
 method useBranching() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
@@ -60,9 +70,58 @@ method useBranching() returns (v_ret_0: Ref)
 }
 
 /custom_run_functions.kt: info: Generated Viper text for useRun:
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
+
+
+method doubleEqualsThree(block: Ref) returns (ret_70: Ref)
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_70), boolType())
+
+
+method doubleIntRun(v_this_extension: Ref, block: Ref)
+  returns (ret_40: Ref)
+  requires isSubtype(typeOf(v_this_extension), intType())
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_40), intType())
+
+
+method equalsThree(block: Ref) returns (ret_49: Ref)
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_49), boolType())
+
+
+method equalsThreeExtension(block: Ref) returns (ret_63: Ref)
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_63), boolType())
+
+
+method equalsThreeParametrized(block: Ref) returns (ret_56: Ref)
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_56), boolType())
+
+
+method f_copiedRun_args_NAny_NAny_ret_NAny(v_this_extension: Ref, block: Ref)
+  returns (ret_45: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_45), nullable(anyType()))
+
+
+method f_copiedRun_args_NAny_ret_NAny(block: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+method intRun(block: Ref) returns (ret_20: Ref)
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_20), intType())
+
+
+method run(block: Ref) returns (ret_30: Ref)
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_30), nullable(anyType()))
 
 
 method useRun() returns (v_ret_0: Ref)
@@ -591,20 +650,67 @@ method complexScenario(par_arg: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
+method doubleIntRun(v_this_extension: Ref, block: Ref)
+  returns (ret_14: Ref)
+  requires isSubtype(typeOf(v_this_extension), intType())
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_14), intType())
+
+
+method equalsThreeExtension(block: Ref) returns (ret_23: Ref)
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_23), boolType())
+
+
+method equalsThreeParametrized(block: Ref) returns (ret_6: Ref)
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_6), boolType())
+
+
+method f_copiedRun_args_NAny_NAny_ret_NAny(v_this_extension: Ref, block: Ref)
+  returns (ret_10: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_10), nullable(anyType()))
+
+
+method f_copiedRun_args_NAny_ret_NAny(block: Ref) returns (ret_19: Ref)
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_19), nullable(anyType()))
+
+
+method ifTrue(v_this_extension: Ref, block: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this_extension), boolType())
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
+
+
 /custom_run_functions.kt: info: Generated Viper text for testCustomClass:
-function member(this: Ref): Ref
-  requires isSubtype(typeOf(this), CustomClass())
+function member(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), CustomClass())
   ensures isSubtype(typeOf(result), intType())
 
 
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 
 
 method con() returns (ret_1: Ref)
   ensures isSubtype(typeOf(ret_1), CustomClass())
   ensures acc(CustomClass_unique(ret_1), write)
+
+
+method extensionRun(v_this_extension: Ref, block: Ref) returns (ret_6: Ref)
+  requires isSubtype(typeOf(v_this_extension), CustomClass())
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_6), nullable(anyType()))
+
+
+method memberRun(v_this: Ref, block: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this), CustomClass())
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
 method testCustomClass() returns (v_ret_0: Ref)

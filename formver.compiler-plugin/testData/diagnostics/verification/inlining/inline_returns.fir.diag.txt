@@ -4,6 +4,11 @@ function size(this: Ref): Ref
   ensures isSubtype(typeOf(result), intType())
 
 
+method not(f: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_1), boolType())
+
+
 method simple_return() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
@@ -25,6 +30,11 @@ method simple_return() returns (v_ret_0: Ref)
 }
 
 /inline_returns.kt: info: Generated Viper text for unnamed_return:
+method not(f: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_2), boolType())
+
+
 method unnamed_return() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), boolType())
   ensures boolFromRef(v_ret_0) == true
@@ -68,6 +78,11 @@ method named_local_return() returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
+method not(f: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_2), boolType())
+
+
 /inline_returns.kt: info: Generated Viper text for named_nonlocal_return:
 method named_nonlocal_return() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), boolType())
@@ -89,6 +104,11 @@ method named_nonlocal_return() returns (v_ret_0: Ref)
   goto lbl_ret_0
   label lbl_ret_0
 }
+
+method not(f: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_2), boolType())
+
 
 /inline_returns.kt: info: Generated Viper text for double_nonlocal_return:
 method double_nonlocal_return() returns (v_ret_0: Ref)
@@ -126,6 +146,11 @@ method double_nonlocal_return() returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
+method not(f: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_2), boolType())
+
+
 /inline_returns.kt: info: Generated Viper text for named_double_nonlocal_return:
 method named_double_nonlocal_return() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), boolType())
@@ -159,3 +184,12 @@ method named_double_nonlocal_return() returns (v_ret_0: Ref)
   goto lbl_ret_0
   label lbl_ret_0
 }
+
+method not(f: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_2), boolType())
+
+
+method step(f: Ref) returns (ret_6: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_6), unitType())
