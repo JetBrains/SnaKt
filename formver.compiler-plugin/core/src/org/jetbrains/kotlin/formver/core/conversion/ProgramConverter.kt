@@ -266,9 +266,7 @@ class ProgramConverter(
         val name = symbol.embedGetterName(this)
         val signature = ImpureGetterFunctionSignature(name, symbol)
         val callable = NonInlineNamedFunction(signature)
-        val function = UserFunctionEmbedding(
-            callable
-        )
+        val function = UserFunctionEmbedding(callable)
         impureFunctions.putIfAbsent(name, function)
         return callable
     }
@@ -279,9 +277,7 @@ class ProgramConverter(
         val returnType = embedType(symbol.resolvedReturnType)
         val signature = PureGetterFunctionSignature(name, symbol, classType, returnType)
         val callable = NonInlineNamedFunction(signature)
-        val function = PureUserFunctionEmbedding(
-            callable
-        )
+        val function = PureUserFunctionEmbedding(callable)
         pureFunctions.putIfAbsent(name, function)
         return callable
     }
@@ -290,9 +286,7 @@ class ProgramConverter(
         val name = symbol.embedSetterName(this)
         val signature = SetterFunctionSignature(name, symbol)
         val callable = NonInlineNamedFunction(signature)
-        val function = UserFunctionEmbedding(
-            callable
-        )
+        val function = UserFunctionEmbedding(callable)
         impureFunctions.putIfAbsent(name, function)
         return callable
     }
@@ -444,8 +438,7 @@ class ProgramConverter(
                     isDefaultProperty -> {
                         // use pure function
                         Pair(
-                            CustomGetter(embedPureGetterFunction(symbol)),
-                            null
+                            CustomGetter(embedPureGetterFunction(symbol)), null
                         )
                     }
 
@@ -454,18 +447,12 @@ class ProgramConverter(
                         // use impure function
                         Pair(
                             CustomGetter(embedImpureGetterFunction(symbol)),
-                            symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) }
-                        )
+                            symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) })
                     }
                 }
 
                 return@getOrPutProperty PropertyEmbedding(
-                    getter,
-                    setter,
-                    isDefaultProperty || isManual,
-                    isUnique,
-                    isImmutable,
-                    type
+                    getter, setter, isDefaultProperty || isManual, isUnique, isImmutable, type
                 )
 
             }
@@ -652,9 +639,9 @@ class ProgramConverter(
         CustomGetter(embedImpureGetterFunction(symbol)),
         symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) },
         hasDefaultBehaviour = false,
-        false,
-        symbol.isVal,
-        embedType(symbol.resolvedReturnType)
+        isUnique = false,
+        isVal = symbol.isVal,
+        type = embedType(symbol.resolvedReturnType)
     )
 
     @OptIn(SymbolInternals::class)
