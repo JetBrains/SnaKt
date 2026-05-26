@@ -17,21 +17,22 @@ function x(this: Ref): Ref
 
 
 predicate A_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), A())
 }
 
 predicate B_unique(this: Ref) {
-  acc(A_unique(this), write)
+  isSubtype(typeOf(this), B()) && acc(A_unique(this), write)
 }
 
 predicate C_unique(this: Ref) {
-  acc(this.y, write) && isSubtype(typeOf(this.y), A()) &&
+  isSubtype(typeOf(this), C()) && acc(this.y, write) &&
+  isSubtype(typeOf(this.y), A()) &&
   acc(D_unique(this), write) &&
   acc(B_unique(this), write)
 }
 
 predicate D_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), D())
 }
 
 method accessSuperTypeProperty(c: Ref) returns (v_ret_0: Ref)
@@ -66,21 +67,22 @@ function x(this: Ref): Ref
 
 
 predicate A_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), A())
 }
 
 predicate B_unique(this: Ref) {
-  acc(A_unique(this), write)
+  isSubtype(typeOf(this), B()) && acc(A_unique(this), write)
 }
 
 predicate C_unique(this: Ref) {
-  acc(this.y, write) && isSubtype(typeOf(this.y), A()) &&
+  isSubtype(typeOf(this), C()) && acc(this.y, write) &&
+  isSubtype(typeOf(this.y), A()) &&
   acc(D_unique(this), write) &&
   acc(B_unique(this), write)
 }
 
 predicate D_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), D())
 }
 
 method accessNested(c: Ref) returns (v_ret_0: Ref)
@@ -103,7 +105,7 @@ function a(this: Ref): Ref
 
 
 predicate A_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), A())
 }
 
 method accessNullable(x: Ref) returns (v_ret_0: Ref)
@@ -130,11 +132,11 @@ function b(this: Ref): Ref
 
 
 predicate A_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), A())
 }
 
 predicate B_unique(this: Ref) {
-  acc(A_unique(this), write)
+  isSubtype(typeOf(this), B()) && acc(A_unique(this), write)
 }
 
 method accessCast(x: Ref) returns (v_ret_0: Ref)
@@ -160,11 +162,11 @@ function b(this: Ref): Ref
 
 
 predicate A_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), A())
 }
 
 predicate B_unique(this: Ref) {
-  acc(A_unique(this), write)
+  isSubtype(typeOf(this), B()) && acc(A_unique(this), write)
 }
 
 method accessSafeCast(x: Ref) returns (v_ret_0: Ref)
@@ -198,11 +200,11 @@ function b(this: Ref): Ref
 
 
 predicate A_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), A())
 }
 
 predicate B_unique(this: Ref) {
-  acc(A_unique(this), write)
+  isSubtype(typeOf(this), B()) && acc(A_unique(this), write)
 }
 
 method accessSmartCast(x: Ref) returns (v_ret_0: Ref)

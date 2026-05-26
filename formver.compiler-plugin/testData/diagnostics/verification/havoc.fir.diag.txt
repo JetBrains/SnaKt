@@ -413,7 +413,8 @@ function xorBools(arg_1: Ref, arg_2: Ref): Ref
 
 
 predicate A_unique(this: Ref) {
-  acc(this.unit, write) && isSubtype(typeOf(this.unit), unitType()) &&
+  isSubtype(typeOf(this), A()) && acc(this.unit, write) &&
+  isSubtype(typeOf(this.unit), unitType()) &&
   acc(this.nothing, write) &&
   isSubtype(typeOf(this.nothing), nothingType()) &&
   acc(this.any, write) &&
@@ -447,7 +448,7 @@ predicate A_unique(this: Ref) {
 }
 
 predicate B_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), B())
 }
 
 method df_havoc(arg_1: rt) returns (v_ret_0: Ref)

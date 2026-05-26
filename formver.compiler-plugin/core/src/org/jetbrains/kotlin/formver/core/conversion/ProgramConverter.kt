@@ -316,36 +316,33 @@ class ProgramConverter(
         }
     }
 
-    private fun embedImpureGetterFunction(symbol: FirPropertySymbol): CallableEmbedding {
+    private fun embedImpureGetterFunction(symbol: FirPropertySymbol): NonInlineNamedFunction {
         val name = symbol.embedGetterName(this)
-        return impureFunctions.getOrPut(name) {
-            val signature = ImpureGetterFunctionSignature(name, symbol)
-            UserFunctionEmbedding(
-                NonInlineNamedFunction(signature)
-            )
-        }
+        val signature = ImpureGetterFunctionSignature(name, symbol)
+        val callable = NonInlineNamedFunction(signature)
+        val function = UserFunctionEmbedding(callable)
+        impureFunctions.putIfAbsent(name, function)
+        return callable
     }
 
-    private fun embedPureGetterFunction(symbol: FirPropertySymbol): CallableEmbedding {
+    private fun embedPureGetterFunction(symbol: FirPropertySymbol): NonInlineNamedFunction {
         val name = symbol.embedGetterName(this)
-        return pureFunctions.getOrPut(name) {
-            val classType = embedType(symbol.dispatchReceiverType!!)
-            val returnType = embedType(symbol.resolvedReturnType)
-            val signature = PureGetterFunctionSignature(name, symbol, classType, returnType)
-            PureUserFunctionEmbedding(
-                NonInlineNamedFunction(signature)
-            )
-        }
+        val classType = embedType(symbol.dispatchReceiverType!!)
+        val returnType = embedType(symbol.resolvedReturnType)
+        val signature = PureGetterFunctionSignature(name, symbol, classType, returnType)
+        val callable = NonInlineNamedFunction(signature)
+        val function = PureUserFunctionEmbedding(callable)
+        pureFunctions.putIfAbsent(name, function)
+        return callable
     }
 
-    private fun embedSetterFunction(symbol: FirPropertySymbol): CallableEmbedding {
+    private fun embedSetterFunction(symbol: FirPropertySymbol): NonInlineNamedFunction {
         val name = symbol.embedSetterName(this)
-        return impureFunctions.getOrPut(name) {
-            val signature = SetterFunctionSignature(name, symbol)
-            UserFunctionEmbedding(
-                NonInlineNamedFunction(signature)
-            )
-        }
+        val signature = SetterFunctionSignature(name, symbol)
+        val callable = NonInlineNamedFunction(signature)
+        val function = UserFunctionEmbedding(callable)
+        impureFunctions.putIfAbsent(name, function)
+        return callable
     }
 
     override fun embedFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding {
@@ -460,7 +457,7 @@ class ProgramConverter(
     override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding {
 
         if (symbol.receiverParameterSymbol != null) {
-            return embedCustomProperty(symbol)
+            return embedExtensionProperty(symbol)
         } else {
             val name = symbol.embedMemberPropertyName(this)
             return typeResolver.getOrPutProperty(name) {
@@ -480,33 +477,37 @@ class ProgramConverter(
                 val isDefaultProperty = isGuaranteedDefaultProperty(symbol)
                 val isImmutable = symbol.isVal
                 val isManual = symbol.isManual(session)
+                val isUnique = symbol.isUnique(session)
 
-                return@getOrPutProperty when {
+                val type = embedType(symbol.resolvedReturnType)
+
+                val (getter, setter) = when {
                     (isDefaultProperty && !isImmutable) || isManual -> {
                         // use a backing field
                         val field = embedBackingField(symbol, regularClass)
-                        PropertyEmbedding(
-                            BackingFieldGetter(field), BackingFieldSetter(field), hasDefaultBehaviour = true
-                        )
+                        Pair(BackingFieldGetter(field), BackingFieldSetter(field))
                     }
 
                     isDefaultProperty -> {
                         // use pure function
-                        PropertyEmbedding(
-                            CustomGetter(embedPureGetterFunction(symbol)), null, hasDefaultBehaviour = true
+                        Pair(
+                            CustomGetter(embedPureGetterFunction(symbol)), null
                         )
                     }
 
                     else -> {
                         // The property could be overridden by anything, or has a custom getter/setter.
                         // use impure function
-                        PropertyEmbedding(
+                        Pair(
                             CustomGetter(embedImpureGetterFunction(symbol)),
-                            symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) },
-                            hasDefaultBehaviour = false
-                        )
+                            symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) })
                     }
                 }
+
+                return@getOrPutProperty PropertyEmbedding(
+                    getter, setter, isDefaultProperty || isManual, isUnique, isImmutable, type
+                )
+
             }
         }
     }
@@ -633,12 +634,10 @@ class ProgramConverter(
                 }
             }.toMap()
 
-            val context = createBodyConversionContext(subSignature, returnTarget)
-
             val fieldPostconditions = signature.params.mapNotNull { param ->
                 require(param is FirVariableEmbedding) { "Constructor parameters must be represented by FirVariableEmbeddings" }
                 parameterMatching[param.symbol]?.let { property ->
-                    EqCmp(property.getter!!.getValueSimple(returnTarget.variable, context), param)
+                    EqCmp(property.getter!!.getValueSimple(returnTarget.variable, typeResolver), param)
                 }
             }
             ConstructorSignature(subSignature, symbol, fieldPostconditions, typeResolver)
@@ -689,10 +688,13 @@ class ProgramConverter(
         return backingField
     }
 
-    private fun embedCustomProperty(symbol: FirPropertySymbol) = PropertyEmbedding(
+    private fun embedExtensionProperty(symbol: FirPropertySymbol) = PropertyEmbedding(
         CustomGetter(embedImpureGetterFunction(symbol)),
         symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) },
-        hasDefaultBehaviour = false
+        hasDefaultBehaviour = false,
+        isUnique = false,
+        isVal = symbol.isVal,
+        type = embedType(symbol.resolvedReturnType)
     )
 
     @OptIn(SymbolInternals::class)

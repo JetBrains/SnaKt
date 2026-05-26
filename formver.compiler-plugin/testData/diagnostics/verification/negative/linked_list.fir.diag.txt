@@ -7,7 +7,9 @@ function next(this: Ref): Ref
 
 
 predicate Link_unique(this: Ref) {
-  acc(this.data, write) && isSubtype(typeOf(this.data), intType())
+  isSubtype(typeOf(this), Link()) && acc(this.data, write) &&
+  isSubtype(typeOf(this.data), intType()) &&
+  (next(this) != nullValue() ==> acc(Link_unique(next(this)), write))
 }
 
 method getVal(l: Ref) returns (v_ret_0: Ref)
@@ -39,20 +41,23 @@ function size(this: Ref): Ref
 
 
 predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
   acc(Cloneable_unique(this), write) &&
   acc(Serializable_unique(this), write)
 }
 
 predicate Cloneable_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), Cloneable())
 }
 
 predicate Link_unique(this: Ref) {
-  acc(this.bf_data, write) && isSubtype(typeOf(this.bf_data), intType())
+  isSubtype(typeOf(this), Link()) && acc(this.bf_data, write) &&
+  isSubtype(typeOf(this.bf_data), intType()) &&
+  (g_next(this) != nullValue() ==> acc(Link_unique(g_next(this)), write))
 }
 
 predicate Serializable_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), Serializable())
 }
 
 method con(par_data: Ref, par_next: Ref) returns (ret_1: Ref)

@@ -28,17 +28,21 @@ data class ClassTypeEmbedding(override val name: ScopedName) : PretypeEmbedding 
 
     context(ctx: TypeResolver)
     fun uniquePredicate(): Predicate = ClassPredicateBuilder.build(name, uniquePredicateName) {
-        forEachField {
-            if (isAlwaysReadable) {
-                addAccessPermissions(PermExp.WildcardPerm())
-            } else {
-                addAccessPermissions(PermExp.FullPerm())
+        includeSubTypeInvariants()
+        forEachPropertyField {
+            forBackingField {
+                if (!isAlwaysWriteable) {
+                    addAccessPermissions(PermExp.FullPerm())
+
+                    forType {
+                        includeSubTypeInvariants()
+                    }
+                }
             }
             forType {
                 if (isUnique) {
                     addAccessToUniquePredicate()
                 }
-                includeSubTypeInvariants()
             }
         }
         forEachSuperType {

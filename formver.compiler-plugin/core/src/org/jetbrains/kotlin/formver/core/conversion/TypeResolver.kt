@@ -92,10 +92,16 @@ class TypeResolver {
     /**
      * Returns all the fields belonging directly to a class.
      */
-    fun lookupClassFields(name: SymbolicName) =
+    fun lookupClassBackingFields(name: SymbolicName) =
         properties.filterKeys { it.className == name }.values.mapNotNull { toBackingField(it) }
 
     fun lookupBackingField(name: ClassPropertyPair): FieldEmbedding? = properties[name]?.let { toBackingField(it) }
+
+    fun lookupClassDefaultBehavingProperties(name: SymbolicName): List<PropertyEmbedding> =
+        lookupClassProperties(name).filter { it.hasDefaultBehaviour }
+
+    fun lookupClassProperties(name: SymbolicName): List<PropertyEmbedding> =
+        properties.filterKeys { it.className == name }.values.toList()
 
     fun lookupDefaultBehavingProperties(name: ClassPropertyPair): PropertyEmbedding? =
         properties[name]?.takeIf { it.hasDefaultBehaviour }
@@ -109,7 +115,7 @@ class TypeResolver {
      * They are unique with regard to their name.
      */
     private fun collectFields(className: SymbolicName): List<FieldEmbedding> {
-        return lookupSuperTypes(className).fold(lookupClassFields(className)) { acc, type ->
+        return lookupSuperTypes(className).fold(lookupClassBackingFields(className)) { acc, type ->
             acc + collectFields(type.name)
         }.distinctBy { it.name }
     }

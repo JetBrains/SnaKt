@@ -12,6 +12,8 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
 import org.jetbrains.kotlin.formver.core.conversion.CollectionSizeFieldEmbedding
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
+import org.jetbrains.kotlin.formver.core.embeddings.types.IntTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.asTypeEmbedding
 import org.jetbrains.kotlin.formver.core.kotlinCallableId
 import org.jetbrains.kotlin.formver.core.names.MemberEmbeddingPolicy
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
@@ -25,7 +27,16 @@ abstract class SpecialProperty(val property: PropertyEmbedding) {
 
 
 object StringSizeProperty :
-    SpecialProperty(PropertyEmbedding(LengthFieldGetter, setter = null, hasDefaultBehaviour = true)) {
+    SpecialProperty(
+        PropertyEmbedding(
+            LengthFieldGetter,
+            setter = null,
+            hasDefaultBehaviour = true,
+            isUnique = true,
+            isVal = true,
+            type = IntTypeEmbedding.asTypeEmbedding()
+        )
+    ) {
     context(typeResolver: TypeResolver, session: FirSession)
     override fun match(symbol: FirPropertySymbol): Boolean = symbol.callableId == kotlinCallableId("String", "length")
 }
@@ -35,7 +46,10 @@ object CollectionSizeProperty :
         PropertyEmbedding(
             BackingFieldGetter(CollectionSizeFieldEmbedding),
             setter = null,
-            hasDefaultBehaviour = true
+            hasDefaultBehaviour = true,
+            isUnique = true,
+            isVal = true,
+            type = CollectionSizeFieldEmbedding.type,
         )
     ) {
     context(typeResolver: TypeResolver, session: FirSession)

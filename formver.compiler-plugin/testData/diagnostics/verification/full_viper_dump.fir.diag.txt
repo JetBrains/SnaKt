@@ -387,7 +387,7 @@ function xorBools(arg_1: Ref, arg_2: Ref): Ref
 
 
 predicate Foo_unique(this: Ref) {
-  true
+  isSubtype(typeOf(this), Foo())
 }
 
 method con(par_x: Ref) returns (ret_1: Ref)
