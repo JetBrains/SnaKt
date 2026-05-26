@@ -504,6 +504,22 @@ class ProgramConverter(
         }
     }
 
+
+    /**
+     * Embeds the full function signature (e.g. with pre+post conditions). If necessary, the body of the function is stored as well.
+     */
+    private fun embedFullFunctionAndBody(symbol: FirFunctionSymbol<*>): CallableNamedSignature {
+
+        callable[symbol.embedName(this)]?.let { return it.signature }
+
+        val (callableEmbedding, returnTarget) = embedCallable(symbol)
+
+
+        embedFunctionBody(symbol, callableEmbedding, returnTarget)
+
+        return callableEmbedding
+    }
+
     /**
      * Returns the callable embedding if a matching special function exists.
      */
