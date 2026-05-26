@@ -534,9 +534,10 @@ class ProgramConverter(
     }
 
     /**
-     * This method should be used to lookup a callable embedding for a function symbol.
+     * This function is the public interface to embed a function symbol.
+     * If during the conversion of a function body a function call is made, then [embedAnyFunction] must be used to embed the function.
      *
-     * It will return the callable embedding, if the function was seen the first time it will embed the full function signature and body (if needed).
+     * It will return the callable embedding, if the function was seen the first time, it will embed the full function signature and body (if needed).
      */
     override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding {
 
