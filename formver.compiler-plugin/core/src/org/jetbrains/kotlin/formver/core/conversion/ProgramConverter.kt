@@ -211,7 +211,7 @@ class ProgramConverter(
         } else {
             signature.toViperMethodHeader(typeResolver)
         }
-        if (method != null) linearizedBodyResolver.storeMethod(name, method)
+        linearizedBodyResolver.storeMethod(name, method)
 
     }
 
