@@ -21,6 +21,7 @@ object FunctionResultVariableName : ViperKeyword("result"), SymbolicName {
 
 object ViperKeywords {
     val keywords = setOf(
+        "apply",
         "import",
         "define",
         "field",
