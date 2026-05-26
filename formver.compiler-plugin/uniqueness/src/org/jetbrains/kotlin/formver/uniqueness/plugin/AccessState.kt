@@ -84,6 +84,10 @@ fun AccessState.mask(uniquenessState: UniquenessState): UniquenessState {
 
 context(context: CheckerContext)
 fun AccessState.resolveUniqueness(): Uniqueness =
-    symbols.fold(Uniqueness.Unique) { result, symbol ->
-        result.join(symbol.resolveComponentUniqueness())
+    if (this == EmptyAccessState) {
+        Uniqueness.Shared
+    } else {
+        symbols.fold(Uniqueness.Unique) { result, symbol ->
+            result.join(symbol.resolveComponentUniqueness())
+        }
     }

@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.uniqueness.plugin
 
+import kotlinx.collections.immutable.persistentMapOf
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.expressions.FirExpression
@@ -12,6 +13,7 @@ import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
 import org.jetbrains.kotlin.fir.expressions.FirLiteralExpression
 import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
+import org.jetbrains.kotlin.fir.expressions.FirThisReceiverExpression
 import org.jetbrains.kotlin.fir.expressions.FirThrowExpression
 import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
@@ -47,12 +49,23 @@ private object TerminalUniquenessResolver : ExpressionTypeResolver<Uniqueness> {
                 if (expression.calleeReference.symbol is FirConstructorSymbol) Uniqueness.Unique
                 else Uniqueness.Shared
 
+            is FirReturnExpression -> Uniqueness.Unique
+
+            is FirThrowExpression -> Uniqueness.Unique
+
+            is FirThisReceiverExpression -> {
+                val symbol = expression.calleeReference.symbol ?: return Uniqueness.Shared
+                val accessState = AccessState(false, persistentMapOf(symbol to AccessState(true)))
+
+                accessState.mask(environment).asUniqueness()
+            }
+
             is FirPropertyAccessExpression -> {
                 expression.resolveAccessState().mask(environment)
                     .asUniqueness()
             }
 
-            else -> Uniqueness.Unique
+            else -> Uniqueness.Shared
         }
     }
 }
