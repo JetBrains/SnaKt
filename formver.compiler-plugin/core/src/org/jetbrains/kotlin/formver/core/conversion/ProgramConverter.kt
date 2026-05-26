@@ -195,6 +195,26 @@ class ProgramConverter(
         }
     }
 
+
+    private fun linearizePure(name: SymbolicName, signature: FullNamedFunctionSignature) {
+        val converted = convertedBodyResolver.lookupPure(name)
+        val linearized = converted?.let { linearizePureBody(signature.declarationSource, it) }
+        linearizedBodyResolver.storeFunction(name, signature.toViperFunction(typeResolver, linearized))
+
+    }
+
+    private fun linearizeImpure(name: SymbolicName, signature: FullNamedFunctionSignature) {
+        val source = signature.declarationSource
+        val converted = convertedBodyResolver.lookupImpure(name)
+        val method = if (converted != null) {
+            linearizeImpureBody(source, converted).toViperMethod(signature, typeResolver)
+        } else {
+            signature.toViperMethodHeader(typeResolver)
+        }
+        if (method != null) linearizedBodyResolver.storeMethod(name, method)
+
+    }
+
     /**
      * Build the finalized Viper `Method` / `Function` for every embedded callable, storing each in
      * [linearizedBodyResolver]. Should only be invoked when [hadConversionError] is false.
@@ -204,21 +224,8 @@ class ProgramConverter(
      */
     fun linearizeAll() {
         val (pure, impure) = fullSignatures.entries.partition { it.value.isPure }
-        for ((name, embedding) in impure) {
-            val source = embedding.declarationSource
-            val converted = convertedBodyResolver.lookupImpure(name)
-            val method = if (converted != null) {
-                linearizeImpureBody(source, converted).toViperMethod(embedding, typeResolver)
-            } else {
-                embedding.toViperMethodHeader(typeResolver)
-            }
-            if (method != null) linearizedBodyResolver.storeMethod(name, method)
-        }
-        for ((name, embedding) in pure) {
-            val converted = convertedBodyResolver.lookupPure(name)
-            val linearized = converted?.let { linearizePureBody(embedding.declarationSource, it) }
-            linearizedBodyResolver.storeFunction(name, embedding.toViperFunction(typeResolver, linearized))
-        }
+        pure.forEach { linearizePure(it.key, it.value) }
+        impure.forEach { linearizeImpure(it.key, it.value) }
     }
 
     private fun createBodyConversionContext(
@@ -342,14 +349,14 @@ class ProgramConverter(
 
 
     /**
-     * Embeds an inline function. This also includes to embed the provided contract.
-     *
-     * We want to be able to call the result. For an inline function to be callable, we need to have the pre+post condition.
+     * Embeds an inline signature. This also includes embedding the provided contract.
+
+     * We want to be able to call the result. For an inline function to be callable, we need to have the pre- and post-conditions.
      * Therefore, the full signature is already registered here.
      */
     @OptIn(SymbolInternals::class)
-    private fun embedInlineFunctionSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<CallableNamedSignature> {
-        val (fullSignature, returnTarget) = embedNamedFunctionSignature(symbol).refineSignature { current ->
+    private fun embedInlineFunctionSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<CallableNamedSignature> =
+        embedNamedFunctionSignature(symbol).refineSignature { current ->
             val body =
                 symbol.fir.body ?: throw SnaktInternalException(symbol.source, "Expected function body, got null")
             val (precondition, postcondition) = embedProvidedContract(symbol, current.signature, current.returnTarget)
@@ -366,9 +373,6 @@ class ProgramConverter(
             fullSignature
         }
 
-
-        return SignatureWithTarget(fullSignature, returnTarget)
-    }
 
     /**
      * Embeds a non-inline function. The contract is not included.
@@ -491,9 +495,7 @@ class ProgramConverter(
      */
     @OptIn(SymbolInternals::class)
     private fun embedFunctionBody(
-        symbol: FirFunctionSymbol<*>,
-        callable: CallableNamedSignature,
-        returnTarget: ReturnTarget
+        symbol: FirFunctionSymbol<*>, callable: CallableNamedSignature, returnTarget: ReturnTarget
     ) {
         embedFullSignature(symbol, callable, returnTarget)
         if (callable.isPure && !symbol.neverConvert(session)) {
@@ -505,7 +507,6 @@ class ProgramConverter(
             val body = context.convertPureBody(declaration)
             convertedBodyResolver.storePure(callable.name, body)
         }
-
     }
 
     /**
@@ -513,12 +514,11 @@ class ProgramConverter(
      */
     fun embedSpecialFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding? {
         val name = symbol.embedName(this)
-        return specialFunctions[name]?.let { existing ->
-            if (existing !is PartiallySpecialKotlinFunction) return existing
-            if (existing.baseEmbedding != null) return existing
+        return specialFunctions[name]?.also { existing ->
+            if (existing !is PartiallySpecialKotlinFunction) return@also
+            if (existing.baseEmbedding != null) return@also
             val callable = embedFullFunctionAndBody(symbol)
             existing.initBaseEmbedding(callable)
-            existing
         }
     }
 
