@@ -81,18 +81,34 @@ class ExpressionUniquenessEnvironmentResolver(session: FirSession) : FirExtensio
             Factory { session -> ExpressionUniquenessEnvironmentResolver(session) }
 
         context(context: CheckerContext)
-        fun resolveEnvironmentOf(expression: FirExpression): UniquenessState =
-            context.session.expressionUniquenessEnvironmentResolver.resolveEnvironmentOf(expression.unwrapExpression())
+        fun resolveInputEnvironmentOf(expression: FirExpression): UniquenessState =
+            context.session.expressionUniquenessEnvironmentResolver.resolveInputEnvironmentOf(expression.unwrapExpression())
+
+        context(context: CheckerContext)
+        fun resolveOutputEnvironmentOf(expression: FirExpression): UniquenessState =
+            context.session.expressionUniquenessEnvironmentResolver.resolveOutputEnvironmentOf(expression.unwrapExpression())
     }
 
     context(context: CheckerContext)
-    fun resolveEnvironmentOf(expression: FirExpression): UniquenessState {
+    fun resolveInputEnvironmentOf(expression: FirExpression): UniquenessState {
         for (symbol in context.containingDeclarations.asReversed()) {
             if (symbol !is FirFunctionSymbol<*>) continue
             val graph = symbol.resolvedControlFlowGraphReference?.controlFlowGraph ?: continue
             val mapping = session.graphUniquenessStateMappingResolver.resolveMappingOf(graph)
-            val state = mapping[expression]
-            if (state != null) return state
+            val pair = mapping[expression]
+            if (pair != null) return pair.input
+        }
+        return EmptyUniquenessState
+    }
+
+    context(context: CheckerContext)
+    fun resolveOutputEnvironmentOf(expression: FirExpression): UniquenessState {
+        for (symbol in context.containingDeclarations.asReversed()) {
+            if (symbol !is FirFunctionSymbol<*>) continue
+            val graph = symbol.resolvedControlFlowGraphReference?.controlFlowGraph ?: continue
+            val mapping = session.graphUniquenessStateMappingResolver.resolveMappingOf(graph)
+            val pair = mapping[expression]
+            if (pair != null) return pair.output
         }
         return EmptyUniquenessState
     }
@@ -105,5 +121,9 @@ private val FirSession.graphUniquenessStateMappingResolver: GraphUniquenessState
     by FirSession.sessionComponentAccessor()
 
 context(context: CheckerContext)
-fun FirExpression.resolveUniquenessEnvironment(): UniquenessState =
-    ExpressionUniquenessEnvironmentResolver.resolveEnvironmentOf(this)
+fun FirExpression.resolveInputUniquenessEnvironment(): UniquenessState =
+    ExpressionUniquenessEnvironmentResolver.resolveInputEnvironmentOf(this)
+
+context(context: CheckerContext)
+fun FirExpression.resolveOutputUniquenessEnvironment(): UniquenessState =
+    ExpressionUniquenessEnvironmentResolver.resolveInputEnvironmentOf(this)

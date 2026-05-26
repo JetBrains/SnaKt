@@ -36,7 +36,7 @@ import org.jetbrains.kotlin.types.ConstantValueKind
 private object TerminalUniquenessResolver : ExpressionTypeResolver<Uniqueness> {
     context(context: CheckerContext)
     override fun resolveTypeOf(expression: FirExpression): Uniqueness {
-        val environment = expression.resolveUniquenessEnvironment()
+        val environment = expression.resolveInputUniquenessEnvironment()
 
         return when (expression) {
             is FirLiteralExpression ->
@@ -64,6 +64,8 @@ private object TerminalUniquenessResolver : ExpressionTypeResolver<Uniqueness> {
  * point, this resolver does **not** cache results at the session level. Instead, it performs a
  * fresh walk through tails on each invocation, delegating terminal resolution to
  * [TerminalUniquenessResolver].
+ *
+ * NOTE TO SELF: DO NOT CALL THIS FROM THE ANALYZER
  */
 object ExpressionUniquenessResolver : ExpressionTypeResolver<Uniqueness> {
     context(context: CheckerContext)

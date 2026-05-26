@@ -10,19 +10,17 @@ import org.jetbrains.kotlin.fir.analysis.cfa.util.previousCfgNodes
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.caches.firCachesFactory
 import org.jetbrains.kotlin.fir.expressions.FirExpression
-import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
-import org.jetbrains.kotlin.fir.expressions.arguments
 import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallEnterNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.JumpNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ThrowExceptionNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
 
-typealias ExpressionUniquenessStateMapping = Map<FirExpression, UniquenessState>
+data class UniquenessStatePair(
+    val input: UniquenessState,
+    val output: UniquenessState,
+)
+
+typealias ExpressionUniquenessStateMapping = Map<FirExpression, UniquenessStatePair>
 
 class GraphUniquenessStateMappingResolver(session: FirSession) : FirExtensionSessionComponent(session) {
     companion object {
@@ -40,7 +38,7 @@ class GraphUniquenessStateMappingResolver(session: FirSession) : FirExtensionSes
 
     private fun buildMapping(graph: ControlFlowGraph, context: CheckerContext): ExpressionUniquenessStateMapping {
         val outputs = context(context) { graph.resolveUniquenessStates() }
-        val mapping = mutableMapOf<FirExpression, UniquenessState>()
+        val mapping = mutableMapOf<FirExpression, UniquenessStatePair>()
 
         fun CFGNode<*>.inputState(): UniquenessState =
             previousCfgNodes
@@ -48,20 +46,23 @@ class GraphUniquenessStateMappingResolver(session: FirSession) : FirExtensionSes
                 .reduceOrNull(UniquenessState::join)
                 ?: EmptyUniquenessState
 
-        fun register(expression: FirExpression, state: UniquenessState) {
-            // Only register the first (earliest) state for a given expression.
-            mapping.putIfAbsent(expression, state)
-        }
+        fun CFGNode<*>.outputState(): UniquenessState =
+            outputs[this].asUniquenessState()
 
+        // graph.nodes is already in topological (BFS) order: each node appears after all its
+        // non-back-edge predecessors.
         for (node in graph.nodes) {
-            val inputState = node.inputState()
             val element = node.fir
 
-            when (element) {
-                is FirExpression -> {
-                    register(element.unwrapExpression(), inputState)
-                }
-                else -> Unit
+            if (element is FirExpression) {
+                val unwrapped = element.unwrapExpression()
+                mapping.putIfAbsent(
+                    unwrapped,
+                    UniquenessStatePair(
+                        input = node.inputState(),
+                        output = node.outputState(),
+                    )
+                )
             }
         }
 
