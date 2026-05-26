@@ -290,8 +290,6 @@ class ProgramConverter(
     override fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<FunctionSignature> {
         val dispatchReceiverType = symbol.receiverType
         val extensionReceiverType = symbol.extensionReceiverType
-        val isExtensionReceiverUnique = symbol.receiverParameterSymbol?.isUnique(session) ?: false
-        val isExtensionReceiverBorrowed = symbol.receiverParameterSymbol?.isBorrowed(session) ?: false
 
         val returnType = embedType(symbol.resolvedReturnType)
 
@@ -300,36 +298,38 @@ class ProgramConverter(
             else -> returnTargetProducer.getFresh(returnType)
         }
 
-        val signature = object : FunctionSignature {
-            override val callableType: FunctionTypeEmbedding = embedFunctionPretype(symbol)
-
-            // TODO: figure out whether we want a symbol here and how to get it.
-            override val dispatchReceiver = dispatchReceiverType?.let {
-                PlaceholderVariableEmbedding(
-                    DispatchReceiverName,
-                    embedType(it),
-                    isUnique = false,
-                    isBorrowed = false,
-                )
-            }
-
-            override val extensionReceiver = extensionReceiverType?.let {
-                PlaceholderVariableEmbedding(
-                    ExtensionReceiverName,
-                    embedType(it),
-                    isExtensionReceiverUnique,
-                    isExtensionReceiverBorrowed,
-                )
-            }
-
-            override val params = symbol.valueParameterSymbols.map {
-                FirVariableEmbedding(
-                    it.embedName(), embedType(it.resolvedReturnType), it, it.isUnique(session), it.isBorrowed(session)
-                )
-            }
-            override val returns: VariableEmbedding = returnTarget.variable
-            override val isPure: Boolean = symbol.isPure(session)
+        val dispatchVariable = dispatchReceiverType?.let {
+            PlaceholderVariableEmbedding(
+                DispatchReceiverName,
+                embedType(it),
+                isUnique = false,
+                isBorrowed = false,
+            )
         }
+        val extensionVariable = extensionReceiverType?.let {
+            PlaceholderVariableEmbedding(
+                ExtensionReceiverName,
+                embedType(it),
+                symbol.receiverParameterSymbol?.isUnique(session) ?: false,
+                symbol.receiverParameterSymbol?.isBorrowed(session) ?: false,
+            )
+        }
+
+        val parameterVariables = symbol.valueParameterSymbols.map {
+            FirVariableEmbedding(
+                it.embedName(), embedType(it.resolvedReturnType), it, it.isUnique(session), it.isBorrowed(session)
+            )
+        }
+
+        val signature = FunctionSignatureImpl(
+            embedFunctionPretype(symbol),
+            dispatchVariable,
+            extensionVariable,
+            parameterVariables,
+            returns = returnTarget.variable,
+            isPure = symbol.isPure(session)
+        )
+
         return SignatureWithTarget(signature, returnTarget)
     }
 
@@ -339,12 +339,7 @@ class ProgramConverter(
     private fun embedNamedFunctionSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<NamedFunctionSignature> =
         embedFunctionSignature(symbol).refineSignature { current ->
             val name = symbol.embedName(this)
-            object : NamedFunctionSignature, FunctionSignature by current.signature {
-                override val name: SymbolicName = name
-                override val symbol: FirFunctionSymbol<*> = symbol
-                override val labelName: String
-                    get() = super<NamedFunctionSignature>.labelName
-            }
+            NamedFunctionSignatureImpl(name, symbol, current.signature)
         }
 
 

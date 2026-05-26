@@ -30,6 +30,16 @@ interface FunctionSignature {
         get() = listOfNotNull(dispatchReceiver, extensionReceiver) + params
 }
 
+data class FunctionSignatureImpl(
+    override val callableType: FunctionTypeEmbedding,
+    override val dispatchReceiver: VariableEmbedding?,
+    override val extensionReceiver: VariableEmbedding?,
+    override val params: List<VariableEmbedding>,
+    override val returns: VariableEmbedding,
+    override val isPure: Boolean,
+    override val labelName: String? = null,
+) : FunctionSignature
+
 abstract class GenericFunctionSignatureMixin : FunctionSignature {
     override val dispatchReceiver: VariableEmbedding?
         get() = callableType.dispatchReceiverType?.let { PlaceholderVariableEmbedding(DispatchReceiverName, it) }

@@ -18,6 +18,14 @@ interface NamedFunctionSignature : FunctionSignature {
         get() = symbol.name.asString()
 }
 
+data class NamedFunctionSignatureImpl(
+    override val name: SymbolicName,
+    override val symbol: FirFunctionSymbol<*>,
+    val functionSignature: FunctionSignature
+) : NamedFunctionSignature, FunctionSignature by functionSignature {
+    override val labelName: String = symbol.name.asString()
+}
+
 fun NamedFunctionSignature.toMethodCall(
     parameters: List<Exp>,
     target: Exp.LocalVar,
