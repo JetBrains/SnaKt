@@ -434,10 +434,7 @@ data class LinearizationVisitor(
                 else -> {
                     val receiverViper = e.receiver.linearize().toViper(ctx)
                     if (e.field.unfoldToAccess) {
-                        val lowering = FieldAccessLowering(ctx.typeResolver, ctx.source)
-                        for (classOnPath in lowering.pathTo(e.receiver.type, e.field)) {
-                            ctx.addStatement { Stmt.Unfold(lowering.predicateAccessFor(receiverViper, classOnPath)) }
-                        }
+                        ctx.unfoldHierarchyPredicates(receiverViper, e.receiver.type, e.field)
                     }
                     val newValueViper = e.newValue.linearize().toViper(ctx)
                     ctx.addStatement {
