@@ -13,13 +13,11 @@ import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactory1
 import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.FirSession
-import org.jetbrains.kotlin.fir.analysis.checkers.isPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
-import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.*
@@ -30,7 +28,9 @@ import org.jetbrains.kotlin.formver.core.*
 import org.jetbrains.kotlin.formver.core.diagnostics.ConversionErrors
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.callables.*
-import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousBuiltinVariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
@@ -48,7 +48,7 @@ import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
  * We need the FirSession to get access to the TypeContext.
  */
 class ProgramConverter(
-    val session: FirSession,
+    override val session: FirSession,
     override val config: PluginConfiguration,
     private val diagnosticContext: DiagnosticContext,
     private val reporter: DiagnosticReporter,
@@ -139,34 +139,18 @@ class ProgramConverter(
         adts = emptyList(),
     )
 
-    /**
-     * Embed the declaration's signature and queue its body for later processing by [convertAll].
-     */
-    fun register(declaration: FirSimpleFunction) {
-        val (signature, returnTarget) = embedCallable(declaration.symbol).refineSignature { current ->
-            embedFullSignature(declaration.symbol, current.signature, current.returnTarget)
-        }
-        registered += RegisteredFunction(declaration, signature, returnTarget)
-    }
+
+    // START PIPELINE
 
     /**
-     * Convert each registered declaration's body to an `ExpEmbedding`, populating [convertedBodyResolver].
+     * Embed the declaration's signature and embeds the body.
      */
-    fun convertAll() {
-        for (entry in registered) {
-            val (declaration, signature, returnTarget) = entry
-            currentDeclarationSource = declaration.source
-            val stmtCtx = createBodyConversionContext(declaration.symbol, signature, returnTarget)
-            if (signature.isPure) {
-                convertedBodyResolver.storePure(signature.name, stmtCtx.convertPureBody(declaration))
-            } else {
-                stmtCtx.convertImpureBody(declaration, signature, returnTarget)?.let {
-                    convertedBodyResolver.storeImpure(signature.name, it)
-                }
-            }
-        }
-        currentDeclarationSource = null
+    fun register(declaration: FirSimpleFunction) {
+        val signature = embedCompleteSignature(declaration.symbol)
+        embedFunctionBody(declaration.symbol, signature)
+        registered += RegisteredFunction(declaration, signature.signature, signature.returnTarget)
     }
+
 
     /**
      * Walk converted bodies to surface validity / purity errors via the diagnostic reporter. If any
@@ -228,16 +212,24 @@ class ProgramConverter(
         impure.forEach { linearizeImpure(it.key, it.value) }
     }
 
+    // END PIPELINE
+
+    // START CONVERSION CONTEXTS
+
     private fun createBodyConversionContext(
-        symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, target: ReturnTarget
+        symbol: FirFunctionSymbol<*>, signature: SignatureWithTarget<NamedFunctionSignature>
     ): StmtConversionContext {
 
         val paramResolver = RootParameterResolver(
-            this@ProgramConverter, signature, symbol.valueParameterSymbols, signature.labelName, target
+            this@ProgramConverter,
+            signature.signature,
+            symbol.valueParameterSymbols,
+            signature.signature.labelName,
+            signature.returnTarget
         )
         val stmtCtx = MethodConverter(
             this@ProgramConverter,
-            signature,
+            signature.signature,
             paramResolver,
             scopeIndexProducer.getFresh(),
         ).statementCtxt()
@@ -281,261 +273,29 @@ class ProgramConverter(
         return Pair(preconditionContext, postconditionContext)
     }
 
-
-    /**
-     * Embeds the function signature of the specified symbol into a representation that includes
-     * function type, receiver details, parameters, and return type.
-     *
-     * This can be used for any function (including inline, pure/impure, lambdas etc.)
-     */
-    override fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<FunctionSignature> {
-        val dispatchReceiverType = symbol.receiverType
-        val extensionReceiverType = symbol.extensionReceiverType
-
-        val returnType = embedType(symbol.resolvedReturnType)
-
-        val returnTarget = when {
-            symbol.isPure(session) -> ReturnTarget.createForPureFunction(returnType)
-            else -> returnTargetProducer.getFresh(returnType)
-        }
-
-        val dispatchVariable = dispatchReceiverType?.let {
-            PlaceholderVariableEmbedding(
-                DispatchReceiverName,
-                embedType(it),
-                isUnique = false,
-                isBorrowed = false,
-            )
-        }
-        val extensionVariable = extensionReceiverType?.let {
-            PlaceholderVariableEmbedding(
-                ExtensionReceiverName,
-                embedType(it),
-                symbol.receiverParameterSymbol?.isUnique(session) ?: false,
-                symbol.receiverParameterSymbol?.isBorrowed(session) ?: false,
-            )
-        }
-
-        val parameterVariables = symbol.valueParameterSymbols.map {
-            FirVariableEmbedding(
-                it.embedName(), embedType(it.resolvedReturnType), it, it.isUnique(session), it.isBorrowed(session)
-            )
-        }
-
-        val signature = FunctionSignatureImpl(
-            embedFunctionPretype(symbol),
-            dispatchVariable,
-            extensionVariable,
-            parameterVariables,
-            returns = returnTarget.variable,
-            isPure = symbol.isPure(session)
-        )
-
-        return SignatureWithTarget(signature, returnTarget)
-    }
-
-    /**
-     * Embeds the function signature of the specific symbol. The symbol must have a name.
-     */
-    private fun embedNamedFunctionSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<NamedFunctionSignature> =
-        embedFunctionSignature(symbol).refineSignature { current ->
-            val name = symbol.embedName(this)
-            NamedFunctionSignatureImpl(current.signature, name, symbol)
-        }
+    // END CONVERSION CONTEXTS
 
 
-    /**
-     * Embeds an inline signature. This also includes embedding the provided contract.
-
-     * We want to be able to call the result. For an inline function to be callable, we need to have the pre- and post-conditions.
-     * Therefore, the full signature is already registered here.
-     */
-    @OptIn(SymbolInternals::class)
-    private fun embedInlineFunctionSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<NamedCallableEmbedding> =
-        embedNamedFunctionSignature(symbol).refineSignature { current ->
-            val body =
-                symbol.fir.body ?: throw SnaktInternalException(symbol.source, "Expected function body, got null")
-            val contract = current.signature.buildConditions(this.typeResolver) {
-                val (precondition, postcondition) = embedProvidedContract(
-                    symbol,
-                    current.signature,
-                    current.returnTarget
-                )
-                userFunctionContract()
-                addPreconditions(precondition)
-                addPostconditions(postcondition)
-            }
-
-            val fullSignature = InlineNamedFunction(
-                current.signature, body, contract.preconditions, contract.postconditions, symbol
-            )
-            if (!symbol.neverConvert(session)) {
-                fullSignatures.putIfAbsent(fullSignature.name, fullSignature)
-            }
-            fullSignature
-        }
-
-
-    /**
-     * Embeds a non-inline function. The contract is not included.
-     */
-    private fun embedNonInlineFunctionSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<NamedCallableEmbedding> =
-        embedNamedFunctionSignature(symbol).refineSignature { current ->
-            NonInlineCallableImpl(current.signature, symbol)
-        }
-
-
-    private fun embedCallable(symbol: FirFunctionSymbol<*>): SignatureWithTarget<NamedCallableEmbedding> {
-        val name = symbol.embedName(this)
-        return callable.getOrPut(name) {
-            if (symbol.shouldBeInlined) {
-                embedInlineFunctionSignature(symbol)
-            } else {
-                embedNonInlineFunctionSignature(symbol)
-            }
-        }
-    }
-
-    /**
-     * Embeds and records full signature if it does not already exist.
-     */
-    private fun embedFullSignature(
-        symbol: FirFunctionSymbol<*>, callable: NamedCallableEmbedding, returnTarget: ReturnTarget
-    ): CompleteFunctionSignature {
-        val name = symbol.embedName(this)
-        return fullSignatures.getOrPut(name) {
-            when {
-                symbol.isPrimaryConstructor() -> embedConstructorSignature(symbol, callable, returnTarget)
-                else -> embedUserSignature(symbol, callable, returnTarget)
-            }
-        }
-    }
-
-    private fun embedConstructorSignature(
-        symbol: FirConstructorSymbol, callable: NamedCallableEmbedding, returnTarget: ReturnTarget
-    ): CompleteFunctionSignature {
-        val constructedClassSymbol =
-            symbol.resolvedReturnType.toRegularClassSymbol(session) ?: throw SnaktInternalException(
-                symbol.source, "Constructor does not return a regular class"
-            )
-        val parameterMatching = constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
-            val name = propertySymbol.embedMemberPropertyName(this)
-            propertySymbol.withConstructorParam { paramSymbol ->
-                typeResolver.lookupDefaultBehavingProperties(name)?.let { paramSymbol to it }
-            }
-        }.toMap()
-
-        val context = createBodyConversionContext(symbol, callable, returnTarget)
-
-        val fieldPostconditions = callable.params.mapNotNull { param ->
-            require(param is FirVariableEmbedding) { "Constructor parameters must be represented by FirVariableEmbeddings" }
-            parameterMatching[param.symbol]?.let { property ->
-                EqCmp(property.getter!!.getValueSimple(returnTarget.variable, context.typeResolver), param)
-            }
-        }
-
-        val contract = callable.buildConditions(this.typeResolver) {
-            userFunctionContract()
-            addPostconditions(fieldPostconditions)
-        }
-
-        return NonInlineFunctionSignature(callable, contract.preconditions, contract.postconditions, symbol.source)
-    }
-
-    private fun embedUserSignature(
-        symbol: FirFunctionSymbol<*>, callable: NamedCallableEmbedding, returnTarget: ReturnTarget
-    ): CompleteFunctionSignature {
-        val contract = callable.buildConditions(this.typeResolver) {
-            userFunctionContract()
-            val (preconditions, postconditions) = embedProvidedContract(symbol, callable, returnTarget)
-            addPreconditions(preconditions)
-            addPostconditions(postconditions)
-        }
-        return NonInlineFunctionSignature(callable, contract.preconditions, contract.postconditions, symbol.source)
-    }
-
-    private fun embedGetterFunction(
-        symbol: FirPropertySymbol,
-        functionType: FunctionTypeEmbedding,
-        defaultBehaviour: Boolean
-    ): NonInlineFunctionSignature {
-        val name = symbol.embedGetterName(this)
-        val returnTarget = when (defaultBehaviour) {
-            true -> ReturnTarget.createForPureFunction(functionType.returnType)
-            false -> returnTargetProducer.getFresh(functionType.returnType)
-        }
-        val signature = GenericFunctionSignature(
-            name,
-            functionType,
-            returnTarget.variable,
-            isPure = defaultBehaviour,
-            symbol = null
-        )
-        val namedFunction = NonInlineCallableImpl(signature, null)
-        val contract = namedFunction.buildConditions(this.typeResolver) {
-            preconditions {
-                args {
-                    provenInvariants()
-                }
-            }
-            postconditions {
-                returns {
-                    provenInvariants()
-                }
-            }
-        }
-        val finishedSignature =
-            NonInlineFunctionSignature(namedFunction, contract.preconditions, contract.postconditions, symbol.source)
-        fullSignatures.putIfAbsent(name, finishedSignature)
-        return finishedSignature
-    }
-
-    private fun embedSetterFunction(symbol: FirPropertySymbol): NonInlineFunctionSignature {
-        val name = symbol.embedSetterName(this)
-        val functionType = buildFunctionPretype {
-            withDispatchReceiver { any() }
-            withParam { nullableAny() }
-            withReturnType { nullableAny() }
-        }
-        val returnTarget = returnTargetProducer.getFresh(functionType.returnType)
-        val signature =
-            GenericFunctionSignature(name, functionType, returnTarget.variable, isPure = false, symbol = null)
-        val namedFunction = NonInlineCallableImpl(signature, null)
-        val contract = namedFunction.buildConditions(this.typeResolver) {
-            preconditions {
-                args {
-                    provenInvariants()
-                }
-            }
-            postconditions {
-                returns {
-                    provenInvariants()
-                }
-            }
-        }
-        val finishedSignature =
-            NonInlineFunctionSignature(namedFunction, contract.preconditions, contract.postconditions, symbol.source)
-        fullSignatures.putIfAbsent(name, finishedSignature)
-        return finishedSignature
-    }
-
+    // START FUNCTIONS
 
     /**
      * Embeds the contract of the provided callable. If necessary, also records the body.
      */
     @OptIn(SymbolInternals::class)
     private fun embedFunctionBody(
-        symbol: FirFunctionSymbol<*>, callable: NamedCallableEmbedding, returnTarget: ReturnTarget
+        symbol: FirFunctionSymbol<*>, signature: SignatureWithTarget<CompleteFunctionSignature>
     ) {
-        embedFullSignature(symbol, callable, returnTarget)
-        if (callable.isPure && !symbol.neverConvert(session)) {
-            val declaration = symbol.fir as? FirSimpleFunction ?: throw SnaktInternalException(
-                symbol.source, "Expected FirSimpleFunction, got unexpected type ${symbol.fir.javaClass.simpleName}"
-            )
+        val declaration = symbol.fir as? FirSimpleFunction ?: throw SnaktInternalException(
+            symbol.source, "Expected FirSimpleFunction, got unexpected type ${symbol.fir.javaClass.simpleName}"
+        )
 
-            val context = createBodyConversionContext(symbol, callable, returnTarget)
+        val context = createBodyConversionContext(symbol, signature)
+        if (signature.signature.isPure) {
             val body = context.convertPureBody(declaration)
-            convertedBodyResolver.storePure(callable.name, body)
+            convertedBodyResolver.storePure(signature.signature.name, body)
+        } else {
+            val body = context.convertImpureBody(declaration, signature.signature, signature.returnTarget)
+            body?.let { convertedBodyResolver.storeImpure(signature.signature.name, it) }
         }
     }
 
@@ -543,16 +303,25 @@ class ProgramConverter(
     /**
      * Embeds the full function signature (e.g. with pre+post conditions). If necessary, the body of the function is stored as well.
      */
-    private fun embedFullFunctionAndBody(symbol: FirFunctionSymbol<*>): NamedCallableEmbedding {
+    private fun embedCompleteSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<CompleteFunctionSignature> {
+        val callable = with(this) {
+            with(symbol) {
+                val namedSignature = symbol.toFunctionSignature().toNamedSignature()
+                if (symbol.shouldBeInlined) {
+                    namedSignature.toInlineSignature().also {
+                        callable.putIfAbsent(it.signature.name, it)
+                    }
+                } else {
+                    namedSignature.toNonInlineSignature().also {
+                        callable.putIfAbsent(it.signature.name, it)
+                    }.toCompleteSignature()
+                }
+            }
+        }
 
-        callable[symbol.embedName(this)]?.let { return it.signature }
+        fullSignatures.putIfAbsent(callable.signature.name, callable.signature)
 
-        val (callableEmbedding, returnTarget) = embedCallable(symbol)
-
-        embedFunctionBody(symbol, callableEmbedding, returnTarget)
-
-
-        return callableEmbedding
+        return callable
     }
 
     /**
@@ -563,8 +332,9 @@ class ProgramConverter(
         return specialFunctions[name]?.also { existing ->
             if (existing !is PartiallySpecialKotlinFunction) return@also
             if (existing.baseEmbedding != null) return@also
-            val callable = embedFullFunctionAndBody(symbol)
-            existing.initBaseEmbedding(callable)
+            val signature = embedCompleteSignature(symbol)
+            embedFunctionBody(symbol, signature)
+            existing.initBaseEmbedding(signature.signature)
         }
     }
 
@@ -575,12 +345,77 @@ class ProgramConverter(
      * It will return the callable embedding, if the function was seen the first time, it will embed the full function signature and body (if needed).
      */
     override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding {
+        // The order of the embedSpecialFunction and the callable lookup does matter.
 
+        // check if it must be handled specially
         embedSpecialFunction(symbol)?.let { return it }
 
-        return embedFullFunctionAndBody(symbol)
+        // check if it already was embedded
+        callable[symbol.embedName(this)]?.let { return it.signature }
+
+        // first embed the complete signature
+        val signature = embedCompleteSignature(symbol)
+
+        // If the function is pure, we add the body.
+        if (signature.signature.isPure && !symbol.neverConvert(session)) {
+            embedFunctionBody(symbol, signature)
+        }
+
+        return signature.signature
     }
 
+    // END FUNCTIONS
+
+
+    // START CONTRACTS
+
+    private fun embedFormverContract(
+        symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, returnTarget: ReturnTarget
+    ): Pair<List<ExpEmbedding>, List<ExpEmbedding>> {
+        @OptIn(SymbolInternals::class) val declaration = symbol.fir
+        val body = declaration.body
+
+        /** Specifications are only allowed inside simple functions.
+         * We are also unable to retrieve them when body is not visible,
+         * although ideally we should be able to see preconditions and postconditions
+         * from other modules.
+         */
+        if (declaration !is FirSimpleFunction || body == null) {
+            return Pair(emptyList(), emptyList())
+        }
+
+        val firSpec = extractFirSpecification(body, declaration.symbol.resolvedReturnType)
+
+
+        val (preconditionContext, postconditionContext) = createContractConversionContext(
+            symbol, signature, firSpec, returnTarget
+        )
+
+        val preconditions = firSpec.precond?.let { preconditionContext.collectInvariants(it) } ?: emptyList()
+        val postconditions = firSpec.postcond?.let { postconditionContext.collectInvariants(it) } ?: emptyList()
+
+        return Pair(preconditions, postconditions)
+    }
+
+    private fun embedKotlinContract(
+        symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature
+    ): List<ExpEmbedding> {
+        val contractVisitor = ContractDescriptionConversionVisitor(this@ProgramConverter, signature, symbol)
+        return contractVisitor.getPostconditions()
+    }
+
+    override fun embedProvidedContract(
+        symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, returnTarget: ReturnTarget
+    ): Pair<List<ExpEmbedding>, List<ExpEmbedding>> {
+        val kotlinContractPostcondition = embedKotlinContract(symbol, signature)
+        val userContract = embedFormverContract(symbol, signature, returnTarget)
+        return Pair(userContract.first, kotlinContractPostcondition + userContract.second)
+    }
+
+    // END CONTRACTS
+
+
+    // START CLASSES (also ADT)
     /**
      * Returns an embedding of the class type, with details set.
      */
@@ -610,10 +445,7 @@ class ProgramConverter(
 
     override fun embedType(type: ConeKotlinType): TypeEmbedding = buildType { embedTypeWithBuilder(type) }
 
-    // Note: keep in mind that this function is necessary to resolve the name of the function!
-    override fun embedFunctionPretype(symbol: FirFunctionSymbol<*>): FunctionTypeEmbedding = buildFunctionPretype {
-        embedFunctionPretypeWithBuilder(symbol)
-    }
+    // START PROPERTIES
 
     /**
      * This function embeds properties. Depending on the behavior of the property, it can be handled differently.
@@ -666,20 +498,34 @@ class ProgramConverter(
                             withReturnType(returnType)
                         }
                         Pair(
-                            CustomGetter(embedGetterFunction(symbol, functionType, defaultBehaviour = true)), null
+                            CustomGetter(embedAccessorFunction(symbol, functionType, defaultBehaviour = true)), null
                         )
                     }
 
                     else -> {
                         // The property could be overridden by anything, or has a custom getter/setter.
                         // use impure function
-                        val functionType = buildFunctionPretype {
-                            withDispatchReceiver { nullableAny() }
+                        val getterType = buildFunctionPretype {
+                            withDispatchReceiver { any() }
                             withReturnType { nullableAny() }
                         }
+                        val setterType = buildFunctionPretype {
+                            withDispatchReceiver { any() }
+                            withParam { nullableAny() }
+                            withReturnType { nullableAny() }
+                        }
+
                         Pair(
-                            CustomGetter(embedGetterFunction(symbol, functionType, defaultBehaviour = false)),
-                            symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) })
+                            CustomGetter(embedAccessorFunction(symbol, getterType, defaultBehaviour = false)),
+                            symbol.isVar.ifTrue {
+                                CustomSetter(
+                                    embedAccessorFunction(
+                                        symbol,
+                                        setterType,
+                                        defaultBehaviour = false
+                                    )
+                                )
+                            })
                     }
                 }
 
@@ -691,72 +537,10 @@ class ProgramConverter(
         }
     }
 
-    private fun <R> FirPropertySymbol.withConstructorParam(action: FirPropertySymbol.(FirValueParameterSymbol) -> R): R? =
-        correspondingValueParameterFromPrimaryConstructor?.let { param ->
-            action(param)
-        }
-
-
-    @OptIn(DirectDeclarationsAccess::class)
-    private val FirRegularClassSymbol.propertySymbols: List<FirPropertySymbol>
-        get() = declarationSymbols.filterIsInstance<FirPropertySymbol>()
-
-
-    private fun embedFormverContract(
-        symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, returnTarget: ReturnTarget
-    ): Pair<List<ExpEmbedding>, List<ExpEmbedding>> {
-        @OptIn(SymbolInternals::class) val declaration = symbol.fir
-        val body = declaration.body
-
-        /** Specifications are only allowed inside simple functions.
-         * We are also unable to retrieve them when body is not visible,
-         * although ideally we should be able to see preconditions and postconditions
-         * from other modules.
-         */
-        if (declaration !is FirSimpleFunction || body == null) {
-            return Pair(emptyList(), emptyList())
-        }
-
-        val firSpec = extractFirSpecification(body, declaration.symbol.resolvedReturnType)
-
-
-        val (preconditionContext, postconditionContext) = createContractConversionContext(
-            symbol, signature, firSpec, returnTarget
-        )
-
-        val preconditions = firSpec.precond?.let { preconditionContext.collectInvariants(it) } ?: emptyList()
-        val postconditions = firSpec.postcond?.let { postconditionContext.collectInvariants(it) } ?: emptyList()
-
-        return Pair(preconditions, postconditions)
+    override fun isGuaranteedDefaultProperty(symbol: FirPropertySymbol): Boolean {
+        val classSymbolFinal = symbol.dispatchReceiverType?.toClassSymbol(session)?.isFinal ?: false
+        return (symbol.isFinal || classSymbolFinal) && !symbol.isCustom
     }
-
-    private fun embedKotlinContract(
-        symbol: FirFunctionSymbol<*>,
-        signature: NamedFunctionSignature
-    ): List<ExpEmbedding> {
-        val contractVisitor = ContractDescriptionConversionVisitor(this@ProgramConverter, signature, symbol)
-        return contractVisitor.getPostconditions()
-    }
-
-    private fun embedProvidedContract(
-        symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, returnTarget: ReturnTarget
-    ): Pair<List<ExpEmbedding>, List<ExpEmbedding>> {
-        val kotlinContractPostcondition = embedKotlinContract(symbol, signature)
-        val userContract = embedFormverContract(symbol, signature, returnTarget)
-        return Pair(userContract.first, kotlinContractPostcondition + userContract.second)
-    }
-
-    private val FirFunctionSymbol<*>.containingPropertyOrSelf
-        get() = when (this) {
-            is FirPropertyAccessorSymbol -> propertySymbol
-            else -> this
-        }
-
-    private val FirFunctionSymbol<*>.receiverType: ConeKotlinType?
-        get() = containingPropertyOrSelf.dispatchReceiverType
-
-    private val FirFunctionSymbol<*>.extensionReceiverType: ConeKotlinType?
-        get() = containingPropertyOrSelf.resolvedReceiverTypeRef?.coneType
 
     /**
      * Construct and register the field embedding for this property's backing field, if any exists.
@@ -777,20 +561,64 @@ class ProgramConverter(
         return backingField
     }
 
+    private fun embedAccessorFunction(
+        symbol: FirPropertySymbol, functionType: FunctionTypeEmbedding, defaultBehaviour: Boolean
+    ): NonInlineFunctionSignature = with(this) {
+        val name = if (functionType.paramTypes.isEmpty()) symbol.embedGetterName(this) else symbol.embedSetterName(this)
+        functionType.toGenericAccessorSignature(defaultBehaviour)
+            .toNamedSignature(name)
+            .toNonInlineSignature()
+            .toCompleteSignature(symbol.source) {
+                preconditions {
+                    args {
+                        provenInvariants()
+                    }
+                }
+                postconditions {
+                    returns {
+                        provenInvariants()
+                    }
+                }
+            }
+    }.also {
+        fullSignatures.putIfAbsent(it.signature.name, it.signature)
+    }.signature
+
     private fun embedExtensionProperty(symbol: FirPropertySymbol): PropertyEmbedding {
         val getterType = buildFunctionPretype {
             withExtensionReceiver { nullableAny() }
             withReturnType { nullableAny() }
         }
 
+        val setterType = buildFunctionPretype {
+            withExtensionReceiver { nullableAny() }
+            withParam { nullableAny() }
+            withReturnType { nullableAny() }
+        }
+
+        val getter = embedAccessorFunction(symbol, getterType, defaultBehaviour = false)
+        val setter = embedAccessorFunction(symbol, setterType, defaultBehaviour = false)
+
         return PropertyEmbedding(
-            CustomGetter(embedGetterFunction(symbol, getterType, defaultBehaviour = false)),
-            symbol.isVar.ifTrue { CustomSetter(embedSetterFunction(symbol)) },
+            CustomGetter(getter),
+            symbol.isVar.ifTrue { CustomSetter(setter) },
             hasDefaultBehaviour = false,
             isUnique = false,
             isVal = symbol.isVal,
             type = embedType(symbol.resolvedReturnType)
         )
+    }
+
+    // END PROPERTIES
+
+
+    // START TYPES
+
+    override fun embedType(type: ConeKotlinType): TypeEmbedding = buildType { embedTypeWithBuilder(type) }
+
+    // Note: keep in mind that this function is necessary to resolve the name of the function!
+    override fun embedFunctionPretype(symbol: FirFunctionSymbol<*>): FunctionTypeEmbedding = buildFunctionPretype {
+        embedFunctionPretypeWithBuilder(symbol)
     }
 
 
@@ -865,8 +693,5 @@ class ProgramConverter(
         }
     }
 
-    override fun isGuaranteedDefaultProperty(symbol: FirPropertySymbol): Boolean {
-        val classSymbolFinal = symbol.dispatchReceiverType?.toClassSymbol(session)?.isFinal ?: false
-        return (symbol.isFinal || classSymbolFinal) && !symbol.isCustom
-    }
+    // END TYPES
 }

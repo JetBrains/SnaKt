@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.conversion
 
+import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
@@ -13,9 +14,10 @@ import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.core.diagnostics.ErrorCollectionContext
 import org.jetbrains.kotlin.formver.core.embeddings.callables.CallableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
+import org.jetbrains.kotlin.formver.core.embeddings.callables.NamedFunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousBuiltinVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
@@ -24,23 +26,12 @@ import org.jetbrains.kotlin.formver.core.names.CatchLabelName
 import org.jetbrains.kotlin.formver.core.names.TryExitLabelName
 import org.jetbrains.kotlin.formver.viper.NameResolver
 
-data class SignatureWithTarget<S : FunctionSignature>(
-    val signature: S,
-    val returnTarget: ReturnTarget
-) {
-    /**
-     * Refines the signature by applying the given action to the current signature.
-     * The return target is preserved.
-     *
-     * It should be used to make a signature more specific, e.g., to add pre+post conditions to an existing signature
-     */
-    fun <T : S> refineSignature(action: (SignatureWithTarget<S>) -> T): SignatureWithTarget<T> =
-        SignatureWithTarget(action(this), returnTarget)
-}
 
 interface ProgramConversionContext : ErrorCollectionContext {
 
     val config: PluginConfiguration
+
+    val session: FirSession
 
     val whileIndexProducer: SimpleFreshEntityProducer<Int>
     val catchLabelNameProducer: SimpleFreshEntityProducer<CatchLabelName>
@@ -56,11 +47,13 @@ interface ProgramConversionContext : ErrorCollectionContext {
     val linearizedBodyResolver: LinearizedBodyResolver
 
     fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding
-    fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<FunctionSignature>
     fun embedType(type: ConeKotlinType): TypeEmbedding
     fun embedFunctionPretype(symbol: FirFunctionSymbol<*>): FunctionTypeEmbedding
     fun embedType(exp: FirExpression): TypeEmbedding = embedType(exp.resolvedType)
     fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding
+    fun embedProvidedContract(
+        symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, returnTarget: ReturnTarget
+    ): Pair<List<ExpEmbedding>, List<ExpEmbedding>>
 
     /**
      * Returns true if the property has default behavior. That is:

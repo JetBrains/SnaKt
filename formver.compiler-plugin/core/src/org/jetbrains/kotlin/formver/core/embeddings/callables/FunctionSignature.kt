@@ -5,7 +5,6 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
-import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
@@ -19,7 +18,6 @@ import org.jetbrains.kotlin.formver.core.names.AnonymousName
 import org.jetbrains.kotlin.formver.core.names.DispatchReceiverName
 import org.jetbrains.kotlin.formver.core.names.ExtensionReceiverName
 import org.jetbrains.kotlin.formver.core.purity.preorder
-import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
 
 interface FunctionSignature {
@@ -52,12 +50,10 @@ data class FunctionSignatureImpl(
 
 
 data class GenericFunctionSignature(
-    override val name: SymbolicName,
     override val callableType: FunctionTypeEmbedding,
     override val returns: VariableEmbedding,
     override val isPure: Boolean,
-    override val symbol: FirFunctionSymbol<*>?
-) : NamedFunctionSignature, GenericFunctionSignatureMixin()
+) : FunctionSignature, GenericFunctionSignatureMixin()
 
 abstract class GenericFunctionSignatureMixin : FunctionSignature {
     override val dispatchReceiver: VariableEmbedding?
