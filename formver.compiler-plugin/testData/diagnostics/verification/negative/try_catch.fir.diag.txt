@@ -5,12 +5,12 @@ method call(x: Ref) returns (ret_1: Ref)
 
 
 method cause(this: Ref) returns (ret_3: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_3), nullable(anyType()))
 
 
 method message(this: Ref) returns (ret_2: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
@@ -47,12 +47,12 @@ method call(x: Ref) returns (ret_1: Ref)
 
 
 method cause(this: Ref) returns (ret_3: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_3), nullable(anyType()))
 
 
 method message(this: Ref) returns (ret_2: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
@@ -106,12 +106,12 @@ method callTwice() returns (ret_1: Ref)
 
 
 method cause(this: Ref) returns (ret_5: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_5), nullable(anyType()))
 
 
 method message(this: Ref) returns (ret_4: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_4), nullable(anyType()))
 
 
@@ -146,12 +146,12 @@ method tryCatchWithInline() returns (v_ret_0: Ref)
 
 /try_catch.kt: info: Generated Viper text for tryCatchShadowing:
 method cause(this: Ref) returns (ret_2: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
 method message(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
@@ -188,12 +188,12 @@ method call(x: Ref) returns (ret_1: Ref)
 
 
 method cause(this: Ref) returns (ret_3: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_3), nullable(anyType()))
 
 
 method message(this: Ref) returns (ret_2: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
@@ -243,7 +243,7 @@ method call(x: Ref) returns (ret_1: Ref)
 
 
 method cause(this: Ref) returns (ret_3: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_3), nullable(anyType()))
 
 
@@ -253,7 +253,7 @@ method ignore(par_e: Ref) returns (ret_4: Ref)
 
 
 method message(this: Ref) returns (ret_2: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 

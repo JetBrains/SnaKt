@@ -34,7 +34,7 @@ method createB() returns (v_ret_0: Ref)
 }
 
 method g_fieldOverride(this: Ref) returns (ret_2: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
@@ -88,7 +88,7 @@ method createBFsAndNoBF() returns (v_ret_0: Ref)
 }
 
 method public_g_x(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 

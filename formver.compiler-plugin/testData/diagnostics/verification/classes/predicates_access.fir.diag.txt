@@ -46,7 +46,7 @@ method accessSuperTypeProperty(c: Ref) returns (v_ret_0: Ref)
 }
 
 method d(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
@@ -98,7 +98,7 @@ method accessNested(c: Ref) returns (v_ret_0: Ref)
 }
 
 method d(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 

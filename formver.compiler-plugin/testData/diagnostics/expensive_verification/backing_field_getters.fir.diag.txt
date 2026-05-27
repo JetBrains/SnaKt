@@ -266,5 +266,5 @@ method con_Z() returns (ret_3: Ref)
 
 
 method public_g_z(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))

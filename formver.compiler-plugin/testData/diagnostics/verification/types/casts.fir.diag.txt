@@ -35,7 +35,7 @@ method isNullOrEmptyWrong(seq: Ref) returns (v_ret_0: Ref)
 }
 
 method length(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
