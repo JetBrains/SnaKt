@@ -20,9 +20,9 @@ method empty_list_expr_get() returns (v_ret_0: Ref)
 }
 
 method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -54,9 +54,9 @@ method empty_list_get() returns (v_ret_0: Ref)
 }
 
 method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), List())
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -70,9 +70,9 @@ method get(this: Ref, index: Ref) returns (ret_2: Ref)
 field size: Ref
 
 method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -83,9 +83,9 @@ method get(this: Ref, index: Ref) returns (ret_1: Ref)
 
 
 method unsafe_last(l: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(l), List())
   requires acc(l.size, write)
   requires intFromRef(l.size) >= 0
-  requires isSubtype(typeOf(l), List())
   ensures acc(l.size, write)
   ensures intFromRef(l.size) >= 0
   ensures isSubtype(typeOf(v_ret_0), intType())
@@ -102,9 +102,9 @@ method unsafe_last(l: Ref) returns (v_ret_0: Ref)
 field size: Ref
 
 method add(this: Ref, element: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), MutableList())
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), MutableList())
   requires isSubtype(typeOf(element), intType())
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
@@ -113,9 +113,9 @@ method add(this: Ref, element: Ref) returns (ret_1: Ref)
 
 
 method add_get(l: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(l), MutableList())
   requires acc(l.size, write)
   requires intFromRef(l.size) >= 0
-  requires isSubtype(typeOf(l), MutableList())
   ensures acc(l.size, write)
   ensures intFromRef(l.size) >= 0
   ensures isSubtype(typeOf(v_ret_0), unitType())
@@ -129,9 +129,9 @@ method add_get(l: Ref) returns (v_ret_0: Ref)
 }
 
 method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), MutableList())
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), MutableList())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -164,9 +164,9 @@ method empty_list_sub() returns (v_ret_0: Ref)
 
 method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
   returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), List())
   requires isSubtype(typeOf(fromIndex), intType())
   requires isSubtype(typeOf(toIndex), intType())
   requires intFromRef(fromIndex) <= intFromRef(toIndex)
@@ -205,9 +205,9 @@ method empty_list_sub_negative() returns (v_ret_0: Ref)
 
 method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
   returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), List())
   requires isSubtype(typeOf(fromIndex), intType())
   requires isSubtype(typeOf(toIndex), intType())
   requires intFromRef(fromIndex) <= intFromRef(toIndex)
