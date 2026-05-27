@@ -107,6 +107,8 @@ method listHierarchy(xs: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(xs), MutableList())
   requires acc(xs.size, write)
   requires intFromRef(xs.size) >= 0
+  ensures acc(xs.size, write)
+  ensures intFromRef(xs.size) >= 0
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   label lbl_ret_0
