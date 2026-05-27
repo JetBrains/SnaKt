@@ -520,9 +520,7 @@ class ProgramConverter(
                             symbol.isVar.ifTrue {
                                 CustomSetter(
                                     embedAccessorFunction(
-                                        symbol,
-                                        setterType,
-                                        defaultBehaviour = false
+                                        symbol, setterType, defaultBehaviour = false
                                     )
                                 )
                             })
@@ -565,9 +563,7 @@ class ProgramConverter(
         symbol: FirPropertySymbol, functionType: FunctionTypeEmbedding, defaultBehaviour: Boolean
     ): NonInlineFunctionSignature = with(this) {
         val name = if (functionType.paramTypes.isEmpty()) symbol.embedGetterName(this) else symbol.embedSetterName(this)
-        functionType.toGenericAccessorSignature(defaultBehaviour)
-            .toNamedSignature(name)
-            .toNonInlineSignature()
+        functionType.toGenericAccessorSignature(defaultBehaviour).toNamedSignature(name).toNonInlineSignature()
             .toCompleteSignature(symbol.source) {
                 preconditions {
                     args {
@@ -597,11 +593,11 @@ class ProgramConverter(
         }
 
         val getter = embedAccessorFunction(symbol, getterType, defaultBehaviour = false)
-        val setter = embedAccessorFunction(symbol, setterType, defaultBehaviour = false)
+        val setter = symbol.isVar.ifTrue { embedAccessorFunction(symbol, setterType, defaultBehaviour = false) }
 
         return PropertyEmbedding(
             CustomGetter(getter),
-            symbol.isVar.ifTrue { CustomSetter(setter) },
+            setter?.let { CustomSetter(it) },
             hasDefaultBehaviour = false,
             isUnique = false,
             isVal = symbol.isVal,
