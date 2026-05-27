@@ -216,9 +216,9 @@ method test_while(param: Ref) returns (v_ret_0: Ref)
     invariant isSubtype(typeOf(param), ClassWithField())
   anon := ltInts(iteration, intToRef(10))
   if (boolFromRef(anon)) {
-    var l5_field: Ref
+    var l4_field: Ref
     var paramField: Ref
-    l5_field := g_field(c)
+    l4_field := g_field(c)
     paramField := g_field(param)
     iteration := plusInts(iteration, intToRef(1))
     goto cont

@@ -1,95 +1,95 @@
 /property_accessors.kt: info: Generated Viper text for testPrimitivePropertyGetter:
-method g_aProp(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
-
-
-method nProp(this: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_0), nullable(anyType()))
-
-
-method s_aProp(this: Ref, anon: Ref) returns (ret_2: Ref)
+method g_aProp(this: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(this), anyType())
-  requires isSubtype(typeOf(anon), nullable(anyType()))
   ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
-method testPrimitivePropertyGetter(pp: Ref) returns (v_ret_3: Ref)
-  requires isSubtype(typeOf(pp), PrimitiveProperty())
-  ensures isSubtype(typeOf(v_ret_3), intType())
-{
-  var anon: Ref
-  anon := nProp(pp)
-  v_ret_3 := anon
-  inhale isSubtype(typeOf(v_ret_3), intType())
-  goto lbl_ret_3
-  label lbl_ret_3
-}
-
-/property_accessors.kt: info: Generated Viper text for testPrimitivePropertySetter:
-method g_aProp(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+method nProp(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-method nProp(this: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_0), nullable(anyType()))
-
-
-method s_aProp(this: Ref, anon: Ref) returns (ret_2: Ref)
+method s_aProp(this: Ref, anon: Ref) returns (ret_3: Ref)
   requires isSubtype(typeOf(this), anyType())
   requires isSubtype(typeOf(anon), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
-
-
-method testPrimitivePropertySetter(pp: Ref) returns (v_ret_3: Ref)
-  requires isSubtype(typeOf(pp), PrimitiveProperty())
-  ensures isSubtype(typeOf(v_ret_3), unitType())
-{
-  var anon: Ref
-  anon := s_aProp(pp, intToRef(0))
-  label lbl_ret_3
-  inhale isSubtype(typeOf(v_ret_3), unitType())
-}
-
-/property_accessors.kt: info: Generated Viper text for testReferencePropertyGetter:
-method g_aProp(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
-
-
-method g_ppProp(this: Ref) returns (ret_4: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_4), nullable(anyType()))
-
-
-method nProp(this: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_0), nullable(anyType()))
-
-
-method rProp(this: Ref) returns (ret_3: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
   ensures isSubtype(typeOf(ret_3), nullable(anyType()))
 
 
-method s_aProp(this: Ref, anon_0: Ref) returns (ret_2: Ref)
+method testPrimitivePropertyGetter(pp: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(pp), PrimitiveProperty())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := nProp(pp)
+  v_ret_0 := anon
+  inhale isSubtype(typeOf(v_ret_0), intType())
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/property_accessors.kt: info: Generated Viper text for testPrimitivePropertySetter:
+method g_aProp(this: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(this), anyType())
-  requires isSubtype(typeOf(anon_0), nullable(anyType()))
   ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
-method s_ppProp(this: Ref, anon_0: Ref) returns (ret_5: Ref)
+method nProp(this: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), anyType())
-  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+method s_aProp(this: Ref, anon: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  requires isSubtype(typeOf(anon), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_3), nullable(anyType()))
+
+
+method testPrimitivePropertySetter(pp: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(pp), PrimitiveProperty())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := s_aProp(pp, intToRef(0))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/property_accessors.kt: info: Generated Viper text for testReferencePropertyGetter:
+method g_aProp(this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
+
+
+method g_ppProp(this: Ref) returns (ret_5: Ref)
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_5), nullable(anyType()))
 
 
-method testReferencePropertyGetter(rp: Ref) returns (v_ret_6: Ref)
+method nProp(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+method rProp(this: Ref) returns (ret_4: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_4), nullable(anyType()))
+
+
+method s_aProp(this: Ref, anon_0: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_3), nullable(anyType()))
+
+
+method s_ppProp(this: Ref, anon_0: Ref) returns (ret_6: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_6), nullable(anyType()))
+
+
+method testReferencePropertyGetter(rp: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(rp), ReferenceProperty())
-  ensures isSubtype(typeOf(v_ret_6), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var pp: Ref
   var anon_0: Ref
@@ -101,46 +101,46 @@ method testReferencePropertyGetter(rp: Ref) returns (v_ret_6: Ref)
   anon_1 := nProp(pp)
   ppn := anon_1
   inhale isSubtype(typeOf(ppn), intType())
-  label lbl_ret_6
-  inhale isSubtype(typeOf(v_ret_6), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /property_accessors.kt: info: Generated Viper text for testCascadingPropertyGetter:
-method g_aProp(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
-
-
-method g_ppProp(this: Ref) returns (ret_4: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_4), nullable(anyType()))
-
-
-method nProp(this: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_0), nullable(anyType()))
-
-
-method rProp(this: Ref) returns (ret_3: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_3), nullable(anyType()))
-
-
-method s_aProp(this: Ref, anon_0: Ref) returns (ret_2: Ref)
+method g_aProp(this: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(this), anyType())
-  requires isSubtype(typeOf(anon_0), nullable(anyType()))
   ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
-method s_ppProp(this: Ref, anon_0: Ref) returns (ret_5: Ref)
+method g_ppProp(this: Ref) returns (ret_5: Ref)
   requires isSubtype(typeOf(this), anyType())
-  requires isSubtype(typeOf(anon_0), nullable(anyType()))
   ensures isSubtype(typeOf(ret_5), nullable(anyType()))
 
 
-method testCascadingPropertyGetter(rp: Ref) returns (v_ret_6: Ref)
+method nProp(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+method rProp(this: Ref) returns (ret_4: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_4), nullable(anyType()))
+
+
+method s_aProp(this: Ref, anon_0: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_3), nullable(anyType()))
+
+
+method s_ppProp(this: Ref, anon_0: Ref) returns (ret_6: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_6), nullable(anyType()))
+
+
+method testCascadingPropertyGetter(rp: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(rp), ReferenceProperty())
-  ensures isSubtype(typeOf(v_ret_6), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var ppn: Ref
   var anon_0: Ref
@@ -152,8 +152,8 @@ method testCascadingPropertyGetter(rp: Ref) returns (v_ret_6: Ref)
   anon_0 := nProp(anon_1)
   ppn := anon_0
   inhale isSubtype(typeOf(ppn), intType())
-  label lbl_ret_6
-  inhale isSubtype(typeOf(v_ret_6), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /property_accessors.kt: info: Generated Viper text for testReferencePropertySetter:
@@ -162,46 +162,46 @@ method con() returns (ret_7: Ref)
   ensures acc(PrimitiveProperty_unique(ret_7), write)
 
 
-method g_aProp(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
-
-
-method g_ppProp(this: Ref) returns (ret_4: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_4), nullable(anyType()))
-
-
-method nProp(this: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_0), nullable(anyType()))
-
-
-method rProp(this: Ref) returns (ret_3: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_3), nullable(anyType()))
-
-
-method s_aProp(this: Ref, anon_0: Ref) returns (ret_2: Ref)
+method g_aProp(this: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(this), anyType())
-  requires isSubtype(typeOf(anon_0), nullable(anyType()))
   ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
-method s_ppProp(this: Ref, anon_0: Ref) returns (ret_5: Ref)
+method g_ppProp(this: Ref) returns (ret_5: Ref)
   requires isSubtype(typeOf(this), anyType())
-  requires isSubtype(typeOf(anon_0), nullable(anyType()))
   ensures isSubtype(typeOf(ret_5), nullable(anyType()))
 
 
-method testReferencePropertySetter(rp: Ref) returns (v_ret_6: Ref)
+method nProp(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+method rProp(this: Ref) returns (ret_4: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_4), nullable(anyType()))
+
+
+method s_aProp(this: Ref, anon_0: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_3), nullable(anyType()))
+
+
+method s_ppProp(this: Ref, anon_0: Ref) returns (ret_6: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_6), nullable(anyType()))
+
+
+method testReferencePropertySetter(rp: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(rp), ReferenceProperty())
-  ensures isSubtype(typeOf(v_ret_6), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_0: Ref
   var anon_1: Ref
   anon_1 := con()
   anon_0 := s_ppProp(rp, anon_1)
-  label lbl_ret_6
-  inhale isSubtype(typeOf(v_ret_6), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }

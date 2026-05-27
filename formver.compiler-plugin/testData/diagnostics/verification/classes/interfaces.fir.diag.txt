@@ -1,18 +1,18 @@
 /interfaces.kt: info: Generated Viper text for testProperties:
-method g_varProp(this: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_0), nullable(anyType()))
-
-
-method s_varProp(this: Ref, anon_0: Ref) returns (ret_1: Ref)
+method g_varProp(this: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), anyType())
-  requires isSubtype(typeOf(anon_0), nullable(anyType()))
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-method testProperties(foo: Ref) returns (v_ret_3: Ref)
+method s_varProp(this: Ref, anon_0: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
+
+
+method testProperties(foo: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(foo), Foo())
-  ensures isSubtype(typeOf(v_ret_3), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_0: Ref
   var x: Ref
@@ -28,13 +28,13 @@ method testProperties(foo: Ref) returns (v_ret_3: Ref)
   anon_3 := anon_4
   inhale isSubtype(typeOf(anon_3), intType())
   x := plusInts(anon_1, anon_3)
-  label lbl_ret_3
-  inhale isSubtype(typeOf(v_ret_3), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method valProp(this: Ref) returns (ret_2: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
+method valProp(this: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_3), nullable(anyType()))
 
 
 /interfaces.kt: info: Generated Viper text for createImpl:
@@ -62,46 +62,46 @@ method createImpl() returns (v_ret_0: Ref)
 }
 
 method public_g_number(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 /interfaces.kt: info: Generated Viper text for take1:
-method g_field(this: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_0), nullable(anyType()))
+method g_field(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-method take1(obj: Ref) returns (v_ret_1: Ref)
+method take1(obj: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(obj), InterfaceWithImplementation1())
-  ensures isSubtype(typeOf(v_ret_1), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_0: Ref
   var anon_1: Ref
   anon_1 := g_field(obj)
   anon_0 := anon_1
   inhale isSubtype(typeOf(anon_0), intType())
-  label lbl_ret_1
-  inhale isSubtype(typeOf(v_ret_1), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /interfaces.kt: info: Generated Viper text for take2:
-method g_field(this: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_0), nullable(anyType()))
+method g_field(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-method take2(obj: Ref) returns (v_ret_1: Ref)
+method take2(obj: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(obj), InterfaceWithoutImplementation2())
-  ensures isSubtype(typeOf(v_ret_1), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_0: Ref
   var anon_1: Ref
   anon_1 := g_field(obj)
   anon_0 := anon_1
   inhale isSubtype(typeOf(anon_0), intType())
-  label lbl_ret_1
-  inhale isSubtype(typeOf(v_ret_1), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /interfaces.kt: info: Generated Viper text for take3:
@@ -119,22 +119,22 @@ method take3(obj: Ref) returns (v_ret_0: Ref)
 }
 
 /interfaces.kt: info: Generated Viper text for take4:
-method g_field(this: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_0), nullable(anyType()))
+method g_field(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-method take4(obj: Ref) returns (v_ret_1: Ref)
+method take4(obj: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(obj), AbstractWithOpenImplementation4())
-  ensures isSubtype(typeOf(v_ret_1), unitType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_0: Ref
   var anon_1: Ref
   anon_1 := g_field(obj)
   anon_0 := anon_1
   inhale isSubtype(typeOf(anon_0), intType())
-  label lbl_ret_1
-  inhale isSubtype(typeOf(v_ret_1), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
 /interfaces.kt: info: Generated Viper text for createImpls:
@@ -268,7 +268,7 @@ method createImpls() returns (v_ret_0: Ref)
 }
 
 method public_g_field(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
@@ -299,7 +299,7 @@ method con() returns (ret_4: Ref)
 
 
 method g_field(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
@@ -328,7 +328,7 @@ method con_I() returns (ret_9: Ref)
 
 
 method g_field(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 

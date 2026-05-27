@@ -1,25 +1,25 @@
 /private_properties.kt: info: Generated Viper text for getBooleanField:
-method g_field(this: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_0), nullable(anyType()))
+method g_field(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-method getBooleanField(this: Ref) returns (v_ret_2: Ref)
+method getBooleanField(this: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(this), A())
-  ensures isSubtype(typeOf(v_ret_2), boolType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
 {
   var anon: Ref
   anon := g_field(this)
-  v_ret_2 := anon
-  inhale isSubtype(typeOf(v_ret_2), boolType())
-  goto lbl_ret_2
-  label lbl_ret_2
+  v_ret_0 := anon
+  inhale isSubtype(typeOf(v_ret_0), boolType())
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
-method s_field(this: Ref, anon: Ref) returns (ret_1: Ref)
+method s_field(this: Ref, anon: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(this), anyType())
   requires isSubtype(typeOf(anon), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
 /private_properties.kt: info: Generated Viper text for getStringField:
@@ -28,24 +28,24 @@ function B_g_field(this: Ref): Ref
   ensures isSubtype(typeOf(result), stringType())
 
 
-method getStringField(this: Ref) returns (v_ret_2: Ref)
+method getStringField(this: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(this), B())
-  ensures isSubtype(typeOf(v_ret_2), stringType())
+  ensures isSubtype(typeOf(v_ret_0), stringType())
 {
-  v_ret_2 := B_g_field(this)
-  goto lbl_ret_2
-  label lbl_ret_2
+  v_ret_0 := B_g_field(this)
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
-method public_g_field(this: Ref) returns (ret_0: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_0), nullable(anyType()))
+method public_g_field(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-method s_field(this: Ref, anon: Ref) returns (ret_1: Ref)
+method s_field(this: Ref, anon: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(this), anyType())
   requires isSubtype(typeOf(anon), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
 /private_properties.kt: info: Generated Viper text for extractPublic:
@@ -96,7 +96,7 @@ method extractPublic() returns (v_ret_0: Ref)
 }
 
 method public_g_field(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 

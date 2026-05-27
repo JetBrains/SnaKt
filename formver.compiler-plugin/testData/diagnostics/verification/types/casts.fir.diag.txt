@@ -12,9 +12,9 @@ method smartcastReturn(n: Ref) returns (v_ret_0: Ref)
 }
 
 /casts.kt: info: Generated Viper text for isNullOrEmptyWrong:
-method isNullOrEmptyWrong(seq: Ref) returns (v_ret_1: Ref)
+method isNullOrEmptyWrong(seq: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(seq), nullable(CharSequence()))
-  ensures isSubtype(typeOf(v_ret_1), boolType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
 {
   if (seq == nullValue()) {
     var anon_0: Ref
@@ -27,16 +27,16 @@ method isNullOrEmptyWrong(seq: Ref) returns (v_ret_1: Ref)
       anon_0 := anon_1
     } else {
       anon_0 := nullValue()}
-    v_ret_1 := boolToRef(anon_0 == intToRef(0))
+    v_ret_0 := boolToRef(anon_0 == intToRef(0))
   } else {
-    v_ret_1 := boolToRef(false)}
-  goto lbl_ret_1
-  label lbl_ret_1
+    v_ret_0 := boolToRef(false)}
+  goto lbl_ret_0
+  label lbl_ret_0
 }
 
-method length(this: Ref) returns (ret_0: Ref)
+method length(this: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_0), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 /casts.kt: info: Generated Viper text for isNonNullable:

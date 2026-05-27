@@ -27,13 +27,13 @@ method intValProp(this: Ref) returns (ret_1: Ref)
 
 
 /extension_properties.kt: info: Generated Viper text for extensionSetterProperty:
-method eg_intVarProp(v_this_extension: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+method eg_intVarProp(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), nullable(anyType()))
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-method es_intVarProp(v_this: Ref, anon: Ref) returns (ret_2: Ref)
-  requires isSubtype(typeOf(v_this), anyType())
+method es_intVarProp(this: Ref, anon: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), nullable(anyType()))
   requires isSubtype(typeOf(anon), nullable(anyType()))
   ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
@@ -83,8 +83,8 @@ method eg_pfVarProp(v_this_extension: Ref) returns (ret_1: Ref)
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-method es_pfVarProp(v_this: Ref, anon: Ref) returns (ret_2: Ref)
-  requires isSubtype(typeOf(v_this), anyType())
+method es_pfVarProp(v_this_extension: Ref, anon: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
   requires isSubtype(typeOf(anon), nullable(anyType()))
   ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
