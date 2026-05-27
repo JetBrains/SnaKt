@@ -14,4 +14,3 @@ class NonInlineFunctionSignature(
     override val postconditions: List<ExpEmbedding>,
     override val declarationSource: KtSourceElement?
 ) : CompleteFunctionSignature, NonInlineCallable, NamedFunctionSignature by signature
-
