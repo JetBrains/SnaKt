@@ -37,6 +37,13 @@ class GraphUniquenessStateAnalyzer(
     private fun ControlFlowInfo<Unit, UniquenessState>.read(): UniquenessState =
         this[Unit] ?: initial
 
+    override fun visitNode(
+        node: CFGNode<*>,
+        data: PathAwareControlFlowInfo<Unit, UniquenessState>
+    ): PathAwareControlFlowInfo<Unit, UniquenessState> {
+        return data.transformValues { data -> data.put(Unit, data.read()) }
+    }
+
     override fun visitVariableDeclarationNode(
         node: VariableDeclarationNode,
         data: PathAwareControlFlowInfo<Unit, UniquenessState>

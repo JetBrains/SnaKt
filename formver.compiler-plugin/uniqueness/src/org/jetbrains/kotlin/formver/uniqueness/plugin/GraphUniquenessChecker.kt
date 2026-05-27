@@ -21,7 +21,6 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 object GraphUniquenessChecker : FirControlFlowChecker(MppCheckerKind.Common) {
     context(reporter: DiagnosticReporter, context: CheckerContext)
     override fun analyze(graph: ControlFlowGraph) {
-        // Trigger the mapping computation so it is cached for expression-level checkers.
         graph.resolveUniquenessStateMapping()
     }
 }
