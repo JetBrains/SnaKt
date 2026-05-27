@@ -21,13 +21,13 @@ abstract class AbstractPartiallySpecialKotlinFunction(
     override val className: String? = null,
     override val name: String,
 ) : PartiallySpecialKotlinFunction {
-    private var _baseEmbedding: CallableNamedSignature? = null
+    private var _baseEmbedding: CallableEmbedding? = null
     override val baseEmbedding
         get() = _baseEmbedding
 
     override val packageName = packageName.toList()
 
-    override fun initBaseEmbedding(embedding: CallableNamedSignature) {
+    override fun initBaseEmbedding(embedding: CallableEmbedding) {
         check(_baseEmbedding == null) { "Base embedding for partially special function $name already initialized." }
         _baseEmbedding = embedding
     }

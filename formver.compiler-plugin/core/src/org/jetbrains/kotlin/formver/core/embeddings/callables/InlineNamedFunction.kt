@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.core.embeddings.callables
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.fir.expressions.FirBlock
+import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
 import org.jetbrains.kotlin.formver.core.conversion.SubstitutedArgument
 import org.jetbrains.kotlin.formver.core.conversion.insertInlineFunctionCall
@@ -17,7 +18,8 @@ class InlineNamedFunction(
     val firBody: FirBlock,
     override val preconditions: List<ExpEmbedding>,
     override val postconditions: List<ExpEmbedding>,
-) : FullNamedFunctionSignature, CallableNamedSignature, NamedFunctionSignature by signature {
+    override val symbol: FirFunctionSymbol<*>,
+) : CompleteFunctionSignature, NamedCallableEmbedding, NamedFunctionSignature by signature {
     override fun insertCall(
         args: List<ExpEmbedding>,
         ctx: StmtConversionContext,

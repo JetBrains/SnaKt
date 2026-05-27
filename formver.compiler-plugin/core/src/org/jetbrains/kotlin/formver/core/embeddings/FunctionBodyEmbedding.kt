@@ -7,7 +7,7 @@ package org.jetbrains.kotlin.formver.core.embeddings
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
-import org.jetbrains.kotlin.formver.core.embeddings.callables.FullNamedFunctionSignature
+import org.jetbrains.kotlin.formver.core.embeddings.callables.CompleteFunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toViperMethod
 import org.jetbrains.kotlin.formver.viper.ast.Method
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
@@ -17,8 +17,8 @@ sealed interface FunctionBodyConversionResult
 data class FunctionBodyEmbedding(
     val viperBody: Stmt.Seqn,
 ) : FunctionBodyConversionResult {
-    fun toViperMethod(signature: FullNamedFunctionSignature, ctx: TypeResolver): Method =
-        signature.toViperMethod(viperBody, ctx)
+    fun toViperMethod(signature: CompleteFunctionSignature, ctx: TypeResolver): Method =
+        signature.toViperMethod(ctx, viperBody)
 }
 
 data class InvalidFunctionBodyEmbedding(
