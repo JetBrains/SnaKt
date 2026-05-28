@@ -496,21 +496,13 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_1_0 ==
+  (let anon_0_0 ==
     ((NodeLLFromRef(this).af_a_NodeLL_tail != nullValue() ?
       equals(NodeLLFromRef(this).af_a_NodeLL_tail, NodeLLFromRef(other).af_a_NodeLL_tail) :
-      boolToRef(false))) in
-    (let anon_2_0 ==
-      ((!boolFromRef(anon_1_0) ?
-        (NodeLLFromRef(this).af_a_NodeLL_tail == nullValue() ?
-          boolToRef(NodeLLFromRef(other).af_a_NodeLL_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_0_0 ==
-        ((boolFromRef(anon_1_0) ? boolToRef(true) : anon_2_0)) in
-        andBools(andBools(boolToRef(isSubtype(typeOf(other), NodeLL())), andBools(boolToRef(isSubtype(typeOf(NodeLLFromRef(other).af_a_NodeLL_head),
-        intType())), boolToRef(intFromRef(NodeLLFromRef(this).af_a_NodeLL_head) ==
-        intFromRef(NodeLLFromRef(other).af_a_NodeLL_head)))), anon_0_0))))
+      boolToRef(NodeLLFromRef(other).af_a_NodeLL_tail == nullValue()))) in
+    andBools(andBools(boolToRef(isSubtype(typeOf(other), NodeLL())), andBools(boolToRef(isSubtype(typeOf(NodeLLFromRef(other).af_a_NodeLL_head),
+    intType())), boolToRef(intFromRef(NodeLLFromRef(this).af_a_NodeLL_head) ==
+    intFromRef(NodeLLFromRef(other).af_a_NodeLL_head)))), anon_0_0))
 }
 
 method testNodeLLComparisionsCoarse(ll1: Ref, ll2: Ref)

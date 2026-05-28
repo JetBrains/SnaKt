@@ -347,6 +347,7 @@ class ProgramConverter(
             AdtConstructorRef(constructorSig.returns.type, constructorSig.params)
         )
         val sig = object : FullNamedFunctionSignature by constructorSig {
+            // only the return type invariant is required, as fields are equal by ADT construction
             override val postconditions = listOf(constructorSig.postconditions[0], adtPostcondition)
             override val isPure = true
         }
@@ -356,7 +357,6 @@ class ProgramConverter(
     /**
      * Returns an embedding of the class type, with details set.
      */
-    @OptIn(DirectDeclarationsAccess::class)
     private fun embedClass(symbol: FirRegularClassSymbol): ClassTypeEmbedding {
         val className = symbol.classId.embedName()
         typeResolver.lookupClassTypeEmbedding(className)?.let { return it }
@@ -467,8 +467,8 @@ class ProgramConverter(
         val equalsExp = buildEqualsExp(ctx, thisReceiver, other)
         val bodyExp = Return(equalsExp, pureReturnTarget)
 
-        // Optimistically register as pure; demote to impure if the synthesized body
-        // contains impure subexpressions (e.g. a field's equals is a MethodCall).
+        // Optimistically register as pure and demote to impure if the synthesized body
+        // contains impure subexpressions
         return if (bodyExp.isPure()) {
             convertedBodyResolver.storePure(pureSignature.name, bodyExp)
             pureEmbedding
@@ -530,7 +530,7 @@ class ProgramConverter(
                         ?: error("No equals symbol found for field ${field.name}")
                     ctx.embedAnyFunction(fieldEqualsSymbol)
                 }
-                desugarEqualsCall(
+                pureDesugarEqualsCall(
                     AdtFieldAccess(thisReceiver, adtEmbedding, field),
                     AdtFieldAccess(other.withType(adtType), adtEmbedding, field),
                     fieldEqualsCallable,
@@ -600,7 +600,7 @@ class ProgramConverter(
                             ?: error("No equals symbol found for field ${field.name}")
                         ctx.embedAnyFunction(fieldEqualsSymbol)
                     }
-                    desugarEqualsCall(
+                    pureDesugarEqualsCall(
                         AdtFieldAccess(thisReceiver.withType(childType), childEmbedding, field),
                         AdtFieldAccess(other.withType(childType), childEmbedding, field),
                         fieldEqualsCallable,
@@ -841,6 +841,7 @@ class ProgramConverter(
 
         val returnTarget = when {
             symbol.isPure(session) -> ReturnTarget.createForPureFunction(returnType)
+            // ADT constructors are embedded as pure Viper functions, not methods.
             symbol is FirConstructorSymbol &&
                     symbol.resolvedReturnType.toRegularClassSymbol(session)?.isAdt(session) == true ->
                 ReturnTarget.createForPureFunction(returnType)

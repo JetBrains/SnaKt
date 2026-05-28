@@ -20,6 +20,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.core.names.CatchLabelName
 import org.jetbrains.kotlin.formver.core.names.TryExitLabelName
 import org.jetbrains.kotlin.formver.viper.NameResolver
@@ -68,10 +69,7 @@ fun ProgramConversionContext.freshAnonVar(type: TypeEmbedding): VariableEmbeddin
 fun ProgramConversionContext.freshAnonBuiltinVar(type: TypeEmbedding): VariableEmbedding =
     anonBuiltinVarProducer.getFresh(type)
 
-/**
- * Mirrors Kotlin's `==` semantics: if [left] is nullable, produces
- * `(left != null && left.equals(right)) || (left == null && right == null)`.
- */
+/** == desugarization: if [left] is nullable, produces `(left != null && left.equals(right)) || (left == null && right == null)` */
 fun desugarEqualsCall(
     left: ExpEmbedding,
     right: ExpEmbedding,
@@ -96,4 +94,27 @@ fun desugarEqualsCall(
             )
         }
     }
+}
+
+/**
+ * Pure-safe variant of [desugarEqualsCall] for use in pure Viper function bodies.
+ * Uses [If] (ternary) instead of [share]/[SequentialAnd]/[SequentialOr], which are
+ * impure constructs that don't linearize correctly in pure contexts.
+ */
+fun pureDesugarEqualsCall(
+    left: ExpEmbedding,
+    right: ExpEmbedding,
+    equalsCallable: CallableEmbedding,
+    ctx: StmtConversionContext,
+): ExpEmbedding {
+    if (!left.type.flags.nullable) {
+        return equalsCallable.insertCall(listOf(left, right), ctx)
+    }
+    val nonNullableLeftType = left.type.getNonNullable()
+    return If(
+        left.notNullCmp(),
+        equalsCallable.insertCall(listOf(left.withType(nonNullableLeftType), right), ctx),
+        EqCmp(right, NullLit),
+        buildType { boolean() },
+    )
 }

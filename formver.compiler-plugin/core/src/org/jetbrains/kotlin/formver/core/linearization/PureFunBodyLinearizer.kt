@@ -39,7 +39,7 @@ data class PureFunBodyLinearizer(
 ) : LinearizationContext {
 
     override val logicOperatorPolicy: LogicOperatorPolicy
-        // SequentialAnd/SequentialOr (e.g. in synthetic ADT equals) require short-circuit semantics
+        // SequentialAnd/SequentialOr require short-circuit semantics
         // that flat Viper &&/|| don't provide.
         get() = LogicOperatorPolicy.CONVERT_TO_IF
 

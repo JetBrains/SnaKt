@@ -254,7 +254,7 @@ data class LinearizationVisitor(
             // Sum-type children share their parent's Viper ADT type, so the runtime subtype
             // and the ADT discriminator are required to distinguish it.
             // Nullable types are excluded: the discriminator requires an unwrapped ADT value.
-            // This loses precision for nullable ADT variants, but is safe — null checks/smart
+            // This loses precision for nullable ADT variants, but is safe, as null checks/smart
             // casts produce a non-nullable Is() that does include the discriminator.
             val isNullable = (e.comparisonType as? TypeEmbedding)?.isNullable == true
             val adtTypeEmbedding = if (isNullable) null else e.comparisonType.nonStandaloneAdtTypeEmbedding

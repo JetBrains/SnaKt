@@ -4,37 +4,20 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_7_0 ==
+  (let anon_6_0 ==
     ((PBSTFromRef(this).af_a_PBST_left != nullValue() ?
       equals(PBSTFromRef(this).af_a_PBST_left, PBSTFromRef(other).af_a_PBST_left) :
-      boolToRef(false))) in
-    (let anon_8_0 ==
-      ((!boolFromRef(anon_7_0) ?
-        (PBSTFromRef(this).af_a_PBST_left == nullValue() ?
-          boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_6_0 ==
-        ((boolFromRef(anon_7_0) ? boolToRef(true) : anon_8_0)) in
-        (let anon_10_0 ==
-          ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
-            equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
-            boolToRef(false))) in
-          (let anon_11_0 ==
-            ((!boolFromRef(anon_10_0) ?
-              (PBSTFromRef(this).af_a_PBST_right == nullValue() ?
-                boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()) :
-                boolToRef(false)) :
-              null)) in
-            (let anon_9_0 ==
-              ((boolFromRef(anon_10_0) ? boolToRef(true) : anon_11_0)) in
-              andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
-              PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_6_0),
-              anon_9_0)))))))
+      boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()))) in
+    (let anon_7_0 ==
+      ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
+        equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
+        boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()))) in
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
+      PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_6_0), anon_7_0)))
 }
 
 function size(par_t: Ref): Ref
@@ -73,37 +56,20 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_11_0 ==
+  (let anon_10_0 ==
     ((PBSTFromRef(this).af_a_PBST_left != nullValue() ?
       equals(PBSTFromRef(this).af_a_PBST_left, PBSTFromRef(other).af_a_PBST_left) :
-      boolToRef(false))) in
-    (let anon_12_0 ==
-      ((!boolFromRef(anon_11_0) ?
-        (PBSTFromRef(this).af_a_PBST_left == nullValue() ?
-          boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_10_0 ==
-        ((boolFromRef(anon_11_0) ? boolToRef(true) : anon_12_0)) in
-        (let anon_14_0 ==
-          ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
-            equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
-            boolToRef(false))) in
-          (let anon_15_0 ==
-            ((!boolFromRef(anon_14_0) ?
-              (PBSTFromRef(this).af_a_PBST_right == nullValue() ?
-                boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()) :
-                boolToRef(false)) :
-              null)) in
-            (let anon_13_0 ==
-              ((boolFromRef(anon_14_0) ? boolToRef(true) : anon_15_0)) in
-              andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
-              PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_10_0),
-              anon_13_0)))))))
+      boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()))) in
+    (let anon_11_0 ==
+      ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
+        equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
+        boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()))) in
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
+      PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_10_0), anon_11_0)))
 }
 
 function lookup(par_t: Ref, k: Ref): Ref
@@ -183,37 +149,20 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_11_0 ==
+  (let anon_10_0 ==
     ((PBSTFromRef(this).af_a_PBST_left != nullValue() ?
       equals(PBSTFromRef(this).af_a_PBST_left, PBSTFromRef(other).af_a_PBST_left) :
-      boolToRef(false))) in
-    (let anon_12_0 ==
-      ((!boolFromRef(anon_11_0) ?
-        (PBSTFromRef(this).af_a_PBST_left == nullValue() ?
-          boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_10_0 ==
-        ((boolFromRef(anon_11_0) ? boolToRef(true) : anon_12_0)) in
-        (let anon_14_0 ==
-          ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
-            equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
-            boolToRef(false))) in
-          (let anon_15_0 ==
-            ((!boolFromRef(anon_14_0) ?
-              (PBSTFromRef(this).af_a_PBST_right == nullValue() ?
-                boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()) :
-                boolToRef(false)) :
-              null)) in
-            (let anon_13_0 ==
-              ((boolFromRef(anon_14_0) ? boolToRef(true) : anon_15_0)) in
-              andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
-              PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_10_0),
-              anon_13_0)))))))
+      boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()))) in
+    (let anon_11_0 ==
+      ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
+        equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
+        boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()))) in
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
+      PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_10_0), anon_11_0)))
 }
 
 function insert(par_t: Ref, k: Ref, par_v: Ref): Ref
@@ -324,37 +273,20 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_8_0 ==
+  (let anon_7_0 ==
     ((PBSTFromRef(this).af_a_PBST_left != nullValue() ?
       equals(PBSTFromRef(this).af_a_PBST_left, PBSTFromRef(other).af_a_PBST_left) :
-      boolToRef(false))) in
-    (let anon_9_0 ==
-      ((!boolFromRef(anon_8_0) ?
-        (PBSTFromRef(this).af_a_PBST_left == nullValue() ?
-          boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_7_0 ==
-        ((boolFromRef(anon_8_0) ? boolToRef(true) : anon_9_0)) in
-        (let anon_11_0 ==
-          ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
-            equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
-            boolToRef(false))) in
-          (let anon_12_0 ==
-            ((!boolFromRef(anon_11_0) ?
-              (PBSTFromRef(this).af_a_PBST_right == nullValue() ?
-                boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()) :
-                boolToRef(false)) :
-              null)) in
-            (let anon_10_0 ==
-              ((boolFromRef(anon_11_0) ? boolToRef(true) : anon_12_0)) in
-              andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
-              PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_7_0),
-              anon_10_0)))))))
+      boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()))) in
+    (let anon_8_0 ==
+      ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
+        equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
+        boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()))) in
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
+      PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_7_0), anon_8_0)))
 }
 
 adt a_PBST {
@@ -401,37 +333,20 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_8_0 ==
+  (let anon_7_0 ==
     ((PBSTFromRef(this).af_a_PBST_left != nullValue() ?
       equals(PBSTFromRef(this).af_a_PBST_left, PBSTFromRef(other).af_a_PBST_left) :
-      boolToRef(false))) in
-    (let anon_9_0 ==
-      ((!boolFromRef(anon_8_0) ?
-        (PBSTFromRef(this).af_a_PBST_left == nullValue() ?
-          boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_7_0 ==
-        ((boolFromRef(anon_8_0) ? boolToRef(true) : anon_9_0)) in
-        (let anon_11_0 ==
-          ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
-            equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
-            boolToRef(false))) in
-          (let anon_12_0 ==
-            ((!boolFromRef(anon_11_0) ?
-              (PBSTFromRef(this).af_a_PBST_right == nullValue() ?
-                boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()) :
-                boolToRef(false)) :
-              null)) in
-            (let anon_10_0 ==
-              ((boolFromRef(anon_11_0) ? boolToRef(true) : anon_12_0)) in
-              andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
-              PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_7_0),
-              anon_10_0)))))))
+      boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()))) in
+    (let anon_8_0 ==
+      ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
+        equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
+        boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()))) in
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
+      PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_7_0), anon_8_0)))
 }
 
 adt a_PBST {
@@ -444,33 +359,33 @@ function allGt(par_t: Ref, b: Ref): Ref
   requires isSubtype(typeOf(b), intType())
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_23_0 ==
+  (let anon_19_0 ==
     ((par_t != nullValue() ? equals(par_t, nullValue()) : boolToRef(false))) in
-    (let anon_24_0 ==
-      ((!boolFromRef(anon_23_0) ?
+    (let anon_20_0 ==
+      ((!boolFromRef(anon_19_0) ?
         (par_t == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_22_0 ==
-        ((boolFromRef(anon_23_0) ? boolToRef(true) : anon_24_0)) in
-        (let anon_25_0 ==
-          ((boolFromRef(anon_22_0) ? boolToRef(true) : null)) in
-          (let anon_27_0 ==
-            ((!boolFromRef(anon_22_0) ?
+      (let anon_18_0 ==
+        ((boolFromRef(anon_19_0) ? boolToRef(true) : anon_20_0)) in
+        (let anon_21_0 ==
+          ((boolFromRef(anon_18_0) ? boolToRef(true) : null)) in
+          (let anon_23_0 ==
+            ((!boolFromRef(anon_18_0) ?
               (intFromRef(PBSTFromRef(par_t).af_a_PBST_key) > intFromRef(b) ?
                 allGt(PBSTFromRef(par_t).af_a_PBST_left, b) :
                 boolToRef(false)) :
               null)) in
-            (let anon_26_0 ==
-              ((!boolFromRef(anon_22_0) ?
-                (boolFromRef(anon_27_0) ?
+            (let anon_22_0 ==
+              ((!boolFromRef(anon_18_0) ?
+                (boolFromRef(anon_23_0) ?
                   allGt(PBSTFromRef(par_t).af_a_PBST_right, b) :
                   boolToRef(false)) :
                 null)) in
-              (let anon_21_0 ==
-                ((boolFromRef(anon_22_0) ? anon_25_0 : anon_26_0)) in
-                anon_21_0)))))))
+              (let anon_17_0 ==
+                ((boolFromRef(anon_18_0) ? anon_21_0 : anon_22_0)) in
+                anon_17_0)))))))
 }
 
 function allLt(par_t: Ref, b: Ref): Ref
@@ -478,33 +393,33 @@ function allLt(par_t: Ref, b: Ref): Ref
   requires isSubtype(typeOf(b), intType())
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_16_0 ==
+  (let anon_12_0 ==
     ((par_t != nullValue() ? equals(par_t, nullValue()) : boolToRef(false))) in
-    (let anon_17_0 ==
-      ((!boolFromRef(anon_16_0) ?
+    (let anon_13_0 ==
+      ((!boolFromRef(anon_12_0) ?
         (par_t == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_15_0 ==
-        ((boolFromRef(anon_16_0) ? boolToRef(true) : anon_17_0)) in
-        (let anon_18_0 ==
-          ((boolFromRef(anon_15_0) ? boolToRef(true) : null)) in
-          (let anon_20_0 ==
-            ((!boolFromRef(anon_15_0) ?
+      (let anon_11_0 ==
+        ((boolFromRef(anon_12_0) ? boolToRef(true) : anon_13_0)) in
+        (let anon_14_0 ==
+          ((boolFromRef(anon_11_0) ? boolToRef(true) : null)) in
+          (let anon_16_0 ==
+            ((!boolFromRef(anon_11_0) ?
               (intFromRef(PBSTFromRef(par_t).af_a_PBST_key) < intFromRef(b) ?
                 allLt(PBSTFromRef(par_t).af_a_PBST_left, b) :
                 boolToRef(false)) :
               null)) in
-            (let anon_19_0 ==
-              ((!boolFromRef(anon_15_0) ?
-                (boolFromRef(anon_20_0) ?
+            (let anon_15_0 ==
+              ((!boolFromRef(anon_11_0) ?
+                (boolFromRef(anon_16_0) ?
                   allLt(PBSTFromRef(par_t).af_a_PBST_right, b) :
                   boolToRef(false)) :
                 null)) in
-              (let anon_14_0 ==
-                ((boolFromRef(anon_15_0) ? anon_18_0 : anon_19_0)) in
-                anon_14_0)))))))
+              (let anon_10_0 ==
+                ((boolFromRef(anon_11_0) ? anon_14_0 : anon_15_0)) in
+                anon_10_0)))))))
 }
 
 function equals(this: Ref, other: Ref): Ref
@@ -512,37 +427,20 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_9_0 ==
+  (let anon_8_0 ==
     ((PBSTFromRef(this).af_a_PBST_left != nullValue() ?
       equals(PBSTFromRef(this).af_a_PBST_left, PBSTFromRef(other).af_a_PBST_left) :
-      boolToRef(false))) in
-    (let anon_10_0 ==
-      ((!boolFromRef(anon_9_0) ?
-        (PBSTFromRef(this).af_a_PBST_left == nullValue() ?
-          boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_8_0 ==
-        ((boolFromRef(anon_9_0) ? boolToRef(true) : anon_10_0)) in
-        (let anon_12_0 ==
-          ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
-            equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
-            boolToRef(false))) in
-          (let anon_13_0 ==
-            ((!boolFromRef(anon_12_0) ?
-              (PBSTFromRef(this).af_a_PBST_right == nullValue() ?
-                boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()) :
-                boolToRef(false)) :
-              null)) in
-            (let anon_11_0 ==
-              ((boolFromRef(anon_12_0) ? boolToRef(true) : anon_13_0)) in
-              andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
-              PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_8_0),
-              anon_11_0)))))))
+      boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()))) in
+    (let anon_9_0 ==
+      ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
+        equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
+        boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()))) in
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
+      PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_8_0), anon_9_0)))
 }
 
 function isBST(par_t: Ref): Ref
@@ -629,24 +527,16 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_7_0 ==
+  (let anon_6_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_8_0 ==
-      ((!boolFromRef(anon_7_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_6_0 ==
-        ((boolFromRef(anon_7_0) ? boolToRef(true) : anon_8_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_6_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_6_0))
 }
 
 adt a_KVList {
@@ -659,24 +549,16 @@ function KVList_f_equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_19_0 ==
+  (let anon_14_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       KVList_f_equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_20_0 ==
-      ((!boolFromRef(anon_19_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_18_0 ==
-        ((boolFromRef(anon_19_0) ? boolToRef(true) : anon_20_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_18_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_14_0))
 }
 
 function PBST_f_equals(this: Ref, other: Ref): Ref
@@ -684,37 +566,20 @@ function PBST_f_equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_7_0 ==
+  (let anon_6_0 ==
     ((PBSTFromRef(this).af_a_PBST_left != nullValue() ?
       PBST_f_equals(PBSTFromRef(this).af_a_PBST_left, PBSTFromRef(other).af_a_PBST_left) :
-      boolToRef(false))) in
-    (let anon_8_0 ==
-      ((!boolFromRef(anon_7_0) ?
-        (PBSTFromRef(this).af_a_PBST_left == nullValue() ?
-          boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_6_0 ==
-        ((boolFromRef(anon_7_0) ? boolToRef(true) : anon_8_0)) in
-        (let anon_10_0 ==
-          ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
-            PBST_f_equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
-            boolToRef(false))) in
-          (let anon_11_0 ==
-            ((!boolFromRef(anon_10_0) ?
-              (PBSTFromRef(this).af_a_PBST_right == nullValue() ?
-                boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()) :
-                boolToRef(false)) :
-              null)) in
-            (let anon_9_0 ==
-              ((boolFromRef(anon_10_0) ? boolToRef(true) : anon_11_0)) in
-              andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
-              PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_6_0),
-              anon_9_0)))))))
+      boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()))) in
+    (let anon_7_0 ==
+      ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
+        PBST_f_equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
+        boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()))) in
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
+      PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_6_0), anon_7_0)))
 }
 
 function appendKV(xs: Ref, ys: Ref): Ref
@@ -722,28 +587,28 @@ function appendKV(xs: Ref, ys: Ref): Ref
   requires isSubtype(typeOf(ys), nullable(KVList()))
   ensures isSubtype(typeOf(result), nullable(KVList()))
 {
-  (let anon_14_0 ==
+  (let anon_10_0 ==
     ((xs != nullValue() ?
       KVList_f_equals(xs, nullValue()) :
       boolToRef(false))) in
-    (let anon_15_0 ==
-      ((!boolFromRef(anon_14_0) ?
+    (let anon_11_0 ==
+      ((!boolFromRef(anon_10_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_13_0 ==
-        ((boolFromRef(anon_14_0) ? boolToRef(true) : anon_15_0)) in
-        (let anon_16_0 ==
-          ((boolFromRef(anon_13_0) ? ys : null)) in
-          (let anon_17_0 ==
-            ((!boolFromRef(anon_13_0) ?
+      (let anon_9_0 ==
+        ((boolFromRef(anon_10_0) ? boolToRef(true) : anon_11_0)) in
+        (let anon_12_0 ==
+          ((boolFromRef(anon_9_0) ? ys : null)) in
+          (let anon_13_0 ==
+            ((!boolFromRef(anon_9_0) ?
               con(KVListFromRef(xs).af_a_KVList_key, KVListFromRef(xs).af_a_KVList_value,
               appendKV(KVListFromRef(xs).af_a_KVList_tail, ys)) :
               null)) in
-            (let anon_12_0 ==
-              ((boolFromRef(anon_13_0) ? anon_16_0 : anon_17_0)) in
-              anon_12_0))))))
+            (let anon_8_0 ==
+              ((boolFromRef(anon_9_0) ? anon_12_0 : anon_13_0)) in
+              anon_8_0))))))
 }
 
 function con(key: Ref, value: Ref, tail: Ref): Ref
@@ -804,24 +669,16 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_11_0 ==
+  (let anon_10_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_12_0 ==
-      ((!boolFromRef(anon_11_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_10_0 ==
-        ((boolFromRef(anon_11_0) ? boolToRef(true) : anon_12_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_10_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_10_0))
 }
 
 function sortedInsert(xs: Ref, k: Ref, par_v: Ref): Ref
@@ -894,24 +751,16 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_7_0 ==
+  (let anon_6_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_8_0 ==
-      ((!boolFromRef(anon_7_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_6_0 ==
-        ((boolFromRef(anon_7_0) ? boolToRef(true) : anon_8_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_6_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_6_0))
 }
 
 function kvAllLt(xs: Ref, b: Ref): Ref
@@ -953,24 +802,16 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_7_0 ==
+  (let anon_6_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_8_0 ==
-      ((!boolFromRef(anon_7_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_6_0 ==
-        ((boolFromRef(anon_7_0) ? boolToRef(true) : anon_8_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_6_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_6_0))
 }
 
 function kvAllGt(xs: Ref, b: Ref): Ref
@@ -1012,37 +853,20 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_5_0 ==
+  (let anon_4_0 ==
     ((PBSTFromRef(this).af_a_PBST_left != nullValue() ?
       equals(PBSTFromRef(this).af_a_PBST_left, PBSTFromRef(other).af_a_PBST_left) :
-      boolToRef(false))) in
-    (let anon_6_0 ==
-      ((!boolFromRef(anon_5_0) ?
-        (PBSTFromRef(this).af_a_PBST_left == nullValue() ?
-          boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_4_0 ==
-        ((boolFromRef(anon_5_0) ? boolToRef(true) : anon_6_0)) in
-        (let anon_8_0 ==
-          ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
-            equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
-            boolToRef(false))) in
-          (let anon_9_0 ==
-            ((!boolFromRef(anon_8_0) ?
-              (PBSTFromRef(this).af_a_PBST_right == nullValue() ?
-                boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()) :
-                boolToRef(false)) :
-              null)) in
-            (let anon_7_0 ==
-              ((boolFromRef(anon_8_0) ? boolToRef(true) : anon_9_0)) in
-              andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
-              PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_4_0),
-              anon_7_0)))))))
+      boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()))) in
+    (let anon_5_0 ==
+      ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
+        equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
+        boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()))) in
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
+      PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_4_0), anon_5_0)))
 }
 
 method tree_refl(par_t: Ref) returns (v_ret_0: Ref)
@@ -1083,24 +907,16 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_4_0 ==
+  (let anon_3_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_5_0 ==
-      ((!boolFromRef(anon_4_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_3_0 ==
-        ((boolFromRef(anon_4_0) ? boolToRef(true) : anon_5_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_3_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_3_0))
 }
 
 method kvlist_refl(xs: Ref) returns (v_ret_0: Ref)
@@ -1139,24 +955,16 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_10_0 ==
+  (let anon_9_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_11_0 ==
-      ((!boolFromRef(anon_10_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_9_0 ==
-        ((boolFromRef(anon_10_0) ? boolToRef(true) : anon_11_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_9_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_9_0))
 }
 
 function size(this: Ref): Ref
@@ -1250,24 +1058,16 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_14_0 ==
+  (let anon_13_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_15_0 ==
-      ((!boolFromRef(anon_14_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_13_0 ==
-        ((boolFromRef(anon_14_0) ? boolToRef(true) : anon_15_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_13_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_13_0))
 }
 
 function size(this: Ref): Ref
@@ -1395,26 +1195,26 @@ function appendKV(xs: Ref, ys: Ref): Ref
   requires isSubtype(typeOf(ys), nullable(KVList()))
   ensures isSubtype(typeOf(result), nullable(KVList()))
 {
-  (let anon_42_0 ==
+  (let anon_40_0 ==
     ((xs != nullValue() ? equals(xs, nullValue()) : boolToRef(false))) in
-    (let anon_43_0 ==
-      ((!boolFromRef(anon_42_0) ?
+    (let anon_41_0 ==
+      ((!boolFromRef(anon_40_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_41_0 ==
-        ((boolFromRef(anon_42_0) ? boolToRef(true) : anon_43_0)) in
-        (let anon_44_0 ==
-          ((boolFromRef(anon_41_0) ? ys : null)) in
-          (let anon_45_0 ==
-            ((!boolFromRef(anon_41_0) ?
+      (let anon_39_0 ==
+        ((boolFromRef(anon_40_0) ? boolToRef(true) : anon_41_0)) in
+        (let anon_42_0 ==
+          ((boolFromRef(anon_39_0) ? ys : null)) in
+          (let anon_43_0 ==
+            ((!boolFromRef(anon_39_0) ?
               con(KVListFromRef(xs).af_a_KVList_key, KVListFromRef(xs).af_a_KVList_value,
               appendKV(KVListFromRef(xs).af_a_KVList_tail, ys)) :
               null)) in
-            (let anon_40_0 ==
-              ((boolFromRef(anon_41_0) ? anon_44_0 : anon_45_0)) in
-              anon_40_0))))))
+            (let anon_38_0 ==
+              ((boolFromRef(anon_39_0) ? anon_42_0 : anon_43_0)) in
+              anon_38_0))))))
 }
 
 function con(key: Ref, value: Ref, tail: Ref): Ref
@@ -1430,24 +1230,16 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_38_0 ==
+  (let anon_37_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_39_0 ==
-      ((!boolFromRef(anon_38_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_37_0 ==
-        ((boolFromRef(anon_38_0) ? boolToRef(true) : anon_39_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_37_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_37_0))
 }
 
 function size(this: Ref): Ref
@@ -1744,26 +1536,26 @@ function appendKV(xs: Ref, ys: Ref): Ref
   requires isSubtype(typeOf(ys), nullable(KVList()))
   ensures isSubtype(typeOf(result), nullable(KVList()))
 {
-  (let anon_32_0 ==
+  (let anon_30_0 ==
     ((xs != nullValue() ? equals(xs, nullValue()) : boolToRef(false))) in
-    (let anon_33_0 ==
-      ((!boolFromRef(anon_32_0) ?
+    (let anon_31_0 ==
+      ((!boolFromRef(anon_30_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_31_0 ==
-        ((boolFromRef(anon_32_0) ? boolToRef(true) : anon_33_0)) in
-        (let anon_34_0 ==
-          ((boolFromRef(anon_31_0) ? ys : null)) in
-          (let anon_35_0 ==
-            ((!boolFromRef(anon_31_0) ?
+      (let anon_29_0 ==
+        ((boolFromRef(anon_30_0) ? boolToRef(true) : anon_31_0)) in
+        (let anon_32_0 ==
+          ((boolFromRef(anon_29_0) ? ys : null)) in
+          (let anon_33_0 ==
+            ((!boolFromRef(anon_29_0) ?
               con(KVListFromRef(xs).af_a_KVList_key, KVListFromRef(xs).af_a_KVList_value,
               appendKV(KVListFromRef(xs).af_a_KVList_tail, ys)) :
               null)) in
-            (let anon_30_0 ==
-              ((boolFromRef(anon_31_0) ? anon_34_0 : anon_35_0)) in
-              anon_30_0))))))
+            (let anon_28_0 ==
+              ((boolFromRef(anon_29_0) ? anon_32_0 : anon_33_0)) in
+              anon_28_0))))))
 }
 
 function con(key: Ref, value: Ref, tail: Ref): Ref
@@ -1779,24 +1571,16 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_28_0 ==
+  (let anon_27_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_29_0 ==
-      ((!boolFromRef(anon_28_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_27_0 ==
-        ((boolFromRef(anon_28_0) ? boolToRef(true) : anon_29_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_27_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_27_0))
 }
 
 function size(this: Ref): Ref
@@ -2011,37 +1795,20 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_11_0 ==
+  (let anon_10_0 ==
     ((PBSTFromRef(this).af_a_PBST_left != nullValue() ?
       equals(PBSTFromRef(this).af_a_PBST_left, PBSTFromRef(other).af_a_PBST_left) :
-      boolToRef(false))) in
-    (let anon_12_0 ==
-      ((!boolFromRef(anon_11_0) ?
-        (PBSTFromRef(this).af_a_PBST_left == nullValue() ?
-          boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_10_0 ==
-        ((boolFromRef(anon_11_0) ? boolToRef(true) : anon_12_0)) in
-        (let anon_14_0 ==
-          ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
-            equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
-            boolToRef(false))) in
-          (let anon_15_0 ==
-            ((!boolFromRef(anon_14_0) ?
-              (PBSTFromRef(this).af_a_PBST_right == nullValue() ?
-                boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()) :
-                boolToRef(false)) :
-              null)) in
-            (let anon_13_0 ==
-              ((boolFromRef(anon_14_0) ? boolToRef(true) : anon_15_0)) in
-              andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
-              PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_10_0),
-              anon_13_0)))))))
+      boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()))) in
+    (let anon_11_0 ==
+      ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
+        equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
+        boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()))) in
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
+      PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_10_0), anon_11_0)))
 }
 
 function size(par_t: Ref): Ref
@@ -2116,37 +1883,20 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_15_0 ==
+  (let anon_14_0 ==
     ((PBSTFromRef(this).af_a_PBST_left != nullValue() ?
       equals(PBSTFromRef(this).af_a_PBST_left, PBSTFromRef(other).af_a_PBST_left) :
-      boolToRef(false))) in
-    (let anon_16_0 ==
-      ((!boolFromRef(anon_15_0) ?
-        (PBSTFromRef(this).af_a_PBST_left == nullValue() ?
-          boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_14_0 ==
-        ((boolFromRef(anon_15_0) ? boolToRef(true) : anon_16_0)) in
-        (let anon_18_0 ==
-          ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
-            equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
-            boolToRef(false))) in
-          (let anon_19_0 ==
-            ((!boolFromRef(anon_18_0) ?
-              (PBSTFromRef(this).af_a_PBST_right == nullValue() ?
-                boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()) :
-                boolToRef(false)) :
-              null)) in
-            (let anon_17_0 ==
-              ((boolFromRef(anon_18_0) ? boolToRef(true) : anon_19_0)) in
-              andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
-              PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_14_0),
-              anon_17_0)))))))
+      boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()))) in
+    (let anon_15_0 ==
+      ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
+        equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
+        boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()))) in
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
+      PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_14_0), anon_15_0)))
 }
 
 function insert(par_t: Ref, k: Ref, par_v: Ref): Ref
@@ -2155,28 +1905,28 @@ function insert(par_t: Ref, k: Ref, par_v: Ref): Ref
   requires isSubtype(typeOf(par_v), intType())
   ensures isSubtype(typeOf(result), PBST())
 {
-  (let anon_22_0 ==
+  (let anon_18_0 ==
     ((par_t != nullValue() ? equals(par_t, nullValue()) : boolToRef(false))) in
-    (let anon_23_0 ==
-      ((!boolFromRef(anon_22_0) ?
+    (let anon_19_0 ==
+      ((!boolFromRef(anon_18_0) ?
         (par_t == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_21_0 ==
-        ((boolFromRef(anon_22_0) ? boolToRef(true) : anon_23_0)) in
-        (let anon_24_0 ==
-          ((boolFromRef(anon_21_0) ?
+      (let anon_17_0 ==
+        ((boolFromRef(anon_18_0) ? boolToRef(true) : anon_19_0)) in
+        (let anon_20_0 ==
+          ((boolFromRef(anon_17_0) ?
             con(k, par_v, nullValue(), nullValue()) :
             null)) in
-          (let anon_26_0 ==
-            ((!boolFromRef(anon_21_0) &&
+          (let anon_22_0 ==
+            ((!boolFromRef(anon_17_0) &&
             intFromRef(k) < intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
               con(PBSTFromRef(par_t).af_a_PBST_key, PBSTFromRef(par_t).af_a_PBST_value,
               insert(PBSTFromRef(par_t).af_a_PBST_left, k, par_v), PBSTFromRef(par_t).af_a_PBST_right) :
               null)) in
-            (let anon_28_0 ==
-              ((!boolFromRef(anon_21_0) &&
+            (let anon_24_0 ==
+              ((!boolFromRef(anon_17_0) &&
               !(intFromRef(k) <
               intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) &&
               intFromRef(k) > intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
@@ -2184,33 +1934,33 @@ function insert(par_t: Ref, k: Ref, par_v: Ref): Ref
                 PBSTFromRef(par_t).af_a_PBST_left, insert(PBSTFromRef(par_t).af_a_PBST_right,
                 k, par_v)) :
                 null)) in
-              (let anon_29_0 ==
-                ((!boolFromRef(anon_21_0) &&
+              (let anon_25_0 ==
+                ((!boolFromRef(anon_17_0) &&
                 !(intFromRef(k) <
                 intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) &&
                 !(intFromRef(k) >
                 intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) ?
                   con(k, par_v, PBSTFromRef(par_t).af_a_PBST_left, PBSTFromRef(par_t).af_a_PBST_right) :
                   null)) in
-                (let anon_27_0 ==
-                  ((!boolFromRef(anon_21_0) &&
+                (let anon_23_0 ==
+                  ((!boolFromRef(anon_17_0) &&
                   !(intFromRef(k) <
                   intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) ?
                     (intFromRef(k) >
                     intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
-                      anon_28_0 :
-                      anon_29_0) :
+                      anon_24_0 :
+                      anon_25_0) :
                     null)) in
-                  (let anon_25_0 ==
-                    ((!boolFromRef(anon_21_0) ?
+                  (let anon_21_0 ==
+                    ((!boolFromRef(anon_17_0) ?
                       (intFromRef(k) <
                       intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
-                        anon_26_0 :
-                        anon_27_0) :
+                        anon_22_0 :
+                        anon_23_0) :
                       null)) in
-                    (let anon_20_0 ==
-                      ((boolFromRef(anon_21_0) ? anon_24_0 : anon_25_0)) in
-                      anon_20_0))))))))))
+                    (let anon_16_0 ==
+                      ((boolFromRef(anon_17_0) ? anon_20_0 : anon_21_0)) in
+                      anon_16_0))))))))))
 }
 
 function lookup(par_t: Ref, k: Ref): Ref
@@ -2324,37 +2074,20 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_44_0 ==
+  (let anon_43_0 ==
     ((PBSTFromRef(this).af_a_PBST_left != nullValue() ?
       equals(PBSTFromRef(this).af_a_PBST_left, PBSTFromRef(other).af_a_PBST_left) :
-      boolToRef(false))) in
-    (let anon_45_0 ==
-      ((!boolFromRef(anon_44_0) ?
-        (PBSTFromRef(this).af_a_PBST_left == nullValue() ?
-          boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_43_0 ==
-        ((boolFromRef(anon_44_0) ? boolToRef(true) : anon_45_0)) in
-        (let anon_47_0 ==
-          ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
-            equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
-            boolToRef(false))) in
-          (let anon_48_0 ==
-            ((!boolFromRef(anon_47_0) ?
-              (PBSTFromRef(this).af_a_PBST_right == nullValue() ?
-                boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()) :
-                boolToRef(false)) :
-              null)) in
-            (let anon_46_0 ==
-              ((boolFromRef(anon_47_0) ? boolToRef(true) : anon_48_0)) in
-              andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
-              PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_43_0),
-              anon_46_0)))))))
+      boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()))) in
+    (let anon_44_0 ==
+      ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
+        equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
+        boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()))) in
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
+      PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_43_0), anon_44_0)))
 }
 
 function insert(par_t: Ref, k: Ref, par_v: Ref): Ref
@@ -2710,37 +2443,20 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_12_0 ==
+  (let anon_11_0 ==
     ((PBSTFromRef(this).af_a_PBST_left != nullValue() ?
       equals(PBSTFromRef(this).af_a_PBST_left, PBSTFromRef(other).af_a_PBST_left) :
-      boolToRef(false))) in
-    (let anon_13_0 ==
-      ((!boolFromRef(anon_12_0) ?
-        (PBSTFromRef(this).af_a_PBST_left == nullValue() ?
-          boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_11_0 ==
-        ((boolFromRef(anon_12_0) ? boolToRef(true) : anon_13_0)) in
-        (let anon_15_0 ==
-          ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
-            equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
-            boolToRef(false))) in
-          (let anon_16_0 ==
-            ((!boolFromRef(anon_15_0) ?
-              (PBSTFromRef(this).af_a_PBST_right == nullValue() ?
-                boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()) :
-                boolToRef(false)) :
-              null)) in
-            (let anon_14_0 ==
-              ((boolFromRef(anon_15_0) ? boolToRef(true) : anon_16_0)) in
-              andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
-              PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_11_0),
-              anon_14_0)))))))
+      boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()))) in
+    (let anon_12_0 ==
+      ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
+        equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
+        boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()))) in
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
+      PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_11_0), anon_12_0)))
 }
 
 function insert(par_t: Ref, k: Ref, par_v: Ref): Ref
@@ -2749,28 +2465,28 @@ function insert(par_t: Ref, k: Ref, par_v: Ref): Ref
   requires isSubtype(typeOf(par_v), intType())
   ensures isSubtype(typeOf(result), PBST())
 {
-  (let anon_19_0 ==
+  (let anon_15_0 ==
     ((par_t != nullValue() ? equals(par_t, nullValue()) : boolToRef(false))) in
-    (let anon_20_0 ==
-      ((!boolFromRef(anon_19_0) ?
+    (let anon_16_0 ==
+      ((!boolFromRef(anon_15_0) ?
         (par_t == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_18_0 ==
-        ((boolFromRef(anon_19_0) ? boolToRef(true) : anon_20_0)) in
-        (let anon_21_0 ==
-          ((boolFromRef(anon_18_0) ?
+      (let anon_14_0 ==
+        ((boolFromRef(anon_15_0) ? boolToRef(true) : anon_16_0)) in
+        (let anon_17_0 ==
+          ((boolFromRef(anon_14_0) ?
             con(k, par_v, nullValue(), nullValue()) :
             null)) in
-          (let anon_23_0 ==
-            ((!boolFromRef(anon_18_0) &&
+          (let anon_19_0 ==
+            ((!boolFromRef(anon_14_0) &&
             intFromRef(k) < intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
               con(PBSTFromRef(par_t).af_a_PBST_key, PBSTFromRef(par_t).af_a_PBST_value,
               insert(PBSTFromRef(par_t).af_a_PBST_left, k, par_v), PBSTFromRef(par_t).af_a_PBST_right) :
               null)) in
-            (let anon_25_0 ==
-              ((!boolFromRef(anon_18_0) &&
+            (let anon_21_0 ==
+              ((!boolFromRef(anon_14_0) &&
               !(intFromRef(k) <
               intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) &&
               intFromRef(k) > intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
@@ -2778,33 +2494,33 @@ function insert(par_t: Ref, k: Ref, par_v: Ref): Ref
                 PBSTFromRef(par_t).af_a_PBST_left, insert(PBSTFromRef(par_t).af_a_PBST_right,
                 k, par_v)) :
                 null)) in
-              (let anon_26_0 ==
-                ((!boolFromRef(anon_18_0) &&
+              (let anon_22_0 ==
+                ((!boolFromRef(anon_14_0) &&
                 !(intFromRef(k) <
                 intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) &&
                 !(intFromRef(k) >
                 intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) ?
                   con(k, par_v, PBSTFromRef(par_t).af_a_PBST_left, PBSTFromRef(par_t).af_a_PBST_right) :
                   null)) in
-                (let anon_24_0 ==
-                  ((!boolFromRef(anon_18_0) &&
+                (let anon_20_0 ==
+                  ((!boolFromRef(anon_14_0) &&
                   !(intFromRef(k) <
                   intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) ?
                     (intFromRef(k) >
                     intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
-                      anon_25_0 :
-                      anon_26_0) :
+                      anon_21_0 :
+                      anon_22_0) :
                     null)) in
-                  (let anon_22_0 ==
-                    ((!boolFromRef(anon_18_0) ?
+                  (let anon_18_0 ==
+                    ((!boolFromRef(anon_14_0) ?
                       (intFromRef(k) <
                       intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
-                        anon_23_0 :
-                        anon_24_0) :
+                        anon_19_0 :
+                        anon_20_0) :
                       null)) in
-                    (let anon_17_0 ==
-                      ((boolFromRef(anon_18_0) ? anon_21_0 : anon_22_0)) in
-                      anon_17_0))))))))))
+                    (let anon_13_0 ==
+                      ((boolFromRef(anon_14_0) ? anon_17_0 : anon_18_0)) in
+                      anon_13_0))))))))))
 }
 
 method allLt_insert(par_t: Ref, k: Ref, par_v: Ref, b: Ref)
@@ -2896,37 +2612,20 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_12_0 ==
+  (let anon_11_0 ==
     ((PBSTFromRef(this).af_a_PBST_left != nullValue() ?
       equals(PBSTFromRef(this).af_a_PBST_left, PBSTFromRef(other).af_a_PBST_left) :
-      boolToRef(false))) in
-    (let anon_13_0 ==
-      ((!boolFromRef(anon_12_0) ?
-        (PBSTFromRef(this).af_a_PBST_left == nullValue() ?
-          boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_11_0 ==
-        ((boolFromRef(anon_12_0) ? boolToRef(true) : anon_13_0)) in
-        (let anon_15_0 ==
-          ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
-            equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
-            boolToRef(false))) in
-          (let anon_16_0 ==
-            ((!boolFromRef(anon_15_0) ?
-              (PBSTFromRef(this).af_a_PBST_right == nullValue() ?
-                boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()) :
-                boolToRef(false)) :
-              null)) in
-            (let anon_14_0 ==
-              ((boolFromRef(anon_15_0) ? boolToRef(true) : anon_16_0)) in
-              andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
-              PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_11_0),
-              anon_14_0)))))))
+      boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()))) in
+    (let anon_12_0 ==
+      ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
+        equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
+        boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()))) in
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
+      PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_11_0), anon_12_0)))
 }
 
 function insert(par_t: Ref, k: Ref, par_v: Ref): Ref
@@ -2935,28 +2634,28 @@ function insert(par_t: Ref, k: Ref, par_v: Ref): Ref
   requires isSubtype(typeOf(par_v), intType())
   ensures isSubtype(typeOf(result), PBST())
 {
-  (let anon_19_0 ==
+  (let anon_15_0 ==
     ((par_t != nullValue() ? equals(par_t, nullValue()) : boolToRef(false))) in
-    (let anon_20_0 ==
-      ((!boolFromRef(anon_19_0) ?
+    (let anon_16_0 ==
+      ((!boolFromRef(anon_15_0) ?
         (par_t == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_18_0 ==
-        ((boolFromRef(anon_19_0) ? boolToRef(true) : anon_20_0)) in
-        (let anon_21_0 ==
-          ((boolFromRef(anon_18_0) ?
+      (let anon_14_0 ==
+        ((boolFromRef(anon_15_0) ? boolToRef(true) : anon_16_0)) in
+        (let anon_17_0 ==
+          ((boolFromRef(anon_14_0) ?
             con(k, par_v, nullValue(), nullValue()) :
             null)) in
-          (let anon_23_0 ==
-            ((!boolFromRef(anon_18_0) &&
+          (let anon_19_0 ==
+            ((!boolFromRef(anon_14_0) &&
             intFromRef(k) < intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
               con(PBSTFromRef(par_t).af_a_PBST_key, PBSTFromRef(par_t).af_a_PBST_value,
               insert(PBSTFromRef(par_t).af_a_PBST_left, k, par_v), PBSTFromRef(par_t).af_a_PBST_right) :
               null)) in
-            (let anon_25_0 ==
-              ((!boolFromRef(anon_18_0) &&
+            (let anon_21_0 ==
+              ((!boolFromRef(anon_14_0) &&
               !(intFromRef(k) <
               intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) &&
               intFromRef(k) > intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
@@ -2964,33 +2663,33 @@ function insert(par_t: Ref, k: Ref, par_v: Ref): Ref
                 PBSTFromRef(par_t).af_a_PBST_left, insert(PBSTFromRef(par_t).af_a_PBST_right,
                 k, par_v)) :
                 null)) in
-              (let anon_26_0 ==
-                ((!boolFromRef(anon_18_0) &&
+              (let anon_22_0 ==
+                ((!boolFromRef(anon_14_0) &&
                 !(intFromRef(k) <
                 intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) &&
                 !(intFromRef(k) >
                 intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) ?
                   con(k, par_v, PBSTFromRef(par_t).af_a_PBST_left, PBSTFromRef(par_t).af_a_PBST_right) :
                   null)) in
-                (let anon_24_0 ==
-                  ((!boolFromRef(anon_18_0) &&
+                (let anon_20_0 ==
+                  ((!boolFromRef(anon_14_0) &&
                   !(intFromRef(k) <
                   intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) ?
                     (intFromRef(k) >
                     intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
-                      anon_25_0 :
-                      anon_26_0) :
+                      anon_21_0 :
+                      anon_22_0) :
                     null)) in
-                  (let anon_22_0 ==
-                    ((!boolFromRef(anon_18_0) ?
+                  (let anon_18_0 ==
+                    ((!boolFromRef(anon_14_0) ?
                       (intFromRef(k) <
                       intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
-                        anon_23_0 :
-                        anon_24_0) :
+                        anon_19_0 :
+                        anon_20_0) :
                       null)) in
-                    (let anon_17_0 ==
-                      ((boolFromRef(anon_18_0) ? anon_21_0 : anon_22_0)) in
-                      anon_17_0))))))))))
+                    (let anon_13_0 ==
+                      ((boolFromRef(anon_14_0) ? anon_17_0 : anon_18_0)) in
+                      anon_13_0))))))))))
 }
 
 method allGt_insert(par_t: Ref, k: Ref, par_v: Ref, b: Ref)
@@ -3039,33 +2738,33 @@ function allGt(par_t: Ref, b: Ref): Ref
   requires isSubtype(typeOf(b), intType())
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_29_0 ==
+  (let anon_25_0 ==
     ((par_t != nullValue() ? equals(par_t, nullValue()) : boolToRef(false))) in
-    (let anon_30_0 ==
-      ((!boolFromRef(anon_29_0) ?
+    (let anon_26_0 ==
+      ((!boolFromRef(anon_25_0) ?
         (par_t == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_28_0 ==
-        ((boolFromRef(anon_29_0) ? boolToRef(true) : anon_30_0)) in
-        (let anon_31_0 ==
-          ((boolFromRef(anon_28_0) ? boolToRef(true) : null)) in
-          (let anon_33_0 ==
-            ((!boolFromRef(anon_28_0) ?
+      (let anon_24_0 ==
+        ((boolFromRef(anon_25_0) ? boolToRef(true) : anon_26_0)) in
+        (let anon_27_0 ==
+          ((boolFromRef(anon_24_0) ? boolToRef(true) : null)) in
+          (let anon_29_0 ==
+            ((!boolFromRef(anon_24_0) ?
               (intFromRef(PBSTFromRef(par_t).af_a_PBST_key) > intFromRef(b) ?
                 allGt(PBSTFromRef(par_t).af_a_PBST_left, b) :
                 boolToRef(false)) :
               null)) in
-            (let anon_32_0 ==
-              ((!boolFromRef(anon_28_0) ?
-                (boolFromRef(anon_33_0) ?
+            (let anon_28_0 ==
+              ((!boolFromRef(anon_24_0) ?
+                (boolFromRef(anon_29_0) ?
                   allGt(PBSTFromRef(par_t).af_a_PBST_right, b) :
                   boolToRef(false)) :
                 null)) in
-              (let anon_27_0 ==
-                ((boolFromRef(anon_28_0) ? anon_31_0 : anon_32_0)) in
-                anon_27_0)))))))
+              (let anon_23_0 ==
+                ((boolFromRef(anon_24_0) ? anon_27_0 : anon_28_0)) in
+                anon_23_0)))))))
 }
 
 function allLt(par_t: Ref, b: Ref): Ref
@@ -3073,33 +2772,33 @@ function allLt(par_t: Ref, b: Ref): Ref
   requires isSubtype(typeOf(b), intType())
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_22_0 ==
+  (let anon_18_0 ==
     ((par_t != nullValue() ? equals(par_t, nullValue()) : boolToRef(false))) in
-    (let anon_23_0 ==
-      ((!boolFromRef(anon_22_0) ?
+    (let anon_19_0 ==
+      ((!boolFromRef(anon_18_0) ?
         (par_t == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_21_0 ==
-        ((boolFromRef(anon_22_0) ? boolToRef(true) : anon_23_0)) in
-        (let anon_24_0 ==
-          ((boolFromRef(anon_21_0) ? boolToRef(true) : null)) in
-          (let anon_26_0 ==
-            ((!boolFromRef(anon_21_0) ?
+      (let anon_17_0 ==
+        ((boolFromRef(anon_18_0) ? boolToRef(true) : anon_19_0)) in
+        (let anon_20_0 ==
+          ((boolFromRef(anon_17_0) ? boolToRef(true) : null)) in
+          (let anon_22_0 ==
+            ((!boolFromRef(anon_17_0) ?
               (intFromRef(PBSTFromRef(par_t).af_a_PBST_key) < intFromRef(b) ?
                 allLt(PBSTFromRef(par_t).af_a_PBST_left, b) :
                 boolToRef(false)) :
               null)) in
-            (let anon_25_0 ==
-              ((!boolFromRef(anon_21_0) ?
-                (boolFromRef(anon_26_0) ?
+            (let anon_21_0 ==
+              ((!boolFromRef(anon_17_0) ?
+                (boolFromRef(anon_22_0) ?
                   allLt(PBSTFromRef(par_t).af_a_PBST_right, b) :
                   boolToRef(false)) :
                 null)) in
-              (let anon_20_0 ==
-                ((boolFromRef(anon_21_0) ? anon_24_0 : anon_25_0)) in
-                anon_20_0)))))))
+              (let anon_16_0 ==
+                ((boolFromRef(anon_17_0) ? anon_20_0 : anon_21_0)) in
+                anon_16_0)))))))
 }
 
 function con(key: Ref, value: Ref, left: Ref, right: Ref): Ref
@@ -3116,37 +2815,20 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_15_0 ==
+  (let anon_14_0 ==
     ((PBSTFromRef(this).af_a_PBST_left != nullValue() ?
       equals(PBSTFromRef(this).af_a_PBST_left, PBSTFromRef(other).af_a_PBST_left) :
-      boolToRef(false))) in
-    (let anon_16_0 ==
-      ((!boolFromRef(anon_15_0) ?
-        (PBSTFromRef(this).af_a_PBST_left == nullValue() ?
-          boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_14_0 ==
-        ((boolFromRef(anon_15_0) ? boolToRef(true) : anon_16_0)) in
-        (let anon_18_0 ==
-          ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
-            equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
-            boolToRef(false))) in
-          (let anon_19_0 ==
-            ((!boolFromRef(anon_18_0) ?
-              (PBSTFromRef(this).af_a_PBST_right == nullValue() ?
-                boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()) :
-                boolToRef(false)) :
-              null)) in
-            (let anon_17_0 ==
-              ((boolFromRef(anon_18_0) ? boolToRef(true) : anon_19_0)) in
-              andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
-              PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_14_0),
-              anon_17_0)))))))
+      boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()))) in
+    (let anon_15_0 ==
+      ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
+        equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
+        boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()))) in
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
+      PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_14_0), anon_15_0)))
 }
 
 function insert(par_t: Ref, k: Ref, par_v: Ref): Ref
@@ -3155,28 +2837,28 @@ function insert(par_t: Ref, k: Ref, par_v: Ref): Ref
   requires isSubtype(typeOf(par_v), intType())
   ensures isSubtype(typeOf(result), PBST())
 {
-  (let anon_36_0 ==
+  (let anon_32_0 ==
     ((par_t != nullValue() ? equals(par_t, nullValue()) : boolToRef(false))) in
-    (let anon_37_0 ==
-      ((!boolFromRef(anon_36_0) ?
+    (let anon_33_0 ==
+      ((!boolFromRef(anon_32_0) ?
         (par_t == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_35_0 ==
-        ((boolFromRef(anon_36_0) ? boolToRef(true) : anon_37_0)) in
-        (let anon_38_0 ==
-          ((boolFromRef(anon_35_0) ?
+      (let anon_31_0 ==
+        ((boolFromRef(anon_32_0) ? boolToRef(true) : anon_33_0)) in
+        (let anon_34_0 ==
+          ((boolFromRef(anon_31_0) ?
             con(k, par_v, nullValue(), nullValue()) :
             null)) in
-          (let anon_40_0 ==
-            ((!boolFromRef(anon_35_0) &&
+          (let anon_36_0 ==
+            ((!boolFromRef(anon_31_0) &&
             intFromRef(k) < intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
               con(PBSTFromRef(par_t).af_a_PBST_key, PBSTFromRef(par_t).af_a_PBST_value,
               insert(PBSTFromRef(par_t).af_a_PBST_left, k, par_v), PBSTFromRef(par_t).af_a_PBST_right) :
               null)) in
-            (let anon_42_0 ==
-              ((!boolFromRef(anon_35_0) &&
+            (let anon_38_0 ==
+              ((!boolFromRef(anon_31_0) &&
               !(intFromRef(k) <
               intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) &&
               intFromRef(k) > intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
@@ -3184,33 +2866,33 @@ function insert(par_t: Ref, k: Ref, par_v: Ref): Ref
                 PBSTFromRef(par_t).af_a_PBST_left, insert(PBSTFromRef(par_t).af_a_PBST_right,
                 k, par_v)) :
                 null)) in
-              (let anon_43_0 ==
-                ((!boolFromRef(anon_35_0) &&
+              (let anon_39_0 ==
+                ((!boolFromRef(anon_31_0) &&
                 !(intFromRef(k) <
                 intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) &&
                 !(intFromRef(k) >
                 intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) ?
                   con(k, par_v, PBSTFromRef(par_t).af_a_PBST_left, PBSTFromRef(par_t).af_a_PBST_right) :
                   null)) in
-                (let anon_41_0 ==
-                  ((!boolFromRef(anon_35_0) &&
+                (let anon_37_0 ==
+                  ((!boolFromRef(anon_31_0) &&
                   !(intFromRef(k) <
                   intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) ?
                     (intFromRef(k) >
                     intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
-                      anon_42_0 :
-                      anon_43_0) :
+                      anon_38_0 :
+                      anon_39_0) :
                     null)) in
-                  (let anon_39_0 ==
-                    ((!boolFromRef(anon_35_0) ?
+                  (let anon_35_0 ==
+                    ((!boolFromRef(anon_31_0) ?
                       (intFromRef(k) <
                       intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
-                        anon_40_0 :
-                        anon_41_0) :
+                        anon_36_0 :
+                        anon_37_0) :
                       null)) in
-                    (let anon_34_0 ==
-                      ((boolFromRef(anon_35_0) ? anon_38_0 : anon_39_0)) in
-                      anon_34_0))))))))))
+                    (let anon_30_0 ==
+                      ((boolFromRef(anon_31_0) ? anon_34_0 : anon_35_0)) in
+                      anon_30_0))))))))))
 }
 
 function isBST(par_t: Ref): Ref
@@ -3323,24 +3005,16 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_10_0 ==
+  (let anon_9_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_11_0 ==
-      ((!boolFromRef(anon_10_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_9_0 ==
-        ((boolFromRef(anon_10_0) ? boolToRef(true) : anon_11_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_9_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_9_0))
 }
 
 function kvAllGt(xs: Ref, b: Ref): Ref
@@ -3411,24 +3085,16 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_10_0 ==
+  (let anon_9_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_11_0 ==
-      ((!boolFromRef(anon_10_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_9_0 ==
-        ((boolFromRef(anon_10_0) ? boolToRef(true) : anon_11_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_9_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_9_0))
 }
 
 function kvAllLt(xs: Ref, b: Ref): Ref
@@ -3499,26 +3165,26 @@ function appendKV(xs: Ref, ys: Ref): Ref
   requires isSubtype(typeOf(ys), nullable(KVList()))
   ensures isSubtype(typeOf(result), nullable(KVList()))
 {
-  (let anon_14_0 ==
+  (let anon_12_0 ==
     ((xs != nullValue() ? equals(xs, nullValue()) : boolToRef(false))) in
-    (let anon_15_0 ==
-      ((!boolFromRef(anon_14_0) ?
+    (let anon_13_0 ==
+      ((!boolFromRef(anon_12_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_13_0 ==
-        ((boolFromRef(anon_14_0) ? boolToRef(true) : anon_15_0)) in
-        (let anon_16_0 ==
-          ((boolFromRef(anon_13_0) ? ys : null)) in
-          (let anon_17_0 ==
-            ((!boolFromRef(anon_13_0) ?
+      (let anon_11_0 ==
+        ((boolFromRef(anon_12_0) ? boolToRef(true) : anon_13_0)) in
+        (let anon_14_0 ==
+          ((boolFromRef(anon_11_0) ? ys : null)) in
+          (let anon_15_0 ==
+            ((!boolFromRef(anon_11_0) ?
               con(KVListFromRef(xs).af_a_KVList_key, KVListFromRef(xs).af_a_KVList_value,
               appendKV(KVListFromRef(xs).af_a_KVList_tail, ys)) :
               null)) in
-            (let anon_12_0 ==
-              ((boolFromRef(anon_13_0) ? anon_16_0 : anon_17_0)) in
-              anon_12_0))))))
+            (let anon_10_0 ==
+              ((boolFromRef(anon_11_0) ? anon_14_0 : anon_15_0)) in
+              anon_10_0))))))
 }
 
 function con(key: Ref, value: Ref, tail: Ref): Ref
@@ -3534,24 +3200,16 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_10_0 ==
+  (let anon_9_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_11_0 ==
-      ((!boolFromRef(anon_10_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_9_0 ==
-        ((boolFromRef(anon_10_0) ? boolToRef(true) : anon_11_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_9_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_9_0))
 }
 
 function kvAllGt(xs: Ref, b: Ref): Ref
@@ -3622,26 +3280,26 @@ function appendKV(xs: Ref, ys: Ref): Ref
   requires isSubtype(typeOf(ys), nullable(KVList()))
   ensures isSubtype(typeOf(result), nullable(KVList()))
 {
-  (let anon_14_0 ==
+  (let anon_12_0 ==
     ((xs != nullValue() ? equals(xs, nullValue()) : boolToRef(false))) in
-    (let anon_15_0 ==
-      ((!boolFromRef(anon_14_0) ?
+    (let anon_13_0 ==
+      ((!boolFromRef(anon_12_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_13_0 ==
-        ((boolFromRef(anon_14_0) ? boolToRef(true) : anon_15_0)) in
-        (let anon_16_0 ==
-          ((boolFromRef(anon_13_0) ? ys : null)) in
-          (let anon_17_0 ==
-            ((!boolFromRef(anon_13_0) ?
+      (let anon_11_0 ==
+        ((boolFromRef(anon_12_0) ? boolToRef(true) : anon_13_0)) in
+        (let anon_14_0 ==
+          ((boolFromRef(anon_11_0) ? ys : null)) in
+          (let anon_15_0 ==
+            ((!boolFromRef(anon_11_0) ?
               con(KVListFromRef(xs).af_a_KVList_key, KVListFromRef(xs).af_a_KVList_value,
               appendKV(KVListFromRef(xs).af_a_KVList_tail, ys)) :
               null)) in
-            (let anon_12_0 ==
-              ((boolFromRef(anon_13_0) ? anon_16_0 : anon_17_0)) in
-              anon_12_0))))))
+            (let anon_10_0 ==
+              ((boolFromRef(anon_11_0) ? anon_14_0 : anon_15_0)) in
+              anon_10_0))))))
 }
 
 function con(key: Ref, value: Ref, tail: Ref): Ref
@@ -3657,24 +3315,16 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_10_0 ==
+  (let anon_9_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_11_0 ==
-      ((!boolFromRef(anon_10_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_9_0 ==
-        ((boolFromRef(anon_10_0) ? boolToRef(true) : anon_11_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_9_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_9_0))
 }
 
 function kvAllLt(xs: Ref, b: Ref): Ref
@@ -3745,24 +3395,16 @@ function KVList_f_equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_25_0 ==
+  (let anon_20_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       KVList_f_equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_26_0 ==
-      ((!boolFromRef(anon_25_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_24_0 ==
-        ((boolFromRef(anon_25_0) ? boolToRef(true) : anon_26_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_24_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_20_0))
 }
 
 function PBST_f_equals(this: Ref, other: Ref): Ref
@@ -3770,37 +3412,20 @@ function PBST_f_equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_13_0 ==
+  (let anon_12_0 ==
     ((PBSTFromRef(this).af_a_PBST_left != nullValue() ?
       PBST_f_equals(PBSTFromRef(this).af_a_PBST_left, PBSTFromRef(other).af_a_PBST_left) :
-      boolToRef(false))) in
-    (let anon_14_0 ==
-      ((!boolFromRef(anon_13_0) ?
-        (PBSTFromRef(this).af_a_PBST_left == nullValue() ?
-          boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_12_0 ==
-        ((boolFromRef(anon_13_0) ? boolToRef(true) : anon_14_0)) in
-        (let anon_16_0 ==
-          ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
-            PBST_f_equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
-            boolToRef(false))) in
-          (let anon_17_0 ==
-            ((!boolFromRef(anon_16_0) ?
-              (PBSTFromRef(this).af_a_PBST_right == nullValue() ?
-                boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()) :
-                boolToRef(false)) :
-              null)) in
-            (let anon_15_0 ==
-              ((boolFromRef(anon_16_0) ? boolToRef(true) : anon_17_0)) in
-              andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
-              PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_12_0),
-              anon_15_0)))))))
+      boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()))) in
+    (let anon_13_0 ==
+      ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
+        PBST_f_equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
+        boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()))) in
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
+      PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_12_0), anon_13_0)))
 }
 
 function allGt(par_t: Ref, b: Ref): Ref
@@ -3844,28 +3469,28 @@ function appendKV(xs: Ref, ys: Ref): Ref
   requires isSubtype(typeOf(ys), nullable(KVList()))
   ensures isSubtype(typeOf(result), nullable(KVList()))
 {
-  (let anon_35_0 ==
+  (let anon_29_0 ==
     ((xs != nullValue() ?
       KVList_f_equals(xs, nullValue()) :
       boolToRef(false))) in
-    (let anon_36_0 ==
-      ((!boolFromRef(anon_35_0) ?
+    (let anon_30_0 ==
+      ((!boolFromRef(anon_29_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_34_0 ==
-        ((boolFromRef(anon_35_0) ? boolToRef(true) : anon_36_0)) in
-        (let anon_37_0 ==
-          ((boolFromRef(anon_34_0) ? ys : null)) in
-          (let anon_38_0 ==
-            ((!boolFromRef(anon_34_0) ?
+      (let anon_28_0 ==
+        ((boolFromRef(anon_29_0) ? boolToRef(true) : anon_30_0)) in
+        (let anon_31_0 ==
+          ((boolFromRef(anon_28_0) ? ys : null)) in
+          (let anon_32_0 ==
+            ((!boolFromRef(anon_28_0) ?
               con(KVListFromRef(xs).af_a_KVList_key, KVListFromRef(xs).af_a_KVList_value,
               appendKV(KVListFromRef(xs).af_a_KVList_tail, ys)) :
               null)) in
-            (let anon_33_0 ==
-              ((boolFromRef(anon_34_0) ? anon_37_0 : anon_38_0)) in
-              anon_33_0))))))
+            (let anon_27_0 ==
+              ((boolFromRef(anon_28_0) ? anon_31_0 : anon_32_0)) in
+              anon_27_0))))))
 }
 
 function con(key: Ref, value: Ref, tail: Ref): Ref
@@ -3880,28 +3505,28 @@ function inOrder(par_t: Ref): Ref
   requires isSubtype(typeOf(par_t), nullable(PBST()))
   ensures isSubtype(typeOf(result), nullable(KVList()))
 {
-  (let anon_29_0 ==
+  (let anon_23_0 ==
     ((par_t != nullValue() ?
       PBST_f_equals(par_t, nullValue()) :
       boolToRef(false))) in
-    (let anon_30_0 ==
-      ((!boolFromRef(anon_29_0) ?
+    (let anon_24_0 ==
+      ((!boolFromRef(anon_23_0) ?
         (par_t == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_28_0 ==
-        ((boolFromRef(anon_29_0) ? boolToRef(true) : anon_30_0)) in
-        (let anon_31_0 ==
-          ((boolFromRef(anon_28_0) ? nullValue() : null)) in
-          (let anon_32_0 ==
-            ((!boolFromRef(anon_28_0) ?
+      (let anon_22_0 ==
+        ((boolFromRef(anon_23_0) ? boolToRef(true) : anon_24_0)) in
+        (let anon_25_0 ==
+          ((boolFromRef(anon_22_0) ? nullValue() : null)) in
+          (let anon_26_0 ==
+            ((!boolFromRef(anon_22_0) ?
               appendKV(inOrder(PBSTFromRef(par_t).af_a_PBST_left), con(PBSTFromRef(par_t).af_a_PBST_key,
               PBSTFromRef(par_t).af_a_PBST_value, inOrder(PBSTFromRef(par_t).af_a_PBST_right))) :
               null)) in
-            (let anon_27_0 ==
-              ((boolFromRef(anon_28_0) ? anon_31_0 : anon_32_0)) in
-              anon_27_0))))))
+            (let anon_21_0 ==
+              ((boolFromRef(anon_22_0) ? anon_25_0 : anon_26_0)) in
+              anon_21_0))))))
 }
 
 function kvAllGt(xs: Ref, b: Ref): Ref
@@ -3909,30 +3534,30 @@ function kvAllGt(xs: Ref, b: Ref): Ref
   requires isSubtype(typeOf(b), intType())
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_20_0 ==
+  (let anon_16_0 ==
     ((xs != nullValue() ?
       KVList_f_equals(xs, nullValue()) :
       boolToRef(false))) in
-    (let anon_21_0 ==
-      ((!boolFromRef(anon_20_0) ?
+    (let anon_17_0 ==
+      ((!boolFromRef(anon_16_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_19_0 ==
-        ((boolFromRef(anon_20_0) ? boolToRef(true) : anon_21_0)) in
-        (let anon_22_0 ==
-          ((boolFromRef(anon_19_0) ? boolToRef(true) : null)) in
-          (let anon_23_0 ==
-            ((!boolFromRef(anon_19_0) ?
+      (let anon_15_0 ==
+        ((boolFromRef(anon_16_0) ? boolToRef(true) : anon_17_0)) in
+        (let anon_18_0 ==
+          ((boolFromRef(anon_15_0) ? boolToRef(true) : null)) in
+          (let anon_19_0 ==
+            ((!boolFromRef(anon_15_0) ?
               (intFromRef(KVListFromRef(xs).af_a_KVList_key) >
               intFromRef(b) ?
                 kvAllGt(KVListFromRef(xs).af_a_KVList_tail, b) :
                 boolToRef(false)) :
               null)) in
-            (let anon_18_0 ==
-              ((boolFromRef(anon_19_0) ? anon_22_0 : anon_23_0)) in
-              anon_18_0))))))
+            (let anon_14_0 ==
+              ((boolFromRef(anon_15_0) ? anon_18_0 : anon_19_0)) in
+              anon_14_0))))))
 }
 
 method allGt_inOrder(par_t: Ref, b: Ref) returns (v_ret_0: Ref)
@@ -3992,24 +3617,16 @@ function KVList_f_equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_25_0 ==
+  (let anon_20_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       KVList_f_equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_26_0 ==
-      ((!boolFromRef(anon_25_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_24_0 ==
-        ((boolFromRef(anon_25_0) ? boolToRef(true) : anon_26_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_24_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_20_0))
 }
 
 function PBST_f_equals(this: Ref, other: Ref): Ref
@@ -4017,37 +3634,20 @@ function PBST_f_equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_13_0 ==
+  (let anon_12_0 ==
     ((PBSTFromRef(this).af_a_PBST_left != nullValue() ?
       PBST_f_equals(PBSTFromRef(this).af_a_PBST_left, PBSTFromRef(other).af_a_PBST_left) :
-      boolToRef(false))) in
-    (let anon_14_0 ==
-      ((!boolFromRef(anon_13_0) ?
-        (PBSTFromRef(this).af_a_PBST_left == nullValue() ?
-          boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_12_0 ==
-        ((boolFromRef(anon_13_0) ? boolToRef(true) : anon_14_0)) in
-        (let anon_16_0 ==
-          ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
-            PBST_f_equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
-            boolToRef(false))) in
-          (let anon_17_0 ==
-            ((!boolFromRef(anon_16_0) ?
-              (PBSTFromRef(this).af_a_PBST_right == nullValue() ?
-                boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()) :
-                boolToRef(false)) :
-              null)) in
-            (let anon_15_0 ==
-              ((boolFromRef(anon_16_0) ? boolToRef(true) : anon_17_0)) in
-              andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
-              PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_12_0),
-              anon_15_0)))))))
+      boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()))) in
+    (let anon_13_0 ==
+      ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
+        PBST_f_equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
+        boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()))) in
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
+      PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_12_0), anon_13_0)))
 }
 
 function allLt(par_t: Ref, b: Ref): Ref
@@ -4091,28 +3691,28 @@ function appendKV(xs: Ref, ys: Ref): Ref
   requires isSubtype(typeOf(ys), nullable(KVList()))
   ensures isSubtype(typeOf(result), nullable(KVList()))
 {
-  (let anon_35_0 ==
+  (let anon_29_0 ==
     ((xs != nullValue() ?
       KVList_f_equals(xs, nullValue()) :
       boolToRef(false))) in
-    (let anon_36_0 ==
-      ((!boolFromRef(anon_35_0) ?
+    (let anon_30_0 ==
+      ((!boolFromRef(anon_29_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_34_0 ==
-        ((boolFromRef(anon_35_0) ? boolToRef(true) : anon_36_0)) in
-        (let anon_37_0 ==
-          ((boolFromRef(anon_34_0) ? ys : null)) in
-          (let anon_38_0 ==
-            ((!boolFromRef(anon_34_0) ?
+      (let anon_28_0 ==
+        ((boolFromRef(anon_29_0) ? boolToRef(true) : anon_30_0)) in
+        (let anon_31_0 ==
+          ((boolFromRef(anon_28_0) ? ys : null)) in
+          (let anon_32_0 ==
+            ((!boolFromRef(anon_28_0) ?
               con(KVListFromRef(xs).af_a_KVList_key, KVListFromRef(xs).af_a_KVList_value,
               appendKV(KVListFromRef(xs).af_a_KVList_tail, ys)) :
               null)) in
-            (let anon_33_0 ==
-              ((boolFromRef(anon_34_0) ? anon_37_0 : anon_38_0)) in
-              anon_33_0))))))
+            (let anon_27_0 ==
+              ((boolFromRef(anon_28_0) ? anon_31_0 : anon_32_0)) in
+              anon_27_0))))))
 }
 
 function con(key: Ref, value: Ref, tail: Ref): Ref
@@ -4127,28 +3727,28 @@ function inOrder(par_t: Ref): Ref
   requires isSubtype(typeOf(par_t), nullable(PBST()))
   ensures isSubtype(typeOf(result), nullable(KVList()))
 {
-  (let anon_29_0 ==
+  (let anon_23_0 ==
     ((par_t != nullValue() ?
       PBST_f_equals(par_t, nullValue()) :
       boolToRef(false))) in
-    (let anon_30_0 ==
-      ((!boolFromRef(anon_29_0) ?
+    (let anon_24_0 ==
+      ((!boolFromRef(anon_23_0) ?
         (par_t == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_28_0 ==
-        ((boolFromRef(anon_29_0) ? boolToRef(true) : anon_30_0)) in
-        (let anon_31_0 ==
-          ((boolFromRef(anon_28_0) ? nullValue() : null)) in
-          (let anon_32_0 ==
-            ((!boolFromRef(anon_28_0) ?
+      (let anon_22_0 ==
+        ((boolFromRef(anon_23_0) ? boolToRef(true) : anon_24_0)) in
+        (let anon_25_0 ==
+          ((boolFromRef(anon_22_0) ? nullValue() : null)) in
+          (let anon_26_0 ==
+            ((!boolFromRef(anon_22_0) ?
               appendKV(inOrder(PBSTFromRef(par_t).af_a_PBST_left), con(PBSTFromRef(par_t).af_a_PBST_key,
               PBSTFromRef(par_t).af_a_PBST_value, inOrder(PBSTFromRef(par_t).af_a_PBST_right))) :
               null)) in
-            (let anon_27_0 ==
-              ((boolFromRef(anon_28_0) ? anon_31_0 : anon_32_0)) in
-              anon_27_0))))))
+            (let anon_21_0 ==
+              ((boolFromRef(anon_22_0) ? anon_25_0 : anon_26_0)) in
+              anon_21_0))))))
 }
 
 function kvAllLt(xs: Ref, b: Ref): Ref
@@ -4156,30 +3756,30 @@ function kvAllLt(xs: Ref, b: Ref): Ref
   requires isSubtype(typeOf(b), intType())
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_20_0 ==
+  (let anon_16_0 ==
     ((xs != nullValue() ?
       KVList_f_equals(xs, nullValue()) :
       boolToRef(false))) in
-    (let anon_21_0 ==
-      ((!boolFromRef(anon_20_0) ?
+    (let anon_17_0 ==
+      ((!boolFromRef(anon_16_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_19_0 ==
-        ((boolFromRef(anon_20_0) ? boolToRef(true) : anon_21_0)) in
-        (let anon_22_0 ==
-          ((boolFromRef(anon_19_0) ? boolToRef(true) : null)) in
-          (let anon_23_0 ==
-            ((!boolFromRef(anon_19_0) ?
+      (let anon_15_0 ==
+        ((boolFromRef(anon_16_0) ? boolToRef(true) : anon_17_0)) in
+        (let anon_18_0 ==
+          ((boolFromRef(anon_15_0) ? boolToRef(true) : null)) in
+          (let anon_19_0 ==
+            ((!boolFromRef(anon_15_0) ?
               (intFromRef(KVListFromRef(xs).af_a_KVList_key) <
               intFromRef(b) ?
                 kvAllLt(KVListFromRef(xs).af_a_KVList_tail, b) :
                 boolToRef(false)) :
               null)) in
-            (let anon_18_0 ==
-              ((boolFromRef(anon_19_0) ? anon_22_0 : anon_23_0)) in
-              anon_18_0))))))
+            (let anon_14_0 ==
+              ((boolFromRef(anon_15_0) ? anon_18_0 : anon_19_0)) in
+              anon_14_0))))))
 }
 
 method allLt_inOrder(par_t: Ref, b: Ref) returns (v_ret_0: Ref)
@@ -4239,26 +3839,26 @@ function appendKV(xs: Ref, ys: Ref): Ref
   requires isSubtype(typeOf(ys), nullable(KVList()))
   ensures isSubtype(typeOf(result), nullable(KVList()))
 {
-  (let anon_36_0 ==
+  (let anon_34_0 ==
     ((xs != nullValue() ? equals(xs, nullValue()) : boolToRef(false))) in
-    (let anon_37_0 ==
-      ((!boolFromRef(anon_36_0) ?
+    (let anon_35_0 ==
+      ((!boolFromRef(anon_34_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_35_0 ==
-        ((boolFromRef(anon_36_0) ? boolToRef(true) : anon_37_0)) in
-        (let anon_38_0 ==
-          ((boolFromRef(anon_35_0) ? ys : null)) in
-          (let anon_39_0 ==
-            ((!boolFromRef(anon_35_0) ?
+      (let anon_33_0 ==
+        ((boolFromRef(anon_34_0) ? boolToRef(true) : anon_35_0)) in
+        (let anon_36_0 ==
+          ((boolFromRef(anon_33_0) ? ys : null)) in
+          (let anon_37_0 ==
+            ((!boolFromRef(anon_33_0) ?
               con(KVListFromRef(xs).af_a_KVList_key, KVListFromRef(xs).af_a_KVList_value,
               appendKV(KVListFromRef(xs).af_a_KVList_tail, ys)) :
               null)) in
-            (let anon_34_0 ==
-              ((boolFromRef(anon_35_0) ? anon_38_0 : anon_39_0)) in
-              anon_34_0))))))
+            (let anon_32_0 ==
+              ((boolFromRef(anon_33_0) ? anon_36_0 : anon_37_0)) in
+              anon_32_0))))))
 }
 
 function con(key: Ref, value: Ref, tail: Ref): Ref
@@ -4274,24 +3874,16 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_22_0 ==
+  (let anon_21_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_23_0 ==
-      ((!boolFromRef(anon_22_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_21_0 ==
-        ((boolFromRef(anon_22_0) ? boolToRef(true) : anon_23_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_21_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_21_0))
 }
 
 function kvAllGt(xs: Ref, b: Ref): Ref
@@ -4329,58 +3921,58 @@ function sortedInsert(xs: Ref, k: Ref, par_v: Ref): Ref
   requires isSubtype(typeOf(par_v), intType())
   ensures isSubtype(typeOf(result), nullable(KVList()))
 {
-  (let anon_26_0 ==
+  (let anon_24_0 ==
     ((xs != nullValue() ? equals(xs, nullValue()) : boolToRef(false))) in
-    (let anon_27_0 ==
-      ((!boolFromRef(anon_26_0) ?
+    (let anon_25_0 ==
+      ((!boolFromRef(anon_24_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_25_0 ==
-        ((boolFromRef(anon_26_0) ? boolToRef(true) : anon_27_0)) in
-        (let anon_28_0 ==
-          ((boolFromRef(anon_25_0) ? con(k, par_v, nullValue()) : null)) in
-          (let anon_30_0 ==
-            ((!boolFromRef(anon_25_0) &&
+      (let anon_23_0 ==
+        ((boolFromRef(anon_24_0) ? boolToRef(true) : anon_25_0)) in
+        (let anon_26_0 ==
+          ((boolFromRef(anon_23_0) ? con(k, par_v, nullValue()) : null)) in
+          (let anon_28_0 ==
+            ((!boolFromRef(anon_23_0) &&
             intFromRef(k) < intFromRef(KVListFromRef(xs).af_a_KVList_key) ?
               con(k, par_v, xs) :
               null)) in
-            (let anon_32_0 ==
-              ((!boolFromRef(anon_25_0) &&
+            (let anon_30_0 ==
+              ((!boolFromRef(anon_23_0) &&
               !(intFromRef(k) <
               intFromRef(KVListFromRef(xs).af_a_KVList_key)) &&
               intFromRef(k) > intFromRef(KVListFromRef(xs).af_a_KVList_key) ?
                 con(KVListFromRef(xs).af_a_KVList_key, KVListFromRef(xs).af_a_KVList_value,
                 sortedInsert(KVListFromRef(xs).af_a_KVList_tail, k, par_v)) :
                 null)) in
-              (let anon_33_0 ==
-                ((!boolFromRef(anon_25_0) &&
+              (let anon_31_0 ==
+                ((!boolFromRef(anon_23_0) &&
                 !(intFromRef(k) <
                 intFromRef(KVListFromRef(xs).af_a_KVList_key)) &&
                 !(intFromRef(k) >
                 intFromRef(KVListFromRef(xs).af_a_KVList_key)) ?
                   con(k, par_v, KVListFromRef(xs).af_a_KVList_tail) :
                   null)) in
-                (let anon_31_0 ==
-                  ((!boolFromRef(anon_25_0) &&
+                (let anon_29_0 ==
+                  ((!boolFromRef(anon_23_0) &&
                   !(intFromRef(k) <
                   intFromRef(KVListFromRef(xs).af_a_KVList_key)) ?
                     (intFromRef(k) >
                     intFromRef(KVListFromRef(xs).af_a_KVList_key) ?
-                      anon_32_0 :
-                      anon_33_0) :
+                      anon_30_0 :
+                      anon_31_0) :
                     null)) in
-                  (let anon_29_0 ==
-                    ((!boolFromRef(anon_25_0) ?
+                  (let anon_27_0 ==
+                    ((!boolFromRef(anon_23_0) ?
                       (intFromRef(k) <
                       intFromRef(KVListFromRef(xs).af_a_KVList_key) ?
-                        anon_30_0 :
-                        anon_31_0) :
+                        anon_28_0 :
+                        anon_29_0) :
                       null)) in
-                    (let anon_24_0 ==
-                      ((boolFromRef(anon_25_0) ? anon_28_0 : anon_29_0)) in
-                      anon_24_0))))))))))
+                    (let anon_22_0 ==
+                      ((boolFromRef(anon_23_0) ? anon_26_0 : anon_27_0)) in
+                      anon_22_0))))))))))
 }
 
 method kvlist_refl(xs: Ref) returns (ret_4: Ref)
@@ -4501,26 +4093,26 @@ function appendKV(xs: Ref, ys: Ref): Ref
   requires isSubtype(typeOf(ys), nullable(KVList()))
   ensures isSubtype(typeOf(result), nullable(KVList()))
 {
-  (let anon_33_0 ==
+  (let anon_31_0 ==
     ((xs != nullValue() ? equals(xs, nullValue()) : boolToRef(false))) in
-    (let anon_34_0 ==
-      ((!boolFromRef(anon_33_0) ?
+    (let anon_32_0 ==
+      ((!boolFromRef(anon_31_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_32_0 ==
-        ((boolFromRef(anon_33_0) ? boolToRef(true) : anon_34_0)) in
-        (let anon_35_0 ==
-          ((boolFromRef(anon_32_0) ? ys : null)) in
-          (let anon_36_0 ==
-            ((!boolFromRef(anon_32_0) ?
+      (let anon_30_0 ==
+        ((boolFromRef(anon_31_0) ? boolToRef(true) : anon_32_0)) in
+        (let anon_33_0 ==
+          ((boolFromRef(anon_30_0) ? ys : null)) in
+          (let anon_34_0 ==
+            ((!boolFromRef(anon_30_0) ?
               con(KVListFromRef(xs).af_a_KVList_key, KVListFromRef(xs).af_a_KVList_value,
               appendKV(KVListFromRef(xs).af_a_KVList_tail, ys)) :
               null)) in
-            (let anon_31_0 ==
-              ((boolFromRef(anon_32_0) ? anon_35_0 : anon_36_0)) in
-              anon_31_0))))))
+            (let anon_29_0 ==
+              ((boolFromRef(anon_30_0) ? anon_33_0 : anon_34_0)) in
+              anon_29_0))))))
 }
 
 function con(key: Ref, value: Ref, tail: Ref): Ref
@@ -4536,24 +4128,16 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_19_0 ==
+  (let anon_18_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_20_0 ==
-      ((!boolFromRef(anon_19_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_18_0 ==
-        ((boolFromRef(anon_19_0) ? boolToRef(true) : anon_20_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_18_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_18_0))
 }
 
 function kvAllLt(xs: Ref, b: Ref): Ref
@@ -4591,58 +4175,58 @@ function sortedInsert(xs: Ref, k: Ref, par_v: Ref): Ref
   requires isSubtype(typeOf(par_v), intType())
   ensures isSubtype(typeOf(result), nullable(KVList()))
 {
-  (let anon_23_0 ==
+  (let anon_21_0 ==
     ((xs != nullValue() ? equals(xs, nullValue()) : boolToRef(false))) in
-    (let anon_24_0 ==
-      ((!boolFromRef(anon_23_0) ?
+    (let anon_22_0 ==
+      ((!boolFromRef(anon_21_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_22_0 ==
-        ((boolFromRef(anon_23_0) ? boolToRef(true) : anon_24_0)) in
-        (let anon_25_0 ==
-          ((boolFromRef(anon_22_0) ? con(k, par_v, nullValue()) : null)) in
-          (let anon_27_0 ==
-            ((!boolFromRef(anon_22_0) &&
+      (let anon_20_0 ==
+        ((boolFromRef(anon_21_0) ? boolToRef(true) : anon_22_0)) in
+        (let anon_23_0 ==
+          ((boolFromRef(anon_20_0) ? con(k, par_v, nullValue()) : null)) in
+          (let anon_25_0 ==
+            ((!boolFromRef(anon_20_0) &&
             intFromRef(k) < intFromRef(KVListFromRef(xs).af_a_KVList_key) ?
               con(k, par_v, xs) :
               null)) in
-            (let anon_29_0 ==
-              ((!boolFromRef(anon_22_0) &&
+            (let anon_27_0 ==
+              ((!boolFromRef(anon_20_0) &&
               !(intFromRef(k) <
               intFromRef(KVListFromRef(xs).af_a_KVList_key)) &&
               intFromRef(k) > intFromRef(KVListFromRef(xs).af_a_KVList_key) ?
                 con(KVListFromRef(xs).af_a_KVList_key, KVListFromRef(xs).af_a_KVList_value,
                 sortedInsert(KVListFromRef(xs).af_a_KVList_tail, k, par_v)) :
                 null)) in
-              (let anon_30_0 ==
-                ((!boolFromRef(anon_22_0) &&
+              (let anon_28_0 ==
+                ((!boolFromRef(anon_20_0) &&
                 !(intFromRef(k) <
                 intFromRef(KVListFromRef(xs).af_a_KVList_key)) &&
                 !(intFromRef(k) >
                 intFromRef(KVListFromRef(xs).af_a_KVList_key)) ?
                   con(k, par_v, KVListFromRef(xs).af_a_KVList_tail) :
                   null)) in
-                (let anon_28_0 ==
-                  ((!boolFromRef(anon_22_0) &&
+                (let anon_26_0 ==
+                  ((!boolFromRef(anon_20_0) &&
                   !(intFromRef(k) <
                   intFromRef(KVListFromRef(xs).af_a_KVList_key)) ?
                     (intFromRef(k) >
                     intFromRef(KVListFromRef(xs).af_a_KVList_key) ?
-                      anon_29_0 :
-                      anon_30_0) :
+                      anon_27_0 :
+                      anon_28_0) :
                     null)) in
-                  (let anon_26_0 ==
-                    ((!boolFromRef(anon_22_0) ?
+                  (let anon_24_0 ==
+                    ((!boolFromRef(anon_20_0) ?
                       (intFromRef(k) <
                       intFromRef(KVListFromRef(xs).af_a_KVList_key) ?
-                        anon_27_0 :
-                        anon_28_0) :
+                        anon_25_0 :
+                        anon_26_0) :
                       null)) in
-                    (let anon_21_0 ==
-                      ((boolFromRef(anon_22_0) ? anon_25_0 : anon_26_0)) in
-                      anon_21_0))))))))))
+                    (let anon_19_0 ==
+                      ((boolFromRef(anon_20_0) ? anon_23_0 : anon_24_0)) in
+                      anon_19_0))))))))))
 }
 
 method kvlist_refl(xs: Ref) returns (ret_4: Ref)
@@ -4754,24 +4338,16 @@ function KVList_f_equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_148_0 ==
+  (let anon_143_0 ==
     ((KVListFromRef(this).af_a_KVList_tail != nullValue() ?
       KVList_f_equals(KVListFromRef(this).af_a_KVList_tail, KVListFromRef(other).af_a_KVList_tail) :
-      boolToRef(false))) in
-    (let anon_149_0 ==
-      ((!boolFromRef(anon_148_0) ?
-        (KVListFromRef(this).af_a_KVList_tail == nullValue() ?
-          boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_147_0 ==
-        ((boolFromRef(anon_148_0) ? boolToRef(true) : anon_149_0)) in
-        andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
-        andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
-        intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
-        intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_147_0))))
+      boolToRef(KVListFromRef(other).af_a_KVList_tail == nullValue()))) in
+    andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), KVList())),
+    andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_key),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_key) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_key)))), andBools(boolToRef(isSubtype(typeOf(KVListFromRef(other).af_a_KVList_value),
+    intType())), boolToRef(intFromRef(KVListFromRef(this).af_a_KVList_value) ==
+    intFromRef(KVListFromRef(other).af_a_KVList_value)))), anon_143_0))
 }
 
 function PBST_f_equals(this: Ref, other: Ref): Ref
@@ -4779,37 +4355,20 @@ function PBST_f_equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_116_0 ==
+  (let anon_115_0 ==
     ((PBSTFromRef(this).af_a_PBST_left != nullValue() ?
       PBST_f_equals(PBSTFromRef(this).af_a_PBST_left, PBSTFromRef(other).af_a_PBST_left) :
-      boolToRef(false))) in
-    (let anon_117_0 ==
-      ((!boolFromRef(anon_116_0) ?
-        (PBSTFromRef(this).af_a_PBST_left == nullValue() ?
-          boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_115_0 ==
-        ((boolFromRef(anon_116_0) ? boolToRef(true) : anon_117_0)) in
-        (let anon_119_0 ==
-          ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
-            PBST_f_equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
-            boolToRef(false))) in
-          (let anon_120_0 ==
-            ((!boolFromRef(anon_119_0) ?
-              (PBSTFromRef(this).af_a_PBST_right == nullValue() ?
-                boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()) :
-                boolToRef(false)) :
-              null)) in
-            (let anon_118_0 ==
-              ((boolFromRef(anon_119_0) ? boolToRef(true) : anon_120_0)) in
-              andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
-              PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
-              intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
-              intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_115_0),
-              anon_118_0)))))))
+      boolToRef(PBSTFromRef(other).af_a_PBST_left == nullValue()))) in
+    (let anon_116_0 ==
+      ((PBSTFromRef(this).af_a_PBST_right != nullValue() ?
+        PBST_f_equals(PBSTFromRef(this).af_a_PBST_right, PBSTFromRef(other).af_a_PBST_right) :
+        boolToRef(PBSTFromRef(other).af_a_PBST_right == nullValue()))) in
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other),
+      PBST())), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_key),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_key) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_key)))), andBools(boolToRef(isSubtype(typeOf(PBSTFromRef(other).af_a_PBST_value),
+      intType())), boolToRef(intFromRef(PBSTFromRef(this).af_a_PBST_value) ==
+      intFromRef(PBSTFromRef(other).af_a_PBST_value)))), anon_115_0), anon_116_0)))
 }
 
 function allGt(par_t: Ref, b: Ref): Ref
@@ -4817,35 +4376,35 @@ function allGt(par_t: Ref, b: Ref): Ref
   requires isSubtype(typeOf(b), intType())
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_130_0 ==
+  (let anon_126_0 ==
     ((par_t != nullValue() ?
       PBST_f_equals(par_t, nullValue()) :
       boolToRef(false))) in
-    (let anon_131_0 ==
-      ((!boolFromRef(anon_130_0) ?
+    (let anon_127_0 ==
+      ((!boolFromRef(anon_126_0) ?
         (par_t == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_129_0 ==
-        ((boolFromRef(anon_130_0) ? boolToRef(true) : anon_131_0)) in
-        (let anon_132_0 ==
-          ((boolFromRef(anon_129_0) ? boolToRef(true) : null)) in
-          (let anon_134_0 ==
-            ((!boolFromRef(anon_129_0) ?
+      (let anon_125_0 ==
+        ((boolFromRef(anon_126_0) ? boolToRef(true) : anon_127_0)) in
+        (let anon_128_0 ==
+          ((boolFromRef(anon_125_0) ? boolToRef(true) : null)) in
+          (let anon_130_0 ==
+            ((!boolFromRef(anon_125_0) ?
               (intFromRef(PBSTFromRef(par_t).af_a_PBST_key) > intFromRef(b) ?
                 allGt(PBSTFromRef(par_t).af_a_PBST_left, b) :
                 boolToRef(false)) :
               null)) in
-            (let anon_133_0 ==
-              ((!boolFromRef(anon_129_0) ?
-                (boolFromRef(anon_134_0) ?
+            (let anon_129_0 ==
+              ((!boolFromRef(anon_125_0) ?
+                (boolFromRef(anon_130_0) ?
                   allGt(PBSTFromRef(par_t).af_a_PBST_right, b) :
                   boolToRef(false)) :
                 null)) in
-              (let anon_128_0 ==
-                ((boolFromRef(anon_129_0) ? anon_132_0 : anon_133_0)) in
-                anon_128_0)))))))
+              (let anon_124_0 ==
+                ((boolFromRef(anon_125_0) ? anon_128_0 : anon_129_0)) in
+                anon_124_0)))))))
 }
 
 function allLt(par_t: Ref, b: Ref): Ref
@@ -4853,35 +4412,35 @@ function allLt(par_t: Ref, b: Ref): Ref
   requires isSubtype(typeOf(b), intType())
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_123_0 ==
+  (let anon_119_0 ==
     ((par_t != nullValue() ?
       PBST_f_equals(par_t, nullValue()) :
       boolToRef(false))) in
-    (let anon_124_0 ==
-      ((!boolFromRef(anon_123_0) ?
+    (let anon_120_0 ==
+      ((!boolFromRef(anon_119_0) ?
         (par_t == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_122_0 ==
-        ((boolFromRef(anon_123_0) ? boolToRef(true) : anon_124_0)) in
-        (let anon_125_0 ==
-          ((boolFromRef(anon_122_0) ? boolToRef(true) : null)) in
-          (let anon_127_0 ==
-            ((!boolFromRef(anon_122_0) ?
+      (let anon_118_0 ==
+        ((boolFromRef(anon_119_0) ? boolToRef(true) : anon_120_0)) in
+        (let anon_121_0 ==
+          ((boolFromRef(anon_118_0) ? boolToRef(true) : null)) in
+          (let anon_123_0 ==
+            ((!boolFromRef(anon_118_0) ?
               (intFromRef(PBSTFromRef(par_t).af_a_PBST_key) < intFromRef(b) ?
                 allLt(PBSTFromRef(par_t).af_a_PBST_left, b) :
                 boolToRef(false)) :
               null)) in
-            (let anon_126_0 ==
-              ((!boolFromRef(anon_122_0) ?
-                (boolFromRef(anon_127_0) ?
+            (let anon_122_0 ==
+              ((!boolFromRef(anon_118_0) ?
+                (boolFromRef(anon_123_0) ?
                   allLt(PBSTFromRef(par_t).af_a_PBST_right, b) :
                   boolToRef(false)) :
                 null)) in
-              (let anon_121_0 ==
-                ((boolFromRef(anon_122_0) ? anon_125_0 : anon_126_0)) in
-                anon_121_0)))))))
+              (let anon_117_0 ==
+                ((boolFromRef(anon_118_0) ? anon_121_0 : anon_122_0)) in
+                anon_117_0)))))))
 }
 
 function appendKV(xs: Ref, ys: Ref): Ref
@@ -4889,28 +4448,28 @@ function appendKV(xs: Ref, ys: Ref): Ref
   requires isSubtype(typeOf(ys), nullable(KVList()))
   ensures isSubtype(typeOf(result), nullable(KVList()))
 {
-  (let anon_143_0 ==
+  (let anon_139_0 ==
     ((xs != nullValue() ?
       KVList_f_equals(xs, nullValue()) :
       boolToRef(false))) in
-    (let anon_144_0 ==
-      ((!boolFromRef(anon_143_0) ?
+    (let anon_140_0 ==
+      ((!boolFromRef(anon_139_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_142_0 ==
-        ((boolFromRef(anon_143_0) ? boolToRef(true) : anon_144_0)) in
-        (let anon_145_0 ==
-          ((boolFromRef(anon_142_0) ? ys : null)) in
-          (let anon_146_0 ==
-            ((!boolFromRef(anon_142_0) ?
+      (let anon_138_0 ==
+        ((boolFromRef(anon_139_0) ? boolToRef(true) : anon_140_0)) in
+        (let anon_141_0 ==
+          ((boolFromRef(anon_138_0) ? ys : null)) in
+          (let anon_142_0 ==
+            ((!boolFromRef(anon_138_0) ?
               con_KVList(KVListFromRef(xs).af_a_KVList_key, KVListFromRef(xs).af_a_KVList_value,
               appendKV(KVListFromRef(xs).af_a_KVList_tail, ys)) :
               null)) in
-            (let anon_141_0 ==
-              ((boolFromRef(anon_142_0) ? anon_145_0 : anon_146_0)) in
-              anon_141_0))))))
+            (let anon_137_0 ==
+              ((boolFromRef(anon_138_0) ? anon_141_0 : anon_142_0)) in
+              anon_137_0))))))
 }
 
 function con_KVList(key: Ref, value: Ref, tail: Ref): Ref
@@ -4934,28 +4493,28 @@ function inOrder(par_t: Ref): Ref
   requires isSubtype(typeOf(par_t), nullable(PBST()))
   ensures isSubtype(typeOf(result), nullable(KVList()))
 {
-  (let anon_137_0 ==
+  (let anon_133_0 ==
     ((par_t != nullValue() ?
       PBST_f_equals(par_t, nullValue()) :
       boolToRef(false))) in
-    (let anon_138_0 ==
-      ((!boolFromRef(anon_137_0) ?
+    (let anon_134_0 ==
+      ((!boolFromRef(anon_133_0) ?
         (par_t == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_136_0 ==
-        ((boolFromRef(anon_137_0) ? boolToRef(true) : anon_138_0)) in
-        (let anon_139_0 ==
-          ((boolFromRef(anon_136_0) ? nullValue() : null)) in
-          (let anon_140_0 ==
-            ((!boolFromRef(anon_136_0) ?
+      (let anon_132_0 ==
+        ((boolFromRef(anon_133_0) ? boolToRef(true) : anon_134_0)) in
+        (let anon_135_0 ==
+          ((boolFromRef(anon_132_0) ? nullValue() : null)) in
+          (let anon_136_0 ==
+            ((!boolFromRef(anon_132_0) ?
               appendKV(inOrder(PBSTFromRef(par_t).af_a_PBST_left), con_KVList(PBSTFromRef(par_t).af_a_PBST_key,
               PBSTFromRef(par_t).af_a_PBST_value, inOrder(PBSTFromRef(par_t).af_a_PBST_right))) :
               null)) in
-            (let anon_135_0 ==
-              ((boolFromRef(anon_136_0) ? anon_139_0 : anon_140_0)) in
-              anon_135_0))))))
+            (let anon_131_0 ==
+              ((boolFromRef(anon_132_0) ? anon_135_0 : anon_136_0)) in
+              anon_131_0))))))
 }
 
 function insert(par_t: Ref, k: Ref, par_v: Ref): Ref
@@ -4964,30 +4523,30 @@ function insert(par_t: Ref, k: Ref, par_v: Ref): Ref
   requires isSubtype(typeOf(par_v), intType())
   ensures isSubtype(typeOf(result), PBST())
 {
-  (let anon_152_0 ==
+  (let anon_146_0 ==
     ((par_t != nullValue() ?
       PBST_f_equals(par_t, nullValue()) :
       boolToRef(false))) in
-    (let anon_153_0 ==
-      ((!boolFromRef(anon_152_0) ?
+    (let anon_147_0 ==
+      ((!boolFromRef(anon_146_0) ?
         (par_t == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_151_0 ==
-        ((boolFromRef(anon_152_0) ? boolToRef(true) : anon_153_0)) in
-        (let anon_154_0 ==
-          ((boolFromRef(anon_151_0) ?
+      (let anon_145_0 ==
+        ((boolFromRef(anon_146_0) ? boolToRef(true) : anon_147_0)) in
+        (let anon_148_0 ==
+          ((boolFromRef(anon_145_0) ?
             con_PBST(k, par_v, nullValue(), nullValue()) :
             null)) in
-          (let anon_156_0 ==
-            ((!boolFromRef(anon_151_0) &&
+          (let anon_150_0 ==
+            ((!boolFromRef(anon_145_0) &&
             intFromRef(k) < intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
               con_PBST(PBSTFromRef(par_t).af_a_PBST_key, PBSTFromRef(par_t).af_a_PBST_value,
               insert(PBSTFromRef(par_t).af_a_PBST_left, k, par_v), PBSTFromRef(par_t).af_a_PBST_right) :
               null)) in
-            (let anon_158_0 ==
-              ((!boolFromRef(anon_151_0) &&
+            (let anon_152_0 ==
+              ((!boolFromRef(anon_145_0) &&
               !(intFromRef(k) <
               intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) &&
               intFromRef(k) > intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
@@ -4995,33 +4554,33 @@ function insert(par_t: Ref, k: Ref, par_v: Ref): Ref
                 PBSTFromRef(par_t).af_a_PBST_left, insert(PBSTFromRef(par_t).af_a_PBST_right,
                 k, par_v)) :
                 null)) in
-              (let anon_159_0 ==
-                ((!boolFromRef(anon_151_0) &&
+              (let anon_153_0 ==
+                ((!boolFromRef(anon_145_0) &&
                 !(intFromRef(k) <
                 intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) &&
                 !(intFromRef(k) >
                 intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) ?
                   con_PBST(k, par_v, PBSTFromRef(par_t).af_a_PBST_left, PBSTFromRef(par_t).af_a_PBST_right) :
                   null)) in
-                (let anon_157_0 ==
-                  ((!boolFromRef(anon_151_0) &&
+                (let anon_151_0 ==
+                  ((!boolFromRef(anon_145_0) &&
                   !(intFromRef(k) <
                   intFromRef(PBSTFromRef(par_t).af_a_PBST_key)) ?
                     (intFromRef(k) >
                     intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
-                      anon_158_0 :
-                      anon_159_0) :
+                      anon_152_0 :
+                      anon_153_0) :
                     null)) in
-                  (let anon_155_0 ==
-                    ((!boolFromRef(anon_151_0) ?
+                  (let anon_149_0 ==
+                    ((!boolFromRef(anon_145_0) ?
                       (intFromRef(k) <
                       intFromRef(PBSTFromRef(par_t).af_a_PBST_key) ?
-                        anon_156_0 :
-                        anon_157_0) :
+                        anon_150_0 :
+                        anon_151_0) :
                       null)) in
-                    (let anon_150_0 ==
-                      ((boolFromRef(anon_151_0) ? anon_154_0 : anon_155_0)) in
-                      anon_150_0))))))))))
+                    (let anon_144_0 ==
+                      ((boolFromRef(anon_145_0) ? anon_148_0 : anon_149_0)) in
+                      anon_144_0))))))))))
 }
 
 function isBST(par_t: Ref): Ref
@@ -5070,6 +4629,37 @@ function kvAllGt(xs: Ref, b: Ref): Ref
   requires isSubtype(typeOf(b), intType())
   ensures isSubtype(typeOf(result), boolType())
 {
+  (let anon_166_0 ==
+    ((xs != nullValue() ?
+      KVList_f_equals(xs, nullValue()) :
+      boolToRef(false))) in
+    (let anon_167_0 ==
+      ((!boolFromRef(anon_166_0) ?
+        (xs == nullValue() ?
+          boolToRef(nullValue() == nullValue()) :
+          boolToRef(false)) :
+        null)) in
+      (let anon_165_0 ==
+        ((boolFromRef(anon_166_0) ? boolToRef(true) : anon_167_0)) in
+        (let anon_168_0 ==
+          ((boolFromRef(anon_165_0) ? boolToRef(true) : null)) in
+          (let anon_169_0 ==
+            ((!boolFromRef(anon_165_0) ?
+              (intFromRef(KVListFromRef(xs).af_a_KVList_key) >
+              intFromRef(b) ?
+                kvAllGt(KVListFromRef(xs).af_a_KVList_tail, b) :
+                boolToRef(false)) :
+              null)) in
+            (let anon_164_0 ==
+              ((boolFromRef(anon_165_0) ? anon_168_0 : anon_169_0)) in
+              anon_164_0))))))
+}
+
+function kvAllLt(xs: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(xs), nullable(KVList()))
+  requires isSubtype(typeOf(b), intType())
+  ensures isSubtype(typeOf(result), boolType())
+{
   (let anon_172_0 ==
     ((xs != nullValue() ?
       KVList_f_equals(xs, nullValue()) :
@@ -5086,45 +4676,14 @@ function kvAllGt(xs: Ref, b: Ref): Ref
           ((boolFromRef(anon_171_0) ? boolToRef(true) : null)) in
           (let anon_175_0 ==
             ((!boolFromRef(anon_171_0) ?
-              (intFromRef(KVListFromRef(xs).af_a_KVList_key) >
-              intFromRef(b) ?
-                kvAllGt(KVListFromRef(xs).af_a_KVList_tail, b) :
-                boolToRef(false)) :
-              null)) in
-            (let anon_170_0 ==
-              ((boolFromRef(anon_171_0) ? anon_174_0 : anon_175_0)) in
-              anon_170_0))))))
-}
-
-function kvAllLt(xs: Ref, b: Ref): Ref
-  requires isSubtype(typeOf(xs), nullable(KVList()))
-  requires isSubtype(typeOf(b), intType())
-  ensures isSubtype(typeOf(result), boolType())
-{
-  (let anon_178_0 ==
-    ((xs != nullValue() ?
-      KVList_f_equals(xs, nullValue()) :
-      boolToRef(false))) in
-    (let anon_179_0 ==
-      ((!boolFromRef(anon_178_0) ?
-        (xs == nullValue() ?
-          boolToRef(nullValue() == nullValue()) :
-          boolToRef(false)) :
-        null)) in
-      (let anon_177_0 ==
-        ((boolFromRef(anon_178_0) ? boolToRef(true) : anon_179_0)) in
-        (let anon_180_0 ==
-          ((boolFromRef(anon_177_0) ? boolToRef(true) : null)) in
-          (let anon_181_0 ==
-            ((!boolFromRef(anon_177_0) ?
               (intFromRef(KVListFromRef(xs).af_a_KVList_key) <
               intFromRef(b) ?
                 kvAllLt(KVListFromRef(xs).af_a_KVList_tail, b) :
                 boolToRef(false)) :
               null)) in
-            (let anon_176_0 ==
-              ((boolFromRef(anon_177_0) ? anon_180_0 : anon_181_0)) in
-              anon_176_0))))))
+            (let anon_170_0 ==
+              ((boolFromRef(anon_171_0) ? anon_174_0 : anon_175_0)) in
+              anon_170_0))))))
 }
 
 function size(this: Ref): Ref
@@ -5138,62 +4697,62 @@ function sortedInsert(xs: Ref, k: Ref, par_v: Ref): Ref
   requires isSubtype(typeOf(par_v), intType())
   ensures isSubtype(typeOf(result), nullable(KVList()))
 {
-  (let anon_162_0 ==
+  (let anon_156_0 ==
     ((xs != nullValue() ?
       KVList_f_equals(xs, nullValue()) :
       boolToRef(false))) in
-    (let anon_163_0 ==
-      ((!boolFromRef(anon_162_0) ?
+    (let anon_157_0 ==
+      ((!boolFromRef(anon_156_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_161_0 ==
-        ((boolFromRef(anon_162_0) ? boolToRef(true) : anon_163_0)) in
-        (let anon_164_0 ==
-          ((boolFromRef(anon_161_0) ?
+      (let anon_155_0 ==
+        ((boolFromRef(anon_156_0) ? boolToRef(true) : anon_157_0)) in
+        (let anon_158_0 ==
+          ((boolFromRef(anon_155_0) ?
             con_KVList(k, par_v, nullValue()) :
             null)) in
-          (let anon_166_0 ==
-            ((!boolFromRef(anon_161_0) &&
+          (let anon_160_0 ==
+            ((!boolFromRef(anon_155_0) &&
             intFromRef(k) < intFromRef(KVListFromRef(xs).af_a_KVList_key) ?
               con_KVList(k, par_v, xs) :
               null)) in
-            (let anon_168_0 ==
-              ((!boolFromRef(anon_161_0) &&
+            (let anon_162_0 ==
+              ((!boolFromRef(anon_155_0) &&
               !(intFromRef(k) <
               intFromRef(KVListFromRef(xs).af_a_KVList_key)) &&
               intFromRef(k) > intFromRef(KVListFromRef(xs).af_a_KVList_key) ?
                 con_KVList(KVListFromRef(xs).af_a_KVList_key, KVListFromRef(xs).af_a_KVList_value,
                 sortedInsert(KVListFromRef(xs).af_a_KVList_tail, k, par_v)) :
                 null)) in
-              (let anon_169_0 ==
-                ((!boolFromRef(anon_161_0) &&
+              (let anon_163_0 ==
+                ((!boolFromRef(anon_155_0) &&
                 !(intFromRef(k) <
                 intFromRef(KVListFromRef(xs).af_a_KVList_key)) &&
                 !(intFromRef(k) >
                 intFromRef(KVListFromRef(xs).af_a_KVList_key)) ?
                   con_KVList(k, par_v, KVListFromRef(xs).af_a_KVList_tail) :
                   null)) in
-                (let anon_167_0 ==
-                  ((!boolFromRef(anon_161_0) &&
+                (let anon_161_0 ==
+                  ((!boolFromRef(anon_155_0) &&
                   !(intFromRef(k) <
                   intFromRef(KVListFromRef(xs).af_a_KVList_key)) ?
                     (intFromRef(k) >
                     intFromRef(KVListFromRef(xs).af_a_KVList_key) ?
-                      anon_168_0 :
-                      anon_169_0) :
+                      anon_162_0 :
+                      anon_163_0) :
                     null)) in
-                  (let anon_165_0 ==
-                    ((!boolFromRef(anon_161_0) ?
+                  (let anon_159_0 ==
+                    ((!boolFromRef(anon_155_0) ?
                       (intFromRef(k) <
                       intFromRef(KVListFromRef(xs).af_a_KVList_key) ?
-                        anon_166_0 :
-                        anon_167_0) :
+                        anon_160_0 :
+                        anon_161_0) :
                       null)) in
-                    (let anon_160_0 ==
-                      ((boolFromRef(anon_161_0) ? anon_164_0 : anon_165_0)) in
-                      anon_160_0))))))))))
+                    (let anon_154_0 ==
+                      ((boolFromRef(anon_155_0) ? anon_158_0 : anon_159_0)) in
+                      anon_154_0))))))))))
 }
 
 method allGt_inOrder(par_t: Ref, b: Ref) returns (ret_6: Ref)
