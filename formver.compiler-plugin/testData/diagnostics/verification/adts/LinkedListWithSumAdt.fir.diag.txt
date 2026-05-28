@@ -6,20 +6,28 @@ function length(xs: Ref): Ref
   (let anon_0_0 ==
     (xs) in
     (let anon_2_0 ==
-      ((isSubtype(typeOf(anon_0_0), LinkedList()) ? intToRef(0) : null)) in
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+      LinkedListFromRef(anon_0_0).isac_Nil ?
+        intToRef(0) :
+        null)) in
       (let anon_4_0 ==
-        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
-        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Cons) ?
           plusInts(intToRef(1), length(LinkedListFromRef(xs).af_a_LinkedList_tail)) :
           null)) in
         (let anon_3_0 ==
-          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+          LinkedListFromRef(anon_0_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Cons ?
               anon_4_0 :
               unitValue()) :
             null)) in
           (let anon_1_0 ==
-            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Nil ?
               anon_2_0 :
               anon_3_0)) in
             anon_1_0)))))
@@ -39,21 +47,29 @@ function append(xs: Ref, ys: Ref): Ref
   (let anon_0_0 ==
     (xs) in
     (let anon_2_0 ==
-      ((isSubtype(typeOf(anon_0_0), LinkedList()) ? ys : null)) in
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+      LinkedListFromRef(anon_0_0).isac_Nil ?
+        ys :
+        null)) in
       (let anon_4_0 ==
-        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
-        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Cons) ?
           con(LinkedListFromRef(xs).af_a_LinkedList_head, append(LinkedListFromRef(xs).af_a_LinkedList_tail,
           ys)) :
           null)) in
         (let anon_3_0 ==
-          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+          LinkedListFromRef(anon_0_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Cons ?
               anon_4_0 :
               unitValue()) :
             null)) in
           (let anon_1_0 ==
-            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Nil ?
               anon_2_0 :
               anon_3_0)) in
             anon_1_0)))))
@@ -62,11 +78,8 @@ function append(xs: Ref, ys: Ref): Ref
 function con(head: Ref, tail: Ref): Ref
   requires isSubtype(typeOf(head), intType())
   requires isSubtype(typeOf(tail), LinkedList())
-  ensures isSubtype(typeOf(result), LinkedList())
-  ensures intFromRef(LinkedListFromRef(result).af_a_LinkedList_head) ==
-    intFromRef(head)
-  ensures LinkedListFromRef(LinkedListFromRef(result).af_a_LinkedList_tail) ==
-    LinkedListFromRef(tail)
+  ensures isSubtype(typeOf(result), LinkedList()) &&
+    LinkedListFromRef(result).isac_Cons
   ensures LinkedListFromRef(result) == ac_Cons(head, tail)
 
 
@@ -84,21 +97,29 @@ function append(xs: Ref, ys: Ref): Ref
   (let anon_1_0 ==
     (xs) in
     (let anon_7_0 ==
-      ((isSubtype(typeOf(anon_1_0), LinkedList()) ? ys : null)) in
+      ((isSubtype(typeOf(anon_1_0), LinkedList()) &&
+      LinkedListFromRef(anon_1_0).isac_Nil ?
+        ys :
+        null)) in
       (let anon_9_0 ==
-        ((!isSubtype(typeOf(anon_1_0), LinkedList()) &&
-        isSubtype(typeOf(anon_1_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_1_0), LinkedList()) &&
+        LinkedListFromRef(anon_1_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_1_0), LinkedList()) &&
+        LinkedListFromRef(anon_1_0).isac_Cons) ?
           con(LinkedListFromRef(xs).af_a_LinkedList_head, append(LinkedListFromRef(xs).af_a_LinkedList_tail,
           ys)) :
           null)) in
         (let anon_8_0 ==
-          ((!isSubtype(typeOf(anon_1_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_1_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_1_0), LinkedList()) &&
+          LinkedListFromRef(anon_1_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_1_0), LinkedList()) &&
+            LinkedListFromRef(anon_1_0).isac_Cons ?
               anon_9_0 :
               unitValue()) :
             null)) in
           (let anon_6_0 ==
-            ((isSubtype(typeOf(anon_1_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_1_0), LinkedList()) &&
+            LinkedListFromRef(anon_1_0).isac_Nil ?
               anon_7_0 :
               anon_8_0)) in
             anon_6_0)))))
@@ -107,11 +128,8 @@ function append(xs: Ref, ys: Ref): Ref
 function con(head: Ref, tail: Ref): Ref
   requires isSubtype(typeOf(head), intType())
   requires isSubtype(typeOf(tail), LinkedList())
-  ensures isSubtype(typeOf(result), LinkedList())
-  ensures intFromRef(LinkedListFromRef(result).af_a_LinkedList_head) ==
-    intFromRef(head)
-  ensures LinkedListFromRef(LinkedListFromRef(result).af_a_LinkedList_tail) ==
-    LinkedListFromRef(tail)
+  ensures isSubtype(typeOf(result), LinkedList()) &&
+    LinkedListFromRef(result).isac_Cons
   ensures LinkedListFromRef(result) == ac_Cons(head, tail)
 
 
@@ -122,23 +140,29 @@ function reverse(xs: Ref): Ref
   (let anon_0_0 ==
     (xs) in
     (let anon_3_0 ==
-      ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+      LinkedListFromRef(anon_0_0).isac_Nil ?
         LinkedListToRef(ac_Nil()) :
         null)) in
       (let anon_5_0 ==
-        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
-        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Cons) ?
           append(reverse(LinkedListFromRef(xs).af_a_LinkedList_tail), con(LinkedListFromRef(xs).af_a_LinkedList_head,
           LinkedListToRef(ac_Nil()))) :
           null)) in
         (let anon_4_0 ==
-          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+          LinkedListFromRef(anon_0_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Cons ?
               anon_5_0 :
               unitValue()) :
             null)) in
           (let anon_2_0 ==
-            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Nil ?
               anon_3_0 :
               anon_4_0)) in
             anon_2_0)))))
@@ -156,15 +180,19 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_3_0 ==
-    ((!isSubtype(typeOf(this), LinkedList()) ?
-      (isSubtype(typeOf(this), LinkedList()) ?
-        boolToRef(isSubtype(typeOf(anon_0), LinkedList())) :
+    ((!(isSubtype(typeOf(this), LinkedList()) &&
+    LinkedListFromRef(this).isac_Cons) ?
+      (isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Nil ?
+        boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Nil) :
         boolToRef(false)) :
       null)) in
     (let anon_2_0 ==
-      ((isSubtype(typeOf(this), LinkedList()) ?
-        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList())),
-        andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
+      ((isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Cons ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Cons), andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
         intType())), boolToRef(intFromRef(LinkedListFromRef(this).af_a_LinkedList_head) ==
         intFromRef(LinkedListFromRef(anon_0).af_a_LinkedList_head)))), equals(LinkedListFromRef(this).af_a_LinkedList_tail,
         LinkedListFromRef(anon_0).af_a_LinkedList_tail)) :
@@ -179,8 +207,10 @@ method listRefl(xs: Ref) returns (v_ret_0: Ref)
 {
   var anon_0: Ref
   anon_0 := xs
-  if (isSubtype(typeOf(anon_0), LinkedList())) {
-  } elseif (isSubtype(typeOf(anon_0), LinkedList())) {
+  if (isSubtype(typeOf(anon_0), LinkedList()) &&
+  LinkedListFromRef(anon_0).isac_Nil) {
+  } elseif (isSubtype(typeOf(anon_0), LinkedList()) &&
+  LinkedListFromRef(anon_0).isac_Cons) {
     var anon_1: Ref
     anon_1 := listRefl(LinkedListFromRef(xs).af_a_LinkedList_tail)
   }
@@ -200,15 +230,19 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_4_0 ==
-    ((!isSubtype(typeOf(this), LinkedList()) ?
-      (isSubtype(typeOf(this), LinkedList()) ?
-        boolToRef(isSubtype(typeOf(anon_0), LinkedList())) :
+    ((!(isSubtype(typeOf(this), LinkedList()) &&
+    LinkedListFromRef(this).isac_Cons) ?
+      (isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Nil ?
+        boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Nil) :
         boolToRef(false)) :
       null)) in
     (let anon_3_0 ==
-      ((isSubtype(typeOf(this), LinkedList()) ?
-        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList())),
-        andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
+      ((isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Cons ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Cons), andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
         intType())), boolToRef(intFromRef(LinkedListFromRef(this).af_a_LinkedList_head) ==
         intFromRef(LinkedListFromRef(anon_0).af_a_LinkedList_head)))), equals(LinkedListFromRef(this).af_a_LinkedList_tail,
         LinkedListFromRef(anon_0).af_a_LinkedList_tail)) :
@@ -225,12 +259,16 @@ method listSym(a: Ref, b: Ref) returns (v_ret_0: Ref)
 {
   var anon_0: Ref
   anon_0 := a
-  if (isSubtype(typeOf(anon_0), LinkedList())) {
-  } elseif (isSubtype(typeOf(anon_0), LinkedList())) {
+  if (isSubtype(typeOf(anon_0), LinkedList()) &&
+  LinkedListFromRef(anon_0).isac_Nil) {
+  } elseif (isSubtype(typeOf(anon_0), LinkedList()) &&
+  LinkedListFromRef(anon_0).isac_Cons) {
     var anon_1: Ref
     anon_1 := b
-    if (isSubtype(typeOf(anon_1), LinkedList())) {
-    } elseif (isSubtype(typeOf(anon_1), LinkedList())) {
+    if (isSubtype(typeOf(anon_1), LinkedList()) &&
+    LinkedListFromRef(anon_1).isac_Nil) {
+    } elseif (isSubtype(typeOf(anon_1), LinkedList()) &&
+    LinkedListFromRef(anon_1).isac_Cons) {
       var anon_2: Ref
       anon_2 := listSym(LinkedListFromRef(a).af_a_LinkedList_tail, LinkedListFromRef(b).af_a_LinkedList_tail)
     }
@@ -251,15 +289,19 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_5_0 ==
-    ((!isSubtype(typeOf(this), LinkedList()) ?
-      (isSubtype(typeOf(this), LinkedList()) ?
-        boolToRef(isSubtype(typeOf(anon_0), LinkedList())) :
+    ((!(isSubtype(typeOf(this), LinkedList()) &&
+    LinkedListFromRef(this).isac_Cons) ?
+      (isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Nil ?
+        boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Nil) :
         boolToRef(false)) :
       null)) in
     (let anon_4_0 ==
-      ((isSubtype(typeOf(this), LinkedList()) ?
-        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList())),
-        andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
+      ((isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Cons ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Cons), andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
         intType())), boolToRef(intFromRef(LinkedListFromRef(this).af_a_LinkedList_head) ==
         intFromRef(LinkedListFromRef(anon_0).af_a_LinkedList_head)))), equals(LinkedListFromRef(this).af_a_LinkedList_tail,
         LinkedListFromRef(anon_0).af_a_LinkedList_tail)) :
@@ -278,16 +320,22 @@ method listTrans(a: Ref, b: Ref, c: Ref) returns (v_ret_0: Ref)
 {
   var anon_0: Ref
   anon_0 := a
-  if (isSubtype(typeOf(anon_0), LinkedList())) {
-  } elseif (isSubtype(typeOf(anon_0), LinkedList())) {
+  if (isSubtype(typeOf(anon_0), LinkedList()) &&
+  LinkedListFromRef(anon_0).isac_Nil) {
+  } elseif (isSubtype(typeOf(anon_0), LinkedList()) &&
+  LinkedListFromRef(anon_0).isac_Cons) {
     var anon_1: Ref
     anon_1 := b
-    if (isSubtype(typeOf(anon_1), LinkedList())) {
-    } elseif (isSubtype(typeOf(anon_1), LinkedList())) {
+    if (isSubtype(typeOf(anon_1), LinkedList()) &&
+    LinkedListFromRef(anon_1).isac_Nil) {
+    } elseif (isSubtype(typeOf(anon_1), LinkedList()) &&
+    LinkedListFromRef(anon_1).isac_Cons) {
       var anon_2: Ref
       anon_2 := c
-      if (isSubtype(typeOf(anon_2), LinkedList())) {
-      } elseif (isSubtype(typeOf(anon_2), LinkedList())) {
+      if (isSubtype(typeOf(anon_2), LinkedList()) &&
+      LinkedListFromRef(anon_2).isac_Nil) {
+      } elseif (isSubtype(typeOf(anon_2), LinkedList()) &&
+      LinkedListFromRef(anon_2).isac_Cons) {
         var anon_3: Ref
         anon_3 := listTrans(LinkedListFromRef(a).af_a_LinkedList_tail, LinkedListFromRef(b).af_a_LinkedList_tail,
           LinkedListFromRef(c).af_a_LinkedList_tail)
@@ -312,21 +360,29 @@ function append(xs: Ref, ys: Ref): Ref
   (let anon_0_0 ==
     (xs) in
     (let anon_4_0 ==
-      ((isSubtype(typeOf(anon_0_0), LinkedList()) ? ys : null)) in
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+      LinkedListFromRef(anon_0_0).isac_Nil ?
+        ys :
+        null)) in
       (let anon_6_0 ==
-        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
-        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Cons) ?
           con(LinkedListFromRef(xs).af_a_LinkedList_head, append(LinkedListFromRef(xs).af_a_LinkedList_tail,
           ys)) :
           null)) in
         (let anon_5_0 ==
-          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+          LinkedListFromRef(anon_0_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Cons ?
               anon_6_0 :
               unitValue()) :
             null)) in
           (let anon_3_0 ==
-            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Nil ?
               anon_4_0 :
               anon_5_0)) in
             anon_3_0)))))
@@ -335,11 +391,8 @@ function append(xs: Ref, ys: Ref): Ref
 function con(head: Ref, tail: Ref): Ref
   requires isSubtype(typeOf(head), intType())
   requires isSubtype(typeOf(tail), LinkedList())
-  ensures isSubtype(typeOf(result), LinkedList())
-  ensures intFromRef(LinkedListFromRef(result).af_a_LinkedList_head) ==
-    intFromRef(head)
-  ensures LinkedListFromRef(LinkedListFromRef(result).af_a_LinkedList_tail) ==
-    LinkedListFromRef(tail)
+  ensures isSubtype(typeOf(result), LinkedList()) &&
+    LinkedListFromRef(result).isac_Cons
   ensures LinkedListFromRef(result) == ac_Cons(head, tail)
 
 
@@ -349,15 +402,19 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_8_0 ==
-    ((!isSubtype(typeOf(this), LinkedList()) ?
-      (isSubtype(typeOf(this), LinkedList()) ?
-        boolToRef(isSubtype(typeOf(anon_0), LinkedList())) :
+    ((!(isSubtype(typeOf(this), LinkedList()) &&
+    LinkedListFromRef(this).isac_Cons) ?
+      (isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Nil ?
+        boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Nil) :
         boolToRef(false)) :
       null)) in
     (let anon_7_0 ==
-      ((isSubtype(typeOf(this), LinkedList()) ?
-        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList())),
-        andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
+      ((isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Cons ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Cons), andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
         intType())), boolToRef(intFromRef(LinkedListFromRef(this).af_a_LinkedList_head) ==
         intFromRef(LinkedListFromRef(anon_0).af_a_LinkedList_head)))), equals(LinkedListFromRef(this).af_a_LinkedList_tail,
         LinkedListFromRef(anon_0).af_a_LinkedList_tail)) :
@@ -372,8 +429,10 @@ method appendNull(xs: Ref) returns (v_ret_0: Ref)
 {
   var anon_1: Ref
   anon_1 := xs
-  if (isSubtype(typeOf(anon_1), LinkedList())) {
-  } elseif (isSubtype(typeOf(anon_1), LinkedList())) {
+  if (isSubtype(typeOf(anon_1), LinkedList()) &&
+  LinkedListFromRef(anon_1).isac_Nil) {
+  } elseif (isSubtype(typeOf(anon_1), LinkedList()) &&
+  LinkedListFromRef(anon_1).isac_Cons) {
     var anon_2: Ref
     anon_2 := appendNull(LinkedListFromRef(xs).af_a_LinkedList_tail)
   }
@@ -395,21 +454,29 @@ function append(xs: Ref, ys: Ref): Ref
   (let anon_0_0 ==
     (xs) in
     (let anon_5_0 ==
-      ((isSubtype(typeOf(anon_0_0), LinkedList()) ? ys : null)) in
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+      LinkedListFromRef(anon_0_0).isac_Nil ?
+        ys :
+        null)) in
       (let anon_7_0 ==
-        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
-        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Cons) ?
           con(LinkedListFromRef(xs).af_a_LinkedList_head, append(LinkedListFromRef(xs).af_a_LinkedList_tail,
           ys)) :
           null)) in
         (let anon_6_0 ==
-          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+          LinkedListFromRef(anon_0_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Cons ?
               anon_7_0 :
               unitValue()) :
             null)) in
           (let anon_4_0 ==
-            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Nil ?
               anon_5_0 :
               anon_6_0)) in
             anon_4_0)))))
@@ -418,11 +485,8 @@ function append(xs: Ref, ys: Ref): Ref
 function con(head: Ref, tail: Ref): Ref
   requires isSubtype(typeOf(head), intType())
   requires isSubtype(typeOf(tail), LinkedList())
-  ensures isSubtype(typeOf(result), LinkedList())
-  ensures intFromRef(LinkedListFromRef(result).af_a_LinkedList_head) ==
-    intFromRef(head)
-  ensures LinkedListFromRef(LinkedListFromRef(result).af_a_LinkedList_tail) ==
-    LinkedListFromRef(tail)
+  ensures isSubtype(typeOf(result), LinkedList()) &&
+    LinkedListFromRef(result).isac_Cons
   ensures LinkedListFromRef(result) == ac_Cons(head, tail)
 
 
@@ -432,15 +496,19 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_9_0 ==
-    ((!isSubtype(typeOf(this), LinkedList()) ?
-      (isSubtype(typeOf(this), LinkedList()) ?
-        boolToRef(isSubtype(typeOf(anon_0), LinkedList())) :
+    ((!(isSubtype(typeOf(this), LinkedList()) &&
+    LinkedListFromRef(this).isac_Cons) ?
+      (isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Nil ?
+        boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Nil) :
         boolToRef(false)) :
       null)) in
     (let anon_8_0 ==
-      ((isSubtype(typeOf(this), LinkedList()) ?
-        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList())),
-        andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
+      ((isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Cons ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Cons), andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
         intType())), boolToRef(intFromRef(LinkedListFromRef(this).af_a_LinkedList_head) ==
         intFromRef(LinkedListFromRef(anon_0).af_a_LinkedList_head)))), equals(LinkedListFromRef(this).af_a_LinkedList_tail,
         LinkedListFromRef(anon_0).af_a_LinkedList_tail)) :
@@ -458,10 +526,12 @@ method appendAssoc(xs: Ref, ys: Ref, zs: Ref) returns (v_ret_0: Ref)
 {
   var anon_1: Ref
   anon_1 := xs
-  if (isSubtype(typeOf(anon_1), LinkedList())) {
+  if (isSubtype(typeOf(anon_1), LinkedList()) &&
+  LinkedListFromRef(anon_1).isac_Nil) {
     var anon_2: Ref
     anon_2 := listRefl(append(ys, zs))
-  } elseif (isSubtype(typeOf(anon_1), LinkedList())) {
+  } elseif (isSubtype(typeOf(anon_1), LinkedList()) &&
+  LinkedListFromRef(anon_1).isac_Cons) {
     var anon_3: Ref
     anon_3 := appendAssoc(LinkedListFromRef(xs).af_a_LinkedList_tail, ys, zs)
   }
@@ -489,21 +559,29 @@ function append(xs: Ref, ys: Ref): Ref
   (let anon_0_0 ==
     (xs) in
     (let anon_8_0 ==
-      ((isSubtype(typeOf(anon_0_0), LinkedList()) ? ys : null)) in
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+      LinkedListFromRef(anon_0_0).isac_Nil ?
+        ys :
+        null)) in
       (let anon_10_0 ==
-        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
-        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Cons) ?
           con(LinkedListFromRef(xs).af_a_LinkedList_head, append(LinkedListFromRef(xs).af_a_LinkedList_tail,
           ys)) :
           null)) in
         (let anon_9_0 ==
-          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+          LinkedListFromRef(anon_0_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Cons ?
               anon_10_0 :
               unitValue()) :
             null)) in
           (let anon_7_0 ==
-            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Nil ?
               anon_8_0 :
               anon_9_0)) in
             anon_7_0)))))
@@ -512,11 +590,8 @@ function append(xs: Ref, ys: Ref): Ref
 function con(head: Ref, tail: Ref): Ref
   requires isSubtype(typeOf(head), intType())
   requires isSubtype(typeOf(tail), LinkedList())
-  ensures isSubtype(typeOf(result), LinkedList())
-  ensures intFromRef(LinkedListFromRef(result).af_a_LinkedList_head) ==
-    intFromRef(head)
-  ensures LinkedListFromRef(LinkedListFromRef(result).af_a_LinkedList_tail) ==
-    LinkedListFromRef(tail)
+  ensures isSubtype(typeOf(result), LinkedList()) &&
+    LinkedListFromRef(result).isac_Cons
   ensures LinkedListFromRef(result) == ac_Cons(head, tail)
 
 
@@ -526,15 +601,19 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_6_0 ==
-    ((!isSubtype(typeOf(this), LinkedList()) ?
-      (isSubtype(typeOf(this), LinkedList()) ?
-        boolToRef(isSubtype(typeOf(anon_0), LinkedList())) :
+    ((!(isSubtype(typeOf(this), LinkedList()) &&
+    LinkedListFromRef(this).isac_Cons) ?
+      (isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Nil ?
+        boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Nil) :
         boolToRef(false)) :
       null)) in
     (let anon_5_0 ==
-      ((isSubtype(typeOf(this), LinkedList()) ?
-        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList())),
-        andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
+      ((isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Cons ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Cons), andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
         intType())), boolToRef(intFromRef(LinkedListFromRef(this).af_a_LinkedList_head) ==
         intFromRef(LinkedListFromRef(anon_0).af_a_LinkedList_head)))), equals(LinkedListFromRef(this).af_a_LinkedList_tail,
         LinkedListFromRef(anon_0).af_a_LinkedList_tail)) :
@@ -552,14 +631,18 @@ method appendCongL(a: Ref, b: Ref, c: Ref) returns (v_ret_0: Ref)
 {
   var anon_1: Ref
   anon_1 := a
-  if (isSubtype(typeOf(anon_1), LinkedList())) {
+  if (isSubtype(typeOf(anon_1), LinkedList()) &&
+  LinkedListFromRef(anon_1).isac_Nil) {
     var anon_3: Ref
     anon_3 := listRefl(c)
-  } elseif (isSubtype(typeOf(anon_1), LinkedList())) {
+  } elseif (isSubtype(typeOf(anon_1), LinkedList()) &&
+  LinkedListFromRef(anon_1).isac_Cons) {
     var anon_2: Ref
     anon_2 := b
-    if (isSubtype(typeOf(anon_2), LinkedList())) {
-    } elseif (isSubtype(typeOf(anon_2), LinkedList())) {
+    if (isSubtype(typeOf(anon_2), LinkedList()) &&
+    LinkedListFromRef(anon_2).isac_Nil) {
+    } elseif (isSubtype(typeOf(anon_2), LinkedList()) &&
+    LinkedListFromRef(anon_2).isac_Cons) {
       var anon_4: Ref
       anon_4 := appendCongL(LinkedListFromRef(a).af_a_LinkedList_tail, LinkedListFromRef(b).af_a_LinkedList_tail,
         c)
@@ -589,21 +672,29 @@ function append(xs: Ref, ys: Ref): Ref
   (let anon_0_0 ==
     (xs) in
     (let anon_7_0 ==
-      ((isSubtype(typeOf(anon_0_0), LinkedList()) ? ys : null)) in
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+      LinkedListFromRef(anon_0_0).isac_Nil ?
+        ys :
+        null)) in
       (let anon_9_0 ==
-        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
-        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Cons) ?
           con(LinkedListFromRef(xs).af_a_LinkedList_head, append(LinkedListFromRef(xs).af_a_LinkedList_tail,
           ys)) :
           null)) in
         (let anon_8_0 ==
-          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+          LinkedListFromRef(anon_0_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Cons ?
               anon_9_0 :
               unitValue()) :
             null)) in
           (let anon_6_0 ==
-            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Nil ?
               anon_7_0 :
               anon_8_0)) in
             anon_6_0)))))
@@ -612,11 +703,8 @@ function append(xs: Ref, ys: Ref): Ref
 function con(head: Ref, tail: Ref): Ref
   requires isSubtype(typeOf(head), intType())
   requires isSubtype(typeOf(tail), LinkedList())
-  ensures isSubtype(typeOf(result), LinkedList())
-  ensures intFromRef(LinkedListFromRef(result).af_a_LinkedList_head) ==
-    intFromRef(head)
-  ensures LinkedListFromRef(LinkedListFromRef(result).af_a_LinkedList_tail) ==
-    LinkedListFromRef(tail)
+  ensures isSubtype(typeOf(result), LinkedList()) &&
+    LinkedListFromRef(result).isac_Cons
   ensures LinkedListFromRef(result) == ac_Cons(head, tail)
 
 
@@ -626,15 +714,19 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_5_0 ==
-    ((!isSubtype(typeOf(this), LinkedList()) ?
-      (isSubtype(typeOf(this), LinkedList()) ?
-        boolToRef(isSubtype(typeOf(anon_0), LinkedList())) :
+    ((!(isSubtype(typeOf(this), LinkedList()) &&
+    LinkedListFromRef(this).isac_Cons) ?
+      (isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Nil ?
+        boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Nil) :
         boolToRef(false)) :
       null)) in
     (let anon_4_0 ==
-      ((isSubtype(typeOf(this), LinkedList()) ?
-        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList())),
-        andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
+      ((isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Cons ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Cons), andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
         intType())), boolToRef(intFromRef(LinkedListFromRef(this).af_a_LinkedList_head) ==
         intFromRef(LinkedListFromRef(anon_0).af_a_LinkedList_head)))), equals(LinkedListFromRef(this).af_a_LinkedList_tail,
         LinkedListFromRef(anon_0).af_a_LinkedList_tail)) :
@@ -652,10 +744,12 @@ method appendCongR(a: Ref, b: Ref, c: Ref) returns (v_ret_0: Ref)
 {
   var anon_1: Ref
   anon_1 := a
-  if (isSubtype(typeOf(anon_1), LinkedList())) {
+  if (isSubtype(typeOf(anon_1), LinkedList()) &&
+  LinkedListFromRef(anon_1).isac_Nil) {
     var anon_2: Ref
     anon_2 := listRefl(b)
-  } elseif (isSubtype(typeOf(anon_1), LinkedList())) {
+  } elseif (isSubtype(typeOf(anon_1), LinkedList()) &&
+  LinkedListFromRef(anon_1).isac_Cons) {
     var anon_3: Ref
     anon_3 := appendCongR(LinkedListFromRef(a).af_a_LinkedList_tail, b, c)
   }
@@ -683,21 +777,29 @@ function append(xs: Ref, ys: Ref): Ref
   (let anon_1_0 ==
     (xs) in
     (let anon_16_0 ==
-      ((isSubtype(typeOf(anon_1_0), LinkedList()) ? ys : null)) in
+      ((isSubtype(typeOf(anon_1_0), LinkedList()) &&
+      LinkedListFromRef(anon_1_0).isac_Nil ?
+        ys :
+        null)) in
       (let anon_18_0 ==
-        ((!isSubtype(typeOf(anon_1_0), LinkedList()) &&
-        isSubtype(typeOf(anon_1_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_1_0), LinkedList()) &&
+        LinkedListFromRef(anon_1_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_1_0), LinkedList()) &&
+        LinkedListFromRef(anon_1_0).isac_Cons) ?
           con(LinkedListFromRef(xs).af_a_LinkedList_head, append(LinkedListFromRef(xs).af_a_LinkedList_tail,
           ys)) :
           null)) in
         (let anon_17_0 ==
-          ((!isSubtype(typeOf(anon_1_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_1_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_1_0), LinkedList()) &&
+          LinkedListFromRef(anon_1_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_1_0), LinkedList()) &&
+            LinkedListFromRef(anon_1_0).isac_Cons ?
               anon_18_0 :
               unitValue()) :
             null)) in
           (let anon_15_0 ==
-            ((isSubtype(typeOf(anon_1_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_1_0), LinkedList()) &&
+            LinkedListFromRef(anon_1_0).isac_Nil ?
               anon_16_0 :
               anon_17_0)) in
             anon_15_0)))))
@@ -706,11 +808,8 @@ function append(xs: Ref, ys: Ref): Ref
 function con(head: Ref, tail: Ref): Ref
   requires isSubtype(typeOf(head), intType())
   requires isSubtype(typeOf(tail), LinkedList())
-  ensures isSubtype(typeOf(result), LinkedList())
-  ensures intFromRef(LinkedListFromRef(result).af_a_LinkedList_head) ==
-    intFromRef(head)
-  ensures LinkedListFromRef(LinkedListFromRef(result).af_a_LinkedList_tail) ==
-    LinkedListFromRef(tail)
+  ensures isSubtype(typeOf(result), LinkedList()) &&
+    LinkedListFromRef(result).isac_Cons
   ensures LinkedListFromRef(result) == ac_Cons(head, tail)
 
 
@@ -720,15 +819,19 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_20_0 ==
-    ((!isSubtype(typeOf(this), LinkedList()) ?
-      (isSubtype(typeOf(this), LinkedList()) ?
-        boolToRef(isSubtype(typeOf(anon_0), LinkedList())) :
+    ((!(isSubtype(typeOf(this), LinkedList()) &&
+    LinkedListFromRef(this).isac_Cons) ?
+      (isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Nil ?
+        boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Nil) :
         boolToRef(false)) :
       null)) in
     (let anon_19_0 ==
-      ((isSubtype(typeOf(this), LinkedList()) ?
-        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList())),
-        andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
+      ((isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Cons ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Cons), andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
         intType())), boolToRef(intFromRef(LinkedListFromRef(this).af_a_LinkedList_head) ==
         intFromRef(LinkedListFromRef(anon_0).af_a_LinkedList_head)))), equals(LinkedListFromRef(this).af_a_LinkedList_tail,
         LinkedListFromRef(anon_0).af_a_LinkedList_tail)) :
@@ -743,23 +846,29 @@ function reverse(xs: Ref): Ref
   (let anon_0_0 ==
     (xs) in
     (let anon_12_0 ==
-      ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+      LinkedListFromRef(anon_0_0).isac_Nil ?
         LinkedListToRef(ac_Nil()) :
         null)) in
       (let anon_14_0 ==
-        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
-        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Cons) ?
           append(reverse(LinkedListFromRef(xs).af_a_LinkedList_tail), con(LinkedListFromRef(xs).af_a_LinkedList_head,
           LinkedListToRef(ac_Nil()))) :
           null)) in
         (let anon_13_0 ==
-          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+          LinkedListFromRef(anon_0_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Cons ?
               anon_14_0 :
               unitValue()) :
             null)) in
           (let anon_11_0 ==
-            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Nil ?
               anon_12_0 :
               anon_13_0)) in
             anon_11_0)))))
@@ -821,12 +930,14 @@ method reverseAppend(xs: Ref, ys: Ref) returns (v_ret_0: Ref)
 {
   var anon_2: Ref
   anon_2 := xs
-  if (isSubtype(typeOf(anon_2), LinkedList())) {
+  if (isSubtype(typeOf(anon_2), LinkedList()) &&
+  LinkedListFromRef(anon_2).isac_Nil) {
     var anon_3: Ref
     var anon_4: Ref
     anon_3 := appendNull(reverse(ys))
     anon_4 := listSym(append(reverse(ys), LinkedListToRef(ac_Nil())), reverse(ys))
-  } elseif (isSubtype(typeOf(anon_2), LinkedList())) {
+  } elseif (isSubtype(typeOf(anon_2), LinkedList()) &&
+  LinkedListFromRef(anon_2).isac_Cons) {
     var anon_5: Ref
     var anon_6: Ref
     var anon_7: Ref
@@ -867,21 +978,29 @@ function append(xs: Ref, ys: Ref): Ref
   (let anon_0_0 ==
     (xs) in
     (let anon_3_0 ==
-      ((isSubtype(typeOf(anon_0_0), LinkedList()) ? ys : null)) in
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+      LinkedListFromRef(anon_0_0).isac_Nil ?
+        ys :
+        null)) in
       (let anon_5_0 ==
-        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
-        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Cons) ?
           con(LinkedListFromRef(xs).af_a_LinkedList_head, append(LinkedListFromRef(xs).af_a_LinkedList_tail,
           ys)) :
           null)) in
         (let anon_4_0 ==
-          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+          LinkedListFromRef(anon_0_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Cons ?
               anon_5_0 :
               unitValue()) :
             null)) in
           (let anon_2_0 ==
-            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Nil ?
               anon_3_0 :
               anon_4_0)) in
             anon_2_0)))))
@@ -890,11 +1009,8 @@ function append(xs: Ref, ys: Ref): Ref
 function con(head: Ref, tail: Ref): Ref
   requires isSubtype(typeOf(head), intType())
   requires isSubtype(typeOf(tail), LinkedList())
-  ensures isSubtype(typeOf(result), LinkedList())
-  ensures intFromRef(LinkedListFromRef(result).af_a_LinkedList_head) ==
-    intFromRef(head)
-  ensures LinkedListFromRef(LinkedListFromRef(result).af_a_LinkedList_tail) ==
-    LinkedListFromRef(tail)
+  ensures isSubtype(typeOf(result), LinkedList()) &&
+    LinkedListFromRef(result).isac_Cons
   ensures LinkedListFromRef(result) == ac_Cons(head, tail)
 
 
@@ -904,15 +1020,19 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_7_0 ==
-    ((!isSubtype(typeOf(this), LinkedList()) ?
-      (isSubtype(typeOf(this), LinkedList()) ?
-        boolToRef(isSubtype(typeOf(anon_0), LinkedList())) :
+    ((!(isSubtype(typeOf(this), LinkedList()) &&
+    LinkedListFromRef(this).isac_Cons) ?
+      (isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Nil ?
+        boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Nil) :
         boolToRef(false)) :
       null)) in
     (let anon_6_0 ==
-      ((isSubtype(typeOf(this), LinkedList()) ?
-        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList())),
-        andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
+      ((isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Cons ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Cons), andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
         intType())), boolToRef(intFromRef(LinkedListFromRef(this).af_a_LinkedList_head) ==
         intFromRef(LinkedListFromRef(anon_0).af_a_LinkedList_head)))), equals(LinkedListFromRef(this).af_a_LinkedList_tail,
         LinkedListFromRef(anon_0).af_a_LinkedList_tail)) :
@@ -953,21 +1073,29 @@ function append(xs: Ref, ys: Ref): Ref
   (let anon_1_0 ==
     (xs) in
     (let anon_22_0 ==
-      ((isSubtype(typeOf(anon_1_0), LinkedList()) ? ys : null)) in
+      ((isSubtype(typeOf(anon_1_0), LinkedList()) &&
+      LinkedListFromRef(anon_1_0).isac_Nil ?
+        ys :
+        null)) in
       (let anon_24_0 ==
-        ((!isSubtype(typeOf(anon_1_0), LinkedList()) &&
-        isSubtype(typeOf(anon_1_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_1_0), LinkedList()) &&
+        LinkedListFromRef(anon_1_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_1_0), LinkedList()) &&
+        LinkedListFromRef(anon_1_0).isac_Cons) ?
           con(LinkedListFromRef(xs).af_a_LinkedList_head, append(LinkedListFromRef(xs).af_a_LinkedList_tail,
           ys)) :
           null)) in
         (let anon_23_0 ==
-          ((!isSubtype(typeOf(anon_1_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_1_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_1_0), LinkedList()) &&
+          LinkedListFromRef(anon_1_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_1_0), LinkedList()) &&
+            LinkedListFromRef(anon_1_0).isac_Cons ?
               anon_24_0 :
               unitValue()) :
             null)) in
           (let anon_21_0 ==
-            ((isSubtype(typeOf(anon_1_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_1_0), LinkedList()) &&
+            LinkedListFromRef(anon_1_0).isac_Nil ?
               anon_22_0 :
               anon_23_0)) in
             anon_21_0)))))
@@ -976,11 +1104,8 @@ function append(xs: Ref, ys: Ref): Ref
 function con(head: Ref, tail: Ref): Ref
   requires isSubtype(typeOf(head), intType())
   requires isSubtype(typeOf(tail), LinkedList())
-  ensures isSubtype(typeOf(result), LinkedList())
-  ensures intFromRef(LinkedListFromRef(result).af_a_LinkedList_head) ==
-    intFromRef(head)
-  ensures LinkedListFromRef(LinkedListFromRef(result).af_a_LinkedList_tail) ==
-    LinkedListFromRef(tail)
+  ensures isSubtype(typeOf(result), LinkedList()) &&
+    LinkedListFromRef(result).isac_Cons
   ensures LinkedListFromRef(result) == ac_Cons(head, tail)
 
 
@@ -990,15 +1115,19 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_26_0 ==
-    ((!isSubtype(typeOf(this), LinkedList()) ?
-      (isSubtype(typeOf(this), LinkedList()) ?
-        boolToRef(isSubtype(typeOf(anon_0), LinkedList())) :
+    ((!(isSubtype(typeOf(this), LinkedList()) &&
+    LinkedListFromRef(this).isac_Cons) ?
+      (isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Nil ?
+        boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Nil) :
         boolToRef(false)) :
       null)) in
     (let anon_25_0 ==
-      ((isSubtype(typeOf(this), LinkedList()) ?
-        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList())),
-        andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
+      ((isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Cons ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Cons), andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
         intType())), boolToRef(intFromRef(LinkedListFromRef(this).af_a_LinkedList_head) ==
         intFromRef(LinkedListFromRef(anon_0).af_a_LinkedList_head)))), equals(LinkedListFromRef(this).af_a_LinkedList_tail,
         LinkedListFromRef(anon_0).af_a_LinkedList_tail)) :
@@ -1013,23 +1142,29 @@ function reverse(xs: Ref): Ref
   (let anon_0_0 ==
     (xs) in
     (let anon_18_0 ==
-      ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+      LinkedListFromRef(anon_0_0).isac_Nil ?
         LinkedListToRef(ac_Nil()) :
         null)) in
       (let anon_20_0 ==
-        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
-        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Cons) ?
           append(reverse(LinkedListFromRef(xs).af_a_LinkedList_tail), con(LinkedListFromRef(xs).af_a_LinkedList_head,
           LinkedListToRef(ac_Nil()))) :
           null)) in
         (let anon_19_0 ==
-          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+          LinkedListFromRef(anon_0_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Cons ?
               anon_20_0 :
               unitValue()) :
             null)) in
           (let anon_17_0 ==
-            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Nil ?
               anon_18_0 :
               anon_19_0)) in
             anon_17_0)))))
@@ -1096,8 +1231,10 @@ method reverseReverseIsId(xs: Ref) returns (v_ret_0: Ref)
 {
   var anon_2: Ref
   anon_2 := xs
-  if (isSubtype(typeOf(anon_2), LinkedList())) {
-  } elseif (isSubtype(typeOf(anon_2), LinkedList())) {
+  if (isSubtype(typeOf(anon_2), LinkedList()) &&
+  LinkedListFromRef(anon_2).isac_Nil) {
+  } elseif (isSubtype(typeOf(anon_2), LinkedList()) &&
+  LinkedListFromRef(anon_2).isac_Cons) {
     var h: Ref
     var anon_3: Ref
     var anon_4: Ref
@@ -1167,21 +1304,29 @@ function append(xs: Ref, ys: Ref): Ref
   (let anon_0_0 ==
     (xs) in
     (let anon_3_0 ==
-      ((isSubtype(typeOf(anon_0_0), LinkedList()) ? ys : null)) in
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+      LinkedListFromRef(anon_0_0).isac_Nil ?
+        ys :
+        null)) in
       (let anon_5_0 ==
-        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
-        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Cons) ?
           con(LinkedListFromRef(xs).af_a_LinkedList_head, append(LinkedListFromRef(xs).af_a_LinkedList_tail,
           ys)) :
           null)) in
         (let anon_4_0 ==
-          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+          LinkedListFromRef(anon_0_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Cons ?
               anon_5_0 :
               unitValue()) :
             null)) in
           (let anon_2_0 ==
-            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Nil ?
               anon_3_0 :
               anon_4_0)) in
             anon_2_0)))))
@@ -1190,11 +1335,8 @@ function append(xs: Ref, ys: Ref): Ref
 function con(head: Ref, tail: Ref): Ref
   requires isSubtype(typeOf(head), intType())
   requires isSubtype(typeOf(tail), LinkedList())
-  ensures isSubtype(typeOf(result), LinkedList())
-  ensures intFromRef(LinkedListFromRef(result).af_a_LinkedList_head) ==
-    intFromRef(head)
-  ensures LinkedListFromRef(LinkedListFromRef(result).af_a_LinkedList_tail) ==
-    LinkedListFromRef(tail)
+  ensures isSubtype(typeOf(result), LinkedList()) &&
+    LinkedListFromRef(result).isac_Cons
   ensures LinkedListFromRef(result) == ac_Cons(head, tail)
 
 
@@ -1204,15 +1346,19 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_7_0 ==
-    ((!isSubtype(typeOf(this), LinkedList()) ?
-      (isSubtype(typeOf(this), LinkedList()) ?
-        boolToRef(isSubtype(typeOf(anon_0), LinkedList())) :
+    ((!(isSubtype(typeOf(this), LinkedList()) &&
+    LinkedListFromRef(this).isac_Cons) ?
+      (isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Nil ?
+        boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Nil) :
         boolToRef(false)) :
       null)) in
     (let anon_6_0 ==
-      ((isSubtype(typeOf(this), LinkedList()) ?
-        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList())),
-        andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
+      ((isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Cons ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Cons), andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
         intType())), boolToRef(intFromRef(LinkedListFromRef(this).af_a_LinkedList_head) ==
         intFromRef(LinkedListFromRef(anon_0).af_a_LinkedList_head)))), equals(LinkedListFromRef(this).af_a_LinkedList_tail,
         LinkedListFromRef(anon_0).af_a_LinkedList_tail)) :
@@ -1251,21 +1397,29 @@ function append(xs: Ref, ys: Ref): Ref
   (let anon_1_0 ==
     (xs) in
     (let anon_8_0 ==
-      ((isSubtype(typeOf(anon_1_0), LinkedList()) ? ys : null)) in
+      ((isSubtype(typeOf(anon_1_0), LinkedList()) &&
+      LinkedListFromRef(anon_1_0).isac_Nil ?
+        ys :
+        null)) in
       (let anon_10_0 ==
-        ((!isSubtype(typeOf(anon_1_0), LinkedList()) &&
-        isSubtype(typeOf(anon_1_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_1_0), LinkedList()) &&
+        LinkedListFromRef(anon_1_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_1_0), LinkedList()) &&
+        LinkedListFromRef(anon_1_0).isac_Cons) ?
           con(LinkedListFromRef(xs).af_a_LinkedList_head, append(LinkedListFromRef(xs).af_a_LinkedList_tail,
           ys)) :
           null)) in
         (let anon_9_0 ==
-          ((!isSubtype(typeOf(anon_1_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_1_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_1_0), LinkedList()) &&
+          LinkedListFromRef(anon_1_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_1_0), LinkedList()) &&
+            LinkedListFromRef(anon_1_0).isac_Cons ?
               anon_10_0 :
               unitValue()) :
             null)) in
           (let anon_7_0 ==
-            ((isSubtype(typeOf(anon_1_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_1_0), LinkedList()) &&
+            LinkedListFromRef(anon_1_0).isac_Nil ?
               anon_8_0 :
               anon_9_0)) in
             anon_7_0)))))
@@ -1274,11 +1428,8 @@ function append(xs: Ref, ys: Ref): Ref
 function con(head: Ref, tail: Ref): Ref
   requires isSubtype(typeOf(head), intType())
   requires isSubtype(typeOf(tail), LinkedList())
-  ensures isSubtype(typeOf(result), LinkedList())
-  ensures intFromRef(LinkedListFromRef(result).af_a_LinkedList_head) ==
-    intFromRef(head)
-  ensures LinkedListFromRef(LinkedListFromRef(result).af_a_LinkedList_tail) ==
-    LinkedListFromRef(tail)
+  ensures isSubtype(typeOf(result), LinkedList()) &&
+    LinkedListFromRef(result).isac_Cons
   ensures LinkedListFromRef(result) == ac_Cons(head, tail)
 
 
@@ -1288,15 +1439,19 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_12_0 ==
-    ((!isSubtype(typeOf(this), LinkedList()) ?
-      (isSubtype(typeOf(this), LinkedList()) ?
-        boolToRef(isSubtype(typeOf(anon_0), LinkedList())) :
+    ((!(isSubtype(typeOf(this), LinkedList()) &&
+    LinkedListFromRef(this).isac_Cons) ?
+      (isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Nil ?
+        boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Nil) :
         boolToRef(false)) :
       null)) in
     (let anon_11_0 ==
-      ((isSubtype(typeOf(this), LinkedList()) ?
-        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList())),
-        andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
+      ((isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Cons ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Cons), andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
         intType())), boolToRef(intFromRef(LinkedListFromRef(this).af_a_LinkedList_head) ==
         intFromRef(LinkedListFromRef(anon_0).af_a_LinkedList_head)))), equals(LinkedListFromRef(this).af_a_LinkedList_tail,
         LinkedListFromRef(anon_0).af_a_LinkedList_tail)) :
@@ -1311,23 +1466,29 @@ function reverse(xs: Ref): Ref
   (let anon_0_0 ==
     (xs) in
     (let anon_4_0 ==
-      ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+      LinkedListFromRef(anon_0_0).isac_Nil ?
         LinkedListToRef(ac_Nil()) :
         null)) in
       (let anon_6_0 ==
-        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
-        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Cons) ?
           append(reverse(LinkedListFromRef(xs).af_a_LinkedList_tail), con(LinkedListFromRef(xs).af_a_LinkedList_head,
           LinkedListToRef(ac_Nil()))) :
           null)) in
         (let anon_5_0 ==
-          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+          LinkedListFromRef(anon_0_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Cons ?
               anon_6_0 :
               unitValue()) :
             null)) in
           (let anon_3_0 ==
-            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Nil ?
               anon_4_0 :
               anon_5_0)) in
             anon_3_0)))))
@@ -1363,21 +1524,29 @@ function append(xs: Ref, ys: Ref): Ref
   (let anon_1_0 ==
     (xs) in
     (let anon_13_0 ==
-      ((isSubtype(typeOf(anon_1_0), LinkedList()) ? ys : null)) in
+      ((isSubtype(typeOf(anon_1_0), LinkedList()) &&
+      LinkedListFromRef(anon_1_0).isac_Nil ?
+        ys :
+        null)) in
       (let anon_15_0 ==
-        ((!isSubtype(typeOf(anon_1_0), LinkedList()) &&
-        isSubtype(typeOf(anon_1_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_1_0), LinkedList()) &&
+        LinkedListFromRef(anon_1_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_1_0), LinkedList()) &&
+        LinkedListFromRef(anon_1_0).isac_Cons) ?
           con(LinkedListFromRef(xs).af_a_LinkedList_head, append(LinkedListFromRef(xs).af_a_LinkedList_tail,
           ys)) :
           null)) in
         (let anon_14_0 ==
-          ((!isSubtype(typeOf(anon_1_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_1_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_1_0), LinkedList()) &&
+          LinkedListFromRef(anon_1_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_1_0), LinkedList()) &&
+            LinkedListFromRef(anon_1_0).isac_Cons ?
               anon_15_0 :
               unitValue()) :
             null)) in
           (let anon_12_0 ==
-            ((isSubtype(typeOf(anon_1_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_1_0), LinkedList()) &&
+            LinkedListFromRef(anon_1_0).isac_Nil ?
               anon_13_0 :
               anon_14_0)) in
             anon_12_0)))))
@@ -1386,11 +1555,8 @@ function append(xs: Ref, ys: Ref): Ref
 function con(head: Ref, tail: Ref): Ref
   requires isSubtype(typeOf(head), intType())
   requires isSubtype(typeOf(tail), LinkedList())
-  ensures isSubtype(typeOf(result), LinkedList())
-  ensures intFromRef(LinkedListFromRef(result).af_a_LinkedList_head) ==
-    intFromRef(head)
-  ensures LinkedListFromRef(LinkedListFromRef(result).af_a_LinkedList_tail) ==
-    LinkedListFromRef(tail)
+  ensures isSubtype(typeOf(result), LinkedList()) &&
+    LinkedListFromRef(result).isac_Cons
   ensures LinkedListFromRef(result) == ac_Cons(head, tail)
 
 
@@ -1400,15 +1566,19 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_17_0 ==
-    ((!isSubtype(typeOf(this), LinkedList()) ?
-      (isSubtype(typeOf(this), LinkedList()) ?
-        boolToRef(isSubtype(typeOf(anon_0), LinkedList())) :
+    ((!(isSubtype(typeOf(this), LinkedList()) &&
+    LinkedListFromRef(this).isac_Cons) ?
+      (isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Nil ?
+        boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Nil) :
         boolToRef(false)) :
       null)) in
     (let anon_16_0 ==
-      ((isSubtype(typeOf(this), LinkedList()) ?
-        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList())),
-        andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
+      ((isSubtype(typeOf(this), LinkedList()) &&
+      LinkedListFromRef(this).isac_Cons ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedList()) &&
+        LinkedListFromRef(anon_0).isac_Cons), andBools(boolToRef(isSubtype(typeOf(LinkedListFromRef(anon_0).af_a_LinkedList_head),
         intType())), boolToRef(intFromRef(LinkedListFromRef(this).af_a_LinkedList_head) ==
         intFromRef(LinkedListFromRef(anon_0).af_a_LinkedList_head)))), equals(LinkedListFromRef(this).af_a_LinkedList_tail,
         LinkedListFromRef(anon_0).af_a_LinkedList_tail)) :
@@ -1423,23 +1593,29 @@ function reverse(xs: Ref): Ref
   (let anon_0_0 ==
     (xs) in
     (let anon_9_0 ==
-      ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+      LinkedListFromRef(anon_0_0).isac_Nil ?
         LinkedListToRef(ac_Nil()) :
         null)) in
       (let anon_11_0 ==
-        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
-        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Cons) ?
           append(reverse(LinkedListFromRef(xs).af_a_LinkedList_tail), con(LinkedListFromRef(xs).af_a_LinkedList_head,
           LinkedListToRef(ac_Nil()))) :
           null)) in
         (let anon_10_0 ==
-          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+          LinkedListFromRef(anon_0_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Cons ?
               anon_11_0 :
               unitValue()) :
             null)) in
           (let anon_8_0 ==
-            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Nil ?
               anon_9_0 :
               anon_10_0)) in
             anon_8_0)))))

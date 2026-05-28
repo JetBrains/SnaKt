@@ -319,8 +319,6 @@ function con_Pair(a: Ref, b: Ref): Ref
   requires isSubtype(typeOf(a), intType())
   requires isSubtype(typeOf(b), intType())
   ensures isSubtype(typeOf(result), Pair())
-  ensures intFromRef(PairFromRef(result).af_a_Pair_a) == intFromRef(a)
-  ensures intFromRef(PairFromRef(result).af_a_Pair_b) == intFromRef(b)
   ensures PairFromRef(result) == ac_Pair(a, b)
 
 

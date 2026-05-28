@@ -39,7 +39,9 @@ data class PureFunBodyLinearizer(
 ) : LinearizationContext {
 
     override val logicOperatorPolicy: LogicOperatorPolicy
-        get() = LogicOperatorPolicy.CONVERT_TO_EXPRESSION
+        // SequentialAnd/SequentialOr (e.g. in synthetic ADT equals) require short-circuit semantics
+        // that flat Viper &&/|| don't provide.
+        get() = LogicOperatorPolicy.CONVERT_TO_IF
 
     override fun <R> withPosition(newSource: KtSourceElement, action: LinearizationContext.() -> R): R =
         copy(source = newSource).action()

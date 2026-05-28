@@ -16,22 +16,40 @@ function isAlternating(node: Ref, expectsPositive: Ref): Ref
         ((boolFromRef(expectsPositive) ? anon_0_0 : anon_1_0)) in
         (let nextNode_0 ==
           (next(node)) in
-          (let anon_3_0 ==
-            ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-            nextNode_0 == nullValue() && nullValue() == nullValue()) ?
-              isAlternating(nextNode_0, notBool(expectsPositive)) :
+          (let anon_5_0 ==
+            ((boolFromRef(isCurrentValid_0) ?
+              (nextNode_0 != nullValue() ?
+                boolToRef(nextNode_0 == nullValue()) :
+                boolToRef(false)) :
               null)) in
-            (let anon_4_0 ==
-              ((!!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-              nextNode_0 == nullValue() && nullValue() == nullValue()) ?
-                boolToRef(true) :
+            (let anon_6_0 ==
+              ((boolFromRef(isCurrentValid_0) && !boolFromRef(anon_5_0) ?
+                (nextNode_0 == nullValue() ?
+                  boolToRef(nullValue() == nullValue()) :
+                  boolToRef(false)) :
                 null)) in
-              (let anon_2_0 ==
-                ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-                nextNode_0 == nullValue() && nullValue() == nullValue()) ?
-                  anon_3_0 :
-                  anon_4_0)) in
-                andBools(isCurrentValid_0, anon_2_0))))))))
+              (let anon_4_0 ==
+                ((boolFromRef(isCurrentValid_0) ?
+                  (boolFromRef(anon_5_0) ? boolToRef(true) : anon_6_0) :
+                  null)) in
+                (let anon_7_0 ==
+                  ((boolFromRef(isCurrentValid_0) && !boolFromRef(anon_4_0) ?
+                    isAlternating(nextNode_0, notBool(expectsPositive)) :
+                    null)) in
+                  (let anon_8_0 ==
+                    ((boolFromRef(isCurrentValid_0) &&
+                    !!boolFromRef(anon_4_0) ?
+                      boolToRef(true) :
+                      null)) in
+                    (let anon_3_0 ==
+                      ((boolFromRef(isCurrentValid_0) ?
+                        (!boolFromRef(anon_4_0) ? anon_7_0 : anon_8_0) :
+                        null)) in
+                      (let anon_2_0 ==
+                        ((boolFromRef(isCurrentValid_0) ?
+                          anon_3_0 :
+                          boolToRef(false))) in
+                        anon_2_0)))))))))))
 }
 
 function next(this: Ref): Ref
@@ -53,33 +71,37 @@ function isStrictlyAscendingAndPositive(node: Ref): Ref
   (let nextNode_0 ==
     (next(node)) in
     (let anon_2_0 ==
-      ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-      nextNode_0 == nullValue() && nullValue() == nullValue()) &&
-      intFromRef(value(nextNode_0)) < 0 ?
-        boolToRef(false) :
-        null)) in
+      ((nextNode_0 != nullValue() ?
+        boolToRef(nextNode_0 == nullValue()) :
+        boolToRef(false))) in
       (let anon_3_0 ==
-        ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-        nextNode_0 == nullValue() && nullValue() == nullValue()) &&
-        !(intFromRef(value(nextNode_0)) < 0) ?
-          andBools(gtInts(value(nextNode_0), value(node)), isStrictlyAscendingAndPositive(nextNode_0)) :
+        ((!boolFromRef(anon_2_0) ?
+          (nextNode_0 == nullValue() ?
+            boolToRef(nullValue() == nullValue()) :
+            boolToRef(false)) :
           null)) in
         (let anon_1_0 ==
-          ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-          nextNode_0 == nullValue() && nullValue() == nullValue()) ?
-            (intFromRef(value(nextNode_0)) < 0 ? anon_2_0 : anon_3_0) :
-            null)) in
-          (let anon_4_0 ==
-            ((!!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-            nextNode_0 == nullValue() && nullValue() == nullValue()) ?
-              boolToRef(true) :
+          ((boolFromRef(anon_2_0) ? boolToRef(true) : anon_3_0)) in
+          (let anon_5_0 ==
+            ((!boolFromRef(anon_1_0) && intFromRef(value(nextNode_0)) < 0 ?
+              boolToRef(false) :
               null)) in
-            (let anon_0_0 ==
-              ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-              nextNode_0 == nullValue() && nullValue() == nullValue()) ?
-                anon_1_0 :
-                anon_4_0)) in
-              anon_0_0))))))
+            (let anon_6_0 ==
+              ((!boolFromRef(anon_1_0) &&
+              !(intFromRef(value(nextNode_0)) < 0) ?
+                (intFromRef(value(nextNode_0)) > intFromRef(value(node)) ?
+                  isStrictlyAscendingAndPositive(nextNode_0) :
+                  boolToRef(false)) :
+                null)) in
+              (let anon_4_0 ==
+                ((!boolFromRef(anon_1_0) ?
+                  (intFromRef(value(nextNode_0)) < 0 ? anon_5_0 : anon_6_0) :
+                  null)) in
+                (let anon_7_0 ==
+                  ((!!boolFromRef(anon_1_0) ? boolToRef(true) : null)) in
+                  (let anon_0_0 ==
+                    ((!boolFromRef(anon_1_0) ? anon_4_0 : anon_7_0)) in
+                    anon_0_0)))))))))
 }
 
 function next(this: Ref): Ref
@@ -99,41 +121,64 @@ function isLocallyValidBST(node: Ref): Ref
 {
   (let leftNode_0 ==
     (left(node)) in
-    (let anon_0_0 ==
-      ((!(leftNode_0 != nullValue() && leftNode_0 == nullValue() ||
-      leftNode_0 == nullValue() && nullValue() == nullValue()) ?
-        andBools(ltInts(value(leftNode_0), value(node)), isLocallyValidBST(leftNode_0)) :
-        null)) in
-      (let anon_1_0 ==
-        ((!!(leftNode_0 != nullValue() && leftNode_0 == nullValue() ||
-        leftNode_0 == nullValue() && nullValue() == nullValue()) ?
-          boolToRef(true) :
+    (let anon_1_0 ==
+      ((leftNode_0 != nullValue() ?
+        boolToRef(leftNode_0 == nullValue()) :
+        boolToRef(false))) in
+      (let anon_2_0 ==
+        ((!boolFromRef(anon_1_0) ?
+          (leftNode_0 == nullValue() ?
+            boolToRef(nullValue() == nullValue()) :
+            boolToRef(false)) :
           null)) in
-        (let leftValid_0 ==
-          ((!(leftNode_0 != nullValue() && leftNode_0 == nullValue() ||
-          leftNode_0 == nullValue() && nullValue() == nullValue()) ?
-            anon_0_0 :
-            anon_1_0)) in
-          (let rightNode_0 ==
-            (right(node)) in
-            (let anon_2_0 ==
-              ((!(rightNode_0 != nullValue() && rightNode_0 == nullValue() ||
-              rightNode_0 == nullValue() && nullValue() == nullValue()) ?
-                andBools(gtInts(value(rightNode_0), value(node)), isLocallyValidBST(rightNode_0)) :
-                null)) in
-              (let anon_3_0 ==
-                ((!!(rightNode_0 != nullValue() &&
-                rightNode_0 == nullValue() ||
-                rightNode_0 == nullValue() && nullValue() == nullValue()) ?
-                  boolToRef(true) :
-                  null)) in
-                (let rightValid_0 ==
-                  ((!(rightNode_0 != nullValue() &&
-                  rightNode_0 == nullValue() ||
-                  rightNode_0 == nullValue() && nullValue() == nullValue()) ?
-                    anon_2_0 :
-                    anon_3_0)) in
-                  andBools(leftValid_0, rightValid_0)))))))))
+        (let anon_0_0 ==
+          ((boolFromRef(anon_1_0) ? boolToRef(true) : anon_2_0)) in
+          (let anon_3_0 ==
+            ((!boolFromRef(anon_0_0) ?
+              (intFromRef(value(leftNode_0)) < intFromRef(value(node)) ?
+                isLocallyValidBST(leftNode_0) :
+                boolToRef(false)) :
+              null)) in
+            (let anon_4_0 ==
+              ((!!boolFromRef(anon_0_0) ? boolToRef(true) : null)) in
+              (let leftValid_0 ==
+                ((!boolFromRef(anon_0_0) ? anon_3_0 : anon_4_0)) in
+                (let rightNode_0 ==
+                  (right(node)) in
+                  (let anon_6_0 ==
+                    ((rightNode_0 != nullValue() ?
+                      boolToRef(rightNode_0 == nullValue()) :
+                      boolToRef(false))) in
+                    (let anon_7_0 ==
+                      ((!boolFromRef(anon_6_0) ?
+                        (rightNode_0 == nullValue() ?
+                          boolToRef(nullValue() == nullValue()) :
+                          boolToRef(false)) :
+                        null)) in
+                      (let anon_5_0 ==
+                        ((boolFromRef(anon_6_0) ?
+                          boolToRef(true) :
+                          anon_7_0)) in
+                        (let anon_8_0 ==
+                          ((!boolFromRef(anon_5_0) ?
+                            (intFromRef(value(rightNode_0)) >
+                            intFromRef(value(node)) ?
+                              isLocallyValidBST(rightNode_0) :
+                              boolToRef(false)) :
+                            null)) in
+                          (let anon_9_0 ==
+                            ((!!boolFromRef(anon_5_0) ?
+                              boolToRef(true) :
+                              null)) in
+                            (let rightValid_0 ==
+                              ((!boolFromRef(anon_5_0) ?
+                                anon_8_0 :
+                                anon_9_0)) in
+                              (let anon_10_0 ==
+                                ((boolFromRef(leftValid_0) ?
+                                  rightValid_0 :
+                                  boolToRef(false))) in
+                                anon_10_0)))))))))))))))
 }
 
 function left(this: Ref): Ref

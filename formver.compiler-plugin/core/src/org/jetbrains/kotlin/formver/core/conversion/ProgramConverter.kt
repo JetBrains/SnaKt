@@ -347,7 +347,7 @@ class ProgramConverter(
             AdtConstructorRef(constructorSig.returns.type, constructorSig.params)
         )
         val sig = object : FullNamedFunctionSignature by constructorSig {
-            override val postconditions = constructorSig.postconditions + adtPostcondition
+            override val postconditions = listOf(constructorSig.postconditions[0], adtPostcondition)
             override val isPure = true
         }
         return ensurePureUserFunctionEmbedding(symbol, sig)

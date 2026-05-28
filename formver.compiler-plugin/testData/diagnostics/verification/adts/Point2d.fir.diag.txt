@@ -3,8 +3,6 @@ function con(x: Ref, y: Ref): Ref
   requires isSubtype(typeOf(x), intType())
   requires isSubtype(typeOf(y), intType())
   ensures isSubtype(typeOf(result), Point())
-  ensures intFromRef(PointFromRef(result).af_a_Point_x) == intFromRef(x)
-  ensures intFromRef(PointFromRef(result).af_a_Point_y) == intFromRef(y)
   ensures PointFromRef(result) == ac_Point(x, y)
 
 
@@ -98,8 +96,6 @@ function con(x: Ref, y: Ref): Ref
   requires isSubtype(typeOf(x), intType())
   requires isSubtype(typeOf(y), intType())
   ensures isSubtype(typeOf(result), Point())
-  ensures intFromRef(PointFromRef(result).af_a_Point_x) == intFromRef(x)
-  ensures intFromRef(PointFromRef(result).af_a_Point_y) == intFromRef(y)
   ensures PointFromRef(result) == ac_Point(x, y)
 
 
@@ -260,8 +256,6 @@ function con(x: Ref, y: Ref): Ref
   requires isSubtype(typeOf(x), intType())
   requires isSubtype(typeOf(y), intType())
   ensures isSubtype(typeOf(result), Point())
-  ensures intFromRef(PointFromRef(result).af_a_Point_x) == intFromRef(x)
-  ensures intFromRef(PointFromRef(result).af_a_Point_y) == intFromRef(y)
   ensures PointFromRef(result) == ac_Point(x, y)
 
 
@@ -281,8 +275,6 @@ function con(x: Ref, y: Ref): Ref
   requires isSubtype(typeOf(x), intType())
   requires isSubtype(typeOf(y), intType())
   ensures isSubtype(typeOf(result), Point())
-  ensures intFromRef(PointFromRef(result).af_a_Point_x) == intFromRef(x)
-  ensures intFromRef(PointFromRef(result).af_a_Point_y) == intFromRef(y)
   ensures PointFromRef(result) == ac_Point(x, y)
 
 

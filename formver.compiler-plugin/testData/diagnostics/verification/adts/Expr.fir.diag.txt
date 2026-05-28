@@ -6,33 +6,47 @@ function eval(e: Ref): Ref
   (let anon_0_0 ==
     (e) in
     (let anon_2_0 ==
-      ((isSubtype(typeOf(anon_0_0), Expr()) ?
+      ((isSubtype(typeOf(anon_0_0), Expr()) &&
+      ExprFromRef(anon_0_0).isac_Lit ?
         ExprFromRef(e).af_a_Expr_n :
         null)) in
       (let anon_4_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Expr()) &&
-        isSubtype(typeOf(anon_0_0), Expr()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+        ExprFromRef(anon_0_0).isac_Lit) &&
+        (isSubtype(typeOf(anon_0_0), Expr()) &&
+        ExprFromRef(anon_0_0).isac_Add) ?
           plusInts(eval(ExprFromRef(e).af_a_Expr_left), eval(ExprFromRef(e).af_a_Expr_right)) :
           null)) in
         (let anon_6_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Expr()) &&
-          !isSubtype(typeOf(anon_0_0), Expr()) &&
-          isSubtype(typeOf(anon_0_0), Expr()) ?
+          ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+          ExprFromRef(anon_0_0).isac_Lit) &&
+          !(isSubtype(typeOf(anon_0_0), Expr()) &&
+          ExprFromRef(anon_0_0).isac_Add) &&
+          (isSubtype(typeOf(anon_0_0), Expr()) &&
+          ExprFromRef(anon_0_0).isac_Neg) ?
             negInt(eval(ExprFromRef(e).af_a_Expr_expr)) :
             null)) in
           (let anon_5_0 ==
-            ((!isSubtype(typeOf(anon_0_0), Expr()) &&
-            !isSubtype(typeOf(anon_0_0), Expr()) ?
-              (isSubtype(typeOf(anon_0_0), Expr()) ?
+            ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+            ExprFromRef(anon_0_0).isac_Lit) &&
+            !(isSubtype(typeOf(anon_0_0), Expr()) &&
+            ExprFromRef(anon_0_0).isac_Add) ?
+              (isSubtype(typeOf(anon_0_0), Expr()) &&
+              ExprFromRef(anon_0_0).isac_Neg ?
                 anon_6_0 :
                 unitValue()) :
               null)) in
             (let anon_3_0 ==
-              ((!isSubtype(typeOf(anon_0_0), Expr()) ?
-                (isSubtype(typeOf(anon_0_0), Expr()) ? anon_4_0 : anon_5_0) :
+              ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+              ExprFromRef(anon_0_0).isac_Lit) ?
+                (isSubtype(typeOf(anon_0_0), Expr()) &&
+                ExprFromRef(anon_0_0).isac_Add ?
+                  anon_4_0 :
+                  anon_5_0) :
                 null)) in
               (let anon_1_0 ==
-                ((isSubtype(typeOf(anon_0_0), Expr()) ?
+                ((isSubtype(typeOf(anon_0_0), Expr()) &&
+                ExprFromRef(anon_0_0).isac_Lit ?
                   anon_2_0 :
                   anon_3_0)) in
                 anon_1_0)))))))
@@ -47,9 +61,7 @@ adt a_Expr {
 /Expr.kt: info: Generated Viper text for evalNeg:
 function con(expr: Ref): Ref
   requires isSubtype(typeOf(expr), Expr())
-  ensures isSubtype(typeOf(result), Expr())
-  ensures ExprFromRef(ExprFromRef(result).af_a_Expr_expr) ==
-    ExprFromRef(expr)
+  ensures isSubtype(typeOf(result), Expr()) && ExprFromRef(result).isac_Neg
   ensures ExprFromRef(result) == ac_Neg(expr)
 
 
@@ -60,33 +72,47 @@ function eval(e: Ref): Ref
   (let anon_0_0 ==
     (e) in
     (let anon_2_0 ==
-      ((isSubtype(typeOf(anon_0_0), Expr()) ?
+      ((isSubtype(typeOf(anon_0_0), Expr()) &&
+      ExprFromRef(anon_0_0).isac_Lit ?
         ExprFromRef(e).af_a_Expr_n :
         null)) in
       (let anon_4_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Expr()) &&
-        isSubtype(typeOf(anon_0_0), Expr()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+        ExprFromRef(anon_0_0).isac_Lit) &&
+        (isSubtype(typeOf(anon_0_0), Expr()) &&
+        ExprFromRef(anon_0_0).isac_Add) ?
           plusInts(eval(ExprFromRef(e).af_a_Expr_left), eval(ExprFromRef(e).af_a_Expr_right)) :
           null)) in
         (let anon_6_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Expr()) &&
-          !isSubtype(typeOf(anon_0_0), Expr()) &&
-          isSubtype(typeOf(anon_0_0), Expr()) ?
+          ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+          ExprFromRef(anon_0_0).isac_Lit) &&
+          !(isSubtype(typeOf(anon_0_0), Expr()) &&
+          ExprFromRef(anon_0_0).isac_Add) &&
+          (isSubtype(typeOf(anon_0_0), Expr()) &&
+          ExprFromRef(anon_0_0).isac_Neg) ?
             negInt(eval(ExprFromRef(e).af_a_Expr_expr)) :
             null)) in
           (let anon_5_0 ==
-            ((!isSubtype(typeOf(anon_0_0), Expr()) &&
-            !isSubtype(typeOf(anon_0_0), Expr()) ?
-              (isSubtype(typeOf(anon_0_0), Expr()) ?
+            ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+            ExprFromRef(anon_0_0).isac_Lit) &&
+            !(isSubtype(typeOf(anon_0_0), Expr()) &&
+            ExprFromRef(anon_0_0).isac_Add) ?
+              (isSubtype(typeOf(anon_0_0), Expr()) &&
+              ExprFromRef(anon_0_0).isac_Neg ?
                 anon_6_0 :
                 unitValue()) :
               null)) in
             (let anon_3_0 ==
-              ((!isSubtype(typeOf(anon_0_0), Expr()) ?
-                (isSubtype(typeOf(anon_0_0), Expr()) ? anon_4_0 : anon_5_0) :
+              ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+              ExprFromRef(anon_0_0).isac_Lit) ?
+                (isSubtype(typeOf(anon_0_0), Expr()) &&
+                ExprFromRef(anon_0_0).isac_Add ?
+                  anon_4_0 :
+                  anon_5_0) :
                 null)) in
               (let anon_1_0 ==
-                ((isSubtype(typeOf(anon_0_0), Expr()) ?
+                ((isSubtype(typeOf(anon_0_0), Expr()) &&
+                ExprFromRef(anon_0_0).isac_Lit ?
                   anon_2_0 :
                   anon_3_0)) in
                 anon_1_0)))))))
@@ -112,11 +138,7 @@ adt a_Expr {
 function con(left: Ref, right: Ref): Ref
   requires isSubtype(typeOf(left), Expr())
   requires isSubtype(typeOf(right), Expr())
-  ensures isSubtype(typeOf(result), Expr())
-  ensures ExprFromRef(ExprFromRef(result).af_a_Expr_left) ==
-    ExprFromRef(left)
-  ensures ExprFromRef(ExprFromRef(result).af_a_Expr_right) ==
-    ExprFromRef(right)
+  ensures isSubtype(typeOf(result), Expr()) && ExprFromRef(result).isac_Add
   ensures ExprFromRef(result) == ac_Add(left, right)
 
 
@@ -127,33 +149,47 @@ function eval(e: Ref): Ref
   (let anon_0_0 ==
     (e) in
     (let anon_2_0 ==
-      ((isSubtype(typeOf(anon_0_0), Expr()) ?
+      ((isSubtype(typeOf(anon_0_0), Expr()) &&
+      ExprFromRef(anon_0_0).isac_Lit ?
         ExprFromRef(e).af_a_Expr_n :
         null)) in
       (let anon_4_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Expr()) &&
-        isSubtype(typeOf(anon_0_0), Expr()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+        ExprFromRef(anon_0_0).isac_Lit) &&
+        (isSubtype(typeOf(anon_0_0), Expr()) &&
+        ExprFromRef(anon_0_0).isac_Add) ?
           plusInts(eval(ExprFromRef(e).af_a_Expr_left), eval(ExprFromRef(e).af_a_Expr_right)) :
           null)) in
         (let anon_6_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Expr()) &&
-          !isSubtype(typeOf(anon_0_0), Expr()) &&
-          isSubtype(typeOf(anon_0_0), Expr()) ?
+          ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+          ExprFromRef(anon_0_0).isac_Lit) &&
+          !(isSubtype(typeOf(anon_0_0), Expr()) &&
+          ExprFromRef(anon_0_0).isac_Add) &&
+          (isSubtype(typeOf(anon_0_0), Expr()) &&
+          ExprFromRef(anon_0_0).isac_Neg) ?
             negInt(eval(ExprFromRef(e).af_a_Expr_expr)) :
             null)) in
           (let anon_5_0 ==
-            ((!isSubtype(typeOf(anon_0_0), Expr()) &&
-            !isSubtype(typeOf(anon_0_0), Expr()) ?
-              (isSubtype(typeOf(anon_0_0), Expr()) ?
+            ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+            ExprFromRef(anon_0_0).isac_Lit) &&
+            !(isSubtype(typeOf(anon_0_0), Expr()) &&
+            ExprFromRef(anon_0_0).isac_Add) ?
+              (isSubtype(typeOf(anon_0_0), Expr()) &&
+              ExprFromRef(anon_0_0).isac_Neg ?
                 anon_6_0 :
                 unitValue()) :
               null)) in
             (let anon_3_0 ==
-              ((!isSubtype(typeOf(anon_0_0), Expr()) ?
-                (isSubtype(typeOf(anon_0_0), Expr()) ? anon_4_0 : anon_5_0) :
+              ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+              ExprFromRef(anon_0_0).isac_Lit) ?
+                (isSubtype(typeOf(anon_0_0), Expr()) &&
+                ExprFromRef(anon_0_0).isac_Add ?
+                  anon_4_0 :
+                  anon_5_0) :
                 null)) in
               (let anon_1_0 ==
-                ((isSubtype(typeOf(anon_0_0), Expr()) ?
+                ((isSubtype(typeOf(anon_0_0), Expr()) &&
+                ExprFromRef(anon_0_0).isac_Lit ?
                   anon_2_0 :
                   anon_3_0)) in
                 anon_1_0)))))))
@@ -179,9 +215,7 @@ adt a_Expr {
 /Expr.kt: info: Generated Viper text for doubleNegIsId:
 function con(expr: Ref): Ref
   requires isSubtype(typeOf(expr), Expr())
-  ensures isSubtype(typeOf(result), Expr())
-  ensures ExprFromRef(ExprFromRef(result).af_a_Expr_expr) ==
-    ExprFromRef(expr)
+  ensures isSubtype(typeOf(result), Expr()) && ExprFromRef(result).isac_Neg
   ensures ExprFromRef(result) == ac_Neg(expr)
 
 
@@ -192,33 +226,47 @@ function eval(e: Ref): Ref
   (let anon_0_0 ==
     (e) in
     (let anon_4_0 ==
-      ((isSubtype(typeOf(anon_0_0), Expr()) ?
+      ((isSubtype(typeOf(anon_0_0), Expr()) &&
+      ExprFromRef(anon_0_0).isac_Lit ?
         ExprFromRef(e).af_a_Expr_n :
         null)) in
       (let anon_6_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Expr()) &&
-        isSubtype(typeOf(anon_0_0), Expr()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+        ExprFromRef(anon_0_0).isac_Lit) &&
+        (isSubtype(typeOf(anon_0_0), Expr()) &&
+        ExprFromRef(anon_0_0).isac_Add) ?
           plusInts(eval(ExprFromRef(e).af_a_Expr_left), eval(ExprFromRef(e).af_a_Expr_right)) :
           null)) in
         (let anon_8_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Expr()) &&
-          !isSubtype(typeOf(anon_0_0), Expr()) &&
-          isSubtype(typeOf(anon_0_0), Expr()) ?
+          ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+          ExprFromRef(anon_0_0).isac_Lit) &&
+          !(isSubtype(typeOf(anon_0_0), Expr()) &&
+          ExprFromRef(anon_0_0).isac_Add) &&
+          (isSubtype(typeOf(anon_0_0), Expr()) &&
+          ExprFromRef(anon_0_0).isac_Neg) ?
             negInt(eval(ExprFromRef(e).af_a_Expr_expr)) :
             null)) in
           (let anon_7_0 ==
-            ((!isSubtype(typeOf(anon_0_0), Expr()) &&
-            !isSubtype(typeOf(anon_0_0), Expr()) ?
-              (isSubtype(typeOf(anon_0_0), Expr()) ?
+            ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+            ExprFromRef(anon_0_0).isac_Lit) &&
+            !(isSubtype(typeOf(anon_0_0), Expr()) &&
+            ExprFromRef(anon_0_0).isac_Add) ?
+              (isSubtype(typeOf(anon_0_0), Expr()) &&
+              ExprFromRef(anon_0_0).isac_Neg ?
                 anon_8_0 :
                 unitValue()) :
               null)) in
             (let anon_5_0 ==
-              ((!isSubtype(typeOf(anon_0_0), Expr()) ?
-                (isSubtype(typeOf(anon_0_0), Expr()) ? anon_6_0 : anon_7_0) :
+              ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+              ExprFromRef(anon_0_0).isac_Lit) ?
+                (isSubtype(typeOf(anon_0_0), Expr()) &&
+                ExprFromRef(anon_0_0).isac_Add ?
+                  anon_6_0 :
+                  anon_7_0) :
                 null)) in
               (let anon_3_0 ==
-                ((isSubtype(typeOf(anon_0_0), Expr()) ?
+                ((isSubtype(typeOf(anon_0_0), Expr()) &&
+                ExprFromRef(anon_0_0).isac_Lit ?
                   anon_4_0 :
                   anon_5_0)) in
                 anon_3_0)))))))
@@ -255,11 +303,7 @@ adt a_Expr {
 function con(left: Ref, right: Ref): Ref
   requires isSubtype(typeOf(left), Expr())
   requires isSubtype(typeOf(right), Expr())
-  ensures isSubtype(typeOf(result), Expr())
-  ensures ExprFromRef(ExprFromRef(result).af_a_Expr_left) ==
-    ExprFromRef(left)
-  ensures ExprFromRef(ExprFromRef(result).af_a_Expr_right) ==
-    ExprFromRef(right)
+  ensures isSubtype(typeOf(result), Expr()) && ExprFromRef(result).isac_Add
   ensures ExprFromRef(result) == ac_Add(left, right)
 
 
@@ -270,33 +314,47 @@ function eval(e: Ref): Ref
   (let anon_0_0 ==
     (e) in
     (let anon_4_0 ==
-      ((isSubtype(typeOf(anon_0_0), Expr()) ?
+      ((isSubtype(typeOf(anon_0_0), Expr()) &&
+      ExprFromRef(anon_0_0).isac_Lit ?
         ExprFromRef(e).af_a_Expr_n :
         null)) in
       (let anon_6_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Expr()) &&
-        isSubtype(typeOf(anon_0_0), Expr()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+        ExprFromRef(anon_0_0).isac_Lit) &&
+        (isSubtype(typeOf(anon_0_0), Expr()) &&
+        ExprFromRef(anon_0_0).isac_Add) ?
           plusInts(eval(ExprFromRef(e).af_a_Expr_left), eval(ExprFromRef(e).af_a_Expr_right)) :
           null)) in
         (let anon_8_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Expr()) &&
-          !isSubtype(typeOf(anon_0_0), Expr()) &&
-          isSubtype(typeOf(anon_0_0), Expr()) ?
+          ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+          ExprFromRef(anon_0_0).isac_Lit) &&
+          !(isSubtype(typeOf(anon_0_0), Expr()) &&
+          ExprFromRef(anon_0_0).isac_Add) &&
+          (isSubtype(typeOf(anon_0_0), Expr()) &&
+          ExprFromRef(anon_0_0).isac_Neg) ?
             negInt(eval(ExprFromRef(e).af_a_Expr_expr)) :
             null)) in
           (let anon_7_0 ==
-            ((!isSubtype(typeOf(anon_0_0), Expr()) &&
-            !isSubtype(typeOf(anon_0_0), Expr()) ?
-              (isSubtype(typeOf(anon_0_0), Expr()) ?
+            ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+            ExprFromRef(anon_0_0).isac_Lit) &&
+            !(isSubtype(typeOf(anon_0_0), Expr()) &&
+            ExprFromRef(anon_0_0).isac_Add) ?
+              (isSubtype(typeOf(anon_0_0), Expr()) &&
+              ExprFromRef(anon_0_0).isac_Neg ?
                 anon_8_0 :
                 unitValue()) :
               null)) in
             (let anon_5_0 ==
-              ((!isSubtype(typeOf(anon_0_0), Expr()) ?
-                (isSubtype(typeOf(anon_0_0), Expr()) ? anon_6_0 : anon_7_0) :
+              ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+              ExprFromRef(anon_0_0).isac_Lit) ?
+                (isSubtype(typeOf(anon_0_0), Expr()) &&
+                ExprFromRef(anon_0_0).isac_Add ?
+                  anon_6_0 :
+                  anon_7_0) :
                 null)) in
               (let anon_3_0 ==
-                ((isSubtype(typeOf(anon_0_0), Expr()) ?
+                ((isSubtype(typeOf(anon_0_0), Expr()) &&
+                ExprFromRef(anon_0_0).isac_Lit ?
                   anon_4_0 :
                   anon_5_0)) in
                 anon_3_0)))))))
@@ -335,19 +393,13 @@ adt a_Expr {
 function con_Add(left: Ref, right: Ref): Ref
   requires isSubtype(typeOf(left), Expr())
   requires isSubtype(typeOf(right), Expr())
-  ensures isSubtype(typeOf(result), Expr())
-  ensures ExprFromRef(ExprFromRef(result).af_a_Expr_left) ==
-    ExprFromRef(left)
-  ensures ExprFromRef(ExprFromRef(result).af_a_Expr_right) ==
-    ExprFromRef(right)
+  ensures isSubtype(typeOf(result), Expr()) && ExprFromRef(result).isac_Add
   ensures ExprFromRef(result) == ac_Add(left, right)
 
 
 function con_Neg(expr: Ref): Ref
   requires isSubtype(typeOf(expr), Expr())
-  ensures isSubtype(typeOf(result), Expr())
-  ensures ExprFromRef(ExprFromRef(result).af_a_Expr_expr) ==
-    ExprFromRef(expr)
+  ensures isSubtype(typeOf(result), Expr()) && ExprFromRef(result).isac_Neg
   ensures ExprFromRef(result) == ac_Neg(expr)
 
 
@@ -358,35 +410,47 @@ function eval(e: Ref): Ref
   (let anon_0_0 ==
     (e) in
     (let anon_7_0 ==
-      ((isSubtype(typeOf(anon_0_0), Expr()) ?
+      ((isSubtype(typeOf(anon_0_0), Expr()) &&
+      ExprFromRef(anon_0_0).isac_Lit ?
         ExprFromRef(e).af_a_Expr_n :
         null)) in
       (let anon_9_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Expr()) &&
-        isSubtype(typeOf(anon_0_0), Expr()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+        ExprFromRef(anon_0_0).isac_Lit) &&
+        (isSubtype(typeOf(anon_0_0), Expr()) &&
+        ExprFromRef(anon_0_0).isac_Add) ?
           plusInts(eval(ExprFromRef(e).af_a_Expr_left), eval(ExprFromRef(e).af_a_Expr_right)) :
           null)) in
         (let anon_11_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Expr()) &&
-          !isSubtype(typeOf(anon_0_0), Expr()) &&
-          isSubtype(typeOf(anon_0_0), Expr()) ?
+          ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+          ExprFromRef(anon_0_0).isac_Lit) &&
+          !(isSubtype(typeOf(anon_0_0), Expr()) &&
+          ExprFromRef(anon_0_0).isac_Add) &&
+          (isSubtype(typeOf(anon_0_0), Expr()) &&
+          ExprFromRef(anon_0_0).isac_Neg) ?
             negInt(eval(ExprFromRef(e).af_a_Expr_expr)) :
             null)) in
           (let anon_10_0 ==
-            ((!isSubtype(typeOf(anon_0_0), Expr()) &&
-            !isSubtype(typeOf(anon_0_0), Expr()) ?
-              (isSubtype(typeOf(anon_0_0), Expr()) ?
+            ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+            ExprFromRef(anon_0_0).isac_Lit) &&
+            !(isSubtype(typeOf(anon_0_0), Expr()) &&
+            ExprFromRef(anon_0_0).isac_Add) ?
+              (isSubtype(typeOf(anon_0_0), Expr()) &&
+              ExprFromRef(anon_0_0).isac_Neg ?
                 anon_11_0 :
                 unitValue()) :
               null)) in
             (let anon_8_0 ==
-              ((!isSubtype(typeOf(anon_0_0), Expr()) ?
-                (isSubtype(typeOf(anon_0_0), Expr()) ?
+              ((!(isSubtype(typeOf(anon_0_0), Expr()) &&
+              ExprFromRef(anon_0_0).isac_Lit) ?
+                (isSubtype(typeOf(anon_0_0), Expr()) &&
+                ExprFromRef(anon_0_0).isac_Add ?
                   anon_9_0 :
                   anon_10_0) :
                 null)) in
               (let anon_6_0 ==
-                ((isSubtype(typeOf(anon_0_0), Expr()) ?
+                ((isSubtype(typeOf(anon_0_0), Expr()) &&
+                ExprFromRef(anon_0_0).isac_Lit ?
                   anon_7_0 :
                   anon_8_0)) in
                 anon_6_0)))))))

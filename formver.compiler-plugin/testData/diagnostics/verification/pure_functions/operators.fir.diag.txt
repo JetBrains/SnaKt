@@ -4,7 +4,9 @@ function testAnd(a: Ref, b: Ref): Ref
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(result), boolType())
 {
-  andBools(andBools(a, b), andBools(a, b))
+  (let anon_0_0 ==
+    ((boolFromRef(a) && boolFromRef(b) ? andBools(a, b) : boolToRef(false))) in
+    anon_0_0)
 }
 
 /operators.kt: info: Generated Viper text for testOr:
@@ -13,7 +15,9 @@ function testOr(a: Ref, b: Ref): Ref
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(result), boolType())
 {
-  orBools(orBools(a, b), orBools(a, b))
+  (let anon_0_0 ==
+    ((boolFromRef(a) || boolFromRef(b) ? boolToRef(true) : orBools(a, b))) in
+    anon_0_0)
 }
 
 /operators.kt: info: Generated Viper text for testXor:

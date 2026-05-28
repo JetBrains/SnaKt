@@ -1,1 +1,0 @@
-/equality.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.

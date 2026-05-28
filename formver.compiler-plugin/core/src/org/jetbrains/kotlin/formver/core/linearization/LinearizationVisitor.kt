@@ -14,11 +14,14 @@ import org.jetbrains.kotlin.formver.core.embeddings.*
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toFuncApp
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toMethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.fillHoles
 import org.jetbrains.kotlin.formver.core.embeddings.types.injection
+import org.jetbrains.kotlin.formver.core.embeddings.types.nonStandaloneAdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
+import org.jetbrains.kotlin.formver.viper.ast.and
 import org.jetbrains.kotlin.formver.viper.ast.viperLiteral
 
 data class LinearizationVisitor(
@@ -193,9 +196,8 @@ data class LinearizationVisitor(
 
     override fun visitAdtConstructorRef(e: AdtConstructorRef): Linearizable = object : DirectResultLinearizable(e, this@LinearizationVisitor) {
         override fun toViperBuiltinType(ctx: LinearizationContext): Exp {
-            val fields = ctx.typeResolver.lookupAdtFields(e.adtTypeEmbedding.name)
             val viperArgs = e.args.map { it.linearize().toViper(ctx) }
-            return Exp.AdtConstructorApp(e.adtTypeEmbedding.getViperConstructorDecl(fields), viperArgs, pos = ctx.source.asPosition)
+            return Exp.AdtConstructorApp(ctx.typeResolver.lookupAdtConstructorDecl(e.adtTypeEmbedding), viperArgs, pos = ctx.source.asPosition)
         }
 
         override fun toViper(ctx: LinearizationContext): Exp =
@@ -241,17 +243,39 @@ data class LinearizationVisitor(
     // region Type Operations
 
     override fun visitIs(e: Is): Linearizable = object : DirectResultLinearizable(e, this@LinearizationVisitor) {
-        override fun toViper(ctx: LinearizationContext): Exp =
-            RuntimeTypeDomain.boolInjection.toRef(
-                RuntimeTypeDomain.isSubtype(
-                    RuntimeTypeDomain.typeOf(e.inner.linearize().toViper(ctx), pos = ctx.source.asPosition),
-                    e.comparisonType.runtimeType,
-                    pos = ctx.source.asPosition,
-                    info = e.sourceRole.asInfo
-                ),
+        override fun toViper(ctx: LinearizationContext): Exp {
+            val innerViper = e.inner.linearize().toViper(ctx)
+            val subtypeCheck = RuntimeTypeDomain.isSubtype(
+                RuntimeTypeDomain.typeOf(innerViper, pos = ctx.source.asPosition),
+                e.comparisonType.runtimeType,
                 pos = ctx.source.asPosition,
-                info = e.sourceRole.asInfo
+                info = e.sourceRole.asInfo,
             )
+            // Sum-type children share their parent's Viper ADT type, so the runtime subtype
+            // and the ADT discriminator are required to distinguish it.
+            // Nullable types are excluded: the discriminator requires an unwrapped ADT value.
+            // This loses precision for nullable ADT variants, but is safe — null checks/smart
+            // casts produce a non-nullable Is() that does include the discriminator.
+            val isNullable = (e.comparisonType as? TypeEmbedding)?.isNullable == true
+            val adtTypeEmbedding = if (isNullable) null else e.comparisonType.nonStandaloneAdtTypeEmbedding
+            val check = if (adtTypeEmbedding != null) {
+                val unwrapped = adtTypeEmbedding.injection.fromRef(innerViper, pos = ctx.source.asPosition)
+                val discriminator = Exp.AdtDiscriminatorApp(
+                    constructorName = ctx.typeResolver.lookupAdtConstructorDecl(adtTypeEmbedding).name,
+                    rcv = unwrapped,
+                    adtName = adtTypeEmbedding.adtName,
+                    pos = ctx.source.asPosition,
+                )
+                subtypeCheck and discriminator
+            } else {
+                subtypeCheck
+            }
+            return RuntimeTypeDomain.boolInjection.toRef(
+                check,
+                pos = ctx.source.asPosition,
+                info = e.sourceRole.asInfo,
+            )
+        }
     }
 
     override fun visitCast(e: Cast): Linearizable = object : DirectResultLinearizable(e, this@LinearizationVisitor) {

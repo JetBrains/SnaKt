@@ -1,9 +1,0 @@
-/Nat.kt: warning: Viper verification error: Postcondition of natRefl might not hold. Assertion boolFromRef(equals(a, a)) might not hold.
-
-/Nat.kt: warning: Viper verification error: Postcondition of natTrans might not hold. Assertion boolFromRef(equals(a, c)) might not hold.
-
-/Nat.kt: warning: Viper verification error: Postcondition of natSym might not hold. Assertion boolFromRef(equals(b, a)) might not hold.
-
-/Nat.kt: warning: Viper verification error: Postcondition of addRightZero might not hold. Assertion boolFromRef(equals(add(m, NatToRef(ac_Zero())), m)) might not hold.
-
-/Nat.kt: warning: Viper verification error: The precondition of method natSym might not hold. Assertion boolFromRef(equals(add(n, m), n)) might not hold.

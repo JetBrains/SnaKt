@@ -74,22 +74,27 @@ function sumFirstTwoNodes(node: Ref): Ref
 {
   (let nextNode_0 ==
     (next(node)) in
-    (let anon_1_0 ==
-      ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-      nextNode_0 == nullValue() && nullValue() == nullValue()) ?
-        plusInts(value(node), value(nextNode_0)) :
-        null)) in
-      (let anon_2_0 ==
-        ((!!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-        nextNode_0 == nullValue() && nullValue() == nullValue()) ?
-          value(node) :
+    (let anon_2_0 ==
+      ((nextNode_0 != nullValue() ?
+        boolToRef(nextNode_0 == nullValue()) :
+        boolToRef(false))) in
+      (let anon_3_0 ==
+        ((!boolFromRef(anon_2_0) ?
+          (nextNode_0 == nullValue() ?
+            boolToRef(nullValue() == nullValue()) :
+            boolToRef(false)) :
           null)) in
-        (let anon_0_0 ==
-          ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-          nextNode_0 == nullValue() && nullValue() == nullValue()) ?
-            anon_1_0 :
-            anon_2_0)) in
-          anon_0_0))))
+        (let anon_1_0 ==
+          ((boolFromRef(anon_2_0) ? boolToRef(true) : anon_3_0)) in
+          (let anon_4_0 ==
+            ((!boolFromRef(anon_1_0) ?
+              plusInts(value(node), value(nextNode_0)) :
+              null)) in
+            (let anon_5_0 ==
+              ((!!boolFromRef(anon_1_0) ? value(node) : null)) in
+              (let anon_0_0 ==
+                ((!boolFromRef(anon_1_0) ? anon_4_0 : anon_5_0)) in
+                anon_0_0)))))))
 }
 
 function value(this: Ref): Ref
@@ -102,9 +107,19 @@ function isLastNode(node: Ref): Ref
   requires isSubtype(typeOf(node), Node())
   ensures isSubtype(typeOf(result), boolType())
 {
-  orBools(andBools(boolToRef(next(node) != nullValue()), boolToRef(next(node) ==
-  nullValue())), andBools(boolToRef(next(node) == nullValue()), boolToRef(nullValue() ==
-  nullValue())))
+  (let anon_1_0 ==
+    ((next(node) != nullValue() ?
+      boolToRef(next(node) == nullValue()) :
+      boolToRef(false))) in
+    (let anon_2_0 ==
+      ((!boolFromRef(anon_1_0) ?
+        (next(node) == nullValue() ?
+          boolToRef(nullValue() == nullValue()) :
+          boolToRef(false)) :
+        null)) in
+      (let anon_0_0 ==
+        ((boolFromRef(anon_1_0) ? boolToRef(true) : anon_2_0)) in
+        anon_0_0)))
 }
 
 function next(this: Ref): Ref
@@ -124,22 +139,27 @@ function length(node: Ref): Ref
 {
   (let nextNode_0 ==
     (next(node)) in
-    (let anon_1_0 ==
-      ((nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-      nextNode_0 == nullValue() && nullValue() == nullValue() ?
-        intToRef(1) :
-        null)) in
-      (let anon_2_0 ==
-        ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-        nextNode_0 == nullValue() && nullValue() == nullValue()) ?
-          plusInts(intToRef(1), length(nextNode_0)) :
+    (let anon_2_0 ==
+      ((nextNode_0 != nullValue() ?
+        boolToRef(nextNode_0 == nullValue()) :
+        boolToRef(false))) in
+      (let anon_3_0 ==
+        ((!boolFromRef(anon_2_0) ?
+          (nextNode_0 == nullValue() ?
+            boolToRef(nullValue() == nullValue()) :
+            boolToRef(false)) :
           null)) in
-        (let anon_0_0 ==
-          ((nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-          nextNode_0 == nullValue() && nullValue() == nullValue() ?
-            anon_1_0 :
-            anon_2_0)) in
-          anon_0_0))))
+        (let anon_1_0 ==
+          ((boolFromRef(anon_2_0) ? boolToRef(true) : anon_3_0)) in
+          (let anon_4_0 ==
+            ((boolFromRef(anon_1_0) ? intToRef(1) : null)) in
+            (let anon_5_0 ==
+              ((!boolFromRef(anon_1_0) ?
+                plusInts(intToRef(1), length(nextNode_0)) :
+                null)) in
+              (let anon_0_0 ==
+                ((boolFromRef(anon_1_0) ? anon_4_0 : anon_5_0)) in
+                anon_0_0)))))))
 }
 
 function next(this: Ref): Ref
@@ -164,22 +184,27 @@ function sumAllNodes(node: Ref): Ref
 {
   (let nextNode_0 ==
     (next(node)) in
-    (let anon_1_0 ==
-      ((nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-      nextNode_0 == nullValue() && nullValue() == nullValue() ?
-        value(node) :
-        null)) in
-      (let anon_2_0 ==
-        ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-        nextNode_0 == nullValue() && nullValue() == nullValue()) ?
-          plusInts(value(node), sumAllNodes(nextNode_0)) :
+    (let anon_2_0 ==
+      ((nextNode_0 != nullValue() ?
+        boolToRef(nextNode_0 == nullValue()) :
+        boolToRef(false))) in
+      (let anon_3_0 ==
+        ((!boolFromRef(anon_2_0) ?
+          (nextNode_0 == nullValue() ?
+            boolToRef(nullValue() == nullValue()) :
+            boolToRef(false)) :
           null)) in
-        (let anon_0_0 ==
-          ((nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-          nextNode_0 == nullValue() && nullValue() == nullValue() ?
-            anon_1_0 :
-            anon_2_0)) in
-          anon_0_0))))
+        (let anon_1_0 ==
+          ((boolFromRef(anon_2_0) ? boolToRef(true) : anon_3_0)) in
+          (let anon_4_0 ==
+            ((boolFromRef(anon_1_0) ? value(node) : null)) in
+            (let anon_5_0 ==
+              ((!boolFromRef(anon_1_0) ?
+                plusInts(value(node), sumAllNodes(nextNode_0)) :
+                null)) in
+              (let anon_0_0 ==
+                ((boolFromRef(anon_1_0) ? anon_4_0 : anon_5_0)) in
+                anon_0_0)))))))
 }
 
 function value(this: Ref): Ref
@@ -195,25 +220,30 @@ function containsValue(node: Ref, target: Ref): Ref
 {
   (let nextNode_0 ==
     (next(node)) in
-    (let anon_1_0 ==
-      ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-      nextNode_0 == nullValue() && nullValue() == nullValue()) ?
-        containsValue(nextNode_0, target) :
-        null)) in
-      (let anon_2_0 ==
-        ((!!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-        nextNode_0 == nullValue() && nullValue() == nullValue()) ?
-          boolToRef(false) :
+    (let anon_2_0 ==
+      ((nextNode_0 != nullValue() ?
+        boolToRef(nextNode_0 == nullValue()) :
+        boolToRef(false))) in
+      (let anon_3_0 ==
+        ((!boolFromRef(anon_2_0) ?
+          (nextNode_0 == nullValue() ?
+            boolToRef(nullValue() == nullValue()) :
+            boolToRef(false)) :
           null)) in
-        (let anon_0_0 ==
-          ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-          nextNode_0 == nullValue() && nullValue() == nullValue()) ?
-            anon_1_0 :
-            anon_2_0)) in
-          (isSubtype(typeOf(target), intType()) &&
-          intFromRef(value(node)) == intFromRef(target) ?
-            boolToRef(true) :
-            anon_0_0)))))
+        (let anon_1_0 ==
+          ((boolFromRef(anon_2_0) ? boolToRef(true) : anon_3_0)) in
+          (let anon_4_0 ==
+            ((!boolFromRef(anon_1_0) ?
+              containsValue(nextNode_0, target) :
+              null)) in
+            (let anon_5_0 ==
+              ((!!boolFromRef(anon_1_0) ? boolToRef(false) : null)) in
+              (let anon_0_0 ==
+                ((!boolFromRef(anon_1_0) ? anon_4_0 : anon_5_0)) in
+                (isSubtype(typeOf(target), intType()) &&
+                intFromRef(value(node)) == intFromRef(target) ?
+                  boolToRef(true) :
+                  anon_0_0))))))))
 }
 
 function next(this: Ref): Ref
@@ -237,17 +267,25 @@ function aliasAndReassign(node: Ref): Ref
       (next(alias1_0)) in
       (let fallbackValue_0 ==
         (intToRef(-1)) in
-        (let fallbackValue_1 ==
-          ((!(alias2_0 != nullValue() && alias2_0 == nullValue() ||
-          alias2_0 == nullValue() && nullValue() == nullValue()) ?
-            value(alias2_0) :
-            null)) in
-          (let fallbackValue_2 ==
-            ((!(alias2_0 != nullValue() && alias2_0 == nullValue() ||
-            alias2_0 == nullValue() && nullValue() == nullValue()) ?
-              fallbackValue_1 :
-              fallbackValue_0)) in
-            fallbackValue_2)))))
+        (let anon_1_0 ==
+          ((alias2_0 != nullValue() ?
+            boolToRef(alias2_0 == nullValue()) :
+            boolToRef(false))) in
+          (let anon_2_0 ==
+            ((!boolFromRef(anon_1_0) ?
+              (alias2_0 == nullValue() ?
+                boolToRef(nullValue() == nullValue()) :
+                boolToRef(false)) :
+              null)) in
+            (let anon_0_0 ==
+              ((boolFromRef(anon_1_0) ? boolToRef(true) : anon_2_0)) in
+              (let fallbackValue_1 ==
+                ((!boolFromRef(anon_0_0) ? value(alias2_0) : null)) in
+                (let fallbackValue_2 ==
+                  ((!boolFromRef(anon_0_0) ?
+                    fallbackValue_1 :
+                    fallbackValue_0)) in
+                  fallbackValue_2))))))))
 }
 
 function next(this: Ref): Ref
@@ -316,22 +354,25 @@ function getNextValueUsingId(node: Ref): Ref
 {
   (let nextNode_0 ==
     (id(next(node))) in
-    (let anon_1_0 ==
-      ((nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-      nextNode_0 == nullValue() && nullValue() == nullValue() ?
-        intToRef(0) :
-        null)) in
-      (let anon_2_0 ==
-        ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-        nextNode_0 == nullValue() && nullValue() == nullValue()) ?
-          value(nextNode_0) :
+    (let anon_2_0 ==
+      ((nextNode_0 != nullValue() ?
+        boolToRef(nextNode_0 == nullValue()) :
+        boolToRef(false))) in
+      (let anon_3_0 ==
+        ((!boolFromRef(anon_2_0) ?
+          (nextNode_0 == nullValue() ?
+            boolToRef(nullValue() == nullValue()) :
+            boolToRef(false)) :
           null)) in
-        (let anon_0_0 ==
-          ((nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
-          nextNode_0 == nullValue() && nullValue() == nullValue() ?
-            anon_1_0 :
-            anon_2_0)) in
-          anon_0_0))))
+        (let anon_1_0 ==
+          ((boolFromRef(anon_2_0) ? boolToRef(true) : anon_3_0)) in
+          (let anon_4_0 ==
+            ((boolFromRef(anon_1_0) ? intToRef(0) : null)) in
+            (let anon_5_0 ==
+              ((!boolFromRef(anon_1_0) ? value(nextNode_0) : null)) in
+              (let anon_0_0 ==
+                ((boolFromRef(anon_1_0) ? anon_4_0 : anon_5_0)) in
+                anon_0_0)))))))
 }
 
 function id(node: Ref): Ref

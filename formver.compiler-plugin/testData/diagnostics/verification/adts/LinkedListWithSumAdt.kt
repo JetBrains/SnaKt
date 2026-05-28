@@ -4,35 +4,35 @@ package diagnostics.verification.adts
 
 import org.jetbrains.kotlin.formver.plugin.*
 
-<!ADT_VIOLATION, ADT_VIOLATION, ADT_VIOLATION, ADT_VIOLATION!>@ADT
-sealed interface LinkedList<!>
+@ADT
+sealed interface LinkedList
 
 @ADT
-data <!ADT_VIOLATION, ADT_VIOLATION, ADT_VIOLATION, ADT_VIOLATION!>object Nil<!> : LinkedList
+data object Nil : LinkedList
 
-<!ADT_VIOLATION, ADT_VIOLATION, ADT_VIOLATION, ADT_VIOLATION!>@ADT
-data class Cons(val head: Int, val tail: LinkedList) : LinkedList<!>
+@ADT
+data class Cons(val head: Int, val tail: LinkedList) : LinkedList
 
-<!ADT_VIOLATION!>@Pure
-fun length(xs: LinkedList): Int = when (xs) {
-        is Nil -> 0
-        is Cons -> 1 + length(xs.tail)
-    }<!>
+@Pure
+fun <!VIPER_TEXT!>length<!>(xs: LinkedList): Int = when (xs) {
+    is Nil -> 0
+    is Cons -> 1 + length(xs.tail)
+}
 
-<!INTERNAL_ERROR!>@Pure
-fun append(xs: LinkedList, ys: LinkedList): LinkedList = when (xs) {
-        is Nil -> ys
-        is Cons -> Cons(xs.head, append(xs.tail, ys))
-    }<!>
+@Pure
+fun <!VIPER_TEXT!>append<!>(xs: LinkedList, ys: LinkedList): LinkedList = when (xs) {
+    is Nil -> ys
+    is Cons -> Cons(xs.head, append(xs.tail, ys))
+}
 
-<!INTERNAL_ERROR!>@Pure
-fun reverse(xs: LinkedList): LinkedList = when (xs) {
-        is Nil -> Nil
-        is Cons -> append(reverse(xs.tail), Cons(xs.head, Nil))
-    }<!>
+@Pure
+fun <!VIPER_TEXT!>reverse<!>(xs: LinkedList): LinkedList = when (xs) {
+    is Nil -> Nil
+    is Cons -> append(reverse(xs.tail), Cons(xs.head, Nil))
+}
 
-<!ADT_VIOLATION!>@AlwaysVerify
-fun listRefl(xs: LinkedList): Unit {
+@AlwaysVerify
+fun <!VIPER_TEXT!>listRefl<!>(xs: LinkedList): Unit {
     postconditions<Unit> {
         xs == xs
     }
@@ -40,10 +40,10 @@ fun listRefl(xs: LinkedList): Unit {
         is Nil -> {}
         is Cons -> listRefl(xs.tail)
     }
-}<!>
+}
 
-<!ADT_VIOLATION!>@AlwaysVerify
-fun listSym(a: LinkedList, b: LinkedList): Unit {
+@AlwaysVerify
+fun <!VIPER_TEXT!>listSym<!>(a: LinkedList, b: LinkedList): Unit {
     preconditions { a == b }
     postconditions<Unit> {
         b == a
@@ -55,10 +55,10 @@ fun listSym(a: LinkedList, b: LinkedList): Unit {
             is Cons -> listSym(a.tail, b.tail)
         }
     }
-}<!>
+}
 
-<!ADT_VIOLATION!>@AlwaysVerify
-fun listTrans(a: LinkedList, b: LinkedList, c: LinkedList): Unit {
+@AlwaysVerify
+fun <!VIPER_TEXT!>listTrans<!>(a: LinkedList, b: LinkedList, c: LinkedList): Unit {
     preconditions {
         a == b
         b == c
@@ -76,10 +76,10 @@ fun listTrans(a: LinkedList, b: LinkedList, c: LinkedList): Unit {
             }
         }
     }
-}<!>
+}
 
-<!INTERNAL_ERROR!>@AlwaysVerify
-fun appendNull(xs: LinkedList): Unit {
+@AlwaysVerify
+fun <!VIPER_TEXT!>appendNull<!>(xs: LinkedList): Unit {
     postconditions<Unit> {
         append(xs, Nil) == xs
     }
@@ -87,10 +87,10 @@ fun appendNull(xs: LinkedList): Unit {
         is Nil -> {}
         is Cons -> appendNull(xs.tail)
     }
-}<!>
+}
 
-<!INTERNAL_ERROR!>@AlwaysVerify
-fun appendAssoc(xs: LinkedList, ys: LinkedList, zs: LinkedList): Unit {
+@AlwaysVerify
+fun <!VIPER_TEXT!>appendAssoc<!>(xs: LinkedList, ys: LinkedList, zs: LinkedList): Unit {
     postconditions<Unit> {
         append(append(xs, ys), zs) == append(xs, append(ys, zs))
     }
@@ -98,10 +98,10 @@ fun appendAssoc(xs: LinkedList, ys: LinkedList, zs: LinkedList): Unit {
         is Nil -> listRefl(append(ys, zs))
         is Cons -> appendAssoc(xs.tail, ys, zs)
     }
-}<!>
+}
 
-<!INTERNAL_ERROR!>@AlwaysVerify
-fun appendCongL(a: LinkedList, b: LinkedList, c: LinkedList): Unit {
+@AlwaysVerify
+fun <!VIPER_TEXT!>appendCongL<!>(a: LinkedList, b: LinkedList, c: LinkedList): Unit {
     preconditions { a == b }
     postconditions<Unit> {
         append(a, c) == append(b, c)
@@ -113,10 +113,10 @@ fun appendCongL(a: LinkedList, b: LinkedList, c: LinkedList): Unit {
             is Cons -> appendCongL(a.tail, b.tail, c)
         }
     }
-}<!>
+}
 
-<!INTERNAL_ERROR!>@AlwaysVerify
-fun appendCongR(a: LinkedList, b: LinkedList, c: LinkedList): Unit {
+@AlwaysVerify
+fun <!VIPER_TEXT!>appendCongR<!>(a: LinkedList, b: LinkedList, c: LinkedList): Unit {
     preconditions { b == c }
     postconditions<Unit> {
         append(a, b) == append(a, c)
@@ -125,10 +125,10 @@ fun appendCongR(a: LinkedList, b: LinkedList, c: LinkedList): Unit {
         is Nil -> listRefl(b)
         is Cons -> appendCongR(a.tail, b, c)
     }
-}<!>
+}
 
-<!INTERNAL_ERROR!>@AlwaysVerify
-fun reverseAppend(xs: LinkedList, ys: LinkedList): Unit {
+@AlwaysVerify
+fun <!VIPER_TEXT!>reverseAppend<!>(xs: LinkedList, ys: LinkedList): Unit {
     postconditions<Unit> {
         reverse(append(xs, ys)) == append(reverse(ys), reverse(xs))
     }
@@ -158,19 +158,19 @@ fun reverseAppend(xs: LinkedList, ys: LinkedList): Unit {
             )
         }
     }
-}<!>
+}
 
-<!INTERNAL_ERROR!>@AlwaysVerify
-fun appendSingletonCons(x: Int, ys: LinkedList): Unit {
+@AlwaysVerify
+fun <!VIPER_TEXT!>appendSingletonCons<!>(x: Int, ys: LinkedList): Unit {
     postconditions<Unit> {
         append(Cons(x, Nil), ys) == Cons(x, ys)
     }
     appendNilL(ys)
-}<!>
+}
 
 
-<!INTERNAL_ERROR!>@AlwaysVerify
-fun reverseReverseIsId(xs: LinkedList): Unit {
+@AlwaysVerify
+fun <!VIPER_TEXT!>reverseReverseIsId<!>(xs: LinkedList): Unit {
     postconditions<Unit> {
         reverse(reverse(xs)) == xs
     }
@@ -224,26 +224,26 @@ fun reverseReverseIsId(xs: LinkedList): Unit {
             )
         }
     }
-}<!>
+}
 
-<!INTERNAL_ERROR!>@AlwaysVerify
-fun appendNilL(xs: LinkedList): Unit {
+@AlwaysVerify
+fun <!VIPER_TEXT!>appendNilL<!>(xs: LinkedList): Unit {
     postconditions<Unit> {
         append(Nil, xs) == xs
     }
     listRefl(xs)
-}<!>
+}
 
-<!INTERNAL_ERROR!>@AlwaysVerify
-fun reverseNil(): Unit {
+@AlwaysVerify
+fun <!VIPER_TEXT!>reverseNil<!>(): Unit {
     postconditions<Unit> {
         reverse(Nil) == Nil
     }
     listRefl(Nil)
-}<!>
+}
 
-<!INTERNAL_ERROR!>@AlwaysVerify
-fun reverseSingleton(x: Int): Unit {
+@AlwaysVerify
+fun <!VIPER_TEXT!>reverseSingleton<!>(x: Int): Unit {
     postconditions<Unit> {
         reverse(Cons(x, Nil)) == Cons(x, Nil)
     }
@@ -263,5 +263,5 @@ fun reverseSingleton(x: Int): Unit {
         append(reverse(Nil), Cons(x, Nil)),
         Cons(x, Nil)
     )
-}<!>
+}
 

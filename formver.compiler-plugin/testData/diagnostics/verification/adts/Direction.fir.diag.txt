@@ -6,50 +6,70 @@ function opposite(d: Ref): Ref
   (let anon_0_0 ==
     (d) in
     (let anon_2_0 ==
-      ((isSubtype(typeOf(anon_0_0), Direction()) ?
+      ((isSubtype(typeOf(anon_0_0), Direction()) &&
+      DirectionFromRef(anon_0_0).isac_North ?
         DirectionToRef(ac_South()) :
         null)) in
       (let anon_4_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Direction()) &&
-        isSubtype(typeOf(anon_0_0), Direction()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Direction()) &&
+        DirectionFromRef(anon_0_0).isac_North) &&
+        (isSubtype(typeOf(anon_0_0), Direction()) &&
+        DirectionFromRef(anon_0_0).isac_South) ?
           DirectionToRef(ac_North()) :
           null)) in
         (let anon_6_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Direction()) &&
-          !isSubtype(typeOf(anon_0_0), Direction()) &&
-          isSubtype(typeOf(anon_0_0), Direction()) ?
+          ((!(isSubtype(typeOf(anon_0_0), Direction()) &&
+          DirectionFromRef(anon_0_0).isac_North) &&
+          !(isSubtype(typeOf(anon_0_0), Direction()) &&
+          DirectionFromRef(anon_0_0).isac_South) &&
+          (isSubtype(typeOf(anon_0_0), Direction()) &&
+          DirectionFromRef(anon_0_0).isac_East) ?
             DirectionToRef(ac_West()) :
             null)) in
           (let anon_8_0 ==
-            ((!isSubtype(typeOf(anon_0_0), Direction()) &&
-            !isSubtype(typeOf(anon_0_0), Direction()) &&
-            !isSubtype(typeOf(anon_0_0), Direction()) &&
-            isSubtype(typeOf(anon_0_0), Direction()) ?
+            ((!(isSubtype(typeOf(anon_0_0), Direction()) &&
+            DirectionFromRef(anon_0_0).isac_North) &&
+            !(isSubtype(typeOf(anon_0_0), Direction()) &&
+            DirectionFromRef(anon_0_0).isac_South) &&
+            !(isSubtype(typeOf(anon_0_0), Direction()) &&
+            DirectionFromRef(anon_0_0).isac_East) &&
+            (isSubtype(typeOf(anon_0_0), Direction()) &&
+            DirectionFromRef(anon_0_0).isac_West) ?
               DirectionToRef(ac_East()) :
               null)) in
             (let anon_7_0 ==
-              ((!isSubtype(typeOf(anon_0_0), Direction()) &&
-              !isSubtype(typeOf(anon_0_0), Direction()) &&
-              !isSubtype(typeOf(anon_0_0), Direction()) ?
-                (isSubtype(typeOf(anon_0_0), Direction()) ?
+              ((!(isSubtype(typeOf(anon_0_0), Direction()) &&
+              DirectionFromRef(anon_0_0).isac_North) &&
+              !(isSubtype(typeOf(anon_0_0), Direction()) &&
+              DirectionFromRef(anon_0_0).isac_South) &&
+              !(isSubtype(typeOf(anon_0_0), Direction()) &&
+              DirectionFromRef(anon_0_0).isac_East) ?
+                (isSubtype(typeOf(anon_0_0), Direction()) &&
+                DirectionFromRef(anon_0_0).isac_West ?
                   anon_8_0 :
                   unitValue()) :
                 null)) in
               (let anon_5_0 ==
-                ((!isSubtype(typeOf(anon_0_0), Direction()) &&
-                !isSubtype(typeOf(anon_0_0), Direction()) ?
-                  (isSubtype(typeOf(anon_0_0), Direction()) ?
+                ((!(isSubtype(typeOf(anon_0_0), Direction()) &&
+                DirectionFromRef(anon_0_0).isac_North) &&
+                !(isSubtype(typeOf(anon_0_0), Direction()) &&
+                DirectionFromRef(anon_0_0).isac_South) ?
+                  (isSubtype(typeOf(anon_0_0), Direction()) &&
+                  DirectionFromRef(anon_0_0).isac_East ?
                     anon_6_0 :
                     anon_7_0) :
                   null)) in
                 (let anon_3_0 ==
-                  ((!isSubtype(typeOf(anon_0_0), Direction()) ?
-                    (isSubtype(typeOf(anon_0_0), Direction()) ?
+                  ((!(isSubtype(typeOf(anon_0_0), Direction()) &&
+                  DirectionFromRef(anon_0_0).isac_North) ?
+                    (isSubtype(typeOf(anon_0_0), Direction()) &&
+                    DirectionFromRef(anon_0_0).isac_South ?
                       anon_4_0 :
                       anon_5_0) :
                     null)) in
                   (let anon_1_0 ==
-                    ((isSubtype(typeOf(anon_0_0), Direction()) ?
+                    ((isSubtype(typeOf(anon_0_0), Direction()) &&
+                    DirectionFromRef(anon_0_0).isac_North ?
                       anon_2_0 :
                       anon_3_0)) in
                     anon_1_0)))))))))
@@ -69,29 +89,43 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_13_0 ==
-    ((!isSubtype(typeOf(this), Direction()) &&
-    !isSubtype(typeOf(this), Direction()) &&
-    !isSubtype(typeOf(this), Direction()) ?
-      (isSubtype(typeOf(this), Direction()) ?
-        boolToRef(isSubtype(typeOf(anon_0), Direction())) :
+    ((!(isSubtype(typeOf(this), Direction()) &&
+    DirectionFromRef(this).isac_East) &&
+    !(isSubtype(typeOf(this), Direction()) &&
+    DirectionFromRef(this).isac_North) &&
+    !(isSubtype(typeOf(this), Direction()) &&
+    DirectionFromRef(this).isac_South) ?
+      (isSubtype(typeOf(this), Direction()) &&
+      DirectionFromRef(this).isac_West ?
+        boolToRef(isSubtype(typeOf(anon_0), Direction()) &&
+        DirectionFromRef(anon_0).isac_West) :
         boolToRef(false)) :
       null)) in
     (let anon_12_0 ==
-      ((!isSubtype(typeOf(this), Direction()) &&
-      !isSubtype(typeOf(this), Direction()) ?
-        (isSubtype(typeOf(this), Direction()) ?
-          boolToRef(isSubtype(typeOf(anon_0), Direction())) :
+      ((!(isSubtype(typeOf(this), Direction()) &&
+      DirectionFromRef(this).isac_East) &&
+      !(isSubtype(typeOf(this), Direction()) &&
+      DirectionFromRef(this).isac_North) ?
+        (isSubtype(typeOf(this), Direction()) &&
+        DirectionFromRef(this).isac_South ?
+          boolToRef(isSubtype(typeOf(anon_0), Direction()) &&
+          DirectionFromRef(anon_0).isac_South) :
           anon_13_0) :
         null)) in
       (let anon_11_0 ==
-        ((!isSubtype(typeOf(this), Direction()) ?
-          (isSubtype(typeOf(this), Direction()) ?
-            boolToRef(isSubtype(typeOf(anon_0), Direction())) :
+        ((!(isSubtype(typeOf(this), Direction()) &&
+        DirectionFromRef(this).isac_East) ?
+          (isSubtype(typeOf(this), Direction()) &&
+          DirectionFromRef(this).isac_North ?
+            boolToRef(isSubtype(typeOf(anon_0), Direction()) &&
+            DirectionFromRef(anon_0).isac_North) :
             anon_12_0) :
           null)) in
         (let anon_10_0 ==
-          ((isSubtype(typeOf(this), Direction()) ?
-            boolToRef(isSubtype(typeOf(anon_0), Direction())) :
+          ((isSubtype(typeOf(this), Direction()) &&
+          DirectionFromRef(this).isac_East ?
+            boolToRef(isSubtype(typeOf(anon_0), Direction()) &&
+            DirectionFromRef(anon_0).isac_East) :
             anon_11_0)) in
           andBools(boolToRef(isSubtype(typeOf(anon_0), Direction())), anon_10_0)))))
 }
@@ -103,50 +137,70 @@ function opposite(d: Ref): Ref
   (let anon_0_0 ==
     (d) in
     (let anon_3_0 ==
-      ((isSubtype(typeOf(anon_0_0), Direction()) ?
+      ((isSubtype(typeOf(anon_0_0), Direction()) &&
+      DirectionFromRef(anon_0_0).isac_North ?
         DirectionToRef(ac_South()) :
         null)) in
       (let anon_5_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Direction()) &&
-        isSubtype(typeOf(anon_0_0), Direction()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Direction()) &&
+        DirectionFromRef(anon_0_0).isac_North) &&
+        (isSubtype(typeOf(anon_0_0), Direction()) &&
+        DirectionFromRef(anon_0_0).isac_South) ?
           DirectionToRef(ac_North()) :
           null)) in
         (let anon_7_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Direction()) &&
-          !isSubtype(typeOf(anon_0_0), Direction()) &&
-          isSubtype(typeOf(anon_0_0), Direction()) ?
+          ((!(isSubtype(typeOf(anon_0_0), Direction()) &&
+          DirectionFromRef(anon_0_0).isac_North) &&
+          !(isSubtype(typeOf(anon_0_0), Direction()) &&
+          DirectionFromRef(anon_0_0).isac_South) &&
+          (isSubtype(typeOf(anon_0_0), Direction()) &&
+          DirectionFromRef(anon_0_0).isac_East) ?
             DirectionToRef(ac_West()) :
             null)) in
           (let anon_9_0 ==
-            ((!isSubtype(typeOf(anon_0_0), Direction()) &&
-            !isSubtype(typeOf(anon_0_0), Direction()) &&
-            !isSubtype(typeOf(anon_0_0), Direction()) &&
-            isSubtype(typeOf(anon_0_0), Direction()) ?
+            ((!(isSubtype(typeOf(anon_0_0), Direction()) &&
+            DirectionFromRef(anon_0_0).isac_North) &&
+            !(isSubtype(typeOf(anon_0_0), Direction()) &&
+            DirectionFromRef(anon_0_0).isac_South) &&
+            !(isSubtype(typeOf(anon_0_0), Direction()) &&
+            DirectionFromRef(anon_0_0).isac_East) &&
+            (isSubtype(typeOf(anon_0_0), Direction()) &&
+            DirectionFromRef(anon_0_0).isac_West) ?
               DirectionToRef(ac_East()) :
               null)) in
             (let anon_8_0 ==
-              ((!isSubtype(typeOf(anon_0_0), Direction()) &&
-              !isSubtype(typeOf(anon_0_0), Direction()) &&
-              !isSubtype(typeOf(anon_0_0), Direction()) ?
-                (isSubtype(typeOf(anon_0_0), Direction()) ?
+              ((!(isSubtype(typeOf(anon_0_0), Direction()) &&
+              DirectionFromRef(anon_0_0).isac_North) &&
+              !(isSubtype(typeOf(anon_0_0), Direction()) &&
+              DirectionFromRef(anon_0_0).isac_South) &&
+              !(isSubtype(typeOf(anon_0_0), Direction()) &&
+              DirectionFromRef(anon_0_0).isac_East) ?
+                (isSubtype(typeOf(anon_0_0), Direction()) &&
+                DirectionFromRef(anon_0_0).isac_West ?
                   anon_9_0 :
                   unitValue()) :
                 null)) in
               (let anon_6_0 ==
-                ((!isSubtype(typeOf(anon_0_0), Direction()) &&
-                !isSubtype(typeOf(anon_0_0), Direction()) ?
-                  (isSubtype(typeOf(anon_0_0), Direction()) ?
+                ((!(isSubtype(typeOf(anon_0_0), Direction()) &&
+                DirectionFromRef(anon_0_0).isac_North) &&
+                !(isSubtype(typeOf(anon_0_0), Direction()) &&
+                DirectionFromRef(anon_0_0).isac_South) ?
+                  (isSubtype(typeOf(anon_0_0), Direction()) &&
+                  DirectionFromRef(anon_0_0).isac_East ?
                     anon_7_0 :
                     anon_8_0) :
                   null)) in
                 (let anon_4_0 ==
-                  ((!isSubtype(typeOf(anon_0_0), Direction()) ?
-                    (isSubtype(typeOf(anon_0_0), Direction()) ?
+                  ((!(isSubtype(typeOf(anon_0_0), Direction()) &&
+                  DirectionFromRef(anon_0_0).isac_North) ?
+                    (isSubtype(typeOf(anon_0_0), Direction()) &&
+                    DirectionFromRef(anon_0_0).isac_South ?
                       anon_5_0 :
                       anon_6_0) :
                     null)) in
                   (let anon_2_0 ==
-                    ((isSubtype(typeOf(anon_0_0), Direction()) ?
+                    ((isSubtype(typeOf(anon_0_0), Direction()) &&
+                    DirectionFromRef(anon_0_0).isac_North ?
                       anon_3_0 :
                       anon_4_0)) in
                     anon_2_0)))))))))
@@ -159,10 +213,14 @@ method oppositeInvolution(d: Ref) returns (v_ret_0: Ref)
 {
   var anon_1: Ref
   anon_1 := d
-  if (isSubtype(typeOf(anon_1), Direction())) {
-  } elseif (isSubtype(typeOf(anon_1), Direction())) {
-  } elseif (isSubtype(typeOf(anon_1), Direction())) {
-  } elseif (isSubtype(typeOf(anon_1), Direction())) {
+  if (isSubtype(typeOf(anon_1), Direction()) &&
+  DirectionFromRef(anon_1).isac_North) {
+  } elseif (isSubtype(typeOf(anon_1), Direction()) &&
+  DirectionFromRef(anon_1).isac_South) {
+  } elseif (isSubtype(typeOf(anon_1), Direction()) &&
+  DirectionFromRef(anon_1).isac_East) {
+  } elseif (isSubtype(typeOf(anon_1), Direction()) &&
+  DirectionFromRef(anon_1).isac_West) {
   }
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())

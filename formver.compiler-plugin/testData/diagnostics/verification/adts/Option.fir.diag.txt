@@ -6,20 +6,30 @@ function isSome(x: Ref): Ref
   (let anon_0_0 ==
     (x) in
     (let anon_2_0 ==
-      ((isSubtype(typeOf(anon_0_0), Option()) ? boolToRef(false) : null)) in
+      ((isSubtype(typeOf(anon_0_0), Option()) &&
+      OptionFromRef(anon_0_0).isac_None ?
+        boolToRef(false) :
+        null)) in
       (let anon_4_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Option()) &&
-        isSubtype(typeOf(anon_0_0), Option()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Option()) &&
+        OptionFromRef(anon_0_0).isac_None) &&
+        (isSubtype(typeOf(anon_0_0), Option()) &&
+        OptionFromRef(anon_0_0).isac_Some) ?
           boolToRef(true) :
           null)) in
         (let anon_3_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Option()) ?
-            (isSubtype(typeOf(anon_0_0), Option()) ?
+          ((!(isSubtype(typeOf(anon_0_0), Option()) &&
+          OptionFromRef(anon_0_0).isac_None) ?
+            (isSubtype(typeOf(anon_0_0), Option()) &&
+            OptionFromRef(anon_0_0).isac_Some ?
               anon_4_0 :
               unitValue()) :
             null)) in
           (let anon_1_0 ==
-            ((isSubtype(typeOf(anon_0_0), Option()) ? anon_2_0 : anon_3_0)) in
+            ((isSubtype(typeOf(anon_0_0), Option()) &&
+            OptionFromRef(anon_0_0).isac_None ?
+              anon_2_0 :
+              anon_3_0)) in
             anon_1_0)))))
 }
 
@@ -37,20 +47,30 @@ function getOrElse(x: Ref, default: Ref): Ref
   (let anon_0_0 ==
     (x) in
     (let anon_2_0 ==
-      ((isSubtype(typeOf(anon_0_0), Option()) ? default : null)) in
+      ((isSubtype(typeOf(anon_0_0), Option()) &&
+      OptionFromRef(anon_0_0).isac_None ?
+        default :
+        null)) in
       (let anon_4_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Option()) &&
-        isSubtype(typeOf(anon_0_0), Option()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Option()) &&
+        OptionFromRef(anon_0_0).isac_None) &&
+        (isSubtype(typeOf(anon_0_0), Option()) &&
+        OptionFromRef(anon_0_0).isac_Some) ?
           OptionFromRef(x).af_a_Option_value :
           null)) in
         (let anon_3_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Option()) ?
-            (isSubtype(typeOf(anon_0_0), Option()) ?
+          ((!(isSubtype(typeOf(anon_0_0), Option()) &&
+          OptionFromRef(anon_0_0).isac_None) ?
+            (isSubtype(typeOf(anon_0_0), Option()) &&
+            OptionFromRef(anon_0_0).isac_Some ?
               anon_4_0 :
               unitValue()) :
             null)) in
           (let anon_1_0 ==
-            ((isSubtype(typeOf(anon_0_0), Option()) ? anon_2_0 : anon_3_0)) in
+            ((isSubtype(typeOf(anon_0_0), Option()) &&
+            OptionFromRef(anon_0_0).isac_None ?
+              anon_2_0 :
+              anon_3_0)) in
             anon_1_0)))))
 }
 
@@ -68,20 +88,30 @@ function orElse(a: Ref, b: Ref): Ref
   (let anon_0_0 ==
     (a) in
     (let anon_2_0 ==
-      ((isSubtype(typeOf(anon_0_0), Option()) ? b : null)) in
+      ((isSubtype(typeOf(anon_0_0), Option()) &&
+      OptionFromRef(anon_0_0).isac_None ?
+        b :
+        null)) in
       (let anon_4_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Option()) &&
-        isSubtype(typeOf(anon_0_0), Option()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Option()) &&
+        OptionFromRef(anon_0_0).isac_None) &&
+        (isSubtype(typeOf(anon_0_0), Option()) &&
+        OptionFromRef(anon_0_0).isac_Some) ?
           a :
           null)) in
         (let anon_3_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Option()) ?
-            (isSubtype(typeOf(anon_0_0), Option()) ?
+          ((!(isSubtype(typeOf(anon_0_0), Option()) &&
+          OptionFromRef(anon_0_0).isac_None) ?
+            (isSubtype(typeOf(anon_0_0), Option()) &&
+            OptionFromRef(anon_0_0).isac_Some ?
               anon_4_0 :
               unitValue()) :
             null)) in
           (let anon_1_0 ==
-            ((isSubtype(typeOf(anon_0_0), Option()) ? anon_2_0 : anon_3_0)) in
+            ((isSubtype(typeOf(anon_0_0), Option()) &&
+            OptionFromRef(anon_0_0).isac_None ?
+              anon_2_0 :
+              anon_3_0)) in
             anon_1_0)))))
 }
 
@@ -97,16 +127,18 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_2_0 ==
-    ((!isSubtype(typeOf(this), Option()) ?
-      (isSubtype(typeOf(this), Option()) ?
-        andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), andBools(boolToRef(isSubtype(typeOf(OptionFromRef(anon_0).af_a_Option_value),
+    ((!(isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_None) ?
+      (isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_Some ?
+        andBools(boolToRef(isSubtype(typeOf(anon_0), Option()) &&
+        OptionFromRef(anon_0).isac_Some), andBools(boolToRef(isSubtype(typeOf(OptionFromRef(anon_0).af_a_Option_value),
         intType())), boolToRef(intFromRef(OptionFromRef(this).af_a_Option_value) ==
         intFromRef(OptionFromRef(anon_0).af_a_Option_value)))) :
         boolToRef(false)) :
       null)) in
     (let anon_1_0 ==
-      ((isSubtype(typeOf(this), Option()) ?
-        boolToRef(isSubtype(typeOf(anon_0), Option())) :
+      ((isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_None ?
+        boolToRef(isSubtype(typeOf(anon_0), Option()) &&
+        OptionFromRef(anon_0).isac_None) :
         anon_2_0)) in
       andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), anon_1_0)))
 }
@@ -118,8 +150,10 @@ method optRefl(x: Ref) returns (v_ret_0: Ref)
 {
   var anon_0: Ref
   anon_0 := x
-  if (isSubtype(typeOf(anon_0), Option())) {
-  } elseif (isSubtype(typeOf(anon_0), Option())) {
+  if (isSubtype(typeOf(anon_0), Option()) &&
+  OptionFromRef(anon_0).isac_None) {
+  } elseif (isSubtype(typeOf(anon_0), Option()) &&
+  OptionFromRef(anon_0).isac_Some) {
   }
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -137,16 +171,18 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_7_0 ==
-    ((!isSubtype(typeOf(this), Option()) ?
-      (isSubtype(typeOf(this), Option()) ?
-        andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), andBools(boolToRef(isSubtype(typeOf(OptionFromRef(anon_0).af_a_Option_value),
+    ((!(isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_None) ?
+      (isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_Some ?
+        andBools(boolToRef(isSubtype(typeOf(anon_0), Option()) &&
+        OptionFromRef(anon_0).isac_Some), andBools(boolToRef(isSubtype(typeOf(OptionFromRef(anon_0).af_a_Option_value),
         intType())), boolToRef(intFromRef(OptionFromRef(this).af_a_Option_value) ==
         intFromRef(OptionFromRef(anon_0).af_a_Option_value)))) :
         boolToRef(false)) :
       null)) in
     (let anon_6_0 ==
-      ((isSubtype(typeOf(this), Option()) ?
-        boolToRef(isSubtype(typeOf(anon_0), Option())) :
+      ((isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_None ?
+        boolToRef(isSubtype(typeOf(anon_0), Option()) &&
+        OptionFromRef(anon_0).isac_None) :
         anon_7_0)) in
       andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), anon_6_0)))
 }
@@ -159,20 +195,30 @@ function orElse(a: Ref, b: Ref): Ref
   (let anon_0_0 ==
     (a) in
     (let anon_3_0 ==
-      ((isSubtype(typeOf(anon_0_0), Option()) ? b : null)) in
+      ((isSubtype(typeOf(anon_0_0), Option()) &&
+      OptionFromRef(anon_0_0).isac_None ?
+        b :
+        null)) in
       (let anon_5_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Option()) &&
-        isSubtype(typeOf(anon_0_0), Option()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Option()) &&
+        OptionFromRef(anon_0_0).isac_None) &&
+        (isSubtype(typeOf(anon_0_0), Option()) &&
+        OptionFromRef(anon_0_0).isac_Some) ?
           a :
           null)) in
         (let anon_4_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Option()) ?
-            (isSubtype(typeOf(anon_0_0), Option()) ?
+          ((!(isSubtype(typeOf(anon_0_0), Option()) &&
+          OptionFromRef(anon_0_0).isac_None) ?
+            (isSubtype(typeOf(anon_0_0), Option()) &&
+            OptionFromRef(anon_0_0).isac_Some ?
               anon_5_0 :
               unitValue()) :
             null)) in
           (let anon_2_0 ==
-            ((isSubtype(typeOf(anon_0_0), Option()) ? anon_3_0 : anon_4_0)) in
+            ((isSubtype(typeOf(anon_0_0), Option()) &&
+            OptionFromRef(anon_0_0).isac_None ?
+              anon_3_0 :
+              anon_4_0)) in
             anon_2_0)))))
 }
 
@@ -183,8 +229,10 @@ method orElseIdempotent(opt: Ref) returns (v_ret_0: Ref)
 {
   var anon_1: Ref
   anon_1 := opt
-  if (isSubtype(typeOf(anon_1), Option())) {
-  } elseif (isSubtype(typeOf(anon_1), Option())) {
+  if (isSubtype(typeOf(anon_1), Option()) &&
+  OptionFromRef(anon_1).isac_None) {
+  } elseif (isSubtype(typeOf(anon_1), Option()) &&
+  OptionFromRef(anon_1).isac_Some) {
   }
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -202,16 +250,18 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_9_0 ==
-    ((!isSubtype(typeOf(this), Option()) ?
-      (isSubtype(typeOf(this), Option()) ?
-        andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), andBools(boolToRef(isSubtype(typeOf(OptionFromRef(anon_0).af_a_Option_value),
+    ((!(isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_None) ?
+      (isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_Some ?
+        andBools(boolToRef(isSubtype(typeOf(anon_0), Option()) &&
+        OptionFromRef(anon_0).isac_Some), andBools(boolToRef(isSubtype(typeOf(OptionFromRef(anon_0).af_a_Option_value),
         intType())), boolToRef(intFromRef(OptionFromRef(this).af_a_Option_value) ==
         intFromRef(OptionFromRef(anon_0).af_a_Option_value)))) :
         boolToRef(false)) :
       null)) in
     (let anon_8_0 ==
-      ((isSubtype(typeOf(this), Option()) ?
-        boolToRef(isSubtype(typeOf(anon_0), Option())) :
+      ((isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_None ?
+        boolToRef(isSubtype(typeOf(anon_0), Option()) &&
+        OptionFromRef(anon_0).isac_None) :
         anon_9_0)) in
       andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), anon_8_0)))
 }
@@ -224,20 +274,30 @@ function orElse(a: Ref, b: Ref): Ref
   (let anon_0_0 ==
     (a) in
     (let anon_5_0 ==
-      ((isSubtype(typeOf(anon_0_0), Option()) ? b : null)) in
+      ((isSubtype(typeOf(anon_0_0), Option()) &&
+      OptionFromRef(anon_0_0).isac_None ?
+        b :
+        null)) in
       (let anon_7_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Option()) &&
-        isSubtype(typeOf(anon_0_0), Option()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Option()) &&
+        OptionFromRef(anon_0_0).isac_None) &&
+        (isSubtype(typeOf(anon_0_0), Option()) &&
+        OptionFromRef(anon_0_0).isac_Some) ?
           a :
           null)) in
         (let anon_6_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Option()) ?
-            (isSubtype(typeOf(anon_0_0), Option()) ?
+          ((!(isSubtype(typeOf(anon_0_0), Option()) &&
+          OptionFromRef(anon_0_0).isac_None) ?
+            (isSubtype(typeOf(anon_0_0), Option()) &&
+            OptionFromRef(anon_0_0).isac_Some ?
               anon_7_0 :
               unitValue()) :
             null)) in
           (let anon_4_0 ==
-            ((isSubtype(typeOf(anon_0_0), Option()) ? anon_5_0 : anon_6_0)) in
+            ((isSubtype(typeOf(anon_0_0), Option()) &&
+            OptionFromRef(anon_0_0).isac_None ?
+              anon_5_0 :
+              anon_6_0)) in
             anon_4_0)))))
 }
 
@@ -256,10 +316,12 @@ method orElseAssoc(a: Ref, b: Ref, c: Ref) returns (v_ret_0: Ref)
 {
   var anon_1: Ref
   anon_1 := a
-  if (isSubtype(typeOf(anon_1), Option())) {
+  if (isSubtype(typeOf(anon_1), Option()) &&
+  OptionFromRef(anon_1).isac_None) {
     var anon_2: Ref
     anon_2 := optRefl(orElse(b, c))
-  } elseif (isSubtype(typeOf(anon_1), Option())) {
+  } elseif (isSubtype(typeOf(anon_1), Option()) &&
+  OptionFromRef(anon_1).isac_Some) {
     var anon_3: Ref
     anon_3 := optRefl(a)
   }
@@ -275,9 +337,8 @@ adt a_Option {
 /Option.kt: info: Generated Viper text for safeHead:
 function con(value: Ref): Ref
   requires isSubtype(typeOf(value), intType())
-  ensures isSubtype(typeOf(result), Option())
-  ensures intFromRef(OptionFromRef(result).af_a_Option_value) ==
-    intFromRef(value)
+  ensures isSubtype(typeOf(result), Option()) &&
+    OptionFromRef(result).isac_Some
   ensures OptionFromRef(result) == ac_Some(value)
 
 
@@ -288,22 +349,28 @@ function safeHead(xs: Ref): Ref
   (let anon_0_0 ==
     (xs) in
     (let anon_2_0 ==
-      ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+      LinkedListFromRef(anon_0_0).isac_Nil ?
         OptionToRef(ac_None()) :
         null)) in
       (let anon_4_0 ==
-        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
-        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Cons) ?
           con(LinkedListFromRef(xs).af_a_LinkedList_head) :
           null)) in
         (let anon_3_0 ==
-          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+          LinkedListFromRef(anon_0_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Cons ?
               anon_4_0 :
               unitValue()) :
             null)) in
           (let anon_1_0 ==
-            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Nil ?
               anon_2_0 :
               anon_3_0)) in
             anon_1_0)))))
@@ -328,21 +395,29 @@ function append(xs: Ref, ys: Ref): Ref
   (let anon_1_0 ==
     (xs) in
     (let anon_11_0 ==
-      ((isSubtype(typeOf(anon_1_0), LinkedList()) ? ys : null)) in
+      ((isSubtype(typeOf(anon_1_0), LinkedList()) &&
+      LinkedListFromRef(anon_1_0).isac_Nil ?
+        ys :
+        null)) in
       (let anon_13_0 ==
-        ((!isSubtype(typeOf(anon_1_0), LinkedList()) &&
-        isSubtype(typeOf(anon_1_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_1_0), LinkedList()) &&
+        LinkedListFromRef(anon_1_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_1_0), LinkedList()) &&
+        LinkedListFromRef(anon_1_0).isac_Cons) ?
           con_Cons(LinkedListFromRef(xs).af_a_LinkedList_head, append(LinkedListFromRef(xs).af_a_LinkedList_tail,
           ys)) :
           null)) in
         (let anon_12_0 ==
-          ((!isSubtype(typeOf(anon_1_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_1_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_1_0), LinkedList()) &&
+          LinkedListFromRef(anon_1_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_1_0), LinkedList()) &&
+            LinkedListFromRef(anon_1_0).isac_Cons ?
               anon_13_0 :
               unitValue()) :
             null)) in
           (let anon_10_0 ==
-            ((isSubtype(typeOf(anon_1_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_1_0), LinkedList()) &&
+            LinkedListFromRef(anon_1_0).isac_Nil ?
               anon_11_0 :
               anon_12_0)) in
             anon_10_0)))))
@@ -351,19 +426,15 @@ function append(xs: Ref, ys: Ref): Ref
 function con_Cons(head: Ref, tail: Ref): Ref
   requires isSubtype(typeOf(head), intType())
   requires isSubtype(typeOf(tail), LinkedList())
-  ensures isSubtype(typeOf(result), LinkedList())
-  ensures intFromRef(LinkedListFromRef(result).af_a_LinkedList_head) ==
-    intFromRef(head)
-  ensures LinkedListFromRef(LinkedListFromRef(result).af_a_LinkedList_tail) ==
-    LinkedListFromRef(tail)
+  ensures isSubtype(typeOf(result), LinkedList()) &&
+    LinkedListFromRef(result).isac_Cons
   ensures LinkedListFromRef(result) == ac_Cons(head, tail)
 
 
 function con_Some(value: Ref): Ref
   requires isSubtype(typeOf(value), intType())
-  ensures isSubtype(typeOf(result), Option())
-  ensures intFromRef(OptionFromRef(result).af_a_Option_value) ==
-    intFromRef(value)
+  ensures isSubtype(typeOf(result), Option()) &&
+    OptionFromRef(result).isac_Some
   ensures OptionFromRef(result) == ac_Some(value)
 
 
@@ -373,16 +444,18 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_19_0 ==
-    ((!isSubtype(typeOf(this), Option()) ?
-      (isSubtype(typeOf(this), Option()) ?
-        andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), andBools(boolToRef(isSubtype(typeOf(OptionFromRef(anon_0).af_a_Option_value),
+    ((!(isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_None) ?
+      (isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_Some ?
+        andBools(boolToRef(isSubtype(typeOf(anon_0), Option()) &&
+        OptionFromRef(anon_0).isac_Some), andBools(boolToRef(isSubtype(typeOf(OptionFromRef(anon_0).af_a_Option_value),
         intType())), boolToRef(intFromRef(OptionFromRef(this).af_a_Option_value) ==
         intFromRef(OptionFromRef(anon_0).af_a_Option_value)))) :
         boolToRef(false)) :
       null)) in
     (let anon_18_0 ==
-      ((isSubtype(typeOf(this), Option()) ?
-        boolToRef(isSubtype(typeOf(anon_0), Option())) :
+      ((isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_None ?
+        boolToRef(isSubtype(typeOf(anon_0), Option()) &&
+        OptionFromRef(anon_0).isac_None) :
         anon_19_0)) in
       andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), anon_18_0)))
 }
@@ -395,20 +468,28 @@ function orElse(a: Ref, b: Ref): Ref
   (let anon_2_0 ==
     (a) in
     (let anon_15_0 ==
-      ((isSubtype(typeOf(anon_2_0), Option()) ? b : null)) in
+      ((isSubtype(typeOf(anon_2_0), Option()) &&
+      OptionFromRef(anon_2_0).isac_None ?
+        b :
+        null)) in
       (let anon_17_0 ==
-        ((!isSubtype(typeOf(anon_2_0), Option()) &&
-        isSubtype(typeOf(anon_2_0), Option()) ?
+        ((!(isSubtype(typeOf(anon_2_0), Option()) &&
+        OptionFromRef(anon_2_0).isac_None) &&
+        (isSubtype(typeOf(anon_2_0), Option()) &&
+        OptionFromRef(anon_2_0).isac_Some) ?
           a :
           null)) in
         (let anon_16_0 ==
-          ((!isSubtype(typeOf(anon_2_0), Option()) ?
-            (isSubtype(typeOf(anon_2_0), Option()) ?
+          ((!(isSubtype(typeOf(anon_2_0), Option()) &&
+          OptionFromRef(anon_2_0).isac_None) ?
+            (isSubtype(typeOf(anon_2_0), Option()) &&
+            OptionFromRef(anon_2_0).isac_Some ?
               anon_17_0 :
               unitValue()) :
             null)) in
           (let anon_14_0 ==
-            ((isSubtype(typeOf(anon_2_0), Option()) ?
+            ((isSubtype(typeOf(anon_2_0), Option()) &&
+            OptionFromRef(anon_2_0).isac_None ?
               anon_15_0 :
               anon_16_0)) in
             anon_14_0)))))
@@ -421,22 +502,28 @@ function safeHead(xs: Ref): Ref
   (let anon_0_0 ==
     (xs) in
     (let anon_7_0 ==
-      ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+      LinkedListFromRef(anon_0_0).isac_Nil ?
         OptionToRef(ac_None()) :
         null)) in
       (let anon_9_0 ==
-        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
-        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Cons) ?
           con_Some(LinkedListFromRef(xs).af_a_LinkedList_head) :
           null)) in
         (let anon_8_0 ==
-          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+          LinkedListFromRef(anon_0_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Cons ?
               anon_9_0 :
               unitValue()) :
             null)) in
           (let anon_6_0 ==
-            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Nil ?
               anon_7_0 :
               anon_8_0)) in
             anon_6_0)))))
@@ -457,10 +544,12 @@ method safeHeadAppend(xs: Ref, ys: Ref) returns (v_ret_0: Ref)
 {
   var anon_3: Ref
   anon_3 := xs
-  if (isSubtype(typeOf(anon_3), LinkedList())) {
+  if (isSubtype(typeOf(anon_3), LinkedList()) &&
+  LinkedListFromRef(anon_3).isac_Nil) {
     var anon_4: Ref
     anon_4 := optRefl(safeHead(ys))
-  } elseif (isSubtype(typeOf(anon_3), LinkedList())) {
+  } elseif (isSubtype(typeOf(anon_3), LinkedList()) &&
+  LinkedListFromRef(anon_3).isac_Cons) {
     var anon_5: Ref
     anon_5 := optRefl(safeHead(xs))
   }
@@ -487,21 +576,29 @@ function append(xs: Ref, ys: Ref): Ref
   (let anon_0_0 ==
     (xs) in
     (let anon_2_0 ==
-      ((isSubtype(typeOf(anon_0_0), LinkedList()) ? ys : null)) in
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+      LinkedListFromRef(anon_0_0).isac_Nil ?
+        ys :
+        null)) in
       (let anon_4_0 ==
-        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
-        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+        ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Nil) &&
+        (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        LinkedListFromRef(anon_0_0).isac_Cons) ?
           con(LinkedListFromRef(xs).af_a_LinkedList_head, append(LinkedListFromRef(xs).af_a_LinkedList_tail,
           ys)) :
           null)) in
         (let anon_3_0 ==
-          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
-            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          ((!(isSubtype(typeOf(anon_0_0), LinkedList()) &&
+          LinkedListFromRef(anon_0_0).isac_Nil) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Cons ?
               anon_4_0 :
               unitValue()) :
             null)) in
           (let anon_1_0 ==
-            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) &&
+            LinkedListFromRef(anon_0_0).isac_Nil ?
               anon_2_0 :
               anon_3_0)) in
             anon_1_0)))))
@@ -510,11 +607,8 @@ function append(xs: Ref, ys: Ref): Ref
 function con(head: Ref, tail: Ref): Ref
   requires isSubtype(typeOf(head), intType())
   requires isSubtype(typeOf(tail), LinkedList())
-  ensures isSubtype(typeOf(result), LinkedList())
-  ensures intFromRef(LinkedListFromRef(result).af_a_LinkedList_head) ==
-    intFromRef(head)
-  ensures LinkedListFromRef(LinkedListFromRef(result).af_a_LinkedList_tail) ==
-    LinkedListFromRef(tail)
+  ensures isSubtype(typeOf(result), LinkedList()) &&
+    LinkedListFromRef(result).isac_Cons
   ensures LinkedListFromRef(result) == ac_Cons(head, tail)
 
 

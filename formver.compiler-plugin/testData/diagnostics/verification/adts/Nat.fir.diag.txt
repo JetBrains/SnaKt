@@ -7,25 +7,36 @@ function add(m: Ref, n: Ref): Ref
   (let anon_0_0 ==
     (m) in
     (let anon_2_0 ==
-      ((isSubtype(typeOf(anon_0_0), Nat()) ? n : null)) in
+      ((isSubtype(typeOf(anon_0_0), Nat()) &&
+      NatFromRef(anon_0_0).isac_Zero ?
+        n :
+        null)) in
       (let anon_4_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Nat()) &&
-        isSubtype(typeOf(anon_0_0), Nat()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Nat()) &&
+        NatFromRef(anon_0_0).isac_Zero) &&
+        (isSubtype(typeOf(anon_0_0), Nat()) &&
+        NatFromRef(anon_0_0).isac_Succ) ?
           con(add(NatFromRef(m).af_a_Nat_pred, n)) :
           null)) in
         (let anon_3_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Nat()) ?
-            (isSubtype(typeOf(anon_0_0), Nat()) ? anon_4_0 : unitValue()) :
+          ((!(isSubtype(typeOf(anon_0_0), Nat()) &&
+          NatFromRef(anon_0_0).isac_Zero) ?
+            (isSubtype(typeOf(anon_0_0), Nat()) &&
+            NatFromRef(anon_0_0).isac_Succ ?
+              anon_4_0 :
+              unitValue()) :
             null)) in
           (let anon_1_0 ==
-            ((isSubtype(typeOf(anon_0_0), Nat()) ? anon_2_0 : anon_3_0)) in
+            ((isSubtype(typeOf(anon_0_0), Nat()) &&
+            NatFromRef(anon_0_0).isac_Zero ?
+              anon_2_0 :
+              anon_3_0)) in
             anon_1_0)))))
 }
 
 function con(pred: Ref): Ref
   requires isSubtype(typeOf(pred), Nat())
-  ensures isSubtype(typeOf(result), Nat())
-  ensures NatFromRef(NatFromRef(result).af_a_Nat_pred) == NatFromRef(pred)
+  ensures isSubtype(typeOf(result), Nat()) && NatFromRef(result).isac_Succ
   ensures NatFromRef(result) == ac_Succ(pred)
 
 
@@ -41,14 +52,16 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_3_0 ==
-    ((!isSubtype(typeOf(this), Nat()) ?
-      (isSubtype(typeOf(this), Nat()) ?
-        boolToRef(isSubtype(typeOf(anon_0), Nat())) :
+    ((!(isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Succ) ?
+      (isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Zero ?
+        boolToRef(isSubtype(typeOf(anon_0), Nat()) &&
+        NatFromRef(anon_0).isac_Zero) :
         boolToRef(false)) :
       null)) in
     (let anon_2_0 ==
-      ((isSubtype(typeOf(this), Nat()) ?
-        andBools(boolToRef(isSubtype(typeOf(anon_0), Nat())), equals(NatFromRef(this).af_a_Nat_pred,
+      ((isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Succ ?
+        andBools(boolToRef(isSubtype(typeOf(anon_0), Nat()) &&
+        NatFromRef(anon_0).isac_Succ), equals(NatFromRef(this).af_a_Nat_pred,
         NatFromRef(anon_0).af_a_Nat_pred)) :
         anon_3_0)) in
       andBools(boolToRef(isSubtype(typeOf(anon_0), Nat())), anon_2_0)))
@@ -61,8 +74,9 @@ method natRefl(a: Ref) returns (v_ret_0: Ref)
 {
   var anon_0: Ref
   anon_0 := a
-  if (isSubtype(typeOf(anon_0), Nat())) {
-  } elseif (isSubtype(typeOf(anon_0), Nat())) {
+  if (isSubtype(typeOf(anon_0), Nat()) && NatFromRef(anon_0).isac_Zero) {
+  } elseif (isSubtype(typeOf(anon_0), Nat()) &&
+  NatFromRef(anon_0).isac_Succ) {
     var anon_1: Ref
     anon_1 := natRefl(NatFromRef(a).af_a_Nat_pred)
   }
@@ -82,14 +96,16 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_5_0 ==
-    ((!isSubtype(typeOf(this), Nat()) ?
-      (isSubtype(typeOf(this), Nat()) ?
-        boolToRef(isSubtype(typeOf(anon_0), Nat())) :
+    ((!(isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Succ) ?
+      (isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Zero ?
+        boolToRef(isSubtype(typeOf(anon_0), Nat()) &&
+        NatFromRef(anon_0).isac_Zero) :
         boolToRef(false)) :
       null)) in
     (let anon_4_0 ==
-      ((isSubtype(typeOf(this), Nat()) ?
-        andBools(boolToRef(isSubtype(typeOf(anon_0), Nat())), equals(NatFromRef(this).af_a_Nat_pred,
+      ((isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Succ ?
+        andBools(boolToRef(isSubtype(typeOf(anon_0), Nat()) &&
+        NatFromRef(anon_0).isac_Succ), equals(NatFromRef(this).af_a_Nat_pred,
         NatFromRef(anon_0).af_a_Nat_pred)) :
         anon_5_0)) in
       andBools(boolToRef(isSubtype(typeOf(anon_0), Nat())), anon_4_0)))
@@ -106,16 +122,19 @@ method natTrans(a: Ref, b: Ref, c: Ref) returns (v_ret_0: Ref)
 {
   var anon_0: Ref
   anon_0 := a
-  if (isSubtype(typeOf(anon_0), Nat())) {
-  } elseif (isSubtype(typeOf(anon_0), Nat())) {
+  if (isSubtype(typeOf(anon_0), Nat()) && NatFromRef(anon_0).isac_Zero) {
+  } elseif (isSubtype(typeOf(anon_0), Nat()) &&
+  NatFromRef(anon_0).isac_Succ) {
     var anon_1: Ref
     anon_1 := b
-    if (isSubtype(typeOf(anon_1), Nat())) {
-    } elseif (isSubtype(typeOf(anon_1), Nat())) {
+    if (isSubtype(typeOf(anon_1), Nat()) && NatFromRef(anon_1).isac_Zero) {
+    } elseif (isSubtype(typeOf(anon_1), Nat()) &&
+    NatFromRef(anon_1).isac_Succ) {
       var anon_2: Ref
       anon_2 := c
-      if (isSubtype(typeOf(anon_2), Nat())) {
-      } elseif (isSubtype(typeOf(anon_2), Nat())) {
+      if (isSubtype(typeOf(anon_2), Nat()) && NatFromRef(anon_2).isac_Zero) {
+      } elseif (isSubtype(typeOf(anon_2), Nat()) &&
+      NatFromRef(anon_2).isac_Succ) {
         var anon_3: Ref
         anon_3 := natTrans(NatFromRef(a).af_a_Nat_pred, NatFromRef(b).af_a_Nat_pred,
           NatFromRef(c).af_a_Nat_pred)
@@ -134,8 +153,7 @@ adt a_Nat {
 /Nat.kt: info: Generated Viper text for conCong:
 function con(pred: Ref): Ref
   requires isSubtype(typeOf(pred), Nat())
-  ensures isSubtype(typeOf(result), Nat())
-  ensures NatFromRef(NatFromRef(result).af_a_Nat_pred) == NatFromRef(pred)
+  ensures isSubtype(typeOf(result), Nat()) && NatFromRef(result).isac_Succ
   ensures NatFromRef(result) == ac_Succ(pred)
 
 
@@ -145,14 +163,16 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_1_0 ==
-    ((!isSubtype(typeOf(this), Nat()) ?
-      (isSubtype(typeOf(this), Nat()) ?
-        boolToRef(isSubtype(typeOf(anon_0), Nat())) :
+    ((!(isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Succ) ?
+      (isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Zero ?
+        boolToRef(isSubtype(typeOf(anon_0), Nat()) &&
+        NatFromRef(anon_0).isac_Zero) :
         boolToRef(false)) :
       null)) in
     (let anon_0_0 ==
-      ((isSubtype(typeOf(this), Nat()) ?
-        andBools(boolToRef(isSubtype(typeOf(anon_0), Nat())), equals(NatFromRef(this).af_a_Nat_pred,
+      ((isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Succ ?
+        andBools(boolToRef(isSubtype(typeOf(anon_0), Nat()) &&
+        NatFromRef(anon_0).isac_Succ), equals(NatFromRef(this).af_a_Nat_pred,
         NatFromRef(anon_0).af_a_Nat_pred)) :
         anon_1_0)) in
       andBools(boolToRef(isSubtype(typeOf(anon_0), Nat())), anon_0_0)))
@@ -187,14 +207,16 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_4_0 ==
-    ((!isSubtype(typeOf(this), Nat()) ?
-      (isSubtype(typeOf(this), Nat()) ?
-        boolToRef(isSubtype(typeOf(anon_0), Nat())) :
+    ((!(isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Succ) ?
+      (isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Zero ?
+        boolToRef(isSubtype(typeOf(anon_0), Nat()) &&
+        NatFromRef(anon_0).isac_Zero) :
         boolToRef(false)) :
       null)) in
     (let anon_3_0 ==
-      ((isSubtype(typeOf(this), Nat()) ?
-        andBools(boolToRef(isSubtype(typeOf(anon_0), Nat())), equals(NatFromRef(this).af_a_Nat_pred,
+      ((isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Succ ?
+        andBools(boolToRef(isSubtype(typeOf(anon_0), Nat()) &&
+        NatFromRef(anon_0).isac_Succ), equals(NatFromRef(this).af_a_Nat_pred,
         NatFromRef(anon_0).af_a_Nat_pred)) :
         anon_4_0)) in
       andBools(boolToRef(isSubtype(typeOf(anon_0), Nat())), anon_3_0)))
@@ -214,12 +236,14 @@ method natSym(a: Ref, b: Ref) returns (v_ret_0: Ref)
 {
   var anon_0: Ref
   anon_0 := a
-  if (isSubtype(typeOf(anon_0), Nat())) {
-  } elseif (isSubtype(typeOf(anon_0), Nat())) {
+  if (isSubtype(typeOf(anon_0), Nat()) && NatFromRef(anon_0).isac_Zero) {
+  } elseif (isSubtype(typeOf(anon_0), Nat()) &&
+  NatFromRef(anon_0).isac_Succ) {
     var anon_1: Ref
     anon_1 := b
-    if (isSubtype(typeOf(anon_1), Nat())) {
-    } elseif (isSubtype(typeOf(anon_1), Nat())) {
+    if (isSubtype(typeOf(anon_1), Nat()) && NatFromRef(anon_1).isac_Zero) {
+    } elseif (isSubtype(typeOf(anon_1), Nat()) &&
+    NatFromRef(anon_1).isac_Succ) {
       var anon_2: Ref
       anon_2 := natSym(NatFromRef(a).af_a_Nat_pred, NatFromRef(b).af_a_Nat_pred)
       assert boolFromRef(equals(NatFromRef(b).af_a_Nat_pred, NatFromRef(a).af_a_Nat_pred))
@@ -243,25 +267,36 @@ function add(m: Ref, n: Ref): Ref
   (let anon_0_0 ==
     (m) in
     (let anon_8_0 ==
-      ((isSubtype(typeOf(anon_0_0), Nat()) ? n : null)) in
+      ((isSubtype(typeOf(anon_0_0), Nat()) &&
+      NatFromRef(anon_0_0).isac_Zero ?
+        n :
+        null)) in
       (let anon_10_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Nat()) &&
-        isSubtype(typeOf(anon_0_0), Nat()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Nat()) &&
+        NatFromRef(anon_0_0).isac_Zero) &&
+        (isSubtype(typeOf(anon_0_0), Nat()) &&
+        NatFromRef(anon_0_0).isac_Succ) ?
           con(add(NatFromRef(m).af_a_Nat_pred, n)) :
           null)) in
         (let anon_9_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Nat()) ?
-            (isSubtype(typeOf(anon_0_0), Nat()) ? anon_10_0 : unitValue()) :
+          ((!(isSubtype(typeOf(anon_0_0), Nat()) &&
+          NatFromRef(anon_0_0).isac_Zero) ?
+            (isSubtype(typeOf(anon_0_0), Nat()) &&
+            NatFromRef(anon_0_0).isac_Succ ?
+              anon_10_0 :
+              unitValue()) :
             null)) in
           (let anon_7_0 ==
-            ((isSubtype(typeOf(anon_0_0), Nat()) ? anon_8_0 : anon_9_0)) in
+            ((isSubtype(typeOf(anon_0_0), Nat()) &&
+            NatFromRef(anon_0_0).isac_Zero ?
+              anon_8_0 :
+              anon_9_0)) in
             anon_7_0)))))
 }
 
 function con(pred: Ref): Ref
   requires isSubtype(typeOf(pred), Nat())
-  ensures isSubtype(typeOf(result), Nat())
-  ensures NatFromRef(NatFromRef(result).af_a_Nat_pred) == NatFromRef(pred)
+  ensures isSubtype(typeOf(result), Nat()) && NatFromRef(result).isac_Succ
   ensures NatFromRef(result) == ac_Succ(pred)
 
 
@@ -271,14 +306,16 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_6_0 ==
-    ((!isSubtype(typeOf(this), Nat()) ?
-      (isSubtype(typeOf(this), Nat()) ?
-        boolToRef(isSubtype(typeOf(anon_0), Nat())) :
+    ((!(isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Succ) ?
+      (isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Zero ?
+        boolToRef(isSubtype(typeOf(anon_0), Nat()) &&
+        NatFromRef(anon_0).isac_Zero) :
         boolToRef(false)) :
       null)) in
     (let anon_5_0 ==
-      ((isSubtype(typeOf(this), Nat()) ?
-        andBools(boolToRef(isSubtype(typeOf(anon_0), Nat())), equals(NatFromRef(this).af_a_Nat_pred,
+      ((isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Succ ?
+        andBools(boolToRef(isSubtype(typeOf(anon_0), Nat()) &&
+        NatFromRef(anon_0).isac_Succ), equals(NatFromRef(this).af_a_Nat_pred,
         NatFromRef(anon_0).af_a_Nat_pred)) :
         anon_6_0)) in
       andBools(boolToRef(isSubtype(typeOf(anon_0), Nat())), anon_5_0)))
@@ -299,14 +336,16 @@ method addCong(a: Ref, b: Ref, c: Ref) returns (v_ret_0: Ref)
 {
   var anon_1: Ref
   anon_1 := a
-  if (isSubtype(typeOf(anon_1), Nat())) {
+  if (isSubtype(typeOf(anon_1), Nat()) && NatFromRef(anon_1).isac_Zero) {
     var anon_3: Ref
     anon_3 := natRefl(c)
-  } elseif (isSubtype(typeOf(anon_1), Nat())) {
+  } elseif (isSubtype(typeOf(anon_1), Nat()) &&
+  NatFromRef(anon_1).isac_Succ) {
     var anon_2: Ref
     anon_2 := b
-    if (isSubtype(typeOf(anon_2), Nat())) {
-    } elseif (isSubtype(typeOf(anon_2), Nat())) {
+    if (isSubtype(typeOf(anon_2), Nat()) && NatFromRef(anon_2).isac_Zero) {
+    } elseif (isSubtype(typeOf(anon_2), Nat()) &&
+    NatFromRef(anon_2).isac_Succ) {
       var anon_4: Ref
       anon_4 := addCong(NatFromRef(a).af_a_Nat_pred, NatFromRef(b).af_a_Nat_pred,
         c)
@@ -338,25 +377,36 @@ function add(m: Ref, n: Ref): Ref
   (let anon_0_0 ==
     (m) in
     (let anon_6_0 ==
-      ((isSubtype(typeOf(anon_0_0), Nat()) ? n : null)) in
+      ((isSubtype(typeOf(anon_0_0), Nat()) &&
+      NatFromRef(anon_0_0).isac_Zero ?
+        n :
+        null)) in
       (let anon_8_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Nat()) &&
-        isSubtype(typeOf(anon_0_0), Nat()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Nat()) &&
+        NatFromRef(anon_0_0).isac_Zero) &&
+        (isSubtype(typeOf(anon_0_0), Nat()) &&
+        NatFromRef(anon_0_0).isac_Succ) ?
           con(add(NatFromRef(m).af_a_Nat_pred, n)) :
           null)) in
         (let anon_7_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Nat()) ?
-            (isSubtype(typeOf(anon_0_0), Nat()) ? anon_8_0 : unitValue()) :
+          ((!(isSubtype(typeOf(anon_0_0), Nat()) &&
+          NatFromRef(anon_0_0).isac_Zero) ?
+            (isSubtype(typeOf(anon_0_0), Nat()) &&
+            NatFromRef(anon_0_0).isac_Succ ?
+              anon_8_0 :
+              unitValue()) :
             null)) in
           (let anon_5_0 ==
-            ((isSubtype(typeOf(anon_0_0), Nat()) ? anon_6_0 : anon_7_0)) in
+            ((isSubtype(typeOf(anon_0_0), Nat()) &&
+            NatFromRef(anon_0_0).isac_Zero ?
+              anon_6_0 :
+              anon_7_0)) in
             anon_5_0)))))
 }
 
 function con(pred: Ref): Ref
   requires isSubtype(typeOf(pred), Nat())
-  ensures isSubtype(typeOf(result), Nat())
-  ensures NatFromRef(NatFromRef(result).af_a_Nat_pred) == NatFromRef(pred)
+  ensures isSubtype(typeOf(result), Nat()) && NatFromRef(result).isac_Succ
   ensures NatFromRef(result) == ac_Succ(pred)
 
 
@@ -366,14 +416,16 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_4_0 ==
-    ((!isSubtype(typeOf(this), Nat()) ?
-      (isSubtype(typeOf(this), Nat()) ?
-        boolToRef(isSubtype(typeOf(anon_0), Nat())) :
+    ((!(isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Succ) ?
+      (isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Zero ?
+        boolToRef(isSubtype(typeOf(anon_0), Nat()) &&
+        NatFromRef(anon_0).isac_Zero) :
         boolToRef(false)) :
       null)) in
     (let anon_3_0 ==
-      ((isSubtype(typeOf(this), Nat()) ?
-        andBools(boolToRef(isSubtype(typeOf(anon_0), Nat())), equals(NatFromRef(this).af_a_Nat_pred,
+      ((isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Succ ?
+        andBools(boolToRef(isSubtype(typeOf(anon_0), Nat()) &&
+        NatFromRef(anon_0).isac_Succ), equals(NatFromRef(this).af_a_Nat_pred,
         NatFromRef(anon_0).af_a_Nat_pred)) :
         anon_4_0)) in
       andBools(boolToRef(isSubtype(typeOf(anon_0), Nat())), anon_3_0)))
@@ -389,8 +441,9 @@ method addCongR(a: Ref, b: Ref, c: Ref) returns (v_ret_0: Ref)
 {
   var anon_1: Ref
   anon_1 := a
-  if (isSubtype(typeOf(anon_1), Nat())) {
-  } elseif (isSubtype(typeOf(anon_1), Nat())) {
+  if (isSubtype(typeOf(anon_1), Nat()) && NatFromRef(anon_1).isac_Zero) {
+  } elseif (isSubtype(typeOf(anon_1), Nat()) &&
+  NatFromRef(anon_1).isac_Succ) {
     var anon_2: Ref
     anon_2 := addCongR(NatFromRef(a).af_a_Nat_pred, b, c)
   }
@@ -412,25 +465,36 @@ function add(m: Ref, n: Ref): Ref
   (let anon_0_0 ==
     (m) in
     (let anon_4_0 ==
-      ((isSubtype(typeOf(anon_0_0), Nat()) ? n : null)) in
+      ((isSubtype(typeOf(anon_0_0), Nat()) &&
+      NatFromRef(anon_0_0).isac_Zero ?
+        n :
+        null)) in
       (let anon_6_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Nat()) &&
-        isSubtype(typeOf(anon_0_0), Nat()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Nat()) &&
+        NatFromRef(anon_0_0).isac_Zero) &&
+        (isSubtype(typeOf(anon_0_0), Nat()) &&
+        NatFromRef(anon_0_0).isac_Succ) ?
           con(add(NatFromRef(m).af_a_Nat_pred, n)) :
           null)) in
         (let anon_5_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Nat()) ?
-            (isSubtype(typeOf(anon_0_0), Nat()) ? anon_6_0 : unitValue()) :
+          ((!(isSubtype(typeOf(anon_0_0), Nat()) &&
+          NatFromRef(anon_0_0).isac_Zero) ?
+            (isSubtype(typeOf(anon_0_0), Nat()) &&
+            NatFromRef(anon_0_0).isac_Succ ?
+              anon_6_0 :
+              unitValue()) :
             null)) in
           (let anon_3_0 ==
-            ((isSubtype(typeOf(anon_0_0), Nat()) ? anon_4_0 : anon_5_0)) in
+            ((isSubtype(typeOf(anon_0_0), Nat()) &&
+            NatFromRef(anon_0_0).isac_Zero ?
+              anon_4_0 :
+              anon_5_0)) in
             anon_3_0)))))
 }
 
 function con(pred: Ref): Ref
   requires isSubtype(typeOf(pred), Nat())
-  ensures isSubtype(typeOf(result), Nat())
-  ensures NatFromRef(NatFromRef(result).af_a_Nat_pred) == NatFromRef(pred)
+  ensures isSubtype(typeOf(result), Nat()) && NatFromRef(result).isac_Succ
   ensures NatFromRef(result) == ac_Succ(pred)
 
 
@@ -440,14 +504,16 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_8_0 ==
-    ((!isSubtype(typeOf(this), Nat()) ?
-      (isSubtype(typeOf(this), Nat()) ?
-        boolToRef(isSubtype(typeOf(anon_0), Nat())) :
+    ((!(isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Succ) ?
+      (isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Zero ?
+        boolToRef(isSubtype(typeOf(anon_0), Nat()) &&
+        NatFromRef(anon_0).isac_Zero) :
         boolToRef(false)) :
       null)) in
     (let anon_7_0 ==
-      ((isSubtype(typeOf(this), Nat()) ?
-        andBools(boolToRef(isSubtype(typeOf(anon_0), Nat())), equals(NatFromRef(this).af_a_Nat_pred,
+      ((isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Succ ?
+        andBools(boolToRef(isSubtype(typeOf(anon_0), Nat()) &&
+        NatFromRef(anon_0).isac_Succ), equals(NatFromRef(this).af_a_Nat_pred,
         NatFromRef(anon_0).af_a_Nat_pred)) :
         anon_8_0)) in
       andBools(boolToRef(isSubtype(typeOf(anon_0), Nat())), anon_7_0)))
@@ -460,8 +526,9 @@ method addRightZero(m: Ref) returns (v_ret_0: Ref)
 {
   var anon_1: Ref
   anon_1 := m
-  if (isSubtype(typeOf(anon_1), Nat())) {
-  } elseif (isSubtype(typeOf(anon_1), Nat())) {
+  if (isSubtype(typeOf(anon_1), Nat()) && NatFromRef(anon_1).isac_Zero) {
+  } elseif (isSubtype(typeOf(anon_1), Nat()) &&
+  NatFromRef(anon_1).isac_Succ) {
     var anon_2: Ref
     anon_2 := addRightZero(NatFromRef(m).af_a_Nat_pred)
   }
@@ -483,25 +550,36 @@ function add(m: Ref, n: Ref): Ref
   (let anon_0_0 ==
     (m) in
     (let anon_5_0 ==
-      ((isSubtype(typeOf(anon_0_0), Nat()) ? n : null)) in
+      ((isSubtype(typeOf(anon_0_0), Nat()) &&
+      NatFromRef(anon_0_0).isac_Zero ?
+        n :
+        null)) in
       (let anon_7_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Nat()) &&
-        isSubtype(typeOf(anon_0_0), Nat()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Nat()) &&
+        NatFromRef(anon_0_0).isac_Zero) &&
+        (isSubtype(typeOf(anon_0_0), Nat()) &&
+        NatFromRef(anon_0_0).isac_Succ) ?
           con(add(NatFromRef(m).af_a_Nat_pred, n)) :
           null)) in
         (let anon_6_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Nat()) ?
-            (isSubtype(typeOf(anon_0_0), Nat()) ? anon_7_0 : unitValue()) :
+          ((!(isSubtype(typeOf(anon_0_0), Nat()) &&
+          NatFromRef(anon_0_0).isac_Zero) ?
+            (isSubtype(typeOf(anon_0_0), Nat()) &&
+            NatFromRef(anon_0_0).isac_Succ ?
+              anon_7_0 :
+              unitValue()) :
             null)) in
           (let anon_4_0 ==
-            ((isSubtype(typeOf(anon_0_0), Nat()) ? anon_5_0 : anon_6_0)) in
+            ((isSubtype(typeOf(anon_0_0), Nat()) &&
+            NatFromRef(anon_0_0).isac_Zero ?
+              anon_5_0 :
+              anon_6_0)) in
             anon_4_0)))))
 }
 
 function con(pred: Ref): Ref
   requires isSubtype(typeOf(pred), Nat())
-  ensures isSubtype(typeOf(result), Nat())
-  ensures NatFromRef(NatFromRef(result).af_a_Nat_pred) == NatFromRef(pred)
+  ensures isSubtype(typeOf(result), Nat()) && NatFromRef(result).isac_Succ
   ensures NatFromRef(result) == ac_Succ(pred)
 
 
@@ -511,14 +589,16 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_9_0 ==
-    ((!isSubtype(typeOf(this), Nat()) ?
-      (isSubtype(typeOf(this), Nat()) ?
-        boolToRef(isSubtype(typeOf(anon_0), Nat())) :
+    ((!(isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Succ) ?
+      (isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Zero ?
+        boolToRef(isSubtype(typeOf(anon_0), Nat()) &&
+        NatFromRef(anon_0).isac_Zero) :
         boolToRef(false)) :
       null)) in
     (let anon_8_0 ==
-      ((isSubtype(typeOf(this), Nat()) ?
-        andBools(boolToRef(isSubtype(typeOf(anon_0), Nat())), equals(NatFromRef(this).af_a_Nat_pred,
+      ((isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Succ ?
+        andBools(boolToRef(isSubtype(typeOf(anon_0), Nat()) &&
+        NatFromRef(anon_0).isac_Succ), equals(NatFromRef(this).af_a_Nat_pred,
         NatFromRef(anon_0).af_a_Nat_pred)) :
         anon_9_0)) in
       andBools(boolToRef(isSubtype(typeOf(anon_0), Nat())), anon_8_0)))
@@ -537,10 +617,11 @@ method addRightSucc(m: Ref, n: Ref) returns (v_ret_0: Ref)
 {
   var anon_1: Ref
   anon_1 := m
-  if (isSubtype(typeOf(anon_1), Nat())) {
+  if (isSubtype(typeOf(anon_1), Nat()) && NatFromRef(anon_1).isac_Zero) {
     var anon_2: Ref
     anon_2 := natRefl(n)
-  } elseif (isSubtype(typeOf(anon_1), Nat())) {
+  } elseif (isSubtype(typeOf(anon_1), Nat()) &&
+  NatFromRef(anon_1).isac_Succ) {
     var anon_3: Ref
     anon_3 := addRightSucc(NatFromRef(m).af_a_Nat_pred, n)
     assert boolFromRef(equals(add(NatFromRef(m).af_a_Nat_pred, con(n)), con(add(NatFromRef(m).af_a_Nat_pred,
@@ -570,25 +651,36 @@ function add(m: Ref, n: Ref): Ref
   (let anon_0_0 ==
     (m) in
     (let anon_10_0 ==
-      ((isSubtype(typeOf(anon_0_0), Nat()) ? n : null)) in
+      ((isSubtype(typeOf(anon_0_0), Nat()) &&
+      NatFromRef(anon_0_0).isac_Zero ?
+        n :
+        null)) in
       (let anon_12_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Nat()) &&
-        isSubtype(typeOf(anon_0_0), Nat()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Nat()) &&
+        NatFromRef(anon_0_0).isac_Zero) &&
+        (isSubtype(typeOf(anon_0_0), Nat()) &&
+        NatFromRef(anon_0_0).isac_Succ) ?
           con(add(NatFromRef(m).af_a_Nat_pred, n)) :
           null)) in
         (let anon_11_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Nat()) ?
-            (isSubtype(typeOf(anon_0_0), Nat()) ? anon_12_0 : unitValue()) :
+          ((!(isSubtype(typeOf(anon_0_0), Nat()) &&
+          NatFromRef(anon_0_0).isac_Zero) ?
+            (isSubtype(typeOf(anon_0_0), Nat()) &&
+            NatFromRef(anon_0_0).isac_Succ ?
+              anon_12_0 :
+              unitValue()) :
             null)) in
           (let anon_9_0 ==
-            ((isSubtype(typeOf(anon_0_0), Nat()) ? anon_10_0 : anon_11_0)) in
+            ((isSubtype(typeOf(anon_0_0), Nat()) &&
+            NatFromRef(anon_0_0).isac_Zero ?
+              anon_10_0 :
+              anon_11_0)) in
             anon_9_0)))))
 }
 
 function con(pred: Ref): Ref
   requires isSubtype(typeOf(pred), Nat())
-  ensures isSubtype(typeOf(result), Nat())
-  ensures NatFromRef(NatFromRef(result).af_a_Nat_pred) == NatFromRef(pred)
+  ensures isSubtype(typeOf(result), Nat()) && NatFromRef(result).isac_Succ
   ensures NatFromRef(result) == ac_Succ(pred)
 
 
@@ -598,14 +690,16 @@ function equals(this: Ref, anon_0: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let anon_14_0 ==
-    ((!isSubtype(typeOf(this), Nat()) ?
-      (isSubtype(typeOf(this), Nat()) ?
-        boolToRef(isSubtype(typeOf(anon_0), Nat())) :
+    ((!(isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Succ) ?
+      (isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Zero ?
+        boolToRef(isSubtype(typeOf(anon_0), Nat()) &&
+        NatFromRef(anon_0).isac_Zero) :
         boolToRef(false)) :
       null)) in
     (let anon_13_0 ==
-      ((isSubtype(typeOf(this), Nat()) ?
-        andBools(boolToRef(isSubtype(typeOf(anon_0), Nat())), equals(NatFromRef(this).af_a_Nat_pred,
+      ((isSubtype(typeOf(this), Nat()) && NatFromRef(this).isac_Succ ?
+        andBools(boolToRef(isSubtype(typeOf(anon_0), Nat()) &&
+        NatFromRef(anon_0).isac_Succ), equals(NatFromRef(this).af_a_Nat_pred,
         NatFromRef(anon_0).af_a_Nat_pred)) :
         anon_14_0)) in
       andBools(boolToRef(isSubtype(typeOf(anon_0), Nat())), anon_13_0)))
@@ -624,12 +718,13 @@ method addComm(m: Ref, n: Ref) returns (v_ret_0: Ref)
 {
   var anon_1: Ref
   anon_1 := m
-  if (isSubtype(typeOf(anon_1), Nat())) {
+  if (isSubtype(typeOf(anon_1), Nat()) && NatFromRef(anon_1).isac_Zero) {
     var anon_2: Ref
     var anon_3: Ref
     anon_2 := addRightZero(n)
     anon_3 := natSym(add(n, m), n)
-  } elseif (isSubtype(typeOf(anon_1), Nat())) {
+  } elseif (isSubtype(typeOf(anon_1), Nat()) &&
+  NatFromRef(anon_1).isac_Succ) {
     var anon_4: Ref
     var anon_5: Ref
     var anon_6: Ref

@@ -1,5 +1,0 @@
-/AdtMissingConcepts.kt: warning: Viper verification error: Assert might fail. Assertion boolFromRef(equals(c, w)) might not hold.
-
-/AdtMissingConcepts.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(get_a_Wrapper_af_a_Wrapper_x(WrapperFromRef(c))) == 2 might not hold.
-
-/AdtMissingConcepts.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(get_a_Wrapper_af_a_Wrapper_x(WrapperFromRef(c))) == 99 might not hold.

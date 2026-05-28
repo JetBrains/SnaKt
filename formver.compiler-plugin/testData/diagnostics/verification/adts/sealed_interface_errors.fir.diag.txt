@@ -30,7 +30,7 @@
 
 /sealed_interface_errors.kt: info: Generated Viper text for useCashCheckout:
 method useCashCheckout(x: Ref) returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(x), Checkout())
+  requires isSubtype(typeOf(x), Checkout()) && CheckoutFromRef(x).isac_Cash
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   label lbl_ret_0
@@ -50,11 +50,14 @@ method testWhenOnCheckout(x: Ref) returns (v_ret_0: Ref)
 {
   var anon: Ref
   anon := x
-  if (isSubtype(typeOf(anon), Checkout())) {
+  if (isSubtype(typeOf(anon), Checkout()) &&
+  CheckoutFromRef(anon).isac_OnTheHouse) {
     v_ret_0 := intToRef(0)
-  } elseif (isSubtype(typeOf(anon), Checkout())) {
+  } elseif (isSubtype(typeOf(anon), Checkout()) &&
+  CheckoutFromRef(anon).isac_Card) {
     v_ret_0 := negInt(plusInts(CheckoutFromRef(x).af_a_Checkout_amount, intToRef(1)))
-  } elseif (isSubtype(typeOf(anon), Checkout())) {
+  } elseif (isSubtype(typeOf(anon), Checkout()) &&
+  CheckoutFromRef(anon).isac_Cash) {
     v_ret_0 := negInt(CheckoutFromRef(x).af_a_Checkout_amount)
   } else {
     v_ret_0 := unitValue()}

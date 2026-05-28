@@ -4,31 +4,31 @@ package diagnostics.verification.adts
 
 import org.jetbrains.kotlin.formver.plugin.*
 
-<!ADT_VIOLATION, ADT_VIOLATION!>@ADT
-sealed interface Direction<!>
+@ADT
+sealed interface Direction
 
 @ADT
-data <!ADT_VIOLATION, ADT_VIOLATION!>object North<!> : Direction
+data object North : Direction
 
 @ADT
-data <!ADT_VIOLATION, ADT_VIOLATION!>object South<!> : Direction
+data object South : Direction
 
 @ADT
-data <!ADT_VIOLATION, ADT_VIOLATION!>object East<!> : Direction
+data object East : Direction
 
 @ADT
-data <!ADT_VIOLATION, ADT_VIOLATION!>object West<!> : Direction
+data object West : Direction
 
-<!ADT_VIOLATION, PURITY_VIOLATION, PURITY_VIOLATION!>@Pure
-fun opposite(d: Direction): Direction = when (d) {
-        is North -> <!ADT_VIOLATION, ADT_VIOLATION!>South<!>
-        is South -> <!ADT_VIOLATION, ADT_VIOLATION!>North<!>
-        is East -> <!ADT_VIOLATION, ADT_VIOLATION!>West<!>
-        is West -> <!ADT_VIOLATION, ADT_VIOLATION!>East<!>
-    }<!>
+@Pure
+fun <!VIPER_TEXT!>opposite<!>(d: Direction): Direction = when (d) {
+        is North -> South
+        is South -> North
+        is East -> West
+        is West -> East
+    }
 
-<!ADT_VIOLATION!>@AlwaysVerify
-fun oppositeInvolution(d: Direction): Unit {
+@AlwaysVerify
+fun <!VIPER_TEXT!>oppositeInvolution<!>(d: Direction): Unit {
     postconditions<Unit> {
         opposite(opposite(d)) == d
     }
@@ -38,4 +38,4 @@ fun oppositeInvolution(d: Direction): Unit {
         is East -> {}
         is West -> {}
     }
-}<!>
+}

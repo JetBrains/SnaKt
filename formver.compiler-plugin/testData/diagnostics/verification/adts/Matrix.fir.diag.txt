@@ -5,10 +5,6 @@ function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
   requires isSubtype(typeOf(c), intType())
   requires isSubtype(typeOf(d), intType())
   ensures isSubtype(typeOf(result), Mat2())
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
   ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
 
 
@@ -29,10 +25,6 @@ function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
   requires isSubtype(typeOf(c), intType())
   requires isSubtype(typeOf(d), intType())
   ensures isSubtype(typeOf(result), Mat2())
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
   ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
 
 
@@ -53,10 +45,6 @@ function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
   requires isSubtype(typeOf(c), intType())
   requires isSubtype(typeOf(d), intType())
   ensures isSubtype(typeOf(result), Mat2())
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
   ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
 
 
@@ -89,10 +77,6 @@ function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
   requires isSubtype(typeOf(c), intType())
   requires isSubtype(typeOf(d), intType())
   ensures isSubtype(typeOf(result), Mat2())
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
   ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
 
 
@@ -107,10 +91,6 @@ function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
   requires isSubtype(typeOf(c), intType())
   requires isSubtype(typeOf(d), intType())
   ensures isSubtype(typeOf(result), Mat2())
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
   ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
 
 
@@ -143,10 +123,6 @@ function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
   requires isSubtype(typeOf(c), intType())
   requires isSubtype(typeOf(d), intType())
   ensures isSubtype(typeOf(result), Mat2())
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
   ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
 
 
@@ -177,10 +153,6 @@ function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
   requires isSubtype(typeOf(c), intType())
   requires isSubtype(typeOf(d), intType())
   ensures isSubtype(typeOf(result), Mat2())
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
   ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
 
 
@@ -204,10 +176,6 @@ function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
   requires isSubtype(typeOf(c), intType())
   requires isSubtype(typeOf(d), intType())
   ensures isSubtype(typeOf(result), Mat2())
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
   ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
 
 
@@ -243,10 +211,6 @@ function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
   requires isSubtype(typeOf(c), intType())
   requires isSubtype(typeOf(d), intType())
   ensures isSubtype(typeOf(result), Mat2())
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
   ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
 
 
@@ -286,10 +250,6 @@ function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
   requires isSubtype(typeOf(c), intType())
   requires isSubtype(typeOf(d), intType())
   ensures isSubtype(typeOf(result), Mat2())
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
   ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
 
 
@@ -338,10 +298,6 @@ function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
   requires isSubtype(typeOf(c), intType())
   requires isSubtype(typeOf(d), intType())
   ensures isSubtype(typeOf(result), Mat2())
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
   ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
 
 
@@ -401,10 +357,6 @@ function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
   requires isSubtype(typeOf(c), intType())
   requires isSubtype(typeOf(d), intType())
   ensures isSubtype(typeOf(result), Mat2())
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
-  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
   ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
 
 

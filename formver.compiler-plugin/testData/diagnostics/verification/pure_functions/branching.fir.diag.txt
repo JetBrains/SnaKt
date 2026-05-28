@@ -114,22 +114,33 @@ function whenNoArgumentBranching(x: Ref, y: Ref): Ref
   requires isSubtype(typeOf(y), intType())
   ensures isSubtype(typeOf(result), intType())
 {
-  (let z_0 ==
-    ((!(isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(x) == 0) &&
-    !(intFromRef(x) > 0 && intFromRef(y) > 0) &&
-    !(intFromRef(x) < 0 || intFromRef(y) < 0) ?
-      intToRef(5) :
+  (let anon_0_0 ==
+    ((!(isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(x) == 0) ?
+      (intFromRef(x) > 0 ? gtInts(y, intToRef(0)) : boolToRef(false)) :
       null)) in
-    (isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(x) == 0 ?
-      intToRef(0) :
-      (!(isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(x) == 0) &&
-      (intFromRef(x) > 0 && intFromRef(y) > 0) ?
-        intToRef(1) :
-        (!(isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(x) == 0) &&
-        !(intFromRef(x) > 0 && intFromRef(y) > 0) &&
-        (intFromRef(x) < 0 || intFromRef(y) < 0) ?
-          intToRef(-1) :
-          z_0))))
+    (let anon_1_0 ==
+      ((!(isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(x) == 0) &&
+      !boolFromRef(anon_0_0) ?
+        (intFromRef(x) < 0 ? boolToRef(true) : ltInts(y, intToRef(0))) :
+        null)) in
+      (let z_0 ==
+        ((!(isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(x) == 0) &&
+        !boolFromRef(anon_0_0) &&
+        !boolFromRef(anon_1_0) ?
+          intToRef(5) :
+          null)) in
+        (isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(x) == 0 ?
+          intToRef(0) :
+          (!(isSubtype(typeOf(intToRef(0)), intType()) &&
+          intFromRef(x) == 0) &&
+          boolFromRef(anon_0_0) ?
+            intToRef(1) :
+            (!(isSubtype(typeOf(intToRef(0)), intType()) &&
+            intFromRef(x) == 0) &&
+            !boolFromRef(anon_0_0) &&
+            boolFromRef(anon_1_0) ?
+              intToRef(-1) :
+              z_0))))))
 }
 
 /branching.kt: info: Generated Viper text for stringEqualityBranching:

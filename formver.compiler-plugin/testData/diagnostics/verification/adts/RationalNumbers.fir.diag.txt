@@ -15,10 +15,6 @@ function con(num: Ref, den: Ref): Ref
   requires isSubtype(typeOf(num), intType())
   requires isSubtype(typeOf(den), intType())
   ensures isSubtype(typeOf(result), RationalNumber())
-  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_num) ==
-    intFromRef(num)
-  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_den) ==
-    intFromRef(den)
   ensures RationalNumberFromRef(result) == ac_RationalNumber(num, den)
 
 
@@ -68,10 +64,6 @@ function con(num: Ref, den: Ref): Ref
   requires isSubtype(typeOf(num), intType())
   requires isSubtype(typeOf(den), intType())
   ensures isSubtype(typeOf(result), RationalNumber())
-  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_num) ==
-    intFromRef(num)
-  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_den) ==
-    intFromRef(den)
   ensures RationalNumberFromRef(result) == ac_RationalNumber(num, den)
 
 
@@ -91,10 +83,6 @@ function con(num: Ref, den: Ref): Ref
   requires isSubtype(typeOf(num), intType())
   requires isSubtype(typeOf(den), intType())
   ensures isSubtype(typeOf(result), RationalNumber())
-  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_num) ==
-    intFromRef(num)
-  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_den) ==
-    intFromRef(den)
   ensures RationalNumberFromRef(result) == ac_RationalNumber(num, den)
 
 
@@ -126,10 +114,6 @@ function con(num: Ref, den: Ref): Ref
   requires isSubtype(typeOf(num), intType())
   requires isSubtype(typeOf(den), intType())
   ensures isSubtype(typeOf(result), RationalNumber())
-  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_num) ==
-    intFromRef(num)
-  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_den) ==
-    intFromRef(den)
   ensures RationalNumberFromRef(result) == ac_RationalNumber(num, den)
 
 
@@ -158,10 +142,6 @@ function con(num: Ref, den: Ref): Ref
   requires isSubtype(typeOf(num), intType())
   requires isSubtype(typeOf(den), intType())
   ensures isSubtype(typeOf(result), RationalNumber())
-  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_num) ==
-    intFromRef(num)
-  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_den) ==
-    intFromRef(den)
   ensures RationalNumberFromRef(result) == ac_RationalNumber(num, den)
 
 
@@ -229,10 +209,6 @@ function con(num: Ref, den: Ref): Ref
   requires isSubtype(typeOf(num), intType())
   requires isSubtype(typeOf(den), intType())
   ensures isSubtype(typeOf(result), RationalNumber())
-  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_num) ==
-    intFromRef(num)
-  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_den) ==
-    intFromRef(den)
   ensures RationalNumberFromRef(result) == ac_RationalNumber(num, den)
 
 

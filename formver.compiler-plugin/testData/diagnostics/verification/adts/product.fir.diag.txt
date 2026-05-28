@@ -3,8 +3,6 @@ function con(par_a: Ref, par_b: Ref): Ref
   requires isSubtype(typeOf(par_a), intType())
   requires isSubtype(typeOf(par_b), intType())
   ensures isSubtype(typeOf(result), Pair())
-  ensures intFromRef(PairFromRef(result).af_a_Pair_a) == intFromRef(par_a)
-  ensures intFromRef(PairFromRef(result).af_a_Pair_b) == intFromRef(par_b)
   ensures PairFromRef(result) == ac_Pair(par_a, par_b)
 
 
@@ -63,8 +61,6 @@ function con(a: Ref, b: Ref): Ref
   requires isSubtype(typeOf(a), intType())
   requires isSubtype(typeOf(b), intType())
   ensures isSubtype(typeOf(result), Pair())
-  ensures intFromRef(PairFromRef(result).af_a_Pair_a) == intFromRef(a)
-  ensures intFromRef(PairFromRef(result).af_a_Pair_b) == intFromRef(b)
   ensures PairFromRef(result) == ac_Pair(a, b)
 
 

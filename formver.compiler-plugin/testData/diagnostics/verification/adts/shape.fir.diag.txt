@@ -6,18 +6,30 @@ function getSubtypeId(s: Ref): Ref
   (let anon_0_0 ==
     (s) in
     (let anon_2_0 ==
-      ((isSubtype(typeOf(anon_0_0), Shape()) ? intToRef(1) : null)) in
+      ((isSubtype(typeOf(anon_0_0), Shape()) &&
+      ShapeFromRef(anon_0_0).isac_Circle ?
+        intToRef(1) :
+        null)) in
       (let anon_4_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Shape()) &&
-        isSubtype(typeOf(anon_0_0), Shape()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Shape()) &&
+        ShapeFromRef(anon_0_0).isac_Circle) &&
+        (isSubtype(typeOf(anon_0_0), Shape()) &&
+        ShapeFromRef(anon_0_0).isac_Origin) ?
           intToRef(0) :
           null)) in
         (let anon_3_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Shape()) ?
-            (isSubtype(typeOf(anon_0_0), Shape()) ? anon_4_0 : unitValue()) :
+          ((!(isSubtype(typeOf(anon_0_0), Shape()) &&
+          ShapeFromRef(anon_0_0).isac_Circle) ?
+            (isSubtype(typeOf(anon_0_0), Shape()) &&
+            ShapeFromRef(anon_0_0).isac_Origin ?
+              anon_4_0 :
+              unitValue()) :
             null)) in
           (let anon_1_0 ==
-            ((isSubtype(typeOf(anon_0_0), Shape()) ? anon_2_0 : anon_3_0)) in
+            ((isSubtype(typeOf(anon_0_0), Shape()) &&
+            ShapeFromRef(anon_0_0).isac_Circle ?
+              anon_2_0 :
+              anon_3_0)) in
             anon_1_0)))))
 }
 
@@ -29,9 +41,8 @@ adt a_Shape {
 /shape.kt: info: Generated Viper text for testSubtypeId:
 function con(radius: Ref): Ref
   requires isSubtype(typeOf(radius), intType())
-  ensures isSubtype(typeOf(result), Shape())
-  ensures intFromRef(ShapeFromRef(result).af_a_Shape_radius) ==
-    intFromRef(radius)
+  ensures isSubtype(typeOf(result), Shape()) &&
+    ShapeFromRef(result).isac_Circle
   ensures ShapeFromRef(result) == ac_Circle(radius)
 
 
@@ -42,18 +53,30 @@ function getSubtypeId(s: Ref): Ref
   (let anon_0_0 ==
     (s) in
     (let anon_2_0 ==
-      ((isSubtype(typeOf(anon_0_0), Shape()) ? intToRef(1) : null)) in
+      ((isSubtype(typeOf(anon_0_0), Shape()) &&
+      ShapeFromRef(anon_0_0).isac_Circle ?
+        intToRef(1) :
+        null)) in
       (let anon_4_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Shape()) &&
-        isSubtype(typeOf(anon_0_0), Shape()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Shape()) &&
+        ShapeFromRef(anon_0_0).isac_Circle) &&
+        (isSubtype(typeOf(anon_0_0), Shape()) &&
+        ShapeFromRef(anon_0_0).isac_Origin) ?
           intToRef(0) :
           null)) in
         (let anon_3_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Shape()) ?
-            (isSubtype(typeOf(anon_0_0), Shape()) ? anon_4_0 : unitValue()) :
+          ((!(isSubtype(typeOf(anon_0_0), Shape()) &&
+          ShapeFromRef(anon_0_0).isac_Circle) ?
+            (isSubtype(typeOf(anon_0_0), Shape()) &&
+            ShapeFromRef(anon_0_0).isac_Origin ?
+              anon_4_0 :
+              unitValue()) :
             null)) in
           (let anon_1_0 ==
-            ((isSubtype(typeOf(anon_0_0), Shape()) ? anon_2_0 : anon_3_0)) in
+            ((isSubtype(typeOf(anon_0_0), Shape()) &&
+            ShapeFromRef(anon_0_0).isac_Circle ?
+              anon_2_0 :
+              anon_3_0)) in
             anon_1_0)))))
 }
 
@@ -92,18 +115,30 @@ function getSubtypeId(s: Ref): Ref
   (let anon_0_0 ==
     (s) in
     (let anon_3_0 ==
-      ((isSubtype(typeOf(anon_0_0), Shape()) ? intToRef(1) : null)) in
+      ((isSubtype(typeOf(anon_0_0), Shape()) &&
+      ShapeFromRef(anon_0_0).isac_Circle ?
+        intToRef(1) :
+        null)) in
       (let anon_5_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Shape()) &&
-        isSubtype(typeOf(anon_0_0), Shape()) ?
+        ((!(isSubtype(typeOf(anon_0_0), Shape()) &&
+        ShapeFromRef(anon_0_0).isac_Circle) &&
+        (isSubtype(typeOf(anon_0_0), Shape()) &&
+        ShapeFromRef(anon_0_0).isac_Origin) ?
           intToRef(0) :
           null)) in
         (let anon_4_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Shape()) ?
-            (isSubtype(typeOf(anon_0_0), Shape()) ? anon_5_0 : unitValue()) :
+          ((!(isSubtype(typeOf(anon_0_0), Shape()) &&
+          ShapeFromRef(anon_0_0).isac_Circle) ?
+            (isSubtype(typeOf(anon_0_0), Shape()) &&
+            ShapeFromRef(anon_0_0).isac_Origin ?
+              anon_5_0 :
+              unitValue()) :
             null)) in
           (let anon_2_0 ==
-            ((isSubtype(typeOf(anon_0_0), Shape()) ? anon_3_0 : anon_4_0)) in
+            ((isSubtype(typeOf(anon_0_0), Shape()) &&
+            ShapeFromRef(anon_0_0).isac_Circle ?
+              anon_3_0 :
+              anon_4_0)) in
             anon_2_0)))))
 }
 
@@ -115,8 +150,8 @@ function size(this: Ref): Ref
 method testSubtypeIdsOnGivenType(s: Ref, c: Ref, o: Ref)
   returns (v_ret_0: Ref)
   requires isSubtype(typeOf(s), Shape())
-  requires isSubtype(typeOf(c), Shape())
-  requires isSubtype(typeOf(o), Shape())
+  requires isSubtype(typeOf(c), Shape()) && ShapeFromRef(c).isac_Circle
+  requires isSubtype(typeOf(o), Shape()) && ShapeFromRef(o).isac_Origin
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var i1: Ref
