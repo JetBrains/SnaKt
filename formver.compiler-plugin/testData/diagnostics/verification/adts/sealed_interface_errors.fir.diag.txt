@@ -28,6 +28,20 @@
 
 /sealed_interface_errors.kt: error: Function 'useWithInvalidSubtype' references an invalid ADT
 
+/sealed_interface_errors.kt: info: Generated Viper text for useOption:
+method useOption(o: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(o), Option())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Option {
+  ac_Option.None()
+  ac_Option.Some(af_a_Option_value: Ref)
+}
+
 /sealed_interface_errors.kt: info: Generated Viper text for useCashCheckout:
 method useCashCheckout(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), Checkout()) && CheckoutFromRef(x).isac_Cash

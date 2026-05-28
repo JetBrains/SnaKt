@@ -40,12 +40,19 @@ data class Card(val amount: Int) : Checkout
 @ADT
 data class Cash(val amount: Int) : Checkout
 
+@ADT
+sealed interface Option {
+    @ADT data object None : Option
+    @ADT data class Some(val value: Int) : Option
+}
+
 <!ADT_VIOLATION!>fun useNotSealed(x: NotSealed) {}<!>
 <!ADT_VIOLATION!>fun useWithTypeParam(x: WithTypeParam<Int>) {}<!>
 <!ADT_VIOLATION!>fun useWithSupertype(x: WithSupertype) {}<!>
 <!ADT_VIOLATION!>fun useWithMember(x: WithMember) {}<!>
 <!ADT_VIOLATION!>fun useWithProperty(x: WithProperty) {}<!>
 <!ADT_VIOLATION!>fun useWithInvalidSubtype(x: WithInvalidSubtype) {}<!>
+fun <!VIPER_TEXT!>useOption<!>(o: Option) {}
 
 fun <!VIPER_TEXT!>useCashCheckout<!>(x: Cash) {}
 

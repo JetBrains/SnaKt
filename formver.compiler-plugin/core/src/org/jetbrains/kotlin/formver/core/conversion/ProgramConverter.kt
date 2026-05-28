@@ -653,13 +653,17 @@ class ProgramConverter(
     private fun validateAdtSealedInterfaceMembers(symbol: FirRegularClassSymbol): Boolean {
         var isValid = true
         for (member in symbol.declarationSymbols) {
-            if (member.origin == FirDeclarationOrigin.Source) {
-                errorCollector.addAdtError(
-                    member.source ?: symbol.source,
-                    "Invalid ADT annotation: An @ADT interface must not declare any members",
-                )
-                isValid = false
-            }
+            if (member.origin != FirDeclarationOrigin.Source) continue
+            if (member is FirRegularClassSymbol
+                && member.isData
+                && member.isAdt(session)
+                && member.resolvedSuperTypes.any { it.classId == symbol.classId }
+            ) continue
+            errorCollector.addAdtError(
+                member.source ?: symbol.source,
+                "Invalid ADT annotation: An @ADT interface must not declare any members",
+            )
+            isValid = false
         }
         return isValid
     }
