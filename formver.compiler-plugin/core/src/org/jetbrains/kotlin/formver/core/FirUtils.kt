@@ -153,9 +153,5 @@ fun FirRegularClassSymbol.findEqualsSymbol(session: FirSession): FirNamedFunctio
 fun ConeKotlinType.findEqualsSymbol(session: FirSession): FirNamedFunctionSymbol? {
     val classSymbol = classId?.let { session.symbolProvider.getClassLikeSymbolByClassId(it) }
         as? FirRegularClassSymbol ?: return null
-    return classSymbol.unsubstitutedScope(
-        session, ScopeSession(), withForcedTypeCalculator = false,
-        memberRequiredPhase = FirResolvePhase.STATUS
-    ).getFunctions(Name.identifier("equals"))
-        .firstOrNull { it.valueParameterSymbols.size == 1 }
+    return classSymbol.findEqualsSymbol(session)
 }

@@ -347,7 +347,7 @@ class ProgramConverter(
             AdtConstructorRef(constructorSig.returns.type, constructorSig.params)
         )
         val sig = object : FullNamedFunctionSignature by constructorSig {
-            // only the return type invariant is required, as fields are equal by ADT construction
+            // postconditions[0] is the return-type SubTypeInvariant (always present for ADT types).
             override val postconditions = listOf(constructorSig.postconditions[0], adtPostcondition)
             override val isPure = true
         }
@@ -407,6 +407,9 @@ class ProgramConverter(
                 symbol.source,
                 "Invalid ADT annotation: @ADT interface '${symbol.name}' has subtypes with invalid @ADT annotations",
             )
+            for (child in subtypeEmbeddings.filterIsInstance<AdtTypeEmbeddingImpl>()) {
+                child.standalone = child
+            }
             typeResolver.registerAdt(name, InvalidAdtTypeEmbedding)
             return InvalidAdtTypeEmbedding
         }
@@ -473,6 +476,7 @@ class ProgramConverter(
             convertedBodyResolver.storePure(pureSignature.name, bodyExp)
             pureEmbedding
         } else {
+            // The body is intentionally not stored, as we are treating equals as opaque.
             pureFunctions.remove(pureSignature.name)
             val impureSignature = demoteToImpure(baseSig, pureSignature)
             UserFunctionEmbedding(NonInlineNamedFunction(impureSignature)).also {
@@ -486,11 +490,11 @@ class ProgramConverter(
         if (!classSymbol.isAdt(session)) return null
 
         // Non-standalone children redirect to the parent sealed interface's unified equals.
-        val parentType = classSymbol.resolvedSuperTypes
-            .firstOrNull { type ->
-                !type.isAny && type.toRegularClassSymbol(session)?.let { it.classKind.isInterface && it.isAdt(session) } == true
-            }
-        if (parentType != null) return tryEmbedAdtEquals(parentType)
+        val parentSymbol = classSymbol.findAdtSealedInterfaceParent(session)
+        if (parentSymbol != null) {
+            val parentType = classSymbol.resolvedSuperTypes.first { it.classId == parentSymbol.classId }
+            return tryEmbedAdtEquals(parentType)
+        }
 
         val adtEmbedding = embedAdtClass(classSymbol) as? AdtTypeEmbeddingImpl ?: return null
 
@@ -736,8 +740,7 @@ class ProgramConverter(
                     reportViolation("An @ADT declaration must not have secondary constructors")
                 }
             }
-            is FirNamedFunctionSymbol -> if (symbol.origin == FirDeclarationOrigin.Source
-                && !(symbol.name.identifier == "equals" && symbol.valueParameterSymbols.size == 1))
+            is FirNamedFunctionSymbol -> if (symbol.origin == FirDeclarationOrigin.Source)
                 reportViolation("An @ADT declaration must not have user-declared member functions")
             else -> reportViolation("An @ADT declaration does not support symbols of type ${symbol.javaClass.simpleName}")
         }
