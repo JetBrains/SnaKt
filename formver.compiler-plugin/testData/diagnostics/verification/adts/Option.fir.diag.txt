@@ -1,59 +1,524 @@
-/Option.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+/Option.kt: info: Generated Viper text for isSome:
+function isSome(x: Ref): Ref
+  requires isSubtype(typeOf(x), Option())
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_0_0 ==
+    (x) in
+    (let anon_2_0 ==
+      ((isSubtype(typeOf(anon_0_0), Option()) ? boolToRef(false) : null)) in
+      (let anon_4_0 ==
+        ((!isSubtype(typeOf(anon_0_0), Option()) &&
+        isSubtype(typeOf(anon_0_0), Option()) ?
+          boolToRef(true) :
+          null)) in
+        (let anon_3_0 ==
+          ((!isSubtype(typeOf(anon_0_0), Option()) ?
+            (isSubtype(typeOf(anon_0_0), Option()) ?
+              anon_4_0 :
+              unitValue()) :
+            null)) in
+          (let anon_1_0 ==
+            ((isSubtype(typeOf(anon_0_0), Option()) ? anon_2_0 : anon_3_0)) in
+            anon_1_0)))))
+}
 
-/Option.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+adt a_Option {
+  ac_None()
+  ac_Some(af_a_Option_value: Ref)
+}
 
-/Option.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+/Option.kt: info: Generated Viper text for getOrElse:
+function getOrElse(x: Ref, default: Ref): Ref
+  requires isSubtype(typeOf(x), Option())
+  requires isSubtype(typeOf(default), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_0_0 ==
+    (x) in
+    (let anon_2_0 ==
+      ((isSubtype(typeOf(anon_0_0), Option()) ? default : null)) in
+      (let anon_4_0 ==
+        ((!isSubtype(typeOf(anon_0_0), Option()) &&
+        isSubtype(typeOf(anon_0_0), Option()) ?
+          OptionFromRef(x).af_a_Option_value :
+          null)) in
+        (let anon_3_0 ==
+          ((!isSubtype(typeOf(anon_0_0), Option()) ?
+            (isSubtype(typeOf(anon_0_0), Option()) ?
+              anon_4_0 :
+              unitValue()) :
+            null)) in
+          (let anon_1_0 ==
+            ((isSubtype(typeOf(anon_0_0), Option()) ? anon_2_0 : anon_3_0)) in
+            anon_1_0)))))
+}
 
-/Option.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+adt a_Option {
+  ac_None()
+  ac_Some(af_a_Option_value: Ref)
+}
 
-/Option.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+/Option.kt: info: Generated Viper text for orElse:
+function orElse(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), Option())
+  requires isSubtype(typeOf(b), Option())
+  ensures isSubtype(typeOf(result), Option())
+{
+  (let anon_0_0 ==
+    (a) in
+    (let anon_2_0 ==
+      ((isSubtype(typeOf(anon_0_0), Option()) ? b : null)) in
+      (let anon_4_0 ==
+        ((!isSubtype(typeOf(anon_0_0), Option()) &&
+        isSubtype(typeOf(anon_0_0), Option()) ?
+          a :
+          null)) in
+        (let anon_3_0 ==
+          ((!isSubtype(typeOf(anon_0_0), Option()) ?
+            (isSubtype(typeOf(anon_0_0), Option()) ?
+              anon_4_0 :
+              unitValue()) :
+            null)) in
+          (let anon_1_0 ==
+            ((isSubtype(typeOf(anon_0_0), Option()) ? anon_2_0 : anon_3_0)) in
+            anon_1_0)))))
+}
 
-/Option.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+adt a_Option {
+  ac_None()
+  ac_Some(af_a_Option_value: Ref)
+}
 
-/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+/Option.kt: info: Generated Viper text for optRefl:
+function equals(this: Ref, anon_0: Ref): Ref
+  requires isSubtype(typeOf(this), Option())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_2_0 ==
+    ((!isSubtype(typeOf(this), Option()) ?
+      (isSubtype(typeOf(this), Option()) ?
+        andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), andBools(boolToRef(isSubtype(typeOf(OptionFromRef(anon_0).af_a_Option_value),
+        intType())), boolToRef(intFromRef(OptionFromRef(this).af_a_Option_value) ==
+        intFromRef(OptionFromRef(anon_0).af_a_Option_value)))) :
+        boolToRef(false)) :
+      null)) in
+    (let anon_1_0 ==
+      ((isSubtype(typeOf(this), Option()) ?
+        boolToRef(isSubtype(typeOf(anon_0), Option())) :
+        anon_2_0)) in
+      andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), anon_1_0)))
+}
 
-/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+method optRefl(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), Option())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures boolFromRef(equals(x, x))
+{
+  var anon_0: Ref
+  anon_0 := x
+  if (isSubtype(typeOf(anon_0), Option())) {
+  } elseif (isSubtype(typeOf(anon_0), Option())) {
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
 
-/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+adt a_Option {
+  ac_None()
+  ac_Some(af_a_Option_value: Ref)
+}
 
-/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+/Option.kt: info: Generated Viper text for orElseIdempotent:
+function equals(this: Ref, anon_0: Ref): Ref
+  requires isSubtype(typeOf(this), Option())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_7_0 ==
+    ((!isSubtype(typeOf(this), Option()) ?
+      (isSubtype(typeOf(this), Option()) ?
+        andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), andBools(boolToRef(isSubtype(typeOf(OptionFromRef(anon_0).af_a_Option_value),
+        intType())), boolToRef(intFromRef(OptionFromRef(this).af_a_Option_value) ==
+        intFromRef(OptionFromRef(anon_0).af_a_Option_value)))) :
+        boolToRef(false)) :
+      null)) in
+    (let anon_6_0 ==
+      ((isSubtype(typeOf(this), Option()) ?
+        boolToRef(isSubtype(typeOf(anon_0), Option())) :
+        anon_7_0)) in
+      andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), anon_6_0)))
+}
 
-/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+function orElse(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), Option())
+  requires isSubtype(typeOf(b), Option())
+  ensures isSubtype(typeOf(result), Option())
+{
+  (let anon_0_0 ==
+    (a) in
+    (let anon_3_0 ==
+      ((isSubtype(typeOf(anon_0_0), Option()) ? b : null)) in
+      (let anon_5_0 ==
+        ((!isSubtype(typeOf(anon_0_0), Option()) &&
+        isSubtype(typeOf(anon_0_0), Option()) ?
+          a :
+          null)) in
+        (let anon_4_0 ==
+          ((!isSubtype(typeOf(anon_0_0), Option()) ?
+            (isSubtype(typeOf(anon_0_0), Option()) ?
+              anon_5_0 :
+              unitValue()) :
+            null)) in
+          (let anon_2_0 ==
+            ((isSubtype(typeOf(anon_0_0), Option()) ? anon_3_0 : anon_4_0)) in
+            anon_2_0)))))
+}
 
-/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+method orElseIdempotent(opt: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(opt), Option())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures boolFromRef(equals(orElse(opt, opt), opt))
+{
+  var anon_1: Ref
+  anon_1 := opt
+  if (isSubtype(typeOf(anon_1), Option())) {
+  } elseif (isSubtype(typeOf(anon_1), Option())) {
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
 
-/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+adt a_Option {
+  ac_None()
+  ac_Some(af_a_Option_value: Ref)
+}
 
-/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+/Option.kt: info: Generated Viper text for orElseAssoc:
+function equals(this: Ref, anon_0: Ref): Ref
+  requires isSubtype(typeOf(this), Option())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_9_0 ==
+    ((!isSubtype(typeOf(this), Option()) ?
+      (isSubtype(typeOf(this), Option()) ?
+        andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), andBools(boolToRef(isSubtype(typeOf(OptionFromRef(anon_0).af_a_Option_value),
+        intType())), boolToRef(intFromRef(OptionFromRef(this).af_a_Option_value) ==
+        intFromRef(OptionFromRef(anon_0).af_a_Option_value)))) :
+        boolToRef(false)) :
+      null)) in
+    (let anon_8_0 ==
+      ((isSubtype(typeOf(this), Option()) ?
+        boolToRef(isSubtype(typeOf(anon_0), Option())) :
+        anon_9_0)) in
+      andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), anon_8_0)))
+}
 
-/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+function orElse(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), Option())
+  requires isSubtype(typeOf(b), Option())
+  ensures isSubtype(typeOf(result), Option())
+{
+  (let anon_0_0 ==
+    (a) in
+    (let anon_5_0 ==
+      ((isSubtype(typeOf(anon_0_0), Option()) ? b : null)) in
+      (let anon_7_0 ==
+        ((!isSubtype(typeOf(anon_0_0), Option()) &&
+        isSubtype(typeOf(anon_0_0), Option()) ?
+          a :
+          null)) in
+        (let anon_6_0 ==
+          ((!isSubtype(typeOf(anon_0_0), Option()) ?
+            (isSubtype(typeOf(anon_0_0), Option()) ?
+              anon_7_0 :
+              unitValue()) :
+            null)) in
+          (let anon_4_0 ==
+            ((isSubtype(typeOf(anon_0_0), Option()) ? anon_5_0 : anon_6_0)) in
+            anon_4_0)))))
+}
 
-/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+method optRefl(x: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(x), Option())
+  ensures isSubtype(typeOf(ret_2), unitType())
+  ensures boolFromRef(equals(x, x))
 
-/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
 
-/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+method orElseAssoc(a: Ref, b: Ref, c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), Option())
+  requires isSubtype(typeOf(b), Option())
+  requires isSubtype(typeOf(c), Option())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures boolFromRef(equals(orElse(orElse(a, b), c), orElse(a, orElse(b, c))))
+{
+  var anon_1: Ref
+  anon_1 := a
+  if (isSubtype(typeOf(anon_1), Option())) {
+    var anon_2: Ref
+    anon_2 := optRefl(orElse(b, c))
+  } elseif (isSubtype(typeOf(anon_1), Option())) {
+    var anon_3: Ref
+    anon_3 := optRefl(a)
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
 
-/Option.kt: error: Function 'isSome' references an invalid ADT
+adt a_Option {
+  ac_None()
+  ac_Some(af_a_Option_value: Ref)
+}
 
-/Option.kt: error: Function 'getOrElse' references an invalid ADT
+/Option.kt: info: Generated Viper text for safeHead:
+function con(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(result), Option())
+  ensures intFromRef(OptionFromRef(result).af_a_Option_value) ==
+    intFromRef(value)
+  ensures OptionFromRef(result) == ac_Some(value)
 
-/Option.kt: error: Function 'orElse' references an invalid ADT
 
-/Option.kt: error: Function 'optRefl' references an invalid ADT
+function safeHead(xs: Ref): Ref
+  requires isSubtype(typeOf(xs), LinkedList())
+  ensures isSubtype(typeOf(result), Option())
+{
+  (let anon_0_0 ==
+    (xs) in
+    (let anon_2_0 ==
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+        OptionToRef(ac_None()) :
+        null)) in
+      (let anon_4_0 ==
+        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          con(LinkedListFromRef(xs).af_a_LinkedList_head) :
+          null)) in
+        (let anon_3_0 ==
+          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+              anon_4_0 :
+              unitValue()) :
+            null)) in
+          (let anon_1_0 ==
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+              anon_2_0 :
+              anon_3_0)) in
+            anon_1_0)))))
+}
 
-/Option.kt: error: Function 'orElseIdempotent' references an invalid ADT
+adt a_LinkedList {
+  ac_Cons(af_a_LinkedList_head: Ref, af_a_LinkedList_tail: Ref)
+  ac_Nil()
+}
 
-/Option.kt: error: Function 'orElseAssoc' references an invalid ADT
+adt a_Option {
+  ac_None()
+  ac_Some(af_a_Option_value: Ref)
+}
 
-/Option.kt: error: An internal error has occurred.
-Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
-Please report this at https://github.com/jesyspa/kotlin
+/Option.kt: info: Generated Viper text for safeHeadAppend:
+function append(xs: Ref, ys: Ref): Ref
+  requires isSubtype(typeOf(xs), LinkedList())
+  requires isSubtype(typeOf(ys), LinkedList())
+  ensures isSubtype(typeOf(result), LinkedList())
+{
+  (let anon_1_0 ==
+    (xs) in
+    (let anon_11_0 ==
+      ((isSubtype(typeOf(anon_1_0), LinkedList()) ? ys : null)) in
+      (let anon_13_0 ==
+        ((!isSubtype(typeOf(anon_1_0), LinkedList()) &&
+        isSubtype(typeOf(anon_1_0), LinkedList()) ?
+          con_Cons(LinkedListFromRef(xs).af_a_LinkedList_head, append(LinkedListFromRef(xs).af_a_LinkedList_tail,
+          ys)) :
+          null)) in
+        (let anon_12_0 ==
+          ((!isSubtype(typeOf(anon_1_0), LinkedList()) ?
+            (isSubtype(typeOf(anon_1_0), LinkedList()) ?
+              anon_13_0 :
+              unitValue()) :
+            null)) in
+          (let anon_10_0 ==
+            ((isSubtype(typeOf(anon_1_0), LinkedList()) ?
+              anon_11_0 :
+              anon_12_0)) in
+            anon_10_0)))))
+}
 
-/Option.kt: error: An internal error has occurred.
-Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
-Please report this at https://github.com/jesyspa/kotlin
+function con_Cons(head: Ref, tail: Ref): Ref
+  requires isSubtype(typeOf(head), intType())
+  requires isSubtype(typeOf(tail), LinkedList())
+  ensures isSubtype(typeOf(result), LinkedList())
+  ensures intFromRef(LinkedListFromRef(result).af_a_LinkedList_head) ==
+    intFromRef(head)
+  ensures LinkedListFromRef(LinkedListFromRef(result).af_a_LinkedList_tail) ==
+    LinkedListFromRef(tail)
+  ensures LinkedListFromRef(result) == ac_Cons(head, tail)
 
-/Option.kt: error: An internal error has occurred.
-Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
-Please report this at https://github.com/jesyspa/kotlin
+
+function con_Some(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(result), Option())
+  ensures intFromRef(OptionFromRef(result).af_a_Option_value) ==
+    intFromRef(value)
+  ensures OptionFromRef(result) == ac_Some(value)
+
+
+function equals(this: Ref, anon_0: Ref): Ref
+  requires isSubtype(typeOf(this), Option())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_19_0 ==
+    ((!isSubtype(typeOf(this), Option()) ?
+      (isSubtype(typeOf(this), Option()) ?
+        andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), andBools(boolToRef(isSubtype(typeOf(OptionFromRef(anon_0).af_a_Option_value),
+        intType())), boolToRef(intFromRef(OptionFromRef(this).af_a_Option_value) ==
+        intFromRef(OptionFromRef(anon_0).af_a_Option_value)))) :
+        boolToRef(false)) :
+      null)) in
+    (let anon_18_0 ==
+      ((isSubtype(typeOf(this), Option()) ?
+        boolToRef(isSubtype(typeOf(anon_0), Option())) :
+        anon_19_0)) in
+      andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), anon_18_0)))
+}
+
+function orElse(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), Option())
+  requires isSubtype(typeOf(b), Option())
+  ensures isSubtype(typeOf(result), Option())
+{
+  (let anon_2_0 ==
+    (a) in
+    (let anon_15_0 ==
+      ((isSubtype(typeOf(anon_2_0), Option()) ? b : null)) in
+      (let anon_17_0 ==
+        ((!isSubtype(typeOf(anon_2_0), Option()) &&
+        isSubtype(typeOf(anon_2_0), Option()) ?
+          a :
+          null)) in
+        (let anon_16_0 ==
+          ((!isSubtype(typeOf(anon_2_0), Option()) ?
+            (isSubtype(typeOf(anon_2_0), Option()) ?
+              anon_17_0 :
+              unitValue()) :
+            null)) in
+          (let anon_14_0 ==
+            ((isSubtype(typeOf(anon_2_0), Option()) ?
+              anon_15_0 :
+              anon_16_0)) in
+            anon_14_0)))))
+}
+
+function safeHead(xs: Ref): Ref
+  requires isSubtype(typeOf(xs), LinkedList())
+  ensures isSubtype(typeOf(result), Option())
+{
+  (let anon_0_0 ==
+    (xs) in
+    (let anon_7_0 ==
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+        OptionToRef(ac_None()) :
+        null)) in
+      (let anon_9_0 ==
+        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          con_Some(LinkedListFromRef(xs).af_a_LinkedList_head) :
+          null)) in
+        (let anon_8_0 ==
+          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+              anon_9_0 :
+              unitValue()) :
+            null)) in
+          (let anon_6_0 ==
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+              anon_7_0 :
+              anon_8_0)) in
+            anon_6_0)))))
+}
+
+method optRefl(x: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(x), Option())
+  ensures isSubtype(typeOf(ret_2), unitType())
+  ensures boolFromRef(equals(x, x))
+
+
+method safeHeadAppend(xs: Ref, ys: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), LinkedList())
+  requires isSubtype(typeOf(ys), LinkedList())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures boolFromRef(equals(safeHead(append(xs, ys)), orElse(safeHead(xs),
+    safeHead(ys))))
+{
+  var anon_3: Ref
+  anon_3 := xs
+  if (isSubtype(typeOf(anon_3), LinkedList())) {
+    var anon_4: Ref
+    anon_4 := optRefl(safeHead(ys))
+  } elseif (isSubtype(typeOf(anon_3), LinkedList())) {
+    var anon_5: Ref
+    anon_5 := optRefl(safeHead(xs))
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_LinkedList {
+  ac_Cons(af_a_LinkedList_head: Ref, af_a_LinkedList_tail: Ref)
+  ac_Nil()
+}
+
+adt a_Option {
+  ac_None()
+  ac_Some(af_a_Option_value: Ref)
+}
+
+/Option.kt: info: Generated Viper text for append:
+function append(xs: Ref, ys: Ref): Ref
+  requires isSubtype(typeOf(xs), LinkedList())
+  requires isSubtype(typeOf(ys), LinkedList())
+  ensures isSubtype(typeOf(result), LinkedList())
+{
+  (let anon_0_0 ==
+    (xs) in
+    (let anon_2_0 ==
+      ((isSubtype(typeOf(anon_0_0), LinkedList()) ? ys : null)) in
+      (let anon_4_0 ==
+        ((!isSubtype(typeOf(anon_0_0), LinkedList()) &&
+        isSubtype(typeOf(anon_0_0), LinkedList()) ?
+          con(LinkedListFromRef(xs).af_a_LinkedList_head, append(LinkedListFromRef(xs).af_a_LinkedList_tail,
+          ys)) :
+          null)) in
+        (let anon_3_0 ==
+          ((!isSubtype(typeOf(anon_0_0), LinkedList()) ?
+            (isSubtype(typeOf(anon_0_0), LinkedList()) ?
+              anon_4_0 :
+              unitValue()) :
+            null)) in
+          (let anon_1_0 ==
+            ((isSubtype(typeOf(anon_0_0), LinkedList()) ?
+              anon_2_0 :
+              anon_3_0)) in
+            anon_1_0)))))
+}
+
+function con(head: Ref, tail: Ref): Ref
+  requires isSubtype(typeOf(head), intType())
+  requires isSubtype(typeOf(tail), LinkedList())
+  ensures isSubtype(typeOf(result), LinkedList())
+  ensures intFromRef(LinkedListFromRef(result).af_a_LinkedList_head) ==
+    intFromRef(head)
+  ensures LinkedListFromRef(LinkedListFromRef(result).af_a_LinkedList_tail) ==
+    LinkedListFromRef(tail)
+  ensures LinkedListFromRef(result) == ac_Cons(head, tail)
+
+
+adt a_LinkedList {
+  ac_Cons(af_a_LinkedList_head: Ref, af_a_LinkedList_tail: Ref)
+  ac_Nil()
+}

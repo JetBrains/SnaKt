@@ -1,43 +1,176 @@
-/Direction.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+/Direction.kt: info: Generated Viper text for opposite:
+function opposite(d: Ref): Ref
+  requires isSubtype(typeOf(d), Direction())
+  ensures isSubtype(typeOf(result), Direction())
+{
+  (let anon_0_0 ==
+    (d) in
+    (let anon_2_0 ==
+      ((isSubtype(typeOf(anon_0_0), Direction()) ?
+        DirectionToRef(ac_South()) :
+        null)) in
+      (let anon_4_0 ==
+        ((!isSubtype(typeOf(anon_0_0), Direction()) &&
+        isSubtype(typeOf(anon_0_0), Direction()) ?
+          DirectionToRef(ac_North()) :
+          null)) in
+        (let anon_6_0 ==
+          ((!isSubtype(typeOf(anon_0_0), Direction()) &&
+          !isSubtype(typeOf(anon_0_0), Direction()) &&
+          isSubtype(typeOf(anon_0_0), Direction()) ?
+            DirectionToRef(ac_West()) :
+            null)) in
+          (let anon_8_0 ==
+            ((!isSubtype(typeOf(anon_0_0), Direction()) &&
+            !isSubtype(typeOf(anon_0_0), Direction()) &&
+            !isSubtype(typeOf(anon_0_0), Direction()) &&
+            isSubtype(typeOf(anon_0_0), Direction()) ?
+              DirectionToRef(ac_East()) :
+              null)) in
+            (let anon_7_0 ==
+              ((!isSubtype(typeOf(anon_0_0), Direction()) &&
+              !isSubtype(typeOf(anon_0_0), Direction()) &&
+              !isSubtype(typeOf(anon_0_0), Direction()) ?
+                (isSubtype(typeOf(anon_0_0), Direction()) ?
+                  anon_8_0 :
+                  unitValue()) :
+                null)) in
+              (let anon_5_0 ==
+                ((!isSubtype(typeOf(anon_0_0), Direction()) &&
+                !isSubtype(typeOf(anon_0_0), Direction()) ?
+                  (isSubtype(typeOf(anon_0_0), Direction()) ?
+                    anon_6_0 :
+                    anon_7_0) :
+                  null)) in
+                (let anon_3_0 ==
+                  ((!isSubtype(typeOf(anon_0_0), Direction()) ?
+                    (isSubtype(typeOf(anon_0_0), Direction()) ?
+                      anon_4_0 :
+                      anon_5_0) :
+                    null)) in
+                  (let anon_1_0 ==
+                    ((isSubtype(typeOf(anon_0_0), Direction()) ?
+                      anon_2_0 :
+                      anon_3_0)) in
+                    anon_1_0)))))))))
+}
 
-/Direction.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+adt a_Direction {
+  ac_East()
+  ac_North()
+  ac_South()
+  ac_West()
+}
 
-/Direction.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+/Direction.kt: info: Generated Viper text for oppositeInvolution:
+function equals(this: Ref, anon_0: Ref): Ref
+  requires isSubtype(typeOf(this), Direction())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_13_0 ==
+    ((!isSubtype(typeOf(this), Direction()) &&
+    !isSubtype(typeOf(this), Direction()) &&
+    !isSubtype(typeOf(this), Direction()) ?
+      (isSubtype(typeOf(this), Direction()) ?
+        boolToRef(isSubtype(typeOf(anon_0), Direction())) :
+        boolToRef(false)) :
+      null)) in
+    (let anon_12_0 ==
+      ((!isSubtype(typeOf(this), Direction()) &&
+      !isSubtype(typeOf(this), Direction()) ?
+        (isSubtype(typeOf(this), Direction()) ?
+          boolToRef(isSubtype(typeOf(anon_0), Direction())) :
+          anon_13_0) :
+        null)) in
+      (let anon_11_0 ==
+        ((!isSubtype(typeOf(this), Direction()) ?
+          (isSubtype(typeOf(this), Direction()) ?
+            boolToRef(isSubtype(typeOf(anon_0), Direction())) :
+            anon_12_0) :
+          null)) in
+        (let anon_10_0 ==
+          ((isSubtype(typeOf(this), Direction()) ?
+            boolToRef(isSubtype(typeOf(anon_0), Direction())) :
+            anon_11_0)) in
+          andBools(boolToRef(isSubtype(typeOf(anon_0), Direction())), anon_10_0)))))
+}
 
-/Direction.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+function opposite(d: Ref): Ref
+  requires isSubtype(typeOf(d), Direction())
+  ensures isSubtype(typeOf(result), Direction())
+{
+  (let anon_0_0 ==
+    (d) in
+    (let anon_3_0 ==
+      ((isSubtype(typeOf(anon_0_0), Direction()) ?
+        DirectionToRef(ac_South()) :
+        null)) in
+      (let anon_5_0 ==
+        ((!isSubtype(typeOf(anon_0_0), Direction()) &&
+        isSubtype(typeOf(anon_0_0), Direction()) ?
+          DirectionToRef(ac_North()) :
+          null)) in
+        (let anon_7_0 ==
+          ((!isSubtype(typeOf(anon_0_0), Direction()) &&
+          !isSubtype(typeOf(anon_0_0), Direction()) &&
+          isSubtype(typeOf(anon_0_0), Direction()) ?
+            DirectionToRef(ac_West()) :
+            null)) in
+          (let anon_9_0 ==
+            ((!isSubtype(typeOf(anon_0_0), Direction()) &&
+            !isSubtype(typeOf(anon_0_0), Direction()) &&
+            !isSubtype(typeOf(anon_0_0), Direction()) &&
+            isSubtype(typeOf(anon_0_0), Direction()) ?
+              DirectionToRef(ac_East()) :
+              null)) in
+            (let anon_8_0 ==
+              ((!isSubtype(typeOf(anon_0_0), Direction()) &&
+              !isSubtype(typeOf(anon_0_0), Direction()) &&
+              !isSubtype(typeOf(anon_0_0), Direction()) ?
+                (isSubtype(typeOf(anon_0_0), Direction()) ?
+                  anon_9_0 :
+                  unitValue()) :
+                null)) in
+              (let anon_6_0 ==
+                ((!isSubtype(typeOf(anon_0_0), Direction()) &&
+                !isSubtype(typeOf(anon_0_0), Direction()) ?
+                  (isSubtype(typeOf(anon_0_0), Direction()) ?
+                    anon_7_0 :
+                    anon_8_0) :
+                  null)) in
+                (let anon_4_0 ==
+                  ((!isSubtype(typeOf(anon_0_0), Direction()) ?
+                    (isSubtype(typeOf(anon_0_0), Direction()) ?
+                      anon_5_0 :
+                      anon_6_0) :
+                    null)) in
+                  (let anon_2_0 ==
+                    ((isSubtype(typeOf(anon_0_0), Direction()) ?
+                      anon_3_0 :
+                      anon_4_0)) in
+                    anon_2_0)))))))))
+}
 
-/Direction.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+method oppositeInvolution(d: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(d), Direction())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures boolFromRef(equals(opposite(opposite(d)), d))
+{
+  var anon_1: Ref
+  anon_1 := d
+  if (isSubtype(typeOf(anon_1), Direction())) {
+  } elseif (isSubtype(typeOf(anon_1), Direction())) {
+  } elseif (isSubtype(typeOf(anon_1), Direction())) {
+  } elseif (isSubtype(typeOf(anon_1), Direction())) {
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
 
-/Direction.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
-
-/Direction.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
-
-/Direction.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
-
-/Direction.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
-
-/Direction.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
-
-/Direction.kt: error: Function 'opposite' references an invalid ADT
-
-/Direction.kt: error: Impure function body detected in pure function
-
-/Direction.kt: error: Impure function body detected in pure function
-
-/Direction.kt: error: Invalid ADT annotation: reference to 'South' which has an invalid @ADT annotation
-
-/Direction.kt: error: Invalid ADT annotation: reference to 'South' which has an invalid @ADT annotation
-
-/Direction.kt: error: Invalid ADT annotation: reference to 'North' which has an invalid @ADT annotation
-
-/Direction.kt: error: Invalid ADT annotation: reference to 'North' which has an invalid @ADT annotation
-
-/Direction.kt: error: Invalid ADT annotation: reference to 'West' which has an invalid @ADT annotation
-
-/Direction.kt: error: Invalid ADT annotation: reference to 'West' which has an invalid @ADT annotation
-
-/Direction.kt: error: Invalid ADT annotation: reference to 'East' which has an invalid @ADT annotation
-
-/Direction.kt: error: Invalid ADT annotation: reference to 'East' which has an invalid @ADT annotation
-
-/Direction.kt: error: Function 'oppositeInvolution' references an invalid ADT
+adt a_Direction {
+  ac_East()
+  ac_North()
+  ac_South()
+  ac_West()
+}

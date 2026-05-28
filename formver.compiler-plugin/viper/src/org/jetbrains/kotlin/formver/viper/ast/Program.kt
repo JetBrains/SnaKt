@@ -133,6 +133,11 @@ private fun registerExpNames(exp: Exp) {
             nameResolver.register(exp.adtName)
             registerExpNames(exp.rcv)
         }
+        is Exp.AdtDiscriminatorApp -> {
+            nameResolver.register(exp.constructorName)
+            nameResolver.register(exp.adtName)
+            registerExpNames(exp.rcv)
+        }
         // no else branch to make decisions explicit.
         is Exp.Result, is Exp.BoolLit, is Exp.EmptySeq, is Exp.IntLit, is Exp.NullLit -> {}
     }

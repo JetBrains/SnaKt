@@ -335,6 +335,21 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
 
         when (val forAllLambda = functionCall.extractFormverFirBlock { isInvariantBuilderFunctionNamed("forAll") }) {
             null -> {
+                // For sealed interface ADTs, FIR resolves .equals() to Any.equals(),
+                // so embedAnyFunction can't detect the ADT from the symbol alone.
+                // Use the call-site receiver type to intercept.
+                if (symbol.isEqualsWithOneParam) {
+                    val receiverType = functionCall.dispatchReceiver?.resolvedType
+                    if (receiverType != null) {
+                        data.tryEmbedAdtEquals(receiverType)?.let { adtEquals ->
+                            return adtEquals.insertCall(
+                                functionCall.functionCallArguments.withVarargsHandled(data, null),
+                                data,
+                                data.embedType(functionCall.resolvedType),
+                            )
+                        }
+                    }
+                }
                 val callee = data.embedAnyFunction(symbol)
                 return callee.insertCall(
                     functionCall.functionCallArguments.withVarargsHandled(data, callee),

@@ -4,8 +4,8 @@ package diagnostics.verification.adts
 
 import org.jetbrains.kotlin.formver.plugin.*
 
-@ADT
-data class Node(val head: Int, val tail: Node?)
+<!VIPER_VERIFICATION_ERROR, VIPER_VERIFICATION_ERROR, VIPER_VERIFICATION_ERROR, VIPER_VERIFICATION_ERROR, VIPER_VERIFICATION_ERROR, VIPER_VERIFICATION_ERROR, VIPER_VERIFICATION_ERROR, VIPER_VERIFICATION_ERROR, VIPER_VERIFICATION_ERROR, VIPER_VERIFICATION_ERROR, VIPER_VERIFICATION_ERROR, VIPER_VERIFICATION_ERROR, VIPER_VERIFICATION_ERROR, VIPER_VERIFICATION_ERROR, VIPER_VERIFICATION_ERROR, VIPER_VERIFICATION_ERROR, VIPER_VERIFICATION_ERROR, VIPER_VERIFICATION_ERROR!>@ADT
+data class Node(val head: Int, val tail: Node?)<!>
 
 @Pure
 fun <!VIPER_TEXT!>length<!>(xs: Node?): Int =
@@ -38,38 +38,38 @@ fun <!VIPER_TEXT!>lengthNonNeg<!>(xs: Node?): Unit {
     if (xs != null) lengthNonNeg(xs.tail)
 }
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>appendLength<!>(xs: Node?, ys: Node?): Unit {
     postconditions<Unit> {
         length(append(xs, ys)) == length(xs) + length(ys)
     }
     if (xs != null) appendLength(xs.tail, ys)
-}
+}<!>
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>appendNull<!>(xs: Node?): Unit {
     postconditions<Unit> {
         append(xs, null) == xs
     }
     if (xs != null) appendNull(xs.tail)
-}
+}<!>
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>nodeRefl<!>(xs: Node?): Unit {
     postconditions<Unit> {
         xs == xs
     }
     if (xs != null) nodeRefl(xs.tail)
-}
+}<!>
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>appendAssoc<!>(xs: Node?, ys: Node?, zs: Node?): Unit {
     postconditions<Unit> {
         append(append(xs, ys), zs) == append(xs, append(ys, zs))
     }
     if (xs != null) appendAssoc(xs.tail, ys, zs)
     else nodeRefl(append(ys, zs))  // Both sides reduce to append(ys, zs)
-}
+}<!>
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>reverseLength<!>(xs: Node?): Unit {
@@ -81,12 +81,12 @@ fun <!VIPER_TEXT!>reverseLength<!>(xs: Node?): Unit {
         appendLength(reverse(xs.tail), Node(xs.head, null))  // length(append(a, b)) == length(a) + length(b)
         verify(length(reverse(xs)) == length(append(reverse(xs.tail), Node(xs.head, null))))
         verify(length(null) == 0)
-        verify(length(Node(xs.head, null)) == 1)
+        verify(<!VIPER_VERIFICATION_ERROR!>length(Node(xs.head, null)) == 1<!>)
         verify(length(xs) == 1 + length(xs.tail))
     }
 }
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>node_refl<!>(r: Node): Unit {
     postconditions<Unit> {
         r == r
@@ -95,9 +95,9 @@ fun <!VIPER_TEXT!>node_refl<!>(r: Node): Unit {
     if (t != null) {
         node_refl(t)
     }
-}
+}<!>
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>node_sym<!>(a: Node?, b: Node?): Unit {
     preconditions { a == b }
     postconditions<Unit> { b == a }
@@ -113,9 +113,9 @@ fun <!VIPER_TEXT!>node_sym<!>(a: Node?, b: Node?): Unit {
             }
         }
     }
-}
+}<!>
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>node_trans<!>(a: Node?, b: Node?, c: Node?): Unit {
     preconditions {
         a == b
@@ -142,9 +142,9 @@ fun <!VIPER_TEXT!>node_trans<!>(a: Node?, b: Node?, c: Node?): Unit {
             }
         }
     }
-}
+}<!>
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>appendCongL<!>(a: Node?, b: Node?, c: Node?): Unit {
     preconditions {
         a == b
@@ -195,9 +195,9 @@ fun <!VIPER_TEXT!>appendCongL<!>(a: Node?, b: Node?, c: Node?): Unit {
         verify(append(a, c) == c)
         verify(append(b, c) == c)
     }
-}
+}<!>
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>reverseAppend<!>(xs: Node?, ys: Node?): Unit {
     postconditions<Unit> {
         reverse(append(xs, ys)) == append(reverse(ys), reverse(xs))
@@ -224,7 +224,7 @@ fun <!VIPER_TEXT!>reverseAppend<!>(xs: Node?, ys: Node?): Unit {
             append(reverse(ys), append(reverse(xs.tail), Node(xs.head, null)))
         )
     }
-}
+}<!>
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>appendCongR<!>(a: Node?, b: Node?, c: Node?): Unit {
@@ -263,11 +263,11 @@ fun <!VIPER_TEXT!>appendCongR<!>(a: Node?, b: Node?, c: Node?): Unit {
             node_refl(c)
         }
         verify(append(a, b) == b)
-        verify(append(a, c) == c)
+        verify(<!VIPER_VERIFICATION_ERROR!>append(a, c) == c<!>)
     }
 }
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>reverseReverseIsId<!>(xs: Node?): Unit {
     postconditions<Unit> {
         reverse(reverse(xs)) == xs
@@ -352,4 +352,4 @@ fun <!VIPER_TEXT!>reverseReverseIsId<!>(xs: Node?): Unit {
             xs
         )
     }
-}
+}<!>

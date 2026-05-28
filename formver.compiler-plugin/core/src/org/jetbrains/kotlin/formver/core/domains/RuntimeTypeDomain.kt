@@ -211,9 +211,11 @@ const val RUNTIME_TYPE_DOMAIN_NAME = "rt"
  * ```
  */
 class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(RUNTIME_TYPE_DOMAIN_NAME)) {
-    private val adts: List<AdtTypeEmbeddingImpl> = typeResolver.adtTypeEmbeddings()
+    private val adts: List<AdtTypeEmbeddingImpl> = typeResolver.standaloneAdtTypeEmbeddings()
     private val adtFields: Map<AdtTypeEmbeddingImpl, List<AdtFieldEmbedding>> =
-        adts.associateWith { typeResolver.lookupAdtFields(it.name) }
+        typeResolver.adtTypeEmbeddings()
+            .associateWith { typeResolver.lookupAdtFields(it.name) }
+            .filterValues { it.isNotEmpty() }
     override val typeVars: List<Type.TypeVar> = emptyList()
 
     // Define types that are not dependent on the user defined classes in a companion object.
@@ -416,13 +418,31 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
                 }
             }
         }
+        // Standalone ADTs are final: no proper subtypes exist
+        adts.forEach { embedding ->
+            axiom {
+                Exp.forall(t) { t ->
+                    assumption {
+                        simpleTrigger { t subtype embedding.runtimeType }
+                    }
+                    t eq embedding.runtimeType
+                }
+            }
+        }
         // Encodes type information of ADT deconstructors
         adtFields.forEach { (embedding, fields) ->
             val p = domainVar("p", Type.Adt(embedding.adtName))
+            val constructorDecl = embedding.getViperConstructorDecl(fields)
             fields.forEach { field ->
                 axiom {
                     Exp.forall(p) { p ->
-                        simpleTrigger { typeOf(Exp.AdtDestructorApp(field.name, p, embedding.adtName)) } subtype field.type.runtimeType
+                        val discriminator = Exp.AdtDiscriminatorApp(
+                            constructorName = constructorDecl.name,
+                            rcv = p,
+                            adtName = embedding.adtName,
+                        )
+                        val destructor = Exp.AdtDestructorApp(field.name, p, embedding.adtName)
+                        discriminator implies (simpleTrigger { typeOf(destructor) } subtype field.type.runtimeType)
                     }
                 }
             }

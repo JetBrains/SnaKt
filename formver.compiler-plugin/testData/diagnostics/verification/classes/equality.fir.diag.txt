@@ -4255,14 +4255,22 @@ domain rt  {
   }
 
   axiom {
+    (forall t: rt ::
+      { isSubtype(t, PairWithPrimitives()) }
+      isSubtype(t, PairWithPrimitives()) ==> t == PairWithPrimitives())
+  }
+
+  axiom {
     (forall p: a_PairWithPrimitives ::
       { typeOf(p.af_a_PairWithPrimitives_a) }
+      p.isac_PairWithPrimitives ==>
       isSubtype(typeOf(p.af_a_PairWithPrimitives_a), intType()))
   }
 
   axiom {
     (forall p: a_PairWithPrimitives ::
       { typeOf(p.af_a_PairWithPrimitives_b) }
+      p.isac_PairWithPrimitives ==>
       isSubtype(typeOf(p.af_a_PairWithPrimitives_b), intType()))
   }
 }
@@ -4698,14 +4706,22 @@ domain rt  {
   }
 
   axiom {
+    (forall t: rt ::
+      { isSubtype(t, PairWithPrimitives()) }
+      isSubtype(t, PairWithPrimitives()) ==> t == PairWithPrimitives())
+  }
+
+  axiom {
     (forall p: a_PairWithPrimitives ::
       { typeOf(p.af_a_PairWithPrimitives_a) }
+      p.isac_PairWithPrimitives ==>
       isSubtype(typeOf(p.af_a_PairWithPrimitives_a), intType()))
   }
 
   axiom {
     (forall p: a_PairWithPrimitives ::
       { typeOf(p.af_a_PairWithPrimitives_b) }
+      p.isac_PairWithPrimitives ==>
       isSubtype(typeOf(p.af_a_PairWithPrimitives_b), intType()))
   }
 }
@@ -5145,8 +5161,15 @@ domain rt  {
   }
 
   axiom {
+    (forall t: rt ::
+      { isSubtype(t, BoxWithCustomEquals()) }
+      isSubtype(t, BoxWithCustomEquals()) ==> t == BoxWithCustomEquals())
+  }
+
+  axiom {
     (forall p: a_BoxWithCustomEquals ::
       { typeOf(p.af_a_BoxWithCustomEquals_a) }
+      p.isac_BoxWithCustomEquals ==>
       isSubtype(typeOf(p.af_a_BoxWithCustomEquals_a), CustomEquals()))
   }
 }
@@ -5595,8 +5618,16 @@ domain rt  {
   }
 
   axiom {
+    (forall t: rt ::
+      { isSubtype(t, BoxWithCustomPureEquals()) }
+      isSubtype(t, BoxWithCustomPureEquals()) ==>
+      t == BoxWithCustomPureEquals())
+  }
+
+  axiom {
     (forall p: a_BoxWithCustomPureEquals ::
       { typeOf(p.af_a_BoxWithCustomPureEquals_a) }
+      p.isac_BoxWithCustomPureEquals ==>
       isSubtype(typeOf(p.af_a_BoxWithCustomPureEquals_a), CustomPureEquals()))
   }
 }
@@ -6046,8 +6077,16 @@ domain rt  {
   }
 
   axiom {
+    (forall t: rt ::
+      { isSubtype(t, BoxWithCustomPureEquals()) }
+      isSubtype(t, BoxWithCustomPureEquals()) ==>
+      t == BoxWithCustomPureEquals())
+  }
+
+  axiom {
     (forall p: a_BoxWithCustomPureEquals ::
       { typeOf(p.af_a_BoxWithCustomPureEquals_a) }
+      p.isac_BoxWithCustomPureEquals ==>
       isSubtype(typeOf(p.af_a_BoxWithCustomPureEquals_a), CustomPureEquals()))
   }
 }
@@ -7294,6 +7333,18 @@ domain rt  {
       { BlueFromRef(v_r) }
       isSubtype(typeOf(v_r), Blue()) ==> BlueToRef(BlueFromRef(v_r)) == v_r)
   }
+
+  axiom {
+    (forall t: rt ::
+      { isSubtype(t, Red()) }
+      isSubtype(t, Red()) ==> t == Red())
+  }
+
+  axiom {
+    (forall t: rt ::
+      { isSubtype(t, Blue()) }
+      isSubtype(t, Blue()) ==> t == Blue())
+  }
 }
 
 function addCharInt(arg_1: Ref, arg_2: Ref): Ref
@@ -7725,6 +7776,12 @@ domain rt  {
     (forall r: Ref ::
       { BlueFromRef(r) }
       isSubtype(typeOf(r), Blue()) ==> BlueToRef(BlueFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall t: rt ::
+      { isSubtype(t, Blue()) }
+      isSubtype(t, Blue()) ==> t == Blue())
   }
 }
 
@@ -8192,6 +8249,18 @@ domain rt  {
       { BlueFromRef(v_r) }
       isSubtype(typeOf(v_r), Blue()) ==> BlueToRef(BlueFromRef(v_r)) == v_r)
   }
+
+  axiom {
+    (forall t: rt ::
+      { isSubtype(t, Red()) }
+      isSubtype(t, Red()) ==> t == Red())
+  }
+
+  axiom {
+    (forall t: rt ::
+      { isSubtype(t, Blue()) }
+      isSubtype(t, Blue()) ==> t == Blue())
+  }
 }
 
 function addCharInt(arg_1: Ref, arg_2: Ref): Ref
@@ -8366,17 +8435,933 @@ adt a_Red {
   ac_Red()
 }
 
-/equality.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+/equality.kt: info: Generated Viper text for testLLComparisionsCoarse:
+domain rt  {
 
-/equality.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+  unique function intType(): rt
 
-/equality.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+  unique function boolType(): rt
 
-/equality.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+  unique function charType(): rt
 
-/equality.kt: error: Function 'testLLComparisionsCoarse' references an invalid ADT
+  unique function unitType(): rt
 
-/equality.kt: error: Function 'testLLComparisionsGranular' references an invalid ADT
+  unique function nothingType(): rt
+
+  unique function anyType(): rt
+
+  unique function functionType(): rt
+
+  unique function stringType(): rt
+
+  unique function LinkedListSum(): rt
+
+  function nullValue(): Ref
+
+  function unitValue(): Ref
+
+  function isSubtype(t1: rt, t2: rt): Bool
+
+  function typeOf(r: Ref): rt
+
+  function nullable(t: rt): rt
+
+  function intToRef(v: Int): Ref
+
+  function intFromRef(r: Ref): Int
+
+  function boolToRef(v: Bool): Ref
+
+  function boolFromRef(r: Ref): Bool
+
+  function charToRef(v: Int): Ref
+
+  function charFromRef(r: Ref): Int
+
+  function stringToRef(v: Seq[Int]): Ref
+
+  function stringFromRef(r: Ref): Seq[Int]
+
+  function LinkedListSumToRef(v: a_LinkedListSum): Ref
+
+  function LinkedListSumFromRef(r: Ref): a_LinkedListSum
+
+  axiom subtypeReflexive {
+    (forall t: rt ::isSubtype(t, t))
+  }
+
+  axiom subtypeTransitive {
+    (forall t1: rt, t2: rt, t3: rt ::
+      { isSubtype(t1, t2), isSubtype(t2, t3) }
+      { isSubtype(t1, t2), isSubtype(t1, t3) }
+      { isSubtype(t2, t3), isSubtype(t1, t3) }
+      isSubtype(t1, t2) && isSubtype(t2, t3) ==> isSubtype(t1, t3))
+  }
+
+  axiom subtypeAntisymmetric {
+    (forall t1: rt, t2: rt ::
+      { isSubtype(t1, t2), isSubtype(t2, t1) }
+      isSubtype(t1, t2) && isSubtype(t2, t1) ==> t1 == t2)
+  }
+
+  axiom nullableIdempotent {
+    (forall t: rt ::
+      { nullable(nullable(t)) }
+      nullable(nullable(t)) == nullable(t))
+  }
+
+  axiom nullableSupertype {
+    (forall t: rt :: { nullable(t) } isSubtype(t, nullable(t)))
+  }
+
+  axiom nullablePreservesSubtype {
+    (forall t1: rt, t2: rt ::
+      { isSubtype(nullable(t1), nullable(t2)) }
+      isSubtype(t1, t2) ==> isSubtype(nullable(t1), nullable(t2)))
+  }
+
+  axiom nullableAnySupertype {
+    (forall t: rt ::isSubtype(t, nullable(anyType())))
+  }
+
+  axiom {
+    isSubtype(intType(), anyType())
+  }
+
+  axiom {
+    isSubtype(boolType(), anyType())
+  }
+
+  axiom {
+    isSubtype(charType(), anyType())
+  }
+
+  axiom {
+    isSubtype(unitType(), anyType())
+  }
+
+  axiom {
+    isSubtype(nothingType(), anyType())
+  }
+
+  axiom {
+    isSubtype(anyType(), anyType())
+  }
+
+  axiom {
+    isSubtype(functionType(), anyType())
+  }
+
+  axiom {
+    isSubtype(stringType(), anyType())
+  }
+
+  axiom {
+    isSubtype(LinkedListSum(), anyType())
+  }
+
+  axiom supertypeOfNothing {
+    (forall t: rt ::isSubtype(nothingType(), t))
+  }
+
+  axiom anyNotNullableTypeLevel {
+    (forall t: rt ::!isSubtype(nullable(t), anyType()))
+  }
+
+  axiom nullSmartcastValueLevel {
+    (forall r: Ref, t: rt ::
+      { isSubtype(typeOf(r), nullable(t)) }
+      isSubtype(typeOf(r), nullable(t)) ==>
+      r == nullValue() || isSubtype(typeOf(r), t))
+  }
+
+  axiom nothingEmpty {
+    (forall r: Ref ::!isSubtype(typeOf(r), nothingType()))
+  }
+
+  axiom nullSmartcastTypeLevel {
+    (forall t1: rt, t2: rt ::
+      { isSubtype(t1, anyType()), isSubtype(t1, nullable(t2)) }
+      isSubtype(t1, anyType()) && isSubtype(t1, nullable(t2)) ==>
+      isSubtype(t1, t2))
+  }
+
+  axiom typeOfNull {
+    isSubtype(typeOf(nullValue()), nullable(nothingType()))
+  }
+
+  axiom anyNotNullableValueLevel {
+    !isSubtype(typeOf(nullValue()), anyType())
+  }
+
+  axiom typeOfUnit {
+    isSubtype(typeOf(unitValue()), unitType())
+  }
+
+  axiom uniquenessOfUnit {
+    (forall r: Ref ::
+      { isSubtype(typeOf(r), unitType()) }
+      isSubtype(typeOf(r), unitType()) ==> r == unitValue())
+  }
+
+  axiom {
+    (forall v: Int ::
+      { isSubtype(typeOf(intToRef(v)), intType()) }
+      isSubtype(typeOf(intToRef(v)), intType()))
+  }
+
+  axiom {
+    (forall v: Int ::
+      { intFromRef(intToRef(v)) }
+      intFromRef(intToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { intFromRef(r) }
+      isSubtype(typeOf(r), intType()) ==> intToRef(intFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall v: Bool ::
+      { isSubtype(typeOf(boolToRef(v)), boolType()) }
+      isSubtype(typeOf(boolToRef(v)), boolType()))
+  }
+
+  axiom {
+    (forall v: Bool ::
+      { boolFromRef(boolToRef(v)) }
+      boolFromRef(boolToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { boolFromRef(r) }
+      isSubtype(typeOf(r), boolType()) ==> boolToRef(boolFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall v: Int ::
+      { isSubtype(typeOf(charToRef(v)), charType()) }
+      isSubtype(typeOf(charToRef(v)), charType()))
+  }
+
+  axiom {
+    (forall v: Int ::
+      { charFromRef(charToRef(v)) }
+      charFromRef(charToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { charFromRef(r) }
+      isSubtype(typeOf(r), charType()) ==> charToRef(charFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall v: Seq[Int] ::
+      { isSubtype(typeOf(stringToRef(v)), stringType()) }
+      isSubtype(typeOf(stringToRef(v)), stringType()))
+  }
+
+  axiom {
+    (forall v: Seq[Int] ::
+      { stringFromRef(stringToRef(v)) }
+      stringFromRef(stringToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { stringFromRef(r) }
+      isSubtype(typeOf(r), stringType()) ==>
+      stringToRef(stringFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall v: a_LinkedListSum ::
+      { isSubtype(typeOf(LinkedListSumToRef(v)), LinkedListSum()) }
+      isSubtype(typeOf(LinkedListSumToRef(v)), LinkedListSum()))
+  }
+
+  axiom {
+    (forall v: a_LinkedListSum ::
+      { LinkedListSumFromRef(LinkedListSumToRef(v)) }
+      LinkedListSumFromRef(LinkedListSumToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { LinkedListSumFromRef(r) }
+      isSubtype(typeOf(r), LinkedListSum()) ==>
+      LinkedListSumToRef(LinkedListSumFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall t: rt ::
+      { isSubtype(t, LinkedListSum()) }
+      isSubtype(t, LinkedListSum()) ==> t == LinkedListSum())
+  }
+
+  axiom {
+    (forall p: a_LinkedListSum ::
+      { typeOf(p.af_a_LinkedListSum_head) }
+      p.isac_Node ==>
+      isSubtype(typeOf(p.af_a_LinkedListSum_head), intType()))
+  }
+
+  axiom {
+    (forall p: a_LinkedListSum ::
+      { typeOf(p.af_a_LinkedListSum_tail) }
+      p.isac_Node ==>
+      isSubtype(typeOf(p.af_a_LinkedListSum_tail), LinkedListSum()))
+  }
+}
+
+function addCharInt(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), charType())
+  ensures charFromRef(result) == charFromRef(arg_1) + intFromRef(arg_2)
+
+
+function addStringChar(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), stringType())
+  ensures stringFromRef(result) ==
+    stringFromRef(arg_1) ++ Seq(charFromRef(arg_2))
+
+
+function addStrings(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), stringType())
+  ensures stringFromRef(result) ==
+    stringFromRef(arg_1) ++ stringFromRef(arg_2)
+
+
+function andBools(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (boolFromRef(arg_1) && boolFromRef(arg_2))
+
+
+function divInts(arg_1: Ref, arg_2: Ref): Ref
+  requires intFromRef(arg_2) != 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg_1) \ intFromRef(arg_2)
+
+
+function equals(this: Ref, anon_0: Ref): Ref
+  requires isSubtype(typeOf(this), LinkedListSum())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_1_0 ==
+    ((!isSubtype(typeOf(this), LinkedListSum()) ?
+      (isSubtype(typeOf(this), LinkedListSum()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedListSum())),
+        andBools(boolToRef(isSubtype(typeOf(LinkedListSumFromRef(anon_0).af_a_LinkedListSum_head),
+        intType())), boolToRef(intFromRef(LinkedListSumFromRef(this).af_a_LinkedListSum_head) ==
+        intFromRef(LinkedListSumFromRef(anon_0).af_a_LinkedListSum_head)))),
+        equals(LinkedListSumFromRef(this).af_a_LinkedListSum_tail, LinkedListSumFromRef(anon_0).af_a_LinkedListSum_tail)) :
+        boolToRef(false)) :
+      null)) in
+    (let anon_0_0 ==
+      ((isSubtype(typeOf(this), LinkedListSum()) ?
+        boolToRef(isSubtype(typeOf(anon_0), LinkedListSum())) :
+        anon_1_0)) in
+      andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedListSum())), anon_0_0)))
+}
+
+function geChars(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg_1) >= charFromRef(arg_2)
+
+
+function geInts(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg_1) >= intFromRef(arg_2)
+
+
+function gtChars(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg_1) > charFromRef(arg_2)
+
+
+function gtInts(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg_1) > intFromRef(arg_2)
+
+
+function impliesBools(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) ==
+    (boolFromRef(arg_1) ==> boolFromRef(arg_2))
+
+
+function leChars(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg_1) <= charFromRef(arg_2)
+
+
+function leInts(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg_1) <= intFromRef(arg_2)
+
+
+function ltChars(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg_1) < charFromRef(arg_2)
+
+
+function ltInts(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg_1) < intFromRef(arg_2)
+
+
+function minusInts(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg_1) - intFromRef(arg_2)
+
+
+function negInt(arg_1: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == -intFromRef(arg_1)
+
+
+function notBool(arg_1: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == !boolFromRef(arg_1)
+
+
+function orBools(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (boolFromRef(arg_1) || boolFromRef(arg_2))
+
+
+function plusInts(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg_1) + intFromRef(arg_2)
+
+
+function remInts(arg_1: Ref, arg_2: Ref): Ref
+  requires intFromRef(arg_2) != 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg_1) % intFromRef(arg_2)
+
+
+function stringGet(arg_1: Ref, arg_2: Ref): Ref
+  requires intFromRef(arg_2) >= 0 &&
+    intFromRef(arg_2) < |stringFromRef(arg_1)|
+  ensures isSubtype(typeOf(result), charType())
+  ensures charFromRef(result) == stringFromRef(arg_1)[intFromRef(arg_2)]
+
+
+function stringLength(arg_1: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == |stringFromRef(arg_1)|
+
+
+function subCharInt(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), charType())
+  ensures charFromRef(result) == charFromRef(arg_1) - intFromRef(arg_2)
+
+
+function subChars(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == charFromRef(arg_1) - charFromRef(arg_2)
+
+
+function timesInts(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg_1) * intFromRef(arg_2)
+
+
+function xorBools(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (boolFromRef(arg_1) != boolFromRef(arg_2))
+
+
+method havoc(arg_1: rt) returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), arg_1)
+
+
+method testLLComparisionsCoarse(ll1: Ref, ll2: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(ll1), LinkedListSum())
+  requires isSubtype(typeOf(ll2), LinkedListSum())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  v_ret_0 := equals(ll1, ll2)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+adt a_LinkedListSum {
+  ac_Nil()
+  ac_Node(af_a_LinkedListSum_head: Ref, af_a_LinkedListSum_tail: Ref)
+}
+
+/equality.kt: info: Generated Viper text for testLLComparisionsGranular:
+domain rt  {
+
+  unique function intType(): rt
+
+  unique function boolType(): rt
+
+  unique function charType(): rt
+
+  unique function unitType(): rt
+
+  unique function nothingType(): rt
+
+  unique function anyType(): rt
+
+  unique function functionType(): rt
+
+  unique function stringType(): rt
+
+  unique function LinkedListSum(): rt
+
+  function nullValue(): Ref
+
+  function unitValue(): Ref
+
+  function isSubtype(t1: rt, t2: rt): Bool
+
+  function typeOf(r: Ref): rt
+
+  function nullable(t: rt): rt
+
+  function intToRef(v: Int): Ref
+
+  function intFromRef(r: Ref): Int
+
+  function boolToRef(v: Bool): Ref
+
+  function boolFromRef(r: Ref): Bool
+
+  function charToRef(v: Int): Ref
+
+  function charFromRef(r: Ref): Int
+
+  function stringToRef(v: Seq[Int]): Ref
+
+  function stringFromRef(r: Ref): Seq[Int]
+
+  function LinkedListSumToRef(v: a_LinkedListSum): Ref
+
+  function LinkedListSumFromRef(r: Ref): a_LinkedListSum
+
+  axiom subtypeReflexive {
+    (forall t: rt ::isSubtype(t, t))
+  }
+
+  axiom subtypeTransitive {
+    (forall t1: rt, t2: rt, t3: rt ::
+      { isSubtype(t1, t2), isSubtype(t2, t3) }
+      { isSubtype(t1, t2), isSubtype(t1, t3) }
+      { isSubtype(t2, t3), isSubtype(t1, t3) }
+      isSubtype(t1, t2) && isSubtype(t2, t3) ==> isSubtype(t1, t3))
+  }
+
+  axiom subtypeAntisymmetric {
+    (forall t1: rt, t2: rt ::
+      { isSubtype(t1, t2), isSubtype(t2, t1) }
+      isSubtype(t1, t2) && isSubtype(t2, t1) ==> t1 == t2)
+  }
+
+  axiom nullableIdempotent {
+    (forall t: rt ::
+      { nullable(nullable(t)) }
+      nullable(nullable(t)) == nullable(t))
+  }
+
+  axiom nullableSupertype {
+    (forall t: rt :: { nullable(t) } isSubtype(t, nullable(t)))
+  }
+
+  axiom nullablePreservesSubtype {
+    (forall t1: rt, t2: rt ::
+      { isSubtype(nullable(t1), nullable(t2)) }
+      isSubtype(t1, t2) ==> isSubtype(nullable(t1), nullable(t2)))
+  }
+
+  axiom nullableAnySupertype {
+    (forall t: rt ::isSubtype(t, nullable(anyType())))
+  }
+
+  axiom {
+    isSubtype(intType(), anyType())
+  }
+
+  axiom {
+    isSubtype(boolType(), anyType())
+  }
+
+  axiom {
+    isSubtype(charType(), anyType())
+  }
+
+  axiom {
+    isSubtype(unitType(), anyType())
+  }
+
+  axiom {
+    isSubtype(nothingType(), anyType())
+  }
+
+  axiom {
+    isSubtype(anyType(), anyType())
+  }
+
+  axiom {
+    isSubtype(functionType(), anyType())
+  }
+
+  axiom {
+    isSubtype(stringType(), anyType())
+  }
+
+  axiom {
+    isSubtype(LinkedListSum(), anyType())
+  }
+
+  axiom supertypeOfNothing {
+    (forall t: rt ::isSubtype(nothingType(), t))
+  }
+
+  axiom anyNotNullableTypeLevel {
+    (forall t: rt ::!isSubtype(nullable(t), anyType()))
+  }
+
+  axiom nullSmartcastValueLevel {
+    (forall r: Ref, t: rt ::
+      { isSubtype(typeOf(r), nullable(t)) }
+      isSubtype(typeOf(r), nullable(t)) ==>
+      r == nullValue() || isSubtype(typeOf(r), t))
+  }
+
+  axiom nothingEmpty {
+    (forall r: Ref ::!isSubtype(typeOf(r), nothingType()))
+  }
+
+  axiom nullSmartcastTypeLevel {
+    (forall t1: rt, t2: rt ::
+      { isSubtype(t1, anyType()), isSubtype(t1, nullable(t2)) }
+      isSubtype(t1, anyType()) && isSubtype(t1, nullable(t2)) ==>
+      isSubtype(t1, t2))
+  }
+
+  axiom typeOfNull {
+    isSubtype(typeOf(nullValue()), nullable(nothingType()))
+  }
+
+  axiom anyNotNullableValueLevel {
+    !isSubtype(typeOf(nullValue()), anyType())
+  }
+
+  axiom typeOfUnit {
+    isSubtype(typeOf(unitValue()), unitType())
+  }
+
+  axiom uniquenessOfUnit {
+    (forall r: Ref ::
+      { isSubtype(typeOf(r), unitType()) }
+      isSubtype(typeOf(r), unitType()) ==> r == unitValue())
+  }
+
+  axiom {
+    (forall v: Int ::
+      { isSubtype(typeOf(intToRef(v)), intType()) }
+      isSubtype(typeOf(intToRef(v)), intType()))
+  }
+
+  axiom {
+    (forall v: Int ::
+      { intFromRef(intToRef(v)) }
+      intFromRef(intToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { intFromRef(r) }
+      isSubtype(typeOf(r), intType()) ==> intToRef(intFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall v: Bool ::
+      { isSubtype(typeOf(boolToRef(v)), boolType()) }
+      isSubtype(typeOf(boolToRef(v)), boolType()))
+  }
+
+  axiom {
+    (forall v: Bool ::
+      { boolFromRef(boolToRef(v)) }
+      boolFromRef(boolToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { boolFromRef(r) }
+      isSubtype(typeOf(r), boolType()) ==> boolToRef(boolFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall v: Int ::
+      { isSubtype(typeOf(charToRef(v)), charType()) }
+      isSubtype(typeOf(charToRef(v)), charType()))
+  }
+
+  axiom {
+    (forall v: Int ::
+      { charFromRef(charToRef(v)) }
+      charFromRef(charToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { charFromRef(r) }
+      isSubtype(typeOf(r), charType()) ==> charToRef(charFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall v: Seq[Int] ::
+      { isSubtype(typeOf(stringToRef(v)), stringType()) }
+      isSubtype(typeOf(stringToRef(v)), stringType()))
+  }
+
+  axiom {
+    (forall v: Seq[Int] ::
+      { stringFromRef(stringToRef(v)) }
+      stringFromRef(stringToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { stringFromRef(r) }
+      isSubtype(typeOf(r), stringType()) ==>
+      stringToRef(stringFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall v: a_LinkedListSum ::
+      { isSubtype(typeOf(LinkedListSumToRef(v)), LinkedListSum()) }
+      isSubtype(typeOf(LinkedListSumToRef(v)), LinkedListSum()))
+  }
+
+  axiom {
+    (forall v: a_LinkedListSum ::
+      { LinkedListSumFromRef(LinkedListSumToRef(v)) }
+      LinkedListSumFromRef(LinkedListSumToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { LinkedListSumFromRef(r) }
+      isSubtype(typeOf(r), LinkedListSum()) ==>
+      LinkedListSumToRef(LinkedListSumFromRef(r)) == r)
+  }
+
+  axiom {
+    (forall t: rt ::
+      { isSubtype(t, LinkedListSum()) }
+      isSubtype(t, LinkedListSum()) ==> t == LinkedListSum())
+  }
+
+  axiom {
+    (forall p: a_LinkedListSum ::
+      { typeOf(p.af_a_LinkedListSum_head) }
+      p.isac_Node ==>
+      isSubtype(typeOf(p.af_a_LinkedListSum_head), intType()))
+  }
+
+  axiom {
+    (forall p: a_LinkedListSum ::
+      { typeOf(p.af_a_LinkedListSum_tail) }
+      p.isac_Node ==>
+      isSubtype(typeOf(p.af_a_LinkedListSum_tail), LinkedListSum()))
+  }
+}
+
+function addCharInt(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), charType())
+  ensures charFromRef(result) == charFromRef(arg_1) + intFromRef(arg_2)
+
+
+function addStringChar(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), stringType())
+  ensures stringFromRef(result) ==
+    stringFromRef(arg_1) ++ Seq(charFromRef(arg_2))
+
+
+function addStrings(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), stringType())
+  ensures stringFromRef(result) ==
+    stringFromRef(arg_1) ++ stringFromRef(arg_2)
+
+
+function andBools(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (boolFromRef(arg_1) && boolFromRef(arg_2))
+
+
+function divInts(arg_1: Ref, arg_2: Ref): Ref
+  requires intFromRef(arg_2) != 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg_1) \ intFromRef(arg_2)
+
+
+function equals(this: Ref, anon_0: Ref): Ref
+  requires isSubtype(typeOf(this), LinkedListSum())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_2_0 ==
+    ((!isSubtype(typeOf(this), LinkedListSum()) ?
+      (isSubtype(typeOf(this), LinkedListSum()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedListSum())),
+        andBools(boolToRef(isSubtype(typeOf(LinkedListSumFromRef(anon_0).af_a_LinkedListSum_head),
+        intType())), boolToRef(intFromRef(LinkedListSumFromRef(this).af_a_LinkedListSum_head) ==
+        intFromRef(LinkedListSumFromRef(anon_0).af_a_LinkedListSum_head)))),
+        equals(LinkedListSumFromRef(this).af_a_LinkedListSum_tail, LinkedListSumFromRef(anon_0).af_a_LinkedListSum_tail)) :
+        boolToRef(false)) :
+      null)) in
+    (let anon_1_0 ==
+      ((isSubtype(typeOf(this), LinkedListSum()) ?
+        boolToRef(isSubtype(typeOf(anon_0), LinkedListSum())) :
+        anon_2_0)) in
+      andBools(boolToRef(isSubtype(typeOf(anon_0), LinkedListSum())), anon_1_0)))
+}
+
+function geChars(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg_1) >= charFromRef(arg_2)
+
+
+function geInts(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg_1) >= intFromRef(arg_2)
+
+
+function gtChars(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg_1) > charFromRef(arg_2)
+
+
+function gtInts(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg_1) > intFromRef(arg_2)
+
+
+function impliesBools(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) ==
+    (boolFromRef(arg_1) ==> boolFromRef(arg_2))
+
+
+function leChars(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg_1) <= charFromRef(arg_2)
+
+
+function leInts(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg_1) <= intFromRef(arg_2)
+
+
+function ltChars(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == charFromRef(arg_1) < charFromRef(arg_2)
+
+
+function ltInts(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == intFromRef(arg_1) < intFromRef(arg_2)
+
+
+function minusInts(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg_1) - intFromRef(arg_2)
+
+
+function negInt(arg_1: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == -intFromRef(arg_1)
+
+
+function notBool(arg_1: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == !boolFromRef(arg_1)
+
+
+function orBools(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (boolFromRef(arg_1) || boolFromRef(arg_2))
+
+
+function plusInts(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg_1) + intFromRef(arg_2)
+
+
+function remInts(arg_1: Ref, arg_2: Ref): Ref
+  requires intFromRef(arg_2) != 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg_1) % intFromRef(arg_2)
+
+
+function stringGet(arg_1: Ref, arg_2: Ref): Ref
+  requires intFromRef(arg_2) >= 0 &&
+    intFromRef(arg_2) < |stringFromRef(arg_1)|
+  ensures isSubtype(typeOf(result), charType())
+  ensures charFromRef(result) == stringFromRef(arg_1)[intFromRef(arg_2)]
+
+
+function stringLength(arg_1: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == |stringFromRef(arg_1)|
+
+
+function subCharInt(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), charType())
+  ensures charFromRef(result) == charFromRef(arg_1) - intFromRef(arg_2)
+
+
+function subChars(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == charFromRef(arg_1) - charFromRef(arg_2)
+
+
+function timesInts(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(arg_1) * intFromRef(arg_2)
+
+
+function xorBools(arg_1: Ref, arg_2: Ref): Ref
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (boolFromRef(arg_1) != boolFromRef(arg_2))
+
+
+method havoc(arg_1: rt) returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), arg_1)
+
+
+method testLLComparisionsGranular(ll1: Ref, ll2: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(ll1), LinkedListSum())
+  requires isSubtype(typeOf(ll2), LinkedListSum())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  var anon_0: Ref
+  anon_0 := ll1
+  if (isSubtype(typeOf(anon_0), LinkedListSum())) {
+    v_ret_0 := equals(ll1, ll2)
+  } elseif (isSubtype(typeOf(anon_0), LinkedListSum())) {
+    v_ret_0 := equals(ll1, ll2)
+  } else {
+    v_ret_0 := unitValue()}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+adt a_LinkedListSum {
+  ac_Nil()
+  ac_Node(af_a_LinkedListSum_head: Ref, af_a_LinkedListSum_tail: Ref)
+}
 
 /equality.kt: info: Generated Viper text for testNodeLLComparisionsCoarse:
 domain rt  {
@@ -8639,14 +9624,21 @@ domain rt  {
   }
 
   axiom {
+    (forall t: rt ::
+      { isSubtype(t, NodeLL()) }
+      isSubtype(t, NodeLL()) ==> t == NodeLL())
+  }
+
+  axiom {
     (forall p: a_NodeLL ::
       { typeOf(p.af_a_NodeLL_head) }
-      isSubtype(typeOf(p.af_a_NodeLL_head), intType()))
+      p.isac_NodeLL ==> isSubtype(typeOf(p.af_a_NodeLL_head), intType()))
   }
 
   axiom {
     (forall p: a_NodeLL ::
       { typeOf(p.af_a_NodeLL_tail) }
+      p.isac_NodeLL ==>
       isSubtype(typeOf(p.af_a_NodeLL_tail), nullable(NodeLL())))
   }
 }

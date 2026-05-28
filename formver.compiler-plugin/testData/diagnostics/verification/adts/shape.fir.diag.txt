@@ -1,19 +1,144 @@
-/shape.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+/shape.kt: info: Generated Viper text for getSubtypeId:
+function getSubtypeId(s: Ref): Ref
+  requires isSubtype(typeOf(s), Shape())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_0_0 ==
+    (s) in
+    (let anon_2_0 ==
+      ((isSubtype(typeOf(anon_0_0), Shape()) ? intToRef(1) : null)) in
+      (let anon_4_0 ==
+        ((!isSubtype(typeOf(anon_0_0), Shape()) &&
+        isSubtype(typeOf(anon_0_0), Shape()) ?
+          intToRef(0) :
+          null)) in
+        (let anon_3_0 ==
+          ((!isSubtype(typeOf(anon_0_0), Shape()) ?
+            (isSubtype(typeOf(anon_0_0), Shape()) ? anon_4_0 : unitValue()) :
+            null)) in
+          (let anon_1_0 ==
+            ((isSubtype(typeOf(anon_0_0), Shape()) ? anon_2_0 : anon_3_0)) in
+            anon_1_0)))))
+}
 
-/shape.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+adt a_Shape {
+  ac_Circle(af_a_Shape_radius: Ref)
+  ac_Origin()
+}
 
-/shape.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+/shape.kt: info: Generated Viper text for testSubtypeId:
+function con(radius: Ref): Ref
+  requires isSubtype(typeOf(radius), intType())
+  ensures isSubtype(typeOf(result), Shape())
+  ensures intFromRef(ShapeFromRef(result).af_a_Shape_radius) ==
+    intFromRef(radius)
+  ensures ShapeFromRef(result) == ac_Circle(radius)
 
-/shape.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
 
-/shape.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+function getSubtypeId(s: Ref): Ref
+  requires isSubtype(typeOf(s), Shape())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_0_0 ==
+    (s) in
+    (let anon_2_0 ==
+      ((isSubtype(typeOf(anon_0_0), Shape()) ? intToRef(1) : null)) in
+      (let anon_4_0 ==
+        ((!isSubtype(typeOf(anon_0_0), Shape()) &&
+        isSubtype(typeOf(anon_0_0), Shape()) ?
+          intToRef(0) :
+          null)) in
+        (let anon_3_0 ==
+          ((!isSubtype(typeOf(anon_0_0), Shape()) ?
+            (isSubtype(typeOf(anon_0_0), Shape()) ? anon_4_0 : unitValue()) :
+            null)) in
+          (let anon_1_0 ==
+            ((isSubtype(typeOf(anon_0_0), Shape()) ? anon_2_0 : anon_3_0)) in
+            anon_1_0)))))
+}
 
-/shape.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
 
-/shape.kt: error: Function 'getSubtypeId' references an invalid ADT
 
-/shape.kt: error: An internal error has occurred.
-Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
-Please report this at https://github.com/jesyspa/kotlin
+method testSubtypeId() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var s1: Ref
+  var i1: Ref
+  var s2: Ref
+  var i2: Ref
+  s1 := con(intToRef(2))
+  i1 := getSubtypeId(s1)
+  assert isSubtype(typeOf(intToRef(1)), intType()) && intFromRef(i1) == 1
+  s2 := ShapeToRef(ac_Origin())
+  i2 := getSubtypeId(s2)
+  assert isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(i2) == 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
 
-/shape.kt: error: Function 'testSubtypeIdsOnGivenType' references an invalid ADT
+adt a_Shape {
+  ac_Origin()
+  ac_Circle(af_a_Shape_radius: Ref)
+}
+
+/shape.kt: info: Generated Viper text for testSubtypeIdsOnGivenType:
+function getSubtypeId(s: Ref): Ref
+  requires isSubtype(typeOf(s), Shape())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_0_0 ==
+    (s) in
+    (let anon_3_0 ==
+      ((isSubtype(typeOf(anon_0_0), Shape()) ? intToRef(1) : null)) in
+      (let anon_5_0 ==
+        ((!isSubtype(typeOf(anon_0_0), Shape()) &&
+        isSubtype(typeOf(anon_0_0), Shape()) ?
+          intToRef(0) :
+          null)) in
+        (let anon_4_0 ==
+          ((!isSubtype(typeOf(anon_0_0), Shape()) ?
+            (isSubtype(typeOf(anon_0_0), Shape()) ? anon_5_0 : unitValue()) :
+            null)) in
+          (let anon_2_0 ==
+            ((isSubtype(typeOf(anon_0_0), Shape()) ? anon_3_0 : anon_4_0)) in
+            anon_2_0)))))
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method testSubtypeIdsOnGivenType(s: Ref, c: Ref, o: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(s), Shape())
+  requires isSubtype(typeOf(c), Shape())
+  requires isSubtype(typeOf(o), Shape())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var i1: Ref
+  var anon_1: Ref
+  var i2: Ref
+  var i3: Ref
+  i1 := getSubtypeId(s)
+  if (isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(i1) == 0) {
+    anon_1 := boolToRef(true)
+  } else {
+    anon_1 := andBools(boolToRef(isSubtype(typeOf(intToRef(1)), intType())),
+      boolToRef(intFromRef(i1) == 1))}
+  assert boolFromRef(anon_1)
+  i2 := getSubtypeId(c)
+  assert isSubtype(typeOf(intToRef(1)), intType()) && intFromRef(i2) == 1
+  i3 := getSubtypeId(o)
+  assert isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(i3) == 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Shape {
+  ac_Circle(af_a_Shape_radius: Ref)
+  ac_Origin()
+}

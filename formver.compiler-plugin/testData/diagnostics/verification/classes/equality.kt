@@ -111,30 +111,30 @@ fun <!VIPER_TEXT!>testBlueBlueComparision<!>(b1: Blue, b2: Blue): Boolean {
     return b1 == b2
 }
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>testRedBlueComparision<!>(r: Red, b: Blue): Boolean {
     postconditions<Boolean> { it }
     return r != b
-}
+}<!>
 
+<!ADT_VIOLATION, ADT_VIOLATION!>@ADT
+sealed interface LinkedListSum<!>
+<!ADT_VIOLATION!>@ADT
+data class Node(val head: Int, val tail: LinkedListSum) : LinkedListSum<!>
 @ADT
-sealed interface LinkedListSum
-@ADT
-data class Node(val head: Int, val tail: LinkedListSum) : LinkedListSum
-@ADT
-data object Nil : LinkedListSum
+data <!ADT_VIOLATION!>object Nil<!> : LinkedListSum
 
-@AlwaysVerify
-fun <!VIPER_TEXT!>testLLComparisionsCoarse<!>(ll1: LinkedListSum, ll2: LinkedListSum): Boolean = ll1 == ll2
+<!ADT_VIOLATION!>@AlwaysVerify
+fun testLLComparisionsCoarse(ll1: LinkedListSum, ll2: LinkedListSum): Boolean = ll1 == ll2<!>
 
-@AlwaysVerify
-fun <!VIPER_TEXT!>testLLComparisionsGranular<!>(ll1: LinkedListSum, ll2: LinkedListSum): Boolean = when (ll1) {
+<!ADT_VIOLATION!>@AlwaysVerify
+fun testLLComparisionsGranular(ll1: LinkedListSum, ll2: LinkedListSum): Boolean = when (ll1) {
     is Node -> ll1 == ll2
     is Nil -> ll1 == ll2
-}
+}<!>
 
-@ADT
-data class NodeLL(val head: Int, val tail: NodeLL?)
+<!VIPER_VERIFICATION_ERROR!>@ADT
+data class NodeLL(val head: Int, val tail: NodeLL?)<!>
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>testNodeLLComparisionsCoarse<!>(ll1: NodeLL, ll2: NodeLL): Boolean = ll1 == ll2

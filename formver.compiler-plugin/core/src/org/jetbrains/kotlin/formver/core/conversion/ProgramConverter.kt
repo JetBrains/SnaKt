@@ -385,7 +385,33 @@ class ProgramConverter(
         val name = symbol.classId.embedName()
         typeResolver.lookupAdtTypeEmbedding(name)?.let { return it }
 
-        return embedAdtDataClassOrObject(symbol, name)
+        return if (symbol.classKind.isInterface)
+            embedAdtSealedInterface(symbol, name)
+        else
+            embedAdtDataClassOrObject(symbol, name)
+    }
+
+    private fun embedAdtSealedInterface(symbol: FirRegularClassSymbol, name: ScopedName): AdtTypeEmbedding {
+        if (!validateAdtSealedInterface(symbol)) {
+            typeResolver.registerAdt(name, InvalidAdtTypeEmbedding)
+            return InvalidAdtTypeEmbedding
+        }
+
+        val adtEmbedding = AdtTypeEmbeddingImpl(name)
+        typeResolver.registerAdt(name, adtEmbedding)
+
+        val subtypeEmbeddings = symbol.adtSubtypeSymbols(session).map { embedAdtClass(it) }
+        val hasInvalidSubtype = subtypeEmbeddings.any { it is InvalidAdtTypeEmbedding }
+        if (hasInvalidSubtype) {
+            errorCollector.addAdtError(
+                symbol.source,
+                "Invalid ADT annotation: @ADT interface '${symbol.name}' has subtypes with invalid @ADT annotations",
+            )
+            typeResolver.registerAdt(name, InvalidAdtTypeEmbedding)
+            return InvalidAdtTypeEmbedding
+        }
+
+        return adtEmbedding
     }
 
     @OptIn(DirectDeclarationsAccess::class)
@@ -396,6 +422,13 @@ class ProgramConverter(
         }
         val adtEmbedding = AdtTypeEmbeddingImpl(name)
         typeResolver.registerAdt(name, adtEmbedding)
+
+        symbol.findAdtSealedInterfaceParent(session)?.let { parentSymbol ->
+            val parentEmbedding = embedAdtClass(parentSymbol)
+            if (parentEmbedding is AdtTypeEmbeddingImpl) {
+                typeResolver.registerAdtParent(child = adtEmbedding, parent = parentEmbedding)
+            }
+        }
 
         symbol.declarationSymbols.filterIsInstance<FirPropertySymbol>().forEach {
             embedAdtField(it, adtEmbedding)
@@ -452,9 +485,19 @@ class ProgramConverter(
         val classSymbol = receiverType.toRegularClassSymbol(session) ?: return null
         if (!classSymbol.isAdt(session)) return null
 
+        // Non-standalone children redirect to the parent sealed interface's unified equals.
+        val parentType = classSymbol.resolvedSuperTypes
+            .firstOrNull { type ->
+                !type.isAny && type.toRegularClassSymbol(session)?.let { it.classKind.isInterface && it.isAdt(session) } == true
+            }
+        if (parentType != null) return tryEmbedAdtEquals(parentType)
+
         val adtEmbedding = embedAdtClass(classSymbol) as? AdtTypeEmbeddingImpl ?: return null
 
-        return buildAdtProductEquals(classSymbol, adtEmbedding)
+        return if (classSymbol.classKind.isInterface && classSymbol.isSealed)
+            buildAdtSumEquals(classSymbol, adtEmbedding)
+        else
+            buildAdtProductEquals(classSymbol, adtEmbedding)
     }
 
     private fun buildAdtProductEquals(
@@ -500,6 +543,127 @@ class ProgramConverter(
         }
     }
 
+    /**
+     * Generates a single unified equals for the sealed interface by inlining each child's
+     * equality logic: `(other is Sealed) && if (this is Child1) (other is Child1 && fields...) else if ... else false`.
+     */
+    private fun buildAdtSumEquals(
+        classSymbol: FirRegularClassSymbol,
+        adtEmbedding: AdtTypeEmbeddingImpl,
+    ): CallableEmbedding {
+        val callableType = buildFunctionPretype {
+            withDispatchReceiver { existing(adtEmbedding) }
+            withParam { nullableAny() }
+            withReturnType { boolean() }
+        }
+        val equalsName = CallableId(classSymbol.classId, Name.identifier("equals")).embedFunctionName(callableType)
+        pureFunctions[equalsName]?.let { return it }
+        impureFunctions[equalsName]?.let { return it }
+
+        val childSymbols = classSymbol.adtSubtypeSymbols(session)
+        val anyEqualsSymbol = classSymbol.findEqualsSymbol(session)
+            ?: error("No equals symbol found for sealed interface ADT ${classSymbol.name}")
+
+        val sealedInterfaceType = buildType { existing(adtEmbedding) }
+        val booleanType = buildType { boolean() }
+        val pureReturnTarget = ReturnTarget.createForPureFunction(booleanType)
+
+        val baseSig = object : NamedFunctionSignature {
+            override val name = equalsName
+            override val symbol = anyEqualsSymbol
+            override val callableType = callableType
+            override val dispatchReceiver = PlaceholderVariableEmbedding(DispatchReceiverName, sealedInterfaceType)
+            override val extensionReceiver: VariableEmbedding? = null
+            override val params = listOf(PlaceholderVariableEmbedding(AnonymousName(0), buildType { nullableAny() }))
+            override val returns = pureReturnTarget.variable
+            override val isPure = true
+            override val labelName = "equals"
+        }
+
+        val pureSignature = object : FullNamedFunctionSignature, NamedFunctionSignature by baseSig {
+            override val preconditions = baseSig.basicPreconditions(typeResolver)
+            override val postconditions = baseSig.userFunctionPostcondition(typeResolver)
+            override val declarationSource = classSymbol.source
+        }
+
+        return buildAndStoreAdtEquals(anyEqualsSymbol, baseSig, pureSignature, pureReturnTarget) { ctx, thisReceiver, other ->
+            val conditionalChain = childSymbols.foldRight<_, ExpEmbedding>(BooleanLit(false)) { childSym, fallback ->
+                val childEmbedding = typeResolver.lookupAdtTypeEmbedding(childSym.classId.embedName()) as? AdtTypeEmbeddingImpl
+                    ?: error("No ADT embedding found for ${childSym.name}")
+                val childType = buildType { existing(childEmbedding) }
+                val fields = typeResolver.lookupAdtFields(childEmbedding.name)
+
+                val typeCheck: ExpEmbedding = Is(other, childType)
+                val fieldComparisons = fields.map { field ->
+                    val fieldEqualsCallable = tryEmbedAdtEquals(field.originalType) ?: run {
+                        val fieldEqualsSymbol = field.originalType.findEqualsSymbol(session)
+                            ?: error("No equals symbol found for field ${field.name}")
+                        ctx.embedAnyFunction(fieldEqualsSymbol)
+                    }
+                    desugarEqualsCall(
+                        AdtFieldAccess(thisReceiver.withType(childType), childEmbedding, field),
+                        AdtFieldAccess(other.withType(childType), childEmbedding, field),
+                        fieldEqualsCallable,
+                        ctx,
+                    )
+                }
+                val childEquality = fieldComparisons.fold<ExpEmbedding, ExpEmbedding>(typeCheck) { acc, cmp -> And(acc, cmp) }
+
+                If(Is(thisReceiver, childType), childEquality, fallback, booleanType)
+            }
+            And(Is(other, sealedInterfaceType), conditionalChain)
+        }
+    }
+
+    // region ADT validation
+
+    private fun validateAdtSealedInterface(symbol: FirRegularClassSymbol): Boolean {
+        var isValid = validateAdtSealedInterfaceSignature(symbol)
+        isValid = validateAdtSealedInterfaceMembers(symbol) && isValid
+        return isValid
+    }
+
+    private fun validateAdtSealedInterfaceSignature(symbol: FirRegularClassSymbol): Boolean {
+        var isValid = true
+        if (!symbol.isSealed) {
+            errorCollector.addAdtError(
+                symbol.source,
+                "Invalid ADT annotation: An @ADT interface must be sealed",
+            )
+            isValid = false
+        }
+        if (symbol.typeParameterSymbols.isNotEmpty()) {
+            errorCollector.addAdtError(
+                symbol.source,
+                "Invalid ADT annotation: An @ADT declaration must not have type parameters",
+            )
+            isValid = false
+        }
+        if (symbol.resolvedSuperTypes.any { !it.isAny }) {
+            errorCollector.addAdtError(
+                symbol.source,
+                "Invalid ADT annotation: An @ADT interface must not extend any interface or class",
+            )
+            isValid = false
+        }
+        return isValid
+    }
+
+    @OptIn(DirectDeclarationsAccess::class)
+    private fun validateAdtSealedInterfaceMembers(symbol: FirRegularClassSymbol): Boolean {
+        var isValid = true
+        for (member in symbol.declarationSymbols) {
+            if (member.origin == FirDeclarationOrigin.Source) {
+                errorCollector.addAdtError(
+                    member.source ?: symbol.source,
+                    "Invalid ADT annotation: An @ADT interface must not declare any members",
+                )
+                isValid = false
+            }
+        }
+        return isValid
+    }
+
     @OptIn(DirectDeclarationsAccess::class)
     private fun validateAdtDataClassOrObject(symbol: FirRegularClassSymbol): Boolean {
         var isValid = validateAdtDataClassOrObjectSignature(symbol)
@@ -525,12 +689,25 @@ class ProgramConverter(
             )
             isValid = false
         }
-        if (symbol.resolvedSuperTypes.any { !it.isAny }) {
-            errorCollector.addAdtError(
-                symbol.source,
-                "Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface",
-            )
-            isValid = false
+        val nonAnySupertypes = symbol.resolvedSuperTypes.filter { !it.isAny }
+        when {
+            nonAnySupertypes.size > 1 -> {
+                errorCollector.addAdtError(
+                    symbol.source,
+                    "Invalid ADT annotation: An @ADT data class or object may only implement a single @ADT sealed interface",
+                )
+                isValid = false
+            }
+            nonAnySupertypes.size == 1 -> {
+                val parent = nonAnySupertypes.single().toRegularClassSymbol(session)
+                if (parent == null || !parent.classKind.isInterface || !parent.isAdt(session)) {
+                    errorCollector.addAdtError(
+                        symbol.source,
+                        "Invalid ADT annotation: An @ADT data class or object may only implement an @ADT sealed interface",
+                    )
+                    isValid = false
+                }
+            }
         }
         return isValid
     }
@@ -562,6 +739,8 @@ class ProgramConverter(
         }
         return isValid
     }
+
+    // endregion
 
     private fun embedAdtField(symbol: FirPropertySymbol, adtEmbedding: AdtTypeEmbeddingImpl) {
         val field = typeResolver.getOrPutAdtField(symbol.embedMemberPropertyName(this)) {

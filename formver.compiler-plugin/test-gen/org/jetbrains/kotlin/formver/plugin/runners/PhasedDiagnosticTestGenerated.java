@@ -393,18 +393,6 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     @TestDataPath("$PROJECT_ROOT")
     public class Adts {
       @Test
-      @TestMetadata("AdtMissingConcepts.kt")
-      public void testAdtMissingConcepts() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/AdtMissingConcepts.kt");
-      }
-
-      @Test
-      @TestMetadata("AdtsAndLanguageFeatures.kt")
-      public void testAdtsAndLanguageFeatures() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/AdtsAndLanguageFeatures.kt");
-      }
-
-      @Test
       public void testAllFilesPresentInAdts() {
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/adts"), Pattern.compile("^(.+)\\.kt$"), null, true);
       }

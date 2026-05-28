@@ -6,21 +6,26 @@
 package org.jetbrains.kotlin.formver.core
 
 import org.jetbrains.kotlin.KtSourceElement
+import org.jetbrains.kotlin.descriptors.isInterface
 import org.jetbrains.kotlin.fir.FirAnnotationContainer
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.contracts.FirEffectDeclaration
+import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationDataKey
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationDataRegistry
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
 import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
+import org.jetbrains.kotlin.fir.declarations.getSealedClassInheritors
 import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.fir.declarations.impl.FirDefaultPropertyGetter
 import org.jetbrains.kotlin.fir.declarations.impl.FirDefaultPropertySetter
+import org.jetbrains.kotlin.fir.declarations.utils.isFinal
 import org.jetbrains.kotlin.fir.declarations.utils.isInline
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
 import org.jetbrains.kotlin.fir.resolve.ScopeSession
+import org.jetbrains.kotlin.fir.resolve.providers.getRegularClassSymbolByClassId
 import org.jetbrains.kotlin.fir.resolve.providers.symbolProvider
 import org.jetbrains.kotlin.fir.scopes.getFunctions
 import org.jetbrains.kotlin.fir.scopes.unsubstitutedScope
@@ -32,6 +37,8 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.fir.types.classId
+import org.jetbrains.kotlin.fir.types.isAny
+import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
 import org.jetbrains.kotlin.formver.core.names.SpecialPackages
 import org.jetbrains.kotlin.formver.viper.ast.Position
@@ -91,6 +98,18 @@ fun FirBasedSymbol<*>.isManual(session: FirSession) = hasAnnotation(annotationId
 
 fun FirBasedSymbol<*>.isAdt(session: FirSession) = hasAnnotation(annotationId("ADT"), session)
 
+fun FirRegularClassSymbol.findAdtSealedInterfaceParent(session: FirSession): FirRegularClassSymbol? =
+    resolvedSuperTypes
+        .filter { !it.isAny }
+        .mapNotNull { it.toRegularClassSymbol(session) }
+        .firstOrNull { it.classKind.isInterface && it.isAdt(session) }
+
+@OptIn(SymbolInternals::class)
+fun FirRegularClassSymbol.adtSubtypeSymbols(session: FirSession): List<FirRegularClassSymbol> =
+    fir.getSealedClassInheritors(session)
+        .mapNotNull { session.getRegularClassSymbolByClassId(it) }
+        .filter { it.isAdt(session) }
+
 fun FirRegularClassSymbol.findSyntheticEquals(session: FirSession): FirNamedFunctionSymbol? =
     unsubstitutedScope(
         session, ScopeSession(), withForcedTypeCalculator = false,
@@ -123,6 +142,13 @@ private object ShouldVerify : FirDeclarationDataKey()
 
 var FirSimpleFunction.viperProgram: viper.silver.ast.Program? by FirDeclarationDataRegistry.data(ViperProgram)
 var FirSimpleFunction.shouldVerify: Boolean? by FirDeclarationDataRegistry.data(ShouldVerify)
+
+fun FirRegularClassSymbol.findEqualsSymbol(session: FirSession): FirNamedFunctionSymbol? =
+    unsubstitutedScope(
+        session, ScopeSession(), withForcedTypeCalculator = false,
+        memberRequiredPhase = FirResolvePhase.STATUS
+    ).getFunctions(Name.identifier("equals"))
+        .firstOrNull { it.valueParameterSymbols.size == 1 }
 
 fun ConeKotlinType.findEqualsSymbol(session: FirSession): FirNamedFunctionSymbol? {
     val classSymbol = classId?.let { session.symbolProvider.getClassLikeSymbolByClassId(it) }

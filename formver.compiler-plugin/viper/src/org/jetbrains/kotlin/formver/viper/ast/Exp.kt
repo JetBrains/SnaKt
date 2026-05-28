@@ -455,6 +455,31 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         override val type = Type.Ref
     }
 
+    /** Represents the application of an ADT discriminator (i.e. checking which constructor was used). */
+    data class AdtDiscriminatorApp(
+        val constructorName: SymbolicName,
+        val rcv: Exp,
+        val adtName: SymbolicName,
+        val typeVarMap: Map<Type.TypeVar, Type> = emptyMap(),
+        val pos: Position = Position.NoPosition,
+        val info: Info = Info.NoInfo,
+        val trafos: Trafos = Trafos.NoTrafos,
+    ) : Exp {
+        context(nameResolver: NameResolver)
+        override fun toSilver(): viper.silver.ast.Exp =
+            viper.silver.plugin.standard.adt.AdtDiscriminatorApp.apply(
+                constructorName.mangled,
+                rcv.toSilver(),
+                typeVarMap.mapKeys { it.key.toSilver() }.mapValues { it.value.toSilver() }.toScalaMap(),
+                pos.toSilver(),
+                info.toSilver(),
+                adtName.mangled,
+                trafos.toSilver(),
+            )
+
+        override val type = Type.Bool
+    }
+
     data class ExplicitSeq(
         val args: List<Exp>,
         val pos: Position = Position.NoPosition,

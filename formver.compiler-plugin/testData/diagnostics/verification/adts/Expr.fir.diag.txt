@@ -1,29 +1,437 @@
-/Expr.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+/Expr.kt: info: Generated Viper text for eval:
+function eval(e: Ref): Ref
+  requires isSubtype(typeOf(e), Expr())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_0_0 ==
+    (e) in
+    (let anon_2_0 ==
+      ((isSubtype(typeOf(anon_0_0), Expr()) ?
+        ExprFromRef(e).af_a_Expr_n :
+        null)) in
+      (let anon_4_0 ==
+        ((!isSubtype(typeOf(anon_0_0), Expr()) &&
+        isSubtype(typeOf(anon_0_0), Expr()) ?
+          plusInts(eval(ExprFromRef(e).af_a_Expr_left), eval(ExprFromRef(e).af_a_Expr_right)) :
+          null)) in
+        (let anon_6_0 ==
+          ((!isSubtype(typeOf(anon_0_0), Expr()) &&
+          !isSubtype(typeOf(anon_0_0), Expr()) &&
+          isSubtype(typeOf(anon_0_0), Expr()) ?
+            negInt(eval(ExprFromRef(e).af_a_Expr_expr)) :
+            null)) in
+          (let anon_5_0 ==
+            ((!isSubtype(typeOf(anon_0_0), Expr()) &&
+            !isSubtype(typeOf(anon_0_0), Expr()) ?
+              (isSubtype(typeOf(anon_0_0), Expr()) ?
+                anon_6_0 :
+                unitValue()) :
+              null)) in
+            (let anon_3_0 ==
+              ((!isSubtype(typeOf(anon_0_0), Expr()) ?
+                (isSubtype(typeOf(anon_0_0), Expr()) ? anon_4_0 : anon_5_0) :
+                null)) in
+              (let anon_1_0 ==
+                ((isSubtype(typeOf(anon_0_0), Expr()) ?
+                  anon_2_0 :
+                  anon_3_0)) in
+                anon_1_0)))))))
+}
 
-/Expr.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+adt a_Expr {
+  ac_Add(af_a_Expr_left: Ref, af_a_Expr_right: Ref)
+  ac_Lit(af_a_Expr_n: Ref)
+  ac_Neg(af_a_Expr_expr: Ref)
+}
 
-/Expr.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+/Expr.kt: info: Generated Viper text for evalNeg:
+function con(expr: Ref): Ref
+  requires isSubtype(typeOf(expr), Expr())
+  ensures isSubtype(typeOf(result), Expr())
+  ensures ExprFromRef(ExprFromRef(result).af_a_Expr_expr) ==
+    ExprFromRef(expr)
+  ensures ExprFromRef(result) == ac_Neg(expr)
 
-/Expr.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
 
-/Expr.kt: error: Function 'eval' references an invalid ADT
+function eval(e: Ref): Ref
+  requires isSubtype(typeOf(e), Expr())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_0_0 ==
+    (e) in
+    (let anon_2_0 ==
+      ((isSubtype(typeOf(anon_0_0), Expr()) ?
+        ExprFromRef(e).af_a_Expr_n :
+        null)) in
+      (let anon_4_0 ==
+        ((!isSubtype(typeOf(anon_0_0), Expr()) &&
+        isSubtype(typeOf(anon_0_0), Expr()) ?
+          plusInts(eval(ExprFromRef(e).af_a_Expr_left), eval(ExprFromRef(e).af_a_Expr_right)) :
+          null)) in
+        (let anon_6_0 ==
+          ((!isSubtype(typeOf(anon_0_0), Expr()) &&
+          !isSubtype(typeOf(anon_0_0), Expr()) &&
+          isSubtype(typeOf(anon_0_0), Expr()) ?
+            negInt(eval(ExprFromRef(e).af_a_Expr_expr)) :
+            null)) in
+          (let anon_5_0 ==
+            ((!isSubtype(typeOf(anon_0_0), Expr()) &&
+            !isSubtype(typeOf(anon_0_0), Expr()) ?
+              (isSubtype(typeOf(anon_0_0), Expr()) ?
+                anon_6_0 :
+                unitValue()) :
+              null)) in
+            (let anon_3_0 ==
+              ((!isSubtype(typeOf(anon_0_0), Expr()) ?
+                (isSubtype(typeOf(anon_0_0), Expr()) ? anon_4_0 : anon_5_0) :
+                null)) in
+              (let anon_1_0 ==
+                ((isSubtype(typeOf(anon_0_0), Expr()) ?
+                  anon_2_0 :
+                  anon_3_0)) in
+                anon_1_0)))))))
+}
 
-/Expr.kt: error: An internal error has occurred.
-Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
-Please report this at https://github.com/jesyspa/kotlin
+method evalNeg(e: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(e), Expr())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures isSubtype(typeOf(negInt(eval(e))), intType()) &&
+    intFromRef(eval(con(e))) == intFromRef(negInt(eval(e)))
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
 
-/Expr.kt: error: An internal error has occurred.
-Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
-Please report this at https://github.com/jesyspa/kotlin
+adt a_Expr {
+  ac_Add(af_a_Expr_left: Ref, af_a_Expr_right: Ref)
+  ac_Lit(af_a_Expr_n: Ref)
+  ac_Neg(af_a_Expr_expr: Ref)
+}
 
-/Expr.kt: error: An internal error has occurred.
-Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
-Please report this at https://github.com/jesyspa/kotlin
+/Expr.kt: info: Generated Viper text for evalAdd:
+function con(left: Ref, right: Ref): Ref
+  requires isSubtype(typeOf(left), Expr())
+  requires isSubtype(typeOf(right), Expr())
+  ensures isSubtype(typeOf(result), Expr())
+  ensures ExprFromRef(ExprFromRef(result).af_a_Expr_left) ==
+    ExprFromRef(left)
+  ensures ExprFromRef(ExprFromRef(result).af_a_Expr_right) ==
+    ExprFromRef(right)
+  ensures ExprFromRef(result) == ac_Add(left, right)
 
-/Expr.kt: error: An internal error has occurred.
-Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
-Please report this at https://github.com/jesyspa/kotlin
 
-/Expr.kt: error: An internal error has occurred.
-Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
-Please report this at https://github.com/jesyspa/kotlin
+function eval(e: Ref): Ref
+  requires isSubtype(typeOf(e), Expr())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_0_0 ==
+    (e) in
+    (let anon_2_0 ==
+      ((isSubtype(typeOf(anon_0_0), Expr()) ?
+        ExprFromRef(e).af_a_Expr_n :
+        null)) in
+      (let anon_4_0 ==
+        ((!isSubtype(typeOf(anon_0_0), Expr()) &&
+        isSubtype(typeOf(anon_0_0), Expr()) ?
+          plusInts(eval(ExprFromRef(e).af_a_Expr_left), eval(ExprFromRef(e).af_a_Expr_right)) :
+          null)) in
+        (let anon_6_0 ==
+          ((!isSubtype(typeOf(anon_0_0), Expr()) &&
+          !isSubtype(typeOf(anon_0_0), Expr()) &&
+          isSubtype(typeOf(anon_0_0), Expr()) ?
+            negInt(eval(ExprFromRef(e).af_a_Expr_expr)) :
+            null)) in
+          (let anon_5_0 ==
+            ((!isSubtype(typeOf(anon_0_0), Expr()) &&
+            !isSubtype(typeOf(anon_0_0), Expr()) ?
+              (isSubtype(typeOf(anon_0_0), Expr()) ?
+                anon_6_0 :
+                unitValue()) :
+              null)) in
+            (let anon_3_0 ==
+              ((!isSubtype(typeOf(anon_0_0), Expr()) ?
+                (isSubtype(typeOf(anon_0_0), Expr()) ? anon_4_0 : anon_5_0) :
+                null)) in
+              (let anon_1_0 ==
+                ((isSubtype(typeOf(anon_0_0), Expr()) ?
+                  anon_2_0 :
+                  anon_3_0)) in
+                anon_1_0)))))))
+}
+
+method evalAdd(a: Ref, b: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), Expr())
+  requires isSubtype(typeOf(b), Expr())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures isSubtype(typeOf(plusInts(eval(a), eval(b))), intType()) &&
+    intFromRef(eval(con(a, b))) == intFromRef(plusInts(eval(a), eval(b)))
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Expr {
+  ac_Add(af_a_Expr_left: Ref, af_a_Expr_right: Ref)
+  ac_Lit(af_a_Expr_n: Ref)
+  ac_Neg(af_a_Expr_expr: Ref)
+}
+
+/Expr.kt: info: Generated Viper text for doubleNegIsId:
+function con(expr: Ref): Ref
+  requires isSubtype(typeOf(expr), Expr())
+  ensures isSubtype(typeOf(result), Expr())
+  ensures ExprFromRef(ExprFromRef(result).af_a_Expr_expr) ==
+    ExprFromRef(expr)
+  ensures ExprFromRef(result) == ac_Neg(expr)
+
+
+function eval(e: Ref): Ref
+  requires isSubtype(typeOf(e), Expr())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_0_0 ==
+    (e) in
+    (let anon_4_0 ==
+      ((isSubtype(typeOf(anon_0_0), Expr()) ?
+        ExprFromRef(e).af_a_Expr_n :
+        null)) in
+      (let anon_6_0 ==
+        ((!isSubtype(typeOf(anon_0_0), Expr()) &&
+        isSubtype(typeOf(anon_0_0), Expr()) ?
+          plusInts(eval(ExprFromRef(e).af_a_Expr_left), eval(ExprFromRef(e).af_a_Expr_right)) :
+          null)) in
+        (let anon_8_0 ==
+          ((!isSubtype(typeOf(anon_0_0), Expr()) &&
+          !isSubtype(typeOf(anon_0_0), Expr()) &&
+          isSubtype(typeOf(anon_0_0), Expr()) ?
+            negInt(eval(ExprFromRef(e).af_a_Expr_expr)) :
+            null)) in
+          (let anon_7_0 ==
+            ((!isSubtype(typeOf(anon_0_0), Expr()) &&
+            !isSubtype(typeOf(anon_0_0), Expr()) ?
+              (isSubtype(typeOf(anon_0_0), Expr()) ?
+                anon_8_0 :
+                unitValue()) :
+              null)) in
+            (let anon_5_0 ==
+              ((!isSubtype(typeOf(anon_0_0), Expr()) ?
+                (isSubtype(typeOf(anon_0_0), Expr()) ? anon_6_0 : anon_7_0) :
+                null)) in
+              (let anon_3_0 ==
+                ((isSubtype(typeOf(anon_0_0), Expr()) ?
+                  anon_4_0 :
+                  anon_5_0)) in
+                anon_3_0)))))))
+}
+
+method doubleNegIsId(e: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(e), Expr())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures isSubtype(typeOf(eval(e)), intType()) &&
+    intFromRef(eval(con(con(e)))) == intFromRef(eval(e))
+{
+  var anon_1: Ref
+  var anon_2: Ref
+  anon_1 := evalNeg(con(e))
+  anon_2 := evalNeg(e)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method evalNeg(e: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(e), Expr())
+  ensures isSubtype(typeOf(ret_2), unitType())
+  ensures isSubtype(typeOf(negInt(eval(e))), intType()) &&
+    intFromRef(eval(con(e))) == intFromRef(negInt(eval(e)))
+
+
+adt a_Expr {
+  ac_Add(af_a_Expr_left: Ref, af_a_Expr_right: Ref)
+  ac_Lit(af_a_Expr_n: Ref)
+  ac_Neg(af_a_Expr_expr: Ref)
+}
+
+/Expr.kt: info: Generated Viper text for addEvalComm:
+function con(left: Ref, right: Ref): Ref
+  requires isSubtype(typeOf(left), Expr())
+  requires isSubtype(typeOf(right), Expr())
+  ensures isSubtype(typeOf(result), Expr())
+  ensures ExprFromRef(ExprFromRef(result).af_a_Expr_left) ==
+    ExprFromRef(left)
+  ensures ExprFromRef(ExprFromRef(result).af_a_Expr_right) ==
+    ExprFromRef(right)
+  ensures ExprFromRef(result) == ac_Add(left, right)
+
+
+function eval(e: Ref): Ref
+  requires isSubtype(typeOf(e), Expr())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_0_0 ==
+    (e) in
+    (let anon_4_0 ==
+      ((isSubtype(typeOf(anon_0_0), Expr()) ?
+        ExprFromRef(e).af_a_Expr_n :
+        null)) in
+      (let anon_6_0 ==
+        ((!isSubtype(typeOf(anon_0_0), Expr()) &&
+        isSubtype(typeOf(anon_0_0), Expr()) ?
+          plusInts(eval(ExprFromRef(e).af_a_Expr_left), eval(ExprFromRef(e).af_a_Expr_right)) :
+          null)) in
+        (let anon_8_0 ==
+          ((!isSubtype(typeOf(anon_0_0), Expr()) &&
+          !isSubtype(typeOf(anon_0_0), Expr()) &&
+          isSubtype(typeOf(anon_0_0), Expr()) ?
+            negInt(eval(ExprFromRef(e).af_a_Expr_expr)) :
+            null)) in
+          (let anon_7_0 ==
+            ((!isSubtype(typeOf(anon_0_0), Expr()) &&
+            !isSubtype(typeOf(anon_0_0), Expr()) ?
+              (isSubtype(typeOf(anon_0_0), Expr()) ?
+                anon_8_0 :
+                unitValue()) :
+              null)) in
+            (let anon_5_0 ==
+              ((!isSubtype(typeOf(anon_0_0), Expr()) ?
+                (isSubtype(typeOf(anon_0_0), Expr()) ? anon_6_0 : anon_7_0) :
+                null)) in
+              (let anon_3_0 ==
+                ((isSubtype(typeOf(anon_0_0), Expr()) ?
+                  anon_4_0 :
+                  anon_5_0)) in
+                anon_3_0)))))))
+}
+
+method addEvalComm(a: Ref, b: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), Expr())
+  requires isSubtype(typeOf(b), Expr())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures isSubtype(typeOf(eval(con(b, a))), intType()) &&
+    intFromRef(eval(con(a, b))) == intFromRef(eval(con(b, a)))
+{
+  var anon_1: Ref
+  var anon_2: Ref
+  anon_1 := evalAdd(a, b)
+  anon_2 := evalAdd(b, a)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method evalAdd(a: Ref, b: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(a), Expr())
+  requires isSubtype(typeOf(b), Expr())
+  ensures isSubtype(typeOf(ret_2), unitType())
+  ensures isSubtype(typeOf(plusInts(eval(a), eval(b))), intType()) &&
+    intFromRef(eval(con(a, b))) == intFromRef(plusInts(eval(a), eval(b)))
+
+
+adt a_Expr {
+  ac_Add(af_a_Expr_left: Ref, af_a_Expr_right: Ref)
+  ac_Lit(af_a_Expr_n: Ref)
+  ac_Neg(af_a_Expr_expr: Ref)
+}
+
+/Expr.kt: info: Generated Viper text for negDistributesAdd:
+function con_Add(left: Ref, right: Ref): Ref
+  requires isSubtype(typeOf(left), Expr())
+  requires isSubtype(typeOf(right), Expr())
+  ensures isSubtype(typeOf(result), Expr())
+  ensures ExprFromRef(ExprFromRef(result).af_a_Expr_left) ==
+    ExprFromRef(left)
+  ensures ExprFromRef(ExprFromRef(result).af_a_Expr_right) ==
+    ExprFromRef(right)
+  ensures ExprFromRef(result) == ac_Add(left, right)
+
+
+function con_Neg(expr: Ref): Ref
+  requires isSubtype(typeOf(expr), Expr())
+  ensures isSubtype(typeOf(result), Expr())
+  ensures ExprFromRef(ExprFromRef(result).af_a_Expr_expr) ==
+    ExprFromRef(expr)
+  ensures ExprFromRef(result) == ac_Neg(expr)
+
+
+function eval(e: Ref): Ref
+  requires isSubtype(typeOf(e), Expr())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_0_0 ==
+    (e) in
+    (let anon_7_0 ==
+      ((isSubtype(typeOf(anon_0_0), Expr()) ?
+        ExprFromRef(e).af_a_Expr_n :
+        null)) in
+      (let anon_9_0 ==
+        ((!isSubtype(typeOf(anon_0_0), Expr()) &&
+        isSubtype(typeOf(anon_0_0), Expr()) ?
+          plusInts(eval(ExprFromRef(e).af_a_Expr_left), eval(ExprFromRef(e).af_a_Expr_right)) :
+          null)) in
+        (let anon_11_0 ==
+          ((!isSubtype(typeOf(anon_0_0), Expr()) &&
+          !isSubtype(typeOf(anon_0_0), Expr()) &&
+          isSubtype(typeOf(anon_0_0), Expr()) ?
+            negInt(eval(ExprFromRef(e).af_a_Expr_expr)) :
+            null)) in
+          (let anon_10_0 ==
+            ((!isSubtype(typeOf(anon_0_0), Expr()) &&
+            !isSubtype(typeOf(anon_0_0), Expr()) ?
+              (isSubtype(typeOf(anon_0_0), Expr()) ?
+                anon_11_0 :
+                unitValue()) :
+              null)) in
+            (let anon_8_0 ==
+              ((!isSubtype(typeOf(anon_0_0), Expr()) ?
+                (isSubtype(typeOf(anon_0_0), Expr()) ?
+                  anon_9_0 :
+                  anon_10_0) :
+                null)) in
+              (let anon_6_0 ==
+                ((isSubtype(typeOf(anon_0_0), Expr()) ?
+                  anon_7_0 :
+                  anon_8_0)) in
+                anon_6_0)))))))
+}
+
+method evalAdd(a: Ref, b: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(a), Expr())
+  requires isSubtype(typeOf(b), Expr())
+  ensures isSubtype(typeOf(ret_3), unitType())
+  ensures isSubtype(typeOf(plusInts(eval(a), eval(b))), intType()) &&
+    intFromRef(eval(con_Add(a, b))) ==
+    intFromRef(plusInts(eval(a), eval(b)))
+
+
+method evalNeg(e: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(e), Expr())
+  ensures isSubtype(typeOf(ret_2), unitType())
+  ensures isSubtype(typeOf(negInt(eval(e))), intType()) &&
+    intFromRef(eval(con_Neg(e))) == intFromRef(negInt(eval(e)))
+
+
+method negDistributesAdd(a: Ref, b: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), Expr())
+  requires isSubtype(typeOf(b), Expr())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures isSubtype(typeOf(eval(con_Add(con_Neg(a), con_Neg(b)))), intType()) &&
+    intFromRef(eval(con_Neg(con_Add(a, b)))) ==
+    intFromRef(eval(con_Add(con_Neg(a), con_Neg(b))))
+{
+  var anon_1: Ref
+  var anon_2: Ref
+  var anon_3: Ref
+  var anon_4: Ref
+  var anon_5: Ref
+  anon_1 := evalNeg(con_Add(a, b))
+  anon_2 := evalAdd(a, b)
+  anon_3 := evalNeg(a)
+  anon_4 := evalNeg(b)
+  anon_5 := evalAdd(con_Neg(a), con_Neg(b))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Expr {
+  ac_Add(af_a_Expr_left: Ref, af_a_Expr_right: Ref)
+  ac_Lit(af_a_Expr_n: Ref)
+  ac_Neg(af_a_Expr_expr: Ref)
+}

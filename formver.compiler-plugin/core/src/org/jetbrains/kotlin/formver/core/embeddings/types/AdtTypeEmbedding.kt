@@ -28,12 +28,31 @@ data object InvalidAdtTypeEmbedding : AdtTypeEmbedding {
     override val name = PretypeName("Invalid")
 }
 
-class AdtTypeEmbeddingImpl(override val name: ScopedName) : AdtTypeEmbedding {
-    val adtName: AdtName = AdtName(name)
-    val viperType: Type.Adt = Type.Adt(adtName)
-    val injection: Injection = Injection(name, viperType, RuntimeTypeDomain.classTypeFunc(name))
+val RuntimeTypeHolder.nonStandaloneAdtTypeEmbedding: AdtTypeEmbeddingImpl?
+    get() {
+        val pretype = when (this) {
+            is TypeEmbedding -> pretype
+            is AdtTypeEmbeddingImpl -> this
+            else -> return null
+        }
+        return (pretype as? AdtTypeEmbeddingImpl)?.takeIf { it.standalone !== it }
+    }
 
-    override val runtimeType = RuntimeTypeDomain.classTypeFunc(name)()
+class AdtTypeEmbeddingImpl(override val name: ScopedName) : AdtTypeEmbedding {
+    private val ownAdtName: AdtName = AdtName(name)
+    private val ownViperType: Type.Adt = Type.Adt(ownAdtName)
+    private val ownInjection: Injection = Injection(name, ownViperType, RuntimeTypeDomain.classTypeFunc(name))
+
+    // For sum-type children, standalone points to the parent sealed interface embedding,
+    // so all Viper-level operations use a single shared ADT declaration.
+    var standalone: AdtTypeEmbeddingImpl = this
+        internal set
+
+    val adtName: AdtName get() = standalone.ownAdtName
+    val viperType: Type.Adt get() = standalone.ownViperType
+    val injection: Injection get() = standalone.ownInjection
+
+    override val runtimeType get() = standalone.ownInjection.typeFunction()
 
     fun getViperConstructorDecl(fields: List<AdtFieldEmbedding>): AdtConstructorDecl =
         AdtConstructorDecl(

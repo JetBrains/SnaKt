@@ -275,15 +275,21 @@ domain rt  {
   }
 
   axiom {
+    (forall t: rt ::
+      { isSubtype(t, Pair()) }
+      isSubtype(t, Pair()) ==> t == Pair())
+  }
+
+  axiom {
     (forall v_p: a_Pair ::
       { typeOf(v_p.af_a_Pair_a) }
-      isSubtype(typeOf(v_p.af_a_Pair_a), intType()))
+      v_p.isac_Pair ==> isSubtype(typeOf(v_p.af_a_Pair_a), intType()))
   }
 
   axiom {
     (forall v_p: a_Pair ::
       { typeOf(v_p.af_a_Pair_b) }
-      isSubtype(typeOf(v_p.af_a_Pair_b), intType()))
+      v_p.isac_Pair ==> isSubtype(typeOf(v_p.af_a_Pair_b), intType()))
   }
 }
 

@@ -56,7 +56,8 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
     override fun uniquePredicateAccessInvariant(ctx: TypeResolver): TypeInvariantEmbedding? =
         flags.adjustOptionalInvariant(pretype.uniquePredicateAccessInvariant(ctx))
 
-    override fun subTypeInvariant(): TypeInvariantEmbedding = SubTypeInvariantEmbedding(this)
+    override fun subTypeInvariant(): TypeInvariantEmbedding =
+        SubTypeInvariantEmbedding(this)
 
     context(nameResolver: NameResolver)
     override val debugTreeView: TreeView

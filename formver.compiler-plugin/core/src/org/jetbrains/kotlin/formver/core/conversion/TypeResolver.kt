@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.formver.core.names.NameMatcher
 import org.jetbrains.kotlin.formver.core.names.NameScope
 import org.jetbrains.kotlin.formver.core.names.ScopedName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
+import org.jetbrains.kotlin.formver.viper.ast.AdtConstructorDecl
 import org.jetbrains.kotlin.formver.viper.ast.AdtDecl
 import org.jetbrains.kotlin.name.Name
 
@@ -54,6 +55,12 @@ class TypeResolver {
     private val adtFieldsByAdt = mutableMapOf<ScopedName, MutableList<AdtFieldEmbedding>>()
 
     /**
+     * Maps a non-standalone ADT (child) to its parent sealed interface ADT.
+     * Standalone ADTs have no entry in this map.
+     */
+    private val adtParent = mutableMapOf<ScopedName, AdtTypeEmbeddingImpl>()
+
+    /**
      * Register a class or interface type embedding.
      * This is needed to know which classes were already registered.
      */
@@ -80,7 +87,34 @@ class TypeResolver {
 
     fun adtTypeEmbeddings(): List<AdtTypeEmbeddingImpl> = adtEmbedding.values.filterIsInstance<AdtTypeEmbeddingImpl>()
 
-    fun adtDeclarations(): List<AdtDecl> = adtTypeEmbeddings().map { it.toAdtDecl(lookupAdtFields(it.name)) }
+    fun standaloneAdtTypeEmbeddings(): List<AdtTypeEmbeddingImpl> =
+        adtTypeEmbeddings().filter { it.standalone === it }
+
+    fun registerAdtParent(child: AdtTypeEmbeddingImpl, parent: AdtTypeEmbeddingImpl) {
+        adtParent[child.name] = parent
+        child.standalone = parent
+    }
+
+    fun lookupAdtParent(childName: ScopedName): AdtTypeEmbeddingImpl? = adtParent[childName]
+
+    fun lookupAdtChildren(parentName: ScopedName): List<AdtTypeEmbeddingImpl> =
+        adtParent.entries.filter { it.value.name == parentName }.map {
+            adtEmbedding[it.key] as AdtTypeEmbeddingImpl
+        }
+
+    fun adtDeclarations(): List<AdtDecl> = adtTypeEmbeddings()
+        .filter { lookupAdtParent(it.name) == null }
+        .map { standalone ->
+            val children = lookupAdtChildren(standalone.name)
+            if (children.isEmpty()) {
+                standalone.toAdtDecl(lookupAdtFields(standalone.name))
+            } else {
+                AdtDecl(
+                    name = standalone.adtName,
+                    constructors = children.map { lookupAdtConstructorDecl(it) },
+                )
+            }
+        }
 
     /**
      * Extends the subtype relation with [subtype] <: [supertype]
@@ -111,6 +145,10 @@ class TypeResolver {
 
     fun lookupAdtFields(className: ScopedName): List<AdtFieldEmbedding> =
         adtFieldsByAdt[className] ?: emptyList()
+
+    fun lookupAdtConstructorDecl(embedding: AdtTypeEmbeddingImpl): AdtConstructorDecl =
+        embedding.getViperConstructorDecl(lookupAdtFields(embedding.name))
+
 
     /**
      * Returns all the fields belonging directly to a class.
