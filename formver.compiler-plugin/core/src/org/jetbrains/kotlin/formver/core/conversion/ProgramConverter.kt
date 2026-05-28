@@ -279,7 +279,7 @@ class ProgramConverter(
     // START FUNCTIONS
 
     /**
-     * Embeds the contract of the provided callable. If necessary, also records the body.
+     * Embeds the body of a function. This must be called at most once per function.
      */
     @OptIn(SymbolInternals::class)
     private fun embedFunctionBody(
@@ -301,21 +301,19 @@ class ProgramConverter(
 
 
     /**
-     * Embeds the full function signature (e.g. with pre+post conditions). If necessary, the body of the function is stored as well.
+     * Embeds the full function signature (with pre+post conditions).
      */
     private fun embedCompleteSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<CompleteFunctionSignature> {
         val callable = with(this) {
-            with(symbol) {
-                val namedSignature = symbol.toFunctionSignature().toNamedSignature()
-                if (symbol.shouldBeInlined) {
-                    namedSignature.toInlineSignature().also {
-                        callable.putIfAbsent(it.signature.name, it)
-                    }
-                } else {
-                    namedSignature.toNonInlineSignature().also {
-                        callable.putIfAbsent(it.signature.name, it)
-                    }.toCompleteSignature()
+            val namedSignature = symbol.toFunctionSignature().toNamedSignature(symbol)
+            if (symbol.shouldBeInlined) {
+                namedSignature.toInlineSignature(symbol).also {
+                    callable.putIfAbsent(it.signature.name, it)
                 }
+            } else {
+                namedSignature.toNonInlineSignature(symbol).also {
+                    callable.putIfAbsent(it.signature.name, it)
+                }.toCompleteSignature(symbol)
             }
         }
 
@@ -340,12 +338,12 @@ class ProgramConverter(
 
     /**
      * This function is the public interface to embed a function symbol.
-     * If during the conversion of a function body a function call is made, then [embedAnyFunction] must be used to embed the function.
+     * If during the conversion of a function body a function call is made, then [embedAnyFunction] must be used to embed/lookup the function.
      *
      * It will return the callable embedding, if the function was seen the first time, it will embed the full function signature and body (if needed).
      */
     override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding {
-        // The order of the embedSpecialFunction and the callable lookup does matter.
+        // NOTE: The order of the embedSpecialFunction and the callable lookup does matter.
 
         // check if it must be handled specially
         embedSpecialFunction(symbol)?.let { return it }
@@ -563,7 +561,8 @@ class ProgramConverter(
         symbol: FirPropertySymbol, functionType: FunctionTypeEmbedding, defaultBehaviour: Boolean
     ): NonInlineFunctionSignature = with(this) {
         val name = if (functionType.paramTypes.isEmpty()) symbol.embedGetterName(this) else symbol.embedSetterName(this)
-        functionType.toGenericAccessorSignature(defaultBehaviour).toNamedSignature(name).toNonInlineSignature()
+        functionType.toGenericAccessorSignature(defaultBehaviour).toNamedSignature(name)
+            .toNonInlineSignature(symbol = null)
             .toCompleteSignature(symbol.source) {
                 preconditions {
                     args {

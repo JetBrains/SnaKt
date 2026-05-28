@@ -5,19 +5,21 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
-import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.KtSourceElement
+import org.jetbrains.kotlin.fir.expressions.FirBlock
+import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.formver.core.asPosition
+import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
+import org.jetbrains.kotlin.formver.core.conversion.SubstitutedArgument
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
-import org.jetbrains.kotlin.formver.core.embeddings.expression.AccEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.PredicateAccessPermissions
+import org.jetbrains.kotlin.formver.core.conversion.insertInlineFunctionCall
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.FunctionCall
+import org.jetbrains.kotlin.formver.core.embeddings.expression.MethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.formver.core.linearization.pureToViper
-import org.jetbrains.kotlin.formver.core.names.AnonymousName
-import org.jetbrains.kotlin.formver.core.names.DispatchReceiverName
-import org.jetbrains.kotlin.formver.core.names.ExtensionReceiverName
-import org.jetbrains.kotlin.formver.core.purity.preorder
+import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
 
 interface FunctionSignature {
@@ -27,7 +29,7 @@ interface FunctionSignature {
 
     val params: List<VariableEmbedding>
 
-    val returns : VariableEmbedding
+    val returns: VariableEmbedding
 
     val isPure: Boolean
 
@@ -49,22 +51,81 @@ data class FunctionSignatureImpl(
 ) : FunctionSignature
 
 
-data class GenericFunctionSignature(
-    override val callableType: FunctionTypeEmbedding,
-    override val returns: VariableEmbedding,
-    override val isPure: Boolean,
-) : FunctionSignature, GenericFunctionSignatureMixin()
+interface NamedFunctionSignature : FunctionSignature {
+    val name: SymbolicName
 
-abstract class GenericFunctionSignatureMixin : FunctionSignature {
-    override val dispatchReceiver: VariableEmbedding?
-        get() = callableType.dispatchReceiverType?.let { PlaceholderVariableEmbedding(DispatchReceiverName, it) }
+    val symbol: FirFunctionSymbol<*>?
 
-    override val extensionReceiver: VariableEmbedding?
-        get() = callableType.extensionReceiverType?.let { PlaceholderVariableEmbedding(ExtensionReceiverName, it) }
-
-    override val params: List<VariableEmbedding>
-        get() = callableType.paramTypes.mapIndexed { ix, type -> PlaceholderVariableEmbedding(AnonymousName(ix), type) }
+    override val labelName: String?
+        get() = symbol?.name?.asString()
 }
+
+data class NamedFunctionSignatureImpl(
+    val signature: FunctionSignature, override val name: SymbolicName, override val symbol: FirFunctionSymbol<*>?
+) : NamedFunctionSignature, FunctionSignature by signature {
+    override val labelName: String?
+        get() = super<NamedFunctionSignature>.labelName
+}
+
+
+interface NamedFunctionSignatureWithContract : NamedFunctionSignature {
+    /**
+     * Preconditions of function in form of `ExpEmbedding`s with type `boolType()`.
+     */
+    val preconditions: List<ExpEmbedding>
+
+    /**
+     * Postconditions of function in form of `ExpEmbedding`s with type `boolType()`.
+     */
+    val postconditions: List<ExpEmbedding>
+
+    val declarationSource: KtSourceElement?
+}
+
+interface NamedCallableEmbedding : NamedFunctionSignature, CallableEmbedding
+
+
+interface NonInlineCallable : NamedCallableEmbedding {
+
+    override fun insertCall(args: List<ExpEmbedding>, ctx: StmtConversionContext): ExpEmbedding = insertCall(args)
+
+    // When the function does not need to be inlined, we do not need a context to call it. This is helpful, because
+    // in some situations, we do not want to pass around the context (or we don't have access to it)
+    fun insertCall(args: List<ExpEmbedding>): ExpEmbedding = if (isPure) {
+        FunctionCall(this, args)
+    } else {
+        MethodCall(this, args)
+    }
+}
+
+data class NonInlineCallableImpl(
+    val functionSignature: NamedFunctionSignature, override val symbol: FirFunctionSymbol<*>?
+) : NonInlineCallable, NamedFunctionSignature by functionSignature {
+    override val labelName: String? = symbol?.name?.asString()
+}
+
+fun NonInlineCallable.toMethodCall(
+    parameters: List<Exp>,
+    target: Exp.LocalVar,
+    pos: Position = Position.NoPosition,
+    info: Info = Info.NoInfo,
+    trafos: Trafos = Trafos.NoTrafos,
+) = Stmt.MethodCall(name, parameters, listOf(target), pos, info, trafos)
+
+fun NonInlineCallable.toFuncApp(
+    parameters: List<Exp>,
+    pos: Position = Position.NoPosition,
+    info: Info = Info.NoInfo,
+    trafos: Trafos = Trafos.NoTrafos
+) = Exp.FuncApp(name, parameters, Type.Ref, pos, info, trafos)
+
+
+data class NonInlineFunctionSignature(
+    val signature: NamedFunctionSignature,
+    override val preconditions: List<ExpEmbedding>,
+    override val postconditions: List<ExpEmbedding>,
+    override val declarationSource: KtSourceElement?
+) : CompleteFunctionSignature, NonInlineCallable, NamedFunctionSignature by signature
 
 
 interface CompleteFunctionSignature : NamedFunctionSignatureWithContract, NamedCallableEmbedding
@@ -91,13 +152,6 @@ fun CompleteFunctionSignature.toViperFunction(
     require(isPure) {
         "Impure functions should not be converted to functions"
     }
-    postconditions.forEach { postcondition ->
-        val isValid =
-            postcondition.preorder().all { it.first !is AccEmbedding && it.first !is PredicateAccessPermissions }
-        if (!isValid) throw SnaktInternalException(
-            declarationSource, "Postcondition tries to acquire permissions, which is not allowed in a function"
-        )
-    }
     return UserFunction(
         name,
         formalArgs.map { it.toLocalVarDecl() },
@@ -108,4 +162,28 @@ fun CompleteFunctionSignature.toViperFunction(
         body,
         declarationSource.asPosition
     )
+}
+
+
+data class InlineNamedFunction(
+    val signature: NamedFunctionSignature,
+    val firBody: FirBlock,
+    override val preconditions: List<ExpEmbedding>,
+    override val postconditions: List<ExpEmbedding>,
+    override val symbol: FirFunctionSymbol<*>,
+) : CompleteFunctionSignature, NamedCallableEmbedding, NamedFunctionSignature by signature {
+    override fun insertCall(
+        args: List<ExpEmbedding>,
+        ctx: StmtConversionContext,
+    ): ExpEmbedding {
+        val paramNames = buildList {
+            if (callableType.dispatchReceiverType != null) add(SubstitutedArgument.DispatchThis)
+            if (callableType.extensionReceiverType != null) add(SubstitutedArgument.ExtensionThis)
+            addAll(symbol.valueParameterSymbols.map { SubstitutedArgument.ValueParameter(it) })
+        }
+        return ctx.insertInlineFunctionCall(signature, paramNames, args, firBody, signature.labelName)
+    }
+
+    override val declarationSource: KtSourceElement?
+        get() = symbol.source
 }

@@ -17,15 +17,11 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.formver.core.isBorrowed
 import org.jetbrains.kotlin.formver.core.isPure
 import org.jetbrains.kotlin.formver.core.isUnique
-import org.jetbrains.kotlin.formver.core.names.DispatchReceiverName
-import org.jetbrains.kotlin.formver.core.names.ExtensionReceiverName
-import org.jetbrains.kotlin.formver.core.names.embedMemberPropertyName
-import org.jetbrains.kotlin.formver.core.names.embedName
+import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 
 data class SignatureWithTarget<out S : FunctionSignature>(
-    val signature: S,
-    val returnTarget: ReturnTarget
+    val signature: S, val returnTarget: ReturnTarget
 ) {
     /**
      * Refines the signature by applying the given action to the current signature.
@@ -110,20 +106,29 @@ fun FirFunctionSymbol<*>.toFunctionSignature(): SignatureWithTarget<FunctionSign
 }
 
 context(converter: ProgramConversionContext)
-fun FunctionTypeEmbedding.toGenericAccessorSignature(defaultBehaviour: Boolean): SignatureWithTarget<FunctionSignature> {
-    val returnTarget = when (defaultBehaviour) {
+fun FunctionTypeEmbedding.toGenericAccessorSignature(isPure: Boolean): SignatureWithTarget<FunctionSignature> {
+    val returnTarget = when (isPure) {
         true -> ReturnTarget.createForPureFunction(returnType)
         false -> converter.returnTargetProducer.getFresh(returnType)
     }
-    val signature = GenericFunctionSignature(
-        this, returnTarget.variable, isPure = defaultBehaviour
+    val extensionVariable = extensionReceiverType?.let { PlaceholderVariableEmbedding(ExtensionReceiverName, it) }
+    val dispatchVariable = dispatchReceiverType?.let { PlaceholderVariableEmbedding(DispatchReceiverName, it) }
+    val parameterVariables =
+        paramTypes.mapIndexed { index, embedding -> PlaceholderVariableEmbedding(AnonymousName(index), embedding) }
+    val signature = FunctionSignatureImpl(
+        this,
+        dispatchVariable,
+        extensionVariable,
+        parameterVariables,
+        returnTarget.variable,
+        isPure
     )
     return SignatureWithTarget(signature, returnTarget)
 }
 
 
-context(converter: ProgramConversionContext, symbol: FirFunctionSymbol<*>)
-fun SignatureWithTarget<FunctionSignature>.toNamedSignature(): SignatureWithTarget<NamedFunctionSignature> =
+context(converter: ProgramConversionContext)
+fun SignatureWithTarget<FunctionSignature>.toNamedSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<NamedFunctionSignature> =
     this.refineSignature { current ->
         NamedFunctionSignatureImpl(current.signature, symbol.embedName(converter), symbol)
     }
@@ -133,37 +138,31 @@ fun SignatureWithTarget<FunctionSignature>.toNamedSignature(name: SymbolicName):
         NamedFunctionSignatureImpl(current.signature, name, null)
     }
 
-context(symbol: FirFunctionSymbol<*>?)
-fun SignatureWithTarget<NamedFunctionSignature>.toNonInlineSignature(): SignatureWithTarget<NonInlineCallable> =
+
+fun SignatureWithTarget<NamedFunctionSignature>.toNonInlineSignature(symbol: FirFunctionSymbol<*>?): SignatureWithTarget<NonInlineCallable> =
     this.refineSignature { current ->
         NonInlineCallableImpl(current.signature, symbol)
     }
 
-fun SignatureWithTarget<NamedFunctionSignature>.toNonInlineSignature(): SignatureWithTarget<NonInlineCallable> =
-    this.refineSignature { current ->
-        NonInlineCallableImpl(current.signature, null)
-    }
 
-
-context(converter: ProgramConversionContext, symbol: FirFunctionSymbol<*>)
-fun SignatureWithTarget<NonInlineCallable>.toCompleteSignature(): SignatureWithTarget<NonInlineFunctionSignature> =
+context(converter: ProgramConversionContext)
+fun SignatureWithTarget<NonInlineCallable>.toCompleteSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<NonInlineFunctionSignature> =
     when {
-        symbol.isPrimaryConstructor() -> this.toConstructorSignature()
-        else -> this.toUserSignature()
+        symbol.isPrimaryConstructor() -> this.toConstructorSignature(symbol)
+        else -> this.toNormalSignature(symbol)
     }
 
 context(converter: ProgramConversionContext)
 fun SignatureWithTarget<NonInlineCallable>.toCompleteSignature(
-    declarationSource: KtSourceElement?,
-    action: FunctionConditionBuilder.() -> Unit
+    declarationSource: KtSourceElement?, action: FunctionConditionBuilder.() -> Unit
 ): SignatureWithTarget<NonInlineFunctionSignature> = refineSignature { current ->
     val (preconditions, postconditions) = current.signature.buildConditions(converter.typeResolver, action)
     NonInlineFunctionSignature(current.signature, preconditions, postconditions, declarationSource)
 }
 
 
-context(converter: ProgramConversionContext, symbol: FirFunctionSymbol<*>)
-fun SignatureWithTarget<NonInlineCallable>.toConstructorSignature(): SignatureWithTarget<NonInlineFunctionSignature> =
+context(converter: ProgramConversionContext)
+fun SignatureWithTarget<NonInlineCallable>.toConstructorSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<NonInlineFunctionSignature> =
     refineSignature { current ->
         val constructedClassSymbol =
             symbol.resolvedReturnType.toRegularClassSymbol(converter.session) ?: throw SnaktInternalException(
@@ -191,15 +190,13 @@ fun SignatureWithTarget<NonInlineCallable>.toConstructorSignature(): SignatureWi
         NonInlineFunctionSignature(current.signature, contract.preconditions, contract.postconditions, symbol.source)
     }
 
-context(converter: ProgramConversionContext, symbol: FirFunctionSymbol<*>)
-fun SignatureWithTarget<NonInlineCallable>.toUserSignature(): SignatureWithTarget<NonInlineFunctionSignature> =
+context(converter: ProgramConversionContext)
+fun SignatureWithTarget<NonInlineCallable>.toNormalSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<NonInlineFunctionSignature> =
     refineSignature { current ->
         val contract = current.signature.buildConditions(converter.typeResolver) {
             userFunctionContract()
             val (preconditions, postconditions) = converter.embedProvidedContract(
-                symbol,
-                current.signature,
-                returnTarget
+                symbol, current.signature, returnTarget
             )
             addPreconditions(preconditions)
             addPostconditions(postconditions)
@@ -208,16 +205,13 @@ fun SignatureWithTarget<NonInlineCallable>.toUserSignature(): SignatureWithTarge
     }
 
 @OptIn(SymbolInternals::class)
-context(converter: ProgramConversionContext, symbol: FirFunctionSymbol<*>)
-fun SignatureWithTarget<NamedFunctionSignature>.toInlineSignature(): SignatureWithTarget<InlineNamedFunction> =
+context(converter: ProgramConversionContext)
+fun SignatureWithTarget<NamedFunctionSignature>.toInlineSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<InlineNamedFunction> =
     this.refineSignature { current ->
-        val body =
-            symbol.fir.body ?: throw SnaktInternalException(symbol.source, "Expected function body, got null")
+        val body = symbol.fir.body ?: throw SnaktInternalException(symbol.source, "Expected function body, got null")
         val contract = current.signature.buildConditions(converter.typeResolver) {
             val (precondition, postcondition) = converter.embedProvidedContract(
-                symbol,
-                current.signature,
-                current.returnTarget
+                symbol, current.signature, current.returnTarget
             )
             userFunctionContract()
             addPreconditions(precondition)

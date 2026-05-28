@@ -1,10 +1,14 @@
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
+import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.conversion.stdLibPostconditions
 import org.jetbrains.kotlin.formver.core.conversion.stdLibPreconditions
+import org.jetbrains.kotlin.formver.core.embeddings.expression.AccEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.PredicateAccessPermissions
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
+import org.jetbrains.kotlin.formver.core.purity.preorder
 
 
 // Container for the generated conditions
@@ -75,7 +79,24 @@ class FunctionConditionBuilder(
         userFunctionPostcondition()
     }
 
-    fun build(): FunctionContract = FunctionContract(preconditions, postconditions)
+    private fun checkNoPermInPurePostcondition() {
+        if (signature.isPure) {
+            postconditions.forEach { postcondition ->
+                val isValid =
+                    postcondition.preorder()
+                        .all { it.first !is AccEmbedding && it.first !is PredicateAccessPermissions }
+                if (!isValid) throw SnaktInternalException(
+                    signature.symbol?.source,
+                    "Postcondition tries to acquire permissions, which is not allowed in a function"
+                )
+            }
+        }
+    }
+
+    fun build(): FunctionContract {
+        checkNoPermInPurePostcondition()
+        return FunctionContract(preconditions, postconditions)
+    }
 }
 
 class PreconditionScope(
