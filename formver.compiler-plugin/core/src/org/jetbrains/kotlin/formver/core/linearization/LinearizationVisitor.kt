@@ -351,6 +351,27 @@ data class LinearizationVisitor(
             )
     }
 
+    override fun visitTrinaryOperatorExpEmbedding(e: TrinaryOperatorExpEmbedding): Linearizable =
+        object : DirectResultLinearizable(e, this@LinearizationVisitor) {
+            override fun toViper(ctx: LinearizationContext): Exp =
+                e.refsOperation(
+                    e.first.linearize().toViper(ctx),
+                    e.second.linearize().toViper(ctx),
+                    e.third.linearize().toViper(ctx),
+                    pos = ctx.source.asPosition,
+                    info = e.sourceRole.asInfo
+                )
+
+            override fun toViperBuiltinType(ctx: LinearizationContext): Exp =
+                e.builtinsOperation(
+                    e.first.linearize().toViperBuiltinType(ctx),
+                    e.second.linearize().toViperBuiltinType(ctx),
+                    e.third.linearize().toViperBuiltinType(ctx),
+                pos = ctx.source.asPosition,
+                info = e.sourceRole.asInfo
+            )
+    }
+
     override fun visitUnaryOperatorExpEmbedding(e: UnaryOperatorExpEmbedding): Linearizable = object : DirectResultLinearizable(e, this@LinearizationVisitor) {
         override fun toViper(ctx: LinearizationContext): Exp =
             e.refsOperation(e.inner.linearize().toViper(ctx), pos = ctx.source.asPosition, info = e.sourceRole.asInfo)

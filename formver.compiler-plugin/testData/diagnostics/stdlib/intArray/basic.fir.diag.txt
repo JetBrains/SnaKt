@@ -1,4 +1,4 @@
-/basic.kt: info: Generated Viper text for binarySearch:
+/basic.kt: info: Generated Viper text for main:
 domain rt  {
 
   unique function intType(): rt
@@ -17,11 +17,17 @@ domain rt  {
 
   unique function stringType(): rt
 
+  unique function intMultisetType(): rt
+
   unique function intArraySlot(): rt
 
   unique function IntArray(): rt
 
-  unique function InvariantBuilder(): rt
+  unique function BooleanArray(): rt
+
+  unique function Cloneable(): rt
+
+  unique function Serializable(): rt
 
   function nullValue(): Ref
 
@@ -56,6 +62,10 @@ domain rt  {
   function stringToRef(v: Seq[Int]): Ref
 
   function stringFromRef(r: Ref): Seq[Int]
+
+  function intMultisetToRef(v: Multiset[Int]): Ref
+
+  function intMultisetFromRef(r: Ref): Multiset[Int]
 
   axiom subtypeReflexive {
     (forall t: rt ::isSubtype(t, t))
@@ -128,6 +138,10 @@ domain rt  {
   }
 
   axiom {
+    isSubtype(intMultisetType(), anyType())
+  }
+
+  axiom {
     isSubtype(intArraySlot(), anyType())
   }
 
@@ -136,7 +150,15 @@ domain rt  {
   }
 
   axiom {
-    isSubtype(InvariantBuilder(), anyType())
+    isSubtype(BooleanArray(), anyType())
+  }
+
+  axiom {
+    isSubtype(Cloneable(), anyType())
+  }
+
+  axiom {
+    isSubtype(Serializable(), anyType())
   }
 
   axiom supertypeOfNothing {
@@ -256,6 +278,33 @@ domain rt  {
       stringToRef(stringFromRef(r)) == r)
   }
 
+  axiom {
+    (forall v: Multiset[Int] ::
+      { isSubtype(typeOf(intMultisetToRef(v)), intMultisetType()) }
+      isSubtype(typeOf(intMultisetToRef(v)), intMultisetType()))
+  }
+
+  axiom {
+    (forall v: Multiset[Int] ::
+      { intMultisetFromRef(intMultisetToRef(v)) }
+      intMultisetFromRef(intMultisetToRef(v)) == v)
+  }
+
+  axiom {
+    (forall r: Ref ::
+      { intMultisetFromRef(r) }
+      isSubtype(typeOf(r), intMultisetType()) ==>
+      intMultisetToRef(intMultisetFromRef(r)) == r)
+  }
+
+  axiom {
+    isSubtype(BooleanArray(), Cloneable())
+  }
+
+  axiom {
+    isSubtype(BooleanArray(), Serializable())
+  }
+
   axiom arrayLenNoneg {
     (forall r: Ref ::
       { arraySize(r) }
@@ -299,6 +348,11 @@ function divInts(arg_1: Ref, arg_2: Ref): Ref
   requires intFromRef(arg_2) != 0
   ensures isSubtype(typeOf(result), intType())
   ensures intFromRef(result) == intFromRef(arg_1) \ intFromRef(arg_2)
+
+
+function g_size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
 
 
 function geChars(arg_1: Ref, arg_2: Ref): Ref
@@ -415,10 +469,35 @@ function timesInts(arg_1: Ref, arg_2: Ref): Ref
   ensures intFromRef(result) == intFromRef(arg_1) * intFromRef(arg_2)
 
 
+function toMultisetInternal(arg_1: Ref, arg_2: Int, arg_3: Int): Multiset[Int]
+  requires acc(IntArray_unique(arg_1), wildcard)
+  requires isSubtype(typeOf(arg_1), IntArray())
+  requires 0 <= arg_2
+  requires arg_2 <= arg_3
+  requires arg_3 <= arraySize(arg_1)
+{
+  (unfolding acc(IntArray_unique(arg_1), wildcard) in
+    (arg_2 == arg_3 ?
+      Multiset[Int]() :
+      (toMultisetInternal(arg_1, arg_2, arg_3 - 1) union
+      Multiset(intFromRef(getSlot(arg_1, intToRef(arg_3 - 1)).intArrayElement)))))
+}
+
 function xorBools(arg_1: Ref, arg_2: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
   ensures boolFromRef(result) == (boolFromRef(arg_1) != boolFromRef(arg_2))
 
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  isSubtype(typeOf(g_size(this)), intType()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
 
 predicate IntArray_unique(this: Ref) {
   isSubtype(typeOf(this), IntArray()) &&
@@ -429,122 +508,99 @@ predicate IntArray_unique(this: Ref) {
     isSubtype(typeOf(getSlot(this, anon_builtin_0).intArrayElement), intType()))
 }
 
-predicate InvariantBuilder_unique(this: Ref) {
-  isSubtype(typeOf(this), InvariantBuilder())
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
 }
 
-method binarySearch(list: Ref, target: Ref) returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(list), IntArray())
-  requires acc(IntArray_unique(list), write)
-  requires isSubtype(typeOf(target), intType())
-  requires (forall anon_builtin_0: Int ::(forall anon_builtin_1: Int ::0 <=
-        anon_builtin_0 &&
-        anon_builtin_0 <= anon_builtin_1 &&
-        anon_builtin_1 < arraySize(list) ==>
-        (unfolding acc(IntArray_unique(list), write) in
-          intFromRef(getSlot(list, intToRef(anon_builtin_0)).intArrayElement)) <=
-        (unfolding acc(IntArray_unique(list), write) in
-          intFromRef(getSlot(list, intToRef(anon_builtin_1)).intArrayElement))))
-  ensures acc(IntArray_unique(list), write)
-  ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
-  ensures !(v_ret_0 == nullValue()) ==>
-    0 <= v_ret_0 && v_ret_0 < arraySize(list)
-  ensures (!(v_ret_0 == nullValue()) ==>
-    (unfolding acc(IntArray_unique(list), write) in
-      intFromRef(getSlot(list, v_ret_0).intArrayElement)) ==
-    intFromRef(target)) &&
-    (v_ret_0 == nullValue() ==>
-    (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
-      anon_builtin_2 < arraySize(list) ==>
-      !((unfolding acc(IntArray_unique(list), write) in
-        intFromRef(getSlot(list, intToRef(anon_builtin_2)).intArrayElement)) ==
-      intFromRef(target))))
-{
-  var low: Ref
-  var high: Ref
-  var anon_0: Ref
-  low := intToRef(0)
-  high := minusInts(intArraySize(list), intToRef(1))
-  label cont
-    invariant isSubtype(typeOf(low), intType())
-    invariant isSubtype(typeOf(high), intType())
-    invariant isSubtype(typeOf(list), IntArray())
-    invariant acc(IntArray_unique(list), write)
-    invariant isSubtype(typeOf(target), intType())
-    invariant (forall anon_builtin_3: Int ::(forall anon_builtin_4: Int ::0 <=
-          anon_builtin_3 &&
-          anon_builtin_3 <= anon_builtin_4 &&
-          anon_builtin_4 < arraySize(list) ==>
-          (unfolding acc(IntArray_unique(list), write) in
-            intFromRef(getSlot(list, intToRef(anon_builtin_3)).intArrayElement)) <=
-          (unfolding acc(IntArray_unique(list), write) in
-            intFromRef(getSlot(list, intToRef(anon_builtin_4)).intArrayElement))))
-    invariant 0 <= intFromRef(low) && intFromRef(high) < arraySize(list) &&
-      intFromRef(low) <= intFromRef(high) + 1
-    invariant (forall anon_builtin_5: Int ::0 <= anon_builtin_5 &&
-        anon_builtin_5 < intFromRef(low) ==>
-        !((unfolding acc(IntArray_unique(list), write) in
-          intFromRef(getSlot(list, intToRef(anon_builtin_5)).intArrayElement)) ==
-        intFromRef(target)))
-    invariant (forall anon_builtin_6: Int ::intFromRef(high) <
-        anon_builtin_6 &&
-        anon_builtin_6 < arraySize(list) ==>
-        !((unfolding acc(IntArray_unique(list), write) in
-          intFromRef(getSlot(list, intToRef(anon_builtin_6)).intArrayElement)) ==
-        intFromRef(target)))
-  anon_0 := leInts(low, high)
-  if (boolFromRef(anon_0)) {
-    var mid: Ref
-    var midVal: Ref
-    mid := plusInts(low, divInts(minusInts(high, low), intToRef(2)))
-    midVal := (unfolding acc(IntArray_unique(list), write) in
-        getSlot(list, mid).intArrayElement)
-    if (intFromRef(midVal) == intFromRef(target)) {
-      v_ret_0 := mid
-      goto lbl_ret_0
-    } elseif (intFromRef(midVal) < intFromRef(target)) {
-      low := plusInts(mid, intToRef(1))
-    } else {
-      high := minusInts(mid, intToRef(1))}
-    goto cont
-  }
-  label break
-  assert isSubtype(typeOf(low), intType())
-  assert isSubtype(typeOf(high), intType())
-  assert isSubtype(typeOf(list), IntArray())
-  assert acc(IntArray_unique(list), write)
-  assert isSubtype(typeOf(target), intType())
-  assert (forall anon_builtin_3: Int ::(forall anon_builtin_4: Int ::0 <=
-        anon_builtin_3 &&
-        anon_builtin_3 <= anon_builtin_4 &&
-        anon_builtin_4 < arraySize(list) ==>
-        (unfolding acc(IntArray_unique(list), write) in
-          intFromRef(getSlot(list, intToRef(anon_builtin_3)).intArrayElement)) <=
-        (unfolding acc(IntArray_unique(list), write) in
-          intFromRef(getSlot(list, intToRef(anon_builtin_4)).intArrayElement))))
-  assert 0 <= intFromRef(low) && intFromRef(high) < arraySize(list) &&
-    intFromRef(low) <= intFromRef(high) + 1
-  assert (forall anon_builtin_5: Int ::0 <= anon_builtin_5 &&
-      anon_builtin_5 < intFromRef(low) ==>
-      !((unfolding acc(IntArray_unique(list), write) in
-        intFromRef(getSlot(list, intToRef(anon_builtin_5)).intArrayElement)) ==
-      intFromRef(target)))
-  assert (forall anon_builtin_6: Int ::intFromRef(high) < anon_builtin_6 &&
-      anon_builtin_6 < arraySize(list) ==>
-      !((unfolding acc(IntArray_unique(list), write) in
-        intFromRef(getSlot(list, intToRef(anon_builtin_6)).intArrayElement)) ==
-      intFromRef(target)))
-  v_ret_0 := nullValue()
-  goto lbl_ret_0
-  label lbl_ret_0
-}
+method con(par_size: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_size), intType())
+  requires intFromRef(par_size) >= 0
+  ensures isSubtype(typeOf(ret_1), IntArray())
+  ensures acc(IntArray_unique(ret_1), write)
+  ensures arraySize(ret_1) == intFromRef(par_size)
+  ensures (forall anon_builtin_0: Ref ::isSubtype(typeOf(anon_builtin_0), intType()) ==>
+      intFromRef(anon_builtin_0) >= 0 &&
+      intFromRef(anon_builtin_0) < arraySize(ret_1) ==>
+      (unfolding acc(IntArray_unique(ret_1), write) in
+        intFromRef(getSlot(ret_1, anon_builtin_0).intArrayElement)) ==
+      0)
+
 
 method havoc(arg_1: rt) returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), arg_1)
 
 
-/basic.kt: error: Argument type mismatch: actual type is 'Int?', but 'Int' was expected.
+method main() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_list: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  var anon_3: Ref
+  var res: Ref
+  var res2: Ref
+  l0_list := con(intToRef(3))
+  anon_0 := set(l0_list, intToRef(0), intToRef(3))
+  anon_1 := set(l0_list, intToRef(1), intToRef(1))
+  anon_2 := set(l0_list, intToRef(2), intToRef(2))
+  anon_3 := selectionSort(l0_list)
+  if ((unfolding acc(IntArray_unique(l0_list), write) in
+    intFromRef(getSlot(l0_list, intToRef(0)).intArrayElement)) <=
+  (unfolding acc(IntArray_unique(l0_list), write) in
+    intFromRef(getSlot(l0_list, intToRef(1)).intArrayElement))) {
+    res := leInts((unfolding acc(IntArray_unique(l0_list), write) in
+        getSlot(l0_list, intToRef(1)).intArrayElement), (unfolding acc(IntArray_unique(l0_list), write) in
+        getSlot(l0_list, intToRef(2)).intArrayElement))
+  } else {
+    res := boolToRef(false)}
+  assert boolFromRef(res)
+  res2 := boolToRef((unfolding acc(IntArray_unique(l0_list), write) in
+      intFromRef(getSlot(l0_list, intToRef(0)).intArrayElement)) ==
+    1)
+  assert boolFromRef(res2)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
 
-/basic.kt: error: Operator call is prohibited on a nullable receiver of type 'Int?'. Use '?.'-qualified call instead.
+method selectionSort(par_list: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(par_list), IntArray())
+  requires acc(IntArray_unique(par_list), write)
+  requires arraySize(par_list) >= 0
+  ensures acc(IntArray_unique(par_list), write)
+  ensures isSubtype(typeOf(ret_3), unitType())
+  ensures (forall anon_builtin_0: Int ::
+      { (unfolding acc(IntArray_unique(par_list), write) in
+        intFromRef(getSlot(par_list, intToRef(anon_builtin_0)).intArrayElement)) }
+      (forall anon_builtin_1: Int ::
+        { (unfolding acc(IntArray_unique(par_list), write) in
+          intFromRef(getSlot(par_list, intToRef(anon_builtin_1)).intArrayElement)) }
+        0 <= anon_builtin_0 && anon_builtin_0 <= anon_builtin_1 &&
+        anon_builtin_1 < arraySize(par_list) ==>
+        (unfolding acc(IntArray_unique(par_list), write) in
+          intFromRef(getSlot(par_list, intToRef(anon_builtin_0)).intArrayElement)) <=
+        (unfolding acc(IntArray_unique(par_list), write) in
+          intFromRef(getSlot(par_list, intToRef(anon_builtin_1)).intArrayElement))))
+  ensures toMultisetInternal(par_list, 0, arraySize(par_list)) ==
+    old(toMultisetInternal(par_list, 0, arraySize(par_list)))
 
-/basic.kt: error: Argument type mismatch: actual type is 'Int?', but 'Int' was expected.
+
+method set(this: Ref, index: Ref, value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), IntArray())
+  requires isSubtype(typeOf(index), intType())
+  requires isSubtype(typeOf(value), intType())
+  requires acc(IntArray_unique(this), write)
+  requires intFromRef(index) >= 0 && intFromRef(index) < arraySize(this)
+  ensures isSubtype(typeOf(ret_2), unitType())
+  ensures acc(IntArray_unique(this), write)
+  ensures (unfolding acc(IntArray_unique(this), write) in
+      (forall anon_builtin_0: Ref ::isSubtype(typeOf(anon_builtin_0), intType()) ==>
+        intFromRef(anon_builtin_0) >= 0 &&
+        intFromRef(anon_builtin_0) < arraySize(this) &&
+        !(intFromRef(anon_builtin_0) == intFromRef(index)) ==>
+        intFromRef(getSlot(this, anon_builtin_0).intArrayElement) ==
+        old((unfolding acc(IntArray_unique(this), write) in
+          intFromRef(getSlot(this, anon_builtin_0).intArrayElement)))))
+  ensures (unfolding acc(IntArray_unique(this), write) in
+      intFromRef(getSlot(this, index).intArrayElement)) ==
+    intFromRef(value)

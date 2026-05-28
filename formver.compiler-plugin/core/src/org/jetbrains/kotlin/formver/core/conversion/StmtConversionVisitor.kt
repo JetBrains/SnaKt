@@ -39,6 +39,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
+import org.jetbrains.kotlin.formver.core.formverCallableId
 import org.jetbrains.kotlin.formver.core.functionCallArguments
 import org.jetbrains.kotlin.formver.core.isInvariantBuilderFunctionNamed
 import org.jetbrains.kotlin.text
@@ -303,17 +304,33 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         val symbol = functionCall.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
             ?: throw NotImplementedError("Only functions are expected as callables of function calls, got ${functionCall.toResolvedCallableSymbol()}")
 
-        when (val forAllLambda = functionCall.extractFormverFirBlock { isInvariantBuilderFunctionNamed("forAll") }) {
-            null -> {
-                val callee = data.embedAnyFunction(symbol)
-                return callee.insertCall(
-                    functionCall.functionCallArguments.withVarargsHandled(data, callee),
-                    data,
-                    data.embedType(functionCall.resolvedType),
+        val forAllLambda = functionCall.extractFormverFirBlock { isInvariantBuilderFunctionNamed("forAll") }
+        val toMultiset =
+            (functionCall.toResolvedCallableSymbol() as? FirNamedFunctionSymbol)?.callableId == formverCallableId(
+                null,
+                "toMultiset"
+            )
+        val old = (functionCall.toResolvedCallableSymbol() as? FirNamedFunctionSymbol)?.callableId == formverCallableId(
+            null,
+            "old"
+        )
+        when {
+            toMultiset -> {
+                val args = functionCall.functionCallArguments
+
+                val res = OperatorExpEmbeddings.intArrayToMultiset(
+                    data.convert(args[0]),
+                    data.convert(args[1]),
+                    data.convert(args[2])
                 )
+                return res
             }
 
-            else -> {
+            old -> {
+                return Old(data.convert(functionCall.argumentList.arguments[0]))
+            }
+
+            forAllLambda != null -> {
                 if (!data.isValidForForAllBlock) throw SnaktInternalException(
                     forAllLambda.source,
                     "`forAll` scope is only allowed inside one of the `loopInvariants`, `preconditions` or `postconditions`."
@@ -324,6 +341,15 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                     forAllLambda.body?.source, "Lambda body should be accessible in `forAll` function call."
                 )
                 return data.insertForAllFunctionCall(forAllArg.symbol, forAllBody)
+            }
+
+            else -> {
+                val callee = data.embedAnyFunction(symbol)
+                return callee.insertCall(
+                    functionCall.functionCallArguments.withVarargsHandled(data, callee),
+                    data,
+                    data.embedType(functionCall.resolvedType),
+                )
             }
         }
     }

@@ -35,7 +35,8 @@ data class Assert(val exp: ExpEmbedding) : ExpEmbedding {
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitAssert(this)
 
     override fun isValid(ctx: PurityContext): Boolean = exp.isPure().also {
-        if (!it) ctx.addPurityError(exp, "Assert condition is impure")
+        if (!it)
+            ctx.addPurityError(exp, "Assert condition is impure")
     }
 }
 

@@ -108,5 +108,4 @@ class InjectionImageFunction(
     postcondition { result isOf resultType.runtimeType }
     postcondition { (resultInjection?.fromRef(result) ?: result) eq viperResult }
     additionalConditions()
-
-})
+}).first

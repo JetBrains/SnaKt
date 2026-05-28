@@ -543,6 +543,57 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         override val type = left.type
     }
 
+    data class EmptyMultiset(
+        val elementType: Type,
+        val pos: Position = Position.NoPosition,
+        val info: Info = Info.NoInfo,
+        val trafos: Trafos = Trafos.NoTrafos,
+    ) : Exp {
+        context(nameResolver: NameResolver)
+        override fun toSilver(): viper.silver.ast.EmptyMultiset =
+            viper.silver.ast.EmptyMultiset.apply(
+                elementType.toSilver(),
+                pos.toSilver(),
+                info.toSilver(),
+                trafos.toSilver(),
+            )
+
+        override val type = Type.Multiset(elementType)
+    }
+
+    data class ExplicitMultiset(
+        val args: List<Exp>,
+        val pos: Position = Position.NoPosition,
+        val info: Info = Info.NoInfo,
+        val trafos: Trafos = Trafos.NoTrafos,
+    ) : Exp {
+        context(nameResolver: NameResolver)
+        override fun toSilver(): viper.silver.ast.ExplicitMultiset =
+            ExplicitMultiset(
+                args.toSilver().toScalaSeq(),
+                pos.toSilver(),
+                info.toSilver(),
+                trafos.toSilver(),
+            )
+
+        override val type = Type.Multiset(args.first().type)
+    }
+
+    data class Union(
+        override val left: Exp,
+        override val right: Exp,
+        val pos: Position = Position.NoPosition,
+        val info: Info = Info.NoInfo,
+        val trafos: Trafos = Trafos.NoTrafos,
+    ) : BinaryExp {
+        override val type = left.type.also { assert(left.type == right.type) }
+
+        context(nameResolver: NameResolver)
+        override fun toSilver(): viper.silver.ast.AnySetUnion =
+            AnySetUnion(left.toSilver(), right.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
+    }
+
+
     data class Old(
         val exp: Exp,
         val pos: Position = Position.NoPosition,

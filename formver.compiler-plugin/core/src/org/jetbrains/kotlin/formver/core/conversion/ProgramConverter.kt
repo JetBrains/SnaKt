@@ -320,10 +320,20 @@ class ProgramConverter(
         return embedPureUserFunction(symbol, signature, returnTarget)
     }
 
-    override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding = if (symbol.isPure(session)) {
-        embedPureFunction(symbol)
-    } else {
-        embedFunction(symbol)
+    override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding {
+        val lookupName = symbol.embedName(this)
+        specialFunctions[lookupName]?.let { existing ->
+            if (existing !is PartiallySpecialKotlinFunction) return existing
+            if (existing.baseEmbedding != null) return existing
+            val callable = embedCallable(symbol)
+            existing.initBaseEmbedding(UserFunctionEmbedding(callable))
+            return existing
+        }
+        return if (symbol.isPure(session)) {
+            embedPureFunction(symbol)
+        } else {
+            embedFunction(symbol)
+        }
     }
 
     /**

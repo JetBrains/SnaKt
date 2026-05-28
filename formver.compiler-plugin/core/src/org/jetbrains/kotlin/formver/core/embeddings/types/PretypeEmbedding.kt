@@ -75,4 +75,9 @@ data object IntArraySlotTypeEmbedding : PretypeEmbedding {
     override val name = PretypeName("IntArraySlot")
 }
 
+data object IntMultisetTypeEmbedding : PretypeEmbedding {
+    override val runtimeType = RuntimeTypeDomain.intArraySlotType()
+    override val name = PretypeName("IntArraySlot")
+}
+
 fun PretypeEmbedding.asTypeEmbedding() = TypeEmbedding(this, TypeEmbeddingFlags(nullable = false))

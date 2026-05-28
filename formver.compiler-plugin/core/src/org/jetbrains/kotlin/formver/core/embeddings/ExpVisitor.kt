@@ -25,6 +25,7 @@ interface ExpVisitor<R> {
     fun visitEqCmp(e: EqCmp): R = visitDefault(e)
     fun visitNeCmp(e: NeCmp): R = visitDefault(e)
     fun visitBinaryOperatorExpEmbedding(e: BinaryOperatorExpEmbedding): R = visitDefault(e)
+    fun visitTrinaryOperatorExpEmbedding(e: TrinaryOperatorExpEmbedding): R = visitDefault(e)
     fun visitSequentialAnd(e: SequentialAnd): R = visitDefault(e)
     fun visitSequentialOr(e: SequentialOr): R = visitDefault(e)
     fun visitInjectionBasedExpEmbedding(e: InjectionBasedExpEmbedding): R = visitDefault(e)

@@ -5,6 +5,12 @@
 
 package org.jetbrains.kotlin.formver.core.domains
 
+import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
+import org.jetbrains.kotlin.formver.core.embeddings.callables.NamedFunctionSignature
+import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.*
+import org.jetbrains.kotlin.formver.core.names.FunctionResultVariableName
 import org.jetbrains.kotlin.formver.core.names.PlaceholderArgumentName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.BuiltinFunction
@@ -38,16 +44,44 @@ class FunctionBuilder private constructor() {
         get() = Exp.Result(retType)
 
     companion object {
-        fun build(name: SymbolicName, action: FunctionBuilder.() -> Unit): BuiltinFunction {
+        fun build(
+            name: SymbolicName,
+            action: FunctionBuilder.() -> Unit
+        ): Pair<BuiltinFunction, NamedFunctionSignature> {
             val builder = FunctionBuilder()
             builder.action()
-            return object : BuiltinFunction(name) {
+            return Pair(object : BuiltinFunction(name) {
                 override val formalArgs = builder.formalArgs.map { it.decl() }
                 override val retType: Type = builder.retType
                 override val body = builder.functionBody
                 override val pres = builder.pres
                 override val posts = builder.posts
-            }
+            }, object : NamedFunctionSignature {
+                override val name: SymbolicName = name
+                override val symbol: FirFunctionSymbol<*>
+                    get() = error("don't touch this")
+                override val callableType: FunctionTypeEmbedding = buildFunctionPretype {
+                    builder.formalArgs.forEach { arg ->
+                        withParam { nullableAny() }
+                    }
+                    withReturnType { nullableAny() }
+                }
+                override val dispatchReceiver: VariableEmbedding? = null
+                override val extensionReceiver: VariableEmbedding? = null
+                override val params: List<VariableEmbedding> = builder.formalArgs.map {
+                    PlaceholderVariableEmbedding(
+                        it.name,
+                        AnyTypeEmbedding.asTypeEmbedding()
+                    )
+                }
+                override val returns: VariableEmbedding =
+                    PlaceholderVariableEmbedding(
+                        FunctionResultVariableName,
+                        AnyTypeEmbedding.asTypeEmbedding()
+                    )
+                override val isPure: Boolean = true
+
+            })
         }
     }
 

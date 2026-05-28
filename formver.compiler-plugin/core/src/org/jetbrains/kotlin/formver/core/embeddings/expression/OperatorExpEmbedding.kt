@@ -9,12 +9,20 @@ import org.jetbrains.kotlin.formver.core.domains.InjectionImageFunction
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
-import org.jetbrains.kotlin.formver.viper.ast.Exp
 
 interface InjectionBasedExpEmbedding : ExpEmbedding {
     val refsOperation: InjectionImageFunction
     val builtinsOperation
         get() = refsOperation.original
+}
+
+interface TrinaryOperatorExpEmbedding : InjectionBasedExpEmbedding {
+    val first: ExpEmbedding
+    val second: ExpEmbedding
+    val third: ExpEmbedding
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitTrinaryOperatorExpEmbedding(this)
+
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(first, second, third)
 }
 
 interface BinaryOperatorExpEmbedding : InjectionBasedExpEmbedding {
@@ -45,9 +53,31 @@ sealed interface OperatorExpEmbeddingTemplate {
         ): OperatorExpEmbeddingTemplate? = when (refsOperation.formalArgs.size) {
             1 -> UnaryOperatorExpEmbeddingTemplate(type, refsOperation)
             2 -> BinaryOperatorExpEmbeddingTemplate(type, refsOperation)
+            3 -> TrinaryOperatorExpEmbeddingTemplate(type, refsOperation)
             else -> null
         }
     }
+}
+
+class TrinaryOperatorExpEmbeddingTemplate(
+    override val type: TypeEmbedding,
+    override val refsOperation: InjectionImageFunction
+) :
+    OperatorExpEmbeddingTemplate {
+    operator fun invoke(
+        first: ExpEmbedding,
+        second: ExpEmbedding,
+        third: ExpEmbedding,
+        sourceRole: SourceRole? = null
+    ): TrinaryOperatorExpEmbedding =
+        object : TrinaryOperatorExpEmbedding {
+            override val refsOperation: InjectionImageFunction = this@TrinaryOperatorExpEmbeddingTemplate.refsOperation
+            override val type = this@TrinaryOperatorExpEmbeddingTemplate.type
+            override val first = first
+            override val second = second
+            override val third = third
+            override val sourceRole = sourceRole
+        }
 }
 
 class BinaryOperatorExpEmbeddingTemplate(

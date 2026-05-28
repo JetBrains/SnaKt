@@ -273,6 +273,7 @@ object SpecialKotlinFunctions {
                     .fillHole(args[0]) as PredicateAccessPermissions
             )
         }
+
     }
 }
 

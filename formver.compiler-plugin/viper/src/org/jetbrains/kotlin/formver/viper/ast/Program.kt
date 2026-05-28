@@ -107,6 +107,7 @@ private fun registerExpNames(exp: Exp) {
         is AccessPredicate.FieldAccessPredicate -> {}
         is Exp.Acc -> registerExpNames(exp.field)
         is Exp.ExplicitSeq -> exp.args.forEach { registerExpNames(it) }
+        is Exp.ExplicitMultiset -> exp.args.forEach { registerExpNames(it) }
         is Exp.Minus -> registerExpNames(exp.arg)
         is Exp.Not -> registerExpNames(exp.arg)
         is Exp.SeqIndex -> {
@@ -119,6 +120,10 @@ private fun registerExpNames(exp: Exp) {
             registerExpNames(exp.seq)
             registerExpNames(exp.idx)
         }
+        is Exp.Union -> {
+            registerExpNames(exp.left)
+            registerExpNames(exp.right)
+        }
 
         is Exp.Unfolding -> {
             registerExpNames(exp.predicateAccess)
@@ -129,7 +134,7 @@ private fun registerExpNames(exp: Exp) {
             exp.args.forEach { registerExpNames(it) }
         }
         // no else branch to make decisions explicit.
-        is Exp.Result, is Exp.BoolLit, is Exp.EmptySeq, is Exp.IntLit, is Exp.NullLit -> {}
+        is Exp.Result, is Exp.BoolLit, is Exp.EmptySeq, is Exp.IntLit, is Exp.NullLit, is Exp.EmptyMultiset -> {}
     }
 }
 

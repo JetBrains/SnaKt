@@ -88,3 +88,6 @@ fun buildUnaryOperator(block: OperatorExpEmbeddingBuilder.() -> Unit) =
 
 fun buildBinaryOperator(block: OperatorExpEmbeddingBuilder.() -> Unit) =
     buildOperator<BinaryOperatorExpEmbeddingTemplate>(block)
+
+fun buildTrinaryOperator(block: OperatorExpEmbeddingBuilder.() -> Unit) =
+    buildOperator<TrinaryOperatorExpEmbeddingTemplate>(block)

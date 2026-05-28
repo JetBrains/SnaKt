@@ -9,7 +9,9 @@ package org.jetbrains.kotlin.formver.core.embeddings.expression
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.intInjection
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.stringInjection
+import org.jetbrains.kotlin.formver.core.embeddings.callables.intArrayToMultisetFunction
 import org.jetbrains.kotlin.formver.core.embeddings.types.IntArrayTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.IntMultisetTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildFunctionPretype
 import org.jetbrains.kotlin.formver.viper.ast.*
 import org.jetbrains.kotlin.formver.viper.ast.Exp.Companion.toConjunction
@@ -279,6 +281,25 @@ object OperatorExpEmbeddings {
             withReturnType { int() }
         }
         viperImplementation { RuntimeTypeDomain.intArrayLength(args[0]) }
+    }
+
+
+    val intArrayToMultiset = buildTrinaryOperator {
+        setName("toMultisetOperator")
+        withSignature {
+            withParam { existing(IntArrayTypeEmbedding) }
+            withParam { int() }
+            withParam { int() }
+            withReturnType { existing(IntMultisetTypeEmbedding) }
+        }
+        viperImplementation {
+            intArrayToMultisetFunction.toFuncApp(
+                listOf(
+                    args[0], args[1], args[2]
+                )
+            )
+
+        }
     }
 
     val allTemplates

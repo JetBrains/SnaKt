@@ -23,19 +23,16 @@ fun preconditions(@Suppress("UNUSED_PARAMETER") body: InvariantBuilder.() -> Uni
 
 fun <T> postconditions(@Suppress("UNUSED_PARAMETER") body: InvariantBuilder.(T) -> Unit) = Unit
 
+@Pure
+fun toMultiset(@Suppress("UNUSED_PARAMETER") list: IntArray, start: Int, end: Int) = Unit
+
+fun old(@Suppress("UNUSED_PARAMETER") value: Any): Any = throw FormverFunctionCalledInRuntimeException("old")
+
 /**
  * This class is designed as a receiver for lambda blocks of `loopInvariants`, `preconditions` and `postconditions`.
  */
 class InvariantBuilder {
     fun <T> forAll(@Suppress("UNUSED_PARAMETER") body: (T) -> Unit): Boolean =
-        throw FormverFunctionCalledInRuntimeException("forAll")
-    fun <T, U> forAll(@Suppress("UNUSED_PARAMETER") body: (T, U) -> Unit): Boolean =
-        throw FormverFunctionCalledInRuntimeException("forAll")
-
-    fun <T, U, V> forAll(@Suppress("UNUSED_PARAMETER") body: (T, U, V) -> Unit): Boolean =
-        throw FormverFunctionCalledInRuntimeException("forAll")
-
-    fun <T, U, V, W> forAll(@Suppress("UNUSED_PARAMETER") body: (T, U, V, W) -> Unit): Boolean =
         throw FormverFunctionCalledInRuntimeException("forAll")
 
     /**
