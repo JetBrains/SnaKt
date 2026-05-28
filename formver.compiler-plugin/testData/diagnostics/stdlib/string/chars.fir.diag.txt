@@ -26,12 +26,16 @@ method testChars(c: Ref) returns (v_ret_0: Ref)
   var charZ: Ref
   box := con(charToRef(97))
   charA := charToRef(97)
-  cond1 := boolToRef(charFromRef(charA) == charFromRef(g_char(box)))
+  cond1 := andBools(boolToRef(isSubtype(typeOf(g_char(box)), charType())), boolToRef(charFromRef(charA) ==
+    charFromRef(g_char(box))))
   assert boolFromRef(cond1)
   charZ := charToRef(122)
-  assert charFromRef(charA) == charFromRef(charZ) - 25
-  assert charFromRef(charA) - charFromRef(charZ) == -25
-  assert charFromRef(charZ) == charFromRef(charA) + 25
+  assert isSubtype(typeOf(subCharInt(charZ, intToRef(25))), charType()) &&
+    charFromRef(charA) == charFromRef(subCharInt(charZ, intToRef(25)))
+  assert isSubtype(typeOf(intToRef(-25)), intType()) &&
+    charFromRef(charA) - charFromRef(charZ) == -25
+  assert isSubtype(typeOf(addCharInt(charA, intToRef(25))), charType()) &&
+    charFromRef(charZ) == charFromRef(addCharInt(charA, intToRef(25)))
   assert charFromRef(charA) <= charFromRef(charZ)
   assert charFromRef(charA) < charFromRef(charZ)
   assert charFromRef(charZ) > charFromRef(charA)

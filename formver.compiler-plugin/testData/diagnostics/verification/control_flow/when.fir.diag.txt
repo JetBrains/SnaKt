@@ -83,9 +83,10 @@ method whenWithSubjectVar(x: Ref) returns (v_ret_0: Ref)
 {
   var anon: Ref
   anon := x
-  if (intFromRef(anon) == 1) {
+  if (isSubtype(typeOf(intToRef(1)), intType()) && intFromRef(anon) == 1) {
     v_ret_0 := intToRef(2)
-  } elseif (intFromRef(anon) == 2) {
+  } elseif (isSubtype(typeOf(intToRef(2)), intType()) &&
+  intFromRef(anon) == 2) {
     v_ret_0 := intToRef(3)
   } else {
     v_ret_0 := intToRef(42)}
@@ -100,16 +101,19 @@ method whenWithSubjectCall(x: Ref) returns (v_ret_0: Ref)
 {
   var anon_0: Ref
   anon_0 := whenWithSubjectVar(x)
-  if (intFromRef(anon_0) == 1) {
+  if (isSubtype(typeOf(intToRef(1)), intType()) && intFromRef(anon_0) == 1) {
     v_ret_0 := intToRef(2)
-  } elseif (intFromRef(anon_0) == 2) {
+  } elseif (isSubtype(typeOf(intToRef(2)), intType()) &&
+  intFromRef(anon_0) == 2) {
     v_ret_0 := intToRef(3)
   } else {
     var anon_1: Ref
     anon_1 := whenWithSubjectVar(intToRef(0))
-    if (intFromRef(anon_1) == 3) {
+    if (isSubtype(typeOf(intToRef(3)), intType()) &&
+    intFromRef(anon_1) == 3) {
       v_ret_0 := intToRef(4)
-    } elseif (intFromRef(anon_1) == 4) {
+    } elseif (isSubtype(typeOf(intToRef(4)), intType()) &&
+    intFromRef(anon_1) == 4) {
       v_ret_0 := intToRef(5)
     } else {
       v_ret_0 := intToRef(42)}
@@ -164,7 +168,7 @@ method whenSubjectVal() returns (v_ret_0: Ref)
 {
   var x: Ref
   x := intToRef(0)
-  if (intFromRef(x) == 1) {
+  if (isSubtype(typeOf(intToRef(1)), intType()) && intFromRef(x) == 1) {
     v_ret_0 := intToRef(1)
   } else {
     v_ret_0 := x}
@@ -178,24 +182,26 @@ method whenSubjectValNested() returns (v_ret_0: Ref)
 {
   var x: Ref
   x := intToRef(1)
-  if (intFromRef(x) == 0) {
+  if (isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(x) == 0) {
   } else {
     var anon: Ref
     var y: Ref
     y := intToRef(1)
-    if (intFromRef(y) == 1) {
+    if (isSubtype(typeOf(intToRef(1)), intType()) && intFromRef(y) == 1) {
       anon := intToRef(1)
     } else {
       var z: Ref
       z := intToRef(1)
-      if (intFromRef(z) == intFromRef(y)) {
+      if (isSubtype(typeOf(y), intType()) && intFromRef(z) == intFromRef(y)) {
         anon := intToRef(2)
-      } elseif (intFromRef(z) == intFromRef(x) + 1) {
+      } elseif (isSubtype(typeOf(plusInts(x, intToRef(1))), intType()) &&
+      intFromRef(z) == intFromRef(plusInts(x, intToRef(1)))) {
         anon := intToRef(3)
       } else {
         anon := intToRef(4)}
     }
-    if (intFromRef(x) == intFromRef(anon)) {
+    if (isSubtype(typeOf(anon), intType()) &&
+    intFromRef(x) == intFromRef(anon)) {
     }
   }
   label lbl_ret_0

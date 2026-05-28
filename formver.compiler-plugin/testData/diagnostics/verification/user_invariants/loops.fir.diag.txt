@@ -30,7 +30,7 @@ method test(n: Ref) returns (v_ret_0: Ref)
   assert isSubtype(typeOf(n), intType())
   assert intFromRef(it) <= 10
   assert boolFromRef(holds)
-  assert intFromRef(it) == 10
+  assert isSubtype(typeOf(intToRef(10)), intType()) && intFromRef(it) == 10
   if (intFromRef(it) <= intFromRef(n)) {
     var anon_1: Ref
     label cont_1
@@ -50,7 +50,8 @@ method test(n: Ref) returns (v_ret_0: Ref)
     assert isSubtype(typeOf(n), intType())
     assert intFromRef(it) <= intFromRef(n)
     assert boolFromRef(holds)
-    assert intFromRef(it) == intFromRef(n)
+    assert isSubtype(typeOf(n), intType()) &&
+      intFromRef(it) == intFromRef(n)
   }
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -121,7 +122,7 @@ method withBreak() returns (v_ret_0: Ref)
   label break
   assert isSubtype(typeOf(i), intType())
   assert intFromRef(i) <= 10
-  assert intFromRef(i) == 10
+  assert isSubtype(typeOf(intToRef(10)), intType()) && intFromRef(i) == 10
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
@@ -228,9 +229,10 @@ method test_while(param: Ref) returns (v_ret_0: Ref)
   assert isSubtype(typeOf(initParamField), intType())
   assert isSubtype(typeOf(iteration), intType())
   assert isSubtype(typeOf(param), ClassWithField())
-  cond1 := boolToRef(intFromRef(g_field(c)) == 13)
-  cond2 := boolToRef(intFromRef(initParamField) ==
-    intFromRef(g_field(param)))
+  cond1 := andBools(boolToRef(isSubtype(typeOf(intToRef(13)), intType())), boolToRef(intFromRef(g_field(c)) ==
+    13))
+  cond2 := andBools(boolToRef(isSubtype(typeOf(g_field(param)), intType())),
+    boolToRef(intFromRef(initParamField) == intFromRef(g_field(param))))
   assert boolFromRef(cond1)
   assert boolFromRef(cond2)
   label lbl_ret_0
@@ -298,8 +300,10 @@ method test_while_with_inlining(param: Ref) returns (v_ret_0: Ref)
   assert isSubtype(typeOf(anon_1), ClassWithField())
   assert isSubtype(typeOf(local), ClassWithField())
   assert isSubtype(typeOf(param), ClassWithField())
-  assert intFromRef(g_field(anon_1)) == 42
-  assert intFromRef(g_field(local)) == 13
+  assert isSubtype(typeOf(intToRef(42)), intType()) &&
+    intFromRef(g_field(anon_1)) == 42
+  assert isSubtype(typeOf(intToRef(13)), intType()) &&
+    intFromRef(g_field(local)) == 13
   label lbl_ret_5
   inhale isSubtype(typeOf(v_ret_5), unitType())
   anon_5 := v_ret_5

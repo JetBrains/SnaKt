@@ -1,0 +1,79 @@
+/LinkedListWithSumAdt.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/LinkedListWithSumAdt.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/LinkedListWithSumAdt.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/LinkedListWithSumAdt.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/LinkedListWithSumAdt.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/LinkedListWithSumAdt.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/LinkedListWithSumAdt.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/LinkedListWithSumAdt.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/LinkedListWithSumAdt.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/LinkedListWithSumAdt.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/LinkedListWithSumAdt.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/LinkedListWithSumAdt.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/LinkedListWithSumAdt.kt: error: Function 'length' references an invalid ADT
+
+/LinkedListWithSumAdt.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/LinkedListWithSumAdt.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/LinkedListWithSumAdt.kt: error: Function 'listRefl' references an invalid ADT
+
+/LinkedListWithSumAdt.kt: error: Function 'listSym' references an invalid ADT
+
+/LinkedListWithSumAdt.kt: error: Function 'listTrans' references an invalid ADT
+
+/LinkedListWithSumAdt.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/LinkedListWithSumAdt.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/LinkedListWithSumAdt.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/LinkedListWithSumAdt.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/LinkedListWithSumAdt.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/LinkedListWithSumAdt.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/LinkedListWithSumAdt.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/LinkedListWithSumAdt.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/LinkedListWithSumAdt.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/LinkedListWithSumAdt.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin

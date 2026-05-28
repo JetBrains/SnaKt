@@ -17,13 +17,20 @@ function isAlternating(node: Ref, expectsPositive: Ref): Ref
         (let nextNode_0 ==
           (next(node)) in
           (let anon_3_0 ==
-            ((!(nextNode_0 == nullValue()) ?
+            ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+            nextNode_0 == nullValue() && nullValue() == nullValue()) ?
               isAlternating(nextNode_0, notBool(expectsPositive)) :
               null)) in
             (let anon_4_0 ==
-              ((!!(nextNode_0 == nullValue()) ? boolToRef(true) : null)) in
+              ((!!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+              nextNode_0 == nullValue() && nullValue() == nullValue()) ?
+                boolToRef(true) :
+                null)) in
               (let anon_2_0 ==
-                ((!(nextNode_0 == nullValue()) ? anon_3_0 : anon_4_0)) in
+                ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+                nextNode_0 == nullValue() && nullValue() == nullValue()) ?
+                  anon_3_0 :
+                  anon_4_0)) in
                 andBools(isCurrentValid_0, anon_2_0))))))))
 }
 
@@ -46,22 +53,32 @@ function isStrictlyAscendingAndPositive(node: Ref): Ref
   (let nextNode_0 ==
     (next(node)) in
     (let anon_2_0 ==
-      ((!(nextNode_0 == nullValue()) && intFromRef(value(nextNode_0)) < 0 ?
+      ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+      nextNode_0 == nullValue() && nullValue() == nullValue()) &&
+      intFromRef(value(nextNode_0)) < 0 ?
         boolToRef(false) :
         null)) in
       (let anon_3_0 ==
-        ((!(nextNode_0 == nullValue()) &&
+        ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+        nextNode_0 == nullValue() && nullValue() == nullValue()) &&
         !(intFromRef(value(nextNode_0)) < 0) ?
           andBools(gtInts(value(nextNode_0), value(node)), isStrictlyAscendingAndPositive(nextNode_0)) :
           null)) in
         (let anon_1_0 ==
-          ((!(nextNode_0 == nullValue()) ?
+          ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+          nextNode_0 == nullValue() && nullValue() == nullValue()) ?
             (intFromRef(value(nextNode_0)) < 0 ? anon_2_0 : anon_3_0) :
             null)) in
           (let anon_4_0 ==
-            ((!!(nextNode_0 == nullValue()) ? boolToRef(true) : null)) in
+            ((!!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+            nextNode_0 == nullValue() && nullValue() == nullValue()) ?
+              boolToRef(true) :
+              null)) in
             (let anon_0_0 ==
-              ((!(nextNode_0 == nullValue()) ? anon_1_0 : anon_4_0)) in
+              ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+              nextNode_0 == nullValue() && nullValue() == nullValue()) ?
+                anon_1_0 :
+                anon_4_0)) in
               anon_0_0))))))
 }
 
@@ -83,23 +100,39 @@ function isLocallyValidBST(node: Ref): Ref
   (let leftNode_0 ==
     (left(node)) in
     (let anon_0_0 ==
-      ((!(leftNode_0 == nullValue()) ?
+      ((!(leftNode_0 != nullValue() && leftNode_0 == nullValue() ||
+      leftNode_0 == nullValue() && nullValue() == nullValue()) ?
         andBools(ltInts(value(leftNode_0), value(node)), isLocallyValidBST(leftNode_0)) :
         null)) in
       (let anon_1_0 ==
-        ((!!(leftNode_0 == nullValue()) ? boolToRef(true) : null)) in
+        ((!!(leftNode_0 != nullValue() && leftNode_0 == nullValue() ||
+        leftNode_0 == nullValue() && nullValue() == nullValue()) ?
+          boolToRef(true) :
+          null)) in
         (let leftValid_0 ==
-          ((!(leftNode_0 == nullValue()) ? anon_0_0 : anon_1_0)) in
+          ((!(leftNode_0 != nullValue() && leftNode_0 == nullValue() ||
+          leftNode_0 == nullValue() && nullValue() == nullValue()) ?
+            anon_0_0 :
+            anon_1_0)) in
           (let rightNode_0 ==
             (right(node)) in
             (let anon_2_0 ==
-              ((!(rightNode_0 == nullValue()) ?
+              ((!(rightNode_0 != nullValue() && rightNode_0 == nullValue() ||
+              rightNode_0 == nullValue() && nullValue() == nullValue()) ?
                 andBools(gtInts(value(rightNode_0), value(node)), isLocallyValidBST(rightNode_0)) :
                 null)) in
               (let anon_3_0 ==
-                ((!!(rightNode_0 == nullValue()) ? boolToRef(true) : null)) in
+                ((!!(rightNode_0 != nullValue() &&
+                rightNode_0 == nullValue() ||
+                rightNode_0 == nullValue() && nullValue() == nullValue()) ?
+                  boolToRef(true) :
+                  null)) in
                 (let rightValid_0 ==
-                  ((!(rightNode_0 == nullValue()) ? anon_2_0 : anon_3_0)) in
+                  ((!(rightNode_0 != nullValue() &&
+                  rightNode_0 == nullValue() ||
+                  rightNode_0 == nullValue() && nullValue() == nullValue()) ?
+                    anon_2_0 :
+                    anon_3_0)) in
                   andBools(leftValid_0, rightValid_0)))))))))
 }
 

@@ -54,7 +54,9 @@ function testReminder(a: Ref, b: Ref, c: Ref): Ref
   requires isSubtype(typeOf(a), intType())
   requires isSubtype(typeOf(b), intType())
   requires isSubtype(typeOf(c), intType())
-  requires !(intFromRef(b) == 0) && !(intFromRef(c) == 0)
+  requires !(isSubtype(typeOf(intToRef(0)), intType()) &&
+    intFromRef(b) == 0) &&
+    !(isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(c) == 0)
   ensures isSubtype(typeOf(result), intType())
 {
   remInts(remInts(a, b), c)

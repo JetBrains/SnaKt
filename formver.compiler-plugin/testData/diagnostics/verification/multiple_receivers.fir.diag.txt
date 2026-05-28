@@ -19,7 +19,8 @@ method applyDelta(v_this: Ref, v_this_extension: Ref)
   var withLabels: Ref
   withoutLabels := plusInts(v_this_extension, delta(v_this))
   withLabels := plusInts(delta(v_this), v_this_extension)
-  assert intFromRef(withoutLabels) == intFromRef(withLabels)
+  assert isSubtype(typeOf(withLabels), intType()) &&
+    intFromRef(withoutLabels) == intFromRef(withLabels)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
@@ -101,7 +102,8 @@ method checkClassWithExtension() returns (v_ret_0: Ref)
   goto lbl_ret_10
   label lbl_ret_10
   anon_10 := v_ret_10
-  assert intFromRef(anon_10) == 84
+  assert isSubtype(typeOf(intToRef(84)), intType()) &&
+    intFromRef(anon_10) == 84
   label lbl_ret_5
   inhale isSubtype(typeOf(v_ret_5), unitType())
   anon_6 := v_ret_5

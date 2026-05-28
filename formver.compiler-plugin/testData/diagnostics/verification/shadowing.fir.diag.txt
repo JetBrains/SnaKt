@@ -5,7 +5,7 @@ method shadowLocal() returns (v_ret_0: Ref)
   var foo: Ref
   var l0_x: Ref
   l0_x := intToRef(0)
-  if (intFromRef(l0_x) == 0) {
+  if (isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(l0_x) == 0) {
     var l2_x: Ref
     foo := l0_x
     l2_x := intToRef(1)

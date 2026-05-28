@@ -1,0 +1,115 @@
+/BinTree.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/BinTree.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/BinTree.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/BinTree.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/BinTree.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/BinTree.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/BinTree.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/BinTree.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/BinTree.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/BinTree.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/BinTree.kt: error: Function 'size' references an invalid ADT
+
+/BinTree.kt: error: Function 'treeRefl' references an invalid ADT
+
+/BinTree.kt: error: Function 'treeTrans' references an invalid ADT
+
+/BinTree.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/BinTree.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/BinTree.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/BinTree.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/BinTree.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/BinTree.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/BinTree.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/BinTree.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/BinTree.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/BinTree.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/BinTree.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/BinTree.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/BinTree.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/BinTree.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/BinTree.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/BinTree.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/BinTree.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/BinTree.kt: error: Function 'listRefl' references an invalid ADT
+
+/BinTree.kt: error: Function 'listSym' references an invalid ADT
+
+/BinTree.kt: error: Function 'listTrans' references an invalid ADT
+
+/BinTree.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/BinTree.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/BinTree.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/BinTree.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/BinTree.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/BinTree.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/BinTree.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/BinTree.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin

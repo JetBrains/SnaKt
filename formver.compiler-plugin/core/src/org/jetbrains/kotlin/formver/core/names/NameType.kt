@@ -33,7 +33,6 @@ sealed interface NameType : NameTypeBase {
                 Base.Adt -> "a"
                 Base.AdtCons -> "ac"
                 Base.AdtField -> "af"
-                Base.AdtEquals -> "aeq"
             }
         )
 
@@ -48,7 +47,7 @@ sealed interface NameType : NameTypeBase {
     enum class Base : NameType {
         Constructor, Function, Predicate,
         Havoc, Variable, Domain, DomainFunction, Label,
-        Adt, AdtCons, AdtField, AdtEquals
+        Adt, AdtCons, AdtField
     }
 
     enum class TypeCategory : NameType {

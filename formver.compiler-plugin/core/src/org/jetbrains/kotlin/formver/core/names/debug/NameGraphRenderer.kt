@@ -156,7 +156,6 @@ class NameGraphRenderer(val shortNameResolver: ShortNameResolver) {
                         is AdtName -> "Adt: "
                         is AdtConstructorName -> "Adt Cons: "
                         is AdtFieldName -> "Adt Field: "
-                        is AdtEqualityFunctionName -> "Adt Equals: "
                         else -> "Unknown: "
                     }
                 }
@@ -298,10 +297,6 @@ class NameGraphRenderer(val shortNameResolver: ShortNameResolver) {
                     is AdtFieldName -> {
                         link(entity.adtName, Relation.IS_PART_OF, entity)
                         link(entity.propertyName, Relation.IS_PART_OF, entity)
-                    }
-
-                    is AdtEqualityFunctionName -> {
-                        link(entity.adtName, Relation.IS_PART_OF, entity)
                     }
 
                     is SimpleKotlinName, is ClassKotlinName, is TypedKotlinName, is DomainName, is UnqualifiedDomainFuncName, is PretypeName, is FunctionResultVariableName -> {}

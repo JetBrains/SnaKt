@@ -19,6 +19,8 @@ import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.fir.types.isUnit
 import org.jetbrains.kotlin.fir.types.resolvedType
+import org.jetbrains.kotlin.formver.core.findEqualsSymbol
+import org.jetbrains.kotlin.formver.core.isEqualsWithOneParam
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.common.UnsupportedFeatureBehaviour
@@ -211,12 +213,21 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 "Invalid equality comparison $equalityOperatorCall, can only compare 2 elements."
             )
         }
-        val left = data.convert(equalityOperatorCall.arguments[0])
-        val right = data.convert(equalityOperatorCall.arguments[1])
-
+        val leftFir = equalityOperatorCall.arguments[0]
+        val rightFir = equalityOperatorCall.arguments[1]
         return when (equalityOperatorCall.operation) {
-            FirOperation.EQ -> convertEqCmp(left, right, data)
-            FirOperation.NOT_EQ -> Not(convertEqCmp(left, right, data))
+            FirOperation.EQ -> desugarEqCall(leftFir, rightFir, data)
+            FirOperation.NOT_EQ -> Not(desugarEqCall(leftFir, rightFir, data))
+            FirOperation.IDENTITY -> {
+                val left = data.convert(leftFir)
+                val right = data.convert(rightFir)
+                EqCmp(left, right)
+            }
+            FirOperation.NOT_IDENTITY -> {
+                val left = data.convert(leftFir)
+                val right = data.convert(rightFir)
+                NeCmp(left, right)
+            }
             else -> handleUnimplementedElement(
                 equalityOperatorCall.source,
                 "Equality comparison operation ${equalityOperatorCall.operation} not yet implemented.",
@@ -225,28 +236,26 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
     }
 
-    private fun convertEqCmp(left: ExpEmbedding, right: ExpEmbedding, data: StmtConversionContext): ExpEmbedding {
-        val adtPretype = left.type.pretype as? AdtTypeEmbeddingImpl ?: return EqCmp(left, right)
-        if (left.type.flags.nullable) {
-            val nonNullableLeftType = left.type.getNonNullable()
-            return share(left) { sharedLeft ->
-                share(right) { sharedRight ->
-                    SequentialOr(
-                        SequentialAnd(
-                            sharedLeft.notNullCmp(),
-                            convertEqCmp(sharedLeft.withType(nonNullableLeftType), sharedRight, data),
-                        ),
-                        SequentialAnd(
-                            EqCmp(sharedLeft, NullLit),
-                            EqCmp(sharedRight, NullLit),
-                        ),
-                    )
-                }
-            }
-        }
-        return data.typeResolver.lookupAdtEquality(adtPretype.name)
-            ?.insertCall(listOf(left, right), data)
-            ?: EqCmp(left, right)
+    private fun desugarEqCall(
+        leftFir: FirExpression,
+        rightFir: FirExpression,
+        data: StmtConversionContext,
+    ): ExpEmbedding {
+        val left = data.convert(leftFir)
+        val right = data.convert(rightFir)
+        // Falls back to reference equality when no equals method is resolvable (e.g. type parameters).
+        val equalsCallable = resolveEqualsCallable(leftFir, data)
+            ?: return EqCmp(left, right)
+        return desugarEqualsCall(left, right, equalsCallable, data)
+    }
+
+    private fun resolveEqualsCallable(
+        leftFir: FirExpression,
+        data: StmtConversionContext,
+    ): CallableEmbedding? {
+        data.tryEmbedAdtEquals(leftFir.resolvedType)?.let { return it }
+        val equalsSymbol = leftFir.resolvedType.findEqualsSymbol(data.session) ?: return null
+        return data.embedAnyFunction(equalsSymbol)
     }
 
     override fun visitComparisonExpression(

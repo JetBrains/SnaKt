@@ -3,7 +3,20 @@ method smartCast(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  if (x == nullValue()) {
+  var anon_0: Ref
+  var anon_1: Ref
+  if (x != nullValue()) {
+    anon_1 := andBools(boolToRef(isSubtype(typeOf(nullValue()), intType())),
+      boolToRef(intFromRef(x) == intFromRef(nullValue())))
+  } else {
+    anon_1 := boolToRef(false)}
+  if (boolFromRef(anon_1)) {
+    anon_0 := boolToRef(true)
+  } elseif (x == nullValue()) {
+    anon_0 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_0 := boolToRef(false)}
+  if (boolFromRef(anon_0)) {
     v_ret_0 := intToRef(0)
     goto lbl_ret_0
   } else {

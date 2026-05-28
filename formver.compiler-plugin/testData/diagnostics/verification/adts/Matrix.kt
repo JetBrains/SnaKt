@@ -52,100 +52,38 @@ fun <!VIPER_TEXT!>trace<!>(m: Mat2): Int = m.a + m.d
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>transposeInvolution<!>(m: Mat2) {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         transpose(transpose(m)) == m
     }
 }
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>identityLeftUnit<!>(m: Mat2) {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         mulM(identity(), m) == m
     }
 }
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>identityRightUnit<!>(m: Mat2) {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         mulM(m, identity()) == m
     }
 }
 
+// -- Could not be verified due to timeout
+
 //@AlwaysVerify
 //fun mulAssociative(x: Mat2, y: Mat2, z: Mat2) {
-//    postconditions<Unit> { _ ->
+//    postconditions<Unit> {
 //        mulM(mulM(x, y), z) == mulM(x, mulM(y, z))
 //    }
 //}
 
 //@AlwaysVerify
 //fun mulLeftDistributesOverAdd(x: Mat2, y: Mat2, z: Mat2) {
-//    postconditions<Unit> { _ ->
+//    postconditions<Unit> {
 //        mulM(x, addM(y, z)) == addM(mulM(x, y), mulM(x, z))
 //    }
 //}
 //
-//@AlwaysVerify
-//fun mulRightDistributesOverAdd(x: Mat2, y: Mat2, z: Mat2) {
-//    postconditions<Unit> { _ ->
-//        mulM(addM(x, y), z) == addM(mulM(x, z), mulM(y, z))
-//    }
-//}
-//
-//@AlwaysVerify
-//fun transposeOfProduct(x: Mat2, y: Mat2) {
-//    postconditions<Unit> { _ ->
-//        transpose(mulM(x, y)) == mulM(transpose(y), transpose(x))
-//    }
-//}
-//
-//@AlwaysVerify
-//fun detTranspose(m: Mat2) {
-//    postconditions<Unit> { _ ->
-//        det(transpose(m)) == det(m)
-//    }
-//}
-//
-//@AlwaysVerify
-//fun traceCyclic(x: Mat2, y: Mat2) {
-//    postconditions<Unit> { _ ->
-//        trace(mulM(x, y)) == trace(mulM(y, x))
-//    }
-//}
-//
-//@AlwaysVerify
-//fun commutatorTraceless(x: Mat2, y: Mat2) {
-//    postconditions<Unit> { _ ->
-//        trace(subM(mulM(x, y), mulM(y, x))) == 0
-//    }
-//}
-//
-//@AlwaysVerify
-//fun adjugateInverseRight(m: Mat2) {
-//    postconditions<Unit> { _ ->
-//        mulM(m, adj(m)) == scaleM(det(m), identity())
-//    }
-//}
-//
-//@AlwaysVerify
-//fun adjugateInverseLeft(m: Mat2) {
-//    postconditions<Unit> { _ ->
-//        mulM(adj(m), m) == scaleM(det(m), identity())
-//    }
-//}
-//
-//@AlwaysVerify
-//fun cayleyHamilton(m: Mat2) {
-//    postconditions<Unit> { _ ->
-//        addM(
-//            subM(mulM(m, m), scaleM(trace(m), m)),
-//            scaleM(det(m), identity()),
-//        ) == zeroMat()
-//    }
-//}
-//
-//@AlwaysVerify
-//fun squareAsLinearCombo(m: Mat2) {
-//    postconditions<Unit> { _ ->
-//        mulM(m, m) == subM(scaleM(trace(m), m), scaleM(det(m), identity()))
-//    }

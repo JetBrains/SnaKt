@@ -42,9 +42,12 @@ method testType(s: Ref) returns (v_ret_0: Ref)
   var cond2: Ref
   var anon_1: Ref
   anon_0 := con(s)
-  cond1 := boolToRef(stringFromRef(g_str(anon_0)) == stringFromRef(s))
+  cond1 := andBools(boolToRef(isSubtype(typeOf(s), stringType())), boolToRef(stringFromRef(g_str(anon_0)) ==
+    stringFromRef(s)))
   anon_1 := con(stringToRef(Seq(115, 116, 114)))
-  cond2 := boolToRef(stringFromRef(g_str(anon_1)) == Seq(115, 116, 114))
+  cond2 := andBools(boolToRef(isSubtype(typeOf(stringToRef(Seq(115, 116, 114))),
+    stringType())), boolToRef(stringFromRef(g_str(anon_1)) ==
+    Seq(115, 116, 114)))
   assert boolFromRef(cond1)
   assert boolFromRef(cond2)
   label lbl_ret_0
@@ -95,7 +98,8 @@ method testLengthField(s: Ref) returns (v_ret_0: Ref)
   var anon: Ref
   len := stringLength(s)
   anon := con(stringToRef(Seq(115, 116, 114)))
-  cond1 := boolToRef(|stringFromRef(g_str(anon))| == 3)
+  cond1 := andBools(boolToRef(isSubtype(typeOf(intToRef(3)), intType())), boolToRef(|stringFromRef(g_str(anon))| ==
+    3))
   assert boolFromRef(cond1)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -139,20 +143,27 @@ method testOps(s: Ref) returns (v_ret_0: Ref)
     c := stringGet(s, intToRef(0))
   } else {
     c := charToRef(97)}
-  if (charFromRef(c) == 97) {
+  if (isSubtype(typeOf(charToRef(97)), charType()) && charFromRef(c) == 97) {
     anon := boolToRef(true)
   } else {
     anon := gtInts(stringLength(s), intToRef(0))}
   assert boolFromRef(anon)
   str := stringToRef(Seq(97, 98, 97))
-  assert stringFromRef(str)[0] == stringFromRef(str)[2]
-  assert !(stringFromRef(str)[1] == stringFromRef(str)[0])
-  assert stringFromRef(str)[1] == 98
-  assert Seq(75, 111, 116, 108, 105, 110, 46, 83, 116, 114, 105, 110, 103) ==
+  assert isSubtype(typeOf(stringGet(str, intToRef(2))), charType()) &&
+    stringFromRef(str)[0] == charFromRef(stringGet(str, intToRef(2)))
+  assert !(isSubtype(typeOf(stringGet(str, intToRef(0))), charType()) &&
+    stringFromRef(str)[1] == charFromRef(stringGet(str, intToRef(0))))
+  assert isSubtype(typeOf(charToRef(98)), charType()) &&
+    stringFromRef(str)[1] == 98
+  assert isSubtype(typeOf(stringToRef(Seq(75, 111, 116, 108, 105, 110, 46, 83,
+    116, 114, 105, 110, 103))), stringType()) &&
+    Seq(75, 111, 116, 108, 105, 110, 46, 83, 116, 114, 105, 110, 103) ==
     Seq(75, 111, 116, 108, 105, 110, 46, 83, 116, 114, 105, 110, 103)
   helloWorld := addStringChar(stringToRef(Seq(72, 101, 108, 108, 111, 32, 87,
     111, 114, 108, 100)), charToRef(33))
-  assert stringFromRef(helloWorld) ==
+  assert isSubtype(typeOf(stringToRef(Seq(72, 101, 108, 108, 111, 32, 87, 111,
+    114, 108, 100, 33))), stringType()) &&
+    stringFromRef(helloWorld) ==
     Seq(72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100, 33)
   stringPlusInteger := plus(stringToRef(Seq(52, 50)), intToRef(42))
   label lbl_ret_0

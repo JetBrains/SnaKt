@@ -12,7 +12,8 @@ method anyIntegerSquaredAtLeastZero() returns (v_ret_0: Ref)
 /simple_forall.kt: info: Generated Viper text for anyIntegerSquaredIsAtLeastOneExceptZero:
 method anyIntegerSquaredIsAtLeastOneExceptZero() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
-  ensures (forall anon: Int ::!(anon == 0) ==>
+  ensures (forall anon: Int ::!(isSubtype(typeOf(intToRef(0)), intType()) &&
+      anon == 0) ==>
       anon * anon >= intFromRef(v_ret_0))
 {
   v_ret_0 := intToRef(1)

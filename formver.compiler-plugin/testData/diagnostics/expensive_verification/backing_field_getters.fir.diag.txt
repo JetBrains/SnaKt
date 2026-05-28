@@ -34,12 +34,24 @@ method receiverNotNullProved(x: Ref) returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), boolType())
   ensures boolFromRef(v_ret_0) == true ==> x != nullValue()
 {
-  var anon: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
   if (x != nullValue()) {
-    anon := y(x)
+    anon_2 := y(x)
   } else {
-    anon := nullValue()}
-  v_ret_0 := notBool(boolToRef(anon == nullValue()))
+    anon_2 := nullValue()}
+  if (anon_2 != nullValue()) {
+    anon_1 := boolToRef(anon_2 == nullValue())
+  } else {
+    anon_1 := boolToRef(false)}
+  if (boolFromRef(anon_1)) {
+    anon_0 := boolToRef(true)
+  } elseif (anon_2 == nullValue()) {
+    anon_0 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_0 := boolToRef(false)}
+  v_ret_0 := notBool(anon_0)
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -89,16 +101,42 @@ method cascadeNullableSmartcastGet(x: Ref) returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), nullable(Z()))
   ensures v_ret_0 != nullValue() ==> x != nullValue()
 {
-  if (x == nullValue()) {
-    var anon_0: Ref
-    anon_0 := nullValue()
-    v_ret_0 := anon_0
-  } elseif (y(x) == nullValue()) {
-    var anon_1: Ref
-    anon_1 := nullValue()
-    v_ret_0 := anon_1
+  var anon_0: Ref
+  var anon_1: Ref
+  if (x != nullValue()) {
+    anon_1 := boolToRef(x == nullValue())
   } else {
-    v_ret_0 := z(y(x))}
+    anon_1 := boolToRef(false)}
+  if (boolFromRef(anon_1)) {
+    anon_0 := boolToRef(true)
+  } elseif (x == nullValue()) {
+    anon_0 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_0 := boolToRef(false)}
+  if (boolFromRef(anon_0)) {
+    var anon_2: Ref
+    anon_2 := nullValue()
+    v_ret_0 := anon_2
+  } else {
+    var anon_3: Ref
+    var anon_4: Ref
+    if (y(x) != nullValue()) {
+      anon_4 := boolToRef(y(x) == nullValue())
+    } else {
+      anon_4 := boolToRef(false)}
+    if (boolFromRef(anon_4)) {
+      anon_3 := boolToRef(true)
+    } elseif (y(x) == nullValue()) {
+      anon_3 := boolToRef(nullValue() == nullValue())
+    } else {
+      anon_3 := boolToRef(false)}
+    if (boolFromRef(anon_3)) {
+      var anon_5: Ref
+      anon_5 := nullValue()
+      v_ret_0 := anon_5
+    } else {
+      v_ret_0 := z(y(x))}
+  }
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -126,13 +164,26 @@ method nullableReceiverNotNullSafeGet() returns (v_ret_0: Ref)
   var anon_0: Ref
   var cond1: Ref
   var anon_1: Ref
+  var anon_2: Ref
+  var anon_3: Ref
   anon_0 := con()
   f := anon_0
   if (f != nullValue()) {
-    anon_1 := x(f)
+    anon_3 := x(f)
   } else {
-    anon_1 := nullValue()}
-  cond1 := notBool(boolToRef(anon_1 == nullValue()))
+    anon_3 := nullValue()}
+  if (anon_3 != nullValue()) {
+    anon_2 := andBools(boolToRef(isSubtype(typeOf(nullValue()), intType())),
+      boolToRef(intFromRef(anon_3) == intFromRef(nullValue())))
+  } else {
+    anon_2 := boolToRef(false)}
+  if (boolFromRef(anon_2)) {
+    anon_1 := boolToRef(true)
+  } elseif (anon_3 == nullValue()) {
+    anon_1 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_1 := boolToRef(false)}
+  cond1 := notBool(anon_1)
   assert boolFromRef(cond1)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -154,13 +205,24 @@ method nullableReceiverNullSafeGet() returns (v_ret_0: Ref)
 {
   var f: Ref
   var cond1: Ref
-  var anon: Ref
+  var anon_0: Ref
+  var anon_1: Ref
   f := nullValue()
   if (f != nullValue()) {
-    anon := x(f)
+    anon_1 := x(f)
   } else {
-    anon := nullValue()}
-  cond1 := boolToRef(anon == nullValue())
+    anon_1 := nullValue()}
+  if (anon_1 != nullValue()) {
+    anon_0 := andBools(boolToRef(isSubtype(typeOf(nullValue()), intType())),
+      boolToRef(intFromRef(anon_1) == intFromRef(nullValue())))
+  } else {
+    anon_0 := boolToRef(false)}
+  if (boolFromRef(anon_0)) {
+    cond1 := boolToRef(true)
+  } elseif (anon_1 == nullValue()) {
+    cond1 := boolToRef(nullValue() == nullValue())
+  } else {
+    cond1 := boolToRef(false)}
   assert boolFromRef(cond1)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -187,13 +249,26 @@ method nonNullableReceiverSafeGet() returns (v_ret_0: Ref)
 {
   var f: Ref
   var cond1: Ref
-  var anon: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
   f := con()
   if (f != nullValue()) {
-    anon := x(f)
+    anon_2 := x(f)
   } else {
-    anon := nullValue()}
-  cond1 := notBool(boolToRef(anon == nullValue()))
+    anon_2 := nullValue()}
+  if (anon_2 != nullValue()) {
+    anon_1 := andBools(boolToRef(isSubtype(typeOf(nullValue()), intType())),
+      boolToRef(intFromRef(anon_2) == intFromRef(nullValue())))
+  } else {
+    anon_1 := boolToRef(false)}
+  if (boolFromRef(anon_1)) {
+    anon_0 := boolToRef(true)
+  } elseif (anon_2 == nullValue()) {
+    anon_0 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_0 := boolToRef(false)}
+  cond1 := notBool(anon_0)
   assert boolFromRef(cond1)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -232,10 +307,12 @@ method checkPrimary(par_x: Ref, par_y: Ref) returns (v_ret_0: Ref)
   var anon: Ref
   classI := con_ClassI(par_x, par_y)
   l0_z := con_Z()
-  if (!(intFromRef(par_x) == intFromRef(par_y))) {
+  if (!(isSubtype(typeOf(par_y), intType()) &&
+  intFromRef(par_x) == intFromRef(par_y))) {
     cond1 := boolToRef(true)
   } else {
-    cond1 := boolToRef(intFromRef(g_x(classI)) == intFromRef(g_y(classI)))}
+    cond1 := andBools(boolToRef(isSubtype(typeOf(g_y(classI)), intType())),
+      boolToRef(intFromRef(g_x(classI)) == intFromRef(g_y(classI))))}
   anon := con_ClassII(l0_z)
   cond2 := boolToRef(ClassII_g_z(anon) == l0_z)
   assert boolFromRef(cond1)

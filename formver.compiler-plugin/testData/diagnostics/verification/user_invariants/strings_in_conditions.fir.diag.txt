@@ -9,7 +9,7 @@ method firstNotSortedIndex(s: Ref) returns (v_ret_0: Ref)
       stringFromRef(s)[anon_builtin_0] <=
       stringFromRef(s)[anon_builtin_0 + 1])
 {
-  if (|stringFromRef(s)| == 0) {
+  if (isSubtype(typeOf(intToRef(0)), intType()) && |stringFromRef(s)| == 0) {
     v_ret_0 := intToRef(0)
     goto lbl_ret_0
   } else {
@@ -63,10 +63,12 @@ method addCharacterTimes(s: Ref, c: Ref, n: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(n), intType())
   requires intFromRef(n) >= 0
   ensures isSubtype(typeOf(v_ret_0), stringType())
-  ensures |stringFromRef(v_ret_0)| == |stringFromRef(s)| + intFromRef(n)
+  ensures isSubtype(typeOf(plusInts(stringLength(s), n)), intType()) &&
+    |stringFromRef(v_ret_0)| == intFromRef(plusInts(stringLength(s), n))
   ensures (forall anon_builtin_0: Int ::|stringFromRef(s)| <=
       anon_builtin_0 &&
       anon_builtin_0 < |stringFromRef(v_ret_0)| ==>
+      isSubtype(typeOf(c), charType()) &&
       stringFromRef(v_ret_0)[anon_builtin_0] == charFromRef(c))
 {
   var i: Ref
@@ -81,10 +83,12 @@ method addCharacterTimes(s: Ref, c: Ref, n: Ref) returns (v_ret_0: Ref)
     invariant isSubtype(typeOf(c), charType())
     invariant isSubtype(typeOf(n), intType())
     invariant 0 <= intFromRef(i) && intFromRef(i) <= intFromRef(n)
-    invariant |stringFromRef(res)| == |stringFromRef(s)| + intFromRef(i)
+    invariant isSubtype(typeOf(plusInts(stringLength(s), i)), intType()) &&
+      |stringFromRef(res)| == intFromRef(plusInts(stringLength(s), i))
     invariant (forall anon_builtin_1: Int ::|stringFromRef(s)| <=
         anon_builtin_1 &&
         anon_builtin_1 < |stringFromRef(res)| ==>
+        isSubtype(typeOf(c), charType()) &&
         stringFromRef(res)[anon_builtin_1] == charFromRef(c))
   anon_0 := ltInts(i, n)
   if (boolFromRef(anon_0)) {
@@ -99,9 +103,11 @@ method addCharacterTimes(s: Ref, c: Ref, n: Ref) returns (v_ret_0: Ref)
   assert isSubtype(typeOf(c), charType())
   assert isSubtype(typeOf(n), intType())
   assert 0 <= intFromRef(i) && intFromRef(i) <= intFromRef(n)
-  assert |stringFromRef(res)| == |stringFromRef(s)| + intFromRef(i)
+  assert isSubtype(typeOf(plusInts(stringLength(s), i)), intType()) &&
+    |stringFromRef(res)| == intFromRef(plusInts(stringLength(s), i))
   assert (forall anon_builtin_1: Int ::|stringFromRef(s)| <= anon_builtin_1 &&
       anon_builtin_1 < |stringFromRef(res)| ==>
+      isSubtype(typeOf(c), charType()) &&
       stringFromRef(res)[anon_builtin_1] == charFromRef(c))
   v_ret_0 := res
   goto lbl_ret_0

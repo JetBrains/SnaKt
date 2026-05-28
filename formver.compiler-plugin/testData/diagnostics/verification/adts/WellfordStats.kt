@@ -26,49 +26,49 @@ fun <!VIPER_TEXT!>varianceNumerator<!>(s: Stats): Int = s.n * s.sumSq - s.sum * 
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>mergeCommutes<!>(a: Stats, b: Stats) {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         merge(a, b) == merge(b, a)
     }
 }
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>mergeAssoc<!>(a: Stats, b: Stats, c: Stats) {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         merge(merge(a, b), c) == merge(a, merge(b, c))
     }
 }
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>mergeEmptyLeftUnit<!>(s: Stats) {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         merge(empty(), s) == s
     }
 }
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>mergeEmptyRightUnit<!>(s: Stats) {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         merge(s, empty()) == s
     }
 }
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>updateAsMergeSingle<!>(s: Stats, x: Int) {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         update(s, x) == merge(s, fromSample(x))
     }
 }
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>varianceNumNonNegEmpty<!>() {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         varianceNumerator(empty()) >= 0
     }
 }
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>varianceNumNonNegSingle<!>(x: Int) {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         varianceNumerator(fromSample(x)) == 0
     }
 }

@@ -44,7 +44,18 @@ method nullableNullableComparison(x: Ref, y: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(y), nullable(intType()))
   ensures isSubtype(typeOf(v_ret_0), boolType())
 {
-  v_ret_0 := boolToRef(x == y)
+  var anon: Ref
+  if (x != nullValue()) {
+    anon := andBools(boolToRef(isSubtype(typeOf(y), intType())), boolToRef(intFromRef(x) ==
+      intFromRef(y)))
+  } else {
+    anon := boolToRef(false)}
+  if (boolFromRef(anon)) {
+    v_ret_0 := boolToRef(true)
+  } elseif (x == nullValue()) {
+    v_ret_0 := boolToRef(y == nullValue())
+  } else {
+    v_ret_0 := boolToRef(false)}
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -55,7 +66,20 @@ method nullableNonNullableComparison(x: Ref, y: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(y), nullable(intType()))
   ensures isSubtype(typeOf(v_ret_0), boolType())
 {
-  v_ret_0 := notBool(boolToRef(x == intToRef(3)))
+  var anon_0: Ref
+  var anon_1: Ref
+  if (x != nullValue()) {
+    anon_1 := andBools(boolToRef(isSubtype(typeOf(intToRef(3)), intType())),
+      boolToRef(intFromRef(x) == 3))
+  } else {
+    anon_1 := boolToRef(false)}
+  if (boolFromRef(anon_1)) {
+    anon_0 := boolToRef(true)
+  } elseif (x == nullValue()) {
+    anon_0 := boolToRef(intToRef(3) == nullValue())
+  } else {
+    anon_0 := boolToRef(false)}
+  v_ret_0 := notBool(anon_0)
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -65,7 +89,18 @@ method nullComparison(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), nullable(intType()))
   ensures isSubtype(typeOf(v_ret_0), boolType())
 {
-  v_ret_0 := boolToRef(x == nullValue())
+  var anon: Ref
+  if (x != nullValue()) {
+    anon := andBools(boolToRef(isSubtype(typeOf(nullValue()), intType())), boolToRef(intFromRef(x) ==
+      intFromRef(nullValue())))
+  } else {
+    anon := boolToRef(false)}
+  if (boolFromRef(anon)) {
+    v_ret_0 := boolToRef(true)
+  } elseif (x == nullValue()) {
+    v_ret_0 := boolToRef(nullValue() == nullValue())
+  } else {
+    v_ret_0 := boolToRef(false)}
   goto lbl_ret_0
   label lbl_ret_0
 }

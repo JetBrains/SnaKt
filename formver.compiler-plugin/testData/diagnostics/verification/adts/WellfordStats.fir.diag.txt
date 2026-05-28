@@ -1,8 +1,21 @@
 /WellfordStats.kt: info: Generated Viper text for empty:
+function con(n: Ref, sum: Ref, sumSq: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires isSubtype(typeOf(sum), intType())
+  requires isSubtype(typeOf(sumSq), intType())
+  ensures isSubtype(typeOf(result), Stats())
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_n) == intFromRef(n)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sum) ==
+    intFromRef(sum)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sumSq) ==
+    intFromRef(sumSq)
+  ensures StatsFromRef(result) == ac_Stats(n, sum, sumSq)
+
+
 function empty(): Ref
   ensures isSubtype(typeOf(result), Stats())
 {
-  StatsToRef(ac_Stats(intToRef(0), intToRef(0), intToRef(0)))
+  con(intToRef(0), intToRef(0), intToRef(0))
 }
 
 adt a_Stats {
@@ -10,11 +23,24 @@ adt a_Stats {
 }
 
 /WellfordStats.kt: info: Generated Viper text for fromSample:
+function con(n: Ref, sum: Ref, sumSq: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires isSubtype(typeOf(sum), intType())
+  requires isSubtype(typeOf(sumSq), intType())
+  ensures isSubtype(typeOf(result), Stats())
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_n) == intFromRef(n)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sum) ==
+    intFromRef(sum)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sumSq) ==
+    intFromRef(sumSq)
+  ensures StatsFromRef(result) == ac_Stats(n, sum, sumSq)
+
+
 function fromSample(x: Ref): Ref
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(result), Stats())
 {
-  StatsToRef(ac_Stats(intToRef(1), x, timesInts(x, x)))
+  con(intToRef(1), x, timesInts(x, x))
 }
 
 adt a_Stats {
@@ -22,13 +48,26 @@ adt a_Stats {
 }
 
 /WellfordStats.kt: info: Generated Viper text for update:
+function con(n: Ref, sum: Ref, sumSq: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires isSubtype(typeOf(sum), intType())
+  requires isSubtype(typeOf(sumSq), intType())
+  ensures isSubtype(typeOf(result), Stats())
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_n) == intFromRef(n)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sum) ==
+    intFromRef(sum)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sumSq) ==
+    intFromRef(sumSq)
+  ensures StatsFromRef(result) == ac_Stats(n, sum, sumSq)
+
+
 function update(s: Ref, x: Ref): Ref
   requires isSubtype(typeOf(s), Stats())
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(result), Stats())
 {
-  StatsToRef(ac_Stats(plusInts(StatsFromRef(s).af_a_Stats_n, intToRef(1)), plusInts(StatsFromRef(s).af_a_Stats_sum,
-  x), plusInts(StatsFromRef(s).af_a_Stats_sumSq, timesInts(x, x))))
+  con(plusInts(StatsFromRef(s).af_a_Stats_n, intToRef(1)), plusInts(StatsFromRef(s).af_a_Stats_sum,
+  x), plusInts(StatsFromRef(s).af_a_Stats_sumSq, timesInts(x, x)))
 }
 
 adt a_Stats {
@@ -36,14 +75,27 @@ adt a_Stats {
 }
 
 /WellfordStats.kt: info: Generated Viper text for merge:
+function con(n: Ref, sum: Ref, sumSq: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires isSubtype(typeOf(sum), intType())
+  requires isSubtype(typeOf(sumSq), intType())
+  ensures isSubtype(typeOf(result), Stats())
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_n) == intFromRef(n)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sum) ==
+    intFromRef(sum)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sumSq) ==
+    intFromRef(sumSq)
+  ensures StatsFromRef(result) == ac_Stats(n, sum, sumSq)
+
+
 function merge(a: Ref, b: Ref): Ref
   requires isSubtype(typeOf(a), Stats())
   requires isSubtype(typeOf(b), Stats())
   ensures isSubtype(typeOf(result), Stats())
 {
-  StatsToRef(ac_Stats(plusInts(StatsFromRef(a).af_a_Stats_n, StatsFromRef(b).af_a_Stats_n), plusInts(StatsFromRef(a).af_a_Stats_sum,
-  StatsFromRef(b).af_a_Stats_sum), plusInts(StatsFromRef(a).af_a_Stats_sumSq,
-  StatsFromRef(b).af_a_Stats_sumSq)))
+  con(plusInts(StatsFromRef(a).af_a_Stats_n, StatsFromRef(b).af_a_Stats_n),
+  plusInts(StatsFromRef(a).af_a_Stats_sum, StatsFromRef(b).af_a_Stats_sum),
+  plusInts(StatsFromRef(a).af_a_Stats_sumSq, StatsFromRef(b).af_a_Stats_sumSq))
 }
 
 adt a_Stats {
@@ -64,21 +116,48 @@ adt a_Stats {
 }
 
 /WellfordStats.kt: info: Generated Viper text for mergeCommutes:
+function con(n: Ref, sum: Ref, sumSq: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires isSubtype(typeOf(sum), intType())
+  requires isSubtype(typeOf(sumSq), intType())
+  ensures isSubtype(typeOf(result), Stats())
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_n) == intFromRef(n)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sum) ==
+    intFromRef(sum)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sumSq) ==
+    intFromRef(sumSq)
+  ensures StatsFromRef(result) == ac_Stats(n, sum, sumSq)
+
+
+function equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Stats())
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), Stats())), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_n),
+  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_n) ==
+  intFromRef(StatsFromRef(other).af_a_Stats_n)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sum),
+  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sum) ==
+  intFromRef(StatsFromRef(other).af_a_Stats_sum)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sumSq),
+  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sumSq) ==
+  intFromRef(StatsFromRef(other).af_a_Stats_sumSq))))
+}
+
 function merge(a: Ref, b: Ref): Ref
   requires isSubtype(typeOf(a), Stats())
   requires isSubtype(typeOf(b), Stats())
   ensures isSubtype(typeOf(result), Stats())
 {
-  StatsToRef(ac_Stats(plusInts(StatsFromRef(a).af_a_Stats_n, StatsFromRef(b).af_a_Stats_n), plusInts(StatsFromRef(a).af_a_Stats_sum,
-  StatsFromRef(b).af_a_Stats_sum), plusInts(StatsFromRef(a).af_a_Stats_sumSq,
-  StatsFromRef(b).af_a_Stats_sumSq)))
+  con(plusInts(StatsFromRef(a).af_a_Stats_n, StatsFromRef(b).af_a_Stats_n),
+  plusInts(StatsFromRef(a).af_a_Stats_sum, StatsFromRef(b).af_a_Stats_sum),
+  plusInts(StatsFromRef(a).af_a_Stats_sumSq, StatsFromRef(b).af_a_Stats_sumSq))
 }
 
 method mergeCommutes(a: Ref, b: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(a), Stats())
   requires isSubtype(typeOf(b), Stats())
   ensures isSubtype(typeOf(v_ret_0), unitType())
-  ensures boolFromRef(aeq_a_Stats(merge(a, b), merge(b, a)))
+  ensures boolFromRef(equals(merge(a, b), merge(b, a)))
 {
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -89,14 +168,41 @@ adt a_Stats {
 }
 
 /WellfordStats.kt: info: Generated Viper text for mergeAssoc:
+function con(n: Ref, sum: Ref, sumSq: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires isSubtype(typeOf(sum), intType())
+  requires isSubtype(typeOf(sumSq), intType())
+  ensures isSubtype(typeOf(result), Stats())
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_n) == intFromRef(n)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sum) ==
+    intFromRef(sum)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sumSq) ==
+    intFromRef(sumSq)
+  ensures StatsFromRef(result) == ac_Stats(n, sum, sumSq)
+
+
+function equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Stats())
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), Stats())), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_n),
+  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_n) ==
+  intFromRef(StatsFromRef(other).af_a_Stats_n)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sum),
+  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sum) ==
+  intFromRef(StatsFromRef(other).af_a_Stats_sum)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sumSq),
+  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sumSq) ==
+  intFromRef(StatsFromRef(other).af_a_Stats_sumSq))))
+}
+
 function merge(a: Ref, b: Ref): Ref
   requires isSubtype(typeOf(a), Stats())
   requires isSubtype(typeOf(b), Stats())
   ensures isSubtype(typeOf(result), Stats())
 {
-  StatsToRef(ac_Stats(plusInts(StatsFromRef(a).af_a_Stats_n, StatsFromRef(b).af_a_Stats_n), plusInts(StatsFromRef(a).af_a_Stats_sum,
-  StatsFromRef(b).af_a_Stats_sum), plusInts(StatsFromRef(a).af_a_Stats_sumSq,
-  StatsFromRef(b).af_a_Stats_sumSq)))
+  con(plusInts(StatsFromRef(a).af_a_Stats_n, StatsFromRef(b).af_a_Stats_n),
+  plusInts(StatsFromRef(a).af_a_Stats_sum, StatsFromRef(b).af_a_Stats_sum),
+  plusInts(StatsFromRef(a).af_a_Stats_sumSq, StatsFromRef(b).af_a_Stats_sumSq))
 }
 
 method mergeAssoc(a: Ref, b: Ref, c: Ref) returns (v_ret_0: Ref)
@@ -104,7 +210,7 @@ method mergeAssoc(a: Ref, b: Ref, c: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(b), Stats())
   requires isSubtype(typeOf(c), Stats())
   ensures isSubtype(typeOf(v_ret_0), unitType())
-  ensures boolFromRef(aeq_a_Stats(merge(merge(a, b), c), merge(a, merge(b, c))))
+  ensures boolFromRef(equals(merge(merge(a, b), c), merge(a, merge(b, c))))
 {
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -115,10 +221,37 @@ adt a_Stats {
 }
 
 /WellfordStats.kt: info: Generated Viper text for mergeEmptyLeftUnit:
+function con(n: Ref, sum: Ref, sumSq: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires isSubtype(typeOf(sum), intType())
+  requires isSubtype(typeOf(sumSq), intType())
+  ensures isSubtype(typeOf(result), Stats())
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_n) == intFromRef(n)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sum) ==
+    intFromRef(sum)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sumSq) ==
+    intFromRef(sumSq)
+  ensures StatsFromRef(result) == ac_Stats(n, sum, sumSq)
+
+
 function empty(): Ref
   ensures isSubtype(typeOf(result), Stats())
 {
-  StatsToRef(ac_Stats(intToRef(0), intToRef(0), intToRef(0)))
+  con(intToRef(0), intToRef(0), intToRef(0))
+}
+
+function equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Stats())
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), Stats())), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_n),
+  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_n) ==
+  intFromRef(StatsFromRef(other).af_a_Stats_n)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sum),
+  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sum) ==
+  intFromRef(StatsFromRef(other).af_a_Stats_sum)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sumSq),
+  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sumSq) ==
+  intFromRef(StatsFromRef(other).af_a_Stats_sumSq))))
 }
 
 function merge(a: Ref, b: Ref): Ref
@@ -126,15 +259,15 @@ function merge(a: Ref, b: Ref): Ref
   requires isSubtype(typeOf(b), Stats())
   ensures isSubtype(typeOf(result), Stats())
 {
-  StatsToRef(ac_Stats(plusInts(StatsFromRef(a).af_a_Stats_n, StatsFromRef(b).af_a_Stats_n), plusInts(StatsFromRef(a).af_a_Stats_sum,
-  StatsFromRef(b).af_a_Stats_sum), plusInts(StatsFromRef(a).af_a_Stats_sumSq,
-  StatsFromRef(b).af_a_Stats_sumSq)))
+  con(plusInts(StatsFromRef(a).af_a_Stats_n, StatsFromRef(b).af_a_Stats_n),
+  plusInts(StatsFromRef(a).af_a_Stats_sum, StatsFromRef(b).af_a_Stats_sum),
+  plusInts(StatsFromRef(a).af_a_Stats_sumSq, StatsFromRef(b).af_a_Stats_sumSq))
 }
 
 method mergeEmptyLeftUnit(s: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(s), Stats())
   ensures isSubtype(typeOf(v_ret_0), unitType())
-  ensures boolFromRef(aeq_a_Stats(merge(empty(), s), s))
+  ensures boolFromRef(equals(merge(empty(), s), s))
 {
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -145,10 +278,37 @@ adt a_Stats {
 }
 
 /WellfordStats.kt: info: Generated Viper text for mergeEmptyRightUnit:
+function con(n: Ref, sum: Ref, sumSq: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires isSubtype(typeOf(sum), intType())
+  requires isSubtype(typeOf(sumSq), intType())
+  ensures isSubtype(typeOf(result), Stats())
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_n) == intFromRef(n)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sum) ==
+    intFromRef(sum)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sumSq) ==
+    intFromRef(sumSq)
+  ensures StatsFromRef(result) == ac_Stats(n, sum, sumSq)
+
+
 function empty(): Ref
   ensures isSubtype(typeOf(result), Stats())
 {
-  StatsToRef(ac_Stats(intToRef(0), intToRef(0), intToRef(0)))
+  con(intToRef(0), intToRef(0), intToRef(0))
+}
+
+function equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Stats())
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), Stats())), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_n),
+  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_n) ==
+  intFromRef(StatsFromRef(other).af_a_Stats_n)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sum),
+  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sum) ==
+  intFromRef(StatsFromRef(other).af_a_Stats_sum)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sumSq),
+  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sumSq) ==
+  intFromRef(StatsFromRef(other).af_a_Stats_sumSq))))
 }
 
 function merge(a: Ref, b: Ref): Ref
@@ -156,15 +316,15 @@ function merge(a: Ref, b: Ref): Ref
   requires isSubtype(typeOf(b), Stats())
   ensures isSubtype(typeOf(result), Stats())
 {
-  StatsToRef(ac_Stats(plusInts(StatsFromRef(a).af_a_Stats_n, StatsFromRef(b).af_a_Stats_n), plusInts(StatsFromRef(a).af_a_Stats_sum,
-  StatsFromRef(b).af_a_Stats_sum), plusInts(StatsFromRef(a).af_a_Stats_sumSq,
-  StatsFromRef(b).af_a_Stats_sumSq)))
+  con(plusInts(StatsFromRef(a).af_a_Stats_n, StatsFromRef(b).af_a_Stats_n),
+  plusInts(StatsFromRef(a).af_a_Stats_sum, StatsFromRef(b).af_a_Stats_sum),
+  plusInts(StatsFromRef(a).af_a_Stats_sumSq, StatsFromRef(b).af_a_Stats_sumSq))
 }
 
 method mergeEmptyRightUnit(s: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(s), Stats())
   ensures isSubtype(typeOf(v_ret_0), unitType())
-  ensures boolFromRef(aeq_a_Stats(merge(s, empty()), s))
+  ensures boolFromRef(equals(merge(s, empty()), s))
 {
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -175,11 +335,38 @@ adt a_Stats {
 }
 
 /WellfordStats.kt: info: Generated Viper text for updateAsMergeSingle:
+function con(n: Ref, sum: Ref, sumSq: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires isSubtype(typeOf(sum), intType())
+  requires isSubtype(typeOf(sumSq), intType())
+  ensures isSubtype(typeOf(result), Stats())
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_n) == intFromRef(n)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sum) ==
+    intFromRef(sum)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sumSq) ==
+    intFromRef(sumSq)
+  ensures StatsFromRef(result) == ac_Stats(n, sum, sumSq)
+
+
+function equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Stats())
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), Stats())), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_n),
+  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_n) ==
+  intFromRef(StatsFromRef(other).af_a_Stats_n)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sum),
+  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sum) ==
+  intFromRef(StatsFromRef(other).af_a_Stats_sum)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sumSq),
+  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sumSq) ==
+  intFromRef(StatsFromRef(other).af_a_Stats_sumSq))))
+}
+
 function fromSample(x: Ref): Ref
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(result), Stats())
 {
-  StatsToRef(ac_Stats(intToRef(1), x, timesInts(x, x)))
+  con(intToRef(1), x, timesInts(x, x))
 }
 
 function merge(a: Ref, b: Ref): Ref
@@ -187,9 +374,9 @@ function merge(a: Ref, b: Ref): Ref
   requires isSubtype(typeOf(b), Stats())
   ensures isSubtype(typeOf(result), Stats())
 {
-  StatsToRef(ac_Stats(plusInts(StatsFromRef(a).af_a_Stats_n, StatsFromRef(b).af_a_Stats_n), plusInts(StatsFromRef(a).af_a_Stats_sum,
-  StatsFromRef(b).af_a_Stats_sum), plusInts(StatsFromRef(a).af_a_Stats_sumSq,
-  StatsFromRef(b).af_a_Stats_sumSq)))
+  con(plusInts(StatsFromRef(a).af_a_Stats_n, StatsFromRef(b).af_a_Stats_n),
+  plusInts(StatsFromRef(a).af_a_Stats_sum, StatsFromRef(b).af_a_Stats_sum),
+  plusInts(StatsFromRef(a).af_a_Stats_sumSq, StatsFromRef(b).af_a_Stats_sumSq))
 }
 
 function update(s: Ref, x: Ref): Ref
@@ -197,15 +384,15 @@ function update(s: Ref, x: Ref): Ref
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(result), Stats())
 {
-  StatsToRef(ac_Stats(plusInts(StatsFromRef(s).af_a_Stats_n, intToRef(1)), plusInts(StatsFromRef(s).af_a_Stats_sum,
-  x), plusInts(StatsFromRef(s).af_a_Stats_sumSq, timesInts(x, x))))
+  con(plusInts(StatsFromRef(s).af_a_Stats_n, intToRef(1)), plusInts(StatsFromRef(s).af_a_Stats_sum,
+  x), plusInts(StatsFromRef(s).af_a_Stats_sumSq, timesInts(x, x)))
 }
 
 method updateAsMergeSingle(s: Ref, x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(s), Stats())
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(v_ret_0), unitType())
-  ensures boolFromRef(aeq_a_Stats(update(s, x), merge(s, fromSample(x))))
+  ensures boolFromRef(equals(update(s, x), merge(s, fromSample(x))))
 {
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -216,10 +403,23 @@ adt a_Stats {
 }
 
 /WellfordStats.kt: info: Generated Viper text for varianceNumNonNegEmpty:
+function con(n: Ref, sum: Ref, sumSq: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires isSubtype(typeOf(sum), intType())
+  requires isSubtype(typeOf(sumSq), intType())
+  ensures isSubtype(typeOf(result), Stats())
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_n) == intFromRef(n)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sum) ==
+    intFromRef(sum)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sumSq) ==
+    intFromRef(sumSq)
+  ensures StatsFromRef(result) == ac_Stats(n, sum, sumSq)
+
+
 function empty(): Ref
   ensures isSubtype(typeOf(result), Stats())
 {
-  StatsToRef(ac_Stats(intToRef(0), intToRef(0), intToRef(0)))
+  con(intToRef(0), intToRef(0), intToRef(0))
 }
 
 function varianceNumerator(s: Ref): Ref
@@ -243,11 +443,24 @@ adt a_Stats {
 }
 
 /WellfordStats.kt: info: Generated Viper text for varianceNumNonNegSingle:
+function con(n: Ref, sum: Ref, sumSq: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires isSubtype(typeOf(sum), intType())
+  requires isSubtype(typeOf(sumSq), intType())
+  ensures isSubtype(typeOf(result), Stats())
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_n) == intFromRef(n)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sum) ==
+    intFromRef(sum)
+  ensures intFromRef(StatsFromRef(result).af_a_Stats_sumSq) ==
+    intFromRef(sumSq)
+  ensures StatsFromRef(result) == ac_Stats(n, sum, sumSq)
+
+
 function fromSample(x: Ref): Ref
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(result), Stats())
 {
-  StatsToRef(ac_Stats(intToRef(1), x, timesInts(x, x)))
+  con(intToRef(1), x, timesInts(x, x))
 }
 
 function varianceNumerator(s: Ref): Ref
@@ -261,7 +474,8 @@ function varianceNumerator(s: Ref): Ref
 method varianceNumNonNegSingle(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
   ensures isSubtype(typeOf(v_ret_0), unitType())
-  ensures intFromRef(varianceNumerator(fromSample(x))) == 0
+  ensures isSubtype(typeOf(intToRef(0)), intType()) &&
+    intFromRef(varianceNumerator(fromSample(x))) == 0
 {
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())

@@ -16,7 +16,8 @@ method forAllWithMultipleTriggers() returns (v_ret_0: Ref)
   ensures (forall anon: Int ::
       { anon * anon }
       { anon + 1 }
-      !(anon == 0) ==> anon * anon >= intFromRef(v_ret_0))
+      !(isSubtype(typeOf(intToRef(0)), intType()) && anon == 0) ==>
+      anon * anon >= intFromRef(v_ret_0))
 {
   v_ret_0 := intToRef(1)
   goto lbl_ret_0

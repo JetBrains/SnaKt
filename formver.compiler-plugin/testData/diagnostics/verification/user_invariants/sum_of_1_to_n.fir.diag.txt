@@ -3,9 +3,12 @@ method recursiveSumOfIntegersUpToN(n: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(n), intType())
   requires intFromRef(n) >= 0
   ensures isSubtype(typeOf(v_ret_0), intType())
-  ensures intFromRef(v_ret_0) == intFromRef(n) * (intFromRef(n) + 1) \ 2
+  ensures isSubtype(typeOf(divInts(timesInts(n, plusInts(n, intToRef(1))), intToRef(2))),
+    intType()) &&
+    intFromRef(v_ret_0) ==
+    intFromRef(divInts(timesInts(n, plusInts(n, intToRef(1))), intToRef(2)))
 {
-  if (intFromRef(n) == 0) {
+  if (isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(n) == 0) {
     v_ret_0 := intToRef(0)
     goto lbl_ret_0
   } else {
@@ -22,7 +25,10 @@ method sumOfIntegersUpToN(n: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(n), intType())
   requires intFromRef(n) >= 0
   ensures isSubtype(typeOf(v_ret_0), intType())
-  ensures intFromRef(v_ret_0) == intFromRef(n) * (intFromRef(n) + 1) \ 2
+  ensures isSubtype(typeOf(divInts(timesInts(n, plusInts(n, intToRef(1))), intToRef(2))),
+    intType()) &&
+    intFromRef(v_ret_0) ==
+    intFromRef(divInts(timesInts(n, plusInts(n, intToRef(1))), intToRef(2)))
 {
   var sum: Ref
   var i: Ref
@@ -34,7 +40,10 @@ method sumOfIntegersUpToN(n: Ref) returns (v_ret_0: Ref)
     invariant isSubtype(typeOf(i), intType())
     invariant isSubtype(typeOf(n), intType())
     invariant intFromRef(i) <= intFromRef(n)
-    invariant intFromRef(sum) == intFromRef(i) * (intFromRef(i) + 1) \ 2
+    invariant isSubtype(typeOf(divInts(timesInts(i, plusInts(i, intToRef(1))),
+      intToRef(2))), intType()) &&
+      intFromRef(sum) ==
+      intFromRef(divInts(timesInts(i, plusInts(i, intToRef(1))), intToRef(2)))
   anon := ltInts(i, n)
   if (boolFromRef(anon)) {
     sum := plusInts(sum, plusInts(i, intToRef(1)))
@@ -46,7 +55,10 @@ method sumOfIntegersUpToN(n: Ref) returns (v_ret_0: Ref)
   assert isSubtype(typeOf(i), intType())
   assert isSubtype(typeOf(n), intType())
   assert intFromRef(i) <= intFromRef(n)
-  assert intFromRef(sum) == intFromRef(i) * (intFromRef(i) + 1) \ 2
+  assert isSubtype(typeOf(divInts(timesInts(i, plusInts(i, intToRef(1))), intToRef(2))),
+    intType()) &&
+    intFromRef(sum) ==
+    intFromRef(divInts(timesInts(i, plusInts(i, intToRef(1))), intToRef(2)))
   v_ret_0 := sum
   goto lbl_ret_0
   label lbl_ret_0

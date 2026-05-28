@@ -234,14 +234,16 @@ method createImpls() returns (v_ret_0: Ref)
   anon_11 := anon_12
   inhale isSubtype(typeOf(anon_11), intType())
   start6 := minusInts(plusInts(anon_11, intToRef(1)), intToRef(1))
-  cond1 := boolToRef(intFromRef(start12) ==
-    intFromRef(Impl12_g_field(impl12)))
-  cond2 := boolToRef(intFromRef(start23) ==
-    intFromRef(AbstractWithFinalImplementation3_g_field(impl23)))
-  cond3 := boolToRef(intFromRef(start3) ==
-    intFromRef(AbstractWithFinalImplementation3_g_field(impl3)))
-  cond4 := boolToRef(intFromRef(start14) ==
-    intFromRef(Impl14_g_field(impl14)))
+  cond1 := andBools(boolToRef(isSubtype(typeOf(Impl12_g_field(impl12)), intType())),
+    boolToRef(intFromRef(start12) == intFromRef(Impl12_g_field(impl12))))
+  cond2 := andBools(boolToRef(isSubtype(typeOf(AbstractWithFinalImplementation3_g_field(impl23)),
+    intType())), boolToRef(intFromRef(start23) ==
+    intFromRef(AbstractWithFinalImplementation3_g_field(impl23))))
+  cond3 := andBools(boolToRef(isSubtype(typeOf(AbstractWithFinalImplementation3_g_field(impl3)),
+    intType())), boolToRef(intFromRef(start3) ==
+    intFromRef(AbstractWithFinalImplementation3_g_field(impl3))))
+  cond4 := andBools(boolToRef(isSubtype(typeOf(Impl14_g_field(impl14)), intType())),
+    boolToRef(intFromRef(start14) == intFromRef(Impl14_g_field(impl14))))
   cond5 := boolToRef(isSubtype(typeOf(start6), intType()))
   assert boolFromRef(cond1)
   assert boolFromRef(cond2)

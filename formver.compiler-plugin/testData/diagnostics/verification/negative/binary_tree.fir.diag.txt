@@ -93,21 +93,33 @@ method test() returns (v_ret_0: Ref)
   var anon_4: Ref
   var expr2: Ref
   var anon_5: Ref
+  var anon_6: Ref
   anon_0 := con(intToRef(4), nullValue(), nullValue())
   anon_2 := con(intToRef(2), nullValue(), nullValue())
   anon_3 := con(intToRef(1), nullValue(), nullValue())
   anon_1 := con(intToRef(3), anon_2, anon_3)
   n := con(intToRef(5), anon_0, anon_1)
   anon_4 := havoc(intType())
-  expr1 := boolToRef(intFromRef(anon_4) == 5)
+  expr1 := andBools(boolToRef(isSubtype(typeOf(intToRef(5)), intType())), boolToRef(intFromRef(anon_4) ==
+    5))
   assert boolFromRef(expr1)
   if (g_left(n) != nullValue()) {
-    var anon_6: Ref
-    anon_6 := havoc(intType())
-    anon_5 := anon_6
+    var anon_7: Ref
+    anon_7 := havoc(intType())
+    anon_6 := anon_7
   } else {
-    anon_5 := nullValue()}
-  expr2 := boolToRef(anon_5 == intToRef(4))
+    anon_6 := nullValue()}
+  if (anon_6 != nullValue()) {
+    anon_5 := andBools(boolToRef(isSubtype(typeOf(intToRef(4)), intType())),
+      boolToRef(intFromRef(anon_6) == 4))
+  } else {
+    anon_5 := boolToRef(false)}
+  if (boolFromRef(anon_5)) {
+    expr2 := boolToRef(true)
+  } elseif (anon_6 == nullValue()) {
+    expr2 := boolToRef(intToRef(4) == nullValue())
+  } else {
+    expr2 := boolToRef(false)}
   assert boolFromRef(expr2)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())

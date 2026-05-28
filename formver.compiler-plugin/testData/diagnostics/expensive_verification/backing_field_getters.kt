@@ -87,7 +87,7 @@ fun <!VIPER_TEXT!>checkPrimary<!>(x: Int, y: Int) {
     val classI = ClassI(x, y)
     val z = Z()
     val cond1 = x != y || classI.x == classI.y
-    val cond2 = ClassII(z).z == z
+    val cond2 = ClassII(z).z === z
     verify(
         cond1,
         cond2

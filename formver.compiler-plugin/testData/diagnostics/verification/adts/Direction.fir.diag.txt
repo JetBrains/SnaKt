@@ -1,0 +1,43 @@
+/Direction.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/Direction.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/Direction.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Direction.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Direction.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Direction.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Direction.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Direction.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Direction.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Direction.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Direction.kt: error: Function 'opposite' references an invalid ADT
+
+/Direction.kt: error: Impure function body detected in pure function
+
+/Direction.kt: error: Impure function body detected in pure function
+
+/Direction.kt: error: Invalid ADT annotation: reference to 'South' which has an invalid @ADT annotation
+
+/Direction.kt: error: Invalid ADT annotation: reference to 'South' which has an invalid @ADT annotation
+
+/Direction.kt: error: Invalid ADT annotation: reference to 'North' which has an invalid @ADT annotation
+
+/Direction.kt: error: Invalid ADT annotation: reference to 'North' which has an invalid @ADT annotation
+
+/Direction.kt: error: Invalid ADT annotation: reference to 'West' which has an invalid @ADT annotation
+
+/Direction.kt: error: Invalid ADT annotation: reference to 'West' which has an invalid @ADT annotation
+
+/Direction.kt: error: Invalid ADT annotation: reference to 'East' which has an invalid @ADT annotation
+
+/Direction.kt: error: Invalid ADT annotation: reference to 'East' which has an invalid @ADT annotation
+
+/Direction.kt: error: Function 'oppositeInvolution' references an invalid ADT

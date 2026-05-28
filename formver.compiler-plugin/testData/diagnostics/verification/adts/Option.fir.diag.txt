@@ -1,0 +1,59 @@
+/Option.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/Option.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/Option.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/Option.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/Option.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/Option.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Option.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Option.kt: error: Function 'isSome' references an invalid ADT
+
+/Option.kt: error: Function 'getOrElse' references an invalid ADT
+
+/Option.kt: error: Function 'orElse' references an invalid ADT
+
+/Option.kt: error: Function 'optRefl' references an invalid ADT
+
+/Option.kt: error: Function 'orElseIdempotent' references an invalid ADT
+
+/Option.kt: error: Function 'orElseAssoc' references an invalid ADT
+
+/Option.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/Option.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/Option.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin

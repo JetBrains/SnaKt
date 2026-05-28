@@ -1,0 +1,73 @@
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function x might not hold. Assertion isSubtype(typeOf(other), WithPureEquals()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function NodeLL_f_equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Precondition of function equals might not hold. Assertion isSubtype(typeOf(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(this))), NodeLL()) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Assert might fail. Assertion !boolFromRef(equals(n, nullValue())) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(nodeLength(con(intToRef(1), nullValue()))) == 1 might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(nodeSum(con(intToRef(3), nullValue()))) == 3 might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Postcondition of prependIncrementsLength might not hold. Assertion intFromRef(nodeLength(nodePrepend(n, x))) == intFromRef(plusInts(intToRef(1), nodeLength(n))) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Postcondition of nodeLL_refl might not hold. Assertion boolFromRef(equals(n, n)) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Postcondition of nodeReflexive might not hold. Assertion n != nullValue() && boolFromRef(equals(n, n)) || n == nullValue() && n == nullValue() might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Postcondition of adtFieldPostcondition might not hold. Assertion get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(v_ret_0)) != nullValue() && boolFromRef(equals(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(v_ret_0)), par_t)) || get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(v_ret_0)) == nullValue() && par_t == nullValue() might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Postcondition of nodeHeadFromPrecondition might not hold. Assertion intFromRef(get_a_NodeLL_af_a_NodeLL_head(NodeLLFromRef(a))) == intFromRef(get_a_NodeLL_af_a_NodeLL_head(NodeLLFromRef(b))) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Postcondition of nodeTailFromPrecondition might not hold. Assertion get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(a)) != nullValue() && boolFromRef(equals(get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(a)), get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(b)))) || get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(a)) == nullValue() && get_a_NodeLL_af_a_NodeLL_tail(NodeLLFromRef(b)) == nullValue() might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Assert might fail. Assertion boolFromRef(NodeLL_f_equals(con_NodeLL(intToRef(1), nullValue()), con_NodeLL(intToRef(1), nullValue()))) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(nodeLength(n1)) == 1 might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(nodeLength(nodePrepend(nullValue(), intToRef(3)))) == 1 might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Assert might fail. Assertion boolFromRef(anon_3) might not hold.
+
+/AdtsAndLanguageFeatures.kt: warning: Viper verification error: Postcondition of prependSumAddsHead might not hold. Assertion intFromRef(nodeSum(nodePrepend(n, x))) == intFromRef(plusInts(x, nodeSum(n))) might not hold.

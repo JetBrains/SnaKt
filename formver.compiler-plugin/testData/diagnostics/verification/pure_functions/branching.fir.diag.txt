@@ -79,16 +79,31 @@ function whenExpressionSimple(x: Ref): Ref
     (let anon_0_0 ==
       (x) in
       (let y_1 ==
-        ((intFromRef(anon_0_0) == 1 ? intToRef(10) : null)) in
+        ((isSubtype(typeOf(intToRef(1)), intType()) &&
+        intFromRef(anon_0_0) == 1 ?
+          intToRef(10) :
+          null)) in
         (let y_2 ==
-          ((!(intFromRef(anon_0_0) == 1) && !(intFromRef(anon_0_0) == 2) ?
+          ((!(isSubtype(typeOf(intToRef(1)), intType()) &&
+          intFromRef(anon_0_0) == 1) &&
+          !(isSubtype(typeOf(intToRef(2)), intType()) &&
+          intFromRef(anon_0_0) == 2) ?
             intToRef(30) :
             null)) in
           (let y_3 ==
-            ((intFromRef(anon_0_0) == 2 ? y_0 : y_2)) in
+            ((isSubtype(typeOf(intToRef(2)), intType()) &&
+            intFromRef(anon_0_0) == 2 ?
+              y_0 :
+              y_2)) in
             (let y_4 ==
-              ((intFromRef(anon_0_0) == 1 ? y_1 : y_3)) in
-              (!(intFromRef(anon_0_0) == 1) && intFromRef(anon_0_0) == 2 ?
+              ((isSubtype(typeOf(intToRef(1)), intType()) &&
+              intFromRef(anon_0_0) == 1 ?
+                y_1 :
+                y_3)) in
+              (!(isSubtype(typeOf(intToRef(1)), intType()) &&
+              intFromRef(anon_0_0) == 1) &&
+              (isSubtype(typeOf(intToRef(2)), intType()) &&
+              intFromRef(anon_0_0) == 2) ?
                 intToRef(20) :
                 plusInts(y_4, intToRef(1)))))))))
 }
@@ -100,15 +115,18 @@ function whenNoArgumentBranching(x: Ref, y: Ref): Ref
   ensures isSubtype(typeOf(result), intType())
 {
   (let z_0 ==
-    ((!(intFromRef(x) == 0) && !(intFromRef(x) > 0 && intFromRef(y) > 0) &&
+    ((!(isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(x) == 0) &&
+    !(intFromRef(x) > 0 && intFromRef(y) > 0) &&
     !(intFromRef(x) < 0 || intFromRef(y) < 0) ?
       intToRef(5) :
       null)) in
-    (intFromRef(x) == 0 ?
+    (isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(x) == 0 ?
       intToRef(0) :
-      (!(intFromRef(x) == 0) && (intFromRef(x) > 0 && intFromRef(y) > 0) ?
+      (!(isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(x) == 0) &&
+      (intFromRef(x) > 0 && intFromRef(y) > 0) ?
         intToRef(1) :
-        (!(intFromRef(x) == 0) && !(intFromRef(x) > 0 && intFromRef(y) > 0) &&
+        (!(isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(x) == 0) &&
+        !(intFromRef(x) > 0 && intFromRef(y) > 0) &&
         (intFromRef(x) < 0 || intFromRef(y) < 0) ?
           intToRef(-1) :
           z_0))))
@@ -122,24 +140,31 @@ function stringEqualityBranching(input: Ref): Ref
   (let isValid_0 ==
     (boolToRef(false)) in
     (let isValid_1 ==
-      ((!(stringFromRef(input) == Seq(97, 100, 109, 105, 110)) &&
-      stringFromRef(input) == Seq(117, 115, 101, 114) ?
+      ((!(isSubtype(typeOf(stringToRef(Seq(97, 100, 109, 105, 110))), stringType()) &&
+      stringFromRef(input) == Seq(97, 100, 109, 105, 110)) &&
+      (isSubtype(typeOf(stringToRef(Seq(117, 115, 101, 114))), stringType()) &&
+      stringFromRef(input) == Seq(117, 115, 101, 114)) ?
         boolToRef(true) :
         null)) in
       (let isValid_2 ==
-        ((!(stringFromRef(input) == Seq(97, 100, 109, 105, 110)) &&
-        !(stringFromRef(input) == Seq(117, 115, 101, 114)) ?
+        ((!(isSubtype(typeOf(stringToRef(Seq(97, 100, 109, 105, 110))), stringType()) &&
+        stringFromRef(input) == Seq(97, 100, 109, 105, 110)) &&
+        !(isSubtype(typeOf(stringToRef(Seq(117, 115, 101, 114))), stringType()) &&
+        stringFromRef(input) == Seq(117, 115, 101, 114)) ?
           boolToRef(false) :
           null)) in
         (let isValid_3 ==
-          ((stringFromRef(input) == Seq(117, 115, 101, 114) ?
+          ((isSubtype(typeOf(stringToRef(Seq(117, 115, 101, 114))), stringType()) &&
+          stringFromRef(input) == Seq(117, 115, 101, 114) ?
             isValid_1 :
             isValid_2)) in
           (let isValid_4 ==
-            ((stringFromRef(input) == Seq(97, 100, 109, 105, 110) ?
+            ((isSubtype(typeOf(stringToRef(Seq(97, 100, 109, 105, 110))), stringType()) &&
+            stringFromRef(input) == Seq(97, 100, 109, 105, 110) ?
               isValid_0 :
               isValid_3)) in
-            (stringFromRef(input) == Seq(97, 100, 109, 105, 110) ?
+            (isSubtype(typeOf(stringToRef(Seq(97, 100, 109, 105, 110))), stringType()) &&
+            stringFromRef(input) == Seq(97, 100, 109, 105, 110) ?
               boolToRef(true) :
               isValid_4))))))
 }
@@ -156,7 +181,10 @@ function sequentialIfWithMutation(): Ref
         ((!(intFromRef(x_0) > 5) ? intToRef(20) : null)) in
         (let x_3 ==
           ((intFromRef(x_0) > 5 ? x_1 : x_2)) in
-          (intFromRef(x_3) == 2 ? intToRef(100) : intToRef(0))))))
+          (isSubtype(typeOf(intToRef(2)), intType()) &&
+          intFromRef(x_3) == 2 ?
+            intToRef(100) :
+            intToRef(0))))))
 }
 
 /branching.kt: info: Generated Viper text for complexBooleanReturn:
@@ -190,9 +218,13 @@ function safeDivide(x: Ref, y: Ref): Ref
   (let res_0 ==
     (intToRef(0)) in
     (let res_1 ==
-      ((!(intFromRef(y) == 0) ? divInts(x, y) : null)) in
+      ((!(isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(y) == 0) ?
+        divInts(x, y) :
+        null)) in
       (let res_2 ==
-        ((!(intFromRef(y) == 0) ? res_1 : res_0)) in
+        ((!(isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(y) == 0) ?
+          res_1 :
+          res_0)) in
         res_2)))
 }
 
@@ -220,13 +252,19 @@ function safeNestedDivide(x: Ref, y: Ref, z: Ref): Ref
   (let res_0 ==
     (intToRef(0)) in
     (let res_1 ==
-      ((!(intFromRef(y) == 0) && !(intFromRef(z) == 0) ?
+      ((!(isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(y) == 0) &&
+      !(isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(z) == 0) ?
         divInts(divInts(x, y), z) :
         null)) in
       (let res_2 ==
-        ((!(intFromRef(z) == 0) ? res_1 : res_0)) in
+        ((!(isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(z) == 0) ?
+          res_1 :
+          res_0)) in
         (let res_3 ==
-          ((!(intFromRef(y) == 0) ? res_2 : res_0)) in
+          ((!(isSubtype(typeOf(intToRef(0)), intType()) &&
+          intFromRef(y) == 0) ?
+            res_2 :
+            res_0)) in
           res_3))))
 }
 
@@ -239,10 +277,13 @@ function safeInverseDifference(x: Ref, y: Ref): Ref
   (let res_0 ==
     (intToRef(0)) in
     (let res_1 ==
-      ((!(intFromRef(x) == intFromRef(y)) ?
+      ((!(isSubtype(typeOf(y), intType()) && intFromRef(x) == intFromRef(y)) ?
         divInts(intToRef(100), minusInts(x, y)) :
         null)) in
       (let res_2 ==
-        ((!(intFromRef(x) == intFromRef(y)) ? res_1 : res_0)) in
+        ((!(isSubtype(typeOf(y), intType()) &&
+        intFromRef(x) == intFromRef(y)) ?
+          res_1 :
+          res_0)) in
         res_2)))
 }

@@ -71,10 +71,12 @@ function verifiedAnnotatedIntLitReturn(par_arg: Ref): Ref
   requires intFromRef(par_arg) >= 42
   requires intFromRef(par_arg) <= 42
   ensures isSubtype(typeOf(result), intType())
-  ensures intFromRef(result) == 42
+  ensures isSubtype(typeOf(intToRef(42)), intType()) &&
+    intFromRef(result) == 42
   ensures (forall anon: Int ::
-      { anon == intFromRef(result) }
-      anon == intFromRef(result) ==> anon == intFromRef(par_arg))
+      { isSubtype(typeOf(result), intType()) && anon == intFromRef(result) }
+      isSubtype(typeOf(result), intType()) && anon == intFromRef(result) ==>
+      isSubtype(typeOf(par_arg), intType()) && anon == intFromRef(par_arg))
 {
   intToRef(42)
 }
@@ -86,7 +88,8 @@ function verifiedAnnotatedBoolLitReturn(par_arg: Ref): Ref
   requires intFromRef(par_arg) >= 0
   ensures isSubtype(typeOf(result), boolType())
   ensures boolFromRef(result)
-  ensures intFromRef(par_arg) == 0
+  ensures isSubtype(typeOf(intToRef(0)), intType()) &&
+    intFromRef(par_arg) == 0
 {
   boolToRef(true)
 }
@@ -94,10 +97,13 @@ function verifiedAnnotatedBoolLitReturn(par_arg: Ref): Ref
 /literal_returns.kt: info: Generated Viper text for verifiedAnnotatedCharLitReturn:
 function verifiedAnnotatedCharLitReturn(par_arg: Ref): Ref
   requires isSubtype(typeOf(par_arg), stringType())
-  requires stringFromRef(par_arg) ==
+  requires isSubtype(typeOf(stringToRef(Seq(72, 101, 108, 108, 111, 32, 83,
+    110, 97, 75, 116))), stringType()) &&
+    stringFromRef(par_arg) ==
     Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116)
   ensures isSubtype(typeOf(result), charType())
-  ensures charFromRef(result) == 65
+  ensures isSubtype(typeOf(charToRef(65)), charType()) &&
+    charFromRef(result) == 65
 {
   charToRef(65)
 }
@@ -107,7 +113,9 @@ function verifiedAnnotatedStringLitReturn(par_arg: Ref): Ref
   requires isSubtype(typeOf(par_arg), boolType())
   requires boolFromRef(par_arg)
   ensures isSubtype(typeOf(result), stringType())
-  ensures stringFromRef(result) ==
+  ensures isSubtype(typeOf(stringToRef(Seq(72, 101, 108, 108, 111, 32, 83, 110,
+    97, 75, 116))), stringType()) &&
+    stringFromRef(result) ==
     Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116)
 {
   stringToRef(Seq(72, 101, 108, 108, 111, 32, 83, 110, 97, 75, 116))

@@ -1,0 +1,51 @@
+/sealed_interface_errors.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/sealed_interface_errors.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/sealed_interface_errors.kt: error: Invalid ADT annotation: An @ADT declaration must not have type parameters
+
+/sealed_interface_errors.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/sealed_interface_errors.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/sealed_interface_errors.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/sealed_interface_errors.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/sealed_interface_errors.kt: error: Function 'doSomething' references an invalid ADT
+
+/sealed_interface_errors.kt: error: Invalid ADT annotation: An @ADT declaration must not have user-declared member functions
+
+/sealed_interface_errors.kt: error: Invalid ADT annotation: An @ADT declaration must not have user-declared member functions
+
+/sealed_interface_errors.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/sealed_interface_errors.kt: error: Invalid ADT annotation: An @ADT declaration may only declare fields in its primary constructor
+
+/sealed_interface_errors.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/sealed_interface_errors.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/sealed_interface_errors.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/sealed_interface_errors.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/sealed_interface_errors.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/sealed_interface_errors.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/sealed_interface_errors.kt: error: Function 'useNotSealed' references an invalid ADT
+
+/sealed_interface_errors.kt: error: Function 'useWithTypeParam' references an invalid ADT
+
+/sealed_interface_errors.kt: error: Function 'useWithSupertype' references an invalid ADT
+
+/sealed_interface_errors.kt: error: Function 'useWithMember' references an invalid ADT
+
+/sealed_interface_errors.kt: error: Function 'useWithProperty' references an invalid ADT
+
+/sealed_interface_errors.kt: error: Function 'useWithInvalidSubtype' references an invalid ADT
+
+/sealed_interface_errors.kt: error: Function 'useCashCheckout' references an invalid ADT
+
+/sealed_interface_errors.kt: error: Function 'testWhenOnCheckout' references an invalid ADT

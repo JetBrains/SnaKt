@@ -44,7 +44,7 @@ method lambdaIf() returns (v_ret_0: Ref)
   var v_ret_4: Ref
   var anon: Ref
   anon := intToRef(0)
-  if (intFromRef(anon) == 0) {
+  if (isSubtype(typeOf(intToRef(0)), intType()) && intFromRef(anon) == 0) {
     v_ret_4 := plusInts(anon, intToRef(1))
   } else {
     v_ret_4 := plusInts(anon, intToRef(2))}

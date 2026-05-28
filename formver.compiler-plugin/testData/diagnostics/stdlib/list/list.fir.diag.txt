@@ -107,7 +107,8 @@ method last_or_null(l: Ref) returns (v_ret_0: Ref)
   var l0_size: Ref
   l0_size := l.p_size
   inhale isSubtype(typeOf(l0_size), intType())
-  if (!(intFromRef(l0_size) == 0)) {
+  if (!(isSubtype(typeOf(intToRef(0)), intType()) &&
+  intFromRef(l0_size) == 0)) {
     var anon: Ref
     anon := get(l, minusInts(l0_size, intToRef(1)))
     v_ret_0 := anon
@@ -202,18 +203,30 @@ method nullable_list(l: Ref) returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_0: Ref
-  if (!(l == nullValue())) {
-    var anon_1: Ref
-    anon_1 := isEmpty(l)
-    anon_0 := notBool(anon_1)
+  var anon_1: Ref
+  var anon_2: Ref
+  if (l != nullValue()) {
+    anon_2 := boolToRef(l == nullValue())
+  } else {
+    anon_2 := boolToRef(false)}
+  if (boolFromRef(anon_2)) {
+    anon_1 := boolToRef(true)
+  } elseif (l == nullValue()) {
+    anon_1 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_1 := boolToRef(false)}
+  if (!boolFromRef(anon_1)) {
+    var anon_3: Ref
+    anon_3 := isEmpty(l)
+    anon_0 := notBool(anon_3)
   } else {
     anon_0 := boolToRef(false)}
   if (boolFromRef(anon_0)) {
     var x: Ref
-    var anon_2: Ref
-    anon_2 := l.size
-    inhale isSubtype(typeOf(anon_2), intType())
-    x := get(l, minusInts(anon_2, intToRef(1)))
+    var anon_4: Ref
+    anon_4 := l.size
+    inhale isSubtype(typeOf(anon_4), intType())
+    x := get(l, minusInts(anon_4, intToRef(1)))
   }
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())

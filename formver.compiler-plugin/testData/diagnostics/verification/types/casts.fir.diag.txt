@@ -3,7 +3,20 @@ method smartcastReturn(n: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(n), nullable(intType()))
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  if (!(n == nullValue())) {
+  var anon_0: Ref
+  var anon_1: Ref
+  if (n != nullValue()) {
+    anon_1 := andBools(boolToRef(isSubtype(typeOf(nullValue()), intType())),
+      boolToRef(intFromRef(n) == intFromRef(nullValue())))
+  } else {
+    anon_1 := boolToRef(false)}
+  if (boolFromRef(anon_1)) {
+    anon_0 := boolToRef(true)
+  } elseif (n == nullValue()) {
+    anon_0 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_0 := boolToRef(false)}
+  if (!boolFromRef(anon_0)) {
     v_ret_0 := n
   } else {
     v_ret_0 := intToRef(0)}
@@ -16,18 +29,41 @@ method isNullOrEmptyWrong(seq: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(seq), nullable(CharSequence()))
   ensures isSubtype(typeOf(v_ret_0), boolType())
 {
-  if (seq == nullValue()) {
-    var anon_0: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  if (seq != nullValue()) {
+    anon_1 := boolToRef(seq == nullValue())
+  } else {
+    anon_1 := boolToRef(false)}
+  if (boolFromRef(anon_1)) {
+    anon_0 := boolToRef(true)
+  } elseif (seq == nullValue()) {
+    anon_0 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_0 := boolToRef(false)}
+  if (boolFromRef(anon_0)) {
+    var anon_2: Ref
+    var anon_3: Ref
     if (seq != nullValue()) {
-      var anon_1: Ref
-      var anon_2: Ref
-      anon_2 := length(seq)
-      anon_1 := anon_2
-      inhale isSubtype(typeOf(anon_1), intType())
-      anon_0 := anon_1
+      var anon_4: Ref
+      var anon_5: Ref
+      anon_5 := length(seq)
+      anon_4 := anon_5
+      inhale isSubtype(typeOf(anon_4), intType())
+      anon_3 := anon_4
     } else {
-      anon_0 := nullValue()}
-    v_ret_0 := boolToRef(anon_0 == intToRef(0))
+      anon_3 := nullValue()}
+    if (anon_3 != nullValue()) {
+      anon_2 := andBools(boolToRef(isSubtype(typeOf(intToRef(0)), intType())),
+        boolToRef(intFromRef(anon_3) == 0))
+    } else {
+      anon_2 := boolToRef(false)}
+    if (boolFromRef(anon_2)) {
+      v_ret_0 := boolToRef(true)
+    } elseif (anon_3 == nullValue()) {
+      v_ret_0 := boolToRef(intToRef(0) == nullValue())
+    } else {
+      v_ret_0 := boolToRef(false)}
   } else {
     v_ret_0 := boolToRef(false)}
   goto lbl_ret_0

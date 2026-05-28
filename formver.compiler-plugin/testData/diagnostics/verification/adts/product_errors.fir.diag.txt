@@ -109,17 +109,40 @@ adt a_TwoFields {
   ac_TwoFields(af_a_TwoFields_a: Ref, af_a_TwoFields_b: Ref)
 }
 
-/data_classes.kt: info: Generated Viper text for testNullableComparisoin:
+/product_errors.kt: info: Generated Viper text for testNullableComparisoin:
+function con(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(result), TwoFields())
+  ensures intFromRef(TwoFieldsFromRef(result).af_a_TwoFields_a) ==
+    intFromRef(a)
+  ensures boolFromRef(TwoFieldsFromRef(result).af_a_TwoFields_b) ==
+    boolFromRef(b)
+  ensures TwoFieldsFromRef(result) == ac_TwoFields(a, b)
+
+
+function equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), TwoFields())
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  andBools(andBools(boolToRef(isSubtype(typeOf(other), TwoFields())), andBools(boolToRef(isSubtype(typeOf(TwoFieldsFromRef(other).af_a_TwoFields_a),
+  intType())), boolToRef(intFromRef(TwoFieldsFromRef(this).af_a_TwoFields_a) ==
+  intFromRef(TwoFieldsFromRef(other).af_a_TwoFields_a)))), andBools(boolToRef(isSubtype(typeOf(TwoFieldsFromRef(other).af_a_TwoFields_b),
+  boolType())), boolToRef(boolFromRef(TwoFieldsFromRef(this).af_a_TwoFields_b) ==
+  boolFromRef(TwoFieldsFromRef(other).af_a_TwoFields_b))))
+}
+
 method testNullableComparisoin() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), boolType())
 {
   var adt1: Ref
   var adt2: Ref
   var anon: Ref
-  adt1 := TwoFieldsToRef(ac_TwoFields(intToRef(0), boolToRef(true)))
-  adt2 := TwoFieldsToRef(ac_TwoFields(intToRef(1), boolToRef(false)))
+  adt1 := con(intToRef(0), boolToRef(true))
+  adt2 := con(intToRef(1), boolToRef(false))
   if (adt1 != nullValue()) {
-    anon := aeq_a_TwoFields(adt1, adt2)
+    anon := equals(adt1, adt2)
   } else {
     anon := boolToRef(false)}
   if (boolFromRef(anon)) {

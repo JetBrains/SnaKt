@@ -75,13 +75,20 @@ function sumFirstTwoNodes(node: Ref): Ref
   (let nextNode_0 ==
     (next(node)) in
     (let anon_1_0 ==
-      ((!(nextNode_0 == nullValue()) ?
+      ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+      nextNode_0 == nullValue() && nullValue() == nullValue()) ?
         plusInts(value(node), value(nextNode_0)) :
         null)) in
       (let anon_2_0 ==
-        ((!!(nextNode_0 == nullValue()) ? value(node) : null)) in
+        ((!!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+        nextNode_0 == nullValue() && nullValue() == nullValue()) ?
+          value(node) :
+          null)) in
         (let anon_0_0 ==
-          ((!(nextNode_0 == nullValue()) ? anon_1_0 : anon_2_0)) in
+          ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+          nextNode_0 == nullValue() && nullValue() == nullValue()) ?
+            anon_1_0 :
+            anon_2_0)) in
           anon_0_0))))
 }
 
@@ -95,7 +102,9 @@ function isLastNode(node: Ref): Ref
   requires isSubtype(typeOf(node), Node())
   ensures isSubtype(typeOf(result), boolType())
 {
-  boolToRef(next(node) == nullValue())
+  orBools(andBools(boolToRef(next(node) != nullValue()), boolToRef(next(node) ==
+  nullValue())), andBools(boolToRef(next(node) == nullValue()), boolToRef(nullValue() ==
+  nullValue())))
 }
 
 function next(this: Ref): Ref
@@ -116,13 +125,20 @@ function length(node: Ref): Ref
   (let nextNode_0 ==
     (next(node)) in
     (let anon_1_0 ==
-      ((nextNode_0 == nullValue() ? intToRef(1) : null)) in
+      ((nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+      nextNode_0 == nullValue() && nullValue() == nullValue() ?
+        intToRef(1) :
+        null)) in
       (let anon_2_0 ==
-        ((!(nextNode_0 == nullValue()) ?
+        ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+        nextNode_0 == nullValue() && nullValue() == nullValue()) ?
           plusInts(intToRef(1), length(nextNode_0)) :
           null)) in
         (let anon_0_0 ==
-          ((nextNode_0 == nullValue() ? anon_1_0 : anon_2_0)) in
+          ((nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+          nextNode_0 == nullValue() && nullValue() == nullValue() ?
+            anon_1_0 :
+            anon_2_0)) in
           anon_0_0))))
 }
 
@@ -149,13 +165,20 @@ function sumAllNodes(node: Ref): Ref
   (let nextNode_0 ==
     (next(node)) in
     (let anon_1_0 ==
-      ((nextNode_0 == nullValue() ? value(node) : null)) in
+      ((nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+      nextNode_0 == nullValue() && nullValue() == nullValue() ?
+        value(node) :
+        null)) in
       (let anon_2_0 ==
-        ((!(nextNode_0 == nullValue()) ?
+        ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+        nextNode_0 == nullValue() && nullValue() == nullValue()) ?
           plusInts(value(node), sumAllNodes(nextNode_0)) :
           null)) in
         (let anon_0_0 ==
-          ((nextNode_0 == nullValue() ? anon_1_0 : anon_2_0)) in
+          ((nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+          nextNode_0 == nullValue() && nullValue() == nullValue() ?
+            anon_1_0 :
+            anon_2_0)) in
           anon_0_0))))
 }
 
@@ -173,14 +196,22 @@ function containsValue(node: Ref, target: Ref): Ref
   (let nextNode_0 ==
     (next(node)) in
     (let anon_1_0 ==
-      ((!(nextNode_0 == nullValue()) ?
+      ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+      nextNode_0 == nullValue() && nullValue() == nullValue()) ?
         containsValue(nextNode_0, target) :
         null)) in
       (let anon_2_0 ==
-        ((!!(nextNode_0 == nullValue()) ? boolToRef(false) : null)) in
+        ((!!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+        nextNode_0 == nullValue() && nullValue() == nullValue()) ?
+          boolToRef(false) :
+          null)) in
         (let anon_0_0 ==
-          ((!(nextNode_0 == nullValue()) ? anon_1_0 : anon_2_0)) in
-          (intFromRef(value(node)) == intFromRef(target) ?
+          ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+          nextNode_0 == nullValue() && nullValue() == nullValue()) ?
+            anon_1_0 :
+            anon_2_0)) in
+          (isSubtype(typeOf(target), intType()) &&
+          intFromRef(value(node)) == intFromRef(target) ?
             boolToRef(true) :
             anon_0_0)))))
 }
@@ -207,9 +238,13 @@ function aliasAndReassign(node: Ref): Ref
       (let fallbackValue_0 ==
         (intToRef(-1)) in
         (let fallbackValue_1 ==
-          ((!(alias2_0 == nullValue()) ? value(alias2_0) : null)) in
+          ((!(alias2_0 != nullValue() && alias2_0 == nullValue() ||
+          alias2_0 == nullValue() && nullValue() == nullValue()) ?
+            value(alias2_0) :
+            null)) in
           (let fallbackValue_2 ==
-            ((!(alias2_0 == nullValue()) ?
+            ((!(alias2_0 != nullValue() && alias2_0 == nullValue() ||
+            alias2_0 == nullValue() && nullValue() == nullValue()) ?
               fallbackValue_1 :
               fallbackValue_0)) in
             fallbackValue_2)))))
@@ -282,11 +317,20 @@ function getNextValueUsingId(node: Ref): Ref
   (let nextNode_0 ==
     (id(next(node))) in
     (let anon_1_0 ==
-      ((nextNode_0 == nullValue() ? intToRef(0) : null)) in
+      ((nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+      nextNode_0 == nullValue() && nullValue() == nullValue() ?
+        intToRef(0) :
+        null)) in
       (let anon_2_0 ==
-        ((!(nextNode_0 == nullValue()) ? value(nextNode_0) : null)) in
+        ((!(nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+        nextNode_0 == nullValue() && nullValue() == nullValue()) ?
+          value(nextNode_0) :
+          null)) in
         (let anon_0_0 ==
-          ((nextNode_0 == nullValue() ? anon_1_0 : anon_2_0)) in
+          ((nextNode_0 != nullValue() && nextNode_0 == nullValue() ||
+          nextNode_0 == nullValue() && nullValue() == nullValue() ?
+            anon_1_0 :
+            anon_2_0)) in
           anon_0_0))))
 }
 

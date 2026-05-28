@@ -1,8 +1,21 @@
 /Matrix.kt: info: Generated Viper text for identity:
+function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), intType())
+  requires isSubtype(typeOf(c), intType())
+  requires isSubtype(typeOf(d), intType())
+  ensures isSubtype(typeOf(result), Mat2())
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
+  ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
+
+
 function identity(): Ref
   ensures isSubtype(typeOf(result), Mat2())
 {
-  Mat2ToRef(ac_Mat2(intToRef(1), intToRef(0), intToRef(0), intToRef(1)))
+  con(intToRef(1), intToRef(0), intToRef(0), intToRef(1))
 }
 
 adt a_Mat2 {
@@ -10,10 +23,23 @@ adt a_Mat2 {
 }
 
 /Matrix.kt: info: Generated Viper text for zeroMat:
+function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), intType())
+  requires isSubtype(typeOf(c), intType())
+  requires isSubtype(typeOf(d), intType())
+  ensures isSubtype(typeOf(result), Mat2())
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
+  ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
+
+
 function zeroMat(): Ref
   ensures isSubtype(typeOf(result), Mat2())
 {
-  Mat2ToRef(ac_Mat2(intToRef(0), intToRef(0), intToRef(0), intToRef(0)))
+  con(intToRef(0), intToRef(0), intToRef(0), intToRef(0))
 }
 
 adt a_Mat2 {
@@ -21,11 +47,25 @@ adt a_Mat2 {
 }
 
 /Matrix.kt: info: Generated Viper text for transpose:
+function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), intType())
+  requires isSubtype(typeOf(c), intType())
+  requires isSubtype(typeOf(d), intType())
+  ensures isSubtype(typeOf(result), Mat2())
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
+  ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
+
+
 function transpose(m: Ref): Ref
   requires isSubtype(typeOf(m), Mat2())
   ensures isSubtype(typeOf(result), Mat2())
 {
-  Mat2ToRef(ac_Mat2(Mat2FromRef(m).af_a_Mat2_a, Mat2FromRef(m).af_a_Mat2_c, Mat2FromRef(m).af_a_Mat2_b, Mat2FromRef(m).af_a_Mat2_d))
+  con(Mat2FromRef(m).af_a_Mat2_a, Mat2FromRef(m).af_a_Mat2_c, Mat2FromRef(m).af_a_Mat2_b,
+  Mat2FromRef(m).af_a_Mat2_d)
 }
 
 adt a_Mat2 {
@@ -38,21 +78,48 @@ function addM(x: Ref, y: Ref): Ref
   requires isSubtype(typeOf(y), Mat2())
   ensures isSubtype(typeOf(result), Mat2())
 {
-  Mat2ToRef(ac_Mat2(plusInts(Mat2FromRef(x).af_a_Mat2_a, Mat2FromRef(y).af_a_Mat2_a), plusInts(Mat2FromRef(x).af_a_Mat2_b,
-  Mat2FromRef(y).af_a_Mat2_b), plusInts(Mat2FromRef(x).af_a_Mat2_c, Mat2FromRef(y).af_a_Mat2_c), plusInts(Mat2FromRef(x).af_a_Mat2_d,
-  Mat2FromRef(y).af_a_Mat2_d)))
+  con(plusInts(Mat2FromRef(x).af_a_Mat2_a, Mat2FromRef(y).af_a_Mat2_a), plusInts(Mat2FromRef(x).af_a_Mat2_b,
+  Mat2FromRef(y).af_a_Mat2_b), plusInts(Mat2FromRef(x).af_a_Mat2_c, Mat2FromRef(y).af_a_Mat2_c),
+  plusInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_d))
 }
+
+function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), intType())
+  requires isSubtype(typeOf(c), intType())
+  requires isSubtype(typeOf(d), intType())
+  ensures isSubtype(typeOf(result), Mat2())
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
+  ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
+
 
 adt a_Mat2 {
   ac_Mat2(af_a_Mat2_a: Ref, af_a_Mat2_b: Ref, af_a_Mat2_c: Ref, af_a_Mat2_d: Ref)
 }
 
 /Matrix.kt: info: Generated Viper text for negM:
+function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), intType())
+  requires isSubtype(typeOf(c), intType())
+  requires isSubtype(typeOf(d), intType())
+  ensures isSubtype(typeOf(result), Mat2())
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
+  ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
+
+
 function negM(m: Ref): Ref
   requires isSubtype(typeOf(m), Mat2())
   ensures isSubtype(typeOf(result), Mat2())
 {
-  Mat2ToRef(ac_Mat2(negInt(Mat2FromRef(m).af_a_Mat2_a), negInt(Mat2FromRef(m).af_a_Mat2_b), negInt(Mat2FromRef(m).af_a_Mat2_c), negInt(Mat2FromRef(m).af_a_Mat2_d)))
+  con(negInt(Mat2FromRef(m).af_a_Mat2_a), negInt(Mat2FromRef(m).af_a_Mat2_b),
+  negInt(Mat2FromRef(m).af_a_Mat2_c), negInt(Mat2FromRef(m).af_a_Mat2_d))
 }
 
 adt a_Mat2 {
@@ -65,16 +132,30 @@ function addM(x: Ref, y: Ref): Ref
   requires isSubtype(typeOf(y), Mat2())
   ensures isSubtype(typeOf(result), Mat2())
 {
-  Mat2ToRef(ac_Mat2(plusInts(Mat2FromRef(x).af_a_Mat2_a, Mat2FromRef(y).af_a_Mat2_a), plusInts(Mat2FromRef(x).af_a_Mat2_b,
-  Mat2FromRef(y).af_a_Mat2_b), plusInts(Mat2FromRef(x).af_a_Mat2_c, Mat2FromRef(y).af_a_Mat2_c), plusInts(Mat2FromRef(x).af_a_Mat2_d,
-  Mat2FromRef(y).af_a_Mat2_d)))
+  con(plusInts(Mat2FromRef(x).af_a_Mat2_a, Mat2FromRef(y).af_a_Mat2_a), plusInts(Mat2FromRef(x).af_a_Mat2_b,
+  Mat2FromRef(y).af_a_Mat2_b), plusInts(Mat2FromRef(x).af_a_Mat2_c, Mat2FromRef(y).af_a_Mat2_c),
+  plusInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_d))
 }
+
+function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), intType())
+  requires isSubtype(typeOf(c), intType())
+  requires isSubtype(typeOf(d), intType())
+  ensures isSubtype(typeOf(result), Mat2())
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
+  ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
+
 
 function negM(m: Ref): Ref
   requires isSubtype(typeOf(m), Mat2())
   ensures isSubtype(typeOf(result), Mat2())
 {
-  Mat2ToRef(ac_Mat2(negInt(Mat2FromRef(m).af_a_Mat2_a), negInt(Mat2FromRef(m).af_a_Mat2_b), negInt(Mat2FromRef(m).af_a_Mat2_c), negInt(Mat2FromRef(m).af_a_Mat2_d)))
+  con(negInt(Mat2FromRef(m).af_a_Mat2_a), negInt(Mat2FromRef(m).af_a_Mat2_b),
+  negInt(Mat2FromRef(m).af_a_Mat2_c), negInt(Mat2FromRef(m).af_a_Mat2_d))
 }
 
 function subM(x: Ref, y: Ref): Ref
@@ -90,13 +171,26 @@ adt a_Mat2 {
 }
 
 /Matrix.kt: info: Generated Viper text for scaleM:
+function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), intType())
+  requires isSubtype(typeOf(c), intType())
+  requires isSubtype(typeOf(d), intType())
+  ensures isSubtype(typeOf(result), Mat2())
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
+  ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
+
+
 function scaleM(k: Ref, m: Ref): Ref
   requires isSubtype(typeOf(k), intType())
   requires isSubtype(typeOf(m), Mat2())
   ensures isSubtype(typeOf(result), Mat2())
 {
-  Mat2ToRef(ac_Mat2(timesInts(k, Mat2FromRef(m).af_a_Mat2_a), timesInts(k, Mat2FromRef(m).af_a_Mat2_b), timesInts(k,
-  Mat2FromRef(m).af_a_Mat2_c), timesInts(k, Mat2FromRef(m).af_a_Mat2_d)))
+  con(timesInts(k, Mat2FromRef(m).af_a_Mat2_a), timesInts(k, Mat2FromRef(m).af_a_Mat2_b),
+  timesInts(k, Mat2FromRef(m).af_a_Mat2_c), timesInts(k, Mat2FromRef(m).af_a_Mat2_d))
 }
 
 adt a_Mat2 {
@@ -104,16 +198,30 @@ adt a_Mat2 {
 }
 
 /Matrix.kt: info: Generated Viper text for mulM:
+function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), intType())
+  requires isSubtype(typeOf(c), intType())
+  requires isSubtype(typeOf(d), intType())
+  ensures isSubtype(typeOf(result), Mat2())
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
+  ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
+
+
 function mulM(x: Ref, y: Ref): Ref
   requires isSubtype(typeOf(x), Mat2())
   requires isSubtype(typeOf(y), Mat2())
   ensures isSubtype(typeOf(result), Mat2())
 {
-  Mat2ToRef(ac_Mat2(plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_a, Mat2FromRef(y).af_a_Mat2_a),
+  con(plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_a, Mat2FromRef(y).af_a_Mat2_a),
   timesInts(Mat2FromRef(x).af_a_Mat2_b, Mat2FromRef(y).af_a_Mat2_c)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_a,
-  Mat2FromRef(y).af_a_Mat2_b), timesInts(Mat2FromRef(x).af_a_Mat2_b, Mat2FromRef(y).af_a_Mat2_d)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_c,
-  Mat2FromRef(y).af_a_Mat2_a), timesInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_c)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_c,
-  Mat2FromRef(y).af_a_Mat2_b), timesInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_d))))
+  Mat2FromRef(y).af_a_Mat2_b), timesInts(Mat2FromRef(x).af_a_Mat2_b, Mat2FromRef(y).af_a_Mat2_d)),
+  plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_c, Mat2FromRef(y).af_a_Mat2_a),
+  timesInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_c)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_c,
+  Mat2FromRef(y).af_a_Mat2_b), timesInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_d)))
 }
 
 adt a_Mat2 {
@@ -125,8 +233,22 @@ function adj(m: Ref): Ref
   requires isSubtype(typeOf(m), Mat2())
   ensures isSubtype(typeOf(result), Mat2())
 {
-  Mat2ToRef(ac_Mat2(Mat2FromRef(m).af_a_Mat2_d, negInt(Mat2FromRef(m).af_a_Mat2_b), negInt(Mat2FromRef(m).af_a_Mat2_c), Mat2FromRef(m).af_a_Mat2_a))
+  con(Mat2FromRef(m).af_a_Mat2_d, negInt(Mat2FromRef(m).af_a_Mat2_b), negInt(Mat2FromRef(m).af_a_Mat2_c),
+  Mat2FromRef(m).af_a_Mat2_a)
 }
+
+function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), intType())
+  requires isSubtype(typeOf(c), intType())
+  requires isSubtype(typeOf(d), intType())
+  ensures isSubtype(typeOf(result), Mat2())
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
+  ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
+
 
 adt a_Mat2 {
   ac_Mat2(af_a_Mat2_a: Ref, af_a_Mat2_b: Ref, af_a_Mat2_c: Ref, af_a_Mat2_d: Ref)
@@ -158,17 +280,48 @@ adt a_Mat2 {
 }
 
 /Matrix.kt: info: Generated Viper text for transposeInvolution:
+function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), intType())
+  requires isSubtype(typeOf(c), intType())
+  requires isSubtype(typeOf(d), intType())
+  ensures isSubtype(typeOf(result), Mat2())
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
+  ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
+
+
+function equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Mat2())
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), Mat2())),
+  andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_a), intType())),
+  boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_a) ==
+  intFromRef(Mat2FromRef(other).af_a_Mat2_a)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_b),
+  intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_b) ==
+  intFromRef(Mat2FromRef(other).af_a_Mat2_b)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_c),
+  intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_c) ==
+  intFromRef(Mat2FromRef(other).af_a_Mat2_c)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_d),
+  intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_d) ==
+  intFromRef(Mat2FromRef(other).af_a_Mat2_d))))
+}
+
 function transpose(m: Ref): Ref
   requires isSubtype(typeOf(m), Mat2())
   ensures isSubtype(typeOf(result), Mat2())
 {
-  Mat2ToRef(ac_Mat2(Mat2FromRef(m).af_a_Mat2_a, Mat2FromRef(m).af_a_Mat2_c, Mat2FromRef(m).af_a_Mat2_b, Mat2FromRef(m).af_a_Mat2_d))
+  con(Mat2FromRef(m).af_a_Mat2_a, Mat2FromRef(m).af_a_Mat2_c, Mat2FromRef(m).af_a_Mat2_b,
+  Mat2FromRef(m).af_a_Mat2_d)
 }
 
 method transposeInvolution(m: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(m), Mat2())
   ensures isSubtype(typeOf(v_ret_0), unitType())
-  ensures boolFromRef(aeq_a_Mat2(transpose(transpose(m)), m))
+  ensures boolFromRef(equals(transpose(transpose(m)), m))
 {
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -179,10 +332,40 @@ adt a_Mat2 {
 }
 
 /Matrix.kt: info: Generated Viper text for identityLeftUnit:
+function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), intType())
+  requires isSubtype(typeOf(c), intType())
+  requires isSubtype(typeOf(d), intType())
+  ensures isSubtype(typeOf(result), Mat2())
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
+  ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
+
+
+function equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Mat2())
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), Mat2())),
+  andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_a), intType())),
+  boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_a) ==
+  intFromRef(Mat2FromRef(other).af_a_Mat2_a)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_b),
+  intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_b) ==
+  intFromRef(Mat2FromRef(other).af_a_Mat2_b)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_c),
+  intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_c) ==
+  intFromRef(Mat2FromRef(other).af_a_Mat2_c)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_d),
+  intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_d) ==
+  intFromRef(Mat2FromRef(other).af_a_Mat2_d))))
+}
+
 function identity(): Ref
   ensures isSubtype(typeOf(result), Mat2())
 {
-  Mat2ToRef(ac_Mat2(intToRef(1), intToRef(0), intToRef(0), intToRef(1)))
+  con(intToRef(1), intToRef(0), intToRef(0), intToRef(1))
 }
 
 function mulM(x: Ref, y: Ref): Ref
@@ -190,17 +373,18 @@ function mulM(x: Ref, y: Ref): Ref
   requires isSubtype(typeOf(y), Mat2())
   ensures isSubtype(typeOf(result), Mat2())
 {
-  Mat2ToRef(ac_Mat2(plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_a, Mat2FromRef(y).af_a_Mat2_a),
+  con(plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_a, Mat2FromRef(y).af_a_Mat2_a),
   timesInts(Mat2FromRef(x).af_a_Mat2_b, Mat2FromRef(y).af_a_Mat2_c)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_a,
-  Mat2FromRef(y).af_a_Mat2_b), timesInts(Mat2FromRef(x).af_a_Mat2_b, Mat2FromRef(y).af_a_Mat2_d)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_c,
-  Mat2FromRef(y).af_a_Mat2_a), timesInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_c)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_c,
-  Mat2FromRef(y).af_a_Mat2_b), timesInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_d))))
+  Mat2FromRef(y).af_a_Mat2_b), timesInts(Mat2FromRef(x).af_a_Mat2_b, Mat2FromRef(y).af_a_Mat2_d)),
+  plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_c, Mat2FromRef(y).af_a_Mat2_a),
+  timesInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_c)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_c,
+  Mat2FromRef(y).af_a_Mat2_b), timesInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_d)))
 }
 
 method identityLeftUnit(m: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(m), Mat2())
   ensures isSubtype(typeOf(v_ret_0), unitType())
-  ensures boolFromRef(aeq_a_Mat2(mulM(identity(), m), m))
+  ensures boolFromRef(equals(mulM(identity(), m), m))
 {
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -211,10 +395,40 @@ adt a_Mat2 {
 }
 
 /Matrix.kt: info: Generated Viper text for identityRightUnit:
+function con(a: Ref, b: Ref, c: Ref, d: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), intType())
+  requires isSubtype(typeOf(c), intType())
+  requires isSubtype(typeOf(d), intType())
+  ensures isSubtype(typeOf(result), Mat2())
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_a) == intFromRef(a)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_b) == intFromRef(b)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_c) == intFromRef(c)
+  ensures intFromRef(Mat2FromRef(result).af_a_Mat2_d) == intFromRef(d)
+  ensures Mat2FromRef(result) == ac_Mat2(a, b, c, d)
+
+
+function equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Mat2())
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), Mat2())),
+  andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_a), intType())),
+  boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_a) ==
+  intFromRef(Mat2FromRef(other).af_a_Mat2_a)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_b),
+  intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_b) ==
+  intFromRef(Mat2FromRef(other).af_a_Mat2_b)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_c),
+  intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_c) ==
+  intFromRef(Mat2FromRef(other).af_a_Mat2_c)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_d),
+  intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_d) ==
+  intFromRef(Mat2FromRef(other).af_a_Mat2_d))))
+}
+
 function identity(): Ref
   ensures isSubtype(typeOf(result), Mat2())
 {
-  Mat2ToRef(ac_Mat2(intToRef(1), intToRef(0), intToRef(0), intToRef(1)))
+  con(intToRef(1), intToRef(0), intToRef(0), intToRef(1))
 }
 
 function mulM(x: Ref, y: Ref): Ref
@@ -222,17 +436,18 @@ function mulM(x: Ref, y: Ref): Ref
   requires isSubtype(typeOf(y), Mat2())
   ensures isSubtype(typeOf(result), Mat2())
 {
-  Mat2ToRef(ac_Mat2(plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_a, Mat2FromRef(y).af_a_Mat2_a),
+  con(plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_a, Mat2FromRef(y).af_a_Mat2_a),
   timesInts(Mat2FromRef(x).af_a_Mat2_b, Mat2FromRef(y).af_a_Mat2_c)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_a,
-  Mat2FromRef(y).af_a_Mat2_b), timesInts(Mat2FromRef(x).af_a_Mat2_b, Mat2FromRef(y).af_a_Mat2_d)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_c,
-  Mat2FromRef(y).af_a_Mat2_a), timesInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_c)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_c,
-  Mat2FromRef(y).af_a_Mat2_b), timesInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_d))))
+  Mat2FromRef(y).af_a_Mat2_b), timesInts(Mat2FromRef(x).af_a_Mat2_b, Mat2FromRef(y).af_a_Mat2_d)),
+  plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_c, Mat2FromRef(y).af_a_Mat2_a),
+  timesInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_c)), plusInts(timesInts(Mat2FromRef(x).af_a_Mat2_c,
+  Mat2FromRef(y).af_a_Mat2_b), timesInts(Mat2FromRef(x).af_a_Mat2_d, Mat2FromRef(y).af_a_Mat2_d)))
 }
 
 method identityRightUnit(m: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(m), Mat2())
   ensures isSubtype(typeOf(v_ret_0), unitType())
-  ensures boolFromRef(aeq_a_Mat2(mulM(m, identity()), m))
+  ensures boolFromRef(equals(mulM(m, identity()), m))
 {
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())

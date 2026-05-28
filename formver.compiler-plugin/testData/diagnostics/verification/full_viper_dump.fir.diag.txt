@@ -2,8 +2,8 @@
 Function(
     name = f,
     {
-        Declare(Var(foo), [pkg$[c$Foo]], MethodCall(callee = con, Int(0)));
-        Declare(Var(l0_p), [pkg$[c$Pair]], AdtConstructorRef(Int(1), Int(2)));
+        Declare(Var(foo), [pkg$[c$Foo]], MethodCall(callee = con_Foo, Int(0)));
+        Declare(Var(l0_p), [pkg$[c$Pair]], FunctionCall(Int(1), Int(2)));
     },
     return = lbl_ret_0,
 )
@@ -304,21 +304,18 @@ function addStrings(arg_1: Ref, arg_2: Ref): Ref
     stringFromRef(arg_1) ++ stringFromRef(arg_2)
 
 
-function aeq_a_Pair(arg_1: Ref, arg_2: Ref): Ref
-  requires isSubtype(typeOf(arg_1), Pair())
-  ensures isSubtype(typeOf(result), boolType())
-{
-  boolToRef((isSubtype(typeOf(arg_2), Pair()) ?
-    intFromRef(PairFromRef(arg_1).af_a_Pair_a) ==
-    intFromRef(PairFromRef(arg_2).af_a_Pair_a) &&
-    intFromRef(PairFromRef(arg_1).af_a_Pair_b) ==
-    intFromRef(PairFromRef(arg_2).af_a_Pair_b) :
-    false))
-}
-
 function andBools(arg_1: Ref, arg_2: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
   ensures boolFromRef(result) == (boolFromRef(arg_1) && boolFromRef(arg_2))
+
+
+function con_Pair(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), intType())
+  ensures isSubtype(typeOf(result), Pair())
+  ensures intFromRef(PairFromRef(result).af_a_Pair_a) == intFromRef(a)
+  ensures intFromRef(PairFromRef(result).af_a_Pair_b) == intFromRef(b)
+  ensures PairFromRef(result) == ac_Pair(a, b)
 
 
 function divInts(arg_1: Ref, arg_2: Ref): Ref
@@ -445,7 +442,7 @@ predicate Foo_unique(this: Ref) {
   true
 }
 
-method con(par_x: Ref) returns (ret_1: Ref)
+method con_Foo(par_x: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_x), intType())
   ensures isSubtype(typeOf(ret_1), Foo())
   ensures acc(Foo_unique(ret_1), write)
@@ -457,8 +454,8 @@ method f() returns (v_ret_0: Ref)
 {
   var foo: Ref
   var l0_p: Ref
-  foo := con(intToRef(0))
-  l0_p := PairToRef(ac_Pair(intToRef(1), intToRef(2)))
+  foo := con_Foo(intToRef(0))
+  l0_p := con_Pair(intToRef(1), intToRef(2))
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }

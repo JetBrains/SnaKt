@@ -10,9 +10,7 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
-import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
-import org.jetbrains.kotlin.fir.declarations.utils.isData
-import org.jetbrains.kotlin.fir.declarations.utils.isFinal
+import org.jetbrains.kotlin.fir.declarations.utils.*
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
@@ -24,21 +22,19 @@ import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.common.UnsupportedFeatureBehaviour
 import org.jetbrains.kotlin.formver.core.*
-import org.jetbrains.kotlin.formver.core.domains.FunctionBuilder
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
-import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.isOf
 import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.And
+import org.jetbrains.kotlin.name.CallableId
+import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.core.purity.checkValidity
 import org.jetbrains.kotlin.formver.core.purity.isPure
 import org.jetbrains.kotlin.formver.viper.SymbolicName
-import org.jetbrains.kotlin.formver.viper.ast.AdtDecl
-import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Program
-import org.jetbrains.kotlin.formver.viper.ast.Type
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
 
 
@@ -49,7 +45,9 @@ import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
  * We need the FirSession to get access to the TypeContext.
  */
 class ProgramConverter(
-    val session: FirSession, override val config: PluginConfiguration, override val errorCollector: ErrorCollector
+    override val session: FirSession,
+    override val config: PluginConfiguration,
+    override val errorCollector: ErrorCollector
 ) : ProgramConversionContext {
     private val specialFunctions: Map<SymbolicName, SpecialKotlinFunction> = buildMap {
         putAll(SpecialKotlinFunctions.byName)
@@ -88,8 +86,7 @@ class ProgramConverter(
         // Public fields with the same name are represented differently at `FieldEmbedding` level
         // but map to the same Viper field, so we deduplicate before emitting.
         fields = typeResolver.backingFields().distinctBy { it.name }.map { it.toViper() },
-        functions = SpecialFunctions.all + linearizedBodyResolver.functions +
-            typeResolver.adtTypeEmbeddings().map { buildAdtEqualityFunction(it, typeResolver.lookupAdtFields(it.name)) },
+        functions = SpecialFunctions.all + linearizedBodyResolver.functions,
         methods = SpecialMethods.all + linearizedBodyResolver.methods,
         predicates = typeResolver.classTypeEmbeddings().map {
             with(typeResolver) {
@@ -311,6 +308,8 @@ class ProgramConverter(
             return existing
         }
         impureFunctions[lookupName]?.let { return it }
+        // ADT equals may already be registered as pure by tryEmbedAdtEquals.
+        pureFunctions[lookupName]?.let { return it }
         val callable = embedCallable(symbol)
         return UserFunctionEmbedding(callable).also {
             impureFunctions[lookupName] = it
@@ -323,16 +322,26 @@ class ProgramConverter(
     }
 
     override fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding {
+        // Calls to ADT constructors must be handled separately
         if (symbol is FirConstructorSymbol) {
             val cls = symbol.resolvedReturnType.toRegularClassSymbol(session)
             if (cls?.isAdt(session) == true) return embedAdtConstructorPureFunction(symbol)
+        }
+        // Calls to ADT equality must be handled separately
+        if (symbol.isEqualsWithOneParam) {
+            val receiverType = symbol.dispatchReceiverType
+            if (receiverType != null) {
+                tryEmbedAdtEquals(receiverType)?.let { return it }
+            }
         }
         return if (symbol.isPure(session)) embedPureFunction(symbol) else embedFunction(symbol)
     }
 
     private fun embedAdtConstructorPureFunction(symbol: FirConstructorSymbol): PureUserFunctionEmbedding {
-        pureFunctions[symbol.embedName(this)]?.also { return it }
+        pureFunctions[symbol.embedName(this)]?.let { return it }
         val (_, constructorSig) = embedFullSignature(symbol)
+        // Postcondition `result == Ctor(params)` links the pure function to the ADT constructor,
+        // letting the verifier reason about the constructed value's fields.
         val adtPostcondition = EqCmp(
             constructorSig.returns,
             AdtConstructorRef(constructorSig.returns.type, constructorSig.params)
@@ -347,6 +356,7 @@ class ProgramConverter(
     /**
      * Returns an embedding of the class type, with details set.
      */
+    @OptIn(DirectDeclarationsAccess::class)
     private fun embedClass(symbol: FirRegularClassSymbol): ClassTypeEmbedding {
         val className = symbol.classId.embedName()
         typeResolver.lookupClassTypeEmbedding(className)?.let { return it }
@@ -371,68 +381,165 @@ class ProgramConverter(
         return embedding
     }
 
-    @OptIn(DirectDeclarationsAccess::class)
     private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding {
         val name = symbol.classId.embedName()
         typeResolver.lookupAdtTypeEmbedding(name)?.let { return it }
 
-        // To avoid rollbacks on a discovered violation, we split the handling into a verification and
-        // embedding phase
-        // 1. Validate ADT and members
-        if (!validateAdtClass(symbol)) {
-            typeResolver.registerAdt(name, InvalidAdtTypeEmbedding)
-            return InvalidAdtTypeEmbedding
-        }
-
-        // 2. Embed ADT and members
-        val adtEmbedding = AdtTypeEmbeddingImpl(name)
-        typeResolver.registerAdt(name, adtEmbedding)
-        symbol.declarationSymbols.filterIsInstance<FirPropertySymbol>().forEach {
-            embedAdtField(it, adtEmbedding)
-        }
-        typeResolver.registerAdtEquality(name, AdtEqualityEmbedding(adtEmbedding))
-        return adtEmbedding
+        return embedAdtDataClassOrObject(symbol, name)
     }
 
     @OptIn(DirectDeclarationsAccess::class)
-    private fun validateAdtClass(symbol: FirRegularClassSymbol): Boolean {
-        var valid = validateAdtHeader(symbol)
-        valid = valid && symbol.declarationSymbols.fold(true) { acc, sym ->
-            acc and validateAdtMember(sym)
+    private fun embedAdtDataClassOrObject(symbol: FirRegularClassSymbol, name: ScopedName): AdtTypeEmbedding {
+        if (!validateAdtDataClassOrObject(symbol)) {
+            typeResolver.registerAdt(name, InvalidAdtTypeEmbedding)
+            return InvalidAdtTypeEmbedding
         }
-        return valid
+        val adtEmbedding = AdtTypeEmbeddingImpl(name)
+        typeResolver.registerAdt(name, adtEmbedding)
+
+        symbol.declarationSymbols.filterIsInstance<FirPropertySymbol>().forEach {
+            embedAdtField(it, adtEmbedding)
+        }
+        return adtEmbedding
     }
 
-    private fun validateAdtHeader(symbol: FirRegularClassSymbol): Boolean {
+    private fun demoteToImpure(
+        baseSig: NamedFunctionSignature,
+        pureSignature: FullNamedFunctionSignature,
+    ): FullNamedFunctionSignature {
+        val impureReturnTarget = returnTargetProducer.getFresh(pureSignature.returns.type)
+        val impureNamedSig = object : NamedFunctionSignature by baseSig {
+            override val isPure = false
+            override val returns = impureReturnTarget.variable
+        }
+        return object : FullNamedFunctionSignature, NamedFunctionSignature by impureNamedSig {
+            override val preconditions = impureNamedSig.basicPreconditions(typeResolver)
+            override val postconditions = impureNamedSig.userFunctionPostcondition(typeResolver)
+            override val declarationSource = pureSignature.declarationSource
+        }
+    }
+
+    private fun buildAndStoreAdtEquals(
+        equalsSymbol: FirFunctionSymbol<*>,
+        baseSig: NamedFunctionSignature,
+        pureSignature: FullNamedFunctionSignature,
+        pureReturnTarget: ReturnTarget,
+        buildEqualsExp: (StmtConversionContext, thisReceiver: VariableEmbedding, other: VariableEmbedding) -> ExpEmbedding,
+    ): CallableEmbedding {
+        val pureEmbedding = ensurePureUserFunctionEmbedding(equalsSymbol, pureSignature)
+        val ctx = createBodyConversionContext(baseSig, pureReturnTarget)
+        val thisReceiver = pureSignature.dispatchReceiver!!
+        val other = pureSignature.params[0]
+
+        val equalsExp = buildEqualsExp(ctx, thisReceiver, other)
+        val bodyExp = Return(equalsExp, pureReturnTarget)
+
+        // Optimistically register as pure; demote to impure if the synthesized body
+        // contains impure subexpressions (e.g. a field's equals is a MethodCall).
+        return if (bodyExp.isPure()) {
+            convertedBodyResolver.storePure(pureSignature.name, bodyExp)
+            pureEmbedding
+        } else {
+            pureFunctions.remove(pureSignature.name)
+            val impureSignature = demoteToImpure(baseSig, pureSignature)
+            UserFunctionEmbedding(NonInlineNamedFunction(impureSignature)).also {
+                impureFunctions[pureSignature.name] = it
+            }
+        }
+    }
+
+    override fun tryEmbedAdtEquals(receiverType: ConeKotlinType): CallableEmbedding? {
+        val classSymbol = receiverType.toRegularClassSymbol(session) ?: return null
+        if (!classSymbol.isAdt(session)) return null
+
+        val adtEmbedding = embedAdtClass(classSymbol) as? AdtTypeEmbeddingImpl ?: return null
+
+        return buildAdtProductEquals(classSymbol, adtEmbedding)
+    }
+
+    private fun buildAdtProductEquals(
+        classSymbol: FirRegularClassSymbol,
+        adtEmbedding: AdtTypeEmbeddingImpl,
+    ): CallableEmbedding? {
+        val equalsSymbol = classSymbol.findSyntheticEquals(session) ?: return null
+
+        val equalsName = equalsSymbol.embedName(this)
+        pureFunctions[equalsName]?.let { return it }
+        impureFunctions[equalsName]?.let { return it }
+
+        val (_, base) = embedFullSignature(equalsSymbol)
+        val pureReturnTarget = ReturnTarget.createForPureFunction(embedType(equalsSymbol.resolvedReturnType))
+        val pureSignature = object : FullNamedFunctionSignature by base {
+            override val isPure: Boolean = true
+            override val returns: VariableEmbedding = pureReturnTarget.variable
+            override val postconditions: List<ExpEmbedding> by lazy {
+                this.userFunctionPostcondition(typeResolver)
+            }
+        }
+
+        return buildAndStoreAdtEquals(equalsSymbol, pureSignature, pureSignature, pureReturnTarget) { ctx, thisReceiver, other ->
+            val adtType = thisReceiver.type
+            val fields = typeResolver.lookupAdtFields(adtEmbedding.name)
+
+            val fieldComparisons = fields.map { field ->
+                val fieldEqualsCallable = tryEmbedAdtEquals(field.originalType) ?: run {
+                    val fieldEqualsSymbol = field.originalType.findEqualsSymbol(session)
+                        ?: error("No equals symbol found for field ${field.name}")
+                    ctx.embedAnyFunction(fieldEqualsSymbol)
+                }
+                desugarEqualsCall(
+                    AdtFieldAccess(thisReceiver, adtEmbedding, field),
+                    AdtFieldAccess(other.withType(adtType), adtEmbedding, field),
+                    fieldEqualsCallable,
+                    ctx,
+                )
+            }
+
+            val typeCheck: ExpEmbedding = Is(other, adtType)
+            fieldComparisons.fold(typeCheck) { acc, cmp -> And(acc, cmp) }
+        }
+    }
+
+    @OptIn(DirectDeclarationsAccess::class)
+    private fun validateAdtDataClassOrObject(symbol: FirRegularClassSymbol): Boolean {
+        var isValid = validateAdtDataClassOrObjectSignature(symbol)
+        isValid = symbol.declarationSymbols.fold(isValid) { acc, sym ->
+            validateAdtDataClassOrObjectMember(sym) && acc
+        }
+        return isValid
+    }
+
+    private fun validateAdtDataClassOrObjectSignature(symbol: FirRegularClassSymbol): Boolean {
+        var isValid = true
         if (!symbol.isData) {
             errorCollector.addAdtError(
                 symbol.source,
-                "Invalid ADT annotation: @ADT may only be applied to data class or data object declarations",
+                "Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations",
             )
-            return false
+            isValid = false
         }
         if (symbol.typeParameterSymbols.isNotEmpty()) {
             errorCollector.addAdtError(
                 symbol.source,
                 "Invalid ADT annotation: An @ADT declaration must not have type parameters",
             )
-            return false
+            isValid = false
         }
         if (symbol.resolvedSuperTypes.any { !it.isAny }) {
             errorCollector.addAdtError(
                 symbol.source,
                 "Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface",
             )
-            return false
+            isValid = false
         }
-        return true
+        return isValid
     }
 
-    private fun validateAdtMember(symbol: FirBasedSymbol<*>): Boolean {
-        var valid = true
+    private fun validateAdtDataClassOrObjectMember(symbol: FirBasedSymbol<*>): Boolean {
+        var isValid = true
         fun reportViolation(reason: String) {
             errorCollector.addAdtError(symbol.source, "Invalid ADT annotation: $reason")
-            valid = false
+            isValid = false
         }
         when (symbol) {
             is FirPropertySymbol -> {
@@ -448,11 +555,12 @@ class ProgramConverter(
                     reportViolation("An @ADT declaration must not have secondary constructors")
                 }
             }
-            is FirNamedFunctionSymbol -> if (symbol.origin == FirDeclarationOrigin.Source)
+            is FirNamedFunctionSymbol -> if (symbol.origin == FirDeclarationOrigin.Source
+                && !(symbol.name.identifier == "equals" && symbol.valueParameterSymbols.size == 1))
                 reportViolation("An @ADT declaration must not have user-declared member functions")
             else -> reportViolation("An @ADT declaration does not support symbols of type ${symbol.javaClass.simpleName}")
         }
-        return valid
+        return isValid
     }
 
     private fun embedAdtField(symbol: FirPropertySymbol, adtEmbedding: AdtTypeEmbeddingImpl) {
@@ -460,54 +568,13 @@ class ProgramConverter(
             AdtFieldEmbedding(
                 name = AdtFieldName(adtEmbedding.adtName, SimpleKotlinName(symbol.name)),
                 type = embedType(symbol.resolvedReturnType),
+                originalType = symbol.resolvedReturnType,
             )
         }
         typeResolver.getOrPutProperty(symbol.embedMemberPropertyName(this)) {
             PropertyEmbedding(AdtFieldGetter(field, adtEmbedding), setter = null, hasDefaultBehaviour = true)
         }
     }
-
-    private fun compareAdtField(lhsField: Exp, rhsField: Exp, fieldType: TypeEmbedding): Exp {
-        val pretype = fieldType.pretype
-        val comparison = if (pretype is AdtTypeEmbeddingImpl) {
-            RuntimeTypeDomain.boolInjection.fromRef(
-                Exp.FuncApp(pretype.equalityFunctionName, listOf(lhsField, rhsField), Type.Ref)
-            )
-        } else {
-            val primitiveInjection = fieldType.injectionOrNull
-            if (primitiveInjection != null) {
-                Exp.EqCmp(primitiveInjection.fromRef(lhsField), primitiveInjection.fromRef(rhsField))
-            } else {
-                Exp.EqCmp(lhsField, rhsField)
-            }
-        }
-        if (!fieldType.isNullable) return comparison
-        val nullVal = RuntimeTypeDomain.nullValue()
-        return Exp.TernaryExp(Exp.EqCmp(lhsField, nullVal), Exp.EqCmp(rhsField, nullVal), comparison)
-    }
-
-    private fun buildAdtEqualityFunction(embedding: AdtTypeEmbeddingImpl, fields: List<AdtFieldEmbedding>) =
-        FunctionBuilder.build(embedding.equalityFunctionName) {
-            val lhs = argument(Type.Ref)
-            val rhs = argument(Type.Ref)
-            returns(Type.Ref)
-            precondition { lhs isOf embedding.runtimeType }
-            postcondition { result isOf RuntimeTypeDomain.boolInjection.typeFunction() }
-            val rhsIsCorrectType = rhs isOf embedding.runtimeType
-            val boolResult = if (fields.isEmpty()) {
-                rhsIsCorrectType
-            } else {
-                val lhsUnwrapped = embedding.injection.fromRef(lhs)
-                val rhsUnwrapped = embedding.injection.fromRef(rhs)
-                val fieldComparisons = fields.map { field ->
-                    val lhsField = Exp.AdtDestructorApp(field.name, lhsUnwrapped, embedding.adtName)
-                    val rhsField = Exp.AdtDestructorApp(field.name, rhsUnwrapped, embedding.adtName)
-                    compareAdtField(lhsField, rhsField, field.type)
-                }.reduce { acc, next -> Exp.And(acc, next) }
-                Exp.TernaryExp(rhsIsCorrectType, fieldComparisons, Exp.BoolLit(false))
-            }
-            body(RuntimeTypeDomain.boolInjection.toRef(boolResult))
-        }
 
     override fun embedType(type: ConeKotlinType): TypeEmbedding = buildType { embedTypeWithBuilder(type) }
 

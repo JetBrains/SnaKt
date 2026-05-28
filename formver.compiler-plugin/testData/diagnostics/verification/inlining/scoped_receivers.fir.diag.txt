@@ -13,53 +13,68 @@ method with_run_extension_labeled(v_this_extension: Ref)
   var anon_13: Ref
   var v_ret_2: Ref
   var anon_14: Ref
-  var anon_15: Ref
-  var v_ret_7: Ref
-  var anon_0: Ref
-  var anon_16: Ref
-  var v_ret_8: Ref
-  var anon_1: Ref
   var anon_17: Ref
   var anon_18: Ref
+  var v_ret_7: Ref
+  var anon_0: Ref
+  var anon_19: Ref
+  var v_ret_8: Ref
+  var anon_1: Ref
+  var anon_20: Ref
+  var anon_21: Ref
   var v_ret_10: Ref
   var anon_2: Ref
-  var anon_19: Ref
+  var anon_22: Ref
   var v_ret_11: Ref
   var anon_3: Ref
-  var anon_20: Ref
+  var anon_23: Ref
   var v_ret_12: Ref
   var anon_4: Ref
-  var anon_21: Ref
+  var anon_24: Ref
+  var anon_25: Ref
   var v_ret_13: Ref
   var anon_5: Ref
-  var anon_22: Ref
-  var v_ret_14: Ref
-  var anon_6: Ref
-  var anon_23: Ref
-  var anon_24: Ref
-  var v_ret_17: Ref
-  var anon_7: Ref
-  var anon_25: Ref
-  var v_ret_18: Ref
-  var anon_8: Ref
   var anon_26: Ref
   var anon_27: Ref
-  var v_ret_19: Ref
+  var v_ret_14: Ref
+  var anon_6: Ref
   var anon_28: Ref
   var anon_29: Ref
+  var anon_30: Ref
+  var v_ret_17: Ref
+  var anon_7: Ref
+  var anon_31: Ref
+  var v_ret_18: Ref
+  var anon_8: Ref
+  var anon_32: Ref
+  var anon_33: Ref
+  var v_ret_19: Ref
+  var anon_34: Ref
+  var anon_37: Ref
+  var anon_38: Ref
   var v_ret_22: Ref
   var anon_9: Ref
-  var anon_30: Ref
+  var anon_39: Ref
   var v_ret_23: Ref
   var anon_10: Ref
-  var anon_31: Ref
-  var anon_32: Ref
+  var anon_40: Ref
+  var anon_41: Ref
   var v_ret_25: Ref
   var anon_11: Ref
-  var anon_33: Ref
+  var anon_42: Ref
   var v_ret_26: Ref
   var anon_12: Ref
-  v_ret_2 := boolToRef(v_this_extension == nullValue())
+  if (v_this_extension != nullValue()) {
+    anon_14 := andBools(boolToRef(isSubtype(typeOf(nullValue()), intType())),
+      boolToRef(intFromRef(v_this_extension) == intFromRef(nullValue())))
+  } else {
+    anon_14 := boolToRef(false)}
+  if (boolFromRef(anon_14)) {
+    v_ret_2 := boolToRef(true)
+  } elseif (v_this_extension == nullValue()) {
+    v_ret_2 := boolToRef(nullValue() == nullValue())
+  } else {
+    v_ret_2 := boolToRef(false)}
   goto lbl_ret_2
   label lbl_ret_2
   anon_13 := v_ret_2
@@ -67,7 +82,20 @@ method with_run_extension_labeled(v_this_extension: Ref)
     cond1 := boolToRef(true)
   } else {
     var v_ret_4: Ref
-    v_ret_4 := notBool(boolToRef(v_this_extension == nullValue()))
+    var anon_15: Ref
+    var anon_16: Ref
+    if (v_this_extension != nullValue()) {
+      anon_16 := andBools(boolToRef(isSubtype(typeOf(nullValue()), intType())),
+        boolToRef(intFromRef(v_this_extension) == intFromRef(nullValue())))
+    } else {
+      anon_16 := boolToRef(false)}
+    if (boolFromRef(anon_16)) {
+      anon_15 := boolToRef(true)
+    } elseif (v_this_extension == nullValue()) {
+      anon_15 := boolToRef(nullValue() == nullValue())
+    } else {
+      anon_15 := boolToRef(false)}
+    v_ret_4 := notBool(anon_15)
     goto lbl_ret_4
     label lbl_ret_4
     cond1 := v_ret_4
@@ -83,35 +111,65 @@ method with_run_extension_labeled(v_this_extension: Ref)
   anon_3 := anon_2
   inhale isSubtype(typeOf(anon_3), nullable(intType()))
   anon_4 := anon_3
-  v_ret_12 := boolToRef(anon_4 == nullValue())
+  if (anon_4 != nullValue()) {
+    anon_24 := andBools(boolToRef(isSubtype(typeOf(nullValue()), intType())),
+      boolToRef(intFromRef(anon_4) == intFromRef(nullValue())))
+  } else {
+    anon_24 := boolToRef(false)}
+  if (boolFromRef(anon_24)) {
+    v_ret_12 := boolToRef(true)
+  } elseif (anon_4 == nullValue()) {
+    v_ret_12 := boolToRef(nullValue() == nullValue())
+  } else {
+    v_ret_12 := boolToRef(false)}
   goto lbl_ret_12
   label lbl_ret_12
-  anon_20 := v_ret_12
-  assert boolFromRef(anon_20)
+  anon_23 := v_ret_12
+  assert boolFromRef(anon_23)
   inhale isSubtype(typeOf(anon_3), nullable(intType()))
   anon_5 := anon_3
-  v_ret_13 := boolToRef(anon_5 == nullValue())
+  if (anon_5 != nullValue()) {
+    anon_26 := andBools(boolToRef(isSubtype(typeOf(nullValue()), intType())),
+      boolToRef(intFromRef(anon_5) == intFromRef(nullValue())))
+  } else {
+    anon_26 := boolToRef(false)}
+  if (boolFromRef(anon_26)) {
+    v_ret_13 := boolToRef(true)
+  } elseif (anon_5 == nullValue()) {
+    v_ret_13 := boolToRef(nullValue() == nullValue())
+  } else {
+    v_ret_13 := boolToRef(false)}
   goto lbl_ret_13
   label lbl_ret_13
-  anon_21 := v_ret_13
-  assert boolFromRef(anon_21)
+  anon_25 := v_ret_13
+  assert boolFromRef(anon_25)
   inhale isSubtype(typeOf(anon_3), nullable(intType()))
   anon_6 := anon_3
-  v_ret_14 := boolToRef(anon_6 == nullValue())
+  if (anon_6 != nullValue()) {
+    anon_28 := andBools(boolToRef(isSubtype(typeOf(nullValue()), intType())),
+      boolToRef(intFromRef(anon_6) == intFromRef(nullValue())))
+  } else {
+    anon_28 := boolToRef(false)}
+  if (boolFromRef(anon_28)) {
+    v_ret_14 := boolToRef(true)
+  } elseif (anon_6 == nullValue()) {
+    v_ret_14 := boolToRef(nullValue() == nullValue())
+  } else {
+    v_ret_14 := boolToRef(false)}
   goto lbl_ret_14
   label lbl_ret_14
-  anon_22 := v_ret_14
-  assert boolFromRef(anon_22)
+  anon_27 := v_ret_14
+  assert boolFromRef(anon_27)
   label lbl_ret_11
   inhale isSubtype(typeOf(v_ret_11), unitType())
-  anon_19 := v_ret_11
-  v_ret_10 := anon_19
+  anon_22 := v_ret_11
+  v_ret_10 := anon_22
   inhale isSubtype(typeOf(v_ret_10), nullable(anyType()))
   goto lbl_ret_10
   label lbl_ret_10
-  anon_18 := v_ret_10
-  anon_17 := anon_18
-  inhale isSubtype(typeOf(anon_17), unitType())
+  anon_21 := v_ret_10
+  anon_20 := anon_21
+  inhale isSubtype(typeOf(anon_20), unitType())
   assert boolFromRef(anon_1)
   assert boolFromRef(anon_1)
   anon_7 := boolToRef(false)
@@ -121,20 +179,43 @@ method with_run_extension_labeled(v_this_extension: Ref)
   assert !boolFromRef(anon_8)
   assert !boolFromRef(anon_8)
   assert boolFromRef(anon_1)
-  v_ret_19 := boolToRef(v_this_extension == nullValue())
+  if (v_this_extension != nullValue()) {
+    anon_34 := andBools(boolToRef(isSubtype(typeOf(nullValue()), intType())),
+      boolToRef(intFromRef(v_this_extension) == intFromRef(nullValue())))
+  } else {
+    anon_34 := boolToRef(false)}
+  if (boolFromRef(anon_34)) {
+    v_ret_19 := boolToRef(true)
+  } elseif (v_this_extension == nullValue()) {
+    v_ret_19 := boolToRef(nullValue() == nullValue())
+  } else {
+    v_ret_19 := boolToRef(false)}
   goto lbl_ret_19
   label lbl_ret_19
-  anon_27 := v_ret_19
-  if (boolFromRef(anon_27)) {
-    anon_26 := boolToRef(true)
+  anon_33 := v_ret_19
+  if (boolFromRef(anon_33)) {
+    anon_32 := boolToRef(true)
   } else {
     var v_ret_20: Ref
-    v_ret_20 := notBool(boolToRef(v_this_extension == nullValue()))
+    var anon_35: Ref
+    var anon_36: Ref
+    if (v_this_extension != nullValue()) {
+      anon_36 := andBools(boolToRef(isSubtype(typeOf(nullValue()), intType())),
+        boolToRef(intFromRef(v_this_extension) == intFromRef(nullValue())))
+    } else {
+      anon_36 := boolToRef(false)}
+    if (boolFromRef(anon_36)) {
+      anon_35 := boolToRef(true)
+    } elseif (v_this_extension == nullValue()) {
+      anon_35 := boolToRef(nullValue() == nullValue())
+    } else {
+      anon_35 := boolToRef(false)}
+    v_ret_20 := notBool(anon_35)
     goto lbl_ret_20
     label lbl_ret_20
-    anon_26 := v_ret_20
+    anon_32 := v_ret_20
   }
-  assert boolFromRef(anon_26)
+  assert boolFromRef(anon_32)
   anon_9 := boolToRef(false)
   inhale isSubtype(typeOf(anon_9), nullable(anyType()))
   inhale isSubtype(typeOf(anon_9), boolType())
@@ -151,44 +232,44 @@ method with_run_extension_labeled(v_this_extension: Ref)
   assert boolFromRef(anon_12)
   label lbl_ret_26
   inhale isSubtype(typeOf(v_ret_26), unitType())
-  anon_33 := v_ret_26
-  v_ret_25 := anon_33
+  anon_42 := v_ret_26
+  v_ret_25 := anon_42
   inhale isSubtype(typeOf(v_ret_25), nullable(anyType()))
   goto lbl_ret_25
   label lbl_ret_25
-  anon_32 := v_ret_25
-  anon_31 := anon_32
-  inhale isSubtype(typeOf(anon_31), unitType())
+  anon_41 := v_ret_25
+  anon_40 := anon_41
+  inhale isSubtype(typeOf(anon_40), unitType())
   label lbl_ret_23
   inhale isSubtype(typeOf(v_ret_23), unitType())
-  anon_30 := v_ret_23
-  v_ret_22 := anon_30
+  anon_39 := v_ret_23
+  v_ret_22 := anon_39
   inhale isSubtype(typeOf(v_ret_22), nullable(anyType()))
   goto lbl_ret_22
   label lbl_ret_22
-  anon_29 := v_ret_22
-  anon_28 := anon_29
-  inhale isSubtype(typeOf(anon_28), unitType())
+  anon_38 := v_ret_22
+  anon_37 := anon_38
+  inhale isSubtype(typeOf(anon_37), unitType())
   label lbl_ret_18
   inhale isSubtype(typeOf(v_ret_18), unitType())
-  anon_25 := v_ret_18
-  v_ret_17 := anon_25
+  anon_31 := v_ret_18
+  v_ret_17 := anon_31
   inhale isSubtype(typeOf(v_ret_17), nullable(anyType()))
   goto lbl_ret_17
   label lbl_ret_17
-  anon_24 := v_ret_17
-  anon_23 := anon_24
-  inhale isSubtype(typeOf(anon_23), unitType())
+  anon_30 := v_ret_17
+  anon_29 := anon_30
+  inhale isSubtype(typeOf(anon_29), unitType())
   label lbl_ret_8
   inhale isSubtype(typeOf(v_ret_8), unitType())
-  anon_16 := v_ret_8
-  v_ret_7 := anon_16
+  anon_19 := v_ret_8
+  v_ret_7 := anon_19
   inhale isSubtype(typeOf(v_ret_7), nullable(anyType()))
   goto lbl_ret_7
   label lbl_ret_7
-  anon_15 := v_ret_7
-  anon_14 := anon_15
-  inhale isSubtype(typeOf(anon_14), unitType())
+  anon_18 := v_ret_7
+  anon_17 := anon_18
+  inhale isSubtype(typeOf(anon_17), unitType())
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }

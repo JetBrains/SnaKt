@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
 import org.jetbrains.kotlin.formver.core.embeddings.expression.Assert
+import org.jetbrains.kotlin.formver.core.embeddings.expression.EqCmp
 import org.jetbrains.kotlin.formver.core.embeddings.expression.IntLit
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.AddCharInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.AddIntInt
@@ -22,10 +23,12 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubCharInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Xor
+import org.jetbrains.kotlin.formver.core.embeddings.expression.Is
 import org.jetbrains.kotlin.formver.core.embeddings.expression.UnitLit
+import org.jetbrains.kotlin.formver.core.embeddings.expression.share
+import org.jetbrains.kotlin.formver.core.embeddings.expression.withType
 import org.jetbrains.kotlin.formver.core.embeddings.expression.toBlock
-import org.jetbrains.kotlin.formver.core.embeddings.types.buildFunctionPretype
-import org.jetbrains.kotlin.formver.core.embeddings.types.nullableAny
+import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.name.CallableId
@@ -257,6 +260,36 @@ object SpecialKotlinFunctions {
 
         addFunction(stringIntToCharType, SpecialPackages.kotlin, className = "String", name = "get") { args, _ ->
             StringGet(args[0], args[1])
+        }
+
+        // equals(other: Any?): Boolean for primitive types and Any.
+        // Mimics the Kotlin compiler's generated equals: check `other is T`, then compare values.
+        // For Any, EqCmp on two Any?-typed Refs gives reference equality — matching Any.equals() semantics.
+        fun primitiveEquals(receiverType: TypeBuilder.() -> PretypeBuilder, className: String) {
+            val funcType = buildFunctionPretype {
+                withDispatchReceiver(receiverType)
+                withParam { nullableAny() }
+                withReturnType { boolean() }
+            }
+            val receiverTypeEmbedding = buildType(receiverType)
+            addFunction(funcType, SpecialPackages.kotlin, className = className, name = "equals") { args, _ ->
+                share(args[1]) { other ->
+                    And(Is(other, receiverTypeEmbedding), EqCmp(args[0], other.withType(args[0].type)))
+                }
+            }
+        }
+        primitiveEquals({ int() }, "Int")
+        primitiveEquals({ boolean() }, "Boolean")
+        primitiveEquals({ char() }, "Char")
+        primitiveEquals({ string() }, "String")
+
+        val anyAnyToBoolType = buildFunctionPretype {
+            withDispatchReceiver { any() }
+            withParam { nullableAny() }
+            withReturnType { boolean() }
+        }
+        addFunction(anyAnyToBoolType, SpecialPackages.kotlin, className = "Any", name = "equals") { args, _ ->
+            EqCmp(args[0], args[1])
         }
     }
 }

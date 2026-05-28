@@ -32,7 +32,7 @@ fun <!VIPER_TEXT!>prepend<!>(xs: Node?, x: Int): Node = Node(x, xs)
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>lengthNonNeg<!>(xs: Node?): Unit {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         length(xs) >= 0
     }
     if (xs != null) lengthNonNeg(xs.tail)
@@ -40,7 +40,7 @@ fun <!VIPER_TEXT!>lengthNonNeg<!>(xs: Node?): Unit {
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>appendLength<!>(xs: Node?, ys: Node?): Unit {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         length(append(xs, ys)) == length(xs) + length(ys)
     }
     if (xs != null) appendLength(xs.tail, ys)
@@ -48,7 +48,7 @@ fun <!VIPER_TEXT!>appendLength<!>(xs: Node?, ys: Node?): Unit {
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>appendNull<!>(xs: Node?): Unit {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         append(xs, null) == xs
     }
     if (xs != null) appendNull(xs.tail)
@@ -56,7 +56,7 @@ fun <!VIPER_TEXT!>appendNull<!>(xs: Node?): Unit {
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>nodeRefl<!>(xs: Node?): Unit {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         xs == xs
     }
     if (xs != null) nodeRefl(xs.tail)
@@ -64,23 +64,22 @@ fun <!VIPER_TEXT!>nodeRefl<!>(xs: Node?): Unit {
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>appendAssoc<!>(xs: Node?, ys: Node?, zs: Node?): Unit {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         append(append(xs, ys), zs) == append(xs, append(ys, zs))
     }
     if (xs != null) appendAssoc(xs.tail, ys, zs)
-    else nodeRefl(append(ys, zs))
+    else nodeRefl(append(ys, zs))  // Both sides reduce to append(ys, zs)
 }
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>reverseLength<!>(xs: Node?): Unit {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         length(reverse(xs)) == length(xs)
     }
     if (xs != null) {
-        reverseLength(xs.tail)
-        appendLength(reverse(xs.tail), Node(xs.head, null))
-        verify(length(reverse(xs)) ==
-                length(append(reverse(xs.tail), Node(xs.head, null))))
+        reverseLength(xs.tail)  // IH: length(reverse(xs.tail)) == length(xs.tail)
+        appendLength(reverse(xs.tail), Node(xs.head, null))  // length(append(a, b)) == length(a) + length(b)
+        verify(length(reverse(xs)) == length(append(reverse(xs.tail), Node(xs.head, null))))
         verify(length(null) == 0)
         verify(length(Node(xs.head, null)) == 1)
         verify(length(xs) == 1 + length(xs.tail))
@@ -89,7 +88,7 @@ fun <!VIPER_TEXT!>reverseLength<!>(xs: Node?): Unit {
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>node_refl<!>(r: Node): Unit {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         r == r
     }
     val t = r.tail
@@ -100,12 +99,8 @@ fun <!VIPER_TEXT!>node_refl<!>(r: Node): Unit {
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>node_sym<!>(a: Node?, b: Node?): Unit {
-    preconditions {
-        a == b
-    }
-    postconditions<Unit> { _ ->
-        b == a
-    }
+    preconditions { a == b }
+    postconditions<Unit> { b == a }
     if (a != null) {
         if (b != null) {
             val ta = a.tail
@@ -126,7 +121,7 @@ fun <!VIPER_TEXT!>node_trans<!>(a: Node?, b: Node?, c: Node?): Unit {
         a == b
         b == c
     }
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         a == c
     }
     if (a != null) {
@@ -154,7 +149,7 @@ fun <!VIPER_TEXT!>appendCongL<!>(a: Node?, b: Node?, c: Node?): Unit {
     preconditions {
         a == b
     }
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         append(a, c) == append(b, c)
     }
     if (a != null) {
@@ -173,6 +168,7 @@ fun <!VIPER_TEXT!>appendCongL<!>(a: Node?, b: Node?, c: Node?): Unit {
                 verify(append(ta, c) == c)
                 verify(append(tb, c) == c)
             }
+            // Decompose append results field by field
             val tailA = append(ta, c)
             if (tailA != null) {
                 node_refl(tailA)
@@ -203,13 +199,18 @@ fun <!VIPER_TEXT!>appendCongL<!>(a: Node?, b: Node?, c: Node?): Unit {
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>reverseAppend<!>(xs: Node?, ys: Node?): Unit {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         reverse(append(xs, ys)) == append(reverse(ys), reverse(xs))
     }
     if (xs == null) {
         appendNull(reverse(ys))
         node_sym(append(reverse(ys), null), reverse(ys))
     } else {
+        // reverse(append(xs, ys))
+        //   == append(reverse(append(xs.tail, ys)), [h])          (def of reverse)
+        //   == append(append(reverse(ys), reverse(xs.tail)), [h]) (IH + congL)
+        //   == append(reverse(ys), append(reverse(xs.tail), [h])) (assoc)
+        //   == append(reverse(ys), reverse(xs))                   (def of reverse)
         reverseAppend(xs.tail, ys)
         appendCongL(
             reverse(append(xs.tail, ys)),
@@ -230,11 +231,12 @@ fun <!VIPER_TEXT!>appendCongR<!>(a: Node?, b: Node?, c: Node?): Unit {
     preconditions {
         b == c
     }
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         append(a, b) == append(a, c)
     }
     if (a != null) {
-        appendCongR(a.tail, b, c)
+        appendCongR(a.tail, b, c)  // IH: append(a.tail, b) == append(a.tail, c)
+        // Seed reflexivitym, then decompose field by field.
         val tailB = append(a.tail, b)
         val tailC = append(a.tail, c)
         if (tailB != null) {
@@ -267,12 +269,12 @@ fun <!VIPER_TEXT!>appendCongR<!>(a: Node?, b: Node?, c: Node?): Unit {
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>reverseReverseIsId<!>(xs: Node?): Unit {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         reverse(reverse(xs)) == xs
     }
     if (xs != null) {
         val h = Node(xs.head, null)
-        reverseReverseIsId(xs.tail)
+        reverseReverseIsId(xs.tail)  // IH: reverse(reverse(xs.tail)) == xs.tail
         reverseAppend(reverse(xs.tail), h)
 
         node_refl(h)
@@ -295,9 +297,8 @@ fun <!VIPER_TEXT!>reverseReverseIsId<!>(xs: Node?): Unit {
         }
 
         val singleton = Node(h.head, null)
-        if (<!SENSELESS_COMPARISON!>singleton != null<!>) {
-            node_refl(singleton)
-        }
+        node_refl(singleton)
+
         verify(reverse(h.tail) == null)
         verify(append(reverse(h.tail), singleton) == singleton)
         verify(reverse(h) == append(reverse(h.tail), singleton))
@@ -324,6 +325,12 @@ fun <!VIPER_TEXT!>reverseReverseIsId<!>(xs: Node?): Unit {
         appendCongL(reverse(h), h, reverse(reverse(xs.tail)))
         appendCongR(h, reverse(reverse(xs.tail)), xs.tail)
 
+        // reverse(reverse(xs))
+        //   == reverse(append(reverse(xs.tail), h))          (def of reverse)
+        //   == append(reverse(h), reverse(reverse(xs.tail))) (reverseAppend)
+        //   == append(h, reverse(reverse(xs.tail)))          (reverse(h) == h)
+        //   == append(h, xs.tail)                            (IH)
+        //   == xs                                            (reconstruct)
         node_trans(
             reverse(reverse(xs)),
             reverse(append(reverse(xs.tail), h)),

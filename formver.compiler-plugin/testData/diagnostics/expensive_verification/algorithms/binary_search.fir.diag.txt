@@ -50,7 +50,8 @@ method mid_increased_by_one(arr: Ref, target: Ref) returns (v_ret_0: Ref)
   } else {
     var anon_2: Ref
     anon_2 := get(arr, mid)
-    if (intFromRef(anon_2) == intFromRef(target)) {
+    if (isSubtype(typeOf(target), intType()) &&
+    intFromRef(anon_2) == intFromRef(target)) {
       v_ret_0 := boolToRef(true)
     } else {
       var anon_3: Ref
@@ -142,7 +143,8 @@ method mid_decreased_by_one(arr: Ref, target: Ref) returns (v_ret_0: Ref)
   } else {
     var anon_2: Ref
     anon_2 := get(arr, mid)
-    if (intFromRef(anon_2) == intFromRef(target)) {
+    if (isSubtype(typeOf(target), intType()) &&
+    intFromRef(anon_2) == intFromRef(target)) {
       v_ret_0 := boolToRef(true)
     } else {
       var anon_3: Ref
@@ -235,7 +237,8 @@ method mid_decreased_by_one_in_rec_call(arr: Ref, target: Ref)
   } else {
     var anon_2: Ref
     anon_2 := get(arr, mid)
-    if (intFromRef(anon_2) == intFromRef(target)) {
+    if (isSubtype(typeOf(target), intType()) &&
+    intFromRef(anon_2) == intFromRef(target)) {
       v_ret_0 := boolToRef(true)
     } else {
       var anon_3: Ref
@@ -311,7 +314,8 @@ method unsafe_binary_search(arr: Ref, target: Ref, left: Ref, right: Ref)
   }
   mid := plusInts(left, divInts(minusInts(right, left), intToRef(2)))
   anon_0 := get(arr, mid)
-  if (intFromRef(anon_0) == intFromRef(target)) {
+  if (isSubtype(typeOf(target), intType()) &&
+  intFromRef(anon_0) == intFromRef(target)) {
     v_ret_0 := boolToRef(true)
   } else {
     var anon_1: Ref

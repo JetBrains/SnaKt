@@ -185,29 +185,48 @@ function whenAssignment(a: Ref, b: Ref): Ref
   (let anon_0_0 ==
     (a) in
     (let anon_2_0 ==
-      ((intFromRef(anon_0_0) == 1 && boolFromRef(b) ? intToRef(2) : null)) in
+      ((isSubtype(typeOf(intToRef(1)), intType()) &&
+      intFromRef(anon_0_0) == 1 &&
+      boolFromRef(b) ?
+        intToRef(2) :
+        null)) in
       (let anon_3_0 ==
-        ((intFromRef(anon_0_0) == 1 && !boolFromRef(b) ?
+        ((isSubtype(typeOf(intToRef(1)), intType()) &&
+        intFromRef(anon_0_0) == 1 &&
+        !boolFromRef(b) ?
           intToRef(3) :
           null)) in
         (let anon_1_0 ==
-          ((intFromRef(anon_0_0) == 1 ?
+          ((isSubtype(typeOf(intToRef(1)), intType()) &&
+          intFromRef(anon_0_0) == 1 ?
             (boolFromRef(b) ? anon_2_0 : anon_3_0) :
             null)) in
           (let anon_5_0 ==
-            ((!(intFromRef(anon_0_0) == 1) && intFromRef(anon_0_0) == 2 ?
+            ((!(isSubtype(typeOf(intToRef(1)), intType()) &&
+            intFromRef(anon_0_0) == 1) &&
+            (isSubtype(typeOf(intToRef(2)), intType()) &&
+            intFromRef(anon_0_0) == 2) ?
               intToRef(4) :
               null)) in
             (let anon_6_0 ==
-              ((!(intFromRef(anon_0_0) == 1) &&
-              !(intFromRef(anon_0_0) == 2) ?
+              ((!(isSubtype(typeOf(intToRef(1)), intType()) &&
+              intFromRef(anon_0_0) == 1) &&
+              !(isSubtype(typeOf(intToRef(2)), intType()) &&
+              intFromRef(anon_0_0) == 2) ?
                 intToRef(5) :
                 null)) in
               (let anon_4_0 ==
-                ((!(intFromRef(anon_0_0) == 1) ?
-                  (intFromRef(anon_0_0) == 2 ? anon_5_0 : anon_6_0) :
+                ((!(isSubtype(typeOf(intToRef(1)), intType()) &&
+                intFromRef(anon_0_0) == 1) ?
+                  (isSubtype(typeOf(intToRef(2)), intType()) &&
+                  intFromRef(anon_0_0) == 2 ?
+                    anon_5_0 :
+                    anon_6_0) :
                   null)) in
                 (let x_0 ==
-                  ((intFromRef(anon_0_0) == 1 ? anon_1_0 : anon_4_0)) in
+                  ((isSubtype(typeOf(intToRef(1)), intType()) &&
+                  intFromRef(anon_0_0) == 1 ?
+                    anon_1_0 :
+                    anon_4_0)) in
                   x_0))))))))
 }

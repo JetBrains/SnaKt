@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.conversion
 
+import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
@@ -15,9 +16,7 @@ import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.core.embeddings.callables.CallableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.callables.PureUserFunctionEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousBuiltinVariableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
@@ -26,6 +25,7 @@ import org.jetbrains.kotlin.formver.core.names.TryExitLabelName
 import org.jetbrains.kotlin.formver.viper.NameResolver
 
 interface ProgramConversionContext {
+    val session: FirSession
     val config: PluginConfiguration
     val errorCollector: ErrorCollector
 
@@ -52,6 +52,12 @@ interface ProgramConversionContext {
     fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding
 
     /**
+     * Lazily creates and returns a structural equals embedding for an ADT type,
+     * or `null` if [receiverType] is not an ADT.
+     */
+    fun tryEmbedAdtEquals(receiverType: ConeKotlinType): CallableEmbedding? = null
+
+    /**
      * Returns true if the property has default behavior. That is:
      * It cannot be overwritten and does not have custom getters or setters
      */
@@ -61,3 +67,33 @@ interface ProgramConversionContext {
 fun ProgramConversionContext.freshAnonVar(type: TypeEmbedding): VariableEmbedding = anonVarProducer.getFresh(type)
 fun ProgramConversionContext.freshAnonBuiltinVar(type: TypeEmbedding): VariableEmbedding =
     anonBuiltinVarProducer.getFresh(type)
+
+/**
+ * Mirrors Kotlin's `==` semantics: if [left] is nullable, produces
+ * `(left != null && left.equals(right)) || (left == null && right == null)`.
+ */
+fun desugarEqualsCall(
+    left: ExpEmbedding,
+    right: ExpEmbedding,
+    equalsCallable: CallableEmbedding,
+    ctx: StmtConversionContext,
+): ExpEmbedding {
+    if (!left.type.flags.nullable) {
+        return equalsCallable.insertCall(listOf(left, right), ctx)
+    }
+    val nonNullableLeftType = left.type.getNonNullable()
+    return share(left) { sharedLeft ->
+        share(right) { sharedRight ->
+            SequentialOr(
+                SequentialAnd(
+                    sharedLeft.notNullCmp(),
+                    equalsCallable.insertCall(listOf(sharedLeft.withType(nonNullableLeftType), sharedRight), ctx),
+                ),
+                SequentialAnd(
+                    EqCmp(sharedLeft, NullLit),
+                    EqCmp(sharedRight, NullLit),
+                ),
+            )
+        }
+    }
+}

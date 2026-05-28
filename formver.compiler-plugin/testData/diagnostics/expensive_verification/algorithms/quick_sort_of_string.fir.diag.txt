@@ -94,7 +94,8 @@ method minOrMaxChar(v_this_extension: Ref, calcMin: Ref)
 method quickSort(v_this_extension: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(v_this_extension), stringType())
   ensures isSubtype(typeOf(v_ret_0), stringType())
-  ensures |stringFromRef(v_ret_0)| == |stringFromRef(v_this_extension)|
+  ensures isSubtype(typeOf(stringLength(v_this_extension)), intType()) &&
+    |stringFromRef(v_ret_0)| == intFromRef(stringLength(v_this_extension))
   ensures (forall anon_builtin_0: Int ::1 <= anon_builtin_0 &&
       anon_builtin_0 < |stringFromRef(v_this_extension)| ==>
       stringFromRef(v_ret_0)[anon_builtin_0 - 1] <=
@@ -125,7 +126,8 @@ method quickSortRec(v_this_extension: Ref, par_minVal: Ref, par_maxVal: Ref)
       stringFromRef(v_this_extension)[anon_builtin_3] <=
       charFromRef(par_maxVal))
   ensures isSubtype(typeOf(ret_3), stringType())
-  ensures |stringFromRef(ret_3)| == |stringFromRef(v_this_extension)|
+  ensures isSubtype(typeOf(stringLength(v_this_extension)), intType()) &&
+    |stringFromRef(ret_3)| == intFromRef(stringLength(v_this_extension))
   ensures (forall anon_builtin_4: Int ::0 <= anon_builtin_4 &&
       anon_builtin_4 < |stringFromRef(v_this_extension)| ==>
       charFromRef(par_minVal) <= stringFromRef(ret_3)[anon_builtin_4] &&
@@ -163,7 +165,8 @@ method quickSortRec(v_this_extension: Ref, minVal: Ref, maxVal: Ref)
       stringFromRef(v_this_extension)[anon_builtin_0] <=
       charFromRef(maxVal))
   ensures isSubtype(typeOf(v_ret_0), stringType())
-  ensures |stringFromRef(v_ret_0)| == |stringFromRef(v_this_extension)|
+  ensures isSubtype(typeOf(stringLength(v_this_extension)), intType()) &&
+    |stringFromRef(v_ret_0)| == intFromRef(stringLength(v_this_extension))
   ensures (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
       anon_builtin_1 < |stringFromRef(v_this_extension)| ==>
       charFromRef(minVal) <= stringFromRef(v_ret_0)[anon_builtin_1] &&
@@ -202,7 +205,8 @@ method quickSortRec(v_this_extension: Ref, minVal: Ref, maxVal: Ref)
     invariant isSubtype(typeOf(maxVal), charType())
     invariant 0 <= intFromRef(i) &&
       intFromRef(i) <= |stringFromRef(v_this_extension)|
-    invariant |stringFromRef(lessString)| + |stringFromRef(greaterString)| +
+    invariant isSubtype(typeOf(i), intType()) &&
+      |stringFromRef(lessString)| + |stringFromRef(greaterString)| +
       |stringFromRef(eqString)| ==
       intFromRef(i)
     invariant (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
@@ -215,6 +219,7 @@ method quickSortRec(v_this_extension: Ref, minVal: Ref, maxVal: Ref)
         stringFromRef(greaterString)[anon_builtin_4] <= charFromRef(maxVal))
     invariant (forall anon_builtin_5: Int ::0 <= anon_builtin_5 &&
         anon_builtin_5 < |stringFromRef(eqString)| ==>
+        isSubtype(typeOf(medVal), charType()) &&
         stringFromRef(eqString)[anon_builtin_5] == charFromRef(medVal))
   anon_2 := ltInts(i, stringLength(v_this_extension))
   if (boolFromRef(anon_2)) {
@@ -243,7 +248,8 @@ method quickSortRec(v_this_extension: Ref, minVal: Ref, maxVal: Ref)
   assert isSubtype(typeOf(maxVal), charType())
   assert 0 <= intFromRef(i) &&
     intFromRef(i) <= |stringFromRef(v_this_extension)|
-  assert |stringFromRef(lessString)| + |stringFromRef(greaterString)| +
+  assert isSubtype(typeOf(i), intType()) &&
+    |stringFromRef(lessString)| + |stringFromRef(greaterString)| +
     |stringFromRef(eqString)| ==
     intFromRef(i)
   assert (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
@@ -256,6 +262,7 @@ method quickSortRec(v_this_extension: Ref, minVal: Ref, maxVal: Ref)
       stringFromRef(greaterString)[anon_builtin_4] <= charFromRef(maxVal))
   assert (forall anon_builtin_5: Int ::0 <= anon_builtin_5 &&
       anon_builtin_5 < |stringFromRef(eqString)| ==>
+      isSubtype(typeOf(medVal), charType()) &&
       stringFromRef(eqString)[anon_builtin_5] == charFromRef(medVal))
   anon_4 := quickSortRec(lessString, minVal, medVal)
   anon_5 := quickSortRec(greaterString, medVal, maxVal)

@@ -111,7 +111,19 @@ method accessNullable(x: Ref) returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var n: Ref
-  if (!(x == nullValue())) {
+  var anon_0: Ref
+  var anon_1: Ref
+  if (x != nullValue()) {
+    anon_1 := boolToRef(x == nullValue())
+  } else {
+    anon_1 := boolToRef(false)}
+  if (boolFromRef(anon_1)) {
+    anon_0 := boolToRef(true)
+  } elseif (x == nullValue()) {
+    anon_0 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_0 := boolToRef(false)}
+  if (!boolFromRef(anon_0)) {
     n := a(x)
   }
   label lbl_ret_0
@@ -173,13 +185,25 @@ method accessSafeCast(x: Ref) returns (v_ret_0: Ref)
 {
   var n: Ref
   var y: Ref
+  var anon_0: Ref
+  var anon_1: Ref
   n := intToRef(0)
   if (isSubtype(typeOf(x), B())) {
     y := x
   } else {
     y := nullValue()}
   inhale isSubtype(typeOf(y), nullable(B()))
-  if (!(y == nullValue())) {
+  if (y != nullValue()) {
+    anon_1 := boolToRef(y == nullValue())
+  } else {
+    anon_1 := boolToRef(false)}
+  if (boolFromRef(anon_1)) {
+    anon_0 := boolToRef(true)
+  } elseif (y == nullValue()) {
+    anon_0 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_0 := boolToRef(false)}
+  if (!boolFromRef(anon_0)) {
     n := b(y)
   }
   label lbl_ret_0

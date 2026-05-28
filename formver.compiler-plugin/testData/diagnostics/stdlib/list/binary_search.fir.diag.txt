@@ -50,7 +50,8 @@ method safe_binary_search(arr: Ref, target: Ref) returns (v_ret_0: Ref)
   } else {
     var anon_2: Ref
     anon_2 := get(arr, mid)
-    if (intFromRef(anon_2) == intFromRef(target)) {
+    if (isSubtype(typeOf(target), intType()) &&
+    intFromRef(anon_2) == intFromRef(target)) {
       v_ret_0 := boolToRef(true)
     } else {
       var anon_3: Ref
@@ -140,7 +141,8 @@ method unsafe_binary_search_fixed(arr: Ref, target: Ref, left: Ref, right: Ref)
   }
   mid := plusInts(left, divInts(minusInts(right, left), intToRef(2)))
   anon_3 := get(arr, mid)
-  if (intFromRef(anon_3) == intFromRef(target)) {
+  if (isSubtype(typeOf(target), intType()) &&
+  intFromRef(anon_3) == intFromRef(target)) {
     v_ret_0 := boolToRef(true)
   } else {
     var anon_4: Ref

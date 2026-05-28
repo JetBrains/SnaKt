@@ -51,7 +51,8 @@ method useRuns(x: Ref) returns (v_ret_0: Ref)
   anon_3 := v_ret_3
   anon_2 := anon_3
   inhale isSubtype(typeOf(anon_2), intType())
-  cond1 := boolToRef(intFromRef(anon_2) == 1 + intFromRef(x))
+  cond1 := andBools(boolToRef(isSubtype(typeOf(plusInts(intToRef(1), x)), intType())),
+    boolToRef(intFromRef(anon_2) == intFromRef(plusInts(intToRef(1), x))))
   inhale isSubtype(typeOf(x), nullable(anyType()))
   anon_0 := x
   inhale isSubtype(typeOf(anon_0), intType())
@@ -67,7 +68,8 @@ method useRuns(x: Ref) returns (v_ret_0: Ref)
   anon_6 := v_ret_7
   anon_5 := anon_6
   inhale isSubtype(typeOf(anon_5), intType())
-  cond2 := boolToRef(intFromRef(anon_5) == 1 + intFromRef(x))
+  cond2 := andBools(boolToRef(isSubtype(typeOf(plusInts(intToRef(1), x)), intType())),
+    boolToRef(intFromRef(anon_5) == intFromRef(plusInts(intToRef(1), x))))
   assert boolFromRef(cond1)
   assert boolFromRef(cond2)
   label lbl_ret_0
@@ -94,7 +96,8 @@ method useAlso(x: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(anon_0), nullable(anyType()))
   inhale isSubtype(typeOf(anon_0), intType())
   anon_1 := anon_0
-  assert intFromRef(anon_1) == 1 + intFromRef(x)
+  assert isSubtype(typeOf(plusInts(intToRef(1), x)), intType()) &&
+    intFromRef(anon_1) == intFromRef(plusInts(intToRef(1), x))
   label lbl_ret_4
   inhale isSubtype(typeOf(v_ret_4), unitType())
   v_ret_3 := anon_0
@@ -140,7 +143,8 @@ method useLet(x: Ref) returns (v_ret_0: Ref)
   anon_3 := v_ret_3
   anon_2 := anon_3
   inhale isSubtype(typeOf(anon_2), intType())
-  cond1 := boolToRef(intFromRef(anon_2) == 1 + intFromRef(x))
+  cond1 := andBools(boolToRef(isSubtype(typeOf(plusInts(intToRef(1), x)), intType())),
+    boolToRef(intFromRef(anon_2) == intFromRef(plusInts(intToRef(1), x))))
   assert boolFromRef(cond1)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
@@ -167,7 +171,8 @@ method useWith(x: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(anon_0), nullable(anyType()))
   inhale isSubtype(typeOf(anon_0), intType())
   anon_1 := anon_0
-  assert intFromRef(anon_1) == 1 + intFromRef(x)
+  assert isSubtype(typeOf(plusInts(intToRef(1), x)), intType()) &&
+    intFromRef(anon_1) == intFromRef(plusInts(intToRef(1), x))
   label lbl_ret_4
   inhale isSubtype(typeOf(v_ret_4), unitType())
   anon_4 := v_ret_4
@@ -202,7 +207,8 @@ method useApply(x: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(anon_0), nullable(anyType()))
   inhale isSubtype(typeOf(anon_0), intType())
   anon_1 := anon_0
-  assert intFromRef(anon_1) == 1 + intFromRef(x)
+  assert isSubtype(typeOf(plusInts(intToRef(1), x)), intType()) &&
+    intFromRef(anon_1) == intFromRef(plusInts(intToRef(1), x))
   label lbl_ret_4
   inhale isSubtype(typeOf(v_ret_4), unitType())
   v_ret_3 := anon_0

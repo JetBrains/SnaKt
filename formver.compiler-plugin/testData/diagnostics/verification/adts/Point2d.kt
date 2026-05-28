@@ -6,7 +6,6 @@ import org.jetbrains.kotlin.formver.plugin.*
 
 @ADT
 data class Point(val x: Int, val y: Int)
-
 @Pure
 @AlwaysVerify
 fun <!VIPER_TEXT!>translate<!>(p: Point, dx: Int, dy: Int): Point = Point(p.x + dx, p.y + dy)
@@ -39,37 +38,38 @@ fun <!VIPER_TEXT!>normSq<!>(p: Point): Int {
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>translateZeroIsId<!>(p: Point) {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         translate(p, 0, 0) == p
     }
 }
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>manhattanSymmetric<!>(a: Point, b: Point) {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         manhattan(a, b) == manhattan(b, a)
     }
 }
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>dotCommutes<!>(a: Point, b: Point) {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         dot(a, b) == dot(b, a)
     }
 }
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>nonNegativeSquare<!>(u: Int) {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         u * u >= 0
     }
 }
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>cauchySchwarz<!>(a: Point, b: Point) {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         dot(a, b) * dot(a, b) <= normSq(a) * normSq(b)
     }
+    // Lagrange identity: (a·b)² + (axby − aybx)² == |a|²|b|², so the hint (axby − aybx)² ≥ 0 suffices.
     nonNegativeSquare(a.x * b.y - a.y * b.x)
 }
 
@@ -78,7 +78,7 @@ fun <!VIPER_TEXT!>rot90<!>(p: Point): Point = Point(-p.y, p.x)
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>rot90FourTimesIsId<!>(p: Point) {
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         rot90(rot90(rot90(rot90(p)))) == p
     }
 }

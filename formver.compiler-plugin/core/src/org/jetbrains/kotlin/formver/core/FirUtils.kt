@@ -11,6 +11,8 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.contracts.FirEffectDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationDataKey
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationDataRegistry
+import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
+import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.fir.declarations.impl.FirDefaultPropertyGetter
@@ -18,11 +20,18 @@ import org.jetbrains.kotlin.fir.declarations.impl.FirDefaultPropertySetter
 import org.jetbrains.kotlin.fir.declarations.utils.isInline
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
+import org.jetbrains.kotlin.fir.resolve.ScopeSession
+import org.jetbrains.kotlin.fir.resolve.providers.symbolProvider
+import org.jetbrains.kotlin.fir.scopes.getFunctions
+import org.jetbrains.kotlin.fir.scopes.unsubstitutedScope
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirNamedFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
+import org.jetbrains.kotlin.fir.types.ConeKotlinType
+import org.jetbrains.kotlin.fir.types.classId
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
 import org.jetbrains.kotlin.formver.core.names.SpecialPackages
 import org.jetbrains.kotlin.formver.viper.ast.Position
@@ -82,6 +91,16 @@ fun FirBasedSymbol<*>.isManual(session: FirSession) = hasAnnotation(annotationId
 
 fun FirBasedSymbol<*>.isAdt(session: FirSession) = hasAnnotation(annotationId("ADT"), session)
 
+fun FirRegularClassSymbol.findSyntheticEquals(session: FirSession): FirNamedFunctionSymbol? =
+    unsubstitutedScope(
+        session, ScopeSession(), withForcedTypeCalculator = false,
+        memberRequiredPhase = FirResolvePhase.STATUS
+    ).getFunctions(Name.identifier("equals"))
+        .firstOrNull {
+            it.valueParameterSymbols.size == 1
+                && it.origin == FirDeclarationOrigin.Synthetic.DataClassMember
+        }
+
 fun FirAnnotationContainer.isUnique(session: FirSession) = hasAnnotation(annotationId("Unique"), session)
 
 fun FirAnnotationContainer.isBorrowed(session: FirSession) = hasAnnotation(annotationId("Borrowed"), session)
@@ -92,6 +111,9 @@ fun FirFunctionSymbol<*>.isFormverFunctionNamed(name: String) =
 fun FirFunctionSymbol<*>.isInvariantBuilderFunctionNamed(name: String) =
     this is FirNamedFunctionSymbol && callableId == formverCallableId("InvariantBuilder", name)
 
+val FirFunctionSymbol<*>.isEqualsWithOneParam: Boolean
+    get() = this is FirNamedFunctionSymbol && name.identifier == "equals" && valueParameterSymbols.size == 1
+
 @OptIn(SymbolInternals::class)
 val FirFunctionSymbol<*>.shouldBeInlined
     get() = isInline && fir.body != null
@@ -101,3 +123,13 @@ private object ShouldVerify : FirDeclarationDataKey()
 
 var FirSimpleFunction.viperProgram: viper.silver.ast.Program? by FirDeclarationDataRegistry.data(ViperProgram)
 var FirSimpleFunction.shouldVerify: Boolean? by FirDeclarationDataRegistry.data(ShouldVerify)
+
+fun ConeKotlinType.findEqualsSymbol(session: FirSession): FirNamedFunctionSymbol? {
+    val classSymbol = classId?.let { session.symbolProvider.getClassLikeSymbolByClassId(it) }
+        as? FirRegularClassSymbol ?: return null
+    return classSymbol.unsubstitutedScope(
+        session, ScopeSession(), withForcedTypeCalculator = false,
+        memberRequiredPhase = FirResolvePhase.STATUS
+    ).getFunctions(Name.identifier("equals"))
+        .firstOrNull { it.valueParameterSymbols.size == 1 }
+}

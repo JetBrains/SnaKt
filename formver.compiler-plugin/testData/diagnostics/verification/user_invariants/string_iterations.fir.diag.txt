@@ -8,7 +8,8 @@ method firstAtLeast(v_this_extension: Ref, c: Ref) returns (v_ret_0: Ref)
   ensures (forall anon_builtin_0: Int ::0 <= anon_builtin_0 &&
       anon_builtin_0 < intFromRef(v_ret_0) ==>
       stringFromRef(v_this_extension)[anon_builtin_0] < charFromRef(c))
-  ensures !(intFromRef(v_ret_0) == |stringFromRef(v_this_extension)|) ==>
+  ensures !(isSubtype(typeOf(stringLength(v_this_extension)), intType()) &&
+    intFromRef(v_ret_0) == intFromRef(stringLength(v_this_extension))) ==>
     stringFromRef(v_this_extension)[intFromRef(v_ret_0)] >= charFromRef(c)
 {
   var i: Ref
@@ -54,7 +55,8 @@ method lastLess(v_this_extension: Ref, c: Ref) returns (v_ret_0: Ref)
       anon_builtin_0 &&
       anon_builtin_0 < |stringFromRef(v_this_extension)| ==>
       stringFromRef(v_this_extension)[anon_builtin_0] >= charFromRef(c))
-  ensures !(intFromRef(v_ret_0) == -1) ==>
+  ensures !(isSubtype(typeOf(intToRef(-1)), intType()) &&
+    intFromRef(v_ret_0) == -1) ==>
     stringFromRef(v_this_extension)[intFromRef(v_ret_0)] < charFromRef(c)
 {
   var i: Ref

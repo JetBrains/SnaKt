@@ -84,7 +84,7 @@ fun <!VIPER_TEXT!>eqR<!>(a: RationalNumber, b: RationalNumber): Boolean {
 @AlwaysVerify
 fun <!VIPER_TEXT!>negInvolution<!>(a: RationalNumber): Unit {
     preconditions { wellFormed(a) }
-    postconditions<Unit> { _ ->
+    postconditions<Unit> {
         negR(negR(a)) == a
     }
 }

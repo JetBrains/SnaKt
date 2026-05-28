@@ -12,7 +12,8 @@ method testGreater(init: Ref) returns (v_ret_0: Ref)
 /simple_postcondition.kt: info: Generated Viper text for testString:
 method testString() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), charType())
-  ensures charFromRef(v_ret_0) == 97
+  ensures isSubtype(typeOf(charToRef(97)), charType()) &&
+    charFromRef(v_ret_0) == 97
 {
   v_ret_0 := stringGet(stringToRef(Seq(98, 97, 98)), intToRef(1))
   goto lbl_ret_0

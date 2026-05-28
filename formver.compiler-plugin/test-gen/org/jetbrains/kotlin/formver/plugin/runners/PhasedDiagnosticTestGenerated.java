@@ -393,8 +393,80 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     @TestDataPath("$PROJECT_ROOT")
     public class Adts {
       @Test
+      @TestMetadata("AdtMissingConcepts.kt")
+      public void testAdtMissingConcepts() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/AdtMissingConcepts.kt");
+      }
+
+      @Test
+      @TestMetadata("AdtsAndLanguageFeatures.kt")
+      public void testAdtsAndLanguageFeatures() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/AdtsAndLanguageFeatures.kt");
+      }
+
+      @Test
       public void testAllFilesPresentInAdts() {
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/adts"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("BinTree.kt")
+      public void testBinTree() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/BinTree.kt");
+      }
+
+      @Test
+      @TestMetadata("Direction.kt")
+      public void testDirection() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/Direction.kt");
+      }
+
+      @Test
+      @TestMetadata("Expr.kt")
+      public void testExpr() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/Expr.kt");
+      }
+
+      @Test
+      @TestMetadata("LinkedList.kt")
+      public void testLinkedList() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/LinkedList.kt");
+      }
+
+      @Test
+      @TestMetadata("LinkedListWithSumAdt.kt")
+      public void testLinkedListWithSumAdt() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/LinkedListWithSumAdt.kt");
+      }
+
+      @Test
+      @TestMetadata("Matrix.kt")
+      public void testMatrix() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/Matrix.kt");
+      }
+
+      @Test
+      @TestMetadata("Nat.kt")
+      public void testNat() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/Nat.kt");
+      }
+
+      @Test
+      @TestMetadata("Option.kt")
+      public void testOption() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/Option.kt");
+      }
+
+      @Test
+      @TestMetadata("PersistentBST.kt")
+      public void testPersistentBST() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/PersistentBST.kt");
+      }
+
+      @Test
+      @TestMetadata("Point2d.kt")
+      public void testPoint2d() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/Point2d.kt");
       }
 
       @Test
@@ -410,6 +482,24 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("RationalNumbers.kt")
+      public void testRationalNumbers() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/RationalNumbers.kt");
+      }
+
+      @Test
+      @TestMetadata("sealed_interface_errors.kt")
+      public void testSealed_interface_errors() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/sealed_interface_errors.kt");
+      }
+
+      @Test
+      @TestMetadata("shape.kt")
+      public void testShape() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/shape.kt");
+      }
+
+      @Test
       @TestMetadata("singleton.kt")
       public void testSingleton() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/singleton.kt");
@@ -420,6 +510,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       public void testSingleton_errors() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/singleton_errors.kt");
       }
+
+      @Test
+      @TestMetadata("WellfordStats.kt")
+      public void testWellfordStats() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/WellfordStats.kt");
+      }
     }
 
     @Nested
@@ -429,6 +525,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @Test
       public void testAllFilesPresentInClasses() {
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/classes"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("equality.kt")
+      public void testEquality() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/equality.kt");
       }
 
       @Test

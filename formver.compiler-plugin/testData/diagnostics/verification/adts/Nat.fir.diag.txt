@@ -1,0 +1,51 @@
+/Nat.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/Nat.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/Nat.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/Nat.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Nat.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Nat.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Nat.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Nat.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Nat.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Nat.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/Nat.kt: error: Function 'natRefl' references an invalid ADT
+
+/Nat.kt: error: Function 'natTrans' references an invalid ADT
+
+/Nat.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/Nat.kt: error: Function 'natSym' references an invalid ADT
+
+/Nat.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/Nat.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/Nat.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/Nat.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/Nat.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin

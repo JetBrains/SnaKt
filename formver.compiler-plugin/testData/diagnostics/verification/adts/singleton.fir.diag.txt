@@ -1,4 +1,12 @@
 /singleton.kt: info: Generated Viper text for nullableRed:
+function equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Red())
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  boolToRef(isSubtype(typeOf(other), Red()))
+}
+
 function size(this: Ref): Ref
   requires isSubtype(typeOf(this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
@@ -10,7 +18,7 @@ method nullableRed() returns (v_ret_0: Ref)
   var l0_r: Ref
   l0_r := nullValue()
   l0_r := RedToRef(ac_Red())
-  assert !boolFromRef(aeq_a_Red(l0_r, nullValue()))
+  assert !boolFromRef(equals(l0_r, nullValue()))
   v_ret_0 := l0_r
   goto lbl_ret_0
   label lbl_ret_0
@@ -21,6 +29,14 @@ adt a_Red {
 }
 
 /singleton.kt: info: Generated Viper text for returnsRed:
+function equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Red())
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  boolToRef(isSubtype(typeOf(other), Red()))
+}
+
 function size(this: Ref): Ref
   requires isSubtype(typeOf(this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
@@ -31,7 +47,7 @@ method returnsRed() returns (v_ret_0: Ref)
 {
   var x: Ref
   x := RedToRef(ac_Red())
-  assert boolFromRef(aeq_a_Red(x, RedToRef(ac_Red())))
+  assert boolFromRef(equals(x, RedToRef(ac_Red())))
   v_ret_0 := x
   goto lbl_ret_0
   label lbl_ret_0

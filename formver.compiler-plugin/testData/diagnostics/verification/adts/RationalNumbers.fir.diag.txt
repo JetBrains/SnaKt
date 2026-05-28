@@ -11,21 +11,29 @@ adt a_RationalNumber {
 }
 
 /RationalNumbers.kt: info: Generated Viper text for mkRationalNumber:
+function con(num: Ref, den: Ref): Ref
+  requires isSubtype(typeOf(num), intType())
+  requires isSubtype(typeOf(den), intType())
+  ensures isSubtype(typeOf(result), RationalNumber())
+  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_num) ==
+    intFromRef(num)
+  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_den) ==
+    intFromRef(den)
+  ensures RationalNumberFromRef(result) == ac_RationalNumber(num, den)
+
+
 function mkRationalNumber(num: Ref, den: Ref): Ref
   requires isSubtype(typeOf(num), intType())
   requires isSubtype(typeOf(den), intType())
-  requires !(intFromRef(den) == 0)
+  requires !(isSubtype(typeOf(intToRef(0)), intType()) &&
+    intFromRef(den) == 0)
   ensures isSubtype(typeOf(result), RationalNumber())
   ensures boolFromRef(wellFormed(result))
 {
   (let anon_1_0 ==
-    ((intFromRef(den) > 0 ?
-      RationalNumberToRef(ac_RationalNumber(num, den)) :
-      null)) in
+    ((intFromRef(den) > 0 ? con(num, den) : null)) in
     (let anon_2_0 ==
-      ((!(intFromRef(den) > 0) ?
-        RationalNumberToRef(ac_RationalNumber(negInt(num), negInt(den))) :
-        null)) in
+      ((!(intFromRef(den) > 0) ? con(negInt(num), negInt(den)) : null)) in
       (let anon_0_0 ==
         ((intFromRef(den) > 0 ? anon_1_0 : anon_2_0)) in
         anon_0_0)))
@@ -51,11 +59,21 @@ function addR(a: Ref, b: Ref): Ref
   ensures isSubtype(typeOf(result), RationalNumber())
   ensures boolFromRef(wellFormed(result))
 {
-  RationalNumberToRef(ac_RationalNumber(plusInts(timesInts(RationalNumberFromRef(a).af_a_RationalNumber_num,
-  RationalNumberFromRef(b).af_a_RationalNumber_den), timesInts(RationalNumberFromRef(b).af_a_RationalNumber_num,
-  RationalNumberFromRef(a).af_a_RationalNumber_den)), timesInts(RationalNumberFromRef(a).af_a_RationalNumber_den,
-  RationalNumberFromRef(b).af_a_RationalNumber_den)))
+  con(plusInts(timesInts(RationalNumberFromRef(a).af_a_RationalNumber_num, RationalNumberFromRef(b).af_a_RationalNumber_den),
+  timesInts(RationalNumberFromRef(b).af_a_RationalNumber_num, RationalNumberFromRef(a).af_a_RationalNumber_den)),
+  timesInts(RationalNumberFromRef(a).af_a_RationalNumber_den, RationalNumberFromRef(b).af_a_RationalNumber_den))
 }
+
+function con(num: Ref, den: Ref): Ref
+  requires isSubtype(typeOf(num), intType())
+  requires isSubtype(typeOf(den), intType())
+  ensures isSubtype(typeOf(result), RationalNumber())
+  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_num) ==
+    intFromRef(num)
+  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_den) ==
+    intFromRef(den)
+  ensures RationalNumberFromRef(result) == ac_RationalNumber(num, den)
+
 
 function wellFormed(par_r: Ref): Ref
   requires isSubtype(typeOf(par_r), RationalNumber())
@@ -69,6 +87,17 @@ adt a_RationalNumber {
 }
 
 /RationalNumbers.kt: info: Generated Viper text for mulR:
+function con(num: Ref, den: Ref): Ref
+  requires isSubtype(typeOf(num), intType())
+  requires isSubtype(typeOf(den), intType())
+  ensures isSubtype(typeOf(result), RationalNumber())
+  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_num) ==
+    intFromRef(num)
+  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_den) ==
+    intFromRef(den)
+  ensures RationalNumberFromRef(result) == ac_RationalNumber(num, den)
+
+
 function mulR(a: Ref, b: Ref): Ref
   requires isSubtype(typeOf(a), RationalNumber())
   requires isSubtype(typeOf(b), RationalNumber())
@@ -77,9 +106,8 @@ function mulR(a: Ref, b: Ref): Ref
   ensures isSubtype(typeOf(result), RationalNumber())
   ensures boolFromRef(wellFormed(result))
 {
-  RationalNumberToRef(ac_RationalNumber(timesInts(RationalNumberFromRef(a).af_a_RationalNumber_num,
-  RationalNumberFromRef(b).af_a_RationalNumber_num), timesInts(RationalNumberFromRef(a).af_a_RationalNumber_den,
-  RationalNumberFromRef(b).af_a_RationalNumber_den)))
+  con(timesInts(RationalNumberFromRef(a).af_a_RationalNumber_num, RationalNumberFromRef(b).af_a_RationalNumber_num),
+  timesInts(RationalNumberFromRef(a).af_a_RationalNumber_den, RationalNumberFromRef(b).af_a_RationalNumber_den))
 }
 
 function wellFormed(par_r: Ref): Ref
@@ -94,13 +122,24 @@ adt a_RationalNumber {
 }
 
 /RationalNumbers.kt: info: Generated Viper text for negR:
+function con(num: Ref, den: Ref): Ref
+  requires isSubtype(typeOf(num), intType())
+  requires isSubtype(typeOf(den), intType())
+  ensures isSubtype(typeOf(result), RationalNumber())
+  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_num) ==
+    intFromRef(num)
+  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_den) ==
+    intFromRef(den)
+  ensures RationalNumberFromRef(result) == ac_RationalNumber(num, den)
+
+
 function negR(a: Ref): Ref
   requires isSubtype(typeOf(a), RationalNumber())
   requires boolFromRef(wellFormed(a))
   ensures isSubtype(typeOf(result), RationalNumber())
   ensures boolFromRef(wellFormed(result))
 {
-  RationalNumberToRef(ac_RationalNumber(negInt(RationalNumberFromRef(a).af_a_RationalNumber_num), RationalNumberFromRef(a).af_a_RationalNumber_den))
+  con(negInt(RationalNumberFromRef(a).af_a_RationalNumber_num), RationalNumberFromRef(a).af_a_RationalNumber_den)
 }
 
 function wellFormed(par_r: Ref): Ref
@@ -115,21 +154,32 @@ adt a_RationalNumber {
 }
 
 /RationalNumbers.kt: info: Generated Viper text for reciprocal:
+function con(num: Ref, den: Ref): Ref
+  requires isSubtype(typeOf(num), intType())
+  requires isSubtype(typeOf(den), intType())
+  ensures isSubtype(typeOf(result), RationalNumber())
+  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_num) ==
+    intFromRef(num)
+  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_den) ==
+    intFromRef(den)
+  ensures RationalNumberFromRef(result) == ac_RationalNumber(num, den)
+
+
 function reciprocal(a: Ref): Ref
   requires isSubtype(typeOf(a), RationalNumber())
   requires boolFromRef(wellFormed(a))
-  requires !(intFromRef(RationalNumberFromRef(a).af_a_RationalNumber_num) ==
-    0)
+  requires !(isSubtype(typeOf(intToRef(0)), intType()) &&
+    intFromRef(RationalNumberFromRef(a).af_a_RationalNumber_num) == 0)
   ensures isSubtype(typeOf(result), RationalNumber())
   ensures boolFromRef(wellFormed(result))
 {
   (let anon_1_0 ==
     ((intFromRef(RationalNumberFromRef(a).af_a_RationalNumber_num) > 0 ?
-      RationalNumberToRef(ac_RationalNumber(RationalNumberFromRef(a).af_a_RationalNumber_den, RationalNumberFromRef(a).af_a_RationalNumber_num)) :
+      con(RationalNumberFromRef(a).af_a_RationalNumber_den, RationalNumberFromRef(a).af_a_RationalNumber_num) :
       null)) in
     (let anon_2_0 ==
       ((!(intFromRef(RationalNumberFromRef(a).af_a_RationalNumber_num) > 0) ?
-        RationalNumberToRef(ac_RationalNumber(negInt(RationalNumberFromRef(a).af_a_RationalNumber_den), negInt(RationalNumberFromRef(a).af_a_RationalNumber_num))) :
+        con(negInt(RationalNumberFromRef(a).af_a_RationalNumber_den), negInt(RationalNumberFromRef(a).af_a_RationalNumber_num)) :
         null)) in
       (let anon_0_0 ==
         ((intFromRef(RationalNumberFromRef(a).af_a_RationalNumber_num) > 0 ?
@@ -157,10 +207,10 @@ function eqR(a: Ref, b: Ref): Ref
   requires boolFromRef(wellFormed(b))
   ensures isSubtype(typeOf(result), boolType())
 {
-  boolToRef(intFromRef(RationalNumberFromRef(a).af_a_RationalNumber_num) *
+  andBools(boolToRef(isSubtype(typeOf(timesInts(RationalNumberFromRef(b).af_a_RationalNumber_num,
+  RationalNumberFromRef(a).af_a_RationalNumber_den)), intType())), boolToRef(intFromRef(RationalNumberFromRef(a).af_a_RationalNumber_num) *
   intFromRef(RationalNumberFromRef(b).af_a_RationalNumber_den) ==
-  intFromRef(RationalNumberFromRef(b).af_a_RationalNumber_num) *
-  intFromRef(RationalNumberFromRef(a).af_a_RationalNumber_den))
+  intFromRef(timesInts(RationalNumberFromRef(b).af_a_RationalNumber_num, RationalNumberFromRef(a).af_a_RationalNumber_den))))
 }
 
 function wellFormed(par_r: Ref): Ref
@@ -175,13 +225,36 @@ adt a_RationalNumber {
 }
 
 /RationalNumbers.kt: info: Generated Viper text for negInvolution:
+function con(num: Ref, den: Ref): Ref
+  requires isSubtype(typeOf(num), intType())
+  requires isSubtype(typeOf(den), intType())
+  ensures isSubtype(typeOf(result), RationalNumber())
+  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_num) ==
+    intFromRef(num)
+  ensures intFromRef(RationalNumberFromRef(result).af_a_RationalNumber_den) ==
+    intFromRef(den)
+  ensures RationalNumberFromRef(result) == ac_RationalNumber(num, den)
+
+
+function equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), RationalNumber())
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  andBools(andBools(boolToRef(isSubtype(typeOf(other), RationalNumber())), andBools(boolToRef(isSubtype(typeOf(RationalNumberFromRef(other).af_a_RationalNumber_num),
+  intType())), boolToRef(intFromRef(RationalNumberFromRef(this).af_a_RationalNumber_num) ==
+  intFromRef(RationalNumberFromRef(other).af_a_RationalNumber_num)))), andBools(boolToRef(isSubtype(typeOf(RationalNumberFromRef(other).af_a_RationalNumber_den),
+  intType())), boolToRef(intFromRef(RationalNumberFromRef(this).af_a_RationalNumber_den) ==
+  intFromRef(RationalNumberFromRef(other).af_a_RationalNumber_den))))
+}
+
 function negR(a: Ref): Ref
   requires isSubtype(typeOf(a), RationalNumber())
   requires boolFromRef(wellFormed(a))
   ensures isSubtype(typeOf(result), RationalNumber())
   ensures boolFromRef(wellFormed(result))
 {
-  RationalNumberToRef(ac_RationalNumber(negInt(RationalNumberFromRef(a).af_a_RationalNumber_num), RationalNumberFromRef(a).af_a_RationalNumber_den))
+  con(negInt(RationalNumberFromRef(a).af_a_RationalNumber_num), RationalNumberFromRef(a).af_a_RationalNumber_den)
 }
 
 function wellFormed(par_r: Ref): Ref
@@ -195,7 +268,7 @@ method negInvolution(a: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(a), RationalNumber())
   requires boolFromRef(wellFormed(a))
   ensures isSubtype(typeOf(v_ret_0), unitType())
-  ensures boolFromRef(aeq_a_RationalNumber(negR(negR(a)), a))
+  ensures boolFromRef(equals(negR(negR(a)), a))
 {
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())

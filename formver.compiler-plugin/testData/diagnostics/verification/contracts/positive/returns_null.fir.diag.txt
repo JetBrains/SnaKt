@@ -32,7 +32,20 @@ method returns_null_with_if(x: Ref, y: Ref, z: Ref) returns (v_ret_0: Ref)
     x == nullValue() && y == nullValue() || z == nullValue()
   ensures v_ret_0 != nullValue() ==> x != nullValue() || y != nullValue()
 {
-  if (x == nullValue()) {
+  var anon_0: Ref
+  var anon_1: Ref
+  if (x != nullValue()) {
+    anon_1 := andBools(boolToRef(isSubtype(typeOf(nullValue()), intType())),
+      boolToRef(intFromRef(x) == intFromRef(nullValue())))
+  } else {
+    anon_1 := boolToRef(false)}
+  if (boolFromRef(anon_1)) {
+    anon_0 := boolToRef(true)
+  } elseif (x == nullValue()) {
+    anon_0 := boolToRef(nullValue() == nullValue())
+  } else {
+    anon_0 := boolToRef(false)}
+  if (boolFromRef(anon_0)) {
     v_ret_0 := y
     goto lbl_ret_0
   } else {

@@ -1,0 +1,29 @@
+/Expr.kt: error: Invalid ADT annotation: @ADT may only be applied to data class, data object, or sealed interface declarations
+
+/Expr.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Expr.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Expr.kt: error: Invalid ADT annotation: An @ADT declaration must not extend a class or implement an interface
+
+/Expr.kt: error: Function 'eval' references an invalid ADT
+
+/Expr.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/Expr.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/Expr.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/Expr.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
+
+/Expr.kt: error: An internal error has occurred.
+Details: AdtConstructorRef requires an AdtTypeEmbedding pretype, got InvalidAdtTypeEmbedding
+Please report this at https://github.com/jesyspa/kotlin
