@@ -109,13 +109,17 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), Stats())), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_n),
-  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_n) ==
-  intFromRef(StatsFromRef(other).af_a_Stats_n)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sum),
-  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sum) ==
-  intFromRef(StatsFromRef(other).af_a_Stats_sum)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sumSq),
-  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sumSq) ==
-  intFromRef(StatsFromRef(other).af_a_Stats_sumSq))))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), Stats()) ?
+      andBools(andBools(andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_n),
+      intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_n) ==
+      intFromRef(StatsFromRef(other).af_a_Stats_n))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sum),
+      intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sum) ==
+      intFromRef(StatsFromRef(other).af_a_Stats_sum)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sumSq),
+      intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sumSq) ==
+      intFromRef(StatsFromRef(other).af_a_Stats_sumSq)))) :
+      boolToRef(false))) in
+    anon_0_0)
 }
 
 function merge(a: Ref, b: Ref): Ref
@@ -156,13 +160,17 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), Stats())), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_n),
-  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_n) ==
-  intFromRef(StatsFromRef(other).af_a_Stats_n)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sum),
-  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sum) ==
-  intFromRef(StatsFromRef(other).af_a_Stats_sum)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sumSq),
-  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sumSq) ==
-  intFromRef(StatsFromRef(other).af_a_Stats_sumSq))))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), Stats()) ?
+      andBools(andBools(andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_n),
+      intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_n) ==
+      intFromRef(StatsFromRef(other).af_a_Stats_n))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sum),
+      intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sum) ==
+      intFromRef(StatsFromRef(other).af_a_Stats_sum)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sumSq),
+      intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sumSq) ==
+      intFromRef(StatsFromRef(other).af_a_Stats_sumSq)))) :
+      boolToRef(false))) in
+    anon_0_0)
 }
 
 function merge(a: Ref, b: Ref): Ref
@@ -210,13 +218,17 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), Stats())), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_n),
-  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_n) ==
-  intFromRef(StatsFromRef(other).af_a_Stats_n)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sum),
-  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sum) ==
-  intFromRef(StatsFromRef(other).af_a_Stats_sum)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sumSq),
-  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sumSq) ==
-  intFromRef(StatsFromRef(other).af_a_Stats_sumSq))))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), Stats()) ?
+      andBools(andBools(andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_n),
+      intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_n) ==
+      intFromRef(StatsFromRef(other).af_a_Stats_n))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sum),
+      intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sum) ==
+      intFromRef(StatsFromRef(other).af_a_Stats_sum)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sumSq),
+      intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sumSq) ==
+      intFromRef(StatsFromRef(other).af_a_Stats_sumSq)))) :
+      boolToRef(false))) in
+    anon_0_0)
 }
 
 function merge(a: Ref, b: Ref): Ref
@@ -262,13 +274,17 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), Stats())), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_n),
-  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_n) ==
-  intFromRef(StatsFromRef(other).af_a_Stats_n)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sum),
-  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sum) ==
-  intFromRef(StatsFromRef(other).af_a_Stats_sum)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sumSq),
-  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sumSq) ==
-  intFromRef(StatsFromRef(other).af_a_Stats_sumSq))))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), Stats()) ?
+      andBools(andBools(andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_n),
+      intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_n) ==
+      intFromRef(StatsFromRef(other).af_a_Stats_n))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sum),
+      intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sum) ==
+      intFromRef(StatsFromRef(other).af_a_Stats_sum)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sumSq),
+      intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sumSq) ==
+      intFromRef(StatsFromRef(other).af_a_Stats_sumSq)))) :
+      boolToRef(false))) in
+    anon_0_0)
 }
 
 function merge(a: Ref, b: Ref): Ref
@@ -308,13 +324,17 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), Stats())), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_n),
-  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_n) ==
-  intFromRef(StatsFromRef(other).af_a_Stats_n)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sum),
-  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sum) ==
-  intFromRef(StatsFromRef(other).af_a_Stats_sum)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sumSq),
-  intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sumSq) ==
-  intFromRef(StatsFromRef(other).af_a_Stats_sumSq))))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), Stats()) ?
+      andBools(andBools(andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_n),
+      intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_n) ==
+      intFromRef(StatsFromRef(other).af_a_Stats_n))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sum),
+      intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sum) ==
+      intFromRef(StatsFromRef(other).af_a_Stats_sum)))), andBools(boolToRef(isSubtype(typeOf(StatsFromRef(other).af_a_Stats_sumSq),
+      intType())), boolToRef(intFromRef(StatsFromRef(this).af_a_Stats_sumSq) ==
+      intFromRef(StatsFromRef(other).af_a_Stats_sumSq)))) :
+      boolToRef(false))) in
+    anon_0_0)
 }
 
 function fromSample(x: Ref): Ref

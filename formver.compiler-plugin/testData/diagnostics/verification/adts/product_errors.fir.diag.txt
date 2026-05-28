@@ -114,11 +114,15 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  andBools(andBools(boolToRef(isSubtype(typeOf(other), TwoFields())), andBools(boolToRef(isSubtype(typeOf(TwoFieldsFromRef(other).af_a_TwoFields_a),
-  intType())), boolToRef(intFromRef(TwoFieldsFromRef(this).af_a_TwoFields_a) ==
-  intFromRef(TwoFieldsFromRef(other).af_a_TwoFields_a)))), andBools(boolToRef(isSubtype(typeOf(TwoFieldsFromRef(other).af_a_TwoFields_b),
-  boolType())), boolToRef(boolFromRef(TwoFieldsFromRef(this).af_a_TwoFields_b) ==
-  boolFromRef(TwoFieldsFromRef(other).af_a_TwoFields_b))))
+  (let anon_1_0 ==
+    ((isSubtype(typeOf(other), TwoFields()) ?
+      andBools(andBools(boolToRef(isSubtype(typeOf(TwoFieldsFromRef(other).af_a_TwoFields_a),
+      intType())), boolToRef(intFromRef(TwoFieldsFromRef(this).af_a_TwoFields_a) ==
+      intFromRef(TwoFieldsFromRef(other).af_a_TwoFields_a))), andBools(boolToRef(isSubtype(typeOf(TwoFieldsFromRef(other).af_a_TwoFields_b),
+      boolType())), boolToRef(boolFromRef(TwoFieldsFromRef(this).af_a_TwoFields_b) ==
+      boolFromRef(TwoFieldsFromRef(other).af_a_TwoFields_b)))) :
+      boolToRef(false))) in
+    anon_1_0)
 }
 
 method testNullableComparisoin() returns (v_ret_0: Ref)
@@ -126,14 +130,14 @@ method testNullableComparisoin() returns (v_ret_0: Ref)
 {
   var adt1: Ref
   var adt2: Ref
-  var anon: Ref
+  var anon_0: Ref
   adt1 := con(intToRef(0), boolToRef(true))
   adt2 := con(intToRef(1), boolToRef(false))
   if (adt1 != nullValue()) {
-    anon := equals(adt1, adt2)
+    anon_0 := equals(adt1, adt2)
   } else {
-    anon := boolToRef(false)}
-  if (boolFromRef(anon)) {
+    anon_0 := boolToRef(false)}
+  if (boolFromRef(anon_0)) {
     v_ret_0 := boolToRef(true)
   } elseif (adt1 == nullValue()) {
     v_ret_0 := boolToRef(adt2 == nullValue())

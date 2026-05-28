@@ -258,16 +258,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), Mat2())),
-  andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_a), intType())),
-  boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_a) ==
-  intFromRef(Mat2FromRef(other).af_a_Mat2_a)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_b),
-  intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_b) ==
-  intFromRef(Mat2FromRef(other).af_a_Mat2_b)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_c),
-  intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_c) ==
-  intFromRef(Mat2FromRef(other).af_a_Mat2_c)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_d),
-  intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_d) ==
-  intFromRef(Mat2FromRef(other).af_a_Mat2_d))))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), Mat2()) ?
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_a),
+      intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_a) ==
+      intFromRef(Mat2FromRef(other).af_a_Mat2_a))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_b),
+      intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_b) ==
+      intFromRef(Mat2FromRef(other).af_a_Mat2_b)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_c),
+      intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_c) ==
+      intFromRef(Mat2FromRef(other).af_a_Mat2_c)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_d),
+      intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_d) ==
+      intFromRef(Mat2FromRef(other).af_a_Mat2_d)))) :
+      boolToRef(false))) in
+    anon_0_0)
 }
 
 function transpose(m: Ref): Ref
@@ -306,16 +309,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), Mat2())),
-  andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_a), intType())),
-  boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_a) ==
-  intFromRef(Mat2FromRef(other).af_a_Mat2_a)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_b),
-  intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_b) ==
-  intFromRef(Mat2FromRef(other).af_a_Mat2_b)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_c),
-  intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_c) ==
-  intFromRef(Mat2FromRef(other).af_a_Mat2_c)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_d),
-  intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_d) ==
-  intFromRef(Mat2FromRef(other).af_a_Mat2_d))))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), Mat2()) ?
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_a),
+      intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_a) ==
+      intFromRef(Mat2FromRef(other).af_a_Mat2_a))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_b),
+      intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_b) ==
+      intFromRef(Mat2FromRef(other).af_a_Mat2_b)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_c),
+      intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_c) ==
+      intFromRef(Mat2FromRef(other).af_a_Mat2_c)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_d),
+      intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_d) ==
+      intFromRef(Mat2FromRef(other).af_a_Mat2_d)))) :
+      boolToRef(false))) in
+    anon_0_0)
 }
 
 function identity(): Ref
@@ -365,16 +371,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(other), Mat2())),
-  andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_a), intType())),
-  boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_a) ==
-  intFromRef(Mat2FromRef(other).af_a_Mat2_a)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_b),
-  intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_b) ==
-  intFromRef(Mat2FromRef(other).af_a_Mat2_b)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_c),
-  intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_c) ==
-  intFromRef(Mat2FromRef(other).af_a_Mat2_c)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_d),
-  intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_d) ==
-  intFromRef(Mat2FromRef(other).af_a_Mat2_d))))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), Mat2()) ?
+      andBools(andBools(andBools(andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_a),
+      intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_a) ==
+      intFromRef(Mat2FromRef(other).af_a_Mat2_a))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_b),
+      intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_b) ==
+      intFromRef(Mat2FromRef(other).af_a_Mat2_b)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_c),
+      intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_c) ==
+      intFromRef(Mat2FromRef(other).af_a_Mat2_c)))), andBools(boolToRef(isSubtype(typeOf(Mat2FromRef(other).af_a_Mat2_d),
+      intType())), boolToRef(intFromRef(Mat2FromRef(this).af_a_Mat2_d) ==
+      intFromRef(Mat2FromRef(other).af_a_Mat2_d)))) :
+      boolToRef(false))) in
+    anon_0_0)
 }
 
 function identity(): Ref

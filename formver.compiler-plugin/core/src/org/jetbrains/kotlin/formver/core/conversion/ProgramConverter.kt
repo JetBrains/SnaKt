@@ -542,8 +542,9 @@ class ProgramConverter(
                 )
             }
 
-            val typeCheck: ExpEmbedding = Is(other, adtType)
-            fieldComparisons.fold(typeCheck) { acc, cmp -> And(acc, cmp) }
+            val fieldEquality = fieldComparisons.reduceOrNull { acc, cmp -> And(acc, cmp) }
+                ?: BooleanLit(true)
+            If(Is(other, adtType), fieldEquality, BooleanLit(false), buildType { boolean() })
         }
     }
 

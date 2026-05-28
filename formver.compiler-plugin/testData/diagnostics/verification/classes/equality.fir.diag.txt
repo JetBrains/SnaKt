@@ -149,13 +149,16 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  andBools(andBools(boolToRef(isSubtype(typeOf(other), PairWithPrimitives())),
-  andBools(boolToRef(isSubtype(typeOf(PairWithPrimitivesFromRef(other).af_a_PairWithPrimitives_a),
-  intType())), boolToRef(intFromRef(PairWithPrimitivesFromRef(this).af_a_PairWithPrimitives_a) ==
-  intFromRef(PairWithPrimitivesFromRef(other).af_a_PairWithPrimitives_a)))),
-  andBools(boolToRef(isSubtype(typeOf(PairWithPrimitivesFromRef(other).af_a_PairWithPrimitives_b),
-  intType())), boolToRef(intFromRef(PairWithPrimitivesFromRef(this).af_a_PairWithPrimitives_b) ==
-  intFromRef(PairWithPrimitivesFromRef(other).af_a_PairWithPrimitives_b))))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), PairWithPrimitives()) ?
+      andBools(andBools(boolToRef(isSubtype(typeOf(PairWithPrimitivesFromRef(other).af_a_PairWithPrimitives_a),
+      intType())), boolToRef(intFromRef(PairWithPrimitivesFromRef(this).af_a_PairWithPrimitives_a) ==
+      intFromRef(PairWithPrimitivesFromRef(other).af_a_PairWithPrimitives_a))),
+      andBools(boolToRef(isSubtype(typeOf(PairWithPrimitivesFromRef(other).af_a_PairWithPrimitives_b),
+      intType())), boolToRef(intFromRef(PairWithPrimitivesFromRef(this).af_a_PairWithPrimitives_b) ==
+      intFromRef(PairWithPrimitivesFromRef(other).af_a_PairWithPrimitives_b)))) :
+      boolToRef(false))) in
+    anon_0_0)
 }
 
 method usePairWithPrimitives(p1: Ref, p2: Ref) returns (v_ret_0: Ref)
@@ -178,13 +181,16 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  andBools(andBools(boolToRef(isSubtype(typeOf(other), PairWithPrimitives())),
-  andBools(boolToRef(isSubtype(typeOf(PairWithPrimitivesFromRef(other).af_a_PairWithPrimitives_a),
-  intType())), boolToRef(intFromRef(PairWithPrimitivesFromRef(this).af_a_PairWithPrimitives_a) ==
-  intFromRef(PairWithPrimitivesFromRef(other).af_a_PairWithPrimitives_a)))),
-  andBools(boolToRef(isSubtype(typeOf(PairWithPrimitivesFromRef(other).af_a_PairWithPrimitives_b),
-  intType())), boolToRef(intFromRef(PairWithPrimitivesFromRef(this).af_a_PairWithPrimitives_b) ==
-  intFromRef(PairWithPrimitivesFromRef(other).af_a_PairWithPrimitives_b))))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), PairWithPrimitives()) ?
+      andBools(andBools(boolToRef(isSubtype(typeOf(PairWithPrimitivesFromRef(other).af_a_PairWithPrimitives_a),
+      intType())), boolToRef(intFromRef(PairWithPrimitivesFromRef(this).af_a_PairWithPrimitives_a) ==
+      intFromRef(PairWithPrimitivesFromRef(other).af_a_PairWithPrimitives_a))),
+      andBools(boolToRef(isSubtype(typeOf(PairWithPrimitivesFromRef(other).af_a_PairWithPrimitives_b),
+      intType())), boolToRef(intFromRef(PairWithPrimitivesFromRef(this).af_a_PairWithPrimitives_b) ==
+      intFromRef(PairWithPrimitivesFromRef(other).af_a_PairWithPrimitives_b)))) :
+      boolToRef(false))) in
+    anon_0_0)
 }
 
 function usePairWithPrimitivesPure(p1: Ref, p2: Ref): Ref
@@ -237,8 +243,12 @@ function BoxWithCustomPureEquals_f_equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  andBools(boolToRef(isSubtype(typeOf(other), BoxWithCustomPureEquals())), CustomPureEquals_f_equals(BoxWithCustomPureEqualsFromRef(this).af_a_BoxWithCustomPureEquals_a,
-  BoxWithCustomPureEqualsFromRef(other).af_a_BoxWithCustomPureEquals_a))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), BoxWithCustomPureEquals()) ?
+      CustomPureEquals_f_equals(BoxWithCustomPureEqualsFromRef(this).af_a_BoxWithCustomPureEquals_a,
+      BoxWithCustomPureEqualsFromRef(other).af_a_BoxWithCustomPureEquals_a) :
+      boolToRef(false))) in
+    anon_0_0)
 }
 
 function CustomPureEquals_f_equals(this: Ref, other: Ref): Ref
@@ -270,8 +280,12 @@ function BoxWithCustomPureEquals_f_equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  andBools(boolToRef(isSubtype(typeOf(other), BoxWithCustomPureEquals())), CustomPureEquals_f_equals(BoxWithCustomPureEqualsFromRef(this).af_a_BoxWithCustomPureEquals_a,
-  BoxWithCustomPureEqualsFromRef(other).af_a_BoxWithCustomPureEquals_a))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), BoxWithCustomPureEquals()) ?
+      CustomPureEquals_f_equals(BoxWithCustomPureEqualsFromRef(this).af_a_BoxWithCustomPureEquals_a,
+      BoxWithCustomPureEqualsFromRef(other).af_a_BoxWithCustomPureEquals_a) :
+      boolToRef(false))) in
+    anon_0_0)
 }
 
 function CustomPureEquals_f_equals(this: Ref, other: Ref): Ref
@@ -325,7 +339,9 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  boolToRef(isSubtype(typeOf(other), Red()))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), Red()) ? boolToRef(true) : boolToRef(false))) in
+    anon_0_0)
 }
 
 function useRedAndBlue(par_r: Ref, b: Ref): Ref
@@ -350,7 +366,11 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  boolToRef(isSubtype(typeOf(other), Blue()))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), Blue()) ?
+      boolToRef(true) :
+      boolToRef(false))) in
+    anon_0_0)
 }
 
 method testBlueBlueComparision(b1: Ref, b2: Ref) returns (v_ret_0: Ref)
@@ -374,7 +394,9 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  boolToRef(isSubtype(typeOf(other), Red()))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), Red()) ? boolToRef(true) : boolToRef(false))) in
+    anon_0_0)
 }
 
 method testRedBlueComparision(par_r: Ref, b: Ref) returns (v_ret_0: Ref)
@@ -496,13 +518,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_0_0 ==
-    ((NodeLLFromRef(this).af_a_NodeLL_tail != nullValue() ?
-      equals(NodeLLFromRef(this).af_a_NodeLL_tail, NodeLLFromRef(other).af_a_NodeLL_tail) :
-      boolToRef(NodeLLFromRef(other).af_a_NodeLL_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), NodeLL())), andBools(boolToRef(isSubtype(typeOf(NodeLLFromRef(other).af_a_NodeLL_head),
-    intType())), boolToRef(intFromRef(NodeLLFromRef(this).af_a_NodeLL_head) ==
-    intFromRef(NodeLLFromRef(other).af_a_NodeLL_head)))), anon_0_0))
+  (let anon_1_0 ==
+    ((isSubtype(typeOf(other), NodeLL()) ?
+      (NodeLLFromRef(this).af_a_NodeLL_tail != nullValue() ?
+        equals(NodeLLFromRef(this).af_a_NodeLL_tail, NodeLLFromRef(other).af_a_NodeLL_tail) :
+        boolToRef(NodeLLFromRef(other).af_a_NodeLL_tail == nullValue())) :
+      null)) in
+    (let anon_0_0 ==
+      ((isSubtype(typeOf(other), NodeLL()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeLLFromRef(other).af_a_NodeLL_head),
+        intType())), boolToRef(intFromRef(NodeLLFromRef(this).af_a_NodeLL_head) ==
+        intFromRef(NodeLLFromRef(other).af_a_NodeLL_head))), anon_1_0) :
+        boolToRef(false))) in
+      anon_0_0))
 }
 
 method testNodeLLComparisionsCoarse(ll1: Ref, ll2: Ref)
