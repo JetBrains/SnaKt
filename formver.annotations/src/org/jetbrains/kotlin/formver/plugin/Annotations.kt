@@ -22,6 +22,3 @@ annotation class Pure
 
 @Target(AnnotationTarget.PROPERTY)
 annotation class Manual
-
-@Target(AnnotationTarget.CLASS)
-annotation class ADT

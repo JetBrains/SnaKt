@@ -95,6 +95,5 @@ val TypeEmbedding.injectionOrNull: Injection?
             CharTypeEmbedding -> RuntimeTypeDomain.charInjection
             IntTypeEmbedding -> RuntimeTypeDomain.intInjection
             BooleanTypeEmbedding -> RuntimeTypeDomain.boolInjection
-            is AdtTypeEmbeddingImpl -> p.injection
             else -> null
         }
