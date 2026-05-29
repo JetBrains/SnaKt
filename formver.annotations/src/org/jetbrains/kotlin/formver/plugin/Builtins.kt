@@ -26,7 +26,7 @@ fun <T> postconditions(@Suppress("UNUSED_PARAMETER") body: InvariantBuilder.(T) 
 @Pure
 fun toMultiset(@Suppress("UNUSED_PARAMETER") list: IntArray, start: Int, end: Int) = Unit
 
-fun old(@Suppress("UNUSED_PARAMETER") value: Any): Any = throw FormverFunctionCalledInRuntimeException("old")
+fun <T> old(@Suppress("UNUSED_PARAMETER") value: T): T = throw FormverFunctionCalledInRuntimeException("old")
 
 /**
  * This class is designed as a receiver for lambda blocks of `loopInvariants`, `preconditions` and `postconditions`.
