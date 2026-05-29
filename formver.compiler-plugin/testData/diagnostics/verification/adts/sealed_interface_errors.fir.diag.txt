@@ -84,3 +84,48 @@ adt a_Checkout {
   ac_Cash(af_a_Checkout_amount: Ref)
   ac_OnTheHouse()
 }
+
+/sealed_interface_errors.kt: info: Generated Viper text for tryCast:
+method tryCast(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), Option())
+  ensures isSubtype(typeOf(v_ret_0), Option()) &&
+    OptionFromRef(v_ret_0).isac_Option.Some
+{
+  inhale isSubtype(typeOf(x), Option()) &&
+    OptionFromRef(x).isac_Option.Some
+  v_ret_0 := x
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+adt a_Option {
+  ac_Option.None()
+  ac_Option.Some(af_a_Option_value: Ref)
+}
+
+/sealed_interface_errors.kt: info: Generated Viper text for testExhaustiveness:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method testExhaustiveness(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), Option())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := x
+  if (isSubtype(typeOf(anon), Option()) &&
+  OptionFromRef(anon).isac_Option.Some) {
+  } elseif (isSubtype(typeOf(anon), Option()) &&
+  OptionFromRef(anon).isac_Option.None) {
+  } else {
+    assert false}
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+adt a_Option {
+  ac_Option.None()
+  ac_Option.Some(af_a_Option_value: Ref)
+}

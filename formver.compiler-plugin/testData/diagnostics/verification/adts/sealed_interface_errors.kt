@@ -61,3 +61,17 @@ fun <!VIPER_TEXT!>testWhenOnCheckout<!>(x: Checkout): Int = when (x) {
     is Card -> -(x.amount + 1)
     is Cash -> -x.amount
 }
+
+fun <!VIPER_TEXT!>tryCast<!>(x: Option): Option.Some {
+    return x as Option.Some
+}
+
+@Suppress("REDUNDANT_ELSE_IN_WHEN")
+@AlwaysVerify
+fun <!VIPER_TEXT!>testExhaustiveness<!>(x: Option) {
+    when (x) {
+        is Option.Some -> {}
+        is Option.None -> {}
+        else -> verify(false)
+    }
+}
