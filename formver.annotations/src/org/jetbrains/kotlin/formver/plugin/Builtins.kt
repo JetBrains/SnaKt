@@ -23,6 +23,10 @@ fun preconditions(@Suppress("UNUSED_PARAMETER") body: InvariantBuilder.() -> Uni
 
 fun <T> postconditions(@Suppress("UNUSED_PARAMETER") body: InvariantBuilder.(T) -> Unit) = Unit
 
+
+fun <T> forAll(@Suppress("UNUSED_PARAMETER") body: (T) -> Unit): Boolean =
+    throw FormverFunctionCalledInRuntimeException("forAll")
+
 /**
  * This class is designed as a receiver for lambda blocks of `loopInvariants`, `preconditions` and `postconditions`.
  */

@@ -42,6 +42,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.InvalidAdtTypeEmbeddin
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
 import org.jetbrains.kotlin.formver.core.functionCallArguments
+import org.jetbrains.kotlin.formver.core.isFormverFunctionNamed
 import org.jetbrains.kotlin.formver.core.isInvariantBuilderFunctionNamed
 import org.jetbrains.kotlin.text
 import org.jetbrains.kotlin.types.ConstantValueKind
@@ -305,17 +306,11 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         val symbol = functionCall.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
             ?: throw NotImplementedError("Only functions are expected as callables of function calls, got ${functionCall.toResolvedCallableSymbol()}")
 
-        when (val forAllLambda = functionCall.extractFormverFirBlock { isInvariantBuilderFunctionNamed("forAll") }) {
-            null -> {
-                val callee = data.embedAnyFunction(symbol)
-                return callee.insertCall(
-                    functionCall.functionCallArguments.withVarargsHandled(data, callee),
-                    data,
-                    data.embedType(functionCall.resolvedType),
-                )
-            }
+        val forAllLambda =
+            functionCall.extractFormverFirBlock { isInvariantBuilderFunctionNamed("forAll") || isFormverFunctionNamed("forAll") }
+        when {
 
-            else -> {
+            forAllLambda != null -> {
                 if (!data.isValidForForAllBlock) throw SnaktInternalException(
                     forAllLambda.source,
                     "`forAll` scope is only allowed inside one of the `loopInvariants`, `preconditions` or `postconditions`."
@@ -327,6 +322,25 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 )
                 return data.insertForAllFunctionCall(forAllArg.symbol, forAllBody)
             }
+
+            symbol.isFormverFunctionNamed("verify") -> {
+                val callee = data.embedAnyFunction(symbol)
+                val arguments = data.withNoScope {
+                    functionCall.functionCallArguments.withVarargsHandled(this, callee)
+
+                }
+                return Block { addAll(arguments.map { Assert(it) }) }
+            }
+
+            else -> {
+                val callee = data.embedAnyFunction(symbol)
+                return callee.insertCall(
+                    functionCall.functionCallArguments.withVarargsHandled(data, callee),
+                    data,
+                    data.embedType(functionCall.resolvedType),
+                )
+            }
+
         }
     }
 
