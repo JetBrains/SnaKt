@@ -5,178 +5,225 @@
 import org.jetbrains.kotlin.formver.plugin.*
 
 
+@Unique
+fun <!VIPER_TEXT!>combine<!>(@Unique list1: IntArray, @Unique list2: IntArray) : IntArray {
+    postconditions<IntArray> { res ->
+        res.size == list1.size + list2.size
+        forAll<Int> { i ->
+            triggers(i)
+            (0 <= i && i < old(list1.size)) implies (res.get(i) == old(list1.get(i)))
+        }
+        forAll<Int> { i ->
+            triggers(i)
+            (0 <= i && i < old(list2.size)) implies (res.get(i + old(list1.size)) == old(list2.get(i)))
+        }
+    }
 
-fun main() {
-    val list = IntArray(3)
-    list.set(0, 3)
-    list.set(1, 1)
-    list.set(2, 2)
+    val resultArray = IntArray(list1.size + list2.size)
+    var i = 0
+    while (i < list1.size) {
+        resultArray.set(i, list1.get(i))
+    }
 
-    selectionSort(list)
+    while (i - list1.size < list2.size) {
+        resultArray.set(i, list2.get(i - list2.size))
+    }
 
-    val res = list.get(0) <= list.get(1) && list.get(1) <= list.get(2)
-    verify(res)
-    val res2 = list.get(0) == 1
-    verify(res2)
+    return resultArray
 
 }
 
-//
-//fun <!VIPER_TEXT!>binarySearch<!>(@Unique @Borrowed list: IntArray, target: Int): Int? {
-//    preconditions {
-//        // Essential: Binary search requires the input array to be sorted
-//        forAll<Int, Int> { i1, i2 ->
-//            (0 <= i1 && i1 <= i2 && i2 < list.size) implies (list.get(i1) <= list.get(i2))
-//        }
-//    }
-//    postconditions<Int?> { ret ->
-//
-//        (ret != null) implies (0 <= ret && ret < list.size)
-//
-//        // 1. If an index is returned, it must contain the target value
-//        ((ret != null) implies (list.get(<!ARGUMENT_TYPE_MISMATCH!>ret<!>) == target)) &&
-//
-//        ((ret == null) implies forAll<Int> { index ->
-//            (0 <= index && index < list.size) implies (list.get(index) != target)
-//        })
-//    }
-//
-//    var low = 0
-//    var high = list.size - 1
-//
-//    while (low <= high) {
-//        loopInvariants {
-//
-//            forAll<Int> { i1 ->
-//                forAll<Int> { i2 ->
-//                    (0 <= i1 && i1 <= i2 && i2 < list.size) implies (list.get(i1) <= list.get(i2))
-//                }
-//            }
-//
-//            // Ensure pointers stay within valid mathematical thresholds
-//            0 <= low && high < list.size && low <= high + 1
-//
-//            // Invariant: The target value does not exist to the left of 'low'
-//            forAll<Int> { k ->
-//                (0 <= k && k < low) implies (list.get(k) != target)
-//            }
-//
-//            // Invariant: The target value does not exist to the right of 'high'
-//            forAll<Int> { k ->
-//                (high < k && k < list.size) implies (list.get(k) != target)
-//            }
-//        }
-//
-//        val mid = low + (high - low) / 2
-//        val midVal = list.get(mid)
-//
-//        if (midVal == target) {
-//            return mid
-//        } else if (midVal < target) {
-//            // Since midVal < target and the array is sorted,
-//            // target cannot be at 'mid' or anywhere to its left.
-//            low = mid + 1
-//        } else {
-//            // Since midVal > target and the array is sorted,
-//            // target cannot be at 'mid' or anywhere to its right.
-//            high = mid - 1
-//        }
-//    }
-//
-//    return null
-//}
-//
-@NeverConvert
-fun selectionSort(@Unique @Borrowed list: IntArray) {
-    preconditions {
-        list.size >= 0
-    }
-    postconditions<Unit> {
-        // The array is sorted in non-decreasing order at the end of execution
-        forAll<Int> { i1 ->
-            triggers(list.get(i1))
-            forAll<Int> { i2 ->
-                triggers(list.get(i2))
-                (0 <= i1 && i1 <= i2 && i2 < list.size) implies (list.get(i1) <= list.get(i2))
-            }
+
+fun <!VIPER_TEXT!>reverse<!>(@Unique @Borrowed list: IntArray) {
+    val size = list.size
+
+    postconditions<Unit> { res ->
+        list.size == old(list.size)
+        forAll<Int> { i ->
+            triggers(i)
+            (0 <= i && i < size) implies (list.get(i) == old(list.get(size - i - 1)))
         }
-        toMultiset(list, 0, list.size) == old(toMultiset(list, 0, list.size))
     }
 
     var i = 0
-    val n = list.size
-    while (i < n) {
+    while (i < size / 2) {
         loopInvariants {
-            0 <= i && i <= n
+            list.size == old(list.size)
+            0 <= i && i <= size / 2
 
-            // 1. The prefix from 0 to i-1 is completely sorted
-            forAll<Int> { k ->
-                (0 <= k && k < i - 1) implies (list.get(k) <= list.get(k + 1))
+            // 1. Elements at the front that HAVE been swapped
+            forAll<Int> { j ->
+                triggers(j)
+                (0 <= j && j < i) implies (list.get(j) == old(list.get(size - j - 1)))
             }
-
-            // 2. Every element in the prefix (0..i-1) is <= every element in the suffix (i..n-1)
-            forAll<Int> { k1 ->
-                forAll<Int> { k2 ->
-                    (0 <= k1 && k1 < i && i <= k2 && k2 < n) implies (list.get(k1) <= list.get(k2))
-                }
+            // 2. Elements in the middle that HAVE NOT been swapped yet
+            forAll<Int> { j ->
+                triggers(j)
+                (i <= j && j < size - i) implies (list.get(j) == old(list.get(j)))
+            }
+            // 3. FIX: Elements at the back that HAVE been swapped
+            forAll<Int> { j ->
+                triggers(j)
+                (size - i <= j && j < size) implies (list.get(j) == old(list.get(size - j - 1)))
             }
         }
 
-        var minIndex = i
-        var j = i + 1
-        while (j < n) {
-            loopInvariants {
-                i <= minIndex && minIndex < j && j <= n
-
-                // 3. list.get(minIndex) holds the minimum value found so far in the sub-range [i..j-1]
-                forAll<Int> { k ->
-                    (i <= k && k < j) implies (list.get(minIndex) <= list.get(k))
-                }
-            }
-
-            if (list.get(j) < list.get(minIndex)) {
-                minIndex = j
-            }
-            j = j + 1
-        }
-
-        // Swap the found minimum element with the element at index i
         val temp = list.get(i)
-        list.set(i, list.get(minIndex))
-        list.set(minIndex, temp)
-
+        list.set(i, list.get(size - i - 1))
+        list.set(size - i - 1, temp)
         i = i + 1
     }
 }
-//
-//
-//@NeverConvert
-//fun firstNNumbers(n: Int): IntArray {
-//    preconditions {
-//        n >= 0
-//    }
-//    postconditions<IntArray> { ret ->
-//        n >= 0
-//        ret.size == n
-//        forAll<Int> { index ->
-//            (0 <= index && index < n) implies (ret.get(index) == index)
-//        }
-//    }
-//
-//    val list = IntArray(n)
-//    var i = 0
-//    while (i < n) {
-//        loopInvariants {
-//            0 <= i && i <= n
-//            forAll<Int> { index ->
-//                (0 <= index && index < i) implies (list.get(index) == index)
-//            }
-//        }
-//        list.set(i, i)
-//        i = i + 1
-//    }
-//
-//    return list
-//
-//
-//}
+
+
+fun <!VIPER_TEXT!>binarySearch<!>(@Unique @Borrowed list: IntArray, target: Int): Int? {
+    preconditions {
+        // Essential: Binary search requires the input array to be sorted
+        forAll<Int> { i1 ->
+            triggers(i1)
+            forAll<Int> { i2 ->
+                triggers(i2)
+                (0 <= i1 && i1 <= i2 && i2 < list.size) implies (list.get(i1) <= list.get(i2))
+            }
+        }
+    }
+    postconditions<Int?> { ret ->
+
+        (ret != null) implies (0 <= <!ARGUMENT_TYPE_MISMATCH!>ret<!> && ret <!UNSAFE_OPERATOR_CALL!><<!> list.size)
+
+        // 1. If an index is returned, it must contain the target value
+        ((ret != null) implies (list.get(<!ARGUMENT_TYPE_MISMATCH!>ret<!>) == target))
+
+        ((ret == null) implies forAll<Int> { index ->
+            (0 <= index && index < list.size) implies (list.get(index) != target)
+        })
+
+        forAll<Int> { i1 ->
+            (0 <= i1 && i1 < list.size) implies (list.get(i1) == old(list.get(i1)))
+        }
+    }
+
+    var low = 0
+    var high = list.size - 1
+
+    while (low <= high) {
+        loopInvariants {
+
+            forAll<Int> { i1 ->
+                triggers(i1)
+                forAll<Int> { i2 ->
+                    triggers(i2)
+                    (0 <= i1 && i1 <= i2 && i2 < list.size) implies (list.get(i1) <= list.get(i2))
+                }
+            }
+
+            // Ensure pointers stay within valid mathematical thresholds
+            0 <= low && high < list.size && low <= high + 1
+
+            // Invariant: The target value does not exist to the left of 'low'
+            forAll<Int> { k ->
+                (0 <= k && k < low) implies (list.get(k) != target)
+            }
+
+            // Invariant: The target value does not exist to the right of 'high'
+            forAll<Int> { k ->
+                (high < k && k < list.size) implies (list.get(k) != target)
+            }
+
+            forAll<Int> { i1 ->
+                (0 <= i1 && i1 < list.size) implies (list.get(i1) == old(list.get(i1)))
+            }
+        }
+
+        val mid = low + (high - low) / 2
+        val midVal = list.get(mid)
+
+        if (midVal == target) {
+            return mid
+        } else if (midVal < target) {
+            // Since midVal < target and the array is sorted,
+            // target cannot be at 'mid' or anywhere to its left.
+            low = mid + 1
+        } else {
+            // Since midVal > target and the array is sorted,
+            // target cannot be at 'mid' or anywhere to its right.
+            high = mid - 1
+        }
+    }
+
+    return null
+}
+
+
+fun <!VIPER_TEXT!>minimum<!>(@Unique @Borrowed list: IntArray) : Int? {
+    postconditions<Int?> { res ->
+        (list.size == 0) implies (res == null)
+
+        (list.size > 0) implies (
+                forAll<Int> { i ->
+                    (0 <= i && i < list.size) implies (res < !UNSAFE_OPERATOR_CALL!><=<!> old(list.get(i)))
+                }
+                )
+        forAll<Int> { i ->
+            (0 <= i && i < list.size) implies (list.get(i) == old(list.get(i)))
+        }
+
+        !(forAll<Int> { i ->
+            (0 <= i && i < list.size) implies (res != old(list.get(i)))
+        })
+    }
+    if (list.size == 0) return null
+    var min = list.get(0)
+    var i = 1
+    while (i < list.size) {
+        loopInvariants {
+            list.size == old(list.size)
+
+            i >= 1 && i <= list.size
+            forAll<Int> { i1 ->
+                (0 <= i1 && i1 < list.size) implies (list.get(i1) == old(list.get(i1)))
+            }
+
+            forAll<Int> { i2 ->
+                (0 <= i2 && i2 < i) implies (list.get(i2) >= min)
+
+            }
+        }
+        if (list.get(i) < min) {
+            min = list.get(i)
+        }
+        i = i + 1
+    }
+    return min
+}
+
+
+fun <!VIPER_TEXT!>firstNNumbers<!>(n: Int): IntArray {
+    preconditions {
+        n >= 0
+    }
+    postconditions<IntArray> { ret ->
+        n >= 0
+        ret.size == n
+        forAll<Int> { index ->
+            (0 <= index && index < n) implies (ret.get(index) == index)
+        }
+    }
+
+    val list = IntArray(n)
+    var i = 0
+    while (i < n) {
+        loopInvariants {
+            0 <= i && i <= n
+            forAll<Int> { index ->
+                (0 <= index && index < i) implies (list.get(index) == index)
+            }
+        }
+        list.set(i, i)
+        i = i + 1
+    }
+
+    return list
+
+
+}
