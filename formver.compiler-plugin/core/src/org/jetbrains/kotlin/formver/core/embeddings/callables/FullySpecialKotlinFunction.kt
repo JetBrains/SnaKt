@@ -262,15 +262,9 @@ object SpecialKotlinFunctions {
             StringGet(args[0], args[1])
         }
 
-        // equals(other: Any?): Boolean for primitive types and Any.
-        // Mimics the Kotlin compiler's generated equals: check `other is T`, then compare values.
-        // For Any, EqCmp on two Any?-typed Refs gives reference equality — matching Any.equals() semantics.
-        //
-        // TODO: share() is an impure construct that relies on mutable caching for variable bindings.
-        //  When this insertCall result ends up in a pure ADT equals body (via pureDesugarEqualsCall),
-        //  the share node doesn't linearize correctly in PureFunBodyLinearizer — it may produce
-        //  duplicated or incorrectly cached Viper expressions. Replace share() with a pure-safe
-        //  alternative (e.g., duplicate the expression or use If-based deduplication).
+        // equals(other: Any?): Boolean for primitive types and Any
+        // Mimics the Kotlin compiler's generated equals: check `other is T`, then compare values
+        // For Any, EqCmp on two Any?-typed Refs gives reference equality
         fun primitiveEquals(receiverType: TypeBuilder.() -> PretypeBuilder, className: String) {
             val funcType = buildFunctionPretype {
                 withDispatchReceiver(receiverType)
