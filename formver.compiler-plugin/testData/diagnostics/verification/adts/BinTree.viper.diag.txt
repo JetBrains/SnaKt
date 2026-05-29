@@ -1,0 +1,21 @@
+/BinTree.kt: warning: Viper verification error: Postcondition of treeRefl might not hold. Assertion boolFromRef(BinTree_f_equals(par_t, par_t)) might not hold.
+
+/BinTree.kt: warning: Viper verification error: The precondition of method treeTrans might not hold. Assertion boolFromRef(BinTree_f_equals(get_a_BinTree_af_a_BinTree_left(BinTreeFromRef(a)), get_a_BinTree_af_a_BinTree_left(BinTreeFromRef(b)))) might not hold.
+
+/BinTree.kt: warning: Viper verification error: Postcondition of mirrorMirrorIsId might not hold. Assertion boolFromRef(BinTree_f_equals(mirror(mirror(par_t)), par_t)) might not hold.
+
+/BinTree.kt: warning: Viper verification error: Postcondition of listRefl might not hold. Assertion boolFromRef(LinkedList_f_equals(xs, xs)) might not hold.
+
+/BinTree.kt: warning: Viper verification error: The precondition of method listSym might not hold. Assertion boolFromRef(LinkedList_f_equals(get_a_LinkedList_af_a_LinkedList_tail(LinkedListFromRef(a)), get_a_LinkedList_af_a_LinkedList_tail(LinkedListFromRef(b)))) might not hold.
+
+/BinTree.kt: warning: Viper verification error: The precondition of method listTrans might not hold. Assertion boolFromRef(LinkedList_f_equals(get_a_LinkedList_af_a_LinkedList_tail(LinkedListFromRef(a)), get_a_LinkedList_af_a_LinkedList_tail(LinkedListFromRef(b)))) might not hold.
+
+/BinTree.kt: warning: Viper verification error: Postcondition of appendNull might not hold. Assertion boolFromRef(LinkedList_f_equals(append(xs, LinkedListToRef(ac_Nil())), xs)) might not hold.
+
+/BinTree.kt: warning: Viper verification error: Postcondition of appendAssoc might not hold. Assertion boolFromRef(LinkedList_f_equals(append(append(xs, ys), zs), append(xs, append(ys, zs)))) might not hold.
+
+/BinTree.kt: warning: Viper verification error: The precondition of method appendCongL might not hold. Assertion boolFromRef(LinkedList_f_equals(get_a_LinkedList_af_a_LinkedList_tail(LinkedListFromRef(a)), get_a_LinkedList_af_a_LinkedList_tail(LinkedListFromRef(b)))) might not hold.
+
+/BinTree.kt: warning: Viper verification error: Postcondition of appendCongR might not hold. Assertion boolFromRef(LinkedList_f_equals(append(a, b), append(a, c))) might not hold.
+
+/BinTree.kt: warning: Viper verification error: Postcondition of appendSingletonCons might not hold. Assertion boolFromRef(LinkedList_f_equals(append(con(x, LinkedListToRef(ac_Nil())), ys), con(x, ys))) might not hold.

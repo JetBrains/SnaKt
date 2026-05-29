@@ -15,18 +15,18 @@ data class Succ(val pred: Nat) : Nat
 
 @Pure
 fun <!VIPER_TEXT!>add<!>(m: Nat, n: Nat): Nat = when (m) {
-        is Zero -> n
-        is Succ -> Succ(add(m.pred, n))
-    }
+    is Zero -> n
+    is Succ -> Succ(add(m.pred, n))
+}
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>natRefl<!>(a: Nat): Unit {
     postconditions<Unit> { a == a }
     when (a) {
         is Zero -> {}
         is Succ -> natRefl(a.pred)
     }
-}
+}<!>
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>natTrans<!>(a: Nat, b: Nat, c: Nat): Unit {
@@ -41,7 +41,7 @@ fun <!VIPER_TEXT!>natTrans<!>(a: Nat, b: Nat, c: Nat): Unit {
             is Zero -> {}
             is Succ -> when (c) {
                 is Zero -> {}
-                is Succ -> natTrans(a.pred, b.pred, c.pred)
+                is Succ -> <!VIPER_VERIFICATION_ERROR!>natTrans(a.pred, b.pred, c.pred)<!>
             }
         }
     }
@@ -63,7 +63,7 @@ fun <!VIPER_TEXT!>natSym<!>(a: Nat, b: Nat): Unit {
         is Succ -> when (b) {
             is Zero -> {}
             is Succ -> {
-                natSym(a.pred, b.pred)
+                <!VIPER_VERIFICATION_ERROR!>natSym(a.pred, b.pred)<!>
                 verify(b.pred == a.pred)
             }
         }
@@ -80,14 +80,14 @@ fun <!VIPER_TEXT!>addCong<!>(a: Nat, b: Nat, c: Nat): Unit {
         is Succ -> when (b) {
             is Zero -> {}
             is Succ -> {
-                addCong(a.pred, b.pred, c)
+                <!VIPER_VERIFICATION_ERROR!>addCong(a.pred, b.pred, c)<!>
                 verify(add(a.pred, c) == add(b.pred, c))
             }
         }
     }
 }
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>addCongR<!>(a: Nat, b: Nat, c: Nat): Unit {
     preconditions { b == c }
     postconditions<Unit> { add(a, b) == add(a, c) }
@@ -95,18 +95,18 @@ fun <!VIPER_TEXT!>addCongR<!>(a: Nat, b: Nat, c: Nat): Unit {
         is Zero -> {}
         is Succ -> addCongR(a.pred, b, c)
     }
-}
+}<!>
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>addRightZero<!>(m: Nat): Unit {
     postconditions<Unit> { add(m, Zero) == m }
     when (m) {
         is Zero -> {}
         is Succ -> addRightZero(m.pred)
     }
-}
+}<!>
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>addRightSucc<!>(m: Nat, n: Nat): Unit {
     postconditions<Unit> { add(m, Succ(n)) == Succ(add(m, n)) }
     when (m) {
@@ -118,7 +118,7 @@ fun <!VIPER_TEXT!>addRightSucc<!>(m: Nat, n: Nat): Unit {
             verify(add(m.pred, Succ(n)) == Succ(add(m.pred, n)))
         }
     }
-}
+}<!>
 
 fun <!VIPER_TEXT!>addComm<!>(m: Nat, n: Nat): Unit {
     postconditions<Unit> { add(m, n) == add(n, m) }

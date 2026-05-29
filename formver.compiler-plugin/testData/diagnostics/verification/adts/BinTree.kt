@@ -25,7 +25,7 @@ fun <!VIPER_TEXT!>size<!>(t: BinTree): Int = when (t) {
     is Node -> 1 + size(t.left) + size(t.right)
 }
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>treeRefl<!>(t: BinTree): Unit {
     postconditions<Unit> { t == t }
     when (t) {
@@ -35,7 +35,7 @@ fun <!VIPER_TEXT!>treeRefl<!>(t: BinTree): Unit {
             treeRefl(t.right)
         }
     }
-}
+}<!>
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>treeTrans<!>(a: BinTree, b: BinTree, c: BinTree): Unit {
@@ -51,7 +51,7 @@ fun <!VIPER_TEXT!>treeTrans<!>(a: BinTree, b: BinTree, c: BinTree): Unit {
             is Node -> when (c) {
                 is Leaf -> {}
                 is Node -> {
-                    treeTrans(a.left, b.left, c.left)
+                    <!VIPER_VERIFICATION_ERROR!>treeTrans(a.left, b.left, c.left)<!>
                     treeTrans(a.right, b.right, c.right)
                 }
             }
@@ -59,7 +59,7 @@ fun <!VIPER_TEXT!>treeTrans<!>(a: BinTree, b: BinTree, c: BinTree): Unit {
     }
 }
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>mirrorMirrorIsId<!>(t: BinTree): Unit {
     postconditions<Unit> { mirror(mirror(t)) == t }
     when (t) {
@@ -69,7 +69,7 @@ fun <!VIPER_TEXT!>mirrorMirrorIsId<!>(t: BinTree): Unit {
             mirrorMirrorIsId(t.right)
         }
     }
-}
+}<!>
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>mirrorPreservesSize<!>(t: BinTree): Unit {
@@ -174,14 +174,14 @@ fun <!VIPER_TEXT!>reverse<!>(xs: LinkedList): LinkedList = when (xs) {
     is Cons -> append(reverse(xs.tail), Cons(xs.head, Nil))
 }
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>listRefl<!>(xs: LinkedList): Unit {
     postconditions<Unit> { xs == xs }
     when (xs) {
         is Nil -> {}
         is Cons -> listRefl(xs.tail)
     }
-}
+}<!>
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>listSym<!>(a: LinkedList, b: LinkedList): Unit {
@@ -191,7 +191,7 @@ fun <!VIPER_TEXT!>listSym<!>(a: LinkedList, b: LinkedList): Unit {
         is Nil -> {}
         is Cons -> when (b) {
             is Nil -> {}
-            is Cons -> listSym(a.tail, b.tail)
+            is Cons -> <!VIPER_VERIFICATION_ERROR!>listSym(a.tail, b.tail)<!>
         }
     }
 }
@@ -209,22 +209,22 @@ fun <!VIPER_TEXT!>listTrans<!>(a: LinkedList, b: LinkedList, c: LinkedList): Uni
             is Nil -> {}
             is Cons -> when (c) {
                 is Nil -> {}
-                is Cons -> listTrans(a.tail, b.tail, c.tail)
+                is Cons -> <!VIPER_VERIFICATION_ERROR!>listTrans(a.tail, b.tail, c.tail)<!>
             }
         }
     }
 }
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>appendNull<!>(xs: LinkedList): Unit {
     postconditions<Unit> { append(xs, Nil) == xs }
     when (xs) {
         is Nil -> {}
         is Cons -> appendNull(xs.tail)
     }
-}
+}<!>
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>appendAssoc<!>(xs: LinkedList, ys: LinkedList, zs: LinkedList): Unit {
     postconditions<Unit> {
         append(append(xs, ys), zs) == append(xs, append(ys, zs))
@@ -233,7 +233,7 @@ fun <!VIPER_TEXT!>appendAssoc<!>(xs: LinkedList, ys: LinkedList, zs: LinkedList)
         is Nil -> listRefl(append(ys, zs))
         is Cons -> appendAssoc(xs.tail, ys, zs)
     }
-}
+}<!>
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>appendCongL<!>(a: LinkedList, b: LinkedList, c: LinkedList): Unit {
@@ -243,12 +243,12 @@ fun <!VIPER_TEXT!>appendCongL<!>(a: LinkedList, b: LinkedList, c: LinkedList): U
         is Nil -> listRefl(c)
         is Cons -> when (b) {
             is Nil -> {}
-            is Cons -> appendCongL(a.tail, b.tail, c)
+            is Cons -> <!VIPER_VERIFICATION_ERROR!>appendCongL(a.tail, b.tail, c)<!>
         }
     }
 }
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>appendCongR<!>(a: LinkedList, b: LinkedList, c: LinkedList): Unit {
     preconditions { b == c }
     postconditions<Unit> { append(a, b) == append(a, c) }
@@ -256,7 +256,7 @@ fun <!VIPER_TEXT!>appendCongR<!>(a: LinkedList, b: LinkedList, c: LinkedList): U
         is Nil -> listRefl(b)
         is Cons -> appendCongR(a.tail, b, c)
     }
-}
+}<!>
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>appendNilL<!>(xs: LinkedList): Unit {
@@ -264,11 +264,11 @@ fun <!VIPER_TEXT!>appendNilL<!>(xs: LinkedList): Unit {
     listRefl(xs)
 }
 
-@AlwaysVerify
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>appendSingletonCons<!>(x: Int, ys: LinkedList): Unit {
     postconditions<Unit> { append(Cons(x, Nil), ys) == Cons(x, ys) }
     appendNilL(ys)
-}
+}<!>
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>reverseNil<!>(): Unit {

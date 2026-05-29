@@ -121,7 +121,20 @@ adt a_Option {
 }
 
 /Option.kt: info: Generated Viper text for optRefl:
-function equals(this: Ref, anon_0: Ref): Ref
+function None_f_equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Option()) &&
+    OptionFromRef(this).isac_None
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_4_0 ==
+    ((isSubtype(typeOf(other), Option()) && OptionFromRef(other).isac_None ?
+      boolToRef(true) :
+      boolToRef(false))) in
+    anon_4_0)
+}
+
+function Option_f_equals(this: Ref, anon_0: Ref): Ref
   requires isSubtype(typeOf(this), Option())
   requires isSubtype(typeOf(anon_0), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
@@ -129,24 +142,35 @@ function equals(this: Ref, anon_0: Ref): Ref
   (let anon_2_0 ==
     ((!(isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_None) ?
       (isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_Some ?
-        andBools(boolToRef(isSubtype(typeOf(anon_0), Option()) &&
-        OptionFromRef(anon_0).isac_Some), andBools(boolToRef(isSubtype(typeOf(OptionFromRef(anon_0).af_a_Option_value),
-        intType())), boolToRef(intFromRef(OptionFromRef(this).af_a_Option_value) ==
-        intFromRef(OptionFromRef(anon_0).af_a_Option_value)))) :
+        Some_f_equals(this, anon_0) :
         boolToRef(false)) :
       null)) in
     (let anon_1_0 ==
       ((isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_None ?
-        boolToRef(isSubtype(typeOf(anon_0), Option()) &&
-        OptionFromRef(anon_0).isac_None) :
+        None_f_equals(this, anon_0) :
         anon_2_0)) in
       andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), anon_1_0)))
+}
+
+function Some_f_equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Option()) &&
+    OptionFromRef(this).isac_Some
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_3_0 ==
+    ((isSubtype(typeOf(other), Option()) && OptionFromRef(other).isac_Some ?
+      andBools(boolToRef(isSubtype(typeOf(OptionFromRef(other).af_a_Option_value),
+      intType())), boolToRef(intFromRef(OptionFromRef(this).af_a_Option_value) ==
+      intFromRef(OptionFromRef(other).af_a_Option_value))) :
+      boolToRef(false))) in
+    anon_3_0)
 }
 
 method optRefl(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), Option())
   ensures isSubtype(typeOf(v_ret_0), unitType())
-  ensures boolFromRef(equals(x, x))
+  ensures boolFromRef(Option_f_equals(x, x))
 {
   var anon_0: Ref
   anon_0 := x
@@ -165,7 +189,20 @@ adt a_Option {
 }
 
 /Option.kt: info: Generated Viper text for orElseIdempotent:
-function equals(this: Ref, anon_0: Ref): Ref
+function None_f_equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Option()) &&
+    OptionFromRef(this).isac_None
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_9_0 ==
+    ((isSubtype(typeOf(other), Option()) && OptionFromRef(other).isac_None ?
+      boolToRef(true) :
+      boolToRef(false))) in
+    anon_9_0)
+}
+
+function Option_f_equals(this: Ref, anon_0: Ref): Ref
   requires isSubtype(typeOf(this), Option())
   requires isSubtype(typeOf(anon_0), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
@@ -173,18 +210,29 @@ function equals(this: Ref, anon_0: Ref): Ref
   (let anon_7_0 ==
     ((!(isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_None) ?
       (isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_Some ?
-        andBools(boolToRef(isSubtype(typeOf(anon_0), Option()) &&
-        OptionFromRef(anon_0).isac_Some), andBools(boolToRef(isSubtype(typeOf(OptionFromRef(anon_0).af_a_Option_value),
-        intType())), boolToRef(intFromRef(OptionFromRef(this).af_a_Option_value) ==
-        intFromRef(OptionFromRef(anon_0).af_a_Option_value)))) :
+        Some_f_equals(this, anon_0) :
         boolToRef(false)) :
       null)) in
     (let anon_6_0 ==
       ((isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_None ?
-        boolToRef(isSubtype(typeOf(anon_0), Option()) &&
-        OptionFromRef(anon_0).isac_None) :
+        None_f_equals(this, anon_0) :
         anon_7_0)) in
       andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), anon_6_0)))
+}
+
+function Some_f_equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Option()) &&
+    OptionFromRef(this).isac_Some
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_8_0 ==
+    ((isSubtype(typeOf(other), Option()) && OptionFromRef(other).isac_Some ?
+      andBools(boolToRef(isSubtype(typeOf(OptionFromRef(other).af_a_Option_value),
+      intType())), boolToRef(intFromRef(OptionFromRef(this).af_a_Option_value) ==
+      intFromRef(OptionFromRef(other).af_a_Option_value))) :
+      boolToRef(false))) in
+    anon_8_0)
 }
 
 function orElse(a: Ref, b: Ref): Ref
@@ -225,7 +273,7 @@ function orElse(a: Ref, b: Ref): Ref
 method orElseIdempotent(opt: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(opt), Option())
   ensures isSubtype(typeOf(v_ret_0), unitType())
-  ensures boolFromRef(equals(orElse(opt, opt), opt))
+  ensures boolFromRef(Option_f_equals(orElse(opt, opt), opt))
 {
   var anon_1: Ref
   anon_1 := opt
@@ -244,7 +292,20 @@ adt a_Option {
 }
 
 /Option.kt: info: Generated Viper text for orElseAssoc:
-function equals(this: Ref, anon_0: Ref): Ref
+function None_f_equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Option()) &&
+    OptionFromRef(this).isac_None
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_11_0 ==
+    ((isSubtype(typeOf(other), Option()) && OptionFromRef(other).isac_None ?
+      boolToRef(true) :
+      boolToRef(false))) in
+    anon_11_0)
+}
+
+function Option_f_equals(this: Ref, anon_0: Ref): Ref
   requires isSubtype(typeOf(this), Option())
   requires isSubtype(typeOf(anon_0), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
@@ -252,18 +313,29 @@ function equals(this: Ref, anon_0: Ref): Ref
   (let anon_9_0 ==
     ((!(isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_None) ?
       (isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_Some ?
-        andBools(boolToRef(isSubtype(typeOf(anon_0), Option()) &&
-        OptionFromRef(anon_0).isac_Some), andBools(boolToRef(isSubtype(typeOf(OptionFromRef(anon_0).af_a_Option_value),
-        intType())), boolToRef(intFromRef(OptionFromRef(this).af_a_Option_value) ==
-        intFromRef(OptionFromRef(anon_0).af_a_Option_value)))) :
+        Some_f_equals(this, anon_0) :
         boolToRef(false)) :
       null)) in
     (let anon_8_0 ==
       ((isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_None ?
-        boolToRef(isSubtype(typeOf(anon_0), Option()) &&
-        OptionFromRef(anon_0).isac_None) :
+        None_f_equals(this, anon_0) :
         anon_9_0)) in
       andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), anon_8_0)))
+}
+
+function Some_f_equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Option()) &&
+    OptionFromRef(this).isac_Some
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_10_0 ==
+    ((isSubtype(typeOf(other), Option()) && OptionFromRef(other).isac_Some ?
+      andBools(boolToRef(isSubtype(typeOf(OptionFromRef(other).af_a_Option_value),
+      intType())), boolToRef(intFromRef(OptionFromRef(this).af_a_Option_value) ==
+      intFromRef(OptionFromRef(other).af_a_Option_value))) :
+      boolToRef(false))) in
+    anon_10_0)
 }
 
 function orElse(a: Ref, b: Ref): Ref
@@ -301,10 +373,10 @@ function orElse(a: Ref, b: Ref): Ref
             anon_4_0)))))
 }
 
-method optRefl(x: Ref) returns (ret_2: Ref)
+method optRefl(x: Ref) returns (ret_4: Ref)
   requires isSubtype(typeOf(x), Option())
-  ensures isSubtype(typeOf(ret_2), unitType())
-  ensures boolFromRef(equals(x, x))
+  ensures isSubtype(typeOf(ret_4), unitType())
+  ensures boolFromRef(Option_f_equals(x, x))
 
 
 method orElseAssoc(a: Ref, b: Ref, c: Ref) returns (v_ret_0: Ref)
@@ -312,7 +384,8 @@ method orElseAssoc(a: Ref, b: Ref, c: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(b), Option())
   requires isSubtype(typeOf(c), Option())
   ensures isSubtype(typeOf(v_ret_0), unitType())
-  ensures boolFromRef(equals(orElse(orElse(a, b), c), orElse(a, orElse(b, c))))
+  ensures boolFromRef(Option_f_equals(orElse(orElse(a, b), c), orElse(a, orElse(b,
+    c))))
 {
   var anon_1: Ref
   anon_1 := a
@@ -387,6 +460,52 @@ adt a_Option {
 }
 
 /Option.kt: info: Generated Viper text for safeHeadAppend:
+function None_f_equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Option()) &&
+    OptionFromRef(this).isac_None
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_21_0 ==
+    ((isSubtype(typeOf(other), Option()) && OptionFromRef(other).isac_None ?
+      boolToRef(true) :
+      boolToRef(false))) in
+    anon_21_0)
+}
+
+function Option_f_equals(this: Ref, anon_0: Ref): Ref
+  requires isSubtype(typeOf(this), Option())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_19_0 ==
+    ((!(isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_None) ?
+      (isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_Some ?
+        Some_f_equals(this, anon_0) :
+        boolToRef(false)) :
+      null)) in
+    (let anon_18_0 ==
+      ((isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_None ?
+        None_f_equals(this, anon_0) :
+        anon_19_0)) in
+      andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), anon_18_0)))
+}
+
+function Some_f_equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Option()) &&
+    OptionFromRef(this).isac_Some
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_20_0 ==
+    ((isSubtype(typeOf(other), Option()) && OptionFromRef(other).isac_Some ?
+      andBools(boolToRef(isSubtype(typeOf(OptionFromRef(other).af_a_Option_value),
+      intType())), boolToRef(intFromRef(OptionFromRef(this).af_a_Option_value) ==
+      intFromRef(OptionFromRef(other).af_a_Option_value))) :
+      boolToRef(false))) in
+    anon_20_0)
+}
+
 function append(xs: Ref, ys: Ref): Ref
   requires isSubtype(typeOf(xs), LinkedList())
   requires isSubtype(typeOf(ys), LinkedList())
@@ -437,28 +556,6 @@ function con_Some(value: Ref): Ref
     OptionFromRef(result).isac_Some
   ensures OptionFromRef(result) == ac_Some(value)
 
-
-function equals(this: Ref, anon_0: Ref): Ref
-  requires isSubtype(typeOf(this), Option())
-  requires isSubtype(typeOf(anon_0), nullable(anyType()))
-  ensures isSubtype(typeOf(result), boolType())
-{
-  (let anon_19_0 ==
-    ((!(isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_None) ?
-      (isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_Some ?
-        andBools(boolToRef(isSubtype(typeOf(anon_0), Option()) &&
-        OptionFromRef(anon_0).isac_Some), andBools(boolToRef(isSubtype(typeOf(OptionFromRef(anon_0).af_a_Option_value),
-        intType())), boolToRef(intFromRef(OptionFromRef(this).af_a_Option_value) ==
-        intFromRef(OptionFromRef(anon_0).af_a_Option_value)))) :
-        boolToRef(false)) :
-      null)) in
-    (let anon_18_0 ==
-      ((isSubtype(typeOf(this), Option()) && OptionFromRef(this).isac_None ?
-        boolToRef(isSubtype(typeOf(anon_0), Option()) &&
-        OptionFromRef(anon_0).isac_None) :
-        anon_19_0)) in
-      andBools(boolToRef(isSubtype(typeOf(anon_0), Option())), anon_18_0)))
-}
 
 function orElse(a: Ref, b: Ref): Ref
   requires isSubtype(typeOf(a), Option())
@@ -529,17 +626,17 @@ function safeHead(xs: Ref): Ref
             anon_6_0)))))
 }
 
-method optRefl(x: Ref) returns (ret_2: Ref)
+method optRefl(x: Ref) returns (ret_4: Ref)
   requires isSubtype(typeOf(x), Option())
-  ensures isSubtype(typeOf(ret_2), unitType())
-  ensures boolFromRef(equals(x, x))
+  ensures isSubtype(typeOf(ret_4), unitType())
+  ensures boolFromRef(Option_f_equals(x, x))
 
 
 method safeHeadAppend(xs: Ref, ys: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(xs), LinkedList())
   requires isSubtype(typeOf(ys), LinkedList())
   ensures isSubtype(typeOf(v_ret_0), unitType())
-  ensures boolFromRef(equals(safeHead(append(xs, ys)), orElse(safeHead(xs),
+  ensures boolFromRef(Option_f_equals(safeHead(append(xs, ys)), orElse(safeHead(xs),
     safeHead(ys))))
 {
   var anon_3: Ref

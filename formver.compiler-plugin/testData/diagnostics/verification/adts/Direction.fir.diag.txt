@@ -83,7 +83,7 @@ adt a_Direction {
 }
 
 /Direction.kt: info: Generated Viper text for oppositeInvolution:
-function equals(this: Ref, anon_0: Ref): Ref
+function Direction_f_equals(this: Ref, anon_0: Ref): Ref
   requires isSubtype(typeOf(this), Direction())
   requires isSubtype(typeOf(anon_0), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
@@ -97,8 +97,7 @@ function equals(this: Ref, anon_0: Ref): Ref
     DirectionFromRef(this).isac_South) ?
       (isSubtype(typeOf(this), Direction()) &&
       DirectionFromRef(this).isac_West ?
-        boolToRef(isSubtype(typeOf(anon_0), Direction()) &&
-        DirectionFromRef(anon_0).isac_West) :
+        West_f_equals(this, anon_0) :
         boolToRef(false)) :
       null)) in
     (let anon_12_0 ==
@@ -108,8 +107,7 @@ function equals(this: Ref, anon_0: Ref): Ref
       DirectionFromRef(this).isac_North) ?
         (isSubtype(typeOf(this), Direction()) &&
         DirectionFromRef(this).isac_South ?
-          boolToRef(isSubtype(typeOf(anon_0), Direction()) &&
-          DirectionFromRef(anon_0).isac_South) :
+          South_f_equals(this, anon_0) :
           anon_13_0) :
         null)) in
       (let anon_11_0 ==
@@ -117,17 +115,71 @@ function equals(this: Ref, anon_0: Ref): Ref
         DirectionFromRef(this).isac_East) ?
           (isSubtype(typeOf(this), Direction()) &&
           DirectionFromRef(this).isac_North ?
-            boolToRef(isSubtype(typeOf(anon_0), Direction()) &&
-            DirectionFromRef(anon_0).isac_North) :
+            North_f_equals(this, anon_0) :
             anon_12_0) :
           null)) in
         (let anon_10_0 ==
           ((isSubtype(typeOf(this), Direction()) &&
           DirectionFromRef(this).isac_East ?
-            boolToRef(isSubtype(typeOf(anon_0), Direction()) &&
-            DirectionFromRef(anon_0).isac_East) :
+            East_f_equals(this, anon_0) :
             anon_11_0)) in
           andBools(boolToRef(isSubtype(typeOf(anon_0), Direction())), anon_10_0)))))
+}
+
+function East_f_equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Direction()) &&
+    DirectionFromRef(this).isac_East
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_17_0 ==
+    ((isSubtype(typeOf(other), Direction()) &&
+    DirectionFromRef(other).isac_East ?
+      boolToRef(true) :
+      boolToRef(false))) in
+    anon_17_0)
+}
+
+function North_f_equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Direction()) &&
+    DirectionFromRef(this).isac_North
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_16_0 ==
+    ((isSubtype(typeOf(other), Direction()) &&
+    DirectionFromRef(other).isac_North ?
+      boolToRef(true) :
+      boolToRef(false))) in
+    anon_16_0)
+}
+
+function South_f_equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Direction()) &&
+    DirectionFromRef(this).isac_South
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_15_0 ==
+    ((isSubtype(typeOf(other), Direction()) &&
+    DirectionFromRef(other).isac_South ?
+      boolToRef(true) :
+      boolToRef(false))) in
+    anon_15_0)
+}
+
+function West_f_equals(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), Direction()) &&
+    DirectionFromRef(this).isac_West
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_14_0 ==
+    ((isSubtype(typeOf(other), Direction()) &&
+    DirectionFromRef(other).isac_West ?
+      boolToRef(true) :
+      boolToRef(false))) in
+    anon_14_0)
 }
 
 function opposite(d: Ref): Ref
@@ -209,7 +261,7 @@ function opposite(d: Ref): Ref
 method oppositeInvolution(d: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(d), Direction())
   ensures isSubtype(typeOf(v_ret_0), unitType())
-  ensures boolFromRef(equals(opposite(opposite(d)), d))
+  ensures boolFromRef(Direction_f_equals(opposite(opposite(d)), d))
 {
   var anon_1: Ref
   anon_1 := d

@@ -217,11 +217,15 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  andBools(andBools(boolToRef(isSubtype(typeOf(other), RationalNumber())), andBools(boolToRef(isSubtype(typeOf(RationalNumberFromRef(other).af_a_RationalNumber_num),
-  intType())), boolToRef(intFromRef(RationalNumberFromRef(this).af_a_RationalNumber_num) ==
-  intFromRef(RationalNumberFromRef(other).af_a_RationalNumber_num)))), andBools(boolToRef(isSubtype(typeOf(RationalNumberFromRef(other).af_a_RationalNumber_den),
-  intType())), boolToRef(intFromRef(RationalNumberFromRef(this).af_a_RationalNumber_den) ==
-  intFromRef(RationalNumberFromRef(other).af_a_RationalNumber_den))))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), RationalNumber()) ?
+      andBools(andBools(boolToRef(isSubtype(typeOf(RationalNumberFromRef(other).af_a_RationalNumber_num),
+      intType())), boolToRef(intFromRef(RationalNumberFromRef(this).af_a_RationalNumber_num) ==
+      intFromRef(RationalNumberFromRef(other).af_a_RationalNumber_num))), andBools(boolToRef(isSubtype(typeOf(RationalNumberFromRef(other).af_a_RationalNumber_den),
+      intType())), boolToRef(intFromRef(RationalNumberFromRef(this).af_a_RationalNumber_den) ==
+      intFromRef(RationalNumberFromRef(other).af_a_RationalNumber_den)))) :
+      boolToRef(false))) in
+    anon_0_0)
 }
 
 function negR(a: Ref): Ref

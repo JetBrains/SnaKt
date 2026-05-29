@@ -1,0 +1,13 @@
+/Nat.kt: warning: Viper verification error: Postcondition of natRefl might not hold. Assertion boolFromRef(Nat_f_equals(a, a)) might not hold.
+
+/Nat.kt: warning: Viper verification error: The precondition of method natTrans might not hold. Assertion boolFromRef(Nat_f_equals(get_a_Nat_af_a_Nat_pred(NatFromRef(a)), get_a_Nat_af_a_Nat_pred(NatFromRef(b)))) might not hold.
+
+/Nat.kt: warning: Viper verification error: The precondition of method natSym might not hold. Assertion boolFromRef(Nat_f_equals(get_a_Nat_af_a_Nat_pred(NatFromRef(a)), get_a_Nat_af_a_Nat_pred(NatFromRef(b)))) might not hold.
+
+/Nat.kt: warning: Viper verification error: The precondition of method addCong might not hold. Assertion boolFromRef(Nat_f_equals(get_a_Nat_af_a_Nat_pred(NatFromRef(a)), get_a_Nat_af_a_Nat_pred(NatFromRef(b)))) might not hold.
+
+/Nat.kt: warning: Viper verification error: Postcondition of addCongR might not hold. Assertion boolFromRef(Nat_f_equals(add(a, b), add(a, c))) might not hold.
+
+/Nat.kt: warning: Viper verification error: Postcondition of addRightZero might not hold. Assertion boolFromRef(Nat_f_equals(add(m, NatToRef(ac_Zero())), m)) might not hold.
+
+/Nat.kt: warning: Viper verification error: Postcondition of addRightSucc might not hold. Assertion boolFromRef(Nat_f_equals(add(m, con(n)), con(add(m, n)))) might not hold.

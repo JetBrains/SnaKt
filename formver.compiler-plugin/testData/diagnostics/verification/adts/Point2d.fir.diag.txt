@@ -104,11 +104,15 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  andBools(andBools(boolToRef(isSubtype(typeOf(other), Point())), andBools(boolToRef(isSubtype(typeOf(PointFromRef(other).af_a_Point_x),
-  intType())), boolToRef(intFromRef(PointFromRef(this).af_a_Point_x) ==
-  intFromRef(PointFromRef(other).af_a_Point_x)))), andBools(boolToRef(isSubtype(typeOf(PointFromRef(other).af_a_Point_y),
-  intType())), boolToRef(intFromRef(PointFromRef(this).af_a_Point_y) ==
-  intFromRef(PointFromRef(other).af_a_Point_y))))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), Point()) ?
+      andBools(andBools(boolToRef(isSubtype(typeOf(PointFromRef(other).af_a_Point_x),
+      intType())), boolToRef(intFromRef(PointFromRef(this).af_a_Point_x) ==
+      intFromRef(PointFromRef(other).af_a_Point_x))), andBools(boolToRef(isSubtype(typeOf(PointFromRef(other).af_a_Point_y),
+      intType())), boolToRef(intFromRef(PointFromRef(this).af_a_Point_y) ==
+      intFromRef(PointFromRef(other).af_a_Point_y)))) :
+      boolToRef(false))) in
+    anon_0_0)
 }
 
 function translate(par_p: Ref, dx: Ref, dy: Ref): Ref
@@ -283,11 +287,15 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  andBools(andBools(boolToRef(isSubtype(typeOf(other), Point())), andBools(boolToRef(isSubtype(typeOf(PointFromRef(other).af_a_Point_x),
-  intType())), boolToRef(intFromRef(PointFromRef(this).af_a_Point_x) ==
-  intFromRef(PointFromRef(other).af_a_Point_x)))), andBools(boolToRef(isSubtype(typeOf(PointFromRef(other).af_a_Point_y),
-  intType())), boolToRef(intFromRef(PointFromRef(this).af_a_Point_y) ==
-  intFromRef(PointFromRef(other).af_a_Point_y))))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), Point()) ?
+      andBools(andBools(boolToRef(isSubtype(typeOf(PointFromRef(other).af_a_Point_x),
+      intType())), boolToRef(intFromRef(PointFromRef(this).af_a_Point_x) ==
+      intFromRef(PointFromRef(other).af_a_Point_x))), andBools(boolToRef(isSubtype(typeOf(PointFromRef(other).af_a_Point_y),
+      intType())), boolToRef(intFromRef(PointFromRef(this).af_a_Point_y) ==
+      intFromRef(PointFromRef(other).af_a_Point_y)))) :
+      boolToRef(false))) in
+    anon_0_0)
 }
 
 function rot90(par_p: Ref): Ref

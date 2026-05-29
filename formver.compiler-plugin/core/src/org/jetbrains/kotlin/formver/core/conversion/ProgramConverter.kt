@@ -489,13 +489,6 @@ class ProgramConverter(
         val classSymbol = receiverType.toRegularClassSymbol(session) ?: return null
         if (!classSymbol.isAdt(session)) return null
 
-        // Non-standalone children redirect to the parent sealed interface's unified equals.
-        val parentSymbol = classSymbol.findAdtSealedInterfaceParent(session)
-        if (parentSymbol != null) {
-            val parentType = classSymbol.resolvedSuperTypes.first { it.classId == parentSymbol.classId }
-            return tryEmbedAdtEquals(parentType)
-        }
-
         val adtEmbedding = embedAdtClass(classSymbol) as? AdtTypeEmbeddingImpl ?: return null
 
         return if (classSymbol.classKind.isInterface && classSymbol.isSealed)
@@ -542,14 +535,15 @@ class ProgramConverter(
                 )
             }
 
-            val typeCheck: ExpEmbedding = Is(other, adtType)
-            fieldComparisons.fold(typeCheck) { acc, cmp -> And(acc, cmp) }
+            val fieldEquality = fieldComparisons.reduceOrNull { acc, cmp -> And(acc, cmp) }
+                ?: BooleanLit(true)
+            If(Is(other, adtType), fieldEquality, BooleanLit(false), buildType { boolean() })
         }
     }
 
     /**
-     * Generates a single unified equals for the sealed interface by inlining each child's
-     * equality logic: `(other is Sealed) && if (this is Child1) (other is Child1 && fields...) else if ... else false`.
+     * Generates a sum-type equals that delegates to each child's own equals function:
+     * `(other is Sealed) && if (this is Child1) child1Equals(this, other) else if ... else false`.
      */
     private fun buildAdtSumEquals(
         classSymbol: FirRegularClassSymbol,
@@ -595,25 +589,16 @@ class ProgramConverter(
                 val childEmbedding = typeResolver.lookupAdtTypeEmbedding(childSym.classId.embedName()) as? AdtTypeEmbeddingImpl
                     ?: error("No ADT embedding found for ${childSym.name}")
                 val childType = buildType { existing(childEmbedding) }
-                val fields = typeResolver.lookupAdtFields(childEmbedding.name)
-
-                val typeCheck: ExpEmbedding = Is(other, childType)
-                val fieldComparisons = fields.map { field ->
-                    val fieldEqualsCallable = tryEmbedAdtEquals(field.originalType) ?: run {
-                        val fieldEqualsSymbol = field.originalType.findEqualsSymbol(session)
-                            ?: error("No equals symbol found for field ${field.name}")
-                        ctx.embedAnyFunction(fieldEqualsSymbol)
-                    }
-                    pureDesugarEqualsCall(
-                        AdtFieldAccess(thisReceiver.withType(childType), childEmbedding, field),
-                        AdtFieldAccess(other.withType(childType), childEmbedding, field),
-                        fieldEqualsCallable,
-                        ctx,
-                    )
-                }
-                val childEquality = fieldComparisons.fold<ExpEmbedding, ExpEmbedding>(typeCheck) { acc, cmp -> And(acc, cmp) }
-
-                If(Is(thisReceiver, childType), childEquality, fallback, booleanType)
+                val childEqualsSymbol = childSym.findEqualsSymbol(session)
+                    ?: error("No equals symbol found for ADT child ${childSym.name}")
+                val childEqualsCallable = embedAnyFunction(childEqualsSymbol)
+                val equalsCall = pureDesugarEqualsCall(
+                    thisReceiver.withType(childType),
+                    other,
+                    childEqualsCallable,
+                    ctx,
+                )
+                If(Is(thisReceiver, childType), equalsCall, fallback, booleanType)
             }
             And(Is(other, sealedInterfaceType), conditionalChain)
         }

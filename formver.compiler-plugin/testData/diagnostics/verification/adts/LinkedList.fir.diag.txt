@@ -4,13 +4,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_6_0 ==
-    ((NodeFromRef(this).af_a_Node_tail != nullValue() ?
-      equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
-      boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), Node())), andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
-    intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
-    intFromRef(NodeFromRef(other).af_a_Node_head)))), anon_6_0))
+  (let anon_7_0 ==
+    ((isSubtype(typeOf(other), Node()) ?
+      (NodeFromRef(this).af_a_Node_tail != nullValue() ?
+        equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
+        boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue())) :
+      null)) in
+    (let anon_6_0 ==
+      ((isSubtype(typeOf(other), Node()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
+        intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
+        intFromRef(NodeFromRef(other).af_a_Node_head))), anon_7_0) :
+        boolToRef(false))) in
+      anon_6_0))
 }
 
 function length(xs: Ref): Ref
@@ -82,13 +88,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_6_0 ==
-    ((NodeFromRef(this).af_a_Node_tail != nullValue() ?
-      equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
-      boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), Node())), andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
-    intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
-    intFromRef(NodeFromRef(other).af_a_Node_head)))), anon_6_0))
+  (let anon_7_0 ==
+    ((isSubtype(typeOf(other), Node()) ?
+      (NodeFromRef(this).af_a_Node_tail != nullValue() ?
+        equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
+        boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue())) :
+      null)) in
+    (let anon_6_0 ==
+      ((isSubtype(typeOf(other), Node()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
+        intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
+        intFromRef(NodeFromRef(other).af_a_Node_head))), anon_7_0) :
+        boolToRef(false))) in
+      anon_6_0))
 }
 
 adt a_Node {
@@ -101,26 +113,26 @@ function append(xs: Ref, ys: Ref): Ref
   requires isSubtype(typeOf(ys), nullable(Node()))
   ensures isSubtype(typeOf(result), nullable(Node()))
 {
-  (let anon_9_0 ==
+  (let anon_10_0 ==
     ((xs != nullValue() ? equals(xs, nullValue()) : boolToRef(false))) in
-    (let anon_10_0 ==
-      ((!boolFromRef(anon_9_0) ?
+    (let anon_11_0 ==
+      ((!boolFromRef(anon_10_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_8_0 ==
-        ((boolFromRef(anon_9_0) ? boolToRef(true) : anon_10_0)) in
-        (let anon_11_0 ==
-          ((boolFromRef(anon_8_0) ? ys : null)) in
-          (let anon_12_0 ==
-            ((!boolFromRef(anon_8_0) ?
+      (let anon_9_0 ==
+        ((boolFromRef(anon_10_0) ? boolToRef(true) : anon_11_0)) in
+        (let anon_12_0 ==
+          ((boolFromRef(anon_9_0) ? ys : null)) in
+          (let anon_13_0 ==
+            ((!boolFromRef(anon_9_0) ?
               con(NodeFromRef(xs).af_a_Node_head, append(NodeFromRef(xs).af_a_Node_tail,
               ys)) :
               null)) in
-            (let anon_7_0 ==
-              ((boolFromRef(anon_8_0) ? anon_11_0 : anon_12_0)) in
-              anon_7_0))))))
+            (let anon_8_0 ==
+              ((boolFromRef(anon_9_0) ? anon_12_0 : anon_13_0)) in
+              anon_8_0))))))
 }
 
 function con(head: Ref, tail: Ref): Ref
@@ -135,13 +147,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_6_0 ==
-    ((NodeFromRef(this).af_a_Node_tail != nullValue() ?
-      equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
-      boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), Node())), andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
-    intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
-    intFromRef(NodeFromRef(other).af_a_Node_head)))), anon_6_0))
+  (let anon_7_0 ==
+    ((isSubtype(typeOf(other), Node()) ?
+      (NodeFromRef(this).af_a_Node_tail != nullValue() ?
+        equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
+        boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue())) :
+      null)) in
+    (let anon_6_0 ==
+      ((isSubtype(typeOf(other), Node()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
+        intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
+        intFromRef(NodeFromRef(other).af_a_Node_head))), anon_7_0) :
+        boolToRef(false))) in
+      anon_6_0))
 }
 
 function reverse(xs: Ref): Ref
@@ -207,13 +225,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_6_0 ==
-    ((NodeFromRef(this).af_a_Node_tail != nullValue() ?
-      equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
-      boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), Node())), andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
-    intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
-    intFromRef(NodeFromRef(other).af_a_Node_head)))), anon_6_0))
+  (let anon_7_0 ==
+    ((isSubtype(typeOf(other), Node()) ?
+      (NodeFromRef(this).af_a_Node_tail != nullValue() ?
+        equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
+        boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue())) :
+      null)) in
+    (let anon_6_0 ==
+      ((isSubtype(typeOf(other), Node()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
+        intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
+        intFromRef(NodeFromRef(other).af_a_Node_head))), anon_7_0) :
+        boolToRef(false))) in
+      anon_6_0))
 }
 
 adt a_Node {
@@ -226,13 +250,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_6_0 ==
-    ((NodeFromRef(this).af_a_Node_tail != nullValue() ?
-      equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
-      boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), Node())), andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
-    intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
-    intFromRef(NodeFromRef(other).af_a_Node_head)))), anon_6_0))
+  (let anon_7_0 ==
+    ((isSubtype(typeOf(other), Node()) ?
+      (NodeFromRef(this).af_a_Node_tail != nullValue() ?
+        equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
+        boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue())) :
+      null)) in
+    (let anon_6_0 ==
+      ((isSubtype(typeOf(other), Node()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
+        intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
+        intFromRef(NodeFromRef(other).af_a_Node_head))), anon_7_0) :
+        boolToRef(false))) in
+      anon_6_0))
 }
 
 function sumOf(xs: Ref): Ref
@@ -290,13 +320,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_9_0 ==
-    ((NodeFromRef(this).af_a_Node_tail != nullValue() ?
-      equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
-      boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), Node())), andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
-    intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
-    intFromRef(NodeFromRef(other).af_a_Node_head)))), anon_9_0))
+  (let anon_10_0 ==
+    ((isSubtype(typeOf(other), Node()) ?
+      (NodeFromRef(this).af_a_Node_tail != nullValue() ?
+        equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
+        boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue())) :
+      null)) in
+    (let anon_9_0 ==
+      ((isSubtype(typeOf(other), Node()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
+        intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
+        intFromRef(NodeFromRef(other).af_a_Node_head))), anon_10_0) :
+        boolToRef(false))) in
+      anon_9_0))
 }
 
 function length(xs: Ref): Ref
@@ -359,26 +395,26 @@ function append(xs: Ref, ys: Ref): Ref
   requires isSubtype(typeOf(ys), nullable(Node()))
   ensures isSubtype(typeOf(result), nullable(Node()))
 {
-  (let anon_12_0 ==
+  (let anon_13_0 ==
     ((xs != nullValue() ? equals(xs, nullValue()) : boolToRef(false))) in
-    (let anon_13_0 ==
-      ((!boolFromRef(anon_12_0) ?
+    (let anon_14_0 ==
+      ((!boolFromRef(anon_13_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_11_0 ==
-        ((boolFromRef(anon_12_0) ? boolToRef(true) : anon_13_0)) in
-        (let anon_14_0 ==
-          ((boolFromRef(anon_11_0) ? ys : null)) in
-          (let anon_15_0 ==
-            ((!boolFromRef(anon_11_0) ?
+      (let anon_12_0 ==
+        ((boolFromRef(anon_13_0) ? boolToRef(true) : anon_14_0)) in
+        (let anon_15_0 ==
+          ((boolFromRef(anon_12_0) ? ys : null)) in
+          (let anon_16_0 ==
+            ((!boolFromRef(anon_12_0) ?
               con(NodeFromRef(xs).af_a_Node_head, append(NodeFromRef(xs).af_a_Node_tail,
               ys)) :
               null)) in
-            (let anon_10_0 ==
-              ((boolFromRef(anon_11_0) ? anon_14_0 : anon_15_0)) in
-              anon_10_0))))))
+            (let anon_11_0 ==
+              ((boolFromRef(anon_12_0) ? anon_15_0 : anon_16_0)) in
+              anon_11_0))))))
 }
 
 function con(head: Ref, tail: Ref): Ref
@@ -393,13 +429,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_9_0 ==
-    ((NodeFromRef(this).af_a_Node_tail != nullValue() ?
-      equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
-      boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), Node())), andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
-    intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
-    intFromRef(NodeFromRef(other).af_a_Node_head)))), anon_9_0))
+  (let anon_10_0 ==
+    ((isSubtype(typeOf(other), Node()) ?
+      (NodeFromRef(this).af_a_Node_tail != nullValue() ?
+        equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
+        boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue())) :
+      null)) in
+    (let anon_9_0 ==
+      ((isSubtype(typeOf(other), Node()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
+        intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
+        intFromRef(NodeFromRef(other).af_a_Node_head))), anon_10_0) :
+        boolToRef(false))) in
+      anon_9_0))
 }
 
 function length(xs: Ref): Ref
@@ -499,13 +541,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_9_0 ==
-    ((NodeFromRef(this).af_a_Node_tail != nullValue() ?
-      equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
-      boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), Node())), andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
-    intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
-    intFromRef(NodeFromRef(other).af_a_Node_head)))), anon_9_0))
+  (let anon_10_0 ==
+    ((isSubtype(typeOf(other), Node()) ?
+      (NodeFromRef(this).af_a_Node_tail != nullValue() ?
+        equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
+        boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue())) :
+      null)) in
+    (let anon_9_0 ==
+      ((isSubtype(typeOf(other), Node()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
+        intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
+        intFromRef(NodeFromRef(other).af_a_Node_head))), anon_10_0) :
+        boolToRef(false))) in
+      anon_9_0))
 }
 
 method appendNull(xs: Ref) returns (v_ret_0: Ref)
@@ -545,13 +593,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_3_0 ==
-    ((NodeFromRef(this).af_a_Node_tail != nullValue() ?
-      equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
-      boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), Node())), andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
-    intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
-    intFromRef(NodeFromRef(other).af_a_Node_head)))), anon_3_0))
+  (let anon_4_0 ==
+    ((isSubtype(typeOf(other), Node()) ?
+      (NodeFromRef(this).af_a_Node_tail != nullValue() ?
+        equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
+        boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue())) :
+      null)) in
+    (let anon_3_0 ==
+      ((isSubtype(typeOf(other), Node()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
+        intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
+        intFromRef(NodeFromRef(other).af_a_Node_head))), anon_4_0) :
+        boolToRef(false))) in
+      anon_3_0))
 }
 
 method nodeRefl(xs: Ref) returns (v_ret_0: Ref)
@@ -624,13 +678,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_10_0 ==
-    ((NodeFromRef(this).af_a_Node_tail != nullValue() ?
-      equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
-      boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), Node())), andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
-    intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
-    intFromRef(NodeFromRef(other).af_a_Node_head)))), anon_10_0))
+  (let anon_11_0 ==
+    ((isSubtype(typeOf(other), Node()) ?
+      (NodeFromRef(this).af_a_Node_tail != nullValue() ?
+        equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
+        boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue())) :
+      null)) in
+    (let anon_10_0 ==
+      ((isSubtype(typeOf(other), Node()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
+        intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
+        intFromRef(NodeFromRef(other).af_a_Node_head))), anon_11_0) :
+        boolToRef(false))) in
+      anon_10_0))
 }
 
 method appendAssoc(xs: Ref, ys: Ref, zs: Ref) returns (v_ret_0: Ref)
@@ -683,26 +743,26 @@ function append(xs: Ref, ys: Ref): Ref
   requires isSubtype(typeOf(ys), nullable(Node()))
   ensures isSubtype(typeOf(result), nullable(Node()))
 {
-  (let anon_19_0 ==
+  (let anon_20_0 ==
     ((xs != nullValue() ? equals(xs, nullValue()) : boolToRef(false))) in
-    (let anon_20_0 ==
-      ((!boolFromRef(anon_19_0) ?
+    (let anon_21_0 ==
+      ((!boolFromRef(anon_20_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_18_0 ==
-        ((boolFromRef(anon_19_0) ? boolToRef(true) : anon_20_0)) in
-        (let anon_21_0 ==
-          ((boolFromRef(anon_18_0) ? ys : null)) in
-          (let anon_22_0 ==
-            ((!boolFromRef(anon_18_0) ?
+      (let anon_19_0 ==
+        ((boolFromRef(anon_20_0) ? boolToRef(true) : anon_21_0)) in
+        (let anon_22_0 ==
+          ((boolFromRef(anon_19_0) ? ys : null)) in
+          (let anon_23_0 ==
+            ((!boolFromRef(anon_19_0) ?
               con(NodeFromRef(xs).af_a_Node_head, append(NodeFromRef(xs).af_a_Node_tail,
               ys)) :
               null)) in
-            (let anon_17_0 ==
-              ((boolFromRef(anon_18_0) ? anon_21_0 : anon_22_0)) in
-              anon_17_0))))))
+            (let anon_18_0 ==
+              ((boolFromRef(anon_19_0) ? anon_22_0 : anon_23_0)) in
+              anon_18_0))))))
 }
 
 function con(head: Ref, tail: Ref): Ref
@@ -717,13 +777,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_10_0 ==
-    ((NodeFromRef(this).af_a_Node_tail != nullValue() ?
-      equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
-      boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), Node())), andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
-    intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
-    intFromRef(NodeFromRef(other).af_a_Node_head)))), anon_10_0))
+  (let anon_11_0 ==
+    ((isSubtype(typeOf(other), Node()) ?
+      (NodeFromRef(this).af_a_Node_tail != nullValue() ?
+        equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
+        boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue())) :
+      null)) in
+    (let anon_10_0 ==
+      ((isSubtype(typeOf(other), Node()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
+        intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
+        intFromRef(NodeFromRef(other).af_a_Node_head))), anon_11_0) :
+        boolToRef(false))) in
+      anon_10_0))
 }
 
 function length(xs: Ref): Ref
@@ -755,26 +821,26 @@ function reverse(xs: Ref): Ref
   requires isSubtype(typeOf(xs), nullable(Node()))
   ensures isSubtype(typeOf(result), nullable(Node()))
 {
-  (let anon_13_0 ==
+  (let anon_14_0 ==
     ((xs != nullValue() ? equals(xs, nullValue()) : boolToRef(false))) in
-    (let anon_14_0 ==
-      ((!boolFromRef(anon_13_0) ?
+    (let anon_15_0 ==
+      ((!boolFromRef(anon_14_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_12_0 ==
-        ((boolFromRef(anon_13_0) ? boolToRef(true) : anon_14_0)) in
-        (let anon_15_0 ==
-          ((boolFromRef(anon_12_0) ? nullValue() : null)) in
-          (let anon_16_0 ==
-            ((!boolFromRef(anon_12_0) ?
+      (let anon_13_0 ==
+        ((boolFromRef(anon_14_0) ? boolToRef(true) : anon_15_0)) in
+        (let anon_16_0 ==
+          ((boolFromRef(anon_13_0) ? nullValue() : null)) in
+          (let anon_17_0 ==
+            ((!boolFromRef(anon_13_0) ?
               append(reverse(NodeFromRef(xs).af_a_Node_tail), con(NodeFromRef(xs).af_a_Node_head,
               nullValue())) :
               null)) in
-            (let anon_11_0 ==
-              ((boolFromRef(anon_12_0) ? anon_15_0 : anon_16_0)) in
-              anon_11_0))))))
+            (let anon_12_0 ==
+              ((boolFromRef(anon_13_0) ? anon_16_0 : anon_17_0)) in
+              anon_12_0))))))
 }
 
 function size(this: Ref): Ref
@@ -844,13 +910,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_3_0 ==
-    ((NodeFromRef(this).af_a_Node_tail != nullValue() ?
-      equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
-      boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), Node())), andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
-    intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
-    intFromRef(NodeFromRef(other).af_a_Node_head)))), anon_3_0))
+  (let anon_4_0 ==
+    ((isSubtype(typeOf(other), Node()) ?
+      (NodeFromRef(this).af_a_Node_tail != nullValue() ?
+        equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
+        boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue())) :
+      null)) in
+    (let anon_3_0 ==
+      ((isSubtype(typeOf(other), Node()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
+        intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
+        intFromRef(NodeFromRef(other).af_a_Node_head))), anon_4_0) :
+        boolToRef(false))) in
+      anon_3_0))
 }
 
 method node_refl(par_r: Ref) returns (v_ret_0: Ref)
@@ -890,13 +962,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_9_0 ==
-    ((NodeFromRef(this).af_a_Node_tail != nullValue() ?
-      equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
-      boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), Node())), andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
-    intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
-    intFromRef(NodeFromRef(other).af_a_Node_head)))), anon_9_0))
+  (let anon_10_0 ==
+    ((isSubtype(typeOf(other), Node()) ?
+      (NodeFromRef(this).af_a_Node_tail != nullValue() ?
+        equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
+        boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue())) :
+      null)) in
+    (let anon_9_0 ==
+      ((isSubtype(typeOf(other), Node()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
+        intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
+        intFromRef(NodeFromRef(other).af_a_Node_head))), anon_10_0) :
+        boolToRef(false))) in
+      anon_9_0))
 }
 
 function size(this: Ref): Ref
@@ -990,13 +1068,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_13_0 ==
-    ((NodeFromRef(this).af_a_Node_tail != nullValue() ?
-      equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
-      boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), Node())), andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
-    intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
-    intFromRef(NodeFromRef(other).af_a_Node_head)))), anon_13_0))
+  (let anon_14_0 ==
+    ((isSubtype(typeOf(other), Node()) ?
+      (NodeFromRef(this).af_a_Node_tail != nullValue() ?
+        equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
+        boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue())) :
+      null)) in
+    (let anon_13_0 ==
+      ((isSubtype(typeOf(other), Node()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
+        intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
+        intFromRef(NodeFromRef(other).af_a_Node_head))), anon_14_0) :
+        boolToRef(false))) in
+      anon_13_0))
 }
 
 function size(this: Ref): Ref
@@ -1124,26 +1208,26 @@ function append(xs: Ref, ys: Ref): Ref
   requires isSubtype(typeOf(ys), nullable(Node()))
   ensures isSubtype(typeOf(result), nullable(Node()))
 {
-  (let anon_40_0 ==
+  (let anon_41_0 ==
     ((xs != nullValue() ? equals(xs, nullValue()) : boolToRef(false))) in
-    (let anon_41_0 ==
-      ((!boolFromRef(anon_40_0) ?
+    (let anon_42_0 ==
+      ((!boolFromRef(anon_41_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_39_0 ==
-        ((boolFromRef(anon_40_0) ? boolToRef(true) : anon_41_0)) in
-        (let anon_42_0 ==
-          ((boolFromRef(anon_39_0) ? ys : null)) in
-          (let anon_43_0 ==
-            ((!boolFromRef(anon_39_0) ?
+      (let anon_40_0 ==
+        ((boolFromRef(anon_41_0) ? boolToRef(true) : anon_42_0)) in
+        (let anon_43_0 ==
+          ((boolFromRef(anon_40_0) ? ys : null)) in
+          (let anon_44_0 ==
+            ((!boolFromRef(anon_40_0) ?
               con(NodeFromRef(xs).af_a_Node_head, append(NodeFromRef(xs).af_a_Node_tail,
               ys)) :
               null)) in
-            (let anon_38_0 ==
-              ((boolFromRef(anon_39_0) ? anon_42_0 : anon_43_0)) in
-              anon_38_0))))))
+            (let anon_39_0 ==
+              ((boolFromRef(anon_40_0) ? anon_43_0 : anon_44_0)) in
+              anon_39_0))))))
 }
 
 function con(head: Ref, tail: Ref): Ref
@@ -1158,13 +1242,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_37_0 ==
-    ((NodeFromRef(this).af_a_Node_tail != nullValue() ?
-      equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
-      boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), Node())), andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
-    intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
-    intFromRef(NodeFromRef(other).af_a_Node_head)))), anon_37_0))
+  (let anon_38_0 ==
+    ((isSubtype(typeOf(other), Node()) ?
+      (NodeFromRef(this).af_a_Node_tail != nullValue() ?
+        equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
+        boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue())) :
+      null)) in
+    (let anon_37_0 ==
+      ((isSubtype(typeOf(other), Node()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
+        intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
+        intFromRef(NodeFromRef(other).af_a_Node_head))), anon_38_0) :
+        boolToRef(false))) in
+      anon_37_0))
 }
 
 function size(this: Ref): Ref
@@ -1452,26 +1542,26 @@ function append(xs: Ref, ys: Ref): Ref
   requires isSubtype(typeOf(ys), nullable(Node()))
   ensures isSubtype(typeOf(result), nullable(Node()))
 {
-  (let anon_17_0 ==
+  (let anon_18_0 ==
     ((xs != nullValue() ? equals(xs, nullValue()) : boolToRef(false))) in
-    (let anon_18_0 ==
-      ((!boolFromRef(anon_17_0) ?
+    (let anon_19_0 ==
+      ((!boolFromRef(anon_18_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_16_0 ==
-        ((boolFromRef(anon_17_0) ? boolToRef(true) : anon_18_0)) in
-        (let anon_19_0 ==
-          ((boolFromRef(anon_16_0) ? ys : null)) in
-          (let anon_20_0 ==
-            ((!boolFromRef(anon_16_0) ?
+      (let anon_17_0 ==
+        ((boolFromRef(anon_18_0) ? boolToRef(true) : anon_19_0)) in
+        (let anon_20_0 ==
+          ((boolFromRef(anon_17_0) ? ys : null)) in
+          (let anon_21_0 ==
+            ((!boolFromRef(anon_17_0) ?
               con(NodeFromRef(xs).af_a_Node_head, append(NodeFromRef(xs).af_a_Node_tail,
               ys)) :
               null)) in
-            (let anon_15_0 ==
-              ((boolFromRef(anon_16_0) ? anon_19_0 : anon_20_0)) in
-              anon_15_0))))))
+            (let anon_16_0 ==
+              ((boolFromRef(anon_17_0) ? anon_20_0 : anon_21_0)) in
+              anon_16_0))))))
 }
 
 function con(head: Ref, tail: Ref): Ref
@@ -1486,13 +1576,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_14_0 ==
-    ((NodeFromRef(this).af_a_Node_tail != nullValue() ?
-      equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
-      boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), Node())), andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
-    intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
-    intFromRef(NodeFromRef(other).af_a_Node_head)))), anon_14_0))
+  (let anon_15_0 ==
+    ((isSubtype(typeOf(other), Node()) ?
+      (NodeFromRef(this).af_a_Node_tail != nullValue() ?
+        equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
+        boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue())) :
+      null)) in
+    (let anon_14_0 ==
+      ((isSubtype(typeOf(other), Node()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
+        intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
+        intFromRef(NodeFromRef(other).af_a_Node_head))), anon_15_0) :
+        boolToRef(false))) in
+      anon_14_0))
 }
 
 function reverse(xs: Ref): Ref
@@ -1632,26 +1728,26 @@ function append(xs: Ref, ys: Ref): Ref
   requires isSubtype(typeOf(ys), nullable(Node()))
   ensures isSubtype(typeOf(result), nullable(Node()))
 {
-  (let anon_30_0 ==
+  (let anon_31_0 ==
     ((xs != nullValue() ? equals(xs, nullValue()) : boolToRef(false))) in
-    (let anon_31_0 ==
-      ((!boolFromRef(anon_30_0) ?
+    (let anon_32_0 ==
+      ((!boolFromRef(anon_31_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_29_0 ==
-        ((boolFromRef(anon_30_0) ? boolToRef(true) : anon_31_0)) in
-        (let anon_32_0 ==
-          ((boolFromRef(anon_29_0) ? ys : null)) in
-          (let anon_33_0 ==
-            ((!boolFromRef(anon_29_0) ?
+      (let anon_30_0 ==
+        ((boolFromRef(anon_31_0) ? boolToRef(true) : anon_32_0)) in
+        (let anon_33_0 ==
+          ((boolFromRef(anon_30_0) ? ys : null)) in
+          (let anon_34_0 ==
+            ((!boolFromRef(anon_30_0) ?
               con(NodeFromRef(xs).af_a_Node_head, append(NodeFromRef(xs).af_a_Node_tail,
               ys)) :
               null)) in
-            (let anon_28_0 ==
-              ((boolFromRef(anon_29_0) ? anon_32_0 : anon_33_0)) in
-              anon_28_0))))))
+            (let anon_29_0 ==
+              ((boolFromRef(anon_30_0) ? anon_33_0 : anon_34_0)) in
+              anon_29_0))))))
 }
 
 function con(head: Ref, tail: Ref): Ref
@@ -1666,13 +1762,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_27_0 ==
-    ((NodeFromRef(this).af_a_Node_tail != nullValue() ?
-      equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
-      boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), Node())), andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
-    intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
-    intFromRef(NodeFromRef(other).af_a_Node_head)))), anon_27_0))
+  (let anon_28_0 ==
+    ((isSubtype(typeOf(other), Node()) ?
+      (NodeFromRef(this).af_a_Node_tail != nullValue() ?
+        equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
+        boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue())) :
+      null)) in
+    (let anon_27_0 ==
+      ((isSubtype(typeOf(other), Node()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
+        intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
+        intFromRef(NodeFromRef(other).af_a_Node_head))), anon_28_0) :
+        boolToRef(false))) in
+      anon_27_0))
 }
 
 function size(this: Ref): Ref
@@ -1886,26 +1988,26 @@ function append(xs: Ref, ys: Ref): Ref
   requires isSubtype(typeOf(ys), nullable(Node()))
   ensures isSubtype(typeOf(result), nullable(Node()))
 {
-  (let anon_56_0 ==
+  (let anon_57_0 ==
     ((xs != nullValue() ? equals(xs, nullValue()) : boolToRef(false))) in
-    (let anon_57_0 ==
-      ((!boolFromRef(anon_56_0) ?
+    (let anon_58_0 ==
+      ((!boolFromRef(anon_57_0) ?
         (xs == nullValue() ?
           boolToRef(nullValue() == nullValue()) :
           boolToRef(false)) :
         null)) in
-      (let anon_55_0 ==
-        ((boolFromRef(anon_56_0) ? boolToRef(true) : anon_57_0)) in
-        (let anon_58_0 ==
-          ((boolFromRef(anon_55_0) ? ys : null)) in
-          (let anon_59_0 ==
-            ((!boolFromRef(anon_55_0) ?
+      (let anon_56_0 ==
+        ((boolFromRef(anon_57_0) ? boolToRef(true) : anon_58_0)) in
+        (let anon_59_0 ==
+          ((boolFromRef(anon_56_0) ? ys : null)) in
+          (let anon_60_0 ==
+            ((!boolFromRef(anon_56_0) ?
               con(NodeFromRef(xs).af_a_Node_head, append(NodeFromRef(xs).af_a_Node_tail,
               ys)) :
               null)) in
-            (let anon_54_0 ==
-              ((boolFromRef(anon_55_0) ? anon_58_0 : anon_59_0)) in
-              anon_54_0))))))
+            (let anon_55_0 ==
+              ((boolFromRef(anon_56_0) ? anon_59_0 : anon_60_0)) in
+              anon_55_0))))))
 }
 
 function con(head: Ref, tail: Ref): Ref
@@ -1920,13 +2022,19 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  (let anon_53_0 ==
-    ((NodeFromRef(this).af_a_Node_tail != nullValue() ?
-      equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
-      boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue()))) in
-    andBools(andBools(boolToRef(isSubtype(typeOf(other), Node())), andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
-    intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
-    intFromRef(NodeFromRef(other).af_a_Node_head)))), anon_53_0))
+  (let anon_54_0 ==
+    ((isSubtype(typeOf(other), Node()) ?
+      (NodeFromRef(this).af_a_Node_tail != nullValue() ?
+        equals(NodeFromRef(this).af_a_Node_tail, NodeFromRef(other).af_a_Node_tail) :
+        boolToRef(NodeFromRef(other).af_a_Node_tail == nullValue())) :
+      null)) in
+    (let anon_53_0 ==
+      ((isSubtype(typeOf(other), Node()) ?
+        andBools(andBools(boolToRef(isSubtype(typeOf(NodeFromRef(other).af_a_Node_head),
+        intType())), boolToRef(intFromRef(NodeFromRef(this).af_a_Node_head) ==
+        intFromRef(NodeFromRef(other).af_a_Node_head))), anon_54_0) :
+        boolToRef(false))) in
+      anon_53_0))
 }
 
 function reverse(xs: Ref): Ref

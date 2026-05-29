@@ -4,7 +4,9 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  boolToRef(isSubtype(typeOf(other), Red()))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), Red()) ? boolToRef(true) : boolToRef(false))) in
+    anon_0_0)
 }
 
 function size(this: Ref): Ref
@@ -34,7 +36,9 @@ function equals(this: Ref, other: Ref): Ref
   requires isSubtype(typeOf(other), nullable(anyType()))
   ensures isSubtype(typeOf(result), boolType())
 {
-  boolToRef(isSubtype(typeOf(other), Red()))
+  (let anon_0_0 ==
+    ((isSubtype(typeOf(other), Red()) ? boolToRef(true) : boolToRef(false))) in
+    anon_0_0)
 }
 
 function size(this: Ref): Ref
