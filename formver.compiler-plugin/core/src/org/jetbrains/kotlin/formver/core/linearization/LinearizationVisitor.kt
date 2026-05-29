@@ -544,8 +544,13 @@ data class LinearizationVisitor(
     override fun visitForAllEmbedding(e: ForAllEmbedding): Linearizable = object : OnlyToBuiltinLinearizable(e, this@LinearizationVisitor) {
         override fun toViperBuiltinType(ctx: LinearizationContext): Exp {
             val conjunction = with(Exp) { e.conditions.map { it.linearize().toViperBuiltinType(ctx) }.toConjunction() }
-            val viperTriggers = e.triggerExpressions.map { triggerExpr ->
-                Exp.Trigger(listOf(triggerExpr.linearize().toViperBuiltinType(ctx)))
+            val viperTriggers = e.triggerExpressions.flatMap { triggerExpr ->
+                setOf(
+                    Exp.Trigger(listOf(triggerExpr.linearize().toViperBuiltinType(ctx))),
+                    Exp.Trigger(listOf(triggerExpr.linearize().toViper(ctx)))
+                )
+            }.filter {
+                !it.exps.any { it is Exp.LocalVar }
             }
             return Exp.Forall(
                 variables = listOf(e.variable.toLocalVarDecl()),
