@@ -17,11 +17,6 @@ object ConversionErrorMessages : BaseDiagnosticRendererFactory() {
             CommonRenderers.STRING,
         )
         map.put(
-            ConversionErrors.ADT_VIOLATION,
-            "{0}",
-            CommonRenderers.STRING,
-        )
-        map.put(
             ConversionErrors.MINOR_INTERNAL_ERROR,
             "Formal verification non-fatal internal error: {0}",
             CommonRenderers.STRING,

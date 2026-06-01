@@ -7,7 +7,6 @@ package org.jetbrains.kotlin.formver.core.embeddings.expression
 
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
-import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbeddingImpl
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 
@@ -58,24 +57,4 @@ data object NullLit : LiteralEmbedding {
     override val value = null
     override val type = buildType { isNullable = true; nothing() }
     override val debugName = "Null"
-}
-
-/**
- * Reference to a literal/constructor of an object/class which was declared to be an ADT in the Kotlin source.
- * As ADTs are value-based, this is treated as an ADT instantiation and triggers an ADT constructor associated
- * with the source object/class.
- */
-data class AdtConstructorRef(
-    override val type: TypeEmbedding,
-) : ExpEmbedding {
-    init {
-        require(type.pretype is AdtTypeEmbeddingImpl) {
-            "AdtConstructorRef requires an AdtTypeEmbedding pretype, got ${type.pretype.javaClass.simpleName}"
-        }
-    }
-
-    val adtTypeEmbedding: AdtTypeEmbeddingImpl
-        get() = type.pretype as AdtTypeEmbeddingImpl
-
-    override fun <R> accept(v: ExpVisitor<R>): R = v.visitAdtConstructorRef(this)
 }

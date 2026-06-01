@@ -6,12 +6,10 @@
 package org.jetbrains.kotlin.formver.core.conversion
 
 import org.jetbrains.kotlin.descriptors.isInterface
-import org.jetbrains.kotlin.descriptors.isObject
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
-import org.jetbrains.kotlin.fir.declarations.utils.isData
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
@@ -76,9 +74,6 @@ class ProgramConverter(
     override fun reportPurityViolation(source: KtSourceElement?, msg: String) =
         emit(source, ConversionErrors.PURITY_VIOLATION, msg)
 
-    override fun reportAdtViolation(source: KtSourceElement?, msg: String) =
-        emit(source, ConversionErrors.ADT_VIOLATION, msg)
-
     override fun reportMinorInternalError(msg: String) =
         emit(currentDeclarationSource, ConversionErrors.MINOR_INTERNAL_ERROR, msg)
 
@@ -137,7 +132,7 @@ class ProgramConverter(
                 it.uniquePredicate()
             }
         },
-        adts = typeResolver.adtTypeEmbeddings().map { it.toViper() },
+        adts = emptyList(),
     )
 
     /**
@@ -397,44 +392,6 @@ class ProgramConverter(
             embedProperty(it)
         }
         return embedding
-    }
-
-    private fun embedAdtClass(symbol: FirRegularClassSymbol): AdtTypeEmbedding =
-        typeResolver.getOrRegisterAdt(symbol.classId.embedName()) {
-            if (!validateAdtHeader(symbol)) InvalidAdtTypeEmbedding
-            else AdtTypeEmbeddingImpl(symbol.classId.embedName())
-        }
-
-    @OptIn(DirectDeclarationsAccess::class)
-    private fun validateAdtHeader(symbol: FirRegularClassSymbol): Boolean {
-        if (!symbol.classKind.isObject || !symbol.isData) {
-            reportAdtViolation(
-                symbol.source, "Invalid ADT annotation: @ADT may only be applied to data object declarations"
-            )
-            return false
-        }
-        for (declaration in symbol.declarationSymbols) when (declaration) {
-            is FirPropertySymbol -> {
-                reportAdtViolation(
-                    declaration.source, "Invalid ADT annotation: An @ADT data object must not have fields"
-                )
-                return false
-            }
-
-            is FirNamedFunctionSymbol -> {
-                reportAdtViolation(
-                    declaration.source, "Invalid ADT annotation: An @ADT data object must not have member functions"
-                )
-                return false
-            }
-        }
-        if (symbol.resolvedSuperTypes.any { !it.isAny }) {
-            reportAdtViolation(
-                symbol.source, "Invalid ADT annotation: An @ADT data object must not extend a class or implement an interface"
-            )
-            return false
-        }
-        return true
     }
 
     override fun embedType(type: ConeKotlinType): TypeEmbedding = buildType { embedTypeWithBuilder(type) }
@@ -750,11 +707,7 @@ class ProgramConverter(
         type is ConeClassLikeType -> {
             val classLikeSymbol = type.toClassSymbol(session)
             if (classLikeSymbol is FirRegularClassSymbol) {
-                if (classLikeSymbol.isAdt(session)) {
-                    existing(embedAdtClass(classLikeSymbol))
-                } else {
-                    existing(embedClass(classLikeSymbol))
-                }
+                existing(embedClass(classLikeSymbol))
             } else {
                 unimplementedTypeEmbedding(type)
             }

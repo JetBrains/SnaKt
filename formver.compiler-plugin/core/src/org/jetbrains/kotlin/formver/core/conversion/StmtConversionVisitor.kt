@@ -7,7 +7,6 @@ package org.jetbrains.kotlin.formver.core.conversion
 
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.contracts.description.LogicOperationKind
-import org.jetbrains.kotlin.descriptors.isObject
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.declarations.FirProperty
 import org.jetbrains.kotlin.fir.expressions.*
@@ -37,8 +36,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.LtIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
-import org.jetbrains.kotlin.formver.core.embeddings.types.AdtTypeEmbeddingImpl
-import org.jetbrains.kotlin.formver.core.embeddings.types.InvalidAdtTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
 import org.jetbrains.kotlin.formver.core.functionCallArguments
@@ -83,30 +80,11 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         resolvedQualifier: FirResolvedQualifier, data: StmtConversionContext
     ): ExpEmbedding {
         if (resolvedQualifier.resolvedType.isUnit) return UnitLit
-        val classSymbol = resolvedQualifier.symbol as? FirClassSymbol<*>
-            ?: throw SnaktInternalException(
-                resolvedQualifier.source,
-                "Unsupported qualifier type ${resolvedQualifier.symbol?.javaClass?.simpleName ?: "<no symbol>"}"
-            )
-        if (!classSymbol.classKind.isObject)
-            throw SnaktInternalException(
-                resolvedQualifier.source,
-                "Qualifier ${classSymbol.name} has class kind ${classSymbol.classKind}, expected object"
-            )
-        val type = data.embedType(resolvedQualifier.resolvedType)
-        if (type.pretype is InvalidAdtTypeEmbedding) {
-            data.reportAdtViolation(
-                resolvedQualifier.source,
-                "Invalid ADT annotation: reference to '${classSymbol.name}' which has an invalid @ADT annotation",
-            )
-            return ErrorExp
-        }
-        if (type.pretype !is AdtTypeEmbeddingImpl)
-            throw SnaktInternalException(
-                resolvedQualifier.source,
-                "Object ${classSymbol.name} has pretype ${type.pretype.javaClass.simpleName} which is not declared to be an ADT."
-            )
-        return AdtConstructorRef(type)
+        return handleUnimplementedElement(
+            resolvedQualifier.source,
+            "Unsupported resolved qualifier ${resolvedQualifier.symbol?.javaClass?.simpleName ?: "<no symbol>"}",
+            data
+        )
     }
 
     override fun visitBlock(block: FirBlock, data: StmtConversionContext): ExpEmbedding =

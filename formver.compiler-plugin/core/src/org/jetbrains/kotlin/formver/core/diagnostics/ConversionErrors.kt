@@ -18,7 +18,6 @@ import org.jetbrains.kotlin.diagnostics.error1
  */
 object ConversionErrors : KtDiagnosticsContainer() {
     val PURITY_VIOLATION by error1<PsiElement, String>()
-    val ADT_VIOLATION by error1<PsiElement, String>()
     val MINOR_INTERNAL_ERROR by error1<PsiElement, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
 
     /**

@@ -16,9 +16,6 @@ interface ErrorCollectionContext {
     /** Report a purity violation at [source]. */
     fun reportPurityViolation(source: KtSourceElement?, msg: String)
 
-    /** Report an ADT violation at [source]. */
-    fun reportAdtViolation(source: KtSourceElement?, msg: String)
-
     /** Report a minor internal error; the source is supplied by the implementation. */
     fun reportMinorInternalError(msg: String)
 }

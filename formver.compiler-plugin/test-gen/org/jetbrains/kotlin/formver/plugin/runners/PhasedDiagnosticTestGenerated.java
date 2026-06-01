@@ -389,28 +389,6 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Nested
-    @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/adts")
-    @TestDataPath("$PROJECT_ROOT")
-    public class Adts {
-      @Test
-      public void testAllFilesPresentInAdts() {
-        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/adts"), Pattern.compile("^(.+)\\.kt$"), null, true);
-      }
-
-      @Test
-      @TestMetadata("singleton.kt")
-      public void testSingleton() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/singleton.kt");
-      }
-
-      @Test
-      @TestMetadata("singleton_errors.kt")
-      public void testSingleton_errors() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/singleton_errors.kt");
-      }
-    }
-
-    @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/classes")
     @TestDataPath("$PROJECT_ROOT")
     public class Classes {
