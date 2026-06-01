@@ -8,6 +8,13 @@ typealias AccessState = PathTrie<Boolean>
 
 val EmptyAccessState = AccessState(false)
 
+/**
+ * Performs the join of two [AccessState]s.
+ *
+ * @param this the [AccessState]
+ * @param other the other [AccessState] to join with.
+ * @return the [AccessState] containing accesses present in both inputs.
+ */
 fun AccessState.join(other: AccessState): AccessState =
     join(other) { a, b -> a || b }
 
@@ -16,18 +23,28 @@ object AccessStateUnifier : TypeUnifier<AccessState> {
         left.join(right)
 }
 
-fun AccessState.isChain(): Boolean {
+/**
+ * Returns `true` if the access state refers to a single path, `false` otherwise.
+ */
+fun AccessState.isSingleton(): Boolean {
     if (children.size > 1) return false
 
     for ((_, child) in children) {
-        return child.isChain()
+        return child.isSingleton()
     }
 
     return true
 }
 
+/**
+ * Alters a uniqueness state at every access position specified by this access state.
+ *
+ * @param this the [AccessState] specifying the access positions to alter.
+ * @param uniquenessState the [UniquenessState] to alter.
+ * @param transform the function to apply to each access position.
+ */
 context(context: CheckerContext)
-fun AccessState.apply(
+fun AccessState.alter(
     uniquenessState: UniquenessState,
     transform: (FirBasedSymbol<*>, UniquenessState) -> UniquenessState
 ): UniquenessState {
@@ -38,7 +55,7 @@ fun AccessState.apply(
             ?: UniquenessState(symbol.resolveComponentUniqueness())
 
         val newUniquenessChild = accessChild
-            .apply(uniquenessChild, transform)
+            .alter(uniquenessChild, transform)
 
         newUniquenessState = newUniquenessState.associate(
             symbol,
@@ -53,16 +70,35 @@ fun AccessState.apply(
     return newUniquenessState
 }
 
+/**
+ * Moves the accessed position specified by this access state in the uniqueness state.
+ *
+ * @param this the [AccessState] specifying the accessed position to move.
+ * @param uniquenessState the [UniquenessState] to move the accessed position in.
+ */
 context(context: CheckerContext)
 fun AccessState.move(uniquenessState: UniquenessState): UniquenessState =
-    apply(uniquenessState) { _, state -> state.copy(data = Uniqueness.Moved) }
+    alter(uniquenessState) { _, state -> state.copy(data = Uniqueness.Moved) }
 
+/**
+ * Moves the accessed position specified by this access state in the uniqueness state.
+ *
+ * @param this the [AccessState] specifying the accessed position to move.
+ * @param uniquenessState the [UniquenessState] to move the accessed position in.
+ */
 context(context: CheckerContext)
 fun AccessState.initialize(uniquenessState: UniquenessState): UniquenessState =
-    apply(uniquenessState) { symbol, state -> state.copy(data = symbol.resolveComponentUniqueness()) }
+    alter(uniquenessState) { symbol, state -> state.copy(data = symbol.resolveComponentUniqueness()) }
 
+/**
+ * Project this access state onto the given uniqueness state, creating a uniqueness state containing only the accessed
+ * positions specified by this access state.
+ *
+ * @param this the [AccessState] specifying the accessed positions to project.
+ * @param uniquenessState the [UniquenessState] to project onto.
+ */
 context(context: CheckerContext)
-fun AccessState.mask(uniquenessState: UniquenessState): UniquenessState {
+fun AccessState.project(uniquenessState: UniquenessState): UniquenessState {
     var result = UniquenessState(Uniqueness.Unique)
 
     for ((symbol, accessChild) in children) {
@@ -72,7 +108,7 @@ fun AccessState.mask(uniquenessState: UniquenessState): UniquenessState {
         val projected = if (accessChild.data) {
             uniquenessChild
         } else {
-            accessChild.mask(uniquenessChild)
+            accessChild.project(uniquenessChild)
         }
 
         result = result.associate(symbol, projected)
@@ -81,8 +117,11 @@ fun AccessState.mask(uniquenessState: UniquenessState): UniquenessState {
     return result
 }
 
+/**
+ * Extracts the default uniqueness from this access state.
+ */
 context(context: CheckerContext)
-fun AccessState.resolveUniqueness(): Uniqueness =
+fun AccessState.extractDefaultUniqueness(): Uniqueness =
     if (this == EmptyAccessState) {
         Uniqueness.Shared
     } else {
