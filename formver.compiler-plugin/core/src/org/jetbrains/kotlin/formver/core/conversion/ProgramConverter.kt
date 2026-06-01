@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactory1
 import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
@@ -49,6 +50,7 @@ import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
  */
 class ProgramConverter(
     override val session: FirSession,
+    override val checkerContext: CheckerContext,
     override val config: PluginConfiguration,
     private val diagnosticContext: DiagnosticContext,
     private val reporter: DiagnosticReporter,
@@ -145,6 +147,7 @@ class ProgramConverter(
     /**
      * Embed the declaration's signature and embeds the body.
      */
+    context(checkerContext: CheckerContext)
     fun register(declaration: FirSimpleFunction) {
         val signature = embedCompleteSignature(declaration.symbol)
         embedFunctionBody(declaration.symbol, signature)
@@ -215,7 +218,8 @@ class ProgramConverter(
     // region Conversion Context
 
     private fun createBodyConversionContext(
-        symbol: FirFunctionSymbol<*>, signature: SignatureWithTarget<NamedFunctionSignature>
+        symbol: FirFunctionSymbol<*>,
+        signature: SignatureWithTarget<NamedFunctionSignature>,
     ): StmtConversionContext {
         val paramResolver = RootParameterResolver(
             this@ProgramConverter,
@@ -229,6 +233,7 @@ class ProgramConverter(
             signature.signature,
             paramResolver,
             scopeIndexProducer.getFresh(),
+            _functionSymbol = symbol,
         ).statementCtxt()
         return stmtCtx
     }
@@ -255,6 +260,7 @@ class ProgramConverter(
             signature,
             rootResolver,
             ScopeIndex.NoScope,
+            _functionSymbol = symbol,
         ).statementCtxt()
 
         val postconditionContext = MethodConverter(
@@ -262,6 +268,7 @@ class ProgramConverter(
             signature,
             wrappedResolver,
             ScopeIndex.NoScope,
+            _functionSymbol = symbol,
         ).statementCtxt()
 
         return Pair(preconditionContext, postconditionContext)

@@ -58,7 +58,7 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
         val inTestRun = System.getProperty("formver.testRun").toBoolean()
         if (!config.shouldConvert(declaration)) return
         try {
-            val programConversionContext = ProgramConverter(session, config, context, reporter)
+            val programConversionContext = ProgramConverter(session, context, config, context, reporter)
             programConversionContext.register(declaration)
             programConversionContext.validateAll()
 
