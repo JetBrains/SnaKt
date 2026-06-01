@@ -140,7 +140,7 @@ class ProgramConverter(
     )
 
 
-    // START PIPELINE
+    // region Callable Conversion
 
     /**
      * Embed the declaration's signature and embeds the body.
@@ -212,9 +212,9 @@ class ProgramConverter(
         impure.forEach { linearizeImpure(it.key, it.value) }
     }
 
-    // END PIPELINE
+    // endregion
 
-    // START CONVERSION CONTEXTS
+    // region Conversion Context
 
     private fun createBodyConversionContext(
         symbol: FirFunctionSymbol<*>, signature: SignatureWithTarget<NamedFunctionSignature>
@@ -273,10 +273,10 @@ class ProgramConverter(
         return Pair(preconditionContext, postconditionContext)
     }
 
-    // END CONVERSION CONTEXTS
+    // endregion
 
 
-    // START FUNCTIONS
+    // region Functions
 
     /**
      * Embeds the body of a function. This must be called at most once per function.
@@ -362,10 +362,10 @@ class ProgramConverter(
         return signature.signature
     }
 
-    // END FUNCTIONS
+    // endregion
 
 
-    // START CONTRACTS
+    // region contracts
 
     private fun embedFormverContract(
         symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, returnTarget: ReturnTarget
@@ -410,38 +410,9 @@ class ProgramConverter(
         return Pair(userContract.first, kotlinContractPostcondition + userContract.second)
     }
 
-    // END CONTRACTS
+    // endregion
 
-
-    // START CLASSES
-    /**
-     * Returns an embedding of the class type, with details set.
-     */
-    private fun embedClass(symbol: FirRegularClassSymbol): ClassTypeEmbedding {
-        val className = symbol.classId.embedName()
-        typeResolver.lookupClassTypeEmbedding(className)?.let { return it }
-
-        val embedding = typeResolver.getEmbeddingOrExecute(className) {
-            val classEmbedding = buildClassPretype {
-                withName(className)
-            }
-
-            typeResolver.register(classEmbedding, symbol.classKind.isInterface)
-
-            symbol.resolvedSuperTypes.forEach {
-                val superTypeName = embedType(it).pretype.name
-                typeResolver.addSubtypeRelation(className, superTypeName)
-            }
-
-            classEmbedding
-        }
-        symbol.propertySymbols.forEach {
-            embedProperty(it)
-        }
-        return embedding
-    }
-
-    // START PROPERTIES
+    // region Properties
 
     /**
      * This function embeds properties. Depending on the behavior of the property, it can be handled differently.
@@ -602,12 +573,39 @@ class ProgramConverter(
         )
     }
 
-    // END PROPERTIES
+    // endregion
 
-
-    // START TYPES
+    // region types (also classes)
 
     override fun embedType(type: ConeKotlinType): TypeEmbedding = buildType { embedTypeWithBuilder(type) }
+
+
+    /**
+     * Returns an embedding of the class type, with details set.
+     */
+    private fun embedClass(symbol: FirRegularClassSymbol): ClassTypeEmbedding {
+        val className = symbol.classId.embedName()
+        typeResolver.lookupClassTypeEmbedding(className)?.let { return it }
+
+        val embedding = typeResolver.getEmbeddingOrExecute(className) {
+            val classEmbedding = buildClassPretype {
+                withName(className)
+            }
+
+            typeResolver.register(classEmbedding, symbol.classKind.isInterface)
+
+            symbol.resolvedSuperTypes.forEach {
+                val superTypeName = embedType(it).pretype.name
+                typeResolver.addSubtypeRelation(className, superTypeName)
+            }
+
+            classEmbedding
+        }
+        symbol.propertySymbols.forEach {
+            embedProperty(it)
+        }
+        return embedding
+    }
 
     // Note: keep in mind that this function is necessary to resolve the name of the function!
     override fun embedFunctionPretype(symbol: FirFunctionSymbol<*>): FunctionTypeEmbedding = buildFunctionPretype {
@@ -686,5 +684,5 @@ class ProgramConverter(
         }
     }
 
-    // END TYPES
+    // endregion
 }
