@@ -17,8 +17,8 @@ import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.LabelEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.callables.FullNamedFunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
+import org.jetbrains.kotlin.formver.core.embeddings.callables.NamedFunctionSignatureWithContract
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.ClassPropertyAccess
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyAccessEmbedding
@@ -244,7 +244,7 @@ fun StmtConversionContext.insertForAllFunctionCall(
 
 fun StmtConversionContext.convertImpureBody(
     declaration: FirSimpleFunction,
-    signature: FullNamedFunctionSignature,
+    signature: NamedFunctionSignatureWithContract,
     returnTarget: ReturnTarget,
 ): ConvertedMethodBody? {
     val firBody = declaration.body ?: return null

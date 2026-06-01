@@ -2,9 +2,9 @@
 field p_size: Ref
 
 method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), List())
   requires acc(this.p_size, write)
   requires intFromRef(this.p_size) >= 0
-  requires isSubtype(typeOf(this), List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.p_size) > intFromRef(index)
@@ -15,9 +15,9 @@ method get(this: Ref, index: Ref) returns (ret_2: Ref)
 
 
 method isEmpty(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
   requires acc(this.p_size, write)
   requires intFromRef(this.p_size) >= 0
-  requires isSubtype(typeOf(this), List())
   ensures acc(this.p_size, write)
   ensures intFromRef(this.p_size) >= 0
   ensures isSubtype(typeOf(ret_1), boolType())
@@ -27,9 +27,9 @@ method isEmpty(this: Ref) returns (ret_1: Ref)
 
 
 method mid_increased_by_one(arr: Ref, target: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(arr), List())
   requires acc(arr.p_size, write)
   requires intFromRef(arr.p_size) >= 0
-  requires isSubtype(typeOf(arr), List())
   requires isSubtype(typeOf(target), intType())
   ensures acc(arr.p_size, write)
   ensures intFromRef(arr.p_size) >= 0
@@ -72,9 +72,9 @@ method mid_increased_by_one(arr: Ref, target: Ref) returns (v_ret_0: Ref)
 
 method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
   returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), List())
   requires acc(this.p_size, write)
   requires intFromRef(this.p_size) >= 0
-  requires isSubtype(typeOf(this), List())
   requires isSubtype(typeOf(fromIndex), intType())
   requires isSubtype(typeOf(toIndex), intType())
   requires intFromRef(fromIndex) <= intFromRef(toIndex)
@@ -94,9 +94,9 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
 field p_size: Ref
 
 method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), List())
   requires acc(this.p_size, write)
   requires intFromRef(this.p_size) >= 0
-  requires isSubtype(typeOf(this), List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.p_size) > intFromRef(index)
@@ -107,9 +107,9 @@ method get(this: Ref, index: Ref) returns (ret_2: Ref)
 
 
 method isEmpty(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
   requires acc(this.p_size, write)
   requires intFromRef(this.p_size) >= 0
-  requires isSubtype(typeOf(this), List())
   ensures acc(this.p_size, write)
   ensures intFromRef(this.p_size) >= 0
   ensures isSubtype(typeOf(ret_1), boolType())
@@ -119,9 +119,9 @@ method isEmpty(this: Ref) returns (ret_1: Ref)
 
 
 method mid_decreased_by_one(arr: Ref, target: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(arr), List())
   requires acc(arr.p_size, write)
   requires intFromRef(arr.p_size) >= 0
-  requires isSubtype(typeOf(arr), List())
   requires isSubtype(typeOf(target), intType())
   ensures acc(arr.p_size, write)
   ensures intFromRef(arr.p_size) >= 0
@@ -164,9 +164,9 @@ method mid_decreased_by_one(arr: Ref, target: Ref) returns (v_ret_0: Ref)
 
 method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
   returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), List())
   requires acc(this.p_size, write)
   requires intFromRef(this.p_size) >= 0
-  requires isSubtype(typeOf(this), List())
   requires isSubtype(typeOf(fromIndex), intType())
   requires isSubtype(typeOf(toIndex), intType())
   requires intFromRef(fromIndex) <= intFromRef(toIndex)
@@ -186,9 +186,9 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
 field p_size: Ref
 
 method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), List())
   requires acc(this.p_size, write)
   requires intFromRef(this.p_size) >= 0
-  requires isSubtype(typeOf(this), List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.p_size) > intFromRef(index)
@@ -199,9 +199,9 @@ method get(this: Ref, index: Ref) returns (ret_2: Ref)
 
 
 method isEmpty(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
   requires acc(this.p_size, write)
   requires intFromRef(this.p_size) >= 0
-  requires isSubtype(typeOf(this), List())
   ensures acc(this.p_size, write)
   ensures intFromRef(this.p_size) >= 0
   ensures isSubtype(typeOf(ret_1), boolType())
@@ -212,9 +212,9 @@ method isEmpty(this: Ref) returns (ret_1: Ref)
 
 method mid_decreased_by_one_in_rec_call(arr: Ref, target: Ref)
   returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(arr), List())
   requires acc(arr.p_size, write)
   requires intFromRef(arr.p_size) >= 0
-  requires isSubtype(typeOf(arr), List())
   requires isSubtype(typeOf(target), intType())
   ensures acc(arr.p_size, write)
   ensures intFromRef(arr.p_size) >= 0
@@ -257,9 +257,9 @@ method mid_decreased_by_one_in_rec_call(arr: Ref, target: Ref)
 
 method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
   returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), List())
   requires acc(this.p_size, write)
   requires intFromRef(this.p_size) >= 0
-  requires isSubtype(typeOf(this), List())
   requires isSubtype(typeOf(fromIndex), intType())
   requires isSubtype(typeOf(toIndex), intType())
   requires intFromRef(fromIndex) <= intFromRef(toIndex)
@@ -279,9 +279,9 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
 field size: Ref
 
 method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), List())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -293,9 +293,9 @@ method get(this: Ref, index: Ref) returns (ret_1: Ref)
 
 method unsafe_binary_search(arr: Ref, target: Ref, left: Ref, right: Ref)
   returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(arr), List())
   requires acc(arr.size, write)
   requires intFromRef(arr.size) >= 0
-  requires isSubtype(typeOf(arr), List())
   requires isSubtype(typeOf(target), intType())
   requires isSubtype(typeOf(left), intType())
   requires isSubtype(typeOf(right), intType())

@@ -6,9 +6,11 @@
 package org.jetbrains.kotlin.formver.core.embeddings.expression
 
 import org.jetbrains.kotlin.formver.core.conversion.ReturnTarget
-import org.jetbrains.kotlin.formver.core.embeddings.*
-import org.jetbrains.kotlin.formver.core.embeddings.callables.FullNamedFunctionSignature
-import org.jetbrains.kotlin.formver.core.embeddings.callables.NamedFunctionSignature
+import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
+import org.jetbrains.kotlin.formver.core.embeddings.LabelEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.LabelLink
+import org.jetbrains.kotlin.formver.core.embeddings.callables.NamedFunctionSignatureWithContract
+import org.jetbrains.kotlin.formver.core.embeddings.callables.NonInlineCallable
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.viper.SymbolicName
@@ -94,14 +96,14 @@ data class NonDeterministically(val exp: ExpEmbedding) : ExpEmbedding {
 }
 
 // Note: this is always a *real* Viper method call.
-data class MethodCall(val method: NamedFunctionSignature, val args: List<ExpEmbedding>) : ExpEmbedding {
+data class MethodCall(val method: NonInlineCallable, val args: List<ExpEmbedding>) : ExpEmbedding {
     override val type: TypeEmbedding = method.callableType.returnType
 
     override fun children(): Sequence<ExpEmbedding> = args.asSequence()
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitMethodCall(this)
 }
 
-data class FunctionCall(val function: NamedFunctionSignature, val args: List<ExpEmbedding>) : ExpEmbedding {
+data class FunctionCall(val function: NonInlineCallable, val args: List<ExpEmbedding>) : ExpEmbedding {
     override val type: TypeEmbedding = function.callableType.returnType
 
     override fun <R> accept(v: ExpVisitor<R>): R =
@@ -127,7 +129,7 @@ data class InvokeFunctionObject(
 }
 
 data class FunctionExp(
-    val signature: FullNamedFunctionSignature?,
+    val signature: NamedFunctionSignatureWithContract?,
     val body: ExpEmbedding,
     val returnLabel: LabelEmbedding
 ) :

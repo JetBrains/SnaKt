@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.contracts.description.*
 import org.jetbrains.kotlin.fir.contracts.description.ConeContractConstantValues
 import org.jetbrains.kotlin.fir.diagnostics.ConeDiagnostic
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.formver.core.effects
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
@@ -24,9 +25,10 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 class ContractDescriptionConversionVisitor(
     private val ctx: ProgramConversionContext,
     private val signature: NamedFunctionSignature,
+    private val symbol: FirFunctionSymbol<*>
 ) : KtContractDescriptionVisitor<ExpEmbedding, Unit, ConeKotlinType, ConeDiagnostic>() {
     fun getPostconditions(): List<ExpEmbedding> =
-        signature.symbol.effects.map {
+        symbol.effects.map {
             it.effect.accept(this, Unit).withPosition(it.source)
         }.filter { it != BooleanLit(true) }
 
@@ -174,7 +176,7 @@ class ContractDescriptionConversionVisitor(
     private fun KtValueParameterReference<ConeKotlinType, ConeDiagnostic>.getTargetParameter(): FirBasedSymbol<*> =
         resolveByIndex(
             parameterIndex,
-            { signature.symbol }) { signature.symbol.valueParameterSymbols[it] }
+            { symbol }) { symbol.valueParameterSymbols[it] }
 
     // If both receivers are present only references to extension receivers will be allowed in contract.
     private fun allowedReceiver() = signature.extensionReceiver ?: signature.dispatchReceiver

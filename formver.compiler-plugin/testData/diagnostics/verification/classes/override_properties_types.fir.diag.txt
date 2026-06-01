@@ -37,7 +37,12 @@ method extractInt(base: Ref, returnNull: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
-method public_g_field(this: Ref) returns (v_ret_0: Ref)
+method public_g_field(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-method s_field(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)
+method s_field(this: Ref, anon_0: Ref) returns (ret_4: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_4), nullable(anyType()))

@@ -7,9 +7,9 @@ function value(this: Ref): Ref
 
 
 method get(this: Ref, index: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), CustomList())
   requires acc(this.size, write)
   requires intFromRef(this.size) >= 0
-  requires isSubtype(typeOf(this), CustomList())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
@@ -42,9 +42,9 @@ method con(par_size: Ref, par_value: Ref) returns (ret_1: Ref)
 
 
 method get(this: Ref, index: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), CustomList())
   requires acc(this.p_size, write)
   requires intFromRef(this.p_size) >= 0
-  requires isSubtype(typeOf(this), CustomList())
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.p_size) > intFromRef(index)
@@ -55,9 +55,9 @@ method get(this: Ref, index: Ref) returns (ret_3: Ref)
 
 
 method isEmpty(this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), CustomList())
   requires acc(this.p_size, write)
   requires intFromRef(this.p_size) >= 0
-  requires isSubtype(typeOf(this), CustomList())
   ensures acc(this.p_size, write)
   ensures intFromRef(this.p_size) >= 0
   ensures isSubtype(typeOf(ret_2), boolType())

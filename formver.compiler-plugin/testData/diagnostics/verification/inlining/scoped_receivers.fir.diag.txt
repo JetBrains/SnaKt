@@ -4,6 +4,28 @@ function size(v_this: Ref): Ref
   ensures isSubtype(typeOf(result), intType())
 
 
+method isNotNull(v_this_extension: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(intType()))
+  ensures isSubtype(typeOf(ret_3), boolType())
+
+
+method isNull(v_this_extension: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(intType()))
+  ensures isSubtype(typeOf(ret_1), boolType())
+
+
+method run(v_this_extension: Ref, block: Ref) returns (ret_15: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_15), nullable(anyType()))
+
+
+method with(receiver: Ref, block: Ref) returns (ret_5: Ref)
+  requires isSubtype(typeOf(receiver), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_5), nullable(anyType()))
+
+
 method with_run_extension_labeled(v_this_extension: Ref)
   returns (v_ret_0: Ref)
   requires isSubtype(typeOf(v_this_extension), nullable(intType()))

@@ -9,8 +9,8 @@ method idFun(par_arg: Ref) returns (v_ret_0: Ref)
 }
 
 /viper_casts_while_inlining.kt: info: Generated Viper text for checkMemberAccess:
-function g_member(this: Ref): Ref
-  requires isSubtype(typeOf(this), ClassWithMember())
+function g_member(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), ClassWithMember())
   ensures isSubtype(typeOf(result), intType())
 
 
@@ -76,14 +76,26 @@ method con(par_member: Ref) returns (ret_2: Ref)
   ensures intFromRef(g_member(ret_2)) == intFromRef(par_member)
 
 
+method copiedRun(v_this_extension: Ref, block: Ref) returns (ret_8: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_8), nullable(anyType()))
+
+
 method idFun(par_arg: Ref) returns (ret_6: Ref)
   requires isSubtype(typeOf(par_arg), nullable(anyType()))
   ensures isSubtype(typeOf(ret_6), nullable(anyType()))
 
 
+method runWithId(v_this_extension: Ref, block: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_3), nullable(anyType()))
+
+
 /viper_casts_while_inlining.kt: info: Generated Viper text for checkGenericMemberAccess:
-function g_wrapped(this: Ref): Ref
-  requires isSubtype(typeOf(this), Box())
+function g_wrapped(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), Box())
   ensures isSubtype(typeOf(result), nullable(anyType()))
 
 
@@ -142,9 +154,21 @@ method con(par_wrapped: Ref) returns (ret_8: Ref)
   ensures g_wrapped(ret_8) == par_wrapped
 
 
+method copiedRun(v_this_extension: Ref, block: Ref) returns (ret_7: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_7), nullable(anyType()))
+
+
 method idFun(par_arg: Ref) returns (ret_5: Ref)
   requires isSubtype(typeOf(par_arg), nullable(anyType()))
   ensures isSubtype(typeOf(ret_5), nullable(anyType()))
+
+
+method runWithId(v_this_extension: Ref, block: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
 /viper_casts_while_inlining.kt: info: Generated Viper text for checkArgumentIsCopied:
@@ -182,18 +206,24 @@ method checkArgumentIsCopied(x: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
+method copiedRun(v_this_extension: Ref, block: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
 /viper_casts_while_inlining.kt: info: Generated Viper text for accessManyMembers:
 field a: Ref
 
 field b: Ref
 
-function c(this: Ref): Ref
-  requires isSubtype(typeOf(this), ManyMembers())
+function c(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), ManyMembers())
   ensures isSubtype(typeOf(result), ClassWithVar())
 
 
-function i(this: Ref): Ref
-  requires isSubtype(typeOf(this), ManyMembers())
+function i(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), ManyMembers())
   ensures isSubtype(typeOf(result), intType())
 
 
@@ -275,9 +305,21 @@ method accessManyMembers(m: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
+method copiedRun(v_this_extension: Ref, block: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
 method idFun(par_arg: Ref) returns (ret_5: Ref)
   requires isSubtype(typeOf(par_arg), nullable(anyType()))
   ensures isSubtype(typeOf(ret_5), nullable(anyType()))
+
+
+method runWithId(v_this_extension: Ref, block: Ref) returns (ret_6: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_6), nullable(anyType()))
 
 
 /viper_casts_while_inlining.kt: info: Generated Viper text for checkEvaluatedOnce:
@@ -285,18 +327,18 @@ field a: Ref
 
 field b: Ref
 
-function c(this: Ref): Ref
-  requires isSubtype(typeOf(this), ManyMembers())
+function c(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), ManyMembers())
   ensures isSubtype(typeOf(result), ClassWithVar())
 
 
-function g_i(this: Ref): Ref
-  requires isSubtype(typeOf(this), ManyMembers())
+function g_i(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), ManyMembers())
   ensures isSubtype(typeOf(result), intType())
 
 
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 
 
@@ -337,3 +379,8 @@ method checkEvaluatedOnce(par_i: Ref, mm: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
+
+method copiedRun(v_this_extension: Ref, block: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))

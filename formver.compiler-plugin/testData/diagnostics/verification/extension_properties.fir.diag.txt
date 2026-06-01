@@ -21,14 +21,21 @@ method extensionGetterProperty() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method intValProp(this: Ref) returns (v_ret_0: Ref)
+method intValProp(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 /extension_properties.kt: info: Generated Viper text for extensionSetterProperty:
-method eg_intVarProp(this: Ref) returns (v_ret_0: Ref)
+method eg_intVarProp(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-method es_intVarProp(this: Ref, anon: Ref) returns (v_ret_0: Ref)
+method es_intVarProp(this: Ref, anon: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), nullable(anyType()))
+  requires isSubtype(typeOf(anon), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
 method extensionSetterProperty() returns (v_ret_0: Ref)
@@ -41,8 +48,8 @@ method extensionSetterProperty() returns (v_ret_0: Ref)
 }
 
 /extension_properties.kt: info: Generated Viper text for extensionGetterPropertyUserDefinedClass:
-function g_x(this: Ref): Ref
-  requires isSubtype(typeOf(this), PrimitiveField())
+function g_x(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), PrimitiveField())
   ensures isSubtype(typeOf(result), intType())
 
 
@@ -60,19 +67,26 @@ method extensionGetterPropertyUserDefinedClass(pf: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method pfValProp(this: Ref) returns (v_ret_0: Ref)
+method pfValProp(v_this_extension: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 /extension_properties.kt: info: Generated Viper text for extensionSetterPropertyUserDefinedClass:
-function x(this: Ref): Ref
-  requires isSubtype(typeOf(this), PrimitiveField())
+function x(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), PrimitiveField())
   ensures isSubtype(typeOf(result), intType())
 
 
-method eg_pfVarProp(this: Ref) returns (v_ret_0: Ref)
+method eg_pfVarProp(v_this_extension: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-method es_pfVarProp(this: Ref, anon: Ref) returns (v_ret_0: Ref)
+method es_pfVarProp(v_this_extension: Ref, anon: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  requires isSubtype(typeOf(anon), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
 method extensionSetterPropertyUserDefinedClass(pf: Ref)

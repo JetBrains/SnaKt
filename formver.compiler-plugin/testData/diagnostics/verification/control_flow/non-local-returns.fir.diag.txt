@@ -1,4 +1,9 @@
 /non-local-returns.kt: info: Generated Viper text for simpleReturn:
+method invoke(f: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
 method simpleReturn() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
@@ -20,6 +25,11 @@ method simpleReturn() returns (v_ret_0: Ref)
 }
 
 /non-local-returns.kt: info: Generated Viper text for returnAtInline:
+method invoke(f: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
 method returnAtInline() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
@@ -73,7 +83,22 @@ method doubleInvoke() returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
+method invoke(f: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
 /non-local-returns.kt: info: Generated Viper text for nested:
+method invoke(f: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method invoke2(f: Ref) returns (ret_5: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_5), intType())
+
+
 method nested() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
 {

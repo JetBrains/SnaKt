@@ -63,10 +63,19 @@ class FunctionPretypeBuilder : PretypeBuilder {
         require(dispatchReceiverType == null) { "Receiver already set" }
         dispatchReceiverType = buildType { receiverInit() }
     }
+    fun withDispatchReceiver(dispatchType: TypeEmbedding) {
+        require(dispatchReceiverType == null) { "Receiver already set" }
+        dispatchReceiverType = dispatchType
+    }
 
     fun withExtensionReceiver(receiverInit: TypeBuilder.() -> PretypeBuilder) {
         require(extensionReceiverType == null) { "Receiver already set" }
         extensionReceiverType = buildType { receiverInit() }
+    }
+
+    fun withExtensionReceiver(extensionType: TypeEmbedding) {
+        require(extensionReceiverType == null) { "Receiver already set" }
+        extensionReceiverType = extensionType
     }
 
     fun withReturnType(returnTypeInit: TypeBuilder.() -> PretypeBuilder) {

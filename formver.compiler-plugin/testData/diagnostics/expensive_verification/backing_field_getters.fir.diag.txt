@@ -244,25 +244,27 @@ method checkPrimary(par_x: Ref, par_y: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method con_ClassI(par_x: Ref, par_y: Ref) returns (ret_1: Ref)
+method con_ClassI(par_x: Ref, par_y: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(par_x), intType())
   requires isSubtype(typeOf(par_y), intType())
-  ensures isSubtype(typeOf(ret_1), ClassI())
-  ensures acc(ClassI_unique(ret_1), write)
-  ensures intFromRef(g_x(ret_1)) == intFromRef(par_x)
-  ensures intFromRef(g_y(ret_1)) == intFromRef(par_y)
+  ensures isSubtype(typeOf(ret_2), ClassI())
+  ensures acc(ClassI_unique(ret_2), write)
+  ensures intFromRef(g_x(ret_2)) == intFromRef(par_x)
+  ensures intFromRef(g_y(ret_2)) == intFromRef(par_y)
 
 
-method con_ClassII(par_z: Ref) returns (ret_3: Ref)
+method con_ClassII(par_z: Ref) returns (ret_4: Ref)
   requires isSubtype(typeOf(par_z), Z())
-  ensures isSubtype(typeOf(ret_3), ClassII())
-  ensures acc(ClassII_unique(ret_3), write)
-  ensures ClassII_g_z(ret_3) == par_z
+  ensures isSubtype(typeOf(ret_4), ClassII())
+  ensures acc(ClassII_unique(ret_4), write)
+  ensures ClassII_g_z(ret_4) == par_z
 
 
-method con_Z() returns (ret_2: Ref)
-  ensures isSubtype(typeOf(ret_2), Z())
-  ensures acc(Z_unique(ret_2), write)
+method con_Z() returns (ret_3: Ref)
+  ensures isSubtype(typeOf(ret_3), Z())
+  ensures acc(Z_unique(ret_3), write)
 
 
-method public_g_z(this: Ref) returns (v_ret_0: Ref)
+method public_g_z(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))

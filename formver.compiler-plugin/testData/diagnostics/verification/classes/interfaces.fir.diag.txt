@@ -1,8 +1,13 @@
 /interfaces.kt: info: Generated Viper text for testProperties:
-method g_varProp(this: Ref) returns (v_ret_0: Ref)
+method g_varProp(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-method s_varProp(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)
+method s_varProp(this: Ref, anon_0: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
 method testProperties(foo: Ref) returns (v_ret_0: Ref)
@@ -27,7 +32,9 @@ method testProperties(foo: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method valProp(this: Ref) returns (v_ret_0: Ref)
+method valProp(this: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_3), nullable(anyType()))
 
 
 /interfaces.kt: info: Generated Viper text for createImpl:
@@ -36,11 +43,11 @@ function Impl_g_number(this: Ref): Ref
   ensures isSubtype(typeOf(result), intType())
 
 
-method con(par_number: Ref) returns (ret_1: Ref)
+method con(par_number: Ref) returns (ret_3: Ref)
   requires isSubtype(typeOf(par_number), intType())
-  ensures isSubtype(typeOf(ret_1), Impl())
-  ensures acc(Impl_unique(ret_1), write)
-  ensures intFromRef(Impl_g_number(ret_1)) == intFromRef(par_number)
+  ensures isSubtype(typeOf(ret_3), Impl())
+  ensures acc(Impl_unique(ret_3), write)
+  ensures intFromRef(Impl_g_number(ret_3)) == intFromRef(par_number)
 
 
 method createImpl() returns (v_ret_0: Ref)
@@ -54,11 +61,15 @@ method createImpl() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method public_g_number(this: Ref) returns (v_ret_0: Ref)
+method public_g_number(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 /interfaces.kt: info: Generated Viper text for take1:
-method g_field(this: Ref) returns (v_ret_0: Ref)
+method g_field(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 method take1(obj: Ref) returns (v_ret_0: Ref)
@@ -75,7 +86,9 @@ method take1(obj: Ref) returns (v_ret_0: Ref)
 }
 
 /interfaces.kt: info: Generated Viper text for take2:
-method g_field(this: Ref) returns (v_ret_0: Ref)
+method g_field(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 method take2(obj: Ref) returns (v_ret_0: Ref)
@@ -106,7 +119,9 @@ method take3(obj: Ref) returns (v_ret_0: Ref)
 }
 
 /interfaces.kt: info: Generated Viper text for take4:
-method g_field(this: Ref) returns (v_ret_0: Ref)
+method g_field(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 method take4(obj: Ref) returns (v_ret_0: Ref)
@@ -143,33 +158,33 @@ function size(this: Ref): Ref
   ensures isSubtype(typeOf(result), intType())
 
 
-method con_Impl12() returns (ret_1: Ref)
-  ensures isSubtype(typeOf(ret_1), Impl12())
-  ensures acc(Impl12_unique(ret_1), write)
+method con_Impl12() returns (ret_3: Ref)
+  ensures isSubtype(typeOf(ret_3), Impl12())
+  ensures acc(Impl12_unique(ret_3), write)
 
 
-method con_Impl14() returns (ret_9: Ref)
-  ensures isSubtype(typeOf(ret_9), Impl14())
-  ensures acc(Impl14_unique(ret_9), write)
+method con_Impl14() returns (ret_14: Ref)
+  ensures isSubtype(typeOf(ret_14), Impl14())
+  ensures acc(Impl14_unique(ret_14), write)
 
 
-method con_Impl23() returns (ret_4: Ref)
-  ensures isSubtype(typeOf(ret_4), Impl23())
-  ensures acc(Impl23_unique(ret_4), write)
+method con_Impl23() returns (ret_7: Ref)
+  ensures isSubtype(typeOf(ret_7), Impl23())
+  ensures acc(Impl23_unique(ret_7), write)
 
 
-method con_Impl24() returns (ret_7: Ref)
-  ensures isSubtype(typeOf(ret_7), Impl24())
-  ensures acc(Impl24_unique(ret_7), write)
+method con_Impl24() returns (ret_11: Ref)
+  ensures isSubtype(typeOf(ret_11), Impl24())
+  ensures acc(Impl24_unique(ret_11), write)
 
 
-method con_Impl3() returns (ret_6: Ref)
-  ensures isSubtype(typeOf(ret_6), Impl3())
-  ensures acc(Impl3_unique(ret_6), write)
+method con_Impl3() returns (ret_9: Ref)
+  ensures isSubtype(typeOf(ret_9), Impl3())
+  ensures acc(Impl3_unique(ret_9), write)
 
 
-method create6() returns (ret_10: Ref)
-  ensures isSubtype(typeOf(ret_10), InheritingInterfaceWithoutImplementation6())
+method create6() returns (ret_15: Ref)
+  ensures isSubtype(typeOf(ret_15), InheritingInterfaceWithoutImplementation6())
 
 
 method createImpls() returns (v_ret_0: Ref)
@@ -252,36 +267,40 @@ method createImpls() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method public_g_field(this: Ref) returns (v_ret_0: Ref)
+method public_g_field(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-method take1(obj: Ref) returns (ret_2: Ref)
+method take1(obj: Ref) returns (ret_4: Ref)
   requires isSubtype(typeOf(obj), InterfaceWithImplementation1())
-  ensures isSubtype(typeOf(ret_2), unitType())
+  ensures isSubtype(typeOf(ret_4), unitType())
 
 
-method take2(obj: Ref) returns (ret_3: Ref)
+method take2(obj: Ref) returns (ret_5: Ref)
   requires isSubtype(typeOf(obj), InterfaceWithoutImplementation2())
-  ensures isSubtype(typeOf(ret_3), unitType())
-
-
-method take3(obj: Ref) returns (ret_5: Ref)
-  requires isSubtype(typeOf(obj), AbstractWithFinalImplementation3())
   ensures isSubtype(typeOf(ret_5), unitType())
 
 
-method take4(obj: Ref) returns (ret_8: Ref)
-  requires isSubtype(typeOf(obj), AbstractWithOpenImplementation4())
+method take3(obj: Ref) returns (ret_8: Ref)
+  requires isSubtype(typeOf(obj), AbstractWithFinalImplementation3())
   ensures isSubtype(typeOf(ret_8), unitType())
 
 
+method take4(obj: Ref) returns (ret_13: Ref)
+  requires isSubtype(typeOf(obj), AbstractWithOpenImplementation4())
+  ensures isSubtype(typeOf(ret_13), unitType())
+
+
 /interfaces.kt: info: Generated Viper text for testDiamond:
-method con() returns (ret_1: Ref)
-  ensures isSubtype(typeOf(ret_1), D())
-  ensures acc(D_unique(ret_1), write)
+method con() returns (ret_4: Ref)
+  ensures isSubtype(typeOf(ret_4), D())
+  ensures acc(D_unique(ret_4), write)
 
 
-method g_field(this: Ref) returns (v_ret_0: Ref)
+method g_field(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 method testDiamond() returns (v_ret_0: Ref)
@@ -298,20 +317,25 @@ method testDiamond() returns (v_ret_0: Ref)
 }
 
 /interfaces.kt: info: Generated Viper text for testVarVal:
-method con_G() returns (ret_1: Ref)
-  ensures isSubtype(typeOf(ret_1), G())
-  ensures acc(G_unique(ret_1), write)
+method con_G() returns (ret_4: Ref)
+  ensures isSubtype(typeOf(ret_4), G())
+  ensures acc(G_unique(ret_4), write)
 
 
-method con_I() returns (ret_2: Ref)
-  ensures isSubtype(typeOf(ret_2), I())
-  ensures acc(I_unique(ret_2), write)
+method con_I() returns (ret_9: Ref)
+  ensures isSubtype(typeOf(ret_9), I())
+  ensures acc(I_unique(ret_9), write)
 
 
-method g_field(this: Ref) returns (v_ret_0: Ref)
+method g_field(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-method s_field(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)
+method s_field(this: Ref, anon_0: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_3), nullable(anyType()))
 
 
 method testVarVal() returns (v_ret_0: Ref)

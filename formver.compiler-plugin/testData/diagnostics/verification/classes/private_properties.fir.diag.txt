@@ -1,5 +1,7 @@
 /private_properties.kt: info: Generated Viper text for getBooleanField:
-method g_field(this: Ref) returns (v_ret_0: Ref)
+method g_field(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 method getBooleanField(this: Ref) returns (v_ret_0: Ref)
@@ -14,7 +16,10 @@ method getBooleanField(this: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
-method s_field(this: Ref, anon: Ref) returns (v_ret_0: Ref)
+method s_field(this: Ref, anon: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  requires isSubtype(typeOf(anon), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
 /private_properties.kt: info: Generated Viper text for getStringField:
@@ -32,10 +37,15 @@ method getStringField(this: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
-method public_g_field(this: Ref) returns (v_ret_0: Ref)
+method public_g_field(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-method s_field(this: Ref, anon: Ref) returns (v_ret_0: Ref)
+method s_field(this: Ref, anon: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  requires isSubtype(typeOf(anon), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
 /private_properties.kt: info: Generated Viper text for extractPublic:
@@ -56,14 +66,14 @@ function size(this: Ref): Ref
   ensures isSubtype(typeOf(result), intType())
 
 
-method con_C() returns (ret_1: Ref)
-  ensures isSubtype(typeOf(ret_1), C())
-  ensures acc(C_unique(ret_1), write)
+method con_C() returns (ret_3: Ref)
+  ensures isSubtype(typeOf(ret_3), C())
+  ensures acc(C_unique(ret_3), write)
 
 
-method con_D() returns (ret_2: Ref)
-  ensures isSubtype(typeOf(ret_2), D())
-  ensures acc(D_unique(ret_2), write)
+method con_D() returns (ret_4: Ref)
+  ensures isSubtype(typeOf(ret_4), D())
+  ensures acc(D_unique(ret_4), write)
 
 
 method extractPublic() returns (v_ret_0: Ref)
@@ -85,7 +95,12 @@ method extractPublic() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method public_g_field(this: Ref) returns (v_ret_0: Ref)
+method public_g_field(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-method s_field(this: Ref, anon_0: Ref) returns (v_ret_0: Ref)
+method s_field(this: Ref, anon_0: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))

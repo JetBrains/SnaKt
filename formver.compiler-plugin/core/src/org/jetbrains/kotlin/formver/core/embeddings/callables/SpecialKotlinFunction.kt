@@ -41,12 +41,12 @@ interface PartiallySpecialKotlinFunction : SpecialKotlinFunction {
      * `baseEmbedding` stores a usual (user) embedding for the partially special function.
      * It is initialised iff the partially special function is used in the program in any way.
      */
-    val baseEmbedding: UserFunctionEmbedding?
+    val baseEmbedding: CallableEmbedding?
     fun tryInsertCall(args: List<ExpEmbedding>, ctx: StmtConversionContext): ExpEmbedding?
     override fun insertCall(args: List<ExpEmbedding>, ctx: StmtConversionContext): ExpEmbedding {
         return tryInsertCall(args, ctx) ?: baseEmbedding?.insertCall(args, ctx)
         ?: error("Base embedding for partially special function $name not specified")
     }
 
-    fun initBaseEmbedding(embedding: UserFunctionEmbedding)
+    fun initBaseEmbedding(embedding: CallableEmbedding)
 }

@@ -4,10 +4,10 @@ function g_fieldNotOverride(this: Ref): Ref
   ensures isSubtype(typeOf(result), C())
 
 
-method con_B(par_fieldOverride: Ref) returns (ret_2: Ref)
+method con_B(par_fieldOverride: Ref) returns (ret_4: Ref)
   requires isSubtype(typeOf(par_fieldOverride), FieldB())
-  ensures isSubtype(typeOf(ret_2), B())
-  ensures acc(B_unique(ret_2), write)
+  ensures isSubtype(typeOf(ret_4), B())
+  ensures acc(B_unique(ret_4), write)
 
 
 method con_FieldB() returns (ret_1: Ref)
@@ -33,7 +33,9 @@ method createB() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method g_fieldOverride(this: Ref) returns (v_ret_0: Ref)
+method g_fieldOverride(this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 
 
 /inheritance_fields.kt: info: Generated Viper text for createBFsAndNoBF:
@@ -42,21 +44,21 @@ function SecondBackingFieldClass_g_x(this: Ref): Ref
   ensures isSubtype(typeOf(result), intType())
 
 
-method con_FirstBackingFieldClass() returns (ret_1: Ref)
-  ensures isSubtype(typeOf(ret_1), FirstBackingFieldClass())
-  ensures acc(FirstBackingFieldClass_unique(ret_1), write)
+method con_FirstBackingFieldClass() returns (ret_2: Ref)
+  ensures isSubtype(typeOf(ret_2), FirstBackingFieldClass())
+  ensures acc(FirstBackingFieldClass_unique(ret_2), write)
 
 
-method con_NoBackingFieldClass() returns (ret_2: Ref)
-  ensures isSubtype(typeOf(ret_2), NoBackingFieldClass())
-  ensures acc(NoBackingFieldClass_unique(ret_2), write)
+method con_NoBackingFieldClass() returns (ret_4: Ref)
+  ensures isSubtype(typeOf(ret_4), NoBackingFieldClass())
+  ensures acc(NoBackingFieldClass_unique(ret_4), write)
 
 
-method con_SecondBackingFieldClass(par_x: Ref) returns (ret_3: Ref)
+method con_SecondBackingFieldClass(par_x: Ref) returns (ret_5: Ref)
   requires isSubtype(typeOf(par_x), intType())
-  ensures isSubtype(typeOf(ret_3), SecondBackingFieldClass())
-  ensures acc(SecondBackingFieldClass_unique(ret_3), write)
-  ensures intFromRef(SecondBackingFieldClass_g_x(ret_3)) ==
+  ensures isSubtype(typeOf(ret_5), SecondBackingFieldClass())
+  ensures acc(SecondBackingFieldClass_unique(ret_5), write)
+  ensures intFromRef(SecondBackingFieldClass_g_x(ret_5)) ==
     intFromRef(par_x)
 
 
@@ -85,7 +87,9 @@ method createBFsAndNoBF() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method public_g_x(this: Ref) returns (v_ret_0: Ref)
+method public_g_x(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 /inheritance_fields.kt: info: Generated Viper text for createY:

@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.conversion
 
+import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
@@ -13,10 +14,10 @@ import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.core.diagnostics.ErrorCollectionContext
 import org.jetbrains.kotlin.formver.core.embeddings.callables.CallableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
-import org.jetbrains.kotlin.formver.core.embeddings.callables.PureUserFunctionEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.callables.NamedFunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousBuiltinVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
@@ -26,7 +27,10 @@ import org.jetbrains.kotlin.formver.core.names.TryExitLabelName
 import org.jetbrains.kotlin.formver.viper.NameResolver
 
 interface ProgramConversionContext : ErrorCollectionContext {
+
     val config: PluginConfiguration
+
+    val session: FirSession
 
     val whileIndexProducer: SimpleFreshEntityProducer<Int>
     val catchLabelNameProducer: SimpleFreshEntityProducer<CatchLabelName>
@@ -41,14 +45,14 @@ interface ProgramConversionContext : ErrorCollectionContext {
     val convertedBodyResolver: ConvertedBodyResolver
     val linearizedBodyResolver: LinearizedBodyResolver
 
-    fun embedFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding
-    fun embedPureFunction(symbol: FirFunctionSymbol<*>): PureUserFunctionEmbedding
     fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding
-    fun embedFunctionSignature(symbol: FirFunctionSymbol<*>): Pair<ReturnTarget,FunctionSignature>
     fun embedType(type: ConeKotlinType): TypeEmbedding
     fun embedFunctionPretype(symbol: FirFunctionSymbol<*>): FunctionTypeEmbedding
     fun embedType(exp: FirExpression): TypeEmbedding = embedType(exp.resolvedType)
     fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding
+    fun embedContract(
+        symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, returnTarget: ReturnTarget
+    ): Pair<List<ExpEmbedding>, List<ExpEmbedding>>
 
     /**
      * Returns true if the property has default behavior. That is:

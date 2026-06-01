@@ -45,7 +45,9 @@ method accessSuperTypeProperty(c: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method d(this: Ref) returns (v_ret_0: Ref)
+method d(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 /predicates_access.kt: info: Generated Viper text for accessNested:
@@ -95,7 +97,9 @@ method accessNested(c: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method d(this: Ref) returns (v_ret_0: Ref)
+method d(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 /predicates_access.kt: info: Generated Viper text for accessNullable:

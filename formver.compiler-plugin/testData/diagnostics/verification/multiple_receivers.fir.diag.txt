@@ -71,6 +71,13 @@ method applyDelta(v_this: Ref, v_this_extension: Ref) returns (ret_6: Ref)
   ensures isSubtype(typeOf(ret_6), unitType())
 
 
+method applyInlineDelta(v_this: Ref, v_this_extension: Ref)
+  returns (ret_9: Ref)
+  requires isSubtype(typeOf(v_this), ClassWithExtension())
+  requires isSubtype(typeOf(v_this_extension), intType())
+  ensures isSubtype(typeOf(ret_9), intType())
+
+
 method checkClassWithExtension() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
@@ -121,6 +128,12 @@ method con(par_delta: Ref) returns (ret_2: Ref)
   ensures isSubtype(typeOf(ret_2), ClassWithExtension())
   ensures acc(ClassWithExtension_unique(ret_2), write)
   ensures intFromRef(g_delta(ret_2)) == intFromRef(par_delta)
+
+
+method copiedRun(v_this_extension: Ref, block: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 method extensionReturnDelta(v_this_extension: Ref) returns (ret_8: Ref)

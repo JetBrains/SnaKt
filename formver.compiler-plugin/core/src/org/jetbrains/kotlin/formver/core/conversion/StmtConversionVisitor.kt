@@ -509,9 +509,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         data: StmtConversionContext,
     ): ExpEmbedding {
         val function = anonymousFunctionExpression.anonymousFunction
-        val (returnTarget, signature) = data.embedFunctionSignature(function.symbol)
+        val (signature, _) = with(data) { function.symbol.toFunctionSignature() }
         return LambdaExp(signature, function, data, function.symbol.label!!.name)
     }
+
 
     override fun visitTryExpression(tryExpression: FirTryExpression, data: StmtConversionContext): ExpEmbedding {
         val (catchData, tryBody) = data.withCatches(tryExpression.catches) { catchData ->

@@ -49,7 +49,9 @@ method isNullOrEmptyWrong(seq: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
-method length(this: Ref) returns (v_ret_0: Ref)
+method length(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 /cond_effects.kt: info: Generated Viper text for recursiveContract:
