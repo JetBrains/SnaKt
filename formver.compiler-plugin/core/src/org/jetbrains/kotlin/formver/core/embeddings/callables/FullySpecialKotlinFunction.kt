@@ -156,6 +156,16 @@ object SpecialKotlinFunctions {
             Implies(args[0], args[1])
         }
 
+        val oldCallableType = buildFunctionPretype {
+            withParam {
+                nullableAny()
+            }
+            withReturnType { nullableAny() }
+        }
+        addFunction(oldCallableType, SpecialPackages.formver, name = "old") { args, _ ->
+            Old(args[0])
+        }
+
         val verifyCallableType = buildFunctionPretype {
             withParam {
                 klass {
@@ -289,7 +299,7 @@ val CallableEmbedding.isVerifyFunction: Boolean
     get() = isFormverPluginFunctionNamed(name = "verify")
 
 fun CallableEmbedding.isFormverPluginFunctionNamed(className: String? = null, name: String): Boolean =
-    this is FullySpecialKotlinFunction && NameMatcher.Companion.matchClassScope(this.embedName()) {
+    this is FullySpecialKotlinFunction && NameMatcher.matchClassScope(this.embedName()) {
         ifPackageName(SpecialPackages.formver) {
             if (className == null) {
                 ifNoReceiver {
