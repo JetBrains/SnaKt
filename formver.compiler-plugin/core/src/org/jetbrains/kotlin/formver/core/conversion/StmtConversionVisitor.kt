@@ -39,7 +39,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
 import org.jetbrains.kotlin.formver.core.functionCallArguments
-import org.jetbrains.kotlin.formver.core.isFormverFunctionNamed
 import org.jetbrains.kotlin.text
 import org.jetbrains.kotlin.types.ConstantValueKind
 
@@ -285,33 +284,12 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         val symbol = functionCall.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
             ?: throw NotImplementedError("Only functions are expected as callables of function calls, got ${functionCall.toResolvedCallableSymbol()}")
 
-        val forAllLambda =
-            functionCall.extractFormverFirBlock { isFormverFunctionNamed("forAll") }
-        when {
-
-            forAllLambda != null -> {
-                if (!data.isValidForForAllBlock) throw SnaktInternalException(
-                    forAllLambda.source,
-                    "`forAll` scope is only allowed inside one of the `loopInvariants`, `preconditions` or `postconditions`."
-                )
-                //error("`forAll` scope is only allowed inside one of the `loopInvariants`, `preconditions` or `postconditions`.")
-                val forAllArg = forAllLambda.valueParameters.first()
-                val forAllBody = forAllLambda.body ?: throw SnaktInternalException(
-                    forAllLambda.body?.source, "Lambda body should be accessible in `forAll` function call."
-                )
-                return data.insertForAllFunctionCall(forAllArg.symbol, forAllBody)
-            }
-
-            else -> {
-                val callee = data.embedAnyFunction(symbol)
-                return callee.insertCall(
-                    functionCall.functionCallArguments.withVarargsHandled(data, callee),
-                    data,
-                    data.embedType(functionCall.resolvedType),
-                )
-            }
-
-        }
+        val callee = data.embedAnyFunction(symbol)
+        return callee.insertCall(
+            functionCall.functionCallArguments.withVarargsHandled(data, callee),
+            data,
+            data.embedType(functionCall.resolvedType),
+        )
     }
 
     override fun visitImplicitInvokeCall(

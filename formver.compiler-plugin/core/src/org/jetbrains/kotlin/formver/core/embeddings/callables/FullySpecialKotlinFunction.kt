@@ -5,8 +5,9 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
-import org.jetbrains.kotlin.formver.core.embeddings.expression.Assert
-import org.jetbrains.kotlin.formver.core.embeddings.expression.IntLit
+import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.core.conversion.insertForAllFunctionCall
+import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.AddCharInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.AddIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.And
@@ -22,8 +23,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubCharInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Xor
-import org.jetbrains.kotlin.formver.core.embeddings.expression.UnitLit
-import org.jetbrains.kotlin.formver.core.embeddings.expression.toBlock
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildFunctionPretype
 import org.jetbrains.kotlin.formver.core.embeddings.types.nullableAny
 import org.jetbrains.kotlin.formver.core.names.*
@@ -51,6 +50,10 @@ object SpecialKotlinFunctions {
     private val booleanArrayTypeName = buildName {
         packageScope(SpecialPackages.kotlin)
         ClassKotlinName(listOf("BooleanArray"))
+    }
+    private val invariantBuilderTypeName = buildName {
+        packageScope(SpecialPackages.formver)
+        ClassKotlinName(listOf("InvariantBuilder"))
     }
 
     val byName: Map<SymbolicName, FullySpecialKotlinFunction> = buildFullySpecialFunctions {
@@ -163,6 +166,41 @@ object SpecialKotlinFunctions {
         }
         addFunction(verifyCallableType, SpecialPackages.formver, name = "verify") { args, _ ->
             args.map { Assert(it) }.toBlock()
+        }
+
+        val forAllCallableType = buildFunctionPretype {
+            withParam {
+                function {
+                    withDispatchReceiver {
+                        klass {
+                            withName(invariantBuilderTypeName)
+                        }
+                    }
+                    withParam {
+                        nullableAny()
+                    }
+                    withReturnType {
+                        unit()
+                    }
+                }
+            }
+            withReturnType {
+                boolean()
+            }
+        }
+
+        addFunction(forAllCallableType, SpecialPackages.formver, name = "forAll") { args, ctx ->
+            val arg = args.first()
+            val lambda = arg.ignoringMetaNodes() as? LambdaExp ?: throw SnaktInternalException(
+                null,
+                "First argument of forAll function must be a lambda."
+            )
+            val param = lambda.function.valueParameters.first()
+            val body = lambda.function.body ?: throw SnaktInternalException(
+                null,
+                "Lambda body of forAll function must be present."
+            )
+            ctx.insertForAllFunctionCall(param.symbol, body)
         }
 
         val invariantsBuilderCallableType = buildFunctionPretype {
