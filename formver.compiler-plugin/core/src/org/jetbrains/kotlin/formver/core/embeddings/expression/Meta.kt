@@ -94,3 +94,31 @@ fun share(toShare: ExpEmbedding, makeSharingScope: (ExpEmbedding) -> ExpEmbeddin
     shared.initContext(context)
     return context
 }
+
+/**
+ * Positioning information for a node is stored in the closest parent `WithPosition` node.
+ *
+ * @return a preordered sequence of pairs, each containing the `ExpEmbedding` and its FIR source as a `KtSourceElement`
+ */
+fun ExpEmbedding.preorder(currentSource: KtSourceElement? = null): Sequence<Pair<ExpEmbedding, KtSourceElement?>> =
+    sequence {
+        val nextSource = (this@preorder as? WithPosition)?.source ?: currentSource
+
+        if (this@preorder !is WithPosition) yield(Pair(this@preorder, nextSource))
+
+        yieldAll(this@preorder.children().flatMap { it.preorder(currentSource = nextSource) })
+    }
+
+/**
+ * Returns the `KtSourceElement` of the outermost `WithPosition`
+ * inside this expression; returns [fallback] if none is found.
+ */
+internal fun ExpEmbedding.expressionSource(fallback: KtSourceElement): KtSourceElement {
+    var curr: ExpEmbedding = this@expressionSource
+    while (true) {
+        if (curr is WithPosition) return curr.source
+        else if (curr is SharingContext) curr = curr.inner
+        else break
+    }
+    return fallback
+}

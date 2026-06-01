@@ -7,6 +7,6 @@ package org.jetbrains.kotlin.formver.core.purity
 
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 
-interface PurityContext {
+fun interface PurityContext {
     fun addPurityError(embedding: ExpEmbedding, msg: String)
 }

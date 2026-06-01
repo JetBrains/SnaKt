@@ -11,7 +11,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.*
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
-import org.jetbrains.kotlin.formver.core.purity.PurityContext
 import org.jetbrains.kotlin.formver.core.names.SimpleNameResolver
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
@@ -37,7 +36,6 @@ sealed interface ExpEmbedding : DebugPrintable {
 
     fun children(): Sequence<ExpEmbedding> = emptySequence()
     fun <R> accept(v: ExpVisitor<R>): R
-    fun isValid(ctx: PurityContext): Boolean = true
 
     context(nameResolver: NameResolver)
     override val debugTreeView: TreeView
