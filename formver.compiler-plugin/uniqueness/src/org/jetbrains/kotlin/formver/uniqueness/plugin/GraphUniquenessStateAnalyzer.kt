@@ -87,7 +87,7 @@ class GraphUniquenessStateAnalyzer(
                 var uniquenessState = data.read()
                 uniquenessState = rightAccessState.move(uniquenessState)
 
-                if (leftAccessState.isChain()) {
+                if (leftAccessState.isSingleton()) {
                     uniquenessState = leftAccessState.initialize(uniquenessState)
                 }
 

@@ -39,7 +39,7 @@ fun FirVariableSymbol<*>.resolveUniqueness(): Uniqueness {
         return resolvedReturnType.defaultUniqueness
     }
 
-    return resolvedInitializer?.resolveAccessState()?.resolveUniqueness() ?: Uniqueness.Shared
+    return resolvedInitializer?.resolveAccessState()?.extractDefaultUniqueness() ?: Uniqueness.Shared
 }
 
 object VariableUniquenessResolver :
