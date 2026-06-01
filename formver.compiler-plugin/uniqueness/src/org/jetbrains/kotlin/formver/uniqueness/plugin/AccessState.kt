@@ -1,6 +1,5 @@
 package org.jetbrains.kotlin.formver.uniqueness.plugin
 
-import kotlinx.collections.immutable.persistentMapOf
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.formver.type.plugin.TypeUnifier
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
