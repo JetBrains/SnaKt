@@ -7,11 +7,11 @@ class A(
 )
 
 fun `assign local to global property`(x: A, y: @Borrowed Any) {
-    x.x = <!LOCALITY_VIOLATION!>y<!>
+    x.x = <!LOCALITY_MISMATCH!>y<!>
 }
 
 fun `assign local to local property`(x: @Borrowed A, y: @Borrowed Any) {
-    x.x = <!LOCALITY_VIOLATION!>y<!>
+    x.x = <!LOCALITY_MISMATCH!>y<!>
 }
 
 fun `assign global property access to local`(x: A) {

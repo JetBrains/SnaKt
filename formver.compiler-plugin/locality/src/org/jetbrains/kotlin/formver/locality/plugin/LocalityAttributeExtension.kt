@@ -17,9 +17,7 @@ class LocalityAttributeExtension(
     private val annotationId: ClassId
 ) : FirTypeAttributeExtension(session) {
     companion object {
-        fun getFactory(
-            annotationId: ClassId
-        ): Factory {
+        fun getFactory(annotationId: ClassId): Factory {
             return Factory { session -> LocalityAttributeExtension(session, annotationId) }
         }
     }

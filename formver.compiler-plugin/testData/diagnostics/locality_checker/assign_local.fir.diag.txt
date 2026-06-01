@@ -1,31 +1,45 @@
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local to global)'.
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
 
-/assign_local.kt: error: Assignment locality mismatch: expected 'local(anonymous)', actual 'local(assign local to local in lambda)'.
+/assign_local.kt: error: Unable to capture outer local declaration from 'anonymous'.
 
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local if-expression to global)'.
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
 
-/assign_local.kt: error: Assignment locality mismatch: expected 'local(anonymous)', actual 'local(assign local if-expression to local in lambda)'.
+/assign_local.kt: error: Unable to capture outer local declaration from 'anonymous'.
 
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local when-expression to global)'.
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
 
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local when-expression to global in loop)'.
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
 
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local try-expression to global)'.
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
 
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local try-expression to global in loop)'.
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
 
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local cast-expression to global)'.
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
 
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local safe-cast-expression to global)'.
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
 
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local not-null-expression to global)'.
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
 
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local nested control-flow to global in loop)'.
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
 
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local nested control-flow to global in loop)'.
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
 
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local nested control-flow to global in lambda loop)'.
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
 
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(assign local nested control-flow to global in lambda loop)'.
+/assign_local.kt: error: Unable to capture outer local declaration from 'anonymous'.
 
-/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local(unknown)'.
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
+
+/assign_local.kt: error: Unable to capture outer local declaration from 'anonymous'.
+
+/assign_local.kt: error: Unable to capture outer local declaration from 'anonymous'.
+
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
+
+/assign_local.kt: error: Unable to capture outer local declaration from 'anonymous'.
+
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
+
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
+
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.

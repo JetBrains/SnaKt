@@ -22,8 +22,7 @@ class LocalityExtensionRegistrar(
     override fun ExtensionRegistrarContext.configurePlugin() {
         registerDiagnosticContainers(LocalityErrors)
         +LocalityAttributeExtension.getFactory(localityAnnotationId)
-        +PropertyOwnerResolver.getFactory()
-        +GraphLocalityInfoResolver.getFactory()
+        +ExpressionLocalityResolver.getFactory()
         +LocalityAdditionalCheckers.getFactory()
     }
 }

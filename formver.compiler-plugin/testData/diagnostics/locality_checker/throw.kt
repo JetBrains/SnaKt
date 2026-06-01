@@ -7,15 +7,15 @@ fun `throw shared value`(x: Throwable) {
 }
 
 fun `throw local value explicitly`(x: @Borrowed Throwable) {
-    throw <!LOCALITY_VIOLATION!>x<!>
+    throw <!LOCALITY_MISMATCH!>x<!>
 }
 
 fun @Borrowed Throwable.`throw local receiver explicitly`() {
-    throw <!LOCALITY_VIOLATION!>this<!>
+    throw <!LOCALITY_MISMATCH!>this<!>
 }
 
 fun `throw local value from lambda`(x: @Borrowed Throwable) {
     run {
-        throw <!LOCALITY_VIOLATION!>x<!>
+        throw <!INVALID_LOCALITY_CAPTURE, LOCALITY_MISMATCH!>x<!>
     }
 }

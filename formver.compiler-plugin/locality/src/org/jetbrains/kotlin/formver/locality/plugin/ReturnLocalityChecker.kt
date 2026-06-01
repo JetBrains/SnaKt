@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirReturnExpressionChecker
 import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
-import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOLATION
+import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_MISMATCH
 
 object ReturnLocalityChecker : FirReturnExpressionChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
@@ -23,7 +23,7 @@ object ReturnLocalityChecker : FirReturnExpressionChecker(MppCheckerKind.Common)
 
         reporter.reportOn(
             expression.result.source,
-            LOCALITY_VIOLATION,
+            LOCALITY_MISMATCH,
             "Return",
             requiredLocality,
             actualLocality

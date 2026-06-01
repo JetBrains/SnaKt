@@ -9,10 +9,10 @@ import org.jetbrains.kotlin.fir.types.ConeAttribute
 import org.jetbrains.kotlin.fir.types.ConeAttributes
 import kotlin.reflect.KClass
 
-object LocalityAttribute : ConeAttribute<LocalityAttribute>() {
+data object LocalityAttribute : ConeAttribute<LocalityAttribute>() {
     override fun union(other: LocalityAttribute?): LocalityAttribute = this
 
-    override fun intersect(other: LocalityAttribute?): LocalityAttribute? = other
+    override fun intersect(other: LocalityAttribute?): LocalityAttribute = this
 
     override fun add(other: LocalityAttribute?): LocalityAttribute = this
 
@@ -24,6 +24,9 @@ object LocalityAttribute : ConeAttribute<LocalityAttribute>() {
         get() = LocalityAttribute::class
 
     override val keepInInferredDeclarationType: Boolean
+        get() = true
+
+    override val implementsEquality: Boolean
         get() = true
 }
 

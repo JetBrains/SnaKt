@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
+import org.jetbrains.kotlin.KtFakeSourceElementKind
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
@@ -13,7 +14,9 @@ import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirCallChecker
 import org.jetbrains.kotlin.fir.expressions.FirCall
 import org.jetbrains.kotlin.fir.expressions.resolvedArgumentMapping
 import org.jetbrains.kotlin.fir.expressions.unwrapAndFlattenArgument
-import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_VIOLATION
+import org.jetbrains.kotlin.fir.types.resolvedType
+import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.CONTEXT_LOCALITY_MISMATCH
+import org.jetbrains.kotlin.formver.locality.plugin.LocalityErrors.LOCALITY_MISMATCH
 
 object CallLocalityChecker : FirCallChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
@@ -21,7 +24,7 @@ object CallLocalityChecker : FirCallChecker(MppCheckerKind.Common) {
         val argumentMappings = expression.resolvedArgumentMapping
 
         for ((argument, argumentDeclaration) in argumentMappings.orEmpty()) {
-            val requiredLocality = argumentDeclaration.resolveRequiredLocality()
+            val requiredLocality = argumentDeclaration.symbol.resolveLocality()
             val effectiveArguments = argument.unwrapAndFlattenArgument(flattenArrays = false)
 
             for (effectiveArgument in effectiveArguments) {
@@ -29,13 +32,23 @@ object CallLocalityChecker : FirCallChecker(MppCheckerKind.Common) {
 
                 if (requiredLocality.accepts(actualLocality)) continue
 
-                reporter.reportOn(
-                    effectiveArgument.source ?: argument.source,
-                    LOCALITY_VIOLATION,
-                    "Argument",
-                    requiredLocality,
-                    actualLocality
-                )
+                if (argument.source?.kind is KtFakeSourceElementKind.ImplicitContextParameterArgument) {
+                    reporter.reportOn(
+                        expression.source,
+                        CONTEXT_LOCALITY_MISMATCH,
+                        argument.resolvedType,
+                        requiredLocality,
+                        actualLocality
+                    )
+                } else {
+                    reporter.reportOn(
+                        effectiveArgument.source ?: argument.source,
+                        LOCALITY_MISMATCH,
+                        "Argument",
+                        requiredLocality,
+                        actualLocality
+                    )
+                }
             }
         }
     }
