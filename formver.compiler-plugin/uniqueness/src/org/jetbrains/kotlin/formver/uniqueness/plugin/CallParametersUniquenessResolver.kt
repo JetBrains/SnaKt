@@ -13,7 +13,7 @@ import org.jetbrains.kotlin.formver.type.plugin.InvokeParameterTypesResolver
 private object InvokeParametersUniquenessResolver : InvokeParameterTypesResolver<Uniqueness> {
     context(context: CheckerContext)
     override fun resolveInvokeParameters(receiver: FirExpression): List<Uniqueness>? =
-        null
+        null // TODO: Implement uniqueness contract resolution
 }
 
 val CallParametersUniquenessResolver = CallParametersTypeResolver(
