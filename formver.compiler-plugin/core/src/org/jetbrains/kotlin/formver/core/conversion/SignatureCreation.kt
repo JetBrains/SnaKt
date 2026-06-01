@@ -195,7 +195,7 @@ fun SignatureWithTarget<NonInlineCallable>.toNormalSignature(symbol: FirFunction
     refineSignature { current ->
         val contract = current.signature.buildConditions(converter.typeResolver) {
             userFunctionContract()
-            val (preconditions, postconditions) = converter.embedProvidedContract(
+            val (preconditions, postconditions) = converter.embedContract(
                 symbol, current.signature, returnTarget
             )
             addPreconditions(preconditions)
@@ -210,7 +210,7 @@ fun SignatureWithTarget<NamedFunctionSignature>.toInlineSignature(symbol: FirFun
     this.refineSignature { current ->
         val body = symbol.fir.body ?: throw SnaktInternalException(symbol.source, "Expected function body, got null")
         val contract = current.signature.buildConditions(converter.typeResolver) {
-            val (precondition, postcondition) = converter.embedProvidedContract(
+            val (precondition, postcondition) = converter.embedContract(
                 symbol, current.signature, current.returnTarget
             )
             userFunctionContract()

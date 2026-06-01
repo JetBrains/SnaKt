@@ -402,7 +402,7 @@ class ProgramConverter(
         return contractVisitor.getPostconditions()
     }
 
-    override fun embedProvidedContract(
+    override fun embedContract(
         symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, returnTarget: ReturnTarget
     ): Pair<List<ExpEmbedding>, List<ExpEmbedding>> {
         val kotlinContractPostcondition = embedKotlinContract(symbol, signature)
