@@ -157,9 +157,7 @@ object SpecialKotlinFunctions {
         }
 
         val oldCallableType = buildFunctionPretype {
-            withParam {
-                nullableAny()
-            }
+            withParam { nullableAny() }
             withReturnType { nullableAny() }
         }
         addFunction(oldCallableType, SpecialPackages.formver, name = "old") { args, _ ->
