@@ -26,7 +26,6 @@ import org.jetbrains.kotlin.formver.core.names.CatchLabelName
 import org.jetbrains.kotlin.formver.core.names.TryExitLabelName
 import org.jetbrains.kotlin.formver.viper.NameResolver
 
-
 interface ProgramConversionContext : ErrorCollectionContext {
 
     val config: PluginConfiguration

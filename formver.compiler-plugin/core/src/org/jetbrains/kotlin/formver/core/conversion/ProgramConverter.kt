@@ -184,7 +184,6 @@ class ProgramConverter(
         val converted = convertedBodyResolver.lookupPure(name)
         val linearized = converted?.let { linearizePureBody(signature.declarationSource, it) }
         linearizedBodyResolver.storeFunction(name, signature.toViperFunction(typeResolver, linearized))
-
     }
 
     private fun linearizeImpure(name: SymbolicName, signature: CompleteFunctionSignature) {
@@ -196,7 +195,6 @@ class ProgramConverter(
             signature.toViperMethod(typeResolver, null)
         }
         linearizedBodyResolver.storeMethod(name, method)
-
     }
 
     /**
@@ -219,7 +217,6 @@ class ProgramConverter(
     private fun createBodyConversionContext(
         symbol: FirFunctionSymbol<*>, signature: SignatureWithTarget<NamedFunctionSignature>
     ): StmtConversionContext {
-
         val paramResolver = RootParameterResolver(
             this@ProgramConverter,
             signature.signature,
@@ -242,7 +239,6 @@ class ProgramConverter(
         firSpec: FirSpecification,
         returnTarget: ReturnTarget,
     ): Pair<StmtConversionContext, StmtConversionContext> {
-
         val rootResolver = RootParameterResolver(
             this@ProgramConverter,
             signature,
@@ -251,10 +247,8 @@ class ProgramConverter(
             returnTarget,
         )
 
-
         val wrappedResolver = firSpec.returnVar?.let { ReturnVarSubstitutor(it, signature.returns) }
             ?.let { ctx -> SubstitutedReturnParameterResolver(rootResolver, ctx) } ?: rootResolver
-
 
         val preconditionContext = MethodConverter(
             this@ProgramConverter,
@@ -425,7 +419,6 @@ class ProgramConverter(
      * * Extension properties are handled like open properties.
      */
     override fun embedProperty(symbol: FirPropertySymbol): PropertyEmbedding {
-
         if (symbol.receiverParameterSymbol != null) {
             return embedExtensionProperty(symbol)
         } else {
@@ -531,8 +524,7 @@ class ProgramConverter(
     ): NonInlineFunctionSignature = with(this) {
         val name = if (functionType.paramTypes.isEmpty()) symbol.embedGetterName(this) else symbol.embedSetterName(this)
         functionType.toGenericAccessorSignature(defaultBehaviour).toNamedSignature(name)
-            .toNonInlineSignature(symbol = null)
-            .toCompleteSignature(symbol.source) {
+            .toNonInlineSignature(symbol = null).toCompleteSignature(symbol.source) {
                 preconditions {
                     args {
                         provenInvariants()
@@ -578,7 +570,6 @@ class ProgramConverter(
     // region types (also classes)
 
     override fun embedType(type: ConeKotlinType): TypeEmbedding = buildType { embedTypeWithBuilder(type) }
-
 
     /**
      * Returns an embedding of the class type, with details set.
