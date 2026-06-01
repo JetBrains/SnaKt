@@ -7,12 +7,15 @@ package org.jetbrains.kotlin.formver.core.embeddings.expression
 
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
-import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.*
+import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.DebugPrintable
+import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.DebugTreeViewVisitor
+import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.TreeView
+import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.print
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
-import org.jetbrains.kotlin.formver.core.purity.PurityContext
 import org.jetbrains.kotlin.formver.core.names.SimpleNameResolver
+import org.jetbrains.kotlin.formver.core.purity.PurityContext
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.PermExp
@@ -58,7 +61,8 @@ data class PrimitiveFieldAccess(val inner: ExpEmbedding, val field: FieldEmbeddi
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(inner)
 }
 
-data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : ExpEmbedding {
+data class FieldAccess(val receiver: ExpEmbedding, val receiverIsUnique: Boolean, val field: FieldEmbedding) :
+    ExpEmbedding {
     override val type: TypeEmbedding = field.type
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitFieldAccess(this)
@@ -68,7 +72,12 @@ data class FieldAccess(val receiver: ExpEmbedding, val field: FieldEmbedding) : 
 /**
  * Represents a combination of `Assign` + `FieldAccess`.
  */
-data class FieldModification(val receiver: ExpEmbedding, val field: FieldEmbedding, val newValue: ExpEmbedding) :
+data class FieldModification(
+    val receiver: ExpEmbedding,
+    val receiverIsUnique: Boolean,
+    val field: FieldEmbedding,
+    val newValue: ExpEmbedding
+) :
     ExpEmbedding {
     override val type: TypeEmbedding = buildType { unit() }
 

@@ -38,6 +38,6 @@ val CollectionSizeFieldEmbedding: FieldEmbedding = SpecialField(
 ) { field ->
     listOf(object : TypeInvariantEmbedding {
         override fun fillHole(exp: ExpEmbedding): ExpEmbedding =
-            OperatorExpEmbeddings.GeIntInt(FieldAccess(exp, field), IntLit(0))
+            OperatorExpEmbeddings.GeIntInt(FieldAccess(exp, true, field), IntLit(0))
     })
 }

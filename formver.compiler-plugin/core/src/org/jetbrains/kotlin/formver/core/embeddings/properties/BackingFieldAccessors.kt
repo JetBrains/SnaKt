@@ -13,8 +13,8 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 class BackingFieldGetter(val field: FieldEmbedding) : GetterEmbedding {
     override fun getValue(receiver: ExpEmbedding, ctx: TypeResolver): ExpEmbedding {
         return when (field.accessPolicy) {
-            AccessPolicy.BY_RECEIVER_UNIQUENESS -> FieldAccess(receiver, field)
-            else -> FieldAccess(receiver, field).withInvariants(ctx) {
+            AccessPolicy.BY_RECEIVER_UNIQUENESS -> FieldAccess(receiver, true, field)
+            else -> FieldAccess(receiver, true, field).withInvariants(ctx) {
                 proven = true
                 access = true
             }
@@ -24,10 +24,10 @@ class BackingFieldGetter(val field: FieldEmbedding) : GetterEmbedding {
     override fun getValueSimple(
         receiver: ExpEmbedding,
         ctx: TypeResolver
-    ): ExpEmbedding = FieldAccess(receiver, field)
+    ): ExpEmbedding = FieldAccess(receiver, true, field)
 }
 
 class BackingFieldSetter(val field: FieldEmbedding) : SetterEmbedding {
     override fun setValue(receiver: ExpEmbedding, value: ExpEmbedding, ctx: StmtConversionContext): ExpEmbedding =
-        FieldModification(receiver, field, value.withType(field.type))
+        FieldModification(receiver, true, field, value.withType(field.type))
 }
