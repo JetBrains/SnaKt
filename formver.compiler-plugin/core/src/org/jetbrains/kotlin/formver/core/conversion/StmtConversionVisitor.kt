@@ -43,7 +43,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
 import org.jetbrains.kotlin.formver.core.functionCallArguments
 import org.jetbrains.kotlin.formver.core.isFormverFunctionNamed
-import org.jetbrains.kotlin.formver.core.isInvariantBuilderFunctionNamed
 import org.jetbrains.kotlin.text
 import org.jetbrains.kotlin.types.ConstantValueKind
 
@@ -295,7 +294,9 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                             arg.source, "Vararg arguments are currently supported for `verify` function only."
                         )
                     }
-                    arg.arguments.map(data::convert)
+                    data.withNoScope {
+                        arg.arguments.map { this.convert(it) }
+                    }
                 }
 
                 else -> listOf(data.convert(arg))
@@ -307,7 +308,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             ?: throw NotImplementedError("Only functions are expected as callables of function calls, got ${functionCall.toResolvedCallableSymbol()}")
 
         val forAllLambda =
-            functionCall.extractFormverFirBlock { isInvariantBuilderFunctionNamed("forAll") || isFormverFunctionNamed("forAll") }
+            functionCall.extractFormverFirBlock { isFormverFunctionNamed("forAll") }
         when {
 
             forAllLambda != null -> {
@@ -321,15 +322,6 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                     forAllLambda.body?.source, "Lambda body should be accessible in `forAll` function call."
                 )
                 return data.insertForAllFunctionCall(forAllArg.symbol, forAllBody)
-            }
-
-            symbol.isFormverFunctionNamed("verify") -> {
-                val callee = data.embedAnyFunction(symbol)
-                val arguments = data.withNoScope {
-                    functionCall.functionCallArguments.withVarargsHandled(this, callee)
-
-                }
-                return Block { addAll(arguments.map { Assert(it) }) }
             }
 
             else -> {

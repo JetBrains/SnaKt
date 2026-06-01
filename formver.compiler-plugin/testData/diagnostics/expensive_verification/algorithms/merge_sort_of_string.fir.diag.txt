@@ -178,27 +178,25 @@ method plus(this: Ref, other: Ref) returns (ret_4: Ref)
 
 
 /merge_sort_of_string.kt: info: Generated Viper text for mergeSorted:
-method mergeSorted(v_this_extension: Ref) returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(v_this_extension), stringType())
+method mergeSorted(this: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), stringType())
   ensures isSubtype(typeOf(v_ret_0), stringType())
-  ensures |stringFromRef(v_ret_0)| == |stringFromRef(v_this_extension)|
+  ensures |stringFromRef(v_ret_0)| == |stringFromRef(this)|
   ensures (forall anon_builtin_0: Int ::1 <= anon_builtin_0 &&
       anon_builtin_0 < |stringFromRef(v_ret_0)| ==>
       stringFromRef(v_ret_0)[anon_builtin_0 - 1] <=
       stringFromRef(v_ret_0)[anon_builtin_0])
 {
-  if (|stringFromRef(v_this_extension)| <= 1) {
-    v_ret_0 := v_this_extension
+  if (|stringFromRef(this)| <= 1) {
+    v_ret_0 := this
   } else {
     var anon_0: Ref
     var anon_1: Ref
     var anon_2: Ref
     var anon_3: Ref
-    anon_1 := subs(v_this_extension, intToRef(0), divInts(stringLength(v_this_extension),
-      intToRef(2)))
+    anon_1 := subs(this, intToRef(0), divInts(stringLength(this), intToRef(2)))
     anon_0 := mergeSorted(anon_1)
-    anon_3 := subs(v_this_extension, divInts(stringLength(v_this_extension),
-      intToRef(2)), stringLength(v_this_extension))
+    anon_3 := subs(this, divInts(stringLength(this), intToRef(2)), stringLength(this))
     anon_2 := mergeSorted(anon_3)
     v_ret_0 := mergeStrings(anon_0, anon_2)
   }
@@ -224,15 +222,15 @@ method mergeStrings(a: Ref, b: Ref) returns (ret_2: Ref)
       stringFromRef(ret_2)[anon_builtin_2])
 
 
-method subs(v_this_extension: Ref, lo: Ref, hi: Ref) returns (ret_3: Ref)
-  requires isSubtype(typeOf(v_this_extension), stringType())
+method subs(this: Ref, lo: Ref, hi: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(lo), intType())
   requires isSubtype(typeOf(hi), intType())
   requires 0 <= intFromRef(lo) && intFromRef(lo) <= intFromRef(hi) &&
-    intFromRef(hi) <= |stringFromRef(v_this_extension)|
+    intFromRef(hi) <= |stringFromRef(this)|
   ensures isSubtype(typeOf(ret_3), stringType())
   ensures |stringFromRef(ret_3)| == intFromRef(hi) - intFromRef(lo)
   ensures (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
       anon_builtin_3 < |stringFromRef(ret_3)| ==>
       stringFromRef(ret_3)[anon_builtin_3] ==
-      stringFromRef(v_this_extension)[anon_builtin_3 + intFromRef(lo)])
+      stringFromRef(this)[anon_builtin_3 + intFromRef(lo)])
