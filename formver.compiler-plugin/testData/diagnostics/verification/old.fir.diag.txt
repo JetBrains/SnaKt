@@ -1,6 +1,11 @@
 /old.kt: info: Generated Viper text for test:
 field bf_field: Ref
 
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
 method inc(c: Ref) returns (ret_3: Ref)
   requires isSubtype(typeOf(c), C())
   requires acc(C_unique(c), write)
@@ -22,6 +27,7 @@ method test(c: Ref) returns (v_ret_0: Ref)
 {
   var anon: Ref
   anon := inc(c)
+  assert c == old(c)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }

@@ -15,6 +15,7 @@ fun <!VIPER_TEXT!>test<!>(@Unique @Borrowed c: C) {
         c.field == 43
     }
     inc(c)
+    verify(c == old(c))
 }
 
 @NeverConvert
