@@ -59,14 +59,14 @@ method zFuncHelper(s: Ref, res: Ref, i: Ref, checkedLeft: Ref, checkedRight: Ref
 }
 
 /z_function.kt: info: Generated Viper text for zFunction:
-method plus(v_this: Ref, other: Ref) returns (ret_2: Ref)
+method plus(v_this: Ref, other: Ref) returns (ret_4: Ref)
   requires isSubtype(typeOf(v_this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_2), stringType())
+  ensures isSubtype(typeOf(ret_4), stringType())
 
 
 method zFuncHelper(s: Ref, par_res: Ref, par_i: Ref, par_checkedLeft: Ref, par_checkedRight: Ref)
-  returns (ret_4: Ref)
+  returns (ret_9: Ref)
   requires isSubtype(typeOf(s), stringType())
   requires isSubtype(typeOf(par_res), stringType())
   requires isSubtype(typeOf(par_i), intType())
@@ -97,11 +97,11 @@ method zFuncHelper(s: Ref, par_res: Ref, par_i: Ref, par_checkedLeft: Ref, par_c
       intFromRef(par_checkedRight) - intFromRef(par_checkedLeft) ==>
       stringFromRef(s)[intFromRef(par_checkedLeft) + anon_builtin_7] ==
       stringFromRef(s)[anon_builtin_7])
-  ensures isSubtype(typeOf(ret_4), intType())
-  ensures intFromRef(par_i) <= intFromRef(ret_4) &&
-    intFromRef(ret_4) <= |stringFromRef(s)|
+  ensures isSubtype(typeOf(ret_9), intType())
+  ensures intFromRef(par_i) <= intFromRef(ret_9) &&
+    intFromRef(ret_9) <= |stringFromRef(s)|
   ensures (forall anon_builtin_8: Int ::intFromRef(par_i) <= anon_builtin_8 &&
-      anon_builtin_8 < intFromRef(ret_4) ==>
+      anon_builtin_8 < intFromRef(ret_9) ==>
       stringFromRef(s)[anon_builtin_8 - intFromRef(par_i)] ==
       stringFromRef(s)[anon_builtin_8])
 
@@ -274,10 +274,10 @@ method zFunction(v_this_extension: Ref) returns (v_ret_0: Ref)
 }
 
 /z_function.kt: info: Generated Viper text for zFunctionNaive:
-method plus(v_this: Ref, other: Ref) returns (ret_2: Ref)
+method plus(v_this: Ref, other: Ref) returns (ret_4: Ref)
   requires isSubtype(typeOf(v_this), stringType())
   requires isSubtype(typeOf(other), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_2), stringType())
+  ensures isSubtype(typeOf(ret_4), stringType())
 
 
 method zFunctionNaive(v_this_extension: Ref) returns (v_ret_0: Ref)
