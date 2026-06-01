@@ -59,14 +59,13 @@ class OperatorExpEmbeddingBuilder {
         val args: List<Exp>,
         val pos: Position,
         val info: Info,
-        val trafos: Trafos,
     )
 
     fun viperImplementation(block: ViperCallData.() -> Exp) {
         check(viperApplicable == null) { "Viper implementation for OperatorExpEmbedding is already set." }
         viperApplicable = object : Applicable {
-            override fun toFuncApp(args: List<Exp>, pos: Position, info: Info, trafos: Trafos): Exp {
-                return ViperCallData(args, pos, info, trafos).block()
+            override fun toFuncApp(args: List<Exp>, pos: Position, info: Info): Exp {
+                return ViperCallData(args, pos, info).block()
             }
         }
     }

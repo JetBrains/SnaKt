@@ -23,12 +23,10 @@ fun NamedFunctionSignature.toMethodCall(
     target: Exp.LocalVar,
     pos: Position = Position.NoPosition,
     info: Info = Info.NoInfo,
-    trafos: Trafos = Trafos.NoTrafos,
-) = Stmt.MethodCall(name, parameters, listOf(target), pos, info, trafos)
+) = Stmt.MethodCall(name, parameters, listOf(target), pos, info)
 
 fun NamedFunctionSignature.toFuncApp(
     parameters: List<Exp>,
     pos: Position = Position.NoPosition,
     info: Info = Info.NoInfo,
-    trafos: Trafos = Trafos.NoTrafos
-) = Exp.FuncApp(name, parameters, Type.Ref, pos, info, trafos)
+) = Exp.FuncApp(name, parameters, Type.Ref, pos, info)

@@ -17,7 +17,6 @@ data class Program(
     /* no extensions */
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
-    val trafos: Trafos = Trafos.NoTrafos,
 ) : IntoSilver<viper.silver.ast.Program> {
     context(nameResolver: NameResolver)
     override fun toSilver(): viper.silver.ast.Program = viper.silver.ast.Program(
@@ -29,7 +28,7 @@ data class Program(
         adts.sortedBy { it.name.mangled }.toSilver().toScalaSeq(),
         pos.toSilver(),
         info.toSilver(),
-        trafos.toSilver(),
+        silverNoTrafos,
     )
 
     fun toShort(): Program = Program(
@@ -41,7 +40,6 @@ data class Program(
         adts.filter { it.includeInShortDump },
         pos,
         info,
-        trafos,
     )
 
     fun withoutPredicates(): Program = copy(

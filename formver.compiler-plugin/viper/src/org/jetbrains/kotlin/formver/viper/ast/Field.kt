@@ -16,9 +16,8 @@ class Field(
     val includeInShortDump: Boolean,
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
-    val trafos: Trafos = Trafos.NoTrafos,
 ) : IntoSilver<viper.silver.ast.Field> {
     context(nameResolver: NameResolver)
     override fun toSilver(): viper.silver.ast.Field =
-        viper.silver.ast.Field(name.mangled, type.toSilver(), pos.toSilver(), info.toSilver(), trafos.toSilver())
+        viper.silver.ast.Field(name.mangled, type.toSilver(), pos.toSilver(), info.toSilver(), silverNoTrafos)
 }

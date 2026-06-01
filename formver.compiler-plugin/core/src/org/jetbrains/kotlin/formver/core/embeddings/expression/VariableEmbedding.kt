@@ -44,14 +44,12 @@ sealed interface VariableEmbedding : ExpEmbedding, PropertyAccessEmbedding {
     fun toLocalVarDecl(
         pos: Position = Position.NoPosition,
         info: Info = Info.NoInfo,
-        trafos: Trafos = Trafos.NoTrafos,
-    ): Declaration.LocalVarDecl = Declaration.LocalVarDecl(name, Type.Ref, pos, info, trafos)
+    ): Declaration.LocalVarDecl = Declaration.LocalVarDecl(name, Type.Ref, pos, info)
 
     fun toLocalVarUse(
         pos: Position = Position.NoPosition,
         info: Info = Info.NoInfo,
-        trafos: Trafos = Trafos.NoTrafos,
-    ): Exp.LocalVar = Exp.LocalVar(name, Type.Ref, pos, info, trafos)
+    ): Exp.LocalVar = Exp.LocalVar(name, Type.Ref, pos, info)
 
     fun toViperExp(ctx: LinearizationContext): Exp = when (name) {
         is FunctionResultVariableName -> Exp.Result(Type.Ref, ctx.source.asPosition, sourceRole.asInfo)
@@ -100,11 +98,11 @@ class AnonymousBuiltinVariableEmbedding(n: Int, override val type: TypeEmbedding
         return injection?.let { it.toRef(inner) } ?: inner
     }
 
-    override fun toLocalVarDecl(pos: Position, info: Info, trafos: Trafos) =
-        Declaration.LocalVarDecl(name, injection.viperType, pos, info, trafos)
+    override fun toLocalVarDecl(pos: Position, info: Info) =
+        Declaration.LocalVarDecl(name, injection.viperType, pos, info)
 
-    override fun toLocalVarUse(pos: Position, info: Info, trafos: Trafos): Exp.LocalVar =
-        Exp.LocalVar(name, injection.viperType, pos, info, trafos)
+    override fun toLocalVarUse(pos: Position, info: Info): Exp.LocalVar =
+        Exp.LocalVar(name, injection.viperType, pos, info)
 
     override val isOriginallyRef: Boolean
         get() = injection == null

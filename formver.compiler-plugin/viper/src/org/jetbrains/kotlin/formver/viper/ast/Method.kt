@@ -11,7 +11,6 @@ abstract class Method(
     val name: SymbolicName,
     val pos: Position = Position.NoPosition,
     val info: Info = Info.NoInfo,
-    val trafos: Trafos = Trafos.NoTrafos,
 ) : IntoSilver<viper.silver.ast.Method> {
     open val includeInShortDump: Boolean = true
     abstract val formalArgs: List<Declaration.LocalVarDecl>
@@ -30,7 +29,7 @@ abstract class Method(
             body.toScalaOption().map { it.toSilver() },
             pos.toSilver(),
             info.toSilver(),
-            trafos.toSilver()
+            silverNoTrafos
         )
 
     fun toMethodCall(
@@ -38,8 +37,7 @@ abstract class Method(
         targets: List<Exp.LocalVar>,
         pos: Position = Position.NoPosition,
         info: Info = Info.NoInfo,
-        trafos: Trafos = Trafos.NoTrafos,
-    ) = Stmt.MethodCall(name, args, targets, pos, info, trafos)
+    ) = Stmt.MethodCall(name, args, targets, pos, info)
 }
 
 class UserMethod(
@@ -51,8 +49,7 @@ class UserMethod(
     override val body: Stmt.Seqn?,
     pos: Position = Position.NoPosition,
     info: Info = Info.NoInfo,
-    trafos: Trafos = Trafos.NoTrafos,
-) : Method(name, pos, info, trafos) {
+) : Method(name, pos, info) {
     override val formalReturns: List<Declaration.LocalVarDecl> = listOf(returnVar)
 }
 
@@ -65,8 +62,7 @@ class BuiltInMethod(
     override val body: Stmt.Seqn?,
     pos: Position = Position.NoPosition,
     info: Info = Info.NoInfo,
-    trafos: Trafos = Trafos.NoTrafos,
-) : Method(name, pos, info, trafos) {
+) : Method(name, pos, info) {
     override val includeInShortDump: Boolean = false
     override val formalReturns: List<Declaration.LocalVarDecl> = listOf(returnVar)
 }

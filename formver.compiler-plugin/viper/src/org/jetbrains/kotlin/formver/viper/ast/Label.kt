@@ -14,18 +14,15 @@ data class Label(
     fun toStmt(
         pos: Position = Position.NoPosition,
         info: Info = Info.NoInfo,
-        trafos: Trafos = Trafos.NoTrafos,
-    ) = Stmt.Label(name, invariants, pos, info, trafos)
+    ) = Stmt.Label(name, invariants, pos, info)
 
     fun toDecl(
         pos: Position = Position.NoPosition,
         info: Info = Info.NoInfo,
-        trafos: Trafos = Trafos.NoTrafos,
-    ) = Declaration.LabelDecl(name, invariants, pos, info, trafos)
+    ) = Declaration.LabelDecl(name, invariants, pos, info)
 
     fun toGoto(
         pos: Position = Position.NoPosition,
         info: Info = Info.NoInfo,
-        trafos: Trafos = Trafos.NoTrafos,
-    ) = Stmt.Goto(name, pos, info, trafos)
+    ) = Stmt.Goto(name, pos, info)
 }

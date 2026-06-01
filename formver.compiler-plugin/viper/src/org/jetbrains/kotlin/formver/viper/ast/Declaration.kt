@@ -13,7 +13,6 @@ sealed interface Declaration : IntoSilver<viper.silver.ast.Declaration> {
         val type: Type,
         val pos: Position = Position.NoPosition,
         val info: Info = Info.NoInfo,
-        val trafos: Trafos = Trafos.NoTrafos,
     ) : Declaration {
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.LocalVarDecl =
@@ -22,7 +21,7 @@ sealed interface Declaration : IntoSilver<viper.silver.ast.Declaration> {
                 type.toSilver(),
                 pos.toSilver(),
                 info.toSilver(),
-                trafos.toSilver()
+                silverNoTrafos
             )
     }
 
@@ -31,7 +30,6 @@ sealed interface Declaration : IntoSilver<viper.silver.ast.Declaration> {
         val invariants: List<Exp>,
         val position: Position = Position.NoPosition,
         val info: Info = Info.NoInfo,
-        val trafos: Trafos = Trafos.NoTrafos,
     ) : Declaration {
         context(nameResolver: NameResolver)
         override fun toSilver(): viper.silver.ast.Label = viper.silver.ast.Label(
@@ -39,7 +37,7 @@ sealed interface Declaration : IntoSilver<viper.silver.ast.Declaration> {
             invariants.toSilver().toScalaSeq(),
             position.toSilver(),
             info.toSilver(),
-            trafos.toSilver()
+            silverNoTrafos
         )
     }
 }
