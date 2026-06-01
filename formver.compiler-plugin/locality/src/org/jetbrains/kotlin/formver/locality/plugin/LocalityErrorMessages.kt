@@ -8,19 +8,33 @@ package org.jetbrains.kotlin.formver.locality.plugin
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactoryToRendererMap
 import org.jetbrains.kotlin.diagnostics.rendering.BaseDiagnosticRendererFactory
 import org.jetbrains.kotlin.diagnostics.rendering.CommonRenderers
+import org.jetbrains.kotlin.fir.analysis.diagnostics.FirDiagnosticRenderers
 
 object LocalityErrorMessages : BaseDiagnosticRendererFactory() {
-    override val MAP: KtDiagnosticFactoryToRendererMap by KtDiagnosticFactoryToRendererMap("FormalVerificationLocality") { map ->
-        map.put(
-            LocalityErrors.LOCALITY_VIOLATION,
-            "{0} locality mismatch: expected {1}, actual {2}.",
-            CommonRenderers.STRING,
-            LocalityRenderer,
-            LocalityRenderer,
-        )
-        map.put(
-            LocalityErrors.INVALID_LOCALITY_TYPE_TARGET,
-            "Locality can only be specified on types of function parameters, extension receivers, or local variables.",
-        )
-    }
+    override val MAP: KtDiagnosticFactoryToRendererMap
+            by KtDiagnosticFactoryToRendererMap("FormalVerificationLocality") { map ->
+                map.put(
+                    LocalityErrors.LOCALITY_MISMATCH,
+                    "{0} locality mismatch: expected ''{1}'', actual ''{2}''.",
+                    CommonRenderers.STRING,
+                    LocalityRenderer,
+                    LocalityRenderer,
+                )
+                map.put(
+                    LocalityErrors.CONTEXT_LOCALITY_MISMATCH,
+                    "Locality mismatch for context parameter of type ''{0}'': expected ''{1}'', actual ''{2}''.",
+                    FirDiagnosticRenderers.RENDER_TYPE,
+                    LocalityRenderer,
+                    LocalityRenderer,
+                )
+                map.put(
+                    LocalityErrors.INVALID_LOCALITY_CAPTURE,
+                    "Unable to capture outer local declaration from ''{0}''.",
+                    FirDiagnosticRenderers.DECLARATION_NAME,
+                )
+                map.put(
+                    LocalityErrors.INVALID_LOCALITY_TYPE_TARGET,
+                    "Locality can only be specified on types of function parameters, extension receivers, or local variables.",
+                )
+            }
 }

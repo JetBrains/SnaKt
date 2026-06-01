@@ -6,62 +6,45 @@
 package org.jetbrains.kotlin.formver.locality.plugin
 
 import org.jetbrains.kotlin.diagnostics.rendering.Renderer
-import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
-import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
-import org.jetbrains.kotlin.formver.locality.plugin.Locality.Global
-import org.jetbrains.kotlin.formver.locality.plugin.Locality.Local
+import org.jetbrains.kotlin.fir.types.ConeKotlinType
+import org.jetbrains.kotlin.formver.type.plugin.TypeIntersector
+import org.jetbrains.kotlin.formver.type.plugin.TypeJudgment
+import org.jetbrains.kotlin.formver.type.plugin.TypeUnifier
 
-/**
- * Symbolic locality value.
- */
-sealed interface Locality {
+typealias Locality = LocalityAttribute?
 
-    /**
-     * Symbolic locality value for a global reference.
-     */
-    data object Global : Locality
+val ConeKotlinType.locality: Locality
+    get() = attributes.locality
 
-    /**
-     * Symbolic locality value for a reference that is local to the declaration referred to by `owner`.
-     */
-    data class Local(
-        val owner: FirBasedSymbol<*>?
-    ) : Locality
+fun Locality.accepts(other: Locality): Boolean =
+    this != null || other == null
+
+object LocalityJudgment : TypeJudgment<Locality> {
+    override fun satisfies(requiredType: Locality, actualType: Locality): Boolean =
+        requiredType.accepts(actualType)
 }
 
-/**
- * Returns `true` if `this` locality accepts [other], `false` otherwise.
- */
-fun Locality.accepts(other: Locality): Boolean {
-    return when (this) {
-        Global -> other == Global
-        is Local ->
-            when (other) {
-                Global -> true
-                is Local -> owner == null || owner == other.owner
-            }
+fun Locality.join(other: Locality): Locality =
+    this?.union(other) ?: other
+
+object LocalityUnifier : TypeUnifier<Locality> {
+    override fun join(left: Locality, right: Locality): Locality {
+        return left.join(right)
     }
 }
 
-/**
- * Merges `this` locality with [other]. If both `this` and [other] are local to different declarations the result will
- * be `Local(null)` (local to unknown).
- */
-fun Locality.union(other: Locality): Locality {
-    return when {
-        this == other -> this
-        this is Global -> other
-        other is Global -> this
-        else -> Local(null)
+fun Locality.meet(other: Locality): Locality =
+    this?.intersect(other)
+
+object LocalityIntersector : TypeIntersector<Locality> {
+    override fun meet(left: Locality, right: Locality): Locality {
+        return left.meet(right)
     }
 }
 
-/**
- * Renders a locality value for diagnostics.
- */
 val LocalityRenderer = Renderer<Locality> { locality ->
     when (locality) {
-        Global -> "'global'"
-        is Local -> "'local(${(locality.owner as? FirCallableSymbol<*>)?.name ?: "unknown"})'"
+        null -> "global"
+        LocalityAttribute -> "local"
     }
 }

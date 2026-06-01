@@ -3,7 +3,7 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
-package org.jetbrains.kotlin.formver.locality.plugin
+package org.jetbrains.kotlin.formver.locality.contract.plugin
 
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.DeclarationCheckers
@@ -14,45 +14,43 @@ import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirCallChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirPropertyAccessExpressionChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirQualifiedAccessExpressionChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirReturnExpressionChecker
-import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirThrowExpressionChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirVariableAssignmentChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.type.FirResolvedTypeRefChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.type.TypeCheckers
 import org.jetbrains.kotlin.fir.analysis.extensions.FirAdditionalCheckersExtension
+import org.jetbrains.kotlin.formver.locality.plugin.PropertyAccessLocalityChecker
+import org.jetbrains.kotlin.formver.locality.plugin.TypeRefLocalityAttributeChecker
 
-class LocalityAdditionalCheckers(session: FirSession) : FirAdditionalCheckersExtension(session) {
+class LocalityContractAdditionalCheckers(session: FirSession) : FirAdditionalCheckersExtension(session) {
     companion object {
         fun getFactory(): Factory {
-            return Factory { session -> LocalityAdditionalCheckers(session) }
+            return Factory { session -> LocalityContractAdditionalCheckers(session) }
         }
     }
 
     override val declarationCheckers: DeclarationCheckers = object : DeclarationCheckers() {
         override val propertyCheckers: Set<FirPropertyChecker> =
-            setOf(PropertyLocalityChecker)
+            setOf(PropertyLocalityContractChecker)
 
         override val valueParameterCheckers: Set<FirValueParameterChecker> =
-            setOf(ValueParameterLocalityChecker)
+            setOf(ValueParameterLocalityContractChecker)
     }
 
     override val expressionCheckers: ExpressionCheckers = object : ExpressionCheckers() {
         override val variableAssignmentCheckers: Set<FirVariableAssignmentChecker> =
-            setOf(AssignmentLocalityChecker)
+            setOf(AssignmentLocalityContractChecker)
 
         override val callCheckers: Set<FirCallChecker> =
-            setOf(CallLocalityChecker)
+            setOf(CallLocalityContractChecker)
 
         override val qualifiedAccessExpressionCheckers: Set<FirQualifiedAccessExpressionChecker> =
-            setOf(QualifiedAccessLocalityChecker)
+            setOf(QualifiedAccessLocalityContractChecker)
 
         override val propertyAccessExpressionCheckers: Set<FirPropertyAccessExpressionChecker> =
             setOf(PropertyAccessLocalityChecker)
 
         override val returnExpressionCheckers: Set<FirReturnExpressionChecker> =
-            setOf(ReturnLocalityChecker)
-
-        override val throwExpressionCheckers: Set<FirThrowExpressionChecker> =
-            setOf(ThrowLocalityChecker)
+            setOf(ReturnLocalityContractChecker)
     }
 
     override val typeCheckers: TypeCheckers = object : TypeCheckers() {
