@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.fillHoles
 import org.jetbrains.kotlin.formver.core.embeddings.types.injection
 import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
 import org.jetbrains.kotlin.formver.viper.ast.Exp
+import org.jetbrains.kotlin.formver.viper.ast.Exp.Companion.toConjunction
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
 import org.jetbrains.kotlin.formver.viper.ast.viperLiteral
 
@@ -481,7 +482,7 @@ data class LinearizationVisitor(
 
     override fun visitForAllEmbedding(e: ForAllEmbedding): Linearizable = object : OnlyToBuiltinLinearizable(e, this@LinearizationVisitor) {
         override fun toViperBuiltinType(ctx: LinearizationContext): Exp {
-            val conjunction = with(Exp) { e.conditions.map { it.linearize().toViperBuiltinType(ctx) }.toConjunction() }
+            val conjunction = e.conditions.pureToViper(true, ctx.typeResolver, ctx.source).toConjunction()
             val viperTriggers = e.triggerExpressions.map { triggerExpr ->
                 Exp.Trigger(listOf(triggerExpr.linearize().toViperBuiltinType(ctx)))
             }

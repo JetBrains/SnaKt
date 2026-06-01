@@ -17,19 +17,18 @@ fun verify(@Suppress("UNUSED_PARAMETER") vararg predicates: Boolean) = Unit
 
 infix fun Boolean.implies(other: Boolean) = !this || other
 
-fun loopInvariants(@Suppress("UNUSED_PARAMETER") body: InvariantBuilder.() -> Unit) = Unit
+fun loopInvariants(@Suppress("UNUSED_PARAMETER") body: () -> Unit) = Unit
 
-fun preconditions(@Suppress("UNUSED_PARAMETER") body: InvariantBuilder.() -> Unit) = Unit
+fun preconditions(@Suppress("UNUSED_PARAMETER") body: () -> Unit) = Unit
 
-fun <T> postconditions(@Suppress("UNUSED_PARAMETER") body: InvariantBuilder.(T) -> Unit) = Unit
+fun <T> postconditions(@Suppress("UNUSED_PARAMETER") body: (T) -> Unit) = Unit
 
-/**
- * This class is designed as a receiver for lambda blocks of `loopInvariants`, `preconditions` and `postconditions`.
- */
+
+fun <T> forAll(@Suppress("UNUSED_PARAMETER") body: InvariantBuilder.(T) -> Unit): Boolean =
+    throw FormverFunctionCalledInRuntimeException("forAll")
+
+
 class InvariantBuilder {
-    fun <T> forAll(@Suppress("UNUSED_PARAMETER") body: (T) -> Unit): Boolean =
-        throw FormverFunctionCalledInRuntimeException("forAll")
-
     /**
      * Specifies trigger expressions for quantifiers.
      * This function should be called within a `forAll` block to provide user-defined triggers

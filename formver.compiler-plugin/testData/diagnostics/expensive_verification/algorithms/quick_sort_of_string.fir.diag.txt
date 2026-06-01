@@ -1,56 +1,52 @@
 /quick_sort_of_string.kt: info: Generated Viper text for minOrMaxChar:
-method minOrMaxChar(v_this_extension: Ref, calcMin: Ref)
-  returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(v_this_extension), stringType())
+method minOrMaxChar(this: Ref, calcMin: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(calcMin), boolType())
-  requires |stringFromRef(v_this_extension)| >= 1
+  requires |stringFromRef(this)| >= 1
   ensures isSubtype(typeOf(v_ret_0), charType())
   ensures boolFromRef(calcMin) ==>
     (forall anon_builtin_0: Int ::0 <= anon_builtin_0 &&
-      anon_builtin_0 < |stringFromRef(v_this_extension)| ==>
-      charFromRef(v_ret_0) <=
-      stringFromRef(v_this_extension)[anon_builtin_0])
+      anon_builtin_0 < |stringFromRef(this)| ==>
+      charFromRef(v_ret_0) <= stringFromRef(this)[anon_builtin_0])
   ensures !boolFromRef(calcMin) ==>
     (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
-      anon_builtin_1 < |stringFromRef(v_this_extension)| ==>
-      charFromRef(v_ret_0) >=
-      stringFromRef(v_this_extension)[anon_builtin_1])
+      anon_builtin_1 < |stringFromRef(this)| ==>
+      charFromRef(v_ret_0) >= stringFromRef(this)[anon_builtin_1])
 {
   var res: Ref
   var i: Ref
   var anon_0: Ref
-  res := stringGet(v_this_extension, intToRef(0))
+  res := stringGet(this, intToRef(0))
   i := intToRef(1)
   label cont
     invariant isSubtype(typeOf(res), charType())
     invariant isSubtype(typeOf(i), intType())
     invariant isSubtype(typeOf(calcMin), boolType())
-    invariant 0 <= intFromRef(i) &&
-      intFromRef(i) <= |stringFromRef(v_this_extension)|
+    invariant 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef(this)|
     invariant boolFromRef(calcMin) ==>
       (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
         anon_builtin_2 < intFromRef(i) ==>
-        charFromRef(res) <= stringFromRef(v_this_extension)[anon_builtin_2])
+        charFromRef(res) <= stringFromRef(this)[anon_builtin_2])
     invariant !boolFromRef(calcMin) ==>
       (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
         anon_builtin_3 < intFromRef(i) ==>
-        charFromRef(res) >= stringFromRef(v_this_extension)[anon_builtin_3])
-  anon_0 := ltInts(i, stringLength(v_this_extension))
+        charFromRef(res) >= stringFromRef(this)[anon_builtin_3])
+  anon_0 := ltInts(i, stringLength(this))
   if (boolFromRef(anon_0)) {
     var anon_1: Ref
     var anon_2: Ref
     if (boolFromRef(calcMin)) {
-      anon_2 := ltChars(stringGet(v_this_extension, i), res)
+      anon_2 := ltChars(stringGet(this, i), res)
     } else {
       anon_2 := boolToRef(false)}
     if (boolFromRef(anon_2)) {
       anon_1 := boolToRef(true)
     } elseif (!boolFromRef(calcMin)) {
-      anon_1 := gtChars(stringGet(v_this_extension, i), res)
+      anon_1 := gtChars(stringGet(this, i), res)
     } else {
       anon_1 := boolToRef(false)}
     if (boolFromRef(anon_1)) {
-      res := stringGet(v_this_extension, i)
+      res := stringGet(this, i)
     }
     i := plusInts(i, intToRef(1))
     goto cont
@@ -59,79 +55,75 @@ method minOrMaxChar(v_this_extension: Ref, calcMin: Ref)
   assert isSubtype(typeOf(res), charType())
   assert isSubtype(typeOf(i), intType())
   assert isSubtype(typeOf(calcMin), boolType())
-  assert 0 <= intFromRef(i) &&
-    intFromRef(i) <= |stringFromRef(v_this_extension)|
+  assert 0 <= intFromRef(i) && intFromRef(i) <= |stringFromRef(this)|
   assert boolFromRef(calcMin) ==>
     (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
       anon_builtin_2 < intFromRef(i) ==>
-      charFromRef(res) <= stringFromRef(v_this_extension)[anon_builtin_2])
+      charFromRef(res) <= stringFromRef(this)[anon_builtin_2])
   assert !boolFromRef(calcMin) ==>
     (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
       anon_builtin_3 < intFromRef(i) ==>
-      charFromRef(res) >= stringFromRef(v_this_extension)[anon_builtin_3])
+      charFromRef(res) >= stringFromRef(this)[anon_builtin_3])
   v_ret_0 := res
   goto lbl_ret_0
   label lbl_ret_0
 }
 
 /quick_sort_of_string.kt: info: Generated Viper text for quickSort:
-method minOrMaxChar(v_this_extension: Ref, calcMin: Ref)
-  returns (ret_2: Ref)
-  requires isSubtype(typeOf(v_this_extension), stringType())
+method minOrMaxChar(this: Ref, calcMin: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(calcMin), boolType())
-  requires |stringFromRef(v_this_extension)| >= 1
+  requires |stringFromRef(this)| >= 1
   ensures isSubtype(typeOf(ret_2), charType())
   ensures boolFromRef(calcMin) ==>
     (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
-      anon_builtin_1 < |stringFromRef(v_this_extension)| ==>
-      charFromRef(ret_2) <= stringFromRef(v_this_extension)[anon_builtin_1])
+      anon_builtin_1 < |stringFromRef(this)| ==>
+      charFromRef(ret_2) <= stringFromRef(this)[anon_builtin_1])
   ensures !boolFromRef(calcMin) ==>
     (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
-      anon_builtin_2 < |stringFromRef(v_this_extension)| ==>
-      charFromRef(ret_2) >= stringFromRef(v_this_extension)[anon_builtin_2])
+      anon_builtin_2 < |stringFromRef(this)| ==>
+      charFromRef(ret_2) >= stringFromRef(this)[anon_builtin_2])
 
 
-method quickSort(v_this_extension: Ref) returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(v_this_extension), stringType())
+method quickSort(this: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), stringType())
   ensures isSubtype(typeOf(v_ret_0), stringType())
-  ensures |stringFromRef(v_ret_0)| == |stringFromRef(v_this_extension)|
+  ensures |stringFromRef(v_ret_0)| == |stringFromRef(this)|
   ensures (forall anon_builtin_0: Int ::1 <= anon_builtin_0 &&
-      anon_builtin_0 < |stringFromRef(v_this_extension)| ==>
+      anon_builtin_0 < |stringFromRef(this)| ==>
       stringFromRef(v_ret_0)[anon_builtin_0 - 1] <=
       stringFromRef(v_ret_0)[anon_builtin_0])
 {
   var l0_minVal: Ref
   var l0_maxVal: Ref
-  if (|stringFromRef(v_this_extension)| <= 1) {
-    v_ret_0 := v_this_extension
+  if (|stringFromRef(this)| <= 1) {
+    v_ret_0 := this
     goto lbl_ret_0
   }
-  l0_minVal := minOrMaxChar(v_this_extension, boolToRef(true))
-  l0_maxVal := minOrMaxChar(v_this_extension, boolToRef(false))
-  v_ret_0 := quickSortRec(v_this_extension, l0_minVal, l0_maxVal)
+  l0_minVal := minOrMaxChar(this, boolToRef(true))
+  l0_maxVal := minOrMaxChar(this, boolToRef(false))
+  v_ret_0 := quickSortRec(this, l0_minVal, l0_maxVal)
   goto lbl_ret_0
   label lbl_ret_0
 }
 
-method quickSortRec(v_this_extension: Ref, par_minVal: Ref, par_maxVal: Ref)
+method quickSortRec(this: Ref, par_minVal: Ref, par_maxVal: Ref)
   returns (ret_3: Ref)
-  requires isSubtype(typeOf(v_this_extension), stringType())
+  requires isSubtype(typeOf(this), stringType())
   requires isSubtype(typeOf(par_minVal), charType())
   requires isSubtype(typeOf(par_maxVal), charType())
   requires (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
-      anon_builtin_3 < |stringFromRef(v_this_extension)| ==>
-      charFromRef(par_minVal) <=
-      stringFromRef(v_this_extension)[anon_builtin_3] &&
-      stringFromRef(v_this_extension)[anon_builtin_3] <=
-      charFromRef(par_maxVal))
+      anon_builtin_3 < |stringFromRef(this)| ==>
+      charFromRef(par_minVal) <= stringFromRef(this)[anon_builtin_3] &&
+      stringFromRef(this)[anon_builtin_3] <= charFromRef(par_maxVal))
   ensures isSubtype(typeOf(ret_3), stringType())
-  ensures |stringFromRef(ret_3)| == |stringFromRef(v_this_extension)|
+  ensures |stringFromRef(ret_3)| == |stringFromRef(this)|
   ensures (forall anon_builtin_4: Int ::0 <= anon_builtin_4 &&
-      anon_builtin_4 < |stringFromRef(v_this_extension)| ==>
+      anon_builtin_4 < |stringFromRef(this)| ==>
       charFromRef(par_minVal) <= stringFromRef(ret_3)[anon_builtin_4] &&
       stringFromRef(ret_3)[anon_builtin_4] <= charFromRef(par_maxVal))
   ensures (forall anon_builtin_5: Int ::1 <= anon_builtin_5 &&
-      anon_builtin_5 < |stringFromRef(v_this_extension)| ==>
+      anon_builtin_5 < |stringFromRef(this)| ==>
       stringFromRef(ret_3)[anon_builtin_5 - 1] <=
       stringFromRef(ret_3)[anon_builtin_5])
 

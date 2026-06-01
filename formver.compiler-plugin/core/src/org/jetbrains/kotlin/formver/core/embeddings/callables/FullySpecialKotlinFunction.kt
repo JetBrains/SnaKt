@@ -52,10 +52,6 @@ object SpecialKotlinFunctions {
         packageScope(SpecialPackages.kotlin)
         ClassKotlinName(listOf("BooleanArray"))
     }
-    private val invariantBuilderTypeName = buildName {
-        packageScope(SpecialPackages.formver)
-        ClassKotlinName(listOf("InvariantBuilder"))
-    }
 
     val byName: Map<SymbolicName, FullySpecialKotlinFunction> = buildFullySpecialFunctions {
         val intIntToIntType = buildFunctionPretype {
@@ -172,11 +168,6 @@ object SpecialKotlinFunctions {
         val invariantsBuilderCallableType = buildFunctionPretype {
             withParam {
                 function {
-                    withDispatchReceiver {
-                        klass {
-                            withName(invariantBuilderTypeName)
-                        }
-                    }
                     withReturnType { unit() }
                 }
             }
@@ -190,11 +181,6 @@ object SpecialKotlinFunctions {
         val postconditionsBuilderCallableType = buildFunctionPretype {
             withParam {
                 function {
-                    withDispatchReceiver {
-                        klass {
-                            withName(invariantBuilderTypeName)
-                        }
-                    }
                     withParam { nullableAny() }
                     withReturnType { unit() }
                 }
