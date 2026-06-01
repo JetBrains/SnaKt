@@ -95,12 +95,12 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
     ): List<KtDiagnostic> {
         val results = mutableListOf<KtDiagnostic>()
         val program = decl.viperProgram!!
-        val onFailure = { err: VerifierError ->
+        val onFailure: (VerifierError) -> Unit = { err ->
             val diagnostics = when (err) {
                 is ConsistencyError -> formatConsistencyError(err, decl, module)
                 is VerificationError -> formatVerificationError(err, decl, module)
             }
-            val _ = results.add(diagnostics)
+            results.add(diagnostics)
         }
         verifier.verify(program, onFailure)
 
