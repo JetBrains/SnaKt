@@ -18,6 +18,7 @@ fun <!VIPER_TEXT!>test<!>(@Unique @Borrowed c: C) {
     verify(c == old(c))
 }
 
+// TODO: Remove the @NeverConvert once we have uniqueness information.
 @NeverConvert
 fun inc(@Unique @Borrowed c: C) {
     postconditions<Unit> {
