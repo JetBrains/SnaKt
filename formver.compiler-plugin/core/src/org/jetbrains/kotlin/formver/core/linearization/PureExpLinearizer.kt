@@ -34,8 +34,7 @@ class PureExpLinearizerMisuseException(val offendingFunction: String) : IllegalS
  * specifications made in Kotlin into Viper expressions.
  */
 data class PureExpLinearizer(
-    override val source: KtSourceElement?,
-    override val typeResolver: TypeResolver
+    override val source: KtSourceElement?, override val typeResolver: TypeResolver
 ) : LinearizationContext {
 
     override val logicOperatorPolicy: LogicOperatorPolicy
@@ -69,19 +68,27 @@ data class PureExpLinearizer(
     }
 
     override fun addBranch(
-        condition: Linearizable,
-        thenBranch: Linearizable,
-        elseBranch: Linearizable,
-        result: VariableEmbedding?
+        condition: Linearizable, thenBranch: Linearizable, elseBranch: Linearizable, result: VariableEmbedding?
     ) {
         throw PureExpLinearizerMisuseException("addBranch")
     }
 
-    override fun addFieldAccessStoringIn(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding, result: VariableEmbedding) {
+    override fun addFieldAccessStoringIn(
+        receiver: Linearizable,
+        receiverUnique: Boolean,
+        receiverType: TypeEmbedding,
+        field: FieldEmbedding,
+        result: VariableEmbedding
+    ) {
         throw PureExpLinearizerMisuseException("addFieldAccessWithResult")
     }
 
-    override fun addFieldAccess(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding): Exp {
+    override fun addFieldAccess(
+        receiver: Linearizable,
+        receiverUnique: Boolean,
+        receiverType: TypeEmbedding,
+        field: FieldEmbedding
+    ): Exp {
         val receiverViper = receiver.toViper(this)
         val hierarchyPath = typeResolver.hierarchyPathTo(receiverType.pretype, field)
         val primitiveAccess: Exp = Exp.FieldAccess(receiverViper, field.toViper(), source.asPosition)
@@ -96,8 +103,7 @@ data class PureExpLinearizer(
         throw PureExpLinearizerMisuseException("addModifier")
     }
 
-    override fun resolveVariableName(name: SymbolicName): SymbolicName =
-        name
+    override fun resolveVariableName(name: SymbolicName): SymbolicName = name
 }
 
 fun ExpEmbedding.pureToViper(toBuiltin: Boolean, typeResolver: TypeResolver, source: KtSourceElement? = null): Exp {
@@ -115,8 +121,5 @@ fun ExpEmbedding.pureToViper(toBuiltin: Boolean, typeResolver: TypeResolver, sou
 }
 
 fun List<ExpEmbedding>.pureToViper(
-    toBuiltin: Boolean,
-    typeResolver: TypeResolver,
-    source: KtSourceElement? = null
-): List<Exp> =
-    map { it.pureToViper(toBuiltin, typeResolver, source) }
+    toBuiltin: Boolean, typeResolver: TypeResolver, source: KtSourceElement? = null
+): List<Exp> = map { it.pureToViper(toBuiltin, typeResolver, source) }
