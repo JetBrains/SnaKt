@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 
 interface GetterEmbedding {
-    fun getValue(receiver: ExpEmbedding, ctx: TypeResolver): ExpEmbedding
+    fun getValue(receiver: ExpEmbedding, receiverIsUnique: Boolean, ctx: TypeResolver): ExpEmbedding
 
     /**
      * Gets the values without adding type invariants.

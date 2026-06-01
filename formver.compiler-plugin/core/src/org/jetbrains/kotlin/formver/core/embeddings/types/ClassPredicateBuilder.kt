@@ -98,7 +98,7 @@ class PropertyAssertionsBuilder(private val subject: VariableEmbedding, private 
 
     context(ctx: TypeResolver)
     fun addEqualsGuarantee(block: ExpEmbedding.() -> ExpEmbedding) {
-        assertions.add(EqCmp(property.getter!!.getValue(subject, ctx), subject.block()))
+        assertions.add(EqCmp(property.getter!!.getValue(subject, true, ctx), subject.block()))
     }
 }
 
