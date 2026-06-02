@@ -9,18 +9,14 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.cfa.util.previousCfgNodes
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.caches.firCachesFactory
-import org.jetbrains.kotlin.fir.expressions.FirExpression
-import org.jetbrains.kotlin.fir.expressions.unwrapExpression
+import org.jetbrains.kotlin.fir.expressions.FirStatement
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 
-data class UniquenessStatePair(
-    val input: UniquenessState,
-    val output: UniquenessState,
-)
+typealias UniquenessStatePair = Pair<UniquenessState, UniquenessState>
 
-typealias ExpressionUniquenessStateMapping = Map<FirExpression, UniquenessStatePair>
+typealias StatementUniquenessStateMapping = Map<FirStatement, UniquenessStatePair>
 
 class GraphUniquenessStateMappingResolver(session: FirSession) : FirExtensionSessionComponent(session) {
     companion object {
@@ -33,12 +29,12 @@ class GraphUniquenessStateMappingResolver(session: FirSession) : FirExtensionSes
     }
 
     context(context: CheckerContext)
-    fun resolveMappingOf(graph: ControlFlowGraph): ExpressionUniquenessStateMapping =
+    fun resolveMappingOf(graph: ControlFlowGraph): StatementUniquenessStateMapping =
         cache.getValue(graph, context)
 
-    private fun buildMapping(graph: ControlFlowGraph, context: CheckerContext): ExpressionUniquenessStateMapping {
+    private fun buildMapping(graph: ControlFlowGraph, context: CheckerContext): StatementUniquenessStateMapping {
         val outputs = context(context) { graph.resolveUniquenessStates() }
-        val mapping = mutableMapOf<FirExpression, UniquenessStatePair>()
+        val mapping = mutableMapOf<FirStatement, UniquenessStatePair>()
 
         fun CFGNode<*>.inputState(): UniquenessState =
             previousCfgNodes
@@ -54,14 +50,10 @@ class GraphUniquenessStateMappingResolver(session: FirSession) : FirExtensionSes
         for (node in graph.nodes) {
             val element = node.fir
 
-            if (element is FirExpression) {
-                val unwrapped = element.unwrapExpression()
+            if (element is FirStatement) {
                 mapping.putIfAbsent(
-                    unwrapped,
-                    UniquenessStatePair(
-                        input = node.inputState(),
-                        output = node.outputState(),
-                    )
+                    element,
+                    node.inputState() to node.outputState()
                 )
             }
         }
@@ -74,5 +66,5 @@ private val FirSession.graphUniquenessStateMappingResolver: GraphUniquenessState
     by FirSession.sessionComponentAccessor()
 
 context(context: CheckerContext)
-fun ControlFlowGraph.resolveUniquenessStateMapping(): ExpressionUniquenessStateMapping =
+fun ControlFlowGraph.resolveUniquenessStateMapping(): StatementUniquenessStateMapping =
     context.session.graphUniquenessStateMappingResolver.resolveMappingOf(this)

@@ -21,7 +21,7 @@ import org.jetbrains.kotlin.formver.locality.plugin.Locality
 import org.jetbrains.kotlin.formver.type.plugin.CallParametersTypeResolver
 
 class GraphUniquenessStateAnalyzer(
-    private val initial: UniquenessState,
+    private val initialState: UniquenessState,
     private val context: CheckerContext,
     private val callParametersLocalityResolver: CallParametersTypeResolver<Locality>,
 ) : PathAwareControlFlowGraphVisitor<Unit, UniquenessState>() {
@@ -35,7 +35,7 @@ class GraphUniquenessStateAnalyzer(
         }
 
     private fun ControlFlowInfo<Unit, UniquenessState>.read(): UniquenessState =
-        this[Unit] ?: initial
+        this[Unit] ?: initialState
 
     override fun visitNode(
         node: CFGNode<*>,

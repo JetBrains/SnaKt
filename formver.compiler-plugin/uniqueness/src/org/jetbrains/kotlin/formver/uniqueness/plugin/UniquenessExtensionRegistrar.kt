@@ -23,7 +23,7 @@ class UniquenessExtensionRegistrar(
         registerDiagnosticContainers(UniquenessErrors)
         +ExpressionAccessStateResolver.getFactory()
         +ExpressionUniquenessResolver.getFactory()
-        +ExpressionUniquenessEnvironmentResolver.getFactory()
+        +StatementUniquenessStatePairResolver.getFactory()
         +GraphUniquenessStateResolver.getFactory()
         +GraphUniquenessStateMappingResolver.getFactory()
         +UniquenessAdditionalCheckers.getFactory()
