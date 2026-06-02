@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.formver.plugin.Unique
 
 class A()
 
-fun consume(a: @Unique Any) {}
+fun consume(a: @Unique Any?) {}
 
 fun borrow(a: @Borrowed Any) {}
 
@@ -27,6 +27,10 @@ fun `consume unique`(a: @Unique A) {
 
 fun `consume unique-borrowed`(a: @Unique @Borrowed A) {
     consume(<!LOCALITY_MISMATCH!>a<!>)
+}
+
+fun `consume unique null`() {
+    consume(null)
 }
 
 // Consuming local after borrowing
