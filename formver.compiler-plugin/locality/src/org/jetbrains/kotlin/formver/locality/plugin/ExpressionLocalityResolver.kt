@@ -32,7 +32,7 @@ private object TerminalLocalityResolver : ExpressionTypeResolver<Locality> {
                     else -> Locality.Global
                 }
 
-            else -> null
+            else -> Locality.Global
         }
 }
 
