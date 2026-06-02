@@ -7,7 +7,6 @@ package org.jetbrains.kotlin.formver.core.embeddings.expression.debug
 
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
-import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.mangled
 
@@ -201,6 +200,18 @@ class DebugTreeViewVisitor(private val nameResolver: NameResolver) : ExpVisitor<
             extraSubtrees = listOf(e.type.debugTreeView.withDesignation("type")),
         )
     }
+
+    override fun visitUnfold(e: Unfold): TreeView =
+        defaultTree(
+            "Unfold",
+            listOf(e.exp)
+        )
+
+    override fun visitFold(e: Fold): TreeView =
+        defaultTree(
+            "Fold",
+            listOf(e.exp)
+        )
 
     // endregion
 

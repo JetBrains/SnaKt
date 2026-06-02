@@ -51,3 +51,16 @@ data class InhaleDirect(val exp: ExpEmbedding) : ExpEmbedding {
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(exp)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitInhaleDirect(this)
 }
+
+
+data class Unfold(val exp: ExpEmbedding) : ExpEmbedding {
+    override val type: TypeEmbedding = buildType { unit() }
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(exp)
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitUnfold(this)
+}
+
+data class Fold(val exp: ExpEmbedding) : ExpEmbedding {
+    override val type: TypeEmbedding = buildType { unit() }
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(exp)
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitFold(this)
+}

@@ -213,6 +213,28 @@ data class LinearizationVisitor(
         }
     }
 
+    override fun visitUnfold(e: Unfold): Linearizable = object : UnitResultLinearizable(e) {
+        override fun toViperUnusedResult(ctx: LinearizationContext) {
+            ctx.addStatement {
+                Stmt.Unfold(
+                    e.exp.type.uniquePredicateAccessInvariant(ctx.typeResolver)!!.fillHole(e.exp)
+                        .pureToViper(true, ctx.typeResolver) as Exp.PredicateAccess
+                )
+            }
+        }
+    }
+
+    override fun visitFold(e: Fold): Linearizable = object : UnitResultLinearizable(e) {
+        override fun toViperUnusedResult(ctx: LinearizationContext) {
+            ctx.addStatement {
+                Stmt.Fold(
+                    e.exp.type.uniquePredicateAccessInvariant(ctx.typeResolver)!!.fillHole(e.exp)
+                        .pureToViper(true, ctx.typeResolver) as Exp.PredicateAccess
+                )
+            }
+        }
+    }
+
     // endregion
 
     // region Type Operations
