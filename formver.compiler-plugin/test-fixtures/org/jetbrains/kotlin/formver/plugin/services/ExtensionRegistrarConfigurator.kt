@@ -75,10 +75,10 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
             dumpUniquenessCFG = dumpUniquenessCFG,
             checkLocality = checkLocality,
         )
-        if (config.checkLocality || true) {
+        if (config.checkLocality || FormVerDirectives.WITH_UNIQUENESS in module.directives) {
             FirExtensionRegistrarAdapter.registerExtension(LocalityExtensionRegistrar())
         }
-        if (config.checkUniqueness || true) {
+        if (config.checkUniqueness || FormVerDirectives.WITH_UNIQUENESS in module.directives) {
             FirExtensionRegistrarAdapter.registerExtension(UniquenessExtensionRegistrar())
         }
         FirExtensionRegistrarAdapter.registerExtension(FormalVerificationPluginExtensionRegistrar(config))
@@ -104,6 +104,10 @@ object FormVerDirectives : SimpleDirectivesContainer() {
 
     val LOCALITY_CHECK_ONLY by directive(
         description = "Do locality checking"
+    )
+
+    val WITH_UNIQUENESS by directive(
+        description = "Does verification with uniqueness checking"
     )
 
     val DUMP_UNIQUENESS_CFG by directive(
