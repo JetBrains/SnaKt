@@ -11,7 +11,6 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.caches.firCachesFactory
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
-import org.jetbrains.kotlin.fir.expressions.FirLiteralExpression
 import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
 import org.jetbrains.kotlin.fir.expressions.FirThisReceiverExpression
@@ -20,23 +19,19 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirConstructorSymbol
 import org.jetbrains.kotlin.fir.types.isNothing
+import org.jetbrains.kotlin.fir.types.isPrimitive
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.formver.type.plugin.ExpressionTypeResolver
 import org.jetbrains.kotlin.formver.type.plugin.ReturnResultTypeResolver
 import org.jetbrains.kotlin.formver.type.plugin.ThrowExceptionTypeResolver
 import org.jetbrains.kotlin.formver.type.plugin.UnifyingExpressionTypeResolver
-import org.jetbrains.kotlin.types.ConstantValueKind
 
 private object TerminalUniquenessResolver : ExpressionTypeResolver<Uniqueness> {
     context(context: CheckerContext)
     override fun resolveTypeOf(expression: FirExpression): Uniqueness {
-        val environment = expression.resolveInputUniquenessEnvironment()
+        val environment = expression.resolveInputUniquenessState() ?: EmptyUniquenessState
 
         return when (expression) {
-            is FirLiteralExpression ->
-                if (expression.kind == ConstantValueKind.Null) Uniqueness.Unique
-                else Uniqueness.Shared
-
             is FirFunctionCall ->
                 if (expression.calleeReference.symbol is FirConstructorSymbol) Uniqueness.Unique
                 else Uniqueness.Shared
@@ -53,7 +48,7 @@ private object TerminalUniquenessResolver : ExpressionTypeResolver<Uniqueness> {
             }
 
             else ->
-                if (expression.resolvedType.isNothing) {
+                if (expression.resolvedType.isNothing || expression.resolvedType.isPrimitive) {
                     Uniqueness.Unique
                 } else {
                     Uniqueness.Shared
