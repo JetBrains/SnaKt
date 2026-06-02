@@ -39,6 +39,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
 import org.jetbrains.kotlin.formver.core.functionCallArguments
+import org.jetbrains.kotlin.formver.uniqueness.plugin.*
 import org.jetbrains.kotlin.text
 import org.jetbrains.kotlin.types.ConstantValueKind
 
@@ -175,8 +176,8 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         data: StmtConversionContext,
     ): ExpEmbedding {
         val propertyAccess = data.embedPropertyAccess(propertyAccessExpression)
-        // TODO: Use uniqueness information
-        return propertyAccess.getValue(false, data)
+        val dispatchReceiver = propertyAccessExpression.dispatchReceiver?.isUnique(data) ?: false
+        return propertyAccess.getValue(dispatchReceiver, data)
     }
 
     override fun visitEqualityOperatorCall(
@@ -389,8 +390,9 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             )
         }
         val convertedRValue = data.convert(variableAssignment.rValue)
-        // TODO: Use uniqueness information
-        return embedding.setValue(false, convertedRValue, data)
+        val isUnique =
+            (variableAssignment.lValue as? FirPropertyAccessExpression)?.dispatchReceiver?.isUnique(data) ?: false
+        return embedding.setValue(isUnique, convertedRValue, data)
     }
 
     override fun visitSmartCastExpression(
@@ -580,5 +582,11 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             data.reportMinorInternalError(msg)
             ErrorExp
         }
+    }
+
+    private fun FirExpression.isUnique(data: StmtConversionContext): Boolean = with(data.checkerContext) {
+        val accessState = resolveAccessState()
+        val uniquenessInformation = resolveInputUniquenessEnvironment(data.functionSymbol)
+        return accessState.mask(uniquenessInformation).asUniqueness() == Uniqueness.Unique
     }
 }
