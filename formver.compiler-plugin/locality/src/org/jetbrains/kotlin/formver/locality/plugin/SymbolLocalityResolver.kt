@@ -30,7 +30,7 @@ fun FirVariableSymbol<*>.resolveLocality(): Locality {
         return resolvedReturnType.locality
     }
 
-    return resolvedInitializer?.resolveLocality()
+    return resolvedInitializer?.resolveLocality() ?: Locality.Global
 }
 
 object VariableLocalityResolver :
