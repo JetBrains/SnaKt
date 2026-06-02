@@ -1,1 +1,3 @@
-/binary_tree.kt: warning: Viper verification error: Assert might fail. Assertion boolFromRef(expr1) might not hold.
+/binary_tree.kt: warning: Viper verification error: Unfolding Node_unique(left(n)) might fail. There might be insufficient permission to access Node_unique(left(n))
+
+/binary_tree.kt: warning: Viper verification error: Assert might fail. Assertion boolFromRef(expr2) might not hold.
