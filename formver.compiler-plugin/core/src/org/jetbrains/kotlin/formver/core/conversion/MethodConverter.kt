@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.core.conversion
 
+import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirValueParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
@@ -29,8 +30,12 @@ class MethodConverter(
     private val paramResolver: ParameterResolver,
     scopeDepth: ScopeIndex,
     private val parent: MethodConversionContext? = null,
+    private val _functionSymbol: FirFunctionSymbol<*>? = null,
 ) : MethodConversionContext, ProgramConversionContext by programCtx {
     private var propertyResolver = PropertyResolver(scopeDepth)
+
+    override val functionSymbol: FirFunctionSymbol<*>?
+        get() = _functionSymbol ?: parent?.functionSymbol
 
     override val isValidForForAllBlock: Boolean
         get() = !propertyResolver.canCreateLocals
