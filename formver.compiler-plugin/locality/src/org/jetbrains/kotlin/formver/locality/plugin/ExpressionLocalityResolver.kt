@@ -29,7 +29,7 @@ private object TerminalLocalityResolver : ExpressionTypeResolver<Locality> {
                 when (val symbol = expression.calleeReference.symbol) {
                     is FirVariableSymbol -> symbol.resolveLocality()
                     is FirReceiverParameterSymbol -> symbol.resolveLocality()
-                    else -> null
+                    else -> Locality.Global
                 }
 
             else -> null
