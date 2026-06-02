@@ -82,6 +82,19 @@ class ExpressionUniquenessResolver(session: FirSession) :
 private val FirSession.expressionUniquenessResolver: ExpressionUniquenessResolver
         by FirSession.sessionComponentAccessor()
 
+/**
+ * Extracts the default uniqueness from this access state.
+ */
+context(context: CheckerContext)
+fun AccessState.extractDefaultUniqueness(): Uniqueness =
+    if (this == EmptyAccessState) {
+        Uniqueness.Shared
+    } else {
+        symbols.fold(Uniqueness.Unique) { result, symbol ->
+            result.join(symbol.resolveComponentUniqueness())
+        }
+    }
+
 object ExpressionDefaultUniquenessResolver : ExpressionTypeResolver<Uniqueness> {
     context(context: CheckerContext)
     private fun extractTypeOf(expression: FirExpression): Uniqueness {

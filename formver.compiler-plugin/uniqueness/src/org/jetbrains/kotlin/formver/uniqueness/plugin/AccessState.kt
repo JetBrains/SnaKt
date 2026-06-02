@@ -116,16 +116,3 @@ fun AccessState.project(uniquenessState: UniquenessState): UniquenessState {
 
     return result
 }
-
-/**
- * Extracts the default uniqueness from this access state.
- */
-context(context: CheckerContext)
-fun AccessState.extractDefaultUniqueness(): Uniqueness =
-    if (this == EmptyAccessState) {
-        Uniqueness.Shared
-    } else {
-        symbols.fold(Uniqueness.Unique) { result, symbol ->
-            result.join(symbol.resolveComponentUniqueness())
-        }
-    }
