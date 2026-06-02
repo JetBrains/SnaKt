@@ -24,7 +24,7 @@ object ReceiverLocalityResolver :
 
 context(context: CheckerContext)
 fun FirVariableSymbol<*>.resolveLocality(): Locality {
-    if (resolvedReturnType is ConeErrorType) return null
+    if (resolvedReturnType is ConeErrorType) return Locality.Global
 
     if (resolvedReturnTypeRef.source?.kind !is KtFakeSourceElementKind.ImplicitTypeRef) {
         return resolvedReturnType.locality
