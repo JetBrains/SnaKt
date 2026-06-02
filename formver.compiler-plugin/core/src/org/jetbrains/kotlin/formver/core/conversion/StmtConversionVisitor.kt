@@ -585,8 +585,12 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     }
 
     private fun FirExpression.isUnique(data: StmtConversionContext): Boolean = with(data.checkerContext) {
-        val accessState = resolveAccessState()
-        val uniquenessInformation = resolveInputUniquenessEnvironment(data.functionSymbol)
-        return accessState.mask(uniquenessInformation).asUniqueness() == Uniqueness.Unique
+        try {
+            val accessState = resolveAccessState()
+            val uniquenessInformation = resolveInputUniquenessEnvironment(data.functionSymbol)
+            return accessState.mask(uniquenessInformation).asUniqueness() == Uniqueness.Unique
+        } catch (e: IllegalStateException) {
+            return false
+        }
     }
 }
