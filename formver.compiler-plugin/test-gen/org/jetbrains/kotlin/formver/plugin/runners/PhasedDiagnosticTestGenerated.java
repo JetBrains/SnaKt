@@ -434,6 +434,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("permissions_test.kt")
+      public void testPermissions_test() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/permissions_test.kt");
+      }
+
+      @Test
       @TestMetadata("predicates.kt")
       public void testPredicates() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/predicates.kt");

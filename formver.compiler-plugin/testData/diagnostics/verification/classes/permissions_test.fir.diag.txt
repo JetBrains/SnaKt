@@ -1,0 +1,36 @@
+/permissions_test.kt: error: Initializer uniqueness mismatch: expected 'unique', actual 'shared'.
+
+/permissions_test.kt: info: Generated Viper text for test:
+field bf_field: Ref
+
+method test(a: Ref, aShared: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), A())
+  requires acc(A_unique(a), write)
+  requires isSubtype(typeOf(aShared), A())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  unfold acc(A_unique(a), write)
+  a.bf_field := intToRef(42)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/permissions_test.kt: error: Assignment uniqueness mismatch: expected 'unique', actual 'shared'.
+
+/permissions_test.kt: info: Generated Viper text for test2:
+field bf_field: Ref
+
+method test2(par_a: Ref, aShared: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_a), A())
+  requires acc(A_unique(par_a), write)
+  requires isSubtype(typeOf(aShared), A())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_a: Ref
+  var y: Ref
+  unfold acc(A_unique(par_a), write)
+  l0_a := par_a.bf_field
+  y := havoc(intType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
