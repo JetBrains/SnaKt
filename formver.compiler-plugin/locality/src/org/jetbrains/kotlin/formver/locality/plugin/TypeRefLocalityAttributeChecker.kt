@@ -22,7 +22,8 @@ object TypeRefLocalityAttributeChecker : FirResolvedTypeRefChecker(MppCheckerKin
     private fun FirElement.isValidLocalityTarget(): Boolean =
         this is FirValueParameter ||
                 this is FirReceiverParameter ||
-                this is FirProperty && isLocal
+                this is FirProperty && isLocal ||
+                source?.kind is KtFakeSourceElementKind.ImplicitTypeArgument
 
     private fun CheckerContext.isValidLocalityTarget(): Boolean {
         val target = containingElements.dropLast(1).lastOrNull()
