@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.formver.plugin.NeverConvert
 class Node(var data: Int, val left: @Unique Node?, val right: @Unique Node?)
 
 fun <!VIPER_TEXT!>get_left_val<!>(n: @Unique Node): Int? {
-    return < !VIPER_VERIFICATION_ERROR!>n.left?.data<!>
+    return <!VIPER_VERIFICATION_ERROR!>n.left?.data<!>
 }
 
 // these expressions should all verify - they currently do not due to lack of correct fold+unfolding
