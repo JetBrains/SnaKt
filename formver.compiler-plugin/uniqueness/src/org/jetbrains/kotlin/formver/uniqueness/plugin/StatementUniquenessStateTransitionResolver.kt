@@ -32,7 +32,7 @@ class StatementUniquenessStateTransitionResolver(session: FirSession) : FirExten
         val functionSymbol = context.findClosest<FirFunctionSymbol<*>>()
         val graph = functionSymbol?.resolvedControlFlowGraphReference?.controlFlowGraph
 
-        return graph?.resolveUniquenessStateMapping()[statement.normalize()]
+        return graph?.resolveUniquenessStateTransitions()[statement.normalize()]
     }
 }
 
