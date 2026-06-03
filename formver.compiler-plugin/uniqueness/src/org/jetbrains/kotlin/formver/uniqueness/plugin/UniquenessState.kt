@@ -1,5 +1,6 @@
 package org.jetbrains.kotlin.formver.uniqueness.plugin
 
+import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.formver.type.plugin.TypeIntersector
 import org.jetbrains.kotlin.formver.type.plugin.TypeUnifier
 
@@ -25,3 +26,6 @@ object UniquenessStateIntersector : TypeIntersector<UniquenessState> {
 
 fun UniquenessState.joinChildren(): Uniqueness =
     joinChildren(UniquenessUnifier)
+
+fun UniquenessState.joinOverPath(path: List<FirBasedSymbol<*>>): Uniqueness =
+    data.join((children[path.first()]?.joinOverPath(path.drop(1)) ?: Uniqueness.Unique))
