@@ -399,6 +399,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     @TestDataPath("$PROJECT_ROOT")
     public class Classes {
       @Test
+      @TestMetadata("acc_precondition.kt")
+      public void testAcc_precondition() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/acc_precondition.kt");
+      }
+
+      @Test
       public void testAllFilesPresentInClasses() {
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/classes"), Pattern.compile("^(.+)\\.kt$"), null, true);
       }

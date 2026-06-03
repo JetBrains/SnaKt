@@ -1,0 +1,20 @@
+// RENDER_PREDICATES
+// NEVER_VALIDATE
+
+import org.jetbrains.kotlin.formver.plugin.*
+
+class X(@property:Manual var a: Any)
+
+fun <!VIPER_TEXT!>test_acc_precondition<!>(x: X) {
+    preconditions { acc(x.a) }
+    x.a = 123
+}
+
+fun <!VIPER_TEXT!>test_acc_precondition_write<!>(x: X) {
+    preconditions { acc(x.a, write()) }
+    x.a = 123
+}
+
+fun <!VIPER_TEXT!>test_acc_precondition_read<!>(x: X) {
+    preconditions { acc(x.a, read()) }
+}

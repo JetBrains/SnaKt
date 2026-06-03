@@ -31,6 +31,29 @@ fun <T> forAll(@Suppress("UNUSED_PARAMETER") body: InvariantBuilder.(T) -> Unit)
 fun <T> old(@Suppress("UNUSED_PARAMETER") body: T): T =
     throw FormverFunctionCalledInRuntimeException("old")
 
+
+/**
+ * Requests access permission to the field denoted by [path] in a pre- or postcondition.
+ *
+ * [path] must be a field access such as `x.a`. The optional [permission] selects how much
+ * permission is requested; use [write] for full (the default) or [read] for a read-only
+ * (wildcard) fraction.
+ */
+fun acc(@Suppress("UNUSED_PARAMETER") path: Any?, @Suppress("UNUSED_PARAMETER") permission: Any? = null): Boolean =
+    throw FormverFunctionCalledInRuntimeException("acc")
+
+/**
+ * Denotes a read-only (wildcard) permission amount. Only meaningful as the second argument of [acc].
+ */
+fun read(): Any? =
+    throw FormverFunctionCalledInRuntimeException("read")
+
+/**
+ * Denotes a full (write) permission amount. Only meaningful as the second argument of [acc].
+ */
+fun write(): Any? =
+    throw FormverFunctionCalledInRuntimeException("write")
+
 class InvariantBuilder {
     /**
      * Specifies trigger expressions for quantifiers.
