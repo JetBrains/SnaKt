@@ -40,11 +40,11 @@ private object TerminalUniquenessResolver : ExpressionTypeResolver<Uniqueness> {
                 val symbol = expression.calleeReference.symbol ?: return Uniqueness.Shared
                 val accessState = AccessState(false, persistentMapOf(symbol to AccessState(true)))
 
-                accessState.project(environment).asUniqueness()
+                accessState.project(environment).joinChildren()
             }
 
             is FirPropertyAccessExpression -> {
-                expression.resolveAccessState().project(environment).asUniqueness()
+                expression.resolveAccessState().project(environment).joinChildren()
             }
 
             else -> {
@@ -84,24 +84,22 @@ private val FirSession.expressionUniquenessResolver: ExpressionUniquenessResolve
  * Extracts the default uniqueness from this access state.
  */
 context(context: CheckerContext)
-fun AccessState.extractDefaultUniqueness(): Uniqueness =
-    if (this == EmptyAccessState) {
+fun FirExpression.resolveDefaultUniqueness(): Uniqueness {
+    val accessState = resolveAccessState()
+
+    return if (accessState == EmptyAccessState) {
         Uniqueness.Shared
     } else {
-        symbols.fold(Uniqueness.Unique) { result, symbol ->
+        accessState.symbols.fold(Uniqueness.Unique) { result, symbol ->
             result.join(symbol.resolveComponentUniqueness())
         }
     }
+}
 
 object ExpressionDefaultUniquenessResolver : ExpressionTypeResolver<Uniqueness> {
     context(context: CheckerContext)
-    private fun extractTypeOf(expression: FirExpression): Uniqueness {
-        return expression.resolveAccessState().extractDefaultUniqueness()
-    }
-
-    context(context: CheckerContext)
     override fun resolveTypeOf(expression: FirExpression): Uniqueness =
-        extractTypeOf(expression)
+        expression.resolveDefaultUniqueness()
 }
 
 object ReturnResultUniquenessResolver : ReturnResultTypeResolver<Uniqueness> {

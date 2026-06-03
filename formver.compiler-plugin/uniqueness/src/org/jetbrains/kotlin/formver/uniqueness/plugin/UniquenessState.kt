@@ -23,5 +23,5 @@ object UniquenessStateIntersector : TypeIntersector<UniquenessState> {
         left.meet(right)
 }
 
-fun UniquenessState.asUniqueness(): Uniqueness =
+fun UniquenessState.joinChildren(): Uniqueness =
     joinChildren(UniquenessUnifier)

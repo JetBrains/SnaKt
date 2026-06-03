@@ -24,9 +24,6 @@ class UniquenessAdditionalCheckers(session: FirSession) : FirAdditionalCheckersE
     }
 
     override val declarationCheckers: DeclarationCheckers = object : DeclarationCheckers() {
-        override val controlFlowAnalyserCheckers: Set<FirControlFlowChecker> =
-            setOf(GraphUniquenessChecker)
-
         override val propertyCheckers: Set<FirPropertyChecker> =
             setOf(PropertyUniquenessChecker)
     }

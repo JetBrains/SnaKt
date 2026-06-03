@@ -14,36 +14,40 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 
-typealias UniquenessStatePair = Pair<UniquenessState, UniquenessState>
+typealias UniquenessStateTransition = Pair<UniquenessState, UniquenessState>
 
-typealias StatementUniquenessStateMapping = Map<FirStatement, UniquenessStatePair>
-
-class GraphUniquenessStateMappingResolver(session: FirSession) : FirExtensionSessionComponent(session) {
+class GraphUniquenessStateTransitionsResolver(session: FirSession) : FirExtensionSessionComponent(session) {
     companion object {
-        fun getFactory(): Factory =
-            Factory { session -> GraphUniquenessStateMappingResolver(session) }
+        fun getFactory(): Factory {
+            return Factory { session -> GraphUniquenessStateTransitionsResolver(session) }
+        }
     }
 
     private val cache = session.firCachesFactory.createCache { graph: ControlFlowGraph, context: CheckerContext ->
-        buildMapping(graph, context)
+        with (context) {
+            extractUniquenessStateTransitionsOf(graph)
+        }
     }
 
     context(context: CheckerContext)
-    fun resolveMappingOf(graph: ControlFlowGraph): StatementUniquenessStateMapping =
+    fun resolveUniquenessStateTransitionsOf(graph: ControlFlowGraph): Map<FirStatement, UniquenessStateTransition> =
         cache.getValue(graph, context)
 
-    private fun buildMapping(graph: ControlFlowGraph, context: CheckerContext): StatementUniquenessStateMapping {
-        val outputs = context(context) { graph.resolveUniquenessStates() }
-        val mapping = mutableMapOf<FirStatement, UniquenessStatePair>()
+    context(context: CheckerContext)
+    fun extractUniquenessStateTransitionsOf(
+        graph: ControlFlowGraph,
+    ): Map<FirStatement, UniquenessStateTransition> {
+        val outputs = context(context) { graph.analyzeUniquenessStateFacts() }
+        val mapping = mutableMapOf<FirStatement, UniquenessStateTransition>()
 
         fun CFGNode<*>.inputState(): UniquenessState =
             previousCfgNodes
-                .map { predecessor -> outputs[predecessor].asUniquenessState() }
+                .map { predecessor -> outputs[predecessor].joinOverEdgeKinds() }
                 .reduceOrNull(UniquenessState::join)
                 ?: EmptyUniquenessState
 
         fun CFGNode<*>.outputState(): UniquenessState =
-            outputs[this].asUniquenessState()
+            outputs[this].joinOverEdgeKinds()
 
         // graph.nodes is already in topological (BFS) order: each node appears after all its
         // non-back-edge predecessors.
@@ -62,9 +66,9 @@ class GraphUniquenessStateMappingResolver(session: FirSession) : FirExtensionSes
     }
 }
 
-private val FirSession.graphUniquenessStateMappingResolver: GraphUniquenessStateMappingResolver
+private val FirSession.graphUniquenessStateTransitionsResolver: GraphUniquenessStateTransitionsResolver
     by FirSession.sessionComponentAccessor()
 
 context(context: CheckerContext)
-fun ControlFlowGraph.resolveUniquenessStateMapping(): StatementUniquenessStateMapping =
-    context.session.graphUniquenessStateMappingResolver.resolveMappingOf(this)
+fun ControlFlowGraph.resolveUniquenessStateMapping():  Map<FirStatement, UniquenessStateTransition> =
+    context.session.graphUniquenessStateTransitionsResolver.resolveUniquenessStateTransitionsOf(this)

@@ -6,7 +6,6 @@
 package org.jetbrains.kotlin.formver.uniqueness.plugin
 
 import org.jetbrains.kotlin.fir.FirSession
-import org.jetbrains.kotlin.fir.analysis.cfa.util.PathAwareControlFlowInfo
 import org.jetbrains.kotlin.fir.analysis.cfa.util.traverseToFixedPoint
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.caches.firCachesFactory
@@ -16,12 +15,11 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 import org.jetbrains.kotlin.formver.locality.plugin.CallParametersLocalityResolver
 
-typealias GraphUniquenessStates = Map<CFGNode<*>, PathAwareControlFlowInfo<Unit, UniquenessState>>
 
-class GraphUniquenessStateResolver(session: FirSession) : FirExtensionSessionComponent(session) {
+class GraphUniquenessStateFactsResolver(session: FirSession) : FirExtensionSessionComponent(session) {
     companion object {
         fun getFactory(): Factory {
-            return Factory { session -> GraphUniquenessStateResolver(session) }
+            return Factory { session -> GraphUniquenessStateFactsResolver(session) }
         }
     }
 
@@ -29,19 +27,25 @@ class GraphUniquenessStateResolver(session: FirSession) : FirExtensionSessionCom
         analyzeUniquenessStatesOf(graph, context)
     }
 
-    fun resolveUniquenessStatesOf(graph: ControlFlowGraph, context: CheckerContext): GraphUniquenessStates =
+    fun resolveUniquenessStatesOf(
+        graph: ControlFlowGraph,
+        context: CheckerContext
+    ): Map<CFGNode<*>, PathAwareUniquenessStateFacts> =
         cache.getValue(graph, context)
 
-    private fun analyzeUniquenessStatesOf(graph: ControlFlowGraph, context: CheckerContext): GraphUniquenessStates {
+    private fun analyzeUniquenessStatesOf(
+        graph: ControlFlowGraph,
+        context: CheckerContext
+    ): Map<CFGNode<*>, PathAwareUniquenessStateFacts> {
         val declaration = graph.declaration
-        var initial = EmptyUniquenessState
+        var initialState = EmptyUniquenessState
 
         if (declaration is FirFunction) {
             for (valueParameter in declaration.valueParameters) {
                 val valueParameterSymbol = valueParameter.symbol
 
-                initial = context(context) {
-                    initial.associate(
+                initialState = context(context) {
+                    initialState.associate(
                         valueParameterSymbol,
                         UniquenessState(valueParameterSymbol.resolveUniqueness())
                     )
@@ -49,8 +53,8 @@ class GraphUniquenessStateResolver(session: FirSession) : FirExtensionSessionCom
             }
         }
 
-        val analyzer = GraphUniquenessStateAnalyzer(
-            initial,
+        val analyzer = GraphUniquenessStateFactsAnalyzer(
+            initialState,
             context,
             CallParametersLocalityResolver
         )
@@ -59,9 +63,9 @@ class GraphUniquenessStateResolver(session: FirSession) : FirExtensionSessionCom
     }
 }
 
-private val FirSession.graphUniquenessStateResolver: GraphUniquenessStateResolver
+private val FirSession.graphUniquenessStateFactsResolver: GraphUniquenessStateFactsResolver
         by FirSession.sessionComponentAccessor()
 
 context(context: CheckerContext)
-fun ControlFlowGraph.resolveUniquenessStates(): GraphUniquenessStates =
-    context.session.graphUniquenessStateResolver.resolveUniquenessStatesOf(this, context)
+fun ControlFlowGraph.analyzeUniquenessStateFacts(): Map<CFGNode<*>, PathAwareUniquenessStateFacts> =
+    context.session.graphUniquenessStateFactsResolver.resolveUniquenessStatesOf(this, context)

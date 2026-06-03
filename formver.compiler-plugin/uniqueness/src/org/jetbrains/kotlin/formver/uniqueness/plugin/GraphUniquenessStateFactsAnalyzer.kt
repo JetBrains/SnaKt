@@ -20,34 +20,38 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
 import org.jetbrains.kotlin.formver.locality.plugin.Locality
 import org.jetbrains.kotlin.formver.type.plugin.CallParametersTypeResolver
 
-class GraphUniquenessStateAnalyzer(
+typealias UniquenessStateFacts = ControlFlowInfo<Unit, UniquenessState>
+
+typealias PathAwareUniquenessStateFacts = PathAwareControlFlowInfo<Unit, UniquenessState>
+
+class GraphUniquenessStateFactsAnalyzer(
     private val initialState: UniquenessState,
     private val context: CheckerContext,
     private val callParametersLocalityResolver: CallParametersTypeResolver<Locality>,
 ) : PathAwareControlFlowGraphVisitor<Unit, UniquenessState>() {
     override fun mergeInfo(
-        a: ControlFlowInfo<Unit, UniquenessState>,
-        b: ControlFlowInfo<Unit, UniquenessState>,
+        a: UniquenessStateFacts,
+        b: UniquenessStateFacts,
         node: CFGNode<*>
-    ): ControlFlowInfo<Unit, UniquenessState> =
+    ): UniquenessStateFacts =
         a.merge(b) { leftState, rightState ->
             leftState.join(rightState)
         }
 
-    private fun ControlFlowInfo<Unit, UniquenessState>.read(): UniquenessState =
+    private fun UniquenessStateFacts.ensure(): UniquenessState =
         this[Unit] ?: initialState
 
     override fun visitNode(
         node: CFGNode<*>,
-        data: PathAwareControlFlowInfo<Unit, UniquenessState>
-    ): PathAwareControlFlowInfo<Unit, UniquenessState> {
-        return data.transformValues { data -> data.put(Unit, data.read()) }
+        data: PathAwareUniquenessStateFacts
+    ): PathAwareUniquenessStateFacts {
+        return data.transformValues { data -> data.put(Unit, data.ensure()) }
     }
 
     override fun visitVariableDeclarationNode(
         node: VariableDeclarationNode,
-        data: PathAwareControlFlowInfo<Unit, UniquenessState>
-    ): PathAwareControlFlowInfo<Unit, UniquenessState> {
+        data: PathAwareUniquenessStateFacts
+    ): PathAwareUniquenessStateFacts {
         val declaration = node.fir
         val initializer = declaration.initializer
 
@@ -59,7 +63,7 @@ class GraphUniquenessStateAnalyzer(
             )
 
             return data.transformValues { data ->
-                var uniquenessState = data.read()
+                var uniquenessState = data.ensure()
 
                 uniquenessState = declarationAccessState.initialize(uniquenessState)
 
@@ -75,8 +79,8 @@ class GraphUniquenessStateAnalyzer(
 
     override fun visitVariableAssignmentNode(
         node: VariableAssignmentNode,
-        data: PathAwareControlFlowInfo<Unit, UniquenessState>
-    ): PathAwareControlFlowInfo<Unit, UniquenessState> {
+        data: PathAwareUniquenessStateFacts
+    ): PathAwareUniquenessStateFacts {
         val assignment = node.fir
 
         with(context) {
@@ -84,7 +88,7 @@ class GraphUniquenessStateAnalyzer(
             val rightAccessState = assignment.rValue.resolveAccessState()
 
             return data.transformValues { data ->
-                var uniquenessState = data.read()
+                var uniquenessState = data.ensure()
                 uniquenessState = rightAccessState.move(uniquenessState)
 
                 if (leftAccessState.isSingleton()) {
@@ -98,8 +102,8 @@ class GraphUniquenessStateAnalyzer(
 
     override fun visitFunctionCallEnterNode(
         node: FunctionCallEnterNode,
-        data: PathAwareControlFlowInfo<Unit, UniquenessState>
-    ): PathAwareControlFlowInfo<Unit, UniquenessState> {
+        data: PathAwareUniquenessStateFacts
+    ): PathAwareUniquenessStateFacts {
         val call = node.fir
 
         var moveState = EmptyUniquenessState
@@ -110,15 +114,15 @@ class GraphUniquenessStateAnalyzer(
             }
 
             return data.transformValues { data ->
-                data.put(Unit, data.read().join(moveState))
+                data.put(Unit, data.ensure().join(moveState))
             }
         }
     }
 
     override fun visitFunctionCallExitNode(
         node: FunctionCallExitNode,
-        data: PathAwareControlFlowInfo<Unit, UniquenessState>
-    ): PathAwareControlFlowInfo<Unit, UniquenessState> {
+        data: PathAwareUniquenessStateFacts
+    ): PathAwareUniquenessStateFacts {
         val call = node.fir
         var initializationState = EmptyUniquenessState
 
@@ -130,13 +134,13 @@ class GraphUniquenessStateAnalyzer(
             }
 
             return data.transformValues { data ->
-                data.put(Unit, data.read().join(initializationState) { a, b -> a.meet(b) })
+                data.put(Unit, data.ensure().join(initializationState) { a, b -> a.meet(b) })
             }
         }
     }
 }
 
-fun PathAwareControlFlowInfo<Unit, UniquenessState>?.asUniquenessState(): UniquenessState =
+fun PathAwareUniquenessStateFacts?.joinOverEdgeKinds(): UniquenessState =
     this?.values
         ?.map { it[Unit] ?: EmptyUniquenessState }
         ?.reduceOrNull(UniquenessState::join)

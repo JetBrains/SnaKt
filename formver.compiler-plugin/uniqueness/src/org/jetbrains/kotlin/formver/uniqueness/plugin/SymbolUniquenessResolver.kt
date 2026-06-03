@@ -39,11 +39,10 @@ fun FirVariableSymbol<*>.resolveUniqueness(): Uniqueness {
         return resolvedReturnType.defaultUniqueness
     }
 
-    return resolvedInitializer?.resolveAccessState()?.extractDefaultUniqueness() ?: Uniqueness.Shared
+    return resolvedInitializer?.resolveDefaultUniqueness() ?: Uniqueness.Shared
 }
 
-object VariableUniquenessResolver :
-    SymbolTypeResolver<Uniqueness, FirVariableSymbol<*>> {
+object VariableUniquenessResolver : SymbolTypeResolver<Uniqueness, FirVariableSymbol<*>> {
     context(context: CheckerContext)
     override fun resolveTypeOf(symbol: FirVariableSymbol<*>): Uniqueness =
         symbol.resolveUniqueness()
