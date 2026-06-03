@@ -1,5 +1,6 @@
 package org.jetbrains.kotlin.formver.uniqueness.plugin
 
+import kotlinx.collections.immutable.persistentMapOf
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.formver.type.plugin.TypeUnifier
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
@@ -99,13 +100,13 @@ fun AccessState.initialize(uniquenessState: UniquenessState): UniquenessState =
  */
 context(context: CheckerContext)
 fun AccessState.project(uniquenessState: UniquenessState): UniquenessState {
-    var result = UniquenessState(Uniqueness.Unique)
+    var result = uniquenessState.copy(children = persistentMapOf())
 
     for ((symbol, accessChild) in children) {
         val uniquenessChild = uniquenessState.children[symbol]
             ?: UniquenessState(symbol.resolveComponentUniqueness())
 
-        val projected = if (accessChild.data) {
+        val projected = if (accessChild.children.isEmpty()) {
             uniquenessChild
         } else {
             accessChild.project(uniquenessChild)
