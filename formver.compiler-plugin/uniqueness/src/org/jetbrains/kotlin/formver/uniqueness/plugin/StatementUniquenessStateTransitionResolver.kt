@@ -3,10 +3,18 @@ package org.jetbrains.kotlin.formver.uniqueness.plugin
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.context.findClosest
+import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirStatement
+import org.jetbrains.kotlin.fir.expressions.unwrapExpression
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
+
+private fun FirStatement.normalize(): FirStatement =
+    when (this) {
+        is FirExpression -> unwrapExpression()
+        else -> this
+    }
 
 class StatementUniquenessStateTransitionResolver(session: FirSession) : FirExtensionSessionComponent(session) {
     companion object {
@@ -24,7 +32,7 @@ class StatementUniquenessStateTransitionResolver(session: FirSession) : FirExten
         val functionSymbol = context.findClosest<FirFunctionSymbol<*>>()
         val graph = functionSymbol?.resolvedControlFlowGraphReference?.controlFlowGraph
 
-        return graph?.resolveUniquenessStateMapping()[statement]
+        return graph?.resolveUniquenessStateMapping()[statement.normalize()]
     }
 }
 
