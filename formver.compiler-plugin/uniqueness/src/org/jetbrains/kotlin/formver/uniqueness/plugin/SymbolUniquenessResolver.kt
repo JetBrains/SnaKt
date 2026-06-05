@@ -13,14 +13,6 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.fir.types.ConeErrorType
 import org.jetbrains.kotlin.formver.type.plugin.SymbolTypeResolver
 
-context(context: CheckerContext)
-fun FirBasedSymbol<*>.resolveComponentUniqueness(): Uniqueness =
-    when (this) {
-        is FirVariableSymbol<*> -> resolveUniqueness()
-        is FirReceiverParameterSymbol -> resolveUniqueness()
-        else -> Uniqueness.Shared
-    }
-
 fun FirReceiverParameterSymbol.resolveUniqueness(): Uniqueness =
     resolvedType.defaultUniqueness
 
@@ -48,3 +40,10 @@ object VariableUniquenessResolver : SymbolTypeResolver<Uniqueness, FirVariableSy
         symbol.resolveUniqueness()
 }
 
+context(context: CheckerContext)
+fun FirBasedSymbol<*>.resolveComponentUniqueness(): Uniqueness =
+    when (this) {
+        is FirVariableSymbol<*> -> resolveUniqueness()
+        is FirReceiverParameterSymbol -> resolveUniqueness()
+        else -> Uniqueness.Shared
+    }
