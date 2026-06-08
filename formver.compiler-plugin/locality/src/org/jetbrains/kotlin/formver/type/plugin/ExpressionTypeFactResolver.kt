@@ -11,25 +11,25 @@ import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
 import org.jetbrains.kotlin.fir.expressions.FirThrowExpression
 
 /**
- * Resolves the type of an expression.
+ * Resolves the type fact of an expression.
  */
-fun interface ExpressionTypeResolver<Type> {
+fun interface ExpressionTypeFactResolver<TypeFact> {
     context(context: CheckerContext)
-    fun resolveTypeOf(expression: FirExpression): Type
+    fun resolveTypeFactOf(expression: FirExpression): TypeFact
 }
 
 /**
- * Resolves the type of the result of a return expression.
+ * Resolves the type fact of the result of a return expression.
  */
-fun interface ReturnResultTypeResolver<Type> {
+fun interface ReturnResultTypeFactResolver<TypeFact> {
     context(context: CheckerContext)
-    fun resolveResultTypeOf(expression: FirReturnExpression): Type
+    fun resolveResultTypeFactOf(expression: FirReturnExpression): TypeFact
 }
 
 /**
- * Resolves the expected type of the exception in throw expression.
+ * Resolves the expected type fact of the exception in throw expression.
  */
-fun interface ThrowExceptionTypeResolver<Type> {
+fun interface ThrowExceptionTypeFactResolver<TypeFact> {
     context(context: CheckerContext)
-    fun resolveExceptionTypeOf(expression: FirThrowExpression): Type
+    fun resolveExceptionTypeFactOf(expression: FirThrowExpression): TypeFact
 }

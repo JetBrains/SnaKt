@@ -22,25 +22,26 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 
 /**
- * Checker for type compatibility in qualified access expressions.
+ * Checker for type-fact compatibility in qualified access expressions.
  *
- * @param Type the type class of the receiver and context arguments.
- * @param typeJudgment the type judgment to use for checking type compatibility.
- * @param expressionTypeResolver the resolver for resolving the actual type of the receiver and context arguments.
- * @param receiverTypeResolver the resolver for resolving the declared type of the receiver.
- * @param variableTypeResolver the resolver for resolving the declared type of the context arguments.
- * @param receiverDiagnosticFactory the diagnostic factory to use for reporting a type mismatch in the receiver.
- * @param contextArgumentDiagnosticFactory the diagnostic factory to use for reporting type mismatch in the context
+ * @param TypeFact the type-fact class of the receiver and context arguments.
+ * @param typeFactJudgment the type-fact judgment to use for checking type-fact compatibility.
+ * @param expressionTypeFactResolver the resolver for resolving the actual type fact of the receiver and context
+ *  arguments.
+ * @param receiverTypeFactResolver the resolver for resolving the declared type fact of the receiver.
+ * @param variableTypeFactResolver the resolver for resolving the declared type fact of the context arguments.
+ * @param receiverDiagnosticFactory the diagnostic factory to use for reporting a type-fact mismatch in the receiver.
+ * @param contextArgumentDiagnosticFactory the diagnostic factory to use for reporting type-fact mismatch in the context
  *  arguments.
  */
-class QualifiedAccessTypeChecker<Type>(
+class QualifiedAccessTypeFactChecker<TypeFact>(
     kind: MppCheckerKind,
-    private val typeJudgment: TypeJudgment<Type>,
-    private val expressionTypeResolver: ExpressionTypeResolver<Type>,
-    private val receiverTypeResolver: SymbolTypeResolver<Type, FirReceiverParameterSymbol>,
-    private val variableTypeResolver: SymbolTypeResolver<Type, FirVariableSymbol<*>>,
-    private val receiverDiagnosticFactory: KtDiagnosticFactory3<String, Type, Type>,
-    private val contextArgumentDiagnosticFactory: KtDiagnosticFactory3<ConeKotlinType, Type, Type>,
+    private val typeFactJudgment: TypeFactJudgment<TypeFact>,
+    private val expressionTypeFactResolver: ExpressionTypeFactResolver<TypeFact>,
+    private val receiverTypeFactResolver: SymbolTypeFactResolver<TypeFact, FirReceiverParameterSymbol>,
+    private val variableTypeFactResolver: SymbolTypeFactResolver<TypeFact, FirVariableSymbol<*>>,
+    private val receiverDiagnosticFactory: KtDiagnosticFactory3<String, TypeFact, TypeFact>,
+    private val contextArgumentDiagnosticFactory: KtDiagnosticFactory3<ConeKotlinType, TypeFact, TypeFact>,
 ) : FirQualifiedAccessExpressionChecker(kind) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirQualifiedAccessExpression) {
@@ -52,16 +53,16 @@ class QualifiedAccessTypeChecker<Type>(
         val receiver = expression.extensionReceiver
 
         if (receiver != null && receiverSymbol != null) {
-            val requiredType = receiverTypeResolver.resolveTypeOf(receiverSymbol)
-            val actualType = expressionTypeResolver.resolveTypeOf(receiver)
+            val requiredTypeFact = receiverTypeFactResolver.resolveTypeFactOf(receiverSymbol)
+            val actualTypeFact = expressionTypeFactResolver.resolveTypeFactOf(receiver)
 
-            if (!typeJudgment.satisfies(requiredType, actualType)) {
+            if (!typeFactJudgment.satisfies(requiredTypeFact, actualTypeFact)) {
                 reporter.reportOn(
                     receiver.source ?: expression.source,
                     receiverDiagnosticFactory,
                     "Receiver",
-                    requiredType,
-                    actualType
+                    requiredTypeFact,
+                    actualTypeFact
                 )
             }
         }
@@ -75,17 +76,17 @@ class QualifiedAccessTypeChecker<Type>(
         val contextArgumentMappings = expression.contextArguments.zip(callableSymbol.contextParameterSymbols)
 
         for ((argument, argumentSymbol) in contextArgumentMappings) {
-            val requiredType = variableTypeResolver.resolveTypeOf(argumentSymbol)
-            val actualType = expressionTypeResolver.resolveTypeOf(argument)
+            val requiredTypeFact = variableTypeFactResolver.resolveTypeFactOf(argumentSymbol)
+            val actualTypeFact = expressionTypeFactResolver.resolveTypeFactOf(argument)
 
-            if (typeJudgment.satisfies(requiredType, actualType)) continue
+            if (typeFactJudgment.satisfies(requiredTypeFact, actualTypeFact)) continue
 
             reporter.reportOn(
                 argument.source ?: expression.source,
                 contextArgumentDiagnosticFactory,
                 argumentSymbol.resolvedReturnType,
-                requiredType,
-                actualType
+                requiredTypeFact,
+                actualTypeFact
             )
         }
     }

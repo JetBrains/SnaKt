@@ -57,37 +57,38 @@ fun FirExpression.collectTails(): Sequence<FirExpression> =
     }
 
 /**
- * Resolves the type of an expression by unifying the types of its tail subexpressions.
+ * Resolves the type fact of an expression by unifying the type facts of its tail subexpressions.
  *
- * @param Type the type class of the expression.
+ * @param TypeFact the type-fact class of the expression.
  * @param cachesFactory the factory for creating the cache for storing the subexpression results.
- * @param typeUnifier the type unifier to use for unifying the types of the expression tails.
- * @param terminalTypeResolver the resolver for resolving the type of the expression if it has no tail subexpressions.
+ * @param typeFactUnifier the type-fact unifier to use for unifying the type facts of the expression tails.
+ * @param terminalTypeFactResolver the resolver for resolving the type fact of the expression if it has no tail
+ *  subexpressions.
  */
-class UnifyingExpressionTypeResolver<Type>(
+class UnifyingExpressionTypeFactResolver<TypeFact>(
     cachesFactory: FirCachesFactory,
-    private val typeUnifier: TypeUnifier<Type>,
-    private val terminalTypeResolver: ExpressionTypeResolver<Type>
-) : ExpressionTypeResolver<Type> {
+    private val typeFactUnifier: TypeFactUnifier<TypeFact>,
+    private val terminalTypeFactResolver: ExpressionTypeFactResolver<TypeFact>
+) : ExpressionTypeFactResolver<TypeFact> {
     private val cache = cachesFactory.createCache { expression: FirExpression, context: CheckerContext ->
         with(context) {
-            extractTypeOf(expression)
+            extractTypeFactOf(expression)
         }
     }
 
     context(context: CheckerContext)
-    override fun resolveTypeOf(expression: FirExpression): Type =
+    override fun resolveTypeFactOf(expression: FirExpression): TypeFact =
         cache.getValue(expression, context)
 
     context(context: CheckerContext)
-    private fun extractTypeOf(expression: FirExpression): Type {
+    private fun extractTypeFactOf(expression: FirExpression): TypeFact {
         val expression = expression.unwrapExpression().removeCast()
         val tails = expression.collectTails()
 
         if (!tails.any()) {
-            return terminalTypeResolver.resolveTypeOf(expression)
+            return terminalTypeFactResolver.resolveTypeFactOf(expression)
         } else {
-            return tails.map { resolveTypeOf(it) }.reduce(typeUnifier::join)
+            return tails.map { resolveTypeFactOf(it) }.reduce(typeFactUnifier::join)
         }
     }
 }

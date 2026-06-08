@@ -9,9 +9,9 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 
 /**
- * Resolves the declared type of a symbol.
+ * Resolves the declared type fact of a symbol.
  */
-fun interface SymbolTypeResolver<Type, in Symbol : FirBasedSymbol<*>> {
+fun interface SymbolTypeFactResolver<TypeFact, in Symbol : FirBasedSymbol<*>> {
     context(context: CheckerContext)
-    fun resolveTypeOf(symbol: Symbol): Type
+    fun resolveTypeFactOf(symbol: Symbol): TypeFact
 }

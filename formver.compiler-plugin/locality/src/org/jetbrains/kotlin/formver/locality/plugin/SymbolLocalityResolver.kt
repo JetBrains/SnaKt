@@ -10,15 +10,15 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.fir.types.ConeErrorType
-import org.jetbrains.kotlin.formver.type.plugin.SymbolTypeResolver
+import org.jetbrains.kotlin.formver.type.plugin.SymbolTypeFactResolver
 
 fun FirReceiverParameterSymbol.resolveLocality(): Locality =
     resolvedType.locality
 
 object ReceiverLocalityResolver :
-    SymbolTypeResolver<Locality, FirReceiverParameterSymbol> {
+    SymbolTypeFactResolver<Locality, FirReceiverParameterSymbol> {
     context(context: CheckerContext)
-    override fun resolveTypeOf(symbol: FirReceiverParameterSymbol): Locality =
+    override fun resolveTypeFactOf(symbol: FirReceiverParameterSymbol): Locality =
         symbol.resolveLocality()
 }
 
@@ -34,8 +34,8 @@ fun FirVariableSymbol<*>.resolveLocality(): Locality {
 }
 
 object VariableLocalityResolver :
-    SymbolTypeResolver<Locality, FirVariableSymbol<*>> {
+    SymbolTypeFactResolver<Locality, FirVariableSymbol<*>> {
     context(context: CheckerContext)
-    override fun resolveTypeOf(symbol: FirVariableSymbol<*>): Locality =
+    override fun resolveTypeFactOf(symbol: FirVariableSymbol<*>): Locality =
         symbol.resolveLocality()
 }

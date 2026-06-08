@@ -6,9 +6,9 @@
 package org.jetbrains.kotlin.formver.locality.plugin
 
 import org.jetbrains.kotlin.diagnostics.rendering.Renderer
-import org.jetbrains.kotlin.formver.type.plugin.TypeIntersector
-import org.jetbrains.kotlin.formver.type.plugin.TypeJudgment
-import org.jetbrains.kotlin.formver.type.plugin.TypeUnifier
+import org.jetbrains.kotlin.formver.type.plugin.TypeFactIntersector
+import org.jetbrains.kotlin.formver.type.plugin.TypeFactJudgment
+import org.jetbrains.kotlin.formver.type.plugin.TypeFactUnifier
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 
 enum class Locality {
@@ -18,9 +18,9 @@ enum class Locality {
 fun Locality.accepts(other: Locality): Boolean =
     this <= other
 
-object LocalityJudgment : TypeJudgment<Locality> {
-    override fun satisfies(requiredType: Locality, actualType: Locality): Boolean =
-        requiredType.accepts(actualType)
+object LocalityJudgment : TypeFactJudgment<Locality> {
+    override fun satisfies(requiredTypeFact: Locality, actualTypeFact: Locality): Boolean =
+        requiredTypeFact.accepts(actualTypeFact)
 }
 
 fun Locality.join(other: Locality): Locality =
@@ -40,7 +40,7 @@ val LocalityRenderer = Renderer<Locality> { locality ->
     }
 }
 
-object LocalityUnifier : TypeUnifier<Locality> {
+object LocalityUnifier : TypeFactUnifier<Locality> {
     override fun join(left: Locality, right: Locality): Locality {
         return left.join(right)
     }
@@ -49,7 +49,7 @@ object LocalityUnifier : TypeUnifier<Locality> {
 fun Locality.meet(other: Locality): Locality =
     maxOf(this, other)
 
-object LocalityIntersector : TypeIntersector<Locality> {
+object LocalityIntersector : TypeFactIntersector<Locality> {
     override fun meet(left: Locality, right: Locality): Locality {
         return left.meet(right)
     }

@@ -14,33 +14,33 @@ import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirVariableAssignme
 import org.jetbrains.kotlin.fir.expressions.FirVariableAssignment
 
 /**
- * Checker for type compatibility in variable assignments.
+ * Checker for type-fact compatibility in variable assignments.
  *
- * @param Type the type class of the variables.
- * @param typeJudgment the type judgment to use for checking type compatibility.
- * @param expressionTypeResolver the resolver for resolving the types of both the left and right-hand expressions of
- *  the assignment.
- * @param diagnosticFactory the diagnostic factory to use for reporting type incompatibility.
+ * @param TypeFact the type-fact class of the variables.
+ * @param typeFactJudgment the type-fact judgment to use for checking type-fact compatibility.
+ * @param expressionTypeFactResolver the resolver for resolving the type facts of both the left and right-hand
+ *  expressions of the assignment.
+ * @param diagnosticFactory the diagnostic factory to use for reporting type-fact incompatibility.
  */
-class AssignmentTypeChecker<Type>(
+class AssignmentTypeFactChecker<TypeFact>(
     kind: MppCheckerKind,
-    private val typeJudgment: TypeJudgment<Type>,
-    private val expressionTypeResolver: ExpressionTypeResolver<Type>,
-    private val diagnosticFactory: KtDiagnosticFactory3<String, Type, Type>
+    private val typeFactJudgment: TypeFactJudgment<TypeFact>,
+    private val expressionTypeFactResolver: ExpressionTypeFactResolver<TypeFact>,
+    private val diagnosticFactory: KtDiagnosticFactory3<String, TypeFact, TypeFact>
 ) : FirVariableAssignmentChecker(kind) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirVariableAssignment) {
-        val requiredType = expressionTypeResolver.resolveTypeOf(expression.lValue)
-        val actualType = expressionTypeResolver.resolveTypeOf(expression.rValue)
+        val requiredTypeFact = expressionTypeFactResolver.resolveTypeFactOf(expression.lValue)
+        val actualTypeFact = expressionTypeFactResolver.resolveTypeFactOf(expression.rValue)
 
-        if (typeJudgment.satisfies(requiredType, actualType)) return
+        if (typeFactJudgment.satisfies(requiredTypeFact, actualTypeFact)) return
 
         reporter.reportOn(
             expression.rValue.source,
             diagnosticFactory,
             "Assignment",
-            requiredType,
-            actualType
+            requiredTypeFact,
+            actualTypeFact
         )
     }
 }

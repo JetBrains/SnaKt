@@ -16,14 +16,14 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
-import org.jetbrains.kotlin.formver.type.plugin.ExpressionTypeResolver
-import org.jetbrains.kotlin.formver.type.plugin.ReturnResultTypeResolver
-import org.jetbrains.kotlin.formver.type.plugin.ThrowExceptionTypeResolver
-import org.jetbrains.kotlin.formver.type.plugin.UnifyingExpressionTypeResolver
+import org.jetbrains.kotlin.formver.type.plugin.ExpressionTypeFactResolver
+import org.jetbrains.kotlin.formver.type.plugin.ReturnResultTypeFactResolver
+import org.jetbrains.kotlin.formver.type.plugin.ThrowExceptionTypeFactResolver
+import org.jetbrains.kotlin.formver.type.plugin.UnifyingExpressionTypeFactResolver
 
-private object TerminalLocalityResolver : ExpressionTypeResolver<Locality> {
+private object TerminalLocalityResolver : ExpressionTypeFactResolver<Locality> {
     context(context: CheckerContext)
-    override fun resolveTypeOf(expression: FirExpression): Locality =
+    override fun resolveTypeFactOf(expression: FirExpression): Locality =
         when (expression) {
             is FirQualifiedAccessExpression ->
                 when (val symbol = expression.calleeReference.symbol) {
@@ -37,19 +37,19 @@ private object TerminalLocalityResolver : ExpressionTypeResolver<Locality> {
 }
 
 class ExpressionLocalityResolver(session: FirSession) :
-    ExpressionTypeResolver<Locality> by UnifyingExpressionTypeResolver(
+    ExpressionTypeFactResolver<Locality> by UnifyingExpressionTypeFactResolver(
         session.firCachesFactory,
         LocalityUnifier,
         TerminalLocalityResolver
     ), FirExtensionSessionComponent(session) {
-    companion object : ExpressionTypeResolver<Locality> {
+    companion object : ExpressionTypeFactResolver<Locality> {
         fun getFactory(): Factory {
             return Factory { session -> ExpressionLocalityResolver(session) }
         }
 
         context(context: CheckerContext)
-        override fun resolveTypeOf(expression: FirExpression): Locality =
-            context.session.expressionLocalityResolver.resolveTypeOf(expression)
+        override fun resolveTypeFactOf(expression: FirExpression): Locality =
+            context.session.expressionLocalityResolver.resolveTypeFactOf(expression)
     }
 }
 
@@ -58,14 +58,14 @@ private val FirSession.expressionLocalityResolver: ExpressionLocalityResolver
 
 context(context: CheckerContext)
 fun FirExpression.resolveLocality(): Locality =
-    ExpressionLocalityResolver.resolveTypeOf(this)
+    ExpressionLocalityResolver.resolveTypeFactOf(this)
 
-object ReturnResultLocalityResolver : ReturnResultTypeResolver<Locality> {
+object ReturnResultLocalityResolver : ReturnResultTypeFactResolver<Locality> {
     context(context: CheckerContext)
-    override fun resolveResultTypeOf(expression: FirReturnExpression): Locality = Locality.Global
+    override fun resolveResultTypeFactOf(expression: FirReturnExpression): Locality = Locality.Global
 }
 
-object ThrowExceptionLocalityResolver : ThrowExceptionTypeResolver<Locality> {
+object ThrowExceptionLocalityResolver : ThrowExceptionTypeFactResolver<Locality> {
     context(context: CheckerContext)
-    override fun resolveExceptionTypeOf(expression: FirThrowExpression): Locality = Locality.Global
+    override fun resolveExceptionTypeFactOf(expression: FirThrowExpression): Locality = Locality.Global
 }

@@ -20,22 +20,22 @@ import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.fir.types.resolvedType
 
 /**
- * Checker for type compatibility in function calls.
+ * Checker for type-fact compatibility in function calls.
  *
- * @param Type the type class of the arguments.
- * @param typeJudgment the type judgment to use for checking type compatibility.
- * @param expressionTypeResolver the resolver for resolving the types of the arguments.
- * @param valueParameterTypeResolver for resolving the types of the call's parameters.
- * @param contextDiagnosticFactory the diagnostic factory to use for reporting type incompatibility in context
+ * @param TypeFact the type-fact class of the arguments.
+ * @param typeFactJudgment the type-fact judgment to use for checking type-fact compatibility.
+ * @param expressionTypeFactResolver the resolver for resolving the type facts of the arguments.
+ * @param valueParameterTypeFactResolver for resolving the type facts of the call's parameters.
+ * @param contextDiagnosticFactory the diagnostic factory to use for reporting type-fact incompatibility in context
  *  parameters.
  */
-class CallTypeChecker<Type>(
+class CallTypeFactChecker<TypeFact>(
     kind: MppCheckerKind,
-    private val typeJudgment: TypeJudgment<Type>,
-    private val expressionTypeResolver: ExpressionTypeResolver<Type>,
-    private val valueParameterTypeResolver: SymbolTypeResolver<Type, FirValueParameterSymbol>,
-    private val argumentDiagnosticFactory: KtDiagnosticFactory3<String, Type, Type>,
-    private val contextDiagnosticFactory: KtDiagnosticFactory3<ConeKotlinType, Type, Type>
+    private val typeFactJudgment: TypeFactJudgment<TypeFact>,
+    private val expressionTypeFactResolver: ExpressionTypeFactResolver<TypeFact>,
+    private val valueParameterTypeFactResolver: SymbolTypeFactResolver<TypeFact, FirValueParameterSymbol>,
+    private val argumentDiagnosticFactory: KtDiagnosticFactory3<String, TypeFact, TypeFact>,
+    private val contextDiagnosticFactory: KtDiagnosticFactory3<ConeKotlinType, TypeFact, TypeFact>
 ) : FirCallChecker(kind) {
 
     context(context: CheckerContext, reporter: DiagnosticReporter)
@@ -43,29 +43,29 @@ class CallTypeChecker<Type>(
         val argumentMappings = expression.resolvedArgumentMapping
 
         for ((argument, argumentDeclaration) in argumentMappings.orEmpty()) {
-            val requiredType = valueParameterTypeResolver.resolveTypeOf(argumentDeclaration.symbol)
+            val requiredTypeFact = valueParameterTypeFactResolver.resolveTypeFactOf(argumentDeclaration.symbol)
             val effectiveArguments = argument.unwrapAndFlattenArgument(flattenArrays = false)
 
             for (effectiveArgument in effectiveArguments) {
-                val actualType = expressionTypeResolver.resolveTypeOf(effectiveArgument)
+                val actualTypeFact = expressionTypeFactResolver.resolveTypeFactOf(effectiveArgument)
 
-                if (typeJudgment.satisfies(requiredType, actualType)) continue
+                if (typeFactJudgment.satisfies(requiredTypeFact, actualTypeFact)) continue
 
                 if (argument.source?.kind is KtFakeSourceElementKind.ImplicitContextParameterArgument) {
                     reporter.reportOn(
                         expression.source,
                         contextDiagnosticFactory,
                         argument.resolvedType,
-                        requiredType,
-                        actualType
+                        requiredTypeFact,
+                        actualTypeFact
                     )
                 } else {
                     reporter.reportOn(
                         effectiveArgument.source ?: argument.source,
                         argumentDiagnosticFactory,
                         "Argument",
-                        requiredType,
-                        actualType
+                        requiredTypeFact,
+                        actualTypeFact
                     )
                 }
             }
