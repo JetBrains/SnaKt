@@ -39,17 +39,6 @@ val SpecialKotlinFunction.callableId: CallableId
 fun SpecialKotlinFunction.embedName(): ScopedName = callableId.embedFunctionName(callableType)
 
 /**
- * Strips type casts, meta nodes, and type-invariant wrappers to recover the core embedding
- * an expression ultimately produces. Arguments of a special function call are wrapped with
- * the parameter's type invariants, so we have to peel those away to inspect the real payload.
- */
-private fun ExpEmbedding.unwrapToCore(): ExpEmbedding =
-    when (val e = ignoringCastsAndMetaNodes()) {
-        is InhaleInvariants -> e.exp.unwrapToCore()
-        else -> e
-    }
-
-/**
  * We store here all the __Kotlin__ functions that need a (fully) special `ExpEmbedding`.
  * `byName` is stateless - it always stores the same Kotlin functions
  * and corresponding embeddings.
@@ -238,11 +227,11 @@ object SpecialKotlinFunctions {
         }
         addFunction(accCallableType, SpecialPackages.formver, name = "acc") { args, ctx ->
             val source = (args.firstOrNull() as? WithPosition)?.source
-            val fieldAccess = args.first().unwrapToCore() as? FieldAccess ?: throw SnaktInternalException(
+            val fieldAccess = args.first().ignoringCastsAndMetaNodes() as? FieldAccess ?: throw SnaktInternalException(
                 source,
                 "First argument of `acc` must be a field access like `x.a`."
             )
-            val perm = when (val permArg = args.getOrNull(1)?.unwrapToCore()) {
+            val perm = when (val permArg = args.getOrNull(1)?.ignoringCastsAndMetaNodes()) {
                 null, NullLit -> PermExp.FullPerm()
                 is PermissionLit -> permArg.perm
                 else -> throw SnaktInternalException(
