@@ -11,10 +11,12 @@ import org.jetbrains.kotlin.fir.analysis.checkers.declaration.DeclarationChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirPropertyChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.ExpressionCheckers
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirCallChecker
+import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirPropertyAccessExpressionChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirReturnExpressionChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirThrowExpressionChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirVariableAssignmentChecker
 import org.jetbrains.kotlin.fir.analysis.extensions.FirAdditionalCheckersExtension
+import org.jetbrains.kotlin.formver.locality.plugin.PropertyAccessLocalityChecker
 
 class UniquenessAdditionalCheckers(session: FirSession) : FirAdditionalCheckersExtension(session) {
     companion object {
@@ -28,9 +30,13 @@ class UniquenessAdditionalCheckers(session: FirSession) : FirAdditionalCheckersE
             setOf(PropertyUniquenessChecker)
     }
 
+
     override val expressionCheckers: ExpressionCheckers = object : ExpressionCheckers() {
         override val variableAssignmentCheckers: Set<FirVariableAssignmentChecker> =
             setOf(AssignmentUniquenessChecker)
+
+        override val propertyAccessExpressionCheckers: Set<FirPropertyAccessExpressionChecker> =
+            setOf(PropertyAccessUniquenessChecker)
 
         override val callCheckers: Set<FirCallChecker> =
             setOf(CallUniquenessChecker)

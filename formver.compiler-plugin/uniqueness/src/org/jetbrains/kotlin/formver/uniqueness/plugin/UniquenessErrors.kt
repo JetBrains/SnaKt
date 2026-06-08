@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.fir.types.ConeKotlinType
 object UniquenessErrors : KtDiagnosticsContainer() {
     val UNIQUENESS_MISMATCH by error3<PsiElement, String, Uniqueness, Uniqueness>()
     val CONTEXT_UNIQUENESS_MISMATCH by error3<PsiElement, ConeKotlinType, Uniqueness, Uniqueness>()
+    val INVALID_MOVED_ACCESS by error0<PsiElement>()
     val INVALID_UNIQUENESS_TYPE_TARGET by error0<PsiElement>()
 
     override fun getRendererFactory() = UniquenessErrorMessages

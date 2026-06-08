@@ -21,11 +21,22 @@ object UniquenessErrorMessages : BaseDiagnosticRendererFactory() {
                     UniquenessRenderer,
                 )
                 map.put(
+                    UniquenessErrors.UNIQUENESS_CONSISTENCY_MISMATCH,
+                    "{0} uniqueness consistency mismatch: expected ''{1}'', actual ''{2}''.",
+                    CommonRenderers.STRING,
+                    UniquenessRenderer,
+                    UniquenessRenderer,
+                )
+                map.put(
                     UniquenessErrors.CONTEXT_UNIQUENESS_MISMATCH,
                     "Uniqueness mismatch for context parameter of type ''{0}'': expected ''{1}'', actual ''{2}''.",
                     FirDiagnosticRenderers.RENDER_TYPE,
                     UniquenessRenderer,
                     UniquenessRenderer,
+                )
+                map.put(
+                    UniquenessErrors.INVALID_MOVED_ACCESS,
+                    "Invalid access to moved reference."
                 )
                 map.put(
                     UniquenessErrors.INVALID_UNIQUENESS_TYPE_TARGET,
