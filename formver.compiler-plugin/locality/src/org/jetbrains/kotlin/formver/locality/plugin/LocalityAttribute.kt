@@ -12,7 +12,7 @@ import kotlin.reflect.KClass
 data object LocalityAttribute : ConeAttribute<LocalityAttribute>() {
     override fun union(other: LocalityAttribute?): LocalityAttribute = this
 
-    override fun intersect(other: LocalityAttribute?): LocalityAttribute = this
+    override fun intersect(other: LocalityAttribute?): LocalityAttribute? = other
 
     override fun add(other: LocalityAttribute?): LocalityAttribute = this
 

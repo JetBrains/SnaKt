@@ -22,6 +22,6 @@ class `reject locality attribute on member property type` {
 // Note: the assigned `listOf` expression flags an error because the locality attribute is implicitly added on the
 // inferred generic parameter.
 val `reject locality attribute on generic type parameter`: List<<!INVALID_LOCALITY_TYPE_TARGET!>@Borrowed Any<!>>
-    = <!INVALID_LOCALITY_TYPE_TARGET!>listOf<!>()
+    = listOf()
 
 typealias `Invalid Type` = <!INVALID_LOCALITY_TYPE_TARGET!>@Borrowed Any<!>

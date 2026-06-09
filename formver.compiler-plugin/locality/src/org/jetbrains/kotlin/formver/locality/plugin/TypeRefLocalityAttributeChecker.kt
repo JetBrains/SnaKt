@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.locality.plugin
 
+import org.jetbrains.kotlin.KtFakeSourceElementKind
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
@@ -17,11 +18,12 @@ import org.jetbrains.kotlin.fir.declarations.FirValueParameter
 import org.jetbrains.kotlin.fir.declarations.isLocal
 import org.jetbrains.kotlin.fir.types.FirResolvedTypeRef
 
-object TypeLocalityAttributeChecker : FirResolvedTypeRefChecker(MppCheckerKind.Common) {
+object TypeRefLocalityAttributeChecker : FirResolvedTypeRefChecker(MppCheckerKind.Common) {
     private fun FirElement.isValidLocalityTarget(): Boolean =
         this is FirValueParameter ||
                 this is FirReceiverParameter ||
-                this is FirProperty && isLocal
+                this is FirProperty && isLocal ||
+                source?.kind is KtFakeSourceElementKind.ImplicitTypeArgument
 
     private fun CheckerContext.isValidLocalityTarget(): Boolean {
         val target = containingElements.dropLast(1).lastOrNull()

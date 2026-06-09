@@ -7,5 +7,3 @@
 /invalid.kt: error: Locality can only be specified on types of function parameters, extension receivers, or local variables.
 
 /invalid.kt: error: Locality can only be specified on types of function parameters, extension receivers, or local variables.
-
-/invalid.kt: error: Locality can only be specified on types of function parameters, extension receivers, or local variables.
