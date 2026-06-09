@@ -3,3 +3,6 @@ repos:
     rev: v5.0.0
     hooks:
       - id: end-of-file-fixer
+        # Generated API dumps end with a trailing blank line that `apiCheck`
+        # requires; the fixer would strip it and break the check.
+        exclude: '\.api$'
