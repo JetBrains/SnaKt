@@ -59,7 +59,7 @@ class GraphUniquenessStateFactsAnalyzer(
             val declarationSymbol = declaration.symbol
             val declarationAccessState = EmptyAccessState.associate(
                 declarationSymbol,
-                AccessState(true)
+                AccessState(Access.Terminal)
             )
 
             return data.transformValues { data ->

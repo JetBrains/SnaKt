@@ -5,7 +5,6 @@
 
 package org.jetbrains.kotlin.formver.uniqueness.plugin
 
-import kotlinx.collections.immutable.persistentMapOf
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.caches.firCachesFactory
@@ -26,25 +25,34 @@ import org.jetbrains.kotlin.formver.type.plugin.ReturnResultTypeResolver
 import org.jetbrains.kotlin.formver.type.plugin.ThrowExceptionTypeResolver
 import org.jetbrains.kotlin.formver.type.plugin.UnifyingExpressionTypeResolver
 
+context(context: CheckerContext)
+fun FirExpression.resolveAccessUniqueness(): Uniqueness {
+    val accessState = resolveAccessState()
+
+    if (accessState == EmptyAccessState) return Uniqueness.Shared
+
+    val uniquenessState = resolveInputUniquenessState() ?: EmptyUniquenessState
+
+    return accessState.joinOverTerminals(uniquenessState)
+}
+
 private object TerminalUniquenessResolver : ExpressionTypeResolver<Uniqueness> {
     context(context: CheckerContext)
     override fun resolveTypeOf(expression: FirExpression): Uniqueness {
-        val environment = expression.resolveInputUniquenessState() ?: EmptyUniquenessState
-
         return when (expression) {
             is FirFunctionCall ->
                 if (expression.calleeReference.symbol is FirConstructorSymbol) Uniqueness.Unique
                 else Uniqueness.Shared
 
             is FirThisReceiverExpression -> {
-                val symbol = expression.calleeReference.symbol ?: return Uniqueness.Shared
-                val accessState = AccessState(false, persistentMapOf(symbol to AccessState(true)))
+                val symbol = expression.calleeReference.symbol ?: return Uniqueness.Unique
+                val uniquenessState = expression.resolveInputUniquenessState() ?: EmptyUniquenessState
 
-                accessState.project(environment).joinChildren()
+                uniquenessState.children[symbol]?.data ?: Uniqueness.Unique
             }
 
             is FirPropertyAccessExpression -> {
-                expression.resolveAccessState().project(environment).joinChildren()
+                expression.resolveAccessUniqueness()
             }
 
             else -> {
@@ -81,6 +89,13 @@ private val FirSession.expressionUniquenessResolver: ExpressionUniquenessResolve
         by FirSession.sessionComponentAccessor()
 
 /**
+ * Extracts the actual uniqueness from this access state.
+ */
+context(context: CheckerContext)
+fun FirExpression.resolveUniqueness(): Uniqueness =
+    context.session.expressionUniquenessResolver.resolveTypeOf(this)
+
+/**
  * Extracts the default uniqueness from this access state.
  */
 context(context: CheckerContext)
@@ -91,7 +106,7 @@ fun FirExpression.resolveDefaultUniqueness(): Uniqueness {
         Uniqueness.Shared
     } else {
         accessState.symbols.fold(Uniqueness.Unique) { result, symbol ->
-            result.join(symbol.resolveComponentUniqueness())
+            result.join(symbol.resolveDeclaredUniqueness())
         }
     }
 }

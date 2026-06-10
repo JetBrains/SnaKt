@@ -5,9 +5,12 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.formver.type.plugin.TypeUnifier
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 
-typealias AccessState = PathTrie<Boolean>
+typealias AccessState = PathTrie<Access>
 
-val EmptyAccessState = AccessState(false)
+val EmptyAccessState = AccessState(Access.Intermediate)
+
+val AccessState.isTerminal: Boolean
+    get() = children.isEmpty() || data == Access.Terminal
 
 /**
  * Performs the join of two [AccessState]s.
@@ -17,7 +20,7 @@ val EmptyAccessState = AccessState(false)
  * @return the [AccessState] containing accesses present in both inputs.
  */
 fun AccessState.join(other: AccessState): AccessState =
-    join(other) { a, b -> a || b }
+    join(other, AccessUnifier)
 
 object AccessStateUnifier : TypeUnifier<AccessState> {
     override fun join(left: AccessState, right: AccessState): AccessState =
@@ -30,11 +33,30 @@ object AccessStateUnifier : TypeUnifier<AccessState> {
 fun AccessState.isSingleton(): Boolean {
     if (children.size > 1) return false
 
+    if (isTerminal && children.isNotEmpty()) return false
+
     for ((_, child) in children) {
         return child.isSingleton()
     }
 
     return true
+}
+
+fun AccessState.append(symbol: FirBasedSymbol<*>): AccessState {
+    var newChildren = children
+
+    for ((childSymbol, child) in newChildren) {
+        newChildren = newChildren.put(childSymbol, child.append(symbol))
+    }
+
+    return if (isTerminal) {
+        copy(
+            data = Access.Intermediate,
+            children = newChildren.put(symbol, AccessState(Access.Terminal))
+        )
+    } else {
+        copy(children = newChildren)
+    }
 }
 
 /**
@@ -45,7 +67,7 @@ fun AccessState.isSingleton(): Boolean {
  * @param transform the function to apply to each access position.
  */
 context(context: CheckerContext)
-fun AccessState.alter(
+fun AccessState.alterTerminals(
     uniquenessState: UniquenessState,
     transform: (FirBasedSymbol<*>, UniquenessState) -> UniquenessState
 ): UniquenessState {
@@ -53,14 +75,18 @@ fun AccessState.alter(
 
     for ((symbol, accessChild) in children) {
         val uniquenessChild = uniquenessState.children[symbol]
-            ?: UniquenessState(symbol.resolveComponentUniqueness())
+            ?: UniquenessState(
+                symbol.resolveDeclaredUniqueness().join(
+                    newUniquenessState.data
+                )
+            )
 
         val newUniquenessChild = accessChild
-            .alter(uniquenessChild, transform)
+            .alterTerminals(uniquenessChild, transform)
 
         newUniquenessState = newUniquenessState.associate(
             symbol,
-            if (accessChild.data) {
+            if (accessChild.isTerminal) {
                 transform(symbol, newUniquenessChild)
             } else {
                 newUniquenessChild
@@ -79,7 +105,13 @@ fun AccessState.alter(
  */
 context(context: CheckerContext)
 fun AccessState.move(uniquenessState: UniquenessState): UniquenessState =
-    alter(uniquenessState) { _, state -> state.copy(data = Uniqueness.Moved) }
+    alterTerminals(uniquenessState) { symbol, state ->
+        if (state.data == Uniqueness.Unique) {
+            state.copy(data = Uniqueness.Moved)
+        } else {
+            state
+        }
+    }
 
 /**
  * Moves the accessed position specified by this access state in the uniqueness state.
@@ -89,7 +121,9 @@ fun AccessState.move(uniquenessState: UniquenessState): UniquenessState =
  */
 context(context: CheckerContext)
 fun AccessState.initialize(uniquenessState: UniquenessState): UniquenessState =
-    alter(uniquenessState) { symbol, state -> state.copy(data = symbol.resolveComponentUniqueness()) }
+    alterTerminals(uniquenessState) { symbol, state ->
+        state.copy(data = symbol.resolveDeclaredUniqueness(), children = persistentMapOf())
+    }
 
 /**
  * Project this access state onto the given uniqueness state, creating a uniqueness state containing only the accessed
@@ -99,20 +133,21 @@ fun AccessState.initialize(uniquenessState: UniquenessState): UniquenessState =
  * @param uniquenessState the [UniquenessState] to project onto.
  */
 context(context: CheckerContext)
-fun AccessState.project(uniquenessState: UniquenessState): UniquenessState {
-    var result = uniquenessState.copy(children = persistentMapOf())
+fun AccessState.joinOverTerminals(uniquenessState: UniquenessState): Uniqueness {
+    var result = Uniqueness.Unique
 
     for ((symbol, accessChild) in children) {
-        val uniquenessChild = uniquenessState.children[symbol]
-            ?: UniquenessState(symbol.resolveComponentUniqueness())
+        val childUniquenessState = uniquenessState.children[symbol]
+            ?: UniquenessState(symbol.resolveDeclaredUniqueness())
+        val childUniqueness = childUniquenessState.data
 
-        val projected = if (accessChild.children.isEmpty()) {
-            uniquenessChild
+        val projected = if (accessChild.data == Access.Terminal) {
+            childUniqueness
         } else {
-            accessChild.project(uniquenessChild)
+            accessChild.joinOverTerminals(childUniquenessState)
         }
 
-        result = result.associate(symbol, projected)
+        result = result.join(projected)
     }
 
     return result

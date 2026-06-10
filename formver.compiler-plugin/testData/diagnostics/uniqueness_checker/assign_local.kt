@@ -148,3 +148,12 @@ fun `assign unique to shared in loop`(x: @Unique Any, y: @Unique Any) {
 
     consume(z)
 }
+
+fun `assign local in if`(x: @Unique Any) {
+    val y: @Unique Any = if (false) {
+        val y: @Unique Any = x
+        y
+    } else {
+        x
+    }
+}

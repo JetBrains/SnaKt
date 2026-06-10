@@ -165,6 +165,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("assign_property_in_if.kt")
+    public void testAssign_property_in_if() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/assign_property_in_if.kt");
+    }
+
+    @Test
     @TestMetadata("borrow_local.kt")
     public void testBorrow_local() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/borrow_local.kt");

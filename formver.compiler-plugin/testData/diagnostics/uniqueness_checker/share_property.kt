@@ -36,18 +36,20 @@ fun `share unique-borrowed subproperty`(z: @Unique @Borrowed B) {
 
 fun `share multiple unique subproperties`(z: @Unique B) {
     share(z.y.x)
-    share(<!UNIQUENESS_MISMATCH!>z.y.w<!>)
+    share(z.y.w)
 }
 
 // Sharing partially-inconsistent properties
 
 fun `share partially moved`(z: @Unique B) {
     consume(z.y)
+    // TODO: Check for partially moved references at function boundaries
     share(<!UNIQUENESS_MISMATCH!>z<!>)
 }
 
 fun `share partially shared`(z: @Unique B) {
     share(z.y)
+    // TODO: Check for partially moved references at function boundaries
     share(<!UNIQUENESS_MISMATCH!>z<!>)
 }
 

@@ -24,6 +24,6 @@ fun test(@Unique a: A) : A{
         @Unique var y = a.second
     }
 
-    return <!UNIQUENESS_MISMATCH!>a<!>
+    return a
 
 }

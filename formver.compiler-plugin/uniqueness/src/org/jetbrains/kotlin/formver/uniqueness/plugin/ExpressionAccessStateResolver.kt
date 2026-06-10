@@ -22,11 +22,11 @@ import org.jetbrains.kotlin.formver.type.plugin.UnifyingExpressionTypeResolver
  * NOTE: this property shouldn't be used to find the receiver of a qualified access expression targeting anything other
  * than a plain property or local variable.
  */
-private val FirQualifiedAccessExpression.pathReceiver: FirExpression?
+val FirQualifiedAccessExpression.pathReceiver: FirExpression?
     get() = explicitReceiver ?: extensionReceiver ?: dispatchReceiver
 
 private fun AccessState.asReceiverState(): AccessState =
-    copy(data = false)
+    copy(data = Access.Intermediate)
 
 object TerminalAccessStateResolver : ExpressionTypeResolver<AccessState> {
     context(context: CheckerContext)
@@ -38,9 +38,9 @@ object TerminalAccessStateResolver : ExpressionTypeResolver<AccessState> {
                         val receiverState = expression.pathReceiver
                             ?.resolveAccessState()
                             ?.asReceiverState()
-                            ?: AccessState(false)
+                            ?: EmptyAccessState
 
-                        receiverState.append(symbol, AccessState(true))
+                        receiverState.append(symbol)
                     }
                     else -> EmptyAccessState
                 }

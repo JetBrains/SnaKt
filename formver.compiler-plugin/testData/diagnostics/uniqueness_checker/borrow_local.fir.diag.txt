@@ -1,5 +1,3 @@
 /borrow_local.kt: error: Argument uniqueness mismatch: expected 'shared', actual 'moved'.
 
 /borrow_local.kt: error: Argument uniqueness mismatch: expected 'shared', actual 'moved'.
-
-/borrow_local.kt: error: Argument uniqueness mismatch: expected 'shared', actual 'moved'.

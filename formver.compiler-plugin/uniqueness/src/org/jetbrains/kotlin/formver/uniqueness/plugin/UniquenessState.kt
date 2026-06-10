@@ -24,8 +24,5 @@ object UniquenessStateIntersector : TypeIntersector<UniquenessState> {
         left.meet(right)
 }
 
-fun UniquenessState.joinChildren(): Uniqueness =
-    joinChildren(UniquenessUnifier)
-
 fun UniquenessState.joinOverPath(path: List<FirBasedSymbol<*>>): Uniqueness =
     data.join((children[path.first()]?.joinOverPath(path.drop(1)) ?: Uniqueness.Unique))

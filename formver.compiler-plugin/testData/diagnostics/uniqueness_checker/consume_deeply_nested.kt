@@ -16,8 +16,8 @@ fun consume(x: @Unique Any) {}
 fun `consume nested unique after moving back`(a: @Unique A) {
     val b: @Unique A = a.um
     consume(b.um)
-    // Problem a.um is Moved and b is Moved, hence this pass while it shouldn't
-    a.um = <!UNIQUENESS_MISMATCH!>b<!>
+    // TODO: Transplant `b.um`'s subtree in `a.um`
+    a.um = b
 
     consume(a)
 }

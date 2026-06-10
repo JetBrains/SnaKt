@@ -41,7 +41,7 @@ object VariableUniquenessResolver : SymbolTypeResolver<Uniqueness, FirVariableSy
 }
 
 context(context: CheckerContext)
-fun FirBasedSymbol<*>.resolveComponentUniqueness(): Uniqueness =
+fun FirBasedSymbol<*>.resolveDeclaredUniqueness(): Uniqueness =
     when (this) {
         is FirVariableSymbol<*> -> resolveUniqueness()
         is FirReceiverParameterSymbol -> resolveUniqueness()

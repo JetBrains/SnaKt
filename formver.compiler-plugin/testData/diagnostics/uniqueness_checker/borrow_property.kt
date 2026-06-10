@@ -18,9 +18,20 @@ fun consume(y: @Unique Any) {}
 
 fun share(a: Any) {}
 
+fun `share shared subproperty twice`(z: B) {
+    share(z.y)
+    // TODO: Consider unique fields of shared references as shared.
+    share(z.y)
+}
+
 // Borrowing subproperties
 
 fun `borrow shared subproperty`(z: B) {
+    borrow(z.y)
+}
+
+fun `borrow shared subproperty twice`(z: B) {
+    borrow(z.y)
     borrow(z.y)
 }
 
@@ -45,11 +56,13 @@ fun `borrow multiple unique subproperties`(z: @Unique B) {
 
 fun `borrow partially moved`(z: @Unique B) {
     consume(z.y)
+    // TODO: Check for partially moved references at function boundaries
     borrow(<!UNIQUENESS_MISMATCH!>z<!>)
 }
 
 fun `borrow partially shared`(z: @Unique B) {
     share(z.y)
+    // TODO: Check for partially moved references at function boundaries
     borrow(<!UNIQUENESS_MISMATCH!>z<!>)
 }
 
