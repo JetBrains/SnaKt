@@ -430,7 +430,7 @@ data class LinearizationVisitor(
                     if (e.field.unfoldToAccess) {
                         val receiverWrapper = ExpWrapper(receiverViper, e.receiver.type)
                         val hierarchyPath = ctx.typeResolver.hierarchyPathTo(e.receiver.type.pretype, e.field)
-                        hierarchyPath?.forEach { classType ->
+                        hierarchyPath.forEach { classType ->
                             val predAcc = classType.predicateAccess(receiverWrapper, ctx.typeResolver, ctx.source)
                             ctx.addStatement { Stmt.Unfold(predAcc) }
                         }
