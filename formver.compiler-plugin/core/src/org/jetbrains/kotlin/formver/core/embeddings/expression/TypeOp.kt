@@ -60,6 +60,8 @@ interface InhaleInvariants : ExpEmbedding {
     override val type: TypeEmbedding
         get() = exp.type
 
+    override fun ignoringCastsAndMetaNodes(): ExpEmbedding = exp.ignoringCastsAndMetaNodes()
+
     val simplified: ExpEmbedding
         get() = if (invariants.isEmpty()) exp
         else this

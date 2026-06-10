@@ -19,53 +19,45 @@ method checkMemberAccess() returns (v_ret_0: Ref)
   ensures boolFromRef(v_ret_0) == true
 {
   var obj: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  var v_ret_5: Ref
+  var anon_3: Ref
+  var v_ret_7: Ref
+  var anon_0: Ref
   var anon_4: Ref
   var anon_5: Ref
-  var v_ret_5: Ref
-  var anon_0: Ref
   var anon_6: Ref
-  var v_ret_7: Ref
-  var anon_1: Ref
-  var anon_7: Ref
-  var anon_8: Ref
-  var anon_9: Ref
   var v_ret_10: Ref
-  var anon_2: Ref
-  var anon_10: Ref
+  var anon_7: Ref
   var v_ret_11: Ref
-  var anon_3: Ref
   obj := con(intToRef(42))
   inhale isSubtype(typeOf(obj), nullable(anyType()))
-  anon_0 := obj
-  anon_7 := idFun(anon_0)
-  anon_1 := anon_7
-  inhale isSubtype(typeOf(anon_1), ClassWithMember())
-  v_ret_7 := g_member(anon_1)
+  anon_4 := idFun(obj)
+  anon_0 := anon_4
+  inhale isSubtype(typeOf(anon_0), ClassWithMember())
+  v_ret_7 := g_member(anon_0)
   goto lbl_ret_7
   label lbl_ret_7
-  anon_6 := v_ret_7
-  v_ret_5 := anon_6
+  anon_3 := v_ret_7
+  v_ret_5 := anon_3
   inhale isSubtype(typeOf(v_ret_5), nullable(anyType()))
   goto lbl_ret_5
   label lbl_ret_5
-  anon_5 := v_ret_5
-  anon_4 := anon_5
-  inhale isSubtype(typeOf(anon_4), intType())
-  inhale isSubtype(typeOf(obj), nullable(anyType()))
-  anon_2 := obj
-  inhale isSubtype(typeOf(anon_2), ClassWithMember())
-  anon_3 := anon_2
+  anon_2 := v_ret_5
+  anon_1 := anon_2
+  inhale isSubtype(typeOf(anon_1), intType())
   v_ret_0 := boolToRef(intFromRef(g_member(obj)) == 42)
   goto lbl_ret_0
   label lbl_ret_11
-  anon_10 := v_ret_11
-  v_ret_10 := anon_10
+  anon_7 := v_ret_11
+  v_ret_10 := anon_7
   inhale isSubtype(typeOf(v_ret_10), nullable(anyType()))
   goto lbl_ret_10
   label lbl_ret_10
-  anon_9 := v_ret_10
-  anon_8 := anon_9
-  inhale isSubtype(typeOf(anon_8), nothingType())
+  anon_6 := v_ret_10
+  anon_5 := anon_6
+  inhale isSubtype(typeOf(anon_5), nothingType())
   label lbl_ret_0
 }
 
@@ -105,45 +97,41 @@ method checkGenericMemberAccess(box: Ref) returns (v_ret_0: Ref)
   ensures boolFromRef(v_ret_0) == true
 {
   var v_ret_4: Ref
-  var anon_0: Ref
   var v_ret_6: Ref
-  var anon_1: Ref
+  var anon_0: Ref
+  var anon_2: Ref
+  var anon_3: Ref
   var anon_4: Ref
+  var v_ret_10: Ref
+  var anon_1: Ref
   var anon_5: Ref
   var anon_6: Ref
-  var v_ret_10: Ref
-  var anon_2: Ref
-  var anon_7: Ref
-  var anon_8: Ref
   var v_ret_11: Ref
-  var anon_3: Ref
   inhale isSubtype(typeOf(box), nullable(anyType()))
-  anon_0 := box
-  anon_4 := idFun(anon_0)
-  anon_1 := anon_4
-  inhale isSubtype(typeOf(anon_1), Box())
-  v_ret_6 := g_wrapped(anon_1)
+  anon_2 := idFun(box)
+  anon_0 := anon_2
+  inhale isSubtype(typeOf(anon_0), Box())
+  v_ret_6 := g_wrapped(anon_0)
   goto lbl_ret_6
   label lbl_ret_6
   v_ret_4 := v_ret_6
   goto lbl_ret_4
   label lbl_ret_4
-  anon_7 := con(g_wrapped(box))
-  anon_2 := anon_7
-  inhale isSubtype(typeOf(anon_2), nullable(anyType()))
-  inhale isSubtype(typeOf(anon_2), Box())
-  anon_3 := anon_2
-  v_ret_0 := boolToRef(g_wrapped(anon_3) == g_wrapped(box))
+  anon_5 := con(g_wrapped(box))
+  anon_1 := anon_5
+  inhale isSubtype(typeOf(anon_1), nullable(anyType()))
+  inhale isSubtype(typeOf(anon_1), Box())
+  v_ret_0 := boolToRef(g_wrapped(anon_1) == g_wrapped(box))
   goto lbl_ret_0
   label lbl_ret_11
-  anon_8 := v_ret_11
-  v_ret_10 := anon_8
+  anon_6 := v_ret_11
+  v_ret_10 := anon_6
   inhale isSubtype(typeOf(v_ret_10), nullable(anyType()))
   goto lbl_ret_10
   label lbl_ret_10
-  anon_6 := v_ret_10
-  anon_5 := anon_6
-  inhale isSubtype(typeOf(anon_5), nothingType())
+  anon_4 := v_ret_10
+  anon_3 := anon_4
+  inhale isSubtype(typeOf(anon_3), nothingType())
   label lbl_ret_0
 }
 
@@ -178,30 +166,28 @@ method checkArgumentIsCopied(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), ClassWithVar())
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
+  var anon_1: Ref
   var anon_2: Ref
-  var anon_3: Ref
   var v_ret_3: Ref
   var anon_0: Ref
+  var anon_3: Ref
   var anon_4: Ref
-  var anon_5: Ref
   var v_ret_4: Ref
-  var anon_1: Ref
-  anon_4 := havoc(intType())
-  anon_0 := anon_4
+  anon_3 := havoc(intType())
+  anon_0 := anon_3
   inhale isSubtype(typeOf(anon_0), nullable(anyType()))
   inhale isSubtype(typeOf(anon_0), intType())
-  anon_1 := anon_0
-  v_ret_4 := anon_1
+  v_ret_4 := anon_0
   goto lbl_ret_4
   label lbl_ret_4
-  anon_5 := v_ret_4
-  v_ret_3 := anon_5
+  anon_4 := v_ret_4
+  v_ret_3 := anon_4
   inhale isSubtype(typeOf(v_ret_3), nullable(anyType()))
   goto lbl_ret_3
   label lbl_ret_3
-  anon_3 := v_ret_3
-  anon_2 := anon_3
-  inhale isSubtype(typeOf(anon_2), intType())
+  anon_2 := v_ret_3
+  anon_1 := anon_2
+  inhale isSubtype(typeOf(anon_1), intType())
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
@@ -231,76 +217,74 @@ method accessManyMembers(m: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(m), ManyMembers())
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
+  var anon_1: Ref
+  var anon_2: Ref
+  var v_ret_3: Ref
+  var anon_3: Ref
+  var v_ret_4: Ref
   var anon_4: Ref
   var anon_5: Ref
-  var v_ret_3: Ref
-  var anon_0: Ref
   var anon_6: Ref
-  var v_ret_4: Ref
-  var anon_1: Ref
   var anon_7: Ref
   var anon_8: Ref
   var anon_9: Ref
   var anon_10: Ref
+  var v_ret_8: Ref
   var anon_11: Ref
+  var v_ret_9: Ref
+  var anon_0: Ref
   var anon_12: Ref
   var anon_13: Ref
-  var v_ret_8: Ref
-  var anon_2: Ref
   var anon_14: Ref
-  var v_ret_9: Ref
-  var anon_3: Ref
   var anon_15: Ref
   var anon_16: Ref
   var anon_17: Ref
-  var anon_18: Ref
-  var anon_19: Ref
-  var anon_20: Ref
+  inhale isSubtype(typeOf(m), ManyMembers())
   inhale isSubtype(typeOf(m), nullable(anyType()))
-  anon_0 := m
-  inhale isSubtype(typeOf(anon_0), ManyMembers())
-  anon_1 := anon_0
-  anon_8 := idFun(i(anon_1))
-  anon_7 := anon_8
-  inhale isSubtype(typeOf(anon_7), intType())
-  anon_11 := havoc(boolType())
-  anon_10 := idFun(anon_11)
-  anon_9 := anon_10
-  inhale isSubtype(typeOf(anon_9), boolType())
-  v_ret_4 := c(anon_1)
+  anon_5 := idFun(i(m))
+  anon_4 := anon_5
+  inhale isSubtype(typeOf(anon_4), intType())
+  inhale isSubtype(typeOf(m), ManyMembers())
+  inhale isSubtype(typeOf(m), nullable(anyType()))
+  anon_8 := havoc(boolType())
+  anon_7 := idFun(anon_8)
+  anon_6 := anon_7
+  inhale isSubtype(typeOf(anon_6), boolType())
+  inhale isSubtype(typeOf(m), ManyMembers())
+  inhale isSubtype(typeOf(m), nullable(anyType()))
+  v_ret_4 := c(m)
   goto lbl_ret_4
   label lbl_ret_4
-  anon_6 := v_ret_4
-  v_ret_3 := anon_6
+  anon_3 := v_ret_4
+  v_ret_3 := anon_3
   inhale isSubtype(typeOf(v_ret_3), nullable(anyType()))
   goto lbl_ret_3
   label lbl_ret_3
-  anon_5 := v_ret_3
-  anon_4 := anon_5
-  inhale isSubtype(typeOf(anon_4), ClassWithVar())
+  anon_2 := v_ret_3
+  anon_1 := anon_2
+  inhale isSubtype(typeOf(anon_1), ClassWithVar())
   inhale isSubtype(typeOf(m), nullable(anyType()))
-  anon_2 := m
-  anon_15 := idFun(anon_2)
-  anon_3 := anon_15
-  inhale isSubtype(typeOf(anon_3), ManyMembers())
-  anon_17 := idFun(i(anon_3))
-  anon_16 := anon_17
-  inhale isSubtype(typeOf(anon_16), intType())
-  anon_20 := havoc(boolType())
-  anon_19 := idFun(anon_20)
-  anon_18 := anon_19
-  inhale isSubtype(typeOf(anon_18), boolType())
-  v_ret_9 := c(anon_3)
+  anon_12 := idFun(m)
+  anon_0 := anon_12
+  inhale isSubtype(typeOf(anon_0), ManyMembers())
+  anon_14 := idFun(i(anon_0))
+  anon_13 := anon_14
+  inhale isSubtype(typeOf(anon_13), intType())
+  anon_17 := havoc(boolType())
+  anon_16 := idFun(anon_17)
+  anon_15 := anon_16
+  inhale isSubtype(typeOf(anon_15), boolType())
+  v_ret_9 := c(anon_0)
   goto lbl_ret_9
   label lbl_ret_9
-  anon_14 := v_ret_9
-  v_ret_8 := anon_14
+  anon_11 := v_ret_9
+  v_ret_8 := anon_11
   inhale isSubtype(typeOf(v_ret_8), nullable(anyType()))
   goto lbl_ret_8
   label lbl_ret_8
-  anon_13 := v_ret_8
-  anon_12 := anon_13
-  inhale isSubtype(typeOf(anon_12), ClassWithVar())
+  anon_10 := v_ret_8
+  anon_9 := anon_10
+  inhale isSubtype(typeOf(anon_9), ClassWithVar())
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
@@ -347,35 +331,34 @@ method checkEvaluatedOnce(par_i: Ref, mm: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(mm), ManyMembers())
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
+  var anon_1: Ref
   var anon_2: Ref
-  var anon_3: Ref
   var v_ret_3: Ref
   var anon_0: Ref
+  var anon_3: Ref
   var anon_4: Ref
   var anon_5: Ref
-  var anon_6: Ref
   var v_ret_4: Ref
-  var anon_1: Ref
-  anon_5 := havoc(boolType())
-  if (boolFromRef(anon_5)) {
-    anon_4 := intToRef(1)
+  anon_4 := havoc(boolType())
+  if (boolFromRef(anon_4)) {
+    anon_3 := intToRef(1)
   } else {
-    anon_4 := intToRef(-1)}
-  anon_0 := plusInts(par_i, anon_4)
+    anon_3 := intToRef(-1)}
+  anon_0 := plusInts(par_i, anon_3)
   inhale isSubtype(typeOf(anon_0), nullable(anyType()))
   inhale isSubtype(typeOf(anon_0), intType())
-  anon_1 := anon_0
-  assert intFromRef(anon_1) == intFromRef(anon_1)
+  inhale isSubtype(typeOf(anon_0), intType())
+  assert intFromRef(anon_0) == intFromRef(anon_0)
   label lbl_ret_4
   inhale isSubtype(typeOf(v_ret_4), unitType())
-  anon_6 := v_ret_4
-  v_ret_3 := anon_6
+  anon_5 := v_ret_4
+  v_ret_3 := anon_5
   inhale isSubtype(typeOf(v_ret_3), nullable(anyType()))
   goto lbl_ret_3
   label lbl_ret_3
-  anon_3 := v_ret_3
-  anon_2 := anon_3
-  inhale isSubtype(typeOf(anon_2), unitType())
+  anon_2 := v_ret_3
+  anon_1 := anon_2
+  inhale isSubtype(typeOf(anon_1), unitType())
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }

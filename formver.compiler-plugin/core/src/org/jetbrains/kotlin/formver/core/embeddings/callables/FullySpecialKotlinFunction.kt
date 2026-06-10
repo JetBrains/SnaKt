@@ -27,6 +27,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.buildFunctionPretype
 import org.jetbrains.kotlin.formver.core.embeddings.types.nullableAny
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
+import org.jetbrains.kotlin.formver.viper.ast.PermExp
 import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
@@ -209,6 +210,38 @@ object SpecialKotlinFunctions {
                 "Lambda body of forAll function must be present."
             )
             ctx.insertForAllFunctionCall(param.symbol, body)
+        }
+
+        val permissionCallableType = buildFunctionPretype {
+            withReturnType { nullableAny() }
+        }
+        withCallableType(permissionCallableType) {
+            addFunction(SpecialPackages.formver, name = "read") { _, _ -> PermissionLit(PermExp.WildcardPerm()) }
+            addFunction(SpecialPackages.formver, name = "write") { _, _ -> PermissionLit(PermExp.FullPerm()) }
+        }
+
+        val accCallableType = buildFunctionPretype {
+            withParam { nullableAny() }
+            withParam { nullableAny() }
+            withReturnType { boolean() }
+        }
+        addFunction(accCallableType, SpecialPackages.formver, name = "acc") { args, ctx ->
+            val source = (args.firstOrNull() as? WithPosition)?.source
+            val fieldAccess = args.first().ignoringCastsAndMetaNodes() as? FieldAccess ?: throw SnaktInternalException(
+                source,
+                "First argument of `acc` must be a field access like `x.a`."
+            )
+            val perm = when (val permArg = args.getOrNull(1)?.ignoringCastsAndMetaNodes()) {
+                null, NullLit -> PermExp.FullPerm()
+                is PermissionLit -> permArg.perm
+                else -> throw SnaktInternalException(
+                    source,
+                    "Second argument of `acc` must be `read()` or `write()`."
+                )
+            }
+            ctx.withNoScope {
+                AccEmbedding(fieldAccess.receiver, fieldAccess.field, perm)
+            }
         }
 
         val invariantsBuilderCallableType = buildFunctionPretype {

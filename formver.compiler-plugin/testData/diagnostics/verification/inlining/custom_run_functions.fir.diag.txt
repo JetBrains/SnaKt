@@ -128,84 +128,83 @@ method useRun() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var genericResult: Ref
+  var anon_9: Ref
   var anon_10: Ref
-  var anon_11: Ref
   var v_ret_3: Ref
-  var anon_12: Ref
+  var anon_11: Ref
   var v_ret_4: Ref
+  var anon_12: Ref
   var anon_13: Ref
-  var anon_14: Ref
   var v_ret_6: Ref
-  var anon_15: Ref
+  var anon_14: Ref
   var v_ret_7: Ref
+  var anon_15: Ref
   var anon_16: Ref
-  var anon_17: Ref
   var v_ret_9: Ref
-  var anon_18: Ref
+  var anon_17: Ref
   var v_ret_10: Ref
   var capturedResult: Ref
+  var anon_18: Ref
   var anon_19: Ref
-  var anon_20: Ref
   var v_ret_12: Ref
-  var anon_21: Ref
+  var anon_20: Ref
   var v_ret_13: Ref
+  var anon_21: Ref
   var anon_22: Ref
-  var anon_23: Ref
   var v_ret_15: Ref
-  var anon_24: Ref
+  var anon_23: Ref
   var v_ret_16: Ref
+  var anon_24: Ref
   var anon_25: Ref
-  var anon_26: Ref
   var v_ret_18: Ref
-  var anon_27: Ref
+  var anon_26: Ref
   var v_ret_19: Ref
   var intResult: Ref
-  var anon_28: Ref
+  var anon_27: Ref
   var v_ret_22: Ref
   var v_ret_23: Ref
-  var anon_29: Ref
+  var anon_28: Ref
   var v_ret_25: Ref
   var v_ret_26: Ref
-  var anon_30: Ref
+  var anon_29: Ref
   var v_ret_28: Ref
   var v_ret_29: Ref
   var stdlibResult: Ref
+  var anon_30: Ref
   var anon_31: Ref
-  var anon_32: Ref
   var v_ret_32: Ref
-  var anon_33: Ref
+  var anon_32: Ref
   var v_ret_33: Ref
+  var anon_33: Ref
   var anon_34: Ref
-  var anon_35: Ref
   var v_ret_35: Ref
-  var anon_36: Ref
+  var anon_35: Ref
   var v_ret_36: Ref
+  var anon_36: Ref
   var anon_37: Ref
-  var anon_38: Ref
   var v_ret_38: Ref
-  var anon_39: Ref
+  var anon_38: Ref
   var v_ret_39: Ref
   var doubleIntRunResult: Ref
-  var anon_40: Ref
+  var anon_39: Ref
   var v_ret_42: Ref
   var anon_0: Ref
   var v_ret_44: Ref
   var anon_1: Ref
   var v_ret_43: Ref
   var genericReceiverResult: Ref
+  var anon_40: Ref
   var anon_41: Ref
-  var anon_42: Ref
   var v_ret_47: Ref
   var anon_2: Ref
-  var anon_43: Ref
+  var anon_42: Ref
   var v_ret_48: Ref
-  var anon_3: Ref
   var cond1: Ref
   var v_ret_51: Ref
   var l30_result: Ref
   var v_ret_52: Ref
   var cond2: Ref
-  var anon_44: Ref
+  var anon_43: Ref
   var v_ret_54: Ref
   var l32_result: Ref
   var v_ret_55: Ref
@@ -213,158 +212,158 @@ method useRun() returns (v_ret_0: Ref)
   var v_ret_58: Ref
   var l34_result: Ref
   var v_ret_59: Ref
-  var anon_4: Ref
+  var anon_3: Ref
   var cond4: Ref
-  var anon_45: Ref
+  var anon_44: Ref
   var v_ret_61: Ref
   var l36_result: Ref
   var v_ret_62: Ref
-  var anon_5: Ref
+  var anon_4: Ref
   var cond5: Ref
   var v_ret_65: Ref
   var l38_result: Ref
   var v_ret_66: Ref
-  var anon_6: Ref
+  var anon_5: Ref
   var cond6: Ref
   var v_ret_68: Ref
   var l40_result: Ref
   var v_ret_69: Ref
-  var anon_7: Ref
+  var anon_6: Ref
   var cond7: Ref
   var v_ret_72: Ref
   var l42_result: Ref
   var v_ret_74: Ref
-  var anon_9: Ref
-  var v_ret_73: Ref
   var anon_8: Ref
+  var v_ret_73: Ref
+  var anon_7: Ref
   v_ret_4 := intToRef(1)
   goto lbl_ret_4
   label lbl_ret_4
-  anon_12 := v_ret_4
-  v_ret_3 := anon_12
+  anon_11 := v_ret_4
+  v_ret_3 := anon_11
   inhale isSubtype(typeOf(v_ret_3), nullable(anyType()))
   goto lbl_ret_3
   label lbl_ret_3
-  anon_11 := v_ret_3
-  anon_10 := anon_11
-  inhale isSubtype(typeOf(anon_10), intType())
+  anon_10 := v_ret_3
+  anon_9 := anon_10
+  inhale isSubtype(typeOf(anon_9), intType())
   v_ret_7 := intToRef(2)
   goto lbl_ret_7
   label lbl_ret_7
-  anon_15 := v_ret_7
-  v_ret_6 := anon_15
+  anon_14 := v_ret_7
+  v_ret_6 := anon_14
   inhale isSubtype(typeOf(v_ret_6), nullable(anyType()))
   goto lbl_ret_6
   label lbl_ret_6
-  anon_14 := v_ret_6
-  anon_13 := anon_14
-  inhale isSubtype(typeOf(anon_13), intType())
+  anon_13 := v_ret_6
+  anon_12 := anon_13
+  inhale isSubtype(typeOf(anon_12), intType())
   v_ret_10 := intToRef(3)
   goto lbl_ret_10
   label lbl_ret_10
-  anon_18 := v_ret_10
-  v_ret_9 := anon_18
+  anon_17 := v_ret_10
+  v_ret_9 := anon_17
   inhale isSubtype(typeOf(v_ret_9), nullable(anyType()))
   goto lbl_ret_9
   label lbl_ret_9
-  anon_17 := v_ret_9
-  anon_16 := anon_17
-  inhale isSubtype(typeOf(anon_16), intType())
-  genericResult := boolToRef(intFromRef(anon_10) + intFromRef(anon_13) ==
-    intFromRef(anon_16))
+  anon_16 := v_ret_9
+  anon_15 := anon_16
+  inhale isSubtype(typeOf(anon_15), intType())
+  genericResult := boolToRef(intFromRef(anon_9) + intFromRef(anon_12) ==
+    intFromRef(anon_15))
   v_ret_13 := intToRef(1)
   goto lbl_ret_13
   label lbl_ret_13
-  anon_21 := v_ret_13
-  v_ret_12 := anon_21
+  anon_20 := v_ret_13
+  v_ret_12 := anon_20
   inhale isSubtype(typeOf(v_ret_12), nullable(anyType()))
   goto lbl_ret_12
   label lbl_ret_12
-  anon_20 := v_ret_12
-  anon_19 := anon_20
-  inhale isSubtype(typeOf(anon_19), intType())
+  anon_19 := v_ret_12
+  anon_18 := anon_19
+  inhale isSubtype(typeOf(anon_18), intType())
   v_ret_16 := intToRef(2)
   goto lbl_ret_16
   label lbl_ret_16
-  anon_24 := v_ret_16
-  v_ret_15 := anon_24
+  anon_23 := v_ret_16
+  v_ret_15 := anon_23
   inhale isSubtype(typeOf(v_ret_15), nullable(anyType()))
   goto lbl_ret_15
   label lbl_ret_15
-  anon_23 := v_ret_15
-  anon_22 := anon_23
-  inhale isSubtype(typeOf(anon_22), intType())
+  anon_22 := v_ret_15
+  anon_21 := anon_22
+  inhale isSubtype(typeOf(anon_21), intType())
   v_ret_19 := intToRef(3)
   goto lbl_ret_19
   label lbl_ret_19
-  anon_27 := v_ret_19
-  v_ret_18 := anon_27
+  anon_26 := v_ret_19
+  v_ret_18 := anon_26
   inhale isSubtype(typeOf(v_ret_18), nullable(anyType()))
   goto lbl_ret_18
   label lbl_ret_18
-  anon_26 := v_ret_18
-  anon_25 := anon_26
-  inhale isSubtype(typeOf(anon_25), intType())
-  capturedResult := boolToRef(intFromRef(anon_19) + intFromRef(anon_22) ==
-    intFromRef(anon_25))
+  anon_25 := v_ret_18
+  anon_24 := anon_25
+  inhale isSubtype(typeOf(anon_24), intType())
+  capturedResult := boolToRef(intFromRef(anon_18) + intFromRef(anon_21) ==
+    intFromRef(anon_24))
   v_ret_23 := intToRef(1)
   goto lbl_ret_23
   label lbl_ret_23
   v_ret_22 := v_ret_23
   goto lbl_ret_22
   label lbl_ret_22
-  anon_28 := v_ret_22
+  anon_27 := v_ret_22
   v_ret_26 := intToRef(2)
   goto lbl_ret_26
   label lbl_ret_26
   v_ret_25 := v_ret_26
   goto lbl_ret_25
   label lbl_ret_25
-  anon_29 := v_ret_25
+  anon_28 := v_ret_25
   v_ret_29 := intToRef(3)
   goto lbl_ret_29
   label lbl_ret_29
   v_ret_28 := v_ret_29
   goto lbl_ret_28
   label lbl_ret_28
-  anon_30 := v_ret_28
-  intResult := boolToRef(intFromRef(anon_28) + intFromRef(anon_29) ==
-    intFromRef(anon_30))
+  anon_29 := v_ret_28
+  intResult := boolToRef(intFromRef(anon_27) + intFromRef(anon_28) ==
+    intFromRef(anon_29))
   v_ret_33 := intToRef(1)
   goto lbl_ret_33
   label lbl_ret_33
-  anon_33 := v_ret_33
-  v_ret_32 := anon_33
+  anon_32 := v_ret_33
+  v_ret_32 := anon_32
   inhale isSubtype(typeOf(v_ret_32), nullable(anyType()))
   goto lbl_ret_32
   label lbl_ret_32
-  anon_32 := v_ret_32
-  anon_31 := anon_32
-  inhale isSubtype(typeOf(anon_31), intType())
+  anon_31 := v_ret_32
+  anon_30 := anon_31
+  inhale isSubtype(typeOf(anon_30), intType())
   v_ret_36 := intToRef(2)
   goto lbl_ret_36
   label lbl_ret_36
-  anon_36 := v_ret_36
-  v_ret_35 := anon_36
+  anon_35 := v_ret_36
+  v_ret_35 := anon_35
   inhale isSubtype(typeOf(v_ret_35), nullable(anyType()))
   goto lbl_ret_35
   label lbl_ret_35
-  anon_35 := v_ret_35
-  anon_34 := anon_35
-  inhale isSubtype(typeOf(anon_34), intType())
+  anon_34 := v_ret_35
+  anon_33 := anon_34
+  inhale isSubtype(typeOf(anon_33), intType())
   v_ret_39 := intToRef(3)
   goto lbl_ret_39
   label lbl_ret_39
-  anon_39 := v_ret_39
-  v_ret_38 := anon_39
+  anon_38 := v_ret_39
+  v_ret_38 := anon_38
   inhale isSubtype(typeOf(v_ret_38), nullable(anyType()))
   goto lbl_ret_38
   label lbl_ret_38
-  anon_38 := v_ret_38
-  anon_37 := anon_38
-  inhale isSubtype(typeOf(anon_37), intType())
-  stdlibResult := boolToRef(intFromRef(anon_31) + intFromRef(anon_34) ==
-    intFromRef(anon_37))
+  anon_37 := v_ret_38
+  anon_36 := anon_37
+  inhale isSubtype(typeOf(anon_36), intType())
+  stdlibResult := boolToRef(intFromRef(anon_30) + intFromRef(anon_33) ==
+    intFromRef(anon_36))
   anon_0 := intToRef(1)
   v_ret_43 := plusInts(anon_0, intToRef(1))
   goto lbl_ret_43
@@ -376,24 +375,23 @@ method useRun() returns (v_ret_0: Ref)
   v_ret_42 := v_ret_44
   goto lbl_ret_42
   label lbl_ret_42
-  anon_40 := v_ret_42
-  doubleIntRunResult := boolToRef(intFromRef(anon_40) == 3)
+  anon_39 := v_ret_42
+  doubleIntRunResult := boolToRef(intFromRef(anon_39) == 3)
   anon_2 := intToRef(1)
   inhale isSubtype(typeOf(anon_2), nullable(anyType()))
   inhale isSubtype(typeOf(anon_2), intType())
-  anon_3 := anon_2
-  v_ret_48 := plusInts(anon_3, intToRef(2))
+  v_ret_48 := plusInts(anon_2, intToRef(2))
   goto lbl_ret_48
   label lbl_ret_48
-  anon_43 := v_ret_48
-  v_ret_47 := anon_43
+  anon_42 := v_ret_48
+  v_ret_47 := anon_42
   inhale isSubtype(typeOf(v_ret_47), nullable(anyType()))
   goto lbl_ret_47
   label lbl_ret_47
-  anon_42 := v_ret_47
-  anon_41 := anon_42
-  inhale isSubtype(typeOf(anon_41), intType())
-  genericReceiverResult := boolToRef(intFromRef(anon_41) == 3)
+  anon_41 := v_ret_47
+  anon_40 := anon_41
+  inhale isSubtype(typeOf(anon_40), intType())
+  genericReceiverResult := boolToRef(intFromRef(anon_40) == 3)
   v_ret_52 := plusInts(intToRef(1), intToRef(2))
   goto lbl_ret_52
   label lbl_ret_52
@@ -409,10 +407,10 @@ method useRun() returns (v_ret_0: Ref)
   v_ret_54 := boolToRef(intFromRef(l32_result) == 3)
   goto lbl_ret_54
   label lbl_ret_54
-  anon_44 := v_ret_54
-  cond2 := notBool(anon_44)
-  anon_4 := intToRef(1)
-  v_ret_59 := plusInts(anon_4, intToRef(2))
+  anon_43 := v_ret_54
+  cond2 := notBool(anon_43)
+  anon_3 := intToRef(1)
+  v_ret_59 := plusInts(anon_3, intToRef(2))
   goto lbl_ret_59
   label lbl_ret_59
   l34_result := v_ret_59
@@ -420,18 +418,18 @@ method useRun() returns (v_ret_0: Ref)
   goto lbl_ret_58
   label lbl_ret_58
   cond3 := v_ret_58
-  anon_5 := intToRef(1)
-  v_ret_62 := anon_5
+  anon_4 := intToRef(1)
+  v_ret_62 := anon_4
   goto lbl_ret_62
   label lbl_ret_62
   l36_result := v_ret_62
   v_ret_61 := boolToRef(intFromRef(l36_result) == 3)
   goto lbl_ret_61
   label lbl_ret_61
-  anon_45 := v_ret_61
-  cond4 := notBool(anon_45)
-  anon_6 := intToRef(1)
-  v_ret_66 := plusInts(anon_6, intToRef(2))
+  anon_44 := v_ret_61
+  cond4 := notBool(anon_44)
+  anon_5 := intToRef(1)
+  v_ret_66 := plusInts(anon_5, intToRef(2))
   goto lbl_ret_66
   label lbl_ret_66
   l38_result := v_ret_66
@@ -439,8 +437,8 @@ method useRun() returns (v_ret_0: Ref)
   goto lbl_ret_65
   label lbl_ret_65
   cond5 := v_ret_65
-  anon_7 := intToRef(1)
-  v_ret_69 := plusInts(anon_7, intToRef(2))
+  anon_6 := intToRef(1)
+  v_ret_69 := plusInts(anon_6, intToRef(2))
   goto lbl_ret_69
   label lbl_ret_69
   l40_result := v_ret_69
@@ -448,12 +446,12 @@ method useRun() returns (v_ret_0: Ref)
   goto lbl_ret_68
   label lbl_ret_68
   cond6 := v_ret_68
-  anon_8 := intToRef(1)
-  v_ret_73 := plusInts(anon_8, intToRef(1))
+  anon_7 := intToRef(1)
+  v_ret_73 := plusInts(anon_7, intToRef(1))
   goto lbl_ret_73
   label lbl_ret_73
-  anon_9 := v_ret_73
-  v_ret_74 := plusInts(anon_9, intToRef(1))
+  anon_8 := v_ret_73
+  v_ret_74 := plusInts(anon_8, intToRef(1))
   goto lbl_ret_74
   label lbl_ret_74
   l42_result := v_ret_74
@@ -485,37 +483,39 @@ method complexScenario(par_arg: Ref) returns (v_ret_0: Ref)
   ensures boolFromRef(v_ret_0) == true ==> boolFromRef(par_arg)
   ensures boolFromRef(v_ret_0) == false ==> !boolFromRef(par_arg)
 {
-  var anon_11: Ref
-  var anon_12: Ref
+  var anon_5: Ref
+  var anon_6: Ref
   var v_ret_4: Ref
   if (boolFromRef(par_arg)) {
-    var anon_13: Ref
+    var anon_7: Ref
     var v_ret_5: Ref
-    var anon_14: Ref
+    var anon_8: Ref
     var v_ret_8: Ref
     var l5_result: Ref
     var v_ret_9: Ref
     var anon_0: Ref
-    var anon_15: Ref
+    var anon_9: Ref
     var v_ret_12: Ref
-    var anon_1: Ref
-    var anon_16: Ref
+    var anon_10: Ref
     var v_ret_13: Ref
-    var anon_2: Ref
     var v_ret_16: Ref
     var v_ret_18: Ref
-    var anon_3: Ref
+    var anon_1: Ref
     var v_ret_17: Ref
     anon_0 := intToRef(1)
+    inhale isSubtype(typeOf(anon_0), intType())
     inhale isSubtype(typeOf(anon_0), nullable(anyType()))
-    anon_1 := anon_0
-    inhale isSubtype(typeOf(anon_1), intType())
-    anon_2 := anon_1
-    v_ret_17 := plusInts(anon_2, intToRef(1))
+    inhale isSubtype(typeOf(anon_0), intType())
+    inhale isSubtype(typeOf(anon_0), nullable(anyType()))
+    inhale isSubtype(typeOf(anon_0), intType())
+    inhale isSubtype(typeOf(anon_0), nullable(anyType()))
+    inhale isSubtype(typeOf(anon_0), intType())
+    inhale isSubtype(typeOf(anon_0), nullable(anyType()))
+    v_ret_17 := plusInts(anon_0, intToRef(1))
     goto lbl_ret_17
     label lbl_ret_17
-    anon_3 := v_ret_17
-    v_ret_18 := plusInts(anon_3, intToRef(1))
+    anon_1 := v_ret_17
+    v_ret_18 := plusInts(anon_1, intToRef(1))
     goto lbl_ret_18
     label lbl_ret_18
     v_ret_16 := v_ret_18
@@ -524,13 +524,13 @@ method complexScenario(par_arg: Ref) returns (v_ret_0: Ref)
     v_ret_13 := v_ret_16
     goto lbl_ret_13
     label lbl_ret_13
-    anon_16 := v_ret_13
-    v_ret_12 := anon_16
+    anon_10 := v_ret_13
+    v_ret_12 := anon_10
     inhale isSubtype(typeOf(v_ret_12), nullable(anyType()))
     goto lbl_ret_12
     label lbl_ret_12
-    anon_15 := v_ret_12
-    v_ret_9 := anon_15
+    anon_9 := v_ret_12
+    v_ret_9 := anon_9
     inhale isSubtype(typeOf(v_ret_9), intType())
     goto lbl_ret_9
     label lbl_ret_9
@@ -538,95 +538,87 @@ method complexScenario(par_arg: Ref) returns (v_ret_0: Ref)
     v_ret_8 := boolToRef(intFromRef(l5_result) == 3)
     goto lbl_ret_8
     label lbl_ret_8
-    anon_14 := v_ret_8
-    v_ret_5 := anon_14
+    anon_8 := v_ret_8
+    v_ret_5 := anon_8
     goto lbl_ret_5
     label lbl_ret_5
-    anon_13 := v_ret_5
-    v_ret_4 := anon_13
+    anon_7 := v_ret_5
+    v_ret_4 := anon_7
     inhale isSubtype(typeOf(v_ret_4), nullable(anyType()))
   } else {
-    var anon_17: Ref
-    anon_17 := nullValue()
-    v_ret_4 := anon_17
+    var anon_11: Ref
+    anon_11 := nullValue()
+    v_ret_4 := anon_11
   }
   goto lbl_ret_4
   label lbl_ret_4
-  anon_12 := v_ret_4
-  anon_11 := anon_12
-  inhale isSubtype(typeOf(anon_11), nullable(boolType()))
-  if (anon_11 != nullValue()) {
-    v_ret_0 := anon_11
+  anon_6 := v_ret_4
+  anon_5 := anon_6
+  inhale isSubtype(typeOf(anon_5), nullable(boolType()))
+  if (anon_5 != nullValue()) {
+    v_ret_0 := anon_5
   } else {
-    var anon_18: Ref
+    var anon_12: Ref
     var v_ret_21: Ref
-    var anon_19: Ref
+    var anon_13: Ref
     var v_ret_22: Ref
     var v_ret_25: Ref
     var l15_result: Ref
     var v_ret_26: Ref
-    var anon_4: Ref
-    var anon_20: Ref
+    var anon_2: Ref
+    var anon_14: Ref
     var v_ret_28: Ref
-    var anon_5: Ref
-    var anon_21: Ref
+    var anon_15: Ref
     var v_ret_29: Ref
-    var anon_6: Ref
-    var anon_22: Ref
+    var anon_16: Ref
     var v_ret_31: Ref
-    var anon_7: Ref
-    var anon_23: Ref
+    var anon_3: Ref
+    var anon_17: Ref
     var v_ret_32: Ref
-    var anon_8: Ref
-    var anon_24: Ref
+    var anon_18: Ref
     var v_ret_34: Ref
-    var anon_9: Ref
-    var anon_25: Ref
+    var anon_4: Ref
+    var anon_19: Ref
     var v_ret_35: Ref
-    var anon_10: Ref
-    anon_4 := intToRef(1)
+    anon_2 := intToRef(1)
+    inhale isSubtype(typeOf(anon_2), intType())
+    inhale isSubtype(typeOf(anon_2), nullable(anyType()))
+    anon_3 := plusInts(anon_2, intToRef(1))
+    inhale isSubtype(typeOf(anon_3), nullable(anyType()))
+    inhale isSubtype(typeOf(anon_3), intType())
+    anon_4 := plusInts(anon_3, intToRef(1))
     inhale isSubtype(typeOf(anon_4), nullable(anyType()))
-    anon_5 := anon_4
-    inhale isSubtype(typeOf(anon_5), intType())
-    anon_6 := anon_5
-    anon_7 := plusInts(anon_6, intToRef(1))
-    inhale isSubtype(typeOf(anon_7), nullable(anyType()))
-    inhale isSubtype(typeOf(anon_7), intType())
-    anon_8 := anon_7
-    anon_9 := plusInts(anon_8, intToRef(1))
-    inhale isSubtype(typeOf(anon_9), nullable(anyType()))
-    inhale isSubtype(typeOf(anon_9), intType())
-    anon_10 := anon_9
-    v_ret_35 := plusInts(anon_10, intToRef(1))
+    inhale isSubtype(typeOf(anon_4), intType())
+    v_ret_35 := plusInts(anon_4, intToRef(1))
     goto lbl_ret_35
     label lbl_ret_35
-    anon_25 := v_ret_35
-    v_ret_34 := anon_25
+    anon_19 := v_ret_35
+    v_ret_34 := anon_19
     inhale isSubtype(typeOf(v_ret_34), nullable(anyType()))
     goto lbl_ret_34
     label lbl_ret_34
-    anon_24 := v_ret_34
-    v_ret_32 := anon_24
+    anon_18 := v_ret_34
+    v_ret_32 := anon_18
     inhale isSubtype(typeOf(v_ret_32), intType())
     goto lbl_ret_32
     label lbl_ret_32
-    anon_23 := v_ret_32
-    v_ret_31 := anon_23
+    anon_17 := v_ret_32
+    v_ret_31 := anon_17
     inhale isSubtype(typeOf(v_ret_31), nullable(anyType()))
     goto lbl_ret_31
     label lbl_ret_31
-    anon_22 := v_ret_31
-    v_ret_29 := anon_22
+    anon_16 := v_ret_31
+    v_ret_29 := anon_16
     inhale isSubtype(typeOf(v_ret_29), intType())
     goto lbl_ret_29
     label lbl_ret_29
-    anon_21 := v_ret_29
-    v_ret_28 := anon_21
+    anon_15 := v_ret_29
+    v_ret_28 := anon_15
     inhale isSubtype(typeOf(v_ret_28), nullable(anyType()))
     goto lbl_ret_28
     label lbl_ret_28
-    anon_20 := v_ret_28
-    v_ret_26 := anon_20
+    anon_14 := v_ret_28
+    v_ret_26 := anon_14
     inhale isSubtype(typeOf(v_ret_26), intType())
     goto lbl_ret_26
     label lbl_ret_26
@@ -637,13 +629,13 @@ method complexScenario(par_arg: Ref) returns (v_ret_0: Ref)
     v_ret_22 := v_ret_25
     goto lbl_ret_22
     label lbl_ret_22
-    anon_19 := v_ret_22
-    v_ret_21 := anon_19
+    anon_13 := v_ret_22
+    v_ret_21 := anon_13
     inhale isSubtype(typeOf(v_ret_21), nullable(anyType()))
     goto lbl_ret_21
     label lbl_ret_21
-    anon_18 := v_ret_21
-    v_ret_0 := anon_18
+    anon_12 := v_ret_21
+    v_ret_0 := anon_12
     inhale isSubtype(typeOf(v_ret_0), boolType())
   }
   goto lbl_ret_0
