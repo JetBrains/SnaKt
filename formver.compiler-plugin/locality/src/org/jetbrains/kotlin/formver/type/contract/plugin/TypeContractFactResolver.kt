@@ -14,14 +14,23 @@ import org.jetbrains.kotlin.fir.types.lowerBoundIfFlexible
 import org.jetbrains.kotlin.fir.types.returnType
 import org.jetbrains.kotlin.fir.types.valueParameterTypesIncludingReceiver
 
-fun interface ConeTypeTypeFactResolver<Type> {
-    fun resolveTypeOf(type: ConeKotlinType, session: FirSession): Type
+fun interface ConeTypeTypeFactResolver<TypeFact> {
+    fun resolveTypeOf(type: ConeKotlinType, session: FirSession): TypeFact
 }
 
-class TypeContractResolver<Type>(
-    private val typeResolver: ConeTypeTypeFactResolver<Type>,
+/**
+ * Resolves the type contract fact of an expression.
+ *
+ * @param TypeFact the type-fact class of the expression.
+ * @param typeTypeFactResolver the resolver for resolving the type-fact from a parameter type.
+ *
+ * Returns `null` if the expression doesn't evaluate to a function, otherwise returns a type contract with the parameter
+ * type-facts extracted by [typeTypeFactResolver].
+ */
+class TypeContractFactResolver<TypeFact>(
+    private val typeTypeFactResolver: ConeTypeTypeFactResolver<TypeFact>,
 ) {
-    fun resolveContractOf(type: ConeKotlinType, session: FirSession): TypeContractFact<Type>? {
+    fun resolveContractOf(type: ConeKotlinType, session: FirSession): TypeContractFact<TypeFact>? {
         val functionType = type.fullyExpandedType(session).lowerBoundIfFlexible() as? ConeClassLikeType
             ?: return null
 
@@ -30,7 +39,7 @@ class TypeContractResolver<Type>(
         return TypeContractFact(
             parameters = functionType.valueParameterTypesIncludingReceiver(session).map { parameterType ->
                 TypeContractFact.ParameterType(
-                    type = typeResolver.resolveTypeOf(parameterType, session),
+                    type = typeTypeFactResolver.resolveTypeOf(parameterType, session),
                     contract = resolveContractOf(parameterType, session),
                 )
             },

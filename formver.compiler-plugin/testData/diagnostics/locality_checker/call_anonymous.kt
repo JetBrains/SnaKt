@@ -34,6 +34,14 @@ fun `call local-local-argument lambda directly with local arguments`(
     f(x, y)
 }
 
+fun `call local-local-argument lambda directly with local arguments using explicit invoke`(
+    x: @Borrowed Any,
+    y: @Borrowed Any,
+    f: (@Borrowed Any, @Borrowed Any) -> Unit
+) {
+    f.invoke(x, y)
+}
+
 fun `call global-local-argument lambda directly with local arguments`(
     x: @Borrowed Any,
     y: @Borrowed Any,

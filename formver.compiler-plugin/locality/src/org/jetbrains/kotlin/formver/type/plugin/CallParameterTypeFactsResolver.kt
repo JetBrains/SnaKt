@@ -20,45 +20,57 @@ import kotlin.collections.orEmpty
 
 /**
  * Resolves the types of the invoke parameters from the receiver expression.
+ *
+ * These include the types of the context and receiver parameters. The type-facts are to be returned in the order:
+ * context parameters, receiver parameter, value parameters.
  */
-fun interface InvokeParameterTypesResolver<Type> {
+fun interface InvokeParameterTypeFactsResolver<TypeFact> {
     context(context: CheckerContext)
-    fun resolveInvokeParameters(receiver: FirExpression): List<Type>?
+    fun resolveInvokeParameters(receiver: FirExpression): List<TypeFact>?
 }
 
 /**
  * Resolves the types of the parameters of a call.
  *
  * @param TypeFact the type-fact class of the parameters.
- * @param parameterDeclaredTypeResolver the resolver for resolving the declared type of a call parameter.
- * @param invokeParameterTypesResolver the resolver for resolving the types of the parameters of an invoke call.
+ * @param declaredParameterTypeFactResolver the resolver for resolving the declared type of a call parameter.
+ * @param invokeParameterTypeFactsResolver the resolver for resolving the types of the parameters of an invoke call.
  */
 class CallParameterTypeFactsResolver<TypeFact>(
-    private val parameterDeclaredTypeResolver: SymbolTypeFactResolver<TypeFact, FirValueParameterSymbol>,
-    private val invokeParameterTypesResolver: InvokeParameterTypesResolver<TypeFact>
+    private val declaredParameterTypeFactResolver: SymbolTypeFactResolver<TypeFact, FirValueParameterSymbol>,
+    private val invokeParameterTypeFactsResolver: InvokeParameterTypeFactsResolver<TypeFact>
 ) {
     private val FirCall.invokeDispatchReceiver: FirExpression?
         get() =
             when (this) {
                 is FirImplicitInvokeCall -> dispatchReceiver
+                // This can happen if .invoke is called explicitly.
                 is FirFunctionCall if calleeReference.name == OperatorNameConventions.INVOKE -> dispatchReceiver
                 else -> null
             }
 
+    /**
+     * Resolves the mapping between the argument expressions of [call] and their corresponding type-facts.
+     */
     context(_: CheckerContext)
     fun resolveParameterTypeFactsOf(call: FirCall): List<Pair<FirExpression, TypeFact>> {
         val invokeReceiver = call.invokeDispatchReceiver
 
         if (invokeReceiver != null) {
-            val argumentTypes = invokeParameterTypesResolver.resolveInvokeParameters(invokeReceiver)
+            val invokeParameterTypeFacts = invokeParameterTypeFactsResolver.resolveInvokeParameters(invokeReceiver)
 
-            if (argumentTypes != null) {
-                return call.arguments.zip(argumentTypes)
+            if (invokeParameterTypeFacts != null) {
+                // NOTE: In invoke calls context and receiver arguments are actually passed as explicit normal
+                // arguments. For example:
+                // val f: context (Any) (Any).(Any) -> (Any)
+                // with (1) { 2.f(3) } // Ok
+                // f(1,2,3) // Same
+                return call.arguments.zip(invokeParameterTypeFacts)
             }
         }
 
         return call.resolvedArgumentMapping?.map { (argument, parameter) ->
-            argument to parameterDeclaredTypeResolver.resolveTypeFactOf(parameter.symbol)
+            argument to declaredParameterTypeFactResolver.resolveTypeFactOf(parameter.symbol)
         }.orEmpty()
     }
 }

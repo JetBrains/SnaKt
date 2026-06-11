@@ -20,7 +20,7 @@ import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.formver.type.plugin.CallParameterTypeFactsResolver
 import org.jetbrains.kotlin.formver.type.plugin.ExpressionTypeFactResolver
-import org.jetbrains.kotlin.formver.type.plugin.InvokeParameterTypesResolver
+import org.jetbrains.kotlin.formver.type.plugin.InvokeParameterTypeFactsResolver
 import org.jetbrains.kotlin.formver.type.plugin.ReturnResultTypeFactResolver
 import org.jetbrains.kotlin.formver.type.plugin.UnifyingExpressionTypeFactResolver
 
@@ -68,7 +68,7 @@ object ReturnResultLocalityContractResolver : ReturnResultTypeFactResolver<Local
         expression.target.labeledElement.returnTypeRef.coneType.resolveLocalityContract(context.session)
 }
 
-private object InvokeParametersLocalityContractResolver : InvokeParameterTypesResolver<LocalityContract?> {
+private object InvokeParametersLocalityContractResolver : InvokeParameterTypeFactsResolver<LocalityContract?> {
     context(context: CheckerContext)
     override fun resolveInvokeParameters(receiver: FirExpression): List<LocalityContract?>? =
         receiver.resolveLocalityContract()?.parameters?.map { element -> element.contract }
