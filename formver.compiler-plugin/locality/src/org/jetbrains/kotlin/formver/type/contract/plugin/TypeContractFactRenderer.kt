@@ -7,18 +7,18 @@ package org.jetbrains.kotlin.formver.type.contract.plugin
 
 import org.jetbrains.kotlin.diagnostics.rendering.ContextIndependentParameterRenderer
 
-class TypeContractRenderer<Type>(
+class TypeContractFactRenderer<Type>(
     private val typeRenderer: ContextIndependentParameterRenderer<Type>
-) : ContextIndependentParameterRenderer<FunctionType<Type>?> {
-    override fun render(obj: FunctionType<Type>?): String =
+) : ContextIndependentParameterRenderer<TypeContractFact<Type>?> {
+    override fun render(obj: TypeContractFact<Type>?): String =
         obj?.renderContract() ?: "unknown"
 
-    private fun FunctionType<Type>.renderContract(): String =
+    private fun TypeContractFact<Type>.renderContract(): String =
         parameters.joinToString(prefix = "[", postfix = "]") { parameter ->
             parameter.renderElement()
         } + (result?.let { " -> ${it.renderContract()}" } ?: "")
 
-    private fun FunctionType.ParameterType<Type>.renderElement(): String {
+    private fun TypeContractFact.ParameterType<Type>.renderElement(): String {
         val renderedType = typeRenderer.render(type)
 
         return contract?.let { "($renderedType, ${it.renderContract()})" } ?: renderedType

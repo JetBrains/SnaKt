@@ -12,5 +12,5 @@ import org.jetbrains.kotlin.formver.type.contract.plugin.TypeContractResolver
 
 private val LocalityTypeContractResolver = TypeContractResolver { type, _ -> type.locality }
 
-fun ConeKotlinType.resolveLocalityContract(session: FirSession): LocalityContract =
+fun ConeKotlinType.resolveLocalityContract(session: FirSession): LocalityContract? =
     LocalityTypeContractResolver.resolveContractOf(this, session)

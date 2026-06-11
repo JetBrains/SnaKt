@@ -6,61 +6,61 @@
 package org.jetbrains.kotlin.formver.locality.contract.plugin
 
 import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
-import org.jetbrains.kotlin.formver.type.plugin.CallTypeChecker
 import org.jetbrains.kotlin.formver.locality.contract.plugin.LocalityContractErrors.CONTEXT_LOCALITY_CONTRACT_MISMATCH
 import org.jetbrains.kotlin.formver.locality.contract.plugin.LocalityContractErrors.LOCALITY_CONTRACT_MISMATCH
-import org.jetbrains.kotlin.formver.type.plugin.AssignmentTypeChecker
-import org.jetbrains.kotlin.formver.type.plugin.PropertyTypeChecker
-import org.jetbrains.kotlin.formver.type.plugin.QualifiedAccessTypeChecker
-import org.jetbrains.kotlin.formver.type.plugin.ReturnTypeChecker
-import org.jetbrains.kotlin.formver.type.plugin.ValueParameterTypeChecker
+import org.jetbrains.kotlin.formver.type.plugin.AssignmentTypeFactChecker
+import org.jetbrains.kotlin.formver.type.plugin.CallTypeFactChecker
+import org.jetbrains.kotlin.formver.type.plugin.PropertyTypeFactChecker
+import org.jetbrains.kotlin.formver.type.plugin.QualifiedAccessTypeFactChecker
+import org.jetbrains.kotlin.formver.type.plugin.ReturnTypeFactChecker
+import org.jetbrains.kotlin.formver.type.plugin.ValueParameterTypeFactChecker
 
-val AssignmentLocalityContractChecker = AssignmentTypeChecker(
+val AssignmentLocalityContractChecker = AssignmentTypeFactChecker(
     kind = MppCheckerKind.Common,
-    typeJudgment = LocalityContractJudgment,
-    expressionTypeResolver = ExpressionLocalityContractResolver,
+    typeFactJudgment = LocalityContractJudgment,
+    expressionTypeFactResolver = ExpressionLocalityContractResolver,
     diagnosticFactory = LOCALITY_CONTRACT_MISMATCH,
 )
 
-val CallLocalityContractChecker = CallTypeChecker(
+val CallLocalityContractChecker = CallTypeFactChecker(
     kind = MppCheckerKind.Common,
-    typeJudgment = LocalityContractJudgment,
-    expressionTypeResolver = ExpressionLocalityContractResolver,
-    callParametersTypeResolver = CallParametersLocalityContractResolver,
+    typeFactJudgment = LocalityContractJudgment,
+    expressionTypeFactResolver = ExpressionLocalityContractResolver,
+    callParameterTypeFactsResolver = CallParametersLocalityContractResolver,
     argumentDiagnosticFactory = LOCALITY_CONTRACT_MISMATCH,
     contextDiagnosticFactory = CONTEXT_LOCALITY_CONTRACT_MISMATCH
 )
 
-val PropertyLocalityContractChecker = PropertyTypeChecker(
+val PropertyLocalityContractChecker = PropertyTypeFactChecker(
     kind = MppCheckerKind.Common,
-    typeJudgment = LocalityContractJudgment,
-    expressionTypeResolver = ExpressionLocalityContractResolver,
-    variableTypeResolver = VariableLocalityContractResolver,
+    typeFactJudgment = LocalityContractJudgment,
+    expressionTypeFactResolver = ExpressionLocalityContractResolver,
+    variableTypeFactResolver = VariableLocalityContractResolver,
     diagnosticFactory = LOCALITY_CONTRACT_MISMATCH,
 )
 
-val QualifiedAccessLocalityContractChecker = QualifiedAccessTypeChecker(
+val QualifiedAccessLocalityContractChecker = QualifiedAccessTypeFactChecker(
     kind = MppCheckerKind.Common,
-    typeJudgment = LocalityContractJudgment,
-    expressionTypeResolver = ExpressionLocalityContractResolver,
-    receiverTypeResolver = ReceiverLocalityContractResolver,
-    variableTypeResolver = VariableLocalityContractResolver,
+    typeFactJudgment = LocalityContractJudgment,
+    expressionTypeFactResolver = ExpressionLocalityContractResolver,
+    receiverTypeFactResolver = ReceiverLocalityContractResolver,
+    variableTypeFactResolver = VariableLocalityContractResolver,
     receiverDiagnosticFactory = LOCALITY_CONTRACT_MISMATCH,
     contextArgumentDiagnosticFactory = CONTEXT_LOCALITY_CONTRACT_MISMATCH,
 )
 
-val ReturnLocalityContractChecker = ReturnTypeChecker(
+val ReturnLocalityContractChecker = ReturnTypeFactChecker(
     kind = MppCheckerKind.Common,
-    typeJudgment = LocalityContractJudgment,
-    expressionTypeResolver = ExpressionLocalityContractResolver,
-    returnResultTypeResolver = ReturnResultLocalityContractResolver,
+    typeFactJudgment = LocalityContractJudgment,
+    expressionTypeFactResolver = ExpressionLocalityContractResolver,
+    returnResultTypeFactResolver = ReturnResultLocalityContractResolver,
     diagnosticFactory = LOCALITY_CONTRACT_MISMATCH,
 )
 
-val ValueParameterLocalityContractChecker = ValueParameterTypeChecker(
+val ValueParameterLocalityContractChecker = ValueParameterTypeFactChecker(
     kind = MppCheckerKind.Common,
-    typeJudgment = LocalityContractJudgment,
-    expressionTypeResolver = ExpressionLocalityContractResolver,
-    parameterDeclaredTypeResolver = VariableLocalityContractResolver,
+    typeFactJudgment = LocalityContractJudgment,
+    expressionTypeFactResolver = ExpressionLocalityContractResolver,
+    parameterDeclaredTypeFactResolver = VariableLocalityContractResolver,
     diagnosticFactory = LOCALITY_CONTRACT_MISMATCH,
 )

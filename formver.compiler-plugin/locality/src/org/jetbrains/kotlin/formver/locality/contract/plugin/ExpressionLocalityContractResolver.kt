@@ -18,15 +18,15 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.fir.types.resolvedType
-import org.jetbrains.kotlin.formver.type.plugin.CallParametersTypeResolver
+import org.jetbrains.kotlin.formver.type.plugin.CallParameterTypeFactsResolver
+import org.jetbrains.kotlin.formver.type.plugin.ExpressionTypeFactResolver
 import org.jetbrains.kotlin.formver.type.plugin.InvokeParameterTypesResolver
-import org.jetbrains.kotlin.formver.type.plugin.ExpressionTypeResolver
-import org.jetbrains.kotlin.formver.type.plugin.ReturnResultTypeResolver
-import org.jetbrains.kotlin.formver.type.plugin.UnifyingExpressionTypeResolver
+import org.jetbrains.kotlin.formver.type.plugin.ReturnResultTypeFactResolver
+import org.jetbrains.kotlin.formver.type.plugin.UnifyingExpressionTypeFactResolver
 
-private object TerminalLocalityContractResolver : ExpressionTypeResolver<LocalityContract> {
+private object TerminalLocalityContractResolver : ExpressionTypeFactResolver<LocalityContract?> {
     context(context: CheckerContext)
-    override fun resolveTypeOf(expression: FirExpression): LocalityContract =
+    override fun resolveTypeFactOf(expression: FirExpression): LocalityContract? =
         when (expression) {
             is FirQualifiedAccessExpression ->
                 when (val symbol = expression.calleeReference.symbol) {
@@ -40,18 +40,18 @@ private object TerminalLocalityContractResolver : ExpressionTypeResolver<Localit
 }
 
 class ExpressionLocalityContractResolver(session: FirSession) :
-    ExpressionTypeResolver<LocalityContract> by UnifyingExpressionTypeResolver(
+    ExpressionTypeFactResolver<LocalityContract?> by UnifyingExpressionTypeFactResolver(
         session.firCachesFactory,
         LocalityContractUnifier,
         TerminalLocalityContractResolver
     ), FirExtensionSessionComponent(session) {
-    companion object : ExpressionTypeResolver<LocalityContract> {
+    companion object : ExpressionTypeFactResolver<LocalityContract?> {
         fun getFactory(): Factory =
             Factory { session -> ExpressionLocalityContractResolver(session) }
 
         context(context: CheckerContext)
-        override fun resolveTypeOf(expression: FirExpression): LocalityContract =
-            context.session.expressionLocalityContractResolver.resolveTypeOf(expression)
+        override fun resolveTypeFactOf(expression: FirExpression): LocalityContract? =
+            context.session.expressionLocalityContractResolver.resolveTypeFactOf(expression)
     }
 }
 
@@ -59,22 +59,22 @@ private val FirSession.expressionLocalityContractResolver: ExpressionLocalityCon
     by FirSession.sessionComponentAccessor()
 
 context(context: CheckerContext)
-fun FirExpression.resolveLocalityContract(): LocalityContract =
-    ExpressionLocalityContractResolver.resolveTypeOf(this)
+fun FirExpression.resolveLocalityContract(): LocalityContract? =
+    ExpressionLocalityContractResolver.resolveTypeFactOf(this)
 
-object ReturnResultLocalityContractResolver : ReturnResultTypeResolver<LocalityContract> {
+object ReturnResultLocalityContractResolver : ReturnResultTypeFactResolver<LocalityContract?> {
     context(context: CheckerContext)
-    override fun resolveResultTypeOf(expression: FirReturnExpression): LocalityContract =
+    override fun resolveResultTypeFactOf(expression: FirReturnExpression): LocalityContract? =
         expression.target.labeledElement.returnTypeRef.coneType.resolveLocalityContract(context.session)
 }
 
-private object InvokeParametersLocalityContractResolver : InvokeParameterTypesResolver<LocalityContract> {
+private object InvokeParametersLocalityContractResolver : InvokeParameterTypesResolver<LocalityContract?> {
     context(context: CheckerContext)
-    override fun resolveInvokeParameters(receiver: FirExpression): List<LocalityContract>? =
+    override fun resolveInvokeParameters(receiver: FirExpression): List<LocalityContract?>? =
         receiver.resolveLocalityContract()?.parameters?.map { element -> element.contract }
 }
 
-val CallParametersLocalityContractResolver = CallParametersTypeResolver(
+val CallParametersLocalityContractResolver = CallParameterTypeFactsResolver(
     VariableLocalityContractResolver,
     InvokeParametersLocalityContractResolver
 )

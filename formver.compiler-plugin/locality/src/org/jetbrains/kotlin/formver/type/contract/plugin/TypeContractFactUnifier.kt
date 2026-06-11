@@ -5,27 +5,27 @@
 
 package org.jetbrains.kotlin.formver.type.contract.plugin
 
-import org.jetbrains.kotlin.formver.type.plugin.TypeIntersector
-import org.jetbrains.kotlin.formver.type.plugin.TypeUnifier
+import org.jetbrains.kotlin.formver.type.plugin.TypeFactIntersector
+import org.jetbrains.kotlin.formver.type.plugin.TypeFactUnifier
 
 /**
- * Implementation of a [org.jetbrains.kotlin.formver.type.TypeUnifier] for a [FunctionType].
+ * Implementation of a [org.jetbrains.kotlin.formver.type.TypeFactUnifier] for a [TypeContractFact].
  *
  * This implementation intersects the types of the parameters between the unified contracts.
  *
  * @param Type the type class of the elements of the contract.
  * @param typeIntersector the type intersector to use for intersecting the input types of the elements.
  */
-class TypeContractUnifier<Type>(
-    private val typeIntersector: TypeIntersector<Type>,
-) : TypeUnifier<FunctionType<Type>?> {
-    override fun join(left: FunctionType<Type>?, right: FunctionType<Type>?): FunctionType<Type>? =
+class TypeContractFactUnifier<Type>(
+    private val typeIntersector: TypeFactIntersector<Type>,
+) : TypeFactUnifier<TypeContractFact<Type>?> {
+    override fun join(left: TypeContractFact<Type>?, right: TypeContractFact<Type>?): TypeContractFact<Type>? =
         when {
             left == null -> right
             right == null -> left
-            else -> FunctionType(
+            else -> TypeContractFact(
                 left.parameters.zip(right.parameters).map { (leftElement, rightElement) ->
-                    FunctionType.ParameterType(
+                    TypeContractFact.ParameterType(
                         typeIntersector.meet(leftElement.type, rightElement.type),
                         join(leftElement.contract, rightElement.contract)
                     )

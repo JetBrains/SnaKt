@@ -16,7 +16,8 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
-import org.jetbrains.kotlin.formver.type.plugin.CallParametersTypeResolver
+import org.jetbrains.kotlin.formver.locality.contract.plugin.resolveLocalityContract
+import org.jetbrains.kotlin.formver.type.plugin.CallParameterTypeFactsResolver
 import org.jetbrains.kotlin.formver.type.plugin.ExpressionTypeFactResolver
 import org.jetbrains.kotlin.formver.type.plugin.InvokeParameterTypesResolver
 import org.jetbrains.kotlin.formver.type.plugin.ReturnResultTypeFactResolver
@@ -78,7 +79,7 @@ object InvokeParametersLocalityResolver : InvokeParameterTypesResolver<Locality>
         receiver.resolveLocalityContract()?.parameters?.map { it.type }
 }
 
-val CallParametersLocalityResolver = CallParametersTypeResolver(
+val CallParametersLocalityResolver = CallParameterTypeFactsResolver(
     VariableLocalityResolver,
     InvokeParametersLocalityResolver
 )

@@ -13,20 +13,20 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirValueParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.fir.types.ConeErrorType
 import org.jetbrains.kotlin.fir.types.varargElementType
-import org.jetbrains.kotlin.formver.type.plugin.SymbolTypeResolver
+import org.jetbrains.kotlin.formver.type.plugin.SymbolTypeFactResolver
 
 context(context: CheckerContext)
-fun FirReceiverParameterSymbol.resolveLocalityContract(): LocalityContract =
+fun FirReceiverParameterSymbol.resolveLocalityContract(): LocalityContract? =
     resolvedType.resolveLocalityContract(context.session)
 
-object ReceiverLocalityContractResolver : SymbolTypeResolver<LocalityContract, FirReceiverParameterSymbol> {
+object ReceiverLocalityContractResolver : SymbolTypeFactResolver<LocalityContract?, FirReceiverParameterSymbol> {
     context(context: CheckerContext)
-    override fun resolveTypeOf(symbol: FirReceiverParameterSymbol): LocalityContract =
+    override fun resolveTypeFactOf(symbol: FirReceiverParameterSymbol): LocalityContract? =
         symbol.resolveLocalityContract()
 }
 
 context(context: CheckerContext)
-fun FirCallableSymbol<*>.resolveLocalityContract(): LocalityContract =
+fun FirCallableSymbol<*>.resolveLocalityContract(): LocalityContract? =
     when (this) {
         is FirVariableSymbol<*> -> {
             if (resolvedReturnType is ConeErrorType) return null
@@ -47,8 +47,8 @@ fun FirCallableSymbol<*>.resolveLocalityContract(): LocalityContract =
         else -> resolvedReturnType.resolveLocalityContract(context.session)
     }
 
-object VariableLocalityContractResolver : SymbolTypeResolver<LocalityContract, FirVariableSymbol<*>> {
+object VariableLocalityContractResolver : SymbolTypeFactResolver<LocalityContract?, FirVariableSymbol<*>> {
     context(context: CheckerContext)
-    override fun resolveTypeOf(symbol: FirVariableSymbol<*>): LocalityContract =
+    override fun resolveTypeFactOf(symbol: FirVariableSymbol<*>): LocalityContract? =
         symbol.resolveLocalityContract()
 }

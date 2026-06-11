@@ -6,20 +6,18 @@
 package org.jetbrains.kotlin.formver.type.contract.plugin
 
 /**
- * Recursive contract representation based on [Type].
+ * Recursive function-fact representation based on [TypeFact].
  *
- * @param Type the type of the contract [ParameterType]s.
+ * @param TypeFact the type of the contract [ParameterType]s.
  * @param parameters the list of contract [ParameterType]s referring to the input parameters.
  * @param result the contract [ParameterType] referring to the return value.
  */
-data class FunctionType<Type>(
-    val parameters: List<ParameterType<Type>>,
-    val result: FunctionType<Type>?,
+data class TypeContractFact<TypeFact>(
+    val parameters: List<ParameterType<TypeFact>>,
+    val result: TypeContractFact<TypeFact>?,
 ) {
     data class ParameterType<Type>(
         val type: Type,
-        val contract: FunctionType<Type>?
+        val contract: TypeContractFact<Type>?
     )
 }
-
-typealias TypeContract<Type> = FunctionType<Type>?

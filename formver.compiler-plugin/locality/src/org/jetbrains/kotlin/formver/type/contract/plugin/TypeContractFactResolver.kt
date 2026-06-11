@@ -14,22 +14,22 @@ import org.jetbrains.kotlin.fir.types.lowerBoundIfFlexible
 import org.jetbrains.kotlin.fir.types.returnType
 import org.jetbrains.kotlin.fir.types.valueParameterTypesIncludingReceiver
 
-fun interface ConeTypeTypeResolver<Type> {
+fun interface ConeTypeTypeFactResolver<Type> {
     fun resolveTypeOf(type: ConeKotlinType, session: FirSession): Type
 }
 
 class TypeContractResolver<Type>(
-    private val typeResolver: ConeTypeTypeResolver<Type>,
+    private val typeResolver: ConeTypeTypeFactResolver<Type>,
 ) {
-    fun resolveContractOf(type: ConeKotlinType, session: FirSession): TypeContract<Type> {
+    fun resolveContractOf(type: ConeKotlinType, session: FirSession): TypeContractFact<Type>? {
         val functionType = type.fullyExpandedType(session).lowerBoundIfFlexible() as? ConeClassLikeType
             ?: return null
 
         if (!functionType.isSomeFunctionType(session)) return null
 
-        return FunctionType(
+        return TypeContractFact(
             parameters = functionType.valueParameterTypesIncludingReceiver(session).map { parameterType ->
-                FunctionType.ParameterType(
+                TypeContractFact.ParameterType(
                     type = typeResolver.resolveTypeOf(parameterType, session),
                     contract = resolveContractOf(parameterType, session),
                 )
