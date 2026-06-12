@@ -45,14 +45,13 @@ private object TerminalUniquenessResolver : ExpressionTypeResolver<Uniqueness> {
                 else Uniqueness.Shared
 
             is FirThisReceiverExpression -> {
-                val symbol = expression.calleeReference.symbol ?: return Uniqueness.Unique
-                val uniquenessState = expression.resolveInputUniquenessState() ?: EmptyUniquenessState
-
-                uniquenessState.children[symbol]?.data ?: Uniqueness.Unique
+                expression.resolveAccessUniqueness()
             }
 
             is FirPropertyAccessExpression -> {
-                expression.resolveAccessUniqueness()
+                val receiverUniqueness = expression.pathReceiver?.resolveUniqueness() ?: Uniqueness.Unique
+
+                receiverUniqueness.join(expression.resolveAccessUniqueness())
             }
 
             else -> {

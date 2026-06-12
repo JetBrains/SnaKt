@@ -19,11 +19,11 @@ fun share(a: Any) {}
 // Consuming subproperties
 
 fun `consume shared subproperty`(z: B) {
-    consume(z.y.x)
+    consume(<!UNIQUENESS_MISMATCH!>z.y.x<!>)
 }
 
 fun `consume borrowed subproperty`(z: @Borrowed B) {
-    consume(z.y.x)
+    consume(<!UNIQUENESS_MISMATCH!>z.y.x<!>)
 }
 
 fun `consume unique subproperty`(z: @Unique B) {
@@ -81,6 +81,7 @@ fun `consume unique parent after cast to not-null`(node: @Unique Node) {
 fun `consume unique parent after smart-cast`(node: @Unique Node?) {
     if (node != null) {
         val local: @Unique Node? = node.next
+        // TODO: Check for partially moved references at function boundaries
         consume(<!UNIQUENESS_MISMATCH!>node<!>)
     }
 }
