@@ -204,6 +204,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("pass_function_reference.kt")
+      public void testPass_function_reference() {
+        runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/contract/pass_function_reference.kt");
+      }
+
+      @Test
       @TestMetadata("return.kt")
       public void testReturn() {
         runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/contract/return.kt");
