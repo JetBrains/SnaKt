@@ -13,6 +13,8 @@ import org.jetbrains.kotlin.fir.analysis.cfa.util.transformValues
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.expressions.arguments
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNodeWithSubgraphs
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallEnterNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
@@ -29,6 +31,10 @@ class GraphUniquenessStateFactsAnalyzer(
     private val context: CheckerContext,
     private val callParametersLocalityResolver: CallParametersTypeResolver<Locality>,
 ) : PathAwareControlFlowGraphVisitor<Unit, UniquenessState>() {
+    override fun visitSubGraph(node: CFGNodeWithSubgraphs<*>, graph: ControlFlowGraph): Boolean {
+        return false
+    }
+
     override fun mergeInfo(
         a: UniquenessStateFacts,
         b: UniquenessStateFacts,
