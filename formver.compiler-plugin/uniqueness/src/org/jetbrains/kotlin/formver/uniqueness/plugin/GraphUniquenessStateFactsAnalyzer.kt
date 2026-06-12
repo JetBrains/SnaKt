@@ -17,6 +17,7 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNodeWithSubgraphs
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallEnterNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallExitNode
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.QualifiedAccessNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
 import org.jetbrains.kotlin.formver.locality.plugin.Locality
@@ -52,6 +53,23 @@ class GraphUniquenessStateFactsAnalyzer(
         data: PathAwareUniquenessStateFacts
     ): PathAwareUniquenessStateFacts {
         return data.transformValues { data -> data.put(Unit, data.ensure()) }
+    }
+
+    override fun visitQualifiedAccessNode(
+        node: QualifiedAccessNode,
+        data: PathAwareControlFlowInfo<Unit, UniquenessState>
+    ): PathAwareControlFlowInfo<Unit, UniquenessState> {
+        return data.transformValues { data ->
+            val qualifiedAccess = node.fir
+
+            with(context) {
+                val uniquenessState = data.ensure()
+                val accessState = qualifiedAccess.resolveAccessState()
+                accessState.move(uniquenessState)
+
+                data.put(Unit, uniquenessState)
+            }
+        }
     }
 
     override fun visitVariableDeclarationNode(
