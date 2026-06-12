@@ -15,11 +15,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirPropertyAccessEx
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirQualifiedAccessExpressionChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirReturnExpressionChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirVariableAssignmentChecker
-import org.jetbrains.kotlin.fir.analysis.checkers.type.FirResolvedTypeRefChecker
-import org.jetbrains.kotlin.fir.analysis.checkers.type.TypeCheckers
 import org.jetbrains.kotlin.fir.analysis.extensions.FirAdditionalCheckersExtension
-import org.jetbrains.kotlin.formver.locality.plugin.PropertyAccessLocalityChecker
-import org.jetbrains.kotlin.formver.locality.plugin.TypeRefLocalityAttributeChecker
 
 class LocalityContractAdditionalCheckers(session: FirSession) : FirAdditionalCheckersExtension(session) {
     companion object {
@@ -46,15 +42,7 @@ class LocalityContractAdditionalCheckers(session: FirSession) : FirAdditionalChe
         override val qualifiedAccessExpressionCheckers: Set<FirQualifiedAccessExpressionChecker> =
             setOf(QualifiedAccessLocalityContractChecker)
 
-        override val propertyAccessExpressionCheckers: Set<FirPropertyAccessExpressionChecker> =
-            setOf(PropertyAccessLocalityChecker)
-
         override val returnExpressionCheckers: Set<FirReturnExpressionChecker> =
             setOf(ReturnLocalityContractChecker)
-    }
-
-    override val typeCheckers: TypeCheckers = object : TypeCheckers() {
-        override val resolvedTypeRefCheckers: Set<FirResolvedTypeRefChecker> =
-            setOf(TypeRefLocalityAttributeChecker)
     }
 }
