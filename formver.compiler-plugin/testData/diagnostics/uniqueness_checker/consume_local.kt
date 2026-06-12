@@ -67,7 +67,7 @@ fun `consume after after borrowing unique-borrowed as unique`(a: @Unique @Borrow
 
 fun `consume unique after storing type check`(a: @Unique Any) {
     val ok = a is A
-    consume(a)
+    consume(<!UNIQUENESS_MISMATCH!>a<!>)
 }
 
 fun `consume unique after safe cast`(a: @Unique Any) {

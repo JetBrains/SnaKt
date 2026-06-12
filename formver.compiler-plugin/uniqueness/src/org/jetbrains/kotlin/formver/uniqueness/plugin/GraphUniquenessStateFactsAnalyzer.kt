@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.fir.analysis.cfa.util.PathAwareControlFlowInfo
 import org.jetbrains.kotlin.fir.analysis.cfa.util.merge
 import org.jetbrains.kotlin.fir.analysis.cfa.util.transformValues
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
+import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
 import org.jetbrains.kotlin.fir.expressions.arguments
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNodeWithSubgraphs
@@ -64,10 +65,13 @@ class GraphUniquenessStateFactsAnalyzer(
 
             with(context) {
                 val uniquenessState = data.ensure()
-                val accessState = qualifiedAccess.resolveAccessState()
-                accessState.move(uniquenessState)
+                val selectorAccessState = qualifiedAccess.resolveAccessState()
+                val receiverAccessState = qualifiedAccess.pathReceiver?.resolveAccessState() ?: EmptyAccessState
+                var newUniquenessState = uniquenessState
+                newUniquenessState = receiverAccessState.initialize(newUniquenessState)
+                newUniquenessState = selectorAccessState.move(newUniquenessState)
 
-                data.put(Unit, uniquenessState)
+                data.put(Unit, newUniquenessState)
             }
         }
     }
@@ -108,18 +112,28 @@ class GraphUniquenessStateFactsAnalyzer(
         val assignment = node.fir
 
         with(context) {
-            val leftAccessState = assignment.lValue.resolveAccessState()
-            val rightAccessState = assignment.rValue.resolveAccessState()
+            val leftValue = assignment.lValue
+            val leftAccessState = leftValue.resolveAccessState()
+            val rightValue = assignment.rValue
+            val rightAccessState = rightValue.resolveAccessState()
 
             return data.transformValues { data ->
-                var uniquenessState = data.ensure()
-                uniquenessState = rightAccessState.move(uniquenessState)
+                val uniquenessState = data.ensure()
+                var newUniquenessState = uniquenessState
+                newUniquenessState = rightAccessState.move(newUniquenessState)
 
                 if (leftAccessState.isSingleton()) {
-                    uniquenessState = leftAccessState.initialize(uniquenessState)
+                    newUniquenessState = leftAccessState.initialize(newUniquenessState)
                 }
 
-                data.put(Unit, uniquenessState)
+                when (leftValue) {
+                    is FirQualifiedAccessExpression -> {
+                        val receiverAccessState = leftValue.pathReceiver?.resolveAccessState() ?: EmptyAccessState
+                        newUniquenessState = receiverAccessState.initialize(newUniquenessState)
+                    }
+                }
+
+                data.put(Unit, newUniquenessState)
             }
         }
     }

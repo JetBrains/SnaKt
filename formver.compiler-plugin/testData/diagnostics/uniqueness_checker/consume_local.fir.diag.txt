@@ -19,3 +19,5 @@
 /consume_local.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
 
 /consume_local.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/consume_local.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
