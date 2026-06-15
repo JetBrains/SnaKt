@@ -77,12 +77,9 @@ fun `assign property to local in if`(c: @Unique C) {
     }).x
 }
 
-// Deeply nested property assignment
-
 fun `consume nested unique after moving back`(a: @Unique R) {
     val b: @Unique R = a.um
     consume(b.um)
-    // TODO: Transplant `b.um`'s subtree in `a.um`
     a.um = b
 
     consume(a)

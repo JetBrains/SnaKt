@@ -150,14 +150,14 @@ class GraphUniquenessStateFactsAnalyzer(
                     newUniquenessState = newUniquenessState.insert(leftPath, rightUniquenessState)
                 }
 
-                newUniquenessState = leftAccessState.initialize(newUniquenessState)
-
                 when (leftValue) {
                     is FirQualifiedAccessExpression -> {
                         val receiverAccessState = leftValue.pathReceiver?.resolveAccessState() ?: EmptyAccessState
                         newUniquenessState = receiverAccessState.initialize(newUniquenessState)
                     }
                 }
+
+                newUniquenessState = leftAccessState.initialize(newUniquenessState)
 
                 data.put(Unit, newUniquenessState)
             }
