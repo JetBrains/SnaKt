@@ -104,25 +104,25 @@ class GraphUniquenessStateFactsAnalyzer(
     ): PathAwareUniquenessStateFacts {
         val declaration = node.fir
         val initializer = declaration.initializer
+        val leftSymbol = declaration.symbol
+        val leftAccessState = EmptyAccessState.associate(
+            leftSymbol,
+            AccessState(Access.Terminal)
+        )
 
         with(context) {
-            val declarationSymbol = declaration.symbol
-            val declarationAccessState = EmptyAccessState.associate(
-                declarationSymbol,
-                AccessState(Access.Terminal)
-            )
-
             return data.transformValues { data ->
-                var uniquenessState = data.ensure()
-
-                uniquenessState = declarationAccessState.initialize(uniquenessState)
+                val uniquenessState = data.ensure()
+                var newUniquenessState = uniquenessState
 
                 if (initializer != null) {
-                    val initializerAccessState = initializer.resolveAccessState()
-                    uniquenessState = initializerAccessState.move(uniquenessState)
+                    val rightAccessState = initializer.resolveAccessState()
+                    val rightUniquenessState = rightAccessState.joinUniquenessStateOverTerminals(uniquenessState)
+                    newUniquenessState = newUniquenessState.insert(listOf(leftSymbol), rightUniquenessState)
                 }
 
-                data.put(Unit, uniquenessState)
+                newUniquenessState = leftAccessState.initialize(newUniquenessState)
+                data.put(Unit, newUniquenessState)
             }
         }
     }
@@ -132,21 +132,25 @@ class GraphUniquenessStateFactsAnalyzer(
         data: PathAwareUniquenessStateFacts
     ): PathAwareUniquenessStateFacts {
         val assignment = node.fir
+        val leftValue = assignment.lValue
+        val rightValue = assignment.rValue
 
         with(context) {
-            val leftValue = assignment.lValue
             val leftAccessState = leftValue.resolveAccessState()
-            val rightValue = assignment.rValue
-            val rightAccessState = rightValue.resolveAccessState()
 
             return data.transformValues { data ->
                 val uniquenessState = data.ensure()
                 var newUniquenessState = uniquenessState
-                newUniquenessState = rightAccessState.move(newUniquenessState)
+                val leftAccesses = leftAccessState.enumerateTerminalPaths()
 
-                if (leftAccessState.isSingleton()) {
-                    newUniquenessState = leftAccessState.initialize(newUniquenessState)
+                if (leftAccesses.count() == 1) {
+                    val leftPath = leftAccesses.first()
+                    val rightAccessState = rightValue.resolveAccessState()
+                    val rightUniquenessState = rightAccessState.joinUniquenessStateOverTerminals(uniquenessState)
+                    newUniquenessState = newUniquenessState.insert(leftPath, rightUniquenessState)
                 }
+
+                newUniquenessState = leftAccessState.initialize(newUniquenessState)
 
                 when (leftValue) {
                     is FirQualifiedAccessExpression -> {

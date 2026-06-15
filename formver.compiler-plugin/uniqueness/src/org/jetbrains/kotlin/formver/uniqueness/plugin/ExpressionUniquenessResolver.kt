@@ -33,7 +33,7 @@ fun FirExpression.resolveAccessUniqueness(): Uniqueness {
 
     val uniquenessState = resolveInputUniquenessState() ?: EmptyUniquenessState
 
-    return accessState.joinOverTerminals(uniquenessState)
+    return accessState.joinUniquenessOverTerminals(uniquenessState)
 }
 
 private object TerminalUniquenessResolver : ExpressionTypeResolver<Uniqueness> {

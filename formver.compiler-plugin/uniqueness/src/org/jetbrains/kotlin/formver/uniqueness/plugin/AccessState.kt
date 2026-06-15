@@ -1,6 +1,5 @@
 package org.jetbrains.kotlin.formver.uniqueness.plugin
 
-import kotlinx.collections.immutable.persistentMapOf
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.formver.type.plugin.TypeUnifier
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
@@ -62,6 +61,7 @@ fun AccessState.append(symbol: FirBasedSymbol<*>): AccessState {
 /**
  * Alters a uniqueness state at every access position specified by this access state.
  *
+ * @param context the checker context used for resolving the default uniqueness of the path components.
  * @param this the [AccessState] specifying the access positions to alter.
  * @param uniquenessState the [UniquenessState] to alter.
  * @param transform the function to apply to each access position.
@@ -105,7 +105,7 @@ fun AccessState.alterTerminals(
  */
 context(context: CheckerContext)
 fun AccessState.move(uniquenessState: UniquenessState): UniquenessState =
-    alterTerminals(uniquenessState) { symbol, state ->
+    alterTerminals(uniquenessState) { _, state ->
         if (state.data == Uniqueness.Unique) {
             state.copy(data = Uniqueness.Moved)
         } else {
@@ -122,18 +122,25 @@ fun AccessState.move(uniquenessState: UniquenessState): UniquenessState =
 context(context: CheckerContext)
 fun AccessState.initialize(uniquenessState: UniquenessState): UniquenessState =
     alterTerminals(uniquenessState) { symbol, state ->
-        state.copy(data = symbol.resolveDeclaredUniqueness(), children = persistentMapOf())
+        state.copy(data = symbol.resolveDeclaredUniqueness())
     }
+
+/**
+ * Enumerates all the paths accessed in [this] access-state
+ */
+fun AccessState.enumerateTerminalPaths(): Sequence<Path> =
+    enumerate { data == Access.Terminal }
 
 /**
  * Project this access state onto the given uniqueness state, creating a uniqueness state containing only the accessed
  * positions specified by this access state.
  *
+ * @param context the checker context used for resolving the default uniqueness of the path components.
  * @param this the [AccessState] specifying the accessed positions to project.
  * @param uniquenessState the [UniquenessState] to project onto.
  */
 context(context: CheckerContext)
-fun AccessState.joinOverTerminals(uniquenessState: UniquenessState): Uniqueness {
+fun AccessState.joinUniquenessOverTerminals(uniquenessState: UniquenessState): Uniqueness {
     var result = Uniqueness.Unique
 
     for ((symbol, accessChild) in children) {
@@ -144,7 +151,7 @@ fun AccessState.joinOverTerminals(uniquenessState: UniquenessState): Uniqueness 
         val projected = if (accessChild.data == Access.Terminal) {
             childUniqueness
         } else {
-            accessChild.joinOverTerminals(childUniquenessState)
+            accessChild.joinUniquenessOverTerminals(childUniquenessState)
         }
 
         result = result.join(projected)
@@ -153,5 +160,12 @@ fun AccessState.joinOverTerminals(uniquenessState: UniquenessState): Uniqueness 
     return result
 }
 
-fun AccessState.enumeratePaths(): Sequence<Path> =
-    enumerate { data == Access.Terminal }
+fun AccessState.joinUniquenessStateOverTerminals(uniquenessState: UniquenessState): UniquenessState {
+    var result = EmptyUniquenessState
+
+    for (path in enumerateTerminalPaths()) {
+        result = result.join(uniquenessState.find(path) ?: EmptyUniquenessState)
+    }
+
+    return result
+}

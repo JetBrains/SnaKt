@@ -78,11 +78,11 @@ fun <Type> PathTrie<Type>.joinChildren(typeUnifier: TypeUnifier<Type>): Type {
     return joinedData
 }
 
-fun <Type> PathTrie<Type>.traverse(path: List<FirBasedSymbol<*>>): PathTrie<Type>? {
+fun <Type> PathTrie<Type>.find(path: List<FirBasedSymbol<*>>): PathTrie<Type>? {
     val head = path.firstOrNull()
 
     return if (head != null) {
-        children[head]?.traverse(path.drop(1))
+        children[head]?.find(path.drop(1))
     } else {
         this
     }

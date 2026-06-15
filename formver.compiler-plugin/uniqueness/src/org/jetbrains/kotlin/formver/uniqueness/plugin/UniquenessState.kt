@@ -27,5 +27,15 @@ object UniquenessStateIntersector : TypeIntersector<UniquenessState> {
 fun UniquenessState.joinOverPath(path: List<FirBasedSymbol<*>>): Uniqueness =
     data.join((children[path.first()]?.joinOverPath(path.drop(1)) ?: Uniqueness.Unique))
 
-fun UniquenessState.enumerateMoved(): Sequence<List<FirBasedSymbol<*>>> =
+fun UniquenessState.enumerateMovedPaths(): Sequence<Path> =
     enumerate(emptyList()) { data == Uniqueness.Moved }
+
+fun UniquenessState.insert(path: Path, child: UniquenessState): UniquenessState =
+    if (path.isEmpty()) {
+        child
+    } else {
+        val head = path.first()
+        copy(
+            children = children.put(head, (children[head] ?: EmptyUniquenessState).insert(path.drop(1), child))
+        )
+    }

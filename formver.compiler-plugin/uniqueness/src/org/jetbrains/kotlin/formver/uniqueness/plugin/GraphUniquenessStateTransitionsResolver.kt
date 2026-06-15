@@ -49,8 +49,8 @@ class GraphUniquenessStateTransitionsResolver(session: FirSession) : FirExtensio
         fun CFGNode<*>.extractOutputState(): UniquenessState =
             outputStates[this].joinOverEdgeKinds()
 
-        // graph.nodes is already in topological (BFS) order: each node appears after all its
-        // non-back-edge predecessors.
+        // NOTE: graph.nodes is already in topological (BFS) order: each node appears after all its non-back-edge
+        // predecessors.
         for (node in graph.nodes) {
             val element = node.fir
 
