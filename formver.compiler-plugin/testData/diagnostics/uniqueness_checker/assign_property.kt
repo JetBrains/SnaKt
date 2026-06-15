@@ -10,11 +10,25 @@ class A {
 
 class B {
     var y: @Unique A = A()
+    var x: @Unique A = A()
 }
+
+class C {
+    var x: @Unique B = B()
+}
+
+class R(
+    var um: @Unique R,
+    val ui: @Unique R,
+    var sm: R,
+    val si: R,
+)
 
 fun borrow(x: @Unique @Borrowed A) {}
 
 fun consume(a: @Unique Any) {}
+
+// Sub-property assignments
 
 fun `return local after assigning its property`(x: @Unique B) {
     val y = x.y
@@ -22,8 +36,6 @@ fun `return local after assigning its property`(x: @Unique B) {
 
     consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>z<!>)
 }
-
-// Property assignments
 
 fun `assign shared to unique subproperty`(x: @Unique B, v: A): Unit {
     x.y = <!UNIQUENESS_MISMATCH!>v<!>
@@ -43,4 +55,41 @@ fun `assign unique-borrowed to unique subproperty`(x: @Unique B, v: @Unique @Bor
     x.y = <!LOCALITY_MISMATCH!>v<!>
 
     consume(x)
+}
+
+// Property reads through if-expression initializers
+
+fun `assign local to local in if`(a: @Unique A) {
+    val x: @Unique Any = if (false) {
+        val x: @Unique Any = a.x
+        x
+    } else {
+        a.x
+    }
+}
+
+fun `assign property to local in if`(c: @Unique C) {
+    val x = (if (false) {
+        val y: @Unique A = c.x.x
+        y
+    } else {
+        c.x.x
+    }).x
+}
+
+// Deeply nested property assignment
+
+fun `consume nested unique after moving back`(a: @Unique R) {
+    val b: @Unique R = a.um
+    consume(b.um)
+    // TODO: Transplant `b.um`'s subtree in `a.um`
+    a.um = b
+
+    consume(a)
+}
+
+fun test(a: @Unique R) {
+    val x: @Unique R = a.um
+    a.um = x
+    consume(a)
 }

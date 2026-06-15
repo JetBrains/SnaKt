@@ -12,6 +12,26 @@ class B {
     var y: @Unique A = A()
 }
 
+// Returning locals
+
+fun `return shared`(a: Any): Any {
+    return a
+}
+
+fun `return borrowed`(a: @Borrowed Any): Any {
+    return <!LOCALITY_MISMATCH!>a<!>
+}
+
+fun `return unique`(a: @Unique Any): Any {
+    return a
+}
+
+fun `return unique-borrowed`(a: @Unique @Borrowed Any): Any {
+    return <!LOCALITY_MISMATCH!>a<!>
+}
+
+// Returning subproperties
+
 fun `return shared subproperty`(a: B): Any {
     return a.y
 }

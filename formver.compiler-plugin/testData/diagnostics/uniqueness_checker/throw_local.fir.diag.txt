@@ -1,3 +1,0 @@
-/throw_local.kt: error: Throw locality mismatch: expected 'global', actual 'local'.
-
-/throw_local.kt: error: Throw locality mismatch: expected 'global', actual 'local'.

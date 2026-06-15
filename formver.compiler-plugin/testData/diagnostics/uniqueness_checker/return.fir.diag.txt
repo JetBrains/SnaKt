@@ -1,0 +1,3 @@
+/return.kt: error: Return locality mismatch: expected 'global', actual 'local'.
+
+/return.kt: error: Return locality mismatch: expected 'global', actual 'local'.

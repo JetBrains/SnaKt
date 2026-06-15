@@ -94,7 +94,7 @@ fun <Type> PathTrie<Type>.enumerate(isTerminal: PathTrie<Type>.() -> Boolean): S
 fun <Type> PathTrie<Type>.enumerate(
     prefix: List<FirBasedSymbol<*>>,
     isTerminal: PathTrie<Type>.() -> Boolean
-): Sequence<List<FirBasedSymbol<*>>> =
+): Sequence<Path> =
     if (children.isEmpty()) {
         sequenceOf()
     } else {

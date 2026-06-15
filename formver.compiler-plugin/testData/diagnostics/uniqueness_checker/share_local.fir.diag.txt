@@ -1,3 +1,0 @@
-/share_local.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
-
-/share_local.kt: error: Argument locality mismatch: expected 'global', actual 'local'.

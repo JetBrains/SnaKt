@@ -1,3 +1,0 @@
-/pass_property_argument.kt: error: Leaking moved field: a.y
-
-/pass_property_argument.kt: error: Leaking moved field: a.y

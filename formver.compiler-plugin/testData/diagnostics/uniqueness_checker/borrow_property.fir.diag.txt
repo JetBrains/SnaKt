@@ -1,3 +1,0 @@
-/borrow_property.kt: error: Leaking moved field: z.y
-
-/borrow_property.kt: error: Leaking moved field: z.y

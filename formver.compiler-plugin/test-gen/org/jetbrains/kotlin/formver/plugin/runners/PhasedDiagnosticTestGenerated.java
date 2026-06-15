@@ -165,39 +165,9 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
-    @TestMetadata("assign_property_in_if.kt")
-    public void testAssign_property_in_if() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/assign_property_in_if.kt");
-    }
-
-    @Test
-    @TestMetadata("borrow_local.kt")
-    public void testBorrow_local() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/borrow_local.kt");
-    }
-
-    @Test
-    @TestMetadata("borrow_property.kt")
-    public void testBorrow_property() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/borrow_property.kt");
-    }
-
-    @Test
-    @TestMetadata("consume_deeply_nested.kt")
-    public void testConsume_deeply_nested() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/consume_deeply_nested.kt");
-    }
-
-    @Test
-    @TestMetadata("consume_local.kt")
-    public void testConsume_local() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/consume_local.kt");
-    }
-
-    @Test
-    @TestMetadata("consume_property.kt")
-    public void testConsume_property() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/consume_property.kt");
+    @TestMetadata("call.kt")
+    public void testCall() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/call.kt");
     }
 
     @Test
@@ -207,51 +177,15 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
-    @TestMetadata("pass_local_argument.kt")
-    public void testPass_local_argument() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/pass_local_argument.kt");
+    @TestMetadata("return.kt")
+    public void testReturn() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/return.kt");
     }
 
     @Test
-    @TestMetadata("pass_property_argument.kt")
-    public void testPass_property_argument() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/pass_property_argument.kt");
-    }
-
-    @Test
-    @TestMetadata("return_local.kt")
-    public void testReturn_local() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/return_local.kt");
-    }
-
-    @Test
-    @TestMetadata("return_property.kt")
-    public void testReturn_property() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/return_property.kt");
-    }
-
-    @Test
-    @TestMetadata("share_local.kt")
-    public void testShare_local() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/share_local.kt");
-    }
-
-    @Test
-    @TestMetadata("share_property.kt")
-    public void testShare_property() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/share_property.kt");
-    }
-
-    @Test
-    @TestMetadata("throw_local.kt")
-    public void testThrow_local() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/throw_local.kt");
-    }
-
-    @Test
-    @TestMetadata("throw_property.kt")
-    public void testThrow_property() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/throw_property.kt");
+    @TestMetadata("throw.kt")
+    public void testThrow() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/throw.kt");
     }
   }
 
