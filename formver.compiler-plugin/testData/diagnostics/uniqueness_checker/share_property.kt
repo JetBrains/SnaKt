@@ -44,13 +44,13 @@ fun `share multiple unique subproperties`(z: @Unique B) {
 fun `share partially moved`(z: @Unique B) {
     consume(z.y)
     // TODO: Check for partially moved references at function boundaries
-    share(<!UNIQUENESS_MISMATCH!>z<!>)
+    share(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>z<!>)
 }
 
 fun `share partially shared`(z: @Unique B) {
     share(z.y)
     // TODO: Check for partially moved references at function boundaries
-    share(<!UNIQUENESS_MISMATCH!>z<!>)
+    share(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>z<!>)
 }
 
 // Sharing subproperties after assignment

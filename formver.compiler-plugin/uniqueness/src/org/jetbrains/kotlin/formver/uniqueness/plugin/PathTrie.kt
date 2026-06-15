@@ -77,3 +77,34 @@ fun <Type> PathTrie<Type>.joinChildren(typeUnifier: TypeUnifier<Type>): Type {
 
     return joinedData
 }
+
+fun <Type> PathTrie<Type>.traverse(path: List<FirBasedSymbol<*>>): PathTrie<Type>? {
+    val head = path.firstOrNull()
+
+    return if (head != null) {
+        children[head]?.traverse(path.drop(1))
+    } else {
+        this
+    }
+}
+
+fun <Type> PathTrie<Type>.enumerate(isTerminal: PathTrie<Type>.() -> Boolean): Sequence<List<FirBasedSymbol<*>>> =
+    enumerate(emptyList(), isTerminal)
+
+fun <Type> PathTrie<Type>.enumerate(
+    prefix: List<FirBasedSymbol<*>>,
+    isTerminal: PathTrie<Type>.() -> Boolean
+): Sequence<List<FirBasedSymbol<*>>> =
+    if (children.isEmpty()) {
+        sequenceOf()
+    } else {
+        sequence {
+            for ((key, child) in children) {
+                val newPrefix = listOf(key) + prefix
+                if (child.isTerminal()) {
+                    yield(newPrefix)
+                }
+                yieldAll(child.enumerate(newPrefix, isTerminal))
+            }
+        }
+    }

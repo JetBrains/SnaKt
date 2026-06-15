@@ -44,13 +44,13 @@ fun `consume multiple unique subproperties`(z: @Unique B) {
 fun `consume partially moved`(z: @Unique B) {
     consume(z.y)
     // TODO: Check for partially moved references at function boundaries
-    consume(<!UNIQUENESS_MISMATCH!>z<!>)
+    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>z<!>)
 }
 
 fun `consume partially shared`(z: @Unique B) {
     share(z.y)
     // TODO: Check for partially moved references at function boundaries
-    consume(<!UNIQUENESS_MISMATCH!>z<!>)
+    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>z<!>)
 }
 
 // Consuming subproperty after assignment
@@ -69,19 +69,19 @@ class Node(
 fun `consume unique parent after cast`(node: @Unique Any) {
     val local: @Unique Node? = (node as Node).next
     // TODO: Check for partially moved references at function boundaries
-    consume(<!UNIQUENESS_MISMATCH!>node<!>)
+    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>node<!>)
 }
 
 fun `consume unique parent after cast to not-null`(node: @Unique Node) {
     val local: @Unique Node = node.next as Node
     // TODO: Check for partially moved references at function boundaries
-    consume(<!UNIQUENESS_MISMATCH!>node<!>)
+    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>node<!>)
 }
 
 fun `consume unique parent after smart-cast`(node: @Unique Node?) {
     if (node != null) {
         val local: @Unique Node? = node.next
         // TODO: Check for partially moved references at function boundaries
-        consume(<!UNIQUENESS_MISMATCH!>node<!>)
+        consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>node<!>)
     }
 }

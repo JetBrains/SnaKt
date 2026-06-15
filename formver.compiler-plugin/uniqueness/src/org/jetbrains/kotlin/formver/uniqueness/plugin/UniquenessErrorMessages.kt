@@ -35,5 +35,10 @@ object UniquenessErrorMessages : BaseDiagnosticRendererFactory() {
                     UniquenessErrors.INVALID_UNIQUENESS_TYPE_TARGET,
                     "Uniqueness can only be specified on values, properties, functions, and compatible type positions.",
                 )
+                map.put(
+                    UniquenessErrors.LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION,
+                    "Leaking moved field: {0}",
+                    PathRenderer
+                )
             }
 }

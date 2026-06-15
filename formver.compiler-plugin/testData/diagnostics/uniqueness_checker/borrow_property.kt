@@ -57,13 +57,13 @@ fun `borrow multiple unique subproperties`(z: @Unique B) {
 fun `borrow partially moved`(z: @Unique B) {
     consume(z.y)
     // TODO: Check for partially moved references at function boundaries
-    borrow(<!UNIQUENESS_MISMATCH!>z<!>)
+    borrow(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>z<!>)
 }
 
 fun `borrow partially shared`(z: @Unique B) {
     share(z.y)
     // TODO: Check for partially moved references at function boundaries
-    borrow(<!UNIQUENESS_MISMATCH!>z<!>)
+    borrow(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>z<!>)
 }
 
 // Borrowing after assignment

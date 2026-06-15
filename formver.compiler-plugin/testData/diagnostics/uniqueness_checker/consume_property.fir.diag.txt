@@ -2,14 +2,12 @@
 
 /consume_property.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
 
-/consume_property.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+/consume_property.kt: error: Leaking moved field: z.y
 
-/consume_property.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+/consume_property.kt: error: Leaking moved field: z.y
 
-/consume_property.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+/consume_property.kt: error: Leaking moved field: node.next
 
-/consume_property.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+/consume_property.kt: error: Leaking moved field: node.next
 
-/consume_property.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
-
-/consume_property.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+/consume_property.kt: error: Leaking moved field: node.next

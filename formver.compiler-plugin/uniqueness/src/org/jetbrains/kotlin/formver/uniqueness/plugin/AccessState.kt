@@ -152,3 +152,6 @@ fun AccessState.joinOverTerminals(uniquenessState: UniquenessState): Uniqueness 
 
     return result
 }
+
+fun AccessState.enumeratePaths(): Sequence<Path> =
+    enumerate { data == Access.Terminal }
