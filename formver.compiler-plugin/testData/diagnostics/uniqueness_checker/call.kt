@@ -28,6 +28,11 @@ fun consumeBoth(a: @Unique Any, b: @Unique Any) {}
 
 fun shareBoth(a: Any, b: Any) {}
 
+fun `borrow after sharing shared`(a: A) {
+    share(a)
+    borrow(a)
+}
+
 // Sharing locals
 
 fun `share shared`(y: A) {
@@ -72,11 +77,6 @@ fun `borrow after consuming unique`(a: @Unique A) {
 }
 
 // Borrowing locals after sharing
-
-fun `borrow after sharing shared`(a: A) {
-    share(a)
-    borrow(a)
-}
 
 fun `borrow after sharing unique`(a: @Unique A) {
     share(a)

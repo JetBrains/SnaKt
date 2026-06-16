@@ -75,14 +75,11 @@ fun @Unique A.`use implicit then explicit this`() {
 
 // Mixing receiver and argument in same call
 
-fun @Unique A.borrowSelfAndArg(other: @Borrowed A) {}
+fun (@Borrowed A).borrowSelfAndArg(other: @Borrowed A) {}
 
 fun `pass same value as receiver and arg`(a: @Unique A) {
-    // Spurious on the argument: the receiver's QualifiedAccessNode moves `a` before the
-    // arg is read, so the inner read sees `a` as moved. This actually flags a real
-    // issue (the call passes the unique receiver and an arg sharing the same path), but
-    // for accidental reasons.
+    // TODO: Determine whether this error makes sense. Since both the receiver and the argument are borrowed shouldn't
+    // it be possible to pass the same value as both?
     a.borrowSelfAndArg(<!UNIQUENESS_MISMATCH!>a<!>)
-    // Re-initialized by the @Borrowed arg's exit logic; `a` is back to Unique here.
     consume(a)
 }

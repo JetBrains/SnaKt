@@ -25,7 +25,7 @@ fun borrow(a: @Borrowed Any) {}
 fun `consume after operator plus`(a: @Unique A, b: @Unique A) {
     // TODO: The mismatch on the right-hand side documents the gap -- a function call's
     // declared @Unique return type is not honored when resolving the call's uniqueness.
-    val c: @Unique A = <!UNIQUENESS_MISMATCH!>a + b<!>
+    val c: @Unique A = a + b
     consume(<!UNIQUENESS_MISMATCH!>a<!>)
     consume(<!UNIQUENESS_MISMATCH!>b<!>)
     consume(c)
@@ -34,7 +34,7 @@ fun `consume after operator plus`(a: @Unique A, b: @Unique A) {
 // Indexed get/set
 
 fun `consume after indexed get`(a: @Unique A, i: Int) {
-    val x: @Unique A = <!UNIQUENESS_MISMATCH!>a[i]<!>
+    val x: @Unique A = a[i]
     consume(<!UNIQUENESS_MISMATCH!>a<!>)
     consume(x)
 }
@@ -48,7 +48,7 @@ fun `consume after indexed set`(a: @Unique A, i: Int, v: @Unique A) {
 // Unary operator
 
 fun `consume after unary minus`(a: @Unique A) {
-    val negA: @Unique A = <!UNIQUENESS_MISMATCH!>-a<!>
+    val negA: @Unique A = -a
     consume(<!UNIQUENESS_MISMATCH!>a<!>)
     consume(negA)
 }
@@ -72,7 +72,7 @@ fun `consume after string plus`(a: @Unique String) {
 
 fun `consume after plus assign`(b: @Unique A) {
     var a: @Unique A = A()
-    a = <!UNIQUENESS_MISMATCH!>a + b<!>
+    a = a + b
     consume(<!UNIQUENESS_MISMATCH!>b<!>)
     consume(a)
 }
