@@ -17,6 +17,7 @@ import org.jetbrains.kotlin.fir.expressions.FirThrowExpression
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirConstructorSymbol
+import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.fir.types.isNothingOrNullableNothing
 import org.jetbrains.kotlin.fir.types.isPrimitive
 import org.jetbrains.kotlin.fir.types.resolvedType
@@ -118,7 +119,8 @@ object ExpressionDefaultUniquenessResolver : ExpressionTypeResolver<Uniqueness> 
 
 object ReturnResultUniquenessResolver : ReturnResultTypeResolver<Uniqueness> {
     context(context: CheckerContext)
-    override fun resolveResultTypeOf(expression: FirReturnExpression): Uniqueness = Uniqueness.Shared
+    override fun resolveResultTypeOf(expression: FirReturnExpression): Uniqueness =
+        expression.target.labeledElement.returnTypeRef.coneType.defaultUniqueness
 }
 
 object ThrowExceptionUniquenessResolver : ThrowExceptionTypeResolver<Uniqueness> {
