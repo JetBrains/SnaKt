@@ -171,9 +171,51 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("consistency.kt")
+    public void testConsistency() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/consistency.kt");
+    }
+
+    @Test
+    @TestMetadata("constructor.kt")
+    public void testConstructor() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/constructor.kt");
+    }
+
+    @Test
     @TestMetadata("dump_cfg.kt")
     public void testDump_cfg() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/dump_cfg.kt");
+    }
+
+    @Test
+    @TestMetadata("lambda.kt")
+    public void testLambda() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/lambda.kt");
+    }
+
+    @Test
+    @TestMetadata("loop.kt")
+    public void testLoop() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/loop.kt");
+    }
+
+    @Test
+    @TestMetadata("nullable.kt")
+    public void testNullable() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/nullable.kt");
+    }
+
+    @Test
+    @TestMetadata("operator.kt")
+    public void testOperator() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/operator.kt");
+    }
+
+    @Test
+    @TestMetadata("receiver.kt")
+    public void testReceiver() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/receiver.kt");
     }
 
     @Test
@@ -186,6 +228,18 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     @TestMetadata("throw.kt")
     public void testThrow() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/throw.kt");
+    }
+
+    @Test
+    @TestMetadata("try_catch.kt")
+    public void testTry_catch() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/try_catch.kt");
+    }
+
+    @Test
+    @TestMetadata("when_expression.kt")
+    public void testWhen_expression() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/when_expression.kt");
     }
   }
 

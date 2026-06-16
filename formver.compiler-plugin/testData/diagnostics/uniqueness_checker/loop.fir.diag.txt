@@ -1,0 +1,17 @@
+/loop.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/loop.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/loop.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/loop.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/loop.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/loop.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/loop.kt: error: Leaking moved field: b.y.x
+
+/loop.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/loop.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.

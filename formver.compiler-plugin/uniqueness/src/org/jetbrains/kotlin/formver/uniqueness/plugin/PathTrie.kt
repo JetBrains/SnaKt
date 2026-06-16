@@ -100,7 +100,7 @@ fun <Type> PathTrie<Type>.enumerate(
     } else {
         sequence {
             for ((key, child) in children) {
-                val newPrefix = listOf(key) + prefix
+                val newPrefix = prefix + key
                 if (child.isTerminal()) {
                     yield(newPrefix)
                 }

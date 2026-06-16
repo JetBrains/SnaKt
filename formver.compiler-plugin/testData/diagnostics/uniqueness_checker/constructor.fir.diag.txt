@@ -1,0 +1,11 @@
+/constructor.kt: error: Assignment uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/constructor.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/constructor.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/constructor.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
+
+/constructor.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/constructor.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.

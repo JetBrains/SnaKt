@@ -82,7 +82,7 @@ fun `consume nested unique after moving back`(a: @Unique R) {
     consume(b.um)
     a.um = b
 
-    consume(a)
+    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>a<!>)
 }
 
 fun test(a: @Unique R) {

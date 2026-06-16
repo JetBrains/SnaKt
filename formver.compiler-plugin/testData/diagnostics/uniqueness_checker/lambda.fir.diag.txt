@@ -1,0 +1,13 @@
+/lambda.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/lambda.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/lambda.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/lambda.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/lambda.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/lambda.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/lambda.kt: error: Return uniqueness mismatch: expected 'shared', actual 'moved'.

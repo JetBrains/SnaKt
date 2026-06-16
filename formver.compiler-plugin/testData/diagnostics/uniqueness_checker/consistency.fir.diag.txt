@@ -1,0 +1,17 @@
+/consistency.kt: error: Leaking moved field: d.c.b.y
+
+/consistency.kt: error: Leaking moved field: b.y.w
+
+/consistency.kt: error: Leaking moved field: b.y.x
+
+/consistency.kt: error: Leaking moved field: b.y.x
+
+/consistency.kt: error: Leaking moved field: b.y.x
+
+/consistency.kt: error: Leaking moved field: b.y
+
+/consistency.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/consistency.kt: error: Invalid access to moved reference.
+
+/consistency.kt: error: Leaking moved field: b.y

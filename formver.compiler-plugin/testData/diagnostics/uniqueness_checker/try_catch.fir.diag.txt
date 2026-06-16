@@ -1,0 +1,15 @@
+/try_catch.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/try_catch.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/try_catch.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/try_catch.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/try_catch.kt: error: Argument uniqueness mismatch: expected 'shared', actual 'moved'.
+
+/try_catch.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/try_catch.kt: error: Leaking moved field: b.y
+
+/try_catch.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.

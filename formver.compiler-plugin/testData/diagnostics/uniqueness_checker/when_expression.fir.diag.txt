@@ -1,0 +1,21 @@
+/when_expression.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/when_expression.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/when_expression.kt: error: Argument uniqueness mismatch: expected 'shared', actual 'moved'.
+
+/when_expression.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/when_expression.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/when_expression.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/when_expression.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/when_expression.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/when_expression.kt: error: Leaking moved field: b.y.w
+
+/when_expression.kt: error: Leaking moved field: b.y.x
+
+/when_expression.kt: error: Leaking moved field: b.y.x

@@ -1,0 +1,21 @@
+/nullable.kt: error: Initializer uniqueness mismatch: expected 'unique', actual 'shared'.
+
+/nullable.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/nullable.kt: error: Leaking moved field: b.y
+
+/nullable.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
+
+/nullable.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/nullable.kt: error: Leaking moved field: a.x
+
+/nullable.kt: error: Leaking moved field: a.x
+
+/nullable.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/nullable.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/nullable.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/nullable.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
