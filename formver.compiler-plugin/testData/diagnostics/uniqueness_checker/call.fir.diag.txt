@@ -1,3 +1,7 @@
+/call.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/call.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
 /call.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
 
 /call.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
@@ -24,13 +28,7 @@
 
 /call.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
 
-/call.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
-
-/call.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
-
-/call.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
-
-/call.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+/call.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'accessed'.
 
 /call.kt: error: Leaking moved field: z.y
 

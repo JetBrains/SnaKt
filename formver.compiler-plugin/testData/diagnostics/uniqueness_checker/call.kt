@@ -28,6 +28,13 @@ fun consumeBoth(a: @Unique Any, b: @Unique Any) {}
 
 fun shareBoth(a: Any, b: Any) {}
 
+fun `consume unique after safe cast`(a: @Unique Any) {
+    val cast = a as? A ?: return
+    consume(cast)
+    consume(<!UNIQUENESS_MISMATCH!>a<!>)
+    consume(<!UNIQUENESS_MISMATCH!>cast<!>)
+}
+
 fun `borrow after sharing shared`(a: A) {
     share(a)
     borrow(a)
@@ -142,13 +149,6 @@ fun `consume after after borrowing unique-borrowed as unique`(a: @Unique @Borrow
 fun `consume unique after storing type check`(a: @Unique Any) {
     val ok = a is A
     consume(a)
-}
-
-fun `consume unique after safe cast`(a: @Unique Any) {
-    val cast = a as? A ?: return
-    consume(cast)
-    consume(<!UNIQUENESS_MISMATCH!>a<!>)
-    consume(<!UNIQUENESS_MISMATCH!>cast<!>)
 }
 
 // Passing the same local as multiple arguments

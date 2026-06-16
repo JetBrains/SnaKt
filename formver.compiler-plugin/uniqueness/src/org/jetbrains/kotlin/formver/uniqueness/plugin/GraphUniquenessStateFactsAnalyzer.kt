@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.fir.analysis.cfa.util.PathAwareControlFlowInfo
 import org.jetbrains.kotlin.fir.analysis.cfa.util.merge
 import org.jetbrains.kotlin.fir.analysis.cfa.util.transformValues
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
+import org.jetbrains.kotlin.fir.expressions.FirOperation
 import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
 import org.jetbrains.kotlin.fir.expressions.arguments
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
@@ -86,17 +87,22 @@ class GraphUniquenessStateFactsAnalyzer(
         val typeOperatorExpression = node.fir
         val arguments = typeOperatorExpression.arguments
 
-        return data.transformValues { data ->
-            with(context) {
-                val uniquenessState = data.ensure()
-                var newUniquenessState = uniquenessState
+        return when (typeOperatorExpression.operation) {
+            FirOperation.AS, FirOperation.SAFE_AS ->
+                data
+            else ->
+                data.transformValues { data ->
+                    with(context) {
+                        val uniquenessState = data.ensure()
+                        var newUniquenessState = uniquenessState
 
-                for (argument in arguments) {
-                    newUniquenessState = argument.resolveAccessState().initialize(newUniquenessState)
+                        for (argument in arguments) {
+                            newUniquenessState = argument.resolveAccessState().initialize(newUniquenessState)
+                        }
+
+                        data.put(Unit, newUniquenessState)
+                    }
                 }
-
-                data.put(Unit, newUniquenessState)
-            }
         }
     }
 
