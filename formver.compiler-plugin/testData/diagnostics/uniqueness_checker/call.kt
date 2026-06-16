@@ -350,9 +350,11 @@ fun `pass borrowed subproperty and parent to borrowBoth`(a: @Borrowed B) {
 }
 
 fun `pass unique subproperty and parent to consumeBoth`(a: @Unique B) {
+    // TODO: This is an error because in the second argument position `a` is partially moved
     consumeBoth(a.y, <!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>a<!>)
 }
 
 fun `pass unique-borrowed subproperty and parent to borrowBoth`(a: @Unique @Borrowed B) {
+    // TODO: This is an error because in the second argument position `a` is partially moved
     borrowBoth(a.y, <!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>a<!>)
 }

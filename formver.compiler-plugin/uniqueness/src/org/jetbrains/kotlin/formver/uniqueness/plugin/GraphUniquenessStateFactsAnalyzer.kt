@@ -66,11 +66,12 @@ class GraphUniquenessStateFactsAnalyzer(
 
             with(context) {
                 val uniquenessState = data.ensure()
-                val selectorAccessState = qualifiedAccess.resolveAccessState()
-                val receiverAccessState = qualifiedAccess.pathReceiver?.resolveAccessState() ?: EmptyAccessState
                 var newUniquenessState = uniquenessState
+                val receiverAccessState = qualifiedAccess.pathReceiver?.resolveAccessState() ?: EmptyAccessState
                 newUniquenessState = receiverAccessState.initialize(newUniquenessState)
-                newUniquenessState = selectorAccessState.move(newUniquenessState)
+
+                val selectorAccessState = qualifiedAccess.resolveAccessState()
+                newUniquenessState = selectorAccessState.access(newUniquenessState)
 
                 data.put(Unit, newUniquenessState)
             }
@@ -111,6 +112,8 @@ class GraphUniquenessStateFactsAnalyzer(
         )
 
         with(context) {
+            val rightAccessState = initializer?.resolveAccessState() ?: EmptyAccessState
+
             return data.transformValues { data ->
                 val uniquenessState = data.ensure()
                 var newUniquenessState = uniquenessState
@@ -122,6 +125,7 @@ class GraphUniquenessStateFactsAnalyzer(
                 }
 
                 newUniquenessState = leftAccessState.initialize(newUniquenessState)
+                newUniquenessState = rightAccessState.move(newUniquenessState)
                 data.put(Unit, newUniquenessState)
             }
         }
@@ -139,14 +143,13 @@ class GraphUniquenessStateFactsAnalyzer(
             val leftAccessState = leftValue.resolveAccessState()
 
             return data.transformValues { data ->
-                val uniquenessState = data.ensure()
-                var newUniquenessState = uniquenessState
-                val leftAccesses = leftAccessState.enumerateTerminalPaths()
+                var newUniquenessState = data.ensure()
+                val leftAccessPaths = leftAccessState.enumerateTerminalPaths()
+                val rightAccessState = rightValue.resolveAccessState()
 
-                if (leftAccesses.count() == 1) {
-                    val leftPath = leftAccesses.first()
-                    val rightAccessState = rightValue.resolveAccessState()
-                    val rightUniquenessState = rightAccessState.joinUniquenessStateOverTerminals(uniquenessState)
+                if (leftAccessPaths.count() == 1) {
+                    val leftPath = leftAccessPaths.first()
+                    val rightUniquenessState = rightAccessState.joinUniquenessStateOverTerminals(newUniquenessState)
                     newUniquenessState = newUniquenessState.insert(leftPath, rightUniquenessState)
                 }
 
@@ -158,6 +161,7 @@ class GraphUniquenessStateFactsAnalyzer(
                 }
 
                 newUniquenessState = leftAccessState.initialize(newUniquenessState)
+                newUniquenessState = rightAccessState.move(newUniquenessState)
 
                 data.put(Unit, newUniquenessState)
             }
@@ -170,15 +174,21 @@ class GraphUniquenessStateFactsAnalyzer(
     ): PathAwareUniquenessStateFacts {
         val call = node.fir
 
-        var moveState = EmptyUniquenessState
-
         with(context) {
-            for (argument in call.arguments) {
-                moveState = argument.resolveAccessState().move(moveState)
-            }
 
             return data.transformValues { data ->
-                data.put(Unit, data.ensure().join(moveState))
+                var newUniquenessState = data.ensure()
+                val callReceiver = call.pathReceiver
+
+                if (callReceiver != null) {
+                    newUniquenessState = callReceiver.resolveAccessState().move(newUniquenessState)
+                }
+
+                for (argument in call.arguments) {
+                    newUniquenessState = argument.resolveAccessState().move(newUniquenessState)
+                }
+
+                data.put(Unit, newUniquenessState)
             }
         }
     }
@@ -188,17 +198,18 @@ class GraphUniquenessStateFactsAnalyzer(
         data: PathAwareUniquenessStateFacts
     ): PathAwareUniquenessStateFacts {
         val call = node.fir
-        var initializationState = EmptyUniquenessState
 
         with(context) {
-            for ((argument, requiredLocality) in callParametersLocalityResolver.resolveParameterTypesOf(call)) {
-                if (requiredLocality == null) continue
-
-                initializationState = argument.resolveAccessState().initialize(initializationState)
-            }
-
             return data.transformValues { data ->
-                data.put(Unit, data.ensure().join(initializationState) { a, b -> a.meet(b) })
+                var newUniquenessState = data.ensure()
+
+                for ((argument, requiredLocality) in callParametersLocalityResolver.resolveParameterTypesOf(call)) {
+                    if (requiredLocality == null) continue
+
+                    newUniquenessState = argument.resolveAccessState().initialize(newUniquenessState)
+                }
+
+                data.put(Unit, newUniquenessState)
             }
         }
     }

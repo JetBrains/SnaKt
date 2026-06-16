@@ -42,7 +42,7 @@ private object TerminalUniquenessResolver : ExpressionTypeResolver<Uniqueness> {
         return when (expression) {
             is FirFunctionCall ->
                 if (expression.calleeReference.symbol is FirConstructorSymbol) Uniqueness.Unique
-                else Uniqueness.Shared
+                else expression.resolvedType.defaultUniqueness
 
             is FirThisReceiverExpression -> {
                 expression.resolveAccessUniqueness()

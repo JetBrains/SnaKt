@@ -1,18 +1,10 @@
-/operator.kt: error: Initializer uniqueness mismatch: expected 'unique', actual 'shared'.
-
-/operator.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
-
-/operator.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
-
-/operator.kt: error: Initializer uniqueness mismatch: expected 'unique', actual 'shared'.
-
 /operator.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
 
 /operator.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
 
 /operator.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
 
-/operator.kt: error: Initializer uniqueness mismatch: expected 'unique', actual 'shared'.
+/operator.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
 
 /operator.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
 
@@ -22,6 +14,6 @@
 
 /operator.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
 
-/operator.kt: error: Assignment uniqueness mismatch: expected 'unique', actual 'shared'.
+/operator.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
 
 /operator.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
