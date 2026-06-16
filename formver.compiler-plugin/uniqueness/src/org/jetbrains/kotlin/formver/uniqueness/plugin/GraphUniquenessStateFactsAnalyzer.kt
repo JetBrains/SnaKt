@@ -20,6 +20,7 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.EqualityOperatorCallNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallEnterNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.QualifiedAccessNode
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.TypeOperatorCallNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
 import org.jetbrains.kotlin.formver.locality.plugin.Locality
@@ -72,6 +73,27 @@ class GraphUniquenessStateFactsAnalyzer(
 
                 val selectorAccessState = qualifiedAccess.resolveAccessState()
                 newUniquenessState = selectorAccessState.access(newUniquenessState)
+
+                data.put(Unit, newUniquenessState)
+            }
+        }
+    }
+
+    override fun visitTypeOperatorCallNode(
+        node: TypeOperatorCallNode,
+        data: PathAwareControlFlowInfo<Unit, UniquenessState>
+    ): PathAwareControlFlowInfo<Unit, UniquenessState> {
+        val typeOperatorExpression = node.fir
+        val arguments = typeOperatorExpression.arguments
+
+        return data.transformValues { data ->
+            with(context) {
+                val uniquenessState = data.ensure()
+                var newUniquenessState = uniquenessState
+
+                for (argument in arguments) {
+                    newUniquenessState = argument.resolveAccessState().initialize(newUniquenessState)
+                }
 
                 data.put(Unit, newUniquenessState)
             }

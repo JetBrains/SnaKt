@@ -30,7 +30,7 @@ class StatementUniquenessConsistencyChecker<Statement : FirStatement>(
 
             for (accessPath in leakAccessState.enumerateTerminalPaths()) {
                 val uniquenessSubstate = inputUniquenessState.find(accessPath) ?: continue
-                val movedPaths = uniquenessSubstate.enumerateMovedPaths()
+                val movedPaths = uniquenessSubstate.enumerateInconsistentPaths()
 
                 for (movedPath in movedPaths) {
                     reporter.reportOn(

@@ -55,7 +55,7 @@ class F {
         this.b = b
     }
 
-    constructor(only: @Unique A) : this(only, <!UNIQUENESS_MISMATCH!>F.Companion.newUnique()<!>)
+    constructor(only: @Unique A) : this(only, F.Companion.newUnique())
 
     companion object {
         fun newUnique(): @Unique A = A()
