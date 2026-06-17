@@ -15,3 +15,15 @@
 /consistency.kt: error: Invalid access to moved reference.
 
 /consistency.kt: error: Leaking moved field: b.y
+
+/consistency.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/consistency.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/consistency.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/consistency.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/consistency.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/consistency.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.

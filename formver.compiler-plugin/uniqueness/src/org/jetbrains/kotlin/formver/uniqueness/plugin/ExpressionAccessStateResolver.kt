@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.caches.firCachesFactory
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
+import org.jetbrains.kotlin.fir.expressions.FirSafeCallExpression
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
@@ -25,9 +26,6 @@ import org.jetbrains.kotlin.formver.type.plugin.UnifyingExpressionTypeResolver
 val FirQualifiedAccessExpression.pathReceiver: FirExpression?
     get() = explicitReceiver ?: extensionReceiver ?: dispatchReceiver
 
-private fun AccessState.asReceiverState(): AccessState =
-    copy(data = Access.Intermediate)
-
 object TerminalAccessStateResolver : ExpressionTypeResolver<AccessState> {
     context(context: CheckerContext)
     override fun resolveTypeOf(expression: FirExpression): AccessState =
@@ -37,12 +35,20 @@ object TerminalAccessStateResolver : ExpressionTypeResolver<AccessState> {
                     is FirVariableSymbol<*> -> {
                         val receiverState = expression.pathReceiver
                             ?.resolveAccessState()
-                            ?.asReceiverState()
                             ?: EmptyAccessState
 
-                        receiverState.append(symbol)
+                        receiverState.append(EmptyAccessState.associate(symbol, AccessState(Access.Terminal)))
                     }
                     else -> EmptyAccessState
+                }
+            }
+            is FirSafeCallExpression -> {
+                val selector = expression.selector
+
+                return if (selector is FirExpression) {
+                    selector.resolveAccessState()
+                } else {
+                    EmptyAccessState
                 }
             }
             else -> EmptyAccessState

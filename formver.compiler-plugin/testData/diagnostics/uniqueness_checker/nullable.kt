@@ -18,22 +18,19 @@ fun borrow(a: @Borrowed Any) {}
 fun newUnique(): @Unique A = A()
 
 fun `safe call read of unique subproperty`(b: @Unique B?) {
-    val z: @Unique A? = <!UNIQUENESS_MISMATCH!>b?.y<!>
-    // TODO: After reading `b.y` through `?.`, `b` is partially moved on the non-null path.
-    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION, UNIQUENESS_MISMATCH!>b<!>)
+    val z: @Unique A? = b?.y
+    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>b<!>)
 }
 
 fun `consume via safe call`(a: @Unique A?) {
-    consume(<!UNIQUENESS_MISMATCH!>a?.x<!>)
-    // TODO: After consuming via safe call, `a.x` is moved -> using `a` should leak.
-    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION, UNIQUENESS_MISMATCH!>a<!>)
+    consume(a?.x)
+    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>a<!>)
 }
 
 // Not-null assertion
 
 fun `not-null assertion then consume`(a: @Unique A?) {
     consume(a!!.x)
-    // TODO: After `a!!.x` consumption, `a.x` is moved -> using `a` should leak.
     consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>a<!>)
 }
 

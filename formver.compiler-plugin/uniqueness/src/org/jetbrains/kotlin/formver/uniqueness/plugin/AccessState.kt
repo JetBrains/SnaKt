@@ -41,18 +41,53 @@ fun AccessState.isSingleton(): Boolean {
     return true
 }
 
-fun AccessState.append(symbol: FirBasedSymbol<*>): AccessState {
+/**
+ * Concatenates every path in [this] with every path in [other].
+ *
+ * Worked example (`*` marks `Terminal` nodes; the top-row labels are the trie's own root and are not symbols inside the
+ * trie):
+ *
+ * ```
+ *   t0:                paths(t0) = { [b], [b, c], [d] }
+ *     \__b*
+ *     \  \__c*
+ *     \__d*
+ *
+ *   t1:                paths(t1) = { [f], [g] }
+ *     \__f*
+ *     \__g*
+ *
+ *   t0.append(t1):     paths = { [b, f], [b, g], [b, c, f], [b, c, g], [d, f], [d, g] }
+ *     \__b
+ *     \  \__f*
+ *     \  \__g*
+ *     \  \__c
+ *     \     \__f*
+ *     \     \__g*
+ *     \__d
+ *        \__f*
+ *        \__g*
+ * ```
+ */
+fun AccessState.append(other: AccessState): AccessState {
+    if (children.isEmpty()) return other
+
     var newChildren = children
 
-    for ((childSymbol, child) in newChildren) {
-        newChildren = newChildren.put(childSymbol, child.append(symbol))
+    for ((symbol, child) in children) {
+        newChildren = newChildren.put(symbol, child.append(other))
     }
 
-    return if (isTerminal) {
-        copy(
-            data = Access.Intermediate,
-            children = newChildren.put(symbol, AccessState(Access.Terminal))
-        )
+    return if (data == Access.Terminal) {
+        for ((symbol, otherChild) in other.children) {
+            val thisChild = newChildren[symbol]
+
+            newChildren = newChildren.put(
+                symbol,
+                if (thisChild != null) thisChild.join(otherChild) else otherChild,
+            )
+        }
+        copy(data = other.data, children = newChildren)
     } else {
         copy(children = newChildren)
     }

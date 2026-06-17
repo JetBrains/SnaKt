@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
 import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
+import org.jetbrains.kotlin.fir.expressions.FirSafeCallExpression
 import org.jetbrains.kotlin.fir.expressions.FirThisReceiverExpression
 import org.jetbrains.kotlin.fir.expressions.FirThrowExpression
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
@@ -51,6 +52,13 @@ private object TerminalUniquenessResolver : ExpressionTypeResolver<Uniqueness> {
 
             is FirPropertyAccessExpression -> {
                 val receiverUniqueness = expression.pathReceiver?.resolveUniqueness() ?: Uniqueness.Unique
+
+                receiverUniqueness.join(expression.resolveAccessUniqueness())
+            }
+
+            is FirSafeCallExpression -> {
+                val receiver = expression.receiver
+                val receiverUniqueness = receiver.resolveUniqueness()
 
                 receiverUniqueness.join(expression.resolveAccessUniqueness())
             }
