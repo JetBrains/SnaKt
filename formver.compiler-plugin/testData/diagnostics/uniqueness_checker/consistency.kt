@@ -20,6 +20,11 @@ class D {
     var c: @Unique C = C()
 }
 
+class N(
+    var b: @Unique N,
+    var c: @Unique N,
+)
+
 fun consume(a: @Unique Any) {}
 
 fun borrow(a: @Borrowed Any) {}
@@ -91,4 +96,22 @@ fun `move child via assignment then reassign`(b: @Unique B, fresh: @Unique A) {
     consume(local)
 
     consume(b)
+}
+
+fun `consume property of if branching between root and child`(n: @Unique N) {
+    consume((if (nondet()) n.b else n).c)
+    consume(<!UNIQUENESS_MISMATCH!>n.c<!>)
+    consume(<!UNIQUENESS_MISMATCH!>n.b.c<!>)
+}
+
+fun `consume property of when branching between root and child`(n: @Unique N) {
+    consume((when { nondet() -> n.b; else -> n }).c)
+    consume(<!UNIQUENESS_MISMATCH!>n.c<!>)
+    consume(<!UNIQUENESS_MISMATCH!>n.b.c<!>)
+}
+
+fun `consume both subproperties via if branching between siblings`(n: @Unique N) {
+    consume((if (nondet()) n.b else n.c).c)
+    consume(<!UNIQUENESS_MISMATCH!>n.b.c<!>)
+    consume(<!UNIQUENESS_MISMATCH!>n.c.c<!>)
 }

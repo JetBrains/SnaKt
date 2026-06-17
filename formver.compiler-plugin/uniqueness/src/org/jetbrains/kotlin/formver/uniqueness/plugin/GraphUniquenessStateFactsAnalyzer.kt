@@ -11,13 +11,16 @@ import org.jetbrains.kotlin.fir.analysis.cfa.util.PathAwareControlFlowInfo
 import org.jetbrains.kotlin.fir.analysis.cfa.util.merge
 import org.jetbrains.kotlin.fir.analysis.cfa.util.transformValues
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
+import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirOperation
 import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
 import org.jetbrains.kotlin.fir.expressions.arguments
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNodeWithSubgraphs
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.EnterSafeCallNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.EqualityOperatorCallNode
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ExitSafeCallNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallEnterNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.QualifiedAccessNode
@@ -67,13 +70,33 @@ class GraphUniquenessStateFactsAnalyzer(
             val qualifiedAccess = node.fir
 
             with(context) {
-                val uniquenessState = data.ensure()
-                var newUniquenessState = uniquenessState
+                var newUniquenessState = data.ensure()
                 val receiverAccessState = qualifiedAccess.pathReceiver?.resolveAccessState() ?: EmptyAccessState
                 newUniquenessState = receiverAccessState.initialize(newUniquenessState)
-
                 val selectorAccessState = qualifiedAccess.resolveAccessState()
                 newUniquenessState = selectorAccessState.access(newUniquenessState)
+
+                data.put(Unit, newUniquenessState)
+            }
+        }
+    }
+
+    override fun visitExitSafeCallNode(
+        node: ExitSafeCallNode,
+        data: PathAwareControlFlowInfo<Unit, UniquenessState>
+    ): PathAwareControlFlowInfo<Unit, UniquenessState> {
+        val safeCall = node.fir
+
+        with(context) {
+            return data.transformValues { data ->
+                var newUniquenessState = data.ensure()
+                val selector = safeCall.selector
+
+                if (selector is FirExpression) {
+                    newUniquenessState = selector.resolveAccessState().access(newUniquenessState)
+                }
+
+                newUniquenessState = safeCall.receiver.resolveAccessState().initialize(newUniquenessState)
 
                 data.put(Unit, newUniquenessState)
             }
