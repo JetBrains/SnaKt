@@ -30,15 +30,15 @@ fun interface ConeTypeTypeFactResolver<TypeFact> {
 class TypeContractFactResolver<TypeFact>(
     private val typeTypeFactResolver: ConeTypeTypeFactResolver<TypeFact>,
 ) {
-    fun resolveContractOf(type: ConeKotlinType, session: FirSession): TypeContractFact<TypeFact>? {
+    fun resolveContractOf(type: ConeKotlinType, session: FirSession): FunctionTypeFact<TypeFact>? {
         val functionType = type.fullyExpandedType(session).lowerBoundIfFlexible() as? ConeClassLikeType
             ?: return null
 
         if (!functionType.isSomeFunctionType(session)) return null
 
-        return TypeContractFact(
+        return FunctionTypeFact(
             parameters = functionType.valueParameterTypesIncludingReceiver(session).map { parameterType ->
-                TypeContractFact.ParameterType(
+                FunctionTypeFact.ParameterType(
                     type = typeTypeFactResolver.resolveTypeOf(parameterType, session),
                     contract = resolveContractOf(parameterType, session),
                 )

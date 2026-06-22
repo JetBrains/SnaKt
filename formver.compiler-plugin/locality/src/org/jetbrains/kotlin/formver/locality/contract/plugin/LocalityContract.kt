@@ -9,15 +9,15 @@ import org.jetbrains.kotlin.formver.locality.plugin.Locality
 import org.jetbrains.kotlin.formver.locality.plugin.LocalityIntersector
 import org.jetbrains.kotlin.formver.locality.plugin.LocalityJudgment
 import org.jetbrains.kotlin.formver.locality.plugin.LocalityRenderer
-import org.jetbrains.kotlin.formver.type.contract.plugin.TypeContractFactJudgment
-import org.jetbrains.kotlin.formver.type.contract.plugin.TypeContractFactRenderer
-import org.jetbrains.kotlin.formver.type.contract.plugin.TypeContractFactUnifier
-import org.jetbrains.kotlin.formver.type.contract.plugin.TypeContractFact
+import org.jetbrains.kotlin.formver.type.contract.plugin.FunctionTypeFactJudgment
+import org.jetbrains.kotlin.formver.type.contract.plugin.FunctionTypeFactRenderer
+import org.jetbrains.kotlin.formver.type.contract.plugin.FunctionTypeFactUnifier
+import org.jetbrains.kotlin.formver.type.contract.plugin.FunctionTypeFact
 
-typealias LocalityContract = TypeContractFact<Locality>
+typealias LocalityContract = FunctionTypeFact<Locality>
 
-val LocalityContractRenderer = TypeContractFactRenderer(LocalityRenderer)
+val LocalityContractRenderer = FunctionTypeFactRenderer(LocalityRenderer)
 
-val LocalityContractUnifier = TypeContractFactUnifier(LocalityIntersector)
+val LocalityContractUnifier = FunctionTypeFactUnifier(LocalityIntersector)
 
-val LocalityContractJudgment = TypeContractFactJudgment(LocalityJudgment)
+val LocalityContractJudgment = FunctionTypeFactJudgment(LocalityJudgment)

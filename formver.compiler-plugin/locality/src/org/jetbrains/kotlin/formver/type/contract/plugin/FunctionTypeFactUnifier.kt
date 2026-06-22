@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.formver.type.plugin.TypeFactIntersector
 import org.jetbrains.kotlin.formver.type.plugin.TypeFactUnifier
 
 /**
- * Implementation of a [TypeFactUnifier] for a nullable [TypeContractFact].
+ * Implementation of a [TypeFactUnifier] for a nullable [FunctionTypeFact].
  *
  * @param TypeFact the type-fact class of the elements of the contract.
  * @param typeIntersector the type intersector to use for intersecting the input types of the elements.
@@ -28,19 +28,19 @@ import org.jetbrains.kotlin.formver.type.plugin.TypeFactUnifier
  *
  * `val f: Function<Char> = if (false) { x: Int -> 'a' } else { x: Int, y: Int -> 'b'}`
  */
-class TypeContractFactUnifier<TypeFact>(
+class FunctionTypeFactUnifier<TypeFact>(
     private val typeIntersector: TypeFactIntersector<TypeFact>,
-) : TypeFactUnifier<TypeContractFact<TypeFact>?> {
-    override fun join(left: TypeContractFact<TypeFact>?, right: TypeContractFact<TypeFact>?): TypeContractFact<TypeFact>? =
+) : TypeFactUnifier<FunctionTypeFact<TypeFact>?> {
+    override fun join(left: FunctionTypeFact<TypeFact>?, right: FunctionTypeFact<TypeFact>?): FunctionTypeFact<TypeFact>? =
         when {
             left == null -> right
             right == null -> left
-            else -> TypeContractFact(
+            else -> FunctionTypeFact(
                 if (left.parameters.size != right.parameters.size) {
                     emptyList()
                 } else {
                     left.parameters.zip(right.parameters).map { (leftElement, rightElement) ->
-                        TypeContractFact.ParameterType(
+                        FunctionTypeFact.ParameterType(
                             typeIntersector.meet(leftElement.type, rightElement.type),
                             join(leftElement.contract, rightElement.contract)
                         )

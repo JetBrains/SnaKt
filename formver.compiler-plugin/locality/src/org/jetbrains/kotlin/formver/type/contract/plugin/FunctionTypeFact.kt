@@ -12,12 +12,12 @@ package org.jetbrains.kotlin.formver.type.contract.plugin
  * @param parameters the list of contract [ParameterType]s referring to the input parameters.
  * @param result the contract type-fact of the return value (if present).
  */
-data class TypeContractFact<TypeFact>(
+data class FunctionTypeFact<TypeFact>(
     val parameters: List<ParameterType<TypeFact>>,
-    val result: TypeContractFact<TypeFact>?,
+    val result: FunctionTypeFact<TypeFact>?,
 ) {
     data class ParameterType<Type>(
         val type: Type,
-        val contract: TypeContractFact<Type>?
+        val contract: FunctionTypeFact<Type>?
     )
 }

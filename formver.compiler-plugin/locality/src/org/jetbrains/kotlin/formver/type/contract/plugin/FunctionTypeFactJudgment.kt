@@ -8,18 +8,18 @@ package org.jetbrains.kotlin.formver.type.contract.plugin
 import org.jetbrains.kotlin.formver.type.plugin.TypeFactJudgment
 
 /**
- * Judgment for [TypeContractFact]s.
+ * Judgment for [FunctionTypeFact]s.
  *
  * @param TypeFact the type-fact of the contract.
  * @param typeJudgment the type-fact judgment to use for checking the compatibility of the parameters and result of the
  *  contracts.
  */
-class TypeContractFactJudgment<TypeFact>(
+class FunctionTypeFactJudgment<TypeFact>(
     private val typeJudgment: TypeFactJudgment<TypeFact>,
-) : TypeFactJudgment<TypeContractFact<TypeFact>?> {
+) : TypeFactJudgment<FunctionTypeFact<TypeFact>?> {
     override fun satisfies(
-        requiredTypeFact: TypeContractFact<TypeFact>?,
-        actualTypeFact: TypeContractFact<TypeFact>?
+        requiredTypeFact: FunctionTypeFact<TypeFact>?,
+        actualTypeFact: FunctionTypeFact<TypeFact>?
     ): Boolean =
         when {
             requiredTypeFact == null -> true
