@@ -16,17 +16,17 @@ import org.jetbrains.kotlin.diagnostics.rendering.ContextIndependentParameterRen
 class FunctionTypeFactRenderer<TypeFact>(
     private val typeFactRenderer: ContextIndependentParameterRenderer<TypeFact>
 ) : ContextIndependentParameterRenderer<FunctionTypeFact<TypeFact>?> {
-    override fun render(obj: FunctionTypeFact<TypeFact>?): String =
-        obj?.renderContract() ?: "unknown"
+    override fun render(functionTypeFact: FunctionTypeFact<TypeFact>?): String =
+        functionTypeFact?.renderContract() ?: "unknown"
 
     private fun FunctionTypeFact<TypeFact>.renderContract(): String =
-        parameters.joinToString(prefix = "[", postfix = "]") { parameter ->
+        parameterTypeFacts.joinToString(prefix = "[", postfix = "]") { parameter ->
             parameter.renderElement()
-        } + (result?.let { " -> ${it.renderContract()}" } ?: "")
+        } + (resultFunctionTypeFact?.let { " -> ${it.renderContract()}" } ?: "")
 
-    private fun FunctionTypeFact.ParameterType<TypeFact>.renderElement(): String {
-        val renderedType = typeFactRenderer.render(typeFact)
+    private fun FunctionTypeFact.ElementTypeFact<TypeFact>.renderElement(): String {
+        val renderedTypeFact = typeFactRenderer.render(typeFact)
 
-        return contract?.let { "($renderedType, ${it.renderContract()})" } ?: renderedType
+        return functionTypeFact?.let { "($renderedTypeFact, ${it.renderContract()})" } ?: renderedTypeFact
     }
 }

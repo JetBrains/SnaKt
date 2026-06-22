@@ -15,7 +15,7 @@ import org.jetbrains.kotlin.fir.types.returnType
 import org.jetbrains.kotlin.fir.types.valueParameterTypesIncludingReceiver
 
 fun interface ConeTypeTypeFactResolver<TypeFact> {
-    fun resolveTypeOf(type: ConeKotlinType, session: FirSession): TypeFact
+    fun resolveTypeFactOf(type: ConeKotlinType, session: FirSession): TypeFact
 }
 
 /**
@@ -37,13 +37,13 @@ class TypeContractFactResolver<TypeFact>(
         if (!functionType.isSomeFunctionType(session)) return null
 
         return FunctionTypeFact(
-            parameters = functionType.valueParameterTypesIncludingReceiver(session).map { parameterType ->
-                FunctionTypeFact.ParameterType(
-                    typeFact = typeTypeFactResolver.resolveTypeOf(parameterType, session),
-                    contract = resolveContractOf(parameterType, session),
+            parameterTypeFacts = functionType.valueParameterTypesIncludingReceiver(session).map { parameterType ->
+                FunctionTypeFact.ElementTypeFact(
+                    typeFact = typeTypeFactResolver.resolveTypeFactOf(parameterType, session),
+                    functionTypeFact = resolveContractOf(parameterType, session),
                 )
             },
-            result = resolveContractOf(functionType.returnType(session), session),
+            resultFunctionTypeFact = resolveContractOf(functionType.returnType(session), session),
         )
     }
 }

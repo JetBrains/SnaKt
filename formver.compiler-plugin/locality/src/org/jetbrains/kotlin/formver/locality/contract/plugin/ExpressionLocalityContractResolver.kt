@@ -74,7 +74,7 @@ object ReturnResultLocalityContractResolver : ReturnResultTypeFactResolver<Local
 private object InvokeParametersLocalityContractResolver : InvokeParameterTypeFactsResolver<LocalityContract?> {
     context(context: CheckerContext)
     override fun resolveInvokeParameters(receiver: FirExpression): List<LocalityContract?>? =
-        receiver.resolveLocalityContract()?.parameters?.map { element -> element.contract }
+        receiver.resolveLocalityContract()?.parameterTypeFacts?.map { element -> element.functionTypeFact }
 }
 
 val CallParametersLocalityContractResolver = CallParameterTypeFactsResolver(

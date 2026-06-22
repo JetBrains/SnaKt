@@ -31,22 +31,25 @@ import org.jetbrains.kotlin.formver.type.plugin.TypeFactUnifier
 class FunctionTypeFactUnifier<TypeFact>(
     private val typeIntersector: TypeFactIntersector<TypeFact>,
 ) : TypeFactUnifier<FunctionTypeFact<TypeFact>?> {
-    override fun join(left: FunctionTypeFact<TypeFact>?, right: FunctionTypeFact<TypeFact>?): FunctionTypeFact<TypeFact>? =
+    override fun join(
+        left: FunctionTypeFact<TypeFact>?,
+        right: FunctionTypeFact<TypeFact>?
+    ): FunctionTypeFact<TypeFact>? =
         when {
             left == null -> right
             right == null -> left
             else -> FunctionTypeFact(
-                if (left.parameters.size != right.parameters.size) {
+                if (left.parameterTypeFacts.size != right.parameterTypeFacts.size) {
                     emptyList()
                 } else {
-                    left.parameters.zip(right.parameters).map { (leftElement, rightElement) ->
-                        FunctionTypeFact.ParameterType(
+                    left.parameterTypeFacts.zip(right.parameterTypeFacts).map { (leftElement, rightElement) ->
+                        FunctionTypeFact.ElementTypeFact(
                             typeIntersector.meet(leftElement.typeFact, rightElement.typeFact),
-                            join(leftElement.contract, rightElement.contract)
+                            join(leftElement.functionTypeFact, rightElement.functionTypeFact)
                         )
                     }
                 },
-                join(left.result, right.result)
+                join(left.resultFunctionTypeFact, right.resultFunctionTypeFact)
             )
         }
 }

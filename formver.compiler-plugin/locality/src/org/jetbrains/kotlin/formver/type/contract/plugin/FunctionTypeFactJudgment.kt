@@ -11,11 +11,11 @@ import org.jetbrains.kotlin.formver.type.plugin.TypeFactJudgment
  * Judgment for [FunctionTypeFact]s.
  *
  * @param TypeFact the type-fact of the contract.
- * @param typeJudgment the type-fact judgment to use for checking the compatibility of the parameters and result of the
- *  contracts.
+ * @param typeFactJudgment the type-fact judgment to use for checking the compatibility of the type-facts and function
+ * type-facts of the parameters and result.
  */
 class FunctionTypeFactJudgment<TypeFact>(
-    private val typeJudgment: TypeFactJudgment<TypeFact>,
+    private val typeFactJudgment: TypeFactJudgment<TypeFact>,
 ) : TypeFactJudgment<FunctionTypeFact<TypeFact>?> {
     override fun satisfies(
         requiredTypeFact: FunctionTypeFact<TypeFact>?,
@@ -24,11 +24,17 @@ class FunctionTypeFactJudgment<TypeFact>(
         when {
             requiredTypeFact == null -> true
             actualTypeFact == null -> false
-            requiredTypeFact.parameters.size != actualTypeFact.parameters.size -> false
-            else -> requiredTypeFact.parameters
-                .zip(actualTypeFact.parameters).all { (requiredElement, actualElement) ->
-                    typeJudgment.satisfies(actualElement.typeFact, requiredElement.typeFact) &&
-                            satisfies(requiredElement.contract, actualElement.contract)
-                } && satisfies(requiredTypeFact.result, actualTypeFact.result)
+            requiredTypeFact.parameterTypeFacts.size != actualTypeFact.parameterTypeFacts.size -> false
+            else -> requiredTypeFact.parameterTypeFacts
+                .zip(actualTypeFact.parameterTypeFacts)
+                .all { (requiredElement, actualElement) ->
+                    typeFactJudgment.satisfies(
+                        requiredElement.typeFact,
+                        actualElement.typeFact
+                    ) && satisfies(
+                        requiredElement.functionTypeFact,
+                        actualElement.functionTypeFact
+                    )
+                } && satisfies(requiredTypeFact.resultFunctionTypeFact, actualTypeFact.resultFunctionTypeFact)
         }
 }
