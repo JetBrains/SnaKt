@@ -38,7 +38,7 @@ class TypeContractFactResolver<TypeFact>(
 
         return FunctionTypeFact(
             parameterTypeFacts = functionType.valueParameterTypesIncludingReceiver(session).map { parameterType ->
-                FunctionTypeFact.ElementTypeFact(
+                FunctionTypeFact.ParameterTypeFact(
                     typeFact = typeTypeFactResolver.resolveTypeFactOf(parameterType, session),
                     functionTypeFact = resolveContractOf(parameterType, session),
                 )

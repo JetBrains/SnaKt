@@ -8,15 +8,15 @@ package org.jetbrains.kotlin.formver.type.contract.plugin
 /**
  * Recursive function type-fact representation based on [TypeFact].
  *
- * @param TypeFact the type of the function [ElementTypeFact]s.
- * @param parameterTypeFacts the list of function [ElementTypeFact]s referring to the input parameters.
+ * @param TypeFact the type of the function [ParameterTypeFact]s.
+ * @param parameterTypeFacts the list of function [ParameterTypeFact]s referring to the input parameters.
  * @param resultFunctionTypeFact the function type-fact of the return value (if present).
  */
 data class FunctionTypeFact<TypeFact>(
-    val parameterTypeFacts: List<ElementTypeFact<TypeFact>>,
+    val parameterTypeFacts: List<ParameterTypeFact<TypeFact>>,
     val resultFunctionTypeFact: FunctionTypeFact<TypeFact>?,
 ) {
-    data class ElementTypeFact<TypeFact>(
+    data class ParameterTypeFact<TypeFact>(
         val typeFact: TypeFact,
         val functionTypeFact: FunctionTypeFact<TypeFact>?
     )
