@@ -41,7 +41,7 @@ class FunctionTypeFactUnifier<TypeFact>(
                 } else {
                     left.parameters.zip(right.parameters).map { (leftElement, rightElement) ->
                         FunctionTypeFact.ParameterType(
-                            typeIntersector.meet(leftElement.type, rightElement.type),
+                            typeIntersector.meet(leftElement.typeFact, rightElement.typeFact),
                             join(leftElement.contract, rightElement.contract)
                         )
                     }

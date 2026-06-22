@@ -27,7 +27,7 @@ class FunctionTypeFactJudgment<TypeFact>(
             requiredTypeFact.parameters.size != actualTypeFact.parameters.size -> false
             else -> requiredTypeFact.parameters
                 .zip(actualTypeFact.parameters).all { (requiredElement, actualElement) ->
-                    typeJudgment.satisfies(actualElement.type, requiredElement.type) &&
+                    typeJudgment.satisfies(actualElement.typeFact, requiredElement.typeFact) &&
                             satisfies(requiredElement.contract, actualElement.contract)
                 } && satisfies(requiredTypeFact.result, actualTypeFact.result)
         }

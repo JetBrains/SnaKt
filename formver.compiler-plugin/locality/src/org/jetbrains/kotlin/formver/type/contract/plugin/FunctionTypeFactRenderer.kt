@@ -25,7 +25,7 @@ class FunctionTypeFactRenderer<TypeFact>(
         } + (result?.let { " -> ${it.renderContract()}" } ?: "")
 
     private fun FunctionTypeFact.ParameterType<TypeFact>.renderElement(): String {
-        val renderedType = typeFactRenderer.render(type)
+        val renderedType = typeFactRenderer.render(typeFact)
 
         return contract?.let { "($renderedType, ${it.renderContract()})" } ?: renderedType
     }

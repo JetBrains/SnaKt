@@ -16,8 +16,8 @@ data class FunctionTypeFact<TypeFact>(
     val parameters: List<ParameterType<TypeFact>>,
     val result: FunctionTypeFact<TypeFact>?,
 ) {
-    data class ParameterType<Type>(
-        val type: Type,
-        val contract: FunctionTypeFact<Type>?
+    data class ParameterType<TypeFact>(
+        val typeFact: TypeFact,
+        val contract: FunctionTypeFact<TypeFact>?
     )
 }
