@@ -21,28 +21,27 @@ import org.jetbrains.kotlin.fir.types.FirResolvedTypeRef
 
 object TypeRefLocalityAttributeChecker : FirResolvedTypeRefChecker(MppCheckerKind.Common) {
     private fun CheckerContext.isValidLocalityTypeTarget(): Boolean {
-        val containingElements = containingElements.asReversed()
-        val target = containingElements.getOrNull(1) ?: return false
+        val targetElement = containingElements.asReversed().getOrNull(1) ?: return false
 
-        return when(target) {
+        return when(targetElement) {
             is FirValueParameter, is FirReceiverParameter -> true
-            is FirProperty -> target.isLocal
-            else -> target.source?.kind is KtFakeSourceElementKind.ImplicitTypeArgument
+            is FirProperty -> targetElement.isLocal
+            else -> targetElement.source?.kind is KtFakeSourceElementKind.ImplicitTypeArgument
         }
     }
 
     private fun CheckerContext.isValidLocalityContractTarget(): Boolean {
-        val containingElements = containingElements.asReversed()
-        val target0 = containingElements.getOrNull(0) ?: return false
-        val target1 = containingElements.getOrNull(1) ?: return false
+        val outerElements = containingElements.asReversed()
+        val currentElement = outerElements.getOrNull(0) ?: return false
+        val containerElement = outerElements.getOrNull(1) ?: return false
 
-        return when (target1) {
+        return when (containerElement) {
             is FirFunctionTypeRef ->
-                target0 == target1.receiverTypeRef || target0 in target1.contextParameterTypeRefs
+                currentElement == containerElement.receiverTypeRef || currentElement in containerElement.contextParameterTypeRefs
             is FirFunctionTypeParameter -> {
-                val target2 = containingElements.getOrNull(2)
+                val functionTypeRef = outerElements.getOrNull(2) as? FirFunctionTypeRef? ?: return false
 
-                target2 is FirFunctionTypeRef && target1 in target2.parameters
+                containerElement in functionTypeRef.parameters
             }
             else -> false
         }
