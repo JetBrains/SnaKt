@@ -141,7 +141,7 @@ fun AccessState.alterTerminals(
 context(context: CheckerContext)
 fun AccessState.move(uniquenessState: UniquenessState): UniquenessState =
     alterTerminals(uniquenessState) { _, state ->
-        if (state.data == Uniqueness.Accessed) {
+        if (state.data == Uniqueness.Reserved) {
             state.copy(data = Uniqueness.Moved)
         } else {
             state
@@ -161,10 +161,10 @@ fun AccessState.initialize(uniquenessState: UniquenessState): UniquenessState =
     }
 
 context(context: CheckerContext)
-fun AccessState.access(uniquenessState: UniquenessState): UniquenessState =
+fun AccessState.reserve(uniquenessState: UniquenessState): UniquenessState =
     alterTerminals(uniquenessState) { symbol, state ->
         if (state.data == Uniqueness.Unique) {
-            state.copy(data = Uniqueness.Accessed)
+            state.copy(data = Uniqueness.Reserved)
         } else {
             state
         }

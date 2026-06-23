@@ -28,7 +28,7 @@ fun UniquenessState.joinOverPath(path: List<FirBasedSymbol<*>>): Uniqueness =
     data.join((children[path.first()]?.joinOverPath(path.drop(1)) ?: Uniqueness.Unique))
 
 fun UniquenessState.enumerateInconsistentPaths(): Sequence<Path> =
-    enumerate(emptyList()) { data == Uniqueness.Moved || data == Uniqueness.Accessed }
+    enumerate(emptyList()) { data == Uniqueness.Moved || data == Uniqueness.Reserved }
 
 fun UniquenessState.insert(path: Path, child: UniquenessState): UniquenessState =
     if (path.isEmpty()) {

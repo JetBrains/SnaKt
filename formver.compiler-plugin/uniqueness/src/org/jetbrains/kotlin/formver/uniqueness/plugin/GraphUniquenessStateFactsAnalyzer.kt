@@ -62,19 +62,34 @@ class GraphUniquenessStateFactsAnalyzer(
         return data.transformValues { data -> data.put(Unit, data.ensure()) }
     }
 
+    val QualifiedAccessNode.isUsedAsStatement: Boolean
+        get() {
+            val blockExit = previousNodes.firstIsInstanceOrNull<BlockEnterNode>() ?: return false
+
+            for (blockStatement in blockExit.fir.statements.dropLast(1)) {
+                if (blockStatement === fir) {
+                    return true
+                }
+            }
+
+            return false
+        }
+
     override fun visitQualifiedAccessNode(
         node: QualifiedAccessNode,
         data: PathAwareControlFlowInfo<Unit, UniquenessState>
     ): PathAwareControlFlowInfo<Unit, UniquenessState> {
-        return data.transformValues { data ->
-            val qualifiedAccess = node.fir
+        if (node.isUsedAsStatement) return data
 
+        val qualifiedAccess = node.fir
+
+        return data.transformValues { data ->
             with(context) {
                 var newUniquenessState = data.ensure()
                 val receiverAccessState = qualifiedAccess.pathReceiver?.resolveAccessState() ?: EmptyAccessState
                 newUniquenessState = receiverAccessState.initialize(newUniquenessState)
                 val selectorAccessState = qualifiedAccess.resolveAccessState()
-                newUniquenessState = selectorAccessState.access(newUniquenessState)
+                newUniquenessState = selectorAccessState.reserve(newUniquenessState)
 
                 data.put(Unit, newUniquenessState)
             }
@@ -93,7 +108,8 @@ class GraphUniquenessStateFactsAnalyzer(
                 val selector = safeCall.selector
 
                 if (selector is FirExpression) {
-                    newUniquenessState = selector.resolveAccessState().access(newUniquenessState)
+                    val selectorAccessState = selector.resolveAccessState()
+                    newUniquenessState = selectorAccessState.reserve(newUniquenessState)
                 }
 
                 newUniquenessState = safeCall.receiver.resolveAccessState().initialize(newUniquenessState)

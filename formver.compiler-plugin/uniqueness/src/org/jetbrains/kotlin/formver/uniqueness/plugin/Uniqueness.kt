@@ -15,7 +15,7 @@ enum class Uniqueness {
     Unique,
     Unknown,
     Shared,
-    Accessed,
+    Reserved,
     Moved
 }
 
@@ -53,7 +53,7 @@ val UniquenessRenderer = Renderer<Uniqueness> { uniqueness ->
         Uniqueness.Unique -> "unique"
         Uniqueness.Unknown -> "unknown"
         Uniqueness.Shared -> "shared"
-        Uniqueness.Accessed -> "accessed"
+        Uniqueness.Reserved -> "reserved"
         Uniqueness.Moved -> "moved"
     }
 }
