@@ -5,7 +5,6 @@
 
 package org.jetbrains.kotlin.formver.uniqueness.plugin
 
-import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.analysis.cfa.util.ControlFlowInfo
 import org.jetbrains.kotlin.fir.analysis.cfa.util.PathAwareControlFlowGraphVisitor
 import org.jetbrains.kotlin.fir.analysis.cfa.util.PathAwareControlFlowInfo
@@ -18,7 +17,6 @@ import org.jetbrains.kotlin.fir.expressions.FirOperation
 import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
 import org.jetbrains.kotlin.fir.expressions.allReceiverExpressions
 import org.jetbrains.kotlin.fir.expressions.arguments
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.BlockEnterNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNodeWithSubgraphs
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
@@ -30,16 +28,14 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.QualifiedAccessNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.TypeOperatorCallNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
-import org.jetbrains.kotlin.fir.visitors.FirVisitorVoid
 import org.jetbrains.kotlin.formver.locality.plugin.Locality
 import org.jetbrains.kotlin.formver.type.plugin.CallParametersTypeResolver
-import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 
-typealias UniquenessStateFacts = ControlFlowInfo<Unit, UniquenessState>
+typealias UniquenessStateFlow = ControlFlowInfo<Unit, UniquenessState>
 
-typealias PathAwareUniquenessStateFacts = PathAwareControlFlowInfo<Unit, UniquenessState>
+typealias PathAwareUniquenessStateFlow = PathAwareControlFlowInfo<Unit, UniquenessState>
 
-class GraphUniquenessStateFactsAnalyzer(
+class GraphUniquenessStatesAnalyzer(
     private val initialState: UniquenessState,
     private val context: CheckerContext,
     private val callParametersLocalityResolver: CallParametersTypeResolver<Locality>,
@@ -49,28 +45,28 @@ class GraphUniquenessStateFactsAnalyzer(
     }
 
     override fun mergeInfo(
-        a: UniquenessStateFacts,
-        b: UniquenessStateFacts,
+        a: UniquenessStateFlow,
+        b: UniquenessStateFlow,
         node: CFGNode<*>
-    ): UniquenessStateFacts =
+    ): UniquenessStateFlow =
         a.merge(b) { leftState, rightState ->
             leftState.join(rightState)
         }
 
-    private fun UniquenessStateFacts.ensure(): UniquenessState =
+    private fun UniquenessStateFlow.ensure(): UniquenessState =
         this[Unit] ?: initialState
 
     override fun visitNode(
         node: CFGNode<*>,
-        data: PathAwareUniquenessStateFacts
-    ): PathAwareUniquenessStateFacts {
+        data: PathAwareUniquenessStateFlow
+    ): PathAwareUniquenessStateFlow {
         return data.transformValues { data -> data.put(Unit, data.ensure()) }
     }
 
     override fun visitQualifiedAccessNode(
         node: QualifiedAccessNode,
-        data: PathAwareControlFlowInfo<Unit, UniquenessState>
-    ): PathAwareControlFlowInfo<Unit, UniquenessState> {
+        data: PathAwareUniquenessStateFlow
+    ): PathAwareUniquenessStateFlow {
         val qualifiedAccess = node.fir
 
         return data.transformValues { data ->
@@ -89,8 +85,8 @@ class GraphUniquenessStateFactsAnalyzer(
 
     override fun visitExitSafeCallNode(
         node: ExitSafeCallNode,
-        data: PathAwareControlFlowInfo<Unit, UniquenessState>
-    ): PathAwareControlFlowInfo<Unit, UniquenessState> {
+        data: PathAwareUniquenessStateFlow
+    ): PathAwareUniquenessStateFlow {
         val safeCall = node.fir
 
         with(context) {
@@ -112,8 +108,8 @@ class GraphUniquenessStateFactsAnalyzer(
 
     private fun visitSyntheticCallNode(
         node: CFGNode<FirCall>,
-        data: PathAwareUniquenessStateFacts
-    ): PathAwareUniquenessStateFacts {
+        data: PathAwareUniquenessStateFlow
+    ): PathAwareUniquenessStateFlow {
         val call = node.fir
 
         return data.transformValues { data ->
@@ -132,8 +128,8 @@ class GraphUniquenessStateFactsAnalyzer(
 
     override fun visitTypeOperatorCallNode(
         node: TypeOperatorCallNode,
-        data: PathAwareControlFlowInfo<Unit, UniquenessState>
-    ): PathAwareControlFlowInfo<Unit, UniquenessState> {
+        data: PathAwareUniquenessStateFlow
+    ): PathAwareUniquenessStateFlow {
         val typeOperatorExpression = node.fir
 
         return when (typeOperatorExpression.operation) {
@@ -144,15 +140,15 @@ class GraphUniquenessStateFactsAnalyzer(
 
     override fun visitEqualityOperatorCallNode(
         node: EqualityOperatorCallNode,
-        data: PathAwareControlFlowInfo<Unit, UniquenessState>
-    ): PathAwareControlFlowInfo<Unit, UniquenessState> {
+        data: PathAwareUniquenessStateFlow
+    ): PathAwareUniquenessStateFlow {
         return visitSyntheticCallNode(node, data)
     }
 
     override fun visitVariableDeclarationNode(
         node: VariableDeclarationNode,
-        data: PathAwareUniquenessStateFacts
-    ): PathAwareUniquenessStateFacts {
+        data: PathAwareUniquenessStateFlow
+    ): PathAwareUniquenessStateFlow {
         val declaration = node.fir
         val initializer = declaration.initializer
         val leftSymbol = declaration.symbol
@@ -183,8 +179,8 @@ class GraphUniquenessStateFactsAnalyzer(
 
     override fun visitVariableAssignmentNode(
         node: VariableAssignmentNode,
-        data: PathAwareUniquenessStateFacts
-    ): PathAwareUniquenessStateFacts {
+        data: PathAwareUniquenessStateFlow
+    ): PathAwareUniquenessStateFlow {
         val assignment = node.fir
         val leftValue = assignment.lValue
         val rightValue = assignment.rValue
@@ -220,8 +216,8 @@ class GraphUniquenessStateFactsAnalyzer(
 
     override fun visitFunctionCallEnterNode(
         node: FunctionCallEnterNode,
-        data: PathAwareUniquenessStateFacts
-    ): PathAwareUniquenessStateFacts {
+        data: PathAwareUniquenessStateFlow
+    ): PathAwareUniquenessStateFlow {
         val call = node.fir
 
         with(context) {
@@ -243,8 +239,8 @@ class GraphUniquenessStateFactsAnalyzer(
 
     override fun visitFunctionCallExitNode(
         node: FunctionCallExitNode,
-        data: PathAwareUniquenessStateFacts
-    ): PathAwareUniquenessStateFacts {
+        data: PathAwareUniquenessStateFlow
+    ): PathAwareUniquenessStateFlow {
         val call = node.fir
 
         with(context) {
@@ -263,7 +259,7 @@ class GraphUniquenessStateFactsAnalyzer(
     }
 }
 
-fun PathAwareUniquenessStateFacts?.joinOverEdgeKinds(): UniquenessState =
+fun PathAwareUniquenessStateFlow?.joinOverEdgeKinds(): UniquenessState =
     this?.values
         ?.map { it[Unit] ?: EmptyUniquenessState }
         ?.reduceOrNull(UniquenessState::join)

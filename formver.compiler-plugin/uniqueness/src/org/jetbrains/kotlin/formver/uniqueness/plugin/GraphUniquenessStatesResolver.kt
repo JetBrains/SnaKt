@@ -16,10 +16,10 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 import org.jetbrains.kotlin.formver.locality.plugin.CallParametersLocalityResolver
 
 
-class GraphUniquenessStateFactsResolver(session: FirSession) : FirExtensionSessionComponent(session) {
+class GraphUniquenessStatesResolver(session: FirSession) : FirExtensionSessionComponent(session) {
     companion object {
         fun getFactory(): Factory {
-            return Factory { session -> GraphUniquenessStateFactsResolver(session) }
+            return Factory { session -> GraphUniquenessStatesResolver(session) }
         }
     }
 
@@ -30,13 +30,13 @@ class GraphUniquenessStateFactsResolver(session: FirSession) : FirExtensionSessi
     fun resolveUniquenessStatesOf(
         graph: ControlFlowGraph,
         context: CheckerContext
-    ): Map<CFGNode<*>, PathAwareUniquenessStateFacts> =
+    ): Map<CFGNode<*>, PathAwareUniquenessStateFlow> =
         cache.getValue(graph, context)
 
     private fun analyzeUniquenessStatesOf(
         graph: ControlFlowGraph,
         context: CheckerContext
-    ): Map<CFGNode<*>, PathAwareUniquenessStateFacts> {
+    ): Map<CFGNode<*>, PathAwareUniquenessStateFlow> {
         val declaration = graph.declaration
         var initialState = EmptyUniquenessState
 
@@ -63,9 +63,9 @@ class GraphUniquenessStateFactsResolver(session: FirSession) : FirExtensionSessi
     }
 }
 
-private val FirSession.graphUniquenessStateFactsResolver: GraphUniquenessStateFactsResolver
+private val FirSession.graphUniquenessStatesResolver: GraphUniquenessStatesResolver
         by FirSession.sessionComponentAccessor()
 
 context(context: CheckerContext)
-fun ControlFlowGraph.analyzeUniquenessStateFacts(): Map<CFGNode<*>, PathAwareUniquenessStateFacts> =
-    context.session.graphUniquenessStateFactsResolver.resolveUniquenessStatesOf(this, context)
+fun ControlFlowGraph.analyzeUniquenessStateFacts(): Map<CFGNode<*>, PathAwareUniquenessStateFlow> =
+    context.session.graphUniquenessStatesResolver.resolveUniquenessStatesOf(this, context)

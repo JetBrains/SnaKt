@@ -24,7 +24,7 @@ class UniquenessExtensionRegistrar(
         +ExpressionAccessStateResolver.getFactory()
         +ExpressionUniquenessResolver.getFactory()
         +StatementUniquenessStateTransitionResolver.getFactory()
-        +GraphUniquenessStateFactsResolver.getFactory()
+        +GraphUniquenessStatesResolver.getFactory()
         +GraphUniquenessStateTransitionsResolver.getFactory()
         +UniquenessAdditionalCheckers.getFactory()
         +UniquenessAttributeExtension.getFactory(uniquenessAnnotationId)
