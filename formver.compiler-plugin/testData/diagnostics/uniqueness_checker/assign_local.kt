@@ -10,6 +10,7 @@ fun nondet(): Boolean {
 fun consume(x: @Unique Any) {}
 
 fun `assign local after accessing it as statement`(x: @Unique Any) {
+    // TODO: Do not put `x` in reserved if it will not be consumed.
     x
     val y: @Unique Any = x
 }

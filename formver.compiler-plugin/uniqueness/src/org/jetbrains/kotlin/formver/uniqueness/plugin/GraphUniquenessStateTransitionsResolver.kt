@@ -37,7 +37,7 @@ class GraphUniquenessStateTransitionsResolver(session: FirSession) : FirExtensio
     fun extractUniquenessStateTransitionsOf(
         graph: ControlFlowGraph,
     ): Map<FirStatement, UniquenessStateTransition> {
-        val outputStates = context(context) { graph.analyzeUniquenessStateFacts() }
+        val outputStates = context(context) { graph.resolveUniquenessStateFlows() }
         val result = mutableMapOf<FirStatement, UniquenessStateTransition>()
 
         fun CFGNode<*>.joinOverInputStates(): UniquenessState =
@@ -46,7 +46,7 @@ class GraphUniquenessStateTransitionsResolver(session: FirSession) : FirExtensio
                 .reduceOrNull(UniquenessState::join)
                 ?: EmptyUniquenessState
 
-        fun CFGNode<*>.extractOutputState(): UniquenessState =
+        fun CFGNode<*>.readOutputState(): UniquenessState =
             outputStates[this].joinOverEdgeKinds()
 
         // NOTE: graph.nodes is already in topological (BFS) order: each node appears after all its non-back-edge
@@ -57,7 +57,7 @@ class GraphUniquenessStateTransitionsResolver(session: FirSession) : FirExtensio
             if (element is FirStatement) {
                 result.putIfAbsent(
                     element,
-                    node.joinOverInputStates() to node.extractOutputState()
+                    node.joinOverInputStates() to node.readOutputState()
                 )
             }
         }
