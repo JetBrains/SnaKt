@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.domains
 
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
+import org.jetbrains.kotlin.formver.core.embeddings.callables.seqToMultisetFunc
 import org.jetbrains.kotlin.formver.core.embeddings.types.embedClassTypeFunc
 import org.jetbrains.kotlin.formver.core.names.DomainName
 import org.jetbrains.kotlin.formver.core.names.QualifiedDomainFuncName
@@ -392,6 +393,15 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
         }
         axiom("typeOfUnit") {
             unitValue() isOf unitType()
+        }
+
+        axiom("multiSetPreservesSize") {
+            Exp.forall(domainVar("t1", Type.Seq(Type.Int))) { t1 ->
+                Exp.EqCmp(
+                    Exp.SeqLength(t1),
+                    Exp.AnySetCardinality(seqToMultisetFunc(t1))
+                )
+            }
         }
         axiom("uniquenessOfUnit") {
             Exp.forall(r) { r ->

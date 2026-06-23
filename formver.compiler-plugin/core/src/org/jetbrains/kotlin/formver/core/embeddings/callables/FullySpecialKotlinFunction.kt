@@ -344,6 +344,15 @@ object SpecialKotlinFunctions {
         addFunction(intArrayIntIntToUnitType, SpecialPackages.kotlin, className = "IntArray", name = "set") { args, _ ->
             IntArraySet(args[0], args[1], args[2])
         }
+
+        val intArrayToMultisetType = buildFunctionPretype {
+            withParam { intArray() }
+            withReturnType { any() }
+        }
+
+        addFunction(intArrayToMultisetType, SpecialPackages.formver, name = "toMultiset") { args, _ ->
+            IntArrayToMultiset(args[0])
+        }
     }
 }
 

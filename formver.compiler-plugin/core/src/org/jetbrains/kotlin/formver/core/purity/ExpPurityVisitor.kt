@@ -48,6 +48,7 @@ internal class ExprPurityVisitor(val declaredVariables: MutableSet<VariableEmbed
     override fun visitOld(e: Old) = e.allChildrenPure(this)
     override fun visitIntArrayGet(e: IntArrayGet): Boolean = e.allChildrenPure(this)
     override fun visitIntArraySize(e: IntArraySize): Boolean = e.allChildrenPure(this)
+    override fun visitIntArrayToMultiset(e: IntArrayToMultiset): Boolean = e.allChildrenPure(this)
 
     /* ————— impure nodes ————— */
     override fun visitSafeCast(e: SafeCast) = false

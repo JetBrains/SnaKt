@@ -14,17 +14,15 @@ import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.intInjection
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.isOf
 import org.jetbrains.kotlin.formver.core.embeddings.*
+import org.jetbrains.kotlin.formver.core.embeddings.callables.seqToMultisetName
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toFuncApp
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toMethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.fillHoles
 import org.jetbrains.kotlin.formver.core.embeddings.types.injection
 import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
-import org.jetbrains.kotlin.formver.viper.ast.Exp
+import org.jetbrains.kotlin.formver.viper.ast.*
 import org.jetbrains.kotlin.formver.viper.ast.Exp.Companion.toConjunction
-import org.jetbrains.kotlin.formver.viper.ast.PermExp
-import org.jetbrains.kotlin.formver.viper.ast.Stmt
-import org.jetbrains.kotlin.formver.viper.ast.viperLiteral
 
 data class LinearizationVisitor(
     val source: KtSourceElement? = null,
@@ -480,6 +478,20 @@ data class LinearizationVisitor(
                 val length = Exp.SeqLength(intArrayDataAccess(array, ctx), ctx.source.asPosition)
                 val unfolding = Exp.Unfolding(intArrayPredicateAccess(array, ctx), length, ctx.source.asPosition)
                 return intInjection.toRef(unfolding, pos = ctx.source.asPosition, info = e.sourceRole.asInfo)
+            }
+        }
+
+    override fun visitIntArrayToMultiset(e: IntArrayToMultiset): Linearizable =
+        object : OnlyToBuiltinLinearizable(e, this@LinearizationVisitor) {
+            override fun toViperBuiltinType(ctx: LinearizationContext): Exp {
+                val array = e.array.linearize().toViper(ctx)
+                val multiset = Exp.FuncApp(
+                    seqToMultisetName,
+                    listOf(intArrayDataAccess(array, ctx)),
+                    Type.Multiset(Type.Int),
+                    ctx.source.asPosition,
+                )
+                return Exp.Unfolding(intArrayPredicateAccess(array, ctx), multiset, ctx.source.asPosition)
             }
         }
 

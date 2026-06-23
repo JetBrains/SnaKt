@@ -29,3 +29,11 @@ data class IntArraySet(val array: ExpEmbedding, val index: ExpEmbedding, val val
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(array, index, value)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitIntArraySet(this)
 }
+
+data class IntArrayToMultiset(val array: ExpEmbedding) : ExpEmbedding {
+    // TODO: The type is wrong. It is unclear if we want to expose the viper internal multiset type to the ExpEmbeddings
+    override val type: TypeEmbedding = buildType { any() }
+
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(array)
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitIntArrayToMultiset(this)
+}

@@ -57,4 +57,5 @@ interface ExpVisitor<R> {
     fun visitIntArrayGet(e: IntArrayGet): R = visitDefault(e)
     fun visitIntArraySize(e: IntArraySize): R = visitDefault(e)
     fun visitIntArraySet(e: IntArraySet): R = visitDefault(e)
+    fun visitIntArrayToMultiset(e: IntArrayToMultiset): R = visitDefault(e)
 }
