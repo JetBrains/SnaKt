@@ -53,7 +53,7 @@ class GraphUniquenessStateFactsResolver(session: FirSession) : FirExtensionSessi
             }
         }
 
-        val analyzer = GraphUniquenessStateFactsAnalyzer(
+        val analyzer = GraphUniquenessStatesAnalyzer(
             initialState,
             context,
             CallParametersLocalityResolver

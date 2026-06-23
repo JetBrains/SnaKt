@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.formver.uniqueness.plugin
 
+import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.analysis.cfa.util.ControlFlowInfo
 import org.jetbrains.kotlin.fir.analysis.cfa.util.PathAwareControlFlowGraphVisitor
 import org.jetbrains.kotlin.fir.analysis.cfa.util.PathAwareControlFlowInfo
@@ -15,9 +16,9 @@ import org.jetbrains.kotlin.fir.expressions.FirCall
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirOperation
 import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
+import org.jetbrains.kotlin.fir.expressions.allReceiverExpressions
 import org.jetbrains.kotlin.fir.expressions.arguments
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.BlockEnterNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.BlockExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNodeWithSubgraphs
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
@@ -29,6 +30,7 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.QualifiedAccessNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.TypeOperatorCallNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
+import org.jetbrains.kotlin.fir.visitors.FirVisitorVoid
 import org.jetbrains.kotlin.formver.locality.plugin.Locality
 import org.jetbrains.kotlin.formver.type.plugin.CallParametersTypeResolver
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
@@ -65,25 +67,10 @@ class GraphUniquenessStateFactsAnalyzer(
         return data.transformValues { data -> data.put(Unit, data.ensure()) }
     }
 
-    val QualifiedAccessNode.isUsedAsStatement: Boolean
-        get() {
-            val blockExit = previousNodes.firstIsInstanceOrNull<BlockEnterNode>() ?: return false
-
-            for (blockStatement in blockExit.fir.statements.dropLast(1)) {
-                if (blockStatement === fir) {
-                    return true
-                }
-            }
-
-            return false
-        }
-
     override fun visitQualifiedAccessNode(
         node: QualifiedAccessNode,
         data: PathAwareControlFlowInfo<Unit, UniquenessState>
     ): PathAwareControlFlowInfo<Unit, UniquenessState> {
-        if (node.isUsedAsStatement) return data
-
         val qualifiedAccess = node.fir
 
         return data.transformValues { data ->
@@ -98,6 +85,7 @@ class GraphUniquenessStateFactsAnalyzer(
             }
         }
     }
+
 
     override fun visitExitSafeCallNode(
         node: ExitSafeCallNode,
@@ -239,10 +227,9 @@ class GraphUniquenessStateFactsAnalyzer(
         with(context) {
             return data.transformValues { data ->
                 var newUniquenessState = data.ensure()
-                val callReceiver = call.pathReceiver
 
-                if (callReceiver != null) {
-                    newUniquenessState = callReceiver.resolveAccessState().move(newUniquenessState)
+                for (receiver in call.allReceiverExpressions) {
+                    newUniquenessState = receiver.resolveAccessState().move(newUniquenessState)
                 }
 
                 for (argument in call.arguments) {
@@ -264,8 +251,6 @@ class GraphUniquenessStateFactsAnalyzer(
             return data.transformValues { data ->
                 var newUniquenessState = data.ensure()
 
-                // NOTE: `callParametersLocalityResolver` returns a mapping between arguments and their expected
-                // locality, including for receiver and context arguments.
                 for ((argument, requiredLocality) in callParametersLocalityResolver.resolveParameterTypesOf(call)) {
                     if (requiredLocality == null) continue
 
