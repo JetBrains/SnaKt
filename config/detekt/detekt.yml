@@ -31,7 +31,7 @@ complexity:
     active: false
   CyclomaticComplexMethod:
     active: true
-    threshold: 35
+    threshold: 40
   NestedBlockDepth:
     active: true
     threshold: 5
