@@ -199,6 +199,14 @@ fun SignatureWithTarget<NonInlineCallable>.toConstructorSignature(symbol: FirFun
             }
         }
 
+        val classSpecificPreconditions = buildList {
+            if (constructedClassSymbol.classId == kotlinClassId("IntArray")) {
+                add(
+                    OperatorExpEmbeddings.GeIntInt(IntLit(0), current.signature.params[0])
+                )
+            }
+        }
+
         val classSpecificPostconditions = buildList {
             if (constructedClassSymbol.classId == kotlinClassId("IntArray")) {
                 add(intArrayZeroInitializedPostcondition(returnTarget.variable))
@@ -211,8 +219,10 @@ fun SignatureWithTarget<NonInlineCallable>.toConstructorSignature(symbol: FirFun
             }
         }
 
+
         val contract = current.signature.buildConditions(converter.typeResolver) {
             userFunctionContract()
+            addPreconditions(classSpecificPreconditions)
             addPostconditions(fieldPostconditions + classSpecificPostconditions)
         }
 
