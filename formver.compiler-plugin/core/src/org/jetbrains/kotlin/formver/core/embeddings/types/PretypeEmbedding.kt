@@ -5,12 +5,15 @@
 
 package org.jetbrains.kotlin.formver.core.embeddings.types
 
+import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
+import org.jetbrains.kotlin.formver.core.conversion.uniqueIntArrayPredicateName
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.PlaintextLeaf
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.TreeView
 import org.jetbrains.kotlin.formver.core.names.PretypeName
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.SymbolicName
+import org.jetbrains.kotlin.formver.viper.ast.PermExp
 import org.jetbrains.kotlin.formver.viper.mangled
 
 /**
@@ -68,6 +71,22 @@ data object CharTypeEmbedding : PretypeEmbedding {
 data object StringTypeEmbedding : PretypeEmbedding {
     override val runtimeType = RuntimeTypeDomain.stringType()
     override val name = PretypeName("String")
+}
+
+/**
+ * Embedding of Kotlin's `IntArray`.
+ *
+ * An `IntArray` is a `Ref` object whose data lives in a special `data: Seq[Int]` field, guarded by the
+ * `uniqueIntArray` predicate. Modelling it as a dedicated pretype (rather than a generic class) lets us
+ * emit that custom predicate and hand its permission off to callees, so that mutations through a
+ * `@Unique @Borrowed` parameter are visible to the caller while the length stays fixed.
+ */
+data object IntArrayTypeEmbedding : PretypeEmbedding {
+    override val runtimeType = RuntimeTypeDomain.intArrayType()
+    override val name = PretypeName("IntArray")
+
+    override fun uniquePredicateAccessInvariant(ctx: TypeResolver): TypeInvariantEmbedding =
+        PredicateAccessTypeInvariantEmbedding(uniqueIntArrayPredicateName, PermExp.FullPerm())
 }
 
 fun PretypeEmbedding.asTypeEmbedding() = TypeEmbedding(this, TypeEmbeddingFlags(nullable = false))

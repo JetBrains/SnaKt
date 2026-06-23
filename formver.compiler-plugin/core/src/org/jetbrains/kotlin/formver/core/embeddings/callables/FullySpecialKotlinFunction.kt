@@ -323,6 +323,27 @@ object SpecialKotlinFunctions {
         addFunction(stringIntToCharType, SpecialPackages.kotlin, className = "String", name = "get") { args, _ ->
             StringGet(args[0], args[1])
         }
+
+        val intArrayIntToIntType = buildFunctionPretype {
+            withDispatchReceiver { intArray() }
+            withParam { int() }
+            withReturnType { int() }
+        }
+
+        addFunction(intArrayIntToIntType, SpecialPackages.kotlin, className = "IntArray", name = "get") { args, _ ->
+            IntArrayGet(args[0], args[1])
+        }
+
+        val intArrayIntIntToUnitType = buildFunctionPretype {
+            withDispatchReceiver { intArray() }
+            withParam { int() }
+            withParam { int() }
+            withReturnType { unit() }
+        }
+
+        addFunction(intArrayIntIntToUnitType, SpecialPackages.kotlin, className = "IntArray", name = "set") { args, _ ->
+            IntArraySet(args[0], args[1], args[2])
+        }
     }
 }
 

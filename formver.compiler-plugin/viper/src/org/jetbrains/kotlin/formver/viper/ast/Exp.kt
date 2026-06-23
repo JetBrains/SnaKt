@@ -490,6 +490,27 @@ sealed interface Exp : IntoSilver<viper.silver.ast.Exp> {
         override val type = Type.Int
     }
 
+    data class SeqUpdate(
+        val seq: Exp,
+        val idx: Exp,
+        val elem: Exp,
+        val pos: Position = Position.NoPosition,
+        val info: Info = Info.NoInfo,
+    ) : Exp {
+        context(nameResolver: NameResolver)
+        override fun toSilver(): viper.silver.ast.SeqUpdate =
+            viper.silver.ast.SeqUpdate.apply(
+                seq.toSilver(),
+                idx.toSilver(),
+                elem.toSilver(),
+                pos.toSilver(),
+                info.toSilver(),
+                silverNoTrafos,
+            )
+
+        override val type = seq.type
+    }
+
     data class SeqAppend(
         override val left: Exp,
         override val right: Exp,

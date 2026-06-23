@@ -128,14 +128,15 @@ class ProgramConverter(
         domains = listOf(RuntimeTypeDomain(typeResolver)),
         // Public fields with the same name are represented differently at `FieldEmbedding` level
         // but map to the same Viper field, so we deduplicate before emitting.
-        fields = typeResolver.backingFields().distinctBy { it.name }.map { it.toViper() },
+        fields = (typeResolver.backingFields().distinctBy { it.name }.map { it.toViper() }
+                + if (typeResolver.intArrayUsed) listOf(IntArrayDataFieldEmbedding.toViper()) else emptyList()),
         functions = SpecialFunctions.all + linearizedBodyResolver.functions,
         methods = SpecialMethods.all + linearizedBodyResolver.methods,
         predicates = typeResolver.classTypeEmbeddings().map {
             with(typeResolver) {
                 it.uniquePredicate()
             }
-        },
+        } + if (typeResolver.intArrayUsed) listOf(intArrayPredicate()) else emptyList(),
         adts = emptyList(),
     )
 
@@ -616,6 +617,11 @@ class ProgramConverter(
                 embedProperty(it)
             }
             string()
+        }
+
+        type.classId == kotlinClassId("IntArray") -> {
+            typeResolver.markIntArrayUsed()
+            intArray()
         }
 
         type.isUnit -> unit()

@@ -8,7 +8,10 @@ package org.jetbrains.kotlin.formver.core.linearization
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
+import org.jetbrains.kotlin.formver.core.conversion.IntArrayDataFieldEmbedding
+import org.jetbrains.kotlin.formver.core.conversion.uniqueIntArrayPredicateName
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
+import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.intInjection
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.isOf
 import org.jetbrains.kotlin.formver.core.embeddings.*
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toFuncApp
@@ -19,6 +22,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.injection
 import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
 import org.jetbrains.kotlin.formver.viper.ast.Exp
 import org.jetbrains.kotlin.formver.viper.ast.Exp.Companion.toConjunction
+import org.jetbrains.kotlin.formver.viper.ast.PermExp
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
 import org.jetbrains.kotlin.formver.viper.ast.viperLiteral
 
@@ -447,6 +451,54 @@ data class LinearizationVisitor(
             }
         }
     }
+
+    // endregion
+
+    // region IntArray
+
+    private fun intArrayPredicateAccess(array: Exp, ctx: LinearizationContext): Exp.PredicateAccess =
+        Exp.PredicateAccess(uniqueIntArrayPredicateName, listOf(array), PermExp.FullPerm(), ctx.source.asPosition)
+
+    private fun intArrayDataAccess(array: Exp, ctx: LinearizationContext): Exp.FieldAccess =
+        Exp.FieldAccess(array, IntArrayDataFieldEmbedding.toViper(), ctx.source.asPosition)
+
+    override fun visitIntArrayGet(e: IntArrayGet): Linearizable =
+        object : DirectResultLinearizable(e, this@LinearizationVisitor) {
+            override fun toViper(ctx: LinearizationContext): Exp {
+                val array = e.array.linearize().toViper(ctx)
+                val index = intInjection.fromRef(e.index.linearize().toViper(ctx), pos = ctx.source.asPosition)
+                val element = Exp.SeqIndex(intArrayDataAccess(array, ctx), index, ctx.source.asPosition)
+                val unfolding = Exp.Unfolding(intArrayPredicateAccess(array, ctx), element, ctx.source.asPosition)
+                return intInjection.toRef(unfolding, pos = ctx.source.asPosition, info = e.sourceRole.asInfo)
+            }
+        }
+
+    override fun visitIntArraySize(e: IntArraySize): Linearizable =
+        object : DirectResultLinearizable(e, this@LinearizationVisitor) {
+            override fun toViper(ctx: LinearizationContext): Exp {
+                val array = e.array.linearize().toViper(ctx)
+                val length = Exp.SeqLength(intArrayDataAccess(array, ctx), ctx.source.asPosition)
+                val unfolding = Exp.Unfolding(intArrayPredicateAccess(array, ctx), length, ctx.source.asPosition)
+                return intInjection.toRef(unfolding, pos = ctx.source.asPosition, info = e.sourceRole.asInfo)
+            }
+        }
+
+    override fun visitIntArraySet(e: IntArraySet): Linearizable = object : UnitResultLinearizable(e) {
+        override fun toViperUnusedResult(ctx: LinearizationContext) {
+            val array = e.array.linearize().toViper(ctx)
+            val index = intInjection.fromRef(e.index.linearize().toViper(ctx), pos = ctx.source.asPosition)
+            val value = intInjection.fromRef(e.value.linearize().toViper(ctx), pos = ctx.source.asPosition)
+            val predicateAccess = intArrayPredicateAccess(array, ctx)
+            ctx.addStatement { Stmt.Unfold(predicateAccess, ctx.source.asPosition) }
+            val updated = Exp.SeqUpdate(intArrayDataAccess(array, ctx), index, value, ctx.source.asPosition)
+            ctx.addStatement { Stmt.FieldAssign(intArrayDataAccess(array, ctx), updated, ctx.source.asPosition) }
+            ctx.addStatement { Stmt.Fold(predicateAccess, ctx.source.asPosition) }
+        }
+    }
+
+    // endregion
+
+    // region Field Access (permissions)
 
     override fun visitFieldAccessPermissions(e: FieldAccessPermissions): Linearizable = object : OnlyToBuiltinLinearizable(e, this@LinearizationVisitor) {
         override fun toViperBuiltinType(ctx: LinearizationContext): Exp =

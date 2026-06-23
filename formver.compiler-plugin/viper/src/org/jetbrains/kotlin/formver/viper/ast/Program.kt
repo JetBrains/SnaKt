@@ -113,6 +113,12 @@ private fun registerExpNames(exp: Exp) {
         }
 
         is Exp.SeqLength -> registerExpNames(exp.seq)
+        is Exp.SeqUpdate -> {
+            registerExpNames(exp.seq)
+            registerExpNames(exp.idx)
+            registerExpNames(exp.elem)
+        }
+
         is Exp.SeqTake -> {
             registerExpNames(exp.seq)
             registerExpNames(exp.idx)

@@ -264,6 +264,7 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
         val boolType: DomainFunc = createNewTypeDomainFunc("boolType")
         val unitType: DomainFunc = createNewTypeDomainFunc("unitType")
         val stringType: DomainFunc = createNewTypeDomainFunc("stringType")
+        val intArrayType: DomainFunc = createNewTypeDomainFunc("intArrayType")
         val nothingType: DomainFunc = createNewTypeDomainFunc("nothingType")
         val anyType: DomainFunc = createNewTypeDomainFunc("anyType")
         val functionType: DomainFunc = createNewTypeDomainFunc("functionType")
@@ -284,7 +285,7 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
 
     private val allInjections: List<Injection> = primitiveTypeInjections
     val builtinTypes: List<DomainFunc> =
-        listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType)
+        listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType, intArrayType)
     private val userTypes: List<DomainFunc> =
         typeResolver.classTypeEmbeddings().map { it.embedClassTypeFunc() }
     val nonNullableTypes: List<DomainFunc> = (builtinTypes + userTypes).distinctBy { it.name }
