@@ -17,15 +17,6 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.formver.type.plugin.ExpressionTypeResolver
 import org.jetbrains.kotlin.formver.type.plugin.UnifyingExpressionTypeResolver
 
-/**
- * Resolves the receiver of [this] qualified access expression targeting a property.
- *
- * NOTE: this property shouldn't be used to find the receiver of a qualified access expression targeting anything other
- * than a plain property or local variable.
- */
-val FirQualifiedAccessExpression.pathReceiver: FirExpression?
-    get() = explicitReceiver ?: extensionReceiver ?: dispatchReceiver
-
 object TerminalAccessStateResolver : ExpressionTypeResolver<AccessState> {
     context(context: CheckerContext)
     override fun resolveTypeOf(expression: FirExpression): AccessState =
