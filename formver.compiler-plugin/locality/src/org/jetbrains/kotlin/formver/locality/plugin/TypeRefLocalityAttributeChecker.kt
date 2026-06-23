@@ -31,15 +31,15 @@ object TypeRefLocalityAttributeChecker : FirResolvedTypeRefChecker(MppCheckerKin
     }
 
     private fun CheckerContext.isValidLocalityContractTarget(): Boolean {
-        val outerElements = containingElements.asReversed()
-        val currentElement = outerElements.getOrNull(0) ?: return false
-        val containerElement = outerElements.getOrNull(1) ?: return false
+        val reversedContainingElements = containingElements.asReversed()
+        val currentElement = reversedContainingElements.getOrNull(0) ?: return false
+        val containerElement = reversedContainingElements.getOrNull(1) ?: return false
 
         return when (containerElement) {
             is FirFunctionTypeRef ->
                 currentElement == containerElement.receiverTypeRef || currentElement in containerElement.contextParameterTypeRefs
             is FirFunctionTypeParameter -> {
-                val functionTypeRef = outerElements.getOrNull(2) as? FirFunctionTypeRef? ?: return false
+                val functionTypeRef = reversedContainingElements.getOrNull(2) as? FirFunctionTypeRef? ?: return false
 
                 containerElement in functionTypeRef.parameters
             }
