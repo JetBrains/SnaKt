@@ -11,14 +11,16 @@ import org.jetbrains.kotlin.fir.analysis.cfa.util.PathAwareControlFlowInfo
 import org.jetbrains.kotlin.fir.analysis.cfa.util.merge
 import org.jetbrains.kotlin.fir.analysis.cfa.util.transformValues
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
+import org.jetbrains.kotlin.fir.expressions.FirCall
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirOperation
 import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
 import org.jetbrains.kotlin.fir.expressions.arguments
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.BlockEnterNode
+import org.jetbrains.kotlin.fir.resolve.dfa.cfg.BlockExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNodeWithSubgraphs
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.EnterSafeCallNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.EqualityOperatorCallNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ExitSafeCallNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallEnterNode
@@ -29,6 +31,7 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
 import org.jetbrains.kotlin.formver.locality.plugin.Locality
 import org.jetbrains.kotlin.formver.type.plugin.CallParametersTypeResolver
+import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 
 typealias UniquenessStateFacts = ControlFlowInfo<Unit, UniquenessState>
 
@@ -234,7 +237,6 @@ class GraphUniquenessStateFactsAnalyzer(
         val call = node.fir
 
         with(context) {
-
             return data.transformValues { data ->
                 var newUniquenessState = data.ensure()
                 val callReceiver = call.pathReceiver
@@ -262,6 +264,8 @@ class GraphUniquenessStateFactsAnalyzer(
             return data.transformValues { data ->
                 var newUniquenessState = data.ensure()
 
+                // NOTE: `callParametersLocalityResolver` returns a mapping between arguments and their expected
+                // locality, including for receiver and context arguments.
                 for ((argument, requiredLocality) in callParametersLocalityResolver.resolveParameterTypesOf(call)) {
                     if (requiredLocality == null) continue
 
