@@ -84,7 +84,7 @@ fun AccessState.append(other: AccessState): AccessState {
 
             newChildren = newChildren.put(
                 symbol,
-                if (thisChild != null) thisChild.join(otherChild) else otherChild,
+                thisChild?.join(otherChild) ?: otherChild,
             )
         }
         copy(data = other.data, children = newChildren)

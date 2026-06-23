@@ -119,29 +119,35 @@ class GraphUniquenessStateFactsAnalyzer(
         }
     }
 
+    private fun visitSyntheticCallNode(
+        node: CFGNode<FirCall>,
+        data: PathAwareUniquenessStateFacts
+    ): PathAwareUniquenessStateFacts {
+        val call = node.fir
+
+        return data.transformValues { data ->
+            with(context) {
+                val uniquenessState = data.ensure()
+                var newUniquenessState = uniquenessState
+
+                for (argument in call.arguments) {
+                    newUniquenessState = argument.resolveAccessState().initialize(newUniquenessState)
+                }
+
+                data.put(Unit, newUniquenessState)
+            }
+        }
+    }
+
     override fun visitTypeOperatorCallNode(
         node: TypeOperatorCallNode,
         data: PathAwareControlFlowInfo<Unit, UniquenessState>
     ): PathAwareControlFlowInfo<Unit, UniquenessState> {
         val typeOperatorExpression = node.fir
-        val arguments = typeOperatorExpression.arguments
 
         return when (typeOperatorExpression.operation) {
-            FirOperation.AS, FirOperation.SAFE_AS ->
-                data
-            else ->
-                data.transformValues { data ->
-                    with(context) {
-                        val uniquenessState = data.ensure()
-                        var newUniquenessState = uniquenessState
-
-                        for (argument in arguments) {
-                            newUniquenessState = argument.resolveAccessState().initialize(newUniquenessState)
-                        }
-
-                        data.put(Unit, newUniquenessState)
-                    }
-                }
+            FirOperation.AS, FirOperation.SAFE_AS -> data
+            else -> visitSyntheticCallNode(node, data)
         }
     }
 
@@ -149,21 +155,7 @@ class GraphUniquenessStateFactsAnalyzer(
         node: EqualityOperatorCallNode,
         data: PathAwareControlFlowInfo<Unit, UniquenessState>
     ): PathAwareControlFlowInfo<Unit, UniquenessState> {
-        val comparisonExpression = node.fir
-        val arguments = comparisonExpression.arguments
-
-        return data.transformValues { data ->
-            with(context) {
-                val uniquenessState = data.ensure()
-                var newUniquenessState = uniquenessState
-
-                for (argument in arguments) {
-                    newUniquenessState = argument.resolveAccessState().initialize(newUniquenessState)
-                }
-
-                data.put(Unit, newUniquenessState)
-            }
-        }
+        return visitSyntheticCallNode(node, data)
     }
 
     override fun visitVariableDeclarationNode(
