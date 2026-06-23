@@ -207,16 +207,15 @@ predicate uniqueIntArray(this: Ref) {
 
 method con(par_size: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_size), intType())
-  requires 0 <= intFromRef(par_size)
   ensures isSubtype(typeOf(ret_1), intArrayType())
   ensures acc(uniqueIntArray(ret_1), write)
-  ensures (unfolding acc(uniqueIntArray(ret_1), write) in |ret_1.data|) ==
-    intFromRef(par_size)
   ensures (forall anon: Int ::0 <= anon &&
       anon < (unfolding acc(uniqueIntArray(ret_1), write) in |ret_1.data|) ==>
       (unfolding acc(uniqueIntArray(ret_1), write) in
         ret_1.data[intFromRef(intToRef(anon))]) ==
       0)
+  ensures (unfolding acc(uniqueIntArray(ret_1), write) in |ret_1.data|) ==
+    intFromRef(par_size)
 
 
 method testConstructor() returns (v_ret_0: Ref)

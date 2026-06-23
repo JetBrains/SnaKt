@@ -170,6 +170,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       public void testIntarray() {
         runTest("formver.compiler-plugin/testData/diagnostics/stdlib/intarray/intarray.kt");
       }
+
+      @Test
+      @TestMetadata("multiset.kt")
+      public void testMultiset() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/intarray/multiset.kt");
+      }
     }
 
     @Nested
