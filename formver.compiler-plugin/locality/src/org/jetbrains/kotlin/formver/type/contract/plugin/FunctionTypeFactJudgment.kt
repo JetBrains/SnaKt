@@ -21,8 +21,8 @@ import org.jetbrains.kotlin.formver.type.plugin.TypeFactJudgment
  * Finally, this judgment checks that the actual result [TypeFact] satisfies the required one according to
  * [typeFactJudgment].
  *
- * Note that this function type-fact judgment is contravariant with respect to the parameter positions and covariant
- * with respect to the result. For example:
+ * Note that this function type-fact judgment is contravariant with respect to the parameter type-facts and covariant
+ * with respect to the parameter and result function type-facts. For example:
  *
  * required = ((global) -> ()) -> () // Function taking a function taking a global
  * actual = ((local) -> ()) -> () // Function taking a function taking a local
@@ -51,11 +51,11 @@ class FunctionTypeFactJudgment<TypeFact>(
                 .zip(actualTypeFact.parameterTypeFacts)
                 .all { (requiredElement, actualElement) ->
                     typeFactJudgment.satisfies(
-                        requiredElement.typeFact,
-                        actualElement.typeFact
+                        actualElement.typeFact,
+                        requiredElement.typeFact
                     ) && satisfies(
-                        actualElement.functionTypeFact,
-                        requiredElement.functionTypeFact
+                        requiredElement.functionTypeFact,
+                        actualElement.functionTypeFact
                     )
                 } && satisfies(requiredTypeFact.resultFunctionTypeFact, actualTypeFact.resultFunctionTypeFact)
         }

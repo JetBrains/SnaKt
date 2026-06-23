@@ -8,9 +8,9 @@ package org.jetbrains.kotlin.formver.locality.contract.plugin
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.formver.locality.plugin.locality
-import org.jetbrains.kotlin.formver.type.contract.plugin.TypeContractFactResolver
+import org.jetbrains.kotlin.formver.type.contract.plugin.FunctionTypeFactResolver
 
-private val LocalityTypeContractResolver = TypeContractFactResolver { type, _ -> type.locality }
+private val LocalityTypeContractResolver = FunctionTypeFactResolver { type, _ -> type.locality }
 
 fun ConeKotlinType.resolveLocalityContract(session: FirSession): LocalityContract? =
     LocalityTypeContractResolver.resolveContractOf(this, session)

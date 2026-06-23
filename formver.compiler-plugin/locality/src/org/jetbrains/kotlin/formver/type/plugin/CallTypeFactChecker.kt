@@ -23,7 +23,7 @@ import org.jetbrains.kotlin.fir.types.resolvedType
  * @param TypeFact the type-fact class of the arguments.
  * @param typeFactJudgment the type-fact judgment to use for checking type-fact compatibility.
  * @param expressionTypeFactResolver the resolver for resolving the type facts of the arguments.
- * @param callParameterTypeFactsResolver for resolving the type-facts of the call's parameters.
+ * @param callArgumentTypeFactsMapper for resolving the type-facts of the call's parameters.
  * @param contextDiagnosticFactory the diagnostic factory to use for reporting type-fact incompatibility in context
  *  parameters.
  */
@@ -31,14 +31,14 @@ class CallTypeFactChecker<TypeFact>(
     kind: MppCheckerKind,
     private val typeFactJudgment: TypeFactJudgment<TypeFact>,
     private val expressionTypeFactResolver: ExpressionTypeFactResolver<TypeFact>,
-    private val callParameterTypeFactsResolver: CallParameterTypeFactsResolver<TypeFact>,
+    private val callArgumentTypeFactsMapper: CallArgumentTypeFactsMapper<TypeFact>,
     private val argumentDiagnosticFactory: KtDiagnosticFactory3<String, TypeFact, TypeFact>,
     private val contextDiagnosticFactory: KtDiagnosticFactory3<ConeKotlinType, TypeFact, TypeFact>
 ) : FirCallChecker(kind) {
 
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirCall) {
-        val requiredTypes = callParameterTypeFactsResolver.resolveParameterTypeFactsOf(expression)
+        val requiredTypes = callArgumentTypeFactsMapper.mapArgumentTypeFactsOf(expression)
 
         for ((argument, requiredTypeFact) in requiredTypes) {
             val effectiveArguments = argument.unwrapAndFlattenArgument(flattenArrays = false)

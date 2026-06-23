@@ -36,7 +36,7 @@ fun interface InvokeParameterTypeFactsResolver<TypeFact> {
  * @param declaredParameterTypeFactResolver the resolver for resolving the declared type of a call parameter.
  * @param invokeParameterTypeFactsResolver the resolver for resolving the types of the parameters of an invoke call.
  */
-class CallParameterTypeFactsResolver<TypeFact>(
+class CallArgumentTypeFactsMapper<TypeFact>(
     private val declaredParameterTypeFactResolver: SymbolTypeFactResolver<TypeFact, FirValueParameterSymbol>,
     private val invokeParameterTypeFactsResolver: InvokeParameterTypeFactsResolver<TypeFact>
 ) {
@@ -53,7 +53,7 @@ class CallParameterTypeFactsResolver<TypeFact>(
      * Resolves the mapping between the argument expressions of [call] and their corresponding type-facts.
      */
     context(_: CheckerContext)
-    fun resolveParameterTypeFactsOf(call: FirCall): List<Pair<FirExpression, TypeFact>> {
+    fun mapArgumentTypeFactsOf(call: FirCall): List<Pair<FirExpression, TypeFact>> {
         val invokeReceiver = call.invokeDispatchReceiver
 
         if (invokeReceiver != null) {

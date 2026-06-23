@@ -19,7 +19,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirNamedFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.fir.types.resolvedType
-import org.jetbrains.kotlin.formver.type.plugin.CallParameterTypeFactsResolver
+import org.jetbrains.kotlin.formver.type.plugin.CallArgumentTypeFactsMapper
 import org.jetbrains.kotlin.formver.type.plugin.ExpressionTypeFactResolver
 import org.jetbrains.kotlin.formver.type.plugin.InvokeParameterTypeFactsResolver
 import org.jetbrains.kotlin.formver.type.plugin.ReturnResultTypeFactResolver
@@ -77,7 +77,7 @@ private object InvokeParametersLocalityContractResolver : InvokeParameterTypeFac
         receiver.resolveLocalityContract()?.parameterTypeFacts?.map { element -> element.functionTypeFact }
 }
 
-val CallParametersLocalityContractResolver = CallParameterTypeFactsResolver(
+val CallParametersLocalityContractResolver = CallArgumentTypeFactsMapper(
     VariableLocalityContractResolver,
     InvokeParametersLocalityContractResolver
 )

@@ -27,7 +27,7 @@ fun interface ConeTypeTypeFactResolver<TypeFact> {
  * Returns `null` if the expression doesn't evaluate to a function, otherwise returns a type contract with the parameter
  * type-facts extracted by [typeTypeFactResolver].
  */
-class TypeContractFactResolver<TypeFact>(
+class FunctionTypeFactResolver<TypeFact>(
     private val typeTypeFactResolver: ConeTypeTypeFactResolver<TypeFact>,
 ) {
     fun resolveContractOf(type: ConeKotlinType, session: FirSession): FunctionTypeFact<TypeFact>? {

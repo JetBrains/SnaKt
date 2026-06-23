@@ -17,7 +17,7 @@ import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.formver.locality.contract.plugin.resolveLocalityContract
-import org.jetbrains.kotlin.formver.type.plugin.CallParameterTypeFactsResolver
+import org.jetbrains.kotlin.formver.type.plugin.CallArgumentTypeFactsMapper
 import org.jetbrains.kotlin.formver.type.plugin.ExpressionTypeFactResolver
 import org.jetbrains.kotlin.formver.type.plugin.InvokeParameterTypeFactsResolver
 import org.jetbrains.kotlin.formver.type.plugin.ReturnResultTypeFactResolver
@@ -79,7 +79,7 @@ object InvokeParametersLocalityResolver : InvokeParameterTypeFactsResolver<Local
         receiver.resolveLocalityContract()?.parameterTypeFacts?.map { it.typeFact }
 }
 
-val CallParametersLocalityResolver = CallParameterTypeFactsResolver(
+val CallArgumentLocalityMapper = CallArgumentTypeFactsMapper(
     VariableLocalityResolver,
     InvokeParametersLocalityResolver
 )
