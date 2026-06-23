@@ -52,6 +52,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("insertion_sort.kt")
+      public void testInsertion_sort() {
+        runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/algorithms/insertion_sort.kt");
+      }
+
+      @Test
       @TestMetadata("merge_sort_of_string.kt")
       public void testMerge_sort_of_string() {
         runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/algorithms/merge_sort_of_string.kt");
