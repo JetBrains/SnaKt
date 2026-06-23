@@ -157,6 +157,22 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/stdlib/intarray")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Intarray {
+      @Test
+      public void testAllFilesPresentInIntarray() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/stdlib/intarray"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("intarray.kt")
+      public void testIntarray() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/intarray/intarray.kt");
+      }
+    }
+
+    @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/stdlib/list")
     @TestDataPath("$PROJECT_ROOT")
     public class List {

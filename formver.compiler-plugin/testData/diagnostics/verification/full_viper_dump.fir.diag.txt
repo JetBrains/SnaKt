@@ -24,6 +24,8 @@ domain rt  {
 
   unique function stringType(): rt
 
+  unique function intArrayType(): rt
+
   unique function Foo(): rt
 
   function nullValue(): Ref
@@ -120,6 +122,10 @@ domain rt  {
 
   axiom {
     isSubtype(stringType(), anyType())
+  }
+
+  axiom {
+    isSubtype(intArrayType(), anyType())
   }
 
   axiom {
