@@ -4,10 +4,8 @@ import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
 import org.jetbrains.kotlin.formver.core.conversion.stdLibPostconditions
 import org.jetbrains.kotlin.formver.core.conversion.stdLibPreconditions
-import org.jetbrains.kotlin.formver.core.embeddings.expression.AccEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.PredicateAccessPermissions
-import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.types.IntArrayTypeEmbedding
 import org.jetbrains.kotlin.formver.core.purity.preorder
 
 
@@ -58,7 +56,10 @@ class FunctionConditionBuilder(
             args {
                 accessInvariants()
                 pureInvariants()
-                if (variable.isBorrowed && variable.isUnique) uniquePredicateInvariants()
+                if (variable.isBorrowed && variable.isUnique) {
+                    uniquePredicateInvariants()
+                    intArraySizePreservation()
+                }
             }
             returns {
                 pureInvariants()
@@ -126,6 +127,12 @@ class VariableScope(
     fun uniquePredicateInvariants() {
         variable.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(variable)?.let { inv ->
             list.add(inv)
+        }
+    }
+
+    fun intArraySizePreservation() {
+        if (variable.type.pretype == IntArrayTypeEmbedding) {
+            list.add(EqCmp(Old(IntArraySize(variable)), IntArraySize(variable)))
         }
     }
 }
