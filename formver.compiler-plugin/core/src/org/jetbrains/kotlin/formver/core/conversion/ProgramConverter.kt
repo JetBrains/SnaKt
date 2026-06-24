@@ -580,6 +580,7 @@ class ProgramConverter(
 
         val embedding = typeResolver.getEmbeddingOrExecute(className) {
             val classEmbedding = buildClassPretype {
+                isManual = symbol.isManual(session)
                 withName(className)
             }
 
