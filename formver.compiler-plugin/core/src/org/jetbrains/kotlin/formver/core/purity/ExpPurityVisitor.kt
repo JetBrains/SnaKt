@@ -66,6 +66,8 @@ internal class ExprPurityVisitor(val declaredVariables: MutableSet<VariableEmbed
     override fun visitPredicateAccessPermissions(e: PredicateAccessPermissions): Boolean = false
     override fun visitLabelExp(e: LabelExp): Boolean = false
     override fun visitAccEmbedding(e: AccEmbedding): Boolean = false
+    override fun visitFold(e: Fold): Boolean = false
+    override fun visitUnfold(e: Unfold): Boolean = false
     override fun visitDefault(e: ExpEmbedding): Boolean = false
 }
 

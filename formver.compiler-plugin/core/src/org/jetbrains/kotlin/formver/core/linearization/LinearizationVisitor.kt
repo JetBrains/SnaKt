@@ -458,6 +458,22 @@ data class LinearizationVisitor(
             Exp.PredicateAccess(e.predicateName, e.args.map { it.linearize().toViper(ctx) }, e.perm, ctx.source.asPosition)
     }
 
+    override fun visitUnfold(e: Unfold): Linearizable = object : UnitResultLinearizable(e) {
+        override fun toViperUnusedResult(ctx: LinearizationContext) {
+            ctx.addStatement {
+                Stmt.Unfold(e.pred.linearize().toViperBuiltinType(ctx) as Exp.PredicateAccess)
+            }
+        }
+    }
+
+    override fun visitFold(e: Fold): Linearizable = object : UnitResultLinearizable(e) {
+        override fun toViperUnusedResult(ctx: LinearizationContext) {
+            ctx.addStatement {
+                Stmt.Fold(e.pred.linearize().toViperBuiltinType(ctx) as Exp.PredicateAccess)
+            }
+        }
+    }
+
     // endregion
 
     // region Assignment / Declaration
