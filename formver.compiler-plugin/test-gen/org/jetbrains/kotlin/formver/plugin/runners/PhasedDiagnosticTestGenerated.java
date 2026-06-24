@@ -447,6 +447,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("manualFolding.kt")
+    public void testManualFolding() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/manualFolding.kt");
+    }
+
+    @Test
     @TestMetadata("multiple_receivers.kt")
     public void testMultiple_receivers() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/multiple_receivers.kt");
