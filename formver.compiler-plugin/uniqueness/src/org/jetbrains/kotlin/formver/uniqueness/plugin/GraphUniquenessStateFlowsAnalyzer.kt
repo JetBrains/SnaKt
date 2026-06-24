@@ -63,88 +63,6 @@ class GraphUniquenessStatesAnalyzer(
         return data.transformValues { data -> data.put(Unit, data.ensure()) }
     }
 
-    override fun visitQualifiedAccessNode(
-        node: QualifiedAccessNode,
-        data: PathAwareUniquenessStateFlow
-    ): PathAwareUniquenessStateFlow {
-        val qualifiedAccess = node.fir
-
-        return data.transformValues { data ->
-            with(context) {
-                var newUniquenessState = data.ensure()
-                val receiverAccessState = qualifiedAccess.pathReceiver?.resolveAccessState() ?: EmptyAccessState
-                newUniquenessState = receiverAccessState.initialize(newUniquenessState)
-                val selectorAccessState = qualifiedAccess.resolveAccessState()
-                newUniquenessState = selectorAccessState.reserve(newUniquenessState)
-
-                data.put(Unit, newUniquenessState)
-            }
-        }
-    }
-
-
-    override fun visitExitSafeCallNode(
-        node: ExitSafeCallNode,
-        data: PathAwareUniquenessStateFlow
-    ): PathAwareUniquenessStateFlow {
-        val safeCall = node.fir
-
-        with(context) {
-            return data.transformValues { data ->
-                var newUniquenessState = data.ensure()
-                val selector = safeCall.selector
-
-                if (selector is FirExpression) {
-                    val selectorAccessState = selector.resolveAccessState()
-                    newUniquenessState = selectorAccessState.reserve(newUniquenessState)
-                }
-
-                newUniquenessState = safeCall.receiver.resolveAccessState().initialize(newUniquenessState)
-
-                data.put(Unit, newUniquenessState)
-            }
-        }
-    }
-
-    private fun visitSyntheticCallNode(
-        node: CFGNode<FirCall>,
-        data: PathAwareUniquenessStateFlow
-    ): PathAwareUniquenessStateFlow {
-        val call = node.fir
-
-        return data.transformValues { data ->
-            with(context) {
-                val uniquenessState = data.ensure()
-                var newUniquenessState = uniquenessState
-
-                for (argument in call.arguments) {
-                    newUniquenessState = argument.resolveAccessState().initialize(newUniquenessState)
-                }
-
-                data.put(Unit, newUniquenessState)
-            }
-        }
-    }
-
-    override fun visitTypeOperatorCallNode(
-        node: TypeOperatorCallNode,
-        data: PathAwareUniquenessStateFlow
-    ): PathAwareUniquenessStateFlow {
-        val typeOperatorExpression = node.fir
-
-        return when (typeOperatorExpression.operation) {
-            FirOperation.AS, FirOperation.SAFE_AS -> data
-            else -> visitSyntheticCallNode(node, data)
-        }
-    }
-
-    override fun visitEqualityOperatorCallNode(
-        node: EqualityOperatorCallNode,
-        data: PathAwareUniquenessStateFlow
-    ): PathAwareUniquenessStateFlow {
-        return visitSyntheticCallNode(node, data)
-    }
-
     override fun visitVariableDeclarationNode(
         node: VariableDeclarationNode,
         data: PathAwareUniquenessStateFlow
@@ -197,13 +115,6 @@ class GraphUniquenessStatesAnalyzer(
                     val leftPath = leftAccessPaths.first()
                     val rightUniquenessState = rightAccessState.joinUniquenessStateOverTerminals(newUniquenessState)
                     newUniquenessState = newUniquenessState.insert(leftPath, rightUniquenessState)
-                }
-
-                when (leftValue) {
-                    is FirQualifiedAccessExpression -> {
-                        val receiverAccessState = leftValue.pathReceiver?.resolveAccessState() ?: EmptyAccessState
-                        newUniquenessState = receiverAccessState.initialize(newUniquenessState)
-                    }
                 }
 
                 newUniquenessState = leftAccessState.initialize(newUniquenessState)

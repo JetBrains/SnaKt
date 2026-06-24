@@ -13,9 +13,7 @@ import org.jetbrains.kotlin.formver.type.plugin.TypeUnifier
 
 enum class Uniqueness {
     Unique,
-    Unknown,
     Shared,
-    Reserved,
     Moved
 }
 
@@ -51,9 +49,7 @@ object UniquenessIntersector : TypeIntersector<Uniqueness> {
 val UniquenessRenderer = Renderer<Uniqueness> { uniqueness ->
     when (uniqueness) {
         Uniqueness.Unique -> "unique"
-        Uniqueness.Unknown -> "unknown"
         Uniqueness.Shared -> "shared"
-        Uniqueness.Reserved -> "reserved"
         Uniqueness.Moved -> "moved"
     }
 }
