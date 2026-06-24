@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.*
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toFuncApp
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toMethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.fillHoles
 import org.jetbrains.kotlin.formver.core.embeddings.types.injection
 import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
@@ -421,13 +422,13 @@ data class LinearizationVisitor(
     override fun visitFieldModification(e: FieldModification): Linearizable = object : UnitResultLinearizable(e) {
         override fun toViperUnusedResult(ctx: LinearizationContext) {
             when (e.field.accessPolicy) {
-                AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
+                AccessPolicy.BY_RECEIVER_UNIQUENESS if false -> {
                     e.receiver.linearize().toViperUnusedResult(ctx)
                     e.newValue.linearize().toViperUnusedResult(ctx)
                 }
                 else -> {
                     val receiverViper = e.receiver.linearize().toViper(ctx)
-                    if (e.field.unfoldToAccess) {
+                    if (e.field.unfoldToAccess && !(e.receiver.type.pretype as ClassTypeEmbedding).isManual) {
                         val receiverWrapper = ExpWrapper(receiverViper, e.receiver.type)
                         val hierarchyPath = ctx.typeResolver.hierarchyPathTo(e.receiver.type.pretype, e.field)
                         hierarchyPath.forEach { classType ->
