@@ -77,7 +77,7 @@ fun `consume subproperty in while`(b: @Unique B) {
         consume(<!UNIQUENESS_MISMATCH!>b.y.x<!>)
     }
 
-    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>b<!>)
+    consume(<!UNIQUENESS_INCONSISTENCY!>b<!>)
 }
 
 fun `consume then break`(a: @Unique A) {

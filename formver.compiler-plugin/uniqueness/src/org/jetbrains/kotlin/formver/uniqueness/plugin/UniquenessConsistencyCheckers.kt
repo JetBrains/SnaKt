@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
 import org.jetbrains.kotlin.fir.expressions.FirStatement
 import org.jetbrains.kotlin.fir.expressions.FirThrowExpression
 import org.jetbrains.kotlin.fir.expressions.arguments
-import org.jetbrains.kotlin.formver.uniqueness.plugin.UniquenessErrors.LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION
+import org.jetbrains.kotlin.formver.uniqueness.plugin.UniquenessErrors.UNIQUENESS_INCONSISTENCY
 
 fun interface StatementLeaksResolver<Statement : FirStatement> {
     fun resolveLeaks(expression: Statement): List<FirExpression>
@@ -35,7 +35,7 @@ class StatementUniquenessConsistencyChecker<Statement : FirStatement>(
                 for (movedPath in movedPaths) {
                     reporter.reportOn(
                         leak.source ?: expression.source,
-                        LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION,
+                        UNIQUENESS_INCONSISTENCY,
                         accessPath + movedPath
                     )
                 }

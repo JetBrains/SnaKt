@@ -28,7 +28,6 @@ class UniquenessAdditionalCheckers(session: FirSession) : FirAdditionalCheckersE
             setOf(PropertyUniquenessChecker)
     }
 
-
     override val expressionCheckers: ExpressionCheckers = object : ExpressionCheckers() {
         override val variableAssignmentCheckers: Set<FirVariableAssignmentChecker> =
             setOf(AssignmentUniquenessChecker)

@@ -19,19 +19,19 @@ fun newUnique(): @Unique A = A()
 
 fun `safe call read of unique subproperty`(b: @Unique B?) {
     val z: @Unique A? = b?.y
-    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>b<!>)
+    consume(<!UNIQUENESS_INCONSISTENCY!>b<!>)
 }
 
 fun `consume via safe call`(a: @Unique A?) {
     consume(a?.x)
-    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>a<!>)
+    consume(<!UNIQUENESS_INCONSISTENCY!>a<!>)
 }
 
 // Not-null assertion
 
 fun `not-null assertion then consume`(a: @Unique A?) {
     consume(a!!.x)
-    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>a<!>)
+    consume(<!UNIQUENESS_INCONSISTENCY!>a<!>)
 }
 
 fun `consume after not-null assertion`(a: @Unique A?) {

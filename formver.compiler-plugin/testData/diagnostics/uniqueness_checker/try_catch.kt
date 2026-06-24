@@ -76,7 +76,7 @@ fun `consume subproperty in try`(b: @Unique B) {
         consume(b.y)
     } catch (_: Throwable) {}
 
-    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>b<!>)
+    consume(<!UNIQUENESS_INCONSISTENCY!>b<!>)
 }
 
 fun `consume in alternative catches`(a: @Unique A) {

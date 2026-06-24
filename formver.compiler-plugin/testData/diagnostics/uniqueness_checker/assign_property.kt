@@ -34,7 +34,7 @@ fun `return local after assigning its property`(x: @Unique B) {
     val y = x.y
     val z = x
 
-    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>z<!>)
+    consume(<!UNIQUENESS_INCONSISTENCY!>z<!>)
 }
 
 fun `assign shared to unique subproperty`(x: @Unique B, v: A): Unit {
@@ -82,7 +82,7 @@ fun `consume nested unique after moving back`(a: @Unique R) {
     consume(b.um)
     a.um = b
 
-    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>a<!>)
+    consume(<!UNIQUENESS_INCONSISTENCY!>a<!>)
 }
 
 fun test(a: @Unique R) {
