@@ -14,6 +14,7 @@ public final class org/jetbrains/kotlin/formver/plugin/BuiltinsKt {
 	public static final fun postconditions (Lkotlin/jvm/functions/Function1;)V
 	public static final fun preconditions (Lkotlin/jvm/functions/Function0;)V
 	public static final fun read ()Ljava/lang/Object;
+	public static final fun toMultiset ([I)Ljava/lang/Object;
 	public static final fun verify ([Z)V
 	public static final fun write ()Ljava/lang/Object;
 }
