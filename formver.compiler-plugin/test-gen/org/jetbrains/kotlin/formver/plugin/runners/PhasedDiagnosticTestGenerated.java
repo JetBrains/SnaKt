@@ -52,6 +52,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("insertion_sort.kt")
+      public void testInsertion_sort() {
+        runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/algorithms/insertion_sort.kt");
+      }
+
+      @Test
       @TestMetadata("merge_sort_of_string.kt")
       public void testMerge_sort_of_string() {
         runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/algorithms/merge_sort_of_string.kt");
@@ -230,6 +236,28 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     @TestMetadata("stdlib_replacement_tests.kt")
     public void testStdlib_replacement_tests() {
       runTest("formver.compiler-plugin/testData/diagnostics/stdlib/stdlib_replacement_tests.kt");
+    }
+
+    @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/stdlib/intarray")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Intarray {
+      @Test
+      public void testAllFilesPresentInIntarray() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/stdlib/intarray"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("intarray.kt")
+      public void testIntarray() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/intarray/intarray.kt");
+      }
+
+      @Test
+      @TestMetadata("multiset.kt")
+      public void testMultiset() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/intarray/multiset.kt");
+      }
     }
 
     @Nested

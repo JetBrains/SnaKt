@@ -31,6 +31,8 @@ fun <T> forAll(@Suppress("UNUSED_PARAMETER") body: InvariantBuilder.(T) -> Unit)
 fun <T> old(@Suppress("UNUSED_PARAMETER") body: T): T =
     throw FormverFunctionCalledInRuntimeException("old")
 
+fun toMultiset(@Suppress("UNUSED_PARAMETER") array: IntArray): Any =
+    throw FormverFunctionCalledInRuntimeException("seqToMultiset")
 
 /**
  * Requests access permission to the field denoted by [path] in a pre- or postcondition.

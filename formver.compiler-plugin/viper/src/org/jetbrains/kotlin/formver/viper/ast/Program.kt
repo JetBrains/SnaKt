@@ -113,11 +113,24 @@ private fun registerExpNames(exp: Exp) {
         }
 
         is Exp.SeqLength -> registerExpNames(exp.seq)
+        is Exp.SeqUpdate -> {
+            registerExpNames(exp.seq)
+            registerExpNames(exp.idx)
+            registerExpNames(exp.elem)
+        }
+
         is Exp.SeqTake -> {
             registerExpNames(exp.seq)
             registerExpNames(exp.idx)
         }
 
+        is Exp.SeqDrop -> {
+            registerExpNames(exp.seq)
+            registerExpNames(exp.n)
+        }
+
+        is Exp.ExplicitMultiset -> exp.elems.forEach { registerExpNames(it) }
+        is Exp.AnySetCardinality -> registerExpNames(exp.anySet)
         is Exp.Unfolding -> {
             registerExpNames(exp.predicateAccess)
             registerExpNames(exp.body)
@@ -127,7 +140,7 @@ private fun registerExpNames(exp: Exp) {
             exp.args.forEach { registerExpNames(it) }
         }
         // no else branch to make decisions explicit.
-        is Exp.Result, is Exp.BoolLit, is Exp.EmptySeq, is Exp.IntLit, is Exp.NullLit -> {}
+        is Exp.Result, is Exp.BoolLit, is Exp.EmptySeq, is Exp.EmptyMultiset, is Exp.IntLit, is Exp.NullLit -> {}
     }
 }
 

@@ -24,6 +24,13 @@ class TypeResolver {
     private val classEmbedding = mutableMapOf<SymbolicName, ClassTypeEmbedding>()
     private val interfaceEmbedding = mutableMapOf<SymbolicName, ClassTypeEmbedding>()
 
+    var intArrayUsed: Boolean = false
+        private set
+
+    fun markIntArrayUsed() {
+        intArrayUsed = true
+    }
+
     /**
      * Supertype relation. Key is a subtype, value is a set of supertypes.
      * The transitive closure is not included.

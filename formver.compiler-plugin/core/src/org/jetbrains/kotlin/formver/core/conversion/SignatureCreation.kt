@@ -10,13 +10,13 @@ import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.embeddings.callables.*
-import org.jetbrains.kotlin.formver.core.embeddings.expression.EqCmp
-import org.jetbrains.kotlin.formver.core.embeddings.expression.FirVariableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.core.isBorrowed
 import org.jetbrains.kotlin.formver.core.isPure
 import org.jetbrains.kotlin.formver.core.isUnique
+import org.jetbrains.kotlin.formver.core.kotlinClassId
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 
@@ -162,6 +162,23 @@ fun SignatureWithTarget<NonInlineCallable>.toCompleteSignature(
 
 
 context(converter: ProgramConversionContext)
+fun intArrayZeroInitializedPostcondition(result: VariableEmbedding): ExpEmbedding {
+    val index = converter.freshAnonBuiltinVar(buildType { int() })
+    return ForAllEmbedding(
+        index,
+        listOf(
+            OperatorExpEmbeddings.Implies(
+                OperatorExpEmbeddings.And(
+                    OperatorExpEmbeddings.LeIntInt(IntLit(0), index),
+                    OperatorExpEmbeddings.LtIntInt(index, IntArraySize(result)),
+                ),
+                EqCmp(IntArrayGet(result, index), IntLit(0)),
+            )
+        ),
+    )
+}
+
+context(converter: ProgramConversionContext)
 fun SignatureWithTarget<NonInlineCallable>.toConstructorSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<NonInlineFunctionSignature> =
     refineSignature { current ->
         val constructedClassSymbol =
@@ -182,9 +199,31 @@ fun SignatureWithTarget<NonInlineCallable>.toConstructorSignature(symbol: FirFun
             }
         }
 
+        val classSpecificPreconditions = buildList {
+            if (constructedClassSymbol.classId == kotlinClassId("IntArray")) {
+                add(
+                    OperatorExpEmbeddings.GeIntInt(IntLit(0), current.signature.params[0])
+                )
+            }
+        }
+
+        val classSpecificPostconditions = buildList {
+            if (constructedClassSymbol.classId == kotlinClassId("IntArray")) {
+                add(intArrayZeroInitializedPostcondition(returnTarget.variable))
+                add(
+                    EqCmp(
+                        IntArraySize(returnTarget.variable),
+                        current.signature.params[0]
+                    )
+                )
+            }
+        }
+
+
         val contract = current.signature.buildConditions(converter.typeResolver) {
             userFunctionContract()
-            addPostconditions(fieldPostconditions)
+            addPreconditions(classSpecificPreconditions)
+            addPostconditions(fieldPostconditions + classSpecificPostconditions)
         }
 
         NonInlineFunctionSignature(current.signature, contract.preconditions, contract.postconditions, symbol.source)

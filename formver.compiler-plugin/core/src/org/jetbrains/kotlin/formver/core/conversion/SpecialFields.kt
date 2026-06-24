@@ -14,9 +14,11 @@ import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeInvariantEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
+import org.jetbrains.kotlin.formver.core.names.DispatchReceiverName
+import org.jetbrains.kotlin.formver.core.names.PredicateName
 import org.jetbrains.kotlin.formver.core.names.SpecialFieldName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
-import org.jetbrains.kotlin.formver.viper.ast.Type
+import org.jetbrains.kotlin.formver.viper.ast.*
 
 class SpecialField(
     baseName: String,
@@ -40,4 +42,27 @@ val CollectionSizeFieldEmbedding: FieldEmbedding = SpecialField(
         override fun fillHole(exp: ExpEmbedding): ExpEmbedding =
             OperatorExpEmbeddings.GeIntInt(FieldAccess(exp, field), IntLit(0))
     })
+}
+
+/**
+ * The special field that holds the actual data of an `IntArray`.
+ */
+val IntArrayDataFieldEmbedding: FieldEmbedding = SpecialField(
+    baseName = "data",
+    type = buildType { int() }, // TODO: This type is technically wrong. But at the moment we dont have a way to express the correct type.
+    viperType = Type.Seq(Type.Int),
+    includeInShortDump = true,
+)
+
+
+val uniqueIntArrayPredicateName: SymbolicName = PredicateName("uniqueIntArray")
+
+fun intArrayPredicate(): Predicate {
+    val thisDecl = Declaration.LocalVarDecl(DispatchReceiverName, Type.Ref)
+    val thisVar = Exp.LocalVar(DispatchReceiverName, Type.Ref)
+    val body = Exp.Acc(
+        Exp.FieldAccess(thisVar, IntArrayDataFieldEmbedding.toViper()),
+        PermExp.FullPerm(),
+    )
+    return Predicate(uniqueIntArrayPredicateName, listOf(thisDecl), body)
 }

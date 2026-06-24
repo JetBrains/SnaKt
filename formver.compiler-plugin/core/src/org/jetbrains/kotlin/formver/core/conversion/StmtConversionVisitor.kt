@@ -61,6 +61,14 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     override fun visitElement(element: FirElement, data: StmtConversionContext): ExpEmbedding =
         handleUnimplementedElement(element.source, "Not yet implemented for $element (${element.source.text})", data)
 
+    // `FirUnitExpression` has no dedicated visit method and so dispatches here. It appears, for instance, as the
+    // synthetic `Unit` result of a desugared indexed assignment (`a[i] = v`); we translate it to the unit literal.
+    override fun visitExpression(expression: FirExpression, data: StmtConversionContext): ExpEmbedding =
+        when (expression) {
+            is FirUnitExpression -> UnitLit
+            else -> super.visitExpression(expression, data)
+        }
+
     override fun visitReturnExpression(
         returnExpression: FirReturnExpression,
         data: StmtConversionContext,

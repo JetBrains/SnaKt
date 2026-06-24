@@ -1,0 +1,234 @@
+/multiset.kt: info: Generated Viper text for multisetReflexive:
+field data: Seq[Int]
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
+
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
+}
+
+predicate uniqueIntArray(this: Ref) {
+  acc(this.data, write)
+}
+
+method multisetReflexive(a: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), intArrayType())
+  requires acc(uniqueIntArray(a), write)
+  ensures acc(uniqueIntArray(a), write)
+  ensures old((unfolding acc(uniqueIntArray(a), write) in |a.data|)) ==
+    (unfolding acc(uniqueIntArray(a), write) in |a.data|)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert (unfolding acc(uniqueIntArray(a), write) in seqToMultiset(a.data)) ==
+    (unfolding acc(uniqueIntArray(a), write) in seqToMultiset(a.data))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/multiset.kt: info: Generated Viper text for multisetUnchanged:
+field data: Seq[Int]
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
+
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
+}
+
+predicate uniqueIntArray(this: Ref) {
+  acc(this.data, write)
+}
+
+method multisetUnchanged(a: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), intArrayType())
+  requires acc(uniqueIntArray(a), write)
+  ensures acc(uniqueIntArray(a), write)
+  ensures old((unfolding acc(uniqueIntArray(a), write) in |a.data|)) ==
+    (unfolding acc(uniqueIntArray(a), write) in |a.data|)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert (unfolding acc(uniqueIntArray(a), write) in seqToMultiset(a.data)) ==
+    old((unfolding acc(uniqueIntArray(a), write) in seqToMultiset(a.data)))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/multiset.kt: info: Generated Viper text for switchTwoElements:
+field data: Seq[Int]
+
+predicate uniqueIntArray(this: Ref) {
+  acc(this.data, write)
+}
+
+method switchTwoElements(a: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), intArrayType())
+  requires acc(uniqueIntArray(a), write)
+  requires (unfolding acc(uniqueIntArray(a), write) in |a.data|) == 2
+  ensures acc(uniqueIntArray(a), write)
+  ensures old((unfolding acc(uniqueIntArray(a), write) in |a.data|)) ==
+    (unfolding acc(uniqueIntArray(a), write) in |a.data|)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures (unfolding acc(uniqueIntArray(a), write) in
+      seqToMultiset(a.data)) ==
+    old((unfolding acc(uniqueIntArray(a), write) in seqToMultiset(a.data)))
+{
+  var tmp0: Ref
+  var tmp1: Ref
+  tmp0 := intToRef((unfolding acc(uniqueIntArray(a), write) in
+      a.data[intFromRef(intToRef(0))]))
+  tmp1 := intToRef((unfolding acc(uniqueIntArray(a), write) in
+      a.data[intFromRef(intToRef(1))]))
+  unfold acc(uniqueIntArray(a), write)
+  a.data := a.data[intFromRef(intToRef(0)) := intFromRef(tmp1)]
+  fold acc(uniqueIntArray(a), write)
+  unfold acc(uniqueIntArray(a), write)
+  a.data := a.data[intFromRef(intToRef(1)) := intFromRef(tmp0)]
+  fold acc(uniqueIntArray(a), write)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/multiset.kt: info: Generated Viper text for minHelper:
+field data: Seq[Int]
+
+predicate InvariantBuilder_unique(this: Ref) {
+  isSubtype(typeOf(this), InvariantBuilder())
+}
+
+predicate uniqueIntArray(this: Ref) {
+  acc(this.data, write)
+}
+
+method minHelper(a: Ref, untilIndex: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), intArrayType())
+  requires acc(uniqueIntArray(a), write)
+  requires isSubtype(typeOf(untilIndex), intType())
+  requires (unfolding acc(uniqueIntArray(a), write) in |a.data|) > 0
+  requires intFromRef(untilIndex) >= 0
+  requires intFromRef(untilIndex) <
+    (unfolding acc(uniqueIntArray(a), write) in |a.data|)
+  ensures acc(uniqueIntArray(a), write)
+  ensures old((unfolding acc(uniqueIntArray(a), write) in |a.data|)) ==
+    (unfolding acc(uniqueIntArray(a), write) in |a.data|)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures (forall anon_builtin_0: Int ::0 <= anon_builtin_0 &&
+      anon_builtin_0 <= intFromRef(untilIndex) ==>
+      (unfolding acc(uniqueIntArray(a), write) in
+        a.data[intFromRef(intToRef(anon_builtin_0))]) >=
+      intFromRef(v_ret_0))
+  ensures (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
+      anon_builtin_1 <
+      (unfolding acc(uniqueIntArray(a), write) in |a.data|) ==>
+      old((unfolding acc(uniqueIntArray(a), write) in
+        a.data[intFromRef(intToRef(anon_builtin_1))])) ==
+      (unfolding acc(uniqueIntArray(a), write) in
+        a.data[intFromRef(intToRef(anon_builtin_1))]))
+{
+  var current: Ref
+  current := intToRef((unfolding acc(uniqueIntArray(a), write) in
+      a.data[intFromRef(untilIndex)]))
+  if (intFromRef(untilIndex) == 0) {
+    v_ret_0 := current
+    goto lbl_ret_0
+  } else {
+    var candidate: Ref
+    candidate := minHelper(a, minusInts(untilIndex, intToRef(1)))
+    if (intFromRef(candidate) < intFromRef(current)) {
+      v_ret_0 := candidate
+      goto lbl_ret_0
+    } else {
+      v_ret_0 := current
+      goto lbl_ret_0
+    }
+  }
+  label lbl_ret_0
+}
+
+/multiset.kt: info: Generated Viper text for min:
+field data: Seq[Int]
+
+predicate InvariantBuilder_unique(this: Ref) {
+  isSubtype(typeOf(this), InvariantBuilder())
+}
+
+predicate uniqueIntArray(this: Ref) {
+  acc(this.data, write)
+}
+
+method min(a: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), intArrayType())
+  requires acc(uniqueIntArray(a), write)
+  requires (unfolding acc(uniqueIntArray(a), write) in |a.data|) > 0
+  ensures acc(uniqueIntArray(a), write)
+  ensures old((unfolding acc(uniqueIntArray(a), write) in |a.data|)) ==
+    (unfolding acc(uniqueIntArray(a), write) in |a.data|)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures (forall anon_builtin_0: Int ::0 <= anon_builtin_0 &&
+      anon_builtin_0 <
+      (unfolding acc(uniqueIntArray(a), write) in |a.data|) ==>
+      (unfolding acc(uniqueIntArray(a), write) in
+        a.data[intFromRef(intToRef(anon_builtin_0))]) >=
+      intFromRef(v_ret_0))
+  ensures (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
+      anon_builtin_1 <
+      (unfolding acc(uniqueIntArray(a), write) in |a.data|) ==>
+      old((unfolding acc(uniqueIntArray(a), write) in
+        a.data[intFromRef(intToRef(anon_builtin_1))])) ==
+      (unfolding acc(uniqueIntArray(a), write) in
+        a.data[intFromRef(intToRef(anon_builtin_1))]))
+{
+  v_ret_0 := minHelper(a, minusInts(intToRef((unfolding acc(uniqueIntArray(a), write) in
+      |a.data|)), intToRef(1)))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method minHelper(a: Ref, untilIndex: Ref) returns (ret_5: Ref)
+  requires isSubtype(typeOf(a), intArrayType())
+  requires acc(uniqueIntArray(a), write)
+  requires isSubtype(typeOf(untilIndex), intType())
+  requires (unfolding acc(uniqueIntArray(a), write) in |a.data|) > 0
+  requires intFromRef(untilIndex) >= 0
+  requires intFromRef(untilIndex) <
+    (unfolding acc(uniqueIntArray(a), write) in |a.data|)
+  ensures acc(uniqueIntArray(a), write)
+  ensures old((unfolding acc(uniqueIntArray(a), write) in |a.data|)) ==
+    (unfolding acc(uniqueIntArray(a), write) in |a.data|)
+  ensures isSubtype(typeOf(ret_5), intType())
+  ensures (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
+      anon_builtin_2 <= intFromRef(untilIndex) ==>
+      (unfolding acc(uniqueIntArray(a), write) in
+        a.data[intFromRef(intToRef(anon_builtin_2))]) >=
+      intFromRef(ret_5))
+  ensures (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
+      anon_builtin_3 <
+      (unfolding acc(uniqueIntArray(a), write) in |a.data|) ==>
+      old((unfolding acc(uniqueIntArray(a), write) in
+        a.data[intFromRef(intToRef(anon_builtin_3))])) ==
+      (unfolding acc(uniqueIntArray(a), write) in
+        a.data[intFromRef(intToRef(anon_builtin_3))]))

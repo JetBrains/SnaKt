@@ -1,0 +1,310 @@
+/intarray.kt: info: Generated Viper text for testSize:
+field data: Seq[Int]
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
+
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
+}
+
+predicate uniqueIntArray(this: Ref) {
+  acc(this.data, write)
+}
+
+method testSize(a: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), intArrayType())
+  requires acc(uniqueIntArray(a), write)
+  ensures acc(uniqueIntArray(a), write)
+  ensures old((unfolding acc(uniqueIntArray(a), write) in |a.data|)) ==
+    (unfolding acc(uniqueIntArray(a), write) in |a.data|)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var n: Ref
+  n := intToRef((unfolding acc(uniqueIntArray(a), write) in |a.data|))
+  assert intFromRef(n) ==
+    (unfolding acc(uniqueIntArray(a), write) in |a.data|)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/intarray.kt: info: Generated Viper text for testGet:
+field data: Seq[Int]
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
+
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
+}
+
+predicate uniqueIntArray(this: Ref) {
+  acc(this.data, write)
+}
+
+method testGet(a: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), intArrayType())
+  requires acc(uniqueIntArray(a), write)
+  requires (unfolding acc(uniqueIntArray(a), write) in |a.data|) > 0
+  ensures acc(uniqueIntArray(a), write)
+  ensures old((unfolding acc(uniqueIntArray(a), write) in |a.data|)) ==
+    (unfolding acc(uniqueIntArray(a), write) in |a.data|)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var x: Ref
+  x := intToRef((unfolding acc(uniqueIntArray(a), write) in
+      a.data[intFromRef(intToRef(0))]))
+  assert intFromRef(x) ==
+    (unfolding acc(uniqueIntArray(a), write) in
+      a.data[intFromRef(intToRef(0))])
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/intarray.kt: info: Generated Viper text for testSet:
+field data: Seq[Int]
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
+
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
+}
+
+predicate uniqueIntArray(this: Ref) {
+  acc(this.data, write)
+}
+
+method testSet(a: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), intArrayType())
+  requires acc(uniqueIntArray(a), write)
+  requires (unfolding acc(uniqueIntArray(a), write) in |a.data|) > 0
+  ensures acc(uniqueIntArray(a), write)
+  ensures old((unfolding acc(uniqueIntArray(a), write) in |a.data|)) ==
+    (unfolding acc(uniqueIntArray(a), write) in |a.data|)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  unfold acc(uniqueIntArray(a), write)
+  a.data := a.data[intFromRef(intToRef(0)) := intFromRef(intToRef(42))]
+  fold acc(uniqueIntArray(a), write)
+  assert (unfolding acc(uniqueIntArray(a), write) in
+      a.data[intFromRef(intToRef(0))]) ==
+    42
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/intarray.kt: info: Generated Viper text for testSizePreservedAfterSet:
+field data: Seq[Int]
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
+
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
+}
+
+predicate uniqueIntArray(this: Ref) {
+  acc(this.data, write)
+}
+
+method testSizePreservedAfterSet(a: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), intArrayType())
+  requires acc(uniqueIntArray(a), write)
+  requires (unfolding acc(uniqueIntArray(a), write) in |a.data|) > 1
+  ensures acc(uniqueIntArray(a), write)
+  ensures old((unfolding acc(uniqueIntArray(a), write) in |a.data|)) ==
+    (unfolding acc(uniqueIntArray(a), write) in |a.data|)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var before: Ref
+  before := intToRef((unfolding acc(uniqueIntArray(a), write) in |a.data|))
+  unfold acc(uniqueIntArray(a), write)
+  a.data := a.data[intFromRef(intToRef(1)) := intFromRef(intToRef(7))]
+  fold acc(uniqueIntArray(a), write)
+  assert (unfolding acc(uniqueIntArray(a), write) in |a.data|) ==
+    intFromRef(before)
+  assert (unfolding acc(uniqueIntArray(a), write) in
+      a.data[intFromRef(intToRef(1))]) ==
+    7
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/intarray.kt: info: Generated Viper text for testConstructor:
+field data: Seq[Int]
+
+function g_size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
+
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
+}
+
+predicate uniqueIntArray(this: Ref) {
+  acc(this.data, write)
+}
+
+method con(par_size: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_size), intType())
+  ensures isSubtype(typeOf(ret_1), intArrayType())
+  ensures acc(uniqueIntArray(ret_1), write)
+  ensures (forall anon: Int ::0 <= anon &&
+      anon < (unfolding acc(uniqueIntArray(ret_1), write) in |ret_1.data|) ==>
+      (unfolding acc(uniqueIntArray(ret_1), write) in
+        ret_1.data[intFromRef(intToRef(anon))]) ==
+      0)
+  ensures (unfolding acc(uniqueIntArray(ret_1), write) in |ret_1.data|) ==
+    intFromRef(par_size)
+
+
+method testConstructor() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var a: Ref
+  a := con(intToRef(5))
+  assert (unfolding acc(uniqueIntArray(a), write) in |a.data|) == 5
+  assert (unfolding acc(uniqueIntArray(a), write) in
+      a.data[intFromRef(intToRef(0))]) ==
+    0
+  assert (unfolding acc(uniqueIntArray(a), write) in
+      a.data[intFromRef(intToRef(4))]) ==
+    0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/intarray.kt: info: Generated Viper text for mutate:
+field data: Seq[Int]
+
+predicate uniqueIntArray(this: Ref) {
+  acc(this.data, write)
+}
+
+method mutate(a: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), intArrayType())
+  requires acc(uniqueIntArray(a), write)
+  requires (unfolding acc(uniqueIntArray(a), write) in |a.data|) > 0
+  ensures acc(uniqueIntArray(a), write)
+  ensures old((unfolding acc(uniqueIntArray(a), write) in |a.data|)) ==
+    (unfolding acc(uniqueIntArray(a), write) in |a.data|)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  unfold acc(uniqueIntArray(a), write)
+  a.data := a.data[intFromRef(intToRef(0)) := intFromRef(intToRef(99))]
+  fold acc(uniqueIntArray(a), write)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/intarray.kt: info: Generated Viper text for testBorrowPreservesSize:
+field data: Seq[Int]
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
+
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
+}
+
+predicate uniqueIntArray(this: Ref) {
+  acc(this.data, write)
+}
+
+method mutate(a: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(a), intArrayType())
+  requires acc(uniqueIntArray(a), write)
+  requires (unfolding acc(uniqueIntArray(a), write) in |a.data|) > 0
+  ensures acc(uniqueIntArray(a), write)
+  ensures old((unfolding acc(uniqueIntArray(a), write) in |a.data|)) ==
+    (unfolding acc(uniqueIntArray(a), write) in |a.data|)
+  ensures isSubtype(typeOf(ret_2), unitType())
+
+
+method testBorrowPreservesSize(a: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), intArrayType())
+  requires acc(uniqueIntArray(a), write)
+  requires (unfolding acc(uniqueIntArray(a), write) in |a.data|) == 5
+  ensures acc(uniqueIntArray(a), write)
+  ensures old((unfolding acc(uniqueIntArray(a), write) in |a.data|)) ==
+    (unfolding acc(uniqueIntArray(a), write) in |a.data|)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := mutate(a)
+  assert (unfolding acc(uniqueIntArray(a), write) in |a.data|) == 5
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
