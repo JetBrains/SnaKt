@@ -20,7 +20,7 @@ import org.jetbrains.kotlin.formver.viper.ast.PermExp
 import org.jetbrains.kotlin.formver.viper.ast.Predicate
 
 // TODO: incorporate generic parameters.
-data class ClassTypeEmbedding(override val name: ScopedName) : PretypeEmbedding {
+data class ClassTypeEmbedding(override val name: ScopedName, val isManual: Boolean) : PretypeEmbedding {
 
     override val runtimeType: Exp = this.embedClassTypeFunc()()
 
