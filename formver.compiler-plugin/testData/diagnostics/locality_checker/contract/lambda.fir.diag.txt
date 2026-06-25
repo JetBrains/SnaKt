@@ -1,0 +1,15 @@
+/lambda.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.
+
+/lambda.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.
+
+/lambda.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.
+
+/lambda.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.
+
+/lambda.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.
+
+/lambda.kt: error: Argument locality contract mismatch: expected '[(global, [local])]', actual '[(global, [global])]'.
+
+/lambda.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.
+
+/lambda.kt: error: Argument locality contract mismatch: expected '[(global, [local])]', actual '[(global, [global])]'.

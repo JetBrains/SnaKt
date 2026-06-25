@@ -1,0 +1,7 @@
+/vararg.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/vararg.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/vararg.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/vararg.kt: error: Argument locality mismatch: expected 'global', actual 'local'.

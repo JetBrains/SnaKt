@@ -1,0 +1,3 @@
+/function_reference.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.
+
+/function_reference.kt: error: Argument locality contract mismatch: expected '[local, local]', actual '[global, global]'.

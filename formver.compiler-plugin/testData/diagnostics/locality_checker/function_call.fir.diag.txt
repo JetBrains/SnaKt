@@ -1,0 +1,15 @@
+/function_call.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/function_call.kt: error: Initializer locality mismatch: expected 'global', actual 'local'.
+
+/function_call.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/function_call.kt: error: Receiver locality mismatch: expected 'global', actual 'local'.
+
+/function_call.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/function_call.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/function_call.kt: error: Receiver locality mismatch: expected 'global', actual 'local'.
+
+/function_call.kt: error: Receiver locality mismatch: expected 'global', actual 'local'.

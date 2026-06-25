@@ -1,3 +1,0 @@
-/call_with_vararg.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.
-
-/call_with_vararg.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.

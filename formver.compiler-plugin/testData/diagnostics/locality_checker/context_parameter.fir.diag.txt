@@ -1,0 +1,19 @@
+/context_parameter.kt: error: Locality mismatch for context parameter of type 'A': expected 'global', actual 'local'.
+
+/context_parameter.kt: error: Receiver locality mismatch: expected 'global', actual 'local'.
+
+/context_parameter.kt: error: Locality mismatch for context parameter of type 'A': expected 'global', actual 'local'.
+
+/context_parameter.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/context_parameter.kt: error: Locality mismatch for context parameter of type 'A': expected 'global', actual 'local'.
+
+/context_parameter.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/context_parameter.kt: error: Locality mismatch for context parameter of type 'A': expected 'global', actual 'local'.
+
+/context_parameter.kt: error: Locality mismatch for context parameter of type 'A': expected 'global', actual 'local'.
+
+/context_parameter.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/context_parameter.kt: error: Locality mismatch for context parameter of type 'A': expected 'global', actual 'local'.

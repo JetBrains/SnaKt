@@ -1,0 +1,37 @@
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/lambda.kt: error: Argument locality mismatch: expected 'global', actual 'local'.

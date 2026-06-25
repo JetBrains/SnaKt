@@ -1,0 +1,7 @@
+/context_parameter.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.
+
+/context_parameter.kt: error: Initializer locality contract mismatch: expected '[local]', actual '[global]'.
+
+/context_parameter.kt: error: Argument locality contract mismatch: expected '[local, local]', actual '[global, local]'.
+
+/context_parameter.kt: error: Locality contract mismatch for context parameter of type 'Function1<Any, Unit>': expected '[local]', actual '[global]'.

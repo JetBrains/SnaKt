@@ -1,0 +1,9 @@
+/local_variable.kt: error: Assignment locality contract mismatch: expected '[local]', actual '[global]'.
+
+/local_variable.kt: error: Assignment locality contract mismatch: expected '[local]', actual '[global]'.
+
+/local_variable.kt: error: Initializer locality contract mismatch: expected '[local]', actual '[global]'.
+
+/local_variable.kt: error: Initializer locality contract mismatch: expected '[local]', actual '[global]'.
+
+/local_variable.kt: error: Assignment locality contract mismatch: expected '[local]', actual '[global]'.

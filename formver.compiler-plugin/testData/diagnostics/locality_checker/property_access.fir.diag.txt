@@ -1,0 +1,3 @@
+/property_access.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
+
+/property_access.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.

@@ -1,7 +1,0 @@
-/call_with_vararg.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
-
-/call_with_vararg.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
-
-/call_with_vararg.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
-
-/call_with_vararg.kt: error: Argument locality mismatch: expected 'global', actual 'local'.

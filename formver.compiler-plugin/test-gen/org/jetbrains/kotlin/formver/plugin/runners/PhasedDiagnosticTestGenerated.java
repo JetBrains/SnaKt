@@ -81,45 +81,15 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
-    @TestMetadata("assign_local.kt")
-    public void testAssign_local() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/assign_local.kt");
+    @TestMetadata("buffer_builder.kt")
+    public void testBuffer_builder() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/buffer_builder.kt");
     }
 
     @Test
-    @TestMetadata("assign_property.kt")
-    public void testAssign_property() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/assign_property.kt");
-    }
-
-    @Test
-    @TestMetadata("call.kt")
-    public void testCall() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/call.kt");
-    }
-
-    @Test
-    @TestMetadata("call_anonymous.kt")
-    public void testCall_anonymous() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/call_anonymous.kt");
-    }
-
-    @Test
-    @TestMetadata("call_anonymous_with_context.kt")
-    public void testCall_anonymous_with_context() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/call_anonymous_with_context.kt");
-    }
-
-    @Test
-    @TestMetadata("call_with_context.kt")
-    public void testCall_with_context() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/call_with_context.kt");
-    }
-
-    @Test
-    @TestMetadata("call_with_vararg.kt")
-    public void testCall_with_vararg() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/call_with_vararg.kt");
+    @TestMetadata("cast.kt")
+    public void testCast() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/cast.kt");
     }
 
     @Test
@@ -129,21 +99,63 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("conditional_expression.kt")
+    public void testConditional_expression() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/conditional_expression.kt");
+    }
+
+    @Test
+    @TestMetadata("connection_pool.kt")
+    public void testConnection_pool() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/connection_pool.kt");
+    }
+
+    @Test
+    @TestMetadata("constructor.kt")
+    public void testConstructor() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/constructor.kt");
+    }
+
+    @Test
+    @TestMetadata("context_parameter.kt")
+    public void testContext_parameter() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/context_parameter.kt");
+    }
+
+    @Test
     @TestMetadata("default_argument.kt")
     public void testDefault_argument() {
       runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/default_argument.kt");
     }
 
     @Test
-    @TestMetadata("invalid.kt")
-    public void testInvalid() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/invalid.kt");
+    @TestMetadata("deferred_callbacks.kt")
+    public void testDeferred_callbacks() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/deferred_callbacks.kt");
     }
 
     @Test
-    @TestMetadata("nested_scope.kt")
-    public void testNested_scope() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/nested_scope.kt");
+    @TestMetadata("function_call.kt")
+    public void testFunction_call() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/function_call.kt");
+    }
+
+    @Test
+    @TestMetadata("lambda.kt")
+    public void testLambda() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/lambda.kt");
+    }
+
+    @Test
+    @TestMetadata("local_variable.kt")
+    public void testLocal_variable() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/local_variable.kt");
+    }
+
+    @Test
+    @TestMetadata("property_access.kt")
+    public void testProperty_access() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/property_access.kt");
     }
 
     @Test
@@ -158,6 +170,18 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/throw.kt");
     }
 
+    @Test
+    @TestMetadata("type_attribute_placement.kt")
+    public void testType_attribute_placement() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/type_attribute_placement.kt");
+    }
+
+    @Test
+    @TestMetadata("vararg.kt")
+    public void testVararg() {
+      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/vararg.kt");
+    }
+
     @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/locality_checker/contract")
     @TestDataPath("$PROJECT_ROOT")
@@ -168,33 +192,15 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
-      @TestMetadata("assign_local.kt")
-      public void testAssign_local() {
-        runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/contract/assign_local.kt");
+      @TestMetadata("conditional_expression.kt")
+      public void testConditional_expression() {
+        runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/contract/conditional_expression.kt");
       }
 
       @Test
-      @TestMetadata("call.kt")
-      public void testCall() {
-        runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/contract/call.kt");
-      }
-
-      @Test
-      @TestMetadata("call_anonymous.kt")
-      public void testCall_anonymous() {
-        runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/contract/call_anonymous.kt");
-      }
-
-      @Test
-      @TestMetadata("call_with_context.kt")
-      public void testCall_with_context() {
-        runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/contract/call_with_context.kt");
-      }
-
-      @Test
-      @TestMetadata("call_with_vararg.kt")
-      public void testCall_with_vararg() {
-        runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/contract/call_with_vararg.kt");
+      @TestMetadata("context_parameter.kt")
+      public void testContext_parameter() {
+        runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/contract/context_parameter.kt");
       }
 
       @Test
@@ -204,15 +210,39 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
-      @TestMetadata("pass_function_reference.kt")
-      public void testPass_function_reference() {
-        runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/contract/pass_function_reference.kt");
+      @TestMetadata("function_call.kt")
+      public void testFunction_call() {
+        runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/contract/function_call.kt");
+      }
+
+      @Test
+      @TestMetadata("function_reference.kt")
+      public void testFunction_reference() {
+        runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/contract/function_reference.kt");
+      }
+
+      @Test
+      @TestMetadata("lambda.kt")
+      public void testLambda() {
+        runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/contract/lambda.kt");
+      }
+
+      @Test
+      @TestMetadata("local_variable.kt")
+      public void testLocal_variable() {
+        runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/contract/local_variable.kt");
       }
 
       @Test
       @TestMetadata("return.kt")
       public void testReturn() {
         runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/contract/return.kt");
+      }
+
+      @Test
+      @TestMetadata("vararg.kt")
+      public void testVararg() {
+        runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/contract/vararg.kt");
       }
     }
   }

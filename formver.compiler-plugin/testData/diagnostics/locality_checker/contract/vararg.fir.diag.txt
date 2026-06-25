@@ -1,0 +1,3 @@
+/vararg.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.
+
+/vararg.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.

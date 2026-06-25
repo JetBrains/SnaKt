@@ -1,0 +1,7 @@
+/local_variable.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.
+
+/local_variable.kt: error: Unresolved reference 'a'.
+
+/local_variable.kt: error: Type checking has run into a recursive problem. Easiest workaround: specify the types of your declarations explicitly.
+
+/local_variable.kt: error: Type checking has run into a recursive problem. Easiest workaround: specify the types of your declarations explicitly.
