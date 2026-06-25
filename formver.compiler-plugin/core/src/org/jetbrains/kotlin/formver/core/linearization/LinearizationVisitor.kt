@@ -421,14 +421,15 @@ data class LinearizationVisitor(
 
     override fun visitFieldModification(e: FieldModification): Linearizable = object : UnitResultLinearizable(e) {
         override fun toViperUnusedResult(ctx: LinearizationContext) {
+            val accessIsManual = (e.receiver.type.pretype as? ClassTypeEmbedding)?.isManual ?: false
             when (e.field.accessPolicy) {
-                AccessPolicy.BY_RECEIVER_UNIQUENESS if false -> {
+                AccessPolicy.BY_RECEIVER_UNIQUENESS if !accessIsManual -> {
                     e.receiver.linearize().toViperUnusedResult(ctx)
                     e.newValue.linearize().toViperUnusedResult(ctx)
                 }
                 else -> {
                     val receiverViper = e.receiver.linearize().toViper(ctx)
-                    if (e.field.unfoldToAccess && !(e.receiver.type.pretype as ClassTypeEmbedding).isManual) {
+                    if (e.field.unfoldToAccess && !accessIsManual) {
                         val receiverWrapper = ExpWrapper(receiverViper, e.receiver.type)
                         val hierarchyPath = ctx.typeResolver.hierarchyPathTo(e.receiver.type.pretype, e.field)
                         hierarchyPath.forEach { classType ->

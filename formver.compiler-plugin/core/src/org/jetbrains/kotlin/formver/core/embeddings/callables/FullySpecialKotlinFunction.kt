@@ -216,7 +216,11 @@ object SpecialKotlinFunctions {
         }
 
         val permissionCallableType = buildFunctionPretype {
-            withReturnType { nullableAny() }
+            withReturnType {
+                klass {
+                    withName(permissionTypeName)
+                }
+            }
         }
         withCallableType(permissionCallableType) {
             addFunction(SpecialPackages.formver, name = "read") { _, _ -> PermissionLit(PermExp.WildcardPerm()) }
@@ -228,7 +232,7 @@ object SpecialKotlinFunctions {
                 null -> PermissionLit(PermExp.FullPerm())
                 is PermissionLit -> perm
                 else -> throw SnaktInternalException(
-                    null, "First argument of `acc` must be `read()` or `write()`."
+                    null, "Second argument of `acc` must be `read()` or `write()`."
                 )
             }
         }
