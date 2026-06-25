@@ -66,4 +66,3 @@ data class Fold(val pred: PredicateAccessPermissions) : ExpEmbedding {
     override fun children(): Sequence<ExpEmbedding> = sequenceOf(pred)
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitFold(this)
 }
-
