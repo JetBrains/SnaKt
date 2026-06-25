@@ -5,6 +5,11 @@
 
 package org.jetbrains.kotlin.formver.plugin.runners
 
+
+import org.jetbrains.kotlin.formver.common.services.DiagnosticsCollector
+import org.jetbrains.kotlin.formver.common.services.PluginAnnotationsProvider
+import org.jetbrains.kotlin.formver.common.services.TagCollector
+import org.jetbrains.kotlin.formver.plugin.compiler.PluginErrors
 import org.jetbrains.kotlin.formver.plugin.services.*
 import org.jetbrains.kotlin.test.FirParser
 import org.jetbrains.kotlin.test.TargetBackend
@@ -34,6 +39,25 @@ fun getTestMode(): TestMode {
     }
 }
 
+class ConversionDiagnosticsCollector(testServices: TestServices) : DiagnosticsCollector(testServices) {
+    override val fileExtension: String = ".fir.diag.txt"
+}
+
+class VerificationDiagnosticsCollector(testServices: TestServices) : DiagnosticsCollector(testServices) {
+    override val fileExtension: String = ".viper.diag.txt"
+}
+
+class ConversionTagCollector(testService: TestServices) : TagCollector(testService) {
+    override val tagsToConsider: List<String> = PluginErrors.tags()
+}
+
+class AllTagCollector(testService: TestServices) : TagCollector(testService)
+
+
+val TestServices.conversionDiagnosticsCollector: ConversionDiagnosticsCollector by TestServices.testServiceAccessor()
+val TestServices.verificationDiagnosticsCollector: VerificationDiagnosticsCollector by TestServices.testServiceAccessor()
+val TestServices.conversionTagCollector: ConversionTagCollector by TestServices.testServiceAccessor()
+val TestServices.allTagCollector: AllTagCollector by TestServices.testServiceAccessor()
 
 /**
  * Runs tests with different modes based on the formver.testMode system property.
@@ -69,8 +93,10 @@ abstract class AbstractPhasedDiagnosticTest : AbstractKotlinCompilerWithTargetBa
         }
 
         // These special services are used to divide the conversion and verification diagnostics/tags
-        useAdditionalService(::DiagnosticsCollector)
-        useAdditionalService(::TagCollector)
+        useAdditionalService(::ConversionDiagnosticsCollector)
+        useAdditionalService(::VerificationDiagnosticsCollector)
+        useAdditionalService(::ConversionTagCollector)
+        useAdditionalService(::AllTagCollector)
 
         // This facade might verify the programs. This depends on the testMode and the result of the conversion check.
         facadeStep(::ViperProgramVerificationFacade)
@@ -92,9 +118,4 @@ abstract class AbstractPhasedDiagnosticTest : AbstractKotlinCompilerWithTargetBa
     override fun createKotlinStandardLibrariesPathProvider(): KotlinStandardLibrariesPathProvider {
         return EnvironmentBasedStandardLibrariesPathProvider
     }
-}
-
-fun runChecks(testService: TestServices, vararg checks: () -> Unit) {
-    val errors = checks.mapNotNull { runCatching { it() }.exceptionOrNull() }
-    testService.assertions.failAll(errors)
 }

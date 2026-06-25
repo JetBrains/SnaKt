@@ -6,13 +6,12 @@ import org.jetbrains.kotlin.diagnostics.SourceElementPositioningStrategies
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.visitors.FirDefaultVisitorVoid
+import org.jetbrains.kotlin.formver.common.services.runChecks
 import org.jetbrains.kotlin.formver.core.shouldVerify
 import org.jetbrains.kotlin.formver.core.viperProgram
 import org.jetbrains.kotlin.formver.plugin.compiler.VerificationErrors
 import org.jetbrains.kotlin.formver.plugin.compiler.reporting.*
-import org.jetbrains.kotlin.formver.plugin.runners.TestMode
-import org.jetbrains.kotlin.formver.plugin.runners.getTestMode
-import org.jetbrains.kotlin.formver.plugin.runners.runChecks
+import org.jetbrains.kotlin.formver.plugin.runners.*
 import org.jetbrains.kotlin.formver.viper.SiliconFrontend
 import org.jetbrains.kotlin.formver.viper.ast.unwrapOr
 import org.jetbrains.kotlin.formver.viper.errors.ConsistencyError
@@ -25,7 +24,7 @@ import org.jetbrains.kotlin.test.services.TestServices
 
 fun shouldSkipByTestMode(testServices: TestServices): Boolean = when (getTestMode()) {
     TestMode.CHECK_CONVERSION -> true
-    TestMode.UPDATE -> !testServices.diagnosticsCollector.conversionHasChanged()
+    TestMode.UPDATE -> !testServices.conversionDiagnosticsCollector.resultHasChanged()
     TestMode.FULL -> false
 }
 
@@ -74,8 +73,8 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
                 val verifier = SiliconFrontend(emptyList())
                 toVerify.forEach { (testFile, decl) ->
                     val diagnostics = verifyFunction(verifier, decl, module)
-                    testServices.diagnosticsCollector.addVerificationDiagnostics(diagnostics)
-                    testServices.tagCollector.reportDiagnostics(testFile, diagnostics)
+                    testServices.verificationDiagnosticsCollector.addDiagnostics(diagnostics)
+                    testServices.allTagCollector.reportDiagnostics(testFile, diagnostics)
                 }
                 verifier.close()
 
@@ -190,9 +189,9 @@ class ViperResultHandler(testServices: TestServices) :
 
         runChecks(
             testServices,
-            { testServices.diagnosticsCollector.assertVerification() },
-            { testServices.diagnosticsCollector.assertConversion() },
-            { testServices.tagCollector.assertAll() },
+            { testServices.conversionDiagnosticsCollector.assertEquality() },
+            { testServices.verificationDiagnosticsCollector.assertEquality() },
+            { testServices.allTagCollector.assertEqual() },
         )
     }
 

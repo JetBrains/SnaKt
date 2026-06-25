@@ -1,4 +1,4 @@
-package org.jetbrains.kotlin.formver.plugin.services
+package org.jetbrains.kotlin.formver.common.services
 
 import org.jetbrains.kotlin.codeMetaInfo.CodeMetaInfoParser
 import org.jetbrains.kotlin.codeMetaInfo.CodeMetaInfoRenderer
@@ -7,28 +7,43 @@ import org.jetbrains.kotlin.codeMetaInfo.model.CodeMetaInfo
 import org.jetbrains.kotlin.diagnostics.KtDiagnostic
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticWithSource
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticWithoutSource
-import org.jetbrains.kotlin.formver.plugin.compiler.VerificationErrors
 import org.jetbrains.kotlin.test.frontend.fir.handlers.FirDiagnosticCodeMetaInfo
 import org.jetbrains.kotlin.test.frontend.fir.handlers.FirMetaInfoUtils
 import org.jetbrains.kotlin.test.model.TestFile
 import org.jetbrains.kotlin.test.services.*
 
+fun KtDiagnostic.metaInfos(): List<FirDiagnosticCodeMetaInfo> {
+    val ranges = when (this) {
+        is KtDiagnosticWithSource -> textRanges
+        is KtDiagnosticWithoutSource -> listOf(firstRange)
+    }
+    return ranges.map { range ->
+        val metaInfo = FirDiagnosticCodeMetaInfo(this, FirMetaInfoUtils.renderDiagnosticNoArgs, range)
+        metaInfo
+    }
+}
 
-val TestServices.tagCollector: TagCollector by TestServices.testServiceAccessor()
 
 /**
  * Collects and asserts the tags in the test files.
+ *
+ * It is possible to ignore some tags when comparing. For this [tagsToConsider] must be overwritten by a list of tags that
+ * should be considered for comparison.
  */
-class TagCollector(
+abstract class TagCollector(
     val testServices: TestServices,
 ) : TestService {
+
+    open val tagsToConsider: List<String>?
+        get() = null
 
     private var reportedInfos: MutableMap<TestFile, MutableList<CodeMetaInfo>> = mutableMapOf()
     private lateinit var existingInfos: Map<TestFile, List<CodeMetaInfo>>
 
     private fun reportMetaInfos(file: TestFile, codeMetaInfos: List<CodeMetaInfo>) {
-        val infos = reportedInfos.getOrPut(file) { codeMetaInfos.toMutableList() }
-        infos += codeMetaInfos
+        val filteredInfos = codeMetaInfos.filter { tagsToConsider == null || it.tag in tagsToConsider!! }
+        val infos = reportedInfos.getOrPut(file) { mutableListOf() }
+        infos += filteredInfos
     }
 
     fun parseExistingMetadataInfosFromAllSources() {
@@ -40,7 +55,7 @@ class TagCollector(
     }
 
     fun reportDiagnostics(file: TestFile, codeMetaInfos: List<KtDiagnostic>) {
-        reportMetaInfos(file, codeMetaInfos.flatMap { it.toMetaInfos() })
+        reportMetaInfos(file, codeMetaInfos.flatMap { it.metaInfos() })
     }
 
     private fun renderText(
@@ -86,10 +101,18 @@ class TagCollector(
         return clearTextFromDiagnosticMarkup(content)
     }
 
+    fun assertEqual() {
+        if (tagsToConsider == null) {
+            assertFileEqual()
+        } else {
+            assertFileEqualFilteredForTags()
+        }
+    }
+
     /**
-     * Asserts equality of the tags and the expected output.
+     * Asserts equality of the tags and the golden file
      */
-    fun assertAll() {
+    fun assertFileEqual() {
         testServices.assertions.assertEqualsToFile(
             testServices.moduleStructure.originalTestDataFiles.single(),
             renderText(reportedInfos, testServices.sourceFileProvider::getContentOfSourceFile)
@@ -97,22 +120,23 @@ class TagCollector(
     }
 
     /**
-     * Removes the verification error marker from the expected output.
+     * Renders the expected output but ignores tags that are not considered for comparison
      */
-    private fun expectedFileWithoutVerificationError(): String {
+    private fun expectedFileFilteredForTags(): String {
+        require(tagsToConsider != null) { "tagsToConsider must be set" }
         parseExistingMetadataInfosFromAllSources()
         val existingInfosWithoutVerification = existingInfos.mapValues {
-            it.value.filter { it.tag !in VerificationErrors.tags() }
+            it.value.filter { info -> info.tag in tagsToConsider!! }
         }
 
         return renderText(existingInfosWithoutVerification, this::sourceFileWithoutTags)
     }
 
     /**
-     * Asserts equality of the tags (without verification error tags)
+     * Asserts equality of the tags to consider and the golden file
      */
-    fun assertConversion() {
-        val expectedOutput = expectedFileWithoutVerificationError()
+    fun assertFileEqualFilteredForTags() {
+        val expectedOutput = expectedFileFilteredForTags()
         val actualOutput = renderText(reportedInfos, testServices.sourceFileProvider::getContentOfSourceFile)
         testServices.assertions.assertEquals(expectedOutput, actualOutput) {
             "Actual tags differ from golden file"
@@ -125,17 +149,5 @@ class TagCollector(
         } else {
             this.toString()
         }
-    }
-}
-
-
-private fun KtDiagnostic.toMetaInfos(): List<FirDiagnosticCodeMetaInfo> {
-    val ranges = when (this) {
-        is KtDiagnosticWithSource -> textRanges
-        is KtDiagnosticWithoutSource -> listOf(firstRange)
-    }
-    return ranges.map { range ->
-        val metaInfo = FirDiagnosticCodeMetaInfo(this, FirMetaInfoUtils.renderDiagnosticNoArgs, range)
-        metaInfo
     }
 }

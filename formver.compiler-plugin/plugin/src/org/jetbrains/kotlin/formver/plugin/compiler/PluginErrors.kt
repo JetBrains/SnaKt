@@ -7,7 +7,6 @@ package org.jetbrains.kotlin.formver.plugin.compiler
 
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.diagnostics.*
-import org.jetbrains.kotlin.formver.locality.plugin.Locality
 
 object PluginErrors : KtDiagnosticsContainer() {
     val VIPER_TEXT by info2<PsiElement, String, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
@@ -15,8 +14,17 @@ object PluginErrors : KtDiagnosticsContainer() {
     val INTERNAL_ERROR by error1<PsiElement, String>()
     val UNIQUENESS_VIOLATION by error1<PsiElement, String>()
     val UNIQUENESS_CFG by info1<PsiElement, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
-    val LOCALITY_VIOLATION by error3<PsiElement, String, Locality, Locality>()
+    val ADT_VIOLATION by error1<PsiElement, String>()
     override fun getRendererFactory() = FormalVerificationPluginErrorMessages
+
+    fun tags() = listOf(
+        VIPER_TEXT.name,
+        EXP_EMBEDDING.name,
+        INTERNAL_ERROR.name,
+        UNIQUENESS_VIOLATION.name,
+        UNIQUENESS_CFG.name,
+        ADT_VIOLATION.name
+    )
 }
 
 
