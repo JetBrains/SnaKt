@@ -111,9 +111,10 @@ data class Linearizer(
 
     override fun addFieldAccessStoringIn(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding, result: VariableEmbedding) {
         addStatement {
+            val accessIsManual = (receiverType.pretype as? ClassTypeEmbedding)?.isManual ?: false
             when (field.accessPolicy) {
                 // TODO: Handling a unique field on a shared receiver must be added here.
-                AccessPolicy.BY_RECEIVER_UNIQUENESS if false -> {
+                AccessPolicy.BY_RECEIVER_UNIQUENESS if !accessIsManual -> {
                     receiver.toViperUnusedResult(this)
                     SpecialMethods.havocMethod.toMethodCall(
                         listOf(field.type.runtimeType),
@@ -125,7 +126,7 @@ data class Linearizer(
                     val receiverViper = receiver.toViper(this)
                     // If the field access is not replaced with havoc,
                     // we might need to unfold some predicate to access it.
-                    if (field.unfoldToAccess && !(receiverType.pretype as ClassTypeEmbedding).isManual) {
+                    if (field.unfoldToAccess && !accessIsManual) {
                         val receiverWrapper = ExpWrapper(receiverViper, receiverType)
                         val hierarchyPath = typeResolver.hierarchyPathTo(receiverType.pretype, field)
                         hierarchyPath.unfoldHierarchyPath(receiverWrapper, this)
