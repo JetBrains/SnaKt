@@ -88,3 +88,6 @@ fun <!VIPER_TEXT!>getNextValueUsingId<!>(node: Node): Int {
     val nextNode = id(node.next)
     return if (nextNode == null) 0 else nextNode.value
 }
+
+@Pure
+fun <!VIPER_TEXT!>testBorrowed<!>(@Unique @Borrowed node: Node): Unit = Unit

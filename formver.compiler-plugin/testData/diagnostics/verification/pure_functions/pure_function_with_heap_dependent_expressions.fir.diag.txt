@@ -305,3 +305,22 @@ function next(this: Ref): Ref
 function value(this: Ref): Ref
   requires isSubtype(typeOf(this), Node())
   ensures isSubtype(typeOf(result), intType())
+
+
+/pure_function_with_heap_dependent_expressions.kt: info: Generated Viper text for testBorrowed:
+function next(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), nullable(Node()))
+
+
+function testBorrowed(node: Ref): Ref
+  requires isSubtype(typeOf(node), Node())
+  requires acc(Node_unique(node), write)
+  ensures isSubtype(typeOf(result), unitType())
+{
+  unitValue()
+}
+
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), Node())
+  ensures isSubtype(typeOf(result), intType())
