@@ -5,6 +5,7 @@ package org.jetbrains.kotlin.formver.plugin.runners;
 import com.intellij.testFramework.TestDataPath;
 import org.jetbrains.kotlin.test.util.KtTestUtil;
 import org.jetbrains.kotlin.test.TestMetadata;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -39,6 +40,18 @@ public class LocalityDiagnosticTestGenerated extends AbstractLocalityDiagnosticT
   }
 
   @Test
+  @TestMetadata("call_anonymous.kt")
+  public void testCall_anonymous() {
+    runTest("formver.compiler-plugin/locality/testData/diagnostics/call_anonymous.kt");
+  }
+
+  @Test
+  @TestMetadata("call_anonymous_with_context.kt")
+  public void testCall_anonymous_with_context() {
+    runTest("formver.compiler-plugin/locality/testData/diagnostics/call_anonymous_with_context.kt");
+  }
+
+  @Test
   @TestMetadata("call_with_context.kt")
   public void testCall_with_context() {
     runTest("formver.compiler-plugin/locality/testData/diagnostics/call_with_context.kt");
@@ -48,6 +61,12 @@ public class LocalityDiagnosticTestGenerated extends AbstractLocalityDiagnosticT
   @TestMetadata("call_with_vararg.kt")
   public void testCall_with_vararg() {
     runTest("formver.compiler-plugin/locality/testData/diagnostics/call_with_vararg.kt");
+  }
+
+  @Test
+  @TestMetadata("closure_capture.kt")
+  public void testClosure_capture() {
+    runTest("formver.compiler-plugin/locality/testData/diagnostics/closure_capture.kt");
   }
 
   @Test
@@ -78,5 +97,63 @@ public class LocalityDiagnosticTestGenerated extends AbstractLocalityDiagnosticT
   @TestMetadata("throw.kt")
   public void testThrow() {
     runTest("formver.compiler-plugin/locality/testData/diagnostics/throw.kt");
+  }
+
+  @Nested
+  @TestMetadata("formver.compiler-plugin/locality/testData/diagnostics/contract")
+  @TestDataPath("$PROJECT_ROOT")
+  public class Contract {
+    @Test
+    public void testAllFilesPresentInContract() {
+      KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/locality/testData/diagnostics/contract"), Pattern.compile("^(.+)\\.kt$"), null, true);
+    }
+
+    @Test
+    @TestMetadata("assign_local.kt")
+    public void testAssign_local() {
+      runTest("formver.compiler-plugin/locality/testData/diagnostics/contract/assign_local.kt");
+    }
+
+    @Test
+    @TestMetadata("call.kt")
+    public void testCall() {
+      runTest("formver.compiler-plugin/locality/testData/diagnostics/contract/call.kt");
+    }
+
+    @Test
+    @TestMetadata("call_anonymous.kt")
+    public void testCall_anonymous() {
+      runTest("formver.compiler-plugin/locality/testData/diagnostics/contract/call_anonymous.kt");
+    }
+
+    @Test
+    @TestMetadata("call_with_context.kt")
+    public void testCall_with_context() {
+      runTest("formver.compiler-plugin/locality/testData/diagnostics/contract/call_with_context.kt");
+    }
+
+    @Test
+    @TestMetadata("call_with_vararg.kt")
+    public void testCall_with_vararg() {
+      runTest("formver.compiler-plugin/locality/testData/diagnostics/contract/call_with_vararg.kt");
+    }
+
+    @Test
+    @TestMetadata("default_argument.kt")
+    public void testDefault_argument() {
+      runTest("formver.compiler-plugin/locality/testData/diagnostics/contract/default_argument.kt");
+    }
+
+    @Test
+    @TestMetadata("pass_function_reference.kt")
+    public void testPass_function_reference() {
+      runTest("formver.compiler-plugin/locality/testData/diagnostics/contract/pass_function_reference.kt");
+    }
+
+    @Test
+    @TestMetadata("return.kt")
+    public void testReturn() {
+      runTest("formver.compiler-plugin/locality/testData/diagnostics/contract/return.kt");
+    }
   }
 }
