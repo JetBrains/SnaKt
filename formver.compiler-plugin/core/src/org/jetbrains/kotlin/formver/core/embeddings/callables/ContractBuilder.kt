@@ -124,7 +124,7 @@ class VariableScope(
     fun provenInvariants() = list.addAll(variable.provenInvariants())
 
     fun uniquePredicateInvariants() {
-        variable.type.uniquePredicateAccessInvariant(typeResolver)?.fillHole(variable)?.let { inv ->
+        variable.type.uniquePredicateAccessInvariant()?.fillHole(variable)?.let { inv ->
             list.add(inv)
         }
     }

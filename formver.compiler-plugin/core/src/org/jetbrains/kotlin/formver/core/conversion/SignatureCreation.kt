@@ -10,13 +10,13 @@ import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.embeddings.callables.*
-import org.jetbrains.kotlin.formver.core.embeddings.expression.EqCmp
-import org.jetbrains.kotlin.formver.core.embeddings.expression.FirVariableEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.buildType
 import org.jetbrains.kotlin.formver.core.isBorrowed
 import org.jetbrains.kotlin.formver.core.isPure
 import org.jetbrains.kotlin.formver.core.isUnique
+import org.jetbrains.kotlin.formver.core.kotlinClassId
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 
@@ -116,12 +116,7 @@ fun FunctionTypeEmbedding.toGenericAccessorSignature(isPure: Boolean): Signature
     val parameterVariables =
         paramTypes.mapIndexed { index, embedding -> PlaceholderVariableEmbedding(AnonymousName(index), embedding) }
     val signature = FunctionSignatureImpl(
-        this,
-        dispatchVariable,
-        extensionVariable,
-        parameterVariables,
-        returnTarget.variable,
-        isPure
+        this, dispatchVariable, extensionVariable, parameterVariables, returnTarget.variable, isPure
     )
     return SignatureWithTarget(signature, returnTarget)
 }
@@ -164,8 +159,9 @@ fun SignatureWithTarget<NonInlineCallable>.toCompleteSignature(
 context(converter: ProgramConversionContext)
 fun SignatureWithTarget<NonInlineCallable>.toConstructorSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<NonInlineFunctionSignature> =
     refineSignature { current ->
+        val constructedType = symbol.resolvedReturnType
         val constructedClassSymbol =
-            symbol.resolvedReturnType.toRegularClassSymbol(converter.session) ?: throw SnaktInternalException(
+            constructedType.toRegularClassSymbol(converter.session) ?: throw SnaktInternalException(
                 symbol.source, "Constructor does not return a regular class"
             )
         val parameterMatching = constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
@@ -182,9 +178,46 @@ fun SignatureWithTarget<NonInlineCallable>.toConstructorSignature(symbol: FirFun
             }
         }
 
+
+        val specialClassPreconditions = buildList {
+            if (constructedClassSymbol.classId == kotlinClassId("IntArray")) {
+                add(
+                    OperatorExpEmbeddings.GeIntInt(
+                        current.signature.params[0], IntLit(0)
+                    )
+                )
+            }
+        }
+
+        val specialClassPostconditions = buildList {
+            when (constructedClassSymbol.classId) {
+                kotlinClassId("IntArray") -> {
+                    add(
+                        EqCmp(IntArraySize(signature.returns), current.signature.params[0])
+                    )
+                    val i = converter.freshAnonBuiltinVar(buildType { int() })
+                    add(
+                        ForAllEmbedding(
+                            i,
+                            listOf(
+                                OperatorExpEmbeddings.Implies(
+                                    OperatorExpEmbeddings.And(
+                                        OperatorExpEmbeddings.GeIntInt(i, IntLit(0)),
+                                        OperatorExpEmbeddings.LtIntInt(i, current.signature.params[0])
+                                    ), EqCmp(IntArrayGet(signature.returns, i), IntLit(0))
+                                )
+                            ),
+                        )
+                    )
+                }
+            }
+        }
+
         val contract = current.signature.buildConditions(converter.typeResolver) {
             userFunctionContract()
             addPostconditions(fieldPostconditions)
+            addPostconditions(specialClassPostconditions)
+            addPreconditions(specialClassPreconditions)
         }
 
         NonInlineFunctionSignature(current.signature, contract.preconditions, contract.postconditions, symbol.source)

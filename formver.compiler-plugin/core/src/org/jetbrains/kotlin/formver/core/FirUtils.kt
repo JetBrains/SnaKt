@@ -73,6 +73,9 @@ fun formverCallableId(className: String?, name: String): CallableId =
 
 fun kotlinCallableId(className: String?, name: String): CallableId = callableId(SpecialPackages.kotlin, className, name)
 
+fun kotlinClassId(className: String): ClassId =
+    ClassId(FqName.fromSegments(SpecialPackages.kotlin), Name.identifier(className))
+
 fun FirBasedSymbol<*>.isUnique(session: FirSession) = hasAnnotation(annotationId("Unique"), session)
 
 fun FirBasedSymbol<*>.isBorrowed(session: FirSession) = hasAnnotation(annotationId("Borrowed"), session)

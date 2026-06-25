@@ -53,8 +53,8 @@ data class TypeEmbedding(val pretype: PretypeEmbedding, val flags: TypeEmbedding
 
     override fun pureInvariants(): List<TypeInvariantEmbedding> = flags.adjustManyInvariants(pretype.pureInvariants())
 
-    override fun uniquePredicateAccessInvariant(ctx: TypeResolver): TypeInvariantEmbedding? =
-        flags.adjustOptionalInvariant(pretype.uniquePredicateAccessInvariant(ctx))
+    override fun uniquePredicateAccessInvariant(): TypeInvariantEmbedding? =
+        flags.adjustOptionalInvariant(pretype.uniquePredicateAccessInvariant())
 
     override fun subTypeInvariant(): TypeInvariantEmbedding = SubTypeInvariantEmbedding(this)
 

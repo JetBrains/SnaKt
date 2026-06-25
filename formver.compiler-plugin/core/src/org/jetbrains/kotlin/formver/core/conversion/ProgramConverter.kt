@@ -135,7 +135,7 @@ class ProgramConverter(
             with(typeResolver) {
                 it.uniquePredicate()
             }
-        },
+        } + typeResolver.specialPredicates(typeResolver),
         adts = emptyList(),
     )
 
@@ -624,6 +624,10 @@ class ProgramConverter(
         type.isInt -> int()
         type.isBoolean -> boolean()
         type.isNothing -> nothing()
+        type.classId == kotlinClassId("IntArray") -> {
+            typeResolver.markIntArrayUsed()
+            intArray()
+        }
         type.isSomeFunctionType(session) -> function {
             check(type is ConeClassLikeType) { "Expected a ConeClassLikeType for a function type, got $type" }
             type.receiverType(session)?.let { withDispatchReceiver { embedTypeWithBuilder(it) } }

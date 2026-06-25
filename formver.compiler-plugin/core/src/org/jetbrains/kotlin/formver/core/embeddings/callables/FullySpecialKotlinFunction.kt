@@ -238,9 +238,7 @@ object SpecialKotlinFunctions {
         }
 
         fun extractPredicate(exp: MethodCall, permissions: ExpEmbedding?): PredicateAccessPermissions {
-
             val permissions = extractPermission(permissions)
-
             return when (exp.type.pretype.name) {
                 uniquePredTypeName -> {
                     val arg = exp.args.firstOrNull()!!
@@ -271,17 +269,13 @@ object SpecialKotlinFunctions {
         }
         addFunction(accCallableType, SpecialPackages.formver, name = "acc") { args, ctx ->
             val source = (args.firstOrNull() as? WithPosition)?.source
-
             val perm = extractPermission(args.getOrNull(1))
-
             when (val exp = args.firstOrNull()?.ignoringCastsAndMetaNodes()) {
                 null -> throw SnaktInternalException(
                     source, "First argument of `acc` must be a field access like `x.a`."
                 )
-
                 is FieldAccess -> AccEmbedding(exp.receiver, exp.field, perm.perm)
                 is MethodCall -> extractPredicate(exp, args.getOrNull(1))
-
                 else -> throw SnaktInternalException(
                     source, "First argument of `acc` must be a field access like `x.a` or a predicate."
                 )
@@ -373,6 +367,25 @@ object SpecialKotlinFunctions {
             StringGet(args[0], args[1])
         }
 
+        val intArrayGetType = buildFunctionPretype {
+            withDispatchReceiver { intArray() }
+            withParam { int() }
+            withReturnType { int() }
+        }
+        addFunction(intArrayGetType, SpecialPackages.kotlin, className = "IntArray", name = "get") { args, _ ->
+            IntArrayGet(args[0], args[1])
+        }
+
+        val intArraySetType = buildFunctionPretype {
+            withDispatchReceiver { intArray() }
+            withParam { int() }
+            withParam { int() }
+            withReturnType { unit() }
+        }
+        addFunction(intArraySetType, SpecialPackages.kotlin, className = "IntArray", name = "set") { args, _ ->
+            IntArraySet(args[0], args[1], args[2])
+        }
+
         val uniquePredicatePermissionsToUnit = buildFunctionPretype {
             withParam {
                 klass {
@@ -387,7 +400,7 @@ object SpecialKotlinFunctions {
             }
             withReturnType { unit() }
         }
-        addFunction(uniquePredicatePermissionsToUnit, SpecialPackages.formver, name = "unfold") { args, ctx ->
+        addFunction(uniquePredicatePermissionsToUnit, SpecialPackages.formver, name = "unfold") { args, _ ->
             val exp = (args[0].ignoringMetaNodes() as? MethodCall) ?: throw SnaktInternalException(
                 null, "First argument of unfold must be constructor to a predicate."
             )
@@ -396,7 +409,7 @@ object SpecialKotlinFunctions {
             )
         }
 
-        addFunction(uniquePredicatePermissionsToUnit, SpecialPackages.formver, name = "fold") { args, ctx ->
+        addFunction(uniquePredicatePermissionsToUnit, SpecialPackages.formver, name = "fold") { args, _ ->
             val exp = (args[0].ignoringMetaNodes() as? MethodCall) ?: throw SnaktInternalException(
                 null, "First argument of unfold must be constructor to a predicate."
             )

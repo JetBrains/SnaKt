@@ -56,4 +56,7 @@ interface ExpVisitor<R> {
     fun visitAccEmbedding(e: AccEmbedding): R = visitDefault(e)
     fun visitFold(e: Fold): R = visitDefault(e)
     fun visitUnfold(e: Unfold): R = visitDefault(e)
+    fun visitIntArraySize(e: IntArraySize): R = visitDefault(e)
+    fun visitIntArrayGet(e: IntArrayGet): R = visitDefault(e)
+    fun visitIntArraySet(e: IntArraySet): R = visitDefault(e)
 }

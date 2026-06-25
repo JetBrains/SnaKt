@@ -127,7 +127,7 @@ class TypeInvariantsBuilder(private val type: TypeEmbedding) {
 
     context(ctx: TypeResolver)
     fun addAccessToUniquePredicate() = invariants.addIfNotNull(
-        type.uniquePredicateAccessInvariant(ctx)
+        type.uniquePredicateAccessInvariant()
     )
 
     fun includeSubTypeInvariants() = invariants.add(
