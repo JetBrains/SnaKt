@@ -58,7 +58,7 @@ class FunctionConditionBuilder(
             args {
                 accessInvariants()
                 pureInvariants()
-                if (variable.isBorrowed && variable.isUnique) uniquePredicateInvariants()
+                if (variable.isBorrowed && variable.isUnique && !signature.isPure) uniquePredicateInvariants()
             }
             returns {
                 pureInvariants()
