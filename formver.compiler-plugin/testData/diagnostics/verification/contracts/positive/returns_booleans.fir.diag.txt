@@ -83,30 +83,30 @@ method call_fun_with_contracts(b: Ref) returns (v_ret_0: Ref)
 }
 
 /returns_booleans.kt: info: Generated Viper text for isNullOrEmpty:
-field size: Ref
+field p_size: Ref
 
 method isEmpty(v_this: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(v_this), Collection())
-  requires acc(v_this.size, write)
-  requires intFromRef(v_this.size) >= 0
-  ensures acc(v_this.size, write)
-  ensures intFromRef(v_this.size) >= 0
+  requires acc(v_this.p_size, write)
+  requires intFromRef(v_this.p_size) >= 0
+  ensures acc(v_this.p_size, write)
+  ensures intFromRef(v_this.p_size) >= 0
   ensures isSubtype(typeOf(ret_2), boolType())
-  ensures intFromRef(v_this.size) == old(intFromRef(v_this.size))
-  ensures boolFromRef(ret_2) ==> intFromRef(v_this.size) == 0
-  ensures !boolFromRef(ret_2) ==> intFromRef(v_this.size) > 0
+  ensures intFromRef(v_this.p_size) == old(intFromRef(v_this.p_size))
+  ensures boolFromRef(ret_2) ==> intFromRef(v_this.p_size) == 0
+  ensures !boolFromRef(ret_2) ==> intFromRef(v_this.p_size) > 0
 
 
 method isNullOrEmpty(v_this_extension: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(v_this_extension), nullable(Collection()))
   requires v_this_extension != nullValue() ==>
-    acc(v_this_extension.size, write)
+    acc(v_this_extension.p_size, write)
   requires v_this_extension != nullValue() ==>
-    intFromRef(v_this_extension.size) >= 0
+    intFromRef(v_this_extension.p_size) >= 0
   ensures v_this_extension != nullValue() ==>
-    acc(v_this_extension.size, write)
+    acc(v_this_extension.p_size, write)
   ensures v_this_extension != nullValue() ==>
-    intFromRef(v_this_extension.size) >= 0
+    intFromRef(v_this_extension.p_size) >= 0
   ensures isSubtype(typeOf(v_ret_0), boolType())
   ensures boolFromRef(v_ret_0) == false ==> v_this_extension != nullValue()
 {

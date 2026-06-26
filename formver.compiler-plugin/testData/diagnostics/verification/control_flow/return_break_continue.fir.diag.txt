@@ -32,22 +32,22 @@ method whileBreak(b: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  var i: Ref
+  var l0_i: Ref
   var anon: Ref
-  i := intToRef(0)
+  l0_i := intToRef(0)
   label cont
-    invariant isSubtype(typeOf(i), intType())
+    invariant isSubtype(typeOf(l0_i), intType())
     invariant isSubtype(typeOf(b), boolType())
   anon := b
   if (boolFromRef(anon)) {
-    i := intToRef(1)
+    l0_i := intToRef(1)
     goto break
     goto cont
   }
   label break
-  assert isSubtype(typeOf(i), intType())
+  assert isSubtype(typeOf(l0_i), intType())
   assert isSubtype(typeOf(b), boolType())
-  v_ret_0 := i
+  v_ret_0 := l0_i
   goto lbl_ret_0
   label lbl_ret_0
 }

@@ -1,5 +1,5 @@
 /list.kt: info: Generated Viper text for declaration:
-field size: Ref
+field p_size: Ref
 
 method declaration() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
@@ -12,21 +12,21 @@ method declaration() returns (v_ret_0: Ref)
 }
 
 /list.kt: info: Generated Viper text for initialization:
-field size: Ref
+field p_size: Ref
 
 method emptyList() returns (ret_1: Ref)
   ensures isSubtype(typeOf(ret_1), List())
-  ensures acc(ret_1.size, write)
-  ensures intFromRef(ret_1.size) >= 0
-  ensures intFromRef(ret_1.size) == 0
+  ensures acc(ret_1.p_size, write)
+  ensures intFromRef(ret_1.p_size) >= 0
+  ensures intFromRef(ret_1.p_size) == 0
 
 
 method initialization(l: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(l), List())
-  requires acc(l.size, write)
-  requires intFromRef(l.size) >= 0
-  ensures acc(l.size, write)
-  ensures intFromRef(l.size) >= 0
+  requires acc(l.p_size, write)
+  requires intFromRef(l.p_size) >= 0
+  ensures acc(l.p_size, write)
+  ensures intFromRef(l.p_size) >= 0
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var myList: Ref
@@ -38,25 +38,25 @@ method initialization(l: Ref) returns (v_ret_0: Ref)
 }
 
 /list.kt: info: Generated Viper text for add_get:
-field size: Ref
+field p_size: Ref
 
 method add(this: Ref, element: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), MutableList())
-  requires acc(this.size, write)
-  requires intFromRef(this.size) >= 0
+  requires acc(this.p_size, write)
+  requires intFromRef(this.p_size) >= 0
   requires isSubtype(typeOf(element), intType())
-  ensures acc(this.size, write)
-  ensures intFromRef(this.size) >= 0
+  ensures acc(this.p_size, write)
+  ensures intFromRef(this.p_size) >= 0
   ensures isSubtype(typeOf(ret_1), boolType())
-  ensures intFromRef(this.size) == old(intFromRef(this.size)) + 1
+  ensures intFromRef(this.p_size) == old(intFromRef(this.p_size)) + 1
 
 
 method add_get(l: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(l), MutableList())
-  requires acc(l.size, write)
-  requires intFromRef(l.size) >= 0
-  ensures acc(l.size, write)
-  ensures intFromRef(l.size) >= 0
+  requires acc(l.p_size, write)
+  requires intFromRef(l.p_size) >= 0
+  ensures acc(l.p_size, write)
+  ensures intFromRef(l.p_size) >= 0
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon: Ref
@@ -69,15 +69,15 @@ method add_get(l: Ref) returns (v_ret_0: Ref)
 
 method get(this: Ref, index: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(this), MutableList())
-  requires acc(this.size, write)
-  requires intFromRef(this.size) >= 0
+  requires acc(this.p_size, write)
+  requires intFromRef(this.p_size) >= 0
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
-  requires intFromRef(this.size) > intFromRef(index)
-  ensures acc(this.size, write)
-  ensures intFromRef(this.size) >= 0
+  requires intFromRef(this.p_size) > intFromRef(index)
+  ensures acc(this.p_size, write)
+  ensures intFromRef(this.p_size) >= 0
   ensures isSubtype(typeOf(ret_2), intType())
-  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
 
 
 /list.kt: info: Generated Viper text for last_or_null:
@@ -120,39 +120,39 @@ method last_or_null(l: Ref) returns (v_ret_0: Ref)
 }
 
 /list.kt: info: Generated Viper text for is_empty:
-field size: Ref
+field p_size: Ref
 
 method get(this: Ref, index: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(this), List())
-  requires acc(this.size, write)
-  requires intFromRef(this.size) >= 0
+  requires acc(this.p_size, write)
+  requires intFromRef(this.p_size) >= 0
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
-  requires intFromRef(this.size) > intFromRef(index)
-  ensures acc(this.size, write)
-  ensures intFromRef(this.size) >= 0
+  requires intFromRef(this.p_size) > intFromRef(index)
+  ensures acc(this.p_size, write)
+  ensures intFromRef(this.p_size) >= 0
   ensures isSubtype(typeOf(ret_2), intType())
-  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
 
 
 method isEmpty(this: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), List())
-  requires acc(this.size, write)
-  requires intFromRef(this.size) >= 0
-  ensures acc(this.size, write)
-  ensures intFromRef(this.size) >= 0
+  requires acc(this.p_size, write)
+  requires intFromRef(this.p_size) >= 0
+  ensures acc(this.p_size, write)
+  ensures intFromRef(this.p_size) >= 0
   ensures isSubtype(typeOf(ret_1), boolType())
-  ensures intFromRef(this.size) == old(intFromRef(this.size))
-  ensures boolFromRef(ret_1) ==> intFromRef(this.size) == 0
-  ensures !boolFromRef(ret_1) ==> intFromRef(this.size) > 0
+  ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
+  ensures boolFromRef(ret_1) ==> intFromRef(this.p_size) == 0
+  ensures !boolFromRef(ret_1) ==> intFromRef(this.p_size) > 0
 
 
 method is_empty(l: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(l), List())
-  requires acc(l.size, write)
-  requires intFromRef(l.size) >= 0
-  ensures acc(l.size, write)
-  ensures intFromRef(l.size) >= 0
+  requires acc(l.p_size, write)
+  requires intFromRef(l.p_size) >= 0
+  ensures acc(l.p_size, write)
+  ensures intFromRef(l.p_size) >= 0
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
   var anon: Ref
@@ -166,39 +166,39 @@ method is_empty(l: Ref) returns (v_ret_0: Ref)
 }
 
 /list.kt: info: Generated Viper text for nullable_list:
-field size: Ref
+field p_size: Ref
 
 method get(this: Ref, index: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(this), List())
-  requires acc(this.size, write)
-  requires intFromRef(this.size) >= 0
+  requires acc(this.p_size, write)
+  requires intFromRef(this.p_size) >= 0
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
-  requires intFromRef(this.size) > intFromRef(index)
-  ensures acc(this.size, write)
-  ensures intFromRef(this.size) >= 0
+  requires intFromRef(this.p_size) > intFromRef(index)
+  ensures acc(this.p_size, write)
+  ensures intFromRef(this.p_size) >= 0
   ensures isSubtype(typeOf(ret_2), intType())
-  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
 
 
 method isEmpty(this: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), List())
-  requires acc(this.size, write)
-  requires intFromRef(this.size) >= 0
-  ensures acc(this.size, write)
-  ensures intFromRef(this.size) >= 0
+  requires acc(this.p_size, write)
+  requires intFromRef(this.p_size) >= 0
+  ensures acc(this.p_size, write)
+  ensures intFromRef(this.p_size) >= 0
   ensures isSubtype(typeOf(ret_1), boolType())
-  ensures intFromRef(this.size) == old(intFromRef(this.size))
-  ensures boolFromRef(ret_1) ==> intFromRef(this.size) == 0
-  ensures !boolFromRef(ret_1) ==> intFromRef(this.size) > 0
+  ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
+  ensures boolFromRef(ret_1) ==> intFromRef(this.p_size) == 0
+  ensures !boolFromRef(ret_1) ==> intFromRef(this.p_size) > 0
 
 
 method nullable_list(l: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(l), nullable(List()))
-  requires l != nullValue() ==> acc(l.size, write)
-  requires l != nullValue() ==> intFromRef(l.size) >= 0
-  ensures l != nullValue() ==> acc(l.size, write)
-  ensures l != nullValue() ==> intFromRef(l.size) >= 0
+  requires l != nullValue() ==> acc(l.p_size, write)
+  requires l != nullValue() ==> intFromRef(l.p_size) >= 0
+  ensures l != nullValue() ==> acc(l.p_size, write)
+  ensures l != nullValue() ==> intFromRef(l.p_size) >= 0
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var anon_0: Ref
@@ -211,7 +211,7 @@ method nullable_list(l: Ref) returns (v_ret_0: Ref)
   if (boolFromRef(anon_0)) {
     var x: Ref
     var anon_2: Ref
-    anon_2 := l.size
+    anon_2 := l.p_size
     inhale isSubtype(typeOf(anon_2), intType())
     x := get(l, minusInts(anon_2, intToRef(1)))
   }

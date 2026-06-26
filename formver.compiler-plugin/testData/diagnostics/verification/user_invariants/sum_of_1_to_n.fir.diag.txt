@@ -25,28 +25,29 @@ method sumOfIntegersUpToN(n: Ref) returns (v_ret_0: Ref)
   ensures intFromRef(v_ret_0) == intFromRef(n) * (intFromRef(n) + 1) \ 2
 {
   var sum: Ref
-  var i: Ref
+  var l0_i: Ref
   var anon: Ref
   sum := intToRef(0)
-  i := intToRef(0)
+  l0_i := intToRef(0)
   label cont
     invariant isSubtype(typeOf(sum), intType())
-    invariant isSubtype(typeOf(i), intType())
+    invariant isSubtype(typeOf(l0_i), intType())
     invariant isSubtype(typeOf(n), intType())
-    invariant intFromRef(i) <= intFromRef(n)
-    invariant intFromRef(sum) == intFromRef(i) * (intFromRef(i) + 1) \ 2
-  anon := ltInts(i, n)
+    invariant intFromRef(l0_i) <= intFromRef(n)
+    invariant intFromRef(sum) ==
+      intFromRef(l0_i) * (intFromRef(l0_i) + 1) \ 2
+  anon := ltInts(l0_i, n)
   if (boolFromRef(anon)) {
-    sum := plusInts(sum, plusInts(i, intToRef(1)))
-    i := plusInts(i, intToRef(1))
+    sum := plusInts(sum, plusInts(l0_i, intToRef(1)))
+    l0_i := plusInts(l0_i, intToRef(1))
     goto cont
   }
   label break
   assert isSubtype(typeOf(sum), intType())
-  assert isSubtype(typeOf(i), intType())
+  assert isSubtype(typeOf(l0_i), intType())
   assert isSubtype(typeOf(n), intType())
-  assert intFromRef(i) <= intFromRef(n)
-  assert intFromRef(sum) == intFromRef(i) * (intFromRef(i) + 1) \ 2
+  assert intFromRef(l0_i) <= intFromRef(n)
+  assert intFromRef(sum) == intFromRef(l0_i) * (intFromRef(l0_i) + 1) \ 2
   v_ret_0 := sum
   goto lbl_ret_0
   label lbl_ret_0

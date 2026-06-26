@@ -153,7 +153,7 @@ function Impl14_g_field(this: Ref): Ref
   ensures isSubtype(typeOf(result), intType())
 
 
-function size(this: Ref): Ref
+function g_size(this: Ref): Ref
   requires isSubtype(typeOf(this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 
@@ -345,7 +345,7 @@ method testVarVal() returns (v_ret_0: Ref)
   var anon_0: Ref
   var anon_1: Ref
   var anon_2: Ref
-  var i: Ref
+  var l0_i: Ref
   var anon_3: Ref
   var anon_4: Ref
   var anon_5: Ref
@@ -354,11 +354,11 @@ method testVarVal() returns (v_ret_0: Ref)
   anon_0 := anon_1
   inhale isSubtype(typeOf(anon_0), intType())
   anon_2 := s_field(g, intToRef(1))
-  i := con_I()
-  anon_4 := g_field(i)
+  l0_i := con_I()
+  anon_4 := g_field(l0_i)
   anon_3 := anon_4
   inhale isSubtype(typeOf(anon_3), intType())
-  anon_5 := s_field(i, intToRef(1))
+  anon_5 := s_field(l0_i, intToRef(1))
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }

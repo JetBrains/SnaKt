@@ -70,7 +70,7 @@ method useBranching() returns (v_ret_0: Ref)
 }
 
 /custom_run_functions.kt: info: Generated Viper text for useRun:
-function size(v_this: Ref): Ref
+function g_size(v_this: Ref): Ref
   requires isSubtype(typeOf(v_this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 
@@ -678,13 +678,13 @@ method ifTrue(v_this_extension: Ref, block: Ref) returns (ret_2: Ref)
 
 
 /custom_run_functions.kt: info: Generated Viper text for testCustomClass:
-function member(v_this: Ref): Ref
-  requires isSubtype(typeOf(v_this), CustomClass())
+function g_size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 
 
-function size(v_this: Ref): Ref
-  requires isSubtype(typeOf(v_this), BooleanArray())
+function member(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), CustomClass())
   ensures isSubtype(typeOf(result), intType())
 
 

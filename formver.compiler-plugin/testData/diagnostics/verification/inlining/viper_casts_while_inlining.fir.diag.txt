@@ -208,7 +208,7 @@ function c(v_this: Ref): Ref
   ensures isSubtype(typeOf(result), ClassWithVar())
 
 
-function i(v_this: Ref): Ref
+function g_i(v_this: Ref): Ref
   requires isSubtype(typeOf(v_this), ManyMembers())
   ensures isSubtype(typeOf(result), intType())
 
@@ -241,7 +241,7 @@ method accessManyMembers(m: Ref) returns (v_ret_0: Ref)
   var anon_17: Ref
   inhale isSubtype(typeOf(m), ManyMembers())
   inhale isSubtype(typeOf(m), nullable(anyType()))
-  anon_5 := idFun(i(m))
+  anon_5 := idFun(g_i(m))
   anon_4 := anon_5
   inhale isSubtype(typeOf(anon_4), intType())
   inhale isSubtype(typeOf(m), ManyMembers())
@@ -267,7 +267,7 @@ method accessManyMembers(m: Ref) returns (v_ret_0: Ref)
   anon_12 := idFun(m)
   anon_0 := anon_12
   inhale isSubtype(typeOf(anon_0), ManyMembers())
-  anon_14 := idFun(i(anon_0))
+  anon_14 := idFun(g_i(anon_0))
   anon_13 := anon_14
   inhale isSubtype(typeOf(anon_13), intType())
   anon_17 := havoc(boolType())
@@ -321,7 +321,7 @@ function g_i(v_this: Ref): Ref
   ensures isSubtype(typeOf(result), intType())
 
 
-function size(v_this: Ref): Ref
+function g_size(v_this: Ref): Ref
   requires isSubtype(typeOf(v_this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 

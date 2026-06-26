@@ -21,19 +21,19 @@ method extensionGetterProperty() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-method intValProp(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+method intValProp(v_this_extension: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
 /extension_properties.kt: info: Generated Viper text for extensionSetterProperty:
-method eg_intVarProp(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+method eg_intVarProp(v_this_extension: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-method es_intVarProp(this: Ref, anon: Ref) returns (ret_2: Ref)
-  requires isSubtype(typeOf(this), nullable(anyType()))
+method es_intVarProp(v_this_extension: Ref, anon: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
   requires isSubtype(typeOf(anon), nullable(anyType()))
   ensures isSubtype(typeOf(ret_2), nullable(anyType()))
 

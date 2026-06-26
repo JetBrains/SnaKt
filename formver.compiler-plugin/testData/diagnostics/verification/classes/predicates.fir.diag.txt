@@ -72,7 +72,7 @@ method threeLayersHierarchy(c: Ref) returns (v_ret_0: Ref)
 }
 
 /predicates.kt: info: Generated Viper text for listHierarchy:
-field size: Ref
+field p_size: Ref
 
 predicate Collection_unique(this: Ref) {
   isSubtype(typeOf(this), Collection()) &&
@@ -105,10 +105,10 @@ predicate MutableList_unique(this: Ref) {
 
 method listHierarchy(xs: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(xs), MutableList())
-  requires acc(xs.size, write)
-  requires intFromRef(xs.size) >= 0
-  ensures acc(xs.size, write)
-  ensures intFromRef(xs.size) >= 0
+  requires acc(xs.p_size, write)
+  requires intFromRef(xs.p_size) >= 0
+  ensures acc(xs.p_size, write)
+  ensures intFromRef(xs.p_size) >= 0
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   label lbl_ret_0

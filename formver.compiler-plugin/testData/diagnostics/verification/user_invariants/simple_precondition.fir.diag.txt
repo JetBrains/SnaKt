@@ -1,5 +1,5 @@
 /simple_precondition.kt: info: Generated Viper text for test:
-function size(this: Ref): Ref
+function g_size(this: Ref): Ref
   requires isSubtype(typeOf(this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 

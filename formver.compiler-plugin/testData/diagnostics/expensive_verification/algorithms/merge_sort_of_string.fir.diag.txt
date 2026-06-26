@@ -19,38 +19,38 @@ method subs(v_this_extension: Ref, lo: Ref, hi: Ref) returns (v_ret_0: Ref)
       stringFromRef(v_this_extension)[anon_builtin_0 + intFromRef(lo)])
 {
   var res: Ref
-  var i: Ref
+  var l0_i: Ref
   var anon_1: Ref
   res := stringToRef(Seq[Int]())
-  i := lo
+  l0_i := lo
   label cont
     invariant isSubtype(typeOf(res), stringType())
-    invariant isSubtype(typeOf(i), intType())
+    invariant isSubtype(typeOf(l0_i), intType())
     invariant isSubtype(typeOf(lo), intType())
     invariant isSubtype(typeOf(hi), intType())
-    invariant 0 <= intFromRef(i) && intFromRef(i) <= intFromRef(hi)
-    invariant |stringFromRef(res)| == intFromRef(i) - intFromRef(lo)
+    invariant 0 <= intFromRef(l0_i) && intFromRef(l0_i) <= intFromRef(hi)
+    invariant |stringFromRef(res)| == intFromRef(l0_i) - intFromRef(lo)
     invariant (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
         anon_builtin_1 < |stringFromRef(res)| ==>
         stringFromRef(res)[anon_builtin_1] ==
         stringFromRef(v_this_extension)[anon_builtin_1 + intFromRef(lo)])
-  anon_1 := ltInts(i, hi)
+  anon_1 := ltInts(l0_i, hi)
   if (boolFromRef(anon_1)) {
     var anon_2: Ref
     var anon_0: Ref
-    anon_0 := i
-    i := plusInts(anon_0, intToRef(1))
+    anon_0 := l0_i
+    l0_i := plusInts(anon_0, intToRef(1))
     anon_2 := anon_0
     res := addStringChar(res, stringGet(v_this_extension, anon_2))
     goto cont
   }
   label break
   assert isSubtype(typeOf(res), stringType())
-  assert isSubtype(typeOf(i), intType())
+  assert isSubtype(typeOf(l0_i), intType())
   assert isSubtype(typeOf(lo), intType())
   assert isSubtype(typeOf(hi), intType())
-  assert 0 <= intFromRef(i) && intFromRef(i) <= intFromRef(hi)
-  assert |stringFromRef(res)| == intFromRef(i) - intFromRef(lo)
+  assert 0 <= intFromRef(l0_i) && intFromRef(l0_i) <= intFromRef(hi)
+  assert |stringFromRef(res)| == intFromRef(l0_i) - intFromRef(lo)
   assert (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
       anon_builtin_1 < |stringFromRef(res)| ==>
       stringFromRef(res)[anon_builtin_1] ==

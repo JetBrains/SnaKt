@@ -17,57 +17,57 @@ method minOrMaxChar(v_this_extension: Ref, calcMin: Ref)
       stringFromRef(v_this_extension)[anon_builtin_1])
 {
   var res: Ref
-  var i: Ref
+  var l0_i: Ref
   var anon_0: Ref
   res := stringGet(v_this_extension, intToRef(0))
-  i := intToRef(1)
+  l0_i := intToRef(1)
   label cont
     invariant isSubtype(typeOf(res), charType())
-    invariant isSubtype(typeOf(i), intType())
+    invariant isSubtype(typeOf(l0_i), intType())
     invariant isSubtype(typeOf(calcMin), boolType())
-    invariant 0 <= intFromRef(i) &&
-      intFromRef(i) <= |stringFromRef(v_this_extension)|
+    invariant 0 <= intFromRef(l0_i) &&
+      intFromRef(l0_i) <= |stringFromRef(v_this_extension)|
     invariant boolFromRef(calcMin) ==>
       (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
-        anon_builtin_2 < intFromRef(i) ==>
+        anon_builtin_2 < intFromRef(l0_i) ==>
         charFromRef(res) <= stringFromRef(v_this_extension)[anon_builtin_2])
     invariant !boolFromRef(calcMin) ==>
       (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
-        anon_builtin_3 < intFromRef(i) ==>
+        anon_builtin_3 < intFromRef(l0_i) ==>
         charFromRef(res) >= stringFromRef(v_this_extension)[anon_builtin_3])
-  anon_0 := ltInts(i, stringLength(v_this_extension))
+  anon_0 := ltInts(l0_i, stringLength(v_this_extension))
   if (boolFromRef(anon_0)) {
     var anon_1: Ref
     var anon_2: Ref
     if (boolFromRef(calcMin)) {
-      anon_2 := ltChars(stringGet(v_this_extension, i), res)
+      anon_2 := ltChars(stringGet(v_this_extension, l0_i), res)
     } else {
       anon_2 := boolToRef(false)}
     if (boolFromRef(anon_2)) {
       anon_1 := boolToRef(true)
     } elseif (!boolFromRef(calcMin)) {
-      anon_1 := gtChars(stringGet(v_this_extension, i), res)
+      anon_1 := gtChars(stringGet(v_this_extension, l0_i), res)
     } else {
       anon_1 := boolToRef(false)}
     if (boolFromRef(anon_1)) {
-      res := stringGet(v_this_extension, i)
+      res := stringGet(v_this_extension, l0_i)
     }
-    i := plusInts(i, intToRef(1))
+    l0_i := plusInts(l0_i, intToRef(1))
     goto cont
   }
   label break
   assert isSubtype(typeOf(res), charType())
-  assert isSubtype(typeOf(i), intType())
+  assert isSubtype(typeOf(l0_i), intType())
   assert isSubtype(typeOf(calcMin), boolType())
-  assert 0 <= intFromRef(i) &&
-    intFromRef(i) <= |stringFromRef(v_this_extension)|
+  assert 0 <= intFromRef(l0_i) &&
+    intFromRef(l0_i) <= |stringFromRef(v_this_extension)|
   assert boolFromRef(calcMin) ==>
     (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
-      anon_builtin_2 < intFromRef(i) ==>
+      anon_builtin_2 < intFromRef(l0_i) ==>
       charFromRef(res) <= stringFromRef(v_this_extension)[anon_builtin_2])
   assert !boolFromRef(calcMin) ==>
     (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
-      anon_builtin_3 < intFromRef(i) ==>
+      anon_builtin_3 < intFromRef(l0_i) ==>
       charFromRef(res) >= stringFromRef(v_this_extension)[anon_builtin_3])
   v_ret_0 := res
   goto lbl_ret_0
@@ -175,7 +175,7 @@ method quickSortRec(v_this_extension: Ref, minVal: Ref, maxVal: Ref)
 {
   var medVal: Ref
   var anon_1: Ref
-  var i: Ref
+  var l0_i: Ref
   var lessString: Ref
   var greaterString: Ref
   var eqString: Ref
@@ -188,23 +188,23 @@ method quickSortRec(v_this_extension: Ref, minVal: Ref, maxVal: Ref)
   }
   anon_1 := chooseIndex(v_this_extension)
   medVal := stringGet(v_this_extension, anon_1)
-  i := intToRef(0)
+  l0_i := intToRef(0)
   lessString := stringToRef(Seq[Int]())
   greaterString := stringToRef(Seq[Int]())
   eqString := stringToRef(Seq[Int]())
   label cont
     invariant isSubtype(typeOf(medVal), charType())
-    invariant isSubtype(typeOf(i), intType())
+    invariant isSubtype(typeOf(l0_i), intType())
     invariant isSubtype(typeOf(lessString), stringType())
     invariant isSubtype(typeOf(greaterString), stringType())
     invariant isSubtype(typeOf(eqString), stringType())
     invariant isSubtype(typeOf(minVal), charType())
     invariant isSubtype(typeOf(maxVal), charType())
-    invariant 0 <= intFromRef(i) &&
-      intFromRef(i) <= |stringFromRef(v_this_extension)|
+    invariant 0 <= intFromRef(l0_i) &&
+      intFromRef(l0_i) <= |stringFromRef(v_this_extension)|
     invariant |stringFromRef(lessString)| + |stringFromRef(greaterString)| +
       |stringFromRef(eqString)| ==
-      intFromRef(i)
+      intFromRef(l0_i)
     invariant (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
         anon_builtin_3 < |stringFromRef(lessString)| ==>
         charFromRef(minVal) <= stringFromRef(lessString)[anon_builtin_3] &&
@@ -216,13 +216,13 @@ method quickSortRec(v_this_extension: Ref, minVal: Ref, maxVal: Ref)
     invariant (forall anon_builtin_5: Int ::0 <= anon_builtin_5 &&
         anon_builtin_5 < |stringFromRef(eqString)| ==>
         stringFromRef(eqString)[anon_builtin_5] == charFromRef(medVal))
-  anon_2 := ltInts(i, stringLength(v_this_extension))
+  anon_2 := ltInts(l0_i, stringLength(v_this_extension))
   if (boolFromRef(anon_2)) {
     var curChar: Ref
     var anon_3: Ref
     var anon_0: Ref
-    anon_0 := i
-    i := plusInts(anon_0, intToRef(1))
+    anon_0 := l0_i
+    l0_i := plusInts(anon_0, intToRef(1))
     anon_3 := anon_0
     curChar := stringGet(v_this_extension, anon_3)
     if (charFromRef(curChar) < charFromRef(medVal)) {
@@ -235,17 +235,17 @@ method quickSortRec(v_this_extension: Ref, minVal: Ref, maxVal: Ref)
   }
   label break
   assert isSubtype(typeOf(medVal), charType())
-  assert isSubtype(typeOf(i), intType())
+  assert isSubtype(typeOf(l0_i), intType())
   assert isSubtype(typeOf(lessString), stringType())
   assert isSubtype(typeOf(greaterString), stringType())
   assert isSubtype(typeOf(eqString), stringType())
   assert isSubtype(typeOf(minVal), charType())
   assert isSubtype(typeOf(maxVal), charType())
-  assert 0 <= intFromRef(i) &&
-    intFromRef(i) <= |stringFromRef(v_this_extension)|
+  assert 0 <= intFromRef(l0_i) &&
+    intFromRef(l0_i) <= |stringFromRef(v_this_extension)|
   assert |stringFromRef(lessString)| + |stringFromRef(greaterString)| +
     |stringFromRef(eqString)| ==
-    intFromRef(i)
+    intFromRef(l0_i)
   assert (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
       anon_builtin_3 < |stringFromRef(lessString)| ==>
       charFromRef(minVal) <= stringFromRef(lessString)[anon_builtin_3] &&
