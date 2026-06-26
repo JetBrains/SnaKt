@@ -1,0 +1,493 @@
+/intarray.kt: info: Generated Viper text for size:
+method f_size(par_arr: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_arr), intArrayType())
+  requires acc(IntArray_unique(par_arr), write)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := intToRef(rt_size(par_arr))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/intarray.kt: info: Generated Viper text for getElement:
+method getElement(par_arr: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_arr), intArrayType())
+  requires acc(IntArray_unique(par_arr), write)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := (unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, 0).array_cell_int)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/intarray.kt: info: Generated Viper text for setElement:
+method setElement(par_arr: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_arr), intArrayType())
+  requires acc(IntArray_unique(par_arr), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  unfold acc(IntArray_unique(par_arr), write)
+  slot(par_arr, 0).array_cell_int := intToRef(42)
+  fold acc(IntArray_unique(par_arr), write)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/intarray.kt: info: Generated Viper text for createArray:
+function g_size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_size: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_size), intType())
+  requires intFromRef(par_size) >= 0
+  ensures isSubtype(typeOf(ret_1), intArrayType())
+  ensures acc(IntArray_unique(ret_1), write)
+  ensures rt_size(ret_1) == intFromRef(par_size)
+  ensures (forall anon: Int ::anon >= 0 && anon < intFromRef(par_size) ==>
+      intFromRef((unfolding acc(IntArray_unique(ret_1), write) in
+        slot(ret_1, anon).array_cell_int)) ==
+      0)
+
+
+method createArray() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intArrayType())
+{
+  var l0_arr: Ref
+  l0_arr := con(intToRef(5))
+  assert rt_size(l0_arr) == 5
+  assert intFromRef((unfolding acc(IntArray_unique(l0_arr), write) in
+      slot(l0_arr, 0).array_cell_int)) ==
+    0
+  v_ret_0 := l0_arr
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/intarray.kt: info: Generated Viper text for toMultisetTest:
+method toMultisetTest(par_arr: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_arr), intArrayType())
+  requires acc(IntArray_unique(par_arr), write)
+  requires arrayToMultiset(par_arr) == arrayToMultiset(par_arr)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/intarray.kt: info: Generated Viper text for swap:
+method swap(par_arr: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_arr), intArrayType())
+  requires acc(IntArray_unique(par_arr), write)
+  requires size(par_arr) >= 2
+  ensures acc(IntArray_unique(par_arr), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures size(par_arr) == old(size(par_arr))
+  ensures arrayToMultiset(par_arr) == arrayToMultiset(old(par_arr))
+  ensures intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, 0).array_cell_int)) ==
+    old(intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, 1).array_cell_int)))
+  ensures intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, 1).array_cell_int)) ==
+    old(intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, 0).array_cell_int)))
+  ensures (forall anon: Int ::
+      { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon).array_cell_int)) }
+      2 <= anon && anon < size(par_arr) ==>
+      intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon).array_cell_int)) ==
+      old(intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon).array_cell_int))))
+{
+  var first: Ref
+  var second: Ref
+  first := (unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, 0).array_cell_int)
+  second := (unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, 1).array_cell_int)
+  unfold acc(IntArray_unique(par_arr), write)
+  slot(par_arr, 0).array_cell_int := second
+  fold acc(IntArray_unique(par_arr), write)
+  unfold acc(IntArray_unique(par_arr), write)
+  slot(par_arr, 1).array_cell_int := first
+  fold acc(IntArray_unique(par_arr), write)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/intarray.kt: info: Generated Viper text for test:
+function g_size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method swap(par_arr: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_arr), intArrayType())
+  requires acc(IntArray_unique(par_arr), write)
+  requires rt_size(par_arr) >= 2
+  ensures acc(IntArray_unique(par_arr), write)
+  ensures isSubtype(typeOf(ret_2), unitType())
+  ensures rt_size(par_arr) == old(rt_size(par_arr))
+  ensures arrayToMultiset(par_arr) == arrayToMultiset(old(par_arr))
+  ensures intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, 0).array_cell_int)) ==
+    old(intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, 1).array_cell_int)))
+  ensures intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, 1).array_cell_int)) ==
+    old(intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, 0).array_cell_int)))
+  ensures (forall anon_builtin: Int ::
+      { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin).array_cell_int)) }
+      2 <= anon_builtin && anon_builtin < rt_size(par_arr) ==>
+      intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin).array_cell_int)) ==
+      old(intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin).array_cell_int))))
+
+
+method test(par_arr: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_arr), intArrayType())
+  requires acc(IntArray_unique(par_arr), write)
+  requires rt_size(par_arr) == 3
+  ensures acc(IntArray_unique(par_arr), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  unfold acc(IntArray_unique(par_arr), write)
+  slot(par_arr, 2).array_cell_int := intToRef(1)
+  fold acc(IntArray_unique(par_arr), write)
+  anon_0 := swap(par_arr)
+  assert intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, 2).array_cell_int)) ==
+    1
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/intarray.kt: info: Generated Viper text for swapElements:
+method swapElements(par_arr: Ref, par_i: Ref, par_j: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_arr), intArrayType())
+  requires acc(IntArray_unique(par_arr), write)
+  requires isSubtype(typeOf(par_i), intType())
+  requires isSubtype(typeOf(par_j), intType())
+  requires 0 <= intFromRef(par_i) && intFromRef(par_i) < size(par_arr)
+  requires 0 <= intFromRef(par_j) && intFromRef(par_j) < size(par_arr)
+  ensures acc(IntArray_unique(par_arr), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures size(par_arr) == old(size(par_arr))
+  ensures arrayToMultiset(par_arr) == arrayToMultiset(old(par_arr))
+  ensures intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, intFromRef(par_i)).array_cell_int)) ==
+    old(intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, intFromRef(par_j)).array_cell_int)))
+  ensures intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, intFromRef(par_j)).array_cell_int)) ==
+    old(intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, intFromRef(par_i)).array_cell_int)))
+  ensures (forall anon: Int ::
+      { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon).array_cell_int)) }
+      0 <= anon && anon < size(par_arr) && !(anon == intFromRef(par_i)) &&
+      !(anon == intFromRef(par_j)) ==>
+      intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon).array_cell_int)) ==
+      old(intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon).array_cell_int))))
+{
+  var temp: Ref
+  var temp2: Ref
+  temp := (unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, intFromRef(par_i)).array_cell_int)
+  temp2 := (unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, intFromRef(par_j)).array_cell_int)
+  unfold acc(IntArray_unique(par_arr), write)
+  slot(par_arr, intFromRef(par_i)).array_cell_int := temp2
+  fold acc(IntArray_unique(par_arr), write)
+  unfold acc(IntArray_unique(par_arr), write)
+  slot(par_arr, intFromRef(par_j)).array_cell_int := temp
+  fold acc(IntArray_unique(par_arr), write)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/intarray.kt: info: Generated Viper text for findMinIndexRec:
+method findMinIndexRec(par_arr: Ref, start: Ref, current: Ref, currentMin: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_arr), intArrayType())
+  requires acc(IntArray_unique(par_arr), write)
+  requires isSubtype(typeOf(start), intType())
+  requires isSubtype(typeOf(current), intType())
+  requires isSubtype(typeOf(currentMin), intType())
+  requires 0 <= intFromRef(start) && intFromRef(start) < size(par_arr)
+  requires intFromRef(start) <= intFromRef(current) &&
+    intFromRef(current) <= size(par_arr)
+  requires intFromRef(start) <= intFromRef(currentMin) &&
+    intFromRef(currentMin) < size(par_arr)
+  requires (forall anon_builtin_0: Int ::
+      { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_0).array_cell_int)) }
+      intFromRef(start) <= anon_builtin_0 &&
+      anon_builtin_0 < intFromRef(current) ==>
+      intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, intFromRef(currentMin)).array_cell_int)) <=
+      intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_0).array_cell_int)))
+  ensures acc(IntArray_unique(par_arr), write)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(start) <= intFromRef(v_ret_0) &&
+    intFromRef(v_ret_0) < size(par_arr)
+  ensures (forall anon_builtin_1: Int ::
+      { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_1).array_cell_int)) }
+      intFromRef(start) <= anon_builtin_1 && anon_builtin_1 < size(par_arr) ==>
+      intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, intFromRef(v_ret_0)).array_cell_int)) <=
+      intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_1).array_cell_int)))
+  ensures size(par_arr) == old(size(par_arr))
+  ensures (forall anon_builtin_2: Int ::
+      { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_2).array_cell_int)) }
+      0 <= anon_builtin_2 && anon_builtin_2 < size(par_arr) ==>
+      intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_2).array_cell_int)) ==
+      old(intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_2).array_cell_int))))
+{
+  var nextMin: Ref
+  if (intFromRef(current) == size(par_arr)) {
+    v_ret_0 := currentMin
+    goto lbl_ret_0
+  }
+  if (intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+    slot(par_arr, intFromRef(current)).array_cell_int)) <
+  intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+    slot(par_arr, intFromRef(currentMin)).array_cell_int))) {
+    nextMin := current
+  } else {
+    nextMin := currentMin}
+  v_ret_0 := findMinIndexRec(par_arr, start, plusInts(current, intToRef(1)),
+    nextMin)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/intarray.kt: info: Generated Viper text for sortRec:
+method findMinIndexRec(par_arr: Ref, start: Ref, current: Ref, currentMin: Ref)
+  returns (ret_9: Ref)
+  requires isSubtype(typeOf(par_arr), intArrayType())
+  requires acc(IntArray_unique(par_arr), write)
+  requires isSubtype(typeOf(start), intType())
+  requires isSubtype(typeOf(current), intType())
+  requires isSubtype(typeOf(currentMin), intType())
+  requires 0 <= intFromRef(start) && intFromRef(start) < size(par_arr)
+  requires intFromRef(start) <= intFromRef(current) &&
+    intFromRef(current) <= size(par_arr)
+  requires intFromRef(start) <= intFromRef(currentMin) &&
+    intFromRef(currentMin) < size(par_arr)
+  requires (forall anon_builtin_6: Int ::
+      { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_6).array_cell_int)) }
+      intFromRef(start) <= anon_builtin_6 &&
+      anon_builtin_6 < intFromRef(current) ==>
+      intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, intFromRef(currentMin)).array_cell_int)) <=
+      intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_6).array_cell_int)))
+  ensures acc(IntArray_unique(par_arr), write)
+  ensures isSubtype(typeOf(ret_9), intType())
+  ensures intFromRef(start) <= intFromRef(ret_9) &&
+    intFromRef(ret_9) < size(par_arr)
+  ensures (forall anon_builtin_7: Int ::
+      { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_7).array_cell_int)) }
+      intFromRef(start) <= anon_builtin_7 && anon_builtin_7 < size(par_arr) ==>
+      intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, intFromRef(ret_9)).array_cell_int)) <=
+      intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_7).array_cell_int)))
+  ensures size(par_arr) == old(size(par_arr))
+  ensures (forall anon_builtin_8: Int ::
+      { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_8).array_cell_int)) }
+      0 <= anon_builtin_8 && anon_builtin_8 < size(par_arr) ==>
+      intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_8).array_cell_int)) ==
+      old(intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_8).array_cell_int))))
+
+
+method sortRec(par_arr: Ref, start: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_arr), intArrayType())
+  requires acc(IntArray_unique(par_arr), write)
+  requires isSubtype(typeOf(start), intType())
+  requires 0 <= intFromRef(start) && intFromRef(start) <= size(par_arr)
+  requires (forall anon_builtin_0: Int ::
+      { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_0).array_cell_int)) }
+      (forall anon_builtin_1: Int ::
+        { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_1).array_cell_int)) }
+        0 <= anon_builtin_0 && anon_builtin_0 <= anon_builtin_1 &&
+        anon_builtin_1 < intFromRef(start) ==>
+        intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_0).array_cell_int)) <=
+        intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_1).array_cell_int))))
+  requires (forall anon_builtin_2: Int ::
+      { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_2).array_cell_int)) }
+      (forall anon_builtin_3: Int ::
+        { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_3).array_cell_int)) }
+        0 <= anon_builtin_2 && anon_builtin_2 < intFromRef(start) &&
+        intFromRef(start) <= anon_builtin_3 &&
+        anon_builtin_3 < size(par_arr) ==>
+        intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_2).array_cell_int)) <=
+        intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_3).array_cell_int))))
+  ensures acc(IntArray_unique(par_arr), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures size(par_arr) == old(size(par_arr))
+  ensures arrayToMultiset(par_arr) == arrayToMultiset(old(par_arr))
+  ensures (forall anon_builtin_4: Int ::
+      { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_4).array_cell_int)) }
+      (forall anon_builtin_5: Int ::
+        { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_5).array_cell_int)) }
+        0 <= anon_builtin_4 && anon_builtin_4 <= anon_builtin_5 &&
+        anon_builtin_5 < size(par_arr) ==>
+        intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_4).array_cell_int)) <=
+        intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_5).array_cell_int))))
+{
+  if (intFromRef(start) < size(par_arr) - 1) {
+    var minIdx: Ref
+    var anon_1: Ref
+    minIdx := findMinIndexRec(par_arr, start, plusInts(start, intToRef(1)),
+      start)
+    if (!(intFromRef(minIdx) == intFromRef(start))) {
+      var anon_0: Ref
+      anon_0 := swapElements(par_arr, start, minIdx)
+    }
+    anon_1 := sortRec(par_arr, plusInts(start, intToRef(1)))
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method swapElements(par_arr: Ref, par_i: Ref, par_j: Ref)
+  returns (ret_13: Ref)
+  requires isSubtype(typeOf(par_arr), intArrayType())
+  requires acc(IntArray_unique(par_arr), write)
+  requires isSubtype(typeOf(par_i), intType())
+  requires isSubtype(typeOf(par_j), intType())
+  requires 0 <= intFromRef(par_i) && intFromRef(par_i) < size(par_arr)
+  requires 0 <= intFromRef(par_j) && intFromRef(par_j) < size(par_arr)
+  ensures acc(IntArray_unique(par_arr), write)
+  ensures isSubtype(typeOf(ret_13), unitType())
+  ensures size(par_arr) == old(size(par_arr))
+  ensures arrayToMultiset(par_arr) == arrayToMultiset(old(par_arr))
+  ensures intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, intFromRef(par_i)).array_cell_int)) ==
+    old(intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, intFromRef(par_j)).array_cell_int)))
+  ensures intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, intFromRef(par_j)).array_cell_int)) ==
+    old(intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+      slot(par_arr, intFromRef(par_i)).array_cell_int)))
+  ensures (forall anon_builtin_9: Int ::
+      { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_9).array_cell_int)) }
+      0 <= anon_builtin_9 && anon_builtin_9 < size(par_arr) &&
+      !(anon_builtin_9 == intFromRef(par_i)) &&
+      !(anon_builtin_9 == intFromRef(par_j)) ==>
+      intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_9).array_cell_int)) ==
+      old(intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_9).array_cell_int))))
+
+
+/intarray.kt: info: Generated Viper text for recursiveSelectionSort:
+method recursiveSelectionSort(par_arr: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_arr), intArrayType())
+  requires acc(IntArray_unique(par_arr), write)
+  ensures acc(IntArray_unique(par_arr), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures size(par_arr) == old(size(par_arr))
+  ensures arrayToMultiset(par_arr) == arrayToMultiset(old(par_arr))
+  ensures (forall anon_builtin_0: Int ::
+      { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_0).array_cell_int)) }
+      (forall anon_builtin_1: Int ::
+        { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_1).array_cell_int)) }
+        0 <= anon_builtin_0 && anon_builtin_0 <= anon_builtin_1 &&
+        anon_builtin_1 < size(par_arr) ==>
+        intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_0).array_cell_int)) <=
+        intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_1).array_cell_int))))
+{
+  var anon_0: Ref
+  anon_0 := sortRec(par_arr, intToRef(0))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method sortRec(par_arr: Ref, start: Ref) returns (ret_4: Ref)
+  requires isSubtype(typeOf(par_arr), intArrayType())
+  requires acc(IntArray_unique(par_arr), write)
+  requires isSubtype(typeOf(start), intType())
+  requires 0 <= intFromRef(start) && intFromRef(start) <= size(par_arr)
+  requires (forall anon_builtin_2: Int ::
+      { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_2).array_cell_int)) }
+      (forall anon_builtin_3: Int ::
+        { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_3).array_cell_int)) }
+        0 <= anon_builtin_2 && anon_builtin_2 <= anon_builtin_3 &&
+        anon_builtin_3 < intFromRef(start) ==>
+        intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_2).array_cell_int)) <=
+        intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_3).array_cell_int))))
+  requires (forall anon_builtin_4: Int ::
+      { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_4).array_cell_int)) }
+      (forall anon_builtin_5: Int ::
+        { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_5).array_cell_int)) }
+        0 <= anon_builtin_4 && anon_builtin_4 < intFromRef(start) &&
+        intFromRef(start) <= anon_builtin_5 &&
+        anon_builtin_5 < size(par_arr) ==>
+        intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_4).array_cell_int)) <=
+        intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_5).array_cell_int))))
+  ensures acc(IntArray_unique(par_arr), write)
+  ensures isSubtype(typeOf(ret_4), unitType())
+  ensures size(par_arr) == old(size(par_arr))
+  ensures arrayToMultiset(par_arr) == arrayToMultiset(old(par_arr))
+  ensures (forall anon_builtin_6: Int ::
+      { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+        slot(par_arr, anon_builtin_6).array_cell_int)) }
+      (forall anon_builtin_7: Int ::
+        { intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_7).array_cell_int)) }
+        0 <= anon_builtin_6 && anon_builtin_6 <= anon_builtin_7 &&
+        anon_builtin_7 < size(par_arr) ==>
+        intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_6).array_cell_int)) <=
+        intFromRef((unfolding acc(IntArray_unique(par_arr), write) in
+          slot(par_arr, anon_builtin_7).array_cell_int))))
