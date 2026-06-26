@@ -25,10 +25,9 @@ fun <!VIPER_TEXT!>postEmpty<!>(arg: Boolean): Boolean {
 
 fun <!VIPER_TEXT!>testInsertedReturn<!>() {
     preconditions {
-        <!RETURN_NOT_ALLOWED!>return<!> Unit
+        return@preconditions Unit
     }
     postconditions<Unit> {
-        <!RETURN_NOT_ALLOWED!>return<!> Unit
     }
     return
 }

@@ -302,9 +302,13 @@ data class InvariantsAndTriggers(
     val triggers: List<ExpEmbedding>
 )
 
+private fun FirBlock.isEmptyLambdaBody(): Boolean {
+    if (statements.isEmpty()) return false
+    return (statements.size == 1 && (statements.first() as? FirReturnExpression)?.result?.resolvedType?.isUnit ?: false)
+}
+
 fun StmtConversionContext.collectInvariants(block: FirBlock) = buildList {
-    // if the lambda is empty the compiler inserts a return Unit
-    if (block.statements.size == 1 && (block.statements.first() as? FirReturnExpression)?.result?.resolvedType?.isUnit ?: false) {
+    if (block.isEmptyLambdaBody()) {
         return@buildList
     }
     block.statements.forEach { stmt ->
