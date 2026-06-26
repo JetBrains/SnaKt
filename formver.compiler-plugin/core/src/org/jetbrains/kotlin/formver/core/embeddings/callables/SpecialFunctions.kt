@@ -89,8 +89,6 @@ object SpecialFunctions {
     }
 
 
-
-
     val all
         get() = OperatorExpEmbeddings.allTemplates.map { it.refsOperation } +
                 listOf(slotsToMultisetFunction, arrayToMultisetFunction)

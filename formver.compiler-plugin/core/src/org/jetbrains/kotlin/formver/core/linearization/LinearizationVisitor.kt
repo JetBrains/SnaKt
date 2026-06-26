@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.formver.core.conversion.ArrayCellDataFieldEmbedding
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.isOf
 import org.jetbrains.kotlin.formver.core.embeddings.*
+import org.jetbrains.kotlin.formver.core.embeddings.callables.SpecialFunctions
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toFuncApp
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toMethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
@@ -657,6 +658,12 @@ data class LinearizationVisitor(
             ctx.addStatement { Stmt.Fold(predicateAccess, ctx.source.asPosition) }
         }
     }
+
+    override fun visitIntArrayAsMultiset(e: IntArrayAsMultiset): Linearizable =
+        object : OnlyToBuiltinLinearizable(e, this) {
+            override fun toViperBuiltinType(ctx: LinearizationContext) =
+                SpecialFunctions.arrayToMultisetFunction(e.arr.linearize().toViperBuiltinType(ctx))
+        }
 
     // endregion
 }

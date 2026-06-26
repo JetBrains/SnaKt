@@ -417,6 +417,15 @@ object SpecialKotlinFunctions {
                 extractPredicate(exp, args.getOrNull(1))
             )
         }
+
+
+        val intArrayToAny = buildFunctionPretype {
+            withParam { intArray() }
+            withReturnType { any() }
+        }
+        addFunction(intArrayToAny, SpecialPackages.formver, name = "toMultiset") { args, _ ->
+            IntArrayAsMultiset(args[0])
+        }
     }
 }
 
