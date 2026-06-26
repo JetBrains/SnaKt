@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.isBoolean
+import org.jetbrains.kotlin.fir.types.isUnit
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyEmbedding
@@ -301,7 +302,15 @@ data class InvariantsAndTriggers(
     val triggers: List<ExpEmbedding>
 )
 
+private fun FirBlock.isEmptyLambdaBody(): Boolean {
+    if (statements.isEmpty()) return false
+    return (statements.size == 1 && (statements.first() as? FirReturnExpression)?.result?.resolvedType?.isUnit ?: false)
+}
+
 fun StmtConversionContext.collectInvariants(block: FirBlock) = buildList {
+    if (block.isEmptyLambdaBody()) {
+        return@buildList
+    }
     block.statements.forEach { stmt ->
         check(stmt is FirExpression && stmt.resolvedType.isBoolean) {
             INVALID_STATEMENT_MSG
