@@ -93,7 +93,7 @@ abstract class DiagnosticsCollector(val testServices: TestServices) : TestServic
             testDataFile.parentFile.resolve("${testDataFile.nameWithoutExtension.removeSuffix(".fir")}${fileExtension}")
 
         val expectedOutput = render()
-        if (!expectedFile.exists()) return
+        if (expectedOutput == null && !expectedFile.exists()) return
 
         testServices.assertions.assertEqualsToFile(expectedFile, expectedOutput ?: "")
     }
