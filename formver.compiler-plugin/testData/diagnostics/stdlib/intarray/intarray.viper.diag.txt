@@ -1,0 +1,3 @@
+/intarray.kt: warning: Viper verification error: Assignment might fail. There might be insufficient permission to access slot(par_arr, 0).array_cell_int
+
+/intarray.kt: warning: Viper verification error: Assignment might fail. There might be insufficient permission to access slot(par_arr, 0).array_cell_int

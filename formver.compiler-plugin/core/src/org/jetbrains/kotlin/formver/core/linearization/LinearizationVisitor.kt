@@ -8,12 +8,15 @@ package org.jetbrains.kotlin.formver.core.linearization
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.AccessPolicy
+import org.jetbrains.kotlin.formver.core.conversion.ArrayCellDataFieldEmbedding
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain
 import org.jetbrains.kotlin.formver.core.domains.RuntimeTypeDomain.Companion.isOf
 import org.jetbrains.kotlin.formver.core.embeddings.*
+import org.jetbrains.kotlin.formver.core.embeddings.callables.SpecialFunctions
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toFuncApp
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toMethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.fillHoles
 import org.jetbrains.kotlin.formver.core.embeddings.types.injection
 import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
@@ -420,14 +423,15 @@ data class LinearizationVisitor(
 
     override fun visitFieldModification(e: FieldModification): Linearizable = object : UnitResultLinearizable(e) {
         override fun toViperUnusedResult(ctx: LinearizationContext) {
+            val accessIsManual = (e.receiver.type.pretype as? ClassTypeEmbedding)?.isManual ?: false
             when (e.field.accessPolicy) {
-                AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
+                AccessPolicy.BY_RECEIVER_UNIQUENESS if !accessIsManual -> {
                     e.receiver.linearize().toViperUnusedResult(ctx)
                     e.newValue.linearize().toViperUnusedResult(ctx)
                 }
                 else -> {
                     val receiverViper = e.receiver.linearize().toViper(ctx)
-                    if (e.field.unfoldToAccess) {
+                    if (e.field.unfoldToAccess && !accessIsManual) {
                         val receiverWrapper = ExpWrapper(receiverViper, e.receiver.type)
                         val hierarchyPath = ctx.typeResolver.hierarchyPathTo(e.receiver.type.pretype, e.field)
                         hierarchyPath.forEach { classType ->
@@ -456,6 +460,22 @@ data class LinearizationVisitor(
     override fun visitPredicateAccessPermissions(e: PredicateAccessPermissions): Linearizable = object : OnlyToBuiltinLinearizable(e, this@LinearizationVisitor) {
         override fun toViperBuiltinType(ctx: LinearizationContext): Exp =
             Exp.PredicateAccess(e.predicateName, e.args.map { it.linearize().toViper(ctx) }, e.perm, ctx.source.asPosition)
+    }
+
+    override fun visitUnfold(e: Unfold): Linearizable = object : UnitResultLinearizable(e) {
+        override fun toViperUnusedResult(ctx: LinearizationContext) {
+            ctx.addStatement {
+                Stmt.Unfold(e.pred.linearize().toViperBuiltinType(ctx) as Exp.PredicateAccess)
+            }
+        }
+    }
+
+    override fun visitFold(e: Fold): Linearizable = object : UnitResultLinearizable(e) {
+        override fun toViperUnusedResult(ctx: LinearizationContext) {
+            ctx.addStatement {
+                Stmt.Fold(e.pred.linearize().toViperBuiltinType(ctx) as Exp.PredicateAccess)
+            }
+        }
     }
 
     // endregion
@@ -597,6 +617,53 @@ data class LinearizationVisitor(
 
     override fun visitDefault(e: ExpEmbedding): Linearizable =
         error("visitDefault should not be called; all concrete ExpEmbedding types must have their own visitor method")
+
+    // endregion
+
+    // region IntArray
+
+    override fun visitIntArraySize(e: IntArraySize): Linearizable =
+        object : DirectResultLinearizable(e, this@LinearizationVisitor) {
+            override fun toViper(ctx: LinearizationContext): Exp {
+                val arrViper = e.arr.linearize().toViper(ctx)
+                val sizeInt = RuntimeTypeDomain.size(arrViper, pos = ctx.source.asPosition)
+                return RuntimeTypeDomain.intInjection.toRef(sizeInt, pos = ctx.source.asPosition)
+            }
+        }
+
+    override fun visitIntArrayGet(e: IntArrayGet): Linearizable =
+        object : DirectResultLinearizable(e, this@LinearizationVisitor) {
+            override fun toViper(ctx: LinearizationContext): Exp {
+                val arrViper = e.arr.linearize().toViper(ctx)
+                val idxInt = e.index.linearize().toViperBuiltinType(ctx)
+                val slotRef = RuntimeTypeDomain.slot(arrViper, idxInt, pos = ctx.source.asPosition)
+                val fieldAccess = Exp.FieldAccess(slotRef, ArrayCellDataFieldEmbedding.toViper(), ctx.source.asPosition)
+                val predicateAccess = e.arr.type.uniquePredicateAccessInvariant()!!.fillHole(e.arr)
+                    .pureToViper(true, ctx.typeResolver, ctx.source)
+                return Exp.Unfolding(predicateAccess as Exp.PredicateAccess, fieldAccess, ctx.source.asPosition)
+            }
+        }
+
+    override fun visitIntArraySet(e: IntArraySet): Linearizable = object : UnitResultLinearizable(e) {
+        override fun toViperUnusedResult(ctx: LinearizationContext) {
+            val arrViper = e.arr.linearize().toViper(ctx)
+            val idxInt = e.index.linearize().toViperBuiltinType(ctx)
+            val valueViper = e.value.linearize().toViper(ctx)
+            val slotRef = RuntimeTypeDomain.slot(arrViper, idxInt, pos = ctx.source.asPosition)
+            val fieldAccess = Exp.FieldAccess(slotRef, ArrayCellDataFieldEmbedding.toViper(), ctx.source.asPosition)
+            val predicateAccess = e.arr.type.uniquePredicateAccessInvariant()!!.fillHole(e.arr)
+                .pureToViper(true, ctx.typeResolver, ctx.source) as Exp.PredicateAccess
+            ctx.addStatement { Stmt.Unfold(predicateAccess, ctx.source.asPosition) }
+            ctx.addStatement { Stmt.FieldAssign(fieldAccess, valueViper, ctx.source.asPosition) }
+            ctx.addStatement { Stmt.Fold(predicateAccess, ctx.source.asPosition) }
+        }
+    }
+
+    override fun visitIntArrayAsMultiset(e: IntArrayAsMultiset): Linearizable =
+        object : OnlyToBuiltinLinearizable(e, this) {
+            override fun toViperBuiltinType(ctx: LinearizationContext) =
+                SpecialFunctions.arrayToMultisetFunction(e.arr.linearize().toViperBuiltinType(ctx))
+        }
 
     // endregion
 }

@@ -20,5 +20,5 @@ annotation class Borrowed
 @Target(AnnotationTarget.FUNCTION)
 annotation class Pure
 
-@Target(AnnotationTarget.PROPERTY)
+@Target(AnnotationTarget.PROPERTY, AnnotationTarget.CLASS)
 annotation class Manual

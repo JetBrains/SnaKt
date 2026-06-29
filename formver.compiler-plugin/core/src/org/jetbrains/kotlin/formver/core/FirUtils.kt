@@ -20,6 +20,7 @@ import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
+import org.jetbrains.kotlin.fir.symbols.impl.FirClassSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirNamedFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
@@ -72,6 +73,9 @@ fun formverCallableId(className: String?, name: String): CallableId =
 
 fun kotlinCallableId(className: String?, name: String): CallableId = callableId(SpecialPackages.kotlin, className, name)
 
+fun kotlinClassId(className: String): ClassId =
+    ClassId(FqName.fromSegments(SpecialPackages.kotlin), Name.identifier(className))
+
 fun FirBasedSymbol<*>.isUnique(session: FirSession) = hasAnnotation(annotationId("Unique"), session)
 
 fun FirBasedSymbol<*>.isBorrowed(session: FirSession) = hasAnnotation(annotationId("Borrowed"), session)
@@ -79,6 +83,8 @@ fun FirBasedSymbol<*>.isBorrowed(session: FirSession) = hasAnnotation(annotation
 fun FirBasedSymbol<*>.isPure(session: FirSession) = hasAnnotation(annotationId("Pure"), session)
 
 fun FirBasedSymbol<*>.isManual(session: FirSession) = hasAnnotation(annotationId("Manual"), session)
+
+fun FirClassSymbol<*>.isManual(session: FirSession) = hasAnnotation(annotationId("Manual"), session)
 
 fun FirAnnotationContainer.isUnique(session: FirSession) = hasAnnotation(annotationId("Unique"), session)
 

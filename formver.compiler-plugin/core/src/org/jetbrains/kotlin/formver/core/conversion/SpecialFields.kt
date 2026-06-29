@@ -30,6 +30,13 @@ class SpecialField(
     override fun extraAccessInvariantsForParameter(): List<TypeInvariantEmbedding> = extraInvariantsBuilder(this)
 }
 
+/** Field holding the integer value of an IntArray slot, stored as an int-typed Ref. */
+val ArrayCellDataFieldEmbedding: FieldEmbedding = SpecialField(
+    baseName = "array_cell_int",
+    type = buildType { int() },
+    viperType = Type.Ref,
+)
+
 val CollectionSizeFieldEmbedding: FieldEmbedding = SpecialField(
     baseName = "size",
     type = buildType { int() },

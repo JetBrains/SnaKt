@@ -11,34 +11,34 @@ method firstAtLeast(v_this_extension: Ref, c: Ref) returns (v_ret_0: Ref)
   ensures !(intFromRef(v_ret_0) == |stringFromRef(v_this_extension)|) ==>
     stringFromRef(v_this_extension)[intFromRef(v_ret_0)] >= charFromRef(c)
 {
-  var i: Ref
+  var l0_i: Ref
   var anon_0: Ref
-  i := intToRef(0)
+  l0_i := intToRef(0)
   label cont
-    invariant isSubtype(typeOf(i), intType())
+    invariant isSubtype(typeOf(l0_i), intType())
     invariant isSubtype(typeOf(c), charType())
-    invariant 0 <= intFromRef(i) &&
-      intFromRef(i) <= |stringFromRef(v_this_extension)|
+    invariant 0 <= intFromRef(l0_i) &&
+      intFromRef(l0_i) <= |stringFromRef(v_this_extension)|
     invariant (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
-        anon_builtin_1 < intFromRef(i) ==>
+        anon_builtin_1 < intFromRef(l0_i) ==>
         stringFromRef(v_this_extension)[anon_builtin_1] < charFromRef(c))
-  anon_0 := ltInts(i, stringLength(v_this_extension))
+  anon_0 := ltInts(l0_i, stringLength(v_this_extension))
   if (boolFromRef(anon_0)) {
-    if (stringFromRef(v_this_extension)[intFromRef(i)] >= charFromRef(c)) {
+    if (stringFromRef(v_this_extension)[intFromRef(l0_i)] >= charFromRef(c)) {
       goto break
     }
-    i := plusInts(i, intToRef(1))
+    l0_i := plusInts(l0_i, intToRef(1))
     goto cont
   }
   label break
-  assert isSubtype(typeOf(i), intType())
+  assert isSubtype(typeOf(l0_i), intType())
   assert isSubtype(typeOf(c), charType())
-  assert 0 <= intFromRef(i) &&
-    intFromRef(i) <= |stringFromRef(v_this_extension)|
+  assert 0 <= intFromRef(l0_i) &&
+    intFromRef(l0_i) <= |stringFromRef(v_this_extension)|
   assert (forall anon_builtin_1: Int ::0 <= anon_builtin_1 &&
-      anon_builtin_1 < intFromRef(i) ==>
+      anon_builtin_1 < intFromRef(l0_i) ==>
       stringFromRef(v_this_extension)[anon_builtin_1] < charFromRef(c))
-  v_ret_0 := i
+  v_ret_0 := l0_i
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -57,34 +57,35 @@ method lastLess(v_this_extension: Ref, c: Ref) returns (v_ret_0: Ref)
   ensures !(intFromRef(v_ret_0) == -1) ==>
     stringFromRef(v_this_extension)[intFromRef(v_ret_0)] < charFromRef(c)
 {
-  var i: Ref
+  var l0_i: Ref
   var anon_0: Ref
-  i := minusInts(stringLength(v_this_extension), intToRef(1))
+  l0_i := minusInts(stringLength(v_this_extension), intToRef(1))
   label cont
-    invariant isSubtype(typeOf(i), intType())
+    invariant isSubtype(typeOf(l0_i), intType())
     invariant isSubtype(typeOf(c), charType())
-    invariant -1 <= intFromRef(i) &&
-      intFromRef(i) < |stringFromRef(v_this_extension)|
-    invariant (forall anon_builtin_1: Int ::intFromRef(i) < anon_builtin_1 &&
+    invariant -1 <= intFromRef(l0_i) &&
+      intFromRef(l0_i) < |stringFromRef(v_this_extension)|
+    invariant (forall anon_builtin_1: Int ::intFromRef(l0_i) <
+        anon_builtin_1 &&
         anon_builtin_1 < |stringFromRef(v_this_extension)| ==>
         stringFromRef(v_this_extension)[anon_builtin_1] >= charFromRef(c))
-  anon_0 := gtInts(i, intToRef(-1))
+  anon_0 := gtInts(l0_i, intToRef(-1))
   if (boolFromRef(anon_0)) {
-    if (stringFromRef(v_this_extension)[intFromRef(i)] < charFromRef(c)) {
+    if (stringFromRef(v_this_extension)[intFromRef(l0_i)] < charFromRef(c)) {
       goto break
     }
-    i := minusInts(i, intToRef(1))
+    l0_i := minusInts(l0_i, intToRef(1))
     goto cont
   }
   label break
-  assert isSubtype(typeOf(i), intType())
+  assert isSubtype(typeOf(l0_i), intType())
   assert isSubtype(typeOf(c), charType())
-  assert -1 <= intFromRef(i) &&
-    intFromRef(i) < |stringFromRef(v_this_extension)|
-  assert (forall anon_builtin_1: Int ::intFromRef(i) < anon_builtin_1 &&
+  assert -1 <= intFromRef(l0_i) &&
+    intFromRef(l0_i) < |stringFromRef(v_this_extension)|
+  assert (forall anon_builtin_1: Int ::intFromRef(l0_i) < anon_builtin_1 &&
       anon_builtin_1 < |stringFromRef(v_this_extension)| ==>
       stringFromRef(v_this_extension)[anon_builtin_1] >= charFromRef(c))
-  v_ret_0 := i
+  v_ret_0 := l0_i
   goto lbl_ret_0
   label lbl_ret_0
 }

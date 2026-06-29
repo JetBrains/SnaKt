@@ -1,12 +1,12 @@
 /strings.kt: info: Generated Viper text for testType:
+function g_size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
 function g_str(this: Ref): Ref
   requires isSubtype(typeOf(this), StringBox())
   ensures isSubtype(typeOf(result), stringType())
-
-
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
 
 
 predicate BooleanArray_unique(this: Ref) {
@@ -34,16 +34,16 @@ method con(par_str: Ref) returns (ret_1: Ref)
   ensures stringFromRef(g_str(ret_1)) == stringFromRef(par_str)
 
 
-method testType(s: Ref) returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(s), stringType())
+method testType(par_s: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_s), stringType())
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var cond1: Ref
   var anon_0: Ref
   var cond2: Ref
   var anon_1: Ref
-  anon_0 := con(s)
-  cond1 := boolToRef(stringFromRef(g_str(anon_0)) == stringFromRef(s))
+  anon_0 := con(par_s)
+  cond1 := boolToRef(stringFromRef(g_str(anon_0)) == stringFromRef(par_s))
   anon_1 := con(stringToRef(Seq(115, 116, 114)))
   cond2 := boolToRef(stringFromRef(g_str(anon_1)) == Seq(115, 116, 114))
   assert boolFromRef(cond1)
@@ -53,14 +53,14 @@ method testType(s: Ref) returns (v_ret_0: Ref)
 }
 
 /strings.kt: info: Generated Viper text for testLengthField:
+function g_size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
 function g_str(this: Ref): Ref
   requires isSubtype(typeOf(this), StringBox())
   ensures isSubtype(typeOf(result), stringType())
-
-
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
 
 
 predicate BooleanArray_unique(this: Ref) {
@@ -88,14 +88,14 @@ method con(par_str: Ref) returns (ret_1: Ref)
   ensures stringFromRef(g_str(ret_1)) == stringFromRef(par_str)
 
 
-method testLengthField(s: Ref) returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(s), stringType())
+method testLengthField(par_s: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_s), stringType())
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var len: Ref
   var cond1: Ref
   var anon: Ref
-  len := stringLength(s)
+  len := stringLength(par_s)
   anon := con(stringToRef(Seq(115, 116, 114)))
   cond1 := boolToRef(|stringFromRef(g_str(anon))| == 3)
   assert boolFromRef(cond1)
@@ -104,7 +104,7 @@ method testLengthField(s: Ref) returns (v_ret_0: Ref)
 }
 
 /strings.kt: info: Generated Viper text for testOps:
-function size(this: Ref): Ref
+function g_size(this: Ref): Ref
   requires isSubtype(typeOf(this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 
@@ -129,8 +129,8 @@ method plus(this: Ref, other: Ref) returns (ret_1: Ref)
   ensures isSubtype(typeOf(ret_1), stringType())
 
 
-method testOps(s: Ref) returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(s), stringType())
+method testOps(par_s: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_s), stringType())
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var c: Ref
@@ -138,14 +138,14 @@ method testOps(s: Ref) returns (v_ret_0: Ref)
   var str: Ref
   var helloWorld: Ref
   var stringPlusInteger: Ref
-  if (|stringFromRef(s)| > 0) {
-    c := stringGet(s, intToRef(0))
+  if (|stringFromRef(par_s)| > 0) {
+    c := stringGet(par_s, intToRef(0))
   } else {
     c := charToRef(97)}
   if (charFromRef(c) == 97) {
     anon := boolToRef(true)
   } else {
-    anon := gtInts(stringLength(s), intToRef(0))}
+    anon := gtInts(stringLength(par_s), intToRef(0))}
   assert boolFromRef(anon)
   str := stringToRef(Seq(97, 98, 97))
   assert stringFromRef(str)[0] == stringFromRef(str)[2]

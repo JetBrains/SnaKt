@@ -4,7 +4,7 @@ function delta(v_this: Ref): Ref
   ensures isSubtype(typeOf(result), intType())
 
 
-function size(v_this: Ref): Ref
+function g_size(v_this: Ref): Ref
   requires isSubtype(typeOf(v_this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 
@@ -60,7 +60,7 @@ function g_delta(v_this: Ref): Ref
   ensures isSubtype(typeOf(result), intType())
 
 
-function size(v_this: Ref): Ref
+function g_size(v_this: Ref): Ref
   requires isSubtype(typeOf(v_this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 

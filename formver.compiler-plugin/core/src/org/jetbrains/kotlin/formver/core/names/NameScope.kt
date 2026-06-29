@@ -33,6 +33,9 @@ val NameScope.allParentScopes: Sequence<NameScope>
 val NameScope.packageNameIfAny: FqName?
     get() = allParentScopes.filterIsInstance<PackageScope>().lastOrNull()?.packageName
 
+val NameScope.classScopeIfAny: ClassScope?
+    get() = allParentScopes.filterIsInstance<ClassScope>().lastOrNull()
+
 
 data class PackageScope(val packageName: FqName) : NameScope {
     override val candidates: List<CandidateName> = buildCandidates {

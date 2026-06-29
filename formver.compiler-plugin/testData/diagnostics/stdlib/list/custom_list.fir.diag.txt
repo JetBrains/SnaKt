@@ -1,5 +1,5 @@
 /custom_list.kt: info: Generated Viper text for get:
-field size: Ref
+field p_size: Ref
 
 function value(this: Ref): Ref
   requires isSubtype(typeOf(this), CustomList())
@@ -8,15 +8,15 @@ function value(this: Ref): Ref
 
 method get(this: Ref, index: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(this), CustomList())
-  requires acc(this.size, write)
-  requires intFromRef(this.size) >= 0
+  requires acc(this.p_size, write)
+  requires intFromRef(this.p_size) >= 0
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
-  requires intFromRef(this.size) > intFromRef(index)
-  ensures acc(this.size, write)
-  ensures intFromRef(this.size) >= 0
+  requires intFromRef(this.p_size) > intFromRef(index)
+  ensures acc(this.p_size, write)
+  ensures intFromRef(this.p_size) >= 0
   ensures isSubtype(typeOf(v_ret_0), intType())
-  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
 {
   v_ret_0 := value(this)
   goto lbl_ret_0

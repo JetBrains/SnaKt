@@ -35,7 +35,7 @@ method idFun(par_t: Ref) returns (ret_1: Ref)
 
 
 /unit_return_type.kt: info: Generated Viper text for useInlineUnit:
-function size(v_this: Ref): Ref
+function g_size(v_this: Ref): Ref
   requires isSubtype(typeOf(v_this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 

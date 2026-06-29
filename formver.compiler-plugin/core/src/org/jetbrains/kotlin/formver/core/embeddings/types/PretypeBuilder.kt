@@ -48,6 +48,10 @@ object StringPretypeBuilder : PretypeBuilder {
     override fun complete() = StringTypeEmbedding
 }
 
+object IntArrayPretypeBuilder : PretypeBuilder {
+    override fun complete() = IntArrayTypeEmbedding
+}
+
 class FunctionPretypeBuilder : PretypeBuilder {
     private val paramTypes = mutableListOf<TypeEmbedding>()
     private var extensionReceiverType: TypeEmbedding? = null
@@ -105,6 +109,7 @@ fun buildFunctionPretype(init: FunctionPretypeBuilder.() -> Unit): FunctionTypeE
 
 class ClassPretypeBuilder : PretypeBuilder {
     private var className: ScopedName? = null
+    var isManual = false
 
     fun withName(name: ScopedName) {
         require(className == null) { "Class name already set" }
@@ -113,7 +118,7 @@ class ClassPretypeBuilder : PretypeBuilder {
 
     override fun complete(): ClassTypeEmbedding {
         require(className != null) { "Class name not set" }
-        return ClassTypeEmbedding(className!!)
+        return ClassTypeEmbeddingImpl(className!!, isManual)
     }
 }
 

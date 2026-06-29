@@ -24,6 +24,8 @@ domain rt  {
 
   unique function stringType(): rt
 
+  unique function intArrayType(): rt
+
   unique function Foo(): rt
 
   function nullValue(): Ref
@@ -35,6 +37,14 @@ domain rt  {
   function typeOf(r: Ref): rt
 
   function nullable(t: rt): rt
+
+  function slot(arr: Ref, i: Int): Ref
+
+  function size(arr: Ref): Int
+
+  function slotToArray(s: Ref): Ref
+
+  function slotToIndex(s: Ref): Int
 
   function intToRef(v: Int): Ref
 
@@ -120,6 +130,10 @@ domain rt  {
 
   axiom {
     isSubtype(stringType(), anyType())
+  }
+
+  axiom {
+    isSubtype(intArrayType(), anyType())
   }
 
   axiom {
@@ -242,7 +256,19 @@ domain rt  {
       isSubtype(typeOf(r), stringType()) ==>
       stringToRef(stringFromRef(r)) == r)
   }
+
+  axiom sizeIsNonNeg {
+    (forall arr: Ref :: { size(arr) } size(arr) >= 0)
+  }
+
+  axiom allDiff {
+    (forall arr: Ref, i: Int ::
+      { slot(arr, i) }
+      slotToArray(slot(arr, i)) == arr && slotToIndex(slot(arr, i)) == i)
+  }
 }
+
+field array_cell_int: Ref
 
 function addCharInt(arg_1: Ref, arg_2: Ref): Ref
   ensures isSubtype(typeOf(result), charType())
@@ -265,6 +291,14 @@ function andBools(arg_1: Ref, arg_2: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
   ensures boolFromRef(result) == (boolFromRef(arg_1) && boolFromRef(arg_2))
 
+
+function arrayToMultiset(arg_1: Ref): Multiset[Int]
+  requires acc(IntArray_unique(arg_1), write)
+  ensures |result| == size(arg_1)
+{
+  (unfolding acc(IntArray_unique(arg_1), wildcard) in
+    slotsToMultiset(arg_1, 0, size(arg_1)))
+}
 
 function divInts(arg_1: Ref, arg_2: Ref): Ref
   requires intFromRef(arg_2) != 0
@@ -354,6 +388,19 @@ function remInts(arg_1: Ref, arg_2: Ref): Ref
   ensures intFromRef(result) == intFromRef(arg_1) % intFromRef(arg_2)
 
 
+function slotsToMultiset(arg_1: Ref, arg_2: Int, arg_3: Int): Multiset[Int]
+  requires 0 <= arg_2 && arg_2 <= arg_3 && arg_3 <= size(arg_1)
+  requires (forall j: Int ::
+      { slot(arg_1, j).array_cell_int }
+      arg_2 <= j && j < arg_3 ==> acc(slot(arg_1, j).array_cell_int, write))
+  ensures |result| == arg_3 - arg_2
+{
+  (arg_2 == arg_3 ?
+    Multiset[Int]() :
+    (Multiset(intFromRef(slot(arg_1, arg_2).array_cell_int)) union
+    slotsToMultiset(arg_1, arg_2 + 1, arg_3)))
+}
+
 function stringGet(arg_1: Ref, arg_2: Ref): Ref
   requires intFromRef(arg_2) >= 0 &&
     intFromRef(arg_2) < |stringFromRef(arg_1)|
@@ -388,6 +435,13 @@ function xorBools(arg_1: Ref, arg_2: Ref): Ref
 
 predicate Foo_unique(this: Ref) {
   isSubtype(typeOf(this), Foo())
+}
+
+predicate IntArray_unique(this: Ref) {
+  isSubtype(typeOf(this), intArrayType()) &&
+  (forall j: Int ::
+    { slot(this, j) }
+    j >= 0 && j < size(this) ==> acc(slot(this, j).array_cell_int, write))
 }
 
 method con(par_x: Ref) returns (ret_1: Ref)

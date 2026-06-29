@@ -7,7 +7,6 @@ package org.jetbrains.kotlin.formver.core.embeddings.expression.debug
 
 import org.jetbrains.kotlin.formver.core.embeddings.ExpVisitor
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
-import org.jetbrains.kotlin.formver.core.embeddings.toLink
 import org.jetbrains.kotlin.formver.viper.NameResolver
 import org.jetbrains.kotlin.formver.viper.mangled
 
@@ -29,6 +28,29 @@ class DebugTreeViewVisitor(private val nameResolver: NameResolver) : ExpVisitor<
         val allSubtrees = anonymousSubtrees + namedSubtrees + extraSubtrees
         return if (allSubtrees.isNotEmpty()) NamedBranchingNode(name, allSubtrees)
         else PlaintextLeaf(name)
+    }
+
+    // endregion
+
+
+    // region Permissions
+
+    override fun visitFold(e: Fold): TreeView = with(nameResolver) {
+        defaultTree(
+            "Fold",
+            extraSubtrees = listOf(
+                e.pred.debugTreeView
+            ),
+        )
+    }
+
+    override fun visitUnfold(e: Unfold): TreeView = with(nameResolver) {
+        defaultTree(
+            "Unfold",
+            extraSubtrees = listOf(
+                e.pred.debugTreeView
+            ),
+        )
     }
 
     // endregion

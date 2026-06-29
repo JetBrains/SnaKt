@@ -55,8 +55,8 @@ method fakePrint(truth: Ref) returns (v_ret_0: Ref)
 }
 
 /function_overloading.kt: info: Generated Viper text for differInNullability:
-method differInNullability(i: Ref) returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(i), intType())
+method differInNullability(par_i: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_i), intType())
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   label lbl_ret_0
@@ -64,8 +64,8 @@ method differInNullability(i: Ref) returns (v_ret_0: Ref)
 }
 
 /function_overloading.kt: info: Generated Viper text for differInNullability:
-method differInNullability(i: Ref) returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(i), nullable(intType()))
+method differInNullability(par_i: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_i), nullable(intType()))
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   label lbl_ret_0

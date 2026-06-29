@@ -280,16 +280,48 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
         // special values
         val nullValue = createDomainFunc(UnqualifiedDomainFuncName("nullValue"), emptyList(), Ref)
         val unitValue = createDomainFunc(UnqualifiedDomainFuncName("unitValue"), emptyList(), Ref)
+
+        // IntArray domain functions
+        val intArrayType: DomainFunc = createNewTypeDomainFunc("intArrayType")
+
+        /** `slot(arr: Ref, i: Int): Ref` — maps an array and index to the slot Ref */
+        val slot: DomainFunc = createDomainFunc(
+            UnqualifiedDomainFuncName("slot"),
+            listOf(domainVar("arr", Ref).decl(), domainVar("i", Type.Int).decl()),
+            Ref
+        )
+
+        /** `size(arr: Ref): Int` — returns the logical size of the array */
+        val size: DomainFunc = createDomainFunc(
+            UnqualifiedDomainFuncName("size"),
+            listOf(domainVar("arr", Ref).decl()),
+            Type.Int
+        )
+
+        /** `slotToArray(slot: Ref): Ref` — inverse of slot's first argument */
+        val slotToArray: DomainFunc = createDomainFunc(
+            UnqualifiedDomainFuncName("slotToArray"),
+            listOf(domainVar("s", Ref).decl()),
+            Ref
+        )
+
+        /** `slotToIndex(slot: Ref): Int` — inverse of slot's second argument */
+        val slotToIndex: DomainFunc = createDomainFunc(
+            UnqualifiedDomainFuncName("slotToIndex"),
+            listOf(domainVar("s", Ref).decl()),
+            Type.Int
+        )
     }
 
     private val allInjections: List<Injection> = primitiveTypeInjections
     val builtinTypes: List<DomainFunc> =
-        listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType)
+        listOf(intType, boolType, charType, unitType, nothingType, anyType, functionType, stringType, intArrayType)
     private val userTypes: List<DomainFunc> =
         typeResolver.classTypeEmbeddings().map { it.embedClassTypeFunc() }
     val nonNullableTypes: List<DomainFunc> = (builtinTypes + userTypes).distinctBy { it.name }
     override val functions: List<DomainFunc> = nonNullableTypes + listOf(
-        nullValue, unitValue, isSubtype, typeOf, nullable
+        nullValue, unitValue, isSubtype, typeOf, nullable,
+        slot, size, slotToArray, slotToIndex,
     ) + allInjections.flatMap { listOf(it.toRef, it.fromRef) }
     override val axioms: List<DomainAxiom> = AxiomListBuilder.build(this) {
         axiom("subtypeReflexive") {
@@ -408,6 +440,19 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
                 axiom {
                     type.runtimeType subtype superType.runtimeType
                 }
+            }
+        }
+        val arrVar = domainVar("arr", Ref)
+        val idxVar = domainVar("i", Type.Int)
+        axiom("sizeIsNonNeg") {
+            Exp.forall(arrVar) { a ->
+                simpleTrigger { size(a) } ge 0.toExp()
+            }
+        }
+        axiom("allDiff") {
+            Exp.forall(arrVar, idxVar) { a, i ->
+                val slotAI = simpleTrigger { slot(a, i) }
+                (slotToArray(slotAI) eq a) and (slotToIndex(slotAI) eq i)
             }
         }
     }

@@ -32,6 +32,9 @@ fun <T> old(@Suppress("UNUSED_PARAMETER") body: T): T =
     throw FormverFunctionCalledInRuntimeException("old")
 
 
+fun toMultiset(@Suppress("UNUSED_PARAMETER") arr: IntArray): Any =
+    throw FormverFunctionCalledInRuntimeException("toMultiset")
+
 /**
  * Requests access permission to the field denoted by [path] in a pre- or postcondition.
  *
@@ -39,20 +42,40 @@ fun <T> old(@Suppress("UNUSED_PARAMETER") body: T): T =
  * permission is requested; use [write] for full (the default) or [read] for a read-only
  * (wildcard) fraction.
  */
-fun acc(@Suppress("UNUSED_PARAMETER") path: Any?, @Suppress("UNUSED_PARAMETER") permission: Any? = null): Boolean =
+fun acc(
+    @Suppress("UNUSED_PARAMETER") path: Any?,
+    @Suppress("UNUSED_PARAMETER") permission: Permission? = null
+): Boolean =
     throw FormverFunctionCalledInRuntimeException("acc")
+
+interface Permission
+abstract class Predicate(val exp: Any)
 
 /**
  * Denotes a read-only (wildcard) permission amount. Only meaningful as the second argument of [acc].
  */
-fun read(): Any? =
+fun read(): Permission =
     throw FormverFunctionCalledInRuntimeException("read")
 
 /**
  * Denotes a full (write) permission amount. Only meaningful as the second argument of [acc].
  */
-fun write(): Any? =
+fun write(): Permission =
     throw FormverFunctionCalledInRuntimeException("write")
+
+
+data class UniquePred(val data: Any) : Predicate(data)
+
+fun unfold(
+    @Suppress("UNUSED_PARAMETER") exp: Predicate,
+    @Suppress("UNUSED_PARAMETER") permission: Permission? = null
+): Unit =
+    throw FormverFunctionCalledInRuntimeException("unfold")
+
+fun fold(
+    @Suppress("UNUSED_PARAMETER") exp: Predicate,
+    @Suppress("UNUSED_PARAMETER") permission: Permission? = null
+): Unit = throw FormverFunctionCalledInRuntimeException("fold")
 
 class InvariantBuilder {
     /**

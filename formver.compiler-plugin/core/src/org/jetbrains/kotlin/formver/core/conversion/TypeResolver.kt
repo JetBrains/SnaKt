@@ -4,11 +4,13 @@ import org.jetbrains.kotlin.formver.core.embeddings.properties.BackingFieldGette
 import org.jetbrains.kotlin.formver.core.embeddings.properties.FieldEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.IntArrayTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeEmbedding
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
 import org.jetbrains.kotlin.formver.core.names.NameScope
 import org.jetbrains.kotlin.formver.core.names.ScopedName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
+import org.jetbrains.kotlin.formver.viper.ast.Predicate
 import org.jetbrains.kotlin.name.Name
 
 /**
@@ -23,6 +25,14 @@ class TypeResolver {
      */
     private val classEmbedding = mutableMapOf<SymbolicName, ClassTypeEmbedding>()
     private val interfaceEmbedding = mutableMapOf<SymbolicName, ClassTypeEmbedding>()
+
+    var intArrayUsed = false
+        private set
+
+    fun markIntArrayUsed() {
+        intArrayUsed = true
+    }
+
 
     /**
      * Supertype relation. Key is a subtype, value is a set of supertypes.
@@ -94,7 +104,12 @@ class TypeResolver {
 
 
     fun backingFields(): List<FieldEmbedding> = properties.values.mapNotNull { toBackingField(it) }
+        .run { if (intArrayUsed) this + listOf(ArrayCellDataFieldEmbedding) else this }
 
+
+    fun specialPredicates(ctx: TypeResolver): List<Predicate> = buildList {
+        if (intArrayUsed) add(with(ctx) { IntArrayTypeEmbedding.uniquePredicate() })
+    }
 
     /**
      * Collects all the fields belonging to a class and its super types.
@@ -133,6 +148,17 @@ class TypeResolver {
         }
     }
 
+
+    fun isInheritorOf(pretype: PretypeEmbedding, packageName: List<String>, interfaceName: String): Boolean {
+        val classEmbedding = pretype as? ClassTypeEmbedding ?: return false
+        return classEmbedding.isInheritorOfPkg(
+            packageName,
+            interfaceName
+        ) || lookupSuperTypes(classEmbedding.name).any {
+            isInheritorOf(it, packageName, interfaceName)
+        }
+    }
+
     /**
      * Returns true if the [pretypeEmbedding] is a subtype of Collection with [name]
      */
@@ -155,6 +181,19 @@ class TypeResolver {
             }
             return false
         }
+        return false
     }
 
+    fun PretypeEmbedding.isInheritorOfPkg(packageName: List<String>, name: String): Boolean {
+        val classEmbedding = this as? ClassTypeEmbedding ?: return false
+        NameMatcher.matchGlobalScope(classEmbedding.name) {
+            ifPackageName(packageName) {
+                ifClassName(name) {
+                    return true
+                }
+            }
+            return false
+        }
+        return false
+    }
 }

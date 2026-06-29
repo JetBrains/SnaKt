@@ -23,6 +23,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubCharInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Xor
+import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.buildFunctionPretype
 import org.jetbrains.kotlin.formver.core.embeddings.types.nullableAny
 import org.jetbrains.kotlin.formver.core.names.*
@@ -55,6 +56,19 @@ object SpecialKotlinFunctions {
     private val invariantBuilderTypeName = buildName {
         packageScope(SpecialPackages.formver)
         ClassKotlinName(listOf("InvariantBuilder"))
+    }
+    private val uniquePredTypeName = buildName {
+        packageScope(SpecialPackages.formver)
+        ClassKotlinName(listOf("UniquePred"))
+    }
+    private val predicateTypeName = buildName {
+        packageScope(SpecialPackages.formver)
+        ClassKotlinName(listOf("Predicate"))
+    }
+
+    private val permissionTypeName = buildName {
+        packageScope(SpecialPackages.formver)
+        ClassKotlinName(listOf("Permission"))
     }
 
     val byName: Map<SymbolicName, FullySpecialKotlinFunction> = buildFullySpecialFunctions {
@@ -116,28 +130,19 @@ object SpecialKotlinFunctions {
 
         withCallableType(booleanBooleanToBooleanType) {
             addFunction(
-                booleanBooleanToBooleanType,
-                SpecialPackages.kotlin,
-                className = "Boolean",
-                name = "and"
+                booleanBooleanToBooleanType, SpecialPackages.kotlin, className = "Boolean", name = "and"
             ) { args, _ ->
                 And(args[0], args[1])
             }
 
             addFunction(
-                booleanBooleanToBooleanType,
-                SpecialPackages.kotlin,
-                className = "Boolean",
-                name = "or"
+                booleanBooleanToBooleanType, SpecialPackages.kotlin, className = "Boolean", name = "or"
             ) { args, _ ->
                 Or(args[0], args[1])
             }
 
             addFunction(
-                booleanBooleanToBooleanType,
-                SpecialPackages.kotlin,
-                className = "Boolean",
-                name = "xor"
+                booleanBooleanToBooleanType, SpecialPackages.kotlin, className = "Boolean", name = "xor"
             ) { args, _ ->
                 Xor(args[0], args[1])
             }
@@ -201,47 +206,82 @@ object SpecialKotlinFunctions {
         addFunction(forAllCallableType, SpecialPackages.formver, name = "forAll") { args, ctx ->
             val arg = args.first()
             val lambda = arg.ignoringMetaNodes() as? LambdaExp ?: throw SnaktInternalException(
-                null,
-                "First argument of forAll function must be a lambda."
+                null, "First argument of forAll function must be a lambda."
             )
             val param = lambda.function.valueParameters.first()
             val body = lambda.function.body ?: throw SnaktInternalException(
-                null,
-                "Lambda body of forAll function must be present."
+                null, "Lambda body of forAll function must be present."
             )
             ctx.insertForAllFunctionCall(param.symbol, body)
         }
 
         val permissionCallableType = buildFunctionPretype {
-            withReturnType { nullableAny() }
+            withReturnType {
+                klass {
+                    withName(permissionTypeName)
+                }
+            }
         }
         withCallableType(permissionCallableType) {
             addFunction(SpecialPackages.formver, name = "read") { _, _ -> PermissionLit(PermExp.WildcardPerm()) }
             addFunction(SpecialPackages.formver, name = "write") { _, _ -> PermissionLit(PermExp.FullPerm()) }
         }
 
+        fun extractPermission(exp: ExpEmbedding?): PermissionLit {
+            return when (val perm = exp?.ignoringCastsAndMetaNodes()) {
+                null -> PermissionLit(PermExp.FullPerm())
+                is PermissionLit -> perm
+                else -> throw SnaktInternalException(
+                    null, "Second argument of `acc` must be `read()` or `write()`."
+                )
+            }
+        }
+
+        fun extractPredicate(exp: MethodCall, permissions: ExpEmbedding?): PredicateAccessPermissions {
+            val permissions = extractPermission(permissions)
+            return when (exp.type.pretype.name) {
+                uniquePredTypeName -> {
+                    val arg = exp.args.firstOrNull()!!
+                    val type = arg.type.pretype as? ClassTypeEmbedding ?: throw SnaktInternalException(
+                        null,
+                        "Can only unfold the unique predicates of classes"
+                    )
+                    PredicateAccessPermissions(
+                        type.uniquePredicateName,
+                        listOf(arg.ignoringCastsAndMetaNodes()),
+                        permissions.perm
+                    )
+                }
+
+                else -> throw SnaktInternalException(null, "Unknown predicate")
+            }
+        }
+
         val accCallableType = buildFunctionPretype {
             withParam { nullableAny() }
-            withParam { nullableAny() }
+            withParam {
+                isNullable = true
+                klass {
+                    withName(permissionTypeName)
+                }
+            }
             withReturnType { boolean() }
         }
         addFunction(accCallableType, SpecialPackages.formver, name = "acc") { args, ctx ->
             val source = (args.firstOrNull() as? WithPosition)?.source
-            val fieldAccess = args.first().ignoringCastsAndMetaNodes() as? FieldAccess ?: throw SnaktInternalException(
-                source,
-                "First argument of `acc` must be a field access like `x.a`."
-            )
-            val perm = when (val permArg = args.getOrNull(1)?.ignoringCastsAndMetaNodes()) {
-                null, NullLit -> PermExp.FullPerm()
-                is PermissionLit -> permArg.perm
+            val perm = extractPermission(args.getOrNull(1))
+            when (val exp = args.firstOrNull()?.ignoringCastsAndMetaNodes()) {
+                null -> throw SnaktInternalException(
+                    source, "First argument of `acc` must be a field access like `x.a`."
+                )
+                is FieldAccess -> AccEmbedding(exp.receiver, exp.field, perm.perm)
+                is MethodCall -> extractPredicate(exp, args.getOrNull(1))
                 else -> throw SnaktInternalException(
-                    source,
-                    "Second argument of `acc` must be `read()` or `write()`."
+                    source, "First argument of `acc` must be a field access like `x.a` or a predicate."
                 )
             }
-            ctx.withNoScope {
-                AccEmbedding(fieldAccess.receiver, fieldAccess.field, perm)
-            }
+
+
         }
 
         val invariantsBuilderCallableType = buildFunctionPretype {
@@ -316,12 +356,75 @@ object SpecialKotlinFunctions {
 
         val stringIntToCharType = buildFunctionPretype {
             withDispatchReceiver { string() }
-            withParam { int() }
+            withParam {
+
+                int()
+            }
             withReturnType { char() }
         }
 
         addFunction(stringIntToCharType, SpecialPackages.kotlin, className = "String", name = "get") { args, _ ->
             StringGet(args[0], args[1])
+        }
+
+        val intArrayGetType = buildFunctionPretype {
+            withDispatchReceiver { intArray() }
+            withParam { int() }
+            withReturnType { int() }
+        }
+        addFunction(intArrayGetType, SpecialPackages.kotlin, className = "IntArray", name = "get") { args, _ ->
+            IntArrayGet(args[0], args[1])
+        }
+
+        val intArraySetType = buildFunctionPretype {
+            withDispatchReceiver { intArray() }
+            withParam { int() }
+            withParam { int() }
+            withReturnType { unit() }
+        }
+        addFunction(intArraySetType, SpecialPackages.kotlin, className = "IntArray", name = "set") { args, _ ->
+            IntArraySet(args[0], args[1], args[2])
+        }
+
+        val uniquePredicatePermissionsToUnit = buildFunctionPretype {
+            withParam {
+                klass {
+                    withName(predicateTypeName)
+                }
+            }
+            withParam {
+                isNullable = true
+                klass {
+                    withName(permissionTypeName)
+                }
+            }
+            withReturnType { unit() }
+        }
+        addFunction(uniquePredicatePermissionsToUnit, SpecialPackages.formver, name = "unfold") { args, _ ->
+            val exp = (args[0].ignoringMetaNodes() as? MethodCall) ?: throw SnaktInternalException(
+                null, "First argument of unfold must be constructor to a predicate."
+            )
+            Unfold(
+                extractPredicate(exp, args.getOrNull(1))
+            )
+        }
+
+        addFunction(uniquePredicatePermissionsToUnit, SpecialPackages.formver, name = "fold") { args, _ ->
+            val exp = (args[0].ignoringMetaNodes() as? MethodCall) ?: throw SnaktInternalException(
+                null, "First argument of unfold must be constructor to a predicate."
+            )
+            Fold(
+                extractPredicate(exp, args.getOrNull(1))
+            )
+        }
+
+
+        val intArrayToAny = buildFunctionPretype {
+            withParam { intArray() }
+            withReturnType { any() }
+        }
+        addFunction(intArrayToAny, SpecialPackages.formver, name = "toMultiset") { args, _ ->
+            IntArrayAsMultiset(args[0])
         }
     }
 }

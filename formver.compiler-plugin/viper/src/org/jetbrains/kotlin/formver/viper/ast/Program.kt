@@ -126,8 +126,25 @@ private fun registerExpNames(exp: Exp) {
             nameResolver.register(exp.constructor.name)
             exp.args.forEach { registerExpNames(it) }
         }
+        is Exp.SeqDrop -> {
+            registerExpNames(exp.seq)
+            registerExpNames(exp.idx)
+        }
+
+        is Exp.SeqAppend -> {
+            registerExpNames(exp.left)
+            registerExpNames(exp.right)
+        }
+
+        is Exp.AnySetCardinality -> registerExpNames(exp.s)
+        is Exp.AnySetUnion -> {
+            registerExpNames(exp.left)
+            registerExpNames(exp.right)
+        }
+
+        is Exp.ExplicitMultiset -> exp.args.forEach { registerExpNames(it) }
         // no else branch to make decisions explicit.
-        is Exp.Result, is Exp.BoolLit, is Exp.EmptySeq, is Exp.IntLit, is Exp.NullLit -> {}
+        is Exp.Result, is Exp.BoolLit, is Exp.EmptySeq, is Exp.EmptyMultiset, is Exp.IntLit, is Exp.NullLit -> {}
     }
 }
 

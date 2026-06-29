@@ -17,7 +17,7 @@ interface TypeInvariantHolder {
     fun accessInvariants(ctx: TypeResolver): List<TypeInvariantEmbedding> = emptyList()
 
     // Note: these functions will replace accessInvariants when nested unfold will be implemented
-    fun uniquePredicateAccessInvariant(ctx: TypeResolver): TypeInvariantEmbedding? = null
+    fun uniquePredicateAccessInvariant(): TypeInvariantEmbedding? = null
 
     /**
      * Invariants that do not depend on the heap, and so do not need to be repeated

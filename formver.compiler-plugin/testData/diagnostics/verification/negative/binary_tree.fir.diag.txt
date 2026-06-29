@@ -46,7 +46,7 @@ function g_right(this: Ref): Ref
   ensures isSubtype(typeOf(result), nullable(Node()))
 
 
-function size(this: Ref): Ref
+function g_size(this: Ref): Ref
   requires isSubtype(typeOf(this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 

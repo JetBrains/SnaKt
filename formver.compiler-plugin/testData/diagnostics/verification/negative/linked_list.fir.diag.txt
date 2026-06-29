@@ -35,7 +35,7 @@ function g_next(this: Ref): Ref
   ensures isSubtype(typeOf(result), nullable(Link()))
 
 
-function size(this: Ref): Ref
+function g_size(this: Ref): Ref
   requires isSubtype(typeOf(this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 
