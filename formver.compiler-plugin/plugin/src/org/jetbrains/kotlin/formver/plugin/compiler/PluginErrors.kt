@@ -34,12 +34,14 @@ object VerificationErrors : KtDiagnosticsContainer() {
     val POSSIBLE_INDEX_OUT_OF_BOUND by warning2<PsiElement, String, String>()
     val UNEXPECTED_RETURNED_VALUE by warning1<PsiElement, String>()
     val INVALID_SUBLIST_RANGE by warning2<PsiElement, String, String>()
+    val CONSISTENCY by error1<PsiElement, String>()
     override fun getRendererFactory() = FormalVerificationPluginErrorMessages
     fun tags() = listOf(
         CONDITIONAL_EFFECT_ERROR.name,
         VIPER_VERIFICATION_ERROR.name,
         POSSIBLE_INDEX_OUT_OF_BOUND.name,
         UNEXPECTED_RETURNED_VALUE.name,
-        INVALID_SUBLIST_RANGE.name
+        INVALID_SUBLIST_RANGE.name,
+        CONSISTENCY.name
     )
 }

@@ -95,15 +95,12 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
     ): List<KtDiagnostic> {
         val results = mutableListOf<KtDiagnostic>()
         val program = decl.viperProgram!!
-        val onFailure = { err: VerifierError ->
-            when (err) {
-                is ConsistencyError -> Unit
-                is VerificationError -> {
-                    val diagnostics = formatVerificationError(err, decl, module)
-                    results.add(diagnostics)
-                    Unit
-                }
+        val onFailure: (VerifierError) -> Unit = { err ->
+            val diagnostics = when (err) {
+                is ConsistencyError -> formatConsistencyError(err, decl, module)
+                is VerificationError -> formatVerificationError(err, decl, module)
             }
+            results.add(diagnostics)
         }
         verifier.verify(program, onFailure)
 
@@ -173,6 +170,19 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
             }
         }
         return diagnostic!!
+    }
+
+    @OptIn(InternalDiagnosticFactoryMethod::class)
+    private fun formatConsistencyError(
+        err: ConsistencyError, decl: FirSimpleFunction,
+        module: TestModule
+    ): KtDiagnostic {
+        val source = err.position.unwrapOr { decl.source }!!
+        val diagnostics = VerificationErrors.CONSISTENCY.on(
+            source, err.msg, positioningStrategy = SourceElementPositioningStrategies.DEFAULT,
+            languageVersionSettings = module.languageVersionSettings
+        )
+        return diagnostics!!
     }
 }
 

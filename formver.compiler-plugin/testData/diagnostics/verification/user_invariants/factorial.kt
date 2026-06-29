@@ -8,7 +8,7 @@ fun <!VIPER_TEXT!>fact<!>(n: Int): Int {
     }
     postconditions<Int> { res ->
         (n == 0) implies (res == 1)
-        (n > 0) implies (res == n * fact(n - 1))
+        (n > 0) implies (res == n * <!CONSISTENCY!>fact(n-1)<!>)
     }
 
     return if (n == 0) {

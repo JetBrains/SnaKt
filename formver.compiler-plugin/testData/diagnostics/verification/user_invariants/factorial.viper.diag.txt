@@ -1,0 +1,1 @@
+/factorial.kt: error: Viper consistency error: Consistency error: Function fact has a self-reference in its postcondition and must be proven to be well-founded. Add a "decreases" clause to prove well-foundedness. (<wrapped value>)

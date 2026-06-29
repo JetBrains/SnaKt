@@ -74,9 +74,9 @@ abstract class DiagnosticsCollector(val testServices: TestServices) : TestServic
 
         val actualDiagnostics = render()
 
-        // the golden file does not exist and diagnostics are empty
-        if (!expectedFile.exists() && actualDiagnostics == null) {
-            return false
+        if (!expectedFile.exists()) {
+            // if the golden file does not exist, the conversion has changed iff there are diagnostics
+            return actualDiagnostics != null
         }
 
         val expectedDiagnostics = expectedFile.readText()
@@ -93,9 +93,7 @@ abstract class DiagnosticsCollector(val testServices: TestServices) : TestServic
             testDataFile.parentFile.resolve("${testDataFile.nameWithoutExtension.removeSuffix(".fir")}${fileExtension}")
 
         val expectedOutput = render()
-        if (expectedOutput == null && !expectedFile.exists()) {
-            return
-        }
+        if (expectedOutput == null && !expectedFile.exists()) return
 
         testServices.assertions.assertEqualsToFile(expectedFile, expectedOutput ?: "")
     }

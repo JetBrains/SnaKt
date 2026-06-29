@@ -142,8 +142,8 @@ manager, operating system, etc.
 
 Depending on the situation, different test modes should be run. The test pipeline is split into conversion and
 verification
-Conversion includes: Uniqueness checking, conversion, purity checking, viper consistency checking
-Verification includes: The actual verification
+Conversion includes: Uniqueness checking, conversion, purity checking
+Verification includes: viper consistency checking, viper verification
 
 The table below summarizes the modes:
 
