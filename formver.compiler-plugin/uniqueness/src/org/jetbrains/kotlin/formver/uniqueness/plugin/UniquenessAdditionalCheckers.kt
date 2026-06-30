@@ -36,7 +36,11 @@ class UniquenessAdditionalCheckers(session: FirSession) : FirAdditionalCheckersE
             setOf(PropertyAccessUniquenessChecker)
 
         override val callCheckers: Set<FirCallChecker> =
-            setOf(CallUniquenessChecker, CallLeakedUniquenessConsistencyChecker)
+            setOf(
+                CallUniquenessChecker,
+                CallArgumentUniquenessCollisionChecker,
+                CallLeakedUniquenessConsistencyChecker
+            )
 
         override val returnExpressionCheckers: Set<FirReturnExpressionChecker> =
             setOf(ReturnUniquenessChecker, ReturnLeakedUniquenessConsistencyChecker)

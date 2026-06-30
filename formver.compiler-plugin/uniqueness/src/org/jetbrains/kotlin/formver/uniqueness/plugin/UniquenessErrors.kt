@@ -9,6 +9,7 @@ import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticsContainer
 import org.jetbrains.kotlin.diagnostics.error0
 import org.jetbrains.kotlin.diagnostics.error1
+import org.jetbrains.kotlin.diagnostics.error2
 import org.jetbrains.kotlin.diagnostics.error3
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 
@@ -16,6 +17,8 @@ object UniquenessErrors : KtDiagnosticsContainer() {
     val UNIQUENESS_MISMATCH by error3<PsiElement, String, Uniqueness, Uniqueness>()
     val UNIQUENESS_INCONSISTENCY by error1<PsiElement, Path>()
     val CONTEXT_UNIQUENESS_MISMATCH by error3<PsiElement, ConeKotlinType, Uniqueness, Uniqueness>()
+    val INVALID_DUPLICATE_UNIQUE_ARGUMENT by error1<PsiElement, Path>()
+    val INVALID_OVERLAPPING_UNIQUE_ARGUMENTS by error2<PsiElement, Path, Path>()
     val INVALID_MOVED_ACCESS by error0<PsiElement>()
     val INVALID_UNIQUENESS_TYPE_TARGET by error0<PsiElement>()
 

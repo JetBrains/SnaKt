@@ -80,6 +80,6 @@ fun (@Borrowed A).borrowSelfAndArg(other: @Borrowed A) {}
 fun `pass same value as receiver and arg`(a: @Unique A) {
     // TODO: Determine whether this error makes sense. Since both the receiver and the argument are borrowed shouldn't
     // it be possible to pass the same value as both?
-    a.borrowSelfAndArg(<!UNIQUENESS_MISMATCH!>a<!>)
+    a.borrowSelfAndArg(a)
     consume(a)
 }

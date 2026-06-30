@@ -11,5 +11,3 @@
 /receiver.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
 
 /receiver.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
-
-/receiver.kt: error: Argument uniqueness mismatch: expected 'shared', actual 'reserved'.

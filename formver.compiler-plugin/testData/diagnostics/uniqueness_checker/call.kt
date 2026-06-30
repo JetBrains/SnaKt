@@ -28,6 +28,14 @@ fun consumeBoth(a: @Unique Any, b: @Unique Any) {}
 
 fun shareBoth(a: Any, b: Any) {}
 
+fun `pass unique subproperty and parent to consumeBoth`(a: @Unique B) {
+    consumeBoth(<!INVALID_OVERLAPPING_UNIQUE_ARGUMENTS!>a.y<!>, <!INVALID_OVERLAPPING_UNIQUE_ARGUMENTS!>a<!>)
+}
+
+fun `pass unique-borrowed subproperty and parent to borrowBoth`(a: @Unique @Borrowed B) {
+    borrowBoth(a.y, a)
+}
+
 fun `consume unique after safe cast`(a: @Unique Any) {
     val cast = a as? A ?: return
     consume(cast)
@@ -163,7 +171,7 @@ fun `pass borrowed twice to borrowBoth`(a: @Borrowed Any) {
 
 fun `pass unique twice to consumeBoth`(a: @Unique Any) {
     // TODO: Report a collision for when a unique value is accessed twice in the same call expression
-    consumeBoth(a, <!UNIQUENESS_MISMATCH!>a<!>)
+    consumeBoth(<!INVALID_DUPLICATE_UNIQUE_ARGUMENT!>a<!>, <!INVALID_DUPLICATE_UNIQUE_ARGUMENT!>a<!>)
 }
 
 // Sharing subproperties
@@ -194,13 +202,13 @@ fun `share multiple unique subproperties`(z: @Unique B) {
 fun `share partially moved`(z: @Unique B) {
     consume(z.y)
     // TODO: Check for partially moved references at function boundaries
-    share(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>z<!>)
+    share(<!UNIQUENESS_INCONSISTENCY!>z<!>)
 }
 
 fun `share partially shared`(z: @Unique B) {
     share(z.y)
     // TODO: Check for partially moved references at function boundaries
-    share(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>z<!>)
+    share(<!UNIQUENESS_INCONSISTENCY!>z<!>)
 }
 
 // Sharing subproperties after assignment
@@ -254,13 +262,13 @@ fun `borrow multiple unique subproperties`(z: @Unique B) {
 fun `borrow partially moved`(z: @Unique B) {
     consume(z.y)
     // TODO: Check for partially moved references at function boundaries
-    borrow(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>z<!>)
+    borrow(<!UNIQUENESS_INCONSISTENCY!>z<!>)
 }
 
 fun `borrow partially shared`(z: @Unique B) {
     share(z.y)
     // TODO: Check for partially moved references at function boundaries
-    borrow(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>z<!>)
+    borrow(<!UNIQUENESS_INCONSISTENCY!>z<!>)
 }
 
 // Borrowing subproperties after assignment
@@ -304,13 +312,13 @@ fun `consume multiple unique subproperties`(z: @Unique B) {
 fun `consume partially moved`(z: @Unique B) {
     consume(z.y)
     // TODO: Check for partially moved references at function boundaries
-    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>z<!>)
+    consume(<!UNIQUENESS_INCONSISTENCY!>z<!>)
 }
 
 fun `consume partially shared`(z: @Unique B) {
     share(z.y)
     // TODO: Check for partially moved references at function boundaries
-    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>z<!>)
+    consume(<!UNIQUENESS_INCONSISTENCY!>z<!>)
 }
 
 // Consuming subproperty after assignment
@@ -324,18 +332,18 @@ fun `consume unique parent after assigning subproperty to unique`(x: @Unique B, 
 
 fun `consume unique parent after cast`(node: @Unique Any) {
     val local: @Unique Node? = (node as Node).next
-    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>node<!>)
+    consume(<!UNIQUENESS_INCONSISTENCY!>node<!>)
 }
 
 fun `consume unique parent after cast to not-null`(node: @Unique Node) {
     val local: @Unique Node = node.next as Node
-    consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>node<!>)
+    consume(<!UNIQUENESS_INCONSISTENCY!>node<!>)
 }
 
 fun `consume unique parent after smart-cast`(node: @Unique Node?) {
     if (node != null) {
         val local: @Unique Node? = node.next
-        consume(<!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>node<!>)
+        consume(<!UNIQUENESS_INCONSISTENCY!>node<!>)
     }
 }
 
@@ -347,14 +355,4 @@ fun `pass shared subproperty and parent to shareBoth`(a: B) {
 
 fun `pass borrowed subproperty and parent to borrowBoth`(a: @Borrowed B) {
     borrowBoth(a.y, a)
-}
-
-fun `pass unique subproperty and parent to consumeBoth`(a: @Unique B) {
-    // TODO: This is an error because in the second argument position `a` is partially moved
-    consumeBoth(a.y, <!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>a<!>)
-}
-
-fun `pass unique-borrowed subproperty and parent to borrowBoth`(a: @Unique @Borrowed B) {
-    // TODO: This is an error because in the second argument position `a` is partially moved
-    borrowBoth(a.y, <!LEAKED_UNIQUENESS_CONSISTENCY_VIOLATION!>a<!>)
 }

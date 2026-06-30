@@ -40,5 +40,16 @@ object UniquenessErrorMessages : BaseDiagnosticRendererFactory() {
                     "Leaking moved field: {0}",
                     PathRenderer
                 )
+                map.put(
+                    UniquenessErrors.INVALID_DUPLICATE_UNIQUE_ARGUMENT,
+                    "Invalid attempt to pass the same unique argument {0} twice.",
+                    PathRenderer
+                )
+                map.put(
+                    UniquenessErrors.INVALID_OVERLAPPING_UNIQUE_ARGUMENTS,
+                    "Invalid attempt to pass unique argument {0} overlapping with {1}.",
+                    PathRenderer,
+                    PathRenderer
+                )
             }
 }

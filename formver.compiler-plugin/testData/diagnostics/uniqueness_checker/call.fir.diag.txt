@@ -1,3 +1,7 @@
+/call.kt: error: Invalid attempt to pass unique argument a.y overlapping with a.
+
+/call.kt: error: Invalid attempt to pass unique argument a overlapping with a.y.
+
 /call.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
 
 /call.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
@@ -28,7 +32,9 @@
 
 /call.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
 
-/call.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'reserved'.
+/call.kt: error: Invalid attempt to pass the same unique argument a twice.
+
+/call.kt: error: Invalid attempt to pass the same unique argument a twice.
 
 /call.kt: error: Leaking moved field: z.y
 
@@ -53,7 +59,3 @@
 /call.kt: error: Leaking moved field: node.next
 
 /call.kt: error: Leaking moved field: node.next
-
-/call.kt: error: Leaking moved field: a.y
-
-/call.kt: error: Leaking moved field: a.y
