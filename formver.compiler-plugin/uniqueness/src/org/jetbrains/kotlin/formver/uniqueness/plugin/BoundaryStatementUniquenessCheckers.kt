@@ -11,21 +11,22 @@ import org.jetbrains.kotlin.fir.expressions.FirReturnExpression
 import org.jetbrains.kotlin.fir.expressions.FirStatement
 import org.jetbrains.kotlin.fir.expressions.FirThrowExpression
 import org.jetbrains.kotlin.fir.expressions.arguments
-import org.jetbrains.kotlin.formver.uniqueness.plugin.UniquenessErrors.UNIQUENESS_INCONSISTENCY
+import org.jetbrains.kotlin.formver.uniqueness.plugin.UniquenessErrors.LEAKED_UNIQUENESS_INCONSISTENCY
 
 fun interface StatementLeaksResolver<Statement : FirStatement> {
-    fun resolveLeaks(expression: Statement): List<FirExpression>
+    fun resolveLeaksOf(expression: Statement): List<FirExpression>
 }
 
-class StatementUniquenessConsistencyChecker<Statement : FirStatement>(
+class BoundaryStatementUniquenessChecker<Statement : FirStatement>(
     val statementLeaksResolver: StatementLeaksResolver<Statement>
 ) : FirExpressionChecker<Statement>( MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: Statement) {
-        val leaks = statementLeaksResolver.resolveLeaks(expression)
+        val leaks = statementLeaksResolver.resolveLeaksOf(expression)
 
         for (leak in leaks) {
-            val inputUniquenessState = leak.resolveInputUniquenessState() ?: EmptyUniquenessState
+            val inputUniquenessState = leak.resolveInputUniquenessState()
+                ?: EmptyUniquenessState
             val leakAccessState = leak.resolveAccessState()
 
             for (accessPath in leakAccessState.enumerateTerminals()) {
@@ -35,7 +36,7 @@ class StatementUniquenessConsistencyChecker<Statement : FirStatement>(
                 for (movedPath in movedPaths) {
                     reporter.reportOn(
                         leak.source ?: expression.source,
-                        UNIQUENESS_INCONSISTENCY,
+                        LEAKED_UNIQUENESS_INCONSISTENCY,
                         accessPath + movedPath
                     )
                 }
@@ -44,19 +45,19 @@ class StatementUniquenessConsistencyChecker<Statement : FirStatement>(
     }
 }
 
-val ReturnLeakedUniquenessConsistencyChecker = StatementUniquenessConsistencyChecker<FirReturnExpression>(
+val ReturnLeakedUniquenessConsistencyChecker = BoundaryStatementUniquenessChecker<FirReturnExpression>(
     statementLeaksResolver = { returnExpression ->
         listOf(returnExpression.result)
     }
 )
 
-val ThrowLeakedUniquenessConsistencyChecker = StatementUniquenessConsistencyChecker<FirThrowExpression>(
+val ThrowLeakedUniquenessConsistencyChecker = BoundaryStatementUniquenessChecker<FirThrowExpression>(
     statementLeaksResolver = { throwExpression ->
         listOf(throwExpression.exception)
     }
 )
 
-val CallLeakedUniquenessConsistencyChecker = StatementUniquenessConsistencyChecker<FirCall>(
+val CallLeakedUniquenessConsistencyChecker = BoundaryStatementUniquenessChecker<FirCall>(
     statementLeaksResolver = { call ->
         call.arguments
     }
