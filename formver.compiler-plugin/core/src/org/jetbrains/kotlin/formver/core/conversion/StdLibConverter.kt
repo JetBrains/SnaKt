@@ -15,9 +15,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeEmbedding
-import org.jetbrains.kotlin.formver.core.names.NameMatcher
 import org.jetbrains.kotlin.formver.core.names.SpecialPackages
-import org.jetbrains.kotlin.formver.viper.SymbolicName
 
 private fun VariableEmbedding.sameSize(): ExpEmbedding =
     EqCmp(FieldAccess(this, CollectionSizeFieldEmbedding), Old(FieldAccess(this, CollectionSizeFieldEmbedding)))
@@ -26,77 +24,6 @@ private fun VariableEmbedding.increasedSize(amount: Int): ExpEmbedding = EqCmp(
     FieldAccess(this, CollectionSizeFieldEmbedding),
     OperatorExpEmbeddings.AddIntInt(Old(FieldAccess(this, CollectionSizeFieldEmbedding)), IntLit(amount)),
 )
-
-/**
- * Matches a stdlib function against a set of AND-combined criteria.
- *
- * [pkg] + [receiverSubtypeName]: the dispatch receiver must be a subtype of `pkg.receiverInherits`.
- * [pkg] is not re-checked against the function's own package in this case — overrides in
- * user-defined classes match just as well as the original declarations.
- *
- * [pkg] + [noReceiver] / [functionName] / [constructorOf]: the function itself must live in [pkg].
- * Use this for top-level functions (e.g. `emptyList`) and constructors.
- *
- * [receiverSubtypeName] and [noReceiver] are mutually exclusive.
- * [functionName] and [constructorOf] are mutually exclusive.
- */
-class StdLibFunctionSpec(
-    val pkg: List<String>? = null,
-    val receiverSubtypeName: String? = null,
-    val noReceiver: Boolean = false,
-    val functionName: String? = null,
-    val constructorOf: String? = null,
-) {
-    init {
-        require(!(receiverSubtypeName != null && noReceiver)) { "receiverInherits and noReceiver are mutually exclusive" }
-        require(receiverSubtypeName == null || pkg != null) { "pkg must be set when receiverInherits is set" }
-        require(constructorOf == null || functionName == null) { "constructorOf and functionName are mutually exclusive" }
-    }
-
-    fun matches(function: NamedFunctionSignature, typeResolver: TypeResolver): Boolean {
-        if (!checkReceiverSubtype(function, typeResolver)) return false
-        if (!needsNameCheck()) return true
-
-        return matchesNameScope(function.name)
-    }
-
-    private fun checkReceiverSubtype(
-        function: NamedFunctionSignature,
-        typeResolver: TypeResolver
-    ): Boolean {
-        if (receiverSubtypeName == null) return true // Pass if there's no inheritance constraint
-
-        val receiverPretype = function.callableType.dispatchReceiverType?.pretype ?: return false
-        return typeResolver.isInheritorOf(receiverPretype, pkg!!, receiverSubtypeName)
-    }
-
-    private fun needsNameCheck(): Boolean {
-        return functionName != null ||
-                constructorOf != null ||
-                noReceiver ||
-                (pkg != null && receiverSubtypeName == null)
-    }
-
-    private fun matchesNameScope(name: SymbolicName): Boolean {
-        NameMatcher.matchClassScope(name) {
-            if (pkg != null && receiverSubtypeName == null) {
-                var pkgMatched = false
-                ifPackageName(pkg) { pkgMatched = true }
-                if (!pkgMatched) return false
-            }
-
-            when {
-                noReceiver && functionName != null -> ifNoReceiver { ifFunctionName(functionName) { return true } }
-                noReceiver && constructorOf != null -> ifNoReceiver { ifConstructorOf(constructorOf) { return true } }
-                noReceiver -> ifNoReceiver { return true }
-                functionName != null -> ifFunctionName(functionName) { return true }
-                constructorOf != null -> ifConstructorOf(constructorOf) { return true }
-                else -> return true
-            }
-            return false
-        }
-    }
-}
 
 /**
  * Matches any parameter whose pretype is a subtype of `[pkg].[paramTypeInherits]`.
@@ -112,9 +39,9 @@ data class StdLibParamSpec(
 }
 
 sealed interface StdLibCondition {
-    val spec: StdLibFunctionSpec
+    val conditions: List<FunctionCondition>
     fun matches(function: NamedFunctionSignature, typeResolver: TypeResolver): Boolean =
-        spec.matches(function, typeResolver)
+        with(typeResolver) { conditions.all { it.matches(function) } }
 }
 
 sealed interface StdLibPrecondition : StdLibCondition {
@@ -164,10 +91,9 @@ sealed interface StdLibParamPostcondition {
 }
 
 data object GetPrecondition : StdLibPrecondition {
-    override val spec = StdLibFunctionSpec(
-        pkg = SpecialPackages.collections,
-        receiverSubtypeName = "List",
-        functionName = "get",
+    override val conditions = listOf(
+        ForReceiver(listOf(IsSubtype(SpecialPackages.collections, "List"))),
+        HasFunctionName("get"),
     )
 
     override fun getEmbeddings(function: NamedFunctionSignature): List<ExpEmbedding> {
@@ -189,10 +115,9 @@ data object GetPrecondition : StdLibPrecondition {
 }
 
 data object SubListPrecondition : StdLibPrecondition {
-    override val spec = StdLibFunctionSpec(
-        pkg = SpecialPackages.collections,
-        receiverSubtypeName = "List",
-        functionName = "subList",
+    override val conditions = listOf(
+        ForReceiver(listOf(IsSubtype(SpecialPackages.collections, "List"))),
+        HasFunctionName("subList"),
     )
 
     override fun getEmbeddings(function: NamedFunctionSignature): List<ExpEmbedding> {
@@ -212,10 +137,10 @@ data object SubListPrecondition : StdLibPrecondition {
 }
 
 data object EmptyListPostcondition : StdLibPostcondition {
-    override val spec = StdLibFunctionSpec(
-        pkg = SpecialPackages.collections,
-        noReceiver = true,
-        functionName = "emptyList",
+    override val conditions = listOf(
+        InPackage(SpecialPackages.collections),
+        HasNoReceiver,
+        HasFunctionName("emptyList"),
     )
 
     override fun getEmbeddings(
@@ -225,10 +150,9 @@ data object EmptyListPostcondition : StdLibPostcondition {
 }
 
 data object IsEmptyPostcondition : StdLibPostcondition {
-    override val spec = StdLibFunctionSpec(
-        pkg = SpecialPackages.collections,
-        receiverSubtypeName = "Collection",
-        functionName = "isEmpty",
+    override val conditions = listOf(
+        ForReceiver(listOf(IsSubtype(SpecialPackages.collections, "Collection"))),
+        HasFunctionName("isEmpty"),
     )
 
     override fun getEmbeddings(
@@ -245,10 +169,9 @@ data object IsEmptyPostcondition : StdLibPostcondition {
 }
 
 data object GetPostcondition : StdLibPostcondition {
-    override val spec = StdLibFunctionSpec(
-        pkg = SpecialPackages.collections,
-        receiverSubtypeName = "List",
-        functionName = "get",
+    override val conditions = listOf(
+        ForReceiver(listOf(IsSubtype(SpecialPackages.collections, "List"))),
+        HasFunctionName("get"),
     )
 
     override fun getEmbeddings(
@@ -258,10 +181,9 @@ data object GetPostcondition : StdLibPostcondition {
 }
 
 data object SubListPostcondition : StdLibPostcondition {
-    override val spec = StdLibFunctionSpec(
-        pkg = SpecialPackages.collections,
-        receiverSubtypeName = "List",
-        functionName = "subList",
+    override val conditions = listOf(
+        ForReceiver(listOf(IsSubtype(SpecialPackages.collections, "List"))),
+        HasFunctionName("subList"),
     )
 
     override fun getEmbeddings(
@@ -278,10 +200,9 @@ data object SubListPostcondition : StdLibPostcondition {
 }
 
 data object AddPostcondition : StdLibPostcondition {
-    override val spec = StdLibFunctionSpec(
-        pkg = SpecialPackages.collections,
-        receiverSubtypeName = "MutableList",
-        functionName = "add",
+    override val conditions = listOf(
+        ForReceiver(listOf(IsSubtype(SpecialPackages.collections, "MutableList"))),
+        HasFunctionName("add"),
     )
 
     override fun getEmbeddings(
