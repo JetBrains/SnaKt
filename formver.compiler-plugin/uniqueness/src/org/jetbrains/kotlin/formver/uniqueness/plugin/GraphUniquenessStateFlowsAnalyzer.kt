@@ -32,10 +32,6 @@ class GraphUniquenessStatesAnalyzer(
     private val context: CheckerContext,
     private val callParametersLocalityResolver: CallParametersTypeResolver<Locality>,
 ) : PathAwareControlFlowGraphVisitor<Unit, UniquenessState>() {
-    override fun visitSubGraph(node: CFGNodeWithSubgraphs<*>, graph: ControlFlowGraph): Boolean {
-        return false
-    }
-
     override fun mergeInfo(
         a: UniquenessStateFlow,
         b: UniquenessStateFlow,
