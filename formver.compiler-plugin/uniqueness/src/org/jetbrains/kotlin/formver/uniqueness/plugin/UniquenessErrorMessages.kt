@@ -41,6 +41,11 @@ object UniquenessErrorMessages : BaseDiagnosticRendererFactory() {
                     PathRenderer
                 )
                 map.put(
+                    UniquenessErrors.CAPTURED_UNIQUENESS_INCONSISTENCY,
+                    "Captured moved field: {0}",
+                    PathRenderer
+                )
+                map.put(
                     UniquenessErrors.INVALID_DUPLICATE_UNIQUE_ARGUMENT,
                     "Invalid attempt to pass the same unique argument {0} twice.",
                     PathRenderer
