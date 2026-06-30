@@ -63,8 +63,7 @@ fun `pass unique through lambda parameter`(a: @Unique A) {
 fun produceUnique(producer: () -> @Unique A): @Unique A = producer()
 
 fun `lambda returns unique`(a: @Unique A): @Unique A {
-    val r = produceUnique { <!UNIQUENESS_MISMATCH!>a<!> }
-    // TODO: Locals that are captured by the lambda should become moved.
+    val r = produceUnique { a }
     consume(<!UNIQUENESS_MISMATCH!>a<!>)
     return r
 }
