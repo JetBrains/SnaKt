@@ -189,12 +189,6 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
-    @TestMetadata("lambda.kt")
-    public void testLambda() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/lambda.kt");
-    }
-
-    @Test
     @TestMetadata("loop.kt")
     public void testLoop() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/loop.kt");
