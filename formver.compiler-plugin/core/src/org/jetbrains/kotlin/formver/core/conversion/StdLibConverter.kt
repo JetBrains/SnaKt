@@ -30,56 +30,56 @@ private fun VariableEmbedding.increasedSize(amount: Int): ExpEmbedding = EqCmp(
 /**
  * Matches a stdlib function against a set of AND-combined criteria.
  *
- * [pkg] + [receiverInherits]: the dispatch receiver must be a subtype of `pkg.receiverInherits`.
+ * [pkg] + [receiverSubtypeName]: the dispatch receiver must be a subtype of `pkg.receiverInherits`.
  * [pkg] is not re-checked against the function's own package in this case — overrides in
  * user-defined classes match just as well as the original declarations.
  *
  * [pkg] + [noReceiver] / [functionName] / [constructorOf]: the function itself must live in [pkg].
  * Use this for top-level functions (e.g. `emptyList`) and constructors.
  *
- * [receiverInherits] and [noReceiver] are mutually exclusive.
+ * [receiverSubtypeName] and [noReceiver] are mutually exclusive.
  * [functionName] and [constructorOf] are mutually exclusive.
  */
-data class StdLibFunctionSpec(
+class StdLibFunctionSpec(
     val pkg: List<String>? = null,
-    val receiverInherits: String? = null,
+    val receiverSubtypeName: String? = null,
     val noReceiver: Boolean = false,
     val functionName: String? = null,
     val constructorOf: String? = null,
 ) {
     init {
-        require(!(receiverInherits != null && noReceiver)) { "receiverInherits and noReceiver are mutually exclusive" }
-        require(receiverInherits == null || pkg != null) { "pkg must be set when receiverInherits is set" }
+        require(!(receiverSubtypeName != null && noReceiver)) { "receiverInherits and noReceiver are mutually exclusive" }
+        require(receiverSubtypeName == null || pkg != null) { "pkg must be set when receiverInherits is set" }
         require(constructorOf == null || functionName == null) { "constructorOf and functionName are mutually exclusive" }
     }
 
     fun matches(function: NamedFunctionSignature, typeResolver: TypeResolver): Boolean {
-        if (!matchesReceiverInheritance(function, typeResolver)) return false
+        if (!checkReceiverSubtype(function, typeResolver)) return false
         if (!needsNameCheck()) return true
 
         return matchesNameScope(function.name)
     }
 
-    private fun matchesReceiverInheritance(
+    private fun checkReceiverSubtype(
         function: NamedFunctionSignature,
         typeResolver: TypeResolver
     ): Boolean {
-        if (receiverInherits == null) return true // Pass if there's no inheritance constraint
+        if (receiverSubtypeName == null) return true // Pass if there's no inheritance constraint
 
         val receiverPretype = function.callableType.dispatchReceiverType?.pretype ?: return false
-        return typeResolver.isInheritorOf(receiverPretype, pkg!!, receiverInherits)
+        return typeResolver.isInheritorOf(receiverPretype, pkg!!, receiverSubtypeName)
     }
 
     private fun needsNameCheck(): Boolean {
         return functionName != null ||
                 constructorOf != null ||
                 noReceiver ||
-                (pkg != null && receiverInherits == null)
+                (pkg != null && receiverSubtypeName == null)
     }
 
     private fun matchesNameScope(name: SymbolicName): Boolean {
         NameMatcher.matchClassScope(name) {
-            if (pkg != null && receiverInherits == null) {
+            if (pkg != null && receiverSubtypeName == null) {
                 var pkgMatched = false
                 ifPackageName(pkg) { pkgMatched = true }
                 if (!pkgMatched) return false
@@ -166,7 +166,7 @@ sealed interface StdLibParamPostcondition {
 data object GetPrecondition : StdLibPrecondition {
     override val spec = StdLibFunctionSpec(
         pkg = SpecialPackages.collections,
-        receiverInherits = "List",
+        receiverSubtypeName = "List",
         functionName = "get",
     )
 
@@ -191,7 +191,7 @@ data object GetPrecondition : StdLibPrecondition {
 data object SubListPrecondition : StdLibPrecondition {
     override val spec = StdLibFunctionSpec(
         pkg = SpecialPackages.collections,
-        receiverInherits = "List",
+        receiverSubtypeName = "List",
         functionName = "subList",
     )
 
@@ -227,7 +227,7 @@ data object EmptyListPostcondition : StdLibPostcondition {
 data object IsEmptyPostcondition : StdLibPostcondition {
     override val spec = StdLibFunctionSpec(
         pkg = SpecialPackages.collections,
-        receiverInherits = "Collection",
+        receiverSubtypeName = "Collection",
         functionName = "isEmpty",
     )
 
@@ -247,7 +247,7 @@ data object IsEmptyPostcondition : StdLibPostcondition {
 data object GetPostcondition : StdLibPostcondition {
     override val spec = StdLibFunctionSpec(
         pkg = SpecialPackages.collections,
-        receiverInherits = "List",
+        receiverSubtypeName = "List",
         functionName = "get",
     )
 
@@ -260,7 +260,7 @@ data object GetPostcondition : StdLibPostcondition {
 data object SubListPostcondition : StdLibPostcondition {
     override val spec = StdLibFunctionSpec(
         pkg = SpecialPackages.collections,
-        receiverInherits = "List",
+        receiverSubtypeName = "List",
         functionName = "subList",
     )
 
@@ -280,7 +280,7 @@ data object SubListPostcondition : StdLibPostcondition {
 data object AddPostcondition : StdLibPostcondition {
     override val spec = StdLibFunctionSpec(
         pkg = SpecialPackages.collections,
-        receiverInherits = "MutableList",
+        receiverSubtypeName = "MutableList",
         functionName = "add",
     )
 
