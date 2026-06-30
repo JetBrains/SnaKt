@@ -25,7 +25,7 @@ sealed interface TypeCondition : Condition {
  * The dispatch receiver must satisfy all [conditions].
  * Returns false if the function has no dispatch receiver.
  */
-data class ForReceiver(val conditions: List<TypeCondition>) : FunctionCondition {
+data class ReceiverSatisfies(val conditions: List<TypeCondition>) : FunctionCondition {
     context(typeResolver: TypeResolver)
     override fun matches(funcName: NamedFunctionSignature): Boolean {
         val receiverType = funcName.callableType.dispatchReceiverType ?: return false
