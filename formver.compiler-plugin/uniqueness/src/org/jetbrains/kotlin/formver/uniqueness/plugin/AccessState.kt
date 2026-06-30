@@ -163,7 +163,7 @@ fun AccessState.initialize(uniquenessState: UniquenessState): UniquenessState =
 /**
  * Enumerates all the paths accessed in [this] access-state
  */
-fun AccessState.enumerateTerminalPaths(): Sequence<Path> =
+fun AccessState.enumerateTerminals(): Sequence<Path> =
     enumerate { data == Access.Terminal }
 
 /**
@@ -198,7 +198,7 @@ fun AccessState.joinUniquenessOverTerminals(uniquenessState: UniquenessState): U
 fun AccessState.joinUniquenessStateOverTerminals(uniquenessState: UniquenessState): UniquenessState {
     var result = EmptyUniquenessState
 
-    for (path in enumerateTerminalPaths()) {
+    for (path in enumerateTerminals()) {
         result = result.join(uniquenessState.find(path) ?: EmptyUniquenessState)
     }
 

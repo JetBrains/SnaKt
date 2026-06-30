@@ -100,7 +100,7 @@ class GraphUniquenessStatesAnalyzer(
 
             return data.transformValues { data ->
                 var newUniquenessState = data.ensure()
-                val leftAccessPaths = leftAccessState.enumerateTerminalPaths()
+                val leftAccessPaths = leftAccessState.enumerateTerminals()
                 val rightAccessState = rightValue.resolveAccessState()
 
                 if (leftAccessPaths.count() == 1) {
