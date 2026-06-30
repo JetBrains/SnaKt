@@ -9,16 +9,14 @@ import org.jetbrains.kotlin.fir.expressions.FirCall
 import org.jetbrains.kotlin.formver.uniqueness.plugin.UniquenessErrors.INVALID_DUPLICATE_UNIQUE_ARGUMENT
 import org.jetbrains.kotlin.formver.uniqueness.plugin.UniquenessErrors.INVALID_OVERLAPPING_UNIQUE_ARGUMENTS
 
-object CallArgumentUniquenessCollisionChecker : FirCallChecker(MppCheckerKind.Common) {
+object CallArgumentUniquenessCollisionChecker
+    : FirCallChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirCall) {
         val arguments = CallParametersUniquenessResolver.resolveParameterTypesOf(expression)
         val uniqueArguments = arguments
             .filter { (_, uniqueness) -> uniqueness == Uniqueness.Unique }
             .map { (expression, _) -> expression }
-        val argumentAccessStates = uniqueArguments.map { argument -> argument.resolveAccessState() }
-        val callAccessState = argumentAccessStates.fold(EmptyAccessState) { a, b -> a.join(b) }
-        val uniquenessState = callAccessState.initialize(EmptyUniquenessState)
 
         for ((index, firstArgument) in uniqueArguments.withIndex()) {
             val firstAccessState = firstArgument.resolveAccessState()
@@ -27,10 +25,10 @@ object CallArgumentUniquenessCollisionChecker : FirCallChecker(MppCheckerKind.Co
                 val secondAccessState = secondArgument.resolveAccessState()
 
                 for (firstPath in firstAccessState.enumerateTerminals()) {
-                    if (uniquenessState.find(firstPath)?.data != Uniqueness.Unique) continue
+                    if (firstPath.uniqueness != Uniqueness.Unique) continue
 
                     for (secondPath in secondAccessState.enumerateTerminals()) {
-                        if (uniquenessState.find(secondPath)?.data != Uniqueness.Unique) continue
+                        if (firstPath.uniqueness != Uniqueness.Unique) continue
 
                         var commonPrefix = 0
 
