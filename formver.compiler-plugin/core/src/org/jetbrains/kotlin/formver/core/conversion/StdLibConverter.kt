@@ -92,7 +92,7 @@ sealed interface StdLibParamPostcondition {
 
 data object GetPrecondition : StdLibPrecondition {
     override val conditions = listOf(
-        ForReceiver(listOf(IsSubtype(SpecialPackages.collections, "List"))),
+        ReceiverSatisfies(listOf(IsSubtype(SpecialPackages.collections, "List"))),
         HasFunctionName("get"),
     )
 
@@ -116,7 +116,7 @@ data object GetPrecondition : StdLibPrecondition {
 
 data object SubListPrecondition : StdLibPrecondition {
     override val conditions = listOf(
-        ForReceiver(listOf(IsSubtype(SpecialPackages.collections, "List"))),
+        ReceiverSatisfies(listOf(IsSubtype(SpecialPackages.collections, "List"))),
         HasFunctionName("subList"),
     )
 
@@ -151,7 +151,7 @@ data object EmptyListPostcondition : StdLibPostcondition {
 
 data object IsEmptyPostcondition : StdLibPostcondition {
     override val conditions = listOf(
-        ForReceiver(listOf(IsSubtype(SpecialPackages.collections, "Collection"))),
+        ReceiverSatisfies(listOf(IsSubtype(SpecialPackages.collections, "Collection"))),
         HasFunctionName("isEmpty"),
     )
 
@@ -170,7 +170,7 @@ data object IsEmptyPostcondition : StdLibPostcondition {
 
 data object GetPostcondition : StdLibPostcondition {
     override val conditions = listOf(
-        ForReceiver(listOf(IsSubtype(SpecialPackages.collections, "List"))),
+        ReceiverSatisfies(listOf(IsSubtype(SpecialPackages.collections, "List"))),
         HasFunctionName("get"),
     )
 
@@ -182,7 +182,7 @@ data object GetPostcondition : StdLibPostcondition {
 
 data object SubListPostcondition : StdLibPostcondition {
     override val conditions = listOf(
-        ForReceiver(listOf(IsSubtype(SpecialPackages.collections, "List"))),
+        ReceiverSatisfies(listOf(IsSubtype(SpecialPackages.collections, "List"))),
         HasFunctionName("subList"),
     )
 
@@ -201,7 +201,7 @@ data object SubListPostcondition : StdLibPostcondition {
 
 data object AddPostcondition : StdLibPostcondition {
     override val conditions = listOf(
-        ForReceiver(listOf(IsSubtype(SpecialPackages.collections, "MutableList"))),
+        ReceiverSatisfies(listOf(IsSubtype(SpecialPackages.collections, "MutableList"))),
         HasFunctionName("add"),
     )
 
