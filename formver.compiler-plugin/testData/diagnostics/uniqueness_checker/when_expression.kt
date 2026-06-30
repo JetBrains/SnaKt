@@ -100,7 +100,7 @@ fun `when consumes different subproperties`(b: @Unique B) {
         else -> consume(b.y.w)
     }
 
-    consume(<!UNIQUENESS_INCONSISTENCY, UNIQUENESS_INCONSISTENCY!>b<!>)
+    consume(<!LEAKED_UNIQUENESS_INCONSISTENCY, LEAKED_UNIQUENESS_INCONSISTENCY!>b<!>)
 }
 
 // `when` consuming the same subproperty in every branch
@@ -112,5 +112,5 @@ fun `when consumes same subproperty in all branches`(b: @Unique B) {
     }
 
     // `b.y.x` is moved on every path; the parent leaks moved sub-state.
-    consume(<!UNIQUENESS_INCONSISTENCY!>b<!>)
+    consume(<!LEAKED_UNIQUENESS_INCONSISTENCY!>b<!>)
 }

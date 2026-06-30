@@ -202,13 +202,13 @@ fun `share multiple unique subproperties`(z: @Unique B) {
 fun `share partially moved`(z: @Unique B) {
     consume(z.y)
     // TODO: Check for partially moved references at function boundaries
-    share(<!UNIQUENESS_INCONSISTENCY!>z<!>)
+    share(<!LEAKED_UNIQUENESS_INCONSISTENCY!>z<!>)
 }
 
 fun `share partially shared`(z: @Unique B) {
     share(z.y)
     // TODO: Check for partially moved references at function boundaries
-    share(<!UNIQUENESS_INCONSISTENCY!>z<!>)
+    share(<!LEAKED_UNIQUENESS_INCONSISTENCY!>z<!>)
 }
 
 // Sharing subproperties after assignment
@@ -262,13 +262,13 @@ fun `borrow multiple unique subproperties`(z: @Unique B) {
 fun `borrow partially moved`(z: @Unique B) {
     consume(z.y)
     // TODO: Check for partially moved references at function boundaries
-    borrow(<!UNIQUENESS_INCONSISTENCY!>z<!>)
+    borrow(<!LEAKED_UNIQUENESS_INCONSISTENCY!>z<!>)
 }
 
 fun `borrow partially shared`(z: @Unique B) {
     share(z.y)
     // TODO: Check for partially moved references at function boundaries
-    borrow(<!UNIQUENESS_INCONSISTENCY!>z<!>)
+    borrow(<!LEAKED_UNIQUENESS_INCONSISTENCY!>z<!>)
 }
 
 // Borrowing subproperties after assignment
@@ -312,13 +312,13 @@ fun `consume multiple unique subproperties`(z: @Unique B) {
 fun `consume partially moved`(z: @Unique B) {
     consume(z.y)
     // TODO: Check for partially moved references at function boundaries
-    consume(<!UNIQUENESS_INCONSISTENCY!>z<!>)
+    consume(<!LEAKED_UNIQUENESS_INCONSISTENCY!>z<!>)
 }
 
 fun `consume partially shared`(z: @Unique B) {
     share(z.y)
     // TODO: Check for partially moved references at function boundaries
-    consume(<!UNIQUENESS_INCONSISTENCY!>z<!>)
+    consume(<!LEAKED_UNIQUENESS_INCONSISTENCY!>z<!>)
 }
 
 // Consuming subproperty after assignment
@@ -332,18 +332,18 @@ fun `consume unique parent after assigning subproperty to unique`(x: @Unique B, 
 
 fun `consume unique parent after cast`(node: @Unique Any) {
     val local: @Unique Node? = (node as Node).next
-    consume(<!UNIQUENESS_INCONSISTENCY!>node<!>)
+    consume(<!LEAKED_UNIQUENESS_INCONSISTENCY!>node<!>)
 }
 
 fun `consume unique parent after cast to not-null`(node: @Unique Node) {
     val local: @Unique Node = node.next as Node
-    consume(<!UNIQUENESS_INCONSISTENCY!>node<!>)
+    consume(<!LEAKED_UNIQUENESS_INCONSISTENCY!>node<!>)
 }
 
 fun `consume unique parent after smart-cast`(node: @Unique Node?) {
     if (node != null) {
         val local: @Unique Node? = node.next
-        consume(<!UNIQUENESS_INCONSISTENCY!>node<!>)
+        consume(<!LEAKED_UNIQUENESS_INCONSISTENCY!>node<!>)
     }
 }
 

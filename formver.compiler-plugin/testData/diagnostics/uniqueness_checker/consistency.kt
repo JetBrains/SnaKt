@@ -36,14 +36,14 @@ fun nondet(): Boolean = false
 fun `consume grandchild leaks grandparent`(d: @Unique D) {
     consume(d.c.b.y)
 
-    consume(<!UNIQUENESS_INCONSISTENCY!>d<!>)
+    consume(<!LEAKED_UNIQUENESS_INCONSISTENCY!>d<!>)
 }
 
 fun `consume two siblings leaks parent`(b: @Unique B) {
     consume(b.y.x)
     consume(b.y.w)
 
-    consume(<!UNIQUENESS_INCONSISTENCY, UNIQUENESS_INCONSISTENCY!>b<!>)
+    consume(<!LEAKED_UNIQUENESS_INCONSISTENCY, LEAKED_UNIQUENESS_INCONSISTENCY!>b<!>)
 }
 
 fun `consume then reassign sub-property does not leak`(b: @Unique B, fresh: @Unique A) {
@@ -55,13 +55,13 @@ fun `consume then reassign sub-property does not leak`(b: @Unique B, fresh: @Uni
 
 fun `consume one of two siblings then borrow parent`(b: @Unique B) {
     consume(b.y.x)
-    borrow(<!UNIQUENESS_INCONSISTENCY!>b<!>)
+    borrow(<!LEAKED_UNIQUENESS_INCONSISTENCY!>b<!>)
 }
 
 fun `return parent after consuming child`(b: @Unique B): @Unique B {
     consume(b.y.x)
 
-    return <!UNIQUENESS_INCONSISTENCY!>b<!>
+    return <!LEAKED_UNIQUENESS_INCONSISTENCY!>b<!>
 }
 
 fun `consume in if then use parent`(b: @Unique B) {
@@ -69,7 +69,7 @@ fun `consume in if then use parent`(b: @Unique B) {
         consume(b.y)
     }
 
-    consume(<!UNIQUENESS_INCONSISTENCY!>b<!>)
+    consume(<!LEAKED_UNIQUENESS_INCONSISTENCY!>b<!>)
 }
 
 fun `borrow parent leaves children unique`(b: @Unique B) {
@@ -87,7 +87,7 @@ fun `move child via assignment then access parent`(b: @Unique B) {
     val local: @Unique A = b.y
     consume(local)
 
-    consume(<!UNIQUENESS_INCONSISTENCY!>b<!>)
+    consume(<!LEAKED_UNIQUENESS_INCONSISTENCY!>b<!>)
 }
 
 fun `move child via assignment then reassign`(b: @Unique B, fresh: @Unique A) {
