@@ -24,10 +24,10 @@ object CallArgumentUniquenessCollisionChecker
             for (secondArgument in uniqueArguments.subList(index + 1, uniqueArguments.size)) {
                 val secondAccessState = secondArgument.resolveAccessState()
 
-                for (firstPath in firstAccessState.enumerateTerminals()) {
+                for (firstPath in firstAccessState.enumeratePaths()) {
                     if (firstPath.uniqueness != Uniqueness.Unique) continue
 
-                    for (secondPath in secondAccessState.enumerateTerminals()) {
+                    for (secondPath in secondAccessState.enumeratePaths()) {
                         if (firstPath.uniqueness != Uniqueness.Unique) continue
 
                         var commonPrefix = 0

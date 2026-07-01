@@ -69,7 +69,7 @@ class StatementLeakUniquenessConsistencyChecker<Statement : FirStatement>(
             val inputUniquenessState = expression.resolveInputUniquenessState() ?: EmptyUniquenessState
             val leakAccessState = leak.resolveAccessState()
 
-            for (accessPath in leakAccessState.enumerateTerminals()) {
+            for (accessPath in leakAccessState.enumeratePaths()) {
                 val uniquenessSubstate = inputUniquenessState.find(accessPath) ?: continue
                 val movedPaths = uniquenessSubstate.enumerateInconsistentPaths()
 
