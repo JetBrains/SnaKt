@@ -16,6 +16,7 @@ import org.jetbrains.kotlin.fir.types.ConeKotlinType
 object UniquenessErrors : KtDiagnosticsContainer() {
     val UNIQUENESS_MISMATCH by error3<PsiElement, String, Uniqueness, Uniqueness>()
     val LEAKED_UNIQUENESS_INCONSISTENCY by error1<PsiElement, Path>()
+    val CONTEXT_LEAKED_UNIQUENESS_INCONSISTENCY by error2<PsiElement, ConeKotlinType, Path>()
     val CAPTURED_UNIQUENESS_INCONSISTENCY by error1<PsiElement, Path>()
     val CONTEXT_UNIQUENESS_MISMATCH by error3<PsiElement, ConeKotlinType, Uniqueness, Uniqueness>()
     val INVALID_DUPLICATE_UNIQUE_ARGUMENT by error1<PsiElement, Path>()

@@ -1,4 +1,5 @@
 // UNIQUE_CHECK_ONLY
+// LANGUAGE: +ContextParameters
 
 import org.jetbrains.kotlin.formver.plugin.Borrowed
 import org.jetbrains.kotlin.formver.plugin.Unique
@@ -131,4 +132,14 @@ fun `consume child of borrowed unique and then throw`(b: @Borrowed @Unique B, t:
     consume(b.y)
 
     <!CAPTURED_UNIQUENESS_INCONSISTENCY!>throw t<!>
+}
+
+context(b: @Unique A)
+fun consumeContext() {
+}
+
+context(b: @Unique A)
+fun `pass inconsistent unique as context parameter`() {
+    val local = b.x
+    <!CONTEXT_LEAKED_UNIQUENESS_INCONSISTENCY!>consumeContext()<!>
 }

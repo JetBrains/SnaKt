@@ -28,6 +28,12 @@ object UniquenessErrorMessages : BaseDiagnosticRendererFactory() {
                     UniquenessRenderer,
                 )
                 map.put(
+                    UniquenessErrors.CONTEXT_LEAKED_UNIQUENESS_INCONSISTENCY,
+                    "Leaking moved field for context parameter of type ''{0}'': {1}",
+                    FirDiagnosticRenderers.RENDER_TYPE,
+                    PathRenderer
+                )
+                map.put(
                     UniquenessErrors.INVALID_MOVED_ACCESS,
                     "Invalid access to moved reference."
                 )

@@ -3,6 +3,7 @@ package org.jetbrains.kotlin.formver.uniqueness.plugin
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.FirFunctionTarget
+import org.jetbrains.kotlin.fir.analysis.cfa.util.previousCfgNodes
 import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirFunctionChecker
@@ -28,10 +29,13 @@ val FirBasedSymbol<*>.locality: Locality
         else -> null
     }
 
-object FunctionUniquenessConsistencyChecker : FirFunctionChecker( MppCheckerKind.Common) {
+object FunctionInputUniquenessConsistencyChecker
+    : FirFunctionChecker( MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(declaration: FirFunction) {
-        val graph = declaration.controlFlowGraphReference?.controlFlowGraph ?: return
+        val graph = declaration.controlFlowGraphReference?.controlFlowGraph
+            ?: return
+        // TODO: Resolve the input uniqueness state flows (the output works but it doesn't make much sense)
         val uniquenessFlows = graph.resolveUniquenessStateFlows()
         fun CFGNode<*>.isExitJump(): Boolean =
             when (this) {

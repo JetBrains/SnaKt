@@ -29,7 +29,7 @@ class UniquenessAdditionalCheckers(session: FirSession) : FirAdditionalCheckersE
             setOf(PropertyUniquenessChecker)
 
         override val functionCheckers: Set<FirFunctionChecker> =
-            setOf(FunctionUniquenessConsistencyChecker)
+            setOf(FunctionExitUniquenessConsistencyChecker)
     }
 
     override val expressionCheckers: ExpressionCheckers = object : ExpressionCheckers() {
@@ -43,19 +43,19 @@ class UniquenessAdditionalCheckers(session: FirSession) : FirAdditionalCheckersE
             setOf(
                 CallUniquenessChecker,
                 CallArgumentUniquenessCollisionChecker,
-                CallLeakedUniquenessConsistencyChecker
+                CallBoundaryUniquenessConsistencyChecker
             )
 
         override val returnExpressionCheckers: Set<FirReturnExpressionChecker> =
             setOf(
                 ReturnUniquenessChecker,
-                ReturnLeakedUniquenessConsistencyChecker
+                ReturnBoundaryUniquenessConsistencyChecker
             )
 
         override val throwExpressionCheckers: Set<FirThrowExpressionChecker> =
             setOf(
                 ThrowUniquenessChecker,
-                ThrowLeakedUniquenessConsistencyChecker
+                ThrowBoundaryUniquenessConsistencyChecker
             )
     }
 }

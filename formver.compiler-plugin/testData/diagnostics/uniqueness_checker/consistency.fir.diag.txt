@@ -33,3 +33,5 @@
 /consistency.kt: error: Captured moved field: y
 
 /consistency.kt: error: Captured moved field: y
+
+/consistency.kt: error: Leaking moved field for context parameter of type 'A': b.x
