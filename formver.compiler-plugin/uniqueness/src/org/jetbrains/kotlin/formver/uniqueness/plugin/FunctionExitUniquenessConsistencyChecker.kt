@@ -29,14 +29,13 @@ val FirBasedSymbol<*>.locality: Locality
         else -> null
     }
 
-object FunctionInputUniquenessConsistencyChecker
+object FunctionExitUniquenessConsistencyChecker
     : FirFunctionChecker( MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(declaration: FirFunction) {
-        val graph = declaration.controlFlowGraphReference?.controlFlowGraph
-            ?: return
-        // TODO: Resolve the input uniqueness state flows (the output works but it doesn't make much sense)
+        val graph = declaration.controlFlowGraphReference?.controlFlowGraph ?: return
         val uniquenessFlows = graph.resolveUniquenessStateFlows()
+
         fun CFGNode<*>.isExitJump(): Boolean =
             when (this) {
                 is ThrowExceptionNode -> true
@@ -51,10 +50,16 @@ object FunctionInputUniquenessConsistencyChecker
                 else -> false
             }
 
+        fun CFGNode<*>.joinOverInputStates(): UniquenessState =
+            previousCfgNodes
+                .map { predecessor -> uniquenessFlows[predecessor].joinOverEdgeKinds() }
+                .reduceOrNull(UniquenessState::join)
+                ?: EmptyUniquenessState
+
         for (node in graph.nodes) {
             if (!node.isExitJump()) continue
 
-            val inputUniquenessState = uniquenessFlows[node].joinOverEdgeKinds()
+            val inputUniquenessState = node.joinOverInputStates()
             val topLevelUniquenessStates = inputUniquenessState.children
 
             for ((symbol, uniquenessState) in topLevelUniquenessStates) {
