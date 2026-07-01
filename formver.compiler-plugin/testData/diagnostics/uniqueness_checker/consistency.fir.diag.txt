@@ -27,3 +27,9 @@
 /consistency.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
 
 /consistency.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
+
+/consistency.kt: error: Captured moved field: y
+
+/consistency.kt: error: Captured moved field: y
+
+/consistency.kt: error: Captured moved field: y

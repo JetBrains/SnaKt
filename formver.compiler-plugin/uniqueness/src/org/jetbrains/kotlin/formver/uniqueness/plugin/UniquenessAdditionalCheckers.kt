@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.uniqueness.plugin
 
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.DeclarationCheckers
+import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirFunctionChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirPropertyChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.ExpressionCheckers
 import org.jetbrains.kotlin.fir.analysis.checkers.expression.FirCallChecker
@@ -26,6 +27,9 @@ class UniquenessAdditionalCheckers(session: FirSession) : FirAdditionalCheckersE
     override val declarationCheckers: DeclarationCheckers = object : DeclarationCheckers() {
         override val propertyCheckers: Set<FirPropertyChecker> =
             setOf(PropertyUniquenessChecker)
+
+        override val functionCheckers: Set<FirFunctionChecker> =
+            setOf(FunctionUniquenessConsistencyChecker)
     }
 
     override val expressionCheckers: ExpressionCheckers = object : ExpressionCheckers() {
@@ -43,9 +47,15 @@ class UniquenessAdditionalCheckers(session: FirSession) : FirAdditionalCheckersE
             )
 
         override val returnExpressionCheckers: Set<FirReturnExpressionChecker> =
-            setOf(ReturnUniquenessChecker, ReturnLeakedUniquenessConsistencyChecker)
+            setOf(
+                ReturnUniquenessChecker,
+                ReturnLeakedUniquenessConsistencyChecker
+            )
 
         override val throwExpressionCheckers: Set<FirThrowExpressionChecker> =
-            setOf(ThrowUniquenessChecker, ThrowLeakedUniquenessConsistencyChecker)
+            setOf(
+                ThrowUniquenessChecker,
+                ThrowLeakedUniquenessConsistencyChecker
+            )
     }
 }

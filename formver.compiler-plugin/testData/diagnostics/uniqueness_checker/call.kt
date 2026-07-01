@@ -188,9 +188,9 @@ fun `share unique subproperty`(z: @Unique B) {
     share(z.y.x)
 }
 
-fun `share unique-borrowed subproperty`(z: @Unique @Borrowed B) {
+fun `share unique-borrowed subproperty`(z: @Unique @Borrowed B) <!CAPTURED_UNIQUENESS_INCONSISTENCY!>{
     share(z.y.x)
-}
+}<!>
 
 fun `share multiple unique subproperties`(z: @Unique B) {
     share(z.y.x)
@@ -298,9 +298,9 @@ fun `consume unique subproperty`(z: @Unique B) {
     consume(z.y.x)
 }
 
-fun `consume unique-borrowed subproperty`(z: @Borrowed @Unique B) {
+fun `consume unique-borrowed subproperty`(z: @Borrowed @Unique B) <!CAPTURED_UNIQUENESS_INCONSISTENCY!>{
     consume(z.y.x)
-}
+}<!>
 
 fun `consume multiple unique subproperties`(z: @Unique B) {
     consume(z.y.x)

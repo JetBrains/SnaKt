@@ -115,3 +115,20 @@ fun `consume both subproperties via if branching between siblings`(n: @Unique N)
     consume(<!UNIQUENESS_MISMATCH!>n.b.c<!>)
     consume(<!UNIQUENESS_MISMATCH!>n.c.c<!>)
 }
+
+fun `consume child of borrowed unique and then return`(b: @Borrowed @Unique B) {
+    consume(b.y)
+
+    <!CAPTURED_UNIQUENESS_INCONSISTENCY!>return<!>
+}
+
+fun `consume child of borrowed unique and then do nothing`(b: @Borrowed @Unique B)
+<!CAPTURED_UNIQUENESS_INCONSISTENCY!>{
+    consume(b.y)
+}<!>
+
+fun `consume child of borrowed unique and then throw`(b: @Borrowed @Unique B, t: Throwable) {
+    consume(b.y)
+
+    <!CAPTURED_UNIQUENESS_INCONSISTENCY!>throw t<!>
+}

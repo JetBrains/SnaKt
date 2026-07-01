@@ -36,6 +36,8 @@
 
 /call.kt: error: Invalid attempt to pass the same unique argument a twice.
 
+/call.kt: error: Captured moved field: y.x
+
 /call.kt: error: Leaking moved field: z.y
 
 /call.kt: error: Leaking moved field: z.y
@@ -49,6 +51,8 @@
 /call.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
 
 /call.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
+
+/call.kt: error: Captured moved field: y.x
 
 /call.kt: error: Leaking moved field: z.y
 
