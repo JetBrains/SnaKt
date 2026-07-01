@@ -14,12 +14,12 @@ import org.jetbrains.kotlin.fir.expressions.FirSafeCallExpression
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
-import org.jetbrains.kotlin.formver.type.plugin.ExpressionTypeResolver
-import org.jetbrains.kotlin.formver.type.plugin.UnifyingExpressionTypeResolver
+import org.jetbrains.kotlin.formver.type.plugin.ExpressionTypeFactResolver
+import org.jetbrains.kotlin.formver.type.plugin.UnifyingExpressionTypeFactResolver
 
-object TerminalAccessStateResolver : ExpressionTypeResolver<AccessState> {
+object TerminalAccessStateResolver : ExpressionTypeFactResolver<AccessState> {
     context(context: CheckerContext)
-    override fun resolveTypeOf(expression: FirExpression): AccessState =
+    override fun resolveTypeFactOf(expression: FirExpression): AccessState =
         when (expression) {
             is FirQualifiedAccessExpression -> {
                 when (val symbol = expression.calleeReference.symbol) {
@@ -48,7 +48,7 @@ object TerminalAccessStateResolver : ExpressionTypeResolver<AccessState> {
 
 class ExpressionAccessStateResolver(session: FirSession) :
     FirExtensionSessionComponent(session),
-    ExpressionTypeResolver<AccessState> by UnifyingExpressionTypeResolver(
+    ExpressionTypeFactResolver<AccessState> by UnifyingExpressionTypeFactResolver(
         session.firCachesFactory,
         AccessStateUnifier,
         TerminalAccessStateResolver
@@ -65,5 +65,5 @@ private val FirSession.expressionAccessStateResolver: ExpressionAccessStateResol
 
 context(context: CheckerContext)
 fun FirExpression.resolveAccessState(): AccessState {
-    return context.session.expressionAccessStateResolver.resolveTypeOf(this)
+    return context.session.expressionAccessStateResolver.resolveTypeFactOf(this)
 }

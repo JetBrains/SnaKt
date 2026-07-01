@@ -14,14 +14,12 @@ import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.expressions.allReceiverExpressions
 import org.jetbrains.kotlin.fir.expressions.arguments
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNode
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.CFGNodeWithSubgraphs
-import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallEnterNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.FunctionCallExitNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableAssignmentNode
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.VariableDeclarationNode
 import org.jetbrains.kotlin.formver.locality.plugin.Locality
-import org.jetbrains.kotlin.formver.type.plugin.CallParametersTypeResolver
+import org.jetbrains.kotlin.formver.type.plugin.CallArgumentTypeFactsMapper
 
 typealias UniquenessStateFlow = ControlFlowInfo<Unit, UniquenessState>
 
@@ -30,7 +28,7 @@ typealias PathAwareUniquenessStateFlow = PathAwareControlFlowInfo<Unit, Uniquene
 class GraphUniquenessStatesAnalyzer(
     private val initialState: UniquenessState,
     private val context: CheckerContext,
-    private val callParametersLocalityResolver: CallParametersTypeResolver<Locality>,
+    private val callParametersLocalityResolver: CallArgumentTypeFactsMapper<Locality>,
 ) : PathAwareControlFlowGraphVisitor<Unit, UniquenessState>() {
     override fun mergeInfo(
         a: UniquenessStateFlow,
@@ -146,8 +144,8 @@ class GraphUniquenessStatesAnalyzer(
             return data.transformValues { data ->
                 var newUniquenessState = data.ensure()
 
-                for ((argument, requiredLocality) in callParametersLocalityResolver.resolveParameterTypesOf(call)) {
-                    if (requiredLocality == null) continue
+                for ((argument, requiredLocality) in callParametersLocalityResolver.mapArgumentTypeFactsOf(call)) {
+                    if (requiredLocality == Locality.Global) continue
 
                     newUniquenessState = argument.resolveAccessState().initialize(newUniquenessState)
                 }

@@ -17,7 +17,6 @@ import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.formver.locality.plugin.Locality
-import org.jetbrains.kotlin.formver.locality.plugin.LocalityAttribute
 import org.jetbrains.kotlin.formver.locality.plugin.resolveLocality
 import org.jetbrains.kotlin.formver.uniqueness.plugin.UniquenessErrors.CAPTURED_UNIQUENESS_INCONSISTENCY
 
@@ -26,7 +25,7 @@ val FirBasedSymbol<*>.locality: Locality
     get() = when (this) {
         is FirVariableSymbol<*> -> resolveLocality()
         is FirReceiverParameterSymbol -> resolveLocality()
-        else -> null
+        else -> Locality.Global
     }
 
 object FunctionExitUniquenessConsistencyChecker
@@ -63,7 +62,7 @@ object FunctionExitUniquenessConsistencyChecker
             val topLevelUniquenessStates = inputUniquenessState.children
 
             for ((symbol, uniquenessState) in topLevelUniquenessStates) {
-                if (symbol.locality == LocalityAttribute) {
+                if (symbol.locality == Locality.Local) {
                     val inconsistentPaths = uniquenessState.enumerateInconsistentPaths()
 
                     for (inconsistentPath in inconsistentPaths) {

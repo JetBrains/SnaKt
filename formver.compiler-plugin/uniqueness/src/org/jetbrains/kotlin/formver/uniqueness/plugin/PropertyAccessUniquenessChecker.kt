@@ -9,7 +9,6 @@ import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
 import org.jetbrains.kotlin.fir.expressions.allReceiverExpressions
 
 object PropertyAccessUniquenessChecker : FirPropertyAccessExpressionChecker(MppCheckerKind.Common) {
-
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirPropertyAccessExpression) {
         for (receiver in expression.allReceiverExpressions) {
@@ -20,5 +19,4 @@ object PropertyAccessUniquenessChecker : FirPropertyAccessExpressionChecker(MppC
             }
         }
     }
-
 }

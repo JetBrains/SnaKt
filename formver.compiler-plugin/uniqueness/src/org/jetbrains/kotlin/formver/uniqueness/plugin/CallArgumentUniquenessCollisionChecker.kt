@@ -13,7 +13,7 @@ object CallArgumentUniquenessCollisionChecker
     : FirCallChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(expression: FirCall) {
-        val arguments = CallParametersUniquenessResolver.resolveParameterTypesOf(expression)
+        val arguments = CallParametersUniquenessResolver.mapArgumentTypeFactsOf(expression)
         val uniqueArguments = arguments
             .filter { (_, uniqueness) -> uniqueness == Uniqueness.Unique }
             .map { (expression, _) -> expression }

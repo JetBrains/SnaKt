@@ -1,8 +1,8 @@
 package org.jetbrains.kotlin.formver.uniqueness.plugin
 
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
-import org.jetbrains.kotlin.formver.type.plugin.TypeIntersector
-import org.jetbrains.kotlin.formver.type.plugin.TypeUnifier
+import org.jetbrains.kotlin.formver.type.plugin.TypeFactIntersector
+import org.jetbrains.kotlin.formver.type.plugin.TypeFactUnifier
 
 typealias UniquenessState = PathTrie<Uniqueness>
 
@@ -11,7 +11,7 @@ val EmptyUniquenessState = UniquenessState(Uniqueness.Unique)
 fun UniquenessState.join(other: UniquenessState): UniquenessState =
     join(other, UniquenessUnifier)
 
-object UniquenessStateUnifier : TypeUnifier<UniquenessState> {
+object UniquenessStateUnifier : TypeFactUnifier<UniquenessState> {
     override fun join(left: UniquenessState, right: UniquenessState): UniquenessState =
         left.join(right)
 }
@@ -19,7 +19,7 @@ object UniquenessStateUnifier : TypeUnifier<UniquenessState> {
 fun UniquenessState.meet(other: UniquenessState): UniquenessState =
     meet(other, UniquenessIntersector)
 
-object UniquenessStateIntersector : TypeIntersector<UniquenessState> {
+object UniquenessStateIntersector : TypeFactIntersector<UniquenessState> {
     override fun meet(left: UniquenessState, right: UniquenessState): UniquenessState =
         left.meet(right)
 }

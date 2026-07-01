@@ -7,9 +7,9 @@ package org.jetbrains.kotlin.formver.uniqueness.plugin
 
 import org.jetbrains.kotlin.diagnostics.rendering.Renderer
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
-import org.jetbrains.kotlin.formver.type.plugin.TypeIntersector
-import org.jetbrains.kotlin.formver.type.plugin.TypeJudgment
-import org.jetbrains.kotlin.formver.type.plugin.TypeUnifier
+import org.jetbrains.kotlin.formver.type.plugin.TypeFactIntersector
+import org.jetbrains.kotlin.formver.type.plugin.TypeFactJudgment
+import org.jetbrains.kotlin.formver.type.plugin.TypeFactUnifier
 
 enum class Uniqueness {
     Unique,
@@ -23,15 +23,15 @@ val ConeKotlinType.defaultUniqueness: Uniqueness
 fun Uniqueness.accepts(other: Uniqueness): Boolean =
     this >= other
 
-object UniquenessJudgment : TypeJudgment<Uniqueness> {
-    override fun satisfies(requiredType: Uniqueness, actualType: Uniqueness): Boolean =
-        requiredType.accepts(actualType)
+object UniquenessJudgment : TypeFactJudgment<Uniqueness> {
+    override fun satisfies(requiredTypeFact: Uniqueness, actualTypeFact: Uniqueness): Boolean =
+        requiredTypeFact.accepts(actualTypeFact)
 }
 
 fun Uniqueness.join(other: Uniqueness): Uniqueness =
     maxOf(this, other)
 
-object UniquenessUnifier : TypeUnifier<Uniqueness> {
+object UniquenessUnifier : TypeFactUnifier<Uniqueness> {
     override fun join(left: Uniqueness, right: Uniqueness): Uniqueness {
         return left.join(right)
     }
@@ -40,7 +40,7 @@ object UniquenessUnifier : TypeUnifier<Uniqueness> {
 fun Uniqueness.meet(other: Uniqueness): Uniqueness =
     minOf(this, other)
 
-object UniquenessIntersector : TypeIntersector<Uniqueness> {
+object UniquenessIntersector : TypeFactIntersector<Uniqueness> {
     override fun meet(left: Uniqueness, right: Uniqueness): Uniqueness {
         return left.meet(right)
     }

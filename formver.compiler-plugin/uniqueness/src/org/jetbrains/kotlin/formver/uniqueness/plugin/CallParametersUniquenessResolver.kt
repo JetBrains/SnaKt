@@ -7,16 +7,16 @@ package org.jetbrains.kotlin.formver.uniqueness.plugin
 
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.expressions.FirExpression
-import org.jetbrains.kotlin.formver.type.plugin.CallParametersTypeResolver
-import org.jetbrains.kotlin.formver.type.plugin.InvokeParameterTypesResolver
+import org.jetbrains.kotlin.formver.type.plugin.CallArgumentTypeFactsMapper
+import org.jetbrains.kotlin.formver.type.plugin.InvokeParameterTypeFactsResolver
 
-private object InvokeParametersUniquenessResolver : InvokeParameterTypesResolver<Uniqueness> {
+private object InvokeParametersUniquenessResolver : InvokeParameterTypeFactsResolver<Uniqueness> {
     context(context: CheckerContext)
     override fun resolveInvokeParameters(receiver: FirExpression): List<Uniqueness>? =
         null // TODO: Implement uniqueness contract resolution
 }
 
-val CallParametersUniquenessResolver = CallParametersTypeResolver(
+val CallParametersUniquenessResolver = CallArgumentTypeFactsMapper(
     VariableUniquenessResolver,
     InvokeParametersUniquenessResolver
 )

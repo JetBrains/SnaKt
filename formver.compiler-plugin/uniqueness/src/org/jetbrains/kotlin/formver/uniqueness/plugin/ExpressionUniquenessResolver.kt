@@ -22,10 +22,10 @@ import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.fir.types.isNothingOrNullableNothing
 import org.jetbrains.kotlin.fir.types.isPrimitive
 import org.jetbrains.kotlin.fir.types.resolvedType
-import org.jetbrains.kotlin.formver.type.plugin.ExpressionTypeResolver
-import org.jetbrains.kotlin.formver.type.plugin.ReturnResultTypeResolver
-import org.jetbrains.kotlin.formver.type.plugin.ThrowExceptionTypeResolver
-import org.jetbrains.kotlin.formver.type.plugin.UnifyingExpressionTypeResolver
+import org.jetbrains.kotlin.formver.type.plugin.ExpressionTypeFactResolver
+import org.jetbrains.kotlin.formver.type.plugin.ReturnResultTypeFactResolver
+import org.jetbrains.kotlin.formver.type.plugin.ThrowExceptionTypeFactResolver
+import org.jetbrains.kotlin.formver.type.plugin.UnifyingExpressionTypeFactResolver
 
 context(context: CheckerContext)
 fun FirExpression.resolveAccessUniqueness(): Uniqueness {
@@ -38,9 +38,9 @@ fun FirExpression.resolveAccessUniqueness(): Uniqueness {
     return accessState.joinUniquenessOverTerminals(uniquenessState)
 }
 
-private object TerminalUniquenessResolver : ExpressionTypeResolver<Uniqueness> {
+private object TerminalUniquenessResolver : ExpressionTypeFactResolver<Uniqueness> {
     context(context: CheckerContext)
-    override fun resolveTypeOf(expression: FirExpression): Uniqueness {
+    override fun resolveTypeFactOf(expression: FirExpression): Uniqueness {
         return when (expression) {
             is FirFunctionCall ->
                 if (expression.calleeReference.symbol is FirConstructorSymbol) Uniqueness.Unique
@@ -77,19 +77,19 @@ private object TerminalUniquenessResolver : ExpressionTypeResolver<Uniqueness> {
 }
 
 class ExpressionUniquenessResolver(session: FirSession) :
-    ExpressionTypeResolver<Uniqueness> by UnifyingExpressionTypeResolver(
+    ExpressionTypeFactResolver<Uniqueness> by UnifyingExpressionTypeFactResolver(
         session.firCachesFactory,
         UniquenessUnifier,
         TerminalUniquenessResolver
     ), FirExtensionSessionComponent(session) {
-    companion object : ExpressionTypeResolver<Uniqueness> {
+    companion object : ExpressionTypeFactResolver<Uniqueness> {
         fun getFactory(): Factory {
             return Factory { session -> ExpressionUniquenessResolver(session) }
         }
 
         context(context: CheckerContext)
-        override fun resolveTypeOf(expression: FirExpression): Uniqueness =
-            context.session.expressionUniquenessResolver.resolveTypeOf(expression)
+        override fun resolveTypeFactOf(expression: FirExpression): Uniqueness =
+            context.session.expressionUniquenessResolver.resolveTypeFactOf(expression)
     }
 }
 
@@ -101,7 +101,7 @@ private val FirSession.expressionUniquenessResolver: ExpressionUniquenessResolve
  */
 context(context: CheckerContext)
 fun FirExpression.resolveUniqueness(): Uniqueness =
-    context.session.expressionUniquenessResolver.resolveTypeOf(this)
+    context.session.expressionUniquenessResolver.resolveTypeFactOf(this)
 
 /**
  * Extracts the default uniqueness from this access state.
@@ -119,19 +119,19 @@ fun FirExpression.resolveDefaultUniqueness(): Uniqueness {
     }
 }
 
-object ExpressionDefaultUniquenessResolver : ExpressionTypeResolver<Uniqueness> {
+object ExpressionDefaultUniquenessResolver : ExpressionTypeFactResolver<Uniqueness> {
     context(context: CheckerContext)
-    override fun resolveTypeOf(expression: FirExpression): Uniqueness =
+    override fun resolveTypeFactOf(expression: FirExpression): Uniqueness =
         expression.resolveDefaultUniqueness()
 }
 
-object ReturnResultUniquenessResolver : ReturnResultTypeResolver<Uniqueness> {
+object ReturnResultUniquenessResolver : ReturnResultTypeFactResolver<Uniqueness> {
     context(context: CheckerContext)
-    override fun resolveResultTypeOf(expression: FirReturnExpression): Uniqueness =
+    override fun resolveResultTypeFactOf(expression: FirReturnExpression): Uniqueness =
         expression.target.labeledElement.returnTypeRef.coneType.defaultUniqueness
 }
 
-object ThrowExceptionUniquenessResolver : ThrowExceptionTypeResolver<Uniqueness> {
+object ThrowExceptionUniquenessResolver : ThrowExceptionTypeFactResolver<Uniqueness> {
     context(context: CheckerContext)
-    override fun resolveExceptionTypeOf(expression: FirThrowExpression): Uniqueness = Uniqueness.Shared
+    override fun resolveExceptionTypeFactOf(expression: FirThrowExpression): Uniqueness = Uniqueness.Shared
 }

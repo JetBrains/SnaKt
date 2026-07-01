@@ -8,8 +8,8 @@ package org.jetbrains.kotlin.formver.uniqueness.plugin
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentMapOf
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
-import org.jetbrains.kotlin.formver.type.plugin.TypeIntersector
-import org.jetbrains.kotlin.formver.type.plugin.TypeUnifier
+import org.jetbrains.kotlin.formver.type.plugin.TypeFactIntersector
+import org.jetbrains.kotlin.formver.type.plugin.TypeFactUnifier
 
 data class PathTrie<Type>(
     val data: Type,
@@ -36,7 +36,7 @@ fun <Type> PathTrie<Type>.append(symbol: FirBasedSymbol<*>, other: PathTrie<Type
     return copy(children = appendedChildren)
 }
 
-fun <Type> PathTrie<Type>.join(other: PathTrie<Type>, typeUnifier: TypeUnifier<Type>): PathTrie<Type> {
+fun <Type> PathTrie<Type>.join(other: PathTrie<Type>, typeUnifier: TypeFactUnifier<Type>): PathTrie<Type> {
     var joinedChildren = children
 
     for ((symbol, otherChild) in other.children) {
@@ -54,7 +54,7 @@ fun <Type> PathTrie<Type>.join(other: PathTrie<Type>, typeUnifier: TypeUnifier<T
     )
 }
 
-fun <Type> PathTrie<Type>.meet(other: PathTrie<Type>, typeIntersector: TypeIntersector<Type>): PathTrie<Type> {
+fun <Type> PathTrie<Type>.meet(other: PathTrie<Type>, typeIntersector: TypeFactIntersector<Type>): PathTrie<Type> {
     var metChildren = persistentMapOf<FirBasedSymbol<*>, PathTrie<Type>>()
 
     for ((symbol, child) in children) {
@@ -68,7 +68,7 @@ fun <Type> PathTrie<Type>.meet(other: PathTrie<Type>, typeIntersector: TypeInter
     )
 }
 
-fun <Type> PathTrie<Type>.joinChildren(typeUnifier: TypeUnifier<Type>): Type {
+fun <Type> PathTrie<Type>.joinChildren(typeUnifier: TypeFactUnifier<Type>): Type {
     var joinedData = data
 
     for (child in children.values) {

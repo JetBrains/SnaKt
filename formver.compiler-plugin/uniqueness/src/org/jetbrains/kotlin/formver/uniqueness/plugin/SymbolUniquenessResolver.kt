@@ -11,15 +11,15 @@ import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.fir.types.ConeErrorType
-import org.jetbrains.kotlin.formver.type.plugin.SymbolTypeResolver
+import org.jetbrains.kotlin.formver.type.plugin.SymbolTypeFactResolver
 
 fun FirReceiverParameterSymbol.resolveUniqueness(): Uniqueness =
     resolvedType.defaultUniqueness
 
 object ReceiverUniquenessResolver :
-    SymbolTypeResolver<Uniqueness, FirReceiverParameterSymbol> {
+    SymbolTypeFactResolver<Uniqueness, FirReceiverParameterSymbol> {
     context(context: CheckerContext)
-    override fun resolveTypeOf(symbol: FirReceiverParameterSymbol): Uniqueness =
+    override fun resolveTypeFactOf(symbol: FirReceiverParameterSymbol): Uniqueness =
         symbol.resolveUniqueness()
 }
 
@@ -34,9 +34,9 @@ fun FirVariableSymbol<*>.resolveUniqueness(): Uniqueness {
     return resolvedInitializer?.resolveDefaultUniqueness() ?: Uniqueness.Shared
 }
 
-object VariableUniquenessResolver : SymbolTypeResolver<Uniqueness, FirVariableSymbol<*>> {
+object VariableUniquenessResolver : SymbolTypeFactResolver<Uniqueness, FirVariableSymbol<*>> {
     context(context: CheckerContext)
-    override fun resolveTypeOf(symbol: FirVariableSymbol<*>): Uniqueness =
+    override fun resolveTypeFactOf(symbol: FirVariableSymbol<*>): Uniqueness =
         symbol.resolveUniqueness()
 }
 

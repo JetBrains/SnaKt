@@ -1,8 +1,8 @@
 package org.jetbrains.kotlin.formver.uniqueness.plugin
 
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
-import org.jetbrains.kotlin.formver.type.plugin.TypeUnifier
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
+import org.jetbrains.kotlin.formver.type.plugin.TypeFactUnifier
 
 typealias AccessState = PathTrie<Access>
 
@@ -21,7 +21,7 @@ val AccessState.isTerminal: Boolean
 fun AccessState.join(other: AccessState): AccessState =
     join(other, AccessUnifier)
 
-object AccessStateUnifier : TypeUnifier<AccessState> {
+object AccessStateUnifier : TypeFactUnifier<AccessState> {
     override fun join(left: AccessState, right: AccessState): AccessState =
         left.join(right)
 }
