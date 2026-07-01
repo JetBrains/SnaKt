@@ -143,3 +143,21 @@ fun `pass inconsistent unique as context parameter`() {
     val local = b.x
     <!CONTEXT_LEAKED_UNIQUENESS_INCONSISTENCY!>consumeContext()<!>
 }
+
+fun `assign unique local field to unique`(x: @Borrowed @Unique A, y: @Unique Any) <!CAPTURED_UNIQUENESS_INCONSISTENCY!>{
+    var z = x.x;
+}<!>
+
+fun `assign unique local field to unique and then reassign it to unique`(x: @Borrowed @Unique A, y: @Unique Any) {
+    var z = x.x;
+    x.x = A()
+}
+
+fun `assign shared local field to shared`(x: @Borrowed A, y: @Unique Any) <!CAPTURED_UNIQUENESS_INCONSISTENCY!>{
+    var z = x.x;
+}<!>
+
+fun `assign shared local field to shared and then reassign it to unique`(x: @Borrowed A, y: @Unique Any) {
+    var z = x.x;
+    x.x = A()
+}

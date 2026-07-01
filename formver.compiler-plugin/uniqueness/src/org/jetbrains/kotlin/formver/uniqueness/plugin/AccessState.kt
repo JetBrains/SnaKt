@@ -27,21 +27,6 @@ object AccessStateUnifier : TypeFactUnifier<AccessState> {
 }
 
 /**
- * Returns `true` if the access state refers to a single path, `false` otherwise.
- */
-fun AccessState.isSingleton(): Boolean {
-    if (children.size > 1) return false
-
-    if (isTerminal && children.isNotEmpty()) return false
-
-    for ((_, child) in children) {
-        return child.isSingleton()
-    }
-
-    return true
-}
-
-/**
  * Concatenates every path in [this] with every path in [other].
  *
  * Worked example (`*` marks `Terminal` nodes; the top-row labels are the trie's own root and are not symbols inside the
