@@ -18,6 +18,9 @@ internal sealed class NameMatcher(val name: SymbolicName) {
         inline fun matchGlobalScope(name: SymbolicName, action: GlobalScopeNameMatcher.() -> Nothing): Nothing {
             GlobalScopeNameMatcher(name).action()
         }
+
+        inline fun matchesClassScope(name: SymbolicName, predicate: ClassScopeNameMatcher.() -> Boolean): Boolean =
+            ClassScopeNameMatcher(name).predicate()
     }
 
     protected val scopedName = name as? ScopedName

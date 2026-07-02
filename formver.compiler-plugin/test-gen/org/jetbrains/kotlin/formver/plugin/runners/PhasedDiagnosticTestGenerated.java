@@ -96,6 +96,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("array_list_constructor.kt")
+      public void testArray_list_constructor() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/array_list_constructor.kt");
+      }
+
+      @Test
       @TestMetadata("binary_search.kt")
       public void testBinary_search() {
         runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/binary_search.kt");

@@ -141,9 +141,6 @@ class TypeResolver {
         }
     }
 
-    fun isInheritorOfCollectionTypeNamed(pretypeEmbedding: PretypeEmbedding, name: String) =
-        isInheritorOf(pretypeEmbedding, SpecialPackages.collections, name)
-
     fun isCollectionInheritor(pretype: PretypeEmbedding) =
         isInheritorOf(pretype, SpecialPackages.collections, "Collection")
 
