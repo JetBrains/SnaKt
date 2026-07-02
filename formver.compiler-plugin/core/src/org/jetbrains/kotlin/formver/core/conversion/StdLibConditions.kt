@@ -36,58 +36,54 @@ data class ReceiverSatisfies(val conditions: List<TypeCondition>) : FunctionCond
 /** Matches functions with no dispatch receiver */
 data object HasNoReceiver : FunctionCondition {
     context(typeResolver: TypeResolver)
-    override fun matches(funcName: NamedFunctionSignature): Boolean {
-        var result = false
-        NameMatcher.matchClassScope(funcName.name) {
-            ifNoReceiver { result = true }
-            return result
+    override fun matches(funcName: NamedFunctionSignature): Boolean =
+        NameMatcher.matchesClassScope(funcName.name) {
+            ifNoReceiver { return@matchesClassScope true }
+            false
         }
-    }
 }
 
 /** Matches functions whose simple name equals [name]. */
 data class HasFunctionName(val name: String) : FunctionCondition {
     context(typeResolver: TypeResolver)
-    override fun matches(funcName: NamedFunctionSignature): Boolean {
-        var result = false
-        NameMatcher.matchClassScope(funcName.name) {
-            ifFunctionName(this@HasFunctionName.name) { result = true }
-            return result
+    override fun matches(funcName: NamedFunctionSignature): Boolean =
+        NameMatcher.matchesClassScope(funcName.name) {
+            ifFunctionName(this@HasFunctionName.name) { return@matchesClassScope true }
+            false
         }
-    }
+}
+
+/** Matches functions with exactly [count] value parameters. */
+data class HasParamCount(val count: Int) : FunctionCondition {
+    context(typeResolver: TypeResolver)
+    override fun matches(funcName: NamedFunctionSignature): Boolean = funcName.params.size == count
 }
 
 /** Matches constructors of the class named [className]. */
 data class IsConstructorOf(val className: String) : FunctionCondition {
     context(typeResolver: TypeResolver)
-    override fun matches(funcName: NamedFunctionSignature): Boolean {
-        var result = false
-        NameMatcher.matchClassScope(funcName.name) {
-            ifConstructorOf(this@IsConstructorOf.className) { result = true }
-            return result
+    override fun matches(funcName: NamedFunctionSignature): Boolean =
+        NameMatcher.matchesClassScope(funcName.name) {
+            ifConstructorOf(this@IsConstructorOf.className) { return@matchesClassScope true }
+            false
         }
-    }
 }
 
 /** Matches functions / types whose declaring package equals [pkg]. */
 data class InPackage(val pkg: List<String>) : FunctionCondition, TypeCondition {
     context(typeResolver: TypeResolver)
-    override fun matches(funcName: NamedFunctionSignature): Boolean {
-        var result = false
-        NameMatcher.matchClassScope(funcName.name) {
-            ifPackageName(pkg) { result = true }
-            return result
+    override fun matches(funcName: NamedFunctionSignature): Boolean =
+        NameMatcher.matchesClassScope(funcName.name) {
+            ifPackageName(pkg) { return@matchesClassScope true }
+            false
         }
-    }
 
     context(typeResolver: TypeResolver)
-    override fun matches(type: TypeEmbedding): Boolean {
-        var result = false
-        NameMatcher.matchClassScope(type.pretype.name) {
-            ifPackageName(pkg) { result = true }
-            return result
+    override fun matches(type: TypeEmbedding): Boolean =
+        NameMatcher.matchesClassScope(type.pretype.name) {
+            ifPackageName(pkg) { return@matchesClassScope true }
+            false
         }
-    }
 }
 
 /** Matches types that are a subtype of [pkg].[className]. */

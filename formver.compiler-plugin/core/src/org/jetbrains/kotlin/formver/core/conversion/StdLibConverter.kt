@@ -14,7 +14,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.LeIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubIntInt
-import org.jetbrains.kotlin.formver.core.embeddings.types.PretypeEmbedding
 import org.jetbrains.kotlin.formver.core.names.SpecialPackages
 
 private fun VariableEmbedding.sameSize(): ExpEmbedding =
@@ -26,18 +25,13 @@ private fun VariableEmbedding.increasedSize(amount: Int): ExpEmbedding = EqCmp(
 )
 
 /**
- * Matches any parameter whose pretype is a subtype of `[pkg].[paramTypeInherits]`.
- * If the parameter type is nullable, the generated embeddings are wrapped as
- * `param != null implies condition`.
+ * A function-level stdlib contract clause.
+ *
+ * A clause applies when every one of its [conditions] holds. All applicable clauses
+ * contribute their embeddings: the conditions no longer race for a single winner, the
+ * embeddings of every matching clause are combined (see [stdLibPreconditions] /
+ * [stdLibPostconditions]).
  */
-data class StdLibParamSpec(
-    val pkg: List<String>,
-    val paramTypeInherits: String,
-) {
-    fun matches(paramPretype: PretypeEmbedding, typeResolver: TypeResolver): Boolean =
-        typeResolver.isInheritorOf(paramPretype, pkg, paramTypeInherits)
-}
-
 sealed interface StdLibCondition {
     val conditions: List<FunctionCondition>
     fun matches(function: NamedFunctionSignature, typeResolver: TypeResolver): Boolean =
@@ -60,34 +54,11 @@ sealed interface StdLibPostcondition : StdLibCondition {
             GetPostcondition,
             SubListPostcondition,
             AddPostcondition,
+            EmptyArrayListPostcondition,
         )
     }
 
     fun getEmbeddings(returnVariable: VariableEmbedding, function: NamedFunctionSignature): List<ExpEmbedding>
-}
-
-sealed interface StdLibParamPrecondition {
-    val spec: StdLibParamSpec
-    fun matches(paramPretype: PretypeEmbedding, typeResolver: TypeResolver): Boolean =
-        spec.matches(paramPretype, typeResolver)
-
-    fun getEmbeddings(param: VariableEmbedding): List<ExpEmbedding>
-
-    companion object {
-        val all: List<StdLibParamPrecondition> = listOf()
-    }
-}
-
-sealed interface StdLibParamPostcondition {
-    val spec: StdLibParamSpec
-    fun matches(paramPretype: PretypeEmbedding, typeResolver: TypeResolver): Boolean =
-        spec.matches(paramPretype, typeResolver)
-
-    fun getEmbeddings(returnVariable: VariableEmbedding, param: VariableEmbedding): List<ExpEmbedding>
-
-    companion object {
-        val all: List<StdLibParamPostcondition> = listOf()
-    }
 }
 
 data object GetPrecondition : StdLibPrecondition {
@@ -211,25 +182,27 @@ data object AddPostcondition : StdLibPostcondition {
     ): List<ExpEmbedding> = listOf(function.dispatchReceiver!!.increasedSize(1))
 }
 
-fun NamedFunctionSignature.stdLibPreconditions(ctx: TypeResolver): List<ExpEmbedding> {
-    val fromFunction = StdLibPrecondition.all.filter { it.matches(this, ctx) }.flatMap { it.getEmbeddings(this) }
-    val fromParams = params.flatMap { param ->
-        StdLibParamPrecondition.all.filter { it.matches(param.type.pretype, ctx) }.flatMap { it.getEmbeddings(param) }
-            .map { if (param.type.isNullable) Implies(param.notNullCmp(), it) else it }
-    }
-    return fromFunction + fromParams
+data object EmptyArrayListPostcondition : StdLibPostcondition {
+    override val conditions = listOf(
+        IsConstructorOf("ArrayList"),
+        HasParamCount(0),
+    )
+
+    override fun getEmbeddings(
+        returnVariable: VariableEmbedding,
+        function: NamedFunctionSignature
+    ): List<ExpEmbedding> = listOf(EqCmp(FieldAccess(returnVariable, CollectionSizeFieldEmbedding), IntLit(0)))
 }
+
+/**
+ * Every clause whose [conditions][StdLibCondition.conditions] all hold contributes its
+ * embeddings; the clauses no longer race for a single winner.
+ */
+fun NamedFunctionSignature.stdLibPreconditions(ctx: TypeResolver): List<ExpEmbedding> =
+    StdLibPrecondition.all.filter { it.matches(this, ctx) }.flatMap { it.getEmbeddings(this) }
 
 fun NamedFunctionSignature.stdLibPostconditions(
     returnVariable: VariableEmbedding,
     ctx: TypeResolver,
-): List<ExpEmbedding> {
-    val fromFunction =
-        StdLibPostcondition.all.filter { it.matches(this, ctx) }.flatMap { it.getEmbeddings(returnVariable, this) }
-    val fromParams = params.flatMap { param ->
-        StdLibParamPostcondition.all.filter { it.matches(param.type.pretype, ctx) }
-            .flatMap { it.getEmbeddings(returnVariable, param) }
-            .map { if (param.type.isNullable) Implies(param.notNullCmp(), it) else it }
-    }
-    return fromFunction + fromParams
-}
+): List<ExpEmbedding> =
+    StdLibPostcondition.all.filter { it.matches(this, ctx) }.flatMap { it.getEmbeddings(returnVariable, this) }

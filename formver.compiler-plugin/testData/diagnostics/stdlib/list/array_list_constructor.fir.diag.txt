@@ -1,0 +1,21 @@
+/array_list_constructor.kt: info: Generated Viper text for empty_array_list:
+field size: Ref
+
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), ArrayList())
+  ensures acc(ret_1.size, write)
+  ensures intFromRef(ret_1.size) >= 0
+  ensures acc(ArrayList_unique(ret_1), write)
+  ensures intFromRef(ret_1.size) == 0
+
+
+method empty_array_list() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var l: Ref
+  l := con()
+  v_ret_0 := l.size
+  inhale isSubtype(typeOf(v_ret_0), intType())
+  goto lbl_ret_0
+  label lbl_ret_0
+}
