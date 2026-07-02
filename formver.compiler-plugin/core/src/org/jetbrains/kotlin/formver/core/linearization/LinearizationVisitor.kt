@@ -516,6 +516,9 @@ data class LinearizationVisitor(
         }
     }
 
+    override fun visitPermissionLit(e: PermissionLit): Linearizable =
+        error("PermissionLit should not be linearized; it is consumed directly by `acc` argument handling")
+
     // endregion
 
     // region Meta / Sharing
@@ -590,13 +593,6 @@ data class LinearizationVisitor(
             TODO("create new function object with counter, duplicable (requires toViper restructuring)")
         }
     }
-
-    // endregion
-
-    // region Default
-
-    override fun visitDefault(e: ExpEmbedding): Linearizable =
-        error("visitDefault should not be called; all concrete ExpEmbedding types must have their own visitor method")
 
     // endregion
 }
