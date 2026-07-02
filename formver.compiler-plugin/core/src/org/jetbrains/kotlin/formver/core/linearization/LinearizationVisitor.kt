@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.*
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toFuncApp
 import org.jetbrains.kotlin.formver.core.embeddings.callables.toMethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
+import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.fillHoles
 import org.jetbrains.kotlin.formver.core.embeddings.types.injection
 import org.jetbrains.kotlin.formver.core.embeddings.types.predicateAccess
@@ -420,14 +421,15 @@ data class LinearizationVisitor(
 
     override fun visitFieldModification(e: FieldModification): Linearizable = object : UnitResultLinearizable(e) {
         override fun toViperUnusedResult(ctx: LinearizationContext) {
+            val accessIsManual = with(ctx.typeResolver) { (e.receiver.type.pretype as? ClassTypeEmbedding)?.isManual ?: false }
             when (e.field.accessPolicy) {
-                AccessPolicy.BY_RECEIVER_UNIQUENESS -> {
+                AccessPolicy.BY_RECEIVER_UNIQUENESS if !accessIsManual -> {
                     e.receiver.linearize().toViperUnusedResult(ctx)
                     e.newValue.linearize().toViperUnusedResult(ctx)
                 }
                 else -> {
                     val receiverViper = e.receiver.linearize().toViper(ctx)
-                    if (e.field.unfoldToAccess) {
+                    if (e.field.unfoldToAccess && !accessIsManual) {
                         val receiverWrapper = ExpWrapper(receiverViper, e.receiver.type)
                         val hierarchyPath = ctx.typeResolver.hierarchyPathTo(e.receiver.type.pretype, e.field)
                         hierarchyPath.forEach { classType ->
@@ -456,6 +458,22 @@ data class LinearizationVisitor(
     override fun visitPredicateAccessPermissions(e: PredicateAccessPermissions): Linearizable = object : OnlyToBuiltinLinearizable(e, this@LinearizationVisitor) {
         override fun toViperBuiltinType(ctx: LinearizationContext): Exp =
             Exp.PredicateAccess(e.predicateName, e.args.map { it.linearize().toViper(ctx) }, e.perm, ctx.source.asPosition)
+    }
+
+    override fun visitUnfold(e: Unfold): Linearizable = object : UnitResultLinearizable(e) {
+        override fun toViperUnusedResult(ctx: LinearizationContext) {
+            ctx.addStatement {
+                Stmt.Unfold(e.pred.linearize().toViperBuiltinType(ctx) as Exp.PredicateAccess)
+            }
+        }
+    }
+
+    override fun visitFold(e: Fold): Linearizable = object : UnitResultLinearizable(e) {
+        override fun toViperUnusedResult(ctx: LinearizationContext) {
+            ctx.addStatement {
+                Stmt.Fold(e.pred.linearize().toViperBuiltinType(ctx) as Exp.PredicateAccess)
+            }
+        }
     }
 
     // endregion
