@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.embeddings.callables
 
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.core.conversion.handleUnsupportedFeature
 import org.jetbrains.kotlin.formver.core.conversion.insertForAllFunctionCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.AddCharInt
@@ -200,10 +201,10 @@ object SpecialKotlinFunctions {
 
         addFunction(forAllCallableType, SpecialPackages.formver, name = "forAll") { args, ctx ->
             val arg = args.first()
-            val lambda = arg.ignoringMetaNodes() as? LambdaExp ?: throw SnaktInternalException(
+            val lambda = arg.ignoringMetaNodes() as? LambdaExp ?: return@addFunction ctx.handleUnsupportedFeature(
                 null,
                 "First argument of forAll function must be a lambda."
-            )
+            ) { ErrorExp }
             val param = lambda.function.valueParameters.first()
             val body = lambda.function.body ?: throw SnaktInternalException(
                 null,
@@ -227,17 +228,18 @@ object SpecialKotlinFunctions {
         }
         addFunction(accCallableType, SpecialPackages.formver, name = "acc") { args, ctx ->
             val source = (args.firstOrNull() as? WithPosition)?.source
-            val fieldAccess = args.first().ignoringCastsAndMetaNodes() as? FieldAccess ?: throw SnaktInternalException(
-                source,
-                "First argument of `acc` must be a field access like `x.a`."
-            )
+            val fieldAccess = args.first().ignoringCastsAndMetaNodes() as? FieldAccess
+                ?: return@addFunction ctx.handleUnsupportedFeature(
+                    source,
+                    "First argument of `acc` must be a field access like `x.a`."
+                ) { ErrorExp }
             val perm = when (val permArg = args.getOrNull(1)?.ignoringCastsAndMetaNodes()) {
                 null, NullLit -> PermExp.FullPerm()
                 is PermissionLit -> permArg.perm
-                else -> throw SnaktInternalException(
+                else -> return@addFunction ctx.handleUnsupportedFeature(
                     source,
                     "Second argument of `acc` must be `read()` or `write()`."
-                )
+                ) { ErrorExp }
             }
             ctx.withNoScope {
                 AccEmbedding(fieldAccess.receiver, fieldAccess.field, perm)
