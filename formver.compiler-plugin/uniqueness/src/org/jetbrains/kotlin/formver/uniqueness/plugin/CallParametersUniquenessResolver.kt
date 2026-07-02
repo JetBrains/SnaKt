@@ -17,6 +17,6 @@ private object InvokeParametersUniquenessResolver : InvokeParameterTypeFactsReso
 }
 
 val CallParametersUniquenessResolver = CallArgumentTypeFactsMapper(
-    VariableUniquenessResolver,
+    ParameterUniquenessResolver,
     InvokeParametersUniquenessResolver
 )

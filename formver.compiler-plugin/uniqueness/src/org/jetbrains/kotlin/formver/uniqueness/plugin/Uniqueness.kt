@@ -7,17 +7,33 @@ package org.jetbrains.kotlin.formver.uniqueness.plugin
 
 import org.jetbrains.kotlin.diagnostics.rendering.Renderer
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
+import org.jetbrains.kotlin.formver.locality.plugin.LocalityAttribute
+import org.jetbrains.kotlin.formver.locality.plugin.locality
 import org.jetbrains.kotlin.formver.type.plugin.TypeFactIntersector
 import org.jetbrains.kotlin.formver.type.plugin.TypeFactJudgment
 import org.jetbrains.kotlin.formver.type.plugin.TypeFactUnifier
 
 enum class Uniqueness {
     Unique,
+    Unknown,
     Shared,
     Moved
 }
 
 val ConeKotlinType.defaultUniqueness: Uniqueness
+    get() =
+        when (attributes.uniquenessAttribute) {
+            is UniquenessAttribute -> {
+                Uniqueness.Unique
+            }
+            else ->
+                when (attributes.locality) {
+                    is LocalityAttribute -> Uniqueness.Unknown
+                    else -> Uniqueness.Shared
+                }
+        }
+
+val ConeKotlinType.parameterUniqueness: Uniqueness
     get() = attributes.uniquenessAttribute?.uniqueness ?: Uniqueness.Shared
 
 fun Uniqueness.accepts(other: Uniqueness): Boolean =
@@ -49,6 +65,7 @@ object UniquenessIntersector : TypeFactIntersector<Uniqueness> {
 val UniquenessRenderer = Renderer<Uniqueness> { uniqueness ->
     when (uniqueness) {
         Uniqueness.Unique -> "unique"
+        Uniqueness.Unknown -> "unknown"
         Uniqueness.Shared -> "shared"
         Uniqueness.Moved -> "moved"
     }

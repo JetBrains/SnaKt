@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.KtFakeSourceElementKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirValueParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.fir.types.ConeErrorType
 import org.jetbrains.kotlin.formver.type.plugin.SymbolTypeFactResolver
@@ -32,6 +33,12 @@ fun FirVariableSymbol<*>.resolveUniqueness(): Uniqueness {
     }
 
     return resolvedInitializer?.resolveDefaultUniqueness() ?: Uniqueness.Shared
+}
+
+object ParameterUniquenessResolver: SymbolTypeFactResolver<Uniqueness, FirValueParameterSymbol> {
+    context(context: CheckerContext)
+    override fun resolveTypeFactOf(symbol: FirValueParameterSymbol): Uniqueness =
+        symbol.resolvedReturnType.parameterUniqueness
 }
 
 object VariableUniquenessResolver : SymbolTypeFactResolver<Uniqueness, FirVariableSymbol<*>> {

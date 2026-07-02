@@ -180,9 +180,9 @@ fun `share shared subproperty`(z: B) {
     share(z.y.x)
 }
 
-fun `share borrowed subproperty`(z: @Borrowed B) {
+fun `share borrowed subproperty`(z: @Borrowed B) <!CAPTURED_UNIQUENESS_INCONSISTENCY!>{
     share(z.y.x)
-}
+}<!>
 
 fun `share unique subproperty`(z: @Unique B) {
     share(z.y.x)
@@ -290,9 +290,9 @@ fun `consume shared subproperty`(z: B) {
     consume(<!UNIQUENESS_MISMATCH!>z.y.x<!>)
 }
 
-fun `consume borrowed subproperty`(z: @Borrowed B) {
+fun `consume borrowed subproperty`(z: @Borrowed B) <!CAPTURED_UNIQUENESS_INCONSISTENCY!>{
     consume(<!UNIQUENESS_MISMATCH!>z.y.x<!>)
-}
+}<!>
 
 fun `consume unique subproperty`(z: @Unique B) {
     consume(z.y.x)
