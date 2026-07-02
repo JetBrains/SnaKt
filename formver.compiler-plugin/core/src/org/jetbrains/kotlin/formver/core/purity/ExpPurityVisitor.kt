@@ -20,6 +20,7 @@ internal class ExprPurityVisitor(val declaredVariables: MutableSet<VariableEmbed
         return pure
     }
     override fun visitLiteralEmbedding(e: LiteralEmbedding) = true
+    override fun visitPermissionLit(e: PermissionLit) = true
     override fun visitExpWrapper(e: ExpWrapper) = true
     override fun visitVariableEmbedding(e: VariableEmbedding) = true
     override fun visitAssign(e: Assign): Boolean =
@@ -66,7 +67,6 @@ internal class ExprPurityVisitor(val declaredVariables: MutableSet<VariableEmbed
     override fun visitPredicateAccessPermissions(e: PredicateAccessPermissions): Boolean = false
     override fun visitLabelExp(e: LabelExp): Boolean = false
     override fun visitAccEmbedding(e: AccEmbedding): Boolean = false
-    override fun visitDefault(e: ExpEmbedding): Boolean = false
 }
 
 private fun ExpEmbedding.allChildrenPure(v: ExprPurityVisitor): Boolean =
