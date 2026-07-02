@@ -1,3 +1,11 @@
-/throw.kt: error: Throw locality mismatch: expected 'global', actual 'local'.
+/throw.kt: error: Attempting to leak unknown path: a.
 
 /throw.kt: error: Throw locality mismatch: expected 'global', actual 'local'.
+
+/throw.kt: error: Attempting to leak unique path: a.
+
+/throw.kt: error: Throw locality mismatch: expected 'global', actual 'local'.
+
+/throw.kt: error: Attempting to leak unknown path: a.y.
+
+/throw.kt: error: Attempting to leak unique path: a.y.

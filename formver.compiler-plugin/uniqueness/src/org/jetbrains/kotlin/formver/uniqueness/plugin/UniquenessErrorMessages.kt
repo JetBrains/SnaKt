@@ -57,6 +57,12 @@ object UniquenessErrorMessages : BaseDiagnosticRendererFactory() {
                     PathRenderer
                 )
                 map.put(
+                    UniquenessErrors.INVALID_LEAKED_UNIQUENESS,
+                    "Attempting to leak {0} path: {1}.",
+                    UniquenessRenderer,
+                    PathRenderer
+                )
+                map.put(
                     UniquenessErrors.INVALID_OVERLAPPING_UNIQUE_ARGUMENTS,
                     "Invalid attempt to pass unique argument {0} overlapping with {1}.",
                     PathRenderer,

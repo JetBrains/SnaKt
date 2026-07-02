@@ -1,5 +1,13 @@
-/return.kt: error: Return locality mismatch: expected 'global', actual 'local'.
+/return.kt: error: Attempting to leak unknown path: a.
 
 /return.kt: error: Return locality mismatch: expected 'global', actual 'local'.
+
+/return.kt: error: Attempting to leak unique path: a.
+
+/return.kt: error: Return locality mismatch: expected 'global', actual 'local'.
+
+/return.kt: error: Attempting to leak unknown path: a.y.
+
+/return.kt: error: Attempting to leak unique path: a.y.
 
 /return.kt: error: Return uniqueness mismatch: expected 'unique', actual 'shared'.

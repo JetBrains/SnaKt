@@ -49,13 +49,15 @@ class UniquenessAdditionalCheckers(session: FirSession) : FirAdditionalCheckersE
         override val returnExpressionCheckers: Set<FirReturnExpressionChecker> =
             setOf(
                 ReturnUniquenessChecker,
-                ReturnBoundaryUniquenessConsistencyChecker
+                ReturnBoundaryUniquenessConsistencyChecker,
+                ReturnLeakedUniquenessChecker
             )
 
         override val throwExpressionCheckers: Set<FirThrowExpressionChecker> =
             setOf(
                 ThrowUniquenessChecker,
-                ThrowBoundaryUniquenessConsistencyChecker
+                ThrowBoundaryUniquenessConsistencyChecker,
+                ThrowLeakedUniquenessConsistencyChecker
             )
     }
 }

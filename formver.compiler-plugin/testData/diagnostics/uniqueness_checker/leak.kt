@@ -9,21 +9,17 @@ class A(
 )
 
 fun `return unique field of a local shared`(x: @Borrowed A): Any {
-    // TODO: This should obviously be an error
-    return x.x
+    <!INVALID_LEAKED_UNIQUENESS!>return x.x<!>
 }
 
 fun `return unique field of a local unique`(x: @Borrowed @Unique A): @Unique Any {
-    // TODO: This should obviously be an error
-    return x.x
+    <!INVALID_LEAKED_UNIQUENESS!>return x.x<!>
 }
 
 fun `throw unique field of a local shared`(x: @Borrowed A): Any {
-    // TODO: This should obviously be an error
-    throw x.w
+    <!INVALID_LEAKED_UNIQUENESS!>throw x.w<!>
 }
 
 fun `throw unique field of a local unique`(x: @Borrowed @Unique A): @Unique Any {
-    // TODO: This should obviously be an error
-    throw x.w
+    <!INVALID_LEAKED_UNIQUENESS!>throw x.w<!>
 }

@@ -15,7 +15,7 @@ fun `throw shared`(a: Throwable) {
 }
 
 fun `throw borrowed`(a: @Borrowed Throwable) {
-    throw <!LOCALITY_MISMATCH!>a<!>
+    <!INVALID_LEAKED_UNIQUENESS!>throw <!LOCALITY_MISMATCH!>a<!><!>
 }
 
 fun `throw unique`(a: @Unique Throwable) {
@@ -23,7 +23,7 @@ fun `throw unique`(a: @Unique Throwable) {
 }
 
 fun `throw unique-borrowed`(a: @Unique @Borrowed Throwable) {
-    throw <!LOCALITY_MISMATCH!>a<!>
+    <!INVALID_LEAKED_UNIQUENESS!>throw <!LOCALITY_MISMATCH!>a<!><!>
 }
 
 // Throwing subproperties
@@ -33,7 +33,7 @@ fun `throw shared subproperty`(a: B) {
 }
 
 fun `throw borrowed subproperty`(a: @Borrowed B) {
-    throw a.y
+    <!INVALID_LEAKED_UNIQUENESS!>throw a.y<!>
 }
 
 fun `throw unique subproperty`(a: @Unique B) {
@@ -41,5 +41,5 @@ fun `throw unique subproperty`(a: @Unique B) {
 }
 
 fun `throw unique-borrowed subproperty`(a: @Unique @Borrowed B) {
-    throw a.y
+    <!INVALID_LEAKED_UNIQUENESS!>throw a.y<!>
 }

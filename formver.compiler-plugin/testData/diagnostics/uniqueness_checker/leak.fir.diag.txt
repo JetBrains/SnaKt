@@ -1,0 +1,7 @@
+/leak.kt: error: Attempting to leak unknown path: x.x.
+
+/leak.kt: error: Attempting to leak unique path: x.x.
+
+/leak.kt: error: Attempting to leak unknown path: x.w.
+
+/leak.kt: error: Attempting to leak unique path: x.w.

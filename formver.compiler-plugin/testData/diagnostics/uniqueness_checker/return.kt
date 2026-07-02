@@ -19,7 +19,7 @@ fun `return shared`(a: Any): Any {
 }
 
 fun `return borrowed`(a: @Borrowed Any): Any {
-    return <!LOCALITY_MISMATCH!>a<!>
+    <!INVALID_LEAKED_UNIQUENESS!>return <!LOCALITY_MISMATCH!>a<!><!>
 }
 
 fun `return unique`(a: @Unique Any): Any {
@@ -27,7 +27,7 @@ fun `return unique`(a: @Unique Any): Any {
 }
 
 fun `return unique-borrowed`(a: @Unique @Borrowed Any): Any {
-    return <!LOCALITY_MISMATCH!>a<!>
+    <!INVALID_LEAKED_UNIQUENESS!>return <!LOCALITY_MISMATCH!>a<!><!>
 }
 
 // Returning subproperties
@@ -37,7 +37,7 @@ fun `return shared subproperty`(a: B): Any {
 }
 
 fun `return borrowed subproperty`(a: @Borrowed B): Any {
-    return a.y
+    <!INVALID_LEAKED_UNIQUENESS!>return a.y<!>
 }
 
 fun `return unique subproperty`(a: @Unique B): Any {
@@ -45,7 +45,7 @@ fun `return unique subproperty`(a: @Unique B): Any {
 }
 
 fun `return unique-borrowed subproperty`(a: @Unique @Borrowed B): Any {
-    return a.y
+    <!INVALID_LEAKED_UNIQUENESS!>return a.y<!>
 }
 
 fun `return shared from unique function`(a: Any) : @Unique Any {
