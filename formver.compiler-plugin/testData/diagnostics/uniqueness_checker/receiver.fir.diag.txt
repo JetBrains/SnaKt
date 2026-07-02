@@ -4,10 +4,4 @@
 
 /receiver.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.
 
-/receiver.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
-
-/receiver.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
-
-/receiver.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
-
-/receiver.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
+/receiver.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'moved'.

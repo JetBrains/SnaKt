@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.fir.expressions.FirQualifiedAccessExpression
 import org.jetbrains.kotlin.fir.expressions.FirSafeCallExpression
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 import org.jetbrains.kotlin.fir.references.symbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 import org.jetbrains.kotlin.formver.type.plugin.ExpressionTypeFactResolver
 import org.jetbrains.kotlin.formver.type.plugin.UnifyingExpressionTypeFactResolver
@@ -23,6 +24,9 @@ object TerminalAccessStateResolver : ExpressionTypeFactResolver<AccessState> {
         when (expression) {
             is FirQualifiedAccessExpression -> {
                 when (val symbol = expression.calleeReference.symbol) {
+                    is FirReceiverParameterSymbol -> {
+                        EmptyAccessState.associate(symbol, AccessState(Access.Terminal))
+                    }
                     is FirVariableSymbol<*> -> {
                         val receiverState = expression.pathReceiver
                             ?.resolveAccessState()
