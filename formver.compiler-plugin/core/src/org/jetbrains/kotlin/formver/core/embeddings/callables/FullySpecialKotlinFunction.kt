@@ -130,19 +130,28 @@ object SpecialKotlinFunctions {
 
         withCallableType(booleanBooleanToBooleanType) {
             addFunction(
-                booleanBooleanToBooleanType, SpecialPackages.kotlin, className = "Boolean", name = "and"
+                booleanBooleanToBooleanType,
+                SpecialPackages.kotlin,
+                className = "Boolean",
+                name = "and"
             ) { args, _ ->
                 And(args[0], args[1])
             }
 
             addFunction(
-                booleanBooleanToBooleanType, SpecialPackages.kotlin, className = "Boolean", name = "or"
+                booleanBooleanToBooleanType,
+                SpecialPackages.kotlin,
+                className = "Boolean",
+                name = "or"
             ) { args, _ ->
                 Or(args[0], args[1])
             }
 
             addFunction(
-                booleanBooleanToBooleanType, SpecialPackages.kotlin, className = "Boolean", name = "xor"
+                booleanBooleanToBooleanType,
+                SpecialPackages.kotlin,
+                className = "Boolean",
+                name = "xor"
             ) { args, _ ->
                 Xor(args[0], args[1])
             }
@@ -206,11 +215,13 @@ object SpecialKotlinFunctions {
         addFunction(forAllCallableType, SpecialPackages.formver, name = "forAll") { args, ctx ->
             val arg = args.first()
             val lambda = arg.ignoringMetaNodes() as? LambdaExp ?: throw SnaktInternalException(
-                null, "First argument of forAll function must be a lambda."
+                null,
+                "First argument of forAll function must be a lambda."
             )
             val param = lambda.function.valueParameters.first()
             val body = lambda.function.body ?: throw SnaktInternalException(
-                null, "Lambda body of forAll function must be present."
+                null,
+                "Lambda body of forAll function must be present."
             )
             ctx.insertForAllFunctionCall(param.symbol, body)
         }
@@ -237,13 +248,13 @@ object SpecialKotlinFunctions {
             }
         }
 
-        fun extractPredicate(exp: MethodCall, permissions: ExpEmbedding?): PredicateAccessPermissions {
-
-            val permissions = extractPermission(permissions)
-
-            return when (exp.type.pretype.name) {
+        fun extractPredicate(exp: MethodCall, perm: PermissionLit): PredicateAccessPermissions =
+            when (exp.type.pretype.name) {
                 uniquePredTypeName -> {
-                    val arg = exp.args.firstOrNull()!!
+                    val arg = exp.args.firstOrNull() ?: throw SnaktInternalException(
+                        null,
+                        "Predicate constructor call is missing its argument."
+                    )
                     val type = arg.type.pretype as? ClassTypeEmbedding ?: throw SnaktInternalException(
                         null,
                         "Can only unfold the unique predicates of classes"
@@ -251,13 +262,12 @@ object SpecialKotlinFunctions {
                     PredicateAccessPermissions(
                         type.uniquePredicateName,
                         listOf(arg.ignoringCastsAndMetaNodes()),
-                        permissions.perm
+                        perm.perm
                     )
                 }
 
                 else -> throw SnaktInternalException(null, "Unknown predicate")
             }
-        }
 
         val accCallableType = buildFunctionPretype {
             withParam { nullableAny() }
@@ -271,23 +281,19 @@ object SpecialKotlinFunctions {
         }
         addFunction(accCallableType, SpecialPackages.formver, name = "acc") { args, ctx ->
             val source = (args.firstOrNull() as? WithPosition)?.source
-
             val perm = extractPermission(args.getOrNull(1))
-
-            when (val exp = args.firstOrNull()?.ignoringCastsAndMetaNodes()) {
-                null -> throw SnaktInternalException(
-                    source, "First argument of `acc` must be a field access like `x.a`."
-                )
-
-                is FieldAccess -> AccEmbedding(exp.receiver, exp.field, perm.perm)
-                is MethodCall -> extractPredicate(exp, args.getOrNull(1))
-
-                else -> throw SnaktInternalException(
-                    source, "First argument of `acc` must be a field access like `x.a` or a predicate."
-                )
+            ctx.withNoScope {
+                when (val exp = args.firstOrNull()?.ignoringCastsAndMetaNodes()) {
+                    null -> throw SnaktInternalException(
+                        source, "First argument of `acc` must be a field access like `x.a`."
+                    )
+                    is FieldAccess -> AccEmbedding(exp.receiver, exp.field, perm.perm)
+                    is MethodCall -> extractPredicate(exp, perm)
+                    else -> throw SnaktInternalException(
+                        source, "First argument of `acc` must be a field access like `x.a` or a predicate."
+                    )
+                }
             }
-
-
         }
 
         val invariantsBuilderCallableType = buildFunctionPretype {
@@ -362,10 +368,7 @@ object SpecialKotlinFunctions {
 
         val stringIntToCharType = buildFunctionPretype {
             withDispatchReceiver { string() }
-            withParam {
-
-                int()
-            }
+            withParam { int() }
             withReturnType { char() }
         }
 
@@ -389,19 +392,19 @@ object SpecialKotlinFunctions {
         }
         addFunction(uniquePredicatePermissionsToUnit, SpecialPackages.formver, name = "unfold") { args, ctx ->
             val exp = (args[0].ignoringMetaNodes() as? MethodCall) ?: throw SnaktInternalException(
-                null, "First argument of unfold must be constructor to a predicate."
+                null, "First argument of `unfold` must be a predicate constructor call like `UniquePred(x)`."
             )
             Unfold(
-                extractPredicate(exp, args.getOrNull(1))
+                extractPredicate(exp, extractPermission(args.getOrNull(1)))
             )
         }
 
         addFunction(uniquePredicatePermissionsToUnit, SpecialPackages.formver, name = "fold") { args, ctx ->
             val exp = (args[0].ignoringMetaNodes() as? MethodCall) ?: throw SnaktInternalException(
-                null, "First argument of unfold must be constructor to a predicate."
+                null, "First argument of `fold` must be a predicate constructor call like `UniquePred(x)`."
             )
             Fold(
-                extractPredicate(exp, args.getOrNull(1))
+                extractPredicate(exp, extractPermission(args.getOrNull(1)))
             )
         }
     }

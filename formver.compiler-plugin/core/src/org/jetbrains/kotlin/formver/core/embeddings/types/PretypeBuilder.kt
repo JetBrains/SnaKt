@@ -105,7 +105,6 @@ fun buildFunctionPretype(init: FunctionPretypeBuilder.() -> Unit): FunctionTypeE
 
 class ClassPretypeBuilder : PretypeBuilder {
     private var className: ScopedName? = null
-    var isManual = false
 
     fun withName(name: ScopedName) {
         require(className == null) { "Class name already set" }
@@ -114,7 +113,7 @@ class ClassPretypeBuilder : PretypeBuilder {
 
     override fun complete(): ClassTypeEmbedding {
         require(className != null) { "Class name not set" }
-        return ClassTypeEmbedding(className!!, isManual)
+        return ClassTypeEmbedding(className!!)
     }
 }
 

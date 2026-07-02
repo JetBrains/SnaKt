@@ -421,7 +421,7 @@ data class LinearizationVisitor(
 
     override fun visitFieldModification(e: FieldModification): Linearizable = object : UnitResultLinearizable(e) {
         override fun toViperUnusedResult(ctx: LinearizationContext) {
-            val accessIsManual = (e.receiver.type.pretype as? ClassTypeEmbedding)?.isManual ?: false
+            val accessIsManual = with(ctx.typeResolver) { (e.receiver.type.pretype as? ClassTypeEmbedding)?.isManual ?: false }
             when (e.field.accessPolicy) {
                 AccessPolicy.BY_RECEIVER_UNIQUENESS if !accessIsManual -> {
                     e.receiver.linearize().toViperUnusedResult(ctx)

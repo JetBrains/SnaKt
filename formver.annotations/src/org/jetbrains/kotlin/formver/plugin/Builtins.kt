@@ -45,7 +45,14 @@ fun acc(
 ): Boolean =
     throw FormverFunctionCalledInRuntimeException("acc")
 
+/**
+ * An amount of permission to a location, such as full ([write]) or read-only ([read]).
+ */
 interface Permission
+
+/**
+ * A verification predicate over [exp].
+ */
 abstract class Predicate(val exp: Any)
 
 /**
@@ -60,15 +67,27 @@ fun read(): Permission =
 fun write(): Permission =
     throw FormverFunctionCalledInRuntimeException("write")
 
-
+/**
+ * The uniqueness predicate of [data]: exclusive access to [data] and its fields.
+ */
 data class UniquePred(val data: Any) : Predicate(data)
 
+/**
+ * Exchanges [exp] for access to its body, exposing the underlying fields. The inverse of [fold].
+ *
+ * [permission] is the amount of the predicate to unfold, defaulting to full ([write]).
+ */
 fun unfold(
     @Suppress("UNUSED_PARAMETER") exp: Predicate,
     @Suppress("UNUSED_PARAMETER") permission: Permission? = null
 ): Unit =
     throw FormverFunctionCalledInRuntimeException("unfold")
 
+/**
+ * Exchanges access to [exp]'s body for the predicate itself. The inverse of [unfold].
+ *
+ * [permission] is the amount of the predicate to fold, defaulting to full ([write]).
+ */
 fun fold(
     @Suppress("UNUSED_PARAMETER") exp: Predicate,
     @Suppress("UNUSED_PARAMETER") permission: Permission? = null
