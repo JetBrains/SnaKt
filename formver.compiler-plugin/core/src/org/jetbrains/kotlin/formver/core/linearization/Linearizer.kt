@@ -111,7 +111,7 @@ data class Linearizer(
 
     override fun addFieldAccessStoringIn(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding, result: VariableEmbedding) {
         addStatement {
-            val accessIsManual = (receiverType.pretype as? ClassTypeEmbedding)?.isManual ?: false
+            val accessIsManual = with(typeResolver) { (receiverType.pretype as? ClassTypeEmbedding)?.isManual ?: false }
             when (field.accessPolicy) {
                 // TODO: Handling a unique field on a shared receiver must be added here.
                 AccessPolicy.BY_RECEIVER_UNIQUENESS if !accessIsManual -> {
