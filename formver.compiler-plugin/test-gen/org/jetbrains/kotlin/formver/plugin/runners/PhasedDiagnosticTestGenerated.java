@@ -189,6 +189,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("leak.kt")
+    public void testLeak() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/leak.kt");
+    }
+
+    @Test
     @TestMetadata("loop.kt")
     public void testLoop() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/loop.kt");
