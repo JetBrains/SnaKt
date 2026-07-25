@@ -39,3 +39,16 @@ method nonIdentityWithNull(x: Ref) returns (v_ret_0: Ref)
   goto lbl_ret_0
   label lbl_ret_0
 }
+
+/identity_equality.kt: info: Generated Viper text for identityOfInts:
+method identityOfInts(x: Ref, y: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  v_ret_0 := boolToRef(x == y)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/identity_equality.kt: warning: Identity equality for arguments of types 'Int' and 'Int' is deprecated.

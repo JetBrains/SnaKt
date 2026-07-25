@@ -18,3 +18,7 @@ fun <!VIPER_TEXT!>identityWithNull<!>(x: C?): Boolean {
 fun <!VIPER_TEXT!>nonIdentityWithNull<!>(x: C?): Boolean {
     return x !== null
 }
+
+fun <!VIPER_TEXT!>identityOfInts<!>(x: Int, y: Int): Boolean {
+    return <!DEPRECATED_IDENTITY_EQUALS!>x === y<!>
+}
