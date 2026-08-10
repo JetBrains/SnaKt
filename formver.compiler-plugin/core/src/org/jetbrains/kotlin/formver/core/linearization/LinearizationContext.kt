@@ -40,6 +40,9 @@ interface LinearizationContext {
 
     val typeResolver: TypeResolver
 
+    /** Whether `inhale` statements can be emitted. Where they cannot, facts that would be inhaled are dropped. */
+    val canInhale: Boolean
+
     fun freshAnonVar(type: TypeEmbedding): AnonymousVariableEmbedding
 
     fun asBlock(action: LinearizationContext.() -> Unit): Stmt.Seqn
