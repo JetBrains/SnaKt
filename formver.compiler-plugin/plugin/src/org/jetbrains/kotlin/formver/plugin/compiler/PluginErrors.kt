@@ -13,6 +13,7 @@ object PluginErrors : KtDiagnosticsContainer() {
     val EXP_EMBEDDING by info2<PsiElement, String, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
     val INTERNAL_ERROR by error1<PsiElement, String>()
     val UNSUPPORTED_FEATURE by error1<PsiElement, String>()
+    val PROVER_NOT_FOUND by error1<PsiElement, String>()
     val UNIQUENESS_VIOLATION by error1<PsiElement, String>()
     val UNIQUENESS_CFG by info1<PsiElement, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
     val ADT_VIOLATION by error1<PsiElement, String>()
@@ -23,6 +24,7 @@ object PluginErrors : KtDiagnosticsContainer() {
         EXP_EMBEDDING.name,
         INTERNAL_ERROR.name,
         UNSUPPORTED_FEATURE.name,
+        PROVER_NOT_FOUND.name,
         UNIQUENESS_VIOLATION.name,
         UNIQUENESS_CFG.name,
         ADT_VIOLATION.name
