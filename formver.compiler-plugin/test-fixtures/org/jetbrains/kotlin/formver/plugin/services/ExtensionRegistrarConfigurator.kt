@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.formver.locality.plugin.LocalityExtensionRegistrar
 import org.jetbrains.kotlin.formver.plugin.compiler.FormalVerificationPluginExtensionRegistrar
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.ALWAYS_VALIDATE
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.DUMP_UNIQUENESS_CFG
+import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.FAIL_ON_VERIFICATION_ERROR
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.FULL_VIPER_DUMP
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.LOCALITY_CHECK_ONLY
 import org.jetbrains.kotlin.formver.plugin.services.FormVerDirectives.NEVER_VALIDATE
@@ -74,6 +75,7 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
             checkUniqueness = checkUniqueness,
             dumpUniquenessCFG = dumpUniquenessCFG,
             checkLocality = checkLocality,
+            verificationErrorSeverity = module.verificationErrorSeverity,
         )
         FirExtensionRegistrarAdapter.registerExtension(FormalVerificationPluginExtensionRegistrar(config))
         if (config.checkLocality) {
@@ -117,7 +119,18 @@ object FormVerDirectives : SimpleDirectivesContainer() {
     val NEVER_VALIDATE by directive(
         description = "Run in conversion-only mode: skip verification, keep consistency checking"
     )
+
+    val FAIL_ON_VERIFICATION_ERROR by directive(
+        description = "Report failed proofs as errors rather than warnings"
+    )
 }
+
+val TestModule.verificationErrorSeverity: VerificationErrorSeverity
+    get() = if (FAIL_ON_VERIFICATION_ERROR in directives) {
+        VerificationErrorSeverity.ERROR
+    } else {
+        VerificationErrorSeverity.WARNING
+    }
 
 class StdlibReplacementsProvider(testServices: TestServices, baseDir: String = ".") :
     AdditionalSourceProvider(testServices) {
