@@ -1,0 +1,3 @@
+/golden_diagnostic_integrity.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(x) >= 0 might not hold.
+
+/golden_diagnostic_integrity.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(x) > 0 might not hold.

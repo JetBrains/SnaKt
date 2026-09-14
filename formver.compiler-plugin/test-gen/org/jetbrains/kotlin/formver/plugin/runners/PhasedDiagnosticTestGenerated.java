@@ -331,6 +331,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("golden_diagnostic_integrity.kt")
+    public void testGolden_diagnostic_integrity() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/golden_diagnostic_integrity.kt");
+    }
+
+    @Test
     @TestMetadata("havoc.kt")
     public void testHavoc() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/havoc.kt");
