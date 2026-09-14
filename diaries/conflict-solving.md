@@ -262,3 +262,13 @@ Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains
 - Ran `./agent-scripts/test.sh extension_function_calls`; Gradle stopped during initialization because the environment provides Java 25.0.2, so no tests executed. The PR's previous validation records both focused golden tests passing.
 
 Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=9b330f41-4dad-4157-a482-ce9fa59da844
+
+## 2026-09-14 — Pull request #411 synchronization to 06857c9
+
+- Read the run request, trigger payload, delivery mode, repository `AGENTS.md`, and `AUTOMATIONS.md`, then recorded this run in `automationsInstructions/conflict-solving.md`.
+- Confirmed the checkout is the pull request source branch `test/issue-345-extension-functions` at `06857c9a95d05721e45e5f67d6b713738c12620e` and fetched complete history plus the current source and base refs.
+- Confirmed the current base `9bac7b389dc5d2e01ffe14b0f92b69f134866c87` is an ancestor of the synchronized head.
+- Confirmed `git merge-tree --write-tree` produces merged tree `3dba62243c4630c567c6d8385443a4e14767898b` without conflicts. GitHub reports `mergeable: MERGEABLE` and `mergeStateStatus: CLEAN`. No conflict-resolution merge was needed.
+- Ran `./agent-scripts/test.sh extension_function_calls`; Gradle stopped during initialization because the environment provides Java 25.0.2, so no tests executed. The PR's previous validation records both focused golden tests passing.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=3bc2ef2b-31fd-4da7-b192-18a15bb5e084
