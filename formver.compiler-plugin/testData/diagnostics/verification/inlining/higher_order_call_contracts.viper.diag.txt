@@ -1,0 +1,1 @@
+/higher_order_call_contracts.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(l0_result) == 11 might not hold.

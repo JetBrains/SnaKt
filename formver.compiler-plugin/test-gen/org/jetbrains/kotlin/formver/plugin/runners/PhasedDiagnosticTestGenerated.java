@@ -666,6 +666,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("higher_order_call_contracts.kt")
+      public void testHigher_order_call_contracts() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/inlining/higher_order_call_contracts.kt");
+      }
+
+      @Test
       @TestMetadata("inline_returns.kt")
       public void testInline_returns() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/inlining/inline_returns.kt");
