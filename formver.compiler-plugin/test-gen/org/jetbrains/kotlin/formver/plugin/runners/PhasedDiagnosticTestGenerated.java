@@ -367,6 +367,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("statement_reordering.kt")
+    public void testStatement_reordering() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/statement_reordering.kt");
+    }
+
+    @Test
     @TestMetadata("unit_return_type.kt")
     public void testUnit_return_type() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/unit_return_type.kt");
