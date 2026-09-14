@@ -1,0 +1,1 @@
+/lambda_capture_behavior.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(l0_result) == 41 might not hold.

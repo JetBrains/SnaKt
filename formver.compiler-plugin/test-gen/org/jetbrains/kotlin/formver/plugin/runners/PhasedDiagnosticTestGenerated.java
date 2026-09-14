@@ -672,6 +672,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("lambda_capture_behavior.kt")
+      public void testLambda_capture_behavior() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/inlining/lambda_capture_behavior.kt");
+      }
+
+      @Test
       @TestMetadata("lambdas.kt")
       public void testLambdas() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/inlining/lambdas.kt");
