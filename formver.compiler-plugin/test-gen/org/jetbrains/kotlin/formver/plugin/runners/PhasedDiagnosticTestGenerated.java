@@ -900,6 +900,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("loop_boundaries_and_exits.kt")
+      public void testLoop_boundaries_and_exits() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/loop_boundaries_and_exits.kt");
+      }
+
+      @Test
       @TestMetadata("loops.kt")
       public void testLoops() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/loops.kt");
