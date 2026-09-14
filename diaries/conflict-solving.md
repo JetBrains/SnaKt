@@ -66,3 +66,13 @@
 - Ran `git merge-tree --write-tree origin/implementing-air-automations HEAD`; it produced merged tree `0c82aef` without conflicts.
 - Ran `git diff --check`; it passed.
 - Concluded that this synchronize event requires no conflict resolution or product changes.
+
+## 2026-09-14 — PR #396 synchronize event at `55dc668`
+
+- Re-read `AUTOMATIONS.md` and confirmed this automation's instruction remains recorded in `automationsInstructions/conflict-solving.md`.
+- Fetched the complete current histories for `implementing-air-automations` and `test/issue-337-mutable-field-permissions` without switching branches.
+- Confirmed the current base commit `9bac7b3` is an ancestor of source head `55dc668`.
+- Confirmed through GitHub that PR #396 is `MERGEABLE` with merge state `CLEAN`, and that its pre-commit check passed.
+- Ran `git merge-tree --write-tree origin/implementing-air-automations HEAD`; it produced merged tree `48888a1` without conflicts.
+- Ran `git diff --check`; it passed.
+- Concluded that this synchronize event requires no conflict resolution or product changes.
