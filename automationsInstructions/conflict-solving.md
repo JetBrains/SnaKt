@@ -12,3 +12,8 @@ longer merges cleanly into `implementing-air-automations`.
 For run `cfc769e2-c997-400a-87b2-6cfdfb19cbaf`, inspect pull request #399
 after its latest synchronize event, verify its source branch still merges into
 `implementing-air-automations`, and resolve only conflicts that actually exist.
+
+For run `e079ec54-1f25-4c0f-89dc-529068bcf6a4`, inspect pull request #399
+after synchronization to `aa891d4162a6c5db14849e53dbc709d158eac278`,
+verify it against the current `implementing-air-automations` base, and resolve
+only conflicts that actually exist.
