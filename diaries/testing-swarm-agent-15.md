@@ -20,6 +20,7 @@ Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automa
 - Ran `./agent-scripts/check-all.sh`: Gradle `check` and `check-testdata.sh` passed, but the first run returned exit 2 because `pre-commit` was absent.
 - Installed the official pre-commit 4.6.2 zipapp and reran `check-all.sh`. Gradle `check` and `check-testdata.sh` passed again; pre-commit initialization failed because the environment proxy returned HTTP 403 while pip fetched setuptools from `files.pythonhosted.org`.
 - Ran all configured hooks directly as a fallback: `end-of-file-fixer` from the pinned pre-commit-hooks v5.0.0 source, `agent-scripts/check-testdata.sh`, and `agent-scripts/tests/run.sh`. All passed. `git diff --check` also passed.
+- Committed the test matrix, generated goldens, instruction record, and diary on `test/issue-332-vararg-call-conversion`; pushed the branch and opened JetBrains/SnaKt#401 against `implementing-air-automations`.
 
 ## Conclusions
 
