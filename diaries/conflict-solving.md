@@ -150,3 +150,13 @@
 - Ran Git's merge-tree calculation successfully; it produced merged tree `e7e7ae3a1d78b4c903e096d78a53811b1b0c67fc` with no conflicts.
 - Confirmed GitHub independently reports PR #408 as `MERGEABLE` with merge state `CLEAN` at the same source and target commits.
 - Made no changes to the PR's implementation or tests because no conflict exists.
+
+## 2026-09-14 — PR #408 synchronized to `d26c4eb`
+
+- Read `AUTOMATIONS.md` and recorded this run's instruction.
+- Confirmed the checkout is clean on `test/issue-325-pure-function-expressions` and matches synchronized source commit `d26c4eb09b0bf2df26126acdf57d65b9c21119b1`.
+- Fetched the current source and target histories and unshallowed the checkout so Git could calculate their ancestry reliably.
+- Confirmed the merge base of source `d26c4eb09b0bf2df26126acdf57d65b9c21119b1` and target `9bac7b389dc5d2e01ffe14b0f92b69f134866c87` is the target commit itself.
+- Ran Git's merge-tree calculation successfully; it produced merged tree `26cf4dbb1b8effd47e8d796eac73e8712dd45cde`, identical to the source tree, with no conflicts.
+- Confirmed GitHub independently reports PR #408 as `MERGEABLE` with merge state `CLEAN` at the same source and target commits.
+- Made no changes to the PR's implementation or tests because no conflict exists.
