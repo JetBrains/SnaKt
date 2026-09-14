@@ -842,6 +842,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("generic_function_substitution.kt")
+      public void testGeneric_function_substitution() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/types/generic_function_substitution.kt");
+      }
+
+      @Test
       @TestMetadata("generics.kt")
       public void testGenerics() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/types/generics.kt");
