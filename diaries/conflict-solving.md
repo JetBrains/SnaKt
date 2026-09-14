@@ -148,3 +148,15 @@
 - Ran `git merge-tree --write-tree HEAD origin/implementing-air-automations`; it produced merge tree `87305b6` successfully with no conflict entries.
 - Queried pull request #397 through GitHub; it reports `MERGEABLE`. Its `UNSTABLE` merge-state status does not indicate a merge conflict.
 - No conflict resolution or product/test changes were necessary for this synchronize event.
+
+## 2026-09-14 — Pull request #397 synchronize recheck at `7fafdcf`
+
+- Re-read `AUTOMATIONS.md` and confirmed the source branch and target comply with its branch rules.
+- Fetched and unshallowed the current source and base histories after the pull request head advanced to `7fafdcf`; the base remained `9bac7b3`.
+- Confirmed the base is the merge base and direct ancestor of the head; the source branch is seventeen commits ahead and zero commits behind.
+- Ran `git merge-tree --write-tree HEAD origin/implementing-air-automations`; it produced merge tree `ab466e9` successfully with no conflict entries.
+- Queried pull request #397 through GitHub; it reports `MERGEABLE`. Its `UNSTABLE` merge-state status is caused by the failing `pre-commit` check and does not indicate a merge conflict.
+- Inspected the failed check and removed the extra blank line at the end of `automationsInstructions/conflict-solving.md` that `end-of-file-fixer` reported.
+- No conflict resolution or product/test changes were necessary for this synchronize event.
+- Ran `git diff --check`; it passed. `check-testdata.sh` also passed through `check-all.sh`.
+- `check-all.sh` could not complete Gradle configuration because the environment provides Java `25.0.2`; Gradle reported that version as the error. The pre-commit check was unavailable locally, and installing it in an isolated virtual environment was blocked by an HTTP 403 from the package proxy.
