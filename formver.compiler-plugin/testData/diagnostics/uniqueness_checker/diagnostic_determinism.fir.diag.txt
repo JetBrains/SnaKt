@@ -1,0 +1,11 @@
+/diagnostic_determinism.kt: error: Invalid access to moved reference.
+
+/diagnostic_determinism.kt: error: Invalid access to moved reference.
+
+/diagnostic_determinism.kt: error: Invalid access to moved reference.
+
+/diagnostic_determinism.kt: error: Invalid access to moved reference.
+
+/diagnostic_determinism.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/diagnostic_determinism.kt: error: Invalid access to moved reference.

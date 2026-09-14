@@ -219,6 +219,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("diagnostic_determinism.kt")
+    public void testDiagnostic_determinism() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/diagnostic_determinism.kt");
+    }
+
+    @Test
     @TestMetadata("dump_cfg.kt")
     public void testDump_cfg() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/dump_cfg.kt");
