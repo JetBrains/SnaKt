@@ -1,5 +1,9 @@
 # Conflict solving
 
+## Run 4b840bcb-3eb4-4d19-9ba3-abed3e3df5db
+
+Monitor synchronized PR #411 (`test/issue-345-extension-functions` into `implementing-air-automations`), determine whether conflicts exist, resolve them if present, verify the result, and leave signed commits on the source branch for platform delivery.
+
 ## Run 8ec74f3c-adac-44c7-880a-0c6785bc8b54
 
 Monitor synchronized automation pull request #411, determine whether its source branch conflicts with `implementing-air-automations`, resolve any conflict on the source branch, verify the result, and leave signed commits for platform delivery.

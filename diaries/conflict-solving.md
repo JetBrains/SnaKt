@@ -1,5 +1,15 @@
 # Conflict solving diary
 
+## 2026-09-14 — Pull request #411 synchronization to 8305b5f
+
+- Read the run request, trigger payload, delivery mode, repository `AGENTS.md`, and `AUTOMATIONS.md`, then recorded this run in `automationsInstructions/conflict-solving.md`.
+- Confirmed the checkout is the pull request source branch `test/issue-345-extension-functions` at `8305b5f693d905bb2fac1221a9faae9e3fcb0dc0` and fetched complete history plus the current source and base refs.
+- Confirmed the current base `9bac7b389dc5d2e01ffe14b0f92b69f134866c87` is an ancestor of the synchronized head.
+- Confirmed `git merge-tree --write-tree` produces merged tree `a9fe12a132edbe03ab4efa09c8d47cc133f50658` without conflicts. GitHub reports `mergeable: MERGEABLE` and `mergeStateStatus: CLEAN`. No conflict-resolution merge was needed.
+- Ran `./agent-scripts/test.sh extension_function_calls`; Gradle stopped during initialization because the environment provides Java 25.0.2, so no tests executed. The PR's previous validation records both focused golden tests passing.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=4b840bcb-3eb4-4d19-9ba3-abed3e3df5db
+
 ## 2026-09-14 — Pull request #411
 
 - Read the run request, trigger payload, delivery mode, repository `AGENTS.md`, and `AUTOMATIONS.md`.
