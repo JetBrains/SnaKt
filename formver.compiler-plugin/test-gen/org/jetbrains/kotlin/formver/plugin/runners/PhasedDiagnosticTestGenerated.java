@@ -638,6 +638,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("recursion_variants.kt")
+      public void testRecursion_variants() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/recursion_variants.kt");
+      }
+
+      @Test
       @TestMetadata("return_break_continue.kt")
       public void testReturn_break_continue() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/return_break_continue.kt");

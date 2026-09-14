@@ -1,0 +1,5 @@
+/recursion_variants.kt: warning: Viper verification error: Postcondition of incorrectDecreasingIdentity might not hold. Assertion intFromRef(v_ret_0) == intFromRef(n) might not hold.
+
+/recursion_variants.kt: warning: Viper verification error: Postcondition of pureMutualEven might not hold. Assertion isSubtype(typeOf(result), boolType()) might not hold.
+
+/recursion_variants.kt: warning: Viper verification error: Postcondition of pureMutualEven might not hold. Assertion isSubtype(typeOf(result), boolType()) might not hold.
