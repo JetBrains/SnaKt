@@ -44,3 +44,13 @@
 - Confirmed GitHub reports the PR as `MERGEABLE` with merge state `CLEAN`.
 - Ran `check-all.sh`: test-data validation passed, Gradle could not configure under the environment's Java 25.0.2, and pre-commit was unavailable locally; the PR's GitHub pre-commit check passed, and `git diff --check` was clean.
 - Made no source or golden changes because there was no conflict to resolve.
+
+## 2026-09-14 — PR #407 synchronization at `d5dac1a`
+
+- Read `AUTOMATIONS.md` and reviewed the existing conflict-solving instruction and diary.
+- Refetched the source and target branches and unshallowed the clone to restore complete ancestry.
+- Confirmed `implementing-air-automations` at `9bac7b3` remains the merge base and an ancestor of the synchronized PR head.
+- Ran `git merge-tree --write-tree`; it produced a clean tree with no conflicts.
+- Confirmed GitHub reports the PR as `MERGEABLE` with merge state `CLEAN`, and its pre-commit check passed.
+- Ran `check-all.sh`: test-data validation passed, Gradle could not configure under the environment's Java 25.0.2, and pre-commit was unavailable locally; `git diff --check` was clean.
+- Made no source or golden changes because there was no conflict to resolve.
