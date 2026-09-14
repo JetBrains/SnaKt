@@ -1,0 +1,276 @@
+/generic_instantiation_isolation.kt: info: Generated Viper text for echo:
+field value: Ref
+
+method echo(this: Ref, argument: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), GenericCell())
+  requires isSubtype(typeOf(argument), nullable(anyType()))
+  ensures isSubtype(typeOf(v_ret_0), nullable(anyType()))
+{
+  v_ret_0 := argument
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/generic_instantiation_isolation.kt: info: Generated Viper text for echo:
+field value: Ref
+
+method echo(this: Ref, argument: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), BoundedCell())
+  requires isSubtype(typeOf(argument), nullable(anyType()))
+  ensures isSubtype(typeOf(v_ret_0), nullable(anyType()))
+{
+  v_ret_0 := argument
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/generic_instantiation_isolation.kt: info: Generated Viper text for distinctFieldInstantiations:
+field bf_value: Ref
+
+method con(par_value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_value), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), GenericCell())
+  ensures acc(GenericCell_unique(ret_2), write)
+  ensures (unfolding acc(GenericCell_unique(ret_2), write) in
+      ret_2.bf_value) ==
+    par_value
+
+
+method distinctFieldInstantiations() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 7
+{
+  var intCell: Ref
+  var booleanCell: Ref
+  var observedBoolean: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  intCell := con(intToRef(7))
+  booleanCell := con(boolToRef(true))
+  anon_0 := havoc(nullable(anyType()))
+  observedBoolean := anon_0
+  inhale isSubtype(typeOf(observedBoolean), boolType())
+  anon_1 := havoc(nullable(anyType()))
+  v_ret_0 := anon_1
+  inhale isSubtype(typeOf(v_ret_0), intType())
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/generic_instantiation_isolation.kt: info: Generated Viper text for distinctFieldInstantiationsNegative:
+field bf_value: Ref
+
+method con(par_value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_value), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), GenericCell())
+  ensures acc(GenericCell_unique(ret_2), write)
+  ensures (unfolding acc(GenericCell_unique(ret_2), write) in
+      ret_2.bf_value) ==
+    par_value
+
+
+method distinctFieldInstantiationsNegative() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 8
+{
+  var intCell: Ref
+  var booleanCell: Ref
+  var observedBoolean: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  intCell := con(intToRef(7))
+  booleanCell := con(boolToRef(true))
+  anon_0 := havoc(nullable(anyType()))
+  observedBoolean := anon_0
+  inhale isSubtype(typeOf(observedBoolean), boolType())
+  anon_1 := havoc(nullable(anyType()))
+  v_ret_0 := anon_1
+  inhale isSubtype(typeOf(v_ret_0), intType())
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/generic_instantiation_isolation.kt: info: Generated Viper text for distinctMethodInstantiations:
+field bf_value: Ref
+
+method c_GenericCell_f_echo_Boolean(this: Ref, argument: Ref)
+  returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), c_GenericCell())
+  requires isSubtype(typeOf(argument), boolType())
+  ensures isSubtype(typeOf(ret_3), boolType())
+
+
+method c_GenericCell_f_echo_Int(this: Ref, argument: Ref)
+  returns (ret_4: Ref)
+  requires isSubtype(typeOf(this), c_GenericCell())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(ret_4), intType())
+
+
+method con(par_value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_value), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), c_GenericCell())
+  ensures acc(c_GenericCell_unique(ret_2), write)
+  ensures (unfolding acc(c_GenericCell_unique(ret_2), write) in
+      ret_2.bf_value) ==
+    par_value
+
+
+method distinctMethodInstantiations() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 11
+{
+  var intCell: Ref
+  var booleanCell: Ref
+  var observedBoolean: Ref
+  intCell := con(intToRef(0))
+  booleanCell := con(boolToRef(false))
+  observedBoolean := c_GenericCell_f_echo_Boolean(booleanCell, boolToRef(true))
+  v_ret_0 := c_GenericCell_f_echo_Int(intCell, intToRef(11))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/generic_instantiation_isolation.kt: info: Generated Viper text for distinctMethodInstantiationsNegative:
+field bf_value: Ref
+
+method c_GenericCell_f_echo_Boolean(this: Ref, argument: Ref)
+  returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), c_GenericCell())
+  requires isSubtype(typeOf(argument), boolType())
+  ensures isSubtype(typeOf(ret_3), boolType())
+
+
+method c_GenericCell_f_echo_Int(this: Ref, argument: Ref)
+  returns (ret_4: Ref)
+  requires isSubtype(typeOf(this), c_GenericCell())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(ret_4), intType())
+
+
+method con(par_value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_value), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), c_GenericCell())
+  ensures acc(c_GenericCell_unique(ret_2), write)
+  ensures (unfolding acc(c_GenericCell_unique(ret_2), write) in
+      ret_2.bf_value) ==
+    par_value
+
+
+method distinctMethodInstantiationsNegative() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 12
+{
+  var intCell: Ref
+  var booleanCell: Ref
+  var observedBoolean: Ref
+  intCell := con(intToRef(0))
+  booleanCell := con(boolToRef(false))
+  observedBoolean := c_GenericCell_f_echo_Boolean(booleanCell, boolToRef(true))
+  v_ret_0 := c_GenericCell_f_echo_Int(intCell, intToRef(11))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/generic_instantiation_isolation.kt: info: Generated Viper text for nullableTypeArgument:
+field bf_value: Ref
+
+method con(par_value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_value), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), GenericCell())
+  ensures acc(GenericCell_unique(ret_2), write)
+  ensures (unfolding acc(GenericCell_unique(ret_2), write) in
+      ret_2.bf_value) ==
+    par_value
+
+
+method nullableTypeArgument() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
+  ensures v_ret_0 == nullValue()
+{
+  var anon: Ref
+  anon := con(nullValue())
+  v_ret_0 := havoc(nullable(intType()))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/generic_instantiation_isolation.kt: info: Generated Viper text for nullableTypeArgumentNegative:
+field bf_value: Ref
+
+method con(par_value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_value), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), GenericCell())
+  ensures acc(GenericCell_unique(ret_2), write)
+  ensures (unfolding acc(GenericCell_unique(ret_2), write) in
+      ret_2.bf_value) ==
+    par_value
+
+
+method nullableTypeArgumentNegative() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
+  ensures !(v_ret_0 == nullValue())
+{
+  var anon: Ref
+  anon := con(nullValue())
+  v_ret_0 := havoc(nullable(intType()))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/generic_instantiation_isolation.kt: info: Generated Viper text for boundedTypeParameter:
+field bf_value: Ref
+
+method boundedTypeParameter() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 21
+{
+  var intCell: Ref
+  intCell := con(intToRef(1))
+  v_ret_0 := echo(intCell, intToRef(21))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method con(par_value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_value), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), BoundedCell())
+  ensures acc(BoundedCell_unique(ret_2), write)
+  ensures (unfolding acc(BoundedCell_unique(ret_2), write) in
+      ret_2.bf_value) ==
+    par_value
+
+
+method echo(this: Ref, argument: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), BoundedCell())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(ret_3), intType())
+
+
+/generic_instantiation_isolation.kt: info: Generated Viper text for boundedTypeParameterNegative:
+field bf_value: Ref
+
+method boundedTypeParameterNegative() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 22
+{
+  var intCell: Ref
+  intCell := con(intToRef(1))
+  v_ret_0 := echo(intCell, intToRef(21))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method con(par_value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_value), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), BoundedCell())
+  ensures acc(BoundedCell_unique(ret_2), write)
+  ensures (unfolding acc(BoundedCell_unique(ret_2), write) in
+      ret_2.bf_value) ==
+    par_value
+
+
+method echo(this: Ref, argument: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), BoundedCell())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(ret_3), intType())

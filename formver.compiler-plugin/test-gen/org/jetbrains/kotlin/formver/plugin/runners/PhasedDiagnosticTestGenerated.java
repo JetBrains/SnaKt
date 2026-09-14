@@ -842,6 +842,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("generic_instantiation_isolation.kt")
+      public void testGeneric_instantiation_isolation() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/types/generic_instantiation_isolation.kt");
+      }
+
+      @Test
       @TestMetadata("generics.kt")
       public void testGenerics() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/types/generics.kt");
