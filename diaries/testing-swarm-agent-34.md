@@ -20,5 +20,7 @@
 - Ran `./agent-scripts/check-all.sh`; Gradle and testData checks passed, but the command returned exit 2 because `pre-commit` was not installed.
 - Installed the official pre-commit 4.0.1 zipapp and prepared its hook environment offline because the environment proxy blocked PyPI build dependencies. Ran all configured hooks successfully.
 - Reran `./agent-scripts/check-all.sh`: Gradle check, testData checks, end-of-file fixer, script tests, and all pre-commit hooks passed with exit 0.
+- Committed the focused tests, generated goldens, test registration, instruction record, and diary on `test/swarm-34-shadowing` with the required Air Automations signature.
+- Pushed `test/swarm-34-shadowing` to `origin` and opened [pull request #420](https://github.com/JetBrains/SnaKt/pull/420) against `implementing-air-automations`.
 
 Produced by Air Automations. Name: Testing swarm agent / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/34ccbbdd-3fd2-474e-8f0a-10b4b2d5bda4?run=638c282d-3ac8-45d8-a38c-c48ab13212a8
