@@ -1,0 +1,23 @@
+/quantifier_witnesses.kt: warning: Viper verification error: Assert might fail. Assertion (forall anon: Bool ::anon) might not hold.
+
+/quantifier_witnesses.kt: warning: Viper verification error: Assert might fail. Assertion (exists anon: Bool :: anon) might not hold.
+
+/quantifier_witnesses.kt: warning: Viper verification error: Assert might fail. Assertion (exists anon: Bool :: anon && !anon) might not hold.
+
+/quantifier_witnesses.kt: warning: Viper verification error: Assert might fail. Assertion (forall anon: Int ::!(anon == 0)) might not hold.
+
+/quantifier_witnesses.kt: warning: Viper verification error: Assert might fail. Assertion (exists anon: Int :: anon == 0) might not hold.
+
+/quantifier_witnesses.kt: warning: Viper verification error: Assert might fail. Assertion (exists anon: Int :: !(anon == anon)) might not hold.
+
+/quantifier_witnesses.kt: warning: Viper verification error: Assert might fail. Assertion (exists anon: Int :: 0 <= anon && anon < 0) might not hold.
+
+/quantifier_witnesses.kt: warning: Viper verification error: Assert might fail. Assertion (exists anon: Int :: 0 <= anon && anon < 1) might not hold.
+
+/quantifier_witnesses.kt: warning: Viper verification error: Assert might fail. Assertion (forall anon_builtin_0: Bool ::(exists anon_builtin_1: Bool :: anon_builtin_1 == anon_builtin_0)) might not hold.
+
+/quantifier_witnesses.kt: warning: Viper verification error: Assert might fail. Assertion (exists anon_builtin_0: Bool :: (forall anon_builtin_1: Bool ::anon_builtin_1 == anon_builtin_0)) might not hold.
+
+/quantifier_witnesses.kt: warning: Viper verification error: Assert might fail. Assertion (forall anon: Int :: { anon * anon } anon * anon > 0) might not hold.
+
+/quantifier_witnesses.kt: warning: Viper verification error: Assert might fail. Assertion (exists anon: Int :: { anon * anon } anon * anon == 0) might not hold.

@@ -906,6 +906,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("quantifier_witnesses.kt")
+      public void testQuantifier_witnesses() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/quantifier_witnesses.kt");
+      }
+
+      @Test
       @TestMetadata("simple_forall.kt")
       public void testSimple_forall() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/simple_forall.kt");
