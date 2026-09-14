@@ -460,6 +460,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("singleton_object_values.kt")
+      public void testSingleton_object_values() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/singleton_object_values.kt");
+      }
+
+      @Test
       @TestMetadata("subtyping.kt")
       public void testSubtyping() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/subtyping.kt");

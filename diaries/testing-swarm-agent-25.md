@@ -1,0 +1,18 @@
+# Testing swarm agent 25 diary
+
+- Read `AUTOMATIONS.md` before all other repository investigation.
+- Recorded the assignment in `automationsInstructions/testing-swarm-agent-25.md`.
+- Confirmed the checkout is clean and currently on `implementing-air-automations`, tracking the required source branch.
+- Read the repository's test-driver documentation and inspected existing golden tests for equality, class properties, and `when` subjects.
+- Searched existing testData for enum entries and singleton objects; found no focused enum verification coverage and only unrelated object-expression coverage.
+- Inspected recent pull requests and created `test/issue-342-enum-object-values` from `implementing-air-automations`, following the established `test/issue-...` branch convention.
+- Added an initial focused golden test covering direct and parameter-passed enum and singleton object values, equality, exhaustive and singleton `when` dispatch, and property access.
+- The first conversion attempt could not start under the environment's JDK 25.0.2. Package installation was unavailable, so downloaded a temporary Temurin JDK 21 outside the repository and used it for all subsequent checks.
+- The combined probe reached conversion and produced internal errors for enum-class property dispatch, enum-entry access, and singleton object qualifiers. Split it into independent `enum_values.kt` and `singleton_object_values.kt` cases so one construct's failure cannot mask the other.
+- Searched open and closed GitHub issues. Enum failures exactly reproduce closed #258 and are covered by open roadmap #316. Singleton object identity/dispatch is also explicitly covered by #316 and related closed #102, so these observations are duplicates and do not justify a new bug issue.
+- Minimized enum probing further. A local two-entry enum still emits three identical `INTERNAL_ERROR` diagnostics on the declaration plus a `FirEnumEntrySymbol` failure at its first direct reference; an external standard-library enum crashes diagnostic reporting because its FIR source is null. The golden marker parser collapses identical diagnostics on the same range, so the local enum failure cannot be represented as a passing golden. Removed that non-passable fixture while retaining the independently runnable singleton regression case and documenting the enum evidence here.
+- Confirmed the singleton case passes the conversion-only loop. The first full-pipeline run additionally exposed Kotlin's expected `REDUNDANT_ELSE_IN_WHEN` diagnostics for singleton-typed subjects; recorded those compiler diagnostics in the source markers before rerunning verification.
+- Confirmed the focused singleton case passes the full `--verify` pipeline after recording the expected compiler diagnostics. Because object qualifiers fail during conversion, no proof obligation for the property or `when` result reaches the backend; this is classified as conversion failure rather than proof or backend failure.
+- Ran `check-all.sh`. Its Gradle and testData phases passed after supplying the documented Z3 4.8.7 binary. The pre-commit phase remained skipped because the environment lacks `pre-commit` and its package proxy rejected installation; ran both configured local hooks (`check-testdata.sh` and `agent-scripts/tests/run.sh`) directly, checked whitespace with `git diff --check`, and confirmed all changed non-API files have exactly one trailing newline.
+
+Produced by Air Automations. Name: Testing swarm agent / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/34ccbbdd-3fd2-474e-8f0a-10b4b2d5bda4?run=4deb351f-f414-4458-a6ef-62301948d204
