@@ -768,6 +768,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("expression_composition.kt")
+      public void testExpression_composition() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/expression_composition.kt");
+      }
+
+      @Test
       @TestMetadata("heap_dependent_specifications.kt")
       public void testHeap_dependent_specifications() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/heap_dependent_specifications.kt");
@@ -811,6 +817,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("assert_statements.kt")
       public void testAssert_statements() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/purity/assert_statements.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_call_classification.kt")
+      public void testPure_call_classification() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/purity/pure_call_classification.kt");
       }
 
       @Test

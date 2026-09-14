@@ -1,0 +1,16 @@
+# Testing swarm agent 08 diary
+
+- Read `AUTOMATIONS.md` before taking any other repository action.
+- Recorded the assignment in `automationsInstructions/testing-swarm-agent-08.md`.
+- Confirmed the checkout starts clean on `implementing-air-automations`, with the matching remote branch available.
+- Reviewed recent pull requests targeting `implementing-air-automations` and created `test/issue-325-pure-function-expressions`, following the existing `test/issue-*` convention.
+- Used semantic code search to locate existing pure-function tests, then inspected the operator, local-value, branching, heap-dependent, and purity-violation controls and the golden-test workflow documentation.
+- Added separate probes for expression composition and purity classification. The composition probe combines unary negation, a conditional expression, local vals, nested calls to annotated pure functions, arithmetic, and a postcondition. The classification probe pairs an annotated pure callee with an otherwise equivalent unannotated callee so classification diagnostics remain distinct from conversion and proof behavior.
+- The host initially supplied only JDK 25, which prevented Gradle from starting. Package installation was unavailable, so downloaded Temurin JDK 17.0.20.1 from the official Adoptium GitHub release and used it for all test commands.
+- The first conversion probe reproduced `PureLinearizer ... freshAnonVar` for a conditional inside a postcondition. Duplicate search found closed issue #242 describing that exact reproducer, so no issue was opened. Rephrased the postcondition using the tested pure helper calls to keep verification coverage without duplicating the known limitation.
+- The classification probe produced an `addStatement` internal conversion error instead of `PURITY_VIOLATION`. Confirmed the existing direct-call control `wrongly_annotated` passes, then minimized the new distinction to an impure call stored in a local `val` and returned directly.
+- Searched open and closed GitHub issues for the minimized local-initializer failure and found no duplicate. Opened issue #368, `Pure local initializer bypasses impurity diagnostic and crashes conversion`, with label `swarmTestingBug` and the minimal reproducer.
+- Recorded the successful composition conversion and the minimized classification crash as separate golden outcomes. Read the generated Viper: the positive case preserved the local bindings, nested pure calls, conditional selection, unary negation, arithmetic helper, and postcondition.
+- Installed the repository-required Z3 4.8.7 from its official GitHub release after full verification identified the missing prover. Full verification of `expression_composition` then passed, proving the positive control rather than only converting it.
+- Full verification of `pure_call_classification` also passed with its expected conversion diagnostic.
+- Ran `check-all.sh`: Gradle `check` and testData validation passed. Its pre-commit stage was initially skipped, then a standalone official pre-commit release was installed; hook environment creation could not download `setuptools` because the environment proxy returned HTTP 403. Ran the configured checks directly instead: end-of-file-fixer on the changed text files, `check-testdata.sh`, and the agent-script test suite all passed. `git diff --check` passed.
