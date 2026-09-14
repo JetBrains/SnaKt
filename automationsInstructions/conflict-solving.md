@@ -18,6 +18,12 @@ Monitor automation pull request #391 after synchronization at `284cdbaa5b19461ff
 
 Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=70e5eaa5-2acf-4967-9e09-fd55feef18d3
 
+## Run 2026-09-14 — PR #391 synchronize at b5f5ae31
+
+Monitor automation pull requests and resolve merge conflicts when they appear. For this run, inspect synchronized head `b5f5ae312a67732856ec4dcd8a0989097cf57fe2` of PR #391 (`test/floating-point-rejection` into `implementing-air-automations`), resolve and verify any conflict on the source branch, or record the clean result when no resolution is required.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=934d4128-056c-403f-bb21-3617e4ac952a
+
 ## Run 2026-09-14 — PR #391 synchronize at a90104cd
 
 Monitor automation pull request #391 after synchronization at `a90104cdbd17d36e70ad17cdc88254d8dd2e5fa2`. Compare its source branch with the current `implementing-air-automations` base, resolve and verify any merge conflicts on the source branch, or record the clean result when no resolution is needed.
