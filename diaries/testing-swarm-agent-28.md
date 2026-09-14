@@ -1,0 +1,22 @@
+# Testing swarm agent 28 diary
+
+- Read `AUTOMATIONS.md` before any repository inspection or modification.
+- Recorded the assignment in `automationsInstructions/testing-swarm-agent-28.md` as required.
+- Confirmed the checkout was clean apart from this agent's two new records and was on `implementing-air-automations` at `9bac7b3`.
+- Inspected recent pull requests targeting `implementing-air-automations`; test branches use the `test/issue-<number>-<topic>` convention.
+- Used semantic code search to locate existing extension and receiver-contract coverage, then read the positive and negative receiver-contract testData and the test-driver documentation.
+- Identified uncovered assignment areas: call-site extension/ordinary-call contrast, nullable extension receivers, and extension overload resolution.
+- Created branch `test/issue-345-extension-functions` from `implementing-air-automations`.
+- Read existing function-overload, extension-property, multiple-receiver, and type-contract testData to match annotations and diagnostic conventions.
+- Added positive probes comparing extension syntax with equivalent ordinary functions for top-level and member calls, nullable-receiver contracts, and overload selection.
+- Added a negative boundary probe showing that extension overload resolution uses the receiver's static type, while retaining the ordinary-call comparison as a positive control.
+- The initial fast-loop command could not start under the environment's Java 25 runtime. Located the bundled Java 21 runtime after package installation and direct-download attempts were unavailable, then reran with `JAVA_HOME` and `PATH` pointing to Java 21.
+- The first Java 21 conversion run exposed missing `FULL_JDK` directives in both new cases (conversion attempted to embed `java/io/Serializable` through the incomplete mock JDK). Added the directive used by comparable receiver/verification tests and corrected the negative assertion marker to the established `VIPER_VERIFICATION_ERROR` convention.
+- The next fast run converted every extension and ordinary helper, but correctly rejected their use inside `verify` assertions as impure. Marked the side-effect-free helpers `@Pure`, following the existing pure-function convention; the generated diagnostics made clear this was a test declaration issue rather than an extension conversion defect.
+- Downloaded the project-required Z3 4.8.7 release through GitHub tooling after local package channels were unavailable, and set `Z3_EXE` for verification.
+- Regenerated the two focused goldens and read the complete report plus both full conversion goldens. Positive top-level/member comparisons, nullable-receiver contract implications, null controls, and base/child overload calls all convert to the expected Viper functions and assertions. The positive case produces no Viper verification diagnostic. The negative case produces exactly the intended assertion failure for expecting the child overload from a base-typed receiver.
+- Concluded that the tested extension-function surface behaves as expected; no previously unreported defect was found, so no bug issue is warranted.
+- Reran `./agent-scripts/test.sh extension_function_calls`: 2 tests passed.
+- Ran `./agent-scripts/test.sh --verify extension_function_calls` with Z3 4.8.7: 2 tests passed, including the expected negative golden.
+- Ran `./agent-scripts/check-all.sh`: Gradle `check` and testData checks passed; the command returned exit 2 only because the `pre-commit` launcher is unavailable.
+- Attempted to install/run `pre-commit` through both pip and uv, but the environment's Python package proxy rejected downloads. Ran the configured local `script-tests` hook directly (all assertions passed) and ran the upstream v5.0.0 `end-of-file-fixer` with its text-file filter (no source changes). The configured `check-testdata` hook had already passed. An initial unfiltered EOF invocation touched the binary Gradle wrapper; restored that exact accidental modification before continuing.

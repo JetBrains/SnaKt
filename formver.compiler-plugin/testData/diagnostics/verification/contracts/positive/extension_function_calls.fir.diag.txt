@@ -1,0 +1,261 @@
+/extension_function_calls.kt: info: Generated Viper text for plusExtension:
+function plusExtension(this: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(this), intType())
+  requires isSubtype(typeOf(other), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(this, other)
+}
+
+/extension_function_calls.kt: info: Generated Viper text for plusOrdinary:
+function plusOrdinary(receiver: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(receiver), intType())
+  requires isSubtype(typeOf(other), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(receiver, other)
+}
+
+/extension_function_calls.kt: info: Generated Viper text for plusOffset:
+function offset(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), ExtensionScope())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function plusOffset(v_this: Ref, v_this_extension: Ref): Ref
+  requires isSubtype(typeOf(v_this), ExtensionScope())
+  requires isSubtype(typeOf(v_this_extension), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(v_this_extension, offset(v_this))
+}
+
+/extension_function_calls.kt: info: Generated Viper text for plusOffsetOrdinary:
+function offset(this: Ref): Ref
+  requires isSubtype(typeOf(this), ExtensionScope())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function plusOffsetOrdinary(this: Ref, receiver: Ref): Ref
+  requires isSubtype(typeOf(this), ExtensionScope())
+  requires isSubtype(typeOf(receiver), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(receiver, offset(this))
+}
+
+/extension_function_calls.kt: info: Generated Viper text for compareMemberExtensionCall:
+function offset(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), ExtensionScope())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function plusOffset(v_this: Ref, v_this_extension: Ref): Ref
+  requires isSubtype(typeOf(v_this), ExtensionScope())
+  requires isSubtype(typeOf(v_this_extension), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(v_this_extension, offset(v_this))
+}
+
+function plusOffsetOrdinary(v_this: Ref, receiver: Ref): Ref
+  requires isSubtype(typeOf(v_this), ExtensionScope())
+  requires isSubtype(typeOf(receiver), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(receiver, offset(v_this))
+}
+
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method compareMemberExtensionCall(v_this: Ref, value: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(v_this), ExtensionScope())
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(plusOffset(v_this, value)) ==
+    intFromRef(plusOffsetOrdinary(v_this, value))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/extension_function_calls.kt: info: Generated Viper text for isPresentExtension:
+function isPresentExtension(v_this_extension: Ref): Ref
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == true ==> v_this_extension != nullValue()
+{
+  notBool(boolToRef(v_this_extension == nullValue()))
+}
+
+/extension_function_calls.kt: info: Generated Viper text for isPresentOrdinary:
+function isPresentOrdinary(receiver: Ref): Ref
+  requires isSubtype(typeOf(receiver), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == true ==> receiver != nullValue()
+{
+  notBool(boolToRef(receiver == nullValue()))
+}
+
+/extension_function_calls.kt: info: Generated Viper text for extensionRank:
+function extensionRank(v_this_extension: Ref): Ref
+  requires isSubtype(typeOf(v_this_extension), ExtensionBase())
+  ensures isSubtype(typeOf(result), intType())
+{
+  intToRef(1)
+}
+
+/extension_function_calls.kt: info: Generated Viper text for extensionRank:
+function extensionRank(v_this_extension: Ref): Ref
+  requires isSubtype(typeOf(v_this_extension), ExtensionChild())
+  ensures isSubtype(typeOf(result), intType())
+{
+  intToRef(2)
+}
+
+/extension_function_calls.kt: info: Generated Viper text for ordinaryRank:
+function ordinaryRank(receiver: Ref): Ref
+  requires isSubtype(typeOf(receiver), ExtensionBase())
+  ensures isSubtype(typeOf(result), intType())
+{
+  intToRef(1)
+}
+
+/extension_function_calls.kt: info: Generated Viper text for ordinaryRank:
+function ordinaryRank(receiver: Ref): Ref
+  requires isSubtype(typeOf(receiver), ExtensionChild())
+  ensures isSubtype(typeOf(result), intType())
+{
+  intToRef(2)
+}
+
+/extension_function_calls.kt: info: Generated Viper text for compareTopLevelExtensionCall:
+function plusExtension(v_this_extension: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(v_this_extension), intType())
+  requires isSubtype(typeOf(other), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(v_this_extension, other)
+}
+
+function plusOrdinary(receiver: Ref, other: Ref): Ref
+  requires isSubtype(typeOf(receiver), intType())
+  requires isSubtype(typeOf(other), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(receiver, other)
+}
+
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method compareTopLevelExtensionCall(left: Ref, right: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(left), intType())
+  requires isSubtype(typeOf(right), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(plusExtension(left, right)) ==
+    intFromRef(plusOrdinary(left, right))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/extension_function_calls.kt: info: Generated Viper text for compareNullableReceiverContracts:
+function isPresentExtension(v_this_extension: Ref): Ref
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == true ==> v_this_extension != nullValue()
+{
+  notBool(boolToRef(v_this_extension == nullValue()))
+}
+
+function isPresentOrdinary(receiver: Ref): Ref
+  requires isSubtype(typeOf(receiver), nullable(anyType()))
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == true ==> receiver != nullValue()
+{
+  notBool(boolToRef(receiver == nullValue()))
+}
+
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method compareNullableReceiverContracts(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), nullable(anyType()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  if (boolFromRef(isPresentExtension(value))) {
+    assert !(value == nullValue())
+  }
+  if (boolFromRef(isPresentOrdinary(value))) {
+    assert !(value == nullValue())
+  }
+  assert !boolFromRef(isPresentExtension(nullValue()))
+  assert !boolFromRef(isPresentOrdinary(nullValue()))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/extension_function_calls.kt: warning: Condition is always 'true'.
+
+/extension_function_calls.kt: warning: Condition is always 'true'.
+
+/extension_function_calls.kt: info: Generated Viper text for compareExtensionOverloads:
+function f_extensionRank_args_ExtensionBase_ret_Int(v_this_extension: Ref): Ref
+  requires isSubtype(typeOf(v_this_extension), ExtensionBase())
+  ensures isSubtype(typeOf(result), intType())
+{
+  intToRef(1)
+}
+
+function f_extensionRank_args_ExtensionChild_ret_Int(v_this_extension: Ref): Ref
+  requires isSubtype(typeOf(v_this_extension), ExtensionChild())
+  ensures isSubtype(typeOf(result), intType())
+{
+  intToRef(2)
+}
+
+function f_ordinaryRank_args_ExtensionBase_ret_Int(receiver: Ref): Ref
+  requires isSubtype(typeOf(receiver), ExtensionBase())
+  ensures isSubtype(typeOf(result), intType())
+{
+  intToRef(1)
+}
+
+function f_ordinaryRank_args_ExtensionChild_ret_Int(receiver: Ref): Ref
+  requires isSubtype(typeOf(receiver), ExtensionChild())
+  ensures isSubtype(typeOf(result), intType())
+{
+  intToRef(2)
+}
+
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method compareExtensionOverloads(base: Ref, child: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(base), ExtensionBase())
+  requires isSubtype(typeOf(child), ExtensionChild())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(f_extensionRank_args_ExtensionBase_ret_Int(base)) ==
+    intFromRef(f_ordinaryRank_args_ExtensionBase_ret_Int(base))
+  assert intFromRef(f_extensionRank_args_ExtensionChild_ret_Int(child)) ==
+    intFromRef(f_ordinaryRank_args_ExtensionChild_ret_Int(child))
+  assert intFromRef(f_extensionRank_args_ExtensionBase_ret_Int(base)) == 1
+  assert intFromRef(f_extensionRank_args_ExtensionChild_ret_Int(child)) ==
+    2
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

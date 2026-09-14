@@ -1,0 +1,63 @@
+/extension_function_calls.kt: info: Generated Viper text for extensionRank:
+function extensionRank(v_this_extension: Ref): Ref
+  requires isSubtype(typeOf(v_this_extension), ExtensionBase())
+  ensures isSubtype(typeOf(result), intType())
+{
+  intToRef(1)
+}
+
+/extension_function_calls.kt: info: Generated Viper text for extensionRank:
+function extensionRank(v_this_extension: Ref): Ref
+  requires isSubtype(typeOf(v_this_extension), ExtensionChild())
+  ensures isSubtype(typeOf(result), intType())
+{
+  intToRef(2)
+}
+
+/extension_function_calls.kt: info: Generated Viper text for ordinaryRank:
+function ordinaryRank(receiver: Ref): Ref
+  requires isSubtype(typeOf(receiver), ExtensionBase())
+  ensures isSubtype(typeOf(result), intType())
+{
+  intToRef(1)
+}
+
+/extension_function_calls.kt: info: Generated Viper text for ordinaryRank:
+function ordinaryRank(receiver: Ref): Ref
+  requires isSubtype(typeOf(receiver), ExtensionChild())
+  ensures isSubtype(typeOf(result), intType())
+{
+  intToRef(2)
+}
+
+/extension_function_calls.kt: info: Generated Viper text for extensionOverloadUsesStaticReceiverType:
+function extensionRank(v_this_extension: Ref): Ref
+  requires isSubtype(typeOf(v_this_extension), ExtensionBase())
+  ensures isSubtype(typeOf(result), intType())
+{
+  intToRef(1)
+}
+
+function ordinaryRank(receiver: Ref): Ref
+  requires isSubtype(typeOf(receiver), ExtensionBase())
+  ensures isSubtype(typeOf(result), intType())
+{
+  intToRef(1)
+}
+
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method extensionOverloadUsesStaticReceiverType(receiver: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(receiver), ExtensionBase())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(extensionRank(receiver)) ==
+    intFromRef(ordinaryRank(receiver))
+  assert intFromRef(extensionRank(receiver)) == 2
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

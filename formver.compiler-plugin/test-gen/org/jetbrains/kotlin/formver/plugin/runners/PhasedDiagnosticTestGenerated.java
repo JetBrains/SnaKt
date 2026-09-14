@@ -509,6 +509,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
         }
 
         @Test
+        @TestMetadata("extension_function_calls.kt")
+        public void testExtension_function_calls() {
+          runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/negative/extension_function_calls.kt");
+        }
+
+        @Test
         @TestMetadata("is_type_contract.kt")
         public void testIs_type_contract() {
           runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/negative/is_type_contract.kt");
@@ -564,6 +570,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
         @TestMetadata("contracts_with_receivers.kt")
         public void testContracts_with_receivers() {
           runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/positive/contracts_with_receivers.kt");
+        }
+
+        @Test
+        @TestMetadata("extension_function_calls.kt")
+        public void testExtension_function_calls() {
+          runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/positive/extension_function_calls.kt");
         }
 
         @Test
