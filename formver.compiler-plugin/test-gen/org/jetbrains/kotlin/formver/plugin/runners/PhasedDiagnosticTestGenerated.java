@@ -301,6 +301,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("cross_file_declarations.kt")
+    public void testCross_file_declarations() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/cross_file_declarations.kt");
+    }
+
+    @Test
     @TestMetadata("do_not_verify.kt")
     public void testDo_not_verify() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/do_not_verify.kt");
