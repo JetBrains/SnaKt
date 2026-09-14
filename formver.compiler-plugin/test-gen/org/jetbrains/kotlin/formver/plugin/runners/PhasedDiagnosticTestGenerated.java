@@ -361,6 +361,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("range_progressions.kt")
+    public void testRange_progressions() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/range_progressions.kt");
+    }
+
+    @Test
     @TestMetadata("shadowing.kt")
     public void testShadowing() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/shadowing.kt");

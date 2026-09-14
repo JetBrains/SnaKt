@@ -1,0 +1,9 @@
+/range_progressions.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(sum) == 6 might not hold.
+
+/range_progressions.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(sum) == 6 might not hold.
+
+/range_progressions.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(sum) == 6 might not hold.
+
+/range_progressions.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(sum) == 9 might not hold.
+
+/range_progressions.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(iterations) == intFromRef(upper) - intFromRef(lower) + 1 might not hold.
