@@ -237,6 +237,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("mutable_field_permissions.kt")
+    public void testMutable_field_permissions() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/mutable_field_permissions.kt");
+    }
+
+    @Test
     @TestMetadata("nullable.kt")
     public void testNullable() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/nullable.kt");
