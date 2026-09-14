@@ -128,3 +128,15 @@
 - Ran Git's merge-tree calculation successfully; it produced merged tree `401c32846d4029bc33414d851ffe01513246bcbd` with no conflicts.
 - Confirmed GitHub independently reports PR #408 as `MERGEABLE` with merge state `CLEAN` at the same source and target commits.
 - Made no changes to the PR's implementation or tests because no conflict exists.
+
+## 2026-09-14 — PR #408 synchronized to `5a8171d`
+
+- Read `AUTOMATIONS.md` and recorded this run's instruction.
+- Confirmed the checkout is clean on `test/issue-325-pure-function-expressions` and matches synchronized source commit `5a8171d5ea131c02e8c896b36b95bd5ce1ba3292`.
+- Fetched and deepened the current source and target histories until their merge base was available.
+- Confirmed the merge base of source `5a8171d5ea131c02e8c896b36b95bd5ce1ba3292` and target `9bac7b389dc5d2e01ffe14b0f92b69f134866c87` is the target commit itself.
+- Ran Git's merge-tree calculation successfully; it produced merged tree `2e56fb9bc5f4c41e78fa5bbc20a02c1bba27875a` with no conflicts.
+- Confirmed GitHub independently reports PR #408 as `MERGEABLE` with merge state `CLEAN` at the same source and target commits.
+- Made no changes to the PR's implementation or tests because no conflict exists.
+- Ran `check-all.sh`; the host JDK 25 failed during Gradle configuration, so reran with the available JDK 21. Gradle compiled successfully and reached the tests, where all 93 verification-test failures reported the same missing external prover: `Cannot run prover at location 'z3': not a file`. Test-data validation passed.
+- Tried to install the repository-required Temurin JDK 17 and Z3 4.8.7, but the environment proxy rejected both official and package-host downloads with HTTP 403. The pre-commit stage was skipped because `pre-commit` is not installed.
