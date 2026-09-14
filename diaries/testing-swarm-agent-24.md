@@ -29,5 +29,7 @@
 - Ran `check-all.sh` with Java 21 and Z3 4.8.7. Gradle `check` and test-data validation passed; the wrapper returned exit 2 only because `pre-commit` was unavailable.
 - Tried installing `pre-commit` with both pip and uv, but the environment proxy rejected Python package downloads with HTTP 403 responses.
 - Ran the configured local pre-commit hooks directly: `check-testdata.sh` passed and all agent-script assertions passed. Also confirmed all changed text files end in a newline and `git diff --check` reports no whitespace errors.
+- Committed the test fixture, generated golden and registration, instruction record, and diary on `test/generic-function-substitution` with commit `a29c1f9` (`Add generic function substitution probes`).
+- Pushed the branch and opened [pull request #388](https://github.com/JetBrains/SnaKt/pull/388) against `implementing-air-automations`.
 
 Produced by Air Automations. Name: Testing swarm agent / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/34ccbbdd-3fd2-474e-8f0a-10b4b2d5bda4?run=46ceed3b-d25b-420b-aeba-77e9c9d6c63b
