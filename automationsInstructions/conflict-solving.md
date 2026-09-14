@@ -1,5 +1,11 @@
 # Conflict solving
 
+## Run 2026-09-14 — PR #391 synchronize at ef5262bd
+
+Monitor automation pull requests and resolve merge conflicts when they appear. For this run, inspect synchronized head `ef5262bd07713c3a2629201f5435d921075068ae` of PR #391 (`test/floating-point-rejection` into `implementing-air-automations`), resolve and verify any conflict on the source branch, or record the clean result when no resolution is required.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=fbfcdf31-966a-49f5-8f06-18df606cdefd
+
 ## Run 2026-09-14 — PR #391 synchronize at 043c2029
 
 Monitor automation pull requests and resolve merge conflicts when they appear. For this run, inspect synchronized head `043c202917143ae2fe1f89ae0a945de52a03a1d7` of PR #391 (`test/floating-point-rejection` into `implementing-air-automations`), resolve and verify any conflict on the source branch, or record the clean result when no resolution is required.
