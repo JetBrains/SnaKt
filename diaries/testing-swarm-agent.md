@@ -37,3 +37,9 @@
   wheel cache for its end-of-file hook environment.
 - Reran `check-all.sh` successfully: Gradle check, testData checks, end-of-file
   fixer, and script tests all passed.
+- Committed the focused test suite, generated registration, instruction record,
+  and diary on `test/issue-337-mutable-field-permissions` with the required run
+  signature, then pushed the branch.
+- Opened PR #396 against `implementing-air-automations`, referencing issue #337
+  and documenting the coverage, observed behavior, validation, and no-bug
+  conclusion.
