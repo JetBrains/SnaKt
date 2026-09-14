@@ -734,6 +734,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("desugaring.kt")
+      public void testDesugaring() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/desugaring.kt");
+      }
+
+      @Test
       @TestMetadata("elvis.kt")
       public void testElvis() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/elvis.kt");
