@@ -20,3 +20,4 @@
 - Ran `./agent-scripts/test.sh --verify extension_function_calls` with Z3 4.8.7: 2 tests passed, including the expected negative golden.
 - Ran `./agent-scripts/check-all.sh`: Gradle `check` and testData checks passed; the command returned exit 2 only because the `pre-commit` launcher is unavailable.
 - Attempted to install/run `pre-commit` through both pip and uv, but the environment's Python package proxy rejected downloads. Ran the configured local `script-tests` hook directly (all assertions passed) and ran the upstream v5.0.0 `end-of-file-fixer` with its text-file filter (no source changes). The configured `check-testdata` hook had already passed. An initial unfiltered EOF invocation touched the binary Gradle wrapper; restored that exact accidental modification before continuing.
+- Committed the test suite and records as `d2d3fd5`, pushed branch `test/issue-345-extension-functions`, and opened pull request #411 against `implementing-air-automations`.
