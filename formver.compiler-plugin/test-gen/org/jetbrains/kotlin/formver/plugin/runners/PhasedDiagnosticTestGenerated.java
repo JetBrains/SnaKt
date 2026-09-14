@@ -870,6 +870,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("boolean_normalization.kt")
+      public void testBoolean_normalization() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/boolean_normalization.kt");
+      }
+
+      @Test
       @TestMetadata("empty.kt")
       public void testEmpty() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/empty.kt");
