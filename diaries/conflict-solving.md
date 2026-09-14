@@ -22,3 +22,13 @@ Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains
 - Ran `./agent-scripts/test.sh extension_function_calls` with JetBrains Runtime 21.0.11; both focused golden tests passed.
 
 Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=039d5544-3013-487a-8451-c0be10465df3
+
+## 2026-09-14 — Pull request #411 synchronization to f41379c
+
+- Re-read the run request, trigger payload, delivery mode, repository `AGENTS.md`, and `AUTOMATIONS.md`.
+- Confirmed the checkout is the pull request source branch `test/issue-345-extension-functions` at `f41379cc7ac5c702f4fe6e91a88a9d3fe9eb030e` and fetched the current source and base refs.
+- Confirmed the current base `9bac7b389dc5d2e01ffe14b0f92b69f134866c87` is an ancestor of the synchronized head.
+- Confirmed a local merge-tree completes without conflicts. GitHub reported `mergeable: MERGEABLE`; its `UNSTABLE` merge-state status therefore reflects checks rather than a merge conflict. No merge commit was needed.
+- The focused test initially failed before execution because the environment selected Java 25.0.2. Re-ran with the available JetBrains Runtime 21.0.11; `./agent-scripts/test.sh extension_function_calls` ran both golden tests and both passed.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=1a11477c-688f-48b0-b588-d8e45f465e69
