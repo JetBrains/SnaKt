@@ -26,3 +26,5 @@
 - Ran `./agent-scripts/test.sh --verify inheritance_dispatch`: 1 test passed.
 - Ran `./agent-scripts/check-all.sh`: Gradle checks and testData checks passed, but the command returned exit 2 because `pre-commit` was absent. Downloaded the official pre-commit 4.6.2 zipapp; its external end-of-file hook could not install because the automation proxy blocks PyPI.
 - Reran `./agent-scripts/check-all.sh` with only `end-of-file-fixer` skipped: Gradle checks, testData checks, `check-testdata`, and `script-tests` all passed, and the command exited 0. Separately ran `git diff --check` and confirmed every added file ends with a newline.
+- Committed the focused test, golden, generated test registration, instruction record, and diary as `1cffaa5` (`Add inheritance dispatch golden coverage`) with the required Air Automations signature.
+- Pushed `test/swarm-339-inheritance-dispatch` and opened pull request #421 against `implementing-air-automations`, referencing assignments #339 and existing behavioral-subtyping scope #311.
