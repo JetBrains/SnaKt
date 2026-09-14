@@ -906,3 +906,18 @@ Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains
 - Concluded that the synchronized head has no merge conflict, so no source or golden-file edits were necessary.
 
 Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=9bfd0370-9bfb-4689-91ad-2b8e944fe4e4
+
+## 2026-09-14 — synchronized head ef1001f1
+
+- Read `AUTOMATIONS.md` and recorded this run in `automationsInstructions/conflict-solving.md`.
+- Confirmed the checkout remains on `test/floating-point-rejection` and PR #391 targets `implementing-air-automations`.
+- Fetched and deepened both exact remote refs without switching branches. The triggered, checked-out, and remote head is `ef1001f15383dc38505d58ba21817e28b38a5e89`; the base is `9bac7b389dc5d2e01ffe14b0f92b69f134866c87`.
+- Confirmed the base is the merge base and an ancestor of the synchronized head.
+- Ran `git merge-tree --write-tree origin/implementing-air-automations HEAD`; it produced merged tree `459b9306bfa89baeb631ed1bfd7c6fdc1fefb702` without conflict diagnostics.
+- Queried GitHub at those exact revisions; it reported `MERGEABLE` and `CLEAN`, and the pre-commit check passed.
+- Ran `git diff --check origin/implementing-air-automations...HEAD` and `git diff --check`; both completed successfully.
+- Ran `./agent-scripts/check-all.sh`; test-data checks passed, but Gradle could not initialize under the environment's Java 25.0.2 runtime. The pre-commit runner was unavailable, and the environment proxy returned HTTP 403 while attempting to install it in an isolated virtual environment.
+- Ran the configured local script tests directly; all assertions passed. Confirmed both modified Markdown files end with a newline. GitHub's pre-commit check for the exact synchronized head also passed.
+- Concluded that the synchronized head has no merge conflict, so no source or golden-file edits were necessary.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=394aa409-45b3-434b-b57c-6123f91882d7
