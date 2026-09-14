@@ -836,6 +836,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("cast_type_refinement.kt")
+      public void testCast_type_refinement() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/types/cast_type_refinement.kt");
+      }
+
+      @Test
       @TestMetadata("casts.kt")
       public void testCasts() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/types/casts.kt");
