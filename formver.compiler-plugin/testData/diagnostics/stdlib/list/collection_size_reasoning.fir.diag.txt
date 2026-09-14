@@ -1,0 +1,263 @@
+/collection_size_reasoning.kt: info: Generated Viper text for size_probe:
+field p_size: Ref
+
+method size_probe(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), List())
+  requires acc(list.p_size, write)
+  requires intFromRef(list.p_size) >= 0
+  ensures acc(list.p_size, write)
+  ensures intFromRef(list.p_size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_size: Ref
+  l0_size := list.p_size
+  inhale isSubtype(typeOf(l0_size), intType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/collection_size_reasoning.kt: info: Generated Viper text for empty_list_probe:
+field size: Ref
+
+method emptyList() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), List())
+  ensures acc(ret_1.size, write)
+  ensures intFromRef(ret_1.size) >= 0
+  ensures intFromRef(ret_1.size) == 0
+
+
+method empty_list_probe() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var list: Ref
+  list := emptyList()
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/collection_size_reasoning.kt: info: Generated Viper text for is_empty_probe:
+field size: Ref
+
+method isEmpty(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures boolFromRef(ret_1) ==> intFromRef(this.size) == 0
+  ensures !boolFromRef(ret_1) ==> intFromRef(this.size) > 0
+
+
+method is_empty_probe(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), List())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var empty: Ref
+  empty := isEmpty(list)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/collection_size_reasoning.kt: error: An internal error has occurred.
+Details: PureLinearizer used to convert non-pure ExpEmbedding; operation freshAnonVar is not supported in a pure context.
+Embedding debug view:
+(InhaleInvariants(Var(par$list).Field(p$size), type = Int), Int(0))
+Please report this at https://github.com/jesyspa/kotlin
+
+/collection_size_reasoning.kt: info: Generated Viper text for zero_index_may_be_invalid:
+field size: Ref
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method zero_index_may_be_invalid(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), List())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := get(list, intToRef(0))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/collection_size_reasoning.kt: info: Generated Viper text for negative_index_is_invalid:
+field size: Ref
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method negative_index_is_invalid(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), List())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := get(list, intToRef(-1))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/collection_size_reasoning.kt: info: Generated Viper text for indices_probe:
+field size: Ref
+
+function first(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), IntProgression())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function last(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), IntProgression())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function step(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), IntProgression())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method endExclusive(v_this: Ref) returns (ret_4: Ref)
+  requires isSubtype(typeOf(v_this), anyType())
+  ensures isSubtype(typeOf(ret_4), nullable(anyType()))
+
+
+method endInclusive(v_this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this), anyType())
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
+
+
+method indices(v_this_extension: Ref) returns (ret_8: Ref)
+  requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_8), nullable(anyType()))
+
+
+method indices_probe(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), List())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var range: Ref
+  var anon: Ref
+  anon := indices(list)
+  range := anon
+  inhale isSubtype(typeOf(range), IntRange())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method start(v_this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+/collection_size_reasoning.kt: info: Generated Viper text for first_probe:
+field size: Ref
+
+method first(v_this_extension: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), List())
+  requires acc(v_this_extension.size, write)
+  requires intFromRef(v_this_extension.size) >= 0
+  ensures acc(v_this_extension.size, write)
+  ensures intFromRef(v_this_extension.size) >= 0
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+method first_probe(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), List())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  anon_1 := first(list)
+  anon_0 := anon_1
+  inhale isSubtype(typeOf(anon_0), intType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/collection_size_reasoning.kt: info: Generated Viper text for last_probe:
+field size: Ref
+
+method last(v_this_extension: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), List())
+  requires acc(v_this_extension.size, write)
+  requires intFromRef(v_this_extension.size) >= 0
+  ensures acc(v_this_extension.size, write)
+  ensures intFromRef(v_this_extension.size) >= 0
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+method last_probe(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), List())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  anon_1 := last(list)
+  anon_0 := anon_1
+  inhale isSubtype(typeOf(anon_0), intType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/collection_size_reasoning.kt: info: Generated Viper text for list_of_probe:
+field size: Ref
+
+method listOf(element: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(element), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_1), List())
+  ensures acc(ret_1.size, write)
+  ensures intFromRef(ret_1.size) >= 0
+
+
+method list_of_probe() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var list: Ref
+  list := listOf(intToRef(1))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
