@@ -25,3 +25,12 @@
 - Ran `git merge-tree --write-tree`; it produced a clean tree with no conflicts.
 - Confirmed GitHub reports the PR as `MERGEABLE` with merge state `CLEAN`, and its pre-commit check passed.
 - Made no source or golden changes because there was no conflict to resolve.
+
+## 2026-09-14 — PR #407 synchronization at `f2aebe4`
+
+- Read `AUTOMATIONS.md` and reviewed the existing conflict-solving instruction and diary.
+- Refetched the source and target branches and unshallowed the clone to restore complete ancestry.
+- Confirmed `implementing-air-automations` at `9bac7b3` is an ancestor of the synchronized PR head.
+- Ran `git merge-tree --write-tree`; it produced a clean tree with no conflicts.
+- Confirmed GitHub reports the PR as `MERGEABLE` with merge state `CLEAN`, and its pre-commit check passed.
+- Made no source or golden changes because there was no conflict to resolve.
