@@ -408,3 +408,17 @@ Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains
 - Concluded that the synchronized head has no merge conflict, so no source or golden-file edits were necessary.
 
 Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=9038cbf3-65c5-4453-8b32-035680575d0c
+
+## 2026-09-14 — synchronized head 1211a5c7
+
+- Read `AUTOMATIONS.md` and recorded this run in `automationsInstructions/conflict-solving.md` before investigating the pull request.
+- Confirmed the checkout remains on `test/floating-point-rejection` and PR #391 targets `implementing-air-automations`.
+- Fetched and deepened both current remote refs without switching branches. The triggered, checked-out, and remote head is `1211a5c7c6fd4b2a5db87f01235ea059d8a5c23f`; the base is `9bac7b389dc5d2e01ffe14b0f92b69f134866c87`.
+- Confirmed the base is the merge base and an ancestor of the synchronized head.
+- Ran `git merge-tree --write-tree origin/implementing-air-automations HEAD`; it produced merged tree `a455aa5d44267df0e64fb200919afa5c524cc910` without conflict diagnostics.
+- Queried GitHub at those exact revisions; it reported `MERGEABLE` and `CLEAN`, and the pre-commit check passed.
+- Ran `git diff --check origin/implementing-air-automations...HEAD`; it completed successfully.
+- Ran the repository checks. `check-testdata.sh`, the script hook tests, and the focused conversion test `floating_point_rejection` passed. The supplied JDK 25 could not configure Gradle; after provisioning JDK 21, the full build compiled but 92 verification tests uniformly failed because Silicon raised `ExternalToolError`. Installing `pre-commit` was blocked by the environment proxy, so its local hooks were run directly where available; GitHub's full pre-commit check is green. No goldens were regenerated.
+- Concluded that the synchronized head has no merge conflict, so no source or golden-file edits were necessary.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=f5ad3c2f-977a-407e-9fb1-5be6dbab08bb
