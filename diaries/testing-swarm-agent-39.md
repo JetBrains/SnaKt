@@ -1,0 +1,22 @@
+# Testing swarm agent 39 diary
+
+- Read `AUTOMATIONS.md` before any other repository action.
+- Read issue #356 and adopted its testing protocol.
+- Confirmed the checkout started on `implementing-air-automations` with a clean worktree.
+- Inspected recent pull requests targeting the source branch and created `test/issue-356-dead-code` using the established `test/issue-*` convention.
+- Recorded this assignment in `automationsInstructions/testing-swarm-agent-39.md`.
+- Located existing return and constant-condition coverage, then traced statement conversion: blocks and both `if` branches are converted eagerly, including unreachable FIR expressions.
+- Added `dead_code.kt` with positive and negative controls for assertions after `return`, `if (false)`, `if (true) ... else`, and a nonconstant branch.
+- Added unsupported `Double` literals after `return` and in the dead `else` branch of `if (true)` to distinguish semantic reachability from conversion traversal.
+- The first test attempt could not configure Gradle on the environment's Java 25.0.2. Downloaded Eclipse Temurin 21.0.12.1 to `/tmp` and used it for all subsequent checks.
+- The focused conversion probe showed supported unreachable assertions convert, while both unreachable `Double` literals produce `INTERNAL_ERROR: Constant Expression of type Double is not yet implemented`.
+- Searched open and closed GitHub issues for unreachable/dead conversion, code after return, constant branches, and floating-point literals. Issues #245 and #314 cover unsupported floating-point semantics but do not cover eager conversion of statically dead paths.
+- Opened #369, `Dead paths with unsupported syntax fail conversion`, with the required `swarmTestingBug` label and a minimal reproducer.
+- Ran `./agent-scripts/test.sh --update-goldens dead_code`, read its full report and generated conversion output, and confirmed the diagnostics record the observed conversion defect rather than treating regeneration as proof of correctness.
+- Ran the focused conversion test successfully after marking the expected internal errors.
+- The first full verification attempt identified missing Z3 rather than a proof result. Installed the documented Z3 4.8.7 temporarily and restarted Gradle with `Z3_EXE` set.
+- Full verification produced exactly three expected failures for live controls: before an unconditional return, after an impossible false branch, and in the reachable side of a nonconstant branch. Assertions in statically dead paths produced no verification failure, so dead fragments do not make later live obligations vacuously true in these cases.
+- Re-ran `./agent-scripts/test.sh --verify dead_code`: 1 test passed, 0 failed.
+- Ran `./agent-scripts/check-all.sh`: Gradle check and testData checks passed, but the script returned exit 2 because `pre-commit` was not installed.
+- Installed the standalone pre-commit 4.6.2 zipapp. Its remote hook bootstrap could not download setuptools because the environment proxy rejected PyPI requests. Ran the remote `end-of-file-fixer` implementation directly over every changed file, then ran the two local hooks successfully through pre-commit.
+- Re-ran `./agent-scripts/check-all.sh` with the already-run `end-of-file-fixer` hook skipped: Gradle check, testData checks, and pre-commit all passed with exit 0.
