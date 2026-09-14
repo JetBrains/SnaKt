@@ -118,6 +118,12 @@ public class LocalityDiagnosticTestGenerated extends AbstractLocalityDiagnosticT
   }
 
   @Test
+  @TestMetadata("local_function_boundaries.kt")
+  public void testLocal_function_boundaries() {
+    runTest("formver.compiler-plugin/locality/testData/diagnostics/local_function_boundaries.kt");
+  }
+
+  @Test
   @TestMetadata("return.kt")
   public void testReturn() {
     runTest("formver.compiler-plugin/locality/testData/diagnostics/return.kt");
