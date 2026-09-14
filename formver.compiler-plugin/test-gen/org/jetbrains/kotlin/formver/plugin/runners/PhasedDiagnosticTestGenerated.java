@@ -900,6 +900,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("function_precondition_calls.kt")
+      public void testFunction_precondition_calls() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/function_precondition_calls.kt");
+      }
+
+      @Test
       @TestMetadata("loops.kt")
       public void testLoops() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/loops.kt");
