@@ -1181,3 +1181,16 @@ Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains
 - Concluded that no conflict resolution, source changes, or golden regeneration is needed.
 
 Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=14aff4eb-edb1-4dfe-b3a1-cf0c94295548
+
+## 2026-09-14 — synchronized head b4e43132
+
+- Read `AUTOMATIONS.md` and recorded this run in `automationsInstructions/conflict-solving.md` before completing the conflict investigation.
+- Confirmed the checkout stayed on `test/floating-point-rejection`, and fetched the current source and `implementing-air-automations` refs without switching branches.
+- Deepened the shallow clone so Git could reliably establish ancestry. The checked-out and remote source head is `b4e4313264fd9c355b41c9beeae98f6fe3550a57`; the live base is `9bac7b389dc5d2e01ffe14b0f92b69f134866c87`.
+- Confirmed the base is the merge base and already an ancestor of the source head; `git rev-list --left-right --count` reported `0 93`.
+- Ran `git merge-tree --write-tree HEAD origin/implementing-air-automations`; it produced tree `527d70280f979c32d3e18a72c6a7d96113bc3d49` with exit code 0 and no conflict diagnostics.
+- Queried GitHub at those exact revisions; PR #391 is open and reports `MERGEABLE` with merge state `CLEAN`. Its pre-commit check completed successfully.
+- Ran `git diff --check origin/implementing-air-automations...HEAD` and `git diff --check`; both passed.
+- Concluded that no conflict resolution, source changes, tests, or golden regeneration are needed.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=f34fd36a-8873-4e28-9852-1f88aa558148
