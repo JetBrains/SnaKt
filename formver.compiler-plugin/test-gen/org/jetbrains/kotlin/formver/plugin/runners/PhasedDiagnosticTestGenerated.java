@@ -367,6 +367,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("shadowing_values.kt")
+    public void testShadowing_values() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/shadowing_values.kt");
+    }
+
+    @Test
     @TestMetadata("unit_return_type.kt")
     public void testUnit_return_type() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/unit_return_type.kt");
