@@ -870,6 +870,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("backend_timeout_boundaries.kt")
+      public void testBackend_timeout_boundaries() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/backend_timeout_boundaries.kt");
+      }
+
+      @Test
       @TestMetadata("empty.kt")
       public void testEmpty() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/empty.kt");

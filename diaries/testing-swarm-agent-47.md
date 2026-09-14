@@ -1,0 +1,27 @@
+# Testing swarm agent 47 diary
+
+- Read `AUTOMATIONS.md` before taking any other repository action.
+- Recorded the assignment from GitHub issue #364 in `automationsInstructions/testing-swarm-agent-47.md`.
+- Confirmed the checkout was clean apart from this agent's two new records and was on `implementing-air-automations` at `9bac7b389dc5d2e01ffe14b0f92b69f134866c87`.
+- Confirmed GitHub authentication is available as `jetbrains-air[bot]`.
+- Inspected recent pull requests targeting `implementing-air-automations`; testing branches use the `test/` prefix.
+- Read `docs/agents-dev.md` and `agent-scripts/test.sh` to understand the conversion-first workflow, result accounting, and golden-update reporting.
+- Created branch `test/issue-364-backend-timeout-behavior` from the required source revision.
+- Delegated read-only semantic exploration as required by `AGENTS.md`; it identified the backend adapter, verification facade, recursive controls, quantified controls, and the known timeout-prone `z_function.kt` case.
+- Inspected `SiliconFrontend`, `VerificationFacade`, recursive and quantified golden cases, and the Silicon dependency declaration. The adapter reports Viper `Failure` errors but has no explicit branch for timeout or unknown results.
+- First attempted the known timeout-prone `z_function` verification under a 90-second process cap. Java 25 prevented Gradle configuration, so no test ran; located the bundled Java 21 runtime required by the build.
+- Re-ran `z_function` with Java 21 and the same cap. It emitted no result and was terminated by the outer timeout after 90 seconds (exit 124), confirming the case is not bounded enough for a regression fixture and that an externally terminated run provides no classified backend result.
+- Added `backend_timeout_boundaries.kt`, a minimized positive/negative pair combining recursion and universal postconditions. The positive case is valid; the structurally similar negative case has a false quantified obligation and is marked to expect a proof failure.
+- The first conversion run generated the missing conversion golden as expected; after reading the generated Viper program, re-running the fast loop passed (1 test).
+- Verification initially could not start because Z3 was absent. System package installation was unavailable without elevated privileges, so downloaded the repository-documented Z3 4.8.7 release to a temporary directory and set `Z3_EXE` for checks.
+- The first full verification generated a verification golden containing exactly the intended warning for `recursiveQuantifiedFailure`; `recursiveQuantifiedSuccess` produced no diagnostic. No timeout or unknown result occurred for this bounded pair.
+- Ran `--update-goldens backend_timeout_boundaries` and read its complete report. It recorded the two generated methods and the single intentional proof-failure warning; `check-testdata.sh` passed. Confirmed these observations are intended.
+- Re-ran `--verify backend_timeout_boundaries`; 1 test passed and 0 failed within the 90-second bound.
+- Inspected the resolved Silicon jar. It contains `TimeoutOccurred` as an `AbstractError`; `SiliconFrontend.verify` only forwards `VerificationError` and `ConsistencyError`, so timeouts have no diagnostic mapping and are not distinguishable from success through this adapter.
+- Temporarily passed `--timeout 1` to the test verifier and ran the existing `z_function` case. The bounded run completed with `Ran 1 tests, 1 passed, 0 failed`, while its JUnit output reported `Verification aborted exceptionally` with `ProverInteractionFailed`. Immediately restored the verifier construction and confirmed no temporary source diff remained.
+- Searched open and closed GitHub issues for timeout, Silicon, prover, backend failure, `Verification aborted exceptionally`, and `AbortedExceptionally`. Issue #283 already covers the absence of timeout limits; #295 is an architectural proposal. Neither reports the concrete green-on-backend-abort behavior.
+- Opened GitHub issue #383, `Silicon backend abort is silently treated as successful verification`, with the minimized bounded reproducer, expected and observed outcomes, environment details, related issues, required `swarmTestingBug` label, and automation signature.
+- Ran `agent-scripts/check-all.sh` with Java 21 and Z3 4.8.7. Compilation, static analysis, plugin validation, and testData checks progressed successfully, but the full verification suite stalled at the pre-existing `z_function` behavior; stopped it after several minutes to keep the run bounded. The resulting summary reported `gradle check: failed`, `check-testdata.sh: passed`, and `pre-commit: skipped` because `pre-commit` was unavailable.
+- Tried to install `pre-commit` as instructed by the check script. The system Python correctly rejected a user install under PEP 668; a temporary virtual environment install then failed because the package proxy returned HTTP 403. This check could not be made available in the environment.
+- Inspected the complete working diff and ran `git diff --check`; no whitespace errors or unintended temporary implementation changes remained.
+- Final focused validation: `./agent-scripts/test.sh --verify backend_timeout_boundaries` passed (1/1) with Java 21 and Z3 4.8.7, followed by a passing `agent-scripts/check-testdata.sh`.

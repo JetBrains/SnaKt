@@ -1,0 +1,31 @@
+/backend_timeout_boundaries.kt: info: Generated Viper text for recursiveQuantifiedSuccess:
+method recursiveQuantifiedSuccess(n: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 0
+  ensures (forall anon: Int ::anon == anon)
+{
+  if (intFromRef(n) == 0) {
+    v_ret_0 := intToRef(0)
+  } else {
+    v_ret_0 := recursiveQuantifiedSuccess(minusInts(n, intToRef(1)))}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/backend_timeout_boundaries.kt: info: Generated Viper text for recursiveQuantifiedFailure:
+method recursiveQuantifiedFailure(n: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 0
+  ensures (forall anon: Int ::anon > 0)
+{
+  if (intFromRef(n) == 0) {
+    v_ret_0 := intToRef(0)
+  } else {
+    v_ret_0 := recursiveQuantifiedFailure(minusInts(n, intToRef(1)))}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
