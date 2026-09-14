@@ -119,3 +119,15 @@ Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains
 - Ran `git diff --check`, test-data validation, and all agent-script assertions; all passed. `check-all.sh` returned exit 1 because Gradle 8.14.3 cannot configure under the environment's Java 25.0.2; its test-data stage passed and its pre-commit stage was skipped because `pre-commit` is not installed. The live PR's pre-commit workflow passed on this exact source head.
 
 Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=e9039148-20f5-4cc4-a368-c03ab99b5f5b
+
+## 2026-09-14 — PR #388 synchronized to `319d313`
+
+- Read the synchronize event, `AGENTS.md`, `AUTOMATIONS.md`, and the previous conflict-solving records.
+- Confirmed the checkout is the required `test/generic-function-substitution` source branch at event head `319d313ac71ebb92d7d7d0e3d952fd334dee3b3e`.
+- Recorded this run's assignment in `automationsInstructions/conflict-solving-agent.md`.
+- Fetched and unshallowed the latest source and `implementing-air-automations` histories. The live base remains `9bac7b389dc5d2e01ffe14b0f92b69f134866c87`, which is also the merge base.
+- Ran `git merge-tree --write-tree origin/implementing-air-automations HEAD`; Git produced merged tree `9569f0602c1894494b8e09d6fe15e05688c5b453` without conflicts.
+- Queried PR #388 and confirmed it is open, `MERGEABLE`, and `CLEAN`; its pre-commit workflow passed on the exact synchronized head.
+- No merge conflict or source-code resolution was needed.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=bf06c5d7-1e77-4d12-9deb-025c28c9aa92
