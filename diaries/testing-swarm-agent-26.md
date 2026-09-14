@@ -18,3 +18,4 @@
 - Ran `./agent-scripts/check-all.sh`: Gradle `check` and testData checks passed, while the first run returned exit 2 because `pre-commit` was absent.
 - Installed the official pre-commit 4.6.2 zipapp and reran. Gradle and testData remained green, but pre-commit could not create the Python hook environment because the automation proxy returned HTTP 403 for `files.pythonhosted.org` while fetching `setuptools`.
 - Executed the same available hooks directly: all agent script tests passed, testData checks passed, the upstream `end-of-file-fixer` from pre-commit's checked-out hook source passed after fixing one trailing blank line, and `git diff --check` passed.
+- Committed and pushed `test/sealed-hierarchy-cases`, then opened pull request #418 against `implementing-air-automations`.
