@@ -37,3 +37,8 @@ For run `3b74a84e-4a84-4b1e-bb6d-5cdad424c1f6`, inspect pull request #399
 after synchronization to `40ee9c9e15c1b45d61e413bd4a013292efccc612`,
 verify it against the current `implementing-air-automations` base, and resolve
 only conflicts that actually exist.
+
+For run `3560e97f-168d-4cbe-b9a7-abcb634cd356`, inspect pull request #399
+after synchronization to `447d2ef4a0a00f277021c67c6226b4126778147d`,
+verify it against the current `implementing-air-automations` base, and resolve
+only conflicts that actually exist.
