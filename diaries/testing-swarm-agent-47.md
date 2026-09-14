@@ -25,3 +25,6 @@
 - Tried to install `pre-commit` as instructed by the check script. The system Python correctly rejected a user install under PEP 668; a temporary virtual environment install then failed because the package proxy returned HTTP 403. This check could not be made available in the environment.
 - Inspected the complete working diff and ran `git diff --check`; no whitespace errors or unintended temporary implementation changes remained.
 - Final focused validation: `./agent-scripts/test.sh --verify backend_timeout_boundaries` passed (1/1) with Java 21 and Z3 4.8.7, followed by a passing `agent-scripts/check-testdata.sh`.
+- Committed the focused tests, generated goldens and registration, instruction record, and diary as `8bfe568` (`Test bounded recursive quantified obligations`) with the required automation signature.
+- Pushed branch `test/issue-364-backend-timeout-behavior` to `origin`.
+- Opened pull request #410, `Test bounded recursive quantified obligations`, targeting `implementing-air-automations`. The signed description links assignment #364 and confirmed backend-abort bug #383 and records validation plus the bounded full-check limitation.
