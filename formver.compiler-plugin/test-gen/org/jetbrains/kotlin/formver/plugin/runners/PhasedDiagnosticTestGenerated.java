@@ -852,6 +852,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       public void testNullable() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/types/nullable.kt");
       }
+
+      @Test
+      @TestMetadata("nullable_smart_casts.kt")
+      public void testNullable_smart_casts() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/types/nullable_smart_casts.kt");
+      }
     }
 
     @Nested

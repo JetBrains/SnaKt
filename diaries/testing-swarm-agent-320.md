@@ -1,0 +1,20 @@
+# Testing swarm agent — issue 320 diary
+
+## 2026-09-14
+
+- Read `AUTOMATIONS.md` before taking any repository action.
+- Recorded the assignment in `automationsInstructions/testing-swarm-agent-320.md` as required.
+- Confirmed the checkout is on `implementing-air-automations`, with only the new instruction record untracked.
+- Read `docs/agents-dev.md` and the repository test guidance. Golden regeneration records observed output and must be reviewed rather than treated as proof of correctness; conversion-only tests are the development loop, followed by targeted verification.
+- Used semantic code search to locate related existing coverage. Basic Elvis expressions live in `verification/operators/elvis.kt`, safe calls in `verification/operators/safe_call.kt`, nullable operations in `verification/types/nullable.kt`, and existing smart-cast examples in `verification/types/casts.kt`.
+- Decided to focus new probes on branch-sensitive nullable facts, stable versus mutable locals, repeated checks, and fact invalidation after assignment, avoiding duplication of existing basic operator cases.
+- Created branch `test/issue-320-nullable-smart-casts`, following the repository's existing `test/issue-...` convention.
+- Added `verification/types/nullable_smart_casts.kt` with eight focused probes: a stable nullable alias, repeated null checks, a branch-selected value after two guards, Elvis non-null fallback, safe-call behavior across a null branch, a stable alias surviving mutation of its mutable source, Elvis after mutation, and rechecking a mutable local after branch-dependent reassignment.
+- The initial direct proof probes used `verify(nullable != null)`. Conversion failed before Viper with `The embedding for type java/io/Serializable is not yet implemented`. Minimized this independently to one `Int?` parameter, one non-null branch, and one `verify(input != null)` call. A type-directed return from the same smart-cast branch converts and verifies, isolating the failure to passing the nullable comparison through `verify(vararg Boolean)` rather than nullable smart casting generally.
+- Searched open and closed GitHub issues for the exact `java/io/Serializable` failure and related nullable/verify terms; found no duplicate. Reported the confirmed conversion failure as [issue 376](https://github.com/JetBrains/SnaKt/issues/376) with the required `swarmTestingBug` label, minimal reproducer, expected/observed behavior, environment, revision, and classification. The temporary reproducer was removed from the change set.
+- The environment initially supplied Java 25.0.2 and no Z3. Installed temporary Temurin 21.0.12.1 and Z3 4.8.7 tools to match project CI; no repository setup files were changed.
+- Regenerated the golden and read its complete contents. The Viper output preserves each null guard and reassignment, returns only non-null references from `Int` functions, lowers safe-call null propagation explicitly, and applies Elvis to the post-mutation value. No `.viper.diag.txt` was produced, so full verification recorded no proof failures.
+- Validation passed: `./agent-scripts/test.sh nullable_smart_casts` and `./agent-scripts/test.sh --verify nullable_smart_casts`, both with 1 test passed and 0 failed.
+- Repository-wide `./agent-scripts/check-all.sh` completed Gradle `check` and `check-testdata.sh` successfully. Its first run exited 2 because `pre-commit` was absent. After obtaining the official pre-commit 4.6.2 zipapp, the hook manager could clone its hook but could not build the hook environment because the workspace proxy returned HTTP 403 for `files.pythonhosted.org`. Ran the configured checks directly from the fetched hook source: `end-of-file-fixer` passed on all changed text files, `agent-scripts/check-testdata.sh` passed, and `agent-scripts/tests/run.sh` passed all assertions. This is an environment bootstrap limitation, not a repository check failure.
+
+Produced by Air Automations. Name: Testing swarm agent / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/34ccbbdd-3fd2-474e-8f0a-10b4b2d5bda4?run=83dbf7bc-981a-419f-9865-ed109bfc9bc1
