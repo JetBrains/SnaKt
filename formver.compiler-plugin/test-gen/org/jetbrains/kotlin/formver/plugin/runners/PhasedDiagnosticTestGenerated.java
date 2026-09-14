@@ -728,6 +728,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("array_index_reads.kt")
+      public void testArray_index_reads() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/array_index_reads.kt");
+      }
+
+      @Test
       @TestMetadata("basic.kt")
       public void testBasic() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/basic.kt");
