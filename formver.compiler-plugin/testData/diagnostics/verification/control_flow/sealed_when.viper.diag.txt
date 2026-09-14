@@ -1,0 +1,3 @@
+/sealed_when.kt: warning: Viper verification error: Postcondition of exhaustivePayloadField might not hold. Assertion isSubtype(typeOf(v_ret_0), intType()) might not hold.
+
+/sealed_when.kt: warning: Viper verification error: Assert might fail. Assertion boolFromRef(anon) might not hold.

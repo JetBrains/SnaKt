@@ -1,0 +1,20 @@
+# Testing swarm agent 26 diary
+
+- Read `AUTOMATIONS.md` before taking any repository action.
+- Recorded the assignment in `automationsInstructions/testing-swarm-agent-26.md` as required.
+- Assignment: probe sealed hierarchies, exhaustive `when`, smart casts, and data-bearing cases, with emphasis on sound impossible-fallthrough handling that preserves case fields.
+- Inspected source-branch status, remote branch and pull-request naming, and created `test/sealed-hierarchy-cases` from `implementing-air-automations`.
+- Used semantic code search first. The closest existing coverage exercises ordinary `when` type tests and class-field smart casts, but no sealed hierarchy appeared in testData.
+- Read the existing control-flow, smart-cast, field-access, contract, and uniqueness `when` tests plus the golden test driver documentation.
+- Added an initial focused probe with a sealed interface, exhaustive type-test `when`, a data-bearing leaf, an explicit closed-world assertion, and a non-sealed fallback control.
+- The first fast-loop command could not start under the environment's JDK 25.0.2. The package repository was unavailable, so downloaded Temurin JDK 21 through GitHub releases and reran successfully.
+- Conversion succeeded. Its Viper output preserves `Payload.value` in the matching smart-cast branch but emits a reachable synthetic `else` that assigns `unitValue()` to the exhaustive expression's `Int` return.
+- The first verification attempt identified a missing Z3 executable. Downloaded the repository-documented Z3 4.8.7 through GitHub releases, set `Z3_EXE`, and reran.
+- Verification produced two proof failures: the exhaustive function's `Int` return postcondition might not hold because of synthetic fallthrough, and `packet is Payload || packet is Empty` cannot be proved. The open-interface control with an explicit `else` verified.
+- Searched open and closed GitHub issues for sealed/exhaustive `when`, fallthrough, and smart-cast field reports. Issue #316 already describes the missing closed-data model and specifically requires genuinely exhaustive sealed fallthrough elimination with case-field refinement, so this is evidence for an existing report rather than a new `swarmTestingBug` issue.
+- Ran `--update-goldens sealed_when` and read its complete report. Confirmed the two recorded verification diagnostics are intended observations and that the generated Viper retains the data-bearing getter in the reachable payload branch.
+- Corrected diagnostic marker ranges to the exact source spans reported by the verification run.
+- Reran both `./agent-scripts/test.sh sealed_when` and `./agent-scripts/test.sh --verify sealed_when`; each ran one test and passed.
+- Ran `./agent-scripts/check-all.sh`: Gradle `check` and testData checks passed, while the first run returned exit 2 because `pre-commit` was absent.
+- Installed the official pre-commit 4.6.2 zipapp and reran. Gradle and testData remained green, but pre-commit could not create the Python hook environment because the automation proxy returned HTTP 403 for `files.pythonhosted.org` while fetching `setuptools`.
+- Executed the same available hooks directly: all agent script tests passed, testData checks passed, the upstream `end-of-file-fixer` from pre-commit's checked-out hook source passed after fixing one trailing blank line, and `git diff --check` passed.

@@ -644,6 +644,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("sealed_when.kt")
+      public void testSealed_when() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/sealed_when.kt");
+      }
+
+      @Test
       @TestMetadata("when.kt")
       public void testWhen() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/when.kt");
