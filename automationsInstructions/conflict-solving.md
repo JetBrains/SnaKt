@@ -1,5 +1,11 @@
 # Conflict solving
 
+## Run 2026-09-14 — PR #391 synchronize at 9110589f
+
+Monitor automation pull request #391 after synchronization at `9110589f9e524ce707e05ea6b93c7fea7b227abb`. Compare its source branch with the current `implementing-air-automations` base, resolve and verify any merge conflicts on the source branch, or record the clean result when no resolution is needed. Do not push; leave signed commits on the current source branch for platform delivery.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=98b788e7-9657-4c86-a9e3-b99fa2c365ca
+
 ## Run 2026-09-14 — PR #391 synchronize at 755a416b
 
 Monitor automation pull request #391 after synchronization at `755a416b0d197748784389631d9c3e1346846111`. Compare its source branch with the current `implementing-air-automations` base, resolve and verify any merge conflicts on the source branch, or record the clean result when no resolution is needed. Do not push; leave signed commits on the current source branch for platform delivery.
