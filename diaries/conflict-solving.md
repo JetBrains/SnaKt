@@ -19,3 +19,13 @@
 - Confirmed through GitHub that PR #396 is `MERGEABLE`. Its `UNSTABLE` state was caused by a queued check, not a merge conflict.
 - Ran `git merge-tree --write-tree origin/implementing-air-automations HEAD`; it produced a merged tree without conflicts.
 - Concluded that this follow-up synchronize event also requires no conflict resolution or product changes.
+
+## 2026-09-14 — PR #396 synchronize event at `39e2863`
+
+- Re-read `AUTOMATIONS.md` and this automation's recorded instruction.
+- Fetched complete, current histories for `implementing-air-automations` and `test/issue-337-mutable-field-permissions`.
+- Confirmed through GitHub that PR #396 is `MERGEABLE`; the base commit `9bac7b3` is an ancestor of source head `39e2863`.
+- Ran `git merge-tree --write-tree origin/implementing-air-automations HEAD`; it produced merged tree `318bc55` without conflicts.
+- Investigated the `UNSTABLE` state and found no conflict: pre-commit failed because its end-of-file fixer removed extra blank lines from two automation instruction files.
+- Applied those exact formatting corrections. `git diff --check`, `agent-scripts/check-testdata.sh`, and `agent-scripts/tests/run.sh` passed.
+- Attempted `agent-scripts/check-all.sh`; its Gradle check could not start because this environment only provides Java `25.0.2`, while CI uses Java 21, and the local pre-commit install was blocked by the environment's package proxy. The directly invoked checks and byte-level inspection confirmed the two files now have exactly one final newline.

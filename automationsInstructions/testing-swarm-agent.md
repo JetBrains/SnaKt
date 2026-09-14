@@ -6,4 +6,3 @@ branches, using minimal two-field classes and positive plus negative or
 near-boundary controls. Follow the golden-test protocol, investigate and
 minimize suspected defects, report only previously unreported confirmed bugs,
 and deliver the tests in a PR targeting `implementing-air-automations`.
-
