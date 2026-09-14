@@ -301,6 +301,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("default_named_arguments.kt")
+    public void testDefault_named_arguments() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/default_named_arguments.kt");
+    }
+
+    @Test
     @TestMetadata("do_not_verify.kt")
     public void testDo_not_verify() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/do_not_verify.kt");

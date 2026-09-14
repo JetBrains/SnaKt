@@ -1,0 +1,226 @@
+/default_named_arguments.kt: info: Generated Viper text for trailingDefault:
+method trailingDefault(first: Ref, second: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(first), intType())
+  requires isSubtype(typeOf(second), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := plusInts(first, second)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/default_named_arguments.kt: info: Generated Viper text for middleDefault:
+method middleDefault(first: Ref, second: Ref, third: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(first), intType())
+  requires isSubtype(typeOf(second), intType())
+  requires isSubtype(typeOf(third), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := plusInts(plusInts(first, second), third)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/default_named_arguments.kt: info: Generated Viper text for earlierParameterDefault:
+method earlierParameterDefault(first: Ref, second: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(first), intType())
+  requires isSubtype(typeOf(second), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := plusInts(first, second)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/default_named_arguments.kt: info: Generated Viper text for subtract:
+function subtract(first: Ref, second: Ref): Ref
+  requires isSubtype(typeOf(first), intType())
+  requires isSubtype(typeOf(second), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  minusInts(first, second)
+}
+
+/default_named_arguments.kt: info: Generated Viper text for explicitTrailingDefault:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method explicitTrailingDefault() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := trailingDefault(intToRef(1), intToRef(2))
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method trailingDefault(first: Ref, second: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(first), intType())
+  requires isSubtype(typeOf(second), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/default_named_arguments.kt: info: Generated Viper text for explicitMiddleDefault:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method explicitMiddleDefault() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := middleDefault(intToRef(1), intToRef(2), intToRef(3))
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method middleDefault(first: Ref, second: Ref, third: Ref)
+  returns (ret_1: Ref)
+  requires isSubtype(typeOf(first), intType())
+  requires isSubtype(typeOf(second), intType())
+  requires isSubtype(typeOf(third), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/default_named_arguments.kt: info: Generated Viper text for explicitEarlierParameterDefault:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method earlierParameterDefault(first: Ref, second: Ref)
+  returns (ret_1: Ref)
+  requires isSubtype(typeOf(first), intType())
+  requires isSubtype(typeOf(second), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method explicitEarlierParameterDefault() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := earlierParameterDefault(intToRef(4), intToRef(4))
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/default_named_arguments.kt: info: Generated Viper text for omittedTrailingDefault:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method omittedTrailingDefault() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := trailingDefault(intToRef(1))
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method trailingDefault(first: Ref, second: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(first), intType())
+  requires isSubtype(typeOf(second), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/default_named_arguments.kt: info: Generated Viper text for omittedMiddleDefault:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method middleDefault(first: Ref, second: Ref, third: Ref)
+  returns (ret_1: Ref)
+  requires isSubtype(typeOf(first), intType())
+  requires isSubtype(typeOf(second), intType())
+  requires isSubtype(typeOf(third), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method omittedMiddleDefault() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := middleDefault(intToRef(1), intToRef(3))
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/default_named_arguments.kt: info: Generated Viper text for omittedEarlierParameterDefault:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method earlierParameterDefault(first: Ref, second: Ref)
+  returns (ret_1: Ref)
+  requires isSubtype(typeOf(first), intType())
+  requires isSubtype(typeOf(second), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method omittedEarlierParameterDefault() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := earlierParameterDefault(intToRef(4))
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/default_named_arguments.kt: info: Generated Viper text for positionalArguments:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function subtract(first: Ref, second: Ref): Ref
+  requires isSubtype(typeOf(first), intType())
+  requires isSubtype(typeOf(second), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  minusInts(first, second)
+}
+
+method positionalArguments() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(subtract(intToRef(3), intToRef(1))) == 2
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/default_named_arguments.kt: info: Generated Viper text for reorderedNamedArguments:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function subtract(first: Ref, second: Ref): Ref
+  requires isSubtype(typeOf(first), intType())
+  requires isSubtype(typeOf(second), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  minusInts(first, second)
+}
+
+method reorderedNamedArguments() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(subtract(intToRef(1), intToRef(3))) == 2
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
