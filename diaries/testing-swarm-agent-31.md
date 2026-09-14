@@ -1,0 +1,21 @@
+# Testing swarm agent 31 diary
+
+- Read `AUTOMATIONS.md` before taking any other repository action.
+- Read issue #348 and recorded its assignment in `automationsInstructions/testing-swarm-agent-31.md`.
+- Confirmed the checkout starts on `implementing-air-automations`, with no working-tree changes.
+- Inspected existing automation record names and recent pull request branch conventions.
+- Created branch `test/issue-348-exceptions-finally` from `implementing-air-automations`.
+- Used semantic search and the repository-required context explorer to map existing exception conversion, uniqueness, and golden-test coverage.
+- Read `docs/agents-dev.md`, the try/catch converter, existing verification and uniqueness tests, and open issue #306.
+- Confirmed issue #306 already reports the missing throw conversion, ignored `finally` semantics, coarse catch edges, uninitialized catch values, and missing exceptional contracts.
+- Added an initial dedicated conversion probe with a supported try/catch control, try/finally, try/catch/finally, and explicit throw.
+- The first fast-loop attempt could not start on the environment's Java 25.0.2. System package installation was unavailable, so downloaded Temurin 21 to a temporary directory and reran with that compatible JDK.
+- The focused fast loop generated the initial conversion golden and showed: supported try/catch lowers to nondeterministic catch edges; both finally bodies are silently absent from Viper; explicit throw produces `INTERNAL_ERROR` at the throw expression.
+- Marked the explicit throw diagnostic as the negative control; the existing open issue #306 covers all three limitations, so no duplicate bug issue was opened.
+- A repeat fast-loop run proved the explicit-throw golden was unstable because the generic unsupported-element message included the FIR object's identity hash. Added a dedicated `visitThrowExpression` unsupported path with a stable, explicit message, without adding exception semantics.
+- Ran `--update-goldens exceptions` and read its full report. It confirmed the three generated Viper bodies and explicit throw diagnostic; the newly created golden was not rewritten because the run classified the diagnostic mismatch as a non-golden failure, so updated that single observed diagnostic line to the stable message.
+- Re-ran the focused conversion test: 1 passed.
+- The first focused full-pipeline run identified the missing Z3 dependency. Downloaded the project-documented Z3 4.8.7 to a temporary directory and reran: 1 passed.
+- Ran `./agent-scripts/check-all.sh`: Gradle check and testData checks passed, while pre-commit was skipped. Attempted to install pre-commit with both pip and uv, but the package host was blocked by the environment proxy, so that check could not be enabled. The successful Gradle check included Detekt and all compiler-plugin tests.
+- Concluded that no new bug report is warranted: open issue #306 already describes unsupported throw, ignored finally blocks, coarse potentially-throwing call edges, and absent exceptional contracts. The tests preserve focused evidence, and the converter change only makes explicit throw fail deterministically and clearly.
+- Committed the work on `test/issue-348-exceptions-finally`, pushed the branch, and opened pull request #404 against `implementing-air-automations`.

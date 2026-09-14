@@ -706,6 +706,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("exceptions.kt")
+      public void testExceptions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/negative/exceptions.kt");
+      }
+
+      @Test
       @TestMetadata("linked_list.kt")
       public void testLinked_list() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/negative/linked_list.kt");

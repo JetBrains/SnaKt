@@ -1,0 +1,100 @@
+/exceptions.kt: info: Generated Viper text for tryCatchControl:
+method cause(this: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_3), nullable(anyType()))
+
+
+method message(this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
+
+
+method observe(x: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret_1), unitType())
+
+
+method tryCatchControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_1: Ref
+  var anon_2: Ref
+  var anon_3: Ref
+  var anon_0: Ref
+  var anon_4: Ref
+  if (boolFromRef(anon_1)) {
+    goto catch
+  }
+  anon_2 := observe(intToRef(0))
+  if (boolFromRef(anon_3)) {
+    goto catch
+  }
+  goto tryExit
+  label catch
+  anon_4 := observe(intToRef(1))
+  goto tryExit
+  label tryExit
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/exceptions.kt: info: Generated Viper text for tryFinally:
+method observe(x: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret_1), unitType())
+
+
+method tryFinally() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := observe(intToRef(0))
+  goto tryExit
+  label tryExit
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/exceptions.kt: info: Generated Viper text for tryCatchFinally:
+method cause(this: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_3), nullable(anyType()))
+
+
+method message(this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
+
+
+method observe(x: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(ret_1), unitType())
+
+
+method tryCatchFinally() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_1: Ref
+  var anon_2: Ref
+  var anon_3: Ref
+  var anon_0: Ref
+  var anon_4: Ref
+  if (boolFromRef(anon_1)) {
+    goto catch
+  }
+  anon_2 := observe(intToRef(0))
+  if (boolFromRef(anon_3)) {
+    goto catch
+  }
+  goto tryExit
+  label catch
+  anon_4 := observe(intToRef(1))
+  goto tryExit
+  label tryExit
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/exceptions.kt: error: An internal error has occurred.
+Details: Throw expressions are not supported.
+Please report this at https://github.com/jesyspa/kotlin
