@@ -314,3 +314,16 @@ Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains
 - `git diff --check`, test-data validation, and all agent-script assertions passed.
 
 Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=6e18f1fe-a235-4f9d-b419-cd1368c0e3ae
+
+## 2026-09-14 — PR #388 synchronized to `e124229`
+
+- Read the synchronize event, `AGENTS.md`, `AUTOMATIONS.md`, and the previous conflict-solving records.
+- Confirmed the checkout is the required `test/generic-function-substitution` source branch at event head `e124229533e87080b2b52a137b32fb581152e45e`.
+- Recorded this run's assignment in `automationsInstructions/conflict-solving-agent.md` before the full conflict analysis.
+- Fetched and unshallowed the latest source and `implementing-air-automations` histories. The live base remains `9bac7b389dc5d2e01ffe14b0f92b69f134866c87`, which is also the merge base.
+- Ran `git merge-tree --write-tree origin/implementing-air-automations HEAD`; Git produced merged tree `95de19cfa4b33787a23dea358e8cbe5182c4db83` without conflicts.
+- Queried PR #388 and confirmed it is open, `MERGEABLE`, and `CLEAN` at the exact synchronized head; its hosted pre-commit workflow passed.
+- No merge conflict or source-code resolution was needed.
+- `git diff --check`, test-data validation, and all agent-script assertions passed.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=85f092e5-e5f2-407e-909f-0d7e0e99dd35
