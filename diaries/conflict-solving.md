@@ -42,3 +42,13 @@ Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains
 - Ran `./agent-scripts/test.sh extension_function_calls` with JetBrains Runtime 21.0.11; both focused golden tests passed.
 
 Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=3c991e04-bd99-4f37-8309-2e4a76e958b9
+
+## 2026-09-14 — Pull request #411 synchronization to fbcb8bf
+
+- Re-read the run request, trigger payload, delivery mode, repository `AGENTS.md`, and `AUTOMATIONS.md`.
+- Confirmed the checkout is the pull request source branch `test/issue-345-extension-functions` at `fbcb8bf1d9647ad33cb734c86f089cf07e11e7cc` and fetched the current source and base refs.
+- Deepened the shallow checkout to restore the ancestry needed for a reliable mergeability check.
+- Confirmed the current base `9bac7b389dc5d2e01ffe14b0f92b69f134866c87` is an ancestor of the synchronized head and that `git merge-tree` produces a merged tree without conflicts. No conflict-resolution merge was needed.
+- Ran `./agent-scripts/test.sh extension_function_calls` with JetBrains Runtime 21.0.11; both focused golden tests passed.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=650590c5-7fd1-4ea4-b684-153fb186108b
