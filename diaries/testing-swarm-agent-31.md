@@ -18,3 +18,4 @@
 - The first focused full-pipeline run identified the missing Z3 dependency. Downloaded the project-documented Z3 4.8.7 to a temporary directory and reran: 1 passed.
 - Ran `./agent-scripts/check-all.sh`: Gradle check and testData checks passed, while pre-commit was skipped. Attempted to install pre-commit with both pip and uv, but the package host was blocked by the environment proxy, so that check could not be enabled. The successful Gradle check included Detekt and all compiler-plugin tests.
 - Concluded that no new bug report is warranted: open issue #306 already describes unsupported throw, ignored finally blocks, coarse potentially-throwing call edges, and absent exceptional contracts. The tests preserve focused evidence, and the converter change only makes explicit throw fail deterministically and clearly.
+- Committed the work on `test/issue-348-exceptions-finally`, pushed the branch, and opened pull request #404 against `implementing-air-automations`.
