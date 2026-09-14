@@ -28,5 +28,9 @@
   reran `check-all.sh`. Gradle and test-data checks again passed; pre-commit
   reached hook setup but failed because the environment proxy returned HTTP 403
   while pip tried to download the hook's setuptools build dependency.
+- Ran the repository-local pre-commit hooks directly: test-data checks and all
+  agent-script assertions passed; `git diff --check` also passed.
+- Committed and pushed branch `issue-321-when-control-flow`, then opened PR #389
+  against `implementing-air-automations`.
 
 Produced by Air Automations. Name: Testing swarm agent / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/34ccbbdd-3fd2-474e-8f0a-10b4b2d5bda4?run=a02a4563-dd2f-4018-9c53-5a8fc3c3c230
