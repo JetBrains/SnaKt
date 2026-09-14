@@ -23,3 +23,5 @@
 - The standalone runner could clone `pre-commit-hooks` v5.0.0, but hook environment installation also attempted a blocked PyPI download. Ran the exact `end-of-file-fixer` implementation from that tagged hook repository over repository text files, then ran `check-all.sh` with only that already-executed hook skipped. Gradle checks, testData checks, the local script tests, and the pre-commit stage all passed with exit 0.
 - Restored `gradle/wrapper/gradle-wrapper.jar` after the manual hook invocation mistakenly inspected the binary as text; confirmed no change to it remained.
 - Reran `--verify array_index_reads` after end-of-file normalization: 1 test passed.
+- Committed the focused read test, generated golden and registration, instruction record, and diary on `swarm-testing/328-array-indexing-obligations` with the required Air Automations signature.
+- Pushed the branch and opened pull request #395 against `implementing-air-automations`, referencing assignment #328 and the previously reported array gaps.
