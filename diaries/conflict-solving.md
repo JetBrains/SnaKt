@@ -425,8 +425,6 @@
 - Ran `git merge-tree --write-tree HEAD origin/implementing-air-automations`; it produced merge tree `175e722` successfully with no conflict entries.
 - Queried pull request #397 through GitHub; it reports `MERGEABLE` with merge state `CLEAN`, and its remote `pre-commit` check passes.
 - No conflict resolution or product/test changes were necessary for this synchronize event.
-- Ran `git diff --check`, the agent-script tests, and the test-data check; all passed.
-- Ran `./agent-scripts/check-all.sh`; the test-data check passed, but Gradle could not configure because the environment provides Java `25.0.2`, and the local `pre-commit` command is unavailable. The pull request's remote `pre-commit` check passes.
 - Ran `git diff --check`; it passed.
 
 ## 2026-09-14 — Pull request #397 synchronize recheck at `c12a920`
@@ -500,3 +498,5 @@
 - Ran `git merge-tree --write-tree HEAD origin/implementing-air-automations`; it produced merge tree `4984b24` successfully with no conflict entries.
 - Queried pull request #397 through GitHub; it reports `MERGEABLE` with merge state `CLEAN`, and its remote `pre-commit` check passes.
 - No conflict resolution or product/test changes were necessary for this synchronize event.
+- Ran `git diff --check`, the agent-script tests, and the test-data check; all passed.
+- Ran `./agent-scripts/check-all.sh`; the test-data check passed, but Gradle could not configure because the environment provides Java `25.0.2`, and the local `pre-commit` command is unavailable. The pull request's remote `pre-commit` check passes.
