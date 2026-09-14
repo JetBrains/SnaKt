@@ -31,3 +31,15 @@
 - Checked synchronized head `3507a348755f20b8e4e780cbeabcb87b4fe3e2e3` against target `9bac7b389dc5d2e01ffe14b0f92b69f134866c87`.
 - Independently produced merge tree `154dbed04c2e99bb7d294b004250a5e35dc5589d` with Git and confirmed there are no conflicts.
 - Left the PR's aliasing tests unchanged because no conflict resolution is needed.
+
+## 2026-09-14 — PR #384 synchronize event at `dc63c55`
+
+- Re-read the run instructions, repository `AGENTS.md`, `AUTOMATIONS.md`, and this automation's existing instruction and diary.
+- Confirmed the checkout is the requested source branch `test/issue-338-aliasing-uniqueness` and fetched its `implementing-air-automations` target.
+- GitHub reports synchronized head `dc63c55a866eb29048887154e7829e02dbf2449f` as mergeable with target `9bac7b389dc5d2e01ffe14b0f92b69f134866c87`; the reported `UNSTABLE` state refers to checks, not conflicts.
+- Fetched the complete repository history after the shallow checkout initially hid the common ancestry.
+- Independently produced conflict-free merge tree `18fc8610c07b87504279c1e4badc2268f1d6fef5` with Git and confirmed the target commit is the merge base.
+- Left the PR's aliasing tests unchanged because no conflict resolution is needed.
+- Ran `./agent-scripts/check-all.sh`: test-data checks passed, while Gradle configuration failed because the runtime only provides unsupported Java `25.0.2`; pre-commit was unavailable.
+- Attempted to provision Java 21 from Adoptium and Oracle, but the runtime proxy rejected both downloads with HTTP 403.
+- Confirmed the diary change passes `git diff --check`.
