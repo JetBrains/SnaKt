@@ -313,3 +313,13 @@ Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains
 - Confirmed GitHub's `pre-commit` check for the synchronized head passed.
 
 Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=b9355da6-5853-4e60-83ec-f28f212ffba7
+
+## 2026-09-14 — Pull request #411 synchronization to 38e6d64
+
+- Read the run request, trigger payload, delivery mode, repository `AGENTS.md`, and `AUTOMATIONS.md`, then recorded this run in `automationsInstructions/conflict-solving.md`.
+- Confirmed the checkout is the pull request source branch `test/issue-345-extension-functions` at `38e6d64edbc2c0e852367950707df5e5bb5afb63` and fetched complete history plus the current source and base refs.
+- Confirmed the current base `9bac7b389dc5d2e01ffe14b0f92b69f134866c87` is an ancestor of the synchronized head.
+- Confirmed `git merge-tree --write-tree` produces merged tree `f495a4793a6d52e6f0c694e3d8c56d0923eed18d` without conflicts. GitHub reports `mergeable: MERGEABLE` and `mergeStateStatus: CLEAN`. No conflict-resolution merge was needed.
+- Confirmed GitHub's `pre-commit` check for the synchronized head passed.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=6e9c68ff-ae95-4b9c-bae2-4189df3918c6
