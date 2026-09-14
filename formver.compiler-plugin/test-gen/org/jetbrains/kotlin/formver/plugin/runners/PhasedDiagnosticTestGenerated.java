@@ -924,6 +924,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("specification_mutation_negatives.kt")
+      public void testSpecification_mutation_negatives() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/specification_mutation_negatives.kt");
+      }
+
+      @Test
       @TestMetadata("string_iterations.kt")
       public void testString_iterations() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/string_iterations.kt");

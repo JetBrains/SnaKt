@@ -1,0 +1,104 @@
+/specification_mutation_negatives.kt: info: Generated Viper text for exactIncrement:
+method exactIncrement(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(x) + 1
+{
+  v_ret_0 := plusInts(x, intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/specification_mutation_negatives.kt: info: Generated Viper text for negatedIncrementPostcondition:
+method negatedIncrementPostcondition(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures !(intFromRef(v_ret_0) == intFromRef(x) + 1)
+{
+  v_ret_0 := plusInts(x, intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/specification_mutation_negatives.kt: info: Generated Viper text for inclusiveUpperBound:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method inclusiveUpperBound(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires 0 <= intFromRef(x) && intFromRef(x) <= 3
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(x) <= 3
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/specification_mutation_negatives.kt: info: Generated Viper text for shiftedUpperBound:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method shiftedUpperBound(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires 0 <= intFromRef(x) && intFromRef(x) <= 3
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(x) < 3
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/specification_mutation_negatives.kt: info: Generated Viper text for firstCharacterWithPrecondition:
+method firstCharacterWithPrecondition(text: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(text), stringType())
+  requires |stringFromRef(text)| > 0
+  ensures isSubtype(typeOf(v_ret_0), charType())
+{
+  v_ret_0 := stringGet(text, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/specification_mutation_negatives.kt: info: Generated Viper text for firstCharacterWithoutPrecondition:
+method firstCharacterWithoutPrecondition(text: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(text), stringType())
+  ensures isSubtype(typeOf(v_ret_0), charType())
+{
+  v_ret_0 := stringGet(text, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/specification_mutation_negatives.kt: info: Generated Viper text for branchResult:
+method branchResult(chooseFirst: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(chooseFirst), boolType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures (boolFromRef(chooseFirst) ==> intFromRef(v_ret_0) == 1) &&
+    (!boolFromRef(chooseFirst) ==> intFromRef(v_ret_0) == 2)
+{
+  if (boolFromRef(chooseFirst)) {
+    v_ret_0 := intToRef(1)
+  } else {
+    v_ret_0 := intToRef(2)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/specification_mutation_negatives.kt: info: Generated Viper text for swappedBranchResult:
+method swappedBranchResult(chooseFirst: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(chooseFirst), boolType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures (boolFromRef(chooseFirst) ==> intFromRef(v_ret_0) == 1) &&
+    (!boolFromRef(chooseFirst) ==> intFromRef(v_ret_0) == 2)
+{
+  if (boolFromRef(chooseFirst)) {
+    v_ret_0 := intToRef(2)
+  } else {
+    v_ret_0 := intToRef(1)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
