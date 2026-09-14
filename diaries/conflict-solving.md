@@ -195,3 +195,17 @@ Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains
 - Concluded that the synchronized head has no merge conflict, so no source or golden-file edits were necessary.
 
 Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=260b72dc-9d8b-43d9-8257-5b961bea58c3
+
+## 2026-09-14 — synchronized head 47be0dcf
+
+- Read `AUTOMATIONS.md` and updated `automationsInstructions/conflict-solving.md` for this run.
+- Confirmed the checkout is on `test/floating-point-rejection` and PR #391 targets `implementing-air-automations`.
+- Fetched both current remote refs without switching branches. The triggered and remote head is `47be0dcfcf247b6b9225dee0479da29f78c9f9fb`; the base is `9bac7b389dc5d2e01ffe14b0f92b69f134866c87`.
+- Deepened the shallow checkout and confirmed the base commit is the merge base.
+- Ran `git merge-tree --write-tree origin/implementing-air-automations HEAD`; it produced merged tree `b6e8d6651c6a288b77ad1e0e892c484bd0162419` without conflict diagnostics.
+- Queried GitHub at those exact revisions; it reported `MERGEABLE` and `CLEAN`.
+- Ran `git diff --check origin/implementing-air-automations...HEAD`; it completed successfully.
+- Ran `./agent-scripts/check-all.sh`. Test-data checks passed, but Gradle could not configure under the environment's JDK 25.0.2, and `pre-commit` was unavailable. No goldens were regenerated.
+- Concluded that the synchronized head has no merge conflict, so no source or golden-file edits were necessary.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=2870620b-6c4b-46de-ba7d-f45ef7620a95
