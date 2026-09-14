@@ -740,6 +740,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("floating_point_rejection.kt")
+      public void testFloating_point_rejection() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/floating_point_rejection.kt");
+      }
+
+      @Test
       @TestMetadata("identity_equality.kt")
       public void testIdentity_equality() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/identity_equality.kt");
