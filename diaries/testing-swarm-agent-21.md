@@ -14,3 +14,4 @@
 - Ran `./agent-scripts/check-all.sh`. The first run failed because Z3 was absent and skipped pre-commit. Installed the CI-pinned Z3 4.8.7 and a standalone pre-commit 4.6.0 release in temporary directories.
 - Re-ran `./agent-scripts/check-all.sh`: the full Gradle `check` passed in 3m51s and `check-testdata.sh` passed. Pre-commit could not build the external `pre-commit-hooks` environment because the network proxy returned 403 for `files.pythonhosted.org`, even after a clean retry.
 - Independently ran both repository-local pre-commit hooks: `agent-scripts/check-testdata.sh` passed and `agent-scripts/tests/run.sh` passed all assertions. `git diff --check` passed, and all changed text files have final newlines, covering the configured end-of-file hook for this change.
+- Committed the test coverage on `test/issue-338-aliasing-uniqueness`, pushed the branch, and opened PR #384 against `implementing-air-automations`.
