@@ -1,0 +1,7 @@
+/data_class_destructuring.kt: error: An internal error has occurred.
+Details: Not yet implemented for FirComponentCall (first)
+Please report this at https://github.com/jesyspa/kotlin
+
+/data_class_destructuring.kt: error: An internal error has occurred.
+Details: Not yet implemented for FirComponentCall (_)
+Please report this at https://github.com/jesyspa/kotlin
