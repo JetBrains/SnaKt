@@ -746,6 +746,18 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("int_boundary_arithmetic.kt")
+      public void testInt_boundary_arithmetic() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/int_boundary_arithmetic.kt");
+      }
+
+      @Test
+      @TestMetadata("integral_conversion_boundaries.kt")
+      public void testIntegral_conversion_boundaries() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/integral_conversion_boundaries.kt");
+      }
+
+      @Test
       @TestMetadata("safe_call.kt")
       public void testSafe_call() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/safe_call.kt");
