@@ -250,3 +250,15 @@
 - Ran Git's merge-tree calculation successfully; it produced merged tree `cea18a82333edd030b6a3c62a77a2104d3cb11f9` with no conflicts.
 - Confirmed GitHub independently reports PR #408 as `MERGEABLE` with merge state `CLEAN` at the same source and target commits; the current pre-commit check passed.
 - Made no changes to the PR's implementation or tests because no conflict exists.
+
+## 2026-09-14 — PR #408 synchronized to `0b0ead2`
+
+- Read `AUTOMATIONS.md` and recorded this run's instruction.
+- Confirmed the checkout is clean on `test/issue-325-pure-function-expressions` and matches synchronized source commit `0b0ead2b10f09eea75f0d82424125898c490ce0b`.
+- Fetched and unshallowed the current source and target histories so Git could calculate their ancestry reliably.
+- Confirmed the merge base of source `0b0ead2b10f09eea75f0d82424125898c490ce0b` and target `9bac7b389dc5d2e01ffe14b0f92b69f134866c87` is the target commit itself.
+- Ran Git's merge-tree calculation successfully; it produced merged tree `b26c1aed80894ac22b31ee409f6f2912267cb8f8`, identical to the source tree, with no conflicts.
+- Confirmed GitHub independently reports PR #408 as `MERGEABLE` with merge state `CLEAN` at the same source and target commits.
+- Made no changes to the PR's implementation or tests because no conflict exists.
+- Ran `check-all.sh` with Temurin JDK 17.0.20.1 and Z3 4.8.7: Gradle `check` and test-data validation passed. The pre-commit wrapper could not install its hook environment because the proxy returned HTTP 403 for the setuptools download.
+- Ran the configured checks directly instead: end-of-file-fixer made no changes, test-data validation passed, the agent-script test suite passed, and `git diff --check` passed.
