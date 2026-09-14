@@ -24,4 +24,18 @@
 - Reviewed the branch diff against the base: it contains the intended generic-substitution probes plus automation instruction and diary records.
 - No conflict resolution or source-code changes were needed for the synchronized head.
 
+## 2026-09-14 — PR #388 synchronized to `1438d2f`
+
+- Read the synchronize event, `AGENTS.md`, `AUTOMATIONS.md`, and the previous conflict-solving records.
+- Confirmed the checkout is the required `test/generic-function-substitution` source branch at event head `1438d2fbdb7170616e8d8adfbe96efb9171e9c23`.
+- Fetched the latest source and `implementing-air-automations` refs. The live base remains `9bac7b389dc5d2e01ffe14b0f92b69f134866c87`, which is also the merge base.
+- Queried PR #388 and confirmed it is open and `MERGEABLE`. Its `UNSTABLE` state comes from the pre-commit check, not a merge conflict.
+- Ran `git merge-tree --write-tree HEAD origin/implementing-air-automations`; Git produced merged tree `762c0f725d02a91351f2d6e3505dd2e0115e535b` without conflicts.
+- Inspected the failed workflow log. The end-of-file hook found the trailing blank line in this automation's instruction file from the preceding synchronization commit; test-data and script checks passed.
+- Removed that trailing blank line. `git diff --check`, `check-testdata.sh`, and the script test suite passed.
+- `check-all.sh` could not complete Gradle configuration because the checkout environment only supplies Java 25.0.2; Gradle reported that version as its error. Installing `pre-commit` in an isolated environment was also blocked by the HTTP 403 proxy, so its two local hooks were run directly and passed; the CI log confirms the end-of-file hook's only prior complaint is now fixed.
+- No merge conflict or source-code resolution was needed.
+
 Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=51985df5-1f10-4e89-b210-c518fc34e923
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=04402cb5-0170-40bd-ad52-558338de59f1
