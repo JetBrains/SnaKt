@@ -144,6 +144,12 @@ Monitor automation pull requests and resolve merge conflicts when they appear. F
 
 Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=ad5b8810-dfa6-4222-baba-ef151540554c
 
+## Run 2026-09-14 — PR #391 synchronize at c923266d
+
+Monitor automation pull request #391 after synchronization at `c923266d6e3841a24df3a4a05a0f605b31a0e484`. Compare its source branch with the current `implementing-air-automations` base, resolve and verify any merge conflicts on the source branch, or record the clean result when no resolution is needed. Do not push; leave signed commits on the current source branch for platform delivery.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=d6cda769-5830-4bee-abe9-7825a8d29d08
+
 # Run 3c499bd6-62cf-4338-9ea6-14e5950ff673
 
 Monitor synchronized automation pull request #391, determine whether its source branch conflicts with `implementing-air-automations`, and resolve and verify any conflicts found. Leave delivery to Air's push-to-source workflow.
