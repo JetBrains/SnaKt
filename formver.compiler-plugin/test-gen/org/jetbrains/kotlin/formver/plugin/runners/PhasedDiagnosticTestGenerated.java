@@ -644,6 +644,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("vararg_calls.kt")
+      public void testVararg_calls() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/vararg_calls.kt");
+      }
+
+      @Test
       @TestMetadata("when.kt")
       public void testWhen() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/when.kt");
