@@ -394,6 +394,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("inheritance_dispatch.kt")
+      public void testInheritance_dispatch() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/inheritance_dispatch.kt");
+      }
+
+      @Test
       @TestMetadata("inheritance_fields.kt")
       public void testInheritance_fields() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/inheritance_fields.kt");
