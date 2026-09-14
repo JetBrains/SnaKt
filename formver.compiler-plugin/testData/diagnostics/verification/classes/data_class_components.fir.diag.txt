@@ -1,0 +1,61 @@
+/data_class_components.kt: info: Generated Viper text for componentOne:
+function g_first(this: Ref): Ref
+  requires isSubtype(typeOf(this), ComponentPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function g_second(this: Ref): Ref
+  requires isSubtype(typeOf(this), ComponentPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method component1(this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), ComponentPair())
+  ensures isSubtype(typeOf(ret_2), intType())
+
+
+method componentOne() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 10
+{
+  var anon: Ref
+  anon := con(intToRef(10), intToRef(20))
+  v_ret_0 := component1(anon)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method con(par_first: Ref, par_second: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(par_first), intType())
+  requires isSubtype(typeOf(par_second), intType())
+  ensures isSubtype(typeOf(ret_3), ComponentPair())
+  ensures acc(ComponentPair_unique(ret_3), write)
+  ensures intFromRef(g_first(ret_3)) == intFromRef(par_first)
+  ensures intFromRef(g_second(ret_3)) == intFromRef(par_second)
+
+
+/data_class_components.kt: info: Generated Viper text for componentTwoBoundary:
+function first(this: Ref): Ref
+  requires isSubtype(typeOf(this), ComponentPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function second(this: Ref): Ref
+  requires isSubtype(typeOf(this), ComponentPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method component2(this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), ComponentPair())
+  ensures isSubtype(typeOf(ret_2), intType())
+
+
+method componentTwoBoundary(pair: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(pair), ComponentPair())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(second(pair))
+{
+  v_ret_0 := component2(pair)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
