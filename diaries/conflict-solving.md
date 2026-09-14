@@ -62,3 +62,13 @@ Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains
 - Ran `./agent-scripts/test.sh extension_function_calls`; Gradle stopped during initialization because the environment provides Java 25.0.2, so no tests executed. The synchronized change is this diary-only conflict-check commit, and the preceding source commit recorded both focused golden tests passing under JetBrains Runtime 21.0.11.
 
 Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=8d6869bd-0c2a-4c55-bdea-a0157161bf9a
+
+## 2026-09-14 — Pull request #411 synchronization to e25c48f
+
+- Re-read the run request, trigger payload, delivery mode, repository `AGENTS.md`, and `AUTOMATIONS.md`.
+- Confirmed the checkout is the pull request source branch `test/issue-345-extension-functions` at `e25c48f2d211bd91cca4f98e8e9bd3775cf5d886` and fetched the current source and base refs.
+- Deepened the shallow checkout to restore the ancestry needed for a reliable mergeability check.
+- Confirmed the current base `9bac7b389dc5d2e01ffe14b0f92b69f134866c87` is an ancestor of the synchronized head and that `git merge-tree` produces a merged tree without conflicts. GitHub also reported `mergeable: MERGEABLE`; its `UNSTABLE` merge-state status reflects checks rather than a merge conflict. No conflict-resolution merge was needed.
+- Ran `./agent-scripts/test.sh extension_function_calls`; Gradle stopped during initialization because the environment only provides Java 25.0.2, so no tests executed. The synchronized change is the preceding diary-only conflict-check commit, and the extension-function tests were already recorded as passing under JetBrains Runtime 21.0.11 before these audit commits.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=b661f397-d5a6-4d2b-be1f-3a48ce5265d6
