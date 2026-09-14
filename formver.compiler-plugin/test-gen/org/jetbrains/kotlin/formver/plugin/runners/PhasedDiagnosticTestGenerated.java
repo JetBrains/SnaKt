@@ -648,6 +648,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       public void testWhen() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/when.kt");
       }
+
+      @Test
+      @TestMetadata("when_swarm_04.kt")
+      public void testWhen_swarm_04() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/when_swarm_04.kt");
+      }
     }
 
     @Nested
