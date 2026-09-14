@@ -143,3 +143,9 @@ Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains
 Monitor automation pull request #391 after synchronization at `1211a5c7c6fd4b2a5db87f01235ea059d8a5c23f`. Compare its source branch with the current `implementing-air-automations` base, resolve and verify any merge conflicts on the source branch, or record the clean result when no resolution is needed.
 
 Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=f5ad3c2f-977a-407e-9fb1-5be6dbab08bb
+
+## Run 7353d7db-dca7-4609-b8af-141c90427365
+
+Monitor PR #391 (`test/floating-point-rejection` into `implementing-air-automations`) after synchronization. Check whether it has merge conflicts, resolve and verify them if present, and otherwise record the clean result. Do not push; leave signed commits on the current source branch for platform delivery.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=7353d7db-dca7-4609-b8af-141c90427365

@@ -566,3 +566,15 @@ Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains
 - Concluded that the synchronized head has no merge conflict, so no source or golden-file edits were necessary.
 
 Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=14fe2b66-d71a-41d1-90be-841fb43e7425
+
+## 2026-09-14 — synchronized head 3e9b72a4
+
+- Read `AUTOMATIONS.md` and recorded this run in `automationsInstructions/conflict-solving.md` before investigating the pull request.
+- Confirmed the checkout remains on `test/floating-point-rejection` and PR #391 targets `implementing-air-automations`.
+- Fetched the exact remote refs and deepened the shallow checkout without switching branches. The triggered, checked-out, and remote head is `3e9b72a47c32e2233cc534e856de2928e70e7ced`; the base is `9bac7b389dc5d2e01ffe14b0f92b69f134866c87`.
+- Confirmed the base is the merge base of the synchronized head and base.
+- Ran `git merge-tree --write-tree HEAD origin/implementing-air-automations`; it produced merged tree `c163b55e312fd6e48afda120136be3683b6426db` without conflict diagnostics.
+- Queried GitHub at those exact revisions; it reported `MERGEABLE` and `CLEAN`.
+- Concluded that the synchronized head has no merge conflict, so no source or golden-file edits were necessary.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=7353d7db-dca7-4609-b8af-141c90427365
