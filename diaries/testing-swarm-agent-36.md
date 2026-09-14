@@ -24,3 +24,5 @@
 - Attempted the documented pip installation in an isolated virtual environment; the environment proxy rejected Python package downloads. Downloaded the official standalone `pre-commit` executable from its GitHub release instead and reran `check-all.sh`. Gradle and testData remained green, but hook environment creation hit the same proxy rejection while fetching setuptools.
 - Executed every configured pre-commit check directly: the checked-out `end-of-file-fixer` normalized the new instruction file and passed on rerun; `agent-scripts/check-testdata.sh` passed; and all `agent-scripts/tests/run.sh` assertions passed. The only incomplete check is the pre-commit framework's environment bootstrap, due solely to the external package proxy.
 - Prepared the focused golden tests, generated registration, instruction record, and this complete diary for commit and pull-request delivery to `implementing-air-automations`.
+- Committed the test suite and records as `5a8afcf` (`Test floating-point rejection`) with the required Air Automations signature.
+- Pushed branch `test/floating-point-rejection` and opened pull request #391 against `implementing-air-automations`.
