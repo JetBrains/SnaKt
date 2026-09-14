@@ -327,3 +327,17 @@ Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains
 - `git diff --check`, test-data validation, and all agent-script assertions passed.
 
 Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=85f092e5-e5f2-407e-909f-0d7e0e99dd35
+
+## 2026-09-14 — PR #388 synchronized to `ae6849d`
+
+- Read the synchronize event, `AGENTS.md`, `AUTOMATIONS.md`, and the previous conflict-solving records.
+- Confirmed the checkout is the required `test/generic-function-substitution` source branch at event head `ae6849da2bdd5991b26ba92cd5d9b7c1a2a4e0f3`.
+- Recorded this run's assignment in `automationsInstructions/conflict-solving-agent.md` before the full conflict analysis.
+- Fetched and unshallowed the latest source and `implementing-air-automations` histories. The live base remains `9bac7b389dc5d2e01ffe14b0f92b69f134866c87`, which is also the merge base.
+- Ran `git merge-tree --write-tree origin/implementing-air-automations HEAD`; Git produced merged tree `3284608517c5980a3f79852c67a65e6d2759e351` without conflicts.
+- Queried PR #388 and confirmed it is open, `MERGEABLE`, and `CLEAN` at the exact synchronized head; its hosted pre-commit workflow passed.
+- No merge conflict or source-code resolution was needed.
+- `git diff --check`, test-data validation, and all agent-script assertions passed.
+- `check-all.sh` could not complete Gradle `check` because the environment provides Java 25.0.2, which this build rejects during configuration; its test-data stage passed, and pre-commit was unavailable locally. The PR's hosted pre-commit check passed on this exact head.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=297bb739-0c78-4fc4-a27a-c65f893fe0db
