@@ -295,6 +295,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("annotation_selection.kt")
+    public void testAnnotation_selection() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/annotation_selection.kt");
+    }
+
+    @Test
     @TestMetadata("basic.kt")
     public void testBasic() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/basic.kt");
