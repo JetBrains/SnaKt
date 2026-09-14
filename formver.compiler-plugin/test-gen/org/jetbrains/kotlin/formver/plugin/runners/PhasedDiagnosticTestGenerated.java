@@ -136,6 +136,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("string_operation_models.kt")
+      public void testString_operation_models() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/string/string_operation_models.kt");
+      }
+
+      @Test
       @TestMetadata("strings.kt")
       public void testStrings() {
         runTest("formver.compiler-plugin/testData/diagnostics/stdlib/string/strings.kt");
