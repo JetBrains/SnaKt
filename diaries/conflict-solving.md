@@ -23,3 +23,11 @@
 - Checked synchronized head `cadd8d93777f41374d458a1cff2c5bf593a8d521` against target `9bac7b389dc5d2e01ffe14b0f92b69f134866c87`.
 - Confirmed GitHub reports the PR as mergeable and independently produced a conflict-free merge tree with Git.
 - Left the PR's aliasing tests unchanged because no merge conflict exists.
+
+## 2026-09-14 — PR #384 synchronize event at `3507a34`
+
+- Re-read `AUTOMATIONS.md` and the existing conflict-solving instruction and diary.
+- Fetched the complete repository history and the latest source and target refs.
+- Checked synchronized head `3507a348755f20b8e4e780cbeabcb87b4fe3e2e3` against target `9bac7b389dc5d2e01ffe14b0f92b69f134866c87`.
+- Independently produced merge tree `154dbed04c2e99bb7d294b004250a5e35dc5589d` with Git and confirmed there are no conflicts.
+- Left the PR's aliasing tests unchanged because no conflict resolution is needed.
