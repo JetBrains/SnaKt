@@ -64,3 +64,17 @@ Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains
 - Concluded that the synchronized head has no merge conflict, so no source or golden-file edits were necessary.
 
 Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=575dda7f-ea2d-4548-9025-f90f90f87f3d
+
+## 2026-09-14 — synchronized head 17ea6e07
+
+- Read `AUTOMATIONS.md` and updated `automationsInstructions/conflict-solving.md` for this run before investigating the pull request.
+- Confirmed the checkout is on `test/floating-point-rejection` and PR #391 targets `implementing-air-automations`.
+- Fetched the current source and base refs without switching branches. The triggered head is `17ea6e07b71dbf7970970b1a355445de62b1393f`; the base is `9bac7b389dc5d2e01ffe14b0f92b69f134866c87`.
+- Deepened the shallow checkout until Git identified the base commit as the merge base.
+- Ran `git merge-tree --write-tree origin/implementing-air-automations HEAD`; it produced merged tree `2c29f7afa64c3f446b49267d764db7ad927b73cc` without conflict diagnostics.
+- Queried GitHub at those exact revisions; it reported `MERGEABLE` and `CLEAN`.
+- Ran `git diff --check origin/implementing-air-automations...HEAD`; it completed successfully.
+- Ran `./agent-scripts/check-all.sh`. Test-data checks passed, but Gradle could not configure under the environment's JDK 25.0.2, and `pre-commit` was unavailable. Attempting to download a temporary Temurin JDK 21 was blocked by the environment proxy with HTTP 403. No goldens were regenerated.
+- Concluded that the synchronized head has no merge conflict, so no source or golden-file edits were necessary.
+
+Produced by Air Automations. Name: Conflict solving / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/5be9939d-4d39-4772-bc0d-2e1b6182d491?run=af9ef9cc-21f5-45f4-ada3-4820d84110e1
