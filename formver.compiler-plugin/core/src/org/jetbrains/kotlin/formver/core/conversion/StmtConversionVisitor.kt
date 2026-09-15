@@ -16,6 +16,7 @@ import org.jetbrains.kotlin.fir.references.toResolvedSymbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.coneType
+import org.jetbrains.kotlin.fir.types.isNothing
 import org.jetbrains.kotlin.fir.types.isUnit
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
@@ -86,8 +87,12 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         )
     }
 
-    override fun visitBlock(block: FirBlock, data: StmtConversionContext): ExpEmbedding =
-        block.statements.map(data::convert).toBlock()
+    override fun visitBlock(block: FirBlock, data: StmtConversionContext): ExpEmbedding = Block {
+        for (statement in block.statements) {
+            add(data.convert(statement))
+            if (statement is FirExpression && statement.resolvedType.isNothing) break
+        }
+    }
 
     override fun visitLiteralExpression(
         literalExpression: FirLiteralExpression,
@@ -136,7 +141,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
 
     private fun convertWhenBranches(
         whenBranches: Iterator<FirWhenBranch>,
-        type: TypeEmbedding,
+        type: () -> TypeEmbedding,
         data: StmtConversionContext,
     ): ExpEmbedding {
         if (!whenBranches.hasNext()) return UnitLit
@@ -144,19 +149,30 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         val branch = whenBranches.next()
 
         // Note that only the last condition can be a FirElseIfTrue
-        return if (branch.condition is FirElseIfTrueCondition) {
-            data.withNewScope { convert(branch.result) }
-        } else {
-            val cond = data.convert(branch.condition).withType { boolean() }
-            val thenExp = data.withNewScope { convert(branch.result) }
-            val elseExp = convertWhenBranches(whenBranches, type, data)
-            If(cond, thenExp.withType(type), elseExp.withType(type), type)
+        if (branch.condition is FirElseIfTrueCondition) {
+            return data.withNewScope { convert(branch.result) }
         }
+
+        val constantCondition = (branch.condition as? FirLiteralExpression)
+            ?.takeIf { it.kind == ConstantValueKind.Boolean }
+            ?.value as? Boolean
+        if (constantCondition == true) {
+            return data.withNewScope { convert(branch.result) }
+        }
+        if (constantCondition == false) {
+            return convertWhenBranches(whenBranches, type, data)
+        }
+
+        val branchType = type()
+        val cond = data.convert(branch.condition).withType { boolean() }
+        val thenExp = data.withNewScope { convert(branch.result) }
+        val elseExp = convertWhenBranches(whenBranches, type, data)
+        return If(cond, thenExp.withType(branchType), elseExp.withType(branchType), branchType)
     }
 
     override fun visitWhenExpression(whenExpression: FirWhenExpression, data: StmtConversionContext): ExpEmbedding =
         data.withNewScope {
-            val type = data.embedType(whenExpression)
+            val type by lazy { data.embedType(whenExpression) }
             val subj: Declare? = whenExpression.subjectVariable?.let { firSubjVar ->
                 val subjExp = convert(firSubjVar.initializer!!)
                 if (firSubjVar.name.isSpecial)
@@ -165,7 +181,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                     declareLocalVariable(firSubjVar.symbol, subjExp)
             }
             val body = withWhenSubject(subj?.variable) {
-                convertWhenBranches(whenExpression.branches.iterator(), type, this)
+                convertWhenBranches(whenExpression.branches.iterator(), { type }, this)
             }
             subj?.let { blockOf(it, body) } ?: body
         }

@@ -602,6 +602,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("dead_code.kt")
+      public void testDead_code() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/dead_code.kt");
+      }
+
+      @Test
       @TestMetadata("exp_side_effects.kt")
       public void testExp_side_effects() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/exp_side_effects.kt");
