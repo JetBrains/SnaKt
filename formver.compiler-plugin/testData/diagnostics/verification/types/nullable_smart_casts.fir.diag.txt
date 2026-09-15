@@ -1,0 +1,161 @@
+/nullable_smart_casts.kt: info: Generated Viper text for stableAliasRetainsNonNullFact:
+method stableAliasRetainsNonNullFact(input: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(input), nullable(intType()))
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var stable: Ref
+  stable := input
+  if (!(stable == nullValue())) {
+    v_ret_0 := stable
+    goto lbl_ret_0
+  }
+  v_ret_0 := intToRef(0)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/nullable_smart_casts.kt: info: Generated Viper text for repeatedNullChecks:
+method repeatedNullChecks(input: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(input), nullable(intType()))
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  if (input == nullValue()) {
+    v_ret_0 := intToRef(0)
+    goto lbl_ret_0
+  }
+  if (input == nullValue()) {
+    v_ret_0 := intToRef(1)
+    goto lbl_ret_0
+  }
+  v_ret_0 := input
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/nullable_smart_casts.kt: warning: Condition is always 'false'.
+
+/nullable_smart_casts.kt: info: Generated Viper text for branchSelectedValueIsNonNull:
+method branchSelectedValueIsNonNull(chooseFirst: Ref, first: Ref, second: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(chooseFirst), boolType())
+  requires isSubtype(typeOf(first), nullable(intType()))
+  requires isSubtype(typeOf(second), nullable(intType()))
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  var selected: Ref
+  if (first == nullValue()) {
+    anon := boolToRef(true)
+  } else {
+    anon := boolToRef(second == nullValue())}
+  if (boolFromRef(anon)) {
+    v_ret_0 := intToRef(0)
+    goto lbl_ret_0
+  }
+  if (boolFromRef(chooseFirst)) {
+    selected := first
+  } else {
+    selected := second}
+  v_ret_0 := selected
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/nullable_smart_casts.kt: info: Generated Viper text for elvisProducesNonNullValue:
+method elvisProducesNonNullValue(input: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(input), nullable(intType()))
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  if (input != nullValue()) {
+    v_ret_0 := input
+  } else {
+    v_ret_0 := intToRef(17)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/nullable_smart_casts.kt: info: Generated Viper text for safeCallFollowsNullBranch:
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), NullableSmartCastBox())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method safeCallFollowsNullBranch(box: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(box), nullable(NullableSmartCastBox()))
+  ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
+{
+  var l0_result: Ref
+  if (box != nullValue()) {
+    l0_result := value(box)
+  } else {
+    l0_result := nullValue()}
+  if (box == nullValue()) {
+    v_ret_0 := l0_result
+    goto lbl_ret_0
+  }
+  v_ret_0 := l0_result
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/nullable_smart_casts.kt: info: Generated Viper text for stableAliasSurvivesMutableLocalMutation:
+method stableAliasSurvivesMutableLocalMutation(input: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(input), nullable(intType()))
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var current: Ref
+  current := input
+  if (!(current == nullValue())) {
+    var stableBeforeMutation: Ref
+    stableBeforeMutation := current
+    current := nullValue()
+    v_ret_0 := stableBeforeMutation
+    goto lbl_ret_0
+  }
+  v_ret_0 := intToRef(0)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/nullable_smart_casts.kt: info: Generated Viper text for elvisAfterMutationUsesCurrentValue:
+method elvisAfterMutationUsesCurrentValue(input: Ref, replacement: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(input), nullable(intType()))
+  requires isSubtype(typeOf(replacement), nullable(intType()))
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var current: Ref
+  current := input
+  if (!(current == nullValue())) {
+    current := replacement
+  }
+  if (current != nullValue()) {
+    v_ret_0 := current
+  } else {
+    v_ret_0 := intToRef(19)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/nullable_smart_casts.kt: info: Generated Viper text for mutableLocalCanBeCheckedAgain:
+method mutableLocalCanBeCheckedAgain(input: Ref, replacement: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(input), nullable(intType()))
+  requires isSubtype(typeOf(replacement), nullable(intType()))
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var current: Ref
+  current := input
+  if (!(current == nullValue())) {
+    current := replacement
+  } else {
+    current := intToRef(1)}
+  if (!(current == nullValue())) {
+    v_ret_0 := current
+    goto lbl_ret_0
+  }
+  v_ret_0 := intToRef(0)
+  goto lbl_ret_0
+  label lbl_ret_0
+}

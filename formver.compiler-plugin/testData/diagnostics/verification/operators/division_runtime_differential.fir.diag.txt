@@ -1,0 +1,27 @@
+/division_runtime_differential.kt: info: Generated Viper text for positiveDivisionControl:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method positiveDivisionControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var l0_result: Ref
+  l0_result := divInts(intToRef(84), intToRef(2))
+  assert intFromRef(l0_result) == 42
+  v_ret_0 := l0_result
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/division_runtime_differential.kt: info: Generated Viper text for divisionByZeroBoundary:
+method divisionByZeroBoundary() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var zero: Ref
+  zero := intToRef(0)
+  v_ret_0 := divInts(intToRef(1), zero)
+  goto lbl_ret_0
+  label lbl_ret_0
+}

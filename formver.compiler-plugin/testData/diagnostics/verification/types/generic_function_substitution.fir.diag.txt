@@ -1,0 +1,173 @@
+/generic_function_substitution.kt: info: Generated Viper text for inferredAndExplicitSubstitution:
+method inferredAndExplicitSubstitution() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true
+{
+  var inferred: Ref
+  var anon_2: Ref
+  var v_ret_3: Ref
+  var anon_0: Ref
+  var explicit: Ref
+  var anon_3: Ref
+  var v_ret_4: Ref
+  var anon_1: Ref
+  anon_0 := intToRef(1)
+  inhale isSubtype(typeOf(anon_0), nullable(anyType()))
+  v_ret_3 := anon_0
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon_2 := v_ret_3
+  inferred := anon_2
+  inhale isSubtype(typeOf(inferred), intType())
+  anon_1 := intToRef(1)
+  inhale isSubtype(typeOf(anon_1), nullable(anyType()))
+  v_ret_4 := anon_1
+  goto lbl_ret_4
+  label lbl_ret_4
+  anon_3 := v_ret_4
+  explicit := anon_3
+  inhale isSubtype(typeOf(explicit), intType())
+  if (intFromRef(inferred) == 1) {
+    v_ret_0 := boolToRef(intFromRef(explicit) == 1)
+  } else {
+    v_ret_0 := boolToRef(false)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method substitutionIdentity(value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(value), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
+
+
+/generic_function_substitution.kt: info: Generated Viper text for explicitSubstitutionPair:
+method explicitSubstitutionPair() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true
+{
+  var specific: Ref
+  var anon_2: Ref
+  var v_ret_3: Ref
+  var anon_0: Ref
+  var general: Ref
+  var anon_3: Ref
+  var v_ret_4: Ref
+  var anon_1: Ref
+  anon_0 := intToRef(1)
+  inhale isSubtype(typeOf(anon_0), nullable(anyType()))
+  v_ret_3 := anon_0
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon_2 := v_ret_3
+  specific := anon_2
+  inhale isSubtype(typeOf(specific), intType())
+  anon_1 := intToRef(1)
+  inhale isSubtype(typeOf(anon_1), nullable(anyType()))
+  v_ret_4 := anon_1
+  goto lbl_ret_4
+  label lbl_ret_4
+  anon_3 := v_ret_4
+  general := anon_3
+  inhale isSubtype(typeOf(general), anyType())
+  if (intFromRef(specific) == 1) {
+    v_ret_0 := boolToRef(general == intToRef(1))
+  } else {
+    v_ret_0 := boolToRef(false)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method substitutionIdentity(value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(value), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
+
+
+/generic_function_substitution.kt: info: Generated Viper text for multipleTypeParameterSubstitution:
+method multipleTypeParameterSubstitution() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true
+{
+  var specific: Ref
+  var anon_4: Ref
+  var v_ret_3: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var general: Ref
+  var anon_5: Ref
+  var v_ret_4: Ref
+  var anon_2: Ref
+  var anon_3: Ref
+  anon_0 := intToRef(1)
+  inhale isSubtype(typeOf(anon_0), nullable(anyType()))
+  anon_1 := boolToRef(true)
+  inhale isSubtype(typeOf(anon_1), nullable(anyType()))
+  v_ret_3 := anon_1
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon_4 := v_ret_3
+  specific := anon_4
+  inhale isSubtype(typeOf(specific), boolType())
+  anon_2 := intToRef(1)
+  inhale isSubtype(typeOf(anon_2), nullable(anyType()))
+  anon_3 := boolToRef(true)
+  inhale isSubtype(typeOf(anon_3), nullable(anyType()))
+  v_ret_4 := anon_3
+  goto lbl_ret_4
+  label lbl_ret_4
+  anon_5 := v_ret_4
+  general := anon_5
+  inhale isSubtype(typeOf(general), anyType())
+  if (boolFromRef(specific)) {
+    v_ret_0 := boolToRef(general == boolToRef(true))
+  } else {
+    v_ret_0 := boolToRef(false)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method substitutionSecond(first: Ref, second: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(first), nullable(anyType()))
+  requires isSubtype(typeOf(second), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
+
+
+/generic_function_substitution.kt: info: Generated Viper text for boundedReturnSubstitution:
+method boundedReturnSubstitution() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true
+{
+  var specific: Ref
+  var anon_2: Ref
+  var v_ret_3: Ref
+  var anon_0: Ref
+  var boundary: Ref
+  var anon_3: Ref
+  var v_ret_4: Ref
+  var anon_1: Ref
+  anon_0 := intToRef(1)
+  inhale isSubtype(typeOf(anon_0), nullable(anyType()))
+  v_ret_3 := anon_0
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon_2 := v_ret_3
+  specific := anon_2
+  inhale isSubtype(typeOf(specific), intType())
+  anon_1 := intToRef(1)
+  inhale isSubtype(typeOf(anon_1), nullable(anyType()))
+  v_ret_4 := anon_1
+  goto lbl_ret_4
+  label lbl_ret_4
+  anon_3 := v_ret_4
+  boundary := anon_3
+  inhale isSubtype(typeOf(boundary), Number())
+  if (intFromRef(specific) == 1) {
+    v_ret_0 := boolToRef(boundary == intToRef(1))
+  } else {
+    v_ret_0 := boolToRef(false)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method boundedSubstitutionIdentity(value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(value), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
