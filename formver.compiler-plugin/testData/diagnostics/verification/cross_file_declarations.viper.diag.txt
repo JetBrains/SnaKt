@@ -1,0 +1,3 @@
+/cross_file_declarations.kt: warning: Viper verification error: The precondition of method crossFileIncrement might not hold. Assertion intFromRef(intToRef(-1)) >= 0 might not hold.
+
+/cross_file_declarations.kt: warning: Viper verification error: The precondition of method add might not hold. Assertion intFromRef(intToRef(-1)) >= 0 might not hold.

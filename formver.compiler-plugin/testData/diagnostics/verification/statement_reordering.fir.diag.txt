@@ -1,0 +1,145 @@
+/statement_reordering.kt: info: Generated Viper text for independentDeclarationsLeftFirst:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method independentDeclarationsLeftFirst() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon: Ref
+  left := plusInts(intToRef(20), intToRef(1))
+  right := timesInts(intToRef(6), intToRef(7))
+  if (intFromRef(left) == 21) {
+    anon := boolToRef(intFromRef(right) == 42)
+  } else {
+    anon := boolToRef(false)}
+  assert boolFromRef(anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/statement_reordering.kt: info: Generated Viper text for independentDeclarationsRightFirst:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method independentDeclarationsRightFirst() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var right: Ref
+  var left: Ref
+  var anon: Ref
+  right := timesInts(intToRef(6), intToRef(7))
+  left := plusInts(intToRef(20), intToRef(1))
+  if (intFromRef(left) == 21) {
+    anon := boolToRef(intFromRef(right) == 42)
+  } else {
+    anon := boolToRef(false)}
+  assert boolFromRef(anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/statement_reordering.kt: info: Generated Viper text for independentAssignmentsLeftFirst:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method independentAssignmentsLeftFirst() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon: Ref
+  left := intToRef(10)
+  right := intToRef(20)
+  left := plusInts(left, intToRef(1))
+  right := plusInts(right, intToRef(2))
+  if (intFromRef(left) == 11) {
+    anon := boolToRef(intFromRef(right) == 22)
+  } else {
+    anon := boolToRef(false)}
+  assert boolFromRef(anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/statement_reordering.kt: info: Generated Viper text for independentAssignmentsRightFirst:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method independentAssignmentsRightFirst() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon: Ref
+  left := intToRef(10)
+  right := intToRef(20)
+  right := plusInts(right, intToRef(2))
+  left := plusInts(left, intToRef(1))
+  if (intFromRef(left) == 11) {
+    anon := boolToRef(intFromRef(right) == 22)
+  } else {
+    anon := boolToRef(false)}
+  assert boolFromRef(anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/statement_reordering.kt: info: Generated Viper text for failingIndependentAssignmentsLeftFirst:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method failingIndependentAssignmentsLeftFirst() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon: Ref
+  left := intToRef(10)
+  right := intToRef(20)
+  left := plusInts(left, intToRef(1))
+  right := plusInts(right, intToRef(2))
+  if (intFromRef(left) == 12) {
+    anon := boolToRef(intFromRef(right) == 22)
+  } else {
+    anon := boolToRef(false)}
+  assert boolFromRef(anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/statement_reordering.kt: info: Generated Viper text for failingIndependentAssignmentsRightFirst:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method failingIndependentAssignmentsRightFirst() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  var anon: Ref
+  left := intToRef(10)
+  right := intToRef(20)
+  right := plusInts(right, intToRef(2))
+  left := plusInts(left, intToRef(1))
+  if (intFromRef(left) == 12) {
+    anon := boolToRef(intFromRef(right) == 22)
+  } else {
+    anon := boolToRef(false)}
+  assert boolFromRef(anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

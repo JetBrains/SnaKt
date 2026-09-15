@@ -1,0 +1,17 @@
+/heap_aliasing_model.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == -1 might not hold.
+
+/heap_aliasing_model.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == 0 might not hold.
+
+/heap_aliasing_model.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == 1 might not hold.
+
+/heap_aliasing_model.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == 0 might not hold.
+
+/heap_aliasing_model.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == 1 might not hold.
+
+/heap_aliasing_model.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == 1 might not hold.
+
+/heap_aliasing_model.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == -1 might not hold.
+
+/heap_aliasing_model.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == 1 might not hold.
+
+/heap_aliasing_model.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == -1 might not hold.
