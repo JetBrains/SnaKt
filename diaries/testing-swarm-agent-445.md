@@ -24,5 +24,7 @@ Issue #445 assigns bounded model-based oracle testing of heap objects, aliasing,
 - Final targeted checks: conversion and `--verify` each ran one test and passed.
 - `./agent-scripts/check-all.sh` completed `gradle check` and `check-testdata.sh` successfully, then exited 2 because `pre-commit` was unavailable. Installation attempts with both pip in a temporary virtual environment and uv were blocked by the environment proxy (403 from `files.pythonhosted.org`; direct networking had no DNS).
 - Ran the available local pre-commit hooks directly: `agent-scripts/tests/run.sh` passed all assertions, `agent-scripts/check-testdata.sh` passed, and `git diff --check` passed. The external `end-of-file-fixer` hook could not be installed; all added text files were manually reviewed for final newlines.
+- Committed and pushed the test branch, opened PR #532 against `implementing-air-automations`, and verified its base/head and open state.
+- Added the required `swarmTestingDone` label to triggering issue #445 and verified that both `swarmTesting` and `swarmTestingDone` are present.
 
 Produced by Air Automations. Name: Testing swarm agent / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/34ccbbdd-3fd2-474e-8f0a-10b4b2d5bda4?run=90d3345e-d4f8-4f4b-83b5-972c58b68485
