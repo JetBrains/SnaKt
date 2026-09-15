@@ -46,6 +46,14 @@ is_assertion_failure_type() {
     esac
 }
 
+# A failed Gradle task is expected in update mode only when fresh, readable
+# results show that one or more golden-file assertions were its sole failures.
+update_task_failed_unexpectedly() {
+    local task_status="$1" tally_status="$2" assertions="$3" other_failed="$4" unreadable="$5"
+    [[ "$task_status" -ne 0 && ( "$tally_status" -ne 0 || "$assertions" -eq 0 || \
+        "$other_failed" -gt 0 || "$unreadable" -gt 0 ) ]]
+}
+
 # Print the first failing <testcase> from JUnit XML newer than $1: failure
 # "type" on the first line, then "classname.name: message", then stack trace.
 # Returns 1 with nothing printed if there is no fresh XML at all, or none of it

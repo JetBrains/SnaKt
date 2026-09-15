@@ -91,6 +91,39 @@ assert_eq "counts: malformed XML is reported, not silently dropped" \
     "1 0 0 0 1" 0 \
     -- python3 "$LIB_DIR/junit_counts.py" "$FIXTURES/malformed.xml" "$FIXTURES/passing.xml"
 
+assert_eq "counts: an all-assertion aggregate is a golden mismatch" \
+    "1 1 0 0 0" 0 \
+    -- python3 "$LIB_DIR/junit_counts.py" "$FIXTURES/assertion-aggregate.xml"
+
+assert_eq "counts: a mixed aggregate remains a non-golden failure" \
+    "1 0 1 0 0" 0 \
+    -- python3 "$LIB_DIR/junit_counts.py" "$FIXTURES/mixed-aggregate.xml"
+
+# update_task_failed_unexpectedly returns success when the harness must fail.
+assert_eq "update classification: rewritten golden is expected" \
+    "" 1 \
+    -- bash -c 'source "$1"; update_task_failed_unexpectedly 1 0 1 0 0' _ "$LIB_DIR/lib.sh"
+
+assert_eq "update classification: backend error remains a failure" \
+    "" 0 \
+    -- bash -c 'source "$1"; update_task_failed_unexpectedly 1 0 0 1 0' _ "$LIB_DIR/lib.sh"
+
+assert_eq "update classification: a failed task without assertions remains a failure" \
+    "" 0 \
+    -- bash -c 'source "$1"; update_task_failed_unexpectedly 1 0 0 0 0' _ "$LIB_DIR/lib.sh"
+
+assert_eq "update classification: malformed results remain a failure" \
+    "" 0 \
+    -- bash -c 'source "$1"; update_task_failed_unexpectedly 1 0 1 0 1' _ "$LIB_DIR/lib.sh"
+
+assert_eq "update classification: missing results remain a failure" \
+    "" 0 \
+    -- bash -c 'source "$1"; update_task_failed_unexpectedly 1 1 0 0 0' _ "$LIB_DIR/lib.sh"
+
+assert_eq "update classification: successful task remains successful" \
+    "" 1 \
+    -- bash -c 'source "$1"; update_task_failed_unexpectedly 0 0 0 1 0' _ "$LIB_DIR/lib.sh"
+
 if [[ "$failures" -gt 0 ]]; then
     echo "$failures assertion(s) failed"
     exit 1
