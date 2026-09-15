@@ -33,6 +33,10 @@ Test pairwise feature interactions in diagnostics, the test harness, and the ver
 - Ran `./agent-scripts/check-all.sh`. Gradle `check` and testData checks passed, but the wrapper exited 2 because `pre-commit` was unavailable.
 - Downloaded the official standalone pre-commit 4.6.2 executable and reran `check-all.sh`. Gradle and testData checks passed again; pre-commit itself failed while creating the `pre-commit-hooks` environment because the configured proxy returned HTTP 403 for Python package metadata.
 - Ran the three configured pre-commit checks directly: the v5.0.0 `end-of-file-fixer` from pre-commit's checked-out hook source passed over repository text files, `agent-scripts/check-testdata.sh` passed, and all `agent-scripts/tests/run.sh` assertions passed. The first direct fixer invocation was mistakenly given the binary Gradle wrapper JAR and appended one byte; that exact byte was immediately removed, and `git diff --quiet` confirmed the JAR matches the branch before the correctly filtered run.
+- Committed the test matrix, generated runner, goldens, assignment record, and diary on `test/swarm-46-diagnostics-harness` with the required automation signature.
+- Updated the checkout's remote to GitHub's canonical repository location after the old lowercase URL rejected the push as moved, then pushed the branch.
+- Opened pull request #536 against `implementing-air-automations` and linked issue #476.
+- Added the required `swarmTestingDone` label to issue #476 and verified that both `swarmTesting` and `swarmTestingDone` are present.
 
 ## Conclusions
 
