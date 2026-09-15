@@ -38,4 +38,10 @@ An initial early-return form exposed an unexpected precondition failure. Minimiz
 - Local initializer after an early return: **confirmed conversion defect**; a reachable-order violation creates an unreachable precondition obligation. Tracked as #512.
 - Initial JDK 25 rejection and missing Z3: **harness failures**, resolved with the supported local tools.
 
+## Delivery
+
+- Committed the probes, generated goldens, instruction record, and diary as `f0241fe` on `test/swarm-465-control-flow-oracle` and pushed the branch.
+- Opened PR #535 against `implementing-air-automations`.
+- Added the required `swarmTestingDone` label to trigger issue #465 and verified it is present.
+
 Produced by Air Automations. Name: Testing swarm agent / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/34ccbbdd-3fd2-474e-8f0a-10b4b2d5bda4?run=4e232c07-df5f-4fcd-af62-cbe071c04131
