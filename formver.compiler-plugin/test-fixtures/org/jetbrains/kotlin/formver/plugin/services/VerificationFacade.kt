@@ -10,10 +10,12 @@ import org.jetbrains.kotlin.formver.common.services.runChecks
 import org.jetbrains.kotlin.formver.core.shouldVerify
 import org.jetbrains.kotlin.formver.core.viperProgram
 import org.jetbrains.kotlin.formver.plugin.compiler.VerificationErrors
+import org.jetbrains.kotlin.formver.plugin.compiler.PluginErrors
 import org.jetbrains.kotlin.formver.plugin.compiler.reporting.*
 import org.jetbrains.kotlin.formver.plugin.runners.*
 import org.jetbrains.kotlin.formver.viper.SiliconFrontend
 import org.jetbrains.kotlin.formver.viper.ast.unwrapOr
+import org.jetbrains.kotlin.formver.viper.errors.BackendError
 import org.jetbrains.kotlin.formver.viper.errors.ConsistencyError
 import org.jetbrains.kotlin.formver.viper.errors.VerificationError
 import org.jetbrains.kotlin.formver.viper.errors.VerifierError
@@ -97,6 +99,7 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
         val program = decl.viperProgram!!
         val onFailure: (VerifierError) -> Unit = { err ->
             val diagnostics = when (err) {
+                is BackendError -> formatBackendError(err, decl, module)
                 is ConsistencyError -> formatConsistencyError(err, decl, module)
                 is VerificationError -> formatVerificationError(err, decl, module)
             }
@@ -184,6 +187,18 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
         )
         return diagnostics!!
     }
+
+    @OptIn(InternalDiagnosticFactoryMethod::class)
+    private fun formatBackendError(
+        err: BackendError,
+        decl: FirSimpleFunction,
+        module: TestModule,
+    ): KtDiagnostic = PluginErrors.INTERNAL_ERROR.on(
+        decl.source!!,
+        err.msg,
+        positioningStrategy = SourceElementPositioningStrategies.DEFAULT,
+        languageVersionSettings = module.languageVersionSettings,
+    )!!
 }
 
 

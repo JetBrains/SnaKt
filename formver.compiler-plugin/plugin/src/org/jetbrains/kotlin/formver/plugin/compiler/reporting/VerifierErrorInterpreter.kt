@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.formver.common.ErrorStyle
 import org.jetbrains.kotlin.formver.plugin.compiler.PluginErrors
+import org.jetbrains.kotlin.formver.viper.errors.BackendError
 import org.jetbrains.kotlin.formver.viper.errors.ConsistencyError
 import org.jetbrains.kotlin.formver.viper.errors.VerificationError
 import org.jetbrains.kotlin.formver.viper.errors.VerifierError
@@ -31,7 +32,7 @@ private fun DiagnosticReporter.reportVerificationError(
 ) = error.formatByErrorStyle(errorStyle).forEach { it.report(source) }
 
 context(context: CheckerContext)
-private fun DiagnosticReporter.reportConsistencyError(source: KtSourceElement?, error: ConsistencyError) {
+private fun DiagnosticReporter.reportConsistencyError(source: KtSourceElement?, error: VerifierError) {
     val sourceIsFunctionDeclaration = source?.elementType?.let { it == KtNodeTypes.FUN } ?: false
     val positionStrategy = when (sourceIsFunctionDeclaration) {
         true -> SourceElementPositioningStrategies.DECLARATION_NAME
@@ -46,6 +47,7 @@ fun DiagnosticReporter.reportVerifierError(
     error: VerifierError,
     errorStyle: ErrorStyle,
 ) = when (error) {
+    is BackendError -> reportConsistencyError(source, error)
     is ConsistencyError -> reportConsistencyError(source, error)
     is VerificationError -> reportVerificationError(source, error, errorStyle)
 }
