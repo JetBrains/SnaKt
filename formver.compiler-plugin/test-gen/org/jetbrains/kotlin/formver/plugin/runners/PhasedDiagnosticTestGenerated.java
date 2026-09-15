@@ -114,6 +114,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("feature_composition.kt")
+      public void testFeature_composition() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/feature_composition.kt");
+      }
+
+      @Test
       @TestMetadata("list.kt")
       public void testList() {
         runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/list.kt");
