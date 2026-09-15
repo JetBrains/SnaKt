@@ -388,6 +388,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("heap_aliasing.kt")
+      public void testHeap_aliasing() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/heap_aliasing.kt");
+      }
+
+      @Test
       @TestMetadata("inheritance.kt")
       public void testInheritance() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/inheritance.kt");
