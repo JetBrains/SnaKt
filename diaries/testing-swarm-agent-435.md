@@ -19,6 +19,8 @@ Test Contract DSL and specification semantics with a bounded, independent model-
 - Searched open and closed GitHub issues for `impure precondition`, specification method calls, `freshAnonVar`, and `PureLinearizer`. The failure is already covered by open issue #379 and the broader issue #242; the equivalent postcondition form is #481. No duplicate bug was filed.
 - Ran `./agent-scripts/check-all.sh`: Gradle `check` and testData checks passed. The command returned exit 2 solely because `pre-commit` was unavailable.
 - Tried to install `pre-commit` in an isolated temporary virtual environment as required after exit 2, but the environment proxy rejected the package download with HTTP 403. Ran all configured hooks directly instead: `check-testdata.sh` passed, all agent-script tests passed, the modified files passed the end-of-file check, and `git diff --check` passed.
+- Committed the probes and evidence on `test/issue-435-contract-oracle`, pushed the branch, and opened pull request #513 against `implementing-air-automations`.
+- Added the required `swarmTestingDone` label to triggering issue #435 and confirmed both `swarmTesting` and `swarmTestingDone` are present.
 
 ## Outcome classification
 
