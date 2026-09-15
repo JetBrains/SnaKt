@@ -1,5 +1,15 @@
 # Conflict solving diary
 
+## 2026-09-15 — PR #504 synchronized to `14a6741`
+
+- Read `AUTOMATIONS.md` and this automation's standing instruction.
+- Fetched the current PR head (`14a6741`) and base (`9bac7b3`) from GitHub.
+- Confirmed the base commit remains an ancestor of the synchronized PR head.
+- Confirmed a local merge-tree operation completed without conflicts.
+- Confirmed GitHub reports PR #504 as `MERGEABLE`; its `UNSTABLE` merge state reflects checks rather than a merge conflict.
+- Made no conflict-resolution changes because no conflict exists.
+- Ran `git diff --check`, `agent-scripts/check-testdata.sh`, and `agent-scripts/tests/run.sh`; all passed.
+
 ## 2026-09-15 — PR #504
 
 - Read `AUTOMATIONS.md` and recorded this automation's instruction.
