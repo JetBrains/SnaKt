@@ -219,9 +219,21 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("diagnostic_determinism.kt")
+    public void testDiagnostic_determinism() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/diagnostic_determinism.kt");
+    }
+
+    @Test
     @TestMetadata("dump_cfg.kt")
     public void testDump_cfg() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/dump_cfg.kt");
+    }
+
+    @Test
+    @TestMetadata("heap_aliasing_mutation.kt")
+    public void testHeap_aliasing_mutation() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/heap_aliasing_mutation.kt");
     }
 
     @Test
@@ -234,6 +246,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     @TestMetadata("loop.kt")
     public void testLoop() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/loop.kt");
+    }
+
+    @Test
+    @TestMetadata("mutable_field_permissions.kt")
+    public void testMutable_field_permissions() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/mutable_field_permissions.kt");
     }
 
     @Test
@@ -388,9 +406,51 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("heap_alias_contract_mutation.kt")
+      public void testHeap_alias_contract_mutation() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/heap_alias_contract_mutation.kt");
+      }
+
+      @Test
+      @TestMetadata("heap_alias_mutation.kt")
+      public void testHeap_alias_mutation() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/heap_alias_mutation.kt");
+      }
+
+      @Test
+      @TestMetadata("heap_aliasing.kt")
+      public void testHeap_aliasing() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/heap_aliasing.kt");
+      }
+
+      @Test
+      @TestMetadata("heap_aliasing_boundaries.kt")
+      public void testHeap_aliasing_boundaries() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/heap_aliasing_boundaries.kt");
+      }
+
+      @Test
+      @TestMetadata("heap_failure_propagation.kt")
+      public void testHeap_failure_propagation() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/heap_failure_propagation.kt");
+      }
+
+      @Test
+      @TestMetadata("heap_state_transitions.kt")
+      public void testHeap_state_transitions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/heap_state_transitions.kt");
+      }
+
+      @Test
       @TestMetadata("inheritance.kt")
       public void testInheritance() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/inheritance.kt");
+      }
+
+      @Test
+      @TestMetadata("inheritance_dispatch.kt")
+      public void testInheritance_dispatch() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/inheritance_dispatch.kt");
       }
 
       @Test
@@ -457,6 +517,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("secondary_constructors.kt")
       public void testSecondary_constructors() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/secondary_constructors.kt");
+      }
+
+      @Test
+      @TestMetadata("singleton_object_values.kt")
+      public void testSingleton_object_values() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/singleton_object_values.kt");
       }
 
       @Test

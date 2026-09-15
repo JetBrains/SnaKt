@@ -1,0 +1,211 @@
+/heap_state_transitions.kt: info: Generated Viper text for mutateAndRestore:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), TransitionCell())
+  ensures acc(TransitionCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(TransitionCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method mutateAndRestore() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  cell := con(intToRef(0))
+  anon_0 := havoc(intType())
+  assert intFromRef(anon_0) == 0
+  anon_1 := havoc(intType())
+  assert intFromRef(anon_1) == 1
+  anon_2 := havoc(intType())
+  assert intFromRef(anon_2) == 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_state_transitions.kt: info: Generated Viper text for observeMutationThroughAlias:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), TransitionCell())
+  ensures acc(TransitionCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(TransitionCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method observeMutationThroughAlias() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var alias: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  cell := con(intToRef(10))
+  alias := cell
+  anon_0 := havoc(intType())
+  assert intFromRef(anon_0) == 10
+  anon_1 := havoc(intType())
+  assert intFromRef(anon_1) == 20
+  anon_2 := havoc(intType())
+  assert intFromRef(anon_2) == 30
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_state_transitions.kt: info: Generated Viper text for nullableDetachAndReattach:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), TransitionCell())
+  ensures acc(TransitionCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(TransitionCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method nullableDetachAndReattach() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var reference: Ref
+  cell := con(intToRef(4))
+  reference := cell
+  assert !(reference == nullValue())
+  reference := nullValue()
+  assert reference == nullValue()
+  reference := cell
+  assert !(reference == nullValue())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_state_transitions.kt: warning: Condition is always 'true'.
+
+/heap_state_transitions.kt: warning: Condition is always 'true'.
+
+/heap_state_transitions.kt: info: Generated Viper text for replaceNestedCellAndMutate:
+field bf_cell: Ref
+
+field bf_optional: Ref
+
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con_TransitionBox(par_cell: Ref, par_optional: Ref)
+  returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_cell), TransitionCell())
+  requires acc(TransitionCell_unique(par_cell), write)
+  requires isSubtype(typeOf(par_optional), nullable(TransitionCell()))
+  ensures isSubtype(typeOf(ret_2), TransitionBox())
+  ensures acc(TransitionBox_unique(ret_2), write)
+  ensures (unfolding acc(TransitionBox_unique(ret_2), write) in
+      ret_2.bf_cell) ==
+    par_cell
+  ensures (unfolding acc(TransitionBox_unique(ret_2), write) in
+      ret_2.bf_optional) ==
+    par_optional
+
+
+method con_TransitionCell(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), TransitionCell())
+  ensures acc(TransitionCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(TransitionCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method replaceNestedCellAndMutate() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var first: Ref
+  var box: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var second: Ref
+  var anon_2: Ref
+  var anon_3: Ref
+  var anon_4: Ref
+  var anon_5: Ref
+  var anon_6: Ref
+  first := con_TransitionCell(intToRef(1))
+  box := con_TransitionBox(first, nullValue())
+  anon_0 := havoc(intType())
+  assert intFromRef(anon_0) == 1
+  anon_1 := havoc(nullable(TransitionCell()))
+  assert anon_1 == nullValue()
+  second := con_TransitionCell(intToRef(2))
+  anon_2 := havoc(intType())
+  assert intFromRef(anon_2) == 2
+  anon_3 := havoc(intType())
+  assert intFromRef(anon_3) == 3
+  anon_4 := havoc(nullable(TransitionCell()))
+  assert !(anon_4 == nullValue())
+  anon_6 := havoc(nullable(TransitionCell()))
+  if (anon_6 != nullValue()) {
+    var anon_7: Ref
+    anon_7 := havoc(intType())
+    anon_5 := anon_7
+  } else {
+    anon_5 := nullValue()}
+  assert anon_5 == intToRef(1)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_state_transitions.kt: info: Generated Viper text for rejectStaleValueAfterMutation:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), TransitionCell())
+  ensures acc(TransitionCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(TransitionCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method rejectStaleValueAfterMutation() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var anon: Ref
+  cell := con(intToRef(7))
+  anon := havoc(intType())
+  assert intFromRef(anon) == 7
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

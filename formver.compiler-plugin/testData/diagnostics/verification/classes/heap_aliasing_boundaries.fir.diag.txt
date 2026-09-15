@@ -1,0 +1,196 @@
+/heap_aliasing_boundaries.kt: info: Generated Viper text for constructBelowBoundary:
+field bf_value: Ref
+
+method con(par_value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_2), BoundaryCell())
+  ensures acc(BoundaryCell_unique(ret_2), write)
+  ensures intFromRef((unfolding acc(BoundaryCell_unique(ret_2), write) in
+      ret_2.bf_value)) ==
+    intFromRef(par_value)
+
+
+method constructBelowBoundary() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), BoundaryCell())
+  ensures acc(BoundaryCell_unique(v_ret_0), write)
+  ensures intFromRef((unfolding acc(BoundaryCell_unique(v_ret_0), write) in
+      v_ret_0.bf_value)) ==
+    -1
+{
+  v_ret_0 := con(intToRef(-1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/heap_aliasing_boundaries.kt: info: Generated Viper text for constructAtBoundary:
+field bf_value: Ref
+
+method con(par_value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_2), BoundaryCell())
+  ensures acc(BoundaryCell_unique(ret_2), write)
+  ensures intFromRef((unfolding acc(BoundaryCell_unique(ret_2), write) in
+      ret_2.bf_value)) ==
+    intFromRef(par_value)
+
+
+method constructAtBoundary() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), BoundaryCell())
+  ensures acc(BoundaryCell_unique(v_ret_0), write)
+  ensures intFromRef((unfolding acc(BoundaryCell_unique(v_ret_0), write) in
+      v_ret_0.bf_value)) ==
+    0
+{
+  v_ret_0 := con(intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/heap_aliasing_boundaries.kt: info: Generated Viper text for constructAboveBoundary:
+field bf_value: Ref
+
+method con(par_value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_2), BoundaryCell())
+  ensures acc(BoundaryCell_unique(ret_2), write)
+  ensures intFromRef((unfolding acc(BoundaryCell_unique(ret_2), write) in
+      ret_2.bf_value)) ==
+    intFromRef(par_value)
+
+
+method constructAboveBoundary() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), BoundaryCell())
+  ensures acc(BoundaryCell_unique(v_ret_0), write)
+  ensures intFromRef((unfolding acc(BoundaryCell_unique(v_ret_0), write) in
+      v_ret_0.bf_value)) ==
+    1
+{
+  v_ret_0 := con(intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/heap_aliasing_boundaries.kt: error: An internal error has occurred.
+Details: Unsupported resolved qualifier FirRegularClassSymbol
+Please report this at https://github.com/jesyspa/kotlin
+
+/heap_aliasing_boundaries.kt: error: An internal error has occurred.
+Details: Unsupported resolved qualifier FirRegularClassSymbol
+Please report this at https://github.com/jesyspa/kotlin
+
+/heap_aliasing_boundaries.kt: info: Generated Viper text for mutateThroughUniqueAlias:
+field value: Ref
+
+method mutateThroughUniqueAlias(cell: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), BoundaryCell())
+  requires acc(BoundaryCell_unique(cell), write)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 1
+{
+  var alias: Ref
+  alias := cell
+  v_ret_0 := havoc(intType())
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/heap_aliasing_boundaries.kt: info: Generated Viper text for mutateThroughSharedAlias:
+field value: Ref
+
+method mutateThroughSharedAlias(cell: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), BoundaryCell())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 1
+{
+  var alias: Ref
+  alias := cell
+  v_ret_0 := havoc(intType())
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/heap_aliasing_boundaries.kt: info: Generated Viper text for nullableEmpty:
+field value: Ref
+
+method nullableEmpty() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), nullable(BoundaryCell()))
+  ensures v_ret_0 != nullValue() ==>
+    acc(BoundaryCell_unique(v_ret_0), write)
+  ensures v_ret_0 == nullValue()
+{
+  v_ret_0 := nullValue()
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/heap_aliasing_boundaries.kt: info: Generated Viper text for nullableSingleton:
+field bf_value: Ref
+
+method con(par_value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_2), BoundaryCell())
+  ensures acc(BoundaryCell_unique(ret_2), write)
+  ensures intFromRef((unfolding acc(BoundaryCell_unique(ret_2), write) in
+      ret_2.bf_value)) ==
+    intFromRef(par_value)
+
+
+method nullableSingleton() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), nullable(BoundaryCell()))
+  ensures v_ret_0 != nullValue() ==>
+    acc(BoundaryCell_unique(v_ret_0), write)
+  ensures !(v_ret_0 == nullValue())
+{
+  var anon: Ref
+  anon := con(intToRef(0))
+  v_ret_0 := anon
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/heap_aliasing_boundaries.kt: info: Generated Viper text for replaceNullableEmpty:
+field cell: Ref
+
+field value: Ref
+
+method replaceNullableEmpty(holder: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(holder), NullableBoundaryCell())
+  requires acc(NullableBoundaryCell_unique(holder), write)
+  ensures acc(NullableBoundaryCell_unique(holder), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures (unfolding acc(NullableBoundaryCell_unique(holder), write) in
+      holder.cell) ==
+    nullValue()
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_aliasing_boundaries.kt: info: Generated Viper text for replaceNullableSingleton:
+field bf_value: Ref
+
+field cell: Ref
+
+method con(par_value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_2), BoundaryCell())
+  ensures acc(BoundaryCell_unique(ret_2), write)
+  ensures intFromRef((unfolding acc(BoundaryCell_unique(ret_2), write) in
+      ret_2.bf_value)) ==
+    intFromRef(par_value)
+
+
+method replaceNullableSingleton(holder: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(holder), NullableBoundaryCell())
+  requires acc(NullableBoundaryCell_unique(holder), write)
+  ensures acc(NullableBoundaryCell_unique(holder), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures !((unfolding acc(NullableBoundaryCell_unique(holder), write) in
+      holder.cell) ==
+    nullValue())
+{
+  var anon: Ref
+  anon := con(intToRef(0))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

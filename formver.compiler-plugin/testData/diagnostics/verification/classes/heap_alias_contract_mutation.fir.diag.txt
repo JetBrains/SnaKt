@@ -1,0 +1,145 @@
+/heap_alias_contract_mutation.kt: info: Generated Viper text for constructorAliasPositiveControl:
+function g_value(this: Ref): Ref
+  requires isSubtype(typeOf(this), ConstructedCell())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), ConstructedCell())
+  ensures acc(ConstructedCell_unique(ret_1), write)
+  ensures intFromRef(g_value(ret_1)) == intFromRef(par_value)
+
+
+method constructorAliasPositiveControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var original: Ref
+  var alias: Ref
+  original := con(intToRef(7))
+  alias := original
+  assert intFromRef(g_value(alias)) == 7
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_alias_contract_mutation.kt: info: Generated Viper text for constructorAliasMutatedControl:
+function g_value(this: Ref): Ref
+  requires isSubtype(typeOf(this), ConstructedCell())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), ConstructedCell())
+  ensures acc(ConstructedCell_unique(ret_1), write)
+  ensures intFromRef(g_value(ret_1)) == intFromRef(par_value)
+
+
+method constructorAliasMutatedControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var original: Ref
+  var alias: Ref
+  original := con(intToRef(8))
+  alias := original
+  assert intFromRef(g_value(alias)) == 7
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_alias_contract_mutation.kt: info: Generated Viper text for mutableAliasAssignmentBoundary:
+field value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method mutableAliasAssignmentBoundary(cell: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), MutableCell())
+  requires acc(MutableCell_unique(cell), write)
+  ensures acc(MutableCell_unique(cell), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures intFromRef((unfolding acc(MutableCell_unique(cell), write) in
+      cell.value)) ==
+    7
+{
+  var alias: Ref
+  var anon: Ref
+  alias := cell
+  anon := havoc(intType())
+  assert intFromRef(anon) == 7
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_alias_contract_mutation.kt: info: Generated Viper text for mutableAliasContractNegative:
+field value: Ref
+
+method mutableAliasContractNegative(cell: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), MutableCell())
+  requires acc(MutableCell_unique(cell), write)
+  ensures acc(MutableCell_unique(cell), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures intFromRef((unfolding acc(MutableCell_unique(cell), write) in
+      cell.value)) ==
+    7
+{
+  var alias: Ref
+  alias := cell
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_alias_contract_mutation.kt: info: Generated Viper text for nullableAliasAssignmentBoundary:
+field value: Ref
+
+method nullableAliasAssignmentBoundary(cell: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), nullable(MutableCell()))
+  requires cell != nullValue() ==> acc(MutableCell_unique(cell), write)
+  ensures cell != nullValue() ==> acc(MutableCell_unique(cell), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures cell == nullValue() ||
+    intFromRef((unfolding acc(MutableCell_unique(cell), write) in
+      cell.value)) ==
+    11
+{
+  var alias: Ref
+  alias := cell
+  if (!(alias == nullValue())) {
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_alias_contract_mutation.kt: info: Generated Viper text for nullableAliasContractNegative:
+field value: Ref
+
+method nullableAliasContractNegative(cell: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), nullable(MutableCell()))
+  requires cell != nullValue() ==> acc(MutableCell_unique(cell), write)
+  ensures cell != nullValue() ==> acc(MutableCell_unique(cell), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures cell == nullValue() ||
+    intFromRef((unfolding acc(MutableCell_unique(cell), write) in
+      cell.value)) ==
+    11
+{
+  var alias: Ref
+  alias := cell
+  if (!(alias == nullValue())) {
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
