@@ -595,6 +595,10 @@ class ProgramConverter(
             }
 
             symbol.resolvedSuperTypes.forEach {
+                // Some Kotlin/JVM classes expose Java marker supertypes (for example,
+                // Array implements java.io.Serializable). We cannot model those classes,
+                // and they do not contribute invariants to the Kotlin type being embedded.
+                if (it.toClassSymbol(session) !is FirRegularClassSymbol) return@forEach
                 val superTypeName = embedType(it).pretype.name
                 typeResolver.addSubtypeRelation(className, superTypeName)
             }

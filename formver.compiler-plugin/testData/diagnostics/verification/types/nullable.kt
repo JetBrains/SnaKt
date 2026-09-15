@@ -1,5 +1,6 @@
 
 import org.jetbrains.kotlin.formver.plugin.NeverConvert
+import org.jetbrains.kotlin.formver.plugin.verify
 
 fun <!VIPER_TEXT!>return_null<!>(): Int? = null
 
@@ -24,4 +25,10 @@ fun <!VIPER_TEXT!>nullableNonNullableComparison<!>(x: Int?, y: Int?): Boolean {
 
 fun <!VIPER_TEXT!>nullComparison<!>(x: Int?): Boolean {
     return x == null
+}
+
+fun <!VIPER_TEXT!>verifyKnownNonNullNullable<!>(input: Int?) {
+    if (input != null) {
+        verify(<!SENSELESS_COMPARISON!>input != null<!>)
+    }
 }
