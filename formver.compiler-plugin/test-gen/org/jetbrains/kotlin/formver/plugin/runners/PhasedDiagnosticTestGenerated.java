@@ -108,6 +108,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("collection_boundary_values.kt")
+      public void testCollection_boundary_values() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/collection_boundary_values.kt");
+      }
+
+      @Test
       @TestMetadata("custom_list.kt")
       public void testCustom_list() {
         runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/custom_list.kt");

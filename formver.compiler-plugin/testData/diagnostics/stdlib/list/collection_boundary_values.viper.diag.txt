@@ -1,0 +1,3 @@
+/collection_boundary_values.kt: warning: Invalid index for list 'values', the index may be less than zero.
+
+/collection_boundary_values.kt: warning: Invalid index for list 'values', the index may be greater than the list's size.
