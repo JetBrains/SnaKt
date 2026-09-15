@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.fir.analysis.checkers.isPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
+import org.jetbrains.kotlin.fir.declarations.utils.isData
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
@@ -200,9 +201,42 @@ fun SignatureWithTarget<NonInlineCallable>.toNormalSignature(symbol: FirFunction
             )
             addPreconditions(preconditions)
             addPostconditions(postconditions)
+            addPostconditions(dataClassGeneratedPostconditions(symbol, current.signature, returnTarget))
         }
         NonInlineFunctionSignature(current.signature, contract.preconditions, contract.postconditions, symbol.source)
     }
+
+context(converter: ProgramConversionContext)
+private fun dataClassGeneratedPostconditions(
+    symbol: FirFunctionSymbol<*>,
+    signature: NamedFunctionSignature,
+    returnTarget: ReturnTarget,
+): List<EqCmp> {
+    val dataClass = symbol.receiverType?.toRegularClassSymbol(converter.session)?.takeIf { it.isData }
+        ?: return emptyList()
+    val receiver = signature.dispatchReceiver ?: return emptyList()
+    val constructorProperties = dataClass.propertySymbols.mapNotNull { property ->
+        property.correspondingValueParameterFromPrimaryConstructor?.let { parameter ->
+            val embedding = converter.embedProperty(property)
+            if (embedding.getter == null) null else Triple(property, parameter, embedding)
+        }
+    }
+
+    val componentIndex = symbol.name.asString().removePrefix("component").toIntOrNull()
+    if (componentIndex != null && symbol.valueParameterSymbols.isEmpty()) {
+        val property = constructorProperties.getOrNull(componentIndex - 1)?.third ?: return emptyList()
+        return listOf(EqCmp(returnTarget.variable, property.getter!!.getValueSimple(receiver, converter.typeResolver)))
+    }
+
+    if (symbol.name.asString() != "copy") return emptyList()
+    val paramsByName = signature.params.filterIsInstance<FirVariableEmbedding>().mapNotNull { parameter ->
+        (parameter.symbol as? FirValueParameterSymbol)?.name?.let { it to parameter }
+    }.toMap()
+    return constructorProperties.mapNotNull { (_, constructorParameter, property) ->
+        val parameter = paramsByName[constructorParameter.name] ?: return@mapNotNull null
+        EqCmp(property.getter!!.getValueSimple(returnTarget.variable, converter.typeResolver), parameter)
+    }
+}
 
 @OptIn(SymbolInternals::class)
 context(converter: ProgramConversionContext)
