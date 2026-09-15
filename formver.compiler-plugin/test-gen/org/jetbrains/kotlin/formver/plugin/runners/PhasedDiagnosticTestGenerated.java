@@ -924,6 +924,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("state_transition_sequences.kt")
+      public void testState_transition_sequences() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/state_transition_sequences.kt");
+      }
+
+      @Test
       @TestMetadata("string_iterations.kt")
       public void testString_iterations() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/string_iterations.kt");
