@@ -8,12 +8,15 @@ package org.jetbrains.kotlin.formver.core.conversion
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.contracts.description.LogicOperationKind
 import org.jetbrains.kotlin.fir.FirElement
+import org.jetbrains.kotlin.fir.FirEvaluatorResult
 import org.jetbrains.kotlin.fir.declarations.FirProperty
+import org.jetbrains.kotlin.fir.declarations.utils.isConst
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.expressions.impl.FirElseIfTrueCondition
 import org.jetbrains.kotlin.fir.expressions.impl.FirUnitExpression
 import org.jetbrains.kotlin.fir.references.toResolvedSymbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
+import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.fir.types.isUnit
@@ -93,7 +96,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         literalExpression: FirLiteralExpression,
         data: StmtConversionContext,
     ): ExpEmbedding = when (literalExpression.kind) {
-        ConstantValueKind.Int -> IntLit((literalExpression.value as Long).toInt())
+        ConstantValueKind.Int -> IntLit((literalExpression.value as Number).toInt())
         ConstantValueKind.Boolean -> BooleanLit(literalExpression.value as Boolean)
         ConstantValueKind.Char -> CharLit(literalExpression.value as Char)
         ConstantValueKind.String -> StringLit(literalExpression.value as String)
@@ -170,10 +173,21 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             subj?.let { blockOf(it, body) } ?: body
         }
 
+    @OptIn(SymbolInternals::class)
     override fun visitPropertyAccessExpression(
         propertyAccessExpression: FirPropertyAccessExpression,
         data: StmtConversionContext,
     ): ExpEmbedding {
+        val symbol = propertyAccessExpression.calleeReference.toResolvedSymbol<FirPropertySymbol>()
+        if (symbol?.isConst == true) {
+            val evaluated = FirExpressionEvaluator.evaluatePropertyInitializer(symbol.fir, data.session)
+            if (evaluated is FirEvaluatorResult.Evaluated) {
+                val result = evaluated.result
+                if (result is FirExpression && result !== propertyAccessExpression) {
+                    return data.convert(result)
+                }
+            }
+        }
         val propertyAccess = data.embedPropertyAccess(propertyAccessExpression)
         return propertyAccess.getValue(data)
     }
