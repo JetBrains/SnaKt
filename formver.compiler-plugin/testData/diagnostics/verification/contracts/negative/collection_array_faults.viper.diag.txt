@@ -1,0 +1,5 @@
+/collection_array_faults.kt: warning: Invalid index for list 'items', the index may be less than zero.
+
+/collection_array_faults.kt: warning: Invalid index for list 'items', the index may be greater than the list's size.
+
+/collection_array_faults.kt: warning: Invalid index for list 'items', the index may be greater than the list's size.

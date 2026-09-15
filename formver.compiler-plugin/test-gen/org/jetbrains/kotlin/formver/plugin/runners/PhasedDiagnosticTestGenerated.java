@@ -497,6 +497,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
         }
 
         @Test
+        @TestMetadata("collection_array_faults.kt")
+        public void testCollection_array_faults() {
+          runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/negative/collection_array_faults.kt");
+        }
+
+        @Test
         @TestMetadata("cond_effects.kt")
         public void testCond_effects() {
           runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/negative/cond_effects.kt");
