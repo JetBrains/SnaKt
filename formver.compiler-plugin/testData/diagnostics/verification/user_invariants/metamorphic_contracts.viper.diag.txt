@@ -1,0 +1,3 @@
+/metamorphic_contracts.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(value) > 0 ==> intFromRef(value) < 0 might not hold.
+
+/metamorphic_contracts.kt: warning: Viper verification error: Assert might fail. Assertion boolFromRef(anon) might not hold.

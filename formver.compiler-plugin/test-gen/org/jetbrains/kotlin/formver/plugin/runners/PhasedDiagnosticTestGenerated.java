@@ -906,6 +906,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("metamorphic_contracts.kt")
+      public void testMetamorphic_contracts() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/metamorphic_contracts.kt");
+      }
+
+      @Test
       @TestMetadata("simple_forall.kt")
       public void testSimple_forall() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/simple_forall.kt");

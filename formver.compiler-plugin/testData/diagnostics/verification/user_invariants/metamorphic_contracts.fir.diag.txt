@@ -1,0 +1,157 @@
+/metamorphic_contracts.kt: info: Generated Viper text for splitContract:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method splitContract(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  requires intFromRef(value) <= 10
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) >= 0
+  ensures intFromRef(v_ret_0) <= 10
+{
+  assert intFromRef(value) >= 0
+  assert intFromRef(value) <= 10
+  v_ret_0 := value
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/metamorphic_contracts.kt: info: Generated Viper text for conjoinedContract:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method conjoinedContract(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0 && intFromRef(value) <= 10
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) >= 0 && intFromRef(v_ret_0) <= 10
+{
+  var anon: Ref
+  if (intFromRef(value) >= 0) {
+    anon := leInts(value, intToRef(10))
+  } else {
+    anon := boolToRef(false)}
+  assert boolFromRef(anon)
+  v_ret_0 := value
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/metamorphic_contracts.kt: info: Generated Viper text for propagatedEquivalentContracts:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method conjoinedContract(value: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0 && intFromRef(value) <= 10
+  ensures isSubtype(typeOf(ret_3), intType())
+  ensures intFromRef(ret_3) >= 0 && intFromRef(ret_3) <= 10
+
+
+method propagatedEquivalentContracts(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0 && intFromRef(value) <= 10
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var splitResult: Ref
+  var conjoinedResult: Ref
+  var anon: Ref
+  splitResult := splitContract(value)
+  conjoinedResult := conjoinedContract(value)
+  assert intFromRef(splitResult) >= 0
+  assert intFromRef(splitResult) <= 10
+  if (intFromRef(conjoinedResult) >= 0) {
+    anon := leInts(conjoinedResult, intToRef(10))
+  } else {
+    anon := boolToRef(false)}
+  assert boolFromRef(anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method splitContract(value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  requires intFromRef(value) <= 10
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) >= 0
+  ensures intFromRef(ret_2) <= 10
+
+
+/metamorphic_contracts.kt: info: Generated Viper text for quantifiedImplication:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method quantifiedImplication() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert (forall anon: Int ::anon == 0 ==> anon * anon == 0)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/metamorphic_contracts.kt: info: Generated Viper text for quantifiedDisjunction:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method quantifiedDisjunction() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert (forall anon: Int ::!(anon == 0) || anon * anon == 0)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/metamorphic_contracts.kt: info: Generated Viper text for failingImplication:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method failingImplication(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) > 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(value) > 0 ==> intFromRef(value) < 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/metamorphic_contracts.kt: info: Generated Viper text for failingDisjunction:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method failingDisjunction(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) > 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  if (intFromRef(value) <= 0) {
+    anon := boolToRef(true)
+  } else {
+    anon := ltInts(value, intToRef(0))}
+  assert boolFromRef(anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/metamorphic_contracts.kt: error: Function 'impureEquivalentForms' was not verified because of errors in its declaration
+
+/metamorphic_contracts.kt: error: Assert condition is impure
+
+/metamorphic_contracts.kt: error: Assert condition is impure
