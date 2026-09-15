@@ -602,6 +602,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("control_flow_boundaries.kt")
+      public void testControl_flow_boundaries() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/control_flow_boundaries.kt");
+      }
+
+      @Test
       @TestMetadata("exp_side_effects.kt")
       public void testExp_side_effects() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/exp_side_effects.kt");
