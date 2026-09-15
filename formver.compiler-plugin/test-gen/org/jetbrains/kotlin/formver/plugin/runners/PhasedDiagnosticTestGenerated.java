@@ -108,6 +108,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("collection_state_transitions.kt")
+      public void testCollection_state_transitions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/collection_state_transitions.kt");
+      }
+
+      @Test
       @TestMetadata("custom_list.kt")
       public void testCustom_list() {
         runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/custom_list.kt");
