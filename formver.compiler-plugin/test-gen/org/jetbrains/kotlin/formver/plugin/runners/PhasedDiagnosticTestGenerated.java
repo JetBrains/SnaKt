@@ -301,6 +301,24 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("diagnostic_cardinality_one.kt")
+    public void testDiagnostic_cardinality_one() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/diagnostic_cardinality_one.kt");
+    }
+
+    @Test
+    @TestMetadata("diagnostic_cardinality_two.kt")
+    public void testDiagnostic_cardinality_two() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/diagnostic_cardinality_two.kt");
+    }
+
+    @Test
+    @TestMetadata("diagnostic_cardinality_zero.kt")
+    public void testDiagnostic_cardinality_zero() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/diagnostic_cardinality_zero.kt");
+    }
+
+    @Test
     @TestMetadata("do_not_verify.kt")
     public void testDo_not_verify() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/do_not_verify.kt");
