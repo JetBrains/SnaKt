@@ -1,0 +1,93 @@
+/contract_feature_interactions.kt: info: Generated Viper text for successorWithImplications:
+method successorWithImplications(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(value) == 0 ==> intFromRef(v_ret_0) == 1
+  ensures intFromRef(value) > 0 ==> intFromRef(v_ret_0) > intFromRef(value)
+{
+  v_ret_0 := plusInts(value, intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/contract_feature_interactions.kt: info: Generated Viper text for useImplicationPostconditions:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method successorWithImplications(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(value) == 0 ==> intFromRef(ret_1) == 1
+  ensures intFromRef(value) > 0 ==> intFromRef(ret_1) > intFromRef(value)
+
+
+method useImplicationPostconditions() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  l0_result := successorWithImplications(intToRef(0))
+  assert intFromRef(l0_result) == 1
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_feature_interactions.kt: info: Generated Viper text for quantifiedIdentity:
+function quantifiedIdentity(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value)
+  ensures (forall anon: Int ::
+      { anon == intFromRef(result) }
+      anon == intFromRef(result) ==> anon == intFromRef(value))
+{
+  value
+}
+
+/contract_feature_interactions.kt: info: Generated Viper text for usePureQuantifiedPostcondition:
+function quantifiedIdentity(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value)
+  ensures (forall anon: Int ::
+      { anon == intFromRef(result) }
+      anon == intFromRef(result) ==> anon == intFromRef(value))
+{
+  value
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method usePureQuantifiedPostcondition(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  l0_result := quantifiedIdentity(value)
+  assert intFromRef(l0_result) == intFromRef(value)
+  assert intFromRef(l0_result) >= 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_feature_interactions.kt: info: Generated Viper text for falsePostconditionControl:
+method falsePostconditionControl(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) > intFromRef(value)
+{
+  v_ret_0 := value
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/contract_feature_interactions.kt: error: forAll body contains impure expressions; method calls are not supported in quantifier bodies
+
+/contract_feature_interactions.kt: error: Function 'impureQuantifiedImplicationControl' was not verified because of errors in its declaration

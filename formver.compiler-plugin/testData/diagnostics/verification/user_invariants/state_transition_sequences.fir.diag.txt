@@ -1,0 +1,205 @@
+/state_transition_sequences.kt: info: Generated Viper text for advance:
+method advance(state: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(state), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(state) + 1
+{
+  v_ret_0 := plusInts(state, intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/state_transition_sequences.kt: info: Generated Viper text for branchTransition:
+method branchTransition(state: Ref, takeLongStep: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(state), intType())
+  requires isSubtype(typeOf(takeLongStep), boolType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures boolFromRef(takeLongStep) &&
+    intFromRef(v_ret_0) == intFromRef(state) + 2 ||
+    !boolFromRef(takeLongStep) &&
+    intFromRef(v_ret_0) == intFromRef(state) + 1
+{
+  if (boolFromRef(takeLongStep)) {
+    v_ret_0 := plusInts(state, intToRef(2))
+  } else {
+    v_ret_0 := plusInts(state, intToRef(1))}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/state_transition_sequences.kt: info: Generated Viper text for countDown:
+method countDown(state: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(state), intType())
+  requires intFromRef(state) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 0
+{
+  if (intFromRef(state) == 0) {
+    v_ret_0 := state
+    goto lbl_ret_0
+  }
+  v_ret_0 := countDown(minusInts(state, intToRef(1)))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/state_transition_sequences.kt: info: Generated Viper text for callBranchLoopResetSequence:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method advance(par_state: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_state), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(ret_1) == intFromRef(par_state) + 1
+
+
+method branchTransition(par_state: Ref, takeLongStep: Ref)
+  returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_state), intType())
+  requires isSubtype(typeOf(takeLongStep), boolType())
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures boolFromRef(takeLongStep) &&
+    intFromRef(ret_2) == intFromRef(par_state) + 2 ||
+    !boolFromRef(takeLongStep) &&
+    intFromRef(ret_2) == intFromRef(par_state) + 1
+
+
+method callBranchLoopResetSequence() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_state: Ref
+  var anon: Ref
+  l0_state := intToRef(0)
+  assert intFromRef(l0_state) == 0
+  l0_state := advance(l0_state)
+  assert intFromRef(l0_state) == 1
+  l0_state := branchTransition(l0_state, boolToRef(true))
+  assert intFromRef(l0_state) == 3
+  label cont
+    invariant isSubtype(typeOf(l0_state), intType())
+    invariant intFromRef(l0_state) >= 3
+    invariant intFromRef(l0_state) <= 5
+  anon := ltInts(l0_state, intToRef(5))
+  if (boolFromRef(anon)) {
+    l0_state := advance(l0_state)
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(l0_state), intType())
+  assert intFromRef(l0_state) >= 3
+  assert intFromRef(l0_state) <= 5
+  assert intFromRef(l0_state) == 5
+  l0_state := countDown(l0_state)
+  assert intFromRef(l0_state) == 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method countDown(par_state: Ref) returns (ret_4: Ref)
+  requires isSubtype(typeOf(par_state), intType())
+  requires intFromRef(par_state) >= 0
+  ensures isSubtype(typeOf(ret_4), intType())
+  ensures intFromRef(ret_4) == 0
+
+
+/state_transition_sequences.kt: info: Generated Viper text for nestedCallSequence:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method advance(par_state: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_state), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(ret_1) == intFromRef(par_state) + 1
+
+
+method branchTransition(par_state: Ref, takeLongStep: Ref)
+  returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_state), intType())
+  requires isSubtype(typeOf(takeLongStep), boolType())
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures boolFromRef(takeLongStep) &&
+    intFromRef(ret_2) == intFromRef(par_state) + 2 ||
+    !boolFromRef(takeLongStep) &&
+    intFromRef(ret_2) == intFromRef(par_state) + 1
+
+
+method countDown(par_state: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(par_state), intType())
+  requires intFromRef(par_state) >= 0
+  ensures isSubtype(typeOf(ret_3), intType())
+  ensures intFromRef(ret_3) == 0
+
+
+method nestedCallSequence() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_state: Ref
+  var anon: Ref
+  anon := advance(intToRef(0))
+  l0_state := advance(anon)
+  assert intFromRef(l0_state) == 2
+  l0_state := branchTransition(l0_state, boolToRef(false))
+  assert intFromRef(l0_state) == 3
+  l0_state := countDown(l0_state)
+  assert intFromRef(l0_state) == 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/state_transition_sequences.kt: info: Generated Viper text for shortSequenceControl:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method branchTransition(par_state: Ref, takeLongStep: Ref)
+  returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_state), intType())
+  requires isSubtype(typeOf(takeLongStep), boolType())
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures boolFromRef(takeLongStep) &&
+    intFromRef(ret_1) == intFromRef(par_state) + 2 ||
+    !boolFromRef(takeLongStep) &&
+    intFromRef(ret_1) == intFromRef(par_state) + 1
+
+
+method shortSequenceControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_state: Ref
+  l0_state := intToRef(0)
+  assert intFromRef(l0_state) == 0
+  l0_state := branchTransition(l0_state, boolToRef(false))
+  assert intFromRef(l0_state) == 1
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/state_transition_sequences.kt: info: Generated Viper text for sequenceBoundaryFailure:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method advance(par_state: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_state), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(ret_1) == intFromRef(par_state) + 1
+
+
+method sequenceBoundaryFailure() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_state: Ref
+  l0_state := advance(intToRef(0))
+  assert intFromRef(l0_state) == 1
+  l0_state := advance(l0_state)
+  assert intFromRef(l0_state) == 1
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

@@ -481,6 +481,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/contracts"), Pattern.compile("^(.+)\\.kt$"), null, true);
       }
 
+      @Test
+      @TestMetadata("implies_runtime_differential.kt")
+      public void testImplies_runtime_differential() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/implies_runtime_differential.kt");
+      }
+
       @Nested
       @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/contracts/negative")
       @TestDataPath("$PROJECT_ROOT")
@@ -497,6 +503,18 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
         }
 
         @Test
+        @TestMetadata("assertion_diagnostics.kt")
+        public void testAssertion_diagnostics() {
+          runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/negative/assertion_diagnostics.kt");
+        }
+
+        @Test
+        @TestMetadata("collection_array_faults.kt")
+        public void testCollection_array_faults() {
+          runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/negative/collection_array_faults.kt");
+        }
+
+        @Test
         @TestMetadata("cond_effects.kt")
         public void testCond_effects() {
           runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/negative/cond_effects.kt");
@@ -506,6 +524,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
         @TestMetadata("contracts_with_receivers.kt")
         public void testContracts_with_receivers() {
           runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/negative/contracts_with_receivers.kt");
+        }
+
+        @Test
+        @TestMetadata("extension_function_calls.kt")
+        public void testExtension_function_calls() {
+          runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/negative/extension_function_calls.kt");
         }
 
         @Test
@@ -564,6 +588,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
         @TestMetadata("contracts_with_receivers.kt")
         public void testContracts_with_receivers() {
           runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/positive/contracts_with_receivers.kt");
+        }
+
+        @Test
+        @TestMetadata("extension_function_calls.kt")
+        public void testExtension_function_calls() {
+          runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/positive/extension_function_calls.kt");
         }
 
         @Test
@@ -768,6 +798,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("expression_composition.kt")
+      public void testExpression_composition() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/expression_composition.kt");
+      }
+
+      @Test
       @TestMetadata("heap_dependent_specifications.kt")
       public void testHeap_dependent_specifications() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/heap_dependent_specifications.kt");
@@ -811,6 +847,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("assert_statements.kt")
       public void testAssert_statements() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/purity/assert_statements.kt");
+      }
+
+      @Test
+      @TestMetadata("pure_call_classification.kt")
+      public void testPure_call_classification() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/purity/pure_call_classification.kt");
       }
 
       @Test
@@ -870,6 +912,78 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("backend_timeout_boundaries.kt")
+      public void testBackend_timeout_boundaries() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/backend_timeout_boundaries.kt");
+      }
+
+      @Test
+      @TestMetadata("binder_alpha_renaming.kt")
+      public void testBinder_alpha_renaming() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/binder_alpha_renaming.kt");
+      }
+
+      @Test
+      @TestMetadata("boolean_normalization.kt")
+      public void testBoolean_normalization() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/boolean_normalization.kt");
+      }
+
+      @Test
+      @TestMetadata("contract_failure_propagation.kt")
+      public void testContract_failure_propagation() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/contract_failure_propagation.kt");
+      }
+
+      @Test
+      @TestMetadata("contract_feature_composition.kt")
+      public void testContract_feature_composition() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/contract_feature_composition.kt");
+      }
+
+      @Test
+      @TestMetadata("contract_feature_interactions.kt")
+      public void testContract_feature_interactions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/contract_feature_interactions.kt");
+      }
+
+      @Test
+      @TestMetadata("contract_model_oracle.kt")
+      public void testContract_model_oracle() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/contract_model_oracle.kt");
+      }
+
+      @Test
+      @TestMetadata("contract_mutation_controls.kt")
+      public void testContract_mutation_controls() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/contract_mutation_controls.kt");
+      }
+
+      @Test
+      @TestMetadata("contract_semantics_boundaries.kt")
+      public void testContract_semantics_boundaries() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/contract_semantics_boundaries.kt");
+      }
+
+      @Test
+      @TestMetadata("contract_state_sequences.kt")
+      public void testContract_state_sequences() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/contract_state_sequences.kt");
+      }
+
+      @Test
+      @TestMetadata("control_flow_interactions.kt")
+      public void testControl_flow_interactions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/control_flow_interactions.kt");
+      }
+
+      @Test
+      @TestMetadata("early_returns.kt")
+      public void testEarly_returns() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/early_returns.kt");
+      }
+
+      @Test
       @TestMetadata("empty.kt")
       public void testEmpty() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/empty.kt");
@@ -900,9 +1014,45 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("function_precondition_calls.kt")
+      public void testFunction_precondition_calls() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/function_precondition_calls.kt");
+      }
+
+      @Test
+      @TestMetadata("harness_contract_mutation.kt")
+      public void testHarness_contract_mutation() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/harness_contract_mutation.kt");
+      }
+
+      @Test
+      @TestMetadata("loop_boundaries_and_exits.kt")
+      public void testLoop_boundaries_and_exits() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/loop_boundaries_and_exits.kt");
+      }
+
+      @Test
       @TestMetadata("loops.kt")
       public void testLoops() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/loops.kt");
+      }
+
+      @Test
+      @TestMetadata("quantifier_trigger_stability.kt")
+      public void testQuantifier_trigger_stability() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/quantifier_trigger_stability.kt");
+      }
+
+      @Test
+      @TestMetadata("quantifier_witnesses.kt")
+      public void testQuantifier_witnesses() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/quantifier_witnesses.kt");
+      }
+
+      @Test
+      @TestMetadata("recursive_call_contract_mutations.kt")
+      public void testRecursive_call_contract_mutations() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/recursive_call_contract_mutations.kt");
       }
 
       @Test
@@ -921,6 +1071,18 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("simple_precondition.kt")
       public void testSimple_precondition() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/simple_precondition.kt");
+      }
+
+      @Test
+      @TestMetadata("specification_mutation_negatives.kt")
+      public void testSpecification_mutation_negatives() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/specification_mutation_negatives.kt");
+      }
+
+      @Test
+      @TestMetadata("state_transition_sequences.kt")
+      public void testState_transition_sequences() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/state_transition_sequences.kt");
       }
 
       @Test

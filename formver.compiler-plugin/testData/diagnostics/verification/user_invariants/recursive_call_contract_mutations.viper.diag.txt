@@ -1,0 +1,3 @@
+/recursive_call_contract_mutations.kt: warning: Viper verification error: Postcondition of recursiveIdentityMutatedBase might not hold. Assertion intFromRef(v_ret_0) == intFromRef(n) might not hold.
+
+/recursive_call_contract_mutations.kt: warning: Viper verification error: Postcondition of nestedCallsMutatedContract might not hold. Assertion intFromRef(v_ret_0) == intFromRef(value) + 3 might not hold.
