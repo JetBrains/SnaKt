@@ -1,0 +1,7 @@
+/heap_aliasing_boundaries.kt: warning: Viper verification error: Postcondition of mutateThroughUniqueAlias might not hold. Assertion intFromRef(v_ret_0) == 1 might not hold.
+
+/heap_aliasing_boundaries.kt: warning: Viper verification error: Postcondition of mutateThroughSharedAlias might not hold. Assertion intFromRef(v_ret_0) == 1 might not hold.
+
+/heap_aliasing_boundaries.kt: warning: Viper verification error: Postcondition of replaceNullableEmpty might not hold. Assertion (unfolding acc(NullableBoundaryCell_unique(holder), write) in holder.cell) == nullValue() might not hold.
+
+/heap_aliasing_boundaries.kt: warning: Viper verification error: Postcondition of replaceNullableSingleton might not hold. Assertion !((unfolding acc(NullableBoundaryCell_unique(holder), write) in holder.cell) == nullValue()) might not hold.
