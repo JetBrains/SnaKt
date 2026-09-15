@@ -225,6 +225,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("heap_aliasing_mutation.kt")
+    public void testHeap_aliasing_mutation() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/heap_aliasing_mutation.kt");
+    }
+
+    @Test
     @TestMetadata("leak.kt")
     public void testLeak() {
       runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/leak.kt");
