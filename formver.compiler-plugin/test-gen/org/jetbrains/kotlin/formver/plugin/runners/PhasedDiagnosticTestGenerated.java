@@ -746,6 +746,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("implication_precedence_internal_error.kt")
+      public void testImplication_precedence_internal_error() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/implication_precedence_internal_error.kt");
+      }
+
+      @Test
       @TestMetadata("safe_call.kt")
       public void testSafe_call() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/safe_call.kt");
