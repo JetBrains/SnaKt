@@ -31,11 +31,13 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousBuiltinVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.FunctionCall
 import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.core.purity.checkValidity
 import org.jetbrains.kotlin.formver.core.purity.isPure
+import org.jetbrains.kotlin.formver.core.purity.preorder
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
@@ -175,11 +177,51 @@ class ProgramConverter(
                 condition.checkValidity(source, this)
             }
         }
+        validatePureRecursion()
         if (hadConversionError) {
             for (entry in registered) {
                 reportVerificationSkipped(
                     entry.declaration.source,
                     "Function '${entry.declaration.name.asString()}' was not verified because of errors in its declaration",
+                )
+            }
+        }
+    }
+
+    /**
+     * Silicon does not support mutually recursive Viper functions. Its consistency check reports
+     * unrelated return-type errors for such programs, so reject the cycle before invoking it.
+     * A function calling itself is supported and deliberately excluded here.
+     */
+    private fun validatePureRecursion() {
+        val bodies = convertedBodyResolver.pureBodies()
+        val calls = bodies.mapValues { (_, body) ->
+            body.preorder()
+                .map { it.first }
+                .filterIsInstance<FunctionCall>()
+                .map { it.function.name }
+                .filter { it in bodies }
+                .toSet()
+        }
+
+        fun reaches(current: SymbolicName, target: SymbolicName, visited: MutableSet<SymbolicName>): Boolean {
+            if (!visited.add(current)) return false
+            return calls[current].orEmpty().any { next ->
+                next == target || reaches(next, target, visited)
+            }
+        }
+
+        val hasMutualRecursion = calls.any { (name, directCalls) ->
+            directCalls
+                .filter { it != name }
+                .any { reaches(it, name, mutableSetOf()) }
+        }
+        if (hasMutualRecursion) {
+            for (entry in registered) {
+                emit(
+                    entry.declaration.source,
+                    ConversionErrors.MUTUAL_RECURSION_UNSUPPORTED,
+                    "Verification involving mutually recursive pure functions is not supported",
                 )
             }
         }
