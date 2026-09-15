@@ -870,6 +870,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("contract_mutation_controls.kt")
+      public void testContract_mutation_controls() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/contract_mutation_controls.kt");
+      }
+
+      @Test
       @TestMetadata("empty.kt")
       public void testEmpty() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/empty.kt");
