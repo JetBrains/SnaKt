@@ -1,0 +1,190 @@
+/lambda_capture_behavior.kt: info: Generated Viper text for immediateImmutableCapture:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method immediateImmutableCapture() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var captured: Ref
+  var l0_result: Ref
+  var anon_0: Ref
+  var v_ret_3: Ref
+  var anon_1: Ref
+  var v_ret_4: Ref
+  captured := intToRef(41)
+  v_ret_4 := plusInts(captured, intToRef(1))
+  goto lbl_ret_4
+  label lbl_ret_4
+  anon_1 := v_ret_4
+  v_ret_3 := anon_1
+  inhale isSubtype(typeOf(v_ret_3), nullable(anyType()))
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon_0 := v_ret_3
+  l0_result := anon_0
+  inhale isSubtype(typeOf(l0_result), intType())
+  assert intFromRef(l0_result) == 42
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method invokeImmediately(block: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+/lambda_capture_behavior.kt: info: Generated Viper text for immediateImmutableCaptureNegative:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method immediateImmutableCaptureNegative() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var captured: Ref
+  var l0_result: Ref
+  var anon_0: Ref
+  var v_ret_3: Ref
+  var anon_1: Ref
+  var v_ret_4: Ref
+  captured := intToRef(41)
+  v_ret_4 := plusInts(captured, intToRef(1))
+  goto lbl_ret_4
+  label lbl_ret_4
+  anon_1 := v_ret_4
+  v_ret_3 := anon_1
+  inhale isSubtype(typeOf(v_ret_3), nullable(anyType()))
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon_0 := v_ret_3
+  l0_result := anon_0
+  inhale isSubtype(typeOf(l0_result), intType())
+  assert intFromRef(l0_result) == 41
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method invokeImmediately(block: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+/lambda_capture_behavior.kt: info: Generated Viper text for immediateMutableCapture:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method immediateMutableCapture() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var captured: Ref
+  var l0_result: Ref
+  var anon_0: Ref
+  var v_ret_3: Ref
+  var anon_1: Ref
+  var v_ret_4: Ref
+  captured := intToRef(40)
+  captured := plusInts(captured, intToRef(2))
+  v_ret_4 := captured
+  goto lbl_ret_4
+  label lbl_ret_4
+  anon_1 := v_ret_4
+  v_ret_3 := anon_1
+  inhale isSubtype(typeOf(v_ret_3), nullable(anyType()))
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon_0 := v_ret_3
+  l0_result := anon_0
+  inhale isSubtype(typeOf(l0_result), intType())
+  assert intFromRef(l0_result) == 42
+  assert intFromRef(captured) == 42
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method invokeImmediately(block: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+/lambda_capture_behavior.kt: info: Generated Viper text for immediateReceiverCapture:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), CaptureReceiver())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method immediateReceiverCapture(this: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), CaptureReceiver())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  var anon_0: Ref
+  var v_ret_3: Ref
+  var anon_1: Ref
+  var v_ret_4: Ref
+  v_ret_4 := value(this)
+  goto lbl_ret_4
+  label lbl_ret_4
+  anon_1 := v_ret_4
+  v_ret_3 := anon_1
+  inhale isSubtype(typeOf(v_ret_3), nullable(anyType()))
+  goto lbl_ret_3
+  label lbl_ret_3
+  anon_0 := v_ret_3
+  l0_result := anon_0
+  inhale isSubtype(typeOf(l0_result), intType())
+  assert intFromRef(l0_result) == intFromRef(value(this))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method invokeImmediately(block: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+/lambda_capture_behavior.kt: info: Generated Viper text for immediateBranchRefinedCapture:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method immediateBranchRefinedCapture(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), anyType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  if (isSubtype(typeOf(value), intType())) {
+    var l2_result: Ref
+    var anon_0: Ref
+    var v_ret_3: Ref
+    var anon_1: Ref
+    var v_ret_4: Ref
+    v_ret_4 := plusInts(value, intToRef(1))
+    goto lbl_ret_4
+    label lbl_ret_4
+    anon_1 := v_ret_4
+    v_ret_3 := anon_1
+    inhale isSubtype(typeOf(v_ret_3), nullable(anyType()))
+    goto lbl_ret_3
+    label lbl_ret_3
+    anon_0 := v_ret_3
+    l2_result := anon_0
+    inhale isSubtype(typeOf(l2_result), intType())
+    assert intFromRef(l2_result) > intFromRef(value)
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method invokeImmediately(block: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))

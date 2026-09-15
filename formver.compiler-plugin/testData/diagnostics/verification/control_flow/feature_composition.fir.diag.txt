@@ -1,0 +1,255 @@
+/feature_composition.kt: info: Generated Viper text for increment:
+function increment(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value) + 1
+{
+  plusInts(value, intToRef(1))
+}
+
+/feature_composition.kt: info: Generated Viper text for loopCallSeed:
+function increment(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value) + 1
+{
+  plusInts(value, intToRef(1))
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method loopCallSeed(limit: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(limit), intType())
+  requires intFromRef(limit) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var current: Ref
+  var anon: Ref
+  current := intToRef(0)
+  label cont
+    invariant isSubtype(typeOf(current), intType())
+    invariant isSubtype(typeOf(limit), intType())
+    invariant 0 <= intFromRef(current)
+    invariant intFromRef(current) <= intFromRef(limit)
+  anon := ltInts(current, limit)
+  if (boolFromRef(anon)) {
+    current := increment(current)
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(current), intType())
+  assert isSubtype(typeOf(limit), intType())
+  assert 0 <= intFromRef(current)
+  assert intFromRef(current) <= intFromRef(limit)
+  assert intFromRef(current) == intFromRef(limit)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/feature_composition.kt: info: Generated Viper text for loopWhenCall:
+function increment(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value) + 1
+{
+  plusInts(value, intToRef(1))
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method loopWhenCall(limit: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(limit), intType())
+  requires intFromRef(limit) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var current: Ref
+  var anon: Ref
+  current := intToRef(0)
+  label cont
+    invariant isSubtype(typeOf(current), intType())
+    invariant isSubtype(typeOf(limit), intType())
+    invariant 0 <= intFromRef(current)
+    invariant intFromRef(current) <= intFromRef(limit)
+  anon := ltInts(current, limit)
+  if (boolFromRef(anon)) {
+    if (intFromRef(current) + 1 < intFromRef(limit)) {
+      current := increment(current)
+    } else {
+      current := increment(current)}
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(current), intType())
+  assert isSubtype(typeOf(limit), intType())
+  assert 0 <= intFromRef(current)
+  assert intFromRef(current) <= intFromRef(limit)
+  assert intFromRef(current) == intFromRef(limit)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/feature_composition.kt: info: Generated Viper text for loopWhenNestedCall:
+function increment(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value) + 1
+{
+  plusInts(value, intToRef(1))
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method loopWhenNestedCall(limit: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(limit), intType())
+  requires intFromRef(limit) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var current: Ref
+  var anon: Ref
+  current := intToRef(0)
+  label cont
+    invariant isSubtype(typeOf(current), intType())
+    invariant isSubtype(typeOf(limit), intType())
+    invariant 0 <= intFromRef(current)
+    invariant intFromRef(current) <= intFromRef(limit)
+  anon := ltInts(current, limit)
+  if (boolFromRef(anon)) {
+    if (intFromRef(current) + 1 < intFromRef(limit)) {
+      current := increment(increment(current))
+    } else {
+      current := increment(current)}
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(current), intType())
+  assert isSubtype(typeOf(limit), intType())
+  assert 0 <= intFromRef(current)
+  assert intFromRef(current) <= intFromRef(limit)
+  assert intFromRef(current) == intFromRef(limit)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/feature_composition.kt: info: Generated Viper text for loopWhenNestedCallNegative:
+function increment(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value) + 1
+{
+  plusInts(value, intToRef(1))
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method loopWhenNestedCallNegative(limit: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(limit), intType())
+  requires intFromRef(limit) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var current: Ref
+  var anon: Ref
+  current := intToRef(0)
+  label cont
+    invariant isSubtype(typeOf(current), intType())
+    invariant isSubtype(typeOf(limit), intType())
+    invariant 0 <= intFromRef(current)
+    invariant intFromRef(current) <= intFromRef(limit)
+  anon := ltInts(current, limit)
+  if (boolFromRef(anon)) {
+    if (intFromRef(current) + 1 < intFromRef(limit)) {
+      current := increment(increment(current))
+    } else {
+      current := increment(current)}
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(current), intType())
+  assert isSubtype(typeOf(limit), intType())
+  assert 0 <= intFromRef(current)
+  assert intFromRef(current) <= intFromRef(limit)
+  assert intFromRef(current) == intFromRef(limit) + 1
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/feature_composition.kt: info: Generated Viper text for recursiveWhenCall:
+function increment(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value) + 1
+{
+  plusInts(value, intToRef(1))
+}
+
+function recursiveWhenCall(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value)
+{
+  (let anon_0_0 ==
+    (value) in
+    (let anon_2_0 ==
+      ((intFromRef(anon_0_0) == 0 ? intToRef(0) : null)) in
+      (let anon_3_0 ==
+        ((!(intFromRef(anon_0_0) == 0) ?
+          increment(recursiveWhenCall(minusInts(value, intToRef(1)))) :
+          null)) in
+        (let anon_1_0 ==
+          ((intFromRef(anon_0_0) == 0 ? anon_2_0 : anon_3_0)) in
+          anon_1_0))))
+}
+
+/feature_composition.kt: info: Generated Viper text for loopWhenEarlyReturnCall:
+function increment(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value) + 1
+{
+  plusInts(value, intToRef(1))
+}
+
+method loopWhenEarlyReturnCall(limit: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(limit), intType())
+  requires intFromRef(limit) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(limit)
+{
+  var current: Ref
+  var anon: Ref
+  current := intToRef(0)
+  label cont
+    invariant isSubtype(typeOf(current), intType())
+    invariant isSubtype(typeOf(limit), intType())
+    invariant 0 <= intFromRef(current)
+    invariant intFromRef(current) <= intFromRef(limit)
+  anon := ltInts(current, limit)
+  if (boolFromRef(anon)) {
+    if (intFromRef(current) + 1 == intFromRef(limit)) {
+      v_ret_0 := increment(current)
+      goto lbl_ret_0
+    } else {
+      current := increment(current)}
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(current), intType())
+  assert isSubtype(typeOf(limit), intType())
+  assert 0 <= intFromRef(current)
+  assert intFromRef(current) <= intFromRef(limit)
+  v_ret_0 := current
+  goto lbl_ret_0
+  label lbl_ret_0
+}

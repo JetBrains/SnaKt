@@ -1,0 +1,5 @@
+/dead_code.kt: warning: Viper verification error: Assert might fail. Assertion false might not hold.
+
+/dead_code.kt: warning: Viper verification error: Assert might fail. Assertion false might not hold.
+
+/dead_code.kt: warning: Viper verification error: Assert might fail. Assertion false might not hold.

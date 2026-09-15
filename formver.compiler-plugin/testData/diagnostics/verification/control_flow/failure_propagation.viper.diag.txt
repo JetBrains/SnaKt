@@ -1,0 +1,5 @@
+/failure_propagation.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(l0_result) == 1 might not hold.
+
+/failure_propagation.kt: warning: Viper verification error: Postcondition of earlyReturnFailureRemainsVisible might not hold. Assertion intFromRef(v_ret_0) >= 0 might not hold.
+
+/failure_propagation.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(remaining) > 0 might not hold.
