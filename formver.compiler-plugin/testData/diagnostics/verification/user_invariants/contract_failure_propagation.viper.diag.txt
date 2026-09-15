@@ -1,0 +1,5 @@
+/contract_failure_propagation.kt: warning: Viper verification error: Postcondition of brokenPostcondition might not hold. Assertion intFromRef(v_ret_0) >= intFromRef(x) might not hold.
+
+/contract_failure_propagation.kt: warning: Viper verification error: Precondition of function nonNegativeIdentity might not hold. Assertion intFromRef(intToRef(-1)) >= 0 might not hold.
+
+/contract_failure_propagation.kt: warning: Viper verification error: Assert might fail. Assertion (forall anon: Int ::!(anon == 0)) might not hold.
