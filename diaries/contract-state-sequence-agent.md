@@ -46,3 +46,9 @@
 ## Conclusion
 
 The bounded sequences confirm contract propagation, conjunction, intermediate `verify` facts, quantifier/implication conversion, and purity enforcement for the tested forms. No previously unreported bug was confirmed, so no `swarmTestingBug` issue was filed.
+
+## Delivery
+
+- Committed the test and diary as `57ff88c` on `test/issue-437-contract-state-sequences` and pushed the branch.
+- Opened [pull request #504](https://github.com/JetBrains/SnaKt/pull/504) against `implementing-air-automations`.
+- Added the required `swarmTestingDone` label to trigger issue #437 and verified both `swarmTesting` and `swarmTestingDone` are present.
