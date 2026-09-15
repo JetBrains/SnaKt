@@ -46,6 +46,14 @@ is_assertion_failure_type() {
     esac
 }
 
+# In golden-update mode an assertion failure is expected when a golden was
+# rewritten. A task failure is still unexpected when result parsing failed or
+# JUnit reported a non-assertion error.
+update_task_failed_unexpectedly() {
+    local task_status="$1" tally_status="$2" other_failed="$3"
+    [[ "$task_status" -ne 0 && ( "$tally_status" -ne 0 || "$other_failed" -gt 0 ) ]]
+}
+
 # Print the first failing <testcase> from JUnit XML newer than $1: failure
 # "type" on the first line, then "classname.name: message", then stack trace.
 # Returns 1 with nothing printed if there is no fresh XML at all, or none of it

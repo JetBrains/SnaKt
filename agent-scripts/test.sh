@@ -116,7 +116,9 @@ report_locality_failure() {
 
 tally() {
     local module="$1" counts status ran rewritten failed skipped unreadable
+    TALLY_STATUS=0
     counts="$(count_xml_results "$2" "$MARKER")" && status=0 || status=$?
+    TALLY_STATUS="$status"
     case "$status" in
         1) no_results+=("$module"); return ;;
         2) unreadable_results+=("$module"); return ;;
@@ -132,14 +134,24 @@ tally() {
 # In --update-goldens mode a matching test is expected to fail: assertEqualsToFile
 # writes the golden and then fails. Only "no tests found" means anything there.
 run_module() {
-    local module="$1" task="$2" results_dir="$3" on_failure="$4"
+    local module="$1" task="$2" results_dir="$3" on_failure="$4" failed_before
+    failed_before="$total_failed"
     run_task "$task"
     if [[ -n "$PATTERN" && "$TASK_OUT" == *"No tests found for given includes"* ]]; then
         return
     fi
     matched=1
     tally "$module" "$results_dir"
-    if [[ "$MODE" == update || "$TASK_STATUS" -eq 0 ]]; then
+    if [[ "$MODE" == update ]]; then
+        if update_task_failed_unexpectedly \
+            "$TASK_STATUS" "$TALLY_STATUS" "$((total_failed - failed_before))"; then
+            overall_status=1
+            echo "$TASK_OUT" | grep -v '^\* Try:\|^> Run with \|^> Get more help ' || true
+            "$on_failure"
+        fi
+        return
+    fi
+    if [[ "$TASK_STATUS" -eq 0 ]]; then
         return
     fi
     overall_status=1
@@ -265,3 +277,5 @@ cat <<'EOF'
 Regeneration records whatever the run produced. What is above is what these
 tests now assert: read it and confirm it is what you meant.
 EOF
+
+exit "$overall_status"

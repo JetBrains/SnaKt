@@ -313,6 +313,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("failure_stage_controls.kt")
+    public void testFailure_stage_controls() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/failure_stage_controls.kt");
+    }
+
+    @Test
     @TestMetadata("full_viper_dump.kt")
     public void testFull_viper_dump() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/full_viper_dump.kt");
