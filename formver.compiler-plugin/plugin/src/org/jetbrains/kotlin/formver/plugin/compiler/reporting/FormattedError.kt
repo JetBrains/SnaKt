@@ -67,7 +67,7 @@ class DefaultError(private val error: VerificationError) : FormattedError {
 
 class IndexOutOfBoundError(
     private val error: VerificationError,
-    private val sourceRole: SourceRole.ListElementAccessCheck
+    private val sourceRole: SourceRole,
 ) :
     FormattedError {
 
@@ -93,10 +93,20 @@ class IndexOutOfBoundError(
     }
 
     fun msg(): Pair<String, String> {
-        val targetListInfo = error.locationNode.asCallable().arg(0).info
-        val targetList = targetListInfo.unwrapOr<SourceRole.FirSymbolHolder> { null }
-        return targetList.formatListMessage() to sourceRole.accessType.asUserFriendlyMessage
+        val targetInfo = error.locationNode.asCallable().arg(0).info
+        val target = targetInfo.unwrapOr<SourceRole.FirSymbolHolder> { null }
+        return when (sourceRole) {
+            is SourceRole.ListElementAccessCheck -> target.formatIndexedMessage("list") to sourceRole.accessType.asUserFriendlyMessage
+            is SourceRole.ArrayElementAccessCheck -> target.formatIndexedMessage("array") to sourceRole.accessType.asUserFriendlyMessage
+            else -> error("Unexpected source role: $sourceRole")
+        }
     }
+
+    private val SourceRole.ArrayElementAccessCheck.AccessCheckType.asUserFriendlyMessage: String
+        get() = when (this) {
+            SourceRole.ArrayElementAccessCheck.AccessCheckType.LESS_THAN_ZERO -> "less than zero"
+            SourceRole.ArrayElementAccessCheck.AccessCheckType.GREATER_THAN_ARRAY_SIZE -> "greater than the array's size"
+        }
 }
 
 class InvalidSubListRangeError(
@@ -132,6 +142,7 @@ fun VerificationError.formatUserFriendly(): FormattedError? =
         is SourceRole.ReturnsEffect -> ReturnsEffectError(sourceRole)
         is SourceRole.ConditionalEffect -> ConditionalEffectError(sourceRole)
         is SourceRole.ListElementAccessCheck -> IndexOutOfBoundError(this, sourceRole)
+        is SourceRole.ArrayElementAccessCheck -> IndexOutOfBoundError(this, sourceRole)
         is SourceRole.SubListCreation -> InvalidSubListRangeError(this, sourceRole)
         else -> null
     }
@@ -159,5 +170,14 @@ private fun SourceRole.FirSymbolHolder?.formatListMessage(): String = when (this
     else -> {
         val listName = FirDiagnosticRenderers.DECLARATION_NAME.render(firSymbol)
         "list '${listName}'"
+    }
+}
+
+
+private fun SourceRole.FirSymbolHolder?.formatIndexedMessage(kind: String): String = when (this) {
+    null -> "the following $kind sub-expression"
+    else -> {
+        val name = FirDiagnosticRenderers.DECLARATION_NAME.render(firSymbol)
+        "$kind '$name'"
     }
 }
