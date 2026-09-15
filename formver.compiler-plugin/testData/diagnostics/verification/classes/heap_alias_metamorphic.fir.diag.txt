@@ -1,0 +1,167 @@
+/heap_alias_metamorphic.kt: info: Generated Viper text for scalarPositiveControl:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method scalarPositiveControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert 1 + 1 == 2
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_alias_metamorphic.kt: info: Generated Viper text for scalarNegativeControl:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method scalarNegativeControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert 1 + 1 == 3
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_alias_metamorphic.kt: info: Generated Viper text for directMutation:
+field value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method directMutation(cell: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), MetamorphicCell())
+  requires acc(MetamorphicCell_unique(cell), write)
+  requires intFromRef((unfolding acc(MetamorphicCell_unique(cell), write) in
+      cell.value)) ==
+    1
+  ensures acc(MetamorphicCell_unique(cell), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := havoc(intType())
+  assert intFromRef(anon) == 2
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_alias_metamorphic.kt: info: Generated Viper text for directMutationNegatedForm:
+field value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method directMutationNegatedForm(renamed: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(renamed), MetamorphicCell())
+  requires acc(MetamorphicCell_unique(renamed), write)
+  requires intFromRef((unfolding acc(MetamorphicCell_unique(renamed), write) in
+      renamed.value)) ==
+    1
+  ensures acc(MetamorphicCell_unique(renamed), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := havoc(intType())
+  assert !!(intFromRef(anon) == 2)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_alias_metamorphic.kt: info: Generated Viper text for aliasedMutationConversion:
+field value: Ref
+
+method aliasedMutationConversion(cell: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), MetamorphicCell())
+  requires acc(MetamorphicCell_unique(cell), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var alias: Ref
+  alias := cell
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_alias_metamorphic.kt: info: Generated Viper text for independentUpdatesLeftFirst:
+field bf_value: Ref
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), MetamorphicCell())
+  ensures acc(MetamorphicCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(MetamorphicCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method independentUpdatesLeftFirst() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  left := con(intToRef(4))
+  right := con(intToRef(5))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_alias_metamorphic.kt: info: Generated Viper text for independentUpdatesRightFirst:
+field bf_value: Ref
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), MetamorphicCell())
+  ensures acc(MetamorphicCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(MetamorphicCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method independentUpdatesRightFirst() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  left := con(intToRef(4))
+  right := con(intToRef(5))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_alias_metamorphic.kt: info: Generated Viper text for nullableMutationDirect:
+field value: Ref
+
+method nullableMutationDirect(cell: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), nullable(MetamorphicCell()))
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  if (cell == nullValue()) {
+    v_ret_0 := intToRef(0)
+    goto lbl_ret_0
+  }
+  v_ret_0 := havoc(intType())
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/heap_alias_metamorphic.kt: info: Generated Viper text for nullableMutationNegatedForm:
+field value: Ref
+
+method nullableMutationNegatedForm(renamed: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(renamed), nullable(MetamorphicCell()))
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  if (!!(renamed == nullValue())) {
+    v_ret_0 := intToRef(0)
+    goto lbl_ret_0
+  }
+  v_ret_0 := havoc(intType())
+  goto lbl_ret_0
+  label lbl_ret_0
+}
