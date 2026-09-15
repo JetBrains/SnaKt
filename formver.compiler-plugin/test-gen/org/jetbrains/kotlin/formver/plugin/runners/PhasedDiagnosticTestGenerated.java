@@ -87,6 +87,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("array_model_probe.kt")
+    public void testArray_model_probe() {
+      runTest("formver.compiler-plugin/testData/diagnostics/stdlib/array_model_probe.kt");
+    }
+
+    @Test
     @TestMetadata("stdlib_replacement_tests.kt")
     public void testStdlib_replacement_tests() {
       runTest("formver.compiler-plugin/testData/diagnostics/stdlib/stdlib_replacement_tests.kt");
@@ -117,6 +123,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("list.kt")
       public void testList() {
         runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/list.kt");
+      }
+
+      @Test
+      @TestMetadata("model_based_oracle.kt")
+      public void testModel_based_oracle() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/model_based_oracle.kt");
       }
     }
 
