@@ -1,3 +1,30 @@
+/branching.kt: info: Generated Viper text for positiveOnly:
+function positiveOnly(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  requires intFromRef(x) > 0
+  ensures isSubtype(typeOf(result), intType())
+{
+  x
+}
+
+/branching.kt: info: Generated Viper text for initializerAfterEarlyReturn:
+function initializerAfterEarlyReturn(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let positive_0 ==
+    ((!(intFromRef(x) <= 0) ? positiveOnly(x) : null)) in
+    (intFromRef(x) <= 0 ? intToRef(0) : positive_0))
+}
+
+function positiveOnly(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  requires intFromRef(x) > 0
+  ensures isSubtype(typeOf(result), intType())
+{
+  x
+}
+
 /branching.kt: info: Generated Viper text for noAssignmentInBlocks:
 function noAssignmentInBlocks(a: Ref): Ref
   requires isSubtype(typeOf(a), boolType())
@@ -85,12 +112,13 @@ function whenExpressionSimple(x: Ref): Ref
             intToRef(30) :
             null)) in
           (let y_3 ==
-            ((intFromRef(anon_0_0) == 2 ? y_0 : y_2)) in
-            (let y_4 ==
-              ((intFromRef(anon_0_0) == 1 ? y_1 : y_3)) in
-              (!(intFromRef(anon_0_0) == 1) && intFromRef(anon_0_0) == 2 ?
-                intToRef(20) :
-                plusInts(y_4, intToRef(1)))))))))
+            ((intFromRef(anon_0_0) == 1 ||
+            !(intFromRef(anon_0_0) == 1) && !(intFromRef(anon_0_0) == 2) ?
+              (intFromRef(anon_0_0) == 1 ? y_1 : y_2) :
+              null)) in
+            (!(intFromRef(anon_0_0) == 1) && intFromRef(anon_0_0) == 2 ?
+              intToRef(20) :
+              plusInts(y_3, intToRef(1))))))))
 }
 
 /branching.kt: info: Generated Viper text for whenNoArgumentBranching:
@@ -132,16 +160,14 @@ function stringEqualityBranching(input: Ref): Ref
           boolToRef(false) :
           null)) in
         (let isValid_3 ==
-          ((stringFromRef(input) == Seq(117, 115, 101, 114) ?
-            isValid_1 :
-            isValid_2)) in
-          (let isValid_4 ==
-            ((stringFromRef(input) == Seq(97, 100, 109, 105, 110) ?
-              isValid_0 :
-              isValid_3)) in
-            (stringFromRef(input) == Seq(97, 100, 109, 105, 110) ?
-              boolToRef(true) :
-              isValid_4))))))
+          ((!(stringFromRef(input) == Seq(97, 100, 109, 105, 110)) ?
+            (stringFromRef(input) == Seq(117, 115, 101, 114) ?
+              isValid_1 :
+              isValid_2) :
+            null)) in
+          (stringFromRef(input) == Seq(97, 100, 109, 105, 110) ?
+            boolToRef(true) :
+            isValid_3)))))
 }
 
 /branching.kt: info: Generated Viper text for sequentialIfWithMutation:
@@ -165,18 +191,31 @@ function complexBooleanReturn(x: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let l0_result_0 ==
-    (boolToRef(false)) in
+    ((!(intFromRef(x) > 100) ? boolToRef(false) : null)) in
     (let l0_result_1 ==
-      ((intFromRef(x) > 50 ? boolToRef(true) : null)) in
+      ((!(intFromRef(x) > 100) && intFromRef(x) > 50 ?
+        boolToRef(true) :
+        null)) in
       (let l0_result_2 ==
-        ((!(intFromRef(x) > 50) ? boolToRef(true) : null)) in
+        ((!(intFromRef(x) > 100) && !(intFromRef(x) > 50) &&
+        !(intFromRef(x) < 0) ?
+          boolToRef(true) :
+          null)) in
         (let l0_result_3 ==
-          ((intFromRef(x) > 50 ? l0_result_1 : l0_result_2)) in
+          ((!(intFromRef(x) > 100) && intFromRef(x) > 50 ||
+          !(intFromRef(x) > 100) && !(intFromRef(x) > 50) &&
+          !(intFromRef(x) < 0) ?
+            (intFromRef(x) > 50 ? l0_result_1 : l0_result_2) :
+            null)) in
           (intFromRef(x) > 100 ?
             boolToRef(true) :
-            (!(intFromRef(x) > 50) && intFromRef(x) < 0 ?
+            (!(intFromRef(x) > 100) && !(intFromRef(x) > 50) &&
+            intFromRef(x) < 0 ?
               boolToRef(false) :
-              (boolFromRef(l0_result_3) ?
+              ((!(intFromRef(x) > 100) && intFromRef(x) > 50 ||
+              !(intFromRef(x) > 100) && !(intFromRef(x) > 50) &&
+              !(intFromRef(x) < 0)) &&
+              boolFromRef(l0_result_3) ?
                 boolToRef(false) :
                 boolToRef(true))))))))
 }

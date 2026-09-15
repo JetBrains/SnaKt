@@ -28,17 +28,28 @@ class SsaConverter(
     ) {
         val splitPoint = head
         head = splitPoint.generateBranchingBlockNodeFromThisNode(condition)
+        val initialThenCondition = head.fullBranchingCondition
         thenBlock()
         val thenResultHead = head
         head = splitPoint.generateBranchingBlockNodeFromThisNode(Exp.Not(condition))
+        val initialElseCondition = head.fullBranchingCondition
         elseBlock()
+        val elseResultHead = head
         val joinNode = SsaJoinNode(
             thenResultHead,
-            head,
+            elseResultHead,
             condition,
             this
         )
-        head = SsaBlockNode(joinNode, splitPoint.fullBranchingCondition)
+        val continuationCondition =
+            if (thenResultHead.fullBranchingCondition == initialThenCondition &&
+                elseResultHead.fullBranchingCondition == initialElseCondition
+            ) {
+                splitPoint.fullBranchingCondition
+            } else {
+                orConditions(thenResultHead.fullBranchingCondition, elseResultHead.fullBranchingCondition)
+            }
+        head = SsaBlockNode(joinNode, continuationCondition)
     }
 
     fun constructExpression(): Exp {
@@ -92,7 +103,10 @@ class SsaConverter(
     }
 
     fun addReturn(returnExp: Exp) {
-        returnExpressions.add(head.fullBranchingCondition to returnExp)
+        if (!head.isTerminated) {
+            returnExpressions.add(head.fullBranchingCondition to returnExp)
+            head.terminate()
+        }
     }
 
     fun resolveVariableName(name: SymbolicName): SymbolicName {
@@ -109,6 +123,12 @@ class SsaConverter(
         } else {
             ssaAssignments.add(name to Exp.TernaryExp(head.fullBranchingCondition, varExp, defaultExpression))
         }
+    }
+
+    private fun orConditions(left: Exp, right: Exp): Exp = when {
+        left == Exp.BoolLit(false) -> right
+        right == Exp.BoolLit(false) -> left
+        else -> Exp.Or(left, right)
     }
 
     private fun Exp.withAccessInvariants(name: SsaVariableName): Exp =

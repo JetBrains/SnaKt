@@ -2,6 +2,21 @@
 
 import org.jetbrains.kotlin.formver.plugin.AlwaysVerify
 import org.jetbrains.kotlin.formver.plugin.Pure
+import org.jetbrains.kotlin.formver.plugin.preconditions
+
+@Pure
+fun <!VIPER_TEXT!>positiveOnly<!>(x: Int): Int {
+    preconditions { x > 0 }
+    return x
+}
+
+@AlwaysVerify
+@Pure
+fun <!VIPER_TEXT!>initializerAfterEarlyReturn<!>(x: Int): Int {
+    if (x <= 0) return 0
+    val positive = positiveOnly(x)
+    return positive
+}
 
 @Pure
 fun <!VIPER_TEXT!>noAssignmentInBlocks<!>(a: Boolean): Int {
