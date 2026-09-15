@@ -36,4 +36,10 @@ Investigate control flow, calls, recursion, evaluation order, and bounded failur
 
 Searched open and closed issues for control-flow failure propagation, recursive verification, local functions, and diagnostic attribution. Relevant existing reports include #372 (local-function conversion errors), #373 (mutually recursive pure functions), #383 (Silicon abort treated as success), and #386 (selected local functions skip verification). The new bounded probes did not reproduce an unreported defect, so no bug issue was filed.
 
+## Delivery
+
+- Committed the probes, goldens, generated registration, assignment, and diary on `test/issue-468-failure-propagation` with the required Air signature.
+- Pushed the branch and opened pull request #499 against `implementing-air-automations`.
+- Added `swarmTestingDone` to issue #468 and verified the label is present.
+
 Produced by Air Automations. Name: Testing swarm agent / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/34ccbbdd-3fd2-474e-8f0a-10b4b2d5bda4?run=c4f6d52b-428d-413d-b621-dbf8c1e08107
