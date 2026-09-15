@@ -906,6 +906,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("recursive_call_contract_mutations.kt")
+      public void testRecursive_call_contract_mutations() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/recursive_call_contract_mutations.kt");
+      }
+
+      @Test
       @TestMetadata("simple_forall.kt")
       public void testSimple_forall() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/simple_forall.kt");
