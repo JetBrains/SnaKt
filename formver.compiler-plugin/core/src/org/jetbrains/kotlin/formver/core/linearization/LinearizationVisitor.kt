@@ -408,11 +408,22 @@ data class LinearizationVisitor(
             if (e.field.accessPolicy == AccessPolicy.ALWAYS_WRITEABLE) {
                 return PrimitiveFieldAccess(e.receiver, e.field).linearize().toViper(ctx)
             }
-            return ctx.addFieldAccess(receiverLinearizable, e.receiver.type, e.field)
+            return ctx.addFieldAccess(
+                receiverLinearizable,
+                e.receiver.type,
+                e.field,
+                e.receiver.underlyingVariable?.isUnique == true,
+            )
         }
 
         override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
-            ctx.addFieldAccessStoringIn(receiverLinearizable, e.receiver.type, e.field, result)
+            ctx.addFieldAccessStoringIn(
+                receiverLinearizable,
+                e.receiver.type,
+                e.field,
+                result,
+                e.receiver.underlyingVariable?.isUnique == true,
+            )
         }
 
         override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) {
@@ -432,22 +443,32 @@ data class LinearizationVisitor(
         override fun toViperUnusedResult(ctx: LinearizationContext) {
             val accessIsManual = with(ctx.typeResolver) { (e.receiver.type.pretype as? ClassTypeEmbedding)?.isManual ?: false }
             when (e.field.accessPolicy) {
-                AccessPolicy.BY_RECEIVER_UNIQUENESS if !accessIsManual -> {
+                AccessPolicy.BY_RECEIVER_UNIQUENESS if !accessIsManual && e.receiver.underlyingVariable?.isUnique != true -> {
                     e.receiver.linearize().toViperUnusedResult(ctx)
                     e.newValue.linearize().toViperUnusedResult(ctx)
                 }
                 else -> {
                     val receiverViper = e.receiver.linearize().toViper(ctx)
-                    if (e.field.unfoldToAccess && !accessIsManual) {
-                        ctx.unfoldHierarchyPredicates(receiverViper, e.receiver.type, e.field)
+                    val predicateAccesses = if (e.field.unfoldToAccess && !accessIsManual) {
+                        ctx.hierarchyPredicateAccesses(receiverViper, e.receiver.type, e.field).toList()
+                    } else {
+                        emptyList()
                     }
+                    // Kotlin evaluates the right-hand side before performing the assignment. Keep the
+                    // receiver predicate folded while evaluating it, since it may read the same field.
                     val newValueViper = e.newValue.linearize().toViper(ctx)
+                    for (predicateAccess in predicateAccesses) {
+                        ctx.addStatement { Stmt.Unfold(predicateAccess, ctx.source.asPosition) }
+                    }
                     ctx.addStatement {
                         Stmt.FieldAssign(
                             Exp.FieldAccess(receiverViper, e.field.toViper()),
                             newValueViper,
                             ctx.source.asPosition
                         )
+                    }
+                    for (predicateAccess in predicateAccesses.asReversed()) {
+                        ctx.addStatement { Stmt.Fold(predicateAccess, ctx.source.asPosition) }
                     }
                 }
             }
