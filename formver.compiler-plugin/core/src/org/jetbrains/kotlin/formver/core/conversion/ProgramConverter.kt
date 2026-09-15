@@ -32,6 +32,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousBuiltinV
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FunctionCall
+import org.jetbrains.kotlin.formver.core.embeddings.expression.MethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
@@ -173,8 +174,13 @@ class ProgramConverter(
         }
         for ((_, signature) in fullSignatures) {
             val source = signature.declarationSource ?: continue
-            for (condition in signature.preconditions + signature.postconditions) {
+            for (condition in signature.preconditions) {
                 condition.checkValidity(source, this)
+                condition.reportImpureCalls(source, "Precondition")
+            }
+            for (condition in signature.postconditions) {
+                condition.checkValidity(source, this)
+                condition.reportImpureCalls(source, "Postcondition")
             }
         }
         validatePureRecursion()
@@ -233,6 +239,18 @@ class ProgramConverter(
                 ConversionErrors.MUTUAL_RECURSION_UNSUPPORTED,
                 "Verification depends on mutually recursive pure functions $names, which is not supported",
             )
+        }
+    }
+
+    /**
+     * Function and method calls share [MethodCall]: both need statements and a temporary result and
+     * therefore cannot be translated by the expression-only linearizer used for contracts.
+     */
+    private fun ExpEmbedding.reportImpureCalls(fallbackSource: KtSourceElement, conditionKind: String) {
+        preorder(fallbackSource).forEach { (embedding, source) ->
+            if (embedding is MethodCall) {
+                reportPurityViolation(source, "$conditionKind contains an impure function or method call")
+            }
         }
     }
 
