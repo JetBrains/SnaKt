@@ -96,9 +96,14 @@ data class Linearizer(
             Stmt.If(condViper, thenViper, elseViper, source.asPosition)
         }
 
-    override fun addFieldAccess(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding): Exp {
+    override fun addFieldAccess(
+        receiver: Linearizable,
+        receiverType: TypeEmbedding,
+        field: FieldEmbedding,
+        receiverIsUnique: Boolean,
+    ): Exp {
         val result = freshAnonVar(field.type)
-        addFieldAccessStoringIn(receiver, receiverType, field, result)
+        addFieldAccessStoringIn(receiver, receiverType, field, result, receiverIsUnique)
         return result.toViperExp(this)
     }
 
@@ -106,12 +111,18 @@ data class Linearizer(
         stmtModifierTracker?.add(mod) ?: error("Not in a statement")
     }
 
-    override fun addFieldAccessStoringIn(receiver: Linearizable, receiverType: TypeEmbedding, field: FieldEmbedding, result: VariableEmbedding) {
+    override fun addFieldAccessStoringIn(
+        receiver: Linearizable,
+        receiverType: TypeEmbedding,
+        field: FieldEmbedding,
+        result: VariableEmbedding,
+        receiverIsUnique: Boolean,
+    ) {
         addStatement {
             val accessIsManual = with(typeResolver) { (receiverType.pretype as? ClassTypeEmbedding)?.isManual ?: false }
             when (field.accessPolicy) {
                 // TODO: Handling a unique field on a shared receiver must be added here.
-                AccessPolicy.BY_RECEIVER_UNIQUENESS if !accessIsManual -> {
+                AccessPolicy.BY_RECEIVER_UNIQUENESS if !accessIsManual && !receiverIsUnique -> {
                     receiver.toViperUnusedResult(this)
                     SpecialMethods.havocMethod.toMethodCall(
                         listOf(field.type.runtimeType),
@@ -123,11 +134,11 @@ data class Linearizer(
                     val receiverViper = receiver.toViper(this)
                     // If the field access is not replaced with havoc,
                     // we might need to unfold some predicate to access it.
-                    if (field.unfoldToAccess && !accessIsManual) {
-                        unfoldHierarchyPredicates(receiverViper, receiverType, field)
-                    }
+                    val primitiveAccess: Exp = Exp.FieldAccess(receiverViper, field.toViper(), source.asPosition)
+                    val fieldAccess = hierarchyPredicateAccesses(receiverViper, receiverType, field).toList()
+                        .foldRight(primitiveAccess) { predicateAccess, acc -> Exp.Unfolding(predicateAccess, acc) }
                     Stmt.assign(
-                        result.toLocalVarUse(), Exp.FieldAccess(receiverViper, field.toViper(), source.asPosition)
+                        result.toLocalVarUse(), fieldAccess
                     )
                 }
             }
