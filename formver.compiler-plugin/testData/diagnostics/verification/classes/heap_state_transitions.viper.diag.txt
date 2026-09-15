@@ -1,0 +1,7 @@
+/heap_state_transitions.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon_0) == 0 might not hold.
+
+/heap_state_transitions.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon_0) == 10 might not hold.
+
+/heap_state_transitions.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon_0) == 1 might not hold.
+
+/heap_state_transitions.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == 7 might not hold.

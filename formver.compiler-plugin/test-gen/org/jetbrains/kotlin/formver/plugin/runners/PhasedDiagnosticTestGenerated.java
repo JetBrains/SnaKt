@@ -388,6 +388,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("heap_state_transitions.kt")
+      public void testHeap_state_transitions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/heap_state_transitions.kt");
+      }
+
+      @Test
       @TestMetadata("inheritance.kt")
       public void testInheritance() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/inheritance.kt");
