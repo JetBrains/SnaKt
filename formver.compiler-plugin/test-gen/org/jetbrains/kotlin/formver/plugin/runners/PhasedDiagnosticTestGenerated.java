@@ -388,6 +388,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("heap_alias_contract_mutation.kt")
+      public void testHeap_alias_contract_mutation() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/heap_alias_contract_mutation.kt");
+      }
+
+      @Test
       @TestMetadata("inheritance.kt")
       public void testInheritance() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/inheritance.kt");
