@@ -367,6 +367,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("state_transition_sequence.kt")
+    public void testState_transition_sequence() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/state_transition_sequence.kt");
+    }
+
+    @Test
     @TestMetadata("unit_return_type.kt")
     public void testUnit_return_type() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/unit_return_type.kt");
