@@ -301,6 +301,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("diagnostic_backend_pairs.kt")
+    public void testDiagnostic_backend_pairs() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/diagnostic_backend_pairs.kt");
+    }
+
+    @Test
     @TestMetadata("do_not_verify.kt")
     public void testDo_not_verify() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/do_not_verify.kt");
