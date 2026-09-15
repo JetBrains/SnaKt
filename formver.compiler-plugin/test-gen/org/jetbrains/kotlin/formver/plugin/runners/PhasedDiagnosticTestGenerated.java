@@ -481,6 +481,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/contracts"), Pattern.compile("^(.+)\\.kt$"), null, true);
       }
 
+      @Test
+      @TestMetadata("implies_runtime_differential.kt")
+      public void testImplies_runtime_differential() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/implies_runtime_differential.kt");
+      }
+
       @Nested
       @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/contracts/negative")
       @TestDataPath("$PROJECT_ROOT")
