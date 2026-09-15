@@ -383,6 +383,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("alias_mutation_determinism.kt")
+      public void testAlias_mutation_determinism() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/alias_mutation_determinism.kt");
+      }
+
+      @Test
       public void testAllFilesPresentInClasses() {
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/classes"), Pattern.compile("^(.+)\\.kt$"), null, true);
       }

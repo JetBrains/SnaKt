@@ -1,0 +1,150 @@
+/alias_mutation_determinism.kt: info: Generated Viper text for aliasIdentityPositiveControl:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method aliasIdentityPositiveControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var alias: Ref
+  cell := con(intToRef(17))
+  alias := cell
+  assert alias == cell
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), MutableCell())
+  ensures acc(MutableCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(MutableCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+/alias_mutation_determinism.kt: info: Generated Viper text for mutationThroughAlias:
+field value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method mutationThroughAlias(cell: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), MutableCell())
+  requires acc(MutableCell_unique(cell), write)
+  ensures acc(MutableCell_unique(cell), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var alias: Ref
+  var anon: Ref
+  alias := cell
+  anon := havoc(intType())
+  assert intFromRef(anon) == 19
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/alias_mutation_determinism.kt: info: Generated Viper text for mutationThroughAliasPerturbed:
+field value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method mutationThroughAliasPerturbed(cell: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), MutableCell())
+  requires acc(MutableCell_unique(cell), write)
+  ensures acc(MutableCell_unique(cell), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var alias: Ref
+  var harmless: Ref
+  var anon: Ref
+  alias := cell
+  harmless := intToRef(0)
+  anon := havoc(intType())
+  assert intFromRef(anon) == 19
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/alias_mutation_determinism.kt: info: Generated Viper text for nullableAliasMutation:
+field bf_cell: Ref
+
+field value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method g_observed(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+method nullableAliasMutation(holder: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(holder), CellHolder())
+  requires acc(CellHolder_unique(holder), write)
+  ensures acc(CellHolder_unique(holder), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_cell: Ref
+  l0_cell := havoc(nullable(MutableCell()))
+  if (!(l0_cell == nullValue())) {
+    var alias: Ref
+    var anon_0: Ref
+    var anon_1: Ref
+    alias := l0_cell
+    anon_1 := havoc(nullable(MutableCell()))
+    if (anon_1 != nullValue()) {
+      var anon_2: Ref
+      anon_2 := havoc(intType())
+      anon_0 := anon_2
+    } else {
+      anon_0 := nullValue()}
+    assert anon_0 == intToRef(23)
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method s_observed(this: Ref, anon_0: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
+
+
+/alias_mutation_determinism.kt: error: Function 'setterMutationObservedByGetter' was not verified because of errors in its declaration
+
+/alias_mutation_determinism.kt: error: Assert condition is impure
+
+/alias_mutation_determinism.kt: info: Generated Viper text for staleValueNegativeControl:
+field value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method staleValueNegativeControl(cell: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), MutableCell())
+  requires acc(MutableCell_unique(cell), write)
+  ensures acc(MutableCell_unique(cell), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var alias: Ref
+  var anon: Ref
+  alias := cell
+  anon := havoc(intType())
+  assert intFromRef(anon) == 30
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

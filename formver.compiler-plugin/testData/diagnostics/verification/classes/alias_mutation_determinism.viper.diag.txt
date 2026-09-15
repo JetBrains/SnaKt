@@ -1,0 +1,7 @@
+/alias_mutation_determinism.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == 19 might not hold.
+
+/alias_mutation_determinism.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == 19 might not hold.
+
+/alias_mutation_determinism.kt: warning: Viper verification error: Assert might fail. Assertion anon_0 == intToRef(23) might not hold.
+
+/alias_mutation_determinism.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == 30 might not hold.

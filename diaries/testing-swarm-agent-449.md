@@ -1,0 +1,28 @@
+# Testing swarm agent — issue 449 diary
+
+## Assignment
+
+Test heap objects, aliasing, and mutation using determinism and repeatability probes, following the full protocol in [issue 449](https://github.com/JetBrains/SnaKt/issues/449).
+
+## Actions
+
+1. Read `AUTOMATIONS.md` before taking any repository action, as required by the assignment. It requires an instruction record, a complete diary, and work based on `implementing-air-automations` with a PR targeting that branch.
+2. Checked repository status and confirmed the checkout was clean on `implementing-air-automations`.
+3. Inspected the existing `automationsInstructions` and `diaries` naming style, then created this assignment record and diary.
+4. Used semantic code search to locate existing constructor, property accessor, unique-field, nullable-reference, and alias-related golden tests.
+5. Read the relevant test sources and `docs/agents-dev.md`. Existing coverage checks these features largely in isolation; the new probes should directly observe a mutation through an alias and repeat equivalent cases.
+6. Inspected recent pull requests targeting `implementing-air-automations`; their branch convention is predominantly `test/issue-<number>-<topic>`. Confirmed GitHub CLI authentication is available and re-read issue 449 from GitHub.
+7. Read nearby contract, verification, linked-list, private-property, and inlining tests to match imports, annotations, positive verification, and expected-failure markup.
+8. Created branch `test/issue-449-heap-alias-determinism` from the required source branch and added a focused golden test for constructor-created objects, direct and nullable aliases, field mutation, property getter/setter access, repeated equivalent cases, and a stale-value negative control.
+9. The first fast-loop attempt failed before tests because the environment's JDK 25 is unsupported. Downloaded the official Temurin 21 release locally. A first retry used the archive's anticipated rather than actual directory name and was classified as a setup failure; the corrected JDK path reached the tests.
+10. The initial conversion generated the missing golden and reported that the custom accessor assertion is impure. Ran `--update-goldens` and read its complete generated files. Verification could not start because `z3` was absent, so this was classified as a harness failure rather than a probe result.
+11. Read the documented solver requirement and existing unique-field setter Viper. The existing setter goldens also omit heap writes, consistent with the new conversion output and suggesting a known implementation limitation rather than immediate evidence of a regression.
+12. Downloaded the repository-documented Z3 4.8.7 release locally, reran golden regeneration, and read the reported diagnostics. Both equivalent direct alias mutations and the nullable alias mutation are expected proof failures because reads are translated as unconstrained values; the stale-value boundary also fails as expected. The custom getter assertion is a source purity diagnostic.
+13. Added a constructor-and-alias identity positive control so the test file contains a supported-and-verified case alongside the proof-failure and source-diagnostic boundaries.
+14. Regenerated the goldens again with the positive control. Read the complete report and generated files: constructor creation plus local alias identity is supported and verified; direct alias mutation, its inert-local perturbation, nullable alias mutation, and the deliberately stale assertion are expected proof failures; the custom getter assertion is rejected with `PURITY_VIOLATION` and the function with `VERIFICATION_SKIPPED`.
+15. Ran the conversion-only test once and full verification twice. Every run passed with exit status 0. Across all three runs, SHA-256 hashes remained identical: FIR golden `a274febb0b5a5eb2cf0e0c276e7adf3a4d7c1a506c239960230390d3ef87092a`, Kotlin test `dcd3f2d2716b8623d00bc6a1583896c72809f2cf0f985d8d1cb6ed24ee5c4ba5`, and Viper diagnostic golden `4acce685d50edeee1d126279fb1e20c294abbbe2d673c1076075f9e04857ea25`. Generated Viper, proof classifications, diagnostic order and locations, exit status, and golden output were repeatable.
+16. Searched open and closed GitHub issues for field mutation, alias mutation, property setters, and unique field writes. Issue [#377](https://github.com/JetBrains/SnaKt/issues/377), “Mutable property reads become havoc and writes are omitted,” already tracks the precise limitation observed here. No new bug was found, so no duplicate issue was filed.
+17. Ran `git diff --check` successfully, then ran `./agent-scripts/check-all.sh`. Gradle checks and test-data checks passed, but the command returned exit 2 because `pre-commit` was not installed.
+18. System Python rejected a user-level install under PEP 668, and both pip in a temporary virtual environment and uv were unable to reach PyPI through the environment proxy. Downloaded the official pre-commit 4.6.2 zipapp from GitHub. Its external hook environment also could not fetch build dependencies from PyPI.
+19. Mirrored the repository's three configured hooks in a temporary system-language pre-commit configuration so the exact hook implementations could run without PyPI. An initial mirror omitted the official `types: [text]` filter and changed only `gradle-wrapper.jar`; immediately restored that tool-caused change and added the exact filter.
+20. Reran `./agent-scripts/check-all.sh` with the corrected temporary pre-commit wrapper. Gradle checks passed, test-data checks passed, end-of-file-fixer passed, check-testdata passed, script-tests passed, and the command exited 0.
