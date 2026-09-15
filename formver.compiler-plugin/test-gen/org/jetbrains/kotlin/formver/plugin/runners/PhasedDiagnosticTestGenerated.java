@@ -102,9 +102,21 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("array_index_probes.kt")
+      public void testArray_index_probes() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/array_index_probes.kt");
+      }
+
+      @Test
       @TestMetadata("binary_search.kt")
       public void testBinary_search() {
         runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/binary_search.kt");
+      }
+
+      @Test
+      @TestMetadata("collection_index_mutations.kt")
+      public void testCollection_index_mutations() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/collection_index_mutations.kt");
       }
 
       @Test
