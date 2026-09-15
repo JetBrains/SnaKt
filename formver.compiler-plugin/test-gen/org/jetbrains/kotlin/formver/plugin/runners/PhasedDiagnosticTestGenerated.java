@@ -814,6 +814,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("impure_contract_determinism.kt")
+      public void testImpure_contract_determinism() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/purity/impure_contract_determinism.kt");
+      }
+
+      @Test
       @TestMetadata("wrongly_annotated.kt")
       public void testWrongly_annotated() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/purity/wrongly_annotated.kt");
@@ -867,6 +873,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("and_or_then.kt")
       public void testAnd_or_then() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/and_or_then.kt");
+      }
+
+      @Test
+      @TestMetadata("contract_determinism.kt")
+      public void testContract_determinism() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/contract_determinism.kt");
       }
 
       @Test

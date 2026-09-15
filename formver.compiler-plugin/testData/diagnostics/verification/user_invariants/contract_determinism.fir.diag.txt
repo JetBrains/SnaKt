@@ -1,0 +1,108 @@
+/contract_determinism.kt: info: Generated Viper text for deterministicContractA:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method deterministicContractA(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(value) + 1
+  ensures intFromRef(value) >= 0 ==> intFromRef(v_ret_0) > 0
+  ensures (forall anon: Int ::anon == anon)
+{
+  assert intFromRef(value) >= 0
+  v_ret_0 := plusInts(value, intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/contract_determinism.kt: info: Generated Viper text for deterministicContractB:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method deterministicContractB(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(value) + 1
+  ensures intFromRef(value) >= 0 ==> intFromRef(v_ret_0) > 0
+  ensures (forall anon: Int ::anon == anon)
+{
+  assert intFromRef(value) >= 0
+  v_ret_0 := plusInts(value, intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/contract_determinism.kt: info: Generated Viper text for contractsPropagateDeterministically:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method contractsPropagateDeterministically(value: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var first: Ref
+  var second: Ref
+  first := deterministicContractA(value)
+  second := deterministicContractB(value)
+  assert intFromRef(first) == intFromRef(second)
+  assert intFromRef(first) > 0
+  assert intFromRef(second) > 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method deterministicContractA(value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) == intFromRef(value) + 1
+  ensures intFromRef(value) >= 0 ==> intFromRef(ret_2) > 0
+  ensures (forall anon_builtin_0: Int ::anon_builtin_0 == anon_builtin_0)
+
+
+method deterministicContractB(value: Ref) returns (ret_4: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(ret_4), intType())
+  ensures intFromRef(ret_4) == intFromRef(value) + 1
+  ensures intFromRef(value) >= 0 ==> intFromRef(ret_4) > 0
+  ensures (forall anon_builtin_1: Int ::anon_builtin_1 == anon_builtin_1)
+
+
+/contract_determinism.kt: info: Generated Viper text for expectedFailureA:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method expectedFailureA() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_determinism.kt: info: Generated Viper text for expectedFailureB:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method expectedFailureB() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

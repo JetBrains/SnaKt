@@ -1,0 +1,7 @@
+/impure_contract_determinism.kt: error: Function 'impureSpecificationA' was not verified because of errors in its declaration
+
+/impure_contract_determinism.kt: error: Assert condition is impure
+
+/impure_contract_determinism.kt: error: Function 'impureSpecificationB' was not verified because of errors in its declaration
+
+/impure_contract_determinism.kt: error: Assert condition is impure
