@@ -602,6 +602,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("deterministic_calls.kt")
+      public void testDeterministic_calls() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/deterministic_calls.kt");
+      }
+
+      @Test
       @TestMetadata("exp_side_effects.kt")
       public void testExp_side_effects() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/exp_side_effects.kt");

@@ -1,0 +1,129 @@
+/deterministic_calls.kt: info: Generated Viper text for nestedCallsBaseline:
+method nestedCallsBaseline(flag: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(flag), boolType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var first: Ref
+  var anon_0: Ref
+  var second: Ref
+  var anon_1: Ref
+  anon_0 := record(intToRef(1))
+  first := record(anon_0)
+  anon_1 := record(intToRef(2))
+  second := record(anon_1)
+  if (boolFromRef(flag)) {
+    v_ret_0 := first
+  } else {
+    v_ret_0 := second}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method record(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/deterministic_calls.kt: info: Generated Viper text for nestedCallsPerturbed:
+method nestedCallsPerturbed(flag: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(flag), boolType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var first: Ref
+  var anon_1: Ref
+  var second: Ref
+  var anon_2: Ref
+  var anon_0: Ref
+  anon_1 := record(intToRef(1))
+  first := record(anon_1)
+  anon_2 := record(intToRef(2))
+  second := record(anon_2)
+  anon_0 := flag
+  if (boolFromRef(anon_0) == true) {
+    v_ret_0 := first
+  } elseif (boolFromRef(anon_0) == false) {
+    v_ret_0 := second
+  } else {
+    v_ret_0 := unitValue()}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method record(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/deterministic_calls.kt: info: Generated Viper text for recursiveBoundary:
+method record(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method recursiveBoundary(remaining: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(remaining), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  if (intFromRef(remaining) <= 0) {
+    v_ret_0 := record(intToRef(0))
+    goto lbl_ret_0
+  }
+  anon := recursiveBoundary(minusInts(remaining, intToRef(1)))
+  v_ret_0 := record(anon)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/deterministic_calls.kt: info: Generated Viper text for positiveControl:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method positiveControl(flag: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(flag), boolType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  var anon: Ref
+  if (boolFromRef(flag)) {
+    l0_result := intToRef(1)
+  } else {
+    l0_result := intToRef(2)}
+  if (intFromRef(l0_result) == 1) {
+    anon := boolToRef(true)
+  } else {
+    anon := boolToRef(intFromRef(l0_result) == 2)}
+  assert boolFromRef(anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/deterministic_calls.kt: info: Generated Viper text for negativeDiagnosticFirst:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method negativeDiagnosticFirst() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/deterministic_calls.kt: info: Generated Viper text for negativeDiagnosticSecond:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method negativeDiagnosticSecond() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert 1 == 2
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
