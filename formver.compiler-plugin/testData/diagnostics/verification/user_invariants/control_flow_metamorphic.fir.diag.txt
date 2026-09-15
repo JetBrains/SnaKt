@@ -1,0 +1,233 @@
+/control_flow_metamorphic.kt: info: Generated Viper text for increment:
+method increment(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(value) + 1
+{
+  v_ret_0 := plusInts(value, intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/control_flow_metamorphic.kt: info: Generated Viper text for recursiveEarlyReturn:
+method recursiveEarlyReturn(remaining: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(remaining), intType())
+  requires intFromRef(remaining) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 0
+{
+  if (intFromRef(remaining) == 0) {
+    v_ret_0 := intToRef(0)
+    goto lbl_ret_0
+  }
+  v_ret_0 := recursiveEarlyReturn(minusInts(remaining, intToRef(1)))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/control_flow_metamorphic.kt: info: Generated Viper text for recursiveIfExpression:
+method recursiveIfExpression(count: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(count), intType())
+  requires intFromRef(count) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 0
+{
+  if (intFromRef(count) == 0) {
+    v_ret_0 := intToRef(0)
+  } else {
+    v_ret_0 := recursiveIfExpression(minusInts(count, intToRef(1)))}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/control_flow_metamorphic.kt: info: Generated Viper text for loopCountdownGreaterThan:
+method loopCountdownGreaterThan(remaining: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(remaining), intType())
+  requires intFromRef(remaining) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 0
+{
+  var count: Ref
+  var anon_1: Ref
+  count := remaining
+  label cont
+    invariant isSubtype(typeOf(count), intType())
+    invariant isSubtype(typeOf(remaining), intType())
+    invariant intFromRef(count) >= 0
+  anon_1 := gtInts(count, intToRef(0))
+  if (boolFromRef(anon_1)) {
+    var anon_0: Ref
+    anon_0 := count
+    count := minusInts(anon_0, intToRef(1))
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(count), intType())
+  assert isSubtype(typeOf(remaining), intType())
+  assert intFromRef(count) >= 0
+  v_ret_0 := count
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/control_flow_metamorphic.kt: info: Generated Viper text for loopCountdownNotZero:
+method loopCountdownNotZero(initial: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(initial), intType())
+  requires intFromRef(initial) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 0
+{
+  var cursor: Ref
+  var anon: Ref
+  cursor := initial
+  label cont
+    invariant isSubtype(typeOf(cursor), intType())
+    invariant isSubtype(typeOf(initial), intType())
+    invariant intFromRef(cursor) >= 0
+  anon := notBool(boolToRef(intFromRef(cursor) == 0))
+  if (boolFromRef(anon)) {
+    cursor := minusInts(cursor, intToRef(1))
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(cursor), intType())
+  assert isSubtype(typeOf(initial), intType())
+  assert intFromRef(cursor) >= 0
+  v_ret_0 := cursor
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/control_flow_metamorphic.kt: info: Generated Viper text for ifClassification:
+method ifClassification(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(value) == 0 && intFromRef(v_ret_0) == 0 ||
+    !(intFromRef(value) == 0) && intFromRef(v_ret_0) == 1
+{
+  if (intFromRef(value) == 0) {
+    v_ret_0 := intToRef(0)
+  } else {
+    v_ret_0 := intToRef(1)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/control_flow_metamorphic.kt: info: Generated Viper text for whenClassification:
+method whenClassification(renamed: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(renamed), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(renamed) == 0 && intFromRef(v_ret_0) == 0 ||
+    !(intFromRef(renamed) == 0) && intFromRef(v_ret_0) == 1
+{
+  var anon: Ref
+  anon := renamed
+  if (intFromRef(anon) == 0) {
+    v_ret_0 := intToRef(0)
+  } else {
+    v_ret_0 := intToRef(1)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/control_flow_metamorphic.kt: info: Generated Viper text for nestedCalls:
+method increment(value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) == intFromRef(value) + 1
+
+
+method nestedCalls(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(value) + 2
+{
+  var anon: Ref
+  anon := increment(value)
+  v_ret_0 := increment(anon)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/control_flow_metamorphic.kt: info: Generated Viper text for sequentialCalls:
+method increment(value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) == intFromRef(value) + 1
+
+
+method sequentialCalls(renamed: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(renamed), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(renamed) + 2
+{
+  var first: Ref
+  first := increment(renamed)
+  v_ret_0 := increment(first)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/control_flow_metamorphic.kt: info: Generated Viper text for independentOrderLeftFirst:
+method increment(value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) == intFromRef(value) + 1
+
+
+method independentOrderLeftFirst(left: Ref, right: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(left), intType())
+  requires isSubtype(typeOf(right), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(left) + intFromRef(right) + 2
+{
+  var leftIncremented: Ref
+  var rightIncremented: Ref
+  leftIncremented := increment(left)
+  rightIncremented := increment(right)
+  v_ret_0 := plusInts(leftIncremented, rightIncremented)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/control_flow_metamorphic.kt: info: Generated Viper text for independentOrderRightFirst:
+method increment(value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) == intFromRef(value) + 1
+
+
+method independentOrderRightFirst(first: Ref, second: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(first), intType())
+  requires isSubtype(typeOf(second), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(first) + intFromRef(second) + 2
+{
+  var secondIncremented: Ref
+  var firstIncremented: Ref
+  secondIncremented := increment(second)
+  firstIncremented := increment(first)
+  v_ret_0 := plusInts(firstIncremented, secondIncremented)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/control_flow_metamorphic.kt: info: Generated Viper text for dependentCallOrderBoundary:
+method dependentCallOrderBoundary(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(value) + 2
+{
+  var incremented: Ref
+  incremented := increment(value)
+  v_ret_0 := increment(minusInts(value, incremented))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method increment(value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) == intFromRef(value) + 1

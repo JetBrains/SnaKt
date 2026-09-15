@@ -870,6 +870,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("control_flow_metamorphic.kt")
+      public void testControl_flow_metamorphic() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/control_flow_metamorphic.kt");
+      }
+
+      @Test
       @TestMetadata("empty.kt")
       public void testEmpty() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/empty.kt");
