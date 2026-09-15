@@ -53,6 +53,13 @@ data object MutableListInterface : PresentInterface {
     override val interfaceName = "MutableList"
 }
 
+data object ListExtensionInterface : StdLibReceiverInterface {
+    override fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean =
+        function.callableType.extensionReceiverType?.pretype?.let {
+            ctx.isInheritorOfCollectionTypeNamed(it, "List")
+        } ?: false
+}
+
 data object NoInterface : StdLibReceiverInterface {
     override fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean =
         NameMatcher.matchClassScope(function.name) {
@@ -138,7 +145,7 @@ data object FirstPrecondition : StdLibPrecondition {
     override fun getEmbeddings(function: NamedFunctionSignature): List<ExpEmbedding> =
         function.nonEmptyExtensionReceiverPrecondition()
 
-    override val stdLibInterface = NoInterface
+    override val stdLibInterface = ListExtensionInterface
     override val functionName = "first"
 }
 
@@ -146,7 +153,7 @@ data object LastPrecondition : StdLibPrecondition {
     override fun getEmbeddings(function: NamedFunctionSignature): List<ExpEmbedding> =
         function.nonEmptyExtensionReceiverPrecondition()
 
-    override val stdLibInterface = NoInterface
+    override val stdLibInterface = ListExtensionInterface
     override val functionName = "last"
 }
 
@@ -218,7 +225,7 @@ data object FirstPostcondition : StdLibPostcondition {
         function: NamedFunctionSignature,
     ): List<ExpEmbedding> = function.unchangedExtensionReceiverSize()
 
-    override val stdLibInterface = NoInterface
+    override val stdLibInterface = ListExtensionInterface
     override val functionName = "first"
 }
 
@@ -228,7 +235,7 @@ data object LastPostcondition : StdLibPostcondition {
         function: NamedFunctionSignature,
     ): List<ExpEmbedding> = function.unchangedExtensionReceiverSize()
 
-    override val stdLibInterface = NoInterface
+    override val stdLibInterface = ListExtensionInterface
     override val functionName = "last"
 }
 
