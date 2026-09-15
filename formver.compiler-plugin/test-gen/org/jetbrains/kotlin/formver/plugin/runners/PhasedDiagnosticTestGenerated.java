@@ -608,6 +608,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("failure_propagation.kt")
+      public void testFailure_propagation() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/failure_propagation.kt");
+      }
+
+      @Test
       @TestMetadata("function_call.kt")
       public void testFunction_call() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/function_call.kt");
