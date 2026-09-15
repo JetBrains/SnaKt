@@ -734,6 +734,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("boolean_implication_oracle.kt")
+      public void testBoolean_implication_oracle() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/boolean_implication_oracle.kt");
+      }
+
+      @Test
       @TestMetadata("elvis.kt")
       public void testElvis() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/elvis.kt");
