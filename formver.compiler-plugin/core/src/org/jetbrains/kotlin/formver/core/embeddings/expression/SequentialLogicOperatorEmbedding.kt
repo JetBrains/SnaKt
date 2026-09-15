@@ -51,3 +51,17 @@ data class SequentialOr(override val left: ExpEmbedding, override val right: Exp
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitSequentialOr(this)
 }
+
+/**
+ * Kotlin's [org.jetbrains.kotlin.formver.plugin.implies] is an ordinary function, so both of its
+ * arguments are evaluated before the logical implication is computed. In specification contexts,
+ * however, it represents a declarative implication and can remain a Viper expression.
+ */
+data class ContextualImplies(val left: ExpEmbedding, val right: ExpEmbedding) : ExpEmbedding {
+    override val type
+        get() = buildType { boolean() }
+
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(left, right)
+
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitContextualImplies(this)
+}
