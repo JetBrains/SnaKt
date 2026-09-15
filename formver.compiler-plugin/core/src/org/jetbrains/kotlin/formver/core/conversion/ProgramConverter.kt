@@ -79,6 +79,9 @@ class ProgramConverter(
     override fun reportMinorInternalError(msg: String) =
         emit(currentDeclarationSource, ConversionErrors.MINOR_INTERNAL_ERROR, msg)
 
+    override fun reportMinorInternalError(source: KtSourceElement?, msg: String) =
+        emit(source, ConversionErrors.MINOR_INTERNAL_ERROR, msg)
+
     private fun reportVerificationSkipped(source: KtSourceElement?, msg: String) {
         context(diagnosticContext) {
             reporter.reportOn(source, ConversionErrors.VERIFICATION_SKIPPED, msg)

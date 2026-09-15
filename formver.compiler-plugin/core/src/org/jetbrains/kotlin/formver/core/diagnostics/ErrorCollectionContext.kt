@@ -18,4 +18,7 @@ interface ErrorCollectionContext {
 
     /** Report a minor internal error; the source is supplied by the implementation. */
     fun reportMinorInternalError(msg: String)
+
+    /** Report a minor internal error at a specific source location. */
+    fun reportMinorInternalError(source: KtSourceElement?, msg: String)
 }

@@ -1,0 +1,3 @@
+/recursive_local_functions.kt: error: Function 'recursiveLocalFunction' was not verified because of errors in its declaration
+
+/recursive_local_functions.kt: error: Formal verification non-fatal internal error: Recursive local function 'local' is not supported

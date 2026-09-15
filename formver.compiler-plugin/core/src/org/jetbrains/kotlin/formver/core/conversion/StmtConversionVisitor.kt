@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.contracts.description.LogicOperationKind
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.declarations.FirProperty
+import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.expressions.impl.FirElseIfTrueCondition
 import org.jetbrains.kotlin.fir.expressions.impl.FirUnitExpression
@@ -329,6 +330,22 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
 
         return data.declareLocalProperty(symbol, property.initializer?.let { data.convert(it) })
+    }
+
+    override fun visitSimpleFunction(
+        simpleFunction: FirSimpleFunction,
+        data: StmtConversionContext,
+    ): ExpEmbedding {
+        if (!simpleFunction.symbol.callableId.isLocal) {
+            throw SnaktInternalException(
+                simpleFunction.source,
+                "StmtConversionVisitor should only encounter local functions.",
+            )
+        }
+
+        // Local functions are embedded lazily at their call sites. Their declaration has no
+        // runtime effect, just like a local class or type alias declaration.
+        return UnitLit
     }
 
     override fun visitWhileLoop(whileLoop: FirWhileLoop, data: StmtConversionContext): ExpEmbedding {
