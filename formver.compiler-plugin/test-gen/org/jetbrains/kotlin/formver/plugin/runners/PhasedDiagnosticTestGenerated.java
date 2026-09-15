@@ -626,6 +626,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("model_based_oracle.kt")
+      public void testModel_based_oracle() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/model_based_oracle.kt");
+      }
+
+      @Test
       @TestMetadata("non-local-returns.kt")
       public void testNon_local_returns() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/non-local-returns.kt");
