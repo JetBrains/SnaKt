@@ -13,6 +13,10 @@ method iAmAMethod() returns (v_ret_0: Ref)
 
 /wrongly_annotated.kt: error: Impure function body detected in pure function
 
+/wrongly_annotated.kt: error: Function 'testImpureLocalInitializer' was not verified because of errors in its declaration
+
+/wrongly_annotated.kt: error: Impure function body detected in pure function
+
 /wrongly_annotated.kt: error: Function 'testExecutingLambda' was not verified because of errors in its declaration
 
 /wrongly_annotated.kt: error: Impure function body detected in pure function
