@@ -1,0 +1,34 @@
+/implication_precedence_internal_error.kt: error: None of the following candidates is applicable:
+
+fun compareTo(other: Byte): Int:
+  Argument type mismatch: actual type is 'Boolean', but 'Byte' was expected.
+
+fun compareTo(other: Short): Int:
+  Argument type mismatch: actual type is 'Boolean', but 'Short' was expected.
+
+fun compareTo(other: Int): Int:
+  Argument type mismatch: actual type is 'Boolean', but 'Int' was expected.
+
+fun compareTo(other: Long): Int:
+  Argument type mismatch: actual type is 'Boolean', but 'Long' was expected.
+
+fun compareTo(other: Float): Int:
+  Argument type mismatch: actual type is 'Boolean', but 'Float' was expected.
+
+fun compareTo(other: Double): Int:
+  Argument type mismatch: actual type is 'Boolean', but 'Double' was expected.
+
+/implication_precedence_internal_error.kt: error: Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+fun Boolean.implies(other: Boolean): Boolean
+
+/implication_precedence_internal_error.kt: info: Generated Viper text for parenthesizedImplicationControl:
+method parenthesizedImplicationControl(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(value) >= 0 ==> intFromRef(v_ret_0) > 0
+{
+  v_ret_0 := plusInts(value, intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
