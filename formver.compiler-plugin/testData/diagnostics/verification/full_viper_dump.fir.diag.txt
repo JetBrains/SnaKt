@@ -351,7 +351,12 @@ function plusInts(arg_1: Ref, arg_2: Ref): Ref
 function remInts(arg_1: Ref, arg_2: Ref): Ref
   requires intFromRef(arg_2) != 0
   ensures isSubtype(typeOf(result), intType())
-  ensures intFromRef(result) == intFromRef(arg_1) % intFromRef(arg_2)
+  ensures intFromRef(result) ==
+    (intFromRef(arg_1) < 0 ?
+      -((intFromRef(arg_1) < 0 ? -intFromRef(arg_1) : intFromRef(arg_1)) %
+      (intFromRef(arg_2) < 0 ? -intFromRef(arg_2) : intFromRef(arg_2))) :
+      (intFromRef(arg_1) < 0 ? -intFromRef(arg_1) : intFromRef(arg_1)) %
+      (intFromRef(arg_2) < 0 ? -intFromRef(arg_2) : intFromRef(arg_2)))
 
 
 function stringGet(arg_1: Ref, arg_2: Ref): Ref
