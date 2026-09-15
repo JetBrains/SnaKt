@@ -602,6 +602,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("compiled_kotlin_differential.kt")
+      public void testCompiled_kotlin_differential() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/compiled_kotlin_differential.kt");
+      }
+
+      @Test
       @TestMetadata("exp_side_effects.kt")
       public void testExp_side_effects() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/exp_side_effects.kt");
