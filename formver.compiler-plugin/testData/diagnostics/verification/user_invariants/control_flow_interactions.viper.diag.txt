@@ -1,0 +1,1 @@
+/control_flow_interactions.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(l0_result) == 3 might not hold.

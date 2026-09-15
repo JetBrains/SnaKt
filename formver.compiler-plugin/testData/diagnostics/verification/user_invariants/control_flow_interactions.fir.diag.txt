@@ -1,0 +1,157 @@
+/control_flow_interactions.kt: info: Generated Viper text for next:
+function next(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value) + 1
+{
+  plusInts(value, intToRef(1))
+}
+
+/control_flow_interactions.kt: info: Generated Viper text for branchWithCall:
+function next(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value) + 1
+{
+  plusInts(value, intToRef(1))
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method branchWithCall(chooseFirst: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(chooseFirst), boolType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var l0_result: Ref
+  if (boolFromRef(chooseFirst)) {
+    l0_result := next(intToRef(0))
+  } else {
+    l0_result := next(intToRef(1))}
+  assert intFromRef(l0_result) > 0
+  v_ret_0 := l0_result
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/control_flow_interactions.kt: info: Generated Viper text for whenWithNestedCalls:
+function next(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value) + 1
+{
+  plusInts(value, intToRef(1))
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method whenWithNestedCalls(start: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(start), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  l0_result := next(next(start))
+  if (intFromRef(start) >= 0) {
+    assert intFromRef(l0_result) >= 2
+  } else {
+    assert intFromRef(l0_result) == intFromRef(start) + 2}
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/control_flow_interactions.kt: info: Generated Viper text for loopCallWithEarlyReturn:
+function next(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value) + 1
+{
+  plusInts(value, intToRef(1))
+}
+
+method loopCallWithEarlyReturn(limit: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(limit), intType())
+  requires intFromRef(limit) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(limit)
+{
+  var current: Ref
+  var anon: Ref
+  current := intToRef(0)
+  label cont
+    invariant isSubtype(typeOf(current), intType())
+    invariant isSubtype(typeOf(limit), intType())
+    invariant intFromRef(current) >= 0
+    invariant intFromRef(current) <= intFromRef(limit)
+  anon := boolToRef(true)
+  if (boolFromRef(anon)) {
+    if (intFromRef(current) == intFromRef(limit)) {
+      v_ret_0 := current
+      goto lbl_ret_0
+    }
+    current := next(current)
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(current), intType())
+  assert isSubtype(typeOf(limit), intType())
+  assert intFromRef(current) >= 0
+  assert intFromRef(current) <= intFromRef(limit)
+  label lbl_ret_0
+}
+
+/control_flow_interactions.kt: info: Generated Viper text for recursiveBranchWithCall:
+function next(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value) + 1
+{
+  plusInts(value, intToRef(1))
+}
+
+method recursiveBranchWithCall(remaining: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(remaining), intType())
+  requires intFromRef(remaining) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(remaining)
+{
+  var anon_0: Ref
+  anon_0 := remaining
+  if (intFromRef(anon_0) == 0) {
+    v_ret_0 := intToRef(0)
+  } else {
+    var anon_1: Ref
+    anon_1 := recursiveBranchWithCall(minusInts(remaining, intToRef(1)))
+    v_ret_0 := next(anon_1)
+  }
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/control_flow_interactions.kt: info: Generated Viper text for nestedCallBoundary:
+function next(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value) + 1
+{
+  plusInts(value, intToRef(1))
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method nestedCallBoundary() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  l0_result := next(next(intToRef(0)))
+  assert intFromRef(l0_result) == 3
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
