@@ -1,0 +1,162 @@
+/function_precondition_calls.kt: info: Generated Viper text for requirePositive:
+method requirePositive(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) > 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(value)
+{
+  v_ret_0 := value
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/function_precondition_calls.kt: info: Generated Viper text for directSatisfied:
+method directSatisfied() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := requirePositive(intToRef(1))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method requirePositive(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) > 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(ret_1) == intFromRef(value)
+
+
+/function_precondition_calls.kt: info: Generated Viper text for directViolated:
+method directViolated() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := requirePositive(intToRef(0))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method requirePositive(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) > 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(ret_1) == intFromRef(value)
+
+
+/function_precondition_calls.kt: info: Generated Viper text for nestedSatisfied:
+method nestedSatisfied() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  anon_1 := requirePositive(intToRef(1))
+  anon_0 := requirePositive(anon_1)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method requirePositive(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) > 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(ret_1) == intFromRef(value)
+
+
+/function_precondition_calls.kt: info: Generated Viper text for nestedViolated:
+method nestedViolated() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  anon_1 := requirePositive(intToRef(0))
+  anon_0 := requirePositive(anon_1)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method requirePositive(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) > 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(ret_1) == intFromRef(value)
+
+
+/function_precondition_calls.kt: info: Generated Viper text for expressionArgumentSatisfied:
+method expressionArgumentSatisfied() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := requirePositive(minusInts(intToRef(2), intToRef(1)))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method requirePositive(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) > 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(ret_1) == intFromRef(value)
+
+
+/function_precondition_calls.kt: info: Generated Viper text for expressionArgumentViolated:
+method expressionArgumentViolated() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := requirePositive(minusInts(intToRef(1), intToRef(1)))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method requirePositive(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) > 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(ret_1) == intFromRef(value)
+
+
+/function_precondition_calls.kt: info: Generated Viper text for branchSatisfied:
+method branchSatisfied(chooseFirst: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(chooseFirst), boolType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  if (boolFromRef(chooseFirst)) {
+    var anon_0: Ref
+    anon_0 := requirePositive(intToRef(1))
+  } else {
+    var anon_1: Ref
+    anon_1 := requirePositive(intToRef(2))
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method requirePositive(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) > 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(ret_1) == intFromRef(value)
+
+
+/function_precondition_calls.kt: info: Generated Viper text for branchViolated:
+method branchViolated(chooseFirst: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(chooseFirst), boolType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  if (boolFromRef(chooseFirst)) {
+    var anon_0: Ref
+    anon_0 := requirePositive(intToRef(1))
+  } else {
+    var anon_1: Ref
+    anon_1 := requirePositive(intToRef(0))
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method requirePositive(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) > 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(ret_1) == intFromRef(value)

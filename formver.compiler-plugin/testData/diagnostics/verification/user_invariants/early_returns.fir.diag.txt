@@ -1,0 +1,151 @@
+/early_returns.kt: info: Generated Viper text for branchEarlyReturns:
+method branchEarlyReturns(first: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(first), boolType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) > 0
+{
+  if (boolFromRef(first)) {
+    v_ret_0 := intToRef(1)
+    goto lbl_ret_0
+  }
+  v_ret_0 := intToRef(2)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/early_returns.kt: info: Generated Viper text for branchEarlyReturnsBoundary:
+method branchEarlyReturnsBoundary(first: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(first), boolType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) > 0
+{
+  if (boolFromRef(first)) {
+    v_ret_0 := intToRef(1)
+    goto lbl_ret_0
+  }
+  v_ret_0 := intToRef(0)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/early_returns.kt: info: Generated Viper text for nestedEarlyReturns:
+method nestedEarlyReturns(outer: Ref, inner: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(outer), boolType())
+  requires isSubtype(typeOf(inner), boolType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) > 0
+{
+  if (boolFromRef(outer)) {
+    if (boolFromRef(inner)) {
+      v_ret_0 := intToRef(1)
+      goto lbl_ret_0
+    }
+    v_ret_0 := intToRef(2)
+    goto lbl_ret_0
+  }
+  v_ret_0 := intToRef(3)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/early_returns.kt: info: Generated Viper text for nestedEarlyReturnsBoundary:
+method nestedEarlyReturnsBoundary(outer: Ref, inner: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(outer), boolType())
+  requires isSubtype(typeOf(inner), boolType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) > 0
+{
+  if (boolFromRef(outer)) {
+    if (boolFromRef(inner)) {
+      v_ret_0 := intToRef(1)
+      goto lbl_ret_0
+    }
+    v_ret_0 := intToRef(0)
+    goto lbl_ret_0
+  }
+  v_ret_0 := intToRef(2)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/early_returns.kt: info: Generated Viper text for returnBranchExpression:
+method returnBranchExpression(first: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(first), boolType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) > 0
+{
+  if (boolFromRef(first)) {
+    v_ret_0 := intToRef(1)
+  } else {
+    v_ret_0 := intToRef(2)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/early_returns.kt: info: Generated Viper text for returnBranchExpressionBoundary:
+method returnBranchExpressionBoundary(first: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(first), boolType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) > 0
+{
+  if (boolFromRef(first)) {
+    v_ret_0 := intToRef(1)
+  } else {
+    v_ret_0 := intToRef(0)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/early_returns.kt: info: Generated Viper text for inlineLambdaEarlyReturn:
+method earlyReturnStep(block: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_2), unitType())
+
+
+method inlineLambdaEarlyReturn(exitFromLambda: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(exitFromLambda), boolType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) > 0
+{
+  var v_ret_4: Ref
+  var v_ret_5: Ref
+  if (boolFromRef(exitFromLambda)) {
+    v_ret_0 := intToRef(1)
+    goto lbl_ret_0
+  }
+  label lbl_ret_5
+  inhale isSubtype(typeOf(v_ret_5), unitType())
+  label lbl_ret_4
+  inhale isSubtype(typeOf(v_ret_4), unitType())
+  v_ret_0 := intToRef(2)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/early_returns.kt: info: Generated Viper text for inlineLambdaEarlyReturnBoundary:
+method earlyReturnStep(block: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(block), functionType())
+  ensures isSubtype(typeOf(ret_2), unitType())
+
+
+method inlineLambdaEarlyReturnBoundary(exitFromLambda: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(exitFromLambda), boolType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) > 0
+{
+  var v_ret_4: Ref
+  var v_ret_5: Ref
+  if (boolFromRef(exitFromLambda)) {
+    v_ret_0 := intToRef(0)
+    goto lbl_ret_0
+  }
+  label lbl_ret_5
+  inhale isSubtype(typeOf(v_ret_5), unitType())
+  label lbl_ret_4
+  inhale isSubtype(typeOf(v_ret_4), unitType())
+  v_ret_0 := intToRef(1)
+  goto lbl_ret_0
+  label lbl_ret_0
+}

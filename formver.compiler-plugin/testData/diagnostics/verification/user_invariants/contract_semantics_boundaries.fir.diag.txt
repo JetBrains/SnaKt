@@ -1,0 +1,178 @@
+/contract_semantics_boundaries.kt: info: Generated Viper text for boundedIdentity:
+function boundedIdentity(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= -1
+  requires intFromRef(value) <= 1
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value)
+  ensures intFromRef(result) >= -1
+  ensures intFromRef(result) <= 1
+{
+  value
+}
+
+/contract_semantics_boundaries.kt: info: Generated Viper text for inclusiveBoundaryControls:
+function boundedIdentity(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= -1
+  requires intFromRef(value) <= 1
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value)
+  ensures intFromRef(result) >= -1
+  ensures intFromRef(result) <= 1
+{
+  value
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method inclusiveBoundaryControls() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(boundedIdentity(intToRef(-1))) == -1
+  assert intFromRef(boundedIdentity(intToRef(0))) == 0
+  assert intFromRef(boundedIdentity(intToRef(1))) == 1
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_semantics_boundaries.kt: info: Generated Viper text for immediatelyBelowPrecondition:
+function boundedIdentity(value: Ref): Ref
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= -1
+  requires intFromRef(value) <= 1
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(value)
+  ensures intFromRef(result) >= -1
+  ensures intFromRef(result) <= 1
+{
+  value
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method immediatelyBelowPrecondition() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(boundedIdentity(intToRef(-2))) == -2
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_semantics_boundaries.kt: info: Generated Viper text for vacuousQuantifierBoundary:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method vacuousQuantifierBoundary() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert (forall anon: Int ::0 <= anon && anon < 0 ==> false)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_semantics_boundaries.kt: info: Generated Viper text for singletonQuantifierBoundary:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method singletonQuantifierBoundary() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert (forall anon: Int ::0 <= anon && anon < 1 ==> anon == 0)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_semantics_boundaries.kt: info: Generated Viper text for immediatelyAboveSingletonBoundary:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method immediatelyAboveSingletonBoundary() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert (forall anon: Int ::0 <= anon && anon < 2 ==> anon == 0)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_semantics_boundaries.kt: info: Generated Viper text for pureZero:
+function pureZero(): Ref
+  ensures isSubtype(typeOf(result), intType())
+{
+  intToRef(0)
+}
+
+/contract_semantics_boundaries.kt: info: Generated Viper text for pureSpecificationExpression:
+function pureZero(): Ref
+  ensures isSubtype(typeOf(result), intType())
+{
+  intToRef(0)
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method pureSpecificationExpression() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(pureZero()) == 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_semantics_boundaries.kt: error: Function 'impureSpecificationExpression' was not verified because of errors in its declaration
+
+/contract_semantics_boundaries.kt: error: Assert condition is impure
+
+/contract_semantics_boundaries.kt: info: Generated Viper text for isPresent:
+function isPresent(value: Ref): Ref
+  requires isSubtype(typeOf(value), nullable(stringType()))
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == true ==> value != nullValue()
+{
+  notBool(boolToRef(value == nullValue()))
+}
+
+/contract_semantics_boundaries.kt: info: Generated Viper text for contractPropagationBoundaries:
+function isPresent(value: Ref): Ref
+  requires isSubtype(typeOf(value), nullable(stringType()))
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == true ==> value != nullValue()
+{
+  notBool(boolToRef(value == nullValue()))
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method contractPropagationBoundaries() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var empty: Ref
+  var singleton: Ref
+  var absent: Ref
+  empty := stringToRef(Seq[Int]())
+  assert boolFromRef(isPresent(empty))
+  singleton := stringToRef(Seq(120))
+  assert boolFromRef(isPresent(singleton))
+  absent := nullValue()
+  assert !boolFromRef(isPresent(absent))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
