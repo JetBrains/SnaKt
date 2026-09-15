@@ -16,6 +16,7 @@ import org.jetbrains.kotlin.fir.references.toResolvedSymbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.coneType
+import org.jetbrains.kotlin.fir.types.isSomeFunctionType
 import org.jetbrains.kotlin.fir.types.isUnit
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
@@ -303,6 +304,22 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 implicitInvokeCall.source,
                 "Implicit invoke calls only support a limited range of receivers at the moment."
             )
+        if (!receiver.resolvedType.isSomeFunctionType(data.session)) {
+            val symbol = implicitInvokeCall.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
+                ?: throw SnaktInternalException(
+                    implicitInvokeCall.source,
+                    "Expected an implicit invoke call on a non-function receiver to resolve to a function."
+                )
+            val callee = data.embedAnyFunction(symbol)
+            val args = listOfNotNull(implicitInvokeCall.dispatchReceiver, implicitInvokeCall.extensionReceiver) +
+                    implicitInvokeCall.argumentList.arguments
+            return callee.insertCall(
+                args.withVarargsHandled(data, callee),
+                data,
+                data.embedType(implicitInvokeCall.resolvedType),
+            )
+        }
+
         val returnType = data.embedType(implicitInvokeCall.resolvedType)
         val receiverSymbol = receiver.calleeReference.toResolvedSymbol<FirBasedSymbol<*>>()!!
         val args = implicitInvokeCall.argumentList.arguments.withVarargsHandled(data, function = null)
