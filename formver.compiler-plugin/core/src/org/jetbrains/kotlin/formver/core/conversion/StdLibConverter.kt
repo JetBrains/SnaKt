@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.formver.core.conversion
 
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
+import org.jetbrains.kotlin.formver.core.kotlinCallableId
 import org.jetbrains.kotlin.formver.core.embeddings.callables.NamedFunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.GeIntInt
@@ -53,6 +54,15 @@ data object MutableListInterface : PresentInterface {
     override val interfaceName = "MutableList"
 }
 
+data object NativeArrayInterface : StdLibReceiverInterface {
+    override fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean =
+        nativeArrayClassNames.any { function.symbol?.callableId == kotlinCallableId(it, name = "get") }
+}
+
+private val nativeArrayClassNames = listOf(
+    "Array", "BooleanArray", "ByteArray", "CharArray", "ShortArray", "IntArray", "LongArray", "FloatArray", "DoubleArray",
+)
+
 data object NoInterface : StdLibReceiverInterface {
     override fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean =
         NameMatcher.matchClassScope(function.name) {
@@ -81,7 +91,7 @@ sealed interface StdLibCondition {
 
 sealed interface StdLibPrecondition : StdLibCondition {
     companion object {
-        val all = listOf(GetPrecondition, SubListPrecondition)
+        val all = listOf(GetPrecondition, NativeArrayGetPrecondition, SubListPrecondition)
     }
 
     fun getEmbeddings(function: NamedFunctionSignature): List<ExpEmbedding>
@@ -120,6 +130,28 @@ data object GetPrecondition : StdLibPrecondition {
     }
 
     override val stdLibInterface = ListInterface
+    override val functionName = "get"
+}
+
+data object NativeArrayGetPrecondition : StdLibPrecondition {
+    override fun getEmbeddings(function: NamedFunctionSignature): List<ExpEmbedding> {
+        val receiver = function.dispatchReceiver!!
+        val indexArg = function.formalArgs[1]
+        return listOf(
+            GeIntInt(
+                indexArg,
+                IntLit(0),
+                SourceRole.ArrayElementAccessCheck(SourceRole.ArrayElementAccessCheck.AccessCheckType.LESS_THAN_ZERO),
+            ),
+            GtIntInt(
+                FieldAccess(receiver, CollectionSizeFieldEmbedding),
+                indexArg,
+                SourceRole.ArrayElementAccessCheck(SourceRole.ArrayElementAccessCheck.AccessCheckType.GREATER_THAN_ARRAY_SIZE),
+            ),
+        )
+    }
+
+    override val stdLibInterface = NativeArrayInterface
     override val functionName = "get"
 }
 

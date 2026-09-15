@@ -17,6 +17,13 @@ sealed interface SourceRole {
         }
     }
 
+    data class ArrayElementAccessCheck(val accessType: AccessCheckType) : SourceRole {
+        enum class AccessCheckType {
+            LESS_THAN_ZERO,
+            GREATER_THAN_ARRAY_SIZE,
+        }
+    }
+
     data class ConditionalEffect(val effect: ReturnsEffect, val condition: Condition) : SourceRole
     data class FirSymbolHolder(val firSymbol: FirBasedSymbol<*>) : SourceRole, Condition
 

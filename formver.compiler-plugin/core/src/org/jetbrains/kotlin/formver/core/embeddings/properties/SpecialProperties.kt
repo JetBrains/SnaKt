@@ -70,10 +70,30 @@ object CollectionSizeProperty :
     }
 }
 
+object NativeArraySizeProperty :
+    SpecialProperty(
+        PropertyEmbedding(
+            BackingFieldGetter(CollectionSizeFieldEmbedding),
+            setter = null,
+            hasDefaultBehaviour = true,
+            isUnique = true,
+            isVal = true,
+            type = CollectionSizeFieldEmbedding.type,
+        )
+    ) {
+    context(typeResolver: TypeResolver, session: FirSession)
+    override fun match(symbol: FirPropertySymbol): Boolean {
+        return listOf(
+            "Array", "BooleanArray", "ByteArray", "CharArray", "ShortArray", "IntArray", "LongArray",
+            "FloatArray", "DoubleArray",
+        ).any { symbol.callableId == kotlinCallableId(it, "size") }
+    }
+}
+
 
 object SpecialProperties {
 
-    val all: List<SpecialProperty> = listOf(StringSizeProperty, CollectionSizeProperty)
+    val all: List<SpecialProperty> = listOf(StringSizeProperty, CollectionSizeProperty, NativeArraySizeProperty)
 
     context(typeResolver: TypeResolver, session: FirSession)
     fun lookup(symbol: FirPropertySymbol): PropertyEmbedding? = all.firstOrNull { it.match(symbol) }?.property

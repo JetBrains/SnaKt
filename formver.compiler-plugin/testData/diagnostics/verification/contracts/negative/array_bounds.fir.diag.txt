@@ -1,0 +1,83 @@
+/array_bounds.kt: info: Generated Viper text for uncheckedGenericArrayRead:
+field size: Ref
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Array())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method uncheckedGenericArrayRead(array: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(array), Array())
+  requires acc(array.size, write)
+  requires intFromRef(array.size) >= 0
+  ensures acc(array.size, write)
+  ensures intFromRef(array.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := get(array, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/array_bounds.kt: info: Generated Viper text for uncheckedPrimitiveArrayRead:
+field size: Ref
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), IntArray())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method uncheckedPrimitiveArrayRead(array: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(array), IntArray())
+  requires acc(array.size, write)
+  requires intFromRef(array.size) >= 0
+  ensures acc(array.size, write)
+  ensures intFromRef(array.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := get(array, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/array_bounds.kt: info: Generated Viper text for negativePrimitiveArrayRead:
+field size: Ref
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), IntArray())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method negativePrimitiveArrayRead(array: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(array), IntArray())
+  requires acc(array.size, write)
+  requires intFromRef(array.size) >= 0
+  ensures acc(array.size, write)
+  ensures intFromRef(array.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := get(array, intToRef(-1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
