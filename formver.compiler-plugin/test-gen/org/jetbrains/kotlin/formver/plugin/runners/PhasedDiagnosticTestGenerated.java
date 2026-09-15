@@ -734,6 +734,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("division_runtime_differential.kt")
+      public void testDivision_runtime_differential() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/division_runtime_differential.kt");
+      }
+
+      @Test
       @TestMetadata("elvis.kt")
       public void testElvis() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/elvis.kt");
