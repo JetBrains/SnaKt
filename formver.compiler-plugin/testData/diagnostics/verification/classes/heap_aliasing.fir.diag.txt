@@ -1,0 +1,301 @@
+/heap_aliasing.kt: info: Generated Viper text for constructorReadControl:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), HeapCell())
+  ensures acc(HeapCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(HeapCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method constructorReadControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var anon: Ref
+  cell := con(intToRef(1))
+  anon := havoc(intType())
+  assert intFromRef(anon) == 1
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_aliasing.kt: info: Generated Viper text for directMutationControl:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), HeapCell())
+  ensures acc(HeapCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(HeapCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method directMutationControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var anon: Ref
+  cell := con(intToRef(1))
+  anon := havoc(intType())
+  assert intFromRef(anon) == 2
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_aliasing.kt: info: Generated Viper text for aliasObservesMutation:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method aliasObservesMutation() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var alias: Ref
+  var anon: Ref
+  cell := con(intToRef(1))
+  alias := cell
+  anon := havoc(intType())
+  assert intFromRef(anon) == 2
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), HeapCell())
+  ensures acc(HeapCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(HeapCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+/heap_aliasing.kt: info: Generated Viper text for nullableAliasObservesMutation:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), HeapCell())
+  ensures acc(HeapCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(HeapCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method nullableAliasObservesMutation() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var alias: Ref
+  cell := con(intToRef(1))
+  alias := cell
+  if (!(alias == nullValue())) {
+    var anon: Ref
+    anon := havoc(intType())
+    assert intFromRef(anon) == 2
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_aliasing.kt: info: Generated Viper text for staleValueBoundary:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), HeapCell())
+  ensures acc(HeapCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(HeapCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method staleValueBoundary() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var alias: Ref
+  var anon: Ref
+  cell := con(intToRef(1))
+  alias := cell
+  anon := havoc(intType())
+  assert intFromRef(anon) == 1
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_aliasing.kt: info: Generated Viper text for manualConstructorReadControl:
+field bf_value: Ref
+
+function exp(this: Ref): Ref
+  requires isSubtype(typeOf(this), Predicate())
+  ensures isSubtype(typeOf(result), anyType())
+
+
+function g_data(this: Ref): Ref
+  requires isSubtype(typeOf(this), UniquePred())
+  ensures isSubtype(typeOf(result), anyType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con_ManualHeapCell(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), ManualHeapCell())
+  ensures acc(ManualHeapCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(ManualHeapCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method con_UniquePred(par_data: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_data), anyType())
+  ensures isSubtype(typeOf(ret_2), UniquePred())
+  ensures acc(UniquePred_unique(ret_2), write)
+
+
+method manualConstructorReadControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var anon: Ref
+  cell := con_ManualHeapCell(intToRef(1))
+  unfold acc(ManualHeapCell_unique(cell), write)
+  anon := cell.bf_value
+  assert intFromRef(anon) == 1
+  fold acc(ManualHeapCell_unique(cell), write)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_aliasing.kt: info: Generated Viper text for manualAliasObservesMutation:
+field bf_value: Ref
+
+function exp(this: Ref): Ref
+  requires isSubtype(typeOf(this), Predicate())
+  ensures isSubtype(typeOf(result), anyType())
+
+
+function g_data(this: Ref): Ref
+  requires isSubtype(typeOf(this), UniquePred())
+  ensures isSubtype(typeOf(result), anyType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con_ManualHeapCell(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), ManualHeapCell())
+  ensures acc(ManualHeapCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(ManualHeapCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method con_UniquePred(par_data: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_data), anyType())
+  ensures isSubtype(typeOf(ret_2), UniquePred())
+  ensures acc(UniquePred_unique(ret_2), write)
+
+
+method manualAliasObservesMutation() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var alias: Ref
+  var anon: Ref
+  cell := con_ManualHeapCell(intToRef(1))
+  alias := cell
+  unfold acc(ManualHeapCell_unique(cell), write)
+  cell.bf_value := intToRef(2)
+  anon := alias.bf_value
+  assert intFromRef(anon) == 2
+  fold acc(ManualHeapCell_unique(cell), write)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_aliasing.kt: info: Generated Viper text for manualNullableAliasObservesMutation:
+field bf_value: Ref
+
+function exp(this: Ref): Ref
+  requires isSubtype(typeOf(this), Predicate())
+  ensures isSubtype(typeOf(result), anyType())
+
+
+function g_data(this: Ref): Ref
+  requires isSubtype(typeOf(this), UniquePred())
+  ensures isSubtype(typeOf(result), anyType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con_ManualHeapCell(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), ManualHeapCell())
+  ensures acc(ManualHeapCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(ManualHeapCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method con_UniquePred(par_data: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_data), anyType())
+  ensures isSubtype(typeOf(ret_2), UniquePred())
+  ensures acc(UniquePred_unique(ret_2), write)
+
+
+method manualNullableAliasObservesMutation() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var alias: Ref
+  cell := con_ManualHeapCell(intToRef(1))
+  alias := cell
+  unfold acc(ManualHeapCell_unique(cell), write)
+  if (!(alias == nullValue())) {
+    var anon: Ref
+    cell.bf_value := intToRef(2)
+    anon := alias.bf_value
+    assert intFromRef(anon) == 2
+  }
+  fold acc(ManualHeapCell_unique(cell), write)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

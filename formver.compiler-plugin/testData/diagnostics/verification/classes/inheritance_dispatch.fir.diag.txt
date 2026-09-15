@@ -1,0 +1,107 @@
+/inheritance_dispatch.kt: info: Generated Viper text for value:
+method value(this: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), DispatchBase())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := intToRef(1)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/inheritance_dispatch.kt: info: Generated Viper text for value:
+method value(this: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), DispatchDerived())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := intToRef(2)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/inheritance_dispatch.kt: info: Generated Viper text for callThroughDerivedReceiver:
+method callThroughDerivedReceiver(receiver: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(receiver), DispatchDerived())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := value(receiver)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method value(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), DispatchDerived())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/inheritance_dispatch.kt: info: Generated Viper text for callThroughBaseReceiver:
+method callThroughBaseReceiver(receiver: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(receiver), DispatchBase())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := value(receiver)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method value(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), DispatchBase())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/inheritance_dispatch.kt: info: Generated Viper text for callNewDerivedThroughDerivedReceiver:
+method callNewDerivedThroughDerivedReceiver() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var receiver: Ref
+  receiver := con()
+  v_ret_0 := value(receiver)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), DispatchDerived())
+  ensures acc(DispatchDerived_unique(ret_1), write)
+
+
+method value(this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), DispatchDerived())
+  ensures isSubtype(typeOf(ret_2), intType())
+
+
+/inheritance_dispatch.kt: info: Generated Viper text for callNewDerivedThroughBaseReceiver:
+method callNewDerivedThroughBaseReceiver() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var receiver: Ref
+  var anon: Ref
+  anon := con()
+  receiver := anon
+  v_ret_0 := value(receiver)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), DispatchDerived())
+  ensures acc(DispatchDerived_unique(ret_1), write)
+
+
+method value(this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), DispatchBase())
+  ensures isSubtype(typeOf(ret_2), intType())
+
+
+/inheritance_dispatch.kt: info: Generated Viper text for callInheritedMethod:
+method callInheritedMethod(receiver: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(receiver), DispatchInherited())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := value(receiver)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method value(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), DispatchBase())
+  ensures isSubtype(typeOf(ret_1), intType())
