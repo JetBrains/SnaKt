@@ -108,6 +108,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("collection_metamorphic_rewrites.kt")
+      public void testCollection_metamorphic_rewrites() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/collection_metamorphic_rewrites.kt");
+      }
+
+      @Test
       @TestMetadata("custom_list.kt")
       public void testCustom_list() {
         runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/custom_list.kt");

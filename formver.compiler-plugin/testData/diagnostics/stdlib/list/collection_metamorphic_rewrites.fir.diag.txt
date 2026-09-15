@@ -1,0 +1,447 @@
+/collection_metamorphic_rewrites.kt: info: Generated Viper text for guarded_list_not_empty:
+field size: Ref
+
+method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method guarded_list_not_empty(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), List())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := isEmpty(list)
+  if (!boolFromRef(anon)) {
+    v_ret_0 := get(list, intToRef(0))
+  } else {
+    v_ret_0 := intToRef(-1)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method isEmpty(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures boolFromRef(ret_1) ==> intFromRef(this.size) == 0
+  ensures !boolFromRef(ret_1) ==> intFromRef(this.size) > 0
+
+
+/collection_metamorphic_rewrites.kt: info: Generated Viper text for guarded_list_false_comparison:
+field size: Ref
+
+method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method guarded_list_false_comparison(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), List())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := isEmpty(list)
+  if (boolFromRef(anon) == false) {
+    v_ret_0 := get(list, intToRef(0))
+  } else {
+    v_ret_0 := intToRef(-1)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method isEmpty(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures boolFromRef(ret_1) ==> intFromRef(this.size) == 0
+  ensures !boolFromRef(ret_1) ==> intFromRef(this.size) > 0
+
+
+/collection_metamorphic_rewrites.kt: info: Generated Viper text for empty_list_inline:
+field size: Ref
+
+method emptyList() returns (ret_2: Ref)
+  ensures isSubtype(typeOf(ret_2), List())
+  ensures acc(ret_2.size, write)
+  ensures intFromRef(ret_2.size) >= 0
+  ensures intFromRef(ret_2.size) == 0
+
+
+method empty_list_inline() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := emptyList()
+  v_ret_0 := get(anon, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+/collection_metamorphic_rewrites.kt: info: Generated Viper text for empty_list_named:
+field size: Ref
+
+method emptyList() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), List())
+  ensures acc(ret_1.size, write)
+  ensures intFromRef(ret_1.size) >= 0
+  ensures intFromRef(ret_1.size) == 0
+
+
+method empty_list_named() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var renamed: Ref
+  renamed := emptyList()
+  v_ret_0 := get(renamed, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+/collection_metamorphic_rewrites.kt: info: Generated Viper text for mutable_add_literal:
+field size: Ref
+
+method add(this: Ref, element: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(element), intType())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size)) + 1
+
+
+method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method mutable_add_literal(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), MutableList())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := add(list, intToRef(1))
+  v_ret_0 := get(list, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/collection_metamorphic_rewrites.kt: info: Generated Viper text for mutable_add_named:
+field size: Ref
+
+method add(this: Ref, par_element: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(par_element), intType())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size)) + 1
+
+
+method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method mutable_add_named(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), MutableList())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var l0_element: Ref
+  var anon: Ref
+  l0_element := intToRef(1)
+  anon := add(list, l0_element)
+  v_ret_0 := get(list, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/collection_metamorphic_rewrites.kt: info: Generated Viper text for mutable_set_not_empty:
+field size: Ref
+
+method isEmpty(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures boolFromRef(ret_1) ==> intFromRef(this.size) == 0
+  ensures !boolFromRef(ret_1) ==> intFromRef(this.size) > 0
+
+
+method mutable_set_not_empty(list: Ref, value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), MutableList())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  requires isSubtype(typeOf(value), intType())
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  anon_0 := isEmpty(list)
+  if (!boolFromRef(anon_0)) {
+    var anon_1: Ref
+    anon_1 := set(list, intToRef(0), value)
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method set(this: Ref, index: Ref, element: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires isSubtype(typeOf(element), intType())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+
+
+/collection_metamorphic_rewrites.kt: info: Generated Viper text for mutable_set_false_comparison:
+field size: Ref
+
+method isEmpty(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures boolFromRef(ret_1) ==> intFromRef(this.size) == 0
+  ensures !boolFromRef(ret_1) ==> intFromRef(this.size) > 0
+
+
+method mutable_set_false_comparison(list: Ref, value: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), MutableList())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  requires isSubtype(typeOf(value), intType())
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  anon_0 := isEmpty(list)
+  if (boolFromRef(anon_0) == false) {
+    var anon_1: Ref
+    anon_1 := set(list, intToRef(0), value)
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method set(this: Ref, index: Ref, element: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires isSubtype(typeOf(element), intType())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+
+
+/collection_metamorphic_rewrites.kt: info: Generated Viper text for mutable_set_unchecked:
+field size: Ref
+
+method mutable_set_unchecked(list: Ref, value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), MutableList())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  requires isSubtype(typeOf(value), intType())
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := set(list, intToRef(0), value)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method set(this: Ref, index: Ref, element: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires isSubtype(typeOf(element), intType())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/collection_metamorphic_rewrites.kt: info: Generated Viper text for object_array_operator:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Array())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method object_array_operator(array: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(array), Array())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := get(array, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/collection_metamorphic_rewrites.kt: info: Generated Viper text for object_array_call:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Array())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method object_array_call(renamed: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(renamed), Array())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := get(renamed, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/collection_metamorphic_rewrites.kt: info: Generated Viper text for primitive_array_operator:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), IntArray())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method primitive_array_operator(array: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(array), IntArray())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := get(array, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/collection_metamorphic_rewrites.kt: info: Generated Viper text for primitive_array_call:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), IntArray())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method primitive_array_call(renamed: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(renamed), IntArray())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := get(renamed, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}

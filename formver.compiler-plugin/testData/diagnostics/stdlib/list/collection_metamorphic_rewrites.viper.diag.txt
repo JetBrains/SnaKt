@@ -1,0 +1,3 @@
+/collection_metamorphic_rewrites.kt: warning: Invalid index for the following list sub-expression, the index may be greater than the list's size.
+
+/collection_metamorphic_rewrites.kt: warning: Invalid index for list 'renamed', the index may be greater than the list's size.
