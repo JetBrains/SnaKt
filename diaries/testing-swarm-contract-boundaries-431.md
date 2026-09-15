@@ -25,6 +25,7 @@ Test Contract DSL and specification semantics using boundary-value analysis. Cov
 - Ran `check-all.sh`: Gradle `check` and test-data validation passed. The wrapper returned exit 2 solely because `pre-commit` was unavailable.
 - Tried both a user installation and an isolated virtual-environment installation of `pre-commit`; the first was blocked by the externally managed Python policy and the second by the environment proxy denying `files.pythonhosted.org`.
 - Ran both local pre-commit hook commands directly (`agent-scripts/tests/run.sh` and `agent-scripts/check-testdata.sh`); all passed. Also checked end-of-file formatting directly, respecting the hook's documented `.api` exclusion, and ran `git diff --check`; both passed.
+- Committed and pushed branch `test/issue-431-contract-boundaries`, opened PR #489 against `implementing-air-automations`, and applied the requested `swarmTestingDone` label to issue #431.
 
 ## Commands
 
