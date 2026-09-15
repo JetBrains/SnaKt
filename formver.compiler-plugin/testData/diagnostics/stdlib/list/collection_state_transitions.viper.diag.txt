@@ -1,0 +1,1 @@
+/collection_state_transitions.kt: warning: Invalid index for list 'list', the index may be greater than the list's size.

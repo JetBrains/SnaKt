@@ -1,0 +1,114 @@
+/string_operation_models.kt: info: Generated Viper text for lengthAndEquality:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method lengthAndEquality(left: Ref, right: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(left), stringType())
+  requires isSubtype(typeOf(right), stringType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert |stringFromRef(left)| >= 0
+  assert (stringFromRef(left) == stringFromRef(right)) ==
+    (stringFromRef(right) == stringFromRef(left))
+  assert |stringFromRef(left) ++ stringFromRef(right)| ==
+    |stringFromRef(left)| + |stringFromRef(right)|
+  assert |stringFromRef(left) ++ Seq[Int]()| == |stringFromRef(left)|
+  assert |Seq[Int]() ++ stringFromRef(right)| == |stringFromRef(right)|
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method plus(this: Ref, other: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), stringType())
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_1), stringType())
+
+
+/string_operation_models.kt: info: Generated Viper text for shortConcreteStrings:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method shortConcreteStrings() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert |Seq[Int]()| == 0
+  assert |Seq(97)| == 1
+  assert |Seq(98)| == 1
+  assert |Seq(97, 97)| == 2
+  assert |Seq(97, 98)| == 2
+  assert |Seq(98, 97)| == 2
+  assert |Seq(98, 98)| == 2
+  assert !(Seq[Int]() == Seq(97))
+  assert !(Seq(97) == Seq(98))
+  assert !(Seq(97) == Seq(97, 97))
+  assert Seq(97, 98) == Seq(97, 98)
+  assert Seq(98, 97) == Seq(98, 97)
+  assert Seq(97, 97)[0] == 97
+  assert Seq(97, 97)[1] == 97
+  assert Seq(97, 98)[0] == 97
+  assert Seq(97, 98)[1] == 98
+  assert Seq(98, 97)[0] == 98
+  assert Seq(98, 97)[1] == 97
+  assert Seq(98, 98)[0] == 98
+  assert Seq(98, 98)[1] == 98
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/string_operation_models.kt: info: Generated Viper text for firstTwo:
+method firstTwo(v_this_extension: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(v_this_extension), stringType())
+  requires |stringFromRef(v_this_extension)| >= 2
+  ensures isSubtype(typeOf(v_ret_0), stringType())
+  ensures |stringFromRef(v_ret_0)| == 2
+  ensures stringFromRef(v_ret_0)[0] == stringFromRef(v_this_extension)[0]
+  ensures stringFromRef(v_ret_0)[1] == stringFromRef(v_this_extension)[1]
+{
+  v_ret_0 := addStringChar(addStringChar(stringToRef(Seq[Int]()), stringGet(v_this_extension,
+    intToRef(0))), stringGet(v_this_extension, intToRef(1)))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method plus(v_this: Ref, other: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(v_this), stringType())
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_3), stringType())
+
+
+/string_operation_models.kt: info: Generated Viper text for guardedBoundaryIndex:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method guardedBoundaryIndex(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), stringType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  if (|stringFromRef(value)| > 0) {
+    var first: Ref
+    var last: Ref
+    first := stringGet(value, intToRef(0))
+    last := stringGet(value, minusInts(stringLength(value), intToRef(1)))
+    assert charFromRef(first) == stringFromRef(value)[0]
+    assert charFromRef(last) ==
+      stringFromRef(value)[|stringFromRef(value)| - 1]
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/string_operation_models.kt: info: Generated Viper text for emptyStringIndex:
+method emptyStringIndex() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var impossible: Ref
+  impossible := stringGet(stringToRef(Seq[Int]()), intToRef(0))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
