@@ -1,0 +1,15 @@
+/issue_379.kt: info: Generated Viper text for requiresNonEmptyList:
+field size: Ref
+
+method requiresNonEmptyList(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), List())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  requires intFromRef(list.size) > 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

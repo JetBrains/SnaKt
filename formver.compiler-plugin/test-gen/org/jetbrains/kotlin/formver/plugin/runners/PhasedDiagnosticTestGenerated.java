@@ -900,6 +900,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("issue_379.kt")
+      public void testIssue_379() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/issue_379.kt");
+      }
+
+      @Test
       @TestMetadata("loops.kt")
       public void testLoops() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/loops.kt");

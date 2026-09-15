@@ -262,6 +262,7 @@ data class LinearizationVisitor(
         if (e.exp.underlyingVariable != null) {
             return object : DirectResultLinearizable(e, this@LinearizationVisitor) {
                 override fun toViper(ctx: LinearizationContext): Exp {
+                    if (ctx is PureExpLinearizer) return e.exp.linearize().toViper(ctx)
                     val variable = e.exp.underlyingVariable ?: error("Use of InhaleInvariantsForVariable for non-variable")
                     for (invariant in e.invariants.fillHoles(variable)) {
                         ctx.addStatement {
@@ -284,6 +285,9 @@ data class LinearizationVisitor(
         }
         // InhaleInvariantsForExp: store result then inhale invariants
         return object : StoredResultLinearizable(e) {
+            override fun toViper(ctx: LinearizationContext): Exp =
+                if (ctx is PureExpLinearizer) e.exp.linearize().toViper(ctx) else super.toViper(ctx)
+
             override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
                 e.exp.linearize().toViperStoringIn(result, ctx)
                 for (invariant in e.invariants.fillHoles(result)) {
