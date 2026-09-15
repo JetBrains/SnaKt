@@ -1,0 +1,3 @@
+/collections_determinism.kt: warning: Invalid index for the following list sub-expression, the index may be greater than the list's size.
+
+/collections_determinism.kt: warning: Invalid index for list 'empty', the index may be greater than the list's size.

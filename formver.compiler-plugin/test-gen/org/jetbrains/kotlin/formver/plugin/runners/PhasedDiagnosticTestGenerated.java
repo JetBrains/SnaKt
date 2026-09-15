@@ -87,6 +87,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("arrays_determinism.kt")
+    public void testArrays_determinism() {
+      runTest("formver.compiler-plugin/testData/diagnostics/stdlib/arrays_determinism.kt");
+    }
+
+    @Test
     @TestMetadata("stdlib_replacement_tests.kt")
     public void testStdlib_replacement_tests() {
       runTest("formver.compiler-plugin/testData/diagnostics/stdlib/stdlib_replacement_tests.kt");
@@ -105,6 +111,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("binary_search.kt")
       public void testBinary_search() {
         runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/binary_search.kt");
+      }
+
+      @Test
+      @TestMetadata("collections_determinism.kt")
+      public void testCollections_determinism() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/collections_determinism.kt");
       }
 
       @Test

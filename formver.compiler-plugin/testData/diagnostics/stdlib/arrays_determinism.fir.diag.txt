@@ -1,0 +1,159 @@
+/arrays_determinism.kt: info: Generated Viper text for arrayReadRepeated:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method arrayReadRepeated(values: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(values), Array())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := get(values, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Array())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/arrays_determinism.kt: info: Generated Viper text for arrayReadPerturbed:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method arrayReadPerturbed(values: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(values), Array())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var firstIndex: Ref
+  firstIndex := intToRef(0)
+  v_ret_0 := get(values, firstIndex)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Array())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/arrays_determinism.kt: info: Generated Viper text for arraySizeRepeated:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method arraySizeRepeated(values: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(values), Array())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := size(values)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/arrays_determinism.kt: info: Generated Viper text for arraySizePerturbed:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method arraySizePerturbed(values: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(values), Array())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var observedSize: Ref
+  observedSize := size(values)
+  v_ret_0 := observedSize
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/arrays_determinism.kt: info: Generated Viper text for primitiveArrayReadRepeated:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), IntArray())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method primitiveArrayReadRepeated(values: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(values), IntArray())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := get(values, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/arrays_determinism.kt: info: Generated Viper text for primitiveArrayReadPerturbed:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), IntArray())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method primitiveArrayReadPerturbed(values: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(values), IntArray())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var firstIndex: Ref
+  firstIndex := intToRef(0)
+  v_ret_0 := get(values, firstIndex)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/arrays_determinism.kt: info: Generated Viper text for primitiveArraySize:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method primitiveArraySize(values: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(values), IntArray())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := size(values)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/arrays_determinism.kt: info: Generated Viper text for emptyArrayBoundary:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method emptyArray() returns (ret_2: Ref)
+  ensures isSubtype(typeOf(ret_2), Array())
+
+
+method emptyArrayBoundary() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := emptyArray()
+  v_ret_0 := get(anon, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Array())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())

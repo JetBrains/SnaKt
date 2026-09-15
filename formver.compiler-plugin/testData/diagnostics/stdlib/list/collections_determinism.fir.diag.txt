@@ -1,0 +1,283 @@
+/collections_determinism.kt: info: Generated Viper text for safeFirstRepeated:
+field size: Ref
+
+method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method isEmpty(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures boolFromRef(ret_1) ==> intFromRef(this.size) == 0
+  ensures !boolFromRef(ret_1) ==> intFromRef(this.size) > 0
+
+
+method safeFirstRepeated(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), List())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := isEmpty(list)
+  if (boolFromRef(anon)) {
+    v_ret_0 := intToRef(0)
+  } else {
+    v_ret_0 := get(list, intToRef(0))}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/collections_determinism.kt: info: Generated Viper text for safeFirstRepeatedAgain:
+field size: Ref
+
+method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method isEmpty(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures boolFromRef(ret_1) ==> intFromRef(this.size) == 0
+  ensures !boolFromRef(ret_1) ==> intFromRef(this.size) > 0
+
+
+method safeFirstRepeatedAgain(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), List())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := isEmpty(list)
+  if (boolFromRef(anon)) {
+    v_ret_0 := intToRef(0)
+  } else {
+    v_ret_0 := get(list, intToRef(0))}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/collections_determinism.kt: info: Generated Viper text for safeFirstPerturbed:
+field size: Ref
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method safeFirstPerturbed(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), List())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var firstIndex: Ref
+  var anon: Ref
+  firstIndex := intToRef(0)
+  anon := list.size
+  inhale isSubtype(typeOf(anon), intType())
+  if (intFromRef(anon) > intFromRef(firstIndex)) {
+    v_ret_0 := get(list, firstIndex)
+  } else {
+    v_ret_0 := intToRef(0)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/collections_determinism.kt: info: Generated Viper text for mutableSingletonRepeated:
+field size: Ref
+
+method add(this: Ref, element: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(element), intType())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size)) + 1
+
+
+method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method mutableSingletonRepeated(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), MutableList())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := add(list, intToRef(29))
+  v_ret_0 := get(list, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/collections_determinism.kt: info: Generated Viper text for mutableSingletonPerturbed:
+field size: Ref
+
+method add(this: Ref, element: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(element), intType())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size)) + 1
+
+
+method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method mutableSingletonPerturbed(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), MutableList())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var value: Ref
+  var anon: Ref
+  var firstIndex: Ref
+  value := intToRef(29)
+  anon := add(list, value)
+  firstIndex := intToRef(0)
+  v_ret_0 := get(list, firstIndex)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/collections_determinism.kt: info: Generated Viper text for emptyBoundaryRepeated:
+field size: Ref
+
+method emptyBoundaryRepeated() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := emptyList()
+  v_ret_0 := get(anon, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method emptyList() returns (ret_2: Ref)
+  ensures isSubtype(typeOf(ret_2), List())
+  ensures acc(ret_2.size, write)
+  ensures intFromRef(ret_2.size) >= 0
+  ensures intFromRef(ret_2.size) == 0
+
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+/collections_determinism.kt: info: Generated Viper text for emptyBoundaryPerturbed:
+field size: Ref
+
+method emptyBoundaryPerturbed() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var empty: Ref
+  var firstIndex: Ref
+  empty := emptyList()
+  firstIndex := intToRef(0)
+  v_ret_0 := get(empty, firstIndex)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method emptyList() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), List())
+  ensures acc(ret_1.size, write)
+  ensures intFromRef(ret_1.size) >= 0
+  ensures intFromRef(ret_1.size) == 0
+
+
+method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
