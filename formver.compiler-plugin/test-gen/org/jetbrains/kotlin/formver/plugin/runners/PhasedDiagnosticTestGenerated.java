@@ -870,6 +870,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("contract_model_oracle.kt")
+      public void testContract_model_oracle() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/contract_model_oracle.kt");
+      }
+
+      @Test
       @TestMetadata("empty.kt")
       public void testEmpty() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/empty.kt");
