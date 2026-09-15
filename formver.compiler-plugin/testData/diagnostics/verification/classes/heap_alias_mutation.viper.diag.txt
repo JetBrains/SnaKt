@@ -1,0 +1,7 @@
+/heap_alias_mutation.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == 2 might not hold.
+
+/heap_alias_mutation.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == 2 might not hold.
+
+/heap_alias_mutation.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == 1 might not hold.
+
+/heap_alias_mutation.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == 3 might not hold.
