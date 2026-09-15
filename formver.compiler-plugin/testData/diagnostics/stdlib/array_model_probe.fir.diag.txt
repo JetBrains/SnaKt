@@ -1,0 +1,166 @@
+/array_model_probe.kt: info: Generated Viper text for reference_array_size:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method reference_array_size(values: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(values), Array())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := size(values)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/array_model_probe.kt: info: Generated Viper text for reference_array_get:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Array())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method reference_array_get(values: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(values), Array())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := get(values, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/array_model_probe.kt: info: Generated Viper text for empty_reference_array_get_zero:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method emptyArray() returns (ret_2: Ref)
+  ensures isSubtype(typeOf(ret_2), Array())
+
+
+method empty_reference_array_get_zero() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := emptyArray()
+  v_ret_0 := get(anon, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Array())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/array_model_probe.kt: info: Generated Viper text for reference_array_get_negative_one:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Array())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method reference_array_get_negative_one(values: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(values), Array())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := get(values, intToRef(-1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/array_model_probe.kt: info: Generated Viper text for primitive_array_size:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method primitive_array_size(values: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(values), IntArray())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := size(values)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/array_model_probe.kt: info: Generated Viper text for primitive_array_get:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), IntArray())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method primitive_array_get(values: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(values), IntArray())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := get(values, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/array_model_probe.kt: info: Generated Viper text for empty_primitive_array_get_zero:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method empty_primitive_array_get_zero() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := intArrayOf()
+  v_ret_0 := get(anon, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), IntArray())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method intArrayOf(elements: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(elements), IntArray())
+  ensures isSubtype(typeOf(ret_2), IntArray())
+
+
+/array_model_probe.kt: info: Generated Viper text for primitive_array_get_size:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), IntArray())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method primitive_array_get_size(values: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(values), IntArray())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := get(values, size(values))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
