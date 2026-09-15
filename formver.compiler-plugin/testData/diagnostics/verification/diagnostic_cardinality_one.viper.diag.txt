@@ -1,0 +1,1 @@
+/diagnostic_cardinality_one.kt: warning: Viper verification error: Assert might fail. Assertion false might not hold.

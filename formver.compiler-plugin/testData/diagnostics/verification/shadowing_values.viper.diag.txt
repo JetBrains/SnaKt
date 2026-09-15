@@ -1,0 +1,3 @@
+/shadowing_values.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(l0_value) == intFromRef(parameterValue) might not hold.
+
+/shadowing_values.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(v_this_extension) == intFromRef(g_value(v_this)) might not hold.

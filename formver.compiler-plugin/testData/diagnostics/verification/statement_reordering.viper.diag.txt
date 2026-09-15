@@ -1,0 +1,3 @@
+/statement_reordering.kt: warning: Viper verification error: Assert might fail. Assertion boolFromRef(anon) might not hold.
+
+/statement_reordering.kt: warning: Viper verification error: Assert might fail. Assertion boolFromRef(anon) might not hold.

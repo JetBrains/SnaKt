@@ -1,0 +1,67 @@
+/diagnostic_backend_pairs.kt: info: Generated Viper text for positiveProof:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method positiveProof(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(x) == intFromRef(x)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/diagnostic_backend_pairs.kt: info: Generated Viper text for negativeProof:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method negativeProof() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/diagnostic_backend_pairs.kt: info: Generated Viper text for skippedNegativeProof:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method skippedNegativeProof() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/diagnostic_backend_pairs.kt: error: Function 'conversionDiagnosticSuppressesVerification' was not verified because of errors in its declaration
+
+/diagnostic_backend_pairs.kt: error: Assert condition is impure
+
+/diagnostic_backend_pairs.kt: info: Generated Viper text for recursiveSpecification:
+function recursiveSpecification(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(n) == 0 ==> intFromRef(result) == 0
+  ensures intFromRef(n) > 0 ==>
+    intFromRef(result) ==
+    intFromRef(recursiveSpecification(minusInts(n, intToRef(1)))) + 1
+{
+  (let anon_1_0 ==
+    ((intFromRef(n) == 0 ? intToRef(0) : null)) in
+    (let anon_2_0 ==
+      ((!(intFromRef(n) == 0) ?
+        plusInts(recursiveSpecification(minusInts(n, intToRef(1))), intToRef(1)) :
+        null)) in
+      (let anon_0_0 ==
+        ((intFromRef(n) == 0 ? anon_1_0 : anon_2_0)) in
+        anon_0_0)))
+}

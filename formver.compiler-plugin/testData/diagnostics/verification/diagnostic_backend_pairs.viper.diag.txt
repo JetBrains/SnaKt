@@ -1,0 +1,3 @@
+/diagnostic_backend_pairs.kt: warning: Viper verification error: Assert might fail. Assertion false might not hold.
+
+/diagnostic_backend_pairs.kt: error: Viper consistency error: Consistency error: Function recursiveSpecification has a self-reference in its postcondition and must be proven to be well-founded. Add a "decreases" clause to prove well-foundedness. (<wrapped value>)
