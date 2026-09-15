@@ -1,0 +1,163 @@
+/contract_state_sequences.kt: info: Generated Viper text for contractStepUp:
+method contractStepUp(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  requires intFromRef(value) < 2
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(value) + 1
+  ensures intFromRef(v_ret_0) > intFromRef(value)
+{
+  v_ret_0 := plusInts(value, intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/contract_state_sequences.kt: info: Generated Viper text for contractStepDown:
+method contractStepDown(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) > 0
+  requires intFromRef(value) <= 2
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(value) - 1
+  ensures intFromRef(v_ret_0) < intFromRef(value)
+{
+  v_ret_0 := minusInts(value, intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/contract_state_sequences.kt: info: Generated Viper text for quantifiedEcho:
+method quantifiedEcho(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires (forall anon_builtin_0: Int ::anon_builtin_0 ==
+      intFromRef(value) ==>
+      anon_builtin_0 >= 0)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(value)
+  ensures (forall anon_builtin_1: Int ::anon_builtin_1 ==
+      intFromRef(v_ret_0) ==>
+      anon_builtin_1 == intFromRef(value))
+{
+  v_ret_0 := value
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/contract_state_sequences.kt: info: Generated Viper text for roundTripSequence:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method contractStepDown(value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) > 0
+  requires intFromRef(value) <= 2
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) == intFromRef(value) - 1
+  ensures intFromRef(ret_2) < intFromRef(value)
+
+
+method contractStepUp(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  requires intFromRef(value) < 2
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(ret_1) == intFromRef(value) + 1
+  ensures intFromRef(ret_1) > intFromRef(value)
+
+
+method quantifiedEcho(value: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires (forall anon_builtin_0: Int ::anon_builtin_0 ==
+      intFromRef(value) ==>
+      anon_builtin_0 >= 0)
+  ensures isSubtype(typeOf(ret_3), intType())
+  ensures intFromRef(ret_3) == intFromRef(value)
+  ensures (forall anon_builtin_1: Int ::anon_builtin_1 == intFromRef(ret_3) ==>
+      anon_builtin_1 == intFromRef(value))
+
+
+method roundTripSequence() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var state: Ref
+  state := intToRef(0)
+  assert intFromRef(state) == 0
+  state := contractStepUp(state)
+  assert intFromRef(state) == 1
+  assert intFromRef(state) > 0
+  state := contractStepUp(state)
+  assert intFromRef(state) == 2
+  assert intFromRef(state) > 1
+  state := contractStepDown(state)
+  assert intFromRef(state) == 1
+  assert intFromRef(state) < 2
+  state := contractStepDown(state)
+  assert intFromRef(state) == 0
+  assert intFromRef(state) >= 0
+  state := quantifiedEcho(state)
+  assert intFromRef(state) == 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_state_sequences.kt: info: Generated Viper text for shortRoundTripControl:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method contractStepDown(value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) > 0
+  requires intFromRef(value) <= 2
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) == intFromRef(value) - 1
+  ensures intFromRef(ret_2) < intFromRef(value)
+
+
+method contractStepUp(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  requires intFromRef(value) < 2
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(ret_1) == intFromRef(value) + 1
+  ensures intFromRef(ret_1) > intFromRef(value)
+
+
+method shortRoundTripControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var advanced: Ref
+  var restored: Ref
+  advanced := contractStepUp(intToRef(0))
+  assert intFromRef(advanced) == 1
+  restored := contractStepDown(advanced)
+  assert intFromRef(restored) == 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_state_sequences.kt: info: Generated Viper text for upperBoundaryViolation:
+method contractStepUp(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  requires intFromRef(value) < 2
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(ret_1) == intFromRef(value) + 1
+  ensures intFromRef(ret_1) > intFromRef(value)
+
+
+method upperBoundaryViolation() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := contractStepUp(intToRef(2))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_state_sequences.kt: error: Function 'impureVerifySequence' was not verified because of errors in its declaration
+
+/contract_state_sequences.kt: error: Assert condition is impure

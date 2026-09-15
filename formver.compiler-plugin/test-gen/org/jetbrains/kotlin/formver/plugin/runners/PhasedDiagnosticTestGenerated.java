@@ -870,6 +870,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("contract_state_sequences.kt")
+      public void testContract_state_sequences() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/contract_state_sequences.kt");
+      }
+
+      @Test
       @TestMetadata("empty.kt")
       public void testEmpty() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/empty.kt");
