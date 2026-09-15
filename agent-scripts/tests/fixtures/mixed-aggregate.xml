@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="verification.AggregateTest" tests="1" skipped="0" failures="1" errors="0">
+  <testcase name="testBackendFailure" classname="verification.AggregateTest" time="0.1">
+    <failure message="org.gradle.internal.exceptions.DefaultMultiCauseException: Multiple Failures (2 failures)&#10;&#9;org.opentest4j.AssertionFailedError: conversion golden changed&#10;&#9;viper.silicon.reporting.ExternalToolError: backend unavailable" type="org.gradle.internal.exceptions.DefaultMultiCauseException">aggregate trace</failure>
+  </testcase>
+</testsuite>
