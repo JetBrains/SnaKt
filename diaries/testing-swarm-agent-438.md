@@ -27,5 +27,8 @@ Issue #438 assigns contract DSL and specification semantics testing using bounde
 - Ran `./agent-scripts/check-all.sh`: Gradle check and testData checks passed, but the command correctly exited 2 because `pre-commit` was unavailable.
 - PyPI installation was blocked by the environment proxy. Cloned the configured official `pre-commit-hooks` v5.0.0 source and used a temporary runner for its end-of-file hook plus the repository's `check-testdata` and script-test hooks. Corrected the runner to preserve pre-commit's text-file filtering after its first attempt touched the binary Gradle wrapper, restored that known accidental wrapper change from `HEAD`, and confirmed only assignment-related files remained modified.
 - Reran `./agent-scripts/check-all.sh` with the temporary runner: Gradle check, testData checks, and all configured pre-commit hooks passed; exit status was 0.
+- Committed the assignment record, diary, focused testData source, conversion and verification goldens, and regenerated test registration as `5870e2e` with the required automation signature.
+- Pushed `test/issue-438-contract-failure-propagation` and opened pull request #510 against `implementing-air-automations`, referencing assignment issue #438 and defect issue #481.
+- Added the required `swarmTestingDone` label to triggering issue #438 and confirmed its labels are now `swarmTesting` and `swarmTestingDone`.
 
 Produced by Air Automations. Name: Testing swarm agent / Run: https://air.jetbrains.cloud/org/05cf1a7f-6ab5-713b-abd3-29d0c8a05e2d/automations/34ccbbdd-3fd2-474e-8f0a-10b4b2d5bda4?run=c902e049-5a44-4c69-bf09-f1ca2cc76fb3
