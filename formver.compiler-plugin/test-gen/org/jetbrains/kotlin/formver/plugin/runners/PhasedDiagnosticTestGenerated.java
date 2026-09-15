@@ -870,6 +870,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("contract_semantics_boundaries.kt")
+      public void testContract_semantics_boundaries() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/contract_semantics_boundaries.kt");
+      }
+
+      @Test
       @TestMetadata("empty.kt")
       public void testEmpty() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/empty.kt");
