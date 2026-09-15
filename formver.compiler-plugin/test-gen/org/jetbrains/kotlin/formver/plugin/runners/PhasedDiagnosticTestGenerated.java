@@ -870,6 +870,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("binder_alpha_renaming.kt")
+      public void testBinder_alpha_renaming() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/binder_alpha_renaming.kt");
+      }
+
+      @Test
       @TestMetadata("empty.kt")
       public void testEmpty() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/empty.kt");
