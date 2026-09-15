@@ -294,6 +294,23 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         )
     }
 
+    override fun visitCheckNotNullCall(
+        checkNotNullCall: FirCheckNotNullCall,
+        data: StmtConversionContext,
+    ): ExpEmbedding {
+        val argument = data.convert(checkNotNullCall.argumentList.arguments.single())
+        val (declaration, usage) = data.argumentDeclaration(argument, argument.type)
+        val resultType = data.embedType(checkNotNullCall)
+        return Block {
+            declaration?.let(::add)
+            add(Assert(usage.notNullCmp()))
+            add(usage.withNewTypeInvariants(resultType, data.typeResolver) {
+                proven = true
+                access = true
+            })
+        }
+    }
+
     override fun visitImplicitInvokeCall(
         implicitInvokeCall: FirImplicitInvokeCall,
         data: StmtConversionContext,
