@@ -1,0 +1,135 @@
+/when_swarm_04.kt: info: Generated Viper text for subjectlessFirstMatchWins:
+method subjectlessFirstMatchWins(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  if (intFromRef(x) >= 0) {
+    v_ret_0 := intToRef(1)
+  } elseif (intFromRef(x) > 0) {
+    v_ret_0 := intToRef(2)
+  } else {
+    v_ret_0 := intToRef(3)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/when_swarm_04.kt: info: Generated Viper text for subjectlessUnreachableElse:
+method subjectlessUnreachableElse(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  if (intFromRef(x) < 0) {
+    v_ret_0 := intToRef(-1)
+  } elseif (intFromRef(x) >= 0) {
+    v_ret_0 := intToRef(1)
+  } else {
+    v_ret_0 := intToRef(99)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/when_swarm_04.kt: info: Generated Viper text for subjectFirstMatchWins:
+method subjectFirstMatchWins(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  anon_0 := x
+  if (intFromRef(anon_0) == 0) {
+    anon_1 := boolToRef(true)
+  } else {
+    anon_1 := boolToRef(intFromRef(anon_0) == 1)}
+  if (boolFromRef(anon_1)) {
+    v_ret_0 := intToRef(10)
+  } elseif (intFromRef(anon_0) == 1) {
+    v_ret_0 := intToRef(20)
+  } else {
+    v_ret_0 := intToRef(30)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/when_swarm_04.kt: info: Generated Viper text for exhaustiveBooleanSubject:
+method exhaustiveBooleanSubject(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), boolType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := value
+  if (boolFromRef(anon) == false) {
+    v_ret_0 := intToRef(0)
+  } elseif (boolFromRef(anon) == true) {
+    v_ret_0 := intToRef(1)
+  } else {
+    v_ret_0 := unitValue()}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/when_swarm_04.kt: info: Generated Viper text for guardedSubjectBranch:
+method guardedSubjectBranch(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), anyType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  anon_0 := value
+  if (isSubtype(typeOf(anon_0), intType())) {
+    anon_1 := gtInts(value, intToRef(0))
+  } else {
+    anon_1 := boolToRef(false)}
+  if (boolFromRef(anon_1)) {
+    v_ret_0 := intToRef(1)
+  } elseif (isSubtype(typeOf(anon_0), intType())) {
+    v_ret_0 := intToRef(-1)
+  } else {
+    v_ret_0 := intToRef(0)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/when_swarm_04.kt: info: Generated Viper text for nestedReturnFromSubjectlessWhen:
+method nestedReturnFromSubjectlessWhen(x: Ref, stop: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(stop), boolType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon_0: Ref
+  anon_0 := x
+  if (intFromRef(anon_0) == 0) {
+    if (boolFromRef(stop)) {
+      var anon_1: Ref
+      v_ret_0 := intToRef(10)
+      goto lbl_ret_0
+      v_ret_0 := anon_1
+    } else {
+      v_ret_0 := intToRef(11)}
+  } elseif (intFromRef(x) < 0) {
+    var anon_2: Ref
+    v_ret_0 := intToRef(-1)
+    goto lbl_ret_0
+    v_ret_0 := anon_2
+  } else {
+    v_ret_0 := intToRef(12)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/when_swarm_04.kt: info: Generated Viper text for subjectlessNearBoundary:
+method subjectlessNearBoundary(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  if (intFromRef(x) == 0) {
+    v_ret_0 := intToRef(0)
+    goto lbl_ret_0
+  } elseif (intFromRef(x) < 0) {
+    v_ret_0 := intToRef(-1)
+    goto lbl_ret_0
+  }
+  v_ret_0 := intToRef(1)
+  goto lbl_ret_0
+  label lbl_ret_0
+}

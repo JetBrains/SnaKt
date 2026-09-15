@@ -602,9 +602,39 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("compiled_kotlin_differential.kt")
+      public void testCompiled_kotlin_differential() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/compiled_kotlin_differential.kt");
+      }
+
+      @Test
+      @TestMetadata("control_flow_boundaries.kt")
+      public void testControl_flow_boundaries() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/control_flow_boundaries.kt");
+      }
+
+      @Test
+      @TestMetadata("dead_code.kt")
+      public void testDead_code() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/dead_code.kt");
+      }
+
+      @Test
       @TestMetadata("exp_side_effects.kt")
       public void testExp_side_effects() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/exp_side_effects.kt");
+      }
+
+      @Test
+      @TestMetadata("failure_propagation.kt")
+      public void testFailure_propagation() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/failure_propagation.kt");
+      }
+
+      @Test
+      @TestMetadata("feature_composition.kt")
+      public void testFeature_composition() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/feature_composition.kt");
       }
 
       @Test
@@ -626,6 +656,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("model_based_oracle.kt")
+      public void testModel_based_oracle() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/model_based_oracle.kt");
+      }
+
+      @Test
       @TestMetadata("non-local-returns.kt")
       public void testNon_local_returns() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/non-local-returns.kt");
@@ -638,15 +674,39 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("recursion_variants.kt")
+      public void testRecursion_variants() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/recursion_variants.kt");
+      }
+
+      @Test
       @TestMetadata("return_break_continue.kt")
       public void testReturn_break_continue() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/return_break_continue.kt");
       }
 
       @Test
+      @TestMetadata("sealed_when.kt")
+      public void testSealed_when() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/sealed_when.kt");
+      }
+
+      @Test
+      @TestMetadata("vararg_calls.kt")
+      public void testVararg_calls() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/vararg_calls.kt");
+      }
+
+      @Test
       @TestMetadata("when.kt")
       public void testWhen() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/when.kt");
+      }
+
+      @Test
+      @TestMetadata("when_swarm_04.kt")
+      public void testWhen_swarm_04() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/control_flow/when_swarm_04.kt");
       }
     }
 
@@ -666,9 +726,21 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("higher_order_call_contracts.kt")
+      public void testHigher_order_call_contracts() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/inlining/higher_order_call_contracts.kt");
+      }
+
+      @Test
       @TestMetadata("inline_returns.kt")
       public void testInline_returns() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/inlining/inline_returns.kt");
+      }
+
+      @Test
+      @TestMetadata("lambda_capture_behavior.kt")
+      public void testLambda_capture_behavior() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/inlining/lambda_capture_behavior.kt");
       }
 
       @Test

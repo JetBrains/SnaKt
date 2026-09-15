@@ -1,0 +1,158 @@
+/failure_propagation.kt: info: Generated Viper text for incrementForFailurePropagation:
+function incrementForFailurePropagation(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(x) + 1
+{
+  plusInts(x, intToRef(1))
+}
+
+/failure_propagation.kt: info: Generated Viper text for nestedCallsPreserveEvaluationOrder:
+function incrementForFailurePropagation(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(x) + 1
+{
+  plusInts(x, intToRef(1))
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method nestedCallsPreserveEvaluationOrder() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  l0_result := incrementForFailurePropagation(incrementForFailurePropagation(intToRef(0)))
+  assert intFromRef(l0_result) == 2
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/failure_propagation.kt: info: Generated Viper text for nestedCallFailureRemainsVisible:
+function incrementForFailurePropagation(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(x) + 1
+{
+  plusInts(x, intToRef(1))
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method nestedCallFailureRemainsVisible() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  l0_result := incrementForFailurePropagation(incrementForFailurePropagation(intToRef(0)))
+  assert intFromRef(l0_result) == 1
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/failure_propagation.kt: info: Generated Viper text for branchLoopAndEarlyReturn:
+function incrementForFailurePropagation(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(x) + 1
+{
+  plusInts(x, intToRef(1))
+}
+
+method branchLoopAndEarlyReturn(limit: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(limit), intType())
+  requires intFromRef(limit) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) >= 0
+{
+  var current: Ref
+  var anon_1: Ref
+  var anon_0: Ref
+  current := intToRef(0)
+  label cont
+    invariant isSubtype(typeOf(current), intType())
+    invariant isSubtype(typeOf(limit), intType())
+    invariant intFromRef(current) >= 0
+    invariant intFromRef(current) <= intFromRef(limit)
+  anon_1 := ltInts(current, limit)
+  if (boolFromRef(anon_1)) {
+    current := incrementForFailurePropagation(current)
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(current), intType())
+  assert isSubtype(typeOf(limit), intType())
+  assert intFromRef(current) >= 0
+  assert intFromRef(current) <= intFromRef(limit)
+  anon_0 := current
+  if (intFromRef(anon_0) == 0) {
+    v_ret_0 := intToRef(0)
+  } else {
+    v_ret_0 := current}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/failure_propagation.kt: info: Generated Viper text for earlyReturnFailureRemainsVisible:
+method earlyReturnFailureRemainsVisible(failEarly: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(failEarly), boolType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) >= 0
+{
+  if (boolFromRef(failEarly)) {
+    v_ret_0 := intToRef(-1)
+    goto lbl_ret_0
+  }
+  v_ret_0 := intToRef(0)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/failure_propagation.kt: info: Generated Viper text for boundedRecursiveCalls:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method boundedRecursiveCalls(remaining: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(remaining), intType())
+  requires intFromRef(remaining) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  if (intFromRef(remaining) == 0) {
+    assert intFromRef(remaining) == 0
+    goto lbl_ret_0
+  }
+  anon := boundedRecursiveCalls(minusInts(remaining, intToRef(1)))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/failure_propagation.kt: info: Generated Viper text for recursiveBaseFailureRemainsVisible:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method recursiveBaseFailureRemainsVisible(remaining: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(remaining), intType())
+  requires intFromRef(remaining) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  if (intFromRef(remaining) == 0) {
+    assert intFromRef(remaining) > 0
+    goto lbl_ret_0
+  }
+  anon := recursiveBaseFailureRemainsVisible(minusInts(remaining, intToRef(1)))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

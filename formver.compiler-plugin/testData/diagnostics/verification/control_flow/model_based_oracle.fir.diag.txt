@@ -1,0 +1,314 @@
+/model_based_oracle.kt: info: Generated Viper text for recursiveTriangular:
+function recursiveTriangular(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires 0 <= intFromRef(n) && intFromRef(n) <= 2
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(n) * (intFromRef(n) + 1) \ 2
+{
+  (intFromRef(n) == 0 ?
+    intToRef(0) :
+    plusInts(n, recursiveTriangular(minusInts(n, intToRef(1)))))
+}
+
+/model_based_oracle.kt: info: Generated Viper text for recursiveScore:
+function recursiveScore(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  requires -2 <= intFromRef(x) && intFromRef(x) <= 2
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(x) < 0 ==>
+    intFromRef(result) == -(intFromRef(x) * (intFromRef(x) - 1) \ 2)
+  ensures intFromRef(x) == 0 ==> intFromRef(result) == 7
+  ensures intFromRef(x) == 1 ==> intFromRef(result) == 11
+  ensures intFromRef(x) == 2 ==> intFromRef(result) == 23
+{
+  (let anon_2_0 ==
+    ((intFromRef(x) < 0 ? negInt(recursiveTriangular(negInt(x))) : null)) in
+    (let triangular_0 ==
+      ((!(intFromRef(x) < 0) ? recursiveTriangular(x) : null)) in
+      (let anon_0_0 ==
+        ((!(intFromRef(x) < 0) ? x : null)) in
+        (let anon_4_0 ==
+          ((!(intFromRef(x) < 0) && intFromRef(anon_0_0) == 0 ?
+            intToRef(7) :
+            null)) in
+          (let anon_6_0 ==
+            ((!(intFromRef(x) < 0) && !(intFromRef(anon_0_0) == 0) &&
+            intFromRef(anon_0_0) == 1 ?
+              plusInts(triangular_0, intToRef(10)) :
+              null)) in
+            (let anon_7_0 ==
+              ((!(intFromRef(x) < 0) && !(intFromRef(anon_0_0) == 0) &&
+              !(intFromRef(anon_0_0) == 1) ?
+                plusInts(triangular_0, intToRef(20)) :
+                null)) in
+              (let anon_5_0 ==
+                ((!(intFromRef(x) < 0) && !(intFromRef(anon_0_0) == 0) ?
+                  (intFromRef(anon_0_0) == 1 ? anon_6_0 : anon_7_0) :
+                  null)) in
+                (let anon_3_0 ==
+                  ((!(intFromRef(x) < 0) ?
+                    (intFromRef(anon_0_0) == 0 ? anon_4_0 : anon_5_0) :
+                    null)) in
+                  (let anon_1_0 ==
+                    ((intFromRef(x) < 0 ? anon_2_0 : anon_3_0)) in
+                    anon_1_0)))))))))
+}
+
+function recursiveTriangular(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires 0 <= intFromRef(n) && intFromRef(n) <= 2
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(n) * (intFromRef(n) + 1) \ 2
+{
+  (intFromRef(n) == 0 ?
+    intToRef(0) :
+    plusInts(n, recursiveTriangular(minusInts(n, intToRef(1)))))
+}
+
+/model_based_oracle.kt: info: Generated Viper text for earlyReturnCallBoundary:
+function earlyReturnCallBoundary(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  requires -1 <= intFromRef(x) && intFromRef(x) <= 0
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let triangular_0 ==
+    (recursiveTriangular(x)) in
+    (intFromRef(x) < 0 ? intToRef(0) : triangular_0))
+}
+
+function recursiveTriangular(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires 0 <= intFromRef(n) && intFromRef(n) <= 2
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(n) * (intFromRef(n) + 1) \ 2
+{
+  (intFromRef(n) == 0 ?
+    intToRef(0) :
+    plusInts(n, recursiveTriangular(minusInts(n, intToRef(1)))))
+}
+
+/model_based_oracle.kt: info: Generated Viper text for loopScore:
+method loopScore(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires -2 <= intFromRef(x) && intFromRef(x) <= 2
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(x) < 0 ==>
+    intFromRef(v_ret_0) == -(intFromRef(x) * (intFromRef(x) - 1) \ 2)
+  ensures intFromRef(x) == 0 ==> intFromRef(v_ret_0) == 7
+  ensures intFromRef(x) == 1 ==> intFromRef(v_ret_0) == 11
+  ensures intFromRef(x) == 2 ==> intFromRef(v_ret_0) == 23
+{
+  var magnitude: Ref
+  var i: Ref
+  var triangular: Ref
+  var anon_1: Ref
+  var anon_0: Ref
+  if (intFromRef(x) < 0) {
+    magnitude := negInt(x)
+  } else {
+    magnitude := x}
+  i := intToRef(0)
+  triangular := intToRef(0)
+  label cont
+    invariant isSubtype(typeOf(magnitude), intType())
+    invariant isSubtype(typeOf(i), intType())
+    invariant isSubtype(typeOf(triangular), intType())
+    invariant isSubtype(typeOf(x), intType())
+    invariant 0 <= intFromRef(i) && intFromRef(i) <= intFromRef(magnitude)
+    invariant intFromRef(triangular) ==
+      intFromRef(i) * (intFromRef(i) + 1) \ 2
+  anon_1 := ltInts(i, magnitude)
+  if (boolFromRef(anon_1)) {
+    i := plusInts(i, intToRef(1))
+    triangular := plusInts(triangular, i)
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(magnitude), intType())
+  assert isSubtype(typeOf(i), intType())
+  assert isSubtype(typeOf(triangular), intType())
+  assert isSubtype(typeOf(x), intType())
+  assert 0 <= intFromRef(i) && intFromRef(i) <= intFromRef(magnitude)
+  assert intFromRef(triangular) == intFromRef(i) * (intFromRef(i) + 1) \ 2
+  if (intFromRef(x) < 0) {
+    v_ret_0 := negInt(triangular)
+    goto lbl_ret_0
+  }
+  anon_0 := x
+  if (intFromRef(anon_0) == 0) {
+    v_ret_0 := intToRef(7)
+  } elseif (intFromRef(anon_0) == 1) {
+    v_ret_0 := plusInts(triangular, intToRef(10))
+  } else {
+    v_ret_0 := plusInts(triangular, intToRef(20))}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/model_based_oracle.kt: info: Generated Viper text for boundedOraclePositiveControls:
+function recursiveScore(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  requires -2 <= intFromRef(x) && intFromRef(x) <= 2
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(x) < 0 ==>
+    intFromRef(result) == -(intFromRef(x) * (intFromRef(x) - 1) \ 2)
+  ensures intFromRef(x) == 0 ==> intFromRef(result) == 7
+  ensures intFromRef(x) == 1 ==> intFromRef(result) == 11
+  ensures intFromRef(x) == 2 ==> intFromRef(result) == 23
+{
+  (let anon_2_0 ==
+    ((intFromRef(x) < 0 ? negInt(recursiveTriangular(negInt(x))) : null)) in
+    (let triangular_0 ==
+      ((!(intFromRef(x) < 0) ? recursiveTriangular(x) : null)) in
+      (let anon_0_0 ==
+        ((!(intFromRef(x) < 0) ? x : null)) in
+        (let anon_4_0 ==
+          ((!(intFromRef(x) < 0) && intFromRef(anon_0_0) == 0 ?
+            intToRef(7) :
+            null)) in
+          (let anon_6_0 ==
+            ((!(intFromRef(x) < 0) && !(intFromRef(anon_0_0) == 0) &&
+            intFromRef(anon_0_0) == 1 ?
+              plusInts(triangular_0, intToRef(10)) :
+              null)) in
+            (let anon_7_0 ==
+              ((!(intFromRef(x) < 0) && !(intFromRef(anon_0_0) == 0) &&
+              !(intFromRef(anon_0_0) == 1) ?
+                plusInts(triangular_0, intToRef(20)) :
+                null)) in
+              (let anon_5_0 ==
+                ((!(intFromRef(x) < 0) && !(intFromRef(anon_0_0) == 0) ?
+                  (intFromRef(anon_0_0) == 1 ? anon_6_0 : anon_7_0) :
+                  null)) in
+                (let anon_3_0 ==
+                  ((!(intFromRef(x) < 0) ?
+                    (intFromRef(anon_0_0) == 0 ? anon_4_0 : anon_5_0) :
+                    null)) in
+                  (let anon_1_0 ==
+                    ((intFromRef(x) < 0 ? anon_2_0 : anon_3_0)) in
+                    anon_1_0)))))))))
+}
+
+function recursiveTriangular(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires 0 <= intFromRef(n) && intFromRef(n) <= 2
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(n) * (intFromRef(n) + 1) \ 2
+{
+  (intFromRef(n) == 0 ?
+    intToRef(0) :
+    plusInts(n, recursiveTriangular(minusInts(n, intToRef(1)))))
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method boundedOraclePositiveControls() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var loopMinusTwo: Ref
+  var loopMinusOne: Ref
+  var loopZero: Ref
+  var loopOne: Ref
+  var loopTwo: Ref
+  assert intFromRef(recursiveScore(intToRef(-2))) == -3
+  assert intFromRef(recursiveScore(intToRef(-1))) == -1
+  assert intFromRef(recursiveScore(intToRef(0))) == 7
+  assert intFromRef(recursiveScore(intToRef(1))) == 11
+  assert intFromRef(recursiveScore(intToRef(2))) == 23
+  loopMinusTwo := loopScore(intToRef(-2))
+  loopMinusOne := loopScore(intToRef(-1))
+  loopZero := loopScore(intToRef(0))
+  loopOne := loopScore(intToRef(1))
+  loopTwo := loopScore(intToRef(2))
+  assert intFromRef(loopMinusTwo) ==
+    intFromRef(recursiveScore(intToRef(-2)))
+  assert intFromRef(loopMinusOne) ==
+    intFromRef(recursiveScore(intToRef(-1)))
+  assert intFromRef(loopZero) == intFromRef(recursiveScore(intToRef(0)))
+  assert intFromRef(loopOne) == intFromRef(recursiveScore(intToRef(1)))
+  assert intFromRef(loopTwo) == intFromRef(recursiveScore(intToRef(2)))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method loopScore(x: Ref) returns (ret_5: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires -2 <= intFromRef(x) && intFromRef(x) <= 2
+  ensures isSubtype(typeOf(ret_5), intType())
+  ensures intFromRef(x) < 0 ==>
+    intFromRef(ret_5) == -(intFromRef(x) * (intFromRef(x) - 1) \ 2)
+  ensures intFromRef(x) == 0 ==> intFromRef(ret_5) == 7
+  ensures intFromRef(x) == 1 ==> intFromRef(ret_5) == 11
+  ensures intFromRef(x) == 2 ==> intFromRef(ret_5) == 23
+
+
+/model_based_oracle.kt: info: Generated Viper text for boundedOracleNegativeControl:
+function recursiveScore(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  requires -2 <= intFromRef(x) && intFromRef(x) <= 2
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(x) < 0 ==>
+    intFromRef(result) == -(intFromRef(x) * (intFromRef(x) - 1) \ 2)
+  ensures intFromRef(x) == 0 ==> intFromRef(result) == 7
+  ensures intFromRef(x) == 1 ==> intFromRef(result) == 11
+  ensures intFromRef(x) == 2 ==> intFromRef(result) == 23
+{
+  (let anon_2_0 ==
+    ((intFromRef(x) < 0 ? negInt(recursiveTriangular(negInt(x))) : null)) in
+    (let triangular_0 ==
+      ((!(intFromRef(x) < 0) ? recursiveTriangular(x) : null)) in
+      (let anon_0_0 ==
+        ((!(intFromRef(x) < 0) ? x : null)) in
+        (let anon_4_0 ==
+          ((!(intFromRef(x) < 0) && intFromRef(anon_0_0) == 0 ?
+            intToRef(7) :
+            null)) in
+          (let anon_6_0 ==
+            ((!(intFromRef(x) < 0) && !(intFromRef(anon_0_0) == 0) &&
+            intFromRef(anon_0_0) == 1 ?
+              plusInts(triangular_0, intToRef(10)) :
+              null)) in
+            (let anon_7_0 ==
+              ((!(intFromRef(x) < 0) && !(intFromRef(anon_0_0) == 0) &&
+              !(intFromRef(anon_0_0) == 1) ?
+                plusInts(triangular_0, intToRef(20)) :
+                null)) in
+              (let anon_5_0 ==
+                ((!(intFromRef(x) < 0) && !(intFromRef(anon_0_0) == 0) ?
+                  (intFromRef(anon_0_0) == 1 ? anon_6_0 : anon_7_0) :
+                  null)) in
+                (let anon_3_0 ==
+                  ((!(intFromRef(x) < 0) ?
+                    (intFromRef(anon_0_0) == 0 ? anon_4_0 : anon_5_0) :
+                    null)) in
+                  (let anon_1_0 ==
+                    ((intFromRef(x) < 0 ? anon_2_0 : anon_3_0)) in
+                    anon_1_0)))))))))
+}
+
+function recursiveTriangular(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires 0 <= intFromRef(n) && intFromRef(n) <= 2
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(n) * (intFromRef(n) + 1) \ 2
+{
+  (intFromRef(n) == 0 ?
+    intToRef(0) :
+    plusInts(n, recursiveTriangular(minusInts(n, intToRef(1)))))
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method boundedOracleNegativeControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(recursiveScore(intToRef(2))) == 22
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

@@ -1,0 +1,3 @@
+/model_based_oracle.kt: warning: Viper verification error: Precondition of function recursiveTriangular might not hold. Assertion 0 <= intFromRef(x) might not hold.
+
+/model_based_oracle.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(recursiveScore(intToRef(2))) == 22 might not hold.

@@ -1,0 +1,1 @@
+/feature_composition.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(current) == intFromRef(limit) + 1 might not hold.

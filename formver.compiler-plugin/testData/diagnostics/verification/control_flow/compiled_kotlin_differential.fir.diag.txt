@@ -1,0 +1,192 @@
+/compiled_kotlin_differential.kt: info: Generated Viper text for decimalPair:
+function decimalPair(left: Ref, right: Ref): Ref
+  requires isSubtype(typeOf(left), intType())
+  requires isSubtype(typeOf(right), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(left) * 10 + intFromRef(right)
+{
+  plusInts(timesInts(left, intToRef(10)), right)
+}
+
+/compiled_kotlin_differential.kt: info: Generated Viper text for whenSubjectEvaluatedOnce:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method whenSubjectEvaluatedOnce() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var subject: Ref
+  var l0_result: Ref
+  var anon_1: Ref
+  var anon_0: Ref
+  subject := intToRef(1)
+  anon_0 := subject
+  subject := plusInts(anon_0, intToRef(1))
+  anon_1 := anon_0
+  if (intFromRef(anon_1) == 1) {
+    l0_result := intToRef(10)
+  } else {
+    l0_result := intToRef(20)}
+  assert intFromRef(l0_result) == 10
+  assert intFromRef(subject) == 2
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/compiled_kotlin_differential.kt: info: Generated Viper text for callArgumentsEvaluateLeftToRight:
+function decimalPair(left: Ref, right: Ref): Ref
+  requires isSubtype(typeOf(left), intType())
+  requires isSubtype(typeOf(right), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(left) * 10 + intFromRef(right)
+{
+  plusInts(timesInts(left, intToRef(10)), right)
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method callArgumentsEvaluateLeftToRight() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var next: Ref
+  var l0_result: Ref
+  var anon_2: Ref
+  var anon_0: Ref
+  var anon_3: Ref
+  var anon_1: Ref
+  next := intToRef(1)
+  anon_0 := next
+  next := plusInts(anon_0, intToRef(1))
+  anon_2 := anon_0
+  anon_1 := next
+  next := plusInts(anon_1, intToRef(1))
+  anon_3 := anon_1
+  l0_result := decimalPair(anon_2, anon_3)
+  assert intFromRef(l0_result) == 12
+  assert intFromRef(next) == 3
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/compiled_kotlin_differential.kt: info: Generated Viper text for shortCircuitSkipsUnsafeCall:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method shortCircuitSkipsUnsafeCall() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var divisor: Ref
+  var l0_result: Ref
+  divisor := intToRef(0)
+  if (!(intFromRef(divisor) == 0)) {
+    l0_result := gtInts(divInts(intToRef(100), divisor), intToRef(1))
+  } else {
+    l0_result := boolToRef(false)}
+  assert !boolFromRef(l0_result)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/compiled_kotlin_differential.kt: info: Generated Viper text for boundedFactorial:
+function boundedFactorial(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) >= 1
+{
+  (let anon_1_0 ==
+    ((intFromRef(n) == 0 ? intToRef(1) : null)) in
+    (let anon_2_0 ==
+      ((!(intFromRef(n) == 0) ?
+        timesInts(n, boundedFactorial(minusInts(n, intToRef(1)))) :
+        null)) in
+      (let anon_0_0 ==
+        ((intFromRef(n) == 0 ? anon_1_0 : anon_2_0)) in
+        anon_0_0)))
+}
+
+/compiled_kotlin_differential.kt: info: Generated Viper text for nestedRecursiveCallControl:
+function boundedFactorial(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) >= 1
+{
+  (let anon_1_0 ==
+    ((intFromRef(n) == 0 ? intToRef(1) : null)) in
+    (let anon_2_0 ==
+      ((!(intFromRef(n) == 0) ?
+        timesInts(n, boundedFactorial(minusInts(n, intToRef(1)))) :
+        null)) in
+      (let anon_0_0 ==
+        ((intFromRef(n) == 0 ? anon_1_0 : anon_2_0)) in
+        anon_0_0)))
+}
+
+function decimalPair(left: Ref, right: Ref): Ref
+  requires isSubtype(typeOf(left), intType())
+  requires isSubtype(typeOf(right), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(left) * 10 + intFromRef(right)
+{
+  plusInts(timesInts(left, intToRef(10)), right)
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method nestedRecursiveCallControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  l0_result := decimalPair(boundedFactorial(intToRef(3)), boundedFactorial(intToRef(2)))
+  assert intFromRef(l0_result) == 62
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/compiled_kotlin_differential.kt: info: Generated Viper text for negativeEvaluationOrderControl:
+function decimalPair(left: Ref, right: Ref): Ref
+  requires isSubtype(typeOf(left), intType())
+  requires isSubtype(typeOf(right), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(left) * 10 + intFromRef(right)
+{
+  plusInts(timesInts(left, intToRef(10)), right)
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method negativeEvaluationOrderControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var next: Ref
+  var l0_result: Ref
+  var anon_2: Ref
+  var anon_0: Ref
+  var anon_3: Ref
+  var anon_1: Ref
+  next := intToRef(1)
+  anon_0 := next
+  next := plusInts(anon_0, intToRef(1))
+  anon_2 := anon_0
+  anon_1 := next
+  next := plusInts(anon_1, intToRef(1))
+  anon_3 := anon_1
+  l0_result := decimalPair(anon_2, anon_3)
+  assert intFromRef(l0_result) == 21
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
