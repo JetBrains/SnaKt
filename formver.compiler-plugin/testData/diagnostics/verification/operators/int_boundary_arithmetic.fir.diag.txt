@@ -1,0 +1,101 @@
+/int_boundary_arithmetic.kt: info: Generated Viper text for maxValueControl:
+method maxValueControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 2147483647
+{
+  v_ret_0 := plusInts(intToRef(2147483646), intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/int_boundary_arithmetic.kt: info: Generated Viper text for maxValueOverflow:
+method maxValueOverflow() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == -2147483648
+{
+  v_ret_0 := plusInts(intToRef(2147483647), intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/int_boundary_arithmetic.kt: info: Generated Viper text for maxValueNearBoundary:
+method maxValueNearBoundary() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 2147483647
+{
+  v_ret_0 := plusInts(intToRef(2147483647), intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/int_boundary_arithmetic.kt: info: Generated Viper text for minValueNegation:
+method minValueNegation() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == -2147483648
+{
+  var value: Ref
+  value := intToRef(-2147483648)
+  v_ret_0 := negInt(value)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/int_boundary_arithmetic.kt: info: Generated Viper text for minValueNegationNearBoundary:
+method minValueNegationNearBoundary() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 2147483647
+{
+  v_ret_0 := intToRef(2147483647)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/int_boundary_arithmetic.kt: info: Generated Viper text for minValueDivisionOverflow:
+method minValueDivisionOverflow() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == -2147483648
+{
+  v_ret_0 := divInts(intToRef(-2147483648), intToRef(-1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/int_boundary_arithmetic.kt: info: Generated Viper text for minValueDivisionControl:
+method minValueDivisionControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == -2147483648
+{
+  v_ret_0 := divInts(intToRef(-2147483648), intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/int_boundary_arithmetic.kt: info: Generated Viper text for minValueRemainder:
+method minValueRemainder() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 0
+{
+  v_ret_0 := remInts(intToRef(-2147483648), intToRef(-1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/int_boundary_arithmetic.kt: info: Generated Viper text for minValueRemainderNearBoundary:
+method minValueRemainderNearBoundary() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == -1
+{
+  v_ret_0 := remInts(intToRef(-2147483648), intToRef(2147483647))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/int_boundary_arithmetic.kt: info: Generated Viper text for negativeRemainderMinimal:
+method negativeRemainderMinimal() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == -2
+{
+  v_ret_0 := remInts(intToRef(-2), intToRef(3))
+  goto lbl_ret_0
+  label lbl_ret_0
+}

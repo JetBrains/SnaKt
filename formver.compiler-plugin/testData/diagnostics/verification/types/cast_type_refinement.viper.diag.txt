@@ -1,0 +1,5 @@
+/cast_type_refinement.kt: warning: Viper verification error: Assert might fail. Assertion false might not hold.
+
+/cast_type_refinement.kt: warning: Viper verification error: Assert might fail. Assertion false might not hold.
+
+/cast_type_refinement.kt: warning: Viper verification error: Assert might fail. Assertion boolFromRef(wrongFact) might not hold.

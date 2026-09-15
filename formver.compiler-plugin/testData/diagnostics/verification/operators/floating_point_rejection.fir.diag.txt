@@ -1,0 +1,48 @@
+/floating_point_rejection.kt: info: Generated Viper text for integerArithmeticControl:
+method integerArithmeticControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := plusInts(intToRef(1), intToRef(2))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/floating_point_rejection.kt: error: An internal error has occurred.
+Details: Constant Expression of type Double is not yet implemented.
+Please report this at https://github.com/jesyspa/kotlin
+
+/floating_point_rejection.kt: error: An internal error has occurred.
+Details: Constant Expression of type Float is not yet implemented.
+Please report this at https://github.com/jesyspa/kotlin
+
+/floating_point_rejection.kt: error: An internal error has occurred.
+Details: Constant Expression of type Double is not yet implemented.
+Please report this at https://github.com/jesyspa/kotlin
+
+/floating_point_rejection.kt: error: An internal error has occurred.
+Details: Constant Expression of type Float is not yet implemented.
+Please report this at https://github.com/jesyspa/kotlin
+
+/floating_point_rejection.kt: error: An internal error has occurred.
+Details: Constant Expression of type Double is not yet implemented.
+Please report this at https://github.com/jesyspa/kotlin
+
+/floating_point_rejection.kt: error: An internal error has occurred.
+Details: Constant Expression of type Float is not yet implemented.
+Please report this at https://github.com/jesyspa/kotlin
+
+/floating_point_rejection.kt: error: An internal error has occurred.
+Details: Unsupported resolved qualifier FirRegularClassSymbol
+Please report this at https://github.com/jesyspa/kotlin
+
+/floating_point_rejection.kt: error: An internal error has occurred.
+Details: Unsupported resolved qualifier FirRegularClassSymbol
+Please report this at https://github.com/jesyspa/kotlin
+
+/floating_point_rejection.kt: error: An internal error has occurred.
+Details: Unsupported resolved qualifier FirRegularClassSymbol
+Please report this at https://github.com/jesyspa/kotlin
+
+/floating_point_rejection.kt: error: An internal error has occurred.
+Details: Unsupported resolved qualifier FirRegularClassSymbol
+Please report this at https://github.com/jesyspa/kotlin

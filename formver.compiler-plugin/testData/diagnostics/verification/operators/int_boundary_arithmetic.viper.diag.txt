@@ -1,0 +1,9 @@
+/int_boundary_arithmetic.kt: warning: Viper verification error: Postcondition of maxValueOverflow might not hold. Assertion intFromRef(v_ret_0) == -2147483648 might not hold.
+
+/int_boundary_arithmetic.kt: warning: Viper verification error: Postcondition of minValueNegation might not hold. Assertion intFromRef(v_ret_0) == -2147483648 might not hold.
+
+/int_boundary_arithmetic.kt: warning: Viper verification error: Postcondition of minValueDivisionOverflow might not hold. Assertion intFromRef(v_ret_0) == -2147483648 might not hold.
+
+/int_boundary_arithmetic.kt: warning: Viper verification error: Postcondition of minValueRemainderNearBoundary might not hold. Assertion intFromRef(v_ret_0) == -1 might not hold.
+
+/int_boundary_arithmetic.kt: warning: Viper verification error: Postcondition of negativeRemainderMinimal might not hold. Assertion intFromRef(v_ret_0) == -2 might not hold.

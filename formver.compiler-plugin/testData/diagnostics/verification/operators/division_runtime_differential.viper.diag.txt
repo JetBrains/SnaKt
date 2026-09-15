@@ -1,0 +1,1 @@
+/division_runtime_differential.kt: warning: Viper verification error: Precondition of function divInts might not hold. Assertion intFromRef(zero) != 0 might not hold.

@@ -1,0 +1,15 @@
+/generic_instantiation_isolation.kt: warning: Viper verification error: Postcondition of distinctFieldInstantiations might not hold. Assertion intFromRef(v_ret_0) == 7 might not hold.
+
+/generic_instantiation_isolation.kt: warning: Viper verification error: Postcondition of distinctFieldInstantiationsNegative might not hold. Assertion intFromRef(v_ret_0) == 8 might not hold.
+
+/generic_instantiation_isolation.kt: warning: Viper verification error: Postcondition of distinctMethodInstantiations might not hold. Assertion intFromRef(v_ret_0) == 11 might not hold.
+
+/generic_instantiation_isolation.kt: warning: Viper verification error: Postcondition of distinctMethodInstantiationsNegative might not hold. Assertion intFromRef(v_ret_0) == 12 might not hold.
+
+/generic_instantiation_isolation.kt: warning: Viper verification error: Postcondition of nullableTypeArgument might not hold. Assertion v_ret_0 == nullValue() might not hold.
+
+/generic_instantiation_isolation.kt: warning: Viper verification error: Postcondition of nullableTypeArgumentNegative might not hold. Assertion !(v_ret_0 == nullValue()) might not hold.
+
+/generic_instantiation_isolation.kt: warning: Viper verification error: Postcondition of boundedTypeParameter might not hold. Assertion intFromRef(v_ret_0) == 21 might not hold.
+
+/generic_instantiation_isolation.kt: warning: Viper verification error: Postcondition of boundedTypeParameterNegative might not hold. Assertion intFromRef(v_ret_0) == 22 might not hold.
