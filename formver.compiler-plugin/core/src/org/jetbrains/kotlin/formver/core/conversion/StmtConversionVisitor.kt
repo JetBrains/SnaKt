@@ -9,13 +9,18 @@ import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.contracts.description.LogicOperationKind
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.declarations.FirProperty
+import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
+import org.jetbrains.kotlin.fir.declarations.utils.isData
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.expressions.impl.FirElseIfTrueCondition
+import org.jetbrains.kotlin.fir.expressions.impl.FirResolvedArgumentList
 import org.jetbrains.kotlin.fir.expressions.impl.FirUnitExpression
 import org.jetbrains.kotlin.fir.references.toResolvedSymbol
+import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.coneType
+import org.jetbrains.kotlin.fir.types.canBeNull
 import org.jetbrains.kotlin.fir.types.isUnit
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
@@ -188,12 +193,14 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 "Invalid equality comparison $equalityOperatorCall, can only compare 2 elements."
             )
         }
-        val left = data.convert(equalityOperatorCall.arguments[0])
-        val right = data.convert(equalityOperatorCall.arguments[1])
+        val leftFir = equalityOperatorCall.arguments[0]
+        val rightFir = equalityOperatorCall.arguments[1]
+        val left = data.convert(leftFir)
+        val right = data.convert(rightFir)
 
         return when (equalityOperatorCall.operation) {
-            FirOperation.EQ -> convertEqCmp(left, right)
-            FirOperation.NOT_EQ -> Not(convertEqCmp(left, right))
+            FirOperation.EQ -> convertEqCmp(leftFir, left, rightFir, right, data)
+            FirOperation.NOT_EQ -> Not(convertEqCmp(leftFir, left, rightFir, right, data))
             FirOperation.IDENTITY -> IdentityCmp(left, right)
             FirOperation.NOT_IDENTITY -> Not(IdentityCmp(left, right))
             else -> handleUnimplementedElement(
@@ -204,9 +211,34 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
     }
 
-    private fun convertEqCmp(left: ExpEmbedding, right: ExpEmbedding): ExpEmbedding {
-        //TODO: replace with call to left.equals()
-        return EqCmp(left, right)
+    private fun convertEqCmp(
+        leftFir: FirExpression,
+        left: ExpEmbedding,
+        rightFir: FirExpression,
+        right: ExpEmbedding,
+        data: StmtConversionContext,
+    ): ExpEmbedding {
+        val leftClass = leftFir.resolvedType.toRegularClassSymbol(data.session)
+        val rightClass = rightFir.resolvedType.toRegularClassSymbol(data.session)
+        if (leftClass == null || leftClass != rightClass || !leftClass.isData ||
+            leftFir.resolvedType.canBeNull(data.session) || rightFir.resolvedType.canBeNull(data.session)
+        ) return EqCmp(left, right)
+
+        val properties = leftClass.propertySymbols.filter {
+            it.correspondingValueParameterFromPrimaryConstructor != null
+        }.map(data::embedProperty)
+        return share(left) { sharedLeft ->
+            share(right) { sharedRight ->
+                properties.mapNotNull { property ->
+                    property.getter?.let { getter ->
+                        EqCmp(
+                            getter.getValueSimple(sharedLeft, data.typeResolver),
+                            getter.getValueSimple(sharedRight, data.typeResolver),
+                        )
+                    }
+                }.toConjunction()
+            }
+        }
     }
 
     override fun visitComparisonExpression(
@@ -287,11 +319,48 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             ?: throw NotImplementedError("Only functions are expected as callables of function calls, got ${functionCall.toResolvedCallableSymbol()}")
 
         val callee = data.embedAnyFunction(symbol)
+        if (symbol.isDataClassCopy(data)) {
+            return insertDataClassCopyCall(functionCall, symbol, callee, data)
+        }
         return callee.insertCall(
             functionCall.functionCallArguments.withVarargsHandled(data, callee),
             data,
             data.embedType(functionCall.resolvedType),
         )
+    }
+
+    override fun visitComponentCall(componentCall: FirComponentCall, data: StmtConversionContext): ExpEmbedding =
+        visitFunctionCall(componentCall, data)
+
+    private fun FirFunctionSymbol<*>.isDataClassCopy(data: StmtConversionContext): Boolean =
+        name.asString() == "copy" && dispatchReceiverType?.toRegularClassSymbol(data.session)?.isData == true
+
+    private fun insertDataClassCopyCall(
+        call: FirFunctionCall,
+        symbol: FirFunctionSymbol<*>,
+        callee: CallableEmbedding,
+        data: StmtConversionContext,
+    ): ExpEmbedding {
+        val dataClass = symbol.dispatchReceiverType?.toRegularClassSymbol(data.session)!!
+        val dispatch = call.dispatchReceiver
+            ?: throw SnaktInternalException(call.source, "Data-class copy call has no dispatch receiver")
+        val resolvedArguments = call.argumentList as? FirResolvedArgumentList
+            ?: throw SnaktInternalException(call.source, "Data-class copy call has no resolved argument mapping")
+        val argumentByParameter = resolvedArguments.mapping.entries.associate { (argument, parameter) ->
+            parameter.symbol to argument
+        }
+        val propertyByName = dataClass.propertySymbols.mapNotNull { property ->
+            property.correspondingValueParameterFromPrimaryConstructor?.let { it.name to data.embedProperty(property) }
+        }.toMap()
+
+        return share(data.convert(dispatch)) { receiver ->
+            val arguments = listOf(receiver) + symbol.valueParameterSymbols.map { parameter ->
+                argumentByParameter[parameter]?.let(data::convert)
+                    ?: propertyByName[parameter.name]?.getter?.getValueSimple(receiver, data.typeResolver)
+                    ?: throw SnaktInternalException(call.source, "Cannot resolve default value for data-class copy parameter ${parameter.name}")
+            }
+            callee.insertCall(arguments, data, data.embedType(call.resolvedType))
+        }
     }
 
     override fun visitImplicitInvokeCall(
