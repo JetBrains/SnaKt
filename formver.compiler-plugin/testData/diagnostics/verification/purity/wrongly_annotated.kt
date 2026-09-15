@@ -11,6 +11,12 @@ fun <!VERIFICATION_SKIPPED!>testWronglyAnnotatedAsPure<!>(): Int {
 }<!>
 
 <!PURITY_VIOLATION!>@Pure
+fun <!VERIFICATION_SKIPPED!>testImpureLocalInitializer<!>(): Int {
+    val result = iAmAMethod()
+    return result
+}<!>
+
+<!PURITY_VIOLATION!>@Pure
 fun <!VERIFICATION_SKIPPED!>testExecutingLambda<!>(action: () -> Int): Int {
     return action()
 }<!>
