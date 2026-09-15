@@ -481,6 +481,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/contracts"), Pattern.compile("^(.+)\\.kt$"), null, true);
       }
 
+      @Test
+      @TestMetadata("deterministic_repetition.kt")
+      public void testDeterministic_repetition() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/deterministic_repetition.kt");
+      }
+
       @Nested
       @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/contracts/negative")
       @TestDataPath("$PROJECT_ROOT")
