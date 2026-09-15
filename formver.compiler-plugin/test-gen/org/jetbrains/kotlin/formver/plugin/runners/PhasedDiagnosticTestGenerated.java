@@ -349,6 +349,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("mixed_pipeline_outcomes.kt")
+    public void testMixed_pipeline_outcomes() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/mixed_pipeline_outcomes.kt");
+    }
+
+    @Test
     @TestMetadata("multiple_receivers.kt")
     public void testMultiple_receivers() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/multiple_receivers.kt");
