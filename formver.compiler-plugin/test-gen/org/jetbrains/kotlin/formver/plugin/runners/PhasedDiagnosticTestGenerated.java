@@ -900,6 +900,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("harness_contract_mutation.kt")
+      public void testHarness_contract_mutation() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/harness_contract_mutation.kt");
+      }
+
+      @Test
       @TestMetadata("loops.kt")
       public void testLoops() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/loops.kt");
