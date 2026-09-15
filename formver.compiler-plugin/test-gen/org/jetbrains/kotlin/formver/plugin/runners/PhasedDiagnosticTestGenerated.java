@@ -36,6 +36,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/backing_field_getters.kt");
     }
 
+    @Test
+    @TestMetadata("heap_aliasing_model.kt")
+    public void testHeap_aliasing_model() {
+      runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/heap_aliasing_model.kt");
+    }
+
     @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/expensive_verification/algorithms")
     @TestDataPath("$PROJECT_ROOT")
