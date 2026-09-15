@@ -337,6 +337,34 @@ data class LinearizationVisitor(
     override fun visitSequentialAnd(e: SequentialAnd): Linearizable = sequentialLogicOperator(e)
     override fun visitSequentialOr(e: SequentialOr): Linearizable = sequentialLogicOperator(e)
 
+    override fun visitContextualImplies(e: ContextualImplies): Linearizable = object : Linearizable {
+        private fun declarative() = OperatorExpEmbeddings.Implies(e.left, e.right).linearize()
+
+        private fun eager() = object : StoredResultLinearizable(e) {
+            override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) {
+                val left = ctx.freshAnonVar { boolean() }
+                val right = ctx.freshAnonVar { boolean() }
+                e.left.linearize().toViperStoringIn(left, ctx)
+                e.right.linearize().toViperStoringIn(right, ctx)
+                OperatorExpEmbeddings.Implies(left, right).linearize().toViperStoringIn(result, ctx)
+            }
+        }
+
+        private fun replacement(ctx: LinearizationContext): Linearizable =
+            when (ctx.logicOperatorPolicy) {
+                LogicOperatorPolicy.CONVERT_TO_IF -> eager()
+                LogicOperatorPolicy.CONVERT_TO_EXPRESSION -> declarative()
+            }
+
+        override fun toViper(ctx: LinearizationContext): Exp = replacement(ctx).toViper(ctx)
+        override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) =
+            replacement(ctx).toViperStoringIn(result, ctx)
+        override fun toViperMaybeStoringIn(result: VariableEmbedding?, ctx: LinearizationContext) =
+            replacement(ctx).toViperMaybeStoringIn(result, ctx)
+        override fun toViperBuiltinType(ctx: LinearizationContext): Exp = replacement(ctx).toViperBuiltinType(ctx)
+        override fun toViperUnusedResult(ctx: LinearizationContext) = replacement(ctx).toViperUnusedResult(ctx)
+    }
+
     private fun sequentialLogicOperator(e: SequentialLogicOperatorEmbedding): Linearizable = object : DirectResultLinearizable(e, this@LinearizationVisitor) {
         private fun replacement(ctx: LinearizationContext) = e.operatorReplacement(ctx)
 
