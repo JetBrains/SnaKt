@@ -388,6 +388,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("heap_failure_propagation.kt")
+      public void testHeap_failure_propagation() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/heap_failure_propagation.kt");
+      }
+
+      @Test
       @TestMetadata("inheritance.kt")
       public void testInheritance() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/inheritance.kt");

@@ -1,0 +1,5 @@
+/heap_failure_propagation.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == 7 might not hold.
+
+/heap_failure_propagation.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == 6 might not hold.
+
+/heap_failure_propagation.kt: warning: Viper verification error: Assert might fail. Assertion anon == nullValue() might not hold.

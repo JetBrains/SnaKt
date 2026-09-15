@@ -1,0 +1,92 @@
+/heap_failure_propagation.kt: info: Generated Viper text for constructorAndSharedAliasControl:
+function g_value(this: Ref): Ref
+  requires isSubtype(typeOf(this), ImmutableHeapCell())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), ImmutableHeapCell())
+  ensures acc(ImmutableHeapCell_unique(ret_1), write)
+  ensures intFromRef(g_value(ret_1)) == intFromRef(par_value)
+
+
+method constructorAndSharedAliasControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var alias: Ref
+  cell := con(intToRef(1))
+  alias := cell
+  assert intFromRef(g_value(cell)) == intFromRef(g_value(alias))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_failure_propagation.kt: info: Generated Viper text for mutationThroughUniqueParameterControl:
+field value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method mutationThroughUniqueParameterControl(cell: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), HeapCell())
+  requires acc(HeapCell_unique(cell), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := havoc(intType())
+  assert intFromRef(anon) == 7
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_failure_propagation.kt: info: Generated Viper text for staleValueAfterMutationFails:
+field value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method staleValueAfterMutationFails(cell: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), HeapCell())
+  requires acc(HeapCell_unique(cell), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := havoc(intType())
+  assert intFromRef(anon) == 6
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_failure_propagation.kt: info: Generated Viper text for nullableFieldBoundaryControl:
+field cell: Ref
+
+field value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method nullableFieldBoundaryControl(box: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(box), NullableHeapBox())
+  requires acc(NullableHeapBox_unique(box), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := havoc(nullable(HeapCell()))
+  assert anon == nullValue()
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
