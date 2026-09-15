@@ -13,13 +13,19 @@ import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactory1
 import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
+import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
+import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
+import org.jetbrains.kotlin.fir.expressions.FirVariableAssignment
+import org.jetbrains.kotlin.fir.references.toResolvedSymbol
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
+import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirConstructorSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirValueParameterSymbol
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
@@ -31,6 +37,8 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousBuiltinVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.EqCmp
 import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
@@ -408,6 +416,75 @@ class ProgramConverter(
         val kotlinContractPostcondition = embedKotlinContract(symbol, signature)
         val userContract = embedFormverContract(symbol, signature, returnTarget)
         return Pair(userContract.first, kotlinContractPostcondition + userContract.second)
+    }
+
+    /**
+     * Recover the state established by a constructor without treating constructors as verified
+     * method bodies.  We only retain facts from straight-line initialization: as soon as a body
+     * contains control flow or another statement kind, its state is discarded conservatively.
+     */
+    @OptIn(SymbolInternals::class)
+    override fun embedConstructorPostconditions(
+        symbol: FirConstructorSymbol,
+        signature: NamedFunctionSignature,
+        returnTarget: ReturnTarget,
+    ): List<ExpEmbedding> {
+        val classSymbol = symbol.resolvedReturnType.toRegularClassSymbol(session) ?: return emptyList()
+        val classProperties = classSymbol.propertySymbols.toSet()
+
+        fun contextFor(
+            constructor: FirConstructorSymbol,
+            substitutions: Map<FirValueParameterSymbol, ExpEmbedding>,
+        ): StmtConversionContext {
+            val resolver = InlineParameterResolver(
+                substitutions.mapKeys { SubstitutedArgument.ValueParameter(it.key) } +
+                    (SubstitutedArgument.DispatchThis to returnTarget.variable),
+                constructor.callableId.callableName.asString(),
+                returnTarget,
+            )
+            return MethodConverter(this, signature, resolver, ScopeIndex.NoScope).statementCtxt()
+        }
+
+        fun collect(
+            constructor: FirConstructorSymbol,
+            substitutions: Map<FirValueParameterSymbol, ExpEmbedding>,
+            seen: Set<FirConstructorSymbol>,
+        ): MutableMap<FirPropertySymbol, ExpEmbedding> {
+            if (constructor in seen) return mutableMapOf()
+            val context = contextFor(constructor, substitutions)
+            val declaration = constructor.fir
+            val delegated = declaration.delegatedConstructor
+            val state = if (delegated?.isThis == true) {
+                val target = delegated.calleeReference.toResolvedSymbol<FirConstructorSymbol>()
+                if (target == null) mutableMapOf() else {
+                    val arguments = delegated.argumentList.arguments.map { context.convert(it) }
+                    collect(target, target.valueParameterSymbols.zip(arguments).toMap(), seen + constructor)
+                }
+            } else {
+                classProperties.mapNotNull { property ->
+                    if (!isGuaranteedDefaultProperty(property)) return@mapNotNull null
+                    val value = property.fir.initializer?.let { context.convert(it) }
+                        ?: property.correspondingValueParameterFromPrimaryConstructor?.let(substitutions::get)
+                    value?.let { property to it }
+                }.toMap().toMutableMap()
+            }
+
+            for (statement in declaration.body?.statements.orEmpty()) {
+                val assignment = statement as? FirVariableAssignment ?: return mutableMapOf()
+                val access = assignment.lValue as? FirPropertyAccessExpression ?: return mutableMapOf()
+                val property = access.calleeReference.toResolvedSymbol<FirPropertySymbol>()
+                    ?.takeIf { it in classProperties && isGuaranteedDefaultProperty(it) }
+                    ?: return mutableMapOf()
+                state[property] = context.convert(assignment.rValue)
+            }
+            return state
+        }
+
+        val initialSubstitutions = symbol.valueParameterSymbols.zip(signature.params).toMap()
+        return collect(symbol, initialSubstitutions, emptySet()).mapNotNull { (property, value) ->
+            val embedded = embedProperty(property)
+            embedded.getter?.let { EqCmp(it.getValueSimple(returnTarget.variable, typeResolver), value) }
+        }
     }
 
     // endregion

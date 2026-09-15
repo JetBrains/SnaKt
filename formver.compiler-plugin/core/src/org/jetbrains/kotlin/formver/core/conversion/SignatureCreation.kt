@@ -1,16 +1,12 @@
 package org.jetbrains.kotlin.formver.core.conversion
 
 import org.jetbrains.kotlin.KtSourceElement
-import org.jetbrains.kotlin.fir.analysis.checkers.isPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
-import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
-import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.embeddings.callables.*
-import org.jetbrains.kotlin.formver.core.embeddings.expression.EqCmp
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FirVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
@@ -36,11 +32,6 @@ data class SignatureWithTarget<out S : FunctionSignature>(
 @OptIn(DirectDeclarationsAccess::class)
 val FirRegularClassSymbol.propertySymbols: List<FirPropertySymbol>
     get() = declarationSymbols.filterIsInstance<FirPropertySymbol>()
-
-private fun <R> FirPropertySymbol.withConstructorParam(action: FirPropertySymbol.(FirValueParameterSymbol) -> R): R? =
-    correspondingValueParameterFromPrimaryConstructor?.let { param ->
-        action(param)
-    }
 
 private val FirFunctionSymbol<*>.containingPropertyOrSelf
     get() = when (this) {
@@ -148,7 +139,7 @@ fun SignatureWithTarget<NamedFunctionSignature>.toNonInlineSignature(symbol: Fir
 context(converter: ProgramConversionContext)
 fun SignatureWithTarget<NonInlineCallable>.toCompleteSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<NonInlineFunctionSignature> =
     when {
-        symbol.isPrimaryConstructor() -> this.toConstructorSignature(symbol)
+        symbol is FirConstructorSymbol -> this.toConstructorSignature(symbol)
         else -> this.toNormalSignature(symbol)
     }
 
@@ -162,29 +153,11 @@ fun SignatureWithTarget<NonInlineCallable>.toCompleteSignature(
 
 
 context(converter: ProgramConversionContext)
-fun SignatureWithTarget<NonInlineCallable>.toConstructorSignature(symbol: FirFunctionSymbol<*>): SignatureWithTarget<NonInlineFunctionSignature> =
+fun SignatureWithTarget<NonInlineCallable>.toConstructorSignature(symbol: FirConstructorSymbol): SignatureWithTarget<NonInlineFunctionSignature> =
     refineSignature { current ->
-        val constructedClassSymbol =
-            symbol.resolvedReturnType.toRegularClassSymbol(converter.session) ?: throw SnaktInternalException(
-                symbol.source, "Constructor does not return a regular class"
-            )
-        val parameterMatching = constructedClassSymbol.propertySymbols.mapNotNull { propertySymbol ->
-            val name = propertySymbol.embedMemberPropertyName(converter)
-            propertySymbol.withConstructorParam { paramSymbol ->
-                converter.typeResolver.lookupDefaultBehavingProperties(name)?.let { paramSymbol to it }
-            }
-        }.toMap()
-
-        val fieldPostconditions = current.signature.params.mapNotNull { param ->
-            require(param is FirVariableEmbedding) { "Constructor parameters must be represented by FirVariableEmbeddings" }
-            parameterMatching[param.symbol]?.let { property ->
-                EqCmp(property.getter!!.getValueSimple(returnTarget.variable, converter.typeResolver), param)
-            }
-        }
-
         val contract = current.signature.buildConditions(converter.typeResolver) {
             userFunctionContract()
-            addPostconditions(fieldPostconditions)
+            addPostconditions(converter.embedConstructorPostconditions(symbol, current.signature, returnTarget))
         }
 
         NonInlineFunctionSignature(current.signature, contract.preconditions, contract.postconditions, symbol.source)
