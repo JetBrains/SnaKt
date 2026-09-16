@@ -23,6 +23,8 @@ import org.jetbrains.kotlin.formver.viper.ast.Exp.Companion.toConjunction
 import org.jetbrains.kotlin.formver.viper.ast.Stmt
 import org.jetbrains.kotlin.formver.viper.ast.viperLiteral
 
+private const val GROUND_TERM_MAX_DEPTH = 10
+
 data class LinearizationVisitor(
     val source: KtSourceElement? = null,
 ) : ExpVisitor<Linearizable> {
@@ -61,7 +63,8 @@ data class LinearizationVisitor(
         fun ExpEmbedding.containsVariable(): Boolean =
             this === variable || children().any { it.containsVariable() }
 
-        fun ExpEmbedding.collectInto(result: MutableList<ExpEmbedding>) {
+        fun ExpEmbedding.collectInto(result: MutableList<ExpEmbedding>, depth: Int) {
+            if (depth == 0) return
             if (this is ForAllEmbedding || this is ExistsEmbedding) return
             if (type == variable.type && !containsVariable()) {
                 result += this
@@ -69,10 +72,10 @@ data class LinearizationVisitor(
                 // type as their child; descending would emit the same candidate several times.
                 return
             }
-            children().forEach { it.collectInto(result) }
+            children().forEach { it.collectInto(result, depth - 1) }
         }
 
-        return buildList { conditions.forEach { it.collectInto(this) } }.distinct()
+        return buildList { conditions.forEach { it.collectInto(this, GROUND_TERM_MAX_DEPTH) } }.distinct()
     }
 
     // region Control Flow
