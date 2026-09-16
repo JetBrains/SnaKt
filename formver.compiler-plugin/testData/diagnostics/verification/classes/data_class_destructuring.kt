@@ -6,12 +6,18 @@ data class DestructuringPair(val first: Int, val second: Int)
 
 @NeverVerify
 fun destructureFirst(): Int {
-    val (<!INTERNAL_ERROR!>first<!>) = DestructuringPair(10, 20)
+    val (<!UNSUPPORTED_FEATURE!>first<!>) = DestructuringPair(10, 20)
     return first
 }
 
 @NeverVerify
 fun destructureSecondBoundary(pair: DestructuringPair): Int {
-    val (<!INTERNAL_ERROR!>_<!>, second) = pair
+    val (<!UNSUPPORTED_FEATURE!>_<!>, second) = pair
     return second
+}
+
+@NeverVerify
+fun destructureBothOnlyFirstReported(pair: DestructuringPair): Int {
+    val (<!UNSUPPORTED_FEATURE!>a<!>, b) = pair
+    return a
 }

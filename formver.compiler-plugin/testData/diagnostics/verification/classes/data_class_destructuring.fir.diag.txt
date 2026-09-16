@@ -1,7 +1,5 @@
-/data_class_destructuring.kt: error: An internal error has occurred.
-Details: Not yet implemented for FirComponentCall (first)
-Please report this at https://github.com/jesyspa/kotlin
+/data_class_destructuring.kt: error: Formal verification does not support this Kotlin feature: Not yet implemented for FirComponentCall (first)
 
-/data_class_destructuring.kt: error: An internal error has occurred.
-Details: Not yet implemented for FirComponentCall (_)
-Please report this at https://github.com/jesyspa/kotlin
+/data_class_destructuring.kt: error: Formal verification does not support this Kotlin feature: Not yet implemented for FirComponentCall (_)
+
+/data_class_destructuring.kt: error: Formal verification does not support this Kotlin feature: Not yet implemented for FirComponentCall (a)
