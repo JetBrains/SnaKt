@@ -32,7 +32,7 @@ private fun DiagnosticReporter.reportVerificationError(
 ) = error.formatByErrorStyle(errorStyle).forEach { it.report(source) }
 
 context(context: CheckerContext)
-private fun DiagnosticReporter.reportConsistencyError(source: KtSourceElement?, error: VerifierError) {
+private fun DiagnosticReporter.reportInternalError(source: KtSourceElement?, error: VerifierError) {
     val sourceIsFunctionDeclaration = source?.elementType?.let { it == KtNodeTypes.FUN } ?: false
     val positionStrategy = when (sourceIsFunctionDeclaration) {
         true -> SourceElementPositioningStrategies.DECLARATION_NAME
@@ -47,7 +47,7 @@ fun DiagnosticReporter.reportVerifierError(
     error: VerifierError,
     errorStyle: ErrorStyle,
 ) = when (error) {
-    is BackendError -> reportConsistencyError(source, error)
-    is ConsistencyError -> reportConsistencyError(source, error)
+    is BackendError -> reportInternalError(source, error)
+    is ConsistencyError -> reportInternalError(source, error)
     is VerificationError -> reportVerificationError(source, error, errorStyle)
 }
