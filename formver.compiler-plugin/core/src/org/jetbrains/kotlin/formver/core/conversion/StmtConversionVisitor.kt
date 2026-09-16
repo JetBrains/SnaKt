@@ -311,10 +311,8 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                     "Expected an implicit invoke call on a non-function receiver to resolve to a function."
                 )
             val callee = data.embedAnyFunction(symbol)
-            val args = listOfNotNull(implicitInvokeCall.dispatchReceiver, implicitInvokeCall.extensionReceiver) +
-                    implicitInvokeCall.argumentList.arguments
             return callee.insertCall(
-                args.withVarargsHandled(data, callee),
+                implicitInvokeCall.functionCallArguments.withVarargsHandled(data, callee),
                 data,
                 data.embedType(implicitInvokeCall.resolvedType),
             )
