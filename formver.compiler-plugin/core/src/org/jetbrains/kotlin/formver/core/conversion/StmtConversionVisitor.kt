@@ -20,6 +20,7 @@ import org.jetbrains.kotlin.fir.types.isUnit
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.common.SnaktUnsupportedFeatureException
 import org.jetbrains.kotlin.formver.common.UnsupportedFeatureBehaviour
 import org.jetbrains.kotlin.formver.core.embeddings.LabelLink
 import org.jetbrains.kotlin.formver.core.embeddings.callables.CallableEmbedding
@@ -583,7 +584,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         source: KtSourceElement?, msg: String, data: StmtConversionContext
     ): ExpEmbedding = when (data.config.behaviour) {
         UnsupportedFeatureBehaviour.THROW_EXCEPTION ->
-            throw SnaktInternalException(source, msg)
+            throw SnaktUnsupportedFeatureException(source, msg)
 
         UnsupportedFeatureBehaviour.ASSUME_UNREACHABLE -> {
             data.reportMinorInternalError(msg)
