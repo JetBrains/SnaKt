@@ -388,6 +388,36 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("data_class_components.kt")
+      public void testData_class_components() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/data_class_components.kt");
+      }
+
+      @Test
+      @TestMetadata("data_class_constructor_properties.kt")
+      public void testData_class_constructor_properties() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/data_class_constructor_properties.kt");
+      }
+
+      @Test
+      @TestMetadata("data_class_copy.kt")
+      public void testData_class_copy() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/data_class_copy.kt");
+      }
+
+      @Test
+      @TestMetadata("data_class_destructuring.kt")
+      public void testData_class_destructuring() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/data_class_destructuring.kt");
+      }
+
+      @Test
+      @TestMetadata("data_class_structural_equality.kt")
+      public void testData_class_structural_equality() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/data_class_structural_equality.kt");
+      }
+
+      @Test
       @TestMetadata("inheritance.kt")
       public void testInheritance() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/inheritance.kt");
