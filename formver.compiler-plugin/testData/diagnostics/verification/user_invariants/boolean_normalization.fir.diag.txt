@@ -1,0 +1,138 @@
+/boolean_normalization.kt: info: Generated Viper text for deMorganConjunction:
+method deMorganConjunction(a: Ref, b: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), boolType())
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == (!boolFromRef(a) || !boolFromRef(b))
+{
+  var anon: Ref
+  if (boolFromRef(a)) {
+    anon := b
+  } else {
+    anon := boolToRef(false)}
+  v_ret_0 := notBool(anon)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/boolean_normalization.kt: info: Generated Viper text for deMorganDisjunction:
+method deMorganDisjunction(a: Ref, b: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), boolType())
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == (!boolFromRef(a) && !boolFromRef(b))
+{
+  var anon: Ref
+  if (boolFromRef(a)) {
+    anon := boolToRef(true)
+  } else {
+    anon := b}
+  v_ret_0 := notBool(anon)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/boolean_normalization.kt: info: Generated Viper text for associatedConjunction:
+method associatedConjunction(a: Ref, b: Ref, c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), boolType())
+  requires isSubtype(typeOf(b), boolType())
+  requires isSubtype(typeOf(c), boolType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) ==
+    (boolFromRef(a) && (boolFromRef(b) && boolFromRef(c)))
+{
+  var anon: Ref
+  if (boolFromRef(a)) {
+    anon := b
+  } else {
+    anon := boolToRef(false)}
+  if (boolFromRef(anon)) {
+    v_ret_0 := c
+  } else {
+    v_ret_0 := boolToRef(false)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/boolean_normalization.kt: info: Generated Viper text for associatedDisjunction:
+method associatedDisjunction(a: Ref, b: Ref, c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), boolType())
+  requires isSubtype(typeOf(b), boolType())
+  requires isSubtype(typeOf(c), boolType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) ==
+    (boolFromRef(a) || (boolFromRef(b) || boolFromRef(c)))
+{
+  var anon: Ref
+  if (boolFromRef(a)) {
+    anon := boolToRef(true)
+  } else {
+    anon := b}
+  if (boolFromRef(anon)) {
+    v_ret_0 := boolToRef(true)
+  } else {
+    v_ret_0 := c}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/boolean_normalization.kt: info: Generated Viper text for negatedLessThan:
+method negatedLessThan(x: Ref, y: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == intFromRef(x) >= intFromRef(y)
+{
+  v_ret_0 := notBool(ltInts(x, y))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/boolean_normalization.kt: info: Generated Viper text for negatedComparisonChain:
+method negatedComparisonChain(x: Ref, y: Ref, z: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  requires isSubtype(typeOf(z), intType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) ==
+    (intFromRef(x) >= intFromRef(y) || intFromRef(y) >= intFromRef(z))
+{
+  var anon: Ref
+  if (intFromRef(x) < intFromRef(y)) {
+    anon := ltInts(y, z)
+  } else {
+    anon := boolToRef(false)}
+  v_ret_0 := notBool(anon)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/boolean_normalization.kt: info: Generated Viper text for strictComparisonBoundary:
+method strictComparisonBoundary(x: Ref, y: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires isSubtype(typeOf(y), intType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == intFromRef(x) > intFromRef(y)
+{
+  v_ret_0 := notBool(ltInts(x, y))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/boolean_normalization.kt: info: Generated Viper text for incorrectDeMorganBoundary:
+method incorrectDeMorganBoundary(a: Ref, b: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), boolType())
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == (!boolFromRef(a) && !boolFromRef(b))
+{
+  var anon: Ref
+  if (boolFromRef(a)) {
+    anon := b
+  } else {
+    anon := boolToRef(false)}
+  v_ret_0 := notBool(anon)
+  goto lbl_ret_0
+  label lbl_ret_0
+}

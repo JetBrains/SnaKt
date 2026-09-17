@@ -1,0 +1,90 @@
+/contract_feature_composition.kt: info: Generated Viper text for quantifiedSuccessor:
+function quantifiedSuccessor(seed: Ref): Ref
+  requires isSubtype(typeOf(seed), intType())
+  requires intFromRef(seed) >= 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(seed) + 1
+  ensures (forall anon: Int ::anon == intFromRef(seed) ==>
+      intFromRef(result) == anon + 1)
+{
+  plusInts(seed, intToRef(1))
+}
+
+/contract_feature_composition.kt: info: Generated Viper text for usesQuantifiedContract:
+function quantifiedSuccessor(seed: Ref): Ref
+  requires isSubtype(typeOf(seed), intType())
+  requires intFromRef(seed) >= 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(seed) + 1
+  ensures (forall anon: Int ::anon == intFromRef(seed) ==>
+      intFromRef(result) == anon + 1)
+{
+  plusInts(seed, intToRef(1))
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method usesQuantifiedContract(seed: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(seed), intType())
+  requires intFromRef(seed) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) > intFromRef(seed)
+{
+  var l0_result: Ref
+  l0_result := quantifiedSuccessor(seed)
+  assert intFromRef(l0_result) == intFromRef(seed) + 1
+  v_ret_0 := l0_result
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/contract_feature_composition.kt: info: Generated Viper text for violatesPropagatedPrecondition:
+function quantifiedSuccessor(seed: Ref): Ref
+  requires isSubtype(typeOf(seed), intType())
+  requires intFromRef(seed) >= 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) == intFromRef(seed) + 1
+  ensures (forall anon: Int ::anon == intFromRef(seed) ==>
+      intFromRef(result) == anon + 1)
+{
+  plusInts(seed, intToRef(1))
+}
+
+method violatesPropagatedPrecondition() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := quantifiedSuccessor(intToRef(-1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/contract_feature_composition.kt: info: Generated Viper text for triggerlessExistentialBoundary:
+method triggerlessExistentialBoundary(seed: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(seed), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures (exists anon: Int :: anon == intFromRef(seed) &&
+      intFromRef(v_ret_0) == anon)
+{
+  v_ret_0 := seed
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/contract_feature_composition.kt: info: Generated Viper text for impurePredicate:
+method impurePredicate(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  v_ret_0 := gtInts(value, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/contract_feature_composition.kt: error: An internal error has occurred.
+Details: PureLinearizer used to convert non-pure ExpEmbedding; operation freshAnonVar is not supported in a pure context.
+Embedding debug view:
+MethodCall(callee = pkg$f$impurePredicate$args$t$Int$ret$Boolean, Var(par$value))
+Please report this at https://github.com/jesyspa/kotlin

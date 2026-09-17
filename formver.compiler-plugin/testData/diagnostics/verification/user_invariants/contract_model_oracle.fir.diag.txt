@@ -1,0 +1,146 @@
+/contract_model_oracle.kt: info: Generated Viper text for modeledImplies:
+function modeledImplies(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), boolType())
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (!boolFromRef(a) || boolFromRef(b))
+{
+  orBools(notBool(a), b)
+}
+
+/contract_model_oracle.kt: info: Generated Viper text for completeTruthTable:
+function modeledImplies(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), boolType())
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (!boolFromRef(a) || boolFromRef(b))
+{
+  orBools(notBool(a), b)
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method completeTruthTable() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert boolFromRef(modeledImplies(boolToRef(false), boolToRef(false)))
+  assert boolFromRef(modeledImplies(boolToRef(false), boolToRef(true)))
+  assert !boolFromRef(modeledImplies(boolToRef(true), boolToRef(false)))
+  assert boolFromRef(modeledImplies(boolToRef(true), boolToRef(true)))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_model_oracle.kt: info: Generated Viper text for quantifiedOracle:
+function modeledImplies(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), boolType())
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (!boolFromRef(a) || boolFromRef(b))
+{
+  orBools(notBool(a), b)
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method quantifiedOracle() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert (forall anon_builtin_0: Bool ::(forall anon_builtin_1: Bool ::boolFromRef(modeledImplies(boolToRef(anon_builtin_0),
+        boolToRef(anon_builtin_1))) ==
+        (anon_builtin_0 ==> anon_builtin_1)))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_model_oracle.kt: info: Generated Viper text for propagateRestrictedContract:
+function modeledImplies(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), boolType())
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (!boolFromRef(a) || boolFromRef(b))
+{
+  orBools(notBool(a), b)
+}
+
+method propagateRestrictedContract(a: Ref, b: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), boolType())
+  requires isSubtype(typeOf(b), boolType())
+  requires boolFromRef(a) || boolFromRef(b)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == boolFromRef(b)
+{
+  v_ret_0 := modeledImplies(a, b)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/contract_model_oracle.kt: info: Generated Viper text for restrictedContractCaller:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method propagateRestrictedContract(a: Ref, b: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(a), boolType())
+  requires isSubtype(typeOf(b), boolType())
+  requires boolFromRef(a) || boolFromRef(b)
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures boolFromRef(ret_1) == boolFromRef(b)
+
+
+method restrictedContractCaller(b: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  l0_result := propagateRestrictedContract(boolToRef(true), b)
+  assert boolFromRef(l0_result) == boolFromRef(b)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_model_oracle.kt: info: Generated Viper text for negativeTruthTableControl:
+function modeledImplies(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), boolType())
+  requires isSubtype(typeOf(b), boolType())
+  ensures isSubtype(typeOf(result), boolType())
+  ensures boolFromRef(result) == (!boolFromRef(a) || boolFromRef(b))
+{
+  orBools(notBool(a), b)
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method negativeTruthTableControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert boolFromRef(modeledImplies(boolToRef(true), boolToRef(false)))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_model_oracle.kt: info: Generated Viper text for impurePredicate:
+method impurePredicate(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  v_ret_0 := geInts(value, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/contract_model_oracle.kt: error: An internal error has occurred.
+Details: PureLinearizer used to convert non-pure ExpEmbedding; operation freshAnonVar is not supported in a pure context.
+Embedding debug view:
+MethodCall(callee = pkg$f$impurePredicate$args$t$Int$ret$Boolean, Var(par$initial))
+Please report this at https://github.com/jesyspa/kotlin

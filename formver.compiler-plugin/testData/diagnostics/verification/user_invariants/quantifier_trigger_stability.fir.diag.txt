@@ -1,0 +1,84 @@
+/quantifier_trigger_stability.kt: info: Generated Viper text for canonicalQuantifierTrigger:
+method canonicalQuantifierTrigger(s: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(s), stringType())
+  requires |stringFromRef(s)| > 0
+  requires (forall anon: Int ::
+      { stringFromRef(s)[anon] }
+      { anon + 1 }
+      0 <= anon && anon < |stringFromRef(s)| ==>
+      stringFromRef(s)[anon] >= 97)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0)
+{
+  v_ret_0 := geChars(stringGet(s, intToRef(0)), charToRef(97))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/quantifier_trigger_stability.kt: info: Generated Viper text for reorderedQuantifierConjuncts:
+method reorderedQuantifierConjuncts(s: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(s), stringType())
+  requires |stringFromRef(s)| > 0
+  requires (forall anon: Int ::
+      { stringFromRef(s)[anon] }
+      { anon + 1 }
+      anon < |stringFromRef(s)| && 0 <= anon ==>
+      stringFromRef(s)[anon] >= 97)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0)
+{
+  v_ret_0 := geChars(stringGet(s, intToRef(0)), charToRef(97))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/quantifier_trigger_stability.kt: info: Generated Viper text for renamedQuantifierBinder:
+method renamedQuantifierBinder(s: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(s), stringType())
+  requires |stringFromRef(s)| > 0
+  requires (forall anon: Int ::
+      { stringFromRef(s)[anon] }
+      { anon + 1 }
+      0 <= anon && anon < |stringFromRef(s)| ==>
+      stringFromRef(s)[anon] >= 97)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0)
+{
+  v_ret_0 := geChars(stringGet(s, intToRef(0)), charToRef(97))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/quantifier_trigger_stability.kt: info: Generated Viper text for reorderedQuantifierTriggers:
+method reorderedQuantifierTriggers(s: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(s), stringType())
+  requires |stringFromRef(s)| > 0
+  requires (forall anon: Int ::
+      { anon + 1 }
+      { stringFromRef(s)[anon] }
+      0 <= anon && anon < |stringFromRef(s)| ==>
+      stringFromRef(s)[anon] >= 97)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0)
+{
+  v_ret_0 := geChars(stringGet(s, intToRef(0)), charToRef(97))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/quantifier_trigger_stability.kt: info: Generated Viper text for strongerConclusionDoesNotVerify:
+method strongerConclusionDoesNotVerify(s: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(s), stringType())
+  requires |stringFromRef(s)| > 0
+  requires (forall anon: Int ::
+      { anon + 1 }
+      { stringFromRef(s)[anon] }
+      anon < |stringFromRef(s)| && 0 <= anon ==>
+      stringFromRef(s)[anon] >= 97)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0)
+{
+  v_ret_0 := gtChars(stringGet(s, intToRef(0)), charToRef(97))
+  goto lbl_ret_0
+  label lbl_ret_0
+}

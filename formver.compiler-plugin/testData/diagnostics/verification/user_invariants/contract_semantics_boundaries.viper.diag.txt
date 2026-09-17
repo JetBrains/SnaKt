@@ -1,0 +1,3 @@
+/contract_semantics_boundaries.kt: warning: Viper verification error: Precondition of function boundedIdentity might not hold. Assertion intFromRef(intToRef(-2)) >= -1 might not hold.
+
+/contract_semantics_boundaries.kt: warning: Viper verification error: Assert might fail. Assertion (forall anon: Int ::0 <= anon && anon < 2 ==> anon == 0) might not hold.

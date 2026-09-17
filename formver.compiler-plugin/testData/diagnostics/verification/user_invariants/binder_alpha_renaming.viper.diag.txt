@@ -1,0 +1,3 @@
+/binder_alpha_renaming.kt: warning: Viper verification error: Postcondition of impossibleOriginalBinder might not hold. Assertion intFromRef(v_ret_0) > intFromRef(value) might not hold.
+
+/binder_alpha_renaming.kt: warning: Viper verification error: Postcondition of impossibleRenamedBinder might not hold. Assertion intFromRef(v_ret_0) > intFromRef(value) might not hold.

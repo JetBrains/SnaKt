@@ -1,0 +1,84 @@
+/recursive_call_contract_mutations.kt: info: Generated Viper text for recursiveIdentityPositive:
+method recursiveIdentityPositive(n: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(n)
+{
+  if (intFromRef(n) == 0) {
+    v_ret_0 := intToRef(0)
+  } else {
+    var anon: Ref
+    anon := recursiveIdentityPositive(minusInts(n, intToRef(1)))
+    v_ret_0 := plusInts(intToRef(1), anon)
+  }
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/recursive_call_contract_mutations.kt: info: Generated Viper text for recursiveIdentityMutatedBase:
+method recursiveIdentityMutatedBase(n: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(n)
+{
+  if (intFromRef(n) == 0) {
+    v_ret_0 := intToRef(1)
+  } else {
+    var anon: Ref
+    anon := recursiveIdentityMutatedBase(minusInts(n, intToRef(1)))
+    v_ret_0 := plusInts(intToRef(1), anon)
+  }
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/recursive_call_contract_mutations.kt: info: Generated Viper text for incrementWithContract:
+method incrementWithContract(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(value) + 1
+{
+  v_ret_0 := plusInts(value, intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/recursive_call_contract_mutations.kt: info: Generated Viper text for nestedCallsPositive:
+method incrementWithContract(value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) == intFromRef(value) + 1
+
+
+method nestedCallsPositive(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(value) + 2
+{
+  var anon: Ref
+  anon := incrementWithContract(value)
+  v_ret_0 := incrementWithContract(anon)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/recursive_call_contract_mutations.kt: info: Generated Viper text for nestedCallsMutatedContract:
+method incrementWithContract(value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) == intFromRef(value) + 1
+
+
+method nestedCallsMutatedContract(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(value) + 3
+{
+  var anon: Ref
+  anon := incrementWithContract(value)
+  v_ret_0 := incrementWithContract(anon)
+  goto lbl_ret_0
+  label lbl_ret_0
+}

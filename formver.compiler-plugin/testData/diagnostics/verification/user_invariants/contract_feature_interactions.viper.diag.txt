@@ -1,0 +1,1 @@
+/contract_feature_interactions.kt: warning: Viper verification error: Postcondition of falsePostconditionControl might not hold. Assertion intFromRef(v_ret_0) > intFromRef(value) might not hold.
