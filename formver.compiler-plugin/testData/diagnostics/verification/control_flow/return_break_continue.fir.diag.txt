@@ -4,8 +4,6 @@ method testReturn() returns (v_ret_0: Ref)
 {
   v_ret_0 := intToRef(0)
   goto lbl_ret_0
-  v_ret_0 := intToRef(1)
-  goto lbl_ret_0
   label lbl_ret_0
 }
 
@@ -84,7 +82,6 @@ method whileNested(b: Ref) returns (v_ret_0: Ref)
   anon_0 := b
   if (boolFromRef(anon_0)) {
     var anon_1: Ref
-    var anon_2: Ref
     label cont_1
       invariant isSubtype(typeOf(b), boolType())
     anon_1 := b
@@ -95,16 +92,6 @@ method whileNested(b: Ref) returns (v_ret_0: Ref)
     label break_1
     assert isSubtype(typeOf(b), boolType())
     goto cont_0
-    label cont_2
-      invariant isSubtype(typeOf(b), boolType())
-    anon_2 := b
-    if (boolFromRef(anon_2)) {
-      goto cont_2
-      goto cont_2
-    }
-    label break_2
-    assert isSubtype(typeOf(b), boolType())
-    goto break_0
     goto cont_0
   }
   label break_0
@@ -129,13 +116,10 @@ method labelledBreak(b: Ref) returns (v_ret_0: Ref)
     anon_1 := b
     if (boolFromRef(anon_1)) {
       goto break_0
-      goto break_1
-      goto break_1
       goto cont_1
     }
     label break_1
     assert isSubtype(typeOf(b), boolType())
-    goto break_0
     goto break_0
     goto cont_0
   }
@@ -162,12 +146,9 @@ method labelledContinue(b: Ref) returns (v_ret_0: Ref)
     if (boolFromRef(anon_1)) {
       goto cont_0
       goto cont_1
-      goto cont_1
-      goto cont_1
     }
     label break_1
     assert isSubtype(typeOf(b), boolType())
-    goto cont_0
     goto cont_0
     goto cont_0
   }
@@ -195,7 +176,6 @@ method labelledWhileShadowing(b: Ref) returns (v_ret_0: Ref)
     if (boolFromRef(anon_1)) {
       goto break_1
       goto cont_1
-      goto cont_1
     }
     label break_1
     assert isSubtype(typeOf(b), boolType())
@@ -205,12 +185,10 @@ method labelledWhileShadowing(b: Ref) returns (v_ret_0: Ref)
     if (boolFromRef(anon_2)) {
       goto break_2
       goto cont_2
-      goto cont_2
     }
     label break_2
     assert isSubtype(typeOf(b), boolType())
     goto break_0
-    goto cont_0
     goto cont_0
   }
   label break_0
