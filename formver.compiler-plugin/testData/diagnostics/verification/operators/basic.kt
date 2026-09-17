@@ -1,5 +1,5 @@
 // FULL_JDK
-import org.jetbrains.kotlin.formver.plugin.NeverVerify
+import org.jetbrains.kotlin.formver.plugin.*
 
 fun <!VIPER_TEXT!>addition<!>(x: Int) {
     val y = x + x
@@ -73,4 +73,21 @@ fun <!VIPER_TEXT!>test_postincvrement<!>() {
     val first = x++
     val second = x--
     val unary = x
+}
+
+// `implies` is an ordinary Kotlin function, so its right argument is evaluated even when the
+// left argument is false.
+@AlwaysVerify
+fun <!VIPER_TEXT!>runtimeImpliesEvaluatesRightArgument<!>(zero: Int) {
+    preconditions { zero == 0 }
+    val result = false implies (<!VIPER_VERIFICATION_ERROR!>1 / zero == 0<!>)
+}
+
+// In specifications, implication remains declarative and guards its right-hand expression.
+@AlwaysVerify
+fun <!VIPER_TEXT!>specificationImplicationRemainsDeclarative<!>(zero: Int) {
+    preconditions { zero == 0 }
+    postconditions<Unit> {
+        false implies (1 / zero == 0)
+    }
 }

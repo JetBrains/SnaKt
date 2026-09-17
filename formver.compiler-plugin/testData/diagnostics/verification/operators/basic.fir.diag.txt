@@ -206,3 +206,32 @@ method test_postincvrement() returns (v_ret_0: Ref)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
+
+/basic.kt: info: Generated Viper text for runtimeImpliesEvaluatesRightArgument:
+method runtimeImpliesEvaluatesRightArgument(zero: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(zero), intType())
+  requires intFromRef(zero) == 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  anon_0 := boolToRef(false)
+  anon_1 := boolToRef(1 \ intFromRef(zero) == 0)
+  l0_result := impliesBools(anon_0, anon_1)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/basic.kt: info: Generated Viper text for specificationImplicationRemainsDeclarative:
+method specificationImplicationRemainsDeclarative(zero: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(zero), intType())
+  requires intFromRef(zero) == 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+  ensures false ==> 1 \ intFromRef(zero) == 0
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
