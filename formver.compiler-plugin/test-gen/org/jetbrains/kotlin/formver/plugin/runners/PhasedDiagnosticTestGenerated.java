@@ -786,6 +786,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("mutual_recursion.kt")
+      public void testMutual_recursion() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/mutual_recursion.kt");
+      }
+
+      @Test
       @TestMetadata("operators.kt")
       public void testOperators() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/operators.kt");
