@@ -56,10 +56,10 @@ data object MutableListInterface : PresentInterface {
 
 data object NativeArrayInterface : StdLibReceiverInterface {
     override fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean =
-        nativeArrayClassNames.any { function.symbol?.callableId == kotlinCallableId(it, name = "get") }
+        nativeArrayClassNames.any { function.symbol?.callableId?.classId == kotlinCallableId(it, "get").classId }
 }
 
-private val nativeArrayClassNames = listOf(
+internal val nativeArrayClassNames = listOf(
     "Array", "BooleanArray", "ByteArray", "CharArray", "ShortArray", "IntArray", "LongArray", "FloatArray", "DoubleArray",
 )
 
@@ -103,6 +103,7 @@ sealed interface StdLibPostcondition : StdLibCondition {
             EmptyListPostcondition,
             IsEmptyPostcondition,
             GetPostcondition,
+            NativeArrayGetPostcondition,
             SubListPostcondition,
             AddPostcondition
         )
@@ -211,6 +212,18 @@ data object GetPostcondition : StdLibPostcondition {
     }
 
     override val stdLibInterface = ListInterface
+    override val functionName = "get"
+}
+
+data object NativeArrayGetPostcondition : StdLibPostcondition {
+    override fun getEmbeddings(
+        returnVariable: VariableEmbedding,
+        function: NamedFunctionSignature
+    ): List<ExpEmbedding> {
+        return listOf(function.dispatchReceiver!!.sameSize())
+    }
+
+    override val stdLibInterface = NativeArrayInterface
     override val functionName = "get"
 }
 

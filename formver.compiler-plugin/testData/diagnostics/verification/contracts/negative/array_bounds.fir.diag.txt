@@ -11,6 +11,7 @@ method get(this: Ref, index: Ref) returns (ret_1: Ref)
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
 
 
 method uncheckedGenericArrayRead(array: Ref) returns (v_ret_0: Ref)
@@ -39,6 +40,7 @@ method get(this: Ref, index: Ref) returns (ret_1: Ref)
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
 
 
 method uncheckedPrimitiveArrayRead(array: Ref) returns (v_ret_0: Ref)
@@ -67,6 +69,7 @@ method get(this: Ref, index: Ref) returns (ret_1: Ref)
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
 
 
 method negativePrimitiveArrayRead(array: Ref) returns (v_ret_0: Ref)

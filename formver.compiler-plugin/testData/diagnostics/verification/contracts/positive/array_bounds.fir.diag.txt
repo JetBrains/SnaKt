@@ -11,6 +11,7 @@ method get(this: Ref, index: Ref) returns (ret_2: Ref)
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
 
 
 method guardedGenericArrayRead(array: Ref, index: Ref)
@@ -57,6 +58,7 @@ method get(this: Ref, index: Ref) returns (ret_2: Ref)
   ensures acc(this.size, write)
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
 
 
 method guardedPrimitiveArrayRead(array: Ref, index: Ref)

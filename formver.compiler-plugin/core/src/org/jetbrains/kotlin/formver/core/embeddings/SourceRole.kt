@@ -10,14 +10,16 @@ import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.formver.viper.ast.Info
 
 sealed interface SourceRole {
-    data class ListElementAccessCheck(val accessType: AccessCheckType) : SourceRole {
+    sealed interface IndexedAccessCheck : SourceRole
+
+    data class ListElementAccessCheck(val accessType: AccessCheckType) : IndexedAccessCheck {
         enum class AccessCheckType {
             LESS_THAN_ZERO,
             GREATER_THAN_LIST_SIZE
         }
     }
 
-    data class ArrayElementAccessCheck(val accessType: AccessCheckType) : SourceRole {
+    data class ArrayElementAccessCheck(val accessType: AccessCheckType) : IndexedAccessCheck {
         enum class AccessCheckType {
             LESS_THAN_ZERO,
             GREATER_THAN_ARRAY_SIZE,

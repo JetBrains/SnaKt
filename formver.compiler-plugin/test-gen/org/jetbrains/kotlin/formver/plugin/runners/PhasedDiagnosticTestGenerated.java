@@ -746,6 +746,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("char_arithmetic.kt")
+      public void testChar_arithmetic() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/char_arithmetic.kt");
+      }
+
+      @Test
       @TestMetadata("elvis.kt")
       public void testElvis() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/elvis.kt");
@@ -854,6 +860,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("char.kt")
+      public void testChar() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/types/char.kt");
+      }
+
+      @Test
       @TestMetadata("generics.kt")
       public void testGenerics() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/types/generics.kt");
@@ -903,6 +915,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("factorial.kt")
       public void testFactorial() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/factorial.kt");
+      }
+
+      @Test
+      @TestMetadata("forall_char_domain.kt")
+      public void testForall_char_domain() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/forall_char_domain.kt");
       }
 
       @Test

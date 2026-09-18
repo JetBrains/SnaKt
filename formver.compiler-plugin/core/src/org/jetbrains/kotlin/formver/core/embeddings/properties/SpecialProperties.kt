@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
 import org.jetbrains.kotlin.formver.core.conversion.CollectionSizeFieldEmbedding
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
+import org.jetbrains.kotlin.formver.core.conversion.nativeArrayClassNames
 import org.jetbrains.kotlin.formver.core.embeddings.types.IntTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.asTypeEmbedding
 import org.jetbrains.kotlin.formver.core.kotlinCallableId
@@ -82,12 +83,8 @@ object NativeArraySizeProperty :
         )
     ) {
     context(typeResolver: TypeResolver, session: FirSession)
-    override fun match(symbol: FirPropertySymbol): Boolean {
-        return listOf(
-            "Array", "BooleanArray", "ByteArray", "CharArray", "ShortArray", "IntArray", "LongArray",
-            "FloatArray", "DoubleArray",
-        ).any { symbol.callableId == kotlinCallableId(it, "size") }
-    }
+    override fun match(symbol: FirPropertySymbol): Boolean =
+        nativeArrayClassNames.any { symbol.callableId == kotlinCallableId(it, "size") }
 }
 
 

@@ -67,7 +67,7 @@ class DefaultError(private val error: VerificationError) : FormattedError {
 
 class IndexOutOfBoundError(
     private val error: VerificationError,
-    private val sourceRole: SourceRole,
+    private val sourceRole: SourceRole.IndexedAccessCheck,
 ) :
     FormattedError {
 
@@ -98,7 +98,6 @@ class IndexOutOfBoundError(
         return when (sourceRole) {
             is SourceRole.ListElementAccessCheck -> target.formatIndexedMessage("list") to sourceRole.accessType.asUserFriendlyMessage
             is SourceRole.ArrayElementAccessCheck -> target.formatIndexedMessage("array") to sourceRole.accessType.asUserFriendlyMessage
-            else -> error("Unexpected source role: $sourceRole")
         }
     }
 
@@ -133,7 +132,7 @@ class InvalidSubListRangeError(
     fun msg(): Pair<String, String> {
         val targetListInfo = error.locationNode.asCallable().arg(0).info
         val targetList = targetListInfo.unwrapOr<SourceRole.FirSymbolHolder> { null }
-        return targetList.formatListMessage() to sourceRole.asUserFriendlyMessage
+        return targetList.formatIndexedMessage("list") to sourceRole.asUserFriendlyMessage
     }
 }
 
@@ -164,15 +163,6 @@ private fun VerificationError.lookupSourceRole(): SourceRole? {
         else -> locationNodeRole
     }
 }
-
-private fun SourceRole.FirSymbolHolder?.formatListMessage(): String = when (this) {
-    null -> "the following list sub-expression"
-    else -> {
-        val listName = FirDiagnosticRenderers.DECLARATION_NAME.render(firSymbol)
-        "list '${listName}'"
-    }
-}
-
 
 private fun SourceRole.FirSymbolHolder?.formatIndexedMessage(kind: String): String = when (this) {
     null -> "the following $kind sub-expression"
