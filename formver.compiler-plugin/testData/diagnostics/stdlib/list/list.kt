@@ -46,6 +46,13 @@ fun <!VIPER_TEXT!>first_last<!>(l: List<Int>): Int {
     return l.first() + l.last()
 }
 
+fun List<Int>.<!VIPER_TEXT!>first<!>(default: Int): Int = default
+
+@AlwaysVerify
+fun <!VIPER_TEXT!>user_defined_first<!>(l: List<Int>): Int {
+    return l.first(7)
+}
+
 @AlwaysVerify
 fun <!VIPER_TEXT!>nullable_list<!>(l: List<Int>?) {
     if (l != null && !l.isEmpty()) {

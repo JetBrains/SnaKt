@@ -99,6 +99,19 @@ class IndexOutOfBoundError(
     }
 }
 
+class EmptyListAccessError(private val error: VerificationError) : FormattedError {
+    context(context: CheckerContext, reporter: DiagnosticReporter)
+    override fun report(source: KtSourceElement?) {
+        reporter.reportOn(source, VerificationErrors.POSSIBLE_EMPTY_LIST_ACCESS, msg())
+    }
+
+    fun msg(): String {
+        val targetListInfo = error.locationNode.asCallable().arg(0).info
+        val targetList = targetListInfo.unwrapOr<SourceRole.FirSymbolHolder> { null }
+        return targetList.formatListMessage()
+    }
+}
+
 class InvalidSubListRangeError(
     private val error: VerificationError,
     private val sourceRole: SourceRole.SubListCreation
@@ -132,6 +145,7 @@ fun VerificationError.formatUserFriendly(): FormattedError? =
         is SourceRole.ReturnsEffect -> ReturnsEffectError(sourceRole)
         is SourceRole.ConditionalEffect -> ConditionalEffectError(sourceRole)
         is SourceRole.ListElementAccessCheck -> IndexOutOfBoundError(this, sourceRole)
+        is SourceRole.EmptyListAccessCheck -> EmptyListAccessError(this)
         is SourceRole.SubListCreation -> InvalidSubListRangeError(this, sourceRole)
         else -> null
     }
