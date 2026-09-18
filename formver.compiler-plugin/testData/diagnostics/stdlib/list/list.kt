@@ -41,6 +41,12 @@ fun <!VIPER_TEXT!>is_empty<!>(l: List<Int>) : Int {
 }
 
 @AlwaysVerify
+fun <!VIPER_TEXT!>first_last<!>(l: List<Int>): Int {
+    if (l.isEmpty()) return 0
+    return l.first() + l.last()
+}
+
+@AlwaysVerify
 fun <!VIPER_TEXT!>nullable_list<!>(l: List<Int>?) {
     if (l != null && !l.isEmpty()) {
         val x = l[l.size - 1]
