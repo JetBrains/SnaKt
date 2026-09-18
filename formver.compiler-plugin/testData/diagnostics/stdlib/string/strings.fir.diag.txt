@@ -1,12 +1,9 @@
 /strings.kt: info: Generated Viper text for testType:
+field size: Ref
+
 function g_str(this: Ref): Ref
   requires isSubtype(typeOf(this), StringBox())
   ensures isSubtype(typeOf(result), stringType())
-
-
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
 
 
 predicate BooleanArray_unique(this: Ref) {
@@ -53,14 +50,11 @@ method testType(s: Ref) returns (v_ret_0: Ref)
 }
 
 /strings.kt: info: Generated Viper text for testLengthField:
+field size: Ref
+
 function g_str(this: Ref): Ref
   requires isSubtype(typeOf(this), StringBox())
   ensures isSubtype(typeOf(result), stringType())
-
-
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
 
 
 predicate BooleanArray_unique(this: Ref) {
@@ -104,10 +98,7 @@ method testLengthField(s: Ref) returns (v_ret_0: Ref)
 }
 
 /strings.kt: info: Generated Viper text for testOps:
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
-
+field size: Ref
 
 predicate BooleanArray_unique(this: Ref) {
   isSubtype(typeOf(this), BooleanArray()) &&

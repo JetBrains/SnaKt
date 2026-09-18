@@ -138,6 +138,8 @@ method take4(obj: Ref) returns (v_ret_0: Ref)
 }
 
 /interfaces.kt: info: Generated Viper text for createImpls:
+field size: Ref
+
 function AbstractWithFinalImplementation3_g_field(this: Ref): Ref
   requires isSubtype(typeOf(this), AbstractWithFinalImplementation3())
   ensures isSubtype(typeOf(result), intType())
@@ -150,11 +152,6 @@ function Impl12_g_field(this: Ref): Ref
 
 function Impl14_g_field(this: Ref): Ref
   requires isSubtype(typeOf(this), Impl14())
-  ensures isSubtype(typeOf(result), intType())
-
-
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 
 

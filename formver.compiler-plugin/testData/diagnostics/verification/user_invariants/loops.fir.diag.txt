@@ -1,8 +1,5 @@
 /loops.kt: info: Generated Viper text for test:
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
-
+field size: Ref
 
 method test(n: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(n), intType())
@@ -97,10 +94,7 @@ method loopInsideLoop() returns (v_ret_0: Ref)
 }
 
 /loops.kt: info: Generated Viper text for withBreak:
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
-
+field size: Ref
 
 method withBreak() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
@@ -129,10 +123,7 @@ method withBreak() returns (v_ret_0: Ref)
 /loops.kt: info: Generated Viper text for test_boolean_postcondition:
 field bf_e: Ref
 
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
-
+field size: Ref
 
 method con(par_e: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(par_e), intType())
@@ -173,13 +164,10 @@ method test_boolean_postcondition() returns (v_ret_0: Ref)
 }
 
 /loops.kt: info: Generated Viper text for test_while:
+field size: Ref
+
 function g_field(this: Ref): Ref
   requires isSubtype(typeOf(this), ClassWithField())
-  ensures isSubtype(typeOf(result), intType())
-
-
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 
 
@@ -238,13 +226,10 @@ method test_while(param: Ref) returns (v_ret_0: Ref)
 }
 
 /loops.kt: info: Generated Viper text for test_while_with_inlining:
+field size: Ref
+
 function g_field(v_this: Ref): Ref
   requires isSubtype(typeOf(v_this), ClassWithField())
-  ensures isSubtype(typeOf(result), intType())
-
-
-function size(v_this: Ref): Ref
-  requires isSubtype(typeOf(v_this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 
 
