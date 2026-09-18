@@ -14,3 +14,6 @@ fun <!MUTUAL_RECURSION_UNSUPPORTED, VERIFICATION_SKIPPED!>odd<!>(n: Int): Boolea
 
 @AlwaysVerify
 fun <!MUTUAL_RECURSION_UNSUPPORTED, VERIFICATION_SKIPPED!>testMutualRecursion<!>(n: Int): Boolean = even(n)
+
+@AlwaysVerify
+fun <!VIPER_TEXT!>unrelated<!>(n: Int): Int = countDown(n)

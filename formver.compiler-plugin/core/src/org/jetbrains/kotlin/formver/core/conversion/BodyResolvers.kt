@@ -52,8 +52,6 @@ class ConvertedBodyResolver {
     fun forEachPure(action: (SymbolicName, ExpEmbedding) -> Unit) {
         pure.forEach { (name, body) -> action(name, body) }
     }
-
-    fun pureBodies(): Map<SymbolicName, ExpEmbedding> = pure.toMap()
 }
 
 /**
