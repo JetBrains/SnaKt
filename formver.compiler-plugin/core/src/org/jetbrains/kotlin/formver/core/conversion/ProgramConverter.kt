@@ -31,11 +31,13 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousBuiltinVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.FunctionCall
 import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.core.purity.checkValidity
 import org.jetbrains.kotlin.formver.core.purity.isPure
+import org.jetbrains.kotlin.formver.core.purity.preorder
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
@@ -175,6 +177,7 @@ class ProgramConverter(
                 condition.checkValidity(source, this)
             }
         }
+        validatePureRecursion()
         if (hadConversionError) {
             for (entry in registered) {
                 reportVerificationSkipped(
@@ -185,6 +188,53 @@ class ProgramConverter(
         }
     }
 
+    /**
+     * Viper accepts mutually recursive functions, but Silicon checks each function's postcondition
+     * without assuming the postconditions of the other functions in its recursion cycle. Even the
+     * generated result-type postcondition then fails, with an error that never mentions recursion.
+     * Reject such cycles before verification instead. A function that only calls itself verifies
+     * fine and does not count as a cycle here.
+     */
+    private fun validatePureRecursion() {
+        val calls: Map<SymbolicName, Set<SymbolicName>> = buildMap {
+            convertedBodyResolver.forEachPure { name, body ->
+                val callees = body.preorder()
+                    .map { it.first }
+                    .filterIsInstance<FunctionCall>()
+                    .map { it.function.name }
+                    .toSet()
+                put(name, callees)
+            }
+        }
+
+        fun reachable(start: SymbolicName): Set<SymbolicName> {
+            val seen = mutableSetOf<SymbolicName>()
+            val work = ArrayDeque(calls.getValue(start))
+            while (work.isNotEmpty()) {
+                val next = work.removeFirst()
+                if (seen.add(next)) work.addAll(calls[next].orEmpty())
+            }
+            return seen
+        }
+
+        val reach = calls.keys.associateWith { reachable(it) }
+        val cycleMembers = calls.keys.filter { name ->
+            reach.getValue(name).any { other -> other != name && name in reach[other].orEmpty() }
+        }
+        if (cycleMembers.isEmpty()) return
+
+        val names = cycleMembers
+            .map { fullSignatures[it]?.symbol?.name?.asString() ?: it.toString() }
+            .sorted()
+            .joinToString { "'$it'" }
+        for (entry in registered) {
+            emit(
+                entry.declaration.source,
+                ConversionErrors.MUTUAL_RECURSION_UNSUPPORTED,
+                "Verification depends on mutually recursive pure functions $names, which is not supported",
+            )
+        }
+    }
 
     private fun linearizePure(name: SymbolicName, signature: CompleteFunctionSignature) {
         val converted = convertedBodyResolver.lookupPure(name)
