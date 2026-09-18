@@ -4,9 +4,9 @@
 
 /list.kt: warning: Invalid index for list 'l', the index may be less than zero.
 
-/list.kt: warning: Invalid index for list 'l', the index may be greater than the list's size.
+/list.kt: warning: Invalid access to list 'l', the list may be empty.
 
-/list.kt: warning: Invalid index for list 'l', the index may be greater than the list's size.
+/list.kt: warning: Invalid access to list 'l', the list may be empty.
 
 /list.kt: warning: Invalid index for list 'l', the index may be greater than the list's size.
 

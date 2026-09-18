@@ -53,11 +53,17 @@ data object MutableListInterface : PresentInterface {
     override val interfaceName = "MutableList"
 }
 
+/**
+ * Top-level functions of the collections package whose extension receiver is a `List`.
+ *
+ * Restricting to the collections package keeps user-defined extensions with the same name
+ * from picking up the standard library contract.
+ */
 data object ListExtensionInterface : StdLibReceiverInterface {
-    override fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean =
-        function.callableType.extensionReceiverType?.pretype?.let {
-            ctx.isInheritorOfCollectionTypeNamed(it, "List")
-        } ?: false
+    override fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean {
+        val receiverType = function.callableType.extensionReceiverType?.pretype ?: return false
+        return NoInterface.match(function, ctx) && ctx.isInheritorOfCollectionTypeNamed(receiverType, "List")
+    }
 }
 
 data object NoInterface : StdLibReceiverInterface {
@@ -76,7 +82,12 @@ sealed interface StdLibCondition {
     val stdLibInterface: StdLibReceiverInterface
     val functionName: String
 
+    /** Number of value parameters of the matched overload; `null` matches every overload. */
+    val parameterCount: Int?
+        get() = null
+
     fun match(function: NamedFunctionSignature): Boolean {
+        if (parameterCount != null && function.params.size != parameterCount) return false
         NameMatcher.matchClassScope(function.name) {
             ifFunctionName(functionName) {
                 return true
@@ -137,7 +148,7 @@ private fun NamedFunctionSignature.nonEmptyExtensionReceiverPrecondition(): List
         GtIntInt(
             FieldAccess(extensionReceiver!!, CollectionSizeFieldEmbedding),
             IntLit(0),
-            SourceRole.ListElementAccessCheck(SourceRole.ListElementAccessCheck.AccessCheckType.GREATER_THAN_LIST_SIZE),
+            SourceRole.EmptyListAccessCheck,
         )
     )
 
@@ -147,6 +158,7 @@ data object FirstPrecondition : StdLibPrecondition {
 
     override val stdLibInterface = ListExtensionInterface
     override val functionName = "first"
+    override val parameterCount = 0
 }
 
 data object LastPrecondition : StdLibPrecondition {
@@ -155,6 +167,7 @@ data object LastPrecondition : StdLibPrecondition {
 
     override val stdLibInterface = ListExtensionInterface
     override val functionName = "last"
+    override val parameterCount = 0
 }
 
 data object SubListPrecondition : StdLibPrecondition {
@@ -227,6 +240,7 @@ data object FirstPostcondition : StdLibPostcondition {
 
     override val stdLibInterface = ListExtensionInterface
     override val functionName = "first"
+    override val parameterCount = 0
 }
 
 data object LastPostcondition : StdLibPostcondition {
@@ -237,6 +251,7 @@ data object LastPostcondition : StdLibPostcondition {
 
     override val stdLibInterface = ListExtensionInterface
     override val functionName = "last"
+    override val parameterCount = 0
 }
 
 data object SubListPostcondition : StdLibPostcondition {

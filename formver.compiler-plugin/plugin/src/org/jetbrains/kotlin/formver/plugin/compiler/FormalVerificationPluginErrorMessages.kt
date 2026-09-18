@@ -56,6 +56,11 @@ object FormalVerificationPluginErrorMessages : BaseDiagnosticRendererFactory() {
             CommonRenderers.STRING,
         )
         map.put(
+            VerificationErrors.POSSIBLE_EMPTY_LIST_ACCESS,
+            "Invalid access to {0}, the list may be empty.",
+            CommonRenderers.STRING,
+        )
+        map.put(
             VerificationErrors.INVALID_SUBLIST_RANGE,
             "Invalid sub-list range for {0}, the range may be {1}.",
             CommonRenderers.STRING,

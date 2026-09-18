@@ -233,6 +233,49 @@ method last(v_this_extension: Ref) returns (ret_3: Ref)
     old(intFromRef(v_this_extension.size))
 
 
+/list.kt: info: Generated Viper text for first:
+field size: Ref
+
+method first(v_this_extension: Ref, default: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(v_this_extension), List())
+  requires acc(v_this_extension.size, write)
+  requires intFromRef(v_this_extension.size) >= 0
+  requires isSubtype(typeOf(default), intType())
+  ensures acc(v_this_extension.size, write)
+  ensures intFromRef(v_this_extension.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := default
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/list.kt: info: Generated Viper text for user_defined_first:
+field size: Ref
+
+method first(v_this_extension: Ref, default: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), List())
+  requires acc(v_this_extension.size, write)
+  requires intFromRef(v_this_extension.size) >= 0
+  requires isSubtype(typeOf(default), intType())
+  ensures acc(v_this_extension.size, write)
+  ensures intFromRef(v_this_extension.size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method user_defined_first(l: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(l), List())
+  requires acc(l.size, write)
+  requires intFromRef(l.size) >= 0
+  ensures acc(l.size, write)
+  ensures intFromRef(l.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := first(l, intToRef(7))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
 /list.kt: info: Generated Viper text for nullable_list:
 field size: Ref
 

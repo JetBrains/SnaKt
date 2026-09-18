@@ -32,6 +32,7 @@ object VerificationErrors : KtDiagnosticsContainer() {
     val CONDITIONAL_EFFECT_ERROR by warning2<PsiElement, String, String>()
     val VIPER_VERIFICATION_ERROR by warning1<PsiElement, String>()
     val POSSIBLE_INDEX_OUT_OF_BOUND by warning2<PsiElement, String, String>()
+    val POSSIBLE_EMPTY_LIST_ACCESS by warning1<PsiElement, String>()
     val UNEXPECTED_RETURNED_VALUE by warning1<PsiElement, String>()
     val INVALID_SUBLIST_RANGE by warning2<PsiElement, String, String>()
     val CONSISTENCY by error1<PsiElement, String>()
@@ -40,6 +41,7 @@ object VerificationErrors : KtDiagnosticsContainer() {
         CONDITIONAL_EFFECT_ERROR.name,
         VIPER_VERIFICATION_ERROR.name,
         POSSIBLE_INDEX_OUT_OF_BOUND.name,
+        POSSIBLE_EMPTY_LIST_ACCESS.name,
         UNEXPECTED_RETURNED_VALUE.name,
         INVALID_SUBLIST_RANGE.name,
         CONSISTENCY.name

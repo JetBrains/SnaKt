@@ -144,6 +144,15 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
                 )
             }
 
+            is EmptyListAccessError -> {
+                val msg = formattedError.msg()
+                VerificationErrors.POSSIBLE_EMPTY_LIST_ACCESS.on(
+                    source, msg,
+                    positioningStrategy = SourceElementPositioningStrategies.DEFAULT,
+                    languageVersionSettings = module.languageVersionSettings
+                )
+            }
+
             is InvalidSubListRangeError -> {
                 val msg = formattedError.msg()
                 VerificationErrors.INVALID_SUBLIST_RANGE.on(

@@ -21,12 +21,12 @@ fun <!VIPER_TEXT!>unsafe_last<!>(l: List<Int>) : Int {
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>unsafe_first_function<!>(l: List<Int>): Int {
-    return <!POSSIBLE_INDEX_OUT_OF_BOUND!>l.first()<!>
+    return <!POSSIBLE_EMPTY_LIST_ACCESS!>l.first()<!>
 }
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>unsafe_last_function<!>(l: List<Int>): Int {
-    return <!POSSIBLE_INDEX_OUT_OF_BOUND!>l.last()<!>
+    return <!POSSIBLE_EMPTY_LIST_ACCESS!>l.last()<!>
 }
 
 @AlwaysVerify
