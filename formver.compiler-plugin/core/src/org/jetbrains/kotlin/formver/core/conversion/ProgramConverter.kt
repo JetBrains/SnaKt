@@ -189,44 +189,52 @@ class ProgramConverter(
     }
 
     /**
-     * Silicon does not support mutually recursive Viper functions. Its consistency check reports
-     * unrelated return-type errors for such programs, so reject the cycle before invoking it.
-     * A function calling itself is supported and deliberately excluded here.
+     * Viper accepts mutually recursive functions, but Silicon checks each function's postcondition
+     * without assuming the postconditions of the other functions in its recursion cycle. Even the
+     * generated result-type postcondition then fails, with an error that never mentions recursion.
+     * Reject such cycles before verification instead. A function that only calls itself verifies
+     * fine and does not count as a cycle here.
      */
     private fun validatePureRecursion() {
-        val bodies = convertedBodyResolver.pureBodies()
-        val calls = bodies.mapValues { (_, body) ->
-            body.preorder()
-                .map { it.first }
-                .filterIsInstance<FunctionCall>()
-                .map { it.function.name }
-                .filter { it in bodies }
-                .toSet()
-        }
-
-        fun reaches(current: SymbolicName, target: SymbolicName, visited: MutableSet<SymbolicName>): Boolean {
-            if (!visited.add(current)) return false
-            return calls[current].orEmpty().any { next ->
-                next == target || reaches(next, target, visited)
+        val calls: Map<SymbolicName, Set<SymbolicName>> = buildMap {
+            convertedBodyResolver.forEachPure { name, body ->
+                val callees = body.preorder()
+                    .map { it.first }
+                    .filterIsInstance<FunctionCall>()
+                    .map { it.function.name }
+                    .toSet()
+                put(name, callees)
             }
         }
 
-        val hasMutualRecursion = calls.any { (name, directCalls) ->
-            directCalls
-                .filter { it != name }
-                .any { reaches(it, name, mutableSetOf()) }
-        }
-        if (hasMutualRecursion) {
-            for (entry in registered) {
-                emit(
-                    entry.declaration.source,
-                    ConversionErrors.MUTUAL_RECURSION_UNSUPPORTED,
-                    "Verification involving mutually recursive pure functions is not supported",
-                )
+        fun reachable(start: SymbolicName): Set<SymbolicName> {
+            val seen = mutableSetOf<SymbolicName>()
+            val work = ArrayDeque(calls.getValue(start))
+            while (work.isNotEmpty()) {
+                val next = work.removeFirst()
+                if (seen.add(next)) work.addAll(calls[next].orEmpty())
             }
+            return seen
+        }
+
+        val reach = calls.keys.associateWith { reachable(it) }
+        val cycleMembers = calls.keys.filter { name ->
+            reach.getValue(name).any { other -> other != name && name in reach[other].orEmpty() }
+        }
+        if (cycleMembers.isEmpty()) return
+
+        val names = cycleMembers
+            .map { fullSignatures[it]?.symbol?.name?.asString() ?: it.toString() }
+            .sorted()
+            .joinToString { "'$it'" }
+        for (entry in registered) {
+            emit(
+                entry.declaration.source,
+                ConversionErrors.MUTUAL_RECURSION_UNSUPPORTED,
+                "Verification depends on mutually recursive pure functions $names, which is not supported",
+            )
         }
     }
-
 
     private fun linearizePure(name: SymbolicName, signature: CompleteFunctionSignature) {
         val converted = convertedBodyResolver.lookupPure(name)
