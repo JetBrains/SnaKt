@@ -36,6 +36,8 @@ method get_left_val(n: Ref) returns (v_ret_0: Ref)
 /binary_tree.kt: info: Generated Viper text for test:
 field bf_data: Ref
 
+field size: Ref
+
 function g_left(this: Ref): Ref
   requires isSubtype(typeOf(this), Node())
   ensures isSubtype(typeOf(result), nullable(Node()))
@@ -44,11 +46,6 @@ function g_left(this: Ref): Ref
 function g_right(this: Ref): Ref
   requires isSubtype(typeOf(this), Node())
   ensures isSubtype(typeOf(result), nullable(Node()))
-
-
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
 
 
 predicate BooleanArray_unique(this: Ref) {

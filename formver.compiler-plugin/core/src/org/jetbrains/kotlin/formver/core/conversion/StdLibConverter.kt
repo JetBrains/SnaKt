@@ -61,7 +61,20 @@ data object NativeArrayInterface : StdLibReceiverInterface {
 
 internal val nativeArrayClassNames = listOf(
     "Array", "BooleanArray", "ByteArray", "CharArray", "ShortArray", "IntArray", "LongArray", "FloatArray", "DoubleArray",
+    "UByteArray", "UShortArray", "UIntArray", "ULongArray",
 )
+
+data object NativeArrayFactoryInterface : StdLibReceiverInterface {
+    override fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean =
+        NameMatcher.matchClassScope(function.name) {
+            ifInKotlinPkg {
+                ifNoReceiver {
+                    return true
+                }
+            }
+            return false
+        }
+}
 
 data object NoInterface : StdLibReceiverInterface {
     override fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean =
@@ -77,21 +90,36 @@ data object NoInterface : StdLibReceiverInterface {
 
 sealed interface StdLibCondition {
     val stdLibInterface: StdLibReceiverInterface
-    val functionName: String
+    fun match(function: NamedFunctionSignature): Boolean
+}
 
-    fun match(function: NamedFunctionSignature): Boolean {
-        NameMatcher.matchClassScope(function.name) {
-            ifFunctionName(functionName) {
-                return true
-            }
-            return false
+private fun NamedFunctionSignature.isNamed(functionName: String): Boolean {
+    NameMatcher.matchClassScope(name) {
+        ifFunctionName(functionName) {
+            return true
         }
+        return false
+    }
+}
+
+private fun NamedFunctionSignature.isConstructor(): Boolean {
+    NameMatcher.matchClassScope(name) {
+        ifConstructor {
+            return true
+        }
+        return false
     }
 }
 
 sealed interface StdLibPrecondition : StdLibCondition {
     companion object {
-        val all = listOf(GetPrecondition, NativeArrayGetPrecondition, SubListPrecondition)
+        val all = listOf(
+            GetPrecondition,
+            SetPrecondition,
+            NativeArrayGetPrecondition,
+            NativeArraySetPrecondition,
+            SubListPrecondition,
+        )
     }
 
     fun getEmbeddings(function: NamedFunctionSignature): List<ExpEmbedding>
@@ -103,7 +131,11 @@ sealed interface StdLibPostcondition : StdLibCondition {
             EmptyListPostcondition,
             IsEmptyPostcondition,
             GetPostcondition,
+            SetPostcondition,
             NativeArrayGetPostcondition,
+            NativeArraySetPostcondition,
+            EmptyArrayPostcondition,
+            NativeArrayConstructorPostcondition,
             SubListPostcondition,
             AddPostcondition
         )
@@ -112,48 +144,63 @@ sealed interface StdLibPostcondition : StdLibCondition {
     fun getEmbeddings(returnVariable: VariableEmbedding, function: NamedFunctionSignature): List<ExpEmbedding>
 }
 
-data object GetPrecondition : StdLibPrecondition {
-    override fun getEmbeddings(function: NamedFunctionSignature): List<ExpEmbedding> {
-        val receiver = function.dispatchReceiver!!
-        val indexArg = function.formalArgs[1]
-        return listOf(
-            GeIntInt(
-                indexArg,
-                IntLit(0),
-                SourceRole.ListElementAccessCheck(SourceRole.ListElementAccessCheck.AccessCheckType.LESS_THAN_ZERO)
-            ),
-            GtIntInt(
-                FieldAccess(receiver, CollectionSizeFieldEmbedding),
-                indexArg,
-                SourceRole.ListElementAccessCheck(SourceRole.ListElementAccessCheck.AccessCheckType.GREATER_THAN_LIST_SIZE)
-            ),
-        )
-    }
+/* In both helpers the index is the first value parameter, which follows the receiver in formalArgs. */
+private fun listIndexInBounds(function: NamedFunctionSignature): List<ExpEmbedding> {
+    val receiver = function.dispatchReceiver!!
+    val indexArg = function.formalArgs[1]
+    return listOf(
+        GeIntInt(
+            indexArg,
+            IntLit(0),
+            SourceRole.ListElementAccessCheck(SourceRole.ListElementAccessCheck.AccessCheckType.LESS_THAN_ZERO)
+        ),
+        GtIntInt(
+            FieldAccess(receiver, CollectionSizeFieldEmbedding),
+            indexArg,
+            SourceRole.ListElementAccessCheck(SourceRole.ListElementAccessCheck.AccessCheckType.GREATER_THAN_LIST_SIZE)
+        ),
+    )
+}
 
+private fun arrayIndexInBounds(function: NamedFunctionSignature): List<ExpEmbedding> {
+    val receiver = function.dispatchReceiver!!
+    val indexArg = function.formalArgs[1]
+    return listOf(
+        GeIntInt(
+            indexArg,
+            IntLit(0),
+            SourceRole.ArrayElementAccessCheck(SourceRole.ArrayElementAccessCheck.AccessCheckType.LESS_THAN_ZERO),
+        ),
+        GtIntInt(
+            FieldAccess(receiver, CollectionSizeFieldEmbedding),
+            indexArg,
+            SourceRole.ArrayElementAccessCheck(SourceRole.ArrayElementAccessCheck.AccessCheckType.GREATER_THAN_ARRAY_SIZE),
+        ),
+    )
+}
+
+data object GetPrecondition : StdLibPrecondition {
+    override fun getEmbeddings(function: NamedFunctionSignature): List<ExpEmbedding> = listIndexInBounds(function)
     override val stdLibInterface = ListInterface
-    override val functionName = "get"
+    override fun match(function: NamedFunctionSignature) = function.isNamed("get")
+}
+
+data object SetPrecondition : StdLibPrecondition {
+    override fun getEmbeddings(function: NamedFunctionSignature): List<ExpEmbedding> = listIndexInBounds(function)
+    override val stdLibInterface = MutableListInterface
+    override fun match(function: NamedFunctionSignature) = function.isNamed("set")
 }
 
 data object NativeArrayGetPrecondition : StdLibPrecondition {
-    override fun getEmbeddings(function: NamedFunctionSignature): List<ExpEmbedding> {
-        val receiver = function.dispatchReceiver!!
-        val indexArg = function.formalArgs[1]
-        return listOf(
-            GeIntInt(
-                indexArg,
-                IntLit(0),
-                SourceRole.ArrayElementAccessCheck(SourceRole.ArrayElementAccessCheck.AccessCheckType.LESS_THAN_ZERO),
-            ),
-            GtIntInt(
-                FieldAccess(receiver, CollectionSizeFieldEmbedding),
-                indexArg,
-                SourceRole.ArrayElementAccessCheck(SourceRole.ArrayElementAccessCheck.AccessCheckType.GREATER_THAN_ARRAY_SIZE),
-            ),
-        )
-    }
-
+    override fun getEmbeddings(function: NamedFunctionSignature): List<ExpEmbedding> = arrayIndexInBounds(function)
     override val stdLibInterface = NativeArrayInterface
-    override val functionName = "get"
+    override fun match(function: NamedFunctionSignature) = function.isNamed("get")
+}
+
+data object NativeArraySetPrecondition : StdLibPrecondition {
+    override fun getEmbeddings(function: NamedFunctionSignature): List<ExpEmbedding> = arrayIndexInBounds(function)
+    override val stdLibInterface = NativeArrayInterface
+    override fun match(function: NamedFunctionSignature) = function.isNamed("set")
 }
 
 data object SubListPrecondition : StdLibPrecondition {
@@ -169,7 +216,7 @@ data object SubListPrecondition : StdLibPrecondition {
     }
 
     override val stdLibInterface = ListInterface
-    override val functionName = "subList"
+    override fun match(function: NamedFunctionSignature) = function.isNamed("subList")
 }
 
 data object EmptyListPostcondition : StdLibPostcondition {
@@ -183,7 +230,7 @@ data object EmptyListPostcondition : StdLibPostcondition {
     }
 
     override val stdLibInterface = NoInterface
-    override val functionName = "emptyList"
+    override fun match(function: NamedFunctionSignature) = function.isNamed("emptyList")
 }
 
 data object IsEmptyPostcondition : StdLibPostcondition {
@@ -200,7 +247,7 @@ data object IsEmptyPostcondition : StdLibPostcondition {
     }
 
     override val stdLibInterface = CollectionInterface
-    override val functionName = "isEmpty"
+    override fun match(function: NamedFunctionSignature) = function.isNamed("isEmpty")
 }
 
 data object GetPostcondition : StdLibPostcondition {
@@ -212,7 +259,19 @@ data object GetPostcondition : StdLibPostcondition {
     }
 
     override val stdLibInterface = ListInterface
-    override val functionName = "get"
+    override fun match(function: NamedFunctionSignature) = function.isNamed("get")
+}
+
+data object SetPostcondition : StdLibPostcondition {
+    override fun getEmbeddings(
+        returnVariable: VariableEmbedding,
+        function: NamedFunctionSignature
+    ): List<ExpEmbedding> {
+        return listOf(function.dispatchReceiver!!.sameSize())
+    }
+
+    override val stdLibInterface = MutableListInterface
+    override fun match(function: NamedFunctionSignature) = function.isNamed("set")
 }
 
 data object NativeArrayGetPostcondition : StdLibPostcondition {
@@ -224,7 +283,48 @@ data object NativeArrayGetPostcondition : StdLibPostcondition {
     }
 
     override val stdLibInterface = NativeArrayInterface
-    override val functionName = "get"
+    override fun match(function: NamedFunctionSignature) = function.isNamed("get")
+}
+
+data object NativeArraySetPostcondition : StdLibPostcondition {
+    override fun getEmbeddings(
+        returnVariable: VariableEmbedding,
+        function: NamedFunctionSignature
+    ): List<ExpEmbedding> {
+        return listOf(function.dispatchReceiver!!.sameSize())
+    }
+
+    override val stdLibInterface = NativeArrayInterface
+    override fun match(function: NamedFunctionSignature) = function.isNamed("set")
+}
+
+data object EmptyArrayPostcondition : StdLibPostcondition {
+    override fun getEmbeddings(
+        returnVariable: VariableEmbedding,
+        function: NamedFunctionSignature
+    ): List<ExpEmbedding> {
+        return listOf(
+            EqCmp(FieldAccess(returnVariable, CollectionSizeFieldEmbedding), IntLit(0))
+        )
+    }
+
+    override val stdLibInterface = NativeArrayFactoryInterface
+    override fun match(function: NamedFunctionSignature) = function.isNamed("emptyArray")
+}
+
+/** Every native array constructor takes the size as its first parameter. */
+data object NativeArrayConstructorPostcondition : StdLibPostcondition {
+    override fun getEmbeddings(
+        returnVariable: VariableEmbedding,
+        function: NamedFunctionSignature
+    ): List<ExpEmbedding> {
+        return listOf(
+            EqCmp(FieldAccess(returnVariable, CollectionSizeFieldEmbedding), function.formalArgs[0])
+        )
+    }
+
+    override val stdLibInterface = NativeArrayInterface
+    override fun match(function: NamedFunctionSignature) = function.isConstructor()
 }
 
 data object SubListPostcondition : StdLibPostcondition {
@@ -241,7 +341,7 @@ data object SubListPostcondition : StdLibPostcondition {
     }
 
     override val stdLibInterface = ListInterface
-    override val functionName = "subList"
+    override fun match(function: NamedFunctionSignature) = function.isNamed("subList")
 }
 
 data object AddPostcondition : StdLibPostcondition {
@@ -253,7 +353,7 @@ data object AddPostcondition : StdLibPostcondition {
     }
 
     override val stdLibInterface = MutableListInterface
-    override val functionName = "add"
+    override fun match(function: NamedFunctionSignature) = function.isNamed("add")
 }
 
 fun NamedFunctionSignature.stdLibPreconditions(ctx: TypeResolver): List<ExpEmbedding> {
