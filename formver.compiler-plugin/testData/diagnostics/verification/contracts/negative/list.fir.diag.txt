@@ -221,3 +221,35 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
   ensures intFromRef(this.size) == old(intFromRef(this.size))
   ensures intFromRef(ret_1.size) ==
     intFromRef(toIndex) - intFromRef(fromIndex)
+
+
+/list.kt: info: Generated Viper text for unchecked_set:
+field size: Ref
+
+method set(this: Ref, index: Ref, element: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires isSubtype(typeOf(element), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method unchecked_set(l: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(l), MutableList())
+  requires acc(l.size, write)
+  requires intFromRef(l.size) >= 0
+  ensures acc(l.size, write)
+  ensures intFromRef(l.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := set(l, intToRef(0), intToRef(1))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
