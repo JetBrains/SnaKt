@@ -1,0 +1,73 @@
+/invoke.kt: info: Generated Viper text for invoke:
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), OperatorProbe())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method invoke(this: Ref, argument: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := plusInts(value(this), argument)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/invoke.kt: info: Generated Viper text for operatorSyntax:
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), OperatorProbe())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method invoke(this: Ref, argument: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method operatorSyntax(probe: Ref, argument: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := invoke(probe, argument)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/invoke.kt: info: Generated Viper text for explicitSyntax:
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), OperatorProbe())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method explicitSyntax(probe: Ref, argument: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := invoke(probe, argument)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method invoke(this: Ref, argument: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/invoke.kt: info: Generated Viper text for functionTypeSyntax:
+method functionTypeSyntax(operation: Ref, argument: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(operation), functionType())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  inhale isSubtype(typeOf(anon), intType())
+  v_ret_0 := anon
+  goto lbl_ret_0
+  label lbl_ret_0
+}
