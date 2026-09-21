@@ -301,6 +301,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("constant_references.kt")
+    public void testConstant_references() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/constant_references.kt");
+    }
+
+    @Test
     @TestMetadata("do_not_verify.kt")
     public void testDo_not_verify() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/do_not_verify.kt");

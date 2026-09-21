@@ -1,0 +1,16 @@
+/constant_references.kt: info: Generated Viper text for constantReferences:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method constantReferences() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert 42 == 42
+  assert Seq(72, 101, 108, 108, 111, 44, 32, 83, 110, 97, 75, 116) ==
+    Seq(72, 101, 108, 108, 111, 44, 32, 83, 110, 97, 75, 116)
+  assert true
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
