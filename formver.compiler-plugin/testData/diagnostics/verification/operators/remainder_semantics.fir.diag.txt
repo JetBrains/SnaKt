@@ -1,0 +1,49 @@
+/remainder_semantics.kt: info: Generated Viper text for negativeDividendRemainder:
+method negativeDividendRemainder() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == -2
+{
+  v_ret_0 := remInts(intToRef(-2), intToRef(3))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/remainder_semantics.kt: info: Generated Viper text for negativeDivisorRemainder:
+method negativeDivisorRemainder() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 2
+{
+  v_ret_0 := remInts(intToRef(2), intToRef(-3))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/remainder_semantics.kt: info: Generated Viper text for bothOperandsNegativeRemainder:
+method bothOperandsNegativeRemainder() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == -2
+{
+  v_ret_0 := remInts(intToRef(-2), intToRef(-3))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/remainder_semantics.kt: info: Generated Viper text for minimumValueRemainder:
+method minimumValueRemainder() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == -1
+{
+  v_ret_0 := remInts(minusInts(intToRef(-2147483647), intToRef(1)), intToRef(2147483647))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/remainder_semantics.kt: info: Generated Viper text for minimumValueNegativeOneRemainder:
+method minimumValueNegativeOneRemainder() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 0
+{
+  v_ret_0 := remInts(minusInts(intToRef(-2147483647), intToRef(1)), intToRef(-1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}

@@ -52,7 +52,15 @@ object OperatorExpEmbeddings {
     val RemIntInt = buildBinaryOperator {
         setName("remInts")
         setSignature(intIntToIntType)
-        viperImplementation { Exp.Mod(args[0], args[1], pos, info) }
+        viperImplementation {
+            val zero = Exp.IntLit(0, pos, info)
+            val dividendIsNegative = Exp.LtCmp(args[0], zero, pos, info)
+            val divisorIsNegative = Exp.LtCmp(args[1], zero, pos, info)
+            val absoluteDividend = Exp.TernaryExp(dividendIsNegative, Exp.Minus(args[0], pos, info), args[0], pos, info)
+            val absoluteDivisor = Exp.TernaryExp(divisorIsNegative, Exp.Minus(args[1], pos, info), args[1], pos, info)
+            val magnitude = Exp.Mod(absoluteDividend, absoluteDivisor, pos, info)
+            Exp.TernaryExp(dividendIsNegative, Exp.Minus(magnitude, pos, info), magnitude, pos, info)
+        }
         additionalConditions {
             precondition {
                 intInjection.fromRef(args[1]) ne 0.toExp()

@@ -746,6 +746,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("remainder_semantics.kt")
+      public void testRemainder_semantics() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/remainder_semantics.kt");
+      }
+
+      @Test
       @TestMetadata("safe_call.kt")
       public void testSafe_call() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/safe_call.kt");
