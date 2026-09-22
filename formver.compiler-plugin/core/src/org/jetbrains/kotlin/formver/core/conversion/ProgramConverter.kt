@@ -97,6 +97,12 @@ class ProgramConverter(
 
     private val callable: MutableMap<SymbolicName, SignatureWithTarget<NamedCallableEmbedding>> = mutableMapOf()
 
+    /** Stable per-symbol indices assigned to local functions to keep their embedded names distinct. */
+    private val localFunctionIndices: MutableMap<FirFunctionSymbol<*>, Int> = mutableMapOf()
+
+    override fun localFunctionUniqueIndex(symbol: FirFunctionSymbol<*>): Int =
+        localFunctionIndices.getOrPut(symbol) { localFunctionIndices.size }
+
     private data class RegisteredFunction(
         val declaration: FirSimpleFunction,
         val signature: CompleteFunctionSignature,

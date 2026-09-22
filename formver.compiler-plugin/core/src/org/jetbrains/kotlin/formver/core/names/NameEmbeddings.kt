@@ -102,6 +102,18 @@ fun CallableId.embedFunctionName(type: FunctionTypeEmbedding): ScopedName = buil
     FunctionKotlinName(callableName, type)
 }
 
+/**
+ * Embeds the name of a local function, disambiguated by [index].
+ *
+ * Sibling local functions may share a name and signature, so [embedFunctionName] is not unique for
+ * them. [index] separates their scopes; see [LocalFunctionScope].
+ */
+fun CallableId.embedLocalFunctionName(type: FunctionTypeEmbedding, index: Int): ScopedName = buildName {
+    embedScope(this@embedLocalFunctionName)
+    localFunctionScope(index)
+    FunctionKotlinName(callableName, type)
+}
+
 fun Name.embedScopedLocalName(scope: ScopeIndex) = buildName {
     when (scope) {
         is ScopeIndex.Indexed -> localScope(scope.index)
@@ -164,5 +176,9 @@ fun FirFunctionSymbol<*>.embedName(ctx: ProgramConversionContext): ScopedName = 
     )
 
     is FirConstructorSymbol -> embedName(ctx)
-    else -> callableId.embedFunctionName(ctx.embedFunctionPretype(this))
+    else -> {
+        val type = ctx.embedFunctionPretype(this)
+        if (callableId.isLocal) callableId.embedLocalFunctionName(type, ctx.localFunctionUniqueIndex(this))
+        else callableId.embedFunctionName(type)
+    }
 }

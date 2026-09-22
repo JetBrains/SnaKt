@@ -16,6 +16,7 @@ import org.jetbrains.kotlin.fir.types.isBoolean
 import org.jetbrains.kotlin.fir.types.isUnit
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.common.UnsupportedFeatureBehaviour
 import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.LabelEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
@@ -184,6 +185,20 @@ fun StmtConversionContext.getInlineFunctionCallArgs(
     }
     return Pair(declarations, storedArgs)
 }
+
+/**
+ * Handles an unsupported language feature according to [PluginConfiguration.behaviour]:
+ * either aborting conversion with an internal error, or reporting a minor error and continuing with
+ * [ErrorExp] as the (unreachable) result.
+ */
+fun StmtConversionContext.handleUnsupportedFeature(source: KtSourceElement?, msg: String): ExpEmbedding =
+    when (config.behaviour) {
+        UnsupportedFeatureBehaviour.THROW_EXCEPTION -> throw SnaktInternalException(source, msg)
+        UnsupportedFeatureBehaviour.ASSUME_UNREACHABLE -> {
+            reportMinorInternalError(source, msg)
+            ErrorExp
+        }
+    }
 
 fun StmtConversionContext.insertInlineFunctionCall(
     calleeSignature: FunctionSignature,
