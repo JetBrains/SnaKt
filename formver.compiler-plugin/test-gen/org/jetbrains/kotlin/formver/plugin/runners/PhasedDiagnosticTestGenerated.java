@@ -712,6 +712,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("non_null_assertion.kt")
+      public void testNon_null_assertion() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/negative/non_null_assertion.kt");
+      }
+
+      @Test
       @TestMetadata("try_catch.kt")
       public void testTry_catch() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/negative/try_catch.kt");
