@@ -1,0 +1,25 @@
+/non_null_assertion.kt: info: Generated Viper text for nonNullAssertionReceiverMightFail:
+method g_aProp(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+method nonNullAssertionReceiverMightFail(property: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(property), nullable(PrimitiveProperty()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  assert property != nullValue()
+  inhale isSubtype(typeOf(property), PrimitiveProperty())
+  anon_1 := property
+  anon_0 := s_aProp(anon_1, intToRef(1))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method s_aProp(this: Ref, anon_0: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
