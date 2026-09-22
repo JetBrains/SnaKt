@@ -12,9 +12,9 @@ import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
 import org.jetbrains.kotlin.formver.core.conversion.SubstitutedArgument
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
+import org.jetbrains.kotlin.formver.core.conversion.handleUnsupportedFeature
 import org.jetbrains.kotlin.formver.core.conversion.insertInlineFunctionCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.ErrorExp
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FunctionCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.MethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
@@ -190,8 +190,8 @@ data class InlineNamedFunction(
 
         val activeCalls = activeLocalCalls.get()
         if (!activeCalls.add(symbol)) {
-            ctx.reportMinorInternalError(symbol.source, "Recursive local function '${symbol.name}' is not supported")
-            return ErrorExp
+            // Recursive local functions cannot be inlined; treat them as an unsupported feature.
+            return ctx.handleUnsupportedFeature(symbol.source, "Recursive local function '${symbol.name}' is not supported")
         }
         return try {
             ctx.insertInlineFunctionCall(

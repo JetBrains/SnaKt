@@ -50,6 +50,11 @@ open class ScopeBuilder {
         scope = LocalScope(level)
     }
 
+    fun localFunctionScope(index: Int) {
+        require(scope != null) { "Local function scope must wrap an existing scope." }
+        scope = LocalFunctionScope(scope!!, index)
+    }
+
     fun badScope() {
         require(scope == null)
         scope = BadScope

@@ -1,6 +1,6 @@
-fun <!VERIFICATION_SKIPPED!>recursiveLocalFunction<!>() {
-    fun <!MINOR_INTERNAL_ERROR!>local<!>() {
+fun recursiveLocalFunction() {
+    <!INTERNAL_ERROR!>fun local() {
         local()
-    }
+    }<!>
     local()
 }
