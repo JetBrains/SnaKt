@@ -94,7 +94,7 @@ fun FirFunctionSymbol<*>.isInvariantBuilderFunctionNamed(name: String) =
 
 @OptIn(SymbolInternals::class)
 val FirFunctionSymbol<*>.shouldBeInlined
-    get() = isInline && fir.body != null
+    get() = (isInline || callableId.isLocal) && fir.body != null
 
 private object ViperProgram : FirDeclarationDataKey()
 private object ShouldVerify : FirDeclarationDataKey()

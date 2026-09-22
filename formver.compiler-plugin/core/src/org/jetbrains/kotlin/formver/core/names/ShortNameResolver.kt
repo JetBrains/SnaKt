@@ -156,6 +156,7 @@ class ShortNameResolver : NameResolver {
             is ClassScope -> 2
             FakeScope -> 50
             is LocalScope -> 3
+            is LocalFunctionScope -> 3
             is PackageScope -> 20
             ParameterScope -> 3
             is PrivateScope -> 1

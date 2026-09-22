@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.contracts.description.LogicOperationKind
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.declarations.FirProperty
+import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.expressions.impl.FirElseIfTrueCondition
 import org.jetbrains.kotlin.fir.expressions.impl.FirUnitExpression
@@ -20,7 +21,6 @@ import org.jetbrains.kotlin.fir.types.isUnit
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
-import org.jetbrains.kotlin.formver.common.UnsupportedFeatureBehaviour
 import org.jetbrains.kotlin.formver.core.embeddings.LabelLink
 import org.jetbrains.kotlin.formver.core.embeddings.callables.CallableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.insertCall
@@ -331,6 +331,22 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         return data.declareLocalProperty(symbol, property.initializer?.let { data.convert(it) })
     }
 
+    override fun visitSimpleFunction(
+        simpleFunction: FirSimpleFunction,
+        data: StmtConversionContext,
+    ): ExpEmbedding {
+        if (!simpleFunction.symbol.callableId.isLocal) {
+            throw SnaktInternalException(
+                simpleFunction.source,
+                "StmtConversionVisitor should only encounter local functions.",
+            )
+        }
+
+        // Local functions are embedded lazily at their call sites. Their declaration has no
+        // runtime effect, just like a local class or type alias declaration.
+        return UnitLit
+    }
+
     override fun visitWhileLoop(whileLoop: FirWhileLoop, data: StmtConversionContext): ExpEmbedding {
         val condition = data.convert(whileLoop.condition).withType { boolean() }
         val invariants = buildList {
@@ -572,13 +588,5 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
 
     private fun handleUnimplementedElement(
         source: KtSourceElement?, msg: String, data: StmtConversionContext
-    ): ExpEmbedding = when (data.config.behaviour) {
-        UnsupportedFeatureBehaviour.THROW_EXCEPTION ->
-            throw SnaktInternalException(source, msg)
-
-        UnsupportedFeatureBehaviour.ASSUME_UNREACHABLE -> {
-            data.reportMinorInternalError(msg)
-            ErrorExp
-        }
-    }
+    ): ExpEmbedding = data.handleUnsupportedFeature(source, msg)
 }
