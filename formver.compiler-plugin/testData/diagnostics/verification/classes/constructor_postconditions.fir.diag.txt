@@ -1,0 +1,163 @@
+/constructor_postconditions.kt: info: Generated Viper text for primaryConstructorPostconditions:
+function g_argument(this: Ref): Ref
+  requires isSubtype(typeOf(this), InitializedPrimary())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function initialized(this: Ref): Ref
+  requires isSubtype(typeOf(this), InitializedPrimary())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_argument: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_argument), intType())
+  ensures isSubtype(typeOf(ret_1), InitializedPrimary())
+  ensures acc(InitializedPrimary_unique(ret_1), write)
+  ensures intFromRef(g_argument(ret_1)) == intFromRef(par_argument)
+  ensures intFromRef(initialized(ret_1)) == 17
+
+
+method primaryConstructorPostconditions() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var fresh: Ref
+  fresh := con(intToRef(42))
+  assert intFromRef(g_argument(fresh)) == 42
+  assert intFromRef(initialized(fresh)) == 17
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/constructor_postconditions.kt: info: Generated Viper text for secondaryConstructorPostconditions:
+function g_argument(this: Ref): Ref
+  requires isSubtype(typeOf(this), InitializedSecondary())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function initialized(this: Ref): Ref
+  requires isSubtype(typeOf(this), InitializedSecondary())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_argument: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_argument), intType())
+  ensures isSubtype(typeOf(ret_1), InitializedSecondary())
+  ensures acc(InitializedSecondary_unique(ret_1), write)
+  ensures intFromRef(initialized(ret_1)) == 23
+  ensures intFromRef(g_argument(ret_1)) == intFromRef(par_argument)
+
+
+method secondaryConstructorPostconditions() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var fresh: Ref
+  fresh := con(intToRef(42))
+  assert intFromRef(g_argument(fresh)) == 42
+  assert intFromRef(initialized(fresh)) == 23
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/constructor_postconditions.kt: info: Generated Viper text for delegatingConstructorPostconditions:
+function argument(this: Ref): Ref
+  requires isSubtype(typeOf(this), DelegatingSecondary())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function initialized(this: Ref): Ref
+  requires isSubtype(typeOf(this), DelegatingSecondary())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), DelegatingSecondary())
+  ensures acc(DelegatingSecondary_unique(ret_1), write)
+  ensures intFromRef(argument(ret_1)) == 42
+  ensures intFromRef(initialized(ret_1)) == 29
+
+
+method delegatingConstructorPostconditions() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var fresh: Ref
+  fresh := con()
+  assert intFromRef(argument(fresh)) == 42
+  assert intFromRef(initialized(fresh)) == 29
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/constructor_postconditions.kt: info: Generated Viper text for nonPureInitializerPostconditions:
+function InitializedPrimary_g_argument(this: Ref): Ref
+  requires isSubtype(typeOf(this), InitializedPrimary())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function NonPureInitializer_g_argument(this: Ref): Ref
+  requires isSubtype(typeOf(this), NonPureInitializer())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function initialized(this: Ref): Ref
+  requires isSubtype(typeOf(this), InitializedPrimary())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function nested(this: Ref): Ref
+  requires isSubtype(typeOf(this), NonPureInitializer())
+  ensures isSubtype(typeOf(result), InitializedPrimary())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function tag(this: Ref): Ref
+  requires isSubtype(typeOf(this), NonPureInitializer())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con_InitializedPrimary(par_argument: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_argument), intType())
+  ensures isSubtype(typeOf(ret_2), InitializedPrimary())
+  ensures acc(InitializedPrimary_unique(ret_2), write)
+  ensures intFromRef(InitializedPrimary_g_argument(ret_2)) ==
+    intFromRef(par_argument)
+  ensures intFromRef(initialized(ret_2)) == 17
+
+
+method con_NonPureInitializer(par_argument: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_argument), intType())
+  ensures isSubtype(typeOf(ret_1), NonPureInitializer())
+  ensures acc(NonPureInitializer_unique(ret_1), write)
+  ensures intFromRef(NonPureInitializer_g_argument(ret_1)) ==
+    intFromRef(par_argument)
+  ensures intFromRef(tag(ret_1)) == 7
+
+
+method nonPureInitializerPostconditions() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var fresh: Ref
+  fresh := con_NonPureInitializer(intToRef(42))
+  assert intFromRef(NonPureInitializer_g_argument(fresh)) == 42
+  assert intFromRef(tag(fresh)) == 7
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
