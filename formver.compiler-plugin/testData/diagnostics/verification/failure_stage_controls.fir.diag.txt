@@ -1,0 +1,35 @@
+/failure_stage_controls.kt: info: Generated Viper text for verifiedControl:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method verifiedControl(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires intFromRef(x) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(x) >= 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/failure_stage_controls.kt: info: Generated Viper text for proofFailureControl:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method proofFailureControl(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires intFromRef(x) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(x) > 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/failure_stage_controls.kt: error: An internal error has occurred.
+Details: Constant Expression of type Double is not yet implemented.
+Please report this at https://github.com/jesyspa/kotlin
