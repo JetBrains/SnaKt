@@ -12,7 +12,7 @@ fun <!VIPER_TEXT!>increment<!>(value: Int): Int = value + 1
 
 @AlwaysVerify
 fun functionReference() {
-    invoke(<!INTERNAL_ERROR!>::increment<!>)
+    invoke(<!UNSUPPORTED_FEATURE!>::increment<!>)
 }
 
 fun <!VIPER_TEXT!>explicitArg<!>(): Int {

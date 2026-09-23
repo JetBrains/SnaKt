@@ -388,6 +388,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("data_class_destructuring.kt")
+      public void testData_class_destructuring() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/data_class_destructuring.kt");
+      }
+
+      @Test
       @TestMetadata("inheritance.kt")
       public void testInheritance() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/inheritance.kt");
