@@ -71,6 +71,13 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         data,
     )
 
+    override fun visitComponentCall(componentCall: FirComponentCall, data: StmtConversionContext): ExpEmbedding =
+        handleUnimplementedElement(
+            componentCall.source,
+            "Not yet implemented for FirComponentCall (${componentCall.source.text})",
+            data,
+        )
+
     override fun visitReturnExpression(
         returnExpression: FirReturnExpression,
         data: StmtConversionContext,

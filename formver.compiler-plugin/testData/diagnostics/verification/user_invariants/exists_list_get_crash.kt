@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.formver.plugin.*
 // is surfaced as a PURITY_VIOLATION.
 <!PURITY_VIOLATION!>fun <!VERIFICATION_SKIPPED!>existsListGetCrash<!>(l: List<Int>, res: Int): Int {
     postconditions<Int> {
-        exists<Int> { i -> 0 <= i && i < l.size && l[i] == l[res] }
+        exists<Int> { i -> 0 <= i && i < l.size && <!PURITY_VIOLATION!>l[i]<!> == <!PURITY_VIOLATION!>l[res]<!> }
     }
     return 0
 }<!>

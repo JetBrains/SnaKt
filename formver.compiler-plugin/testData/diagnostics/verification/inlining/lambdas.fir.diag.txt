@@ -8,9 +8,7 @@ method increment(value: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
-/lambdas.kt: error: An internal error has occurred.
-Details: Function references are not supported (::increment)
-Please report this at https://github.com/jesyspa/kotlin
+/lambdas.kt: error: Formal verification does not support this Kotlin feature: Function references are not supported (::increment)
 
 /lambdas.kt: info: Generated Viper text for explicitArg:
 method explicitArg() returns (v_ret_0: Ref)
