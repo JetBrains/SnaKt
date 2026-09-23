@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.EqCmp
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FirVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
@@ -211,7 +212,7 @@ private fun dataClassGeneratedPostconditions(
     symbol: FirFunctionSymbol<*>,
     signature: NamedFunctionSignature,
     returnTarget: ReturnTarget,
-): List<EqCmp> {
+): List<ExpEmbedding> {
     val dataClass = symbol.receiverType?.toRegularClassSymbol(converter.session)?.takeIf { it.isData }
         ?: return emptyList()
     val receiver = signature.dispatchReceiver ?: return emptyList()
@@ -232,10 +233,15 @@ private fun dataClassGeneratedPostconditions(
     val paramsByName = signature.params.filterIsInstance<FirVariableEmbedding>().mapNotNull { parameter ->
         (parameter.symbol as? FirValueParameterSymbol)?.name?.let { it to parameter }
     }.toMap()
-    return constructorProperties.mapNotNull { (_, constructorParameter, property) ->
+    val propertyEqualities = constructorProperties.mapNotNull { (_, constructorParameter, property) ->
         val parameter = paramsByName[constructorParameter.name] ?: return@mapNotNull null
         EqCmp(property.getter!!.getValueSimple(returnTarget.variable, converter.typeResolver), parameter)
     }
+    // `copy` returns a freshly created instance, so - like the constructor - it must grant the
+    // caller exclusive access to the result's unique predicate. Without it, the copy result could
+    // not be mutated or passed where uniqueness is required, even though the constructor allows it.
+    val uniqueAccess = returnTarget.variable.uniquePredicateAccessInvariant(converter.typeResolver)
+    return propertyEqualities + listOfNotNull(uniqueAccess)
 }
 
 @OptIn(SymbolInternals::class)

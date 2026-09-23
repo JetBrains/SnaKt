@@ -1,3 +1,23 @@
+/data_classes.kt: info: Generated Viper text for consumeUnique:
+function first(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function second(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method consumeUnique(pair: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(pair), DataPair())
+  requires acc(DataPair_unique(pair), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
 /data_classes.kt: info: Generated Viper text for destructureDataClass:
 function g_first(this: Ref): Ref
   requires isSubtype(typeOf(this), DataPair())
@@ -161,6 +181,7 @@ method copy(this: Ref, par_first: Ref, par_second: Ref)
   ensures isSubtype(typeOf(ret_1), DataPair())
   ensures intFromRef(g_first(ret_1)) == intFromRef(par_first)
   ensures intFromRef(g_second(ret_1)) == intFromRef(par_second)
+  ensures acc(DataPair_unique(ret_1), write)
 
 
 method dataClassCopyDefaults() returns (v_ret_0: Ref)
@@ -172,6 +193,56 @@ method dataClassCopyDefaults() returns (v_ret_0: Ref)
   copied := copy(anon, g_first(anon), intToRef(30))
   assert intFromRef(g_first(copied)) == 10
   assert intFromRef(g_second(copied)) == 30
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/data_classes.kt: info: Generated Viper text for copyResultProvidesUniqueAccess:
+function g_first(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function g_second(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_first: Ref, par_second: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_first), intType())
+  requires isSubtype(typeOf(par_second), intType())
+  ensures isSubtype(typeOf(ret_2), DataPair())
+  ensures acc(DataPair_unique(ret_2), write)
+  ensures intFromRef(g_first(ret_2)) == intFromRef(par_first)
+  ensures intFromRef(g_second(ret_2)) == intFromRef(par_second)
+
+
+method consumeUnique(pair: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(pair), DataPair())
+  requires acc(DataPair_unique(pair), write)
+  ensures isSubtype(typeOf(ret_3), unitType())
+
+
+method copy(this: Ref, par_first: Ref, par_second: Ref)
+  returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), DataPair())
+  requires isSubtype(typeOf(par_first), intType())
+  requires isSubtype(typeOf(par_second), intType())
+  ensures isSubtype(typeOf(ret_1), DataPair())
+  ensures intFromRef(g_first(ret_1)) == intFromRef(par_first)
+  ensures intFromRef(g_second(ret_1)) == intFromRef(par_second)
+  ensures acc(DataPair_unique(ret_1), write)
+
+
+method copyResultProvidesUniqueAccess() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var copied: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  anon_0 := con(intToRef(10), intToRef(20))
+  copied := copy(anon_0, g_first(anon_0), intToRef(30))
+  anon_1 := consumeUnique(copied)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
