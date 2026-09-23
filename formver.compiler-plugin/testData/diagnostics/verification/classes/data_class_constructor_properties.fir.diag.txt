@@ -1,0 +1,53 @@
+/data_class_constructor_properties.kt: info: Generated Viper text for constructorPropertiesPositive:
+function g_first(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function g_second(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_first: Ref, par_second: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_first), intType())
+  requires isSubtype(typeOf(par_second), intType())
+  ensures isSubtype(typeOf(ret_2), DataPair())
+  ensures acc(DataPair_unique(ret_2), write)
+  ensures intFromRef(g_first(ret_2)) == intFromRef(par_first)
+  ensures intFromRef(g_second(ret_2)) == intFromRef(par_second)
+
+
+method constructorPropertiesPositive() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0)
+{
+  var pair: Ref
+  pair := con(intToRef(10), intToRef(20))
+  if (intFromRef(g_first(pair)) == 10) {
+    v_ret_0 := boolToRef(intFromRef(g_second(pair)) == 20)
+  } else {
+    v_ret_0 := boolToRef(false)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/data_class_constructor_properties.kt: info: Generated Viper text for constructorPropertiesBoundary:
+function first(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function second(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method constructorPropertiesBoundary(pair: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(pair), DataPair())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  v_ret_0 := boolToRef(intFromRef(first(pair)) == intFromRef(second(pair)))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
