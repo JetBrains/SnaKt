@@ -482,6 +482,10 @@ class ProgramConverter(
 
         val initialSubstitutions = symbol.valueParameterSymbols.zip(signature.params).toMap()
         return collect(symbol, initialSubstitutions, emptySet()).mapNotNull { (property, value) ->
+            // Postconditions are linearized in a pure context, so a value we cannot express purely
+            // (e.g. a property initialized by a constructor or method call) is dropped conservatively
+            // rather than crashing the pure linearizer.
+            if (!value.isPure()) return@mapNotNull null
             val embedded = embedProperty(property)
             embedded.getter?.let { EqCmp(it.getValueSimple(returnTarget.variable, typeResolver), value) }
         }

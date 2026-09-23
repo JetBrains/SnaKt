@@ -22,6 +22,14 @@ class DelegatingSecondary(val argument: Int) {
     constructor() : this(42)
 }
 
+// A property initialized by a constructor call has no pure value, so no postcondition can be
+// inferred for it. Inference must skip it (not crash the pure linearizer) while still recovering
+// the pure facts about the other properties.
+class NonPureInitializer(val argument: Int) {
+    val tag = 7
+    val nested = InitializedPrimary(argument)
+}
+
 @AlwaysVerify
 fun <!VIPER_TEXT!>primaryConstructorPostconditions<!>() {
     val fresh = InitializedPrimary(42)
@@ -41,4 +49,11 @@ fun <!VIPER_TEXT!>delegatingConstructorPostconditions<!>() {
     val fresh = DelegatingSecondary()
     verify(fresh.argument == 42)
     verify(fresh.initialized == 29)
+}
+
+@AlwaysVerify
+fun <!VIPER_TEXT!>nonPureInitializerPostconditions<!>() {
+    val fresh = NonPureInitializer(42)
+    verify(fresh.argument == 42)
+    verify(fresh.tag == 7)
 }

@@ -101,3 +101,63 @@ method delegatingConstructorPostconditions() returns (v_ret_0: Ref)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
+
+/constructor_postconditions.kt: info: Generated Viper text for nonPureInitializerPostconditions:
+function InitializedPrimary_g_argument(this: Ref): Ref
+  requires isSubtype(typeOf(this), InitializedPrimary())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function NonPureInitializer_g_argument(this: Ref): Ref
+  requires isSubtype(typeOf(this), NonPureInitializer())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function initialized(this: Ref): Ref
+  requires isSubtype(typeOf(this), InitializedPrimary())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function nested(this: Ref): Ref
+  requires isSubtype(typeOf(this), NonPureInitializer())
+  ensures isSubtype(typeOf(result), InitializedPrimary())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function tag(this: Ref): Ref
+  requires isSubtype(typeOf(this), NonPureInitializer())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con_InitializedPrimary(par_argument: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_argument), intType())
+  ensures isSubtype(typeOf(ret_2), InitializedPrimary())
+  ensures acc(InitializedPrimary_unique(ret_2), write)
+  ensures intFromRef(InitializedPrimary_g_argument(ret_2)) ==
+    intFromRef(par_argument)
+  ensures intFromRef(initialized(ret_2)) == 17
+
+
+method con_NonPureInitializer(par_argument: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_argument), intType())
+  ensures isSubtype(typeOf(ret_1), NonPureInitializer())
+  ensures acc(NonPureInitializer_unique(ret_1), write)
+  ensures intFromRef(NonPureInitializer_g_argument(ret_1)) ==
+    intFromRef(par_argument)
+  ensures intFromRef(tag(ret_1)) == 7
+
+
+method nonPureInitializerPostconditions() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var fresh: Ref
+  fresh := con_NonPureInitializer(intToRef(42))
+  assert intFromRef(NonPureInitializer_g_argument(fresh)) == 42
+  assert intFromRef(tag(fresh)) == 7
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
