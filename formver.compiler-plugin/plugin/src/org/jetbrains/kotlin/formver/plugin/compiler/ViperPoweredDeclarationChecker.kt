@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.plugin.compiler
 
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.reportOn
+import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
@@ -16,9 +17,13 @@ import org.jetbrains.kotlin.fir.declarations.FirContractDescriptionOwner
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.hasAnnotation
+import org.jetbrains.kotlin.fir.expressions.FirErrorExpression
+import org.jetbrains.kotlin.fir.references.FirErrorNamedReference
+import org.jetbrains.kotlin.fir.visitors.FirDefaultVisitorVoid
 import org.jetbrains.kotlin.formver.common.LogLevel
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.common.SnaktUnsupportedFeatureException
 import org.jetbrains.kotlin.formver.common.TargetsSelection
 import org.jetbrains.kotlin.formver.core.conversion.ProgramConverter
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.print
@@ -49,6 +54,29 @@ private fun TargetsSelection.applicable(declaration: FirSimpleFunction): Boolean
     TargetsSelection.FORCE_DISABLE -> false
 }
 
+/**
+ * FIR checkers are invoked even for declarations which contain unresolved source constructs. Such
+ * declarations are already rejected by the Kotlin frontend, and trying to convert their recovery
+ * nodes tends to turn ordinary source diagnostics into misleading plugin internal errors.
+ */
+private fun FirSimpleFunction.containsErrorNodes(): Boolean {
+    var found = false
+    accept(object : FirDefaultVisitorVoid() {
+        override fun visitElement(element: FirElement) {
+            if (!found) element.acceptChildren(this)
+        }
+
+        override fun visitErrorExpression(errorExpression: FirErrorExpression) {
+            found = true
+        }
+
+        override fun visitErrorNamedReference(errorNamedReference: FirErrorNamedReference) {
+            found = true
+        }
+    })
+    return found
+}
+
 class ViperPoweredDeclarationChecker(private val session: FirSession, private val config: PluginConfiguration) :
     FirSimpleFunctionChecker(MppCheckerKind.Common) {
 
@@ -56,6 +84,7 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
     override fun check(declaration: FirSimpleFunction) {
         val inTestRun = System.getProperty("formver.testRun").toBoolean()
         if (!config.shouldConvert(declaration)) return
+        if (declaration.containsErrorNodes()) return
         try {
             val programConversionContext = ProgramConverter(session, config, context, reporter)
             programConversionContext.register(declaration)
@@ -113,6 +142,8 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
                 verifier.use { it.verify(viperProgram, onFailure) }
             }
 
+        } catch (e: SnaktUnsupportedFeatureException) {
+            reporter.reportOn(e.source, PluginErrors.UNSUPPORTED_FEATURE, e.message)
         } catch (e: SnaktInternalException) {
             reporter.reportOn(e.source, PluginErrors.INTERNAL_ERROR, e.message)
         } catch (e: Exception) {

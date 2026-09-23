@@ -69,3 +69,22 @@ method nullComparison(x: Ref) returns (v_ret_0: Ref)
   goto lbl_ret_0
   label lbl_ret_0
 }
+
+/nullable.kt: info: Generated Viper text for verifyKnownNonNullNullable:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method verifyKnownNonNullNullable(input: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(input), nullable(intType()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  if (!(input == nullValue())) {
+    assert !(input == nullValue())
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/nullable.kt: warning: Condition is always 'true'.

@@ -388,6 +388,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("data_class_destructuring.kt")
+      public void testData_class_destructuring() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/data_class_destructuring.kt");
+      }
+
+      @Test
       @TestMetadata("inheritance.kt")
       public void testInheritance() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/inheritance.kt");
@@ -746,6 +752,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("implication_precedence_internal_error.kt")
+      public void testImplication_precedence_internal_error() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/implication_precedence_internal_error.kt");
+      }
+
+      @Test
       @TestMetadata("safe_call.kt")
       public void testSafe_call() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/safe_call.kt");
@@ -786,6 +798,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("mutual_recursion.kt")
+      public void testMutual_recursion() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/mutual_recursion.kt");
+      }
+
+      @Test
       @TestMetadata("operators.kt")
       public void testOperators() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/operators.kt");
@@ -811,6 +829,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("assert_statements.kt")
       public void testAssert_statements() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/purity/assert_statements.kt");
+      }
+
+      @Test
+      @TestMetadata("impure_postconditions.kt")
+      public void testImpure_postconditions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/purity/impure_postconditions.kt");
       }
 
       @Test

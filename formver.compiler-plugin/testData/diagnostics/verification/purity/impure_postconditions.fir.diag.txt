@@ -1,0 +1,27 @@
+/impure_postconditions.kt: info: Generated Viper text for impureTopLevelPredicate:
+method impureTopLevelPredicate(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  v_ret_0 := gtInts(value, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/impure_postconditions.kt: info: Generated Viper text for impureMemberPredicate:
+method impureMemberPredicate(this: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), PredicateHolder())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  v_ret_0 := boolToRef(true)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/impure_postconditions.kt: error: Postcondition contains an impure function or method call
+
+/impure_postconditions.kt: error: Function 'impureTopLevelCallInPostcondition' was not verified because of errors in its declaration
+
+/impure_postconditions.kt: error: Postcondition contains an impure function or method call
+
+/impure_postconditions.kt: error: Function 'impureMemberCallInPostcondition' was not verified because of errors in its declaration

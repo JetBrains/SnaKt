@@ -1,5 +1,6 @@
 package org.jetbrains.kotlin.formver.viper
 
+import org.jetbrains.kotlin.formver.viper.errors.BackendError
 import org.jetbrains.kotlin.formver.viper.errors.GenericConsistencyError
 import org.jetbrains.kotlin.formver.viper.errors.VerificationError
 import org.jetbrains.kotlin.formver.viper.errors.VerifierError
@@ -42,19 +43,24 @@ class SiliconFrontend(commandLineArgs: List<String>) : Closeable {
     /** Consistency-checks and verifies [viperProgram], calling [onFailure] for each error found. */
     fun verify(viperProgram: viper.silver.ast.Program, onFailure: (VerifierError) -> Unit) {
         val result = siliconApi.verify(viperProgram)
-        if (result is viper.silver.verifier.Failure) {
-            for (error in result.errors()) {
-                when (error) {
-                    is viper.silver.verifier.VerificationError ->
-                        onFailure(VerificationError(error))
-                    is viper.silver.verifier.ConsistencyError ->
-                        onFailure(GenericConsistencyError(error))
-                }
-            }
-        }
+        reportFailures(result, onFailure)
     }
 
     override fun close() {
         siliconApi.stop()
+    }
+}
+
+internal fun reportFailures(
+    result: viper.silver.verifier.VerificationResult,
+    onFailure: (VerifierError) -> Unit,
+) {
+    if (result !is viper.silver.verifier.Failure) return
+    for (error in result.errors()) {
+        when (error) {
+            is viper.silver.verifier.VerificationError -> onFailure(VerificationError(error))
+            is viper.silver.verifier.ConsistencyError -> onFailure(GenericConsistencyError(error))
+            else -> onFailure(BackendError(error))
+        }
     }
 }

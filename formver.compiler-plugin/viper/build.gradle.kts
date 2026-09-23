@@ -4,6 +4,11 @@ plugins {
 
 dependencies {
     implementation(ViperVersions.silicon)
+    testImplementation(kotlin("test-junit5"))
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 sourceSets {
@@ -12,7 +17,7 @@ sourceSets {
         resources.srcDir("resources")
     }
     test {
-        java.setSrcDirs(emptyList<String>())
+        java.setSrcDirs(listOf("test"))
         resources.setSrcDirs(emptyList<String>())
     }
 }

@@ -15,7 +15,7 @@ internal class ExprPurityVisitor(val declaredVariables: MutableSet<VariableEmbed
     override fun visitUnitLit(e: UnitLit) = true
     override fun visitFunctionCall(e: FunctionCall) = true
     override fun visitDeclare(e: Declare): Boolean {
-        val pure = e.initializer != null
+        val pure = e.initializer?.accept(this) == true
         if (pure) declaredVariables.add(e.variable)
         return pure
     }
