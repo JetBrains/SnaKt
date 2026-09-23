@@ -1,0 +1,3 @@
+/data_class_components.kt: warning: Viper verification error: Postcondition of componentOne might not hold. Assertion intFromRef(v_ret_0) == 10 might not hold.
+
+/data_class_components.kt: warning: Viper verification error: Postcondition of componentTwoBoundary might not hold. Assertion intFromRef(v_ret_0) == intFromRef(second(pair)) might not hold.

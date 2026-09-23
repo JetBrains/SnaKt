@@ -1,0 +1,86 @@
+/data_class_structural_equality.kt: info: Generated Viper text for equalValues:
+function g_first(this: Ref): Ref
+  requires isSubtype(typeOf(this), EqualityPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function g_second(this: Ref): Ref
+  requires isSubtype(typeOf(this), EqualityPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_first: Ref, par_second: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_first), intType())
+  requires isSubtype(typeOf(par_second), intType())
+  ensures isSubtype(typeOf(ret_2), EqualityPair())
+  ensures acc(EqualityPair_unique(ret_2), write)
+  ensures intFromRef(g_first(ret_2)) == intFromRef(par_first)
+  ensures intFromRef(g_second(ret_2)) == intFromRef(par_second)
+
+
+method equalValues() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0)
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  anon_0 := con(intToRef(10), intToRef(20))
+  anon_1 := con(intToRef(10), intToRef(20))
+  v_ret_0 := boolToRef(anon_0 == anon_1)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/data_class_structural_equality.kt: info: Generated Viper text for differentValues:
+function g_first(this: Ref): Ref
+  requires isSubtype(typeOf(this), EqualityPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function g_second(this: Ref): Ref
+  requires isSubtype(typeOf(this), EqualityPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_first: Ref, par_second: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_first), intType())
+  requires isSubtype(typeOf(par_second), intType())
+  ensures isSubtype(typeOf(ret_2), EqualityPair())
+  ensures acc(EqualityPair_unique(ret_2), write)
+  ensures intFromRef(g_first(ret_2)) == intFromRef(par_first)
+  ensures intFromRef(g_second(ret_2)) == intFromRef(par_second)
+
+
+method differentValues() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures !boolFromRef(v_ret_0)
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  anon_0 := con(intToRef(10), intToRef(20))
+  anon_1 := con(intToRef(10), intToRef(30))
+  v_ret_0 := boolToRef(anon_0 == anon_1)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/data_class_structural_equality.kt: info: Generated Viper text for sameReference:
+function first(this: Ref): Ref
+  requires isSubtype(typeOf(this), EqualityPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function second(this: Ref): Ref
+  requires isSubtype(typeOf(this), EqualityPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method sameReference(pair: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(pair), EqualityPair())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0)
+{
+  v_ret_0 := boolToRef(pair == pair)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
