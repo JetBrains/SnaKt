@@ -1,0 +1,9 @@
+/heap_alias_contract_mutation.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(g_value(alias)) == 7 might not hold.
+
+/heap_alias_contract_mutation.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(anon) == 7 might not hold.
+
+/heap_alias_contract_mutation.kt: warning: Viper verification error: Postcondition of mutableAliasContractNegative might not hold. Assertion intFromRef((unfolding acc(MutableCell_unique(cell), write) in cell.value)) == 7 might not hold.
+
+/heap_alias_contract_mutation.kt: warning: Viper verification error: Postcondition of nullableAliasAssignmentBoundary might not hold. Assertion cell == nullValue() || intFromRef((unfolding acc(MutableCell_unique(cell), write) in cell.value)) == 11 might not hold.
+
+/heap_alias_contract_mutation.kt: warning: Viper verification error: Postcondition of nullableAliasContractNegative might not hold. Assertion cell == nullValue() || intFromRef((unfolding acc(MutableCell_unique(cell), write) in cell.value)) == 11 might not hold.

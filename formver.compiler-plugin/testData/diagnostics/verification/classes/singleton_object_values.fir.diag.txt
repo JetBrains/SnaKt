@@ -1,0 +1,11 @@
+/singleton_object_values.kt: error: An internal error has occurred.
+Details: Unsupported resolved qualifier FirRegularClassSymbol
+Please report this at https://github.com/jesyspa/kotlin
+
+/singleton_object_values.kt: warning: 'when' is exhaustive so 'else' is redundant here.
+
+/singleton_object_values.kt: error: An internal error has occurred.
+Details: Unsupported resolved qualifier FirRegularClassSymbol
+Please report this at https://github.com/jesyspa/kotlin
+
+/singleton_object_values.kt: warning: 'when' is exhaustive so 'else' is redundant here.

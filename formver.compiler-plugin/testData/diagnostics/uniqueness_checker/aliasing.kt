@@ -18,6 +18,8 @@ fun borrow(a: @Borrowed Any) {}
 
 fun share(a: Any) {}
 
+fun forward(a: @Unique Any): @Unique Any = a
+
 // Local aliases
 
 fun `consume through unique alias moves source`(x: @Unique Any) {
@@ -55,6 +57,34 @@ fun `consume original after alias reassigned`(x: @Unique Any, y: @Unique Any) {
 
     consume(<!INVALID_MOVED_ACCESS!>x<!>)
     consume(alias)
+}
+
+fun `consume through alias chain`(x: @Unique Any) {
+    val first = x
+    val second = first
+
+    consume(second)
+}
+
+fun `access intermediate after alias chain moved`(x: @Unique Any) {
+    val first = x
+    val second = first
+
+    consume(second)
+    consume(<!INVALID_MOVED_ACCESS!>first<!>)
+}
+
+fun `consume ownership returned by helper`(x: @Unique Any) {
+    val transferred: @Unique Any = forward(x)
+
+    consume(transferred)
+}
+
+fun `access source after helper transfer`(x: @Unique Any) {
+    val transferred: @Unique Any = forward(x)
+
+    consume(transferred)
+    consume(<!INVALID_MOVED_ACCESS!>x<!>)
 }
 
 // Property aliases
@@ -100,4 +130,19 @@ fun `move one property alias then consume parent leaks`(box: @Unique Box) {
 
     consume(item)
     consume(<!ESCAPE_UNIQUENESS_INCONSISTENCY!>box<!>)
+}
+
+fun `restore nested item after helper transfer`(nested: @Unique Nested, fresh: @Unique Any) {
+    val item: @Unique Any = forward(nested.box.item)
+    consume(item)
+
+    nested.box.item = fresh
+    consume(nested)
+}
+
+fun `helper transfer nested item without restore leaks parent`(nested: @Unique Nested) {
+    val item: @Unique Any = forward(nested.box.item)
+    consume(item)
+
+    consume(<!ESCAPE_UNIQUENESS_INCONSISTENCY!>nested<!>)
 }

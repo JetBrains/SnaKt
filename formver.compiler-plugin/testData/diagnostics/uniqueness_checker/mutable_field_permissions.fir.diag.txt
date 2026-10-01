@@ -1,0 +1,7 @@
+/mutable_field_permissions.kt: error: Argument uniqueness mismatch: expected 'unique', actual 'shared'.
+
+/mutable_field_permissions.kt: error: Invalid access to moved reference.
+
+/mutable_field_permissions.kt: error: Escaping value has moved field: 'pair.first'.
+
+/mutable_field_permissions.kt: error: Assignment uniqueness mismatch: expected 'unique', actual 'shared'.

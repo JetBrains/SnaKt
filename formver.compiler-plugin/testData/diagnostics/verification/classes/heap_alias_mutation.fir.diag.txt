@@ -1,0 +1,122 @@
+/heap_alias_mutation.kt: info: Generated Viper text for aliasIdentityControl:
+field value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method aliasIdentityControl(cell: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), MutableCell())
+  requires acc(MutableCell_unique(cell), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var alias: Ref
+  alias := cell
+  assert alias == cell
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_alias_mutation.kt: info: Generated Viper text for constructorAndDirectMutation:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), MutableCell())
+  ensures acc(MutableCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(MutableCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method constructorAndDirectMutation() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var anon: Ref
+  cell := con(intToRef(1))
+  anon := havoc(intType())
+  assert intFromRef(anon) == 2
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_alias_mutation.kt: info: Generated Viper text for mutationThroughAlias:
+field value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method mutationThroughAlias(cell: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), MutableCell())
+  requires acc(MutableCell_unique(cell), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var alias: Ref
+  var anon: Ref
+  alias := cell
+  anon := havoc(intType())
+  assert intFromRef(anon) == 2
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_alias_mutation.kt: info: Generated Viper text for staleValueAfterAliasMutation:
+field value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method staleValueAfterAliasMutation(cell: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), MutableCell())
+  requires acc(MutableCell_unique(cell), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var alias: Ref
+  var anon: Ref
+  alias := cell
+  anon := havoc(intType())
+  assert intFromRef(anon) == 1
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_alias_mutation.kt: info: Generated Viper text for nullableAliasMutation:
+field value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method nullableAliasMutation(cell: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), nullable(MutableCell()))
+  requires cell != nullValue() ==> acc(MutableCell_unique(cell), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  if (!(cell == nullValue())) {
+    var alias: Ref
+    var anon: Ref
+    alias := cell
+    if (alias != nullValue()) {
+    }
+    anon := havoc(intType())
+    assert intFromRef(anon) == 3
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_alias_mutation.kt: error: Function 'customAccessorBoundary' was not verified because of errors in its declaration
+
+/heap_alias_mutation.kt: error: Assert condition is impure

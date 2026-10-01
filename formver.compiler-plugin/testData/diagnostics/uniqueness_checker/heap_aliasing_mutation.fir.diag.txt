@@ -1,0 +1,13 @@
+/heap_aliasing_mutation.kt: error: Invalid access to moved reference.
+
+/heap_aliasing_mutation.kt: error: Invalid access to moved reference.
+
+/heap_aliasing_mutation.kt: error: Escaping value has moved field: 'box.current'.
+
+/heap_aliasing_mutation.kt: error: Escaping value has moved field: 'box.optional'.
+
+/heap_aliasing_mutation.kt: error: Invalid access to moved reference.
+
+/heap_aliasing_mutation.kt: error: Invalid access to moved reference.
+
+/heap_aliasing_mutation.kt: error: Invalid access to moved reference.
