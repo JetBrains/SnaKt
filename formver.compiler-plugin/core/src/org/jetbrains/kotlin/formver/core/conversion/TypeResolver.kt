@@ -146,15 +146,13 @@ class TypeResolver {
         }
     }
 
+    /** Returns true if [pretypeEmbedding] is a subtype of `[pkg].[name]`. */
     fun isInheritorOf(pretypeEmbedding: PretypeEmbedding, pkg: List<String>, name: String): Boolean {
         val classEmbedding = pretypeEmbedding as? ClassTypeEmbedding ?: return false
         return classEmbedding.isPkgTypeNamed(pkg, name) || lookupSuperTypes(classEmbedding.name).any {
             isInheritorOf(it, pkg, name)
         }
     }
-
-    fun isInheritorOfCollectionTypeNamed(pretypeEmbedding: PretypeEmbedding, name: String) =
-        isInheritorOf(pretypeEmbedding, SpecialPackages.collections, name)
 
     fun isCollectionInheritor(pretype: PretypeEmbedding) =
         isInheritorOf(pretype, SpecialPackages.collections, "Collection")
