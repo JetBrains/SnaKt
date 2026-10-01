@@ -1,0 +1,60 @@
+/local_functions.kt: info: Generated Viper text for localFunction:
+method local() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), unitType())
+
+
+method localFunction() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var v_ret_2: Ref
+  label lbl_ret_2
+  inhale isSubtype(typeOf(v_ret_2), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/local_functions.kt: info: Generated Viper text for capturingLocalFunction:
+method capturingLocalFunction(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var v_ret_2: Ref
+  var captured: Ref
+  captured := x
+  label lbl_ret_2
+  inhale isSubtype(typeOf(v_ret_2), unitType())
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method local() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), unitType())
+
+
+/local_functions.kt: info: Generated Viper text for sameNamedSiblingLocalFunctions:
+method lf0_f_local_args_t_ret_Int() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method lf1_f_local_args_t_ret_Int() returns (ret_3: Ref)
+  ensures isSubtype(typeOf(ret_3), intType())
+
+
+method sameNamedSiblingLocalFunctions() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  if (true) {
+    var v_ret_2: Ref
+    v_ret_2 := intToRef(1)
+    goto lbl_ret_2
+    label lbl_ret_2
+  }
+  if (true) {
+    var v_ret_4: Ref
+    v_ret_4 := intToRef(2)
+    goto lbl_ret_4
+    label lbl_ret_4
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

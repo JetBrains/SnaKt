@@ -139,6 +139,9 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
     private fun PluginConfiguration.shouldConvert(declaration: FirSimpleFunction): Boolean = when {
         // Prevent compiler-derived or library functions from being verified
         declaration.origin != FirDeclarationOrigin.Source -> false
+        // Local functions are converted in the lexical context of their enclosing function.
+        // Converting them as independent roots loses captured parameters and variables.
+        declaration.symbol.callableId.isLocal -> false
         declaration.hasAnnotation(neverConvertId, session) -> false
         declaration.hasAnnotation(alwaysVerifyId, session) -> true
         else -> conversionSelection.applicable(declaration)
