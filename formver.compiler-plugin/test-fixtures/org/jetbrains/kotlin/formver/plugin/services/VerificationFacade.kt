@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.formver.plugin.compiler.reporting.*
 import org.jetbrains.kotlin.formver.plugin.runners.*
 import org.jetbrains.kotlin.formver.viper.SiliconFrontend
 import org.jetbrains.kotlin.formver.viper.ast.unwrapOr
+import org.jetbrains.kotlin.formver.viper.errors.AbortedError
 import org.jetbrains.kotlin.formver.viper.errors.ConsistencyError
 import org.jetbrains.kotlin.formver.viper.errors.VerificationError
 import org.jetbrains.kotlin.formver.viper.errors.VerifierError
@@ -99,6 +100,7 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
             val diagnostics = when (err) {
                 is ConsistencyError -> formatConsistencyError(err, decl, module)
                 is VerificationError -> formatVerificationError(err, decl, module)
+                is AbortedError -> formatAbortedError(err, decl, module)
             }
             results.add(diagnostics)
         }
@@ -183,6 +185,19 @@ class ViperProgramVerificationFacade(val testServices: TestServices) :
             languageVersionSettings = module.languageVersionSettings
         )
         return diagnostics!!
+    }
+
+    @OptIn(InternalDiagnosticFactoryMethod::class)
+    private fun formatAbortedError(
+        err: AbortedError, decl: FirSimpleFunction,
+        module: TestModule
+    ): KtDiagnostic {
+        val source = err.position.unwrapOr { decl.source }!!
+        val diagnostic = VerificationErrors.VIPER_VERIFICATION_ABORTED.on(
+            source, err.msg, positioningStrategy = SourceElementPositioningStrategies.DEFAULT,
+            languageVersionSettings = module.languageVersionSettings
+        )
+        return diagnostic!!
     }
 }
 

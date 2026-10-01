@@ -1,5 +1,6 @@
 package org.jetbrains.kotlin.formver.viper
 
+import org.jetbrains.kotlin.formver.viper.errors.AbortedError
 import org.jetbrains.kotlin.formver.viper.errors.GenericConsistencyError
 import org.jetbrains.kotlin.formver.viper.errors.VerificationError
 import org.jetbrains.kotlin.formver.viper.errors.VerifierError
@@ -49,6 +50,8 @@ class SiliconFrontend(commandLineArgs: List<String>) : Closeable {
                         onFailure(VerificationError(error))
                     is viper.silver.verifier.ConsistencyError ->
                         onFailure(GenericConsistencyError(error))
+                    else ->
+                        onFailure(AbortedError(error))
                 }
             }
         }
