@@ -333,16 +333,24 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
 
     override fun visitWhileLoop(whileLoop: FirWhileLoop, data: StmtConversionContext): ExpEmbedding {
         val condition = data.convert(whileLoop.condition).withType { boolean() }
-        val invariants = buildList {
-            data.retrievePropertiesAndParameters().forEach {
-                addAll(it.provenInvariants())
-            }
-            extractLoopInvariants(whileLoop.block)?.let {
-                addAll(data.withScopeImpl(ScopeIndex.NoScope) { data.collectInvariants(it) })
-            }
-        }
+        val inScope = data.retrievePropertiesAndParameters().toList()
+        val userInvariants = extractLoopInvariants(whileLoop.block)?.let {
+            data.withScopeImpl(ScopeIndex.NoScope) { data.collectInvariants(it) }
+        }.orEmpty()
         return data.withFreshWhile(whileLoop.label) {
             val body = convert(whileLoop.block)
+            val mentioned = (listOf(condition, body) + userInvariants)
+                .flatMap { it.mentionedVariables() }
+                .mapTo(mutableSetOf()) { it.name }
+            val invariants = buildList {
+                inScope.forEach {
+                    addAll(it.provenInvariants())
+                    // Without these the loop drops the permissions to the variable's fields. They are limited to
+                    // variables the loop mentions because two aliases of one object cannot both hold them.
+                    if (it.name in mentioned) addAll(it.accessInvariants(typeResolver))
+                }
+                addAll(userInvariants)
+            }
             While(condition, body, breakLabelName(), continueLabelName(), invariants)
         }
     }
@@ -581,4 +589,12 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             ErrorExp
         }
     }
+}
+
+// `InhaleInvariants` does not list its expression among its children.
+private fun ExpEmbedding.mentionedVariables(): Sequence<VariableEmbedding> = sequence {
+    val exp = this@mentionedVariables
+    if (exp is VariableEmbedding) yield(exp)
+    val children = if (exp is InhaleInvariants) sequenceOf(exp.exp) else exp.children()
+    children.forEach { yieldAll(it.mentionedVariables()) }
 }
