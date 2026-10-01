@@ -1,0 +1,159 @@
+/cross_file_declarations.kt: info: Generated Viper text for sameFileIncrement:
+method sameFileIncrement(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(value) + 1
+{
+  v_ret_0 := plusInts(value, intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/cross_file_declarations.kt: info: Generated Viper text for crossFileIncrement:
+method crossFileIncrement(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(value) + 1
+{
+  v_ret_0 := plusInts(value, intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/cross_file_declarations.kt: info: Generated Viper text for crossFileFunctionControl:
+method crossFileFunctionControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 1
+{
+  v_ret_0 := crossFileIncrement(intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method crossFileIncrement(value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) == intFromRef(value) + 1
+
+
+/cross_file_declarations.kt: info: Generated Viper text for crossFileClassControl:
+function g_offset(this: Ref): Ref
+  requires isSubtype(typeOf(this), Counter())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method add(this: Ref, value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), Counter())
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) ==
+    intFromRef(value) + intFromRef(g_offset(this))
+
+
+method con(par_offset: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(par_offset), intType())
+  ensures isSubtype(typeOf(ret_3), Counter())
+  ensures acc(Counter_unique(ret_3), write)
+  ensures intFromRef(g_offset(ret_3)) == intFromRef(par_offset)
+
+
+method crossFileClassControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 2
+{
+  var anon: Ref
+  anon := con(intToRef(2))
+  v_ret_0 := add(anon, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/cross_file_declarations.kt: info: Generated Viper text for sameFileControl:
+method sameFileControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 1
+{
+  v_ret_0 := sameFileIncrement(intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method sameFileIncrement(value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) == intFromRef(value) + 1
+
+
+/cross_file_declarations.kt: info: Generated Viper text for add:
+function offset(this: Ref): Ref
+  requires isSubtype(typeOf(this), Counter())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method add(this: Ref, value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), Counter())
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) ==
+    intFromRef(value) + intFromRef(offset(this))
+{
+  v_ret_0 := plusInts(value, offset(this))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/cross_file_declarations.kt: info: Generated Viper text for crossFileFunctionPreconditionViolation:
+method crossFileFunctionPreconditionViolation() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := crossFileIncrement(intToRef(-1))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method crossFileIncrement(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(ret_1) == intFromRef(value) + 1
+
+
+/cross_file_declarations.kt: info: Generated Viper text for crossFileClassPreconditionViolation:
+function g_offset(this: Ref): Ref
+  requires isSubtype(typeOf(this), Counter())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method add(this: Ref, value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Counter())
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(ret_1) ==
+    intFromRef(value) + intFromRef(g_offset(this))
+
+
+method con(par_offset: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_offset), intType())
+  ensures isSubtype(typeOf(ret_2), Counter())
+  ensures acc(Counter_unique(ret_2), write)
+  ensures intFromRef(g_offset(ret_2)) == intFromRef(par_offset)
+
+
+method crossFileClassPreconditionViolation() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  anon_1 := con(intToRef(2))
+  anon_0 := add(anon_1, intToRef(-1))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

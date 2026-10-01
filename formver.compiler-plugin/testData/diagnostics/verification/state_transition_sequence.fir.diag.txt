@@ -1,0 +1,57 @@
+/state_transition_sequence.kt: info: Generated Viper text for transitionAndReturn:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method transitionAndReturn(initial: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(initial), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var state: Ref
+  state := initial
+  state := plusInts(state, intToRef(1))
+  assert intFromRef(state) == intFromRef(initial) + 1
+  state := minusInts(state, intToRef(1))
+  assert intFromRef(state) == intFromRef(initial)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/state_transition_sequence.kt: info: Generated Viper text for zeroDeltaTransition:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method zeroDeltaTransition(initial: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(initial), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var state: Ref
+  state := initial
+  state := plusInts(state, intToRef(0))
+  assert intFromRef(state) == intFromRef(initial)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/state_transition_sequence.kt: info: Generated Viper text for transitionPastReturnedState:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method transitionPastReturnedState(initial: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(initial), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var state: Ref
+  state := initial
+  state := plusInts(state, intToRef(1))
+  state := minusInts(state, intToRef(1))
+  state := minusInts(state, intToRef(1))
+  assert intFromRef(state) == intFromRef(initial)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

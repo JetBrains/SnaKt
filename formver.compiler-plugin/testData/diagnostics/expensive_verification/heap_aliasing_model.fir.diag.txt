@@ -1,0 +1,465 @@
+/heap_aliasing_model.kt: info: Generated Viper text for positiveControl:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
+
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
+}
+
+method positiveControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert 0 == 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_aliasing_model.kt: info: Generated Viper text for constructorNegativeOracle:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
+
+predicate ModelCell_unique(this: Ref) {
+  isSubtype(typeOf(this), ModelCell()) && acc(this.bf_value, write) &&
+  isSubtype(typeOf(this.bf_value), intType())
+}
+
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
+}
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), ModelCell())
+  ensures acc(ModelCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(ModelCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method constructorNegativeOracle() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var anon: Ref
+  cell := con(intToRef(-1))
+  anon := havoc(intType())
+  assert intFromRef(anon) == -1
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_aliasing_model.kt: info: Generated Viper text for constructorZeroOracle:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
+
+predicate ModelCell_unique(this: Ref) {
+  isSubtype(typeOf(this), ModelCell()) && acc(this.bf_value, write) &&
+  isSubtype(typeOf(this.bf_value), intType())
+}
+
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
+}
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), ModelCell())
+  ensures acc(ModelCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(ModelCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method constructorZeroOracle() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var anon: Ref
+  cell := con(intToRef(0))
+  anon := havoc(intType())
+  assert intFromRef(anon) == 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_aliasing_model.kt: info: Generated Viper text for constructorPositiveOracle:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
+
+predicate ModelCell_unique(this: Ref) {
+  isSubtype(typeOf(this), ModelCell()) && acc(this.bf_value, write) &&
+  isSubtype(typeOf(this.bf_value), intType())
+}
+
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
+}
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), ModelCell())
+  ensures acc(ModelCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(ModelCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method constructorPositiveOracle() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var anon: Ref
+  cell := con(intToRef(1))
+  anon := havoc(intType())
+  assert intFromRef(anon) == 1
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_aliasing_model.kt: info: Generated Viper text for directMutationZeroOracle:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
+
+predicate ModelCell_unique(this: Ref) {
+  isSubtype(typeOf(this), ModelCell()) && acc(this.bf_value, write) &&
+  isSubtype(typeOf(this.bf_value), intType())
+}
+
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
+}
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), ModelCell())
+  ensures acc(ModelCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(ModelCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method directMutationZeroOracle() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var anon: Ref
+  cell := con(intToRef(-1))
+  anon := havoc(intType())
+  assert intFromRef(anon) == 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_aliasing_model.kt: info: Generated Viper text for directMutationPositiveOracle:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
+
+predicate ModelCell_unique(this: Ref) {
+  isSubtype(typeOf(this), ModelCell()) && acc(this.bf_value, write) &&
+  isSubtype(typeOf(this.bf_value), intType())
+}
+
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
+}
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), ModelCell())
+  ensures acc(ModelCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(ModelCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method directMutationPositiveOracle() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var anon: Ref
+  cell := con(intToRef(0))
+  anon := havoc(intType())
+  assert intFromRef(anon) == 1
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_aliasing_model.kt: info: Generated Viper text for aliasMutationOracle:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
+
+predicate ModelCell_unique(this: Ref) {
+  isSubtype(typeOf(this), ModelCell()) && acc(this.bf_value, write) &&
+  isSubtype(typeOf(this.bf_value), intType())
+}
+
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
+}
+
+method aliasMutationOracle() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var original: Ref
+  var alias: Ref
+  var anon: Ref
+  original := con(intToRef(-1))
+  alias := original
+  assert original == alias
+  anon := havoc(intType())
+  assert intFromRef(anon) == 1
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), ModelCell())
+  ensures acc(ModelCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(ModelCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+/heap_aliasing_model.kt: info: Generated Viper text for nullableAliasOracle:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
+
+predicate ModelCell_unique(this: Ref) {
+  isSubtype(typeOf(this), ModelCell()) && acc(this.bf_value, write) &&
+  isSubtype(typeOf(this.bf_value), intType())
+}
+
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
+}
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), ModelCell())
+  ensures acc(ModelCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(ModelCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method nullableAliasOracle() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var original: Ref
+  var alias: Ref
+  original := con(intToRef(0))
+  alias := original
+  if (!(alias == nullValue())) {
+    var anon: Ref
+    assert original == alias
+    anon := havoc(intType())
+    assert intFromRef(anon) == -1
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_aliasing_model.kt: info: Generated Viper text for uniqueOwnershipOracle:
+field value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
+
+predicate ModelCell_unique(this: Ref) {
+  isSubtype(typeOf(this), ModelCell()) && acc(this.value, write) &&
+  isSubtype(typeOf(this.value), intType())
+}
+
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
+}
+
+method uniqueOwnershipOracle(cell: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(cell), ModelCell())
+  requires acc(ModelCell_unique(cell), write)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  assert cell == cell
+  anon := havoc(intType())
+  assert intFromRef(anon) == 1
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/heap_aliasing_model.kt: error: Function 'accessorMutationOracle' was not verified because of errors in its declaration
+
+/heap_aliasing_model.kt: error: Assert condition is impure
+
+/heap_aliasing_model.kt: error: Assert condition is impure
+
+/heap_aliasing_model.kt: info: Generated Viper text for negativeMutationControl:
+field bf_value: Ref
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+predicate BooleanArray_unique(this: Ref) {
+  isSubtype(typeOf(this), BooleanArray()) &&
+  acc(Cloneable_unique(this), write) &&
+  acc(Serializable_unique(this), write)
+}
+
+predicate Cloneable_unique(this: Ref) {
+  isSubtype(typeOf(this), Cloneable())
+}
+
+predicate ModelCell_unique(this: Ref) {
+  isSubtype(typeOf(this), ModelCell()) && acc(this.bf_value, write) &&
+  isSubtype(typeOf(this.bf_value), intType())
+}
+
+predicate Serializable_unique(this: Ref) {
+  isSubtype(typeOf(this), Serializable())
+}
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), ModelCell())
+  ensures acc(ModelCell_unique(ret_1), write)
+  ensures intFromRef((unfolding acc(ModelCell_unique(ret_1), write) in
+      ret_1.bf_value)) ==
+    intFromRef(par_value)
+
+
+method negativeMutationControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cell: Ref
+  var anon: Ref
+  cell := con(intToRef(-1))
+  anon := havoc(intType())
+  assert intFromRef(anon) == -1
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

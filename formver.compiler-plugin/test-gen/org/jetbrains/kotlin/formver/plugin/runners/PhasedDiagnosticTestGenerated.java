@@ -36,6 +36,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/backing_field_getters.kt");
     }
 
+    @Test
+    @TestMetadata("heap_aliasing_model.kt")
+    public void testHeap_aliasing_model() {
+      runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/heap_aliasing_model.kt");
+    }
+
     @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/expensive_verification/algorithms")
     @TestDataPath("$PROJECT_ROOT")
@@ -295,9 +301,51 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("annotation_selection.kt")
+    public void testAnnotation_selection() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/annotation_selection.kt");
+    }
+
+    @Test
     @TestMetadata("basic.kt")
     public void testBasic() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/basic.kt");
+    }
+
+    @Test
+    @TestMetadata("cross_file_declarations.kt")
+    public void testCross_file_declarations() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/cross_file_declarations.kt");
+    }
+
+    @Test
+    @TestMetadata("default_named_arguments.kt")
+    public void testDefault_named_arguments() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/default_named_arguments.kt");
+    }
+
+    @Test
+    @TestMetadata("diagnostic_backend_pairs.kt")
+    public void testDiagnostic_backend_pairs() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/diagnostic_backend_pairs.kt");
+    }
+
+    @Test
+    @TestMetadata("diagnostic_cardinality_one.kt")
+    public void testDiagnostic_cardinality_one() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/diagnostic_cardinality_one.kt");
+    }
+
+    @Test
+    @TestMetadata("diagnostic_cardinality_two.kt")
+    public void testDiagnostic_cardinality_two() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/diagnostic_cardinality_two.kt");
+    }
+
+    @Test
+    @TestMetadata("diagnostic_cardinality_zero.kt")
+    public void testDiagnostic_cardinality_zero() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/diagnostic_cardinality_zero.kt");
     }
 
     @Test
@@ -310,6 +358,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     @TestMetadata("extension_properties.kt")
     public void testExtension_properties() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/extension_properties.kt");
+    }
+
+    @Test
+    @TestMetadata("failure_stage_controls.kt")
+    public void testFailure_stage_controls() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/failure_stage_controls.kt");
     }
 
     @Test
@@ -331,9 +385,21 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("golden_diagnostic_integrity.kt")
+    public void testGolden_diagnostic_integrity() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/golden_diagnostic_integrity.kt");
+    }
+
+    @Test
     @TestMetadata("havoc.kt")
     public void testHavoc() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/havoc.kt");
+    }
+
+    @Test
+    @TestMetadata("literal_boundaries.kt")
+    public void testLiteral_boundaries() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/literal_boundaries.kt");
     }
 
     @Test
@@ -349,6 +415,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("mixed_pipeline_outcomes.kt")
+    public void testMixed_pipeline_outcomes() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/mixed_pipeline_outcomes.kt");
+    }
+
+    @Test
     @TestMetadata("multiple_receivers.kt")
     public void testMultiple_receivers() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/multiple_receivers.kt");
@@ -361,9 +433,33 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("range_progressions.kt")
+    public void testRange_progressions() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/range_progressions.kt");
+    }
+
+    @Test
     @TestMetadata("shadowing.kt")
     public void testShadowing() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/shadowing.kt");
+    }
+
+    @Test
+    @TestMetadata("shadowing_values.kt")
+    public void testShadowing_values() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/shadowing_values.kt");
+    }
+
+    @Test
+    @TestMetadata("state_transition_sequence.kt")
+    public void testState_transition_sequence() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/state_transition_sequence.kt");
+    }
+
+    @Test
+    @TestMetadata("statement_reordering.kt")
+    public void testStatement_reordering() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/statement_reordering.kt");
     }
 
     @Test

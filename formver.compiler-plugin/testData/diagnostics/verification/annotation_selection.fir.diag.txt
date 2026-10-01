@@ -1,0 +1,55 @@
+/annotation_selection.kt: info: Generated Viper text for alwaysVerifyWithNeverVerify:
+method alwaysVerifyWithNeverVerify() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+  ensures boolFromRef(v_ret_0) == true
+{
+  v_ret_0 := boolToRef(false)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/annotation_selection.kt: info: Generated Viper text for selectedTopLevel:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method selectedTopLevel() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/annotation_selection.kt: error: Impure function body detected in pure function
+
+/annotation_selection.kt: error: Function 'pureWithNeverVerify' was not verified because of errors in its declaration
+
+/annotation_selection.kt: info: Generated Viper text for selectedInner:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method selectedInner() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/annotation_selection.kt: info: Generated Viper text for convertedButUnverifiedInner:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method convertedButUnverifiedInner() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

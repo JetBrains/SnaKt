@@ -1,0 +1,73 @@
+/literal_boundaries.kt: info: Generated Viper text for integerBasesAtBoundaries:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method integerBasesAtBoundaries() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var zero: Ref
+  var positiveMax: Ref
+  var negativeMin: Ref
+  var binary: Ref
+  zero := intToRef(0)
+  positiveMax := intToRef(2147483647)
+  negativeMin := intToRef(-2147483648)
+  binary := intToRef(170)
+  assert intFromRef(zero) == 0
+  assert intFromRef(positiveMax) == 2147483647
+  assert intFromRef(negativeMin) == -2147483648
+  assert intFromRef(binary) == 170
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/literal_boundaries.kt: info: Generated Viper text for escapedCharactersAtBoundaries:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method escapedCharactersAtBoundaries() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var nul: Ref
+  var newline: Ref
+  var max: Ref
+  nul := charToRef(0)
+  newline := charToRef(10)
+  max := charToRef(65535)
+  assert charFromRef(nul) == 0
+  assert charFromRef(newline) == 10
+  assert charFromRef(max) == 65535
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/literal_boundaries.kt: info: Generated Viper text for literalStringTemplates:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method literalStringTemplates() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var decimal: Ref
+  var escaped: Ref
+  decimal := stringToRef(Seq(118, 97, 108, 117, 101, 61, 52, 50))
+  escaped := stringToRef(Seq(10, 58, 65535))
+  assert stringFromRef(decimal) == Seq(118, 97, 108, 117, 101, 61, 52, 50)
+  assert stringFromRef(escaped) == Seq(10, 58, 65535)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/literal_boundaries.kt: error: An internal error has occurred.
+Details: Property FOLDED_INT not found in scope.
+Please report this at https://github.com/jesyspa/kotlin
+
+/literal_boundaries.kt: error: An internal error has occurred.
+Details: Constant Expression of type UInt is not yet implemented.
+Please report this at https://github.com/jesyspa/kotlin

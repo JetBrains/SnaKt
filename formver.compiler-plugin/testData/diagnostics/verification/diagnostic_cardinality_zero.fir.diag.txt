@@ -1,0 +1,13 @@
+/diagnostic_cardinality_zero.kt: info: Generated Viper text for zeroVerificationDiagnostics:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method zeroVerificationDiagnostics() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert true
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

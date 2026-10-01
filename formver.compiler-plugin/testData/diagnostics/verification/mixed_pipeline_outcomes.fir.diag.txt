@@ -1,0 +1,33 @@
+/mixed_pipeline_outcomes.kt: error: Function 'conversionFailure' was not verified because of errors in its declaration
+
+/mixed_pipeline_outcomes.kt: error: Assert condition is impure
+
+/mixed_pipeline_outcomes.kt: info: Generated Viper text for positiveControl:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method positiveControl(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(x) == intFromRef(x)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/mixed_pipeline_outcomes.kt: info: Generated Viper text for verificationFailure:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method verificationFailure(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(x) > 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

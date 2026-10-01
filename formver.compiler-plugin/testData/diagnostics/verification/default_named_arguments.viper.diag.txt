@@ -1,0 +1,7 @@
+/default_named_arguments.kt: warning: Viper verification error: Assert might fail. Assertion false might not hold.
+
+/default_named_arguments.kt: warning: Viper verification error: Assert might fail. Assertion false might not hold.
+
+/default_named_arguments.kt: warning: Viper verification error: Assert might fail. Assertion false might not hold.
+
+/default_named_arguments.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(subtract(intToRef(1), intToRef(3))) == 2 might not hold.

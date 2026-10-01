@@ -1,0 +1,1 @@
+/mixed_pipeline_outcomes.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(x) > 0 might not hold.

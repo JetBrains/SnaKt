@@ -1,0 +1,67 @@
+/shadowing_values.kt: info: Generated Viper text for shadowedParameterAndNestedLocals:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method shadowedParameterAndNestedLocals(par_value: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  requires intFromRef(par_value) == 11
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 112337
+{
+  var parameterValue: Ref
+  var l0_value: Ref
+  var l0_result: Ref
+  parameterValue := par_value
+  l0_value := intToRef(23)
+  l0_result := plusInts(timesInts(parameterValue, intToRef(10000)), timesInts(l0_value,
+    intToRef(100)))
+  if (true) {
+    var l2_value: Ref
+    l2_value := intToRef(37)
+    l0_result := plusInts(l0_result, l2_value)
+    assert intFromRef(l2_value) == 37
+  }
+  assert intFromRef(l0_value) == 23
+  assert intFromRef(l0_value) == intFromRef(parameterValue)
+  v_ret_0 := l0_result
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/shadowing_values.kt: info: Generated Viper text for shadowedReceiversFieldAndParameter:
+function g_value(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), ShadowingValues())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method shadowedReceiversFieldAndParameter(v_this: Ref, v_this_extension: Ref,
+  par_value: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(v_this), ShadowingValues())
+  requires isSubtype(typeOf(v_this_extension), intType())
+  requires isSubtype(typeOf(par_value), intType())
+  requires intFromRef(g_value(v_this)) == 11
+  requires intFromRef(v_this_extension) == 23
+  requires intFromRef(par_value) == 37
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var parameterValue: Ref
+  var l0_value: Ref
+  parameterValue := par_value
+  l0_value := intToRef(41)
+  assert intFromRef(g_value(v_this)) == 11
+  assert intFromRef(v_this_extension) == 23
+  assert intFromRef(parameterValue) == 37
+  assert intFromRef(l0_value) == 41
+  assert intFromRef(v_this_extension) == intFromRef(g_value(v_this))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

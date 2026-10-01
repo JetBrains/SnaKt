@@ -1,0 +1,455 @@
+/range_progressions.kt: error: Function 'constantClosedRangeMembership' was not verified because of errors in its declaration
+
+/range_progressions.kt: error: Assert condition is impure
+
+/range_progressions.kt: error: Assert condition is impure
+
+/range_progressions.kt: error: Assert condition is impure
+
+/range_progressions.kt: error: Assert condition is impure
+
+/range_progressions.kt: error: Function 'constantUntilMembership' was not verified because of errors in its declaration
+
+/range_progressions.kt: error: Assert condition is impure
+
+/range_progressions.kt: error: Assert condition is impure
+
+/range_progressions.kt: error: Assert condition is impure
+
+/range_progressions.kt: error: Assert condition is impure
+
+/range_progressions.kt: error: Function 'parameterizedClosedRangeMembership' was not verified because of errors in its declaration
+
+/range_progressions.kt: error: Assert condition is impure
+
+/range_progressions.kt: error: Function 'parameterizedUntilMembership' was not verified because of errors in its declaration
+
+/range_progressions.kt: error: Assert condition is impure
+
+/range_progressions.kt: info: Generated Viper text for constantClosedRangeLoop:
+function first(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntProgression())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function last(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntProgression())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function step(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntProgression())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method constantClosedRangeLoop() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var sum: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  sum := intToRef(0)
+  anon_1 := rangeTo(intToRef(1), intToRef(3))
+  anon_0 := iterator(anon_1)
+  label cont
+    invariant isSubtype(typeOf(sum), intType())
+    invariant isSubtype(typeOf(anon_0), IntIterator())
+  anon_2 := hasNext(anon_0)
+  if (boolFromRef(anon_2)) {
+    var i: Ref
+    i := next(anon_0)
+    sum := plusInts(sum, i)
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(sum), intType())
+  assert isSubtype(typeOf(anon_0), IntIterator())
+  assert intFromRef(sum) == 6
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method endExclusive(this: Ref) returns (ret_5: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_5), nullable(anyType()))
+
+
+method endInclusive(this: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_3), nullable(anyType()))
+
+
+method hasNext(this: Ref) returns (ret_10: Ref)
+  requires isSubtype(typeOf(this), IntIterator())
+  ensures isSubtype(typeOf(ret_10), boolType())
+
+
+method iterator(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), IntProgression())
+  ensures isSubtype(typeOf(ret_1), IntIterator())
+
+
+method next(this: Ref) returns (ret_11: Ref)
+  requires isSubtype(typeOf(this), IntIterator())
+  ensures isSubtype(typeOf(ret_11), intType())
+
+
+method rangeTo(this: Ref, other: Ref) returns (ret_9: Ref)
+  requires isSubtype(typeOf(this), intType())
+  requires isSubtype(typeOf(other), intType())
+  ensures isSubtype(typeOf(ret_9), IntRange())
+
+
+method start(this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
+
+
+/range_progressions.kt: info: Generated Viper text for constantUntilLoop:
+function first(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), IntProgression())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function last(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), IntProgression())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function step(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), IntProgression())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method constantUntilLoop() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var sum: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  sum := intToRef(0)
+  anon_1 := until(intToRef(1), intToRef(4))
+  anon_0 := iterator(anon_1)
+  label cont
+    invariant isSubtype(typeOf(sum), intType())
+    invariant isSubtype(typeOf(anon_0), IntIterator())
+  anon_2 := hasNext(anon_0)
+  if (boolFromRef(anon_2)) {
+    var i: Ref
+    i := next(anon_0)
+    sum := plusInts(sum, i)
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(sum), intType())
+  assert isSubtype(typeOf(anon_0), IntIterator())
+  assert intFromRef(sum) == 6
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method endExclusive(v_this: Ref) returns (ret_5: Ref)
+  requires isSubtype(typeOf(v_this), anyType())
+  ensures isSubtype(typeOf(ret_5), nullable(anyType()))
+
+
+method endInclusive(v_this: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(v_this), anyType())
+  ensures isSubtype(typeOf(ret_3), nullable(anyType()))
+
+
+method hasNext(v_this: Ref) returns (ret_10: Ref)
+  requires isSubtype(typeOf(v_this), IntIterator())
+  ensures isSubtype(typeOf(ret_10), boolType())
+
+
+method iterator(v_this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this), IntProgression())
+  ensures isSubtype(typeOf(ret_1), IntIterator())
+
+
+method next(v_this: Ref) returns (ret_11: Ref)
+  requires isSubtype(typeOf(v_this), IntIterator())
+  ensures isSubtype(typeOf(ret_11), intType())
+
+
+method start(v_this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this), anyType())
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
+
+
+method until(v_this_extension: Ref, to: Ref) returns (ret_9: Ref)
+  requires isSubtype(typeOf(v_this_extension), intType())
+  requires isSubtype(typeOf(to), intType())
+  ensures isSubtype(typeOf(ret_9), IntRange())
+
+
+/range_progressions.kt: info: Generated Viper text for constantDownToLoop:
+function first(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), IntProgression())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function last(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), IntProgression())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function step(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), IntProgression())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method constantDownToLoop() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var sum: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  sum := intToRef(0)
+  anon_1 := downTo(intToRef(3), intToRef(1))
+  anon_0 := iterator(anon_1)
+  label cont
+    invariant isSubtype(typeOf(sum), intType())
+    invariant isSubtype(typeOf(anon_0), IntIterator())
+  anon_2 := hasNext(anon_0)
+  if (boolFromRef(anon_2)) {
+    var i: Ref
+    i := next(anon_0)
+    sum := plusInts(sum, i)
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(sum), intType())
+  assert isSubtype(typeOf(anon_0), IntIterator())
+  assert intFromRef(sum) == 6
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method downTo(v_this_extension: Ref, to: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this_extension), intType())
+  requires isSubtype(typeOf(to), intType())
+  ensures isSubtype(typeOf(ret_2), IntProgression())
+
+
+method hasNext(v_this: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(v_this), IntIterator())
+  ensures isSubtype(typeOf(ret_3), boolType())
+
+
+method iterator(v_this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this), IntProgression())
+  ensures isSubtype(typeOf(ret_1), IntIterator())
+
+
+method next(v_this: Ref) returns (ret_4: Ref)
+  requires isSubtype(typeOf(v_this), IntIterator())
+  ensures isSubtype(typeOf(ret_4), intType())
+
+
+/range_progressions.kt: info: Generated Viper text for constantStepLoop:
+function first(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), IntProgression())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function g_step(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), IntProgression())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function last(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), IntProgression())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method constantStepLoop() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var sum: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  var anon_3: Ref
+  sum := intToRef(0)
+  anon_2 := rangeTo(intToRef(1), intToRef(5))
+  anon_1 := f_step(anon_2, intToRef(2))
+  anon_0 := iterator(anon_1)
+  label cont
+    invariant isSubtype(typeOf(sum), intType())
+    invariant isSubtype(typeOf(anon_0), IntIterator())
+  anon_3 := hasNext(anon_0)
+  if (boolFromRef(anon_3)) {
+    var i: Ref
+    i := next(anon_0)
+    sum := plusInts(sum, i)
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(sum), intType())
+  assert isSubtype(typeOf(anon_0), IntIterator())
+  assert intFromRef(sum) == 9
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method endExclusive(v_this: Ref) returns (ret_6: Ref)
+  requires isSubtype(typeOf(v_this), anyType())
+  ensures isSubtype(typeOf(ret_6), nullable(anyType()))
+
+
+method endInclusive(v_this: Ref) returns (ret_4: Ref)
+  requires isSubtype(typeOf(v_this), anyType())
+  ensures isSubtype(typeOf(ret_4), nullable(anyType()))
+
+
+method f_step(v_this_extension: Ref, par_step: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this_extension), IntProgression())
+  requires isSubtype(typeOf(par_step), intType())
+  ensures isSubtype(typeOf(ret_2), IntProgression())
+
+
+method hasNext(v_this: Ref) returns (ret_11: Ref)
+  requires isSubtype(typeOf(v_this), IntIterator())
+  ensures isSubtype(typeOf(ret_11), boolType())
+
+
+method iterator(v_this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this), IntProgression())
+  ensures isSubtype(typeOf(ret_1), IntIterator())
+
+
+method next(v_this: Ref) returns (ret_12: Ref)
+  requires isSubtype(typeOf(v_this), IntIterator())
+  ensures isSubtype(typeOf(ret_12), intType())
+
+
+method rangeTo(v_this: Ref, other: Ref) returns (ret_10: Ref)
+  requires isSubtype(typeOf(v_this), intType())
+  requires isSubtype(typeOf(other), intType())
+  ensures isSubtype(typeOf(ret_10), IntRange())
+
+
+method start(v_this: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(v_this), anyType())
+  ensures isSubtype(typeOf(ret_3), nullable(anyType()))
+
+
+/range_progressions.kt: info: Generated Viper text for parameterizedClosedRangeLoop:
+function first(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntProgression())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function last(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntProgression())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function step(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntProgression())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method endExclusive(this: Ref) returns (ret_6: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_6), nullable(anyType()))
+
+
+method endInclusive(this: Ref) returns (ret_4: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_4), nullable(anyType()))
+
+
+method hasNext(this: Ref) returns (ret_11: Ref)
+  requires isSubtype(typeOf(this), IntIterator())
+  ensures isSubtype(typeOf(ret_11), boolType())
+
+
+method iterator(this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), IntProgression())
+  ensures isSubtype(typeOf(ret_2), IntIterator())
+
+
+method next(this: Ref) returns (ret_12: Ref)
+  requires isSubtype(typeOf(this), IntIterator())
+  ensures isSubtype(typeOf(ret_12), intType())
+
+
+method parameterizedClosedRangeLoop(lower: Ref, upper: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(lower), intType())
+  requires isSubtype(typeOf(upper), intType())
+  requires intFromRef(lower) <= intFromRef(upper)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var iterations: Ref
+  var anon_0: Ref
+  var anon_2: Ref
+  var anon_3: Ref
+  iterations := intToRef(0)
+  anon_2 := rangeTo(lower, upper)
+  anon_0 := iterator(anon_2)
+  label cont
+    invariant isSubtype(typeOf(iterations), intType())
+    invariant isSubtype(typeOf(anon_0), IntIterator())
+    invariant isSubtype(typeOf(lower), intType())
+    invariant isSubtype(typeOf(upper), intType())
+  anon_3 := hasNext(anon_0)
+  if (boolFromRef(anon_3)) {
+    var i: Ref
+    var anon_1: Ref
+    i := next(anon_0)
+    anon_1 := iterations
+    iterations := plusInts(anon_1, intToRef(1))
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(iterations), intType())
+  assert isSubtype(typeOf(anon_0), IntIterator())
+  assert isSubtype(typeOf(lower), intType())
+  assert isSubtype(typeOf(upper), intType())
+  assert intFromRef(iterations) ==
+    intFromRef(upper) - intFromRef(lower) + 1
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method rangeTo(this: Ref, other: Ref) returns (ret_10: Ref)
+  requires isSubtype(typeOf(this), intType())
+  requires isSubtype(typeOf(other), intType())
+  ensures isSubtype(typeOf(ret_10), IntRange())
+
+
+method start(this: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_3), nullable(anyType()))
