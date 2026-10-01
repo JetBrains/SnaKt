@@ -38,3 +38,8 @@ fun <!VIPER_TEXT!>testCascadingPropertyGetter<!>(rp: ReferenceProperty) {
 fun <!VIPER_TEXT!>testReferencePropertySetter<!>(rp: ReferenceProperty) {
     rp.ppProp = PrimitiveProperty()
 }
+
+fun <!VIPER_TEXT!>testNonNullAssertionReceiver<!>() {
+    val property: PrimitiveProperty? = PrimitiveProperty()
+    property!!.aProp = 1
+}

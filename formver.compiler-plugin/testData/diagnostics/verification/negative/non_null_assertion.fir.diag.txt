@@ -1,0 +1,147 @@
+/non_null_assertion.kt: info: Generated Viper text for method:
+function g_field(this: Ref): Ref
+  requires isSubtype(typeOf(this), Box())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method f_method(this: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), Box())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := intToRef(2)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method prop(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+/non_null_assertion.kt: info: Generated Viper text for nonNullAssertionReceiverMightFail:
+method g_aProp(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+method nonNullAssertionReceiverMightFail(property: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(property), nullable(PrimitiveProperty()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  assert property != nullValue()
+  inhale isSubtype(typeOf(property), PrimitiveProperty())
+  anon_1 := property
+  anon_0 := s_aProp(anon_1, intToRef(1))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method s_aProp(this: Ref, anon_0: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  requires isSubtype(typeOf(anon_0), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
+
+
+/non_null_assertion.kt: info: Generated Viper text for nonNullAssertionInitializerMightFail:
+method nonNullAssertionInitializerMightFail(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), nullable(intType()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var y: Ref
+  assert x != nullValue()
+  inhale isSubtype(typeOf(x), intType())
+  y := x
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/non_null_assertion.kt: info: Generated Viper text for nonNullAssertionMethodReceiverMightFail:
+function g_field(this: Ref): Ref
+  requires isSubtype(typeOf(this), Box())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method f_method(this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), Box())
+  ensures isSubtype(typeOf(ret_2), intType())
+
+
+method nonNullAssertionMethodReceiverMightFail(b: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(b), nullable(Box()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  assert b != nullValue()
+  inhale isSubtype(typeOf(b), Box())
+  anon_1 := b
+  anon_0 := f_method(anon_1)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method prop(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+/non_null_assertion.kt: info: Generated Viper text for nonNullAssertionGetterReceiverMightFail:
+function g_field(this: Ref): Ref
+  requires isSubtype(typeOf(this), Box())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method nonNullAssertionGetterReceiverMightFail(b: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(b), nullable(Box()))
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  assert b != nullValue()
+  inhale isSubtype(typeOf(b), Box())
+  anon_1 := b
+  anon_0 := prop(anon_1)
+  v_ret_0 := anon_0
+  inhale isSubtype(typeOf(v_ret_0), intType())
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method prop(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+/non_null_assertion.kt: info: Generated Viper text for nonNullAssertionFieldReceiverMightFail:
+function g_field(this: Ref): Ref
+  requires isSubtype(typeOf(this), Box())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method nonNullAssertionFieldReceiverMightFail(b: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(b), nullable(Box()))
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  assert b != nullValue()
+  inhale isSubtype(typeOf(b), Box())
+  anon := b
+  v_ret_0 := g_field(anon)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method prop(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), anyType())
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+
+
+/non_null_assertion.kt: error: Impure function body detected in pure function
+
+/non_null_assertion.kt: error: Function 'nonNullAssertionInPureFunctionMightFail' was not verified because of errors in its declaration
