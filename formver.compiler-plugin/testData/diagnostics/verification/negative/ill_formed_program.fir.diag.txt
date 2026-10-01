@@ -1,0 +1,27 @@
+/ill_formed_program.kt: info: Generated Viper text for copyWithDefaults:
+function g_first(this: Ref): Ref
+  requires isSubtype(typeOf(this), Pair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function g_second(this: Ref): Ref
+  requires isSubtype(typeOf(this), Pair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method copy(this: Ref, par_first: Ref, par_second: Ref)
+  returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Pair())
+  requires isSubtype(typeOf(par_first), intType())
+  requires isSubtype(typeOf(par_second), intType())
+  ensures isSubtype(typeOf(ret_1), Pair())
+
+
+method copyWithDefaults(pair: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(pair), Pair())
+  ensures isSubtype(typeOf(v_ret_0), Pair())
+{
+  v_ret_0 := copy(pair, intToRef(30))
+  goto lbl_ret_0
+  label lbl_ret_0
+}

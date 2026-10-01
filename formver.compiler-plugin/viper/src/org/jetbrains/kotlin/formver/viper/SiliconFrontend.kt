@@ -1,5 +1,6 @@
 package org.jetbrains.kotlin.formver.viper
 
+import org.jetbrains.kotlin.formver.viper.errors.AbortedError
 import org.jetbrains.kotlin.formver.viper.errors.GenericConsistencyError
 import org.jetbrains.kotlin.formver.viper.errors.VerificationError
 import org.jetbrains.kotlin.formver.viper.errors.VerifierError
@@ -39,22 +40,33 @@ class SiliconFrontend(commandLineArgs: List<String>) : Closeable {
         }
     }
 
-    /** Consistency-checks and verifies [viperProgram], calling [onFailure] for each error found. */
+    /**
+     * Consistency-checks and verifies [viperProgram], calling [onFailure] for each error found.
+     * A program that fails the consistency check is not passed to Silicon.
+     */
     fun verify(viperProgram: viper.silver.ast.Program, onFailure: (VerifierError) -> Unit) {
-        val result = siliconApi.verify(viperProgram)
-        if (result is viper.silver.verifier.Failure) {
-            for (error in result.errors()) {
-                when (error) {
-                    is viper.silver.verifier.VerificationError ->
-                        onFailure(VerificationError(error))
-                    is viper.silver.verifier.ConsistencyError ->
-                        onFailure(GenericConsistencyError(error))
-                }
-            }
+        // Silicon skips Silver's consistency check for programs passed as ASTs, so it is run here.
+        val consistencyErrors = viperProgram.checkTransitively()
+        if (!consistencyErrors.isEmpty) {
+            for (error in consistencyErrors) onFailure(AbortedError(error))
+            return
         }
+        reportFailures(siliconApi.verify(viperProgram), onFailure)
     }
 
     override fun close() {
         siliconApi.stop()
+    }
+}
+
+/** Calls [onFailure] for each error in [result]. */
+internal fun reportFailures(result: viper.silver.verifier.VerificationResult, onFailure: (VerifierError) -> Unit) {
+    if (result !is viper.silver.verifier.Failure) return
+    for (error in result.errors()) {
+        when (error) {
+            is viper.silver.verifier.VerificationError -> onFailure(VerificationError(error))
+            is viper.silver.verifier.ConsistencyError -> onFailure(GenericConsistencyError(error))
+            else -> onFailure(AbortedError(error))
+        }
     }
 }

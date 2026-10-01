@@ -1,0 +1,1 @@
+/ill_formed_program.kt: error: Viper verification aborted: Consistency error: Arguments List(pair, intToRef(30)) are not assignable to formal arguments List(this: Ref, par_first: Ref, par_second: Ref) of method copy (<wrapped value>)
