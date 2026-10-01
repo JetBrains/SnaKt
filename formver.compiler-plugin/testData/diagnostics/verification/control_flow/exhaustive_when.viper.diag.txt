@@ -1,3 +1,5 @@
 /exhaustive_when.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(l0_r) >= 0 might not hold.
 
-/exhaustive_when.kt: warning: Viper verification error: Postcondition of pureSealedWhen might not hold. Assertion isSubtype(typeOf(result), boolType()) might not hold.
+/exhaustive_when.kt: warning: Viper verification error: Assert might fail. Assertion false might not hold.
+
+/exhaustive_when.kt: warning: Viper verification error: Assert might fail. Assertion !(intFromRef(l0_r) == 4) might not hold.

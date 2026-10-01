@@ -13,7 +13,10 @@ import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactory1
 import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
+import org.jetbrains.kotlin.fir.declarations.getSealedClassInheritors
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
+import org.jetbrains.kotlin.fir.declarations.utils.isSealed
+import org.jetbrains.kotlin.fir.resolve.providers.symbolProvider
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirConstructorSymbol
@@ -601,10 +604,26 @@ class ProgramConverter(
 
             classEmbedding
         }
+        if (symbol.isSealed) embedSealedInheritors(symbol)
         symbol.propertySymbols.forEach {
             embedProperty(it)
         }
         return embedding
+    }
+
+    /**
+     * Embeds every direct inheritor of the sealed class [symbol], so the type domain can state that a value of the
+     * sealed type is an instance of one of them.
+     */
+    @OptIn(SymbolInternals::class)
+    private fun embedSealedInheritors(symbol: FirRegularClassSymbol) {
+        val className = symbol.classId.embedName()
+        val inheritorNames = symbol.fir.getSealedClassInheritors(session).map { classId ->
+            val inheritor = session.symbolProvider.getClassLikeSymbolByClassId(classId) as? FirRegularClassSymbol
+                ?: throw SnaktInternalException(symbol.source, "Cannot resolve sealed inheritor $classId")
+            embedClass(inheritor).name
+        }
+        typeResolver.addSealedInheritors(className, inheritorNames)
     }
 
     // Note: keep in mind that this function is necessary to resolve the name of the function!
