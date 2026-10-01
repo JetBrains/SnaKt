@@ -18,39 +18,13 @@ method prop(this: Ref) returns (ret_1: Ref)
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-/non_null_assertion.kt: info: Generated Viper text for nonNullAssertionReceiverMightFail:
-method g_aProp(this: Ref) returns (ret_1: Ref)
-  requires isSubtype(typeOf(this), anyType())
-  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
-
-
-method nonNullAssertionReceiverMightFail(property: Ref)
-  returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(property), nullable(PrimitiveProperty()))
+/non_null_assertion.kt: info: Generated Viper text for nonNullAssertionInitializer:
+method nonNullAssertionInitializer() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
-  var anon_0: Ref
-  var anon_1: Ref
-  assert property != nullValue()
-  inhale isSubtype(typeOf(property), PrimitiveProperty())
-  anon_1 := property
-  anon_0 := s_aProp(anon_1, intToRef(1))
-  label lbl_ret_0
-  inhale isSubtype(typeOf(v_ret_0), unitType())
-}
-
-method s_aProp(this: Ref, anon_0: Ref) returns (ret_2: Ref)
-  requires isSubtype(typeOf(this), anyType())
-  requires isSubtype(typeOf(anon_0), nullable(anyType()))
-  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
-
-
-/non_null_assertion.kt: info: Generated Viper text for nonNullAssertionInitializerMightFail:
-method nonNullAssertionInitializerMightFail(x: Ref) returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(x), nullable(intType()))
-  ensures isSubtype(typeOf(v_ret_0), unitType())
-{
+  var x: Ref
   var y: Ref
+  x := intToRef(1)
   assert x != nullValue()
   inhale isSubtype(typeOf(x), intType())
   y := x
@@ -58,28 +32,37 @@ method nonNullAssertionInitializerMightFail(x: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-/non_null_assertion.kt: info: Generated Viper text for nonNullAssertionMethodReceiverMightFail:
+/non_null_assertion.kt: info: Generated Viper text for nonNullAssertionMethodReceiver:
 function g_field(this: Ref): Ref
   requires isSubtype(typeOf(this), Box())
   ensures isSubtype(typeOf(result), intType())
 
 
-method f_method(this: Ref) returns (ret_2: Ref)
+method con(par_field: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_field), intType())
+  ensures isSubtype(typeOf(ret_2), Box())
+  ensures acc(Box_unique(ret_2), write)
+  ensures intFromRef(g_field(ret_2)) == intFromRef(par_field)
+
+
+method f_method(this: Ref) returns (ret_3: Ref)
   requires isSubtype(typeOf(this), Box())
-  ensures isSubtype(typeOf(ret_2), intType())
+  ensures isSubtype(typeOf(ret_3), intType())
 
 
-method nonNullAssertionMethodReceiverMightFail(b: Ref)
-  returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(b), nullable(Box()))
+method nonNullAssertionMethodReceiver() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
+  var b: Ref
   var anon_0: Ref
   var anon_1: Ref
+  var anon_2: Ref
+  anon_0 := con(intToRef(1))
+  b := anon_0
   assert b != nullValue()
   inhale isSubtype(typeOf(b), Box())
-  anon_1 := b
-  anon_0 := f_method(anon_1)
+  anon_2 := b
+  anon_1 := f_method(anon_2)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
@@ -89,24 +72,33 @@ method prop(this: Ref) returns (ret_1: Ref)
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-/non_null_assertion.kt: info: Generated Viper text for nonNullAssertionGetterReceiverMightFail:
+/non_null_assertion.kt: info: Generated Viper text for nonNullAssertionGetterReceiver:
 function g_field(this: Ref): Ref
   requires isSubtype(typeOf(this), Box())
   ensures isSubtype(typeOf(result), intType())
 
 
-method nonNullAssertionGetterReceiverMightFail(b: Ref)
-  returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(b), nullable(Box()))
+method con(par_field: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_field), intType())
+  ensures isSubtype(typeOf(ret_2), Box())
+  ensures acc(Box_unique(ret_2), write)
+  ensures intFromRef(g_field(ret_2)) == intFromRef(par_field)
+
+
+method nonNullAssertionGetterReceiver() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
+  var b: Ref
   var anon_0: Ref
   var anon_1: Ref
+  var anon_2: Ref
+  anon_0 := con(intToRef(1))
+  b := anon_0
   assert b != nullValue()
   inhale isSubtype(typeOf(b), Box())
-  anon_1 := b
-  anon_0 := prop(anon_1)
-  v_ret_0 := anon_0
+  anon_2 := b
+  anon_1 := prop(anon_2)
+  v_ret_0 := anon_1
   inhale isSubtype(typeOf(v_ret_0), intType())
   goto lbl_ret_0
   label lbl_ret_0
@@ -117,22 +109,31 @@ method prop(this: Ref) returns (ret_1: Ref)
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
 
-/non_null_assertion.kt: info: Generated Viper text for nonNullAssertionFieldReceiverMightFail:
+/non_null_assertion.kt: info: Generated Viper text for nonNullAssertionFieldReceiver:
 function g_field(this: Ref): Ref
   requires isSubtype(typeOf(this), Box())
   ensures isSubtype(typeOf(result), intType())
 
 
-method nonNullAssertionFieldReceiverMightFail(b: Ref)
-  returns (v_ret_0: Ref)
-  requires isSubtype(typeOf(b), nullable(Box()))
+method con(par_field: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_field), intType())
+  ensures isSubtype(typeOf(ret_2), Box())
+  ensures acc(Box_unique(ret_2), write)
+  ensures intFromRef(g_field(ret_2)) == intFromRef(par_field)
+
+
+method nonNullAssertionFieldReceiver() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  var anon: Ref
+  var b: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  anon_0 := con(intToRef(1))
+  b := anon_0
   assert b != nullValue()
   inhale isSubtype(typeOf(b), Box())
-  anon := b
-  v_ret_0 := g_field(anon)
+  anon_1 := b
+  v_ret_0 := g_field(anon_1)
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -144,4 +145,4 @@ method prop(this: Ref) returns (ret_1: Ref)
 
 /non_null_assertion.kt: error: Impure function body detected in pure function
 
-/non_null_assertion.kt: error: Function 'nonNullAssertionInPureFunctionMightFail' was not verified because of errors in its declaration
+/non_null_assertion.kt: error: Function 'nonNullAssertionInPureFunction' was not verified because of errors in its declaration

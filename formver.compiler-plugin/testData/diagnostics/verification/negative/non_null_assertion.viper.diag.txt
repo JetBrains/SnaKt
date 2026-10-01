@@ -1,1 +1,9 @@
 /non_null_assertion.kt: warning: Viper verification error: Assert might fail. Assertion property != nullValue() might not hold.
+
+/non_null_assertion.kt: warning: Viper verification error: Assert might fail. Assertion x != nullValue() might not hold.
+
+/non_null_assertion.kt: warning: Viper verification error: Assert might fail. Assertion b != nullValue() might not hold.
+
+/non_null_assertion.kt: warning: Viper verification error: Assert might fail. Assertion b != nullValue() might not hold.
+
+/non_null_assertion.kt: warning: Viper verification error: Assert might fail. Assertion b != nullValue() might not hold.
