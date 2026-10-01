@@ -58,7 +58,7 @@ dependencies {
     testRuntimeOnly(project(":formver.compiler-plugin:viper"))
 
     // Dependencies required to run the internal test framework.
-    testRuntimeOnly("junit:junit:4.13.2")
+    testRuntimeOnly(libs.junit4)
     testRuntimeOnly(kotlin("reflect"))
     testRuntimeOnly(kotlin("test"))
     testRuntimeOnly(kotlin("script-runtime"))
