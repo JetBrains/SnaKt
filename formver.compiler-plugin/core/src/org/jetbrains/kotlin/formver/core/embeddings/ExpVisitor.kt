@@ -38,6 +38,7 @@ interface ExpVisitor<R> {
     fun visitBinaryOperatorExpEmbedding(e: BinaryOperatorExpEmbedding): R
     fun visitSequentialAnd(e: SequentialAnd): R
     fun visitSequentialOr(e: SequentialOr): R
+    fun visitContextualImplies(e: ContextualImplies): R
     fun visitInjectionBasedExpEmbedding(e: InjectionBasedExpEmbedding): R
     fun visitFieldAccessPermissions(e: FieldAccessPermissions): R
     fun visitForAllEmbedding(e: ForAllEmbedding): R
@@ -100,6 +101,7 @@ interface DefaultingExpVisitor<R> : ExpVisitor<R> {
     override fun visitBinaryOperatorExpEmbedding(e: BinaryOperatorExpEmbedding): R = visitDefault(e)
     override fun visitSequentialAnd(e: SequentialAnd): R = visitDefault(e)
     override fun visitSequentialOr(e: SequentialOr): R = visitDefault(e)
+    override fun visitContextualImplies(e: ContextualImplies): R = visitDefault(e)
     override fun visitInjectionBasedExpEmbedding(e: InjectionBasedExpEmbedding): R = visitDefault(e)
     override fun visitFieldAccessPermissions(e: FieldAccessPermissions): R = visitDefault(e)
     override fun visitForAllEmbedding(e: ForAllEmbedding): R = visitDefault(e)

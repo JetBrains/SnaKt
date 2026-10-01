@@ -51,3 +51,18 @@ data class SequentialOr(override val left: ExpEmbedding, override val right: Exp
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitSequentialOr(this)
 }
+
+/**
+ * A call to [org.jetbrains.kotlin.formver.plugin.implies]. Under [LogicOperatorPolicy.CONVERT_TO_IF] it is an
+ * ordinary call, so both operands are evaluated left to right before the implication is computed. Under
+ * [LogicOperatorPolicy.CONVERT_TO_EXPRESSION] it becomes a Viper implication, which does not evaluate the right
+ * operand when the left one is false.
+ */
+data class ContextualImplies(val left: ExpEmbedding, val right: ExpEmbedding) : ExpEmbedding {
+    override val type
+        get() = buildType { boolean() }
+
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(left, right)
+
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitContextualImplies(this)
+}

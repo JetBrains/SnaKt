@@ -187,7 +187,7 @@ object SpecialKotlinFunctions {
         }
 
         addFunction(extBooleanBooleanToBooleanType, SpecialPackages.formver, name = "implies") { args, _ ->
-            Implies(args[0], args[1])
+            ContextualImplies(args[0], args[1])
         }
 
         val oldCallableType = buildFunctionPretype {
