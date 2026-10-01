@@ -258,7 +258,11 @@ object OperatorExpEmbeddings {
             withParam { char() }
             withReturnType { string() }
         }
-        viperImplementation { Exp.SeqAppend(args[0], Exp.ExplicitSeq(listOf(args[1])), pos, info) }
+        // Nothing at the domain level puts a char-typed `Ref` in the code range, and a string may
+        // only hold chars; this is the identity on every `Char` value.
+        viperImplementation {
+            Exp.SeqAppend(args[0], Exp.ExplicitSeq(listOf(truncateToChar.toFuncApp(listOf(args[1])))), pos, info)
+        }
     }
 
     val allTemplates

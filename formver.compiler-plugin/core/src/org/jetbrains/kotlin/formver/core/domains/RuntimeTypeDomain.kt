@@ -278,8 +278,6 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
         val intInjection = Injection(UnqualifiedDomainFuncName("int"), Type.Int, intType)
         val boolInjection = Injection(UnqualifiedDomainFuncName("bool"), Type.Bool, boolType)
         val charInjection = Injection(UnqualifiedDomainFuncName("char"), Type.Int, charType)
-        val stringInjection = Injection(UnqualifiedDomainFuncName("string"), Type.Seq(Type.Int), stringType)
-        val primitiveTypeInjections = listOf(intInjection, boolInjection, charInjection, stringInjection)
         /**
          * `truncateToChar: Int -> Int`
          *
@@ -292,6 +290,19 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
             createDomainFunc(UnqualifiedDomainFuncName("truncateToChar"), listOf(codePoint.decl()), Type.Int)
 
         private val charCodeRangeSize = Exp.IntLit(CharTypeEmbedding.CODE_RANGE_SIZE)
+        private fun inCharCodeRange(code: Exp): Exp =
+            Exp.And(Exp.LeCmp(Exp.IntLit(0), code), Exp.LtCmp(code, charCodeRangeSize))
+
+        // A Kotlin string is a sequence of chars, so a `Seq[Int]` with an element outside the code
+        // range is not the image of any string.
+        val stringInjection = Injection(UnqualifiedDomainFuncName("string"), Type.Seq(Type.Int), stringType) { seq ->
+            Exp.forall(index) { index ->
+                assumption { Exp.LeCmp(Exp.IntLit(0), index) }
+                assumption { Exp.LtCmp(index, Exp.SeqLength(seq)) }
+                inCharCodeRange(simpleTrigger { Exp.SeqIndex(seq, index) })
+            }
+        }
+        val primitiveTypeInjections = listOf(intInjection, boolInjection, charInjection, stringInjection)
 
         // special values
         val nullValue = createDomainFunc(UnqualifiedDomainFuncName("nullValue"), emptyList(), Ref)
@@ -310,8 +321,7 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
     override val axioms: List<DomainAxiom> = AxiomListBuilder.build(this) {
         axiom("truncateToCharInCodeRange") {
             Exp.forall(codePoint) { code ->
-                val truncated = simpleTrigger { truncateToChar.toFuncApp(listOf(code)) }
-                Exp.And(Exp.LeCmp(Exp.IntLit(0), truncated), Exp.LtCmp(truncated, charCodeRangeSize))
+                inCharCodeRange(simpleTrigger { truncateToChar.toFuncApp(listOf(code)) })
             }
         }
         // A value already in the code range is its own truncation. This follows from the
@@ -335,16 +345,13 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
                 )
             }
         }
-        // A string is embedded as a `Seq[Int]`, whose elements Viper knows nothing about. Only a
-        // real Kotlin string is in the image of the injection, and its elements are chars, so an
-        // element read out of one is in the code range without any reduction being applied to it.
+        // The projection only yields char sequences. This is consistent with the injection because
+        // `fromRef(toRef(v)) == v` is only stated for char sequences `v`.
         axiom("stringElementInCodeRange") {
             Exp.forall(r, index) { r, index ->
-                assumption { r isOf stringType() }
                 assumption { Exp.LeCmp(Exp.IntLit(0), index) }
                 assumption { Exp.LtCmp(index, Exp.SeqLength(stringInjection.fromRef(r))) }
-                val element = simpleTrigger { Exp.SeqIndex(stringInjection.fromRef(r), index) }
-                Exp.And(Exp.LeCmp(Exp.IntLit(0), element), Exp.LtCmp(element, charCodeRangeSize))
+                inCharCodeRange(simpleTrigger { Exp.SeqIndex(stringInjection.fromRef(r), index) })
             }
         }
         axiom("subtypeReflexive") {

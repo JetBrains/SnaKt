@@ -123,3 +123,46 @@ method requiresNonNegativeChar(par_c: Ref) returns (ret_3: Ref)
   ensures 0 <= charFromRef(par_c) && charFromRef(par_c) < 65536
   ensures 0 <= charFromRef(ret_3) && charFromRef(ret_3) < 65536
   ensures isSubtype(typeOf(ret_3), charType())
+
+
+/char.kt: info: Generated Viper text for stringLiteralAtCodeRangeEdgeReadsBack:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method stringLiteralAtCodeRangeEdgeReadsBack() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var s: Ref
+  s := stringToRef(Seq(0, 65535))
+  assert stringFromRef(s)[0] == 0
+  assert stringFromRef(s)[1] == 65535
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/char.kt: info: Generated Viper text for appendedCharReadsBack:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method appendedCharReadsBack(s: Ref, c: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(s), stringType())
+  requires 0 <= charFromRef(c) && charFromRef(c) < 65536
+  requires isSubtype(typeOf(c), charType())
+  ensures 0 <= charFromRef(c) && charFromRef(c) < 65536
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_t: Ref
+  l0_t := addStringChar(s, c)
+  assert stringFromRef(l0_t)[|stringFromRef(s)|] == charFromRef(c)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method plus(this: Ref, other: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), stringType())
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_1), stringType())

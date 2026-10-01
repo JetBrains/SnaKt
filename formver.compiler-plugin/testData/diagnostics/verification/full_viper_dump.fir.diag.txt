@@ -76,8 +76,7 @@ domain rt  {
   axiom stringElementInCodeRange {
     (forall r: Ref, index: Int ::
       { stringFromRef(r)[index] }
-      isSubtype(typeOf(r), stringType()) && 0 <= index &&
-      index < |stringFromRef(r)| ==>
+      0 <= index && index < |stringFromRef(r)| ==>
       0 <= stringFromRef(r)[index] && stringFromRef(r)[index] < 65536)
   }
 
@@ -262,6 +261,9 @@ domain rt  {
   axiom {
     (forall v: Seq[Int] ::
       { stringFromRef(stringToRef(v)) }
+      (forall index: Int ::
+        { v[index] }
+        0 <= index && index < |v| ==> 0 <= v[index] && v[index] < 65536) ==>
       stringFromRef(stringToRef(v)) == v)
   }
 
@@ -282,7 +284,7 @@ function addCharInt(arg_1: Ref, arg_2: Ref): Ref
 function addStringChar(arg_1: Ref, arg_2: Ref): Ref
   ensures isSubtype(typeOf(result), stringType())
   ensures stringFromRef(result) ==
-    stringFromRef(arg_1) ++ Seq(charFromRef(arg_2))
+    stringFromRef(arg_1) ++ Seq(truncateToChar(charFromRef(arg_2)))
 
 
 function addStrings(arg_1: Ref, arg_2: Ref): Ref

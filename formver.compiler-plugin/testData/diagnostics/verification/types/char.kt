@@ -21,8 +21,7 @@ fun <!VIPER_TEXT!>passesCharParameterOn<!>(c: Char): Char = requiresNonNegativeC
 @AlwaysVerify
 fun <!VIPER_TEXT!>nullableCharRoundTrip<!>(c: Char?): Char? = c
 
-// A string is embedded as a sequence of unconstrained `Int`s, so an element read out of one
-// only lands in the code range because `String.get` reduces it into the range.
+// The code range of a string element comes from the string domain, not from the caller.
 @AlwaysVerify
 fun <!VIPER_TEXT!>stringElementIsInCodeRange<!>(s: String): Char {
     preconditions {
@@ -48,4 +47,17 @@ fun <!VIPER_TEXT!>advanceCharInLoop<!>(n: Int): Char {
         i += 1
     }
     return requiresNonNegativeChar(c)
+}
+
+// A string's contents are only recovered from its literal when every element is in the code range.
+@AlwaysVerify
+fun <!VIPER_TEXT!>stringLiteralAtCodeRangeEdgeReadsBack<!>() {
+    val s = "\u0000\uFFFF"
+    verify(s[0] == '\u0000', s[1] == '\uFFFF')
+}
+
+@AlwaysVerify
+fun <!VIPER_TEXT!>appendedCharReadsBack<!>(s: String, c: Char) {
+    val t = s + c
+    verify(t[s.length] == c)
 }
