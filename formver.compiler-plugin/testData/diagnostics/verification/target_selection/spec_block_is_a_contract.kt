@@ -3,8 +3,7 @@
 
 import org.jetbrains.kotlin.formver.plugin.*
 
-// A specification block is the only thing marking these two functions as worth verifying.
-// Callers may assume what they promise, so their bodies have to be checked against it.
+// A specification block alone makes these two functions targets.
 
 <!VIPER_VERIFICATION_ERROR!>fun <!VIPER_TEXT!>alwaysPositive<!>(x: Int): Int {
     postconditions<Int> {
@@ -31,7 +30,7 @@ fun <!VIPER_TEXT!>caller<!>(): Int {
 // Neither specified nor annotated: not a target, and nothing is assumed of it.
 fun unspecified(x: Int): Int = x + 1
 
-// Only misplaced blocks: still a target, so the blocks are reported rather than skipped.
+// Only misplaced blocks: still a target, so the blocks are reported.
 fun <!VERIFICATION_SKIPPED!>onlyMisplacedPostconditions<!>(x: Int): Int {
     val y = x
     <!IGNORED_SPEC_BLOCK!>postconditions<Int> { it > 0 }<!>

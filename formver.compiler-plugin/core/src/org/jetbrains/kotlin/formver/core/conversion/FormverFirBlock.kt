@@ -39,11 +39,9 @@ private fun FirFunctionCall.specBlockLambda(): FirAnonymousFunction {
 enum class SpecBlockPosition { FUNCTION_BODY, LOOP_BODY, NONE }
 
 /**
- * The specification-block calls conversion picks up from [block].
+ * The specification-block calls conversion picks up from [block], keyed by kind.
  *
- * The single authority on where a specification block counts: extraction reads what this returns,
- * and [findIgnoredSpecBlocks] treats everything else as dropped. Resolves names only, so it is safe to
- * ask about a body conversion may yet reject.
+ * Resolves names only, so it is safe to call on a body that conversion may yet reject.
  */
 fun usedSpecBlocks(block: FirBlock, position: SpecBlockPosition): Map<SpecBlockKind, FirFunctionCall> {
     fun statementAt(index: Int, kind: SpecBlockKind): FirFunctionCall? =
@@ -66,20 +64,14 @@ fun usedSpecBlocks(block: FirBlock, position: SpecBlockPosition): Map<SpecBlockK
 /**
  * Every specification-block call inside [body] that conversion will not pick up, in source order.
  *
- * Conversion resolves these calls by name wherever they appear and no-ops them, so a block outside
- * the position [usedSpecBlocks] reads is dropped without a word. Nested statement lists count: a
- * block in an `if` branch is ignored just as surely as one further down the body. Lambdas and nested
- * functions are skipped, having their own specification blocks in their own right.
+ * Conversion resolves these calls by name wherever they appear and converts them to no-ops, so a
+ * block outside the positions [usedSpecBlocks] returns has no effect. Includes blocks in nested
+ * statement lists such as `if` branches. Skips lambdas and local functions, which own their blocks.
  */
 fun findIgnoredSpecBlocks(body: FirBlock): List<Pair<SpecBlockKind, FirFunctionCall>> =
     SpecBlockCollector(body).ignored
 
-/**
- * Whether [body] calls any specification block, wherever it sits.
- *
- * Target selection asks this rather than [usedSpecBlocks]: a function whose blocks are all misplaced
- * must still be converted, or nothing reports them.
- */
+/** Whether [body] calls any specification block, wherever it sits. Includes misplaced blocks. */
 fun containsSpecBlocks(body: FirBlock): Boolean = SpecBlockCollector(body).found
 
 private class SpecBlockCollector(body: FirBlock) : FirVisitorVoid() {
