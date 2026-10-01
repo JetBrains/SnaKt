@@ -3,8 +3,7 @@
 import org.jetbrains.kotlin.formver.plugin.AlwaysVerify
 import org.jetbrains.kotlin.formver.plugin.verify
 
-// A prefix/suffix query is a pure observation: it may not make the verification
-// state inconsistent, so `false` has to stay unprovable after one.
+// `false` stays unprovable after a call that omits `ignoreCase`.
 @AlwaysVerify
 fun <!VIPER_TEXT!>startsWithKeepsStateConsistent<!>(a: String, b: String) {
     a.startsWith(b)

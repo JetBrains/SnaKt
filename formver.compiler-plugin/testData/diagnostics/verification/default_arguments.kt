@@ -16,8 +16,7 @@ fun <!VIPER_TEXT!>defaultInTheMiddle<!>(a: Int, skipped: Int = 0, c: Int): Int =
 
 class Boxed(val a: Int, val b: Int = 0)
 
-// A parameter left at its default tells the caller nothing, but the call still may not
-// make the verification state inconsistent.
+// `false` stays unprovable after a call that omits a default argument.
 @AlwaysVerify
 fun <!VIPER_TEXT!>omittedTrailingDefault<!>() {
     trailingDefault(1)
@@ -42,8 +41,7 @@ fun <!VIPER_TEXT!>omittedConstructorDefault<!>() {
     verify(<!VIPER_VERIFICATION_ERROR!>false<!>)
 }
 
-// Nothing is assumed about the omitted argument, so the default value itself does not
-// reach the caller.
+// Known gap: an omitted argument is not assumed to equal its default value.
 @AlwaysVerify
 fun <!VIPER_TEXT!>defaultValueIsNotAssumed<!>() {
     val defaulted = pureTrailingDefault(1)
@@ -63,8 +61,7 @@ fun <!VIPER_TEXT!>functionDefault<!>(a: Int, f: (Int) -> Int = { it }): Int = a
 
 fun <!VIPER_TEXT!>varargAndDefault<!>(vararg xs: Int, b: Int = 0): Int = b
 
-// The filled-in value carries no access permissions, so nothing can be read off it, but the
-// call still may not make the verification state inconsistent.
+// The filled-in value of a reference parameter carries no access permissions.
 @AlwaysVerify
 fun <!VIPER_TEXT!>omittedReferenceDefault<!>() {
     refDefault(1)
@@ -89,16 +86,14 @@ fun <!VIPER_TEXT!>omittedFunctionDefault<!>() {
     verify(<!VIPER_VERIFICATION_ERROR!>false<!>)
 }
 
-// A vararg argument of a user function is not supported; filling in the omitted default must
-// keep reporting that, rather than a different failure.
+// Known gap: vararg arguments to user functions are not supported.
 @AlwaysVerify
 fun varargWithOmittedDefault() {
     varargAndDefault(<!INTERNAL_ERROR!>1, 2<!>)
     verify(false)
 }
 
-// A vararg parameter given no arguments has no entry in the argument mapping, so it is filled
-// in like any omitted parameter: a value of the array type, not known to be empty.
+// An empty vararg parameter is filled in like an omitted one: an array not known to be empty.
 @AlwaysVerify
 fun <!VIPER_TEXT!>emptyVarargWithOmittedDefault<!>() {
     varargAndDefault()

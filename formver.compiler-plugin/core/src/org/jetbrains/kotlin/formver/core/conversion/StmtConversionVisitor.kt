@@ -292,9 +292,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
      *
      * The default value of a parameter the call omits is not available at the call site, and a Viper
      * call that omits the actual leaves the callee's formal unbound, which makes the verification
-     * state inconsistent and proves anything afterwards. Such a formal gets a value of its own type
-     * that nothing else is assumed about: that loses what the default would have told us, but only
-     * that.
+     * state inconsistent. Such a formal gets a fresh value constrained only by its type.
      *
      * When named arguments are out of formal order, each argument is stored in a fresh variable in
      * source order, so that their side effects happen in source order.
