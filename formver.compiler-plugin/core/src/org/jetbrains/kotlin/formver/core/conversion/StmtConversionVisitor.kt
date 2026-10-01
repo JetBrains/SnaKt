@@ -16,6 +16,7 @@ import org.jetbrains.kotlin.fir.references.toResolvedSymbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.coneType
+import org.jetbrains.kotlin.fir.types.isNothing
 import org.jetbrains.kotlin.fir.types.isUnit
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
@@ -86,8 +87,12 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         )
     }
 
-    override fun visitBlock(block: FirBlock, data: StmtConversionContext): ExpEmbedding =
-        block.statements.map(data::convert).toBlock()
+    override fun visitBlock(block: FirBlock, data: StmtConversionContext): ExpEmbedding = Block {
+        for (statement in block.statements) {
+            add(data.convert(statement))
+            if (statement is FirExpression && statement.resolvedType.isNothing) break
+        }
+    }
 
     override fun visitLiteralExpression(
         literalExpression: FirLiteralExpression,
