@@ -1,0 +1,7 @@
+/function_precondition_calls.kt: warning: Viper verification error: The precondition of method requirePositive might not hold. Assertion intFromRef(intToRef(0)) > 0 might not hold.
+
+/function_precondition_calls.kt: warning: Viper verification error: The precondition of method requirePositive might not hold. Assertion intFromRef(intToRef(0)) > 0 might not hold.
+
+/function_precondition_calls.kt: warning: Viper verification error: The precondition of method requirePositive might not hold. Assertion intFromRef(minusInts(intToRef(1), intToRef(1))) > 0 might not hold.
+
+/function_precondition_calls.kt: warning: Viper verification error: The precondition of method requirePositive might not hold. Assertion intFromRef(intToRef(0)) > 0 might not hold.

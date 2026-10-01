@@ -6,6 +6,8 @@ import org.jetbrains.kotlin.formver.plugin.verify
 
 fun <!VIPER_TEXT!>useChecks<!>(): Unit {
     check(true)
+    // Runtime checks are deliberately erased by the replacement; this is not a proof assertion.
+    check(false)
     check(true) { "Lazy message" }
 }
 

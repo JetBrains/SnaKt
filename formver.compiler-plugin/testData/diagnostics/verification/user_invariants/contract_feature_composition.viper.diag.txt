@@ -1,0 +1,3 @@
+/contract_feature_composition.kt: warning: Viper verification error: Precondition of function quantifiedSuccessor might not hold. Assertion intFromRef(intToRef(-1)) >= 0 might not hold.
+
+/contract_feature_composition.kt: warning: Viper verification error: Postcondition of triggerlessExistentialBoundary might not hold. Assertion (exists anon: Int :: anon == intFromRef(seed) && intFromRef(v_ret_0) == anon) might not hold.

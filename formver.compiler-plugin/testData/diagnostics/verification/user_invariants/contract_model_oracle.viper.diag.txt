@@ -1,0 +1,1 @@
+/contract_model_oracle.kt: warning: Viper verification error: Assert might fail. Assertion boolFromRef(modeledImplies(boolToRef(true), boolToRef(false))) might not hold.

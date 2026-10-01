@@ -1,0 +1,1 @@
+/contract_state_sequences.kt: warning: Viper verification error: The precondition of method contractStepUp might not hold. Assertion intFromRef(intToRef(2)) < 2 might not hold.

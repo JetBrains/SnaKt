@@ -1,0 +1,7 @@
+/specification_mutation_negatives.kt: warning: Viper verification error: Postcondition of negatedIncrementPostcondition might not hold. Assertion !(intFromRef(v_ret_0) == intFromRef(x) + 1) might not hold.
+
+/specification_mutation_negatives.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(x) < 3 might not hold.
+
+/specification_mutation_negatives.kt: warning: Viper verification error: Precondition of function stringGet might not hold. Assertion intFromRef(intToRef(0)) < |stringFromRef(text)| might not hold.
+
+/specification_mutation_negatives.kt: warning: Viper verification error: Postcondition of swappedBranchResult might not hold. Assertion boolFromRef(chooseFirst) ==> intFromRef(v_ret_0) == 1 might not hold.

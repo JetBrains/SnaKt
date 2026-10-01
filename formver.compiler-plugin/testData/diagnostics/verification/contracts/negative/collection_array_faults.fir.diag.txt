@@ -1,0 +1,286 @@
+/collection_array_faults.kt: info: Generated Viper text for list_positive_control:
+field size: Ref
+
+method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method isEmpty(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures boolFromRef(ret_1) ==> intFromRef(this.size) == 0
+  ensures !boolFromRef(ret_1) ==> intFromRef(this.size) > 0
+
+
+method list_positive_control(items: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(items), List())
+  requires acc(items.size, write)
+  requires intFromRef(items.size) >= 0
+  ensures acc(items.size, write)
+  ensures intFromRef(items.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon_0: Ref
+  anon_0 := isEmpty(items)
+  if (boolFromRef(anon_0)) {
+    v_ret_0 := intToRef(0)
+  } else {
+    var anon_1: Ref
+    anon_1 := items.size
+    inhale isSubtype(typeOf(anon_1), intType())
+    v_ret_0 := get(items, minusInts(anon_1, intToRef(1)))
+  }
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/collection_array_faults.kt: info: Generated Viper text for list_negative_index:
+field size: Ref
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method list_negative_index(items: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(items), List())
+  requires acc(items.size, write)
+  requires intFromRef(items.size) >= 0
+  ensures acc(items.size, write)
+  ensures intFromRef(items.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := get(items, intToRef(-1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/collection_array_faults.kt: info: Generated Viper text for list_upper_bound:
+field size: Ref
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method list_upper_bound(items: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(items), List())
+  requires acc(items.size, write)
+  requires intFromRef(items.size) >= 0
+  ensures acc(items.size, write)
+  ensures intFromRef(items.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := items.size
+  inhale isSubtype(typeOf(anon), intType())
+  v_ret_0 := get(items, anon)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/collection_array_faults.kt: info: Generated Viper text for mutable_list_boundary_after_add:
+field size: Ref
+
+method add(this: Ref, element: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(element), intType())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size)) + 1
+
+
+method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method mutable_list_boundary_after_add(items: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(items), MutableList())
+  requires acc(items.size, write)
+  requires intFromRef(items.size) >= 0
+  ensures acc(items.size, write)
+  ensures intFromRef(items.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  anon_0 := add(items, intToRef(1))
+  anon_2 := items.size
+  inhale isSubtype(typeOf(anon_2), intType())
+  anon_1 := get(items, anon_2)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/collection_array_faults.kt: info: Generated Viper text for array_positive_control:
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method array_positive_control(items: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(items), Array())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := isEmpty(items)
+  if (boolFromRef(anon)) {
+    v_ret_0 := intToRef(0)
+  } else {
+    v_ret_0 := get(items, minusInts(size(items), intToRef(1)))}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method get(v_this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this), Array())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
+
+
+method isEmpty(v_this_extension: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), Array())
+  ensures isSubtype(typeOf(ret_1), boolType())
+
+
+/collection_array_faults.kt: info: Generated Viper text for array_upper_bound:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method array_upper_bound(items: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(items), Array())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := get(items, size(items))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Array())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/collection_array_faults.kt: info: Generated Viper text for empty_array_index:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method emptyArray() returns (ret_2: Ref)
+  ensures isSubtype(typeOf(ret_2), Array())
+
+
+method empty_array_index() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := emptyArray()
+  v_ret_0 := get(anon, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Array())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/collection_array_faults.kt: info: Generated Viper text for int_array_positive_control:
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(v_this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this), IntArray())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
+
+
+method int_array_positive_control(items: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(items), IntArray())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := isEmpty(items)
+  if (boolFromRef(anon)) {
+    v_ret_0 := intToRef(0)
+  } else {
+    v_ret_0 := get(items, intToRef(0))}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method isEmpty(v_this_extension: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), IntArray())
+  ensures isSubtype(typeOf(ret_1), boolType())
+
+
+/collection_array_faults.kt: info: Generated Viper text for int_array_negative_index:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), IntArray())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method int_array_negative_index(items: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(items), IntArray())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := get(items, intToRef(-1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}

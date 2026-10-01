@@ -1,0 +1,54 @@
+/assertion_diagnostics.kt: info: Generated Viper text for positiveNestedBoundary:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method positiveNestedBoundary(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  if (intFromRef(x) >= 0) {
+    if (intFromRef(x) < 10) {
+      assert intFromRef(x) + 1 > 0
+    }
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/assertion_diagnostics.kt: info: Generated Viper text for failingNestedBoundary:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method failingNestedBoundary(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  if (intFromRef(x) >= 0) {
+    if (intFromRef(x) < 10) {
+      assert intFromRef(x) > 0
+    }
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/assertion_diagnostics.kt: info: Generated Viper text for multipleAssertionsAttributeTheFailure:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method multipleAssertionsAttributeTheFailure(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert intFromRef(x) == intFromRef(x)
+  assert !(intFromRef(x) == intFromRef(x))
+  assert intFromRef(x) + 1 > intFromRef(x)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

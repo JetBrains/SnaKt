@@ -1,0 +1,21 @@
+/harness_contract_mutation.kt: info: Generated Viper text for preservesExactResult:
+method preservesExactResult(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(value)
+{
+  v_ret_0 := value
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/harness_contract_mutation.kt: info: Generated Viper text for reversesExactResult:
+method reversesExactResult(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(value) + 1
+{
+  v_ret_0 := value
+  goto lbl_ret_0
+  label lbl_ret_0
+}

@@ -1,0 +1,1 @@
+/quantifier_trigger_stability.kt: warning: Viper verification error: Postcondition of strongerConclusionDoesNotVerify might not hold. Assertion boolFromRef(v_ret_0) might not hold.

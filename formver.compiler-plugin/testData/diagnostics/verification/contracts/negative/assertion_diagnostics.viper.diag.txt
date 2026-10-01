@@ -1,0 +1,3 @@
+/assertion_diagnostics.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(x) > 0 might not hold.
+
+/assertion_diagnostics.kt: warning: Viper verification error: Assert might fail. Assertion !(intFromRef(x) == intFromRef(x)) might not hold.

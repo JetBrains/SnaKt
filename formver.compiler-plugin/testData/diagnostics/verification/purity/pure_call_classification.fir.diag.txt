@@ -1,0 +1,45 @@
+/pure_call_classification.kt: info: Generated Viper text for classifiedPureIncrement:
+function classifiedPureIncrement(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(x, intToRef(1))
+}
+
+/pure_call_classification.kt: info: Generated Viper text for unclassifiedIncrement:
+method unclassifiedIncrement(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := plusInts(x, intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/pure_call_classification.kt: info: Generated Viper text for callClassifiedPureExpression:
+function callClassifiedPureExpression(condition: Ref, x: Ref): Ref
+  requires isSubtype(typeOf(condition), boolType())
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let adjusted_0 ==
+    (classifiedPureIncrement(x)) in
+    (let anon_1_0 ==
+      ((boolFromRef(condition) ? negInt(adjusted_0) : null)) in
+      (let anon_2_0 ==
+        ((!boolFromRef(condition) ? adjusted_0 : null)) in
+        (let anon_0_0 ==
+          ((boolFromRef(condition) ? anon_1_0 : anon_2_0)) in
+          anon_0_0))))
+}
+
+function classifiedPureIncrement(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(x, intToRef(1))
+}
+
+/pure_call_classification.kt: error: An internal error has occurred.
+Details: addStatement
+Please report this at https://github.com/jesyspa/kotlin

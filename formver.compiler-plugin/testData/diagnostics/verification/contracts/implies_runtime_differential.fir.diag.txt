@@ -1,0 +1,45 @@
+/implies_runtime_differential.kt: info: Generated Viper text for safeImplicationControl:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method safeImplicationControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert true ==> 6 \ 2 == 3
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/implies_runtime_differential.kt: info: Generated Viper text for eagerImplicationRuntimeFailure:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method eagerImplicationRuntimeFailure() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert false ==> 1 \ 0 == 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/implies_runtime_differential.kt: warning: Division by zero.
+
+/implies_runtime_differential.kt: info: Generated Viper text for trueAntecedentDivisionBoundary:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method trueAntecedentDivisionBoundary() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert true ==> 1 \ 0 == 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/implies_runtime_differential.kt: warning: Division by zero.

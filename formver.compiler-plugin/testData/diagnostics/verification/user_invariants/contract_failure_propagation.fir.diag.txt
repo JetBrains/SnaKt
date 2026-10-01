@@ -1,0 +1,108 @@
+/contract_failure_propagation.kt: info: Generated Viper text for nonNegativeIdentity:
+function nonNegativeIdentity(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  requires intFromRef(x) >= 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) >= 0
+  ensures (forall anon: Int ::anon == intFromRef(x) ==>
+      intFromRef(result) == anon)
+{
+  x
+}
+
+/contract_failure_propagation.kt: info: Generated Viper text for contractPositiveControl:
+function nonNegativeIdentity(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  requires intFromRef(x) >= 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) >= 0
+  ensures (forall anon_builtin_0: Int ::anon_builtin_0 == intFromRef(x) ==>
+      intFromRef(result) == anon_builtin_0)
+{
+  x
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method contractPositiveControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  l0_result := nonNegativeIdentity(intToRef(0))
+  assert intFromRef(l0_result) == 0
+  assert (forall anon_builtin_1: Int ::anon_builtin_1 == 0 ==>
+      anon_builtin_1 >= 0)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_failure_propagation.kt: info: Generated Viper text for brokenPostcondition:
+method brokenPostcondition(x: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(x), intType())
+  requires intFromRef(x) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) >= intFromRef(x)
+{
+  v_ret_0 := minusInts(x, intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/contract_failure_propagation.kt: info: Generated Viper text for violatesPropagatedPrecondition:
+function nonNegativeIdentity(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  requires intFromRef(x) >= 0
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) >= 0
+  ensures (forall anon: Int ::anon == intFromRef(x) ==>
+      intFromRef(result) == anon)
+{
+  x
+}
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method violatesPropagatedPrecondition() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  l0_result := nonNegativeIdentity(intToRef(-1))
+  assert intFromRef(l0_result) >= 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_failure_propagation.kt: info: Generated Viper text for failingQuantifiedVerify:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method failingQuantifiedVerify() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert (forall anon: Int ::!(anon == 0))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/contract_failure_propagation.kt: info: Generated Viper text for impurePredicate:
+method impurePredicate() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  v_ret_0 := boolToRef(true)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/contract_failure_propagation.kt: error: An internal error has occurred.
+Details: PureLinearizer used to convert non-pure ExpEmbedding; operation freshAnonVar is not supported in a pure context.
+Embedding debug view:
+MethodCall(callee = pkg$f$impurePredicate$args$t$ret$Boolean)
+Please report this at https://github.com/jesyspa/kotlin

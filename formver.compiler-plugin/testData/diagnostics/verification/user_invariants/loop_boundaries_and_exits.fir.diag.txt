@@ -1,0 +1,180 @@
+/loop_boundaries_and_exits.kt: info: Generated Viper text for zeroIterationsAtBoundary:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method zeroIterationsAtBoundary() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var i: Ref
+  var anon: Ref
+  i := intToRef(3)
+  label cont
+    invariant isSubtype(typeOf(i), intType())
+    invariant intFromRef(i) == 3
+  anon := ltInts(i, intToRef(3))
+  if (boolFromRef(anon)) {
+    i := plusInts(i, intToRef(1))
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(i), intType())
+  assert intFromRef(i) == 3
+  assert intFromRef(i) == 3
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/loop_boundaries_and_exits.kt: info: Generated Viper text for oneIterationAtBoundary:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method oneIterationAtBoundary() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var i: Ref
+  var anon: Ref
+  i := intToRef(2)
+  label cont
+    invariant isSubtype(typeOf(i), intType())
+    invariant 2 <= intFromRef(i) && intFromRef(i) <= 3
+  anon := ltInts(i, intToRef(3))
+  if (boolFromRef(anon)) {
+    i := plusInts(i, intToRef(1))
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(i), intType())
+  assert 2 <= intFromRef(i) && intFromRef(i) <= 3
+  assert intFromRef(i) == 3
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/loop_boundaries_and_exits.kt: info: Generated Viper text for incrementCrossesBoundary:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method incrementCrossesBoundary() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var i: Ref
+  var anon: Ref
+  i := intToRef(0)
+  label cont
+    invariant isSubtype(typeOf(i), intType())
+    invariant 0 <= intFromRef(i) && intFromRef(i) <= 6
+    invariant intFromRef(i) % 2 == 0
+  anon := ltInts(i, intToRef(5))
+  if (boolFromRef(anon)) {
+    i := plusInts(i, intToRef(2))
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(i), intType())
+  assert 0 <= intFromRef(i) && intFromRef(i) <= 6
+  assert intFromRef(i) % 2 == 0
+  assert intFromRef(i) == 6
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/loop_boundaries_and_exits.kt: info: Generated Viper text for conditionalBoundaryUpdate:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method conditionalBoundaryUpdate() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var i: Ref
+  var anon: Ref
+  i := intToRef(0)
+  label cont
+    invariant isSubtype(typeOf(i), intType())
+    invariant 0 <= intFromRef(i) && intFromRef(i) <= 4
+    invariant !(intFromRef(i) == 3)
+  anon := ltInts(i, intToRef(4))
+  if (boolFromRef(anon)) {
+    if (intFromRef(i) < 2) {
+      i := plusInts(i, intToRef(1))
+    } else {
+      i := plusInts(i, intToRef(2))}
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(i), intType())
+  assert 0 <= intFromRef(i) && intFromRef(i) <= 4
+  assert !(intFromRef(i) == 3)
+  assert intFromRef(i) == 4
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/loop_boundaries_and_exits.kt: info: Generated Viper text for returnFromCountingLoop:
+method returnFromCountingLoop() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 3
+{
+  var i: Ref
+  var anon: Ref
+  i := intToRef(0)
+  label cont
+    invariant isSubtype(typeOf(i), intType())
+    invariant 0 <= intFromRef(i) && intFromRef(i) <= 3
+  anon := boolToRef(true)
+  if (boolFromRef(anon)) {
+    if (intFromRef(i) == 3) {
+      v_ret_0 := i
+      goto lbl_ret_0
+    }
+    i := plusInts(i, intToRef(1))
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(i), intType())
+  assert 0 <= intFromRef(i) && intFromRef(i) <= 3
+  label lbl_ret_0
+}
+
+/loop_boundaries_and_exits.kt: info: Generated Viper text for returnFromNestedConditional:
+method returnFromNestedConditional(stopEarly: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(stopEarly), boolType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures (boolFromRef(stopEarly) ==> intFromRef(v_ret_0) == 1) &&
+    (!boolFromRef(stopEarly) ==> intFromRef(v_ret_0) == 3)
+{
+  var i: Ref
+  var anon: Ref
+  i := intToRef(0)
+  label cont
+    invariant isSubtype(typeOf(i), intType())
+    invariant isSubtype(typeOf(stopEarly), boolType())
+    invariant 0 <= intFromRef(i) && intFromRef(i) <= 3
+    invariant boolFromRef(stopEarly) ==> intFromRef(i) == 0
+  anon := ltInts(i, intToRef(3))
+  if (boolFromRef(anon)) {
+    i := plusInts(i, intToRef(1))
+    if (boolFromRef(stopEarly)) {
+      if (intFromRef(i) == 1) {
+        v_ret_0 := i
+        goto lbl_ret_0
+      }
+    }
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(i), intType())
+  assert isSubtype(typeOf(stopEarly), boolType())
+  assert 0 <= intFromRef(i) && intFromRef(i) <= 3
+  assert boolFromRef(stopEarly) ==> intFromRef(i) == 0
+  v_ret_0 := i
+  goto lbl_ret_0
+  label lbl_ret_0
+}

@@ -1,0 +1,1 @@
+/harness_contract_mutation.kt: warning: Viper verification error: Postcondition of reversesExactResult might not hold. Assertion intFromRef(v_ret_0) == intFromRef(value) + 1 might not hold.

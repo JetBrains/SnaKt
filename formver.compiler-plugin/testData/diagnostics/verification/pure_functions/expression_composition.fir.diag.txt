@@ -1,0 +1,75 @@
+/expression_composition.kt: info: Generated Viper text for increment:
+function increment(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(x, intToRef(1))
+}
+
+/expression_composition.kt: info: Generated Viper text for choose:
+function choose(condition: Ref, whenTrue: Ref, whenFalse: Ref): Ref
+  requires isSubtype(typeOf(condition), boolType())
+  requires isSubtype(typeOf(whenTrue), intType())
+  requires isSubtype(typeOf(whenFalse), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_1_0 ==
+    ((boolFromRef(condition) ? whenTrue : null)) in
+    (let anon_2_0 ==
+      ((!boolFromRef(condition) ? whenFalse : null)) in
+      (let anon_0_0 ==
+        ((boolFromRef(condition) ? anon_1_0 : anon_2_0)) in
+        anon_0_0)))
+}
+
+/expression_composition.kt: info: Generated Viper text for negate:
+function negate(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  negInt(x)
+}
+
+/expression_composition.kt: info: Generated Viper text for composePureExpressions:
+function choose(condition: Ref, whenTrue: Ref, whenFalse: Ref): Ref
+  requires isSubtype(typeOf(condition), boolType())
+  requires isSubtype(typeOf(whenTrue), intType())
+  requires isSubtype(typeOf(whenFalse), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_1_0 ==
+    ((boolFromRef(condition) ? whenTrue : null)) in
+    (let anon_2_0 ==
+      ((!boolFromRef(condition) ? whenFalse : null)) in
+      (let anon_0_0 ==
+        ((boolFromRef(condition) ? anon_1_0 : anon_2_0)) in
+        anon_0_0)))
+}
+
+function composePureExpressions(condition: Ref, x: Ref): Ref
+  requires isSubtype(typeOf(condition), boolType())
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+  ensures intFromRef(result) ==
+    intFromRef(negate(choose(condition, increment(x), negInt(increment(x)))))
+{
+  (let incremented_0 ==
+    (increment(x)) in
+    (let selected_0 ==
+      (choose(condition, incremented_0, negInt(incremented_0))) in
+      negate(selected_0)))
+}
+
+function increment(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  plusInts(x, intToRef(1))
+}
+
+function negate(x: Ref): Ref
+  requires isSubtype(typeOf(x), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  negInt(x)
+}

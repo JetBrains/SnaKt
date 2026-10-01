@@ -1,0 +1,7 @@
+/early_returns.kt: warning: Viper verification error: Postcondition of branchEarlyReturnsBoundary might not hold. Assertion intFromRef(v_ret_0) > 0 might not hold.
+
+/early_returns.kt: warning: Viper verification error: Postcondition of nestedEarlyReturnsBoundary might not hold. Assertion intFromRef(v_ret_0) > 0 might not hold.
+
+/early_returns.kt: warning: Viper verification error: Postcondition of returnBranchExpressionBoundary might not hold. Assertion intFromRef(v_ret_0) > 0 might not hold.
+
+/early_returns.kt: warning: Viper verification error: Postcondition of inlineLambdaEarlyReturnBoundary might not hold. Assertion intFromRef(v_ret_0) > 0 might not hold.

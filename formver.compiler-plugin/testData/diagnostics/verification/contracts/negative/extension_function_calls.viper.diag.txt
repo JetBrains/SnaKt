@@ -1,0 +1,1 @@
+/extension_function_calls.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(extensionRank(receiver)) == 2 might not hold.

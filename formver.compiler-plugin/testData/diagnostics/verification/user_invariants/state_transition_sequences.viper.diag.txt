@@ -1,0 +1,1 @@
+/state_transition_sequences.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(l0_state) == 1 might not hold.

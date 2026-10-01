@@ -1,0 +1,45 @@
+/binder_alpha_renaming.kt: info: Generated Viper text for originalBinderNames:
+method originalBinderNames(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(value) &&
+    (forall anon: Int ::anon * anon >= 0)
+{
+  v_ret_0 := value
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/binder_alpha_renaming.kt: info: Generated Viper text for renamedBinderNames:
+method renamedBinderNames(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(value) &&
+    (forall anon: Int ::anon * anon >= 0)
+{
+  v_ret_0 := value
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/binder_alpha_renaming.kt: info: Generated Viper text for impossibleOriginalBinder:
+method impossibleOriginalBinder(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) > intFromRef(value)
+{
+  v_ret_0 := value
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/binder_alpha_renaming.kt: info: Generated Viper text for impossibleRenamedBinder:
+method impossibleRenamedBinder(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) > intFromRef(value)
+{
+  v_ret_0 := value
+  goto lbl_ret_0
+  label lbl_ret_0
+}
