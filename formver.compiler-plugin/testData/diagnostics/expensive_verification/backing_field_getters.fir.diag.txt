@@ -104,10 +104,7 @@ method cascadeNullableSmartcastGet(x: Ref) returns (v_ret_0: Ref)
 }
 
 /backing_field_getters.kt: info: Generated Viper text for nullableReceiverNotNullSafeGet:
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
-
+field size: Ref
 
 function x(this: Ref): Ref
   requires isSubtype(typeOf(this), Baz())
@@ -139,10 +136,7 @@ method nullableReceiverNotNullSafeGet() returns (v_ret_0: Ref)
 }
 
 /backing_field_getters.kt: info: Generated Viper text for nullableReceiverNullSafeGet:
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
-
+field size: Ref
 
 function x(this: Ref): Ref
   requires isSubtype(typeOf(this), Baz())
@@ -167,10 +161,7 @@ method nullableReceiverNullSafeGet() returns (v_ret_0: Ref)
 }
 
 /backing_field_getters.kt: info: Generated Viper text for nonNullableReceiverSafeGet:
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
-
+field size: Ref
 
 function x(this: Ref): Ref
   requires isSubtype(typeOf(this), Baz())
@@ -200,6 +191,8 @@ method nonNullableReceiverSafeGet() returns (v_ret_0: Ref)
 }
 
 /backing_field_getters.kt: info: Generated Viper text for checkPrimary:
+field size: Ref
+
 function ClassII_g_z(this: Ref): Ref
   requires isSubtype(typeOf(this), ClassII())
   ensures isSubtype(typeOf(result), Z())
@@ -212,11 +205,6 @@ function g_x(this: Ref): Ref
 
 function g_y(this: Ref): Ref
   requires isSubtype(typeOf(this), ClassI())
-  ensures isSubtype(typeOf(result), intType())
-
-
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 
 

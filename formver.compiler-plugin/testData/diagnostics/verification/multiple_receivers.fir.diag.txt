@@ -1,11 +1,8 @@
 /multiple_receivers.kt: info: Generated Viper text for applyDelta:
+field size: Ref
+
 function delta(v_this: Ref): Ref
   requires isSubtype(typeOf(v_this), ClassWithExtension())
-  ensures isSubtype(typeOf(result), intType())
-
-
-function size(v_this: Ref): Ref
-  requires isSubtype(typeOf(v_this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 
 
@@ -55,13 +52,10 @@ method extensionReturnDelta(v_this_extension: Ref) returns (v_ret_0: Ref)
 }
 
 /multiple_receivers.kt: info: Generated Viper text for checkClassWithExtension:
+field size: Ref
+
 function g_delta(v_this: Ref): Ref
   requires isSubtype(typeOf(v_this), ClassWithExtension())
-  ensures isSubtype(typeOf(result), intType())
-
-
-function size(v_this: Ref): Ref
-  requires isSubtype(typeOf(v_this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 
 

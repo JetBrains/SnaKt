@@ -311,6 +311,8 @@ field a: Ref
 
 field b: Ref
 
+field size: Ref
+
 function c(v_this: Ref): Ref
   requires isSubtype(typeOf(v_this), ManyMembers())
   ensures isSubtype(typeOf(result), ClassWithVar())
@@ -318,11 +320,6 @@ function c(v_this: Ref): Ref
 
 function g_i(v_this: Ref): Ref
   requires isSubtype(typeOf(v_this), ManyMembers())
-  ensures isSubtype(typeOf(result), intType())
-
-
-function size(v_this: Ref): Ref
-  requires isSubtype(typeOf(v_this), BooleanArray())
   ensures isSubtype(typeOf(result), intType())
 
 
