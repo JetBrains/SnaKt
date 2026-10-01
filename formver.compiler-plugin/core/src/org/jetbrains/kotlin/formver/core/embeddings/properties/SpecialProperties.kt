@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirRegularClassSymbol
 import org.jetbrains.kotlin.formver.core.conversion.CollectionSizeFieldEmbedding
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
+import org.jetbrains.kotlin.formver.core.conversion.nativeArrayClassNames
 import org.jetbrains.kotlin.formver.core.embeddings.types.IntTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.asTypeEmbedding
 import org.jetbrains.kotlin.formver.core.kotlinCallableId
@@ -70,10 +71,26 @@ object CollectionSizeProperty :
     }
 }
 
+object NativeArraySizeProperty :
+    SpecialProperty(
+        PropertyEmbedding(
+            BackingFieldGetter(CollectionSizeFieldEmbedding),
+            setter = null,
+            hasDefaultBehaviour = true,
+            isUnique = true,
+            isVal = true,
+            type = CollectionSizeFieldEmbedding.type,
+        )
+    ) {
+    context(typeResolver: TypeResolver, session: FirSession)
+    override fun match(symbol: FirPropertySymbol): Boolean =
+        nativeArrayClassNames.any { symbol.callableId == kotlinCallableId(it, "size") }
+}
+
 
 object SpecialProperties {
 
-    val all: List<SpecialProperty> = listOf(StringSizeProperty, CollectionSizeProperty)
+    val all: List<SpecialProperty> = listOf(StringSizeProperty, CollectionSizeProperty, NativeArraySizeProperty)
 
     context(typeResolver: TypeResolver, session: FirSession)
     fun lookup(symbol: FirPropertySymbol): PropertyEmbedding? = all.firstOrNull { it.match(symbol) }?.property

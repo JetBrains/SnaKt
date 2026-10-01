@@ -21,7 +21,7 @@ sourceSets {
 
 dependencies {
     compileOnly(kotlin("compiler"))
-    compileOnly("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.7")
+    compileOnly(libs.kotlinx.collections.immutable)
     testFixturesApi(kotlin("test-junit5"))
     testFixturesApi(kotlin("compiler-internal-test-framework"))
     testFixturesApi(kotlin("compiler"))
@@ -30,7 +30,7 @@ dependencies {
     implementation(project(":formver.annotations"))
 
 
-    testRuntimeOnly("junit:junit:4.13.2")
+    testRuntimeOnly(libs.junit4)
     testRuntimeOnly(kotlin("reflect"))
     testRuntimeOnly(kotlin("test"))
     testRuntimeOnly(kotlin("script-runtime"))

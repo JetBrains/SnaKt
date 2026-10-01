@@ -6,7 +6,10 @@ import org.jetbrains.kotlin.formver.plugin.*
 @AlwaysVerify
 fun <!VIPER_TEXT!>simpleExists<!>(): Int {
     preconditions {
-        exists<Int> { it == 0 }
+        exists<Int> {
+            triggers(it * it, it + 1)
+            it == 0
+        }
     }
     return 0
 }
@@ -28,7 +31,10 @@ fun <!VIPER_TEXT!>symbolExists<!>(s: String): Int {
     while (i < s.length) {
         loopInvariants {
             0 <= i && i <= s.length
-            exists<Int> { 0 <= it && it < s.length && s[it] == c }
+            exists<Int> {
+                triggers(s[it])
+                0 <= it && it < s.length && s[it] == c
+            }
         }
         i += 1
     }

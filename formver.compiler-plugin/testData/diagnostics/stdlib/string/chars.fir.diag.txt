@@ -1,12 +1,9 @@
 /chars.kt: info: Generated Viper text for testChars:
+field size: Ref
+
 function g_char(this: Ref): Ref
   requires isSubtype(typeOf(this), CharBox())
   ensures isSubtype(typeOf(result), charType())
-
-
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
 
 
 method con(par_char: Ref) returns (ret_1: Ref)
