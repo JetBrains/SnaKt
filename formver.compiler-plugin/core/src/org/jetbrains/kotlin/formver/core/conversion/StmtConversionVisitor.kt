@@ -141,9 +141,8 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         data: StmtConversionContext,
     ): ExpEmbedding {
         // When Kotlin proves the `when` exhaustive but there is no syntactic `else`, the missing fallthrough is
-        // unreachable. We trust this as we trust smart-casts and emit `ErrorExp` (`inhale false`). A pure function
-        // body cannot inhale, so it keeps the `UnitLit` fallthrough.
-        if (!whenBranches.hasNext()) return if (fallthroughUnreachable && !data.signature.isPure) ErrorExp else UnitLit
+        // `Unreachable`. A pure function body cannot inhale, so it keeps the `UnitLit` fallthrough.
+        if (!whenBranches.hasNext()) return if (fallthroughUnreachable && !data.signature.isPure) Unreachable else UnitLit
 
         val branch = whenBranches.next()
 
