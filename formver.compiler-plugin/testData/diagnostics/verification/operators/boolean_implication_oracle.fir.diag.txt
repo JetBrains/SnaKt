@@ -1,0 +1,75 @@
+/boolean_implication_oracle.kt: info: Generated Viper text for falseImpliesFalse:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method falseImpliesFalse() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  if (!false) {
+    anon := boolToRef(true)
+  } else {
+    anon := boolToRef(false)}
+  assert boolFromRef(anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/boolean_implication_oracle.kt: info: Generated Viper text for falseImpliesTrue:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method falseImpliesTrue() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  if (!false) {
+    anon := boolToRef(true)
+  } else {
+    anon := boolToRef(true)}
+  assert boolFromRef(anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/boolean_implication_oracle.kt: info: Generated Viper text for trueImpliesFalse:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method trueImpliesFalse() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  if (!true) {
+    anon := boolToRef(true)
+  } else {
+    anon := boolToRef(false)}
+  assert boolFromRef(anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/boolean_implication_oracle.kt: info: Generated Viper text for trueImpliesTrue:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method trueImpliesTrue() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  if (!true) {
+    anon := boolToRef(true)
+  } else {
+    anon := boolToRef(true)}
+  assert boolFromRef(anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

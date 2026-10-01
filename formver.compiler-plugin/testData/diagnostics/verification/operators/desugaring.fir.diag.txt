@@ -1,0 +1,552 @@
+/desugaring.kt: info: Generated Viper text for plus:
+field value: Ref
+
+method plus(this: Ref, other: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(other), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := havoc(intType())
+  v_ret_0 := plusInts(anon, other)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for minus:
+field value: Ref
+
+method minus(this: Ref, other: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(other), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := havoc(intType())
+  v_ret_0 := minusInts(anon, other)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for compareTo:
+field value: Ref
+
+method compareTo(this: Ref, other: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(other), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := havoc(intType())
+  v_ret_0 := minusInts(anon, other)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for get:
+field value: Ref
+
+method get(this: Ref, index: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := havoc(intType())
+  v_ret_0 := plusInts(anon, index)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for set:
+field value: Ref
+
+method set(this: Ref, index: Ref, newValue: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(index), intType())
+  requires isSubtype(typeOf(newValue), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/desugaring.kt: info: Generated Viper text for contains:
+field value: Ref
+
+method contains(this: Ref, candidate: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(candidate), intType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  var anon: Ref
+  anon := havoc(intType())
+  v_ret_0 := boolToRef(intFromRef(candidate) == intFromRef(anon))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for invoke:
+field value: Ref
+
+method invoke(this: Ref, argument: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := havoc(intType())
+  v_ret_0 := plusInts(anon, argument)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for unaryPlus:
+field value: Ref
+
+method unaryPlus(this: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := havoc(intType())
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for unaryMinus:
+field value: Ref
+
+method unaryMinus(this: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := havoc(intType())
+  v_ret_0 := negInt(anon)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for plusOperator:
+field value: Ref
+
+method plus(this: Ref, other: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(other), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method plusOperator(probe: Ref, operand: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(operand), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := plus(probe, operand)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for plusExplicit:
+field value: Ref
+
+method plus(this: Ref, other: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(other), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method plusExplicit(probe: Ref, operand: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(operand), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := plus(probe, operand)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for minusOperator:
+field value: Ref
+
+method minus(this: Ref, other: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(other), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method minusOperator(probe: Ref, operand: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(operand), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := minus(probe, operand)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for minusExplicit:
+field value: Ref
+
+method minus(this: Ref, other: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(other), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method minusExplicit(probe: Ref, operand: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(operand), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := minus(probe, operand)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for lessOperator:
+field value: Ref
+
+method compareTo(this: Ref, other: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(other), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method lessOperator(probe: Ref, operand: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(operand), intType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  var anon: Ref
+  anon := compareTo(probe, operand)
+  v_ret_0 := ltInts(anon, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for lessExplicit:
+field value: Ref
+
+method compareTo(this: Ref, other: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(other), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method lessExplicit(probe: Ref, operand: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(operand), intType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  var anon: Ref
+  anon := compareTo(probe, operand)
+  v_ret_0 := ltInts(anon, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for greaterEqualOperator:
+field value: Ref
+
+method compareTo(this: Ref, other: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(other), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method greaterEqualOperator(probe: Ref, operand: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(operand), intType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  var anon: Ref
+  anon := compareTo(probe, operand)
+  v_ret_0 := geInts(anon, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for greaterEqualExplicit:
+field value: Ref
+
+method compareTo(this: Ref, other: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(other), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method greaterEqualExplicit(probe: Ref, operand: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(operand), intType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  var anon: Ref
+  anon := compareTo(probe, operand)
+  v_ret_0 := geInts(anon, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for getOperator:
+field value: Ref
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method getOperator(probe: Ref, index: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := get(probe, index)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for getExplicit:
+field value: Ref
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method getExplicit(probe: Ref, index: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := get(probe, index)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for setExplicit:
+field value: Ref
+
+method set(this: Ref, index: Ref, newValue: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(index), intType())
+  requires isSubtype(typeOf(newValue), intType())
+  ensures isSubtype(typeOf(ret_1), unitType())
+
+
+method setExplicit(probe: Ref, index: Ref, newValue: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(index), intType())
+  requires isSubtype(typeOf(newValue), intType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := set(probe, index, newValue)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/desugaring.kt: info: Generated Viper text for containsOperator:
+field value: Ref
+
+method contains(this: Ref, candidate: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(candidate), intType())
+  ensures isSubtype(typeOf(ret_1), boolType())
+
+
+method containsOperator(probe: Ref, candidate: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(candidate), intType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  v_ret_0 := contains(probe, candidate)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for containsExplicit:
+field value: Ref
+
+method contains(this: Ref, candidate: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(candidate), intType())
+  ensures isSubtype(typeOf(ret_1), boolType())
+
+
+method containsExplicit(probe: Ref, candidate: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(candidate), intType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  v_ret_0 := contains(probe, candidate)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for notContainsOperator:
+field value: Ref
+
+method contains(this: Ref, candidate: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(candidate), intType())
+  ensures isSubtype(typeOf(ret_1), boolType())
+
+
+method notContainsOperator(probe: Ref, candidate: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(candidate), intType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  var anon: Ref
+  anon := contains(probe, candidate)
+  v_ret_0 := notBool(anon)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for notContainsExplicit:
+field value: Ref
+
+method contains(this: Ref, candidate: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(candidate), intType())
+  ensures isSubtype(typeOf(ret_1), boolType())
+
+
+method notContainsExplicit(probe: Ref, candidate: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(candidate), intType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  var anon: Ref
+  anon := contains(probe, candidate)
+  v_ret_0 := notBool(anon)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for invokeOperator:
+field value: Ref
+
+method invokeOperator(probe: Ref, argument: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  inhale isSubtype(typeOf(anon), intType())
+  v_ret_0 := anon
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for invokeExplicit:
+field value: Ref
+
+method invoke(this: Ref, argument: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method invokeExplicit(probe: Ref, argument: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := invoke(probe, argument)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for unaryPlusOperator:
+field value: Ref
+
+method unaryPlus(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method unaryPlusOperator(probe: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := unaryPlus(probe)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for unaryPlusExplicit:
+field value: Ref
+
+method unaryPlus(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method unaryPlusExplicit(probe: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := unaryPlus(probe)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for unaryMinusOperator:
+field value: Ref
+
+method unaryMinus(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method unaryMinusOperator(probe: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := unaryMinus(probe)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for unaryMinusExplicit:
+field value: Ref
+
+method unaryMinus(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method unaryMinusExplicit(probe: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := unaryMinus(probe)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/desugaring.kt: info: Generated Viper text for primitivePositiveControl:
+method primitivePositiveControl(left: Ref, right: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(left), intType())
+  requires isSubtype(typeOf(right), intType())
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  if (intFromRef(left) + intFromRef(right) ==
+  intFromRef(left) + intFromRef(right)) {
+    v_ret_0 := boolToRef(intFromRef(left) - intFromRef(right) ==
+      intFromRef(left) - intFromRef(right))
+  } else {
+    v_ret_0 := boolToRef(false)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}

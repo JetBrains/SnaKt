@@ -728,9 +728,33 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("array_index_reads.kt")
+      public void testArray_index_reads() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/array_index_reads.kt");
+      }
+
+      @Test
       @TestMetadata("basic.kt")
       public void testBasic() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/basic.kt");
+      }
+
+      @Test
+      @TestMetadata("boolean_implication_oracle.kt")
+      public void testBoolean_implication_oracle() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/boolean_implication_oracle.kt");
+      }
+
+      @Test
+      @TestMetadata("desugaring.kt")
+      public void testDesugaring() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/desugaring.kt");
+      }
+
+      @Test
+      @TestMetadata("division_runtime_differential.kt")
+      public void testDivision_runtime_differential() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/division_runtime_differential.kt");
       }
 
       @Test
@@ -740,9 +764,27 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("floating_point_rejection.kt")
+      public void testFloating_point_rejection() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/floating_point_rejection.kt");
+      }
+
+      @Test
       @TestMetadata("identity_equality.kt")
       public void testIdentity_equality() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/identity_equality.kt");
+      }
+
+      @Test
+      @TestMetadata("int_boundary_arithmetic.kt")
+      public void testInt_boundary_arithmetic() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/int_boundary_arithmetic.kt");
+      }
+
+      @Test
+      @TestMetadata("integral_conversion_boundaries.kt")
+      public void testIntegral_conversion_boundaries() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/integral_conversion_boundaries.kt");
       }
 
       @Test
@@ -836,9 +878,27 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("cast_type_refinement.kt")
+      public void testCast_type_refinement() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/types/cast_type_refinement.kt");
+      }
+
+      @Test
       @TestMetadata("casts.kt")
       public void testCasts() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/types/casts.kt");
+      }
+
+      @Test
+      @TestMetadata("generic_function_substitution.kt")
+      public void testGeneric_function_substitution() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/types/generic_function_substitution.kt");
+      }
+
+      @Test
+      @TestMetadata("generic_instantiation_isolation.kt")
+      public void testGeneric_instantiation_isolation() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/types/generic_instantiation_isolation.kt");
       }
 
       @Test
@@ -851,6 +911,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("nullable.kt")
       public void testNullable() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/types/nullable.kt");
+      }
+
+      @Test
+      @TestMetadata("nullable_smart_casts.kt")
+      public void testNullable_smart_casts() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/types/nullable_smart_casts.kt");
       }
     }
 

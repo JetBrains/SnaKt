@@ -1,0 +1,15 @@
+/integral_conversion_boundaries.kt: error: An internal error has occurred.
+Details: Constant Expression of type Long is not yet implemented.
+Please report this at https://github.com/jesyspa/kotlin
+
+/integral_conversion_boundaries.kt: error: An internal error has occurred.
+Details: Constant Expression of type Long is not yet implemented.
+Please report this at https://github.com/jesyspa/kotlin
+
+/integral_conversion_boundaries.kt: error: An internal error has occurred.
+Details: Constant Expression of type Long is not yet implemented.
+Please report this at https://github.com/jesyspa/kotlin
+
+/integral_conversion_boundaries.kt: error: An internal error has occurred.
+Details: Constant Expression of type Long is not yet implemented.
+Please report this at https://github.com/jesyspa/kotlin

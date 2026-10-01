@@ -1,0 +1,196 @@
+/cast_type_refinement.kt: info: Generated Viper text for isBranchesRefineLocally:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method isBranchesRefineLocally(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), nullable(CastBase37()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  if (isSubtype(typeOf(value), CastLeaf37())) {
+    var l2_fact: Ref
+    l2_fact := boolToRef(isSubtype(typeOf(value), CastLeaf37()))
+    assert boolFromRef(l2_fact)
+  } else {
+    var l3_fact: Ref
+    l3_fact := notBool(boolToRef(isSubtype(typeOf(value), CastLeaf37())))
+    assert boolFromRef(l3_fact)
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/cast_type_refinement.kt: info: Generated Viper text for notIsBranchesRefineLocally:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method notIsBranchesRefineLocally(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), nullable(CastBase37()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  if (!isSubtype(typeOf(value), CastLeaf37())) {
+    var l2_fact: Ref
+    l2_fact := notBool(boolToRef(isSubtype(typeOf(value), CastLeaf37())))
+    assert boolFromRef(l2_fact)
+  } else {
+    var l3_fact: Ref
+    l3_fact := boolToRef(isSubtype(typeOf(value), CastLeaf37()))
+    assert boolFromRef(l3_fact)
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/cast_type_refinement.kt: info: Generated Viper text for safeCastMatchesTypeTest:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method safeCastMatchesTypeTest(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), nullable(CastBase37()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var cast: Ref
+  if (isSubtype(typeOf(value), CastLeaf37())) {
+    cast := value
+  } else {
+    cast := nullValue()}
+  inhale isSubtype(typeOf(cast), nullable(CastLeaf37()))
+  if (!(cast == nullValue())) {
+    var originalIsLeaf: Ref
+    var resultIsLeaf: Ref
+    originalIsLeaf := boolToRef(isSubtype(typeOf(value), CastLeaf37()))
+    resultIsLeaf := boolToRef(isSubtype(typeOf(cast), CastLeaf37()))
+    assert boolFromRef(originalIsLeaf)
+    assert boolFromRef(resultIsLeaf)
+  } else {
+    var originalIsNotLeaf: Ref
+    originalIsNotLeaf := notBool(boolToRef(isSubtype(typeOf(value), CastLeaf37())))
+    assert boolFromRef(originalIsNotLeaf)
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/cast_type_refinement.kt: info: Generated Viper text for successfulExplicitCastRefines:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), CastLeaf37())
+  ensures acc(CastLeaf37_unique(ret_1), write)
+
+
+method successfulExplicitCastRefines() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var value: Ref
+  var anon: Ref
+  var cast: Ref
+  var originalIsLeaf: Ref
+  var resultIsLeaf: Ref
+  anon := con()
+  value := anon
+  inhale isSubtype(typeOf(value), CastLeaf37())
+  cast := value
+  originalIsLeaf := boolToRef(isSubtype(typeOf(value), CastLeaf37()))
+  resultIsLeaf := boolToRef(isSubtype(typeOf(cast), CastLeaf37()))
+  assert boolFromRef(originalIsLeaf)
+  assert boolFromRef(resultIsLeaf)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/cast_type_refinement.kt: info: Generated Viper text for nonNullableExplicitCastMustThrow:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), CastBase37())
+  ensures acc(CastBase37_unique(ret_1), write)
+
+
+method nonNullableExplicitCastMustThrow() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var value: Ref
+  value := con()
+  inhale isSubtype(typeOf(value), CastLeaf37())
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/cast_type_refinement.kt: info: Generated Viper text for nullToNullableExplicitCastSucceeds:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method nullToNullableExplicitCastSucceeds() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var value: Ref
+  var cast: Ref
+  value := nullValue()
+  inhale isSubtype(typeOf(value), nullable(CastLeaf37()))
+  cast := value
+  assert cast == nullValue()
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/cast_type_refinement.kt: info: Generated Viper text for nonNullToNullableExplicitCastMustThrow:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), CastBase37())
+  ensures acc(CastBase37_unique(ret_1), write)
+
+
+method nonNullToNullableExplicitCastMustThrow() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var value: Ref
+  var anon: Ref
+  anon := con()
+  value := anon
+  inhale isSubtype(typeOf(value), nullable(CastLeaf37()))
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/cast_type_refinement.kt: info: Generated Viper text for wrongBranchFactIsRejected:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method wrongBranchFactIsRejected(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), nullable(CastBase37()))
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  if (isSubtype(typeOf(value), CastLeaf37())) {
+    var fact: Ref
+    fact := boolToRef(isSubtype(typeOf(value), CastLeaf37()))
+    assert boolFromRef(fact)
+  } else {
+    var wrongFact: Ref
+    wrongFact := boolToRef(isSubtype(typeOf(value), CastLeaf37()))
+    assert boolFromRef(wrongFact)
+  }
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
