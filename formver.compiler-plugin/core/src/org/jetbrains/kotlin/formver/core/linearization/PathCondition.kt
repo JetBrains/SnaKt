@@ -18,8 +18,7 @@ sealed interface PathCondition {
     /**
      * The block is reached when all [conjuncts] hold.
      *
-     * Conjuncts are kept as a list so that joins can find the shared prefix of both
-     * predecessors instead of building nested disjunctions.
+     * Conjuncts are a list so that [or] can factor out the prefix shared by both predecessors.
      */
     data class Reachable(val conjuncts: List<Exp>) : PathCondition {
         val exp: Exp = conjuncts.toConjunction()
