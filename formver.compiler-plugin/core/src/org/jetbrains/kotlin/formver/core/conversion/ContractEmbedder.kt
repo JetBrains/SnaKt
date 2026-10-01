@@ -12,8 +12,8 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.NamedFunctionSigna
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 
 /**
- * Embeds function contracts (Kotlin `contract { }` blocks and Formver `requires`/`ensures`
- * specifications) as pre/postcondition expressions.
+ * Embeds a function's Kotlin `contract { }` block and its `preconditions`/`postconditions`
+ * specification as pre- and postcondition expressions.
  */
 class ContractEmbedder(private val programCtx: ProgramConversionContext) {
 

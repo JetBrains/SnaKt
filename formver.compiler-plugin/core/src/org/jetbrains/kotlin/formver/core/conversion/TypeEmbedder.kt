@@ -18,8 +18,7 @@ import org.jetbrains.kotlin.formver.core.isManual
 import org.jetbrains.kotlin.formver.core.names.embedName
 
 /**
- * Embeds Kotlin types (and classes) as [TypeEmbedding]s, pairing with the [PretypeBuilder]
- * hierarchy in `embeddings/types/`.
+ * Embeds Kotlin types and classes as [TypeEmbedding]s, built through [PretypeBuilder]s.
  */
 class TypeEmbedder(private val programCtx: ProgramConversionContext) {
     private val session: FirSession get() = programCtx.session
