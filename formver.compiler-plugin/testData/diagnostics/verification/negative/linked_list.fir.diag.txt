@@ -30,14 +30,11 @@ method getVal(l: Ref) returns (v_ret_0: Ref)
 /linked_list.kt: info: Generated Viper text for test:
 field bf_data: Ref
 
+field size: Ref
+
 function g_next(this: Ref): Ref
   requires isSubtype(typeOf(this), Link())
   ensures isSubtype(typeOf(result), nullable(Link()))
-
-
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
 
 
 predicate BooleanArray_unique(this: Ref) {

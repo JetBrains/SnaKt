@@ -3,3 +3,13 @@
 /array_bounds.kt: warning: Invalid index for array 'array', the index may be greater than the array's size.
 
 /array_bounds.kt: warning: Invalid index for array 'array', the index may be less than zero.
+
+/array_bounds.kt: warning: Invalid index for array 'array', the index may be greater than the array's size.
+
+/array_bounds.kt: warning: Invalid index for the following array sub-expression, the index may be greater than the array's size.
+
+/array_bounds.kt: warning: Invalid index for the following array sub-expression, the index may be greater than the array's size.
+
+/array_bounds.kt: warning: Invalid index for array 'array', the index may be greater than the array's size.
+
+/array_bounds.kt: warning: Invalid index for array 'array', the index may be less than zero.

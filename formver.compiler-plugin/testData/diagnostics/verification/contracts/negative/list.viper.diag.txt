@@ -9,3 +9,5 @@
 /list.kt: warning: Invalid sub-list range for the following list sub-expression, the range may be greater than the list's size.
 
 /list.kt: warning: Invalid sub-list range for the following list sub-expression, the range may be including negative indices.
+
+/list.kt: warning: Invalid index for list 'l', the index may be greater than the list's size.

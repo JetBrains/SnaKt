@@ -46,3 +46,9 @@ fun <!VIPER_TEXT!>nullable_list<!>(l: List<Int>?) {
         val x = l[l.size - 1]
     }
 }
+
+@AlwaysVerify
+fun <!VIPER_TEXT!>add_set<!>(l: MutableList<Int>) {
+    l.add(1)
+    l[0] = 2
+}

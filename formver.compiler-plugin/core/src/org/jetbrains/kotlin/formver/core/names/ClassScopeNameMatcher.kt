@@ -33,6 +33,10 @@ internal sealed class NameMatcher(val name: SymbolicName) {
         ifPackageName(SpecialPackages.collections) { this.action() }
     }
 
+    inline fun ifInKotlinPkg(action: NameMatcher.() -> Unit) {
+        ifPackageName(SpecialPackages.kotlin) { this.action() }
+    }
+
     inline fun ifClassName(vararg segments: String, action: NameMatcher.() -> Unit) {
         if (className == ClassKotlinName(segments.toList()))
             this.action()
@@ -59,6 +63,11 @@ internal class ClassScopeNameMatcher(name: SymbolicName) : NameMatcher(name) {
     inline fun ifFunctionName(name: String, action: ClassScopeNameMatcher.() -> Unit) {
         val functionName = scopedName?.name as? FunctionKotlinName
         if (functionName?.name == Name.identifier(name))
+            this.action()
+    }
+
+    inline fun ifConstructor(action: ClassScopeNameMatcher.() -> Unit) {
+        if (scopedName?.name is ConstructorKotlinName)
             this.action()
     }
 

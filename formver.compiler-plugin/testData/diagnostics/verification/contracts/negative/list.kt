@@ -34,3 +34,8 @@ fun <!VIPER_TEXT!>empty_list_sub<!>() {
 fun <!VIPER_TEXT!>empty_list_sub_negative<!>() {
     val l = <!INVALID_SUBLIST_RANGE!>emptyList<Int>().subList(-1, 1)<!>
 }
+
+@AlwaysVerify
+fun <!VIPER_TEXT!>unchecked_set<!>(l: MutableList<Int>) {
+    <!POSSIBLE_INDEX_OUT_OF_BOUND!>l[0] = 1<!>
+}

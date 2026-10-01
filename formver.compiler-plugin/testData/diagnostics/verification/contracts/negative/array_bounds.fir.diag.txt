@@ -84,3 +84,171 @@ method negativePrimitiveArrayRead(array: Ref) returns (v_ret_0: Ref)
   goto lbl_ret_0
   label lbl_ret_0
 }
+
+/array_bounds.kt: info: Generated Viper text for uncheckedUnsignedArrayRead:
+field size: Ref
+
+function data(this: Ref): Ref
+  requires isSubtype(typeOf(this), UInt())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function storage(this: Ref): Ref
+  requires isSubtype(typeOf(this), UIntArray())
+  ensures isSubtype(typeOf(result), IntArray())
+
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), UIntArray())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), UInt())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method uncheckedUnsignedArrayRead(array: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(array), UIntArray())
+  requires acc(array.size, write)
+  requires intFromRef(array.size) >= 0
+  ensures acc(array.size, write)
+  ensures intFromRef(array.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), UInt())
+{
+  v_ret_0 := get(array, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/array_bounds.kt: info: Generated Viper text for emptyArrayRead:
+field size: Ref
+
+method emptyArray() returns (ret_2: Ref)
+  ensures isSubtype(typeOf(ret_2), Array())
+  ensures acc(ret_2.size, write)
+  ensures intFromRef(ret_2.size) >= 0
+  ensures intFromRef(ret_2.size) == 0
+
+
+method emptyArrayRead() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := emptyArray()
+  v_ret_0 := get(anon, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Array())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+/array_bounds.kt: info: Generated Viper text for constructedArrayReadPastEnd:
+field p_size: Ref
+
+method con(par_size: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_size), intType())
+  ensures isSubtype(typeOf(ret_2), IntArray())
+  ensures acc(ret_2.p_size, write)
+  ensures intFromRef(ret_2.p_size) >= 0
+  ensures acc(IntArray_unique(ret_2), write)
+  ensures intFromRef(ret_2.p_size) == intFromRef(par_size)
+
+
+method constructedArrayReadPastEnd() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := con(intToRef(3))
+  v_ret_0 := get(anon, intToRef(3))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), IntArray())
+  requires acc(this.p_size, write)
+  requires intFromRef(this.p_size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.p_size) > intFromRef(index)
+  ensures acc(this.p_size, write)
+  ensures intFromRef(this.p_size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
+
+
+/array_bounds.kt: info: Generated Viper text for uncheckedPrimitiveArrayWrite:
+field size: Ref
+
+method set(this: Ref, index: Ref, value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), IntArray())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), unitType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method uncheckedPrimitiveArrayWrite(array: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(array), IntArray())
+  requires acc(array.size, write)
+  requires intFromRef(array.size) >= 0
+  ensures acc(array.size, write)
+  ensures intFromRef(array.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := set(array, intToRef(0), intToRef(1))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/array_bounds.kt: info: Generated Viper text for negativeGenericArrayWrite:
+field size: Ref
+
+method negativeGenericArrayWrite(array: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(array), Array())
+  requires acc(array.size, write)
+  requires intFromRef(array.size) >= 0
+  ensures acc(array.size, write)
+  ensures intFromRef(array.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := set(array, intToRef(-1), intToRef(1))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method set(this: Ref, index: Ref, value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Array())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), unitType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
