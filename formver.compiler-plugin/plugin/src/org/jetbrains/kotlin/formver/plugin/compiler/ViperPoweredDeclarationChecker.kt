@@ -55,9 +55,8 @@ private fun TargetsSelection.applicable(declaration: FirSimpleFunction): Boolean
 }
 
 /**
- * FIR checkers are invoked even for declarations which contain unresolved source constructs. Such
- * declarations are already rejected by the Kotlin frontend, and trying to convert their recovery
- * nodes tends to turn ordinary source diagnostics into misleading plugin internal errors.
+ * FIR checkers run even on declarations with unresolved source constructs. The frontend has already
+ * reported an error for those, and their recovery nodes cannot be converted.
  */
 private fun FirSimpleFunction.containsErrorNodes(): Boolean {
     var found = false

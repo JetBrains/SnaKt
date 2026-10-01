@@ -198,8 +198,7 @@ class ProgramConverter(
      * Viper accepts mutually recursive functions, but Silicon checks each function's postcondition
      * without assuming the postconditions of the other functions in its recursion cycle. Even the
      * generated result-type postcondition then fails, with an error that never mentions recursion.
-     * Reject such cycles before verification instead. A function that only calls itself verifies
-     * fine and does not count as a cycle here.
+     * Such cycles are reported before verification. Self-recursion verifies and is not a cycle here.
      */
     private fun validatePureRecursion() {
         val calls: Map<SymbolicName, Set<SymbolicName>> = buildMap {
