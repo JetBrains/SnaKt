@@ -561,12 +561,11 @@ data class LinearizationVisitor(
                 info = e.sourceRole.asInfo,
             )
 
-            // Each ground instance implies the existential. Consequently
+            // Each ground instance implies the existential, so
             //
             //   (exists x :: P(x)) <==> (exists x :: P(x)) || P(t1) || ... || P(tn)
             //
-            // This equivalence gives the solver several small, quantifier-free ways of proving
-            // the larger scheme, without relying on trigger selection or changing its meaning.
+            // The instances are quantifier-free, so the solver can prove them without trigger matching.
             val groundTerms = groundTermsFor(e.variable, e.conditions)
                 .map { it.linearize().toViperBuiltinType(ctx) }
                 .distinct()

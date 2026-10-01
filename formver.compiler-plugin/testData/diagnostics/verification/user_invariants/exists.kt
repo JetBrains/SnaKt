@@ -35,8 +35,7 @@ fun <!VIPER_TEXT!>symbolExists<!>(s: String): Int {
     return 0
 }
 
-// The postcondition supplies `res` as a finite ground candidate for `it`. Instantiating the
-// body with that candidate reduces the existential to its three quantifier-free conjuncts.
+// Verifies through the ground instance `it == res`.
 @AlwaysVerify
 fun <!VIPER_TEXT!>symbolExistsWithoutGroundTerm<!>(s: String): Int {
     preconditions {
@@ -49,7 +48,7 @@ fun <!VIPER_TEXT!>symbolExistsWithoutGroundTerm<!>(s: String): Int {
     return 0
 }
 
-// Literal candidates are instances too, so this proves the obvious witness without a trigger.
+// Verifies through the ground instance `it == 0`.
 @AlwaysVerify
 fun <!VIPER_TEXT!>existsPostcondWithoutTrigger<!>(): Int {
     postconditions<Int> {
@@ -66,8 +65,7 @@ fun <!VIPER_TEXT!>existsWithGroundLocal<!>(n: Int): Int {
     return n
 }
 
-// Finite instantiation is only a proof aid: retaining the original existential is essential.
-// A false ground instance must not make a false existential verify.
+// A false existential does not verify.
 <!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>falseExistsRemainsFalse<!>(): Int {
     postconditions<Int> {
