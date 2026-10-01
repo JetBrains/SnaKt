@@ -1,23 +1,11 @@
 // FULL_JDK
 
-// LeetCode 69, "Sqrt(x)".
+// LeetCode 69, "Sqrt(x)": the largest r with r * r <= x.
 // https://leetcode.com/problems/sqrtx/
-//
-// Return the square root of a non-negative x rounded down, without using any
-// built-in exponent function. Equivalently: the largest integer whose square
-// is at most x, which is exactly the postcondition shared by both functions
-// below.
-//
-// Note what is *not* being proven. LeetCode's constraint is x <= 2^31 - 1, so
-// the usual C++/Java solution compares `mid > x / mid` to keep `mid * mid`
-// from overflowing a 32-bit int. Our `Int` is Viper's unbounded integer, so
-// `mid * mid` is written directly here -- and, by the same token, this proof
-// says nothing about overflow. It is a proof about the mathematical integers.
+// `Int` is unbounded, so this says nothing about 32-bit overflow of `mid * mid`.
 
 import org.jetbrains.kotlin.formver.plugin.*
 
-// O(sqrt x): walk up while the next square still fits. The loop condition
-// gives the upper bound on exit and the invariant carries the lower one.
 @AlwaysVerify
 fun <!VIPER_TEXT!>integerSqrtLinear<!>(x: Int): Int {
     preconditions {
@@ -40,12 +28,7 @@ fun <!VIPER_TEXT!>integerSqrtLinear<!>(x: Int): Int {
     return r
 }
 
-// O(log x): binary search for the last index whose square fits. The invariant
-// is the postcondition split across the two bounds -- `lo` always under-shoots
-// and `hi` always over-shoots -- so when they meet, `lo` is the answer.
-//
-// `mid` is biased upward, `lo + (hi - lo + 1) / 2`, which is what makes
-// `lo := mid` progress rather than spin.
+// `mid` rounds up so that `lo = mid` always makes progress.
 @AlwaysVerify
 fun <!VIPER_TEXT!>integerSqrtBinarySearch<!>(x: Int): Int {
     preconditions {

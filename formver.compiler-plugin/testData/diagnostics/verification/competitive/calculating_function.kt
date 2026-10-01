@@ -1,16 +1,8 @@
 // FULL_JDK
 
-// Codeforces 486A, "Calculating Function".
+// Codeforces 486A, "Calculating Function": f(n) = -1 + 2 - 3 + ... +- n.
 // https://codeforces.com/problemset/problem/486/A
-//
-// f(n) = -1 + 2 - 3 + 4 - ... +- n, i.e. the sum of (-1)^i * i for i in 1..n.
-// The intended solution is the O(1) closed form; what is worth verifying is
-// that the closed form agrees with the definition, which is what the loop
-// below establishes.
-//
-// The real problem has n <= 10^15 and so needs `Long`, which we do not
-// support; `n` is an `Int` here. That costs nothing in terms of what is
-// proven, since our `Int` is Viper's unbounded integer either way.
+// The original takes n up to 10^15 (`Long`); `Int` here is unbounded, so nothing is lost.
 
 import org.jetbrains.kotlin.formver.plugin.*
 
@@ -27,9 +19,7 @@ fun <!VIPER_TEXT!>calculatingFunctionClosedForm<!>(n: Int): Int {
     return if (n % 2 == 0) n / 2 else -((n + 1) / 2)
 }
 
-// Sums the series term by term. The invariant is the closed form applied to
-// the number of terms consumed so far, `i - 1`, so on exit (`i == n + 1`) it
-// is the postcondition.
+// The invariant is the closed form applied to the `i - 1` terms consumed so far.
 @AlwaysVerify
 fun <!VIPER_TEXT!>calculatingFunctionLoop<!>(n: Int): Int {
     preconditions {
