@@ -117,3 +117,16 @@ fun `reverse in place`(head: @Unique Node?): @Unique Node? {
     }
     return prev
 }
+
+// A shared `payload` of the same type puts shared and unique links in one summarized region.
+class PayloadNode(val payload: PayloadNode, val next: @Unique PayloadNode)
+
+fun consumePayloadNode(n: @Unique PayloadNode?) {}
+
+fun readPayloadNode(n: PayloadNode?) {}
+
+fun `consume a unique link twice beside a shared payload`(head: @Unique PayloadNode) {
+    readPayloadNode(head.next.next.payload)
+    consumePayloadNode(head.next.next)
+    consumePayloadNode(<!INVALID_MOVED_ACCESS!>head.next.next<!>)
+}

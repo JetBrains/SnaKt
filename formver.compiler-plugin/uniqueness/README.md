@@ -122,5 +122,5 @@ Known limitations in current code/tests:
   - The current `GraphUniquenessStatesAnalyzer.kt` visits the lambda subgraphs as if they were part of the local control flows, which can result in unexpected behavior.
 
 - **Summary nodes are approximate**
-  - A summary node stands for a whole region of paths rather than one path, so an operation that reaches past it applies to that entire region: a read there is treated as touching everything the summary covers, and a move marks all of it. Operations at a summary join their result with the value already held, so a restore cannot clear a fact that holds of another path in the region — the approximation only ever over-reports.
+  - A summary node stands for a whole region of paths rather than one path, so an operation that reaches it applies to that entire region: a read there is treated as touching everything the summary covers, and a move marks all of it. An operation at a summary is applied to the value the accessed path would have if it were not recorded, and the result is joined with the value already held, so a restore cannot clear a fact that holds of another path in the region — the approximation only ever over-reports.
   
