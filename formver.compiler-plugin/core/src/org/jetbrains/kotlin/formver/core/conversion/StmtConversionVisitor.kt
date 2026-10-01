@@ -137,9 +137,12 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     private fun convertWhenBranches(
         whenBranches: Iterator<FirWhenBranch>,
         type: TypeEmbedding,
+        fallthroughUnreachable: Boolean,
         data: StmtConversionContext,
     ): ExpEmbedding {
-        if (!whenBranches.hasNext()) return UnitLit
+        // When Kotlin proves the `when` exhaustive but there is no syntactic `else`, the missing fallthrough is
+        // `Unreachable`. A pure function body cannot inhale, so it keeps the `UnitLit` fallthrough.
+        if (!whenBranches.hasNext()) return if (fallthroughUnreachable && !data.signature.isPure) Unreachable else UnitLit
 
         val branch = whenBranches.next()
 
@@ -149,7 +152,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         } else {
             val cond = data.convert(branch.condition).withType { boolean() }
             val thenExp = data.withNewScope { convert(branch.result) }
-            val elseExp = convertWhenBranches(whenBranches, type, data)
+            val elseExp = convertWhenBranches(whenBranches, type, fallthroughUnreachable, data)
             If(cond, thenExp.withType(type), elseExp.withType(type), type)
         }
     }
@@ -164,8 +167,9 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 else
                     declareLocalVariable(firSubjVar.symbol, subjExp)
             }
+            val fallthroughUnreachable = whenExpression.exhaustivenessStatus is ExhaustivenessStatus.ProperlyExhaustive
             val body = withWhenSubject(subj?.variable) {
-                convertWhenBranches(whenExpression.branches.iterator(), type, this)
+                convertWhenBranches(whenExpression.branches.iterator(), type, fallthroughUnreachable, this)
             }
             subj?.let { blockOf(it, body) } ?: body
         }
