@@ -23,14 +23,12 @@ need_python3() {
 # GenerateTestsKt capitalizes a testData stem and turns dashes into underscores
 # to form the method name (non-local-returns.kt backs testNon_local_returns),
 # and --tests is case-sensitive. A name already in method form, and a path to
-# the .kt, are both accepted.
+# the .kt, are both accepted. Method names are test followed by an uppercase
+# letter, which tells them apart from stems that happen to start with test.
 gradle_filter() {
-    local pattern="${1##*/}" source_file=0
-    if [[ "$pattern" == *.kt ]]; then
-        pattern="${pattern%.kt}"
-        source_file=1
-    fi
-    if [[ "$source_file" -eq 0 && "$pattern" == test* ]]; then
+    local pattern="${1##*/}"
+    pattern="${pattern%.kt}"
+    if [[ "$pattern" == test[A-Z]* ]]; then
         printf '%s' "$pattern"
     else
         printf '%s%s' "$(printf '%s' "${pattern:0:1}" | tr '[:lower:]' '[:upper:]')" "${pattern:1}" \

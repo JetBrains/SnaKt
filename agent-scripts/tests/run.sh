@@ -106,6 +106,10 @@ assert_eq "gradle_filter: source names beginning with test are not mistaken for 
     "Test_helpers" 0 \
     -- gradle_filter "diagnostics/verification/test_helpers.kt"
 
+assert_eq "gradle_filter: bare names beginning with test are not mistaken for methods" \
+    "Test_helpers" 0 \
+    -- gradle_filter "test_helpers"
+
 assert_eq "assertion types: opentest4j failures carry a golden diff" \
     "" 0 \
     -- is_assertion_failure_type "org.opentest4j.AssertionFailedError"
