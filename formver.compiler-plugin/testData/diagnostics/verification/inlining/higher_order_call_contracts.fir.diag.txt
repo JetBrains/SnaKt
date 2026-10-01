@@ -1,0 +1,157 @@
+/higher_order_call_contracts.kt: info: Generated Viper text for inlineCallbackOnce:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method applyOnce(value: Ref, callback: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires isSubtype(typeOf(callback), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method inlineCallbackOnce() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  var v_ret_3: Ref
+  var anon: Ref
+  var v_ret_4: Ref
+  anon := intToRef(10)
+  v_ret_4 := plusInts(anon, intToRef(1))
+  goto lbl_ret_4
+  label lbl_ret_4
+  v_ret_3 := v_ret_4
+  goto lbl_ret_3
+  label lbl_ret_3
+  l0_result := v_ret_3
+  assert intFromRef(l0_result) == 11
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/higher_order_call_contracts.kt: info: Generated Viper text for inlineCallbackTwice:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method applyTwice(value: Ref, callback: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires isSubtype(typeOf(callback), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method inlineCallbackTwice() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  var v_ret_3: Ref
+  var anon_0: Ref
+  var v_ret_5: Ref
+  var anon_1: Ref
+  var v_ret_4: Ref
+  anon_0 := intToRef(10)
+  v_ret_4 := plusInts(anon_0, intToRef(1))
+  goto lbl_ret_4
+  label lbl_ret_4
+  anon_1 := v_ret_4
+  v_ret_5 := plusInts(anon_1, intToRef(1))
+  goto lbl_ret_5
+  label lbl_ret_5
+  v_ret_3 := v_ret_5
+  goto lbl_ret_3
+  label lbl_ret_3
+  l0_result := v_ret_3
+  assert intFromRef(l0_result) == 12
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/higher_order_call_contracts.kt: info: Generated Viper text for inlineCallbackTwiceNegativeControl:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method applyTwice(value: Ref, callback: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires isSubtype(typeOf(callback), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method inlineCallbackTwiceNegativeControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  var v_ret_3: Ref
+  var anon_0: Ref
+  var v_ret_5: Ref
+  var anon_1: Ref
+  var v_ret_4: Ref
+  anon_0 := intToRef(10)
+  v_ret_4 := plusInts(anon_0, intToRef(1))
+  goto lbl_ret_4
+  label lbl_ret_4
+  anon_1 := v_ret_4
+  v_ret_5 := plusInts(anon_1, intToRef(1))
+  goto lbl_ret_5
+  label lbl_ret_5
+  v_ret_3 := v_ret_5
+  goto lbl_ret_3
+  label lbl_ret_3
+  l0_result := v_ret_3
+  assert intFromRef(l0_result) == 11
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/higher_order_call_contracts.kt: info: Generated Viper text for inlineCallbackOnTakenBranch:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method applyConditionally(run: Ref, value: Ref, callback: Ref)
+  returns (ret_1: Ref)
+  requires isSubtype(typeOf(run), boolType())
+  requires isSubtype(typeOf(value), intType())
+  requires isSubtype(typeOf(callback), functionType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method inlineCallbackOnTakenBranch(run: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(run), boolType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  var v_ret_3: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  anon_0 := intToRef(10)
+  if (boolFromRef(run)) {
+    var v_ret_4: Ref
+    v_ret_4 := plusInts(anon_0, intToRef(1))
+    goto lbl_ret_4
+    label lbl_ret_4
+    v_ret_3 := v_ret_4
+  } else {
+    v_ret_3 := anon_0}
+  goto lbl_ret_3
+  label lbl_ret_3
+  l0_result := v_ret_3
+  if (boolFromRef(run)) {
+    anon_2 := boolToRef(intFromRef(l0_result) == 11)
+  } else {
+    anon_2 := boolToRef(false)}
+  if (boolFromRef(anon_2)) {
+    anon_1 := boolToRef(true)
+  } elseif (!boolFromRef(run)) {
+    anon_1 := boolToRef(intFromRef(l0_result) == 10)
+  } else {
+    anon_1 := boolToRef(false)}
+  assert boolFromRef(anon_1)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

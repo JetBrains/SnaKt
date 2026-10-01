@@ -1,0 +1,3 @@
+/compiled_kotlin_differential.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(l0_result) == 62 might not hold.
+
+/compiled_kotlin_differential.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(l0_result) == 21 might not hold.

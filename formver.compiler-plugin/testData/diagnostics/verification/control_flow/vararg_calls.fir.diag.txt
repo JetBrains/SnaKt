@@ -1,0 +1,91 @@
+/vararg_calls.kt: info: Generated Viper text for verifyVarargControls:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method verifyVarargControls() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert true
+  assert true
+  assert true
+  assert true
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/vararg_calls.kt: info: Generated Viper text for verifyVarargNegativeControl:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method verifyVarargNegativeControl() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/vararg_calls.kt: info: Generated Viper text for callEmptyVararg:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method callEmptyVararg() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := consume()
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method consume(values: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(values), IntArray())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/vararg_calls.kt: error: An internal error has occurred.
+Details: Vararg arguments are currently supported for `verify` function only.
+Please report this at https://github.com/jesyspa/kotlin
+
+/vararg_calls.kt: error: An internal error has occurred.
+Details: Vararg arguments are currently supported for `verify` function only.
+Please report this at https://github.com/jesyspa/kotlin
+
+/vararg_calls.kt: info: Generated Viper text for callMixedEmptyVararg:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method callMixedEmptyVararg() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := consumeMixed(intToRef(10))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method consumeMixed(prefix: Ref, values: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(prefix), intType())
+  requires isSubtype(typeOf(values), IntArray())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/vararg_calls.kt: error: An internal error has occurred.
+Details: Vararg arguments are currently supported for `verify` function only.
+Please report this at https://github.com/jesyspa/kotlin
+
+/vararg_calls.kt: error: An internal error has occurred.
+Details: Vararg arguments are currently supported for `verify` function only.
+Please report this at https://github.com/jesyspa/kotlin
+
+/vararg_calls.kt: error: An internal error has occurred.
+Details: Vararg arguments are currently supported for `verify` function only.
+Please report this at https://github.com/jesyspa/kotlin

@@ -1,0 +1,68 @@
+/sealed_when.kt: info: Generated Viper text for exhaustivePayloadField:
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), Payload())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method exhaustivePayloadField(packet: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(packet), Packet())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := packet
+  if (isSubtype(typeOf(anon), Payload())) {
+    v_ret_0 := value(packet)
+  } elseif (isSubtype(typeOf(anon), Empty())) {
+    v_ret_0 := intToRef(0)
+  } else {
+    v_ret_0 := unitValue()}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/sealed_when.kt: info: Generated Viper text for sealedCasesAreExhaustive:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), Payload())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method sealedCasesAreExhaustive(packet: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(packet), Packet())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  if (isSubtype(typeOf(packet), Payload())) {
+    anon := boolToRef(true)
+  } else {
+    anon := boolToRef(isSubtype(typeOf(packet), Empty()))}
+  assert boolFromRef(anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/sealed_when.kt: info: Generated Viper text for openHierarchyNeedsFallback:
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), OpenPayload())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method openHierarchyNeedsFallback(packet: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(packet), OpenPacket())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := packet
+  if (isSubtype(typeOf(anon), OpenPayload())) {
+    v_ret_0 := value(packet)
+  } elseif (isSubtype(typeOf(anon), OpenEmpty())) {
+    v_ret_0 := intToRef(0)
+  } else {
+    v_ret_0 := intToRef(-1)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}

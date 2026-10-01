@@ -1,0 +1,166 @@
+/recursion_variants.kt: info: Generated Viper text for decreasingCountdown:
+method decreasingCountdown(n: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 0
+{
+  if (intFromRef(n) == 0) {
+    v_ret_0 := intToRef(0)
+  } else {
+    v_ret_0 := decreasingCountdown(minusInts(n, intToRef(1)))}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/recursion_variants.kt: info: Generated Viper text for incorrectDecreasingIdentity:
+method incorrectDecreasingIdentity(n: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(n)
+{
+  if (intFromRef(n) == 0) {
+    v_ret_0 := intToRef(0)
+  } else {
+    v_ret_0 := incorrectDecreasingIdentity(minusInts(n, intToRef(1)))}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/recursion_variants.kt: info: Generated Viper text for stationaryRecursion:
+method stationaryRecursion() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 0
+{
+  v_ret_0 := stationaryRecursion()
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/recursion_variants.kt: info: Generated Viper text for mutualEvenStep:
+method mutualEvenStep(n: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 0
+{
+  if (intFromRef(n) == 0) {
+    v_ret_0 := intToRef(0)
+  } else {
+    v_ret_0 := mutualOddStep(minusInts(n, intToRef(1)))}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method mutualOddStep(n: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(ret_3), intType())
+  ensures intFromRef(ret_3) == 0
+
+
+/recursion_variants.kt: info: Generated Viper text for mutualOddStep:
+method mutualEvenStep(n: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(ret_3), intType())
+  ensures intFromRef(ret_3) == 0
+
+
+method mutualOddStep(n: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 0
+{
+  if (intFromRef(n) == 0) {
+    v_ret_0 := intToRef(0)
+  } else {
+    v_ret_0 := mutualEvenStep(minusInts(n, intToRef(1)))}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/recursion_variants.kt: info: Generated Viper text for pureCountdown:
+function pureCountdown(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_1_0 ==
+    ((intFromRef(n) == 0 ? intToRef(0) : null)) in
+    (let anon_2_0 ==
+      ((!(intFromRef(n) == 0) ?
+        pureCountdown(minusInts(n, intToRef(1))) :
+        null)) in
+      (let anon_0_0 ==
+        ((intFromRef(n) == 0 ? anon_1_0 : anon_2_0)) in
+        anon_0_0)))
+}
+
+/recursion_variants.kt: info: Generated Viper text for pureMutualEven:
+function pureMutualEven(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_1_0 ==
+    ((intFromRef(n) == 0 ? boolToRef(true) : null)) in
+    (let anon_2_0 ==
+      ((!(intFromRef(n) == 0) ?
+        pureMutualOdd(minusInts(n, intToRef(1))) :
+        null)) in
+      (let anon_0_0 ==
+        ((intFromRef(n) == 0 ? anon_1_0 : anon_2_0)) in
+        anon_0_0)))
+}
+
+function pureMutualOdd(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_4_0 ==
+    ((intFromRef(n) == 0 ? boolToRef(false) : null)) in
+    (let anon_5_0 ==
+      ((!(intFromRef(n) == 0) ?
+        pureMutualEven(minusInts(n, intToRef(1))) :
+        null)) in
+      (let anon_3_0 ==
+        ((intFromRef(n) == 0 ? anon_4_0 : anon_5_0)) in
+        anon_3_0)))
+}
+
+/recursion_variants.kt: info: Generated Viper text for pureMutualOdd:
+function pureMutualEven(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_4_0 ==
+    ((intFromRef(n) == 0 ? boolToRef(true) : null)) in
+    (let anon_5_0 ==
+      ((!(intFromRef(n) == 0) ?
+        pureMutualOdd(minusInts(n, intToRef(1))) :
+        null)) in
+      (let anon_3_0 ==
+        ((intFromRef(n) == 0 ? anon_4_0 : anon_5_0)) in
+        anon_3_0)))
+}
+
+function pureMutualOdd(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  requires intFromRef(n) >= 0
+  ensures isSubtype(typeOf(result), boolType())
+{
+  (let anon_1_0 ==
+    ((intFromRef(n) == 0 ? boolToRef(false) : null)) in
+    (let anon_2_0 ==
+      ((!(intFromRef(n) == 0) ?
+        pureMutualEven(minusInts(n, intToRef(1))) :
+        null)) in
+      (let anon_0_0 ==
+        ((intFromRef(n) == 0 ? anon_1_0 : anon_2_0)) in
+        anon_0_0)))
+}

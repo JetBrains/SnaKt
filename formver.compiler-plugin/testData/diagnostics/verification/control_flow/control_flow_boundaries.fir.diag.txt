@@ -1,0 +1,130 @@
+/control_flow_boundaries.kt: info: Generated Viper text for signAtBoundary:
+method signAtBoundary(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(value) < 0 && intFromRef(v_ret_0) == -1 ||
+    intFromRef(value) == 0 && intFromRef(v_ret_0) == 0 ||
+    intFromRef(value) > 0 && intFromRef(v_ret_0) == 1
+{
+  if (intFromRef(value) < 0) {
+    v_ret_0 := intToRef(-1)
+  } elseif (intFromRef(value) == 0) {
+    v_ret_0 := intToRef(0)
+  } else {
+    v_ret_0 := intToRef(1)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/control_flow_boundaries.kt: info: Generated Viper text for countToBoundary:
+method countToBoundary(limit: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(limit), intType())
+  requires intFromRef(limit) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(limit)
+{
+  var current: Ref
+  var anon: Ref
+  current := intToRef(0)
+  label cont
+    invariant isSubtype(typeOf(current), intType())
+    invariant isSubtype(typeOf(limit), intType())
+    invariant intFromRef(current) >= 0
+    invariant intFromRef(current) <= intFromRef(limit)
+  anon := ltInts(current, limit)
+  if (boolFromRef(anon)) {
+    current := plusInts(current, intToRef(1))
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(current), intType())
+  assert isSubtype(typeOf(limit), intType())
+  assert intFromRef(current) >= 0
+  assert intFromRef(current) <= intFromRef(limit)
+  v_ret_0 := current
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/control_flow_boundaries.kt: info: Generated Viper text for recursiveToBoundary:
+method recursiveToBoundary(value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 0
+{
+  if (intFromRef(value) == 0) {
+    v_ret_0 := value
+    goto lbl_ret_0
+  }
+  v_ret_0 := recursiveToBoundary(minusInts(value, intToRef(1)))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/control_flow_boundaries.kt: info: Generated Viper text for boundaryControls:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method boundaryControls() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var below: Ref
+  var at: Ref
+  var above: Ref
+  var minimum: Ref
+  var maximum: Ref
+  var empty: Ref
+  var singleton: Ref
+  var multiple: Ref
+  var base: Ref
+  var oneStep: Ref
+  var twoSteps: Ref
+  below := signAtBoundary(intToRef(-1))
+  at := signAtBoundary(intToRef(0))
+  above := signAtBoundary(intToRef(1))
+  minimum := signAtBoundary(minusInts(intToRef(-2147483647), intToRef(1)))
+  maximum := signAtBoundary(intToRef(2147483647))
+  assert intFromRef(below) == -1
+  assert intFromRef(at) == 0
+  assert intFromRef(above) == 1
+  assert intFromRef(minimum) == -1
+  assert intFromRef(maximum) == 1
+  empty := countToBoundary(intToRef(0))
+  singleton := countToBoundary(intToRef(1))
+  multiple := countToBoundary(intToRef(2))
+  assert intFromRef(empty) == 0
+  assert intFromRef(singleton) == 1
+  assert intFromRef(multiple) == 2
+  base := recursiveToBoundary(intToRef(0))
+  oneStep := recursiveToBoundary(intToRef(1))
+  twoSteps := recursiveToBoundary(intToRef(2))
+  assert intFromRef(base) == 0
+  assert intFromRef(oneStep) == 0
+  assert intFromRef(twoSteps) == 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method countToBoundary(limit: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(limit), intType())
+  requires intFromRef(limit) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) == intFromRef(limit)
+
+
+method recursiveToBoundary(value: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(value) >= 0
+  ensures isSubtype(typeOf(ret_3), intType())
+  ensures intFromRef(ret_3) == 0
+
+
+method signAtBoundary(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(value) < 0 && intFromRef(ret_1) == -1 ||
+    intFromRef(value) == 0 && intFromRef(ret_1) == 0 ||
+    intFromRef(value) > 0 && intFromRef(ret_1) == 1

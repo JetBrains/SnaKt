@@ -1,0 +1,107 @@
+/dead_code.kt: info: Generated Viper text for assertionAfterReturn:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method assertionAfterReturn() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  goto lbl_ret_0
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/dead_code.kt: info: Generated Viper text for liveAssertionBeforeReturn:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method liveAssertionBeforeReturn() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert false
+  goto lbl_ret_0
+  assert true
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/dead_code.kt: info: Generated Viper text for assertionInFalseBranch:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method assertionInFalseBranch() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  if (false) {
+    assert false
+  }
+  assert true
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/dead_code.kt: info: Generated Viper text for liveAssertionAfterFalseBranch:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method liveAssertionAfterFalseBranch() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  if (false) {
+    assert true
+  }
+  assert false
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/dead_code.kt: info: Generated Viper text for assertionInConstantElse:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method assertionInConstantElse() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  if (true) {
+    assert true
+  } else {
+    assert false}
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/dead_code.kt: info: Generated Viper text for nonConstantElseControl:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method nonConstantElseControl(condition: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(condition), boolType())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  if (boolFromRef(condition)) {
+    assert true
+  } else {
+    assert false}
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/dead_code.kt: error: An internal error has occurred.
+Details: Constant Expression of type Double is not yet implemented.
+Please report this at https://github.com/jesyspa/kotlin
+
+/dead_code.kt: error: An internal error has occurred.
+Details: Constant Expression of type Double is not yet implemented.
+Please report this at https://github.com/jesyspa/kotlin
