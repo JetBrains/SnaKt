@@ -1,0 +1,1 @@
+/string_operation_models.kt: warning: Viper verification error: Precondition of function stringGet might not hold. Assertion intFromRef(intToRef(0)) < |stringFromRef(stringToRef(Seq[Int]()))| might not hold.

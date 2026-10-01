@@ -1,0 +1,194 @@
+/array_index_probes.kt: info: Generated Viper text for object_array_first:
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(v_this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this), Array())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
+
+
+method isEmpty(v_this_extension: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), Array())
+  ensures isSubtype(typeOf(ret_1), boolType())
+
+
+method object_array_first(xs: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), Array())
+  ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
+{
+  var anon_0: Ref
+  anon_0 := isEmpty(xs)
+  if (boolFromRef(anon_0)) {
+    var anon_1: Ref
+    anon_1 := nullValue()
+    v_ret_0 := anon_1
+  } else {
+    var anon_2: Ref
+    anon_2 := get(xs, intToRef(0))
+    v_ret_0 := anon_2
+  }
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/array_index_probes.kt: info: Generated Viper text for object_array_at_size:
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(v_this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this), Array())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
+
+
+method isEmpty(v_this_extension: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), Array())
+  ensures isSubtype(typeOf(ret_1), boolType())
+
+
+method object_array_at_size(xs: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), Array())
+  ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
+{
+  var anon_0: Ref
+  anon_0 := isEmpty(xs)
+  if (boolFromRef(anon_0)) {
+    var anon_1: Ref
+    anon_1 := nullValue()
+    v_ret_0 := anon_1
+  } else {
+    var anon_2: Ref
+    anon_2 := get(xs, size(xs))
+    v_ret_0 := anon_2
+  }
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/array_index_probes.kt: info: Generated Viper text for primitive_array_first:
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(v_this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this), IntArray())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
+
+
+method isEmpty(v_this_extension: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), IntArray())
+  ensures isSubtype(typeOf(ret_1), boolType())
+
+
+method primitive_array_first(xs: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), IntArray())
+  ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
+{
+  var anon_0: Ref
+  anon_0 := isEmpty(xs)
+  if (boolFromRef(anon_0)) {
+    var anon_1: Ref
+    anon_1 := nullValue()
+    v_ret_0 := anon_1
+  } else {
+    var anon_2: Ref
+    anon_2 := get(xs, intToRef(0))
+    v_ret_0 := anon_2
+  }
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/array_index_probes.kt: info: Generated Viper text for primitive_array_at_size:
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(v_this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this), IntArray())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
+
+
+method isEmpty(v_this_extension: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), IntArray())
+  ensures isSubtype(typeOf(ret_1), boolType())
+
+
+method primitive_array_at_size(xs: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), IntArray())
+  ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
+{
+  var anon_0: Ref
+  anon_0 := isEmpty(xs)
+  if (boolFromRef(anon_0)) {
+    var anon_1: Ref
+    anon_1 := nullValue()
+    v_ret_0 := anon_1
+  } else {
+    var anon_2: Ref
+    anon_2 := get(xs, size(xs))
+    v_ret_0 := anon_2
+  }
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/array_index_probes.kt: info: Generated Viper text for object_empty_array_size:
+function Array_g_size(this: Ref): Ref
+  requires isSubtype(typeOf(this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function BooleanArray_g_size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method emptyArray() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), Array())
+
+
+method object_empty_array_size() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := emptyArray()
+  assert intFromRef(Array_g_size(anon)) == 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/array_index_probes.kt: info: Generated Viper text for primitive_empty_array_size:
+function BooleanArray_g_size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function IntArray_g_size(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method intArrayOf(elements: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(elements), IntArray())
+  ensures isSubtype(typeOf(ret_1), IntArray())
+
+
+method primitive_empty_array_size() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := intArrayOf()
+  assert intFromRef(IntArray_g_size(anon)) == 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

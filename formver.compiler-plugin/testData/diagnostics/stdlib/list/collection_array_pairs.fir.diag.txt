@@ -1,0 +1,285 @@
+/collection_array_pairs.kt: info: Generated Viper text for guardedListRead:
+field size: Ref
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method guardedListRead(xs: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), List())
+  requires acc(xs.size, write)
+  requires intFromRef(xs.size) >= 0
+  ensures acc(xs.size, write)
+  ensures intFromRef(xs.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
+{
+  var anon_0: Ref
+  anon_0 := xs.size
+  inhale isSubtype(typeOf(anon_0), intType())
+  if (intFromRef(anon_0) == 0) {
+    var anon_1: Ref
+    anon_1 := nullValue()
+    v_ret_0 := anon_1
+  } else {
+    var anon_2: Ref
+    var anon_3: Ref
+    anon_3 := xs.size
+    inhale isSubtype(typeOf(anon_3), intType())
+    anon_2 := get(xs, minusInts(anon_3, intToRef(1)))
+    v_ret_0 := anon_2
+  }
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/collection_array_pairs.kt: info: Generated Viper text for emptyListRead:
+field size: Ref
+
+method emptyList() returns (ret_2: Ref)
+  ensures isSubtype(typeOf(ret_2), List())
+  ensures acc(ret_2.size, write)
+  ensures intFromRef(ret_2.size) >= 0
+  ensures intFromRef(ret_2.size) == 0
+
+
+method emptyListRead() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := emptyList()
+  v_ret_0 := get(anon, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+/collection_array_pairs.kt: info: Generated Viper text for singletonListRead:
+field size: Ref
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method listOf(element: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(element), nullable(anyType()))
+  ensures isSubtype(typeOf(ret_2), List())
+  ensures acc(ret_2.size, write)
+  ensures intFromRef(ret_2.size) >= 0
+
+
+method singletonListRead() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := listOf(intToRef(7))
+  v_ret_0 := get(anon, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/collection_array_pairs.kt: info: Generated Viper text for appendThenRead:
+field size: Ref
+
+method add(this: Ref, element: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(element), intType())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size)) + 1
+
+
+method appendThenRead(xs: Ref, value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), MutableList())
+  requires acc(xs.size, write)
+  requires intFromRef(xs.size) >= 0
+  requires isSubtype(typeOf(value), intType())
+  ensures acc(xs.size, write)
+  ensures intFromRef(xs.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var oldSize: Ref
+  var anon: Ref
+  oldSize := xs.size
+  inhale isSubtype(typeOf(oldSize), intType())
+  anon := add(xs, value)
+  v_ret_0 := get(xs, oldSize)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+/collection_array_pairs.kt: info: Generated Viper text for appendThenReadPastEnd:
+field size: Ref
+
+method add(this: Ref, element: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(element), intType())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size)) + 1
+
+
+method appendThenReadPastEnd(xs: Ref, value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), MutableList())
+  requires acc(xs.size, write)
+  requires intFromRef(xs.size) >= 0
+  requires isSubtype(typeOf(value), intType())
+  ensures acc(xs.size, write)
+  ensures intFromRef(xs.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  anon_0 := add(xs, value)
+  anon_1 := xs.size
+  inhale isSubtype(typeOf(anon_1), intType())
+  v_ret_0 := get(xs, anon_1)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+/collection_array_pairs.kt: info: Generated Viper text for referenceArraySize:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method referenceArraySize(xs: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), Array())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := size(xs)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/collection_array_pairs.kt: info: Generated Viper text for guardedReferenceArrayRead:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Array())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method guardedReferenceArrayRead(xs: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), Array())
+  ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
+{
+  if (intFromRef(size(xs)) == 0) {
+    var anon_0: Ref
+    anon_0 := nullValue()
+    v_ret_0 := anon_0
+  } else {
+    var anon_1: Ref
+    anon_1 := get(xs, minusInts(size(xs), intToRef(1)))
+    v_ret_0 := anon_1
+  }
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/collection_array_pairs.kt: info: Generated Viper text for emptyReferenceArrayRead:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method emptyArray() returns (ret_2: Ref)
+  ensures isSubtype(typeOf(ret_2), Array())
+
+
+method emptyReferenceArrayRead() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := emptyArray()
+  v_ret_0 := get(anon, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Array())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/collection_array_pairs.kt: info: Generated Viper text for primitiveArraySize:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method primitiveArraySize(xs: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(xs), IntArray())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := size(xs)
+  goto lbl_ret_0
+  label lbl_ret_0
+}

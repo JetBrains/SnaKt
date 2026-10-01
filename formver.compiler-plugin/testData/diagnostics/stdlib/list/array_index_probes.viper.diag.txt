@@ -1,0 +1,1 @@
+/array_index_probes.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(Array_g_size(anon)) == 0 might not hold.

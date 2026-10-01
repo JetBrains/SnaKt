@@ -1,0 +1,378 @@
+/collection_state_transitions.kt: info: Generated Viper text for mutable_list_grows_step_by_step:
+field size: Ref
+
+method add(this: Ref, element: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(element), intType())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size)) + 1
+
+
+method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method mutable_list_grows_step_by_step(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), MutableList())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var initialSize: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  var anon_3: Ref
+  var anon_4: Ref
+  initialSize := list.size
+  inhale isSubtype(typeOf(initialSize), intType())
+  anon_0 := add(list, intToRef(10))
+  anon_1 := get(list, initialSize)
+  anon_2 := add(list, intToRef(20))
+  anon_3 := get(list, plusInts(initialSize, intToRef(1)))
+  anon_4 := get(list, intToRef(0))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/collection_state_transitions.kt: info: Generated Viper text for sublist_size_transitions:
+field size: Ref
+
+method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
+  returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(fromIndex), intType())
+  requires isSubtype(typeOf(toIndex), intType())
+  requires intFromRef(fromIndex) <= intFromRef(toIndex)
+  requires intFromRef(fromIndex) >= 0
+  requires intFromRef(toIndex) <= intFromRef(this.size)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), List())
+  ensures acc(ret_1.size, write)
+  ensures intFromRef(ret_1.size) >= 0
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures intFromRef(ret_1.size) ==
+    intFromRef(toIndex) - intFromRef(fromIndex)
+
+
+method sublist_size_transitions(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), List())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var initialSize: Ref
+  var emptyPrefix: Ref
+  var anon_0: Ref
+  var wholeList: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  initialSize := list.size
+  inhale isSubtype(typeOf(initialSize), intType())
+  emptyPrefix := subList(list, intToRef(0), intToRef(0))
+  anon_0 := subList(emptyPrefix, intToRef(0), intToRef(0))
+  anon_1 := list.size
+  inhale isSubtype(typeOf(anon_1), intType())
+  wholeList := subList(list, intToRef(0), anon_1)
+  anon_2 := subList(wholeList, intToRef(0), initialSize)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/collection_state_transitions.kt: info: Generated Viper text for empty_list_stays_empty:
+field size: Ref
+
+method emptyList() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), List())
+  ensures acc(ret_1.size, write)
+  ensures intFromRef(ret_1.size) >= 0
+  ensures intFromRef(ret_1.size) == 0
+
+
+method empty_list_stays_empty() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var list: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  var anon_3: Ref
+  list := emptyList()
+  anon_0 := subList(list, intToRef(0), intToRef(0))
+  anon_2 := list.size
+  inhale isSubtype(typeOf(anon_2), intType())
+  anon_3 := list.size
+  inhale isSubtype(typeOf(anon_3), intType())
+  anon_1 := subList(list, anon_2, anon_3)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
+  returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(fromIndex), intType())
+  requires isSubtype(typeOf(toIndex), intType())
+  requires intFromRef(fromIndex) <= intFromRef(toIndex)
+  requires intFromRef(fromIndex) >= 0
+  requires intFromRef(toIndex) <= intFromRef(this.size)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), List())
+  ensures acc(ret_2.size, write)
+  ensures intFromRef(ret_2.size) >= 0
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures intFromRef(ret_2.size) ==
+    intFromRef(toIndex) - intFromRef(fromIndex)
+
+
+/collection_state_transitions.kt: info: Generated Viper text for nonempty_prefix_is_singleton:
+field size: Ref
+
+method get(this: Ref, index: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_3), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method isEmpty(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures boolFromRef(ret_1) ==> intFromRef(this.size) == 0
+  ensures !boolFromRef(ret_1) ==> intFromRef(this.size) > 0
+
+
+method nonempty_prefix_is_singleton(list: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), List())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  var singleton: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  var anon_3: Ref
+  anon_0 := isEmpty(list)
+  if (boolFromRef(anon_0)) {
+    goto lbl_ret_0
+  }
+  singleton := subList(list, intToRef(0), intToRef(1))
+  anon_1 := get(singleton, intToRef(0))
+  anon_3 := singleton.size
+  inhale isSubtype(typeOf(anon_3), intType())
+  anon_2 := subList(singleton, intToRef(0), anon_3)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
+  returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), List())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(fromIndex), intType())
+  requires isSubtype(typeOf(toIndex), intType())
+  requires intFromRef(fromIndex) <= intFromRef(toIndex)
+  requires intFromRef(fromIndex) >= 0
+  requires intFromRef(toIndex) <= intFromRef(this.size)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), List())
+  ensures acc(ret_2.size, write)
+  ensures intFromRef(ret_2.size) >= 0
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+  ensures intFromRef(ret_2.size) ==
+    intFromRef(toIndex) - intFromRef(fromIndex)
+
+
+/collection_state_transitions.kt: info: Generated Viper text for one_add_does_not_make_second_index_safe:
+field size: Ref
+
+method add(this: Ref, element: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(element), intType())
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size)) + 1
+
+
+method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), MutableList())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method one_add_does_not_make_second_index_safe(list: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(list), MutableList())
+  requires acc(list.size, write)
+  requires intFromRef(list.size) >= 0
+  ensures acc(list.size, write)
+  ensures intFromRef(list.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var initialSize: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  initialSize := list.size
+  inhale isSubtype(typeOf(initialSize), intType())
+  anon_0 := add(list, intToRef(10))
+  anon_1 := get(list, plusInts(initialSize, intToRef(1)))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/collection_state_transitions.kt: info: Generated Viper text for generic_array_read_at_zero:
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method generic_array_read_at_zero(array: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(array), Array())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  anon_0 := isEmpty(array)
+  if (boolFromRef(anon_0)) {
+    goto lbl_ret_0
+  }
+  anon_1 := get(array, intToRef(0))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method get(v_this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this), Array())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
+
+
+method isEmpty(v_this_extension: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), Array())
+  ensures isSubtype(typeOf(ret_1), boolType())
+
+
+/collection_state_transitions.kt: info: Generated Viper text for primitive_array_read_at_zero:
+function size(v_this: Ref): Ref
+  requires isSubtype(typeOf(v_this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(v_this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this), IntArray())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
+
+
+method isEmpty(v_this_extension: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), IntArray())
+  ensures isSubtype(typeOf(ret_1), boolType())
+
+
+method primitive_array_read_at_zero(array: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(array), IntArray())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  anon_0 := isEmpty(array)
+  if (boolFromRef(anon_0)) {
+    goto lbl_ret_0
+  }
+  anon_1 := get(array, intToRef(0))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/collection_state_transitions.kt: info: Generated Viper text for generic_array_unchecked_read:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), Array())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method generic_array_unchecked_read(array: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(array), Array())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := get(array, intToRef(0))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Array())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/collection_state_transitions.kt: info: Generated Viper text for primitive_array_unchecked_read:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), IntArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), IntArray())
+  requires isSubtype(typeOf(index), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method primitive_array_unchecked_read(array: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(array), IntArray())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := get(array, intToRef(0))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

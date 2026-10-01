@@ -87,6 +87,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("array_model_probe.kt")
+    public void testArray_model_probe() {
+      runTest("formver.compiler-plugin/testData/diagnostics/stdlib/array_model_probe.kt");
+    }
+
+    @Test
     @TestMetadata("stdlib_replacement_tests.kt")
     public void testStdlib_replacement_tests() {
       runTest("formver.compiler-plugin/testData/diagnostics/stdlib/stdlib_replacement_tests.kt");
@@ -102,9 +108,45 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("array_index_probes.kt")
+      public void testArray_index_probes() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/array_index_probes.kt");
+      }
+
+      @Test
       @TestMetadata("binary_search.kt")
       public void testBinary_search() {
         runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/binary_search.kt");
+      }
+
+      @Test
+      @TestMetadata("collection_array_pairs.kt")
+      public void testCollection_array_pairs() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/collection_array_pairs.kt");
+      }
+
+      @Test
+      @TestMetadata("collection_boundary_values.kt")
+      public void testCollection_boundary_values() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/collection_boundary_values.kt");
+      }
+
+      @Test
+      @TestMetadata("collection_index_mutations.kt")
+      public void testCollection_index_mutations() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/collection_index_mutations.kt");
+      }
+
+      @Test
+      @TestMetadata("collection_size_reasoning.kt")
+      public void testCollection_size_reasoning() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/collection_size_reasoning.kt");
+      }
+
+      @Test
+      @TestMetadata("collection_state_transitions.kt")
+      public void testCollection_state_transitions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/collection_state_transitions.kt");
       }
 
       @Test
@@ -114,9 +156,21 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("feature_composition.kt")
+      public void testFeature_composition() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/feature_composition.kt");
+      }
+
+      @Test
       @TestMetadata("list.kt")
       public void testList() {
         runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/list.kt");
+      }
+
+      @Test
+      @TestMetadata("model_based_oracle.kt")
+      public void testModel_based_oracle() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/list/model_based_oracle.kt");
       }
     }
 
@@ -133,6 +187,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("chars.kt")
       public void testChars() {
         runTest("formver.compiler-plugin/testData/diagnostics/stdlib/string/chars.kt");
+      }
+
+      @Test
+      @TestMetadata("string_operation_models.kt")
+      public void testString_operation_models() {
+        runTest("formver.compiler-plugin/testData/diagnostics/stdlib/string/string_operation_models.kt");
       }
 
       @Test
