@@ -120,6 +120,13 @@ abstract class TagCollector(
     }
 
     /**
+     * Reported infos with repeats of the same tag and range collapsed. A marker in the test file names only a tag and a
+     * range, so it cannot express one diagnostic firing twice at one position.
+     */
+    private fun deduplicatedReportedInfos(): Map<TestFile, List<CodeMetaInfo>> =
+        reportedInfos.mapValues { (_, infos) -> infos.distinctBy { Triple(it.tag, it.start, it.end) } }
+
+    /**
      * Renders the expected output but ignores tags that are not considered for comparison
      */
     private fun expectedFileFilteredForTags(): String {
@@ -137,7 +144,7 @@ abstract class TagCollector(
      */
     fun assertFileEqualFilteredForTags() {
         val expectedOutput = expectedFileFilteredForTags()
-        val actualOutput = renderText(reportedInfos, testServices.sourceFileProvider::getContentOfSourceFile)
+        val actualOutput = renderText(deduplicatedReportedInfos(), testServices.sourceFileProvider::getContentOfSourceFile)
         testServices.assertions.assertEquals(expectedOutput, actualOutput) {
             "Actual tags differ from golden file"
         }
