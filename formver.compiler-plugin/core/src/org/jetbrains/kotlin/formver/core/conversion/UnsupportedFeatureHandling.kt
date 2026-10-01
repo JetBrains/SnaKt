@@ -10,13 +10,11 @@ import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.common.UnsupportedFeatureBehaviour
 
 /**
- * Single entry point for reporting that the plugin does not support some construct the user
- * wrote (as opposed to an internal invariant violation, which should keep using
- * `SnaktInternalException`/`error` directly).
+ * Reports a construct the user wrote that the plugin does not support. Internal invariant
+ * violations use `SnaktInternalException` or `error` instead.
  *
- * Honors `config.behaviour`: in `THROW_EXCEPTION` mode this throws; in `ASSUME_UNREACHABLE`
- * mode it reports a minor internal error diagnostic and falls back to [onUnreachable], which
- * lets callers keep converting the rest of the program instead of aborting.
+ * In `THROW_EXCEPTION` mode this throws. In `ASSUME_UNREACHABLE` mode it reports a minor
+ * internal error and returns [onUnreachable], so conversion continues past the construct.
  */
 inline fun <T> ProgramConversionContext.handleUnsupportedFeature(
     source: KtSourceElement?,
