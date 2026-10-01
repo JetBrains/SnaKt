@@ -1,0 +1,61 @@
+/first_bad_version.kt: info: Generated Viper text for firstBadVersion:
+method firstBadVersion(versions: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(versions), stringType())
+  requires |stringFromRef(versions)| > 0
+  requires stringFromRef(versions)[|stringFromRef(versions)| - 1] == 49
+  requires (forall anon_builtin_0: Int ::(0 <= anon_builtin_0 &&
+      anon_builtin_0 < |stringFromRef(versions)| ==>
+      stringFromRef(versions)[anon_builtin_0] == 48 ||
+      stringFromRef(versions)[anon_builtin_0] == 49) &&
+      (0 <= anon_builtin_0 && anon_builtin_0 < |stringFromRef(versions)| ==>
+      (forall anon_builtin_1: Int ::anon_builtin_0 < anon_builtin_1 &&
+        anon_builtin_1 < |stringFromRef(versions)| ==>
+        stringFromRef(versions)[anon_builtin_0] <=
+        stringFromRef(versions)[anon_builtin_1])))
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures 0 <= intFromRef(v_ret_0) &&
+    intFromRef(v_ret_0) < |stringFromRef(versions)|
+  ensures stringFromRef(versions)[intFromRef(v_ret_0)] == 49
+  ensures (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
+      anon_builtin_2 < intFromRef(v_ret_0) ==>
+      stringFromRef(versions)[anon_builtin_2] == 48)
+{
+  var low: Ref
+  var high: Ref
+  var anon_0: Ref
+  low := intToRef(0)
+  high := minusInts(stringLength(versions), intToRef(1))
+  label cont
+    invariant isSubtype(typeOf(low), intType())
+    invariant isSubtype(typeOf(high), intType())
+    invariant isSubtype(typeOf(versions), stringType())
+    invariant 0 <= intFromRef(low) && intFromRef(low) <= intFromRef(high) &&
+      intFromRef(high) < |stringFromRef(versions)|
+    invariant stringFromRef(versions)[intFromRef(high)] == 49
+    invariant (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
+        anon_builtin_3 < intFromRef(low) ==>
+        stringFromRef(versions)[anon_builtin_3] == 48)
+  anon_0 := ltInts(low, high)
+  if (boolFromRef(anon_0)) {
+    var middle: Ref
+    middle := plusInts(low, divInts(minusInts(high, low), intToRef(2)))
+    if (stringFromRef(versions)[intFromRef(middle)] == 48) {
+      low := plusInts(middle, intToRef(1))
+    } else {
+      high := middle}
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(low), intType())
+  assert isSubtype(typeOf(high), intType())
+  assert isSubtype(typeOf(versions), stringType())
+  assert 0 <= intFromRef(low) && intFromRef(low) <= intFromRef(high) &&
+    intFromRef(high) < |stringFromRef(versions)|
+  assert stringFromRef(versions)[intFromRef(high)] == 49
+  assert (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
+      anon_builtin_3 < intFromRef(low) ==>
+      stringFromRef(versions)[anon_builtin_3] == 48)
+  v_ret_0 := low
+  goto lbl_ret_0
+  label lbl_ret_0
+}
