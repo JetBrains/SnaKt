@@ -52,6 +52,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("max_character.kt")
+      public void testMax_character() {
+        runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/algorithms/max_character.kt");
+      }
+
+      @Test
       @TestMetadata("merge_sort_of_string.kt")
       public void testMerge_sort_of_string() {
         runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/algorithms/merge_sort_of_string.kt");
@@ -68,76 +74,6 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       public void testZ_function() {
         runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/algorithms/z_function.kt");
       }
-    }
-  }
-
-  @Nested
-  @TestMetadata("formver.compiler-plugin/testData/diagnostics/locality_checker")
-  @TestDataPath("$PROJECT_ROOT")
-  public class Locality_checker {
-    @Test
-    public void testAllFilesPresentInLocality_checker() {
-      KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/locality_checker"), Pattern.compile("^(.+)\\.kt$"), null, true);
-    }
-
-    @Test
-    @TestMetadata("assign_local.kt")
-    public void testAssign_local() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/assign_local.kt");
-    }
-
-    @Test
-    @TestMetadata("assign_property.kt")
-    public void testAssign_property() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/assign_property.kt");
-    }
-
-    @Test
-    @TestMetadata("call.kt")
-    public void testCall() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/call.kt");
-    }
-
-    @Test
-    @TestMetadata("call_with_context.kt")
-    public void testCall_with_context() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/call_with_context.kt");
-    }
-
-    @Test
-    @TestMetadata("call_with_vararg.kt")
-    public void testCall_with_vararg() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/call_with_vararg.kt");
-    }
-
-    @Test
-    @TestMetadata("default_argument.kt")
-    public void testDefault_argument() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/default_argument.kt");
-    }
-
-    @Test
-    @TestMetadata("invalid.kt")
-    public void testInvalid() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/invalid.kt");
-    }
-
-    @Test
-    @TestMetadata("nested_scope.kt")
-    public void testNested_scope() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/nested_scope.kt");
-    }
-
-    @Test
-    @TestMetadata("return.kt")
-    public void testReturn() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/return.kt");
-    }
-
-    @Test
-    @TestMetadata("throw.kt")
-    public void testThrow() {
-      runTest("formver.compiler-plugin/testData/diagnostics/locality_checker/throw.kt");
     }
   }
 
@@ -212,6 +148,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
   @TestDataPath("$PROJECT_ROOT")
   public class Uniqueness_checker {
     @Test
+    @TestMetadata("aliasing.kt")
+    public void testAliasing() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/aliasing.kt");
+    }
+
+    @Test
     public void testAllFilesPresentInUniqueness_checker() {
       KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/uniqueness_checker"), Pattern.compile("^(.+)\\.kt$"), null, true);
     }
@@ -235,33 +177,45 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
-    @TestMetadata("borrow_local.kt")
-    public void testBorrow_local() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/borrow_local.kt");
+    @TestMetadata("break.kt")
+    public void testBreak() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/break.kt");
     }
 
     @Test
-    @TestMetadata("borrow_property.kt")
-    public void testBorrow_property() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/borrow_property.kt");
+    @TestMetadata("call.kt")
+    public void testCall() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/call.kt");
     }
 
     @Test
-    @TestMetadata("consume_deeply_nested.kt")
-    public void testConsume_deeply_nested() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/consume_deeply_nested.kt");
+    @TestMetadata("consistency.kt")
+    public void testConsistency() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/consistency.kt");
     }
 
     @Test
-    @TestMetadata("consume_local.kt")
-    public void testConsume_local() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/consume_local.kt");
+    @TestMetadata("constructor.kt")
+    public void testConstructor() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/constructor.kt");
     }
 
     @Test
-    @TestMetadata("consume_property.kt")
-    public void testConsume_property() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/consume_property.kt");
+    @TestMetadata("context.kt")
+    public void testContext() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/context.kt");
+    }
+
+    @Test
+    @TestMetadata("continue.kt")
+    public void testContinue() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/continue.kt");
+    }
+
+    @Test
+    @TestMetadata("default_argument.kt")
+    public void testDefault_argument() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/default_argument.kt");
     }
 
     @Test
@@ -271,51 +225,63 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
-    @TestMetadata("pass_local_argument.kt")
-    public void testPass_local_argument() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/pass_local_argument.kt");
+    @TestMetadata("leak.kt")
+    public void testLeak() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/leak.kt");
     }
 
     @Test
-    @TestMetadata("pass_property_argument.kt")
-    public void testPass_property_argument() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/pass_property_argument.kt");
+    @TestMetadata("loop.kt")
+    public void testLoop() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/loop.kt");
     }
 
     @Test
-    @TestMetadata("return_local.kt")
-    public void testReturn_local() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/return_local.kt");
+    @TestMetadata("nullable.kt")
+    public void testNullable() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/nullable.kt");
     }
 
     @Test
-    @TestMetadata("return_property.kt")
-    public void testReturn_property() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/return_property.kt");
+    @TestMetadata("operator.kt")
+    public void testOperator() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/operator.kt");
     }
 
     @Test
-    @TestMetadata("share_local.kt")
-    public void testShare_local() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/share_local.kt");
+    @TestMetadata("primitive.kt")
+    public void testPrimitive() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/primitive.kt");
     }
 
     @Test
-    @TestMetadata("share_property.kt")
-    public void testShare_property() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/share_property.kt");
+    @TestMetadata("receiver.kt")
+    public void testReceiver() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/receiver.kt");
     }
 
     @Test
-    @TestMetadata("throw_local.kt")
-    public void testThrow_local() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/throw_local.kt");
+    @TestMetadata("return.kt")
+    public void testReturn() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/return.kt");
     }
 
     @Test
-    @TestMetadata("throw_property.kt")
-    public void testThrow_property() {
-      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/throw_property.kt");
+    @TestMetadata("throw.kt")
+    public void testThrow() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/throw.kt");
+    }
+
+    @Test
+    @TestMetadata("try_catch.kt")
+    public void testTry_catch() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/try_catch.kt");
+    }
+
+    @Test
+    @TestMetadata("when_expression.kt")
+    public void testWhen_expression() {
+      runTest("formver.compiler-plugin/testData/diagnostics/uniqueness_checker/when_expression.kt");
     }
   }
 
@@ -371,9 +337,27 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Test
+    @TestMetadata("manualFolding.kt")
+    public void testManualFolding() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/manualFolding.kt");
+    }
+
+    @Test
+    @TestMetadata("manualFoldingNegative.kt")
+    public void testManualFoldingNegative() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/manualFoldingNegative.kt");
+    }
+
+    @Test
     @TestMetadata("multiple_receivers.kt")
     public void testMultiple_receivers() {
       runTest("formver.compiler-plugin/testData/diagnostics/verification/multiple_receivers.kt");
+    }
+
+    @Test
+    @TestMetadata("old.kt")
+    public void testOld() {
+      runTest("formver.compiler-plugin/testData/diagnostics/verification/old.kt");
     }
 
     @Test
@@ -389,31 +373,15 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Nested
-    @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/adts")
-    @TestDataPath("$PROJECT_ROOT")
-    public class Adts {
-      @Test
-      public void testAllFilesPresentInAdts() {
-        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/adts"), Pattern.compile("^(.+)\\.kt$"), null, true);
-      }
-
-      @Test
-      @TestMetadata("singleton.kt")
-      public void testSingleton() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/singleton.kt");
-      }
-
-      @Test
-      @TestMetadata("singleton_errors.kt")
-      public void testSingleton_errors() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/adts/singleton_errors.kt");
-      }
-    }
-
-    @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/classes")
     @TestDataPath("$PROJECT_ROOT")
     public class Classes {
+      @Test
+      @TestMetadata("acc_precondition.kt")
+      public void testAcc_precondition() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/acc_precondition.kt");
+      }
+
       @Test
       public void testAllFilesPresentInClasses() {
         KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/classes"), Pattern.compile("^(.+)\\.kt$"), null, true);
@@ -772,6 +740,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("identity_equality.kt")
+      public void testIdentity_equality() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/identity_equality.kt");
+      }
+
+      @Test
       @TestMetadata("safe_call.kt")
       public void testSafe_call() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/safe_call.kt");
@@ -794,12 +768,6 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
-      @TestMetadata("elvis_receiver_chain.kt")
-      public void testElvis_receiver_chain() {
-        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/elvis_receiver_chain.kt");
-      }
-
-      @Test
       @TestMetadata("heap_dependent_specifications.kt")
       public void testHeap_dependent_specifications() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/heap_dependent_specifications.kt");
@@ -818,9 +786,21 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("operators.kt")
+      public void testOperators() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/operators.kt");
+      }
+
+      @Test
       @TestMetadata("pure_function_with_heap_dependent_expressions.kt")
       public void testPure_function_with_heap_dependent_expressions() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/pure_function_with_heap_dependent_expressions.kt");
+      }
+
+      @Test
+      @TestMetadata("unique_access_dependencies.kt")
+      public void testUnique_access_dependencies() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/pure_functions/unique_access_dependencies.kt");
       }
     }
 
@@ -893,6 +873,30 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("and_or_then.kt")
       public void testAnd_or_then() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/and_or_then.kt");
+      }
+
+      @Test
+      @TestMetadata("empty.kt")
+      public void testEmpty() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/empty.kt");
+      }
+
+      @Test
+      @TestMetadata("exists.kt")
+      public void testExists() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/exists.kt");
+      }
+
+      @Test
+      @TestMetadata("exists_list_get_crash.kt")
+      public void testExists_list_get_crash() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/exists_list_get_crash.kt");
+      }
+
+      @Test
+      @TestMetadata("factorial.kt")
+      public void testFactorial() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/factorial.kt");
       }
 
       @Test

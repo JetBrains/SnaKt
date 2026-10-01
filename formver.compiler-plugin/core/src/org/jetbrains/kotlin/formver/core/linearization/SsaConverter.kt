@@ -7,7 +7,6 @@ import org.jetbrains.kotlin.formver.core.names.SsaVariableName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Declaration
 import org.jetbrains.kotlin.formver.viper.ast.Exp
-import org.jetbrains.kotlin.formver.viper.ast.Exp.Companion.toConjunction
 import org.jetbrains.kotlin.formver.viper.ast.Type
 
 class SsaConverter(
@@ -17,8 +16,9 @@ class SsaConverter(
     private val ssaAssignments: MutableList<Pair<SsaVariableName, Exp>> = mutableListOf()
     private val returnExpressions: MutableList<Pair<Exp, Exp>> = mutableListOf()
 
-    // An entry in this map means that to accessing the let-bound variable SSAVariableName under condition Exp requires predicates in the List<Exp.PredicateAccess> unfolded
-    private val accessDependencies: MutableMap<SsaVariableName, Map<Exp, List<Exp.PredicateAccess>>> = mutableMapOf()
+    // Using a let-bound variable under one of the conditions requires the listed predicates to be unfolded.
+    // The conditions of each entry are mutually exclusive and together exhaustive.
+    private val accessDependencies: MutableMap<SsaVariableName, AccessDependencies> = mutableMapOf()
 
     // Produce new ssa names for a source variable name
     private val ssaNameProducers: MutableMap<SymbolicName, FreshEntityProducer<SsaVariableName, SymbolicName>> =
@@ -73,16 +73,9 @@ class SsaConverter(
         newVarAccessDependencies: List<Exp.PredicateAccess> = emptyList()
     ) {
         val ssaName = head.updateLatestName(name)
-        varExp.propagateAccessDependencies(ssaName)
-        val propagatedDependencies = accessDependencies[ssaName]
-        if (propagatedDependencies == null || propagatedDependencies.isEmpty()) {
-            accessDependencies[ssaName] = mapOf(Exp.BoolLit(true) to newVarAccessDependencies)
-        } else if (newVarAccessDependencies.isNotEmpty()) {
-            val withNewDependencies =
-                propagatedDependencies.mapValues { (_, value) -> value + newVarAccessDependencies }
-            accessDependencies[ssaName] = withNewDependencies
-        }
-        addGuardedAssignment(ssaName, varExp.withAccessDependencies(ssaName))
+        val dependencies = varExp.accessDependencies().combine(mapOf(Exp.BoolLit(true) to newVarAccessDependencies))
+        accessDependencies[ssaName] = dependencies
+        addGuardedAssignment(ssaName, varExp.withAccessDependencies(dependencies))
     }
 
     fun addPhiAssignment(condition: Exp, left: SsaVariableName, right: SsaVariableName, name: SsaVariableName) {
@@ -97,12 +90,13 @@ class SsaConverter(
             Exp.LocalVar(left, Type.Ref),
             Exp.LocalVar(right, Type.Ref)
         )
-        phiExpression.propagateAccessDependencies(name)
-        addGuardedAssignment(name, phiExpression.withAccessDependencies(name))
+        val dependencies = phiExpression.accessDependencies()
+        accessDependencies[name] = dependencies
+        addGuardedAssignment(name, phiExpression.withAccessDependencies(dependencies))
     }
 
     fun addReturn(returnExp: Exp) {
-        returnExpressions.add(head.fullBranchingCondition to returnExp)
+        returnExpressions.add(head.fullBranchingCondition to returnExp.withAccessDependencies(returnExp.accessDependencies()))
     }
 
     fun resolveVariableName(name: SymbolicName): SymbolicName {
@@ -121,82 +115,59 @@ class SsaConverter(
         }
     }
 
-    private fun Exp.withAccessDependencies(name: SsaVariableName): Exp =
+    private fun Exp.withAccessDependencies(dependencies: AccessDependencies): Exp {
+        if (this !is Exp.FieldAccess && this !is Exp.FuncApp && this !is Exp.DomainFuncApp) return this
+        val cases = dependencies.entries.groupBy({ it.value }, { it.key })
+        // Each case unfolds its predicates around a copy of this expression; the last one needs no guard.
+        val guarded = cases.map { (predicates, conditions) -> conditions.toDisjunction() to predicates.asUnfoldingIn(this) }
+        return guarded.dropLast(1).foldRight(guarded.last().second) { (condition, exp), elseExp ->
+            Exp.TernaryExp(condition, exp, elseExp)
+        }
+    }
+
+    private fun Exp.accessDependencies(): AccessDependencies =
         when (this) {
-            is Exp.FieldAccess, is Exp.FuncApp, is Exp.DomainFuncApp -> {
-                val accesses = accessDependencies[name]
-                when {
-                    accesses == null || accesses.isEmpty() -> this
-                    accesses.size == 1 -> {
-                        val toUnfold = accesses.values.first()
-                        toUnfold.asUnfoldingIn(this)
-                    }
-
-                    else -> {
-                        val defaultExpression = this.type.defaultExpression() ?: throw SnaktInternalException(
-                            source,
-                            "Tried to assign a variable without a default expression"
-                        )
-                        val asExpressions = accesses.mapValues { (_, predicates) -> predicates.asUnfoldingIn(this) }
-                        asExpressions.entries.fold(defaultExpression) { acc, entry ->
-                            Exp.TernaryExp(entry.key, entry.value, acc)
-                        }
-                    }
+            is Exp.LocalVar -> accessDependencies[name] ?: noAccessDependencies
+            is Exp.FieldAccess -> {
+                if (rcv !is Exp.LocalVar) {
+                    throw SnaktInternalException(source, "Access sources must be local variables, but received $rcv")
                 }
+                rcv.accessDependencies()
             }
 
-            else -> this
+            is Exp.FuncApp -> args.combinedAccessDependencies()
+            is Exp.DomainFuncApp -> args.combinedAccessDependencies()
+            is Exp.TernaryExp ->
+                thenExp.accessDependencies().mapKeys { (condition, _) -> conjunction(condition, condExp) } +
+                    elseExp.accessDependencies().mapKeys { (condition, _) -> conjunction(condition, Exp.Not(condExp)) }
+
+            else -> noAccessDependencies
         }
 
-    private fun mergeAccessDependencies(from: SymbolicName, newName: SsaVariableName) {
-        val fromDependencies = accessDependencies[from] ?: emptyMap()
-        val toDependencies = accessDependencies[newName] ?: emptyMap()
-        accessDependencies[newName] = fromDependencies.mergeWith(toDependencies)
-    }
+    private fun List<Exp>.combinedAccessDependencies(): AccessDependencies =
+        map { it.accessDependencies() }.distinct().fold(noAccessDependencies) { acc, dependencies -> acc.combine(dependencies) }
 
-    private fun Map<Exp, List<Exp.PredicateAccess>>.mergeWith(
-        other: Map<Exp, List<Exp.PredicateAccess>>
-    ): Map<Exp, List<Exp.PredicateAccess>> {
-        return (this.keys + other.keys).associateWith { key ->
-            ((this[key] ?: emptyList()) + (other[key] ?: emptyList())).distinct()
-        }
-    }
-
-    private fun Exp.propagateAccessDependencies(to: SsaVariableName) {
-        val sourceExp = when (this) {
-            is Exp.LocalVar -> this
-            is Exp.FieldAccess -> this.rcv
-            is Exp.FuncApp -> {
-                this.args.forEach { it.propagateAccessDependencies(to) }
-                return
+    /** Dependencies of using two values together: every pair of their cases can occur. */
+    private fun AccessDependencies.combine(other: AccessDependencies): AccessDependencies =
+        entries.flatMap { (condition, predicates) ->
+            other.map { (otherCondition, otherPredicates) ->
+                conjunction(condition, otherCondition) to (predicates + otherPredicates).distinct()
             }
+        }.toMap()
 
-            is Exp.DomainFuncApp -> {
-                this.args.forEach { it.propagateAccessDependencies(to) }
-                return
-            }
-
-            is Exp.TernaryExp -> {
-                val leftInvariants = accessDependencies[(this.thenExp as? Exp.LocalVar)?.name] ?: emptyMap()
-                val rightInvariants = accessDependencies[(this.elseExp as? Exp.LocalVar)?.name] ?: emptyMap()
-                val leftAmended = leftInvariants.mapKeys { (condition, _) ->
-                    listOf(condition, this.condExp).toConjunction()
-                }
-                val rightAmended = rightInvariants.mapKeys { (condition, _) ->
-                    listOf(condition, Exp.Not(this.condExp)).toConjunction()
-                }
-                accessDependencies[to] = leftAmended.mergeWith(rightAmended)
-                return
-            }
-
-            else -> return
+    private fun conjunction(left: Exp, right: Exp): Exp =
+        when {
+            left == Exp.BoolLit(true) -> right
+            right == Exp.BoolLit(true) -> left
+            else -> Exp.And(left, right)
         }
-        if (sourceExp !is Exp.LocalVar) {
-            throw SnaktInternalException(source, "Access sources must be local variables, but received $sourceExp")
-        }
-        mergeAccessDependencies(sourceExp.name, to)
-    }
+
+    private fun List<Exp>.toDisjunction(): Exp = reduce { left, right -> Exp.Or(left, right) }
 
     private fun List<Exp.PredicateAccess>.asUnfoldingIn(exp: Exp): Exp =
         foldRight(exp) { access, acc -> Exp.Unfolding(access, acc) }
 }
+
+private typealias AccessDependencies = Map<Exp, List<Exp.PredicateAccess>>
+
+private val noAccessDependencies: AccessDependencies = mapOf(Exp.BoolLit(true) to emptyList())

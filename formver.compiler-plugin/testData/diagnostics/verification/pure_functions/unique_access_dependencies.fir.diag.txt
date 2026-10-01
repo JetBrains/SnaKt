@@ -1,0 +1,274 @@
+/unique_access_dependencies.kt: info: Generated Viper text for sumInner:
+field bf_v: Ref
+
+function sumInner(x: Ref, y: Ref): Ref
+  requires isSubtype(typeOf(x), Inner())
+  requires acc(Inner_unique(x), write)
+  requires isSubtype(typeOf(y), Inner())
+  requires acc(Inner_unique(y), write)
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_0_0 ==
+    ((unfolding acc(Inner_unique(x), write) in x.bf_v)) in
+    (let anon_1_0 ==
+      ((unfolding acc(Inner_unique(y), write) in y.bf_v)) in
+      (unfolding acc(Inner_unique(x), write) in
+        (unfolding acc(Inner_unique(y), write) in
+          plusInts(anon_0_0, anon_1_0)))))
+}
+
+/unique_access_dependencies.kt: info: Generated Viper text for chain:
+field bf_v: Ref
+
+field inner: Ref
+
+function chain(a: Ref): Ref
+  requires isSubtype(typeOf(a), Outer())
+  requires acc(Outer_unique(a), write)
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_1_0 ==
+    ((unfolding acc(Outer_unique(a), write) in a.inner)) in
+    (let anon_0_0 ==
+      ((unfolding acc(Outer_unique(a), write) in
+        (unfolding acc(Inner_unique(anon_1_0), write) in anon_1_0.bf_v))) in
+      anon_0_0))
+}
+
+/unique_access_dependencies.kt: info: Generated Viper text for branchThenField:
+field bf_v: Ref
+
+field inner: Ref
+
+function branchThenField(a: Ref, b: Ref, p: Ref): Ref
+  requires isSubtype(typeOf(a), Outer())
+  requires acc(Outer_unique(a), write)
+  requires isSubtype(typeOf(b), Outer())
+  requires acc(Outer_unique(b), write)
+  requires isSubtype(typeOf(p), boolType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_0_0 ==
+    ((boolFromRef(p) ?
+      (unfolding acc(Outer_unique(a), write) in a.inner) :
+      null)) in
+    (let anon_1_0 ==
+      ((!boolFromRef(p) ?
+        (unfolding acc(Outer_unique(b), write) in b.inner) :
+        null)) in
+      (let x_0 ==
+        ((boolFromRef(p) ? anon_0_0 : anon_1_0)) in
+        (let anon_2_0 ==
+          ((boolFromRef(p) ?
+            (unfolding acc(Outer_unique(a), write) in
+              (unfolding acc(Inner_unique(x_0), write) in x_0.bf_v)) :
+            (unfolding acc(Outer_unique(b), write) in
+              (unfolding acc(Inner_unique(x_0), write) in x_0.bf_v)))) in
+          anon_2_0))))
+}
+
+/unique_access_dependencies.kt: info: Generated Viper text for reassignThenField:
+field bf_v: Ref
+
+field inner: Ref
+
+function reassignThenField(a: Ref, b: Ref, p: Ref): Ref
+  requires isSubtype(typeOf(a), Outer())
+  requires acc(Outer_unique(a), write)
+  requires isSubtype(typeOf(b), Outer())
+  requires acc(Outer_unique(b), write)
+  requires isSubtype(typeOf(p), boolType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let x_0 ==
+    ((unfolding acc(Outer_unique(a), write) in a.inner)) in
+    (let x_1 ==
+      ((boolFromRef(p) ?
+        (unfolding acc(Outer_unique(b), write) in b.inner) :
+        null)) in
+      (let x_2 ==
+        ((boolFromRef(p) ? x_1 : x_0)) in
+        (let anon_0_0 ==
+          ((boolFromRef(p) ?
+            (unfolding acc(Outer_unique(b), write) in
+              (unfolding acc(Inner_unique(x_2), write) in x_2.bf_v)) :
+            (unfolding acc(Outer_unique(a), write) in
+              (unfolding acc(Inner_unique(x_2), write) in x_2.bf_v)))) in
+          anon_0_0))))
+}
+
+/unique_access_dependencies.kt: info: Generated Viper text for independentBranches:
+field bf_v: Ref
+
+field inner: Ref
+
+function independentBranches(a: Ref, b: Ref, c: Ref, d: Ref, p: Ref, q: Ref): Ref
+  requires isSubtype(typeOf(a), Outer())
+  requires acc(Outer_unique(a), write)
+  requires isSubtype(typeOf(b), Outer())
+  requires acc(Outer_unique(b), write)
+  requires isSubtype(typeOf(c), Outer())
+  requires acc(Outer_unique(c), write)
+  requires isSubtype(typeOf(d), Outer())
+  requires acc(Outer_unique(d), write)
+  requires isSubtype(typeOf(p), boolType())
+  requires isSubtype(typeOf(q), boolType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_0_0 ==
+    ((boolFromRef(p) ?
+      (unfolding acc(Outer_unique(a), write) in a.inner) :
+      null)) in
+    (let anon_1_0 ==
+      ((!boolFromRef(p) ?
+        (unfolding acc(Outer_unique(b), write) in b.inner) :
+        null)) in
+      (let x_0 ==
+        ((boolFromRef(p) ? anon_0_0 : anon_1_0)) in
+        (let anon_2_0 ==
+          ((boolFromRef(q) ?
+            (unfolding acc(Outer_unique(c), write) in c.inner) :
+            null)) in
+          (let anon_3_0 ==
+            ((!boolFromRef(q) ?
+              (unfolding acc(Outer_unique(d), write) in d.inner) :
+              null)) in
+            (let y_0 ==
+              ((boolFromRef(q) ? anon_2_0 : anon_3_0)) in
+              (let l0_result_0 ==
+                ((boolFromRef(p) && boolFromRef(q) ?
+                  (unfolding acc(Outer_unique(a), write) in
+                    (unfolding acc(Outer_unique(c), write) in
+                      sumInner(x_0, y_0))) :
+                  (boolFromRef(p) && !boolFromRef(q) ?
+                    (unfolding acc(Outer_unique(a), write) in
+                      (unfolding acc(Outer_unique(d), write) in
+                        sumInner(x_0, y_0))) :
+                    (!boolFromRef(p) && boolFromRef(q) ?
+                      (unfolding acc(Outer_unique(b), write) in
+                        (unfolding acc(Outer_unique(c), write) in
+                          sumInner(x_0, y_0))) :
+                      (unfolding acc(Outer_unique(b), write) in
+                        (unfolding acc(Outer_unique(d), write) in
+                          sumInner(x_0, y_0))))))) in
+                l0_result_0)))))))
+}
+
+function sumInner(par_x: Ref, par_y: Ref): Ref
+  requires isSubtype(typeOf(par_x), Inner())
+  requires acc(Inner_unique(par_x), write)
+  requires isSubtype(typeOf(par_y), Inner())
+  requires acc(Inner_unique(par_y), write)
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_4_0 ==
+    ((unfolding acc(Inner_unique(par_x), write) in par_x.bf_v)) in
+    (let anon_5_0 ==
+      ((unfolding acc(Inner_unique(par_y), write) in par_y.bf_v)) in
+      (unfolding acc(Inner_unique(par_x), write) in
+        (unfolding acc(Inner_unique(par_y), write) in
+          plusInts(anon_4_0, anon_5_0)))))
+}
+
+/unique_access_dependencies.kt: info: Generated Viper text for independentBranchesReturned:
+field bf_v: Ref
+
+field inner: Ref
+
+function independentBranchesReturned(a: Ref, b: Ref, c: Ref, d: Ref, p: Ref,
+  q: Ref): Ref
+  requires isSubtype(typeOf(a), Outer())
+  requires acc(Outer_unique(a), write)
+  requires isSubtype(typeOf(b), Outer())
+  requires acc(Outer_unique(b), write)
+  requires isSubtype(typeOf(c), Outer())
+  requires acc(Outer_unique(c), write)
+  requires isSubtype(typeOf(d), Outer())
+  requires acc(Outer_unique(d), write)
+  requires isSubtype(typeOf(p), boolType())
+  requires isSubtype(typeOf(q), boolType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_0_0 ==
+    ((boolFromRef(p) ?
+      (unfolding acc(Outer_unique(a), write) in a.inner) :
+      null)) in
+    (let anon_1_0 ==
+      ((!boolFromRef(p) ?
+        (unfolding acc(Outer_unique(b), write) in b.inner) :
+        null)) in
+      (let x_0 ==
+        ((boolFromRef(p) ? anon_0_0 : anon_1_0)) in
+        (let anon_2_0 ==
+          ((boolFromRef(q) ?
+            (unfolding acc(Outer_unique(c), write) in c.inner) :
+            null)) in
+          (let anon_3_0 ==
+            ((!boolFromRef(q) ?
+              (unfolding acc(Outer_unique(d), write) in d.inner) :
+              null)) in
+            (let y_0 ==
+              ((boolFromRef(q) ? anon_2_0 : anon_3_0)) in
+              (boolFromRef(p) && boolFromRef(q) ?
+                (unfolding acc(Outer_unique(a), write) in
+                  (unfolding acc(Outer_unique(c), write) in
+                    sumInner(x_0, y_0))) :
+                (boolFromRef(p) && !boolFromRef(q) ?
+                  (unfolding acc(Outer_unique(a), write) in
+                    (unfolding acc(Outer_unique(d), write) in
+                      sumInner(x_0, y_0))) :
+                  (!boolFromRef(p) && boolFromRef(q) ?
+                    (unfolding acc(Outer_unique(b), write) in
+                      (unfolding acc(Outer_unique(c), write) in
+                        sumInner(x_0, y_0))) :
+                    (unfolding acc(Outer_unique(b), write) in
+                      (unfolding acc(Outer_unique(d), write) in
+                        sumInner(x_0, y_0))))))))))))
+}
+
+function sumInner(par_x: Ref, par_y: Ref): Ref
+  requires isSubtype(typeOf(par_x), Inner())
+  requires acc(Inner_unique(par_x), write)
+  requires isSubtype(typeOf(par_y), Inner())
+  requires acc(Inner_unique(par_y), write)
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_4_0 ==
+    ((unfolding acc(Inner_unique(par_x), write) in par_x.bf_v)) in
+    (let anon_5_0 ==
+      ((unfolding acc(Inner_unique(par_y), write) in par_y.bf_v)) in
+      (unfolding acc(Inner_unique(par_x), write) in
+        (unfolding acc(Inner_unique(par_y), write) in
+          plusInts(anon_4_0, anon_5_0)))))
+}
+
+/unique_access_dependencies.kt: info: Generated Viper text for elvisThenSafeField:
+field bf_v: Ref
+
+field inner: Ref
+
+function elvisThenSafeField(a: Ref, b: Ref): Ref
+  requires isSubtype(typeOf(a), NullableOuter())
+  requires acc(NullableOuter_unique(a), write)
+  requires isSubtype(typeOf(b), Outer())
+  requires acc(Outer_unique(b), write)
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_2_0 ==
+    ((unfolding acc(NullableOuter_unique(a), write) in a.inner)) in
+    (let anon_3_0 ==
+      ((!(anon_2_0 != nullValue()) ?
+        (unfolding acc(Outer_unique(b), write) in b.inner) :
+        null)) in
+      (let anon_1_0 ==
+        ((anon_2_0 != nullValue() ? anon_2_0 : anon_3_0)) in
+        (let anon_0_0 ==
+          ((anon_2_0 != nullValue() ?
+            (unfolding acc(NullableOuter_unique(a), write) in
+              (unfolding acc(Inner_unique(anon_1_0), write) in
+                anon_1_0.bf_v)) :
+            (unfolding acc(Outer_unique(b), write) in
+              (unfolding acc(Inner_unique(anon_1_0), write) in
+                anon_1_0.bf_v)))) in
+          anon_0_0))))
+}
