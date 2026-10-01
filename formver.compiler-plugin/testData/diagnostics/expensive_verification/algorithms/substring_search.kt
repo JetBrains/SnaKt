@@ -54,7 +54,7 @@ fun <!VIPER_TEXT!>indexOfNaive<!>(haystack: String, needle: String): Int {
     return if (i + needle.length <= haystack.length) i else -1
 }
 
-// Known gap: the first-occurrence invariant (a forall over an exists) is not shown to be preserved, although the witness is asserted in the loop body.
+// Known gap: the first-occurrence invariant (a forall over an exists) is not shown to be preserved.
 <!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>indexOfNaiveFirst<!>(haystack: String, needle: String): Int {
     postconditions<Int> { res ->

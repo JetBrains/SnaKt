@@ -2,8 +2,7 @@
 
 // LeetCode 125, "Valid Palindrome", without case folding or skipping non-alphanumerics.
 // https://leetcode.com/problems/valid-palindrome/
-// The invariant covers both processed ends, so on exit only the middle index is
-// left, where `it == length - 1 - it`.
+// The invariant covers both processed ends, since the postcondition ranges over all indices.
 
 import org.jetbrains.kotlin.formver.plugin.*
 

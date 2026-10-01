@@ -2,7 +2,7 @@
 
 // Codeforces 4A, "Watermelon": can w be split into two positive even parts?
 // https://codeforces.com/problemset/problem/4/A
-// Soundness exhibits the split (2, w - 2) instead of stating an `exists`.
+// Soundness is stated by the split (2, w - 2).
 
 import org.jetbrains.kotlin.formver.plugin.*
 

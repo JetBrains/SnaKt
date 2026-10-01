@@ -2,7 +2,7 @@
 
 // Codeforces 486A, "Calculating Function": f(n) = -1 + 2 - 3 + ... +- n.
 // https://codeforces.com/problemset/problem/486/A
-// The original takes n up to 10^15 (`Long`); `Int` here is unbounded, so nothing is lost.
+// The original takes n up to 10^15 (`Long`); `Int` is unbounded in verification.
 
 import org.jetbrains.kotlin.formver.plugin.*
 
