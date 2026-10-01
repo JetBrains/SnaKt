@@ -1,4 +1,9 @@
+// FULL_JDK
+
 import org.jetbrains.kotlin.formver.plugin.Unique
+import org.jetbrains.kotlin.formver.plugin.AlwaysVerify
+import org.jetbrains.kotlin.formver.plugin.preconditions
+import org.jetbrains.kotlin.formver.plugin.verify
 
 class UniquePrimitiveFields(
     val sharedVal: Int,
@@ -29,6 +34,13 @@ fun <!VIPER_TEXT!>testPrimitiveFieldSetterUnique<!>(@Unique pf: UniquePrimitiveF
 fun <!VIPER_TEXT!>testPrimitiveFieldSetterShared<!>(pf: UniquePrimitiveFields) {
     pf.sharedVar = 3
     pf.uniqueVar = 4
+}
+
+@AlwaysVerify
+fun <!VIPER_TEXT!>testMutablePropertyReadAfterWrite<!>(@Unique pf: UniquePrimitiveFields) {
+    preconditions { pf.sharedVar == 0 }
+    pf.sharedVar = pf.sharedVar + 1
+    verify(pf.sharedVar == 1)
 }
 
 class UniqueReferenceFields(
