@@ -25,9 +25,8 @@ private fun optionValue(args: List<String>, name: String): String? {
  * argument is passed: [Z3_EXE_ENV_VAR] if set, otherwise the first entry of `PATH` that *contains*
  * a file or directory of the executable's name, otherwise that bare name.
  *
- * Resolving more leniently than Silicon — falling back to `PATH` when [Z3_EXE_ENV_VAR] is set, or
- * demanding a usable executable of the `PATH` entries — would let a prover through that Silicon
- * then rejects, or name a path Silicon does not use.
+ * Any difference from Silicon's lookup would accept a prover Silicon rejects, or report a path
+ * Silicon does not use.
  */
 private fun resolveZ3Executable(getenv: (String) -> String?): File {
     getenv(Z3_EXE_ENV_VAR)?.let { return File(it) }
