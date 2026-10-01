@@ -8,9 +8,8 @@ package org.jetbrains.kotlin.formver.common
 /**
  * Severity at which a failed proof is reported.
  *
- * At [WARNING] a failed proof leaves the build green, so that adopting the plugin
- * cannot break an existing build; at [ERROR] it fails compilation like any other
- * compiler error.
+ * At [WARNING] a failed proof leaves the build green; at [ERROR] it fails
+ * compilation like any other compiler error.
  */
 enum class VerificationErrorSeverity {
     WARNING,
