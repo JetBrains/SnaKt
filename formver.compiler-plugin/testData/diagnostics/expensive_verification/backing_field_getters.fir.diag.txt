@@ -117,6 +117,7 @@ function x(this: Ref): Ref
 method con() returns (ret_1: Ref)
   ensures isSubtype(typeOf(ret_1), Baz())
   ensures acc(Baz_unique(ret_1), write)
+  ensures intFromRef(x(ret_1)) == 4
 
 
 method nullableReceiverNotNullSafeGet() returns (v_ret_0: Ref)
@@ -180,6 +181,7 @@ function x(this: Ref): Ref
 method con() returns (ret_1: Ref)
   ensures isSubtype(typeOf(ret_1), Baz())
   ensures acc(Baz_unique(ret_1), write)
+  ensures intFromRef(x(ret_1)) == 4
 
 
 method nonNullableReceiverSafeGet() returns (v_ret_0: Ref)

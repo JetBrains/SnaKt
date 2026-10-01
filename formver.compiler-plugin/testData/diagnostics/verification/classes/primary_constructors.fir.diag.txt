@@ -63,6 +63,7 @@ method con(par_c: Ref) returns (ret_1: Ref)
   ensures isSubtype(typeOf(ret_1), FieldInBody())
   ensures acc(FieldInBody_unique(ret_1), write)
   ensures intFromRef(g_c(ret_1)) == intFromRef(par_c)
+  ensures intFromRef(a(ret_1)) == 5
 
 
 method createFieldInBody() returns (v_ret_0: Ref)

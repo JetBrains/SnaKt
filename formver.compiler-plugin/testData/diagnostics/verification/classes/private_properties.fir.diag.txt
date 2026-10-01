@@ -69,11 +69,15 @@ function size(this: Ref): Ref
 method con_C() returns (ret_3: Ref)
   ensures isSubtype(typeOf(ret_3), C())
   ensures acc(C_unique(ret_3), write)
+  ensures intFromRef((unfolding acc(C_unique(ret_3), write) in
+      ret_3.bf_field)) ==
+    0
 
 
 method con_D() returns (ret_4: Ref)
   ensures isSubtype(typeOf(ret_4), D())
   ensures acc(D_unique(ret_4), write)
+  ensures intFromRef(D_g_field(ret_4)) == 0
 
 
 method extractPublic() returns (v_ret_0: Ref)

@@ -39,6 +39,7 @@ method con(par_size: Ref, par_value: Ref) returns (ret_1: Ref)
   ensures intFromRef(ret_1.p_size) >= 0
   ensures acc(CustomList_unique(ret_1), write)
   ensures intFromRef(ret_1.p_size) == intFromRef(par_size)
+  ensures intFromRef(g_value(ret_1)) == intFromRef(par_value)
 
 
 method get(this: Ref, index: Ref) returns (ret_3: Ref)
