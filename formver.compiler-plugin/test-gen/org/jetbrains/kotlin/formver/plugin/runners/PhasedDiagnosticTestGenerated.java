@@ -488,6 +488,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("binary_search.kt")
+      public void testBinary_search() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/competitive/binary_search.kt");
+      }
+
+      @Test
       @TestMetadata("calculating_function.kt")
       public void testCalculating_function() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/competitive/calculating_function.kt");
@@ -500,15 +506,39 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("first_bad_version.kt")
+      public void testFirst_bad_version() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/competitive/first_bad_version.kt");
+      }
+
+      @Test
       @TestMetadata("integer_sqrt.kt")
       public void testInteger_sqrt() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/competitive/integer_sqrt.kt");
       }
 
       @Test
+      @TestMetadata("next_round.kt")
+      public void testNext_round() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/competitive/next_round.kt");
+      }
+
+      @Test
       @TestMetadata("palindrome.kt")
       public void testPalindrome() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/competitive/palindrome.kt");
+      }
+
+      @Test
+      @TestMetadata("search_insert_position.kt")
+      public void testSearch_insert_position() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/competitive/search_insert_position.kt");
+      }
+
+      @Test
+      @TestMetadata("spy_detected.kt")
+      public void testSpy_detected() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/competitive/spy_detected.kt");
       }
 
       @Test
