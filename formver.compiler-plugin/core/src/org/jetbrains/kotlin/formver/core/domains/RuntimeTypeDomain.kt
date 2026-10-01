@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.formver.core.names.QualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.core.names.UnqualifiedDomainFuncName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.*
+import org.jetbrains.kotlin.formver.viper.ast.Exp.Companion.toDisjunction
 
 
 const val RUNTIME_TYPE_DOMAIN_NAME = "rt"
@@ -194,6 +195,14 @@ const val RUNTIME_TYPE_DOMAIN_NAME = "rt"
  *  // same for bool2ref and ref2bool
  *
  *  // isSubtype(*Type(), *Type()) for each pair of user type and its supertype()
+ *
+ *  // for each sealed type S with direct inheritors C1, ..., Cn:
+ *  axiom {
+ *    (forall r: Ref ::
+ *      { isSubtype(typeOf(r), S()) }
+ *      isSubtype(typeOf(r), S()) ==>
+ *      isSubtype(typeOf(r), C1()) || ... || isSubtype(typeOf(r), Cn()))
+ *  }
  * }
  *
  * function addInts(arg1: Ref, arg2: Ref): Ref
@@ -407,6 +416,16 @@ class RuntimeTypeDomain(typeResolver: TypeResolver) : BuiltinDomain(DomainName(R
             typeResolver.lookupSuperTypes(type.name).forEach { superType ->
                 axiom {
                     type.runtimeType subtype superType.runtimeType
+                }
+            }
+        }
+        typeResolver.sealedHierarchies().forEach { (sealedType, inheritors) ->
+            axiom {
+                Exp.forall(r) { r ->
+                    assumption {
+                        simpleTrigger { r isOf sealedType.runtimeType }
+                    }
+                    inheritors.map { r isOf it.runtimeType }.toDisjunction()
                 }
             }
         }

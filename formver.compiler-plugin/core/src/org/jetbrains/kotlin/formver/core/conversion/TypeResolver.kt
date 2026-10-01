@@ -31,6 +31,11 @@ class TypeResolver {
     private val superTypes = mutableMapOf<SymbolicName, MutableSet<SymbolicName>>()
 
     /**
+     * Direct inheritors of each sealed class or interface. Key is the sealed type.
+     */
+    private val sealedInheritors = mutableMapOf<SymbolicName, List<SymbolicName>>()
+
+    /**
      * All the properties. Key is the pair of the class name and the field name.
      */
     private val properties = mutableMapOf<ClassPropertyPair, PropertyEmbedding>()
@@ -80,6 +85,24 @@ class TypeResolver {
      */
     fun lookupSuperTypes(name: SymbolicName) =
         superTypes.getOrDefault(name, emptySet()).mapNotNull { lookupClassTypeEmbedding(it) }
+
+    /**
+     * Records that [inheritors] are all the direct subtypes of the sealed type [sealedType].
+     */
+    fun addSealedInheritors(sealedType: SymbolicName, inheritors: List<SymbolicName>) {
+        sealedInheritors[sealedType] = inheritors
+    }
+
+    /**
+     * Each sealed type paired with its direct inheritors. A hierarchy with an unregistered member is left out,
+     * since an incomplete list of inheritors would make an unsound exhaustiveness claim.
+     */
+    fun sealedHierarchies(): List<Pair<ClassTypeEmbedding, List<ClassTypeEmbedding>>> =
+        sealedInheritors.mapNotNull { (sealedType, inheritors) ->
+            val sealedEmbedding = lookupClassTypeEmbedding(sealedType) ?: return@mapNotNull null
+            val inheritorEmbeddings = inheritors.map { lookupClassTypeEmbedding(it) ?: return@mapNotNull null }
+            sealedEmbedding to inheritorEmbeddings
+        }
 
     /**
      * Get or Put a property to the class.
