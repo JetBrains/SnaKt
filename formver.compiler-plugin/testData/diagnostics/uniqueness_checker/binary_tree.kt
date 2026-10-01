@@ -14,8 +14,7 @@ fun `insert leaf into an empty child slot`(t: @Unique Tree, leaf: @Unique Tree) 
     }
 }
 
-// The checker does not see `pivot?.right = root` as restoring `pivot.right`, so the pivot escapes with a moved field.
-// The same rotation on a non-null pivot checks clean, which places the gap in the safe-call assignment.
+// Known gap: `pivot?.right = root` is not seen as restoring `pivot.right`, so the pivot escapes with a moved field.
 fun `rotate right around the root`(root: @Unique Tree): @Unique Tree? {
     val pivot: @Unique Tree? = root.left
     root.left = pivot?.right

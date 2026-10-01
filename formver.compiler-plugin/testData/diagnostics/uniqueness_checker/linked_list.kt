@@ -31,8 +31,7 @@ fun `return node after detaching tail`(head: @Unique Node): @Unique Node {
     return <!ESCAPE_UNIQUENESS_INCONSISTENCY!>head<!>
 }
 
-// Advancing the cursor reads `next` out of the node it is leaving; the same assignment points the cursor at what it
-// read, so nothing moved stays reachable through the cursor.
+// Advancing a borrowed cursor with `current = current.next` leaves nothing moved reachable through it.
 fun `sum values`(head: @Borrowed Node?): Int {
     var current: @Borrowed Node? = head
     var total = 0
@@ -94,8 +93,7 @@ fun `use readonly spine list after recursion`(head: @Unique RoNode) {
     consumeRo(head)
 }
 
-// The field goes to `consume` before the assignment reads it, so the advance is a read of a reference already handed
-// away.
+// The advance reads `current.next` after it was consumed.
 fun `drop the tail in a loop`(head: @Unique Node?) {
     var current: @Unique Node? = head
     while (current != null) {
@@ -104,8 +102,7 @@ fun `drop the tail in a loop`(head: @Unique Node?) {
     }
 }
 
-// `prev` gains the spine of the node assigned to it and that spine is written into `current.next` next time round,
-// which is what deepened the tracked paths until summarization bounded them.
+// Each iteration deepens the paths tracked through `prev` and `current.next`; summarization bounds them.
 fun `reverse in place`(head: @Unique Node?): @Unique Node? {
     var prev: @Unique Node? = null
     var current: @Unique Node? = head

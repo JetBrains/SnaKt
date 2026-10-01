@@ -120,10 +120,8 @@ abstract class TagCollector(
     }
 
     /**
-     * The expected side of a filtered comparison comes from parsing markers back out of the test file, and a marker
-     * names a tag and a range and nothing else: it cannot say that one diagnostic fired twice at one position. The
-     * reported side is matched to that by collapsing such repeats. The message of each individual report is still
-     * checked against the `.diag.txt` golden.
+     * Reported infos with repeats of the same tag and range collapsed. A marker in the test file names only a tag and a
+     * range, so it cannot express one diagnostic firing twice at one position.
      */
     private fun deduplicatedReportedInfos(): Map<TestFile, List<CodeMetaInfo>> =
         reportedInfos.mapValues { (_, infos) -> infos.distinctBy { Triple(it.tag, it.start, it.end) } }
