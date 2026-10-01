@@ -28,11 +28,6 @@ method symbolExists(s: Ref) returns (v_ret_0: Ref)
       stringFromRef(s)[anon_builtin_0] ==
       stringFromRef(s)[intFromRef(v_ret_0)]) ||
     (let anon_builtin_0 ==
-      (|stringFromRef(s)|) in
-      0 <= anon_builtin_0 && anon_builtin_0 < |stringFromRef(s)| &&
-      stringFromRef(s)[anon_builtin_0] ==
-      stringFromRef(s)[intFromRef(v_ret_0)]) ||
-    (let anon_builtin_0 ==
       (intFromRef(v_ret_0)) in
       0 <= anon_builtin_0 && anon_builtin_0 < |stringFromRef(s)| &&
       stringFromRef(s)[anon_builtin_0] ==
@@ -54,10 +49,6 @@ method symbolExists(s: Ref) returns (v_ret_0: Ref)
       (let anon_builtin_1 ==
         (0) in
         0 <= anon_builtin_1 && anon_builtin_1 < |stringFromRef(s)| &&
-        stringFromRef(s)[anon_builtin_1] == charFromRef(c)) ||
-      (let anon_builtin_1 ==
-        (|stringFromRef(s)|) in
-        0 <= anon_builtin_1 && anon_builtin_1 < |stringFromRef(s)| &&
         stringFromRef(s)[anon_builtin_1] == charFromRef(c))
   anon_0 := ltInts(i, stringLength(s))
   if (boolFromRef(anon_0)) {
@@ -74,10 +65,6 @@ method symbolExists(s: Ref) returns (v_ret_0: Ref)
       stringFromRef(s)[anon_builtin_1] == charFromRef(c)) ||
     (let anon_builtin_1 ==
       (0) in
-      0 <= anon_builtin_1 && anon_builtin_1 < |stringFromRef(s)| &&
-      stringFromRef(s)[anon_builtin_1] == charFromRef(c)) ||
-    (let anon_builtin_1 ==
-      (|stringFromRef(s)|) in
       0 <= anon_builtin_1 && anon_builtin_1 < |stringFromRef(s)| &&
       stringFromRef(s)[anon_builtin_1] == charFromRef(c))
   v_ret_0 := intToRef(0)
@@ -96,10 +83,6 @@ method symbolExistsWithoutGroundTerm(s: Ref) returns (v_ret_0: Ref)
       stringFromRef(s)[anon] == stringFromRef(s)[intFromRef(v_ret_0)]) ||
     (let anon ==
       (0) in
-      0 <= anon && anon < |stringFromRef(s)| &&
-      stringFromRef(s)[anon] == stringFromRef(s)[intFromRef(v_ret_0)]) ||
-    (let anon ==
-      (|stringFromRef(s)|) in
       0 <= anon && anon < |stringFromRef(s)| &&
       stringFromRef(s)[anon] == stringFromRef(s)[intFromRef(v_ret_0)]) ||
     (let anon ==
@@ -140,6 +123,20 @@ method existsWithGroundLocal(n: Ref) returns (v_ret_0: Ref)
 method falseExistsRemainsFalse() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
   ensures (exists anon: Int :: !(anon == anon))
+{
+  v_ret_0 := intToRef(0)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/exists.kt: info: Generated Viper text for guardedGroundTerm:
+method guardedGroundTerm(s: Ref, k: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(s), stringType())
+  requires isSubtype(typeOf(k), intType())
+  requires (exists anon: Int :: 0 <= intFromRef(k) &&
+      intFromRef(k) < |stringFromRef(s)| &&
+      anon == stringFromRef(s)[intFromRef(k)])
+  ensures isSubtype(typeOf(v_ret_0), intType())
 {
   v_ret_0 := intToRef(0)
   goto lbl_ret_0

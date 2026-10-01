@@ -44,22 +44,24 @@ data class LinearizationVisitor(
     }
 
     /**
-     * Find terms which can be used as concrete values for a quantified variable.
+     * Find literals and variables which can be used as concrete values for a quantified variable.
      *
-     * Quantifiers are deliberately treated as leaves: a term below a nested quantifier may
-     * mention that quantifier's local variable and is therefore not a valid term at the outer
-     * quantifier's scope.
+     * Only these are collected because they are always well-defined: an instance binds its
+     * term outside the guards of the body, so a partial term such as `s[k]` could add a
+     * well-definedness failure.
+     *
+     * Quantifiers are treated as leaves: a variable below a nested quantifier may be that
+     * quantifier's own variable and is therefore not in scope at the outer quantifier.
      */
     private fun groundTermsFor(variable: VariableEmbedding, conditions: List<ExpEmbedding>): List<ExpEmbedding> {
-        fun ExpEmbedding.containsVariable(): Boolean =
-            this === variable || children().any { it.containsVariable() }
+        fun ExpEmbedding.isCandidate(): Boolean =
+            (this is LiteralEmbedding || this is VariableEmbedding) && this != variable && type == variable.type
 
         fun ExpEmbedding.collectInto(result: MutableList<ExpEmbedding>) {
             if (this is ForAllEmbedding || this is ExistsEmbedding) return
-            if (type == variable.type && !containsVariable()) {
-                result += this
-                // Keep the maximal term. Metadata wrappers and conversions often have the same
-                // type as their child; descending would emit the same candidate several times.
+            val term = ignoringMetaNodes()
+            if (term.isCandidate()) {
+                result += term
                 return
             }
             children().forEach { it.collectInto(result) }

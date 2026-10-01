@@ -12,10 +12,6 @@ method maxCharacter(s: Ref) returns (v_ret_0: Ref)
     (let anon_builtin_1 ==
       (0) in
       0 <= anon_builtin_1 && anon_builtin_1 < |stringFromRef(s)| &&
-      stringFromRef(s)[anon_builtin_1] == charFromRef(v_ret_0)) ||
-    (let anon_builtin_1 ==
-      (|stringFromRef(s)|) in
-      0 <= anon_builtin_1 && anon_builtin_1 < |stringFromRef(s)| &&
       stringFromRef(s)[anon_builtin_1] == charFromRef(v_ret_0)))
 {
   var m: Ref

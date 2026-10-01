@@ -75,3 +75,12 @@ fun <!VIPER_TEXT!>falseExistsRemainsFalse<!>(): Int {
     }
     return 0
 }<!>
+
+// `s[k]` is only well-defined under the guard, so it must not be used as a candidate.
+@AlwaysVerify
+fun <!VIPER_TEXT!>guardedGroundTerm<!>(s: String, k: Int): Int {
+    preconditions {
+        exists<Char> { 0 <= k && k < s.length && it == s[k] }
+    }
+    return 0
+}
