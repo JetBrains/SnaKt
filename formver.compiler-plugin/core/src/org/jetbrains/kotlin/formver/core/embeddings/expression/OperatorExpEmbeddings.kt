@@ -41,7 +41,22 @@ object OperatorExpEmbeddings {
     val DivIntInt = buildBinaryOperator {
         setName("divInts")
         setSignature(intIntToIntType)
-        viperImplementation { Exp.Div(args[0], args[1], pos, info) }
+        // Viper `/` is Euclidean: it rounds so that the remainder is nonnegative. Kotlin `/` truncates
+        // towards zero. The two agree on nonnegative operands, so this relies on
+        // `a / b == sign(a) * sign(b) * (|a| / |b|)` for `b != 0`. Viper integers are unbounded, so
+        // `Int.MIN_VALUE / -1` is 2^31 here rather than wrapping to `Int.MIN_VALUE` as in Kotlin.
+        viperImplementation {
+            val dividendIsNegative = isNegative(args[0])
+            val divisorIsNegative = isNegative(args[1])
+            val magnitude = Exp.Div(absolute(args[0]), absolute(args[1]), pos, info)
+            Exp.TernaryExp(
+                Exp.NeCmp(dividendIsNegative, divisorIsNegative, pos, info),
+                Exp.Minus(magnitude, pos, info),
+                magnitude,
+                pos,
+                info,
+            )
+        }
         additionalConditions {
             precondition {
                 intInjection.fromRef(args[1]) ne 0.toExp()
@@ -52,13 +67,26 @@ object OperatorExpEmbeddings {
     val RemIntInt = buildBinaryOperator {
         setName("remInts")
         setSignature(intIntToIntType)
-        viperImplementation { Exp.Mod(args[0], args[1], pos, info) }
+        // Viper `%` is Euclidean: its result is always nonnegative. Kotlin `%` truncates, so its result
+        // takes the sign of the dividend. The two agree on nonnegative operands, so this relies on
+        // `a % b == sign(a) * (|a| mod |b|)` for `b != 0`. Viper integers are unbounded, so negating
+        // `Int.MIN_VALUE` here does not overflow.
+        viperImplementation {
+            val magnitude = Exp.Mod(absolute(args[0]), absolute(args[1]), pos, info)
+            Exp.TernaryExp(isNegative(args[0]), Exp.Minus(magnitude, pos, info), magnitude, pos, info)
+        }
         additionalConditions {
             precondition {
                 intInjection.fromRef(args[1]) ne 0.toExp()
             }
         }
     }
+
+    private fun OperatorExpEmbeddingBuilder.ViperCallData.isNegative(exp: Exp): Exp =
+        Exp.LtCmp(exp, Exp.IntLit(0, pos, info), pos, info)
+
+    private fun OperatorExpEmbeddingBuilder.ViperCallData.absolute(exp: Exp): Exp =
+        Exp.TernaryExp(isNegative(exp), Exp.Minus(exp, pos, info), exp, pos, info)
 
     private val intIntToBooleanType
         get() = buildFunctionPretype {

@@ -1,0 +1,72 @@
+/division_semantics.kt: info: Generated Viper text for positiveOperandsDivision:
+method positiveOperandsDivision() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 3
+{
+  v_ret_0 := divInts(intToRef(7), intToRef(2))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/division_semantics.kt: info: Generated Viper text for negativeDividendDivision:
+method negativeDividendDivision() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == -3
+{
+  v_ret_0 := divInts(intToRef(-7), intToRef(2))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/division_semantics.kt: info: Generated Viper text for negativeDivisorDivision:
+method negativeDivisorDivision() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == -3
+{
+  v_ret_0 := divInts(intToRef(7), intToRef(-2))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/division_semantics.kt: info: Generated Viper text for bothOperandsNegativeDivision:
+method bothOperandsNegativeDivision() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 3
+{
+  v_ret_0 := divInts(intToRef(-7), intToRef(-2))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/division_semantics.kt: info: Generated Viper text for zeroDividendDivision:
+method zeroDividendDivision() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 0
+{
+  v_ret_0 := divInts(intToRef(0), intToRef(-2))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/division_semantics.kt: info: Generated Viper text for divisionRemainderIdentity:
+method divisionRemainderIdentity(a: Ref, b: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(a), intType())
+  requires isSubtype(typeOf(b), intType())
+  requires !(intFromRef(b) == 0)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(a)
+{
+  v_ret_0 := plusInts(timesInts(divInts(a, b), b), remInts(a, b))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/division_semantics.kt: info: Generated Viper text for minimumValueNegativeOneDivision:
+method minimumValueNegativeOneDivision() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == -(-2147483647 - 1)
+{
+  v_ret_0 := divInts(minusInts(intToRef(-2147483647), intToRef(1)), intToRef(-1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
