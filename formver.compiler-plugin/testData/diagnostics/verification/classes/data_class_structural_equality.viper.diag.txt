@@ -1,0 +1,1 @@
+/data_class_structural_equality.kt: warning: Viper verification error: Postcondition of equalValues might not hold. Assertion boolFromRef(v_ret_0) might not hold.
