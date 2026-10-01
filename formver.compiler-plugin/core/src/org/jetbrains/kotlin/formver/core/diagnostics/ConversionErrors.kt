@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.diagnostics.error1
  */
 object ConversionErrors : KtDiagnosticsContainer() {
     val PURITY_VIOLATION by error1<PsiElement, String>()
+    val MUTUAL_RECURSION_UNSUPPORTED by error1<PsiElement, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
     val MINOR_INTERNAL_ERROR by error1<PsiElement, String>(SourceElementPositioningStrategies.DECLARATION_NAME)
 
     /**

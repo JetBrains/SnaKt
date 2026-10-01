@@ -1,0 +1,52 @@
+/mutual_recursion.kt: info: Generated Viper text for countDown:
+function countDown(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_1_0 ==
+    ((intFromRef(n) == 0 ? intToRef(0) : null)) in
+    (let anon_2_0 ==
+      ((!(intFromRef(n) == 0) ?
+        countDown(minusInts(n, intToRef(1))) :
+        null)) in
+      (let anon_0_0 ==
+        ((intFromRef(n) == 0 ? anon_1_0 : anon_2_0)) in
+        anon_0_0)))
+}
+
+/mutual_recursion.kt: error: Function 'even' was not verified because of errors in its declaration
+
+/mutual_recursion.kt: error: Verification depends on mutually recursive pure functions 'even', 'odd', which is not supported
+
+/mutual_recursion.kt: error: Function 'odd' was not verified because of errors in its declaration
+
+/mutual_recursion.kt: error: Verification depends on mutually recursive pure functions 'even', 'odd', which is not supported
+
+/mutual_recursion.kt: error: Function 'testMutualRecursion' was not verified because of errors in its declaration
+
+/mutual_recursion.kt: error: Verification depends on mutually recursive pure functions 'even', 'odd', which is not supported
+
+/mutual_recursion.kt: info: Generated Viper text for unrelated:
+function countDown(n: Ref): Ref
+  requires isSubtype(typeOf(n), intType())
+  ensures isSubtype(typeOf(result), intType())
+{
+  (let anon_1_0 ==
+    ((intFromRef(n) == 0 ? intToRef(0) : null)) in
+    (let anon_2_0 ==
+      ((!(intFromRef(n) == 0) ?
+        countDown(minusInts(n, intToRef(1))) :
+        null)) in
+      (let anon_0_0 ==
+        ((intFromRef(n) == 0 ? anon_1_0 : anon_2_0)) in
+        anon_0_0)))
+}
+
+method unrelated(n: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(n), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := countDown(n)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
