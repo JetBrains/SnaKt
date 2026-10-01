@@ -30,8 +30,8 @@ sealed interface ComparisonRepresentation {
      */
     data class Builtin(val injection: Injection) : ComparisonRepresentation {
         override fun operandToViper(operand: Linearizable, type: TypeEmbedding, ctx: LinearizationContext): Exp {
-            // `toViperBuiltinType` unwraps the operand through the injection of its own type rather
-            // than through ours; `shared` picks this representation exactly when the two coincide.
+            // `toViperBuiltinType` unwraps the operand through the injection of its own type, so that
+            // injection has to be [injection].
             check(type.injectionOrNull == injection) {
                 "Comparison operand is represented as ${type.injectionOrNull.viperType}, expected ${injection.viperType}."
             }
@@ -43,8 +43,7 @@ sealed interface ComparisonRepresentation {
      * Compare the operands as `Ref`s.
      *
      * The only representation available when the operands have no builtin one in common: class
-     * types, `Any` and every nullable type are represented as `Ref` and nothing else. Reference
-     * equality asks for this representation whatever its operand types are.
+     * types, `Any` and every nullable type are represented as `Ref` and nothing else.
      */
     data object Refs : ComparisonRepresentation {
         override fun operandToViper(operand: Linearizable, type: TypeEmbedding, ctx: LinearizationContext): Exp =
