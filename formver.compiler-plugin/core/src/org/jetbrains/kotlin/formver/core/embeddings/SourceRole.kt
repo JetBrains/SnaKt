@@ -17,6 +17,8 @@ sealed interface SourceRole {
         }
     }
 
+    data object EmptyListAccessCheck : SourceRole
+
     data class ConditionalEffect(val effect: ReturnsEffect, val condition: Condition) : SourceRole
     data class FirSymbolHolder(val firSymbol: FirBasedSymbol<*>) : SourceRole, Condition
 

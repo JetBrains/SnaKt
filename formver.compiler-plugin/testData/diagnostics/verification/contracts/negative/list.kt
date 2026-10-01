@@ -20,6 +20,16 @@ fun <!VIPER_TEXT!>unsafe_last<!>(l: List<Int>) : Int {
 }
 
 @AlwaysVerify
+fun <!VIPER_TEXT!>unsafe_first_function<!>(l: List<Int>): Int {
+    return <!POSSIBLE_EMPTY_LIST_ACCESS!>l.first()<!>
+}
+
+@AlwaysVerify
+fun <!VIPER_TEXT!>unsafe_last_function<!>(l: List<Int>): Int {
+    return <!POSSIBLE_EMPTY_LIST_ACCESS!>l.last()<!>
+}
+
+@AlwaysVerify
 fun <!VIPER_TEXT!>add_get<!>(l: MutableList<Int>) {
     l.add(1)
     val n = <!POSSIBLE_INDEX_OUT_OF_BOUND!>l[1]<!>

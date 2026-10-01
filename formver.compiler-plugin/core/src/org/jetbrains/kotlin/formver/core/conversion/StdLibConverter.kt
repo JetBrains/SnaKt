@@ -53,6 +53,19 @@ data object MutableListInterface : PresentInterface {
     override val interfaceName = "MutableList"
 }
 
+/**
+ * Top-level functions of the collections package whose extension receiver is a `List`.
+ *
+ * Restricting to the collections package keeps user-defined extensions with the same name
+ * from picking up the standard library contract.
+ */
+data object ListExtensionInterface : StdLibReceiverInterface {
+    override fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean {
+        val receiverType = function.callableType.extensionReceiverType?.pretype ?: return false
+        return NoInterface.match(function, ctx) && ctx.isInheritorOfCollectionTypeNamed(receiverType, "List")
+    }
+}
+
 data object NoInterface : StdLibReceiverInterface {
     override fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean =
         NameMatcher.matchClassScope(function.name) {
@@ -69,7 +82,12 @@ sealed interface StdLibCondition {
     val stdLibInterface: StdLibReceiverInterface
     val functionName: String
 
+    /** Number of value parameters of the matched overload; `null` matches every overload. */
+    val parameterCount: Int?
+        get() = null
+
     fun match(function: NamedFunctionSignature): Boolean {
+        if (parameterCount != null && function.params.size != parameterCount) return false
         NameMatcher.matchClassScope(function.name) {
             ifFunctionName(functionName) {
                 return true
@@ -81,7 +99,7 @@ sealed interface StdLibCondition {
 
 sealed interface StdLibPrecondition : StdLibCondition {
     companion object {
-        val all = listOf(GetPrecondition, SubListPrecondition)
+        val all = listOf(GetPrecondition, FirstPrecondition, LastPrecondition, SubListPrecondition)
     }
 
     fun getEmbeddings(function: NamedFunctionSignature): List<ExpEmbedding>
@@ -92,6 +110,8 @@ sealed interface StdLibPostcondition : StdLibCondition {
         val all = listOf(
             EmptyListPostcondition,
             IsEmptyPostcondition,
+            FirstPostcondition,
+            LastPostcondition,
             GetPostcondition,
             SubListPostcondition,
             AddPostcondition
@@ -121,6 +141,33 @@ data object GetPrecondition : StdLibPrecondition {
 
     override val stdLibInterface = ListInterface
     override val functionName = "get"
+}
+
+private fun NamedFunctionSignature.nonEmptyExtensionReceiverPrecondition(): List<ExpEmbedding> =
+    listOf(
+        GtIntInt(
+            FieldAccess(extensionReceiver!!, CollectionSizeFieldEmbedding),
+            IntLit(0),
+            SourceRole.EmptyListAccessCheck,
+        )
+    )
+
+data object FirstPrecondition : StdLibPrecondition {
+    override fun getEmbeddings(function: NamedFunctionSignature): List<ExpEmbedding> =
+        function.nonEmptyExtensionReceiverPrecondition()
+
+    override val stdLibInterface = ListExtensionInterface
+    override val functionName = "first"
+    override val parameterCount = 0
+}
+
+data object LastPrecondition : StdLibPrecondition {
+    override fun getEmbeddings(function: NamedFunctionSignature): List<ExpEmbedding> =
+        function.nonEmptyExtensionReceiverPrecondition()
+
+    override val stdLibInterface = ListExtensionInterface
+    override val functionName = "last"
+    override val parameterCount = 0
 }
 
 data object SubListPrecondition : StdLibPrecondition {
@@ -180,6 +227,31 @@ data object GetPostcondition : StdLibPostcondition {
 
     override val stdLibInterface = ListInterface
     override val functionName = "get"
+}
+
+private fun NamedFunctionSignature.unchangedExtensionReceiverSize(): List<ExpEmbedding> =
+    listOf(extensionReceiver!!.sameSize())
+
+data object FirstPostcondition : StdLibPostcondition {
+    override fun getEmbeddings(
+        returnVariable: VariableEmbedding,
+        function: NamedFunctionSignature,
+    ): List<ExpEmbedding> = function.unchangedExtensionReceiverSize()
+
+    override val stdLibInterface = ListExtensionInterface
+    override val functionName = "first"
+    override val parameterCount = 0
+}
+
+data object LastPostcondition : StdLibPostcondition {
+    override fun getEmbeddings(
+        returnVariable: VariableEmbedding,
+        function: NamedFunctionSignature,
+    ): List<ExpEmbedding> = function.unchangedExtensionReceiverSize()
+
+    override val stdLibInterface = ListExtensionInterface
+    override val functionName = "last"
+    override val parameterCount = 0
 }
 
 data object SubListPostcondition : StdLibPostcondition {
