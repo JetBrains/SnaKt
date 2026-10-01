@@ -3,9 +3,8 @@
 import org.jetbrains.kotlin.formver.plugin.*
 
 // A quantifier variable is not introduced by a declaration, so the code range of a `Char`
-// has to be conjoined as a witness constraint for anything about it to be provable. Put in
-// preconditions (assumed, not proven) so the bare arithmetic body doesn't hit the "no
-// trigger to build a witness from" limitation that a postcondition would (see exists.kt).
+// has to be conjoined as a witness constraint for anything about it to be provable.
+// Preconditions, because a postcondition has no trigger to build a witness from (see exists.kt).
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>someCharIsNonNegative<!>(): Boolean {

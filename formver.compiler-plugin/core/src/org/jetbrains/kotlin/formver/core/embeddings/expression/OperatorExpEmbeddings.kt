@@ -228,8 +228,7 @@ object OperatorExpEmbeddings {
             withParam { int() }
             withReturnType { char() }
         }
-        // The element is a `Char` already: `stringElementInCodeRange` gives its range from the
-        // string it was read out of, under the same index bounds this operator requires below.
+        // `stringElementInCodeRange` bounds the element under the index bounds required below.
         viperImplementation { Exp.SeqIndex(args[0], args[1], pos, info) }
         additionalConditions {
             precondition {
