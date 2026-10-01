@@ -8,7 +8,7 @@ package org.jetbrains.kotlin.formver.viper.errors
 import org.jetbrains.kotlin.formver.viper.ast.Position
 
 /**
- * An error that is neither a verification nor a consistency error, such as an exception thrown inside Silicon.
+ * An error that stopped verification, such as a Silver consistency error or an exception thrown inside Silicon.
  * The program was not fully verified, so it must not be treated as verified.
  */
 class AbortedError(val error: viper.silver.verifier.AbstractError) : VerifierError {

@@ -40,8 +40,17 @@ class SiliconFrontend(commandLineArgs: List<String>) : Closeable {
         }
     }
 
-    /** Consistency-checks and verifies [viperProgram], calling [onFailure] for each error found. */
+    /**
+     * Consistency-checks and verifies [viperProgram], calling [onFailure] for each error found.
+     * A program that fails the consistency check is not passed to Silicon.
+     */
     fun verify(viperProgram: viper.silver.ast.Program, onFailure: (VerifierError) -> Unit) {
+        // Silicon skips Silver's consistency check for programs passed as ASTs, so it is run here.
+        val consistencyErrors = viperProgram.checkTransitively()
+        if (!consistencyErrors.isEmpty) {
+            for (error in consistencyErrors) onFailure(AbortedError(error))
+            return
+        }
         val result = siliconApi.verify(viperProgram)
         if (result is viper.silver.verifier.Failure) {
             for (error in result.errors()) {
