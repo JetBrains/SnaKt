@@ -13,7 +13,6 @@ internal class ExprPurityVisitor(val declaredVariables: MutableSet<VariableEmbed
 
     /* ————— pure nodes ————— */
     override fun visitUnitLit(e: UnitLit) = true
-    override fun visitFunctionCall(e: FunctionCall) = true
     override fun visitDeclare(e: Declare): Boolean {
         val pure = e.initializer?.accept(this) == true
         if (pure) declaredVariables.add(e.variable)
@@ -27,6 +26,7 @@ internal class ExprPurityVisitor(val declaredVariables: MutableSet<VariableEmbed
         e.lhs.ignoringMetaNodes() is VariableEmbedding && declaredVariables.contains(e.lhs.ignoringMetaNodes())
 
     /* ————— structural nodes without side effects ————— */
+    override fun visitFunctionCall(e: FunctionCall) = e.allChildrenPure(this)
     override fun visitReturn(e: Return) = e.allChildrenPure(this)
     override fun visitBlock(e: Block) = e.allChildrenPure(this)
     override fun visitBinaryOperatorExpEmbedding(e: BinaryOperatorExpEmbedding) = e.allChildrenPure(this)

@@ -16,6 +16,20 @@ fun <!VERIFICATION_SKIPPED!>testImpureLocalInitializer<!>(): Int {
     return result
 }<!>
 
+@Pure
+fun <!VIPER_TEXT!>identity<!>(x: Int): Int = x
+
+<!PURITY_VIOLATION!>@Pure
+fun <!VERIFICATION_SKIPPED!>testImpureArgumentOfPureCall<!>(): Int {
+    val result = identity(iAmAMethod())
+    return result
+}<!>
+
+<!PURITY_VIOLATION!>@Pure
+fun <!VERIFICATION_SKIPPED!>testImpureArgumentOfPureCallInReturn<!>(): Int {
+    return identity(iAmAMethod())
+}<!>
+
 <!PURITY_VIOLATION!>@Pure
 fun <!VERIFICATION_SKIPPED!>testExecutingLambda<!>(action: () -> Int): Int {
     return action()
