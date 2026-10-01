@@ -98,6 +98,68 @@ method unsafe_last(l: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
+/list.kt: info: Generated Viper text for unsafe_first_function:
+field size: Ref
+
+method first(v_this_extension: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), List())
+  requires acc(v_this_extension.size, write)
+  requires intFromRef(v_this_extension.size) >= 0
+  requires intFromRef(v_this_extension.size) > 0
+  ensures acc(v_this_extension.size, write)
+  ensures intFromRef(v_this_extension.size) >= 0
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+  ensures intFromRef(v_this_extension.size) ==
+    old(intFromRef(v_this_extension.size))
+
+
+method unsafe_first_function(l: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(l), List())
+  requires acc(l.size, write)
+  requires intFromRef(l.size) >= 0
+  ensures acc(l.size, write)
+  ensures intFromRef(l.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := first(l)
+  v_ret_0 := anon
+  inhale isSubtype(typeOf(v_ret_0), intType())
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/list.kt: info: Generated Viper text for unsafe_last_function:
+field size: Ref
+
+method last(v_this_extension: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this_extension), List())
+  requires acc(v_this_extension.size, write)
+  requires intFromRef(v_this_extension.size) >= 0
+  requires intFromRef(v_this_extension.size) > 0
+  ensures acc(v_this_extension.size, write)
+  ensures intFromRef(v_this_extension.size) >= 0
+  ensures isSubtype(typeOf(ret_1), nullable(anyType()))
+  ensures intFromRef(v_this_extension.size) ==
+    old(intFromRef(v_this_extension.size))
+
+
+method unsafe_last_function(l: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(l), List())
+  requires acc(l.size, write)
+  requires intFromRef(l.size) >= 0
+  ensures acc(l.size, write)
+  ensures intFromRef(l.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := last(l)
+  v_ret_0 := anon
+  inhale isSubtype(typeOf(v_ret_0), intType())
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
 /list.kt: info: Generated Viper text for add_get:
 field size: Ref
 
