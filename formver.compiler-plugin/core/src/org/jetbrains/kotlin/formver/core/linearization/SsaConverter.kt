@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.formver.viper.ast.Type
 class SsaConverter(
     val source: KtSourceElement? = null,
 ) {
-    private var head: SsaBlockNode = SsaBlockNode(SsaStartNode(), Exp.BoolLit(true))
+    private var head: SsaBlockNode = SsaBlockNode(SsaStartNode(), PathCondition.Always)
     private val ssaAssignments: MutableList<Pair<SsaVariableName, Exp>> = mutableListOf()
     private val returnExpressions: MutableList<Pair<Exp, Exp>> = mutableListOf()
     private val accessInvariants: MutableMap<SsaVariableName, List<Exp.PredicateAccess>> = mutableMapOf()
@@ -38,16 +38,7 @@ class SsaConverter(
             condition,
             this
         )
-        // The branching condition of the join is "under what condition is code after the
-        // if-else reachable". A branch that ends in `return` contributes no reachable
-        // continuation, so we drop its side of the disjunction.
-        val branchCondition = when {
-            thenResultHead.returns && head.returns -> Exp.BoolLit(false)
-            thenResultHead.returns -> head.fullBranchingCondition
-            head.returns -> thenResultHead.fullBranchingCondition
-            else -> Exp.Or(thenResultHead.fullBranchingCondition, head.fullBranchingCondition)
-        }
-        head = SsaBlockNode(joinNode, branchCondition)
+        head = SsaBlockNode(joinNode, PathCondition.or(thenResultHead.pathCondition, head.pathCondition))
     }
 
     fun constructExpression(): Exp {
@@ -101,8 +92,9 @@ class SsaConverter(
     }
 
     fun addReturn(returnExp: Exp) {
-        head.markAsReturning()
-        returnExpressions.add(head.fullBranchingCondition to returnExp)
+        val condition = head.pathCondition as? PathCondition.Reachable ?: return
+        returnExpressions.add(condition.exp to returnExp)
+        head = SsaBlockNode(head, PathCondition.Unreachable)
     }
 
     fun resolveVariableName(name: SymbolicName): SymbolicName {
@@ -114,11 +106,12 @@ class SsaConverter(
             source,
             "Tried to assign a variable without a default expression"
         )
-        if (head.fullBranchingCondition == Exp.BoolLit(true)) {
-            ssaAssignments.add(name to varExp)
-        } else {
-            ssaAssignments.add(name to Exp.TernaryExp(head.fullBranchingCondition, varExp, defaultExpression))
+        val guarded = when (val condition = head.pathCondition) {
+            PathCondition.Unreachable -> defaultExpression
+            PathCondition.Always -> varExp
+            is PathCondition.Reachable -> Exp.TernaryExp(condition.exp, varExp, defaultExpression)
         }
+        ssaAssignments.add(name to guarded)
     }
 
     private fun Exp.withAccessInvariants(name: SsaVariableName): Exp =

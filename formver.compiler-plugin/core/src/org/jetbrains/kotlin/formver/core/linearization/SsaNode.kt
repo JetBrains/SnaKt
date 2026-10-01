@@ -23,21 +23,12 @@ class SsaStartNode : SsaNode {
 
 class SsaBlockNode(
     private val predecessor: SsaNode,
-    val fullBranchingCondition: Exp,
+    val pathCondition: PathCondition,
 ) : SsaNode {
     val latestName: MutableMap<SymbolicName, SsaVariableName> = mutableMapOf()
-    var returns: Boolean = false
-        private set
-
-    fun markAsReturning() {
-        returns = true
-    }
 
     fun generateBranchingBlockNodeFromThisNode(condition: Exp): SsaBlockNode =
-        SsaBlockNode(
-            this,
-            if (fullBranchingCondition == Exp.BoolLit(true)) condition else Exp.And(fullBranchingCondition, condition),
-        )
+        SsaBlockNode(this, pathCondition.and(condition))
 
     context(ssaConverter: SsaConverter)
     fun updateLatestName(name: SymbolicName): SsaVariableName =
@@ -59,6 +50,9 @@ class SsaJoinNode(
         lookupCache[name] ?: resolveNameFromPredecessors(name)
 
     private fun resolveNameFromPredecessors(name: SymbolicName): SymbolicName {
+        // A predecessor that ends in a return contributes no value to the join.
+        if (leftPredecessor.pathCondition is PathCondition.Unreachable) return rightPredecessor.resolveVariableName(name)
+        if (rightPredecessor.pathCondition is PathCondition.Unreachable) return leftPredecessor.resolveVariableName(name)
         val leftIncoming = leftPredecessor.resolveVariableName(name)
         val rightIncoming = rightPredecessor.resolveVariableName(name)
         return if (rightIncoming == leftIncoming) {
