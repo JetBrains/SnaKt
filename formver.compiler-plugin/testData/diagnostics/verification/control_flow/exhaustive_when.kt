@@ -8,16 +8,14 @@ sealed interface Expr
 class Const(val value: Int) : Expr
 class Neg(val operand: Const) : Expr
 
-// An exhaustive `when` over a sealed interface with no `else` is total: the missing fallthrough is
-// unreachable (`inhale false`), so the function verifies as always returning an Int.
+// An exhaustive `when` over a sealed interface with no `else` verifies as total.
 @AlwaysVerify
 fun <!VIPER_TEXT!>eval<!>(e: Expr): Int = when (e) {
     is Const -> e.value
     is Neg -> -e.operand.value
 }
 
-// Totality is trusted, but branch bodies are still checked. `r` may be negative (e.g. Const(-1)),
-// so the assertion below fails to verify even though the `when` is total.
+// Branch bodies of a total `when` are still checked: `r` can be negative.
 @AlwaysVerify
 fun <!VIPER_TEXT!>evalNonNeg<!>(e: Expr): Int {
     val r = when (e) {
