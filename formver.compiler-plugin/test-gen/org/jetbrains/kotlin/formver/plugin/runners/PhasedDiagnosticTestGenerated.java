@@ -746,6 +746,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("invoke.kt")
+      public void testInvoke() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/invoke.kt");
+      }
+
+      @Test
       @TestMetadata("safe_call.kt")
       public void testSafe_call() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/safe_call.kt");

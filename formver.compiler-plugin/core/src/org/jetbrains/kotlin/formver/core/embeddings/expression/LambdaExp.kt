@@ -20,7 +20,7 @@ class LambdaExp(
     val signature: FunctionSignature,
     val function: FirAnonymousFunction,
     private val parentCtx: MethodConversionContext,
-    override val labelName: String,
+    override val labelName: String?,
 ) : CallableEmbedding,
     ExpEmbedding,
     FunctionSignature by signature {
