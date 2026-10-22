@@ -90,3 +90,105 @@ method require(value: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(value), boolType())
   ensures isSubtype(typeOf(ret_1), unitType())
   ensures true ==> boolFromRef(value)
+
+
+/array_bounds.kt: info: Generated Viper text for emptyArraySize:
+field p_size: Ref
+
+method emptyArray() returns (ret_1: Ref)
+  ensures isSubtype(typeOf(ret_1), Array())
+  ensures acc(ret_1.p_size, write)
+  ensures intFromRef(ret_1.p_size) >= 0
+  ensures intFromRef(ret_1.p_size) == 0
+
+
+method emptyArraySize() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_size: Ref
+  var anon: Ref
+  anon := emptyArray()
+  l0_size := anon.p_size
+  inhale isSubtype(typeOf(l0_size), intType())
+  assert intFromRef(l0_size) == 0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/array_bounds.kt: info: Generated Viper text for constructedArrayRead:
+field p_size: Ref
+
+method con(par_size: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_size), intType())
+  ensures isSubtype(typeOf(ret_2), IntArray())
+  ensures acc(ret_2.p_size, write)
+  ensures intFromRef(ret_2.p_size) >= 0
+  ensures acc(IntArray_unique(ret_2), write)
+  ensures intFromRef(ret_2.p_size) == intFromRef(par_size)
+
+
+method constructedArrayRead() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := con(intToRef(3))
+  v_ret_0 := get(anon, intToRef(2))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), IntArray())
+  requires acc(this.p_size, write)
+  requires intFromRef(this.p_size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.p_size) > intFromRef(index)
+  ensures acc(this.p_size, write)
+  ensures intFromRef(this.p_size) >= 0
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
+
+
+/array_bounds.kt: info: Generated Viper text for constructedArrayLastRead:
+field p_size: Ref
+
+method con(par_size: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(par_size), intType())
+  ensures isSubtype(typeOf(ret_3), IntArray())
+  ensures acc(ret_3.p_size, write)
+  ensures intFromRef(ret_3.p_size) >= 0
+  ensures acc(IntArray_unique(ret_3), write)
+  ensures intFromRef(ret_3.p_size) == intFromRef(par_size)
+
+
+method constructedArrayLastRead(n: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(n), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  anon_0 := require(gtInts(n, intToRef(0)))
+  anon_1 := con(n)
+  v_ret_0 := get(anon_1, minusInts(n, intToRef(1)))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method get(this: Ref, index: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), IntArray())
+  requires acc(this.p_size, write)
+  requires intFromRef(this.p_size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.p_size) > intFromRef(index)
+  ensures acc(this.p_size, write)
+  ensures intFromRef(this.p_size) >= 0
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
+
+
+method require(value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(value), boolType())
+  ensures isSubtype(typeOf(ret_1), unitType())
+  ensures true ==> boolFromRef(value)
