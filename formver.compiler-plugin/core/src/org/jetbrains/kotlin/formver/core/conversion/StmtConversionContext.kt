@@ -8,9 +8,7 @@ package org.jetbrains.kotlin.formver.core.conversion
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.fir.FirLabel
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
-import org.jetbrains.kotlin.fir.declarations.utils.isFinal
 import org.jetbrains.kotlin.fir.expressions.*
-import org.jetbrains.kotlin.fir.references.symbol
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.isBoolean
 import org.jetbrains.kotlin.fir.types.isUnit
@@ -18,21 +16,12 @@ import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.embeddings.FunctionBodyEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.LabelEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.callables.NamedFunctionSignatureWithContract
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
-import org.jetbrains.kotlin.formver.core.embeddings.properties.ClassPropertyAccess
-import org.jetbrains.kotlin.formver.core.embeddings.properties.PropertyAccessEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.properties.asPropertyAccess
-import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
-import org.jetbrains.kotlin.formver.core.isCustom
 import org.jetbrains.kotlin.formver.core.isInvariantBuilderFunctionNamed
 import org.jetbrains.kotlin.formver.core.linearization.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Exp
-import org.jetbrains.kotlin.utils.addIfNotNull
-import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
-import org.jetbrains.kotlin.utils.filterIsInstanceAnd
 
 /**
  * Interface for statement conversion.
@@ -69,178 +58,6 @@ interface StmtConversionContext : MethodConversionContext {
         action: StmtConversionContext.(catchBlockListData: CatchBlockListData) -> R,
     ): Pair<CatchBlockListData, R>
 }
-
-fun StmtConversionContext.declareLocalProperty(symbol: FirPropertySymbol, initializer: ExpEmbedding?): Declare {
-    registerLocalProperty(symbol)
-    val variable = embedLocalProperty(symbol)
-    return Declare(variable, initializer?.withType(variable.type))
-}
-
-fun StmtConversionContext.declareLocalVariable(symbol: FirVariableSymbol<*>, initializer: ExpEmbedding?): Declare {
-    registerLocalVariable(symbol)
-    val variable = embedLocalVariable(symbol)
-    return Declare(variable, initializer?.withType(variable.type))
-}
-
-fun StmtConversionContext.declareAnonVar(type: TypeEmbedding, initializer: ExpEmbedding?): Declare {
-    val variable = freshAnonVar(type)
-    return Declare(variable, initializer?.withType(variable.type))
-}
-
-
-val FirIntersectionOverridePropertySymbol.propertyIntersections
-    get() = intersections.filterIsInstanceAnd<FirPropertySymbol> { it.isVal == isVal }
-
-/**
- * Tries to find final property symbol actually declared in some class instead of
- * (potentially) fake property symbol.
- * Note that if some property is found it is fixed since
- * 1. there can't be two non-abstract properties which don't subsume each other
- * in the hierarchy (kotlin disallows that) and final properties can't be abstract;
- * 2. final property can't subsume other final property as that means final property
- * is overridden.
- * //TODO: decide if we leave this lookup or consider it unsafe.
- */
-fun FirPropertySymbol.findFinalParentProperty(): FirPropertySymbol? =
-    if (this !is FirIntersectionOverridePropertySymbol)
-        (isFinal && !isCustom).ifTrue { this }
-    else propertyIntersections.firstNotNullOfOrNull { it.findFinalParentProperty() }
-
-
-/**
- * This is a key function when looking up properties.
- * It translates a kotlin `receiver.field` expression to an `ExpEmbedding`.
- *
- * Note that in FIR this `field` may be represented as `FirIntersectionOverridePropertySymbol`
- * which is necessary when the property could hypothetically inherit from multiple sources.
- * However, we don't register such symbols in the context when traversing the class.
- * Hence, some advanced logic is needed here.
- *
- * First, we try to find an actual backing field somewhere in the parents of the field with a
- * dfs-like algorithm on `FirIntersectionOverridePropertySymbol`s (it also should be final).
- *
- * If final backing field is not found, we lazily create a getter/setter pair for this
- * `FirIntersectionOverrideProperty`.
- */
-fun StmtConversionContext.embedPropertyAccess(accessExpression: FirPropertyAccessExpression): PropertyAccessEmbedding =
-    when (val calleeSymbol = accessExpression.calleeReference.symbol) {
-        is FirValueParameterSymbol -> embedParameter(calleeSymbol).asPropertyAccess()
-        is FirPropertySymbol -> {
-            val type = embedType(calleeSymbol.resolvedReturnType)
-            when {
-                accessExpression.dispatchReceiver != null -> {
-                    val property = calleeSymbol.findFinalParentProperty()?.let {
-                        embedProperty(it)
-                    } ?: embedProperty(calleeSymbol)
-                    ClassPropertyAccess(convert(accessExpression.dispatchReceiver!!), property, type)
-                }
-
-                accessExpression.extensionReceiver != null -> {
-                    val property = embedProperty(calleeSymbol)
-                    ClassPropertyAccess(convert(accessExpression.extensionReceiver!!), property, type)
-                }
-
-                else -> embedLocalProperty(calleeSymbol)
-            }
-        }
-
-        else ->
-            error("Property access symbol $calleeSymbol has unsupported type.")
-    }
-
-
-fun StmtConversionContext.argumentDeclaration(
-    arg: ExpEmbedding,
-    callType: TypeEmbedding
-): Pair<Declare?, ExpEmbedding> =
-    when (arg.ignoringMetaNodes()) {
-        is LambdaExp -> null to arg
-        else -> {
-            val argWithInvariants = arg.withNewTypeInvariants(callType, typeResolver) {
-                proven = true
-                access = true
-            }
-            // If `argWithInvariants` is `Cast(...(Cast(someVariable))...)` it is fine to use it
-            // since in Viper it will always be translated to `someVariable`.
-            // On other hand, `TypeEmbedding` and invariants in Viper are guaranteed
-            // via previous line.
-            if (argWithInvariants.underlyingVariable != null) null to argWithInvariants
-            else declareAnonVar(callType, argWithInvariants).let {
-                it to it.variable
-            }
-        }
-    }
-
-fun StmtConversionContext.getInlineFunctionCallArgs(
-    args: List<ExpEmbedding>,
-    formalArgTypes: List<TypeEmbedding>,
-): Pair<List<Declare>, List<ExpEmbedding>> {
-    val declarations = mutableListOf<Declare>()
-    val storedArgs = args.zip(formalArgTypes).map { (arg, callType) ->
-        argumentDeclaration(arg, callType).let { (declaration, usage) ->
-            declarations.addIfNotNull(declaration)
-            usage
-        }
-    }
-    return Pair(declarations, storedArgs)
-}
-
-fun StmtConversionContext.insertInlineFunctionCall(
-    calleeSignature: FunctionSignature,
-    paramNames: List<SubstitutedArgument>,
-    args: List<ExpEmbedding>,
-    body: FirBlock,
-    returnTargetName: String?,
-    parentCtx: MethodConversionContext? = null,
-): ExpEmbedding {
-    // TODO: It seems like it may be possible to avoid creating a local here, but it is not clear how.
-    val returnTarget = returnTargetProducer.getFresh(calleeSignature.callableType.returnType)
-    assert(returnTarget.label != null) {
-        "Return target label not found for function ${calleeSignature.callableType.name}"
-    }
-    val (declarations, callArgs) = getInlineFunctionCallArgs(args, calleeSignature.callableType.formalArgTypes)
-    val subs = paramNames.zip(callArgs).toMap()
-    val methodCtxFactory = MethodContextFactory(
-        calleeSignature,
-        InlineParameterResolver(subs, returnTargetName, returnTarget),
-        parent = parentCtx,
-    )
-
-    return withMethodCtx(methodCtxFactory) {
-        Block {
-            add(Declare(returnTarget.variable, null))
-            addAll(declarations)
-            add(FunctionExp(null, convert(body), returnTarget.label!!))
-            // if unit is what we return we might not guarantee it yet
-            add(returnTarget.variable.withIsUnitInvariantIfUnit(typeResolver))
-        }
-    }
-}
-
-internal fun StmtConversionContext.insertQuantifierFunctionCall(
-    symbol: FirValueParameterSymbol,
-    block: FirBlock,
-    buildEmbedding: (VariableEmbedding, List<ExpEmbedding>, List<ExpEmbedding>) -> ExpEmbedding,
-): ExpEmbedding {
-    val anonVar = freshAnonBuiltinVar(embedType(symbol.resolvedReturnType))
-    val methodCtxFactory = MethodContextFactory(
-        signature,
-        InlineParameterResolver(
-            substitutions = mapOf(SubstitutedArgument.ValueParameter(symbol) to anonVar),
-            labelName = null,
-            // TODO: ideally, there shouldn't be a return target since return is prohibited
-            defaultResolvedReturnTarget = defaultResolvedReturnTarget,
-        ),
-        parent = this,
-    )
-    return withNoScope {
-        withMethodCtx(methodCtxFactory) {
-            val (invariants, triggers) = collectInvariantsAndTriggers(block)
-            buildEmbedding(anonVar, invariants, triggers)
-        }
-    }
-}
-
 
 fun StmtConversionContext.convertImpureBody(
     declaration: FirSimpleFunction,
