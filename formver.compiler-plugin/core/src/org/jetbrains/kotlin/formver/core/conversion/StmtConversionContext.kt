@@ -154,7 +154,10 @@ fun StmtConversionContext.embedPropertyAccess(accessExpression: FirPropertyAcces
             error("Property access symbol $calleeSymbol has unsupported type.")
     }
 
-/** Evaluates a `const` property to its initializer's value, or returns null if it cannot be evaluated. */
+/**
+ * Evaluates a `const` property to its initializer's value, or returns null if it cannot be evaluated.
+ * A receiver that is more than a qualifier or `this` is still evaluated for its effects, before the value.
+ */
 @OptIn(SymbolInternals::class)
 private fun StmtConversionContext.foldConstProperty(
     symbol: FirPropertySymbol,
@@ -162,8 +165,12 @@ private fun StmtConversionContext.foldConstProperty(
 ): ExpEmbedding? {
     val evaluated = FirExpressionEvaluator.evaluatePropertyInitializer(symbol.fir, session)
     if (evaluated !is FirEvaluatorResult.Evaluated) return null
-    val result = evaluated.result
-    return if (result is FirExpression && result !== accessExpression) convert(result) else null
+    val literal = (evaluated.result as? FirLiteralExpression)?.let { convert(it) } ?: return null
+    val receiver = accessExpression.dispatchReceiver
+    return when (receiver) {
+        null, is FirResolvedQualifier, is FirThisReceiverExpression -> literal
+        else -> blockOf(convert(receiver), literal)
+    }
 }
 
 fun StmtConversionContext.argumentDeclaration(
