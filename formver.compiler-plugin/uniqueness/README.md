@@ -65,6 +65,12 @@ The checker tracks two kinds of uniqueness:
 - **Merges**
   - Join incoming states path-wise.
 
+Both call nodes are skipped for a call the analyzer's `UniquenessNeutralCallPredicate` accepts, leaving the
+state untouched. The plugin supplies `isSpecificationCall`, which holds for the `@SpecificationHelper`
+specification DSL (`verify`, `preconditions`, `old`, `fold`, `UniquePred`, and the rest), so a specification
+neither moves nor mutates what it mentions. Those functions take their arguments `@Borrowed`, so what a
+specification mentions does not escape either.
+
 ### Diagnostics
 
 Checkers consume the above analyses:
@@ -79,6 +85,10 @@ Checkers consume the above analyses:
   - reports moved subpaths left in borrowed locals at function exit
 - `ExpressionArgumentUniquenessCollisionChecker.kt`
   - reports duplicate/overlapping unique arguments in one call
+
+The three flow-sensitive function checkers are registered through `asSpecificationAware()`
+(`SpecificationAwareChecker.kt`, in the plugin module), which suppresses them inside the arguments of a
+specification call.
 
 ## Current Test Coverage
 
@@ -116,4 +126,9 @@ Known limitations in current code/tests:
 
 - **Interaction with closures** 
   - The current `GraphUniquenessStatesAnalyzer.kt` visits the lambda subgraphs as if they were part of the local control flows, which can result in unexpected behavior.
-  
+
+- **Reading a moved value inside a specification**
+  - Whether this is reported depends on the shape of the DSL entry point. `verify(a === b)` evaluates its
+    argument in the enclosing function's flow, so a moved `a` is reported; `preconditions { a.n == 0 }` puts it
+    in a lambda that `asSpecificationAware()` stands the checker down on, so nothing is reported.
+  - Both behaviours are pinned by `uniqueness_checker/specification.kt`.

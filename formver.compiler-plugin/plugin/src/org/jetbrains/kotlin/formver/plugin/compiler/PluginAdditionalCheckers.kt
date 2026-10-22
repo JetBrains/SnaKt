@@ -72,9 +72,10 @@ class PluginAdditionalCheckers(session: FirSession, config: PluginConfiguration)
 
         override val functionCheckers: Set<FirFunctionChecker> = buildSet {
             if (config.checkUniqueness) {
-                add(FunctionEscapeUniquenessConsistencyChecker)
-                add(FunctionExitUniquenessConsistencyChecker)
-                add(FunctionUseAfterMoveChecker)
+                // A specification body never runs, so there is no flow through it to check.
+                add(FunctionEscapeUniquenessConsistencyChecker.asSpecificationAware())
+                add(FunctionExitUniquenessConsistencyChecker.asSpecificationAware())
+                add(FunctionUseAfterMoveChecker.asSpecificationAware())
             }
         }
 
@@ -144,7 +145,8 @@ class PluginAdditionalCheckers(session: FirSession, config: PluginConfiguration)
 
         override val propertyAccessExpressionCheckers: Set<FirPropertyAccessExpressionChecker> = buildSet {
             if (config.checkLocality) {
-                add(PropertyAccessLocalityChecker)
+                // A specification block never runs, so it may capture a variable of any locality.
+                add(PropertyAccessLocalityChecker.asSpecificationAware())
             }
         }
 
