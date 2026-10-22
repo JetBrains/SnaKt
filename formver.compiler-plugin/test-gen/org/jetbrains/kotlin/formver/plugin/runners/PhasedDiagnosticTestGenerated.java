@@ -678,6 +678,18 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("local_functions.kt")
+      public void testLocal_functions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/inlining/local_functions.kt");
+      }
+
+      @Test
+      @TestMetadata("recursive_local_functions.kt")
+      public void testRecursive_local_functions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/inlining/recursive_local_functions.kt");
+      }
+
+      @Test
       @TestMetadata("scoped_receivers.kt")
       public void testScoped_receivers() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/inlining/scoped_receivers.kt");

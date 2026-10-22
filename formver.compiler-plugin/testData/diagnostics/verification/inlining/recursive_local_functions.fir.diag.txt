@@ -1,0 +1,3 @@
+/recursive_local_functions.kt: error: An internal error has occurred.
+Details: Recursive local function 'local' is not supported
+Please report this at https://github.com/jesyspa/kotlin

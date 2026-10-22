@@ -46,6 +46,15 @@ interface ProgramConversionContext : ErrorCollectionContext {
     val linearizedBodyResolver: LinearizedBodyResolver
 
     fun embedAnyFunction(symbol: FirFunctionSymbol<*>): CallableEmbedding
+
+    /**
+     * Returns a stable, per-conversion index that disambiguates local functions.
+     *
+     * Sibling local functions may share a name and signature, so their embedded names would
+     * otherwise collide in the signature cache and cause the wrong body to be inlined. Each distinct
+     * local function symbol is assigned its own index.
+     */
+    fun localFunctionUniqueIndex(symbol: FirFunctionSymbol<*>): Int
     fun embedType(type: ConeKotlinType): TypeEmbedding
     fun embedFunctionPretype(symbol: FirFunctionSymbol<*>): FunctionTypeEmbedding
     fun embedType(exp: FirExpression): TypeEmbedding = embedType(exp.resolvedType)

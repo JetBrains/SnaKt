@@ -79,6 +79,9 @@ class ProgramConverter(
     override fun reportMinorInternalError(msg: String) =
         emit(currentDeclarationSource, ConversionErrors.MINOR_INTERNAL_ERROR, msg)
 
+    override fun reportMinorInternalError(source: KtSourceElement?, msg: String) =
+        emit(source, ConversionErrors.MINOR_INTERNAL_ERROR, msg)
+
     private fun reportVerificationSkipped(source: KtSourceElement?, msg: String) {
         context(diagnosticContext) {
             reporter.reportOn(source, ConversionErrors.VERIFICATION_SKIPPED, msg)
@@ -93,6 +96,12 @@ class ProgramConverter(
     private val fullSignatures: MutableMap<SymbolicName, CompleteFunctionSignature> = mutableMapOf()
 
     private val callable: MutableMap<SymbolicName, SignatureWithTarget<NamedCallableEmbedding>> = mutableMapOf()
+
+    /** Stable per-symbol indices assigned to local functions to keep their embedded names distinct. */
+    private val localFunctionIndices: MutableMap<FirFunctionSymbol<*>, Int> = mutableMapOf()
+
+    override fun localFunctionUniqueIndex(symbol: FirFunctionSymbol<*>): Int =
+        localFunctionIndices.getOrPut(symbol) { localFunctionIndices.size }
 
     private data class RegisteredFunction(
         val declaration: FirSimpleFunction,

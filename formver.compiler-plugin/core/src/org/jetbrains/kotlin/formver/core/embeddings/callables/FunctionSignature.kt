@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.formver.core.asPosition
 import org.jetbrains.kotlin.formver.core.conversion.StmtConversionContext
 import org.jetbrains.kotlin.formver.core.conversion.SubstitutedArgument
 import org.jetbrains.kotlin.formver.core.conversion.TypeResolver
+import org.jetbrains.kotlin.formver.core.conversion.handleUnsupportedFeature
 import org.jetbrains.kotlin.formver.core.conversion.insertInlineFunctionCall
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FunctionCall
@@ -170,6 +171,10 @@ data class InlineNamedFunction(
     override val postconditions: List<ExpEmbedding>,
     override val symbol: FirFunctionSymbol<*>,
 ) : CompleteFunctionSignature, NamedCallableEmbedding, NamedFunctionSignature by signature {
+    companion object {
+        private val activeLocalCalls = ThreadLocal.withInitial { mutableSetOf<FirFunctionSymbol<*>>() }
+    }
+
     override fun insertCall(
         args: List<ExpEmbedding>,
         ctx: StmtConversionContext,
@@ -179,7 +184,28 @@ data class InlineNamedFunction(
             if (callableType.extensionReceiverType != null) add(SubstitutedArgument.ExtensionThis)
             addAll(symbol.valueParameterSymbols.map { SubstitutedArgument.ValueParameter(it) })
         }
-        return ctx.insertInlineFunctionCall(signature, paramNames, args, firBody, signature.labelName)
+        if (!symbol.callableId.isLocal) {
+            return ctx.insertInlineFunctionCall(signature, paramNames, args, firBody, signature.labelName)
+        }
+
+        val activeCalls = activeLocalCalls.get()
+        if (!activeCalls.add(symbol)) {
+            // Recursive local functions cannot be inlined; treat them as an unsupported feature.
+            return ctx.handleUnsupportedFeature(symbol.source, "Recursive local function '${symbol.name}' is not supported")
+        }
+        return try {
+            ctx.insertInlineFunctionCall(
+                signature,
+                paramNames,
+                args,
+                firBody,
+                signature.labelName,
+                parentCtx = ctx,
+            )
+        } finally {
+            activeCalls.remove(symbol)
+            if (activeCalls.isEmpty()) activeLocalCalls.remove()
+        }
     }
 
     override val declarationSource: KtSourceElement?

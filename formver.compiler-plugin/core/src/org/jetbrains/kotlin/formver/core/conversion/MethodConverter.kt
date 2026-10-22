@@ -19,6 +19,11 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
  * In general, however, a callee inline function does *not* in general have its caller as a parent: this is because an inlined
  * function does not have access to the variables of its caller, so it does not make sense to have symbol resolution pass through it.
  *
+ * Local functions are the exception: they capture variables from their enclosing scope, so a local-function call is inlined
+ * with the caller as its parent (see `InlineNamedFunction.insertCall`). A local function is only visible within its enclosing
+ * scope, so the caller's converter chain always reaches the lexical parent, and symbol resolution by symbol identity finds the
+ * captured variables and parameters there.
+ *
  * We're using the term `MethodConverter` here for consistency with the `XConverter` implementing `XConversionContext`.
  * Really, this class doesn't do any conversion itself, it just provides information for the `StmtConverter`
  * to get its work done.

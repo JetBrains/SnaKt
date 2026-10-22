@@ -90,6 +90,27 @@ data class LocalScope(val level: Int) : NameScope {
 }
 
 /**
+ * Scope disambiguating a local function.
+ *
+ * Local function names are not unique within their enclosing declaration: sibling local functions
+ * (declared in different blocks) may share a name and signature. [index] is a stable per-conversion
+ * index that keeps such functions' embedded names — and hence their signature-cache keys — apart.
+ */
+data class LocalFunctionScope(override val parent: NameScope, val index: Int) : NameScope {
+    override val candidates: List<CandidateName> = buildCandidates {
+        candidateNoSeparator {
+            +"lf"
+            +"$index"
+        }
+        candidate {
+            +parent
+            +"lf$index"
+        }
+    }
+    override val children: List<AnyName> = listOf(parent)
+}
+
+/**
  * Scope to use in cases when we need a scoped name, but don't actually want to introduce one.
  */
 data object FakeScope : NameScope {
