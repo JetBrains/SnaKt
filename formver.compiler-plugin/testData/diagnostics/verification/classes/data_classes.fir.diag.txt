@@ -1,0 +1,124 @@
+/data_classes.kt: info: Generated Viper text for destructureDataClass:
+function g_first(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function g_second(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method component1(this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) == intFromRef(g_first(this))
+
+
+method con(par_first: Ref, par_second: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_first), intType())
+  requires isSubtype(typeOf(par_second), intType())
+  ensures isSubtype(typeOf(ret_1), DataPair())
+  ensures acc(DataPair_unique(ret_1), write)
+  ensures intFromRef(g_first(ret_1)) == intFromRef(par_first)
+  ensures intFromRef(g_second(ret_1)) == intFromRef(par_second)
+
+
+method destructureDataClass() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  var l0_first: Ref
+  anon := con(intToRef(10), intToRef(20))
+  l0_first := component1(anon)
+  assert intFromRef(l0_first) == 10
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/data_classes.kt: info: Generated Viper text for dataClassComponent:
+function g_first(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function g_second(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method component1(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(ret_1), intType())
+  ensures intFromRef(ret_1) == intFromRef(g_first(this))
+
+
+method con(par_first: Ref, par_second: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_first), intType())
+  requires isSubtype(typeOf(par_second), intType())
+  ensures isSubtype(typeOf(ret_2), DataPair())
+  ensures acc(DataPair_unique(ret_2), write)
+  ensures intFromRef(g_first(ret_2)) == intFromRef(par_first)
+  ensures intFromRef(g_second(ret_2)) == intFromRef(par_second)
+
+
+method dataClassComponent() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_first: Ref
+  var anon: Ref
+  anon := con(intToRef(10), intToRef(20))
+  l0_first := component1(anon)
+  assert intFromRef(l0_first) == 10
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/data_classes.kt: info: Generated Viper text for destructureWithVarProperty:
+field bf_first: Ref
+
+function g_second(this: Ref): Ref
+  requires isSubtype(typeOf(this), MutablePair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method component1(this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), MutablePair())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method component2(this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), MutablePair())
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) == intFromRef(g_second(this))
+
+
+method destructureWithVarProperty(pair: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(pair), MutablePair())
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  var l0_first: Ref
+  var l0_second: Ref
+  anon := pair
+  l0_first := component1(anon)
+  l0_second := component2(anon)
+  assert intFromRef(l0_second) == intFromRef(g_second(pair))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.fir.analysis.checkers.isPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
+import org.jetbrains.kotlin.fir.declarations.utils.isData
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
@@ -11,6 +12,7 @@ import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.EqCmp
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FirVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
@@ -200,9 +202,30 @@ fun SignatureWithTarget<NonInlineCallable>.toNormalSignature(symbol: FirFunction
             )
             addPreconditions(preconditions)
             addPostconditions(postconditions)
+            addPostconditions(dataClassGeneratedPostconditions(symbol, current.signature, returnTarget))
         }
         NonInlineFunctionSignature(current.signature, contract.preconditions, contract.postconditions, symbol.source)
     }
+
+context(converter: ProgramConversionContext)
+private fun dataClassGeneratedPostconditions(
+    symbol: FirFunctionSymbol<*>,
+    signature: NamedFunctionSignature,
+    returnTarget: ReturnTarget,
+): List<ExpEmbedding> {
+    val dataClass = symbol.receiverType?.toRegularClassSymbol(converter.session)?.takeIf { it.isData }
+        ?: return emptyList()
+    val receiver = signature.dispatchReceiver ?: return emptyList()
+    // Constructor property getters in constructor order. Only `val` properties can be read in a postcondition.
+    val constructorProperties = dataClass.propertySymbols
+        .filter { it.correspondingValueParameterFromPrimaryConstructor != null }
+        .map { property -> converter.embedProperty(property).takeIf { it.isVal }?.getter }
+
+    val componentIndex = symbol.name.asString().removePrefix("component").toIntOrNull()
+    if (componentIndex == null || symbol.valueParameterSymbols.isNotEmpty()) return emptyList()
+    val getter = constructorProperties.getOrNull(componentIndex - 1) ?: return emptyList()
+    return listOf(EqCmp(returnTarget.variable, getter.getValueSimple(receiver, converter.typeResolver)))
+}
 
 @OptIn(SymbolInternals::class)
 context(converter: ProgramConversionContext)
