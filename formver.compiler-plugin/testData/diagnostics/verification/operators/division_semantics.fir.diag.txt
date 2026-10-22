@@ -60,13 +60,3 @@ method divisionRemainderIdentity(a: Ref, b: Ref) returns (v_ret_0: Ref)
   goto lbl_ret_0
   label lbl_ret_0
 }
-
-/division_semantics.kt: info: Generated Viper text for minimumValueNegativeOneDivision:
-method minimumValueNegativeOneDivision() returns (v_ret_0: Ref)
-  ensures isSubtype(typeOf(v_ret_0), intType())
-  ensures intFromRef(v_ret_0) == -(-2147483647 - 1)
-{
-  v_ret_0 := divInts(minusInts(intToRef(-2147483647), intToRef(1)), intToRef(-1))
-  goto lbl_ret_0
-  label lbl_ret_0
-}
