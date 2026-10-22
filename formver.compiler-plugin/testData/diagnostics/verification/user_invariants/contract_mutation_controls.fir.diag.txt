@@ -1,0 +1,69 @@
+/contract_mutation_controls.kt: info: Generated Viper text for strictSuccessor:
+method strictSuccessor(base: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(base), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(base) >= 0 ==> intFromRef(v_ret_0) > intFromRef(base)
+{
+  v_ret_0 := plusInts(base, intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/contract_mutation_controls.kt: info: Generated Viper text for nonStrictSuccessor:
+method nonStrictSuccessor(base: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(base), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(base) >= 0 ==> intFromRef(v_ret_0) >= intFromRef(base)
+{
+  v_ret_0 := plusInts(base, intToRef(1))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/contract_mutation_controls.kt: info: Generated Viper text for strictPostconditionPropagates:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method strictPostconditionPropagates(base: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(base), intType())
+  requires intFromRef(base) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  l0_result := strictSuccessor(base)
+  assert intFromRef(l0_result) > intFromRef(base)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method strictSuccessor(base: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(base), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(base) >= 0 ==> intFromRef(ret_2) > intFromRef(base)
+
+
+/contract_mutation_controls.kt: info: Generated Viper text for nonStrictPostconditionDoesNotProveStrictResult:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method nonStrictPostconditionDoesNotProveStrictResult(base: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(base), intType())
+  requires intFromRef(base) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var l0_result: Ref
+  l0_result := nonStrictSuccessor(base)
+  assert intFromRef(l0_result) > intFromRef(base)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method nonStrictSuccessor(base: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(base), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(base) >= 0 ==> intFromRef(ret_2) >= intFromRef(base)
