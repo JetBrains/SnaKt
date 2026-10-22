@@ -103,6 +103,8 @@ class ProgramConverter(
 
     override val typeResolver: TypeResolver = TypeResolver()
 
+    private val contractEmbedder = ContractEmbedder(this)
+
     val debugExpEmbeddings: Map<SymbolicName, ExpEmbedding>
         get() = buildMap {
             convertedBodyResolver.forEachImpure { name, body -> put(name, body.bodyExp) }
@@ -238,40 +240,6 @@ class ProgramConverter(
         return stmtCtx
     }
 
-    private fun createContractConversionContext(
-        symbol: FirFunctionSymbol<*>,
-        signature: NamedFunctionSignature,
-        firSpec: FirSpecification,
-        returnTarget: ReturnTarget,
-    ): Pair<StmtConversionContext, StmtConversionContext> {
-        val rootResolver = RootParameterResolver(
-            this@ProgramConverter,
-            signature,
-            symbol.valueParameterSymbols,
-            signature.labelName,
-            returnTarget,
-        )
-
-        val wrappedResolver = firSpec.returnVar?.let { ReturnVarSubstitutor(it, signature.returns) }
-            ?.let { ctx -> SubstitutedReturnParameterResolver(rootResolver, ctx) } ?: rootResolver
-
-        val preconditionContext = MethodConverter(
-            this@ProgramConverter,
-            signature,
-            rootResolver,
-            ScopeIndex.NoScope,
-        ).statementCtxt()
-
-        val postconditionContext = MethodConverter(
-            this@ProgramConverter,
-            signature,
-            wrappedResolver,
-            ScopeIndex.NoScope,
-        ).statementCtxt()
-
-        return Pair(preconditionContext, postconditionContext)
-    }
-
     // endregion
 
 
@@ -366,48 +334,9 @@ class ProgramConverter(
 
     // region contracts
 
-    private fun embedFormverContract(
-        symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, returnTarget: ReturnTarget
-    ): Pair<List<ExpEmbedding>, List<ExpEmbedding>> {
-        @OptIn(SymbolInternals::class) val declaration = symbol.fir
-        val body = declaration.body
-
-        /** Specifications are only allowed inside simple functions.
-         * We are also unable to retrieve them when body is not visible,
-         * although ideally we should be able to see preconditions and postconditions
-         * from other modules.
-         */
-        if (declaration !is FirSimpleFunction || body == null) {
-            return Pair(emptyList(), emptyList())
-        }
-
-        val firSpec = extractFirSpecification(body, declaration.symbol.resolvedReturnType, this)
-
-
-        val (preconditionContext, postconditionContext) = createContractConversionContext(
-            symbol, signature, firSpec, returnTarget
-        )
-
-        val preconditions = firSpec.precond?.let { preconditionContext.collectInvariants(it) } ?: emptyList()
-        val postconditions = firSpec.postcond?.let { postconditionContext.collectInvariants(it) } ?: emptyList()
-
-        return Pair(preconditions, postconditions)
-    }
-
-    private fun embedKotlinContract(
-        symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature
-    ): List<ExpEmbedding> {
-        val contractVisitor = ContractDescriptionConversionVisitor(this@ProgramConverter, signature, symbol)
-        return contractVisitor.getPostconditions()
-    }
-
     override fun embedContract(
         symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, returnTarget: ReturnTarget
-    ): Pair<List<ExpEmbedding>, List<ExpEmbedding>> {
-        val kotlinContractPostcondition = embedKotlinContract(symbol, signature)
-        val userContract = embedFormverContract(symbol, signature, returnTarget)
-        return Pair(userContract.first, kotlinContractPostcondition + userContract.second)
-    }
+    ): Pair<List<ExpEmbedding>, List<ExpEmbedding>> = contractEmbedder.embedContract(symbol, signature, returnTarget)
 
     // endregion
 
