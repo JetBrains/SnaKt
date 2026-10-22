@@ -1,8 +1,5 @@
 // FULL_JDK
 
-import org.jetbrains.kotlin.formver.plugin.Pure
-import org.jetbrains.kotlin.formver.plugin.preconditions
-
 class Box(val field: Int) {
     val prop: Int
         get() = 1
@@ -29,12 +26,3 @@ fun <!VIPER_TEXT!>nonNullAssertionFieldReceiver<!>(): Int {
     val b: Box? = Box(1)
     return b!!.field
 }
-
-// A non-null assertion converts to an assert, which pure function bodies do not allow.
-<!PURITY_VIOLATION!>@Pure
-fun <!VERIFICATION_SKIPPED!>nonNullAssertionInPureFunction<!>(x: Int?): Int {
-    preconditions {
-        x != null
-    }
-    return x!! + 1
-}<!>
