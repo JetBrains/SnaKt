@@ -214,11 +214,38 @@ private fun dataClassGeneratedPostconditions(
     signature: NamedFunctionSignature,
     returnTarget: ReturnTarget,
 ): List<ExpEmbedding> {
+    if (symbol.name.asString() == "copy") return dataClassCopyPostconditions(symbol, signature, returnTarget)
     val property = generatedComponentProperty(symbol) ?: return emptyList()
     val receiver = signature.dispatchReceiver ?: return emptyList()
     // Relating mutable components to field values needs permission-aware reads, which are not modeled here.
     val getter = converter.embedProperty(property).takeIf { it.isVal }?.getter ?: return emptyList()
     return listOf(EqCmp(returnTarget.variable, getter.getValueSimple(receiver, converter.typeResolver)))
+}
+
+context(converter: ProgramConversionContext)
+private fun dataClassCopyPostconditions(
+    symbol: FirFunctionSymbol<*>,
+    signature: NamedFunctionSignature,
+    returnTarget: ReturnTarget,
+): List<ExpEmbedding> {
+    val dataClass = symbol.receiverType?.toRegularClassSymbol(converter.session)?.takeIf { it.isData }
+        ?: return emptyList()
+    val constructorProperties = dataClass.propertySymbols.mapNotNull { property ->
+        property.correspondingValueParameterFromPrimaryConstructor?.let { parameter ->
+            parameter to converter.embedProperty(property).takeIf { it.isVal }?.getter
+        }
+    }
+
+    val paramsByName = signature.params.filterIsInstance<FirVariableEmbedding>().mapNotNull { parameter ->
+        (parameter.symbol as? FirValueParameterSymbol)?.name?.let { it to parameter }
+    }.toMap()
+    val propertyEqualities = constructorProperties.mapNotNull { (constructorParameter, getter) ->
+        val parameter = paramsByName[constructorParameter.name] ?: return@mapNotNull null
+        getter?.let { EqCmp(it.getValueSimple(returnTarget.variable, converter.typeResolver), parameter) }
+    }
+    // `copy` returns a fresh instance, so like a constructor it grants access to the result's unique predicate.
+    val uniqueAccess = returnTarget.variable.uniquePredicateAccessInvariant(converter.typeResolver)
+    return propertyEqualities + listOfNotNull(uniqueAccess)
 }
 
 @OptIn(SymbolInternals::class, DirectDeclarationsAccess::class)
