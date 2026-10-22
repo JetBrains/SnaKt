@@ -21,6 +21,7 @@ import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.common.TargetsSelection
 import org.jetbrains.kotlin.formver.core.conversion.ProgramConverter
+import org.jetbrains.kotlin.formver.core.conversion.containsSpecBlocks
 import org.jetbrains.kotlin.formver.core.embeddings.expression.debug.print
 import org.jetbrains.kotlin.formver.core.names.SimpleNameResolver
 import org.jetbrains.kotlin.formver.core.shouldVerify
@@ -36,11 +37,23 @@ import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 
-private val FirContractDescriptionOwner.hasContract: Boolean
+private val FirContractDescriptionOwner.hasKotlinContract: Boolean
     get() = when (val description = contractDescription) {
         is FirResolvedContractDescription -> description.effects.isNotEmpty()
         else -> false
     }
+
+private val FirSimpleFunction.hasSpecBlocks: Boolean
+    get() = body?.let { containsSpecBlocks(it) } == true
+
+/**
+ * Whether [this] has a Kotlin `contract { }` or a SnaKt specification block, misplaced blocks included.
+ *
+ * Callers assume a callee's specification whether or not the callee is a target. Misplaced blocks are
+ * reported only for functions that get converted.
+ */
+private val FirSimpleFunction.hasContract: Boolean
+    get() = hasKotlinContract || hasSpecBlocks
 
 private fun TargetsSelection.applicable(declaration: FirSimpleFunction): Boolean = when (this) {
     TargetsSelection.ALL_TARGETS -> true
