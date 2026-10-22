@@ -1,0 +1,11 @@
+/non_literal_spec_arguments.kt: error: An internal error has occurred.
+Details: Only lambdas are allowed as arguments of preconditions.
+Please report this at https://github.com/jesyspa/kotlin
+
+/non_literal_spec_arguments.kt: error: An internal error has occurred.
+Details: Only lambdas are allowed as arguments of loopInvariants.
+Please report this at https://github.com/jesyspa/kotlin
+
+/non_literal_spec_arguments.kt: error: An internal error has occurred.
+Details: Expected type kotlin/Int based on signature, got kotlin/Boolean
+Please report this at https://github.com/jesyspa/kotlin

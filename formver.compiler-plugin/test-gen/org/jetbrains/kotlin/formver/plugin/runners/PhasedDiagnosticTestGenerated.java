@@ -906,6 +906,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("non_literal_spec_arguments.kt")
+      public void testNon_literal_spec_arguments() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/non_literal_spec_arguments.kt");
+      }
+
+      @Test
       @TestMetadata("simple_forall.kt")
       public void testSimple_forall() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/simple_forall.kt");
