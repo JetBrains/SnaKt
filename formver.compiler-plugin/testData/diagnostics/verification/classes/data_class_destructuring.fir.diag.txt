@@ -1,0 +1,5 @@
+/data_class_destructuring.kt: error: Formal verification does not support this Kotlin feature: Not yet implemented for FirComponentCall (first)
+
+/data_class_destructuring.kt: error: Formal verification does not support this Kotlin feature: Not yet implemented for FirComponentCall (_)
+
+/data_class_destructuring.kt: error: Formal verification does not support this Kotlin feature: Not yet implemented for FirComponentCall (a)
