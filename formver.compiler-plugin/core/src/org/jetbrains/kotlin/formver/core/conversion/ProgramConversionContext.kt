@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.formver.core.conversion
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirConstructorSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.fir.types.resolvedType
@@ -53,6 +54,11 @@ interface ProgramConversionContext : ErrorCollectionContext {
     fun embedContract(
         symbol: FirFunctionSymbol<*>, signature: NamedFunctionSignature, returnTarget: ReturnTarget
     ): Pair<List<ExpEmbedding>, List<ExpEmbedding>>
+    fun embedConstructorPostconditions(
+        symbol: FirConstructorSymbol,
+        signature: NamedFunctionSignature,
+        returnTarget: ReturnTarget,
+    ): List<ExpEmbedding>
 
     /**
      * Returns true if the property has default behavior. That is:

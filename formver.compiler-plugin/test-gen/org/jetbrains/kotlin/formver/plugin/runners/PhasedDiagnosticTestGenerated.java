@@ -388,6 +388,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("constructor_postconditions.kt")
+      public void testConstructor_postconditions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/constructor_postconditions.kt");
+      }
+
+      @Test
       @TestMetadata("inheritance.kt")
       public void testInheritance() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/classes/inheritance.kt");
