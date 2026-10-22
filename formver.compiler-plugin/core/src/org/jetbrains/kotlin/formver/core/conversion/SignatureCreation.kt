@@ -22,6 +22,7 @@ import org.jetbrains.kotlin.formver.core.isPure
 import org.jetbrains.kotlin.formver.core.isUnique
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
+import org.jetbrains.kotlin.util.OperatorNameConventions
 
 data class SignatureWithTarget<out S : FunctionSignature>(
     val signature: S, val returnTarget: ReturnTarget
@@ -39,6 +40,10 @@ data class SignatureWithTarget<out S : FunctionSignature>(
 @OptIn(DirectDeclarationsAccess::class)
 val FirRegularClassSymbol.propertySymbols: List<FirPropertySymbol>
     get() = declarationSymbols.filterIsInstance<FirPropertySymbol>()
+
+@OptIn(DirectDeclarationsAccess::class)
+val FirRegularClassSymbol.declaresEquals: Boolean
+    get() = declarationSymbols.any { it is FirNamedFunctionSymbol && it.name == OperatorNameConventions.EQUALS }
 
 private fun <R> FirPropertySymbol.withConstructorParam(action: FirPropertySymbol.(FirValueParameterSymbol) -> R): R? =
     correspondingValueParameterFromPrimaryConstructor?.let { param ->

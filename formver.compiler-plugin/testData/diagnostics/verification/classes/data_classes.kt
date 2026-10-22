@@ -18,6 +18,24 @@ fun <!VIPER_TEXT!>dataClassComponent<!>() {
     verify(first == 10)
 }
 
+@AlwaysVerify
+fun <!VIPER_TEXT!>dataClassStructuralEquality<!>() {
+    verify(DataPair(10, 20) == DataPair(10, 20))
+    verify(DataPair(10, 20) != DataPair(10, 30))
+}
+
+data class NeverEqual(val x: Int) {
+    override fun <!VIPER_TEXT!>equals<!>(other: Any?): Boolean = false
+}
+
+// A user-defined `equals` is not modeled, so `==` is not lowered to property equality.
+@AlwaysVerify
+fun <!VIPER_TEXT!>userEqualsIsNotStructural<!>() {
+    val left = NeverEqual(1)
+    val right = NeverEqual(1)
+    verify(<!VIPER_VERIFICATION_ERROR!>left == right<!>)
+}
+
 data class MutablePair(var first: Int, val second: Int)
 
 @AlwaysVerify

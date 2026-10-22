@@ -84,6 +84,96 @@ method dataClassComponent() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
+/data_classes.kt: info: Generated Viper text for dataClassStructuralEquality:
+function g_first(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function g_second(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_first: Ref, par_second: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_first), intType())
+  requires isSubtype(typeOf(par_second), intType())
+  ensures isSubtype(typeOf(ret_1), DataPair())
+  ensures acc(DataPair_unique(ret_1), write)
+  ensures intFromRef(g_first(ret_1)) == intFromRef(par_first)
+  ensures intFromRef(g_second(ret_1)) == intFromRef(par_second)
+
+
+method dataClassStructuralEquality() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  var anon_3: Ref
+  anon_0 := con(intToRef(10), intToRef(20))
+  anon_1 := con(intToRef(10), intToRef(20))
+  assert intFromRef(g_first(anon_0)) == intFromRef(g_first(anon_1)) &&
+    intFromRef(g_second(anon_0)) == intFromRef(g_second(anon_1))
+  anon_2 := con(intToRef(10), intToRef(20))
+  anon_3 := con(intToRef(10), intToRef(30))
+  assert !(intFromRef(g_first(anon_2)) == intFromRef(g_first(anon_3)) &&
+    intFromRef(g_second(anon_2)) == intFromRef(g_second(anon_3)))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/data_classes.kt: info: Generated Viper text for equals:
+function x(this: Ref): Ref
+  requires isSubtype(typeOf(this), NeverEqual())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method equals(this: Ref, other: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), NeverEqual())
+  requires isSubtype(typeOf(other), nullable(anyType()))
+  ensures isSubtype(typeOf(v_ret_0), boolType())
+{
+  v_ret_0 := boolToRef(false)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/data_classes.kt: info: Generated Viper text for userEqualsIsNotStructural:
+function g_x(this: Ref): Ref
+  requires isSubtype(typeOf(this), NeverEqual())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_x: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_x), intType())
+  ensures isSubtype(typeOf(ret_1), NeverEqual())
+  ensures acc(NeverEqual_unique(ret_1), write)
+  ensures intFromRef(g_x(ret_1)) == intFromRef(par_x)
+
+
+method userEqualsIsNotStructural() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var left: Ref
+  var right: Ref
+  left := con(intToRef(1))
+  right := con(intToRef(1))
+  assert left == right
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
 /data_classes.kt: info: Generated Viper text for destructureWithVarProperty:
 field bf_first: Ref
 
