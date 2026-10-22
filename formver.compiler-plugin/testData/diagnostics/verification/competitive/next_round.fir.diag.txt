@@ -1,0 +1,71 @@
+/next_round.kt: info: Generated Viper text for advancingCount:
+method advancingCount(scores: Ref, k: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(scores), stringType())
+  requires isSubtype(typeOf(k), intType())
+  requires 1 <= |stringFromRef(scores)| && |stringFromRef(scores)| <= 50
+  requires 1 <= intFromRef(k) && intFromRef(k) <= |stringFromRef(scores)|
+  requires (forall anon_builtin_0: Int ::(0 <= anon_builtin_0 &&
+      anon_builtin_0 < |stringFromRef(scores)| ==>
+      0 <= stringFromRef(scores)[anon_builtin_0] &&
+      stringFromRef(scores)[anon_builtin_0] <= 100) &&
+      (1 <= anon_builtin_0 && anon_builtin_0 < |stringFromRef(scores)| ==>
+      stringFromRef(scores)[anon_builtin_0 - 1] >=
+      stringFromRef(scores)[anon_builtin_0]))
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures 0 <= intFromRef(v_ret_0) &&
+    intFromRef(v_ret_0) <= |stringFromRef(scores)|
+  ensures (forall anon_builtin_1: Int ::(0 <= anon_builtin_1 &&
+      anon_builtin_1 < intFromRef(v_ret_0) ==>
+      stringFromRef(scores)[anon_builtin_1] > 0 &&
+      stringFromRef(scores)[anon_builtin_1] >=
+      stringFromRef(scores)[intFromRef(k) - 1]) &&
+      (intFromRef(v_ret_0) <= anon_builtin_1 &&
+      anon_builtin_1 < |stringFromRef(scores)| ==>
+      stringFromRef(scores)[anon_builtin_1] <= 0 ||
+      stringFromRef(scores)[anon_builtin_1] <
+      stringFromRef(scores)[intFromRef(k) - 1]))
+{
+  var threshold: Ref
+  var count: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  threshold := stringGet(scores, minusInts(k, intToRef(1)))
+  count := intToRef(0)
+  label cont
+    invariant isSubtype(typeOf(threshold), charType())
+    invariant isSubtype(typeOf(count), intType())
+    invariant isSubtype(typeOf(scores), stringType())
+    invariant isSubtype(typeOf(k), intType())
+    invariant 0 <= intFromRef(count) &&
+      intFromRef(count) <= |stringFromRef(scores)|
+    invariant (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
+        anon_builtin_2 < intFromRef(count) ==>
+        stringFromRef(scores)[anon_builtin_2] > 0 &&
+        stringFromRef(scores)[anon_builtin_2] >= charFromRef(threshold))
+  if (intFromRef(count) < |stringFromRef(scores)|) {
+    anon_1 := gtChars(stringGet(scores, count), charToRef(0))
+  } else {
+    anon_1 := boolToRef(false)}
+  if (boolFromRef(anon_1)) {
+    anon_0 := geChars(stringGet(scores, count), threshold)
+  } else {
+    anon_0 := boolToRef(false)}
+  if (boolFromRef(anon_0)) {
+    count := plusInts(count, intToRef(1))
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(threshold), charType())
+  assert isSubtype(typeOf(count), intType())
+  assert isSubtype(typeOf(scores), stringType())
+  assert isSubtype(typeOf(k), intType())
+  assert 0 <= intFromRef(count) &&
+    intFromRef(count) <= |stringFromRef(scores)|
+  assert (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
+      anon_builtin_2 < intFromRef(count) ==>
+      stringFromRef(scores)[anon_builtin_2] > 0 &&
+      stringFromRef(scores)[anon_builtin_2] >= charFromRef(threshold))
+  v_ret_0 := count
+  goto lbl_ret_0
+  label lbl_ret_0
+}
