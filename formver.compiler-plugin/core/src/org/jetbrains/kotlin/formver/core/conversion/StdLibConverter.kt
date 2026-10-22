@@ -61,6 +61,7 @@ data object NativeArrayInterface : StdLibReceiverInterface {
 
 internal val nativeArrayClassNames = listOf(
     "Array", "BooleanArray", "ByteArray", "CharArray", "ShortArray", "IntArray", "LongArray", "FloatArray", "DoubleArray",
+    "UByteArray", "UShortArray", "UIntArray", "ULongArray",
 )
 
 data object NoInterface : StdLibReceiverInterface {
