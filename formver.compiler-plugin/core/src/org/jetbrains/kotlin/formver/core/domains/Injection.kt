@@ -39,11 +39,14 @@ import org.jetbrains.kotlin.formver.viper.ast.Function
  *
  * @param viperType: built-in type which needs to be mapped
  * @param typeFunction: representation of that type as a domain func
+ * @param isKotlinValue: for a `viperType` with more values than the Kotlin type has, which of them
+ *   represent a Kotlin value. Only those are recovered by `fromRef(toRef(v))`.
  */
 class Injection(
     baseName: SymbolicName,
     val viperType: Type,
     val typeFunction: DomainFunc,
+    private val isKotlinValue: ((Exp) -> Exp)? = null,
 ) {
     private val v = domainVar("v", viperType)
     private val r = domainVar("r", Type.Ref)
@@ -59,6 +62,7 @@ class Injection(
         }
         axiom {
             Exp.forall(v) { v ->
+                isKotlinValue?.let { assumption { it(v) } }
                 simpleTrigger { fromRef(toRef(v)) } eq v
             }
         }
