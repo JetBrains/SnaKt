@@ -57,18 +57,14 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
             checkersOnly -> TargetsSelection.NO_TARGETS
             else -> TargetsSelection.ALL_TARGETS
         }
-        // Only checker tests run the checkers, so conversion and verification tests see the same types as before.
-        val checkUniqueness = checkersOnly
-        val checkLocality = checkersOnly
+
         val config = PluginConfiguration(
             logLevel,
             errorStyle,
             UnsupportedFeatureBehaviour.THROW_EXCEPTION,
             conversionSelection = conversionSelection,
             verificationSelection = verificationSelection,
-            checkUniqueness = checkUniqueness,
-            dumpUniquenessCFG = dumpUniquenessCFG,
-            checkLocality = checkLocality,
+            dumpUniquenessCFG = dumpUniquenessCFG
         )
         FirExtensionRegistrarAdapter.registerExtension(FormalVerificationPluginExtensionRegistrar(config))
     }
@@ -87,8 +83,10 @@ object FormVerDirectives : SimpleDirectivesContainer() {
         description = "Always validate functions"
     )
 
+    // The uniqueness and locality checkers run in every test; this only takes conversion and verification out of the
+    // way, so a test can be about the checker diagnostics alone.
     val CHECKERS_ONLY by directive(
-        description = "Run the uniqueness and locality checkers; do not convert or verify"
+        description = "Report checker diagnostics only; do not convert or verify"
     )
 
     val DUMP_UNIQUENESS_CFG by directive(

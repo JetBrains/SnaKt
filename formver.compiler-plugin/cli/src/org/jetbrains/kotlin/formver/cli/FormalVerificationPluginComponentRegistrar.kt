@@ -38,8 +38,8 @@ class FormalVerificationPluginComponentRegistrar : CompilerPluginRegistrar() {
             FormalVerificationConfigurationKeys.VERIFICATION_TARGETS_SELECTION,
             TargetsSelection.Companion.defaultBehaviour()
         )
-        val checkUniqueness = configuration.get(FormalVerificationConfigurationKeys.CHECK_UNIQUENESS, false)
-        val checkLocality = configuration.get(FormalVerificationConfigurationKeys.CHECK_LOCALITY, false)
+        val checkUniqueness = configuration.get(FormalVerificationConfigurationKeys.CHECK_UNIQUENESS, true)
+        val checkLocality = configuration.get(FormalVerificationConfigurationKeys.CHECK_LOCALITY, true)
         val dumpUniquenessCFG = configuration.get(FormalVerificationConfigurationKeys.DUMP_UNIQUENESS_CFG, false)
         val config = PluginConfiguration(
             logLevel, errorStyle, behaviour, conversionSelection, verificationSelection,

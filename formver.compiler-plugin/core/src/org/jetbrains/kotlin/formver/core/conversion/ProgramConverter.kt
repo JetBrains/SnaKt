@@ -446,7 +446,7 @@ class ProgramConverter(
                 val isDefaultProperty = isGuaranteedDefaultProperty(symbol)
                 val isImmutable = symbol.isVal
                 val isManual = symbol.isManual(session)
-                val isUnique = symbol.isUnique(session)
+                val isUnique = symbol.isUnique
 
                 val returnType = embedType(symbol.resolvedReturnType)
 
@@ -518,7 +518,7 @@ class ProgramConverter(
             scopedName,
             embedType(symbol.resolvedReturnType),
             symbol,
-            symbol.isUnique(session),
+            symbol.isUnique,
             embedding,
             symbol.isManual(session)
         )
@@ -672,7 +672,7 @@ class ProgramConverter(
             }
         }
         withReturnType { embedTypeWithBuilder(symbol.resolvedReturnType) }
-        returnsUnique = symbol.isUnique(session) || symbol is FirConstructorSymbol
+        returnsUnique = symbol.isUnique || symbol is FirConstructorSymbol
     }
 
     private fun TypeBuilder.unimplementedTypeEmbedding(type: ConeKotlinType): PretypeBuilder = when (config.behaviour) {
