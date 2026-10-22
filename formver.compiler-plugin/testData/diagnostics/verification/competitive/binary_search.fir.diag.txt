@@ -1,0 +1,74 @@
+/binary_search.kt: info: Generated Viper text for binarySearch:
+method binarySearch(values: Ref, target: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(values), stringType())
+  requires isSubtype(typeOf(target), charType())
+  requires (forall anon_builtin_0: Int ::0 <= anon_builtin_0 &&
+      anon_builtin_0 < |stringFromRef(values)| ==>
+      (forall anon_builtin_1: Int ::anon_builtin_0 < anon_builtin_1 &&
+        anon_builtin_1 < |stringFromRef(values)| ==>
+        stringFromRef(values)[anon_builtin_0] <
+        stringFromRef(values)[anon_builtin_1]))
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures -1 <= intFromRef(v_ret_0) &&
+    intFromRef(v_ret_0) < |stringFromRef(values)|
+  ensures intFromRef(v_ret_0) >= 0 ==>
+    stringFromRef(values)[intFromRef(v_ret_0)] == charFromRef(target)
+  ensures intFromRef(v_ret_0) == -1 ==>
+    (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
+      anon_builtin_2 < |stringFromRef(values)| ==>
+      !(stringFromRef(values)[anon_builtin_2] == charFromRef(target)))
+{
+  var low: Ref
+  var high: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  low := intToRef(0)
+  high := stringLength(values)
+  label cont
+    invariant isSubtype(typeOf(low), intType())
+    invariant isSubtype(typeOf(high), intType())
+    invariant isSubtype(typeOf(values), stringType())
+    invariant isSubtype(typeOf(target), charType())
+    invariant 0 <= intFromRef(low) && intFromRef(low) <= intFromRef(high) &&
+      intFromRef(high) <= |stringFromRef(values)|
+    invariant (forall anon_builtin_3: Int ::(0 <= anon_builtin_3 &&
+        anon_builtin_3 < intFromRef(low) ==>
+        stringFromRef(values)[anon_builtin_3] < charFromRef(target)) &&
+        (intFromRef(high) <= anon_builtin_3 &&
+        anon_builtin_3 < |stringFromRef(values)| ==>
+        charFromRef(target) <= stringFromRef(values)[anon_builtin_3]))
+  anon_0 := ltInts(low, high)
+  if (boolFromRef(anon_0)) {
+    var middle: Ref
+    middle := plusInts(low, divInts(minusInts(high, low), intToRef(2)))
+    if (stringFromRef(values)[intFromRef(middle)] < charFromRef(target)) {
+      low := plusInts(middle, intToRef(1))
+    } else {
+      high := middle}
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(low), intType())
+  assert isSubtype(typeOf(high), intType())
+  assert isSubtype(typeOf(values), stringType())
+  assert isSubtype(typeOf(target), charType())
+  assert 0 <= intFromRef(low) && intFromRef(low) <= intFromRef(high) &&
+    intFromRef(high) <= |stringFromRef(values)|
+  assert (forall anon_builtin_3: Int ::(0 <= anon_builtin_3 &&
+      anon_builtin_3 < intFromRef(low) ==>
+      stringFromRef(values)[anon_builtin_3] < charFromRef(target)) &&
+      (intFromRef(high) <= anon_builtin_3 &&
+      anon_builtin_3 < |stringFromRef(values)| ==>
+      charFromRef(target) <= stringFromRef(values)[anon_builtin_3]))
+  if (intFromRef(low) < |stringFromRef(values)|) {
+    anon_1 := boolToRef(stringFromRef(values)[intFromRef(low)] ==
+      charFromRef(target))
+  } else {
+    anon_1 := boolToRef(false)}
+  if (boolFromRef(anon_1)) {
+    v_ret_0 := low
+  } else {
+    v_ret_0 := intToRef(-1)}
+  goto lbl_ret_0
+  label lbl_ret_0
+}

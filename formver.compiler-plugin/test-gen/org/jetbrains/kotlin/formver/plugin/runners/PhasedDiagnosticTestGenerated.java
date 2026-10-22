@@ -473,6 +473,34 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/competitive")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Competitive {
+      @Test
+      public void testAllFilesPresentInCompetitive() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/competitive"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("binary_search.kt")
+      public void testBinary_search() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/competitive/binary_search.kt");
+      }
+
+      @Test
+      @TestMetadata("first_bad_version.kt")
+      public void testFirst_bad_version() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/competitive/first_bad_version.kt");
+      }
+
+      @Test
+      @TestMetadata("search_insert_position.kt")
+      public void testSearch_insert_position() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/competitive/search_insert_position.kt");
+      }
+    }
+
+    @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/contracts")
     @TestDataPath("$PROJECT_ROOT")
     public class Contracts {
