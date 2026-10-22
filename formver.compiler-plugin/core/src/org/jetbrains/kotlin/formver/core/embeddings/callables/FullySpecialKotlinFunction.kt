@@ -296,7 +296,7 @@ object SpecialKotlinFunctions {
         addFunction(accCallableType, SpecialPackages.formver, name = "acc") { args, ctx ->
             val source = (args.firstOrNull() as? WithPosition)?.source
             val perm = when (val permArg = args.getOrNull(1)?.ignoringCastsAndMetaNodes()) {
-                null, NullLit -> PermissionLit(PermExp.FullPerm())
+                null -> PermissionLit(PermExp.FullPerm())
                 is PermissionLit -> permArg
                 else -> return@addFunction ctx.handleUnsupportedFeature(
                     source,
