@@ -61,6 +61,12 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     override fun visitElement(element: FirElement, data: StmtConversionContext): ExpEmbedding =
         handleUnimplementedElement(element.source, "Not yet implemented for $element (${element.source.text})", data)
 
+    override fun visitExpression(expression: FirExpression, data: StmtConversionContext): ExpEmbedding =
+        when (expression) {
+            is FirUnitExpression -> UnitLit
+            else -> visitElement(expression, data)
+        }
+
     override fun visitReturnExpression(
         returnExpression: FirReturnExpression,
         data: StmtConversionContext,
