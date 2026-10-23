@@ -21,7 +21,7 @@ enum class SpecBlockKind(val functionName: String) {
     LOOP_INVARIANTS("loopInvariants"),
 }
 
-/** The specification block [this] calls, or `null` if it is not such a call. */
+/** The specification builder identified by this statement's resolved call, if any. */
 fun FirStatement.specBlockKind(): SpecBlockKind? {
     if (this !is FirFunctionCall) return null
     val symbol = toResolvedCallableSymbol() as? FirFunctionSymbol<*> ?: return null
@@ -35,7 +35,7 @@ private fun FirFunctionCall.specBlockLambda(): FirAnonymousFunction {
     return argument.anonymousFunction
 }
 
-/** What a statement list is, which is what decides where specification blocks may sit in it. */
+/** Extraction context for the leading statements of a block. */
 enum class SpecBlockPosition { FUNCTION_BODY, LOOP_BODY, NONE }
 
 /**
@@ -62,11 +62,11 @@ fun usedSpecBlocks(block: FirBlock, position: SpecBlockPosition): Map<SpecBlockK
 }
 
 /**
- * Every specification-block call inside [body] that conversion will not pick up, in source order.
+ * Specification-builder calls not consumed by extraction, collected in FIR traversal order.
  *
- * Conversion resolves these calls by name wherever they appear and converts them to no-ops, so a
- * block outside the positions [usedSpecBlocks] returns has no effect. Includes blocks in nested
- * statement lists such as `if` branches. Skips lambdas and local functions, which own their blocks.
+ * Visits nested statement lists and anonymous-function bodies, but not builder payloads or named
+ * local functions. Anonymous functions have no extracted contracts; their leading while invariants
+ * are still recognized. Named function bodies are scanned separately during contract conversion.
  */
 fun findIgnoredSpecBlocks(body: FirBlock): List<Pair<SpecBlockKind, FirFunctionCall>> =
     SpecBlockCollector(body).ignored
@@ -100,7 +100,9 @@ private class SpecBlockCollector(body: FirBlock) : FirVisitorVoid() {
         if (used.none { it === functionCall }) ignored.add(kind to functionCall)
     }
 
-    override fun visitAnonymousFunction(anonymousFunction: FirAnonymousFunction) = Unit
+    override fun visitAnonymousFunction(anonymousFunction: FirAnonymousFunction) {
+        anonymousFunction.body?.let { visitStatements(it, SpecBlockPosition.NONE) }
+    }
 
     override fun visitSimpleFunction(simpleFunction: FirSimpleFunction) = Unit
 

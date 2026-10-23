@@ -55,3 +55,18 @@ fun <!VERIFICATION_SKIPPED!>nestedLoopInvariants<!>() {
         i = i + 1
     }
 }
+
+// Lambda contracts are not extracted, but while invariants inside lambdas still are.
+@AlwaysVerify
+fun <!VERIFICATION_SKIPPED!>invokedLambdaPlacement<!>() {
+    val action = {
+        <!IGNORED_SPEC_BLOCK!>preconditions { false }<!>
+        <!IGNORED_SPEC_BLOCK!>postconditions<Unit> { _ -> false }<!>
+        var i = 0
+        while (i < 2) {
+            loopInvariants { i <= 2 }
+            i = i + 1
+        }
+    }
+    action()
+}
