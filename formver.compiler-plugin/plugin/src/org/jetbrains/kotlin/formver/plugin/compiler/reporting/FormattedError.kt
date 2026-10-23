@@ -74,14 +74,14 @@ class IndexOutOfBoundError(
     private val SourceRole.ListElementAccessCheck.AccessCheckType.asUserFriendlyMessage: String
         get() = when (this) {
             SourceRole.ListElementAccessCheck.AccessCheckType.LESS_THAN_ZERO -> "less than zero"
-            SourceRole.ListElementAccessCheck.AccessCheckType.GREATER_THAN_LIST_SIZE -> "greater than the list's size"
+            SourceRole.ListElementAccessCheck.AccessCheckType.GREATER_THAN_LIST_SIZE -> "greater than or equal to the list's size"
         }
 
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun report(source: KtSourceElement?) {
         /**
-         * When we are dealing with inlined expressions returning a list, we do not have access to any list symbol.
-         * Therefore, we do not report any name since the compiler would highlight the sub-expression causing the problem.
+         * If the list or array receiver has no FIR symbol, describe it as a sub-expression rather than by name.
+         * The compiler highlights the sub-expression causing the problem.
          */
         val (targetInfo, userFriendlyMessage) = msg()
         reporter.reportOn(
@@ -104,7 +104,7 @@ class IndexOutOfBoundError(
     private val SourceRole.ArrayElementAccessCheck.AccessCheckType.asUserFriendlyMessage: String
         get() = when (this) {
             SourceRole.ArrayElementAccessCheck.AccessCheckType.LESS_THAN_ZERO -> "less than zero"
-            SourceRole.ArrayElementAccessCheck.AccessCheckType.GREATER_THAN_ARRAY_SIZE -> "greater than the array's size"
+            SourceRole.ArrayElementAccessCheck.AccessCheckType.GREATER_THAN_ARRAY_SIZE -> "greater than or equal to the array's size"
         }
 }
 
