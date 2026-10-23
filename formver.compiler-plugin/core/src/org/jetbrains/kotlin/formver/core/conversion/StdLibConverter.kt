@@ -15,6 +15,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.LeIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubIntInt
+import org.jetbrains.kotlin.formver.core.embeddings.types.IntTypeEmbedding
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
 
 private fun VariableEmbedding.sameSize(): ExpEmbedding =
@@ -63,6 +64,18 @@ internal val nativeArrayClassNames = listOf(
     "Array", "BooleanArray", "ByteArray", "CharArray", "ShortArray", "IntArray", "LongArray", "FloatArray", "DoubleArray",
 )
 
+data object NativeArrayFactoryInterface : StdLibReceiverInterface {
+    override fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean =
+        NameMatcher.matchClassScope(function.name) {
+            ifInKotlinPkg {
+                ifNoReceiver {
+                    return true
+                }
+            }
+            return false
+        }
+}
+
 data object NoInterface : StdLibReceiverInterface {
     override fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean =
         NameMatcher.matchClassScope(function.name) {
@@ -77,15 +90,24 @@ data object NoInterface : StdLibReceiverInterface {
 
 sealed interface StdLibCondition {
     val stdLibInterface: StdLibReceiverInterface
-    val functionName: String
+    fun match(function: NamedFunctionSignature): Boolean
+}
 
-    fun match(function: NamedFunctionSignature): Boolean {
-        NameMatcher.matchClassScope(function.name) {
-            ifFunctionName(functionName) {
-                return true
-            }
-            return false
+private fun NamedFunctionSignature.isNamed(functionName: String): Boolean {
+    NameMatcher.matchClassScope(name) {
+        ifFunctionName(functionName) {
+            return true
         }
+        return false
+    }
+}
+
+private fun NamedFunctionSignature.isConstructor(): Boolean {
+    NameMatcher.matchClassScope(name) {
+        ifConstructor {
+            return true
+        }
+        return false
     }
 }
 
@@ -104,6 +126,8 @@ sealed interface StdLibPostcondition : StdLibCondition {
             IsEmptyPostcondition,
             GetPostcondition,
             NativeArrayGetPostcondition,
+            EmptyArrayPostcondition,
+            NativeArrayConstructorPostcondition,
             SubListPostcondition,
             AddPostcondition
         )
@@ -131,7 +155,7 @@ data object GetPrecondition : StdLibPrecondition {
     }
 
     override val stdLibInterface = ListInterface
-    override val functionName = "get"
+    override fun match(function: NamedFunctionSignature) = function.isNamed("get")
 }
 
 data object NativeArrayGetPrecondition : StdLibPrecondition {
@@ -153,7 +177,7 @@ data object NativeArrayGetPrecondition : StdLibPrecondition {
     }
 
     override val stdLibInterface = NativeArrayInterface
-    override val functionName = "get"
+    override fun match(function: NamedFunctionSignature) = function.isNamed("get")
 }
 
 data object SubListPrecondition : StdLibPrecondition {
@@ -169,7 +193,7 @@ data object SubListPrecondition : StdLibPrecondition {
     }
 
     override val stdLibInterface = ListInterface
-    override val functionName = "subList"
+    override fun match(function: NamedFunctionSignature) = function.isNamed("subList")
 }
 
 data object EmptyListPostcondition : StdLibPostcondition {
@@ -183,7 +207,7 @@ data object EmptyListPostcondition : StdLibPostcondition {
     }
 
     override val stdLibInterface = NoInterface
-    override val functionName = "emptyList"
+    override fun match(function: NamedFunctionSignature) = function.isNamed("emptyList")
 }
 
 data object IsEmptyPostcondition : StdLibPostcondition {
@@ -200,7 +224,7 @@ data object IsEmptyPostcondition : StdLibPostcondition {
     }
 
     override val stdLibInterface = CollectionInterface
-    override val functionName = "isEmpty"
+    override fun match(function: NamedFunctionSignature) = function.isNamed("isEmpty")
 }
 
 data object GetPostcondition : StdLibPostcondition {
@@ -212,7 +236,7 @@ data object GetPostcondition : StdLibPostcondition {
     }
 
     override val stdLibInterface = ListInterface
-    override val functionName = "get"
+    override fun match(function: NamedFunctionSignature) = function.isNamed("get")
 }
 
 data object NativeArrayGetPostcondition : StdLibPostcondition {
@@ -224,7 +248,44 @@ data object NativeArrayGetPostcondition : StdLibPostcondition {
     }
 
     override val stdLibInterface = NativeArrayInterface
-    override val functionName = "get"
+    override fun match(function: NamedFunctionSignature) = function.isNamed("get")
+}
+
+data object EmptyArrayPostcondition : StdLibPostcondition {
+    override fun getEmbeddings(
+        returnVariable: VariableEmbedding,
+        function: NamedFunctionSignature
+    ): List<ExpEmbedding> {
+        return listOf(
+            EqCmp(FieldAccess(returnVariable, CollectionSizeFieldEmbedding), IntLit(0))
+        )
+    }
+
+    override val stdLibInterface = NativeArrayFactoryInterface
+    override fun match(function: NamedFunctionSignature) = function.isNamed("emptyArray")
+}
+
+/**
+ * A normal-return size summary for size-first constructors, not an allocation-safety check.
+ * Initializer execution and effects remain unsupported independently of this summary.
+ */
+data object NativeArrayConstructorPostcondition : StdLibPostcondition {
+    override fun getEmbeddings(
+        returnVariable: VariableEmbedding,
+        function: NamedFunctionSignature
+    ): List<ExpEmbedding> {
+        return listOf(
+            EqCmp(FieldAccess(returnVariable, CollectionSizeFieldEmbedding), function.params[0])
+        )
+    }
+
+    override val stdLibInterface = NativeArrayInterface
+    override fun match(function: NamedFunctionSignature): Boolean {
+        if (!function.isConstructor() || function.dispatchReceiver != null || function.extensionReceiver != null) return false
+        val sizeType = function.params.firstOrNull()?.type ?: return false
+        // Class membership alone is insufficient: unsigned arrays also have storage constructors.
+        return sizeType.pretype == IntTypeEmbedding && !sizeType.isNullable
+    }
 }
 
 data object SubListPostcondition : StdLibPostcondition {
@@ -241,7 +302,7 @@ data object SubListPostcondition : StdLibPostcondition {
     }
 
     override val stdLibInterface = ListInterface
-    override val functionName = "subList"
+    override fun match(function: NamedFunctionSignature) = function.isNamed("subList")
 }
 
 data object AddPostcondition : StdLibPostcondition {
@@ -253,7 +314,7 @@ data object AddPostcondition : StdLibPostcondition {
     }
 
     override val stdLibInterface = MutableListInterface
-    override val functionName = "add"
+    override fun match(function: NamedFunctionSignature) = function.isNamed("add")
 }
 
 fun NamedFunctionSignature.stdLibPreconditions(ctx: TypeResolver): List<ExpEmbedding> {
