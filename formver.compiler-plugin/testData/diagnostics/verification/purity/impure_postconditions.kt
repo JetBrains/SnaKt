@@ -21,3 +21,10 @@ fun <!VERIFICATION_SKIPPED!>impureMemberCallInPostcondition<!>(holder: Predicate
         holder.impureMemberPredicate()
     }
 }<!>
+
+<!PURITY_VIOLATION!>@AlwaysVerify
+fun <!VERIFICATION_SKIPPED!>impureTopLevelCallInPrecondition<!>(value: Int) {
+    preconditions {
+        impureTopLevelPredicate(value)
+    }
+}<!>

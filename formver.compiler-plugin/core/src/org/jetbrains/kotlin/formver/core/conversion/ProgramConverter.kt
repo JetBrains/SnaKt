@@ -186,7 +186,7 @@ class ProgramConverter(
             for (entry in registered) {
                 reportVerificationSkipped(
                     entry.declaration.source,
-                    "Function '${entry.declaration.name.asString()}' was not verified because of errors in its declaration",
+                    "Function '${entry.declaration.name.asString()}' was not verified because of errors in its declaration or dependencies",
                 )
             }
         }
@@ -194,8 +194,9 @@ class ProgramConverter(
 
 
     /**
-     * Function and method calls share [MethodCall]: both need statements and a temporary result and
-     * therefore cannot be translated by the expression-only linearizer used for contracts.
+     * Impure calls, including unannotated top-level Kotlin calls, use [MethodCall] and need statements
+     * and a temporary result, so the expression-only contract linearizer cannot translate them.
+     * Pure calls use FunctionCall expressions and are not rejected by this check.
      */
     private fun ExpEmbedding.reportImpureCalls(fallbackSource: KtSourceElement, conditionKind: String) {
         preorder(fallbackSource).forEach { (embedding, source) ->

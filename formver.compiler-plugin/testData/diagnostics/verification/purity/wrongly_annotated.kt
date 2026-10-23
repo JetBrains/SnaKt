@@ -16,6 +16,13 @@ fun <!VERIFICATION_SKIPPED!>testImpureLocalInitializer<!>(): Int {
     return result
 }<!>
 
+<!PURITY_VIOLATION!>@Pure
+fun <!VERIFICATION_SKIPPED!>testImpureReassignment<!>(): Int {
+    var result = 0
+    result = iAmAMethod()
+    return result
+}<!>
+
 @Pure
 fun <!VIPER_TEXT!>identity<!>(x: Int): Int = x
 

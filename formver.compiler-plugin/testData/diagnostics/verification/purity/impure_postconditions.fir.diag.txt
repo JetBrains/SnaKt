@@ -20,8 +20,12 @@ method impureMemberPredicate(this: Ref) returns (v_ret_0: Ref)
 
 /impure_postconditions.kt: error: Postcondition contains an impure function or method call
 
-/impure_postconditions.kt: error: Function 'impureTopLevelCallInPostcondition' was not verified because of errors in its declaration
+/impure_postconditions.kt: error: Function 'impureTopLevelCallInPostcondition' was not verified because of errors in its declaration or dependencies
 
 /impure_postconditions.kt: error: Postcondition contains an impure function or method call
 
-/impure_postconditions.kt: error: Function 'impureMemberCallInPostcondition' was not verified because of errors in its declaration
+/impure_postconditions.kt: error: Function 'impureMemberCallInPostcondition' was not verified because of errors in its declaration or dependencies
+
+/impure_postconditions.kt: error: Precondition contains an impure function or method call
+
+/impure_postconditions.kt: error: Function 'impureTopLevelCallInPrecondition' was not verified because of errors in its declaration or dependencies
