@@ -11,6 +11,8 @@ import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
+import org.jetbrains.kotlin.formver.common.SnaktUnsupportedFeatureException
+import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.EqCmp
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
@@ -214,11 +216,69 @@ private fun dataClassGeneratedPostconditions(
     signature: NamedFunctionSignature,
     returnTarget: ReturnTarget,
 ): List<ExpEmbedding> {
+    if (symbol.name.asString() == "copy") return dataClassCopyPostconditions(symbol, signature, returnTarget)
     val property = generatedComponentProperty(symbol) ?: return emptyList()
     val receiver = signature.dispatchReceiver ?: return emptyList()
     // Relating mutable components to field values needs permission-aware reads, which are not modeled here.
     val getter = converter.embedProperty(property).takeIf { it.isVal }?.getter ?: return emptyList()
     return listOf(EqCmp(returnTarget.variable, getter.getValueSimple(receiver, converter.typeResolver)))
+}
+
+context(converter: ProgramConversionContext)
+private fun dataClassCopyPostconditions(
+    symbol: FirFunctionSymbol<*>,
+    signature: NamedFunctionSignature,
+    returnTarget: ReturnTarget,
+): List<ExpEmbedding> {
+    val dataClass = generatedCopyClass(symbol) ?: return emptyList()
+    // Shallow allocation cannot duplicate permissions to an owned child, including inherited ownership.
+    val receiverType = signature.dispatchReceiver?.type?.pretype as? ClassTypeEmbedding
+        ?: throw SnaktUnsupportedFeatureException(symbol.source, "Cannot establish data-class copy ownership")
+    fun ownsReferences(type: ClassTypeEmbedding): Boolean =
+        converter.typeResolver.lookupClassProperties(type.name).any { it.isUnique } ||
+                converter.typeResolver.lookupSuperTypes(type.name).any(::ownsReferences)
+    if (ownsReferences(receiverType)) {
+        throw SnaktUnsupportedFeatureException(symbol.source, "Data-class copy with owned references is unsupported")
+    }
+    val constructorProperties = dataClass.propertySymbols.mapNotNull { property ->
+        property.correspondingValueParameterFromPrimaryConstructor?.let { parameter ->
+            parameter to converter.embedProperty(property).takeIf { it.isVal }?.getter
+        }
+    }
+
+    val paramsByName = signature.params.filterIsInstance<FirVariableEmbedding>().mapNotNull { parameter ->
+        (parameter.symbol as? FirValueParameterSymbol)?.name?.let { it to parameter }
+    }.toMap()
+    val propertyEqualities = constructorProperties.mapNotNull { (constructorParameter, getter) ->
+        val parameter = paramsByName[constructorParameter.name] ?: return@mapNotNull null
+        getter?.let { EqCmp(it.getValueSimple(returnTarget.variable, converter.typeResolver), parameter) }
+    }
+    // Fresh outer allocation grants its predicate only after excluding recursively owned references.
+    val uniqueAccess = returnTarget.variable.uniquePredicateAccessInvariant(converter.typeResolver)
+    return propertyEqualities + listOfNotNull(uniqueAccess)
+}
+
+@OptIn(SymbolInternals::class, DirectDeclarationsAccess::class)
+context(converter: ProgramConversionContext)
+fun generatedCopyClass(symbol: FirFunctionSymbol<*>): FirRegularClassSymbol? {
+    if (symbol !is FirNamedFunctionSymbol || symbol.name.asString() != "copy") return null
+    if (symbol.fir.origin != FirDeclarationOrigin.Synthetic.DataClassMember ||
+        symbol.receiverParameterSymbol != null
+    ) return null
+    val dataClass = symbol.receiverType?.toRegularClassSymbol(converter.session)?.takeIf {
+        it.isData && it.declarationSymbols.any { member -> member === symbol }
+    } ?: return null
+    val constructor = dataClass.declarationSymbols.filterIsInstance<FirConstructorSymbol>()
+        .singleOrNull { it.isPrimaryConstructor() } ?: return null
+    if (symbol.resolvedReturnType.toRegularClassSymbol(converter.session) !== dataClass ||
+        symbol.valueParameterSymbols.size != constructor.valueParameterSymbols.size
+    ) return null
+    val matchesConstructor = symbol.valueParameterSymbols.zip(constructor.valueParameterSymbols).all { (copy, primary) ->
+        copy.name == primary.name && copy.resolvedReturnType == primary.resolvedReturnType &&
+                dataClass.propertySymbols.any { it.correspondingValueParameterFromPrimaryConstructor === primary }
+    }
+    if (!matchesConstructor) return null
+    return dataClass
 }
 
 @OptIn(SymbolInternals::class, DirectDeclarationsAccess::class)

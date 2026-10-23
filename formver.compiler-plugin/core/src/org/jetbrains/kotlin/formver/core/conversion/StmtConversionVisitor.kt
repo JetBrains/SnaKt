@@ -9,10 +9,13 @@ import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.contracts.description.LogicOperationKind
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.declarations.FirProperty
+import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.expressions.impl.FirElseIfTrueCondition
+import org.jetbrains.kotlin.fir.expressions.impl.FirResolvedArgumentList
 import org.jetbrains.kotlin.fir.expressions.impl.FirUnitExpression
 import org.jetbrains.kotlin.fir.references.toResolvedSymbol
+import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.coneType
@@ -307,6 +310,9 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             ?: throw NotImplementedError("Only functions are expected as callables of function calls, got ${functionCall.toResolvedCallableSymbol()}")
 
         val callee = data.embedAnyFunction(symbol)
+        if (with(data) { generatedCopyClass(symbol) } != null) {
+            return insertDataClassCopyCall(functionCall, symbol, callee, data)
+        }
         return callee.insertCall(
             functionCall.functionCallArguments.withVarargsHandled(data, callee),
             data,
@@ -316,6 +322,42 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
 
     override fun visitComponentCall(componentCall: FirComponentCall, data: StmtConversionContext): ExpEmbedding =
         visitFunctionCall(componentCall, data)
+
+    private fun insertDataClassCopyCall(
+        call: FirFunctionCall,
+        symbol: FirFunctionSymbol<*>,
+        callee: CallableEmbedding,
+        data: StmtConversionContext,
+    ): ExpEmbedding {
+        val dataClass = symbol.dispatchReceiverType?.toRegularClassSymbol(data.session)!!
+        val dispatch = call.dispatchReceiver
+            ?: throw SnaktInternalException(call.source, "Data-class copy call has no dispatch receiver")
+        val resolvedArguments = call.argumentList as? FirResolvedArgumentList
+            ?: throw SnaktInternalException(call.source, "Data-class copy call has no resolved argument mapping")
+        val propertyByName = dataClass.propertySymbols.mapNotNull { property ->
+            property.correspondingValueParameterFromPrimaryConstructor?.let { it.name to data.embedProperty(property) }
+        }.toMap()
+
+        val steps = mutableListOf<ExpEmbedding>()
+        fun snapshot(expression: ExpEmbedding): VariableEmbedding =
+            data.declareAnonVar(expression.type, expression).also(steps::add).variable
+
+        // Shared expressions do not freeze local variables across mutations in later arguments.
+        val receiver = snapshot(data.convert(dispatch))
+        val actuals = mutableMapOf<FirValueParameterSymbol, VariableEmbedding>()
+        // Resolved mapping retains source argument order; formal order is only for the final call.
+        resolvedArguments.mapping.forEach { (argument, parameter) ->
+            actuals[parameter.symbol] = snapshot(data.convert(argument))
+        }
+        val arguments = listOf(receiver) + symbol.valueParameterSymbols.map { parameter ->
+            actuals[parameter] ?: snapshot(
+                propertyByName[parameter.name]?.getter?.getValueSimple(receiver, data.typeResolver)
+                    ?: throw SnaktInternalException(call.source, "Cannot resolve default value for data-class copy parameter ${parameter.name}")
+            )
+        }
+        steps += callee.insertCall(arguments, data, data.embedType(call.resolvedType))
+        return steps.toBlock()
+    }
 
     override fun visitImplicitInvokeCall(
         implicitInvokeCall: FirImplicitInvokeCall,
