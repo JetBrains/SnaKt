@@ -22,16 +22,17 @@ sealed interface ComparisonRepresentation {
     fun operandToViper(operand: Linearizable, type: TypeEmbedding, ctx: LinearizationContext): Exp
 
     /**
-     * Compare the operands as the builtin type [injection] injects into.
+     * Compare the operands as the builtin type that [injection] maps to `Ref`.
      *
-     * Available only when both operands are represented by [injection], and chosen whenever it is:
-     * facts about such values are stated on their builtin values, and the solver links those to
-     * `Ref` equality only through the injection's round-trip axiom, which needs a `fromRef` trigger.
+     * Value comparisons select this representation only when both operand types use [injection].
+     * Keeping those comparisons on builtin values avoids relying on the injection's round-trip
+     * axiom to relate reference equality to builtin equality; that axiom needs a `fromRef` trigger.
+     * Reference identity instead uses [Refs], even when both operands share an injection.
      */
     data class Builtin(val injection: Injection) : ComparisonRepresentation {
         override fun operandToViper(operand: Linearizable, type: TypeEmbedding, ctx: LinearizationContext): Exp {
-            // `toViperBuiltinType` unwraps the operand through the injection of its own type, so that
-            // injection has to be [injection].
+            // `toViperBuiltinType` unwraps using the operand type's injection, which must match
+            // the injection selected for both operands.
             check(type.injectionOrNull == injection) {
                 "Comparison operand is represented as ${type.injectionOrNull.viperType}, expected ${injection.viperType}."
             }

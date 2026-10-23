@@ -46,8 +46,7 @@ data class NeCmp(
 /**
  * Kotlin reference equality (`===`).
  *
- * Unlike [EqCmp], this compares the operands as `Ref`s no matter what their types are; see
- * `LinearizationVisitor.visitIdentityCmp`.
+ * Compares both operands as `Ref`s without unwrapping, regardless of their types.
  */
 data class IdentityCmp(
     override val left: ExpEmbedding,
