@@ -1,0 +1,69 @@
+/data_class_copy.kt: info: Generated Viper text for copyOneProperty:
+function g_first(this: Ref): Ref
+  requires isSubtype(typeOf(this), CopyPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function g_second(this: Ref): Ref
+  requires isSubtype(typeOf(this), CopyPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_first: Ref, par_second: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(par_first), intType())
+  requires isSubtype(typeOf(par_second), intType())
+  ensures isSubtype(typeOf(ret_3), CopyPair())
+  ensures acc(CopyPair_unique(ret_3), write)
+  ensures intFromRef(g_first(ret_3)) == intFromRef(par_first)
+  ensures intFromRef(g_second(ret_3)) == intFromRef(par_second)
+
+
+method copy(this: Ref, par_first: Ref, par_second: Ref)
+  returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), CopyPair())
+  requires isSubtype(typeOf(par_first), intType())
+  requires isSubtype(typeOf(par_second), intType())
+  ensures isSubtype(typeOf(ret_2), CopyPair())
+
+
+method copyOneProperty() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), CopyPair())
+  ensures intFromRef(g_first(v_ret_0)) == 10 &&
+    intFromRef(g_second(v_ret_0)) == 30
+{
+  var anon: Ref
+  anon := con(intToRef(10), intToRef(20))
+  v_ret_0 := copy(anon, intToRef(30))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/data_class_copy.kt: info: Generated Viper text for copyDefaultsBoundary:
+function g_first(this: Ref): Ref
+  requires isSubtype(typeOf(this), CopyPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function g_second(this: Ref): Ref
+  requires isSubtype(typeOf(this), CopyPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method copy(this: Ref, par_first: Ref, par_second: Ref)
+  returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), CopyPair())
+  requires isSubtype(typeOf(par_first), intType())
+  requires isSubtype(typeOf(par_second), intType())
+  ensures isSubtype(typeOf(ret_2), CopyPair())
+
+
+method copyDefaultsBoundary(pair: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(pair), CopyPair())
+  ensures isSubtype(typeOf(v_ret_0), CopyPair())
+  ensures intFromRef(g_first(v_ret_0)) == intFromRef(g_first(pair)) &&
+    intFromRef(g_second(v_ret_0)) == intFromRef(g_second(pair))
+{
+  v_ret_0 := copy(pair)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
