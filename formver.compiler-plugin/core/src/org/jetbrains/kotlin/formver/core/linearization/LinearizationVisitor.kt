@@ -133,14 +133,18 @@ data class LinearizationVisitor(
     override fun visitFunctionCall(e: FunctionCall): Linearizable = object : DirectResultLinearizable(e, this@LinearizationVisitor) {
         override fun toViper(ctx: LinearizationContext): Exp {
             val argExps = e.args.map { it.linearize().toViper(ctx) }
-            var result: Exp = e.function.toFuncApp(argExps, ctx.source.asPosition)
+            val reads = linkedMapOf<Pair<ClassTypeEmbedding, Exp>, Pair<ClassTypeEmbedding, Exp>>()
             for ((formal, arg) in e.function.formalArgs.zip(e.args.zip(argExps))) {
                 val (argEmbedding, argExp) = arg
                 if (formal.isUnique) {
-                    result = ctx.unfoldingUniqueReads(argEmbedding, argExp, result)
+                    ctx.collectUniqueReads(argEmbedding, argExp, reads)
                 }
             }
-            return result
+            // Collect receiver-first across the whole call: sibling paths share permissions.
+            val call: Exp = e.function.toFuncApp(argExps, ctx.source.asPosition)
+            return reads.values.toList().foldRight(call) { (onPath, receiver), inner ->
+                Exp.Unfolding(uniquePredicateAccess(receiver, onPath, ctx.source), inner, ctx.source.asPosition)
+            }
         }
     }
 
@@ -668,9 +672,9 @@ private fun LinearizationContext.uniqueReadPath(
 }
 
 /**
- * [body], wrapped in the unfoldings that expose the permissions carried by the value [arg] reads.
+ * Collect the unfoldings that expose the permissions carried by the value [arg] reads, receiver-first.
  *
- * A `@Unique` property with no backing field is embedded as a permission-free function, so the permissions of
+ * A default immutable `@Unique` property is embedded as a permission-free getter function, so the permissions of
  * the value it holds sit inside the unique predicate of the receiver it is read from. A chain of such reads
  * needs one unfolding per link, with the receiver end outermost: unfolding one link is what grants access to
  * the predicate of the next.
@@ -679,16 +683,27 @@ private fun LinearizationContext.uniqueReadPath(
  * they cease to correspond, since only [argExp] may be reused: linearizing [arg] again would emit its
  * statements a second time.
  */
-private fun LinearizationContext.unfoldingUniqueReads(arg: ExpEmbedding, argExp: Exp, body: Exp): Exp {
-    val read = arg.ignoringCastsAndMetaNodes() as? FunctionCall ?: return body
-    val call = argExp as? Exp.FuncApp ?: return body
-    if (call.functionName != read.function.name) return body
-    val receiver = read.args.singleOrNull() ?: return body
-    val receiverExp = call.args.singleOrNull() ?: return body
+private fun LinearizationContext.collectUniqueReads(
+    arg: ExpEmbedding,
+    argExp: Exp,
+    reads: MutableMap<Pair<ClassTypeEmbedding, Exp>, Pair<ClassTypeEmbedding, Exp>>,
+) {
+    val read = arg.ignoringCastsAndMetaNodes() as? FunctionCall ?: return
+    val call = argExp as? Exp.FuncApp ?: return
+    if (call.functionName != read.function.name) return
+    val receiver = read.args.singleOrNull() ?: return
+    val receiverExp = call.args.singleOrNull() ?: return
     val path = uniqueReadPath(receiver.type.pretype, read.function)
-    if (path.isEmpty()) return body
-    val unfolded = path.foldRight(body) { onPath, inner ->
-        Exp.Unfolding(uniquePredicateAccess(receiverExp, onPath, source), inner, source.asPosition)
+    if (path.isEmpty()) return
+    collectUniqueReads(receiver, receiverExp, reads)
+    for (onPath in path) {
+        reads.putIfAbsent(onPath to receiverExp.uniqueReadKey(), onPath to receiverExp)
     }
-    return unfoldingUniqueReads(receiver, receiverExp, unfolded)
+}
+
+/** Source positions distinguish occurrences, not permissions. Keep the original expression for emission. */
+private fun Exp.uniqueReadKey(): Exp = when (this) {
+    is Exp.LocalVar -> Exp.LocalVar(name, type)
+    is Exp.FuncApp -> Exp.FuncApp(functionName, args.map { it.uniqueReadKey() }, type)
+    else -> this
 }
