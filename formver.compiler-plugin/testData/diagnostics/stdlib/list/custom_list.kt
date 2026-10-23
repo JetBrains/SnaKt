@@ -17,3 +17,16 @@ fun <!VIPER_TEXT!>test<!>(n: Int) {
         customList[0]
     }
 }
+
+class Grid(override val size: Int) : AbstractList<Int>() {
+    override fun <!VIPER_TEXT!>get<!>(index: Int): Int = index
+    fun <!VIPER_TEXT!>get<!>(row: Int, col: Int): Int = row * col
+}
+
+fun <!VIPER_TEXT!>emptyList<!>(): List<Int> = listOf(1)
+
+@AlwaysVerify
+fun <!VIPER_TEXT!>lookalikes<!>(grid: Grid): Int {
+    val notEmpty = emptyList()
+    return grid.get(-1, 5)
+}
