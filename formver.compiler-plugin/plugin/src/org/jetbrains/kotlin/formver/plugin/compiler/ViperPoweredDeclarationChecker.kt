@@ -47,7 +47,8 @@ private val FirSimpleFunction.hasSpecBlocks: Boolean
     get() = body?.let { containsSpecBlocks(it) } == true
 
 /**
- * Whether [this] has a Kotlin `contract { }` or a SnaKt specification block, misplaced blocks included.
+ * Whether [this] has a Kotlin `contract { }` or a resolved SnaKt specification call in its own body.
+ * Includes misplaced blocks; excludes blocks owned by nested lambdas or local functions.
  *
  * Callers assume a callee's specification whether or not the callee is a target. Misplaced blocks are
  * reported only for functions that get converted.

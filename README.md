@@ -103,7 +103,8 @@ The plugin accepts a number of command line options which can be passed via
 - Options `conversion_targets_selection` and `verification_targets_selection`: permitted values `no_targets`,
   `targets_with_contract`, `all_targets` (default: `targets_with_contract`). A function counts as having a
   contract if it has a Kotlin `contract { }` block or calls `preconditions`, `postconditions` or
-  `loopInvariants` anywhere in its body.
+  `loopInvariants` in its own body, including misplaced blocks. Blocks inside nested lambdas or local
+  functions do not select the enclosing function; unrelated functions with the same names do not count.
 - Option `unsupported_feature_behaviour`: permitted values `throw_exception`, `assume_unreachable` (default:
   `throw_exception`).
 

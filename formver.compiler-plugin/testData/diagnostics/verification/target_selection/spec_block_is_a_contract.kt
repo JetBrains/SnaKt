@@ -27,8 +27,21 @@ fun <!VIPER_TEXT!>caller<!>(): Int {
     return atLeastTen(20)
 }
 
-// Neither specified nor annotated: not a target, and nothing is assumed of it.
+// Neither specified nor annotated: outside default target selection.
 fun unspecified(x: Int): Int = x + 1
+
+// A nested lambda owns its blocks; it must not select this enclosing function.
+fun lambdaOnly() = { preconditions { true } }
+
+// Matching spelling alone is not a SnaKt specification.
+object OtherSpecs {
+    fun preconditions() = Unit
+}
+
+fun sameNameNonDsl() {
+    OtherSpecs.preconditions()
+    verify(false)
+}
 
 // Only misplaced blocks: still a target, so the blocks are reported.
 fun <!VERIFICATION_SKIPPED!>onlyMisplacedPostconditions<!>(x: Int): Int {

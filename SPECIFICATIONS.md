@@ -5,8 +5,10 @@ SnaKt translates Kotlin code with formal specifications to [Viper](https://www.p
 ## Verification Control
 
 By default, SnaKt verifies the functions that have a contract: a Kotlin `contract { }` block, or a
-SnaKt `preconditions { }`, `postconditions<T> { }` or `loopInvariants { }` block anywhere in the body.
-A misplaced block still selects its function, so that it is reported. Everything else is left alone:
+resolved SnaKt `preconditions { }`, `postconditions<T> { }` or `loopInvariants { }` call in the function's
+own body. Blocks inside nested lambdas or local functions do not select the enclosing function.
+A misplaced block still selects its function, so that it is reported. Unspecified, unannotated
+functions remain outside default target selection:
 
 ```kotlin
 import org.jetbrains.kotlin.formver.plugin.*
@@ -20,14 +22,16 @@ fun divide(numerator: Int, denominator: Int): Int {
 fun half(x: Int) = divide(x, 2)
 ```
 
-Callers of a specified function may assume its postconditions, so a function that carries a
-specification is verified against it rather than believed. Suppressing that — with `@NeverVerify`,
-or by setting the selection to `no_targets` — turns the specification into an assumption that
-nothing checks.
+Callers of a specified function may assume its postconditions. Selection is not a proof result:
+a selected function may fail verification or be rejected during conversion.
+
+Verification-only suppression (`@NeverVerify` or verification selection `no_targets`) is honored by
+the test facade. The production checker currently verifies every converted declaration regardless
+of that suppression. Conversion selection and `@NeverConvert` still control entry to conversion.
 
 **Annotations:**
 - `@AlwaysVerify` — verify this function regardless of plugin settings
-- `@NeverVerify` — skip verification even with contracts
+- `@NeverVerify` — request skipping verification even with contracts (see the production limitation above)
 - `@NeverConvert` — skip Viper conversion entirely
 
 **Plugin configuration** (in `build.gradle.kts`):
@@ -35,7 +39,7 @@ nothing checks.
 formver {
     verificationTargetsSelection("all_targets")  // Verify all functions
     // or "targets_with_contract" (default) — only functions carrying a contract
-    // or "no_targets" — disable verification
+    // or "no_targets" — request disabling verification (see the production limitation above)
 }
 ```
 
