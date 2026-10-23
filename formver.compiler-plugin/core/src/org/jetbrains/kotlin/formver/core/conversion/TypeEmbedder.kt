@@ -27,7 +27,8 @@ class TypeEmbedder(private val programCtx: ProgramConversionContext) {
     fun embedType(type: ConeKotlinType): TypeEmbedding = buildType { embedTypeWithBuilder(type) }
 
     /**
-     * Returns an embedding of the class type, with details set.
+     * Returns the cached embedding, or registers one before embedding supertypes and properties.
+     * Recursive lookups reuse that identity while the outer call is still populating its details.
      */
     fun embedClass(symbol: FirRegularClassSymbol): ClassTypeEmbedding {
         val className = symbol.classId.embedName()
@@ -56,7 +57,10 @@ class TypeEmbedder(private val programCtx: ProgramConversionContext) {
         return embedding
     }
 
-    // Note: keep in mind that this function is necessary to resolve the name of the function!
+    /**
+     * Builds the callable signature used to disambiguate its embedded name, including receiver,
+     * parameter and return types. Name resolution therefore also requires type embedding.
+     */
     fun embedFunctionPretype(symbol: FirFunctionSymbol<*>): FunctionTypeEmbedding = buildFunctionPretype {
         embedFunctionPretypeWithBuilder(symbol)
     }
