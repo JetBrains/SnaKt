@@ -58,7 +58,7 @@ dependencies {
     testImplementation(project(":formver.compiler-plugin:locality"))
     testImplementation(project(":formver.common"))
     testImplementation(project(":formver.compiler-plugin:uniqueness"))
-    testRuntimeOnly(project(":formver.compiler-plugin:core"))
+    testImplementation(project(":formver.compiler-plugin:core"))
     testRuntimeOnly(project(":formver.compiler-plugin:viper"))
 
     // Dependencies required to run the internal test framework.

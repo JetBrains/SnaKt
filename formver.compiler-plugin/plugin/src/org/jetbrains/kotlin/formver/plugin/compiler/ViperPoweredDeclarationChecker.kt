@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.formver.plugin.compiler
 
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.reportOn
+import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.MppCheckerKind
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
@@ -16,6 +17,9 @@ import org.jetbrains.kotlin.fir.declarations.FirContractDescriptionOwner
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.hasAnnotation
+import org.jetbrains.kotlin.fir.expressions.FirErrorExpression
+import org.jetbrains.kotlin.fir.references.FirErrorNamedReference
+import org.jetbrains.kotlin.fir.visitors.FirDefaultVisitorVoid
 import org.jetbrains.kotlin.formver.common.LogLevel
 import org.jetbrains.kotlin.formver.common.PluginConfiguration
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
@@ -50,6 +54,30 @@ private fun TargetsSelection.applicable(declaration: FirSimpleFunction): Boolean
     TargetsSelection.FORCE_DISABLE -> false
 }
 
+/**
+ * Skip conversion and verification of the entire containing declaration when this recursive scan
+ * finds a FirErrorExpression or FirErrorNamedReference, including inside nested declarations.
+ * Skipped declarations are not proved. This is not a complete frontend-error check; frontend
+ * diagnostics remain authoritative for invalid input.
+ */
+private fun FirSimpleFunction.containsErrorNodes(): Boolean {
+    var found = false
+    accept(object : FirDefaultVisitorVoid() {
+        override fun visitElement(element: FirElement) {
+            if (!found) element.acceptChildren(this)
+        }
+
+        override fun visitErrorExpression(errorExpression: FirErrorExpression) {
+            found = true
+        }
+
+        override fun visitErrorNamedReference(errorNamedReference: FirErrorNamedReference) {
+            found = true
+        }
+    })
+    return found
+}
+
 class ViperPoweredDeclarationChecker(private val session: FirSession, private val config: PluginConfiguration) :
     FirSimpleFunctionChecker(MppCheckerKind.Common) {
 
@@ -57,6 +85,7 @@ class ViperPoweredDeclarationChecker(private val session: FirSession, private va
     override fun check(declaration: FirSimpleFunction) {
         val inTestRun = System.getProperty("formver.testRun").toBoolean()
         if (!config.shouldConvert(declaration)) return
+        if (declaration.containsErrorNodes()) return
         try {
             val programConversionContext = ProgramConverter(session, config, context, reporter)
             programConversionContext.register(declaration)
