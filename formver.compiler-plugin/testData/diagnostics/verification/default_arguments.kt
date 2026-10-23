@@ -61,7 +61,10 @@ fun <!VIPER_TEXT!>functionDefault<!>(a: Int, f: (Int) -> Int = { it }): Int = a
 
 fun <!VIPER_TEXT!>varargAndDefault<!>(vararg xs: Int, b: Int = 0): Int = b
 
-// The filled-in value of a reference parameter carries no access permissions.
+// Anti-vacuity controls: false must not become provable after an omitted argument.
+// These callers do not read fields, so they do not establish absence of access permissions.
+// Constructor/lambda defaults require rejection under the supported-literal policy;
+// these controls do not establish that default-expression effects can be ignored.
 @AlwaysVerify
 fun <!VIPER_TEXT!>omittedReferenceDefault<!>() {
     refDefault(1)
@@ -86,7 +89,8 @@ fun <!VIPER_TEXT!>omittedFunctionDefault<!>() {
     verify(<!VIPER_VERIFICATION_ERROR!>false<!>)
 }
 
-// An empty vararg parameter is filled in like an omitted one: an array not known to be empty.
+// Anti-vacuity control, not an assertion about array size or populated-vararg support.
+// This remains a rejection-expectation follow-up if the omitted vararg has no supported summary.
 @AlwaysVerify
 fun <!VIPER_TEXT!>emptyVarargWithOmittedDefault<!>() {
     varargAndDefault()
