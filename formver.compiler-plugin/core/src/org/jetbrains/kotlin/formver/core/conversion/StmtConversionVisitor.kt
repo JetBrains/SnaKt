@@ -9,14 +9,21 @@ import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.contracts.description.LogicOperationKind
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.declarations.FirProperty
+import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
+import org.jetbrains.kotlin.fir.declarations.utils.isData
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.expressions.impl.FirElseIfTrueCondition
 import org.jetbrains.kotlin.fir.expressions.impl.FirUnitExpression
 import org.jetbrains.kotlin.fir.references.toResolvedSymbol
+import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.coneType
+import org.jetbrains.kotlin.fir.types.canBeNull
 import org.jetbrains.kotlin.fir.types.isUnit
+import org.jetbrains.kotlin.fir.types.isInt
+import org.jetbrains.kotlin.fir.types.isBoolean
+import org.jetbrains.kotlin.fir.types.isChar
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
@@ -208,12 +215,14 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 "Invalid equality comparison ${equalityOperatorCall.description}, can only compare 2 elements."
             )
         }
-        val left = data.convert(equalityOperatorCall.arguments[0])
-        val right = data.convert(equalityOperatorCall.arguments[1])
+        val leftFir = equalityOperatorCall.arguments[0]
+        val rightFir = equalityOperatorCall.arguments[1]
+        val left = data.convert(leftFir)
+        val right = data.convert(rightFir)
 
         return when (equalityOperatorCall.operation) {
-            FirOperation.EQ -> convertEqCmp(left, right)
-            FirOperation.NOT_EQ -> Not(convertEqCmp(left, right))
+            FirOperation.EQ -> convertEqCmp(leftFir, left, rightFir, right, data)
+            FirOperation.NOT_EQ -> Not(convertEqCmp(leftFir, left, rightFir, right, data))
             FirOperation.IDENTITY -> IdentityCmp(left, right)
             FirOperation.NOT_IDENTITY -> Not(IdentityCmp(left, right))
             else -> handleUnimplementedElement(
@@ -224,10 +233,64 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
     }
 
-    private fun convertEqCmp(left: ExpEmbedding, right: ExpEmbedding): ExpEmbedding {
-        //TODO: replace with call to left.equals()
-        return EqCmp(left, right)
+    private fun convertEqCmp(
+        leftFir: FirExpression,
+        left: ExpEmbedding,
+        rightFir: FirExpression,
+        right: ExpEmbedding,
+        data: StmtConversionContext,
+    ): ExpEmbedding {
+        val leftClass = leftFir.resolvedType.toRegularClassSymbol(data.session)
+        val rightClass = rightFir.resolvedType.toRegularClassSymbol(data.session)
+        if (leftClass?.isData != true && rightClass?.isData != true) return EqCmp(left, right)
+        val dataClass = generatedEqualsClass(leftFir, rightFir, data)
+            ?: return unsupportedDataClassEquality(leftFir, data)
+        val propertySymbols = dataClass.propertySymbols.filter {
+            it.correspondingValueParameterFromPrimaryConstructor != null
+        }
+        // Reference equality is not a model of a property's Kotlin `equals`, including nested data classes.
+        if (propertySymbols.any {
+                val type = it.resolvedReturnType
+                val modeled = type.isInt || type.isBoolean || type.isChar
+                type.canBeNull(data.session) || !modeled
+            }) return unsupportedDataClassEquality(leftFir, data)
+        val getters = propertySymbols.map { symbol ->
+            val property = data.embedProperty(symbol)
+            property.getter?.takeIf { property.isVal } ?: return unsupportedDataClassEquality(leftFir, data)
+        }
+        // Declarations snapshot values, unlike lazy `share`: RHS effects cannot change the saved LHS.
+        val savedLeft = data.declareAnonVar(left.type, left)
+        val savedRight = data.declareAnonVar(right.type, right)
+        return blockOf(savedLeft, savedRight, getters.map { getter ->
+            EqCmp(
+                getter.getValueSimple(savedLeft.variable, data.typeResolver),
+                getter.getValueSimple(savedRight.variable, data.typeResolver),
+            )
+        }.toConjunction())
     }
+
+    /**
+     * The data class whose generated `equals` compares both operands, if any.
+     */
+    private fun generatedEqualsClass(
+        leftFir: FirExpression,
+        rightFir: FirExpression,
+        data: StmtConversionContext,
+    ): FirRegularClassSymbol? {
+        if (leftFir.resolvedType.canBeNull(data.session) || rightFir.resolvedType.canBeNull(data.session)) return null
+        val leftClass = leftFir.resolvedType.toRegularClassSymbol(data.session)
+        val rightClass = rightFir.resolvedType.toRegularClassSymbol(data.session)
+        if (leftClass != rightClass) return null
+        // Eligibility excludes both user declarations and supertypes that could suppress generated equals.
+        return leftClass?.takeIf { it.hasGeneratedEquals }
+    }
+
+    private fun unsupportedDataClassEquality(expression: FirExpression, data: StmtConversionContext): ExpEmbedding =
+        handleUnimplementedElement(
+            expression.source,
+            "Data-class equality requires generated equals, matching non-null types, and immutable Int, Boolean or Char properties.",
+            data,
+        )
 
     override fun visitComparisonExpression(
         comparisonExpression: FirComparisonExpression,
