@@ -84,3 +84,42 @@ method negativePrimitiveArrayRead(array: Ref) returns (v_ret_0: Ref)
   goto lbl_ret_0
   label lbl_ret_0
 }
+
+/array_bounds.kt: info: Generated Viper text for uncheckedUnsignedArrayRead:
+field size: Ref
+
+function data(this: Ref): Ref
+  requires isSubtype(typeOf(this), UInt())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function storage(this: Ref): Ref
+  requires isSubtype(typeOf(this), UIntArray())
+  ensures isSubtype(typeOf(result), IntArray())
+
+
+method get(this: Ref, index: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), UIntArray())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), UInt())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method uncheckedUnsignedArrayRead(array: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(array), UIntArray())
+  requires acc(array.size, write)
+  requires intFromRef(array.size) >= 0
+  ensures acc(array.size, write)
+  ensures intFromRef(array.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), UInt())
+{
+  v_ret_0 := get(array, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}

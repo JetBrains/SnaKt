@@ -14,3 +14,8 @@ fun <!VIPER_TEXT!>uncheckedPrimitiveArrayRead<!>(array: IntArray): Int =
 @AlwaysVerify
 fun <!VIPER_TEXT!>negativePrimitiveArrayRead<!>(array: IntArray): Int =
     <!POSSIBLE_INDEX_OUT_OF_BOUND!>array[-1]<!>
+
+@OptIn(ExperimentalUnsignedTypes::class)
+@AlwaysVerify
+fun <!VIPER_TEXT!>uncheckedUnsignedArrayRead<!>(array: UIntArray): UInt =
+    <!POSSIBLE_INDEX_OUT_OF_BOUND!>array[0]<!>
