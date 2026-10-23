@@ -1,0 +1,1 @@
+/basic.kt: warning: Viper verification error: Assignment might fail. Divisor intFromRef(zero) might be zero.

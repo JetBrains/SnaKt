@@ -35,6 +35,9 @@ data class Linearizer(
     override val typeResolver: TypeResolver,
     val stmtModifierTracker: StmtModifierTracker? = null
 ) : LinearizationContext {
+    override val eagerImplies: Boolean
+        get() = true
+
     override val logicOperatorPolicy: LogicOperatorPolicy
         get() = LogicOperatorPolicy.CONVERT_TO_IF
 

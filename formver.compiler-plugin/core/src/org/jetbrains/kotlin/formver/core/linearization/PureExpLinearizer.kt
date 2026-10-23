@@ -36,6 +36,9 @@ data class PureExpLinearizer(
     override val typeResolver: TypeResolver
 ) : LinearizationContext {
 
+    override val eagerImplies: Boolean
+        get() = false
+
     override val logicOperatorPolicy: LogicOperatorPolicy
         get() = LogicOperatorPolicy.CONVERT_TO_EXPRESSION
 

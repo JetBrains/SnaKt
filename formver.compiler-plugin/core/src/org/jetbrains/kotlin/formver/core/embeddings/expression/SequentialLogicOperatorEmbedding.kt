@@ -51,3 +51,18 @@ data class SequentialOr(override val left: ExpEmbedding, override val right: Exp
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitSequentialOr(this)
 }
+
+/**
+ * A call to [org.jetbrains.kotlin.formver.plugin.implies]. Executable bodies capture both operands left to
+ * right before computing the implication, using statements or ordered let-bindings. Specifications instead
+ * use declarative implication: the antecedent guards the consequent's definedness obligations.
+ * This choice is independent of the policy for short-circuiting `&&` and `||`; no conditional is emitted here.
+ */
+data class ContextualImplies(val left: ExpEmbedding, val right: ExpEmbedding) : ExpEmbedding {
+    override val type
+        get() = buildType { boolean() }
+
+    override fun children(): Sequence<ExpEmbedding> = sequenceOf(left, right)
+
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitContextualImplies(this)
+}
