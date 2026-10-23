@@ -140,4 +140,3 @@ method nonNullAssertionFieldReceiverMightFail(b: Ref)
 method prop(this: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
-
