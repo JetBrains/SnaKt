@@ -140,8 +140,8 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         fallthroughUnreachable: Boolean,
         data: StmtConversionContext,
     ): ExpEmbedding {
-        // When Kotlin proves the `when` exhaustive but there is no syntactic `else`, the missing fallthrough is
-        // `Unreachable`. A pure function body cannot inhale, so it keeps the `UnitLit` fallthrough.
+        // Trust FIR's exhaustiveness check for the missing tail rather than proving sealed-hierarchy closure.
+        // Pure bodies must remain expressions: they cannot inhale, so retain their conservative Unit fallback.
         if (!whenBranches.hasNext()) return if (fallthroughUnreachable && !data.signature.isPure) Unreachable else UnitLit
 
         val branch = whenBranches.next()

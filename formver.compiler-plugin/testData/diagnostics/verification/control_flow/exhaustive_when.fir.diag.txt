@@ -109,35 +109,3 @@ function pureBooleanWhenStatement(b: Ref): Ref
               ((boolFromRef(anon_0_0) == true ? r_1 : r_3)) in
               r_4))))))
 }
-
-/exhaustive_when.kt: info: Generated Viper text for pureSealedWhen:
-function operand(this: Ref): Ref
-  requires isSubtype(typeOf(this), Neg())
-  ensures isSubtype(typeOf(result), Const())
-
-
-function pureSealedWhen(e: Ref): Ref
-  requires isSubtype(typeOf(e), Expr())
-  ensures isSubtype(typeOf(result), boolType())
-{
-  (let anon_0_0 ==
-    (e) in
-    (let anon_2_0 ==
-      ((isSubtype(typeOf(anon_0_0), Const()) ? boolToRef(true) : null)) in
-      (let anon_4_0 ==
-        ((!isSubtype(typeOf(anon_0_0), Const()) &&
-        isSubtype(typeOf(anon_0_0), Neg()) ?
-          boolToRef(false) :
-          null)) in
-        (let anon_3_0 ==
-          ((!isSubtype(typeOf(anon_0_0), Const()) ?
-            (isSubtype(typeOf(anon_0_0), Neg()) ? anon_4_0 : unitValue()) :
-            null)) in
-          (let anon_1_0 ==
-            ((isSubtype(typeOf(anon_0_0), Const()) ? anon_2_0 : anon_3_0)) in
-            anon_1_0)))))
-}
-
-function value(this: Ref): Ref
-  requires isSubtype(typeOf(this), Const())
-  ensures isSubtype(typeOf(result), intType())

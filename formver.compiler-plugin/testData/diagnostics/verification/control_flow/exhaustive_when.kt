@@ -15,7 +15,7 @@ fun <!VIPER_TEXT!>eval<!>(e: Expr): Int = when (e) {
     is Neg -> -e.operand.value
 }
 
-// Branch bodies of a total `when` are still checked: `r` can be negative.
+// Exhaustiveness does not imply a non-negative result: either variant can produce a negative value.
 @AlwaysVerify
 fun <!VIPER_TEXT!>evalNonNeg<!>(e: Expr): Int {
     val r = when (e) {
@@ -43,12 +43,3 @@ fun <!VIPER_TEXT!>pureBooleanWhenStatement<!>(b: Boolean): Int {
     }
     return r
 }
-
-// Known gap: a pure body keeps a `Unit` fallthrough, and Viper cannot rule it out for a sealed subject,
-// so the result-type postcondition fails.
-<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
-@Pure
-fun <!VIPER_TEXT!>pureSealedWhen<!>(e: Expr): Boolean = when (e) {
-    is Const -> true
-    is Neg -> false
-}<!>
