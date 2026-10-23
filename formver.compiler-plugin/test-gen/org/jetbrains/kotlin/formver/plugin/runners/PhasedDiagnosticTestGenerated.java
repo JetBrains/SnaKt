@@ -870,6 +870,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("contract_mutation_controls.kt")
+      public void testContract_mutation_controls() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/contract_mutation_controls.kt");
+      }
+
+      @Test
       @TestMetadata("empty.kt")
       public void testEmpty() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/empty.kt");
@@ -921,6 +927,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("simple_precondition.kt")
       public void testSimple_precondition() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/simple_precondition.kt");
+      }
+
+      @Test
+      @TestMetadata("specification_mutation_negatives.kt")
+      public void testSpecification_mutation_negatives() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/user_invariants/specification_mutation_negatives.kt");
       }
 
       @Test
