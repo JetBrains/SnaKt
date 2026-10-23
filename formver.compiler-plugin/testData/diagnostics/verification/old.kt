@@ -18,7 +18,7 @@ fun <!VIPER_TEXT!>test<!>(c: @Unique @Borrowed C) {
     verify(c == old(c))
 }
 
-// TODO: Remove the @NeverConvert once we have uniqueness information.
+// The caller trusts this contract; @NeverConvert leaves the mutating helper body unverified.
 @NeverConvert
 fun inc(c: @Unique @Borrowed C) {
     postconditions<Unit> {

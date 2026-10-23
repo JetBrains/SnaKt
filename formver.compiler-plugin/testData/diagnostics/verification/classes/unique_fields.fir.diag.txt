@@ -1,4 +1,4 @@
-/unique_fields.kt: info: Generated Viper text for testPrimitiveFieldGetterUnique:
+/unique_fields.kt: info: Generated Viper text for testAnyFieldGetterUnique:
 field bf_sharedVar: Ref
 
 field bf_uniqueVar: Ref
@@ -13,7 +13,7 @@ function g_uniqueVal(this: Ref): Ref
   ensures isSubtype(typeOf(result), anyType())
 
 
-method testPrimitiveFieldGetterUnique(pf: Ref) returns (v_ret_0: Ref)
+method testAnyFieldGetterUnique(pf: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(pf), UniqueContainer())
   requires acc(UniqueContainer_unique(pf), write)
   ensures isSubtype(typeOf(v_ret_0), unitType())
@@ -30,7 +30,7 @@ method testPrimitiveFieldGetterUnique(pf: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-/unique_fields.kt: info: Generated Viper text for testPrimitiveFieldGetterShared:
+/unique_fields.kt: info: Generated Viper text for testAnyFieldGetterShared:
 field bf_sharedVar: Ref
 
 field bf_uniqueVar: Ref
@@ -45,7 +45,7 @@ function g_uniqueVal(this: Ref): Ref
   ensures isSubtype(typeOf(result), anyType())
 
 
-method testPrimitiveFieldGetterShared(pf: Ref) returns (v_ret_0: Ref)
+method testAnyFieldGetterShared(pf: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(pf), UniqueContainer())
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
@@ -61,7 +61,7 @@ method testPrimitiveFieldGetterShared(pf: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-/unique_fields.kt: info: Generated Viper text for testPrimitiveFieldSetterUnique:
+/unique_fields.kt: info: Generated Viper text for testAnyFieldSetterUnique:
 field sharedVar: Ref
 
 field uniqueVar: Ref
@@ -80,7 +80,7 @@ method con() returns (ret_1: Ref)
   ensures isSubtype(typeOf(ret_1), anyType())
 
 
-method testPrimitiveFieldSetterUnique(pf: Ref) returns (v_ret_0: Ref)
+method testAnyFieldSetterUnique(pf: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(pf), UniqueContainer())
   requires acc(UniqueContainer_unique(pf), write)
   ensures isSubtype(typeOf(v_ret_0), unitType())
@@ -93,7 +93,7 @@ method testPrimitiveFieldSetterUnique(pf: Ref) returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
 
-/unique_fields.kt: info: Generated Viper text for testPrimitiveFieldSetterShared:
+/unique_fields.kt: info: Generated Viper text for testAnyFieldSetterShared:
 field sharedVar: Ref
 
 field uniqueVar: Ref
@@ -112,7 +112,7 @@ method con() returns (ret_1: Ref)
   ensures isSubtype(typeOf(ret_1), anyType())
 
 
-method testPrimitiveFieldSetterShared(pf: Ref) returns (v_ret_0: Ref)
+method testAnyFieldSetterShared(pf: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(pf), UniqueContainer())
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {

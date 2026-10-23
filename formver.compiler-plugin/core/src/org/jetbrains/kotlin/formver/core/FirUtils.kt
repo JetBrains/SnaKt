@@ -83,8 +83,8 @@ fun kotlinCallableId(className: String?, name: String): CallableId = callableId(
 
 /*
  * Conversion has no `CheckerContext`, so it cannot call the uniqueness and locality modules' symbol resolvers and
- * reads the type attributes those modules install directly instead. That covers explicitly typed declarations only,
- * which is all conversion sees.
+ * reads attributes on resolved declaration types instead, including inferred types. These are type-level facts,
+ * not the initializer-derived or flow-sensitive uniqueness tracked by the symbol resolvers.
  */
 
 val FirBasedSymbol<*>.isUnique: Boolean
@@ -94,7 +94,7 @@ val FirBasedSymbol<*>.isUnique: Boolean
         else -> false
     }
 
-// `@Borrowed` is only allowed on a parameter type, so no other symbol can carry it.
+// Conversion uses borrowing here for value and extension-receiver parameters; this is not a target-validity check.
 val FirBasedSymbol<*>.isBorrowed: Boolean
     get() = when (this) {
         is FirReceiverParameterSymbol -> resolvedType.locality == Locality.Local

@@ -83,10 +83,10 @@ object FormVerDirectives : SimpleDirectivesContainer() {
         description = "Always validate functions"
     )
 
-    // The uniqueness and locality checkers run in every test; this only takes conversion and verification out of the
-    // way, so a test can be about the checker diagnostics alone.
+    // Select no conversion or verification targets by default; @AlwaysVerify can still select a function.
+    // Outside conversion-only mode, ALWAYS_VALIDATE conflicts with the disabled conversion selection.
     val CHECKERS_ONLY by directive(
-        description = "Report checker diagnostics only; do not convert or verify"
+        description = "Select no conversion or verification targets by default"
     )
 
     val DUMP_UNIQUENESS_CFG by directive(
