@@ -1,6 +1,6 @@
 // FULL_JDK
 
-// LeetCode 278, "First Bad Version": the first 1 in a 0/1 sequence that ends in 1.
+// LeetCode 278, "First Bad Version": the zero-based index of the first 1 in a nondecreasing 0/1 string ending in 1.
 // https://leetcode.com/problems/first-bad-version/
 
 import org.jetbrains.kotlin.formver.plugin.*
