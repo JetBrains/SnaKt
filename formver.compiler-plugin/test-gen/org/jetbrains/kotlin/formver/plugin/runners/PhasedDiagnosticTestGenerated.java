@@ -734,6 +734,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("division_semantics.kt")
+      public void testDivision_semantics() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/division_semantics.kt");
+      }
+
+      @Test
       @TestMetadata("elvis.kt")
       public void testElvis() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/elvis.kt");
@@ -743,6 +749,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       @TestMetadata("identity_equality.kt")
       public void testIdentity_equality() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/identity_equality.kt");
+      }
+
+      @Test
+      @TestMetadata("remainder_semantics.kt")
+      public void testRemainder_semantics() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/operators/remainder_semantics.kt");
       }
 
       @Test

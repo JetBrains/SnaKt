@@ -3,7 +3,16 @@ method recursiveSumOfIntegersUpToN(n: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(n), intType())
   requires intFromRef(n) >= 0
   ensures isSubtype(typeOf(v_ret_0), intType())
-  ensures intFromRef(v_ret_0) == intFromRef(n) * (intFromRef(n) + 1) \ 2
+  ensures intFromRef(v_ret_0) ==
+    (intFromRef(n) * (intFromRef(n) + 1) < 0 != 2 < 0 ?
+      -((intFromRef(n) * (intFromRef(n) + 1) < 0 ?
+        -(intFromRef(n) * (intFromRef(n) + 1)) :
+        intFromRef(n) * (intFromRef(n) + 1)) \
+      (2 < 0 ? -2 : 2)) :
+      (intFromRef(n) * (intFromRef(n) + 1) < 0 ?
+        -(intFromRef(n) * (intFromRef(n) + 1)) :
+        intFromRef(n) * (intFromRef(n) + 1)) \
+      (2 < 0 ? -2 : 2))
 {
   if (intFromRef(n) == 0) {
     v_ret_0 := intToRef(0)
@@ -22,7 +31,16 @@ method sumOfIntegersUpToN(n: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(n), intType())
   requires intFromRef(n) >= 0
   ensures isSubtype(typeOf(v_ret_0), intType())
-  ensures intFromRef(v_ret_0) == intFromRef(n) * (intFromRef(n) + 1) \ 2
+  ensures intFromRef(v_ret_0) ==
+    (intFromRef(n) * (intFromRef(n) + 1) < 0 != 2 < 0 ?
+      -((intFromRef(n) * (intFromRef(n) + 1) < 0 ?
+        -(intFromRef(n) * (intFromRef(n) + 1)) :
+        intFromRef(n) * (intFromRef(n) + 1)) \
+      (2 < 0 ? -2 : 2)) :
+      (intFromRef(n) * (intFromRef(n) + 1) < 0 ?
+        -(intFromRef(n) * (intFromRef(n) + 1)) :
+        intFromRef(n) * (intFromRef(n) + 1)) \
+      (2 < 0 ? -2 : 2))
 {
   var sum: Ref
   var i: Ref
@@ -34,7 +52,16 @@ method sumOfIntegersUpToN(n: Ref) returns (v_ret_0: Ref)
     invariant isSubtype(typeOf(i), intType())
     invariant isSubtype(typeOf(n), intType())
     invariant intFromRef(i) <= intFromRef(n)
-    invariant intFromRef(sum) == intFromRef(i) * (intFromRef(i) + 1) \ 2
+    invariant intFromRef(sum) ==
+      (intFromRef(i) * (intFromRef(i) + 1) < 0 != 2 < 0 ?
+        -((intFromRef(i) * (intFromRef(i) + 1) < 0 ?
+          -(intFromRef(i) * (intFromRef(i) + 1)) :
+          intFromRef(i) * (intFromRef(i) + 1)) \
+        (2 < 0 ? -2 : 2)) :
+        (intFromRef(i) * (intFromRef(i) + 1) < 0 ?
+          -(intFromRef(i) * (intFromRef(i) + 1)) :
+          intFromRef(i) * (intFromRef(i) + 1)) \
+        (2 < 0 ? -2 : 2))
   anon := ltInts(i, n)
   if (boolFromRef(anon)) {
     sum := plusInts(sum, plusInts(i, intToRef(1)))
@@ -46,7 +73,16 @@ method sumOfIntegersUpToN(n: Ref) returns (v_ret_0: Ref)
   assert isSubtype(typeOf(i), intType())
   assert isSubtype(typeOf(n), intType())
   assert intFromRef(i) <= intFromRef(n)
-  assert intFromRef(sum) == intFromRef(i) * (intFromRef(i) + 1) \ 2
+  assert intFromRef(sum) ==
+    (intFromRef(i) * (intFromRef(i) + 1) < 0 != 2 < 0 ?
+      -((intFromRef(i) * (intFromRef(i) + 1) < 0 ?
+        -(intFromRef(i) * (intFromRef(i) + 1)) :
+        intFromRef(i) * (intFromRef(i) + 1)) \
+      (2 < 0 ? -2 : 2)) :
+      (intFromRef(i) * (intFromRef(i) + 1) < 0 ?
+        -(intFromRef(i) * (intFromRef(i) + 1)) :
+        intFromRef(i) * (intFromRef(i) + 1)) \
+      (2 < 0 ? -2 : 2))
   v_ret_0 := sum
   goto lbl_ret_0
   label lbl_ret_0
