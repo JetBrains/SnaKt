@@ -14,7 +14,9 @@ import org.jetbrains.kotlin.formver.common.UnsupportedFeatureBehaviour
  * violations use `SnaktInternalException` or `error` instead.
  *
  * In `THROW_EXCEPTION` mode this throws. In `ASSUME_UNREACHABLE` mode it reports a minor
- * internal error and returns [onUnreachable], so conversion continues past the construct.
+ * internal error and invokes [onUnreachable] to supply a diagnostic recovery placeholder.
+ * Reporting sets the conversion-error flag; the declaration checker must skip verification.
+ * The placeholder does not model Kotlin execution or establish that a path is unreachable.
  */
 inline fun <T> ProgramConversionContext.handleUnsupportedFeature(
     source: KtSourceElement?,
