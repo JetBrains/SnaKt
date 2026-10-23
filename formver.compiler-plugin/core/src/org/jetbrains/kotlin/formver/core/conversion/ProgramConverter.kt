@@ -12,11 +12,17 @@ import org.jetbrains.kotlin.diagnostics.DiagnosticReporter
 import org.jetbrains.kotlin.diagnostics.KtDiagnosticFactory1
 import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.declarations.FirAnonymousInitializer
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
+import org.jetbrains.kotlin.fir.expressions.FirExpression
+import org.jetbrains.kotlin.fir.expressions.FirLiteralExpression
+import org.jetbrains.kotlin.fir.expressions.FirNamedArgumentExpression
 import org.jetbrains.kotlin.fir.expressions.FirPropertyAccessExpression
+import org.jetbrains.kotlin.fir.expressions.FirThisReceiverExpression
 import org.jetbrains.kotlin.fir.expressions.FirVariableAssignment
+import org.jetbrains.kotlin.fir.expressions.impl.FirResolvedArgumentList
 import org.jetbrains.kotlin.fir.references.toResolvedSymbol
 import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
@@ -37,7 +43,6 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousBuiltinVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
-import org.jetbrains.kotlin.formver.core.embeddings.expression.VariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.EqCmp
 import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
@@ -419,9 +424,11 @@ class ProgramConverter(
     }
 
     /**
-     * Recover the state established by a constructor without treating constructors as verified
-     * method bodies.  We only retain facts from straight-line initialization: as soon as a body
-     * contains control flow or another statement kind, its state is discarded conservatively.
+     * Infer equalities for abstract constructors, not execution guarantees. Only literals and
+     * substituted parameters are supported values; expression purity alone is not a frame proof.
+     * Executable init blocks, unknown effects, non-this writes and incomplete delegation mappings
+     * discard every inferred equality, including facts collected before the unsupported operation.
+     * Custom superclasses, defaults and varargs are outside this deliberately narrow model.
      */
     @OptIn(SymbolInternals::class)
     override fun embedConstructorPostconditions(
@@ -431,6 +438,10 @@ class ProgramConverter(
     ): List<ExpEmbedding> {
         val classSymbol = symbol.resolvedReturnType.toRegularClassSymbol(session) ?: return emptyList()
         val classProperties = classSymbol.propertySymbols.toSet()
+        if (classSymbol.fir.declarations.any { it is FirAnonymousInitializer }) {
+            return emptyList()
+        }
+        if (classSymbol.fir.superTypeRefs.any { !it.coneType.isAny }) return emptyList()
 
         fun contextFor(
             constructor: FirConstructorSymbol,
@@ -445,47 +456,77 @@ class ProgramConverter(
             return MethodConverter(this, signature, resolver, ScopeIndex.NoScope).statementCtxt()
         }
 
+        fun supportedValue(
+            expression: FirExpression,
+            substitutions: Map<FirValueParameterSymbol, ExpEmbedding>,
+            context: StmtConversionContext,
+        ): ExpEmbedding? = when (expression) {
+            is FirLiteralExpression -> context.convert(expression).takeIf { it.isPure() }
+            is FirNamedArgumentExpression -> supportedValue(expression.expression, substitutions, context)
+            is FirPropertyAccessExpression -> expression.calleeReference
+                .toResolvedSymbol<FirValueParameterSymbol>()?.let(substitutions::get)
+            else -> null
+        }
+
         fun collect(
             constructor: FirConstructorSymbol,
             substitutions: Map<FirValueParameterSymbol, ExpEmbedding>,
             seen: Set<FirConstructorSymbol>,
-        ): MutableMap<FirPropertySymbol, ExpEmbedding> {
-            if (constructor in seen) return mutableMapOf()
+        ): MutableMap<FirPropertySymbol, ExpEmbedding>? {
+            if (constructor in seen || substitutions.keys != constructor.valueParameterSymbols.toSet()) return null
+            if (constructor.valueParameterSymbols.any { it.fir.isVararg || it.fir.defaultValue != null }) return null
             val context = contextFor(constructor, substitutions)
             val declaration = constructor.fir
             val delegated = declaration.delegatedConstructor
             val state = if (delegated?.isThis == true) {
-                val target = delegated.calleeReference.toResolvedSymbol<FirConstructorSymbol>()
-                if (target == null) mutableMapOf() else {
-                    val arguments = delegated.argumentList.arguments.map { context.convert(it) }
-                    collect(target, target.valueParameterSymbols.zip(arguments).toMap(), seen + constructor)
+                val target = delegated.calleeReference.toResolvedSymbol<FirConstructorSymbol>() ?: return null
+                if (target.resolvedReturnType.toRegularClassSymbol(session) != classSymbol) return null
+                val mapping = (delegated.argumentList as? FirResolvedArgumentList)?.mapping ?: return null
+                val parameters = target.valueParameterSymbols
+                if (mapping.keys.toSet() != delegated.argumentList.arguments.toSet() ||
+                    mapping.size != parameters.size || mapping.values.map { it.symbol }.toSet() != parameters.toSet()
+                ) return null
+                val arguments = mapping.entries.associate { (argument, parameter) ->
+                    parameter.symbol to (supportedValue(argument, substitutions, context) ?: return null)
                 }
+                collect(target, arguments, seen + constructor) ?: return null
             } else {
-                classProperties.mapNotNull { property ->
-                    if (!isGuaranteedDefaultProperty(property)) return@mapNotNull null
-                    val value = property.fir.initializer?.let { context.convert(it) }
-                        ?: property.correspondingValueParameterFromPrimaryConstructor?.let(substitutions::get)
-                    value?.let { property to it }
-                }.toMap().toMutableMap()
+                // Even a fresh allocation may invoke arbitrary superclass code.
+                val target = delegated?.calleeReference?.toResolvedSymbol<FirConstructorSymbol>() ?: return null
+                if (!target.resolvedReturnType.isAny || delegated.argumentList.arguments.isNotEmpty()) return null
+                val initial = mutableMapOf<FirPropertySymbol, ExpEmbedding>()
+                for (property in classProperties) {
+                    if (property.fir.delegate != null) return null
+                    val initializer = property.fir.initializer
+                    val value = if (initializer != null) {
+                        supportedValue(initializer, substitutions, context) ?: return null
+                    } else {
+                        property.correspondingValueParameterFromPrimaryConstructor?.let {
+                            substitutions[it] ?: return null
+                        }
+                    }
+                    if (value != null && isGuaranteedDefaultProperty(property)) initial[property] = value
+                }
+                initial
             }
 
             for (statement in declaration.body?.statements.orEmpty()) {
-                val assignment = statement as? FirVariableAssignment ?: return mutableMapOf()
-                val access = assignment.lValue as? FirPropertyAccessExpression ?: return mutableMapOf()
+                val assignment = statement as? FirVariableAssignment ?: return null
+                val access = assignment.lValue as? FirPropertyAccessExpression ?: return null
+                val receiver = access.dispatchReceiver as? FirThisReceiverExpression ?: return null
+                if (receiver.calleeReference.boundSymbol != classSymbol) return null
                 val property = access.calleeReference.toResolvedSymbol<FirPropertySymbol>()
                     ?.takeIf { it in classProperties && isGuaranteedDefaultProperty(it) }
-                    ?: return mutableMapOf()
-                state[property] = context.convert(assignment.rValue)
+                    ?: return null
+                state[property] = supportedValue(assignment.rValue, substitutions, context) ?: return null
             }
             return state
         }
 
+        if (symbol.valueParameterSymbols.size != signature.params.size) return emptyList()
         val initialSubstitutions = symbol.valueParameterSymbols.zip(signature.params).toMap()
-        return collect(symbol, initialSubstitutions, emptySet()).mapNotNull { (property, value) ->
-            // Postconditions are linearized in a pure context, so a value we cannot express purely
-            // (e.g. a property initialized by a constructor or method call) is dropped conservatively
-            // rather than crashing the pure linearizer.
-            if (!value.isPure()) return@mapNotNull null
+        val state = collect(symbol, initialSubstitutions, emptySet()) ?: return emptyList()
+        return state.mapNotNull { (property, value) ->
             val embedded = embedProperty(property)
             embedded.getter?.let { EqCmp(it.getValueSimple(returnTarget.variable, typeResolver), value) }
         }

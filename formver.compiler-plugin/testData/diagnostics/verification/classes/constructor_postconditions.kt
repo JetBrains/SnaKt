@@ -22,9 +22,8 @@ class DelegatingSecondary(val argument: Int) {
     constructor() : this(42)
 }
 
-// A property initialized by a constructor call has no pure value, so no postcondition can be
-// inferred for it. Inference must skip it (not crash the pure linearizer) while still recovering
-// the pure facts about the other properties.
+// Allocation alone does not establish an effect or nonescape guarantee. Unknown initializer
+// effects disable all inferred equalities, not just the equality for the allocated property.
 class NonPureInitializer(val argument: Int) {
     val tag = 7
     val nested = InitializedPrimary(argument)
@@ -54,6 +53,43 @@ fun <!VIPER_TEXT!>delegatingConstructorPostconditions<!>() {
 @AlwaysVerify
 fun <!VIPER_TEXT!>nonPureInitializerPostconditions<!>() {
     val fresh = NonPureInitializer(42)
-    verify(fresh.argument == 42)
-    verify(fresh.tag == 7)
+    verify(<!VIPER_VERIFICATION_ERROR!>fresh.argument == 42<!>)
+    verify(<!VIPER_VERIFICATION_ERROR!>fresh.tag == 7<!>)
+}
+
+class InitMutation {
+    var x = 1
+    init { x = 2 }
+}
+
+class OtherReceiverWrite {
+    var x = 0
+    constructor(other: OtherReceiverWrite) { other.x = 5 }
+    constructor()
+}
+
+class UnknownInitializerEffect {
+    var x = 1
+    val y = change()
+    private fun change(): Int { x = 2; return 0 }
+}
+
+// These stale equalities must not follow from an abstract constructor call. The diagnostic
+// expectations are source guards; execution-dependent Viper goldens still require validation.
+@AlwaysVerify
+fun initBlockDoesNotEstablishStaleState() {
+    val fresh = InitMutation()
+    verify(<!VIPER_VERIFICATION_ERROR!>fresh.x == 1<!>)
+}
+
+@AlwaysVerify
+fun otherReceiverDoesNotEstablishConstructedState(other: OtherReceiverWrite) {
+    val fresh = OtherReceiverWrite(other)
+    verify(<!VIPER_VERIFICATION_ERROR!>fresh.x == 5<!>)
+}
+
+@AlwaysVerify
+fun unknownInitializerDoesNotPreserveEarlierState() {
+    val fresh = UnknownInitializerEffect()
+    verify(<!VIPER_VERIFICATION_ERROR!>fresh.x == 1<!>)
 }
