@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.fir.analysis.checkers.isPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
 import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
+import org.jetbrains.kotlin.fir.declarations.utils.isData
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
@@ -11,6 +12,7 @@ import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.EqCmp
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.FirVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.PlaceholderVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.FunctionTypeEmbedding
@@ -19,6 +21,7 @@ import org.jetbrains.kotlin.formver.core.isPure
 import org.jetbrains.kotlin.formver.core.isUnique
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.viper.SymbolicName
+import org.jetbrains.kotlin.util.OperatorNameConventions
 
 data class SignatureWithTarget<out S : FunctionSignature>(
     val signature: S, val returnTarget: ReturnTarget
@@ -36,6 +39,10 @@ data class SignatureWithTarget<out S : FunctionSignature>(
 @OptIn(DirectDeclarationsAccess::class)
 val FirRegularClassSymbol.propertySymbols: List<FirPropertySymbol>
     get() = declarationSymbols.filterIsInstance<FirPropertySymbol>()
+
+@OptIn(DirectDeclarationsAccess::class)
+val FirRegularClassSymbol.declaresEquals: Boolean
+    get() = declarationSymbols.any { it is FirNamedFunctionSymbol && it.name == OperatorNameConventions.EQUALS }
 
 private fun <R> FirPropertySymbol.withConstructorParam(action: FirPropertySymbol.(FirValueParameterSymbol) -> R): R? =
     correspondingValueParameterFromPrimaryConstructor?.let { param ->
@@ -200,9 +207,45 @@ fun SignatureWithTarget<NonInlineCallable>.toNormalSignature(symbol: FirFunction
             )
             addPreconditions(preconditions)
             addPostconditions(postconditions)
+            addPostconditions(dataClassGeneratedPostconditions(symbol, current.signature, returnTarget))
         }
         NonInlineFunctionSignature(current.signature, contract.preconditions, contract.postconditions, symbol.source)
     }
+
+context(converter: ProgramConversionContext)
+private fun dataClassGeneratedPostconditions(
+    symbol: FirFunctionSymbol<*>,
+    signature: NamedFunctionSignature,
+    returnTarget: ReturnTarget,
+): List<ExpEmbedding> {
+    val dataClass = symbol.receiverType?.toRegularClassSymbol(converter.session)?.takeIf { it.isData }
+        ?: return emptyList()
+    val receiver = signature.dispatchReceiver ?: return emptyList()
+    // Constructor properties in constructor order. Only `val` properties can be read in a postcondition.
+    val constructorProperties = dataClass.propertySymbols.mapNotNull { property ->
+        property.correspondingValueParameterFromPrimaryConstructor?.let { parameter ->
+            parameter to converter.embedProperty(property).takeIf { it.isVal }?.getter
+        }
+    }
+
+    val componentIndex = symbol.name.asString().removePrefix("component").toIntOrNull()
+    if (componentIndex != null && symbol.valueParameterSymbols.isEmpty()) {
+        val getter = constructorProperties.getOrNull(componentIndex - 1)?.second ?: return emptyList()
+        return listOf(EqCmp(returnTarget.variable, getter.getValueSimple(receiver, converter.typeResolver)))
+    }
+
+    if (symbol.name.asString() != "copy") return emptyList()
+    val paramsByName = signature.params.filterIsInstance<FirVariableEmbedding>().mapNotNull { parameter ->
+        (parameter.symbol as? FirValueParameterSymbol)?.name?.let { it to parameter }
+    }.toMap()
+    val propertyEqualities = constructorProperties.mapNotNull { (constructorParameter, getter) ->
+        val parameter = paramsByName[constructorParameter.name] ?: return@mapNotNull null
+        getter?.let { EqCmp(it.getValueSimple(returnTarget.variable, converter.typeResolver), parameter) }
+    }
+    // `copy` returns a fresh instance, so like a constructor it grants access to the result's unique predicate.
+    val uniqueAccess = returnTarget.variable.uniquePredicateAccessInvariant(converter.typeResolver)
+    return propertyEqualities + listOfNotNull(uniqueAccess)
+}
 
 @OptIn(SymbolInternals::class)
 context(converter: ProgramConversionContext)
