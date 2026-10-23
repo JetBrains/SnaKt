@@ -121,6 +121,8 @@ formver {
 }
 ```
 
-`verificationErrorSeverity` defaults to `"warning"`, so a failed proof leaves the build green
-and adopting the plugin cannot break an existing build. Set it to `"error"` to fail compilation
-on a failed proof instead.
+`verificationErrorSeverity` defaults to `"warning"`. Set it to `"error"` to report failed proofs
+as compiler errors. This controls failed-proof diagnostics only: conversion, consistency and
+internal failures remain errors, and compiler warnings-as-errors policies still apply.
+Successful compilation in warning mode does not mean that all selected proof obligations
+were established; warning mode is not a guarantee of build success.

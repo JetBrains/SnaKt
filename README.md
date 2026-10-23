@@ -80,9 +80,11 @@ formver {
 However, keep in mind that the Viper dump is provided as an info message: this message will not be shown
 unless you run `gradle` with the `--info` flag.
 
-By default a failed proof is reported as a warning, so adopting the plugin cannot break an
-existing build. Set `verificationErrorSeverity("error")` to fail compilation on a failed proof
-instead.
+By default a failed proof is reported as a warning. Set `verificationErrorSeverity("error")`
+to report failed proofs as compiler errors instead. Warning mode does not guarantee build
+success: compiler warnings-as-errors policies still apply, and conversion, consistency and
+internal failures remain errors. Successful compilation in warning mode does not mean that
+all selected proof obligations were established.
 
 ### Annotations
 
