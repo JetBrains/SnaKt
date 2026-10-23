@@ -53,10 +53,10 @@ data class SequentialOr(override val left: ExpEmbedding, override val right: Exp
 }
 
 /**
- * A call to [org.jetbrains.kotlin.formver.plugin.implies]. Under [LogicOperatorPolicy.CONVERT_TO_IF] it is an
- * ordinary call, so both operands are evaluated left to right before the implication is computed. Under
- * [LogicOperatorPolicy.CONVERT_TO_EXPRESSION] it becomes a Viper implication, which does not evaluate the right
- * operand when the left one is false.
+ * A call to [org.jetbrains.kotlin.formver.plugin.implies]. Executable bodies capture both operands left to
+ * right before computing the implication, using statements or ordered let-bindings. Specifications instead
+ * use declarative implication: the antecedent guards the consequent's definedness obligations.
+ * This choice is independent of the policy for short-circuiting `&&` and `||`; no conditional is emitted here.
  */
 data class ContextualImplies(val left: ExpEmbedding, val right: ExpEmbedding) : ExpEmbedding {
     override val type

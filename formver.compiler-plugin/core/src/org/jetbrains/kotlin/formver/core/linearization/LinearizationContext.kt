@@ -38,6 +38,9 @@ interface LinearizationContext {
     val source: KtSourceElement?
     val logicOperatorPolicy: LogicOperatorPolicy
 
+    // Ordinary implies calls are eager in executable bodies, independently of &&/|| lowering.
+    val eagerImplies: Boolean
+
     val typeResolver: TypeResolver
 
     fun freshAnonVar(type: TypeEmbedding): AnonymousVariableEmbedding

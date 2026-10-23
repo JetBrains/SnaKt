@@ -351,10 +351,7 @@ data class LinearizationVisitor(
         }
 
         private fun replacement(ctx: LinearizationContext): Linearizable =
-            when (ctx.logicOperatorPolicy) {
-                LogicOperatorPolicy.CONVERT_TO_IF -> eager()
-                LogicOperatorPolicy.CONVERT_TO_EXPRESSION -> declarative()
-            }
+            if (ctx.eagerImplies) eager() else declarative()
 
         override fun toViper(ctx: LinearizationContext): Exp = replacement(ctx).toViper(ctx)
         override fun toViperStoringIn(result: VariableEmbedding, ctx: LinearizationContext) =
