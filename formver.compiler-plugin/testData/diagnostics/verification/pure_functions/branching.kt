@@ -2,6 +2,48 @@
 
 import org.jetbrains.kotlin.formver.plugin.AlwaysVerify
 import org.jetbrains.kotlin.formver.plugin.Pure
+import org.jetbrains.kotlin.formver.plugin.preconditions
+
+@Pure
+fun <!VIPER_TEXT!>positiveOnly<!>(x: Int): Int {
+    preconditions { x > 0 }
+    return x
+}
+
+@AlwaysVerify
+@Pure
+fun <!VIPER_TEXT!>initializerAfterEarlyReturn<!>(x: Int): Int {
+    if (x <= 0) return 0
+    val positive = positiveOnly(x)
+    return positive
+}
+
+@AlwaysVerify
+@Pure
+fun <!VIPER_TEXT!>manySequentialIfs<!>(a: Boolean, b: Boolean, c: Boolean, d: Boolean, e: Boolean, f: Boolean): Int {
+    var x = 0
+    if (a) { x = x + 1 } else { x = x + 2 }
+    if (b) { x = x + 1 } else { x = x + 2 }
+    if (c) { x = x + 1 } else { x = x + 2 }
+    if (d) { x = x + 1 } else { x = x + 2 }
+    if (e) { x = x + 1 } else { x = x + 2 }
+    if (f) { x = x + 1 } else { x = x + 2 }
+    return x
+}
+
+@AlwaysVerify
+@Pure
+fun <!VIPER_TEXT!>sequentialEarlyReturns<!>(a: Boolean, b: Boolean, c: Boolean, d: Boolean): Int {
+    var x = 0
+    if (a) return 1
+    x = x + 1
+    if (b) return 2
+    x = x + 1
+    if (c) return 3
+    x = x + 1
+    if (d) return 4
+    return x
+}
 
 @Pure
 fun <!VIPER_TEXT!>noAssignmentInBlocks<!>(a: Boolean): Int {

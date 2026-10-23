@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.formver.viper.ast.Type
 class SsaConverter(
     val source: KtSourceElement? = null,
 ) {
-    private var head: SsaBlockNode = SsaBlockNode(SsaStartNode(), Exp.BoolLit(true))
+    private var head: SsaBlockNode = SsaBlockNode(SsaStartNode(), PathCondition.Always)
     private val ssaAssignments: MutableList<Pair<SsaVariableName, Exp>> = mutableListOf()
     private val returnExpressions: MutableList<Pair<Exp, Exp>> = mutableListOf()
     private val accessInvariants: MutableMap<SsaVariableName, List<Exp.PredicateAccess>> = mutableMapOf()
@@ -38,7 +38,7 @@ class SsaConverter(
             condition,
             this
         )
-        head = SsaBlockNode(joinNode, splitPoint.fullBranchingCondition)
+        head = SsaBlockNode(joinNode, PathCondition.or(thenResultHead.pathCondition, head.pathCondition))
     }
 
     fun constructExpression(): Exp {
@@ -92,7 +92,9 @@ class SsaConverter(
     }
 
     fun addReturn(returnExp: Exp) {
-        returnExpressions.add(head.fullBranchingCondition to returnExp)
+        val condition = head.pathCondition as? PathCondition.Reachable ?: return
+        returnExpressions.add(condition.exp to returnExp)
+        head = SsaBlockNode(head, PathCondition.Unreachable)
     }
 
     fun resolveVariableName(name: SymbolicName): SymbolicName {
@@ -104,11 +106,12 @@ class SsaConverter(
             source,
             "Tried to assign a variable without a default expression"
         )
-        if (head.fullBranchingCondition == Exp.BoolLit(true)) {
-            ssaAssignments.add(name to varExp)
-        } else {
-            ssaAssignments.add(name to Exp.TernaryExp(head.fullBranchingCondition, varExp, defaultExpression))
+        val guarded = when (val condition = head.pathCondition) {
+            PathCondition.Unreachable -> defaultExpression
+            PathCondition.Always -> varExp
+            is PathCondition.Reachable -> Exp.TernaryExp(condition.exp, varExp, defaultExpression)
         }
+        ssaAssignments.add(name to guarded)
     }
 
     private fun Exp.withAccessInvariants(name: SsaVariableName): Exp =

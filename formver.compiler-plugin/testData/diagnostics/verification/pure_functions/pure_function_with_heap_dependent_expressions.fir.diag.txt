@@ -171,15 +171,21 @@ function containsValue(node: Ref, target: Ref): Ref
   ensures isSubtype(typeOf(result), boolType())
 {
   (let nextNode_0 ==
-    (next(node)) in
+    ((!(intFromRef(value(node)) == intFromRef(target)) ? next(node) : null)) in
     (let anon_1_0 ==
-      ((!(nextNode_0 == nullValue()) ?
+      ((!(intFromRef(value(node)) == intFromRef(target)) &&
+      !(nextNode_0 == nullValue()) ?
         containsValue(nextNode_0, target) :
         null)) in
       (let anon_2_0 ==
-        ((!!(nextNode_0 == nullValue()) ? boolToRef(false) : null)) in
+        ((!(intFromRef(value(node)) == intFromRef(target)) &&
+        !!(nextNode_0 == nullValue()) ?
+          boolToRef(false) :
+          null)) in
         (let anon_0_0 ==
-          ((!(nextNode_0 == nullValue()) ? anon_1_0 : anon_2_0)) in
+          ((!(intFromRef(value(node)) == intFromRef(target)) ?
+            (!(nextNode_0 == nullValue()) ? anon_1_0 : anon_2_0) :
+            null)) in
           (intFromRef(value(node)) == intFromRef(target) ?
             boolToRef(true) :
             anon_0_0)))))
