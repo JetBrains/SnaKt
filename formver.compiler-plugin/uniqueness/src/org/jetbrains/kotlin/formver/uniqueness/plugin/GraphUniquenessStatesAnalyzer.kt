@@ -84,11 +84,7 @@ class GraphUniquenessStatesAnalyzer(
         this[Unit] ?: initialState
 
     /**
-     * Records [state] as the outcome of a node, summarized so that no path in it revisits a symbol.
-     *
-     * Normalizing at every node, rather than only where control flow merges, keeps the bound on the state space
-     * independent of which nodes the traversal happens to merge at, so the fixed point is reached whatever shape the
-     * graph has.
+     * Records [state] with descendants below the first repeated symbol summarized at every CFG node.
      */
     private fun UniquenessStateFlow.putSummarized(state: UniquenessState): UniquenessStateFlow =
         put(Unit, state.summarizeRecursivePaths())
@@ -155,11 +151,7 @@ class GraphUniquenessStatesAnalyzer(
                 val leftAccessPaths = leftAccessState.enumeratePaths()
                 val rightAccessState = rightValue.resolveAccessState()
 
-                // The right-hand side is read before the assignment takes effect, so both what it projects and the move
-                // of the paths it reads are computed against the incoming state, and the move is applied first. That
-                // ordering matters when the left-hand side is a prefix of what was read: advancing a cursor with
-                // `current = current.next` moves the field out of the node the cursor is leaving, and overwriting
-                // `current` then drops that mark, because it described a location the cursor no longer reaches.
+                // Read and move the RHS before overwriting the LHS: `current = current.next` moves the old node's link.
                 val rightUniquenessState = rightAccessState.projectTerminalUniquenessState(uniquenessState)
                 var newUniquenessState = rightAccessState.move(uniquenessState)
 

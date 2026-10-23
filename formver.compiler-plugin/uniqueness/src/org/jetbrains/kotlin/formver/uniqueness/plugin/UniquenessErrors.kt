@@ -34,7 +34,7 @@ object UniquenessErrors : KtDiagnosticsContainer() {
 
     override fun getRendererFactory() = UniquenessErrorMessages
 
-    fun tags() = listOf(
+    val tags = listOf(
         UNIQUENESS_MISMATCH.name,
         CONTEXT_UNIQUENESS_MISMATCH.name,
         ESCAPE_UNIQUENESS_INCONSISTENCY.name,

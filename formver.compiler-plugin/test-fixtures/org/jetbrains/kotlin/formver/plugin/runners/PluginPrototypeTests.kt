@@ -49,7 +49,7 @@ class VerificationDiagnosticsCollector(testServices: TestServices) : Diagnostics
 }
 
 class ConversionTagCollector(testService: TestServices) : TagCollector(testService) {
-    override val tagsToConsider: List<String> = PluginErrors.tags() + UniquenessErrors.tags()
+    override val tagsToConsider: List<String> = PluginErrors.tags() + UniquenessErrors.tags
 }
 
 class AllTagCollector(testService: TestServices) : TagCollector(testService)

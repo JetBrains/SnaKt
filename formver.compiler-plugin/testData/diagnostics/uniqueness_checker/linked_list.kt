@@ -128,9 +128,22 @@ fun `consume a unique link twice beside a shared payload`(head: @Unique PayloadN
     consumePayloadNode(<!INVALID_MOVED_ACCESS!>head.next.next<!>)
 }
 
-// Known gap: the second read is a moved access, missed because a move inside a summary sees `payload`'s shared type.
+// A shared declaration cannot exclude a unique value restored into the summarized region.
 fun `read a restored unique link twice through a shared payload`(head: @Unique PayloadNode, fresh: @Unique PayloadNode) {
     head.next.next.payload.next = fresh
     readPayloadNode(head.next.next.payload.next)
-    readPayloadNode(head.next.next.payload.next)
+    readPayloadNode(<!INVALID_MOVED_ACCESS!>head.next.next.payload.next<!>)
+}
+
+// Without a summary, the restored unique value is tracked precisely.
+fun `read an unsummarized restored unique link twice`(head: @Unique PayloadNode, fresh: @Unique PayloadNode) {
+    head.payload.next = fresh
+    readPayloadNode(head.payload.next)
+    readPayloadNode(<!INVALID_MOVED_ACCESS!>head.payload.next<!>)
+}
+
+// An unsummarized shared-only access must remain reusable.
+fun `read a shared payload twice`(head: @Unique PayloadNode) {
+    readPayloadNode(head.payload)
+    readPayloadNode(head.payload)
 }

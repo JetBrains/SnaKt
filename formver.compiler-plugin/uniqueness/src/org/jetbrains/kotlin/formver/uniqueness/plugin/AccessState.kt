@@ -98,10 +98,8 @@ fun AccessState.append(other: AccessState): AccessState {
  * components is automatically inferred to be the join between the declared uniqueness of the component's symbol and the
  * uniqueness of the parent.
  *
- * An access that reaches a summary node cannot single out one path in the region the summary covers, so the update
- * there is weak: the transform is applied to the value the accessed path would have if it were not recorded, and the
- * result is joined into the summary. The summary's own value cannot stand in for the accessed path, because it is only
- * an upper bound: a summary that is shared because of one path may still cover a unique path that a move has to mark.
+ * Summary updates are weak. Their joined value and declared types cannot exclude a unique descendant, so the
+ * transform also considers a unique value. This may conservatively mark shared-only summarized accesses as moved.
  */
 context(context: CheckerContext)
 fun AccessState.transformOnTerminals(
@@ -125,7 +123,12 @@ fun AccessState.transformOnTerminals(
 
             accessedPaths.fold(uniquenessChild) { summary, path ->
                 val unrecorded = UniquenessState(path.resolveDeclaredUniqueness().join(newUniquenessState.data))
-                summary.copy(data = summary.data.join(transform(path.last(), unrecorded).data))
+                val possibleUnique = UniquenessState(Uniqueness.Unique)
+                summary.copy(
+                    data = summary.data
+                        .join(transform(path.last(), unrecorded).data)
+                        .join(transform(path.last(), possibleUnique).data)
+                )
             }
         } else {
             val transformedChild = accessChild.transformOnTerminals(uniquenessChild, transform)

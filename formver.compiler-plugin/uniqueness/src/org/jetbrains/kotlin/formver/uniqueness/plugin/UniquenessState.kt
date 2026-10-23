@@ -47,12 +47,8 @@ fun UniquenessState.insert(path: Path, child: UniquenessState): UniquenessState 
 /**
  * Collapses every path that revisits a symbol into a summary of the region below the repeat.
  *
- * Assignment projects the substate of the right-hand side under the path of the left-hand side, so a loop over a
- * recursive type can deepen the trie once per iteration - `prev.next`, then `prev.next.next`, and so on - and the
- * chain of states never stabilizes. Cutting the trie wherever a symbol comes round a second time bounds its depth by
- * the number of distinct symbols the function mentions, which makes the state space finite and the fixed point
- * reachable. Any growth that is unbounded has to repeat a symbol, because a loop body can only ever append the finitely
- * many components its own syntax spells out; paths over non-recursive data are therefore left exactly as they are.
+ * Keeping the first repeated symbol as a summary bounds path length by the number of distinct symbols plus one.
+ * This bounds representation size; convergence also depends on the transfer functions.
  */
 fun UniquenessState.summarizeRecursivePaths(): UniquenessState =
     summarizeRecursivePaths(emptySet())
