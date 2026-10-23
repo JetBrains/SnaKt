@@ -14,15 +14,15 @@ function countDown(n: Ref): Ref
         anon_0_0)))
 }
 
-/mutual_recursion.kt: error: Function 'even' was not verified because of errors in its declaration
+/mutual_recursion.kt: error: Function 'even' was not verified because of errors in its declaration or dependencies
 
 /mutual_recursion.kt: error: Verification depends on mutually recursive pure functions 'even', 'odd', which is not supported
 
-/mutual_recursion.kt: error: Function 'odd' was not verified because of errors in its declaration
+/mutual_recursion.kt: error: Function 'odd' was not verified because of errors in its declaration or dependencies
 
 /mutual_recursion.kt: error: Verification depends on mutually recursive pure functions 'even', 'odd', which is not supported
 
-/mutual_recursion.kt: error: Function 'testMutualRecursion' was not verified because of errors in its declaration
+/mutual_recursion.kt: error: Function 'testMutualRecursion' was not verified because of errors in its declaration or dependencies
 
 /mutual_recursion.kt: error: Verification depends on mutually recursive pure functions 'even', 'odd', which is not supported
 

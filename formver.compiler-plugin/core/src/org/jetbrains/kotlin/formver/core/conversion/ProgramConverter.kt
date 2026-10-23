@@ -182,17 +182,19 @@ class ProgramConverter(
             for (entry in registered) {
                 reportVerificationSkipped(
                     entry.declaration.source,
-                    "Function '${entry.declaration.name.asString()}' was not verified because of errors in its declaration",
+                    "Function '${entry.declaration.name.asString()}' was not verified because of errors in its declaration or dependencies",
                 )
             }
         }
     }
 
     /**
-     * Viper accepts mutually recursive functions, but Silicon checks each function's postcondition
-     * without assuming the postconditions of the other functions in its recursion cycle. Even the
-     * generated result-type postcondition then fails, with an error that never mentions recursion.
-     * Such cycles are reported before verification. Self-recursion verifies and is not a cycle here.
+     * Reject strongly connected components containing more than one converted pure function before
+     * verification, avoiding downstream postcondition failures that may obscure mutual recursion.
+     * Calls in bodies are inspected syntactically, including infeasible branches; contract-only
+     * cycles and unavailable bodies are outside this check's scope. Direct self-recursion is left
+     * to the existing verifier, not guaranteed to verify. This check proves neither termination
+     * nor total correctness.
      */
     private fun validatePureRecursion() {
         val calls: Map<SymbolicName, Set<SymbolicName>> = buildMap {
