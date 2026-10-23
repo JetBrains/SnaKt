@@ -595,10 +595,6 @@ class ProgramConverter(
             }
 
             symbol.resolvedSuperTypes.forEach {
-                // Some Kotlin/JVM classes expose Java marker supertypes (for example,
-                // Array implements java.io.Serializable). We cannot model those classes,
-                // and they do not contribute invariants to the Kotlin type being embedded.
-                if (it.toClassSymbol(session) !is FirRegularClassSymbol) return@forEach
                 val superTypeName = embedType(it).pretype.name
                 typeResolver.addSubtypeRelation(className, superTypeName)
             }
@@ -652,11 +648,18 @@ class ProgramConverter(
 
         type.isAny -> any()
         type is ConeClassLikeType -> {
-            val classLikeSymbol = type.toClassSymbol(session)
-            if (classLikeSymbol is FirRegularClassSymbol) {
-                existing(embedClass(classLikeSymbol))
+            // Serializable may be present in JVM built-in supertypes without a resolvable
+            // FIR class. Preserve its identity and hierarchy edges instead of dropping it.
+            val marker = typeResolver.embedExternalMarker(type.lookupTag.classId)
+            if (marker != null) {
+                existing(marker)
             } else {
-                unimplementedTypeEmbedding(type)
+                val classLikeSymbol = type.toClassSymbol(session)
+                if (classLikeSymbol is FirRegularClassSymbol) {
+                    existing(embedClass(classLikeSymbol))
+                } else {
+                    unimplementedTypeEmbedding(type)
+                }
             }
         }
 

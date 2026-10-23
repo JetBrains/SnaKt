@@ -54,8 +54,10 @@ private fun TargetsSelection.applicable(declaration: FirSimpleFunction): Boolean
 }
 
 /**
- * FIR checkers run even on declarations with unresolved source constructs. The frontend has already
- * reported an error for those, and their recovery nodes cannot be converted.
+ * Skip conversion and verification of the entire containing declaration when this recursive scan
+ * finds a FirErrorExpression or FirErrorNamedReference, including inside nested declarations.
+ * Skipped declarations are not proved. This is not a complete frontend-error check; frontend
+ * diagnostics remain authoritative for invalid input.
  */
 private fun FirSimpleFunction.containsErrorNodes(): Boolean {
     var found = false
