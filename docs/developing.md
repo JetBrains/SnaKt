@@ -15,8 +15,15 @@ diagnostics, alongside golden files holding the diagnostic text:
 The test runners are generated from the testData tree as part of
 `compileTestKotlin`, so a new file is picked up on the next build.
 
-The pipeline splits into conversion (uniqueness checking, conversion, purity
-checking) and verification (Viper consistency checking and verification):
+Locality and uniqueness checking happens in FIR checkers that run in every task
+below and report into `.fir.diag.txt`; the plugin's `check_locality` and
+`check_uniqueness` options switch those diagnostics off, and tests leave them on.
+`@Unique` and `@Borrowed` reach conversion as type attributes either way.
+Explicitly setting a checker option to `false` is trusted unchecked mode: the
+corresponding ownership assumptions still participate in Viper contracts, but
+are not validated by that checker. Past that the pipeline splits into conversion
+(conversion proper and purity checking)
+and verification (Viper consistency checking and verification):
 
 | Task                       | Conversion | Verification                |
 |:---------------------------|:-----------|:----------------------------|
@@ -43,10 +50,14 @@ Which checks run:
 
 - `NEVER_VALIDATE` — convert but do not verify. Consistency checking still runs.
   This is how a test that is not meant to reach the verifier says so.
-- `CHECKERS_ONLY` — locality and uniqueness checking. No conversion.
-- `ALWAYS_VALIDATE` — verify every target. Verification is already the default,
-  so this changes nothing on its own; it earns its place by overriding
-  `CHECKERS_ONLY` above.
+- `CHECKERS_ONLY` — sets conversion and verification selection to `NO_TARGETS`
+  for checker diagnostics. `@AlwaysVerify` can still select an individual function
+  for conversion and verification.
+- `ALWAYS_VALIDATE` — selects all verification targets outside conversion-only
+  mode (`NEVER_VALIDATE` or `formver.conversionOnly=true`). This is also the
+  default verification selection. Combining it with `CHECKERS_ONLY` outside
+  conversion-only mode is invalid: conversion remains
+  `NO_TARGETS`, violating the configuration's conversion >= verification requirement.
 
 What the diagnostic contains:
 

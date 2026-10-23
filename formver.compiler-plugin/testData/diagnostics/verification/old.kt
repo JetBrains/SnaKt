@@ -4,10 +4,10 @@ import org.jetbrains.kotlin.formver.plugin.*
 
 
 class C(
-    @Unique var field: Int
+    var field: Int
 )
 
-fun <!VIPER_TEXT!>test<!>(@Unique @Borrowed c: C) {
+fun <!VIPER_TEXT!>test<!>(c: @Unique @Borrowed C) {
     preconditions {
         c.field == 42
     }
@@ -18,9 +18,9 @@ fun <!VIPER_TEXT!>test<!>(@Unique @Borrowed c: C) {
     verify(c == old(c))
 }
 
-// TODO: Remove the @NeverConvert once we have uniqueness information.
+// The caller trusts this contract; @NeverConvert leaves the mutating helper body unverified.
 @NeverConvert
-fun inc(@Unique @Borrowed c: C) {
+fun inc(c: @Unique @Borrowed C) {
     postconditions<Unit> {
         c.field == old(c.field) + 1
     }

@@ -12,6 +12,18 @@ The module is responsible for:
 
 `@Borrowed` behavior is provided by the locality module and consumed here to restore borrowed values after calls.
 
+## Wiring
+
+`FormalVerificationPluginExtensionRegistrar` registers `UniquenessAttributeExtension` and this module's
+resolvers unconditionally, so a `@Unique` type carries `UniquenessAttribute` in every run of the plugin.
+Conversion relies on that: `ProgramConverter` and `SignatureCreation` ask a symbol's type for its
+`scopeUniqueness` — and for its `locality`, in the case of `@Borrowed` — rather than reading the annotations
+themselves.
+
+The diagnostics are separate and on by default. `PluginAdditionalCheckers` adds the checkers below only when
+`PluginConfiguration.checkUniqueness` is set, which the `check_uniqueness` compiler option controls; unsetting
+it leaves `@Unique` in the Viper encoding with nothing validating it.
+
 ## Strategy
 
 The checker tracks two kinds of uniqueness:
@@ -31,7 +43,13 @@ The checker tracks two kinds of uniqueness:
 - `UniquenessAttributeExtension.kt` maps the `@Unique` annotation to `UniquenessAttribute`.
 - `Uniqueness.kt` defines the actual uniqueness lattice:
   - `Unique < Unknown < Shared < Moved`
-- `TypeRefUniquenessAttributeChecker.kt` restricts valid annotation targets to local variables and function parameters.
+- `Uniqueness.kt` also reads a type's attributes into that lattice:
+  - `scopeUniqueness` — what a value of the type is assumed to be: `Unique` for `@Unique`, `Unknown` for
+    `@Borrowed`, `Shared` otherwise.
+  - `parameterUniqueness` — what a parameter declared with the type requires.
+- `@Unique` applies to types only (`AnnotationTarget.TYPE`). `TypeRefUniquenessAttributeChecker.kt` narrows
+  that further to the type positions the analysis understands: value parameters, receiver parameters,
+  properties, function return types, and implicit type arguments.
 
 ### Path models
 

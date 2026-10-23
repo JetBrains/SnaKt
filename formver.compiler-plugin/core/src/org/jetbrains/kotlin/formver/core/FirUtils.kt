@@ -6,7 +6,6 @@
 package org.jetbrains.kotlin.formver.core
 
 import org.jetbrains.kotlin.KtSourceElement
-import org.jetbrains.kotlin.fir.FirAnnotationContainer
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.contracts.FirEffectDeclaration
@@ -23,11 +22,18 @@ import org.jetbrains.kotlin.fir.expressions.FirStatement
 import org.jetbrains.kotlin.fir.expressions.toResolvedCallableSymbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
+import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirValueParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirNamedFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.formver.core.embeddings.SourceRole
 import org.jetbrains.kotlin.formver.core.names.SpecialPackages
+import org.jetbrains.kotlin.formver.locality.plugin.Locality
+import org.jetbrains.kotlin.formver.locality.plugin.locality
+import org.jetbrains.kotlin.formver.uniqueness.plugin.Uniqueness
+import org.jetbrains.kotlin.formver.uniqueness.plugin.scopeUniqueness
 import org.jetbrains.kotlin.formver.viper.ast.Position
 import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId
@@ -75,9 +81,26 @@ fun formverCallableId(className: String?, name: String): CallableId =
 
 fun kotlinCallableId(className: String?, name: String): CallableId = callableId(SpecialPackages.kotlin, className, name)
 
-fun FirBasedSymbol<*>.isUnique(session: FirSession) = hasAnnotation(annotationId("Unique"), session)
+/*
+ * Conversion has no `CheckerContext`, so it cannot call the uniqueness and locality modules' symbol resolvers and
+ * reads attributes on resolved declaration types instead, including inferred types. These are type-level facts,
+ * not the initializer-derived or flow-sensitive uniqueness tracked by the symbol resolvers.
+ */
 
-fun FirBasedSymbol<*>.isBorrowed(session: FirSession) = hasAnnotation(annotationId("Borrowed"), session)
+val FirBasedSymbol<*>.isUnique: Boolean
+    get() = when (this) {
+        is FirReceiverParameterSymbol -> resolvedType.scopeUniqueness == Uniqueness.Unique
+        is FirCallableSymbol<*> -> resolvedReturnType.scopeUniqueness == Uniqueness.Unique
+        else -> false
+    }
+
+// Conversion uses borrowing here for value and extension-receiver parameters; this is not a target-validity check.
+val FirBasedSymbol<*>.isBorrowed: Boolean
+    get() = when (this) {
+        is FirReceiverParameterSymbol -> resolvedType.locality == Locality.Local
+        is FirValueParameterSymbol -> resolvedReturnType.locality == Locality.Local
+        else -> false
+    }
 
 /**
  * Returns `true` if [this] function is part of the specification DSL, that is, if it carries `@SpecificationHelper`.
@@ -98,10 +121,6 @@ fun FirStatement.isSpecificationCall(): Boolean =
 fun FirBasedSymbol<*>.isPure(session: FirSession) = hasAnnotation(annotationId("Pure"), session)
 
 fun FirBasedSymbol<*>.isManual(session: FirSession) = hasAnnotation(annotationId("Manual"), session)
-
-fun FirAnnotationContainer.isUnique(session: FirSession) = hasAnnotation(annotationId("Unique"), session)
-
-fun FirAnnotationContainer.isBorrowed(session: FirSession) = hasAnnotation(annotationId("Borrowed"), session)
 
 fun FirFunctionSymbol<*>.neverConvert(session: FirSession) = hasAnnotation(annotationId("NeverConvert"), session)
 
