@@ -29,10 +29,7 @@ method useChecks() returns (v_ret_0: Ref)
 }
 
 /stdlib_replacement_tests.kt: info: Generated Viper text for useRuns:
-function size(v_this: Ref): Ref
-  requires isSubtype(typeOf(v_this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
-
+field size: Ref
 
 method f_run_args_NAny_NAny_ret_NAny(v_this_extension: Ref, block: Ref)
   returns (ret_5: Ref)
@@ -95,10 +92,7 @@ method useRuns(x: Ref) returns (v_ret_0: Ref)
 }
 
 /stdlib_replacement_tests.kt: info: Generated Viper text for useAlso:
-function size(v_this: Ref): Ref
-  requires isSubtype(typeOf(v_this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
-
+field size: Ref
 
 method also(v_this_extension: Ref, block: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
@@ -132,10 +126,7 @@ method useAlso(x: Ref) returns (v_ret_0: Ref)
 }
 
 /stdlib_replacement_tests.kt: info: Generated Viper text for useLet:
-function size(v_this: Ref): Ref
-  requires isSubtype(typeOf(v_this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
-
+field size: Ref
 
 method f_let(v_this_extension: Ref, block: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(v_this_extension), nullable(anyType()))
@@ -173,10 +164,7 @@ method useLet(x: Ref) returns (v_ret_0: Ref)
 }
 
 /stdlib_replacement_tests.kt: info: Generated Viper text for useWith:
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
-
+field size: Ref
 
 method useWith(x: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(x), intType())
@@ -213,10 +201,7 @@ method with(receiver: Ref, block: Ref) returns (ret_1: Ref)
 
 
 /stdlib_replacement_tests.kt: info: Generated Viper text for useApply:
-function size(v_this: Ref): Ref
-  requires isSubtype(typeOf(v_this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
-
+field size: Ref
 
 method f_apply(v_this_extension: Ref, block: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(v_this_extension), nullable(anyType()))

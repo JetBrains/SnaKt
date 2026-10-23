@@ -491,6 +491,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
         }
 
         @Test
+        @TestMetadata("array_bounds.kt")
+        public void testArray_bounds() {
+          runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/negative/array_bounds.kt");
+        }
+
+        @Test
         @TestMetadata("as_type_contract.kt")
         public void testAs_type_contract() {
           runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/negative/as_type_contract.kt");
@@ -552,6 +558,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
         @Test
         public void testAllFilesPresentInPositive() {
           KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/contracts/positive"), Pattern.compile("^(.+)\\.kt$"), null, true);
+        }
+
+        @Test
+        @TestMetadata("array_bounds.kt")
+        public void testArray_bounds() {
+          runTest("formver.compiler-plugin/testData/diagnostics/verification/contracts/positive/array_bounds.kt");
         }
 
         @Test

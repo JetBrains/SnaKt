@@ -1,8 +1,5 @@
 /viper_verify.kt: info: Generated Viper text for verify_false:
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
-
+field size: Ref
 
 method verify_false() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
@@ -13,10 +10,7 @@ method verify_false() returns (v_ret_0: Ref)
 }
 
 /viper_verify.kt: info: Generated Viper text for verify_compound:
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
-
+field size: Ref
 
 method verify_compound() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
@@ -32,10 +26,7 @@ method verify_compound() returns (v_ret_0: Ref)
 }
 
 /viper_verify.kt: info: Generated Viper text for verify_forall:
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
-
+field size: Ref
 
 method verify_forall() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())

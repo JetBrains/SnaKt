@@ -1,10 +1,7 @@
 /old.kt: info: Generated Viper text for test:
 field bf_field: Ref
 
-function size(this: Ref): Ref
-  requires isSubtype(typeOf(this), BooleanArray())
-  ensures isSubtype(typeOf(result), intType())
-
+field size: Ref
 
 method inc(c: Ref) returns (ret_3: Ref)
   requires isSubtype(typeOf(c), C())
