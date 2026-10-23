@@ -122,3 +122,156 @@ method destructureWithVarProperty(pair: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
+
+/data_classes.kt: info: Generated Viper text for componentConstructorOrder:
+function g_a(this: Ref): Ref
+  requires isSubtype(typeOf(this), NonLexicalPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function g_z(this: Ref): Ref
+  requires isSubtype(typeOf(this), NonLexicalPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method component1(this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), NonLexicalPair())
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) == intFromRef(g_z(this))
+
+
+method component2(this: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), NonLexicalPair())
+  ensures isSubtype(typeOf(ret_3), intType())
+  ensures intFromRef(ret_3) == intFromRef(g_a(this))
+
+
+method componentConstructorOrder() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var pair: Ref
+  var anon: Ref
+  var l0_z: Ref
+  var l0_a: Ref
+  var second: Ref
+  pair := con(intToRef(10), intToRef(20))
+  anon := pair
+  l0_z := component1(anon)
+  l0_a := component2(anon)
+  second := component2(pair)
+  assert intFromRef(l0_z) == 10
+  assert intFromRef(l0_a) == 20
+  assert intFromRef(second) == 20
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method con(par_z: Ref, par_a: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_z), intType())
+  requires isSubtype(typeOf(par_a), intType())
+  ensures isSubtype(typeOf(ret_1), NonLexicalPair())
+  ensures acc(NonLexicalPair_unique(ret_1), write)
+  ensures intFromRef(g_z(ret_1)) == intFromRef(par_z)
+  ensures intFromRef(g_a(ret_1)) == intFromRef(par_a)
+
+
+/data_classes.kt: info: Generated Viper text for componentLookalikes:
+function g_a(this: Ref): Ref
+  requires isSubtype(typeOf(this), NonLexicalPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function g_z(this: Ref): Ref
+  requires isSubtype(typeOf(this), NonLexicalPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method 1(this: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(this), NonLexicalPair())
+  ensures isSubtype(typeOf(ret_3), intType())
+
+
+method component01(this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), NonLexicalPair())
+  ensures isSubtype(typeOf(ret_2), intType())
+
+
+method componentLookalikes() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var pair: Ref
+  var padded: Ref
+  var numeric: Ref
+  var anon: Ref
+  pair := con(intToRef(10), intToRef(20))
+  padded := component01(pair)
+  numeric := 1(pair)
+  if (intFromRef(padded) == 10) {
+    anon := boolToRef(true)
+  } else {
+    anon := boolToRef(intFromRef(numeric) == 10)}
+  assert boolFromRef(anon)
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method con(par_z: Ref, par_a: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_z), intType())
+  requires isSubtype(typeOf(par_a), intType())
+  ensures isSubtype(typeOf(ret_1), NonLexicalPair())
+  ensures acc(NonLexicalPair_unique(ret_1), write)
+  ensures intFromRef(g_z(ret_1)) == intFromRef(par_z)
+  ensures intFromRef(g_a(ret_1)) == intFromRef(par_a)
+
+
+/data_classes.kt: info: Generated Viper text for componentFalseValue:
+function g_a(this: Ref): Ref
+  requires isSubtype(typeOf(this), NonLexicalPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function g_z(this: Ref): Ref
+  requires isSubtype(typeOf(this), NonLexicalPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method component2(this: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), NonLexicalPair())
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) == intFromRef(g_a(this))
+
+
+method componentFalseValue() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var pair: Ref
+  var second: Ref
+  pair := con(intToRef(10), intToRef(20))
+  second := component2(pair)
+  assert intFromRef(second) == 10
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method con(par_z: Ref, par_a: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_z), intType())
+  requires isSubtype(typeOf(par_a), intType())
+  ensures isSubtype(typeOf(ret_1), NonLexicalPair())
+  ensures acc(NonLexicalPair_unique(ret_1), write)
+  ensures intFromRef(g_z(ret_1)) == intFromRef(par_z)
+  ensures intFromRef(g_a(ret_1)) == intFromRef(par_a)

@@ -3,6 +3,7 @@ package org.jetbrains.kotlin.formver.core.conversion
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.fir.analysis.checkers.isPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.DirectDeclarationsAccess
+import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
 import org.jetbrains.kotlin.fir.declarations.utils.correspondingValueParameterFromPrimaryConstructor
 import org.jetbrains.kotlin.fir.declarations.utils.isData
 import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
@@ -213,18 +214,33 @@ private fun dataClassGeneratedPostconditions(
     signature: NamedFunctionSignature,
     returnTarget: ReturnTarget,
 ): List<ExpEmbedding> {
-    val dataClass = symbol.receiverType?.toRegularClassSymbol(converter.session)?.takeIf { it.isData }
-        ?: return emptyList()
+    val property = generatedComponentProperty(symbol) ?: return emptyList()
     val receiver = signature.dispatchReceiver ?: return emptyList()
-    // Constructor property getters in constructor order. Only `val` properties can be read in a postcondition.
-    val constructorProperties = dataClass.propertySymbols
-        .filter { it.correspondingValueParameterFromPrimaryConstructor != null }
-        .map { property -> converter.embedProperty(property).takeIf { it.isVal }?.getter }
-
-    val componentIndex = symbol.name.asString().removePrefix("component").toIntOrNull()
-    if (componentIndex == null || symbol.valueParameterSymbols.isNotEmpty()) return emptyList()
-    val getter = constructorProperties.getOrNull(componentIndex - 1) ?: return emptyList()
+    // Relating mutable components to field values needs permission-aware reads, which are not modeled here.
+    val getter = converter.embedProperty(property).takeIf { it.isVal }?.getter ?: return emptyList()
     return listOf(EqCmp(returnTarget.variable, getter.getValueSimple(receiver, converter.typeResolver)))
+}
+
+@OptIn(SymbolInternals::class, DirectDeclarationsAccess::class)
+context(converter: ProgramConversionContext)
+private fun generatedComponentProperty(symbol: FirFunctionSymbol<*>): FirPropertySymbol? {
+    if (symbol !is FirNamedFunctionSymbol ||
+        symbol.fir.origin != FirDeclarationOrigin.Synthetic.DataClassMember ||
+        symbol.valueParameterSymbols.isNotEmpty()
+    ) return null
+    val name = symbol.name.asString()
+    val componentIndex = name.removePrefix("component").toIntOrNull() ?: return null
+    if (componentIndex <= 0 || name != "component$componentIndex") return null
+    val dataClass = symbol.receiverType?.toRegularClassSymbol(converter.session)?.takeIf {
+        it.isData && it.declarationSymbols.any { member -> member === symbol }
+    } ?: return null
+    val constructor = dataClass.declarationSymbols.filterIsInstance<FirConstructorSymbol>()
+        .singleOrNull { it.isPrimaryConstructor() } ?: return null
+    // Index constructor parameters, not declaration order: mutable slots must not shift later components.
+    val parameter = constructor.valueParameterSymbols.getOrNull(componentIndex - 1) ?: return null
+    return dataClass.propertySymbols.singleOrNull {
+        it.correspondingValueParameterFromPrimaryConstructor === parameter
+    }
 }
 
 @OptIn(SymbolInternals::class)

@@ -1,0 +1,3 @@
+/data_classes.kt: warning: Viper verification error: Assert might fail. Assertion boolFromRef(anon) might not hold.
+
+/data_classes.kt: warning: Viper verification error: Assert might fail. Assertion intFromRef(second) == 10 might not hold.
