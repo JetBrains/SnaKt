@@ -36,6 +36,8 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.LtIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.toLink
+import org.jetbrains.kotlin.formver.core.embeddings.types.BooleanTypeEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.equalToType
 import org.jetbrains.kotlin.formver.core.functionCallArguments
@@ -137,12 +139,10 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     private fun convertWhenBranches(
         whenBranches: Iterator<FirWhenBranch>,
         type: TypeEmbedding,
-        fallthroughUnreachable: Boolean,
+        fallthrough: ExpEmbedding,
         data: StmtConversionContext,
     ): ExpEmbedding {
-        // When Kotlin proves the `when` exhaustive but there is no syntactic `else`, the missing fallthrough is
-        // `Unreachable`. A pure function body cannot inhale, so it keeps the `UnitLit` fallthrough.
-        if (!whenBranches.hasNext()) return if (fallthroughUnreachable && !data.signature.isPure) Unreachable else UnitLit
+        if (!whenBranches.hasNext()) return fallthrough
 
         val branch = whenBranches.next()
 
@@ -152,9 +152,28 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         } else {
             val cond = data.convert(branch.condition).withType { boolean() }
             val thenExp = data.withNewScope { convert(branch.result) }
-            val elseExp = convertWhenBranches(whenBranches, type, fallthroughUnreachable, data)
+            val elseExp = convertWhenBranches(whenBranches, type, fallthrough, data)
             If(cond, thenExp.withType(type), elseExp.withType(type), type)
         }
+    }
+
+    /**
+     * The path taken when no branch of [whenExpression] matches. When Kotlin proves the `when` exhaustive but there is
+     * no syntactic `else`, that path is `Unreachable`. For an impure body, a `Boolean` or class-typed subject selects
+     * an `assert false` proof obligation, not an established coverage result. The verifier must rule out fallthrough
+     * using the branch conditions and available type axioms; insufficient coverage must fail verification.
+     * Other embedded subject types retain the trusted `inhale false` fallback, including type parameters whose
+     * sealed bound is erased to `Any?`. A pure function body can neither assert nor inhale, so it keeps `UnitLit`.
+     */
+    private fun whenFallthrough(
+        whenExpression: FirWhenExpression,
+        subject: VariableEmbedding?,
+        data: StmtConversionContext,
+    ): ExpEmbedding {
+        if (whenExpression.exhaustivenessStatus !is ExhaustivenessStatus.ProperlyExhaustive) return UnitLit
+        if (data.signature.isPure) return UnitLit
+        val subjectPretype = subject?.type?.pretype
+        return Unreachable(checked = subjectPretype is BooleanTypeEmbedding || subjectPretype is ClassTypeEmbedding)
     }
 
     override fun visitWhenExpression(whenExpression: FirWhenExpression, data: StmtConversionContext): ExpEmbedding =
@@ -167,9 +186,9 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 else
                     declareLocalVariable(firSubjVar.symbol, subjExp)
             }
-            val fallthroughUnreachable = whenExpression.exhaustivenessStatus is ExhaustivenessStatus.ProperlyExhaustive
+            val fallthrough = whenFallthrough(whenExpression, subj?.variable, data)
             val body = withWhenSubject(subj?.variable) {
-                convertWhenBranches(whenExpression.branches.iterator(), type, fallthroughUnreachable, this)
+                convertWhenBranches(whenExpression.branches.iterator(), type, fallthrough, this)
             }
             subj?.let { blockOf(it, body) } ?: body
         }

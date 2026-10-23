@@ -29,10 +29,11 @@ data object ErrorExp : ExpEmbedding {
 }
 
 /**
- * Marks a control-flow path that Kotlin's exhaustiveness check proves unreachable. Lowers to `inhale false`, so the
- * verifier trusts the check rather than proving it.
+ * Marks a control-flow path that Kotlin's exhaustiveness check proves unreachable. When [checked], it lowers to
+ * `assert false`, so the verifier proves the path unreachable; otherwise it lowers to `inhale false`, so the verifier
+ * trusts the check.
  */
-data object Unreachable : ExpEmbedding {
+data class Unreachable(val checked: Boolean) : ExpEmbedding {
     override val type: TypeEmbedding = buildType { nothing() }
 
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitUnreachable(this)
