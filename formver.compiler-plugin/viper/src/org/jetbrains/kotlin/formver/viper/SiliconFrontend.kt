@@ -45,13 +45,7 @@ class SiliconFrontend(commandLineArgs: List<String>) : Closeable {
      * A program that fails the consistency check is not passed to Silicon.
      */
     fun verify(viperProgram: viper.silver.ast.Program, onFailure: (VerifierError) -> Unit) {
-        // Silicon skips Silver's consistency check for programs passed as ASTs, so it is run here.
-        val consistencyErrors = viperProgram.checkTransitively()
-        if (!consistencyErrors.isEmpty) {
-            for (error in consistencyErrors) onFailure(AbortedError(error))
-            return
-        }
-        reportFailures(siliconApi.verify(viperProgram), onFailure)
+        verifyConsistentProgram(viperProgram, siliconApi::verify, onFailure)
     }
 
     override fun close() {
@@ -59,7 +53,21 @@ class SiliconFrontend(commandLineArgs: List<String>) : Closeable {
     }
 }
 
-/** Calls [onFailure] for each error in [result]. */
+/** Rejects malformed ASTs before invoking the backend, which skips this check for AST input. */
+internal fun verifyConsistentProgram(
+    program: viper.silver.ast.Program,
+    verifyBackend: (viper.silver.ast.Program) -> viper.silver.verifier.VerificationResult,
+    onFailure: (VerifierError) -> Unit,
+) {
+    val consistencyErrors = program.checkTransitively()
+    if (!consistencyErrors.isEmpty) {
+        for (error in consistencyErrors) onFailure(AbortedError(error))
+        return
+    }
+    reportFailures(verifyBackend(program), onFailure)
+}
+
+/** Retains every backend failure, including errors that do not describe a proof counterexample. */
 internal fun reportFailures(result: viper.silver.verifier.VerificationResult, onFailure: (VerifierError) -> Unit) {
     if (result !is viper.silver.verifier.Failure) return
     for (error in result.errors()) {
