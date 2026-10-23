@@ -58,6 +58,7 @@ internal class ExprPurityVisitor(val declaredVariables: MutableSet<VariableEmbed
     override fun visitInvokeFunctionObject(e: InvokeFunctionObject) = false
     override fun visitInhaleDirect(e: InhaleDirect): Boolean = false
     override fun visitErrorExp(e: ErrorExp) = false
+    override fun visitUnreachable(e: Unreachable) = false
     override fun visitAssert(e: Assert): Boolean = false
     override fun visitFieldModification(e: FieldModification): Boolean = false
     override fun visitGoto(e: Goto): Boolean = false

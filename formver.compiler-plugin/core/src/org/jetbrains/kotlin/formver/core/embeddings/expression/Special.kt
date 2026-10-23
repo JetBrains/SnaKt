@@ -28,6 +28,16 @@ data object ErrorExp : ExpEmbedding {
     override fun <R> accept(v: ExpVisitor<R>): R = v.visitErrorExp(this)
 }
 
+/**
+ * Marks a control-flow path that Kotlin's exhaustiveness check proves unreachable. Lowers to `inhale false`, so the
+ * verifier trusts the check rather than proving it.
+ */
+data object Unreachable : ExpEmbedding {
+    override val type: TypeEmbedding = buildType { nothing() }
+
+    override fun <R> accept(v: ExpVisitor<R>): R = v.visitUnreachable(this)
+}
+
 data class Assert(val exp: ExpEmbedding) : ExpEmbedding {
     override val type: TypeEmbedding = buildType { unit() }
 

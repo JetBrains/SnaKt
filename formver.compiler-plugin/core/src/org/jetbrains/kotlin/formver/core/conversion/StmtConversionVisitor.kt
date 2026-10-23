@@ -164,9 +164,12 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     private fun convertWhenBranches(
         whenBranches: Iterator<FirWhenBranch>,
         type: TypeEmbedding,
+        fallthroughUnreachable: Boolean,
         data: StmtConversionContext,
     ): ExpEmbedding {
-        if (!whenBranches.hasNext()) return UnitLit
+        // Trust FIR's exhaustiveness check for the missing tail rather than proving sealed-hierarchy closure.
+        // Pure bodies must remain expressions: they cannot inhale, so retain their conservative Unit fallback.
+        if (!whenBranches.hasNext()) return if (fallthroughUnreachable && !data.signature.isPure) Unreachable else UnitLit
 
         val branch = whenBranches.next()
 
@@ -176,7 +179,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         } else {
             val cond = data.convert(branch.condition).withType { boolean() }
             val thenExp = data.withNewScope { convert(branch.result) }
-            val elseExp = convertWhenBranches(whenBranches, type, data)
+            val elseExp = convertWhenBranches(whenBranches, type, fallthroughUnreachable, data)
             If(cond, thenExp.withType(type), elseExp.withType(type), type)
         }
     }
@@ -191,8 +194,9 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
                 else
                     declareLocalVariable(firSubjVar.symbol, subjExp)
             }
+            val fallthroughUnreachable = whenExpression.exhaustivenessStatus is ExhaustivenessStatus.ProperlyExhaustive
             val body = withWhenSubject(subj?.variable) {
-                convertWhenBranches(whenExpression.branches.iterator(), type, this)
+                convertWhenBranches(whenExpression.branches.iterator(), type, fallthroughUnreachable, this)
             }
             subj?.let { blockOf(it, body) } ?: body
         }
