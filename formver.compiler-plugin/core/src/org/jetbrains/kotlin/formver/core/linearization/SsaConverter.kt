@@ -147,7 +147,10 @@ class SsaConverter(
     private fun List<Exp>.combinedAccessDependencies(): AccessDependencies =
         map { it.accessDependencies() }.distinct().fold(noAccessDependencies) { acc, dependencies -> acc.combine(dependencies) }
 
-    /** Dependencies of using two values together: every pair of their cases can occur. */
+    /**
+     * Combines every pair of cases by conjoining their guards and unioning their predicate lists in order.
+     * Infeasible guard combinations are retained; no satisfiability filtering is performed.
+     */
     private fun AccessDependencies.combine(other: AccessDependencies): AccessDependencies =
         entries.flatMap { (condition, predicates) ->
             other.map { (otherCondition, otherPredicates) ->
