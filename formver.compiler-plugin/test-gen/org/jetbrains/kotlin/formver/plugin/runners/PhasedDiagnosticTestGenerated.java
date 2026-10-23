@@ -814,6 +814,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("impure_postconditions.kt")
+      public void testImpure_postconditions() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/purity/impure_postconditions.kt");
+      }
+
+      @Test
       @TestMetadata("wrongly_annotated.kt")
       public void testWrongly_annotated() {
         runTest("formver.compiler-plugin/testData/diagnostics/verification/purity/wrongly_annotated.kt");

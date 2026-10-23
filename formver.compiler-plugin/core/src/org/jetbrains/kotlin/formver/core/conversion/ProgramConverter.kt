@@ -31,11 +31,13 @@ import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousBuiltinVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.AnonymousVariableEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.MethodCall
 import org.jetbrains.kotlin.formver.core.embeddings.properties.*
 import org.jetbrains.kotlin.formver.core.embeddings.types.*
 import org.jetbrains.kotlin.formver.core.names.*
 import org.jetbrains.kotlin.formver.core.purity.checkValidity
 import org.jetbrains.kotlin.formver.core.purity.isPure
+import org.jetbrains.kotlin.formver.core.purity.preorder
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Program
 import org.jetbrains.kotlin.utils.addToStdlib.ifTrue
@@ -171,20 +173,38 @@ class ProgramConverter(
         }
         for ((_, signature) in fullSignatures) {
             val source = signature.declarationSource ?: continue
-            for (condition in signature.preconditions + signature.postconditions) {
+            for (condition in signature.preconditions) {
                 condition.checkValidity(source, this)
+                condition.reportImpureCalls(source, "Precondition")
+            }
+            for (condition in signature.postconditions) {
+                condition.checkValidity(source, this)
+                condition.reportImpureCalls(source, "Postcondition")
             }
         }
         if (hadConversionError) {
             for (entry in registered) {
                 reportVerificationSkipped(
                     entry.declaration.source,
-                    "Function '${entry.declaration.name.asString()}' was not verified because of errors in its declaration",
+                    "Function '${entry.declaration.name.asString()}' was not verified because of errors in its declaration or dependencies",
                 )
             }
         }
     }
 
+
+    /**
+     * Impure calls, including unannotated top-level Kotlin calls, use [MethodCall] and need statements
+     * and a temporary result, so the expression-only contract linearizer cannot translate them.
+     * Pure calls use FunctionCall expressions and are not rejected by this check.
+     */
+    private fun ExpEmbedding.reportImpureCalls(fallbackSource: KtSourceElement, conditionKind: String) {
+        preorder(fallbackSource).forEach { (embedding, source) ->
+            if (embedding is MethodCall) {
+                reportPurityViolation(source, "$conditionKind contains an impure function or method call")
+            }
+        }
+    }
 
     private fun linearizePure(name: SymbolicName, signature: CompleteFunctionSignature) {
         val converted = convertedBodyResolver.lookupPure(name)
