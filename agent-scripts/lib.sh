@@ -42,15 +42,23 @@ gradle_filter() {
     fi
 }
 
-# True if a JUnit "type" attribute names a golden-file mismatch rather than a
-# thrown exception: assertEqualsToFile raises opentest4j's AssertionFailedError,
-# and *ComparisonFailure covers both org.junit's and com.intellij's. Only these
-# carry expected/actual values for render_dump_diffs to recover.
+# Assertion types are a proxy for golden mismatches, not evidence of a rewrite.
+# assertEqualsToFile raises opentest4j's AssertionFailedError; the suffix also
+# covers org.junit's and com.intellij's comparison failures.
 is_assertion_failure_type() {
     case "$1" in
         org.opentest4j.AssertionFailedError|*ComparisonFailure) return 0 ;;
         *) return 1 ;;
     esac
+}
+
+# Tolerate a failed update task only with fresh, readable assertion-classified
+# failures and no other reported failures. XML cannot rule out failures outside
+# the test results or prove goldens changed. Successful task status is authoritative.
+update_task_failed_unexpectedly() {
+    local task_status="$1" tally_status="$2" assertions="$3" other_failed="$4" unreadable="$5"
+    [[ "$task_status" -ne 0 && ( "$tally_status" -ne 0 || "$assertions" -eq 0 || \
+        "$other_failed" -gt 0 || "$unreadable" -gt 0 ) ]]
 }
 
 # Print the first failing <testcase> from JUnit XML newer than $1: failure

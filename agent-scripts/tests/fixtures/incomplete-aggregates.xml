@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Aggregates" tests="5" failures="5">
+  <testcase name="colonlessBackend"><failure type="org.gradle.internal.exceptions.DefaultMultiCauseException" message="Multiple Failures (2 failures)&#10;&#9;org.opentest4j.AssertionFailedError: changed&#10;&#9;java.lang.RuntimeException" /></testcase>
+  <testcase name="truncated"><failure type="org.gradle.internal.exceptions.DefaultMultiCauseException" message="Multiple Failures (2 failures)&#10;&#9;org.opentest4j.AssertionFailedError: changed" /></testcase>
+  <testcase name="noCauses"><failure type="org.gradle.internal.exceptions.DefaultMultiCauseException" message="Multiple Failures (2 failures)" /></testcase>
+  <testcase name="unknownHeader"><failure type="org.gradle.internal.exceptions.DefaultMultiCauseException" message="Unknown aggregate&#10;&#9;org.opentest4j.AssertionFailedError: changed" /></testcase>
+  <testcase name="extraCause"><failure type="org.gradle.internal.exceptions.DefaultMultiCauseException" message="Multiple Failures (1 failures)&#10;&#9;org.opentest4j.AssertionFailedError: changed&#10;&#9;org.opentest4j.AssertionFailedError: changed" /></testcase>
+</testsuite>

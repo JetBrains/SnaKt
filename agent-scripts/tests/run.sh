@@ -130,6 +130,55 @@ assert_eq "identity hashes: names, annotations and labels are not mistaken for h
     "" 1 \
     -- identity_hash_lines "$FIXTURES/stable.diag.txt"
 
+assert_eq "counts: an all-assertion aggregate is assertion-classified" \
+    "1 1 0 0 0" 0 \
+    -- python3 "$LIB_DIR/junit_counts.py" "$FIXTURES/assertion-aggregate.xml"
+
+assert_eq "counts: a mixed aggregate remains a non-golden failure" \
+    "1 0 1 0 0" 0 \
+    -- python3 "$LIB_DIR/junit_counts.py" "$FIXTURES/mixed-aggregate.xml"
+
+# update_task_failed_unexpectedly returns success when the harness must fail.
+assert_eq "counts: incomplete and unknown aggregates fail closed" \
+    "5 0 5 0 0" 0 \
+    -- python3 "$LIB_DIR/junit_counts.py" "$FIXTURES/incomplete-aggregates.xml"
+
+assert_eq "update status: both modules and final report preserve failure" \
+    "update status: 5 module/report scenarios passed" 0 \
+    -- python3 "$TESTS_DIR/update_status.py"
+
+assert_eq "update classification: assertion proxy is tolerated" \
+    "" 1 \
+    -- update_task_failed_unexpectedly 1 0 1 0 0
+
+assert_eq "update classification: backend error remains a failure" \
+    "" 0 \
+    -- update_task_failed_unexpectedly 1 0 0 1 0
+
+assert_eq "update classification: a failed task without assertions remains a failure" \
+    "" 0 \
+    -- update_task_failed_unexpectedly 1 0 0 0 0
+
+assert_eq "update classification: malformed results remain a failure" \
+    "" 0 \
+    -- update_task_failed_unexpectedly 1 0 1 0 1
+
+assert_eq "update classification: missing results remain a failure" \
+    "" 0 \
+    -- update_task_failed_unexpectedly 1 1 0 0 0
+
+assert_eq "update classification: assertions do not hide an independent failure" \
+    "" 0 \
+    -- update_task_failed_unexpectedly 1 0 1 1 0
+
+assert_eq "update classification: all-unreadable results remain a failure" \
+    "" 0 \
+    -- update_task_failed_unexpectedly 1 2 0 0 0
+
+assert_eq "update classification: successful task remains successful" \
+    "" 1 \
+    -- update_task_failed_unexpectedly 0 0 0 1 0
+
 if [[ "$failures" -gt 0 ]]; then
     echo "$failures assertion(s) failed"
     exit 1
