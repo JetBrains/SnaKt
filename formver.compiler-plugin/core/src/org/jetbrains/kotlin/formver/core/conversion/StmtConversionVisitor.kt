@@ -167,7 +167,8 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
 
     override fun visitWhenExpression(whenExpression: FirWhenExpression, data: StmtConversionContext): ExpEmbedding =
         data.withNewScope {
-            // A dead arm can widen the type of the `when` to one with no embedding, so only embed it when a live branch needs it.
+            // A dead arm can widen the common type to one with no embedding.
+            // Only a nonliteral condition needs that type for a conditional join.
             val type by lazy { data.embedType(whenExpression) }
             val subj: Declare? = whenExpression.subjectVariable?.let { firSubjVar ->
                 val subjExp = convert(firSubjVar.initializer!!)

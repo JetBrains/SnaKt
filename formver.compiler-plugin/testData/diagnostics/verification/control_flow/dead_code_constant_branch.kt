@@ -23,9 +23,17 @@ fun <!VIPER_TEXT!>deadArmWidensType<!>() {
 
 @AlwaysVerify
 fun <!VIPER_TEXT!>liveAfterConstantBranch<!>() {
-    if (true) Unit else {
+    if (true) {
+        verify(2 == 2)
+    } else {
         verify(0 == 1)
-        Unit
     }
+    verify((if (true) 7 else 8) == 7)
+    if (false) {
+        verify(0 == 1)
+    } else {
+        verify(3 == 3)
+    }
+    verify((if (false) 7 else 8) == 8)
     verify(<!VIPER_VERIFICATION_ERROR!>0 == 1<!>)
 }
