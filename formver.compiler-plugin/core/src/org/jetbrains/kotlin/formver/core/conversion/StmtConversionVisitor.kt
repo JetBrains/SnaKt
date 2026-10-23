@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.fir.expressions.impl.FirElseIfTrueCondition
 import org.jetbrains.kotlin.fir.expressions.impl.FirUnitExpression
 import org.jetbrains.kotlin.fir.references.toResolvedSymbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
+import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.fir.types.isUnit
@@ -296,19 +297,11 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
     }
 
     /**
-     * The actuals of a call to [callee], one per formal argument: receivers first, then one per
-     * value parameter in declaration order.
-     *
-     * The default value of a parameter the call omits is not available at the call site, and a Viper
-     * call that omits the actual leaves the callee's formal unbound, which makes the verification
-     * state inconsistent. Such a formal gets a fresh value constrained only by its type.
-     *
-     * When named arguments are out of formal order, each argument is stored in a fresh variable in
-     * source order, so that their side effects happen in source order.
-     *
-     * The declarations of the fresh variables are collected in [declarations], and belong in front
-     * of the call.
+     * Snapshot explicit actuals in source order, then assemble one actual per formal.
+     * Only defaults covered by the literal converter's effect-free cases may be abstracted;
+     * a typed unknown cannot stand in for arbitrary default evaluation.
      */
+    @OptIn(SymbolInternals::class)
     private fun FirFunctionCall.argumentsPerParameter(
         symbol: FirFunctionSymbol<*>,
         callee: CallableEmbedding,
@@ -316,28 +309,50 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         declarations: MutableList<Declare>,
     ): List<ExpEmbedding> {
         val sourceOrder = functionCallArguments
-        val mapping = resolvedArgumentMapping ?: return buildCallArguments(sourceOrder, data, callee)
+        val mapping = resolvedArgumentMapping ?: throw SnaktInternalException(
+            source, "Cannot assemble a call without a resolved argument mapping."
+        )
+        if (mapping.keys.toSet() != argumentList.arguments.toSet() ||
+            mapping.values.any { it.symbol !in symbol.valueParameterSymbols }
+        ) {
+            throw SnaktInternalException(source, "Incomplete argument mapping for ${symbol.name}.")
+        }
         val byParameter = mapping.entries.groupBy({ (_, parameter) -> parameter.symbol }) { (argument, _) -> argument }
         val valueArguments = symbol.valueParameterSymbols.map { parameter ->
-            val arguments = byParameter[parameter] ?: return@map null
+            val arguments = byParameter[parameter]
+            if (arguments == null) {
+                val default = parameter.fir.defaultValue as? FirLiteralExpression
+                if (default == null || default.kind !in setOf(
+                        ConstantValueKind.Int, ConstantValueKind.Boolean, ConstantValueKind.Char,
+                        ConstantValueKind.String, ConstantValueKind.Null,
+                    )
+                ) {
+                    throw SnaktInternalException(
+                        source, "Omitted parameter ${parameter.name} has no supported effect-free default summary."
+                    )
+                }
+                return@map null
+            }
             arguments.singleOrNull() ?: throw SnaktInternalException(
                 source, "Parameter ${parameter.name} of ${symbol.name} is given ${arguments.size} arguments."
             )
         }
         val formalOrder = listOfNotNull(dispatchReceiver, extensionReceiver) + valueArguments
-        val reordered = formalOrder.filterNotNull() != sourceOrder
+        val formals = (callee as? FunctionSignature)?.formalArgs ?: throw SnaktInternalException(
+            source, "Cannot determine formal arguments of $callee."
+        )
+        if (formalOrder.size != formals.size) {
+            throw SnaktInternalException(source, "Receiver/parameter arity mismatch for ${symbol.name}.")
+        }
         val converted = sourceOrder.associateWith { arg ->
             val exp = buildCallArguments(listOf(arg), data, callee).single()
             // A lambda has no side effects, and an inline callee needs to see it as a lambda.
-            if (!reordered || exp.ignoringMetaNodes() is LambdaExp) exp
+            if (exp.ignoringMetaNodes() is LambdaExp) exp
             else data.declareAnonVar(exp.type, exp).also { declarations.add(it) }.variable
         }
-        val formals = (callee as? FunctionSignature)?.formalArgs
         return formalOrder.mapIndexed { index, arg ->
             if (arg != null) return@mapIndexed converted.getValue(arg)
-            val formal = formals?.getOrNull(index) ?: throw SnaktInternalException(
-                source, "Cannot fill in the argument at index $index of a call to $callee."
-            )
+            val formal = formals[index]
             val (declaration, value) = data.unconstrainedValue(formal.type)
             declarations.add(declaration)
             value

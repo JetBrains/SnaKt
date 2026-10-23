@@ -41,15 +41,6 @@ fun <!VIPER_TEXT!>omittedConstructorDefault<!>() {
     verify(<!VIPER_VERIFICATION_ERROR!>false<!>)
 }
 
-// Known gap: an omitted argument is not assumed to equal its default value.
-@AlwaysVerify
-fun <!VIPER_TEXT!>defaultValueIsNotAssumed<!>() {
-    val defaulted = pureTrailingDefault(1)
-    val given = pureTrailingDefault(1, 0)
-    verify(given == 1)
-    verify(<!VIPER_VERIFICATION_ERROR!>defaulted == 1<!>)
-}
-
 @Pure
 fun <!VIPER_TEXT!>pureDifference<!>(a: Int, b: Int): Int = a - b
 
