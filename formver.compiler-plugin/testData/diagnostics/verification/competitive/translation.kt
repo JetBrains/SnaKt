@@ -5,7 +5,7 @@
 
 import org.jetbrains.kotlin.formver.plugin.*
 
-// First index at which s disagrees with t reversed, or s.length if there is none.
+// Requires equal lengths: first index at which s disagrees with t reversed, or s.length if there is none.
 fun <!VIPER_TEXT!>firstReverseMismatch<!>(s: String, t: String): Int {
     preconditions {
         s.length == t.length
