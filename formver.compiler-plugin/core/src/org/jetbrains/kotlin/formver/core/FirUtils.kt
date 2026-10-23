@@ -82,7 +82,8 @@ fun FirBasedSymbol<*>.isBorrowed(session: FirSession) = hasAnnotation(annotation
 /**
  * Returns `true` if [this] function is part of the specification DSL, that is, if it carries `@SpecificationHelper`.
  *
- * Such a function is never executed, so its arguments are neither consumed nor mutated.
+ * Its call-entry and call-exit uniqueness transitions are neutral; argument expressions, including
+ * nested ordinary calls, are still analyzed.
  */
 context(context: CheckerContext)
 private fun FirFunctionSymbol<*>.isSpecificationFunction(): Boolean =

@@ -22,11 +22,6 @@ import org.jetbrains.kotlin.formver.core.isSpecificationCall
 private fun CheckerContext.isInSpecificationContext(): Boolean =
     callsOrAssignments.lastOrNull()?.isSpecificationCall() == true
 
-/**
- * Wraps a declaration [checker] into a checker that only executes if not in a specification context.
- *
- * @see [CheckerContext.isInSpecificationContext]
- */
 class SpecificationAwareDeclarationChecker<Declaration : FirDeclaration>(
     private val checker: FirDeclarationChecker<Declaration>
 ) : FirDeclarationChecker<Declaration>(checker.mppKind) {
@@ -38,17 +33,9 @@ class SpecificationAwareDeclarationChecker<Declaration : FirDeclaration>(
     }
 }
 
-/**
- * Wraps [this] checker into a [SpecificationAwareDeclarationChecker].
- */
 fun <Declaration : FirDeclaration> FirDeclarationChecker<Declaration>.asSpecificationAware(): FirDeclarationChecker<Declaration> =
     SpecificationAwareDeclarationChecker(this)
 
-/**
- * Wraps an expression [checker] into a checker that only executes if not in a specification context.
- *
- * @see [CheckerContext.isInSpecificationContext]
- */
 class SpecificationAwareExpressionChecker<Expression : FirStatement>(
     private val checker: FirExpressionChecker<Expression>
 ) : FirExpressionChecker<Expression>(checker.mppKind) {
@@ -60,8 +47,5 @@ class SpecificationAwareExpressionChecker<Expression : FirStatement>(
     }
 }
 
-/**
- * Wraps [this] checker into a [SpecificationAwareExpressionChecker].
- */
 fun <Expression : FirStatement> FirExpressionChecker<Expression>.asSpecificationAware(): FirExpressionChecker<Expression> =
     SpecificationAwareExpressionChecker(this)
