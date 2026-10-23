@@ -16,6 +16,10 @@ class SiliconFrontend(commandLineArgs: List<String>) : Closeable {
     init {
         val args = buildList {
             addAll(commandLineArgs)
+            resolveZ3Executable(commandLineArgs)?.let {
+                add("--z3Exe")
+                add(it)
+            }
             System.getenv("SILICON_PARALLEL_VERIFIERS")?.let {
                 add("--numberOfParallelVerifiers")
                 add(it)
