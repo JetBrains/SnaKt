@@ -2,7 +2,8 @@
 
 // LeetCode 69, "Sqrt(x)": the largest r with r * r <= x.
 // https://leetcode.com/problems/sqrtx/
-// `Int` is unbounded, so this says nothing about 32-bit overflow of `mid * mid`.
+// The verification model uses mathematical integers; Kotlin `Int` is bounded.
+// Neither algorithm establishes JVM `Int` overflow safety for its products or additions.
 
 import org.jetbrains.kotlin.formver.plugin.*
 
