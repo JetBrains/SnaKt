@@ -132,10 +132,8 @@ data class Linearizer(
 
                 else -> {
                     val receiverViper = receiver.toViper(this)
-                    // If the field access is not replaced with havoc, we might need to unfold some
-                    // predicate to access it. Only fields whose access is guarded by a predicate
-                    // hierarchy have such a path; others (e.g. the special collection-size field with
-                    // no class information) must be read directly.
+                    // Expression unfolding exposes the field for this read and leaves the receiver
+                    // predicate folded afterward; manual permissions use direct access.
                     val primitiveAccess: Exp = Exp.FieldAccess(receiverViper, field.toViper(), source.asPosition)
                     val fieldAccess = if (field.unfoldToAccess && !accessIsManual) {
                         hierarchyPredicateAccesses(receiverViper, receiverType, field).toList()
