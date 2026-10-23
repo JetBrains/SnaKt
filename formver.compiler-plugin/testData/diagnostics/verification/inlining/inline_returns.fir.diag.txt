@@ -44,8 +44,6 @@ method unnamed_return() returns (v_ret_0: Ref)
   var v_ret_5: Ref
   v_ret_0 := boolToRef(true)
   goto lbl_ret_0
-  v_ret_5 := boolToRef(true)
-  goto lbl_ret_5
   label lbl_ret_5
   anon := v_ret_5
   v_ret_4 := notBool(anon)
@@ -65,8 +63,6 @@ method named_local_return() returns (v_ret_0: Ref)
   var anon: Ref
   var v_ret_5: Ref
   v_ret_5 := boolToRef(false)
-  goto lbl_ret_5
-  v_ret_5 := boolToRef(true)
   goto lbl_ret_5
   label lbl_ret_5
   anon := v_ret_5
@@ -93,8 +89,6 @@ method named_nonlocal_return() returns (v_ret_0: Ref)
   var v_ret_5: Ref
   v_ret_0 := boolToRef(true)
   goto lbl_ret_0
-  v_ret_5 := boolToRef(true)
-  goto lbl_ret_5
   label lbl_ret_5
   anon := v_ret_5
   v_ret_4 := notBool(anon)
@@ -124,8 +118,6 @@ method double_nonlocal_return() returns (v_ret_0: Ref)
   var v_ret_8: Ref
   v_ret_0 := boolToRef(true)
   goto lbl_ret_0
-  v_ret_8 := boolToRef(false)
-  goto lbl_ret_8
   label lbl_ret_8
   anon_1 := v_ret_8
   v_ret_7 := notBool(anon_1)
@@ -134,8 +126,6 @@ method double_nonlocal_return() returns (v_ret_0: Ref)
   x := v_ret_7
   v_ret_0 := boolToRef(false)
   goto lbl_ret_0
-  v_ret_5 := x
-  goto lbl_ret_5
   label lbl_ret_5
   anon_0 := v_ret_5
   v_ret_4 := notBool(anon_0)
@@ -163,8 +153,6 @@ method named_double_nonlocal_return() returns (v_ret_0: Ref)
   var v_ret_9: Ref
   v_ret_5 := boolToRef(false)
   goto lbl_ret_5
-  v_ret_0 := boolToRef(false)
-  goto lbl_ret_0
   label lbl_ret_9
   inhale isSubtype(typeOf(v_ret_9), unitType())
   v_ret_8 := v_ret_9
@@ -173,8 +161,6 @@ method named_double_nonlocal_return() returns (v_ret_0: Ref)
   inhale isSubtype(typeOf(v_ret_8), unitType())
   v_ret_0 := boolToRef(false)
   goto lbl_ret_0
-  v_ret_5 := boolToRef(true)
-  goto lbl_ret_5
   label lbl_ret_5
   anon := v_ret_5
   v_ret_4 := notBool(anon)

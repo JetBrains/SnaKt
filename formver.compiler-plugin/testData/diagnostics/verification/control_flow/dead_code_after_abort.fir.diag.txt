@@ -1,0 +1,23 @@
+/dead_code_after_abort.kt: info: Generated Viper text for deadAfterReturn:
+method deadAfterReturn() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  goto lbl_ret_0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/dead_code_after_abort.kt: info: Generated Viper text for liveBeforeReturn:
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method liveBeforeReturn() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  assert 0 == 1
+  goto lbl_ret_0
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}

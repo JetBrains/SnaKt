@@ -1,0 +1,1 @@
+/dead_code_after_abort.kt: warning: Viper verification error: Assert might fail. Assertion 0 == 1 might not hold.
