@@ -2,13 +2,8 @@
 method simpleIf() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
-  if (true) {
-    v_ret_0 := intToRef(0)
-    goto lbl_ret_0
-  } else {
-    v_ret_0 := intToRef(1)
-    goto lbl_ret_0
-  }
+  v_ret_0 := intToRef(0)
+  goto lbl_ret_0
   label lbl_ret_0
 }
 
