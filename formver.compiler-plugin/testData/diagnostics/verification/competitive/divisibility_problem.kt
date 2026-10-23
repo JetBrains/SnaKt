@@ -2,8 +2,10 @@
 
 // Codeforces 1328A, "Divisibility Problem": the least k >= 0 such that b divides a + k.
 // https://codeforces.com/problemset/problem/1328/A
-// Divisibility is stated against an explicit quotient (`divisibilityQuotient`):
-// stated as `(a + res) % b == 0` over a symbolic `b`, it does not verify.
+// The contracts specify the remainder-based adjustment and, separately, an explicit
+// quotient witness (`divisibilityQuotient`) for the next multiple. They do not
+// directly assert `(a + res) % b == 0` or quantified minimality, or connect the helpers.
+// These specifications use mathematical integers, not JVM overflow semantics.
 
 import org.jetbrains.kotlin.formver.plugin.*
 
