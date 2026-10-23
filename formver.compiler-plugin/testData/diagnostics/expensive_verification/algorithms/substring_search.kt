@@ -1,6 +1,8 @@
 // FULL_JDK
 
-// LeetCode 28, "Find the Index of the First Occurrence in a String", naive search.
+// Naive substring-search probe inspired by LeetCode 28; only returned matches are specified.
+// Arithmetic uses the verifier's mathematical-integer model. Additive bounds checks
+// do not establish Kotlin Int overflow safety for very large inputs.
 // https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/
 
 import org.jetbrains.kotlin.formver.plugin.*
@@ -33,7 +35,9 @@ fun <!VIPER_TEXT!>matchLength<!>(haystack: String, needle: String, start: Int): 
     return j
 }
 
-// An empty needle matches at 0.
+// The contract specifies a matching occurrence for nonnegative results, not the first
+// occurrence or absence of a match on -1. It does not establish termination.
+// The implementation returns 0 for an empty needle; the postcondition does not require it.
 @AlwaysVerify
 fun <!VIPER_TEXT!>indexOfNaive<!>(haystack: String, needle: String): Int {
     postconditions<Int> { res ->
