@@ -213,6 +213,16 @@ data class LinearizationVisitor(
         }
     }
 
+    override fun visitUnreachable(e: Unreachable): Linearizable = object : UnitResultLinearizable(e) {
+        override fun toViperUnusedResult(ctx: LinearizationContext) {
+            val falseLit = Exp.BoolLit(false, ctx.source.asPosition)
+            ctx.addStatement {
+                if (e.checked) Stmt.Assert(falseLit, ctx.source.asPosition)
+                else Stmt.Inhale(falseLit, ctx.source.asPosition)
+            }
+        }
+    }
+
     override fun visitAssert(e: Assert): Linearizable = object : UnitResultLinearizable(e) {
         override fun toViperUnusedResult(ctx: LinearizationContext) {
             ctx.addStatement { Stmt.Assert(e.exp.linearize().toViperBuiltinType(ctx), ctx.source.asPosition) }
