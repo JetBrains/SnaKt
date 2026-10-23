@@ -39,8 +39,8 @@ fun StmtConversionContext.collectInvariants(block: FirBlock) = buildList {
 }
 
 /**
- * Attempts to extract trigger expressions from a triggers() function call.
- * Returns the list of trigger expressions if this is a triggers() call, or null otherwise.
+ * Extracts expressions from an invariant-builder triggers() call, or returns null for other statements.
+ * Extraction does not validate Viper trigger restrictions.
  */
 private fun StmtConversionContext.tryExtractTriggers(stmt: FirStatement): List<ExpEmbedding>? {
     if (stmt !is FirFunctionCall) return null
@@ -68,7 +68,6 @@ fun StmtConversionContext.collectInvariantsAndTriggers(block: FirBlock): Invaria
             return@forEach
         }
 
-        // Otherwise, treat as invariant
         check(stmt is FirExpression && stmt.resolvedType.isBoolean) {
             INVALID_STATEMENT_MSG
         }

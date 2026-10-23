@@ -20,8 +20,8 @@ fun ProgramConversionContext.linearizeImpureBody(
     val linearizer =
         Linearizer(SharedLinearizationState(anonVarProducer), seqnBuilder, source, typeResolver)
     converted.bodyExp.toLinearizable(source).toViperUnusedResult(linearizer)
-    // note: we must guarantee somewhere that returned value is Unit
-    // as we may not encounter any `return` statement in the body
+    // A Unit body may fall through without an explicit return. Inhale its result's Unit subtype invariant;
+    // non-Unit results are unchanged.
     converted.returnTarget.variable.withIsUnitInvariantIfUnit(typeResolver)
         .toLinearizable(source).toViperUnusedResult(linearizer)
     return FunctionBodyEmbedding(seqnBuilder.block)
