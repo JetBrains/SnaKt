@@ -473,6 +473,28 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
     }
 
     @Nested
+    @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/competitive")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Competitive {
+      @Test
+      public void testAllFilesPresentInCompetitive() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("formver.compiler-plugin/testData/diagnostics/verification/competitive"), Pattern.compile("^(.+)\\.kt$"), null, true);
+      }
+
+      @Test
+      @TestMetadata("next_round.kt")
+      public void testNext_round() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/competitive/next_round.kt");
+      }
+
+      @Test
+      @TestMetadata("spy_detected.kt")
+      public void testSpy_detected() {
+        runTest("formver.compiler-plugin/testData/diagnostics/verification/competitive/spy_detected.kt");
+      }
+    }
+
+    @Nested
     @TestMetadata("formver.compiler-plugin/testData/diagnostics/verification/contracts")
     @TestDataPath("$PROJECT_ROOT")
     public class Contracts {

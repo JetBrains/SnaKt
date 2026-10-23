@@ -1,0 +1,81 @@
+/spy_detected.kt: info: Generated Viper text for uniqueIndex:
+method uniqueIndex(values: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(values), stringType())
+  requires 3 <= |stringFromRef(values)| && |stringFromRef(values)| <= 100
+  requires (exists anon_builtin_0: Int :: 0 <= anon_builtin_0 &&
+      anon_builtin_0 < |stringFromRef(values)| &&
+      (forall anon_builtin_1: Int ::(0 <= anon_builtin_1 &&
+        anon_builtin_1 < |stringFromRef(values)| &&
+        !(anon_builtin_1 == anon_builtin_0) ==>
+        !(stringFromRef(values)[anon_builtin_1] ==
+        stringFromRef(values)[anon_builtin_0])) &&
+        (0 <= anon_builtin_1 && anon_builtin_1 < |stringFromRef(values)| &&
+        !(anon_builtin_1 == anon_builtin_0) ==>
+        (forall anon_builtin_2: Int ::0 <= anon_builtin_2 &&
+          anon_builtin_2 < |stringFromRef(values)| &&
+          !(anon_builtin_2 == anon_builtin_0) ==>
+          stringFromRef(values)[anon_builtin_1] ==
+          stringFromRef(values)[anon_builtin_2]))))
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures 0 <= intFromRef(v_ret_0) &&
+    intFromRef(v_ret_0) < |stringFromRef(values)|
+  ensures (forall anon_builtin_3: Int ::0 <= anon_builtin_3 &&
+      anon_builtin_3 < |stringFromRef(values)| &&
+      !(anon_builtin_3 == intFromRef(v_ret_0)) ==>
+      !(stringFromRef(values)[anon_builtin_3] ==
+      stringFromRef(values)[intFromRef(v_ret_0)]))
+{
+  var common: Ref
+  var index: Ref
+  var anon_0: Ref
+  if (stringFromRef(values)[0] == stringFromRef(values)[1]) {
+    common := stringGet(values, intToRef(0))
+  } else {
+    common := stringGet(values, intToRef(2))}
+  index := intToRef(0)
+  label cont
+    invariant isSubtype(typeOf(common), charType())
+    invariant isSubtype(typeOf(index), intType())
+    invariant isSubtype(typeOf(values), stringType())
+    invariant 0 <= intFromRef(index) &&
+      intFromRef(index) <= |stringFromRef(values)|
+    invariant (forall anon_builtin_4: Int ::0 <= anon_builtin_4 &&
+        anon_builtin_4 < intFromRef(index) ==>
+        stringFromRef(values)[anon_builtin_4] == charFromRef(common))
+    invariant (exists anon_builtin_5: Int :: intFromRef(index) <=
+        anon_builtin_5 &&
+        anon_builtin_5 < |stringFromRef(values)| &&
+        !(stringFromRef(values)[anon_builtin_5] == charFromRef(common)) &&
+        (forall anon_builtin_6: Int ::0 <= anon_builtin_6 &&
+          anon_builtin_6 < |stringFromRef(values)| &&
+          !(anon_builtin_6 == anon_builtin_5) ==>
+          stringFromRef(values)[anon_builtin_6] == charFromRef(common)))
+  if (intFromRef(index) < |stringFromRef(values)|) {
+    anon_0 := boolToRef(stringFromRef(values)[intFromRef(index)] ==
+      charFromRef(common))
+  } else {
+    anon_0 := boolToRef(false)}
+  if (boolFromRef(anon_0)) {
+    index := plusInts(index, intToRef(1))
+    goto cont
+  }
+  label break
+  assert isSubtype(typeOf(common), charType())
+  assert isSubtype(typeOf(index), intType())
+  assert isSubtype(typeOf(values), stringType())
+  assert 0 <= intFromRef(index) &&
+    intFromRef(index) <= |stringFromRef(values)|
+  assert (forall anon_builtin_4: Int ::0 <= anon_builtin_4 &&
+      anon_builtin_4 < intFromRef(index) ==>
+      stringFromRef(values)[anon_builtin_4] == charFromRef(common))
+  assert (exists anon_builtin_5: Int :: intFromRef(index) <= anon_builtin_5 &&
+      anon_builtin_5 < |stringFromRef(values)| &&
+      !(stringFromRef(values)[anon_builtin_5] == charFromRef(common)) &&
+      (forall anon_builtin_6: Int ::0 <= anon_builtin_6 &&
+        anon_builtin_6 < |stringFromRef(values)| &&
+        !(anon_builtin_6 == anon_builtin_5) ==>
+        stringFromRef(values)[anon_builtin_6] == charFromRef(common)))
+  v_ret_0 := index
+  goto lbl_ret_0
+  label lbl_ret_0
+}
