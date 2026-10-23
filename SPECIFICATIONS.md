@@ -47,6 +47,10 @@ fun abs(x: Int): Int {
 
 Multiple conditions are implicitly conjoined. The postconditions block receives the return value as its parameter.
 
+`preconditions` must be the first statement of the function body, and `postconditions` must
+immediately follow it, or be first if there is no `preconditions`. A block anywhere else is
+reported as ignored rather than silently dropped.
+
 ## Loop Invariants
 
 ```kotlin
@@ -73,6 +77,8 @@ The rules are as follows:
 - Loop invariant must hold after each iteration.
 - Loop invariant must hold when the loop is exited.
 - Code after the loop may assume the condition fails.
+
+`loopInvariants` must be the first statement of the loop body; elsewhere it is reported as ignored.
 
 ## Universal Quantification
 
